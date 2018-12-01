@@ -7,17 +7,29 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { Box, DisabledContent } from 'brave-ui/features/rewards'
+import {
+  Box,
+  DisabledContent,
+  List,
+  NextContribution,
+  Tokens
+} from 'brave-ui/features/rewards'
+import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 
 // Utils
+import * as utils from '../utils'
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 
 // Assets
 const adsDisabledIcon = require('../../img/ads_disabled.svg')
 
-class AdsBox extends React.Component {
-  adsDisabled () {
+interface Props extends Rewards.ComponentProps {
+}
+
+class AdsBox extends React.Component<Props, {}> {
+
+  adsDisabled = () => {
     return (
       <DisabledContent
         image={adsDisabledIcon}
@@ -28,15 +40,87 @@ class AdsBox extends React.Component {
     )
   }
 
+  onAdsSettingChange = (key: string, value: string) => {
+    console.log(`Setting ${key} to ${value}`)
+  }
+
+  adsSettings = () => {
+    /*
+    if (!this.props.rewardsData.adsEnabled) {
+      return null
+    }
+    */
+
+    const adsPerHour = '5'
+    // const { adsPerHour } = this.props.rewardsData.adsData
+
+    return (
+      <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
+        <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+          <ControlWrapper text={getLocale('adsPerHour')}>
+            <Select
+              value={adsPerHour}
+              onChange={this.onAdsSettingChange.bind(this, 'adsPerHour')}
+            >
+              {['1', '2', '3', '4', '5'].map((num: string) => {
+                return (
+                  <div data-value={num}>
+                   {getLocale(`adsPerHour${num}`)}
+                  </div>
+                )
+              })}
+            </Select>
+          </ControlWrapper>
+        </Column>
+      </Grid>
+    )
+  }
+
   render () {
+    // Temporary until we have such attributes
+    const adsEarnings = '10.0'
+    const adsEnabled = true
+    const notificationsReceived = '80'
+    const pagesViewed = '15'
+    const paymentDate = 'Monthly, 5th'
+    const { rates } = this.props.rewardsData.walletInfo
+    // const { adsEarnings, adsEnabled, notificationsReceived, pagesViewed, paymentDate } = this.props.rewardsData.adsData
+
     return (
       <Box
         title={getLocale('adsTitle')}
         type={'ads'}
         description={getLocale('adsDesc')}
-        toggle={false}
+        toggle={true}
+        checked={adsEnabled}
+        settingsChild={this.adsSettings()}
+        testId={'braveAdsSettings'}
         disabledContent={this.adsDisabled()}
-      />
+      >
+        <List title={getLocale('adsCurrentEarnings')}>
+          <Tokens
+            value={adsEarnings}
+            converted={utils.convertBalance(adsEarnings, rates)}
+          />
+        </List>
+        <List title={getLocale('adsPaymentDate')}>
+          <NextContribution>
+            {paymentDate}
+          </NextContribution>
+        </List>
+        <List title={getLocale('adsNotificationsReceived')}>
+          <Tokens
+            hideText={true}
+            value={notificationsReceived}
+          />
+        </List>
+        <List title={getLocale('adsPagesViewed')}>
+          <Tokens
+            hideText={true}
+            value={pagesViewed}
+          />
+        </List>
+      </Box>
     )
   }
 }
