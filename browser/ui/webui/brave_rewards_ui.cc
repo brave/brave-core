@@ -271,8 +271,8 @@ void RewardsDOMHandler::OnWalletProperties(
       rewards_service->GetPublisherAllowNonVerified());
     values.SetBoolean("contributionVideos",
       rewards_service->GetPublisherAllowVideos());
-    web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards.initAutoContributeSettings", values);
+
+    auto ui_values = std::make_unique<base::DictionaryValue>();
 
     base::DictionaryValue result;
     result.SetInteger("status", error_code);
@@ -281,6 +281,7 @@ void RewardsDOMHandler::OnWalletProperties(
     if (error_code == 0 && wallet_properties) {
       walletInfo->SetDouble("balance", wallet_properties->balance);
       walletInfo->SetString("probi", wallet_properties->probi);
+      ui_values->SetBoolean("emptyWallet", (wallet_properties->balance > 0));
 
       auto rates = std::make_unique<base::DictionaryValue>();
       for (auto const& rate : wallet_properties->rates) {
@@ -309,6 +310,10 @@ void RewardsDOMHandler::OnWalletProperties(
       }
       walletInfo->SetList("grants", std::move(grants));
     }
+
+    values.SetDictionary("ui", std::move(ui_values));
+    web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.initAutoContributeSettings", values);
 
     result.SetDictionary("wallet", std::move(walletInfo));
     result.SetDouble("monthlyAmount", wallet_properties->monthly_amount);
