@@ -18,6 +18,7 @@ class AdsService : public KeyedService {
   AdsService() = default;
 
   virtual bool is_enabled() const = 0;
+  virtual uint64_t ads_per_hour() const = 0;
 
   // ads::Ads proxy
   virtual void TabUpdated(

@@ -50,6 +50,8 @@ class AdsServiceImpl : public AdsService,
 
   // AdsService implementation
   bool is_enabled() const override;
+  uint64_t ads_per_hour() const override;
+
   void TabUpdated(
       SessionID tab_id,
       const GURL& url,

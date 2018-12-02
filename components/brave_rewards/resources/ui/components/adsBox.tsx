@@ -44,27 +44,24 @@ class AdsBox extends React.Component<Props, {}> {
     console.log(`Setting ${key} to ${value}`)
   }
 
-  adsSettings = () => {
-    /*
-    if (!this.props.rewardsData.adsEnabled) {
+  adsSettings = (enabled?: boolean) => {
+    if (!enabled) {
       return null
     }
-    */
 
-    const adsPerHour = '5'
-    // const { adsPerHour } = this.props.rewardsData.adsData
+    const { adsPerHour } = this.props.rewardsData.adsData
 
     return (
       <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
         <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
           <ControlWrapper text={getLocale('adsPerHour')}>
             <Select
-              value={adsPerHour}
+              value={adsPerHour.toString()}
               onChange={this.onAdsSettingChange.bind(this, 'adsPerHour')}
             >
               {['1', '2', '3', '4', '5'].map((num: string) => {
                 return (
-                  <div data-value={num}>
+                  <div key={`num-per-hour-${num}`} data-value={num}>
                    {getLocale(`adsPerHour${num}`)}
                   </div>
                 )
@@ -77,14 +74,20 @@ class AdsBox extends React.Component<Props, {}> {
   }
 
   render () {
+    const { adsData } = this.props.rewardsData
+
+    if (!adsData) {
+      return null
+    }
+
     // Temporary until we have such attributes
+    // const { adsEarnings, notificationsReceived, pagesViewed, paymentDate } = adsData
     const adsEarnings = '10.0'
-    const adsEnabled = true
     const notificationsReceived = '80'
     const pagesViewed = '15'
     const paymentDate = 'Monthly, 5th'
     const { rates } = this.props.rewardsData.walletInfo
-    // const { adsEarnings, adsEnabled, notificationsReceived, pagesViewed, paymentDate } = this.props.rewardsData.adsData
+    const { adsEnabled } = adsData
 
     return (
       <Box
@@ -93,7 +96,7 @@ class AdsBox extends React.Component<Props, {}> {
         description={getLocale('adsDesc')}
         toggle={true}
         checked={adsEnabled}
-        settingsChild={this.adsSettings()}
+        settingsChild={this.adsSettings(adsEnabled)}
         testId={'braveAdsSettings'}
         disabledContent={this.adsDisabled()}
       >

@@ -7,6 +7,8 @@
 #include "base/base64.h"
 #include "base/memory/weak_ptr.h"
 
+#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
@@ -75,6 +77,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void UpdateTipsList(const base::ListValue* args);
   void GetContributionList(const base::ListValue* args);
   void CheckImported(const base::ListValue* args);
+  void GetAdsData(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -127,6 +130,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
           notifications_list) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
+  brave_ads::AdsService* ads_service_;
   base::WeakPtrFactory<RewardsDOMHandler> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsDOMHandler);
@@ -200,12 +204,18 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.checkImported",
                                     base::BindRepeating(&RewardsDOMHandler::CheckImported,
                                                         base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getAdsData",
+                                    base::BindRepeating(&RewardsDOMHandler::GetAdsData,
+                                                        base::Unretained(this)));
 }
 
 void RewardsDOMHandler::Init() {
   Profile* profile = Profile::FromWebUI(web_ui());
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  ads_service_ =
+      brave_ads::AdsServiceFactory::GetForProfile(profile);
+
   if (rewards_service_)
     rewards_service_->AddObserver(this);
 }
@@ -688,6 +698,19 @@ void RewardsDOMHandler::CheckImported(const base::ListValue *args) {
   if (web_ui()->CanCallJavascript() && rewards_service_) {
     bool imported = rewards_service_->CheckImported();
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.imported", base::Value(imported));
+  }
+}
+
+void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
+  if (ads_service_ && web_ui()->CanCallJavascript()) {
+    base::DictionaryValue adsData;
+    bool ads_enabled = ads_service_->is_enabled();
+    int ads_per_hour = ads_service_->ads_per_hour();
+
+    adsData.SetBoolean("adsEnabled", ads_enabled);
+    adsData.SetInteger("adsPerHour", ads_per_hour);
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsData", adsData);
   }
 }
 
