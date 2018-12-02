@@ -518,6 +518,10 @@ uint64_t AdsServiceImpl::GetAdsPerHour() const {
   return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerHour);
 }
 
+uint64_t AdsServiceImpl::ads_per_hour() const {
+  return GetAdsPerHour();
+}
+
 uint64_t AdsServiceImpl::GetAdsPerDay() const {
   return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerDay);
 }

@@ -117,6 +117,21 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         }
         break
       }
+    case types.GET_ADS_DATA:
+      {
+        chrome.send('brave_rewards.getAdsData')
+        break
+      }
+    case types.ON_ADS_DATA:
+      {
+        if (!action.payload.adsData) {
+          break
+        }
+
+        state = { ...state }
+        state.adsData = action.payload.adsData
+        break
+      }
   }
 
   return state
