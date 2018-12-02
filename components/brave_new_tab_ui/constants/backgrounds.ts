@@ -94,7 +94,7 @@ export const images: NewTab.Image[] = [
     'link': 'https://www.photoserge.com/'
   },
   {
-    'name': 'Paris: Conciergeri',
+    'name': 'Paris: Conciergerie',
     'source': 'Phoyoserge_ParisConciergeri.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'
