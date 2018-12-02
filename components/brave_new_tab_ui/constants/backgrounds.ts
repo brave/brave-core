@@ -4,7 +4,7 @@
 
 export const images: NewTab.Image[] = [
   {
-    'name': 'Tuolome Meadows',
+    'name': 'Tuolumne Meadows',
     'source': 'dksfoto1.jpg',
     'author': 'Darrell Sano',
     'link': 'https://dksfoto.smugmug.com'
@@ -94,7 +94,7 @@ export const images: NewTab.Image[] = [
     'link': 'https://www.photoserge.com/'
   },
   {
-    'name': 'Paris: Conciergeri',
+    'name': 'Paris: Conciergerie',
     'source': 'Phoyoserge_ParisConciergeri.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'
