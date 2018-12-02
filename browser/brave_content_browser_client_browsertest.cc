@@ -81,11 +81,11 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
-  GURL chrome_settings_url("chrome://settings/");
+  GURL chrome_settings_url("chrome://about/");
   std::vector<GURL> urls {
     chrome_settings_url,
-    GURL("about:settings/"),
-    GURL("brave://settings/")
+    GURL("about:about/"),
+    GURL("brave://about/")
   };
   std::for_each(urls.begin(), urls.end(), [this, &chrome_settings_url](const GURL& url) {
     content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
