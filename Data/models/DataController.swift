@@ -8,14 +8,14 @@ import XCGLogger
 private let log = Logger.browserLogger
 
 public class DataController: NSObject {
-    private let databaseName = "Brave.sqlite"
+    private static let databaseName = "Brave.sqlite"
     
     public static var shared: DataController = DataController()
     
     private lazy var container: NSPersistentContainer = {
+        
         let modelName = "Model"
-        guard let modelURL =
-            Bundle(for: DataController.self).url(forResource: modelName, withExtension: "momd") else {
+        guard let modelURL = Bundle(for: DataController.self).url(forResource: modelName, withExtension: "momd") else {
             fatalError("Error loading model from bundle")
         }
         guard let mom = NSManagedObjectModel(contentsOf: modelURL) else {
@@ -81,13 +81,6 @@ public class DataController: NSObject {
             return
         }
         
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        guard let docURL = urls.last else {
-            log.error("Could not load url at document directory")
-            fatalError()
-        }
-        let storeURL = docURL.appendingPathComponent(databaseName)
-        
         let storeDescription = NSPersistentStoreDescription(url: storeURL)
         
         // This makes the database file encrypted until device is unlocked.
@@ -95,6 +88,19 @@ public class DataController: NSObject {
         storeDescription.setOption(completeProtection, forKey: NSPersistentStoreFileProtectionKey)
         
         container.persistentStoreDescriptions = [storeDescription]
+    }
+    
+    let storeURL: URL = {
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        guard let docURL = urls.last else {
+            log.error("Could not load url at document directory")
+            fatalError()
+        }
+        return docURL.appendingPathComponent(DataController.databaseName)
+    }()
+    
+    public func storeExists() -> Bool {
+        return FileManager.default.fileExists(atPath: storeURL.path)
     }
 }
 
