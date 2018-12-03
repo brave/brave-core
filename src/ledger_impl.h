@@ -168,7 +168,7 @@ class LedgerImpl : public ledger::Ledger,
   void OnPublisherActivity(ledger::Result result,
                            std::unique_ptr<ledger::PublisherInfo> info,
                            uint64_t windowId);
-  void OnExcludedSitesChanged();
+  void OnExcludedSitesChanged(const std::string& publisher_id);
   void SetBalanceReportItem(ledger::PUBLISHER_MONTH month,
                             int year,
                             ledger::ReportType type,
