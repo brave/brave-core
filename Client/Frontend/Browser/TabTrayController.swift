@@ -956,7 +956,6 @@ fileprivate class EmptyPrivateTabsView: UIView {
     
     let stackView = UIStackView().then {
         $0.axis = .vertical
-        $0.alignment = .center
         $0.spacing = EmptyPrivateTabsViewUX.StackViewSpacing
     }
     
@@ -989,6 +988,7 @@ fileprivate class EmptyPrivateTabsView: UIView {
     }
 
     let iconImageView = UIImageView(image: #imageLiteral(resourceName: "private_glasses")).then {
+        $0.contentMode = .center
         $0.setContentHuggingPriority(.required, for: .vertical)
         $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
     }
