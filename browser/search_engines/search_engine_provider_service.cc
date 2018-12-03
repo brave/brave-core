@@ -42,7 +42,7 @@ void SearchEngineProviderService::OnPreferenceChanged(
   DCHECK(pref_name == kUseAlternativeSearchEngineProvider);
   DCHECK(!brave::IsRegionForQwant(otr_profile_));
 
-  ConfigureSearchEngineProvider();
+  OnUseAlternativeSearchEngineProviderChanged();
 }
 
 bool

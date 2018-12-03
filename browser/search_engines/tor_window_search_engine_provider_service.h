@@ -23,8 +23,6 @@ class TorWindowSearchEngineProviderService
   // TemplateURLServiceObserver overrides:
   void OnTemplateURLServiceChanged() override;
 
-  void ConfigureSearchEngineProvider() override {}
-
   int GetInitialSearchEngineProvider() const;
 
   IntegerPrefMember alternative_search_engine_provider_in_tor_;

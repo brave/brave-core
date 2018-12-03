@@ -48,7 +48,8 @@ void GuestWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
     brave::ToggleUseAlternativeSearchEngineProvider(otr_profile_);
 }
 
-void GuestWindowSearchEngineProviderService::ConfigureSearchEngineProvider() {
+void GuestWindowSearchEngineProviderService::
+OnUseAlternativeSearchEngineProviderChanged() {
   // When this call is from setting's change, we don't need to set provider
   // again.
   if (ignore_template_url_service_changing_)

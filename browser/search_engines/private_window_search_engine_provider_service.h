@@ -16,11 +16,14 @@ class PrivateWindowSearchEngineProviderService
   ~PrivateWindowSearchEngineProviderService() override;
 
  private:
+  // Configure appropriate provider according to prefs.
+  void ConfigureSearchEngineProvider();
+
   // TemplateURLServiceObserver overrides:
   void OnTemplateURLServiceChanged() override;
 
-  // SearchEngineProviderControllerBase overrides:
-  void ConfigureSearchEngineProvider() override;
+  // SearchEngineProviderService overrides:
+  void OnUseAlternativeSearchEngineProviderChanged() override;
 
   DISALLOW_COPY_AND_ASSIGN(PrivateWindowSearchEngineProviderService);
 };

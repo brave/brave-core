@@ -22,7 +22,9 @@ class SearchEngineProviderService : public KeyedService {
   ~SearchEngineProviderService() override;
 
  protected:
-  virtual void ConfigureSearchEngineProvider() = 0;
+  // If subclass want to know and configure according to prefs change, override
+  // this.
+  virtual void OnUseAlternativeSearchEngineProviderChanged() {}
 
   bool UseAlternativeSearchEngineProvider() const;
   void ChangeToAlternativeSearchEngineProvider();

@@ -25,6 +25,11 @@ PrivateWindowSearchEngineProviderService::
 }
 
 void PrivateWindowSearchEngineProviderService::
+OnUseAlternativeSearchEngineProviderChanged() {
+  ConfigureSearchEngineProvider();
+}
+
+void PrivateWindowSearchEngineProviderService::
 ConfigureSearchEngineProvider() {
   UseAlternativeSearchEngineProvider()
       ? ChangeToAlternativeSearchEngineProvider()
