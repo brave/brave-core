@@ -6,8 +6,11 @@
 
 #include "base/strings/string_util.h"
 #include "brave/common/url_constants.h"
-#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/profiles/profile.h"
+
+#if !defined(OS_ANDROID)
+#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
+#endif
 
 // See the BraveAutocompleteProviderClient why GetOriginalProfile() is fetched.
 // All services except TemplateURLService exposed from AutocompleteClassifier
@@ -30,9 +33,12 @@ BraveAutocompleteSchemeClassifier::GetInputTypeForScheme(
     return metrics::OmniboxInputType::INVALID;
   }
   if (base::IsStringASCII(scheme) &&
-      (base::LowerCaseEqualsASCII(scheme, kBraveUIScheme) ||
-       (webtorrent::IsWebtorrentEnabled(profile_) &&
-        base::LowerCaseEqualsASCII(scheme, kMagnetScheme)))) {
+      (base::LowerCaseEqualsASCII(scheme, kBraveUIScheme)
+#if !defined(OS_ANDROID)
+      || (webtorrent::IsWebtorrentEnabled(profile_) &&
+        base::LowerCaseEqualsASCII(scheme, kMagnetScheme))
+#endif
+      )) {
     return metrics::OmniboxInputType::URL;
   }
 
