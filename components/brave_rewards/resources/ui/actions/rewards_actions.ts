@@ -132,3 +132,9 @@ export const getContributeList = () => action(types.GET_CONTRIBUTE_LIST)
 export const onInitAutoContributeSettings = (properties: any) => action(types.INIT_AUTOCONTRIBUTE_SETTINGS, {
   properties
 })
+
+export const checkImported = () => action(types.CHECK_IMPORTED)
+
+export const onImportedCheck = (imported: boolean) => action(types.ON_IMPORTED_CHECK, {
+  imported
+})

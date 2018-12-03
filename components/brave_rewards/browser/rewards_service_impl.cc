@@ -27,6 +27,7 @@
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
 #include "brave/common/brave_switches.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/publisher_info_database.h"
 #include "brave/components/brave_rewards/browser/rewards_fetcher_service_observer.h"
@@ -41,6 +42,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content_site.h"
 #include "extensions/buildflags/buildflags.h"
@@ -1410,18 +1412,31 @@ void RewardsServiceImpl::OnPublisherBanner(std::unique_ptr<ledger::PublisherBann
     observer.OnPublisherBanner(this, new_banner);
 }
 
-void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount, bool recurring) {
+void RewardsServiceImpl::OnDonate_PublisherInfoSaved(ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info) {
+}
+
+void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount,
+  bool recurring, const ledger::PublisherInfo* publisher_info) {
   if (recurring) {
+    // If caller provided publisher info, save it to `publisher_info` table
+    if (publisher_info) {
+      auto publisher_copy = std::make_unique<ledger::PublisherInfo>(
+        *publisher_info);
+      SavePublisherInfo(std::move(publisher_copy),
+        std::bind(&RewardsServiceImpl::OnDonate_PublisherInfoSaved, this, _1, _2));
+    }
+
     SaveRecurringDonation(publisher_key, amount);
     return;
   }
 
-  ledger::PublisherInfo publisher_info(
+  ledger::PublisherInfo publisher(
     publisher_key,
     ledger::PUBLISHER_MONTH::ANY,
     -1);
 
-  ledger_->DoDirectDonation(publisher_info, amount, "BAT");
+  ledger_->DoDirectDonation(publisher, amount, "BAT");
 }
 
 bool SaveContributionInfoOnFileTaskRunner(const brave_rewards::ContributionInfo info,
@@ -1695,6 +1710,41 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       }
     }
   }
+}
+
+bool RewardsServiceImpl::CheckImported() {
+  PrefService* prefs = profile_->GetOriginalProfile()->GetPrefs();
+  const int pinned_item_count = prefs->GetInteger(
+      kBravePaymentsPinnedItemCount);
+  if (pinned_item_count > 0) {
+    prefs->SetInteger(kBravePaymentsPinnedItemCount, 0);
+  }
+
+  return pinned_item_count > 0;
+}
+
+void RewardsServiceImpl::OnDonate(
+    const std::string& publisher_key,
+    int amount,
+    bool recurring,
+    std::unique_ptr<brave_rewards::ContentSite> site) {
+
+  if (!site) {
+    return;
+  }
+
+  ledger::PublisherInfo info;
+  info.id = publisher_key;
+  info.month = ledger::PUBLISHER_MONTH::ANY;
+  info.year = -1;
+  info.verified = site->verified;
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.name = site->name;
+  info.url = site->url;
+  info.provider = site->provider;
+  info.favicon_url = site->favicon_url;
+
+  OnDonate(publisher_key, amount, recurring, &info);
 }
 
 }  // namespace brave_rewards
