@@ -33,7 +33,7 @@ class BraveImporter : public ChromeImporter {
   void ImportBookmarks() override;
   void ImportHistory() override;
   void ImportStats();
-  void ImportLedger();
+  bool ImportLedger();
   void ImportWindows();
   void ImportReferral();
 
