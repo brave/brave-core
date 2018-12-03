@@ -110,11 +110,13 @@ void BraveImporter::StartImport(const importer::SourceProfile& source_profile,
   }
 
   if ((items & importer::LEDGER) && !cancelled()) {
-    bridge_->NotifyItemStarted(importer::LEDGER);
-    // NOTE: RecoverWallet is async.
-    // Its handler will call NotifyItemEnded/NotifyEnded
-    ImportLedger();
-    return;
+    // `ImportLedger` returns true if "importable"
+    if (ImportLedger()) {
+      // NOTE: RecoverWallet is async.
+      // Its handler will call NotifyItemEnded/NotifyEnded
+      bridge_->NotifyItemStarted(importer::LEDGER);
+      return;
+    }
   }
 
   bridge_->NotifyEnded();
@@ -585,40 +587,48 @@ bool ParsePinnedSites(BraveLedger& ledger,
   return true;
 }
 
-void BraveImporter::ImportLedger() {
+bool BraveImporter::ImportLedger() {
   std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
       "session-store-1");
   std::unique_ptr<base::Value> ledger_state_json = ParseBraveStateFile(
       "ledger-state.json");
-  if (!(session_store_json && ledger_state_json))
-    return;
+  if (!(session_store_json && ledger_state_json)) {
+    return false;
+  }
 
   BraveLedger ledger;
+
+  if (!ParsePaymentsPreferences(ledger, *session_store_json)) {
+    LOG(ERROR) << "Failed to parse preferences for Brave Payments";
+    return false;
+  }
 
   // It should be considered fatal if an error occurs while
   // parsing any of the below expected fields. This could
   // indicate a corrupt session-store-1
   if (!ParseWalletPassphrase(ledger, *session_store_json)) {
     LOG(ERROR) << "Failed to parse wallet passphrase";
-    return;
+    return false;
   }
 
-  if (!ParsePaymentsPreferences(ledger, *session_store_json)) {
-    LOG(ERROR) << "Failed to parse preferences for Brave Payments";
-    return;
+  if (!ledger.settings.payments.enabled) {
+    LOG(INFO) << "Skipping `Brave Payments` import (feature was disabled)";
+    return false;
   }
 
+  // only do the import if Brave Payments is enabled
   if (!ParseExcludedSites(ledger, *session_store_json)) {
     LOG(ERROR) << "Failed to parse list of excluded sites for Brave Payments";
-    return;
+    return false;
   }
 
   if (!ParsePinnedSites(ledger, *session_store_json)) {
     LOG(ERROR) << "Failed to parse list of pinned sites for Brave Payments";
-    return;
+    return false;
   }
 
   bridge_->UpdateLedger(ledger);
+  return true;
 }
 
 void BraveImporter::ImportReferral() {
