@@ -54,6 +54,7 @@ declare namespace Rewards {
       modalBackup: boolean
       walletRecoverySuccess: boolean | null
       walletServerProblem: boolean
+      walletImported: boolean
     }
     walletCreated: boolean
     walletCreateFailed: boolean

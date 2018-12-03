@@ -19,6 +19,10 @@
 
 class PrefRegistrySimple;
 
+namespace ledger {
+struct PublisherInfo;
+}
+
 namespace content {
 class NavigationHandle;
 }
@@ -93,12 +97,16 @@ class RewardsService : public KeyedService {
   virtual void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url, const std::string& favicon_url) = 0;
   virtual double GetContributionAmount() = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id) = 0;
-  virtual void OnDonate(const std::string& publisher_key, int amount, bool recurring) = 0;
+  virtual void OnDonate(const std::string& publisher_key, int amount,
+      bool recurring, const ledger::PublisherInfo* publisher_info = NULL) = 0;
+  virtual void OnDonate(const std::string& publisher_key, int amount,
+      bool recurring, std::unique_ptr<brave_rewards::ContentSite> site) = 0;
   virtual void RemoveRecurring(const std::string& publisher_key) = 0;
   virtual void UpdateRecurringDonationsList() = 0;
   virtual void UpdateTipsList() = 0;
   virtual void SetContributionAutoInclude(
     std::string publisher_key, bool excluded, uint64_t windowId) = 0;
+  virtual bool CheckImported() = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

@@ -121,6 +121,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onInitAutoContributeSettings(properties)
   }
 
+  function imported (imported: boolean) {
+    getActions().onImportedCheck(imported)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -140,7 +144,8 @@ window.cr.define('brave_rewards', function () {
     contributionAmount,
     recurringDonationUpdate,
     currentTips,
-    initAutoContributeSettings
+    initAutoContributeSettings,
+    imported
   }
 })
 

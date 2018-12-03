@@ -298,6 +298,7 @@
       <message name="IDS_BRAVE_UI_GRANTS" desc="">Grants</message>
       <message name="IDS_BRAVE_UI_IMPORT" desc="">import</message>
       <message name="IDS_BRAVE_UI_INCLUDE_IN_AUTO" desc="">Include in Auto-Contribute</message>
+      <message name="IDS_BRAVE_UI_LEARN_MORE" desc="">Learn More</message>
       <message name="IDS_BRAVE_UI_MAKE_MONTHLY" desc="">Make this monthly</message>
       <message name="IDS_BRAVE_UI_MONTH_APR" desc="">Apr</message>
       <message name="IDS_BRAVE_UI_MONTH_AUG" desc="">August</message>
@@ -311,6 +312,7 @@
       <message name="IDS_BRAVE_UI_MONTH_NOV" desc="">November</message>
       <message name="IDS_BRAVE_UI_MONTH_OCT" desc="">October</message>
       <message name="IDS_BRAVE_UI_MONTH_SEP" desc="">September</message>
+      <message name="IDS_BRAVE_UI_MONTHLY_TIPS" desc="">Monthly Tips!</message>
       <message name="IDS_BRAVE_UI_NEW_GRANT" desc="">A free token grant is available.</message>
       <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="">Free Token Grant</message>
       <message name="IDS_BRAVE_UI_NO_GRANTS" desc="">Currently no token grant is available.</message>
@@ -326,6 +328,12 @@
       <message name="IDS_BRAVE_UI_PAYMENT_MONTHLY" desc="">Payment made every {{day}}th day in each month.</message>
       <message name="IDS_BRAVE_UI_PAYMENT_NOT_MADE" desc="">Payment not made.</message>
       <message name="IDS_BRAVE_UI_PAYMENT_WARNING" desc="">When your balance is not enough to cover the combined total of Auto-Contribute and your recurring tips, these payments are skipped for this period.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_HEADER" desc="">Pinned sites are now</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_MSG" desc="">Here's how monthly tips work:</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_ONE" desc="">Monthly tips do not come out of your Auto-Contribute payment. They're separate.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_TWO" desc="">Each site is paid a fixed amount monthly.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_THREE" desc="">Monthly tips are paid out all at once, each month. If you're using Auto-Contribute, tips go out at the same time as your monthly Auto-Contribute payment.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_FOUR" desc="">You can remove any site receiving monthly tips from inside of the Tips panel.</message>
       <message name="IDS_BRAVE_UI_PLEASE_NOTE" desc="">Please note:</message>
       <message name="IDS_BRAVE_UI_PRINT" desc="">Print</message>
       <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART" desc="">Ready to get started?</message>
@@ -338,6 +346,7 @@
       <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
       <message name="IDS_BRAVE_UI_RESTORE" desc="">Restore</message>
       <message name="IDS_BRAVE_UI_RESTORE_ALL" desc="">Restore All</message>
+      <message name="IDS_BRAVE_UI_REVIEW_SITE_MSG" desc="">Your pinned sites have been moved to</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT1" desc="">Backup your Wallet</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2" desc="">Keep this recovery key safe. You can always use this key to get your wallet back if something happens to your browser or computer. But make sure to protect it — anyone who gets this key could steal your wallet. It's probably safest to write it down on a piece of paper, or wherever else you keep important info.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">You can support this site by sending a tip. It’s a way of thanking them for making great content. Content creators get paid for their tips during the first week of each calendar month.</message>

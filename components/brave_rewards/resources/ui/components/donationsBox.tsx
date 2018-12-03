@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 
 // Components
 import { Checkbox, Column, Grid, ControlWrapper } from 'brave-ui/components'
-import { DisabledContent, Box, TableDonation, List, Tokens, ModalDonation } from 'brave-ui/features/rewards'
+import { DisabledContent, Box, TableDonation, List, Tokens, ModalDonation, TipsMigrationAlert } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
 
 // Utils
@@ -180,8 +180,21 @@ class DonationBox extends React.Component<Props, State> {
     })
   }
 
+  doNothing = () => {
+    console.log('Alert closed')
+  }
+
+  importAlert = (walletImported: boolean) => {
+    return (
+      walletImported
+      ? <TipsMigrationAlert onReview={this.doNothing} />
+      : null
+    )
+  }
+
   render () {
-    const { walletInfo, firstLoad, enabledMain } = this.props.rewardsData
+    const { walletInfo, firstLoad, enabledMain, ui } = this.props.rewardsData
+    const { walletImported } = ui
     const showDisabled = firstLoad !== false || !enabledMain
     const donationRows = this.getDonationRows()
     const topRows = donationRows.slice(0, 5)
@@ -197,6 +210,7 @@ class DonationBox extends React.Component<Props, State> {
         description={getLocale('donationDesc')}
         settingsChild={this.donationSettings()}
         disabledContent={showDisabled ? this.disabledContent() : null}
+        attachedAlert={this.importAlert(walletImported)}
       >
         {
           this.state.modalShowAll
