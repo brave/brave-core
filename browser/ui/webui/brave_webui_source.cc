@@ -483,6 +483,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "doMonthly", IDS_BRAVE_UI_DO_MONTHLY },
         { "makeMonthly", IDS_BRAVE_UI_MAKE_MONTHLY },
         { "notEnoughTokens", IDS_BRAVE_UI_NOT_ENOUGH_TOKENS },
+        { "on", IDS_BRAVE_UI_ON },
         { "rewardsBannerText1", IDS_BRAVE_UI_REWARDS_BANNER_TEXT1 },
         { "rewardsBannerText2", IDS_BRAVE_UI_REWARDS_BANNER_TEXT2 },
         { "sendDonation", IDS_BRAVE_UI_SEND_DONATION },
