@@ -4,7 +4,6 @@
 
 #include "brave/browser/brave_profile_prefs.h"
 
-#include "brave/browser/search_engine_provider_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/common/pref_names.h"
 #include "brave/browser/tor/tor_profile_service.h"
@@ -25,8 +24,6 @@ namespace brave {
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_rewards::RewardsService::RegisterProfilePrefs(registry);
   brave_shields::BraveShieldsWebContentsObserver::RegisterProfilePrefs(registry);
-
-  RegisterAlternativeSearchEngineProviderProfilePrefs(registry);
 
   // appearance
   BraveThemeService::RegisterProfilePrefs(registry);

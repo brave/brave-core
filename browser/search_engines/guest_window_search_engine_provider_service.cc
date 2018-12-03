@@ -2,19 +2,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/guest_window_search_engine_provider_controller.h"
+#include "brave/browser/search_engines/guest_window_search_engine_provider_service.h"
 
 #include "base/auto_reset.h"
-#include "brave/browser/search_engine_provider_util.h"
+#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 
 // Guest windows starts with default search engine provider because it's guest.
-GuestWindowSearchEngineProviderController::
-GuestWindowSearchEngineProviderController(Profile* otr_profile)
-    : SearchEngineProviderControllerBase(otr_profile) {
+GuestWindowSearchEngineProviderService::GuestWindowSearchEngineProviderService(
+    Profile* otr_profile)
+    : SearchEngineProviderService(otr_profile) {
   DCHECK_EQ(otr_profile->GetProfileType(), Profile::GUEST_PROFILE);
   DCHECK(!otr_profile->IsTorProfile());
   DCHECK(!brave::IsRegionForQwant(otr_profile));
@@ -25,12 +25,12 @@ GuestWindowSearchEngineProviderController(Profile* otr_profile)
   otr_template_url_service_->AddObserver(this);
 }
 
-GuestWindowSearchEngineProviderController::
-~GuestWindowSearchEngineProviderController() {
+GuestWindowSearchEngineProviderService::
+~GuestWindowSearchEngineProviderService() {
   otr_template_url_service_->RemoveObserver(this);
 }
 
-void GuestWindowSearchEngineProviderController::OnTemplateURLServiceChanged() {
+void GuestWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
   // When this change is came from pref changing, we don't need to control
   // prefs again.
   if (ignore_template_url_service_changing_)
@@ -48,8 +48,8 @@ void GuestWindowSearchEngineProviderController::OnTemplateURLServiceChanged() {
     brave::ToggleUseAlternativeSearchEngineProvider(otr_profile_);
 }
 
-void
-GuestWindowSearchEngineProviderController::ConfigureSearchEngineProvider() {
+void GuestWindowSearchEngineProviderService::
+OnUseAlternativeSearchEngineProviderChanged() {
   // When this call is from setting's change, we don't need to set provider
   // again.
   if (ignore_template_url_service_changing_)

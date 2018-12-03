@@ -2,27 +2,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_SEARCH_ENGINE_PROVIDER_CONTROLLER_BASE_H_
-#define BRAVE_BROWSER_SEARCH_ENGINE_PROVIDER_CONTROLLER_BASE_H_
+#ifndef BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_H_
+#define BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_H_
 
 #include <memory>
 #include <string>
 
 #include "base/macros.h"
+#include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_member.h"
-#include "components/search_engines/template_url_service_observer.h"
 
 class Profile;
 class TemplateURL;
 class TemplateURLService;
 
-class SearchEngineProviderControllerBase : public TemplateURLServiceObserver {
+class SearchEngineProviderService : public KeyedService {
  public:
-  explicit SearchEngineProviderControllerBase(Profile* otr_profile);
-  ~SearchEngineProviderControllerBase() override;
+  explicit SearchEngineProviderService(Profile* otr_profile);
+  ~SearchEngineProviderService() override;
 
  protected:
-  virtual void ConfigureSearchEngineProvider() = 0;
+  // If subclass want to know and configure according to prefs change, override
+  // this.
+  virtual void OnUseAlternativeSearchEngineProviderChanged() {}
 
   bool UseAlternativeSearchEngineProvider() const;
   void ChangeToAlternativeSearchEngineProvider();
@@ -40,14 +42,9 @@ class SearchEngineProviderControllerBase : public TemplateURLServiceObserver {
  private:
   void OnPreferenceChanged(const std::string& pref_name);
 
-  // |destroyer_| controls the lifecycle of this class and it is destroyed
-  // by itself.
-  class Destroyer;
-  Destroyer* destroyer_ = nullptr;
-
   BooleanPrefMember use_alternative_search_engine_provider_;
 
-  DISALLOW_COPY_AND_ASSIGN(SearchEngineProviderControllerBase);
+  DISALLOW_COPY_AND_ASSIGN(SearchEngineProviderService);
 };
 
-#endif  // BRAVE_BROWSER_SEARCH_ENGINE_PROVIDER_CONTROLLER_BASE_H_
+#endif  // BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_SERVICE_H_

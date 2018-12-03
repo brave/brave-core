@@ -4,7 +4,7 @@
 
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 
-#include "brave/browser/search_engine_provider_util.h"
+#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
