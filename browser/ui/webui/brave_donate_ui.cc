@@ -202,6 +202,7 @@ void RewardsDonateDOMHandler::OnPublisherBanner(brave_rewards::RewardsService* r
   result.SetString("description", banner.description);
   result.SetString("background", banner.background);
   result.SetString("logo", banner.logo);
+  result.SetString("provider", banner.provider);
 
   auto amounts = std::make_unique<base::ListValue>();
   for (int const& value : banner.amounts) {

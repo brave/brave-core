@@ -24,6 +24,7 @@ declare namespace RewardsDonate {
     background: string
     logo: string
     amount: number[],
+    provider: string
     social: Record<string, string>
   }
 
