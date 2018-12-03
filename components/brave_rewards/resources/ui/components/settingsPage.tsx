@@ -50,6 +50,7 @@ class SettingsPage extends React.Component<Props, {}> {
     this.actions.getGrant()
     this.actions.getDonationTable()
     this.actions.getContributeList()
+    this.actions.checkImported()
   }
 
   componentWillUnmount () {
