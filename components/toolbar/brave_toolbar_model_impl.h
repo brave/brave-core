@@ -10,7 +10,13 @@
 class BraveToolbarModelImpl : public ToolbarModelImpl {
   public:
     using ToolbarModelImpl::ToolbarModelImpl;
+#if defined(OS_ANDROID)
+    // On Android GetURLForDisplay is not invoked as on brave-core,
+    // but GetFormattedFullURL is invoked instead
+    base::string16 GetFormattedFullURL() const override;
+#else
     base::string16 GetURLForDisplay() const override;
+#endif
   private:
     DISALLOW_COPY_AND_ASSIGN(BraveToolbarModelImpl);
 };

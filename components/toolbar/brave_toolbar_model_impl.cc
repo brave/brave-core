@@ -20,8 +20,13 @@ const base::string16 replacement_scheme_part =
 
 }
 
+#if defined(OS_ANDROID)
+base::string16 BraveToolbarModelImpl::GetFormattedFullURL() const {
+  base::string16 formatted_text = ToolbarModelImpl::GetFormattedFullURL();
+#else
 base::string16 BraveToolbarModelImpl::GetURLForDisplay() const {
   base::string16 formatted_text = ToolbarModelImpl::GetURLForDisplay();
+#endif
 
   const GURL url(GetURL());
   // Only replace chrome:// with brave:// if scheme is "chrome" and
