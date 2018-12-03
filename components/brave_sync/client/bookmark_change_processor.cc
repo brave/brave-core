@@ -140,14 +140,9 @@ const bookmarks::BookmarkNode* FindByObjectId(bookmarks::BookmarkModel* model,
 
 uint64_t GetIndexByOrder(const bookmarks::BookmarkNode* root_node,
                   const std::string& record_order) {
-  uint64_t index = 0;
-  ui::TreeNodeIterator<const bookmarks::BookmarkNode> iterator(root_node);
-  while (iterator.has_next()) {
-    const bookmarks::BookmarkNode* node = iterator.Next();
-
-    if (node->parent() != root_node)
-      return index;
-
+  int index = 0;
+  while (index < root_node->child_count()) {
+    const bookmarks::BookmarkNode* node = root_node->GetChild(index);
     std::string node_order;
     node->GetMetaInfo("order", &node_order);
 
@@ -437,6 +432,49 @@ void BookmarkChangeProcessor::DeleteSelfAndChildren(
   bookmark_model_->Remove(node);
 }
 
+void ValidateFolderOrders(const bookmarks::BookmarkNode* folder_node) {
+  DCHECK(folder_node);
+
+  // Validate direct children order
+  std::string left_order;
+  std::string right_order;
+  for (auto i = 0; i < folder_node->child_count(); ++i) {
+    const auto* node = folder_node->GetChild(i);
+    std::string order;
+    node->GetMetaInfo("order", &order);
+    if (order.empty()) {
+      continue;
+    }
+
+    if (left_order.empty()) {
+      left_order = order;
+      continue;
+    }
+
+    if (right_order.empty()) {
+      right_order = order;
+    } else {
+      left_order = right_order;
+      right_order = order;
+    }
+
+    DCHECK(!left_order.empty());
+    DCHECK(!right_order.empty());
+
+    bool compare_result = CompareOrder(left_order, right_order);
+    if (!compare_result) {
+      DLOG(ERROR) << "ValidateFolderOrders failed";
+      DLOG(ERROR) << "folder_node=" << folder_node->GetTitle();
+      DLOG(ERROR) << "folder_node->child_count()=" << folder_node->child_count();
+      DLOG(ERROR) << "i=" << i;
+      DLOG(ERROR) << "left_order=" << left_order;
+      DLOG(ERROR) << "right_order=" << right_order;
+      DLOG(ERROR) << "Unexpected situation of invalid order";
+      return;
+    }
+  }
+}
+
 void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
     const RecordsList &records) {
   ScopedPauseObserver pause(this);
@@ -486,9 +524,10 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
       }
     } else if (sync_record->action == jslib::SyncRecord::Action::A_CREATE) {
       bool folder_was_created = false;
+      const bookmarks::BookmarkNode* parent_node = nullptr;
       if (!node) {
         // TODO(bridiver) make sure there isn't an existing record for objectId
-        const bookmarks::BookmarkNode* parent_node =
+        parent_node =
             FindParent(bookmark_model_, bookmark_record, GetPendingNodeRoot());
 
         const BookmarkNode* bookmark_bar = bookmark_model_->bookmark_bar_node();
@@ -513,6 +552,13 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
                                           true);
       }
       UpdateNode(bookmark_model_, node, sync_record.get(), GetPendingNodeRoot());
+
+#ifndef NDEBUG
+      if (parent_node) {
+        ValidateFolderOrders(parent_node);
+      }
+#endif
+
       if (folder_was_created) {
         CompletePendingNodesMove(node, sync_record->objectId);
       }
@@ -567,6 +613,9 @@ void BookmarkChangeProcessor::CompletePendingNodesMove(
     // is attached to proper parent. Note that parent can still be a child
     // of "Pending Bookmarks" note.
     node->DeleteMetaInfo("parent_object_id");
+#ifndef NDEBUG
+    ValidateFolderOrders(target_folder);
+#endif
   }
 }
 
