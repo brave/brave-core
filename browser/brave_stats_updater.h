@@ -53,11 +53,8 @@ class BraveStatsUpdater {
       std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
       scoped_refptr<net::HttpResponseHeaders> headers);
 
-  // Invoked when server ping startup timer fires.
-  void OnServerPingStartupTimerFired();
-
-  // Invoked when server ping periodic timer fires.
-  void OnServerPingPeriodicTimerFired();
+  // Invoked when server ping timer fires.
+  void OnServerPingTimerFired();
 
   // Invoked when the specified referral preference changes.
   void OnReferralCheckedForPromoCodeFileChanged();
