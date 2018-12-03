@@ -12,9 +12,9 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
+    "brave-sync": "github:brave/sync#staging",
     "page-metadata-parser": "^1.1.2",
-    "readability": "mozilla/readability#3c76104adb00eb9897517e6be6c74c6c05918dfe",
-    "brave-sync": "brave/sync#staging"
+    "readability": "mozilla/readability#3c76104adb00eb9897517e6be6c74c6c05918dfe"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
