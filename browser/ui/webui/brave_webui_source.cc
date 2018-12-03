@@ -433,53 +433,78 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
       }
     }, {
       std::string("sync"), {
-        { "sync", IDS_BRAVE_SYNC_TITLE },
-        { "beta", IDS_BRAVE_SYNC_TITLE_BETA },
-        { "syncInfo1", IDS_BRAVE_SYNC_INFO_1 },
-        { "syncInfo2", IDS_BRAVE_SYNC_INFO_2 },
-        { "done", IDS_BRAVE_SYNC_DONE },
-        { "cancel", IDS_BRAVE_SYNC_CANCEL },
-        { "areYouSure", IDS_BRAVE_SYNC_ARE_YOU_SURE },
-
-        { "iAmNewToSync", IDS_BRAVE_SYNC_I_AM_NEW_TO_SYNC },
-        { "iHaveAnExistingSyncCode", IDS_BRAVE_SYNC_I_HAVE_AN_EXISTING_SYNC_CODE },
-
-        { "devices", IDS_BRAVE_SYNC_DEVICES },
-        { "deviceName", IDS_BRAVE_SYNC_DEVICE_NAME },
-        { "id", IDS_BRAVE_SYNC_ID },
-        { "lastActive", IDS_BRAVE_SYNC_LAST_ACTIVE },
-        { "syncANewDevice", IDS_BRAVE_SYNC_NEW_DEVICE },
-        { "syncData", IDS_BRAVE_SYNC_DATA },
-        { "syncDataInfo", IDS_BRAVE_SYNC_DATA_INFO },
-        { "bookmarks", IDS_BRAVE_SYNC_BOOKMARKS },
-        { "savedSiteSettings", IDS_BRAVE_SYNC_SAVED_SITE_SETTINGS },
-        { "browsingHistory", IDS_BRAVE_SYNC_BROWSING_HISTORY },
-        { "clearData", IDS_BRAVE_SYNC_CLEAR_DATA },
-        { "resetSync", IDS_BRAVE_SYNC_RESET_SYNC },
-        { "removeDevice", IDS_BRAVE_SYNC_REMOVE_DEVICE },
-
-        { "setUpSync", IDS_BRAVE_SYNC_SET_UP_SYNC },
-
-        { "enterYourSyncCodeWords", IDS_BRAVE_SYNC_ENTER_SYNC_CODE_WORDS },
-        { "enterAnOptionalName", IDS_BRAVE_SYNC_ENTER_OPTIONAL_NAME_FOR_THIS_DEVICE },
-
-        { "syncANewDeviceFirstBulletText", IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_FIRST_BULLET },
-        { "syncANewDeviceSecondBulletText", IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_SECOND_BULLET },
-        { "syncANewDeviceThirdBulletText", IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_THIRD_BULLET },
-        { "showSecretQRCode", IDS_BRAVE_SYNC_SHOW_QR_CODE },
-        { "showSecretCodeWords", IDS_BRAVE_SYNC_SHOW_SECRET_CODE_WORDS },
-
-        { "resetSyncFirstBullet", IDS_BRAVE_SYNC_RESET_SYNC_FIRST_BULLET },
-        { "resetSyncSecondBullet", IDS_BRAVE_SYNC_RESET_SYNC_SECOND_BULLET },
-        { "resetSyncThirdBullet", IDS_BRAVE_SYNC_RESET_SYNC_THIRD_BULLET },
-
+        { "done", IDS_BRAVE_SYNC_SHARED_DONE_BUTTON },
+        { "remove", IDS_BRAVE_SYNC_SHARED_REMOVE_PARTIAL },
+        { "copied", IDS_BRAVE_SYNC_SHARED_COPIED_TEXT },
+        { "wordCount",  IDS_BRAVE_SYNC_SHARED_WORD_COUNT_TEXT },
+        { "ok", IDS_BRAVE_SYNC_SHARED_OK_BUTTON },
+        { "cancel", IDS_BRAVE_SYNC_SHARED_CANCEL_BUTTON },
+        { "thisSyncChain", IDS_BRAVE_SYNC_SHARED_FROM_THIS_CHAIN_PARTIAL },
+        // Enabled Content
+        { "braveSync", IDS_BRAVE_SYNC_ENABLED_BRAVE_TITLE },
+        { "syncChainDevices", IDS_BRAVE_SYNC_ENABLED_DEVICES_CHAIN_TITLE },
+        { "deviceName", IDS_BRAVE_SYNC_ENABLED_TABLE_DEVICE_NAME_TITLE },
+        { "mainDevice", IDS_BRAVE_SYNC_ENABLED_TABLE_MAIN_DEVICE_TEXT },
+        { "addedOn", IDS_BRAVE_SYNC_ENABLED_TABLE_ADDED_ON_TITLE },
+        { "addDevice", IDS_BRAVE_SYNC_ENABLED_ADD_DEVICE_BUTTON },
+        { "viewSyncCode", IDS_BRAVE_SYNC_ENABLED_VIEW_CODE_BUTTON },
+        { "dataToSync", IDS_BRAVE_SYNC_ENABLED_DATA_TITLE },
+        { "bookmarks", IDS_BRAVE_SYNC_ENABLED_BOOKMARKS_LABEL },
+        { "savedSiteSettings", IDS_BRAVE_SYNC_ENABLED_SITE_SETTINGS_LABEL },
+        { "browsingHistory", IDS_BRAVE_SYNC_ENABLED_HISTORY_LABEL },
+        { "leaveSyncChain", IDS_BRAVE_SYNC_ENABLED_LEAVE_CHAIN_BUTTON },
+        // Disabled Content
+        { "syncTitle", IDS_BRAVE_SYNC_DISABLED_DESCRIPTION },
+        { "syncDescription", IDS_BRAVE_SYNC_DISABLED_NEW_CHAIN_DESCRIPTION },
+        { "startSyncChain", IDS_BRAVE_SYNC_DISABLED_START_NEW_CHAIN_BUTTON },
+        { "enterSyncChainCode", IDS_BRAVE_SYNC_DISABLED_ENTER_CODE_BUTTON },
+        { "confirmSyncCode", IDS_BRAVE_SYNC_DISABLED_CONFIRM_CODE_BUTTON },
+        // [modal] Enter Sync Code
+        { "enterSyncCode", IDS_BRAVE_SYNC_ENTER_CODE_TITLE },
+        { "enterSyncCodeDescription", IDS_BRAVE_SYNC_ENTER_CODE_DESCRIPTION },
+        { "confirmCode", IDS_BRAVE_SYNC_ENTER_CODE_CONFIRM_CODE_BUTTON },
+        { "invalidCode", IDS_BRAVE_SYNC_ENTER_CODE_INVALID_CODE_TEXT },
+        { "tryAgain", IDS_BRAVE_SYNC_ENTER_CODE_TRY_AGAIN_TEXT },
+        // [modal] Remove Main Device
+        { "thisDeviceRemovalDescription", IDS_BRAVE_SYNC_REMOVE_MAIN_DEVICE_DESCRIPTION },
+        { "joinSyncChain", IDS_BRAVE_SYNC_REMOVE_MAIN_DEVICE_JOIN_CHAIN_INSTRUCTIONS },
+        // [modal] Remove Other Device
+        { "otherDeviceRemovalDescription", IDS_BRAVE_SYNC_REMOVE_OTHER_DEVICE_DESCRIPTION },
+        // [modal] Reset Sync
+        { "warning", IDS_BRAVE_SYNC_RESET_WARNING_TITLE },
+        { "removing", IDS_BRAVE_SYNC_RESET_REMOVING_PARTIAL },
+        { "deleteSyncChain", IDS_BRAVE_SYNC_RESET_DELETE_CHAIN_PARTIAL },
+        { "deleteSyncDescription", IDS_BRAVE_SYNC_RESET_REMOVAL_INSTRUCTIONS },
+        { "startSyncChainHowTo", IDS_BRAVE_SYNC_RESET_START_NEW_INSTRUCTIONS },
+        { "areYouSure", IDS_BRAVE_SYNC_RESET_ARE_YOU_SURE_TITLE },
+        // [modal] Add New Chain
+        { "scanThisCode", IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_DESCRIPTION },
+        { "scanThisCodeHowTo", IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_INSTRUCTIONS },
+        { "enterCodeWordsInstead", IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_CODE_WORDS_BUTTON },
+        { "previous", IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_PREVIOUS_BUTTON },
+        { "lookingForDevice", IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_LOOKING_FOR_DEVICE_BUTTON },
+        // [modal] Add New Chain (Camera Option)
+        // [modal] Add New Chain (no Camera)
+        { "enterThisCode", IDS_BRAVE_SYNC_NEW_CHAIN_DESKTOP_TITLE },
+        { "mobileEnterThisCode", IDS_BRAVE_SYNC_NEW_CHAIN_MOBILE_TITLE },
+        { "syncChainCodeHowTo", IDS_BRAVE_SYNC_NEW_CHAIN_DESCRIPTION },
+        { "useCameraInstead", IDS_BRAVE_SYNC_NEW_CHAIN_USE_CAMERA_BUTTON },
+        // [modal] Choose Device Type
+        { "letsSync", IDS_BRAVE_SYNC_CHOOSE_DEVICE_NEW_DEVICE_TITLE },
+        { "chooseDeviceType", IDS_BRAVE_SYNC_CHOOSE_DEVICE_CHOOSE_DEVICE_TITLE },
+        { "phoneTablet", IDS_BRAVE_SYNC_CHOOSE_DEVICE_MOBILE_TITLE },
+        { "computer", IDS_BRAVE_SYNC_CHOOSE_DEVICE_COMPUTER_TITLE },
+        // [modal] View Sync Code
+        { "qrCode", IDS_BRAVE_SYNC_VIEW_CODE_QR_CODE_TITLE },
+        { "wordCode", IDS_BRAVE_SYNC_VIEW_CODE_WORD_CODE_TITLE },
+        { "privateKey", IDS_BRAVE_SYNC_VIEW_CODE_PRIVATE_KEY_PHRASE },
+        // errors
         { "errorWrongCodeTitle", IDS_BRAVE_SYNC_ERROR_WRONG_CODE_TITLE },
         { "errorWrongCodeDescription", IDS_BRAVE_SYNC_ERROR_WRONG_CODE_DESCRIPTION },
         { "errorNoInternetTitle", IDS_BRAVE_SYNC_ERROR_NO_INTERNET_TITLE },
         { "errorNoInternetDescription", IDS_BRAVE_SYNC_ERROR_NO_INTERNET_DESCRIPTION },
         { "errorMissingDeviceNameTitle", IDS_BRAVE_SYNC_ERROR_MISSING_DEVICE_NAME_TITLE },
         { "errorMissingCodeTitle", IDS_BRAVE_SYNC_ERROR_MISSING_SYNC_CODE_TITLE },
-        { "ok", IDS_BRAVE_SYNC_OK_BUTTON },
       }
     }, {
       std::string("adblock"), {
