@@ -1714,10 +1714,37 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
 
 bool RewardsServiceImpl::CheckImported() {
   PrefService* prefs = profile_->GetOriginalProfile()->GetPrefs();
-  const uint64_t pinned_item_count = prefs->GetUint64(kBravePaymentsPinnedItemCount);
-  prefs->SetUint64(kBravePaymentsPinnedItemCount, 0);
+  const int pinned_item_count = prefs->GetInteger(
+      kBravePaymentsPinnedItemCount);
+  if (pinned_item_count > 0) {
+    prefs->SetInteger(kBravePaymentsPinnedItemCount, 0);
+  }
 
   return pinned_item_count > 0;
+}
+
+void RewardsServiceImpl::OnDonate(
+    const std::string& publisher_key,
+    int amount,
+    bool recurring,
+    std::unique_ptr<brave_rewards::ContentSite> site) {
+
+  if (!site) {
+    return;
+  }
+
+  ledger::PublisherInfo info;
+  info.id = publisher_key;
+  info.month = ledger::PUBLISHER_MONTH::ANY;
+  info.year = -1;
+  info.verified = site->verified;
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.name = site->name;
+  info.url = site->url;
+  info.provider = site->provider;
+  info.favicon_url = site->favicon_url;
+
+  OnDonate(publisher_key, amount, recurring, &info);
 }
 
 }  // namespace brave_rewards

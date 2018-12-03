@@ -24,6 +24,7 @@
 #include "extensions/common/one_shot_event.h"
 #include "net/url_request/url_fetcher_delegate.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
+#include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "ui/gfx/image/image.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
@@ -130,6 +131,8 @@ class RewardsServiceImpl : public RewardsService,
   static void HandleFlags(const std::string& options);
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
+  void OnDonate(const std::string& publisher_key, int amount, bool recurring,
+      std::unique_ptr<brave_rewards::ContentSite> site) override;
 
  private:
   friend void RunIOTaskCallback(

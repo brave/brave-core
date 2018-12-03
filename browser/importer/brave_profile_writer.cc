@@ -7,6 +7,7 @@
 #include "brave/common/importer/brave_referral.h"
 #include "brave/common/importer/imported_browser_window.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
@@ -38,20 +39,6 @@
 #include "ui/base/ui_base_types.h"
 
 #include <sstream>
-
-// BSC - this is a hack
-namespace ledger {
-struct PublisherInfo {
-std::string id;
-bool verified;
-int excluded;
-std::string name;
-std::string url;
-std::string provider;
-std::string favicon_url;
-int month;
-};
-}
 
 BraveProfileWriter::BraveProfileWriter(Profile* profile)
     : ProfileWriter(profile),
@@ -257,19 +244,20 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
       sum_of_monthly_tips += amount_in_bat;
 
       // Add publisher to `publisher_info`
-      ledger::PublisherInfo publisher_info;
-      publisher_info.id = publisher.key;
-      publisher_info.verified = publisher.verified;
-      publisher_info.excluded = 0;
-      publisher_info.name = publisher.name;
-      publisher_info.url = publisher.url;
-      publisher_info.provider = publisher.provider;
-      publisher_info.favicon_url = "";
-      publisher_info.month = -1; // ledger::PUBLISHER_MONTH::ANY;
+      auto site = std::make_unique<brave_rewards::ContentSite>();
+      site->id = publisher.key;
+      site->verified = publisher.verified;
+      site->excluded = 0;
+      site->name = publisher.name;
+      site->favicon_url = "";
+      site->url = publisher.url;
+      site->provider = publisher.provider;
 
       // Add `recurring_donation` entry
-      rewards_service->OnDonate(publisher.key, amount_in_bat, true,
-        &publisher_info);
+      rewards_service->OnDonate(publisher.key,
+                                amount_in_bat,
+                                true,
+                                std::move(site));
     }
   }
 

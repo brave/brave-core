@@ -101,6 +101,8 @@ class RewardsService : public KeyedService {
   virtual void GetPublisherBanner(const std::string& publisher_id) = 0;
   virtual void OnDonate(const std::string& publisher_key, int amount,
       bool recurring, const ledger::PublisherInfo* publisher_info = NULL) = 0;
+  virtual void OnDonate(const std::string& publisher_key, int amount,
+      bool recurring, std::unique_ptr<brave_rewards::ContentSite> site) = 0;
   virtual void RemoveRecurring(const std::string& publisher_key) = 0;
   virtual void UpdateRecurringDonationsList() = 0;
   virtual void UpdateTipsList() = 0;
