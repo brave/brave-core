@@ -38,7 +38,7 @@ extension Strings {
     public static let LoginsHelperDontUpdateButtonTitle = NSLocalizedString("LoginsHelperDontUpdateButtonTitle", value: "Don’t Update", comment: "Button to not update the user's password")
 }
 
-// Firefox Logins
+// Brave Logins
 extension Strings {
     public static let SaveLoginUsernamePrompt = NSLocalizedString("SaveLoginUsernamePrompt", value: "Save login %@ for %@?", comment: "Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site.")
     public static let SaveLoginPrompt = NSLocalizedString("SaveLoginPrompt", value: "Save password for %@?", comment: "Prompt for saving a password with no username. The parameter is the hostname of the site.")
@@ -80,12 +80,12 @@ extension Strings {
 
 extension Strings {
     // Settings.AdvanceAccount.SectionName
-    // Label used as an item in Settings. When touched it will open a dialog to setup advance Firefox account settings.
+    // Label used as an item in Settings. When touched it will open a dialog to setup advance Brave account settings.
     public static let SettingsAdvanceAccountSectionName = "Account Settings"
 
     // Settings.AdvanceAccount.SectionFooter
-    // Details for using custom Firefox Account service.
-    public static let SettingsAdvanceAccountSectionFooter = "To use a custom Firefox Account and sync servers, specify the root Url of the Firefox Account site. This will download the configuration and setup this device to use the new service. After the new service has been set, you will need to create a new Firefox Account or login with an existing one."
+    // Details for using custom Brave Account service.
+    public static let SettingsAdvanceAccountSectionFooter = "To use a custom Brave Account and sync servers, specify the root Url of the Brave Account site. This will download the configuration and setup this device to use the new service. After the new service has been set, you will need to create a new Brave Account or login with an existing one."
 
     // Settings.AdvanceAccount.SectionName
     // Title displayed in header of the setting panel.
@@ -97,7 +97,7 @@ extension Strings {
 
     // Settings.AdvanceAccount.UpdatedAlertMessage
     // Messaged displayed when sync service has been successfully set.
-    public static let SettingsAdvanceAccountUrlUpdatedAlertMessage = "Firefox account service updated. To begin using custom server, please log out and re-login."
+    public static let SettingsAdvanceAccountUrlUpdatedAlertMessage = "Brave account service updated. To begin using custom server, please log out and re-login."
 
     // Settings.AdvanceAccount.UpdatedAlertOk
     // Ok button on custom sync service updated alert
@@ -109,7 +109,7 @@ extension Strings {
 
     // Settings.AdvanceAccount.ErrorAlertMessage
     // Messaged displayed when sync service has an error setting a custom sync url.
-    public static let SettingsAdvanceAccountUrlErrorAlertMessage = "There was an error while attempting to parse the url. Please make sure that it is a valid Firefox Account root url."
+    public static let SettingsAdvanceAccountUrlErrorAlertMessage = "There was an error while attempting to parse the url. Please make sure that it is a valid Brave Account root url."
 
     // Settings.AdvanceAccount.ErrorAlertOk
     // Ok button on custom sync service error alert.
@@ -153,7 +153,7 @@ extension Strings {
     public static let UnableToAddPassErrorTitle = NSLocalizedString("UnableToAddPassErrorTitle", value: "Failed to Add Pass", comment: "Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet.")
     public static let UnableToAddPassErrorMessage = NSLocalizedString("UnableToAddPassErrorMessage", value: "An error occurred while adding the pass to Wallet. Please try again later.", comment: "Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet.")
     public static let UnableToAddPassErrorDismiss = NSLocalizedString("UnableToAddPassErrorDismiss", value: "OK", comment: "Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet.")
-    public static let UnableToOpenURLError = NSLocalizedString("UnableToOpenURLError", value: "Firefox cannot open the page because it has an invalid address.", comment: "The message displayed to a user when they try to open a URL that cannot be handled by Firefox, or any external app.")
+    public static let UnableToOpenURLError = NSLocalizedString("UnableToOpenURLError", value: "Brave cannot open the page because it has an invalid address.", comment: "The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app.")
     public static let UnableToOpenURLErrorTitle = NSLocalizedString("UnableToOpenURLErrorTitle", value: "Cannot Open Page", comment: "Title of the message shown when the user attempts to navigate to an invalid link.")
 }
 
@@ -188,7 +188,7 @@ extension Strings {
     public static let ScanQRCodeViewTitle = NSLocalizedString("ScanQRCodeViewTitle", value: "Scan QR Code", comment: "Title for the QR code scanner view.")
     public static let ScanQRCodeInstructionsLabel = NSLocalizedString("ScanQRCodeInstructionsLabel", value: "Align QR code within frame to scan", comment: "Text for the instructions label, displayed in the QR scanner view")
     public static let ScanQRCodeInvalidDataErrorMessage = NSLocalizedString("ScanQRCodeInvalidDataErrorMessage", value: "The data is invalid", comment: "Text of the prompt that is shown to the user when the data is invalid")
-    public static let ScanQRCodePermissionErrorMessage = NSLocalizedString("ScanQRCodePermissionErrorMessage", value: "Please allow Firefox to access your device’s camera in ‘Settings’ -> ‘Privacy’ -> ‘Camera’.", comment: "Text of the prompt user to setup the camera authorization.")
+    public static let ScanQRCodePermissionErrorMessage = NSLocalizedString("ScanQRCodePermissionErrorMessage", value: "Please allow Brave to access your device’s camera in ‘Settings’ -> ‘Privacy’ -> ‘Camera’.", comment: "Text of the prompt user to setup the camera authorization.")
     public static let ScanQRCodeErrorOKButton = NSLocalizedString("ScanQRCodeErrorOKButton", value: "OK", comment: "OK button to dismiss the error prompt.")
 }
 
