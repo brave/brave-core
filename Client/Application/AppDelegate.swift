@@ -13,6 +13,7 @@ import LocalAuthentication
 import CoreSpotlight
 import UserNotifications
 import BraveShared
+import Data
 
 private let log = Logger.browserLogger
 
@@ -55,6 +56,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window!.backgroundColor = UIColor.Photon.White100
+        
+        // Passcode checking, must happen on immediate launch
+        if !DataController.shared.storeExists() {
+            // Since passcode is stored in keychain it persists between installations.
+            //  If there is no database (either fresh install, or deleted in file system), there is no real reason
+            //  to passcode the browser (no data to protect).
+            // Main concern is user installs Brave after a long period of time, cannot recall passcode, and can
+            //  literally never use Brave. This bypasses this situation, while not using a modifiable pref.
+            KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(nil)
+        }
 
         // Short circuit the app if we want to email logs from the debug menu
         if DebugSettingsBundleOptions.launchIntoEmailComposer {
