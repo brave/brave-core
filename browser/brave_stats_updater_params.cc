@@ -6,9 +6,9 @@
 
 #include "brave/browser/brave_stats_updater_params.h"
 
-#include "base/strings/stringprintf.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
+#include "brave/browser/brave_stats_updater_util.h"
 #include "brave/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
@@ -83,15 +83,8 @@ std::string BraveStatsUpdaterParams::BooleanToString(bool bool_value) const {
   return bool_value ? "true" : "false";
 }
 
-std::string BraveStatsUpdaterParams::GetDateAsYMD(const base::Time& time) const {
-  base::Time::Exploded exploded;
-  time.LocalExplode(&exploded);
-  return base::StringPrintf("%d-%02d-%02d", exploded.year, exploded.month,
-                            exploded.day_of_month);
-}
-
 std::string BraveStatsUpdaterParams::GetCurrentDateAsYMD() const {
-  return GetDateAsYMD(g_current_time);
+  return brave::GetDateAsYMD(g_current_time);
 }
 
 std::string BraveStatsUpdaterParams::GetLastMondayAsYMD() const {
@@ -104,7 +97,7 @@ std::string BraveStatsUpdaterParams::GetLastMondayAsYMD() const {
       now.ToJsTime() -
       ((exploded.day_of_week - 1) * base::Time::kMillisecondsPerDay));
 
-  return GetDateAsYMD(last_monday);
+  return brave::GetDateAsYMD(last_monday);
 }
 
 int BraveStatsUpdaterParams::GetCurrentMonth() const {
