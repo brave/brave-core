@@ -39,7 +39,8 @@ class RewardsServiceObserver : public base::CheckedObserver {
                                  unsigned int result,
                                  brave_rewards::Grant grant) {};
   virtual void OnContentSiteUpdated(RewardsService* rewards_service) {};
-  virtual void OnExcludedSitesChanged(RewardsService* rewards_service) {};
+  virtual void OnExcludedSitesChanged(RewardsService* rewards_service,
+                                      std::string publisher_id) {};
   virtual void OnReconcileComplete(RewardsService* rewards_service,
                                    unsigned int result,
                                    const std::string& viewing_id,

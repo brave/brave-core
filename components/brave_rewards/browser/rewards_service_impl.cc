@@ -1288,9 +1288,9 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId,
   ledger_->GetPublisherActivityFromUrl(windowId, visitData);
 }
 
-void RewardsServiceImpl::OnExcludedSitesChanged() {
+void RewardsServiceImpl::OnExcludedSitesChanged(const std::string& publisher_id) {
   for (auto& observer : observers_)
-    observer.OnExcludedSitesChanged(this);
+    observer.OnExcludedSitesChanged(this, publisher_id);
 }
 
 void RewardsServiceImpl::OnPublisherActivity(ledger::Result result,
