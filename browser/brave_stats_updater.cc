@@ -6,6 +6,7 @@
 
 #include "base/sys_info.h"
 #include "brave/browser/brave_stats_updater_params.h"
+#include "brave/browser/brave_stats_updater_util.h"
 #include "brave/browser/version_info.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -25,8 +26,9 @@
 // Ping the update server shortly after startup (units are seconds).
 const int kUpdateServerStartupPingDelay = 3;
 
-// Ping the update server once an hour (units are seconds).
-const int kUpdateServerPeriodicPingFrequency = 60 * 60;
+// Every five minutes, check if we need to ping the update server for
+// today (units are seconds).
+const int kUpdateServerPeriodicPingFrequency = 5 * 60;
 
 namespace {
 
@@ -112,7 +114,7 @@ void BraveStatsUpdater::Start() {
   server_ping_periodic_timer_->Start(
       FROM_HERE,
       base::TimeDelta::FromSeconds(kUpdateServerPeriodicPingFrequency), this,
-      &BraveStatsUpdater::OnServerPingPeriodicTimerFired);
+      &BraveStatsUpdater::OnServerPingTimerFired);
   DCHECK(server_ping_periodic_timer_->IsRunning());
 }
 
@@ -155,11 +157,13 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
   VLOG(1) << "Brave stats ping, url: " << final_url.spec();
 }
 
-void BraveStatsUpdater::OnServerPingStartupTimerFired() {
-  SendServerPing();
-}
+void BraveStatsUpdater::OnServerPingTimerFired() {
+  // If we already pinged the stats server today, then we're done.
+  std::string today_ymd = brave::GetDateAsYMD(base::Time::Now());
+  std::string last_check_ymd = pref_service_->GetString(kLastCheckYMD);
+  if (base::CompareCaseInsensitiveASCII(today_ymd, last_check_ymd) == 0)
+    return;
 
-void BraveStatsUpdater::OnServerPingPeriodicTimerFired() {
   SendServerPing();
 }
 
@@ -170,7 +174,7 @@ void BraveStatsUpdater::OnReferralCheckedForPromoCodeFileChanged() {
 void BraveStatsUpdater::StartServerPingStartupTimer() {
   server_ping_startup_timer_->Start(
       FROM_HERE, base::TimeDelta::FromSeconds(kUpdateServerStartupPingDelay),
-      this, &BraveStatsUpdater::OnServerPingStartupTimerFired);
+      this, &BraveStatsUpdater::OnServerPingTimerFired);
   DCHECK(server_ping_startup_timer_->IsRunning());
 }
 
