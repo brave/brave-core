@@ -90,7 +90,7 @@ extension FavoritesDataSource: NSFetchedResultsControllerDelegate {
 
         switch type {
         case .insert:
-            if let indexPath = indexPath {
+            if let indexPath = newIndexPath {
                 collectionView?.insertItems(at: [indexPath])
             }
         case .delete:
