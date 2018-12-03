@@ -24,6 +24,7 @@
 #include "extensions/common/one_shot_event.h"
 #include "net/url_request/url_fetcher_delegate.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
+#include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "ui/gfx/image/image.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
@@ -125,10 +126,13 @@ class RewardsServiceImpl : public RewardsService,
   void SetContributionAutoInclude(
     std::string publisher_key, bool excluded, uint64_t windowId) override;
   RewardsNotificationService* GetNotificationService() const override;
+  bool CheckImported() override;
 
   static void HandleFlags(const std::string& options);
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
+  void OnDonate(const std::string& publisher_key, int amount, bool recurring,
+      std::unique_ptr<brave_rewards::ContentSite> site) override;
 
  private:
   friend void RunIOTaskCallback(
@@ -173,7 +177,11 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnContentSiteUpdated();
   void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
                              const std::string& data);
-  void OnDonate(const std::string& publisher_key, int amount, bool recurring) override;
+
+  void OnDonate_PublisherInfoSaved(ledger::Result result,
+                                   std::unique_ptr<ledger::PublisherInfo> info);
+  void OnDonate(const std::string& publisher_key, int amount, bool recurring,
+      const ledger::PublisherInfo* publisher_info = NULL) override;
   void OnContributionInfoSaved(const ledger::PUBLISHER_CATEGORY category, bool success);
   void OnRecurringDonationSaved(bool success);
   void SaveRecurringDonation(const std::string& publisher_key, const int amount);

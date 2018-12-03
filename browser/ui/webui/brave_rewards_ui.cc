@@ -72,6 +72,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void UpdateRecurringDonationsList(const base::ListValue* args);
   void UpdateTipsList(const base::ListValue* args);
   void GetContributionList(const base::ListValue* args);
+  void CheckImported(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -192,6 +193,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getContributionList",
                                     base::BindRepeating(&RewardsDOMHandler::GetContributionList,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.checkImported",
+                                    base::BindRepeating(&RewardsDOMHandler::CheckImported,
                                                         base::Unretained(this)));
 }
 
@@ -661,6 +665,13 @@ void RewardsDOMHandler::UpdateTipsList(const base::ListValue *args) {
 void RewardsDOMHandler::GetContributionList(const base::ListValue *args) {
   if (rewards_service_) {
     OnContentSiteUpdated(rewards_service_);
+  }
+}
+
+void RewardsDOMHandler::CheckImported(const base::ListValue *args) {
+  if (web_ui()->CanCallJavascript() && rewards_service_) {
+    bool imported = rewards_service_->CheckImported();
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.imported", base::Value(imported));
   }
 }
 
