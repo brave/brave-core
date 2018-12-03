@@ -12,6 +12,7 @@ namespace brave_rewards {
       percentage(0),
       verified(false),
       excluded(0),
+      weight(0),
       reconcile_stamp(0) {
   }
 
@@ -26,6 +27,7 @@ namespace brave_rewards {
     url = properties.url;
     provider = properties.provider;
     id = properties.id;
+    weight = properties.weight;
     reconcile_stamp = properties.reconcile_stamp;
   }
 

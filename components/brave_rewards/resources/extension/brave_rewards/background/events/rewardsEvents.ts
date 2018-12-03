@@ -27,3 +27,7 @@ chrome.rewardsNotifications.onNotificationAdded.addListener((id: string, type: n
 chrome.rewardsNotifications.onNotificationDeleted.addListener((id: string, type: number, timestamp: number) => {
   rewardsPanelActions.onNotificationDeleted(id, type, timestamp)
 })
+
+chrome.braveRewards.onRecurringDonations.addListener((result: RewardsExtension.RecurringDonation) => {
+  rewardsPanelActions.onRecurringDonations(result)
+})

@@ -138,5 +138,44 @@ ExtensionFunction::ResponseAction BraveRewardsGetGrantFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+BraveRewardsSaveRecurringDonationFunction::~BraveRewardsSaveRecurringDonationFunction() {
+}
+
+ExtensionFunction::ResponseAction
+  BraveRewardsSaveRecurringDonationFunction::Run() {
+
+  std::unique_ptr<brave_rewards::SaveRecurringDonation::Params> params(
+    brave_rewards::SaveRecurringDonation::Params::Create(*args_));
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
+
+  if (rewards_service_) {
+    rewards_service_->AddRecurringPayment(params->publisher_key, params->new_amount);
+  }
+
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsRemoveRecurringDonationFunction::~BraveRewardsRemoveRecurringDonationFunction() {
+}
+
+ExtensionFunction::ResponseAction
+  BraveRewardsRemoveRecurringDonationFunction::Run() {
+
+  std::unique_ptr<brave_rewards::RemoveRecurringDonation::Params> params(
+    brave_rewards::RemoveRecurringDonation::Params::Create(*args_));
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
+
+  if (rewards_service_) {
+    rewards_service_->RemoveRecurring(params->publisher_key);
+  }
+
+  return RespondNow(NoArguments());
+}
+
+
 }  // namespace api
 }  // namespace extensions

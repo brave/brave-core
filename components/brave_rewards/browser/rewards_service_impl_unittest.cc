@@ -37,6 +37,7 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
   MOCK_METHOD2(OnCurrentTips, void(RewardsService*, brave_rewards::ContentSiteList));
   MOCK_METHOD2(OnPublisherBanner, void(RewardsService*, const brave_rewards::PublisherBanner));
   MOCK_METHOD4(OnGetPublisherActivityFromUrl, void(RewardsService*, int, ledger::PublisherInfo*, uint64_t));
+  MOCK_METHOD2(OnRecurringDonations, void(brave_rewards::RewardsService*, const ledger::PublisherInfoList*));
 };
 
 class RewardsServiceTest : public testing::Test {
