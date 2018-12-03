@@ -180,9 +180,9 @@ public extension Strings {
 
 // MARK:-  ReaderModeHandlers.swift
 public extension Strings {
-    public static let ReaderModeLoadingContentDisplayText = NSLocalizedString("ReaderModeLoadingContentDisplayText", tableName: "BraveShared", value: "Loading content…", comment: "Message displayed when the reader mode page is loading. This message will appear only when sharing to Firefox reader mode from another app.")
-    public static let ReaderModePageCantShowDisplayText = NSLocalizedString("ReaderModePageCantShowDisplayText", tableName: "BraveShared", value: "The page could not be displayed in Reader View.", comment: "Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Firefox reader mode from another app.")
-    public static let ReaderModeLoadOriginalLinkText = NSLocalizedString("ReaderModeLoadOriginalLinkText", tableName: "BraveShared", value: "Load original page", comment: "Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Firefox reader mode from another app.")
+    public static let ReaderModeLoadingContentDisplayText = NSLocalizedString("ReaderModeLoadingContentDisplayText", tableName: "BraveShared", value: "Loading content…", comment: "Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app.")
+    public static let ReaderModePageCantShowDisplayText = NSLocalizedString("ReaderModePageCantShowDisplayText", tableName: "BraveShared", value: "The page could not be displayed in Reader View.", comment: "Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app.")
+    public static let ReaderModeLoadOriginalLinkText = NSLocalizedString("ReaderModeLoadOriginalLinkText", tableName: "BraveShared", value: "Load original page", comment: "Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app.")
     public static let ReaderModeErrorConvertDisplayText = NSLocalizedString("ReaderModeErrorConvertDisplayText", tableName: "BraveShared", value: "There was an error converting the page", comment: "Error displayed when reader mode cannot be enabled")
 }
 
@@ -303,7 +303,7 @@ public extension Strings {
     public static let CodeWords = NSLocalizedString("CodeWords", tableName: "BraveShared", value: "Code Words", comment: "Code words section title")
     public static let Sync = NSLocalizedString("Sync", tableName: "BraveShared", value: "Sync", comment: "Sync settings section title")
     public static let BraveSync = NSLocalizedString("BraveSync", tableName: "BraveShared", value: "Brave Sync", comment: "Brave sync page title")
-    public static let BraveSyncWelcome = NSLocalizedString("BraveSyncWelcome", tableName: "BraveShared", value: "Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices. \r\rSimply scan the code from your sync chain that you created on another device. Or start a new sync chain. ", comment: "Sync settings welcome")
+    public static let BraveSyncWelcome = NSLocalizedString("BraveSyncWelcome", tableName: "BraveShared", value: "Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices. \n\nSimply scan the code from your sync chain that you created on another device. Or start a new sync chain. ", comment: "Sync settings welcome")
     public static let NewSyncCode = NSLocalizedString("NewSyncCode", tableName: "BraveShared", value: "Start a new sync chain", comment: "New sync code button title")
     public static let ScanSyncCode = NSLocalizedString("ScanSyncCode", tableName: "BraveShared", value: "Scan or enter sync code", comment: "Scan sync code button title")
     public static let Scan = NSLocalizedString("Scan", tableName: "BraveShared", value: "Scan", comment: "Scan sync code title")
@@ -370,11 +370,11 @@ public extension Strings {
     public static let Privacy = NSLocalizedString("Privacy", tableName: "BraveShared", value: "Privacy", comment: "Settings privacy section title")
     public static let Security = NSLocalizedString("Security", tableName: "BraveShared", value: "Security", comment: "Settings security section title")
     public static let Save_Logins = NSLocalizedString("SaveLogins", tableName: "BraveShared", value: "Save Logins", comment: "Setting to enable the built-in password manager")
-    public static let ShieldsAdStats = NSLocalizedString("AdsrBlocked", tableName: "BraveShared", value: "Ads \rBlocked", comment: "Shields Ads Stat")
-    public static let ShieldsAdAndTrackerStats = NSLocalizedString("AdsAndTrackersrBlocked", tableName: "BraveShared", value: "Ads & Trackers \rBlocked", comment: "Shields Ads Stat")
-    public static let ShieldsTrackerStats = NSLocalizedString("TrackersrBlocked", tableName: "BraveShared", value: "Trackers \rBlocked", comment: "Shields Trackers Stat")
-    public static let ShieldsHttpsStats = NSLocalizedString("HTTPSrUpgrades", tableName: "BraveShared", value: "HTTPS \rUpgrades", comment: "Shields Https Stat")
-    public static let ShieldsTimeStats = NSLocalizedString("EstTimerSaved", tableName: "BraveShared", value: "Est. Time \rSaved", comment: "Shields Time Saved Stat")
+    public static let ShieldsAdStats = NSLocalizedString("AdsrBlocked", tableName: "BraveShared", value: "Ads \nBlocked", comment: "Shields Ads Stat")
+    public static let ShieldsAdAndTrackerStats = NSLocalizedString("AdsAndTrackersrBlocked", tableName: "BraveShared", value: "Ads & Trackers \nBlocked", comment: "Shields Ads Stat")
+    public static let ShieldsTrackerStats = NSLocalizedString("TrackersrBlocked", tableName: "BraveShared", value: "Trackers \nBlocked", comment: "Shields Trackers Stat")
+    public static let ShieldsHttpsStats = NSLocalizedString("HTTPSrUpgrades", tableName: "BraveShared", value: "HTTPS \nUpgrades", comment: "Shields Https Stat")
+    public static let ShieldsTimeStats = NSLocalizedString("EstTimerSaved", tableName: "BraveShared", value: "Est. Time \nSaved", comment: "Shields Time Saved Stat")
     public static let ShieldsTimeStatsHour = NSLocalizedString("ShieldsTimeStatsHour", tableName: "BraveShared", value: "h", comment: "Time Saved Hours")
     public static let ShieldsTimeStatsMinutes = NSLocalizedString("ShieldsTimeStatsMinutes", tableName: "BraveShared", value: "min", comment: "Time Saved Minutes")
     public static let ShieldsTimeStatsSeconds = NSLocalizedString("ShieldsTimeStatsSeconds", tableName: "BraveShared", value: "s", comment: "Time Saved Seconds")
@@ -460,5 +460,5 @@ public extension Strings {
     public static let DDG_callout_message = NSLocalizedString("DDGCalloutMessage", tableName: "BraveShared", value: "With private search, Brave will use DuckDuckGo to answer your searches while you are in this private tab. DuckDuckGo is a search engine that does not track your search history, enabling you to search privately.", comment: "DuckDuckGo message.")
     public static let DDG_callout_no = NSLocalizedString("DDGCalloutNo", tableName: "BraveShared", value: "No", comment: "DuckDuckGo callout no action.")
     public static let DDG_callout_enable = NSLocalizedString("DDGCalloutEnable", tableName: "BraveShared", value: "Yes", comment: "DuckDuckGo callout enable action.")
-    public static let DDG_promotion = NSLocalizedString("LearnAboutPrivateSearchrwithDuckDuckGo", tableName: "BraveShared", value: "Learn about private search \rwith DuckDuckGo", comment: "DuckDuckGo promotion label.")
+    public static let DDG_promotion = NSLocalizedString("LearnAboutPrivateSearchrwithDuckDuckGo", tableName: "BraveShared", value: "Learn about private search \nwith DuckDuckGo", comment: "DuckDuckGo promotion label.")
 }
