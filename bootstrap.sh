@@ -46,21 +46,6 @@ npm run build:sync
 echo "Building adblock library"
 npm run build:adblock
 
-# Set up adblock regional filters
-
-echo "Compiling adblock regional filters"
-if ! g++ get_adblock_regions.cpp -Inode_modules/ad-block/ -std=c++11 -o get_adblock_regions; then
-    echo "Error: could not setup adblock region file."
-    exit 1
-fi
-
-./get_adblock_regions && rm get_adblock_regions
-
-if [ ! -e adblock-regions.txt ]; then
-    echo "Error: adblock region file does not exist."
-    exit 1
-fi
-
 # Sets up local configurations from the tracked .template files
 
 # Checking the `Local` Directory
