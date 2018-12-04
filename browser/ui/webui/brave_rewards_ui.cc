@@ -277,7 +277,7 @@ void RewardsDOMHandler::OnWalletProperties(
     if (error_code == 0 && wallet_properties) {
       walletInfo->SetDouble("balance", wallet_properties->balance);
       walletInfo->SetString("probi", wallet_properties->probi);
-      ui_values->SetBoolean("emptyWallet", (wallet_properties->balance > 0));
+      ui_values->SetBoolean("emptyWallet", (wallet_properties->balance == 0));
 
       auto rates = std::make_unique<base::DictionaryValue>();
       for (auto const& rate : wallet_properties->rates) {
@@ -308,6 +308,8 @@ void RewardsDOMHandler::OnWalletProperties(
     }
 
     values.SetDictionary("ui", std::move(ui_values));
+    //  TODO this needs to be moved out of this flow, because
+    //  now we set this values every minute
     web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards.initAutoContributeSettings", values);
 

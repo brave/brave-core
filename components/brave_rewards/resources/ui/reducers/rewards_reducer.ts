@@ -11,19 +11,33 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
   switch (action.type) {
     case types.INIT_AUTOCONTRIBUTE_SETTINGS:
       {
+        state = { ...state }
         let properties = action.payload.properties
+        let ui = state.ui
 
         if (!properties || Object.keys(properties).length === 0) {
           break
         }
 
-        state = { ...state }
+        const isEmpty = !ui || ui.emptyWallet
 
         Object.keys(properties).map((property: string) => {
-          if (properties[property] !== undefined) {
+          if (properties[property] !== undefined && properties[property] !== 'ui') {
             state[property] = properties[property]
+          } else if (properties[property] === 'ui') {
+            ui = Object.assign(ui, properties[property])
           }
         })
+
+        if (!isEmpty) {
+          ui.emptyWallet = false
+        }
+
+        state = {
+          ...state,
+          ui
+        }
+
         break
       }
     case types.ON_SETTING_SAVE:
