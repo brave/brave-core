@@ -15,7 +15,7 @@ public class DAU {
     private static let baseUrl = "https://laptop-updates.brave.com/\(apiVersion)/usage/ios?platform=ios"
     
     /// Number of seconds that determins when a user is "active"
-    private let activeUserDuration = 10.0
+    private let pingRefreshDuration = 5.minutes
     
     /// We always use gregorian calendar for DAU pings. This also adds more anonymity to the server call.
     fileprivate static var calendar: NSCalendar { return Calendar(identifier: .gregorian) as NSCalendar }
@@ -38,27 +38,32 @@ public class DAU {
             return false
         }
         
+        // Sending ping immediately
+        sendPingToServerInternal()
+        
+        // Setting up timer to try to send ping after certain amount of time.
+        // This helps in offline mode situations.
         if launchTimer != nil { return false }
         launchTimer =
             Timer.scheduledTimer(
-                timeInterval: activeUserDuration,
+                timeInterval: pingRefreshDuration,
                 target: self,
                 selector: #selector(sendPingToServerInternal),
                 userInfo: nil,
-                repeats: false)
+                repeats: true)
         
         return true
     }
     
     @objc public func sendPingToServerInternal() {
-        guard let params = paramsAndPrefsSetup() else {
+        guard let paramsAndPrefs = paramsAndPrefsSetup() else {
             log.debug("dau, no changes detected, no server ping")
             return
         }
         
         // Sending ping to server
         var pingRequest = URLComponents(string: DAU.baseUrl)
-        pingRequest?.queryItems = params
+        pingRequest?.queryItems = paramsAndPrefs.queryParams
         
         guard let pingRequestUrl = pingRequest?.url else {
             log.error("Stats failed to update, via invalud URL: \(pingRequest?.description ?? "😡")")
@@ -76,13 +81,26 @@ public class DAU {
             // Ping was successful, next ping should be sent with `first` parameter set to false.
             // This preference is set for future DAU pings.
             Preferences.DAU.firstPingParam.value = false
+            
+            // This preference is used to calculate whether user used the app in this month and/or day.
+            Preferences.DAU.lastLaunchInfo.value = paramsAndPrefs.lastLaunchInfoPreference
+            
+            Preferences.DAU.lastPingFirstMonday.value = paramsAndPrefs.lastPingFirstMondayPreference
         }
         
         task.resume()
     }
     
-    /// Return params query or nil if no ping should be send to server.
-    func paramsAndPrefsSetup() -> [URLQueryItem]? {
+    /// A helper struct that stores all data from params setup.
+    struct ParamsAndPrefs {
+        let queryParams: [URLQueryItem]
+        let lastLaunchInfoPreference: [Optional<Int>]
+        let lastPingFirstMondayPreference: String
+    }
+    
+    /// Return params query or nil if no ping should be send to server and also preference values to set
+    /// after a succesful ing.
+    func paramsAndPrefsSetup() -> ParamsAndPrefs? {
         var params = [channelParam(), versionParam()]
         
         let firstLaunch = Preferences.DAU.firstPingParam.value
@@ -114,17 +132,15 @@ public class DAU {
             UrpLog.log("DAU ping with added ref, params: \(params)")
         }
         
-        // This preference is used to calculate wheter user used the app in this month and/or day.
         let secsMonthYear = [Int(today.timeIntervalSince1970), todayComponents.month, todayComponents.year]
-        Preferences.DAU.lastLaunchInfo.value = secsMonthYear
         
         // Using `secsMonthYear` with week component for weekly usage check is not robust enough and fails on edge cases.
         // To calculate weekly usage we store first monday of week to and then compare it with the
         // current first monday of week to see if a user used the app on new week.
         let lastPingFirstMonday = todayComponents.weeksMonday
-        Preferences.DAU.lastPingFirstMonday.value = lastPingFirstMonday
         
-        return params
+        return ParamsAndPrefs(queryParams: params, lastLaunchInfoPreference: secsMonthYear,
+                              lastPingFirstMondayPreference: lastPingFirstMonday)
     }
     
     func channelParam(for channel: AppBuildChannel = AppConstants.BuildChannel) -> URLQueryItem {

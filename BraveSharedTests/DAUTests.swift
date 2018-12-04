@@ -122,8 +122,13 @@ class DAUTests: XCTestCase {
         
         // Acting like a first launch so preferences are going to be set up
         let dauFirstLaunch = DAU(date: date)
-        _ = dauFirstLaunch.paramsAndPrefsSetup()
-        Preferences.DAU.firstPingParam.value = false
+        let params = dauFirstLaunch.paramsAndPrefsSetup()
+        
+        // These preferences should be set only after a successful ping.
+        XCTAssertNil(Preferences.DAU.lastLaunchInfo.value)
+        XCTAssertNil(Preferences.DAU.lastPingFirstMonday.value)
+        
+        simulatePing(params: params)
         
         let dauSecondLaunch = DAU(date: date)
         
@@ -131,8 +136,9 @@ class DAUTests: XCTestCase {
         XCTAssertNotNil(Preferences.DAU.weekOfInstallation.value)
         
         // Second launch on the same day
-        let params = dauSecondLaunch.paramsAndPrefsSetup()
-        XCTAssertNil(params)
+        let params2 = dauSecondLaunch.paramsAndPrefsSetup()
+        
+        XCTAssertNil(params2)
     }
     
     func testNotFirstLaunchSetDau() {
@@ -143,8 +149,9 @@ class DAUTests: XCTestCase {
         
         // Acting like a first launch so preferences are going to be set up
         let dauFirstLaunch = DAU(date: date)
-        _ = dauFirstLaunch.paramsAndPrefsSetup()
-        Preferences.DAU.firstPingParam.value = false
+        let params = dauFirstLaunch.paramsAndPrefsSetup()
+        
+        simulatePing(params: params)
         
         // Daily check
         pingWithDateAndCompare(dateString: "2017-11-22", daily: true, weekly: false, monthly: false, woi: woiPrefs)
@@ -221,7 +228,7 @@ class DAUTests: XCTestCase {
     @discardableResult
     private func pingWithDateAndCompare(dateString: String = "2017-11-20", daily: Bool, weekly: Bool,
                                         monthly: Bool, first: Bool = false, woi: String? = nil,
-                                        firstPingPref: Bool = false) -> [URLQueryItem]? {
+                                        firstPingPref: Bool = false) -> DAU.ParamsAndPrefs? {
         
         let date = dateFrom(string: dateString)
         let dau = DAU(date: date)
@@ -233,18 +240,26 @@ class DAUTests: XCTestCase {
             return params
         }
         
-        XCTAssert(params!.contains(URLQueryItem(name: "daily", value: daily.description)))
-        XCTAssert(params!.contains(URLQueryItem(name: "weekly", value: weekly.description)))
-        XCTAssert(params!.contains(URLQueryItem(name: "monthly", value: monthly.description)))
-        XCTAssert(params!.contains(URLQueryItem(name: "first", value: first.description)))
+        XCTAssert(params!.queryParams.contains(URLQueryItem(name: "daily", value: daily.description)))
+        XCTAssert(params!.queryParams.contains(URLQueryItem(name: "weekly", value: weekly.description)))
+        XCTAssert(params!.queryParams.contains(URLQueryItem(name: "monthly", value: monthly.description)))
+        XCTAssert(params!.queryParams.contains(URLQueryItem(name: "first", value: first.description)))
         
         if let woi = woi {
-            XCTAssert(params!.contains(URLQueryItem(name: "woi", value: woi)))
+            XCTAssert(params!.queryParams.contains(URLQueryItem(name: "woi", value: woi)))
         }
         
-        Preferences.DAU.firstPingParam.value = firstPingPref
+        simulatePing(firstPing: firstPingPref, params: params!)
         
         return params
+    }
+    
+    /// This actually simulates business logic that's done after a successful ping.
+    private func simulatePing(firstPing: Bool = false, params: DAU.ParamsAndPrefs?) {
+        Preferences.DAU.firstPingParam.value = firstPing
+        
+        Preferences.DAU.lastLaunchInfo.value = params!.lastLaunchInfoPreference
+        Preferences.DAU.lastPingFirstMonday.value = params!.lastPingFirstMondayPreference
     }
     
     private var appVersion: String {

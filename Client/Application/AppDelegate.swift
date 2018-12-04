@@ -215,8 +215,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // that is an iOS bug or not.
         AutocompleteTextField.appearance().semanticContentAttribute = .forceLeftToRight
         
-        DAU().sendPingToServer()
-        
         let isFirstLaunch = Preferences.General.isFirstLaunch.value
         Preferences.General.isFirstLaunch.value = false
         
@@ -292,6 +290,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             quickActions.handleShortCutItem(shortcut, withBrowserViewController: browserViewController)
             quickActions.launchedShortcutItem = nil
         }
+        
+        // We try to send DAU ping each time the app goes to foreground to work around network edge cases
+        // (offline, bad connection etc.)
+        DAU().sendPingToServer()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
