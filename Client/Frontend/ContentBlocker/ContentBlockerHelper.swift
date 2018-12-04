@@ -31,6 +31,16 @@ class BlocklistName: Hashable, CustomStringConvertible {
         return "<\(type(of: self)): \(self.filename)>"
     }
     
+    private lazy var fileVersionPref: Preferences.Option<String?>? = {
+        let prefMap = [BlocklistName.ad: Preferences.BlockFileVersion.adblock]
+        return prefMap[self]
+    }()
+    
+    private lazy var fileVersion: String? = {
+        let adVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
+        return self == .ad ? adVersion : nil
+    }()
+    
     static func blocklists(forDomain domain: Domain) -> (on: Set<BlocklistName>, off: Set<BlocklistName>) {
         if domain.shield_allOff == 1 {
             return ([], allLists)
@@ -50,17 +60,12 @@ class BlocklistName: Hashable, CustomStringConvertible {
         return (onList, allLists.subtracting(onList))
     }
 
-    private func compile(ruleStore: WKContentRuleListStore) -> Deferred<Void> {
+    private func buildRule(ruleStore: WKContentRuleListStore) -> Deferred<Void> {
         let compilerDeferred = Deferred<Void>()
         
-        let ruleExists = Deferred<Bool>()
-        ruleStore.lookUpContentRuleList(forIdentifier: self.filename) { rule, error in
-            self.rule = rule
-            ruleExists.fill(self.rule != nil)
-        }
-        
-        ruleExists.upon { exists in
-            if exists {
+        let compileIt = needsCompiling(ruleStore: ruleStore)
+        compileIt.upon { compile in
+            if !compile {
                 compilerDeferred.fill(())
                 return
             }
@@ -75,17 +80,33 @@ class BlocklistName: Hashable, CustomStringConvertible {
                     assert(rule != nil)
                     
                     self.rule = rule
+                    self.fileVersionPref?.value = self.fileVersion
                     compilerDeferred.fill(())
                 }
             }
         }
+        
         return compilerDeferred
+    }
+    
+    private func needsCompiling(ruleStore: WKContentRuleListStore) -> Deferred<Bool> {
+        let needsCompiling = Deferred<Bool>()
+        if fileVersionPref?.value == fileVersion {
+            needsCompiling.fill(false)
+            return needsCompiling
+        }
+        
+        ruleStore.lookUpContentRuleList(forIdentifier: self.filename) { rule, error in
+            self.rule = rule
+            needsCompiling.fill(self.rule == nil)
+        }
+        return needsCompiling
     }
     
     static func compileAll(ruleStore: WKContentRuleListStore) -> Deferred<Void> {
         let allCompiledDeferred = Deferred<Void>()
         let allOfThem = BlocklistName.allLists.map {
-            $0.compile(ruleStore: ruleStore)
+            $0.buildRule(ruleStore: ruleStore)
         }
         
         all(allOfThem).upon { _ in
