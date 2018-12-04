@@ -578,6 +578,9 @@ bool ParsePinnedSites(BraveLedger& ledger,
 
         // Publisher URL is required; if found, persist this object.
         if (TryFindStringKey(&item, "publisherURL", publisher.url)) {
+          if (publisher.url[publisher.url.length() - 1] != '/') {
+              publisher.url += "/";
+          }
           ledger.pinned_publishers.push_back(publisher);
         }
       }
