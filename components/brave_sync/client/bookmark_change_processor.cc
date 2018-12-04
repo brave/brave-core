@@ -78,11 +78,11 @@ LoadExtraNodes(bookmarks::LoadExtraCallback callback,
   if (callback)
     extra_nodes = std::move(callback).Run(next_node_id);
 
-  auto node = MakePermanentNode(kDeletedBookmarksTitle, next_node_id);
-  extra_nodes.push_back(std::move(node));
+  auto deleted_node = MakePermanentNode(kDeletedBookmarksTitle, next_node_id);
+  extra_nodes.push_back(std::move(deleted_node));
 
-  auto node_pending = MakePermanentNode(kPendingBookmarksTitle, next_node_id);
-  extra_nodes.push_back(std::move(node_pending));
+  auto pending_node = MakePermanentNode(kPendingBookmarksTitle, next_node_id);
+  extra_nodes.push_back(std::move(pending_node));
 
   return extra_nodes;
 }
@@ -189,7 +189,7 @@ void UpdateNode(bookmarks::BookmarkModel* model,
       "sync_timestamp",
       std::to_string(record->syncTimestamp.ToJsTime()));
 
-  if (pending_node_root && bookmarks::IsDescendantOf(node, pending_node_root)) {
+  if (pending_node_root && node->parent() == pending_node_root) {
     model->SetNodeMetaInfo(node, "parent_object_id",
         bookmark.parentFolderObjectId);
   }
@@ -568,17 +568,18 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
 }
 
 void BookmarkChangeProcessor::CompletePendingNodesMove(
-    const bookmarks::BookmarkNode* folder_node, const std::string& object_id) {
+    const bookmarks::BookmarkNode* created_folder_node,
+    const std::string& created_folder_object_id) {
   DCHECK(GetPendingNodeRoot());
-  ui::TreeNodeIterator<bookmarks::BookmarkNode> iterator(GetPendingNodeRoot());
 
-  // node, target_folder, index
-  using move_info = std::tuple<bookmarks::BookmarkNode*,
-      const bookmarks::BookmarkNode*, const std::string>;
-  std::vector<move_info> move_infos;
+  // node, node_order
+  using MoveInfo = std::tuple<bookmarks::BookmarkNode*, const std::string>;
+  std::vector<MoveInfo> move_infos;
 
-  while (iterator.has_next()) {
-    bookmarks::BookmarkNode* node = iterator.Next();
+  bookmarks::BookmarkNode* pending_node_root = GetPendingNodeRoot();
+  for (int i = 0; i < pending_node_root->child_count(); ++i) {
+    bookmarks::BookmarkNode* node = pending_node_root->GetChild(i);
+
     std::string parent_object_id;
     node->GetMetaInfo("parent_object_id", &parent_object_id);
     if (parent_object_id.empty()) {
@@ -586,10 +587,8 @@ void BookmarkChangeProcessor::CompletePendingNodesMove(
       continue;
     }
 
-    const auto* target_folder = FindByObjectId(bookmark_model_,
-        parent_object_id);
-    if (!target_folder) {
-      // Target folder had not arrived yet
+    if (created_folder_object_id != parent_object_id) {
+      // Node is still pending, because waits for another parent
       continue;
     }
 
@@ -597,24 +596,23 @@ void BookmarkChangeProcessor::CompletePendingNodesMove(
     node->GetMetaInfo("order", &order);
 
     DCHECK(!order.empty());
-    move_infos.push_back(std::make_tuple(node, target_folder, order));
+    move_infos.push_back(std::make_tuple(node, order));
   }
 
   for (auto& move_info : move_infos) {
     auto* node = std::get<0>(move_info);
-    const auto* target_folder = std::get<1>(move_info);
-    const auto& order = std::get<2>(move_info);
-    int64_t index = GetIndexByOrder(std::get<1>(move_info), order);
+    const auto& order = std::get<1>(move_info);
+    int64_t index = GetIndexByOrder(created_folder_node, order);
 
     // TODO(alexeyb): use manual move to avoid model observer invocation
     // leading "Pending bookmarks" to get shown
-    bookmark_model_->Move(node, target_folder, index);
+    bookmark_model_->Move(node, created_folder_node, index);
     // Now we dont need "parent_object_id" metainfo on node, because node
     // is attached to proper parent. Note that parent can still be a child
     // of "Pending Bookmarks" note.
     node->DeleteMetaInfo("parent_object_id");
 #ifndef NDEBUG
-    ValidateFolderOrders(target_folder);
+    ValidateFolderOrders(created_folder_node);
 #endif
   }
 }

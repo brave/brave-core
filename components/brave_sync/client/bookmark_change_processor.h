@@ -93,8 +93,9 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   // "Other Bookmarks" so we need to explicitly delete children
   void DeleteSelfAndChildren(const bookmarks::BookmarkNode* node);
 
-  void CompletePendingNodesMove(const bookmarks::BookmarkNode* folder_node,
-      const std::string& object_id);
+  void CompletePendingNodesMove(
+      const bookmarks::BookmarkNode* created_folder_node,
+      const std::string& created_folder_object_id);
 
   BraveSyncClient* sync_client_;  // not owned
   prefs::Prefs* sync_prefs_;  // not owned
