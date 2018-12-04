@@ -22,6 +22,7 @@
       <include name="IDR_BRAVE_REWARDS_IMG_ETH" file="img/ETH.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_LTC" file="img/LTC.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_NICEWARE_LIST" file="../../../vendor/bat-native-ledger/niceware/wordlist" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_FAVICON" file="img/favicon.ico" type="BINDATA" />
 
       <!-- WebUI donate resources -->
       <include name="IDR_BRAVE_DONATE_BG_1" file="img/donate_bg_1.svg" type="BINDATA" />
