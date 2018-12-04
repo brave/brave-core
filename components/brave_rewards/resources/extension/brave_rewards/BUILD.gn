@@ -24,12 +24,16 @@ transpile_web_ui("brave_rewards_panel") {
     "components/app.tsx",
     "components/panel.tsx",
     "constants/rewards_panel_types.ts",
+    "content-scripts/twitter.ts",
+    "user-tip/userTipDialog.tsx",
+    "user-tip/userTipDialogContent.tsx",
     "utils.ts",
   ]
 
   entry_points = [
     ["brave_rewards_panel", rebase_path("brave_rewards_panel.tsx")],
-    ["brave_rewards_panel_background", rebase_path("background.ts")]
+    ["brave_rewards_panel_background", rebase_path("background.ts")],
+    ["brave_rewards_content_twitter", rebase_path("content-scripts/twitter.ts")]
   ]
 
   resource_name = "brave_rewards_panel"

@@ -11,7 +11,10 @@
   "permissions": [
     "storage",
     "tabs",
-    "chrome://favicon/*"
+    "chrome://favicon/*",
+    "activeTab",
+    "webRequest",
+    "https://*.twitter.com/"
   ],
   "browser_action": {
     "default_popup": "brave_rewards_panel.html",
