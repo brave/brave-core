@@ -67,9 +67,8 @@ bool HandleURLReverseRewrite(GURL* url,
 
 }  // namespace
 
-BraveContentBrowserClient::BraveContentBrowserClient(std::unique_ptr<ui::DataPack> data_pack,
-    ChromeFeatureListCreator* chrome_feature_list_creator) :
-    ChromeContentBrowserClient(std::move(data_pack), chrome_feature_list_creator)
+BraveContentBrowserClient::BraveContentBrowserClient(ChromeFeatureListCreator* chrome_feature_list_creator) :
+    ChromeContentBrowserClient(chrome_feature_list_creator)
 {}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
