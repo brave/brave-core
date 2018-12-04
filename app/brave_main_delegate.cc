@@ -54,13 +54,10 @@ BraveMainDelegate::CreateContentBrowserClient() {
   return NULL;
 #else
   if (chrome_content_browser_client_ == nullptr) {
-    DCHECK(service_manifest_data_pack_);
-    DCHECK(service_manifest_data_pack_);
     DCHECK(!chrome_feature_list_creator_);
     chrome_feature_list_creator_ = std::make_unique<ChromeFeatureListCreator>();
     chrome_content_browser_client_ =
         std::make_unique<BraveContentBrowserClient>(
-            std::move(service_manifest_data_pack_),
             chrome_feature_list_creator_.get());
   }
   return chrome_content_browser_client_.get();
