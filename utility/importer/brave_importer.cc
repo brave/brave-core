@@ -672,6 +672,19 @@ void BraveImporter::ImportReferral() {
   bridge_->UpdateReferral(referral);
 }
 
+bool CanImportURL(const GURL& url) {
+  if (!url.is_valid())
+    return false;
+
+  const char* const kInvalidSchemes[] = {"about", "chrome-extension"};
+  for (size_t i = 0; i < arraysize(kInvalidSchemes); i++) {
+    if (url.SchemeIs(kInvalidSchemes[i]))
+      return false;
+  }
+
+  return true;
+}
+
 std::vector<ImportedBrowserTab> ParseTabs(const base::Value* frames) {
   std::vector<ImportedBrowserTab> tabs;
 
@@ -684,11 +697,14 @@ std::vector<ImportedBrowserTab> ParseTabs(const base::Value* frames) {
     if (!(key && location))
       continue;
 
+    auto url = GURL(location->GetString());
+    // Filter internal URLs from Muon that won't resolve correctly in brave-core
+    if (!CanImportURL(url))
+      continue;
+
     ImportedBrowserTab tab;
     tab.key = key->GetInt();
-    // TODO filter locations that won't work in b-c, e.g. about:preferences, about:newtab, chrome-extension:// (for PDFs), etc.
-    tab.location = GURL(location->GetString());
-
+    tab.location = url;
     tabs.push_back(tab);
   }
 
@@ -739,6 +755,10 @@ std::vector<ImportedBrowserWindow> ParseWindows(
       continue;
     }
 
+    auto tabs = ParseTabs(frames);
+    if (tabs.size() == 0)
+      continue;
+
     window.top = top->GetInt();
     window.left = left->GetInt();
     window.width = width->GetInt();
@@ -746,8 +766,7 @@ std::vector<ImportedBrowserWindow> ParseWindows(
     window.focused = focused->GetBool();
     window.state = state->GetString();
     window.activeFrameKey = activeFrameKey->GetInt();
-
-    window.tabs = ParseTabs(frames);
+    window.tabs = tabs;
 
     windows.push_back(window);
   }
@@ -774,9 +793,14 @@ std::vector<ImportedBrowserTab> ParsePinnedTabs(
     if (!(location && order))
       continue;
 
+    auto url = GURL(location->GetString());
+    // Filter internal URLs from Muon that won't resolve correctly in brave-core
+    if (!CanImportURL(url))
+      continue;
+
     ImportedBrowserTab tab;
     tab.key = order->GetInt();
-    tab.location = GURL(location->GetString());
+    tab.location = url;
     pinnedTabs.push_back(tab);
   }
 
