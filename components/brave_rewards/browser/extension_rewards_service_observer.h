@@ -21,6 +21,7 @@ class RewardsService;
 class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
                                         public RewardsServicePrivateObserver {
  public:
+  ExtensionRewardsServiceObserver() {}
   ExtensionRewardsServiceObserver(Profile* profile);
   ~ExtensionRewardsServiceObserver() override;
 
