@@ -62,18 +62,3 @@ export const includeInAutoContribution = (publisherKey: string, excluded: boolea
 })
 
 export const getGrant = () => action(types.GET_GRANT, {})
-
-export const saveRecurringDonation = (publisherKey: string, newAmount: number) => action(types.SAVE_RECURRING_DONATION, {
-  publisherKey,
-  newAmount
-})
-
-export const removeRecurringContribution = (publisherKey: string) => action(types.REMOVE_RECURRING_DONATION, {
-  publisherKey
-})
-
-export const getRecurringDonations = () => action(types.GET_RECURRING_DONATIONS)
-
-export const onRecurringDonations = (result: RewardsExtension.RecurringDonation) => action(types.ON_RECURRING_DONATIONS, {
-  result
-})

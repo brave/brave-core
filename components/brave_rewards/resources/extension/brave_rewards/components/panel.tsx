@@ -79,46 +79,6 @@ export class Panel extends React.Component<Props, State> {
     console.log('doNothing click')
   }
 
-  onContributionAmountChange = (publisherKey: string, newAmount: string) => {
-    const newValue = parseInt(newAmount)
-
-    if (newValue === 0) {
-      this.actions.removeRecurringContribution(publisherKey)
-    } else {
-      this.actions.saveRecurringDonation(publisherKey, newValue)
-    }
-  }
-
-  generateAmounts = () => {
-    const { rates } = this.props.rewardsPanelData.walletProperties
-
-    return [0, 1, 5, 10].map((value: number) => {
-      return {
-        tokens: value.toFixed(1),
-        converted: utils.convertBalance(value.toString(), rates),
-        selected: false
-      }
-    })
-  }
-
-  getContribution = (publisher?: RewardsExtension.Publisher) => {
-    let defaultContribution = '0.0'
-    const { recurringDonations } = this.props.rewardsPanelData
-
-    if (!recurringDonations ||
-       (!publisher || !publisher.publisher_key)) {
-      return defaultContribution
-    }
-
-    recurringDonations.map((donation: any) => {
-      if (donation.publisherKey === publisher.publisher_key) {
-        defaultContribution = donation.amount.toFixed(1)
-      }
-    })
-
-    return defaultContribution
-  }
-
   switchAutoContribute = () => {
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const publisherKey = publisher && publisher.publisher_key
@@ -298,7 +258,6 @@ export class Panel extends React.Component<Props, State> {
   render () {
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
-    const defaultContribution = this.getContribution(publisher)
     const converted = utils.convertBalance(balance.toString(), rates)
     const notification = this.getNotification()
 
@@ -309,7 +268,6 @@ export class Panel extends React.Component<Props, State> {
         faviconUrl = `chrome://favicon/size/48@2x/${publisher.favicon_url}`
       }
     }
-
     return (
       <WalletWrapper
         compact={true}
@@ -341,25 +299,21 @@ export class Panel extends React.Component<Props, State> {
         >
           {
             publisher && publisher.publisher_key
-            ? <>
-              <WalletPanel
-                id={'wallet-panel'}
-                platform={publisher.provider as Provider}
-                publisherName={publisher.name}
-                publisherImg={faviconUrl}
-                monthlyAmount={defaultContribution}
-                isVerified={publisher.verified}
-                tipsEnabled={true}
-                includeInAuto={!publisher.excluded}
-                attentionScore={(publisher.percentage || 0).toString()}
-                onToggleTips={this.doNothing}
-                donationAmounts={this.generateAmounts()}
-                donationAction={this.showDonateToSiteDetail}
-                onAmountChange={this.onContributionAmountChange.bind(this, publisher.publisher_key)}
-                onIncludeInAuto={this.switchAutoContribute}
-              />
-              <div style={{ height: '48px' }}></div>
-              </>
+            ? <WalletPanel
+              id={'wallet-panel'}
+              platform={publisher.provider as Provider}
+              publisherName={publisher.name}
+              publisherImg={faviconUrl}
+              monthlyAmount={'10.0'}
+              isVerified={publisher.verified}
+              tipsEnabled={true}
+              includeInAuto={!publisher.excluded}
+              attentionScore={(publisher.percentage || 0).toString()}
+              onToggleTips={this.doNothing}
+              donationAction={this.showDonateToSiteDetail}
+              onAmountChange={this.doNothing}
+              onIncludeInAuto={this.switchAutoContribute}
+            />
             : null
           }
           <WalletSummary compact={true} {...this.getWalletSummary()}/>

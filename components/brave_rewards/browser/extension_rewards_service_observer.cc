@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
+
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -135,39 +136,6 @@ void ExtensionRewardsServiceObserver::OnGetPublisherActivityFromUrl(
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_ON_PUBLISHER_DATA,
       extensions::api::brave_rewards::OnPublisherData::kEventName,
-      std::move(args)));
-  event_router->BroadcastEvent(std::move(event));
-}
-
-void ExtensionRewardsServiceObserver::OnRecurringDonations(
-    RewardsService* rewards_service,
-    brave_rewards::ContentSiteList list) {
-  extensions::EventRouter* event_router = extensions::EventRouter::Get(profile_);
-  if (!event_router) {
-    return;
-  }
-
-  base::DictionaryValue result;
-  auto recurringDonations = std::make_unique<base::ListValue>();
-
-  if (!list.empty()) {
-    for (auto const& item: list) {
-      auto recurringDonation = std::make_unique<base::DictionaryValue>();
-      recurringDonation->SetString("publisherKey", item.id);
-      recurringDonation->SetInteger("amount", item.weight);
-      recurringDonations->Append(std::move(recurringDonation));
-    }
-  }
-
-  result.SetList("recurringDonations", std::move(recurringDonations));
-
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnRecurringDonations::Create(result)
-          .release());
-
-  std::unique_ptr<extensions::Event> event(new extensions::Event(
-      extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnRecurringDonations::kEventName,
       std::move(args)));
   event_router->BroadcastEvent(std::move(event));
 }
