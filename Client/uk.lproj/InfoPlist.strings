@@ -1,0 +1,32 @@
+/* (No Comment) */
+"1Password Fill Browser Action" = "Заповнення паролів у браузері за допомогою 1Password";
+
+/* (No Comment) */
+"NSCameraUsageDescription" = "Це дозволить вам завантажувати фото.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Щоб надати Brave доступ до збережених облікових даних, уведіть Face ID.";
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+"NSLocationWhenInUseUsageDescription" = "Деякі веб-сайти можуть запитати дані щодо вашого місцеположення.";
+
+/* (No Comment) */
+"NSMicrophoneUsageDescription" = "Це дозволить вам знімати і надсилати відео.";
+
+/* (No Comment) */
+"NSPhotoLibraryAddUsageDescription" = "Це дозволить вам зберігати фото.";
+
+/* (No Comment) */
+"NSPhotoLibraryUsageDescription" = "Це дозволить вам зберігати і надсилати фото.";
+
+/* (No Comment) */
+"ShortcutItemTitleNewPrivateTab" = "Нова приватна вкладка";
+
+/* (No Comment) */
+"ShortcutItemTitleNewTab" = "Нова вкладка";
+
+/* (No Comment) */
+"ShortcutItemTitleQRCode" = "Сканування QR-коду";
+

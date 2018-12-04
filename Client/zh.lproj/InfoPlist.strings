@@ -1,0 +1,32 @@
+/* (No Comment) */
+"1Password Fill Browser Action" = "1密码填写浏览器操作";
+
+/* (No Comment) */
+"NSCameraUsageDescription" = "这可使您拍照和上传照片。";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Brave需要 Face ID 才能访问您保存的登录信息。";
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+"NSLocationWhenInUseUsageDescription" = "您访问的网站可能需要您的位置。";
+
+/* (No Comment) */
+"NSMicrophoneUsageDescription" = "这可使您拍照和上传照片。";
+
+/* (No Comment) */
+"NSPhotoLibraryAddUsageDescription" = "这可使您保存照片。";
+
+/* (No Comment) */
+"NSPhotoLibraryUsageDescription" = "这可使您拍照和上传照片。";
+
+/* (No Comment) */
+"ShortcutItemTitleNewPrivateTab" = "新私人标签页";
+
+/* (No Comment) */
+"ShortcutItemTitleNewTab" = "新标签页";
+
+/* (No Comment) */
+"ShortcutItemTitleQRCode" = "扫描二维码";
+

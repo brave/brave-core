@@ -1,0 +1,249 @@
+/* Accessibility label for the Menu button. */
+"AppMenuButtonAccessibilityLabel" = "選單";
+
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "網址已複製到剪貼簿";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "要求存取桌面版網站";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "要求存取行動版網站";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"BackTitle" = "返回";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "取消";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "確定要取消這項下載？";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "繼續";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "取消下載";
+
+/* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseAllTabsFromTabTrayKeyCodeTitle" = "關閉所有分頁";
+
+/* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseTabFromTabTrayKeyCodeTitle" = "關閉所選分頁";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"CloseTabTitle" = "關閉分頁";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "切換";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "已開啟新分頁";
+
+/* The title for the button that lets you copy the url from the location bar. */
+"CopyAddressTitle" = "複製網址";
+
+/* A message explaining fault in custom search engine form. */
+"CustomEngineDuplicateErrorMessage" = "已新增使用此標題或網址的搜尋引擎。";
+
+/* A message explaining fault in custom search engine form. */
+"CustomEngineFormErrorMessage" = "請正確填寫所有欄位。";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "已取消下載";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "下載失敗";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 個檔案，共 %d 個";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "下載";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "使用 App Store 應用程式開啟此連結？";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"FindTitle" = "尋找";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ForwardTitle" = "向前";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "立即前往";
+
+/* Message displayed when the user has a copied link on the clipboard */
+"GoToCopiedLink" = "前往複製的連結？";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "不要儲存";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "不要更新";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "儲存登入資訊";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "更新";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewPrivateTabTitle" = "新增隱私分頁";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewTabTitle" = "新增分頁";
+
+/* OK button */
+"OKString" = "確定";
+
+/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenNewTabFromTabTrayKeyCodeTitle" = "開啟新分頁";
+
+/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenSelectedTabFromTabTrayKeyCodeTitle" = "開啟所選分頁";
+
+/* The title for the button that lets you paste and go to a URL */
+"PasteAndGoTitle" = "貼上並前往";
+
+/* The title for the button that lets you paste into the location bar */
+"PasteTitle" = "貼上";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "有可用的閱讀模式";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "重設字體大小";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ReloadPageTitle" = "重新載入頁面";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "儲存 %@ 的密碼？";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "儲存 %2$@ 的登入資訊 %1$@？";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "確定";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "將 QR 碼對齊方框即可掃描";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "資料無效";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "請前往「設定」->「隱私」->「相機」，允許 Brave 存取您裝置的相機。";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "掃描 QR 碼";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"SelectLocationBarTitle" = "選取位置列";
+
+/* Alert dialog body when the user opens the home page for the first time. */
+"SetHomePageDialogMessage" = "您可以隨時前往「設定」變更";
+
+/* Button cancelling changes setting the home page for the first time. */
+"SetHomePageDialogNo" = "取消";
+
+/* Alert dialog title when the user opens the home page for the first time. */
+"SetHomePageDialogTitle" = "是否要將此網頁設為您的首頁？";
+
+/* Button accepting changes setting the home page for the first time. */
+"SetHomePageDialogYes" = "設定首頁";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "一般";
+
+/* Option in settings to show a blank page when you open a new tab */
+"SettingsNewTabBlankPage" = "顯示空白頁";
+
+/* Option in settings to show your homepage when you open a new tab */
+"SettingsNewTabHomePage" = "顯示首頁";
+
+/* Option in settings to show top sites when you open a new tab */
+"SettingsNewTabTopSites" = "顯示常用網站";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "完成";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchEditButton" = "編輯";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowNextTabTitle" = "顯示下一個分頁";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowPreviousTabTitle" = "顯示上一個分頁";
+
+/* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"ShowTabTrayFromTabKeyCodeTitle" = "顯示所有分頁";
+
+/* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToNonPBMKeyCodeTitle" = "正常瀏覽模式";
+
+/* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToPBMKeyCodeTitle" = "隱私瀏覽模式";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "復原";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "已關閉 %d 個分頁";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"ThirdPartySearchAddMessage" = "新的搜尋引擎會顯示於快速搜尋列。";
+
+/* The title that asks the user to Add the search provider */
+"ThirdPartySearchAddTitle" = "新增搜尋服務提供者？";
+
+/* The cancel button if you do not want to add a search engine. */
+"ThirdPartySearchCancelButton" = "取消";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"ThirdPartySearchEngineAdded" = "已新增搜尋引擎！";
+
+/* A title explaining that we failed to add a search engine */
+"ThirdPartySearchFailedMessage" = "無法新增搜尋服務提供者。";
+
+/* A title explaining that we failed to add a search engine */
+"ThirdPartySearchFailedTitle" = "失敗";
+
+/* The confirmation button */
+"ThirdPartySearchOkayButton" = "確定";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "確定";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "將票卡放入錢包時發生錯誤，請稍後再試。";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "新增票卡失敗";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "該頁面的網址無效，Brave 無法開啟頁面。";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "無法開啟頁面";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "更新 %2$@ 的登入資訊 %1$@？";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "更新 %2$@ 的登入資訊 %1$@？";
+
+/* List section title for when to use Face ID */
+"UseFaceID" = "使用 Face ID";
+
+/* List section title for when to use Touch ID */
+"UseTouchID" = "使用 Touch ID";
+

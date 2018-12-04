@@ -1,0 +1,9 @@
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"No" = "Nie";
+
+/* Prompt shown before enabling provider search queries */
+"Turn on search suggestions?" = "Czy włączyć sugestie wyszukiwania?";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"Yes" = "Tak";
+

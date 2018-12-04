@@ -1,0 +1,9 @@
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"No" = "Nej";
+
+/* Prompt shown before enabling provider search queries */
+"Turn on search suggestions?" = "Sätt på sökförslag?";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"Yes" = "Ja";
+

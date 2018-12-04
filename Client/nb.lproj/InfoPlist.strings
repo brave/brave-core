@@ -1,0 +1,32 @@
+/* (No Comment) */
+"1Password Fill Browser Action" = "1Password-handling – fyll inn i nettleser";
+
+/* (No Comment) */
+"NSCameraUsageDescription" = "Dette lar deg ta bilder og laste dem opp.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Brave krever Face ID for å gi tilgang til dine lagrede innlogginger.";
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+"NSLocationWhenInUseUsageDescription" = "Hjemmesidene du besøker kan be om å få vite hvor du befinner deg.";
+
+/* (No Comment) */
+"NSMicrophoneUsageDescription" = "Dette lar deg ta opp videoer og laste dem opp.";
+
+/* (No Comment) */
+"NSPhotoLibraryAddUsageDescription" = "Dette lar deg lagre bilder.";
+
+/* (No Comment) */
+"NSPhotoLibraryUsageDescription" = "Dette lar deg lagre og laste opp bilder.";
+
+/* (No Comment) */
+"ShortcutItemTitleNewPrivateTab" = "Ny privat fane";
+
+/* (No Comment) */
+"ShortcutItemTitleNewTab" = "Ny fane";
+
+/* (No Comment) */
+"ShortcutItemTitleQRCode" = "Skann QR-kode";
+

@@ -1,0 +1,21 @@
+/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
+"AppAndDeviceNameFormat" = "%1$@ auf %2$@";
+
+/* Relative time for a tab that was visited within the last few moments. */
+"TimeConstantJustNowText" = "gerade eben";
+
+/* Relative date for dates older than a month and less than two months. */
+"TimeConstantMoreThanMonthAgoText" = "vor über einem Monat";
+
+/* Description for a date more than a week ago, but less than a month ago. */
+"TimeConstantMoreThanWeekAgoText" = "vor über einer Woche";
+
+/* Relative date for date in past week. */
+"TimeConstantThisWeekText" = "diese Woche";
+
+/* Relative date for date older than a minute. */
+"TimeConstantTodayAtFormat" = "heute um %@";
+
+/* Relative date for yesterday. */
+"TimeConstantYesterdayText" = "gestern";
+

@@ -1,0 +1,249 @@
+/* Accessibility label for the Menu button. */
+"AppMenuButtonAccessibilityLabel" = "Menu";
+
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "Adres URL został skopiowany do schowka";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "Otwórz wersję komputerową";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "Otwórz wersję mobilną";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"BackTitle" = "Wróć";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "Anuluj";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "Czy na pewno chcesz anulować to pobieranie?";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "Wznów";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "Anuluj pobieranie";
+
+/* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseAllTabsFromTabTrayKeyCodeTitle" = "Zamknij wszystkie karty";
+
+/* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseTabFromTabTrayKeyCodeTitle" = "Zamknij wybraną kartę";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"CloseTabTitle" = "Zamknij kartę";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "Zmień";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "Otwarto nową kartę";
+
+/* The title for the button that lets you copy the url from the location bar. */
+"CopyAddressTitle" = "Skopiuj adres";
+
+/* A message explaining fault in custom search engine form. */
+"CustomEngineDuplicateErrorMessage" = "Dodano już wyszukiwarkę o tej nazwie lub adresie URL. ";
+
+/* A message explaining fault in custom search engine form. */
+"CustomEngineFormErrorMessage" = "Proszę prawidłowo wypełnić wszystkie pola.";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "Pobieranie anulowane";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "Pobieranie zakończyło się niepowodzeniem";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "Pliki: 1 z %d";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "Pobierane";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "Czy otworzyć to łącze w aplikacji App Store?";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"FindTitle" = "Znajdź";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ForwardTitle" = "Dalej";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "Otwórz";
+
+/* Message displayed when the user has a copied link on the clipboard */
+"GoToCopiedLink" = "Czy otworzyć skopiowane łącze?";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "Nie zapisuj";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "Nie aktualizuj";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "Zapisz login";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "Aktualizuj";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewPrivateTabTitle" = "Nowa karta w trybie prywatnym";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewTabTitle" = "Nowa karta";
+
+/* OK button */
+"OKString" = "OK";
+
+/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Otwórz nową kartę";
+
+/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenSelectedTabFromTabTrayKeyCodeTitle" = "Otwórz wybraną kartę";
+
+/* The title for the button that lets you paste and go to a URL */
+"PasteAndGoTitle" = "Wklej i otwórz";
+
+/* The title for the button that lets you paste into the location bar */
+"PasteTitle" = "Wklej";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "Dostępny Tryb odczytu";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "Zresetuj rozmiar tekstu";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ReloadPageTitle" = "Wczytaj stronę ponownie";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "Czy zapisać hasło na %@?";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "Czy zapisać login %1$@ na %2$@?";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "OK";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "Wyrównaj kod QR wewnątrz ramki, aby skanować";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "Dane są nieprawidłowe";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "Zezwól przeglądarce Brave na dostęp do aparatu, wybierając „Ustawienia” -> „Prywatność” -> „Aparat”.";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "Skanuj kod QR";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"SelectLocationBarTitle" = "Wybierz pasek lokalizacji";
+
+/* Alert dialog body when the user opens the home page for the first time. */
+"SetHomePageDialogMessage" = "W każdej chwili możesz ją zmienić w Ustawieniach";
+
+/* Button cancelling changes setting the home page for the first time. */
+"SetHomePageDialogNo" = "Anuluj";
+
+/* Alert dialog title when the user opens the home page for the first time. */
+"SetHomePageDialogTitle" = "Czy chcesz, aby ta strona była stroną domową?";
+
+/* Button accepting changes setting the home page for the first time. */
+"SetHomePageDialogYes" = "Ustaw stronę domową";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "Ogólne";
+
+/* Option in settings to show a blank page when you open a new tab */
+"SettingsNewTabBlankPage" = "Pokaż pustą stronę";
+
+/* Option in settings to show your homepage when you open a new tab */
+"SettingsNewTabHomePage" = "Pokaż stronę domową";
+
+/* Option in settings to show top sites when you open a new tab */
+"SettingsNewTabTopSites" = "Pokaż najczęściej odwiedzane strony";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "Gotowe";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchEditButton" = "Edytuj";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowNextTabTitle" = "Pokaż następną kartę";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowPreviousTabTitle" = "Pokaż poprzednią kartę";
+
+/* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"ShowTabTrayFromTabKeyCodeTitle" = "Pokaż wszystkie karty";
+
+/* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToNonPBMKeyCodeTitle" = "Normalny tryb przeglądania";
+
+/* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToPBMKeyCodeTitle" = "Prywatny tryb przeglądania";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "Cofnij";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "Zamknięte karty: %d";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"ThirdPartySearchAddMessage" = "Na pasku szybkiego wyszukiwania pojawi się nowa wyszukiwarka.";
+
+/* The title that asks the user to Add the search provider */
+"ThirdPartySearchAddTitle" = "Czy dodać wyszukiwarkę?";
+
+/* The cancel button if you do not want to add a search engine. */
+"ThirdPartySearchCancelButton" = "Anuluj";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"ThirdPartySearchEngineAdded" = "Dodano wyszukiwarkę!";
+
+/* A title explaining that we failed to add a search engine */
+"ThirdPartySearchFailedMessage" = "Nie udało się dodać wyszukiwarki.";
+
+/* A title explaining that we failed to add a search engine */
+"ThirdPartySearchFailedTitle" = "Nie powiodło się.";
+
+/* The confirmation button */
+"ThirdPartySearchOkayButton" = "OK";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "OK";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "Wystąpił błąd podczas dodawania karty do aplikacji Wallet. Proszę spróbować ponownie później.";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "Nie udało się dodać karty";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "Przeglądarka Brave nie otworzyła strony, gdyż podano niewłaściwy adres.";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "Nie można otworzyć strony";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "Czy zaktualizować login %1$@ na %2$@?";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "Czy zaktualizować login %1$@ na %2$@?";
+
+/* List section title for when to use Face ID */
+"UseFaceID" = "Użyj Face ID";
+
+/* List section title for when to use Touch ID */
+"UseTouchID" = "Użyj Touch ID";
+

@@ -1,0 +1,32 @@
+/* (No Comment) */
+"1Password Fill Browser Action" = "Tindakan Browser Mengisi Kata Sandi 1Password";
+
+/* (No Comment) */
+"NSCameraUsageDescription" = "Ini memungkinkan Anda mengambil dan mengunggah foto.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Brave memerlukan Face ID untuk mengakses login tersimpan Anda.";
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+"NSLocationWhenInUseUsageDescription" = "Situs yang Anda kunjungi mungkin meminta lokasi Anda.";
+
+/* (No Comment) */
+"NSMicrophoneUsageDescription" = "Ini memungkinkan Anda untuk mengambil dan mengunggah video.";
+
+/* (No Comment) */
+"NSPhotoLibraryAddUsageDescription" = "Ini memungkinkan Anda menyimpan foto.";
+
+/* (No Comment) */
+"NSPhotoLibraryUsageDescription" = "Ini memungkinkan Anda menyimpan dan mengunggah foto.";
+
+/* (No Comment) */
+"ShortcutItemTitleNewPrivateTab" = "Tab Pribadi Baru";
+
+/* (No Comment) */
+"ShortcutItemTitleNewTab" = "Tab Baru";
+
+/* (No Comment) */
+"ShortcutItemTitleQRCode" = "Pindai Kode QR";
+

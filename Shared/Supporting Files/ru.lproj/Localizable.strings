@@ -1,0 +1,249 @@
+/* Accessibility label for the Menu button. */
+"AppMenuButtonAccessibilityLabel" = "Меню";
+
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "URL скопирован в буфер обмена";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "Открыть полную версию";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "Открыть мобильную версию";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"BackTitle" = "Назад";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "Отмена";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "Вы действительно хотите отменить скачивание?";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "Продолжить";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "Отмена скачивания";
+
+/* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseAllTabsFromTabTrayKeyCodeTitle" = "Закрыть все вкладки";
+
+/* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseTabFromTabTrayKeyCodeTitle" = "Закрыть выбранную вкладку";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"CloseTabTitle" = "Закрыть вкладку";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "Переключиться";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "Открыта новая вкладка";
+
+/* The title for the button that lets you copy the url from the location bar. */
+"CopyAddressTitle" = "Скопировать адрес";
+
+/* A message explaining fault in custom search engine form. */
+"CustomEngineDuplicateErrorMessage" = "Поисковая система с таким названием или URL уже добавлена.";
+
+/* A message explaining fault in custom search engine form. */
+"CustomEngineFormErrorMessage" = "Укажите верные данные.";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "Скачивание отменено";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "Во время скачивания произошла ошибка";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "Файлы: 1 из %d";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "Загрузки";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "Открыть эту ссылку в App Store?";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"FindTitle" = "Найти";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ForwardTitle" = "Вперед";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "Перейти";
+
+/* Message displayed when the user has a copied link on the clipboard */
+"GoToCopiedLink" = "Перейти по скопированной ссылке?";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "Не сохранять";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "Не обновлять";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "Сохранить учетные данные";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "Обновить";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewPrivateTabTitle" = "Новая приватная вкладка";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewTabTitle" = "Новая вкладка";
+
+/* OK button */
+"OKString" = "ОК";
+
+/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Открыть новую вкладку";
+
+/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenSelectedTabFromTabTrayKeyCodeTitle" = "Открыть выбранную вкладку";
+
+/* The title for the button that lets you paste and go to a URL */
+"PasteAndGoTitle" = "Вставить и перейти";
+
+/* The title for the button that lets you paste into the location bar */
+"PasteTitle" = "Вставить";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "Доступен режим чтения";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "Вернуться к исходному размеру шрифта";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ReloadPageTitle" = "Перезагрузить страницу";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "Сохранить пароль для %@?";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "Сохранить имя пользователя «%1$@» на сайте %2$@?";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "ОК";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "Чтобы отсканировать QR-код, поместите его в рамку";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "Неверные данные";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "Предоставьте Brave доступ к камере: «Настройки > Конфиденциальность > Камера».";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "Сканирование QR-кода";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"SelectLocationBarTitle" = "Выбрать панель местоположения";
+
+/* Alert dialog body when the user opens the home page for the first time. */
+"SetHomePageDialogMessage" = "Этот параметр можно изменить в настройках";
+
+/* Button cancelling changes setting the home page for the first time. */
+"SetHomePageDialogNo" = "Отмена";
+
+/* Alert dialog title when the user opens the home page for the first time. */
+"SetHomePageDialogTitle" = "Сделать эту страницу домашней?";
+
+/* Button accepting changes setting the home page for the first time. */
+"SetHomePageDialogYes" = "Сделать домашней";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "Основные настройки";
+
+/* Option in settings to show a blank page when you open a new tab */
+"SettingsNewTabBlankPage" = "Открывать пустую страницу";
+
+/* Option in settings to show your homepage when you open a new tab */
+"SettingsNewTabHomePage" = "Открывать домашнюю страницу";
+
+/* Option in settings to show top sites when you open a new tab */
+"SettingsNewTabTopSites" = "Показывать часто посещаемые сайты";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "Готово";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchEditButton" = "Изменить";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowNextTabTitle" = "Показать следующую вкладку";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowPreviousTabTitle" = "Показать предыдущую вкладку";
+
+/* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"ShowTabTrayFromTabKeyCodeTitle" = "Показать все вкладки";
+
+/* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToNonPBMKeyCodeTitle" = "Обычный режим просмотра";
+
+/* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToPBMKeyCodeTitle" = "Приватный режим просмотра";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "Отменить";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "Вкладки закрыты (%d)";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"ThirdPartySearchAddMessage" = "Новая поисковая система появится на панели быстрого поиска.";
+
+/* The title that asks the user to Add the search provider */
+"ThirdPartySearchAddTitle" = "Добавить поисковую систему?";
+
+/* The cancel button if you do not want to add a search engine. */
+"ThirdPartySearchCancelButton" = "Отмена";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"ThirdPartySearchEngineAdded" = "Поисковая система добавлена.";
+
+/* A title explaining that we failed to add a search engine */
+"ThirdPartySearchFailedMessage" = "Не удалось добавить поисковую систему";
+
+/* A title explaining that we failed to add a search engine */
+"ThirdPartySearchFailedTitle" = "Произошла ошибка";
+
+/* The confirmation button */
+"ThirdPartySearchOkayButton" = "ОК";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "ОК";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "При добавлении карты в Кошелек произошла ошибка. Повторите попытку позже.";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "Не удалось добавить iTunes Pass";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "Не удалось открыть страницу, так как указан недействительный адрес.";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "Не удалось открыть страницу";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "Обновить имя пользователя «%1$@» на сайте %2$@?";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "Обновить имя пользователя «%1$@» на сайте %2$@?";
+
+/* List section title for when to use Face ID */
+"UseFaceID" = "Использование Face ID";
+
+/* List section title for when to use Touch ID */
+"UseTouchID" = "Использование Touch ID";
+

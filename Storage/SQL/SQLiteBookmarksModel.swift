@@ -942,7 +942,7 @@ open class MergedSQLiteBookmarks: BookmarksModelFactorySource, KeywordSearchSour
 }
 
 extension Strings {
-    public static let SQLLiteBookmarkDesktopBookmarksLabel = NSLocalizedString("SQLLiteBookmarkDesktopBookmarksLabel", tableName: "Storage", value: "Desktop Bookmarks", comment: "The folder name for the virtual folder that contains all desktop bookmarks.")
-    public static let SQLLiteBookmarkDefaultFolderTitle = NSLocalizedString("SQLLiteBookmarkDefaultFolderTitle", tableName: "Storage", value: "Untitled", comment: "The default name for bookmark folders without titles.")
-    public static let SQLLiteBookmarkDefaultItemTitle = NSLocalizedString("SQLLiteBookmarkDefaultItemTitle", tableName: "Storage", value: "Untitled", comment: "The default name for bookmark nodes without titles.")
+    public static let SQLLiteBookmarkDesktopBookmarksLabel = NSLocalizedString("SQLLiteBookmarkDesktopBookmarksLabel", tableName: "Storage", bundle: Bundle.storage, value: "Desktop Bookmarks", comment: "The folder name for the virtual folder that contains all desktop bookmarks.")
+    public static let SQLLiteBookmarkDefaultFolderTitle = NSLocalizedString("SQLLiteBookmarkDefaultFolderTitle", tableName: "Storage", bundle: Bundle.storage, value: "Untitled", comment: "The default name for bookmark folders without titles.")
+    public static let SQLLiteBookmarkDefaultItemTitle = NSLocalizedString("SQLLiteBookmarkDefaultItemTitle", tableName: "Storage", bundle: Bundle.storage, value: "Untitled", comment: "The default name for bookmark nodes without titles.")
 }
