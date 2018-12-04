@@ -54,6 +54,9 @@ extension Preferences {
         static let httpsUpgradeCount = Option<Int>(key: "stats.http-upgrade", default: 0)
         static let fingerprintingCount = Option<Int>(key: "stats.fingerprinting", default: 0)
     }
+    public final class BlockFileVersion {
+        public static let adblock = Option<String?>(key: "blockfile.adblock", default: nil)
+    }
 }
 
 extension Preferences {
