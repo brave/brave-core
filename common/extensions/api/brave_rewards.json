@@ -177,17 +177,6 @@
             }
           }
         ]
-      },
-      {
-        "name": "onRecurringDonations",
-        "type": "function",
-        "description": "",
-        "parameters": [
-          {
-            "name": "result",
-            "type": "any"
-          }
-        ]
       }
     ],
     "functions": [
@@ -267,32 +256,6 @@
         "type": "function",
         "description": "Retrieves grant when panel is mounted",
         "parameters": []
-      },
-      {
-        "name": "saveRecurringDonation",
-        "type": "function",
-        "description": "Updates recurring donation amount for rewards panel",
-        "parameters": [
-          {
-            "name": "publisher_key",
-            "type": "string"
-          },
-          {
-            "name": "new_amount",
-            "type": "integer"
-          }
-        ]
-      },
-      {
-        "name": "removeRecurringDonation",
-        "type": "function",
-        "description": "Removes recurring donation for rewards panel",
-        "parameters": [
-          {
-            "name": "publisher_key",
-            "type": "string"
-          }
-        ]
       }
     ]
   }

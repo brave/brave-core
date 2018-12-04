@@ -274,7 +274,6 @@ test("brave_browser_tests") {
 
   if (brave_rewards_enabled) {
     sources += [
-      "//brave/components/brave_rewards/browser/extension_rewards_service_observer_browsertest.cc",
       "//brave/components/brave_rewards/browser/rewards_notification_service_browsertest.cc",
       "//brave/components/brave_rewards/browser/rewards_service_browsertest.cc",
     ]
@@ -310,7 +309,6 @@ test("brave_browser_tests") {
     ":brave_browser_tests_deps",
     ":browser_tests_runner",
     "//testing/gmock",
-    "//brave/vendor/bat-native-ledger",
   ]
   data_deps = [
     "//ppapi:ppapi_tests",

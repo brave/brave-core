@@ -29,8 +29,7 @@ const defaultState: RewardsExtension.State = {
     total: '0'
   },
   notifications: {},
-  currentNotification: undefined,
-  recurringDonations: []
+  currentNotification: undefined
 }
 
 const cleanData = (state: RewardsExtension.State) => {

@@ -81,26 +81,6 @@ class BraveRewardsGetGrantFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsSaveRecurringDonationFunction : public UIThreadExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.saveRecurringDonation", UNKNOWN)
-
- protected:
-  ~BraveRewardsSaveRecurringDonationFunction() override;
-
-  ResponseAction Run() override;
-};
-
-class BraveRewardsRemoveRecurringDonationFunction : public UIThreadExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.removeRecurringDonation", UNKNOWN)
-
- protected:
-  ~BraveRewardsRemoveRecurringDonationFunction() override;
-
-  ResponseAction Run() override;
-};
-
 }  // namespace api
 }  // namespace extensions
 

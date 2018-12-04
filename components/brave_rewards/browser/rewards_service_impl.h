@@ -123,7 +123,6 @@ class RewardsServiceImpl : public RewardsService,
   void RemoveRecurring(const std::string& publisher_key) override;
   void UpdateRecurringDonationsList() override;
   void UpdateTipsList() override;
-  void AddRecurringPayment(const std::string& publisher_key, double new_amount) override;
   void SetContributionAutoInclude(
     std::string publisher_key, bool excluded, uint64_t windowId) override;
   RewardsNotificationService* GetNotificationService() const override;
@@ -198,7 +197,6 @@ class RewardsServiceImpl : public RewardsService,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> info,
       uint64_t windowId);
-  void TriggerOnRecurringDonations(brave_rewards::ContentSiteList);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;

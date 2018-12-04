@@ -30,13 +30,8 @@ declare namespace chrome.braveRewards {
   const onCurrentReport: {
     addListener: (callback: (properties: RewardsExtension.Report) => void) => void
   }
-  const onRecurringDonations: {
-    addListener: (callback: (result: RewardsExtension.RecurringDonation) => void) => void
-  }
   const includeInAutoContribution: (publisherKey: string, excluded: boolean, windowId: number) => {}
   const getGrant: () => {}
-  const saveRecurringDonation: (publisherKey: string, newAmount: string) => {}
-  const removeRecurringDonation: (publisherKey: string) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

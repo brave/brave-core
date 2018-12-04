@@ -9,7 +9,6 @@
 
 #include "base/macros.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 
 class Profile;
@@ -41,8 +40,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
       std::unique_ptr<ledger::PublisherInfo> info,
       uint64_t windowId) override;
 
-  void OnRecurringDonations(RewardsService* rewards_service,
-                            brave_rewards::ContentSiteList) override;
  private:
   Profile* profile_;
 
