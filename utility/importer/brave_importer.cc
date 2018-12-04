@@ -542,6 +542,14 @@ bool ParseExcludedSites(BraveLedger& ledger,
   return true;
 }
 
+// implemented in C++20
+bool ends_with(const std::string &input, const std::string &test) {
+  if (input.length() >= test.length()) {
+    return (0 == input.compare (input.length() - test.length(), test.length(), test));
+  }
+  return false;
+}
+
 bool ParsePinnedSites(BraveLedger& ledger,
   const base::Value& session_store_json) {
   const base::Value* publishers = session_store_json.FindPathOfType(
@@ -578,6 +586,9 @@ bool ParsePinnedSites(BraveLedger& ledger,
 
         // Publisher URL is required; if found, persist this object.
         if (TryFindStringKey(&item, "publisherURL", publisher.url)) {
+          if (!ends_with(publisher.url, "/")) {
+            publisher.url += "/";
+          }
           ledger.pinned_publishers.push_back(publisher);
         }
       }
