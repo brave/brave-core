@@ -113,9 +113,8 @@ class Banner extends React.Component<Props, State> {
 
     if (publisher) {
       title = publisher.title
-      // TODO re-enable when IsWebUIAllowedToMakeNetworkRequests crash is fixed
-      // background = publisher.background
-      // logo = publisher.logo
+      background = publisher.background
+      logo = publisher.logo
       publisherKey = publisher.publisherKey
       description = publisher.description
       name = publisher.name
