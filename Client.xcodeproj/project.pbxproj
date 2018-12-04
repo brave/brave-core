@@ -44,7 +44,6 @@
 		0A43293B21B1C8D10041625B /* FifoDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A43293A21B1C8D10041625B /* FifoDict.swift */; };
 		0A43293E21B1CA910041625B /* ABPFilterLibWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0A43293C21B1CA910041625B /* ABPFilterLibWrapper.mm */; };
 		0A43294021B1CB8C0041625B /* ABPFilterLibWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A43293D21B1CA910041625B /* ABPFilterLibWrapper.h */; };
-		0A43294421B2E8DD0041625B /* adblock-regions.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A43294321B2E8DC0041625B /* adblock-regions.txt */; };
 		0A4B012020D02EC4004D4011 /* TabsBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B011F20D02EC4004D4011 /* TabsBarViewController.swift */; };
 		0A4B012220D02F26004D4011 /* TabBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B012120D02F26004D4011 /* TabBarCell.swift */; };
 		0A4B012420D0321A004D4011 /* UX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B012320D0321A004D4011 /* UX.swift */; };
@@ -964,7 +963,6 @@
 		0A43293A21B1C8D10041625B /* FifoDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FifoDict.swift; sourceTree = "<group>"; };
 		0A43293C21B1CA910041625B /* ABPFilterLibWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ABPFilterLibWrapper.mm; sourceTree = "<group>"; };
 		0A43293D21B1CA910041625B /* ABPFilterLibWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABPFilterLibWrapper.h; sourceTree = "<group>"; };
-		0A43294321B2E8DC0041625B /* adblock-regions.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "adblock-regions.txt"; sourceTree = SOURCE_ROOT; };
 		0A4B011F20D02EC4004D4011 /* TabsBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsBarViewController.swift; sourceTree = "<group>"; };
 		0A4B012120D02F26004D4011 /* TabBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCell.swift; sourceTree = "<group>"; };
 		0A4B012320D0321A004D4011 /* UX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UX.swift; sourceTree = "<group>"; };
@@ -2031,7 +2029,6 @@
 				0A4319B621B1C5470041625B /* bloom-filter-cpp */,
 				0A43210321B1C5840041625B /* hashset-cpp */,
 				0A43216721B1C5D30041625B /* ad-block */,
-				0A43294321B2E8DC0041625B /* adblock-regions.txt */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -4172,7 +4169,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D38A1EE01CB458EC0080C842 /* CertError.html in Resources */,
-				0A43294421B2E8DD0041625B /* adblock-regions.txt in Resources */,
 				0BA1E0301B051A07007675AF /* NetError.css in Resources */,
 				3BC659491E5BA4AE006D560F /* TopSites in Resources */,
 				E4B7B77E1A793CF20022C5E0 /* FiraSans-SemiBold.ttf in Resources */,
