@@ -24,7 +24,7 @@ import * as utils from '../utils'
 import WalletOff from 'brave-ui/features/rewards/walletOff'
 import ModalAddFunds from 'brave-ui/features/rewards/modalAddFunds'
 
-import clipboardCopy = require('clipboard-copy')
+const clipboardCopy = require('clipboard-copy')
 
 interface State {
   activeTabId: number
@@ -74,10 +74,14 @@ class PageWallet extends React.Component<Props, State> {
     })
   }
 
-  onModalBackupOnCopy = (backupKey: string) => {
-    const success = clipboardCopy(backupKey)
+  onModalBackupOnCopy = async (backupKey: string) => {
     // TODO(jsadler) possibly flash a message that copy was completed
-    console.log(success ? 'Copy successful' : 'Copy failed')
+    try {
+      await clipboardCopy(backupKey)
+      console.log('Copy successful')
+    } catch (e) {
+      console.log('Copy failed')
+    }
   }
 
   onModalBackupOnPrint = (backupKey: string) => {

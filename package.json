@@ -215,12 +215,19 @@
   },
   "homepage": "https:/github.com/brave/brave-core#readme",
   "jest": {
+    "preset": "ts-jest/presets/default",
     "moduleFileExtensions": [
       "js",
       "tsx",
       "ts",
       "json"
     ],
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig-jest.json",
+        "isolatedModules": true
+      }
+    },
     "transform": {
       ".(jsx|js|ts|tsx)": "ts-jest"
     },
@@ -263,15 +270,6 @@
     "@types/react-dom": "^16.0.7",
     "@types/react-redux": "6.0.4",
     "awesome-typescript-loader": "^5.2.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-react-optimize": "^1.0.1",
-    "babel-preset-stage-0": "^6.24.1",
     "brave-ui": "^0.34.7",
     "css-loader": "^0.28.9",
     "csstype": "^2.5.5",
@@ -293,7 +291,7 @@
     "redux": "^4.0.0",
     "style-loader": "^0.19.1",
     "styled-components": "^3.4.2",
-    "ts-jest": "^23.0.1",
+    "ts-jest": "^23.10.5",
     "tslint": "^5.8.0",
     "tslint-config-standard": "^7.0.0",
     "tslint-react": "^3.2.0",

@@ -24,14 +24,6 @@ module.exports = (env, argv) => ({
         loader: 'awesome-typescript-loader'
       },
       {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        query: {
-          presets: ['react-optimize']
-        }
-      },
-      {
         test: /\.less$/,
         loader: 'style-loader!css-loader?-minimize!less-loader'
       },
