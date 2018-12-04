@@ -1,0 +1,724 @@
+/* About settings section title */
+"About" = "Información";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "Esto le permite guardar la imagen en su Carrete.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertTitle" = "Brave desea acceder a sus fotografías";
+
+/* Button to add a bookmark */
+"AddBookmark" = "Añadir marcador";
+
+/* Add to favorites share action. */
+"AddToFavorites" = "Añadir a favoritos";
+
+/* individual blocking statistic title */
+"AdsAndTrackers" = "Anuncios y rastreadores";
+
+/* Used as a button label for crash dialog prompt */
+"AlwaysSendButtonTitle" = "Enviar siempre";
+
+/* tabs bar show/hide option */
+"AlwaysShow" = "Mostrar siempre";
+
+/* Label used as a setting item and title of the following screen to change the current passcode */
+"AuthenticationChangePasscode" = "Cambiar clave de acceso";
+
+/* Touch ID prompt subtitle when disabling Touch ID */
+"AuthenticationDisableTouchReason" = "Use su huella dactilar para deshabilitar Touch ID.";
+
+/* Text displayed above the input field when entering a new passcode */
+"AuthenticationEnterAPasscode" = "Introduzca una clave de acceso";
+
+/* Text displayed above the input field when changing the existing passcode */
+"AuthenticationEnterNewPasscode" = "Introduzca una nueva clave de acceso";
+
+/* Text displayed above the input field when changing the existing passcode */
+"AuthenticationEnterPasscode" = "Introducir clave de acceso";
+
+/* Title of the dialog used to request the passcode */
+"AuthenticationEnterPasscodeTitle" = "Introducir clave de acceso";
+
+/* Label for the Face ID/Passcode item in Settings */
+"AuthenticationFaceIDPasscodeSetting" = "Face ID y clave de acceso";
+
+/* Immediately' interval item for selecting when to require passcode */
+"AuthenticationImmediately" = "Ahora mismo";
+
+/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
+"AuthenticationIncorrectAttemptsRemaining" = "Clave de acceso incorrecta. Vuelva a intentarlo (intentos restantes: %d).";
+
+/* Touch ID prompt subtitle when accessing logins */
+"AuthenticationLoginsTouchReason" = "Use su huella dactilar para acceder ya a las credenciales de inicio de sesión.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReached" = "Se ha alcanzado el máximo de intentos. Vuelva a intentarlo dentro de una hora.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReachedNoTime" = "Se ha alcanzado el máximo de intentos. Vuelva a intentarlo más adelante.";
+
+/* Label for the Passcode item in Settings */
+"AuthenticationPasscode" = "Clave de acceso para Inicios de sesión";
+
+/* Text displayed above the input field when confirming a passcode */
+"AuthenticationReenterPasscode" = "Volver a introducir clave de acceso";
+
+/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
+"AuthenticationRequirePasscode" = "Requerir clave de acceso";
+
+/* Touch ID prompt subtitle when accessing the require passcode setting */
+"AuthenticationRequirePasscodeTouchReason" = "Use su huella dactilar para acceder a la configuración de su intervalo de clave de acceso requerida.";
+
+/* Title of the dialog used to set a passcode */
+"AuthenticationSetPasscode" = "Fijar clave de acceso";
+
+/* Label for the Touch ID/Passcode item in Settings */
+"AuthenticationTouchIDPasscodeSetting" = "Touch ID y clave de acceso";
+
+/* Label used as a setting item to turn off passcode */
+"AuthenticationTurnOffPasscode" = "Desactivar clave de acceso";
+
+/* Label used as a setting item to turn on passcode */
+"AuthenticationTurnOnPasscode" = "Activar clave de acceso";
+
+/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
+"AuthenticationWrongPasscodeError" = "Clave de acceso incorrecta. Vuelva a intentarlo.";
+
+/* Label for Cancel button */
+"AuthPromptAlertCancelButtonTitle" = "Cancelar";
+
+/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
+"AuthPromptAlertFormatRealmMessageText" = "%1$@ requiere un nombre de usuario y una contraseña. El sitio dice: %2$@";
+
+/* Authentication prompt log in button */
+"AuthPromptAlertLogInButtonTitle" = "Iniciar sesión";
+
+/* Authentication prompt message with no realm. Parameter is the hostname of the site */
+"AuthPromptAlertMessageText" = "%1$@ requiere un nombre de usuario y una contraseña.";
+
+/* Password textbox in Authentication prompt */
+"AuthPromptAlertPasswordPlaceholderText" = "Contraseña";
+
+/* Authentication prompt title */
+"AuthPromptAlertTitle" = "Se requiere autenticación";
+
+/* Username textbox in Authentication prompt */
+"AuthPromptAlertUsernamePlaceholderText" = "Nombre de usuario";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "Bloquear cookies de terceros";
+
+/* No comment provided by engineer. */
+"BlockAdsAndTracking" = "Bloquear anuncios y rastreadores";
+
+/* cookie settings option */
+"BlockAllCookies" = "Bloquear todas las cookies";
+
+/* title for section showing page blocking statistics */
+"BlockingMonitor" = "Monitor de bloqueo";
+
+/* Brave panel individual toggle title */
+"BlockPhishing" = "Bloquear suplantaciones de identidad";
+
+/* No comment provided by engineer. */
+"BlockPhishingAndMalware" = "Bloquear suplantaciones de identidad y códigos maliciosos";
+
+/* Setting to enable popup blocking */
+"BlockPopups" = "Bloquear ventanas emergentes";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "Bloquear scripts";
+
+/* Bookmark Folder Section Title */
+"BookmarkFolder" = "Carpeta de marcadores";
+
+/* Bookmark Info Section Title */
+"BookmarkInfo" = "Información de marcadores";
+
+/* title for bookmarks panel */
+"Bookmarks" = "Marcadores";
+
+/* Button to show the brave panel */
+"BravePanel" = "Panel de Brave";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"BraveShieldDefaults" = "Opciones por defecto de Brave Shield";
+
+/* Browser Lock feature callout enable action. */
+"BrowserLockCalloutEnable" = "Habilitar";
+
+/* Browser Lock feature callout message. */
+"BrowserLockCalloutMessage" = "La función Bloqueo de navegador requiere que introduzca un código PIN para utilizar Brave.";
+
+/* Browser Lock feature callout not now action. */
+"BrowserLockCalloutNotNow" = "Ahora no";
+
+/* Browser Lock feature callout title. */
+"BrowserLockCalloutTitle" = "Privado significa privado.";
+
+/* Settings item for clearing browsing history */
+"BrowsingHistory" = "Historial de navegación";
+
+/* Settings item for clearing the cache */
+"Cache" = "Caché";
+
+/* No comment provided by engineer. */
+"CancelButtonTitle" = "Cancelar";
+
+/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+"ClearPrivateData" = "Borrar datos privados";
+
+/* The cancel button when confirming clear private data. */
+"ClearPrivateDataAlertCancelButtonTitle" = "Cancelar";
+
+/* Description of the confirmation dialog shown when a user tries to clear their private data. */
+"ClearPrivateDataAlertMessage" = "Esta acción borrará todos sus datos privados irreversiblemente.";
+
+/* The button that clears private data. */
+"ClearPrivateDataAlertOkButtonTitle" = "Aceptar";
+
+/* The cancel button when confirming clear history. */
+"ClearSyncedHistoryAlertCancelButtoTitle" = "Cancelar";
+
+/* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
+"ClearSyncedHistoryAlertMessage" = "Esta acción borrará todos sus datos privados, incluido el historial de sus dispositivos sincronizados.";
+
+/* The confirmation button that clears history even when Sync is connected. */
+"ClearSyncedHistoryAlertOkButtoTitle" = "Aceptar";
+
+/* No comment provided by engineer. */
+"CloseAllTabsTitle" = "Cerrar las %i pestañas";
+
+/* No comment provided by engineer. */
+"Confirm" = "Confirmar";
+
+/* Cookie settings option title */
+"CookieControl" = "Control de cookies";
+
+/* Settings item for clearing cookies */
+"Cookies" = "Cookies";
+
+/* Copy app info to clipboard action sheet action. */
+"CopyAppInfoToClipboard" = "Copiar información de la aplicación en el portapapeles.";
+
+/* Context menu item for copying an image to the clipboard */
+"CopyImageActionTitle" = "Copiar imagen";
+
+/* Context menu item for copying a link URL to the clipboard */
+"CopyLinkActionTitle" = "Copiar enlace";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "Utilizado actualmente en buscadores";
+
+/* DuckDuckGo callout enable action. */
+"DDGCalloutEnable" = "Sí";
+
+/* DuckDuckGo message. */
+"DDGCalloutMessage" = "Con la búsqueda privada, Brave utilizará DuckDuckGo para atender sus búsquedas mientras navegue en esta pestaña privada. DuckDuckGo es un buscador que no rastrea su historial de búsqueda, permitiéndole así realizar búsquedas con total privacidad.";
+
+/* DuckDuckGo callout no action. */
+"DDGCalloutNo" = "No";
+
+/* DuckDuckGo callout title. */
+"DDGCalloutTitle" = "¿Búsqueda privada con DuckDuckGo?";
+
+/* No comment provided by engineer. */
+"Delete" = "Eliminar";
+
+/* Prompt option for cancelling out of deletion */
+"DeleteLoginAlertCancelActionTitle" = "Cancelar";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "Los inicios de sesión serán eliminados permanentemente.";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "Los inicios de sesión serán eliminados de todos los dispositivos conectados.";
+
+/* Prompt title when deleting logins */
+"DeleteLoginAlertTitle" = "¿Seguro?";
+
+/* Label for the button used to delete the current login. */
+"DeleteLoginButtonTitle" = "Eliminar";
+
+/* Current device model and iOS version copied to clipboard. */
+"DeviceTemplate" = "Dispositivo %1$@ (%2$@)";
+
+/* No comment provided by engineer. */
+"Done" = "Listo";
+
+/* cookie settings option */
+"DontBlockCookies" = "No bloquear cookies";
+
+/* Used as a button label for crash dialog prompt */
+"DontSendButtonTitle" = "No enviar";
+
+/* No comment provided by engineer. */
+"Edit" = "Editar";
+
+/* Button to edit a bookmark */
+"EditBookmark" = "Editar marcador";
+
+/* Button to edit a favorite */
+"EditFavorite" = "Editar favorito";
+
+/* Description for new folder popup */
+"EnterFolderName" = "Editar nombre de carpeta";
+
+/* Shown in error pages for files that can't be shown and need to be downloaded. */
+"ErrorPageOpenInSafariButtonTitle" = "Abrir en Safari";
+
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "Volver a intentar";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesAdvancedButton" = "Avanzado";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarning1" = "Advertencia: No podemos confirmar si su conexión es segura en este sitio web.";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarning2" = "Podría deberse a una mala configuración o a la manipulación de un atacante. Continúe solo si acepta el riesgo potencial que entraña.";
+
+/* Warning text on the certificate error page */
+"ErrorPagesCertWarningDescription" = "El propietario de %@ tiene mal configurado su sitio web. Para evitar posibles robos de información, Brave ha evitado la conexión con este sitio web.";
+
+/* Title on the certificate error page */
+"ErrorPagesCertWarningTitle" = "Su conexión no es privada";
+
+/* Label for button to go back from the error page */
+"ErrorPagesGoBackButton" = "Volver";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesVisitOnceButton" = "Visitar sitio igualmente";
+
+/* Share action title */
+"FindInPage" = "Encontrar en la página";
+
+/* Done button in Find in Page Toolbar. */
+"FindInPageDoneButtonAccessibilityLabel" = "Listo";
+
+/* Accessibility label for next result button in Find in Page Toolbar. */
+"FindInPageNextResultButtonAccessibilityLabel" = "Siguiente resultado en la página";
+
+/* Accessibility label for previous result button in Find in Page Toolbar. */
+"FindInPagePreviousResultButtonAccessibilityLabel" = "Anterior resultado en la página";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "Métodos dactiloscópicos";
+
+/* blocking stat title */
+"FingerprintingnProtection" = "Protección
+dactiloscópica";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "Protección dactiloscópica";
+
+/* No comment provided by engineer. */
+"Home" = "Inicio";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* individual blocking statistic title */
+"HTTPSUpgrades" = "Mejoras de HTTPS";
+
+/* title for per-site shield toggles */
+"IndividualControls" = "Controles individuales";
+
+/* History tableview section header */
+"LastMonth" = "El mes pasado";
+
+/* History tableview section header */
+"LastWeek" = "La semana pasada";
+
+/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
+"LoginDetailLastModifiedCellFormatTitle" = "Última modificación %@";
+
+/* Label displayed above the password row in Login Detail View. */
+"LoginDetailPasswordCellTitle" = "contraseña";
+
+/* Label displayed above the username row in Login Detail View. */
+"LoginDetailUsernameCellTitle" = "nombre de usuario";
+
+/* Label displayed above the website row in Login Detail View. */
+"LoginDetailWebsiteCellTitle" = "sitio web";
+
+/* Label for the button used to deselect all logins. */
+"LoginListDeselectAllButtonTitle" = "Desmarcar todo";
+
+/* Label displayed when no logins are found after searching. */
+"LoginListNoLoginTitle" = "No se han encontrado inicios de sesión";
+
+/* Title for Logins List View screen. */
+"LoginListScreenTitle" = "Inicios de sesión";
+
+/* Label for the button used to select all logins. */
+"LoginListSelectAllButtonTitle" = "Seleccionar todo";
+
+/* Copy password text selection menu item */
+"MenuItemCopyTitle" = "Copiar";
+
+/* Text selection menu item */
+"MenuItemFindInPageTitle" = "Encontrar en la página";
+
+/* Hide password text selection menu item */
+"MenuItemHidePasswordTitle" = "Ocultar";
+
+/* Open and Fill website text selection menu item */
+"MenuItemOpenAndFillTitle" = "Abrir y rellenar";
+
+/* Reveal password text selection menu item */
+"MenuItemRevealPasswordTitle" = "Desvelar";
+
+/* Bookmark title / Device name */
+"Name" = "Nombre";
+
+/* tabs bar show/hide option */
+"NeverShow" = "No mostrar nunca";
+
+/* Title for new folder popup */
+"NewFolder" = "Nueva carpeta";
+
+/* New Tab title */
+"NewTab" = "Nueva pestaña";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "Abrir todo (%i)";
+
+/* Context menu item for opening a link in a new tab */
+"OpenInBackgroundTab" = "Abrir enlace en pestaña nueva";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "Abrir en nueva pestaña privada";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "Abrir en pestaña nueva";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "Abrir Ajustes";
+
+/* Error message displayed to user when their confirming passcode doesn't match the first code. */
+"PasscodeConfirmMisMatchErrorText" = "Las claves de acceso no concuerdan. Vuelva a intentarlo.";
+
+/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
+"PasscodeMatchOldErrorText" = "La nueva clave de acceso debe ser diferente a la ya existente.";
+
+/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
+"PreviewActionAddToBookmarksActionTitle" = "Añadir a Marcadores";
+
+/* Label for preview action on Tab Tray Tab to close the current tab */
+"PreviewActionCloseTabActionTitle" = "Cerrar pestaña";
+
+/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
+"PreviewActionCopyURLActionTitle" = "Copiar URL";
+
+/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
+"PreviewFormatAccessibilityLabel" = "Vista previa de %@";
+
+/* Settings privacy section title */
+"Privacy" = "Privacidad";
+
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "Política de privacidad";
+
+/* Private button title */
+"Private" = "Privado";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "Navegación privada";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "Solo navegación privada";
+
+/* Private tab details */
+"PrivateTabBody" = "Las pestañas privadas no se guardan en Brave, pero tampoco le hacen guardar el anonimato en línea. Los sitios que visita con una pestaña privada no constan en el historial y sus cookies desaparecen al cerrarla, sin que quede rastro alguno de ellas en Brave. No obstante, su operador de telefonía móvil (o el propietario de la red WiFi o RPV a la que esté conectado) puede ver los sitios que visita, y esos mismos sitios conocerán su dirección IP pública aunque utilice pestañas privadas.";
+
+/* Private tab information link */
+"PrivateTabLink" = "Más información acerca de las pestañas privadas.";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "Pestaña privada";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "Buscadores rápidos";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "Aumentar el tamaño del texto";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "Brillo";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "Mostrar ajustes";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "Se ha producido un error al convertir la página";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Sans serif";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Serif";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "Aa";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "Cambia el tipo de fuente.";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "Cargando contenido…";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "Cargar la página original";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "No se ha podido mostrar la página en la vista de lectura.";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "Reducir el tamaño del texto";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "Cambia el tema de color.";
+
+/* Dark theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleDark" = "Oscuro";
+
+/* Light theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleLight" = "Claro";
+
+/* Sepia theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleSepia" = "Sepia";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "Eliminar favorito";
+
+/* Show mail composer to report a bug. */
+"ReportABug" = "Informar de un problema";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "Aceptar";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "No";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "Parece que Brave se cerró repentinamente. ¿Le gustaría recuperar sus pestañas?";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "Vaya, esto es embarazoso.";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "Inicios de sesión guardados";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "Guardar imagen";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "Guardar inicios de sesión";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "Scripts bloqueados";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "Búsqueda de %@";
+
+/* Title for default search engine picker. */
+"SearchEnginePickerNavTitle" = "Buscador predeterminado";
+
+/* Search engines section of settings */
+"SearchEngines" = "Buscadores";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "Búsquedas para la sugerencia";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "Limpiar búsqueda";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "Entrar en modo de búsqueda";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "Campo de entrada de búsqueda";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "Buscar";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "Buscar";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "Ajustes de búsqueda";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "Mostrar sugerencias de búsqueda";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "Sugerencias de búsqueda de %@";
+
+/* Settings security section title */
+"Security" = "Seguridad";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "¿Enviar un informe de incidencias para que Brave pueda arreglar el problema?";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "¡Ups! Brave se ha cerrado repentinamente";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "Enviar informe";
+
+/* No comment provided by engineer. */
+"Settings" = "Ajustes";
+
+/* Error message that is shown in settings when there was a problem loading */
+"SettingsContentLoadErrorMessage" = "No se ha podido cargar la página.";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "Compartir enlace";
+
+/* shields overview message */
+"ShieldsOverview" = "Los Shields del sitio le permiten controlar cuándo bloquear anuncios y rastreadores en cada sitio que visite. Si prefiere ver anuncios en un sitio en concreto, puede habilitarlos aquí.";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "Nota: Es posible que algunos sitios necesiten scripts para funcionar correctamente, por lo que este Shield está desactivado por defecto. ";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "d";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "h";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "min";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "s";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "Mostrar marcadores";
+
+/* Button to show the history list */
+"ShowHistory" = "Mostrar historial";
+
+/* tabs bar show/hide option */
+"ShowInLandscapeOnly" = "Mostrar solo apaisado";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "Mostrar pestañas";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "Mostrar barra de pestañas";
+
+/* Brave panel topmost title */
+"SiteShieldSettings" = "Shields";
+
+/* Open search section of settings */
+"StandardTabSearch" = "Pestaña estándar";
+
+/* Support section title */
+"Support" = "Asistencia";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "Cerrar";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "Activa o desactiva el modo privado";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "Modo privado";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "Desactivado";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "Activado";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "Barra de navegación";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "Añadir pestaña";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "Atrás";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "Adelante";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "Conexión segura";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "Vista de lectura";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "Añadir a lista de lectura";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "Recargar";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "Buscar o introducir la dirección";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "Compartir";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "Detener";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "Bandeja de pestañas";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "Añadir pestaña";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "Deslice con tres dedos hacia la derecha o la izquierda para cerrar la pestaña.";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "Cerrando pestaña";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "No hay pestañas";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "Pestañas %1$@-%2$@ de %3$@";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "Nueva pestaña";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "Pestaña %1$@ de %2$@";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "Términos de uso";
+
+/* History tableview section header */
+"Today" = "Hoy";
+
+/* Bookmark URL */
+"URL" = "URL";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "Dirección y búsqueda";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "Usar bloqueador de anuncios regional";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "Versión %1$@ (%2$@)";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "Contenido web";
+
+/* History tableview section header */
+"Yesterday" = "Ayer";
+

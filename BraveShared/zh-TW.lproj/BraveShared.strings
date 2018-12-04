@@ -1,0 +1,724 @@
+/* About settings section title */
+"About" = "關於";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "這可讓您將影像儲存至您的相機膠卷。";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertTitle" = "Brave 希望能存取您的相片";
+
+/* Button to add a bookmark */
+"AddBookmark" = "新增書籤";
+
+/* Add to favorites share action. */
+"AddToFavorites" = "新增至我的最愛";
+
+/* individual blocking statistic title */
+"AdsAndTrackers" = "廣告和追蹤器";
+
+/* Used as a button label for crash dialog prompt */
+"AlwaysSendButtonTitle" = "一律傳送";
+
+/* tabs bar show/hide option */
+"AlwaysShow" = "一律顯示";
+
+/* Label used as a setting item and title of the following screen to change the current passcode */
+"AuthenticationChangePasscode" = "變更密碼";
+
+/* Touch ID prompt subtitle when disabling Touch ID */
+"AuthenticationDisableTouchReason" = "使用您的指紋來停用 Touch ID。";
+
+/* Text displayed above the input field when entering a new passcode */
+"AuthenticationEnterAPasscode" = "輸入密碼";
+
+/* Text displayed above the input field when changing the existing passcode */
+"AuthenticationEnterNewPasscode" = "輸入新密碼";
+
+/* Text displayed above the input field when changing the existing passcode */
+"AuthenticationEnterPasscode" = "輸入密碼";
+
+/* Title of the dialog used to request the passcode */
+"AuthenticationEnterPasscodeTitle" = "輸入密碼";
+
+/* Label for the Face ID/Passcode item in Settings */
+"AuthenticationFaceIDPasscodeSetting" = "Face ID 和密碼";
+
+/* Immediately' interval item for selecting when to require passcode */
+"AuthenticationImmediately" = "立即";
+
+/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
+"AuthenticationIncorrectAttemptsRemaining" = "密碼不正確，請再試一次 (剩餘嘗試次數：%d)。";
+
+/* Touch ID prompt subtitle when accessing logins */
+"AuthenticationLoginsTouchReason" = "立即使用您的指紋登入。";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReached" = "已達嘗試次數上限，請一小時後再試。";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReachedNoTime" = "已達嘗試次數上限，請稍後再試。";
+
+/* Label for the Passcode item in Settings */
+"AuthenticationPasscode" = "登入密碼";
+
+/* Text displayed above the input field when confirming a passcode */
+"AuthenticationReenterPasscode" = "重新輸入密碼";
+
+/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
+"AuthenticationRequirePasscode" = "請輸入密碼";
+
+/* Touch ID prompt subtitle when accessing the require passcode setting */
+"AuthenticationRequirePasscodeTouchReason" = "使用您的指紋來設定需輸入密碼的間隔時間。";
+
+/* Title of the dialog used to set a passcode */
+"AuthenticationSetPasscode" = "設定密碼";
+
+/* Label for the Touch ID/Passcode item in Settings */
+"AuthenticationTouchIDPasscodeSetting" = "Touch ID 和密碼";
+
+/* Label used as a setting item to turn off passcode */
+"AuthenticationTurnOffPasscode" = "關閉密碼";
+
+/* Label used as a setting item to turn on passcode */
+"AuthenticationTurnOnPasscode" = "開啟密碼";
+
+/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
+"AuthenticationWrongPasscodeError" = "密碼不正確，請再試一次。";
+
+/* Label for Cancel button */
+"AuthPromptAlertCancelButtonTitle" = "取消";
+
+/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
+"AuthPromptAlertFormatRealmMessageText" = "%1$@ 要求取得使用者名稱和密碼。該網站顯示：%2$@";
+
+/* Authentication prompt log in button */
+"AuthPromptAlertLogInButtonTitle" = "登入";
+
+/* Authentication prompt message with no realm. Parameter is the hostname of the site */
+"AuthPromptAlertMessageText" = "%@ 要求取得使用者名稱和密碼。";
+
+/* Password textbox in Authentication prompt */
+"AuthPromptAlertPasswordPlaceholderText" = "密碼";
+
+/* Authentication prompt title */
+"AuthPromptAlertTitle" = "請驗證";
+
+/* Username textbox in Authentication prompt */
+"AuthPromptAlertUsernamePlaceholderText" = "使用者名稱";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "封鎖第 3 方 Cookie";
+
+/* No comment provided by engineer. */
+"BlockAdsAndTracking" = "封鎖廣告和追蹤";
+
+/* cookie settings option */
+"BlockAllCookies" = "封鎖所有 Cookie";
+
+/* title for section showing page blocking statistics */
+"BlockingMonitor" = "封鎖監控";
+
+/* Brave panel individual toggle title */
+"BlockPhishing" = "封鎖網路釣魚";
+
+/* No comment provided by engineer. */
+"BlockPhishingAndMalware" = "封鎖網路釣魚和惡意軟體";
+
+/* Setting to enable popup blocking */
+"BlockPopups" = "封鎖彈出式視窗";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "封鎖指令碼";
+
+/* Bookmark Folder Section Title */
+"BookmarkFolder" = "書籤資料夾";
+
+/* Bookmark Info Section Title */
+"BookmarkInfo" = "書籤資訊";
+
+/* title for bookmarks panel */
+"Bookmarks" = "書籤";
+
+/* Button to show the brave panel */
+"BravePanel" = "Brave 面板";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"BraveShieldDefaults" = "Brave Shield 預設";
+
+/* Browser Lock feature callout enable action. */
+"BrowserLockCalloutEnable" = "啟用";
+
+/* Browser Lock feature callout message. */
+"BrowserLockCalloutMessage" = "啟用瀏覽器鎖定功能後，您必須輸入 PIN 碼才能存取 Brave。";
+
+/* Browser Lock feature callout not now action. */
+"BrowserLockCalloutNotNow" = "現在不要";
+
+/* Browser Lock feature callout title. */
+"BrowserLockCalloutTitle" = "隱私不容妥協。";
+
+/* Settings item for clearing browsing history */
+"BrowsingHistory" = "瀏覽記錄";
+
+/* Settings item for clearing the cache */
+"Cache" = "快取";
+
+/* No comment provided by engineer. */
+"CancelButtonTitle" = "取消";
+
+/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+"ClearPrivateData" = "清除隱私資料";
+
+/* The cancel button when confirming clear private data. */
+"ClearPrivateDataAlertCancelButtonTitle" = "取消";
+
+/* Description of the confirmation dialog shown when a user tries to clear their private data. */
+"ClearPrivateDataAlertMessage" = "此操作會清除您的所有隱私資料，且無法復原。";
+
+/* The button that clears private data. */
+"ClearPrivateDataAlertOkButtonTitle" = "確定";
+
+/* The cancel button when confirming clear history. */
+"ClearSyncedHistoryAlertCancelButtoTitle" = "取消";
+
+/* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
+"ClearSyncedHistoryAlertMessage" = "此操作會清除您的所有隱私資料，包括已同步裝置的記錄。";
+
+/* The confirmation button that clears history even when Sync is connected. */
+"ClearSyncedHistoryAlertOkButtoTitle" = "確定";
+
+/* No comment provided by engineer. */
+"CloseAllTabsTitle" = "關閉全部 %i 個分頁";
+
+/* No comment provided by engineer. */
+"Confirm" = "確認";
+
+/* Cookie settings option title */
+"CookieControl" = "Cookie 控制項";
+
+/* Settings item for clearing cookies */
+"Cookies" = "Cookie";
+
+/* Copy app info to clipboard action sheet action. */
+"CopyAppInfoToClipboard" = "將應用程式資訊複製到剪貼簿。";
+
+/* Context menu item for copying an image to the clipboard */
+"CopyImageActionTitle" = "複製圖片";
+
+/* Context menu item for copying a link URL to the clipboard */
+"CopyLinkActionTitle" = "複製連結";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "目前使用的搜尋引擎";
+
+/* DuckDuckGo callout enable action. */
+"DDGCalloutEnable" = "是";
+
+/* DuckDuckGo message. */
+"DDGCalloutMessage" = "您在隱私分頁中搜尋時，Brave 會使用 DuckDuckGo 回應您的搜尋要求。DuckDuckGo 搜尋引擎不會收集您的搜尋記錄，可以保護您的搜尋隱私。";
+
+/* DuckDuckGo callout no action. */
+"DDGCalloutNo" = "否";
+
+/* DuckDuckGo callout title. */
+"DDGCalloutTitle" = "使用 DuckDuckGo 執行隱私搜尋？";
+
+/* No comment provided by engineer. */
+"Delete" = "刪除";
+
+/* Prompt option for cancelling out of deletion */
+"DeleteLoginAlertCancelActionTitle" = "取消";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "登入資訊會永遠移除。";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "登入資訊會從所有連線的裝置上移除。";
+
+/* Prompt title when deleting logins */
+"DeleteLoginAlertTitle" = "是否確定？";
+
+/* Label for the button used to delete the current login. */
+"DeleteLoginButtonTitle" = "刪除";
+
+/* Current device model and iOS version copied to clipboard. */
+"DeviceTemplate" = "裝置 %1$@ (%2$@)";
+
+/* No comment provided by engineer. */
+"Done" = "完成";
+
+/* cookie settings option */
+"DontBlockCookies" = "不要封鎖 Cookie";
+
+/* Used as a button label for crash dialog prompt */
+"DontSendButtonTitle" = "不要傳送";
+
+/* No comment provided by engineer. */
+"Edit" = "編輯";
+
+/* Button to edit a bookmark */
+"EditBookmark" = "編輯書籤";
+
+/* Button to edit a favorite */
+"EditFavorite" = "編輯我的最愛 ";
+
+/* Description for new folder popup */
+"EnterFolderName" = "輸入資料夾名稱";
+
+/* Shown in error pages for files that can't be shown and need to be downloaded. */
+"ErrorPageOpenInSafariButtonTitle" = "以 Safari 開啟";
+
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "再試一次";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesAdvancedButton" = "進階";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarning1" = "警告：我們無法確定您所連線的網站是否安全。";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarning2" = "這可能會導致設定錯誤或遭有心人士竄改。如果接受此潛在風險，請繼續操作。";
+
+/* Warning text on the certificate error page */
+"ErrorPagesCertWarningDescription" = "%@ 的擁有者不當設定網站。為防止您的資料遭竊，Brave 尚未連線至此網站。";
+
+/* Title on the certificate error page */
+"ErrorPagesCertWarningTitle" = "您的連線並非隱私瀏覽";
+
+/* Label for button to go back from the error page */
+"ErrorPagesGoBackButton" = "返回";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesVisitOnceButton" = "繼續造訪網站";
+
+/* Share action title */
+"FindInPage" = "在頁面中尋找";
+
+/* Done button in Find in Page Toolbar. */
+"FindInPageDoneButtonAccessibilityLabel" = "完成";
+
+/* Accessibility label for next result button in Find in Page Toolbar. */
+"FindInPageNextResultButtonAccessibilityLabel" = "下一個頁面搜尋結果";
+
+/* Accessibility label for previous result button in Find in Page Toolbar. */
+"FindInPagePreviousResultButtonAccessibilityLabel" = "上一個頁面搜尋結果";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "指紋識別法";
+
+/* blocking stat title */
+"FingerprintingnProtection" = "指紋識別
+防護";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "指紋識別防護";
+
+/* No comment provided by engineer. */
+"Home" = "主畫面";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* individual blocking statistic title */
+"HTTPSUpgrades" = "HTTPS 更新";
+
+/* title for per-site shield toggles */
+"IndividualControls" = "個別控制項";
+
+/* History tableview section header */
+"LastMonth" = "上個月";
+
+/* History tableview section header */
+"LastWeek" = "上週";
+
+/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
+"LoginDetailLastModifiedCellFormatTitle" = "上次修改的時間：%@";
+
+/* Label displayed above the password row in Login Detail View. */
+"LoginDetailPasswordCellTitle" = "密碼";
+
+/* Label displayed above the username row in Login Detail View. */
+"LoginDetailUsernameCellTitle" = "使用者名稱";
+
+/* Label displayed above the website row in Login Detail View. */
+"LoginDetailWebsiteCellTitle" = "網站";
+
+/* Label for the button used to deselect all logins. */
+"LoginListDeselectAllButtonTitle" = "取消選取所有項目";
+
+/* Label displayed when no logins are found after searching. */
+"LoginListNoLoginTitle" = "找不到登入資訊";
+
+/* Title for Logins List View screen. */
+"LoginListScreenTitle" = "登入";
+
+/* Label for the button used to select all logins. */
+"LoginListSelectAllButtonTitle" = "全選";
+
+/* Copy password text selection menu item */
+"MenuItemCopyTitle" = "複製";
+
+/* Text selection menu item */
+"MenuItemFindInPageTitle" = "在頁面中尋找";
+
+/* Hide password text selection menu item */
+"MenuItemHidePasswordTitle" = "隱藏";
+
+/* Open and Fill website text selection menu item */
+"MenuItemOpenAndFillTitle" = "開啟並填寫";
+
+/* Reveal password text selection menu item */
+"MenuItemRevealPasswordTitle" = "顯示";
+
+/* Bookmark title / Device name */
+"Name" = "名稱";
+
+/* tabs bar show/hide option */
+"NeverShow" = "永不顯示";
+
+/* Title for new folder popup */
+"NewFolder" = "新增資料夾";
+
+/* New Tab title */
+"NewTab" = "新增分頁";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "開啟全部 (%i)";
+
+/* Context menu item for opening a link in a new tab */
+"OpenInBackgroundTab" = "在新分頁中開啟連結";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "以新的隱私分頁開啟";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "在新分頁中開啟";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "開啟設定";
+
+/* Error message displayed to user when their confirming passcode doesn't match the first code. */
+"PasscodeConfirmMisMatchErrorText" = "密碼不符，請再試一次。";
+
+/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
+"PasscodeMatchOldErrorText" = "新密碼必須與現有密碼不同。";
+
+/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
+"PreviewActionAddToBookmarksActionTitle" = "新增至書籤";
+
+/* Label for preview action on Tab Tray Tab to close the current tab */
+"PreviewActionCloseTabActionTitle" = "關閉分頁";
+
+/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
+"PreviewActionCopyURLActionTitle" = "複製網址";
+
+/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
+"PreviewFormatAccessibilityLabel" = "預覽 %@";
+
+/* Settings privacy section title */
+"Privacy" = "隱私";
+
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "隱私政策";
+
+/* Private button title */
+"Private" = "隱私";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "隱私瀏覽";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "僅限隱私瀏覽";
+
+/* Private tab details */
+"PrivateTabBody" = "Brave 不會儲存隱私分頁，但這並不代表您在網路上為匿名狀態。您使用隱私分頁造訪的網站不會顯示在您的瀏覽記錄中，且一旦您關閉分頁，網站的 Cookie 也將一律刪除，也就是說，Brave 不會留下任何瀏覽記錄。即便使用隱私分頁，您的行動網路業者 (或是您所連線的 WiFi 網路或 VPN 擁有者) 仍能看見您造訪哪些網站，而這些網站亦將取得您的公開 IP 位址。";
+
+/* Private tab information link */
+"PrivateTabLink" = "深入瞭解隱私分頁。";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "隱私分頁";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "快速搜尋引擎";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "調大字體";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "亮度";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "顯示設定";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "轉換頁面時發生錯誤";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Serif";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "文字";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "變更字型。";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "正在載入內容…";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "載入原始頁面";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "頁面無法以閱讀檢視顯示。";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "縮小字體";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "變更顏色主題。";
+
+/* Dark theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleDark" = "深色";
+
+/* Light theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleLight" = "淺色";
+
+/* Sepia theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleSepia" = "復古";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "移除我的最愛";
+
+/* Show mail composer to report a bug. */
+"ReportABug" = "回報錯誤";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "確定";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "否";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "很抱歉，Brave 之前當機了。是否要回復之前開啟的分頁？";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "哎呀，真抱歉。";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "已儲存的登入資訊";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "儲存圖片";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "儲存登入資訊";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "已封鎖指令碼";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "%@ 搜尋";
+
+/* Title for default search engine picker. */
+"SearchEnginePickerNavTitle" = "預設搜尋引擎";
+
+/* Search engines section of settings */
+"SearchEngines" = "搜尋引擎";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "搜尋建議內容";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "清除搜尋";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "進入搜尋模式";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "搜尋輸入欄位";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "搜尋";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "搜尋";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "搜尋設定";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "顯示搜尋建議";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "%@ 提供的搜尋建議";
+
+/* Settings security section title */
+"Security" = "安全";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "傳送當機報告協助 Brave 修正問題？";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "糟糕，Brave 當機了！";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "傳送報告";
+
+/* No comment provided by engineer. */
+"Settings" = "設定";
+
+/* Error message that is shown in settings when there was a problem loading */
+"SettingsContentLoadErrorMessage" = "無法載入頁面。";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "分享連結";
+
+/* shields overview message */
+"ShieldsOverview" = "「網站防護」可控制您在造訪每個網站時，是否直接封鎖網站上的廣告與追踪器。若您希望在特定網站上顯示廣告，可以在這裡啟用廣告。";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "請注意：部分網站可能需要指令碼才能順利運作，所以此防護機制預設為關閉。";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "日";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "時";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "分";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "秒";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "顯示書籤";
+
+/* Button to show the history list */
+"ShowHistory" = "顯示記錄";
+
+/* tabs bar show/hide option */
+"ShowInLandscapeOnly" = "僅以橫向畫面顯示";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "顯示分頁";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "顯示分頁列";
+
+/* Brave panel topmost title */
+"SiteShieldSettings" = "防護";
+
+/* Open search section of settings */
+"StandardTabSearch" = "標準分頁";
+
+/* Support section title */
+"Support" = "支援";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "關閉";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "開啟或關閉隱私模式";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "隱私模式";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "關閉";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "開啟";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "導覽工具列";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "新增分頁";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "返回";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "向前";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "安全連線";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "閱讀檢視";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "新增至閱讀清單";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "重新載入";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "搜尋或輸入網址";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "分享";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "停止";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "分頁列表";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "新增分頁";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "以三指左右滑動即可關閉分頁。";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "關閉分頁中";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "沒有分頁";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "分頁 %1$@ 至 %2$@，共 %3$@ 個";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "新增分頁";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "分頁 %1$@，共 %2$@ 個";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "使用條款";
+
+/* History tableview section header */
+"Today" = "今天";
+
+/* Bookmark URL */
+"URL" = "網址";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "網址和搜尋內容";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "使用區域性廣告封鎖程式";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "%1$@ 版 (%2$@)";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "網頁內容";
+
+/* History tableview section header */
+"Yesterday" = "昨天";
+

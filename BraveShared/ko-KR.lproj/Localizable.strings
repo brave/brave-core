@@ -1,0 +1,9 @@
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"No" = "아니요";
+
+/* Prompt shown before enabling provider search queries */
+"Turn on search suggestions?" = "추천 검색어를 사용하시겠습니까?";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"Yes" = "예";
+

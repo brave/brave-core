@@ -1,0 +1,249 @@
+/* Accessibility label for the Menu button. */
+"AppMenuButtonAccessibilityLabel" = "Meny";
+
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "URL kopiert til utklippstavle";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "Be om skrivebordside";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "Be om mobilside";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"BackTitle" = "Tilbake";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "Avbryt";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "Er du sikker på at du vil avbryte denne nedlastingen?";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "Fortsett";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "Avbryt nedlasting";
+
+/* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseAllTabsFromTabTrayKeyCodeTitle" = "Lukk alle faner";
+
+/* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseTabFromTabTrayKeyCodeTitle" = "Lukk valgt fane";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"CloseTabTitle" = "Lukk fane";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "Bytt";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "Ny fane åpnet";
+
+/* The title for the button that lets you copy the url from the location bar. */
+"CopyAddressTitle" = "Kopier adresse";
+
+/* A message explaining fault in custom search engine form. */
+"CustomEngineDuplicateErrorMessage" = "En søkemotor med dette navnet eller denne URL-en er allerede lagt til.";
+
+/* A message explaining fault in custom search engine form. */
+"CustomEngineFormErrorMessage" = "Vennligst fyll inn alle feltene på riktig måte.";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "Nedlasting avbrutt";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "Nedlasting mislykket";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 av %d filer";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "Nedlastinger";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "Åpne denne lenken i App Store-appen?";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"FindTitle" = "Finn";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ForwardTitle" = "Videre";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "Gå til";
+
+/* Message displayed when the user has a copied link on the clipboard */
+"GoToCopiedLink" = "Gå til kopiert lenke?";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "Ikke lagre";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "Ikke oppdater";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "Lagre innlogging";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "Oppdater";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewPrivateTabTitle" = "Ny privat fane";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewTabTitle" = "Ny fane";
+
+/* OK button */
+"OKString" = "OK";
+
+/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Åpne ny fane";
+
+/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenSelectedTabFromTabTrayKeyCodeTitle" = "Åpne valgt fane";
+
+/* The title for the button that lets you paste and go to a URL */
+"PasteAndGoTitle" = "Lim inn og gå til";
+
+/* The title for the button that lets you paste into the location bar */
+"PasteTitle" = "Lim inn";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "Lesemodus tilgjengelig";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "Tilbakestill tekststørrelse";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ReloadPageTitle" = "Last inn side på nytt";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "Lagre passordet for %@?";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "Lagre innloggingen %1$@ for %2$@?";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "OK";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "For at du skal kunne skanne, må QR-koden være innenfor rammen";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "Ugyldig data";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "Vennligst la Brave få tilgang til enhetens kamera i «Innstillinger» -> «Personvern» -> «Kamera».";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "Skann QR-kode";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"SelectLocationBarTitle" = "Velg søkefelt";
+
+/* Alert dialog body when the user opens the home page for the first time. */
+"SetHomePageDialogMessage" = "Du kan endre dette når som helst i Innstillinger";
+
+/* Button cancelling changes setting the home page for the first time. */
+"SetHomePageDialogNo" = "Avbryt";
+
+/* Alert dialog title when the user opens the home page for the first time. */
+"SetHomePageDialogTitle" = "Vil du bruke denne hjemmesiden som startside?";
+
+/* Button accepting changes setting the home page for the first time. */
+"SetHomePageDialogYes" = "Sett som startside";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "Generelt";
+
+/* Option in settings to show a blank page when you open a new tab */
+"SettingsNewTabBlankPage" = "Vis tom side";
+
+/* Option in settings to show your homepage when you open a new tab */
+"SettingsNewTabHomePage" = "Vis startside";
+
+/* Option in settings to show top sites when you open a new tab */
+"SettingsNewTabTopSites" = "Vis toppsidene dine";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "Ferdig";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchEditButton" = "Rediger";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowNextTabTitle" = "Vis neste fane";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowPreviousTabTitle" = "Vis forrige fane";
+
+/* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"ShowTabTrayFromTabKeyCodeTitle" = "Vis alle faner";
+
+/* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToNonPBMKeyCodeTitle" = "Normal nettlesermodus";
+
+/* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToPBMKeyCodeTitle" = "Privat nettlesermodus";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "Angre";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "%d fane(r) lukket";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"ThirdPartySearchAddMessage" = "Den nye søkemotor vil dukke opp i søkefeltet.";
+
+/* The title that asks the user to Add the search provider */
+"ThirdPartySearchAddTitle" = "Legge til søkemotor?";
+
+/* The cancel button if you do not want to add a search engine. */
+"ThirdPartySearchCancelButton" = "Avbryt";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"ThirdPartySearchEngineAdded" = "La til søkemotor!";
+
+/* A title explaining that we failed to add a search engine */
+"ThirdPartySearchFailedMessage" = "Søkemotoren kunne ikke legges til.";
+
+/* A title explaining that we failed to add a search engine */
+"ThirdPartySearchFailedTitle" = "Mislykket";
+
+/* The confirmation button */
+"ThirdPartySearchOkayButton" = "OK";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "OK";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "Det oppstod en feil da passet ble forsøkt lagt til Wallet. Vennligst prøv igjen senere.";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "Kunne ikke legge til pass";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "Brave kunne ikke åpne siden, da den har en ugyldig adresse.";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "Kan ikke åpne side";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "Oppdatere innlogging %1$@ for %2$@?";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "Oppdatere innlogging %1$@ for %2$@?";
+
+/* List section title for when to use Face ID */
+"UseFaceID" = "Bruke Face ID";
+
+/* List section title for when to use Touch ID */
+"UseTouchID" = "Bruk Touch ID";
+

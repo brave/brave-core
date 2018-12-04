@@ -1,0 +1,32 @@
+/* (No Comment) */
+"1Password Fill Browser Action" = "Заполнение пароля с помощью 1Password";
+
+/* (No Comment) */
+"NSCameraUsageDescription" = "Вы сможете снимать и загружать фото.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Для доступа к сохраненным учетным данным требуется Face ID.";
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+"NSLocationWhenInUseUsageDescription" = "Посещаемые сайты могут запрашивать местоположение.";
+
+/* (No Comment) */
+"NSMicrophoneUsageDescription" = "Вы сможете снимать и загружать видео.";
+
+/* (No Comment) */
+"NSPhotoLibraryAddUsageDescription" = "Вы сможете сохранять фото.";
+
+/* (No Comment) */
+"NSPhotoLibraryUsageDescription" = "Вы сможете сохранять и загружать фото.";
+
+/* (No Comment) */
+"ShortcutItemTitleNewPrivateTab" = "Новая приватная вкладка";
+
+/* (No Comment) */
+"ShortcutItemTitleNewTab" = "Новая вкладка";
+
+/* (No Comment) */
+"ShortcutItemTitleQRCode" = "Сканировать QR-код";
+

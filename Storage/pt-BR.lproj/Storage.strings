@@ -1,0 +1,21 @@
+/* The name of the folder that contains desktop bookmarks in the menu. This should match bookmarks.folder.menu.label on Android. */
+"BookmarksFolderTitleMenu" = " Menu de favoritos";
+
+/* The title of the folder that contains mobile bookmarks. This should match bookmarks.folder.mobile.label on Android. */
+"BookmarksFolderTitleMobile" = "Favoritos para dispositivos móveis";
+
+/* The name of the folder that contains desktop bookmarks in the toolbar. This should match bookmarks.folder.toolbar.label on Android. */
+"BookmarksFolderTitleToolbar" = "Barra de ferramentas de favoritos";
+
+/* The name of the folder that contains unsorted desktop bookmarks. This should match bookmarks.folder.unfiled.label on Android. */
+"BookmarksFolderTitleUnsorted" = "Favoritos não classificados";
+
+/* The default name for bookmark folders without titles. */
+"SQLLiteBookmarkDefaultFolderTitle" = "Sem título";
+
+/* The default name for bookmark nodes without titles. */
+"SQLLiteBookmarkDefaultItemTitle" = "Sem título";
+
+/* The folder name for the virtual folder that contains all desktop bookmarks. */
+"SQLLiteBookmarkDesktopBookmarksLabel" = "Favoritos para computador";
+

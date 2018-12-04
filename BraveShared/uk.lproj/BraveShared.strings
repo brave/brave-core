@@ -1,0 +1,724 @@
+/* About settings section title */
+"About" = "Про";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "Це дозволить збергіати зображення до папки «Камера».";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertTitle" = "Brave хоче отримати доступ до «Фотографій»";
+
+/* Button to add a bookmark */
+"AddBookmark" = "Додати закладку";
+
+/* Add to favorites share action. */
+"AddToFavorites" = "Додати до обраного";
+
+/* individual blocking statistic title */
+"AdsAndTrackers" = "Реклама і трекери";
+
+/* Used as a button label for crash dialog prompt */
+"AlwaysSendButtonTitle" = "Надсилати завжди";
+
+/* tabs bar show/hide option */
+"AlwaysShow" = "Показувати завжди";
+
+/* Label used as a setting item and title of the following screen to change the current passcode */
+"AuthenticationChangePasscode" = "Змінити код доступу";
+
+/* Touch ID prompt subtitle when disabling Touch ID */
+"AuthenticationDisableTouchReason" = "Щоб вимкнути Touch ID, скористайтеся відбитком пальця.";
+
+/* Text displayed above the input field when entering a new passcode */
+"AuthenticationEnterAPasscode" = "Уведіть код доступу";
+
+/* Text displayed above the input field when changing the existing passcode */
+"AuthenticationEnterNewPasscode" = "Уведіть новий код доступу";
+
+/* Text displayed above the input field when changing the existing passcode */
+"AuthenticationEnterPasscode" = "Уведіть код доступу";
+
+/* Title of the dialog used to request the passcode */
+"AuthenticationEnterPasscodeTitle" = "Уведіть код доступу";
+
+/* Label for the Face ID/Passcode item in Settings */
+"AuthenticationFaceIDPasscodeSetting" = "Face ID і код доступу";
+
+/* Immediately' interval item for selecting when to require passcode */
+"AuthenticationImmediately" = "Негайно";
+
+/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
+"AuthenticationIncorrectAttemptsRemaining" = "Неправильний код доступу. Спробуйте ще раз (Залишилось спроб: %d).";
+
+/* Touch ID prompt subtitle when accessing logins */
+"AuthenticationLoginsTouchReason" = "Щоб отримати доступ до «Облікових даних», скористайтеся відбитком пальця.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReached" = "Досягнуто максимальної кількості спроб. Спробуйте ще раз за годину.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReachedNoTime" = "Досягнуто максимальної кількості спроб. Спробуйте ще раз пізніше.";
+
+/* Label for the Passcode item in Settings */
+"AuthenticationPasscode" = "Код доступу до облікових даних ";
+
+/* Text displayed above the input field when confirming a passcode */
+"AuthenticationReenterPasscode" = "Повторно введіть код доступу";
+
+/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
+"AuthenticationRequirePasscode" = "Потрібен код доступу";
+
+/* Touch ID prompt subtitle when accessing the require passcode setting */
+"AuthenticationRequirePasscodeTouchReason" = "Щоб отримати доступ до налаштувань щодо інтервалу запита коду доступу, скористайтеся відбитком пальця.";
+
+/* Title of the dialog used to set a passcode */
+"AuthenticationSetPasscode" = "Установлення коду доступу";
+
+/* Label for the Touch ID/Passcode item in Settings */
+"AuthenticationTouchIDPasscodeSetting" = "Touch ID і код доступу";
+
+/* Label used as a setting item to turn off passcode */
+"AuthenticationTurnOffPasscode" = "Використання коду доступу вимкнено";
+
+/* Label used as a setting item to turn on passcode */
+"AuthenticationTurnOnPasscode" = "Використання коду доступу увімкнено";
+
+/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
+"AuthenticationWrongPasscodeError" = "Неправильний код доступу. Спробуйте ще раз.";
+
+/* Label for Cancel button */
+"AuthPromptAlertCancelButtonTitle" = "Скасувати";
+
+/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
+"AuthPromptAlertFormatRealmMessageText" = "Запит на ім’я користувача і пароль від %1$@. Відповідь сайту: %2$@ ";
+
+/* Authentication prompt log in button */
+"AuthPromptAlertLogInButtonTitle" = "Вхід";
+
+/* Authentication prompt message with no realm. Parameter is the hostname of the site */
+"AuthPromptAlertMessageText" = "Запит на ім’я користувача і пароль від %@.";
+
+/* Password textbox in Authentication prompt */
+"AuthPromptAlertPasswordPlaceholderText" = "Пароль";
+
+/* Authentication prompt title */
+"AuthPromptAlertTitle" = "Потрібна автентифікація";
+
+/* Username textbox in Authentication prompt */
+"AuthPromptAlertUsernamePlaceholderText" = "Ім’я користувача";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "Блокування додаткових файлів cookie";
+
+/* No comment provided by engineer. */
+"BlockAdsAndTracking" = "Блокування реклами і трекерів";
+
+/* cookie settings option */
+"BlockAllCookies" = "Блокування усіх файлів cookie";
+
+/* title for section showing page blocking statistics */
+"BlockingMonitor" = "Блокування програм відстеження";
+
+/* Brave panel individual toggle title */
+"BlockPhishing" = "Блокування фішингу";
+
+/* No comment provided by engineer. */
+"BlockPhishingAndMalware" = "Блокування фішингу і зловмисних програм";
+
+/* Setting to enable popup blocking */
+"BlockPopups" = "Блокування спливаючих вікон";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "Блокування скриптів";
+
+/* Bookmark Folder Section Title */
+"BookmarkFolder" = "Папка із закладками";
+
+/* Bookmark Info Section Title */
+"BookmarkInfo" = "Дані закладки";
+
+/* title for bookmarks panel */
+"Bookmarks" = "Закладки";
+
+/* Button to show the brave panel */
+"BravePanel" = "Панель Brave";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"BraveShieldDefaults" = "Екрани Brave за замовчуванням";
+
+/* Browser Lock feature callout enable action. */
+"BrowserLockCalloutEnable" = "Увімкнено";
+
+/* Browser Lock feature callout message. */
+"BrowserLockCalloutMessage" = "Якщо функцію Browser Lock увімкнено, потрібно буде ввести PIN-код, щоб отримати доступ до Brave.";
+
+/* Browser Lock feature callout not now action. */
+"BrowserLockCalloutNotNow" = "Не зараз";
+
+/* Browser Lock feature callout title. */
+"BrowserLockCalloutTitle" = "Приватний — зі збреженням конфіденційності.";
+
+/* Settings item for clearing browsing history */
+"BrowsingHistory" = "Журнал браузера";
+
+/* Settings item for clearing the cache */
+"Cache" = "Кеш";
+
+/* No comment provided by engineer. */
+"CancelButtonTitle" = "Скасувати";
+
+/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+"ClearPrivateData" = "Видалити особисті дані";
+
+/* The cancel button when confirming clear private data. */
+"ClearPrivateDataAlertCancelButtonTitle" = "Скасувати";
+
+/* Description of the confirmation dialog shown when a user tries to clear their private data. */
+"ClearPrivateDataAlertMessage" = "Це призведе до видалення всіх особистих даних без можливості відновлення.";
+
+/* The button that clears private data. */
+"ClearPrivateDataAlertOkButtonTitle" = "OK";
+
+/* The cancel button when confirming clear history. */
+"ClearSyncedHistoryAlertCancelButtoTitle" = "Скасувати";
+
+/* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
+"ClearSyncedHistoryAlertMessage" = "Це призведе до видалення всіх особистих даних, включно з даними журналу на всіх синхронізованих пристроях.";
+
+/* The confirmation button that clears history even when Sync is connected. */
+"ClearSyncedHistoryAlertOkButtoTitle" = "OK";
+
+/* No comment provided by engineer. */
+"CloseAllTabsTitle" = "Закрити усі вкладки (%i)";
+
+/* No comment provided by engineer. */
+"Confirm" = "Підтвердити";
+
+/* Cookie settings option title */
+"CookieControl" = "Керування файлами cookie";
+
+/* Settings item for clearing cookies */
+"Cookies" = "Файли сookies";
+
+/* Copy app info to clipboard action sheet action. */
+"CopyAppInfoToClipboard" = "Скопіювати дані програми до буферу обміну.";
+
+/* Context menu item for copying an image to the clipboard */
+"CopyImageActionTitle" = "Скопіювати зображення";
+
+/* Context menu item for copying a link URL to the clipboard */
+"CopyLinkActionTitle" = "Скопіювати посилання";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "Нещодавно використані пошукові системи";
+
+/* DuckDuckGo callout enable action. */
+"DDGCalloutEnable" = "Так";
+
+/* DuckDuckGo message. */
+"DDGCalloutMessage" = "В режимі приватного пошуку у Brave використовується система DuckDuckGo. DuckDuckGo — це пошукова система, що не відстежує сайти, які ви переглядаєте.";
+
+/* DuckDuckGo callout no action. */
+"DDGCalloutNo" = "Ні";
+
+/* DuckDuckGo callout title. */
+"DDGCalloutTitle" = "Використати DuckDuckGo для приватного пошуку?";
+
+/* No comment provided by engineer. */
+"Delete" = "Видалити";
+
+/* Prompt option for cancelling out of deletion */
+"DeleteLoginAlertCancelActionTitle" = "Скасувати";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "Облікові дані буде видалено назавжди.";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "Облікові дані буде видалено з усіх під’єднаних пристроїв.";
+
+/* Prompt title when deleting logins */
+"DeleteLoginAlertTitle" = "Ви впевнені?";
+
+/* Label for the button used to delete the current login. */
+"DeleteLoginButtonTitle" = "Видалити";
+
+/* Current device model and iOS version copied to clipboard. */
+"DeviceTemplate" = "Пристрій %1$@ (%2$@)";
+
+/* No comment provided by engineer. */
+"Done" = "Завершено";
+
+/* cookie settings option */
+"DontBlockCookies" = "Не блокувати файли cookie";
+
+/* Used as a button label for crash dialog prompt */
+"DontSendButtonTitle" = "Не надсилати";
+
+/* No comment provided by engineer. */
+"Edit" = "Редагування";
+
+/* Button to edit a bookmark */
+"EditBookmark" = "Редагування закладки";
+
+/* Button to edit a favorite */
+"EditFavorite" = "Редагування списку обраного";
+
+/* Description for new folder popup */
+"EnterFolderName" = "Уведіть назву папки";
+
+/* Shown in error pages for files that can't be shown and need to be downloaded. */
+"ErrorPageOpenInSafariButtonTitle" = "Відкрити в Safari";
+
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "Спробувати ще раз";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesAdvancedButton" = "Додатково";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarning1" = "Попередження. З’єднання з цим сайтом не захищено.";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarning2" = "Це може бути неправильне налаштування або втручання зловмисника. Продовжуйте на власний розсуд.";
+
+/* Warning text on the certificate error page */
+"ErrorPagesCertWarningDescription" = "Веб-сайт %@ неправильно налаштовано. Щоб захистити вас від крадіжки даних, з’єднання з цим сайтом не будет встановлено.";
+
+/* Title on the certificate error page */
+"ErrorPagesCertWarningTitle" = "Ваше з’єднання не захищено";
+
+/* Label for button to go back from the error page */
+"ErrorPagesGoBackButton" = "Перейти назад";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesVisitOnceButton" = "Все одно перейти до сайту";
+
+/* Share action title */
+"FindInPage" = "Знайти на сторінці";
+
+/* Done button in Find in Page Toolbar. */
+"FindInPageDoneButtonAccessibilityLabel" = "Завершено";
+
+/* Accessibility label for next result button in Find in Page Toolbar. */
+"FindInPageNextResultButtonAccessibilityLabel" = "Наступний результат на сторінці";
+
+/* Accessibility label for previous result button in Find in Page Toolbar. */
+"FindInPagePreviousResultButtonAccessibilityLabel" = "Попередній результат на сторінці";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "Способи додавання відбитків пальців";
+
+/* blocking stat title */
+"FingerprintingnProtection" = "Захист за допомогою
+відбитків пальців";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "Захист за допомогою відбитків пальців";
+
+/* No comment provided by engineer. */
+"Home" = "Домашня сторінка";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhere" = "HTTPS усюди";
+
+/* individual blocking statistic title */
+"HTTPSUpgrades" = "Оновлення HTTPS";
+
+/* title for per-site shield toggles */
+"IndividualControls" = "Індивідуальні налаштування";
+
+/* History tableview section header */
+"LastMonth" = "Останній місяць";
+
+/* History tableview section header */
+"LastWeek" = "Останній  тиждень";
+
+/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
+"LoginDetailLastModifiedCellFormatTitle" = "Останні зміни: %@";
+
+/* Label displayed above the password row in Login Detail View. */
+"LoginDetailPasswordCellTitle" = "пароль";
+
+/* Label displayed above the username row in Login Detail View. */
+"LoginDetailUsernameCellTitle" = "ім’я користувача";
+
+/* Label displayed above the website row in Login Detail View. */
+"LoginDetailWebsiteCellTitle" = "веб-сайт";
+
+/* Label for the button used to deselect all logins. */
+"LoginListDeselectAllButtonTitle" = "Зняти все виділення";
+
+/* Label displayed when no logins are found after searching. */
+"LoginListNoLoginTitle" = "Немає облікових даних";
+
+/* Title for Logins List View screen. */
+"LoginListScreenTitle" = "Облікові дані";
+
+/* Label for the button used to select all logins. */
+"LoginListSelectAllButtonTitle" = "Вибрати все";
+
+/* Copy password text selection menu item */
+"MenuItemCopyTitle" = "Скопіювати";
+
+/* Text selection menu item */
+"MenuItemFindInPageTitle" = "Пошук на сторінці";
+
+/* Hide password text selection menu item */
+"MenuItemHidePasswordTitle" = "Приховати";
+
+/* Open and Fill website text selection menu item */
+"MenuItemOpenAndFillTitle" = "Відкрити і заповнити";
+
+/* Reveal password text selection menu item */
+"MenuItemRevealPasswordTitle" = "Показати";
+
+/* Bookmark title / Device name */
+"Name" = "Назва";
+
+/* tabs bar show/hide option */
+"NeverShow" = "Ніколи не показувати";
+
+/* Title for new folder popup */
+"NewFolder" = "Нова папка";
+
+/* New Tab title */
+"NewTab" = "Нова вкладка";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "Відкрити всі (%i)";
+
+/* Context menu item for opening a link in a new tab */
+"OpenInBackgroundTab" = "Відкрити посилання у новій вкладці";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "Відкрити у новій приватній вкладці";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "Відкрити у новій вкладці";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "Відкрити налаштування";
+
+/* Error message displayed to user when their confirming passcode doesn't match the first code. */
+"PasscodeConfirmMisMatchErrorText" = "Коди доступу не збігаються. Спробуйте ще раз. ";
+
+/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
+"PasscodeMatchOldErrorText" = "Новий код доступу має відрізнятися від старого. ";
+
+/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
+"PreviewActionAddToBookmarksActionTitle" = "Додати до закладок";
+
+/* Label for preview action on Tab Tray Tab to close the current tab */
+"PreviewActionCloseTabActionTitle" = "Закрити вкладку";
+
+/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
+"PreviewActionCopyURLActionTitle" = "Скопіювати URL";
+
+/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
+"PreviewFormatAccessibilityLabel" = "Попередній перегляд %@";
+
+/* Settings privacy section title */
+"Privacy" = "Приватність";
+
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "Політика конфіденційності";
+
+/* Private button title */
+"Private" = "Приватний";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "Перегляд у приватному режимі";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "Перегляд тільки у приватному режимі";
+
+/* Private tab details */
+"PrivateTabBody" = "Приватні вкладки не зберігаються у Brave, але ви не переглядаєте сторінки у Інтернеті в анонімному режимі. Сторінки, які ви переглядаєте у приватній вкладці, не буде записано до журналу, а файли cookie буде видалено після закриття вкладки. У Brave не залишиться жодних слідів. Провайдер мобільної мережі (або власник мережі WiFi або VPN, до якої ви підключені) зможе переглянути відвідувані сайти. Сайти отримають дані щодо вашої публічної IP-адреси, навіть під час перегляду в приватному режимі.";
+
+/* Private tab information link */
+"PrivateTabLink" = "Додаткові відомості щодо приватких вкладок.";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "Приватна вкладка";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "Системи швидкого пошуку";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "Збільшити розмір шрифту";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "Яскравість";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "Налаштування дисплея";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "Під час перетворення сторінки сталася помилка";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Без зарубок";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Із зарубками";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "Aa";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "Зміна типу шрифту.";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "Завантаження вмісту…";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "Завантаження вихідної сторінки";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "Неможливо відобразити сторінку в режимі читання.";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "Зменшити розмір шрифту";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "–";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "Зміна кольорової теми.";
+
+/* Dark theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleDark" = "Темна";
+
+/* Light theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleLight" = "Світла";
+
+/* Sepia theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleSepia" = "Сепія";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "Вилучити зі списку обраного";
+
+/* Show mail composer to report a bug. */
+"ReportABug" = "Повідомити про помилку";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "Гаразд";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "Ні";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "Здається, роботу Brave було завершено в аварійному режимі. Відновити закриті вкладки?";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "Нам дуже шкода.";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "Збережені облікові дані";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "Зберегти зображення";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "Зберегти облікові дані";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "Заблоковані скрипти";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "Пошукова система %@ ";
+
+/* Title for default search engine picker. */
+"SearchEnginePickerNavTitle" = "Пошукова система за замовчуванням";
+
+/* Search engines section of settings */
+"SearchEngines" = "Пошукові системи";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "Пошук за підказками";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "Видалити дані пошуку";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "Віхд до режиму пошуку";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "Поле пошуку";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "Пошук";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "Пошук";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "Налаштування пошуку";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "Показувати пошукові підказки";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "Пошукові підказки %@";
+
+/* Settings security section title */
+"Security" = "Безпека";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "Надіслати звіт про аварійне завершення роботи Brave, щоб вирішити проблему?";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "Роботу Brave було завершено в аварійному режимі";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "Надіслати звіт";
+
+/* No comment provided by engineer. */
+"Settings" = "Налаштування";
+
+/* Error message that is shown in settings when there was a problem loading */
+"SettingsContentLoadErrorMessage" = "Не вдалося завантажити сторінку.";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "Поділитися посиланням";
+
+/* shields overview message */
+"ShieldsOverview" = "Екрани дозволяють керувати блокуванням реклами або трекерів на кожному сайті, який ви переглядаєте. Для перегляду реклами на сайті увімкніть цей параметр тут.";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "Примітка. Деякі сайти потребують скриптів для нормальної роботи. Цей екран вимкнено за замовчуванням.";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "дн.";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "год.";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "хв.";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "с";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "Показати закладки";
+
+/* Button to show the history list */
+"ShowHistory" = "Показати журнал";
+
+/* tabs bar show/hide option */
+"ShowInLandscapeOnly" = "Показувати лише в альбомному режимі";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "Показати вкладки";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "Показати панель вкладок";
+
+/* Brave panel topmost title */
+"SiteShieldSettings" = "Екрани";
+
+/* Open search section of settings */
+"StandardTabSearch" = "Стандартна вкладка";
+
+/* Support section title */
+"Support" = "Підтримка";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "Закрити";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "Увімкнення/вимкнення приватного режиму";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "Приватний режим";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "Вимк.";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "Увімк.";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "Панель навігації";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "Додати вкладку";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "Назад";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "Вперед";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "Захищене з’єднання";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "Режим читання";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "Додати до списку читання";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "Перезавантажити";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "Пошук або введення адреси";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "Поділитися";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "Зупинити";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "Лоток вкладок";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "Додати вкладку";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "Щоб закрити вкладку, проведіть трьома пальцями праворуч або ліворуч.";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "Закриваємо вкладку";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "Немає вкладок";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "Вкладки: з %1$@ по %2$@ із %3$@";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "Нова вкладка";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "Вкладки: %1$@ із %2$@";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "Умови використання";
+
+/* History tableview section header */
+"Today" = "Сьогодні";
+
+/* Bookmark URL */
+"URL" = "URL";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "Адреса і пошук";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "Використовувати локальний блокувальник реклами";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "Версія %1$@ (%2$@)";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "Веб-вміст";
+
+/* History tableview section header */
+"Yesterday" = "Учора";
+

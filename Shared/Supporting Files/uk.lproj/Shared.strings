@@ -1,0 +1,21 @@
+/* A brief descriptive name for this app on this device, used for Send Tab and Synced Tabs. The first argument is the app name. The second argument is the device name. */
+"AppAndDeviceNameFormat" = "%1$@ на %2$@";
+
+/* Relative time for a tab that was visited within the last few moments. */
+"TimeConstantJustNowText" = "тільки що";
+
+/* Relative date for dates older than a month and less than two months. */
+"TimeConstantMoreThanMonthAgoText" = "більше місяця тому";
+
+/* Description for a date more than a week ago, but less than a month ago. */
+"TimeConstantMoreThanWeekAgoText" = "більше тижня тому";
+
+/* Relative date for date in past week. */
+"TimeConstantThisWeekText" = "цього тижня";
+
+/* Relative date for date older than a minute. */
+"TimeConstantTodayAtFormat" = "сьогодні о %@";
+
+/* Relative date for yesterday. */
+"TimeConstantYesterdayText" = "учора";
+

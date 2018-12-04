@@ -1,0 +1,249 @@
+/* Accessibility label for the Menu button. */
+"AppMenuButtonAccessibilityLabel" = "Menu";
+
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "URL Disalin Kepada Papan Klip";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "Minta Laman Desktop";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "Minta Laman Mudah Alih";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"BackTitle" = "Kembali";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "Batal";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "Adakah anda pasti anda mahu membatal muat turun ini?";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "Pulih";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "Batal Muat Turu";
+
+/* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseAllTabsFromTabTrayKeyCodeTitle" = "Tutup Semua Tab";
+
+/* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseTabFromTabTrayKeyCodeTitle" = "Tutup Tab Terpilih";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"CloseTabTitle" = "Tutup Tab";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "Tukar";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "Tab Baharu dibuka";
+
+/* The title for the button that lets you copy the url from the location bar. */
+"CopyAddressTitle" = "Salin Alamat";
+
+/* A message explaining fault in custom search engine form. */
+"CustomEngineDuplicateErrorMessage" = "Enjin carian dengan tajuk atau URL ini telah pun ditambahkan.";
+
+/* A message explaining fault in custom search engine form. */
+"CustomEngineFormErrorMessage" = "Sila isi semua medan dengan betul.";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "Muat Turun Dibatal";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "Muat Turun Gagal";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 / %d fail";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "Muat Turu";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "Buka pautan ini dalam apl App Store?";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"FindTitle" = "Cari";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ForwardTitle" = "Ke Hadapan";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "Pergi";
+
+/* Message displayed when the user has a copied link on the clipboard */
+"GoToCopiedLink" = "Pergi ke pautan yang disalin?";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "Jangan Simpan";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "Jangan Kemas Kini";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "Simpan Log Masuk";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "Kemas Kini";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewPrivateTabTitle" = "Tab Peribadi Baru";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewTabTitle" = "Tab Bahar";
+
+/* OK button */
+"OKString" = "OK";
+
+/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Buka Tab Bahar";
+
+/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenSelectedTabFromTabTrayKeyCodeTitle" = "Buka Tab Terpilih";
+
+/* The title for the button that lets you paste and go to a URL */
+"PasteAndGoTitle" = "Tampal & Pergi";
+
+/* The title for the button that lets you paste into the location bar */
+"PasteTitle" = "Tampal";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "Mod Pembaca tersedia";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "Tetapkan semula saiz teks";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ReloadPageTitle" = "Muat Semula Halaman";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "Simpan kata laluan untuk %@?";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "Simpan log masuk %1$@ untuk %2$@?";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "OK";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "Jajarkan kod QR dalam rangka untuk mengimbas";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "Data tidak sah";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "Sila benarkan Brave mengakses kamera peranti anda dalam 'Tetapan' -> 'Privasi' -> 'Kamera'.";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "Imbas Kod QR";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"SelectLocationBarTitle" = "Pilih Bar Lokasi";
+
+/* Alert dialog body when the user opens the home page for the first time. */
+"SetHomePageDialogMessage" = "Anda boleh menukar ini pada bila-bila masa dalam Tetapan";
+
+/* Button cancelling changes setting the home page for the first time. */
+"SetHomePageDialogNo" = "Batal";
+
+/* Alert dialog title when the user opens the home page for the first time. */
+"SetHomePageDialogTitle" = "Adakah anda mahu menggunakan laman web ini sebagai laman utama anda?";
+
+/* Button accepting changes setting the home page for the first time. */
+"SetHomePageDialogYes" = "Tetapkan Laman Utama";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "Umu";
+
+/* Option in settings to show a blank page when you open a new tab */
+"SettingsNewTabBlankPage" = "Tunjukkan Halaman kosong";
+
+/* Option in settings to show your homepage when you open a new tab */
+"SettingsNewTabHomePage" = "Tunjuk Laman Utama anda";
+
+/* Option in settings to show top sites when you open a new tab */
+"SettingsNewTabTopSites" = "Tunjuk Laman Terbaik anda";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "Selesai";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchEditButton" = "Edit";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowNextTabTitle" = "Tunjuk Tab Seterusnya";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowPreviousTabTitle" = "Tunjuk Tab Sebelumnya";
+
+/* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"ShowTabTrayFromTabKeyCodeTitle" = "Tunjuk Semua Tab";
+
+/* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToNonPBMKeyCodeTitle" = "Mod Pelayaran Biasa";
+
+/* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToPBMKeyCodeTitle" = "Mod Pelayaran Peribadi";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "Buat Asal";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "%d tab(-tab) ditutup";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"ThirdPartySearchAddMessage" = "Enjin carian baharu akan muncul dalam bar carian cepat.";
+
+/* The title that asks the user to Add the search provider */
+"ThirdPartySearchAddTitle" = "Tambah Pembekal Carian?";
+
+/* The cancel button if you do not want to add a search engine. */
+"ThirdPartySearchCancelButton" = "Batal";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"ThirdPartySearchEngineAdded" = "Enjin carian ditambah!";
+
+/* A title explaining that we failed to add a search engine */
+"ThirdPartySearchFailedMessage" = "Pembekal carian tidak dapat ditambahkan.";
+
+/* A title explaining that we failed to add a search engine */
+"ThirdPartySearchFailedTitle" = "Gagal";
+
+/* The confirmation button */
+"ThirdPartySearchOkayButton" = "OK";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "OK";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "Ralat berlaku semasa menambah pas ke Dompet. Sila cuba sebentar lagi.";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "Gagal untuk Menambahkan Pas";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "Brave tidak dapat membuka halaman kerana ia mempunyai alamat yang tidak sah.";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "Tidak Dapat Membuka Halaman";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "Kemas kini log masuk %1$@ untuk %2$@?";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "Kemas kini log masuk %1$@ untuk %2$@?";
+
+/* List section title for when to use Face ID */
+"UseFaceID" = "Guna ID Muka";
+
+/* List section title for when to use Touch ID */
+"UseTouchID" = "Guna ID Sentuhan";
+

@@ -1,0 +1,32 @@
+/* (No Comment) */
+"1Password Fill Browser Action" = "1Password Fill Browser Action";
+
+/* (No Comment) */
+"NSCameraUsageDescription" = "Cette option vous permet de prendre des photos et de les importer.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Brave nécessite l'utilisation de Face ID pour accéder à vos identifiants enregistrés.";
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+"NSLocationWhenInUseUsageDescription" = "Les sites Web que vous consultez peuvent demander votre position.";
+
+/* (No Comment) */
+"NSMicrophoneUsageDescription" = "Cette option vous permet de faire des vidéos et de les importer.";
+
+/* (No Comment) */
+"NSPhotoLibraryAddUsageDescription" = "Cette option vous permet d'enregistrer des photos.";
+
+/* (No Comment) */
+"NSPhotoLibraryUsageDescription" = "Cette option vous permet d'enregistrer et d'importer des photos.";
+
+/* (No Comment) */
+"ShortcutItemTitleNewPrivateTab" = "Nouvel onglet privé";
+
+/* (No Comment) */
+"ShortcutItemTitleNewTab" = "Nouvel onglet";
+
+/* (No Comment) */
+"ShortcutItemTitleQRCode" = "Analyser un code QR";
+

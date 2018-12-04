@@ -1,0 +1,724 @@
+/* About settings section title */
+"About" = "Brave について";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "画像をカメラロールに保存することができます。";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertTitle" = "Brave が写真にアクセスしようとしています";
+
+/* Button to add a bookmark */
+"AddBookmark" = "ブックマークを追加";
+
+/* Add to favorites share action. */
+"AddToFavorites" = "お気に入りに追加";
+
+/* individual blocking statistic title */
+"AdsAndTrackers" = "広告とトラッカー";
+
+/* Used as a button label for crash dialog prompt */
+"AlwaysSendButtonTitle" = "常に送信";
+
+/* tabs bar show/hide option */
+"AlwaysShow" = "常に表示";
+
+/* Label used as a setting item and title of the following screen to change the current passcode */
+"AuthenticationChangePasscode" = "パスコードを変更";
+
+/* Touch ID prompt subtitle when disabling Touch ID */
+"AuthenticationDisableTouchReason" = "指紋を使って Touch ID を無効にしてください。";
+
+/* Text displayed above the input field when entering a new passcode */
+"AuthenticationEnterAPasscode" = "パスコードを入力";
+
+/* Text displayed above the input field when changing the existing passcode */
+"AuthenticationEnterNewPasscode" = "新しいパスコードを入力";
+
+/* Text displayed above the input field when changing the existing passcode */
+"AuthenticationEnterPasscode" = "パスコードを入力";
+
+/* Title of the dialog used to request the passcode */
+"AuthenticationEnterPasscodeTitle" = "パスコードを入力";
+
+/* Label for the Face ID/Passcode item in Settings */
+"AuthenticationFaceIDPasscodeSetting" = "Face ID とパスコード";
+
+/* Immediately' interval item for selecting when to require passcode */
+"AuthenticationImmediately" = "即座";
+
+/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
+"AuthenticationIncorrectAttemptsRemaining" = "パスコードが正しくありません。やり直してください (残り試行回数: %d)。";
+
+/* Touch ID prompt subtitle when accessing logins */
+"AuthenticationLoginsTouchReason" = "今すぐ指紋を使ってログイン情報にアクセスしてください。";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReached" = "試行回数が上限に達しました。1 時間後にやり直してください。";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReachedNoTime" = "試行回数が上限に達しました。しばらくしてからやり直してください。";
+
+/* Label for the Passcode item in Settings */
+"AuthenticationPasscode" = "ログイン情報のパスコード";
+
+/* Text displayed above the input field when confirming a passcode */
+"AuthenticationReenterPasscode" = "パスコードを再入力";
+
+/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
+"AuthenticationRequirePasscode" = "パスコードを要求";
+
+/* Touch ID prompt subtitle when accessing the require passcode setting */
+"AuthenticationRequirePasscodeTouchReason" = "パスコードの要求間隔を構成するには指紋を使ってください。";
+
+/* Title of the dialog used to set a passcode */
+"AuthenticationSetPasscode" = "パスコードを設定";
+
+/* Label for the Touch ID/Passcode item in Settings */
+"AuthenticationTouchIDPasscodeSetting" = "Touch ID とパスコード";
+
+/* Label used as a setting item to turn off passcode */
+"AuthenticationTurnOffPasscode" = "パスコードをオフにする";
+
+/* Label used as a setting item to turn on passcode */
+"AuthenticationTurnOnPasscode" = "パスコードをオンにする";
+
+/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
+"AuthenticationWrongPasscodeError" = "パスコードが正しくありません。やり直してください。";
+
+/* Label for Cancel button */
+"AuthPromptAlertCancelButtonTitle" = "キャンセル";
+
+/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
+"AuthPromptAlertFormatRealmMessageText" = "%1$@ がユーザー名とパスワードを求めています。サイトのコメント: %2$@";
+
+/* Authentication prompt log in button */
+"AuthPromptAlertLogInButtonTitle" = "ログイン";
+
+/* Authentication prompt message with no realm. Parameter is the hostname of the site */
+"AuthPromptAlertMessageText" = "%@ がユーザー名とパスワードを求めています。";
+
+/* Password textbox in Authentication prompt */
+"AuthPromptAlertPasswordPlaceholderText" = "パスワード";
+
+/* Authentication prompt title */
+"AuthPromptAlertTitle" = "認証が必要です";
+
+/* Username textbox in Authentication prompt */
+"AuthPromptAlertUsernamePlaceholderText" = "ユーザー名";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "サードパーティの Cookie をブロック";
+
+/* No comment provided by engineer. */
+"BlockAdsAndTracking" = "広告と追跡をブロック";
+
+/* cookie settings option */
+"BlockAllCookies" = "すべての Cookie をブロック";
+
+/* title for section showing page blocking statistics */
+"BlockingMonitor" = "ブロックモニター";
+
+/* Brave panel individual toggle title */
+"BlockPhishing" = "フィッシングをブロック";
+
+/* No comment provided by engineer. */
+"BlockPhishingAndMalware" = "フィッシングとマルウェアをブロック";
+
+/* Setting to enable popup blocking */
+"BlockPopups" = "ポップアップをブロック";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "スクリプトをブロック";
+
+/* Bookmark Folder Section Title */
+"BookmarkFolder" = "ブックマークフォルダ";
+
+/* Bookmark Info Section Title */
+"BookmarkInfo" = "ブックマーク情報";
+
+/* title for bookmarks panel */
+"Bookmarks" = "ブックマーク";
+
+/* Button to show the brave panel */
+"BravePanel" = "Brave パネル";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"BraveShieldDefaults" = "Brave 保護機能の既定設定";
+
+/* Browser Lock feature callout enable action. */
+"BrowserLockCalloutEnable" = "有効にする";
+
+/* Browser Lock feature callout message. */
+"BrowserLockCalloutMessage" = "ブラウザロックを有効にすると、Brave へのアクセス時に PIN の入力が必要になります。";
+
+/* Browser Lock feature callout not now action. */
+"BrowserLockCalloutNotNow" = "後で";
+
+/* Browser Lock feature callout title. */
+"BrowserLockCalloutTitle" = "本当のプライベート機能です。";
+
+/* Settings item for clearing browsing history */
+"BrowsingHistory" = "閲覧履歴";
+
+/* Settings item for clearing the cache */
+"Cache" = "キャッシュ";
+
+/* No comment provided by engineer. */
+"CancelButtonTitle" = "キャンセル";
+
+/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+"ClearPrivateData" = "プライベートデータを消去";
+
+/* The cancel button when confirming clear private data. */
+"ClearPrivateDataAlertCancelButtonTitle" = "キャンセル";
+
+/* Description of the confirmation dialog shown when a user tries to clear their private data. */
+"ClearPrivateDataAlertMessage" = "すべてのプライベートデータが消去されます。この操作は元に戻せません。";
+
+/* The button that clears private data. */
+"ClearPrivateDataAlertOkButtonTitle" = "了解";
+
+/* The cancel button when confirming clear history. */
+"ClearSyncedHistoryAlertCancelButtoTitle" = "キャンセル";
+
+/* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
+"ClearSyncedHistoryAlertMessage" = "すべてのプライベートデータが消去されます。これには同期済みデバイスからの履歴も含まれます。";
+
+/* The confirmation button that clears history even when Sync is connected. */
+"ClearSyncedHistoryAlertOkButtoTitle" = "了解";
+
+/* No comment provided by engineer. */
+"CloseAllTabsTitle" = "%i 個のタブをすべて閉じる";
+
+/* No comment provided by engineer. */
+"Confirm" = "確認";
+
+/* Cookie settings option title */
+"CookieControl" = "Cookie コントロール";
+
+/* Settings item for clearing cookies */
+"Cookies" = "Cookie";
+
+/* Copy app info to clipboard action sheet action. */
+"CopyAppInfoToClipboard" = "アプリ情報をクリップボードにコピーします。";
+
+/* Context menu item for copying an image to the clipboard */
+"CopyImageActionTitle" = "画像をコピー";
+
+/* Context menu item for copying a link URL to the clipboard */
+"CopyLinkActionTitle" = "リンクをコピー";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "現在使用中の検索エンジン";
+
+/* DuckDuckGo callout enable action. */
+"DDGCalloutEnable" = "はい";
+
+/* DuckDuckGo message. */
+"DDGCalloutMessage" = "プライベート検索を有効にすると、このプライベートタブの使用時は検索の応答に DuckDuckGo が使われます。DuckDuckGo は検索履歴を追跡しない検索エンジンで、これによりプライベートな検索が可能になります。";
+
+/* DuckDuckGo callout no action. */
+"DDGCalloutNo" = "いいえ";
+
+/* DuckDuckGo callout title. */
+"DDGCalloutTitle" = "DuckDuckGo によるプライベート検索を有効にしますか？";
+
+/* No comment provided by engineer. */
+"Delete" = "削除";
+
+/* Prompt option for cancelling out of deletion */
+"DeleteLoginAlertCancelActionTitle" = "キャンセル";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "ログイン情報は完全に削除されます。";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "すべての接続済みデバイスからログイン情報が削除されます。";
+
+/* Prompt title when deleting logins */
+"DeleteLoginAlertTitle" = "よろしいですか？";
+
+/* Label for the button used to delete the current login. */
+"DeleteLoginButtonTitle" = "削除";
+
+/* Current device model and iOS version copied to clipboard. */
+"DeviceTemplate" = "デバイス %1$@ (%2$@)";
+
+/* No comment provided by engineer. */
+"Done" = "完了";
+
+/* cookie settings option */
+"DontBlockCookies" = "Cookie をブロックしない";
+
+/* Used as a button label for crash dialog prompt */
+"DontSendButtonTitle" = "送信しない";
+
+/* No comment provided by engineer. */
+"Edit" = "編集";
+
+/* Button to edit a bookmark */
+"EditBookmark" = "ブックマークを編集";
+
+/* Button to edit a favorite */
+"EditFavorite" = "お気に入りを編集";
+
+/* Description for new folder popup */
+"EnterFolderName" = "フォルダ名を入力";
+
+/* Shown in error pages for files that can't be shown and need to be downloaded. */
+"ErrorPageOpenInSafariButtonTitle" = "Safari で開く";
+
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "やり直す";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesAdvancedButton" = "高度";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarning1" = "警告: このウェブサイトに対する接続の安全性が確認できません。";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarning2" = "構成に問題が生じたり攻撃者による改ざんを受ける恐れがあります。潜在的なリスクを許容する場合は続行してください。";
+
+/* Warning text on the certificate error page */
+"ErrorPagesCertWarningDescription" = "%@ の所有者はウェブサイトを不適切に構成しています。情報漏洩を防ぐために、Brave はこのウェブサイトにアクセスしませんでした。";
+
+/* Title on the certificate error page */
+"ErrorPagesCertWarningTitle" = "接続はプライベートではありません";
+
+/* Label for button to go back from the error page */
+"ErrorPagesGoBackButton" = "戻る";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesVisitOnceButton" = "それでもサイトを訪問";
+
+/* Share action title */
+"FindInPage" = "ページ内で見つける";
+
+/* Done button in Find in Page Toolbar. */
+"FindInPageDoneButtonAccessibilityLabel" = "完了";
+
+/* Accessibility label for next result button in Find in Page Toolbar. */
+"FindInPageNextResultButtonAccessibilityLabel" = "次のページ内の結果";
+
+/* Accessibility label for previous result button in Find in Page Toolbar. */
+"FindInPagePreviousResultButtonAccessibilityLabel" = "前のページ内の結果";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "フィンガープリント";
+
+/* blocking stat title */
+"FingerprintingnProtection" = "フィンガープリント
+対策";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "フィンガープリント対策";
+
+/* No comment provided by engineer. */
+"Home" = "ホーム";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhere" = "どこでも HTTPS";
+
+/* individual blocking statistic title */
+"HTTPSUpgrades" = "HTTPS アップグレード";
+
+/* title for per-site shield toggles */
+"IndividualControls" = "個別コントロール";
+
+/* History tableview section header */
+"LastMonth" = "先月";
+
+/* History tableview section header */
+"LastWeek" = "先週";
+
+/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
+"LoginDetailLastModifiedCellFormatTitle" = "最終変更 %@";
+
+/* Label displayed above the password row in Login Detail View. */
+"LoginDetailPasswordCellTitle" = "パスワード";
+
+/* Label displayed above the username row in Login Detail View. */
+"LoginDetailUsernameCellTitle" = "ユーザー名";
+
+/* Label displayed above the website row in Login Detail View. */
+"LoginDetailWebsiteCellTitle" = "ウェブサイト";
+
+/* Label for the button used to deselect all logins. */
+"LoginListDeselectAllButtonTitle" = "すべて選択解除";
+
+/* Label displayed when no logins are found after searching. */
+"LoginListNoLoginTitle" = "ログイン情報が見つかりません";
+
+/* Title for Logins List View screen. */
+"LoginListScreenTitle" = "ログイン情報";
+
+/* Label for the button used to select all logins. */
+"LoginListSelectAllButtonTitle" = "すべて選択";
+
+/* Copy password text selection menu item */
+"MenuItemCopyTitle" = "コピー";
+
+/* Text selection menu item */
+"MenuItemFindInPageTitle" = "ページ内で見つける";
+
+/* Hide password text selection menu item */
+"MenuItemHidePasswordTitle" = "非表示";
+
+/* Open and Fill website text selection menu item */
+"MenuItemOpenAndFillTitle" = "開いて入力";
+
+/* Reveal password text selection menu item */
+"MenuItemRevealPasswordTitle" = "表示";
+
+/* Bookmark title / Device name */
+"Name" = "名前";
+
+/* tabs bar show/hide option */
+"NeverShow" = "決して表示しない";
+
+/* Title for new folder popup */
+"NewFolder" = "新しいフォルダ";
+
+/* New Tab title */
+"NewTab" = "新しいタブ";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "すべて開く (%i)";
+
+/* Context menu item for opening a link in a new tab */
+"OpenInBackgroundTab" = "リンクを新しいタブで開く";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "新しいプライベートタブで開く";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "新しいタブで開く";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "設定を開く";
+
+/* Error message displayed to user when their confirming passcode doesn't match the first code. */
+"PasscodeConfirmMisMatchErrorText" = "パスコードが一致しませんでした。やり直してください。";
+
+/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
+"PasscodeMatchOldErrorText" = "新しいパスコードは既存のコードと異なるものにする必要があります。";
+
+/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
+"PreviewActionAddToBookmarksActionTitle" = "ブックマークに追加";
+
+/* Label for preview action on Tab Tray Tab to close the current tab */
+"PreviewActionCloseTabActionTitle" = "タブを閉じる";
+
+/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
+"PreviewActionCopyURLActionTitle" = "URL をコピー";
+
+/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
+"PreviewFormatAccessibilityLabel" = "%@ のプレビュー";
+
+/* Settings privacy section title */
+"Privacy" = "プライバシー";
+
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "プライバシーポリシー";
+
+/* Private button title */
+"Private" = "プライベート";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "プライベートブラウジング";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "プライベートブラウジングのみ";
+
+/* Private tab details */
+"PrivateTabBody" = "プライベートタブを使うと Brave への保存は行われませんが、オンライン上で匿名になるわけではありません。プライベートタブを使って訪問したサイトは履歴には表示されず、サイトを閉じれば Cookie は必ず削除されます。つまりサイトの形跡が Brave に残ることはありません。一方で、プライベートタブを使っても、ご利用の携帯電話会社 (または接続している WiFi ネットワークや VPN の所有者) はあなたが訪問したサイトを確認できるほか、訪問先のサイトもあなたのパブリック IP アドレスを知ることができます。";
+
+/* Private tab information link */
+"PrivateTabLink" = "プライベートタブについて。";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "プライベートタブ";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "クイック検索エンジン";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "テキストサイズを大きくする";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "明るさ";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "表示設定";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "ページの変換でエラーが発生しました";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Serif";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "Aa";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "フォントの種類を変更します。";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "コンテンツの読み込み中…";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "元のページを読み込む";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "ページをリーダービューで表示できませんでした。";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "テキストサイズを小さくする";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "色テーマを変更します。";
+
+/* Dark theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleDark" = "ダーク";
+
+/* Light theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleLight" = "ライト";
+
+/* Sepia theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleSepia" = "セピア";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "お気に入りを削除";
+
+/* Show mail composer to report a bug. */
+"ReportABug" = "バグを報告";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "OK";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "いいえ";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "前回 Brave はクラッシュしたようです。タブを復元しますか？";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "申し訳ありません。";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "保存したログイン情報";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "画像を保存";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "ログイン情報を保存";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "ブロック済みのスクリプト";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "%@ 検索";
+
+/* Title for default search engine picker. */
+"SearchEnginePickerNavTitle" = "既定の検索エンジン";
+
+/* Search engines section of settings */
+"SearchEngines" = "検索エンジン";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "候補の検索";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "検索を消去";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "検索モードを開始";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "検索入力フィールド";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "検索";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "検索";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "検索設定";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "検索候補を表示";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "%@ からの検索候補";
+
+/* Settings security section title */
+"Security" = "セキュリティ";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "クラッシュレポートを送信して Brave の問題修正をサポートしますか？";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "Brave がクラッシュしました";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "レポートを送信";
+
+/* No comment provided by engineer. */
+"Settings" = "設定";
+
+/* Error message that is shown in settings when there was a problem loading */
+"SettingsContentLoadErrorMessage" = "ページを読み込めませんでした。";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "リンクを共有";
+
+/* shields overview message */
+"ShieldsOverview" = "サイトの保護機能では、訪問したサイトで広告とトラッカーをブロックするタイミングをコントロールすることができます。特定のサイトで広告を表示させたい場合、ここで設定することができます。";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "注意: 一部のサイトでは適切な動作にスクリプトが必要なため、この保護機能はデフォルトでオフになっています。";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "日";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "時間";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "分";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "秒";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "ブックマークを表示";
+
+/* Button to show the history list */
+"ShowHistory" = "履歴を表示";
+
+/* tabs bar show/hide option */
+"ShowInLandscapeOnly" = "横向きのみで表示";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "タブを表示";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "タブバーを表示";
+
+/* Brave panel topmost title */
+"SiteShieldSettings" = "保護機能";
+
+/* Open search section of settings */
+"StandardTabSearch" = "標準タブ";
+
+/* Support section title */
+"Support" = "サポート";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "閉じる";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "プライベートモードのオンとオフを切り替えます";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "プライベートモード";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "オフ";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "オン";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "ナビゲーションツールバー";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "タブを追加";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "戻る";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "進む";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "安全な接続";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "リーダービュー";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "リーディングリストに追加";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "再読み込み";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "検索またはアドレスを入力";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "共有";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "停止";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "タブトレイ";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "タブを追加";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "タブを閉じるには 3 本の指で右または左方向にスワイプします。";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "タブを閉じています";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "タブがありません";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "%3$@ 個のタブのうち %1$@〜%2$@ 番目";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "新しいタブ";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "%2$@ 個のタブのうち %1$@ 番目";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "利用規約";
+
+/* History tableview section header */
+"Today" = "今日";
+
+/* Bookmark URL */
+"URL" = "URL";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "アドレスと検索";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "地域別広告ブロックを使用";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "バージョン %1$@ (%2$@)";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "ウェブコンテンツ";
+
+/* History tableview section header */
+"Yesterday" = "昨日";
+

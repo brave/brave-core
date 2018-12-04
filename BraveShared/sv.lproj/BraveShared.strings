@@ -1,0 +1,723 @@
+/* About settings section title */
+"About" = "Om";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "Detta låter dig spara bilden till din kamerarulle.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertTitle" = "Brave vill ha tillgång till dina foton";
+
+/* Button to add a bookmark */
+"AddBookmark" = "Lägg till bokmärke";
+
+/* Add to favorites share action. */
+"AddToFavorites" = "Lägg till i favoriter";
+
+/* individual blocking statistic title */
+"AdsAndTrackers" = "Annonser och spårare";
+
+/* Used as a button label for crash dialog prompt */
+"AlwaysSendButtonTitle" = "Skicka alltid";
+
+/* tabs bar show/hide option */
+"AlwaysShow" = "Visa alltid";
+
+/* Label used as a setting item and title of the following screen to change the current passcode */
+"AuthenticationChangePasscode" = "Ändra lösenord";
+
+/* Touch ID prompt subtitle when disabling Touch ID */
+"AuthenticationDisableTouchReason" = "Använd ditt fingeravtryck för att inaktivera Touch ID.";
+
+/* Text displayed above the input field when entering a new passcode */
+"AuthenticationEnterAPasscode" = "Ange ett lösenord";
+
+/* Text displayed above the input field when changing the existing passcode */
+"AuthenticationEnterNewPasscode" = "Ange ett nytt lösenord";
+
+/* Text displayed above the input field when changing the existing passcode */
+"AuthenticationEnterPasscode" = "Ange lösenord";
+
+/* Title of the dialog used to request the passcode */
+"AuthenticationEnterPasscodeTitle" = "Ange lösenord";
+
+/* Label for the Face ID/Passcode item in Settings */
+"AuthenticationFaceIDPasscodeSetting" = "Face ID och lösenord";
+
+/* Immediately' interval item for selecting when to require passcode */
+"AuthenticationImmediately" = "Omedelbart";
+
+/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
+"AuthenticationIncorrectAttemptsRemaining" = "Felaktigt lösenord. Försök igen (Återstående försök: %d).";
+
+/* Touch ID prompt subtitle when accessing logins */
+"AuthenticationLoginsTouchReason" = "Använd ditt fingeravtryck för att komma inloggningar nu.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReached" = "Maximala antalet försök har nåtts. Försök igen om en timme.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReachedNoTime" = "Maximala antalet försök har nåtts. Försök igen senare.";
+
+/* Label for the Passcode item in Settings */
+"AuthenticationPasscode" = "Lösenord för inloggning";
+
+/* Text displayed above the input field when confirming a passcode */
+"AuthenticationReenterPasscode" = "Ange lösenordet igen";
+
+/* Text displayed in the 'Interval' section, followed by the current interval setting, e.g. 'Immediately' */
+"AuthenticationRequirePasscode" = "Kräv lösenord";
+
+/* Touch ID prompt subtitle when accessing the require passcode setting */
+"AuthenticationRequirePasscodeTouchReason" = "Använd ditt fingeravtryck för att komma åt inställningarna för hur ofta lösenord behöver anges.";
+
+/* Title of the dialog used to set a passcode */
+"AuthenticationSetPasscode" = "Ställ in lösenord";
+
+/* Label for the Touch ID/Passcode item in Settings */
+"AuthenticationTouchIDPasscodeSetting" = "Touch ID och lösenord";
+
+/* Label used as a setting item to turn off passcode */
+"AuthenticationTurnOffPasscode" = "Stäng av lösenord";
+
+/* Label used as a setting item to turn on passcode */
+"AuthenticationTurnOnPasscode" = "Sätt på lösenord";
+
+/* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app */
+"AuthenticationWrongPasscodeError" = "Felaktigt lösenord. Försök igen.";
+
+/* Label for Cancel button */
+"AuthPromptAlertCancelButtonTitle" = "Avbryt";
+
+/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
+"AuthPromptAlertFormatRealmMessageText" = "Användarnamn och lösenord efterfrågas av %1$@. Sidan säger: %2$@";
+
+/* Authentication prompt log in button */
+"AuthPromptAlertLogInButtonTitle" = "Logga in";
+
+/* Authentication prompt message with no realm. Parameter is the hostname of the site */
+"AuthPromptAlertMessageText" = "Användarnamn och lösenord efterfrågas av %@.";
+
+/* Password textbox in Authentication prompt */
+"AuthPromptAlertPasswordPlaceholderText" = "Lösenord";
+
+/* Authentication prompt title */
+"AuthPromptAlertTitle" = "Autentisering krävs";
+
+/* Username textbox in Authentication prompt */
+"AuthPromptAlertUsernamePlaceholderText" = "Användarnamn";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "Blockera cookies från 3:e part";
+
+/* No comment provided by engineer. */
+"BlockAdsAndTracking" = "Blockera annonser och spårning";
+
+/* cookie settings option */
+"BlockAllCookies" = "Blockera alla cookies";
+
+/* title for section showing page blocking statistics */
+"BlockingMonitor" = "Blockeringsvisare";
+
+/* Brave panel individual toggle title */
+"BlockPhishing" = "Blockera phishing";
+
+/* No comment provided by engineer. */
+"BlockPhishingAndMalware" = "Blockera phishing och malware";
+
+/* Setting to enable popup blocking */
+"BlockPopups" = "Blockera popup-fönster";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "Blockera skript";
+
+/* Bookmark Folder Section Title */
+"BookmarkFolder" = "Bokmärkesmapp";
+
+/* Bookmark Info Section Title */
+"BookmarkInfo" = "Bokmärkesinformation";
+
+/* title for bookmarks panel */
+"Bookmarks" = "Bokmärken";
+
+/* Button to show the brave panel */
+"BravePanel" = "Brave-panelen";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"BraveShieldDefaults" = "Standardinställningar för Braves sköldar";
+
+/* Browser Lock feature callout enable action. */
+"BrowserLockCalloutEnable" = "Aktivera";
+
+/* Browser Lock feature callout message. */
+"BrowserLockCalloutMessage" = "Med kodlåset för Brave så kommer du behöva ange koden för att komma in i webbläsaren.";
+
+/* Browser Lock feature callout not now action. */
+"BrowserLockCalloutNotNow" = "Inte nu";
+
+/* Browser Lock feature callout title. */
+"BrowserLockCalloutTitle" = "Privat betyder privat.";
+
+/* Settings item for clearing browsing history */
+"BrowsingHistory" = "Webbläsarhistorik";
+
+/* Settings item for clearing the cache */
+"Cache" = "Cache";
+
+/* No comment provided by engineer. */
+"CancelButtonTitle" = "Avbryt";
+
+/* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
+"ClearPrivateData" = "Rensa privata data";
+
+/* The cancel button when confirming clear private data. */
+"ClearPrivateDataAlertCancelButtonTitle" = "Avbryt";
+
+/* Description of the confirmation dialog shown when a user tries to clear their private data. */
+"ClearPrivateDataAlertMessage" = "Den här åtgärden rensar alla dina privata data. Detta kan inte ångras.";
+
+/* The button that clears private data. */
+"ClearPrivateDataAlertOkButtonTitle" = "OK";
+
+/* The cancel button when confirming clear history. */
+"ClearSyncedHistoryAlertCancelButtoTitle" = "Avbryt";
+
+/* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
+"ClearSyncedHistoryAlertMessage" = "Den här åtgärden rensar alla dina privata data, inklusive historik från synkade enheter.";
+
+/* The confirmation button that clears history even when Sync is connected. */
+"ClearSyncedHistoryAlertOkButtoTitle" = "OK";
+
+/* No comment provided by engineer. */
+"CloseAllTabsTitle" = "Stäng alla %i flikar";
+
+/* No comment provided by engineer. */
+"Confirm" = "Bekräfta";
+
+/* Cookie settings option title */
+"CookieControl" = "Cookie-kontroll";
+
+/* Settings item for clearing cookies */
+"Cookies" = "Cookies";
+
+/* Copy app info to clipboard action sheet action. */
+"CopyAppInfoToClipboard" = "Kopiera appinformation till urklipp.";
+
+/* Context menu item for copying an image to the clipboard */
+"CopyImageActionTitle" = "Kopiera bild";
+
+/* Context menu item for copying a link URL to the clipboard */
+"CopyLinkActionTitle" = "Kopiera länk";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "Sökmotorer som används för närvarande";
+
+/* DuckDuckGo callout enable action. */
+"DDGCalloutEnable" = "Ja";
+
+/* DuckDuckGo message. */
+"DDGCalloutMessage" = "Vid privat sökning använder Brave DuckDuckGo för att leverera sökträffar. DuckDuckGo är en sökmotor som inte spårar din sökhistorik, vilket låter dig göra privata sökningar.";
+
+/* DuckDuckGo callout no action. */
+"DDGCalloutNo" = "Nej";
+
+/* DuckDuckGo callout title. */
+"DDGCalloutTitle" = "Privat sökning med DuckDuckGo?";
+
+/* No comment provided by engineer. */
+"Delete" = "Radera";
+
+/* Prompt option for cancelling out of deletion */
+"DeleteLoginAlertCancelActionTitle" = "Avbryt";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "Dina inloggningar tas bort permanent.";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "Dina inloggningar tas bort från alla anslutna enheter.";
+
+/* Prompt title when deleting logins */
+"DeleteLoginAlertTitle" = "Är du säker?";
+
+/* Label for the button used to delete the current login. */
+"DeleteLoginButtonTitle" = "Radera";
+
+/* Current device model and iOS version copied to clipboard. */
+"DeviceTemplate" = "Enhet %1$@ (%2$@)";
+
+/* No comment provided by engineer. */
+"Done" = "Klar";
+
+/* cookie settings option */
+"DontBlockCookies" = "Blockera inte cookies";
+
+/* Used as a button label for crash dialog prompt */
+"DontSendButtonTitle" = "Skicka inte";
+
+/* No comment provided by engineer. */
+"Edit" = "Ändra";
+
+/* Button to edit a bookmark */
+"EditBookmark" = "Ändra bokmärke";
+
+/* Button to edit a favorite */
+"EditFavorite" = "Ändra favorit";
+
+/* Description for new folder popup */
+"EnterFolderName" = "Ange mappnamn";
+
+/* Shown in error pages for files that can't be shown and need to be downloaded. */
+"ErrorPageOpenInSafariButtonTitle" = "Öppna i Safari";
+
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "Försök igen";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesAdvancedButton" = "Avancerat";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarning1" = "Varning: Vi kan inte garantera att kopplingen till denna webbplats är säker.";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarning2" = "Det kan vara en felkonfiguration eller manipulering av en angripare. Fortsätt om du accepterar den potentiella risken.";
+
+/* Warning text on the certificate error page */
+"ErrorPagesCertWarningDescription" = "Ägaren till % @ har konfigurerat sin webbplats felaktigt. För att skydda din information från att bli stulen så anslöt inte Brave till denna webbplats.";
+
+/* Title on the certificate error page */
+"ErrorPagesCertWarningTitle" = "Din anslutning är inte säker";
+
+/* Label for button to go back from the error page */
+"ErrorPagesGoBackButton" = "Gå tillbaka";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesVisitOnceButton" = "Besök webbplatsen ändå";
+
+/* Share action title */
+"FindInPage" = "Sök på sidan";
+
+/* Done button in Find in Page Toolbar. */
+"FindInPageDoneButtonAccessibilityLabel" = "Klar";
+
+/* Accessibility label for next result button in Find in Page Toolbar. */
+"FindInPageNextResultButtonAccessibilityLabel" = "Nästa resultat på sidan";
+
+/* Accessibility label for previous result button in Find in Page Toolbar. */
+"FindInPagePreviousResultButtonAccessibilityLabel" = "Föregående resultat på sidan";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "Fingeravtrycksmetoder";
+
+/* blocking stat title */
+"FingerprintingnProtection" = "Fingeratrycksskydd";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "Fingeravtrycksskydd";
+
+/* No comment provided by engineer. */
+"Home" = "Hem";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* individual blocking statistic title */
+"HTTPSUpgrades" = "HTTPS-uppgraderingar";
+
+/* title for per-site shield toggles */
+"IndividualControls" = "Inviduella kontroller";
+
+/* History tableview section header */
+"LastMonth" = "Förra månaden";
+
+/* History tableview section header */
+"LastWeek" = "Förra veckan";
+
+/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
+"LoginDetailLastModifiedCellFormatTitle" = "Senast ändrad %@";
+
+/* Label displayed above the password row in Login Detail View. */
+"LoginDetailPasswordCellTitle" = "lösenord";
+
+/* Label displayed above the username row in Login Detail View. */
+"LoginDetailUsernameCellTitle" = "användarnamn";
+
+/* Label displayed above the website row in Login Detail View. */
+"LoginDetailWebsiteCellTitle" = "hemsida";
+
+/* Label for the button used to deselect all logins. */
+"LoginListDeselectAllButtonTitle" = "Avmarkera alla";
+
+/* Label displayed when no logins are found after searching. */
+"LoginListNoLoginTitle" = "Inga inloggningar hittades";
+
+/* Title for Logins List View screen. */
+"LoginListScreenTitle" = "Inloggningar";
+
+/* Label for the button used to select all logins. */
+"LoginListSelectAllButtonTitle" = "Välj alla";
+
+/* Copy password text selection menu item */
+"MenuItemCopyTitle" = "Kopiera";
+
+/* Text selection menu item */
+"MenuItemFindInPageTitle" = "Sök på sidan";
+
+/* Hide password text selection menu item */
+"MenuItemHidePasswordTitle" = "Dölj";
+
+/* Open and Fill website text selection menu item */
+"MenuItemOpenAndFillTitle" = "Open & Fill";
+
+/* Reveal password text selection menu item */
+"MenuItemRevealPasswordTitle" = "Avslöja";
+
+/* Bookmark title / Device name */
+"Name" = "Namn";
+
+/* tabs bar show/hide option */
+"NeverShow" = "Visa aldrig";
+
+/* Title for new folder popup */
+"NewFolder" = "Ny mapp ";
+
+/* New Tab title */
+"NewTab" = "Ny flik";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "Öppna alla (%i)";
+
+/* Context menu item for opening a link in a new tab */
+"OpenInBackgroundTab" = "Öppna länk i ny flik";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "Öppna i ny privat flik ";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "Öppna i ny flik";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "Öppna inställningar";
+
+/* Error message displayed to user when their confirming passcode doesn't match the first code. */
+"PasscodeConfirmMisMatchErrorText" = "Lösenorden matchade inte. Försök igen.";
+
+/* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
+"PasscodeMatchOldErrorText" = "Ditt nya lösenord får inte vara samma som ditt befintliga.";
+
+/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
+"PreviewActionAddToBookmarksActionTitle" = "Lägg till i bokmärken";
+
+/* Label for preview action on Tab Tray Tab to close the current tab */
+"PreviewActionCloseTabActionTitle" = "Stäng flik";
+
+/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
+"PreviewActionCopyURLActionTitle" = "Kopiera URL";
+
+/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
+"PreviewFormatAccessibilityLabel" = "Förhandsvisning av %@";
+
+/* Settings privacy section title */
+"Privacy" = "Integritet";
+
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "Integritetspolicy";
+
+/* Private button title */
+"Private" = "Privat";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "Privat surfning";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "Endast privat surfning";
+
+/* Private tab details */
+"PrivateTabBody" = "Privata flikar sparas inte i Brave, men de gör dig inte heller anonym. Webbplatser du besöker i en privat flik kommer inte att visas i din historik och deras cookies försvinner alltid när du stänger dem, så det finns inget spår kvar av dem i Brave. Din mobiloperatör (eller ägaren av det trådlösa nätverk eller den VPN du är ansluten till) kan se vilka webbplatser du besöker och de webbplatserna får därför reda på din offentliga IP-adress, även när du använder privata flikar.";
+
+/* Private tab information link */
+"PrivateTabLink" = "Läs mer om privata flikar.";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "Privat flik";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "Snabbsökmotorer";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "Öka textstorleken";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "Ljusstyrka";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "Skärminställningar";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "Det gick inte att konvertera sidan";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Sans serif";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Serif";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "Aa";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "Ändrar typsnitt.";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "Laddar innehåll...";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "Ladda standardsida";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "Sidan kunde inte visas i läsläge.";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "Minska textstorleken";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "Ändrar färgtemat.";
+
+/* Dark theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleDark" = "Mörkt";
+
+/* Light theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleLight" = "Ljust";
+
+/* Sepia theme setting in Reading View settings */
+"ReaderModeThemeButtonTitleSepia" = "Sepia";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "Radera favorit";
+
+/* Show mail composer to report a bug. */
+"ReportABug" = "Rapportera en bugg";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "Okej";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "Nej";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "Det verkar som att Brave kraschade förut. Vill du återställa dina flikar?";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "Oj, det här var ju pinsamt.";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "Sparade inloggningar";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "Spara bild";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "Spara inloggningar";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "Blockerade skript";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "%@ sök";
+
+/* Title for default search engine picker. */
+"SearchEnginePickerNavTitle" = "Standardsökmotor";
+
+/* Search engines section of settings */
+"SearchEngines" = "Sökmotorer";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "Söker efter förslag";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "Rensa sökningar";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "Ange sökläge";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "Sök i inmatningsfältet";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "Sök";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "Sök";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "Sökinställningar";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "Visa sökförslag";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "Sökförslag från %@";
+
+/* Settings security section title */
+"Security" = "Säkerhet";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "Skicka kraschrapport så att Brave kan lösa problemet?";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "Oj! Brave kraschade";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "Skicka rapport";
+
+/* No comment provided by engineer. */
+"Settings" = "Inställningar";
+
+/* Error message that is shown in settings when there was a problem loading */
+"SettingsContentLoadErrorMessage" = "Kunde inte ladda sidan.";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "Dela länk";
+
+/* shields overview message */
+"ShieldsOverview" = "Sköldarna låter dig styra när annonser och spårare blockeras för varje webbplats du besöker. Om du föredrar att se annonser på en viss webbplats kan du aktivera dem här.";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "Obs: Några webbplatser kan behöva skript för att fungera korrekt, därför är den här skölden avstängd som standard.";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "d";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "h";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "min";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "s";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "Visa bokmärken";
+
+/* Button to show the history list */
+"ShowHistory" = "Visa historik";
+
+/* tabs bar show/hide option */
+"ShowInLandscapeOnly" = "Visa endast i landskapsläge";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "Visa flikar";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "Visa flikfältet";
+
+/* Brave panel topmost title */
+"SiteShieldSettings" = "Sköldar";
+
+/* Open search section of settings */
+"StandardTabSearch" = "Standardflik";
+
+/* Support section title */
+"Support" = "Support";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "Stäng";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "Sätter på och stänger av privat läge";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "Privat läge";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "Av";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "På";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "Navigationsfältet";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "Lägg till flik";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "Bakåt";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "Framåt";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "Säker anslutning";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "Läsläge";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "Lägg till i läslistan";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "Ladda om";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "Sök eller ange adress";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "Dela";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "Stoppa";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "Flikfack";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "Lägg till flik";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "Dra höger eller vänster med tre fingrar för att stänga fliken.";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "Stänger flik";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "Inga flikar";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "Flikar %1$@ till %2$@ av %3$@";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "Ny flik";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "Flik %1$@ av %2$@";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "Villkor";
+
+/* History tableview section header */
+"Today" = "Idag";
+
+/* Bookmark URL */
+"URL" = "URL";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "Adress och Sök";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "Använd regional annonsblockering";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "Version %1$@ (%2$@)";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "Webbinnehåll";
+
+/* History tableview section header */
+"Yesterday" = "Igår";
+
