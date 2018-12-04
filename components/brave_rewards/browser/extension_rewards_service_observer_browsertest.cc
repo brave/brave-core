@@ -9,12 +9,13 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
+#include "brave/components/brave_rewards/browser/content_site.h"
 
 using namespace brave_rewards;
 
 class ExtensionRewardsServiceObserverBrowserTest
     : public InProcessBrowserTest,
-      public RewardsServiceObserver {
+      public ExtensionRewardsServiceObserver {
   public:
 
   void SetUpOnMainThread() override {
@@ -28,11 +29,10 @@ class ExtensionRewardsServiceObserverBrowserTest
 
   void OnRecurringDonations(
       RewardsService* rewards_service,
-      const ledger::PublisherInfoList& list) override {
+      brave_rewards::ContentSiteList list) override {
 
-    ledger::PublisherInfo firstPublisher = list.front();
-    EXPECT_STREQ(firstPublisher.id.c_str(), "brave.com");
-    EXPECT_STREQ(std::to_string(firstPublisher.weight).c_str(), "10");
+    EXPECT_STREQ(list.front().id.c_str(), "brave.com");
+    EXPECT_STREQ(std::to_string(list.front().weight).c_str(), "10");
 
     on_recurring_notifications_callback_was_called_ = true;
   }
