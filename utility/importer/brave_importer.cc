@@ -653,7 +653,7 @@ void BraveImporter::ImportReferral() {
   // always there). `referralTimestamp` is only present after those
   // 90 days elapse. Week of installation should always be present
   // but if missing, it shouldn't cancel the import.
-  if (!TryFindStringKey(updates, "promoCode", referral.promo_code)) {
+  if (!TryFindStringKey(updates, "referralPromoCode", referral.promo_code)) {
     referral.promo_code = "";
   }
 
