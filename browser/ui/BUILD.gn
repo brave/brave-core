@@ -145,6 +145,8 @@ source_set("ui") {
 
   if (brave_rewards_enabled) {
     sources += [
+      "webui/brave_rewards_source.cc",
+      "webui/brave_rewards_source.h",
       "webui/brave_rewards_ui.cc",
       "webui/brave_rewards_ui.h",
     ]
