@@ -162,6 +162,7 @@ class TabLocationView: UIView {
         $0.accessibilityIdentifier = "TabToolbar.stopReloadButton"
         $0.accessibilityLabel = Strings.TabToolbarReloadButtonAccessibilityLabel
         $0.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
+        $0.tintColor = UIColor.Photon.Grey30
         let longPressGestureStopReloadButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressStopReload(_:)))
         $0.addGestureRecognizer(longPressGestureStopReloadButton)
         $0.addTarget(self, action: #selector(didClickStopReload), for: .touchUpInside)
