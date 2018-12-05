@@ -17,6 +17,9 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
         state.contributeLoad = true
       }
       // Ensure that state.excluded is respected at all times
+      if (!state.excluded) {
+        state.excluded = []
+      }
       state.autoContributeList = action.payload.list.filter((item: Rewards.Publisher) => {
         return !state.excluded.includes(item.id)
       })

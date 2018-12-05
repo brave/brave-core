@@ -239,7 +239,7 @@ void PostWriteCallback(
 void GetContentSiteListInternal(
     uint32_t start,
     uint32_t limit,
-    const GetContentSiteListCallback& callback,
+    const GetCurrentContributeListCallback& callback,
     const ledger::PublisherInfoList& publisher_list,
     uint32_t next_record) {
   std::unique_ptr<ContentSiteList> site_list(new ContentSiteList);
@@ -347,21 +347,23 @@ void RewardsServiceImpl::CreateWallet() {
   }
 }
 
-void RewardsServiceImpl::GetContentSiteList(
-    uint32_t start, uint32_t limit,
-    const GetContentSiteListCallback& callback) {
-  auto now = base::Time::Now();
+void RewardsServiceImpl::GetCurrentContributeList(
+    uint32_t start,
+    uint32_t limit,
+    const GetCurrentContributeListCallback& callback) {
   ledger::PublisherInfoFilter filter;
   filter.category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;
-  filter.month = GetPublisherMonth(now);
-  filter.year = GetPublisherYear(now);
+  filter.month = ledger::PUBLISHER_MONTH::ANY;
+  filter.year = -1;
   filter.min_duration = ledger_->GetPublisherMinVisitTime();
   filter.order_by.push_back(std::pair<std::string, bool>("ai.percent", false));
   filter.reconcile_stamp = ledger_->GetReconcileStamp();
   filter.excluded =
     ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
 
-  ledger_->GetPublisherInfoList(start, limit,
+  ledger_->GetPublisherInfoList(
+      start,
+      limit,
       filter,
       std::bind(&GetContentSiteListInternal,
                 start,
@@ -802,11 +804,6 @@ void RewardsServiceImpl::LoadPublisherInfoList(
     uint32_t limit,
     ledger::PublisherInfoFilter filter,
     ledger::PublisherInfoListCallback callback) {
-  auto now = base::Time::Now();
-  filter.month = GetPublisherMonth(now);
-  filter.year = GetPublisherYear(now);
-  filter.reconcile_stamp = ledger_->GetReconcileStamp();
-
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
                     start, limit, filter,
