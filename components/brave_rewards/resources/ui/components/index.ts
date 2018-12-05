@@ -6,6 +6,7 @@ import Alert from './alert'
 import Amount from './amount'
 import Box from './box'
 import DisabledContent from './disabledContent'
+import DisabledPanel from './disabledPanel'
 import Donate from './donate'
 import DonationOverlay from './donationOverlay'
 import GrantCaptcha from './grantCaptcha'
@@ -51,6 +52,7 @@ export {
   Amount,
   Box,
   DisabledContent,
+  DisabledPanel,
   DonationOverlay,
   Donate,
   GrantCaptcha,

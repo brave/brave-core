@@ -10,7 +10,7 @@ import { withKnobs, boolean, text, object, select } from '@storybook/addon-knobs
 // Components
 import Settings from './settings/settings'
 import SettingsMobile from './settingsMobile/settingsMobile'
-import { SiteBanner, Tip, PanelWelcome, WalletPanel, WalletSummary, WalletSummarySlider, WalletWrapper } from '../../../src/features/rewards'
+import { DisabledPanel, SiteBanner, Tip, PanelWelcome, WalletPanel, WalletSummary, WalletSummarySlider, WalletWrapper } from '../../../src/features/rewards'
 import { BatColorIcon, WalletAddIcon } from '../../../src/components/icons'
 import WelcomePage from '../../../src/features/rewards/welcomePage'
 
@@ -167,6 +167,26 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       </div>
     )
   }))
+  .add('Disabled Panel', () => {
+    const onPrivateLink = () => {
+      console.log('open up private tab info')
+    }
+
+    const onNonPrivateLink = () => {
+      console.log('open up rewards settings')
+    }
+
+    return (
+      <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '40px', left: '40px', width: '330px', borderRadius: '8px', overflow: 'hidden' }}>
+          <DisabledPanel onLinkOpen={onNonPrivateLink} />
+        </div>
+        <div style={{ position: 'absolute', top: '40px', left: '460px', width: '330px', borderRadius: '8px', overflow: 'hidden' }}>
+          <DisabledPanel isPrivate={true} onLinkOpen={onPrivateLink} />
+        </div>
+      </div>
+    )
+  })
   .add('Wallet Panel', withState({ showSummary: false, tipsEnabled: true, includeInAuto: true }, (store) => {
     const curveRgb = '233,235,255'
     const panelRgb = '249,251,252'
