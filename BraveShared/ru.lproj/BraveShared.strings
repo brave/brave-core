@@ -16,6 +16,10 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Реклама и трекеры";
 
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "Реклам и трекеров
+блокировано";
+
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Отправлять всегда";
 
