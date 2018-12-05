@@ -35,8 +35,10 @@
 #include "components/prefs/pref_service.h"
 #include "components/wifi/wifi_service.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/network_service_instance.h"
 #include "content/public/common/service_manager_connection.h"
 #include "net/url_request/url_fetcher.h"
+#include "services/network/public/cpp/network_connection_tracker.h"
 #include "services/service_manager/public/cpp/connector.h"
 #include "third_party/dom_distiller_js/dom_distiller.pb.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -663,8 +665,7 @@ void AdsServiceImpl::LoadSampleBundle(
 }
 
 bool AdsServiceImpl::IsNetworkConnectionAvailable() {
-  // TODO - implement this
-  return true;
+  return !content::GetNetworkConnectionTracker()->IsOffline();
 }
 
 void AdsServiceImpl::OnShow(Profile* profile,

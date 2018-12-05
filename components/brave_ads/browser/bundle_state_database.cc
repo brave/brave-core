@@ -58,7 +58,7 @@ bool BundleStateDatabase::Init() {
   // Version check.
   sql::InitStatus version_status = EnsureCurrentVersion();
   if (version_status != sql::INIT_OK)
-    return version_status;
+    return false;
 
   if (!committer.Commit())
     return false;

@@ -48,6 +48,8 @@ source_set("browser") {
       "//components/history/core/common",
       "//components/wifi",
       "//net",
+      "//services/network/public/cpp",
+      "//sql",
       "//ui/base",
       "//ui/message_center/public/cpp",
     ]
