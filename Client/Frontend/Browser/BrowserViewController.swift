@@ -417,7 +417,20 @@ class BrowserViewController: UIViewController {
     }
     
     fileprivate func setupTabs() {
-        let tabToSelect = tabManager.restoreAllTabs()
+        let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
+        let noTabsAdded = tabManager.tabsForCurrentMode.isEmpty
+        
+        var tabToSelect: Tab?
+        
+        if noTabsAdded {
+            // Two scenarios if there are no tabs in tabmanager:
+            // 1. We have not restored tabs yet, attempt to restore or make a new tab if there is nothing.
+            // 2. We are in private browsing mode and need to add a new private tab.
+            tabToSelect = isPrivate ? tabManager.addTab(isPrivate: true) : tabManager.restoreAllTabs()
+        } else {
+            tabToSelect = tabManager.tabsForCurrentMode.last
+        }
+        
         contentBlockListDeferred?.uponQueue(.main) { _ in
             self.tabManager.selectTab(tabToSelect)
         }
@@ -2814,11 +2827,7 @@ extension BrowserViewController: PreferencesObserver {
             let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
             switchToPrivacyMode(isPrivate: isPrivate)
             PrivateBrowsingManager.shared.isPrivateBrowsing = isPrivate
-            if let firstTab = tabManager.tabsForCurrentMode.first {
-                tabManager.selectTab(firstTab)
-            } else {
-                tabManager.addTabAndSelect(nil, isPrivate: isPrivate)
-            }
+            setupTabs()
             updateTabsBarVisibility()
         case Preferences.Shields.blockAdsAndTracking.key,
              Preferences.Shields.httpsEverywhere.key,
