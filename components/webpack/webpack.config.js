@@ -10,11 +10,9 @@ module.exports = (env, argv) => ({
   resolve: {
     extensions: ['.js', '.tsx', '.ts', '.json'],
     alias: {
-      'bittorrent-tracker': path.resolve(__dirname, '../../node_modules/bittorrent-tracker'),
       'dgram': 'chrome-dgram',
       'dns': path.resolve(__dirname, '../common/dns.ts'),
       'net': 'chrome-net',
-      'torrent-discovery': path.resolve(__dirname, '../../node_modules/torrent-discovery')
     }
   },
   module: {
