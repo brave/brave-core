@@ -239,7 +239,7 @@ void PostWriteCallback(
 void GetContentSiteListInternal(
     uint32_t start,
     uint32_t limit,
-    const GetContentSiteListCallback& callback,
+    const GetCurrentContributeListCallback& callback,
     const ledger::PublisherInfoList& publisher_list,
     uint32_t next_record) {
   std::unique_ptr<ContentSiteList> site_list(new ContentSiteList);
@@ -347,9 +347,10 @@ void RewardsServiceImpl::CreateWallet() {
   }
 }
 
-void RewardsServiceImpl::GetContentSiteList(
-    uint32_t start, uint32_t limit,
-    const GetContentSiteListCallback& callback) {
+void RewardsServiceImpl::GetCurrentContributeList(
+    uint32_t start,
+    uint32_t limit,
+    const GetCurrentContributeListCallback& callback) {
   auto now = base::Time::Now();
   ledger::PublisherInfoFilter filter;
   filter.category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;
@@ -361,7 +362,9 @@ void RewardsServiceImpl::GetContentSiteList(
   filter.excluded =
     ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
 
-  ledger_->GetPublisherInfoList(start, limit,
+  ledger_->GetPublisherInfoList(
+      start,
+      limit,
       filter,
       std::bind(&GetContentSiteListInternal,
                 start,
