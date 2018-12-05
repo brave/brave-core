@@ -2514,6 +2514,11 @@ extension BrowserViewController: HistoryStateHelperDelegate {
 extension BrowserViewController {
 
     func addCustomSearchButtonToWebView(_ webView: WKWebView) {
+        // For now we're going to just not add the custom search button to the web view
+        // TODO: #586 Re-enable custom search engines button or remove entirely
+        return
+        
+        /*
         //check if the search engine has already been added.
         let domain = webView.url?.domainURL.host
         let matches = self.profile.searchEngines.orderedEngines.filter {$0.shortName == domain}
@@ -2554,6 +2559,7 @@ extension BrowserViewController {
                 make.top.equalTo(nextButtonView.snp.top)
                 make.height.equalTo(inputView.snp.height)
             }
+        */
     }
 
     /**
