@@ -23,6 +23,10 @@ class BraveProfileChooserView : public ProfileChooserView {
 
   void ResetView() override;
 
+  views::View* CreateDiceSyncErrorView(const AvatarMenu::Item& avatar_item,
+    sync_ui_util::AvatarSyncErrorType error,
+    int button_string_id) override;
+
   void AddTorButton(views::GridLayout* layout);
 
   views::LabelButton* tor_profile_button_;
