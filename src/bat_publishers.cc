@@ -336,10 +336,12 @@ void BatPublishers::onSetExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
   publisher_info->month = ledger::PUBLISHER_MONTH::ANY;
   setNumExcludedSitesInternal(exclude);
 
+  std::string publisherKey = publisher_info->id;
+
   ledger_->SetPublisherInfo(std::move(publisher_info),
     std::bind(&BatPublishers::onSetPublisherInfo, this, _1, _2));
 
-  OnExcludedSitesChanged();
+  OnExcludedSitesChanged(publisherKey);
 }
 
 void BatPublishers::onSetPublisherInfo(ledger::Result result,
@@ -375,10 +377,13 @@ void BatPublishers::onSetPanelExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
   setNumExcludedSitesInternal(exclude);
 
   ledger::VisitData visit_data;
+  std::string publisherKey = publisher_info->id;
+
   ledger_->SetPublisherInfo(std::move(publisher_info),
       std::bind(&BatPublishers::onPublisherActivity, this, _1, _2,
       windowId, visit_data));
-  OnExcludedSitesChanged();
+
+  OnExcludedSitesChanged(publisherKey);
 }
 
 void BatPublishers::restorePublishers() {
@@ -820,8 +825,8 @@ void BatPublishers::onPublisherActivity(ledger::Result result,
   }
 }
 
-void BatPublishers::OnExcludedSitesChanged() {
-  ledger_->OnExcludedSitesChanged();
+void BatPublishers::OnExcludedSitesChanged(const std::string& publisher_id) {
+  ledger_->OnExcludedSitesChanged(publisher_id);
 }
 
 void BatPublishers::setBalanceReportItem(ledger::PUBLISHER_MONTH month,
