@@ -244,7 +244,6 @@ extension URL {
             components.scheme = self.scheme
             components.port = self.port
             components.host = normalized
-            components.path = "/"
             return components.url ?? self
         }
         return self
