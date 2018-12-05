@@ -110,7 +110,6 @@ void AdsTabHelper::DidFinishLoad(
 }
 
 void AdsTabHelper::DidAttachInterstitialPage() {
-  // TODO maybe this shouldn't fire? Are we tracking times?
   TabUpdated();
 }
 

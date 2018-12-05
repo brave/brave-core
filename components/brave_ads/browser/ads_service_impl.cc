@@ -731,8 +731,6 @@ void AdsServiceImpl::OpenSettings(Profile* profile,
   NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
 #endif
   nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
-  // TODO(bridiver) - what to put here?
-  // nav_params.referrer = GURL("https://brave.com");
   nav_params.window_action = NavigateParams::SHOW_WINDOW;
 #if defined(OS_ANDROID)
   TabModelList::HandlePopupNavigation(&nav_params);
