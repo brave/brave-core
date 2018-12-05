@@ -28,6 +28,9 @@ class AdBlockStats {
     let adBlockRegionFilePath = Bundle.main.path(forResource: "adblock-regions", ofType: "txt")
     let adBlockDataUrlPath = "https://adblock-data.s3.brave.com/"
     
+    /// If set to true, it uses local dat file instead of downloading it from the server.
+    let useLocalDatFile = true
+    
     var isNSPrefEnabled = true
     fileprivate var fifoCacheOfUrlsChecked = FifoDict()
     fileprivate var regionToS3FileName = [LocaleCode: String]()
@@ -116,6 +119,13 @@ class AdBlockStats {
     }
     
     func startLoading() {
+        // Temporarily a prepackaged blocklist data file is used.
+        if useLocalDatFile {
+            // First network loader is always the default one("en")
+            networkLoaders.first?.1.loadLocalData()
+            return
+        }
+        
         networkLoaders.forEach { $0.1.loadData() }
     }
     
