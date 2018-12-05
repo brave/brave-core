@@ -193,7 +193,10 @@ class TabManager: NSObject {
         if previous === tab {
             return
         }
-
+        // Convert the global mode to private if opening private tab from normal tab/ history/bookmark.
+        if selectedTab?.isPrivate == false && tab?.isPrivate == true {
+            PrivateBrowsingManager.shared.isPrivateBrowsing = true
+        }
         // Make sure to wipe the private tabs if the user has the pref turned on
         if !TabType.of(tab).isPrivate {
             removeAllPrivateTabs()
