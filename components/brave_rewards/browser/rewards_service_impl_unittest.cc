@@ -31,7 +31,7 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
   MOCK_METHOD4(OnRecoverWallet, void(RewardsService*, unsigned int, double, std::vector<brave_rewards::Grant>));
   MOCK_METHOD3(OnGrantFinish, void(RewardsService*, unsigned int, brave_rewards::Grant));
   MOCK_METHOD1(OnContentSiteUpdated, void(RewardsService*));
-  MOCK_METHOD1(OnExcludedSitesChanged, void(RewardsService*));
+  MOCK_METHOD2(OnExcludedSitesChanged, void(RewardsService*, std::string));
   MOCK_METHOD4(OnReconcileComplete, void(RewardsService*, unsigned int, const std::string&, const std::string&));
   MOCK_METHOD2(OnRecurringDonationUpdated, void(RewardsService*, brave_rewards::ContentSiteList));
   MOCK_METHOD2(OnCurrentTips, void(RewardsService*, brave_rewards::ContentSiteList));

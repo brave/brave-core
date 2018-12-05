@@ -93,8 +93,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onContributeList(list)
   }
 
-  function numExcludedSites (num: string) {
-    getActions().onNumExcludedSites(num)
+  function numExcludedSites (excludedSitesInfo: {num: string, publisherKey: string}) {
+    getActions().onNumExcludedSites(excludedSitesInfo)
   }
 
   function balanceReports (reports: Record<string, Rewards.Report>) {

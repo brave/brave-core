@@ -93,7 +93,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                        unsigned int result,
                        brave_rewards::Grant grant) override;
   void OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) override;
-  void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service) override;
+  void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service,
+                              std::string publisher_id) override;
   void OnReconcileComplete(brave_rewards::RewardsService* rewards_service,
                            unsigned int result,
                            const std::string& viewing_id,
@@ -464,10 +465,16 @@ void RewardsDOMHandler::OnContentSiteUpdated(brave_rewards::RewardsService* rewa
       base::Bind(&RewardsDOMHandler::OnGetContentSiteList, weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service) {
+void RewardsDOMHandler::OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service,
+                                               std::string publisher_id) {
   if (rewards_service_ && web_ui()->CanCallJavascript()) {
-    int num = (int)rewards_service_->GetNumExcludedSites();
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.numExcludedSites", base::Value(num));
+    base::DictionaryValue excludedSitesInfo;
+    int num = rewards_service_->GetNumExcludedSites();
+
+    excludedSitesInfo.SetString("num", std::to_string(num));
+    excludedSitesInfo.SetString("publisherKey", publisher_id);
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.numExcludedSites", excludedSitesInfo);
   }
 }
 
