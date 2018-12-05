@@ -78,9 +78,10 @@ class RewardsServiceImpl : public RewardsService,
   std::string GetWalletPassphrase() const override;
   unsigned int GetNumExcludedSites() const override;
   void RecoverWallet(const std::string passPhrase) const override;
-  void GetContentSiteList(uint32_t start,
-                          uint32_t limit,
-     const GetContentSiteListCallback& callback) override;
+  void GetCurrentContributeList(
+      uint32_t start,
+      uint32_t limit,
+      const GetCurrentContributeListCallback& callback) override;
   void OnLoad(SessionID tab_id, const GURL& url) override;
   void OnUnload(SessionID tab_id) override;
   void OnShow(SessionID tab_id) override;
