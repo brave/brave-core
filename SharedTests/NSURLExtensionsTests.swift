@@ -358,9 +358,9 @@ class NSURLExtensionsTests: XCTestCase {
 
     func testdomainURL() {
         let urls = [
-            ("https://www.example.com/index.html", "https://example.com/"),
-            ("https://mail.example.com/index.html", "https://mail.example.com/"),
-            ("https://mail.example.co.uk/index.html", "https://mail.example.co.uk/"),
+            ("https://www.example.com/index.html", "https://example.com"),
+            ("https://mail.example.com/index.html", "https://mail.example.com"),
+            ("https://mail.example.co.uk/index.html", "https://mail.example.co.uk"),
         ]
         urls.forEach { XCTAssertEqual(URL(string:$0.0)!.domainURL.absoluteString, $0.1) }
     }

@@ -6,6 +6,7 @@ import Foundation
 import Shared
 import BraveShared
 import SwiftKeychainWrapper
+import Data
 
 private let log = Logger.browserLogger
 
@@ -96,6 +97,39 @@ extension Preferences {
         // This needs to be translated to our new preference.
         Preferences.General.isFirstLaunch.value = Preferences.DAU.lastLaunchInfo.value == nil
         
+        // Migrate the shield overrides
+        migrateShieldOverrides()
+        
         Preferences.Migration.completed.value = true
+    }
+    
+    private class func migrateShieldOverrides() {
+        // 1.6 had an unfortunate bug that caused shield overrides to create new Domain objects using `http` regardless
+        // which would lead to a duplicated Domain object using http that held custom shield overides settings for that
+        // domain
+        //
+        // Therefore we need to migrate any `http` Domains shield overrides to its sibiling `https` domain if it exists
+        let allHttpPredicate = NSPredicate(format: "url BEGINSWITH[cd] 'http://'")
+        let backgroundContext = DataController.newBackgroundContext()
+        
+        guard let httpDomains = Domain.all(where: allHttpPredicate, context: backgroundContext) else {
+            return
+        }
+        
+        for domain in httpDomains {
+            guard let urlString = domain.url, var urlComponents = URLComponents(string: urlString) else { continue }
+            urlComponents.scheme = "https"
+            guard let httpsUrl = urlComponents.url?.absoluteString else { continue }
+            if let httpsDomain = Domain.first(where: NSPredicate(format: "url == %@", httpsUrl), context: backgroundContext) {
+                httpsDomain.shield_allOff = domain.shield_allOff
+                httpsDomain.shield_adblockAndTp = domain.shield_adblockAndTp
+                httpsDomain.shield_noScript = domain.shield_noScript
+                httpsDomain.shield_fpProtection = domain.shield_fpProtection
+                httpsDomain.shield_safeBrowsing = domain.shield_safeBrowsing
+                httpsDomain.shield_httpse = domain.shield_httpse
+                // Could call `domain.delete()` here (or add to batch to delete)
+            }
+        }
+        DataController.save(context: backgroundContext)
     }
 }
