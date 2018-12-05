@@ -1063,11 +1063,6 @@ void RewardsServiceImpl::LoadActivityInfoList(
     uint32_t limit,
     ledger::ActivityInfoFilter filter,
     ledger::PublisherInfoListCallback callback) {
-void RewardsServiceImpl::LoadPublisherInfoList(
-    uint32_t start,
-    uint32_t limit,
-    ledger::ActivityInfoFilter filter,
-    ledger::PublisherInfoListCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&GetActivityListOnFileTaskRunner,
                     start, limit, filter,
