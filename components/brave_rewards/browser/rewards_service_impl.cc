@@ -351,11 +351,10 @@ void RewardsServiceImpl::GetCurrentContributeList(
     uint32_t start,
     uint32_t limit,
     const GetCurrentContributeListCallback& callback) {
-  auto now = base::Time::Now();
   ledger::PublisherInfoFilter filter;
   filter.category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;
-  filter.month = GetPublisherMonth(now);
-  filter.year = GetPublisherYear(now);
+  filter.month = ledger::PUBLISHER_MONTH::ANY;
+  filter.year = -1;
   filter.min_duration = ledger_->GetPublisherMinVisitTime();
   filter.order_by.push_back(std::pair<std::string, bool>("ai.percent", false));
   filter.reconcile_stamp = ledger_->GetReconcileStamp();
@@ -805,11 +804,6 @@ void RewardsServiceImpl::LoadPublisherInfoList(
     uint32_t limit,
     ledger::PublisherInfoFilter filter,
     ledger::PublisherInfoListCallback callback) {
-  auto now = base::Time::Now();
-  filter.month = GetPublisherMonth(now);
-  filter.year = GetPublisherYear(now);
-  filter.reconcile_stamp = ledger_->GetReconcileStamp();
-
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
                     start, limit, filter,
