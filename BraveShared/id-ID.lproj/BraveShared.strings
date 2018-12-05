@@ -16,6 +16,10 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Iklan dan Pelacak";
 
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "Iklan & Pelacak
+Terblokir";
+
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Selalu Kirim";
 

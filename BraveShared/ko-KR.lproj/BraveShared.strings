@@ -16,6 +16,9 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "광고 및 개인정보 트래커";
 
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "차단 된 광고 및 트래커";
+
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "항상 보내기";
 

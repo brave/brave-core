@@ -16,6 +16,10 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "広告とトラッカー";
 
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "ブロックされている
+広告とトラッカー";
+
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "常に送信";
 

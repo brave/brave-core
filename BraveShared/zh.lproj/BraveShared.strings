@@ -16,6 +16,10 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "广告和跟踪器";
 
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "廣告和追蹤器
+封鎖";
+
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "总是发送";
 

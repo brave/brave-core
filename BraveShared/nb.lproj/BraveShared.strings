@@ -16,6 +16,10 @@
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Annonser og sporingsprogrammer";
 
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "Annonser og 
+sporer blokkert";
+
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Send alltid";
 
