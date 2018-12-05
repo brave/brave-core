@@ -103,4 +103,3 @@ public class DataController: NSObject {
         return FileManager.default.fileExists(atPath: storeURL.path)
     }
 }
-

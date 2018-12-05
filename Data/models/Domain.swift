@@ -32,7 +32,7 @@ public final class Domain: NSManagedObject, CRUD {
         super.awakeFromInsert()
     }
 
-    public class func getOrCreateForUrl(_ url: URL, context: NSManagedObjectContext) -> Domain {
+    public class func getOrCreateForUrl(_ url: URL, context: NSManagedObjectContext, save: Bool = true) -> Domain {
         let domainString = url.domainURL.absoluteString
         if let domain = Domain.first(where: NSPredicate(format: "url == %@", domainString), context: context) {
             return domain
@@ -47,7 +47,9 @@ public final class Domain: NSManagedObject, CRUD {
         context.performAndWait {
             newDomain = Domain(entity: Domain.entity(context), insertInto: context)
             newDomain.url = domainString
-            DataController.save(context: context)
+            if save {
+                DataController.save(context: context)
+            }
         }
         return newDomain
     }

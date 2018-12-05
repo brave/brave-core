@@ -200,7 +200,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         bk.syncOrder = root?.syncOrder
         
         if let location = site?.location, let url = URL(string: location) {
-            bk.domain = Domain.getOrCreateForUrl(url, context: context)
+            bk.domain = Domain.getOrCreateForUrl(url, context: context, save: false)
         }
         
         // This also sets up a parent folder
@@ -243,13 +243,25 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
             format: "%K == %@ AND %K == NO", parentFolderKP, parent ?? nilArgumentForPredicate, isFavoriteKP)
     }
     
+    public class func add(from list: [(url: URL, title: String)]) {
+        let context = DataController.newBackgroundContext()
+        context.performAndWait {
+            list.forEach { fav in
+                Bookmark.add(url: fav.url, title: fav.title, isFavorite: true, save: false, context: context)
+            }
+            DataController.save(context: context)
+        }
+    }
+    
     public class func add(url: URL?,
                           title: String?,
                           customTitle: String? = nil, // Folders only use customTitle
                           parentFolder: Bookmark? = nil,
                           isFolder: Bool = false,
                           isFavorite: Bool = false,
-                          syncOrder: String? = nil) {
+                          syncOrder: String? = nil,
+                          save: Bool = true,
+                          context: NSManagedObjectContext? = nil) {
         
         let site = SyncSite()
         site.title = title
@@ -263,7 +275,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         bookmark.site = site
         bookmark.syncOrder = syncOrder
         
-        _ = add(rootObject: bookmark, save: true, sendToSync: true, parentFolder: parentFolder)
+        _ = add(rootObject: bookmark, save: save, sendToSync: true, parentFolder: parentFolder, context: context ?? DataController.newBackgroundContext())
     }
     
     public class func contains(url: URL, getFavorites: Bool = false) -> Bool {

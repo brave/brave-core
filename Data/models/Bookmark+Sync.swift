@@ -93,8 +93,6 @@ extension Bookmark {
         } else {
             syncOrder = Sync.shared.getBookmarkOrder(previousOrder: lastBookmarkOrder, nextOrder: nil)
         }
-        
-        DataController.save(context: context)
     }
     
     class func removeSyncOrders() {
