@@ -45,5 +45,6 @@ export const enum types {
   CHECK_IMPORTED = '@@rewards/CHECK_IMPORTED',
   ON_IMPORTED_CHECK = '@@rewards/ON_IMPORTED_CHECK',
   GET_ADS_DATA = '@@rewards/GET_ADS_DATA',
-  ON_ADS_DATA = '@@rewards/ON_ADS_DATA'
+  ON_ADS_DATA = '@@rewards/ON_ADS_DATA',
+  ON_ADS_SETTING_SAVE = '@@rewards/ON_ADS_SETTING_SAVE'
 }

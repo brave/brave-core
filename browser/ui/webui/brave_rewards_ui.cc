@@ -78,6 +78,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetContributionList(const base::ListValue* args);
   void CheckImported(const base::ListValue* args);
   void GetAdsData(const base::ListValue* args);
+  void SaveAdsSetting(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -206,6 +207,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getAdsData",
                                     base::BindRepeating(&RewardsDOMHandler::GetAdsData,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.saveAdsSetting",
+                                    base::BindRepeating(&RewardsDOMHandler::SaveAdsSetting,
                                                         base::Unretained(this)));
 }
 
@@ -711,6 +715,26 @@ void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
     adsData.SetInteger("adsPerHour", ads_per_hour);
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsData", adsData);
+  }
+}
+
+void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
+  if (ads_service_) {
+    std::string key;
+    std::string value;
+    args->GetString(0, &key);
+    args->GetString(1, &value);
+
+    if (key == "adsEnabled") {
+      ads_service_->set_ads_enabled(value == "true");
+    }
+
+    if (key == "adsPerHour") {
+      ads_service_->set_ads_per_hour(std::stoi(value));
+    }
+
+    base::ListValue* emptyArgs;
+    GetAdsData(emptyArgs);
   }
 }
 
