@@ -37,6 +37,7 @@ import {
   StyledPipe
 } from './style'
 import { getLocale } from '../../../helpers'
+import { GrantCaptcha, GrantComplete, GrantError, GrantWrapper } from '../'
 import Alert, { Type as AlertType } from '../alert'
 import { Button } from '../../../components'
 import {
@@ -55,6 +56,16 @@ import megaphoneIconUrl from './assets/megaphone.svg'
 type Grant = {
   tokens: string,
   expireDate: string
+}
+
+type GrantClaim = {
+  promotionId?: string
+  altcurrency?: string
+  probi: string
+  expiryTime: number
+  captcha?: string
+  hint?: string
+  status?: 'wrongPosition' | 'grantGone' | 'generalError' | number | null
 }
 
 export interface AlertWallet {
@@ -92,12 +103,20 @@ export interface Props {
   onSettingsClick?: () => void
   onActivityClick?: () => void
   grants?: Grant[]
+  grant?: GrantClaim
   alert?: AlertWallet | null
   id?: string
   gradientTop?: string
   isMobile?: boolean
   notification?: Notification
+  onFetchCaptcha?: () => void
+  onGrantHide?: () => void
+  onFinish?: () => void
+  onSolution?: (x: number, y: number) => void
+  convertProbiToFixed?: (probi: string, place: number) => string
 }
+
+export type Step = '' | 'captcha' | 'complete'
 
 interface State {
   grantDetails: boolean
@@ -122,6 +141,92 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     })
   }
 
+  onFetchCaptcha = () => {
+    if (this.props.onFetchCaptcha) {
+      this.props.onFetchCaptcha()
+    }
+  }
+
+  onGrantHide = () => {
+    if (this.props.onGrantHide) {
+      this.props.onGrantHide()
+    }
+  }
+
+  onFinish = () => {
+    if (this.props.onFinish) {
+      this.props.onFinish()
+    }
+  }
+
+  onSolution = (x: number, y: number) => {
+    if (this.props.onSolution) {
+      this.props.onSolution(x, y)
+    }
+  }
+
+  grantCaptcha = () => {
+    const { grant } = this.props
+
+    if (!grant || !grant.promotionId) {
+      return
+    }
+
+    if (grant && grant.status === 'grantGone') {
+      return (
+        <GrantWrapper
+          onClose={this.onFinish}
+          title={getLocale('grantGoneTitle')}
+          text={''}
+        >
+          <GrantError
+            buttonText={getLocale('grantGoneButton')}
+            text={getLocale('grantGoneText')}
+            onButtonClick={this.onFinish}
+          />
+        </GrantWrapper>
+      )
+    }
+
+    if (grant && grant.status === 'generalError') {
+      return (
+        <GrantWrapper
+          onClose={this.onGrantHide}
+          title={getLocale('grantGeneralErrorTitle')}
+          text={''}
+        >
+          <GrantError
+            buttonText={getLocale('grantGeneralErrorButton')}
+            text={getLocale('grantGeneralErrorText')}
+            onButtonClick={this.onGrantHide}
+          />
+        </GrantWrapper>
+      )
+    }
+
+    if (!grant.captcha || !grant.hint) {
+      return
+    }
+
+    return (
+      <GrantWrapper
+        isPanel={true}
+        onClose={this.onGrantHide}
+        title={status === 'wrongPosition' ? getLocale('captchaMissedTarget') : getLocale('captchaProveHuman')}
+        text={getLocale('proveHuman')}
+        hint={grant.hint}
+      >
+        <GrantCaptcha
+          isPanel={true}
+          onSolution={this.onSolution}
+          dropBgImage={grant.captcha}
+          hint={grant.hint}
+          isWindows={window.navigator.platform === 'Win32'}
+        />
+      </GrantWrapper>
+    )
+  }
+
   generateNotification = (notification: Notification | undefined) => {
     if (!notification) {
       return null
@@ -138,13 +243,23 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           {this.getNotificationIcon(notification)}
           {this.getNotificationMessage(notification)}
           <StyledButton>
-            <Button
-              size={'small'}
-              type={'accent'}
-              level={'primary'}
-              onClick={onClose}
-              text={'OK'}
-            />
+            {
+              notification.type === 'grant'
+              ? <Button
+                size={'small'}
+                type={'accent'}
+                level={'primary'}
+                onClick={this.onFetchCaptcha}
+                text={getLocale('claim')}
+              />
+              : <Button
+                size={'small'}
+                type={'accent'}
+                level={'primary'}
+                onClick={onClose}
+                text={'OK'}
+              />
+            }
           </StyledButton>
         </StyledNotificationContent>
       </>
@@ -232,14 +347,21 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       contentPadding,
       showSecActions,
       grants,
+      grant,
       onSettingsClick,
       alert,
       gradientTop,
       notification,
-      isMobile
+      isMobile,
+      convertProbiToFixed
     } = this.props
 
     const hasGrants = this.hasGrants(grants)
+
+    let tokens = '0.0'
+    if (grant && grant.probi && convertProbiToFixed) {
+      tokens = convertProbiToFixed(grant.probi, 1)
+    }
 
     return (
       <>
@@ -249,6 +371,23 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           isMobile={isMobile}
           notification={notification}
         >
+          {
+            grant && !grant.expiryTime
+            ? this.grantCaptcha()
+            : null
+          }
+          {
+            grant && grant.expiryTime
+            ? <GrantWrapper
+              isPanel={true}
+              onClose={this.onFinish}
+              title={getLocale('captchaLuckyDay')}
+              text={getLocale('captchaOnTheWay')}
+            >
+              <GrantComplete isMobile={true} onClose={this.onFinish} amount={tokens} date={new Date(grant.expiryTime).toLocaleDateString()} />
+            </GrantWrapper>
+            : null
+          }
           <StyledHeader>
             {
               !notification

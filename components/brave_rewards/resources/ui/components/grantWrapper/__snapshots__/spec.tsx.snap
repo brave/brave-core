@@ -21,13 +21,13 @@ exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   font-family: Poppins,sans-serif;
-  background-color: rgba(255,255,255,0.95);
   overflow: hidden;
   width: 100%;
   padding: 0 52px 20px;
   border-radius: 6px;
   height: auto;
   overflow-y: hidden;
+  background: rgba(255,255,255,0.95);
 }
 
 .c3 {

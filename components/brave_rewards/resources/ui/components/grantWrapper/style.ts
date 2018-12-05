@@ -5,7 +5,20 @@
 import styled from 'styled-components'
 
 interface StyleProps {
+  isPanel?: boolean
   fullScreen?: boolean
+}
+
+const getBackground = (props: StyleProps) => {
+  if (props.fullScreen) {
+    return '#fff'
+  }
+
+  if (props.isPanel) {
+    return 'linear-gradient(-180deg, rgba(255, 255, 255, 1) 50%, rgba(228, 242, 255, 1) 100%)'
+  }
+
+  return 'rgba(255, 255, 255, 0.95)'
 }
 
 export const StyledWrapper = styled<StyleProps, 'div'>('div')`
@@ -18,13 +31,13 @@ export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   align-content: flex-start;
   flex-wrap: wrap;
   font-family: Poppins, sans-serif;
-  background-color: ${p => p.fullScreen ? '#fff' : 'rgba(255, 255, 255, 0.95)'};
   overflow: hidden;
   width: 100%;
   padding: 0 52px 20px;
   border-radius: 6px;
-  height: ${p => p.fullScreen ? '100%' : 'auto'};
+  height: ${p => (p.fullScreen || p.isPanel) ? '100%' : 'auto'};
   overflow-y: ${p => p.fullScreen ? 'scroll' : 'hidden'};
+  background: ${p => getBackground(p)};
 `
 
 export const StyledHeader = styled<{}, 'div'>('div')`
@@ -33,10 +46,10 @@ export const StyledHeader = styled<{}, 'div'>('div')`
   margin: 59px 0;
 `
 
-export const StyledTitle = styled<{}, 'div'>('div')`
+export const StyledTitle = styled<StyleProps, 'div'>('div')`
   width: 100%;
-  font-size: 28px;
-  font-weight: 500;
+  font-size: ${p => p.isPanel ? 20 : 28}px;
+  font-weight: ${p => p.isPanel ? 'normal' : 500};
   line-height: 1.29;
   letter-spacing: -0.2px;
   text-align: center;
@@ -64,4 +77,21 @@ export const StyledText = styled<{}, 'div'>('div')`
   line-height: 1.63;
   text-align: center;
   color: #4b4c5c;
+`
+
+export const StyledGrantIcon = styled<{}, 'img'>('img')`
+  height: 53px;
+  width: 53px;
+  margin: 25px auto 15px;
+`
+
+export const StyledPanelText = styled<{}, 'div'>('div')`
+  margin-top: 7px;
+  padding: 7px;
+  background: rgba(241, 241, 245, 0.70);
+  border-radius: 8px 8px 8px 8px;
+`
+
+export const StyledHint = styled<{}, 'span'>('span')`
+  font-weight: 600;
 `

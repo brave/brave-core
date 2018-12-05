@@ -3,13 +3,21 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper, StyledDropArea, StyledDrag, StyledText, StyledImageWrap, StyledImage } from './style'
+import {
+  StyledWrapper,
+  StyledDropArea,
+  StyledDrag,
+  StyledText,
+  StyledImageWrap,
+  StyledImage
+} from './style'
 import { getLocale } from '../../../helpers'
 
 import batUrl from './assets/bat.png'
 
 export interface Props {
   id?: string
+  isPanel?: true
   isWindows?: boolean
   onSolution: (x: number, y: number) => void
   dropBgImage: string
@@ -84,7 +92,7 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, dropBgImage, hint } = this.props
+    const { id, isPanel, dropBgImage, hint } = this.props
 
     return (
       <StyledWrapper
@@ -95,9 +103,13 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
           <StyledImageWrap>
             <StyledImage src={batUrl} onDragStart={this.onCaptchaDrag} draggable={true} />
           </StyledImageWrap>
-          <StyledText>
-            {getLocale('dndCaptchaText1')} <b>{hint}</b> {getLocale('dndCaptchaText2')}
-          </StyledText>
+          {
+            !isPanel
+            ? <StyledText>
+                {getLocale('dndCaptchaText1')} <b>{hint}</b> {getLocale('dndCaptchaText2')}
+              </StyledText>
+            : null
+          }
         </StyledDrag>
         <StyledDropArea src={dropBgImage} draggable={false} onDrop={this.onCaptchaDrop} onDragOver={this.preventDefault} />
       </StyledWrapper>

@@ -3,35 +3,61 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper, StyledHeader, StyledTitle, StyledClose, StyledText } from './style'
+import { StyledWrapper, StyledHeader, StyledTitle, StyledClose, StyledText, StyledGrantIcon, StyledPanelText, StyledHint } from './style'
 import { CloseStrokeIcon } from '../../../components/icons'
+import { getLocale } from '../../../helpers'
 
 import header from './assets/header'
+import giftIconUrl from './assets/gift.svg'
 
 export interface Props {
   id?: string
+  isPanel?: boolean
   onClose: () => void
   title: string
   fullScreen?: boolean
+  hint?: string
   text: React.ReactNode
   children: React.ReactNode
 }
 
 export default class GrantWrapper extends React.PureComponent<Props, {}> {
   render () {
-    const { id, fullScreen, onClose, title, text, children } = this.props
+    const { id, isPanel, fullScreen, hint, onClose, title, text, children } = this.props
 
     return (
       <StyledWrapper
         id={id}
+        isPanel={isPanel}
         fullScreen={fullScreen}
       >
         <StyledClose onClick={onClose}>
           <CloseStrokeIcon />
         </StyledClose>
-        <StyledHeader>{header}</StyledHeader>
-        <StyledTitle>{title}</StyledTitle>
-        <StyledText>{text}</StyledText>
+        {
+          !isPanel
+          ? <StyledHeader>
+              {header}
+            </StyledHeader>
+          : <StyledGrantIcon src={giftIconUrl} />
+        }
+        <StyledTitle isPanel={isPanel}>
+          {title}
+        </StyledTitle>
+        {
+          !isPanel || !hint
+          ? <StyledText>
+              {text}
+            </StyledText>
+          : null
+        }
+        {
+          isPanel && hint
+          ? <StyledPanelText>
+              {getLocale('captchaDrag')} <StyledHint>{hint}</StyledHint> {getLocale('captchaTarget')}
+            </StyledPanelText>
+          : null
+        }
         {children}
       </StyledWrapper>
     )

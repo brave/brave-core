@@ -13,6 +13,7 @@ import SettingsMobile from './settingsMobile/settingsMobile'
 import { DisabledPanel, SiteBanner, Tip, PanelWelcome, WalletPanel, WalletSummary, WalletSummarySlider, WalletWrapper } from '../../../src/features/rewards'
 import { BatColorIcon, WalletAddIcon } from '../../../src/components/icons'
 import WelcomePage from '../../../src/features/rewards/welcomePage'
+import { Notification } from '../../../src/features/rewards/walletWrapper'
 
 const bartBaker = require('../../assets/img/bartBaker.jpeg')
 const siteBgImage = require('../../assets/img/bg_siteBanner.jpg')
@@ -20,11 +21,34 @@ const siteBgLogo = require('../../assets/img/ddgo_siteBanner.svg')
 const siteScreen = require('../../assets/img/ddgo_site.png')
 const tipScreen = require('../../assets/img/tip_site.jpg')
 
+const captchaDrop = require('../../assets/img/captchaDrop.png')
+
+const doNothing = (id: string) => {
+  console.log('nothing')
+}
+
 const donationAmounts = [
   { tokens: '1.0', converted: '0.30', selected: false },
   { tokens: '5.0', converted: '1.50', selected: false },
   { tokens: '10.0', converted: '3.00', selected: false }
 ]
+
+const defaultGrant = {
+  promotionId: 'test',
+  altcurrency: 'none',
+  probi: '',
+  expiryTime: 0,
+  captcha: '',
+  hint: ''
+}
+
+const grantNotification = {
+  id: '001',
+  type: 'grant',
+  date: 'July 7',
+  onCloseNotification: doNothing,
+  text: <span>Free 30 BAT have been awarded to you.</span>
+}
 
 const dummyOptInAction = () => {
   console.log(dummyOptInAction)
@@ -187,7 +211,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       </div>
     )
   })
-  .add('Wallet Panel', withState({ showSummary: false, tipsEnabled: true, includeInAuto: true }, (store) => {
+  .add('Wallet Panel', withState({ grant: defaultGrant, notification: grantNotification, showSummary: false, tipsEnabled: true, includeInAuto: true }, (store) => {
     const curveRgb = '233,235,255'
     const panelRgb = '249,251,252'
 
@@ -215,19 +239,53 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       store.set({ tipsEnabled: !store.state.tipsEnabled })
     }
 
+    const onFetchCaptcha = () => {
+      const hint = 'blue'
+      const captcha = captchaDrop
+      const newGrant = {
+        ...store.state.grant,
+        captcha,
+        hint
+      }
+      store.set({ grant: newGrant })
+    }
+
+    const onGrantHide = () => {
+      const hint = ''
+      const captcha = ''
+      const newGrant = {
+        ...store.state.grant,
+        captcha,
+        hint
+      }
+      store.set({ grant: newGrant })
+    }
+
+    const onSolution = (x: number, y: number) => {
+      const expiryTime = 99
+      const newGrant = {
+        ...store.state.grant,
+        expiryTime
+      }
+      store.set({ grant: newGrant })
+    }
+
+    const onFinish = () => {
+      store.set({ grant: undefined })
+      store.set({ notification: undefined })
+    }
+
+    const convertProbiToFixed = (probi: string, places: number = 1) => {
+      return '0.0'
+    }
+
     return (
       <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '100vh', margin: '0 auto', position: 'relative' }}>
         <div style={{ position: 'absolute', top: '50px', left: '560px', borderRadius: '8px', overflow: 'hidden' }}>
           <WalletWrapper
             compact={true}
             contentPadding={false}
-            notification={{
-              id: '001',
-              type: 'ads',
-              date: 'July 7',
-              onCloseNotification: onCloseNotification,
-              text: <span>You've earned 10 BAT from Brave Ads</span>
-            }}
+            notification={store.state.notification as Notification}
             gradientTop={getGradientColor()}
             balance={text('Tokens', '30.0')}
             converted={text('Converted', '15.50 USD')}
@@ -260,6 +318,12 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
                 expireDate: '10/10/2018'
               }
             ])}
+            grant={store.state.grant}
+            onGrantHide={onGrantHide}
+            onFetchCaptcha={onFetchCaptcha}
+            onSolution={onSolution}
+            onFinish={onFinish}
+            convertProbiToFixed={convertProbiToFixed}
           >
             <WalletSummarySlider
               id={'panel-slider'}
