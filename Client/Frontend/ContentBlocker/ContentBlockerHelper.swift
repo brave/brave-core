@@ -91,8 +91,9 @@ class BlocklistName: Hashable, CustomStringConvertible {
     
     private func needsCompiling(ruleStore: WKContentRuleListStore) -> Deferred<Bool> {
         let needsCompiling = Deferred<Bool>()
-        if fileVersionPref?.value == fileVersion {
-            needsCompiling.fill(false)
+        if fileVersionPref?.value != fileVersion {
+            // New file, so we must update the lists, no need to check the store
+            needsCompiling.fill(true)
             return needsCompiling
         }
         
