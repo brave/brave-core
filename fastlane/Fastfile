@@ -83,6 +83,25 @@ platform :ios do
     )
   end
 
+  desc "Create an archive to be uploaded to the App Store"
+  lane :release do |options|
+    set_build_number(options)
+
+    carthage(
+      platform: "iOS",
+      cache_builds: true,
+      configuration: "Release",
+    )
+
+    gym(
+      scheme: "Firefox",
+      sdk: "iphoneos",
+      clean: true,
+      skip_package_ipa: true,
+      xcargs: "-allowProvisioningUpdates BRAVE_API_KEY=\"#{sh("head", "-1", "#{ENV['HOME']}/.brave-api-key")}\"",
+    )
+  end
+
   # Private helper methods ---------------------------------------
 
   desc "Adds the version/build tag on top of the AppIcon. Takes the following arguments: \"
