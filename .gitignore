@@ -85,5 +85,4 @@ BuildId.xcconfig
 
 Client/Configuration/Local/
 
-ABPFilterParserData.dat
 adblock-regions.txt
