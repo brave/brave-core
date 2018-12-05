@@ -274,14 +274,15 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
             let json = JSON(file)
             var icons: [String: (color: UIColor, url: String)] = [:]
             json.forEach({
-                guard let url = $0.1["domain"].string, let color = $0.1["background_color"].string, var path = $0.1["image_url"].string else {
+                guard let url = $0.1["domain"].string, let color = $0.1["background_color"].string?.lowercased(),
+                    var path = $0.1["image_url"].string else {
                     return
                 }
                 path = path.replacingOccurrences(of: ".png", with: "")
                 let filePath = Bundle.main.path(forResource: "TopSites/" + path, ofType: "png")
                 if let filePath = filePath {
-                    if color == "#fff" || color == "#FFF" {
-                        icons[url] = (UIColor.clear, filePath)
+                    if color == "#fff" {
+                        icons[url] = (UIColor.white, filePath)
                     } else {
                         icons[url] = (UIColor(colorString: color.replacingOccurrences(of: "#", with: "")), filePath)
                     }
