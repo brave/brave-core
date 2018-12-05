@@ -30,17 +30,10 @@ export const StyledLeft = styled<{}, 'div'>('div')`
 `
 
 export const StyledRight = styled<{}, 'div'>('div')`
-  padding: 0px 15px;
-  display: flex;
   height: 66px;
-  align-items: center;
-  margin-top: -3px;
-
-  @media (max-width: 355px) {
-    width: 55px;
-    position: relative;
-    right: 45px;
-  }
+  position: fixed;
+  right: 15px;
+  top: 18px;
 `
 
 export const StyledTitle = styled<{}, 'div'>('div')`
@@ -48,8 +41,16 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   font-size: 22px;
   font-weight: 500;
   letter-spacing: 0.12px;
-  line-height: 44px;
   margin-bottom: -23px;
+  line-height: 44px;
+
+  @media (max-width: 375px) {
+    max-width: 250px;
+    word-wrap: break-word;
+    display: block;
+    line-height: 20px;
+    margin-top: -12px;
+  }
 `
 
 export const StyledTM = styled<{}, 'span'>('span')`
@@ -61,6 +62,10 @@ export const StyledTM = styled<{}, 'span'>('span')`
   position: relative;
   top: -13px;
   vertical-align: text-top;
+
+  @media (max-width: 375px) {
+    top: -2px;
+  }
 `
 
 export const StyledLogoWrapper = styled<{}, 'div'>('div')`

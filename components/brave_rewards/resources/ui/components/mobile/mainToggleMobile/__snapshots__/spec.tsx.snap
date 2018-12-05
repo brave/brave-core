@@ -51,17 +51,10 @@ exports[`MainToggleMobile tests basic tests matches the snapshot 1`] = `
 }
 
 .c6 {
-  padding: 0px 15px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
   height: 66px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  margin-top: -3px;
+  position: fixed;
+  right: 15px;
+  top: 18px;
 }
 
 .c4 {
@@ -72,8 +65,8 @@ exports[`MainToggleMobile tests basic tests matches the snapshot 1`] = `
   -moz-letter-spacing: 0.12px;
   -ms-letter-spacing: 0.12px;
   letter-spacing: 0.12px;
-  line-height: 44px;
   margin-bottom: -23px;
+  line-height: 44px;
 }
 
 .c5 {
@@ -158,11 +151,19 @@ exports[`MainToggleMobile tests basic tests matches the snapshot 1`] = `
   fill: currentColor;
 }
 
-@media (max-width:355px) {
-  .c6 {
-    width: 55px;
-    position: relative;
-    right: 45px;
+@media (max-width:375px) {
+  .c4 {
+    max-width: 250px;
+    word-wrap: break-word;
+    display: block;
+    line-height: 20px;
+    margin-top: -12px;
+  }
+}
+
+@media (max-width:375px) {
+  .c5 {
+    top: -2px;
   }
 }
 
