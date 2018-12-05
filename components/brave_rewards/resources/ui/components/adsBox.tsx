@@ -10,14 +10,10 @@ import { connect } from 'react-redux'
 import {
   Box,
   DisabledContent,
-  List,
-  NextContribution,
-  Tokens
 } from 'brave-ui/features/rewards'
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 
 // Utils
-import * as utils from '../utils'
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 
@@ -41,7 +37,14 @@ class AdsBox extends React.Component<Props, {}> {
   }
 
   onAdsSettingChange = (key: string, value: string) => {
-    console.log(`Setting ${key} to ${value}`)
+    let newValue: any = value
+    const { adsEnabled } = this.props.rewardsData.adsData
+
+    if (key === 'adsEnabled') {
+      newValue = !adsEnabled
+    }
+
+    this.props.actions.onAdsSettingSave(key, newValue)
   }
 
   adsSettings = (enabled?: boolean) => {
@@ -74,20 +77,14 @@ class AdsBox extends React.Component<Props, {}> {
   }
 
   render () {
+    let adsEnabled
     const { adsData } = this.props.rewardsData
 
     if (!adsData) {
-      return null
+      adsEnabled = false
+    } else {
+      adsEnabled = this.props.rewardsData.adsData.adsEnabled
     }
-
-    // Temporary until we have such attributes
-    // const { adsEarnings, notificationsReceived, pagesViewed, paymentDate } = adsData
-    const adsEarnings = '10.0'
-    const notificationsReceived = '80'
-    const pagesViewed = '15'
-    const paymentDate = 'Monthly, 5th'
-    const { rates } = this.props.rewardsData.walletInfo
-    const { adsEnabled } = adsData
 
     return (
       <Box
@@ -99,31 +96,8 @@ class AdsBox extends React.Component<Props, {}> {
         settingsChild={this.adsSettings(adsEnabled)}
         testId={'braveAdsSettings'}
         disabledContent={this.adsDisabled()}
-      >
-        <List title={getLocale('adsCurrentEarnings')}>
-          <Tokens
-            value={adsEarnings}
-            converted={utils.convertBalance(adsEarnings, rates)}
-          />
-        </List>
-        <List title={getLocale('adsPaymentDate')}>
-          <NextContribution>
-            {paymentDate}
-          </NextContribution>
-        </List>
-        <List title={getLocale('adsNotificationsReceived')}>
-          <Tokens
-            hideText={true}
-            value={notificationsReceived}
-          />
-        </List>
-        <List title={getLocale('adsPagesViewed')}>
-          <Tokens
-            hideText={true}
-            value={pagesViewed}
-          />
-        </List>
-      </Box>
+        onToggle={this.onAdsSettingChange.bind(this, 'adsEnabled', '')}
+      />
     )
   }
 }

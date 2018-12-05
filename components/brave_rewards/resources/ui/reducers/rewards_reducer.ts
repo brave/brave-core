@@ -132,6 +132,17 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         state.adsData = action.payload.adsData
         break
       }
+    case types.ON_ADS_SETTING_SAVE:
+      {
+        state = { ...state }
+        const key = action.payload.key
+        const value = action.payload.value
+        if (key) {
+          state[key] = value
+          chrome.send('brave_rewards.saveAdsSetting', [key, value.toString()])
+        }
+        break
+      }
   }
 
   return state

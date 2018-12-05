@@ -144,3 +144,8 @@ export const getAdsData = () => action(types.GET_ADS_DATA)
 export const onAdsData = (adsData: Rewards.AdsData) => action(types.ON_ADS_DATA, {
   adsData
 })
+
+export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS_SETTING_SAVE, {
+  key,
+  value
+})
