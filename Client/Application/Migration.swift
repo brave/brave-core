@@ -59,8 +59,22 @@ extension Preferences {
         
         // Security
         NSKeyedUnarchiver.setClass(AuthenticationKeychainInfo.self, forClassName: "AuthenticationKeychainInfo")
+        
+        // Solely for 1.6.6 -> 1.7 migration
         if let pinLockInfo = KeychainWrapper.standard.object(forKey: "pinLockInfo") as? AuthenticationKeychainInfo {
-            KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(pinLockInfo)
+            
+            // Checks if browserLock was enabled in old app (1.6.6)
+            let browserLockKey = "\(keyPrefix)browserLock"
+            let isBrowserLockEnabled = Preferences.defaultContainer.bool(forKey: browserLockKey)
+            
+            // Preference no longer controls passcode functionality, so delete it
+            Preferences.defaultContainer.removeObject(forKey: browserLockKey)
+            if isBrowserLockEnabled {
+                KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(pinLockInfo)
+            }
+            
+            // No longer use this key, so remove, rely on other mechanisms
+            KeychainWrapper.standard.removeObject(forKey: "pinLockInfo")
         }
         
         // Shields

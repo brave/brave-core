@@ -63,6 +63,10 @@ open class AuthenticationKeychainInfo: NSObject, NSCoding {
         self.useTouchID = aDecoder.decodeAsBool(forKey: "useTouchID")
         if aDecoder.containsValue(forKey: "isPasscodeRequiredImmediately") {
             self.isPasscodeRequiredImmediately = aDecoder.decodeAsBool(forKey: "isPasscodeRequiredImmediately")
+        } else if let interval = aDecoder.decodeObject(forKey: "requiredPasscodeInterval") as? NSNumber {
+            // This is solely used for 1.6.6 -> 1.7 migration
+            //  `requiredPasscodeInterval` is not re-encoded on this object
+            self.isPasscodeRequiredImmediately = (interval == 2)
         } else {
             self.isPasscodeRequiredImmediately = true
         }
