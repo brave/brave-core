@@ -815,22 +815,6 @@ void RewardsServiceImpl::LoadPublisherInfoList(
                     callback));
 }
 
-void RewardsServiceImpl::LoadCurrentPublisherInfoList(
-    uint32_t start,
-    uint32_t limit,
-    ledger::PublisherInfoFilter filter,
-    ledger::PublisherInfoListCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
-                    start, limit, filter,
-                    publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnPublisherInfoListLoaded,
-                    AsWeakPtr(),
-                    start,
-                    limit,
-                    callback));
-}
-
 void RewardsServiceImpl::OnPublisherInfoListLoaded(
     uint32_t start,
     uint32_t limit,
