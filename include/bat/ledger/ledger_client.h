@@ -97,9 +97,6 @@ class LEDGER_EXPORT LedgerClient {
   virtual void LoadPublisherInfoList(uint32_t start, uint32_t limit,
                                     PublisherInfoFilter filter,
                                     PublisherInfoListCallback callback) = 0;
-  virtual void LoadCurrentPublisherInfoList(uint32_t start, uint32_t limit,
-                                    PublisherInfoFilter filter,
-                                    PublisherInfoListCallback callback) = 0;
 
   // TODO this can be removed
   virtual void FetchGrant(const std::string& lang, const std::string& paymentId) = 0;

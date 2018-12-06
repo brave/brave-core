@@ -116,7 +116,7 @@ void BatContribution::StartAutoContribute() {
       ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       current_reconcile_stamp);
-  ledger_->GetCurrentPublisherInfoList(
+  ledger_->GetPublisherInfoList(
       0,
       0,
       filter,
