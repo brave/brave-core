@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, SearchImage, Paragraph } from '../../../../../src/features/welcome/'
+import { Content, Title, Paragraph } from '../../../../../src/features/welcome/'
 
 // Shared components
 import { Button } from '../../../../../src/components'
@@ -15,7 +15,7 @@ import { Button } from '../../../../../src/components'
 import locale from '../fakeLocale'
 
 // Images
-const searchImage = require('../../../../assets/img/welcome_search.svg')
+import { WelcomeSearchImage } from '../../../../../src/features/welcome/images'
 
 interface Props {
   index: number
@@ -33,7 +33,7 @@ export default class SearchEngineBox extends React.PureComponent<Props, {}> {
         screenPosition={'1' + (index + 1) + '0%'}
         isPrevious={index <= currentScreen}
       >
-        <SearchImage src={searchImage} />
+        <WelcomeSearchImage />
         <Title>{locale.setDefaultSearchEngine}</Title>
         <Paragraph>{locale.chooseSearchEngine}</Paragraph>
           <Button

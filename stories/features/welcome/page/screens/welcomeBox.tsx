@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, BraveImage, Paragraph } from '../../../../../src/features/welcome/'
+import { Content, Title, Paragraph } from '../../../../../src/features/welcome/'
 
 // Shared components
 import { Button } from '../../../../../src/components'
@@ -15,7 +15,7 @@ import { ArrowRightIcon } from '../../../../../src/components/icons'
 import locale from '../fakeLocale'
 
 // Images
-const braveLogo = require('../../../../assets/img/lion_logo.svg')
+import { WelcomeLionImage } from '../../../../../src/features/welcome/images'
 
 interface Props {
   index: number
@@ -33,7 +33,7 @@ export default class ThemingBox extends React.PureComponent<Props, {}> {
         screenPosition={'1' + (index + 1) + '0%'}
         isPrevious={index <= currentScreen}
       >
-        <BraveImage src={braveLogo} />
+        <WelcomeLionImage />
         <Title>{locale.welcome}</Title>
         <Paragraph>{locale.whatIsBrave}</Paragraph>
         <Button

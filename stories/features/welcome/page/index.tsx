@@ -6,10 +6,8 @@ import * as React from 'react'
 
 // Feature-specific components
 import {
-  Background,
   Page,
   Panel,
-  BackgroundContainer,
   SlideContent
 } from '../../../../src/features/welcome/'
 
@@ -23,7 +21,7 @@ import ThemeBox from './screens/themeBox'
 import FooterBox from './screens/footerBox'
 
 // Images
-const background = require('../../../assets/img/welcome_bg.svg')
+import { Background, BackgroundContainer } from '../../../../src/features/welcome/images'
 
 // Fonts
 import '../../../assets/fonts/muli.css'
@@ -121,7 +119,7 @@ export default class WelcomePage extends React.PureComponent<{}, State> {
     return (
       <>
         <BackgroundContainer>
-          <Background background={{ image: background, position: `-${currentScreen}0%` }} />
+          <Background position={`-${currentScreen}0%`} />
         </BackgroundContainer>
         <Page>
           <Panel>

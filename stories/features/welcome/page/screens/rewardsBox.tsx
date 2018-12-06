@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, PaymentsImage, Paragraph } from '../../../../../src/features/welcome/'
+import { Content, Title, Paragraph } from '../../../../../src/features/welcome/'
 
 // Shared components
 import { Button } from '../../../../../src/components'
@@ -14,7 +14,7 @@ import { Button } from '../../../../../src/components'
 import locale from '../fakeLocale'
 
 // Images
-const paymentsImage = require('../../../../assets/img/welcome_rewards.svg')
+import { WelcomeRewardsImage } from '../../../../../src/features/welcome/images'
 
 interface Props {
   index: number
@@ -32,7 +32,7 @@ export default class PaymentsBox extends React.PureComponent<Props, {}> {
         screenPosition={'1' + (index + 1) + '0%'}
         isPrevious={index <= currentScreen}
       >
-        <PaymentsImage src={paymentsImage} />
+        <WelcomeRewardsImage />
         <Title>{locale.enableBraveRewards}</Title>
         <Paragraph>{locale.setupBraveRewards}</Paragraph>
         <Button

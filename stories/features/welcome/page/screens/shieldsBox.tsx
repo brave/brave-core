@@ -5,13 +5,13 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, ShieldsImage, Paragraph } from '../../../../../src/features/welcome/'
+import { Content, Title, Paragraph } from '../../../../../src/features/welcome/'
 
 // Utils
 import locale from '../fakeLocale'
 
 // Images
-const shieldsImage = require('../../../../assets/img/welcome_shields.svg')
+import { WelcomeShieldsImage } from '../../../../../src/features/welcome/images'
 
 interface Props {
   index: number
@@ -28,7 +28,7 @@ export default class ShieldsBox extends React.PureComponent<Props> {
         screenPosition={'1' + (index + 1) + '0%'}
         isPrevious={index <= currentScreen}
       >
-        <ShieldsImage src={shieldsImage} />
+        <WelcomeShieldsImage />
         <Title>{locale.protectYourPrivacy}</Title>
         <Paragraph>{locale.adjustProtectionLevel}</Paragraph>
       </Content>

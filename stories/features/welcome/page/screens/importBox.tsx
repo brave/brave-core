@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, ImportImage, Paragraph } from '../../../../../src/features/welcome/'
+import { Content, Title, Paragraph } from '../../../../../src/features/welcome/'
 
 // Shared components
 import { Button } from '../../../../../src/components'
@@ -14,7 +14,7 @@ import { Button } from '../../../../../src/components'
 import locale from '../fakeLocale'
 
 // Images
-const importImage = require('../../../../assets/img/welcome_import.svg')
+import { WelcomeImportImage } from '../../../../../src/features/welcome/images'
 
 interface Props {
   index: number
@@ -46,7 +46,7 @@ export default class ImportBox extends React.PureComponent<Props, State> {
         screenPosition={'1' + (index + 1) + '0%'}
         isPrevious={index <= currentScreen}
       >
-        <ImportImage src={importImage} />
+        <WelcomeImportImage />
         <Title>{locale.importFromAnotherBrowser}</Title>
         <Paragraph>{locale.setupImport}</Paragraph>
           <Button
