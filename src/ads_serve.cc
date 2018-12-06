@@ -119,9 +119,9 @@ void AdsServe::UpdateNextCatalogCheck() {
   next_retry_start_timer_in_ = 0;
 
   auto ping = bundle_->GetCatalogPing();
-  auto rand_delay = helper::Math::Random(ping / 10);
 
   // Add randomized delay so that the Ad server can't correlate users by timing
+  auto rand_delay = helper::Math::Random(ping / 10);
   next_catalog_check_ = ping + rand_delay;
 
   ads_->StartCollectingActivity(next_catalog_check_);
