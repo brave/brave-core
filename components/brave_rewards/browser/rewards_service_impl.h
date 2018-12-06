@@ -229,11 +229,6 @@ class RewardsServiceImpl : public RewardsService,
       uint32_t limit,
       ledger::PublisherInfoFilter filter,
       ledger::PublisherInfoListCallback callback) override;
-  void LoadCurrentPublisherInfoList(
-      uint32_t start,
-      uint32_t limit,
-      ledger::PublisherInfoFilter filter,
-      ledger::PublisherInfoListCallback callback) override;
   void SavePublishersList(const std::string& publishers_list,
                           ledger::LedgerCallbackHandler* handler) override;
   void SetTimer(uint64_t time_offset, uint32_t& timer_id) override;
