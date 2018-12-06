@@ -283,7 +283,7 @@ void AdsServiceImpl::OnInitialize() {
 }
 
 void AdsServiceImpl::OnCreate() {
-  if (!bat_ads_.is_bound()) {
+  if (!connected()) {
     // TODO(bridiver) - reconnect?
     return;
   }
@@ -453,7 +453,7 @@ void AdsServiceImpl::TabUpdated(SessionID tab_id,
 
 void AdsServiceImpl::TabClosed(SessionID tab_id) {
   if (!connected())
-    return
+    return;
 
   bat_ads_->TabClosed(tab_id.id(), base::BindOnce(&Noop));
 }
@@ -461,7 +461,7 @@ void AdsServiceImpl::TabClosed(SessionID tab_id) {
 void AdsServiceImpl::ClassifyPage(const std::string& url,
                                   const std::string& page) {
   if (!connected())
-    return
+    return;
 
   bat_ads_->ClassifyPage(url, page, base::BindOnce(&Noop));
 }
