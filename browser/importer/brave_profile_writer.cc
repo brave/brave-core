@@ -25,6 +25,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/browser_tabrestore.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "content/public/browser/browser_context.h"
@@ -377,12 +378,19 @@ void OpenImportedBrowserTabs(Browser* browser,
     const std::vector<ImportedBrowserTab>& tabs,
     bool pinned) {
   for (const auto tab : tabs) {
-    NavigateParams params(browser, tab.location,
-                          ui::PAGE_TRANSITION_AUTO_TOPLEVEL);
-    params.disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
-    params.tabstrip_add_types = pinned ? TabStripModel::ADD_PINNED
-                                       : TabStripModel::ADD_FORCE_INDEX;
-    Navigate(&params);
+    std::vector<sessions::SerializedNavigationEntry> e;
+    sessions::SerializedNavigationEntry entry;
+    entry.set_virtual_url(tab.location);
+    entry.set_original_request_url(tab.location);
+    entry.set_is_restored(true);
+    e.push_back(entry);
+
+    chrome::AddRestoredTab(
+        browser, e, browser->tab_strip_model()->count(), 0,
+        "", false, pinned, true,
+        base::TimeTicks::UnixEpoch(), nullptr,
+        "", true /* from_session_restore */);
+
   }
 }
 
