@@ -210,6 +210,17 @@
             }
           }
         ]
+      },
+      {
+        "name": "onEnabledMain",
+        "type": "function",
+        "description": "",
+        "parameters": [
+          {
+            "name": "enabledMain",
+            "type": "boolean"
+          }
+        ]
       }
     ],
     "functions": [

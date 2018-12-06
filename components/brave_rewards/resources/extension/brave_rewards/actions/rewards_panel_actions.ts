@@ -89,3 +89,7 @@ export const onDeleteGrant = () => action(types.ON_GRANT_DELETE)
 export const OnPendingContributionsTotal = (amount: number) => action(types.ON_PENDING_CONTRIBUTIONS_TOTAL, {
   amount
 })
+
+export const onEnabledMain = (enabledMain: boolean) => action(types.ON_ENABLED_MAIN, {
+  enabledMain
+})

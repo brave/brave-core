@@ -104,7 +104,7 @@ class RewardsService : public KeyedService {
   virtual void GetReconcileStamp(
       const GetReconcileStampCallback& callback) = 0;
   virtual void GetAddresses(const GetAddressesCallback& callback) = 0;
-  virtual void SetRewardsMainEnabled(bool enabled) const = 0;
+  virtual void SetRewardsMainEnabled(bool enabled) = 0;
   virtual void GetPublisherMinVisitTime(
       const GetPublisherMinVisitTimeCallback& callback) = 0;
   virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const = 0;
