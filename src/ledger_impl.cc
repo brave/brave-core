@@ -374,12 +374,6 @@ void LedgerImpl::GetPublisherInfoList(uint32_t start, uint32_t limit,
   ledger_client_->LoadPublisherInfoList(start, limit, filter, callback);
 }
 
-void LedgerImpl::GetCurrentPublisherInfoList(uint32_t start, uint32_t limit,
-                                const ledger::PublisherInfoFilter& filter,
-                                ledger::PublisherInfoListCallback callback) {
-  ledger_client_->LoadCurrentPublisherInfoList(start, limit, filter, callback);
-}
-
 void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
   bat_state_->SetRewardsMainEnabled(enabled);
 }
