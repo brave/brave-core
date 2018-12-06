@@ -267,10 +267,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
       NotificationHandler::Type::BRAVE_ADS,
       std::make_unique<AdsNotificationHandler>(this));
 
-  if (is_enabled())
-    Start();
-  else
-    Stop();
+  MaybeStart(false);
 }
 
 AdsServiceImpl::~AdsServiceImpl() {
@@ -283,17 +280,18 @@ void AdsServiceImpl::OnInitialize() {
 }
 
 void AdsServiceImpl::OnCreate() {
-  if (!connected()) {
-    // TODO(bridiver) - reconnect?
-    return;
-  }
-
   bat_ads_->Initialize(
       base::BindOnce(&AdsServiceImpl::OnInitialize, AsWeakPtr()));
 }
 
-void ConnectionClosed() {
-  // TODO(bridiver)
+void AdsServiceImpl::MaybeStart(bool restart) {
+  if (restart)
+    Shutdown();
+
+  if (is_enabled())
+    Start();
+  else
+    Stop();
 }
 
 void AdsServiceImpl::Start() {
@@ -314,7 +312,7 @@ void AdsServiceImpl::Start() {
       bat_ads::mojom::kServiceName, &bat_ads_service_);
 
   bat_ads_service_.set_connection_error_handler(
-      base::Bind(&ConnectionClosed));
+      base::Bind(&AdsServiceImpl::MaybeStart, AsWeakPtr(), true));
 
   bool is_production = false;
 #if defined(OFFICIAL_BUILD)
@@ -395,9 +393,9 @@ void AdsServiceImpl::Shutdown() {
       // this is kind of weird, but we need to call Initialize on disable too
       bat_ads_->Initialize(base::BindOnce(&Noop));
     }
-    bat_ads_.reset();
-    bat_ads_client_binding_.Close();
   }
+  bat_ads_.reset();
+  bat_ads_client_binding_.Close();
 
   for (NotificationInfoMap::iterator it = notification_ids_.begin();
       it != notification_ids_.end(); ++it) {

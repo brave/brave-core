@@ -154,6 +154,7 @@ class AdsServiceImpl : public AdsService,
   void OnPrefsChanged(const std::string& pref);
   void OnCreate();
   void OnInitialize();
+  void MaybeStart(bool restart);
 
   // are we still connected to the ads lib
   bool connected();
