@@ -2,16 +2,19 @@
   "compilerOptions": {
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "commonjs",
+    // esnext modules supports import() async webpack modules
+    "module": "esnext",
+    // chrome 70 supports 100% es2017/8
+    "target": "es2017",
+    "allowJs": true,
+    // convert jsx to react components
+    "jsx": "react",
     "lib": [
       "es6",
       "dom",
       "es7",
       "es2017"
     ],
-    "target": "es5",
-    "allowJs": true,
-    "jsx": "react",
     "moduleResolution": "node",
     "typeRoots": [
       "./node_modules/@types",

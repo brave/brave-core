@@ -27,4 +27,3 @@ export const getLocale = (key: string, replacements?: Record<string, string>) =>
   return returnVal
 }
 
-module.exports = { getLocale }
