@@ -7,6 +7,8 @@ source_set("browser") {
   ]
 
   sources = [
+    "switches.cc",
+    "switches.h",
     "balance_report.cc",
     "balance_report.h",
     "rewards_notification_service.cc",
