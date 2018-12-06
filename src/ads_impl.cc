@@ -155,7 +155,7 @@ void AdsImpl::InitializeUserModel(const std::string& json) {
   LOG(INFO) << "Initializing user model";
 
   user_model_.reset(usermodel::UserModel::CreateInstance());
-  user_model_->initializePageClassifier(json);
+  user_model_->InitializePageClassifier(json);
 
   LOG(INFO) << "Initialized user model";
 }
@@ -342,7 +342,7 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
   TestShoppingData(url);
   TestSearchState(url);
 
-  auto page_score = user_model_->classifyPage(html);
+  auto page_score = user_model_->ClassifyPage(html);
   last_page_classification_ = GetWinningCategory(page_score);
 
   client_->AppendPageScoreToPageScoreHistory(page_score);
@@ -377,7 +377,7 @@ std::string AdsImpl::GetWinnerOverTimeCategory() {
 }
 
 std::string AdsImpl::GetWinningCategory(const std::vector<double>& page_score) {
-  return user_model_->winningCategory(page_score);
+  return user_model_->WinningCategory(page_score);
 }
 
 void AdsImpl::CachePageScore(
