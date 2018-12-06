@@ -69,9 +69,6 @@ class LedgerImpl : public ledger::Ledger,
   void GetPublisherInfoList(uint32_t start, uint32_t limit,
                             const ledger::PublisherInfoFilter& filter,
                             ledger::PublisherInfoListCallback callback) override;
-  void GetCurrentPublisherInfoList(uint32_t start, uint32_t limit,
-                            const ledger::PublisherInfoFilter& filter,
-                            ledger::PublisherInfoListCallback callback) override;
 
   void DoDirectDonation(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) override;
 

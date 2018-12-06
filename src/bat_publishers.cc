@@ -567,10 +567,6 @@ void BatPublishers::synopsisNormalizer(const ledger::PublisherInfo& info) {
           nullptr, true, _1, _2));
 }
 
-
-
-
-
 bool BatPublishers::isVerified(const std::string& publisher_id) {
   if (server_list_.empty()) {
     return false;
