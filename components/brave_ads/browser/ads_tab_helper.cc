@@ -32,6 +32,7 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
       ads_service_(nullptr),
       is_active_(false),
       is_browser_active_(true),
+      run_distiller_(false),
       weak_factory_(this) {
   if (!tab_id_.is_valid())
     return;
@@ -53,9 +54,24 @@ AdsTabHelper::~AdsTabHelper() {
 #endif
 }
 
+void AdsTabHelper::DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (navigation_handle->IsInMainFrame() &&
+      navigation_handle->GetResponseHeaders()) {
+    if (navigation_handle->GetResponseHeaders()->HasHeaderValue(
+            "cache-control", "no-store") ||
+        navigation_handle->GetResponseHeaders()->HasHeaderValue(
+            "cache-control", "private")) {
+      run_distiller_ = false;
+    } else {
+      run_distiller_ = true;
+    }
+  }
+}
+
 void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
   // don't start distilling is the ad service isn't enabled
-  if (!ads_service_ || !ads_service_->is_enabled())
+  if (!ads_service_ || !ads_service_->is_enabled() || !run_distiller_)
     return;
 
   auto* dom_distiller_service =

@@ -46,6 +46,8 @@ class AdsTabHelper : public content::WebContentsObserver,
   void TabUpdated();
 
   // content::WebContentsObserver overrides.
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void DocumentOnLoadCompletedInMainFrame() override;
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
@@ -74,6 +76,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   AdsService* ads_service_;  // NOT OWNED
   bool is_active_;
   bool is_browser_active_;
+  bool run_distiller_;
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_;
 
