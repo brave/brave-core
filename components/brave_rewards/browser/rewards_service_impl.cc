@@ -360,6 +360,7 @@ void RewardsServiceImpl::GetCurrentContributeList(
   filter.reconcile_stamp = ledger_->GetReconcileStamp();
   filter.excluded =
     ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
+  filter.percent = 1;
 
   ledger_->GetPublisherInfoList(
       start,
