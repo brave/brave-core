@@ -1718,4 +1718,9 @@ void RewardsServiceImpl::OnDonate(
   OnDonate(publisher_key, amount, recurring, &info);
 }
 
+void RewardsServiceImpl::SetLedgerClient(
+    std::unique_ptr<ledger::Ledger> new_ledger) {
+  ledger_ = std::move(new_ledger);
+}
+
 }  // namespace brave_rewards
