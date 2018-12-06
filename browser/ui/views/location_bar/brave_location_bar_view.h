@@ -25,6 +25,8 @@ class BraveLocationBarView : public LocationBarView {
     void OnThemeChanged() override;
     void ChildPreferredSizeChanged(views::View* child) override;
 
+    ContentSettingImageView* GetContentSettingsImageViewForTesting(size_t idx);
+
   private:
     void UpdateBookmarkStarVisibility() override;
     OmniboxTint GetTint() override;

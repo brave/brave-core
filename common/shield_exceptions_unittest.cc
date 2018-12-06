@@ -12,37 +12,6 @@ namespace {
 typedef testing::Test BraveShieldsExceptionsTest;
 using brave::IsWhitelistedReferrer;
 
-TEST_F(BraveShieldsExceptionsTest, WidevineInstallableURL) {
-  std::vector<GURL> urls({
-    GURL("https://www.netflix.com/"),
-    GURL("https://bitmovin.com/"),
-    GURL("https://www.primevideo.com/"),
-    GURL("https://www.spotify.com/"),
-    GURL("https://shaka-player-demo.appspot.com"),
-    GURL("https://www.netflix.com/subdir"),
-    GURL("https://bitmovin.com/subdir"),
-    GURL("https://www.primevideo.com/subdir"),
-    GURL("https://www.spotify.com/subdir"),
-    GURL("https://shaka-player-demo.appspot.com/subdir"),
-    GURL("https://hulu.com/watch/bf77880c-2f2e-4e09-b26d-5c7cc1de47ce")
-  });
-  std::for_each(urls.begin(), urls.end(),
-      [this](GURL url){
-    EXPECT_TRUE(brave::IsWidevineInstallableURL(url));
-  });
-}
-
-TEST_F(BraveShieldsExceptionsTest, NotWidevineInstallableURL) {
-  std::vector<GURL> urls({
-    GURL("https://www.brave.com/"),
-    GURL("https://widevine.com/")
-  });
-  std::for_each(urls.begin(), urls.end(),
-      [this](GURL url){
-    EXPECT_FALSE(brave::IsWidevineInstallableURL(url));
-  });
-}
-
 TEST_F(BraveShieldsExceptionsTest, IsWhitelistedReferrer) {
   // *.fbcdn.net not allowed on some other URL
   EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://test.com"),

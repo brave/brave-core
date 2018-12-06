@@ -109,6 +109,12 @@ void BraveLocationBarView::ChildPreferredSizeChanged(views::View* child) {
   Layout();
 }
 
+ContentSettingImageView*
+BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
+  DCHECK(idx < content_setting_views_.size());
+  return content_setting_views_[idx];
+}
+
 // Provide base class implementation for Update override that has been added to
 // header via a patch. This should never be called as the only instantiated
 // implementation should be our |BraveLocationBarView|.
