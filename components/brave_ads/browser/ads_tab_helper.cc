@@ -30,16 +30,21 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
       tab_id_(SessionTabHelper::IdForTab(web_contents)),
       ads_service_(nullptr),
+      is_active_(false),
+      is_browser_active_(true),
       weak_factory_(this) {
   if (!tab_id_.is_valid())
     return;
 
-#if !defined(OS_ANDROID)
-  BrowserList::AddObserver(this);
-#endif
   Profile* profile = Profile::FromBrowserContext(
       web_contents->GetBrowserContext());
   ads_service_ = AdsServiceFactory::GetForProfile(profile);
+
+#if !defined(OS_ANDROID)
+  BrowserList::AddObserver(this);
+  OnBrowserSetLastActive(BrowserList::GetInstance()->GetLastActive());
+#endif
+  OnVisibilityChanged(web_contents->GetVisibility());
 }
 
 AdsTabHelper::~AdsTabHelper() {
@@ -161,6 +166,9 @@ void AdsTabHelper::WebContentsDestroyed() {
 // TODO(bridiver) - what is the android equivalent of this?
 #if !defined(OS_ANDROID)
 void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
+  if (!browser)
+    return;
+
   bool old_active = is_browser_active_;
   if (browser->tab_strip_model()->GetIndexOfWebContents(web_contents()) !=
       TabStripModel::kNoTab) {
