@@ -69,7 +69,7 @@ class ADS_EXPORT Ads {
   virtual void SaveCachedInfo() = 0;
 
   // Should be called when the user changes the operating system's locale, i.e.
-  // en, en_US or en_GB.UTF-8
+  // en, en_US or en_GB.UTF-8 unless the operating system restarts the app
   virtual void ChangeLocale(const std::string& locale) = 0;
 
   // Should be called when a page has loaded in the current browser tab, and the
