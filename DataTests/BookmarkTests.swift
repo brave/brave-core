@@ -78,17 +78,9 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertEqual(objects.count, bookmarksToAdd)
         
         // Testing if it sorts correctly
-        XCTAssertEqual(objects.first?.title, "1")
-        XCTAssertEqual(objects[5].title, "6")
-        XCTAssertEqual(objects.last?.title, "10")
-        
-        // Folder sort is before create sort, the folder should appear at the top.
-        let folderTitle = "100"
-        createAndWait(url: URL(string: ""), title: folderTitle, isFolder: true)
-        
-        try! frc.performFetch()
-        let obj = frc.fetchedObjects!.last
-        XCTAssertEqual(obj?.title, folderTitle)
+        XCTAssertEqual(objects.first?.title, "10")
+        XCTAssertEqual(objects[5].title, "5")
+        XCTAssertEqual(objects.last?.title, "1")
     }
     
     func testFrcWithParentFolder() {
@@ -292,8 +284,8 @@ class BookmarkTests: CoreDataTestCase {
         let sourceObject = result.src
         let destinationObject = result.dest
         
-        XCTAssertEqual(sourceObject.syncOrder, "0.0.6.1")
-        XCTAssertEqual(destinationObject.syncOrder, "0.0.6")
+        XCTAssertEqual(sourceObject.order, 5)
+        XCTAssertEqual(destinationObject.order, 4)
     }
     
     func testBookmarkReorderDragUp() {
@@ -301,8 +293,8 @@ class BookmarkTests: CoreDataTestCase {
         let sourceObject = result.src
         let destinationObject = result.dest
         
-        XCTAssertEqual(sourceObject.syncOrder, "0.0.1.1")
-        XCTAssertEqual(destinationObject.syncOrder, "0.0.2")
+        XCTAssertEqual(sourceObject.order, 1)
+        XCTAssertEqual(destinationObject.order, 2)
     }
     
     func testBookmarkReorderTopToBottom() {
@@ -310,8 +302,8 @@ class BookmarkTests: CoreDataTestCase {
         let sourceObject = result.src
         let destinationObject = result.dest
         
-        XCTAssertEqual(sourceObject.syncOrder, "0.0.0.1")
-        XCTAssertEqual(destinationObject.syncOrder, "0.0.1")
+        XCTAssertEqual(sourceObject.order, 0)
+        XCTAssertEqual(destinationObject.order, 1)
     }
     
     func testBookmarkReorderBottomToTop() {
@@ -319,8 +311,8 @@ class BookmarkTests: CoreDataTestCase {
         let sourceObject = result.src
         let destinationObject = result.dest
         
-        XCTAssertEqual(sourceObject.syncOrder, "0.0.11")
-        XCTAssertEqual(destinationObject.syncOrder, "0.0.10")
+        XCTAssertEqual(sourceObject.order, 9)
+        XCTAssertEqual(destinationObject.order, 8)
     }
     
     func testBookmarksReorderSameIndexPaths() {
@@ -348,28 +340,6 @@ class BookmarkTests: CoreDataTestCase {
         
         Bookmark.reorderBookmarks(frc: nil, sourceIndexPath: sourceIndexPath, destinationIndexPath: destinationIndexPath)
         // Assert nothing.
-    }
-    
-    func testSortingManyBookmarks() {
-        let sortedOrders = ["1.1.0.1", "1.1.1", "1.1.2", "1.1.3", "1.1.4", "1.1.5", "1.1.6", "1.1.7", "1.1.8",
-                            "1.1.9", "1.1.10", "1.1.11", "1.1.12", "1.1.12.1", "1.1.12.1.2", "1.1.12.1.3",
-                            "1.1.13", "1.1.14", "1.1.15", "1.1.16", "1.1.17", "1.1.19", "1.1.20", "1.1.21"]
-        
-        let shuffledOrders = sortedOrders.shuffled()
-        XCTAssertNotEqual(sortedOrders, shuffledOrders)
-        
-        // Adding bookmarks in random order
-        shuffledOrders.forEach {
-            let url = URL(string: "http://brave.com/\($0)")!
-            createAndWait(url: url, title: "Brave", syncOrder: $0)
-        }
-        
-        let frc = Bookmark.frc(parentFolder: nil)
-        // Frc should sort them back
-        try! frc.performFetch()
-        let frcOrders = frc.fetchedObjects!.compactMap { $0.syncOrder }
-        
-        XCTAssertEqual(sortedOrders, frcOrders)
     }
     
     // MARK: - Delete
@@ -528,16 +498,15 @@ class BookmarkTests: CoreDataTestCase {
         let sourceObject = frc.object(at: sourceIndexPath)
         let destinationObject = frc.object(at: destinationIndexPath)
         
-        let sourceOrderBefore = (frc.object(at: sourceIndexPath)).syncOrder
-        let destinationOrderBefore = (frc.object(at: destinationIndexPath)).syncOrder
+        let sourceOrderBefore = (frc.object(at: sourceIndexPath)).order
+        let destinationOrderBefore = (frc.object(at: destinationIndexPath)).order
         
         // CD objects we saved before will get updated after this call.
         Bookmark.reorderBookmarks(frc: frc, sourceIndexPath: sourceIndexPath, destinationIndexPath: destinationIndexPath)
         
         // Test order has changed, won't work when swapping bookmarks with order = 0
         if !skipOrderChangeTests {
-            XCTAssertNotEqual(sourceObject.syncOrder, sourceOrderBefore)
-            XCTAssertEqual(destinationObject.syncOrder, destinationOrderBefore)
+            XCTAssertNotEqual(sourceObject.order, sourceOrderBefore)
         }
         
         return (sourceObject, destinationObject)
