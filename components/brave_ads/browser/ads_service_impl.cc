@@ -13,6 +13,7 @@
 #include "base/sequenced_task_runner.h"
 #include "base/task_runner_util.h"
 #include "base/task/post_task.h"
+#include "base/time/time.h"
 #include "bat/ads/notification_info.h"
 #include "bat/ads/notification_result_type.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
@@ -288,10 +289,17 @@ void AdsServiceImpl::MaybeStart(bool restart) {
   if (restart)
     Shutdown();
 
-  if (is_enabled())
-    Start();
-  else
+  if (is_enabled()) {
+    if (restart) {
+      base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(FROM_HERE,
+          base::BindOnce(&AdsServiceImpl::Start, AsWeakPtr()),
+          base::TimeDelta::FromSeconds(1));
+    } else {
+      Start();
+    }
+  } else {
     Stop();
+  }
 }
 
 void AdsServiceImpl::Start() {
