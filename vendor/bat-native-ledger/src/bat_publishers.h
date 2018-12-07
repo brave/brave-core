@@ -123,7 +123,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       int year,
       ledger::PUBLISHER_EXCLUDE_FILTER excluded,
       bool min_duration,
-      const uint64_t& currentReconcileStamp);
+      const uint64_t& currentReconcileStamp,
+      bool non_verified);
 
   void clearAllBalanceReports();
   void NormalizeContributeWinners(
