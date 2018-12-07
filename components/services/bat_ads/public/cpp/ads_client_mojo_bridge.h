@@ -57,10 +57,9 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   void GetClientInfo(const std::string& client_info,
                      GetClientInfoCallback callback) override;
 
-  void EventLog(const std::string& json, EventLogCallback callback) override;
-  void SetIdleThreshold(int32_t threshold,
-                        SetIdleThresholdCallback callback) override;
-  void KillTimer(uint32_t timer_id, KillTimerCallback callback) override;
+  void EventLog(const std::string& json) override;
+  void SetIdleThreshold(int32_t threshold) override;
+  void KillTimer(uint32_t timer_id) override;
   void Load(const std::string& name, LoadCallback callback) override;
   void Save(const std::string& name,
             const std::string& value,
@@ -75,8 +74,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
                   int32_t method,
                   URLRequestCallback callback) override;
   void LoadSampleBundle(LoadSampleBundleCallback callback) override;
-  void ShowNotification(const std::string& notification_info,
-                        ShowNotificationCallback callback) override;
+  void ShowNotification(const std::string& notification_info) override;
   void SaveBundleState(const std::string& bundle_state,
                        SaveBundleStateCallback callback) override;
   void GetAds(const std::string& region,

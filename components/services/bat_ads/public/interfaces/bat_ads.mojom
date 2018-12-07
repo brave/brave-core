@@ -42,18 +42,18 @@ interface BatAdsClient {
   [Sync]
   GetClientInfo(string client_info) => (string client_info);
 
-  SetIdleThreshold(int32 threshold) => ();
-  KillTimer(uint32 timer_id) => ();
+  SetIdleThreshold(int32 threshold);
+  KillTimer(uint32 timer_id);
   Save(string name, string value) => (int32 result);
   Load(string name) => (int32 result, string value);
   Reset(string name) => (int32 result);
-  EventLog(string json) => ();
+  EventLog(string json);
   LoadUserModelForLocale(string locale) => (int32 result, string value);
   LoadSampleBundle() => (int32 result, string value);
   URLRequest(string url, array<string> headers, string content,
              string content_type, int32 method) =>
       (int32 status_code, string content, map<string, string> headers);
-  ShowNotification(string notification_info) => ();
+  ShowNotification(string notification_info);
   SaveBundleState(string bundle_state) => (int32 result);
   GetAds(string region, string category) =>
       (int32 result, string region, string category, array<string> ad_info);
@@ -61,20 +61,20 @@ interface BatAdsClient {
 
 interface BatAds {
   Initialize() => ();
-  ClassifyPage(string url, string page) => ();
-  TabClosed(int32 tab_id) => ();
-  OnTimer(uint32 timer_id) => ();
-  OnUnIdle() => ();
-  OnIdle() => ();
+  ClassifyPage(string url, string page);
+  TabClosed(int32 tab_id);
+  OnTimer(uint32 timer_id);
+  OnUnIdle();
+  OnIdle();
   SaveCachedInfo() => ();
-  OnForeground() => ();
-  OnBackground() => ();
-  OnMediaPlaying(int32 tab_id) => ();
-  OnMediaStopped(int32 tab_id) => ();
-  TabUpdated(int32 tab_id, string url, bool is_active, bool is_incognito) => ();
+  OnForeground();
+  OnBackground();
+  OnMediaPlaying(int32 tab_id);
+  OnMediaStopped(int32 tab_id);
+  TabUpdated(int32 tab_id, string url, bool is_active, bool is_incognito);
   RemoveAllHistory() => ();
-  ServeSampleAd() => ();
-  GenerateAdReportingNotificationShownEvent(string notification_info) => ();
+  ServeSampleAd();
+  GenerateAdReportingNotificationShownEvent(string notification_info);
   GenerateAdReportingNotificationResultEvent(
-      string notification_info, int32 result_type) => ();
+      string notification_info, int32 result_type);
 };

@@ -143,15 +143,12 @@ void AdsClientMojoBridge::GetLocales(GetLocalesCallback callback) {
   std::move(callback).Run(ads_client_->GetLocales());
 }
 
-void AdsClientMojoBridge::SetIdleThreshold(int32_t threshold,
-                      SetIdleThresholdCallback callback) {
+void AdsClientMojoBridge::SetIdleThreshold(int32_t threshold) {
   ads_client_->SetIdleThreshold(threshold);
-  std::move(callback).Run();
 }
 
-void AdsClientMojoBridge::KillTimer(uint32_t timer_id, KillTimerCallback callback) {
+void AdsClientMojoBridge::KillTimer(uint32_t timer_id) {
   ads_client_->KillTimer(timer_id);
-  std::move(callback).Run();
 }
 
 bool AdsClientMojoBridge::GetUrlComponents(const std::string& url,
@@ -189,9 +186,8 @@ void AdsClientMojoBridge::GetClientInfo(const std::string& client_info,
   std::move(callback).Run(info.ToJson());
 }
 
-void AdsClientMojoBridge::EventLog(const std::string& json, EventLogCallback callback) {
+void AdsClientMojoBridge::EventLog(const std::string& json) {
   ads_client_->EventLog(json);
-  std::move(callback).Run();
 }
 
 // static
@@ -310,13 +306,11 @@ void AdsClientMojoBridge::LoadSampleBundle(LoadSampleBundleCallback callback) {
       std::bind( AdsClientMojoBridge::OnLoadSampleBundle, holder, _1, _2));
 }
 
-void AdsClientMojoBridge::ShowNotification(const std::string& notification_info,
-                                        ShowNotificationCallback callback) {
+void AdsClientMojoBridge::ShowNotification(
+    const std::string& notification_info) {
   auto info = std::make_unique<ads::NotificationInfo>();
   if (info->FromJson(notification_info))
     ads_client_->ShowNotification(std::move(info));
-
-  std::move(callback).Run();
 }
 
 // static

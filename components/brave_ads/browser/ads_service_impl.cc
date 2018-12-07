@@ -126,8 +126,6 @@ class AdsNotificationHandler : public NotificationHandler {
 
 namespace {
 
-void Noop() {}
-
 int32_t ToMojomNotificationResultInfoResultType(
     ads::NotificationResultInfoResultType result_type) {
   return (int32_t)result_type;
@@ -345,9 +343,9 @@ void AdsServiceImpl::Start() {
     is_testing = true;
   }
 
-  bat_ads_service_->SetProduction(is_production, base::BindOnce(&Noop));
-  bat_ads_service_->SetDebug(is_debug, base::BindOnce(&Noop));
-  bat_ads_service_->SetTesting(is_testing, base::BindOnce(&Noop));
+  bat_ads_service_->SetProduction(is_production, base::NullCallback());
+  bat_ads_service_->SetDebug(is_debug, base::NullCallback());
+  bat_ads_service_->SetTesting(is_testing, base::NullCallback());
 
   bat_ads_service_->Create(std::move(client_ptr_info), MakeRequest(&bat_ads_),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
@@ -380,9 +378,9 @@ void AdsServiceImpl::OnIdleState(ui::IdleState idle_state) {
     return;
 
   if (idle_state == ui::IdleState::IDLE_STATE_ACTIVE)
-    bat_ads_->OnUnIdle(base::BindOnce(&Noop));
+    bat_ads_->OnUnIdle();
   else
-    bat_ads_->OnIdle(base::BindOnce(&Noop));
+    bat_ads_->OnIdle();
 
   last_idle_state_ = idle_state;
 }
@@ -396,10 +394,10 @@ void AdsServiceImpl::Shutdown() {
   idle_poll_timer_.Stop();
 
   if (connected()) {
-    bat_ads_->SaveCachedInfo(base::BindOnce(&Noop));
+    bat_ads_->SaveCachedInfo(base::NullCallback());
     if (!enabled_) {
       // this is kind of weird, but we need to call Initialize on disable too
-      bat_ads_->Initialize(base::BindOnce(&Noop));
+      bat_ads_->Initialize(base::NullCallback());
     }
   }
   bat_ads_.reset();
@@ -453,16 +451,15 @@ void AdsServiceImpl::TabUpdated(SessionID tab_id,
   bat_ads_->TabUpdated(tab_id.id(),
                    url.spec(),
                    is_active,
-                   profile_->IsOffTheRecord(),
-                   base::BindOnce(&Noop));
+                   profile_->IsOffTheRecord());
 
 // TODO(bridiver) - what do we do here for android
 #if !defined(OS_ANDROID)
   if (is_foreground_ && !chrome::FindBrowserWithActiveWindow()) {
-    bat_ads_->OnBackground(base::BindOnce(&Noop));
+    bat_ads_->OnBackground();
   } else if (!is_foreground_) {
     is_foreground_ = true;
-    bat_ads_->OnForeground(base::BindOnce(&Noop));
+    bat_ads_->OnForeground();
   }
 #endif
 }
@@ -471,7 +468,7 @@ void AdsServiceImpl::TabClosed(SessionID tab_id) {
   if (!connected())
     return;
 
-  bat_ads_->TabClosed(tab_id.id(), base::BindOnce(&Noop));
+  bat_ads_->TabClosed(tab_id.id());
 }
 
 void AdsServiceImpl::ClassifyPage(const std::string& url,
@@ -479,7 +476,7 @@ void AdsServiceImpl::ClassifyPage(const std::string& url,
   if (!connected())
     return;
 
-  bat_ads_->ClassifyPage(url, page, base::BindOnce(&Noop));
+  bat_ads_->ClassifyPage(url, page);
 }
 
 int AdsServiceImpl::GetIdleThreshold() {
@@ -511,25 +508,25 @@ void AdsServiceImpl::LoadUserModelForLocale(
 }
 
 void AdsServiceImpl::OnURLsDeleted(history::HistoryService* history_service,
-                   const history::DeletionInfo& deletion_info) {
+                                   const history::DeletionInfo& deletion_info) {
   if (!connected())
     return;
 
-  bat_ads_->RemoveAllHistory(base::BindOnce(&Noop));
+  bat_ads_->RemoveAllHistory(base::NullCallback());
 }
 
 void AdsServiceImpl::OnMediaStart(SessionID tab_id) {
   if (!connected())
     return;
 
-  bat_ads_->OnMediaPlaying(tab_id.id(), base::BindOnce(&Noop));
+  bat_ads_->OnMediaPlaying(tab_id.id());
 }
 
 void AdsServiceImpl::OnMediaStop(SessionID tab_id) {
   if (!connected())
     return;
 
-  bat_ads_->OnMediaStopped(tab_id.id(), base::BindOnce(&Noop));
+  bat_ads_->OnMediaStopped(tab_id.id());
 }
 
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
@@ -695,7 +692,7 @@ void AdsServiceImpl::OnShow(Profile* profile,
     return;
 
   bat_ads_->GenerateAdReportingNotificationShownEvent(
-      notification_ids_[notification_id]->ToJson(), base::BindOnce(&Noop));
+      notification_ids_[notification_id]->ToJson());
 }
 
 void AdsServiceImpl::OnClose(Profile* profile,
@@ -714,8 +711,7 @@ void AdsServiceImpl::OnClose(Profile* profile,
           : ads::NotificationResultInfoResultType::TIMEOUT;
       bat_ads_->GenerateAdReportingNotificationResultEvent(
           notification_info->ToJson(),
-          ToMojomNotificationResultInfoResultType(result_type),
-          base::BindOnce(&Noop));
+          ToMojomNotificationResultInfoResultType(result_type));
     }
   }
 
@@ -738,8 +734,7 @@ void AdsServiceImpl::OpenSettings(Profile* profile,
     bat_ads_->GenerateAdReportingNotificationResultEvent(
         notification_info->ToJson(),
         ToMojomNotificationResultInfoResultType(
-            ads::NotificationResultInfoResultType::CLICKED),
-        base::BindOnce(&Noop));
+            ads::NotificationResultInfoResultType::CLICKED));
   }
 
   GURL url(notification_info->url);
@@ -935,7 +930,7 @@ void AdsServiceImpl::OnTimer(uint32_t timer_id) {
     return;
 
   timers_.erase(timer_id);
-  bat_ads_->OnTimer(timer_id, base::BindOnce(&Noop));
+  bat_ads_->OnTimer(timer_id);
 }
 
 std::unique_ptr<ads::LogStream> AdsServiceImpl::Log(

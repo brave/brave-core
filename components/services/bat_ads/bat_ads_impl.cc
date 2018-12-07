@@ -26,35 +26,30 @@ BatAdsImpl::BatAdsImpl(mojom::BatAdsClientAssociatedPtrInfo client_info)
 BatAdsImpl::~BatAdsImpl() {}
 
 void BatAdsImpl::Initialize(InitializeCallback callback) {
+  // TODO - Initialize needs a real callback
   ads_->Initialize();
   std::move(callback).Run();
 }
 
 void BatAdsImpl::ClassifyPage(const std::string& url,
-                              const std::string& page,
-                              ClassifyPageCallback callback) {
+                              const std::string& page) {
   ads_->ClassifyPage(url, page);
-  std::move(callback).Run();
 }
 
-void BatAdsImpl::TabClosed(int32_t tab_id, TabClosedCallback callback) {
+void BatAdsImpl::TabClosed(int32_t tab_id) {
   ads_->TabClosed(tab_id);
-  std::move(callback).Run();
 }
 
-void BatAdsImpl::OnTimer(uint32_t timer_id, OnTimerCallback callback) {
+void BatAdsImpl::OnTimer(uint32_t timer_id) {
   ads_->OnTimer(timer_id);
-  std::move(callback).Run();
 }
 
-void BatAdsImpl::OnUnIdle(OnUnIdleCallback callback) {
+void BatAdsImpl::OnUnIdle() {
   ads_->OnUnIdle();
-  std::move(callback).Run();
 }
 
-void BatAdsImpl::OnIdle(OnIdleCallback callback) {
+void BatAdsImpl::OnIdle() {
   ads_->OnIdle();
-  std::move(callback).Run();
 }
 
 void BatAdsImpl::SaveCachedInfo(SaveCachedInfoCallback callback) {
@@ -62,68 +57,56 @@ void BatAdsImpl::SaveCachedInfo(SaveCachedInfoCallback callback) {
   std::move(callback).Run();
 }
 
-void BatAdsImpl::OnForeground(OnForegroundCallback callback) {
+void BatAdsImpl::OnForeground() {
   ads_->OnForeground();
-  std::move(callback).Run();
 }
 
-void BatAdsImpl::OnBackground(OnBackgroundCallback callback) {
+void BatAdsImpl::OnBackground() {
   ads_->OnBackground();
-  std::move(callback).Run();
 }
 
-void BatAdsImpl::OnMediaPlaying(int32_t tab_id,
-                                OnMediaPlayingCallback callback) {
+void BatAdsImpl::OnMediaPlaying(int32_t tab_id) {
   ads_->OnMediaPlaying(tab_id);
-  std::move(callback).Run();
 }
 
-void BatAdsImpl::OnMediaStopped(int32_t tab_id,
-                                OnMediaStoppedCallback callback) {
+void BatAdsImpl::OnMediaStopped(int32_t tab_id) {
   ads_->OnMediaStopped(tab_id);
-  std::move(callback).Run();
 }
 
 void BatAdsImpl::TabUpdated(int32_t tab_id,
                 const std::string& url,
                 bool is_active,
-                bool is_incognito,
-                TabUpdatedCallback callback) {
+                bool is_incognito) {
   ads_->TabUpdated(tab_id, url, is_active, is_incognito);
-  std::move(callback).Run();
 }
 
 void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
+  // TODO - RemoveAllHistory needs a real callback
   ads_->RemoveAllHistory();
   std::move(callback).Run();
 }
 
-void BatAdsImpl::ServeSampleAd(ServeSampleAdCallback callback) {
+void BatAdsImpl::ServeSampleAd() {
   ads_->ServeSampleAd();
-  std::move(callback).Run();
 }
 
 void BatAdsImpl::GenerateAdReportingNotificationShownEvent(
-      const std::string& notification_info,
-      GenerateAdReportingNotificationShownEventCallback callback) {
+      const std::string& notification_info) {
   auto info = std::make_unique<ads::NotificationInfo>();
   if (info->FromJson(notification_info)) {
     ads_->GenerateAdReportingNotificationShownEvent(*info);
   }
-  std::move(callback).Run();
 }
 
 void BatAdsImpl::GenerateAdReportingNotificationResultEvent(
       const std::string& notification_info,
-      int32_t result_type,
-      GenerateAdReportingNotificationResultEventCallback callback) {
+      int32_t result_type) {
   auto info = std::make_unique<ads::NotificationInfo>();
   if (info->FromJson(notification_info)) {
     ads_->GenerateAdReportingNotificationResultEvent(
         *info,
         ToNotificationResultInfoResultType(result_type));
   }
-  std::move(callback).Run();
 }
 
 }  // namespace bat_ads

@@ -27,31 +27,27 @@ class BatAdsImpl : public mojom::BatAds {
   // Overridden from mojom::BatAds:
   void Initialize(InitializeCallback callback) override;
   void ClassifyPage(const std::string& url,
-                    const std::string& page,
-                    ClassifyPageCallback callback) override;
-  void TabClosed(int32_t tab_id, TabClosedCallback callback) override;
-  void OnTimer(uint32_t timer_id, OnTimerCallback callback) override;
-  void OnUnIdle(OnUnIdleCallback callback) override;
-  void OnIdle(OnIdleCallback callback) override;
+                    const std::string& page) override;
+  void TabClosed(int32_t tab_id) override;
+  void OnTimer(uint32_t timer_id) override;
+  void OnUnIdle() override;
+  void OnIdle() override;
   void SaveCachedInfo(SaveCachedInfoCallback callback) override;
-  void OnForeground(OnForegroundCallback callback) override;
-  void OnBackground(OnBackgroundCallback callback) override;
-  void OnMediaPlaying(int32_t tab_id, OnMediaPlayingCallback callback) override;
-  void OnMediaStopped(int32_t tab_id, OnMediaStoppedCallback callback) override;
+  void OnForeground() override;
+  void OnBackground() override;
+  void OnMediaPlaying(int32_t tab_id) override;
+  void OnMediaStopped(int32_t tab_id) override;
   void TabUpdated(int32_t tab_id,
                   const std::string& url,
                   bool is_active,
-                  bool is_incognito,
-                  TabUpdatedCallback callback) override;
+                  bool is_incognito) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
-  void ServeSampleAd(ServeSampleAdCallback callback) override;
+  void ServeSampleAd() override;
   void GenerateAdReportingNotificationShownEvent(
-      const std::string& notification_info,
-      GenerateAdReportingNotificationShownEventCallback callback) override;
+      const std::string& notification_info) override;
   void GenerateAdReportingNotificationResultEvent(
       const std::string& notification_info,
-      int32_t event_type,
-      GenerateAdReportingNotificationResultEventCallback callback) override;
+      int32_t event_type) override;
 
  private:
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;

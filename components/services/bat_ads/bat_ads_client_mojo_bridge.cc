@@ -31,8 +31,6 @@ ads::Result ToAdsResult(int32_t result) {
   return (ads::Result)result;
 }
 
-void Noop() {}
-
 class LogStreamImpl : public ads::LogStream {
  public:
   LogStreamImpl(const char* file,
@@ -146,7 +144,7 @@ void BatAdsClientMojoBridge::ShowNotification(
   if (!connected())
     return;
 
-  bat_ads_client_->ShowNotification(info->ToJson(), base::BindOnce(&Noop));
+  bat_ads_client_->ShowNotification(info->ToJson());
 }
 
 uint32_t BatAdsClientMojoBridge::SetTimer(const uint64_t time_offset) {
@@ -162,7 +160,7 @@ void BatAdsClientMojoBridge::KillTimer(uint32_t timer_id) {
   if (!connected())
     return;
 
-  bat_ads_client_->KillTimer(timer_id, base::BindOnce(&Noop));
+  bat_ads_client_->KillTimer(timer_id);
 }
 
 void OnURLRequest(const ads::URLRequestCallback& callback,
@@ -336,7 +334,7 @@ void BatAdsClientMojoBridge::EventLog(const std::string& json) {
   if (!connected())
     return;
 
-  bat_ads_client_->EventLog(json, base::BindOnce(&Noop));
+  bat_ads_client_->EventLog(json);
 }
 
 std::unique_ptr<ads::LogStream> BatAdsClientMojoBridge::Log(
@@ -351,7 +349,7 @@ void BatAdsClientMojoBridge::SetIdleThreshold(const int threshold) {
   if (!connected())
     return;
 
-  bat_ads_client_->SetIdleThreshold(threshold, base::BindOnce(&Noop));
+  bat_ads_client_->SetIdleThreshold(threshold);
 }
 
 bool BatAdsClientMojoBridge::IsNotificationsAvailable() const {
