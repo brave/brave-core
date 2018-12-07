@@ -73,6 +73,8 @@ source_set("ui") {
     "webui/brave_welcome_ui.h",
     "webui/settings/brave_privacy_handler.cc",
     "webui/settings/brave_privacy_handler.h",
+    "webui/settings/brave_relaunch_handler_mac.mm",
+    "webui/settings/brave_relaunch_handler_mac.h",
     "webui/settings/default_brave_shields_handler.cc",
     "webui/settings/default_brave_shields_handler.h",
     "webui/sync/sync_ui.cc",

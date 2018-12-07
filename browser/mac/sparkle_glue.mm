@@ -225,6 +225,11 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
   [su_updater_ checkForUpdatesInBackground];
 }
 
+- (void)relaunch {
+  [su_updater_.driver installWithToolAndRelaunch:YES
+                         displayingUserInterface:NO];
+}
+
 - (void)checkForUpdatesInBackground {
   DCHECK(registered_);
   [su_updater_ checkForUpdatesInBackground];
