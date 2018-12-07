@@ -426,16 +426,6 @@ bool AdsServiceImpl::IsAdsEnabled() const {
   return is_enabled();
 }
 
-void AdsServiceImpl::set_ads_enabled(bool enabled) {
-  profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabled, enabled);
-  enabled_ = enabled;
-  OnPrefsChanged(prefs::kBraveAdsEnabled);
-}
-
-void AdsServiceImpl::set_ads_per_hour(int ads_per_hour) {
-  profile_->GetPrefs()->SetUint64(prefs::kBraveAdsPerHour, ads_per_hour);
-}
-
 void AdsServiceImpl::TabUpdated(SessionID tab_id,
                                 const GURL& url,
                                 const bool is_active) {
@@ -526,10 +516,6 @@ void AdsServiceImpl::OnMediaStop(SessionID tab_id) {
 
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
   return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerHour);
-}
-
-uint64_t AdsServiceImpl::ads_per_hour() const {
-  return GetAdsPerHour();
 }
 
 uint64_t AdsServiceImpl::GetAdsPerDay() const {

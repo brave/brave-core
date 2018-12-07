@@ -53,7 +53,19 @@ export const defaultState: Rewards.State = {
   }
 }
 
-const cleanData = (state: Rewards.State) => state
+export const getLoadTimeData = (state: Rewards.State): Rewards.State => {
+  state = { ...state }
+  state.adsData = defaultState.adsData
+
+  state.adsData.adsEnabled = (chrome.getVariableValue('adsEnabled') === 'true')
+  state.adsData.adsPerHour = parseInt(chrome.getVariableValue('adsPerHour'), 10)
+
+  return state
+}
+
+const cleanData = (state: Rewards.State) => {
+  return getLoadTimeData(state)
+}
 
 export const load = (): Rewards.State => {
   const data = window.localStorage.getItem(keyName)

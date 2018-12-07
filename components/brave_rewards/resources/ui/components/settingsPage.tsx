@@ -51,7 +51,6 @@ class SettingsPage extends React.Component<Props, {}> {
     this.actions.getDonationTable()
     this.actions.getContributeList()
     this.actions.checkImported()
-    this.actions.getAdsData()
   }
 
   componentWillUnmount () {

@@ -7,8 +7,6 @@
 #include "base/base64.h"
 #include "base/memory/weak_ptr.h"
 
-#include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
@@ -24,6 +22,12 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/bindings_policy.h"
+#include "brave/components/brave_ads/common/pref_names.h"
+#include "components/prefs/pref_change_registrar.h"
+#include "components/prefs/pref_service.h"
+#include "content/public/browser/render_view_host.h"
+#include "chrome/browser/extensions/api/settings_private/prefs_util.h"
+#include "chrome/browser/extensions/api/settings_private/settings_private_api.h"
 
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
@@ -77,7 +81,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void UpdateTipsList(const base::ListValue* args);
   void GetContributionList(const base::ListValue* args);
   void CheckImported(const base::ListValue* args);
-  void GetAdsData(const base::ListValue* args);
   void SaveAdsSetting(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
@@ -131,7 +134,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
           notifications_list) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
-  brave_ads::AdsService* ads_service_;
   base::WeakPtrFactory<RewardsDOMHandler> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsDOMHandler);
@@ -205,9 +207,6 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.checkImported",
                                     base::BindRepeating(&RewardsDOMHandler::CheckImported,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.getAdsData",
-                                    base::BindRepeating(&RewardsDOMHandler::GetAdsData,
-                                                        base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.saveAdsSetting",
                                     base::BindRepeating(&RewardsDOMHandler::SaveAdsSetting,
                                                         base::Unretained(this)));
@@ -217,9 +216,6 @@ void RewardsDOMHandler::Init() {
   Profile* profile = Profile::FromWebUI(web_ui());
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-  ads_service_ =
-      brave_ads::AdsServiceFactory::GetForProfile(profile);
-
   if (rewards_service_)
     rewards_service_->AddObserver(this);
 }
@@ -705,36 +701,31 @@ void RewardsDOMHandler::CheckImported(const base::ListValue *args) {
   }
 }
 
-void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
-  if (ads_service_ && web_ui()->CanCallJavascript()) {
-    base::DictionaryValue adsData;
-    bool ads_enabled = ads_service_->is_enabled();
-    int ads_per_hour = ads_service_->ads_per_hour();
-
-    adsData.SetBoolean("adsEnabled", ads_enabled);
-    adsData.SetInteger("adsPerHour", ads_per_hour);
-
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsData", adsData);
-  }
-}
-
 void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
-  if (ads_service_) {
+  if (web_ui()->CanCallJavascript()) {
     std::string key;
     std::string value;
+    auto funcArgs = std::make_unique<base::ListValue>();
+
     args->GetString(0, &key);
     args->GetString(1, &value);
 
     if (key == "adsEnabled") {
-      ads_service_->set_ads_enabled(value == "true");
+      bool ads_enabled = value == "true";
+      funcArgs->AppendString("brave.brave_ads.enabled");
+      funcArgs->AppendBoolean(ads_enabled);
     }
 
     if (key == "adsPerHour") {
-      ads_service_->set_ads_per_hour(std::stoi(value));
+      funcArgs->AppendString("brave.brave_ads.ads_per_hour");
+      funcArgs->AppendInteger(std::stoi(value));
     }
 
-    base::ListValue* emptyArgs;
-    GetAdsData(emptyArgs);
+    // This shouldn't be otherwise since we only have
+    // these two keys that can be set, but better to be safe.
+    if (funcArgs->GetSize() == 2) {
+      web_ui()->CallJavascriptFunctionUnsafe("chrome.settingsPrivate.setPref", *funcArgs);
+    }
   }
 }
 
@@ -749,10 +740,41 @@ BraveRewardsUI::BraveRewardsUI(content::WebUI* web_ui, const std::string& name)
     kBraveRewardsSettingsGenerated, kBraveRewardsSettingsGeneratedSize,
 #endif
     IDR_BRAVE_REWARDS_HTML) {
+  Profile* profile = Profile::FromWebUI(web_ui);
+  PrefService* prefs = profile->GetPrefs();
+  pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
+  pref_change_registrar_->Init(prefs);
+  pref_change_registrar_->Add(brave_ads::prefs::kBraveAdsEnabled,
+                              base::Bind(&BraveRewardsUI::OnPreferenceChanged,
+                              base::Unretained(this)));
+  pref_change_registrar_->Add(brave_ads::prefs::kBraveAdsPerHour,
+                              base::Bind(&BraveRewardsUI::OnPreferenceChanged,
+                              base::Unretained(this)));
+
   auto handler_owner = std::make_unique<RewardsDOMHandler>();
   RewardsDOMHandler * handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));
   handler->Init();
+}
+
+void BraveRewardsUI::CustomizeBraveRewardsUIProperties(content::RenderViewHost* render_view_host) {
+  DCHECK(IsSafeToSetWebUIProperties());
+  Profile* profile = Profile::FromWebUI(web_ui());
+  PrefService* prefs = profile->GetPrefs();
+
+  if (render_view_host) {
+    render_view_host->SetWebUIProperty("adsEnabled",
+                                       std::to_string(prefs->GetUint64(brave_ads::prefs::kBraveAdsEnabled)));
+    render_view_host->SetWebUIProperty("adsPerHour",
+                                       std::to_string(prefs->GetUint64(brave_ads::prefs::kBraveAdsPerHour)));
+  }
+}
+
+void BraveRewardsUI::OnPreferenceChanged(){
+  if (IsSafeToSetWebUIProperties()) {
+    CustomizeBraveRewardsUIProperties(GetRenderViewHost());
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsData");
+  }
 }
 
 BraveRewardsUI::~BraveRewardsUI() {

@@ -139,8 +139,6 @@ export const onImportedCheck = (imported: boolean) => action(types.ON_IMPORTED_C
   imported
 })
 
-export const getAdsData = () => action(types.GET_ADS_DATA)
-
 export const onAdsData = (adsData: Rewards.AdsData) => action(types.ON_ADS_DATA, {
   adsData
 })

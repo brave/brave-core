@@ -44,6 +44,10 @@ class AdsBox extends React.Component<Props, {}> {
       newValue = !adsEnabled
     }
 
+    if (key === 'adsPerHour') {
+      newValue = +value
+    }
+
     this.props.actions.onAdsSettingSave(key, newValue)
   }
 
