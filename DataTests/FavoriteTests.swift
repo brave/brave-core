@@ -118,7 +118,7 @@ class FavoriteTests: CoreDataTestCase {
         // Upon re-order, each now has a given order
         reorder(0, toIndex: 2)
         // Check to see if an order (2) has been given to fetchedObjects index 0
-        XCTAssertEqual(fetchController.fetchedObjects![0].syncOrder, "0.0.3.1")
+        XCTAssertEqual(fetchController.fetchedObjects![0].order, 2)
         
         // Verify that order is now taken into account by refetching
         try! fetchController.performFetch()
@@ -136,9 +136,9 @@ class FavoriteTests: CoreDataTestCase {
         
         reorder(0, toIndex: 2)
         // Check to see if an order (2) has been given to fetchedObjects index 0
-        XCTAssertEqual(first.syncOrder, "0.0.3.1")
+        XCTAssertEqual(first.order, 2)
         // The second favorite should have been pushed backwards to 0 since we moved the original 0 to 2
-        XCTAssertEqual(second.syncOrder, "0.0.2")
+        XCTAssertEqual(second.order, 0)
         
         // Order is now taken into account by refetching
         try! fetchController.performFetch()
@@ -149,7 +149,7 @@ class FavoriteTests: CoreDataTestCase {
         // Verify that the first object at index 0 is the original pushed back one
         XCTAssertEqual(fetchController.fetchedObjects![0], second)
         // Verify that the object at index 1 was pushed back
-        XCTAssertEqual(fetchController.fetchedObjects![1].syncOrder, "0.0.3")
+        XCTAssertEqual(fetchController.fetchedObjects![1].order, 1)
     }
     
     func testMoveToStart() {
@@ -162,7 +162,7 @@ class FavoriteTests: CoreDataTestCase {
         let startIndex = fetchController.fetchedObjects!.startIndex
         
         reorder(3, toIndex: startIndex)
-        XCTAssertEqual(object.syncOrder, "0.0.0.1")
+        XCTAssertEqual(object.order, 0)
         
         // Order is now taken into account by refetching
         try! fetchController.performFetch()
@@ -181,7 +181,7 @@ class FavoriteTests: CoreDataTestCase {
         let endIndex = fetchController.fetchedObjects!.endIndex - 1
         
         reorder(0, toIndex: endIndex)
-        XCTAssertEqual(first.syncOrder, "0.0.6")
+        XCTAssertEqual(first.order, 4)
         
         // Order is now taken into account by refetching
         try! fetchController.performFetch()
