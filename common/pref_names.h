@@ -31,6 +31,11 @@ extern const char kReferralCheckedForPromoCodeFile[];
 extern const char kHTTPSEVerywhereControlType[];
 extern const char kNoScriptControlType[];
 extern const char kRewardsNotifications[];
+extern const char kRewardsNotificationTimerInterval[];
+extern const char kRewardsBackupNotificationFrequency[];
+extern const char kRewardsBackupNotificationInterval[];
+extern const char kRewardsBackupSucceeded[];
+extern const char kRewardsUserHasFunded[];
 extern const char kMigratedMuonProfile[];
 extern const char kBravePaymentsPinnedItemCount[];
 
