@@ -1,0 +1,32 @@
+diff --git a/chrome/browser/resources/settings/lifetime_browser_proxy.js b/chrome/browser/resources/settings/lifetime_browser_proxy.js
+index 396539708ffed08cc0fc084fde54bba2496598fe..afa73c21c35d4ab6d54797b63a96eec993d93f73 100644
+--- a/chrome/browser/resources/settings/lifetime_browser_proxy.js
++++ b/chrome/browser/resources/settings/lifetime_browser_proxy.js
+@@ -11,6 +11,13 @@ cr.define('settings', function() {
+     // Triggers a browser relaunch.
+     relaunch() {}
+ 
++    // <if expr="is_macosx">
++    // Use separate api for relaunch after update on Mac.
++    // Chromium's relaunch api isn't compatible with sparkle framework.
++    // So, sparkle framework's relaunch api is used on Mac.
++    relaunchOnMac() {}
++    // </if>
++
+     // <if expr="chromeos">
+     // First signs out current user and then performs a restart.
+     signOutAndRestart() {}
+@@ -39,6 +46,13 @@ cr.define('settings', function() {
+       chrome.send('relaunch');
+     }
+ 
++    // <if expr="is_macosx">
++    /** @override */
++    relaunchOnMac() {
++      chrome.send('relaunchOnMac');
++    }
++    // </if>
++
+     // <if expr="chromeos">
+     /** @override */
+     signOutAndRestart() {

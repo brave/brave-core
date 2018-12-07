@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/resources/settings/about_page/about_page.js b/chrome/browser/resources/settings/about_page/about_page.js
+index 70e53fcf3166560520b31ecaa906120f44e3315a..6f31f72f1d0ffe8e8add29ebe1f0027bfc7be2dc 100644
+--- a/chrome/browser/resources/settings/about_page/about_page.js
++++ b/chrome/browser/resources/settings/about_page/about_page.js
+@@ -271,7 +271,14 @@ Polymer({
+ 
+   /** @private */
+   onRelaunchTap_: function() {
++    // <if expr="is_macosx">
++    // Sparkle framework's relaunch api is used.
++    this.lifetimeBrowserProxy_.relaunchOnMac();
++    // </if>
++
++    // <if expr="not is_macosx">
+     this.lifetimeBrowserProxy_.relaunch();
++    // </if>
+   },
+ 
+   /** @private */
