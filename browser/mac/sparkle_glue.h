@@ -53,6 +53,8 @@ extern NSString* const kBraveAutoupdateStatusErrorMessages;
 
 - (void)checkForUpdates;
 
+- (void)relaunch;
+
 - (AutoupdateStatus)recentStatus;
 - (NSNotification*)recentNotification;
 

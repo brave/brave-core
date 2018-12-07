@@ -7,7 +7,16 @@
 
 #import <Foundation/Foundation.h>
 
+@interface SUUpdateDriver;
+
+- (void)installWithToolAndRelaunch:(BOOL)relaunch displayingUserInterface
+                                  :(BOOL)showUI;
+
+@end
+
 @interface SUUpdater : NSObject
+
+@property (strong) SUUpdateDriver *driver;
 
 + (SUUpdater *)sharedUpdater;
 
