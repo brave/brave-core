@@ -592,8 +592,9 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChildrenOfPermanentNodesFromSync) {
       "", false, ""));
   ASSERT_EQ(model()->mobile_node()->child_count(), 0);
   change_processor()->ApplyChangesFromSyncModel(records);
-  ASSERT_EQ(model()->mobile_node()->child_count(), 1);
-  const auto* folder2 = model()->mobile_node()->GetChild(0);
+  ASSERT_EQ(model()->mobile_node()->child_count(), 0);
+  ASSERT_EQ(model()->bookmark_bar_node()->child_count(), 2);
+  const auto* folder2 = model()->bookmark_bar_node()->GetChild(1);
   EXPECT_EQ(base::UTF16ToUTF8(folder2->GetTitle()), "Folder2");
 
   records.clear();
@@ -779,4 +780,25 @@ TEST_F(BraveBookmarkChangeProcessorTest, TitleCustomTitle) {
   ASSERT_EQ(folder1->child_count(), 1);
   const auto* folder2 = folder1->GetChild(0);
   EXPECT_EQ(base::UTF16ToUTF8(folder2->GetTitle()), "Folder2");
+}
+
+TEST_F(BraveBookmarkChangeProcessorTest, BookmarkFromMobileGoesToToolbar) {
+  change_processor()->Start();
+  auto a_record = SimpleBookmarkSyncRecord(
+    jslib::SyncRecord::Action::A_CREATE,
+    "",
+    "https://a.com/",
+    "A.com - title",
+    "2.1.1",
+    "");
+  RecordsList records;
+  records.push_back(std::move(a_record));
+  change_processor()->ApplyChangesFromSyncModel(records);
+  // Verify the model, now we should find the folder and the nodes
+  EXPECT_EQ(model()->other_node()->child_count(), 0);
+  EXPECT_EQ(model()->mobile_node()->child_count(), 0);
+  ASSERT_EQ(model()->bookmark_bar_node()->child_count(), 1);
+
+  const auto* node_a = model()->bookmark_bar_node()->GetChild(0);
+  EXPECT_EQ(node_a->url().spec(), "https://a.com/");
 }
