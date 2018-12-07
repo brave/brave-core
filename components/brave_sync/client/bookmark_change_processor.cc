@@ -173,17 +173,15 @@ const bookmarks::BookmarkNode* FindParent(bookmarks::BookmarkModel* model,
   auto* parent_node = FindByObjectId(model, bookmark.parentFolderObjectId);
 
   if (!parent_node) {
-    if (!bookmark.order.empty() &&
-        bookmark.order.at(0) == '2') {
-      // mobile generated bookmarks go in the mobile folder so they don't
-      // get so we don't get m.xxx.xxx domains in the normal bookmarks
-      parent_node = model->mobile_node();
-    } else if (!bookmark.hideInToolbar) {
-      // this flag is a bit odd, but if the node doesn't have a parent and
-      // hideInToolbar is false, then this bookmark should go in the
-      // toolbar root. We don't care about this flag for records with
-      // a parent id because they will be inserted into the correct
-      // parent folder
+    if (
+        // this flag is a bit odd, but if the node doesn't have a parent and
+        // hideInToolbar is false, then this bookmark should go in the
+        // toolbar root. We don't care about this flag for records with
+        // a parent id because they will be inserted into the correct
+        // parent folder
+        !bookmark.hideInToolbar ||
+        // mobile generated bookmarks go also in bookmark bar
+        (!bookmark.order.empty() && bookmark.order.at(0) == '2')) {
       parent_node = model->bookmark_bar_node();
     } else {
       parent_node = model->other_node();
