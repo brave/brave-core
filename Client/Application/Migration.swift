@@ -97,8 +97,13 @@ extension Preferences {
         // This needs to be translated to our new preference.
         Preferences.General.isFirstLaunch.value = Preferences.DAU.lastLaunchInfo.value == nil
         
+        // Core Data
+        
         // Migrate the shield overrides
         migrateShieldOverrides()
+        
+        Bookmark.migrateOrder(forFavorites: true)
+        Bookmark.migrateOrder(forFavorites: false)
         
         Preferences.Migration.completed.value = true
     }

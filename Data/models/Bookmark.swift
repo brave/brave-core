@@ -309,6 +309,40 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         DataController.save(context: frc.managedObjectContext)
     }
     
+    /// Takes all Bookmarks and Favorites from 1.6 and sets correct order for them.
+    /// 1.6 had few bugs with reordering which we want to avoid, in particular non-reordered bookmarks on 1.6
+    /// all have order set to 0 which makes sorting confusing.
+    /// In migration we take all bookmarks using the same sorting method as on 1.6 and add a proper `order`
+    /// attribute to them. The goal is to have all bookmarks with a proper unique order number set.
+    public class func migrateOrder(parentFolder: Bookmark? = nil,
+                                   forFavorites: Bool,
+                                   context: NSManagedObjectContext = DataController.newBackgroundContext()) {
+        
+        let predicate = forFavorites ?
+            NSPredicate(format: "isFavorite == true") : allBookmarksOfAGivenLevelPredicate(parent: parentFolder)
+        
+        let orderSort = NSSortDescriptor(key: #keyPath(Bookmark.order), ascending: true)
+        let folderSort = NSSortDescriptor(key: #keyPath(Bookmark.isFolder), ascending: false)
+        let createdSort = NSSortDescriptor(key: #keyPath(Bookmark.created), ascending: true)
+        
+        let sort = [orderSort, folderSort, createdSort]
+        
+        guard let allBookmarks = all(where: predicate, sortDescriptors: sort, context: context),
+              !allBookmarks.isEmpty else {
+            return
+        }
+        
+        for (i, bookmark) in allBookmarks.enumerated() {
+            bookmark.order = Int16(i)
+            // Calling this method recursively to get ordering for nested bookmarks
+            if !forFavorites && bookmark.isFolder {
+                migrateOrder(parentFolder: bookmark, forFavorites: forFavorites, context: context)
+            }
+        }
+        
+        DataController.save(context: context)
+    }
+    
     // TODO: Migration syncUUIDS still needs to be solved
     // Should only ever be used for migration from old db
     // Always uses worker context
