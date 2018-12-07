@@ -249,7 +249,9 @@
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/components/test/fileMock.ts",
-      "\\.(css|less)$": "identity-obj-proxy"
+      "\\.(css|less)$": "identity-obj-proxy",
+      "^brave-ui$": "<rootDir>/node_modules/brave-ui/src",
+      "^brave-ui\\/(.*)": "<rootDir>/node_modules/brave-ui/src/$1"
     }
   },
   "devDependencies": {
@@ -272,7 +274,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-0": "^6.24.1",
-    "brave-ui": "^0.34.6",
+    "brave-ui": "brave/brave-ui#5c2d8a0f669af2e9a68ce0fe38d49a116bc52315",
     "css-loader": "^0.28.9",
     "csstype": "^2.5.5",
     "emptykit.css": "^1.0.1",
