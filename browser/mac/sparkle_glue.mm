@@ -147,6 +147,8 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
   if ([self isOnReadOnlyFilesystem])
     return NO;
 
+  DCHECK(!su_updater_);
+
   NSString* sparkle_path =
       [[base::mac::FrameworkBundle() privateFrameworksPath]
           stringByAppendingPathComponent:@"Sparkle.framework"];
@@ -164,6 +166,11 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
 }
 
 - (void)registerWithSparkle {
+  // This can be called by BraveBrowserMainPartsMac::PreMainMessageLoopStart()
+  // again when browser is relaunched.
+  if (registered_)
+    return;
+
   DCHECK(brave::UpdateEnabled());
   DCHECK(su_updater_);
 
