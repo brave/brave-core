@@ -14,6 +14,7 @@
 #include "base/task_runner_util.h"
 #include "base/task/post_task.h"
 #include "base/time/time.h"
+#include "bat/ads/ads.h"
 #include "bat/ads/notification_info.h"
 #include "bat/ads/notification_result_type.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
@@ -132,8 +133,8 @@ int32_t ToMojomNotificationResultInfoResultType(
 }
 
 static std::map<std::string, int> g_schema_resource_ids = {
-  {"catalog", IDR_ADS_CATALOG_SCHEMA},
-  {"bundle", IDR_ADS_BUNDLE_SCHEMA},
+  {ads::_catalog_schema_name, IDR_ADS_CATALOG_SCHEMA},
+  {ads::_bundle_schema_name, IDR_ADS_BUNDLE_SCHEMA},
 };
 
 int GetSchemaResourceId(const std::string& name) {
@@ -835,6 +836,8 @@ void AdsServiceImpl::URLRequest(
     fetcher->SetUploadData(content_type, content);
 
   fetchers_[fetcher] = callback;
+
+  fetcher->Start();
 }
 
 void AdsServiceImpl::OnURLFetchComplete(
