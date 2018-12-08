@@ -40,7 +40,7 @@ bool BundleState::FromJson(
     return false;
   }
 
-  std::map<std::string, std::vector<AdInfo>> new_categories;
+  std::map<std::string, std::vector<AdInfo>> new_categories = {};
 
   if (bundle.HasMember("categories")) {
     for (const auto& category : bundle["categories"].GetObject()) {
