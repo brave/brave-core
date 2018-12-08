@@ -255,6 +255,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME" desc="The utility process which launch Tor">
         Tor Launcher
       </message>
+      <message name="IDS_SERVICE_BAT_ADS" desc="The bat ads utility process">
+        Bat Ads Service
+      </message>
       <!-- Brave Shields Defaults -->
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE" desc="The title for Brave shields defaults in settings">
         Brave shields defaults
@@ -328,6 +331,8 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />
       <include name="IDR_BRAVE_TAG_MANAGER_POLYFILL" file="resources/js/tag_manager_polyfill.js" type="BINDATA" />
+      <include name="IDR_BRAVE_CONTENT_BROWSER_MANIFEST_OVERLAY" file="${root_gen_dir}/brave/components/services/brave_content_browser_manifest_overlay.json" use_base_dir="false" type="BINDATA" />
+      <include name="IDR_BRAVE_CONTENT_PACKAGED_SERVICES_MANIFEST_OVERLAY" file="${root_gen_dir}/brave/components/services/brave_content_packaged_services_manifest_overlay.json" use_base_dir="false" type="BINDATA" />
     </includes>
   </release>
 </grit>
