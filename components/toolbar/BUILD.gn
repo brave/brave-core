@@ -9,7 +9,7 @@ source_set("toolbar") {
 
   deps = [
     "//base",
-    "//components/toolbar"
+    "//components/omnibox/browser"
   ]
 
 }
@@ -23,7 +23,7 @@ source_set("unit_tests") {
   deps = [
     ":toolbar",
     "//base",
-    "//components/toolbar",
+    "//components/omnibox/browser",
     "//testing/gtest",
     "//url",
   ]
