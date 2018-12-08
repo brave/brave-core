@@ -75,6 +75,8 @@ void AdsImpl::InitializeStep3() {
 
   LOG(INFO) << "Successfully initialized";
 
+  is_foreground_ = true;
+
   ads_client_->SetIdleThreshold(kIdleThresholdInSeconds);
 
   NotificationAllowedCheck(false);
