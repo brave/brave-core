@@ -279,12 +279,14 @@ void AdsImpl::RemoveAllHistory() {
   ConfirmAdUUIDIfAdEnabled();
 }
 
-void AdsImpl::SaveCachedInfo() {
+void AdsImpl::SaveCachedInfo(OnSaveCallback callback) {
   if (!ads_client_->IsAdsEnabled()) {
     client_->RemoveAllHistory();
   }
 
   client_->SaveState();
+
+  callback(SUCCESS);
 }
 
 void AdsImpl::RetrieveSSID() {
@@ -555,7 +557,7 @@ void AdsImpl::OnGetAds(
       std::string new_category = category.substr(0, pos);
 
       LOG(WARNING) << "No ads found for \"" << category <<
-      "\" category, trying again with \"" << new_category << "\" category";
+        "\" category, trying again with \"" << new_category << "\" category";
 
       auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3, _4);
       ads_client_->GetAds(region, new_category, callback);

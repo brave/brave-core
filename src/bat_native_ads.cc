@@ -109,8 +109,6 @@ int main() {
 
   ads.ServeSampleAd();
 
-  ads.SaveCachedInfo();
-
   ads.RemoveAllHistory();
 
   ads.OnUnIdle();

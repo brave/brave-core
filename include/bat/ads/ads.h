@@ -66,7 +66,7 @@ class ADS_EXPORT Ads {
   virtual void RemoveAllHistory() = 0;
 
   // Should be called when the browser is about to exit
-  virtual void SaveCachedInfo() = 0;
+  virtual void SaveCachedInfo(OnSaveCallback callback) = 0;
 
   // Should be called when the user changes the operating system's locale, i.e.
   // en, en_US or en_GB.UTF-8 unless the operating system restarts the app
