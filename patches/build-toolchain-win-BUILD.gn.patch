@@ -1,21 +1,13 @@
 diff --git a/build/toolchain/win/BUILD.gn b/build/toolchain/win/BUILD.gn
-index 3c6c9d05d2c86adca43a7a71ab6d2634a49fc4d3..b3ab43a16d8ddcc3d2714fe3b5a5573729d21d4b 100644
+index 07319b7989989adc542383935e760bb3e0a6bbcd..515133b38cbf56df62cfc27da67ffe24d092cd75 100644
 --- a/build/toolchain/win/BUILD.gn
 +++ b/build/toolchain/win/BUILD.gn
-@@ -6,6 +6,7 @@ import("//build/config/clang/clang.gni")
- import("//build/config/compiler/compiler.gni")
- import("//build/config/sanitizers/sanitizers.gni")
- import("//build/config/win/visual_studio_version.gni")
-+import("//build/toolchain/cc_wrapper.gni")
- import("//build/toolchain/clang_static_analyzer.gni")
- import("//build/toolchain/goma.gni")
- import("//build/toolchain/toolchain.gni")
-@@ -28,6 +29,8 @@ if (use_goma) {
-   } else {
+@@ -30,6 +30,8 @@ if (use_goma) {
      goma_prefix = "$goma_dir/gomacc "
    }
+   clang_prefix = goma_prefix
 +} else if (cc_wrapper != "") {
 +  goma_prefix = "$cc_wrapper "
  } else {
    goma_prefix = ""
- }
+   if (cc_wrapper != "") {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/permissions/permission_uma_util.cc b/chrome/browser/permissions/permission_uma_util.cc
-index e2c560d81b03a38790ac5af710d40e0e5375cafe..566fc30eff823c9df5e4fb4e4b5fb7153636a5e2 100644
+index e4096511164296749fa9be0eccf4fdd8ab5213f5..a0913c777d5ef17fe3d43ac510c9f4d5a36a1ab2 100644
 --- a/chrome/browser/permissions/permission_uma_util.cc
 +++ b/chrome/browser/permissions/permission_uma_util.cc
 @@ -64,7 +64,7 @@ namespace {

@@ -1,12 +1,12 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 9bc5861b648af0aaa191aacf4f334c4540f3f817..0378f06ebe66abf232d0c6896e6543f22c69636e 100644
+index b6b7f59830b4aba9b2a62b5295bafb916980ae71..79d39034cba5caff7672894960458801db8f9bae 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
-@@ -205,6 +205,7 @@ jumbo_static_library("browser") {
-     "//ui/gfx",
-     "//url",
-   ]
+@@ -235,6 +235,7 @@ jumbo_static_library("browser") {
+   if ((!is_android || enable_vr) && !is_ios) {
+     deps += [ ":vector_icons" ]
+   }
 +  if (brave_chromium_build) {  deps += [ "//brave/components/omnibox/browser" ] }
  
-   if ((!is_android || enable_vr) && !is_ios) {
-     sources += get_target_outputs(":omnibox_vector_icons")
+   if (is_android) {
+     deps += [ ":jni_headers" ]

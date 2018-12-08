@@ -1,16 +1,16 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index 5bd0cdfee88155bf1ea629a2e96e776d3ce6b6af..abb4c958d04524f4eb123304767acb5e9849c9fc 100644
+index 114fb2085179403f8f7f8e46eca3bf2a0545d757..17dce5eaa32ac7349186a2c0af0a2853623bda9a 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-@@ -5,6 +5,7 @@
- #include "third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
+@@ -9,6 +9,7 @@
+ #include <memory>
  
- #include "base/numerics/checked_math.h"
+ #include "base/metrics/histogram_functions.h"
 +#include "brave/renderer/brave_content_settings_observer_helper.h"
  #include "third_party/blink/renderer/core/css/cssom/css_url_image_value.h"
  #include "third_party/blink/renderer/core/css/parser/css_parser.h"
- #include "third_party/blink/renderer/core/execution_context/execution_context.h"
-@@ -355,7 +356,12 @@ void BaseRenderingContext2D::setShadowColor(const String& color_string) {
+ #include "third_party/blink/renderer/core/html/canvas/text_metrics.h"
+@@ -343,7 +344,12 @@ void BaseRenderingContext2D::setShadowColor(const String& color_string) {
    ModifiableState().SetShadowColor(color.Rgb());
  }
  
@@ -24,7 +24,7 @@ index 5bd0cdfee88155bf1ea629a2e96e776d3ce6b6af..abb4c958d04524f4eb123304767acb5e
    return GetState().LineDash();
  }
  
-@@ -791,16 +797,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
+@@ -779,16 +785,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
    ClipInternal(dom_path->GetPath(), winding_rule_string);
  }
  
@@ -53,12 +53,13 @@ index 5bd0cdfee88155bf1ea629a2e96e776d3ce6b6af..abb4c958d04524f4eb123304767acb5e
    return IsPointInPathInternal(dom_path->GetPath(), x, y, winding_rule_string);
  }
  
-@@ -825,13 +841,22 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
+@@ -813,13 +829,23 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
                         SkFillTypeToWindRule(ParseWinding(winding_rule_string)));
  }
  
 -bool BaseRenderingContext2D::isPointInStroke(const double x, const double y) {
-+bool BaseRenderingContext2D::isPointInStroke(ScriptState* script_state, const double x, const double y) {
++bool BaseRenderingContext2D::isPointInStroke(ScriptState* script_state,
++                                             const double x, const double y) {
 +  LocalDOMWindow* window = LocalDOMWindow::From(script_state);
 +  if (window && !AllowFingerprinting(window->GetFrame())) {
 +    return false;
@@ -67,12 +68,10 @@ index 5bd0cdfee88155bf1ea629a2e96e776d3ce6b6af..abb4c958d04524f4eb123304767acb5e
  }
  
 -bool BaseRenderingContext2D::isPointInStroke(Path2D* dom_path,
--                                             const double x,
--                                             const double y) {
 +bool BaseRenderingContext2D::isPointInStroke(ScriptState* script_state,
 +                                             Path2D* dom_path,
-+                                              const double x,
-+                                              const double y) {
+                                              const double x,
+                                              const double y) {
 +  LocalDOMWindow* window = LocalDOMWindow::From(script_state);
 +  if (window && !AllowFingerprinting(window->GetFrame())) {
 +    return false;
@@ -80,7 +79,7 @@ index 5bd0cdfee88155bf1ea629a2e96e776d3ce6b6af..abb4c958d04524f4eb123304767acb5e
    return IsPointInStrokeInternal(dom_path->GetPath(), x, y);
  }
  
-@@ -1607,11 +1632,16 @@ ImageData* BaseRenderingContext2D::createImageData(
+@@ -1570,11 +1596,16 @@ ImageData* BaseRenderingContext2D::createImageData(
  }
  
  ImageData* BaseRenderingContext2D::getImageData(

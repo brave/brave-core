@@ -1,5 +1,5 @@
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index 299f60cbc7ef12fb291731f73ed2bb13fca764d3..106986e647d5057728d72a008a95594e4bae70bf 100644
+index 2c4d8cb94ff53f555f3a7af04767ce9e30279f41..e623b63d78f3a05c821da0f6d1d28cb55ffdd448 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
 @@ -13,6 +13,7 @@
@@ -10,7 +10,7 @@ index 299f60cbc7ef12fb291731f73ed2bb13fca764d3..106986e647d5057728d72a008a95594e
  #include "chrome/common/chrome_content_client.h"
  #include "chrome/common/chrome_switches.h"
  #include "chrome/common/extensions/api/extension_action/action_info.h"
-@@ -82,6 +83,7 @@ ChromeChannelForHistogram GetChromeChannelForHistogram(
+@@ -85,6 +86,7 @@ ChromeChannelForHistogram GetChromeChannelForHistogram(
  ChromeExtensionsClient::ChromeExtensionsClient() {
    AddAPIProvider(std::make_unique<ChromeExtensionsAPIProvider>());
    AddAPIProvider(std::make_unique<CoreExtensionsAPIProvider>());

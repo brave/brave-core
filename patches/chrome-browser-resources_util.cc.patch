@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources_util.cc b/chrome/browser/resources_util.cc
-index d74bc7f4accc959329dc57be8232263736d4473c..41fcf53a338b7022c608e6527a9e9d0fa16dc382 100644
+index e2bbf23a96d9ad6947c1aed458a1d09889e8d57a..b3a3d5e7776e5cd77867d9ed27ba71d1b4c7b033 100644
 --- a/chrome/browser/resources_util.cc
 +++ b/chrome/browser/resources_util.cc
 @@ -19,6 +19,10 @@
@@ -13,7 +13,7 @@ index d74bc7f4accc959329dc57be8232263736d4473c..41fcf53a338b7022c608e6527a9e9d0f
  namespace {
  
  // A wrapper class that holds a map between resource strings and resource
-@@ -42,6 +46,12 @@ class ThemeMap {
+@@ -49,6 +53,12 @@ class ThemeMap {
      for (size_t i = 0; i < kUiResourcesSize; ++i) {
        storage.emplace_back(kUiResources[i].name, kUiResources[i].value);
      }
