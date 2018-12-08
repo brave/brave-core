@@ -2,14 +2,21 @@
 
 ## Limitations
 
+- Production Ad Serve URL needs updating with final URL
 - Should run synchronously in own process
-- Due to privacy concerns Brian Johnson has with platform information being transmitted when requesting a new catalog, `Win7` and `Win8` are not passed from Brave Core, Brian Johnson is raising these privacy concerns
-- `IsNotificationsAvailable` always returns `true` from Brave Core irrespective if they are enabled or disabled on the operating system
-- `EventLog`'s are persisted in the Console Log, whereas in Muon they were persisted in a JSON file
+- Due to privacy concerns Brian Johnson has with platform information being
+  transmitted when requesting a new catalog, `Win7` and `Win8` are not passed
+  from Brave Core, Brian Johnson is raising these privacy concerns
+- `IsNotificationsAvailable` always returns `true` from Brave Core irrespective
+  if they are enabled or disabled on the operating system
+- `EventLog`'s are persisted in the Console Log, whereas in Muon they were
+  persisted in a JSON file
 - Implement DemoAPI logs
 - Additional unit test coverage
 
 ## Isolated development on macOS
+
+- Deprecated as will be moved to Brave Core
 
 ### Pre-requisite
 
