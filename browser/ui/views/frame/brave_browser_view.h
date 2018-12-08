@@ -8,11 +8,14 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 class BraveBrowserView : public BrowserView {
-  public:
-    using BrowserView::BrowserView;
-    void SetStarredState(bool is_starred) override;
-  private:
-    DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);
+ public:
+  using BrowserView::BrowserView;
+
+  void SetStarredState(bool is_starred) override;
+  void ShowUpdateChromeDialog() override;
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_H_
