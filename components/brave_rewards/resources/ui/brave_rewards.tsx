@@ -125,6 +125,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onImportedCheck(imported)
   }
 
+  function adsData (adsData: Rewards.AdsData) {
+    getActions().onAdsData(adsData)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -145,7 +149,8 @@ window.cr.define('brave_rewards', function () {
     recurringDonationUpdate,
     currentTips,
     initAutoContributeSettings,
-    imported
+    imported,
+    adsData
   }
 })
 

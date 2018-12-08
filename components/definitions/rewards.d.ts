@@ -25,6 +25,7 @@ declare namespace Rewards {
 
   export interface State {
     addresses?: Record<AddressesType, Address>
+    adsData: AdsData
     autoContributeList: Publisher[]
     connectedWallet: boolean
     contributeLoad: boolean
@@ -133,5 +134,10 @@ declare namespace Rewards {
   export interface Captcha {
     image: string
     hint: string
+  }
+
+  export interface AdsData {
+    adsEnabled: boolean
+    adsPerHour: number
   }
 }
