@@ -343,6 +343,16 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
     return;
   }
 
+  UrlComponents components;
+
+  if (!ads_client_->GetUrlComponents(url, &components)) {
+    return;
+  }
+
+  if (components.scheme != "http" && components.scheme != "https") {
+    return;
+  }
+
   TestShoppingData(url);
   TestSearchState(url);
 
