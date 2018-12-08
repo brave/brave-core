@@ -58,6 +58,22 @@ bool BundleState::FromJson(
           ad_info.creative_set_id = info["creativeSetId"].GetString();
         }
 
+        if (info.HasMember("startTimestamp")) {
+          ad_info.start_timestamp = info["startTimestamp"].GetString();
+        }
+
+        if (info.HasMember("endTimestamp")) {
+          ad_info.end_timestamp = info["endTimestamp"].GetString();
+        }
+
+        std::vector<std::string> regions = {};
+        if (info.HasMember("regions")) {
+          for (const auto& region : info["regions"].GetArray()) {
+            regions.push_back(region.GetString());
+          }
+        }
+        ad_info.regions = regions;
+
         ad_info.advertiser = info["advertiser"].GetString();
         ad_info.notification_text = info["notificationText"].GetString();
         ad_info.notification_url = info["notificationURL"].GetString();
@@ -90,6 +106,22 @@ void SaveToJson(JsonWriter* writer, const BundleState& state) {
     for (const auto& ad : category.second) {
       writer->StartObject();
 
+      writer->String("creativeSetId");
+      writer->String(ad.creative_set_id.c_str());
+
+      writer->String("regions");
+      writer->StartArray();
+      for (const auto& region : ad.regions) {
+        writer->String(region.c_str());
+      }
+      writer->EndArray();
+
+      writer->String("startTimestamp");
+      writer->String(ad.start_timestamp.c_str());
+
+      writer->String("endTimestamp");
+      writer->String(ad.end_timestamp.c_str());
+
       writer->String("advertiser");
       writer->String(ad.advertiser.c_str());
 
@@ -101,9 +133,6 @@ void SaveToJson(JsonWriter* writer, const BundleState& state) {
 
       writer->String("uuid");
       writer->String(ad.uuid.c_str());
-
-      writer->String("creativeSetId");
-      writer->String(ad.creative_set_id.c_str());
 
       writer->EndObject();
     }
