@@ -123,7 +123,7 @@ class AdsImpl : public Ads {
   void DeliverNotification();
   void StopDeliveringNotifications();
   bool IsDeliveringNotifications() const;
-  bool IsCatalogIsOlderThanOneDay();
+  bool IsCatalogOlderThanOneDay();
   void NotificationAllowedCheck(const bool serve);
 
   uint32_t sustained_ad_interaction_timer_id_;

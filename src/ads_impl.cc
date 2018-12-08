@@ -776,7 +776,7 @@ bool AdsImpl::IsDeliveringNotifications() const {
   return true;
 }
 
-bool AdsImpl::IsCatalogIsOlderThanOneDay() {
+bool AdsImpl::IsCatalogOlderThanOneDay() {
   auto now = helper::Time::Now();
 
   auto catalog_last_updated_timestamp =
@@ -821,7 +821,7 @@ void AdsImpl::NotificationAllowedCheck(const bool serve) {
     return;
   }
 
-  if (IsCatalogIsOlderThanOneDay()) {
+  if (IsCatalogOlderThanOneDay()) {
     return;
   }
 
