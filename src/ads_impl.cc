@@ -280,12 +280,6 @@ void AdsImpl::RemoveAllHistory() {
 }
 
 void AdsImpl::SaveCachedInfo(OnSaveCallback callback) {
-  if (!ads_client_->IsAdsEnabled()) {
-    client_->RemoveAllHistory();
-  }
-
-  client_->SaveState();
-
   callback(SUCCESS);
 }
 

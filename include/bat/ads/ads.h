@@ -65,7 +65,8 @@ class ADS_EXPORT Ads {
   // Should be called to remove all cached history
   virtual void RemoveAllHistory() = 0;
 
-  // Should be called when the browser is about to exit
+  // Should not call this function as it is deprecated and will be removed in a
+  // future version, there is no longer a need to call this function
   virtual void SaveCachedInfo(OnSaveCallback callback) = 0;
 
   // Should be called when the user changes the operating system's locale, i.e.

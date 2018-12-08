@@ -39,6 +39,8 @@ void Client::AppendCurrentTimeToAdsShownHistory() {
       kMaximumEntriesInAdsShownHistory) {
     client_state_->ads_shown_history.pop_back();
   }
+  
+  SaveState();
 }
 
 const std::deque<uint64_t> Client::GetAdsShownHistory() {
@@ -51,12 +53,16 @@ void Client::UpdateAdUUID() {
   }
 
   client_state_->ad_uuid = ads_client_->GenerateUUID();
+
+  SaveState();
 }
 
 void Client::UpdateAdsUUIDSeen(
     const std::string& uuid,
     const uint64_t value) {
   client_state_->ads_uuid_seen.insert({uuid, value});
+
+  SaveState();
 }
 
 const std::map<std::string, uint64_t> Client::GetAdsUUIDSeen() {
@@ -73,10 +79,14 @@ void Client::ResetAdsUUIDSeen(
       client_state_->ads_uuid_seen.erase(ad_uuid_seen);
     }
   }
+
+  SaveState();
 }
 
 void Client::SetAvailable(const bool available) {
   client_state_->available = available;
+
+  SaveState();
 }
 
 bool Client::GetAvailable() const {
@@ -85,6 +95,8 @@ bool Client::GetAvailable() const {
 
 void Client::SetExpired(const bool expired) {
   client_state_->expired = expired;
+
+  SaveState();
 }
 
 bool Client::GetExpired() const {
@@ -93,6 +105,8 @@ bool Client::GetExpired() const {
 
 void Client::SetCurrentSSID(const std::string& ssid) {
   client_state_->current_ssid = ssid;
+
+  SaveState();
 }
 
 void Client::FlagShoppingState(
@@ -103,10 +117,14 @@ void Client::FlagShoppingState(
   client_state_->score = score;
 
   client_state_->last_shop_time = helper::Time::Now();
+
+  SaveState();
 }
 
 void Client::UnflagShoppingState() {
   client_state_->shop_activity = false;
+
+  SaveState();
 }
 
 bool Client::GetShoppingState() {
@@ -121,6 +139,8 @@ void Client::FlagSearchState(
   client_state_->score = score;
 
   client_state_->last_search_time = helper::Time::Now();
+
+  SaveState();
 }
 
 void Client::UnflagSearchState(const std::string& url) {
@@ -131,6 +151,8 @@ void Client::UnflagSearchState(const std::string& url) {
   client_state_->search_activity = false;
 
   client_state_->last_search_time = helper::Time::Now();
+
+  SaveState();
 }
 
 bool Client::GetSearchState() {
@@ -139,6 +161,8 @@ bool Client::GetSearchState() {
 
 void Client::UpdateLastUserActivity() {
   client_state_->last_user_activity = helper::Time::Now();
+
+  SaveState();
 }
 
 uint64_t Client::GetLastUserActivity() {
@@ -147,10 +171,14 @@ uint64_t Client::GetLastUserActivity() {
 
 void Client::UpdateLastUserIdleStopTime() {
   client_state_->last_user_idle_stop_time = helper::Time::Now();
+
+  SaveState();
 }
 
 void Client::SetLocale(const std::string& locale) {
   client_state_->locale = locale;
+
+  SaveState();
 }
 
 const std::string Client::GetLocale() {
@@ -159,6 +187,8 @@ const std::string Client::GetLocale() {
 
 void Client::SetLocales(const std::vector<std::string>& locales) {
   client_state_->locales = locales;
+
+  SaveState();
 }
 
 const std::vector<std::string> Client::GetLocales() {
@@ -172,6 +202,8 @@ void Client::AppendPageScoreToPageScoreHistory(
       kMaximumEntriesInPageScoreHistory) {
     client_state_->page_score_history.pop_back();
   }
+
+  SaveState();
 }
 
 const std::deque<std::vector<double>> Client::GetPageScoreHistory() {
@@ -189,6 +221,8 @@ const std::string Client::GetCurrentPlace() {
 
 void Client::RemoveAllHistory() {
   client_state_.reset(new ClientState());
+
+  SaveState();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -229,6 +263,8 @@ bool Client::FromJson(const std::string& json) {
   }
 
   client_state_.reset(new ClientState(state));
+
+  SaveState();
 
   return true;
 }
