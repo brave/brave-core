@@ -68,6 +68,7 @@ class AdsTabHelper : public content::WebContentsObserver,
 #endif
 
   void OnWebContentsDistillationDone(
+      const GURL& url,
       std::unique_ptr<dom_distiller::DistillerPage>,
       std::unique_ptr<dom_distiller::proto::DomDistillerResult> result,
       bool distillation_successful);
