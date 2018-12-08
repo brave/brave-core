@@ -699,8 +699,7 @@ bool AdsImpl::IsAllowedToShowAds() {
 
   auto minimum_wait_time = hour_window / hour_allowed;
   bool respects_minimum_wait_time =
-    AdsShownHistoryRespectsRollingTimeConstraint(
-    minimum_wait_time, 0);
+    AdsShownHistoryRespectsRollingTimeConstraint(minimum_wait_time, 0);
 
   return respects_hour_limit &&
     respects_day_limit &&
