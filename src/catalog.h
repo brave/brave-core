@@ -29,14 +29,11 @@ class Catalog {
 
   const std::vector<CampaignInfo>& GetCampaigns() const;
 
-  void Save(const std::string& json);
-  void Reset();
+  void Save(const std::string& json, OnSaveCallback callback);
+  void Reset(OnSaveCallback callback);
 
  private:
   bool IsIdValid(const CatalogState& catalog_state);
-
-  void OnCatalogSaved(const Result result);
-  void OnCatalogReset(const Result result);
 
   AdsClient* ads_client_;  // NOT OWNED
   Bundle* bundle_;  // NOT OWNED

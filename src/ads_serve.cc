@@ -153,9 +153,22 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
     return false;
   }
 
-  catalog.Save(json);
+  auto callback = std::bind(&AdsServe::OnCatalogSaved, this, _1);
+  catalog.Save(json, callback);
 
   return true;
+}
+
+void AdsServe::OnCatalogSaved(const Result result) {
+  if (result == FAILED) {
+    LOG(ERROR) << "Failed to save catalog";
+
+    // If the catalog fails to save, we will retry the next time a we collect
+    // activity
+    return;
+  }
+
+  LOG(INFO) << "Successfully saved catalog";
 }
 
 void AdsServe::RetryDownloadingCatalog() {
@@ -174,7 +187,18 @@ void AdsServe::RetryDownloadingCatalog() {
 
 void AdsServe::ResetCatalog() {
   Catalog catalog(ads_client_, bundle_);
-  catalog.Reset();
+  auto callback = std::bind(&AdsServe::OnCatalogReset, this, _1);
+  catalog.Reset(callback);
+}
+
+void AdsServe::OnCatalogReset(const Result result) {
+  if (result == FAILED) {
+    LOG(ERROR) << "Failed to reset catalog";
+
+    return;
+  }
+
+  LOG(INFO) << "Successfully reset catalog";
 }
 
 }  // namespace ads

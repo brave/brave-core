@@ -43,10 +43,14 @@ class AdsServe {
       const std::string& response,
       const std::map<std::string, std::string>& headers);
   bool ProcessCatalog(const std::string& json);
+  void OnCatalogSaved(const Result result);
+
   uint64_t next_retry_start_timer_in_;
   void RetryDownloadingCatalog();
   uint64_t catalog_last_updated_;
+
   void ResetCatalog();
+  void OnCatalogReset(const Result result);
 
   AdsImpl* ads_;  // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED

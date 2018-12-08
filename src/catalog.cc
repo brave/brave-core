@@ -61,13 +61,11 @@ const std::vector<CampaignInfo>& Catalog::GetCampaigns() const {
   return catalog_state_->campaigns;
 }
 
-void Catalog::Save(const std::string& json) {
-  auto callback = std::bind(&Catalog::OnCatalogSaved, this, _1);
+void Catalog::Save(const std::string& json, OnSaveCallback callback) {
   ads_client_->Save(_catalog_name, json, callback);
 }
 
-void Catalog::Reset() {
-  auto callback = std::bind(&Catalog::OnCatalogReset, this, _1);
+void Catalog::Reset(OnSaveCallback callback) {
   ads_client_->Reset(_catalog_name, callback);
 }
 
@@ -88,28 +86,6 @@ bool Catalog::IsIdValid(const CatalogState& catalog_state) {
   }
 
   return true;
-}
-
-void Catalog::OnCatalogSaved(const Result result) {
-  if (result == FAILED) {
-    LOG(ERROR) << "Failed to save catalog";
-
-    // If the catalog fails to save, we will retry the next time a we collect
-    // activity
-    return;
-  }
-
-  LOG(INFO) << "Successfully saved catalog";
-}
-
-void Catalog::OnCatalogReset(const Result result) {
-  if (result == FAILED) {
-    LOG(ERROR) << "Failed to reset catalog";
-
-    return;
-  }
-
-  LOG(INFO) << "Successfully reset catalog";
 }
 
 }  // namespace ads
