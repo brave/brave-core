@@ -167,22 +167,22 @@ BraveContentBrowserClient::AllowWebBluetooth(
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
-    const GURL& url,
-    content::ResourceRequestInfo::WebContentsGetter web_contents_getter,
-    int child_id,
-    content::NavigationUIData* navigation_data,
-    bool is_main_frame,
-    ui::PageTransition page_transition,
-    bool has_user_gesture) {
-
+      const GURL& url,
+      content::ResourceRequestInfo::WebContentsGetter web_contents_getter,
+      int child_id,
+      content::NavigationUIData* navigation_data,
+      bool is_main_frame,
+      ui::PageTransition page_transition,
+      bool has_user_gesture,
+      const std::string& method,
+      const net::HttpRequestHeaders& headers) {
   if (webtorrent::HandleMagnetProtocol(url, web_contents_getter,
         page_transition, has_user_gesture)) {
     return true;
   }
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
-      url, web_contents_getter, child_id, navigation_data, is_main_frame,
-      page_transition, has_user_gesture);
+      url, web_contents_getter, child_id, navigation_data, is_main_frame, page_transition, has_user_gesture, method, headers);
 }
 
 void BraveContentBrowserClient::RegisterOutOfProcessServices(

@@ -10,7 +10,7 @@
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/strings/grit/components_strings.h"
-#include "components/toolbar/vector_icons.h"
+#include "components/omnibox/browser/vector_icons.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/theme_provider.h"
@@ -61,8 +61,8 @@ void BookmarkButton::SetToggled(bool on) {
 
   SkColor icon_color = tp->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
   const gfx::VectorIcon& icon = on
-    ? toolbar::kStarActiveIcon
-    : toolbar::kStarIcon;
+    ? omnibox::kStarActiveIcon
+    : omnibox::kStarIcon;
   SetImage(views::Button::STATE_NORMAL, gfx::CreateVectorIcon(
       icon, icon_color));
 }

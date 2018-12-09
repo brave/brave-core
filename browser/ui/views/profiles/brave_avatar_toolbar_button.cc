@@ -12,7 +12,7 @@
 gfx::ImageSkia BraveAvatarToolbarButton::GetAvatarIcon() const {
   if (profile_->IsTorProfile()) {
     const int icon_size =
-      ui::MaterialDesignController::IsTouchOptimizedUiEnabled() ? 24 : 20;
+      ui::MaterialDesignController::touch_ui() ? 24 : 20;
     const SkColor icon_color =
       GetThemeProvider()->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
     return gfx::CreateVectorIcon(kTorProfileIcon, icon_size, icon_color);

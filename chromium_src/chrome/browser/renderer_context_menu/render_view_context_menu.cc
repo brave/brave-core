@@ -69,7 +69,7 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
           base::Bind(
               OnProfileCreated, params_.link_url,
               content::Referrer(GURL(),
-                                blink::kWebReferrerPolicyStrictOrigin)));
+                                network::mojom::ReferrerPolicy::kStrictOrigin)));
       break;
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
