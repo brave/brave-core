@@ -529,6 +529,28 @@ void AdsImpl::OnLoadSampleBundle(
   ShowAd(ad, category);
 }
 
+void AdsImpl::CheckEasterEgg(const std::string& url) {
+  if (!_is_testing) {
+    return;
+  }
+
+  UrlComponents components;
+  if (!ads_client_->GetUrlComponents(url, &components)) {
+    return;
+  }
+
+  auto now = helper::Time::Now();
+  if (components.hostname == kEasterEggUrl && next_easter_egg_ < now) {
+    LOG(INFO) << "Collect easter egg";
+
+    CheckReadyAdServe(true);
+
+    next_easter_egg_ = now + kNextEasterEggStartsInSeconds;
+    LOG(INFO) << "Next easter egg available in " << next_easter_egg_
+      << " seconds";
+  }
+}
+
 void AdsImpl::CheckReadyAdServe(const bool forced) {
   if (!IsInitialized()) {
     LOG(INFO) << "Notification not made: Not initialized";
@@ -1191,13 +1213,7 @@ void AdsImpl::GenerateAdReportingLoadEvent(
   auto json = buffer.GetString();
   ads_client_->EventLog(json);
 
-  auto now = helper::Time::Now();
-  if (_is_testing && info.tab_url == "https://www.iab.com/"
-      && next_easter_egg_ < now) {
-    next_easter_egg_ = now + kNextEasterEggStartsInSeconds;
-
-    CheckReadyAdServe(true);
-  }
+  CheckEasterEgg(info.tab_url);
 }
 
 void AdsImpl::GenerateAdReportingBackgroundEvent() {

@@ -25,6 +25,7 @@ static const uint64_t kOneHourInSeconds = 60 * kOneMinuteInSeconds;
 static const uint64_t kDebugOneHourInSeconds = 25;
 static const uint64_t kOneDayInSeconds = 24 * kOneHourInSeconds;
 
+static char kEasterEggUrl[] = "www.iab.com";
 static const uint64_t kNextEasterEggStartsInSeconds = 30;
 
 static const uint64_t kSustainAdInteractionAfterSeconds = 10;

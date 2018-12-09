@@ -96,6 +96,7 @@ class AdsImpl : public Ads {
       const Result result,
       const std::string& json);
 
+  void CheckEasterEgg(const std::string& url);
   void CheckReadyAdServe(const bool forced);
   void ServeAdFromCategory(const std::string& category);
   void OnGetAds(
