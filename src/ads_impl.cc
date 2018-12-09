@@ -181,7 +181,9 @@ void AdsImpl::OnForeground() {
 }
 
 void AdsImpl::OnBackground() {
-  is_foreground_ = false;
+  // TODO(Terry Mancey, Brian Johston): Following code is comemnted out until we
+  // come up with a solution for Brave Core
+  // is_foreground_ = false;
   GenerateAdReportingBackgroundEvent();
 }
 
