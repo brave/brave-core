@@ -74,7 +74,7 @@ void AdsServe::OnCatalogDownloaded(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog current', { method, server, path }
 
-    LOG(INFO) << "Catalog is already up to date";
+    LOG(INFO) << "Catalog is already up to dates";
   } else {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog download failed', { error, method, server, path }
@@ -87,8 +87,11 @@ void AdsServe::OnCatalogDownloaded(
       }
     }
 
-    LOG(ERROR) << "Failed to download catalog from " << url << " (" <<
-      response_status_code << "): " << response << " " << formatted_headers;
+    LOG(ERROR) << "Failed to download catalog from:"
+      << std::endl << "  url: " << url
+      << std::endl << "  response_status_code: " << response_status_code
+      << std::endl << "  response: " << response
+      << std::endl << "  headers: " << formatted_headers;
 
     should_retry = true;
   }
@@ -134,21 +137,31 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
 
   Catalog catalog(ads_client_, bundle_);
 
+  LOG(INFO) << "Parsing catalog";
+
   if (!catalog.FromJson(json)) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Failed to parse catalog'
 
+    LOG(ERROR) << "Failed to parse catalog";
+
     return false;
   }
+
+  LOG(INFO) << "Catalog parsed";
 
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Catalog parsed', underscore.extend(underscore.clone(header),
   // { status: 'processed', campaigns: underscore.keys(campaigns).length,
   // creativeSets: underscore.keys(creativeSets).length
 
+  LOG(INFO) << "Generating bundle";
+
   if (!bundle_->UpdateFromCatalog(catalog)) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Failed to generate bundle'
+
+    LOG(ERROR) << "Failed to generate bundle";
 
     return false;
   }
@@ -172,6 +185,8 @@ void AdsServe::OnCatalogSaved(const Result result) {
 }
 
 void AdsServe::RetryDownloadingCatalog() {
+  LOG(INFO) << "Retry downloading catalog";
+
   if (next_retry_start_timer_in_ == 0) {
     if (ads_->IsMobile()) {
       next_retry_start_timer_in_ = 2 * kOneMinuteInSeconds;
@@ -186,6 +201,8 @@ void AdsServe::RetryDownloadingCatalog() {
 }
 
 void AdsServe::ResetCatalog() {
+  LOG(INFO) << "Resetting catalog to default state";
+
   Catalog catalog(ads_client_, bundle_);
   auto callback = std::bind(&AdsServe::OnCatalogReset, this, _1);
   catalog.Reset(callback);

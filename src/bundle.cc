@@ -42,6 +42,8 @@ bool Bundle::UpdateFromCatalog(const Catalog& catalog) {
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Generated bundle'
 
+  LOG(INFO) << "Generated bundle";
+
   return true;
 }
 

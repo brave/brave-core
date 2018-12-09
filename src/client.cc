@@ -39,7 +39,7 @@ void Client::AppendCurrentTimeToAdsShownHistory() {
       kMaximumEntriesInAdsShownHistory) {
     client_state_->ads_shown_history.pop_back();
   }
-  
+
   SaveState();
 }
 
@@ -71,7 +71,7 @@ const std::map<std::string, uint64_t> Client::GetAdsUUIDSeen() {
 
 void Client::ResetAdsUUIDSeen(
     const std::vector<AdInfo>& ads) {
-  LOG(INFO) << "Resetting seen ads";
+  LOG(INFO) << "Resetting seen Ads";
 
   for (const auto& ad : ads) {
     auto ad_uuid_seen = client_state_->ads_uuid_seen.find(ad.uuid);
@@ -220,6 +220,8 @@ const std::string Client::GetCurrentPlace() {
 }
 
 void Client::RemoveAllHistory() {
+  LOG(INFO) << "Removed all client state history";
+
   client_state_.reset(new ClientState());
 
   SaveState();
@@ -239,9 +241,8 @@ void Client::OnStateSaved(const Result result) {
 
 void Client::OnStateLoaded(const Result result, const std::string& json) {
   if (result == FAILED) {
-    LOG(ERROR) << "Failed to load client state";
+    LOG(ERROR) << "Failed to load client state, resetting to default values";
 
-    LOG(INFO) << "Resetting client state";
     client_state_.reset(new ClientState());
   } else {
     if (!FromJson(json)) {

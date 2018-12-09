@@ -98,6 +98,8 @@ void AdsImpl::Deinitialize() {
     return;
   }
 
+  LOG(INFO) << "Deinitializing";
+
   ads_serve_->Reset();
 
   StopDeliveringNotifications();
@@ -190,11 +192,15 @@ bool AdsImpl::IsForeground() const {
 void AdsImpl::OnIdle() {
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Idle state changed', { idleState: action.get('idleState') }
+
+  LOG(INFO) << "Browser state changed to idle";
 }
 
 void AdsImpl::OnUnIdle() {
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Idle state changed', { idleState: action.get('idleState') }
+
+  LOG(INFO) << "Browser state changed to unidle";
 
   client_->UpdateLastUserIdleStopTime();
 
@@ -212,6 +218,8 @@ void AdsImpl::OnMediaPlaying(const int32_t tab_id) {
     return;
   }
 
+  LOG(INFO) << "OnMediaPlaying for tab id: " << tab_id;
+
   media_playing_.insert({tab_id, true});
 }
 
@@ -221,6 +229,8 @@ void AdsImpl::OnMediaStopped(const int32_t tab_id) {
     // Media is not playing for this tab
     return;
   }
+
+  LOG(INFO) << "OnMediaStopped for tab id: " << tab_id;
 
   media_playing_.erase(tab_id);
 }
@@ -250,6 +260,9 @@ void AdsImpl::TabUpdated(
   GenerateAdReportingLoadEvent(load_info);
 
   if (is_active) {
+    LOG(INFO) << "TabUpdated.IsFocused for tab id: " << tab_id
+      << " and url:" << url;
+
     last_shown_tab_url_ = url;
 
     TestShoppingData(url);
@@ -259,6 +272,9 @@ void AdsImpl::TabUpdated(
     focus_info.tab_id = tab_id;
     GenerateAdReportingFocusEvent(focus_info);
   } else {
+    LOG(INFO) << "TabUpdated.IsBlurred for tab id: " << tab_id
+      << " and url:" << url;
+
     BlurInfo blur_info;
     blur_info.tab_id = tab_id;
     GenerateAdReportingBlurEvent(blur_info);
@@ -266,6 +282,8 @@ void AdsImpl::TabUpdated(
 }
 
 void AdsImpl::TabClosed(const int32_t tab_id) {
+  LOG(INFO) << "TabClosed for tab id: " << tab_id;
+
   OnMediaStopped(tab_id);
 
   DestroyInfo destroy_info;
@@ -315,6 +333,7 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
   auto locales = ads_client_->GetLocales();
 
   if (std::find(locales.begin(), locales.end(), locale) != locales.end()) {
+    LOG(INFO) << "Change Localed to " << locale;
     client_->SetLocale(locale);
   } else {
     std::string closest_match_for_locale = "";
@@ -326,6 +345,8 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
       closest_match_for_locale = kDefaultLanguageCode;
     }
 
+    LOG(INFO) << "Locale not found, so changed Locale to closest match: "
+      << closest_match_for_locale;
     client_->SetLocale(closest_match_for_locale);
   }
 
@@ -357,6 +378,12 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
 
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Site visited', { url, immediateWinner, winnerOverTime }
+
+  auto winner_over_time_category = GetWinnerOverTimeCategory();
+
+  LOG(INFO) << "Site visited " << url << ", immediateWinner is "
+    << last_page_classification_ << " and winnerOverTime is "
+    << winner_over_time_category;
 }
 
 std::string AdsImpl::GetWinnerOverTimeCategory() {
@@ -473,7 +500,8 @@ void AdsImpl::OnLoadSampleBundle(
   if (categories_count == 0) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no categories' }
-    LOG(WARNING) << "Sample bundle does not contain any categories";
+
+    LOG(INFO) << "Notification not made: No sample bundle categories";
 
     return;
   }
@@ -488,7 +516,9 @@ void AdsImpl::OnLoadSampleBundle(
   if (ads_count == 0) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ads for category', category }
-    LOG(WARNING) << "No ads found for \"" << category << "\" sample category";
+
+    LOG(INFO) << "Notification not made: No sample bundle ads found for \""
+      << category << "\" sample category";
 
     return;
   }
@@ -501,6 +531,8 @@ void AdsImpl::OnLoadSampleBundle(
 
 void AdsImpl::CheckReadyAdServe(const bool forced) {
   if (!IsInitialized()) {
+    LOG(INFO) << "Notification not made: Not initialized";
+
     return;
   }
 
@@ -508,18 +540,27 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
     if (!IsMobile() && !IsForeground()) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'not in foreground' }
+
+      LOG(INFO) << "Notification not made: Not in foreground";
+
       return;
     }
 
     if (IsMediaPlaying()) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'media playing in browser' }
+
+      LOG(INFO) << "Notification not made: Media playing in browser";
+
       return;
     }
 
     if (!IsAllowedToShowAds()) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'not allowed based on history' }
+
+      LOG(INFO) << "Notification not made: Not allowed based on history";
+
       return;
     }
   }
@@ -533,6 +574,9 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
   if (catalog_id.empty()) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ad catalog' }
+
+    LOG(INFO) << "Notification not made: No ad catalog";
+
     return;
   }
 
@@ -540,6 +584,10 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ad (or permitted ad) for
     // winnerOverTime', category, winnerOverTime, arbitraryKey }
+
+    LOG(INFO) << "Notification not made: No ad (or permitted ad) for \""
+      << category << "\" category";
+
     return;
   }
 
@@ -560,8 +608,8 @@ void AdsImpl::OnGetAds(
     if (pos != std::string::npos) {
       std::string new_category = category.substr(0, pos);
 
-      LOG(WARNING) << "No ads found for \"" << category <<
-        "\" category, trying again with \"" << new_category << "\" category";
+      LOG(INFO) << "Notification not made: No ads found for \"" << category
+        << "\" category, trying again with \"" << new_category << "\" category";
 
       auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3, _4);
       ads_client_->GetAds(region, new_category, callback);
@@ -573,7 +621,8 @@ void AdsImpl::OnGetAds(
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'no ads for category', category }
 
-      LOG(WARNING) << "No ads found for \"" << category << "\" category";
+      LOG(INFO) << "Notification not made: No ads found for \"" << category
+        << "\" category";
 
       return;
     }
@@ -584,12 +633,17 @@ void AdsImpl::OnGetAds(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Ad round-robin', { category, adsSeen, adsNotSeen }
 
+    LOG(INFO) << "Ad round-robin for \"" << category << "\" category";
+
     client_->ResetAdsUUIDSeen(ads);
 
     ads_unseen = GetUnseenAds(ads);
     if (ads_unseen.empty()) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'no ads for category', category }
+
+      LOG(INFO) << "Notification not made: No ads found for \""
+        << category << "\" category";
 
       return;
     }
@@ -625,6 +679,14 @@ bool AdsImpl::IsAdValid(const AdInfo& ad_info) {
     // 'Notification not made', { reason: 'incomplete ad information',
     // category, winnerOverTime, arbitraryKey, notificationUrl,
     // notificationText, advertiser
+
+    LOG(INFO) << "Notification not made: Incomplete ad information for:"
+      << std::endl << "  advertiser: " << ad_info.advertiser << std::endl
+      << std::endl << "  notificationText: " << ad_info.notification_text
+      << std::endl << "  notificationUrl: " << ad_info.notification_url
+      << std::endl << "  creativeSetId: " << ad_info.notification_url
+      << std::endl << "  uuid: " << ad_info.notification_url;
+
     return false;
   }
 
@@ -648,11 +710,19 @@ bool AdsImpl::ShowAd(
 
   last_shown_notification_info_ = NotificationInfo(*notification_info);
 
-  ads_client_->ShowNotification(std::move(notification_info));
-
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Notification shown', {category, winnerOverTime, arbitraryKey,
   // notificationUrl, notificationText, advertiser, uuid, hierarchy}
+
+  LOG(INFO) << "Notification shown:"
+    << std::endl << "  category: " << category
+    << std::endl << "  winnerOverTime: " << GetWinnerOverTimeCategory()
+    << std::endl << "  notificationUrl: " << notification_info->url
+    << std::endl << "  notificationText: " << notification_info->text
+    << std::endl << "  advertiser: " << notification_info->advertiser
+    << std::endl << "  uuid: " << notification_info->uuid;
+
+  ads_client_->ShowNotification(std::move(notification_info));
 
   client_->AppendCurrentTimeToAdsShownHistory();
 
@@ -821,14 +891,26 @@ void AdsImpl::NotificationAllowedCheck(const bool serve) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Ad not served', { reason: 'notifications not presently allowed' }
 
+    LOG(INFO) << "Ad not served: Notifications not presently allowed";
+
     return;
   }
 
   if (!ads_client_->IsNetworkConnectionAvailable()) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Ad not served', { reason: 'network connection not availaable' }
+
+    LOG(INFO) << "Ad not served: Network connection not available";
+
     return;
   }
 
   if (IsCatalogOlderThanOneDay()) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Ad not served', { reason: 'catalog older than one day' }
+
+    LOG(INFO) << "Ad not served: Catalog older than one day";
+
     return;
   }
 

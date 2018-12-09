@@ -27,12 +27,11 @@ bool Catalog::FromJson(const std::string& json) {
 
   auto json_schema = ads_client_->LoadJsonSchema(_catalog_schema_name);
   if (!LoadFromJson(catalog_state.get(), json, json_schema)) {
-    LOG(ERROR) << "Failed to parse catalog: " << json;
     return false;
   }
 
   if (!IsIdValid(*catalog_state)) {
-    LOG(ERROR) << "New catalog id " << catalog_state->catalog_id <<
+    LOG(WARNING) << "New catalog id " << catalog_state->catalog_id <<
       " does not match current catalog id " << bundle_->GetCatalogId();
 
     return false;
