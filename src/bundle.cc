@@ -73,6 +73,14 @@ uint64_t Bundle::GetCatalogLastUpdatedTimestamp() const {
   return catalog_last_updated_timestamp_;
 }
 
+bool Bundle::IsReady() const {
+  if (GetCatalogVersion() == 0) {
+    return false;
+  }
+
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // TODO(Terry Mancey): We should consider optimizing memory consumption when

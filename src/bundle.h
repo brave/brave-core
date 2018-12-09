@@ -27,6 +27,8 @@ class Bundle {
   uint64_t GetCatalogPing() const;
   uint64_t GetCatalogLastUpdatedTimestamp() const;
 
+  bool IsReady() const;
+
  private:
   std::unique_ptr<BundleState> GenerateFromCatalog(const Catalog& catalog);
 

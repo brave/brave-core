@@ -546,7 +546,7 @@ void AdsImpl::CheckEasterEgg(const std::string& url) {
 }
 
 void AdsImpl::CheckReadyAdServe(const bool forced) {
-  if (!IsInitialized()) {
+  if (!IsInitialized() || !bundle_->IsReady()) {
     LOG(INFO) << "Notification not made: Not initialized";
 
     return;
