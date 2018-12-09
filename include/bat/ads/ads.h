@@ -13,8 +13,15 @@
 
 namespace ads {
 
+// Reduces the wait time before calling the StartCollectingActivity function
 extern bool _is_debug;
+
+// Easter egg for serving Ads every kNextEasterEggStartsInSeconds seconds. The
+// user must visit www.iab.com and the manually refresh the page to serve the
+// next easter egg
 extern bool _is_testing;
+
+// Determines whether to use the staging or production Ad Serve
 extern bool _is_production;
 
 extern const char _bundle_schema_name[];
@@ -38,12 +45,14 @@ class ADS_EXPORT Ads {
   // Should be called when the browser enters the background
   virtual void OnBackground() = 0;
 
-  // Should be called periodically as set by SetIdleThreshold to record when
-  // the browser is idle
+  // Should be called periodically on desktop browsers as set by
+  // SetIdleThreshold to record when the browser is idle. This call is optional
+  // for mobile devices
   virtual void OnIdle() = 0;
 
-  // Should be called periodically as set by SetIdleThreshold to record when
-  // the browser is no longer idle
+  // Should be called periodically on desktop browsers as set by
+  // SetIdleThreshold to record when the browser is no longer idle. This call is
+  // optional for mobile devices
   virtual void OnUnIdle() = 0;
 
   // Should be called to record when a tab has started playing media (A/V)

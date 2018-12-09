@@ -174,10 +174,11 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
 
 void AdsServe::OnCatalogSaved(const Result result) {
   if (result == FAILED) {
+    // If the catalog fails to save, we will retry the next time we collect
+    // activity
+
     LOG(ERROR) << "Failed to save catalog";
 
-    // If the catalog fails to save, we will retry the next time a we collect
-    // activity
     return;
   }
 
