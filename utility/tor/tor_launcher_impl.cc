@@ -74,7 +74,7 @@ static void TearDownPipeHack() {
 
 namespace tor {
 
-#if defined(OS_POSIX)
+#if defined(OS_POSIX) && !defined(OS_MACOSX)
 class TorLauncherDelegate : public base::LaunchOptions::PreExecDelegate {
  public:
     TorLauncherDelegate() {}
@@ -155,7 +155,7 @@ void TorLauncherImpl::Launch(const TorConfig& config,
   }
 
   base::LaunchOptions launchopts;
-#if defined(OS_POSIX)
+#if defined(OS_POSIX) && !defined(OS_MACOSX)
   TorLauncherDelegate tor_launcher_delegate;
   launchopts.pre_exec_delegate = &tor_launcher_delegate;
 #endif
