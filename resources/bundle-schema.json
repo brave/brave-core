@@ -17,6 +17,21 @@
               "uuid"
             ],
             "properties": {
+              "creativeSetId": {
+                "type": "string"
+              },
+              "startTimestamp": {
+                "type": "string"
+              },
+              "endTimestamp": {
+                "type": "string"
+              },
+              "regions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "advertiser": {
                 "type": "string"
               },
@@ -27,9 +42,6 @@
                 "type": "string"
               },
               "uuid": {
-                "type": "string"
-              },
-              "creativeSetId": {
                 "type": "string"
               }
             }
