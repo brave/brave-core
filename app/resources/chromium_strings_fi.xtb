@@ -47,7 +47,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="8667808506758191620"><ph name="DEVICE_TYPE"/> on ajan tasalla.</translation>
 <translation id="6970811910055250180">Päivitetään laitetta...</translation>
 <translation id="8030318113982266900">Päivitetään laitteeseen kanavaa <ph name="CHANNEL_NAME"/>…</translation>
-<translation id="7355059611036077582">Lisää Braveiin</translation>
 <translation id="7456658570432774853">Auta parantamaan Braveia ilmoittamalla nykyiset asetukset.</translation>
 <translation id="6134859571175647580">Varoitus: Brave ei voi estää laajennuksia tallentamasta selaushistoriaasi. Poista tämä valinta, jos haluat poistaa tämän laajennuksen käytöstä incognito-tilassa.</translation>
 <translation id="777113543093865885">Poista Braveista…</translation>
@@ -71,7 +70,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="2887570477425111999">Tallenna tiedot Braveiin</translation>
 <translation id="193559141530782783">Brave tallentaa tietosi turvalliseen paikkaan, jottei sinun tarvitse kirjoittaa tietoja uudelleen.</translation>
 <translation id="663059986967017181">Kopioitiin Braveiin.</translation>
-<translation id="5225129378754387452">Näytä Brave-valikko</translation>
 <translation id="300669147395456190">Brave-sovellukset</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> edellyttää, että luet ja hyväksyt seuraavat käyttöehdot ennen tämän laitteen käyttöä. Nämä ehdot eivät laajenna, muokkaa tai rajoita Brave-käyttöliittymän ehtoja.</translation>
 <translation id="3293668930608086049">Brave käyttää kameraasi ja mikrofoniasi.</translation>
@@ -95,8 +93,8 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="1705567146636171298">Päivitä Brave</translation>
 <translation id="4050175100176540509">Uusimmassa versiossa on käytettävissä tärkeitä turvallisuusparannuksia ja uusia ominaisuuksia.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave käynnistyy uudelleen 1 sekunnin kuluttua}other{Brave käynnistyy uudelleen # sekunnin kuluttua}}</translation>
-<translation id="9159286371333817139">Käynnistä Brave uudelleen</translation>
-<translation id="9203540365585059272">Bravein tärkeä tietoturvapäivitys on asennettu. Käynnistä se uudelleen, niin päivitys otetaan käyttöön (avoimet välilehdet palautetaan).</translation>
+<translation id="5509303873219371662">Käynnistä Brave uudelleen</translation>
+<translation id="8668413672647811944">Bravein tärkeä tietoturvapäivitys on asennettu. Käynnistä selain uudelleen – palautamme avoimet välilehdet.</translation>
 <translation id="763369711159699222">Auta parantamaan Braveia</translation>
 <translation id="1156940037717341650">Voit auttaa meitä parantamaan Bravein turvallisuutta ja tekemään siitä helppokäyttöisemmän ilmoittamalla mahdollisista turvallisuusongelmista Brave Softwarelle automaattisesti.</translation>
 <translation id="6791166902140255175">Brave-välilehti</translation>
@@ -118,7 +116,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="8586264863973514035">Ota muutokset käyttöön käynnistämällä Brave uudelleen</translation>
 <translation id="7021823858304886493">Salli Brave-kirjautuminen</translation>
 <translation id="1649714546770135458">Poistamalla tämän käytöstä voit kirjautua Brave Software-sivustoille, esim. Gmailiin, kirjautumatta Braveiin.</translation>
-<translation id="6274110506580702455">Tämän laitteen järjestelmänvalvoja on poistanut käytöstä Braveiin kirjautumisen.</translation>
 <translation id="9220324636239049437">Tämä poistaa yhden kohteen pysyvästi laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Tämä poistaa <ph name="ITEMS_COUNT"/> kohdetta pysyvästi laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Tämä poistaa selaustiedot pysyvästi laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>

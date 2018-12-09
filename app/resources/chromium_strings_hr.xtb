@@ -47,7 +47,6 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="8667808506758191620"><ph name="DEVICE_TYPE"/> je ažuriran.</translation>
 <translation id="6970811910055250180">Ažuriranje uređaja...</translation>
 <translation id="8030318113982266900">Ažuriranje vašeg uređaja na kanal <ph name="CHANNEL_NAME"/>...</translation>
-<translation id="7355059611036077582">Dodajte u Brave</translation>
 <translation id="7456658570432774853">Doprinesite poboljšanju Bravea prijavljivanjem trenutačnih postavki</translation>
 <translation id="6134859571175647580">Upozorenje: Brave ne može spriječiti proširenja da evidentiraju vašu povijest pregledavanja. Da biste onemogućili proširenje u anonimnom načinu, isključite tu opciju.</translation>
 <translation id="777113543093865885">Ukloni iz Bravea...</translation>
@@ -71,7 +70,6 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="2887570477425111999">Spremi pojedinosti u sustavu Brave</translation>
 <translation id="193559141530782783">Brave će pohraniti vaše osobne podatke na siguran način tako da ih ne morate ponovo upisivati.</translation>
 <translation id="663059986967017181">Kopirano na Brave</translation>
-<translation id="5225129378754387452">Prikaz izbornika Brave</translation>
 <translation id="300669147395456190">Aplikacije sustava Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> zahtijeva da pročitate i prihvatite sljedeće Uvjete pružanja usluge prije upotrebe ovog uređaja. Ti uvjeti ne predstavljaju proširenje, izmjenu ili ograničenje Uvjeta OS-a Brave.</translation>
 <translation id="3293668930608086049">Brave upotrebljava vašu kameru i mikrofon.</translation>
@@ -95,8 +93,8 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="1705567146636171298">Ažuriraj Brave</translation>
 <translation id="4050175100176540509">Najnovija verzija sadrži važna sigurnosna poboljšanja i nove značajke.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave će se ponovo pokrenuti za 1 sekundu}one{Brave će se ponovo pokrenuti za # sekundu}few{Brave će se ponovo pokrenuti za # sekunde}other{Brave će se ponovo pokrenuti za # sekundi}}</translation>
-<translation id="9159286371333817139">Sada trebate ponovo pokrenuti Brave.</translation>
-<translation id="9203540365585059272">Upravo je primijenjeno posebno sigurnosno ažuriranje za Brave i trebate ponovo pokrenuti sustav kako bi promjena stupila na snagu (vratit ćemo vaše kartice).</translation>
+<translation id="5509303873219371662">Sada trebate ponovo pokrenuti Brave</translation>
+<translation id="8668413672647811944">Upravo je primijenjeno posebno sigurnosno ažuriranje za Brave. Ponovo pokrenite sustav i vratit ćemo vaše kartice.</translation>
 <translation id="763369711159699222">Pomognite poboljšati Brave.</translation>
 <translation id="1156940037717341650">Možete pomoći da Brave bude sigurniji i jednostavniji za upotrebu tako što ćete omogućiti da se Brave Softwareu automatski prijavljuju pojedinosti o mogućim sigurnosnim incidentima.</translation>
 <translation id="6791166902140255175">Braveova kartica</translation>
@@ -118,7 +116,6 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="8586264863973514035">Da bi se vaše promjene primijenile, ponovo pokrenite Brave</translation>
 <translation id="7021823858304886493">Dopusti prijavu u Brave</translation>
 <translation id="1649714546770135458">Ako isključite tu opciju, možete se prijaviti na Brave Softwareove web-lokacije kao što je Gmail bez prijavljivanja u Brave</translation>
-<translation id="6274110506580702455">Administrator ovog uređaja onemogućio je prijavu na Brave.</translation>
 <translation id="9220324636239049437">Time će se izbrisati jedna stavka s uređaja. Da biste kasnije dohvatili svoje podatke, prijavite se na Brave kao <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Time će se izbrisati sljedeći broj stavki s uređaja: <ph name="ITEMS_COUNT"/>. TDa biste kasnije dohvatili svoje podatke, prijavite se na Brave kao <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Time će se izbrisati podaci o pregledavanju s uređaja. Da biste kasnije dohvatili svoje podatke, prijavite se na Brave kao <ph name="USER_EMAIL"/>.</translation>

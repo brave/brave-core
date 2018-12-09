@@ -196,5 +196,9 @@
   "contributeNotificationTipError": {
     "message": "팁을 처리하는 중에 문제가 생겼습니다. 다시 시도해 주세요.",
     "description": "We show this string in notification when tip fails"
+  },
+  "noActivity": {
+    "message": "No activities yet…",
+    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   }
 }

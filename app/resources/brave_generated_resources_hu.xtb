@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (kiterjesztésazonosító "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nem engedélyezett a Brave-ben.</translation>
 <translation id="7450557937477381864">Chrome bezárása</translation>
 <translation id="7008934821596358692">Az importálás befejezéséhez zárja be az összes Chrome ablakot.</translation>
-<translation id="7753103220327065417">Brave bezárása</translation>
-<translation id="5588481533147090393">Az importálás befejezéséhez zárja be az összes Brave ablakot.</translation>
 <translation id="6447842834002726250">Sütik</translation>
 <translation id="4983925687993168579">Statisztikák</translation>
 <translation id="9173846700806833701">A Widevine nincs telepítve</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">A Google Widevine egy digitális jogkezelő (DRM - Digital Rights Management) kód, amelyet mi a Brave Software vállalatnál nem birtokolunk és nem vizsgálunk meg. A Google Widevine kódot Google szerverektől töltjük be, nem pedig saját szervereinkről. Csak akkor töltődik be, ha engedélyezi ezt az opciót. Javasoljuk a DRM használatát, de tiszteletben tartjuk a felhasználók döntését és elismerjük, hogy néhány Brave felhasználó olyan szolgáltatásokat szeretne használni, amelyekhez ez szükséges.
 
 Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhasználási feltételeit. Beleegyezik abba, hogy a Brave nem felelős semmilyen kárért vagy veszteségért, amely a Google Widevine használatával kapcsolatban keletkezik.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Importálva a Brave alól</translation>
 <translation id="453977518730680921">Média automatikus lejátszása</translation>
 <translation id="410351446219883937">Automatikus lejátszás</translation>

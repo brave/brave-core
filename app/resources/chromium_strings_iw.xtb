@@ -45,7 +45,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="8667808506758191620">ה-<ph name="DEVICE_TYPE"/> שלך מעודכן.</translation>
 <translation id="6970811910055250180">מעדכן את המכשיר שלך...</translation>
 <translation id="8030318113982266900">מעדכן את המכשיר שלך לערוץ <ph name="CHANNEL_NAME"/>...</translation>
-<translation id="7355059611036077582">‏הוסף ל-‏Brave‏</translation>
 <translation id="7456658570432774853">‏עזור לשפר את Brave על ידי דיווח ההגדרות הנוכחיות</translation>
 <translation id="6134859571175647580">‏אזהרה: Brave לא יכול למנוע מתוספים לתעד את היסטוריית הגלישה שלך. כדי להשבית את התוסף הזה במצב גלישה בסתר, צריך לבטל את הבחירה של האפשרות הזו.</translation>
 <translation id="777113543093865885">‏הסר מ-Brave...</translation>
@@ -69,7 +68,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="2887570477425111999">‏שמור פרטים ב-Brave</translation>
 <translation id="193559141530782783">‏Brave יאחסן את הפרטים האישיים שלך באופן מאובטח כדי שלא תידרש להקליד אותם שוב.</translation>
 <translation id="663059986967017181">‏הועתק אל Brave</translation>
-<translation id="5225129378754387452">‏הצג את תפריט Brave</translation>
 <translation id="300669147395456190">‏יישומי Brave</translation>
 <translation id="3421950102518690868">‏<ph name="DOMAIN"/> דורש שתקרא ותקבל את התנאים וההגבלות הבאים לפני שתשתמש במכשיר הזה. תנאים אלה אינם מרחיבים, משנים או מגבילים את התנאים של מערכת ההפעלה של Brave.</translation>
 <translation id="3293668930608086049">‏Brave משתמש במצלמה ובמיקרופון שלך.</translation>
@@ -93,8 +91,8 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="1705567146636171298">‏עדכן את Brave‏</translation>
 <translation id="4050175100176540509">הגרסה החדשה כוללת שיפורי בטיחות חשובים ותכונות חדשות.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{‏Brave יבצע אתחול בעוד שנייה אחת}two{‏Brave יבצע אתחול בעוד # שניות}many{‏Brave יבצע אתחול בעוד # שניות}other{‏Brave יבצע אתחול בעוד # שניות}}</translation>
-<translation id="9159286371333817139">‏עליך לאתחל את Brave עכשיו.</translation>
-<translation id="9203540365585059272">‏בוצע עדכון אבטחה מיוחד של Brave. עליך לאתחל עכשיו כדי שהעדכון יופעל (נשחזר את הכרטיסיות שלך).</translation>
+<translation id="5509303873219371662">‏עליך להפעיל מחדש את Brave עכשיו</translation>
+<translation id="8668413672647811944">‏בוצע עדכון אבטחה מיוחד של Brave. עכשיו עליך להפעיל מחדש ואנחנו נשחזר את הכרטיסיות.</translation>
 <translation id="763369711159699222">‏עזור לנו לשפר את Brave</translation>
 <translation id="1156940037717341650">‏אתה יכול לעזור לשפר את הבטיחות של Brave ולהקל את השימוש בו על ידי דיווח ל-Brave Software על פרטים של בעיות אבטחה אפשריות.</translation>
 <translation id="6791166902140255175">‏כרטיסייה של Brave</translation>
@@ -116,7 +114,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="8586264863973514035">‏כדי להחיל את השינויים שביצעת, יש להפעיל מחדש את Brave</translation>
 <translation id="7021823858304886493">‏התרת כניסה אל Brave</translation>
 <translation id="1649714546770135458">‏כיבוי הגדרה זו יאפשר לך להיכנס לאתרי Brave Software, כמו Gmail, בלי להיכנס אל Brave</translation>
-<translation id="6274110506580702455">‏מנהל המערכת של המכשיר הזה השבית את הכניסה אל Brave.</translation>
 <translation id="9220324636239049437">‏הפעולה הזו תמחק פריט אחד מהמכשיר. כדי לשחזר את הנתונים מאוחר יותר, היכנס אל Brave עם <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">‏פעולה זו תמחק <ph name="ITEMS_COUNT"/> פריטים מהמכשיר. כדי לשחזר את הנתונים מאוחר יותר, היכנס אל Brave עם <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">‏פעולה זו תמחק את נתוני הגלישה מהמכשיר. כדי לשחזר את הנתונים מאוחר יותר, היכנס אל Brave עם <ph name="USER_EMAIL"/>.</translation>

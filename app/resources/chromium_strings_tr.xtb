@@ -45,7 +45,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="8667808506758191620"><ph name="DEVICE_TYPE"/> cihazınız güncel.</translation>
 <translation id="6970811910055250180">Cihazınız güncelleniyor...</translation>
 <translation id="8030318113982266900">Cihazınız <ph name="CHANNEL_NAME"/> kanalına güncelleniyor...</translation>
-<translation id="7355059611036077582">Brave'a ekle</translation>
 <translation id="7456658570432774853">Mevcut ayarlarınızı bildirerek Brave'u daha iyi hale getirmemize yardımcı olun</translation>
 <translation id="6134859571175647580">Uyarı: Brave, uzantıların tarama geçmişinizi kaydetmesini engelleyemez. Gizli modda bu uzantıyı devre dışı bırakmak için bu seçeneğin onay işaretini kaldırın.</translation>
 <translation id="777113543093865885">Brave'dan kaldır...</translation>
@@ -69,7 +68,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="2887570477425111999">Ayrıntıları Brave'a kaydet</translation>
 <translation id="193559141530782783">Brave, kişisel bilgilerinizi güvenli şekilde depoladığından bu bilgileri tekrar yazmak zorunda kalmazsınız.</translation>
 <translation id="663059986967017181">Brave'a kopyalandı</translation>
-<translation id="5225129378754387452">Brave menüsünü göster</translation>
 <translation id="300669147395456190">Brave Uygulamaları</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/>, bu cihazı kullanmadan önce aşağıdaki Hizmet Şartları'nı okuyup kabul etmenizi gerektirmektedir. Bu şartlar, Brave OS Şartları'nın kapsamını genişletmez, değiştirmez veya sınırlamaz.</translation>
 <translation id="3293668930608086049">Brave kameranızı ve mikrofonunuzu kullanıyor.</translation>
@@ -93,8 +91,8 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="1705567146636171298">Brave'u güncelle</translation>
 <translation id="4050175100176540509">Son sürümde güvenlikle ilgili önemli iyileştirmeler ve yeni özellikler mevcuttur.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave 1 saniye içinde yeniden başlatılacak}other{Brave # saniye içinde yeniden başlatılacak}}</translation>
-<translation id="9159286371333817139">Brave'u şimdi yeniden başlatmalısınız.</translation>
-<translation id="9203540365585059272">Brave için özel bir güvenlik güncellemesi uygulandı. Güncellemenin geçerli olması için cihazı şimdi yeniden başlatmalısınız (sekmeleriniz geri yüklenecektir).</translation>
+<translation id="5509303873219371662">Brave'u şimdi yeniden başlatmalısınız.</translation>
+<translation id="8668413672647811944">Brave için özel bir güvenlik güncellemesi uygulandı. Uygulamayı hemen yeniden başlatın; açık sekmeleriniz geri yüklenir.</translation>
 <translation id="763369711159699222">Brave'u daha iyi hale getirmeye yardımcı olun</translation>
 <translation id="1156940037717341650">Olası güvenlik olaylarının ayrıntılarını Brave Software'a otomatik olarak bildirerek Brave'un daha güvenli ve kullanımı kolay bir hale gelmesine yardımcı olabilirsiniz.</translation>
 <translation id="6791166902140255175">Brave Sekmesi</translation>
@@ -116,7 +114,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="8586264863973514035">Yaptığınız değişiklikleri uygulamak için Brave'u yeniden başlatın</translation>
 <translation id="7021823858304886493">Brave'da oturum açmaya izin verin</translation>
 <translation id="1649714546770135458">Bu özelliği kapatarak Brave'da oturum açmadan Gmail gibi Brave Software sitelerinde oturum açabilirsiniz</translation>
-<translation id="6274110506580702455">Brave'da oturum açma işlevi, bu cihazın yöneticisi tarafından devre dışı bırakılmıştır.</translation>
 <translation id="9220324636239049437">Bu işlem 1 öğeyi bu cihazdan silecektir. Verilerinizi daha sonra geri almak için Brave'da <ph name="USER_EMAIL"/> hesabıyla oturum açın.</translation>
 <translation id="5853262807109651878">Bu işlem, <ph name="ITEMS_COUNT"/> öğeyi bu cihazdan silecektir. Verilerinizi daha sonra geri almak için Brave'da <ph name="USER_EMAIL"/> hesabıyla oturum açın.</translation>
 <translation id="4784414698887946907">Bu işlem tarama verilerinizi bu cihazdan silecektir. Verilerinizi daha sonra geri almak için Brave'da <ph name="USER_EMAIL"/> hesabıyla oturum açın.</translation>

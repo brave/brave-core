@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (การระบุชื่อสกุลแฟ้ม "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ไม่ได้รับอนุญาตในโปรแกรมของเบรฟ (Brave)</translation>
 <translation id="7450557937477381864">ปิด Chrome</translation>
 <translation id="7008934821596358692">เพื่อเสร็จสิ้นการนำเข้า ปิดหน้าต่าง Chrome ทั้งหมด</translation>
-<translation id="7753103220327065417">ปิด Brave</translation>
-<translation id="5588481533147090393">เพื่อเสร็จสิ้นการนำเข้า ปิดหน้าต่าง Brave ทั้งหมด</translation>
 <translation id="6447842834002726250">คุกกี้</translation>
 <translation id="4983925687993168579">สถิติ</translation>
 <translation id="9173846700806833701">Widevine  ยังไม่ถูกติดตั้ง</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine คือชิ้นส่วนรหัส Digital Rights Management (DRM) ที่พวกเราที่ Brave Software ไม่ได้เป็นเจ้าของและไม่สามารถทำการตรวจได้ รหัส Google Widevine ได้ถูกโหลดจากเซิร์ฟเวอร์ Google ไม่ได้โหลดจากเซิร์ฟเวอร์ของเรา DRM จะถูกโหลดเมื่อคุณเปิดตัวเลือกนี้  เราไม่สนับสนุนการใช้ DRM แต่เราเคารพการตัดสินใจของผู้ใช้และเข้าใจว่าผู้ใช้ Brave บางท่านอาจต้องการใช้บริการที่ต้องการมัน
 
 โดยการติดตั้งส่วนขยายนี้ คุณได้ยอมรับข้อตกลงการใช้งาน Google Widevine คุณได้ตกลงว่า Brave จะไม่รับผิดชอบต่อความเสียหายหรือสูญหายในการเชื่อมต่อการใช้ Google Widevine ของคุณ</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">นำเข้าจาก Brave</translation>
 <translation id="453977518730680921">เล่นสื่ออัตโนมัติ</translation>
 <translation id="410351446219883937">เล่นอัตโนมัติ</translation>

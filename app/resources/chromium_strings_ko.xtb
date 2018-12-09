@@ -49,7 +49,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8667808506758191620"><ph name="DEVICE_TYPE"/>이(가) 최신 버전입니다.</translation>
 <translation id="6970811910055250180">기기를 업데이트하는 중...</translation>
 <translation id="8030318113982266900">기기를 <ph name="CHANNEL_NAME"/> 채널로 업데이트하는 중...</translation>
-<translation id="7355059611036077582">Brave에 추가</translation>
 <translation id="7456658570432774853">현재 설정을 보고하여 Brave 개선에 참여</translation>
 <translation id="6134859571175647580">경고: Brave은 확장 프로그램이 인터넷 방문 기록을 저장하지 못하도록 할 수 없습니다. 시크릿 모드에서 이 확장 프로그램을 사용 중지하려면 옵션을 선택 취소하세요.</translation>
 <translation id="777113543093865885">Brave에서 제거...</translation>
@@ -73,7 +72,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="2887570477425111999">Brave에 세부정보 저장</translation>
 <translation id="193559141530782783">Brave은 개인정보를 안전하게 저장하므로 정보를 다시 입력할 필요가 없습니다.</translation>
 <translation id="663059986967017181">Brave에 복사됨</translation>
-<translation id="5225129378754387452">Brave 메뉴 표시</translation>
 <translation id="300669147395456190">Brave 앱</translation>
 <translation id="3421950102518690868">이 기기를 사용하기 전에 <ph name="DOMAIN"/>에서 다음 서비스 약관을 읽고 동의해야 합니다. 이 약관은 Brave OS 약관을 확장, 수정 또는 제한하지 않습니다.</translation>
 <translation id="3293668930608086049">Brave이 카메라와 마이크를 사용 중입니다.</translation>
@@ -97,8 +95,8 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="1705567146636171298">Brave 업데이트</translation>
 <translation id="4050175100176540509">최신 버전에는 중요한 보안 개선사항 및 새로운 기능이 포함되어 있습니다.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{1초 후에 Brave이 다시 시작됩니다}other{#초 후에 Brave이 다시 시작됩니다}}</translation>
-<translation id="9159286371333817139">지금 Brave을 다시 시작해야 합니다.</translation>
-<translation id="9203540365585059272">Brave 특별 보안 업데이트를 방금 적용했습니다. 실행하려면 지금 다시 시작하세요. 다시 시작 후 탭은 복원됩니다.</translation>
+<translation id="5509303873219371662">지금 Brave을 다시 시작해야 합니다</translation>
+<translation id="8668413672647811944">Brave 특별 보안 업데이트를 방금 적용했습니다. 다시 시작하면 탭이 복원됩니다.</translation>
 <translation id="763369711159699222">Brave 개선에 참여</translation>
 <translation id="1156940037717341650">Brave Software에 발생할 수 있는 보안 문제의 세부정보를 자동으로 보고하도록 설정하면 Brave을 더 안전하고 편리하게 사용할 수 있습니다.</translation>
 <translation id="6791166902140255175">Brave 탭</translation>
@@ -120,7 +118,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8586264863973514035">변경사항을 적용하려면 Brave을 다시 실행하세요.</translation>
 <translation id="7021823858304886493">Brave 로그인 허용</translation>
 <translation id="1649714546770135458">이 기능을 사용 중지하면 Brave에 로그인하지 않고도 Gmail 등의 Brave Software 사이트에 로그인할 수 있습니다.</translation>
-<translation id="6274110506580702455">이 기기의 관리자에 의해 Brave 로그인이 사용 중지되었습니다.</translation>
 <translation id="9220324636239049437">항목 1개가 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>
 <translation id="5853262807109651878">항목 <ph name="ITEMS_COUNT"/>개가 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>
 <translation id="4784414698887946907">인터넷 사용 기록이 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>

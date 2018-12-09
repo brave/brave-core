@@ -40,7 +40,7 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Recompensas",
+    "message": "Concesiones",
     "description": "Title for grant section in wallet summary"
   },
   "on": {
@@ -196,5 +196,9 @@
   "contributeNotificationTipError": {
     "message": "Ha ocurrido un problema al procesar su propina, por favor, vuelva a intentarlo.",
     "description": "We show this string in notification when tip fails"
+  },
+  "noActivity": {
+    "message": "No activities yet…",
+    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   }
 }

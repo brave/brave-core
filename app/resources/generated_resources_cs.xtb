@@ -39,6 +39,7 @@
 <translation id="5112577000029535889">&amp;Nástroje pro vývojáře</translation>
 <translation id="5184063094292164363">Konzole &amp;JavaScriptu</translation>
 <translation id="7056526158851679338">&amp;Zkontrolovat zařízení</translation>
+<translation id="947329552760389097">&amp;Prozkoumat prvky</translation>
 <translation id="48838266408104654">&amp;Správce úloh</translation>
 <translation id="6277518330158259200">&amp;Pořídit snímek obrazovky</translation>
 <translation id="5288678174502918605">Znovu ot&amp;evřít zavřenou kartu</translation>
@@ -57,6 +58,7 @@
 <translation id="7324297612904500502">Fórum beta</translation>
 <translation id="7199158086730159431">Zobrazit nápovědu</translation>
 <translation id="630065524203833229">Konec</translation>
+<translation id="2052369079215022979">Spravováno vaší organizací</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5702898740348134351">Upravit vyhl&amp;edávače...</translation>
 <translation id="2454247629720664989">Klíčové slovo</translation>
@@ -152,6 +154,7 @@
 <translation id="4020327272915390518">Nabídka možností</translation>
 <translation id="8200772114523450471">Pokračovat</translation>
 <translation id="2770465223704140727">Odstranit ze seznamu</translation>
+<translation id="7702574632857388784">Odstranit ze seznamu soubor <ph name="FILE_NAME"/></translation>
 <translation id="7658239707568436148">Zrušit</translation>
 <translation id="7144878232160441200">Opakovat</translation>
 <translation id="6910211073230771657">Smazáno</translation>
@@ -165,11 +168,11 @@
 <translation id="3612673635130633812">Staženo pomocí rozšíření &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="6395403722585816044">Staženo v anonymním režimu</translation>
 <translation id="8028803902702117856">Stahování souboru <ph name="FILE_NAME"/> – <ph name="SIZE"/></translation>
-<translation id="4644818355646995778">Stahování: <ph name="PERCENT_REMAINING"/></translation>
+<translation id="5632592977009207922">Probíhá stahování, zbývá: <ph name="PERCENT_REMAINING"/>%</translation>
 <translation id="313963229645891001">Stahování: <ph name="STATUS"/></translation>
 <translation id="1834503245783133039">Stažení se nezdařilo: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Stahování zrušeno: <ph name="FILE_NAME"/></translation>
-<translation id="348999362308956431">Stažení bylo dokončeno: <ph name="FILE_NAME"/></translation>
+<translation id="4110490973560452005">Stažení bylo dokončeno: <ph name="FILE_NAME"/>. Stisknutím kombinace kláves Shift+F6 přejdete na lištu se staženými soubory.</translation>
 <translation id="2743387203779672305">Zkopírovat do schránky</translation>
 <translation id="883911313571074303">Přidat k obrázku poznámku</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Probíhá stahování}few{Probíhají stahování}many{Probíhají stahování}other{Probíhají stahování}}</translation>
@@ -291,7 +294,7 @@
 <translation id="6398765197997659313">Ukončit režim celé obrazovky</translation>
 <translation id="8559694214572302298">Dekodér obrázků</translation>
 <translation id="8191453843330043793">Překladač proxy serverů V8</translation>
-<translation id="6185617499004995178">Validátor CUPS IPP</translation>
+<translation id="5552059560155071882">Analyzátor CUPS IPP</translation>
 <translation id="3077708072777965506">Metoda zadávání v systému Brave OS</translation>
 <translation id="7171242884588191792">Nástroje Brave pro práci se soubory</translation>
 <translation id="3061707000357573562">Služba oprav</translation>
@@ -300,7 +303,6 @@
 <translation id="1545775234664667895">Nainstalován motiv <ph name="THEME_NAME"/></translation>
 <translation id="2079545284768500474">Vrátit zpět</translation>
 <translation id="2256115617011615191">Restartovat</translation>
-<translation id="795025003224538582">Nerestartovat</translation>
 <translation id="4545028762441890696">Chcete-li rozšíření znovu aktivovat, přijměte nová oprávnění:</translation>
 <translation id="3009487527589249344">Rozšíření <ph name="EXTENSION_NAME"/> bylo společností Brave Software označeno jako škodlivé a jeho instalace byla zablokována</translation>
 <translation id="6790497603648687708">Rozšíření <ph name="EXTENSION_NAME"/> bylo přidáno vzdáleně</translation>
@@ -496,9 +498,9 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3987348946546879621">Byla uspořena data</translation>
 <translation id="6228516488918914827">Byla načtena rychlejší stránka</translation>
 <translation id="9137013805542155359">Zobrazit originál</translation>
-<translation id="71243390042171582">Aktualizováno před <ph name="MINUTES"/> min</translation>
+<translation id="1056466516655540509">Aktualizováno před <ph name="MINUTES"/> min</translation>
 <translation id="8743864605301774756">Aktualizováno před 1 h</translation>
-<translation id="5638497698949808140">Aktualizováno před <ph name="HOURS"/> h</translation>
+<translation id="7363117941401515667">Aktualizováno před <ph name="HOURS"/> h</translation>
 <translation id="1329584516321524826">Aktualizováno právě teď</translation>
 <translation id="224940702122312781">Tato stránka využije velké množství dat</translation>
 <translation id="3861241522664181545">Stránka je pozastavená.</translation>
@@ -643,6 +645,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8803953437405899238">Otevírejte novou kartu jedním kliknutím</translation>
 <translation id="3071624960923923138">Kliknutím sem otevřete novou kartu</translation>
 <translation id="4908811072292128752">Otevřete novou kartu a prohlížejte dvě webové stránky naráz</translation>
+<translation id="8966870118594285808">Pokud jste nějakou kartu zavřeli omylem, můžete ji znovu otevřít</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Stránka nereaguje}few{Stránky nereagují}many{Stránky nereagují}other{Stránky nereagují}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Můžete počkat, než stránka začne reagovat, nebo ji můžete opustit.}few{Můžete počkat, než stránky začnou reagovat, nebo je můžete opustit.}many{Můžete počkat, než stránky začnou reagovat, nebo je můžete opustit.}other{Můžete počkat, než stránky začnou reagovat, nebo je můžete opustit.}}</translation>
 <translation id="7903345046358933331">Stránka přestala reagovat. Můžete počkat, až začne reagovat, nebo ji ukončit.</translation>
@@ -773,9 +776,8 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2445484935443597917">Vytvořit nový profil</translation>
 <translation id="2606246518223360146">Propojit data</translation>
 <translation id="473546211690256853">Tento účet spravuje <ph name="DOMAIN"/>.</translation>
-<translation id="3661054927247347545">Přihlašovací certifikace není platná. Okno se zavře za <ph name="MINUTES"/>:<ph name="SECONDS"/></translation>
-<translation id="6522797484310591766">Přihlásit se</translation>
-<translation id="5436822233913560332">Pokud se nepřihlásíte, všechna okna prohlížeče se brzy automaticky zavřou.</translation>
+<translation id="622537739776246443">Profil bude smazán</translation>
+<translation id="5632566673632479864">Váš účet <ph name="EMAIL"/> již není povolen jako primární účet. Protože je tento účet spravován doménou <ph name="DOMAIN"/>, budou z tohoto zařízení vymazány vaše záložky, historie, hesla a další nastavení.</translation>
 <translation id="8168435359814927499">Obsah</translation>
 <translation id="7702907602086592255">Doména</translation>
 <translation id="3202131003361292969">Cesta</translation>
@@ -843,15 +845,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3074037959626057712">Přihlásili jste se a zapnuli jste synchronizaci.</translation>
 <translation id="1231733316453485619">Zapnout synchronizaci?</translation>
 <translation id="9125982323641182972">Získejte do Chromu chytré funkce Brave Software</translation>
-<translation id="7988117629517051942">Získejte více chytrých funkcí Brave Software</translation>
-<translation id="5596627076506792578">Další možnosti</translation>
-<translation id="4419556793104466535">Ovládání synchronizace, personalizace apod.</translation>
-<translation id="184568702928428857">Nastavení, která v Chromu ovládají synchronizaci, personalizaci a další služby Brave Software, se změnila. Může to mít dopad na vaše aktuální nastavení.</translation>
-<translation id="4192273449750167573">Na další obrazovce zkontrolujte svá nastavení</translation>
-<translation id="685040365210406336">Neprovádět žádné změny</translation>
-<translation id="6418273007044911016">Data synchronizovaná do Googlu ani používané funkce se nezmění</translation>
-<translation id="8372733498235009300">Zapnout synchronizaci, personalizaci a další služby Brave Software</translation>
-<translation id="8340964510643644301">Toto nastavení můžete kdykoliv upravit v nastavení Chromu</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">Vaše záložky, historie, hesla a další nastavení budou synchronizována do účtu Brave Software, abyste je mohli používat ve všech svých zařízeních.</translation>
 <translation id="1371301976177520732">Záložky, historii a další údaje budete mít na všech svých zařízeních</translation>
@@ -897,7 +890,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6812349420832218321">Aplikaci <ph name="PRODUCT_NAME"/> nelze spustit jako uživatel root.</translation>
 <translation id="2292848386125228270">Spusťte prosím aplikaci <ph name="PRODUCT_NAME"/> jako běžný uživatel. Pokud ji pro účely vývoje potřebujete spustit jako uživatel root, spusťte ji znovu s příznakem --no-sandbox.</translation>
 <translation id="3122496702278727796">Nepodařilo se vytvořit datový adresář</translation>
-<translation id="602251597322198729">Stránky se snaží stáhnout několik souborů. Chcete akci povolit?</translation>
+<translation id="51918995459521422"><ph name="ORIGIN"/> se pokouší stáhnout několik souborů</translation>
 <translation id="691024665142758461">Stáhnout několik souborů</translation>
 <translation id="7004499039102548441">Nedávno použité karty</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 karta}few{# karty}many{# karty}other{# karet}}</translation>
@@ -1124,6 +1117,8 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="874689135111202667">{0,plural, =1{Nahrát jeden soubor na tento web?}few{Nahrát # soubory na tento web?}many{Nahrát # souboru na tento web?}other{Nahrát # souborů na tento web?}}</translation>
 <translation id="1956390763342388273">Touto akcí nahrajete všechny soubory ze složky <ph name="FOLDER_PATH"/>. Proveďte ji pouze v případě, že webu důvěřujete.</translation>
 <translation id="1243314992276662751">Nahrát</translation>
+<translation id="8480139856920479206">{0,plural, =1{Máte jedno anonymní okno.}few{Máte # anonymní okna.}many{Máte # anonymního okna.}other{Máte # anonymních oken.}}</translation>
+<translation id="2545348954155066907">{0,plural, =1{Zavřít toto okno}few{Zavřít všechna anonymní okna}many{Zavřít všechna anonymní okna}other{Zavřít všechna anonymní okna}}</translation>
 <translation id="3785308913036335955">Zobrazit zástupce aplikací</translation>
 <translation id="711840821796638741">Zobrazit spravované záložky</translation>
 <translation id="3613134908380545408">Zobrazit <ph name="FOLDER_NAME"/></translation>
@@ -1230,7 +1225,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3596235046596950091">Aktivovat cloudové služby</translation>
 <translation id="7649070708921625228">Nápověda</translation>
 <translation id="9011163749350026987">Vždy zobrazovat ikonu</translation>
-<translation id="9115487443206954631">Spravovat zařízení Cast</translation>
 <translation id="1706586824377653884">Přidáno administrátorem</translation>
 <translation id="6467304607960172345">Optimalizovat videa na celou obrazovku</translation>
 <translation id="1597210476603167523">Umožněte odesílání do cloudových služeb, jako je například Brave Software Hangouts.</translation>
@@ -1261,6 +1255,9 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="4415245286584082850">Nebyla nalezena žádná zařízení. Otevřete článek centra nápovědy na nové kartě.</translation>
 <translation id="4363771538994847871">Nebyly nalezeny žádné cíle odesílání. Potřebujete pomoci?</translation>
 <translation id="8688672835843460752">Dostupné</translation>
+<translation id="1536754031901697553">Odpojování...</translation>
+<translation id="1854180393107901205">Zastavit odesílání</translation>
+<translation id="5307030433605830021">Zdroj není podporován</translation>
 <translation id="4271396100647220620">Žádné shody</translation>
 <translation id="6972180789171089114">Zvuk/video</translation>
 <translation id="2541002089857695151">Optimalizovat odesílání celé obrazovky?</translation>
@@ -1294,7 +1291,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3340978935015468852">nastavení</translation>
 <translation id="5704875434923668958">Synchronizace na účet</translation>
 <translation id="6257602895346497974">Zapnout synchronizaci...</translation>
-<translation id="8618141719844947886">Data se nesynchronizují</translation>
+<translation id="5127805178023152808">Synchronizace je vypnuta</translation>
 <translation id="5781092003150880845">Synchronizovat jako <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Synchronizovat do vašeho účtu</translation>
 <translation id="2538361623464451692">Synchronizace deaktivována</translation>
@@ -1390,6 +1387,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6268185425799226387">Disk Brave Software</translation>
 <translation id="4425149324548788773">Můj disk</translation>
 <translation id="1786636458339910689">Týmové disky</translation>
+<translation id="5010406651457630570">Počítače</translation>
 <translation id="8106045200081704138">Sdíleno se mnou</translation>
 <translation id="981121421437150478">Offline</translation>
 <translation id="9034924485347205037">Soubory systému Linux</translation>
@@ -1453,6 +1451,9 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="5649768706273821470">Poslechnout si</translation>
 <translation id="4582497162516204941">Instalovat pomocí Linuxu (beta)</translation>
 <translation id="4195249722193633765">Nainstalovat aplikaci pro Linux (beta)</translation>
+<translation id="7248671827512403053">Aplikace</translation>
+<translation id="183183971458492120">Načítání informací...</translation>
+<translation id="8157684860301034423">Informace o aplikaci se nepodařilo načíst.</translation>
 <translation id="5678784840044122290">Aplikace pro Linux bude k dispozici v Terminálu a může se pro ni také zobrazovat ikona ve Spouštěči.</translation>
 <translation id="9213073329713032541">Instalace byla úspěšně spuštěna.</translation>
 <translation id="2782104745158847185">Při instalaci aplikace pro Linux došlo k chybě</translation>
@@ -1513,13 +1514,14 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="386548886866354912">Zabalit pomocí rozšíření <ph name="EXTENSION_NAME"/></translation>
 <translation id="3078461028045006476">Sdílet s rozšířením <ph name="EXTENSION_NAME"/></translation>
 <translation id="4197674956721858839">Výběr souborů pro komprimaci</translation>
-<translation id="9215934040295798075">Nastavit tapetu</translation>
+<translation id="1572585716423026576">Nastavit jako tapetu</translation>
 <translation id="204914487372604757">Vytvořit zástupce</translation>
 <translation id="799547531016638432">Odebrat zástupce</translation>
 <translation id="5494920125229734069">Vybrat vše</translation>
 <translation id="7295662345261934369">Sdílet s dalšími uživateli</translation>
 <translation id="2001796770603320721">Spravovat na Disku</translation>
 <translation id="5318819489018851358">Sdílet s Linuxem</translation>
+<translation id="6806699711453372963">Spravovat sdílení v systému Linux</translation>
 <translation id="7505167922889582512">Zobrazit skryté soubory</translation>
 <translation id="7846076177841592234">Zrušit výběr</translation>
 <translation id="2377319039870049694">Přepnout na zobrazení seznamu</translation>
@@ -1659,7 +1661,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8671210955687109937">Může přidávat komentáře</translation>
 <translation id="799923393800005025">Může zobrazit</translation>
 <translation id="7925686952655276919">Nepoužívat k synchronizaci mobilní datové přenosy</translation>
-<translation id="4649168043999963079">Zobrazit soubory Dokumentů Brave Software</translation>
 <translation id="7106346894903675391">Koupit větší úložiště...</translation>
 <translation id="3549797760399244642">Přejít na stránky drive.google.com...</translation>
 <translation id="3451154303153932176">Volné místo na Disku Brave Software: <ph name="SPACE_AVAILABLE"/>.</translation>
@@ -1672,7 +1673,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7606199793785990727">Disk Brave Software nelze použít. <ph name="BEGIN_LINK"/>Odhlaste se prosím<ph name="END_LINK"/> a opět se přihlaste.</translation>
 <translation id="585883343689351092">Vítá vás Disk Brave Software!</translation>
 <translation id="1788440444874291920">Získejte zdarma 100 GB na Disku Brave Software</translation>
-<translation id="5722262830411045381">Získejte 1 TB volného úložiště na Disku Brave Software zdarma</translation>
 <translation id="6862635236584086457">Všechny soubory uložené v této složce se automaticky zálohují online</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Získejte k souborům přístup odkudkoli, dokonce i v režimu offline.<ph name="MARKUP_2"/>
     Soubory na Disku Brave Software jsou aktuální a dostupné z libovolného zařízení.<ph name="MARKUP_3"/>
@@ -1688,9 +1688,11 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3096967955765855393">Neustále hledáme způsoby, jak zvýšit bezpečnost prohlížení. V minulosti vás k přidání rozšíření do prohlížeče mohl vyzvat kterýkoliv web. V nejnovějších verzích Brave Software Brave musíte Chromu výslovně sdělit, že rozšíření chcete nainstalovat. Učiníte tak tím, že rozšíření přidáte na stránce Rozšíření. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">Nelze otevřít pomocí aplikace $1</translation>
 <translation id="639777613761517128">Chcete-li soubory otevřít pomocí aplikace $1, nejdříve je zkopírujte do složky souborů systému Linux.</translation>
-<translation id="5112009661904384591">Sdílet soubory se systémem Linux</translation>
-<translation id="3186202398303525187">Nechat aplikace Linux otevřít soubor $1.</translation>
-<translation id="1603300902586586390">Nechat aplikace Linux otevřít tyto soubory (celkem $1).</translation>
+<translation id="5368191757080475556">Sdílet složku se systémem Linux</translation>
+<translation id="6803594270782834876">Udělit linuxovým aplikacím oprávnění k otevírání souborů ve složce $1</translation>
+<translation id="9204140378020726578">Udělujete linuxovým aplikacím oprávnění otevírat soubory ve vašem Disku Brave Software. Změny se synchronizují do vašich ostatních zařízení.</translation>
+<translation id="4290535918735525311">1 složka je sdílena se systémem Linux</translation>
+<translation id="984401732412731005">Počet složek sdílených s Linuxem: $1</translation>
 <translation id="4572815280350369984">Soubor <ph name="FILE_TYPE"/></translation>
 <translation id="803771048473350947">Soubor</translation>
 <translation id="895586998699996576">Obrázek ve formátu $1</translation>
@@ -1744,6 +1746,8 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6199801702437275229">Čeká se na informace o volném místě...</translation>
 <translation id="6485131920355264772">Informace o volném místě se nepodařilo načíst</translation>
 <translation id="7748626145866214022">Další možnosti jsou k dispozici na panelu akcí. Na panel akcí přejdete stisknutím kláves Alt + A.</translation>
+<translation id="60628369828239652">Otevírání souboru <ph name="FILE_NAME"/></translation>
+<translation id="353547388688256996">Otevírání <ph name="NUMBER_FILES"/></translation>
 <translation id="6710213216561001401">Předchozí</translation>
 <translation id="1201402288615127009">Další</translation>
 <translation id="1395262318152388157">Posuvník přehrávání</translation>
@@ -1834,6 +1838,16 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8710187907779883426">krátká (1 s)</translation>
 <translation id="4305227814872083840">dlouhá (2 s)</translation>
 <translation id="2860150991415616761">velmi dlouhá (4 s)</translation>
+<translation id="5573248369095789351">Akce při zastavení kurzoru</translation>
+<translation id="2427507373259914951">Kliknutí levým tlačítkem</translation>
+<translation id="8203795194971602413">Kliknutí pravým tlačítkem</translation>
+<translation id="1999763610967697511">Přetažení</translation>
+<translation id="8142441511840089262">Dvojité kliknutí</translation>
+<translation id="485592688953820832">Žádná akce (pozastavit)</translation>
+<translation id="1217668622537098248">Po akci vrátit na kliknutí levým tlačítkem</translation>
+<translation id="3682824389861648626">Limit pohybu</translation>
+<translation id="5511379779384092781">Velmi malý</translation>
+<translation id="7409549334477097887">Velmi velký</translation>
 <translation id="1330145147221172764">Povolit softwarovou klávesnici</translation>
 <translation id="1800308196794859773">Odesílat hlasové údaje do Googlu, aby bylo možné diktovat do libovolného textového pole.</translation>
 <translation id="8758418656925882523">Povolit diktování (hlasové zadávání textu)</translation>
@@ -1915,40 +1929,33 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1763808908432309942">Otevře se na nové kartě</translation>
 <translation id="6248988683584659830">Prohledat nastavení</translation>
 <translation id="883304095704384301">Pokud nemůžete najít, co hledáte, navštivte <ph name="BEGIN_LINK_CHROMIUM"/>nápovědu Brave Software Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
+<translation id="6406708970972405507">Nastavení – <ph name="SECTION_TITLE"/></translation>
 <translation id="5860033963881614850">Vypnuto</translation>
 <translation id="5916664084637901428">Zapnuto</translation>
 <translation id="1378613616312864539">Toto nastavení je ovládáno rozšířením <ph name="NAME"/></translation>
 <translation id="6643016212128521049">Vymazat</translation>
 <translation id="8465252176946159372">Neplatné</translation>
 <translation id="8647834505253004544">Toto není platná webová adresa</translation>
-<translation id="2149850907588596975">Hesla a formuláře</translation>
-<translation id="8639963783467694461">Nastavení automatického vyplňování</translation>
+<translation id="7946586320617670168">Původ musí být zabezpečený</translation>
+<translation id="2709516037105925701">Automatické vyplňování</translation>
 <translation id="7764225426217299476">Přidat adresu</translation>
 <translation id="5595485650161345191">Upravit adresu</translation>
 <translation id="6207937957461833379">Země nebo oblast</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="5659593005791499971">E-mail</translation>
-<translation id="5762172915276660232">Nastavení platebních karet</translation>
-<translation id="4499718683476608392">Zapněte automatické vyplňování platebních karet a vyplňujte webové formuláře jedním kliknutím</translation>
 <translation id="9064275926664971810">Aktivujte automatické vyplňování a vyplňujte webové formuláře jedním kliknutím.</translation>
 <translation id="5029568752722684782">Vymazat kopii</translation>
 <translation id="2154484045852737596">Úprava karty</translation>
 <translation id="5087580092889165836">Přidat kartu</translation>
-<translation id="7284555534810614828">Uložit kartu k použití ve službě Brave Software Pay</translation>
-<translation id="6281511959351052816">Uložit karty k použití ve službě Brave Software Pay</translation>
-<translation id="1904518222538904133">V tomto zařízení lze použít jen jednu z vašich karet</translation>
-<translation id="8065485338434000013">V tomto zařízení lze použít jen některé z vašich karet</translation>
 <translation id="4807098396393229769">Jméno na kartě</translation>
 <translation id="2612676031748830579">Číslo karty</translation>
 <translation id="869891660844655955">Datum vypršení platnosti</translation>
 <translation id="1149401351239820326">Měsíc vypršení platnosti</translation>
 <translation id="8058655154417507695">Rok vypršení platnosti</translation>
 <translation id="379082410132524484">Platnost vaší karty vypršela.</translation>
-<translation id="5624120631404540903">Spravovat hesla</translation>
 <translation id="6644512095122093795">Nabídnout uložení hesel</translation>
 <translation id="2100273922101894616">Přihlásit se automaticky</translation>
 <translation id="7513029293694390567">Přihlašovat se na weby automaticky pomocí uložených identifikačních údajů. Když je tato funkce vypnutá, budete před každým přihlášením na web požádáni o potvrzení.</translation>
-<translation id="1511388193702657997">Nabízet uložení hesel</translation>
 <translation id="1375321115329958930">Uložená hesla</translation>
 <translation id="152234381334907219">Neuloženo</translation>
 <translation id="5137501176474113045">Smazat tuto položku</translation>
@@ -1958,7 +1965,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8503813439785031346">Uživatelské jméno</translation>
 <translation id="6657585470893396449">Heslo</translation>
 <translation id="137651782282853227">Tady se budou zobrazovat uložené adresy</translation>
-<translation id="1529116897397289129">Tady se budou zobrazovat uložené karty</translation>
 <translation id="7930294771522048157">Zde se budou zobrazovat uložené platební metody</translation>
 <translation id="9124003689441359348">Zde se zobrazí uložená hesla</translation>
 <translation id="4400367121200150367">Zde se zobrazí weby, které nikdy neukládají heslo</translation>
@@ -2206,6 +2212,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1164899421101904659">Zadejte klíč k odemknutí kódu PIN</translation>
 <translation id="7582582252461552277">Preferovat tuto síť</translation>
 <translation id="7469894403370665791">Automaticky připojit k této síti</translation>
+<translation id="7987814697832569482">Vždy se připojovat prostřednictvím této sítě VPN</translation>
 <translation id="8821045908425223359">Nakonfigurovat IP adresu automaticky</translation>
 <translation id="6596816719288285829">IP adresa</translation>
 <translation id="8986362086234534611">Odstranit</translation>
@@ -2372,8 +2379,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="490074449735753175">Vyřešit pravopisné chyby pomocí webové služby</translation>
 <translation id="3523078749603005179">Chytřejší kontrola pravopisu, která hodnoty zadané do prohlížeče odesílá do Googlu</translation>
 <translation id="2564653188463346023">Vylepšená kontrola pravopisu</translation>
-<translation id="7469406957790636836">Chcete-li tuto funkci zapnout, nejdříve v sekci <ph name="BEGIN_LINK"/>Jazyky a zadávání<ph name="END_LINK"/> zapněte kontrolu pravopisu</translation>
-<translation id="8699566574894671540">Chcete-li tuto funkci zapnout, v nabídce Upravit vyberte Kontrolovat během psaní pravopis</translation>
 <translation id="9079153198295609735">Automaticky posílat společnosti Brave Software statistiky používání a zprávy o selhání</translation>
 <translation id="5941220456342415404">Automaticky do Googlu odesílat diagnostické údaje a údaje o využití</translation>
 <translation id="918192811481327695">Pomoci s vylepšováním funkcí a výkonu prohlížeče Brave</translation>
@@ -2418,13 +2423,13 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1545786162090505744">URL se značkou %s místo dotazu</translation>
 <translation id="7136694880210472378">Nastavit jako výchozí</translation>
 <translation id="6953878494808481632">Související informace</translation>
-<translation id="7258619945375359543">Nechte Asistenta nabízet vám návrhy podle toho, co je na obrazovce</translation>
+<translation id="4145922204387553806">Nechat Asistenta zobrazovat informace související s obsahem na obrazovce</translation>
 <translation id="472896694312062378">„Ok Brave Software“</translation>
 <translation id="6236033368436682108">Když je zapnutá obrazovka, můžete Asistenta kdykoliv aktivovat vyslovením fráze „Ok Brave Software“</translation>
 <translation id="2482878487686419369">Oznámení</translation>
 <translation id="5355099869024327351">Povolit Asistentovi zobrazovat vám oznámení</translation>
-<translation id="1127216846847548354">Hlasová aktivace</translation>
-<translation id="3506093155988721483">Místo klávesnice při spuštění Asistenta používat hlas</translation>
+<translation id="133535873114485416">Preferovaná metoda zadávání</translation>
+<translation id="6233154960150021497">Ve výchozím nastavení používat místo klávesnice hlas</translation>
 <translation id="3908743412684152579">Nastavení Asistenta Brave Software</translation>
 <translation id="4933484234309072027">vloženo do <ph name="URL"/></translation>
 <translation id="8427292751741042100">vloženo na libovolném webu</translation>
@@ -2567,7 +2572,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1296497012903089238">Typ certifikátu</translation>
 <translation id="8553342806078037065">Spravovat ostatní uživatele</translation>
 <translation id="8907706281008466056">Profilová fotka Brave Software</translation>
-<translation id="127138278192656016">Používat synchronizaci a všechny služby</translation>
 <translation id="2408955596600435184">Zadejte PIN</translation>
 <translation id="6619990499523117484">Potvrďte PIN</translation>
 <translation id="2023167225947895179">PIN může být snadné uhodnout.</translation>
@@ -2642,10 +2646,10 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2731700343119398978">Čekejte prosím...</translation>
 <translation id="7529411698175791732">Zkontrolujte připojení k internetu. Pokud problém přetrvává, zkuste se odhlásit a znovu přihlásit.</translation>
 <translation id="4684427112815847243">Synchronizovat vše</translation>
-<translation id="2709516037105925701">Automatické vyplňování</translation>
+<translation id="1125261911132334651">Spravovat váš účet Brave Software</translation>
+<translation id="4570387585180509432">Adresy, telefonní čísla apod.</translation>
 <translation id="1644574205037202324">Historie</translation>
 <translation id="5117427536932535467">Motivy a tapety</translation>
-<translation id="3259418918864581163">Platební karty a adresy pomocí služby Brave Software Pay</translation>
 <translation id="3268451620468152448">Otevřené karty</translation>
 <translation id="5241892180459725878">Návrhy vyhledávacích dotazů z Disku Brave Software</translation>
 <translation id="2120297377148151361">Aktivita a interakce</translation>
@@ -2821,7 +2825,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2307631131458143837">Odpojte telefon od Bravebooku</translation>
 <translation id="1146102139091738471">Odpojte telefon od Bravebooku. Již se nebudou propojovat automaticky.</translation>
 <translation id="7878562273885520351">Heslo může být prolomeno</translation>
-<translation id="6582421931165117398">Chcete-li ochránit své osobní údaje, neprodleně změňte heslo. Před změnou hesla budete požádáni o přihlášení.</translation>
 <translation id="1089439967362294234">Změnit heslo</translation>
 <translation id="4635398712689569051">Stránka <ph name="PAGE_NAME"/> hostům není k dispozici.</translation>
 <translation id="4893522937062257019">Na obrazovce uzamčení</translation>
@@ -2830,6 +2833,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7642778300616172920">Skrýt citlivý obsah</translation>
 <translation id="3341703758641437857">Umožnit přístup k adresám URL souborů</translation>
 <translation id="9003647077635673607">Povolit na všech webech</translation>
+<translation id="2915102088417824677">Zobrazit protokol aktivity</translation>
 <translation id="1744108098763830590">stránka na pozadí</translation>
 <translation id="3378572629723696641">Toto rozšíření mohlo být poškozeno.</translation>
 <translation id="4348766275249686434">Shromažďování chyb</translation>
@@ -2859,6 +2863,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3729506734996624908">Povolené weby</translation>
 <translation id="3732078975418297900">Chyba na řádku <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Chyba na řádku <ph name="ERROR_LINE_START"/> až <ph name="ERROR_LINE_END"/></translation>
+<translation id="3104763887980088552">Protokol aktivit</translation>
 <translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Zkontrolovat zobrazení</translation>
 <translation id="181577467034453336">Ještě <ph name="NUMBER_OF_VIEWS"/>...</translation>
@@ -2882,6 +2887,8 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3798449238516105146">Verze</translation>
 <translation id="3838085852053358637">Rozšíření se nepodařilo načíst</translation>
 <translation id="6370021412472292592">Načtení manifestu se nezdařilo.</translation>
+<translation id="7235716375204803342">Načítání aktivit...</translation>
+<translation id="7647403192093989392">Žádné nedávné aktivity</translation>
 <translation id="2152198799932802652">Rozšíření a motivy najdete v <ph name="BEGIN_LINK"/>Internetovém obchodě Brave<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">K dispozici není žádný popis</translation>
 <translation id="3855441664322950881">Zabalit rozšíření</translation>
@@ -2914,12 +2921,22 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1909880997794698664">Opravdu chcete toto zařízení trvale ponechat v režimu veřejného terminálu?</translation>
 <translation id="1512210426710821809">Jediný způsob, jak tuto akci vrátit zpět, je přeinstalovat systém <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>.</translation>
 <translation id="4472575034687746823">Začít</translation>
-<translation id="6060991652695587932">Vyberte e‑mailovou službu pro rychlý přístup</translation>
-<translation id="296137235951584143">Přizpůsobte si Brave</translation>
+<translation id="8281886186245836920">Přeskočit</translation>
+<translation id="2342740338116612727">Byly přidány záložky</translation>
 <translation id="7835178595033117206">Záložka byla odstraněna</translation>
+<translation id="742130257665691897">Záložky byly odstraněny</translation>
 <translation id="2785008241190445880">Záložka byla nahrazena</translation>
+<translation id="4320948194796820126">Přidejte si záložku pro e-mail</translation>
 <translation id="2950533317914339731">Přidejte záložky svých oblíbeným aplikací Brave Software</translation>
-<translation id="8846319957959474018">Aplikace otevřete snadno pomocí záložek</translation>
+<translation id="239760341987199724">Nastavte si Brave jako výchozí prohlížeč</translation>
+<translation id="96037229054033864">Mějte při procházení internetu vždy k dispozici Vyhledávání Brave Software a chytré funkce Brave Software</translation>
+<translation id="296137235951584143">Přizpůsobte si Brave</translation>
+<translation id="3982375475032951137">Několika jednoduchými kroky si prohlížeč nastavte</translation>
+<translation id="6972754398087986839">Začínáme</translation>
+<translation id="3707821975049107110">Už uživatelský profil Chromu máte? Přihlaste se</translation>
+<translation id="1573150740912592860">Uložení postupu</translation>
+<translation id="567643736130151854">Chcete-li mít své záložky, hesla a další obsah na všech zařízeních, přihlaste se a zapněte synchronizaci</translation>
+<translation id="8282356762694872144">Pokračovat do e‑mailu?</translation>
 <translation id="5939847200023027600">Služba kompozitoru PDF</translation>
 <translation id="5877584842898320529">Zvolená tiskárna není k dispozici nebo není správně nainstalovaná. <ph name="BR"/> Zkontrolujte tiskárnu nebo vyberte jinou.</translation>
 <translation id="1526560967942511387">Dokument bez názvu</translation>

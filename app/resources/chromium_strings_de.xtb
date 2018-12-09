@@ -47,7 +47,6 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="8667808506758191620">Ihr <ph name="DEVICE_TYPE"/> ist auf dem neuesten Stand.</translation>
 <translation id="6970811910055250180">Ihr Gerät wird aktualisiert...</translation>
 <translation id="8030318113982266900">Ihr Gerät wird auf Kanal <ph name="CHANNEL_NAME"/> aktualisiert...</translation>
-<translation id="7355059611036077582">Zu Brave hinzufügen</translation>
 <translation id="7456658570432774853">Helfen Sie uns mit Ihrem Feedback zu den aktuellen Einstellungen bei der Verbesserung von Brave.</translation>
 <translation id="6134859571175647580">Achtung: Brave kann nicht verhindern, dass Ihr Browserverlauf von Erweiterungen protokolliert wird. Sie können diese Erweiterung für den Inkognitomodus deaktivieren, indem Sie die Auswahl für die entsprechende Option aufheben.</translation>
 <translation id="777113543093865885">Aus Brave entfernen...</translation>
@@ -71,7 +70,6 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="2887570477425111999">Details in Brave speichern</translation>
 <translation id="193559141530782783">Ihre personenbezogenen Daten werden von Brave sicher gespeichert. Dadurch brauchen Sie sie nicht noch einmal einzugeben.</translation>
 <translation id="663059986967017181">In Brave kopiert</translation>
-<translation id="5225129378754387452">Brave-Menü anzeigen</translation>
 <translation id="300669147395456190">Brave-Apps</translation>
 <translation id="3421950102518690868">Vor der Verwendung dieses Geräts ist es erforderlich, dass Sie die folgenden Nutzungsbedingungen von <ph name="DOMAIN"/> akzeptieren. Durch diese Nutzungsbedingungen werden die Brave OS-Nutzungsbedingungen nicht erweitert, geändert oder eingeschränkt.</translation>
 <translation id="3293668930608086049">Brave verwendet Ihre Kamera und Ihr Mikrofon.</translation>
@@ -95,8 +93,8 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="1705567146636171298">Brave aktualisieren</translation>
 <translation id="4050175100176540509">Wichtige Sicherheitsverbesserungen und neue Funktionen sind in der aktuellen Version verfügbar.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave wird in 1 Sekunde neu gestartet}other{Brave wird in # Sekunden neu gestartet}}</translation>
-<translation id="9159286371333817139">Brave jetzt neu starten.</translation>
-<translation id="9203540365585059272">Soeben wurde ein spezielles Sicherheitsupdate für Brave installiert. Führen Sie einen Neustart durch, damit es wirksam wird. Ihre Tabs werden automatisch wiederhergestellt.</translation>
+<translation id="5509303873219371662">Brave jetzt neu starten</translation>
+<translation id="8668413672647811944">Da soeben ein kritisches Sicherheitsupdate für Brave installiert wurde, sollten Sie jetzt einen Neustart durchführen. Ihre Tabs werden dann automatisch wiederhergestellt.</translation>
 <translation id="763369711159699222">Brave mit Ihrer Hilfe verbessern</translation>
 <translation id="1156940037717341650">Helfen Sie mit, Brave sicherer und nutzerfreundlicher zu machen, indem Sie Details zu möglichen sicherheitsrelevanten Zwischenfällen automatisch an Brave Software senden.</translation>
 <translation id="6791166902140255175">Brave-Tab</translation>
@@ -118,7 +116,6 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="8586264863973514035">Starten Sie Brave neu, um die Änderungen zu übernehmen</translation>
 <translation id="7021823858304886493">Anmeldung in Brave zulassen</translation>
 <translation id="1649714546770135458">Wenn Sie diese Einstellung deaktivieren, können Sie sich auf Websites von Brave Software wie beispielsweise Gmail anmelden, ohne sich auch in Brave anmelden zu müssen</translation>
-<translation id="6274110506580702455">Die Anmeldung in Brave wurde vom Administrator dieses Geräts deaktiviert.</translation>
 <translation id="9220324636239049437">Dadurch wird 1 Element von diesem Gerät gelöscht. Wenn Sie Ihre Daten später abrufen möchten, melden Sie sich als <ph name="USER_EMAIL"/> in Brave an.</translation>
 <translation id="5853262807109651878">Dadurch werden <ph name="ITEMS_COUNT"/> Elemente von diesem Gerät gelöscht. Wenn Sie Ihre Daten später abrufen möchten, melden Sie sich als <ph name="USER_EMAIL"/> in Brave an.</translation>
 <translation id="4784414698887946907">Dadurch werden Ihre Browserdaten von diesem Gerät gelöscht. Wenn Sie Ihre Daten später abrufen möchten, melden Sie sich als <ph name="USER_EMAIL"/> in Brave an.</translation>

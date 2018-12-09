@@ -49,7 +49,6 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="8667808506758191620">Napapanahon ang iyong <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="6970811910055250180">Ina-update ang iyong device...</translation>
 <translation id="8030318113982266900">Ina-update ang iyong device sa <ph name="CHANNEL_NAME"/> na channel...</translation>
-<translation id="7355059611036077582">Idagdag sa Brave</translation>
 <translation id="7456658570432774853">Tumulong na pahusayin ang Brave sa pamamagitan ng pag-uulat sa mga kasalukuyang setting</translation>
 <translation id="6134859571175647580">Babala: Hindi mapipigilan ng Brave ang pagtatala ng mga extension sa iyong history ng pag-browse. Upang i-disable ang extension na ito sa incognito mode, alisin sa pagkakapili ang opsyong ito.</translation>
 <translation id="777113543093865885">Alisin sa Brave...</translation>
@@ -73,7 +72,6 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="2887570477425111999">I-save ang mga detalye sa Brave</translation>
 <translation id="193559141530782783">Secure na iiimbak ng Brave ang iyong mga personal na detalye nang sa gayon ay hindi mo na kailangang i-type muli ang mga ito.</translation>
 <translation id="663059986967017181">Kinopya sa Brave</translation>
-<translation id="5225129378754387452">Ipakita ang menu ng Brave</translation>
 <translation id="300669147395456190">Brave Apps</translation>
 <translation id="3421950102518690868">Kinakailangan ng <ph name="DOMAIN"/> na basahin mo at tanggapin ang sumusunod na Mga Tuntunin ng Serbisyo bago gamitin ang device na ito. Hindi pinapalawak, binabago o nililimitahan ng mga tuntuning ito ang Mga Tuntunin ng Brave OS.</translation>
 <translation id="3293668930608086049">Ginagamit ng Brave ang iyong camera at mikropono.</translation>
@@ -97,8 +95,8 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="1705567146636171298">I-update ang Brave</translation>
 <translation id="4050175100176540509">May available na mahahalagang pagpapahusay sa seguridad at mga bagong feature sa pinakabagong bersyon.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Magre-restart ang Brave pagkalipas ng 1 segundo}one{Magre-restart ang Brave pagkalipas ng # segundo}other{Magre-restart ang Brave pagkalipas ng # na segundo}}</translation>
-<translation id="9159286371333817139">Dapat mo nang i-restart ngayon ang Brave.</translation>
-<translation id="9203540365585059272">May kakalapat lang na espesyal na update sa seguridad para sa Brave; dapat ka nang mag-restart ngayon upang magkabisa ito (ire-restore namin ang iyong mga tab).</translation>
+<translation id="5509303873219371662">Dapat mo nang i-restart ang Brave</translation>
+<translation id="8668413672647811944">Naglapat ng espesyal na update sa seguridad para sa Brave. Mag-restart na at ire-restore namin ang iyong mga tab.</translation>
 <translation id="763369711159699222">Tumulong sa pagpapahusay ng Brave</translation>
 <translation id="1156940037717341650">Makakatulong ka na gawing mas ligtas at mas madaling gamitin ang Brave sa pamamagitan ng awtomatikong pag-uulat sa Brave Software ng mga detalye ng mga posibleng isyu sa seguridad.</translation>
 <translation id="6791166902140255175">Tab ng Brave</translation>
@@ -120,7 +118,6 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="8586264863973514035">Para ilapat ang iyong mga pagbabago, muling ilunsad ang Brave</translation>
 <translation id="7021823858304886493">Pagayan ang pag-sign in sa Brave</translation>
 <translation id="1649714546770135458">Kapag na-off ito, maaari kang mag-sign in sa mga site ng Brave Software tulad ng Gmail nang hindi nagsa-sign in sa Brave</translation>
-<translation id="6274110506580702455">Na-disable ng administrator ng device na ito ang pag-sign in sa Brave.</translation>
 <translation id="9220324636239049437">Magde-delete ito ng 1 item sa device na ito. Upang makuha ang iyong data sa ibang pagkakataon, mag-sign in sa Brave bilang <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Magde-delete ito ng <ph name="ITEMS_COUNT"/> (na) item sa device na ito. Upang makuha ang iyong data sa ibang pagkakataon, mag-sign in sa Brave bilang <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Ide-delete nito ang iyong data mula sa pag-browse sa device na ito. Upang makuha ang iyong data sa ibang pagkakataon, mag-sign in sa Brave bilang <ph name="USER_EMAIL"/>.</translation>

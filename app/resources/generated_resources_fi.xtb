@@ -39,6 +39,7 @@
 <translation id="5112577000029535889">&amp;Kehittäjän työkalut</translation>
 <translation id="5184063094292164363">&amp;JavaScript-konsoli</translation>
 <translation id="7056526158851679338">Tark&amp;ista laitteet</translation>
+<translation id="947329552760389097">Tutk&amp;i elementtejä</translation>
 <translation id="48838266408104654">&amp;Tehtävänhallinta</translation>
 <translation id="6277518330158259200">Ot&amp;a kuvakaappaus</translation>
 <translation id="5288678174502918605">Avaa sulj&amp;ettu välilehti uudelleen</translation>
@@ -57,6 +58,7 @@
 <translation id="7324297612904500502">Beta-keskusteluryhmä</translation>
 <translation id="7199158086730159431">Pyydä ohj&amp;eita</translation>
 <translation id="630065524203833229">Poist&amp;u</translation>
+<translation id="2052369079215022979">Organisaatiosi ylläpitämä</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5702898740348134351">Muokkaa hakukon&amp;eita...</translation>
 <translation id="2454247629720664989">Avainsana</translation>
@@ -152,6 +154,7 @@
 <translation id="4020327272915390518">Asetukset-valikko</translation>
 <translation id="8200772114523450471">Jatka</translation>
 <translation id="2770465223704140727">Poista luettelosta</translation>
+<translation id="7702574632857388784">Poista <ph name="FILE_NAME"/> luettelosta</translation>
 <translation id="7658239707568436148">Peruuta</translation>
 <translation id="7144878232160441200">Yritä uudelleen</translation>
 <translation id="6910211073230771657">Poistettu</translation>
@@ -165,11 +168,11 @@
 <translation id="3612673635130633812">Lataaja: &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="6395403722585816044">Ladattiin incognito-tilassa</translation>
 <translation id="8028803902702117856">Lataus käynnissä: <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
-<translation id="4644818355646995778">Ladataan, <ph name="PERCENT_REMAINING"/></translation>
+<translation id="5632592977009207922">Ladataan, <ph name="PERCENT_REMAINING"/> % jäljellä</translation>
 <translation id="313963229645891001">Ladataan, <ph name="STATUS"/></translation>
 <translation id="1834503245783133039">Lataus epäonnistui: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Lataus peruutettu: <ph name="FILE_NAME"/></translation>
-<translation id="348999362308956431">Lataus valmis: <ph name="FILE_NAME"/></translation>
+<translation id="4110490973560452005">Lataus valmis: <ph name="FILE_NAME"/>. Paina Shift + F6 siirtyäksesi latauspalkkialueelle.</translation>
 <translation id="2743387203779672305">Kopioi leikepöydälle</translation>
 <translation id="883911313571074303">Lisää kuvaan muistiinpano</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Lataus on käynnissä}other{Latauksia on käynnissä}}</translation>
@@ -291,7 +294,7 @@
 <translation id="6398765197997659313">Poistu koko näytön tilasta</translation>
 <translation id="8559694214572302298">Kuvien dekoodaaja</translation>
 <translation id="8191453843330043793">V8-välityspalvelimen selvittäjä</translation>
-<translation id="6185617499004995178">CUPS IPP ‑vahvistus</translation>
+<translation id="5552059560155071882">CUPS IPP ‑jäsennin</translation>
 <translation id="3077708072777965506">Brave-käyttöjärjestelmän syöttötapa</translation>
 <translation id="7171242884588191792">Brave-tiedostoapuohjelma</translation>
 <translation id="3061707000357573562">Virheenkorjauspalvelu</translation>
@@ -300,7 +303,6 @@
 <translation id="1545775234664667895">Asennettin teema <ph name="THEME_NAME"/></translation>
 <translation id="2079545284768500474">Kumoa</translation>
 <translation id="2256115617011615191">Käynnistä uudelleen</translation>
-<translation id="795025003224538582">Älä käynnistä uudelleen</translation>
 <translation id="4545028762441890696">Ota se uudelleen käyttöön hyväksymällä uudet käyttöoikeudet:</translation>
 <translation id="3009487527589249344"><ph name="EXTENSION_NAME"/> on Brave Softwaren haitalliseksi merkitsemä, joten sen asennus on estetty.</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> lisättiin etäyhteyden kautta</translation>
@@ -495,9 +497,9 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3987348946546879621">Datan säästö</translation>
 <translation id="6228516488918914827">Sivu ladattu nopeammin</translation>
 <translation id="9137013805542155359">Näytä alkuperäinen</translation>
-<translation id="71243390042171582">Päivitetty <ph name="MINUTES"/> min sitten</translation>
+<translation id="1056466516655540509">Päivitetty <ph name="MINUTES"/> min sitten</translation>
 <translation id="8743864605301774756">Päivitetty 1 t sitten</translation>
-<translation id="5638497698949808140">Päivitetty <ph name="HOURS"/> t sitten</translation>
+<translation id="7363117941401515667">Päivitetty <ph name="HOURS"/> t sitten</translation>
 <translation id="1329584516321524826">Päivitetty juuri nyt</translation>
 <translation id="224940702122312781">Tämä sivu käyttää paljon dataa.</translation>
 <translation id="3861241522664181545">Sivu pysäytetty.</translation>
@@ -642,6 +644,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8803953437405899238">Avaa uusi välilehti yhdellä klikkauksella.</translation>
 <translation id="3071624960923923138">Klikkaa tätä, niin uusi välilehti avautuu.</translation>
 <translation id="4908811072292128752">Avaa uusi välilehti, niin voit selailla kahdella sivulla yhtä aikaa.</translation>
+<translation id="8966870118594285808">Avaa välilehti uudelleen, jos suljit sen vahingossa</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Sivu ei vastaa.}other{Sivut eivät vastaa.}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Voit odottaa sivun vastausta tai poistua sivulta.}other{Voit odottaa sivujen vastausta tai poista sivuilta.}}</translation>
 <translation id="7903345046358933331">Tämä sivu ei enää vastaa. Voit odottaa sivun vastausta tai sulkea sen.</translation>
@@ -772,9 +775,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2445484935443597917">Luo uusi profiili</translation>
 <translation id="2606246518223360146">Yhdistä tiedot</translation>
 <translation id="473546211690256853">Tätä tiliä hallitsee <ph name="DOMAIN"/></translation>
-<translation id="3661054927247347545">Kirjautumisen varmenne ei kelpaa, ikkuna sulkeutuu <ph name="MINUTES"/> minuutin ja <ph name="SECONDS"/> sekunnin kuluttua.</translation>
-<translation id="6522797484310591766">Kirjaudu sisään nyt</translation>
-<translation id="5436822233913560332">Kaikki selainikkunat suljetaan pian automaattisesti ilman sisäänkirjausta.</translation>
+<translation id="622537739776246443">Profiili poistetaan</translation>
+<translation id="5632566673632479864">Tilisi <ph name="EMAIL"/> ei ole enää sallittu ensisijaisena tilinä. Koska <ph name="DOMAIN"/> ylläpitää tätä tiliä, kirjanmerkit, historia, salasanat ja muut asetukset tyhjennetään tältä laitteelta.</translation>
 <translation id="8168435359814927499">Sisältö</translation>
 <translation id="7702907602086592255">Verkkotunnus</translation>
 <translation id="3202131003361292969">Reitti</translation>
@@ -842,15 +844,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3074037959626057712">Olet kirjautunut sisään ja ottanut synkronoinnin käyttöön.</translation>
 <translation id="1231733316453485619">Otetaanko synkronointi käyttöön?</translation>
 <translation id="9125982323641182972">Brave Softwaren älykkäitä ratkaisuja Braveen</translation>
-<translation id="7988117629517051942">Lisää Brave Softwaren älykkäitä ratkaisuja</translation>
-<translation id="5596627076506792578">Lisäasetukset</translation>
-<translation id="4419556793104466535">Hallitse synkronointia, personointia ja muuta</translation>
-<translation id="184568702928428857">Synkronointia, personointia ja muita Brave Softwaren palveluita Bravessa hallitsevat asetukset ovat muuttuneet. Tämä voi vaikuttaa nykyisiin asetuksiisi.</translation>
-<translation id="4192273449750167573">Tarkista asetukset seuraavalla ruudulla</translation>
-<translation id="685040365210406336">Älä tee muutoksia</translation>
-<translation id="6418273007044911016">Brave Softwaren kanssa synkronoimiasi tietoja tai käyttämiäsi ominaisuuksia ei muuteta.</translation>
-<translation id="8372733498235009300">Ota synkronointi, personointi ja muut Brave Software-palvelut käyttöön</translation>
-<translation id="8340964510643644301">Voit muokata tätä koska tahansa Braven asetuksissa</translation>
 <translation id="3149880132460839085">Braven synkronointi</translation>
 <translation id="3796902758602917951">Kirjanmerkkisi, historiasi, salasanasi ja muut asetuksesi synkronoidaan Brave Software-tilillesi, jotta voit käyttää niitä kaikilla laitteillasi.</translation>
 <translation id="1371301976177520732">Kirjanmerkit, historia ja paljon muuta kaikilla laitteillasi</translation>
@@ -896,7 +889,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6812349420832218321">Tuotetta <ph name="PRODUCT_NAME"/> ei voi käynnistää pääkäyttäjätilassa.</translation>
 <translation id="2292848386125228270">Käynnistä <ph name="PRODUCT_NAME"/> tavallisena käyttäjänä. Jos sinun on käytettävä sitä pääkäyttäjänä, käynnistä se uudelleen --no-sandbox-merkinnän kanssa.</translation>
 <translation id="3122496702278727796">Tietohakemiston luonti epäonnistui</translation>
-<translation id="602251597322198729">Sivusto yrittää ladata useita tiedostoja. Sallitaanko?</translation>
+<translation id="51918995459521422"><ph name="ORIGIN"/> haluaa ladata useita tiedostoja</translation>
 <translation id="691024665142758461">ladata useita tiedostoja</translation>
 <translation id="7004499039102548441">Hiljattain suljetut välilehdet</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 välilehti}other{# välilehteä}}</translation>
@@ -1123,6 +1116,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="874689135111202667">{0,plural, =1{Ladataanko sivustoon yksi tiedosto?}other{Ladataanko sivustoon # tiedostoa?}}</translation>
 <translation id="1956390763342388273">Kaikki tämän polun (<ph name="FOLDER_PATH"/>) tiedostot ladataan sivustoon. Tee tämä vain luotettavien sivustojen kohdalla.</translation>
 <translation id="1243314992276662751">Lähetä</translation>
+<translation id="8480139856920479206">{0,plural, =1{Sinulla on yksi incognito-ikkuna.}other{Sinulla on # incognito-ikkunaa.}}</translation>
+<translation id="2545348954155066907">{0,plural, =1{Sulje tämä ikkuna}other{Sulje kaikki incognito-ikkunat}}</translation>
 <translation id="3785308913036335955">Näytä Apps-oikopolku</translation>
 <translation id="711840821796638741">Näytä hallinnoidut kirjanmerkit</translation>
 <translation id="3613134908380545408">Näytä <ph name="FOLDER_NAME"/></translation>
@@ -1229,7 +1224,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3596235046596950091">Ota pilvipalvelut käyttöön</translation>
 <translation id="7649070708921625228">Ohje</translation>
 <translation id="9011163749350026987">Näytä kuvake aina</translation>
-<translation id="9115487443206954631">Hallinnoi Cast-laitteita</translation>
 <translation id="1706586824377653884">Järjestelmänvalvojan lisäämä</translation>
 <translation id="6467304607960172345">Optimoi koko näytön videot</translation>
 <translation id="1597210476603167523">Ota käyttöön suoratoisto pilvipohjaisiin palveluihin, kuten Brave Software Hangoutsiin.</translation>
@@ -1260,6 +1254,9 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="4415245286584082850">Laitteita ei löytynyt. Avaa ohjekeskuksen artikkeli uudella välilehdellä.</translation>
 <translation id="4363771538994847871">Cast-kohteita ei löytynyt. Tarvitsetko apua?</translation>
 <translation id="8688672835843460752">Saatavilla</translation>
+<translation id="1536754031901697553">Katkaistaan yhteyttä...</translation>
+<translation id="1854180393107901205">Lopeta suoratoisto</translation>
+<translation id="5307030433605830021">Lähdettä ei tueta</translation>
 <translation id="4271396100647220620">Ei hakutuloksia</translation>
 <translation id="6972180789171089114">Ääni- ja videotiedostot</translation>
 <translation id="2541002089857695151">Optimoidaanko koko näytön suoratoisto?</translation>
@@ -1293,7 +1290,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3340978935015468852">asetuksissa</translation>
 <translation id="5704875434923668958">Synkronoidaan kohteeseen</translation>
 <translation id="6257602895346497974">Ota synkronointi käyttöön…</translation>
-<translation id="8618141719844947886">Ei synkronointia</translation>
+<translation id="5127805178023152808">Synkronointi ei ole käytössä</translation>
 <translation id="5781092003150880845">Vaihda synkronointitilille <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Synkronoi tilillesi</translation>
 <translation id="2538361623464451692">Synkronointi pois käytöstä</translation>
@@ -1389,6 +1386,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="4425149324548788773">Oma Drive</translation>
 <translation id="1786636458339910689">Tiimin Drivet</translation>
+<translation id="5010406651457630570">Tietokoneet</translation>
 <translation id="8106045200081704138">Jaettu minun kanssani</translation>
 <translation id="981121421437150478">Offline</translation>
 <translation id="9034924485347205037">Linux-tiedostot</translation>
@@ -1452,6 +1450,9 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="5649768706273821470">Kuuntele</translation>
 <translation id="4582497162516204941">Asenna Linuxilla (beta)</translation>
 <translation id="4195249722193633765">Asenna sovellus Linuxilla (beta)</translation>
+<translation id="7248671827512403053">Sovellus</translation>
+<translation id="183183971458492120">Ladataan tietoja…</translation>
+<translation id="8157684860301034423">Sovellustietojen noutaminen epäonnistui.</translation>
 <translation id="5678784840044122290">Linux-sovellus on saatavilla terminaalissa. Käynnistysohjelmassa saattaa myös näkyä kuvake.</translation>
 <translation id="9213073329713032541">Asennus käynnistyi.</translation>
 <translation id="2782104745158847185">Virhe Linux-sovelluksen asennuksessa</translation>
@@ -1512,13 +1513,14 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="386548886866354912">Pakkaa laajennuksella <ph name="EXTENSION_NAME"/></translation>
 <translation id="3078461028045006476">Jaa laajennuksen <ph name="EXTENSION_NAME"/> kanssa</translation>
 <translation id="4197674956721858839">Pakkaa valitut</translation>
-<translation id="9215934040295798075">Aseta taustakuva</translation>
+<translation id="1572585716423026576">Aseta taustakuvaksi</translation>
 <translation id="204914487372604757">Luo pikakuvake</translation>
 <translation id="799547531016638432">Poista pikakuvake</translation>
 <translation id="5494920125229734069">Valitse kaikki</translation>
 <translation id="7295662345261934369">Jaa muiden kanssa</translation>
 <translation id="2001796770603320721">Ylläpidä Drivessa</translation>
 <translation id="5318819489018851358">Jaa Linuxilla</translation>
+<translation id="6806699711453372963">Määritä Linux-jakaminen</translation>
 <translation id="7505167922889582512">Näytä piilotetut tiedostot</translation>
 <translation id="7846076177841592234">Peruuta valinta</translation>
 <translation id="2377319039870049694">Vaihda luettelonäkymään</translation>
@@ -1658,7 +1660,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8671210955687109937">Voi kommentoida</translation>
 <translation id="799923393800005025">Voi tarkastella</translation>
 <translation id="7925686952655276919">Älä käytä mobiiliyhteyttä synkronointiin</translation>
-<translation id="4649168043999963079">Näytä Brave Software Docs -tiedostot</translation>
 <translation id="7106346894903675391">Osta lisää tallennustilaa...</translation>
 <translation id="3549797760399244642">Siirry osoitteeseen drive.google.com...</translation>
 <translation id="3451154303153932176">Brave Software Drive -tallennustilaa jäljellä: <ph name="SPACE_AVAILABLE"/>.</translation>
@@ -1671,7 +1672,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="7606199793785990727">Brave Software Driveen ei saada yhteyttä. <ph name="BEGIN_LINK"/>Kirjaudu ulos<ph name="END_LINK"/> ja takaisin sisään.</translation>
 <translation id="585883343689351092">Tervetuloa Brave Software Driveen!</translation>
 <translation id="1788440444874291920">Saa 100 Gt ilmaista tallennustilaa Brave Software Drivessa</translation>
-<translation id="5722262830411045381">1 Tt ilmaista tallennustilaa Brave Software Drivessa</translation>
 <translation id="6862635236584086457">Kaikki tähän kansioon tallennetut tiedostot varmuuskopioidaan verkkoon automaattisesti</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Käytä tiedostojasi missä vain, myös offline-tilassa.<ph name="MARKUP_2"/>
         Brave Software Drivessa tiedostot ovat ajan tasalla ja käytettävissä kaikilla laitteillasi.<ph name="MARKUP_3"/>
@@ -1688,9 +1688,11 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3096967955765855393">Pyrimme jatkuvasti tekemään selaamisesta turvallisempaa. Aiemmin mikä tahansa sivusto pystyi pyytämään laajennuksen lisäämistä selaimeen. Uusimmissa Brave Software Brave -versioissa sinun on erikseen ilmoitettava Bravelle, että haluat asentaa nämä laajennukset, lisäämällä ne Laajennukset-sivulla. <ph name="BEGIN_LINK"/>Lisätietoja<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">Ei voi avata kohteella $1</translation>
 <translation id="639777613761517128">Jos haluat avata tiedostoja sovelluksella $1, kopioi ne ensin Linux-tiedostot-kansioon.</translation>
-<translation id="5112009661904384591">Jaa tiedostoja Linuxilla</translation>
-<translation id="3186202398303525187">Anna Linux-sovellusten avata $1.</translation>
-<translation id="1603300902586586390">Anna Linux-sovellusten avata $1-tiedostot.</translation>
+<translation id="5368191757080475556">Jaa kansio Linuxin kanssa</translation>
+<translation id="6803594270782834876">Anna Linux-sovelluksille lupa avata tiedostoja $1-kansiossa</translation>
+<translation id="9204140378020726578">Anna Linux-sovelluksille lupa avata Brave Software Driven tiedostoja. Muutokset synkronoidaan muihin laitteisiin.</translation>
+<translation id="4290535918735525311">1 kansio jaettu Linuxin kanssa</translation>
+<translation id="984401732412731005">$1 kansiota jaettu Linuxille</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/>-tiedosto</translation>
 <translation id="803771048473350947">Tiedosto</translation>
 <translation id="895586998699996576">Kuvatiedosto ($1)</translation>
@@ -1744,6 +1746,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6199801702437275229">Odotetaan tietoja tallennustilasta...</translation>
 <translation id="6485131920355264772">Tilatietojen noutaminen epäonnistui</translation>
 <translation id="7748626145866214022">Lisää valintoja on saatavilla toimintopalkissa. Aseta toimintopalkki aktiiviseksi painamalla Alt + A.</translation>
+<translation id="60628369828239652">Avataan tiedostoa <ph name="FILE_NAME"/></translation>
+<translation id="353547388688256996">Avataan <ph name="NUMBER_FILES"/></translation>
 <translation id="6710213216561001401">Edellinen</translation>
 <translation id="1201402288615127009">Seuraava</translation>
 <translation id="1395262318152388157">Kelaamisen liukusäädin</translation>
@@ -1834,6 +1838,16 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8710187907779883426">lyhyt (1 s)</translation>
 <translation id="4305227814872083840">pitkä (2 s)</translation>
 <translation id="2860150991415616761">hyvin pitkä (4 s)</translation>
+<translation id="5573248369095789351">Viivetoiminto</translation>
+<translation id="2427507373259914951">Ykköspainikkeen klikkaus</translation>
+<translation id="8203795194971602413">Klikkaus kakkospainikkeella</translation>
+<translation id="1999763610967697511">Vedä ja pudota</translation>
+<translation id="8142441511840089262">Kaksoisklikkaus</translation>
+<translation id="485592688953820832">Ei toimenpiteitä (keskeytä)</translation>
+<translation id="1217668622537098248">Palaa ykkösklikkaukseen toiminnon jälkeen</translation>
+<translation id="3682824389861648626">Liikkeen raja-arvo</translation>
+<translation id="5511379779384092781">Erittäin pieni</translation>
+<translation id="7409549334477097887">Erittäin suuri</translation>
 <translation id="1330145147221172764">Ota ruutunäppäimistö käyttöön</translation>
 <translation id="1800308196794859773">Lähetä äänesi Brave Softwarelle, jotta sanelu on mahdollista kaikissa tekstikentissä.</translation>
 <translation id="8758418656925882523">Ota sanelu käyttöön (kirjoita puhumalla)</translation>
@@ -1915,40 +1929,33 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1763808908432309942">Avautuu uuteen välilehteen</translation>
 <translation id="6248988683584659830">Hakuasetukset</translation>
 <translation id="883304095704384301">Jos et löydä etsimääsi, siirry <ph name="BEGIN_LINK_CHROMIUM"/>Brave Software Braven ohjeisiin<ph name="END_LINK_CHROMIUM"/>.</translation>
+<translation id="6406708970972405507">Asetukset – <ph name="SECTION_TITLE"/></translation>
 <translation id="5860033963881614850">Pois käytöstä</translation>
 <translation id="5916664084637901428">Käytössä</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> hallinnoi tätä asetusta.</translation>
 <translation id="6643016212128521049">Tyhjennä</translation>
 <translation id="8465252176946159372">Virheellinen</translation>
 <translation id="8647834505253004544">Ei kelvollinen verkko-osoite</translation>
-<translation id="2149850907588596975">Salasanat ja lomakkeet</translation>
-<translation id="8639963783467694461">Automaattisen täytön asetukset</translation>
+<translation id="7946586320617670168">Lähteen on oltava turvallinen</translation>
+<translation id="2709516037105925701">Automaattinen täyttö</translation>
 <translation id="7764225426217299476">Lisää osoite</translation>
 <translation id="5595485650161345191">Osoitteen muokkaus</translation>
 <translation id="6207937957461833379">Maa/alue</translation>
 <translation id="4378154925671717803">Puhelin</translation>
 <translation id="5659593005791499971">Sähköposti</translation>
-<translation id="5762172915276660232">Luottokorttiasetukset</translation>
-<translation id="4499718683476608392">Ota luottokorttien automaattinen täyttö käyttöön, niin voit täyttää lomakkeita yhdellä klikkauksella</translation>
 <translation id="9064275926664971810">Ottamalla automaattisen täytön käyttöön voit täyttää lomakkeet yhdellä klikkauksella.</translation>
 <translation id="5029568752722684782">Poista kopio</translation>
 <translation id="2154484045852737596">Muokkaa korttia</translation>
 <translation id="5087580092889165836">Lisää kortti</translation>
-<translation id="7284555534810614828">Tallenna kortti käyttääksesi Brave Software Payta</translation>
-<translation id="6281511959351052816">Tallenna kortteja käyttääksesi Brave Software Payta</translation>
-<translation id="1904518222538904133">Yhtä korteistasi voidaan käyttää vain tällä laitteella</translation>
-<translation id="8065485338434000013">Joitakin korttejasi ei voi käyttää tällä laitteella</translation>
 <translation id="4807098396393229769">Kortissa oleva nimi</translation>
 <translation id="2612676031748830579">Kortin numero</translation>
 <translation id="869891660844655955">Vanhenemispäivämäärä</translation>
 <translation id="1149401351239820326">Viimeinen voimassaolokuukausi</translation>
 <translation id="8058655154417507695">Viimeinen voimassaolovuosi</translation>
 <translation id="379082410132524484">Korttisi on vanhentunut.</translation>
-<translation id="5624120631404540903">Hallitse salasanoja</translation>
 <translation id="6644512095122093795">Tarjoa salasanojen tallentamista</translation>
 <translation id="2100273922101894616">Automaattinen kirjautuminen</translation>
 <translation id="7513029293694390567">Kirjaudu automaattisesti verkkosivustoille käyttämällä tallennettuja kirjautumistietoja. Jos toiminto ei ole käytössä, sinua pyydetään vahvistamaan kirjautuminen aina, kun kirjaudut sivustolle.</translation>
-<translation id="1511388193702657997">Ehdota salasanojen tallentamista verkossa.</translation>
 <translation id="1375321115329958930">Tallennetut salasanat</translation>
 <translation id="152234381334907219">Tallentamaton</translation>
 <translation id="5137501176474113045">Poista tämä kohde</translation>
@@ -1958,7 +1965,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8503813439785031346">Käyttäjätunnus</translation>
 <translation id="6657585470893396449">Salasana</translation>
 <translation id="137651782282853227">Tässä näytetään tallennetut osoitteet.</translation>
-<translation id="1529116897397289129">Tässä näytetään tallennetut kortit.</translation>
 <translation id="7930294771522048157">Tallennetut maksutavat näkyvät täällä</translation>
 <translation id="9124003689441359348">Tässä näytetään tallennetut salasanasi.</translation>
 <translation id="4400367121200150367">Tässä näytetään sivustot, jotka eivät koskaan tallenna salasanoja.</translation>
@@ -2206,6 +2212,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1164899421101904659">Anna PUK-koodi</translation>
 <translation id="7582582252461552277">Käytä tätä verkkoa</translation>
 <translation id="7469894403370665791">Yhdistä automaattisesti tähän verkkoon</translation>
+<translation id="7987814697832569482">Muodosta tähän aina VPN-yhteys</translation>
 <translation id="8821045908425223359">Määritä IP-osoite automaattisesti</translation>
 <translation id="6596816719288285829">IP-osoite</translation>
 <translation id="8986362086234534611">Unohda</translation>
@@ -2372,8 +2379,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="490074449735753175">Käytä verkkopalvelua kirjoitusvirheiden korjaamiseen</translation>
 <translation id="3523078749603005179">Älykkäämpi oikeinkirjoituksen tarkistus lähettämällä selaimeen kirjoittamasi teksti Brave Softwarelle</translation>
 <translation id="2564653188463346023">Parannettu oikeinkirjoituksen tarkistus</translation>
-<translation id="7469406957790636836">Voit käyttää tätä ottamalla käyttöön oikeinkirjoituksen tarkistuksen <ph name="BEGIN_LINK"/>Kieli ja syöttö<ph name="END_LINK"/> ‑kohdasta</translation>
-<translation id="8699566574894671540">Ota tämä käyttöön valitsemalla Muokkaa-valikosta Tarkista oikeinkirjoitus kirjoittaessani.</translation>
 <translation id="9079153198295609735">Lähetä Brave Softwarelle käyttötilastoja ja virheraportteja automaattisesti</translation>
 <translation id="5941220456342415404">Lähetä automaattisesti diagnostiikka- ja käyttötietoja Brave Softwarelle</translation>
 <translation id="918192811481327695">Auta parantamaan Braven ominaisuuksia ja suorituskykyä</translation>
@@ -2418,13 +2423,13 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1545786162090505744">URL-osoite jonka %s käytössä ennen hakua</translation>
 <translation id="7136694880210472378">Aseta oletukseksi</translation>
 <translation id="6953878494808481632">Asiaan liittyvät tiedot</translation>
-<translation id="7258619945375359543">Assistant saa antaa ehdotuksia näytön sisällön perusteella</translation>
+<translation id="4145922204387553806">Anna Assistantin näyttää tietoa näytön sisällöstä</translation>
 <translation id="472896694312062378">Ok Brave Software</translation>
 <translation id="6236033368436682108">Käytä Assistantia sanomalla Ok Brave Software koska vain, kun näyttö on päällä</translation>
 <translation id="2482878487686419369">Ilmoitukset</translation>
 <translation id="5355099869024327351">Anna Assistantin näyttää ilmoituksia</translation>
-<translation id="1127216846847548354">Aktivointi puhumalla</translation>
-<translation id="3506093155988721483">Käynnistä Assistant näppäimistön sijaan puhumalla</translation>
+<translation id="133535873114485416">Syöttötapa</translation>
+<translation id="6233154960150021497">Oletuksena puhe näppäimistön sijaan</translation>
 <translation id="3908743412684152579">Brave Software Assistantin asetukset</translation>
 <translation id="4933484234309072027">upotettu sivustoon <ph name="URL"/></translation>
 <translation id="8427292751741042100">verkkopalveluun upotettu</translation>
@@ -2567,7 +2572,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1296497012903089238">Varmenteen tyyppi</translation>
 <translation id="8553342806078037065">Hallitse muita henkilöitä</translation>
 <translation id="8907706281008466056">Brave Software-profiilin valokuva</translation>
-<translation id="127138278192656016">Käytä synkronointia ja kaikkia palveluja</translation>
 <translation id="2408955596600435184">Anna PIN-koodi</translation>
 <translation id="6619990499523117484">Vahvista PIN-koodi.</translation>
 <translation id="2023167225947895179">PIN-koodi voi olla helppo arvata.</translation>
@@ -2642,10 +2646,10 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2731700343119398978">Odota...</translation>
 <translation id="7529411698175791732">Tarkista internetyhteytesi. Jos ongelma jatkuu, kirjaudu ulos ja sitten takaisin sisään.</translation>
 <translation id="4684427112815847243">Synkronoi kaikki</translation>
-<translation id="2709516037105925701">Automaattinen täyttö</translation>
+<translation id="1125261911132334651">Ylläpidä Brave Software-tiliäsi</translation>
+<translation id="4570387585180509432">Osoitteet, puhelinnumerot ja muut</translation>
 <translation id="1644574205037202324">Historia</translation>
 <translation id="5117427536932535467">Teemat ja taustakuvat</translation>
-<translation id="3259418918864581163">Luottokortit ja osoitteet Brave Software Paysta</translation>
 <translation id="3268451620468152448">Avoimet välilehdet</translation>
 <translation id="5241892180459725878">Brave Software Drive ‑hakuehdotukset</translation>
 <translation id="2120297377148151361">Toiminnot ja vuorovaikutukset</translation>
@@ -2821,7 +2825,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2307631131458143837">Irrota puhelin Bravebookista</translation>
 <translation id="1146102139091738471">Irrota puhelin Bravebookista. Niitä ei enää yhdistetä automaattisesti.</translation>
 <translation id="7878562273885520351">Salasanasi on saattanut vaarantua.</translation>
-<translation id="6582421931165117398">Vaihda salasanasi nyt, jotta henkilötietosi pysyvät turvassa. Sinun on kirjauduttava sisään ennen salasanan vaihtamista.</translation>
 <translation id="1089439967362294234">Vaihda salasana</translation>
 <translation id="4635398712689569051"><ph name="PAGE_NAME"/> ei ole vieraskäyttäjien saatavilla.</translation>
 <translation id="4893522937062257019">Lukitusnäytöllä</translation>
@@ -2830,6 +2833,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="7642778300616172920">Piilota arkaluontoinen sisältö</translation>
 <translation id="3341703758641437857">Salli tiedostojen URL-osoitteiden käyttö</translation>
 <translation id="9003647077635673607">Salli kaikissa verkkosivustoissa</translation>
+<translation id="2915102088417824677">Näytä tapahtumaloki</translation>
 <translation id="1744108098763830590">taustasivu:</translation>
 <translation id="3378572629723696641">Tämä laajennus on ehkä vioittunut.</translation>
 <translation id="4348766275249686434">Kerää virheet</translation>
@@ -2859,6 +2863,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3729506734996624908">Sallitut sivustot</translation>
 <translation id="3732078975418297900">Virhe rivillä <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Virhe riveillä <ph name="ERROR_LINE_START"/>–<ph name="ERROR_LINE_END"/></translation>
+<translation id="3104763887980088552">Toimintaloki</translation>
 <translation id="1890674179660343635">&lt;span&gt;Tunnus:&lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Tarkasta näkymät</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> lisää…</translation>
@@ -2882,6 +2887,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3798449238516105146">Versio</translation>
 <translation id="3838085852053358637">Laajennuksen lataus epäonnistui</translation>
 <translation id="6370021412472292592">Luettelon lataaminen epäonnistui.</translation>
+<translation id="7235716375204803342">Haetaan tapahtumia…</translation>
+<translation id="7647403192093989392">Ei viimeaikaisia tapahtumia</translation>
 <translation id="2152198799932802652">Löydät laajennuksia ja teemoja <ph name="BEGIN_LINK"/>Brave Web Storesta<ph name="END_LINK"/>.</translation>
 <translation id="7272674038937250585">Ei kuvausta</translation>
 <translation id="3855441664322950881">Pakkaa laajennus</translation>
@@ -2914,12 +2921,22 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1909880997794698664">Haluatko varmasti pitää laitteen pysyvästi kioskitilassa?</translation>
 <translation id="1512210426710821809">Tämä voidaan kumota vain asentamalla <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> uudelleen.</translation>
 <translation id="4472575034687746823">Aloita</translation>
-<translation id="6060991652695587932">Valitse sähköpostipalvelu pikakäyttöä varten</translation>
-<translation id="296137235951584143">Tee Bravesta näköisesi</translation>
+<translation id="8281886186245836920">Ohita</translation>
+<translation id="2342740338116612727">Kirjanmerkit lisätty</translation>
 <translation id="7835178595033117206">Kirjanmerkki poistettu</translation>
+<translation id="742130257665691897">Kirjanmerkit poistettu</translation>
 <translation id="2785008241190445880">Kirjanmerkki korvattu</translation>
+<translation id="4320948194796820126">Lisää sähköpostiin kirjanmerkki</translation>
 <translation id="2950533317914339731">Lisää kirjanmerkkejä tuttuihin Brave Software-sovelluksiin</translation>
-<translation id="8846319957959474018">Avaa sovelluksia kätevästi kirjanmerkkien avulla</translation>
+<translation id="239760341987199724">Aseta Brave oletusselaimeksi</translation>
+<translation id="96037229054033864">Käytä Brave Software Hakua ja Brave Softwaren älykkäitä ratkaisuja selatessasi</translation>
+<translation id="296137235951584143">Tee Bravesta näköisesi</translation>
+<translation id="3982375475032951137">Asenna selain parilla yksinkertaisella vaiheella</translation>
+<translation id="6972754398087986839">Aloitusopas</translation>
+<translation id="3707821975049107110">Oletko jo Brave-käyttäjä? Kirjaudu sisään</translation>
+<translation id="1573150740912592860">Tallenna edistyminen</translation>
+<translation id="567643736130151854">Kirjaudu sisään ja ota synkronoi käyttöön, niin voit käyttää kirjanmerkkejä, salasanoja ja muita asetuksiasi kaikilla laitteilla</translation>
+<translation id="8282356762694872144">Haluatko jatkaa sähköpostiisi?</translation>
 <translation id="5939847200023027600">PDF-koontipalvelu</translation>
 <translation id="5877584842898320529">Valittu tulostin ei ole käytettävissä tai sitä ei ole asennettu oikein. <ph name="BR"/> Tarkista tulostin tai valitse toinen tulostin.</translation>
 <translation id="1526560967942511387">Nimetön asiakirja</translation>

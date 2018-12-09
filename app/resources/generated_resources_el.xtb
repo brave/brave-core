@@ -39,6 +39,7 @@
 <translation id="5112577000029535889">&amp;Εργαλεία για Προγραμματιστές</translation>
 <translation id="5184063094292164363">Κονσόλα &amp;JavaScript</translation>
 <translation id="7056526158851679338">&amp;Επιθεώρηση συσκευών</translation>
+<translation id="947329552760389097">&amp;Inspect Elements</translation>
 <translation id="48838266408104654">&amp;Διαχείριση Εργασιών</translation>
 <translation id="6277518330158259200">Λήψη στιγμιότυπου οθόνης</translation>
 <translation id="5288678174502918605">Εκ νέου ά&amp;νοιγμα κλειστής καρτέλας</translation>
@@ -57,6 +58,7 @@
 <translation id="7324297612904500502">Φόρουμ για την έκδοση beta</translation>
 <translation id="7199158086730159431">Λάβετε β&amp;οήθεια</translation>
 <translation id="630065524203833229">Έ&amp;ξοδος</translation>
+<translation id="2052369079215022979">Διαχειριζόμενο από τον οργανισμό σας</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5702898740348134351">&amp;Επεξεργασία μηχανών αναζήτησης...</translation>
 <translation id="2454247629720664989">Λέξη-κλειδί</translation>
@@ -152,6 +154,7 @@
 <translation id="4020327272915390518">Μενού επιλογών</translation>
 <translation id="8200772114523450471">Συνέχιση</translation>
 <translation id="2770465223704140727">Κατάργηση από τη λίστα</translation>
+<translation id="7702574632857388784">Κατάργηση αρχείου <ph name="FILE_NAME"/> από τη λίστα</translation>
 <translation id="7658239707568436148">Ακύρωση</translation>
 <translation id="7144878232160441200">Δοκιμάστε ξανά</translation>
 <translation id="6910211073230771657">Διαγράφηκε</translation>
@@ -165,11 +168,11 @@
 <translation id="3612673635130633812">Λήψη από &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="6395403722585816044">Έγινε λήψη στην ανώνυμη περιήγηση</translation>
 <translation id="8028803902702117856">Λήψη <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
-<translation id="4644818355646995778">Λήψη: <ph name="PERCENT_REMAINING"/></translation>
+<translation id="5632592977009207922">Πραγματοποιείται λήψη, απομένει το <ph name="PERCENT_REMAINING"/>%</translation>
 <translation id="313963229645891001">Λήψη: <ph name="STATUS"/></translation>
 <translation id="1834503245783133039">Ανεπιτυχής λήψη: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Η λήψη ακυρώθηκε: <ph name="FILE_NAME"/></translation>
-<translation id="348999362308956431">Η λήψη ολοκληρώθηκε: <ph name="FILE_NAME"/></translation>
+<translation id="4110490973560452005">Η λήψη ολοκληρώθηκε: <ph name="FILE_NAME"/>. Πατήστε Shift+F6 για να μεταβείτε στη γραμμή λήψεων.</translation>
 <translation id="2743387203779672305">Αντιγραφή στο πρόχειρο</translation>
 <translation id="883911313571074303">Σχολιασμός εικόνας</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Λήψη σε εξέλιξη}other{Λήψεις σε εξέλιξη}}</translation>
@@ -292,7 +295,7 @@
 <translation id="6398765197997659313">Έξοδος από πλήρη οθόνη</translation>
 <translation id="8559694214572302298">Εργαλείο αποκωδικοποίησης εικόνων</translation>
 <translation id="8191453843330043793">Εργαλείο επίλυσης διακομιστή μεσολάβησης V8</translation>
-<translation id="6185617499004995178">Εργαλείο επικύρωσης CUPS IPP</translation>
+<translation id="5552059560155071882">Συντακτικός αναλυτής IPP CUPS</translation>
 <translation id="3077708072777965506">Μέθοδος εισαγωγής Brave OS</translation>
 <translation id="7171242884588191792">Βοηθητικά προγράμματα διαχείρισης αρχείων του Brave</translation>
 <translation id="3061707000357573562">Υπηρεσία ενημέρωσης κώδικα</translation>
@@ -301,7 +304,6 @@
 <translation id="1545775234664667895">Εγκατεστημένο θέμα "<ph name="THEME_NAME"/>"</translation>
 <translation id="2079545284768500474">Αναίρεση</translation>
 <translation id="2256115617011615191">Άμεση επανεκκίνηση</translation>
-<translation id="795025003224538582">Να μην γίνει επανεκκίνηση</translation>
 <translation id="4545028762441890696">Για να την ενεργοποιήσετε ξανά, αποδεχτείτε τις νέες άδειες:</translation>
 <translation id="3009487527589249344">Η Brave Software έχει επισημάνει την επέκταση "<ph name="EXTENSION_NAME"/>" ως κακόβουλη και η εγκατάσταση έχει εμποδιστεί</translation>
 <translation id="6790497603648687708">Η επέκταση <ph name="EXTENSION_NAME"/> προστέθηκε απομακρυσμένα</translation>
@@ -497,9 +499,9 @@
 <translation id="3987348946546879621">Εξοικονόμηση δεδομένων</translation>
 <translation id="6228516488918914827">Ταχύτερη φόρτωση σελίδας</translation>
 <translation id="9137013805542155359">Εμφάνιση πρωτοτύπου</translation>
-<translation id="71243390042171582">Ενημερώθηκε πριν από <ph name="MINUTES"/> λεπτά</translation>
+<translation id="1056466516655540509">Ενημερώθηκε πριν από <ph name="MINUTES"/> λεπτά</translation>
 <translation id="8743864605301774756">Ενημερώθηκε πριν από 1 ώρα</translation>
-<translation id="5638497698949808140">Ενημερώθηκε πριν από <ph name="HOURS"/> ώρες</translation>
+<translation id="7363117941401515667">Ενημερώθηκε πριν από <ph name="HOURS"/> ώρες</translation>
 <translation id="1329584516321524826">Ενημερώθηκε μόλις τώρα</translation>
 <translation id="224940702122312781">Αυτή η σελίδα θα χρησιμοποιεί πολλά δεδομένα.</translation>
 <translation id="3861241522664181545">Η σελίδα τέθηκε σε παύση.</translation>
@@ -644,6 +646,7 @@
 <translation id="8803953437405899238">Ανοίξτε μια νέα καρτέλα με ένα κλικ</translation>
 <translation id="3071624960923923138">Μπορείτε να κάνετε κλικ εδώ, για να ανοίξετε μια νέα καρτέλα</translation>
 <translation id="4908811072292128752">Ανοίξτε μια νέα καρτέλα για ταυτόχρονη περιήγηση σε δύο ιστότοπους</translation>
+<translation id="8966870118594285808">Ανοίξτε ξανά μια καρτέλα εάν την κλείσατε τυχαία</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Μη ανταποκρίσιμη σελίδα}other{Μη ανταποκρίσιμες σελίδες}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Μπορείτε να περιμένετε μέχρι να ανταποκριθεί η σελίδα ή να πραγματοποιήσετε έξοδο από αυτήν.}other{Μπορείτε να περιμένετε μέχρι να ανταποκριθούν οι σελίδες ή να πραγματοποιήσετε έξοδο από αυτές.}}</translation>
 <translation id="7903345046358933331">Η σελίδα δεν ανταποκρίνεται. Μπορείτε να περιμένετε μέχρι να ανταποκριθεί ή να την τερματίσετε.</translation>
@@ -774,9 +777,8 @@
 <translation id="2445484935443597917">Δημιουργία νέου προφίλ</translation>
 <translation id="2606246518223360146">Σύνδεση δεδομένων</translation>
 <translation id="473546211690256853">Η διαχείριση αυτού του λογαριασμού γίνεται από τον τομέα <ph name="DOMAIN"/>.</translation>
-<translation id="3661054927247347545">Η πιστοποίηση σύνδεσης δεν είναι έγκυρη. Το παράθυρο κλείνει σε <ph name="MINUTES"/> : <ph name="SECONDS"/></translation>
-<translation id="6522797484310591766">Σύνδεση τώρα</translation>
-<translation id="5436822233913560332">Όλα τα παράθυρα του προγράμματος περιήγησης θα κλείσουν αυτόματα χωρίς σύνδεση.</translation>
+<translation id="622537739776246443">Το προφίλ θα διαγραφεί</translation>
+<translation id="5632566673632479864">Δεν είναι πλέον δυνατή η χρήση του λογαριασμού σας <ph name="EMAIL"/> ως κύριου λογαριασμού. Επειδή ο λογαριασμός είναι διαχειριζόμενος από τον τομέα <ph name="DOMAIN"/>, οι σελιδοδείκτες, το ιστορικό, οι κωδικοί πρόσβασης και άλλες ρυθμίσεις σας θα διαγραφούν από αυτήν τη συσκευή.</translation>
 <translation id="8168435359814927499">Περιεχόμενο</translation>
 <translation id="7702907602086592255">Τομέας</translation>
 <translation id="3202131003361292969">Διαδρομή</translation>
@@ -844,15 +846,6 @@
 <translation id="3074037959626057712">Έχετε συνδεθεί και ενεργοποιήσει τον συγχρονισμό</translation>
 <translation id="1231733316453485619">Ενεργοποίηση συγχρονισμού;</translation>
 <translation id="9125982323641182972">Έξυπνες λειτουργίες Brave Software στο Brave</translation>
-<translation id="7988117629517051942">Περισσότερες έξυπνες λειτουργίες Brave Software</translation>
-<translation id="5596627076506792578">Περισσότερες επιλογές</translation>
-<translation id="4419556793104466535">Ελέγξτε τον συγχρονισμό, την εξατομίκευση και άλλα</translation>
-<translation id="184568702928428857">Οι ρυθμίσεις που ελέγχουν τον συγχρονισμό, την εξατομίκευση και άλλες υπηρεσίες Brave Software στο Brave άλλαξαν. Αυτό μπορεί να επηρεάσει τις τρέχουσες ρυθμίσεις σας.</translation>
-<translation id="4192273449750167573">Ελέγξτε τις ρυθμίσεις σας στην επόμενη οθόνη</translation>
-<translation id="685040365210406336">Να μην γίνουν αλλαγές</translation>
-<translation id="6418273007044911016">Τα δεδομένα που συγχρονίζετε στο Brave Software και οι λειτουργίες που χρησιμοποιείτε δεν θα αλλάξουν</translation>
-<translation id="8372733498235009300">Ενεργοποιήστε τον συγχρονισμό, την εξατομίκευση και άλλες υπηρεσίες Brave Software</translation>
-<translation id="8340964510643644301">Μπορείτε να προσαρμόσετε την επιλογή ανά πάσα στιγμή από τις ρυθμίσεις του Brave</translation>
 <translation id="3149880132460839085">Συγχρονισμός Brave</translation>
 <translation id="3796902758602917951">Οι σελιδοδείκτες, το ιστορικό, οι κωδικοί πρόσβασης και άλλες ρυθμίσεις σας θα συγχρονιστούν στο Λογαριασμό σας Brave Software, ώστε η χρήση τους να είναι δυνατή σε όλες τις συσκευές σας</translation>
 <translation id="1371301976177520732">Οι σελιδοδείκτες, οι κωδικοί πρόσβασης, το ιστορικό σας και άλλο περιεχόμενο σε όλες τις συσκευές σας</translation>
@@ -898,7 +891,7 @@
 <translation id="6812349420832218321">Δεν είναι δυνατή η εκτέλεση του <ph name="PRODUCT_NAME"/> ως ρίζα</translation>
 <translation id="2292848386125228270">Εκκινήστε το <ph name="PRODUCT_NAME"/> ως απλός χρήστης. Εάν απαιτείται εκτέλεση ως ρίζας για ανάπτυξη, εκτελέστε το ξανά με την ετικέτα --no-sandbox.</translation>
 <translation id="3122496702278727796">Η δημιουργία καταλόγου δεδομένων απέτυχε</translation>
-<translation id="602251597322198729">Αυτός ο ιστότοπος επιχειρεί λήψη πολλαπλών αρχείων. Θέλετε να επιτρέψετε αυτήν την ενέργεια;</translation>
+<translation id="51918995459521422">Ο ιστότοπος <ph name="ORIGIN"/> θέλει να κατεβάσει πολλά αρχεία</translation>
 <translation id="691024665142758461">Λήψη πολλών αρχείων</translation>
 <translation id="7004499039102548441">Πρόσφατες καρτέλες</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 καρτέλα}other{# καρτέλες}}</translation>
@@ -1125,6 +1118,8 @@
 <translation id="874689135111202667">{0,plural, =1{Θέλετε να ανεβάσετε ένα αρχείο σε αυτόν τον ιστότοπο;}other{Θέλετε να ανεβάσετε # αρχεία σε αυτόν τον ιστότοπο;}}</translation>
 <translation id="1956390763342388273">Αυτή η ενέργεια θα ανεβάσει όλα τα αρχεία από το φάκελο "<ph name="FOLDER_PATH"/>". Κάντε την ενέργεια μόνο αν εμπιστεύεστε τον ιστότοπο.</translation>
 <translation id="1243314992276662751">Μεταφόρτωση</translation>
+<translation id="8480139856920479206">{0,plural, =1{Έχετε ένα παράθυρο για ανώνυμη περιήγηση.}other{Έχετε # παράθυρα για ανώνυμη περιήγηση.}}</translation>
+<translation id="2545348954155066907">{0,plural, =1{Κλείσιμο αυτού του παραθύρου}other{Κλείσιμο όλων των παραθύρων για ανώνυμη περιήγηση}}</translation>
 <translation id="3785308913036335955">Εμφάνιση συντόμευσης εφαρμογών</translation>
 <translation id="711840821796638741">Εμφάνιση διαχειριζόμενων σελιδοδεικτών</translation>
 <translation id="3613134908380545408">Εμφάνιση <ph name="FOLDER_NAME"/></translation>
@@ -1231,7 +1226,6 @@
 <translation id="3596235046596950091">Ενεργοποίηση υπηρεσιών cloud</translation>
 <translation id="7649070708921625228">Βοήθεια</translation>
 <translation id="9011163749350026987">Να εμφανίζεται πάντα το εικονίδιο</translation>
-<translation id="9115487443206954631">Διαχείριση συσκευών μετάδοσης</translation>
 <translation id="1706586824377653884">Προστέθηκε από τον διαχειριστή σας</translation>
 <translation id="6467304607960172345">Βελτιστοποίηση βίντεο πλήρους οθόνης</translation>
 <translation id="1597210476603167523">Ενεργοποίηση μετάδοσης σε υπηρεσίες που βασίζονται στο cloud, όπως το Brave Software Hangouts.</translation>
@@ -1262,6 +1256,9 @@
 <translation id="4415245286584082850">Δεν βρέθηκαν συσκευές. Ανοίξτε ένα άρθρο του κέντρο βοήθειας σε νέα καρτέλα.</translation>
 <translation id="4363771538994847871">Δεν βρέθηκαν προορισμοί μετάδοσης. Χρειάζεστε βοήθεια;</translation>
 <translation id="8688672835843460752">Διαθέσιμο</translation>
+<translation id="1536754031901697553">Γίνεται αποσύνδεση…</translation>
+<translation id="1854180393107901205">Διακοπή μετάδοσης</translation>
+<translation id="5307030433605830021">Η πηγή δεν υποστηρίζεται</translation>
 <translation id="4271396100647220620">Δεν υπάρχουν αντιστοιχίες</translation>
 <translation id="6972180789171089114">Ήχος/Βίντεο</translation>
 <translation id="2541002089857695151">Βελτιστοποίηση μετάδοσης πλήρους οθόνης;</translation>
@@ -1295,7 +1292,7 @@
 <translation id="3340978935015468852">ρυθμίσεις</translation>
 <translation id="5704875434923668958">Συγχρονισμός με</translation>
 <translation id="6257602895346497974">Ενεργοποίηση συγχρονισμού…</translation>
-<translation id="8618141719844947886">Δεν συγχρονίζεται</translation>
+<translation id="5127805178023152808">Ο συγχρονισμός είναι απενεργοποιημένος</translation>
 <translation id="5781092003150880845">Συγχρονισμός ως <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Συγχρονισμός με τον λογαριασμό σας</translation>
 <translation id="2538361623464451692">Ο συγχρονισμός είναι απενεργοποιημένος</translation>
@@ -1391,6 +1388,7 @@
 <translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="4425149324548788773">Το Drive μου</translation>
 <translation id="1786636458339910689">Drive ομάδας</translation>
+<translation id="5010406651457630570">Υπολογιστές</translation>
 <translation id="8106045200081704138">Κοινόχρηστο με εμένα</translation>
 <translation id="981121421437150478">Εκτός σύνδεσης</translation>
 <translation id="9034924485347205037">Αρχεία Linux</translation>
@@ -1454,6 +1452,9 @@
 <translation id="5649768706273821470">Ακρόαση</translation>
 <translation id="4582497162516204941">Εγκατάσταση με Linux (beta)</translation>
 <translation id="4195249722193633765">Εγκατάσταση εφαρμογής με Linux (beta)</translation>
+<translation id="7248671827512403053">Εφαρμογή</translation>
+<translation id="183183971458492120">Γίνεται φόρτωση των πληροφοριών…</translation>
+<translation id="8157684860301034423">Αποτυχία ανάκτησης των πληροφοριών της εφαρμογής.</translation>
 <translation id="5678784840044122290">Η εφαρμογή Linux θα είναι διαθέσιμη στο τερματικό σας και μπορεί επίσης να εμφανίζει ένα εικονίδιο στην Εφαρμογή εκκίνησης.</translation>
 <translation id="9213073329713032541">Η εγκατάσταση ξεκίνησε με επιτυχία.</translation>
 <translation id="2782104745158847185">Παρουσιάστηκε σφάλμα κατά την εγκατάσταση της εφαρμογής Linux</translation>
@@ -1514,13 +1515,14 @@
 <translation id="386548886866354912">Συμπίεση με <ph name="EXTENSION_NAME"/></translation>
 <translation id="3078461028045006476">Μοιραστείτε με την επέκταση <ph name="EXTENSION_NAME"/></translation>
 <translation id="4197674956721858839">Επιλογή για δημιουργία συμπιεσμένου αρχείου</translation>
-<translation id="9215934040295798075">Ορισμός ταπετσαρίας</translation>
+<translation id="1572585716423026576">Ορισμός ως ταπετσαρία</translation>
 <translation id="204914487372604757">Δημιουργία συντόμευσης</translation>
 <translation id="799547531016638432">Κατάργηση συντόμευσης</translation>
 <translation id="5494920125229734069">Επιλογή όλων</translation>
 <translation id="7295662345261934369">Κοινοποίηση σε άλλα άτομα</translation>
 <translation id="2001796770603320721">Διαχείριση στο Drive</translation>
 <translation id="5318819489018851358">Κοινοποίηση σε Linux</translation>
+<translation id="6806699711453372963">Διαχείριση κοινοποίησης Linux</translation>
 <translation id="7505167922889582512">Εμφάνιση κρυφών αρχείων</translation>
 <translation id="7846076177841592234">Ακύρωση επιλογής</translation>
 <translation id="2377319039870049694">Εναλλαγή σε προβολή λίστας</translation>
@@ -1660,7 +1662,6 @@
 <translation id="8671210955687109937">Δυνατότητα σχολιασμού</translation>
 <translation id="799923393800005025">Δυνατότητα προβολής</translation>
 <translation id="7925686952655276919">Μη χρησιμοποιείτε δεδομένα για κινητά για συγχρονισμό</translation>
-<translation id="4649168043999963079">Εμφάνιση αρχείων Εγγράφων Brave Software</translation>
 <translation id="7106346894903675391">Αγοράστε περισσότερο αποθηκευτικό χώρο...</translation>
 <translation id="3549797760399244642">Μετάβαση στη διεύθυνση drive.google.com…</translation>
 <translation id="3451154303153932176">Χώρος που απομένει στο Brave Software Drive: <ph name="SPACE_AVAILABLE"/>.</translation>
@@ -1673,7 +1674,6 @@
 <translation id="7606199793785990727">Δεν ήταν δυνατή η επικοινωνία με το Brave Software Drive. <ph name="BEGIN_LINK"/>Αποσυνδεθείτε<ph name="END_LINK"/> και συνδεθείτε ξανά.</translation>
 <translation id="585883343689351092">Καλώς ήρθατε στο Brave Software Drive!</translation>
 <translation id="1788440444874291920">Αποκτήστε δωρεάν 100 GB με το Brave Software Drive</translation>
-<translation id="5722262830411045381">Αποκτήστε δωρεάν 1 TB με το Brave Software Drive</translation>
 <translation id="6862635236584086457">Για όλα τα αρχεία που αποθηκεύονται σε αυτόν το φάκελο δημιουργούνται αυτόματα αντίγραφα ασφαλείας στο διαδίκτυο</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Αποκτήστε πρόσβαση στα αρχεία σας από οπουδήποτε, ακόμη και εκτός σύνδεσης.<ph name="MARKUP_2"/>
     Τα αρχεία στο Brave Software Drive είναι ενημερωμένα και διαθέσιμα από οποιαδήποτε συσκευή.<ph name="MARKUP_3"/>
@@ -1690,9 +1690,11 @@
 <translation id="3096967955765855393">Αναζητούμε συνεχώς νέους τρόπους για να κάνουμε πιο ασφαλή την περιήγησή σας. Παλιότερα, ένας ιστότοπος μπορούσε να σας ζητήσει να προσθέσετε μια επέκταση στο πρόγραμμα περιήγησής σας. Στις πιο πρόσφατες εκδόσεις του Brave Software Brave, πρέπει να πείτε ρητά στο Brave ότι επιθυμείτε την εγκατάσταση αυτών των επεκτάσεων, προσθέτοντάς τες μέσω της σελίδας "Επεκτάσεις". <ph name="BEGIN_LINK"/>Μάθετε περισσότερα<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">Δεν είναι δυνατό το άνοιγμα με την εφαρμογή $1</translation>
 <translation id="639777613761517128">Προκειμένου να ανοίξετε αρχεία χρησιμοποιώντας την εφαρμογή $1, πρώτα αντιγράψτε τα στον φάκελο "Αρχεία Linux".</translation>
-<translation id="5112009661904384591">Κοινοποίηση αρχείων με Linux</translation>
-<translation id="3186202398303525187">Επιτρέψτε στις εφαρμογές Linux να ανοίξουν το $1.</translation>
-<translation id="1603300902586586390">Επιτρέψτε στις εφαρμογές Linux να ανοίξουν $1 αρχεία.</translation>
+<translation id="5368191757080475556">Κοινοποίηση φακέλου με Linux</translation>
+<translation id="6803594270782834876">Δώστε στις εφαρμογές Linux την άδεια να ανοίγουν αρχεία στον φάκελο $1</translation>
+<translation id="9204140378020726578">Δώστε στις εφαρμογές Linux την άδεια να ανοίγουν αρχεία στο Brave Software Drive. Οι αλλαγές θα συγχρονιστούν με τις άλλες συσκευές σας.</translation>
+<translation id="4290535918735525311">1 φάκελος που κοινοποιήθηκε με Linux</translation>
+<translation id="984401732412731005">$1 φάκελοι κοινόχρηστοι με Linux</translation>
 <translation id="4572815280350369984">Αρχείο <ph name="FILE_TYPE"/></translation>
 <translation id="803771048473350947">Αρχείο</translation>
 <translation id="895586998699996576">$1 εικόνα</translation>
@@ -1746,6 +1748,8 @@
 <translation id="6199801702437275229">Αναμονή για πληροφορίες χώρου...</translation>
 <translation id="6485131920355264772">Αποτυχία ανάκτησης των πληροφοριών χώρου</translation>
 <translation id="7748626145866214022">Στη γραμμή ενεργειών υπάρχουν περισσότερες επιλογές. Πιέστε Alt + A, για να εστιάσετε στη γραμμή ενεργειών.</translation>
+<translation id="60628369828239652">Άνοιγμα αρχείου <ph name="FILE_NAME"/></translation>
+<translation id="353547388688256996">Άνοιγμα <ph name="NUMBER_FILES"/></translation>
 <translation id="6710213216561001401">Προηγούμενο</translation>
 <translation id="1201402288615127009">Επόμενο</translation>
 <translation id="1395262318152388157">Ρυθμιστικό αναζήτησης</translation>
@@ -1836,6 +1840,16 @@
 <translation id="8710187907779883426">μικρή (1 δ.)</translation>
 <translation id="4305227814872083840">μεγάλη (2 δ.)</translation>
 <translation id="2860150991415616761">πολύ μεγάλη (4 δ.)</translation>
+<translation id="5573248369095789351">Ενέργεια παραμονής</translation>
+<translation id="2427507373259914951">Αριστερό κλικ</translation>
+<translation id="8203795194971602413">Δεξί κλικ</translation>
+<translation id="1999763610967697511">Μεταφορά και απόθεση</translation>
+<translation id="8142441511840089262">Διπλό κλικ</translation>
+<translation id="485592688953820832">Καμία ενέργεια (παύση)</translation>
+<translation id="1217668622537098248">Επαναφορά σε αριστερό κλικ μετά από κάποια ενέργεια</translation>
+<translation id="3682824389861648626">Ελάχιστο όριο κίνησης</translation>
+<translation id="5511379779384092781">Πολύ μικρό</translation>
+<translation id="7409549334477097887">Πολύ μεγάλο</translation>
 <translation id="1330145147221172764">Ενεργοποίηση πληκτρολογίου οθόνης</translation>
 <translation id="1800308196794859773">Αποστολή της φωνής σας στην Brave Software, ώστε να επιτρέπεται η υπαγόρευση σε οποιοδήποτε πεδίο κειμένου.</translation>
 <translation id="8758418656925882523">Ενεργοποίηση υπαγόρευσης (μιλήστε για πληκτρολόγηση)</translation>
@@ -1917,40 +1931,33 @@
 <translation id="1763808908432309942">Ανοίγει σε νέα καρτέλα</translation>
 <translation id="6248988683584659830">Αναζήτηση ρυθμίσεων</translation>
 <translation id="883304095704384301">Μεταβείτε στη <ph name="BEGIN_LINK_CHROMIUM"/>βοήθεια του Brave Software Brave<ph name="END_LINK_CHROMIUM"/> εάν δεν μπορείτε να βρείτε αυτό που αναζητάτε</translation>
+<translation id="6406708970972405507">Ρυθμίσεις - <ph name="SECTION_TITLE"/></translation>
 <translation id="5860033963881614850">Απενεργοποιημένη</translation>
 <translation id="5916664084637901428">Ενεργό</translation>
 <translation id="1378613616312864539">Ο/Η <ph name="NAME"/> ελέγχει αυτήν τη ρύθμιση</translation>
 <translation id="6643016212128521049">Διαγραφή</translation>
 <translation id="8465252176946159372">Μη έγκυρο</translation>
 <translation id="8647834505253004544">Μη έγκυρη διεύθυνση ιστού</translation>
-<translation id="2149850907588596975">Κωδικοί πρόσβασης και φόρμες</translation>
-<translation id="8639963783467694461">Ρυθμίσεις αυτόματης συμπλήρωσης</translation>
+<translation id="7946586320617670168">Η προέλευση θα πρέπει να είναι ασφαλής</translation>
+<translation id="2709516037105925701">Αυτόματη συμπλήρωση</translation>
 <translation id="7764225426217299476">Προσθήκη διεύθυνσης</translation>
 <translation id="5595485650161345191">Επεξεργασία διεύθυνσης</translation>
 <translation id="6207937957461833379">Χώρα/Περιοχή</translation>
 <translation id="4378154925671717803">Τηλέφωνο</translation>
 <translation id="5659593005791499971">Διεύθυνση ηλεκτρονικού ταχυδρομείου</translation>
-<translation id="5762172915276660232">Ρυθμίσεις πιστωτικής κάρτας</translation>
-<translation id="4499718683476608392">Ενεργοποίηση Αυτόματης συμπλήρωσης στοιχείων πιστωτικής κάρτας για τη συμπλήρωση φορμών με ένα μόνο κλικ</translation>
 <translation id="9064275926664971810">Ενεργοποίηση Αυτόματης συμπλήρωσης για τη συμπλήρωση φορμών με ένα μόνο κλικ</translation>
 <translation id="5029568752722684782">Διαγραφή αντιγράφου</translation>
 <translation id="2154484045852737596">Επεξεργασία κάρτας</translation>
 <translation id="5087580092889165836">Προσθήκη κάρτας</translation>
-<translation id="7284555534810614828">Αποθήκευση κάρτας για χρήση του Brave Software Pay</translation>
-<translation id="6281511959351052816">Αποθήκευση καρτών για χρήση του Brave Software Pay</translation>
-<translation id="1904518222538904133">Μόνο 1 από τις κάρτες σας μπορεί να χρησιμοποιηθεί σε αυτήν τη συσκευή</translation>
-<translation id="8065485338434000013">Ορισμένες από τις κάρτες σας μπορούν να χρησιμοποιηθούν μόνο σε αυτήν τη συσκευή</translation>
 <translation id="4807098396393229769">Όνομα στην κάρτα</translation>
 <translation id="2612676031748830579">Αριθμός κάρτας</translation>
 <translation id="869891660844655955">Ημερομηνία λήξης</translation>
 <translation id="1149401351239820326">Μήνας λήξης</translation>
 <translation id="8058655154417507695">Έτος λήξης</translation>
 <translation id="379082410132524484">Η κάρτα σας έληξε</translation>
-<translation id="5624120631404540903">Διαχείριση κωδικών πρόσβασης</translation>
 <translation id="6644512095122093795">Να προτείνεται αποθήκευση των κωδικών πρόσβασης</translation>
 <translation id="2100273922101894616">Αυτόματη σύνδεση</translation>
 <translation id="7513029293694390567">Αυτόματη σύνδεση σε ιστοτόπους με χρήση αποθηκευμένων διαπιστευτηρίων. Όταν η λειτουργία είναι απενεργοποιημένη, θα σας ζητείται επιβεβαίωση κάθε φορά που προσπαθείτε να συνδεθείτε σε έναν ιστότοπο.</translation>
-<translation id="1511388193702657997">Πρόταση αποθήκευσης των κωδικών σας πρόσβασης στον ιστό</translation>
 <translation id="1375321115329958930">Αποθηκευμένοι κωδικοί πρόσβασης</translation>
 <translation id="152234381334907219">Δεν έγινε ποτέ αποθήκευση</translation>
 <translation id="5137501176474113045">Διαγραφή αυτού του στοιχείο</translation>
@@ -1960,7 +1967,6 @@
 <translation id="8503813439785031346">Όνομα χρήστη</translation>
 <translation id="6657585470893396449">Κωδικός πρόσβασης</translation>
 <translation id="137651782282853227">Οι αποθηκευμένες διευθύνσεις σας θα εμφανίζονται εδώ</translation>
-<translation id="1529116897397289129">Οι αποθηκευμένες κάρτες θα εμφανίζονται εδώ</translation>
 <translation id="7930294771522048157">Οι αποθηκευμένοι τρόποι πληρωμής θα εμφανίζονται εδώ</translation>
 <translation id="9124003689441359348">Οι αποθηκευμένοι κωδικοί πρόσβασής σας θα εμφανίζονται εδώ</translation>
 <translation id="4400367121200150367">Οι ιστότοποι που δεν αποθηκεύουν ποτέ κωδικούς πρόσβασης θα εμφανίζονται εδώ</translation>
@@ -2208,6 +2214,7 @@
 <translation id="1164899421101904659">Καταχωρίστε το κλειδί ξεκλειδώματος PIN (PUK)</translation>
 <translation id="7582582252461552277">Προτίμηση αυτού του δικτύου</translation>
 <translation id="7469894403370665791">Αυτόματη σύνδεση σε αυτό το δίκτυο</translation>
+<translation id="7987814697832569482">Πάντα σύνδεση μέσω αυτού του VPN</translation>
 <translation id="8821045908425223359">Αυτόματη διαμόρφωση διεύθυνσης IP</translation>
 <translation id="6596816719288285829">Διεύθυνση IP</translation>
 <translation id="8986362086234534611">Διαγραφή από τη μνήμη</translation>
@@ -2374,8 +2381,6 @@
 <translation id="490074449735753175">Χρησιμοποιήστε μια υπηρεσία ιστού για βοήθεια στην επίλυση σφαλμάτων ορθογραφίας</translation>
 <translation id="3523078749603005179">Πιο έξυπνος ορθογραφικός έλεγχος μέσω αποστολής στην Brave Software όσων πληκτρολογείτε στο πρόγραμμα περιήγησης</translation>
 <translation id="2564653188463346023">Ενισχυμένος ορθογραφικός έλεγχος</translation>
-<translation id="7469406957790636836">Για ενεργοποίηση, πρώτα ενεργοποιήστε τον ορθογραφικό έλεγχο στην επιλογή <ph name="BEGIN_LINK"/>Γλώσσες και είσοδος<ph name="END_LINK"/></translation>
-<translation id="8699566574894671540">Για ενεργοποίηση, πρώτα επιλέξτε "Ορθογραφικός έλεγχος κατά την πληκτρολόγηση" στο μενού Επεξεργασία</translation>
 <translation id="9079153198295609735">Αυτόματη αποστολή στατιστικών στοιχείων χρήσης και αναφορών σφαλμάτων στην Brave Software</translation>
 <translation id="5941220456342415404">Αυτόματη αποστολή διαγνωστικών και δεδομένων χρήσης στην Brave Software</translation>
 <translation id="918192811481327695">Συμβάλλετε στη βελτίωση των λειτουργιών και της απόδοσης του Brave</translation>
@@ -2420,13 +2425,13 @@
 <translation id="1545786162090505744">URL με % στη θέση του ερωτήματος</translation>
 <translation id="7136694880210472378">Ορισμός ως προεπιλογής</translation>
 <translation id="6953878494808481632">Σχετικές πληροφορίες</translation>
-<translation id="7258619945375359543">Επιτρέψτε στον Βοηθό να κάνει προτάσεις βάσει του περιεχομένου στην οθόνη σας</translation>
+<translation id="4145922204387553806">Επιτρέψτε στον Βοηθό να σας εμφανίζει πληροφορίες σχετικά με το περιεχόμενο της οθόνης σας</translation>
 <translation id="472896694312062378">"Ok Brave Software"</translation>
 <translation id="6236033368436682108">Μεταβείτε στον Βοηθό σας οποιαδήποτε στιγμή λέγοντας "Ok Brave Software", ενώ η οθόνη σας είναι ενεργή</translation>
 <translation id="2482878487686419369">Ειδοποιήσεις</translation>
 <translation id="5355099869024327351">Επιτρέπει στον Βοηθό να εμφανίζει ειδοποιήσεις</translation>
-<translation id="1127216846847548354">Ενεργοποίηση φωνής</translation>
-<translation id="3506093155988721483">Χρησιμοποιήστε φωνητικές εντολές αντί για πληκτρολόγιο, όταν κάνετε εκκίνηση του Βοηθού</translation>
+<translation id="133535873114485416">Προτιμώμενη εισαγωγή</translation>
+<translation id="6233154960150021497">Προεπιλεγμένη χρήση φωνής αντί για πληκτρολόγιο</translation>
 <translation id="3908743412684152579">Ρυθμίσεις του Βοηθού Brave Software</translation>
 <translation id="4933484234309072027">ενσωματωμένο σε <ph name="URL"/></translation>
 <translation id="8427292751741042100">ενσωματωμένο σε οποιονδήποτε κεντρικό υπολογιστή</translation>
@@ -2569,7 +2574,6 @@
 <translation id="1296497012903089238">Τύπος πιστοποιητικού</translation>
 <translation id="8553342806078037065">Διαχείριση άλλων ατόμων</translation>
 <translation id="8907706281008466056">Φωτογραφία προφίλ Brave Software</translation>
-<translation id="127138278192656016">Χρήση συγχρονισμού και όλων των υπηρεσιών</translation>
 <translation id="2408955596600435184">Εισαγάγετε το PIN σας</translation>
 <translation id="6619990499523117484">Επιβεβαιώστε το PIN σας</translation>
 <translation id="2023167225947895179">Αυτό το PIN ίσως είναι εύκολο να το μαντέψει κάποιος</translation>
@@ -2644,10 +2648,10 @@
 <translation id="2731700343119398978">Περιμένετε…</translation>
 <translation id="7529411698175791732">Ελέγξτε τη σύνδεσή σας στο διαδίκτυο. Εάν το πρόβλημα παραμένει, δοκιμάστε να αποσυνδεθείτε και να συνδεθείτε ξανά.</translation>
 <translation id="4684427112815847243">Συγχρονισμός όλων</translation>
-<translation id="2709516037105925701">Αυτόματη συμπλήρωση</translation>
+<translation id="1125261911132334651">Διαχείριση Λογαριασμού Brave Software</translation>
+<translation id="4570387585180509432">Διευθύνσεις, αριθμοί τηλεφώνου και πολλά άλλα</translation>
 <translation id="1644574205037202324">Ιστορικό</translation>
 <translation id="5117427536932535467">Θέματα και ταπετσαρίες</translation>
-<translation id="3259418918864581163">Πιστωτικές κάρτες και διευθύνσεις που χρησιμοποιούν το Brave Software Pay.</translation>
 <translation id="3268451620468152448">Ανοικτές καρτέλες</translation>
 <translation id="5241892180459725878">Προτάσεις αναζήτησης Brave Software Drive</translation>
 <translation id="2120297377148151361">Δραστηριότητα και αλληλεπιδράσεις</translation>
@@ -2823,7 +2827,6 @@
 <translation id="2307631131458143837">Αποσυνδέστε το τηλέφωνό σας από το Bravebook</translation>
 <translation id="1146102139091738471">Αποσυνδέστε το τηλέφωνό σας από το Bravebook. Δεν θα συνδέονται πλέον αυτόματα.</translation>
 <translation id="7878562273885520351">Ο κωδικός πρόσβασής σας μπορεί να έχει παραβιαστεί</translation>
-<translation id="6582421931165117398">Προκειμένου να προστατεύσετε τα προσωπικά στοιχεία σας, αλλάξτε τον κωδικό πρόσβασής σας τώρα. Θα σας ζητηθεί να συνδεθείτε, για να μπορέσετε να αλλάξετε τον κωδικό πρόσβασής σας.</translation>
 <translation id="1089439967362294234">Αλλαγή κωδικού πρόσβασης</translation>
 <translation id="4635398712689569051">Η σελίδα <ph name="PAGE_NAME"/> δεν είναι διαθέσιμη σε επισκέπτες.</translation>
 <translation id="4893522937062257019">Στην οθόνη κλειδώματος</translation>
@@ -2832,6 +2835,7 @@
 <translation id="7642778300616172920">Απόκρυψη ευαίσθητου περιεχομένου</translation>
 <translation id="3341703758641437857">Να επιτρέπεται η πρόσβαση σε διευθύνσεις URL αρχείων</translation>
 <translation id="9003647077635673607">Να επιτρέπεται σε όλους τους ιστότοπους</translation>
+<translation id="2915102088417824677">Προβολή αρχείου καταγραφής δραστηριοτήτων</translation>
 <translation id="1744108098763830590">σελίδα παρασκηνίου</translation>
 <translation id="3378572629723696641">Αυτή η επέκταση ενδεχομένως να είναι κατεστραμμένη.</translation>
 <translation id="4348766275249686434">Συλλογή σφαλμάτων</translation>
@@ -2861,6 +2865,7 @@
 <translation id="3729506734996624908">Επιτρεπόμενοι ιστότοποι</translation>
 <translation id="3732078975418297900">Σφάλμα στη γραμμή <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Σφάλμα από τη γραμμή <ph name="ERROR_LINE_START"/> έως <ph name="ERROR_LINE_END"/></translation>
+<translation id="3104763887980088552">Αρχείο καταγραφής δραστηριοτήτων</translation>
 <translation id="1890674179660343635">&lt;span&gt;Αναγνωριστικό: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Επιθεώρηση προβολών</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> ακόμη…</translation>
@@ -2884,6 +2889,8 @@
 <translation id="3798449238516105146">Έκδοση</translation>
 <translation id="3838085852053358637">Η φόρτωση της επέκτασης απέτυχε</translation>
 <translation id="6370021412472292592">Δεν ήταν δυνατή η φόρτωση της δήλωσης.</translation>
+<translation id="7235716375204803342">Ανάκτηση δραστηριοτήτων…</translation>
+<translation id="7647403192093989392">Δεν υπάρχουν πρόσφατες δραστηριότητες</translation>
 <translation id="2152198799932802652">Βρείτε επεκτάσεις και θέματα στο <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">Χωρίς περιγραφή</translation>
 <translation id="3855441664322950881">Στοίβαξη επέκτασης</translation>
@@ -2916,12 +2923,22 @@
 <translation id="1909880997794698664">Είστε σίγουροι ότι θέλετε να διατηρήσετε την παρούσα συσκευή μόνιμα σε λειτουργία Kiosk;</translation>
 <translation id="1512210426710821809">Ο μόνος τρόπος να αναιρέσετε αυτήν την ενέργεια είναι να επανεγκαταστήσετε το <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>.</translation>
 <translation id="4472575034687746823">Έναρξη</translation>
-<translation id="6060991652695587932">Επιλέξτε την υπηρεσία ηλεκτρονικού ταχυδρομείου σας γρήγορη πρόσβαση</translation>
-<translation id="296137235951584143">Προσαρμόστε το Brave για εσάς</translation>
+<translation id="8281886186245836920">Παράβλεψη</translation>
+<translation id="2342740338116612727">Προστέθηκαν σελιδοδείκτες</translation>
 <translation id="7835178595033117206">Ο σελιδοδείκτης καταργήθηκε</translation>
+<translation id="742130257665691897">Καταργήθηκαν σελιδοδείκτες</translation>
 <translation id="2785008241190445880">Ο σελιδοδείκτης αντικαταστάθηκε</translation>
+<translation id="4320948194796820126">Προσθήκη σελιδοδείκτη στο ηλεκτρονικό ταχυδρομείο σας</translation>
 <translation id="2950533317914339731">Προσθέστε σελιδοδείκτες στις αγαπημένες σας Εφαρμογές Brave Software</translation>
-<translation id="8846319957959474018">Εύκολο άνοιγμα εφαρμογών με σελιδοδείκτες</translation>
+<translation id="239760341987199724">Ορισμός του Brave ως προεπιλεγμένο πρόγραμμα περιήγησης</translation>
+<translation id="96037229054033864">Λήψη Αναζήτησης Brave Software και έξυπνων λειτουργιών Brave Software κάθε φορά που περιηγείστε</translation>
+<translation id="296137235951584143">Προσαρμόστε το Brave για εσάς</translation>
+<translation id="3982375475032951137">Ρυθμίστε το πρόγραμμα περιήγησης σε μερικά απλά βήματα</translation>
+<translation id="6972754398087986839">Έναρξη</translation>
+<translation id="3707821975049107110">Είστε ήδη χρήστης του Brave; Συνδεθείτε</translation>
+<translation id="1573150740912592860">Αποθήκευση της προόδου σας</translation>
+<translation id="567643736130151854">Συνδεθείτε και ενεργοποιήστε τον συγχρονισμό, για να έχετε τους σελιδοδείκτες, τους κωδικούς πρόσβασης και άλλα σε όλες τις συσκευές</translation>
+<translation id="8282356762694872144">Συνέχεια στο ηλεκτρονικό ταχυδρομείο σας;</translation>
 <translation id="5939847200023027600">Υπηρεσία δημιουργίας PDF</translation>
 <translation id="5877584842898320529">Ο επιλεγμένος εκτυπωτής δεν είναι διαθέσιμος ή δεν έχει εγκατασταθεί σωστά. <ph name="BR"/> Ελέγξτε τον εκτυπωτή σας ή δοκιμάστε να επιλέξετε άλλον εκτυπωτή.</translation>
 <translation id="1526560967942511387">Έγγραφο χωρίς τίτλο</translation>

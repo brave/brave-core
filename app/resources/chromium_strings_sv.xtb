@@ -49,7 +49,6 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="8667808506758191620"><ph name="DEVICE_TYPE"/> är uppdaterad.</translation>
 <translation id="6970811910055250180">Enheten uppdateras ...</translation>
 <translation id="8030318113982266900">Uppdaterar din enhet till kanalen <ph name="CHANNEL_NAME"/> ...</translation>
-<translation id="7355059611036077582">Lägg till i Brave</translation>
 <translation id="7456658570432774853">Hjälp oss att förbättra Brave genom att rapportera dina aktuella inställningar</translation>
 <translation id="6134859571175647580">Varning! Brave kan inte förhindra att tillägg registrerar din webbhistorik. Om du vill inaktivera det här tillägget i inkognitoläge avmarkerar du det här alternativet.</translation>
 <translation id="777113543093865885">Ta bort från Brave …</translation>
@@ -73,7 +72,6 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="2887570477425111999">Spara information i Brave</translation>
 <translation id="193559141530782783">Brave sparar dina personliga uppgifter på ett säkert sätt så att du inte behöver ange dem på nytt.</translation>
 <translation id="663059986967017181">Kopierat till Brave</translation>
-<translation id="5225129378754387452">Visa Brave-menyn</translation>
 <translation id="300669147395456190">Brave-appar</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> kräver att du läser och godkänner följande användarvillkor innan du använder enheten. Villkoren varken utökar, ändrar eller begränsar villkoren för Brave OS.</translation>
 <translation id="3293668930608086049">Brave använder din kamera och mikrofon.</translation>
@@ -97,8 +95,8 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="1705567146636171298">Uppdatera Brave</translation>
 <translation id="4050175100176540509">Den senaste versionen har viktiga säkerhetsförbättringar och nya funktioner.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave startas om om en sekund}other{Brave startas om om # sekunder}}</translation>
-<translation id="9159286371333817139">Starta om Brave nu.</translation>
-<translation id="9203540365585059272">En särskild säkerhetsuppdatering för Brave installerades precis. Tillämpa uppdateringen genom att starta om (vi återställer flikarna).</translation>
+<translation id="5509303873219371662">Starta om Brave nu</translation>
+<translation id="8668413672647811944">En särskild säkerhetsuppdatering för Brave installerades precis. Starta om webbläsaren nu. Flikarna återställs efteråt.</translation>
 <translation id="763369711159699222">Bidra till att förbättra Brave</translation>
 <translation id="1156940037717341650">Du kan bidra till att göra Brave säkrare och enklare att använda genom att rapportera uppgifter om möjliga säkerhetsincidenter till Brave Software automatiskt.</translation>
 <translation id="6791166902140255175">Brave-flik</translation>
@@ -120,7 +118,6 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="8586264863973514035">Ändringarna tillämpas när du startar om Brave</translation>
 <translation id="7021823858304886493">Tillåt inloggning i Brave</translation>
 <translation id="1649714546770135458">Om du inaktiverar detta kan du logga in på Brave Softwares webbplatser, till exempel Gmail, utan att logga in i Brave</translation>
-<translation id="6274110506580702455">Inloggning i Brave har inaktiverats av enhetens administratör.</translation>
 <translation id="9220324636239049437">Ett objekt tas bort från enheten. Logga in i Brave som <ph name="USER_EMAIL"/> om du vill kunna återställa datan senare.</translation>
 <translation id="5853262807109651878"><ph name="ITEMS_COUNT"/> objekt tas bort från enheten. Logga in i Brave som <ph name="USER_EMAIL"/> om du vill kunna återställa datan senare.</translation>
 <translation id="4784414698887946907">Webbinformationen raderas från enheten. Logga in i Brave som <ph name="USER_EMAIL"/> om du vill kunna återställa datan senare.</translation>

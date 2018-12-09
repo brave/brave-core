@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") tidak diizinkan di Brave.</translation>
 <translation id="7450557937477381864">Tutup Chrome</translation>
 <translation id="7008934821596358692">Untuk menyelesaikan impor, tutup semua jendela Chrome.</translation>
-<translation id="7753103220327065417">Tutup Brave</translation>
-<translation id="5588481533147090393">Untuk menyelesaikan impor, tutup semua jendela Brave.</translation>
 <translation id="6447842834002726250">Kuki</translation>
 <translation id="4983925687993168579">Statistik</translation>
 <translation id="9173846700806833701">Widevine tidak terpasang</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine adalah sepotong kode Digital Rights Management (DRM) yang tidak kami miliki dan tidak bisa kami periksa di Brave Software. Kode Google Widevine dimuat dari server Google, bukan dari server kami. Kode ini hanya dimuat jika Anda mengaktifkan pilihan ini. Kami tidak menyarankan penggunaan DRM, tetapi kami menghormati pilihan pengguna dan mengakui bahwa beberapa pengguna Brave ingin menggunakan layanan yang memerlukannya.
 
 Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Widevine. Anda setuju bahwa Brave tidak bertanggung jawab untuk setiap kerusakan atau kerugian sehubungan dengan penggunaan Google Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Diimpor dari Brave</translation>
 <translation id="453977518730680921">Otomatis putar media</translation>
 <translation id="410351446219883937">Putar otomatis</translation>
