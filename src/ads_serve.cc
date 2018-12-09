@@ -65,7 +65,10 @@ void AdsServe::OnCatalogDownloaded(
   if (response_status_code / 100 == 2) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog downloaded', [ 'version', 'catalog', 'status' ]
-    LOG(INFO) << "Successfully downloaded catalog";
+
+    if (!response.empty()) {
+      LOG(INFO) << "Successfully downloaded catalog";
+    }
 
     if (!ProcessCatalog(response)) {
       should_retry = true;
