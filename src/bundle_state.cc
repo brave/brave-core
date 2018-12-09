@@ -45,13 +45,6 @@ bool BundleState::FromJson(
   if (bundle.HasMember("categories")) {
     for (const auto& category : bundle["categories"].GetObject()) {
       for (const auto& info : category.value.GetArray()) {
-        if (!info.HasMember("advertiser") &&
-            !info.HasMember("notificationText") &&
-            !info.HasMember("notificationURL") &&
-            !info.HasMember("uuid")) {
-          continue;
-        }
-
         AdInfo ad_info;
 
         if (info.HasMember("creativeSetId")) {
