@@ -152,6 +152,8 @@ class AdsImpl : public Ads {
   void GenerateAdReportingRestartEvent();
   void GenerateAdReportingSettingsEvent();
 
+  bool IsValidScheme(const std::string& url);
+
   std::unique_ptr<Client> client_;
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<AdsServe> ads_serve_;

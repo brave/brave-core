@@ -358,13 +358,7 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
     return;
   }
 
-  UrlComponents components;
-
-  if (!ads_client_->GetUrlComponents(url, &components)) {
-    return;
-  }
-
-  if (components.scheme != "http" && components.scheme != "https") {
+  if (!IsValidScheme(url)) {
     return;
   }
 
@@ -1151,13 +1145,7 @@ void AdsImpl::GenerateAdReportingSustainEvent(
 
 void AdsImpl::GenerateAdReportingLoadEvent(
     const LoadInfo& info) {
-  UrlComponents components;
-
-  if (!ads_client_->GetUrlComponents(info.tab_url, &components)) {
-    return;
-  }
-
-  if (components.scheme != "http" && components.scheme != "https") {
+  if (!IsValidScheme(info.tab_url)) {
     return;
   }
 
@@ -1422,6 +1410,19 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
 
   auto json = buffer.GetString();
   ads_client_->EventLog(json);
+}
+
+bool AdsImpl::IsValidScheme(const std::string& url) {
+  UrlComponents components;
+  if (!ads_client_->GetUrlComponents(url, &components)) {
+    return false;
+  }
+
+  if (components.scheme != "http" && components.scheme != "https") {
+    return false;
+  }
+
+  return true;
 }
 
 }  // namespace ads
