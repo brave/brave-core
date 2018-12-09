@@ -876,11 +876,11 @@ bool AdsImpl::IsCatalogOlderThanOneDay() {
     bundle_->GetCatalogLastUpdatedTimestamp();
 
   if (catalog_last_updated_timestamp != 0 &&
-      catalog_last_updated_timestamp + kOneDayInSeconds >= now) {
-    return false;
+      now > catalog_last_updated_timestamp + kOneDayInSeconds) {
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 void AdsImpl::NotificationAllowedCheck(const bool serve) {
