@@ -503,10 +503,6 @@ Brave is unable to recover your settings.
       </if>
 
       <!-- Extension/App install prompt -->
-      <message name="IDS_EXTENSION_INLINE_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app inline installation prompt window">
-        Add to Brave
-      </message>
-
       <if expr="enable_extensions">
         <!-- Extension installed bubble -->
         <message name="IDS_EXTENSION_INSTALLED_HEADING" desc="Title of the extension-installed bubble. Instructs that the extension was installed.">
@@ -674,15 +670,6 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
         </message>
       </if>
 
-      <if expr="toolkit_views">
-        <message name="IDS_ENTERPRISE_FORCE_SIGNOUT_EXPLANATION" desc="Text of the reason to sign out">
-          Authentication certificate failed. Please sign in to Brave again as <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph> or contact your administrator for more information. <ph name="ADDITIONAL_EXPLANATION">$2</ph>
-        </message>
-        <message name="IDS_ENTERPRISE_FORCE_SIGNOUT_EXPLANATION_WITHOUT_USER_NAME" desc="Text of the reason to sign out when there is no valid email address">
-          Authentication certificate failed. Please sign in to Brave again or contact your administrator for more information. <ph name="ADDITIONAL_EXPLANATION">$2</ph>
-        </message>
-      </if>
-
       <!-- Signin Email Confirmation tab modal dialog -->
       <if expr="not chromeos">
         <message name="IDS_SIGNIN_EMAIL_CONFIRMATION_TITLE" desc="Title of the signin email confirmation tab modal dialog.">
@@ -738,13 +725,6 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
       <message name="IDS_AUTOFILL_DESCRIBE_LOCAL_COPY" desc="Text label that described a Wallet credit card which has been copied to the local Brave instance.">
         Copied to Brave
       </message>
-
-      <!-- Brave OS keyboard overlay-->
-      <if expr="chromeos">
-        <message name="IDS_KEYBOARD_OVERLAY_SHOW_WRENCH_MENU" desc="The text in the keyboard overlay to explain the shortcut that opens the main Brave menu.">
-          Show Brave menu
-        </message>
-      </if>
 
       <!-- App list -->
       <if expr="enable_app_list">
@@ -1024,10 +1004,10 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
          other {Brave will restart in # seconds}}
       </message>
       <message name="IDS_CRITICAL_NOTIFICATION_TITLE_ALTERNATE" desc="The title for a bubble that appears when there is a critical update and Brave must restart to install it. The title was previously countng down to an automatic restart and now it has finished. Will only be seen if a web page stops the shutdown process.">
-        You should restart Brave now.
+        You should restart Brave now
       </message>
       <message name="IDS_CRITICAL_NOTIFICATION_TEXT" desc="Explanation text for the bubble that appears when there is a critical update and Brave must restart to install it.">
-        A special security update for Brave was just applied; you should restart now for it to take effect (we'll restore your tabs).
+        A special security update for Brave was just applied. Restart now and we'll restore your tabs.
       </message>
 
       <!-- Dialog that asks whether user wants to participate in Safe Browsing Extended Reporting -->
@@ -1254,7 +1234,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
           </else>
         </if>
       </if>
-      <!-- Chroium launch blocking dialog. -->
+      <!-- Brave launch blocking dialog. -->
       <if expr="not is_android and not chromeos">
          <message name="IDS_ENTERPRISE_STARTUP_CLOUD_POLICY_ENROLLMENT_TOOLTIP" desc="The information message of Brave launch blocking dialog for machine level user cloud policy enrollment.">
           Launching Brave...
