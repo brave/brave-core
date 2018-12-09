@@ -2,6 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/strings/utf_string_conversions.h"
+#include "components/country_codes/country_codes.h"
+
 #define GetDataVersion GetDataVersion_ChromiumImpl
 #if defined(OS_ANDROID)
 #define GetLocalPrepopulatedEngines GetLocalPrepopulatedEngines_Unused
@@ -66,8 +69,8 @@ const BravePrepopulatedEngineID kDefaultEngineID =
 // regular default engine.
 const std::map<int, BravePrepopulatedEngineID>
     default_engine_by_country_id_map = {
-        {CODE_TO_ID(D, E), PREPOPULATED_ENGINE_ID_QWANT},
-        {CODE_TO_ID(F, R), PREPOPULATED_ENGINE_ID_QWANT},
+        {country_codes::CountryCharsToCountryID('D', 'E'), PREPOPULATED_ENGINE_ID_QWANT},
+        {country_codes::CountryCharsToCountryID('F', 'R'), PREPOPULATED_ENGINE_ID_QWANT}
 };
 
 // Default order in which engines will appear in the UI.
@@ -410,13 +413,13 @@ GetBravePrepopulatedEnginesForCountryID(
   const BravePrepopulatedEngineID* brave_engines;
   size_t num_brave_engines;
   // Check for exceptions from the default list of engines
-  if (CountryCharsToCountryID('C', 'A') == country_id) {
+  if (country_codes::CountryCharsToCountryID('C', 'A') == country_id) {
     brave_engines = brave_engines_CA;
     num_brave_engines = arraysize(brave_engines_CA);
-  } else if (CountryCharsToCountryID('D', 'E') == country_id) {
+  } else if (country_codes::CountryCharsToCountryID('D', 'E') == country_id) {
     brave_engines = brave_engines_DE;
     num_brave_engines = arraysize(brave_engines_DE);
-  } else if (CountryCharsToCountryID('F', 'R') == country_id) {
+  } else if (country_codes::CountryCharsToCountryID('F', 'R') == country_id) {
     brave_engines = brave_engines_FR;
     num_brave_engines = arraysize(brave_engines_FR);
   } else {
@@ -480,7 +483,7 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
   if (!t_urls.empty())
     return t_urls;
 
-  return GetBravePrepopulatedEnginesForCountryID(GetCountryIDFromPrefs(prefs),
+  return GetBravePrepopulatedEnginesForCountryID(country_codes::GetCountryIDFromPrefs(prefs),
                                                  default_search_provider_index);
 }
 
@@ -490,7 +493,7 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
 
 std::vector<std::unique_ptr<TemplateURLData>> GetLocalPrepopulatedEngines(
     const std::string& locale) {
-  int country_id = CountryStringToCountryID(locale);
+  int country_id = country_codes::CountryStringToCountryID(locale);
   if (country_id == kCountryIDUnknown) {
     LOG(ERROR) << "Unknown country code specified: " << locale;
     return std::vector<std::unique_ptr<TemplateURLData>>();
