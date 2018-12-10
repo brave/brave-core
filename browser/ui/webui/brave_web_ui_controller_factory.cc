@@ -41,8 +41,7 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
   if (host == kBraveUISyncHost && brave_sync::BraveSyncService::is_enabled()) {
     return new SyncUI(web_ui, url.host());
-  } else
-  if (host == kAdblockHost) {
+  } else if (host == kAdblockHost) {
     return new BraveAdblockUI(web_ui, url.host());
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   } else if (host == kRewardsHost) {

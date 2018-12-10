@@ -63,13 +63,19 @@ bool HandleURLRewrite(GURL* url,
     *url = GURL(kBraveUIWelcomeURL);
     return true;
   }
+  if (url->SchemeIs(content::kChromeUIScheme) &&
+      (url->host() == kBraveUISyncHost)) {
+    *url = GURL(kBraveUISyncURL);
+    return true;
+  }
 
   return false;
 }
 
 bool HandleURLReverseRewrite(GURL* url,
                              content::BrowserContext* browser_context) {
-  if (url->spec() == kBraveUIWelcomeURL) {
+  if (url->spec() == kBraveUIWelcomeURL ||
+      url->spec() == kBraveUISyncURL) {
     return true;
   }
   return false;
