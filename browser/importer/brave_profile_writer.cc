@@ -216,7 +216,9 @@ void BraveProfileWriter::CancelWalletImport(std::string msg) {
   }
   LOG(ERROR) << msg;
   DCHECK(bridge_ptr_);
-  bridge_ptr_->Cancel();
+  // NOTE: calling bridge_ptr_->Cancel() may roll back previously imported
+  // items. Instead, let's let the importer finish (errors are logged).
+  bridge_ptr_->FinishLedgerImport();
 }
 
 void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
