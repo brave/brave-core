@@ -74,22 +74,6 @@ static void TearDownPipeHack() {
 
 namespace tor {
 
-#if defined(OS_POSIX) && !defined(OS_MACOSX)
-class TorLauncherDelegate : public base::LaunchOptions::PreExecDelegate {
- public:
-    TorLauncherDelegate() {}
-    ~TorLauncherDelegate() override {}
-
-    void RunAsyncSafe() override {
-      // Makes tor process a new leader of process group so that it won't get
-      // affected by ctrl+c (SIGINT) in current terminal
-      setsid();
-    }
- private:
-    DISALLOW_COPY_AND_ASSIGN(TorLauncherDelegate);
-};
-#endif
-
 TorLauncherImpl::TorLauncherImpl(
     std::unique_ptr<service_manager::ServiceContextRef> service_ref)
     : service_ref_(std::move(service_ref)) {
@@ -155,10 +139,6 @@ void TorLauncherImpl::Launch(const TorConfig& config,
   }
 
   base::LaunchOptions launchopts;
-#if defined(OS_POSIX) && !defined(OS_MACOSX)
-  TorLauncherDelegate tor_launcher_delegate;
-  launchopts.pre_exec_delegate = &tor_launcher_delegate;
-#endif
 #if defined(OS_LINUX)
   launchopts.kill_on_parent_death = true;
 #endif
@@ -215,6 +195,7 @@ void TorLauncherImpl::MonitorChild() {
           } else if (WIFEXITED(status)) {
             LOG(ERROR) << "tor exit (" << WEXITSTATUS(status) << ")";
           }
+          tor_process_.Close();
           if (crash_handler_callback_) {
             base::ThreadTaskRunnerHandle::Get()->PostTask(
               FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
