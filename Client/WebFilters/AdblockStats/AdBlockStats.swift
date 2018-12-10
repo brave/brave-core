@@ -53,6 +53,7 @@ class AdBlockStats {
         parseAdblockRegionsFile()
         
         // so that didSet is called from init
+        // swiftlint:disable:next inert_defer
         defer { currentLocaleCode = Locale.current.languageCode ?? AdBlockStats.defaultLocale }
     }
     

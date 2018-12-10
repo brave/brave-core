@@ -83,7 +83,7 @@ class SyncAddDeviceViewController: SyncViewController {
 
         view.addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.top.equalTo(self.topLayoutGuide.snp.bottom)
+            make.top.equalTo(self.view.safeArea.top)
             make.left.right.equalTo(self.view)
             make.bottom.equalTo(self.view.safeArea.bottom).inset(24)
         }
