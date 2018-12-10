@@ -32,9 +32,6 @@ const char kDisableWebTorrentExtension[] = "disable-webtorrent-extension";
 // Allows disabling Brave Sync.
 const char kDisableBraveSync[] = "disable-brave-sync";
 
-// Contains all flags that we use for rewards
-const char kRewards[] = "rewards";
-
 // Specifies overriding the built-in theme setting.
 // Valid values are: "dark" | "light".
 const char kUiMode[] = "ui-mode";
