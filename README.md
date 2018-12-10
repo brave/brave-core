@@ -2,8 +2,8 @@
 
 ## Limitations
 
-- Production Ad Serve URL needs updating with final URL
-- Should run synchronously in own process
+- Awaiting final production Ad Serve URL
+- Catalog is downloaded twice upon startup
 - Due to privacy concerns Brian Johnson has with platform information being
   transmitted when requesting a new catalog, `Win7` and `Win8` are not passed
   from Brave Core, Brian Johnson is raising these privacy concerns
