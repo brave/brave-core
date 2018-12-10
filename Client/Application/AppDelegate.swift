@@ -82,7 +82,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     @discardableResult fileprivate func startApplication(_ application: UIApplication, withLaunchOptions launchOptions: [AnyHashable: Any]?) -> Bool {
         log.info("startApplication begin")
         
-        
         // Set the Firefox UA for browsing.
         setUserAgent()
 

@@ -215,7 +215,7 @@ public class Sync: JSInjector {
         get {
             if !UserDefaults.standard.bool(forKey: prefNameSeed) {
                 // This must be true to stay in sync group
-                KeychainWrapper.standard.remove(key: prefNameSeed)
+                KeychainWrapper.standard.removeObject(forKey: prefNameSeed)
                 return nil
             }
             
@@ -258,13 +258,13 @@ public class Sync: JSInjector {
             fetchTimer?.invalidate()
             fetchTimer = nil
             
-            KeychainWrapper.standard.remove(key: prefNameSeed)
+            KeychainWrapper.standard.removeObject(forKey: prefNameSeed)
         }
     }
     
     public var syncSeedArray: [Int]? {
         let splitBytes = syncSeed?.components(separatedBy: CharacterSet(charactersIn: "[], ")).filter { !$0.isEmpty }
-        let seed = splitBytes?.map { Int($0) }.flatMap { $0 }
+        let seed = splitBytes?.compactMap { Int($0) }
         return seed?.count == Sync.SeedByteLength ? seed : nil
     }
     

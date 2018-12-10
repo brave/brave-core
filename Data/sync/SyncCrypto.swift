@@ -161,7 +161,7 @@ public class SyncCrypto: JSInjector {
 }
 
 extension SyncCrypto: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.isSyncCryptoReady = true
     }
 }

@@ -15,6 +15,8 @@
 
 import Shared
 
+// swiftlint:disable line_length
+
 // MARK:-  Common Strings Here.
 public extension Strings {
     public static let CancelButtonTitle = NSLocalizedString("CancelButtonTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Cancel", comment: "")

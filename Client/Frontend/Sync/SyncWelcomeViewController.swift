@@ -103,7 +103,7 @@ class SyncWelcomeViewController: SyncViewController {
 
         view.addSubview(mainStackView)
         mainStackView.snp.makeConstraints { make in
-            make.top.equalTo(self.topLayoutGuide.snp.bottom)
+            make.top.equalTo(self.view.safeArea.top)
             // This VC doesn't rotate, no need to check for left and right safe area constraints.
             make.left.right.equalTo(self.view).inset(16)
             make.bottom.equalTo(self.view.safeArea.bottom).inset(32)
