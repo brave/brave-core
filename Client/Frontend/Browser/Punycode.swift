@@ -123,7 +123,7 @@ extension String {
         var n = initialN
         var bias = initialBias
         var pos = 0
-        if let ipos = input.index(of: delimiter) {
+        if let ipos = input.lastIndex(of: delimiter) {
             pos = ipos
             output.append(contentsOf: input[0 ..< pos])
             pos += 1
@@ -188,7 +188,7 @@ extension String {
         var labels = self.components(separatedBy: ".")
         for (index, part) in labels.enumerated() {
             if isValidPunycodeScala(part) {
-                let changeStr = String(part[part.index(part.startIndex, offsetBy: 4)...])
+                let changeStr = String(part[part.index(part.startIndex, offsetBy: prefixPunycode.count)...])
                 labels[index] = decode(changeStr)
             }
         }

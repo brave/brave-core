@@ -358,6 +358,7 @@ class URLBarView: UIView {
         locationTextField.keyboardType = .webSearch
         locationTextField.autocorrectionType = .no
         locationTextField.autocapitalizationType = .none
+        locationTextField.smartDashesType = .no
         locationTextField.returnKeyType = .go
         locationTextField.clearButtonMode = .whileEditing
         locationTextField.textAlignment = .left
