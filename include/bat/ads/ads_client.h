@@ -100,6 +100,10 @@ class ADS_EXPORT AdsClient {
   // Should return the network SSID or an empty string if not available
   virtual const std::string GetSSID() const = 0;
 
+  // Should return true if the browser is in the foreground otherwise returns
+  // false
+  virtual bool IsForeground() const = 0;
+
   // Should return true if the operating system supports notifications otherwise
   // returns false
   virtual bool IsNotificationsAvailable() const = 0;

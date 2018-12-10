@@ -75,7 +75,7 @@ void AdsImpl::InitializeStep3() {
 
   LOG(INFO) << "Successfully initialized";
 
-  is_foreground_ = true;
+  is_foreground_ = ads_client_->IsForeground();
 
   ads_client_->SetIdleThreshold(kIdleThresholdInSeconds);
 
@@ -181,9 +181,7 @@ void AdsImpl::OnForeground() {
 }
 
 void AdsImpl::OnBackground() {
-  // TODO(Terry Mancey, Brian Johston): Following code is comemnted out until we
-  // come up with a solution for Brave Core
-  // is_foreground_ = false;
+  is_foreground_ = false;
   GenerateAdReportingBackgroundEvent();
 }
 

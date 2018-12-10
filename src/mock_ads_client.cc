@@ -136,6 +136,10 @@ const std::string MockAdsClient::GetSSID() const {
   return "My WiFi Network";
 }
 
+bool MockAdsClient::IsForeground() const {
+  return true;
+}
+
 bool MockAdsClient::IsNotificationsAvailable() const {
   return true;
 }
