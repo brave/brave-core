@@ -21,6 +21,22 @@ struct BravePublisher {
   ~BravePublisher();
 };
 
+// NOTE: if we need to read more data from session-store-1,
+// we may consider moving this to brave_importer.h (or similar)
+struct SessionStoreSettings {
+  struct PaymentSettings {
+    bool allow_media_publishers;
+    bool allow_non_verified;
+    bool enabled;
+    double contribution_amount;
+    uint64_t min_visit_time;
+    unsigned int min_visits;
+  } payments;
+  std::string default_search_engine;
+  bool use_alternate_private_search_engine;
+  bool use_alternate_private_search_engine_tor;
+};
+
 struct BraveLedger {
   BraveLedger();
   BraveLedger(const BraveLedger& other);
@@ -29,19 +45,7 @@ struct BraveLedger {
   std::string passphrase;
   std::vector<std::string> excluded_publishers;
   std::vector<BravePublisher> pinned_publishers;
-
-  // NOTE: if we need to read more data from session-store-1,
-  // we may consider moving this to brave_importer.h (or similar)
-  struct SessionStoreSettings {
-    struct PaymentSettings {
-      bool allow_media_publishers;
-      bool allow_non_verified;
-      bool enabled;
-      double contribution_amount;
-      uint64_t min_visit_time;
-      unsigned int min_visits;
-    } payments;
-  } settings;
+  SessionStoreSettings settings;
 };
 
 #endif  // BRAVE_COMMON_IMPORTER_BRAVE_LEDGER_H_

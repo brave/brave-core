@@ -29,6 +29,7 @@ class BraveInProcessImporterBridge : public InProcessImporterBridge {
   void UpdateLedger(const BraveLedger& ledger) override;
   void UpdateReferral(const BraveReferral& referral) override;
   void UpdateWindows(const ImportedWindowState& windowState) override;
+  void UpdateSettings(const SessionStoreSettings& settings) override;
 
   void FinishLedgerImport();
   void Cancel();

@@ -11,8 +11,10 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/utility/importer/brave_importer.h"
 #include "brave/browser/importer/brave_in_process_importer_bridge.h"
+#include "brave/browser/search_engines/search_engine_provider_util.h"
 
 #include "base/files/file_util.h"
 #include "base/strings/string_number_conversions.h"
@@ -21,6 +23,7 @@
 
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator.h"
@@ -32,6 +35,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/storage_partition.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/template_url_data_util.h"
 #include "net/cookies/canonical_cookie.h"
 #include "net/cookies/cookie_constants.h"
 #include "net/url_request/url_request_context.h"
@@ -442,4 +446,72 @@ void BraveProfileWriter::UpdateWindows(
   // Re-focus the window that was originally focused before import.
   if (active)
     active->window()->Show();
+}
+
+
+// NOTE: the strings used as keys match the values found in Muon:
+// browser-laptop/js/data/searchProviders.js
+const std::map<std::string,
+        const TemplateURLPrepopulateData::PrepopulatedEngine>
+    importable_engines = {
+      {"Amazon", TemplateURLPrepopulateData::amazon},
+      {"Bing", TemplateURLPrepopulateData::bing},
+      {"DuckDuckGo", TemplateURLPrepopulateData::duckduckgo},
+      {"Ecosia", TemplateURLPrepopulateData::ecosia},
+      {"GitHub", TemplateURLPrepopulateData::github},
+      {"Google", TemplateURLPrepopulateData::google},
+      {"Infogalactic", TemplateURLPrepopulateData::infogalactic},
+      {"MDN Web Docs", TemplateURLPrepopulateData::mdnwebdocs},
+      {"Qwant", TemplateURLPrepopulateData::qwant},
+      {"searx", TemplateURLPrepopulateData::searx},
+      {"Semantic Scholar", TemplateURLPrepopulateData::semanticscholar},
+      {"Stack Overflow", TemplateURLPrepopulateData::stackoverflow},
+      {"StartPage", TemplateURLPrepopulateData::startpage},
+      {"Twitter", TemplateURLPrepopulateData::twitter},
+      {"Wikipedia", TemplateURLPrepopulateData::wikipedia},
+      {"Wolfram Alpha", TemplateURLPrepopulateData::wolframalpha},
+      {"Yahoo", TemplateURLPrepopulateData::yahoo},
+      {"Yandex", TemplateURLPrepopulateData::yandex},
+      {"YouTube", TemplateURLPrepopulateData::youtube}
+    };
+
+void BraveProfileWriter::UpdateSettings(const SessionStoreSettings& settings) {
+  int default_search_engine_id =
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID;
+
+  // Set the default search engine
+  TemplateURLService* url_service =
+      TemplateURLServiceFactory::GetForProfile(profile_);
+  if (url_service) {
+    auto it = importable_engines.find(settings.default_search_engine);
+    if (it != importable_engines.end()) {
+      const TemplateURLPrepopulateData::PrepopulatedEngine engine = it->second;
+      const std::unique_ptr<TemplateURLData> template_data =
+          TemplateURLDataFromPrepopulatedEngine(engine);
+      default_search_engine_id = engine.id;
+      LOG(INFO) << "Setting default search engine to "
+          << settings.default_search_engine;
+      TemplateURL provider_url(*template_data);
+      url_service->SetUserSelectedDefaultSearchProvider(&provider_url);
+    }
+  }
+
+  // Save alternate engine (for private tabs) to preferences
+  PrefService* prefs = profile_->GetPrefs();
+  if (prefs) {
+    prefs->SetBoolean(kUseAlternativeSearchEngineProvider,
+        settings.use_alternate_private_search_engine);
+
+    // Provider for Tor tabs
+    if (settings.use_alternate_private_search_engine_tor) {
+      // if enabled, set as a default. This gets resolved to either
+      // DDG or Qwant in TorWindowSearchEngineProviderService
+      prefs->SetInteger(kAlternativeSearchEngineProviderInTor,
+           TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID);
+    } else {
+      // if disabled, set to same as regular search engine
+      prefs->SetInteger(kAlternativeSearchEngineProviderInTor,
+          default_search_engine_id);
+    }
+  }
 }

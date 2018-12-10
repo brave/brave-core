@@ -28,6 +28,7 @@ class BraveProfileWriter : public ProfileWriter,
   virtual void UpdateLedger(const BraveLedger& ledger);
   virtual void UpdateReferral(const BraveReferral& referral);
   virtual void UpdateWindows(const ImportedWindowState& windowState);
+  virtual void UpdateSettings(const SessionStoreSettings& settings);
 
   void SetBridge(BraveInProcessImporterBridge* bridge);
 

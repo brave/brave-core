@@ -38,6 +38,7 @@ class BraveExternalProcessImporterClient : public ExternalProcessImporterClient 
        const BraveReferral& referral) override;
   void OnWindowsImportReady(
        const ImportedWindowState& windowState) override;
+  void OnSettingsImportReady(const SessionStoreSettings& settings) override;
 
  private:
   ~BraveExternalProcessImporterClient() override;
