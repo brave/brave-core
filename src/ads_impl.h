@@ -70,8 +70,6 @@ class AdsImpl : public Ads {
 
   void RemoveAllHistory() override;
 
-  void SaveCachedInfo(OnSaveCallback callback) override;
-
   void RetrieveSSID();
 
   void ConfirmAdUUIDIfAdEnabled();

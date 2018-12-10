@@ -297,10 +297,6 @@ void AdsImpl::RemoveAllHistory() {
   ConfirmAdUUIDIfAdEnabled();
 }
 
-void AdsImpl::SaveCachedInfo(OnSaveCallback callback) {
-  callback(SUCCESS);
-}
-
 void AdsImpl::RetrieveSSID() {
   std::string ssid = ads_client_->GetSSID();
   if (ssid.empty()) {
