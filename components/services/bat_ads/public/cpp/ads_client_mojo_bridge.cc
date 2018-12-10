@@ -335,7 +335,7 @@ void AdsClientMojoBridge::SaveBundleState(const std::string& bundle_state_json,
     ads_client_->SaveBundleState(std::move(bundle_state),
         std::bind( AdsClientMojoBridge::OnSaveBundleState, holder, _1));
   } else {
-    std::move(callback).Run(ToMojomResult(ads::Result::FAILED));
+    std::move(holder->get()).Run(ToMojomResult(ads::Result::FAILED));
   }
 }
 

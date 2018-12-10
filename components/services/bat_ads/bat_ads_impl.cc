@@ -7,6 +7,8 @@
 #include "bat/ads/ads.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
+using namespace std::placeholders;
+
 namespace bat_ads {
 
 namespace {
@@ -52,8 +54,10 @@ void BatAdsImpl::OnIdle() {
   ads_->OnIdle();
 }
 
+void OnSaveCachedInfo(const ads::Result result) {}
+
 void BatAdsImpl::SaveCachedInfo(SaveCachedInfoCallback callback) {
-  ads_->SaveCachedInfo();
+  ads_->SaveCachedInfo(std::bind(&OnSaveCachedInfo, _1));
   std::move(callback).Run();
 }
 
