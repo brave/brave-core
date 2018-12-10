@@ -135,6 +135,14 @@ class BraveBookmarkChangeProcessorTest : public testing::Test {
   brave_sync::BookmarkChangeProcessor* change_processor() {
     return change_processor_.get();
   }
+  const bookmarks::BookmarkPermanentNode* GetDeletedNodeRoot() {
+    return static_cast<const bookmarks::BookmarkPermanentNode*>(
+              change_processor_->GetDeletedNodeRoot());
+  }
+  const bookmarks::BookmarkPermanentNode* GetPendingNodeRoot() {
+    return static_cast<const bookmarks::BookmarkPermanentNode*>(
+              change_processor_->GetPendingNodeRoot());
+  }
 
   void BookmarkAddedImpl();
   void BookmarkCreatedFromSyncImpl();
@@ -296,6 +304,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkDeleted) {
       ContainsRecord(SyncRecord::Action::A_DELETE, "https://a.com/"))).Times(1);
   model()->Remove(nodes.at(0));
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  EXPECT_FALSE(GetDeletedNodeRoot()->IsVisible());
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, BookmarkModified) {
@@ -862,6 +871,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolder) {
   EXPECT_EQ(node_a->url().spec(), "https://a.com/");
   const auto* node_b = folder1->GetChild(1);
   EXPECT_EQ(node_b->url().spec(), "https://b.com/");
+  EXPECT_FALSE(GetPendingNodeRoot()->IsVisible());
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolderAgressive) {
@@ -977,6 +987,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolderAgressive) {
   EXPECT_EQ(node_a->url().spec(), "https://a.com/");
   const auto* node_b = folder3->GetChild(1);
   EXPECT_EQ(node_b->url().spec(), "https://b.com/");
+  EXPECT_FALSE(GetPendingNodeRoot()->IsVisible());
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolderRequireStrictSorting) {
@@ -1152,4 +1163,5 @@ TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolderRequireStrictSorting) 
   EXPECT_EQ(node_a->url().spec(), "https://a.com/");
   const auto* node_b = folder3->GetChild(1);
   EXPECT_EQ(node_b->url().spec(), "https://b.com/");
+  EXPECT_FALSE(GetPendingNodeRoot()->IsVisible());
 }

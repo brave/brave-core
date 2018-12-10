@@ -6,6 +6,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/bookmark_order_util.h"
+#include "brave/components/brave_sync/client/bookmark_node.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/tools.h"
@@ -41,9 +42,9 @@ class ScopedPauseObserver {
 const char kDeletedBookmarksTitle[] = "Deleted Bookmarks";
 const char kPendingBookmarksTitle[] = "Pending Bookmarks";
 
-std::unique_ptr<bookmarks::BookmarkPermanentNode>
+std::unique_ptr<brave_sync::BraveBookmarkPermanentNode>
     MakePermanentNode(const std::string& title, int64_t* next_node_id) {
-  auto node = std::make_unique<bookmarks::BookmarkPermanentNode>(*next_node_id);
+  auto node = std::make_unique<brave_sync::BraveBookmarkPermanentNode>(*next_node_id);
   (*next_node_id)++;
   node->set_type(bookmarks::BookmarkNode::FOLDER);
   node->set_visible(false);
@@ -533,8 +534,6 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
         const BookmarkNode* bookmark_bar = bookmark_model_->bookmark_bar_node();
         bool bookmark_bar_was_empty = bookmark_bar->empty();
 
-        // TODO(alexeyb): use manual add node/folder to avoid model's observers
-        // invocation leading "Pending bookmarks" to be shown
         if (bookmark_record.isFolder) {
           node = bookmark_model_->AddFolder(
                           parent_node,
@@ -604,8 +603,6 @@ void BookmarkChangeProcessor::CompletePendingNodesMove(
     const auto& order = std::get<1>(move_info);
     int64_t index = GetIndexByOrder(created_folder_node, order);
 
-    // TODO(alexeyb): use manual move to avoid model observer invocation
-    // leading "Pending bookmarks" to get shown
     bookmark_model_->Move(node, created_folder_node, index);
     // Now we dont need "parent_object_id" metainfo on node, because node
     // is attached to proper parent. Note that parent can still be a child

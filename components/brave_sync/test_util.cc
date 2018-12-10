@@ -7,6 +7,7 @@
 #include "base/files/file_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
+#include "brave/components/brave_sync/client/bookmark_node.h"
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/prefs/browser_prefs.h"
@@ -23,7 +24,7 @@ using namespace bookmarks;
 
 void AddPermanentNode(BookmarkPermanentNodeList* extra_nodes, int64_t id,
       const std::string& title) {
-  auto node = std::make_unique<BookmarkPermanentNode>(id);
+  auto node = std::make_unique<brave_sync::BraveBookmarkPermanentNode>(id);
   node->set_type(bookmarks::BookmarkNode::FOLDER);
   node->set_visible(false);
   node->SetTitle(base::UTF8ToUTF16(title));
