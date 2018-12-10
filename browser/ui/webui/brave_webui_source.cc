@@ -423,7 +423,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "yourWallet", IDS_BRAVE_UI_YOUR_WALLET }
       }
     }, {
-      std::string("bravesync"), {
+      std::string("sync"), {
         { "sync", IDS_BRAVE_SYNC_TITLE },
         { "beta", IDS_BRAVE_SYNC_TITLE_BETA },
         { "syncInfo1", IDS_BRAVE_SYNC_INFO_1 },

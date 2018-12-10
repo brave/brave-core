@@ -102,7 +102,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
     GURL("chrome://rewards/"),
 #endif
-    GURL("chrome://welcome/")
+    GURL("chrome://welcome/"),
+    GURL("chrome://sync/")
   };
   std::for_each(urls.begin(), urls.end(), [this](const GURL& url) {
     content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
