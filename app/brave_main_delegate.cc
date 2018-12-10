@@ -87,10 +87,6 @@ BraveMainDelegate::CreateContentUtilityClient() {
 #endif
 }
 
-bool BraveMainDelegate::ShouldEnableProfilerRecording() {
-  return false;
-}
-
 void BraveMainDelegate::PreSandboxStartup() {
   ChromeMainDelegate::PreSandboxStartup();
 #if defined(OS_POSIX)
