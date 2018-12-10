@@ -275,7 +275,6 @@ AdsServiceImpl::~AdsServiceImpl() {
 }
 
 void AdsServiceImpl::OnInitialize() {
-  enabled_ = true;
   ResetTimer();
 }
 
@@ -353,7 +352,6 @@ void AdsServiceImpl::Start() {
 }
 
 void AdsServiceImpl::Stop() {
-  enabled_ = false;
   Shutdown();
 }
 
@@ -416,8 +414,10 @@ void AdsServiceImpl::Shutdown() {
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
   if (pref == prefs::kBraveAdsEnabled) {
     if (is_enabled() && !enabled_) {
+      enabled_ = true;
       Start();
     } else if (!is_enabled() && enabled_) {
+      enabled_ = false;
       Stop();
     }
   } else if (pref == prefs::kBraveAdsIdleThreshold) {
@@ -435,8 +435,6 @@ bool AdsServiceImpl::IsAdsEnabled() const {
 
 void AdsServiceImpl::set_ads_enabled(bool enabled) {
   profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabled, enabled);
-  enabled_ = enabled;
-  OnPrefsChanged(prefs::kBraveAdsEnabled);
 }
 
 void AdsServiceImpl::set_ads_per_hour(int ads_per_hour) {
@@ -456,12 +454,13 @@ void AdsServiceImpl::TabUpdated(SessionID tab_id,
 
 // TODO(bridiver) - what do we do here for android
 #if !defined(OS_ANDROID)
-  if (is_foreground_ && !chrome::FindBrowserWithActiveWindow()) {
-    bat_ads_->OnBackground();
-  } else if (!is_foreground_) {
-    is_foreground_ = true;
-    bat_ads_->OnForeground();
-  }
+  // TODO(bridiver) - this doesn't work correctly
+  // if (is_foreground_ && !chrome::FindBrowserWithActiveWindow()) {
+  //   bat_ads_->OnBackground();
+  // } else if (!is_foreground_) {
+  //   is_foreground_ = true;
+  //   bat_ads_->OnForeground();
+  // }
 #endif
 }
 

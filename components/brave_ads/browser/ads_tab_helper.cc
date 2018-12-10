@@ -100,10 +100,12 @@ void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
       options,
       base::Bind(&AdsTabHelper::OnWebContentsDistillationDone,
           weak_factory_.GetWeakPtr(),
+          web_contents()->GetLastCommittedURL(),
           base::Passed(std::move(distiller_page))));
 }
 
 void AdsTabHelper::OnWebContentsDistillationDone(
+    const GURL& url,
     std::unique_ptr<dom_distiller::DistillerPage> distiller_page,
     std::unique_ptr<dom_distiller::proto::DomDistillerResult> distiller_result,
     bool distillation_successful) {
@@ -114,7 +116,7 @@ void AdsTabHelper::OnWebContentsDistillationDone(
       distiller_result->has_distilled_content() &&
       distiller_result->has_markup_info() &&
       distiller_result->distilled_content().has_html()) {
-    ads_service_->ClassifyPage(distiller_result->markup_info().url(),
+    ads_service_->ClassifyPage(url.spec(),
                                distiller_result->distilled_content().html());
   } else {
     // TODO(bridiver) - fall back to web_contents()->GenerateMHTML or ignore?
