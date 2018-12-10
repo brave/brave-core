@@ -233,14 +233,13 @@ void BatContribution::StartAutoContribute() {
   uint64_t current_reconcile_stamp = ledger_->GetReconcileStamp();
   ledger::ActivityInfoFilter filter = ledger_->CreateActivityFilter(
       "",
-      ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE,
       ledger::ACTIVITY_MONTH::ANY,
       -1,
       ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       current_reconcile_stamp,
       ledger_->GetPublisherAllowNonVerified());
-  ledger_->GetPublisherInfoList(
+  ledger_->GetActivityInfoList(
       0,
       0,
       filter,

@@ -869,11 +869,11 @@ void LedgerImpl::OnRemovedRecurring(ledger::Result result) {
   }
 }
 
-ledger::PublisherInfoFilter LedgerImpl::CreateActivityFilter(
+ledger::ActivityInfoFilter LedgerImpl::CreateActivityFilter(
     const std::string& publisher_id,
     ledger::ACTIVITY_MONTH month,
     int year,
-    ledger::PUBLISHER_EXCLUDE_FILTER excluded,
+    ledger::EXCLUDE_FILTER excluded,
     bool min_duration,
     const uint64_t& currentReconcileStamp,
     bool non_verified) {

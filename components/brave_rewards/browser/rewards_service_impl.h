@@ -89,7 +89,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetNumExcludedSites(
       const GetNumExcludedSitesCallback& callback) override;
   void RecoverWallet(const std::string passPhrase) const override;
-  void GetCurrentContributeList(
+  void GetContentSiteList(
       uint32_t start,
       uint32_t limit,
       uint64_t min_visit_time,

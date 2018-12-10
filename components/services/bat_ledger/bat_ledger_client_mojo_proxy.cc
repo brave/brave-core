@@ -19,7 +19,7 @@ ledger::Result ToLedgerResult(int32_t result) {
   return (ledger::Result)result;
 }
 
-int32_t ToMojomPublisherCategory(ledger::PUBLISHER_CATEGORY category) {
+int32_t ToMojomPublisherCategory(ledger::REWARDS_CATEGORY category) {
   return (int32_t)category;
 }
 
@@ -144,7 +144,7 @@ void BatLedgerClientMojoProxy::OnRecoverWallet(ledger::Result result,
 
 void BatLedgerClientMojoProxy::OnReconcileComplete(ledger::Result result,
     const std::string& viewing_id,
-    ledger::PUBLISHER_CATEGORY category,
+    ledger::REWARDS_CATEGORY category,
     const std::string& probi) {
   if (!Connected())
     return;
@@ -311,7 +311,7 @@ void OnLoadPublisherInfo(const ledger::PublisherInfoCallback& callback,
 }
 
 void BatLedgerClientMojoProxy::LoadPublisherInfo(
-    ledger::PublisherInfoFilter filter,
+    ledger::ActivityInfoFilter filter,
     ledger::PublisherInfoCallback callback) {
   if (!Connected()) {
     callback(ledger::Result::LEDGER_ERROR,
@@ -340,7 +340,7 @@ void OnLoadPublisherInfoList(const ledger::PublisherInfoListCallback& callback,
 void BatLedgerClientMojoProxy::LoadPublisherInfoList(
     uint32_t start,
     uint32_t limit,
-    ledger::PublisherInfoFilter filter,
+    ledger::ActivityInfoFilter filter,
     ledger::PublisherInfoListCallback callback) {
   if (!Connected()) {
     callback(std::vector<ledger::PublisherInfo>(), 0);
@@ -484,7 +484,7 @@ void BatLedgerClientMojoProxy::SaveContributionInfo(const std::string& probi,
     const int year,
     const uint32_t date,
     const std::string& publisher_key,
-    const ledger::PUBLISHER_CATEGORY category) {
+    const ledger::REWARDS_CATEGORY category) {
   if (!Connected())
     return;
 

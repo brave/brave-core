@@ -87,6 +87,7 @@ test("brave_unit_tests") {
     sources += [
       "//brave/vendor/bat-native-ledger/src/bat_get_media_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/test/niceware_partial_unittest.cc",
+      "//brave/components/brave_rewards/browser/publisher_info_database_unittest.cc",
       "//brave/vendor/bat-native-usermodel/test/usermodel_unittest.cc",
       "//brave/components/brave_rewards/browser/rewards_service_impl_unittest.cc",
     ]

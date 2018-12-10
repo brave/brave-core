@@ -61,7 +61,6 @@ LEDGER_EXPORT struct ActivityInfoFilter {
   bool loadFromJson(const std::string& json);
 
   std::string id;
-  int category;
   ACTIVITY_MONTH month;
   int year;
   EXCLUDE_FILTER excluded;

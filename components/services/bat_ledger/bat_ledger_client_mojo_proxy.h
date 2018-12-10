@@ -34,7 +34,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                       const std::vector<ledger::Grant>& grants) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
-                           ledger::PUBLISHER_CATEGORY category,
+                           ledger::REWARDS_CATEGORY category,
                            const std::string& probi) override;
   void OnGrantFinish(ledger::Result result,
                      const ledger::Grant& grant) override;
@@ -47,12 +47,12 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void SavePublisherInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
                          ledger::PublisherInfoCallback callback) override;
-  void LoadPublisherInfo(ledger::PublisherInfoFilter filter,
+  void LoadPublisherInfo(ledger::ActivityInfoFilter filter,
                          ledger::PublisherInfoCallback callback) override;
   void LoadPublisherInfoList(
       uint32_t start,
       uint32_t limit,
-      ledger::PublisherInfoFilter filter,
+      ledger::ActivityInfoFilter filter,
       ledger::PublisherInfoListCallback callback) override;
   void SavePublishersList(const std::string& publishers_list,
                           ledger::LedgerCallbackHandler* handler) override;
@@ -78,7 +78,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                             const int year,
                             const uint32_t date,
                             const std::string& publisher_key,
-                            const ledger::PUBLISHER_CATEGORY category) override;
+                            const ledger::REWARDS_CATEGORY category) override;
   void GetRecurringDonations(ledger::PublisherInfoListCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(const char* file, int line, ledger::LogLevel level) const override;
   void LoadMediaPublisherInfo(

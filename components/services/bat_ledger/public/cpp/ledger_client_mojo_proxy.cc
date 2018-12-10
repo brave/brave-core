@@ -21,8 +21,8 @@ ledger::Result ToLedgerResult(int32_t result) {
   return (ledger::Result)result;
 }
 
-ledger::PUBLISHER_CATEGORY ToLedgerPublisherCategory(int32_t category) {
-  return (ledger::PUBLISHER_CATEGORY)category;
+ledger::REWARDS_CATEGORY ToLedgerPublisherCategory(int32_t category) {
+  return (ledger::REWARDS_CATEGORY)category;
 }
 
 ledger::Grant ToLedgerGrant(const std::string& grant_json) {
@@ -272,7 +272,7 @@ void LedgerClientMojoProxy::LoadPublisherInfo(
   // deleted in OnLoadPublisherInfo
   auto* holder = new CallbackHolder<LoadPublisherInfoCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger::PublisherInfoFilter publisher_info_filter;
+  ledger::ActivityInfoFilter publisher_info_filter;
   publisher_info_filter.loadFromJson(filter);
   ledger_client_->LoadPublisherInfo(publisher_info_filter,
       std::bind(LedgerClientMojoProxy::OnLoadPublisherInfo, holder, _1, _2));
@@ -300,7 +300,7 @@ void LedgerClientMojoProxy::LoadPublisherInfoList(uint32_t start,
   // deleted in OnLoadPublisherInfoList
   auto* holder = new CallbackHolder<LoadPublisherInfoListCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger::PublisherInfoFilter publisher_info_filter;
+  ledger::ActivityInfoFilter publisher_info_filter;
   publisher_info_filter.loadFromJson(filter);
   ledger_client_->LoadPublisherInfoList(start, limit, publisher_info_filter,
       std::bind(LedgerClientMojoProxy::OnLoadPublisherInfoList,

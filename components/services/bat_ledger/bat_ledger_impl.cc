@@ -18,16 +18,16 @@ ledger::PUBLISHER_EXCLUDE ToLedgerPublisherExclude(int32_t exclude) {
   return (ledger::PUBLISHER_EXCLUDE)exclude;
 }
 
-ledger::PUBLISHER_MONTH ToLedgerPublisherMonth(int32_t month) {
-  return (ledger::PUBLISHER_MONTH)month;
+ledger::ACTIVITY_MONTH ToLedgerPublisherMonth(int32_t month) {
+  return (ledger::ACTIVITY_MONTH)month;
 }
 
 ledger::ReportType ToLedgerReportType(int32_t type) {
   return (ledger::ReportType)type;
 }
 
-ledger::PUBLISHER_CATEGORY ToLedgerPublisherCategory(int32_t category) {
-  return (ledger::PUBLISHER_CATEGORY)category;
+ledger::REWARDS_CATEGORY ToLedgerPublisherCategory(int32_t category) {
+  return (ledger::REWARDS_CATEGORY)category;
 }
 
 } // anonymous namespace
@@ -318,7 +318,7 @@ void BatLedgerImpl::GetPublisherInfoList(uint32_t start, uint32_t limit,
   // delete in OnGetPublisherInfoList
   auto* holder = new CallbackHolder<GetPublisherInfoListCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger::PublisherInfoFilter publisher_info_filter;
+  ledger::ActivityInfoFilter publisher_info_filter;
   publisher_info_filter.loadFromJson(filter);
   ledger_->GetPublisherInfoList(start, limit, publisher_info_filter,
       std::bind(BatLedgerImpl::OnGetPublisherInfoList, holder, _1, _2));

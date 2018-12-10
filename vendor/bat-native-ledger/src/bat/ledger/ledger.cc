@@ -86,7 +86,7 @@ bool VisitData::loadFromJson(const std::string& json) {
     domain = d["domain"].GetString();
     path = d["path"].GetString();
     tab_id = d["tab_id"].GetUint();
-    local_month = (PUBLISHER_MONTH)d["local_month"].GetInt();
+    local_month = (ACTIVITY_MONTH)d["local_month"].GetInt();
     local_year = d["local_year"].GetInt();
     name = d["name"].GetString();
     url = d["url"].GetString();
@@ -126,46 +126,34 @@ PaymentData::PaymentData(const PaymentData& data):
 PaymentData::~PaymentData() {}
 
 ActivityInfoFilter::ActivityInfoFilter() :
-    category(REWARDS_CATEGORY::ALL_CATEGORIES),
     month(ACTIVITY_MONTH::ANY),
     year(-1),
     excluded(EXCLUDE_FILTER::FILTER_DEFAULT),
     percent(0),
     min_duration(0),
-<<<<<<< HEAD
     reconcile_stamp(0),
     non_verified(true) {}
 
-PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
-=======
-    reconcile_stamp(0) {}
 ActivityInfoFilter::ActivityInfoFilter(const ActivityInfoFilter& filter) :
->>>>>>> Ports ledger cahnges from seperate repo into core
     id(filter.id),
-    category(filter.category),
     month(filter.month),
     year(filter.year),
     excluded(filter.excluded),
     percent(filter.percent),
     order_by(filter.order_by),
     min_duration(filter.min_duration),
-<<<<<<< HEAD
     reconcile_stamp(filter.reconcile_stamp),
     non_verified(filter.non_verified) {}
 
-PublisherInfoFilter::~PublisherInfoFilter() {}
-=======
-    reconcile_stamp(filter.reconcile_stamp) {}
 ActivityInfoFilter::~ActivityInfoFilter() {}
->>>>>>> Ports ledger cahnges from seperate repo into core
 
-const std::string PublisherInfoFilter::ToJson() const {
+const std::string ActivityInfoFilter::ToJson() const {
   std::string json;
   braveledger_bat_helper::saveToJsonString(*this, json);
   return json;
 }
 
-bool PublisherInfoFilter::loadFromJson(const std::string& json) {
+bool ActivityInfoFilter::loadFromJson(const std::string& json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
@@ -187,9 +175,9 @@ bool PublisherInfoFilter::loadFromJson(const std::string& json) {
   if (false == error) {
     id = d["id"].GetString();
     category = d["category"].GetInt();
-    month = (PUBLISHER_MONTH)d["month"].GetInt();
+    month = (ACTIVITY_MONTH)d["month"].GetInt();
     year = d["year"].GetInt();
-    excluded = (PUBLISHER_EXCLUDE_FILTER)d["excluded"].GetInt();
+    excluded = (EXCLUDE_FILTER)d["excluded"].GetInt();
     percent = d["percent"].GetUint();
     min_duration = d["min_duration"].GetUint64();
     reconcile_stamp = d["reconcile_stamp"].GetUint64();
@@ -373,8 +361,8 @@ bool PublisherInfo::loadFromJson(const std::string& json) {
     percent = d["percent"].GetUint();
     weight = d["weight"].GetDouble();
     excluded = (PUBLISHER_EXCLUDE)d["excluded"].GetInt();
-    category = (PUBLISHER_CATEGORY)d["category"].GetInt();
-    month = (PUBLISHER_MONTH)d["month"].GetInt();
+    category = (REWARDS_CATEGORY)d["category"].GetInt();
+    month = (ACTIVITY_MONTH)d["month"].GetInt();
     year = d["year"].GetInt();
     reconcile_stamp = d["reconcile_stamp"].GetUint64();
     verified = d["verified"].GetBool();
@@ -397,7 +385,7 @@ bool PublisherInfo::loadFromJson(const std::string& json) {
   return !error;
 }
 
-const PublisherInfo invalid("", PUBLISHER_MONTH::ANY, -1);
+const PublisherInfo invalid("", ACTIVITY_MONTH::ANY, -1);
 =======
 const PublisherInfo invalid("", ACTIVITY_MONTH::ANY, -1);
 >>>>>>> Ports ledger cahnges from seperate repo into core

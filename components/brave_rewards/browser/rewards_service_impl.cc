@@ -444,8 +444,7 @@ void RewardsServiceImpl::GetContentSiteList(
   }
 
   ledger::ActivityInfoFilter filter;
-  filter.category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;
-  filter.month = ledger::PUBLISHER_MONTH::ANY;
+  filter.month = ledger::ACTIVITY_MONTH::ANY;
   filter.year = -1;
   filter.min_duration = min_visit_time;
   filter.order_by.push_back(std::pair<std::string, bool>("ai.percent", false));
