@@ -18,7 +18,7 @@
   confirmations_client_->Log( \
     __FILE__, __LINE__, ::confirmations::LogLevel::LOG_ERROR)
 
-#define LOG(severity) CONFIRMATIONS_LOG_ ## severity->stream()
+#define BLOG(severity) CONFIRMATIONS_LOG_ ## severity->stream()
 
 #if defined(ERROR)
 #define LOG_0 CONFIRMATIONS_LOG_ERROR

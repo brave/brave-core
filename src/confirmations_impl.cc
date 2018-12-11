@@ -20,7 +20,7 @@ ConfirmationsImpl::~ConfirmationsImpl() = default;
 
 void ConfirmationsImpl::Initialize() {
   if (is_initialized_) {
-    LOG(WARNING) << "Already initialized";
+    BLOG(WARNING) << "Already initialized";
     return;
   }
 
