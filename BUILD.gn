@@ -1,19 +1,40 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
 
 if (is_android) {
   import("//build/config/android/rules.gni")
 }
-
-dep_base = rebase_path("../..", "//")
+if (is_android || defined(is_docker)) {
+  dep_base = rebase_path("./", "//")
+} else {
+  dep_base = rebase_path("../..", "//")
+}
 
 config("external_config") {
-  include_dirs = [ "include" ]
+  include_dirs = [ "include", 
+                   "deps/challenge-bypass-ristretto-ffi/src/",
+  ]
 }
 
 config("internal_config") {
   include_dirs = [ "src" ]
+}
+
+executable("bnc-test") {
+
+  sources = [
+    "src/bat_native_confirmations.cc",
+    "src/mock_confirmations_client.cc",
+  ]
+
+  include_dirs = [
+#    "src",
+  ]
+
+  deps = [
+    ":confirmations",
+  ]
 }
 
 group("bat-native-confirmations") {
@@ -27,7 +48,6 @@ group("bat-native-confirmations") {
 }
 
 static_library("bat-native-confirmations-standalone") {
-  # TODO(bridiver) - only export symbols from `include`
   complete_static_lib = true
 
   output_dir = root_out_dir
@@ -39,7 +59,7 @@ static_library("bat-native-confirmations-standalone") {
   ]
 
   deps = [
-    ":confirmations"
+    ":confirmations",
   ]
 }
 
@@ -49,12 +69,33 @@ source_set("confirmations") {
 
   output_name = "bat_native_confirmations"
 
+  libs = [
+    "Security.framework",
+    "deps/challenge-bypass-ristretto-ffi/target/debug/libchallenge_bypass_ristretto.a",
+  ]
+
+  include_dirs = [
+   "deps/happyhttp",
+  ]
+
+
   sources = [
+#    "deps/challenge-bypass-ristretto-ffi/src/wrapper.hpp",
+#    "deps/challenge-bypass-ristretto-ffi/src/wrapper.cpp",
+#    "deps/challenge-bypass-ristretto-ffi/src/lib.h",
+#    "include/confirmations.hpp",
+#    "src/confirmations.cpp",
+    "deps/happyhttp/happyhttp.cpp",
+    "src/bat/confirmations/ad_info.cc",
+    "src/bat/confirmations/wallet_info.cc",
     "src/confirmations.cc",
     "src/confirmations_impl.cc",
-    "src/bat/confirmations/ad_info.cc",
   ]
 
   deps = [
+    "//base",
+    "//net",
+    "//third_party/boringssl",
+    rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
   ]
 }

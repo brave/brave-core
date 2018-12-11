@@ -6,6 +6,10 @@
 #include "mock_confirmations_client.h"
 #include "bat/confirmations/confirmations.h"
 
+std::string happy_data; 
+int happy_status;
+int count;
+
 int main() {
   auto mock_confirmations_client =
     std::make_unique<confirmations::MockConfirmationsClient>();
@@ -13,6 +17,8 @@ int main() {
     *mock_confirmations_client->confirmations_;
 
   confirmations.Initialize();
+
+
 
   return 0;
 }
