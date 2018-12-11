@@ -62,7 +62,7 @@ class ADS_EXPORT AdsClient {
  public:
   virtual ~AdsClient() = default;
 
-  // Should return true if Brave Ads are enabled otherwise returns false
+  // Should return true if Brave Ads is enabled otherwise returns false
   virtual bool IsAdsEnabled() const = 0;
 
   // Should return the operating system's locale, i.e. en, en_US or en_GB.UTF-8
@@ -81,7 +81,7 @@ class ADS_EXPORT AdsClient {
   // Should return true if there is a network connection otherwise returns false
   virtual bool IsNetworkConnectionAvailable() = 0;
 
-  // Should return information about the client
+  // Should get information about the client
   virtual void GetClientInfo(ClientInfo* info) const = 0;
 
   // Should return a list of supported User Model locales
@@ -125,7 +125,7 @@ class ADS_EXPORT AdsClient {
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& content_type,
-      URLRequestMethod method,
+      const URLRequestMethod method,
       URLRequestCallback callback) = 0;
 
   // Should save a value to persistent storage

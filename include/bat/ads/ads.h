@@ -36,7 +36,7 @@ class ADS_EXPORT Ads {
 
   static Ads* CreateInstance(AdsClient* ads_client);
 
-  // Should be called when Brave Ads are enabled or disabled on the Client
+  // Should be called when Brave Ads is enabled or disabled on the Client
   virtual void Initialize() = 0;
 
   // Should be called when the browser enters the foreground
