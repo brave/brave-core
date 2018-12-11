@@ -55,6 +55,8 @@ source_set("ui") {
     "views/toolbar/bookmark_button.h",
     "views/toolbar/brave_toolbar_view.cc",
     "views/toolbar/brave_toolbar_view.h",
+    "views/update_recommended_message_box_mac.mm",
+    "views/update_recommended_message_box_mac.h",
     "webui/basic_ui.cc",
     "webui/basic_ui.h",
     "webui/brave_adblock_ui.cc",
