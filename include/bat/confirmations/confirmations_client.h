@@ -13,6 +13,7 @@
 #include <fstream>
 
 #include "bat/confirmations/export.h"
+#include "bat/confirmations/wallet_info.h"
 
 namespace confirmations {
 
