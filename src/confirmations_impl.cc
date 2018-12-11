@@ -11,6 +11,7 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include <regex>
 
 #include "base/base64.h"
 #include "base/guid.h"
@@ -29,6 +30,22 @@
 extern int count;
 extern std::string happy_data; 
 extern int happy_status;
+
+void get_catalog() {
+
+  happyhttp::Connection conn(BRAVE_AD_SERVER, BRAVE_AD_SERVER_PORT);
+  conn.setcallbacks( OnBegin, OnData, OnComplete, 0 );
+  conn.request( "GET", "/v1/catalog" );
+  while( conn.outstanding() ) conn.pump();
+
+  // we should extract the json key `issuers`, save it versioned using issuersVersion and fabricate a version if we don't have one
+  // we should key our version of the confirmations objects like this and have them saved as such
+  // (make a new obj for each version, maybe have a bool func that states whether it has confirmations to redeem or not)
+  // if a newer version has been seen, then any lower version #'d object can be retired after it's been allowed to redeem everything,
+  // ie, you pump it until it returns false when asked if it has in-progress items to redeem
+  // so we should control how confirmations objects get created, via constructor or something, and how they're saved
+  // maybe we should just punt on all of this for now and require them not to rev the keys yet
+}
 
 void OnBegin( const happyhttp::Response* r, void* userdata )
 {
@@ -88,9 +105,7 @@ namespace confirmations {
 
     // TODO Whatever thread/service calls this in brave-core-client must also 
     //      be the one that triggers ad showing, or we'll have a race condition
-    // mutex.lock();
     bool ready = (signed_blinded_confirmation_tokens.size() > 0);
-    // mutex.unlock();
 
     return ready;
   }
@@ -1076,6 +1091,52 @@ namespace confirmations {
 
     return succeed;
   }
+///////////////////////////////////////////////////////////////////
+
+  MockServer::~MockServer() {
+
+  }
+
+  MockServer::MockServer() {
+
+  }
+
+  void MockServer::test() {
+    // BLOG(INFO) << __PRETTY_FUNCTION__ << std::endl;
+  }
+
+  void MockServer::generateSignedBlindedTokensAndProof(std::vector<std::string> blinded_tokens) {
+
+    std::vector<std::string> stamped;
+
+    std::vector<BlindedToken> rehydrated_blinded_tokens;
+    std::vector<SignedToken>  rehydrated_signed_tokens;
+
+    for (auto x : blinded_tokens) {
+      // rehydrate the token from the base64 string
+      BlindedToken blinded_token = BlindedToken::decode_base64(x);
+      // keep it for the proof later
+      rehydrated_blinded_tokens.push_back(blinded_token);
+
+      // server signs the blinded token 
+      SignedToken signed_token = this->signing_key.sign(blinded_token);
+      // keep it for the proof later
+      rehydrated_signed_tokens.push_back(signed_token);
+
+      std::string base64_signed_token = signed_token.encode_base64();
+      // BLOG(INFO)<<"[SERVER] base64_signed_tok: "<<base64_signed_token<<"\n";
+      stamped.push_back(base64_signed_token);
+    }
+
+    BatchDLEQProof server_batch_proof = BatchDLEQProof(rehydrated_blinded_tokens, rehydrated_signed_tokens, this->signing_key);;
+    std::string base64_batch_proof = server_batch_proof.encode_base64();
+    // BLOG(INFO)<<"[SERVER] base64_batch_proof: "<<base64_batch_proof<<"\n";
+
+    this->signed_tokens = stamped;
+    this->batch_dleq_proof = base64_batch_proof;
+
+    return;
+  }
 
 ///////////////////////////////////////////////////////////////////
 
@@ -1095,9 +1156,127 @@ void ConfirmationsImpl::Initialize() {
 
   is_initialized_ = true;
 
-  BLOG(INFO) << BRAVE_AD_SERVER;
-  BLOG(INFO) << BRAVE_AD_SERVER_PORT;
+  /////////////////////
+  // TODO remove
+  this->test();
+  /////////////////////
+}
+
+void ConfirmationsImpl::test() {
+
+  bool test_with_server = true;
+
+  // bat_native_confirmations::Confirmations conf_client;
+  MockServer mock_server;
+
+  std::string mock_confirmations_public_key = mock_server.public_key.encode_base64();
+  std::string mock_payments_public_key = mock_confirmations_public_key; // hack. mock server only has 1 key for now
+  std::vector<std::string> mock_bat_names = {"0.00BAT", "0.01BAT", "0.02BAT"};
+  std::vector<std::string> mock_bat_keys  = {mock_payments_public_key, mock_payments_public_key, mock_payments_public_key}; // hack
+
+  std::vector<std::string> mock_sbc;
+  std::string mock_worth = "mock_pub_key_for_lookup_in_catalog";
+  std::vector<std::string> mock_sbp;
+  std::string mock_sbp_token;
+  std::string mock_confirmation_proof;
+  std::string mock_payment_proof;
+
+  std::string mock_wallet_address = "ed89e4cb-2a66-454a-8276-1d167c2a44fa"; // aka paymentId or payment_id
+  std::string mock_wallet_address_secret_key = "56fe77e2a5b2fa3339fe13944856c901cbd926932e0b17257d2f1b03fe15441a2c7420280292d383eed24ba50ca0a3dd03e8fba6871d46f8557b35b6dc367aca";
+
+  std::string mock_body_22 = "{\"blindedTokens\":[\"lNcLBep59zi5zMWD3s3gT7WpgLPlM7n0YiCD2jdkMlc=\"]}";
+  std::string mock_body_sha_256 = "MGyHkaktkuGfmopz+uljkmapS0zLwBB9GJNp68kqVzM=";
+  std::string mock_signature_22 = "V+paOGZm0OU36hJCr7BrR49OlMpOiuaGC2DeXXwBWlKU88FXA/MOv5gwl/MqQPHWX5RA1+9YDb/6g6FEcsYnAw==";
+
+  std::string mock_creative_instance_id = "6ca04e53-2741-4d62-acbb-e63336d7ed46";
+  // TODO: fill in : hook up into brave-core client / bat-native-ads: populate creative instance id with real one
+  std::string real_creative_instance_id = mock_creative_instance_id; // XXX TODO
+
+  std::vector<std::string> real_bat_names = {};
+  std::vector<std::string> real_bat_keys = {};
+
+  // TODO: fill in : hook up into brave-core client / bat-native-ads: populate mock_wallet_address with real wallet address
+  std::string real_wallet_address = mock_wallet_address; // XXX TODO
+  std::string real_wallet_address_secret_key = mock_wallet_address_secret_key; // XXX TODO
+  // This is stored on the conf_client as server_confirmation_key server_payment_key
+  std::string real_confirmations_public_key = mock_confirmations_public_key;
+  std::string real_payments_public_key = mock_payments_public_key;
+
   BLOG(INFO) << "Hello";
+
+  if (test_with_server) {
+    get_catalog();
+
+    std::unique_ptr<base::Value> value(base::JSONReader::Read(happy_data));
+    base::DictionaryValue* dict;
+    if (!value->GetAsDictionary(&dict)) {
+      std::cerr << "no dict" << "\n";
+      abort();
+    }
+
+    base::Value *v;
+    if (!(v = dict->FindKey("issuers"))) {
+      std::cerr << "could not get issuers\n";
+      abort();
+    }
+
+    base::ListValue list(v->GetList());
+
+    real_bat_names = {};
+    real_bat_keys = {};
+ 
+    for (size_t i = 0; i < list.GetSize(); i++) {
+      base::Value *x;
+      list.Get(i, &x);
+      //v.push_back(x->GetString());
+      base::DictionaryValue* d;
+      if (!x->GetAsDictionary(&d)) {
+        std::cerr << "no dict x/d" << "\n";
+        abort();
+      }
+      base::Value *a;
+      
+      if (!(a = d->FindKey("name"))) {
+        std::cerr << "no name\n";
+        abort();
+      }
+
+      std::string name = a->GetString();
+
+      if (!(a = d->FindKey("publicKey"))) {
+        std::cerr << "no pubkey\n";
+        abort();
+      }
+
+      std::string pubkey = a->GetString();
+
+      std::regex bat_regex("\\d\\.\\d\\dBAT"); // eg, "1.23BAT"
+
+      if (name == "confirmation") {
+        real_confirmations_public_key = pubkey; 
+      } else if (name == "payment") {
+        // per amir, evq, we're not actually using this! so it's not supposed to be appearing in the catalog return but is
+        real_payments_public_key = pubkey; 
+      } else if (std::regex_match(name, bat_regex) ) {
+        real_bat_names.push_back(name);
+        real_bat_keys.push_back(pubkey);
+      }
+    }
+
+    //so now all our mock data is ready to go for step_1 below (it's populated with the return from the server)
+  }
+
+  this->step_1_storeTheServersConfirmationsPublicKeyAndGenerator(real_confirmations_public_key,
+                                                                 real_payments_public_key,
+                                                                 real_bat_names,
+                                                                 real_bat_keys);
+  this->step_2_refillConfirmationsIfNecessary(real_wallet_address,
+                                              real_wallet_address_secret_key,
+                                              this->server_confirmation_key);
+  this->step_3_redeemConfirmation(real_creative_instance_id);
+  this->step_4_retrievePaymentIOUs();
+  this->step_5_cashInPaymentIOUs(real_wallet_address);
+
 }
 
 void ConfirmationsImpl::OnCatalogIssuersChanged(

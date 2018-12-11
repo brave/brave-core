@@ -25,8 +25,6 @@ using namespace challenge_bypass_ristretto;
 
 class ConfirmationsImpl : public Confirmations {
  public:
-    std::mutex mutex;
-
     const size_t low_token_threshold = 2; // 20 
     const size_t refill_amount = 1 * low_token_threshold; // 5
 
@@ -74,6 +72,7 @@ class ConfirmationsImpl : public Confirmations {
     std::vector<std::string> unmunge(base::Value *value);
     std::string BATNameFromBATPublicKey(std::string token);
     bool processIOUBundle(std::string bundle_json);
+    void test();
 
     //convert std::string of ascii-hex to raw data vector<uint8_t>
     std::vector<uint8_t> rawDataBytesVectorFromASCIIHexString(std::string ascii);
@@ -101,6 +100,21 @@ class ConfirmationsImpl : public Confirmations {
   // Not copyable, not assignable
   ConfirmationsImpl(const ConfirmationsImpl&) = delete;
   ConfirmationsImpl& operator=(const ConfirmationsImpl&) = delete;
+};
+
+class MockServer {
+  public:
+    SigningKey signing_key = SigningKey::random();
+    PublicKey public_key = signing_key.public_key();
+
+    std::vector<std::string> signed_tokens;
+    std::string batch_dleq_proof;
+
+    void generateSignedBlindedTokensAndProof(std::vector<std::string> blinded_tokens);
+
+    void test();
+    MockServer();
+    ~MockServer();
 };
 
 }  // namespace confirmations
