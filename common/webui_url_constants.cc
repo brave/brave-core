@@ -8,6 +8,7 @@
 const char kAdblockHost[] = "adblock";
 const char kAdblockJS[] = "brave_adblock.js";
 const char kRewardsHost[] = "rewards";
+const char kRewardsInternalsHost[] = "rewards-internals";
 const char kRewardsJS[] = "brave_rewards.js";
 const char kWelcomeHost[] = "welcome";
 const char kWelcomeJS[] = "brave_welcome.js";

@@ -17,6 +17,7 @@ brave_common_web_compile_inputs = [
   rebase_path("../definitions/rewards.d.ts"),
   rebase_path("../definitions/rewardsDonate.d.ts"),
   rebase_path("../definitions/rewardsExtensions.d.ts"),
+  rebase_path("../definitions/rewardsInternals.d.ts"),
   rebase_path("../definitions/sync.d.ts"),
   rebase_path("../definitions/throttleit.d.ts"),
   rebase_path("../definitions/webtorrent.d.ts"),

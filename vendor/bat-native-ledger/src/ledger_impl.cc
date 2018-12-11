@@ -1125,6 +1125,38 @@ const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
   return wallet_info;
 }
 
+void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo& info) {
+  // Retrieve the payment id.
+  info.payment_id = bat_state_->GetPaymentId();
+
+  // Retrieve the key info seed and validate it.
+  const braveledger_bat_helper::WALLET_INFO_ST wallet_info =
+      bat_state_->GetWalletInfo();
+  if (wallet_info.keyInfoSeed_.size() != SEED_LENGTH)
+    info.is_key_info_seed_valid = false;
+  else {
+    std::vector<uint8_t> secret_key =
+        braveledger_bat_helper::getHKDF(wallet_info.keyInfoSeed_);
+    std::vector<uint8_t> public_key;
+    std::vector<uint8_t> new_secret_key;
+    info.is_key_info_seed_valid = braveledger_bat_helper::getPublicKeyFromSeed(
+        secret_key, public_key, new_secret_key);
+  }
+
+  // Retrieve the current reconciles.
+  const braveledger_bat_helper::CurrentReconciles current_reconciles =
+      GetCurrentReconciles();
+  for (const auto& reconcile : current_reconciles) {
+    ledger::RewardsInternalsInfo::CurrentReconcileInfo current_reconcile_info;
+    current_reconcile_info.viewing_id = reconcile.second.viewingId_;
+    current_reconcile_info.amount = reconcile.second.amount_;
+    current_reconcile_info.retry_step = reconcile.second.retry_step_;
+    current_reconcile_info.retry_level = reconcile.second.retry_level_;
+    info.current_reconciles.insert(
+        std::make_pair(reconcile.second.viewingId_, current_reconcile_info));
+  }
+}
+
 const braveledger_bat_helper::WALLET_PROPERTIES_ST&
 LedgerImpl::GetWalletProperties() const {
   return bat_state_->GetWalletProperties();

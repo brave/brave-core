@@ -3067,4 +3067,38 @@ void saveToJson(JsonWriter* writer,
   writer->EndObject();
 }
 
+  void saveToJson(JsonWriter& writer,
+                  const ledger::RewardsInternalsInfo& info) {
+    writer.StartObject();
+
+    writer.String("payment_id");
+    writer.String(info.payment_id.c_str());
+
+    writer.String("is_key_info_seed_valid");
+    writer.Bool(info.is_key_info_seed_valid);
+
+    writer.String("current_reconciles");
+    writer.StartArray();
+    for (const auto& reconcile : info.current_reconciles) {
+      writer.StartObject();
+
+      writer.String("viewing_id");
+      writer.String(reconcile.second.viewing_id.c_str());
+
+      writer.String("amount");
+      writer.String(reconcile.second.amount.c_str());
+
+      writer.String("retry_step");
+      writer.Int(reconcile.second.retry_step);
+
+      writer.String("retry_level");
+      writer.Int(reconcile.second.retry_level);
+
+      writer.EndObject();
+    }
+    writer.EndArray();
+
+    writer.EndObject();
+  }
+
 }  // namespace braveledger_bat_helper

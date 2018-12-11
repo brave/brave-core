@@ -620,6 +620,55 @@ bool AutoContributeProps::loadFromJson(const std::string& json) {
   return !error;
 }
 
+RewardsInternalsInfo::RewardsInternalsInfo() { }
+
+RewardsInternalsInfo::RewardsInternalsInfo(const RewardsInternalsInfo& info)
+    : payment_id(info.payment_id),
+      is_key_info_seed_valid(info.is_key_info_seed_valid),
+      current_reconciles(info.current_reconciles) { }
+
+RewardsInternalsInfo::~RewardsInternalsInfo() { }
+
+const std::string RewardsInternalsInfo::ToJson() const {
+  std::string json;
+  braveledger_bat_helper::saveToJsonString(*this, json);
+  return json;
+}
+
+bool RewardsInternalsInfo::loadFromJson(const std::string& json) {
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  // has parser errors or wrong types
+  bool error = d.HasParseError();
+
+  if (false == error) {
+    error = !(d.HasMember("payment_id") && d["payment_id"].IsString() &&
+              d.HasMember("is_key_info_seed_valid") &&
+              d["is_key_info_seed_valid"].IsBool() &&
+              d.HasMember("current_reconciles") &&
+              d["current_reconciles"].IsArray());
+  }
+
+  if (false == error) {
+    payment_id = d["payment_id"].GetString();
+    is_key_info_seed_valid = d["is_key_info_seed_valid"].GetBool();
+
+    for (const auto& i : d["current_reconciles"].GetArray()) {
+      auto value = i.GetObject();
+      CurrentReconcileInfo current_reconcile_info;
+      current_reconcile_info.viewing_id = value["viewing_id"].GetString();
+      current_reconcile_info.amount = value["amount"].GetString();
+      current_reconcile_info.retry_step = value["retry_step"].GetInt();
+      current_reconcile_info.retry_level = value["retry_level"].GetInt();
+      current_reconciles.insert(std::make_pair(
+          current_reconcile_info.viewing_id, current_reconcile_info));
+    }
+  }
+
+  return !error;
+}
+
 bool Ledger::IsMediaLink(const std::string& url,
                          const std::string& first_party_url,
                          const std::string& referrer) {

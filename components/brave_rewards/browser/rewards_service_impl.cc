@@ -793,6 +793,31 @@ void RewardsServiceImpl::OnGetAutoContributeProps(
   callback.Run(std::move(auto_contri_props));
 }
 
+void RewardsServiceImpl::OnGetRewardsInternalsInfo(
+    const GetRewardsInternalsInfoCallback& callback,
+    const std::string& json_info) {
+  ledger::RewardsInternalsInfo info;
+  info.loadFromJson(json_info);
+
+  auto rewards_internals_info =
+    std::make_unique<brave_rewards::RewardsInternalsInfo>();
+  rewards_internals_info->payment_id = info.payment_id;
+  rewards_internals_info->is_key_info_seed_valid = info.is_key_info_seed_valid;
+  for (const auto& item : info.current_reconciles) {
+    RewardsInternalsInfo::CurrentReconcileInfo current_reconcile_info;
+    current_reconcile_info.viewing_id = item.second.viewing_id;
+    current_reconcile_info.amount = item.second.amount;
+    current_reconcile_info.retry_step =
+        static_cast<RewardsInternalsInfo::ContributionRetry>(
+            item.second.retry_step);
+    current_reconcile_info.retry_level = item.second.retry_level;
+    rewards_internals_info->current_reconciles[item.first] =
+        current_reconcile_info;
+  }
+
+  callback.Run(std::move(rewards_internals_info));
+}
+
 void RewardsServiceImpl::GetAutoContributeProps(
     const GetAutoContributePropsCallback& callback) {
   if (!Connected())
@@ -2453,6 +2478,12 @@ bool RewardsServiceImpl::CheckImported() {
 
 void RewardsServiceImpl::SetBackupCompleted() {
   profile_->GetPrefs()->SetBoolean(prefs::kRewardsBackupSucceeded, true);
+}
+
+void RewardsServiceImpl::GetRewardsInternalsInfo(
+    const GetRewardsInternalsInfoCallback& callback) {
+  bat_ledger_->GetRewardsInternalsInfo(base::BindOnce(
+      &RewardsServiceImpl::OnGetRewardsInternalsInfo, AsWeakPtr(), callback));
 }
 
 void RewardsServiceImpl::OnDonate(

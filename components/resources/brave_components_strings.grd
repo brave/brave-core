@@ -139,7 +139,6 @@
       <message name="IDS_BRAVE_NEW_TAB_BOOKMARKS_PAGE_TITLE" desc="Title for bookmarks page">View and Manage Bookmarks</message>
       <message name="IDS_BRAVE_NEW_TAB_HISTORY_PAGE_TITLE" desc="Title for history page">View your browsing history</message>
 
-
       <!-- WebUI private tab resources -->
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE" desc="">Learn more</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DONE" desc="">Done</message>
@@ -256,6 +255,28 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED_NOW" desc="">Recover now!</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_GRANT_ALREADY_CLAIMED_TEXT" desc="">Sorry, it appears that this grant has already been claimed.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_NEXT_DATE" desc="Description of the date in the donation box">Next monthly tip date</message>
+
+      <!-- WebUI rewards internals resources -->
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_AMOUNT" desc="Amount">Amount:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CURRENT_RECONCILE" desc="Current reconcile">Current Reconcile</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_INVALID" desc="Invalid indicator">Invalid</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_KEY_INFO_SEED" desc="Key info seed">Key Info Seed:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_LEVEL" desc="Retry level">Retry Level:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP" desc="Retry step">Retry Step:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_CURRENT" desc="Retry step current">Current</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_FINAL" desc="Retry step final">Final</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_PAYLOAD" desc="Retry step payload">Payload</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_PREPARE" desc="Retry step prepare">Prepare</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_PROOF" desc="Retry step proof">Proof</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_RECONCILE" desc="Retry step reconcile">Reconcile</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_REGISTER" desc="Retry step register">Register</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_UNKNOWN" desc="Retry step unknown">Unknown</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_VIEWING" desc="Retry step viewing">Viewing</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_VOTE" desc="Retry step vote">Vote</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_WINNERS" desc="Retry step winners">Winners</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_VALID" desc="Valid indicator">Valid</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_VIEWING_ID" desc="Viewing ID">Viewing ID:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Wallet payment ID">Wallet Payment ID:</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>

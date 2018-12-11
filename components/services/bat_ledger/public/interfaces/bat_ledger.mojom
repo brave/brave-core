@@ -100,6 +100,7 @@ interface BatLedger {
   AdSustained(string info);
   GetConfirmationsHistory(uint64 from_timestamp_seconds,
       uint64 to_timestamp_seconds) => (string transactions);
+  GetRewardsInternalsInfo() => (string info);
 };
 
 interface BatLedgerClient {
