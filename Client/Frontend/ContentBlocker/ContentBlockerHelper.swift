@@ -46,10 +46,8 @@ class ContentBlockerHelper {
     static let ruleStore: WKContentRuleListStore = WKContentRuleListStore.default()
     weak var tab: Tab?
     
-    static func compileLists() -> Deferred<((), ())> {
-        let statsList = TPStatsBlocklistChecker.shared.startup()
-        let compileList = BlocklistName.compileAll(ruleStore: ruleStore)
-        return statsList.both(compileList)
+    static func compileLists() -> Deferred<()> {
+        return BlocklistName.compileAll(ruleStore: ruleStore)
     }
 
     var isUserEnabled: Bool? {

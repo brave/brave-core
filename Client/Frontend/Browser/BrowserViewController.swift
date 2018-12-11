@@ -124,7 +124,7 @@ class BrowserViewController: UIViewController {
 
     let downloadQueue = DownloadQueue()
     
-    fileprivate var contentBlockListDeferred: Deferred<((), ())>?
+    fileprivate var contentBlockListDeferred: Deferred<()>?
     
     // Web filters
     
