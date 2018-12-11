@@ -733,6 +733,10 @@ void AdsServiceImpl::OpenSettings(Profile* profile,
   }
 
   GURL url(notification_info->url);
+  if (!url.is_valid()) {
+    LOG(WARNING) << "Invalid notification URL: " << notification_info->url;
+    return;
+  }
 
 #if defined(OS_ANDROID)
   NavigateParams nav_params(profile, url, ui::PAGE_TRANSITION_LINK);
