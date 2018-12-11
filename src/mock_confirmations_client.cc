@@ -70,6 +70,19 @@ void MockConfirmationsClient::GetWalletInfo(WalletInfo* info) const {
   info->signing_key = "abcdefghijklmnoprstuvwxyz";
 }
 
+uint32_t MockConfirmationsClient::SetTimer(const uint64_t time_offset) {
+  (void)time_offset;
+
+  static uint32_t mock_timer_id = 0;
+  mock_timer_id++;
+
+  return mock_timer_id;
+}
+
+void MockConfirmationsClient::KillTimer(uint32_t timer_id) {
+  (void)timer_id;
+}
+
 void MockConfirmationsClient::URLRequest(
     const std::string& url,
     const std::vector<std::string>& headers,
