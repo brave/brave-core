@@ -27,6 +27,9 @@ class CONFIRMATIONS_EXPORT Confirmations {
   // Should be called when a new catalog has been downloaded in Brave Ads
   virtual void OnCatalogIssuersChanged(const CatalogIssuersInfo& info) = 0;
 
+  // Should be called when a timer is triggered
+  virtual void OnTimer(const uint32_t timer_id) = 0;
+
  private:
   // Not copyable, not assignable
   Confirmations(const Confirmations&) = delete;

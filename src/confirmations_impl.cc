@@ -31,4 +31,7 @@ void ConfirmationsImpl::OnCatalogIssuersChanged(
     const CatalogIssuersInfo& info) {
 }
 
+void ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
+}
+
 }  // namespace confirmations

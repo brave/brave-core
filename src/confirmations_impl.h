@@ -18,6 +18,8 @@ class ConfirmationsImpl : public Confirmations {
 
   void OnCatalogIssuersChanged(const CatalogIssuersInfo& info) override;
 
+  void OnTimer(const uint32_t timer_id) override;
+
  private:
   bool is_initialized_;
 
