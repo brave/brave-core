@@ -14,6 +14,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test_utils.h"
+#include "net/dns/mock_host_resolver.h"
 
 using extensions::ExtensionBrowserTest;
 
@@ -45,6 +46,11 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
 public:
   AdBlockServiceTest() {}
 
+  void SetUpOnMainThread() override {
+    ExtensionBrowserTest::SetUpOnMainThread();
+    host_resolver()->AddRule("*", "127.0.0.1");
+  }
+
   void SetUp() override {
     InitEmbeddedTestServer();
     ExtensionBrowserTest::SetUp();
@@ -61,6 +67,7 @@ public:
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    content::SetupCrossSiteRedirector(embedded_test_server());
     ASSERT_TRUE(embedded_test_server()->Start());
   }
 
@@ -378,4 +385,37 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 
   ui_test_utils::NavigateToURL(browser(), url);
+}
+
+// XHRs and ads in a cross-site iframe are blocked as well.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
+  SetDefaultComponentIdAndBase64PublicKeyForTest(
+      kDefaultAdBlockComponentTestId,
+      kDefaultAdBlockComponentTestBase64PublicKey);
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  GURL url = embedded_test_server()->GetURL("a.com", "/iframe_blocking.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(url, contents->GetURL());
+
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+      contents->GetAllFrames()[1],
+      "setExpectations(0, 0, 0, 1);"
+      "xhr('adbanner.js?1');",
+      &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+
+  // Check also an explicit request for a script since it is a common real-world
+  // scenario.
+  ASSERT_TRUE(ExecuteScript(
+      contents->GetAllFrames()[1],
+      "var s = document.createElement('script');"
+      "s.setAttribute('src', 'adbanner.js?2');"
+      "document.head.appendChild(s);"));
+  content::RunAllTasksUntilIdle();
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
