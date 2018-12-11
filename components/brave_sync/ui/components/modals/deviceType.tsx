@@ -53,6 +53,7 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
 
   onUserNoticedError = () => {
     this.props.actions.resetSyncSetupError()
+    this.props.onClose()
   }
 
   onClickClose = () => {
@@ -82,6 +83,14 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
           ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
               <Title>{getLocale('errorNoInternetTitle')}</Title>
               <SubTitle>{getLocale('errorNoInternetDescription')}</SubTitle>
+            </AlertBox>
+          : null
+        }
+        {
+          syncData.error === 'ERR_SYNC_INIT_FAILED'
+          ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
+              <Title>{getLocale('errorSyncInitFailedTitle')}</Title>
+              <SubTitle>{getLocale('errorSyncInitFailedDescription')}</SubTitle>
             </AlertBox>
           : null
         }

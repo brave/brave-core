@@ -52,6 +52,7 @@ interface Props {
 
   onUserNoticedError = () => {
     this.props.actions.resetSyncSetupError()
+    this.props.onClose()
   }
 
   onEnterPassphrase = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -70,7 +71,6 @@ interface Props {
 
   render () {
     const { onClose, syncData } = this.props
-
     return (
       <Modal id='enterSyncCodeModal' onClose={onClose} size='small'>
         {

@@ -463,8 +463,6 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "enterSyncCode", IDS_BRAVE_SYNC_ENTER_CODE_TITLE },
         { "enterSyncCodeDescription", IDS_BRAVE_SYNC_ENTER_CODE_DESCRIPTION },
         { "confirmCode", IDS_BRAVE_SYNC_ENTER_CODE_CONFIRM_CODE_BUTTON },
-        { "invalidCode", IDS_BRAVE_SYNC_ENTER_CODE_INVALID_CODE_TEXT },
-        { "tryAgain", IDS_BRAVE_SYNC_ENTER_CODE_TRY_AGAIN_TEXT },
         // [modal] Remove Main Device
         { "thisDeviceRemovalDescription", IDS_BRAVE_SYNC_REMOVE_MAIN_DEVICE_DESCRIPTION },
         { "joinSyncChain", IDS_BRAVE_SYNC_REMOVE_MAIN_DEVICE_JOIN_CHAIN_INSTRUCTIONS },
@@ -505,6 +503,8 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "errorNoInternetDescription", IDS_BRAVE_SYNC_ERROR_NO_INTERNET_DESCRIPTION },
         { "errorMissingDeviceNameTitle", IDS_BRAVE_SYNC_ERROR_MISSING_DEVICE_NAME_TITLE },
         { "errorMissingCodeTitle", IDS_BRAVE_SYNC_ERROR_MISSING_SYNC_CODE_TITLE },
+        { "errorSyncInitFailedTitle", IDS_BRAVE_SYNC_ERROR_INIT_FAILED_TITLE },
+        { "errorSyncInitFailedDescription", IDS_BRAVE_SYNC_ERROR_INIT_FAILED_DESCRIPTION },
       }
     }, {
       std::string("adblock"), {

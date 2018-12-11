@@ -470,8 +470,6 @@
       <message name="IDS_BRAVE_SYNC_ENTER_CODE_TITLE" desc="The Sync modal title for `enter sync code`">Enter a sync code</message>
       <message name="IDS_BRAVE_SYNC_ENTER_CODE_DESCRIPTION" desc="The Sync modal text for `enter sync code`">Go to Brave Settings &gt; Sync &gt; Display sync code</message>
       <message name="IDS_BRAVE_SYNC_ENTER_CODE_CONFIRM_CODE_BUTTON" desc="The Sync modal button for `enter sync code` to confirm sync code">Confirm Sync Code</message>
-      <message name="IDS_BRAVE_SYNC_ENTER_CODE_INVALID_CODE_TEXT" desc="The Sync modal warning dialog title saying that sync code is invalid">Invalid sync code.</message>
-      <message name="IDS_BRAVE_SYNC_ENTER_CODE_TRY_AGAIN_TEXT" desc="The Sync modal warning dialog description saying that sync code is invalid">Please try again.</message>
       <!-- WebUI brave sync resources: [modal] Remove Main Device -->
       <message name="IDS_BRAVE_SYNC_REMOVE_MAIN_DEVICE_DESCRIPTION" desc="The Sync phrase in `remove main device` modal explaining how data behaves on all devices">Local device data will remain intact on all devices. Other devices in this sync chain will remain synced.</message>
       <message name="IDS_BRAVE_SYNC_REMOVE_MAIN_DEVICE_JOIN_CHAIN_INSTRUCTIONS" desc="The Sync phrase in `remove main device` modal explaining how to join a sync chain again">To join a sync chain again, choose “Enter a sync chain code”.</message>
@@ -512,6 +510,8 @@
       <message name="IDS_BRAVE_SYNC_ERROR_NO_INTERNET_DESCRIPTION" desc="Error message in dialog for when user is offline (description)">Please try again when your connection is available.</message>
       <message name="IDS_BRAVE_SYNC_ERROR_MISSING_DEVICE_NAME_TITLE" desc="Error message in dialog for when device name is missing (title)">Device name is required.</message>
       <message name="IDS_BRAVE_SYNC_ERROR_MISSING_SYNC_CODE_TITLE" desc="Error message in dialog for when device name is missing (description)">Please add a sync code.</message>
+      <message name="IDS_BRAVE_SYNC_ERROR_INIT_FAILED_TITLE" desc="Error message in dialog for when a Sync error happens in the back-end">Unable to connect to Sync</message>
+      <message name="IDS_BRAVE_SYNC_ERROR_INIT_FAILED_DESCRIPTION" desc="Error message in dialog for when a Sync error happens in the back-end">Unable to connect to the Sync servers. Please try again in a few minutes.</message>
     </messages>
   </release>
 </grit>
