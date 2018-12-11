@@ -4,6 +4,7 @@
 
 #include "confirmations_impl.h"
 #include "bat/confirmations/confirmations_client.h"
+#include "bat/confirmations/catalog_issuers_info.h"
 #include "logging.h"
 #include "static_values.h"
 
@@ -24,6 +25,10 @@ void ConfirmationsImpl::Initialize() {
   }
 
   is_initialized_ = true;
+}
+
+void ConfirmationsImpl::OnCatalogIssuersChanged(
+    const CatalogIssuersInfo& info) {
 }
 
 }  // namespace confirmations

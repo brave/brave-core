@@ -6,6 +6,7 @@
 
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/export.h"
+#include "bat/confirmations/catalog_issuers_info.h"
 
 namespace confirmations {
 
@@ -22,6 +23,9 @@ class CONFIRMATIONS_EXPORT Confirmations {
 
   // Should be called when Brave Ads are enabled or disabled on the Client
   virtual void Initialize() = 0;
+
+  // Should be called when a new catalog has been downloaded in Brave Ads
+  virtual void OnCatalogIssuersChanged(const CatalogIssuersInfo& info) = 0;
 
  private:
   // Not copyable, not assignable

@@ -16,6 +16,8 @@ class ConfirmationsImpl : public Confirmations {
 
   void Initialize() override;
 
+  void OnCatalogIssuersChanged(const CatalogIssuersInfo& info) override;
+
  private:
   bool is_initialized_;
 
