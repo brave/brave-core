@@ -334,6 +334,14 @@ void BookmarkChangeProcessor::BookmarkNodeRemoved(
     const std::set<GURL>& no_longer_bookmarked) {
   // TODO(bridiver) - should this be in OnWillRemoveBookmarks?
   // copy into the deleted node tree without firing any events
+
+  // The node which has not yet been sent, should not be cloned into removed.
+  std::string node_object_id;
+  node->GetMetaInfo("object_id", &node_object_id);
+  if (node_object_id.empty()) {
+    return;
+  }
+
   auto* deleted_node = GetDeletedNodeRoot();
   CHECK(deleted_node);
   bookmarks::BookmarkNodeData data(node);
@@ -631,7 +639,10 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
   //bookmark->site.lastAccessedTime - ignored
   bookmark->site.creationTime = node->date_added();
   bookmark->site.favicon = node->icon_url() ? node->icon_url()->spec() : "";
-  bookmark->isFolder = node->is_folder();
+  //bookmark->isFolder = node->is_folder();
+  // Url may have type OTHER_NODE if it is in Deleted Bookmarks
+  bookmark->isFolder = (node->type() != bookmarks::BookmarkNode::URL &&
+                           node->type() != bookmarks::BookmarkNode::OTHER_NODE);
   bookmark->hideInToolbar =
       !node->HasAncestor(bookmark_model_->bookmark_bar_node());
 
@@ -670,6 +681,12 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
     record->syncTimestamp = base::Time::FromJsTime(std::stod(sync_timestamp));
   } else {
     record->syncTimestamp = base::Time::Now();
+  }
+
+  // Situation below means the node was created and then deleted before send
+  // Should be ignored
+  if (record->objectId.empty() && node->HasAncestor(deleted_node)) {
+    return nullptr;
   }
 
   if (record->objectId.empty()) {
