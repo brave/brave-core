@@ -136,6 +136,7 @@ extension ShieldsViewController {
         let settingsDivider = dividerView()
         let settingsHeaderLabel = headerLabel(title: Strings.Individual_Controls)
         let adsTrackersControl = ToggleView(title: Strings.Block_Ads_and_Tracking)
+        let httpsUpgradesControl = ToggleView(title: Strings.HTTPS_Everywhere)
         let blockMalwareControl = ToggleView(title: Strings.Block_Phishing)
         let blockScriptsControl = ToggleView(title: Strings.Block_Scripts)
         let fingerprintingControl = ToggleView(title: Strings.Fingerprinting_Protection_wrapped)
@@ -161,7 +162,7 @@ extension ShieldsViewController {
             addArrangedSubview(settingsDivider)
             addArrangedSubview(settingsHeaderLabel)
             
-            [adsTrackersControl, blockMalwareControl, blockScriptsControl, fingerprintingControl].forEach {
+            [adsTrackersControl, httpsUpgradesControl, blockMalwareControl, blockScriptsControl, fingerprintingControl].forEach {
                 addArrangedSubview($0)
                 setCustomSpacing(18.0, after: $0)
             }
