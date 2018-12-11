@@ -166,8 +166,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
@@ -192,8 +190,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
@@ -222,8 +218,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
@@ -253,8 +247,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
@@ -289,8 +281,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
@@ -314,8 +304,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoSameAdsGetCountedAsOne) {
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
@@ -340,8 +328,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoDiffAdsGetCountedAsTwo) {
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
@@ -366,8 +352,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
@@ -379,7 +363,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
 
   ui_test_utils::NavigateToURL(browser(), url);
   contents = browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
 
   as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
@@ -404,7 +387,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  EXPECT_EQ(url, contents->GetURL());
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents->GetAllFrames()[1],
