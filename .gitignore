@@ -9,6 +9,7 @@
 /dist/
 /out/
 /vendor
+!/vendor/bat-native-ledger
 node_modules/
 *.xcodeproj
 *.swp
