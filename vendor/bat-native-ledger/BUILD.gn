@@ -1,0 +1,90 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+if (is_android) {
+  import("//build/config/android/rules.gni")
+}
+
+dep_base = rebase_path("../..", "//")
+
+config("external_config") {
+  include_dirs = [ "include" ]
+}
+
+config("internal_config") {
+  include_dirs = [ "src" ]
+}
+
+group("bat-native-ledger") {
+  public_deps = [
+    ":ledger",
+  ]
+
+  data_deps = [
+    ":bat-native-ledger-standalone",
+  ]
+}
+
+static_library("bat-native-ledger-standalone") {
+  # TODO(bridiver) - only export symbols from `include`
+  complete_static_lib = true
+
+  output_dir = root_out_dir
+
+  configs -= [ "//build/config/compiler:thin_archive" ]
+
+  defines = [
+    "STANDALONE_BUILD",
+  ]
+
+  deps = [
+    ":ledger"
+  ]
+}
+
+source_set("ledger") {
+  public_configs = [ ":external_config" ]
+  configs += [ ":internal_config" ]
+
+  output_name = "bat_native_ledger"
+
+  sources = [
+    "include/bat/ledger/ledger.h",
+    "include/bat/ledger/ledger_callback_handler.h",
+    "include/bat/ledger/ledger_client.h",
+    "include/bat/ledger/ledger_url_loader.h",
+    "include/bat/ledger/ledger_task_runner.h",
+    "src/bat/ledger/ledger.cc",
+    "src/bat_client.cc",
+    "src/bat_client.h",
+    "src/bat_contribution.cc",
+    "src/bat_contribution.h",
+    "src/bat_get_media.cc",
+    "src/bat_get_media.h",
+    "src/bat_helper.cc",
+    "src/bat_helper.h",
+    "src/bat_helper_platform.h",
+    "src/bat_publishers.cc",
+    "src/bat_publishers.h",
+    "src/bat_state.cc",
+    "src/bat_state.h",
+    "src/bignum.cc",
+    "src/bignum.h",
+    "src/ledger_impl.cc",
+    "src/ledger_impl.h",
+    "src/ledger_task_runner_impl.cc",
+    "src/ledger_task_runner_impl.h",
+    "src/url_request_handler.cc",
+    "src/url_request_handler.h",
+  ]
+
+  deps = [
+    "//third_party/boringssl",
+    "//third_party/leveldatabase",
+    rebase_path("bat-native-anonize:anonize2", dep_base),
+    rebase_path("bip39wally-core-native:bip39wally-core", dep_base),
+    rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
+    rebase_path("bat-native-rapidjson", dep_base),
+  ]
+}
