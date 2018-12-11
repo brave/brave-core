@@ -18,14 +18,14 @@ interface Props extends RewardsDonate.ComponentProps {
 }
 
 interface State {
-  currentAmount: number
+  currentAmount: string
 }
 
 class Banner extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      currentAmount: 0
+      currentAmount: '0'
     }
   }
 
@@ -60,17 +60,17 @@ class Banner extends React.Component<Props, State> {
     })
   }
 
-  onAmountSelection = (tokens: number) => {
+  onAmountSelection = (tokens: string) => {
     this.setState({
       currentAmount: tokens
     })
   }
 
-  onDonate = (amount: number, recurring: boolean) => {
+  onDonate = (amount: string, recurring: boolean) => {
     const { publisher, walletInfo } = this.props.rewardsDonateData
     const { balance } = walletInfo
 
-    if (publisher && publisher.publisherKey && balance >= parseInt(amount.toString(), 10)) {
+    if (publisher && publisher.publisherKey && balance >= parseInt(amount, 10)) {
       this.actions.onDonate(publisher.publisherKey, amount, recurring)
     } else {
       // TODO return error
