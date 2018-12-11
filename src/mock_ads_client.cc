@@ -173,7 +173,7 @@ void MockAdsClient::URLRequest(
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& content_type,
-    URLRequestMethod method,
+    const URLRequestMethod method,
     URLRequestCallback callback) {
   (void)url;
   (void)headers;
