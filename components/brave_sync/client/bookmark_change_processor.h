@@ -17,6 +17,8 @@
 #include "components/bookmarks/browser/bookmark_node.h"
 #include "components/bookmarks/browser/bookmark_node_data.h"
 
+class BraveBookmarkChangeProcessorTest;
+
 namespace brave_sync {
 
 class BookmarkChangeProcessor : public ChangeProcessor,
@@ -40,6 +42,8 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   void InitialSync() override;
 
  private:
+  friend class ::BraveBookmarkChangeProcessorTest;
+
   BookmarkChangeProcessor(Profile* profile,
                           BraveSyncClient* sync_client,
                           prefs::Prefs* sync_prefs);
@@ -80,6 +84,7 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   std::unique_ptr<jslib::SyncRecord> BookmarkNodeToSyncBookmark(
       const bookmarks::BookmarkNode* node);
   bookmarks::BookmarkNode* GetDeletedNodeRoot();
+  bookmarks::BookmarkNode* GetPendingNodeRoot();
   void CloneBookmarkNodeForDeleteImpl(
       const bookmarks::BookmarkNodeData::Element& element,
       bookmarks::BookmarkNode* parent,
@@ -92,12 +97,17 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   // "Other Bookmarks" so we need to explicitly delete children
   void DeleteSelfAndChildren(const bookmarks::BookmarkNode* node);
 
+  void CompletePendingNodesMove(
+      const bookmarks::BookmarkNode* created_folder_node,
+      const std::string& created_folder_object_id);
+
   BraveSyncClient* sync_client_;  // not owned
   prefs::Prefs* sync_prefs_;  // not owned
   Profile* profile_; // not owned
   bookmarks::BookmarkModel* bookmark_model_;  // not owned
 
   bookmarks::BookmarkNode* deleted_node_root_;
+  bookmarks::BookmarkNode* pending_node_root_;
 
   DISALLOW_COPY_AND_ASSIGN(BookmarkChangeProcessor);
 };

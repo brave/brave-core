@@ -135,6 +135,14 @@ class BraveBookmarkChangeProcessorTest : public testing::Test {
   brave_sync::BookmarkChangeProcessor* change_processor() {
     return change_processor_.get();
   }
+  const bookmarks::BookmarkPermanentNode* GetDeletedNodeRoot() {
+    return static_cast<const bookmarks::BookmarkPermanentNode*>(
+              change_processor_->GetDeletedNodeRoot());
+  }
+  const bookmarks::BookmarkPermanentNode* GetPendingNodeRoot() {
+    return static_cast<const bookmarks::BookmarkPermanentNode*>(
+              change_processor_->GetPendingNodeRoot());
+  }
 
   void BookmarkAddedImpl();
   void BookmarkCreatedFromSyncImpl();
@@ -203,8 +211,8 @@ TEST_F(BraveBookmarkChangeProcessorTest, StopObserver) {
 bool BraveBookmarkChangeProcessorTest::HasAnySyncMetaInfo(
                                                     const BookmarkNode* node) {
   DCHECK(node);
-  const std::vector<std::string> keys = {"object_id", "order", "sync_timestamp", "last_send_time",
-                     "last_updated_time"};
+  const std::vector<std::string> keys = {"object_id", "order", "sync_timestamp",
+      "last_send_time", "last_updated_time", "parent_object_id"};
   for (const auto& key : keys ) {
     std::string value;
     if (node->GetMetaInfo(key, &value) && !value.empty()) {
@@ -296,6 +304,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkDeleted) {
       ContainsRecord(SyncRecord::Action::A_DELETE, "https://a.com/"))).Times(1);
   model()->Remove(nodes.at(0));
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  EXPECT_FALSE(GetDeletedNodeRoot()->IsVisible());
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, BookmarkModified) {
@@ -801,4 +810,358 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkFromMobileGoesToToolbar) {
 
   const auto* node_a = model()->bookmark_bar_node()->GetChild(0);
   EXPECT_EQ(node_a->url().spec(), "https://a.com/");
+}
+
+TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolder) {
+  // Create these:
+  // Other
+  //    Folder1
+  //      a.com
+  //      b.com
+  // With a broken sequence
+  // Then verify in a model
+
+  change_processor()->Start();
+
+  auto folder1_record = SimpleFolderSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "Folder1",
+      "1.1.1.1.1.1",
+      "", true, "");
+
+  auto a_record = SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "https://a.com/",
+      "A.com - title",
+      "1.1.1.1.1.1.1",
+      folder1_record->objectId);
+
+  auto b_record = SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "https://b.com/",
+      "B.com - title",
+      "1.1.1.1.1.1.2",
+      folder1_record->objectId);
+
+  RecordsList records;
+  records.push_back(std::move(a_record));
+  records.push_back(std::move(b_record));
+
+  change_processor()->ApplyChangesFromSyncModel(records);
+
+  // Verify the model, for now we should not find anything
+  EXPECT_EQ(model()->GetMostRecentlyAddedUserNodeForURL(GURL("https://a.com/")),
+      nullptr);
+  EXPECT_EQ(model()->GetMostRecentlyAddedUserNodeForURL(GURL("https://b.com/")),
+      nullptr);
+
+  RecordsList records2;
+  records2.push_back(std::move(folder1_record));
+  change_processor()->ApplyChangesFromSyncModel(records2);
+
+  // Verify the model, now we should find the folder and the nodes
+  ASSERT_EQ(model()->other_node()->child_count(), 1);
+  const auto* folder1 = model()->other_node()->GetChild(0);
+  EXPECT_EQ(base::UTF16ToUTF8(folder1->GetTitle()), "Folder1");
+
+  ASSERT_EQ(folder1->child_count(), 2);
+  const auto* node_a = folder1->GetChild(0);
+  EXPECT_EQ(node_a->url().spec(), "https://a.com/");
+  const auto* node_b = folder1->GetChild(1);
+  EXPECT_EQ(node_b->url().spec(), "https://b.com/");
+  EXPECT_FALSE(GetPendingNodeRoot()->IsVisible());
+}
+
+TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolderAgressive) {
+  // Send these:
+  // Other
+  //    Folder1
+  //       Folder2
+  //          Folder3
+  //              a.com
+  //              b.com
+  // In a backwards order:
+  //    b.com, a.com,
+  //    Folder2,
+  //    Folder3,
+  //    Folder1
+  // Then verify in a model
+
+  change_processor()->Start();
+
+  auto folder1_record = SimpleFolderSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "Folder1",
+      "1.1.1.1",
+      "", true, "");
+
+  auto folder2_record = SimpleFolderSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "Folder2",
+      "1.1.1.1.1",
+      folder1_record->objectId,
+      true, "");
+
+  auto folder3_record = SimpleFolderSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "Folder3",
+      "1.1.1.1.1.1",
+      folder2_record->objectId,
+      true, "");
+
+  auto a_record = SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "https://a.com/",
+      "A.com - title",
+      "1.1.1.1.1.1.1",
+      folder3_record->objectId);
+
+  auto b_record = SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "https://b.com/",
+      "B.com - title",
+      "1.1.1.1.1.1.2",
+      folder3_record->objectId);
+
+  // Send in a backwards order
+  {
+    RecordsList records1;
+    records1.push_back(std::move(b_record));
+    records1.push_back(std::move(a_record));
+    change_processor()->ApplyChangesFromSyncModel(records1);
+
+    // Verify the model, for now we should not find anything
+    EXPECT_EQ(model()->GetMostRecentlyAddedUserNodeForURL(GURL("https://a.com/")),
+        nullptr);
+    EXPECT_EQ(model()->GetMostRecentlyAddedUserNodeForURL(GURL("https://b.com/")),
+        nullptr);
+  }
+
+  {
+    RecordsList records2;
+    records2.push_back(std::move(folder2_record));
+    change_processor()->ApplyChangesFromSyncModel(records2);
+    EXPECT_EQ(model()->GetMostRecentlyAddedUserNodeForURL(GURL("https://a.com/")),
+        nullptr);
+    EXPECT_EQ(model()->GetMostRecentlyAddedUserNodeForURL(GURL("https://b.com/")),
+        nullptr);
+  }
+
+  {
+    RecordsList records3;
+    records3.push_back(std::move(folder3_record));
+    change_processor()->ApplyChangesFromSyncModel(records3);
+    EXPECT_EQ(model()->GetMostRecentlyAddedUserNodeForURL(GURL("https://a.com/")),
+        nullptr);
+    EXPECT_EQ(model()->GetMostRecentlyAddedUserNodeForURL(GURL("https://b.com/")),
+        nullptr);
+    // TODO(alexeyb): Verify there are some records attached to
+    // "Pending Bookmarks" node
+  }
+
+  {
+    RecordsList records4;
+    records4.push_back(std::move(folder1_record));
+    change_processor()->ApplyChangesFromSyncModel(records4);
+  }
+
+  // Verify now all is as expected
+  ASSERT_EQ(model()->other_node()->child_count(), 1);
+  const auto* folder1 = model()->other_node()->GetChild(0);
+  EXPECT_EQ(base::UTF16ToUTF8(folder1->GetTitle()), "Folder1");
+
+  ASSERT_EQ(folder1->child_count(), 1);
+  const auto* folder2 = folder1->GetChild(0);
+  EXPECT_EQ(base::UTF16ToUTF8(folder2->GetTitle()), "Folder2");
+
+  ASSERT_EQ(folder2->child_count(), 1);
+  const auto* folder3 = folder2->GetChild(0);
+  EXPECT_EQ(base::UTF16ToUTF8(folder3->GetTitle()), "Folder3");
+
+  ASSERT_EQ(folder3->child_count(), 2);
+  const auto* node_a = folder3->GetChild(0);
+  EXPECT_EQ(node_a->url().spec(), "https://a.com/");
+  const auto* node_b = folder3->GetChild(1);
+  EXPECT_EQ(node_b->url().spec(), "https://b.com/");
+  EXPECT_FALSE(GetPendingNodeRoot()->IsVisible());
+}
+
+TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolderRequireStrictSorting) {
+  // Send these:
+  // Other
+  // +--0-1.com              1.1.1.1
+  // +--Folder1              1.1.1.2
+  // |  +--1-1.com           1.1.1.2.1
+  // |  +--Folder2           1.1.1.2.2
+  // |  |  +--2-1.com        1.1.1.2.2.1
+  // |  |  +--Folder3        1.1.1.2.2.2
+  // |  |  |  +--a.com       1.1.1.2.2.2.1
+  // |  |  |  +--b.com       1.1.1.2.2.2.2
+  // |  |  +--2-2.com        1.1.1.2.2.3
+  // |  |  +--2-3.com        1.1.1.2.2.4
+  // |  +--1-2.com           1.1.1.2.3
+  // +--0-2.com              1.1.1.3
+  //
+  // In an order:
+  //    Folder2, 2-1.com, Folder3, a.com, b.com
+  //    2-3.com, 2-2.com, 1-2.com
+  //    Folder1, 0-1.com, 0-2.com, 1-1.com
+  // Then verify in a model
+
+  change_processor()->Start();
+
+  auto folder1_record = SimpleFolderSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "Folder1",
+      "1.1.1.2",
+      "", true, "");
+
+  auto folder2_record = SimpleFolderSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "Folder2",
+      "1.1.1.2.2",
+      folder1_record->objectId,
+      true, "");
+
+  auto folder3_record = SimpleFolderSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "Folder3",
+      "1.1.1.2.2.2",
+      folder2_record->objectId,
+      true, "");
+
+  auto _0_1_record = SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "https://0-1.com/",
+      "0-1.com - title",
+      "1.1.1.1",
+      "");
+  auto _0_2_record = SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "https://0-2.com/",
+      "0-2.com - title",
+      "1.1.1.3",
+      "");
+
+  auto _1_1_record = SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "https://1-1.com/",
+      "1-1.com - title",
+      "1.1.1.2.1",
+      folder1_record->objectId);
+  auto _1_2_record = SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "https://1-2.com/",
+      "1-2.com - title",
+      "1.1.1.2.3",
+      folder1_record->objectId);
+
+  auto _2_1_record = SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "https://2-1.com/",
+      "2-1.com - title",
+      "1.1.1.2.2.1",
+      folder2_record->objectId);
+  auto _2_2_record = SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "https://2-2.com/",
+      "2-2.com - title",
+      "1.1.1.2.2.3",
+      folder2_record->objectId);
+  auto _2_3_record = SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "https://2-3.com/",
+      "2-3.com - title",
+      "1.1.1.2.2.4",
+      folder2_record->objectId);
+
+  auto a_record = SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "https://a.com/",
+      "A.com - title",
+      "1.1.1.1.1.1.1",
+      folder3_record->objectId);
+
+  auto b_record = SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "https://b.com/",
+      "B.com - title",
+      "1.1.1.1.1.1.2",
+      folder3_record->objectId);
+
+  // Send in an order
+  {
+    RecordsList records1;
+    records1.push_back(std::move(folder2_record));
+    records1.push_back(std::move(_2_1_record));
+    records1.push_back(std::move(folder3_record));
+    records1.push_back(std::move(a_record));
+    records1.push_back(std::move(b_record));
+    change_processor()->ApplyChangesFromSyncModel(records1);
+  }
+
+  {
+    RecordsList records2;
+    // 2-3 before 2-2 is important
+    records2.push_back(std::move(_2_3_record));
+    records2.push_back(std::move(_2_2_record));
+    records2.push_back(std::move(_1_2_record));
+    change_processor()->ApplyChangesFromSyncModel(records2);
+  }
+
+  {
+    RecordsList records3;
+    records3.push_back(std::move(folder1_record));
+    records3.push_back(std::move(_0_1_record));
+    records3.push_back(std::move(_0_2_record));
+    records3.push_back(std::move(_1_1_record));
+
+    change_processor()->ApplyChangesFromSyncModel(records3);
+  }
+
+  // Verify now all is as expected
+  ASSERT_EQ(model()->other_node()->child_count(), 3);
+  const auto* node_0_1 = model()->other_node()->GetChild(0);
+  EXPECT_EQ(node_0_1->url().spec(), "https://0-1.com/");
+  const auto* folder1 = model()->other_node()->GetChild(1);
+  EXPECT_EQ(base::UTF16ToUTF8(folder1->GetTitle()), "Folder1");
+  const auto* node_0_2 = model()->other_node()->GetChild(2);
+  EXPECT_EQ(node_0_2->url().spec(), "https://0-2.com/");
+
+  ASSERT_EQ(folder1->child_count(), 3);
+  const auto* node_1_1 = folder1->GetChild(0);
+  EXPECT_EQ(node_1_1->url().spec(), "https://1-1.com/");
+  const auto* folder2 = folder1->GetChild(1);
+  EXPECT_EQ(base::UTF16ToUTF8(folder2->GetTitle()), "Folder2");
+  const auto* node_1_2 = folder1->GetChild(2);
+  EXPECT_EQ(node_1_2->url().spec(), "https://1-2.com/");
+
+  ASSERT_EQ(folder2->child_count(), 4);
+  const auto* node_2_1 = folder2->GetChild(0);
+  EXPECT_EQ(node_2_1->url().spec(), "https://2-1.com/");
+  const auto* folder3 = folder2->GetChild(1);
+  EXPECT_EQ(base::UTF16ToUTF8(folder3->GetTitle()), "Folder3");
+  // Below fails if GetIndex uses tree iteartor
+  const auto* node_2_2 = folder2->GetChild(2);
+  EXPECT_EQ(node_2_2->url().spec(), "https://2-2.com/");
+
+  ASSERT_EQ(folder3->child_count(), 2);
+  const auto* node_a = folder3->GetChild(0);
+  EXPECT_EQ(node_a->url().spec(), "https://a.com/");
+  const auto* node_b = folder3->GetChild(1);
+  EXPECT_EQ(node_b->url().spec(), "https://b.com/");
+  EXPECT_FALSE(GetPendingNodeRoot()->IsVisible());
 }
