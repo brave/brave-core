@@ -4,6 +4,9 @@
 
 #pragma once
 
+static const char* BRAVE_AD_SERVER = "ads-serve.bravesoftware.com";
+static int BRAVE_AD_SERVER_PORT = 80;
+
 namespace confirmations {
 
 }  // namespace confirmations

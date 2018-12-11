@@ -80,11 +80,9 @@ source_set("confirmations") {
 
 
   sources = [
-#    "deps/challenge-bypass-ristretto-ffi/src/wrapper.hpp",
-#    "deps/challenge-bypass-ristretto-ffi/src/wrapper.cpp",
-#    "deps/challenge-bypass-ristretto-ffi/src/lib.h",
-#    "include/confirmations.hpp",
-#    "src/confirmations.cpp",
+    "deps/challenge-bypass-ristretto-ffi/src/wrapper.hpp",
+    "deps/challenge-bypass-ristretto-ffi/src/wrapper.cpp",
+    "deps/challenge-bypass-ristretto-ffi/src/lib.h",
     "deps/happyhttp/happyhttp.cpp",
     "src/bat/confirmations/ad_info.cc",
     "src/bat/confirmations/wallet_info.cc",
