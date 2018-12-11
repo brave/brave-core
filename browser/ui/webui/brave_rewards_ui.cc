@@ -9,6 +9,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
+#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
@@ -708,11 +709,20 @@ void RewardsDOMHandler::CheckImported(const base::ListValue *args) {
 void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
   if (ads_service_ && web_ui()->CanCallJavascript()) {
     base::DictionaryValue adsData;
+
+    bool ads_ui_enabled;
     bool ads_enabled = ads_service_->is_enabled();
     int ads_per_hour = ads_service_->ads_per_hour();
 
+    #if BUILDFLAG(BRAVE_ADS_ENABLED)
+      ads_ui_enabled = true;
+    #else
+      ads_ui_enabled = false;
+    #endif
+
     adsData.SetBoolean("adsEnabled", ads_enabled);
     adsData.SetInteger("adsPerHour", ads_per_hour);
+    adsData.SetBoolean("adsUIEnabled", ads_ui_enabled);
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsData", adsData);
   }

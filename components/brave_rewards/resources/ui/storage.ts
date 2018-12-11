@@ -49,7 +49,8 @@ export const defaultState: Rewards.State = {
   excluded: [],
   adsData: {
     adsEnabled: false,
-    adsPerHour: 0
+    adsPerHour: 0,
+    adsUIEnabled: false
   }
 }
 

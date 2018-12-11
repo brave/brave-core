@@ -77,13 +77,13 @@ class AdsBox extends React.Component<Props, {}> {
   }
 
   render () {
-    let adsEnabled
+    let adsEnabled = false
+    let adsUIEnabled = false
     const { adsData } = this.props.rewardsData
 
-    if (!adsData) {
-      adsEnabled = false
-    } else {
-      adsEnabled = this.props.rewardsData.adsData.adsEnabled
+    if (adsData) {
+      adsEnabled = adsData.adsEnabled
+      adsUIEnabled = adsData.adsUIEnabled
     }
 
     return (
@@ -91,7 +91,7 @@ class AdsBox extends React.Component<Props, {}> {
         title={getLocale('adsTitle')}
         type={'ads'}
         description={getLocale('adsDesc')}
-        toggle={true}
+        toggle={adsUIEnabled}
         checked={adsEnabled}
         settingsChild={this.adsSettings(adsEnabled)}
         testId={'braveAdsSettings'}
