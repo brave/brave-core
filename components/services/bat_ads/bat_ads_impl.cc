@@ -57,7 +57,6 @@ void BatAdsImpl::OnIdle() {
 void OnSaveCachedInfo(const ads::Result result) {}
 
 void BatAdsImpl::SaveCachedInfo(SaveCachedInfoCallback callback) {
-  ads_->SaveCachedInfo(std::bind(&OnSaveCachedInfo, _1));
   std::move(callback).Run();
 }
 
