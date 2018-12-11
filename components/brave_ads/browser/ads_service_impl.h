@@ -16,6 +16,7 @@
 #include "base/timer/timer.h"
 #include "bat/ads/ads_client.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/background_helper.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "components/history/core/browser/history_service_observer.h"
@@ -43,6 +44,7 @@ class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
                        public net::URLFetcherDelegate,
                        public history::HistoryServiceObserver,
+                       BackgroundHelper::Observer,
                        public base::SupportsWeakPtr<AdsServiceImpl> {
  public:
   explicit AdsServiceImpl(Profile* profile);
@@ -90,6 +92,7 @@ class AdsServiceImpl : public AdsService,
 
   // AdsClient implementation
   bool IsAdsEnabled() const override;
+  bool IsForeground() const override;
   const std::string GetAdsLocale() const override;
   uint64_t GetAdsPerHour() const override;
   uint64_t GetAdsPerDay() const override;
@@ -145,6 +148,10 @@ class AdsServiceImpl : public AdsService,
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;
+
+  // BackgroundHelper::Observer impl
+  void OnBackground() override;
+  void OnForeground() override;
 
   void OnGetAdsForCategory(const ads::OnGetAdsCallback& callback,
                            const std::string& region,

@@ -21,6 +21,7 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
 
   // AdsClient implementation
   bool IsAdsEnabled() const override;
+  bool IsForeground() const override;
   const std::string GetAdsLocale() const override;
   uint64_t GetAdsPerHour() const override;
   uint64_t GetAdsPerDay() const override;
