@@ -76,6 +76,15 @@ bool BatAdsClientMojoBridge::IsAdsEnabled() const {
   return is_enabled;
 }
 
+bool BatAdsClientMojoBridge::IsForeground() const {
+  if (!connected())
+    return false;
+
+  bool is_foreground;
+  bat_ads_client_->IsForeground(&is_foreground);
+  return is_foreground;
+}
+
 const std::string BatAdsClientMojoBridge::GetAdsLocale() const {
   if (!connected())
     return "en-US";

@@ -41,6 +41,8 @@ interface BatAdsClient {
   GetUrlComponents(string url) => (bool result, string components_json);
   [Sync]
   GetClientInfo(string client_info) => (string client_info);
+  [Sync]
+  IsForeground() => (bool foreground);
 
   SetIdleThreshold(int32 threshold);
   KillTimer(uint32 timer_id);
@@ -66,7 +68,6 @@ interface BatAds {
   OnTimer(uint32 timer_id);
   OnUnIdle();
   OnIdle();
-  SaveCachedInfo() => ();
   OnForeground();
   OnBackground();
   OnMediaPlaying(int32 tab_id);

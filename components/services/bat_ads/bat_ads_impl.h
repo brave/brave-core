@@ -32,7 +32,6 @@ class BatAdsImpl : public mojom::BatAds {
   void OnTimer(uint32_t timer_id) override;
   void OnUnIdle() override;
   void OnIdle() override;
-  void SaveCachedInfo(SaveCachedInfoCallback callback) override;
   void OnForeground() override;
   void OnBackground() override;
   void OnMediaPlaying(int32_t tab_id) override;

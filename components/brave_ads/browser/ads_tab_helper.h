@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_REWARDS_ADS_TAB_HELPER_H_
-#define BRAVE_BROWSER_BRAVE_REWARDS_ADS_TAB_HELPER_H_
+#ifndef BRAVE_BROWSER_BRAVE_ADS_ADS_TAB_HELPER_H_
+#define BRAVE_BROWSER_BRAVE_ADS_ADS_TAB_HELPER_H_
 
 #include <string>
 
@@ -86,4 +86,4 @@ class AdsTabHelper : public content::WebContentsObserver,
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_BROWSER_BRAVE_REWARDSADSSTAB__HELPER_H_
+#endif  // BRAVE_BROWSER_BRAVE_ADS_ADS_TAB_HELPER_H_

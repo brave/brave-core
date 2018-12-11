@@ -36,6 +36,12 @@ source_set("browser") {
       "ad_notification.h",
       "ads_service_impl.cc",
       "ads_service_impl.h",
+      "background_helper.cc",
+      "background_helper.h",
+      "background_helper_mac.mm",
+      "background_helper_mac.h",
+      "background_helper_win.cc",
+      "background_helper_win.h",
       "bundle_state_database.cc",
       "bundle_state_database.h",
     ]
@@ -53,5 +59,12 @@ source_set("browser") {
       "//ui/base",
       "//ui/message_center/public/cpp",
     ]
+
+    if (is_win) {
+      deps += [
+        "//ui/views",
+        "//ui/gfx",
+      ]
+    }
   }
 }

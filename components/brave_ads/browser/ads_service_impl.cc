@@ -349,6 +349,8 @@ void AdsServiceImpl::Start() {
 
   bat_ads_service_->Create(std::move(client_ptr_info), MakeRequest(&bat_ads_),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
+
+  BackgroundHelper::GetInstance()->AddObserver(this);
 }
 
 void AdsServiceImpl::Stop() {
@@ -363,7 +365,6 @@ void AdsServiceImpl::ResetTimer() {
 }
 
 void AdsServiceImpl::CheckIdleState() {
-// TODO(bridiver) - what is the android equivalent of this?
 #if !defined(OS_ANDROID)
   ui::CalculateIdleState(GetIdleThreshold(),
       base::BindRepeating(&AdsServiceImpl::OnIdleState,
@@ -386,6 +387,8 @@ void AdsServiceImpl::OnIdleState(ui::IdleState idle_state) {
 #endif
 
 void AdsServiceImpl::Shutdown() {
+  BackgroundHelper::GetInstance()->RemoveObserver(this);
+
   for (const auto fetcher : fetchers_) {
     delete fetcher.first;
   }
@@ -393,7 +396,6 @@ void AdsServiceImpl::Shutdown() {
   idle_poll_timer_.Stop();
 
   if (connected()) {
-    bat_ads_->SaveCachedInfo(base::NullCallback());
     if (!enabled_) {
       // this is kind of weird, but we need to call Initialize on disable too
       bat_ads_->Initialize(base::NullCallback());
@@ -441,6 +443,10 @@ void AdsServiceImpl::set_ads_per_hour(int ads_per_hour) {
   profile_->GetPrefs()->SetUint64(prefs::kBraveAdsPerHour, ads_per_hour);
 }
 
+bool AdsServiceImpl::IsForeground() const {
+  return BackgroundHelper::GetInstance()->IsForeground();
+}
+
 void AdsServiceImpl::TabUpdated(SessionID tab_id,
                                 const GURL& url,
                                 const bool is_active) {
@@ -451,17 +457,6 @@ void AdsServiceImpl::TabUpdated(SessionID tab_id,
                    url.spec(),
                    is_active,
                    profile_->IsOffTheRecord());
-
-// TODO(bridiver) - what do we do here for android
-#if !defined(OS_ANDROID)
-  // TODO(bridiver) - this doesn't work correctly
-  // if (is_foreground_ && !chrome::FindBrowserWithActiveWindow()) {
-  //   bat_ads_->OnBackground();
-  // } else if (!is_foreground_) {
-  //   is_foreground_ = true;
-  //   bat_ads_->OnForeground();
-  // }
-#endif
 }
 
 void AdsServiceImpl::TabClosed(SessionID tab_id) {
@@ -872,6 +867,18 @@ void AdsServiceImpl::OnURLFetchComplete(
 
   if (connected())
     callback(response_code, body, headers);
+}
+
+void AdsServiceImpl::OnBackground() {
+  if (connected()) {
+    bat_ads_->OnBackground();
+  }
+}
+
+void AdsServiceImpl::OnForeground() {
+  if (connected()) {
+    bat_ads_->OnForeground();
+  }
 }
 
 bool AdsServiceImpl::GetUrlComponents(
