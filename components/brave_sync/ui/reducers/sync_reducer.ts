@@ -86,7 +86,7 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
         break
       }
 
-      // if the device removed is the main device, reset sync
+      // if the device removed is the this device, reset sync
       if (payload.deviceName === state.thisDeviceName && payload.id === 0) {
         state = { ...storage.defaultState }
         chrome.send('resetSync')
