@@ -158,8 +158,8 @@ TEST_F(RewardsServiceTest, HandleFlags) {
 
 TEST_F(RewardsServiceTest, OnWalletProperties) {
   // wallet properties are empty (no call should be made)
-  rewards_service()->OnWalletProperties(ledger::Result::LEDGER_OK, nullptr);
   EXPECT_CALL(*observer(), OnWalletProperties(_, _, _)).Times(0);
+  rewards_service()->OnWalletProperties(ledger::Result::LEDGER_OK, nullptr);
 }
 
 // add test for strange entries
