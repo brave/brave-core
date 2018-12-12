@@ -1,8 +1,33 @@
 # bat-native-ads
 
+## Command-line switches
+
+Use production Ads Serve as defined by `PRODUCTION_SERVER` in `static_values.h`. Default for Official Builds
+
+```
+--brave-ads-production
+```
+
+Use staging Ads Serve as defined by `STAGING_SERVER` in `static_values.h`. Default for non Office Builds, i.e. Debug
+
+```
+--brave-ads-staging
+```
+
+Collect initial activity after 25 seconds instead of 1 hour as defined by `kDebugOneHourInSeconds` in `static_values.h`
+
+```
+--brave-ads-debug
+```
+
+Enable testing of notifications while viewing `www.iab.com` so that page refreshes force a notification to show after 30 seconds as defined by `kNextEasterEggStartsInSeconds` in `static_values.h`
+
+```
+--brave-ads-testing
+```
+
 ## Limitations
 
-- Awaiting final production Ad Serve URL
 - Catalog is downloaded twice upon startup
 - Due to privacy concerns Brian Johnson has with platform information being
   transmitted when requesting a new catalog, `Win7` and `Win8` are not passed
@@ -16,7 +41,7 @@
 
 ## Isolated development on macOS
 
-- Deprecated as will be moved to Brave Core
+- Deprecated as building and testing of the library will be moved to Brave Core
 
 ### Pre-requisite
 
