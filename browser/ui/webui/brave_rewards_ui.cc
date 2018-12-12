@@ -279,7 +279,6 @@ void RewardsDOMHandler::OnWalletProperties(
     brave_rewards::RewardsService* rewards_service,
     int error_code,
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
-
   if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue values;
     values.SetBoolean("enabledContribute",
