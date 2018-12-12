@@ -1250,7 +1250,7 @@ void ConfirmationsImpl::test() {
 
       std::string pubkey = a->GetString();
 
-      std::regex bat_regex("\\d\\.\\d\\dBAT"); // eg, "1.23BAT"
+      std::regex bat_regex("\\d+\\.?\\d*BAT"); // eg, "1.23BAT"
 
       if (name == "confirmation") {
         real_confirmations_public_key = pubkey; 
