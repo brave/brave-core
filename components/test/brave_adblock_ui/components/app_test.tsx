@@ -16,7 +16,7 @@ describe('adblockPage component', () => {
   })
 
   describe('mapDispatchToProps', () => {
-    it('should change the current pageIndex if goToPageRequested is fired', () => {
+    it('should fire statsUpdated', () => {
       const dispatch = jest.fn()
 
       // For the `mapDispatchToProps`, call it directly but pass in

@@ -7,9 +7,7 @@ import { debounce } from '../common/debounce'
 
 const keyName = 'welcome-data'
 
-const defaultState = {
-  pageIndex: 0
-}
+const defaultState = {}
 
 const cleanData = (state: Welcome.State) => {
   state = { ...state }

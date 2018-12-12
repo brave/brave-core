@@ -5,149 +5,119 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import { UnstyledButton } from 'brave-ui/old'
-import Panel from 'brave-ui/old/v1/panel'
 
-// Components
-import BraveScreen from './braveScreen'
-import RewardsScreen from './rewardsScreen'
-import ImportScreen from './importScreen'
-import ShieldsScreen from './shieldsScreen'
-import FeaturesScreen from './featuresScreen'
-import Footer from './footer'
+// Feature-specific components
+import { Page, Panel, SlideContent } from 'brave-ui/features/welcome'
 
-// Constants
-import { theme } from '../constants/theme'
+// Component groups
+import WelcomeBox from './screens/welcomeBox'
+import ImportBox from './screens/importBox'
+import RewardsBox from './screens/rewardsBox'
+import SearchBox from './screens/searchBox'
+import ShieldsBox from './screens/shieldsBox'
+import ThemeBox from './screens/themeBox'
+import FooterBox from './screens/footerBox'
+
+// Images
+import { Background, BackgroundContainer } from 'brave-ui/features/welcome/images'
 
 // Utils
 import * as welcomeActions from '../actions/welcome_actions'
 
 // Assets
-const background = require('../../img/welcome/welcomebg.svg')
-require('../../fonts/muli.css')
-require('../../fonts/poppins.css')
+import '../../fonts/muli.css'
+import '../../fonts/poppins.css'
+import 'emptykit.css'
 
 interface Props {
   welcomeData: Welcome.State
   actions: any
 }
 
-export class WelcomePage extends React.Component<Props, {}> {
-  get pageIndex () {
-    return this.props.welcomeData.pageIndex
-  }
+export interface State {
+  currentScreen: number
+}
 
-  get actions () {
-    return this.props.actions
-  }
+const totalScreensSize = 6
 
-  get totalSecondaryScreensSize () {
-    return [
-      BraveScreen,
-      RewardsScreen,
-      ImportScreen,
-      ShieldsScreen,
-      FeaturesScreen
-    ].length
-  }
-
-  get activeScreen () {
-    switch (this.pageIndex) {
-      case 0:
-        return <BraveScreen onGoToFirstSlide={this.onGoToFirstSlide} />
-      case 1:
-        return <RewardsScreen />
-      case 2:
-        return <ImportScreen onImportNowClicked={this.onImportNowClicked} />
-      case 3:
-        return <ShieldsScreen />
-      case 4:
-        return <FeaturesScreen />
-      default:
-        return <BraveScreen onGoToFirstSlide={this.onGoToFirstSlide} />
+export class WelcomePage extends React.Component<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      currentScreen: 1
     }
   }
 
-  get slideBullets () {
-    return Array.from({ length: this.totalSecondaryScreensSize }, (v, k) => {
-      return (
-        <UnstyledButton
-          customStyle={
-            this.pageIndex === k
-              ? theme.bulletActive
-              : theme.bullet
-          }
-          text='•'
-          key={k}
-          onClick={this.onGoToSlide.bind(this, k)}
-        />
-      )
-    })
+  get currentScreen () {
+    return this.state.currentScreen
   }
 
-  get backgroundStyle () {
-    return {
-      fontFamily: '"Poppins", sans-serif',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '-webkit-fill-available',
-      width: '-webkit-fill-available',
-      transition: 'background-position-x 0.6s ease-out',
-      backgroundRepeat: 'repeat-x',
-      backgroundImage: `url('${background}')`,
-      backgroundPositionX: this.backgroundPosition
-    }
+  onClickLetsGo = () => {
+    this.setState({ currentScreen: this.state.currentScreen + 1 })
   }
 
-  get backgroundPosition () {
-    const { welcomeData } = this.props
-    switch (welcomeData.pageIndex) {
-      case 0:
-        return '0%'
-      case 1:
-        return '100%'
-      case 2:
-        return '200%'
-      case 3:
-        return '300%'
-      case 4:
-        return '400%'
-      default:
-        return '0%'
-    }
+  onClickImport = () => {
+    // clicking this button executes functionality and then auto proceed to next screen
+    this.props.actions.importNowRequested()
+    this.setState({ currentScreen: this.state.currentScreen + 1 })
   }
 
-  onGoToFirstSlide = () => {
-    this.onGoToSlide(1)
+  onClickConfirmDefaultSearchEngine = () => {
+    this.props.actions.goToTabRequested('brave://settings/search', '_blank')
   }
 
-  onGoToSlide = (nextPage: number) => {
-    this.actions.goToPageRequested(nextPage)
+  onClickChooseYourTheme = () => {
+    this.props.actions.goToTabRequested('brave://settings/appearance', '_blank')
+  }
+
+  onClickRewardsGetStarted = () => {
+    this.props.actions.goToTabRequested('brave://rewards', '_blank')
+  }
+
+  onClickSlideBullet = (nextScreen: number) => {
+    this.setState({ currentScreen: nextScreen })
   }
 
   onClickNext = () => {
-    this.actions.goToPageRequested(this.pageIndex + 1)
+    this.setState({ currentScreen: this.state.currentScreen + 1 })
   }
 
-  onImportNowClicked = () => {
-    this.actions.importNowRequested()
+  onClickDone = () => {
+    this.props.actions.goToTabRequested('brave://newtab', '_self')
+  }
+
+  onClickSkip = () => {
+    this.props.actions.goToTabRequested('brave://newtab', '_self')
   }
 
   render () {
+    const { currentScreen } = this.state
     return (
-      <div id='welcomePage' style={this.backgroundStyle}>
-        <Panel customStyle={theme.panel}>
-          {this.activeScreen}
-          <Footer
-            pageIndex={this.pageIndex}
-            totalSecondaryScreensSize={this.totalSecondaryScreensSize}
-            onClickNext={this.onClickNext}
-          >
-            {this.slideBullets}
-          </Footer>
-        </Panel>
-      </div>
+      <>
+        <BackgroundContainer>
+          <Background position={`-${currentScreen}0%`} style={{ backfaceVisibility: 'hidden' }} />
+        </BackgroundContainer>
+        <Page id='welcomePage'>
+          <Panel>
+            <SlideContent>
+              <WelcomeBox index={1} currentScreen={this.currentScreen} onClick={this.onClickLetsGo} />
+              <ImportBox index={2} currentScreen={this.currentScreen} onClick={this.onClickImport} />
+              <SearchBox index={3} currentScreen={this.currentScreen} onClick={this.onClickConfirmDefaultSearchEngine} />
+              <ThemeBox index={4} currentScreen={this.currentScreen} onClick={this.onClickChooseYourTheme} />
+              <ShieldsBox index={5} currentScreen={this.currentScreen} />
+              <RewardsBox index={6} currentScreen={this.currentScreen} onClick={this.onClickRewardsGetStarted} />
+            </SlideContent>
+            <FooterBox
+              totalScreensSize={totalScreensSize}
+              currentScreen={this.currentScreen}
+              onClickSkip={this.onClickSkip}
+              onClickSlideBullet={this.onClickSlideBullet}
+              onClickNext={this.onClickNext}
+              onClickDone={this.onClickDone}
+            />
+          </Panel>
+        </Page>
+      </>
     )
   }
 }

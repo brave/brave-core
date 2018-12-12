@@ -6,25 +6,38 @@ import welcomeReducer from '../../../brave_welcome_ui/reducers/welcome_reducer'
 import * as actions from '../../../brave_welcome_ui/actions/welcome_actions'
 import { types } from '../../../brave_welcome_ui/constants/welcome_types'
 
+window.open = jest.fn()
+window.close = jest.fn()
+
 describe('welcomeReducer', () => {
   it('should handle initial state', () => {
-    const assertion = welcomeReducer(undefined, actions.goToPageRequested(1))
-    expect(assertion).toEqual({ pageIndex: 1 })
-  })
-
-  describe('GO_TO_PAGE_REQUESTED', () => {
-    it('sets the pageIndex', () => {
-      const assertion = welcomeReducer(undefined, {
-        type: types.GO_TO_PAGE_REQUESTED,
-        payload: { pageIndex: 1337 }
-      })
-      expect(assertion).toEqual({ pageIndex: 1337 })
-    })
+    const assertion = welcomeReducer(undefined, actions.closeTabRequested())
+    expect(assertion).toEqual({})
   })
 
   describe.skip('IMPORT_NOW_REQUESTED', () => {
     it('calls importNowRequested', () => {
       // TODO
+    })
+  })
+
+  describe('GO_TO_TAB_REQUESTED', () => {
+    it('calls window.open', () => {
+      welcomeReducer(undefined, {
+        type: types.GO_TO_TAB_REQUESTED,
+        payload: { url: 'https://brave.com', target: '_blank' }
+      })
+      expect(window.open).toBeCalled()
+    })
+  })
+
+  describe.skip('CLOSE_TAB_REQUESTED', () => {
+    it('calls window.close', () => {
+      welcomeReducer(undefined, {
+        type: types.CLOSE_TAB_REQUESTED,
+        payload: undefined
+      })
+      expect(window.close).toBeCalled()
     })
   })
 })

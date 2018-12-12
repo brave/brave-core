@@ -33,9 +33,7 @@ export const getMockChrome = () => {
 }
 
 export const welcomeInitialState: Welcome.ApplicationState = {
-  welcomeData: {
-    pageIndex: 0
-  }
+  welcomeData: {}
 }
 
 export const rewardsInitialState: Rewards.ApplicationState = {
