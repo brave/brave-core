@@ -6,41 +6,68 @@ import * as React from 'react'
 
 // Components
 import { Button } from 'brave-ui'
-import SwitchButton from 'brave-ui/old/switchButton'
 import Table, { Cell, Row } from 'brave-ui/components/dataTables/table'
+import { Toggle } from 'brave-ui/features/shields'
 
 // Feature-specific components
 import {
-  Grid,
+  Main,
+  Title,
+  SettingsToggleGrid,
   SwitchLabel,
-  Paragraph,
   SectionBlock,
-  SubTitle
+  SubTitle,
+  TableRowDevice,
+  TableRowRemove,
+  TableRowRemoveButton,
+  TableGrid,
+  TableButtonGrid
 } from 'brave-ui/features/sync'
 
 // Modals
-import SyncANewDeviceModal from './modals/syncNewDevice'
+import RemoveDeviceModal from './modals/removeDevice'
+import ViewSyncCodeModal from './modals/viewSyncCode'
+import DeviceTypeModal from './modals/deviceType'
 import ResetSyncModal from './modals/resetSync'
 
 // Utils
 import { getLocale } from '../../../common/locale'
 
-interface SyncEnabledContentProps {
+interface Props {
   syncData: Sync.State
   actions: any
 }
 
-interface SyncEnabledContentState {
-  syncANewDevice: boolean
+interface State {
+  removeDevice: boolean
+  viewSyncCode: boolean
+  addDevice: boolean
   resetSync: boolean
+  deviceToRemoveName: string | undefined
+  deviceToRemoveId: string | undefined
 }
 
-class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, SyncEnabledContentState> {
-  constructor (props: SyncEnabledContentProps) {
+export default class SyncEnabledContent extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
     super(props)
     this.state = {
-      syncANewDevice: false,
-      resetSync: false
+      removeDevice: false,
+      viewSyncCode: false,
+      addDevice: false,
+      resetSync: false,
+      deviceToRemoveName: '',
+      deviceToRemoveId: ''
+    }
+  }
+
+   componentDidUpdate () {
+    // immediately request qr code and sync words
+    // in case they aren't already. this could happen if user
+    // had the sync word where the requests are stopped due to sync reset
+    const { seedQRImageSource, syncWords } = this.props.syncData
+    if (!seedQRImageSource && !syncWords) {
+       this.props.actions.onRequestQRCode()
+       this.props.actions.onRequestSyncWords()
     }
   }
 
@@ -52,21 +79,23 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
     return devices.map((device: any): Row => {
       const cell: Row = {
         content: [
-          { content: device.id },
-          { content: device.name },
+          { content:
+            <TableRowDevice>
+              {device.name} {Number(device.id) === 0 ? getLocale('mainDevice') : null }
+            </TableRowDevice>
+          },
           { content: device.lastActive },
           {
             content: (
-              <span
-                style={{ cursor: 'pointer' /* TODO: cezar make this a component */ }}
+              <TableRowRemoveButton
                 data-id={device.id}
                 data-name={device.name}
-                onClick={this.onRemoveDevice}
+                data-main={device.thisDeviceName}
+                onClick={this.onClickRemoveDeviceButton}
               >
-                  &times;
-              </span>
-            ),
-            customStyle: { 'text-align': 'center' }
+                &times;
+              </TableRowRemoveButton>
+            )
           }
         ]
       }
@@ -76,83 +105,111 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
 
   get header (): Cell[] {
     return [
-      { content: getLocale('id') },
-      { content: getLocale('deviceName') },
-      { content: getLocale('lastActive') },
-      { content: getLocale('removeDevice'), customStyle: { 'text-align': 'center' } }
+      { content: <TableRowDevice>{getLocale('deviceName')}</TableRowDevice> },
+      { content: getLocale('addedOn') },
+      { content: <TableRowRemove>{getLocale('remove')}</TableRowRemove> }
     ]
   }
 
-  onRemoveDevice = (event: React.MouseEvent<HTMLSpanElement>) => {
-    const target = event.target as HTMLSpanElement
-    this.props.actions.onRemoveDevice(Number(target.dataset.id), target.dataset.name)
-  }
-
-  syncANewDeviceModal = () => {
-    this.setState({ syncANewDevice: !this.state.syncANewDevice })
-  }
-
-  resetSyncModal = () => {
-    this.setState({ resetSync: !this.state.resetSync })
-  }
-
-  onSyncReset = () => {
-    if (window.confirm(getLocale('areYouSure'))) {
-      this.props.actions.onSyncReset()
+  onClickRemoveDeviceButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (!event || !event.currentTarget || !event.currentTarget.dataset) {
+      return
     }
+    const target = event.currentTarget as HTMLButtonElement
+    this.setState({
+      deviceToRemoveName: target.dataset.name,
+      deviceToRemoveId: target.dataset.id,
+      removeDevice: !this.state.removeDevice
+    })
+  }
+
+  onClickViewSyncCodeButton = () => {
+    this.setState({ viewSyncCode: !this.state.viewSyncCode })
+  }
+
+  onClickAddDeviceButton = () => {
+    this.setState({ addDevice: !this.state.addDevice })
+  }
+
+  onClickResetSyncButton = () => {
+    this.setState({ resetSync: !this.state.resetSync })
   }
 
   onSyncBookmarks = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.props.actions.onSyncBookmarks(event.target.checked)
   }
 
-  onSyncSavedSiteSettings = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.actions.onSyncSavedSiteSettings(event.target.checked)
-  }
-
-  onSyncBrowsingHistory = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.actions.onSyncBrowsingHistory(event.target.checked)
-  }
-
   render () {
     const { actions, syncData } = this.props
+    const {
+      removeDevice,
+      viewSyncCode,
+      addDevice,
+      resetSync,
+      deviceToRemoveName,
+      deviceToRemoveId
+    } = this.state
+
+    if (!syncData) {
+      return null
+    }
+
     return (
-      <>
+      <Main>
         {
-          this.state.syncANewDevice
-            ? (
-              <SyncANewDeviceModal
-                actions={actions}
-                seedQRImageSource={syncData.seedQRImageSource}
-                syncWords={syncData.syncWords}
-                onClose={this.syncANewDeviceModal}
+          removeDevice
+            ? <RemoveDeviceModal
+              deviceName={deviceToRemoveName}
+              deviceId={Number(deviceToRemoveId)}
+              actions={actions}
+              onClose={this.onClickRemoveDeviceButton}
               />
-            )
             : null
         }
         {
-          this.state.resetSync
-            ? <ResetSyncModal actions={actions} onClose={this.resetSyncModal} />
+          viewSyncCode
+            ? <ViewSyncCodeModal syncData={syncData} actions={actions} onClose={this.onClickViewSyncCodeButton} />
             : null
         }
+        {
+          addDevice
+            ? <DeviceTypeModal syncData={syncData} actions={actions} onClose={this.onClickAddDeviceButton} />
+            : null
+        }
+        {
+          resetSync
+            ? <ResetSyncModal syncData={syncData} actions={actions} onClose={this.onClickResetSyncButton} />
+            : null
+        }
+        <Title level={2}>{getLocale('braveSync')}</Title>
         <SectionBlock>
-          <SubTitle level={2}>{getLocale('devices')}</SubTitle>
-          <Table header={this.header} rows={this.getRows(syncData.devices)}>
-            Device list is empty
-          </Table>
-          <Button
-            level='primary'
-            type='accent'
-            size='medium'
-            text={getLocale('syncANewDevice')}
-            onClick={this.syncANewDeviceModal}
-          />
+          <SubTitle level={2}>{getLocale('syncChainDevices')}</SubTitle>
+          <TableGrid>
+            <Table header={this.header} rows={this.getRows(syncData.devices)}>
+              Device list is empty
+            </Table>
+            <TableButtonGrid>
+              <Button
+                level='secondary'
+                type='accent'
+                size='medium'
+                text={getLocale('addDevice')}
+                onClick={this.onClickAddDeviceButton}
+              />
+              <Button
+                level='secondary'
+                type='accent'
+                size='medium'
+                text={getLocale('viewSyncCode')}
+                onClick={this.onClickViewSyncCodeButton}
+              />
+            </TableButtonGrid>
+          </TableGrid>
         </SectionBlock>
         <SectionBlock>
-          <SubTitle level={2}>{getLocale('syncData')}</SubTitle>
-          <Paragraph>{getLocale('syncDataInfo')}</Paragraph>
-          <Grid columns='auto 1fr' rows='1fr 1fr 1fr' gap='5px'>
-            <SwitchButton
+          <SubTitle level={2}>{getLocale('dataToSync')} {syncData.thisDeviceName}</SubTitle>
+          <SettingsToggleGrid>
+            <Toggle
               id='bookmarks'
               checked={syncData.syncBookmarks}
               onChange={this.onSyncBookmarks}
@@ -160,39 +217,18 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
             <SwitchLabel htmlFor='bookmarks'>
               {getLocale('bookmarks')}
             </SwitchLabel>
-            <SwitchButton
-              id='savedSiteSettings'
-              checked={syncData.syncSavedSiteSettings}
-              onChange={this.onSyncSavedSiteSettings}
-              disabled={true}
-            />
-            <SwitchLabel htmlFor='savedSiteSettings'>
-              {getLocale('savedSiteSettings')}
-            </SwitchLabel>
-            <SwitchButton
-              id='browsingHistory'
-              checked={syncData.syncBrowsingHistory}
-              onChange={this.onSyncBrowsingHistory}
-              disabled={true}
-            />
-            <SwitchLabel htmlFor='browsingHistory'>
-              {getLocale('browsingHistory')}
-            </SwitchLabel>
-          </Grid>
+          </SettingsToggleGrid>
         </SectionBlock>
         <SectionBlock>
-          <SubTitle level={2}>{getLocale('clearData')}</SubTitle>
           <Button
             level='primary'
             type='accent'
             size='medium'
-            text={getLocale('resetSync')}
-            onClick={this.onSyncReset}
+            text={getLocale('leaveSyncChain')}
+            onClick={this.onClickResetSyncButton}
           />
         </SectionBlock>
-      </>
+      </Main>
     )
   }
 }
-
-export default SyncEnabledContent
