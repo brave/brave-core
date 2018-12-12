@@ -26,7 +26,7 @@ Enable testing of notifications while viewing `www.iab.com` so that page refresh
 --brave-ads-testing
 ```
 
-## Limitations
+## Initial Limitations
 
 - Catalog is downloaded twice upon startup
 - Due to privacy concerns Brian Johnson has with platform information being transmitted when requesting a new catalog, `Win7` and `Win8` are not passed from Brave Core, Brian Johnson is raising these privacy concerns
@@ -35,6 +35,8 @@ Enable testing of notifications while viewing `www.iab.com` so that page refresh
   persisted in a JSON file
 - Implement DemoAPI logs
 - Additional unit test coverage
+
+All of these will be fixed _very soon!_
 
 ## Isolated development on macOS
 
