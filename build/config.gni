@@ -24,6 +24,8 @@ declare_args() {
   chrome_version_major = ""
   build_omaha = false
   tag_ap =""
+
+  skip_signing = false
 }
 
 if (base_sparkle_update_url == "") {
