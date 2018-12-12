@@ -29,11 +29,8 @@ Enable testing of notifications while viewing `www.iab.com` so that page refresh
 ## Limitations
 
 - Catalog is downloaded twice upon startup
-- Due to privacy concerns Brian Johnson has with platform information being
-  transmitted when requesting a new catalog, `Win7` and `Win8` are not passed
-  from Brave Core, Brian Johnson is raising these privacy concerns
-- `IsNotificationsAvailable` always returns `true` from Brave Core irrespective
-  if they are enabled or disabled on the operating system
+- Due to privacy concerns Brian Johnson has with platform information being transmitted when requesting a new catalog, `Win7` and `Win8` are not passed from Brave Core, Brian Johnson is raising these privacy concerns
+- `IsNotificationsAvailable` always returns `true` from Brave Core irrespective if they are enabled or disabled on the operating system
 - `EventLog`'s are persisted in the Console Log, whereas in Muon they were
   persisted in a JSON file
 - Implement DemoAPI logs
@@ -74,8 +71,7 @@ mkdir build
 
 #### Generate Makefile
 
-You must be in the `build` directory of BAT Native Ads before running the
-following commands. If any project changes are made the `Makefile` may need to
+You must be in the `build` directory of BAT Native Ads before running the following commands. If any project changes are made the `Makefile` may need to
 be re-generated
 
 ```
@@ -84,8 +80,7 @@ cmake ..
 
 #### Build executable
 
-You must be in the `build` directory of BAT Native Ads before running the
-following commands
+You must be in the `build` directory of BAT Native Ads before running the following commands
 
 ```
 make
@@ -93,13 +88,11 @@ make
 
 #### Debugging
 
-You can attach a debugger to the `batnativeads` executable which can be
-found in the `build` folder
+You can attach a debugger to the `batnativeads` executable which can be found in the `build` folder
 
 #### Isolated Google Tests
 
-You must be in the `build` directory of BAT Native Ads before running the
-following commands
+You must be in the `build` directory of BAT Native Ads before running the following commands
 
 ```
 make test
