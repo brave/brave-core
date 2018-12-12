@@ -48,7 +48,7 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, {}
         </ModalHeader>
         <ModalContent>
           {
-            // zero is always the main device
+            // zero is always the this device
             deviceId === 0
             ? <div>
                 <Paragraph>{getLocale('thisDeviceRemovalDescription')}</Paragraph>
