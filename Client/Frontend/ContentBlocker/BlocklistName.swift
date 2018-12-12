@@ -54,7 +54,10 @@ class BlocklistName: Hashable, CustomStringConvertible, ContentBlocker {
         // For lists not implemented, always return exclude from `onList` to prevent accidental execution
         
         // TODO #159: Setup image shield
-        // TODO #269: Setup HTTPS shield
+        
+        if domain.isShieldExpected(.HTTPSE) {
+            onList.formUnion([.https])
+        }
         
         return (onList, allLists.subtracting(onList))
     }

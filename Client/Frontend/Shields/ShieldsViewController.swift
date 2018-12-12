@@ -74,6 +74,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     
     private func updateShieldBlockStats() {
         shieldsView.shieldsContainerStackView.adsTrackersStatView.valueLabel.text = String(tab.contentBlocker.stats.adCount + tab.contentBlocker.stats.trackerCount)
+        shieldsView.shieldsContainerStackView.httpsUpgradesStatView.valueLabel.text = String(tab.contentBlocker.stats.httpsCount)
         shieldsView.shieldsContainerStackView.scriptsBlockedStatView.valueLabel.text = String(tab.contentBlocker.stats.scriptCount)
         shieldsView.shieldsContainerStackView.fingerprintingStatView.valueLabel.text = String(tab.contentBlocker.stats.fingerprintingCount)
     }
