@@ -7,6 +7,7 @@
 
 namespace brave_ads {
 namespace switches {
+extern const char kStaging[];
 extern const char kProduction[];
 extern const char kDebug[];
 extern const char kTesting[];

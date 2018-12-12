@@ -333,6 +333,9 @@ void AdsServiceImpl::Start() {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
 
+  if (command_line.HasSwitch(switches::kStaging)) {
+    is_production = false;
+  }
   if (command_line.HasSwitch(switches::kProduction)) {
     is_production = true;
   }
