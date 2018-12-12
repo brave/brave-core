@@ -10,9 +10,11 @@
 class BraveLocationBarModelImpl : public LocationBarModelImpl {
   public:
     using LocationBarModelImpl::LocationBarModelImpl;
+    base::string16 GetFormattedFullURL() const override;
     base::string16 GetURLForDisplay() const override;
   private:
     DISALLOW_COPY_AND_ASSIGN(BraveLocationBarModelImpl);
+    base::string16 RewriteSchemes(base::string16 formatted_text) const;
 };
 
 #endif

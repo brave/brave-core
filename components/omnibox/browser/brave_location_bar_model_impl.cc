@@ -20,9 +20,7 @@ const base::string16 replacement_scheme_part =
 
 }
 
-base::string16 BraveLocationBarModelImpl::GetURLForDisplay() const {
-  base::string16 formatted_text = LocationBarModelImpl::GetURLForDisplay();
-
+base::string16 BraveLocationBarModelImpl::RewriteSchemes(base::string16 formatted_text) const {
   const GURL url(GetURL());
   // Only replace chrome:// with brave:// if scheme is "chrome" and
   // it has not been stripped from the display text
@@ -33,4 +31,12 @@ base::string16 BraveLocationBarModelImpl::GetURLForDisplay() const {
                             replacement_scheme_part);
   }
   return formatted_text;
+}
+
+base::string16 BraveLocationBarModelImpl::GetFormattedFullURL() const {
+  return RewriteSchemes(LocationBarModelImpl::GetFormattedFullURL());
+}
+
+base::string16 BraveLocationBarModelImpl::GetURLForDisplay() const {
+  return RewriteSchemes(LocationBarModelImpl::GetURLForDisplay());
 }
