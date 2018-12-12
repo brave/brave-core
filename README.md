@@ -29,8 +29,9 @@ Enable testing of notifications while viewing `www.iab.com` so that page refresh
 ## Initial Limitations
 
 - Catalog is downloaded twice upon startup
-- In "debug" mode, notifications crash on Linux
-- Due to privacy concerns Brian Johnson has with platform information being transmitted when requesting a new catalog, `Win7` and `Win8` are not passed from Brave Core, Brian Johnson is raising these privacy concerns
+- For Linux:
+    - In "debug" mode, notifications cause crashes
+    - Foreground/Background notifications aren't implemented
 - `IsNotificationsAvailable` always returns `true` from Brave Core irrespective if they are enabled or disabled on the operating system
 - `EventLog`'s are persisted in the Console Log, whereas in Muon they were
   persisted in a JSON file
