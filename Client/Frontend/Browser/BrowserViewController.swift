@@ -112,6 +112,9 @@ class BrowserViewController: UIViewController {
     var navigationToolbar: TabToolbarProtocol {
         return toolbar ?? urlBar
     }
+    
+    /// Keep track of the URL request that was upgraded so that we can add it to the HTTPS page stats
+    var pendingHTTPUpgrades = [String: URLRequest]()
 
     // Keep track of allowed `URLRequest`s from `webView(_:decidePolicyFor:decisionHandler:)` so
     // that we can obtain the originating `URLRequest` when a `URLResponse` is received. This will

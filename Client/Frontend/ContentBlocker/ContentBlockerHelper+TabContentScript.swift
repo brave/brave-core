@@ -35,9 +35,7 @@ extension ContentBlockerHelper: TabContentScript {
             return
         }
     
-        guard var components = URLComponents(string: urlString) else { return }
-        components.scheme = "http"
-        guard let url = components.url else { return }
+        guard let url = URL(string: urlString) else { return }
         
         let resourceType = TPStatsResourceType(rawValue: body["resourceType"] ?? "")
         
@@ -52,6 +50,14 @@ extension ContentBlockerHelper: TabContentScript {
 
         TPStatsBlocklistChecker.shared.isBlocked(request: req, domain: domain, resourceType: resourceType).uponQueue(.main) { listItem in
             if let listItem = listItem {
+                if listItem == .https {
+                    if mainDocumentUrl.scheme == "https" && url.scheme == "http" && resourceType != .image {
+                        // WKWebView will block loading this URL so we can't count it due to mixed content restrictions
+                        // Unfortunately, it does not check to see if a content blocker would promote said URL to https
+                        // before blocking the load
+                        return
+                    }
+                }
                 self.stats = self.stats.create(byAddingListItem: listItem)
                 
                 // Increase global stats (here due to BlocklistName being in Client and BraveGlobalShieldStats being
@@ -62,6 +68,7 @@ extension ContentBlockerHelper: TabContentScript {
                 case .https: stats.httpse += 1
                 case .tracker: stats.trackingProtection += 1
                 case .image: stats.images += 1
+                case .https: stats.httpse += 1
                 default:
                     // TODO: #97 Add fingerprinting count here when it is integrated
                     break
