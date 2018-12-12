@@ -114,6 +114,34 @@ action("create_dmg") {
   deps = [":sign_app"]
 }
 
+action("create_unsigned_dmg") {
+  brave_app = "$root_build_dir/$brave_exe"
+  output = "$root_out_dir/unsigned_dmg/$brave_dmg"
+  script = "//build/gn_run_binary.py"
+  shell_script = "//chrome/installer/mac/pkg-dmg"
+  inputs = [
+    script,
+    shell_script,
+  ]
+  outputs = [ output ]
+  args = [
+    rebase_path(shell_script, root_build_dir),
+    "--source", "/var/empty",
+    "--target", "unsigned_dmg/$brave_dmg",
+    "--format", "UDBZ",
+    "--verbosity", "0",
+    "--volname", "$chrome_product_full_name",
+    "--copy", rebase_path(brave_app, root_build_dir),
+    "--tempdir", "/tmp",
+    "--symlink", "/Applications",
+  ]
+
+  deps = [
+    "//brave:chrome_app",
+    "//chrome/installer/mac"
+  ]
+}
+
 action("sign_dmg") {
   script = "//build/gn_run_binary.py"
   shell_script = "sign_dmg.sh"
