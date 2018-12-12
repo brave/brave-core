@@ -45,7 +45,7 @@ exports[`ModalDonation tests basic tests matches the snapshot 1`] = `
 }
 
 .c4 {
-  padding: 61px 50px;
+  padding: 48px 48px;
   overflow-y: auto;
   max-height: calc(100vh - 100px);
 }
