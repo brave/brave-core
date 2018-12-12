@@ -76,6 +76,7 @@ source_set("ads") {
     "src/string_helper.cc",
     "src/time_helper.cc",
     "src/json_helper.cc",
+    "src/uri_helper.cc",
     "src/bat/ads/ad_info.cc",
     "src/bat/ads/notification_info.cc",
     "src/bat/ads/client_info.cc",

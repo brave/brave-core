@@ -19,6 +19,7 @@
 #include "string_helper.h"
 #include "locale_helper.h"
 #include "time_helper.h"
+#include "uri_helper.h"
 #include "bat/ads/url_components.h"
 #include "static_values.h"
 
@@ -716,11 +717,7 @@ bool AdsImpl::ShowAd(
   notification_info->advertiser = ad_info.advertiser;
   notification_info->category = category;
   notification_info->text = ad_info.notification_text;
-  std::string url = ad_info.notification_url;
-  if (url.find("http://") != 0 && url.find("https://") != 0) {
-    url = "http://" + url;
-  }
-  notification_info->url = url;
+  notification_info->url = helper::Uri::GetUri(ad_info.notification_url);
   notification_info->creative_set_id = ad_info.creative_set_id;
   notification_info->uuid = ad_info.uuid;
 

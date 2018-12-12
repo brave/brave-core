@@ -108,7 +108,8 @@ set(SOURCES
   "${PROJECT_SOURCE_DIR}/src/locale_helper.cc"
   "${PROJECT_SOURCE_DIR}/src/search_providers.cc"
   "${PROJECT_SOURCE_DIR}/src/string_helper.cc"
-  "${PROJECT_SOURCE_DIR}/src/time_helper.cc")
+  "${PROJECT_SOURCE_DIR}/src/time_helper.cc"
+  "${PROJECT_SOURCE_DIR}/src/uri_helper.cc")
 
 include_directories(
   "${PROJECT_SOURCE_DIR}"

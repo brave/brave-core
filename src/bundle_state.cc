@@ -5,6 +5,7 @@
 #include "bat/ads/bundle_state.h"
 
 #include "json_helper.h"
+#include "uri_helper.h"
 
 namespace ads {
 
@@ -69,11 +70,8 @@ bool BundleState::FromJson(
 
         ad_info.advertiser = info["advertiser"].GetString();
         ad_info.notification_text = info["notificationText"].GetString();
-        std::string url = info["notificationURL"].GetString();
-        if (url.find("http://") != 0 && url.find("https://") != 0) {
-          url = "http://" + url;
-        }
-        ad_info.notification_url = url;
+        ad_info.notification_url =
+          helper::Uri::GetUri(info["notificationURL"].GetString());
         ad_info.uuid = info["uuid"].GetString();
 
         if (new_categories.find(category.name.GetString()) ==
