@@ -17,6 +17,8 @@
 #include "components/bookmarks/browser/bookmark_node.h"
 #include "components/bookmarks/browser/bookmark_node_data.h"
 
+FORWARD_DECLARE_TEST(BraveBookmarkChangeProcessorTest, IgnoreRapidCreateDelete);
+
 class BraveBookmarkChangeProcessorTest;
 
 namespace brave_sync {
@@ -43,6 +45,8 @@ class BookmarkChangeProcessor : public ChangeProcessor,
 
  private:
   friend class ::BraveBookmarkChangeProcessorTest;
+  FRIEND_TEST_ALL_PREFIXES(::BraveBookmarkChangeProcessorTest,
+                                                       IgnoreRapidCreateDelete);
 
   BookmarkChangeProcessor(Profile* profile,
                           BraveSyncClient* sync_client,

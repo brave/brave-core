@@ -1215,3 +1215,18 @@ TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolderRequireStrictSorting) 
   EXPECT_EQ(node_b->url().spec(), "https://b.com/");
   EXPECT_FALSE(GetPendingNodeRoot()->IsVisible());
 }
+
+TEST_F(BraveBookmarkChangeProcessorTest, IgnoreRapidCreateDelete) {
+  change_processor()->Start();
+
+  const auto* node_a = model()->AddURL(model()->other_node(), 0,
+                           base::ASCIIToUTF16("A.com - title"),
+                           GURL("https://a.com/"));
+  model()->Remove(node_a);
+
+  EXPECT_EQ(change_processor()->GetDeletedNodeRoot()->child_count(), 0);
+
+  // Expect there will be no calls, because no any records to send
+  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(0);
+  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+}
