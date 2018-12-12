@@ -16,4 +16,8 @@
 
 #import "ABPFilterLibWrapper.h"
 
+#import "HttpsEverywhereObjC.h"
+#import "NSData+GZIP.h"
+#import "NSFileManager+Tar.h"
+
 #endif
