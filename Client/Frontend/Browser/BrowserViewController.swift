@@ -412,7 +412,24 @@ class BrowserViewController: UIViewController {
     /// Added to keyWindow, since it can then be utilized from any VC (e.g. settings modal).
     /// This also inits sync at app launch.
     private func initializeSyncWebView() {
-        Sync.shared.webView.alpha = 0.01
+        let sync = Sync.shared
+        
+        #if NO_SYNC
+        if sync.syncSeedArray == nil { return }
+        
+        sync.leaveSyncGroup()
+        
+        let msg = """
+            Sync has been disabled, as it will not be included in the next couple of production builds.
+            Your iOS device has been auto-removed from any sync groups.
+        """
+        
+        let alert = UIAlertController(title: "Sync Disabled", message: msg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+        #endif
+        
+        sync.webView.alpha = 0.01
         UIApplication.shared.keyWindow?.insertSubview(Sync.shared.webView, at: 0)
     }
     
