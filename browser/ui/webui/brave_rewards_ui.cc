@@ -279,7 +279,6 @@ void RewardsDOMHandler::OnWalletProperties(
     brave_rewards::RewardsService* rewards_service,
     int error_code,
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
-
   if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue values;
     values.SetBoolean("enabledContribute",
@@ -330,6 +329,8 @@ void RewardsDOMHandler::OnWalletProperties(
         grants->Append(std::move(grant));
       }
       walletInfo->SetList("grants", std::move(grants));
+
+      result.SetDouble("monthlyAmount", wallet_properties->monthly_amount);
     }
 
     values.SetDictionary("ui", std::move(ui_values));
@@ -339,8 +340,6 @@ void RewardsDOMHandler::OnWalletProperties(
       "brave_rewards.initAutoContributeSettings", values);
 
     result.SetDictionary("wallet", std::move(walletInfo));
-    result.SetDouble("monthlyAmount", wallet_properties->monthly_amount);
-
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletProperties", result);
   }
