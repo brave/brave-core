@@ -24,14 +24,27 @@ std::unique_ptr<message_center::Notification> CreateAdNotification(
     std::string* notification_id) {
   *notification_id = kNotifierIdPrefix + notification_info.uuid;
   message_center::RichNotificationData notification_data;
+
+  base::string16 advertiser;
+  if (base::IsStringUTF8(notification_info.advertiser)) {
+    base::UTF8ToUTF16(notification_info.advertiser.c_str(),
+                      notification_info.advertiser.length(), &advertiser);
+  }
+
+  base::string16 text;
+  if (base::IsStringUTF8(notification_info.text)) {
+    base::UTF8ToUTF16(notification_info.text.c_str(),
+                      notification_info.text.length(), &text);
+  }
+
   // hack to prevent origin from showing in the notification
   // since we're using that to get the notification_id to OpenSettings
   notification_data.context_message = base::ASCIIToUTF16(" ");
   auto notification = std::make_unique<message_center::Notification>(
       message_center::NOTIFICATION_TYPE_SIMPLE,
       *notification_id,
-      base::ASCIIToUTF16(notification_info.advertiser),
-      base::ASCIIToUTF16(notification_info.text),
+      advertiser,
+      text,
       gfx::Image(),
       base::string16(),
       GURL("chrome://brave_ads/?" + *notification_id),
