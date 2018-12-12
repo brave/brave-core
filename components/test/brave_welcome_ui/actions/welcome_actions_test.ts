@@ -14,11 +14,19 @@ describe('welcome_actions', () => {
     })
   })
 
-  it('goToPageRequested', () => {
-    expect(actions.goToPageRequested(1337)).toEqual({
-      type: types.GO_TO_PAGE_REQUESTED,
+  it('goToTabRequested', () => {
+    expect(actions.goToTabRequested('https://rossmoody.design', '_blank')).toEqual({
+      type: types.GO_TO_TAB_REQUESTED,
       meta: undefined,
-      payload: { pageIndex: 1337 }
+      payload: { url: 'https://rossmoody.design', target: '_blank' }
+    })
+  })
+
+  it('closeTabRequested', () => {
+    expect(actions.closeTabRequested()).toEqual({
+      type: types.CLOSE_TAB_REQUESTED,
+      meta: undefined,
+      payload: undefined
     })
   })
 })

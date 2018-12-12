@@ -4,5 +4,6 @@
 
 export const enum types {
   IMPORT_NOW_REQUESTED = '@@welcome/IMPORT_NOW_REQUESTED',
-  GO_TO_PAGE_REQUESTED = '@@welcome/GO_TO_PAGE_REQUESTED'
+  GO_TO_TAB_REQUESTED = '@@welcome/GO_TO_TAB_REQUESTED',
+  CLOSE_TAB_REQUESTED = '@@welcome/CLOSE_TAB_REQUESTED'
 }
