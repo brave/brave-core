@@ -18,9 +18,6 @@ import {
   OneColumnButtonGrid
 } from '../../../../src/features/sync'
 
-// Images
-import { SyncRemoveIcon } from '../../../../src/features/sync/images'
-
 // Utils
 import { getLocale } from '../page/fakeLocale'
 
@@ -35,7 +32,6 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, {}
     return (
       <Modal id='removeMainDeviceModal' onClose={onClose} size='small'>
         <ModalHeader>
-          <SyncRemoveIcon />
           <ModalTitle level={1}>{getLocale('remove')} “{otherDeviceName}” {getLocale('thisSyncChain')}</ModalTitle>
         </ModalHeader>
         <ModalContent>
@@ -45,7 +41,7 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, {}
           <OneColumnButtonGrid>
             <Button
               level='secondary'
-              type='accent'
+              type='subtle'
               size='medium'
               onClick={onClose}
               text={getLocale('cancel')}
@@ -53,7 +49,7 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, {}
           </OneColumnButtonGrid>
           <Button
             level='primary'
-            type='accent'
+            type='warn'
             size='medium'
             onClick={onClose}
             text={getLocale('remove')}

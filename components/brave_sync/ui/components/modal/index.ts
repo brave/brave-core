@@ -8,15 +8,15 @@ import Heading from '../../../components/text/heading'
 export const ModalHeader = styled<{}, 'header'>('header')`
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-gap: 30px;
-  margin-bottom: 20px;
+  grid-gap: 32px;
+  margin-bottom: 8px;
 `
 
 export const ModalTitle = styled(Heading)`
   font-weight: 500;
-  font-size: 26px;
-  margin: 0 0 10px;
-  line-height: 1.3;
+  font-size: 24px;
+  margin: 0 0 4px;
+  line-height: 1.6;
 `
 
 interface ModalSubTitleProps {
@@ -26,12 +26,12 @@ interface ModalSubTitleProps {
 export const ModalSubTitle = styled<ModalSubTitleProps, 'span'>('span')`
   display: block;
   font-size: 18px;
-  line-height: 1.2;
+  line-height: 1.6;
   color: ${p => p.highlight && '#ff0000'}
 `
 
 export const ModalContent = styled<{}, 'div'>('div')`
-  margin-left: 90px;
+  margin-left: 0px;
 `
 
 export const OneColumnButtonGrid = styled<{}, 'div'>('div')`
@@ -95,8 +95,8 @@ export const ScanGrid = styled<{}, 'div'>('div')`
 export const QRCodeContainer = styled<{}, 'div'>('div')`
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  width: 180px;
+  align-items: center;
+  width: 120px;
   img {
     max-width: 100%;
   }
@@ -105,8 +105,11 @@ export const QRCodeContainer = styled<{}, 'div'>('div')`
 export const ViewSyncCodeGrid = styled<{}, 'div'>('div')`
   display: grid;
   height: 100%;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 2fr 1fr;
   grid-template-rows: 1fr;
-  grid-gap: 20px;
+  grid-gap: 16px;
   margin: 0 0 25px;
+  img {
+    max-width: 80%;
+  }
 `

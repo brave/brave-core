@@ -24,7 +24,7 @@ const locale: any = {
   browsingHistory: 'Browsing History',
   leaveSyncChain: 'Leave Sync Chain',
   // Disabled Content
-  syncTitle: 'Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices.',
+  syncTitle: 'Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on various devices.',
   syncDescription: 'When you start a new sync chain, a new sync code is created. You will use this same code across your devices to link them together.',
   startSyncChain: 'Start a new sync chain',
   enterSyncChainCode: 'Enter a sync chain code',
@@ -50,7 +50,7 @@ const locale: any = {
   // [modal] Add New Chain
   scanThisCode: 'Now, using Brave on your mobile device, scan this code.',
   scanThisCodeHowTo: 'Go to: Brave Settings > Sync > Scan Sync Code',
-  enterCodeWordsInstead: 'Enter code words instead...',
+  enterCodeWordsInstead: 'Enter code words instead',
   previous: '< Previous',
   lookingForDevice: 'Looking for device',
   // [modal] Add New Chain (Camera Option)
@@ -58,7 +58,7 @@ const locale: any = {
   enterThisCode: 'Now, using Brave on your computer, enter this code:',
   mobileEnterThisCode: 'Now, using Brave on your mobile device, enter this code:',
   syncChainCodeHowTo: 'Go to: Brave Settings > Sync > Enter a Sync Chain Code',
-  useCameraInstead: 'Use my camera instead...',
+  useCameraInstead: 'Use camera instead',
   // [modal] Choose Device Type
   letsSync: 'Let’s sync a new device with',
   chooseDeviceType: 'Choose a device type:',

@@ -25,9 +25,6 @@ import {
 // Utils
 import { getLocale } from '../page/fakeLocale'
 
-// Images
-import { SyncDefaultIcon } from '../../../../src/features/sync/images'
-
 interface Props {
   onClose: () => void
 }
@@ -74,7 +71,6 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
         : null
       }
         <ModalHeader>
-          <SyncDefaultIcon />
           <div>
             <ModalTitle level={1}>{getLocale('enterSyncCode')}</ModalTitle>
             <ModalSubTitle>{getLocale('enterSyncCodeDescription')}</ModalSubTitle>

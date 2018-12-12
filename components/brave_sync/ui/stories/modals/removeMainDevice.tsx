@@ -22,9 +22,6 @@ import {
 // Utils
 import { getLocale } from '../page/fakeLocale'
 
-// Images
-import { SyncRemoveIcon } from '../../../../src/features/sync/images'
-
 interface Props {
   mainDeviceName: string
   onClose: () => void
@@ -36,7 +33,6 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, {}
     return (
       <Modal id='removeMainDeviceModal' onClose={onClose} size='small'>
         <ModalHeader>
-          <SyncRemoveIcon />
           <ModalTitle level={1}>{getLocale('remove')} “{mainDeviceName}” {getLocale('thisSyncChain')}?</ModalTitle>
         </ModalHeader>
         <ModalContent>
@@ -47,7 +43,7 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, {}
             <OneColumnButtonGrid>
               <Button
                 level='secondary'
-                type='accent'
+                type='subtle'
                 size='medium'
                 onClick={onClose}
                 text={getLocale('cancel')}
@@ -55,7 +51,7 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, {}
             </OneColumnButtonGrid>
             <Button
               level='primary'
-              type='accent'
+              type='warn'
               size='medium'
               onClick={onClose}
               text={getLocale('remove')}

@@ -18,7 +18,7 @@ import {
 } from '../../../../src/features/sync'
 
 // Images
-import { SyncAddIcon, SyncMobileIcon, SyncDesktopIcon } from '../../../../src/features/sync/images'
+import { SyncMobileIcon, SyncDesktopIcon } from '../../../../src/features/sync/images'
 
 // Modals
 import AddNewChainNoCamera from './addNewChainNoCamera'
@@ -70,9 +70,8 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
             : null
         }
         <ModalHeader>
-          <SyncAddIcon />
           <div>
-            <ModalTitle level={1}>{getLocale('letsSync')}<br />“{mainDeviceName}”.</ModalTitle>
+            <ModalTitle level={1}>{getLocale('letsSync')} “{mainDeviceName}”.</ModalTitle>
             <ModalSubTitle>{getLocale('chooseDeviceType')}</ModalSubTitle>
           </div>
         </ModalHeader>

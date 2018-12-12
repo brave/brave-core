@@ -21,9 +21,6 @@ import {
   Paragraph
 } from '../../../../src/features/sync'
 
-// Images
-import { SyncRemoveIcon } from '../../../../src/features/sync/images'
-
 // Utils
 import { getLocale } from '../page/fakeLocale'
 
@@ -70,7 +67,6 @@ export default class ResetSyncModal extends React.PureComponent<Props, State> {
           : null
         }
         <ModalHeader>
-          <SyncRemoveIcon />
           <div>
             <ModalSubTitle highlight={true}>{getLocale('warning')}</ModalSubTitle>
             <ModalTitle level={1}>{getLocale('removing')} “{mainDeviceName}” {getLocale('deleteSyncChain')}</ModalTitle>
@@ -84,7 +80,7 @@ export default class ResetSyncModal extends React.PureComponent<Props, State> {
             <OneColumnButtonGrid>
               <Button
                 level='secondary'
-                type='accent'
+                type='subtle'
                 size='medium'
                 onClick={onClose}
                 text={getLocale('cancel')}
@@ -92,7 +88,7 @@ export default class ResetSyncModal extends React.PureComponent<Props, State> {
             </OneColumnButtonGrid>
             <Button
               level='primary'
-              type='accent'
+              type='warn'
               size='medium'
               onClick={this.onSetupSync}
               text={getLocale('remove')}

@@ -35,10 +35,6 @@ export default class ViewSyncCodeModal extends React.PureComponent<Props, {}> {
     return (
       <Modal id='viewSyncCodeModal' onClose={onClose} size='small'>
         <ViewSyncCodeGrid>
-          <div style={{ textAlign: 'center' }}>
-            <ModalTitle level={3}>{getLocale('qrCode')}</ModalTitle>
-            <QRCode size='small' src={qrCodeImage} />
-          </div>
           <div>
             <ModalTitle level={3}>{getLocale('wordCode')}</ModalTitle>
             <TextAreaClipboard
@@ -46,6 +42,10 @@ export default class ViewSyncCodeModal extends React.PureComponent<Props, {}> {
               wordCountString={getLocale('wordCount')}
               defaultValue={data.passphrase}
             />
+          </div>
+          <div style={{ textAlign: 'left' }}>
+            <ModalTitle level={3}>{getLocale('qrCode')}</ModalTitle>
+            <QRCode size='small' src={qrCodeImage} />
           </div>
         </ViewSyncCodeGrid>
         <TwoColumnButtonGrid>

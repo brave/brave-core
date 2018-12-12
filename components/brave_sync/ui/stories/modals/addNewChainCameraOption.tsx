@@ -12,9 +12,6 @@ import TextAreaClipboard from '../../../../src/components/formControls/textareaC
 // Feature-specific components
 import { ModalHeader, ModalTitle, ModalSubTitle, ModalContent, ThreeColumnButtonGrid, ThreeColumnButtonGridCol2, ThreeColumnButtonGridCol1 } from '../../../../src/features/sync'
 
-// Images
-import { SyncAddIcon } from '../../../../src/features/sync/images'
-
 // Modals
 import ScanCode from './scanCode'
 
@@ -54,7 +51,6 @@ export default class AddNewChainCameraOptionModal extends React.PureComponent<Pr
             : null
         }
         <ModalHeader>
-          <SyncAddIcon />
           <div>
             <ModalTitle level={1}>
               {

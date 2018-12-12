@@ -21,7 +21,7 @@ import {
 } from '../../../../src/features/sync'
 
 // Images
-import { SyncMobilePicture, SyncAddIcon, QRCode } from '../../../../src/features/sync/images'
+import { SyncMobilePicture, QRCode } from '../../../../src/features/sync/images'
 
 // Fake QR Code
 import qrCodeImage from '../../../assets/img/fakeQRCodeImage.png'
@@ -63,7 +63,6 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
           : null
       }
         <ModalHeader>
-          <SyncAddIcon />
           <div>
             <ModalTitle level={1}>{getLocale('scanThisCode')}</ModalTitle>
             <ModalSubTitle>{getLocale('scanThisCodeHowTo')}</ModalSubTitle>

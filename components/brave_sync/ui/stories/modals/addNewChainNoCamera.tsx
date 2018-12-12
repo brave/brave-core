@@ -19,9 +19,6 @@ import {
   OneColumnButtonGrid
 } from '../../../../src/features/sync'
 
-// Images
-import { SyncAddIcon } from '../../../../src/features/sync/images'
-
 // Utils
 import { getLocale } from '../page/fakeLocale'
 import data from '../page/fakeData'
@@ -36,7 +33,6 @@ export default class AddNewChainNoCameraModal extends React.PureComponent<Props,
     return (
       <Modal id='addNewChainNoCameraModal' onClose={onClose} size='small'>
         <ModalHeader>
-          <SyncAddIcon />
           <div>
             <ModalTitle level={1}>{getLocale('enterThisCode')}</ModalTitle>
             <ModalSubTitle>{getLocale('syncChainCodeHowTo')}</ModalSubTitle>
