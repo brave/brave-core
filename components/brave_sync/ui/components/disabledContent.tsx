@@ -8,27 +8,37 @@ import * as React from 'react'
 import { Button } from 'brave-ui'
 
 // Component-specific components
-import { Grid } from 'brave-ui/features/sync'
+import {
+  Main,
+  Title,
+  SectionBlock,
+  DisabledContentButtonGrid,
+  TableGrid,
+  Paragraph
+} from 'brave-ui/features/sync'
+
+import { SyncStartIcon } from 'brave-ui/features/sync/images'
 
 // Modals
-import NewToSyncModal from './modals/newToSync'
-import ExistingSyncCodeModal from './modals/existingSyncCode'
+import DeviceTypeModal from './modals/deviceType'
+import EnterSyncCodeModal from './modals/enterSyncCode'
 
 // Utils
 import { getLocale } from '../../../common/locale'
+import { getDefaultDeviceName } from '../helpers'
 
-interface SyncDisabledContentProps {
+interface Props {
   syncData: Sync.State
   actions: any
 }
 
-interface SyncDisabledContentState {
+interface State {
   newToSync: boolean
   existingSyncCode: boolean
 }
 
-class SyncDisabledContent extends React.PureComponent<SyncDisabledContentProps, SyncDisabledContentState> {
-  constructor (props: SyncDisabledContentProps) {
+export default class SyncDisabledContent extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
     super(props)
     this.state = {
       newToSync: false,
@@ -36,61 +46,82 @@ class SyncDisabledContent extends React.PureComponent<SyncDisabledContentProps, 
     }
   }
 
-  newToSyncModal = () => {
+   componentWillMount () {
+    // once the screen is rendered, create a sync chain.
+    // this allow us to request the qr code and sync words immediately
+    const { thisDeviceName } = this.props.syncData
+    if (thisDeviceName === '') {
+       this.props.actions.onSetupNewToSync(getDefaultDeviceName())
+    }
+  }
+
+   componentDidUpdate () {
+    // once this screen is rendered and component is updated,
+    // request sync qr code and words so it can be seen immediately
+    // upon user request via "start a new sync chain" button.
+    const { seedQRImageSource, syncWords } = this.props.syncData
+    if (!seedQRImageSource && !syncWords) {
+       this.props.actions.onRequestQRCode()
+       this.props.actions.onRequestSyncWords()
+    }
+  }
+
+  onClickNewSyncChainButton = () => {
     this.setState({ newToSync: !this.state.newToSync })
   }
 
-  existingSyncCodeModal = () => {
+  onClickEnterSyncChainCodeButton = () => {
     this.setState({ existingSyncCode: !this.state.existingSyncCode })
   }
 
   render () {
     const { actions, syncData } = this.props
+    const { newToSync, existingSyncCode } = this.state
+
+    if (!syncData) {
+      return null
+    }
+
     return (
-      <Grid columns='auto 1fr'>
+      <Main>
         {
-          this.state.newToSync
-            ? (
-              <NewToSyncModal
-                actions={actions}
-                onClose={this.newToSyncModal}
-                onError={syncData.error}
-              />
-            )
+          newToSync
+            ? <DeviceTypeModal syncData={syncData} actions={actions} onClose={this.onClickNewSyncChainButton} />
             : null
         }
         {
-          this.state.existingSyncCode
-            ? (
-              <ExistingSyncCodeModal
-                actions={actions}
-                onClose={this.existingSyncCodeModal}
-                onError={syncData.error}
-              />
-            )
+          existingSyncCode
+            ? <EnterSyncCodeModal syncData={syncData} actions={actions} onClose={this.onClickEnterSyncChainCodeButton} />
             : null
         }
-        <div>
-          <Button
-            level='primary'
-            type='accent'
-            size='medium'
-            onClick={this.newToSyncModal}
-            text={getLocale('iAmNewToSync')}
-          />
-        </div>
-        <div>
-          <Button
-            level='secondary'
-            type='accent'
-            size='medium'
-            onClick={this.existingSyncCodeModal}
-            text={getLocale('iHaveAnExistingSyncCode')}
-          />
-        </div>
-      </Grid>
+        <TableGrid>
+          <SyncStartIcon />
+          <div>
+            <Title level={2}>{getLocale('syncTitle')}</Title>
+            <Paragraph>{getLocale('syncDescription')}</Paragraph>
+            <SectionBlock>
+              <DisabledContentButtonGrid>
+                <div>
+                  <Button
+                    level='primary'
+                    type='accent'
+                    onClick={this.onClickNewSyncChainButton}
+                    text={getLocale('startSyncChain')}
+                  />
+                </div>
+                <div>
+                  <Button
+                    level='secondary'
+                    type='accent'
+                    onClick={this.onClickEnterSyncChainCodeButton}
+                    text={getLocale('enterSyncChainCode')}
+                  />
+                </div>
+              </DisabledContentButtonGrid>
+            </SectionBlock>
+          </div>
+        </TableGrid>
+      </Main>
     )
   }
 }
-
-export default SyncDisabledContent

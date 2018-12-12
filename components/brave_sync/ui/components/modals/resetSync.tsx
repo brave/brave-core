@@ -5,75 +5,104 @@
 import * as React from 'react'
 
 // Components
-import { Button, Modal } from 'brave-ui'
+import { AlertBox, Button, Modal } from 'brave-ui'
 
 // Feature-specific components
 import {
+  ModalHeader,
+  ModalTitle,
+  ModalSubTitle,
+  ModalContent,
+  TwoColumnButtonGrid,
+  OneColumnButtonGrid,
   Title,
-  ListOrdered,
-  ListBullet,
-  Grid,
-  FlexColumn
+  Paragraph
 } from 'brave-ui/features/sync'
 
-// Assets
+// Utils
 import { getLocale } from '../../../../common/locale'
 
-interface ResetSyncModalProps {
-  onClose: () => void
+// Images
+import { SyncRemoveIcon } from 'brave-ui/features/sync/images'
+
+interface Props {
+  syncData: Sync.State
   actions: any
+  onClose: () => void
 }
 
-interface ResetSyncModalState {
-  showAreYouSureAlert: boolean
+interface State {
+  showAlert: boolean
 }
 
-class ResetSyncModal extends React.PureComponent<ResetSyncModalProps, ResetSyncModalState> {
-  constructor (props: ResetSyncModalProps) {
+export default class ResetSyncModal extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
     super(props)
-    this.state = { showAreYouSureAlert: false }
+    this.state = { showAlert: false }
   }
 
-  areYouSureAlert = () => {
-    const { actions, onClose } = this.props
-    if (window.confirm(getLocale('areYouSure'))) {
-      actions.syncReset()
-      onClose()
-    }
-    return null
+  onResetSync = () => {
+    this.setState({ showAlert: !this.state.showAlert })
+  }
+
+  onConfirmResetSync = () => {
+    this.props.actions.onSyncReset()
   }
 
   render () {
-    const { onClose } = this.props
+    const { onClose, syncData } = this.props
+    const { showAlert } = this.state
+
+    if (!syncData) {
+      return null
+    }
+
     return (
-      <Modal id='showIAmResetSyncModal' onClose={onClose} size='small'>
-        <Title level={1}>{getLocale('resetSync')}</Title>
-        <ListOrdered>
-          <ListBullet>{getLocale('resetSyncFirstBullet')}</ListBullet>
-          <ListBullet>{getLocale('resetSyncSecondBullet')}</ListBullet>
-          <ListBullet>{getLocale('resetSyncThirdBullet')}</ListBullet>
-        </ListOrdered>
-        <Grid columns='auto 0fr'>
-          <FlexColumn content='flex-end'>
+      <Modal id='resetSyncModal' onClose={onClose} size='small'>
+        {
+          showAlert
+          ? (
+              <AlertBox
+                okString={getLocale('ok')}
+                onClickOk={this.onConfirmResetSync}
+                cancelString={getLocale('cancel')}
+                onClickCancel={onClose}
+              >
+                <Title level={1}>{getLocale('areYouSure')}</Title>
+              </AlertBox>
+            )
+          : null
+        }
+        <ModalHeader>
+          <SyncRemoveIcon />
+          <div>
+            <ModalSubTitle highlight={true}>{getLocale('warning')}</ModalSubTitle>
+            <ModalTitle level={1}>{getLocale('removing')} “{syncData.thisDeviceName}” {getLocale('deleteSyncChain')}</ModalTitle>
+          </div>
+        </ModalHeader>
+        <ModalContent>
+          <Paragraph>{getLocale('deleteSyncDescription')}</Paragraph>
+          <Paragraph>{getLocale('startSyncChainHowTo')}</Paragraph>
+        </ModalContent>
+        <TwoColumnButtonGrid>
+            <OneColumnButtonGrid>
+              <Button
+                level='secondary'
+                type='accent'
+                size='medium'
+                onClick={onClose}
+                text={getLocale('cancel')}
+              />
+            </OneColumnButtonGrid>
             <Button
-              level='secondary'
+              level='primary'
               type='accent'
               size='medium'
-              onClick={onClose}
-              text={getLocale('cancel')}
+              onClick={this.onResetSync}
+              text={getLocale('remove')}
             />
-          </FlexColumn>
-          <Button
-            level='primary'
-            type='accent'
-            size='medium'
-            onClick={this.areYouSureAlert}
-            text={getLocale('resetSync')}
-          />
-        </Grid>
+          </TwoColumnButtonGrid>
       </Modal>
     )
   }
 }
-
-export default ResetSyncModal
