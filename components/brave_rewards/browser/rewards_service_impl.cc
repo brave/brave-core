@@ -950,11 +950,11 @@ void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
 
         wallet_properties->grants.push_back(grant);
       }
-
-      // webui
-      observer.OnWalletProperties(
-          this, error_code, std::move(wallet_properties));
     }
+
+    // webui
+    observer.OnWalletProperties(
+            this, error_code, std::move(wallet_properties));
   }
 }
 
