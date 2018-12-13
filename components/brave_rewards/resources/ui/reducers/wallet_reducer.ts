@@ -55,6 +55,10 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
           state.walletInfo = action.payload.properties.wallet
           ui.walletServerProblem = false
           ui.walletCorrupted = false
+
+          if (ui.emptyWallet && state.walletInfo && state.walletInfo.balance > 0) {
+            ui.emptyWallet = false
+          }
         }
 
         state = {
