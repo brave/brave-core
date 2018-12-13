@@ -739,8 +739,8 @@ TEST_F(BraveBookmarkChangeProcessorTest, GetAllSyncData) {
 
   EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
       records_to_resolve.at(0).get(), pair_at_0->first.get());
-  // UPDATE now can be resolved to nullptr in some cases
-  EXPECT_EQ(pair_at_0->second.get(), nullptr);
+  EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
+       records.at(1).get(), pair_at_0->second.get());
 
   const auto& pair_at_1 = records_and_existing_objects.at(1);
   EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
