@@ -200,5 +200,41 @@
   "noActivity": {
     "message": "No activities yet…",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Drag the BAT Icon on to the",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "It’s your lucky day!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Your token grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Prove that you are human!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "target.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Hmm… Not Quite. Try Again.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Claim",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Free Token Grant",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Grant Expiration Date",
+    "description": "Grant expiry label"
   }
 }

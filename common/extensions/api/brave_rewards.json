@@ -17,6 +17,39 @@
         "parameters": []
       },
       {
+        "name": "onGrant",
+        "type": "function",
+        "description": "Fired when grant is received",
+        "parameters": [
+          {
+            "name": "properties",
+            "type": "any"
+          }
+        ]
+      },
+      {
+        "name": "onGrantCaptcha",
+        "type": "function",
+        "description": "Fired when grant captcha is received",
+        "parameters": [
+          {
+            "name": "captcha",
+            "type": "any"
+          }
+        ]
+      },
+      {
+        "name": "onGrantFinish",
+        "type": "function",
+        "description": "Fired when grant process is finished",
+        "parameters": [
+          {
+            "name": "properties",
+            "type": "any"
+          }
+        ]
+      },
+      {
         "name": "onPublisherData",
         "type": "function",
         "description": "Fired when we get publisher data from the DB",
@@ -256,6 +289,23 @@
         "type": "function",
         "description": "Retrieves grant when panel is mounted",
         "parameters": []
+      },
+      {
+        "name": "getGrantCaptcha",
+        "type": "function",
+        "description": "Retrieves grant captcha data",
+        "parameters": []
+      },
+      {
+        "name": "solveGrantCaptcha",
+        "type": "function",
+        "description": "Sends the user solution to the grant claim captcha",
+        "parameters": [
+          {
+            "name": "solution",
+            "type": "string"
+          }
+        ]
       }
     ]
   }

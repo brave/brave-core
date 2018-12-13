@@ -106,6 +106,22 @@ export class Panel extends React.Component<Props, State> {
     })
   }
 
+  onFetchCaptcha = () => {
+    this.actions.getGrantCaptcha()
+  }
+
+  onGrantHide = () => {
+    this.actions.onResetGrant()
+  }
+
+  onFinish = () => {
+    this.actions.onDeleteGrant()
+  }
+
+  onSolution = (x: number, y: number) => {
+    this.actions.solveGrantCaptcha(x, y)
+  }
+
   getGrants = (grants?: RewardsExtension.Grant[]) => {
     if (!grants) {
       return []
@@ -256,6 +272,7 @@ export class Panel extends React.Component<Props, State> {
   }
 
   render () {
+    const { grant } = this.props.rewardsPanelData
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const converted = utils.convertBalance(balance.toString(), rates)
@@ -290,6 +307,12 @@ export class Panel extends React.Component<Props, State> {
         showCopy={false}
         showSecActions={false}
         connectedWallet={false}
+        grant={grant}
+        onGrantHide={this.onGrantHide}
+        onFetchCaptcha={this.onFetchCaptcha}
+        onSolution={this.onSolution}
+        onFinish={this.onFinish}
+        convertProbiToFixed={utils.convertProbiToFixed}
         grants={this.getGrants(grants)}
         {...notification}
       >
