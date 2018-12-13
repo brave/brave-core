@@ -1,5 +1,5 @@
 diff --git a/chrome/common/importer/profile_import.typemap b/chrome/common/importer/profile_import.typemap
-index 6283f2bf6871a10f710694772b5da0bc9b70c2ad..e11821c72ba2d1adc36c6ca6d362f10a5f501b66 100644
+index 6283f2bf6871a10f710694772b5da0bc9b70c2ad..78968b5fba8693185c8e517d3d08b140b4a49d70 100644
 --- a/chrome/common/importer/profile_import.typemap
 +++ b/chrome/common/importer/profile_import.typemap
 @@ -4,6 +4,10 @@
@@ -21,7 +21,7 @@ index 6283f2bf6871a10f710694772b5da0bc9b70c2ad..e11821c72ba2d1adc36c6ca6d362f10a
    "//chrome/common",
    "//components/favicon_base",
    "//ipc",
-@@ -26,4 +31,10 @@ type_mappings = [
+@@ -26,4 +31,11 @@ type_mappings = [
    "chrome.mojom.SearchEngineInfo=::importer::SearchEngineInfo",
    "chrome.mojom.SourceProfile=::importer::SourceProfile",
    "chrome.mojom.ImportItem=::importer::ImportItem",
@@ -31,4 +31,5 @@ index 6283f2bf6871a10f710694772b5da0bc9b70c2ad..e11821c72ba2d1adc36c6ca6d362f10a
 +  "chrome.mojom.ImportedBrowserTab=::ImportedBrowserTab",
 +  "chrome.mojom.ImportedBrowserWindow=::ImportedBrowserWindow",
 +  "chrome.mojom.ImportedWindowState=::ImportedWindowState",
++  "chrome.mojom.SessionStoreSettings=::SessionStoreSettings"
  ]
