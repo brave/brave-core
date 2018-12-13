@@ -157,9 +157,9 @@ TEST_F(RewardsServiceTest, HandleFlags) {
 }
 
 TEST_F(RewardsServiceTest, OnWalletProperties) {
-  // wallet properties are empty (no call should be made)
-  EXPECT_CALL(*observer(), OnWalletProperties(_, _, _)).Times(0);
-  rewards_service()->OnWalletProperties(ledger::Result::LEDGER_OK, nullptr);
+  // We always need to call observer as we report errors back even when we have null pointer
+  EXPECT_CALL(*observer(), OnWalletProperties(_, 1, _)).Times(1);
+  rewards_service()->OnWalletProperties(ledger::Result::LEDGER_ERROR, nullptr);
 }
 
 // add test for strange entries
