@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 1f39abbeb2579098a54fa82612199f0307ea03b4..80095fc3ab546770adc098a36bef9e795b1a07ca 100644
+index 1f39abbeb2579098a54fa82612199f0307ea03b4..5909709a6f51428abf261f8384fb78aba0575c42 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
 @@ -61,7 +61,7 @@ struct Context {
@@ -11,7 +11,7 @@ index 1f39abbeb2579098a54fa82612199f0307ea03b4..80095fc3ab546770adc098a36bef9e79
  // Opens the Google Update ClientState key. If |binaries| is false, opens the
  // key for Google Chrome or Chrome SxS (canary). If |binaries| is true and an
  // existing multi-install Chrome is being updated, opens the key for the
-@@ -142,6 +142,122 @@ void SetInstallerFlags(const Configuration& configuration) {
+@@ -142,6 +142,140 @@ void SetInstallerFlags(const Configuration& configuration) {
  }
  #endif  // GOOGLE_CHROME_BUILD
  
@@ -103,6 +103,24 @@ index 1f39abbeb2579098a54fa82612199f0307ea03b4..80095fc3ab546770adc098a36bef9e79
 +  if (*scan == L'.')
 +    filename.truncate_at(scan - filename.get());
 +
++  // Strip any de-duplicating suffix from filename, e.g. "(1)".
++  scan = filename.get() + filename.length() - 1;
++  if (*scan == L')') {
++    --scan;
++    while (scan != filename.get() && *scan >= '0' && *scan <= '9')
++      --scan;
++    if (*scan == L'(')
++      filename.truncate_at(scan - filename.get());
++  }
++
++  // Strip trailing spaces from filename.
++  scan = filename.get() + filename.length() - 1;
++  while (scan != filename.get() && *scan == L' ')
++    --scan;
++
++  if (scan != filename.get() && (scan != filename.get() + filename.length()))
++    filename.truncate_at(scan - filename.get() + 1);
++
 +  // First check for 6-character standard referral code XXXDDD, where
 +  // X is an alphabetic character and D is a numeric character. If not
 +  // found, check for an alphabetic referral code of any length in the
@@ -134,7 +152,7 @@ index 1f39abbeb2579098a54fa82612199f0307ea03b4..80095fc3ab546770adc098a36bef9e79
  // Gets the setup.exe path from Registry by looking at the value of Uninstall
  // string.  |size| is measured in wchar_t units.
  ProcessExitResult GetSetupExePathForAppGuid(bool system_level,
-@@ -526,6 +642,21 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -526,6 +660,21 @@ ProcessExitResult RunSetup(const Configuration& configuration,
    // on to setup.exe
    AppendCommandLineFlags(configuration.command_line(), &cmd_line);
  
@@ -156,7 +174,7 @@ index 1f39abbeb2579098a54fa82612199f0307ea03b4..80095fc3ab546770adc098a36bef9e79
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
-@@ -873,7 +1004,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -873,7 +1022,7 @@ ProcessExitResult WMain(HMODULE module) {
    if (!GetWorkDir(module, &base_path, &exit_code))
      return exit_code;
  
@@ -165,7 +183,7 @@ index 1f39abbeb2579098a54fa82612199f0307ea03b4..80095fc3ab546770adc098a36bef9e79
    // Set the magic suffix in registry to try full installer next time. We ignore
    // any errors here and we try to set the suffix for user level unless
    // GoogleUpdateIsMachine=1 is present in the environment or --system-level is
-@@ -898,7 +1029,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -898,7 +1047,7 @@ ProcessExitResult WMain(HMODULE module) {
    if (ShouldDeleteExtractedFiles())
      DeleteExtractedFiles(base_path.get(), archive_path.get(), setup_path.get());
  
