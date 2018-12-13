@@ -87,7 +87,7 @@ class AdsImpl : public Ads {
       const std::vector<double>& page_score);
 
   void TestShoppingData(const std::string& url);
-  void TestSearchState(const std::string& url);
+  bool TestSearchState(const std::string& url);
 
   void ServeSampleAd() override;
   void OnLoadSampleBundle(
@@ -151,6 +151,7 @@ class AdsImpl : public Ads {
   void GenerateAdReportingSettingsEvent();
 
   bool IsValidScheme(const std::string& url);
+  bool IsSearchEngine(const std::string& url);
 
   std::unique_ptr<Client> client_;
   std::unique_ptr<Bundle> bundle_;

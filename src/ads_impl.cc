@@ -359,8 +359,11 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
     return;
   }
 
+  if (TestSearchState(url)) {
+    return;
+  }
+
   TestShoppingData(url);
-  TestSearchState(url);
 
   auto page_score = user_model_->ClassifyPage(html);
   last_page_classification_ = GetWinningCategory(page_score);
@@ -437,21 +440,19 @@ void AdsImpl::TestShoppingData(const std::string& url) {
   }
 }
 
-void AdsImpl::TestSearchState(const std::string& url) {
+bool AdsImpl::TestSearchState(const std::string& url) {
   if (!IsInitialized()) {
-    return;
+    return false;
   }
 
-  UrlComponents components;
-  if (!ads_client_->GetUrlComponents(url, &components)) {
-    return;
-  }
-
-  if (SearchProviders::IsSearchEngine(components)) {
+  auto is_search_engine = IsSearchEngine(url);
+  if (is_search_engine) {
     client_->FlagSearchState(url, 1.0);
   } else {
     client_->UnflagSearchState(url);
   }
+
+  return is_search_engine;
 }
 
 void AdsImpl::ServeSampleAd() {
@@ -1420,6 +1421,15 @@ bool AdsImpl::IsValidScheme(const std::string& url) {
   }
 
   return true;
+}
+
+bool AdsImpl::IsSearchEngine(const std::string& url) {
+  UrlComponents components;
+  if (!ads_client_->GetUrlComponents(url, &components)) {
+    return false;
+  }
+
+  return SearchProviders::IsSearchEngine(components);
 }
 
 }  // namespace ads
