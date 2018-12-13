@@ -136,6 +136,7 @@ class TabLocationView: UIView {
 
     fileprivate lazy var lockImageView: UIImageView = {
         let lockImageView = UIImageView(image: #imageLiteral(resourceName: "lock_verified").template)
+        lockImageView.isHidden = true // Hidden by default
         lockImageView.tintColor = UIColor.Photon.Green50
         lockImageView.isAccessibilityElement = true
         lockImageView.contentMode = .center
