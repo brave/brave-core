@@ -79,6 +79,7 @@ public final class Device: NSManagedObject, Syncable, CRUD {
         guard let root = record as? SyncDevice else { return }
         self.name = root.name
         self.deviceId = root.deviceId
+        created = record?.syncNativeTimestamp
         
         // No save currently
     }
