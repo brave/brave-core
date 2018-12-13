@@ -161,6 +161,7 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
             ? <RemoveDeviceModal
               deviceName={deviceToRemoveName}
               deviceId={Number(deviceToRemoveId)}
+              devices={syncData.devices}
               actions={actions}
               onClose={this.onClickRemoveDeviceButton}
               />

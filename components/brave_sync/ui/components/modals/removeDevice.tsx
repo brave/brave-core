@@ -28,12 +28,18 @@ interface Props {
   actions: any
   deviceName: string | undefined
   deviceId: number | undefined
+  devices: Sync.Devices[]
 }
 
 export default class RemoveMainDeviceModal extends React.PureComponent<Props, {}> {
   onClickConfirmRemoveDeviceButton = () => {
-    const { deviceName, deviceId } = this.props
+    const { deviceName, deviceId, devicesList } = this.props
     this.props.actions.onRemoveDevice(Number(deviceId), deviceName)
+    // if there are 2 devices and user tries to remove one,
+    // reset sync
+    if (devices.length <= 2) {
+      this.props.actions.onSyncReset()
+    }
     this.props.onClose()
   }
 
