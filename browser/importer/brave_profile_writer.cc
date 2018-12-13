@@ -14,7 +14,7 @@
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/utility/importer/brave_importer.h"
 #include "brave/browser/importer/brave_in_process_importer_bridge.h"
-#include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/browser/search_engine_provider_util.h"
 
 #include "base/files/file_util.h"
 #include "base/strings/string_number_conversions.h"
