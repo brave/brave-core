@@ -31,10 +31,9 @@ Enable testing of notifications while viewing `www.iab.com` so that page refresh
 - Catalog is downloaded twice upon startup
 - For Linux:
     - In "debug" mode, notifications cause crashes
-    - Foreground/Background notifications aren't implemented
+    - Foreground/Background notifications aren't implemented on Brave Core
 - `IsNotificationsAvailable` always returns `true` from Brave Core irrespective if they are enabled or disabled on the operating system
-- `EventLog`'s are persisted in the Console Log, whereas in Muon they were
-  persisted in a JSON file
+- `EventLog`'s are persisted in the Console Log, whereas in Muon they were persisted in a JSON file
 - Implement DemoAPI logs
 - Additional unit test coverage
 
