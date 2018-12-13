@@ -366,7 +366,15 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
   TestShoppingData(url);
 
   auto page_score = user_model_->ClassifyPage(html);
-  last_page_classification_ = GetWinningCategory(page_score);
+  auto winning_category = GetWinningCategory(page_score);
+  if (winning_category.empty()) {
+    LOG(INFO) << "Site visited " << url
+      << ", not enough content to classify page";
+
+    return;
+  }
+
+  last_page_classification_ = winning_category;
 
   client_->AppendPageScoreToPageScoreHistory(page_score);
 
