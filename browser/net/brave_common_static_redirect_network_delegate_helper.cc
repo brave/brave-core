@@ -26,6 +26,17 @@ bool IsUpdaterURL(const GURL& gurl) {
       });
 }
 
+bool IsDefaultComponentUpdaterURL(const GURL& gurl) {
+  static std::vector<URLPattern> updater_patterns({
+      URLPattern(URLPattern::SCHEME_HTTPS, std::string(component_updater::kUpdaterDefaultUrl) + "*"),
+      URLPattern(URLPattern::SCHEME_HTTP, std::string(component_updater::kUpdaterFallbackUrl) + "*"),
+  });
+  return std::any_of(updater_patterns.begin(), updater_patterns.end(),
+      [&gurl](URLPattern pattern) {
+        return pattern.MatchesURL(gurl);
+      });
+}
+
 int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
@@ -33,6 +44,10 @@ int OnBeforeURLRequest_CommonStaticRedirectWork(
   if (IsUpdaterURL(ctx->request_url)) {
     replacements.SetQueryStr(ctx->request_url.query_piece());
     ctx->new_url_spec = GURL(kBraveUpdatesExtensionsEndpoint).ReplaceComponents(replacements).spec();
+    return net::OK;
+  }
+  if (IsDefaultComponentUpdaterURL(ctx->request_url)) {
+    ctx->new_url_spec = GURL(kBraveComponentUpdaterEndpoint).spec();
     return net::OK;
   }
   return net::OK;
