@@ -262,7 +262,7 @@ void AdsImpl::TabUpdated(
 
   if (is_active) {
     LOG(INFO) << "TabUpdated.IsFocused for tab id: " << tab_id
-      << " and url:" << url;
+      << " and url: " << url;
 
     last_shown_tab_url_ = url;
 
@@ -274,7 +274,7 @@ void AdsImpl::TabUpdated(
     GenerateAdReportingFocusEvent(focus_info);
   } else {
     LOG(INFO) << "TabUpdated.IsBlurred for tab id: " << tab_id
-      << " and url:" << url;
+      << " and url: " << url;
 
     BlurInfo blur_info;
     blur_info.tab_id = tab_id;

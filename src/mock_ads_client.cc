@@ -147,12 +147,12 @@ bool MockAdsClient::IsNotificationsAvailable() const {
 void MockAdsClient::ShowNotification(
     std::unique_ptr<NotificationInfo> info) {
   std::cout << std::endl << "------------------------------------------------";
-  std::cout << std::endl << "Notification:";
-  std::cout << std::endl << info->advertiser;
-  std::cout << std::endl << info->category;
-  std::cout << std::endl << info->text;
-  std::cout << std::endl << info->url;
-  std::cout << std::endl << info->uuid;
+  std::cout << std::endl << "Notification shown:";
+  std::cout << std::endl << "  advertiser: " << info->advertiser;
+  std::cout << std::endl << "  category: " << info->category;
+  std::cout << std::endl << "  notificationText: " << info->text;
+  std::cout << std::endl << "  notificationUrl: " << info->url;
+  std::cout << std::endl << "  uuid: " << info->uuid;
 }
 
 uint32_t MockAdsClient::SetTimer(const uint64_t time_offset) {
