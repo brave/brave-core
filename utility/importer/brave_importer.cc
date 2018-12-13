@@ -238,19 +238,30 @@ void BraveImporter::RecursiveReadBookmarksFolder(
   if (!bookmark_order)
     return;
 
-  for (const auto& entry : bookmark_order->GetList()) {
-    auto& type = entry.FindKeyOfType("type",
-      base::Value::Type::STRING)->GetString();
-    auto& key = entry.FindKeyOfType("key",
-      base::Value::Type::STRING)->GetString();
+  for (auto& entry : bookmark_order->GetList()) {
+    base::Value* typeValue = entry.FindKeyOfType("type",
+        base::Value::Type::STRING);
+    base::Value* keyValue = entry.FindKeyOfType("key",
+        base::Value::Type::STRING);
+    if (!(typeValue && keyValue))
+      continue;
 
-     if (type == "bookmark-folder") {
+    auto type = typeValue->GetString();
+    auto key = keyValue->GetString();
+
+    if (type == "bookmark-folder") {
       base::Value* bookmark_folder =
         bookmark_folders_dict->FindKeyOfType(key,
           base::Value::Type::DICTIONARY);
-      auto& title =
-        bookmark_folder->FindKeyOfType("title",
-          base::Value::Type::STRING)->GetString();
+      if (!bookmark_folder)
+        continue;
+
+      base::Value* titleValue = bookmark_folder->FindKeyOfType("title",
+          base::Value::Type::STRING);
+      if (!titleValue)
+        continue;
+
+      auto title = titleValue->GetString();
 
       // Empty folders don't have a corresponding entry in bookmark_order_dict,
       // which provides an easy way to test whether a folder is empty.
@@ -282,12 +293,18 @@ void BraveImporter::RecursiveReadBookmarksFolder(
     } else if (type == "bookmark") {
       base::Value* bookmark =
         bookmarks_dict->FindKeyOfType(key, base::Value::Type::DICTIONARY);
-      auto& title =
-        bookmark->FindKeyOfType("title",
-          base::Value::Type::STRING)->GetString();
-      auto& location =
-        bookmark->FindKeyOfType("location",
-          base::Value::Type::STRING)->GetString();
+      if (!bookmark)
+        continue;
+
+      base::Value* titleValue = bookmark->FindKeyOfType("title",
+          base::Value::Type::STRING);
+      base::Value* locationValue = bookmark->FindKeyOfType("location",
+          base::Value::Type::STRING);
+      if (!(titleValue && locationValue))
+        continue;
+
+      auto title = titleValue->GetString();
+      auto location = locationValue->GetString();
 
       ImportedBookmarkEntry imported_bookmark;
       imported_bookmark.is_folder = false;
