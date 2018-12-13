@@ -46,4 +46,9 @@ void BraveInProcessImporterBridge::UpdateWindows(
   writer_->UpdateWindows(windowState);
 }
 
+void BraveInProcessImporterBridge::UpdateSettings(
+      const SessionStoreSettings& settings) {
+  writer_->UpdateSettings(settings);
+}
+
 BraveInProcessImporterBridge::~BraveInProcessImporterBridge() {}

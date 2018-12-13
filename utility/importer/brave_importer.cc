@@ -69,9 +69,9 @@ void BraveImporter::StartImport(const importer::SourceProfile& source_profile,
   // The order here is important!
   bridge_->NotifyStarted();
 
-  // NOTE: Referrals are always imported (not configurable by user)
-  // If referral data isn't found, those settings are then cleared.
-  ImportReferral();
+  // NOTE: Some data is always imported (not configurable by user)
+  // If data isn't found, settings are cleared or defaulted.
+  ImportRequiredItems();
 
   if ((items & importer::HISTORY) && !cancelled()) {
     bridge_->NotifyItemStarted(importer::HISTORY);
@@ -120,6 +120,13 @@ void BraveImporter::StartImport(const importer::SourceProfile& source_profile,
   }
 
   bridge_->NotifyEnded();
+}
+
+// Called before user-toggleable import items.
+// These import types don't need a distinct checkbox in the import screen.
+void BraveImporter::ImportRequiredItems() {
+  ImportReferral();
+  ImportSettings();
 }
 
 void BraveImporter::ImportHistory() {
@@ -754,7 +761,7 @@ std::vector<ImportedBrowserWindow> ParseWindows(
         base::Value::Type::STRING);
     auto* state = windowInfo->FindKeyOfType("state",
         base::Value::Type::STRING);
-    
+
     if (!(top && left && width && height && focused && type && state)) {
       LOG(WARNING) << "windowInfo failed validation, skipping window";
       continue;
@@ -781,7 +788,7 @@ std::vector<ImportedBrowserWindow> ParseWindows(
 
     windows.push_back(window);
   }
-  
+
   return windows;
 }
 
@@ -853,4 +860,38 @@ void BraveImporter::ImportWindows() {
     windowState.pinnedTabs = pinnedTabs;
     bridge_->UpdateWindows(windowState);
   }
+}
+
+void BraveImporter::ImportSettings() {
+  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+      "session-store-1");
+  if (!session_store_json) {
+    return;
+  }
+
+  const base::Value* settings = session_store_json->FindKeyOfType(
+      "settings",
+      base::Value::Type::DICTIONARY);
+  if (!settings) {
+    LOG(ERROR) << "No entry \"settings\" found in session-store-1";
+    return;
+  }
+
+  SessionStoreSettings user_settings;
+
+  // Search related settings
+  TryFindStringKey(settings, "search.default-search-engine",
+      user_settings.default_search_engine);
+
+  if (!TryFindBoolKey(settings, "search.use-alternate-private-search-engine",
+      user_settings.use_alternate_private_search_engine)) {
+    user_settings.use_alternate_private_search_engine = false;
+  }
+
+  if (!TryFindBoolKey(settings, "search.use-alternate-private-search-engine-tor",
+      user_settings.use_alternate_private_search_engine_tor)) {
+    user_settings.use_alternate_private_search_engine_tor = true;
+  }
+
+  bridge_->UpdateSettings(user_settings);
 }

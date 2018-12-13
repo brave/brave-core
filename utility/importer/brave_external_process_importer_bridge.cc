@@ -59,6 +59,13 @@ void BraveExternalProcessImporterBridge::UpdateWindows(
   (*observer_)->OnWindowsImportReady(windowState);
 }
 
+
+void BraveExternalProcessImporterBridge::UpdateSettings(
+      const SessionStoreSettings& settings) {
+  (*observer_)->OnSettingsImportReady(settings);
+}
+
+
 BraveExternalProcessImporterBridge::BraveExternalProcessImporterBridge(
     const base::flat_map<uint32_t, std::string>& localized_strings,
     scoped_refptr<chrome::mojom::ThreadSafeProfileImportObserverPtr> observer)

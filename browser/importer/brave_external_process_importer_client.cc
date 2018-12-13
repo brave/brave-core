@@ -77,4 +77,12 @@ void BraveExternalProcessImporterClient::OnWindowsImportReady(
   bridge_->UpdateWindows(windowState);
 }
 
+void BraveExternalProcessImporterClient::OnSettingsImportReady(
+    const SessionStoreSettings& settings) {
+  if (cancelled_)
+    return;
+
+  bridge_->UpdateSettings(settings);
+}
+
 BraveExternalProcessImporterClient::~BraveExternalProcessImporterClient() {}
