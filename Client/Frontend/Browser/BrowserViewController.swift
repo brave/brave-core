@@ -2399,15 +2399,16 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             let tabType = currentTab.type
 
             let addTab = { (rURL: URL, isPrivate: Bool) in
-                    let tab = self.tabManager.addTab(URLRequest(url: rURL as URL), afterTab: currentTab, isPrivate: isPrivate)
-
-                    // We're not showing the top tabs; show a toast to quick switch to the fresh new tab.
-                    let toast = ButtonToast(labelText: Strings.ContextMenuButtonToastNewTabOpenedLabelText, buttonText: Strings.ContextMenuButtonToastNewTabOpenedButtonText, completion: { buttonPressed in
-                        if buttonPressed {
-                            self.tabManager.selectTab(tab)
-                        }
-                    })
-                    self.show(toast: toast)
+                let tab = self.tabManager.addTab(URLRequest(url: rURL as URL), afterTab: currentTab, isPrivate: isPrivate)
+                
+                // We're not showing the top tabs; show a toast to quick switch to the fresh new tab.
+                let toast = ButtonToast(labelText: Strings.ContextMenuButtonToastNewTabOpenedLabelText, buttonText: Strings.ContextMenuButtonToastNewTabOpenedButtonText, completion: { buttonPressed in
+                    if buttonPressed {
+                        self.tabManager.selectTab(tab)
+                    }
+                })
+                self.show(toast: toast)
+                self.scrollController.showToolbars(animated: true)
             }
 
             if !tabType.isPrivate {
@@ -2440,6 +2441,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             
             let openInNewTabAction = UIAlertAction(title: Strings.OpenImageInNewTabActionTitle, style: .default) { _ in
                 self.tabManager.addTab(URLRequest(url: url), afterTab: self.tabManager.selectedTab)
+                self.scrollController.showToolbars(animated: true)
             }
             actionSheetController.addAction(openInNewTabAction, accessibilityIdentifier: "linkContextMenu.openImageInNewTab")
 
