@@ -29,23 +29,8 @@ AdsServe::AdsServe(
 AdsServe::~AdsServe() = default;
 
 void AdsServe::BuildUrl() {
-  ClientInfo client_info;
-  ads_client_->GetClientInfo(&client_info);
-
   url_ = _is_production ? PRODUCTION_SERVER : STAGING_SERVER;
   url_ += CATALOG_PATH;
-
-  url_ += "?braveVersion=";
-  url_ += client_info.application_version;
-
-  auto platform = client_info.GetPlatformName();
-  if (!platform.empty()) {
-    url_ += "&platform=";
-    url_ += platform;
-  }
-
-  url_ += "&platformVersion=";
-  url_ += client_info.platform_version;
 }
 
 void AdsServe::DownloadCatalog() {
