@@ -729,14 +729,7 @@ void BookmarkChangeProcessor::GetAllSyncData(
     resolved_record->first = jslib::SyncRecord::Clone(*record);
     auto* node = FindByObjectId(bookmark_model_, record->objectId);
     if (node) {
-      // only match unsynced nodes so we don't accidentally overwrite
-      // changes from another client with our local changes
-      // TODO(darkdh): remove this hack once sync library can diffenrentiate
-      // records by syncTimstamp
-      if (IsUnsynced(node) ||
-          record->action != jslib::SyncRecord::Action::A_UPDATE) {
       resolved_record->second = BookmarkNodeToSyncBookmark(node);
-      }
     }
 
     records_and_existing_objects->push_back(std::move(resolved_record));
