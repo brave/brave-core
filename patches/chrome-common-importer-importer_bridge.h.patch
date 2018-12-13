@@ -1,8 +1,8 @@
 diff --git a/chrome/common/importer/importer_bridge.h b/chrome/common/importer/importer_bridge.h
-index b4250c91d1b83ea920b3de9cd6b1a7929b30ffc5..d36edb5a93f0d0117bb368c15693e8fc91272d3c 100644
+index b4250c91d1b83ea920b3de9cd6b1a7929b30ffc5..c040145ad980af35228fd9e70e49093be85a1e3f 100644
 --- a/chrome/common/importer/importer_bridge.h
 +++ b/chrome/common/importer/importer_bridge.h
-@@ -58,6 +58,21 @@ class ImporterBridge : public base::RefCountedThreadSafe<ImporterBridge> {
+@@ -58,6 +58,24 @@ class ImporterBridge : public base::RefCountedThreadSafe<ImporterBridge> {
    virtual void SetAutofillFormData(
        const std::vector<ImporterAutofillFormDataEntry>& entries) = 0;
  
@@ -20,6 +20,9 @@ index b4250c91d1b83ea920b3de9cd6b1a7929b30ffc5..d36edb5a93f0d0117bb368c15693e8fc
 +
 +  virtual void UpdateWindows(
 +      const ImportedWindowState& windowState) {};
++
++  virtual void UpdateSettings(
++      const SessionStoreSettings& settings) {};
 +
    // Notifies the coordinator that the import operation has begun.
    virtual void NotifyStarted() = 0;

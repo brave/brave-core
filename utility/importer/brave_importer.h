@@ -36,6 +36,8 @@ class BraveImporter : public ChromeImporter {
   bool ImportLedger();
   void ImportWindows();
   void ImportReferral();
+  void ImportRequiredItems();
+  void ImportSettings();
 
   std::unique_ptr<base::Value> ParseBraveStateFile(
     const std::string& filename);
