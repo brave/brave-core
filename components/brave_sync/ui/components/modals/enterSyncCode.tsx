@@ -42,14 +42,6 @@ interface Props {
     }
   }
 
-  componentWillMount () {
-    // sync is initialized in the first screen's render so we can have
-    // access to qrcode and sync words. since in this screen user
-    // is trying to sync another device, reset the instance created
-    // so a new sync chain can be re-created and connect to the remote device
-    this.props.actions.onSyncReset()
-  }
-
   onUserNoticedError = () => {
     this.props.actions.resetSyncSetupError()
     this.props.onClose()
