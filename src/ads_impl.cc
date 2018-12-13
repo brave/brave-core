@@ -959,6 +959,8 @@ void AdsImpl::SustainAdInteraction() {
   }
 
   GenerateAdReportingSustainEvent(last_shown_notification_info_);
+
+  AdSustained(last_shown_notification_info_);
 }
 
 void AdsImpl::StopSustainingAdInteraction() {
@@ -986,6 +988,12 @@ bool AdsImpl::IsStillViewingAd() const {
   }
 
   return true;
+}
+
+void AdsImpl::AdSustained(const NotificationInfo& info) const {
+  auto notification_info =
+    std::make_unique<NotificationInfo>(info);
+  ads_client_->AdSustained(std::move(notification_info));
 }
 
 void AdsImpl::OnTimer(const uint32_t timer_id) {

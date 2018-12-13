@@ -155,6 +155,16 @@ void MockAdsClient::ShowNotification(
   std::cout << std::endl << "  uuid: " << info->uuid;
 }
 
+void MockAdsClient::AdSustained(std::unique_ptr<NotificationInfo> info) {
+  std::cout << std::endl << "------------------------------------------------";
+  std::cout << std::endl << "Sustained notification:";
+  std::cout << std::endl << "  advertiser: " << info->advertiser;
+  std::cout << std::endl << "  category: " << info->category;
+  std::cout << std::endl << "  notificationText: " << info->text;
+  std::cout << std::endl << "  notificationUrl: " << info->url;
+  std::cout << std::endl << "  uuid: " << info->uuid;
+}
+
 uint32_t MockAdsClient::SetTimer(const uint64_t time_offset) {
   (void)time_offset;
 
