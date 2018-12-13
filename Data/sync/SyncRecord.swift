@@ -5,6 +5,8 @@ import Shared
 import CoreData
 import SwiftyJSON
 
+private let log = Logger.browserLogger
+
 protocol SyncRecordProtocol {
     associatedtype CoreDataParallel: Syncable
 //    var CoredataParallel: NSManagedObject.Type?
@@ -19,7 +21,7 @@ public class SyncRecord: SyncRecordProtocol {
         static let deviceId = "deviceId"
         static let action = "action"
         static let objectData = "objectData"
-        // TODO: Add sync timestamp
+        static let syncTimestamp = "syncTimestamp"
     }
     
     // MARK: Properties
@@ -28,11 +30,20 @@ public class SyncRecord: SyncRecordProtocol {
     var action: Int?
     var objectData: SyncObjectDataType?
     
+    var syncTimestamp: Int?
+    
 //    var CoredataParallel: Syncable.Type?
     typealias CoreDataParallel = Device
     
     convenience init() {
         self.init(json: nil)
+    }
+    
+    /// Converts server format for storing timestamp(integer) to Date
+    var syncNativeTimestamp: Date? {
+        guard let syncTimestamp = syncTimestamp else { return nil }
+        
+        return Date.fromTimestamp(Timestamp(syncTimestamp))
     }
     
     /// Initiates the instance based on the object.
@@ -56,7 +67,10 @@ public class SyncRecord: SyncRecordProtocol {
         
         // TODO: Need object type!!
         
-        // TOOD: Add sync timestmap
+        // Initially, a record should have timestamp set to now.
+        // It should then be updated from resolved-sync-records callback.
+        let timeStamp = (record?.created ?? Date()).timeIntervalSince1970
+        syncTimestamp = Int(timeStamp)
     }
     
     /// Initiates the instance based on the JSON that was passed.
@@ -68,7 +82,7 @@ public class SyncRecord: SyncRecordProtocol {
         if let items = json?[SerializationKeys.deviceId].array { deviceId = items.map { $0.intValue } }
         action = json?[SerializationKeys.action].int
         if let item = json?[SerializationKeys.objectData].string { objectData = SyncObjectDataType(rawValue: item) }
-        // TODO: Add sync timestamp
+        self.syncTimestamp = json?[SerializationKeys.syncTimestamp].int
     }
     
     /// Generates description of the object in the form of a NSDictionary.
@@ -81,7 +95,7 @@ public class SyncRecord: SyncRecordProtocol {
         if let value = deviceId { dictionary[SerializationKeys.deviceId] = value }
         if let value = action { dictionary[SerializationKeys.action] = value }
         if let value = objectData { dictionary[SerializationKeys.objectData] = value.rawValue }
-        // TODO: Add sync timestamp
+        if let value = syncTimestamp { dictionary[SerializationKeys.syncTimestamp] = value }
         return dictionary
     }
 }

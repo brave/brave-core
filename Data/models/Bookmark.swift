@@ -67,7 +67,6 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
     
     override public func awakeFromInsert() {
         super.awakeFromInsert()
-        created = Date()
         lastVisited = created
     }
     
@@ -100,6 +99,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         update(customTitle: site.customTitle, url: site.location, newSyncOrder: bookmark.syncOrder)
         lastVisited = Date(timeIntervalSince1970: (Double(site.lastAccessedTime ?? 0) / 1000.0))
         syncParentUUID = bookmark.parentFolderObjectId
+        created = record?.syncNativeTimestamp
         // No auto-save, must be handled by caller if desired
     }
     
@@ -196,6 +196,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         bk.isFavorite = bookmark?.isFavorite ?? bk.isFavorite
         bk.isFolder = bookmark?.isFolder ?? bk.isFolder
         bk.syncUUID = root?.objectId ?? bk.syncUUID ?? SyncCrypto.uniqueSerialBytes(count: 16)
+        bk.created = root?.syncNativeTimestamp ?? Date()
         
         if let location = site?.location, let url = URL(string: location) {
             bk.domain = Domain.getOrCreateForUrl(url, context: context, save: false)

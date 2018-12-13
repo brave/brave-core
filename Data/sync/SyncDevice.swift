@@ -9,17 +9,10 @@ class SyncDevice: SyncRecord {
     // MARK: Declaration for string constants to be used to decode and also serialize.
     private struct SerializationKeys {
         static let name = "name"
-        static let syncTimestamp = "syncTimestamp"
     }
     
     // MARK: Properties
     var name: String?
-    // Not on 'device' object
-    var syncTimestamp: Int?
-    
-    var syncNativeTimestamp: Date? {
-        return Date.fromTimestamp(Timestamp(syncTimestamp ?? 0))
-    }
     
     required init(record: Syncable?, deviceId: [Int]?, action: Int?) {
         super.init(record: record, deviceId: deviceId, action: action)
@@ -35,8 +28,7 @@ class SyncDevice: SyncRecord {
         super.init(json: json)
 
         self.name = json?[SyncObjectDataType.Device.rawValue][SerializationKeys.name].string
-        self.syncTimestamp = json?[SerializationKeys.syncTimestamp].int
-        
+
         // Preference
         self.objectData = nil
     }
@@ -54,7 +46,6 @@ class SyncDevice: SyncRecord {
 
         var dictionary = super.dictionaryRepresentation()
         dictionary[SyncObjectDataType.Device.rawValue] = deviceDict
-        if let value = self.syncTimestamp { dictionary[SerializationKeys.syncTimestamp] = value }
         
         return dictionary
     }
