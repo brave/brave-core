@@ -13,7 +13,6 @@ import {
   ModalTitle,
   ModalSubTitle,
   ScanGrid,
-  QRCodeContainer,
   ThreeColumnButtonGrid,
   ThreeColumnButtonGridCol1,
   ThreeColumnButtonGridCol2
@@ -26,7 +25,7 @@ import AddNewChainCameraOptionModal from './addNewChainCameraOption'
 import { getLocale } from '../../../../common/locale'
 
 // Images
-import { SyncAddIcon, SyncMobilePicture, QRCode } from 'brave-ui/features/sync/images'
+import { SyncMobilePicture, QRCode } from 'brave-ui/features/sync/images'
 
 interface Props {
   syncData: Sync.State
@@ -65,7 +64,6 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
             : null
         }
         <ModalHeader>
-          <SyncAddIcon />
           <div>
             <ModalTitle level={1}>{getLocale('scanThisCode')}</ModalTitle>
             <ModalSubTitle>{getLocale('scanThisCodeHowTo')}</ModalSubTitle>
@@ -73,7 +71,7 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
         </ModalHeader>
         <ScanGrid>
           <div><SyncMobilePicture /></div>
-          <QRCodeContainer><QRCode size='normal' src={syncData.seedQRImageSource} /></QRCodeContainer>
+          <QRCode size='normal' src={syncData.seedQRImageSource} />
         </ScanGrid>
         <ThreeColumnButtonGrid>
           <ThreeColumnButtonGridCol1>
