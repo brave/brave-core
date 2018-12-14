@@ -167,9 +167,8 @@ class BookmarksViewController: SiteTableViewController {
       make.bottom.equalTo(self.view.safeAreaLayoutGuide)
     }
     
-    tableView.snp.makeConstraints { make in
-      make.bottom.equalTo(self.view).inset(UIEdgeInsets(top: 0, left: 0, bottom: toolbarHeight, right: 0))
-    }
+    tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: toolbarHeight, right: 0)
+    tableView.scrollIndicatorInsets = tableView.contentInset
     
     reloadData()
   }
