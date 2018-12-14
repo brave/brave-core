@@ -96,8 +96,7 @@ class AppAuthenticator {
                     self.dismissPrompt()
                     self.didCancelPasscodeEntry?()
                 } else {
-                    self.isPrompting = false
-                    self.promptUserForAuthentication()
+                    AppAuthenticator.presentPasscodeAuthentication(self.blurController, delegate: self, isCancellable: self.isPasscodeEntryCancellable)
                 }
             },
             fallback: {
