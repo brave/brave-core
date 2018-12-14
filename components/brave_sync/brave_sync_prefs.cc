@@ -97,6 +97,7 @@ std::unique_ptr<brave_sync::Settings> Prefs::GetBraveSyncSettings() const {
   auto settings = std::make_unique<brave_sync::Settings>();
 
   settings->this_device_name_ = GetThisDeviceName();
+  settings->this_device_id_ = GetThisDeviceId();
   settings->sync_this_device_ = GetSyncEnabled();
   settings->sync_bookmarks_ = GetSyncBookmarksEnabled();
   settings->sync_settings_ = GetSyncSiteSettingsEnabled();
