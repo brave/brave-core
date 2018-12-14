@@ -317,6 +317,7 @@ TEST_F(BraveSyncServiceTest, GetSettingsAndDevices) {
       [](std::unique_ptr<brave_sync::Settings> settings,
          std::unique_ptr<brave_sync::SyncDevices> devices) {
             EXPECT_TRUE(settings->this_device_name_.empty());
+            EXPECT_TRUE(settings->this_device_id_.empty());
             EXPECT_FALSE(settings->sync_configured_);
             EXPECT_FALSE(settings->sync_this_device_);
             EXPECT_FALSE(settings->sync_bookmarks_);

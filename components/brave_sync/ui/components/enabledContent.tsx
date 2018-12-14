@@ -81,7 +81,7 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
         content: [
           { content:
             <TableRowDevice>
-              {device.name} {Number(device.id) === 0 ? getLocale('mainDevice') : null }
+              {device.name} {device.id === this.props.syncData.thisDeviceId ? getLocale('thisDevice') : null }
             </TableRowDevice>
           },
           { content: device.lastActive },
@@ -90,7 +90,6 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
               <TableRowRemoveButton
                 data-id={device.id}
                 data-name={device.name}
-                data-main={device.thisDeviceName}
                 onClick={this.onClickRemoveDeviceButton}
               >
                 &times;
