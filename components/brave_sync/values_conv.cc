@@ -23,6 +23,7 @@ std::unique_ptr<Value> BraveSyncSettingsToValue(brave_sync::Settings *brave_sync
   auto result = std::make_unique<Value>(Value::Type::DICTIONARY);
 
   result->SetKey("this_device_name", Value(brave_sync_settings->this_device_name_));
+  result->SetKey("this_device_id", Value(brave_sync_settings->this_device_id_));
   result->SetKey("sync_this_device", Value(brave_sync_settings->sync_this_device_));
   result->SetKey("sync_bookmarks", Value(brave_sync_settings->sync_bookmarks_));
   result->SetKey("sync_settings", Value(brave_sync_settings->sync_settings_));
