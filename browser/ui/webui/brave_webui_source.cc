@@ -444,7 +444,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "braveSync", IDS_BRAVE_SYNC_ENABLED_BRAVE_TITLE },
         { "syncChainDevices", IDS_BRAVE_SYNC_ENABLED_DEVICES_CHAIN_TITLE },
         { "deviceName", IDS_BRAVE_SYNC_ENABLED_TABLE_DEVICE_NAME_TITLE },
-        { "mainDevice", IDS_BRAVE_SYNC_ENABLED_TABLE_MAIN_DEVICE_TEXT },
+        { "thisDevice", IDS_BRAVE_SYNC_ENABLED_TABLE_THIS_DEVICE_TEXT },
         { "addedOn", IDS_BRAVE_SYNC_ENABLED_TABLE_ADDED_ON_TITLE },
         { "addDevice", IDS_BRAVE_SYNC_ENABLED_ADD_DEVICE_BUTTON },
         { "viewSyncCode", IDS_BRAVE_SYNC_ENABLED_VIEW_CODE_BUTTON },
@@ -464,8 +464,8 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "enterSyncCodeDescription", IDS_BRAVE_SYNC_ENTER_CODE_DESCRIPTION },
         { "confirmCode", IDS_BRAVE_SYNC_ENTER_CODE_CONFIRM_CODE_BUTTON },
         // [modal] Remove Main Device
-        { "thisDeviceRemovalDescription", IDS_BRAVE_SYNC_REMOVE_MAIN_DEVICE_DESCRIPTION },
-        { "joinSyncChain", IDS_BRAVE_SYNC_REMOVE_MAIN_DEVICE_JOIN_CHAIN_INSTRUCTIONS },
+        { "thisDeviceRemovalDescription", IDS_BRAVE_SYNC_REMOVE_THIS_DEVICE_DESCRIPTION },
+        { "joinSyncChain", IDS_BRAVE_SYNC_REMOVE_THIS_DEVICE_JOIN_CHAIN_INSTRUCTIONS },
         // [modal] Remove Other Device
         { "otherDeviceRemovalDescription", IDS_BRAVE_SYNC_REMOVE_OTHER_DEVICE_DESCRIPTION },
         // [modal] Reset Sync
