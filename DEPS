@@ -15,7 +15,7 @@ deps = {
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bip39wally-core-native.git@9b119931c702d55be994117eb505d56310720b1d",
   "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@adeff3254bb90ccdc9699040d5a4e1cd6b8393b7",
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@1b4362968c8f22720bfb75af6f506d4ecc0f3116",
-  "components/brave_sync/extension/brave-sync": "https://github.com/brave/sync.git@d926cfb84e3f644ab14d0908608025c19c753f4b",
+  "components/brave_sync/extension/brave-sync": "https://github.com/brave/sync.git@bf82f868e1eff9f7d94b84a09d3e70236c1c86af",
   "components/brave_sync/extension/brave-crypto": "https://github.com/brave/crypto@7e391cec6975106fa9f686016f494cb8a782afcd",
   "vendor/bat-native-ads": "https://github.com/brave-intl/bat-native-ads.git@6a2b8459c2a52e9649b6e498101d56f4131c5e6f",
   "vendor/bat-native-usermodel": "https://github.com/brave-intl/bat-native-usermodel.git@c3b6111aa862c5c452c84be8a225d5f1df32b284",
