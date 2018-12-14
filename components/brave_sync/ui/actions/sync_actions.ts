@@ -50,21 +50,8 @@ export const onSetupNewToSync = (thisDeviceName: string) => {
   return action(types.SYNC_ON_SETUP_NEW_TO_SYNC, { thisDeviceName })
 }
 
-/**
- * Dispatches a message telling the back-end that the user requested the QR code
- */
-export const onRequestQRCode = () => {
-  return action(types.SYNC_ON_REQUEST_QR_CODE)
-}
-
 export const onGenerateQRCodeImageSource = (imageSource: string) => {
   return action(types.SYNC_ON_GENERATE_QR_CODE_IMAGE_SOURCE, { imageSource })
-}
-/**
- * Dispatches a message telling the back-end that the user requested the sync words
- */
-export const onRequestSyncWords = () => {
-  return action(types.SYNC_ON_REQUEST_SYNC_WORDS)
 }
 
 /**
