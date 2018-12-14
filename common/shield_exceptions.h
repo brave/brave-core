@@ -13,6 +13,5 @@ bool IsWhitelistedCookieExeption(const GURL& firstPartyOrigin,
                                  const GURL& subresourceUrl);
 bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
                            const GURL& subresourceUrl);
-bool IsWidevineInstallableURL(const GURL& url);
 
 }  // namespace brave

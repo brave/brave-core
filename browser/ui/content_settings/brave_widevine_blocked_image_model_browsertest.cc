@@ -6,19 +6,24 @@
 #include "brave/browser/ui/content_settings/brave_content_setting_bubble_model.h"
 #include "brave/browser/ui/content_settings/brave_widevine_blocked_image_model.h"
 #include "brave/browser/ui/content_settings/brave_widevine_content_setting_bubble_model.h"
+#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_content_setting_bubble_model_delegate.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 using content::WebContents;
 using ImageType = ContentSettingImageModel::ImageType;
@@ -39,11 +44,6 @@ class BraveWidevineBlockedImageModelBrowserTest : public InProcessBrowserTest {
 
   content::WebContents* active_contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
-  }
-
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    ui_test_utils::NavigateToURL(browser(), url);
-    return WaitForLoadStop(active_contents());
   }
 
   std::unique_ptr<BraveWidevineBlockedImageModel> CreateModel() {
@@ -115,7 +115,7 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
                        RunPluginsOnPageClicked) {
   GURL url = embedded_test_server()->GetURL("www.netflix.com", "/blank.html");
-  NavigateToURLUntilLoadStop(url);
+  ui_test_utils::NavigateToURL(browser(), url);
 
   auto model = CreateModel();
   Profile* profile = browser()->profile();
@@ -147,7 +147,7 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
   prefs->SetBoolean(kWidevineOptedIn, true);
 
   GURL url = embedded_test_server()->GetURL("www.netflix.com", "/blank.html");
-  NavigateToURLUntilLoadStop(url);
+  ui_test_utils::NavigateToURL(browser(), url);
 
   auto model = CreateModel();
 
@@ -162,3 +162,86 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
 
   ASSERT_FALSE(model->is_visible());
 }
+
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+class BraveWidevineIconVisibilityBrowserTest : public InProcessBrowserTest {
+ public:
+  BraveWidevineIconVisibilityBrowserTest()
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    host_resolver()->AddRule("*", "127.0.0.1");
+
+    // Chromium allows the API under test only on HTTPS domains.
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    ASSERT_TRUE(https_server_.Start());
+  }
+
+  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    command_line->AppendSwitchASCII(
+        "enable-blink-features",
+        "EncryptedMediaEncryptionSchemeQuery");
+  }
+
+  content::WebContents* active_contents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  bool IsWidevineIconVisible() {
+    auto* location_bar = static_cast<BraveLocationBarView*>(
+        browser()->window()->GetLocationBar());
+
+    // TODO(iefremov): the hack with getting the proper view index is caused by
+    // changes in brave_content_setting_image_models.cc. Probably we need to
+    // refactor this to keep original indexes correct.
+    ContentSettingImageView* view =
+        location_bar->GetContentSettingsImageViewForTesting(
+            static_cast<size_t>(
+                ContentSettingImageModel::ImageType::NUM_IMAGE_TYPES)-1);
+    return view->visible();
+  }
+
+ protected:
+  net::EmbeddedTestServer https_server_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveWidevineIconVisibilityBrowserTest,
+                       SuggestOptInIfWidevineDetected) {
+  GURL url = https_server_.GetURL("a.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  EXPECT_FALSE(IsWidevineIconVisible());
+
+  const std::string drm_js =
+      "var config = [{initDataTypes: ['cenc']}];"
+      "navigator.requestMediaKeySystemAccess($1, config);";
+  const std::string widevine_js = content::JsReplace(drm_js,
+                                                     "com.widevine.alpha");
+
+  EXPECT_TRUE(content::ExecuteScript(active_contents(), widevine_js));
+  EXPECT_TRUE(IsWidevineIconVisible());
+
+  // The icon should disappear after reload.
+  content::TestNavigationObserver observer(active_contents());
+  chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+  observer.Wait();
+  EXPECT_FALSE(IsWidevineIconVisible());
+
+  // Navigate to a page with some videos.
+  url = https_server_.GetURL("a.com", "/media/youtube.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  EXPECT_FALSE(IsWidevineIconVisible());
+
+  // Check that non-widevine DRM is ignored.
+  EXPECT_TRUE(
+      content::ExecuteScript(active_contents(),
+                             content::JsReplace(drm_js, "org.w3.clearkey")));
+  EXPECT_FALSE(IsWidevineIconVisible());
+
+  // Finally check the widevine request.
+  EXPECT_TRUE(content::ExecuteScript(active_contents(), widevine_js));
+  EXPECT_TRUE(IsWidevineIconVisible());
+}
+#endif  //  BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
