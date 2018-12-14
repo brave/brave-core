@@ -25,7 +25,6 @@ import EnterSyncCodeModal from './modals/enterSyncCode'
 
 // Utils
 import { getLocale } from '../../../common/locale'
-import { getDefaultDeviceName } from '../helpers'
 
 interface Props {
   syncData: Sync.State
@@ -43,26 +42,6 @@ export default class SyncDisabledContent extends React.PureComponent<Props, Stat
     this.state = {
       newToSync: false,
       existingSyncCode: false
-    }
-  }
-
-   componentWillMount () {
-    // once the screen is rendered, create a sync chain.
-    // this allow us to request the qr code and sync words immediately
-    const { thisDeviceName } = this.props.syncData
-    if (thisDeviceName === '') {
-       this.props.actions.onSetupNewToSync(getDefaultDeviceName())
-    }
-  }
-
-   componentDidUpdate () {
-    // once this screen is rendered and component is updated,
-    // request sync qr code and words so it can be seen immediately
-    // upon user request via "start a new sync chain" button.
-    const { seedQRImageSource, syncWords } = this.props.syncData
-    if (!seedQRImageSource && !syncWords) {
-       this.props.actions.onRequestQRCode()
-       this.props.actions.onRequestSyncWords()
     }
   }
 
