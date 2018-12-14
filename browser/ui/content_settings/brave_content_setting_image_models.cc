@@ -15,6 +15,9 @@ void BraveGenerateContentSettingImageModels(
     std::vector<std::unique_ptr<ContentSettingImageModel>>& result) {
   // Remove the cookies content setting image model
   // https://github.com/brave/brave-browser/issues/1197
+  // TODO(iefremov): This changes break internal image models ordering which is
+  // based on enum values. This breaks tests and probably should be fixed
+  // (by adding more diff of course).
   for (size_t i = 0; i < result.size(); i++) {
     if (result[i]->image_type() ==
         ContentSettingImageModel::ImageType::COOKIES) {
