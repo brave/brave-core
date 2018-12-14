@@ -907,6 +907,9 @@ class BrowserViewController: UIViewController {
             
             if webView == tabManager.selectedTab?.webView {
                 urlBar.locationView.loading = loading
+                if loading && urlBar.currentProgress() < 0.1 {
+                    urlBar.updateProgressBar(0.1)
+                }
             }
             
             if !loading {
@@ -930,7 +933,7 @@ class BrowserViewController: UIViewController {
             
             // Ensure that the tab title *actually* changed to prevent repeated calls
             // to navigateInTab(tab:).
-            guard let title = tab.title else { break }
+            guard let title = (webView.title?.count == 0 ? webView.url?.absoluteString : webView.title) else { break }
             if !title.isEmpty && title != tab.lastTitle {
                 navigateInTab(tab: tab)
             }
@@ -953,14 +956,14 @@ class BrowserViewController: UIViewController {
                 tab.contentIsSecure = false
             }
             
-            updateURLBar()
+            urlBar.contentIsSecure = tab.contentIsSecure
         case .serverTrust:
             guard let tab = tabManager[webView] else {
                 break
             }
 
             tab.contentIsSecure = false
-            updateURLBar()
+            urlBar.contentIsSecure = tab.contentIsSecure
 
             guard let serverTrust = tab.webView?.serverTrust else {
                 break
