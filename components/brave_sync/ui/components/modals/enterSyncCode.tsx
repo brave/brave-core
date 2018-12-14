@@ -23,9 +23,6 @@ import {
 import { getLocale } from '../../../../common/locale'
 import { getDefaultDeviceName } from '../../helpers'
 
-// Images
-import { SyncDefaultIcon } from 'brave-ui/features/sync/images'
-
 interface Props {
   syncData: Sync.State
   actions: any
@@ -105,7 +102,6 @@ interface Props {
           : null
         }
         <ModalHeader>
-          <SyncDefaultIcon />
           <div>
             <ModalTitle level={1}>{getLocale('enterSyncCode')}</ModalTitle>
             <ModalSubTitle>{getLocale('enterSyncCodeDescription')}</ModalSubTitle>
