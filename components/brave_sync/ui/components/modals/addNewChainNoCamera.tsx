@@ -20,9 +20,6 @@ import {
 // Utils
 import { getLocale } from '../../../../common/locale'
 
-// Images
-import { SyncAddIcon } from 'brave-ui/features/sync/images'
-
 interface Props {
   syncData: Sync.State
   actions: any
@@ -40,7 +37,6 @@ export default class AddNewChainNoCameraModal extends React.PureComponent<Props,
     return (
       <Modal id='addNewChainNoCameraModal' onClose={onClose} size='small'>
         <ModalHeader>
-          <SyncAddIcon />
           <div>
             <ModalTitle level={1}>{getLocale('enterThisCode')}</ModalTitle>
             <ModalSubTitle>{getLocale('syncChainCodeHowTo')}</ModalSubTitle>
