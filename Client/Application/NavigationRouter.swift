@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import BraveShared
 
 // Used by the App to navigate to different views.
 // To open a URL use /open-url or to open a blank tab use /open-url with no params
@@ -47,7 +48,8 @@ enum NavigationPath: Equatable {
             self = .deepLink(link)
         } else if urlString.starts(with: "\(scheme)://open-url") {
             let url = components.valueForQuery("url")?.asURL
-            let isPrivate = Bool(components.valueForQuery("private") ?? "") ?? false
+            let forcedPrivate = Preferences.Privacy.privateBrowsingOnly.value || PrivateBrowsingManager.shared.isPrivateBrowsing
+            let isPrivate = Bool(components.valueForQuery("private") ?? "") ?? forcedPrivate
             self = .url(webURL: url, isPrivate: isPrivate)
         } else if urlString.starts(with: "\(scheme)://open-text") {
             let text = components.valueForQuery("text")
