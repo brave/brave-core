@@ -20,9 +20,6 @@ import {
 // Utils
 import { getLocale } from '../../../../common/locale'
 
-// Images
-import { SyncRemoveIcon } from 'brave-ui/features/sync/images'
-
 interface Props {
   onClose: (event?: React.MouseEvent<HTMLButtonElement>) => void
   actions: any
@@ -43,7 +40,6 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, {}
     return (
       <Modal id='removeMainDeviceModal' onClose={onClose} size='small'>
         <ModalHeader>
-          <SyncRemoveIcon />
           <ModalTitle level={1}>{getLocale('remove')} “{deviceName}” {getLocale('thisSyncChain')}?</ModalTitle>
         </ModalHeader>
         <ModalContent>

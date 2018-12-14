@@ -27,9 +27,7 @@ import { getLocale } from '../../../../common/locale'
 import { getDefaultDeviceName } from '../../helpers'
 
 // Images
-import { SyncAddIcon } from 'brave-ui/features/sync/images'
-import { SyncMobileIcon } from 'brave-ui/features/sync/images'
-import { SyncDesktopIcon } from 'brave-ui/features/sync/images'
+import { SyncDesktopIcon, SyncMobileIcon } from 'brave-ui/features/sync/images'
 
 interface Props {
   syncData: Sync.State
@@ -105,9 +103,8 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
             : null
         }
         <ModalHeader>
-          <SyncAddIcon />
           <div>
-            <ModalTitle level={1}>{getLocale('letsSync')}<br />“{getDefaultDeviceName()}”.</ModalTitle>
+            <ModalTitle level={1}>{getLocale('letsSync')} “{getDefaultDeviceName()}”.</ModalTitle>
             <ModalSubTitle>{getLocale('chooseDeviceType')}</ModalSubTitle>
           </div>
         </ModalHeader>
