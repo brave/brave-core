@@ -9,6 +9,7 @@
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/extensions/api/settings_private.h"
+#include "components/browsing_data/core/pref_names.h"
 
 namespace extensions {
 
@@ -43,6 +44,23 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
     settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kHideBraveRewardsButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  // Clear browsing data on exit prefs.
+  (*s_brave_whitelist)[browsing_data::prefs::kDeleteBrowsingHistoryOnExit] =
+    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[browsing_data::prefs::kDeleteDownloadHistoryOnExit] =
+    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[browsing_data::prefs::kDeleteCacheOnExit] =
+    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[browsing_data::prefs::kDeleteCookiesOnExit] =
+    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[browsing_data::prefs::kDeletePasswordsOnExit] =
+    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[browsing_data::prefs::kDeleteFormDataOnExit] =
+    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[browsing_data::prefs::kDeleteSiteSettingsOnExit] =
+    settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[browsing_data::prefs::kDeleteHostedAppsDataOnExit] =
+    settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // WebTorrent pref
   (*s_brave_whitelist)[kWebTorrentEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

@@ -373,6 +373,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_MD_EXTENSIONS_BRAVE_ITEM_CHROME_WEB_STORE" desc="Label for button to visit the Web Extensions Store.">
         View in Web Extensions Store
       </message>
+      <!-- Brave Clear Browsing Data On Exit Settings -->
+      <message name="IDS_SETTINGS_BRAVE_ON_EXIT" desc="Clear Browsing Data dialog On exit tab label">
+        On exit
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />
