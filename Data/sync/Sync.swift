@@ -459,12 +459,20 @@ extension Sync {
         guard var fetchedRecords = recordType.fetchedModelType?.syncRecords(recordJSON) else { return }
         
         // Currently only prefs are device related
-        if recordType == .prefs, let data = fetchedRecords as? [SyncDevice] {
+        if recordType == .prefs {
             // Devices have really bad data filtering, so need to manually process more of it
             // Sort to not rely on API - Reverse sort, so unique pulls the `latest` not just the `first`
-            fetchedRecords = data.sorted { device1, device2 in
+            fetchedRecords = fetchedRecords.sorted { device1, device2 in
                 device1.syncTimestamp ?? -1 > device2.syncTimestamp ?? -1 }.unique { $0.objectId ?? [] == $1.objectId ?? [] }
             
+        } else if recordType == .bookmark {
+            // Bookmarks are sorted to have the oldest bookmark to come in first, so it can be added before it's children.
+            fetchedRecords = fetchedRecords.sorted(by: {
+                let firstTimestamp = $0.syncTimestamp ?? 0
+                let secondTimestamp = $1.syncTimestamp ?? 0
+                
+                return firstTimestamp < secondTimestamp
+            })
         }
         
         let context = DataController.newBackgroundContext()
