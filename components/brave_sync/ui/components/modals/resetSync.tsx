@@ -22,9 +22,6 @@ import {
 // Utils
 import { getLocale } from '../../../../common/locale'
 
-// Images
-import { SyncRemoveIcon } from 'brave-ui/features/sync/images'
-
 interface Props {
   syncData: Sync.State
   actions: any
@@ -74,7 +71,6 @@ export default class ResetSyncModal extends React.PureComponent<Props, State> {
           : null
         }
         <ModalHeader>
-          <SyncRemoveIcon />
           <div>
             <ModalSubTitle highlight={true}>{getLocale('warning')}</ModalSubTitle>
             <ModalTitle level={1}>{getLocale('removing')} “{syncData.thisDeviceName}” {getLocale('deleteSyncChain')}</ModalTitle>

@@ -24,9 +24,6 @@ import ScanCodeModal from './scanCode'
 // Utils
 import { getLocale } from '../../../../common/locale'
 
-// Images
-import { SyncAddIcon } from 'brave-ui/features/sync/images'
-
 interface Props {
   fromMobileScreen?: boolean
   syncData: Sync.State
@@ -66,7 +63,6 @@ export default class AddNewChainCameraOptionModal extends React.PureComponent<Pr
             : null
         }
         <ModalHeader>
-          <SyncAddIcon />
           <div>
             <ModalTitle level={1}>
               {
