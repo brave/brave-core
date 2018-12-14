@@ -9,6 +9,9 @@ import unittest
 import os
 import upload
 from mock import Repo
+import upload
+
+from githubmock import Repo
 
 dirname = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(dirname, '..'))
