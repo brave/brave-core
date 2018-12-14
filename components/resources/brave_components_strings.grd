@@ -446,7 +446,7 @@
       <message name="IDS_BRAVE_SYNC_ENABLED_BRAVE_TITLE" desc="The Brae Sync title">Brave Sync</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_DEVICES_CHAIN_TITLE" desc="The Sync title for the table of devices synced">Devices in your sync chain</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_TABLE_DEVICE_NAME_TITLE" desc="The Sync table title for the device column">device name</message>
-      <message name="IDS_BRAVE_SYNC_ENABLED_TABLE_MAIN_DEVICE_TEXT" desc="The Sync table title for the device column">(This Device)</message>
+      <message name="IDS_BRAVE_SYNC_ENABLED_TABLE_THIS_DEVICE_TEXT" desc="The Sync table title for the device column">(This Device)</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_TABLE_ADDED_ON_TITLE" desc="The Sync table title indicating when a device was added to the chain">added on</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_ADD_DEVICE_BUTTON" desc="The Sync button `add device` for adding a new device to the sync chain. triggers a modal with device options">add device</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_VIEW_CODE_BUTTON" desc="The Sync button `view sync code` for viewing the passphrase needed to add a new device. triggers a modal with sync code">view sync code</message>
@@ -466,8 +466,8 @@
       <message name="IDS_BRAVE_SYNC_ENTER_CODE_DESCRIPTION" desc="The Sync modal text for `enter sync code`">Go to Brave Settings &gt; Sync &gt; Display sync code</message>
       <message name="IDS_BRAVE_SYNC_ENTER_CODE_CONFIRM_CODE_BUTTON" desc="The Sync modal button for `enter sync code` to confirm sync code">Confirm Sync Code</message>
       <!-- WebUI brave sync resources: [modal] Remove Main Device -->
-      <message name="IDS_BRAVE_SYNC_REMOVE_MAIN_DEVICE_DESCRIPTION" desc="The Sync phrase in `remove this device` modal explaining how data behaves on all devices">Local device data will remain intact on all devices. Other devices in this sync chain will remain synced.</message>
-      <message name="IDS_BRAVE_SYNC_REMOVE_MAIN_DEVICE_JOIN_CHAIN_INSTRUCTIONS" desc="The Sync phrase in `remove this device` modal explaining how to join a sync chain again">To join a sync chain again, choose “Enter a sync chain code”.</message>
+      <message name="IDS_BRAVE_SYNC_REMOVE_THIS_DEVICE_DESCRIPTION" desc="The Sync phrase in `remove this device` modal explaining how data behaves on all devices">Local device data will remain intact on all devices. Other devices in this sync chain will remain synced.</message>
+      <message name="IDS_BRAVE_SYNC_REMOVE_THIS_DEVICE_JOIN_CHAIN_INSTRUCTIONS" desc="The Sync phrase in `remove this device` modal explaining how to join a sync chain again">To join a sync chain again, choose “Enter a sync chain code”.</message>
       <!-- WebUI brave sync resources: [modal] Remove Other Device -->
       <message name="IDS_BRAVE_SYNC_REMOVE_OTHER_DEVICE_DESCRIPTION" desc="The Sync phrase in `remove other device` modal explaining what happens when the device is removed">Note: Removing this device from this sync chain does not clear previously synced data from the device.</message>
       <!-- WebUI brave sync resources: [modal] Reset Sync -->

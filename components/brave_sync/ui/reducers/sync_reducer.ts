@@ -39,6 +39,7 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
         devices: [ ...devices ],
         isSyncConfigured: payload.settings.sync_configured,
         thisDeviceName: payload.settings.this_device_name,
+        thisDeviceId: payload.settings.this_device_id,
         syncBookmarks: payload.settings.sync_bookmarks,
         syncSavedSiteSettings: payload.settings.sync_settings,
         syncBrowsingHistory: payload.settings.sync_history
@@ -87,7 +88,7 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       }
 
       // if the device removed is the this device, reset sync
-      if (payload.deviceName === state.thisDeviceName && payload.id === 0) {
+      if (payload.id === state.thisDeviceId) {
         state = { ...storage.defaultState }
         chrome.send('resetSync')
         break
