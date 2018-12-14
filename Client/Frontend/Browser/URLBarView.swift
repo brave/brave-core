@@ -402,6 +402,10 @@ class URLBarView: UIView {
         self.alpha = alpha
     }
     
+    func currentProgress() -> Float {
+        return progressBar.progress
+    }
+    
     func updateProgressBar(_ progress: Float) {
         progressBar.alpha = 1
         progressBar.isHidden = false
