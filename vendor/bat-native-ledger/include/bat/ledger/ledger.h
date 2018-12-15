@@ -10,6 +10,7 @@
 #include <string>
 
 #include "bat/ledger/export.h"
+#include "bat/ledger/auto_contribute_props.h"
 #include "bat/ledger/ledger_client.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/media_publisher_info.h"
@@ -34,6 +35,9 @@ LEDGER_EXPORT struct VisitData {
             const std::string& favicon_url);
   VisitData(const VisitData& data);
   ~VisitData();
+
+  const std::string ToJson() const;
+  bool loadFromJson(const std::string& json);
 
   std::string tld;
   std::string domain;
@@ -141,6 +145,7 @@ class LEDGER_EXPORT Ledger {
                               int year,
                               const ledger::BalanceReportInfo& report_info) = 0;
 
+  virtual std::map<std::string, std::string> GetAddresses() = 0;
   virtual const std::string& GetBATAddress() const = 0;
   virtual const std::string& GetBTCAddress() const = 0;
   virtual const std::string& GetETHAddress() const = 0;
@@ -163,6 +168,7 @@ class LEDGER_EXPORT Ledger {
                               int year,
                               ledger::BalanceReportInfo* report_info) const = 0;
   virtual std::map<std::string, ledger::BalanceReportInfo> GetAllBalanceReports() const = 0;
+  virtual void GetAutoContributeProps(ledger::AutoContributeProps& props) = 0;
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
   virtual void SaveMediaVisit(const std::string& publisher_id,
@@ -191,6 +197,7 @@ class LEDGER_EXPORT Ledger {
   virtual double GetDefaultContributionAmount() = 0;
 
   virtual uint64_t GetBootStamp() const = 0;
+  virtual bool HasSufficientBalanceToReconcile() = 0;
 };
 
 }  // namespace ledger

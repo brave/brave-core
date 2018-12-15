@@ -1000,16 +1000,11 @@ void BatContribution::Proof() {
     }
   }
 
-  ledger_->RunIOTask(std::bind(&BatContribution::ProofBatch,
-                               this,
-                               batch_proof,
-                               _1));
-
+  ProofBatch(batch_proof);
 }
 
 void BatContribution::ProofBatch(
-    const braveledger_bat_helper::BathProofs& batch_proof,
-    ledger::LedgerTaskRunner::CallerThreadCallback callback) {
+    const braveledger_bat_helper::BathProofs& batch_proof) {
   std::vector<std::string> proofs;
 
   for (size_t i = 0; i < batch_proof.size(); i++) {
@@ -1061,12 +1056,6 @@ void BatContribution::ProofBatch(
     proofs.push_back(annon_proof);
   }
 
-  callback(std::bind(&BatContribution::ProofBatchCallback, this, batch_proof, proofs));
-}
-
-void BatContribution::ProofBatchCallback(
-    const braveledger_bat_helper::BathProofs& batch_proof,
-    const std::vector<std::string>& proofs) {
   braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
 
   for (size_t i = 0; i < batch_proof.size(); i++) {

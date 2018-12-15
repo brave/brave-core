@@ -300,9 +300,13 @@ void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
   }
 
   ledger_ = BraveLedger(ledger);
+  rewards_service_->IsWalletCreated(
+      base::Bind(&BraveProfileWriter::OnIsWalletCreated, AsWeakPtr()));
+}
 
+void BraveProfileWriter::OnIsWalletCreated(bool created) {
   // If a wallet doesn't exist, we need to create one (needed for RecoverWallet)
-  if (!rewards_service_->IsWalletCreated()) {
+  if (!created) {
     rewards_service_->AddObserver(this);
     LOG(INFO) << "Creating wallet to use for import...";
     rewards_service_->CreateWallet();

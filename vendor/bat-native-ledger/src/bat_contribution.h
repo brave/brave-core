@@ -61,13 +61,12 @@
 // 5. PrepareBatch
 // 6. PrepareBatchCallback
 // 7. ProofBatch
-// 8. ProofBatchCallback
-// 9. SetTimer
-// 10. PrepareVoteBatch
-// 11. SetTimer
-// 12. VoteBatch
-// 13. VoteBatchCallback
-// 14. SetTimer - we set timer until the whole batch is processed
+// 8. SetTimer
+// 9. PrepareVoteBatch
+// 10. SetTimer
+// 11. VoteBatch
+// 12. VoteBatchCallback
+// 13. SetTimer - we set timer until the whole batch is processed
 
 namespace bat_ledger {
   class LedgerImpl;
@@ -223,12 +222,7 @@ class BatContribution {
   void Proof();
 
   void ProofBatch(
-      const braveledger_bat_helper::BathProofs& batch_proof,
-      ledger::LedgerTaskRunner::CallerThreadCallback callback);
-
-  void ProofBatchCallback(
-      const braveledger_bat_helper::BathProofs& batch_proof,
-      const std::vector<std::string>& proofs);
+      const braveledger_bat_helper::BathProofs& batch_proof);
 
   void PrepareVoteBatch();
 

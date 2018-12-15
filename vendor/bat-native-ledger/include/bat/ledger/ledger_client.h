@@ -15,7 +15,6 @@
 #include "bat/ledger/balance_report_info.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/ledger_callback_handler.h"
-#include "bat/ledger/ledger_task_runner.h"
 #include "bat/ledger/media_publisher_info.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
@@ -136,9 +135,7 @@ class LEDGER_EXPORT LedgerClient {
       const std::string& contentType,
       const ledger::URL_METHOD& method,
       ledger::LoadURLCallback callback) = 0;
-  // RunIOTask is a temporary workarounds for some IO tasks
-  virtual void RunIOTask(std::unique_ptr<LedgerTaskRunner> task) = 0;
-  virtual void SetContributionAutoInclude(std::string publisher_key,
+  virtual void SetContributionAutoInclude(const std::string& publisher_key,
                                           bool excluded,
                                           uint64_t windowId) = 0;
 

@@ -10,7 +10,6 @@
 #include <mutex>
 
 #include "bat/ledger/ledger_callback_handler.h"
-#include "bat/ledger/ledger_task_runner.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat_helper.h"
 

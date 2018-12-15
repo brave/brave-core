@@ -1,0 +1,150 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+module bat_ledger.mojom;
+
+const string kServiceName = "bat_ledger";
+
+interface BatLedgerService {
+  Create(associated BatLedgerClient bat_ledger_client,
+         associated BatLedger& bat_ledger);
+  SetProduction(bool isProduction);
+};
+
+interface BatLedger {
+  Initialize();
+  CreateWallet();
+  FetchWalletProperties();
+
+  GetAutoContributeProps() => (string props);
+  GetPublisherMinVisitTime() => (uint64 min_visit_time);
+  GetPublisherMinVisits() => (uint32 min_visits);
+  GetPublisherAllowNonVerified() => (bool allowed);
+  GetPublisherAllowVideos() => (bool allowed);
+  GetAutoContribute() => (bool auto_contribute);
+  GetReconcileStamp() => (uint64 reconcile_stamp);
+
+  GetPublisherInfoList(uint32 start, uint32 limit, string filter) => (
+      array<string> publisher_info_list, uint32 next_record);
+
+  OnLoad(string visit_data, uint64 current_time);
+  OnUnload(uint32 tab_id, uint64 current_time);
+  OnShow(uint32 tab_id, uint64 current_time);
+  OnHide(uint32 tab_id, uint64 current_time);
+  OnForeground(uint32 tab_id, uint64 current_time);
+  OnBackground(uint32 tab_id, uint64 current_time);
+  OnMediaStart(uint32 tab_id, uint64 current_time);
+  OnMediaStop(uint32 tab_id, uint64 current_time);
+
+  OnPostData(string url, string first_party_url, string referrer,
+             string post_data, string visit_data);
+  OnXHRLoad(uint32 tab_id, string url, map<string, string> parts,
+            string first_party_url, string referrer, string visit_data);
+
+  SetPublisherExclude(string publisher_key, int32 exclude);
+  RestorePublishers();
+
+  SetBalanceReportItem(int32 month, int32 year, int32 type, string probi);
+  OnReconcileCompleteSuccess(string viewing_id, int32 category, string probi,
+      int32 month, int32 year, uint32 data);
+
+  FetchGrant(string lang, string payment_id);
+  GetGrantCaptcha();
+  GetWalletPassphrase() => (string wallet_passphrase);
+  GetNumExcludedSites() => (uint32 num_excluded_sites);
+  RecoverWallet(string passPhrase);
+  SolveGrantCaptcha(string solution);
+
+  GetAddresses() => (map<string, string> addresses);
+  GetBATAddress() => (string address);
+  GetBTCAddress() => (string address);
+  GetETHAddress() => (string address);
+  GetLTCAddress() => (string address);
+
+  SetRewardsMainEnabled(bool enabled);
+  SetPublisherMinVisitTime(uint64 duration_in_seconds);
+  SetPublisherMinVisits(uint32 visits);
+  SetPublisherAllowNonVerified(bool allow);
+  SetPublisherAllowVideos(bool allow);
+  SetUserChangedContribution();
+  SetContributionAmount(double amount);
+  SetAutoContribute(bool enabled);
+
+  OnTimer(uint32 timer_id);
+
+  GetAllBalanceReports() => (map<string, string> reports);
+  GetBalanceReport(int32 month, int32 year) => (bool result, string report);
+
+  IsWalletCreated() => (bool wallet_created);
+
+  GetPublisherActivityFromUrl(uint64 window_id, string visit_data);
+  GetContributionAmount() => (double contribution_amount);
+  GetPublisherBanner(string publisher_id) => (string banner);
+
+  DoDirectDonation(string publisher_info, int32 amount, string currency);
+
+  RemoveRecurring(string publisher_key);
+  SetPublisherPanelExclude(string publisher_key, int32 exclude,
+      uint64 window_id);
+  GetBootStamp() => (uint64 boot_stamp);
+  GetRewardsMainEnabled() => (bool main_enabled);
+
+  HasSufficientBalanceToReconcile() => (bool sufficient);
+};
+
+interface BatLedgerClient {
+  [Sync]
+  GenerateGUID() => (string guid);
+  LoadLedgerState() => (int32 result, string data);
+  OnWalletInitialized(int32 result);
+  LoadPublisherState() => (int32 result, string data);
+  LoadPublisherList() => (int32 result, string data);
+  SaveLedgerState(string ledger_state) => (int32 result);
+  SavePublisherState(string publisher_state) => (int32 result);
+  SavePublishersList(string publishers_list) => (int32 result);
+
+  OnWalletProperties(int32 result, string info);
+  OnGrant(int32 result, string grant);
+  OnGrantCaptcha(string image, string hint);
+  OnRecoverWallet(int32 result, double balance, array<string> grants);
+  OnReconcileComplete(int32 result, string viewing_id, int32 category,
+      string probi);
+  OnGrantFinish(int32 result, string grant);
+
+  SavePublisherInfo(string publisher_info) => (int32 result,
+      string publisher_info);
+  LoadPublisherInfo(string filter) => (int32 result, string publisher_info);
+  LoadPublisherInfoList(uint32 start, uint32 limit, string filter) => (
+      array<string> publisher_info_list, uint32 next_record);
+  LoadMediaPublisherInfo(string media_key) => (int32 result,
+      string publisher_info);
+
+  OnPublisherActivity(int32 result, string info, uint64 window_id);
+  FetchFavIcon(string url, string favicon_key) => (bool success,
+      string favicon_url);
+  GetRecurringDonations() => (array<string> publisher_info_list,
+      uint32 next_record);
+
+  LoadNicewareList() => (int32 result, string data);
+  OnRemoveRecurring(string publisher_key) => (int32 result);
+
+  LoadURL(string url, array<string> headers, string content,
+      string content_type, int32 method) => (bool success, string response,
+        map<string, string> headers);
+
+  [Sync]
+  SetTimer(uint64 time_offset) => (uint32 timer_id);
+  OnExcludedSitesChanged(string publisher_id);
+  SaveContributionInfo(string probi, int32 month, int32 year, uint32 date,
+      string publisher_key, int32 category);
+  SaveMediaPublisherInfo(string media_key, string publisher_id);
+  FetchWalletProperties();
+  FetchGrant(string lang, string payment_id);
+  GetGrantCaptcha();
+
+  [Sync]
+  URIEncode(string value) => (string encoded_value);
+
+  SetContributionAutoInclude(string publisher_key, bool excluded,
+      uint64 window_id);
+};

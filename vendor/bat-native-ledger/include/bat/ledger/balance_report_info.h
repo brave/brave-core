@@ -25,6 +25,9 @@ LEDGER_EXPORT struct BalanceReportInfo {
   BalanceReportInfo(const BalanceReportInfo&);
   ~BalanceReportInfo();
 
+  const std::string ToJson() const;
+  bool loadFromJson(const std::string& json);
+
   std::string opening_balance_ = "0";
   std::string closing_balance_ = "0";
   std::string deposits_ = "0";

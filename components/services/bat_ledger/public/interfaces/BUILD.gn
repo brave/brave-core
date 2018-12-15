@@ -1,0 +1,13 @@
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("interfaces") {
+  support_lazy_serialization = true
+
+  sources = [
+    "bat_ledger.mojom",
+  ]
+
+  public_deps = [
+    "//mojo/public/mojom/base",
+  ]
+}

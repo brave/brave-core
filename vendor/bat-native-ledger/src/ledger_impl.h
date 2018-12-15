@@ -14,7 +14,6 @@
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
 #include "bat_helper.h"
-#include "ledger_task_runner_impl.h"
 #include "logging.h"
 
 namespace braveledger_bat_client {
@@ -83,6 +82,7 @@ class LedgerImpl : public ledger::Ledger,
                         int year,
                         const ledger::BalanceReportInfo& report_info) override;
 
+  std::map<std::string, std::string> GetAddresses() override;
   const std::string& GetBATAddress() const override;
   const std::string& GetBTCAddress() const override;
   const std::string& GetETHAddress() const override;
@@ -100,6 +100,7 @@ class LedgerImpl : public ledger::Ledger,
                         int year,
                         ledger::BalanceReportInfo* report_info) const override;
   std::map<std::string, ledger::BalanceReportInfo> GetAllBalanceReports() const override;
+  void GetAutoContributeProps(ledger::AutoContributeProps& props) override;
 
   void SaveLedgerState(const std::string& data);
   void SavePublisherState(const std::string& data,
@@ -144,7 +145,6 @@ class LedgerImpl : public ledger::Ledger,
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
                            const std::string& probi = "0");
-  void RunIOTask(LedgerTaskRunnerImpl::Task task);
   std::string URIEncode(const std::string& value) override;
   void SaveMediaVisit(const std::string& publisher_id,
                       const ledger::VisitData& visit_data,
@@ -280,6 +280,7 @@ class LedgerImpl : public ledger::Ledger,
 
   const braveledger_bat_helper::CurrentReconciles& GetCurrentReconciles() const;
   double GetDefaultContributionAmount() override;
+  bool HasSufficientBalanceToReconcile() override;
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;

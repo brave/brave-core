@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "ledger_impl.h"
-#include "ledger_task_runner_impl.h"
 
 #include "bat_client.h"
 #include "bat_contribution.h"
@@ -297,12 +296,6 @@ void LedgerImpl::LoadURL(const std::string& url,
       url, headers, content, contentType, method, callback);
 }
 
-void LedgerImpl::RunIOTask(ledger::LedgerTaskRunner::Task io_task) {
-  std::unique_ptr<LedgerTaskRunnerImpl> task_runner(
-      new LedgerTaskRunnerImpl(io_task));
-  ledger_client_->RunIOTask(std::move(task_runner));
-}
-
 std::string LedgerImpl::URIEncode(const std::string& value) {
   return ledger_client_->URIEncode(value);
 }
@@ -410,6 +403,15 @@ void LedgerImpl::SetAutoContribute(bool enabled) {
   bat_state_->SetAutoContribute(enabled);
 }
 
+void LedgerImpl::GetAutoContributeProps(ledger::AutoContributeProps& props) {
+  props.enabled_contribute = GetAutoContribute();
+  props.contribution_min_time = GetPublisherMinVisitTime();
+  props.contribution_min_visits = GetPublisherMinVisits();
+  props.contribution_non_verified = GetPublisherAllowNonVerified();
+  props.contribution_videos = GetPublisherAllowVideos();
+  props.reconcile_stamp = GetReconcileStamp();
+}
+
 bool LedgerImpl::GetRewardsMainEnabled() const {
   return bat_state_->GetRewardsMainEnabled();
 }
@@ -440,6 +442,15 @@ double LedgerImpl::GetContributionAmount() const {
 
 bool LedgerImpl::GetAutoContribute() const {
   return bat_state_->GetAutoContribute();
+}
+
+std::map<std::string, std::string> LedgerImpl::GetAddresses() {
+  std::map<std::string, std::string> addresses;
+  addresses.emplace("BAT", GetBATAddress());
+  addresses.emplace("BTC", GetBTCAddress());
+  addresses.emplace("ETH", GetETHAddress());
+  addresses.emplace("LTC", GetLTCAddress());
+  return addresses;
 }
 
 const std::string& LedgerImpl::GetBATAddress() const {
@@ -1053,6 +1064,10 @@ LedgerImpl::GetCurrentReconciles() const {
 
 double LedgerImpl::GetDefaultContributionAmount() {
   return bat_state_->GetDefaultContributionAmount();
+}
+
+bool LedgerImpl::HasSufficientBalanceToReconcile() {
+  return GetBalance() >= GetContributionAmount();
 }
 
 }  // namespace bat_ledger
