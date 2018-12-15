@@ -2,7 +2,6 @@
 #define BRAVE_COMMON_NETWORK_CONSTANTS_H_
 
 extern const char kBraveUpdatesExtensionsEndpoint[];
-extern const char kBraveComponentUpdaterEndpoint[];
 
 extern const char kBraveReferralsServer[];
 extern const char kBraveReferralsHeadersPath[];
