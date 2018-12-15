@@ -9,14 +9,11 @@ const char kBraveReferralsHeadersPath[] = "/promo/custom-headers";
 const char kBraveReferralsInitPath[] = "/promo/initialize/nonua";
 const char kBraveReferralsActivityPath[] = "/promo/activity";
 
-const char kCRXDownloadPrefix[] = "https://clients2.googleusercontent.com/crx/blobs/*crx*";
 const char kEmptyDataURI[] = "data:text/plain,";
 const char kEmptyImageDataURI[] = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 const char kJSDataURLPrefix[] = "data:application/javascript;base64,";
 const char kGeoLocationsPattern[] = "https://www.googleapis.com/geolocation/v1/geolocate?key=*";
 const char kSafeBrowsingPrefix[] = "https://safebrowsing.googleapis.com/";
-const char kCRLSetPrefix1[] = "https://dl.google.com/release2/chrome_component/*crl-set*";
-const char kCRLSetPrefix2[] = "https://*.gvt1.com/edgedl/release2/chrome_component/*crl-set*";
 const char kGoogleTagManagerPattern[] = "https://www.googletagmanager.com/gtm.js";
 const char kGoogleTagServicesPattern[] = "https://www.googletagservices.com/tag/js/gpt.js";
 const char kForbesPattern[] = "https://www.forbes.com/*";
