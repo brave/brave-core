@@ -8,7 +8,6 @@
 #include "brave/common/network_constants.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "components/component_updater/component_updater_url_constants.h"
-#include "extensions/common/extension_urls.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request_test_util.h"
 #include "url/gurl.h"
@@ -52,28 +51,10 @@ TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest, ModifyComponentUpdate
   EXPECT_EQ(ret, net::OK);
 }
 
-TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest, ModifyDefaultComponentUpdaterURL) {
+TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest, NoModifyComponentUpdaterURL) {
   net::TestDelegate test_delegate;
   std::string query_string("?braveRedirect=true");
   GURL url(std::string(component_updater::kUpdaterDefaultUrl) + query_string);
-  std::unique_ptr<net::URLRequest> request =
-      context()->CreateRequest(url, net::IDLE, &test_delegate,
-                             TRAFFIC_ANNOTATION_FOR_TESTS);
-  std::shared_ptr<brave::BraveRequestInfo>
-      before_url_context(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
-  brave::ResponseCallback callback;
-  GURL expected_url(kBraveComponentUpdaterEndpoint);
-  int ret =
-      OnBeforeURLRequest_CommonStaticRedirectWork(callback, before_url_context);
-  EXPECT_EQ(GURL(before_url_context->new_url_spec), expected_url);
-  EXPECT_EQ(ret, net::OK);
-}
-
-TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest, NoModifyUpdaterURL) {
-  net::TestDelegate test_delegate;
-  std::string query_string("?braveRedirect=true");
-  GURL url(std::string(extension_urls::kChromeWebstoreUpdateURL) + query_string);
   std::unique_ptr<net::URLRequest> request =
       context()->CreateRequest(url, net::IDLE, &test_delegate,
                              TRAFFIC_ANNOTATION_FOR_TESTS);
