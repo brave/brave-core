@@ -32,9 +32,17 @@ struct SessionStoreSettings {
     uint64_t min_visit_time;
     unsigned int min_visits;
   } payments;
+
   std::string default_search_engine;
   bool use_alternate_private_search_engine;
   bool use_alternate_private_search_engine_tor;
+
+  struct ExtensionSettings {
+    bool honey_enabled;
+    std::string active_password_manager;
+    bool metamask_enabled;
+    bool pocket_enabled;
+  } extensions;
 };
 
 struct BraveLedger {

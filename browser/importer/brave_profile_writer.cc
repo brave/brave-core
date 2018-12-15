@@ -496,9 +496,9 @@ void BraveProfileWriter::UpdateSettings(const SessionStoreSettings& settings) {
     }
   }
 
-  // Save alternate engine (for private tabs) to preferences
   PrefService* prefs = profile_->GetPrefs();
   if (prefs) {
+    // Save alternate engine (for private tabs) to preferences
     prefs->SetBoolean(kUseAlternativeSearchEngineProvider,
         settings.use_alternate_private_search_engine);
 
@@ -513,5 +513,8 @@ void BraveProfileWriter::UpdateSettings(const SessionStoreSettings& settings) {
       prefs->SetInteger(kAlternativeSearchEngineProviderInTor,
           default_search_engine_id);
     }
+
+    // TODO: set extension values here (to be read by web_ui)
+    // ...
   }
 }

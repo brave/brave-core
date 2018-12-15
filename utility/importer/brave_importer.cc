@@ -893,5 +893,28 @@ void BraveImporter::ImportSettings() {
     user_settings.use_alternate_private_search_engine_tor = true;
   }
 
+  // Extension related settings
+  if (!TryFindBoolKey(settings, "extensions.honey.enabled",
+      user_settings.extensions.honey_enabled)) {
+    user_settings.extensions.honey_enabled = false;
+  }
+
+  // NOTE: valid values for this are (case-sensitive)
+  // ['1Password', 'Dashlane', 'LastPass', 'bitwarden']
+  if (!TryFindStringKey(settings, "security.passwords.active-password-manager",
+      user_settings.extensions.active_password_manager)) {
+    user_settings.extensions.active_password_manager = "";
+  }
+
+  if (!TryFindBoolKey(settings, "extensions.metamask.enabled",
+      user_settings.extensions.metamask_enabled)) {
+    user_settings.extensions.metamask_enabled = false;
+  }
+
+  if (!TryFindBoolKey(settings, "extensions.pocket.enabled",
+      user_settings.extensions.pocket_enabled)) {
+    user_settings.extensions.pocket_enabled = false;
+  }
+
   bridge_->UpdateSettings(user_settings);
 }
