@@ -13,6 +13,8 @@
 #include "ledger_impl.h"
 #include "rapidjson_bat_helper.h"
 
+using namespace std::placeholders;
+
 namespace braveledger_bat_contribution {
 
 static bool winners_votes_compare(
@@ -99,11 +101,8 @@ void BatContribution::ReconcilePublisherList(
 
 void BatContribution::OnTimerReconcile() {
   ledger_->GetRecurringDonations(
-      std::bind(&BatContribution::ReconcilePublisherList,
-                this,
-                ledger::PUBLISHER_CATEGORY::RECURRING_DONATION,
-                std::placeholders::_1,
-                std::placeholders::_2));
+      std::bind(&BatContribution::ReconcilePublisherList, this,
+                ledger::PUBLISHER_CATEGORY::RECURRING_DONATION, _1, _2));
 }
 
 void BatContribution::StartAutoContribute() {
@@ -124,8 +123,8 @@ void BatContribution::StartAutoContribute() {
       std::bind(&BatContribution::ReconcilePublisherList,
                 this,
                 ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-                std::placeholders::_1,
-                std::placeholders::_2));
+                _1,
+                _2));
 }
 
 void BatContribution::StartReconcile(
@@ -248,22 +247,17 @@ void BatContribution::StartReconcile(
 void BatContribution::Reconcile(const std::string& viewing_id) {
   ledger_->AddReconcileStep(viewing_id,
                             braveledger_bat_helper::ContributionRetry::STEP_RECONCILE);
-    std::string url = braveledger_bat_helper::buildURL(
+  std::string url = braveledger_bat_helper::buildURL(
       (std::string)RECONCILE_CONTRIBUTION + ledger_->GetUserId(), PREFIX_V2);
-  auto request_id = ledger_->LoadURL(url,
+
+  auto callback = std::bind(&BatContribution::ReconcileCallback, this,
+      viewing_id, _1, _2, _3);
+  ledger_->LoadURL(url,
       std::vector<std::string>(),
       "",
       "",
       ledger::URL_METHOD::GET,
-      &handler_);
-
-  handler_.AddRequestHandler(std::move(request_id),
-                             std::bind(&BatContribution::ReconcileCallback,
-                                       this,
-                                       viewing_id,
-                                       std::placeholders::_1,
-                                       std::placeholders::_2,
-                                       std::placeholders::_3));
+      callback);
 }
 
 void BatContribution::ReconcileCallback(
@@ -321,21 +315,15 @@ void BatContribution::CurrentReconcile(const std::string& viewing_id) {
                       "&altcurrency=" +
                       currency;
 
-  auto request_id = ledger_->LoadURL(
+  auto callback =std::bind(&BatContribution::CurrentReconcileCallback, this,
+      viewing_id, _1, _2, _3);
+  ledger_->LoadURL(
       braveledger_bat_helper::buildURL(path, PREFIX_V2),
       std::vector<std::string>(),
       "",
       "",
       ledger::URL_METHOD::GET,
-      &handler_);
-  handler_.AddRequestHandler(std::move(request_id),
-                             std::bind(
-                                 &BatContribution::CurrentReconcileCallback,
-                                 this,
-                                 viewing_id,
-                                 std::placeholders::_1,
-                                 std::placeholders::_2,
-                                 std::placeholders::_3));
+      callback);
 }
 
 void BatContribution::CurrentReconcileCallback(
@@ -442,21 +430,15 @@ void BatContribution::ReconcilePayload(const std::string& viewing_id) {
   wallet_header.push_back("Content-Type: application/json; charset=UTF-8");
   std::string path = (std::string)WALLET_PROPERTIES + ledger_->GetPaymentId();
 
-  auto request_id = ledger_->LoadURL(
+  auto callback = std::bind(&BatContribution::ReconcilePayloadCallback, this,
+      viewing_id, _1, _2, _3);
+  ledger_->LoadURL(
       braveledger_bat_helper::buildURL(path, PREFIX_V2),
       wallet_header,
       payload_stringify,
       "application/json; charset=utf-8",
       ledger::URL_METHOD::PUT,
-      &handler_);
-  handler_.AddRequestHandler(
-      std::move(request_id),
-      std::bind(&BatContribution::ReconcilePayloadCallback,
-               this,
-               viewing_id,
-               std::placeholders::_1,
-               std::placeholders::_2,
-               std::placeholders::_3));
+      callback);
 }
 
 void BatContribution::ReconcilePayloadCallback(
@@ -497,22 +479,16 @@ void BatContribution::ReconcilePayloadCallback(
 void BatContribution::RegisterViewing(const std::string& viewing_id) {
   ledger_->AddReconcileStep(viewing_id,
                             braveledger_bat_helper::ContributionRetry::STEP_REGISTER);
-  auto request_id = ledger_->LoadURL(
+  auto callback = std::bind(&BatContribution::RegisterViewingCallback, this,
+        viewing_id, _1, _2, _3);
+  ledger_->LoadURL(
       braveledger_bat_helper::buildURL(
-          (std::string)REGISTER_VIEWING, PREFIX_V2),
+        (std::string)REGISTER_VIEWING, PREFIX_V2),
       std::vector<std::string>(),
       "",
       "",
       ledger::URL_METHOD::GET,
-      &handler_);
-  handler_.AddRequestHandler(std::move(request_id),
-                             std::bind(
-                                 &BatContribution::RegisterViewingCallback,
-                                 this,
-                                 viewing_id,
-                                 std::placeholders::_1,
-                                 std::placeholders::_2,
-                                 std::placeholders::_3));
+      callback);
 }
 
 void BatContribution::RegisterViewingCallback(
@@ -577,20 +553,14 @@ void BatContribution::ViewingCredentials(const std::string& viewing_id) {
       reconcile.anonizeViewingId_,
       PREFIX_V2);
 
-  auto request_id = ledger_->LoadURL(url,
-                                     std::vector<std::string>(),
-                                     proof_stringified,
-                                     "application/json; charset=utf-8",
-                                     ledger::URL_METHOD::POST,
-                                     &handler_);
-  handler_.AddRequestHandler(std::move(request_id),
-                             std::bind(
-                                 &BatContribution::ViewingCredentialsCallback,
-                                 this,
-                                 viewing_id,
-                                 std::placeholders::_1,
-                                 std::placeholders::_2,
-                                 std::placeholders::_3));
+  auto callback = std::bind(&BatContribution::ViewingCredentialsCallback, this,
+        viewing_id, _1, _2, _3);
+  ledger_->LoadURL(url,
+      std::vector<std::string>(),
+      proof_stringified,
+      "application/json; charset=utf-8",
+      ledger::URL_METHOD::POST,
+      callback);
 }
 
 void BatContribution::ViewingCredentialsCallback(
@@ -939,19 +909,14 @@ void BatContribution::PrepareBatch(
       "/" +
       transaction.anonizeViewingId_, PREFIX_V2);
 
-  auto request_id = ledger_->LoadURL(url,
-                                     std::vector<std::string>(),
-                                     "",
-                                     "",
-                                     ledger::URL_METHOD::GET,
-                                     &handler_);
-
-  handler_.AddRequestHandler(std::move(request_id),
-                             std::bind(&BatContribution::PrepareBatchCallback,
-                                       this,
-                                       std::placeholders::_1,
-                                       std::placeholders::_2,
-                                       std::placeholders::_3));
+  auto callback = std::bind(&BatContribution::PrepareBatchCallback, this,
+      _1, _2, _3);
+  ledger_->LoadURL(url,
+      std::vector<std::string>(),
+      "",
+      "",
+      ledger::URL_METHOD::GET,
+      callback);
 }
 
 void BatContribution::PrepareBatchCallback(
@@ -1038,7 +1003,7 @@ void BatContribution::Proof() {
   ledger_->RunIOTask(std::bind(&BatContribution::ProofBatch,
                                this,
                                batch_proof,
-                               std::placeholders::_1));
+                               _1));
 
 }
 
@@ -1216,20 +1181,14 @@ void BatContribution::VoteBatch() {
   std::string url = braveledger_bat_helper::buildURL(
       (std::string)SURVEYOR_BATCH_VOTING ,
       PREFIX_V2);
-
-  auto request_id = ledger_->LoadURL(url,
-                                     std::vector<std::string>(),
-                                     payload,
-                                     "application/json; charset=utf-8",
-                                     ledger::URL_METHOD::POST,
-                                     &handler_);
-  handler_.AddRequestHandler(std::move(request_id),
-                             std::bind(&BatContribution::VoteBatchCallback,
-                                       this,
-                                       batch_votes.publisher_,
-                                       std::placeholders::_1,
-                                       std::placeholders::_2,
-                                       std::placeholders::_3));
+  auto callback = std::bind(&BatContribution::VoteBatchCallback, this,
+      batch_votes.publisher_, _1, _2, _3);
+  ledger_->LoadURL(url,
+      std::vector<std::string>(),
+      payload,
+      "application/json; charset=utf-8",
+      ledger::URL_METHOD::POST,
+      callback);
 }
 
 void BatContribution::VoteBatchCallback(

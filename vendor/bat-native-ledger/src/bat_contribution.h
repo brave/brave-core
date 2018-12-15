@@ -9,7 +9,6 @@
 
 #include "bat/ledger/ledger.h"
 #include "bat_helper.h"
-#include "url_request_handler.h"
 
 // Contribution has two big phases. PHASE 1 is starting the contribution,
 // getting surveyors and transferring BAT from the wallet.
@@ -257,7 +256,6 @@ class BatContribution {
   void DoRetry(const std::string& viewing_id);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  bat_ledger::URLRequestHandler handler_;
   uint32_t last_reconcile_timer_id_;
   uint32_t last_prepare_vote_batch_timer_id_;
   uint32_t last_vote_batch_timer_id_;

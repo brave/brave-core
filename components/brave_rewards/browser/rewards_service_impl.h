@@ -142,7 +142,6 @@ class RewardsServiceImpl : public RewardsService,
   friend void RunIOTaskCallback(
       base::WeakPtr<RewardsServiceImpl>,
       std::function<void(void)>);
-  typedef base::Callback<void(int, const std::string&, const std::map<std::string, std::string>& headers)> FetchCallback;
 
   const extensions::OneShotEvent& ready() const { return ready_; }
   void OnLedgerStateSaved(ledger::LedgerCallbackHandler* handler,
@@ -239,12 +238,12 @@ class RewardsServiceImpl : public RewardsService,
   void SetTimer(uint64_t time_offset, uint32_t& timer_id) override;
   void LoadPublisherList(ledger::LedgerCallbackHandler* handler) override;
 
-  std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
+  void LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,
       const ledger::URL_METHOD& method,
-      ledger::LedgerCallbackHandler* handler) override;
+      ledger::LoadURLCallback callback) override;
 
   void RunIOTask(std::unique_ptr<ledger::LedgerTaskRunner> task) override;
   void SetRewardsMainEnabled(bool enabled) const override;
@@ -314,7 +313,7 @@ class RewardsServiceImpl : public RewardsService,
 #endif
 
   extensions::OneShotEvent ready_;
-  std::map<const net::URLFetcher*, FetchCallback> fetchers_;
+  std::map<const net::URLFetcher*, ledger::LoadURLCallback> fetchers_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   std::vector<std::string> current_media_fetchers_;
   std::vector<BitmapFetcherService::RequestId> request_ids_;

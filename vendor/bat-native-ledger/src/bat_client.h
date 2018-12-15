@@ -9,11 +9,10 @@
 #include <vector>
 #include <mutex>
 
+#include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_task_runner.h"
-#include "bat/ledger/ledger_url_loader.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat_helper.h"
-#include "url_request_handler.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -43,8 +42,8 @@ class BatClient {
   void continueRecover(int result, size_t *written, std::vector<uint8_t>& newSeed);
 
   void OnNicewareListLoaded(const std::string& pass_phrase,
-                                ledger::Result result,
-                                const std::string& data);
+      ledger::Result result,
+      const std::string& data);
 
  private:
   void getGrantCaptchaCallback(bool result, const std::string& response,
@@ -60,8 +59,6 @@ class BatClient {
   std::string getAnonizeProof(const std::string& registrarVK, const std::string& id, std::string& preFlight);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-
-  bat_ledger::URLRequestHandler handler_;
 };
 
 }  // namespace braveledger_bat_client

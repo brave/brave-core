@@ -53,7 +53,6 @@ source_set("ledger") {
     "include/bat/ledger/ledger.h",
     "include/bat/ledger/ledger_callback_handler.h",
     "include/bat/ledger/ledger_client.h",
-    "include/bat/ledger/ledger_url_loader.h",
     "include/bat/ledger/ledger_task_runner.h",
     "src/bat/ledger/ledger.cc",
     "src/bat_client.cc",
@@ -75,8 +74,6 @@ source_set("ledger") {
     "src/ledger_impl.h",
     "src/ledger_task_runner_impl.cc",
     "src/ledger_task_runner_impl.h",
-    "src/url_request_handler.cc",
-    "src/url_request_handler.h",
   ]
 
   deps = [

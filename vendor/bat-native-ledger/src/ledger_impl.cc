@@ -287,14 +287,14 @@ void LedgerImpl::OnWalletInitialized(ledger::Result result) {
   }
 }
 
-std::unique_ptr<ledger::LedgerURLLoader> LedgerImpl::LoadURL(const std::string& url,
+void LedgerImpl::LoadURL(const std::string& url,
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& contentType,
     const ledger::URL_METHOD& method,
-    ledger::LedgerCallbackHandler* handler) {
-  return ledger_client_->LoadURL(
-      url, headers, content, contentType, method, handler);
+    ledger::LoadURLCallback callback) {
+  ledger_client_->LoadURL(
+      url, headers, content, contentType, method, callback);
 }
 
 void LedgerImpl::RunIOTask(ledger::LedgerTaskRunner::Task io_task) {
@@ -619,9 +619,10 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 
     //download the list
     std::string url = braveledger_bat_helper::buildURL(GET_PUBLISHERS_LIST_V1, "", braveledger_bat_helper::SERVER_TYPES::PUBLISHER);
-    auto url_loader = LoadURL(url, std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
-    handler_.AddRequestHandler(std::move(url_loader),
-      std::bind(&LedgerImpl::LoadPublishersListCallback,this,_1,_2,_3));
+    auto callback = std::bind(&LedgerImpl::LoadPublishersListCallback, this,
+        _1, _2, _3);
+    LoadURL(url, std::vector<std::string>(), "", "",
+        ledger::URL_METHOD::GET, callback);
   } else if (timer_id == last_grant_check_timer_id_) {
     last_grant_check_timer_id_ = 0;
     FetchGrant(std::string(), std::string());

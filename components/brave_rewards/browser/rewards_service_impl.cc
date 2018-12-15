@@ -106,26 +106,6 @@ class LogStreamImpl : public ledger::LogStream {
 
 namespace {
 
-class LedgerURLLoaderImpl : public ledger::LedgerURLLoader {
- public:
-  LedgerURLLoaderImpl(uint64_t request_id, net::URLFetcher* fetcher) :
-    request_id_(request_id),
-    fetcher_(fetcher) {}
-  ~LedgerURLLoaderImpl() override = default;
-
-  void Start() override {
-    fetcher_->Start();
-  }
-
-  uint64_t request_id() override {
-    return request_id_;
-  }
-
- private:
-  uint64_t request_id_;
-  net::URLFetcher* fetcher_;  // NOT OWNED
-};
-
 ledger::PUBLISHER_MONTH GetPublisherMonth(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
@@ -253,8 +233,6 @@ void GetContentSiteListInternal(
 time_t GetCurrentTimestamp() {
   return base::Time::NowFromSystemTime().ToTimeT();
 }
-
-static uint64_t next_id = 1;
 
 }  // namespace
 
@@ -857,13 +835,13 @@ void RewardsServiceImpl::OnPublisherInfoListLoaded(
   callback(std::cref(list), next_record);
 }
 
-std::unique_ptr<ledger::LedgerURLLoader> RewardsServiceImpl::LoadURL(
+void RewardsServiceImpl::LoadURL(
     const std::string& url,
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& contentType,
     const ledger::URL_METHOD& method,
-    ledger::LedgerCallbackHandler* handler) {
+    ledger::LoadURLCallback callback) {
   net::URLFetcher::RequestType request_type = URLMethodToRequestType(method);
 
   net::URLFetcher* fetcher = net::URLFetcher::Create(
@@ -905,17 +883,8 @@ std::unique_ptr<ledger::LedgerURLLoader> RewardsServiceImpl::LoadURL(
       << "[ END REQUEST ]";
   }
 
-  FetchCallback callback = base::Bind(
-      &ledger::LedgerCallbackHandler::OnURLRequestResponse,
-      base::Unretained(handler),
-      next_id,
-      url);
   fetchers_[fetcher] = callback;
-
-  std::unique_ptr<ledger::LedgerURLLoader> loader(
-      new LedgerURLLoaderImpl(next_id++, fetcher));
-
-  return loader;
+  fetcher->Start();
 }
 
 void RewardsServiceImpl::OnURLFetchComplete(
@@ -950,7 +919,7 @@ void RewardsServiceImpl::OnURLFetchComplete(
 
   delete source;
 
-  callback.Run(response_code, body, headers);
+  callback(response_code == 200, body, headers);
 }
 
 void RunIOTaskCallback(

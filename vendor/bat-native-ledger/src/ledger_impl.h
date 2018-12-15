@@ -13,10 +13,8 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
-#include "bat/ledger/ledger_url_loader.h"
 #include "bat_helper.h"
 #include "ledger_task_runner_impl.h"
-#include "url_request_handler.h"
 #include "logging.h"
 
 namespace braveledger_bat_client {
@@ -137,12 +135,12 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnPublishersListSaved(ledger::Result result) override;
 
-  std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
+  void LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,
       const ledger::URL_METHOD& method,
-      ledger::LedgerCallbackHandler* handler);
+      ledger::LoadURLCallback callback);
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
                            const std::string& probi = "0");
@@ -340,8 +338,6 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_contribution::BatContribution> bat_contribution_;
   bool initialized_;
   bool initializing_;
-
-  URLRequestHandler handler_;
 
   //ledger::VisitData current_visit_data_;
   std::map<uint32_t, ledger::VisitData> current_pages_;

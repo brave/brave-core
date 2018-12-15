@@ -58,14 +58,13 @@ void MockLedgerClient::SavePublisherState(const std::string& publisher_state,
   handler->OnPublisherStateSaved(ledger::Result::OK);
 }
 
-uint64_t MockLedgerClient::LoadURL(const std::string& url,
+void MockLedgerClient::LoadURL(const std::string& url,
                  const std::vector<std::string>& headers,
                  const std::string& content,
                  const std::string& contentType,
                  const ledger::URL_METHOD& method,
-                 ledger::LedgerCallbackHandler* handler) {
-  handler->OnURLRequestResponse(next_id, url, 200, "{}");
-  return next_id++;
+                 ledger::LoadURLCallback callback) {
+  callback(true, "{}", {});
 }
 
 void MockLedgerClient::RunIOTask(
