@@ -105,6 +105,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnReconcileComplete(brave_rewards::RewardsService* rewards_service,
                            unsigned int result,
                            const std::string& viewing_id,
+                           const std::string& category,
                            const std::string& probi) override;
   void OnRecurringDonationUpdated(brave_rewards::RewardsService* rewards_service,
                                   brave_rewards::ContentSiteList) override;
@@ -617,10 +618,12 @@ void RewardsDOMHandler::GetContributionAmount(const base::ListValue* args) {
   }
 }
 
-void RewardsDOMHandler::OnReconcileComplete(brave_rewards::RewardsService* rewards_service,
-  unsigned int result,
-  const std::string& viewing_id,
-  const std::string& probi) {
+void RewardsDOMHandler::OnReconcileComplete(
+    brave_rewards::RewardsService* rewards_service,
+    unsigned int result,
+    const std::string& viewing_id,
+    const std::string& category,
+    const std::string& probi) {
   GetAllBalanceReports();
   OnContentSiteUpdated(rewards_service);
   GetReconcileStamp(nullptr);

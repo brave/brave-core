@@ -25,18 +25,34 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
  public:
   MockRewardsServiceObserver() {}
   MOCK_METHOD2(OnWalletInitialized, void(RewardsService*, int));
-  MOCK_METHOD3(OnWalletProperties, void(RewardsService*, int, std::unique_ptr<brave_rewards::WalletProperties>));
-  MOCK_METHOD3(OnGrant, void(RewardsService*, unsigned int, brave_rewards::Grant));
-  MOCK_METHOD3(OnGrantCaptcha, void(RewardsService*, std::string, std::string));
-  MOCK_METHOD4(OnRecoverWallet, void(RewardsService*, unsigned int, double, std::vector<brave_rewards::Grant>));
-  MOCK_METHOD3(OnGrantFinish, void(RewardsService*, unsigned int, brave_rewards::Grant));
+  MOCK_METHOD3(OnWalletProperties, void(RewardsService*,
+      int,
+      std::unique_ptr<brave_rewards::WalletProperties>));
+  MOCK_METHOD3(OnGrant,
+      void(RewardsService*, unsigned int, brave_rewards::Grant));
+  MOCK_METHOD3(OnGrantCaptcha,
+      void(RewardsService*, std::string, std::string));
+  MOCK_METHOD4(OnRecoverWallet, void(RewardsService*,
+                                     unsigned int,
+                                     double,
+                                     std::vector<brave_rewards::Grant>));
+  MOCK_METHOD3(OnGrantFinish,
+      void(RewardsService*, unsigned int, brave_rewards::Grant));
   MOCK_METHOD1(OnContentSiteUpdated, void(RewardsService*));
   MOCK_METHOD2(OnExcludedSitesChanged, void(RewardsService*, std::string));
-  MOCK_METHOD4(OnReconcileComplete, void(RewardsService*, unsigned int, const std::string&, const std::string&));
-  MOCK_METHOD2(OnRecurringDonationUpdated, void(RewardsService*, brave_rewards::ContentSiteList));
-  MOCK_METHOD2(OnCurrentTips, void(RewardsService*, brave_rewards::ContentSiteList));
-  MOCK_METHOD2(OnPublisherBanner, void(RewardsService*, const brave_rewards::PublisherBanner));
-  MOCK_METHOD4(OnGetPublisherActivityFromUrl, void(RewardsService*, int, ledger::PublisherInfo*, uint64_t));
+  MOCK_METHOD5(OnReconcileComplete, void(RewardsService*,
+                                         unsigned int,
+                                         const std::string&,
+                                         const std::string&,
+                                         const std::string&));
+  MOCK_METHOD2(OnRecurringDonationUpdated,
+      void(RewardsService*, brave_rewards::ContentSiteList));
+  MOCK_METHOD2(OnCurrentTips,
+      void(RewardsService*, brave_rewards::ContentSiteList));
+  MOCK_METHOD2(OnPublisherBanner,
+      void(RewardsService*, const brave_rewards::PublisherBanner));
+  MOCK_METHOD4(OnGetPublisherActivityFromUrl,
+      void(RewardsService*, int, ledger::PublisherInfo*, uint64_t));
 };
 
 class RewardsServiceTest : public testing::Test {

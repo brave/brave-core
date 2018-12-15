@@ -330,6 +330,7 @@ RewardsServiceImpl::~RewardsServiceImpl() {
 }
 
 void RewardsServiceImpl::Init() {
+  AddObserver(notification_service_.get());
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   AddObserver(extension_rewards_service_observer_.get());
   private_observers_.AddObserver(private_observer_.get());
@@ -538,6 +539,7 @@ std::string RewardsServiceImpl::GenerateGUID() const {
 }
 
 void RewardsServiceImpl::Shutdown() {
+  RemoveObserver(notification_service_.get());
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   RemoveObserver(extension_rewards_service_observer_.get());
   private_observers_.RemoveObserver(private_observer_.get());
@@ -580,13 +582,6 @@ void RewardsServiceImpl::OnWalletProperties(ledger::Result result,
 void RewardsServiceImpl::OnGrant(ledger::Result result,
                                  const ledger::Grant& grant) {
   TriggerOnGrant(result, grant);
-
-  if (result == ledger::Result::LEDGER_OK) {
-    RewardsNotificationService::RewardsNotificationArgs args;
-    notification_service_->AddNotification(
-        RewardsNotificationService::REWARDS_NOTIFICATION_GRANT, args,
-        "rewards_notification_grant");
-  }
 }
 
 void RewardsServiceImpl::OnGrantCaptcha(const std::string& image, const std::string& hint) {
@@ -611,31 +606,12 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
   }
 
   TriggerOnGrantFinish(result, grant);
-  notification_service_->DeleteNotification("rewards_notification_grant");
 }
 
 void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
   const std::string& viewing_id,
   ledger::PUBLISHER_CATEGORY category,
   const std::string& probi) {
-
-  if ((result == ledger::Result::LEDGER_OK &&
-       category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) ||
-      result == ledger::Result::LEDGER_ERROR ||
-      result == ledger::Result::NOT_ENOUGH_FUNDS ||
-      result == ledger::Result::TIP_ERROR) {
-    RewardsNotificationService::RewardsNotificationArgs args;
-    args.push_back(viewing_id);
-    args.push_back(std::to_string(result));
-    args.push_back(std::to_string(category));
-    args.push_back(probi);
-
-    notification_service_->AddNotification(
-        RewardsNotificationService::REWARDS_NOTIFICATION_AUTO_CONTRIBUTE,
-        args,
-        "contribution_" + viewing_id);
-  }
-
   if (result == ledger::Result::LEDGER_OK) {
     auto now = base::Time::Now();
     FetchWalletProperties();
@@ -648,7 +624,11 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
   }
 
   for (auto& observer : observers_)
-    observer.OnReconcileComplete(this, result, viewing_id, probi);
+    observer.OnReconcileComplete(this,
+                                 result,
+                                 viewing_id,
+                                 std::to_string(category),
+                                 probi);
 }
 
 void RewardsServiceImpl::LoadLedgerState(
