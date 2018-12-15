@@ -44,6 +44,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnReconcileComplete(RewardsService* rewards_service,
                                    unsigned int result,
                                    const std::string& viewing_id,
+                                   const std::string& category,
                                    const std::string& probi) {};
   virtual void OnRecurringDonationUpdated(RewardsService* rewards_service,
                                           brave_rewards::ContentSiteList) {};
