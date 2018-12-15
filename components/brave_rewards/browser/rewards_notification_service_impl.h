@@ -9,6 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "extensions/buildflags/buildflags.h"
 
 class Profile;
@@ -19,6 +20,7 @@ class ExtensionRewardsNotificationServiceObserver;
 
 class RewardsNotificationServiceImpl
     : public RewardsNotificationService,
+      public RewardsServiceObserver,
       public base::SupportsWeakPtr<RewardsNotificationServiceImpl> {
  public:
   RewardsNotificationServiceImpl(Profile* profile);
@@ -36,6 +38,19 @@ class RewardsNotificationServiceImpl
   void StoreRewardsNotifications() override;
 
  private:
+  // RewardsServiceObserver impl
+  void OnGrant(RewardsService* rewards_service,
+               unsigned int error_code,
+               Grant properties) override;
+  void OnGrantFinish(RewardsService* rewards_service,
+                     unsigned int result,
+                     brave_rewards::Grant grant) override;
+  void OnReconcileComplete(RewardsService* rewards_service,
+                           unsigned int result,
+                           const std::string& viewing_id,
+                           const std::string& category,
+                           const std::string& probi) override;
+
   void TriggerOnNotificationAdded(
       const RewardsNotification& rewards_notification);
   void TriggerOnNotificationDeleted(
