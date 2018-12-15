@@ -62,6 +62,7 @@ LEDGER_EXPORT struct PublisherInfoFilter {
   PUBLISHER_MONTH month;
   int year;
   PUBLISHER_EXCLUDE_FILTER excluded;
+  uint32_t percent;
   std::vector<std::pair<std::string, bool>> order_by;
   unsigned int min_duration;
   uint64_t reconcile_stamp;
