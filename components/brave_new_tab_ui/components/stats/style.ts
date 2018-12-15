@@ -5,7 +5,8 @@
 import styled from '../../../theme'
 
 export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
   font-weight: 400;
   margin: 0;
   padding: 0;
@@ -21,53 +22,44 @@ export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
 `
 
 export const StyledStatsItem = styled<{}, 'li'>('li')`
-  vertical-align: middle;
   list-style-type: none;
   font-size: inherit;
   font-family: inherit;
 
   &:first-child {
-    color: rgb(243, 144, 48);
+    color: #FB542B;
   }
   &:nth-child(2) {
-    color: rgb(254, 82, 29);
+    color: #B02FFB;
   }
   &:nth-child(3) {
-    color: rgb(7, 150, 250);
+    color: #4C54D2;
   }
   &:last-child {
-    color: rgb(153, 153, 153);
+    color: #FFF;
   }
 `
 
 export const StyledStatsItemCounter = styled<{}, 'span'>('span')`
   color: inherit;
   font-family: ${p => p.theme.fontFamily.heading};
-  font-size: 44px;
+  font-size: 46px;
   font-weight: 400;
-  line-height: 53px;
-  width: 7ch;
-  letter-spacing: -0.4px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 `
 
 export const StyledStatsItemText = styled<{}, 'span'>('span')`
-  color: rgb(153, 153, 153);
+  color: #FFF;
   font-size: 20px;
+  margin-left: 4px;
   font-family: ${p => p.theme.fontFamily.heading};
-  line-height: 24px;
-  margin-left: 3px;
-  display: inline;
-  letter-spacing: 0;
 `
 
 export const StyledStatsItemDescription = styled<{}, 'div'>('div')`
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
-  color: rgb(255, 255, 255);
-  line-height: 24px;
-  margin-left: 3px;
+  color: #FFF;
   font-family: ${p => p.theme.fontFamily.heading};
 `
