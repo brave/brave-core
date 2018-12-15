@@ -10,6 +10,8 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "bat/ledger/ledger_callback_handler.h"
+#include "bat/ledger/publisher_info.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "chrome/browser/profiles/profile.h"
@@ -223,6 +225,49 @@ void RewardsNotificationServiceImpl::OnGetNotification(
 void RewardsNotificationServiceImpl::OnGetAllNotifications(
     const RewardsNotificationsList& rewards_notifications_list) {
   TriggerOnGetAllNotifications(rewards_notifications_list);
+}
+
+void RewardsNotificationServiceImpl::OnGrant(RewardsService* rewards_service,
+                                             unsigned int error_code,
+                                             Grant properties) {
+if (error_code == ledger::Result::LEDGER_OK) {
+    RewardsNotificationService::RewardsNotificationArgs args;
+    AddNotification(RewardsNotificationService::REWARDS_NOTIFICATION_GRANT,
+                    args,
+                    "rewards_notification_grant");
+  }
+}
+
+void RewardsNotificationServiceImpl::OnGrantFinish(
+    RewardsService* rewards_service,
+    unsigned int result,
+    Grant grant) {
+  DeleteNotification("rewards_notification_grant");
+}
+
+void RewardsNotificationServiceImpl::OnReconcileComplete(
+    RewardsService* rewards_service,
+    unsigned int result,
+    const std::string& viewing_id,
+    const std::string& category,
+    const std::string& probi) {
+  if ((result == ledger::Result::LEDGER_OK &&
+       category ==
+          std::to_string(ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE)) ||
+       result == ledger::Result::LEDGER_ERROR ||
+       result == ledger::Result::NOT_ENOUGH_FUNDS ||
+       result == ledger::Result::TIP_ERROR) {
+    RewardsNotificationService::RewardsNotificationArgs args;
+    args.push_back(viewing_id);
+    args.push_back(std::to_string(result));
+    args.push_back(category);
+    args.push_back(probi);
+
+    AddNotification(
+        RewardsNotificationService::REWARDS_NOTIFICATION_AUTO_CONTRIBUTE,
+        args,
+        "contribution_" + viewing_id);
+  }
 }
 
 }  // namespace brave_rewards

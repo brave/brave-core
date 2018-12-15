@@ -57,7 +57,7 @@ class Profile;
 namespace brave_rewards {
 
 class PublisherInfoDatabase;
-class RewardsNotificationService;
+class RewardsNotificationServiceImpl;
 
 class RewardsServiceImpl : public RewardsService,
                             public ledger::LedgerClient,
@@ -294,7 +294,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath publisher_info_db_path_;
   const base::FilePath publisher_list_path_;
   std::unique_ptr<PublisherInfoDatabase> publisher_info_backend_;
-  std::unique_ptr<RewardsNotificationService> notification_service_;
+  std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   base::ObserverList<RewardsServicePrivateObserver> private_observers_;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   std::unique_ptr<ExtensionRewardsServiceObserver> private_observer_;
