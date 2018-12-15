@@ -181,7 +181,6 @@ test("brave_unit_tests") {
       "//chrome/install_static:install_static_util",
       "//chrome/install_static/test:test_support",
       "//chrome/installer/mini_installer:lib",
-      "//chrome/installer/mini_installer:mini_installer",
       "//testing/gmock",
       "//testing/gtest",
     ]
