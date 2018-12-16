@@ -36,9 +36,6 @@ namespace component_updater {
 
 namespace {
 
-const base::Feature kFeatureUpdateClientUseJSON{
-  "UpdateClientUseJSON", base::FEATURE_DISABLED_BY_DEFAULT};
-
 class BraveConfigurator : public update_client::Configurator {
  public:
   BraveConfigurator(const base::CommandLine* cmdline,
@@ -206,8 +203,6 @@ std::string BraveConfigurator::GetAppGuid() const {
 
 std::unique_ptr<update_client::ProtocolHandlerFactory>
 BraveConfigurator::GetProtocolHandlerFactory() const {
-  if (base::FeatureList::IsEnabled(kFeatureUpdateClientUseJSON))
-    return std::make_unique<update_client::ProtocolHandlerFactoryJSON>();
   return std::make_unique<update_client::ProtocolHandlerFactoryXml>();
 }
 
