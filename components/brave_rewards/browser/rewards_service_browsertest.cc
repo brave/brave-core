@@ -234,7 +234,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
 
   // toggle auto contribute off
   content::EvalJsResult toggleOffResult = EvalJs(contents(),
-    "document.querySelector(\"[data-test-id2='autoContribution']\").click();"
+    "let toggleClicked = false;"
     "new Promise((resolve) => {"
     "var count = 10;"
     "var interval = setInterval(function() {"
@@ -245,9 +245,14 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
     "    count -= 1;"
     "  }"
     "  if (document.querySelector(\"[data-test-id2='autoContribution']\")) {"
-    "    clearInterval(interval);"
-    "    resolve(document.querySelector(\"[data-test-id2='autoContribution']\")"
-    "      .getAttribute(\"data-toggled\") === 'false');"
+    "    if (!toggleClicked) {"
+    "      toggleClicked = true;"
+    "      document.querySelector(\"[data-test-id2='autoContribution']\").click();"
+    "    } else {"
+    "      clearInterval(interval);"
+    "      resolve(document.querySelector(\"[data-test-id2='autoContribution']\")"
+    "        .getAttribute(\"data-toggled\") === 'false');"
+    "    }"
     "  }"
     "}, 500);});",
     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
