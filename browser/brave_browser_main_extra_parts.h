@@ -16,7 +16,6 @@ class BraveBrowserMainExtraParts : public ChromeBrowserMainExtraParts {
   ~BraveBrowserMainExtraParts() override;
 
   // ChromeBrowserMainExtraParts overrides.
-  void PreCreateThreads() override;
   void PreMainMessageLoopRun() override;
 
  private:
