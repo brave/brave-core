@@ -13,15 +13,18 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/ssl/cert_verifier_browser_test.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_content_setting_bubble_model_delegate.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
+#include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "net/cert/mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -57,10 +60,9 @@ class BraveWidevineBlockedImageModelBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest, CreateBubbleModel) {
   WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  Profile* profile = browser()->profile();
   auto model = CreateModel();
   std::unique_ptr<ContentSettingBubbleModel> bubble(
-      model->CreateBubbleModel(nullptr, web_contents, profile));
+      model->CreateBubbleModel(nullptr, web_contents));
   ContentSettingSimpleBubbleModel* simple_bubble =
       bubble->AsSimpleBubbleModel();
   ASSERT_TRUE(simple_bubble);
@@ -96,10 +98,8 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   auto model = CreateModel();
-  Profile* profile = browser()->profile();
   std::unique_ptr<ContentSettingBubbleModel> bubble(model->CreateBubbleModel(
-      browser()->content_setting_bubble_model_delegate(), web_contents,
-      profile));
+      browser()->content_setting_bubble_model_delegate(), web_contents));
 
   content::TestNavigationObserver observer(nullptr);
   observer.StartWatchingNewWebContents();
@@ -118,21 +118,18 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
   ui_test_utils::NavigateToURL(browser(), url);
 
   auto model = CreateModel();
-  Profile* profile = browser()->profile();
   WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  std::unique_ptr<BraveWidevineContentSettingPluginBubbleModel> bubble(
-      (BraveWidevineContentSettingPluginBubbleModel*)
+  std::unique_ptr<ContentSettingBubbleModel> bubble(
           model->CreateBubbleModel(
-              browser()->content_setting_bubble_model_delegate(), web_contents,
-              profile));
+              browser()->content_setting_bubble_model_delegate(), web_contents));
 
   PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
 
   // Before we allow, opted in should be false
   ASSERT_FALSE(prefs->GetBoolean(kWidevineOptedIn));
 
-  bubble->RunPluginsOnPage();
+  ((BraveWidevineContentSettingPluginBubbleModel*)bubble.get())->RunPluginsOnPage();
 
   // After we allow, opted in pref should be true
   ASSERT_TRUE(prefs->GetBoolean(kWidevineOptedIn));
@@ -151,32 +148,29 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
 
   auto model = CreateModel();
 
-  Profile* profile = browser()->profile();
   WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  std::unique_ptr<BraveWidevineContentSettingPluginBubbleModel> bubble(
-      (BraveWidevineContentSettingPluginBubbleModel*)
+  std::unique_ptr<ContentSettingBubbleModel> bubble(
           model->CreateBubbleModel(
-              browser()->content_setting_bubble_model_delegate(), web_contents,
-              profile));
+              browser()->content_setting_bubble_model_delegate(), web_contents));
 
   ASSERT_FALSE(model->is_visible());
 }
 
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
-class BraveWidevineIconVisibilityBrowserTest : public InProcessBrowserTest {
+class BraveWidevineIconVisibilityBrowserTest : public CertVerifierBrowserTest {
  public:
   BraveWidevineIconVisibilityBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+    CertVerifierBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
-
     // Chromium allows the API under test only on HTTPS domains.
     base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    base::PathService::Get(chrome::DIR_TEST_DATA, &test_data_dir);
     https_server_.ServeFilesFromDirectory(test_data_dir);
+    SetUpMockCertVerifierForHttpsServer(0, net::OK);
     ASSERT_TRUE(https_server_.Start());
   }
 
@@ -205,6 +199,16 @@ class BraveWidevineIconVisibilityBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
+  void SetUpMockCertVerifierForHttpsServer(net::CertStatus cert_status,
+                                           int net_result) {
+    scoped_refptr<net::X509Certificate> cert(https_server_.GetCertificate());
+    net::CertVerifyResult verify_result;
+    verify_result.is_issued_by_known_root = true;
+    verify_result.verified_cert = cert;
+    verify_result.cert_status = cert_status;
+    mock_cert_verifier()->AddResultForCert(cert, verify_result, net_result);
+  }
+
   net::EmbeddedTestServer https_server_;
 };
 
