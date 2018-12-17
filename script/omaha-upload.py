@@ -25,7 +25,7 @@ from lib.omaha import get_app_info, get_base64_authorization, get_channel_id, ge
 # THE jenkins-upload USER CAN ONLY ADD OMAHA OR SPARKLE VERSION, CANNOT DELETE OR MODIFY EXISTING VERSIONS
 # EXAMPLE CURL
 # curl -L -D- -X GET -H "Authorization: Basic BASE64USERIDANDPASSWORD" -H "Content-Type: application/json" \
-#  "http://OMAHA-HOSTNAME/api/omaha/version"
+#  "https://OMAHA-HOSTNAME/api/omaha/version"
 # https://crystalnix.github.io/omaha-server/#header-supplying-basic-auth-headers
 # https://crystalnix.github.io/omaha-server/#omaha-version-version-list-post
 # https://crystalnix.github.io/omaha-server/#sparkle-version-version-list-post
@@ -37,7 +37,7 @@ from lib.omaha import get_app_info, get_base64_authorization, get_channel_id, ge
 
 
 def create_app(host, app_info, headers):
-    url = 'http://' + host + '/api/app/'
+    url = 'https://' + host + '/api/app/'
     # print "app ids"
     # print get(url, headers)
 
@@ -49,7 +49,7 @@ def create_app(host, app_info, headers):
 
 
 def post_action(host, version, action, headers, args):
-    url = 'http://' + host + '/api/action/'
+    url = 'https://' + host + '/api/action/'
     params = {
         "version": version,
         "event": get_event_id(action)
@@ -124,7 +124,7 @@ def main():
         elif app_info['platform'] in 'win32':
             app_info['version_url'] = '/api/omaha/version/'
 
-        app_info['version_post_url'] = 'http://' + \
+        app_info['version_post_url'] = 'https://' + \
             app_info['omahahost'] + app_info['version_url']
 
         app_info['size'] = os.path.getsize(source_file)
@@ -269,7 +269,7 @@ def parse_args():
     desc = "Upload Windows/Mac install files to Omaha server" \
            "\n\nRequires the following ENVIRONMENT VARIABLES be set:" \
            "\n\nCHANNEL: The Brave channel, i.e. \'release\', \'beta\', \'dev\'" \
-           "\nOMAHAHOST: The FQDN hostname of the Omaha server to upload to. (without \'http:\\\\' prefix)" \
+           "\nOMAHAHOST: The FQDN hostname of the Omaha server to upload to. (without \'https:\\\\' prefix)" \
            "\nOMAHAUSERID: The UserID to use to login to the Omaha server." \
            "\nOMAHAPW: The Password to login to the Omaha server." \
            "\nDSAPRIVPEM: The Private DSA pem file used to sign the Mac DMG file." \
