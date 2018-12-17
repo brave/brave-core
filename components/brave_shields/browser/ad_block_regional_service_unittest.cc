@@ -8,7 +8,7 @@
 TEST(AdBlockRegionalServiceTest, SupportedLocales) {
   std::vector<std::string> locales({ "fr", "fR", "fr-FR", "fr-ca" });
     std::for_each(locales.begin(), locales.end(),
-      [this](const std::string& locale){
+      [](const std::string& locale){
     EXPECT_TRUE(brave_shields::AdBlockRegionalService::IsSupportedLocale(locale));
   });
 }

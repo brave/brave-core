@@ -11,11 +11,11 @@
 
 namespace {
 
-class FakeLocationBarModelImpl: public LocationBarModelImpl {
+class FakeLocationBarModelImpl: public LocationBarModelDelegate {
  public:
   void SetURL(const GURL& url) { url_ = url; }
 
-  // ToolbarModelDelegate:
+  // LocationBarModelDelegate:
   base::string16 FormattedStringWithEquivalentMeaning(
       const GURL& url,
       const base::string16& formatted_url) const override {

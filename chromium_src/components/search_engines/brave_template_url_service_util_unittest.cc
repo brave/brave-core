@@ -19,6 +19,8 @@
 
 namespace {
 
+const char kCountryIDAtInstall[] = "countryid_at_install";
+
 std::unique_ptr<TemplateURLData> CreatePrepopulateTemplateURLData(
     int prepopulate_id,
     const std::string& keyword,
@@ -99,7 +101,7 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   new_resource_keyword_version = 0;
 
   // Check Germany.
-  prefs_.SetInteger(prefs::kCountryIDAtInstall, 'D' << 8 | 'E');
+  prefs_.SetInteger(kCountryIDAtInstall, 'D' << 8 | 'E');
 
   GetSearchProvidersUsingKeywordResult(result, nullptr, &prefs_, &template_urls,
                                        default_turl.get(), SearchTermsData(),
