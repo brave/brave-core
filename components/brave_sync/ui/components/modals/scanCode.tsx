@@ -52,10 +52,6 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
     const { onClose, syncData, actions } = this.props
     const { enterCodeWordsInstead } = this.state
 
-    if (!syncData) {
-      return null
-    }
-
     return (
       <Modal id='scanCodeModal' onClose={onClose} size='small'>
         {
@@ -71,7 +67,11 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
         </ModalHeader>
         <ScanGrid>
           <div><SyncMobilePicture /></div>
-          <QRCode size='normal' src={syncData.seedQRImageSource} />
+          {
+            syncData.seedQRImageSource
+              ? <QRCode size='normal' src={syncData.seedQRImageSource} />
+              : null
+          }
         </ScanGrid>
         <ThreeColumnButtonGrid>
           <ThreeColumnButtonGridCol1>

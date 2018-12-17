@@ -30,32 +30,40 @@ export default class ViewSyncCodeModal extends React.PureComponent<Props, {}> {
   render () {
     const { onClose, syncData } = this.props
 
-    if (!syncData) {
-      return null
-    }
-
     return (
       <Modal id='viewSyncCodeModal' onClose={onClose} size='small'>
         <ViewSyncCodeGrid>
           <div>
             <ModalTitle level={3}>{getLocale('wordCode')}</ModalTitle>
-            <TextAreaClipboard
-              copiedString={getLocale('copied')}
-              wordCountString={getLocale('wordCount')}
-              readOnly={true}
-              defaultValue={syncData.syncWords}
-            />
+          {
+            syncData.syncWords
+            ? (
+              <TextAreaClipboard
+                copiedString={getLocale('copied')}
+                wordCountString={getLocale('wordCount')}
+                readOnly={true}
+                defaultValue={syncData.syncWords}
+              />
+            )
+            : null
+          }
           </div>
           <div>
             <ModalTitle level={3}>{getLocale('qrCode')}</ModalTitle>
-            <QRCode
-              size='small'
-              src={syncData.seedQRImageSource}
-              style={{
-                // TODO: @cezaraugusto fix this in brave-ui
-                border: '1px solid #DFDFE8'
-              }}
-            />
+            {
+              syncData.seedQRImageSource
+                ? (
+                  <QRCode
+                    size='small'
+                    src={syncData.seedQRImageSource}
+                    style={{
+                      // TODO: @cezaraugusto fix this in brave-ui
+                      border: '1px solid #DFDFE8'
+                    }}
+                  />
+                )
+                : null
+            }
           </div>
         </ViewSyncCodeGrid>
         <TwoColumnButtonGrid>
