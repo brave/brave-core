@@ -385,7 +385,6 @@ public extension Strings {
     public static let New_Tab = NSLocalizedString("NewTab", tableName: "BraveShared", bundle: Bundle.braveShared, value: "New Tab", comment: "New Tab title")
     public static let Yes = NSLocalizedString("Yes", bundle: Bundle.braveShared, comment: "For search suggestions prompt. This string should be short so it fits nicely on the prompt row.")
     public static let No = NSLocalizedString("No", bundle: Bundle.braveShared, comment: "For search suggestions prompt. This string should be short so it fits nicely on the prompt row.")
-    public static let Open_In_Background_Tab = NSLocalizedString("OpenInBackgroundTab", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Open Link In New Tab", comment: "Context menu item for opening a link in a new tab")
     public static let Open_All_Bookmarks = NSLocalizedString("OpenAllBookmarks", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Open All (%i)", comment: "Context menu item for opening all folder bookmarks")
     
     public static let Bookmark_Folder = NSLocalizedString("BookmarkFolder", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Bookmark Folder", comment: "Bookmark Folder Section Title")

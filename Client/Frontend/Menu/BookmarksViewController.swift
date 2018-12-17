@@ -648,7 +648,7 @@ extension BookmarksViewController {
     
     var items: [UIAlertAction] = []
     // New Tab
-    items.append(UIAlertAction(title: Strings.Open_In_Background_Tab, style: .default, handler: { [weak self] _ in
+    items.append(UIAlertAction(title: Strings.OpenNewTabButtonTitle, style: .default, handler: { [weak self] _ in
       guard let `self` = self else { return }
       self.linkNavigationDelegate?.linkNavigatorDidRequestToOpenInNewTab(url, isPrivate: currentTabIsPrivate)
     }))
