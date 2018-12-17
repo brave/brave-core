@@ -37,7 +37,7 @@ extension BrowserViewController {
     }
 
     @objc private func newTabKeyCommand() {
-        openBlankNewTab(focusLocationField: true, isPrivate: false)
+        openBlankNewTab(focusLocationField: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
     }
 
     @objc private func newPrivateTabKeyCommand() {
