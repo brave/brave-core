@@ -58,30 +58,18 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
     }
   }
 
-   componentDidUpdate () {
-    // once this screen is rendered and component is updated,
-    // request sync qr code and words so it can be seen immediately
-    const { seedQRImageSource, syncWords } = this.props.syncData
-    if (!syncWords) {
-      this.props.actions.onRequestSyncWords()
-    }
-    if (!seedQRImageSource) {
-      this.props.actions.onRequestQRCode()
-    }
-  }
-
   onUserNoticedError = () => {
     this.props.actions.resetSyncSetupError()
     this.props.onClose()
   }
 
   onClickClose = () => {
-    const { devices } = this.props.syncData
+    const { devices, isSyncConfigured } = this.props.syncData
     // sync is enabled when at least 2 devices are in the chain.
     // this modal works both with sync enabled and disabled states.
     // in case user opens it in the enabled content screen,
     // check there are 2 devices in chain before reset
-    if (devices.length < 2) {
+    if (isSyncConfigured && devices.length < 2) {
       this.props.actions.onSyncReset()
     }
     this.props.onClose()

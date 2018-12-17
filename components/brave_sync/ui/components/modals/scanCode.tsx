@@ -96,9 +96,9 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
               type='accent'
               size='medium'
               onClick={onClose}
-              disabled={syncData.devices.length < 2}
+              disabled={!syncData.isSyncConfigured}
               text={
-                syncData.devices.length < 2
+                !syncData.isSyncConfigured
                 ? getLocale('lookingForDevice')
                 : getLocale('ok')
               }

@@ -469,6 +469,7 @@ BraveSyncServiceImpl::PrepareResolvedPreferences(const RecordsList& records) {
 void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records) {
   const std::string this_device_id = sync_prefs_->GetThisDeviceId();
   bool this_device_deleted = false;
+  bool contains_only_one_device = false;
 
   auto sync_devices = sync_prefs_->GetSyncDevices();
   for (const auto &record : records) {
@@ -486,12 +487,14 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records) {
         (record->deviceId == this_device_id &&
           record->action == jslib::SyncRecord::Action::A_DELETE &&
           actually_merged);
+      contains_only_one_device = sync_devices->size() < 2 &&
+        record->action == jslib::SyncRecord::Action::A_DELETE;
     }
   } // for each device
 
   sync_prefs_->SetSyncDevices(*sync_devices);
 
-  if (this_device_deleted)
+  if (this_device_deleted || contains_only_one_device)
     OnResetSync();
 }
 

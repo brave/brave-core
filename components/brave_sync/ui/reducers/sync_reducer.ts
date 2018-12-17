@@ -44,6 +44,20 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
         syncSavedSiteSettings: payload.settings.sync_settings,
         syncBrowsingHistory: payload.settings.sync_history
       }
+
+      if (state.isSyncConfigured && !state.syncWords) {
+        chrome.send('needSyncWords')
+      }
+      if (state.isSyncConfigured && !state.seedQRImageSource) {
+        chrome.send('needSyncQRcode')
+      }
+
+      // if this device is deleted or only one device on sync chain,
+      // BraveSyncService will do reset but we must clear
+      // previous sync state
+      if (!state.isSyncConfigured) {
+        state = { ...storage.defaultState }
+      }
       break
 
     case types.SYNC_ON_HAVE_SEED_FOR_QR_CODE:
@@ -68,14 +82,6 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       chrome.send('setupSyncNewToSync', [payload.thisDeviceName])
       break
 
-    case types.SYNC_ON_REQUEST_QR_CODE:
-      chrome.send('needSyncQRcode')
-      break
-
-    case types.SYNC_ON_REQUEST_SYNC_WORDS:
-      chrome.send('needSyncWords')
-      break
-
     case types.SYNC_ON_RESET:
       chrome.send('resetSync')
       // sync is reset. clear all data
@@ -85,18 +91,6 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
     case types.SYNC_ON_REMOVE_DEVICE:
       if (typeof payload.id === 'undefined' || typeof payload.deviceName === 'undefined') {
         break
-      }
-
-      // if the device removed is the this device, reset sync
-      if (payload.id === state.thisDeviceId) {
-        state = { ...storage.defaultState }
-        chrome.send('resetSync')
-        break
-      }
-
-      state = {
-        ...state,
-        devices: [ ...state.devices.filter((device: Sync.Devices) => device.id !== payload.id) ]
       }
       chrome.send('deleteDevice', [payload.id])
       break
