@@ -75,6 +75,7 @@ void ChromeProfileLockTest::LockFileExists(bool expect) {
 
 TEST_F(ChromeProfileLockTest, LockTest) {
   ChromeProfileLock lock(user_data_path_);
+  lock.Lock();
   ASSERT_TRUE(lock.HasAcquired());
   lock.Unlock();
   ASSERT_FALSE(lock.HasAcquired());
@@ -89,6 +90,7 @@ TEST_F(ChromeProfileLockTest, ProfileLock) {
   EXPECT_EQ(static_cast<ChromeProfileLock*>(NULL), lock.get());
   LockFileExists(false);
   lock.reset(new ChromeProfileLock(user_data_path_));
+  lock->Lock();
   EXPECT_TRUE(lock->HasAcquired());
   LockFileExists(true);
   lock->Unlock();
