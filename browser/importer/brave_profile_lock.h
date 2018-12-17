@@ -12,6 +12,8 @@ class BraveProfileLock : public ChromeProfileLock {
  public:
   explicit BraveProfileLock(const base::FilePath& user_data_dir);
   ~BraveProfileLock() override;
+
+  void Lock() override;
 };
 
 #endif  // BRAVE_BROWSER_IMPORTER_BRAVE_PROFILE_LOCK_H__

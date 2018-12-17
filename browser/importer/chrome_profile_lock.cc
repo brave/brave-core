@@ -6,17 +6,17 @@
 
 #include "base/bind.h"
 #include "base/bind_helpers.h"
+#include "base/logging.h"
 #include "base/threading/thread_restrictions.h"
+#include "chrome/browser/process_singleton.h"
 
 ChromeProfileLock::ChromeProfileLock(
     const base::FilePath& user_data_dir)
     : lock_acquired_(false),
-      user_data_dir_(user_data_dir),
       process_singleton_(new ProcessSingleton(user_data_dir,
-                         base::Bind(&ChromeProfileLock::NotificationCallback,
-                                    base::Unretained(this)))) {
-  Lock();
-}
+          base::Bind(&ChromeProfileLock::NotificationCallback,
+                     base::Unretained(this)))),
+      user_data_dir_(user_data_dir) {}
 
 ChromeProfileLock::~ChromeProfileLock() {
   Unlock();

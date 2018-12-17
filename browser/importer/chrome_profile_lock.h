@@ -22,11 +22,12 @@ class ChromeProfileLock : public BrowserProfileLock {
   // Returns true if we lock the profile successfully.
   bool HasAcquired() override;
 
- private:
+ protected:
   bool lock_acquired_;
-  base::FilePath user_data_dir_;
   std::unique_ptr<ProcessSingleton> process_singleton_;
 
+ private:
+  base::FilePath user_data_dir_;
   bool NotificationCallback(const base::CommandLine& command_line,
                             const base::FilePath& current_directory);
 
