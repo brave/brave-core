@@ -167,12 +167,13 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
   grantCaptcha = () => {
     const { grant } = this.props
+    const status = grant && grant.status
 
     if (!grant || !grant.promotionId) {
       return
     }
 
-    if (grant && grant.status === 'grantGone') {
+    if (status === 'grantGone') {
       return (
         <GrantWrapper
           onClose={this.onFinish}
@@ -188,7 +189,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       )
     }
 
-    if (grant && grant.status === 'generalError') {
+    if (status === 'generalError') {
       return (
         <GrantWrapper
           onClose={this.onGrantHide}
