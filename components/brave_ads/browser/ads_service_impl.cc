@@ -363,7 +363,8 @@ void AdsServiceImpl::Stop() {
 void AdsServiceImpl::ResetTimer() {
   idle_poll_timer_.Stop();
   idle_poll_timer_.Start(FROM_HERE,
-                         base::TimeDelta::FromSeconds(GetIdleThreshold()), this,
+                         base::TimeDelta::FromSeconds(1),
+                         this,
                          &AdsServiceImpl::CheckIdleState);
 }
 
