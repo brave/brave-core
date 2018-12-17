@@ -7,7 +7,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
-#include "components/domain_reliability/service.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/web_preferences.h"
 
@@ -16,8 +15,8 @@ using BraveMainDelegateBrowserTest = InProcessBrowserTest;
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DomainReliabilityServiceDisabled) {
   EXPECT_TRUE(base::CommandLine::ForCurrentProcess()->HasSwitch(
       switches::kDisableDomainReliability));
-  ASSERT_EQ(domain_reliability::DomainReliabilityServiceFactory::GetForBrowserContext(
-        ((content::BrowserContext *)browser()->profile())), nullptr);
+  EXPECT_FALSE(domain_reliability::DomainReliabilityServiceFactory::
+               ShouldCreateService());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
