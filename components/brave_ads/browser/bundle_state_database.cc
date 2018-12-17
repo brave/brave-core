@@ -19,8 +19,8 @@ namespace brave_ads {
 
 namespace {
 
-const int kCurrentVersionNumber = 1;
-const int kCompatibleVersionNumber = 1;
+const int kCurrentVersionNumber = 2;
+const int kCompatibleVersionNumber = 2;
 
 }  // namespace
 
@@ -391,6 +391,44 @@ sql::MetaTable& BundleStateDatabase::GetMetaTable() {
   return meta_table_;
 }
 
+bool BundleStateDatabase::MigrateV1toV2() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (!GetDB().BeginTransaction())
+    return false;
+
+  std::string sql = "ALTER TABLE ad_info ADD campaign_id LONGVARCHAR;";
+  if (!GetDB().Execute(sql.c_str())) {
+    GetDB().RollbackTransaction();
+    return false;
+  }
+
+  sql = "ALTER TABLE ad_info ADD daily_cap INTEGER DEFAULT 0 NOT NULL;";
+  if (!GetDB().Execute(sql.c_str())) {
+    GetDB().RollbackTransaction();
+    return false;
+  }
+
+  sql = "ALTER TABLE ad_info ADD per_day INTEGER DEFAULT 0 NOT NULL;";
+  if (!GetDB().Execute(sql.c_str())) {
+    GetDB().RollbackTransaction();
+    return false;
+  }
+
+  sql = "ALTER TABLE ad_info ADD total_max INTEGER DEFAULT 0 NOT NULL;";
+  if (!GetDB().Execute(sql.c_str())) {
+    GetDB().RollbackTransaction();
+    return false;
+  }
+
+  if (GetDB().CommitTransaction()) {
+    Vacuum();
+    return true;
+  }
+
+  return false;
+}
+
 sql::InitStatus BundleStateDatabase::EnsureCurrentVersion() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -398,6 +436,18 @@ sql::InitStatus BundleStateDatabase::EnsureCurrentVersion() {
   if (meta_table_.GetCompatibleVersionNumber() > GetCurrentVersion()) {
     LOG(WARNING) << "Publisher info database is too new.";
     return sql::INIT_TOO_NEW;
+  }
+
+  const int old_version = meta_table_.GetVersionNumber();
+  const int cur_version = GetCurrentVersion();
+
+  // Migration from version 1 to version 2
+  if (old_version == 1 && cur_version == 2) {
+    if (!MigrateV1toV2()) {
+      LOG(ERROR) << "DB: Error with MigrateV1toV2";
+    }
+
+    meta_table_.SetVersionNumber(cur_version);
   }
 
   return sql::INIT_OK;

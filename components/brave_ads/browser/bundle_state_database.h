@@ -68,6 +68,7 @@ class BundleStateDatabase {
   sql::Database& GetDB();
   sql::MetaTable& GetMetaTable();
 
+  bool MigrateV1toV2();
   sql::InitStatus EnsureCurrentVersion();
 
   sql::Database db_;
