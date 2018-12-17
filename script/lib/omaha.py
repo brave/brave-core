@@ -71,11 +71,11 @@ def get_base64_authorization(omahaid, omahapw):
 
 # To-Do: Add functions to create apps
 def get_appguid(channel):
-    if channel in 'dev':
+    if channel in 'dev' or channel in 'stable':
         return '{CB2150F2-595F-4633-891A-E39720CE0531}'
     elif channel in 'beta':
         return '{CB2150F2-595F-4633-891A-E39720CE0531}'
-    elif channel in 'release' or channel in 'stable':
+    elif channel in 'release':
         return '{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}'
 
 
