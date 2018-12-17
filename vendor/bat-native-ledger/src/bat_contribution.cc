@@ -164,7 +164,7 @@ ledger::PublisherInfoList BatContribution::GetVerifiedListRecurring(
 }
 
 void BatContribution::ReconcilePublisherList(
-    ledger::PUBLISHER_CATEGORY category,
+    ledger::REWARDS_CATEGORY category,
     const ledger::PublisherInfoList& list,
     uint32_t next_record) {
   std::string viewing_id = ledger_->GenerateGUID();
@@ -209,8 +209,11 @@ void BatContribution::OnTimerReconcile() {
   }
 
   ledger_->GetRecurringDonations(
-      std::bind(&BatContribution::ReconcilePublisherList, this,
-                ledger::PUBLISHER_CATEGORY::RECURRING_DONATION, _1, _2));
+      std::bind(&BatContribution::ReconcilePublisherList,
+                this,
+                ledger::REWARDS_CATEGORY::RECURRING_DONATION,
+                std::placeholders::_1,
+                std::placeholders::_2));
 }
 
 bool BatContribution::ShouldStartAutoContribute() {
@@ -228,12 +231,12 @@ void BatContribution::StartAutoContribute() {
   }
 
   uint64_t current_reconcile_stamp = ledger_->GetReconcileStamp();
-  ledger::PublisherInfoFilter filter = ledger_->CreatePublisherFilter(
+  ledger::ActivityInfoFilter filter = ledger_->CreateActivityFilter(
       "",
-      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-      ledger::PUBLISHER_MONTH::ANY,
+      ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE,
+      ledger::ACTIVITY_MONTH::ANY,
       -1,
-      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
+      ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       current_reconcile_stamp,
       ledger_->GetPublisherAllowNonVerified());
@@ -243,14 +246,14 @@ void BatContribution::StartAutoContribute() {
       filter,
       std::bind(&BatContribution::ReconcilePublisherList,
                 this,
-                ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-                _1,
-                _2));
+                ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE,
+                std::placeholders::_1,
+                std::placeholders::_2));
 }
 
 void BatContribution::StartReconcile(
     const std::string& viewing_id,
-    const ledger::PUBLISHER_CATEGORY category,
+    const ledger::REWARDS_CATEGORY category,
     const braveledger_bat_helper::PublisherList& list,
     const braveledger_bat_helper::Directions& directions,
     double budget) {
@@ -265,7 +268,7 @@ void BatContribution::StartReconcile(
   double fee = .0;
   double balance = ledger_->GetBalance();
 
-  if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
+  if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
 
     if (list.size() == 0 || budget > balance || budget == 0) {
       if (list.size() == 0 || budget == 0) {
@@ -291,7 +294,7 @@ void BatContribution::StartReconcile(
     fee = budget;
   }
 
-  if (category == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
+  if (category == ledger::REWARDS_CATEGORY::RECURRING_DONATION) {
     double ac_amount = ledger_->GetContributionAmount();
 
     // don't use ac amount if ac is disabled
@@ -311,7 +314,7 @@ void BatContribution::StartReconcile(
         "You do not have enough funds to do recurring and auto contribution";
         OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
                             viewing_id,
-                            ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE);
+                            ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE);
       return;
     }
 
@@ -319,7 +322,7 @@ void BatContribution::StartReconcile(
     fee = budget;
   }
 
-  if (category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
+  if (category == ledger::REWARDS_CATEGORY::DIRECT_DONATION) {
     for (const auto& direction : directions) {
       if (direction.publisher_key_.empty()) {
         BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
@@ -757,12 +760,12 @@ void BatContribution::OnReconcileComplete(ledger::Result result,
                                           int category,
                                           const std::string& probi) {
   // Start the timer again if it wasn't a direct donation
-  if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
+  if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
     ResetReconcileStamp();
   }
 
   // Trigger auto contribute after recurring donation
-  if (category == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
+  if (category == ledger::REWARDS_CATEGORY::RECURRING_DONATION) {
     StartAutoContribute();
   }
 
@@ -798,17 +801,17 @@ void BatContribution::GetReconcileWinners(const std::string& viewing_id) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
 
   switch (reconcile.category_) {
-    case ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE: {
+    case ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE: {
       GetContributeWinners(ballots_count, viewing_id, reconcile.list_);
       break;
     }
 
-    case ledger::PUBLISHER_CATEGORY::RECURRING_DONATION: {
+    case ledger::REWARDS_CATEGORY::RECURRING_DONATION: {
       GetDonationWinners(ballots_count, viewing_id, reconcile.list_);
       break;
     }
 
-    case ledger::PUBLISHER_CATEGORY::DIRECT_DONATION: {
+    case ledger::REWARDS_CATEGORY::DIRECT_DONATION: {
       // Direct one-time contribution
       braveledger_bat_helper::WINNERS_ST winner;
       winner.votes_ = ballots_count;
@@ -1407,12 +1410,12 @@ void BatContribution::SetTimer(uint32_t& timer_id, uint64_t start_timer_in) {
 
 void BatContribution::OnReconcileCompleteSuccess(
     const std::string& viewing_id,
-    ledger::PUBLISHER_CATEGORY category,
+    ledger::REWARDS_CATEGORY category,
     const std::string& probi,
-    ledger::PUBLISHER_MONTH month,
+    ledger::ACTIVITY_MONTH month,
     int year,
     uint32_t date) {
-  if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
+  if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
     ledger_->SetBalanceReportItem(month,
                                   year,
                                   ledger::ReportType::AUTO_CONTRIBUTION,
@@ -1421,7 +1424,7 @@ void BatContribution::OnReconcileCompleteSuccess(
     return;
   }
 
-  if (category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
+  if (category == ledger::REWARDS_CATEGORY::DIRECT_DONATION) {
     ledger_->SetBalanceReportItem(month,
                                   year,
                                   ledger::ReportType::DONATION,
@@ -1440,7 +1443,7 @@ void BatContribution::OnReconcileCompleteSuccess(
     return;
   }
 
-  if (category == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
+  if (category == ledger::REWARDS_CATEGORY::RECURRING_DONATION) {
     auto reconcile = ledger_->GetReconcileById(viewing_id);
     ledger_->SetBalanceReportItem(month,
                                   year,
