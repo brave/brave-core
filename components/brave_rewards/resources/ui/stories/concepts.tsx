@@ -331,7 +331,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             >
               <WalletPanel
                 id={'wallet-panel'}
-                toggleTips={true}
+                toggleTips={boolean('Toggle tips', true)}
                 platform={'youtube'}
                 publisherImg={bartBaker}
                 publisherName={'Bart Baker'}
