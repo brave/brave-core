@@ -907,8 +907,12 @@ class BrowserViewController: UIViewController {
             
             if webView == tabManager.selectedTab?.webView {
                 urlBar.locationView.loading = loading
-                if loading && urlBar.currentProgress() < 0.1 {
-                    urlBar.updateProgressBar(0.1)
+                if !(webView.url?.isLocalUtility ?? false) {
+                    if loading && urlBar.currentProgress() < URLBarView.psuedoProgressValue {
+                        urlBar.updateProgressBar(URLBarView.psuedoProgressValue)
+                    }
+                } else {
+                    urlBar.hideProgressBar()
                 }
             }
             
@@ -1924,6 +1928,16 @@ extension BrowserViewController: TabManagerDelegate {
 
         if let tab = selected, let webView = tab.webView {
             updateURLBar()
+            
+            if let url = tab.url, !url.isLocalUtility, webView.isLoading {
+                if webView.estimatedProgress > 0 {
+                    urlBar.updateProgressBar(Float(webView.estimatedProgress))
+                } else {
+                    urlBar.updateProgressBar(URLBarView.psuedoProgressValue)
+                }
+            } else {
+                urlBar.hideProgressBar()
+            }
 
             if tab.type != previous?.type {
                 let theme = Theme.of(tab)
