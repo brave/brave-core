@@ -29,8 +29,9 @@ const char kDisableTorClientUpdaterExtension[] = "disable-tor-client-updater-ext
 // Allows disabling the WebTorrent extension.
 const char kDisableWebTorrentExtension[] = "disable-webtorrent-extension";
 
-// Allows disabling Brave Sync.
-const char kDisableBraveSync[] = "disable-brave-sync";
+// Enables Brave Sync. For now it is targeted to staging for QA tests, so
+// is disabled by default for a while.
+const char kEnableBraveSync[] = "enable-brave-sync";
 
 // Contains all flags that we use for rewards
 const char kRewards[] = "rewards";
