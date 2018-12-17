@@ -106,6 +106,7 @@ bool BraveExternalProcessImporterHost::CheckForChromeOrBraveLock() {
     browser_lock_.reset(new BraveProfileLock(source_profile_.source_path));
   }
 
+  browser_lock_->Lock();
   if (browser_lock_->HasAcquired())
     return true;
 

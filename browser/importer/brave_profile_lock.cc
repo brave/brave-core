@@ -4,8 +4,27 @@
 
 #include "brave/browser/importer/brave_profile_lock.h"
 
+#include "build/build_config.h"
+#include "base/logging.h"
+#include "base/threading/thread_restrictions.h"
+
 BraveProfileLock::BraveProfileLock(
     const base::FilePath& user_data_dir)
   : ChromeProfileLock(user_data_dir) {}
 
 BraveProfileLock::~BraveProfileLock() {}
+
+void BraveProfileLock::Lock() {
+#if defined(OS_WIN)
+  ChromeProfileLock::Lock();
+#elif defined(OS_POSIX)
+  base::ThreadRestrictions::ScopedAllowIO allow_io;
+  if (HasAcquired())
+    return;
+
+  ProcessSingleton::NotifyResult rv =
+      process_singleton_->NotifyOtherProcessOrCreate();
+  LOG(INFO) << "BraveProfileLock::Lock: NotifyOtherProcessOrCreate rv: " << rv;
+  lock_acquired_ = rv == ProcessSingleton::PROCESS_NONE;
+#endif
+}
