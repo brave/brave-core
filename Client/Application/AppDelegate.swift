@@ -225,7 +225,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             profile?.searchEngines.setupDefaultRegionalSearchEngines()
         }
         
-        if let urp = UserReferralProgram() {
+        if let urp = UserReferralProgram.shared {
             if isFirstLaunch {
                 urp.referralLookup { url in
                     guard let url = url else { return }
