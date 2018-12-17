@@ -150,7 +150,6 @@ class ErrorPageHelper {
                   let errCode = Int(code),
                   let errDescription = query["description"] as? String,
                   let errURLString = query["url"] as? String,
-                  let errURLDomain = URL(string: errURLString)?.host,
                   var errDomain = query["domain"] as? String else {
                 return GCDWebServerResponse(statusCode: 404)
             }
@@ -175,7 +174,8 @@ class ErrorPageHelper {
                 }
                 errDomain = ""
             } else if CertErrors.contains(errCode) {
-                guard let query = request?.query, let certError = query["certerror"] as? String else {
+                guard let query = request?.query, let certError = query["certerror"] as? String,
+                    let errURLDomain = URL(string: errURLString)?.host else {
                     return GCDWebServerResponse(statusCode: 404)
                 }
 
