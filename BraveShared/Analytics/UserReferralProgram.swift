@@ -8,6 +8,8 @@ import Shared
 private let log = Logger.browserLogger
 
 public class UserReferralProgram {
+    public static let shared = UserReferralProgram()
+    
     private static let apiKeyPlistKey = "API_KEY"
     
     struct HostUrl {
