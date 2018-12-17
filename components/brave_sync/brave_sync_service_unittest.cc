@@ -323,7 +323,7 @@ TEST_F(BraveSyncServiceTest, GetSettingsAndDevices) {
             EXPECT_FALSE(settings->sync_bookmarks_);
             EXPECT_FALSE(settings->sync_settings_);
             EXPECT_FALSE(settings->sync_history_);
-            EXPECT_EQ(devices->devices_.size(), 0u);
+            EXPECT_EQ(devices->size(), 0u);
         }
   );
   sync_service()->GetSettingsAndDevices(callback1);
@@ -425,24 +425,88 @@ TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
   EXPECT_CALL(*sync_client(), SendSyncRecords("PREFERENCES",
       ContainsDeviceRecord(SyncRecord::Action::A_DELETE, "device3"))).Times(1);
   sync_service()->OnDeleteDevice("3");
-  EXPECT_CALL(*sync_client(), SendSyncRecords("PREFERENCES",
-      ContainsDeviceRecord(SyncRecord::Action::A_DELETE, "device2"))).Times(1);
-  sync_service()->OnDeleteDevice("2");
 
   RecordsList resolved_records;
-  auto resolved_record1 = SyncRecord::Clone(*records.at(2));
-  resolved_record1->action = jslib::SyncRecord::Action::A_DELETE;
-  resolved_records.push_back(std::move(resolved_record1));
-  auto resolved_record2 = SyncRecord::Clone(*records.at(1));
-  resolved_record2->action = jslib::SyncRecord::Action::A_DELETE;
-  resolved_records.push_back(std::move(resolved_record2));
+  auto resolved_record = SyncRecord::Clone(*records.at(2));
+  resolved_record->action = jslib::SyncRecord::Action::A_DELETE;
+  resolved_records.push_back(std::move(resolved_record));
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(resolved_records);
 
   auto devices_final = sync_service()->sync_prefs_->GetSyncDevices();
   EXPECT_TRUE(DevicesContains(devices_final.get(), "1", "device1"));
-  EXPECT_FALSE(DevicesContains(devices_final.get(), "2", "device2"));
+  EXPECT_TRUE(DevicesContains(devices_final.get(), "2", "device2"));
   EXPECT_FALSE(DevicesContains(devices_final.get(), "3", "device3"));
+}
+
+TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice) {
+  RecordsList records;
+  records.push_back(SimpleDeviceRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "1", "device1"));
+  records.push_back(SimpleDeviceRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "2", "device2"));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
+  sync_service()->OnResolvedPreferences(records);
+
+  auto devices = sync_service()->sync_prefs_->GetSyncDevices();
+
+  EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "2", "device2"));
+
+  using brave_sync::jslib::SyncRecord;
+  EXPECT_CALL(*sync_client(), SendSyncRecords("PREFERENCES",
+      ContainsDeviceRecord(SyncRecord::Action::A_DELETE, "device2"))).Times(1);
+  sync_service()->OnDeleteDevice("2");
+
+  RecordsList resolved_records;
+  auto resolved_record = SyncRecord::Clone(*records.at(1));
+  resolved_record->action = jslib::SyncRecord::Action::A_DELETE;
+  resolved_records.push_back(std::move(resolved_record));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(3);
+  sync_service()->OnResolvedPreferences(resolved_records);
+
+  auto devices_final = sync_service()->sync_prefs_->GetSyncDevices();
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "2", "device2"));
+
+  EXPECT_FALSE(sync_service()->IsSyncConfigured());
+}
+
+TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
+  RecordsList records;
+  records.push_back(SimpleDeviceRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "1", "device1"));
+  records.push_back(SimpleDeviceRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "2", "device2"));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
+  sync_service()->OnResolvedPreferences(records);
+
+  auto devices = sync_service()->sync_prefs_->GetSyncDevices();
+
+  EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "2", "device2"));
+
+  using brave_sync::jslib::SyncRecord;
+  EXPECT_CALL(*sync_client(), SendSyncRecords("PREFERENCES",
+      ContainsDeviceRecord(SyncRecord::Action::A_DELETE, "device1"))).Times(1);
+  sync_service()->OnDeleteDevice("1");
+
+  RecordsList resolved_records;
+  auto resolved_record = SyncRecord::Clone(*records.at(0));
+  resolved_record->action = jslib::SyncRecord::Action::A_DELETE;
+  resolved_records.push_back(std::move(resolved_record));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(3);
+  sync_service()->OnResolvedPreferences(resolved_records);
+
+  auto devices_final = sync_service()->sync_prefs_->GetSyncDevices();
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "2", "device2"));
+
+  EXPECT_FALSE(sync_service()->IsSyncConfigured());
 }
 
 TEST_F(BraveSyncServiceTest, OnResetSync) {

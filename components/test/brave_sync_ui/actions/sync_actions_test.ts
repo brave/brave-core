@@ -58,20 +58,12 @@ describe('sync_actions', () => {
     })
   })
 
-  it('onRequestQRCode', () => {
-    expect(actions.onRequestQRCode).toEqual(expect.any(Function))
-  })
-
   it('onGenerateQRCodeImageSource', () => {
     expect(actions.onGenerateQRCodeImageSource('someImageConvertedToBase64')).toEqual({
       type: types.SYNC_ON_GENERATE_QR_CODE_IMAGE_SOURCE,
       meta: undefined,
       payload: { imageSource: 'someImageConvertedToBase64' }
     })
-  })
-
-  it('onRequestSyncWords', () => {
-    expect(actions.onRequestSyncWords).toEqual(expect.any(Function))
   })
 
   it('onRemoveDevice', () => {

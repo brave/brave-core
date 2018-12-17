@@ -60,17 +60,6 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
     }
   }
 
-   componentDidUpdate () {
-    // immediately request qr code and sync words
-    // in case they aren't already. this could happen if user
-    // had the sync word where the requests are stopped due to sync reset
-    const { seedQRImageSource, syncWords } = this.props.syncData
-    if (!seedQRImageSource && !syncWords) {
-       this.props.actions.onRequestQRCode()
-       this.props.actions.onRequestSyncWords()
-    }
-  }
-
   getRows = (devices?: any): Row[] | undefined => {
     if (!devices) {
       return

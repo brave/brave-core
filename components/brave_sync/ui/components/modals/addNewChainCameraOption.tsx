@@ -105,9 +105,9 @@ export default class AddNewChainCameraOptionModal extends React.PureComponent<Pr
               type='accent'
               size='medium'
               onClick={onClose}
-              disabled={syncData.devices.length < 2}
+              disabled={!syncData.isSyncConfigured}
               text={
-                syncData.devices.length < 2
+                !syncData.isSyncConfigured
                 ? getLocale('lookingForDevice')
                 : getLocale('ok')
               }

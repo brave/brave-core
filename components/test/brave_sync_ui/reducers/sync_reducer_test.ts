@@ -31,14 +31,6 @@ describe.skip('syncReducer', () => {
     // TODO
   })
 
-  describe('SYNC_ON_REQUEST_QR_CODE', () => {
-    // TODO
-  })
-
-  describe('SYNC_ON_REQUEST_SYNC_WORDS', () => {
-    // TODO
-  })
-
   describe('SYNC_ON_RESET', () => {
     // TODO
   })

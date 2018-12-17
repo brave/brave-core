@@ -20,6 +20,8 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkDeleted);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, GetSyncWords);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, GetSeed);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnDeleteDevice);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnResetSync);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, ClientOnGetInitData);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetInitData);
@@ -94,6 +96,9 @@ class BraveSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, GetSyncWords);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, GetSeed);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnDeleteDevice);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
+                           OnDeleteDeviceWhenSelfDeleted);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnResetSync);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, ClientOnGetInitData);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSaveBookmarksBaseOrder);
