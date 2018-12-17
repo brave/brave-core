@@ -39,7 +39,7 @@ def get_channel_ids_from_omaha_server(host, headers, logging):
     the server versus hardcoding in an enum like we do above
     with Event IDs or Platform IDs.
     """
-    url = 'http://' + host + '/api/channel'
+    url = 'https://' + host + '/api/channel'
     response = get(url, headers)
     if response.status_code != 200:
         logging.error("ERROR: Cannot GET /api/channel from Omaha host {}! "
