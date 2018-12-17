@@ -44,12 +44,14 @@ hooks = [
   {
     # Build brave-sync
     'name': 'build_brave_sync',
+    'condition': 'not checkout_android',
     'pattern': '.',
     'action': ['python', 'src/brave/script/build-simple-js-bundle.py', '--repo_dir_path', 'src/brave/components/brave_sync/extension/brave-sync'],
   },
   {
     # Build brave-crypto
     'name': 'build_brave_crypto',
+    'condition': 'not checkout_android',
     'pattern': '.',
     'action': ['python', 'src/brave/script/build-simple-js-bundle.py', '--repo_dir_path', 'src/brave/components/brave_sync/extension/brave-crypto'],
   }
