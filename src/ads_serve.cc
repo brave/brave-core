@@ -12,30 +12,32 @@ using namespace std::placeholders;
 
 namespace ads {
 
-AdsServe::AdsServe(
-    AdsImpl* ads,
-    AdsClient* ads_client,
-    Bundle* bundle) :
-      url_(""),
-      next_catalog_check_(0),
-      next_retry_start_timer_in_(0),
-      catalog_last_updated_(0),
-      ads_(ads),
-      ads_client_(ads_client),
-      bundle_(bundle) {
+AdsServe::AdsServe(AdsImpl* ads, AdsClient* ads_client, Bundle* bundle) :
+    url_(""),
+    next_catalog_check_(0),
+    next_retry_start_timer_in_(0),
+    catalog_last_updated_(0),
+    ads_(ads),
+    ads_client_(ads_client),
+    bundle_(bundle) {
   BuildUrl();
 }
 
 AdsServe::~AdsServe() = default;
 
 void AdsServe::BuildUrl() {
-  url_ = _is_production ? PRODUCTION_SERVER : STAGING_SERVER;
+  if (_is_production) {
+    url_ = PRODUCTION_SERVER;
+  } else {
+    url_ = STAGING_SERVER;
+  }
+
   url_ += CATALOG_PATH;
 }
 
 void AdsServe::DownloadCatalog() {
-  auto callback = std::bind(&AdsServe::OnCatalogDownloaded, this,
-    url_, _1, _2, _3);
+  auto callback = std::bind(&AdsServe::OnCatalogDownloaded,
+      this, url_, _1, _2, _3);
 
   ads_client_->URLRequest(url_, {}, "", "", URLRequestMethod::GET, callback);
 }
@@ -76,10 +78,10 @@ void AdsServe::OnCatalogDownloaded(
     }
 
     LOG(ERROR) << "Failed to download catalog from:"
-      << std::endl << "  url: " << url
-      << std::endl << "  response_status_code: " << response_status_code
-      << std::endl << "  response: " << response
-      << std::endl << "  headers: " << formatted_headers;
+        << std::endl << "  url: " << url
+        << std::endl << "  response_status_code: " << response_status_code
+        << std::endl << "  response: " << response
+        << std::endl << "  headers: " << formatted_headers;
 
     should_retry = true;
   }

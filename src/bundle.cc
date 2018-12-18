@@ -34,9 +34,9 @@ bool Bundle::UpdateFromCatalog(const Catalog& catalog) {
   }
 
   auto callback = std::bind(&Bundle::OnStateSaved,
-    this, bundle_state->catalog_id, bundle_state->catalog_version,
-    bundle_state->catalog_ping, bundle_state->catalog_last_updated_timestamp,
-    _1);
+      this, bundle_state->catalog_id, bundle_state->catalog_version,
+      bundle_state->catalog_ping, bundle_state->catalog_last_updated_timestamp,
+      _1);
   ads_client_->SaveBundleState(std::move(bundle_state), callback);
 
   // TODO(Terry Mancey): Implement Log (#44)
@@ -51,9 +51,9 @@ void Bundle::Reset() {
   auto bundle_state = std::make_unique<BundleState>();
 
   auto callback = std::bind(&Bundle::OnStateReset,
-    this, bundle_state->catalog_id, bundle_state->catalog_version,
-    bundle_state->catalog_ping, bundle_state->catalog_last_updated_timestamp,
-    _1);
+      this, bundle_state->catalog_id, bundle_state->catalog_version,
+      bundle_state->catalog_ping, bundle_state->catalog_last_updated_timestamp,
+      _1);
   ads_client_->SaveBundleState(std::move(bundle_state), callback);
 }
 

@@ -82,7 +82,7 @@ bool ClientState::FromJson(const std::string& json) {
   if (client.HasMember("adsUUIDSeen")) {
     for (const auto& ad_uuid_seen : client["adsUUIDSeen"].GetObject()) {
       ads_uuid_seen.insert({ad_uuid_seen.name.GetString(),
-        ad_uuid_seen.value.GetInt64()});
+          ad_uuid_seen.value.GetInt64()});
     }
   }
 

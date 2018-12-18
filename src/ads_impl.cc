@@ -59,6 +59,7 @@ void AdsImpl::Initialize() {
 
   if (IsInitialized()) {
     LOG(WARNING) << "Already initialized";
+
     return;
   }
 
@@ -96,6 +97,7 @@ void AdsImpl::InitializeStep3() {
 void AdsImpl::Deinitialize() {
   if (!IsInitialized()) {
     LOG(WARNING) << "Failed to deinitialize as not initialized";
+
     return;
   }
 
@@ -262,7 +264,7 @@ void AdsImpl::TabUpdated(
 
   if (is_active) {
     LOG(INFO) << "TabUpdated.IsFocused for tab id: " << tab_id
-      << " and url: " << url;
+        << " and url: " << url;
 
     last_shown_tab_url_ = url;
 
@@ -274,7 +276,7 @@ void AdsImpl::TabUpdated(
     GenerateAdReportingFocusEvent(focus_info);
   } else {
     LOG(INFO) << "TabUpdated.IsBlurred for tab id: " << tab_id
-      << " and url: " << url;
+        << " and url: " << url;
 
     BlurInfo blur_info;
     blur_info.tab_id = tab_id;
@@ -343,7 +345,7 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
     }
 
     LOG(INFO) << "Locale not found, so changed Locale to closest match: "
-      << closest_match_for_locale;
+        << closest_match_for_locale;
     client_->SetLocale(closest_match_for_locale);
   }
 
@@ -369,7 +371,7 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
   auto winning_category = GetWinningCategory(page_score);
   if (winning_category.empty()) {
     LOG(INFO) << "Site visited " << url
-      << ", not enough content to classify page";
+        << ", not enough content to classify page";
 
     return;
   }
@@ -384,8 +386,8 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
   auto winner_over_time_category = GetWinnerOverTimeCategory();
 
   LOG(INFO) << "Site visited " << url << ", immediateWinner is "
-    << last_page_classification_ << " and winnerOverTime is "
-    << winner_over_time_category;
+      << last_page_classification_ << " and winnerOverTime is "
+      << winner_over_time_category;
 }
 
 std::string AdsImpl::GetWinnerOverTimeCategory() {
@@ -398,7 +400,7 @@ std::string AdsImpl::GetWinnerOverTimeCategory() {
 
   std::vector<double> winner_over_time_page_scores(count);
   std::fill(winner_over_time_page_scores.begin(),
-    winner_over_time_page_scores.end(), 0);
+      winner_over_time_page_scores.end(), 0);
 
   for (const auto& page_score : page_score_history) {
     if (page_score.size() != count) {
@@ -477,6 +479,7 @@ void AdsImpl::OnLoadSampleBundle(
     const std::string& json) {
   if (result == FAILED) {
     LOG(ERROR) << "Failed to load sample bundle";
+
     return;
   }
 
@@ -486,6 +489,7 @@ void AdsImpl::OnLoadSampleBundle(
   if (!sample_bundle_state.FromJson(json,
       ads_client_->LoadJsonSchema(_bundle_schema_name))) {
     LOG(ERROR) << "Failed to parse sample bundle: " << json;
+
     return;
   }
 
@@ -518,7 +522,7 @@ void AdsImpl::OnLoadSampleBundle(
     // 'Notification not made', { reason: 'no ads for category', category }
 
     LOG(INFO) << "Notification not made: No sample bundle ads found for \""
-      << category << "\" sample category";
+        << category << "\" sample category";
 
     return;
   }
@@ -547,7 +551,7 @@ void AdsImpl::CheckEasterEgg(const std::string& url) {
 
     next_easter_egg_ = now + kNextEasterEggStartsInSeconds;
     LOG(INFO) << "Next easter egg available in " << next_easter_egg_
-      << " seconds";
+        << " seconds";
   }
 }
 
@@ -608,7 +612,7 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
     // winnerOverTime', category, winnerOverTime, arbitraryKey }
 
     LOG(INFO) << "Notification not made: No ad (or permitted ad) for \""
-      << category << "\" category";
+        << category << "\" category";
 
     return;
   }
@@ -631,7 +635,8 @@ void AdsImpl::OnGetAds(
       std::string new_category = category.substr(0, pos);
 
       LOG(INFO) << "Notification not made: No ads found for \"" << category
-        << "\" category, trying again with \"" << new_category << "\" category";
+          << "\" category, trying again with \"" << new_category
+          << "\" category";
 
       auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3, _4);
       ads_client_->GetAds(region, new_category, callback);
@@ -644,7 +649,7 @@ void AdsImpl::OnGetAds(
       // 'Notification not made', { reason: 'no ads for category', category }
 
       LOG(INFO) << "Notification not made: No ads found for \"" << category
-        << "\" category";
+          << "\" category";
 
       return;
     }
@@ -658,7 +663,7 @@ void AdsImpl::OnGetAds(
     // winnerOverTime', category, winnerOverTime, arbitraryKey }
 
     LOG(INFO) << "Notification not made: No ad (or permitted ad) for \""
-      << category << "\" category";
+        << category << "\" category";
 
     return;
   }
@@ -719,11 +724,11 @@ bool AdsImpl::IsAdValid(const AdInfo& ad_info) {
     // notificationText, advertiser
 
     LOG(INFO) << "Notification not made: Incomplete ad information for:"
-      << std::endl << "  advertiser: " << ad_info.advertiser << std::endl
-      << std::endl << "  notificationText: " << ad_info.notification_text
-      << std::endl << "  notificationUrl: " << ad_info.notification_url
-      << std::endl << "  creativeSetId: " << ad_info.notification_url
-      << std::endl << "  uuid: " << ad_info.notification_url;
+        << std::endl << "  advertiser: " << ad_info.advertiser
+        << std::endl << "  notificationText: " << ad_info.notification_text
+        << std::endl << "  notificationUrl: " << ad_info.notification_url
+        << std::endl << "  creativeSetId: " << ad_info.notification_url
+        << std::endl << "  uuid: " << ad_info.notification_url;
 
     return false;
   }
@@ -753,12 +758,12 @@ bool AdsImpl::ShowAd(
   // notificationUrl, notificationText, advertiser, uuid, hierarchy}
 
   LOG(INFO) << "Notification shown:"
-    << std::endl << "  category: " << category
-    << std::endl << "  winnerOverTime: " << GetWinnerOverTimeCategory()
-    << std::endl << "  notificationUrl: " << notification_info->url
-    << std::endl << "  notificationText: " << notification_info->text
-    << std::endl << "  advertiser: " << notification_info->advertiser
-    << std::endl << "  uuid: " << notification_info->uuid;
+      << std::endl << "  category: " << category
+      << std::endl << "  winnerOverTime: " << GetWinnerOverTimeCategory()
+      << std::endl << "  notificationUrl: " << notification_info->url
+      << std::endl << "  notificationText: " << notification_info->text
+      << std::endl << "  advertiser: " << notification_info->advertiser
+      << std::endl << "  uuid: " << notification_info->uuid;
 
   ads_client_->ShowNotification(std::move(notification_info));
 
@@ -807,9 +812,8 @@ bool AdsImpl::IsAllowedToShowAds() {
     HistoryRespectsRollingTimeConstraint(
       ads_shown_history, minimum_wait_time, 0);
 
-  return respects_hour_limit &&
-    respects_day_limit &&
-    respects_minimum_wait_time;
+  return respects_hour_limit && respects_day_limit &&
+      respects_minimum_wait_time;
 }
 
 void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
@@ -818,6 +822,7 @@ void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
   collect_activity_timer_id_ = ads_client_->SetTimer(start_timer_in);
   if (collect_activity_timer_id_ == 0) {
     LOG(ERROR) << "Failed to start collecting activity due to an invalid timer";
+
     return;
   }
 
@@ -860,12 +865,13 @@ void AdsImpl::StartDeliveringNotifications(const uint64_t start_timer_in) {
   delivering_notifications_timer_id_ = ads_client_->SetTimer(start_timer_in);
   if (delivering_notifications_timer_id_ == 0) {
     LOG(ERROR) <<
-      "Failed to start delivering notifications due to an invalid timer";
+        "Failed to start delivering notifications due to an invalid timer";
+
     return;
   }
 
   LOG(INFO) << "Start delivering notifications in "
-    << start_timer_in << " seconds";
+      << start_timer_in << " seconds";
 }
 
 void AdsImpl::DeliverNotification() {
@@ -965,12 +971,13 @@ void AdsImpl::StartSustainingAdInteraction(const uint64_t start_timer_in) {
   sustained_ad_interaction_timer_id_ = ads_client_->SetTimer(start_timer_in);
   if (sustained_ad_interaction_timer_id_ == 0) {
     LOG(ERROR) <<
-      "Failed to start sustaining ad interaction due to an invalid timer";
+        "Failed to start sustaining ad interaction due to an invalid timer";
+
     return;
   }
 
   LOG(INFO) << "Start sustaining ad interaction in "
-    << start_timer_in << " seconds";
+      << start_timer_in << " seconds";
 }
 
 void AdsImpl::SustainAdInteraction() {

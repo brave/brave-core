@@ -75,7 +75,7 @@ bool CatalogState::FromJson(
       CreativeSetInfo creative_set_info;
 
       creative_set_info.creative_set_id =
-        creative_set["creativeSetId"].GetString();
+          creative_set["creativeSetId"].GetString();
 
       std::string execution = creative_set["execution"].GetString();
       if (execution != "per_click") {
@@ -112,7 +112,7 @@ bool CatalogState::FromJson(
         CreativeInfo creative_info;
 
         creative_info.creative_instance_id =
-          creative["creativeInstanceId"].GetString();
+            creative["creativeInstanceId"].GetString();
 
         // Type
         auto type = creative["type"].GetObject();

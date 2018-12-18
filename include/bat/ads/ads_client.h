@@ -2,7 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#pragma once
+#ifndef BAT_ADS_ADS_CLIENT_H_
+#define BAT_ADS_ADS_CLIENT_H_
 
 #include <string>
 #include <vector>
@@ -136,8 +137,8 @@ class ADS_EXPORT AdsClient {
 
   // Should save the bundle state to persistent storage
   virtual void SaveBundleState(
-    std::unique_ptr<BundleState> state,
-    OnSaveCallback callback) = 0;
+      std::unique_ptr<BundleState> state,
+      OnSaveCallback callback) = 0;
 
   // Should load a value from persistent storage
   virtual void Load(const std::string& name, OnLoadCallback callback) = 0;
@@ -184,3 +185,5 @@ class ADS_EXPORT AdsClient {
 };
 
 }  // namespace ads
+
+#endif  // BAT_ADS_ADS_CLIENT_H_

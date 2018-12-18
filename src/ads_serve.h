@@ -2,7 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#pragma once
+#ifndef BAT_ADS_ADS_SERVE_H_
+#define BAT_ADS_ADS_SERVE_H_
 
 #include <string>
 #include <map>
@@ -58,3 +59,5 @@ class AdsServe {
 };
 
 }  // namespace ads
+
+#endif  // BAT_ADS_ADS_SERVE_H_

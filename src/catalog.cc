@@ -32,7 +32,7 @@ bool Catalog::FromJson(const std::string& json) {
 
   if (!IsIdValid(*catalog_state)) {
     LOG(WARNING) << "New catalog id " << catalog_state->catalog_id <<
-      " does not match current catalog id " << bundle_->GetCatalogId();
+        " does not match current catalog id " << bundle_->GetCatalogId();
 
     return false;
   }

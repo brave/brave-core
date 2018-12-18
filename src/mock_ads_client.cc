@@ -409,7 +409,7 @@ void MockAdsClient::OnBundleStateLoaded(
 
 void MockAdsClient::LoadSampleBundleState() {
   auto callback = std::bind(&MockAdsClient::OnSampleBundleStateLoaded,
-    this, _1, _2);
+      this, _1, _2);
   Load("sample_bundle.json", callback);
 }
 
