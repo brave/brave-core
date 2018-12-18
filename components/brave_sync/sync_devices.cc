@@ -135,11 +135,6 @@ void SyncDevices::FromJson(const std::string& str_json) {
 void SyncDevices::Merge(const SyncDevice& device,
                         int action,
                         bool* actually_merged) {
-  /*
-  const int kActionCreate = 0;
-  const int kActionUpdate = 1;
-  const int kActionDelete = 2;
-  */
   *actually_merged = false;
   auto existing_it = std::find_if(std::begin(devices_),
                                   std::end(devices_),
@@ -147,13 +142,8 @@ void SyncDevices::Merge(const SyncDevice& device,
         return cur_dev.object_id_ == device.object_id_;
       });
 
-  if (existing_it == std::end(devices_)) {
-    // TODO(bridiver) - should this be an error or a DCHECK?
-  }
-
   switch (action) {
     case jslib_const::kActionCreate: {
-      //DCHECK(existing_device == nullptr);
       if (existing_it == std::end(devices_)) {
         devices_.push_back(device);
         *actually_merged = true;
@@ -163,20 +153,19 @@ void SyncDevices::Merge(const SyncDevice& device,
       break;
     }
     case jslib_const::kActionUpdate: {
-      //DCHECK(existing_device != nullptr);
       DCHECK(existing_it != std::end(devices_));
-      //*existing_device = device;
       *existing_it = device;
       *actually_merged = true;
       break;
     }
     case jslib_const::kActionDelete: {
-      //DCHECK(existing_device != nullptr);
-      DCHECK(existing_it != std::end(devices_));
-      //DeleteByObjectId(device.object_id_);
+      // Sync js lib does not merge several DELETE records into one,
+      // at this point existing_it can be equal to std::end(devices_)
       if (existing_it != std::end(devices_)) {
         devices_.erase(existing_it);
         *actually_merged = true;
+      } else {
+        // ignoring delete, already deleted
       }
       break;
     }
@@ -190,7 +179,6 @@ SyncDevice* SyncDevices::GetByObjectId(const std::string &object_id) {
     }
   }
 
-  //DCHECK(false) << "Not expected to find no device";
   return nullptr;
 }
 
@@ -201,7 +189,6 @@ const SyncDevice* SyncDevices::GetByDeviceId(const std::string &device_id) {
     }
   }
 
-  //DCHECK(false) << "Not expected to find no device";
   return nullptr;
 }
 
