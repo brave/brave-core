@@ -29,13 +29,13 @@
               "endTimestamp": {
                 "type": "string"
               },
-              "daily_cap": {
+              "dailyCap": {
                 "type": "number"
               },
-              "per_day": {
+              "perDay": {
                 "type": "number"
               },
-              "total_max": {
+              "totalMax": {
                 "type": "number"
               },
               "regions": {
