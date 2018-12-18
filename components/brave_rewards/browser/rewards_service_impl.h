@@ -137,6 +137,8 @@ class RewardsServiceImpl : public RewardsService,
   void OnDonate(const std::string& publisher_key, int amount, bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
   void SetLedgerClient(std::unique_ptr<ledger::Ledger> new_ledger) override;
+  void SetPreventGrant(bool should_prevent) override;
+  bool GetPreventGrant() override;
 
  private:
   friend void RunIOTaskCallback(
@@ -322,6 +324,7 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
 
   uint32_t next_timer_id_;
+  bool prevent_grant_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);
 };

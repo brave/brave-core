@@ -301,7 +301,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       private_observer_(
           std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
 #endif
-      next_timer_id_(0) {
+      next_timer_id_(0),
+      prevent_grant_(false) {
   // Environment
   #if defined(OFFICIAL_BUILD)
     ledger::is_production = true;
@@ -1027,7 +1028,9 @@ void RewardsServiceImpl::FetchWalletProperties() {
 
 void RewardsServiceImpl::FetchGrant(const std::string& lang,
     const std::string& payment_id) {
-  ledger_->FetchGrant(lang, payment_id);
+  if (!prevent_grant_) {
+    ledger_->FetchGrant(lang, payment_id);
+  }
 }
 
 void RewardsServiceImpl::TriggerOnGrant(ledger::Result result,
@@ -1210,6 +1213,14 @@ void RewardsServiceImpl::SetTimer(uint64_t time_offset,
       base::TimeDelta::FromSeconds(time_offset),
       base::BindOnce(
           &RewardsServiceImpl::OnTimer, AsWeakPtr(), next_timer_id_));
+}
+
+void RewardsServiceImpl::SetPreventGrant(bool should_prevent) {
+  prevent_grant_ = should_prevent;
+}
+
+bool RewardsServiceImpl::GetPreventGrant() {
+  return prevent_grant_;
 }
 
 void RewardsServiceImpl::OnTimer(uint32_t timer_id) {

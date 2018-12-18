@@ -574,6 +574,22 @@ bool ends_with(const std::string &input, const std::string &test) {
   return false;
 }
 
+bool ParseClaimedGrants(BraveLedger& ledger,
+  const base::Value& session_store_json) {
+  const base::Value* grants = session_store_json.FindPathOfType(
+      {"ledger", "info", "grants"}, base::Value::Type::LIST);
+
+  if (!grants) {
+    LOG(ERROR)
+      << "\"ledger\".\"info\".\"grants\" not found in session-store-1";
+    return false;    
+  }
+
+  ledger.grants_claimed = (grants->GetList().size() > 0);
+
+  return true;
+}
+
 bool ParsePinnedSites(BraveLedger& ledger,
   const base::Value& session_store_json) {
   const base::Value* publishers = session_store_json.FindPathOfType(
@@ -660,6 +676,11 @@ bool BraveImporter::ImportLedger() {
   if (!ParsePinnedSites(ledger, *session_store_json)) {
     LOG(ERROR) << "Failed to parse list of pinned sites for Brave Payments";
     return false;
+  }
+
+  if (!ParseClaimedGrants(ledger, *session_store_json)) {
+    LOG(ERROR) << "Failed to parse list of grants for Brave Payments";
+    return false;    
   }
 
   bridge_->UpdateLedger(ledger);

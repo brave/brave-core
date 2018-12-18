@@ -45,6 +45,7 @@ struct BraveLedger {
   std::string passphrase;
   std::vector<std::string> excluded_publishers;
   std::vector<BravePublisher> pinned_publishers;
+  bool grants_claimed;
   SessionStoreSettings settings;
 };
 

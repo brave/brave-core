@@ -133,7 +133,10 @@ ExtensionFunction::ResponseAction BraveRewardsGetGrantFunction::Run() {
   RewardsService* rewards_service_ =
     RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service_) {
-    rewards_service_->FetchGrant(std::string(), std::string());
+    bool should_prevent = rewards_service_->GetPreventGrant();
+    if (!should_prevent) {
+      rewards_service_->FetchGrant(std::string(), std::string());
+    }
   }
   return RespondNow(NoArguments());
 }

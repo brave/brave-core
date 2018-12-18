@@ -113,6 +113,8 @@ class RewardsService : public KeyedService {
   virtual RewardsNotificationService* GetNotificationService() const = 0;
   virtual bool CheckImported() = 0;
   virtual void SetLedgerClient(std::unique_ptr<ledger::Ledger> new_ledger) = 0;
+  virtual void SetPreventGrant(bool should_prevent) = 0;
+  virtual bool GetPreventGrant() = 0;
   virtual void SetBackupCompleted() = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
