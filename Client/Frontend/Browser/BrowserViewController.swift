@@ -1695,19 +1695,31 @@ extension BrowserViewController: TabToolbarDelegate {
     }
 
     func tabToolbarDidLongPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
+        showAddTabContextMenu(sourceView: toolbar ?? urlBar, button: button)
+    }
+    
+    private func addTabAlertActions() -> [UIAlertAction] {
+        var actions: [UIAlertAction] = []
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
             let newPrivateTabAction = UIAlertAction(title: Strings.NewPrivateTabTitle, style: .default, handler: { [unowned self] _ in
                 // BRAVE TODO: Add check for DuckDuckGo popup (and based on 1.6, whether the browser lock is enabled?)
                 // before focusing on the url bar
                 self.openBlankNewTab(focusLocationField: true, isPrivate: true)
             })
-            alertController.addAction(newPrivateTabAction)
+            actions.append(newPrivateTabAction)
         }
-        alertController.addAction(UIAlertAction(title: Strings.NewTabTitle, style: .default, handler: { [unowned self] _ in
+        actions.append(UIAlertAction(title: Strings.NewTabTitle, style: .default, handler: { [unowned self] _ in
             self.openBlankNewTab(focusLocationField: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
         }))
+        return actions
+    }
+    
+    func showAddTabContextMenu(sourceView: UIView, button: UIButton) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
+        addTabAlertActions().forEach(alertController.addAction)
+        alertController.popoverPresentationController?.sourceView = sourceView
+        alertController.popoverPresentationController?.sourceRect = button.frame
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.impactOccurred()
         present(alertController, animated: true)
@@ -1728,6 +1740,12 @@ extension BrowserViewController: TabToolbarDelegate {
             return
         }
         let controller = AlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar.view.isHidden) ||
+            (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil) {
+            addTabAlertActions().forEach(controller.addAction)
+        }
+        
         if tabManager.tabsForCurrentMode.count > 1 {
             controller.addAction(UIAlertAction(title: String(format: Strings.CloseAllTabsTitle, tabManager.tabsForCurrentMode.count), style: .destructive, handler: { _ in
                 self.tabManager.removeAll()
@@ -1772,6 +1790,10 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
         if tab == tabManager.selectedTab { return }
         urlBar.leaveOverlayMode(didCancel: true)
         tabManager.selectTab(tab)
+    }
+    
+    func tabsBarDidLongPressAddTab(_ tabsBarController: TabsBarViewController, button: UIButton) {
+        showAddTabContextMenu(sourceView: tabsBarController.view, button: button)
     }
 }
 

@@ -10,6 +10,7 @@ import BraveShared
 
 protocol TabsBarViewControllerDelegate: class {
     func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab)
+    func tabsBarDidLongPressAddTab(_ tabsBarController: TabsBarViewController, button: UIButton)
 }
 
 class TabsBarViewController: UIViewController {
@@ -25,6 +26,7 @@ class TabsBarViewController: UIViewController {
         button.tintColor = UIColor.black
         button.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
+        button.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressAddTab(_:))))
         button.backgroundColor = .clear
         return button
     }()
@@ -130,6 +132,12 @@ class TabsBarViewController: UIViewController {
     
     @objc func addTabPressed() {
         tabManager?.addTabAndSelect(isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+    }
+    
+    @objc private func didLongPressAddTab(_ longPress: UILongPressGestureRecognizer) {
+        if longPress.state == .began {
+            delegate?.tabsBarDidLongPressAddTab(self, button: plusButton)
+        }
     }
     
     func updateData() {
