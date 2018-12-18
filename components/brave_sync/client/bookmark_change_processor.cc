@@ -405,12 +405,12 @@ void BookmarkChangeProcessor::BookmarkNodeChildrenReordered(
   // this should be safe to ignore as it's only called for managed bookmarks
 }
 
-void BookmarkChangeProcessor::Reset() {
+void BookmarkChangeProcessor::Reset(bool clear_meta_info) {
   ui::TreeNodeIterator<const bookmarks::BookmarkNode>
       iterator(bookmark_model_->root_node());
   bookmark_model_->BeginExtensiveChanges();
 
-  {
+  if (clear_meta_info) {
     ScopedPauseObserver pause(this);
     while (iterator.has_next()) {
       const bookmarks::BookmarkNode* node = iterator.Next();
@@ -425,6 +425,9 @@ void BookmarkChangeProcessor::Reset() {
   auto* deleted_node = GetDeletedNodeRoot();
   CHECK(deleted_node);
   deleted_node->DeleteAll();
+  auto* pending_node = GetPendingNodeRoot();
+  CHECK(pending_node);
+  pending_node->DeleteAll();
   bookmark_model_->EndExtensiveChanges();
 }
 

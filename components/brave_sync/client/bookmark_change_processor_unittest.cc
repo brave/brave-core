@@ -241,7 +241,7 @@ void BraveBookmarkChangeProcessorTest::AddSimpleHierarchy(
                            GURL("https://c.com/"));
 }
 
-TEST_F(BraveBookmarkChangeProcessorTest, Reset) {
+TEST_F(BraveBookmarkChangeProcessorTest, ResetClearMeta) {
   // Reset does clear of the metainfo, but
   // to fillup the metainfo now need to send it to sync
   change_processor()->Start();
@@ -260,13 +260,63 @@ TEST_F(BraveBookmarkChangeProcessorTest, Reset) {
   EXPECT_TRUE(HasAnySyncMetaInfo(node_b));
   EXPECT_TRUE(HasAnySyncMetaInfo(node_c));
 
-  change_processor()->Reset();
+  model()->AddURL(GetDeletedNodeRoot(), 0,
+                  base::ASCIIToUTF16("A.com - title"),
+                  GURL("https://a.com/"));
+  model()->AddURL(GetPendingNodeRoot(), 0,
+                  base::ASCIIToUTF16("A.com - title"),
+                  GURL("https://a.com/"));
+  EXPECT_FALSE(GetDeletedNodeRoot()->empty());
+  EXPECT_FALSE(GetPendingNodeRoot()->empty());
+
+  change_processor()->Reset(true);
 
   EXPECT_FALSE(HasAnySyncMetaInfo(folder1));
   EXPECT_FALSE(HasAnySyncMetaInfo(node_a));
   EXPECT_FALSE(HasAnySyncMetaInfo(node_b));
   EXPECT_FALSE(HasAnySyncMetaInfo(node_c));
+  EXPECT_TRUE(GetDeletedNodeRoot()->empty());
+  EXPECT_TRUE(GetPendingNodeRoot()->empty());
 }
+
+TEST_F(BraveBookmarkChangeProcessorTest, ResetPreserveMeta) {
+  // Reset does clear of the metainfo, but
+  // to fillup the metainfo now need to send it to sync
+  change_processor()->Start();
+
+  const BookmarkNode* folder1;
+  const BookmarkNode* node_a;
+  const BookmarkNode* node_b;
+  const BookmarkNode* node_c;
+  AddSimpleHierarchy(&folder1, &node_a, &node_b, &node_c);
+
+  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
+  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+
+  EXPECT_TRUE(HasAnySyncMetaInfo(folder1));
+  EXPECT_TRUE(HasAnySyncMetaInfo(node_a));
+  EXPECT_TRUE(HasAnySyncMetaInfo(node_b));
+  EXPECT_TRUE(HasAnySyncMetaInfo(node_c));
+
+  model()->AddURL(GetDeletedNodeRoot(), 0,
+                  base::ASCIIToUTF16("A.com - title"),
+                  GURL("https://a.com/"));
+  model()->AddURL(GetPendingNodeRoot(), 0,
+                  base::ASCIIToUTF16("A.com - title"),
+                  GURL("https://a.com/"));
+  EXPECT_FALSE(GetDeletedNodeRoot()->empty());
+  EXPECT_FALSE(GetPendingNodeRoot()->empty());
+
+  change_processor()->Reset(false);
+
+  EXPECT_TRUE(HasAnySyncMetaInfo(folder1));
+  EXPECT_TRUE(HasAnySyncMetaInfo(node_a));
+  EXPECT_TRUE(HasAnySyncMetaInfo(node_b));
+  EXPECT_TRUE(HasAnySyncMetaInfo(node_c));
+  EXPECT_TRUE(GetDeletedNodeRoot()->empty());
+  EXPECT_TRUE(GetPendingNodeRoot()->empty());
+}
+
 
 TEST_F(BraveBookmarkChangeProcessorTest, DISABLED_InitialSync) {
   // BookmarkChangeProcessor::InitialSync does not do anything now

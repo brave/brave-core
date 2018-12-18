@@ -239,16 +239,9 @@ void BraveSyncServiceImpl::OnResetSync() {
 
   const std::string device_id = sync_prefs_->GetThisDeviceId();
 
-  bookmark_change_processor_->Reset();
-
+  // We have to send delete record and wait for library deleted response then we
+  // can reset it by ResetInternal()
   OnDeleteDevice(device_id);
-
-  sync_prefs_->Clear();
-
-  sync_configured_ = false;
-  sync_initialized_ = false;
-
-  sync_prefs_->SetSyncEnabled(false);
 }
 
 void BraveSyncServiceImpl::GetSettingsAndDevices(
@@ -372,8 +365,16 @@ void BraveSyncServiceImpl::OnSaveInitData(const Uint8Array& seed,
   std::string seed_str = StrFromUint8Array(seed);
   std::string device_id_str = StrFromUint8Array(device_id);
 
+  std::string prev_seed_str = sync_prefs_->GetPrevSeed();
+
   sync_words_.clear();
   DCHECK(!seed_str.empty());
+  if (prev_seed_str == seed_str) { // reconnecitng to previous sync chain
+    sync_prefs_->SetPrevSeed(std::string());
+  } else if (!prev_seed_str.empty()) { // connect/create to new sync chain
+    bookmark_change_processor_->Reset(true);
+    sync_prefs_->SetPrevSeed(std::string());
+  } // else {} no previous sync chain
   sync_prefs_->SetSeed(seed_str);
   sync_prefs_->SetThisDeviceId(device_id_str);
 
@@ -494,7 +495,9 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records) {
 
   sync_prefs_->SetSyncDevices(*sync_devices);
 
-  if (this_device_deleted || contains_only_one_device)
+  if (this_device_deleted)
+    ResetSyncInternal();
+  if (contains_only_one_device)
     OnResetSync();
 }
 
@@ -661,6 +664,19 @@ void BraveSyncServiceImpl::NotifyHaveSyncWords(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   for (auto& observer : observers_)
     observer.OnHaveSyncWords(this, sync_words);
+}
+
+void BraveSyncServiceImpl::ResetSyncInternal() {
+  bookmark_change_processor_->Reset(false);
+
+  sync_prefs_->SetPrevSeed(sync_prefs_->GetSeed());
+
+  sync_prefs_->Clear();
+
+  sync_configured_ = false;
+  sync_initialized_ = false;
+
+  sync_prefs_->SetSyncEnabled(false);
 }
 
 } // namespace brave_sync
