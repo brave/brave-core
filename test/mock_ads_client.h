@@ -91,9 +91,6 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD1(ShowNotification, void(
       std::unique_ptr<NotificationInfo> info));
 
-  MOCK_METHOD1(AdSustained, void(
-      std::unique_ptr<NotificationInfo> info));
-
   MOCK_METHOD1(SetTimer, uint32_t(
       const uint64_t time_offset));
 

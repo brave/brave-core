@@ -133,7 +133,6 @@ class AdsImpl : public Ads {
   void StopSustainingAdInteraction();
   bool IsSustainingAdInteraction() const;
   bool IsStillViewingAd() const;
-  void AdSustained(const NotificationInfo& info) const;
 
   void OnTimer(const uint32_t timer_id) override;
 
