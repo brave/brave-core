@@ -1195,6 +1195,7 @@
 		27A586E0214C0DDD000CAE3C /* PreferencesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTest.swift; sourceTree = "<group>"; };
 		27C461DD211B76500088A441 /* ShieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsView.swift; sourceTree = "<group>"; };
 		27D87C2D2152B50200FB55C6 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		27D922B221C9830F00345BF3 /* Model9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model9.xcdatamodel; sourceTree = "<group>"; };
 		27F443952135E11200296C58 /* BraveShareTo.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BraveShareTo.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		27F4439C2135E11200296C58 /* BraveShareToInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = BraveShareToInfo.plist; sourceTree = "<group>"; };
 		27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareToBraveViewController.swift; sourceTree = "<group>"; };
@@ -9440,6 +9441,7 @@
 		5D1DC54C20AE004600905E5A /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				27D922B221C9830F00345BF3 /* Model9.xcdatamodel */,
 				0A9B6A3420E6453400712BC9 /* Model8.xcdatamodel */,
 				5D1DC54D20AE004600905E5A /* Model7.xcdatamodel */,
 				5D1DC54E20AE004600905E5A /* Model2.xcdatamodel */,
@@ -9449,7 +9451,7 @@
 				5D1DC55220AE004600905E5A /* Model5.xcdatamodel */,
 				5D1DC55320AE004600905E5A /* Model.xcdatamodel */,
 			);
-			currentVersion = 0A9B6A3420E6453400712BC9 /* Model8.xcdatamodel */;
+			currentVersion = 27D922B221C9830F00345BF3 /* Model9.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
