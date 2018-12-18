@@ -311,7 +311,7 @@ Enable diagnostic logging, where `#` should set to a minimum log level. Valid va
 --enable-logging --log-level=#
 ```
 
-i.e. to launch using Staging Server, Easter Egg and logging for INFO, WARNING and ERROR on macOS open the `Terminal` application and enter the below commands,:
+i.e. to launch using Staging Server, Easter Egg and logging for INFO, WARNING and ERROR on macOS open the `Terminal` application and enter the below commands:
 
 ```
 cd /Applications
@@ -340,6 +340,7 @@ npm run test -- brave_unit_tests --filter=AdsTest.*
 - Implement DemoAPI logs
 - Additional unit test coverage
 - Migrate Mocks and Tests to Brave Core
+- Remove CMake and migrate to Brave Core
 
 All of these will be fixed _very soon!_
 
