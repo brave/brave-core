@@ -52,12 +52,28 @@ bool BundleState::FromJson(
           ad_info.creative_set_id = info["creativeSetId"].GetString();
         }
 
+        if (info.HasMember("campaignId")) {
+          ad_info.campaign_id = info["campaignId"].GetString();
+        }
+
         if (info.HasMember("startTimestamp")) {
           ad_info.start_timestamp = info["startTimestamp"].GetString();
         }
 
         if (info.HasMember("endTimestamp")) {
           ad_info.end_timestamp = info["endTimestamp"].GetString();
+        }
+
+        if (info.HasMember("dailyCap")) {
+          ad_info.daily_cap = info["dailyCap"].GetUint();
+        }
+
+        if (info.HasMember("perDay")) {
+          ad_info.per_day = info["perDay"].GetUint();
+        }
+
+        if (info.HasMember("totalMax")) {
+          ad_info.total_max = info["totalMax"].GetUint();
         }
 
         std::vector<std::string> regions = {};
@@ -104,18 +120,30 @@ void SaveToJson(JsonWriter* writer, const BundleState& state) {
       writer->String("creativeSetId");
       writer->String(ad.creative_set_id.c_str());
 
-      writer->String("regions");
-      writer->StartArray();
-      for (const auto& region : ad.regions) {
-        writer->String(region.c_str());
-      }
-      writer->EndArray();
+      writer->String("campaignId");
+      writer->String(ad.campaign_id.c_str());
 
       writer->String("startTimestamp");
       writer->String(ad.start_timestamp.c_str());
 
       writer->String("endTimestamp");
       writer->String(ad.end_timestamp.c_str());
+
+      writer->String("dailyCap");
+      writer->Uint(ad.daily_cap);
+
+      writer->String("perDay");
+      writer->Uint(ad.per_day);
+
+      writer->String("totalMax");
+      writer->Uint(ad.total_max);
+
+      writer->String("regions");
+      writer->StartArray();
+      for (const auto& region : ad.regions) {
+        writer->String(region.c_str());
+      }
+      writer->EndArray();
 
       writer->String("advertiser");
       writer->String(ad.advertiser.c_str());

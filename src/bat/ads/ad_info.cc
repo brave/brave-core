@@ -10,8 +10,12 @@ namespace ads {
 
 AdInfo::AdInfo() :
     creative_set_id(""),
+    campaign_id(""),
     start_timestamp(""),
     end_timestamp(""),
+    daily_cap(0),
+    per_day(0),
+    total_max(0),
     regions({}),
     advertiser(""),
     notification_text(""),
@@ -20,8 +24,12 @@ AdInfo::AdInfo() :
 
 AdInfo::AdInfo(const AdInfo& info) :
     creative_set_id(info.creative_set_id),
+    campaign_id(info.campaign_id),
     start_timestamp(info.start_timestamp),
     end_timestamp(info.end_timestamp),
+    daily_cap(info.daily_cap),
+    per_day(info.per_day),
+    total_max(info.total_max),
     regions(info.regions),
     advertiser(info.advertiser),
     notification_text(info.notification_text),
@@ -48,12 +56,28 @@ bool AdInfo::FromJson(const std::string& json) {
     creative_set_id = document["creative_set_id"].GetString();
   }
 
+  if (document.HasMember("campaign_id")) {
+    campaign_id = document["campaign_id"].GetString();
+  }
+
   if (document.HasMember("start_timestamp")) {
     start_timestamp = document["start_timestamp"].GetString();
   }
 
   if (document.HasMember("end_timestamp")) {
     end_timestamp = document["end_timestamp"].GetString();
+  }
+
+  if (document.HasMember("daily_cap")) {
+    daily_cap = document["daily_cap"].GetUint();
+  }
+
+  if (document.HasMember("per_day")) {
+    per_day = document["per_day"].GetUint();
+  }
+
+  if (document.HasMember("total_max")) {
+    total_max = document["total_max"].GetUint();
   }
 
   std::vector<std::string> regions = {};
@@ -88,11 +112,23 @@ void SaveToJson(JsonWriter* writer, const AdInfo& info) {
   writer->String("creative_set_id");
   writer->String(info.creative_set_id.c_str());
 
+  writer->String("campaign_id");
+  writer->String(info.campaign_id.c_str());
+
   writer->String("start_timestamp");
   writer->String(info.start_timestamp.c_str());
 
   writer->String("end_timestamp");
   writer->String(info.end_timestamp.c_str());
+
+  writer->String("daily_cap");
+  writer->Uint(info.daily_cap);
+
+  writer->String("per_day");
+  writer->Uint(info.per_day);
+
+  writer->String("total_max");
+  writer->Uint(info.total_max);
 
   writer->String("regions");
   writer->StartArray();

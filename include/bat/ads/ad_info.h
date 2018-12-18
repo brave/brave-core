@@ -20,8 +20,12 @@ struct ADS_EXPORT AdInfo {
   bool FromJson(const std::string& json);
 
   std::string creative_set_id;
+  std::string campaign_id;
   std::string start_timestamp;
   std::string end_timestamp;
+  unsigned int daily_cap;
+  unsigned int per_day;
+  unsigned int total_max;
   std::vector<std::string> regions;
   std::string advertiser;
   std::string notification_text;

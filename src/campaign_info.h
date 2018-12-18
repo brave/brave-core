@@ -52,8 +52,8 @@ struct CampaignInfo {
   std::string name;
   std::string start_at;
   std::string end_at;
-  uint64_t daily_cap;
-  uint64_t budget;
+  unsigned int daily_cap;
+  unsigned int budget;
   std::string advertiser_id;
   std::vector<GeoTargetInfo> geo_targets;
   std::vector<CreativeSetInfo> creative_sets;

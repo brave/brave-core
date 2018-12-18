@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <deque>
 #include <memory>
 
 #include "ads_serve.h"
@@ -106,7 +107,8 @@ class AdsImpl : public Ads {
   bool IsAdValid(const AdInfo& ad_info);
   NotificationInfo last_shown_notification_info_;
   bool ShowAd(const AdInfo& ad_info, const std::string& category);
-  bool AdsShownHistoryRespectsRollingTimeConstraint(
+  bool HistoryRespectsRollingTimeConstraint(
+      const std::deque<uint64_t> history,
       const uint64_t seconds_window,
       const uint64_t allowable_ad_count) const;
   bool IsAllowedToShowAds();

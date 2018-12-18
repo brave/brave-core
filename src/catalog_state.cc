@@ -57,8 +57,8 @@ bool CatalogState::FromJson(
     campaign_info.name = campaign["name"].GetString();
     campaign_info.start_at = campaign["startAt"].GetString();
     campaign_info.end_at = campaign["endAt"].GetString();
-    campaign_info.daily_cap = campaign["dailyCap"].GetUint64();
-    campaign_info.budget = campaign["budget"].GetUint64();
+    campaign_info.daily_cap = campaign["dailyCap"].GetUint();
+    campaign_info.budget = campaign["budget"].GetUint();
 
     // Geo targets
     for (const auto& geo_target : campaign["geoTargets"].GetArray()) {
@@ -86,9 +86,9 @@ bool CatalogState::FromJson(
       }
       creative_set_info.execution = execution;
 
-      creative_set_info.per_day = creative_set["perDay"].GetUint64();
+      creative_set_info.per_day = creative_set["perDay"].GetUint();
 
-      creative_set_info.total_max = creative_set["totalMax"].GetUint64();
+      creative_set_info.total_max = creative_set["totalMax"].GetUint();
 
       // Segments
       auto segments = creative_set["segments"].GetArray();

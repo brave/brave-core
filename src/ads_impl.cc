@@ -651,24 +651,16 @@ void AdsImpl::OnGetAds(
   }
 
   auto ads_unseen = GetUnseenAds(ads);
+
   if (ads_unseen.empty()) {
     // TODO(Terry Mancey): Implement Log (#44)
-    // 'Ad round-robin', { category, adsSeen, adsNotSeen }
+    // 'Notification not made', { reason: 'no ad (or permitted ad) for
+    // winnerOverTime', category, winnerOverTime, arbitraryKey }
 
-    LOG(INFO) << "Ad round-robin for \"" << category << "\" category";
+    LOG(INFO) << "Notification not made: No ad (or permitted ad) for \""
+      << category << "\" category";
 
-    client_->ResetAdsUUIDSeen(ads);
-
-    ads_unseen = GetUnseenAds(ads);
-    if (ads_unseen.empty()) {
-      // TODO(Terry Mancey): Implement Log (#44)
-      // 'Notification not made', { reason: 'no ads for category', category }
-
-      LOG(INFO) << "Notification not made: No ads found for \""
-        << category << "\" category";
-
-      return;
-    }
+    return;
   }
 
   auto rand = helper::Math::Random(ads_unseen.size() - 1);
@@ -678,17 +670,41 @@ void AdsImpl::OnGetAds(
 
 std::vector<AdInfo> AdsImpl::GetUnseenAds(
     const std::vector<AdInfo>& ads) {
-  auto ads_unseen = ads;
-  auto ads_seen = client_->GetAdsUUIDSeen();
+  std::vector<AdInfo> ads_unseen = {};
 
-  auto iterator = std::remove_if(
-    ads_unseen.begin(),
-    ads_unseen.end(),
-    [&](AdInfo &info) {
-      return ads_seen.find(info.uuid) != ads_seen.end();
-    });
+  for (const auto& ad : ads) {
+    std::deque<uint64_t> creative_set = {};
+    auto creative_set_history = client_->GetCreativeSetHistory();
+    if (creative_set_history.find(ad.creative_set_id)
+        != creative_set_history.end()) {
+      creative_set = creative_set_history.at(ad.creative_set_id);
+    }
 
-  ads_unseen.erase(iterator, ads_unseen.end());
+    if (creative_set.size() >= ad.total_max) {
+      continue;
+    }
+
+    auto day_window = kOneDayInSeconds;
+
+    if (!HistoryRespectsRollingTimeConstraint(
+        creative_set, day_window, ad.per_day)) {
+      continue;
+    }
+
+    std::deque<uint64_t> campaign = {};
+    auto campaign_history = client_->GetCampaignHistory();
+    if (campaign_history.find(ad.campaign_id)
+        != campaign_history.end()) {
+      campaign = campaign_history.at(ad.campaign_id);
+    }
+
+    if (!HistoryRespectsRollingTimeConstraint(
+        campaign, day_window, ad.daily_cap)) {
+      continue;
+    }
+
+    ads_unseen.push_back(ad);
+  }
 
   return ads_unseen;
 }
@@ -747,20 +763,21 @@ bool AdsImpl::ShowAd(
   ads_client_->ShowNotification(std::move(notification_info));
 
   client_->AppendCurrentTimeToAdsShownHistory();
+  client_->AppendCurrentTimeToCreativeSetHistory(ad_info.creative_set_id);
+  client_->AppendCurrentTimeToCampaignHistory(ad_info.campaign_id);
 
   return true;
 }
 
-bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
+bool AdsImpl::HistoryRespectsRollingTimeConstraint(
+    const std::deque<uint64_t> history,
     const uint64_t seconds_window,
     const uint64_t allowable_ad_count) const {
-  auto ads_shown_history = client_->GetAdsShownHistory();
-
   uint64_t recent_count = 0;
   auto now = helper::Time::Now();
 
-  for (auto ad_shown : ads_shown_history) {
-    if (now - ad_shown < seconds_window) {
+  for (const auto& timestamp : history) {
+    if (now - timestamp < seconds_window) {
       recent_count++;
     }
   }
@@ -773,19 +790,22 @@ bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
 }
 
 bool AdsImpl::IsAllowedToShowAds() {
+  auto ads_shown_history = client_->GetAdsShownHistory();
+
   auto hour_window = kOneHourInSeconds;
   auto hour_allowed = ads_client_->GetAdsPerHour();
-  auto respects_hour_limit = AdsShownHistoryRespectsRollingTimeConstraint(
-    hour_window, hour_allowed);
+  auto respects_hour_limit = HistoryRespectsRollingTimeConstraint(
+    ads_shown_history, hour_window, hour_allowed);
 
-  auto day_window = kOneHourInSeconds;
+  auto day_window = kOneDayInSeconds;
   auto day_allowed = ads_client_->GetAdsPerDay();
-  auto respects_day_limit = AdsShownHistoryRespectsRollingTimeConstraint(
-    day_window, day_allowed);
+  auto respects_day_limit = HistoryRespectsRollingTimeConstraint(
+    ads_shown_history, day_window, day_allowed);
 
   auto minimum_wait_time = hour_window / hour_allowed;
   bool respects_minimum_wait_time =
-    AdsShownHistoryRespectsRollingTimeConstraint(minimum_wait_time, 0);
+    HistoryRespectsRollingTimeConstraint(
+      ads_shown_history, minimum_wait_time, 0);
 
   return respects_hour_limit &&
     respects_day_limit &&

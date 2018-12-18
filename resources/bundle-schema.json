@@ -20,11 +20,23 @@
               "creativeSetId": {
                 "type": "string"
               },
+              "campaignId": {
+                "type": "string"
+              },
               "startTimestamp": {
                 "type": "string"
               },
               "endTimestamp": {
                 "type": "string"
+              },
+              "daily_cap": {
+                "type": "number"
+              },
+              "per_day": {
+                "type": "number"
+              },
+              "total_max": {
+                "type": "number"
               },
               "regions": {
                 "type": "array",

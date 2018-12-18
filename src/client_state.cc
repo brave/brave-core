@@ -22,6 +22,8 @@ ClientState::ClientState() :
     locale(kDefaultLanguageCode),
     locales({}),
     page_score_history({}),
+    creative_set_history({}),
+    campaign_history({}),
     places({}),
     score(0.0),
     search_activity(false),
@@ -29,27 +31,28 @@ ClientState::ClientState() :
     shop_activity(false),
     shop_url("") {}
 
-ClientState::ClientState(const ClientState& state) {
-  ads_shown_history = state.ads_shown_history;
-  ad_uuid = state.ad_uuid;
-  ads_uuid_seen = state.ads_uuid_seen;
-  available = state.available;
-  current_ssid = state.current_ssid;
-  expired = state.expired;
-  last_search_time = state.last_search_time;
-  last_shop_time = state.last_shop_time;
-  last_user_activity = state.last_user_activity;
-  last_user_idle_stop_time = state.last_user_idle_stop_time;
-  locale = state.locale;
-  locales = state.locales;
-  page_score_history = state.page_score_history;
-  places = state.places;
-  score = state.score;
-  search_activity = state.search_activity;
-  search_url = state.search_url;
-  shop_activity = state.shop_activity;
-  shop_url = state.shop_url;
-}
+ClientState::ClientState(const ClientState& state) :
+  ads_shown_history(state.ads_shown_history),
+  ad_uuid(state.ad_uuid),
+  ads_uuid_seen(state.ads_uuid_seen),
+  available(state.available),
+  current_ssid(state.current_ssid),
+  expired(state.expired),
+  last_search_time(state.last_search_time),
+  last_shop_time(state.last_shop_time),
+  last_user_activity(state.last_user_activity),
+  last_user_idle_stop_time(state.last_user_idle_stop_time),
+  locale(state.locale),
+  locales(state.locales),
+  page_score_history(state.page_score_history),
+  creative_set_history(state.creative_set_history),
+  campaign_history(state.campaign_history),
+  places(state.places),
+  score(state.score),
+  search_activity(state.search_activity),
+  search_url(state.search_url),
+  shop_activity(state.shop_activity),
+  shop_url(state.shop_url) {}
 
 ClientState::~ClientState() = default;
 
@@ -124,13 +127,41 @@ bool ClientState::FromJson(const std::string& json) {
 
   if (client.HasMember("pageScoreHistory")) {
     for (const auto& history : client["pageScoreHistory"].GetArray()) {
-      std::vector<double> pageScores = {};
+      std::vector<double> page_scores = {};
 
-      for (const auto& pageScore : history.GetArray()) {
-        pageScores.push_back(pageScore.GetDouble());
+      for (const auto& page_score : history.GetArray()) {
+        page_scores.push_back(page_score.GetDouble());
       }
 
-      page_score_history.push_back(pageScores);
+      page_score_history.push_back(page_scores);
+    }
+  }
+
+  if (client.HasMember("creativeSetHistory")) {
+    for (const auto& history : client["creativeSetHistory"].GetObject()) {
+      std::string creative_set_id = history.name.GetString();
+      uint64_t timestamp = history.value.GetUint64();
+
+      if (creative_set_history.find(creative_set_id) ==
+          creative_set_history.end()) {
+        creative_set_history.insert({creative_set_id, {}});
+      }
+
+      creative_set_history.at(creative_set_id).push_back(timestamp);
+    }
+  }
+
+  if (client.HasMember("campaignHistory")) {
+    for (const auto& history : client["campaignHistory"].GetObject()) {
+      std::string campaign_id = history.name.GetString();
+      uint64_t timestamp = history.value.GetUint64();
+
+      if (campaign_history.find(campaign_id) ==
+          campaign_history.end()) {
+        campaign_history.insert({campaign_id, {}});
+      }
+
+      campaign_history.at(campaign_id).push_back(timestamp);
     }
   }
 
@@ -225,6 +256,30 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
     writer->EndArray();
   }
   writer->EndArray();
+
+  writer->String("creativeSetHistory");
+  writer->StartObject();
+  for (const auto& creative_set_id : state.creative_set_history) {
+    writer->String(creative_set_id.first.c_str());
+    writer->StartArray();
+    for (const auto& timestamp : creative_set_id.second) {
+      writer->Uint64(timestamp);
+    }
+    writer->EndArray();
+  }
+  writer->EndObject();
+
+  writer->String("campaignHistory");
+  writer->StartObject();
+  for (const auto& campaign_id : state.campaign_history) {
+    writer->String(campaign_id.first.c_str());
+    writer->StartArray();
+    for (const auto& timestamp : campaign_id.second) {
+      writer->Uint64(timestamp);
+    }
+    writer->EndArray();
+  }
+  writer->EndObject();
 
   writer->String("places");
   writer->StartObject();

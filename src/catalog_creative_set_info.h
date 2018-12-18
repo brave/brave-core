@@ -41,8 +41,8 @@ struct CreativeSetInfo {
 
   std::string creative_set_id;
   std::string execution;
-  uint64_t per_day;
-  uint64_t total_max;
+  unsigned int per_day;
+  unsigned int total_max;
   std::vector<SegmentInfo> segments;
   std::vector<CreativeInfo> creatives;
 };

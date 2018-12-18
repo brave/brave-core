@@ -210,6 +210,42 @@ const std::deque<std::vector<double>> Client::GetPageScoreHistory() {
   return client_state_->page_score_history;
 }
 
+void Client::AppendCurrentTimeToCreativeSetHistory(
+    const std::string& creative_set_id) {
+  if (client_state_->creative_set_history.find(creative_set_id) ==
+      client_state_->creative_set_history.end()) {
+    client_state_->creative_set_history.insert({creative_set_id, {}});
+  }
+
+  auto now = helper::Time::Now();
+  client_state_->creative_set_history.at(creative_set_id).push_back(now);
+
+  SaveState();
+}
+
+const std::map<std::string, std::deque<uint64_t>>
+    Client::GetCreativeSetHistory() const {
+  return client_state_->creative_set_history;
+}
+
+void Client::AppendCurrentTimeToCampaignHistory(
+    const std::string& campaign_id) {
+  if (client_state_->campaign_history.find(campaign_id) ==
+      client_state_->campaign_history.end()) {
+    client_state_->campaign_history.insert({campaign_id, {}});
+  }
+
+  auto now = helper::Time::Now();
+  client_state_->campaign_history.at(campaign_id).push_back(now);
+
+  SaveState();
+}
+
+const std::map<std::string, std::deque<uint64_t>>
+    Client::GetCampaignHistory() const {
+  return client_state_->campaign_history;
+}
+
 const std::string Client::GetCurrentPlace() {
   auto place = client_state_->places.find(client_state_->current_ssid);
   if (place != client_state_->places.end()) {

@@ -54,6 +54,14 @@ class Client {
   void AppendPageScoreToPageScoreHistory(
       const std::vector<double>& page_scores);
   const std::deque<std::vector<double>> GetPageScoreHistory();
+  void AppendCurrentTimeToCreativeSetHistory(
+      const std::string& creative_set_id);
+  const std::map<std::string, std::deque<uint64_t>>
+      GetCreativeSetHistory() const;
+  void AppendCurrentTimeToCampaignHistory(
+      const std::string& campaign_id);
+  const std::map<std::string, std::deque<uint64_t>>
+      GetCampaignHistory() const;
   const std::string GetCurrentPlace();
 
   void RemoveAllHistory();

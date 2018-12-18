@@ -32,6 +32,8 @@ struct ClientState {
   std::string locale;
   std::vector<std::string> locales;
   std::deque<std::vector<double>> page_score_history;
+  std::map<std::string, std::deque<uint64_t>> creative_set_history;
+  std::map<std::string, std::deque<uint64_t>> campaign_history;
   std::map<std::string, std::string> places;
   double score;
   bool search_activity;
