@@ -1,6 +1,285 @@
-# bat-native-ads
+# BAT Native Ads
 
-## Command-line switches
+## Resources
+
+The `resources/` directory contains the following structure:
+
+```
+locales/
+├── de/
+│   ├── user_model.json
+├── en/
+│   ├── user_model.json
+├── fr/
+│   └── user_model.json
+catalog-schema.json
+bundle-schema.json
+```
+
+`user_model.json` see https://github.com/brave-intl/bat-native-usermodel/blob/master/README.md
+
+`catalog-schema.json` and `bundle-schema.json` are JSON Schemas which specify the JSON-based format to define the structure of the JSON data for validation, documentation, and interaction control. It provides the contract for the JSON data and how that data can be modified.
+
+## API
+
+### Native
+
+Initialize Ads by calling Initialize() when Ads are enabled or disabled on the Client as follows:
+
+```
+Initialize()
+```
+
+`OnForeground` should be called when the browser enters the foreground
+```
+void OnForeground()
+```
+
+`OnBackground` should be called when the browser enters the background
+```
+void OnBackground()
+```
+
+`OnIdle` should be called periodically on desktop browsers as set by `SetIdleThreshold` to record when the browser is idle. This call is optional for mobile devices
+```
+void OnIdle()
+```
+
+`OnUnidle` should be called periodically on desktop browsers as set by `SetIdleThreshold` to record when the browser is no longer idle. This call is optional for mobile devices
+```
+void OnUnIdle()
+```
+
+`OnMediaPlaying` should be called to record when a tab has started playing media (A/V)
+```
+void OnMediaPlaying(
+    const int32_t tab_id)
+```
+
+`OnMediaStopped` should be called to record when a tab has stopped playing media (A/V)
+```
+void OnMediaStopped(
+    const int32_t tab_id)
+```
+
+`TabUpdated` should be called to record user activity on a browser tab
+```
+void TabUpdated(
+    const int32_t tab_id,
+    const std::string& url,
+    const bool is_active,
+    const bool is_incognito);
+```
+
+`TabClosed` should be called to record when a browser tab is closed
+```
+void TabClosed(
+    const int32_t tab_id)
+```
+
+`RemoveAllHistory` should be called to remove all cached history when the user clears browsing data
+```
+void RemoveAllHistory()
+```
+
+`ChangeLocale` should be called when the user changes the operating system's locale, i.e. `en`, `en_US` or `en_GB.UTF-8`. This call is not required if the operating system restarts the app when the user changes their locale
+```
+void ChangeLocale(
+    const std::string& locale)
+```
+
+`ClassifyPage` should be called when a page has loaded in the current browser tab, and the HTML is available for analysis
+```
+void ClassifyPage(
+    const std::string& url,
+    const std::string& html)
+```
+
+`ServeSampleAd` should be called when the user invokes "Show Sample Ad" on the Client; a notification is then sent to the Client for processing
+```
+void ServeSampleAd()
+```
+
+`OnTimer` should be called when a timer is triggered
+```
+void OnTimer(
+    const uint32_t timer_id)
+```
+
+`GenerateAdReportingNotificationShownEvent` should be called when a notification has been shown
+```
+void GenerateAdReportingNotificationShownEvent(
+    const NotificationInfo& info)
+```
+
+`GenerateAdReportingNotificationResultEvent` should be called when a notification has been clicked, dismissed or times out on the Client. Dismiss events for local Notifications may not be available for every version of Android, making the Dismiss notification capture optional for Android devices
+```
+void GenerateAdReportingNotificationResultEvent(
+    const NotificationInfo& info,
+    const NotificationResultInfoResultType type)
+```
+
+### Client
+
+`IsAdsEnabled` should return `true` if Ads are enabled otherwise returns `false`
+```
+bool IsAdsEnabled() const
+```
+
+`GetAdsLocale` should return the operating system's locale, i.e. `en`, `en_US` or `en_GB.UTF-8`
+```
+std::string GetAdsLocale() const
+```
+
+`GetAdsPerHour` should return the number of Ads that can be shown per hour
+```
+uint64_t GetAdsPerHour() const
+```
+
+`GetAdsPerDay` should return the maximum number of Ads that can be shown per day
+```
+uint64_t GetAdsPerDay() const
+```
+
+`SetIdleThreshold` should set the idle threshold specified in seconds, for how often `OnIdle` or `OnUndle` should be called
+```
+void SetIdleThreshold(
+    const int threshold)
+```
+
+`IsNetworkConnectionAvailable` should return `true` if there is a network connection otherwise returns `false`
+```
+bool IsNetworkConnectionAvailable()
+```
+
+`GetClientInfo` should get information about the client
+```
+void GetClientInfo(
+    ClientInfo* info) const
+```
+
+`GetLocales` should return a list of supported User Model locales, see [resources](#resources)
+```
+const std::vector<std::string> GetLocales() const
+```
+
+`LoadUserModelForLocale` should load the User Model for the specified locale, see [resources](#resources)
+```
+void LoadUserModelForLocale(
+    const std::string& locale,
+    OnLoadCallback callback) const
+```
+
+`GenerateUUID` should generate and return a v4 UUID
+```
+const std::string GenerateUUID() const
+```
+
+`GetSSID` should return the network SSID or an empty string if not available
+```
+const std::string GetSSID() const
+```
+
+`IsForeground` should return `true` if the browser is in the foreground otherwise returns `false`
+```
+bool IsForeground() const
+```
+
+`IsNotificationsAvailable` should return `true` if the operating system supports notifications otherwise returns `false`
+```
+bool IsNotificationsAvailable() const
+```
+
+`ShowNotification` should show a notification
+```
+void ShowNotification(std::unique_ptr<NotificationInfo> info)
+```
+
+`SetTimer` should create a timer to trigger after the time offset specified in seconds. If the timer was created successfully a unique identifier should be returned, otherwise returns `0`
+```
+uint32_t SetTimer(const uint64_t time_offset)
+```
+
+`KillTimer` should destroy the timer associated with the specified timer identifier
+```
+void KillTimer(uint32_t timer_id)
+```
+
+`URLRequest` should start a URL request
+```
+void URLRequest(
+    const std::string& url,
+    const std::vector<std::string>& headers,
+    const std::string& content,
+    const std::string& content_type,
+    const URLRequestMethod method,
+    URLRequestCallback callback)
+```
+
+`Save` should save a value to persistent storage
+```
+void Save(
+    const std::string& name,
+    const std::string& value,
+    OnSaveCallback callback)
+```
+
+`SaveBundleState` should save the bundle state to persistent storage
+```
+void SaveBundleState(
+    std::unique_ptr<BundleState> state,
+    OnSaveCallback callback)
+```
+
+`Load` should load a value from persistent storage
+```
+void Load(const std::string& name, OnLoadCallback callback)
+```
+
+`LoadJsonSchema` should load a JSON schema from persistent storage, see [resources](#resources)
+```
+const std::string LoadJsonSchema(const std::string& name)
+```
+
+`LoadSampleBundle` should load the sample bundle from persistent storage
+```
+void LoadSampleBundle(OnLoadSampleBundleCallback callback)
+```
+
+`Reset` should reset a previously saved value, i.e. remove the file from persistent storage
+```
+void Reset(const std::string& name, OnResetCallback callback)
+```
+
+`GetAds` should get Ads for the specified region and category from the previously persisted bundle state
+```
+void GetAds(
+    const std::string& region,
+    const std::string& category,
+    OnGetAdsCallback callback)
+```
+
+`GetUrlComponents` should get the components of the specified URL
+```
+bool GetUrlComponents(
+    const std::string& url,
+    UrlComponents* components)
+```
+
+`EventLog` should log an event to persistent storage
+```
+void EventLog(const std::string& json)
+```
+
+`Log` should log diagnostic information to the console
+```
+std::unique_ptr<LogStream> Log(
+    const char* file,
+    const int line,
+    const LogLevel log_level) const
+```
+
+## Command-line Switches
 
 Use production Ads Serve as defined by `PRODUCTION_SERVER` in `static_values.h`. Default for Official Builds
 
@@ -41,7 +320,12 @@ cd Brave\ Browser\ Beta.app/
 
 cd Contents
 
-./Brave\ Browser\ Development --brave-ads-staging --brave-ads-testing --enable-logging --log-level=2
+./Brave\ Browser\ Beta --brave-ads-staging --brave-ads-testing --enable-logging --log-level=2
+```
+
+## Unit Tests
+```
+npm run test -- brave_unit_tests --filter=AdsTest.*
 ```
 
 ## Initial Limitations
@@ -59,74 +343,6 @@ cd Contents
 
 All of these will be fixed _very soon!_
 
-## Unscheduled future features
+## Unscheduled Future Features
 
 - `IsNotificationsAvailable` always returns `true` from Brave Core irrespective if they are enabled or disabled on the operating system
-
-## Isolated development on macOS
-
-- Deprecated as building and testing of the library will be moved to Brave Core
-
-### Pre-requisite
-
-- Xcode command line tools must be installed
-- You must be in the working directory of BAT Native Ads, i.e. `bat-native-ads`
-
-#### Install homebrew
-
-```
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
-```
-
-#### Install cmake (3.12 or above required)
-
-```
-brew install cmake
-```
-
-or
-
-```
-brew upgrade cmake
-```
-
-#### Create build folder
-
-```
-mkdir build
-```
-
-#### Generate Makefile
-
-You must be in the `build` directory of BAT Native Ads before running the following commands. If any project changes are made the `Makefile` may need to
-be re-generated
-
-```
-cmake ..
-```
-
-#### Build executable
-
-You must be in the `build` directory of BAT Native Ads before running the following commands
-
-```
-make
-```
-
-#### Debugging
-
-You can attach a debugger to the `batnativeads` executable which can be found in the `build` folder
-
-#### Isolated Google Tests
-
-You must be in the `build` directory of BAT Native Ads before running the following commands
-
-```
-make test
-```
-
-You can also add the `ARGS="-V"` command line argument for verbose output
-
-```
-make test ARGS="-V"
-```
