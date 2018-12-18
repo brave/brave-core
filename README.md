@@ -26,18 +26,42 @@ Enable testing of notifications while viewing `www.iab.com` so that page refresh
 --brave-ads-testing
 ```
 
+Enable diagnostic logging, where `#` should set to a minimum log level. Valid values are from 0 to 3 where INFO = 0, WARNING = 1, ERROR = 2 and FATAL = 3. So if you want INFO, WARNING and ERROR you would choose 2
+
+```
+--enable-logging --log-level=#
+```
+
+i.e. to launch using Staging Server, Easter Egg and logging for INFO, WARNING and ERROR on macOS open the `Terminal` application and enter the below commands,:
+
+```
+cd /Applications
+
+cd Brave\ Browser\ Beta.app/
+
+cd Contents
+
+./Brave\ Browser\ Development --brave-ads-staging --brave-ads-testing --enable-logging --log-level=2
+```
+
 ## Initial Limitations
 
 - Catalog is downloaded twice upon startup
+- Clicking Ads in the Notification Center do not open the Ad
+- Brave Ads notifications disappear without user input
 - For Linux:
     - In "debug" mode, notifications cause crashes
     - Foreground/Background notifications aren't implemented on Brave Core
-- `IsNotificationsAvailable` always returns `true` from Brave Core irrespective if they are enabled or disabled on the operating system
 - `EventLog`'s are persisted in the Console Log, whereas in Muon they were persisted in a JSON file
 - Implement DemoAPI logs
 - Additional unit test coverage
+- Migrate Mocks and Tests to Brave Core
 
 All of these will be fixed _very soon!_
+
+## Unscheduled future features
+
+- `IsNotificationsAvailable` always returns `true` from Brave Core irrespective if they are enabled or disabled on the operating system
 
 ## Isolated development on macOS
 
