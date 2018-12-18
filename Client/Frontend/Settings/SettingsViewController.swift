@@ -233,7 +233,7 @@ class SettingsViewController: TableViewController {
             header: .title(Strings.Brave_Shield_Defaults),
             rows: [
                 BoolRow(title: Strings.Block_Ads_and_Tracking, option: Preferences.Shields.blockAdsAndTracking),
-                BoolRow(title: Strings.HTTPS_Everywhere, option: Preferences.Shields.httpsEverywhere),
+//                BoolRow(title: Strings.HTTPS_Everywhere, option: Preferences.Shields.httpsEverywhere),
                 BoolRow(title: Strings.Block_Phishing_and_Malware, option: Preferences.Shields.blockPhishingAndMalware),
                 BoolRow(title: Strings.Block_Scripts, option: Preferences.Shields.blockScripts),
                 BoolRow(title: Strings.Fingerprinting_Protection, option: Preferences.Shields.fingerprintingProtection),
