@@ -65,6 +65,8 @@ const InstallConstants kInstallModes[] = {
           0x4b6b,
           { 0x85, 0x60, 0xe4, 0xb2, 0x3, 0xa9, 0x7a,
             0x8b } },  // Elevator CLSID.
+        { 0xb7965c30, 0x7d58, 0x4d86, {
+          0x9e, 0x18, 0x47, 0x94, 0x25, 0x64, 0x9, 0xee } },
         L"",  // The empty string means "stable".
         ChannelStrategy::ADDITIONAL_PARAMETERS,
         true,  // Supports system-level installs.
@@ -100,6 +102,9 @@ const InstallConstants kInstallModes[] = {
           0x4347,
           { 0xbe, 0xc0, 0xd7, 0x22, 0xca, 0x41, 0x2c,
             0x75 } },  // Elevator CLSID.
+        { 0xd9d7b102, 0xfc8a, 0x4843, {
+          0xac, 0x35, 0x1e, 0xbc, 0xc7, 0xed, 0x12,
+          0x3d } },
         L"beta",                                    // Forced channel name.
         ChannelStrategy::FIXED,
         true,   // Supports system-level installs.
@@ -135,6 +140,9 @@ const InstallConstants kInstallModes[] = {
           0x43b7,
           { 0xb7, 0x18, 0x8f, 0x82, 0x61, 0x45, 0x97,
             0xa3 } },  // Elevator CLSID.
+        { 0x9cf6868c, 0x8c9f, 0x4220,
+          { 0x95, 0xbe, 0x13, 0x99, 0x9d, 0xd9, 0x9b,
+            0x48 } },
         L"dev",                                     // Forced channel name.
         ChannelStrategy::FIXED,
         true,   // Supports system-level installs.
@@ -170,6 +178,9 @@ const InstallConstants kInstallModes[] = {
           0x4389,
           { 0x87, 0xdb, 0xd0, 0x99, 0x48, 0x30, 0xbb,
             0x17 } },  // Elevator CLSID.
+        { 0x648b3c2b, 0xe53, 0x4085,
+          { 0xa9, 0x75, 0x11, 0x18, 0x1, 0x75, 0x8f,
+            0xe7 } },
         L"nightly",                                  // Forced channel name.
         ChannelStrategy::FIXED,
         false,  // Does not support system-level installs.
@@ -208,6 +219,9 @@ const InstallConstants kInstallModes[] = {
           0x4421,
           { 0xaf, 0xe8, 0x58, 0xf3, 0xc9, 0x47, 0x43,
             0x6a } },  // Elevator CLSID.
+        { 0xedf6b466, 0x4efc, 0x4c88,
+          { 0x83, 0x8c, 0x96, 0xb4, 0x39, 0x1c, 0x6a,
+            0xe } },
         L"",    // Empty default channel name since no update integration.
         ChannelStrategy::UNSUPPORTED,
         true,   // Supports system-level installs.
