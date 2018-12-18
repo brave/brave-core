@@ -316,7 +316,8 @@ bool BundleStateDatabase::InsertOrUpdateAdInfoCategory(
   return ad_info_statement.Run();
 }
 
-bool BundleStateDatabase::GetAdsForCategory(const std::string& category,
+bool BundleStateDatabase::GetAdsForCategory(const std::string& region,
+                                            const std::string& category,
                                             std::vector<ads::AdInfo>& ads) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -334,7 +335,11 @@ bool BundleStateDatabase::GetAdsForCategory(const std::string& category,
                              "ON aic.ad_info_uuid = ai.uuid "
                              "WHERE aic.category_name = ?"));
 
+                             // TODO(tmancey) - use region in the query
+                             // "ai.region = ? and "
   info_sql.BindString(0, category);
+  // TODO(tmancey) - use region in the query
+  // info_sql.BindString(1, region);
 
   if (info_sql.Step()) {
     ads::AdInfo info;

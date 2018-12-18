@@ -34,7 +34,8 @@ class BundleStateDatabase {
   }
 
   bool SaveBundleState(const ads::BundleState& bundle_state);
-  bool GetAdsForCategory(const std::string& category,
+  bool GetAdsForCategory(const std::string& region,
+                         const std::string& category,
                          std::vector<ads::AdInfo>& ads);
 
   // Returns the current version of the publisher info database
