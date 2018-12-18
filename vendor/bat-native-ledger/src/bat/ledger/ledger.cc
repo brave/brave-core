@@ -90,7 +90,8 @@ PublisherInfoFilter::PublisherInfoFilter() :
     excluded(PUBLISHER_EXCLUDE_FILTER::FILTER_DEFAULT),
     percent(0),
     min_duration(0),
-    reconcile_stamp(0) {}
+    reconcile_stamp(0),
+    non_verified(true) {}
 PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
     id(filter.id),
     category(filter.category),
@@ -100,7 +101,8 @@ PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
     percent(filter.percent),
     order_by(filter.order_by),
     min_duration(filter.min_duration),
-    reconcile_stamp(filter.reconcile_stamp) {}
+    reconcile_stamp(filter.reconcile_stamp),
+    non_verified(filter.non_verified) {}
 PublisherInfoFilter::~PublisherInfoFilter() {}
 
 PublisherBanner::PublisherBanner() {}

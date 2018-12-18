@@ -487,6 +487,10 @@ std::string PublisherInfoDatabase::BuildClauses(int start,
     clauses += " AND ai.percent >= ?";
   }
 
+  if (!filter.non_verified) {
+    clauses += " AND pi.verified = 1";
+  }
+
   for (const auto& it : filter.order_by) {
     clauses += " ORDER BY " + it.first;
     clauses += (it.second ? " ASC" : " DESC");
