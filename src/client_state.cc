@@ -37,7 +37,6 @@ ClientState::ClientState(const ClientState& state) :
   ads_uuid_seen(state.ads_uuid_seen),
   available(state.available),
   current_ssid(state.current_ssid),
-  expired(state.expired),
   last_search_time(state.last_search_time),
   last_shop_time(state.last_shop_time),
   last_user_activity(state.last_user_activity),
@@ -93,10 +92,6 @@ bool ClientState::FromJson(const std::string& json) {
 
   if (client.HasMember("currentSSID")) {
     current_ssid = client["currentSSID"].GetString();
-  }
-
-  if (client.HasMember("expired")) {
-    expired = client["expired"].GetBool();
   }
 
   if (client.HasMember("lastSearchTime")) {
@@ -220,9 +215,6 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
 
   writer->String("currentSSID");
   writer->String(state.current_ssid.c_str());
-
-  writer->String("expired");
-  writer->Bool(state.expired);
 
   writer->String("lastSearchTime");
   writer->Uint64(state.last_search_time);

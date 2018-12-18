@@ -93,16 +93,6 @@ bool Client::GetAvailable() const {
   return client_state_->available;
 }
 
-void Client::SetExpired(const bool expired) {
-  client_state_->expired = expired;
-
-  SaveState();
-}
-
-bool Client::GetExpired() const {
-  return client_state_->expired;
-}
-
 void Client::SetCurrentSSID(const std::string& ssid) {
   client_state_->current_ssid = ssid;
 

@@ -35,8 +35,6 @@ class Client {
   void ResetAdsUUIDSeen(const std::vector<AdInfo>& ads);
   void SetAvailable(const bool available);
   bool GetAvailable() const;
-  void SetExpired(const bool expired);
-  bool GetExpired() const;
   void SetCurrentSSID(const std::string& ssid);
   void FlagShoppingState(const std::string& url, const uint64_t score);
   void UnflagShoppingState();
