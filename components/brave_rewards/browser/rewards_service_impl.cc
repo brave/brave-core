@@ -606,6 +606,7 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
                                   grant.probi);
   }
 
+  GetCurrentBalanceReport();
   TriggerOnGrantFinish(result, grant);
 }
 
@@ -624,6 +625,7 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
         GetCurrentTimestamp());
   }
 
+  GetCurrentBalanceReport();
   for (auto& observer : observers_)
     observer.OnReconcileComplete(this,
                                  result,
