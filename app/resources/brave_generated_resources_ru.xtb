@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID расширения "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") не разрешено в Brave.</translation>
 <translation id="7450557937477381864">Закрыть Chrome</translation>
 <translation id="7008934821596358692">Чтобы завершить импорт, закройте все окна Chrome.</translation>
-<translation id="7753103220327065417">Закрыть Brave</translation>
-<translation id="5588481533147090393">Для завершения импорта закройте все окна Brave.</translation>
 <translation id="6447842834002726250">Файлы сookie</translation>
 <translation id="4983925687993168579">Статистика</translation>
 <translation id="9173846700806833701">Widevine не установлен</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine является частью кода Управления цифровыми правами (DRM), в отношении которого Brave Software не имеет прав на владение и изучение. Код Google Widevine загружается из серверов Google, а не наших серверов. Он загружается только в том случае, если вы включите эту опцию. Мы не рекомендуем использовать DRM, но мы уважаем выбор пользователя и признаем, что некоторые пользователи Brave хотели бы пользоваться услугами, которые его требуют.
 
 Установив данное расширение, вы соглашаетесь с Условиями пользования Google Widevine. Вы соглашаетесь с тем, что Brave не несет ответственности за любой ущерб или убытки, причиненные в связи с использованием вами Google Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Импортировано из Brave</translation>
 <translation id="453977518730680921">Автозапуск аудио и видео</translation>
 <translation id="410351446219883937">Автовоспроизведение</translation>

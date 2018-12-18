@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nije dopušteno u pregledniku Brave.</translation>
 <translation id="7450557937477381864">Zatvori Chrome</translation>
 <translation id="7008934821596358692">Kako biste dovršili uvoz, zatvorite sve prozore preglednika Chrome.</translation>
-<translation id="7753103220327065417">Zatvorite Brave</translation>
-<translation id="5588481533147090393">Kako biste dovršili uvoz, zatvorite sve prozore preglednika Brave.</translation>
 <translation id="6447842834002726250">Kolačići</translation>
 <translation id="4983925687993168579">Statistički podaci</translation>
 <translation id="9173846700806833701">Widevine nije instaliran</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Widevine tvrtke Google dio je koda za upravljanje digitalnim pravima (DRM) koji tvrtka Brave Software ne posjeduje i ne može pregledati. Kȏd za Googleovo rješenje Widevine učitava se s poslužitelja tvrtke Google, a ne s naših poslužitelja. Učitava se samo kada omogućite tu opciju. Ne preporučujemo uporabu DRM-a, no poštujemo izbor korisnika i prihvaćamo činjenicu da bi neki korisnici preglednika Brave htjeli koristiti usluge koje to zahtijevaju.
 
 Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtke Google. Potvrđujete da Brave ne odgovora ni za kakvu štetu ni gubitke povezane s vašom uporabom Googleova rješenja Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Uvezeno iz preglednika Brave</translation>
 <translation id="453977518730680921">Automatski reproduciraj medije</translation>
 <translation id="410351446219883937">Automatska reprodukcija</translation>

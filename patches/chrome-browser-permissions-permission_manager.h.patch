@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/permissions/permission_manager.h b/chrome/browser/permissions/permission_manager.h
-index 223f67e98f95ce3d5c4ff9e69d4894daf992d933..1f5928b4fd2447cc894ae62334ba702662e393dd 100644
+index f907ae4f1d0592e1ca5b077f7ddecefd2a9ba4b0..08f428650727dd76fad61b3da679c029d9684f16 100644
 --- a/chrome/browser/permissions/permission_manager.h
 +++ b/chrome/browser/permissions/permission_manager.h
-@@ -120,6 +120,7 @@ class PermissionManager : public KeyedService,
-   bool IsPermissionKillSwitchOn(ContentSettingsType);
+@@ -125,6 +125,7 @@ class PermissionManager : public KeyedService,
+   void ResetPermissionOverridesForDevTools();
  
   private:
 +  friend class BravePermissionManager;

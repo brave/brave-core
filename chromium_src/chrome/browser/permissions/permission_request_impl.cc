@@ -8,7 +8,7 @@
 PermissionRequest::IconId PermissionRequestImpl::GetIconId() const {
   switch (content_settings_type_) {
     case CONTENT_SETTINGS_TYPE_AUTOPLAY:
-      return kPlayArrowIcon;
+      return vector_icons::kPlayArrowIcon;
     default:
       break;
   }

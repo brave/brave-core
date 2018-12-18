@@ -1,5 +1,5 @@
 diff --git a/net/base/host_port_pair.h b/net/base/host_port_pair.h
-index a5ee6bda3ff542624b484b7a11811b708fec3e11..084616da28ba3569cc75d1b0fef51a0b89a9f54e 100644
+index 1efb721e103ad43bb8799ceed2ce3fc199ccd9e6..9818f8be199a7c378721bf4b90222c25f556b738 100644
 --- a/net/base/host_port_pair.h
 +++ b/net/base/host_port_pair.h
 @@ -24,6 +24,13 @@ class NET_EXPORT HostPortPair {
@@ -16,7 +16,7 @@ index a5ee6bda3ff542624b484b7a11811b708fec3e11..084616da28ba3569cc75d1b0fef51a0b
    // Creates a HostPortPair for the origin of |url|.
    static HostPortPair FromURL(const GURL& url);
  
-@@ -37,18 +44,23 @@ class NET_EXPORT HostPortPair {
+@@ -37,20 +44,25 @@ class NET_EXPORT HostPortPair {
    // TODO(willchan): Define a functor instead.
    // Comparator function so this can be placed in a std::map.
    bool operator<(const HostPortPair& other) const {
@@ -24,6 +24,8 @@ index a5ee6bda3ff542624b484b7a11811b708fec3e11..084616da28ba3569cc75d1b0fef51a0b
 +    return std::tie(port_, host_, username_, password_) <
 +      std::tie(other.port_, other.host_, other.username_, other.password_);
    }
+ 
+   bool operator==(const HostPortPair& other) const { return Equals(other); }
  
    // Equality test of contents. (Probably another violation of style guide).
    bool Equals(const HostPortPair& other) const {
@@ -42,7 +44,7 @@ index a5ee6bda3ff542624b484b7a11811b708fec3e11..084616da28ba3569cc75d1b0fef51a0b
    const std::string& host() const {
      return host_;
    }
-@@ -72,6 +84,8 @@ class NET_EXPORT HostPortPair {
+@@ -74,6 +86,8 @@ class NET_EXPORT HostPortPair {
    size_t EstimateMemoryUsage() const;
  
   private:

@@ -39,6 +39,7 @@
 <translation id="5112577000029535889">Outils de &amp;développement</translation>
 <translation id="5184063094292164363">Console &amp;JavaScript</translation>
 <translation id="7056526158851679338">&amp;Inspecter les appareils</translation>
+<translation id="947329552760389097">&amp;Examiner les éléments</translation>
 <translation id="48838266408104654">&amp;Gestionnaire de tâches</translation>
 <translation id="6277518330158259200">F&amp;aire une capture d'écran</translation>
 <translation id="5288678174502918605">&amp;Rouvrir l'onglet fermé</translation>
@@ -57,6 +58,7 @@
 <translation id="7324297612904500502">Forum bêta</translation>
 <translation id="7199158086730159431">Obtenir de l'aid&amp;e</translation>
 <translation id="630065524203833229">&amp;Quitter</translation>
+<translation id="2052369079215022979">Géré par votre organisation</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5702898740348134351">Modifi&amp;er les moteurs de recherche...</translation>
 <translation id="2454247629720664989">Mot clé</translation>
@@ -152,6 +154,7 @@
 <translation id="4020327272915390518">Menu Options</translation>
 <translation id="8200772114523450471">Reprendre</translation>
 <translation id="2770465223704140727">Retirer de la liste</translation>
+<translation id="7702574632857388784">Supprimer <ph name="FILE_NAME"/> de la liste</translation>
 <translation id="7658239707568436148">Annuler</translation>
 <translation id="7144878232160441200">Réessayer</translation>
 <translation id="6910211073230771657">Supprimé</translation>
@@ -165,11 +168,11 @@
 <translation id="3612673635130633812">Téléchargé par &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="6395403722585816044">Téléchargé en mode navigation privée</translation>
 <translation id="8028803902702117856">Téléchargement en cours : <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
-<translation id="4644818355646995778">Téléchargement en cours : <ph name="PERCENT_REMAINING"/></translation>
+<translation id="5632592977009207922">Téléchargement en cours, <ph name="PERCENT_REMAINING"/> % restant</translation>
 <translation id="313963229645891001">Téléchargement en cours : <ph name="STATUS"/></translation>
 <translation id="1834503245783133039">Échec du téléchargement : <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Téléchargement annulé : <ph name="FILE_NAME"/></translation>
-<translation id="348999362308956431">Téléchargement terminé : <ph name="FILE_NAME"/></translation>
+<translation id="4110490973560452005">Téléchargement terminé : <ph name="FILE_NAME"/>. Appuyez sur Maj+F6 pour accéder à la zone de la barre de téléchargements.</translation>
 <translation id="2743387203779672305">Copier dans le Presse-papier</translation>
 <translation id="883911313571074303">Annoter l'image</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Téléchargement en cours}one{Téléchargement en cours}other{Téléchargements en cours}}</translation>
@@ -292,7 +295,7 @@ Assurez-vous de ne pas dévoiler d'informations sensibles.</translation>
 <translation id="6398765197997659313">Quitter le mode plein écran</translation>
 <translation id="8559694214572302298">Décodage d'images</translation>
 <translation id="8191453843330043793">Résolution de proxy V8</translation>
-<translation id="6185617499004995178">Outil de validation IPP CUPS</translation>
+<translation id="5552059560155071882">Analyseur IPP CUPS</translation>
 <translation id="3077708072777965506">Mode de saisie Brave OS</translation>
 <translation id="7171242884588191792">Utilitaires de fichiers Brave</translation>
 <translation id="3061707000357573562">Service d'application de correctifs</translation>
@@ -301,7 +304,6 @@ Assurez-vous de ne pas dévoiler d'informations sensibles.</translation>
 <translation id="1545775234664667895">Thème "<ph name="THEME_NAME"/>" installé</translation>
 <translation id="2079545284768500474">Annuler</translation>
 <translation id="2256115617011615191">Redémarrer maintenant</translation>
-<translation id="795025003224538582">Ne pas redémarrer</translation>
 <translation id="4545028762441890696">Pour réactiver cette extension, acceptez les nouvelles autorisations :</translation>
 <translation id="3009487527589249344">Brave Software a signalé l'extension <ph name="EXTENSION_NAME"/> comme malveillante et a bloqué son installation</translation>
 <translation id="6790497603648687708">Ajout de l'extension <ph name="EXTENSION_NAME"/> effectué à distance</translation>
@@ -497,9 +499,9 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3987348946546879621">Données économisées</translation>
 <translation id="6228516488918914827">Page chargée plus rapidement</translation>
 <translation id="9137013805542155359">Afficher l'original</translation>
-<translation id="71243390042171582">Mise à jour il y a <ph name="MINUTES"/> min</translation>
+<translation id="1056466516655540509">Mis à jour il y a <ph name="MINUTES"/> min</translation>
 <translation id="8743864605301774756">Mise à jour il y a 1 heure</translation>
-<translation id="5638497698949808140">Mise à jour il y a <ph name="HOURS"/> heures</translation>
+<translation id="7363117941401515667">Mise à jour il y a <ph name="HOURS"/> heures</translation>
 <translation id="1329584516321524826">Mise à jour à l'instant</translation>
 <translation id="224940702122312781">Cette page consomme beaucoup de données.</translation>
 <translation id="3861241522664181545">Chargement de la page suspendu.</translation>
@@ -644,6 +646,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8803953437405899238">Ouvrez un nouvel onglet d'un simple clic</translation>
 <translation id="3071624960923923138">Vous pouvez cliquer ici pour ouvrir un nouvel onglet</translation>
 <translation id="4908811072292128752">Ouvrez un nouvel onglet pour naviguer sur deux sites Web en même temps</translation>
+<translation id="8966870118594285808">Permet de rouvrir un onglet fermé par erreur</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Page ne répondant pas}one{Page ne répondant pas}other{Pages ne répondant pas}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Vous pouvez attendre que la page soit de nouveau accessible ou la quitter.}one{Vous pouvez attendre que la page soit de nouveau accessible ou la quitter.}other{Vous pouvez attendre que les pages soient de nouveau accessibles ou les quitter.}}</translation>
 <translation id="7903345046358933331">La page ne répond plus. Vous pouvez attendre qu'elle soit de nouveau accessible ou la fermer.</translation>
@@ -774,9 +777,8 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="2445484935443597917">Créer un profil</translation>
 <translation id="2606246518223360146">Associer les données</translation>
 <translation id="473546211690256853">Ce compte est géré par <ph name="DOMAIN"/>.</translation>
-<translation id="3661054927247347545">Le certificat de connexion n'est pas valide. Fermeture de la fenêtre dans <ph name="MINUTES"/> et <ph name="SECONDS"/></translation>
-<translation id="6522797484310591766">Se connecter maintenant</translation>
-<translation id="5436822233913560332">Sans connexion, toutes les fenêtres du navigateur vont bientôt se fermer automatiquement.</translation>
+<translation id="622537739776246443">Le profil va être supprimé</translation>
+<translation id="5632566673632479864">Votre compte <ph name="EMAIL"/> n'est plus autorisé comme compte principal. Étant donné que ce compte est géré par <ph name="DOMAIN"/>, vos favoris, votre historique, vos mots de passe et les autres paramètres seront effacés de cet appareil.</translation>
 <translation id="8168435359814927499">Contenu</translation>
 <translation id="7702907602086592255">Domaine</translation>
 <translation id="3202131003361292969">Chemin d'accès</translation>
@@ -844,15 +846,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3074037959626057712">Vous êtes connecté et avez activé la synchronisation</translation>
 <translation id="1231733316453485619">Activer la synchronisation ?</translation>
 <translation id="9125982323641182972">Profitez des fonctionnalités intelligentes de Brave Software dans Brave</translation>
-<translation id="7988117629517051942">Profitez d'encore plus de fonctionnalités intelligentes de Brave Software</translation>
-<translation id="5596627076506792578">Plus d'options</translation>
-<translation id="4419556793104466535">Contrôler les paramètres de synchronisation et de personnalisation, et bien plus</translation>
-<translation id="184568702928428857">Les paramètres relatifs à la synchronisation, à la personnalisation et à d'autres services Brave Software dans Brave ont été modifiés, ce qui peut avoir une incidence sur votre configuration actuelle.</translation>
-<translation id="4192273449750167573">Consulter vos paramètres sur l'écran suivant</translation>
-<translation id="685040365210406336">Ne rien modifier</translation>
-<translation id="6418273007044911016">Les données que vous synchronisez avec Brave Software et les fonctionnalités que vous utilisez ne changeront pas</translation>
-<translation id="8372733498235009300">Activer la synchronisation, la personnalisation et d'autres services Brave Software</translation>
-<translation id="8340964510643644301">Vous pouvez personnaliser cette option à tout moment dans les paramètres Brave</translation>
 <translation id="3149880132460839085">Synchronisation Brave Software Brave</translation>
 <translation id="3796902758602917951">Vos favoris, votre historique, vos mots de passe et d'autres paramètres seront synchronisés avec votre compte Brave Software, afin que vous puissiez les utiliser sur tous vos appareils.</translation>
 <translation id="1371301976177520732">Vos favoris, vos mots de passe, votre historique et plus encore sur tous vos appareils</translation>
@@ -898,7 +891,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="6812349420832218321"><ph name="PRODUCT_NAME"/> ne peut pas être exécuté en tant que root.</translation>
 <translation id="2292848386125228270">Veuillez démarrer <ph name="PRODUCT_NAME"/> en mode utilisateur standard. Si vous devez l'exécuter à la racine dans le cadre du développement, relancez-le avec l'indicateur --no-sandbox.</translation>
 <translation id="3122496702278727796">Échec de la création du répertoire des données</translation>
-<translation id="602251597322198729">Ce site tente de télécharger plusieurs fichiers. Voulez-vous autoriser le chargement ?</translation>
+<translation id="51918995459521422"><ph name="ORIGIN"/> souhaite télécharger plusieurs fichiers</translation>
 <translation id="691024665142758461">Télécharger plusieurs fichiers</translation>
 <translation id="7004499039102548441">Onglets récents</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 onglet}one{# onglet}other{# onglets}}</translation>
@@ -1125,6 +1118,8 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="874689135111202667">{0,plural, =1{Importer un fichier sur ce site ?}one{Importer # fichier sur ce site ?}other{Importer # fichiers sur ce site ?}}</translation>
 <translation id="1956390763342388273">Tous les fichiers seront téléchargés depuis "<ph name="FOLDER_PATH"/>". N'effectuez cette opération que s'il s'agit d'un site de confiance.</translation>
 <translation id="1243314992276662751">Importer</translation>
+<translation id="8480139856920479206">{0,plural, =1{Vous avez une fenêtre de navigation privée.}one{Vous avez # fenêtre de navigation privée.}other{Vous avez # fenêtres de navigation privée.}}</translation>
+<translation id="2545348954155066907">{0,plural, =1{Fermer cette fenêtre}one{Fermer la fenêtre de navigation privée}other{Fermer toutes les fenêtres de navigation privée}}</translation>
 <translation id="3785308913036335955">Afficher le raccourci des applications</translation>
 <translation id="711840821796638741">Afficher les favoris gérés</translation>
 <translation id="3613134908380545408">Afficher "<ph name="FOLDER_NAME"/>"</translation>
@@ -1231,7 +1226,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3596235046596950091">Activer les services cloud</translation>
 <translation id="7649070708921625228">Aide</translation>
 <translation id="9011163749350026987">Toujours afficher l'icône</translation>
-<translation id="9115487443206954631">Gérer les appareils Cast</translation>
 <translation id="1706586824377653884">Ajouté par votre administrateur</translation>
 <translation id="6467304607960172345">Optimiser les vidéos en plein écran</translation>
 <translation id="1597210476603167523">Activer la diffusion sur des services basés sur le cloud tels que Brave Software Hangouts.</translation>
@@ -1262,6 +1256,9 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="4415245286584082850">Aucun appareil détecté. Ouvrir un article du centre d'aide dans un nouvel onglet.</translation>
 <translation id="4363771538994847871">Aucune destination Cast trouvée. Besoin d'aide?</translation>
 <translation id="8688672835843460752">Disponible</translation>
+<translation id="1536754031901697553">Déconnexion…</translation>
+<translation id="1854180393107901205">Arrêter la diffusion</translation>
+<translation id="5307030433605830021">Source non compatible</translation>
 <translation id="4271396100647220620">Aucune correspondance</translation>
 <translation id="6972180789171089114">Audio/Vidéo</translation>
 <translation id="2541002089857695151">Optimiser la diffusion en plein écran ?</translation>
@@ -1295,7 +1292,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3340978935015468852">paramètres</translation>
 <translation id="5704875434923668958">Synchronisation</translation>
 <translation id="6257602895346497974">Activer la synchronisation…</translation>
-<translation id="8618141719844947886">Aucune synchronisation</translation>
+<translation id="5127805178023152808">La synchronisation est désactivée.</translation>
 <translation id="5781092003150880845">Synchroniser en tant que <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Synchroniser avec votre compte</translation>
 <translation id="2538361623464451692">Synchronisation désactivée</translation>
@@ -1391,6 +1388,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="4425149324548788773">Mon Drive</translation>
 <translation id="1786636458339910689">Drive d'équipe</translation>
+<translation id="5010406651457630570">Ordinateurs</translation>
 <translation id="8106045200081704138">Partagés avec moi</translation>
 <translation id="981121421437150478">Hors connexion</translation>
 <translation id="9034924485347205037">Fichiers Linux</translation>
@@ -1454,6 +1452,9 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="5649768706273821470">Écouter</translation>
 <translation id="4582497162516204941">Installer avec Linux (Bêta)</translation>
 <translation id="4195249722193633765">Installez l'application avec Linux (Bêta)</translation>
+<translation id="7248671827512403053">Application</translation>
+<translation id="183183971458492120">Chargement des informations…</translation>
+<translation id="8157684860301034423">Échec de la récupération des informations sur l'application.</translation>
 <translation id="5678784840044122290">L'application Linux sera disponible dans votre terminal et une icône peut également apparaître dans votre lanceur d'applications.</translation>
 <translation id="9213073329713032541">Installation démarrée avec succès.</translation>
 <translation id="2782104745158847185">Erreur pendant l'installation de l'application Linux</translation>
@@ -1514,13 +1515,14 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="386548886866354912">Empaqueter avec <ph name="EXTENSION_NAME"/></translation>
 <translation id="3078461028045006476">Partager avec <ph name="EXTENSION_NAME"/></translation>
 <translation id="4197674956721858839">Compresser les fichiers sélectionnés au format .zip</translation>
-<translation id="9215934040295798075">Définir le fond d'écran</translation>
+<translation id="1572585716423026576">Définir comme fond d'écran</translation>
 <translation id="204914487372604757">Créer un raccourci</translation>
 <translation id="799547531016638432">Supprimer le raccourci</translation>
 <translation id="5494920125229734069">Tout sélectionner</translation>
 <translation id="7295662345261934369">Partager</translation>
 <translation id="2001796770603320721">Gérer dans Drive</translation>
 <translation id="5318819489018851358">Partager avec Linux</translation>
+<translation id="6806699711453372963">Gérer le partage Linux</translation>
 <translation id="7505167922889582512">Afficher les fichiers masqués</translation>
 <translation id="7846076177841592234">Annuler la sélection</translation>
 <translation id="2377319039870049694">Passer en mode Liste</translation>
@@ -1660,7 +1662,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8671210955687109937">Commentateur</translation>
 <translation id="799923393800005025">Lecteur</translation>
 <translation id="7925686952655276919">Ne pas utiliser les données mobiles pour la synchronisation</translation>
-<translation id="4649168043999963079">Afficher les fichiers Brave Software Docs</translation>
 <translation id="7106346894903675391">Acheter de l'espace de stockage supplémentaire…</translation>
 <translation id="3549797760399244642">Accéder à drive.google.com…</translation>
 <translation id="3451154303153932176">Espace Brave Software Drive disponible : <ph name="SPACE_AVAILABLE"/></translation>
@@ -1673,7 +1674,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="7606199793785990727">Impossible d'accéder à Brave Software Drive. Veuillez vous <ph name="BEGIN_LINK"/>déconnecter<ph name="END_LINK"/>, puis vous reconnecter.</translation>
 <translation id="585883343689351092">Bienvenue dans Brave Software Drive !</translation>
 <translation id="1788440444874291920">Bénéficiez de 100 Go d'espace libre avec Brave Software Drive</translation>
-<translation id="5722262830411045381">Profitez d'un téraoctet d'espace de stockage gratuit grâce à Brave Software Drive</translation>
 <translation id="6862635236584086457">Tous les fichiers enregistrés dans ce dossier sont automatiquement sauvegardés en ligne.</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Accédez à vos fichiers où que vous soyez, même hors connexion.<ph name="MARKUP_2"/>
     Les fichiers enregistrés dans Brave Software Drive sont à jour et disponibles depuis n'importe quel appareil.<ph name="MARKUP_3"/>
@@ -1690,9 +1690,11 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3096967955765855393">Nous recherchons constamment à rendre votre navigation plus sûre. Auparavant, vous pouviez être invité à ajouter une extension dans votre navigateur par n'importe quel site Web. Dans les dernières versions de Brave Software Brave, vous devez explicitement indiquer que vous souhaitez installer une extension en l'ajoutant via la page "Extensions". <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">Impossible d'ouvrir le fichier avec $1</translation>
 <translation id="639777613761517128">Pour ouvrir un fichier avec $1, copiez-le d'abord dans le dossier "Fichiers Linux".</translation>
-<translation id="5112009661904384591">Partager les fichiers avec Linux</translation>
-<translation id="3186202398303525187">Autoriser les applications Linux à ouvrir les fichiers $1.</translation>
-<translation id="1603300902586586390">Autoriser les applications Linux à ouvrir les fichiers $1.</translation>
+<translation id="5368191757080475556">Partager le dossier avec Linux</translation>
+<translation id="6803594270782834876">Autoriser les applications Linux à ouvrir les fichiers contenus dans le dossier $1</translation>
+<translation id="9204140378020726578">Autorisez les applications Linux à ouvrir les fichiers contenus dans Brave Software Drive. Les modifications seront synchronisées avec vos autres appareils.</translation>
+<translation id="4290535918735525311">1 dossier partagé avec Linux</translation>
+<translation id="984401732412731005">$1 dossiers partagés avec Linux</translation>
 <translation id="4572815280350369984">Fichier <ph name="FILE_TYPE"/></translation>
 <translation id="803771048473350947">Fichier</translation>
 <translation id="895586998699996576">Image $1</translation>
@@ -1746,6 +1748,8 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="6199801702437275229">En attente d'informations sur l'espace disponible…</translation>
 <translation id="6485131920355264772">Échec de la récupération des informations sur l'espace disponible</translation>
 <translation id="7748626145866214022">D'autres options sont disponibles dans la barre d'action. Appuyez sur Alt+A pour la sélectionner.</translation>
+<translation id="60628369828239652">Ouverture du fichier <ph name="FILE_NAME"/></translation>
+<translation id="353547388688256996">Ouverture de <ph name="NUMBER_FILES"/></translation>
 <translation id="6710213216561001401">Précédent</translation>
 <translation id="1201402288615127009">Suivant</translation>
 <translation id="1395262318152388157">Barre de recherche</translation>
@@ -1836,6 +1840,16 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8710187907779883426">court (1 s)</translation>
 <translation id="4305227814872083840">long (2 s)</translation>
 <translation id="2860150991415616761">très long (4 s)</translation>
+<translation id="5573248369095789351">Action d'attente</translation>
+<translation id="2427507373259914951">Clic gauche</translation>
+<translation id="8203795194971602413">Clic droit</translation>
+<translation id="1999763610967697511">Glisser-déposer</translation>
+<translation id="8142441511840089262">Double-clic</translation>
+<translation id="485592688953820832">Aucune action (pause)</translation>
+<translation id="1217668622537098248">Réactiver le clic gauche après l'action</translation>
+<translation id="3682824389861648626">Seuil de mouvement</translation>
+<translation id="5511379779384092781">Très léger</translation>
+<translation id="7409549334477097887">Très important</translation>
 <translation id="1330145147221172764">Activer le clavier à l'écran</translation>
 <translation id="1800308196794859773">Transmettez votre voix à Brave Software pour pouvoir dicter ce que vous voulez dans n'importe quelle zone de texte.</translation>
 <translation id="8758418656925882523">Activer la dictée (parlez pour que vos propos soient saisis)</translation>
@@ -1917,40 +1931,33 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="1763808908432309942">La page s'ouvre dans un nouvel onglet</translation>
 <translation id="6248988683584659830">Rechercher</translation>
 <translation id="883304095704384301">Si vous ne trouvez pas ce que vous recherchez, consultez l'<ph name="BEGIN_LINK_CHROMIUM"/>Aide Brave Software Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
+<translation id="6406708970972405507">Paramètres – <ph name="SECTION_TITLE"/></translation>
 <translation id="5860033963881614850">Désactivé</translation>
 <translation id="5916664084637901428">Activé</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> contrôle ce paramètre</translation>
 <translation id="6643016212128521049">Effacer</translation>
 <translation id="8465252176946159372">Non valide</translation>
 <translation id="8647834505253004544">Adresse Web non valide</translation>
-<translation id="2149850907588596975">Mots de passe et formulaires</translation>
-<translation id="8639963783467694461">Paramètres de saisie automatique</translation>
+<translation id="7946586320617670168">L'origine doit être sûre</translation>
+<translation id="2709516037105925701">Saisie automatique</translation>
 <translation id="7764225426217299476">Ajouter une adresse</translation>
 <translation id="5595485650161345191">Modifier l'adresse</translation>
 <translation id="6207937957461833379">Pays/Région</translation>
 <translation id="4378154925671717803">Téléphone</translation>
 <translation id="5659593005791499971">E-mail</translation>
-<translation id="5762172915276660232">Paramètres de carte de crédit</translation>
-<translation id="4499718683476608392">Activer la saisie automatique des informations de paiement pour remplir les formulaires d'un simple clic</translation>
 <translation id="9064275926664971810">Activer la saisie automatique pour remplir les formulaires d'un simple clic</translation>
 <translation id="5029568752722684782">Effacer la copie</translation>
 <translation id="2154484045852737596">Modifier la carte</translation>
 <translation id="5087580092889165836">Ajouter une carte</translation>
-<translation id="7284555534810614828">Enregistrer la carte pour utiliser Brave Software Pay</translation>
-<translation id="6281511959351052816">Enregistrer des cartes pour utiliser Brave Software Pay</translation>
-<translation id="1904518222538904133">L'une de vos cartes ne peut être utilisée que sur cet appareil</translation>
-<translation id="8065485338434000013">Certaines de vos cartes ne peuvent être utilisées que sur cet appareil</translation>
 <translation id="4807098396393229769">Titulaire de la carte</translation>
 <translation id="2612676031748830579">Numéro de carte</translation>
 <translation id="869891660844655955">Date d'expiration</translation>
 <translation id="1149401351239820326">Mois d'expiration</translation>
 <translation id="8058655154417507695">Année d'expiration</translation>
 <translation id="379082410132524484">Votre carte est arrivée à expiration</translation>
-<translation id="5624120631404540903">Gérer les mots de passe</translation>
 <translation id="6644512095122093795">Proposer d'enregistrer les mots de passe</translation>
 <translation id="2100273922101894616">Connexion automatique</translation>
 <translation id="7513029293694390567">Permet de se connecter automatiquement aux sites Web à l'aide des identifiants enregistrés. Si cette fonctionnalité est désactivée, vous êtes invité à confirmer chaque connexion à un site Web.</translation>
-<translation id="1511388193702657997">Proposer d'enregistrer mes mots de passe Web</translation>
 <translation id="1375321115329958930">Mots de passe enregistrés</translation>
 <translation id="152234381334907219">Jamais enregistrés</translation>
 <translation id="5137501176474113045">Supprimer cet article</translation>
@@ -1960,7 +1967,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8503813439785031346">Nom d'utilisateur</translation>
 <translation id="6657585470893396449">Mot de passe</translation>
 <translation id="137651782282853227">Les adresses enregistrées s'afficheront ici</translation>
-<translation id="1529116897397289129">Les cartes enregistrées s'afficheront ici</translation>
 <translation id="7930294771522048157">Les modes de paiement enregistrés s'afficheront ici</translation>
 <translation id="9124003689441359348">Les mots de passe enregistrés s'afficheront ici</translation>
 <translation id="4400367121200150367">Les sites pour lesquels vos mots de passe ne seront jamais enregistrés s'afficheront ici</translation>
@@ -2208,6 +2214,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="1164899421101904659">Saisir la clé de déverrouillage du code</translation>
 <translation id="7582582252461552277">Préférer ce réseau</translation>
 <translation id="7469894403370665791">Se connecter automatiquement à ce réseau</translation>
+<translation id="7987814697832569482">Toujours se connecter via ce VPN</translation>
 <translation id="8821045908425223359">Configurer l'adresse IP automatiquement</translation>
 <translation id="6596816719288285829">Adresse IP</translation>
 <translation id="8986362086234534611">Retirer</translation>
@@ -2374,8 +2381,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="490074449735753175">Utiliser un service Web pour corriger les erreurs d'orthographe</translation>
 <translation id="3523078749603005179">Correcteur orthographique plus intelligent qui envoie à Brave Software ce que vous saisissez dans le navigateur</translation>
 <translation id="2564653188463346023">Correcteur orthographique amélioré</translation>
-<translation id="7469406957790636836">Pour activer cette option, activez d'abord la vérification orthographique sous <ph name="BEGIN_LINK"/>Langues et saisie<ph name="END_LINK"/></translation>
-<translation id="8699566574894671540">Pour activer cette option, sélectionnez d'abord "Vérifier l'orthographe lors de la frappe" depuis le menu "Édition"</translation>
 <translation id="9079153198295609735">Envoie automatiquement les statistiques d'utilisation et les rapports d'erreur à Brave Software</translation>
 <translation id="5941220456342415404">Envoyer automatiquement des données de diagnostic et d'utilisation à Brave Software</translation>
 <translation id="918192811481327695">Contribuer à l'amélioration des fonctionnalités et des performances de Brave</translation>
@@ -2420,13 +2425,13 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="1545786162090505744">URL avec %s à la place de la requête</translation>
 <translation id="7136694880210472378">Utiliser par défaut</translation>
 <translation id="6953878494808481632">Autres infos</translation>
-<translation id="7258619945375359543">Autoriser l'Assistant à proposer des suggestions en fonction des éléments affichés sur votre écran</translation>
+<translation id="4145922204387553806">Autoriser l'Assistant à vous fournir des informations en lien avec le contenu affiché sur votre écran</translation>
 <translation id="472896694312062378">"Ok Brave Software"</translation>
 <translation id="6236033368436682108">Accédez à l'Assistant chaque fois que vous dites "Ok Brave Software" quand l'écran est allumé</translation>
 <translation id="2482878487686419369">Notifications</translation>
 <translation id="5355099869024327351">Autoriser l'Assistant à proposer des notifications</translation>
-<translation id="1127216846847548354">Activation des commandes vocales</translation>
-<translation id="3506093155988721483">Utiliser la saisie vocale au lieu du clavier pour démarrer l'Assistant</translation>
+<translation id="133535873114485416">Mode de saisie préféré</translation>
+<translation id="6233154960150021497">Utiliser par défaut les commandes vocales plutôt que le clavier</translation>
 <translation id="3908743412684152579">Paramètres de l'Assistant Brave Software</translation>
 <translation id="4933484234309072027">intégration sur <ph name="URL"/></translation>
 <translation id="8427292751741042100">intégré sur n'importe quel hôte</translation>
@@ -2569,7 +2574,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="1296497012903089238">Type de certificat</translation>
 <translation id="8553342806078037065">Gérer d'autres utilisateurs</translation>
 <translation id="8907706281008466056">Photo du profil Brave Software</translation>
-<translation id="127138278192656016">Utiliser la synchronisation et tous les services</translation>
 <translation id="2408955596600435184">Saisissez votre code.</translation>
 <translation id="6619990499523117484">Confirmez votre code.</translation>
 <translation id="2023167225947895179">Ce code est facile à deviner</translation>
@@ -2644,10 +2648,10 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="2731700343119398978">Veuillez patienter…</translation>
 <translation id="7529411698175791732">Vérifiez votre connexion Internet. Si le problème persiste, essayez de vous déconnecter, puis de vous reconnecter.</translation>
 <translation id="4684427112815847243">Tout synchroniser</translation>
-<translation id="2709516037105925701">Saisie automatique</translation>
+<translation id="1125261911132334651">Gérer votre compte Brave Software</translation>
+<translation id="4570387585180509432">Adresses, numéros de téléphone, etc.</translation>
 <translation id="1644574205037202324">Historique</translation>
 <translation id="5117427536932535467">Thèmes et fonds d'écran</translation>
-<translation id="3259418918864581163">Cartes de crédit et adresses utilisées dans Brave Software Pay.</translation>
 <translation id="3268451620468152448">Onglets ouverts</translation>
 <translation id="5241892180459725878">Suggestions de recherche Brave Software Drive</translation>
 <translation id="2120297377148151361">Activité et interactions</translation>
@@ -2823,7 +2827,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="2307631131458143837">Déconnecter votre téléphone de votre Bravebook</translation>
 <translation id="1146102139091738471">Déconnectez votre téléphone de votre Bravebook. Ils ne se connecteront plus automatiquement.</translation>
 <translation id="7878562273885520351">Votre mot de passe a peut-être été piraté</translation>
-<translation id="6582421931165117398">Pour protéger vos informations personnelles, modifiez votre mot de passe maintenant. Vous devrez vous connecter au préalable.</translation>
 <translation id="1089439967362294234">Modifier le mot de passe</translation>
 <translation id="4635398712689569051">La page <ph name="PAGE_NAME"/> n'est pas accessible aux utilisateurs invités.</translation>
 <translation id="4893522937062257019">Sur l'écran de verrouillage</translation>
@@ -2832,6 +2835,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="7642778300616172920">Masquer le contenu sensible</translation>
 <translation id="3341703758641437857">Autoriser l'accès aux URL de fichier</translation>
 <translation id="9003647077635673607">Autoriser sur tous les sites Web</translation>
+<translation id="2915102088417824677">Afficher le journal d'activité</translation>
 <translation id="1744108098763830590">page en arrière-plan</translation>
 <translation id="3378572629723696641">Cette extension a pu être corrompue.</translation>
 <translation id="4348766275249686434">Recueillir les erreurs</translation>
@@ -2861,6 +2865,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3729506734996624908">Sites autorisés</translation>
 <translation id="3732078975418297900">Erreur à la ligne <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Erreur de la ligne <ph name="ERROR_LINE_START"/> à la ligne <ph name="ERROR_LINE_END"/></translation>
+<translation id="3104763887980088552">Journal d'activité</translation>
 <translation id="1890674179660343635">&lt;span&gt;Identifiant&lt;/span&gt; : <ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Examiner les vues</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> autres…</translation>
@@ -2884,6 +2889,8 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3798449238516105146">Version</translation>
 <translation id="3838085852053358637">Échec du chargement de l'extension</translation>
 <translation id="6370021412472292592">Impossible de charger le fichier manifeste.</translation>
+<translation id="7235716375204803342">Récupération des activités…</translation>
+<translation id="7647403192093989392">Aucune activité récente.</translation>
 <translation id="2152198799932802652">Découvrez des extensions et des thèmes sur le <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">Aucune description fournie</translation>
 <translation id="3855441664322950881">Empaqueter l'extension</translation>
@@ -2916,12 +2923,22 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="1909880997794698664">Voulez-vous vraiment conserver cet appareil en mode Kiosque de manière permanente ?</translation>
 <translation id="1512210426710821809">La seule façon d'annuler cette action consiste à réinstaller <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="4472575034687746823">Premiers pas</translation>
-<translation id="6060991652695587932">Choisissez votre service de messagerie pour un accès rapide</translation>
-<translation id="296137235951584143">Personnalisez Brave</translation>
+<translation id="8281886186245836920">Passer</translation>
+<translation id="2342740338116612727">Favoris ajoutés</translation>
 <translation id="7835178595033117206">Favori supprimé</translation>
+<translation id="742130257665691897">Favoris supprimés</translation>
 <translation id="2785008241190445880">Favori remplacé</translation>
+<translation id="4320948194796820126">Ajouter un favori à votre e-mail</translation>
 <translation id="2950533317914339731">Ajouter des favoris à vos applications Brave Software préférées</translation>
-<translation id="8846319957959474018">Ouvrir les applications facilement grâce aux favoris</translation>
+<translation id="239760341987199724">Définir Brave comme navigateur par défaut</translation>
+<translation id="96037229054033864">Naviguez sur le Web en bénéficiant des fonctionnalités intelligentes de Brave Software et de la recherche Brave Software</translation>
+<translation id="296137235951584143">Personnalisez Brave</translation>
+<translation id="3982375475032951137">Configurez votre navigateur en quelques étapes faciles</translation>
+<translation id="6972754398087986839">Démarrer</translation>
+<translation id="3707821975049107110">Vous utilisez déjà Brave ? Connexion</translation>
+<translation id="1573150740912592860">Enregistrer votre progression</translation>
+<translation id="567643736130151854">Connectez-vous et activez la synchronisation pour accéder à vos favoris, mots de passe et bien plus sur tous vos appareils</translation>
+<translation id="8282356762694872144">Voulez-vous accéder à votre messagerie ?</translation>
 <translation id="5939847200023027600">Service de composition de PDF</translation>
 <translation id="5877584842898320529">L'imprimante sélectionnée n'est pas disponible ou n'est pas installée correctement. <ph name="BR"/> Vérifiez votre imprimante ou sélectionnez-en une autre.</translation>
 <translation id="1526560967942511387">Document sans titre</translation>

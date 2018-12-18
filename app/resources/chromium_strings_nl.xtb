@@ -49,7 +49,6 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="8667808506758191620">Je <ph name="DEVICE_TYPE"/> is up-to-date.</translation>
 <translation id="6970811910055250180">Je apparaat bijwerken...</translation>
 <translation id="8030318113982266900">Je apparaat bijwerken naar <ph name="CHANNEL_NAME"/> kanaal...</translation>
-<translation id="7355059611036077582">Toevoegen aan Brave</translation>
 <translation id="7456658570432774853">Help Brave beter te maken door de huidige instellingen te melden</translation>
 <translation id="6134859571175647580">Waarschuwing: Brave kan niet voorkomen dat extensies je browsergeschiedenis vastleggen. Als je deze extensie in de incognitomodus wilt uitschakelen, verwijder je het vinkje bij deze optie.</translation>
 <translation id="777113543093865885">Verwijderen uit Brave…</translation>
@@ -73,7 +72,6 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="2887570477425111999">Details opslaan in Brave</translation>
 <translation id="193559141530782783">Brave slaat je persoonlijke gegevens beveiligd op, zodat je ze niet opnieuw hoeft op te geven.</translation>
 <translation id="663059986967017181">Gekopieerd naar Brave</translation>
-<translation id="5225129378754387452">Brave-menu weergeven</translation>
 <translation id="300669147395456190">Brave-apps</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> vereist dat je de volgende Servicevoorwaarden leest en accepteert voordat je dit apparaat gebruikt. Deze voorwaarden zijn geen uitbreiding, aanpassing of beperking van de Voorwaarden van Brave OS.</translation>
 <translation id="3293668930608086049">Brave gebruikt je camera en microfoon.</translation>
@@ -97,8 +95,8 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="1705567146636171298">Brave updaten</translation>
 <translation id="4050175100176540509">Er zijn belangrijke beveiligingsverbeteringen en nieuwe functies beschikbaar in de nieuwste versie.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave wordt over één seconde opnieuw gestart}other{Brave wordt over # seconden opnieuw gestart}}</translation>
-<translation id="9159286371333817139">Je moet Brave nu opnieuw starten.</translation>
-<translation id="9203540365585059272">Er is zojuist een speciale beveiligingsupdate voor Brave toegepast. Je moet Brave nu opnieuw starten om de update toe te passen (je tabbladen worden hersteld).</translation>
+<translation id="5509303873219371662">Je moet Brave nu opnieuw opstarten</translation>
+<translation id="8668413672647811944">Er is zojuist een speciale beveiligingsupdate voor Brave toegepast. Start nu opnieuw op. Je tabbladen worden hersteld.</translation>
 <translation id="763369711159699222">Help ons Brave beter te maken</translation>
 <translation id="1156940037717341650">Je kunt helpen Brave veiliger en gebruiksvriendelijker te maken door automatisch informatie over mogelijke beveiligingsincidenten aan Brave Software te melden.</translation>
 <translation id="6791166902140255175">Brave-tabblad</translation>
@@ -120,7 +118,6 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="8586264863973514035">Als je de wijzigingen wilt toepassen, start je Brave opnieuw</translation>
 <translation id="7021823858304886493">Inloggen bij Brave toestaan</translation>
 <translation id="1649714546770135458">Als je dit uitschakelt, kun je inloggen bij Brave Software-sites zoals Gmail zonder in te loggen bij Brave</translation>
-<translation id="6274110506580702455">Inloggen bij Brave is uitgeschakeld door de beheerder van dit apparaat.</translation>
 <translation id="9220324636239049437">Hiermee wordt 1 item verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Hiermee worden <ph name="ITEMS_COUNT"/> items verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Hiermee worden je browsergegevens verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>

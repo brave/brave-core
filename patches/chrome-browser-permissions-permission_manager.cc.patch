@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/permissions/permission_manager.cc b/chrome/browser/permissions/permission_manager.cc
-index 11ad65b4a936c303c51359955d10ef61ef7c7e94..24994d648fc911ad9ab054db229d515f6e57d5a4 100644
+index 4132305480275a4bd57e213d2d34c8130aa0d450..03cc837e52697df31dcb0a6e6c469bc7d1089937 100644
 --- a/chrome/browser/permissions/permission_manager.cc
 +++ b/chrome/browser/permissions/permission_manager.cc
 @@ -85,7 +85,7 @@ PermissionStatus ContentSettingToPermissionStatus(ContentSetting setting) {

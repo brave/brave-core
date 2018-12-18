@@ -12,8 +12,10 @@
 #include "chrome/browser/ui/browser.h"
 
 BraveAppMenuModel::BraveAppMenuModel(
-    ui::AcceleratorProvider* provider, Browser* browser)
-    : AppMenuModel(provider, browser),
+    ui::AcceleratorProvider* provider,
+    Browser* browser,
+    AppMenuIconController* app_menu_icon_controller)
+    : AppMenuModel(provider, browser, app_menu_icon_controller),
       browser_(browser) {}
 
 BraveAppMenuModel::~BraveAppMenuModel() {}

@@ -196,5 +196,9 @@
   "contributeNotificationTipError": {
     "message": "Det oppstod et problem under behandlingen av tipsen din. Vennligst prøv igjen.",
     "description": "We show this string in notification when tip fails"
+  },
+  "noActivity": {
+    "message": "No activities yet…",
+    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   }
 }

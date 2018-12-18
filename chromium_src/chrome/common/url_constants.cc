@@ -101,9 +101,6 @@ const char kCloudPrintCertificateErrorLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/360017880792-How-do-I-print-from-Brave-";
 #endif
 
-const char kCloudPrintNoDestinationsLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/360017880792-How-do-I-print-from-Brave-";
-
 const char kContentSettingsExceptionsLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/360018205431-How-do-I-change-site-permissions-";
 
@@ -142,6 +139,10 @@ const char kExtensionInvalidRequestURL[] = "chrome-extension://invalid/";
 const char kGoogleAccountActivityControlsURL[] =
     "https://support.brave.com/";
 
+const char kGoogleAccountURL[] = "https://support.brave.com/";
+
+const char kGooglePasswordManagerURL[] = "https://support.brave.com/";
+
 const char kLearnMoreReportingURL[] =
     "https://support.brave.com/hc/en-us/articles/360017905872-How-do-I-enable-or-disable-automatic-crash-reporting-";
 
@@ -149,6 +150,10 @@ const char kLegacySupervisedUserManagementDisplayURL[] =
     "https://support.brave.com/";
 const char kLegacySupervisedUserManagementURL[] =
     "https://support.brave.com/";
+
+// TODO(nicolaso): Replace with a p-link once it's ready. b/117655761
+const char kManagedUiLearnMoreUrl[] =
+    "https://support.google.com/chromebook/answer/1331549";
 
 const char kMyActivityUrlInClearBrowsingData[] =
     "https://support.brave.com/";

@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") Brave'de izin verilmiyor.</translation>
 <translation id="7450557937477381864">Chrome'u Kapat</translation>
 <translation id="7008934821596358692">İçe aktarmayı bitirmek için tüm Chrome pencerelerini kapatın.</translation>
-<translation id="7753103220327065417">Brave'i Kapat</translation>
-<translation id="5588481533147090393">İçe aktarmayı tamamlamak için tüm Brave pencerelerini kapatın.</translation>
 <translation id="6447842834002726250">Çerezler</translation>
 <translation id="4983925687993168579">İstatistik</translation>
 <translation id="9173846700806833701">Widevine yüklenmedi</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine, Brave Yazılım'da sahibi olmadığımız ve denetlemediğimiz bir Digital Rights Management (DRM) kodu parçasıdır. Google Widevine kodu bizim sunucularımızdan değil Google sunucularından yüklenir. Sadece bu seçeneği etkinleştirdiğinizde yüklenir. DRM kullanımını teşvik etmiyoruz, fakat kullanıcı tercihlerine saygı duyuyor ve bazı Brave kullanıcılarının bunu gerektiren hizmetleri kullanmak isteyebileceğini biliyoruz.
 
 Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş sayılırsınız. Brave'in, Google Widevine kullanımı ile oluşabilecek herhangi bir hasar ya da bağlantı kayıplarından sorumlu olmayacağını kabul etmiş sayılırsınız.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Brave'den içeri aktarıldı</translation>
 <translation id="453977518730680921">Medyaları otomatik oynat</translation>
 <translation id="410351446219883937">Otomatik oynat</translation>

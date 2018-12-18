@@ -196,5 +196,9 @@
   "contributeNotificationTipError": {
     "message": "আপনার টিপ প্রক্রিয়া করার সময় একটি সমস্যা হয়েছে, অনুগ্রহ করে আবার চেষ্টা করুন।",
     "description": "We show this string in notification when tip fails"
+  },
+  "noActivity": {
+    "message": "No activities yet…",
+    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   }
 }

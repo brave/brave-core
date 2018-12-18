@@ -254,26 +254,65 @@
     <message name="IDS_SETTINGS_TAP_DRAGGING_LABEL" desc="Label for checkbox which enables tap dragging.">
       Enable tap dragging
     </message>
-    <message name="IDS_SETTINGS_CLICK_ON_STOP_LABEL" desc="Label for checkbox which enables automatically clicking when the mouse cursor stops.">
+    <message name="IDS_SETTINGS_CLICK_ON_STOP_LABEL" desc="Label for checkbox which enables automatically do a mouse action when the mouse cursor stops.">
       Automatically click when the mouse cursor stops
     </message>
-    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_LABEL" desc="Label for dropdown menu which contains various time delays for clicks.">
+    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_LABEL" desc="Label for dropdown menu which contains various time delays for mouse action.">
       Delay before click:
     </message>
-    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_EXTREMELY_SHORT" desc="Description of an extremely short delay before clicks.">
+    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_EXTREMELY_SHORT" desc="Description of an extremely short delay before mouse action.">
       extremely short (0.6s)
     </message>
-    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_VERY_SHORT" desc="Description of a very short delay before clicks.">
+    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_VERY_SHORT" desc="Description of a very short delay before mouse action.">
       very short (0.8s)
     </message>
-    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_SHORT" desc="Description of a short delay before clicks.">
+    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_SHORT" desc="Description of a short delay before mouse action.">
       short (1s)
     </message>
-    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_LONG" desc="Description of a long delay before clicks.">
+    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_LONG" desc="Description of a long delay before mouse action.">
       long (2s)
     </message>
-    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_VERY_LONG" desc="Description of a very long delay before clicks.">
+    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_VERY_LONG" desc="Description of a very long delay before mouse action.">
       very long (4s)
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_EVENT_TYPE_LABEL" desc="Label for dropdown menu which contains various mouse actions for autoclick to take when the mouse cursor stops">
+      Dwell action
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_EVENT_TYPE_LEFT_CLICK" desc="Description of a left click mouse action.">
+      Left click
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_EVENT_TYPE_RIGHT_CLICK" desc="Description of a right click mouse action.">
+      Right click
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_EVENT_TYPE_DRAG_AND_DROP" desc="Description of a drag and drop mouse action.">
+      Drag and drop
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_EVENT_TYPE_DOUBLE_CLICK" desc="Description of a double click mouse action.">
+      Double click
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_EVENT_TYPE_NO_ACTION" desc="Description of an option to take no action (pause mouse actions).">
+      No action (pause)
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_REVERT_TO_LEFT_CLICK" desc="Description of a checkbox that gives the option to return to the default left click action after taking another action.">
+      Revert to left click after action
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_MOVEMENT_THRESHOLD_LABEL" desc="Label for a dropdown menu which that has options for how much mouse movement can occur before a new autoclick is initiated.">
+      Movement threshold
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_MOVEMENT_THRESHOLD_EXTRA_SMALL" desc="Description of an extra small mouse movement threshold for autoclick mouse movements.">
+      Extra small
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_MOVEMENT_THRESHOLD_SMALL" desc="Description of a small mouse movement threshold for autoclick mouse movements">
+      Small
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_MOVEMENT_THRESHOLD_DEFAULT" desc="Description of the default mouse movement threshold for autoclick mouse movements">
+      Default
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_MOVEMENT_THRESHOLD_LARGE" desc="Description of a large mouse movement threshold for autoclick mouse movements">
+      Large
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_MOVEMENT_THRESHOLD_EXTRA_LARGE" desc="Description of an extra large mouse movement threshold for autoclick mouse movements">
+      Extra large
     </message>
     <message name="IDS_SETTINGS_ON_SCREEN_KEYBOARD_LABEL" desc="Label for checkbox which enables an on-screen keyboard.">
       Enable on-screen keyboard
@@ -556,6 +595,9 @@
     <message name="IDS_SETTINGS_TABS_TO_LINKS_PREF" desc="The documentation string of the 'Tabs to Links' preference">
       Pressing Tab on a webpage highlights links, as well as form fields
     </message>
+    <message name="IDS_SETTINGS_WARN_BEFORE_QUITTING_PREF" desc="The documentation string of the 'Warn Before Quitting' preference which is also available in the Brave app menu.">
+      Show warning before quitting with ⌘Q
+    </message>
   </if>
 
   <!-- Common -->
@@ -579,6 +621,9 @@
   </message>
   <message name="IDS_SETTINGS_SETTINGS" desc="The settings page title.">
     Settings
+  </message>
+  <message name="IDS_SETTINGS_ALT_PAGE_TITLE" desc="The settings page title for the about page.">
+    Settings - <ph name="SECTION_TITLE">$1<ex>About Brave</ex></ph>
   </message>
   <if expr="not chromeos">
     <message name="IDS_SETTINGS_RESTART" desc="Text for a button that will restart Brave.">
@@ -617,16 +662,16 @@
   <message name="IDS_SETTINGS_NOT_VALID_WEB_ADDRESS" desc="Text indicating that the Web address entered by the user is invalid.">
     Not a valid web address
   </message>
+  <message name="IDS_SETTINGS_NOT_VALID_WEB_ADDRESS_FOR_CONTENT_TYPE" desc="Text indicating that the content setting can't take effect because the setting is limited to secure origins.">
+    Origin must be secure
+  </message>
   <message name="IDS_SETTINGS_RETRY" desc="The label text of the retry button because there is an error.">
    Retry
   </message>
 
-  <!-- Passwords and Autofill Page -->
-  <message name="IDS_SETTINGS_PASSWORDS_AND_AUTOFILL_PAGE_TITLE" desc="Name of the settings page which allows managing passwords and autofill settings.">
-    Passwords and forms
-  </message>
-  <message name="IDS_SETTINGS_AUTOFILL" desc="Name for the autofill section and toggle.">
-    Autofill settings
+  <!-- Autofill Page -->
+  <message name="IDS_SETTINGS_AUTOFILL" desc="Name of the settings page which allows managing passwords, payment methods and addresses settings.">
+    Autofill
   </message>
   <message name="IDS_SETTINGS_GOOGLE_PAYMENTS" desc="Label used to differentiate when an address or credit card entry comes from Brave Pay. This should follow the casing of the 'Brave Pay' brand. 'Brave Pay' should not be translated as it is the product name.">
     Brave Pay
@@ -646,14 +691,6 @@
   <message name="IDS_SETTINGS_AUTOFILL_ADDRESSES_EMAIL" desc="This is the label for the field that lets a user modify the email address that will be used when auto-filling forms on the web.">
     Email
   </message>
-  <!-- TODO(https://crbug.com/854562): Remove this string once Autofill Home is fully launched. -->
-  <message name="IDS_SETTINGS_AUTOFILL_CREDIT_CARD_HEADING" desc="Title for the list of saved passwords that can be used to fill in forms.">
-    Credit card settings
-  </message>
-  <!-- TODO(https://crbug.com/854562): Remove this string once Autofill Home is fully launched. -->
-  <message name="IDS_SETTINGS_AUTOFILL_CREDIT_CARD_DETAIL" desc="Description of what toggling the 'Credit card' setting does. Immediately underneath IDS_SETTINGS_AUTOFILL_CREDIT_CARD_HEADING.">
-    Enable credit card Autofill to fill out forms in a single click
-  </message>
   <message name="IDS_SETTINGS_AUTOFILL_CREDIT_CARD_TYPE_COLUMN_LABEL" desc="Label for the column containing the type of credit card that is saved. The type is in the format: `Visa ****1234`.">
     Type
   </message>
@@ -667,7 +704,7 @@
     Remove
   </message>
   <message name="IDS_SETTINGS_CREDIT_CARD_CLEAR" desc="Label for a context menu item clears the locally cached credit card that is also saved on Brave Payments. Clicking this will NOT remove the credit card from Brave Payments.">
-   Clear copy
+    Clear copy
   </message>
   <message name="IDS_SETTINGS_EDIT_CREDIT_CARD_TITLE" desc="The title for the dialog that's shown when editing a card. This can be either credit, debit, or prepaid card..">
     Edit card
@@ -675,17 +712,14 @@
   <message name="IDS_SETTINGS_ADD_CREDIT_CARD_TITLE" desc="The title for the dialog that's shown when entering the information for a new card. This can be either credit, debit, or prepaid card.">
     Add card
   </message>
-  <message name="IDS_SETTINGS_SINGLE_MIGRATABLE_CARD_LABEL" desc="Label for the field to migrate the locally cached credit card to Brave Payments for single migratable card. Clicking this will upload migratable credit cards to Brave Payments.">
-    Save card to use Brave Pay
-  </message>
-  <message name="IDS_SETTINGS_MULTIPLE_MIGRATABLE_CARDS_LABEL" desc="Label for the field to migrate the locally cached credit cards to Brave Payments for multiple migratable cards. Clicking this will upload migratable credit cards to Brave Payments.">
-    Save cards to use Brave Pay
+  <message name="IDS_SETTINGS_MIGRATABLE_CARDS_LABEL" desc="Label for the field to migrate the locally cached credit card to Brave Payments. Clicking this will upload migratable credit cards to Brave Payments.">
+    Save cards in your Brave Account
   </message>
   <message name="IDS_SETTINGS_SINGLE_MIGRATABLE_CARD_INFO" desc="Display text under the save cards to Brave Pay label. This text indicates one of local cards can only be used on this device.">
-    1 of your cards can only be used on this device
+    Right now, you have one card that can only be used on this device
   </message>
   <message name="IDS_SETTINGS_MULTIPLE_MIGRATABLE_CARDS_INFO" desc="Display text under the save cards to Brave Pay label. This text indicates user has multiple migratable cards on this device.">
-    Some of your cards can only be used on this device
+    Right now, you have some cards that can only be used on this device
   </message>
   <message name="IDS_SETTINGS_NAME_ON_CREDIT_CARD" desc="The title for the input that lets users modify the name on the credit card.">
     Name on card
@@ -705,11 +739,7 @@
   <message name="IDS_SETTINGS_CREDIT_CARD_EXPIRED" desc="The error message that is shown when user attempts to enter or save an expired card.">
     Your card is expired
   </message>
-  <message name="IDS_SETTINGS_PASSWORDS" desc="Name for the password section and toggle">
-    Manage passwords
-  </message>
-  <!-- TODO(https://crbug.com/854562): Rename this to "IDS_SETTINGS_PASSWORDS" once Autofill Home is fully launched. -->
-  <message name="IDS_SETTINGS_PASSWORDS_AUTOFILL_HOME" desc="Name for the password section and settings entry used for Autofill Home.">
+  <message name="IDS_SETTINGS_PASSWORDS" desc="Name for the password section and settings entry used for managing passwords.">
     Passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_SAVE_PASSWORDS_TOGGLE_LABEL" desc="Label for a toggle that allows users to be prompted if they want to save their passwords when logging into webpages.">
@@ -720,9 +750,6 @@
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_AUTOSIGNIN_CHECKBOX_DESC" desc="Text that describes the 'Auto Sign-in' functionality to users.">
     Automatically sign in to websites using stored credentials. If disabled, you will be asked for confirmation every time before signing in to a website.
-  </message>
-  <message name="IDS_SETTINGS_PASSWORDS_DETAIL" desc="Description of what toggling the 'Manage passwords' setting does. Immediately underneath IDS_SETTINGS_PASSWORDS">
-    Offer to save your web passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_SAVED_HEADING" desc="The title for a list of username/site/password items. These items are already saved by the browser and can be deleted/edited.">
     Saved Passwords
@@ -762,10 +789,6 @@
   </message>
   <message name="IDS_SETTINGS_ADDRESS_NONE" desc="Placeholder that is shown when there are no addresses in the list of saved addresses.">
     Saved addresses will appear here
-  </message>
-  <!-- TODO(https://crbug.com/854562): Remove this string (and use "IDS_SETTINGS_PAYMENT_METHODS_NONE" instead) once Autofill Home is fully launched. -->
-  <message name="IDS_SETTINGS_CREDIT_CARD_NONE" desc="Placeholder that is shown when there are no credit cards in the list of saved credit cards.">
-    Saved cards will appear here
   </message>
   <message name="IDS_SETTINGS_PAYMENT_METHODS_NONE" desc="Placeholder that is shown when there are no payment methods in the list of saved payment methods.">
     Saved payment methods will appear here
@@ -1829,6 +1852,9 @@
     <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether to automatically connect to the network.">
       Automatically connect to this network
     </message>
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_ALWAYS_ON_VPN" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining that all internet traffic has to go through this VPN (virtual private network), and all other network connections are blocked.">
+      Always connect through this VPN
+    </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_IP_CONFIG_AUTO" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether to automatically configure the network IP config.">
       Configure IP address automatically
     </message>
@@ -2471,12 +2497,6 @@
   <message name="IDS_SETTINGS_SPELLING_PREF_UNIFIED_CONSENT" desc="The documentation string of the 'Use Spelling' preference">
     Enhanced spell check
   </message>
-  <message name="IDS_SETTINGS_SPELLING_TURN_ON_HINT_UNIFIED_CONSENT" desc="Informs user how to change their settings to be able to turn on spell check.">
-    To turn this on, first turn on spell check in <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Languages and input<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_SPELLING_TURN_ON_HINT_UNIFIED_CONSENT_MAC" desc="Informs user how to change their settings on Mac to be able to turn on spell check.">
-    To turn this on, first select Check Spelling While Typing in the Edit menu
-  </message>
   <message name="IDS_SETTINGS_ENABLE_LOGGING" desc="The label of the checkbox to enable/disable crash and user metrics logging">
     Automatically send crash reports to Brave
   </message>
@@ -2673,7 +2693,7 @@
     Related info
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_CONTEXT_DESCRIPTION" desc="Sub label for context-enable toggle.">
-    Let the Assistant give suggestions based on what's on your screen
+    Let the Assistant show you info related to what's on your screen
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD" desc="Title for a toggle that lets the assistant detect hotword.">
     "Ok Brave"
@@ -2688,10 +2708,10 @@
     Allow the Assistant to show you notifications
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_LAUNCH_WITH_MIC_OPEN" desc="Title for a toggle that determines whether to open the microphone when launching the Assistant.">
-    Voice activation
+    Preferred input
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_LAUNCH_WITH_MIC_OPEN_DESCRIPTION" desc="Sub label for launch-with-microphone-open toggle.">
-    Use speech instead of keyboard when you start your Assistant
+    Default to using voice instead of keyboard
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_SETTINGS" desc="Title for a button that opens the Brave Assistant app settings.">
     Brave Assistant settings
@@ -3265,9 +3285,6 @@
   <message name="IDS_SETTINGS_COOKIES_SERVICE_WORKER" desc="The text shown when there is data for Service Workers within an origin (name of a Web standard) in the Cookies table">
     Service Workers
   </message>
-  <message name="IDS_SETTINGS_COOKIES_SERVICE_WORKER_SCOPES_LABEL" desc="Label for list of Service Worker (name of an HTML standard) patterns">
-    Scopes
-  </message>
   <message name="IDS_SETTINGS_COOKIES_SHARED_WORKER" desc="The text shown when there is data for Shared Workers within an origin (name of a Web standard) in the Cookies table">
     Shared Workers
   </message>
@@ -3287,9 +3304,6 @@
   </message>
   <message name="IDS_SETTINGS_CHANGE_PICTURE_PROFILE_PHOTO" desc="The text on the Brave profile photo of the user.">
     Brave Profile photo
-  </message>
-  <message name="IDS_SETTINGS_PEOPLE_SYNC_UNIFIED_CONSENT_TOGGLE_TITLE" desc="The title of the toggle to opt into unified consent and enable all its services.">
-    Use sync and all services
   </message>
   <message name="IDS_SETTINGS_PEOPLE_SIGN_OUT" desc="The label of the button that lets user sign-out of Brave.">
     Sign out
@@ -3598,6 +3612,9 @@
   <message name="IDS_SETTINGS_SYNC_EVERYTHING_CHECKBOX_LABEL" desc="Label for the checkbox which causes all properties to be synced.">
     Sync everything
   </message>
+  <message name="IDS_SETTINGS_MANAGE_GOOGLE_ACCOUNT" desc="Label for the button that takes the user to the Brave Account website.">
+    Manage your Brave Account
+  </message>
   <message name="IDS_SETTINGS_APPS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing apps between multiple browser instances.">
     Apps
   </message>
@@ -3608,23 +3625,26 @@
     Settings
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing autofill settings between multiple browser instances.">
-    Autofill
+    Addresses, phone numbers, and more
   </message>
   <message name="IDS_SETTINGS_HISTORY_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing history between multiple browser instances.">
     History
   </message>
+<if expr="chromeos">
   <message name="IDS_SETTINGS_THEMES_AND_WALLPAPERS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing themes and wallpapers between multiple browser instances.">
     Themes &amp; Wallpapers
   </message>
+</if>
+<if expr="not chromeos">
+  <message name="IDS_SETTINGS_THEMES_AND_WALLPAPERS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing themes and wallpapers between multiple browser instances.">
+    Themes
+  </message>
+</if>
   <message name="IDS_SETTINGS_BOOKMARKS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing bookmarks between multiple browser instances.">
     Bookmarks
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing passwords between multiple browser instances.">
     Passwords
-  </message>
-  <!-- TODO(https://crbug.com/854562): Remove this string once Autofill Home is fully launched. -->
-  <message name="IDS_SETTINGS_ENABLE_PAYMENTS_INTEGRATION_CHECKBOX_LABEL" desc="Label for the checkbox that controls the Autofill/Payments integration feature.">
-    Credit cards and addresses using Brave Pay.
   </message>
   <message name="IDS_SETTINGS_OPEN_TABS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing open tabs between multiple browser instances.">
     Open Tabs
@@ -3956,7 +3976,7 @@
     <message name="IDS_SETTINGS_KEYBOARD_AUTO_REPEAT_FAST" desc="The label for the end of the auto-repeat rate slider, representing a fast repeat rate.">
       Fast
     </message>
-    <message name="IDS_SETTINGS_KEYBOARD_SHOW_KEYBOARD_SHORTCUTS_OVERLAY" desc="The link to open the keyboard shortuts overlay.">
+    <message name="IDS_SETTINGS_KEYBOARD_SHOW_SHORTCUT_VIEWER" desc="The link to open the keyboard shortut viewer.">
       View keyboard shortcuts
     </message>
     <message name="IDS_SETTINGS_KEYBOARD_SHOW_LANGUAGE_AND_INPUT" desc="The link to navigate to the language and input method settings.">
@@ -4328,9 +4348,6 @@
   <!-- Password protection -->
   <message name="IDS_SETTINGS_CHANGE_PASSWORD_TITLE" desc="Title of the reset password warning.">
     Your password may be compromised
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_PASSWORD_DETAIL" desc="Detailed description of the reset password warning.">
-    To protect your personal information, change your password now. Before you can change your password, you’ll be asked to sign in.
   </message>
   <message name="IDS_SETTINGS_CHANGE_PASSWORD_BUTTON" desc="Label on button that takes user to change password page.">
     Change Password

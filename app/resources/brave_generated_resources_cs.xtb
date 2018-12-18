@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID rozšíření "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") není v Brave povoleno.</translation>
 <translation id="7450557937477381864">Zavřít Chrome</translation>
 <translation id="7008934821596358692">Pro dokončení importu zavřete všechna okna prohlížeče Chrome.</translation>
-<translation id="7753103220327065417">Zavřít Brave</translation>
-<translation id="5588481533147090393">Import dokončíte uzavřením všech oken Brave.</translation>
 <translation id="6447842834002726250">Soubory cookie</translation>
 <translation id="4983925687993168579">Statistiky</translation>
 <translation id="9173846700806833701">Widevine není instalováno</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine je kód pro správu digitálních práv (DRM), který ve společnosti Brave Software nevlastníme a nemůžeme jej kontrolovat. Kód Google Widevine je nahráván ze serverů Google, ne z našich serverů. Nahraje se pouze po povolení této možnosti. Používání DRM nedoporučujeme, ale respektujeme volbu uživatele a uznáváme, že někteří uživatelé Brave by rádi využívali služby, které DRM vyžadují.
 
 Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Google Widevine. Souhlasíte s tím, že společnost Brave neodpovídá za škody ani ztráty související s používáním služby Google Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Importováno z Brave</translation>
 <translation id="453977518730680921">Automaticky přehrávat média</translation>
 <translation id="410351446219883937">Automatické přehrávání</translation>

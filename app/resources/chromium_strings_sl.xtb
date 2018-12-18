@@ -49,7 +49,6 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="8667808506758191620">Naprava <ph name="DEVICE_TYPE"/> je posodobljena.</translation>
 <translation id="6970811910055250180">Posodabljanje naprave ...</translation>
 <translation id="8030318113982266900">Posodabljanje naprave na kanal <ph name="CHANNEL_NAME"/> ...</translation>
-<translation id="7355059611036077582">Dodaj v Brave</translation>
 <translation id="7456658570432774853">Pomagajte izboljšati Brave s poročanjem o trenutnih nastavitvah</translation>
 <translation id="6134859571175647580">Opozorilo: Brave razširitvam ne more preprečiti beleženja zgodovine brskanja. Če želite onemogočiti to razširitev v načinu brez beleženja zgodovine, počistite to možnost.</translation>
 <translation id="777113543093865885">Odstranitev iz Bravea ...</translation>
@@ -73,7 +72,6 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="2887570477425111999">Shrani podrobnosti v Brave</translation>
 <translation id="193559141530782783">Brave bo varno shranil vaše osebne podatke, tako da vam jih ne bo treba več vnesti.</translation>
 <translation id="663059986967017181">Kopirano v Brave</translation>
-<translation id="5225129378754387452">Prikaz Braveovega menija</translation>
 <translation id="300669147395456190">Aplikacije za Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> zahteva, da preberete in sprejmete pogoje storitve, preden začnete uporabljati napravo. Ti pogoji ne dopolnjujejo, spreminjajo ali omejujejo pogojev za Brave OS.</translation>
 <translation id="3293668930608086049">Brave uporablja vašo kamero in mikrofon.</translation>
@@ -97,8 +95,8 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="1705567146636171298">Posodobi Brave</translation>
 <translation id="4050175100176540509">V najnovejši različici so na voljo pomembne varnostne izboljšave in nove funkcije.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave se bo znova zagnal čez 1 sekundo}one{Brave se bo znova zagnal čez # sekundo}two{Brave se bo znova zagnal čez # sekundi}few{Brave se bo znova zagnal čez # sekunde}other{Brave se bo znova zagnal čez # sekund}}</translation>
-<translation id="9159286371333817139">Brave zdaj znova zaženite.</translation>
-<translation id="9203540365585059272">Pravkar je bila nameščena posebna varnostna posodobitev za Brave. Zdaj znova zaženite računalnik, da bo uveljavljena (vaše zavihke bomo obnovili).</translation>
+<translation id="5509303873219371662">Brave zdaj znova zaženite.</translation>
+<translation id="8668413672647811944">Pravkar je bila nameščena posebna varnostna posodobitev za Brave. Znova ga zaženite (vaše zavihke bomo obnovili).</translation>
 <translation id="763369711159699222">Pomagajte izboljšati Brave</translation>
 <translation id="1156940037717341650">S samodejnim poročanjem podrobnosti o morebitnih varnostnih dogodkih Googlu lahko pomagate narediti Brave varnejši in preprostejši za uporabo.</translation>
 <translation id="6791166902140255175">Zavihek v Braveu</translation>
@@ -121,7 +119,6 @@ Te storitve lahko po želji onemogočite. <ph name="BEGIN_LINK"/>Več o tem<ph n
 <translation id="8586264863973514035">Če želite uporabiti spremembe, znova zaženite Brave</translation>
 <translation id="7021823858304886493">Omogočanje prijave v Brave</translation>
 <translation id="1649714546770135458">Če to izklopite, se lahko prijavite na Googlovih spletnih mestih, kot je Gmail, ne da bi se morali prijaviti v Brave</translation>
-<translation id="6274110506580702455">Prijavo v Brave je onemogočil skrbnik te naprave.</translation>
 <translation id="9220324636239049437">S tem bo iz te naprave izbrisan 1 element. Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">S tem bo iz te naprave izbrisanih več elementov (<ph name="ITEMS_COUNT"/>). Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">S tem bodo iz te naprave izbrisani podatki brskanja. Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>

@@ -55,6 +55,16 @@
     Site can share your screen
   </message>
 
+  <!-- Desktop-specific permission prompts -->
+  <if expr="not is_android">
+    <message name="IDS_DESKTOP_PROMPT_DOFF_HEADSET" desc="Text displayed in a dialog in a VR headset to notify the user to take the headset off and take some action on the desktop monitor.">
+      Remove headset to block or allow on the desktop display
+    </message>
+    <message name="IDS_VR_DESKTOP_BLUETOOTH_PROMPT" desc="Text displayed in a dialog in VR headset to notify the user that the current webpage is requesting bluetooth permissions.">
+      <ph name="URL_HOST">$1<ex>google.com</ex></ph> wants to pair to devices
+    </message>
+  </if>
+
   <!-- VR browser -->
   <!-- TODO(https://crbug.com/731802): Only build these when the VR browser is supported. -->
   <message name="IDS_VR_UPDATE_KEYBOARD_PROMPT" desc="Text shown when the keyboard is not installed or needs to be updated on the user's device">

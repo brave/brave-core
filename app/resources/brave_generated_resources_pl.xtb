@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") - to rozszerzenie nie jest dozwolone w Brave.</translation>
 <translation id="7450557937477381864">Zamknij przeglądarkę Chrome</translation>
 <translation id="7008934821596358692">Aby skończyć importowanie, zamknij wszystkie okna przeglądarki Chrome.</translation>
-<translation id="7753103220327065417">Zamknij przeglądarkę Brave</translation>
-<translation id="5588481533147090393">Aby zakończyć importowanie, zamknij wszystkie okna Brave.</translation>
 <translation id="6447842834002726250">Pliki typu cookie</translation>
 <translation id="4983925687993168579">Statystyki</translation>
 <translation id="9173846700806833701">Nie zainstalowano Widevine</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine to fragment kodu zarządzania prawami cyfrowymi (DRM), który nie należy do Brave Software i którego nie jesteśmy w stanie kontrolować. Kod Google Widevine wczytywany jest z serwerów Google, a nie z naszych. Jest wczytywany tylko wtedy, gdy włączysz taką opcję. Odradzamy używanie DRM, ale szanujemy wybór użytkownika i przyjmujemy do wiadomości, że niektórzy użytkownicy Brave chcą korzystać z usług, które tego wymagają.
 
 Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Google Widevine. Akceptujesz to, że Brave nie ponosi odpowiedzialności za jakiekolwiek szkody lub straty związane z używaniem Google Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Importuj z przeglądarki Brave</translation>
 <translation id="453977518730680921">Automatycznie odtwarzaj media</translation>
 <translation id="410351446219883937">Automatyczne odtwarzanie</translation>

@@ -1,18 +1,39 @@
 source_set("browser") {
   # Only //components/omnibox/browser target can depend on this target
   # because this target expands //components/omnibox/browser implementation.
-  visibility = [ "//components/omnibox/browser" ]
+  visibility = [ "//components/omnibox/browser", ":unit_tests" ]
 
   sources = [
     "brave_autocomplete_controller.cc",
     "brave_autocomplete_controller.h",
+    "brave_location_bar_model_impl.cc",
+    "brave_location_bar_model_impl.h",
+    "constants.cc",
+    "constants.h",
     "topsites_provider_data.cc",
     "topsites_provider.cc",
     "topsites_provider.h",
   ]
 
   deps = [
+     "//base",
+     "//components/security_state/core",
      "//skia",
      "//third_party/metrics_proto",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "location_bar_model_impl_unittest.cc",
+  ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//components/omnibox/browser",
+    "//testing/gtest",
+    "//url",
   ]
 }

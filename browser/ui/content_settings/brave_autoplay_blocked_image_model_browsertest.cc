@@ -5,7 +5,6 @@
 #include "brave/browser/ui/content_settings/brave_autoplay_blocked_image_model.h"
 
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -22,10 +21,9 @@ IN_PROC_BROWSER_TEST_F(BraveAutoplayBlockedImageModelTest, CreateBubbleModel) {
       TabSpecificContentSettings::FromWebContents(web_contents);
   content_settings->BlockAllContentForTesting();
 
-  Profile* profile = browser()->profile();
   auto model = std::make_unique<BraveAutoplayBlockedImageModel>();
   std::unique_ptr<ContentSettingBubbleModel> bubble(
-    model->CreateBubbleModel(nullptr, web_contents, profile));
+    model->CreateBubbleModel(nullptr, web_contents));
 
   ContentSettingSimpleBubbleModel* simple_bubble =
     bubble->AsSimpleBubbleModel();

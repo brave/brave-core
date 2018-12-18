@@ -11,17 +11,17 @@ namespace blink {
   CredentialsContainer::CredentialsContainer() = default;
 
   ScriptPromise CredentialsContainer::get(
-    ScriptState* script_state,
-    const CredentialRequestOptions& options) {
-      ScriptPromiseResolver* resolver = ScriptPromiseResolver::Create(script_state);
-      ScriptPromise promise = resolver->Promise();
-      v8::Isolate* isolate = script_state->GetIsolate();
-      resolver->Resolve(v8::Null(isolate));
-      return promise;
+      ScriptState* script_state,
+      const CredentialRequestOptions* options) {
+    ScriptPromiseResolver* resolver = ScriptPromiseResolver::Create(script_state);
+    ScriptPromise promise = resolver->Promise();
+    v8::Isolate* isolate = script_state->GetIsolate();
+    resolver->Resolve(v8::Null(isolate));
+    return promise;
   }
 
   ScriptPromise CredentialsContainer::store(ScriptState* script_state,
-                                          Credential* credential) {
+      Credential* credential) {
     ScriptPromiseResolver* resolver = ScriptPromiseResolver::Create(script_state);
     ScriptPromise promise = resolver->Promise();
     v8::Isolate* isolate = script_state->GetIsolate();
@@ -30,7 +30,7 @@ namespace blink {
   }
 
   ScriptPromise CredentialsContainer::preventSilentAccess(
-    ScriptState* script_state) {
+      ScriptState* script_state) {
     ScriptPromiseResolver* resolver = ScriptPromiseResolver::Create(script_state);
     ScriptPromise promise = resolver->Promise();
     resolver->Resolve();
@@ -41,14 +41,13 @@ namespace blink {
     return new CredentialsContainer();
   }
 
-  ScriptPromise CredentialsContainer::create(
-    ScriptState* script_state,
-    const CredentialCreationOptions& options,
-    ExceptionState& exception_state) {
-      ScriptPromiseResolver* resolver = ScriptPromiseResolver::Create(script_state);
-      ScriptPromise promise = resolver->Promise();
-      v8::Isolate* isolate = script_state->GetIsolate();
-      resolver->Resolve(v8::Null(isolate));
-      return promise;
+  ScriptPromise CredentialsContainer::create(ScriptState* script_state,
+      const CredentialCreationOptions* options,
+      ExceptionState& exception_state) {
+    ScriptPromiseResolver* resolver = ScriptPromiseResolver::Create(script_state);
+    ScriptPromise promise = resolver->Promise();
+    v8::Isolate* isolate = script_state->GetIsolate();
+    resolver->Resolve(v8::Null(isolate));
+    return promise;
   }
 } // namespace blink

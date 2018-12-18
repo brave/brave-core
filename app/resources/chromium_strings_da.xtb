@@ -47,7 +47,6 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="8667808506758191620">Din <ph name="DEVICE_TYPE"/> er opdateret.</translation>
 <translation id="6970811910055250180">Opdaterer din enhed...</translation>
 <translation id="8030318113982266900">Opdaterer din enhed til kanalen <ph name="CHANNEL_NAME"/>...</translation>
-<translation id="7355059611036077582">Føj til Brave</translation>
 <translation id="7456658570432774853">Hjælp med at gøre Brave bedre ved at rapportere de aktuelle indstillinger</translation>
 <translation id="6134859571175647580">Advarsel! Brave kan ikke forhindre udvidelser i at registrere din browserhistorik. Fjern markeringen i afkrydsningsfeltet for at deaktivere denne udvidelse i inkognitotilstand.</translation>
 <translation id="777113543093865885">Fjern fra Brave...</translation>
@@ -71,7 +70,6 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="2887570477425111999">Gem oplysninger i Brave</translation>
 <translation id="193559141530782783">Brave gemmer dine personlige oplysninger på sikker vis, så du ikke behøver at angive dem igen.</translation>
 <translation id="663059986967017181">Kopieret til Brave</translation>
-<translation id="5225129378754387452">Vis Brave-menuen</translation>
 <translation id="300669147395456190">Brave-apps</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> kræver, at du læser og accepterer følgende servicevilkår, inden du bruger denne enhed. Disse vilkår udvider, ændrer eller begrænser på ingen måde vilkårene for Brave OS.</translation>
 <translation id="3293668930608086049">Brave bruger dit kamera og din mikrofon.</translation>
@@ -95,8 +93,8 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="1705567146636171298">Opdater Brave</translation>
 <translation id="4050175100176540509">Vigtige sikkerhedsforbedringer og nye funktioner er tilgængelige i den seneste version.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave genstarter om 1 sekund}one{Brave genstarter om # sekund}other{Brave genstarter om # sekunder}}</translation>
-<translation id="9159286371333817139">Du bør genstarte Brave nu.</translation>
-<translation id="9203540365585059272">En særlig sikkerhedsopdatering til Brave blev netop anvendt. Du bør genstarte nu, så den kan træde i kraft (dine faner gendannes).</translation>
+<translation id="5509303873219371662">Genstart Brave nu</translation>
+<translation id="8668413672647811944">En særlig sikkerhedsopdatering til Brave blev netop anvendt. Genstart nu, hvorefter vi gendanner dine faner.</translation>
 <translation id="763369711159699222">Hjælp med at gøre Brave bedre</translation>
 <translation id="1156940037717341650">Du kan hjælpe med at gøre Brave sikrere og nemmere at bruge ved automatisk at rapportere oplysninger om mulige sikkerhedshændelser til Brave Software.</translation>
 <translation id="6791166902140255175">Fanen Brave</translation>
@@ -118,7 +116,6 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="8586264863973514035">Åbn Brave igen for at anvende ændringerne</translation>
 <translation id="7021823858304886493">Tillad login via Brave</translation>
 <translation id="1649714546770135458">Når du deaktiverer denne indstilling, kan du logge ind på Brave Software-websites som f.eks. Gmail uden at logge ind i Brave</translation>
-<translation id="6274110506580702455">Login til Brave er deaktiveret af administratoren af denne enhed.</translation>
 <translation id="9220324636239049437">Denne handling sletter ét element på denne enhed. Hvis du senere vil hente dine data igen, skal du logge ind på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Denne handling sletter <ph name="ITEMS_COUNT"/> elementer på denne enhed. Hvis du senere vil hente dine data igen, skal du logge ind på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Denne handling sletter dine browserdata på denne enhed. Hvis du senere vil hente dine data igen, skal du logge ind på Brave som <ph name="USER_EMAIL"/>.</translation>

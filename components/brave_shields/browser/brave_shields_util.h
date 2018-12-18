@@ -9,7 +9,7 @@
 #include <string>
 
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "third_party/blink/public/platform/web_referrer_policy.h"
+#include "services/network/public/mojom/referrer_policy.mojom.h"
 
 namespace net {
 class URLRequest;
@@ -46,7 +46,7 @@ void GetRenderFrameInfo(const net::URLRequest* request,
 bool ShouldSetReferrer(bool allow_referrers, bool shields_up,
     const GURL& original_referrer, const GURL& tab_origin,
     const GURL& target_url, const GURL& new_referrer_url,
-    blink::WebReferrerPolicy policy, content::Referrer *output_referrer);
+    network::mojom::ReferrerPolicy policy, content::Referrer *output_referrer);
 
 }  // namespace brave_shields
 

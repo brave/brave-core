@@ -49,7 +49,6 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="8667808506758191620">Vaše zariadenie <ph name="DEVICE_TYPE"/> je aktuálne.</translation>
 <translation id="6970811910055250180">Prebieha aktualizácia zariadenia...</translation>
 <translation id="8030318113982266900">Prebieha aktualizácia vášho zariadenia na kanál <ph name="CHANNEL_NAME"/>...</translation>
-<translation id="7355059611036077582">Pridať do prehliadača Brave</translation>
 <translation id="7456658570432774853">Nahláste aktuálne nastavenia a pomôžte tak zlepšiť prehliadač Brave</translation>
 <translation id="6134859571175647580">Upozornenie: Brave nemôže zabrániť rozšíreniam v zaznamenávaní vašej histórie prehliadania. Ak chcete rozšírenie v režime inkognito zakázať, zrušte výber tejto možnosti.</translation>
 <translation id="777113543093865885">Odstrániť z prehliadača Brave...</translation>
@@ -73,7 +72,6 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="2887570477425111999">Uložiť podrobnosti v prehliadači Brave</translation>
 <translation id="193559141530782783">Brave vaše osobné údaje bezpečne uloží, aby ste ich už nemuseli znova zadávať.</translation>
 <translation id="663059986967017181">Skopírovaná do prehliadača Brave</translation>
-<translation id="5225129378754387452">Zobraziť Ponuku Brave</translation>
 <translation id="300669147395456190">Aplikácie Brave</translation>
 <translation id="3421950102518690868">Stránky <ph name="DOMAIN"/> vyžadujú, aby ste si pred používaním tohto zariadenia prečítali nasledujúce Zmluvné podmienky a vyjadrili s nimi súhlas. Tieto zmluvné podmienky nerozširujú, neupravujú ani neobmedzujú Zmluvné podmienky systému Brave OS.</translation>
 <translation id="3293668930608086049">Brave používa vašu kameru a mikrofón.</translation>
@@ -97,8 +95,8 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="1705567146636171298">Aktualizovať Brave</translation>
 <translation id="4050175100176540509">V najnovšej verzii sú k dispozícii dôležité vylepšenia zabezpečenia a nové funkcie.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave sa reštartuje o 1 sekundu}few{Brave sa reštartujte o # sekundy}many{Brave sa reštartujte o # sekundy}other{Brave sa reštartujte o # sekúnd}}</translation>
-<translation id="9159286371333817139">Mali by ste reštartovať Brave.</translation>
-<translation id="9203540365585059272">Práve bola použitá mimoriadna bezpečnostná aktualizácia pre prehliadač Brave. Zmeny sa prejavia až po jeho reštartovaní (vaše karty sa automaticky obnovia).</translation>
+<translation id="5509303873219371662">Mali by ste reštartovať Brave</translation>
+<translation id="8668413672647811944">Práve bola použitá mimoriadna bezpečnostná aktualizácia pre prehliadač Brave. Zmeny sa prejavia až po jeho reštartovaní (vaše karty sa automaticky obnovia).</translation>
 <translation id="763369711159699222">Pomôže zlepšiť Brave</translation>
 <translation id="1156940037717341650">Automatickým nahlasovaním podrobností o možných bezpečnostných problémoch môžete prispieť k zvýšeniu zabezpečenia prehliadača Brave a k zjednodušeniu jeho používania.</translation>
 <translation id="6791166902140255175">Karta Brave</translation>
@@ -120,7 +118,6 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="8586264863973514035">Ak chcete zmeny použiť, spustite Brave znova</translation>
 <translation id="7021823858304886493">Povoliť prihlásenie do prehliadača Brave</translation>
 <translation id="1649714546770135458">Po vypnutí tejto možnosti sa budete môcť prihlásiť do webov Googlu (napríklad do Gmailu) bez prihlásenia do prehliadača Brave</translation>
-<translation id="6274110506580702455">Prihlásenie do prehliadača Brave je zakázané správcom tohto zariadenia.</translation>
 <translation id="9220324636239049437">Táto akcia odstráni zo zariadenia jednu položku. Ak budete chcieť svoje údaje neskôr opäť načítať, prihláste sa do prehliadača Brave ako <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Táto akcia odstráni zo zariadenia niekoľko položiek (počet: <ph name="ITEMS_COUNT"/>). Ak budete chcieť svoje údaje neskôr opäť načítať, prihláste sa do prehliadača Brave ako <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Táto akcia odstráni zo zariadenia údaje prehliadania. Ak budete chcieť svoje údaje neskôr opäť načítať, prihláste sa do prehliadača Brave ako <ph name="USER_EMAIL"/>.</translation>

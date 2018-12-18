@@ -1,5 +1,5 @@
 diff --git a/components/os_crypt/os_crypt_mac.mm b/components/os_crypt/os_crypt_mac.mm
-index 91a27e4f43f1e3d2078c8f1d9038bcb40c07c445..6f64e71624a5866193bacda30b01f19892638af4 100644
+index 88304b2c3865ea3b126789f6a976d8bae4aa50ba..43dc62d9b829dbfbb605e7bfbf30cc0180daafc5 100644
 --- a/components/os_crypt/os_crypt_mac.mm
 +++ b/components/os_crypt/os_crypt_mac.mm
 @@ -100,6 +100,10 @@ crypto::SymmetricKey* GetEncryptionKey() {

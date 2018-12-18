@@ -11,10 +11,6 @@
 #include "ipc/struct_constructor_macros.h"
 #include "brave/common/common_message_generator.h"
 
-// Generate destructors.
-#include "ipc/struct_destructor_macros.h"
-#include "brave/common/common_message_generator.h"
-
 // Generate param traits write methods.
 #include "ipc/param_traits_write_macros.h"
 namespace IPC {

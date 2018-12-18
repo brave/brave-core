@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID de extensión "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") no se permite en Brave.</translation>
 <translation id="7450557937477381864">Cerrar Chrome</translation>
 <translation id="7008934821596358692">Para finalizar la importación, cierra todas las ventanas de Chrome.</translation>
-<translation id="7753103220327065417">Cerrar Brave</translation>
-<translation id="5588481533147090393">Para finalizar la importación, cerrar todas las ventanas de Brave.</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="4983925687993168579">Estadísticas</translation>
 <translation id="9173846700806833701">Widevine no está instalado</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">El código de Google Wide Vine se carga desde los servidores de Google, no desde nuestros servidores. Se carga solo cuando habilita esta opción. Desaconsejamos el uso de DRM, pero respetamos la elección del usuario y reconocemos que algunos usuarios de Brave desean utilizar los servicios cuando son requeridos.
 
 Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al instalar esta extensión aceptas que Brave no es responsable de los daños o pérdidas relacionadas con el uso de Google Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Importado Desde Brave</translation>
 <translation id="453977518730680921">Reproducir automáticamente el contenido multimedia</translation>
 <translation id="410351446219883937">Reproducir automáticamente</translation>

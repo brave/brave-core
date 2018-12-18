@@ -35,7 +35,7 @@ std::unique_ptr<message_center::Notification> CreateAdNotification(
       gfx::Image(),
       base::string16(),
       GURL("chrome://brave_ads/?" + *notification_id),
-      message_center::NotifierId(message_center::NotifierId::SYSTEM_COMPONENT,
+      message_center::NotifierId(message_center::NotifierType::SYSTEM_COMPONENT,
                                  kNotifierId),
       notification_data,
       nullptr);

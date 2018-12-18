@@ -47,7 +47,6 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="8667808506758191620"><ph name="DEVICE_TYPE"/> Anda sudah diperbarui.</translation>
 <translation id="6970811910055250180">Memperbarui perangkat Anda...</translation>
 <translation id="8030318113982266900">Memperbarui perangkat Anda ke saluran <ph name="CHANNEL_NAME"/>...</translation>
-<translation id="7355059611036077582">Tambahkan ke Brave</translation>
 <translation id="7456658570432774853">Bantu menjadikan Brave lebih baik dengan melaporkan setelan saat ini</translation>
 <translation id="6134859571175647580">Peringatan: Brave tidak dapat mencegah ekstensi merekam histori browsing Anda. Untuk menonaktifkan ekstensi ini dalam mode penyamaran, jangan pilih opsi ini.</translation>
 <translation id="777113543093865885">Buang dari Brave...</translation>
@@ -71,7 +70,6 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="2887570477425111999">Simpan detail di Brave</translation>
 <translation id="193559141530782783">Brave akan meyimpan informasi pribadi Anda dengan aman sehingga Anda tidak perlu mengetiknya lagi.</translation>
 <translation id="663059986967017181">Disalin ke Brave</translation>
-<translation id="5225129378754387452">Tampilkan menu Brave</translation>
 <translation id="300669147395456190">Aplikasi Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> mewajibkan Anda membaca dan menyetujui Persyaratan Layanan sebelum menggunakan perangkat ini. Persyaratan ini tidak memperluas, mengubah, atau membatasi Persyaratan Brave OS.</translation>
 <translation id="3293668930608086049">Brave menggunakan kamera dan mikrofon Anda.</translation>
@@ -95,8 +93,8 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="1705567146636171298">Perbarui Brave</translation>
 <translation id="4050175100176540509">Peningkatan keamanan dan fitur baru yang penting tersedia di versi terbaru.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave akan dimulai ulang dalam 1 detik}other{Brave akan dimulai ulang dalam # detik}}</translation>
-<translation id="9159286371333817139">Mulai ulang Brave sekarang.</translation>
-<translation id="9203540365585059272">Pembaruan keamanan khusus untuk Brave baru saja diterapkan; mulai ulang Brave sekarang agar pembaruan diterapkan (nanti kami akan memulihkan tab yang Anda buka).</translation>
+<translation id="5509303873219371662">Mulai ulang Brave sekarang</translation>
+<translation id="8668413672647811944">Update keamanan khusus untuk Brave baru saja diterapkan. Mulai ulang Brave sekarang dan kami akan memulihkan tab Anda.</translation>
 <translation id="763369711159699222">Bantu kami membuat Brave menjadi lebih baik</translation>
 <translation id="1156940037717341650">Anda dapat membantu membuat Brave lebih aman dan lebih mudah digunakan dengan melaporkan detail secara otomatis tentang kemungkinan insiden keamanan ke Brave Software.</translation>
 <translation id="6791166902140255175">Tab Brave</translation>
@@ -118,7 +116,6 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="8586264863973514035">Untuk menerapkan perubahan Anda, luncurkan ulang Brave</translation>
 <translation id="7021823858304886493">Izinkan login Brave</translation>
 <translation id="1649714546770135458">Dengan menonaktifkan ini, Anda dapat login ke situs Brave Software seperti Gmail tanpa harus login ke Brave</translation>
-<translation id="6274110506580702455">Login ke Brave dinonaktifkan oleh administrator perangkat ini.</translation>
 <translation id="9220324636239049437">Tindakan ini akan menghapus 1 item dari perangkat. Untuk mengambil data nanti, login ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Tindakan ini akan menghapus <ph name="ITEMS_COUNT"/> item dari perangkat. Untuk mengambil data nanti, login ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Tindakan ini akan menghapus data browsing dari perangkat. Untuk mengambil data nanti, login ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>

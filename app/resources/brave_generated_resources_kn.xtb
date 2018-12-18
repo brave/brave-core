@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ವಿಸ್ತರಣೆ ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") , ಇದು Brave ನಲ್ಲಿ ಅನುಮತಿಸಲಾಗಿಲ್ಲ.</translation>
 <translation id="7450557937477381864">Chrome ಮುಚ್ಚಿ</translation>
 <translation id="7008934821596358692">ಆಮದು ಕಾರ್ಯವನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು, ಎಲ್ಲಾ Chrome ವಿಂಡೋಗಳನ್ನು ಮುಚ್ಚಿ.</translation>
-<translation id="7753103220327065417">Brave ಮುಚ್ಚಿ</translation>
-<translation id="5588481533147090393">ಆಮದು ಕಾರ್ಯವನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು ಎಲ್ಲಾ Brave ವಿಂಡೋಗಳನ್ನು ಮುಚ್ಚಿ.</translation>
 <translation id="6447842834002726250">ಕುಕೀಗಳು</translation>
 <translation id="4983925687993168579">ಅಂಕಿಅಂಶ</translation>
 <translation id="9173846700806833701">Widevine ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine ಎಂಬುದು ಡಿಜಿಟಲ್ ರೈಟ್ಸ್ ಮ್ಯಾನೇಜ್‌ಮೆಂಟ್ (DRM) ಕೋಡ್‌ನ ಭಾಗವಾಗಿದ್ದು, ನಾವು ಅಂದರೆ Brave ಅದರ ಮಾಲೀಕತ್ವವನ್ನು ಹೊಂದಿರುವುದಿಲ್ಲ ಮತ್ತು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. Google Widevine ಕೋಡ್ ಅನ್ನು Google ಸರ್ವರ್‌ಗಳಿಂದ ಲೋಡ್ ಮಾಡಲಾಗಿರುತ್ತದೆಯೇ ಹೊರತು, ನಮ್ಮ ಸರ್ವರ್‌ಗಳಿಂದಲ್ಲ. ನೀವು ಈ ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದಾಗ ಮಾತ್ರವೇ ಇದನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತದೆ. ನಾವು DRM ಬಳಕೆಯನ್ನು ಪ್ರೋತ್ಸಾಹಿಸುವುದಿಲ್ಲವಾದರೂ, ಬಳಕೆದಾರರ ಆಯ್ಕೆಯನ್ನು ನಾವು ಗೌರವಿಸುತ್ತೇವೆ ಹಾಗೆಯೇ ಕೆಲವು Brave ಬಳಕೆದಾರರು ಇದರ ಅಗತ್ಯವಿರುವ ಸೇವೆಗಳನ್ನು ಬಳಸಲು ಬಯಸುತ್ತಾರೆ ಎಂಬುದನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೇವೆ.
 
 ಈ ವಿಸ್ತರಣೆಯನ್ನು ಸ್ಥಾಪಿಸುವ ಮೂಲಕ, ನೀವು Google Widevine ಬಳಕೆಯ ನಿಯಮಗಳಿಗೆ ಒಪ್ಪಿಗೆ ಸೂಚಿಸುತ್ತಿದ್ದೀರಿ. ನಿಮ್ಮ Google Widevine ಬಳಕೆಗೆ ಸಂಬಂಧಿಸಿದಂತೆ ಉಂಟಾಗುವ ಯಾವುದೇ ಹಾನಿಗಳು ಅಥವಾ ನಷ್ಟಗಳಿಗೆ Brave ಜವಾಬ್ದಾರರಲ್ಲ ಎಂಬುದನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೀರಿ.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Brave ನಿಂದ ಆಮದು ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="453977518730680921">ಮೀಡಿಯಾ ಸ್ವಯಂಪ್ಲೇ</translation>
 <translation id="410351446219883937">ಸ್ವಯಂಪ್ಲೇ</translation>

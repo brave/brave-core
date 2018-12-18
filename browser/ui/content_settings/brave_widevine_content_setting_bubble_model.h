@@ -4,14 +4,12 @@
 
 #include "chrome/browser/ui/content_settings/content_setting_bubble_model.h"
 
-class Profile;
 class BraveBrowserContentSettingBubbleModelDelegate;
 
 class BraveWidevineContentSettingPluginBubbleModel : public ContentSettingSimpleBubbleModel {
  public:
   BraveWidevineContentSettingPluginBubbleModel(ContentSettingBubbleModel::Delegate* delegate,
-                                               content::WebContents* web_contents,
-                                               Profile* profile);
+                                               content::WebContents* web_contents);
   BraveBrowserContentSettingBubbleModelDelegate* brave_content_settings_delegate() const {
     return brave_content_settings_delegate_;
   }

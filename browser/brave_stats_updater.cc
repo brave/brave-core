@@ -4,7 +4,7 @@
 
 #include "brave/browser/brave_stats_updater.h"
 
-#include "base/sys_info.h"
+#include "base/system/sys_info.h"
 #include "brave/browser/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats_updater_util.h"
 #include "brave/browser/version_info.h"

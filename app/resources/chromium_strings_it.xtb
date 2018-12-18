@@ -47,7 +47,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="8667808506758191620">Il dispositivo <ph name="DEVICE_TYPE"/> è aggiornato.</translation>
 <translation id="6970811910055250180">Aggiornamento del dispositivo in corso...</translation>
 <translation id="8030318113982266900">Aggiornamento del dispositivo al canale <ph name="CHANNEL_NAME"/>...</translation>
-<translation id="7355059611036077582">Aggiungi a Brave</translation>
 <translation id="7456658570432774853">Contribuisci a migliorare Brave indicando le impostazioni attuali</translation>
 <translation id="6134859571175647580">Brave non è in grado di impedire alle estensioni di registrare la tua cronologia di navigazione. Per disattivare questa estensione in modalità di navigazione in incognito, deseleziona questa opzione.</translation>
 <translation id="777113543093865885">Rimuovi da Brave...</translation>
@@ -71,7 +70,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="2887570477425111999">Salva dati in Brave</translation>
 <translation id="193559141530782783">Brave memorizzerà in sicurezza i tuoi dati personali affinché tu non debba digitarli di nuovo.</translation>
 <translation id="663059986967017181">Copiata in Brave</translation>
-<translation id="5225129378754387452">Mostra il menu Brave</translation>
 <translation id="300669147395456190">Applicazioni Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> richiede di leggere e accettare i seguenti Termini di servizio prima di utilizzare il dispositivo. Questi termini non ampliano, modificano o limitano i Termini di Brave OS.</translation>
 <translation id="3293668930608086049">Brave sta utilizzando videocamera e microfono.</translation>
@@ -95,8 +93,8 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="1705567146636171298">Aggiorna Brave</translation>
 <translation id="4050175100176540509">Nell'ultima versione sono stati apportati miglioramenti rilevanti in materia di sicurezza e sono state aggiunte nuove funzioni.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave si riavvierà tra 1 secondo}other{Brave si riavvierà tra # secondi}}</translation>
-<translation id="9159286371333817139">Brave deve essere riavviato adesso.</translation>
-<translation id="9203540365585059272">È stato appena applicato un aggiornamento di sicurezza speciale per Brave; è necessario riavviare ora affinché abbia effetto (le schede verranno ripristinate).</translation>
+<translation id="5509303873219371662">Riavvia subito Brave</translation>
+<translation id="8668413672647811944">È stato appena applicato un aggiornamento di sicurezza speciale per Brave. Riavvia ora e le schede verranno ripristinate.</translation>
 <translation id="763369711159699222">Contribuisci a migliorare Brave</translation>
 <translation id="1156940037717341650">Puoi contribuire a rendere Brave più sicuro e più facile da utilizzare segnalando automaticamente a Brave Software i dettagli dei possibili problemi di sicurezza.</translation>
 <translation id="6791166902140255175">Scheda Brave</translation>
@@ -118,7 +116,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="8586264863973514035">Riavvia Brave per applicare le modifiche</translation>
 <translation id="7021823858304886493">Consenti l'accesso a Brave</translation>
 <translation id="1649714546770135458">Se disattivi questa funzione, puoi accedere ai siti Brave Software quali Gmail senza accedere a Brave</translation>
-<translation id="6274110506580702455">L'accesso a Brave è disattivato dall'amministratore del dispositivo.</translation>
 <translation id="9220324636239049437">Verrà eliminato 1 elemento da questo dispositivo. Per recuperare i dati in un secondo momento, accedi a Brave come <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Verranno eliminati <ph name="ITEMS_COUNT"/> elementi da questo dispositivo. Per recuperare i dati in un secondo momento, accedi a Brave come <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Verranno eliminati i tuoi dati di navigazione da questo dispositivo. Per recuperare i dati in un secondo momento, accedi a Brave come <ph name="USER_EMAIL"/>.</translation>
