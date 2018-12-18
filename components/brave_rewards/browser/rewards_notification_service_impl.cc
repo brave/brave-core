@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 
 #include "base/json/json_reader.h"
@@ -33,7 +35,7 @@ RewardsNotificationServiceImpl::RewardsNotificationServiceImpl(Profile* profile)
               profile);
   AddObserver(extension_rewards_notification_service_observer_.get());
 #endif
-  ReadRewardsNotifications();
+  ReadRewardsNotificationsJSON();
 }
 
 RewardsNotificationServiceImpl::~RewardsNotificationServiceImpl() {
@@ -46,14 +48,28 @@ RewardsNotificationServiceImpl::~RewardsNotificationServiceImpl() {
 void RewardsNotificationServiceImpl::AddNotification(
     RewardsNotificationType type,
     RewardsNotificationArgs args,
-    RewardsNotificationID id) {
+    RewardsNotificationID id,
+    bool only_once) {
   DCHECK(type != REWARDS_NOTIFICATION_INVALID);
-  if (id.empty())
+  if (id.empty()) {
     id = GenerateRewardsNotificationID();
+  } else if (only_once) {
+    if (std::find(
+        rewards_notifications_displayed_.begin(),
+        rewards_notifications_displayed_.end(),
+        id) != rewards_notifications_displayed_.end()) {
+      return;
+    }
+  }
+
   RewardsNotification rewards_notification(
       id, type, GenerateRewardsNotificationTimestamp(), std::move(args));
   rewards_notifications_[id] = rewards_notification;
   OnNotificationAdded(rewards_notification);
+
+  if (only_once) {
+    rewards_notifications_displayed_.push_back(id);
+  }
 }
 
 void RewardsNotificationServiceImpl::DeleteNotification(RewardsNotificationID id) {
@@ -96,16 +112,47 @@ RewardsNotificationServiceImpl::GenerateRewardsNotificationTimestamp() const {
   return base::Time::NowFromSystemTime().ToTimeT();
 }
 
-void RewardsNotificationServiceImpl::ReadRewardsNotifications() {
+void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
   std::string json = profile_->GetPrefs()->GetString(kRewardsNotifications);
   if (json.empty())
     return;
-  std::unique_ptr<base::ListValue> root =
+  std::unique_ptr<base::DictionaryValue> dictionary =
+      base::DictionaryValue::From(base::JSONReader::Read(json));
+
+  // legacy read
+  if (!dictionary || !dictionary->is_dict()) {
+    std::unique_ptr<base::ListValue> list =
       base::ListValue::From(base::JSONReader::Read(json));
-  if (!root) {
-    LOG(ERROR) << "Failed to deserialize rewards notifications on startup";
+    if (!list) {
+      LOG(ERROR) << "Failed to deserialize rewards notifications on startup";
+      return;
+    }
+
+    ReadRewardsNotifications(std::move(list));
     return;
   }
+
+  base::ListValue* notifications;
+  dictionary->GetList("notifications", &notifications);
+  auto unique = std::make_unique<base::ListValue>(notifications->GetList());
+  ReadRewardsNotifications(std::move(unique));
+
+  base::ListValue* displayed;
+  dictionary->GetList("displayed", &displayed);
+  if (displayed && displayed->is_list()) {
+    for (auto& it : *displayed) {
+      rewards_notifications_displayed_.push_back(it.GetString());
+    }
+  }
+
+}
+
+void RewardsNotificationServiceImpl::ReadRewardsNotifications(
+    std::unique_ptr<base::ListValue> root) {
+  if (!root) {
+    return;
+  }
+
   for (auto it = root->begin(); it != root->end(); ++it) {
     if (!it->is_dict())
       continue;
@@ -150,8 +197,9 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications() {
 }
 
 void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
-  base::ListValue root;
+  base::DictionaryValue root;
 
+  auto notifications = std::make_unique<base::ListValue>();
   for (auto& item : rewards_notifications_) {
     auto dict = std::make_unique<base::DictionaryValue>();
     dict->SetString("id", item.second.id_);
@@ -162,8 +210,16 @@ void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
       args->AppendString(arg);
     }
     dict->SetList("args", std::move(args));
-    root.Append(std::move(dict));
+    notifications->Append(std::move(dict));
   }
+
+  auto displayed = std::make_unique<base::ListValue>();
+  for (auto& item : rewards_notifications_displayed_) {
+    displayed->AppendString(item);
+  }
+
+  root.SetList("notifications", std::move(notifications));
+  root.SetList("displayed", std::move(displayed));
 
   std::string result;
   if (!base::JSONWriter::Write(root, &result)) {
@@ -234,7 +290,8 @@ if (error_code == ledger::Result::LEDGER_OK) {
     RewardsNotificationService::RewardsNotificationArgs args;
     AddNotification(RewardsNotificationService::REWARDS_NOTIFICATION_GRANT,
                     args,
-                    "rewards_notification_grant");
+                    "rewards_notification_grant_" + properties.promotionId,
+                    true);
   }
 }
 
@@ -242,6 +299,8 @@ void RewardsNotificationServiceImpl::OnGrantFinish(
     RewardsService* rewards_service,
     unsigned int result,
     Grant grant) {
+  DeleteNotification("rewards_notification_grant_" + grant.promotionId);
+  // We keep it for back compatibility
   DeleteNotification("rewards_notification_grant");
 }
 
