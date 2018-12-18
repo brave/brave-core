@@ -51,15 +51,15 @@ exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
 
 .c1 {
   top: 16px;
-  right: 16px;
+  right: 15px;
   position: absolute;
   padding: 0;
   border: none;
   background: none;
   cursor: pointer;
   color: #B8B9C4;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
 }
 
 .c5 {

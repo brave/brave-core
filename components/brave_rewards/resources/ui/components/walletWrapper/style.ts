@@ -250,7 +250,7 @@ export const StyledBAT = styled<{}, 'div'>('div')`
 export const StyledNotificationIcon = styled<StyledProps, 'img'>('img')`
   height: 53px;
   width: 53px;
-  margin: 8px auto 0px;
+  margin: 9px 5px 0px 15px;
 `
 
 export const StyledNotificationCloseIcon = styled<StyledProps, 'div'>('div')`
@@ -297,7 +297,7 @@ export const StyledDateText = styled<StyledProps, 'span'>('span')`
 
 export const StyledButton = styled<StyledProps, 'div'>('div')`
   width: 88px;
-  margin: 12px auto 15px;
+  margin: 12px 122px 15px 125px;
 `
 
 export const StyledPipe = styled<StyledProps, 'span'>('span')`
