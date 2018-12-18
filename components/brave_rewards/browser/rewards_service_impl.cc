@@ -381,6 +381,8 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
   if (baseDomain == "")
     return;
 
+  const std::string publisher_url = origin.scheme() + "://" + baseDomain + "/";
+
   auto now = base::Time::Now();
   ledger::VisitData data(baseDomain,
                          origin.host(),
@@ -389,7 +391,7 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
                          GetPublisherMonth(now),
                          GetPublisherYear(now),
                          baseDomain,
-                         origin.spec(),
+                         publisher_url,
                          "",
                          "");
   ledger_->OnLoad(data, GetCurrentTimestamp());
@@ -1714,6 +1716,11 @@ void RewardsServiceImpl::OnDonate(
   info.favicon_url = site->favicon_url;
 
   OnDonate(publisher_key, amount, recurring, &info);
+}
+
+void RewardsServiceImpl::SetLedgerClient(
+    std::unique_ptr<ledger::Ledger> new_ledger) {
+  ledger_ = std::move(new_ledger);
 }
 
 }  // namespace brave_rewards

@@ -134,6 +134,7 @@ class RewardsServiceImpl : public RewardsService,
                           std::unique_ptr<ledger::WalletInfo> info) override;
   void OnDonate(const std::string& publisher_key, int amount, bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
+  void SetLedgerClient(std::unique_ptr<ledger::Ledger> new_ledger) override;
 
  private:
   friend void RunIOTaskCallback(

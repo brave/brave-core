@@ -128,7 +128,6 @@ test("brave_unit_tests") {
   deps = [
     "//brave/components/brave_rewards/browser:testutil",
     "//brave/components/brave_sync:testutil",
-    "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-usermodel",
     "//brave/vendor/bat-native-rapidjson",
     "//chrome:browser_dependencies",
@@ -144,6 +143,12 @@ test("brave_unit_tests") {
     "//components/sync_preferences",
     "//content/public/common",
   ]
+
+  if (brave_rewards_enabled) {
+    deps += [
+      "//brave/vendor/bat-native-ledger",
+    ]
+  }
 
   public_deps = [
     "//base",
