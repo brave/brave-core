@@ -41,7 +41,6 @@ interface Props {
 
   onUserNoticedError = () => {
     this.props.actions.resetSyncSetupError()
-    this.props.onClose()
   }
 
   onEnterPassphrase = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
