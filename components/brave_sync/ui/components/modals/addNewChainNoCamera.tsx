@@ -30,10 +30,6 @@ export default class AddNewChainNoCameraModal extends React.PureComponent<Props,
   render () {
     const { onClose, syncData } = this.props
 
-    if (!syncData) {
-      return null
-    }
-
     return (
       <Modal id='addNewChainNoCameraModal' onClose={onClose} size='small'>
         <ModalHeader>
@@ -43,12 +39,18 @@ export default class AddNewChainNoCameraModal extends React.PureComponent<Props,
           </div>
         </ModalHeader>
         <ModalContent>
-          <TextAreaClipboard
-            copiedString={getLocale('copied')}
-            wordCountString={getLocale('wordCount')}
-            readOnly={true}
-            defaultValue={syncData.syncWords}
-          />
+          {
+            syncData.syncWords
+            ? (
+              <TextAreaClipboard
+                copiedString={getLocale('copied')}
+                wordCountString={getLocale('wordCount')}
+                readOnly={true}
+                defaultValue={syncData.syncWords}
+              />
+            )
+            : null
+          }
         </ModalContent>
         <TwoColumnButtonGrid>
           <OneColumnButtonGrid>
