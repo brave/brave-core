@@ -93,6 +93,8 @@ export const onBalanceReports = (reports: Record<string, Rewards.Report>) => act
   reports
 })
 
+export const getCurrentReport = () => action(types.GET_CURRENT_REPORT, {})
+
 export const excludePublisher = (publisherKey: string) => action(types.ON_EXCLUDE_PUBLISHER, {
   publisherKey
 })
