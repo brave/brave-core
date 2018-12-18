@@ -68,14 +68,14 @@ def main():
     if args.file and args.github:
         exit("Error: --file and --github are mutually exclusive, only one allowed")
 
-    if not os.environ.get('OMAHAPW') or not os.environ.get('OMAHAUSERID'):
-        message = ('Error: Please set the $OMAHAUSERID, $OMAHAPW and $OMAHAHOST'
+    if not os.environ.get('OMAHA_PASS') or not os.environ.get('OMAHA_USER'):
+        message = ('Error: Please set the $OMAHA_USER, $OMAHA_PASS and $OMAHA_HOST'
                    'environment variables')
         exit(message)
 
-    omahaid = os.environ.get('OMAHAUSERID')
-    omahapw = os.environ.get('OMAHAPW')
-    omahahost = os.environ.get('OMAHAHOST')
+    omahaid = os.environ.get('OMAHA_USER')
+    omahapw = os.environ.get('OMAHA_PASS')
+    omahahost = os.environ.get('OMAHA_HOST')
 
     if args.github:
         file_list = download_from_github(args, logging)
@@ -107,8 +107,8 @@ def main():
 
         if app_info['platform'] in 'darwin':
             app_info['version_url'] = '/api/sparkle/version/'
-            if not os.environ.get('DSAPRIVPEM'):
-                exit('Error: Please set the $DSAPRIVPEM environment variable')
+            if not os.environ.get('DSA_PRIVATE_PEM'):
+                exit('Error: Please set the $DSA_PRIVATE_PEM environment variable')
         elif app_info['platform'] in 'win32':
             app_info['version_url'] = '/api/omaha/version/'
 
@@ -148,7 +148,7 @@ def main():
                 params['platform'] = app_info['platform_id']
             else:
                 app_info['darwindsasig'] = sign_update_sparkle(
-                    source_file, os.environ.get('DSAPRIVPEM')).rstrip('\n')
+                    source_file, os.environ.get('DSA_PRIVATE_PEM')).rstrip('\n')
                 params['dsa_signature'] = app_info['darwindsasig']
                 params['short_version'] = app_info['short_version']
 
@@ -257,10 +257,10 @@ def parse_args():
     desc = "Upload Windows/Mac install files to Omaha server" \
            "\n\nRequires the following ENVIRONMENT VARIABLES be set:" \
            "\n\nCHANNEL: The Brave channel, i.e. \'release\', \'beta\', \'dev\'" \
-           "\nOMAHAHOST: The FQDN hostname of the Omaha server to upload to. (without \'https:\\\\' prefix)" \
-           "\nOMAHAUSERID: The UserID to use to login to the Omaha server." \
-           "\nOMAHAPW: The Password to login to the Omaha server." \
-           "\nDSAPRIVPEM: The Private DSA pem file used to sign the Mac DMG file." \
+           "\nOMAHA_HOST: The FQDN hostname of the Omaha server to upload to. (without \'https:\\\\' prefix)" \
+           "\nOMAHA_USER: The UserID to use to login to the Omaha server." \
+           "\nOMAHA_PASS: The Password to login to the Omaha server." \
+           "\nDSA_PRIVATE_PEM: The Private DSA pem file used to sign the Mac DMG file." \
            "\nBRAVE_GITHUB_TOKEN: Github token to download from a draft release if not published yet. " \
            "(ONLY REQUIRED IF --github)" \
            "\nnpm_config_brave_version: Chromium version (only if not in brave-core directory with brave-browser" \
