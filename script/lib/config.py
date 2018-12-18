@@ -23,6 +23,12 @@ BRAVE_CORE_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..', '..'))
 BRAVE_BROWSER_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
+"""
+SHALLOW_BRAVE_BROWSER_ROOT assumes the brave-browser directory is in the same
+parent directory as brave-core
+"""
+SHALLOW_BRAVE_BROWSER_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '..', '..', '..', 'brave-browser'))
 verbose_mode = False
 
 
@@ -38,10 +44,24 @@ def output_dir():
 
 # Use brave-browser/package.json version for canonical version definition
 def brave_browser_package():
-    pjson = os.path.join(BRAVE_BROWSER_ROOT, 'package.json')
-    with open(pjson) as f:
-        obj = json.load(f)
-        return obj
+    try:
+        pjson = os.path.join(BRAVE_BROWSER_ROOT, 'package.json')
+        with open(pjson) as f:
+            obj = json.load(f)
+            return obj
+    except IOError:
+        # When IOError exception is caught, try SHALLOW_BRAVE_BROWSER_ROOT next
+        try:
+            """
+            SHALLOW_BRAVE_BROWSER_ROOT assumes the brave-browser directory is in the same
+            parent directory as brave-core
+            """
+            pjson = os.path.join(SHALLOW_BRAVE_BROWSER_ROOT, 'package.json')
+            with open(pjson) as f:
+                obj = json.load(f)
+                return obj
+        except Exception as e:
+            exit("Error: cannot open file package.json: {}".format(e))
 
 
 def brave_core_package():
@@ -63,8 +83,8 @@ def project_name():
 
 def get_chrome_version():
     version = (os.environ.get('npm_config_brave_version') or
-               brave_browser_package()['version'])
-    return version.split('+')[1]
+               brave_browser_package()['config']['projects']['chrome']['tag'])
+    return version
 
 
 def get_brave_version():

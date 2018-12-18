@@ -8,7 +8,7 @@ import publish_release
 import sys
 import unittest
 
-from mock import MockImport, Repo
+from githubmock import MockImport, Repo
 
 # Mock requests module
 sys.modules['requests'] = MockImport
