@@ -15,8 +15,9 @@ import urllib2
 import os
 import zipfile
 
-from config import is_verbose_mode
+from config import is_verbose_mode, PLATFORM
 from env_util import get_vs_env
+from helpers import release_channel
 
 BOTO_DIR = os.path.abspath(os.path.join(__file__, '..', '..', '..', 'vendor',
                                         'boto'))
@@ -238,3 +239,48 @@ def import_vs_env(target_arch):
         vs_arch = 'x86_amd64'
     env = get_vs_env('14.0', vs_arch)
     os.environ.update(env)
+
+
+def get_platform():
+    PLATFORM = {
+        'cygwin': 'win32',
+        'darwin': 'darwin',
+        'linux2': 'linux',
+        'win32': 'win32',
+    }[sys.platform]
+    return PLATFORM
+
+
+def omaha_channel(platform, arch, preview):
+    if platform == 'darwin':
+        if preview:
+            return 'test'
+        else:
+            return release_channel() if release_channel() not in 'release' else 'stable'
+    elif platform == 'win32':
+        if arch in 'ia32':
+            if preview:
+                arch = '86'
+            else:
+                arch = 'x86'
+        elif arch in 'x64':
+            if preview:
+                arch = '64'
+        if release_channel() in ['beta']:
+            if preview:
+                chan = '{}-{}-test'.format(arch, release_channel()[0:2])
+            else:
+                chan = '{}-{}'.format(arch, release_channel()[0:2])
+            return chan
+        elif release_channel() in ['dev']:
+            if preview:
+                chan = '{}-dv-test'.format(arch)
+            else:
+                chan = '{}-{}'.format(arch, release_channel()[0:3])
+            return chan
+        elif release_channel() in ['release']:
+            if preview:
+                chan = '{}-r-test'.format(arch)
+            else:
+                chan = '{}-{}'.format(arch, release_channel()[0:3])
+            return chan
