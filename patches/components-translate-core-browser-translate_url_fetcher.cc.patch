@@ -1,5 +1,5 @@
 diff --git a/components/translate/core/browser/translate_url_fetcher.cc b/components/translate/core/browser/translate_url_fetcher.cc
-index 9dae29174d5f1899b9ba6e4df02cbe1844b18ca7..585c1db28cf87d4fac43bde1044cc13c75eaa53a 100644
+index 254e0ab249a9717893d8fcff40ff660913f387f2..778c465df7fbf003decb294d19d7091e00808151 100644
 --- a/components/translate/core/browser/translate_url_fetcher.cc
 +++ b/components/translate/core/browser/translate_url_fetcher.cc
 @@ -31,6 +31,7 @@ TranslateURLFetcher::~TranslateURLFetcher() {}

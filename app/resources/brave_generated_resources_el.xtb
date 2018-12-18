@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") δεν επιτρέπεται στο Brave.</translation>
 <translation id="7450557937477381864">Κλείστε τον Chrome</translation>
 <translation id="7008934821596358692">Για να ολοκληρωθεί η εισαγωγή, κλείστε όλα τα παράθυρα Chrome.</translation>
-<translation id="7753103220327065417">Κλείσiμο Brave</translation>
-<translation id="5588481533147090393">Για να ολοκληρωθεί η εισαγωγή, κλείστε όλα τα παράθυρα Brave.</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="4983925687993168579">Στατιστικά στοιχεία</translation>
 <translation id="9173846700806833701">Το Widevine δεν έχει εγκατασταθεί</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Το Google Widevine είναι ένα μέρος του κώδικα Ψηφιακής Διαχείρισης Δικαιωμάτων (DRM), για το οποίον εμείς στην Brave Software δεν είμαστε υπεύθυνοι και δεν μπορούμε να το ελέγξουμε. Ο κώδικας Google Widevine φορτώνεται από τους διακομιστές της Google κι όχι από τους δικούς μας. Η φόρτωση γίνεται μόνο όταν ενεργοποιήσετε αυτήν την επιλογή. Δε συνιστούμε τη χρήση του DRM, αλλά σεβόμαστε την επιλογή των χρηστών κι αναγνωρίζουμε ότι μερικοί χρήστες του Brave θα ήθελαν να χρησιμοποιήσουν υπηρεσίες που το χρειάζονται.
 
 Εγκαθιστώντας αυτήν την επέκταση, συμφωνείτε με τους Όρους Χρήσης του Google Widevine. Συμφωνείτε ότι η Brave δεν ευθύνεται για οποιεσδήποτε ζημίες ή απώλειες σε σχέση με τη χρήση του Google Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Έγινε Εισαγωγή Από Το Brave</translation>
 <translation id="453977518730680921">Αυτόματη εκτέλεση πολυμέσων</translation>
 <translation id="410351446219883937">Αυτόματη εκτέλεση</translation>

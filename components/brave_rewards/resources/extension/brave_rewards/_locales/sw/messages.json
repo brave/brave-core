@@ -196,5 +196,9 @@
   "contributeNotificationTipError": {
     "message": "Kulikuwa na tatizo kuchakata mchango wako, tafadhali jaribu tena.",
     "description": "We show this string in notification when tip fails"
+  },
+  "noActivity": {
+    "message": "No activities yet…",
+    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   }
 }

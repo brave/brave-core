@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index e98e4245808d553c301c2f770af72a4ce37757b1..6ec62e523879adb4444295740f7c85552061b405 100644
+index 23b8a086b7f7e754e284412fd232ee49d2ba768b..51556ad1372d7acec40c56ddc4fb63fe8941d41c 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
-@@ -74,12 +74,14 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -75,12 +75,14 @@ class ToolbarView : public views::AccessiblePaneView,
    ~ToolbarView() override;
  
    // Create the contents of the Browser Toolbar.
@@ -16,8 +16,8 @@ index e98e4245808d553c301c2f770af72a4ce37757b1..6ec62e523879adb4444295740f7c8555
 +  virtual
    void Update(content::WebContents* tab);
  
-   // Clears the current state for |tab|.
-@@ -101,6 +103,7 @@ class ToolbarView : public views::AccessiblePaneView,
+   // Updates the visibility of the toolbar, potentially animating the
+@@ -106,6 +108,7 @@ class ToolbarView : public views::AccessiblePaneView,
  #endif  // defined(OS_CHROMEOS)
  
    // Shows a bookmark bubble and anchors it appropriately.
@@ -25,15 +25,15 @@ index e98e4245808d553c301c2f770af72a4ce37757b1..6ec62e523879adb4444295740f7c8555
    void ShowBookmarkBubble(const GURL& url,
                            bool already_bookmarked,
                            bookmarks::BookmarkBubbleObserver* observer);
-@@ -182,6 +185,7 @@ class ToolbarView : public views::AccessiblePaneView,
-   }
+@@ -192,6 +195,7 @@ class ToolbarView : public views::AccessiblePaneView,
+   void SetToolbarVisibility(bool visible);
  
   private:
 +  friend class BraveToolbarView;
    // Types of display mode this toolbar can have.
    enum DisplayMode {
-     DISPLAYMODE_NORMAL,       // Normal toolbar with buttons, etc.
-@@ -211,6 +215,7 @@ class ToolbarView : public views::AccessiblePaneView,
+     DISPLAYMODE_NORMAL,   // Normal toolbar with buttons, etc.
+@@ -225,6 +229,7 @@ class ToolbarView : public views::AccessiblePaneView,
    // ToolbarView::CalculatePreferredSize() and ToolbarView::GetMinimumSize().
    // These two functions call through to GetSizeInternal(), passing themselves
    // as the function pointer |View::*get_size|.

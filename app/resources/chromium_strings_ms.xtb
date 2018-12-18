@@ -47,7 +47,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="8667808506758191620"><ph name="DEVICE_TYPE"/> anda sudah dikemas kini.</translation>
 <translation id="6970811910055250180">Mengemas kini peranti anda...</translation>
 <translation id="8030318113982266900">Mengemas kini peranti anda kepada saluran <ph name="CHANNEL_NAME"/>...</translation>
-<translation id="7355059611036077582">Tambah ke Brave</translation>
 <translation id="7456658570432774853">Bantu jadikan Brave lebih baik dengan melaporkan tetapan semasa</translation>
 <translation id="6134859571175647580">Amaran: Brave tidak dapat menghalang sambungan daripada merakamkan sejarah penyemakan imbas anda. Untuk melumpuhkan sambungan ini dalam mod inkognito, nyahpilih pilihan ini.</translation>
 <translation id="777113543093865885">Alih keluar daripada Brave...</translation>
@@ -71,7 +70,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="2887570477425111999">Simpan butiran di Brave</translation>
 <translation id="193559141530782783">Brave akan menyimpan butiran peribadi anda dengan selamat supaya anda tidak perlu menaipnya semula.</translation>
 <translation id="663059986967017181">Disalin ke Brave</translation>
-<translation id="5225129378754387452">Paparkan menu Brave</translation>
 <translation id="300669147395456190">Apl Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> menghendaki anda membaca dan menerima Syarat Perkhidmatan berikut sebelum menggunakan peranti ini. Syarat ini tidak meluaskan, mengubah suai atau mengehadkan Syarat OS Brave.</translation>
 <translation id="3293668930608086049">Brave menggunakan kamera dan mikrofon anda.</translation>
@@ -95,8 +93,8 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="1705567146636171298">Kemas kini Brave</translation>
 <translation id="4050175100176540509">Peningkatan keselamatan penting dan ciri baharu tersedia dalam versi terkini.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave akan dimulakan semula dalam 1 saat}other{Brave akan dimulakan semula dalam # saat}}</translation>
-<translation id="9159286371333817139">Anda perlu memulakan semula Brave sekarang.</translation>
-<translation id="9203540365585059272">Kemas kini keselamatan khas untuk Brave baru sahaja dilakukan; anda perlu memulakan semula peranti ini sekarang supaya kemas kini ini berkesan (kami akan memulihkan tab anda).</translation>
+<translation id="5509303873219371662">Anda perlu memulakan semula Brave sekarang</translation>
+<translation id="8668413672647811944">Kemas kini keselamatan khas untuk Brave baru sahaja dilakukan. Mulakan semula sekarang dan kami akan memulihkan tab anda.</translation>
 <translation id="763369711159699222">Bantu menjadikan Brave lebih baik</translation>
 <translation id="1156940037717341650">Anda boleh membantu menjadikan Brave lebih selamat dan lebih mudah untuk digunakan dengan melaporkan butiran kemungkinan insiden keselamatan secara automatik kepada Brave Software.</translation>
 <translation id="6791166902140255175">Tab Brave</translation>
@@ -118,7 +116,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="8586264863973514035">Untuk menggunakan perubahan anda, mulakan semula Brave</translation>
 <translation id="7021823858304886493">Benarkan log masuk Brave</translation>
 <translation id="1649714546770135458">Dengan mematikan pilihan ini, anda boleh mengelog masuk ke tapak Brave Software seperti Gmail tanpa perlu mengelog masuk ke Brave</translation>
-<translation id="6274110506580702455">Log masuk ke Brave dilumpuhkan oleh pentadbir peranti ini.</translation>
 <translation id="9220324636239049437">Tindakan ini akan memadamkan 1 item daripada peranti ini. Untuk mendapatkan kembali data anda kemudian, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Tindakan ini akan memadamkan <ph name="ITEMS_COUNT"/> item daripada peranti ini. Untuk mendapatkan kembali data anda kemudian, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Tindakan ini akan memadamkan data semakan imbas anda daripada peranti ini. Untuk mendapatkan kembali data anda kemudian, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>

@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (شناسه افزونه "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") در Brave مجاز نیست.</translation>
 <translation id="7450557937477381864">بستن Chrome</translation>
 <translation id="7008934821596358692">برای تکمیل وارد کردن، همه پنجره‌های Chrome را ببندید.</translation>
-<translation id="7753103220327065417">بستن Brave</translation>
-<translation id="5588481533147090393">برای تکمیل وارد کردن، همه پنجره‌های Brave را ببندید.</translation>
 <translation id="6447842834002726250">کوکی</translation>
 <translation id="4983925687993168579">آمار</translation>
 <translation id="9173846700806833701">Widevine نصب نشده است</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine قطعه‌ای از کد «مدیریت حقوق دیجیتال» (DRM) است که ما (Brave Software) مالک آن نیستیم و نمی‌توانیم آن را بازبینی کنیم. کد Google Widevine از سرورهای Google - نه سرورهای ما - بارگیری می‌شود. این کد فقط در صورتی بارگیری می‌شود که این گزینه را فعال کنید. کاربران را به استفاده از DRM تشویق نمی‌کنیم، اما به انتخاب کاربران احترام می‌گذاریم و اذعان داریم بعضی از کاربران Brave تمایل دارند از سرویس‌هایی که به DRM نیاز دارند استفاده کنند.
 
 با نصب این افزونه، «شرایط استفاده از Google Widevine» را می‌پذیرید و موافقت می‌کنید Brave مسئول هرگونه خسارت یا زیان مرتبط با استفاده شما از Google Widevine نیست.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">واردشده از Brave</translation>
 <translation id="453977518730680921">پخش خودکار رسانه</translation>
 <translation id="410351446219883937">پخش خودکار</translation>

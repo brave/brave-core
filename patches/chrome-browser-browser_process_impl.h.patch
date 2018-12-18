@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index ab192b468f539a49a3990260b30c794034ce97dd..ec77ef3946ecbe5dd8dc1eff854ce5d1cc987d4d 100644
+index 143e7442ca050594dfb51a8e2fb5eb662a3f24c0..b68aeb1e147898eb013e5444009b1030683abc94 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
-@@ -206,6 +206,7 @@ class BrowserProcessImpl : public BrowserProcess,
+@@ -205,6 +205,7 @@ class BrowserProcessImpl : public BrowserProcess,
    std::string actual_locale();
  
   private:

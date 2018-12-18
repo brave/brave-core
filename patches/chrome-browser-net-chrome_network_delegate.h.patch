@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/net/chrome_network_delegate.h b/chrome/browser/net/chrome_network_delegate.h
-index 8b37b38330975f2b23fceb915eadafe63e7a6790..fa07f1615c597e62cd53389bbed63426fcfdb5fa 100644
+index 3a6907a6b83a4639df73ff28a461f6a1ed5dbb61..48044ebd5d63bcb6b6cd251545fe86112c90a2bc 100644
 --- a/chrome/browser/net/chrome_network_delegate.h
 +++ b/chrome/browser/net/chrome_network_delegate.h
-@@ -111,6 +111,7 @@ class ChromeNetworkDelegate : public net::NetworkDelegateImpl {
+@@ -97,6 +97,7 @@ class ChromeNetworkDelegate : public net::NetworkDelegateImpl {
    static void EnableAccessToAllFilesForTesting(bool enabled);
  
   private:

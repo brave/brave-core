@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style.cc b/chrome/browser/ui/views/tabs/tab_style.cc
-index 76b4beafc613ebe4246f0117cdf52f98792a1cde..a42862b9fd9c9289ce0a447cd5401d0f7fc6194f 100644
+index 8f21aa7edbb3b0409c68e0d850541573710f993c..791e5dc1c2c161325990a43f0bb2d960d152e95a 100644
 --- a/chrome/browser/ui/views/tabs/tab_style.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style.cc
-@@ -127,7 +127,7 @@ class GM2TabStyle : public TabStyle {
+@@ -128,7 +128,7 @@ class GM2TabStyle : public TabStyle {
  
  // Thickness in DIPs of the separator painted on the left and right edges of
  // the tab.
@@ -11,16 +11,16 @@ index 76b4beafc613ebe4246f0117cdf52f98792a1cde..a42862b9fd9c9289ce0a447cd5401d0f
  
  // Returns the radius of the outer corners of the tab shape.
  int GetCornerRadius() {
-@@ -143,7 +143,7 @@ int GetContentsHorizontalInsetSize() {
+@@ -144,7 +144,7 @@ int GetContentsHorizontalInsetSize() {
  
  // Returns the height of the separator between tabs.
  int GetSeparatorHeight() {
--  constexpr int kTabSeparatorHeight = 20;
-+  constexpr int kTabSeparatorHeight = 24;
-   constexpr int kTabSeparatorTouchHeight = 24;
-   return ui::MaterialDesignController::IsTouchOptimizedUiEnabled()
-              ? kTabSeparatorTouchHeight
-@@ -270,6 +270,7 @@ gfx::Path GM2TabStyle::GetPath(PathType path_type,
+-  return ui::MaterialDesignController::touch_ui() ? 24 : 20;
++  return ui::MaterialDesignController::touch_ui() ? 24 : 24;
+ }
+ 
+ void DrawHighlight(gfx::Canvas* canvas,
+@@ -267,6 +267,7 @@ gfx::Path GM2TabStyle::GetPath(PathType path_type,
    // When the radius shrinks, it leaves a gap between the bottom corners and the
    // edge of the tab. Make sure we account for this - and for any adjustment we
    // may have made to the location of the tab!
@@ -28,7 +28,7 @@ index 76b4beafc613ebe4246f0117cdf52f98792a1cde..a42862b9fd9c9289ce0a447cd5401d0f
    const float corner_gap = (right - tab_right) - bottom_radius;
  
    gfx::Path path;
-@@ -376,7 +377,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
+@@ -383,7 +384,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
    separator_bounds.leading =
        gfx::RectF(aligned_bounds.x() + corner_radius,
                   aligned_bounds.y() +
@@ -37,11 +37,10 @@ index 76b4beafc613ebe4246f0117cdf52f98792a1cde..a42862b9fd9c9289ce0a447cd5401d0f
                   separator_size.width(), separator_size.height());
  
    separator_bounds.trailing = separator_bounds.leading;
-@@ -688,13 +689,13 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
-                        gfx::Tween::IntValueBetween(opacity, SK_AlphaTRANSPARENT,
+@@ -696,12 +697,13 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
--
+ 
 +  const int separator_radius = separator_bounds.leading.width() / 2;
    cc::PaintFlags flags;
    flags.setAntiAlias(true);

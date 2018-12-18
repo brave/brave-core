@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc b/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
-index babc823c9df6f031c20d2792de6ede83648ede15..7495718e768a5ecb93803995bd55530b89f44627 100644
+index edb24bcb3cb10d35e00f4ea30fabbdd15fc7e9f6..02507a44da53374960256934f8c77db857f29236 100644
 --- a/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
 +++ b/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
 @@ -85,6 +85,7 @@ std::string HashIdWithOrigin(const std::string& security_origin,

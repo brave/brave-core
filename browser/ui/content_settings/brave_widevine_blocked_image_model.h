@@ -11,11 +11,10 @@ class BraveWidevineBlockedImageModel : public ContentSettingSimpleImageModel {
  public:
   BraveWidevineBlockedImageModel(ImageType image_type,
                                                ContentSettingsType content_type);
-  void UpdateFromWebContents(content::WebContents* web_contents) override;
-  ContentSettingBubbleModel* CreateBubbleModelImpl(
+  bool UpdateAndGetVisibility(content::WebContents* web_contents) override;
+  std::unique_ptr<ContentSettingBubbleModel> CreateBubbleModelImpl(
     ContentSettingBubbleModel::Delegate* delegate,
-    content::WebContents* web_contents,
-    Profile* profile) override;
+    content::WebContents* web_contents) override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveWidevineBlockedImageModel);

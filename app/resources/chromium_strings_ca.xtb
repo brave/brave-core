@@ -47,7 +47,6 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="8667808506758191620">El dispositiu <ph name="DEVICE_TYPE"/> està actualitzat.</translation>
 <translation id="6970811910055250180">S'està actualitzant el dispositiu...</translation>
 <translation id="8030318113982266900">S'està actualitzant el vostre dispositiu al canal <ph name="CHANNEL_NAME"/>...</translation>
-<translation id="7355059611036077582">Addició a Brave</translation>
 <translation id="7456658570432774853">Informa de la configuració actual per ajudar-nos a millorar Brave</translation>
 <translation id="6134859571175647580">Advertiment: Brave no pot evitar que les extensions registrin l'historial de navegació. Per desactivar aquesta extensió en mode d'incògnit, desmarca aquesta opció.</translation>
 <translation id="777113543093865885">Suprimeix de Brave...</translation>
@@ -71,7 +70,6 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="2887570477425111999">Desa els detalls a Brave</translation>
 <translation id="193559141530782783">Brave emmagatzemarà de manera segura les vostres dades personals perquè no les hàgiu de tornar a escriure</translation>
 <translation id="663059986967017181">Copiada a Brave</translation>
-<translation id="5225129378754387452">Mostra el menú de Brave.</translation>
 <translation id="300669147395456190">Aplicacions de Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> exigeix que llegiu i accepteu els Termes i condicions següents abans no utilitzeu el dispositiu. Aquestes condicions no amplien, modifiquen ni restringeixen les condicions de Brave OS.</translation>
 <translation id="3293668930608086049">Brave està utilitzant la càmera i el micròfon.</translation>
@@ -95,8 +93,8 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="1705567146636171298">Actualitza Brave</translation>
 <translation id="4050175100176540509">La versió més recent incorpora millores de seguretat i funcions noves importants.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave es reiniciarà d'aquí a 1 segon}other{Brave es reiniciarà d'aquí a # segons}}</translation>
-<translation id="9159286371333817139">Reinicieu Brave ara</translation>
-<translation id="9203540365585059272">S'acaba d'aplicar una actualització de seguretat especial per a Brave; reinicieu el navegador ara perquè es faci efectiva (restaurarem les pestanyes).</translation>
+<translation id="5509303873219371662">Reinicia Brave ara</translation>
+<translation id="8668413672647811944">S'acaba d'aplicar una actualització de seguretat especial per a Brave. Reinicia el navegador i restaurarem les pestanyes.</translation>
 <translation id="763369711159699222">Ajudeu a millorar Brave</translation>
 <translation id="1156940037717341650">Si voleu col·laborar perquè Brave sigui més segur i més fàcil d'utilitzar, informeu automàticament Brave Software dels detalls sobre possibles incidències de seguretat.</translation>
 <translation id="6791166902140255175">Pestanya de Brave</translation>
@@ -118,7 +116,6 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="8586264863973514035">Torna a iniciar Brave perquè s'apliquin els canvis</translation>
 <translation id="7021823858304886493">Permet l'inici de sessió a Brave</translation>
 <translation id="1649714546770135458">En desactivar aquesta opció, pots iniciar la sessió en llocs web de Brave Software, com ara Gmail, sense iniciar la sessió a Brave</translation>
-<translation id="6274110506580702455">L'administrador d'aquest dispositiu ha desactivat l'inici de sessió a Brave.</translation>
 <translation id="9220324636239049437">Amb aquesta acció, se suprimirà 1 element d'aquest dispositiu. Per recuperar les teves dades més endavant, inicia la sessió a Brave com a <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Amb aquesta acció, se suprimiran <ph name="ITEMS_COUNT"/> elements d'aquest dispositiu. Per recuperar les teves dades més endavant, inicia la sessió a Brave com a <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Amb aquesta acció, se suprimiran les teves dades de navegació d'aquest dispositiu. Per recuperar les teves dades més endavant, inicia la sessió a Brave com a <ph name="USER_EMAIL"/>.</translation>

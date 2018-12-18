@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/appearance_page/appearance_page.html b/chrome/browser/resources/settings/appearance_page/appearance_page.html
-index 720d25d126a118315a08cef90d77d1fc78775254..24a7a07aeedd81af8f7bc5de5781a0af92eca165 100644
+index c35f9399b872bddf25b94398f5edcd6fd760bfa6..6faea3ebdcf893768a227a29103eb54a49551845 100644
 --- a/chrome/browser/resources/settings/appearance_page/appearance_page.html
 +++ b/chrome/browser/resources/settings/appearance_page/appearance_page.html
 @@ -19,6 +19,11 @@

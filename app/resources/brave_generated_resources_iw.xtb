@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") לא נתמך ב-Brave.</translation>
 <translation id="7450557937477381864">סגירת Chrome</translation>
 <translation id="7008934821596358692">על מנת לסיים את הייבוא, סגרו את כל חלונות הדפדפן.</translation>
-<translation id="7753103220327065417">סגירת Brave</translation>
-<translation id="5588481533147090393">כדי לסיים את הייבוא, סגרו את כל חלונות Brave.</translation>
 <translation id="6447842834002726250">עוגיות</translation>
 <translation id="4983925687993168579">סטטיסטיקות</translation>
 <translation id="9173846700806833701">Widevine איננו מותקן</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine הוא מקטע קוד של ניהול זכויות דיגיטליות (DRM), שאיננו שייך לנו ב-Brave Software ואין באפשרותנו לפקח עליו. הקוד של Google Widevine הנטען ישירות מהשרתים של Google, ולא מהשרתים שלנו. הוא נטען רק בעת הפעלת אפשרות זו. אנחנו לא מעודדים שימוש ב-DRM, אך מכבדים את הבחירה של המשתמש ומודעים לכך שחלק מהמשתמשים של Brave מעדיפים להשתמש בשירותים אשר דורשים זאת.
 
 בעת התקנת התוסף הזה, אתם מסכימים לתנאי השימוש של Google Widevine. אתם מסכימים גם ש-Brave אינם אחראים לכל נזקים או הפסדים בהקשר השימוש שלכם ב-Google Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">מיובא מ-Brave</translation>
 <translation id="453977518730680921">ניגון אוטומטי של מדיה</translation>
 <translation id="410351446219883937">הפעלה אוטומטית</translation>

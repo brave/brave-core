@@ -20,10 +20,9 @@
 
 BraveWidevineContentSettingPluginBubbleModel::BraveWidevineContentSettingPluginBubbleModel(
     ContentSettingBubbleModel::Delegate* delegate,
-        content::WebContents* web_contents, Profile* profile) :
+        content::WebContents* web_contents) :
         ContentSettingSimpleBubbleModel(delegate,
             web_contents,
-            profile,
             CONTENT_SETTINGS_TYPE_PLUGINS),
         brave_content_settings_delegate_(
             (BraveBrowserContentSettingBubbleModelDelegate*)delegate) {

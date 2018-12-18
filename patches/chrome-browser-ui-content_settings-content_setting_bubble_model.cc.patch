@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/content_settings/content_setting_bubble_model.cc b/chrome/browser/ui/content_settings/content_setting_bubble_model.cc
-index 0c697082d979e47e4385b045327dee264656964e..bb70982bfa87493b62029357b9fee2e24fbe85dc 100644
+index 2d94eed1a4a28c7a8ab983e4f1cf745e1e79d34c..ca3ad10e020241046b220b526986fe329e13e5d2 100644
 --- a/chrome/browser/ui/content_settings/content_setting_bubble_model.cc
 +++ b/chrome/browser/ui/content_settings/content_setting_bubble_model.cc
 @@ -15,6 +15,7 @@
@@ -10,12 +10,12 @@ index 0c697082d979e47e4385b045327dee264656964e..bb70982bfa87493b62029357b9fee2e2
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/chrome_notification_types.h"
  #include "chrome/browser/content_settings/chrome_content_settings_utils.h"
-@@ -1671,7 +1672,7 @@ ContentSettingBubbleModel*
-                                                    profile, content_type);
+@@ -1524,7 +1525,7 @@ ContentSettingBubbleModel::CreateContentSettingBubbleModel(
+         delegate, web_contents, content_type);
    }
    if (content_type == CONTENT_SETTINGS_TYPE_PLUGINS) {
--    return new ContentSettingPluginBubbleModel(delegate, web_contents, profile);
-+    return new BraveContentSettingPluginBubbleModel(delegate, web_contents, profile);
+-    return std::make_unique<ContentSettingPluginBubbleModel>(delegate,
++    return std::make_unique<BraveContentSettingPluginBubbleModel>(delegate,
+                                                              web_contents);
    }
    if (content_type == CONTENT_SETTINGS_TYPE_MIXEDSCRIPT) {
-     return new ContentSettingMixedScriptBubbleModel(delegate, web_contents,

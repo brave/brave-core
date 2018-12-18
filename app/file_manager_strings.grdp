@@ -48,6 +48,9 @@
   <message name="IDS_FILE_BROWSER_DRIVE_TEAM_DRIVES_LABEL" desc="A label for the 'Team Drives' collection of Brave Drive.">
     Team Drives
   </message>
+  <message name="IDS_FILE_BROWSER_DRIVE_COMPUTERS_LABEL" desc="A label for the 'Computers' collection of Brave Drive.">
+    Computers
+  </message>
   <message name="IDS_FILE_BROWSER_DRIVE_SHARED_WITH_ME_COLLECTION_LABEL" desc="A label for the 'shared with me' collection of Brave Drive.">
     Shared with me
   </message>
@@ -270,6 +273,24 @@
 
   <message name="IDS_FILE_BROWSER_INSTALL_LINUX_PACKAGE_TITLE" desc="In the File Manager, the title shown in the dialog for installing a Linux application.">
     Install app with Linux (Beta)
+  </message>
+  <message name="IDS_FILE_BROWSER_INSTALL_LINUX_PACKAGE_DETAILS_LABEL" desc="In the File Manager, the label shown above the app information (name, version, etc.) in the dialog for installing a Linux application.">
+    Details
+  </message>
+  <message name="IDS_FILE_BROWSER_INSTALL_LINUX_PACKAGE_DETAILS_APPLICATION_LABEL" desc="In the File Manager, the label shown next to the application name in the dialog for installing a Linux application.">
+    Application
+  </message>
+  <message name="IDS_FILE_BROWSER_INSTALL_LINUX_PACKAGE_DETAILS_VERSION_LABEL" desc="In the File Manager, the label shown next to the version string in the dialog for installing a Linux application.">
+    Version
+  </message>
+  <message name="IDS_FILE_BROWSER_INSTALL_LINUX_PACKAGE_DETAILS_DESCRIPTION_LABEL" desc="In the File Manager, the label shown next to a block of text describing the application in the dialog for installing a Linux application.">
+    Description
+  </message>
+  <message name="IDS_FILE_BROWSER_INSTALL_LINUX_PACKAGE_DETAILS_LOADING" desc="In the File Manager, the message shown to indicate we are loading information about the application (name, version, etc.) in the dialog for installing a Linux application.">
+    Loading information...
+  </message>
+  <message name="IDS_FILE_BROWSER_INSTALL_LINUX_PACKAGE_DETAILS_NOT_AVAILABLE" desc="In the File Manager, the message shown to indicate we failed to load information about the application in the dialog for installing a Linux application.">
+    Failed to retrieve app info.
   </message>
   <message name="IDS_FILE_BROWSER_INSTALL_LINUX_PACKAGE_DESCRIPTION" desc="In the File Manager, the message shown in the dialog for installing a Linux application.">
     The Linux application will be available within your Terminal and may also show an icon in your Launcher.
@@ -494,7 +515,7 @@
     Zip selection
   </message>
   <message name="IDS_FILE_BROWSER_SET_WALLPAPER_BUTTON_LABEL" desc="The context menu item to set wallpaper.">
-    Set wallpaper
+    Set as wallpaper
   </message>
   <message name="IDS_FILE_BROWSER_CREATE_FOLDER_SHORTCUT_BUTTON_LABEL" desc="Menu item label, creating a shortcut of the selected folder to the left nav.">
     Create shortcut
@@ -513,6 +534,9 @@
   </message>
   <message name="IDS_FILE_BROWSER_SHARE_WITH_LINUX_BUTTON_LABEL" desc="Label for menu that will share a folder with the crostini Linux container.">
     Share with Linux
+  </message>
+  <message name="IDS_FILE_BROWSER_MANAGE_LINUX_SHARING_BUTTON_LABEL" desc="Label for menu that will take users to the settings page where they can manage which files and folders are shared with the crostini Linux container.">
+    Manage Linux sharing
   </message>
   <message name="IDS_FILE_BROWSER_TOGGLE_HIDDEN_FILES_COMMAND_LABEL" desc="Label for menu or button with checkmark that toggles visibility of hidden files.">
     Show hidden files
@@ -741,9 +765,12 @@
   <message name="IDS_FILE_BROWSER_SEARCH_TEXT_LABEL" desc="Search text field label.">
     Search
   </message>
+  <message name="IDS_FILE_BROWSER_SEARCH_CLEAR_LABEL" desc="Label to clear search text field">
+    Clear
+  </message>
 
   <message name="IDS_FILE_BROWSER_DEFAULT_NEW_FOLDER_NAME" desc="The default name for a newly created folder.">
-    New Folder
+    New folder
   </message>
 
  <message name="IDS_FILE_BROWSER_CONFIRM_DELETE_ONE" desc="Asks the user if they are sure they want to delete a single file.">
@@ -963,9 +990,6 @@
   <message name="IDS_FILE_BROWSER_DRIVE_MOBILE_CONNECTION_OPTION" desc="Option that determines if we will allow Brave Drive content sync over mobile connections.">
     Do not use mobile data for sync
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_SHOW_HOSTED_FILES_OPTION" desc="Option that determines if we will show hosted Brave Docs files in file browser.">
-    Show Brave Docs files
-  </message>
   <message name="IDS_FILE_BROWSER_DRIVE_MENU_HELP" desc="In the Brave Drive settings menu, name of the Help item.">
     Help
   </message>
@@ -1000,9 +1024,6 @@
   </message>
   <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_TITLE_ALTERNATIVE" desc="In the Welcome to Brave Drive banner, title of the alternative banner offering 100GB free storage.">
     Get 100 GB free with Brave Drive
-  </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_TITLE_ALTERNATIVE_1TB" desc="In the Welcome to Brave Drive banner, title of the alternative banner offering 1TB free storage.">
-    Get 1 TB free with Brave Drive
   </message>
   <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_TEXT_SHORT" desc="In the Welcome to Brave Drive banner, text of the welcome message, short version.">
     All files saved in this folder are backed up online automatically
@@ -1043,14 +1064,20 @@
   <message name="IDS_FILE_BROWSER_UNABLE_TO_OPEN_CROSTINI" desc="Message shown when a user tries to use a crostini app to open a file which cannot be shared with the crostini container (e.g. in Play or USB).  This message will be removed once we support this action.">
     To open files with $1, first copy to Linux files folder.
   </message>
-  <message name="IDS_FILE_BROWSER_SHARE_BEFORE_OPEN_CROSTINI_TITLE" desc="Message title shown when a user tries to use a crostini app to open a file outside the crostini container which can be shared with the container (e.g. in Downloads).">
-    Share files with Linux
+  <message name="IDS_FILE_BROWSER_SHARE_ROOT_FOLDER_WITH_CROSTINI_TITLE" desc="Message title shown when a user shares the root of a volume such as Downloads with the crostini container.">
+    Share folder with Linux
   </message>
-  <message name="IDS_FILE_BROWSER_SHARE_BEFORE_OPEN_CROSTINI_SINGLE" desc="Message shown when a user tries to use a crostini app to open a single file outside the crostini container which can be shared with the container (e.g. in Downloads).">
-    Let Linux apps open $1.
+  <message name="IDS_FILE_BROWSER_SHARE_ROOT_FOLDER_WITH_CROSTINI" desc="Confirmation message shown when a user shares the root of a volume such as Downloads with the crostini container.">
+    Give Linux apps permission to open files in the $1 folder
   </message>
-  <message name="IDS_FILE_BROWSER_SHARE_BEFORE_OPEN_CROSTINI_MULTIPLE" desc="Message shown when a user tries to use a crostini app to multiple files outside the crostini container which can be shared with the container (e.g. in Downloads).">
-    Let Linux apps open $1 files.
+  <message name="IDS_FILE_BROWSER_SHARE_ROOT_FOLDER_WITH_CROSTINI_DRIVE" desc="Confirmation message shown when a user shares the root of a Drive volume (My Drive, Team Drives, Computers) with the crostini container.">
+    Give Linux apps permission to open files in your Brave Drive. Changes will sync to your other devices.
+  </message>
+  <message name="IDS_FILE_BROWSER_FOLDER_SHARED_WITH_CROSTINI" desc="Confirmation message shown when a user shares a folder with the crostini container.">
+    1 folder shared with Linux
+  </message>
+  <message name="IDS_FILE_BROWSER_FOLDER_SHARED_WITH_CROSTINI_PLURAL" desc="Confirmation message shown when a user shares more than 1 folder with the crostini container.">
+    $1 folders shared with Linux
   </message>
 
   <message name="IDS_FILE_BROWSER_FOLDER" desc="Folder entry type">
@@ -1238,6 +1265,15 @@
   </message>
   <message name="IDS_FILE_BROWSER_SEE_MENU_FOR_ACTIONS" desc="Text to be used by screen reader to indicate users that there are more options on the action bar.">
     More options available on the action bar. Press Alt + A to focus the action bar.
+  </message>
+  <message name="IDS_FILE_BROWSER_OPEN_A11Y" desc="Text to be used by screen reader to indicate users that the opening one single file is being executed.">
+    Opening file <ph name="FILE_NAME"> $1<ex>file_name.txt</ex>.</ph>
+  </message>
+  <message name="IDS_FILE_BROWSER_OPEN_A11Y_PLURAL" desc="Text to be used by screen reader to indicate users that the opening multiple files is being executed.">
+    Opening <ph name="NUMBER_FILES"> $1<ex>3</ex> files.</ph>
+  </message>
+  <message name="IDS_FILE_BROWSER_A11Y_VOLUME_EJECT" desc="Text to be used by screen reader to indicate users that the eject volume action has finished.">
+    <ph name="VOLUME_NAME">$1<ex>file_name.rar</ex> has been ejected.</ph>
   </message>
 
 <!-- Common for Audio player and Media player -->

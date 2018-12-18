@@ -47,7 +47,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="8667808506758191620"><ph name="DEVICE_TYPE"/> của bạn đã cập nhật.</translation>
 <translation id="6970811910055250180">Đang cập nhật thiết bị của bạn...</translation>
 <translation id="8030318113982266900">Đang cập nhật thiết bị tới kênh <ph name="CHANNEL_NAME"/>...</translation>
-<translation id="7355059611036077582">Thêm vào Brave</translation>
 <translation id="7456658570432774853">Giúp cải thiện Brave bằng cách báo cáo cài đặt hiện tại</translation>
 <translation id="6134859571175647580">Cảnh báo: Brave không thể ngăn các tiện ích ghi lại lịch sử duyệt web của bạn. Để vô hiệu hóa tiện ích này trong chế độ ẩn danh, hãy bỏ chọn tiện ích này.</translation>
 <translation id="777113543093865885">Xóa khỏi Brave...</translation>
@@ -71,7 +70,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="2887570477425111999">Lưu chi tiết trong Brave</translation>
 <translation id="193559141530782783">Brave sẽ lưu trữ an toàn chi tiết cá nhân của bạn nên bạn không cần nhập lại thông tin này.</translation>
 <translation id="663059986967017181">Đã sao chép vào Brave</translation>
-<translation id="5225129378754387452">Hiển thị menu Brave</translation>
 <translation id="300669147395456190">Ứng dụng Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> yêu cầu bạn đọc và chấp nhận Điều khoản dịch vụ sau đây trước khi sử dụng thiết bị này. Những điều khoản này không mở rộng, sửa đổi hoặc giới hạn Điều khoản Brave OS.</translation>
 <translation id="3293668930608086049">Brave đang sử dụng máy ảnh và micrô của bạn.</translation>
@@ -95,8 +93,8 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="1705567146636171298">Cập nhật Brave</translation>
 <translation id="4050175100176540509">Cải thiện bảo mật quan trọng và tính năng mới có trong phiên bản mới nhất.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave sẽ khởi động lại sau 1 giây}other{Brave sẽ khởi động lại sau # giây}}</translation>
-<translation id="9159286371333817139">Bạn phải khởi động lại Brave ngay bây giờ.</translation>
-<translation id="9203540365585059272">Cập nhật bảo mật đặc biệt cho Brave vừa được áp dụng; bạn phải khởi động lại ngay bây giờ để cập nhật có hiệu lực (chúng tôi sẽ khôi phục các tab của bạn).</translation>
+<translation id="5509303873219371662">Bạn cần khởi động lại Brave ngay bây giờ</translation>
+<translation id="8668413672647811944">Brave vừa áp dụng một bản cập nhật bảo mật đặc biệt. Vui lòng khởi động lại ngay bây giờ và chúng tôi sẽ khôi phục các tab của bạn.</translation>
 <translation id="763369711159699222">Giúp cải thiện Brave</translation>
 <translation id="1156940037717341650">Bạn có thể giúp Brave an toàn và dễ sử dụng hơn bằng cách tự động báo cáo với Brave Software chi tiết về sự cố bảo mật có thể xảy ra.</translation>
 <translation id="6791166902140255175">Tab Brave</translation>
@@ -118,7 +116,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="8586264863973514035">Để áp dụng các mục thay đổi của bạn, hãy chạy lại Brave</translation>
 <translation id="7021823858304886493">Cho phép đăng nhập vào Brave</translation>
 <translation id="1649714546770135458">Bằng việc tắt tính năng này, bạn có thể đăng nhập vào các trang web của Brave Software, chẳng hạn như Gmail mà không cần đăng nhập vào Brave</translation>
-<translation id="6274110506580702455">Quản trị viên của thiết bị này đã tắt tính năng đăng nhập vào Brave.</translation>
 <translation id="9220324636239049437">Thao tác này sẽ xóa 1 mục khỏi thiết bị này. Để truy xuất dữ liệu của bạn sau, hãy đăng nhập vào Brave dưới dạng <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Thao tác này sẽ xóa <ph name="ITEMS_COUNT"/> mục khỏi thiết bị này. Để truy xuất dữ liệu của bạn sau, hãy đăng nhập vào Brave dưới dạng <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Thao tác này sẽ xóa dữ liệu duyệt web của bạn khỏi thiết bị này. Để truy xuất dữ liệu của bạn sau, hãy đăng nhập vào Brave dưới dạng <ph name="USER_EMAIL"/>.</translation>

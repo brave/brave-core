@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/public/BUILD.gn b/third_party/blink/public/BUILD.gn
-index d7e025324889bb94136d05fe4d25e445eb85c1e9..0d12694524112ecd2d52b168febdd568f9a2c47b 100644
+index 516058e0ca2be99f157a1fbfbca13a3e280dd958..8c3eeeae7ed17ee6d45ea4daf59a5d0549b3497c 100644
 --- a/third_party/blink/public/BUILD.gn
 +++ b/third_party/blink/public/BUILD.gn
-@@ -671,6 +671,7 @@ mojom("mojo_bindings") {
+@@ -645,6 +645,7 @@ mojom("mojo_bindings") {
    visibility_blink =
        [ "//third_party/blink/renderer/platform:blink_platform_public_deps" ]
    sources = [

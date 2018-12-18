@@ -24,11 +24,9 @@ using content_settings::SETTING_SOURCE_NONE;
 
 BraveAutoplayContentSettingBubbleModel::BraveAutoplayContentSettingBubbleModel(
     Delegate* delegate,
-    WebContents* web_contents,
-    Profile* profile)
+    WebContents* web_contents)
     : ContentSettingSimpleBubbleModel(delegate,
                                       web_contents,
-                                      profile,
                                       CONTENT_SETTINGS_TYPE_AUTOPLAY),
       block_setting_(CONTENT_SETTING_BLOCK) {
   SetTitle();
@@ -79,7 +77,7 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
 
   SettingInfo info;
   HostContentSettingsMap* map =
-    HostContentSettingsMapFactory::GetForProfile(profile());
+    HostContentSettingsMapFactory::GetForProfile(GetProfile());
   std::unique_ptr<base::Value> value =
     map->GetWebsiteSetting(url, url, content_type(), std::string(), &info);
   setting = content_settings::ValueToContentSetting(value.get());
@@ -95,18 +93,16 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
 
   // Prevent creation of content settings for illegal urls like about:blank
   bool is_valid = map->CanSetNarrowestContentSetting(url, url, content_type());
-
-  set_radio_group_enabled(is_valid && setting_source == SETTING_SOURCE_USER);
-
+  radio_group.user_managed = is_valid && setting_source == SETTING_SOURCE_USER;
   set_radio_group(radio_group);
 }
 
 void BraveAutoplayContentSettingBubbleModel::SetNarrowestContentSetting(
     ContentSetting setting) {
-  if (!profile())
+  if (!GetProfile())
     return;
 
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
+  auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
   map->SetNarrowestContentSetting(bubble_content().radio_group.url,
                                   bubble_content().radio_group.url,
                                   content_type(), setting);

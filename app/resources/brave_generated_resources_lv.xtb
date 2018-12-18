@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nav atļauts Brave.</translation>
 <translation id="7450557937477381864">Aizvērt Chrome</translation>
 <translation id="7008934821596358692">Lai pabeigtu importēšanu, aizveriet visus Chrome logus.</translation>
-<translation id="7753103220327065417">Aizvērt Brave</translation>
-<translation id="5588481533147090393">Lai pabeigtu importēšanu, aizveriet visus Brave logus.</translation>
 <translation id="6447842834002726250">Sīkfaili</translation>
 <translation id="4983925687993168579">Statistika</translation>
 <translation id="9173846700806833701">Widevine nav instalēta</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine ir Digitālā satura tiesību pārvaldības (DRM) koda daļa, kas mums, Brave Software, nepieder un ko mēs nevaram pārbaudīt. Google Widevine kods tiek ielādēts no Google serveriem, nevis no mūsu serveriem. Tas tiek ielādēts tikai tad, ja Jūs iespējojat šo opciju. Mēs atturam no DRM izmantošanas, bet mēs cienām lietotāju izvēli un pieņemam, ka daži Brave lietotāji vēlas izmantot pakalpojumus, kuriem tas ir nepieciešams.
 
 Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas noteikumiem. Jūs piekrītat, ka Brave neatbild ne par kādiem bojājumiem vai zaudējumiem saistībā ar Jūsu Google Widevine lietojumu.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Importēts no Brave</translation>
 <translation id="453977518730680921">Automātiski atskaņot medijus</translation>
 <translation id="410351446219883937">Automātiska atskaņošana</translation>

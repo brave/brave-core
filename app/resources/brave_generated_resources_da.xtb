@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") er ikke tilladt i Brave.</translation>
 <translation id="7450557937477381864">Luk Chrome</translation>
 <translation id="7008934821596358692">Luk alle Chrome-vinduer for at afslutte importeringen.</translation>
-<translation id="7753103220327065417">Luk Brave</translation>
-<translation id="5588481533147090393">For at fuldføre importering skal du lukke alle Brave-vinduer.</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="4983925687993168579">Statistikker</translation>
 <translation id="9173846700806833701">Widevine er ikke installeret</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine er en del af Digital Rights Management (DRM)-koden, som vi på Brave Software ikke ejer og ikke kan inspicere. Google Widevine-koden indlæses fra Google-servere, ikke fra vores servere. Den indlæses kun, når du aktiverer denne mulighed. Vi fraråder brugen af DRM, men vi respekterer brugernes valg og anerkender at nogle Brave-brugere ønsker at bruge tjenester der kræver det.
 
 Ved at installere denne udvidelse accepterer du Google Widevines betingelser for brug. Du accepterer at Brave ikke er ansvarlige for nogen skader eller tab i forbindelse med din brug af Google Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Importeret fra Brave</translation>
 <translation id="453977518730680921">Afspil medier automatisk</translation>
 <translation id="410351446219883937">Automatisk afspilning</translation>

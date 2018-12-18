@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") はブレイブでは許可されていません。</translation>
 <translation id="7450557937477381864">Chromeを閉じる</translation>
 <translation id="7008934821596358692">インポートを終了するには、すべてのChromeウィンドウを閉じてください。</translation>
-<translation id="7753103220327065417">Braveを閉じる</translation>
-<translation id="5588481533147090393">インポートを終了するには、すべてのBraveウィンドウを閉じてください。</translation>
 <translation id="6447842834002726250">クッキー</translation>
 <translation id="4983925687993168579">統計</translation>
 <translation id="9173846700806833701">Widevineはインストールされていません</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google WidevineはBrave Softwareが所有しておらず、検査できないデジタル著作権管理（DRM）コードの1つです。Google Widevineのコードは弊社のサーバーではなくGoogleのサーバーから割り当てられます。このコードはこのオプションを有効にしている際にのみ読み込まれます。弊社はDRMの使用は推奨しませんがユーザーの選択を尊重しており、一部のBraveユーザーがGoogle Widevineを要求するサービスの利用を望んでいることは承知しております。
 
 この拡張をインストールすると、Google Widevineの使用条件に同意したことになります。Google Widevineの使用に関するいかなる損害や損失にもBraveは責任を負わないことをご了承ください。</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Braveからインポートされました</translation>
 <translation id="453977518730680921">メディアの自動再生</translation>
 <translation id="410351446219883937">自動再生</translation>

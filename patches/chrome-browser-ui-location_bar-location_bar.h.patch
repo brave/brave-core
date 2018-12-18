@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/location_bar/location_bar.h b/chrome/browser/ui/location_bar/location_bar.h
-index 7858e11f8955b585c546d890262a4ecc0ebc8c6b..2d42f20a6f8c0308cb5f4c839e7dd704cd6c8f6d 100644
+index cee5096ba56e509b3480e112d98b32bbf1324462..2d06db885dc79a85d588e6cb6b709b09bdb03827 100644
 --- a/chrome/browser/ui/location_bar/location_bar.h
 +++ b/chrome/browser/ui/location_bar/location_bar.h
-@@ -88,7 +88,7 @@ class LocationBar {
+@@ -81,7 +81,7 @@ class LocationBar {
    virtual ~LocationBar();
  
    // Checks if any extension has requested that the bookmark star be hidden.

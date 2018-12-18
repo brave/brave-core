@@ -7,8 +7,6 @@
 <translation id="120759863357279975">La extensión <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") no está permitida en Brave.</translation>
 <translation id="7450557937477381864">Cerrar Chrome</translation>
 <translation id="7008934821596358692">Para finalizar la importación, cierra todas las ventanas de Brave.</translation>
-<translation id="7753103220327065417">Cerrar Brave</translation>
-<translation id="5588481533147090393">Para finalizar la importación, cierra todas las ventanas de Brave.</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="4983925687993168579">Estadísticas</translation>
 <translation id="9173846700806833701">Widevine no está instalado</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine es un código de administración de derechos digitales (DRM)  que no es propiedad de Brave Software y por tanto no podemos inspeccionarlo. El código de Google Widevine se carga desde los servidores de Google, no desde nuestros servidores. Se carga solo cuando habilitas esta opción. Desaconsejamos el uso de DRM, pero respetamos la elección del usuario y entendemos que a algunos usuarios de Brave les gustaría usar algunos servicios que lo requieran.
 
 Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Aceptas que Brave no es responsable por daños o pérdidas en relación con tu uso de Google Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Importado desde Brave</translation>
 <translation id="453977518730680921">Reproducir medios automáticamente</translation>
 <translation id="410351446219883937">Reproducción automática</translation>
@@ -46,8 +43,8 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="6067014455220527258">Bloquear anuncios</translation>
 <translation id="6985711843506827936">Permitir anuncios y seguimiento</translation>
 <translation id="6132506775968708399">Bloquear cookies de terceros</translation>
-<translation id="5657156137487675418">Permitir todas la cookies</translation>
-<translation id="6883611015375728278">Bloquear todas las cookies</translation>
+<translation id="5657156137487675418">Permitir cookies</translation>
+<translation id="6883611015375728278">Bloquear cookies</translation>
 <translation id="1442559343076146186">Bloquear toma de huella digital a terceros</translation>
 <translation id="8034285923190068220">Permitir huella digital</translation>
 <translation id="4540198958192073185">Bloquear toma de huella digital</translation>

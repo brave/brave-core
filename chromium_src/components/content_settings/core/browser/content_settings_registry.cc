@@ -14,7 +14,8 @@ void ContentSettingsRegistry::BraveInit() {
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
-           ContentSettingsInfo::PERSISTENT);
+           ContentSettingsInfo::PERSISTENT,
+           ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
   // Change plugins default to CONTENT_SETTING_BLOCK
   content_settings_info_.erase(CONTENT_SETTINGS_TYPE_PLUGINS);
@@ -29,7 +30,8 @@ void ContentSettingsRegistry::BraveInit() {
       WebsiteSettingsInfo::SINGLE_ORIGIN_WITH_EMBEDDED_EXCEPTIONS_SCOPE,
       WebsiteSettingsRegistry::DESKTOP,
       ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
-      ContentSettingsInfo::EPHEMERAL);
+      ContentSettingsInfo::EPHEMERAL,
+      ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 }
 
 } // namespace content_settings

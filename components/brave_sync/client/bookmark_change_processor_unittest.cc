@@ -104,7 +104,7 @@ class BraveBookmarkChangeProcessorTest : public testing::Test {
     sync_client_.reset(new MockBraveSyncClient()) ;
 
     BookmarkModelFactory::GetInstance()->SetTestingFactory(
-       profile_.get(), &BuildFakeBookmarkModelForTests);
+       profile_.get(), base::BindRepeating(&BuildFakeBookmarkModelForTests));
 
     model_ = BookmarkModelFactory::GetForBrowserContext(
         Profile::FromBrowserContext(profile_.get()));

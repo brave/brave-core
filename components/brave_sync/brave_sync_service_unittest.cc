@@ -120,7 +120,7 @@ class BraveSyncServiceTest
     // to bookmark_change_processor to allow `set_for_testing` like
     // BraveSyncClient
     BookmarkModelFactory::GetInstance()->SetTestingFactory(
-       profile(), &BuildFakeBookmarkModelForTests);
+       profile(), base::BindRepeating(&BuildFakeBookmarkModelForTests));
 
     BraveSyncClientImpl::set_for_testing(
         new MockBraveSyncClient());

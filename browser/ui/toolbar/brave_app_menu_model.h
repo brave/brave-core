@@ -10,7 +10,9 @@
 class BraveAppMenuModel : public AppMenuModel {
  public:
   using AppMenuModel::AppMenuModel;
-  BraveAppMenuModel(ui::AcceleratorProvider* provider, Browser* browser);
+  BraveAppMenuModel(ui::AcceleratorProvider* provider,
+      Browser* browser,
+      AppMenuIconController* app_menu_icon_controller = nullptr);
   ~BraveAppMenuModel() override;
 
  private:

@@ -41,7 +41,6 @@
 <translation id="8667808506758191620">Tu <ph name="DEVICE_TYPE"/> está actualizado.</translation>
 <translation id="6970811910055250180">Actualizando el dispositivo...</translation>
 <translation id="8030318113982266900">Actualizando el dispositivo al canal <ph name="CHANNEL_NAME"/>…</translation>
-<translation id="7355059611036077582">Agregar a Brave</translation>
 <translation id="7456658570432774853">Informa tu configuración actual para ayudarnos a mejorar Brave.</translation>
 <translation id="6134859571175647580">Advertencia: Brave no puede evitar que las extensiones registren tu historial de búsqueda. Para desactivar esta extensión en modo de navegación incógnito, desmarca la casilla de esta opción.</translation>
 <translation id="777113543093865885">Eliminar de Brave…</translation>
@@ -65,7 +64,6 @@
 <translation id="2887570477425111999">Guardar los detalles en Brave</translation>
 <translation id="193559141530782783">Brave almacenará de forma segura tus datos personales para que no tengas que volver a escribirlos.</translation>
 <translation id="663059986967017181">Se copió en Brave.</translation>
-<translation id="5225129378754387452">Mostrar el menú de Brave</translation>
 <translation id="300669147395456190">Aplicaciones de Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> requiere que leas y aceptes las siguientes Condiciones del servicio antes de usar este dispositivo. Estas condiciones no amplían, modifican ni limitan las Condiciones de Brave OS.</translation>
 <translation id="3293668930608086049">Brave está usando tu cámara y tu micrófono.</translation>
@@ -89,8 +87,8 @@
 <translation id="1705567146636171298">Actualizar Brave</translation>
 <translation id="4050175100176540509">La última versión proporciona importantes mejoras de seguridad y nuevas funciones.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave se reiniciará en 1 segundo}other{Brave se reiniciará en # segundos}}</translation>
-<translation id="9159286371333817139">Debes reiniciar Brave ahora.</translation>
-<translation id="9203540365585059272">Se acaba de instalar una actualización de seguridad especial para Brave. Reinícialo para que se apliquen los cambios (se restaurarán tus pestañas).</translation>
+<translation id="5509303873219371662">Debes reiniciar Brave ahora</translation>
+<translation id="8668413672647811944">Se acaba de instalar una actualización de seguridad especial para Brave. Reinícialo ahora (se restablecerán tus pestañas).</translation>
 <translation id="763369711159699222">Ayudar a mejorar Brave</translation>
 <translation id="1156940037717341650">Puedes ayudar a que Brave sea más seguro y fácil de usar si informas automáticamente detalles de posibles incidentes de seguridad en Brave Software.</translation>
 <translation id="6791166902140255175">Pestaña de Brave</translation>
@@ -112,7 +110,6 @@
 <translation id="8586264863973514035">Para aplicar los cambios, vuelve a ejecutar Brave</translation>
 <translation id="7021823858304886493">Permitir el acceso a Brave</translation>
 <translation id="1649714546770135458">Si desactivas esta preferencia, podrás acceder a sitios de Brave Software (como Gmail) sin tener que acceder a Brave</translation>
-<translation id="6274110506580702455">El administrador de este dispositivo inhabilitó el acceso a Brave.</translation>
 <translation id="9220324636239049437">Esta acción borrará 1 elemento de este dispositivo. Si más adelante deseas recuperar los datos, accede a tu cuenta en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Esta acción borrará <ph name="ITEMS_COUNT"/> elementos de este dispositivo. Si más adelante deseas recuperar los datos, accede a tu cuenta en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Esta acción borrará tus datos de navegación de este dispositivo. Si más adelante deseas recuperarlos, accede a tu cuenta en Brave como <ph name="USER_EMAIL"/>.</translation>
