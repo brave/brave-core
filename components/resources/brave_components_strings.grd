@@ -452,7 +452,7 @@
       <message name="IDS_BRAVE_SYNC_ENABLED_TABLE_THIS_DEVICE_TEXT" desc="The Sync table title for the device column">(This Device)</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_TABLE_ADDED_ON_TITLE" desc="The Sync table title indicating when a device was added to the chain">added on</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_ADD_DEVICE_BUTTON" desc="The Sync button `add device` for adding a new device to the sync chain. triggers a modal with device options">add device</message>
-      <message name="IDS_BRAVE_SYNC_ENABLED_VIEW_CODE_BUTTON" desc="The Sync button `view sync code` for viewing the passphrase needed to add a new device. triggers a modal with sync code">view sync code</message>
+      <message name="IDS_BRAVE_SYNC_ENABLED_VIEW_CODE_BUTTON" desc="The Sync button `view sync code` for viewing the passphrase and qr code needed to add a new device. triggers a modal with sync code">view QR code and code words</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_DATA_TITLE" desc="The Sync title that shows the options for data syncing">Data to sync from</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_BOOKMARKS_LABEL" desc="The Sync label for the `bookmarks` toggle">Bookmarks</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_SITE_SETTINGS_LABEL" desc="The Sync label for the `saved site settings` toggle">Saved Site Settings</message>
