@@ -17,6 +17,10 @@
 
 namespace brave_rewards {
 
+MockLedgerClient::MockLedgerClient() {}
+
+MockLedgerClient::~MockLedgerClient() {}
+
 std::unique_ptr<Profile> CreateBraveRewardsProfile(const base::FilePath& path) {
   // Bitmap fetcher service needed for rewards service
   BitmapFetcherServiceFactory::GetInstance();
