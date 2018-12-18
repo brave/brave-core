@@ -250,6 +250,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetLastGrantLoadTimestamp(uint64_t stamp);
 
+  uint64_t GetBootStamp() const override;
   void SetBootStamp(uint64_t stamp);
 
   const std::string& GetMasterUserToken() const;

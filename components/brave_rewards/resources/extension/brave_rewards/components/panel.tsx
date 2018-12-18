@@ -192,11 +192,23 @@ export class Panel extends React.Component<Props, State> {
 
     const notification: RewardsExtension.Notification = notifications[currentNotification]
 
+    // Note: This declaration must match the RewardsNotificationType enum in
+    // brave/components/brave_rewards/browser/rewards_notification_service.h
+    enum RewardsNotificationType {
+      REWARDS_NOTIFICATION_INVALID = 0,
+      REWARDS_NOTIFICATION_AUTO_CONTRIBUTE,
+      REWARDS_NOTIFICATION_GRANT,
+      REWARDS_NOTIFICATION_FAILED_CONTRIBUTION,
+      REWARDS_NOTIFICATION_IMPENDING_CONTRIBUTION,
+      REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS,
+      REWARDS_NOTIFICATION_BACKUP_WALLET,
+    }
+
     let type: NotificationType = ''
     let text = ''
     let isAlert = ''
     switch (notification.type) {
-      case 1:
+      case RewardsNotificationType.REWARDS_NOTIFICATION_AUTO_CONTRIBUTE:
         {
           if (!notification.args ||
             !Array.isArray(notification.args) ||
@@ -228,9 +240,16 @@ export class Panel extends React.Component<Props, State> {
           type = 'contribute'
           break
         }
-      case 2:
+      case RewardsNotificationType.REWARDS_NOTIFICATION_GRANT:
         type = 'grant'
         text = getMessage('grantNotification')
+        break
+      case RewardsNotificationType.REWARDS_NOTIFICATION_BACKUP_WALLET:
+        type = 'backupWallet'
+        text = getMessage('backupWalletNotification')
+        break
+      default:
+        type = ''
         break
     }
 

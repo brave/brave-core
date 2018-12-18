@@ -985,6 +985,10 @@ void LedgerImpl::SetLastGrantLoadTimestamp(uint64_t stamp) {
   bat_state_->SetLastGrantLoadTimestamp(stamp);
 }
 
+uint64_t LedgerImpl::GetBootStamp() const {
+  return bat_state_->GetBootStamp();
+}
+
 void LedgerImpl::SetBootStamp(uint64_t stamp) {
   bat_state_->SetBootStamp(stamp);
 }

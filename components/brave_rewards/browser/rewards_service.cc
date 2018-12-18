@@ -4,6 +4,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 
 #include "base/logging.h"
+#include "base/time/time.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
@@ -41,6 +42,14 @@ void RewardsService::RemoveObserver(RewardsServiceObserver* observer) {
 // static
 void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kRewardsNotifications, "");
+  registry->RegisterTimeDeltaPref(kRewardsNotificationTimerInterval,
+                                  base::TimeDelta::FromDays(1));
+  registry->RegisterTimeDeltaPref(kRewardsBackupNotificationFrequency,
+                                  base::TimeDelta::FromDays(7));
+  registry->RegisterTimeDeltaPref(kRewardsBackupNotificationInterval,
+                                  base::TimeDelta::FromDays(7));
+  registry->RegisterBooleanPref(kRewardsBackupSucceeded, false);
+  registry->RegisterBooleanPref(kRewardsUserHasFunded, false);
 }
 
 }  // namespace brave_rewards

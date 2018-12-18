@@ -181,6 +181,14 @@
     "message": "You have a grant waiting for you.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Backup Wallet",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Please backup your Brave wallet.",
+    "description": "Description for backup wallet notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Creating wallet",
     "description": "Used in a button displaying wallet creation process"
