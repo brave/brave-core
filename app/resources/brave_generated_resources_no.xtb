@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") er ikke tillatt hos Brave.</translation>
 <translation id="7450557937477381864">Lukk Chrome</translation>
 <translation id="7008934821596358692">For å avslutte importering, lukk alle Chrome-vinduer.</translation>
-<translation id="7753103220327065417">Lukk Brave</translation>
-<translation id="5588481533147090393">For å fullføre importen, lukk alle Brave-vinduer.</translation>
 <translation id="6447842834002726250">Informasjonskapsler</translation>
 <translation id="4983925687993168579">Statistikk</translation>
 <translation id="9173846700806833701">Widevine er ikke installert</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine er en bit Digital Rettighetsstyring (DRM)-kode som vi hos Brave Software ikke eier, og ikke kan inspisere. Google Widevine-koden lastes fra Googles servere, ikke fra våre servere. Den lastes kun når du slår på dette alternativet. Vi fraråder bruk av DRM, men vi respekterer brukerens valg, og anerkjenner at noen Brave-brukere ønsker å bruke tjenester som krever det.
 
 Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. Du samtykker til at Brave ikke er ansvarlig for noen skade eller tap i forbindelse med din bruk av Google Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Importert fra Brave</translation>
 <translation id="453977518730680921">Autoavspill media</translation>
 <translation id="410351446219883937">Autospill</translation>

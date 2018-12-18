@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") በብሬቭ ውስጥ አይፈቀድም፡፡</translation>
 <translation id="7450557937477381864">ክሮም ዝጋ</translation>
 <translation id="7008934821596358692">ማስተላለፍ ለመጨረስ፣ ሁሉኑም የክሮም ዊንደው ይዝጉ፡፡</translation>
-<translation id="7753103220327065417">ብሬቭ ይዝጉ</translation>
-<translation id="5588481533147090393">ኢምፖርቲንግ ለመጨረስ፣ ብሬቭ ዊንደው ይዘጉ፡፡</translation>
 <translation id="6447842834002726250">ኮኪስ</translation>
 <translation id="4983925687993168579">ሁነት</translation>
 <translation id="9173846700806833701">ዊንድቪን አልተገጠመም</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine የዲጂታል መብት አስተዳደር (DRM) አካል የሆነ ኮድ ሲሆን እኛ ብሬቭ ሶፍትዌር ባለቤትነት የሌለንና ምርመራ ማካሄድ አንችልም፡፡ Google Widevine ኮድ ከኛ ሰርቨር ሳይሆን ከ Google ሰርቨር ማግኘት ይችላሉ፡፡ የሚጀምረው ይህን አማራጭ ካበራቹህ ብቻ ነው፡፡ DRM እንዲጠቀሙ አናበረታታም፣ ቢሆንም የተጠቃሚዎቻችንን ምርጫ እናከብራለን እንዲሁም አንድ አንድ የብሬቭ ተጠቃሚዎች ይህን የሚጠይቅ አገልግሎት መጠቀም እንደሚፈልጉ እውቅና እነሰታለን፡፡
  
  ይህን ቅጥያ ሲገጥሙ፣ በGoogle Widevine የአጠቃቀም ሕግ እየተስማሙ ነው፡፡ ከGoogle Widevine ሲጠቀሙ ለሚገጥሞት አደጋ ወይ የግንኙነት መቋረጥ ብሬቭ ሀላፊነት እንደማይወስድ ይስማማሉ፡፡</translation>
-<translation id="939305735877869636">ብሬቭ</translation>
 <translation id="3198814717959506569">ከብሬቭ ኢምፖርት የተደረገ</translation>
 <translation id="453977518730680921">ሚድያ አውቶፕለይ</translation>
 <translation id="410351446219883937">አውቶፕለይ</translation>

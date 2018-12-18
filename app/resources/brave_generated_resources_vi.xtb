@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID phần mở rộng "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") không được phép trong Brave.</translation>
 <translation id="7450557937477381864">Đóng Chrome</translation>
 <translation id="7008934821596358692">Để hoàn tất nhập, hãy đóng mọi cửa sổ Chrome.</translation>
-<translation id="7753103220327065417">Đóng Brave</translation>
-<translation id="5588481533147090393">Để hoàn tất quá trình nhập, hãy đóng tất cả các cửa sổ Brave.</translation>
 <translation id="6447842834002726250">Cookie</translation>
 <translation id="4983925687993168579">Thống kê</translation>
 <translation id="9173846700806833701">Widevine không cài đặt</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine là một phần của mã Quản lý Quyền Kỹ thuật số (Digital Rights Management hay DRM) mà chúng tôi tại Brave Software không sở hữu và không thể kiểm tra. Mã Google Widevine được tải từ các máy chủ của Google chứ không phải từ các máy chủ của chúng tôi. Mã này chỉ được tải khi bạn bật tùy chọn này. Chúng tôi không khuyến khích sử dụng DRM, nhưng chúng tôi tôn trọng lựa chọn của người dùng và thừa nhận rằng một số người dùng Brave muốn sử dụng các dịch vụ cần tới mã đó.
 
 Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với các Điều khoản Sử dụng của Google Widevine. Bạn đồng ý rằng Brave không chịu trách nhiệm đối với bất kỳ thiệt hại hoặc tổn thất nào liên quan đến việc bạn sử dụng Google Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Đã nhập từ Brave</translation>
 <translation id="453977518730680921">Tự động phát truyền thông đa phương tiện</translation>
 <translation id="410351446219883937">Tự động phát</translation>

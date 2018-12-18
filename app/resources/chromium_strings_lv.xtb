@@ -45,7 +45,6 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="8667808506758191620"><ph name="DEVICE_TYPE"/> ierīce ir atjaunināta.</translation>
 <translation id="6970811910055250180">Notiek ierīces atjaunināšana...</translation>
 <translation id="8030318113982266900">Notiek ierīces atjaunināšana uz kanālu <ph name="CHANNEL_NAME"/>...</translation>
-<translation id="7355059611036077582">Pievienot pārlūkam Brave</translation>
 <translation id="7456658570432774853">Palīdziet uzlabot pārlūku Brave, ziņojot par pašreizējiem iestatījumiem.</translation>
 <translation id="6134859571175647580">Brīdinājums! Brave nevar novērst to, ka paplašinājumi ieraksta jūsu pārlūkošanas vēsturi. Lai atspējotu šo paplašinājumu inkognito režīmā, noņemiet atzīmi no šīs opcijas.</translation>
 <translation id="777113543093865885">Noņemšana no pārlūka Brave...</translation>
@@ -69,7 +68,6 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="2887570477425111999">Saglabāt informāciju operētājsistēmā Brave</translation>
 <translation id="193559141530782783">Brave droši saglabās jūsu privāto informāciju, lai jums vairs nevajadzētu to atkārtoti ievadīt.</translation>
 <translation id="663059986967017181">Nokopēta pārlūkā Brave</translation>
-<translation id="5225129378754387452">Rādīt Brave izvēlni</translation>
 <translation id="300669147395456190">Brave lietotnes</translation>
 <translation id="3421950102518690868">Pirms šīs ierīces lietošanas jums ir jāizlasa un jāapstiprina tālāk sniegtie domēna <ph name="DOMAIN"/> pakalpojumu sniegšanas noteikumi. Šie noteikumi nepaplašina, nepārveido vai neierobežo operētājsistēmas Brave OS noteikumus.</translation>
 <translation id="3293668930608086049">Pārlūkā Brave tiek izmantota jūsu kamera un mikrofons.</translation>
@@ -93,8 +91,8 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="1705567146636171298">Atjaunināt Brave</translation>
 <translation id="4050175100176540509">Jaunākajā versijā ir pieejami svarīgi drošības uzlabojumi un jaunas funkcijas.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Pārlūks Brave tiks restartēts pēc 1 sekundes.}zero{Pārlūks Brave tiks restartēts pēc # sekundēm.}one{Pārlūks Brave tiks restartēts pēc # sekundes.}other{Pārlūks Brave tiks restartēts pēc # sekundēm.}}</translation>
-<translation id="9159286371333817139">Restartējiet Brave tūlīt.</translation>
-<translation id="9203540365585059272">Tikko tika piemērots īpašs Brave drošības atjauninājums. Restartējiet tūlīt, lai tas stātos spēkā (mēs atjaunosim jūsu cilnes).</translation>
+<translation id="5509303873219371662">Restartējiet Brave tūlīt</translation>
+<translation id="8668413672647811944">Tikko tika piemērots īpašs Brave drošības atjauninājums. Restartējiet tūlīt, un mēs atjaunosim jūsu cilnes.</translation>
 <translation id="763369711159699222">Palīdziet uzlabot Brave</translation>
 <translation id="1156940037717341650">Varat palīdzēt uzlabot Brave drošību un lietošanas ērtumu, automātiski nosūtot Brave Software serveriem informāciju par iespējamām drošības problēmām.</translation>
 <translation id="6791166902140255175">Brave cilne</translation>
@@ -116,7 +114,6 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="8586264863973514035">Lai ieviestu veiktās izmaiņas, atkārtoti palaidiet pārlūku Brave.</translation>
 <translation id="7021823858304886493">Atļaut pierakstīties pārlūkā Brave</translation>
 <translation id="1649714546770135458">Ja izslēgsiet šo iestatījumu, varēsiet pierakstīties Brave Software vietnēs, piemēram, pakalpojumā Gmail, nepierakstoties pārlūkā Brave.</translation>
-<translation id="6274110506580702455">Šīs ierīces administrators ir atspējojis pierakstīšanos pārlūkā Brave.</translation>
 <translation id="9220324636239049437">Veicot šo darbību, no šīs ierīces tiks dzēsts 1 vienums. Lai vēlāk izgūtu datus, pierakstieties pārlūkā Brave kā <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Veicot šo darbību, no šīs ierīces tiks dzēsts(-i) <ph name="ITEMS_COUNT"/> vienums(-i). Lai vēlāk izgūtu datus, pierakstieties pārlūkā Brave kā <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Veicot šo darbību, no šīs ierīces tiks dzēsti pārlūkošanas dati. Lai vēlāk izgūtu datus, pierakstieties pārlūkā Brave kā <ph name="USER_EMAIL"/>.</translation>

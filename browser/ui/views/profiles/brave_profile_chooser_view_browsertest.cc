@@ -47,5 +47,5 @@ IN_PROC_BROWSER_TEST_F(BraveProfileChooserViewTest, TestCurrentProfileView) {
 
   EXPECT_EQ(1u, avatar_menu()->GetNumberOfItems());
   ASSERT_EQ(avatar_menu()->GetItemAt(0).name,
-            current_profile_card()->accessible_name());
+            current_profile_card()->GetAccessibleName());
 }

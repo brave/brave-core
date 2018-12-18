@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/content_settings/content_setting_image_model.cc b/chrome/browser/ui/content_settings/content_setting_image_model.cc
-index c32fcb2a3ee845c756b7f9f6968fca2045c24a7d..586230711df39816d8aad1e388fc782d807cfb69 100644
+index afaee36cf39fae81aef937aa9fe3189ba7b1f2f6..c1ada370ccc002eac0a87282896b3dbda0b0db82 100644
 --- a/chrome/browser/ui/content_settings/content_setting_image_model.cc
 +++ b/chrome/browser/ui/content_settings/content_setting_image_model.cc
 @@ -10,6 +10,7 @@
@@ -10,7 +10,7 @@ index c32fcb2a3ee845c756b7f9f6968fca2045c24a7d..586230711df39816d8aad1e388fc782d
  #include "build/build_config.h"
  #include "chrome/app/vector_icons/vector_icons.h"
  #include "chrome/browser/browser_process.h"
-@@ -775,6 +776,9 @@ ContentSettingImageModel::GenerateContentSettingImageModels() {
+@@ -668,6 +669,9 @@ ContentSettingImageModel::GenerateContentSettingImageModels() {
    std::vector<std::unique_ptr<ContentSettingImageModel>> result;
    for (auto type : kContentSettingImageOrder)
      result.push_back(CreateForContentType(type));

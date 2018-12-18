@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc b/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
-index 1072ca64219fe91cedfb16f5078fdf9e4f1c18c5..fb44253a082e480bc85758f563c84c2213d73cce 100644
+index 7fc27898124c9ddcf992c232bbfbdf8a8aed8267..53ccedb086e498004079cca2b8a14e8ff41875c0 100644
 --- a/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
 +++ b/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
 @@ -38,6 +38,7 @@
@@ -10,16 +10,16 @@ index 1072ca64219fe91cedfb16f5078fdf9e4f1c18c5..fb44253a082e480bc85758f563c84c22
  #include "services/metrics/public/cpp/ukm_builders.h"
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/public/platform/platform.h"
-@@ -660,6 +661,8 @@ void RTCPeerConnection::Dispose() {
+@@ -798,6 +799,8 @@ void RTCPeerConnection::Dispose() {
  
  ScriptPromise RTCPeerConnection::createOffer(ScriptState* script_state,
-                                              const RTCOfferOptions& options) {
+                                              const RTCOfferOptions* options) {
 +  if (!AllowFingerprinting(To<Document>(GetExecutionContext())->GetFrame()))
 +    return ScriptPromise::CastUndefined(script_state);
    if (signaling_state_ ==
        webrtc::PeerConnectionInterface::SignalingState::kClosed) {
      return ScriptPromise::RejectWithDOMException(
-@@ -693,6 +696,8 @@ ScriptPromise RTCPeerConnection::createOffer(
+@@ -833,6 +836,8 @@ ScriptPromise RTCPeerConnection::createOffer(
    ExecutionContext* context = ExecutionContext::From(script_state);
    UseCounter::Count(
        context, WebFeature::kRTCPeerConnectionCreateOfferLegacyFailureCallback);
@@ -28,16 +28,16 @@ index 1072ca64219fe91cedfb16f5078fdf9e4f1c18c5..fb44253a082e480bc85758f563c84c22
    if (CallErrorCallbackIfSignalingStateClosed(signaling_state_, error_callback))
      return ScriptPromise::CastUndefined(script_state);
  
-@@ -746,6 +751,8 @@ ScriptPromise RTCPeerConnection::createOffer(
+@@ -890,6 +895,8 @@ ScriptPromise RTCPeerConnection::createOffer(
  
  ScriptPromise RTCPeerConnection::createAnswer(ScriptState* script_state,
-                                               const RTCAnswerOptions& options) {
+                                               const RTCAnswerOptions* options) {
 +  if (!AllowFingerprinting(To<Document>(GetExecutionContext())->GetFrame()))
 +    return ScriptPromise::CastUndefined(script_state);
    if (signaling_state_ ==
        webrtc::PeerConnectionInterface::SignalingState::kClosed) {
      return ScriptPromise::RejectWithDOMException(
-@@ -779,7 +786,8 @@ ScriptPromise RTCPeerConnection::createAnswer(
+@@ -926,7 +933,8 @@ ScriptPromise RTCPeerConnection::createAnswer(
      UseCounter::Count(
          context, WebFeature::kRTCPeerConnectionCreateAnswerLegacyCompliant);
    }
@@ -47,16 +47,16 @@ index 1072ca64219fe91cedfb16f5078fdf9e4f1c18c5..fb44253a082e480bc85758f563c84c22
    if (CallErrorCallbackIfSignalingStateClosed(signaling_state_, error_callback))
      return ScriptPromise::CastUndefined(script_state);
  
-@@ -882,6 +890,8 @@ bool RTCPeerConnection::ShouldShowComplexPlanBSdpWarning(
+@@ -1169,6 +1177,8 @@ void RTCPeerConnection::ReportSetSdpUsage(
  ScriptPromise RTCPeerConnection::setLocalDescription(
      ScriptState* script_state,
-     const RTCSessionDescriptionInit& session_description_init) {
+     const RTCSessionDescriptionInit* session_description_init) {
 +  if (!AllowFingerprinting(To<Document>(GetExecutionContext())->GetFrame()))
 +    return ScriptPromise::CastUndefined(script_state);
-   if (ShouldShowComplexPlanBSdpWarning(session_description_init)) {
-     Deprecation::CountDeprecation(
-         GetExecutionContext(),
-@@ -929,6 +939,8 @@ ScriptPromise RTCPeerConnection::setLocalDescription(
+   MaybeWarnAboutUnsafeSdp(session_description_init);
+   ReportSetSdpUsage(SetSdpOperationType::kSetLocalDescription,
+                     session_description_init);
+@@ -1216,6 +1226,8 @@ ScriptPromise RTCPeerConnection::setLocalDescription(
            WebFeature::
                kRTCPeerConnectionSetLocalDescriptionLegacyNoFailureCallback);
    }
@@ -65,16 +65,16 @@ index 1072ca64219fe91cedfb16f5078fdf9e4f1c18c5..fb44253a082e480bc85758f563c84c22
  
    String sdp;
    DOMException* exception =
-@@ -977,6 +989,8 @@ RTCSessionDescription* RTCPeerConnection::pendingLocalDescription() {
+@@ -1269,6 +1281,8 @@ RTCSessionDescription* RTCPeerConnection::pendingLocalDescription() {
  ScriptPromise RTCPeerConnection::setRemoteDescription(
      ScriptState* script_state,
-     const RTCSessionDescriptionInit& session_description_init) {
+     const RTCSessionDescriptionInit* session_description_init) {
 +  if (!AllowFingerprinting(To<Document>(GetExecutionContext())->GetFrame()))
 +    return ScriptPromise::CastUndefined(script_state);
-   if (ShouldShowComplexPlanBSdpWarning(session_description_init)) {
-     Deprecation::CountDeprecation(
-         GetExecutionContext(),
-@@ -1026,6 +1040,8 @@ ScriptPromise RTCPeerConnection::setRemoteDescription(
+   MaybeWarnAboutUnsafeSdp(session_description_init);
+   ReportSetSdpUsage(SetSdpOperationType::kSetRemoteDescription,
+                     session_description_init);
+@@ -1318,6 +1332,8 @@ ScriptPromise RTCPeerConnection::setRemoteDescription(
            WebFeature::
                kRTCPeerConnectionSetRemoteDescriptionLegacyNoFailureCallback);
    }

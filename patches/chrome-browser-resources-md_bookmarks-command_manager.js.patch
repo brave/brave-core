@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/md_bookmarks/command_manager.js b/chrome/browser/resources/md_bookmarks/command_manager.js
-index 19565417eb3760ec17839bc30dbb5ba99dcd0b2b..61bbad29de68fb0f5fd621c346ba7f0638443d79 100644
+index e573fdf24d801ce29a8c86ca8def62549585d236..f427666f9153e70d533bb09a2f3058607019909f 100644
 --- a/chrome/browser/resources/md_bookmarks/command_manager.js
 +++ b/chrome/browser/resources/md_bookmarks/command_manager.js
 @@ -408,7 +408,7 @@ cr.define('bookmarks', function() {

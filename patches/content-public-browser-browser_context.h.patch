@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/browser_context.h b/content/public/browser/browser_context.h
-index e26a929290a9af9808c9a8c0a64cdbb542dac445..88c2c156686b380f810e1f9d1e4ae1a7e33e320d 100644
+index b6181e5c68a8036c7d4f87b4ba4748a5139d0e62..39833e328629f9775bbaa5a3c964e3a7ea953d66 100644
 --- a/content/public/browser/browser_context.h
 +++ b/content/public/browser/browser_context.h
-@@ -263,6 +263,9 @@ class CONTENT_EXPORT BrowserContext : public base::SupportsUserData {
+@@ -264,6 +264,9 @@ class CONTENT_EXPORT BrowserContext : public base::SupportsUserData {
    // Return whether this context is incognito. Default is false.
    virtual bool IsOffTheRecord() const = 0;
  

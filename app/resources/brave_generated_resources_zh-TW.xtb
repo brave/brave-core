@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") 在 Brave 中是不允許的。</translation>
 <translation id="7450557937477381864">關閉 Chrome</translation>
 <translation id="7008934821596358692">關閉所有 Chrome 視窗以完成匯入。</translation>
-<translation id="7753103220327065417">關閉  Brave</translation>
-<translation id="5588481533147090393">關閉所有 Brave 視窗以完成匯入。</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="4983925687993168579">統計數據</translation>
 <translation id="9173846700806833701">未安裝 Widevine</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine 為數位版權管理 (DRM) 碼的一部分，非 Brave Software 所有，且我們無法偵測。Google Widevine 碼是從 Google 伺服器而非我們的伺服器下載。它僅在您同意該選項時裝載。我們不鼓勵使用 DRM，但我們尊重使用者的選擇，並了解部分 Brave 使用者想使用要求安裝 DRM 的服務。
 
 安裝該擴充功能即表示您同意 Google Widevine 使用條款。您同意 Brave 不為您使用 Google Widevine 而產生的任何相關損害或損失負責。</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">自 Brave 匯入</translation>
 <translation id="453977518730680921">自動播放媒體</translation>
 <translation id="410351446219883937">自動播放</translation>

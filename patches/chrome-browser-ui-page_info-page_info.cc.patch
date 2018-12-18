@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/page_info/page_info.cc b/chrome/browser/ui/page_info/page_info.cc
-index e7e7c5d1c2c0699f8892d4be90281c2bb7c7d1b9..91c46da0bddfcf3ea3e2b4bc587a26138d79a3c3 100644
+index 4b8dacdbec6136ab6aaa38a7dc9f2d29b2b46a7a..85f4c826a0dfba05f52a785340d36271f897f08b 100644
 --- a/chrome/browser/ui/page_info/page_info.cc
 +++ b/chrome/browser/ui/page_info/page_info.cc
 @@ -152,6 +152,7 @@ bool ShouldShowPermission(
@@ -19,7 +19,7 @@ index e7e7c5d1c2c0699f8892d4be90281c2bb7c7d1b9..91c46da0bddfcf3ea3e2b4bc587a2613
    // Autoplay is Android-only at the moment.
    if (info.type == CONTENT_SETTINGS_TYPE_AUTOPLAY)
      return false;
-@@ -1001,7 +1002,7 @@ void PageInfo::PresentSiteIdentity() {
+@@ -973,7 +974,7 @@ void PageInfo::PresentSiteIdentity() {
  std::vector<ContentSettingsType> PageInfo::GetAllPermissionsForTesting() {
    std::vector<ContentSettingsType> permission_list;
    for (size_t i = 0; i < arraysize(kPermissionType); ++i) {

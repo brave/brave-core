@@ -86,9 +86,6 @@
   <message name="IDS_MEDIA_ROUTER_REPORT_ISSUE" desc="Title of a menu item which, on click, opens a page to give feedback or report an issue with Bravecast integration.">
     Report an issue
   </message>
-  <message name="IDS_MEDIA_ROUTER_MANAGE_DEVICES" desc="Title of a menu item which, on click, opens a page that allows the user to manage Cast devices: view, reboot, reset, and manage settings of available Cast devices, or set up new Cast devices.">
-    Manage Cast devices
-  </message>
   <message name="IDS_MEDIA_ROUTER_SHOWN_BY_POLICY" desc="Title of a menu item, which indicates that the Media Router action icon was added to the toolbar by the policy enabled by the user's administrator.">
     Added by your administrator
   </message>
@@ -222,6 +219,15 @@
   </message>
   <message name="IDS_MEDIA_ROUTER_SINK_CONNECTING" desc="Text shown as the status of a Cast destination that we are starting a Cast session on.">
     Connecting...
+  </message>
+  <message name="IDS_MEDIA_ROUTER_SINK_DISCONNECTING" desc="Text shown as the status of a Cast device that has a Cast session that is ending.">
+    Disconnecting...
+  </message>
+  <message name="IDS_MEDIA_ROUTER_STOP_CASTING" desc="Text shown when user hovers over the stop icon for a cast device.">
+    Stop casting
+  </message>
+  <message name="IDS_MEDIA_ROUTER_SOURCE_NOT_SUPPORTED" desc="Text shown as the status of a Cast device that is not compatible with the selected Cast source (contents).">
+    Source not supported
   </message>
 
   <!-- Sink Search -->

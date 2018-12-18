@@ -1,8 +1,8 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index abbab2664254c9be1ec5074463722c1365590cd0..a114baddd2b52aa9deaf7ee15ea74e909c54522e 100644
+index b3ebd3da653f731094d1c1a88fdedeccfa9be682..b5257588ebccae2d90f58bea86a2628874d25da6 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -184,6 +184,10 @@ if (!is_android && !is_mac) {
+@@ -185,6 +185,10 @@ if (!is_android && !is_mac) {
            "common/crash_keys.cc",
            "common/crash_keys.h",
          ]
@@ -13,31 +13,31 @@ index abbab2664254c9be1ec5074463722c1365590cd0..a114baddd2b52aa9deaf7ee15ea74e90
  
          deps += [
            ":chrome_dll",
-@@ -260,6 +264,7 @@ if (!is_android && !is_mac) {
+@@ -268,6 +272,7 @@ if (!is_android && !is_mac) {
+           "//headless:headless_shell_lib",
+           "//services/service_manager/embedder",
+         ]
++        deps += [ "//components/unified_consent" ]
  
-           # Needed to use the master_preferences functions
-           "//chrome/installer/util:with_no_strings",
-+          "//components/unified_consent",
-           "//content/public/app:both",
-           "//content/public/common:service_names",
+         public_deps = [
+           ":xdg_mime",  # Needs to be public for installer to consume files.
+@@ -418,6 +423,7 @@ if (is_win) {
+       "//third_party/wtl",
+       "//ui/views",
+     ]
++    deps += [ "//components/unified_consent" ]
  
-@@ -409,6 +414,7 @@ if (is_win) {
-       "//chrome_elf",
-       "//components/crash/content/app",
-       "//components/policy:generated",
-+      "//components/unified_consent",
-       "//content/app/resources",
-       "//content/public/common:service_names",
-       "//crypto",
-@@ -514,6 +520,7 @@ if (is_win) {
-         "//chrome_elf",
-         "//components/browser_watcher:browser_watcher_client",
-         "//components/crash/content/app",
-+        "//components/unified_consent",
-         "//content/public/app:child",
-         "//content/public/common:service_names",
+     ldflags = [
+       "/DELAYLOAD:comdlg32.dll",
+@@ -518,6 +524,7 @@ if (is_win) {
          "//headless:headless_shell_child_lib",
-@@ -617,6 +624,11 @@ if (is_win) {
+         "//services/service_manager/embedder",
+       ]
++      deps += [ "//components/unified_consent" ]
+ 
+       ldflags = [
+         "/DELAYLOAD:d3d11.dll",
+@@ -616,6 +623,11 @@ if (is_win) {
      ]
    }
  
@@ -49,7 +49,7 @@ index abbab2664254c9be1ec5074463722c1365590cd0..a114baddd2b52aa9deaf7ee15ea74e90
    mac_app_bundle("chrome_app") {
      output_name = chrome_product_full_name
  
-@@ -653,6 +665,7 @@ if (is_win) {
+@@ -648,6 +660,7 @@ if (is_win) {
                    rebase_path("app/app.exports", root_build_dir) ]
      }
    }
@@ -57,7 +57,7 @@ index abbab2664254c9be1ec5074463722c1365590cd0..a114baddd2b52aa9deaf7ee15ea74e90
  
    compiled_action("chrome_app_strings") {
      tool = "//chrome/tools/build/mac:infoplist_strings_tool"
-@@ -682,7 +695,7 @@ if (is_win) {
+@@ -677,7 +690,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -66,15 +66,15 @@ index abbab2664254c9be1ec5074463722c1365590cd0..a114baddd2b52aa9deaf7ee15ea74e90
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
-@@ -1207,6 +1220,7 @@ if (is_win) {
-       "//components/policy:generated",
-       "//content/public/app:both",
-       "//content/public/common:service_names",
-+      "//components/unified_consent",
-       "//headless:headless_shell_lib",
+@@ -1194,6 +1207,7 @@ if (is_win) {
        "//services/service_manager/embedder",
        "//third_party/cld_3/src/src:cld_3",
-@@ -1274,6 +1288,10 @@ if (is_win) {
+     ]
++    deps += [ "//components/unified_consent" ]
+ 
+     if (is_component_build) {
+       libs = [ "Carbon.framework" ]
+@@ -1257,6 +1271,10 @@ if (is_win) {
      if (is_chrome_branded) {
        deps += [ ":default_apps" ]
      }
@@ -85,7 +85,7 @@ index abbab2664254c9be1ec5074463722c1365590cd0..a114baddd2b52aa9deaf7ee15ea74e90
  
      ldflags = [
        "-Wl,-install_name,@executable_path/../Versions/$chrome_version_full/$chrome_framework_name.framework/$chrome_framework_name",
-@@ -1433,6 +1451,7 @@ if (is_win) {
+@@ -1416,6 +1434,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -93,7 +93,7 @@ index abbab2664254c9be1ec5074463722c1365590cd0..a114baddd2b52aa9deaf7ee15ea74e90
      "//chrome/browser",
      "//chrome/common",
      "//components/sync",
-@@ -1470,6 +1489,7 @@ group("browser_dependencies") {
+@@ -1453,6 +1472,7 @@ group("browser_dependencies") {
  
  group("child_dependencies") {
    public_deps = [
@@ -101,7 +101,7 @@ index abbab2664254c9be1ec5074463722c1365590cd0..a114baddd2b52aa9deaf7ee15ea74e90
      "//chrome/browser/devtools",
      "//chrome/child",
      "//chrome/common",
-@@ -1492,7 +1512,7 @@ group("child_dependencies") {
+@@ -1475,7 +1495,7 @@ group("child_dependencies") {
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
      sources = [
@@ -110,7 +110,7 @@ index abbab2664254c9be1ec5074463722c1365590cd0..a114baddd2b52aa9deaf7ee15ea74e90
      ]
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
-@@ -1565,6 +1585,7 @@ group("resources") {
+@@ -1548,6 +1568,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
@@ -118,11 +118,11 @@ index abbab2664254c9be1ec5074463722c1365590cd0..a114baddd2b52aa9deaf7ee15ea74e90
    ]
  }
  
-@@ -1802,6 +1823,7 @@ if (is_android) {
-       "//components/safe_browsing/android:safe_browsing_mobile",
-       "//components/services/heap_profiling",
-       "//components/tracing",
-+      "//components/unified_consent",
-       "//content/public/app:both",
+@@ -1796,6 +1817,7 @@ if (is_android) {
        "//content/public/common:service_names",
        "//services/service_manager/embedder",
+     ]
++    deps += [ "//components/unified_consent" ]
+ 
+     # Explicit dependency required for JNI registration to be able to
+     # find the native side functions.

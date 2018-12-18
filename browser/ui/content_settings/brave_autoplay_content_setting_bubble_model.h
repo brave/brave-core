@@ -14,8 +14,7 @@ using content::WebContents;
 class BraveAutoplayContentSettingBubbleModel : public ContentSettingSimpleBubbleModel {
  public:
    BraveAutoplayContentSettingBubbleModel(Delegate* delegate,
-                                          WebContents* web_contents,
-                                          Profile* profile);
+                                          WebContents* web_contents);
    ~BraveAutoplayContentSettingBubbleModel() override;
 
   // ContentSettingSimpleBubbleModel:

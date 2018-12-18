@@ -49,7 +49,6 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="8667808506758191620">Jūsų „<ph name="DEVICE_TYPE"/>“ atnaujintas.</translation>
 <translation id="6970811910055250180">Įrenginys atnaujinamas...</translation>
 <translation id="8030318113982266900">Atnaujinamas įrenginys į „<ph name="CHANNEL_NAME"/>“ kanalą...</translation>
-<translation id="7355059611036077582">Pridėti prie „Brave“</translation>
 <translation id="7456658570432774853">Padėkite tobulinti „Brave“ pateikę ataskaitą apie dabartinius nustatymus</translation>
 <translation id="6134859571175647580">Įspėjimas: Brave“ negali neleisti plėtiniams įrašyti naršymo istorijos. Jei norite išjungti šį plėtinį inkognito režimu, panaikinkite šios parinkties pasirinkimą.</translation>
 <translation id="777113543093865885">Pašalinti iš „Brave“...</translation>
@@ -73,7 +72,6 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="2887570477425111999">Išsaugoti išsamią informaciją „Brave“</translation>
 <translation id="193559141530782783">„Brave“ patikimai saugos jūsų išsamią informaciją, kad nebereikėtų jos vėl įvesti.</translation>
 <translation id="663059986967017181">Nukopijuota į „Brave“</translation>
-<translation id="5225129378754387452">Rodyti „Brave“ menu</translation>
 <translation id="300669147395456190">„Brave“ programos</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> reikia, kad prieš naudodami šį įrenginį perskaitytumėte toliau pateiktas paslaugų teikimo sąlygas. Šios sąlygos neišplečia, nepakeičia ir neapriboja „Brave“ OS sąlygų.</translation>
 <translation id="3293668930608086049">„Brave“ naudoja jūsų fotoaparatą ir mikrofoną.</translation>
@@ -97,8 +95,8 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="1705567146636171298">Atnaujinti „Brave“</translation>
 <translation id="4050175100176540509">Naujausios versijos programoje įdiegti svarbūs saugos patobulinimai ir pasiekiamos naujos funkcijos.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{„Brave“ bus paleista iš naujo po 1 sekundės}one{„Brave“ bus paleista iš naujo po # sekundės}few{„Brave“ bus paleista iš naujo po # sekundžių}many{„Brave“ bus paleista iš naujo po # sekundės}other{„Brave“ bus paleista iš naujo po # sekundžių}}</translation>
-<translation id="9159286371333817139">Turėtumėte dabar iš naujo paleisti „Brave“.</translation>
-<translation id="9203540365585059272">Ką tik pritaikytas specialus „Brave“ skirtas saugos naujinys. Kad jis pradėtų veikti, turite dabar iš naujo paleisti „Chronium“ (atkursime visus skirtukus).</translation>
+<translation id="5509303873219371662">Dabar turėtumėte paleisti „Brave“ iš naujo</translation>
+<translation id="8668413672647811944">Ką tik pritaikytas specialus „Brave“ skirtas saugos naujinys. Paleiskite naršyklę iš naujo ir atkursime visus skirtukus.</translation>
 <translation id="763369711159699222">Padėkite tobulinti „Brave“</translation>
 <translation id="1156940037717341650">Galite padėti sustiprinti „Brave“ saugą ir palengvinti jos naudojimą automatiškai „Brave Software“ pateikdami išsamią informaciją apie galimas saugos problemas.</translation>
 <translation id="6791166902140255175">„Brave“ skirtukas</translation>
@@ -120,7 +118,6 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="8586264863973514035">Norėdami pritaikyti pakeitimus, paleiskite „Brave“ iš naujo</translation>
 <translation id="7021823858304886493">Leisti „Brave“ prisijungti</translation>
 <translation id="1649714546770135458">Jei išjungsite šį nustatymą, prie „Brave Software“ svetainių galėsite prisijungti kaip prie „Gmail“ neprisijungę prie „Brave“</translation>
-<translation id="6274110506580702455">Prisijungimo prie „Brave“ funkciją išjungė šio įrenginio administratorius.</translation>
 <translation id="9220324636239049437">Atlikus šį veiksmą iš šio įrenginio bus ištrintas 1 elementas. Jei vėliau norėsite gauti duomenis, prisijunkite prie „Brave“ kaip <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Atlikus šį veiksmą iš šio įrenginio bus ištrinti elementai (<ph name="ITEMS_COUNT"/>). Jei vėliau norėsite gauti duomenis, prisijunkite prie „Brave“ kaip <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Atlikus šį veiksmą iš šio įrenginio bus ištrinti naršymo duomenys. Jei vėliau norėsite gauti duomenis, prisijunkite prie „Brave“ kaip <ph name="USER_EMAIL"/>.</translation>

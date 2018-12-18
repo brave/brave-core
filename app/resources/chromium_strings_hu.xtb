@@ -45,7 +45,6 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="8667808506758191620"><ph name="DEVICE_TYPE"/> eszköze naprakész.</translation>
 <translation id="6970811910055250180">Az eszköz frissítése folyamatban van...</translation>
 <translation id="8030318113982266900">Eszköz frissítése a(z) <ph name="CHANNEL_NAME"/> csatornára...</translation>
-<translation id="7355059611036077582">Hozzáadás a Bravehoz</translation>
 <translation id="7456658570432774853">Segítsen a Brave fejlesztésében a jelenlegi beállítások elküldésével</translation>
 <translation id="6134859571175647580">Figyelmeztetés: a Brave nem tudja megakadályozni, hogy a bővítmények rögzítsék a böngészési előzményeit. A bővítmény inkognitómódban való használatának letiltásához törölje a lehetőség bejelölését.</translation>
 <translation id="777113543093865885">Eltávolítás a Braveból…</translation>
@@ -69,7 +68,6 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="2887570477425111999">Részletek mentése a Braveban</translation>
 <translation id="193559141530782783">A Brave biztonságosan tárolja a személyes adatait, így nem kell újra begépelnie őket.</translation>
 <translation id="663059986967017181">A Bravera másolva</translation>
-<translation id="5225129378754387452">Brave menü megjelenítése</translation>
 <translation id="300669147395456190">Brave-alkalmazások</translation>
 <translation id="3421950102518690868">A(z) <ph name="DOMAIN"/> megköveteli, hogy olvassa, majd fogadja el a következő Általános Szerződési Feltételeket, mielőtt használná ezt az eszközt. Ezek a feltételek nem bővítik, módosítják vagy korlátozzák a Brave OS feltételeit.</translation>
 <translation id="3293668930608086049">A Brave használja a kamerát és a mikrofont.</translation>
@@ -93,8 +91,8 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="1705567146636171298">A Brave frissítése</translation>
 <translation id="4050175100176540509">A legújabb verzióban fontos biztonsági fejlesztések és új funkciók érhetők el.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{A Brave 1 másodpercen belül újraindul}other{A Brave # másodpercen belül újraindul}}</translation>
-<translation id="9159286371333817139">Indítsa újra a Braveot most.</translation>
-<translation id="9203540365585059272">A rendszer egy speciális biztonsági frissítést alkalmazott a Braveon; indítsa újra a számítógépet, hogy a módosítás életbe léphessen (a lapokat visszaállítjuk).</translation>
+<translation id="5509303873219371662">Indítsa újra a Braveot most</translation>
+<translation id="8668413672647811944">A rendszer egy speciális biztonsági frissítést alkalmazott a Braveon. Indítsa újra a számítógépet, a lapokat majd mi visszaállítjuk.</translation>
 <translation id="763369711159699222">Segítsen a Brave továbbfejlesztésében</translation>
 <translation id="1156940037717341650">Az esetleges biztonsági események adatainak automatikus jelentésével segítséget nyújthat a Brave Software-nak a Brave használatának biztonságosabbá és egyszerűbbé tételéhez.</translation>
 <translation id="6791166902140255175">Brave lap</translation>
@@ -116,7 +114,6 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="8586264863973514035">A módosítások alkalmazásához indítsa újra a Braveot</translation>
 <translation id="7021823858304886493">Brave-bejelentkezés engedélyezése</translation>
 <translation id="1649714546770135458">A beállítás kikapcsolásával anélkül jelentkezhet be a Brave Software-webhelyekre (pl. Gmail), hogy a Braveba is bejelentkezne</translation>
-<translation id="6274110506580702455">A Brave böngészőbe való bejelentkezést letiltotta az eszköz rendszergazdája.</translation>
 <translation id="9220324636239049437">Ezzel egyetlen elemet töröl erről az eszközről. Az adatok későbbi lekéréséhez jelentkezzen be a Braveba a következő e-mail-címmel: <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Ezzel <ph name="ITEMS_COUNT"/> elemet töröl erről az eszközről. Az adatok későbbi lekéréséhez jelentkezzen be a Braveba a következő e-mail-címmel: <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Ezzel az eszközön lévő összes böngészési adat törlődik. Az adatok későbbi lekéréséhez jelentkezzen be a Braveba a következő e-mail-címmel: <ph name="USER_EMAIL"/>.</translation>

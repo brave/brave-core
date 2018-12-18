@@ -39,6 +39,7 @@
 <translation id="5112577000029535889">Zana za &amp;Wasanidi Programu</translation>
 <translation id="5184063094292164363">Kidhibiti Kazi cha &amp;JavaScript</translation>
 <translation id="7056526158851679338">Na Ukague Vifaa</translation>
+<translation id="947329552760389097">&amp;Kagua Vipengee</translation>
 <translation id="48838266408104654">&amp;Kidhibiti cha Shughuli</translation>
 <translation id="6277518330158259200">Piga Picha ya Skrini</translation>
 <translation id="5288678174502918605">Fungua Kichupo Kilichofungwa &amp;Tena</translation>
@@ -57,6 +58,7 @@
 <translation id="7324297612904500502">Mfumo wa Beta</translation>
 <translation id="7199158086730159431">Pata Usaidizi</translation>
 <translation id="630065524203833229">Ondoka</translation>
+<translation id="2052369079215022979">Inasimamiwa na Shirika lako</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5702898740348134351">&amp;Badilisha Mitambo ya Kutafuta...</translation>
 <translation id="2454247629720664989">Neno muhimu</translation>
@@ -152,6 +154,7 @@
 <translation id="4020327272915390518">Menyu yenye chaguo</translation>
 <translation id="8200772114523450471">Endelea</translation>
 <translation id="2770465223704140727">Ondoa kwenye orodha</translation>
+<translation id="7702574632857388784">Ondoa <ph name="FILE_NAME"/> kwenye orodha</translation>
 <translation id="7658239707568436148">Ghairi</translation>
 <translation id="7144878232160441200">Jaribu tena</translation>
 <translation id="6910211073230771657">Imeondolewa</translation>
@@ -165,11 +168,11 @@
 <translation id="3612673635130633812">Imepakuliwa na &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="6395403722585816044">Ilipakuliwa katika Hali Fiche</translation>
 <translation id="8028803902702117856">Inapakua <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
-<translation id="4644818355646995778">Inapakua, <ph name="PERCENT_REMAINING"/></translation>
+<translation id="5632592977009207922">Inapakua, imesalia <ph name="PERCENT_REMAINING"/>%</translation>
 <translation id="313963229645891001">Inapakua, <ph name="STATUS"/></translation>
 <translation id="1834503245783133039">Imeshindwa kupakua: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Imeghairi kupakua: <ph name="FILE_NAME"/></translation>
-<translation id="348999362308956431">Imekamilisha kupakua: <ph name="FILE_NAME"/></translation>
+<translation id="4110490973560452005">Imemaliza kupakua: <ph name="FILE_NAME"/>. Bonyeza Shift+F6 ili uende kwenye eneo la upau wa vipakuliwa.</translation>
 <translation id="2743387203779672305">Nakili kwenye ubao wa kunakili</translation>
 <translation id="883911313571074303">Eleza kuhusu picha</translation>
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Inaendelea kupakua}other{Inaendelea kupakua}}</translation>
@@ -291,7 +294,7 @@
 <translation id="6398765197997659313">Ondoka kwenye Skrini nzima</translation>
 <translation id="8559694214572302298">Kisimbuaji cha Picha</translation>
 <translation id="8191453843330043793">Kitatuaji cha Seva Mbadala ya V8</translation>
-<translation id="6185617499004995178">Kithibitishaji cha IPP ya CUPS</translation>
+<translation id="5552059560155071882">Kichanganuzi cha IPP ya CUPS</translation>
 <translation id="3077708072777965506">Mbinu ya Kuingiza Data kwenye Mfumo wa Uendeshaji wa Brave</translation>
 <translation id="7171242884588191792">Huduma za Faili za Brave</translation>
 <translation id="3061707000357573562">Huduma ya Kurekebisha</translation>
@@ -300,7 +303,6 @@
 <translation id="1545775234664667895">Mandhari  "<ph name="THEME_NAME"/>"  imesanidiwa</translation>
 <translation id="2079545284768500474">Tendua</translation>
 <translation id="2256115617011615191">Zima na uwashe sasa</translation>
-<translation id="795025003224538582">Usianzishe upya</translation>
 <translation id="4545028762441890696">Ili ukiwashe upya, kubali ruhusa mpya:</translation>
 <translation id="3009487527589249344">Brave Software imeripoti kuwa "<ph name="EXTENSION_NAME"/>" ni programu hasidi na imezuia kuisakinisha</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> iliongezwa kwa mbali</translation>
@@ -495,9 +497,9 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="3987348946546879621">Data imeokolewa</translation>
 <translation id="6228516488918914827">Imepakia ukurasa unaofunguka haraka</translation>
 <translation id="9137013805542155359">Onyesha asili</translation>
-<translation id="71243390042171582">Ulisasishwa dakika <ph name="MINUTES"/> zilizopita</translation>
+<translation id="1056466516655540509">Imesasishwa dakika <ph name="MINUTES"/> zilizopita</translation>
 <translation id="8743864605301774756">Ulisasishwa saa 1 iliyopita</translation>
-<translation id="5638497698949808140">Ulisasishwa saa <ph name="HOURS"/> zilizopita</translation>
+<translation id="7363117941401515667">Ilisasishwa saa <ph name="HOURS"/> zilizopita</translation>
 <translation id="1329584516321524826">Imesasishwa sasa hivi</translation>
 <translation id="224940702122312781">Ukurasa huu utatumia data nyingi.</translation>
 <translation id="3861241522664181545">Ukurasa umesitishwa.</translation>
@@ -642,6 +644,7 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="8803953437405899238">Fungua kichupo kipya kwa mbofyo mmoja</translation>
 <translation id="3071624960923923138">Unaweza kubofya hapa ili ufungue kichupo kipya</translation>
 <translation id="4908811072292128752">Fungua kichupo kipya ili uvinjari tovuti mbili kwa wakati mmoja</translation>
+<translation id="8966870118594285808">Fungua tena kichupo ikiwa umekifunga kimakosa</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Ukurasa Umekwama}other{Kurasa Zimekwama}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Unaweza kusubiri ukurasa uanze kufanya kazi au uufunge.}other{Unaweza kusubiri kurasa zianze kufanya kazi au uzifunge.}}</translation>
 <translation id="7903345046358933331">Ukurasa haufanyi kazi. Unaweza kusubiri uanze kufanya kazi au uufunge.</translation>
@@ -772,9 +775,8 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="2445484935443597917">Unda Wasifu Mpya</translation>
 <translation id="2606246518223360146">Unganisha Data</translation>
 <translation id="473546211690256853">Akaunti hii inadhibitiwa na <ph name="DOMAIN"/></translation>
-<translation id="3661054927247347545">Cheti cha kuingia katika akaunti si sahihi, dirisha litafungwa baada ya <ph name="MINUTES"/> : <ph name="SECONDS"/></translation>
-<translation id="6522797484310591766">Ingia sasa</translation>
-<translation id="5436822233913560332">Madirisha yote ya kivinjari yatafungwa kiotomatiki hivi punde bila kuingia katika akaunti.</translation>
+<translation id="622537739776246443">Wasifu utafutwa</translation>
+<translation id="5632566673632479864">Akaunti yako ya <ph name="EMAIL"/> hairuhusiwi tena kuwa akaunti ya msingi. Kwa sababu akaunti hii inadhibitiwa na <ph name="DOMAIN"/>, alamisho, historia, manenosiri na mipangilio yako mingine itafutwa kwenye kifaa hiki.</translation>
 <translation id="8168435359814927499">Maudhui</translation>
 <translation id="7702907602086592255">Kikoa</translation>
 <translation id="3202131003361292969">Njia</translation>
@@ -842,15 +844,6 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="3074037959626057712">Umeingia katika akaunti na kuwasha kipengele cha Usawazishaji</translation>
 <translation id="1231733316453485619">Ungependa kuwasha usawazishaji?</translation>
 <translation id="9125982323641182972">Pata Brave Software mahiri kwenye Brave</translation>
-<translation id="7988117629517051942">Pata programu zaidi mahiri za Brave Software</translation>
-<translation id="5596627076506792578">Chaguo zaidi</translation>
-<translation id="4419556793104466535">Dhibiti usawazishaji, mapendeleo na nyinginezo</translation>
-<translation id="184568702928428857">Mipangilio inayodhibiti usawazishaji, mapendeleo na huduma nyingine za Brave Software katika Brave imebadilishwa. Huenda hali hii ikaathiri mipangilio yako ya sasa.</translation>
-<translation id="4192273449750167573">Kagua mipangilio yako kwenye skrini inayofuata</translation>
-<translation id="685040365210406336">Usifanye mabadiliko</translation>
-<translation id="6418273007044911016">Data unayosawazisha kwenye Brave Software na vipengele unavyotumia havitabadilika</translation>
-<translation id="8372733498235009300">Washa usawazishaji, mapendeleo na huduma nyingine za Brave Software</translation>
-<translation id="8340964510643644301">Unaweza kuweka mapendeleo kwenye chaguo hili wakati wowote katika Mipangilio ya Brave</translation>
 <translation id="3149880132460839085">Usawazishaji wa Brave</translation>
 <translation id="3796902758602917951">Alamisho, historia, manenosiri na mipangilio yako mingine itasawazishwa kwenye Akaunti yako ya Brave Software ili uitumie katika vifaa vyako vyote</translation>
 <translation id="1371301976177520732">Historia, manenosiri, alamisho na vipengee vingine kwenye vifaa vyako vyote</translation>
@@ -896,7 +889,7 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="6812349420832218321"><ph name="PRODUCT_NAME"/> haiwezi kuendeshwa kama kina.</translation>
 <translation id="2292848386125228270">Tafadhali anzisha <ph name="PRODUCT_NAME"/> ukiwa mtumiaji wa kawaida. Ikiwa unahitaji kutumia kama chanzo cha uimarishaji, tumia tena kwa alama ya --no-sandbox.</translation>
 <translation id="3122496702278727796">Imeshindwa Kuunda Saraka ya Data</translation>
-<translation id="602251597322198729">Tovuti hii inajaribu kupakua faili nyingi. Je, ungependa kuruhusu ifanye hivyo?</translation>
+<translation id="51918995459521422"><ph name="ORIGIN"/> inataka kupakua faili kadhaa</translation>
 <translation id="691024665142758461">Pakua faili nyingi</translation>
 <translation id="7004499039102548441">Vichupo vya Hivi Punde</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{Kichupo 1}other{Vichupo #}}</translation>
@@ -1123,6 +1116,8 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="874689135111202667">{0,plural, =1{Ungependa kupakia faili moja kwenye tovuti hii?}other{Ungependa kupakia faili # kwenye tovuti hii?}}</translation>
 <translation id="1956390763342388273">Hatua hii itapakia faili zote kutoka "<ph name="FOLDER_PATH"/>". Tekeleza tu hatua hii ikiwa unaamini tovuti.</translation>
 <translation id="1243314992276662751">Pakia</translation>
+<translation id="8480139856920479206">{0,plural, =1{Una dirisha moja fiche.}other{Una madirisha # fiche.}}</translation>
+<translation id="2545348954155066907">{0,plural, =1{Funga dirisha hili}other{Funga madirisha yote fiche}}</translation>
 <translation id="3785308913036335955">Onyesha Mkato wa Programu</translation>
 <translation id="711840821796638741">Onyesha Alamisho Zinazosimamiwa</translation>
 <translation id="3613134908380545408">Onyesha <ph name="FOLDER_NAME"/></translation>
@@ -1229,7 +1224,6 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="3596235046596950091">Washa huduma za wingu</translation>
 <translation id="7649070708921625228">Usaidizi</translation>
 <translation id="9011163749350026987">Onyesha aikoni kila wakati</translation>
-<translation id="9115487443206954631">Dhibiti vifaa vya Kutuma</translation>
 <translation id="1706586824377653884">Imeongezwa na msimamizi wako</translation>
 <translation id="6467304607960172345">Boresha video za skrini nzima</translation>
 <translation id="1597210476603167523">Washa kipengele cha kutuma kwenye huduma za wingu kama vile Brave Software Hangouts.</translation>
@@ -1261,6 +1255,9 @@ Huenda watu wengine wenye miunganisho ya polepole hawataona maudhui yako.</trans
 <translation id="4415245286584082850">Haikupata kifaa chochote. Fungua makala kutoka kituo cha usaidizi katika kichupo kipya.</translation>
 <translation id="4363771538994847871">Hakuna sehemu za Kutuma zilizopatikana. Unahitaji usaidizi?</translation>
 <translation id="8688672835843460752">Inapatikana</translation>
+<translation id="1536754031901697553">Inatenganisha...</translation>
+<translation id="1854180393107901205">Acha kutuma</translation>
+<translation id="5307030433605830021">Chanzo hakitumiki</translation>
 <translation id="4271396100647220620">Hakuna matokeo yanayolingana</translation>
 <translation id="6972180789171089114">Sauti/Video</translation>
 <translation id="2541002089857695151">Ungependa kuboresha utumaji kwenye skrini nzima?</translation>
@@ -1294,7 +1291,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="3340978935015468852">mipangilio</translation>
 <translation id="5704875434923668958">Inasawazisha kwenye</translation>
 <translation id="6257602895346497974">Washa kipengele cha kusawazisha...</translation>
-<translation id="8618141719844947886">Haisawazishi</translation>
+<translation id="5127805178023152808">Usawazishaji umezimwa</translation>
 <translation id="5781092003150880845">Sawazisha ukitumia <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sawazisha katika akaunti yako</translation>
 <translation id="2538361623464451692">Kipengele cha kusawazisha kimezimwa</translation>
@@ -1390,6 +1387,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="6268185425799226387">Hifadhi ya Brave Software</translation>
 <translation id="4425149324548788773">Hifadhi Yangu</translation>
 <translation id="1786636458339910689">Hifadhi za Timu</translation>
+<translation id="5010406651457630570">Kompyuta</translation>
 <translation id="8106045200081704138">Zilizoshirikiwa na mimi</translation>
 <translation id="981121421437150478">Nje ya mtandao</translation>
 <translation id="9034924485347205037">Faili za Linux</translation>
@@ -1453,6 +1451,9 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="5649768706273821470">Sikiliza</translation>
 <translation id="4582497162516204941">Sakinisha ukitumia Linux (Beta)</translation>
 <translation id="4195249722193633765">Sakinisha programu na Linux (Beta)</translation>
+<translation id="7248671827512403053">Programu</translation>
+<translation id="183183971458492120">Inapakia maelezo...</translation>
+<translation id="8157684860301034423">Imeshindwa kuleta maelezo ya programu.</translation>
 <translation id="5678784840044122290">Programu ya Linux itapatikana kwenye Kituo chako na huenda pia ikaonyesha aikoni kwenye Kifungua programu chako.</translation>
 <translation id="9213073329713032541">Imeanza kusakinisha.</translation>
 <translation id="2782104745158847185">Hitilafu imetokea wakati wa kusakinisha programu ya Linux</translation>
@@ -1514,13 +1515,14 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="386548886866354912">Fungasha kwa <ph name="EXTENSION_NAME"/></translation>
 <translation id="3078461028045006476">Shiriki na <ph name="EXTENSION_NAME"/></translation>
 <translation id="4197674956721858839">Punguza uchaguzi</translation>
-<translation id="9215934040295798075">Weka mandhari</translation>
+<translation id="1572585716423026576">Weka kama mandhari</translation>
 <translation id="204914487372604757">Unda njia mkato</translation>
 <translation id="799547531016638432">Ondoa njia ya mkato</translation>
 <translation id="5494920125229734069">Chagua zote</translation>
 <translation id="7295662345261934369">Shiriki na wengine</translation>
 <translation id="2001796770603320721">Dhibiti katika Hifadhi ya Brave Software</translation>
 <translation id="5318819489018851358">Shiriki kwenye Linux</translation>
+<translation id="6806699711453372963">Dhibiti kushiriki katika Linux</translation>
 <translation id="7505167922889582512">Onyesha faili zilizofichwa</translation>
 <translation id="7846076177841592234">Ghairi uchaguzi</translation>
 <translation id="2377319039870049694">Tumia mwonekano wa orodha</translation>
@@ -1660,7 +1662,6 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="8671210955687109937">Anaweza kutoa maoni</translation>
 <translation id="799923393800005025">Unaweza kuangalia</translation>
 <translation id="7925686952655276919">Usitumie data ya simu kwa ulinganishaji</translation>
-<translation id="4649168043999963079">Onyesha faili za  Hati za Brave Software</translation>
 <translation id="7106346894903675391">Nunua hifadhi zaidi...</translation>
 <translation id="3549797760399244642">Nenda kwenye drive.google.com...</translation>
 <translation id="3451154303153932176">Nafasi iliyosalia ya Hifadhi ya Brave Software: <ph name="SPACE_AVAILABLE"/>.</translation>
@@ -1673,7 +1674,6 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="7606199793785990727">Hifadhi ya Brave Software haikuweza kupatikana. Tafadhali  <ph name="BEGIN_LINK"/>ondoka<ph name="END_LINK"/> na uingie tena.</translation>
 <translation id="585883343689351092">Karibu kwenye Hifadhi ya Brave Software!</translation>
 <translation id="1788440444874291920">Pata GB 100 bila malipo kwa Hifadhi ya Brave Software</translation>
-<translation id="5722262830411045381">Pata TB 1 isiyolipiwa kutoka Hifadhi ya Brave Software</translation>
 <translation id="6862635236584086457">Faili zote zilizohifadhiwa kwenye folda hii zinachelezwa kiotomatiki mtandaoni</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Fikia faili kutoka mahali popote, hata nje ya mtandao.<ph name="MARKUP_2"/>
         Faili katika Hifadhi ya Brave Software zimesasishwa na hupatikana kwenye kifaa chochote.<ph name="MARKUP_3"/>
@@ -1690,9 +1690,11 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="3096967955765855393">Tunaendelea kutafuta njia za kufanya kuvinjari kwako kuwe salama zaidi. Hapo awali, tovuti yoyote ingeweza kukuomba kuongeza kiendelezi katika kivinjari chako. Katika matoleo mapya ya Brave Software Brave, lazima uiambie Brave kwa uwazi kuwa unataka kusakinisha viendelezi hivi kwa kuviongeza kupitia ukurasa wa Viendelezi. <ph name="BEGIN_LINK"/>Pata maelezo zaidi<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">Imeshindwa kufungua kwa kutumia $1</translation>
 <translation id="639777613761517128">Ili ufungue faili ukitumia $1, nakili kwanza folda ya faili za Linux.</translation>
-<translation id="5112009661904384591">Shiriki faili ukitumia Linux</translation>
-<translation id="3186202398303525187">Ruhusu programu za Linux zifungue $1.</translation>
-<translation id="1603300902586586390">Ruhusu programu za Linux zifungue faili za $1.</translation>
+<translation id="5368191757080475556">Shiriki folda na Linux</translation>
+<translation id="6803594270782834876">Ruhusu programu za Linux zifungue faili kwenye folda ya $1</translation>
+<translation id="9204140378020726578">Ruhusu programu za Linux zifungue faili kwenye Hifadhi yako ya Brave Software. Mabadiliko utakayofanya yatasawazishwa kwenye vifaa vyako vingine.</translation>
+<translation id="4290535918735525311">Folda 1 imeshirikiwa na Linux</translation>
+<translation id="984401732412731005">Umeshiriki folda $1 katika Linux</translation>
 <translation id="4572815280350369984">Faili ya <ph name="FILE_TYPE"/></translation>
 <translation id="803771048473350947">Faili</translation>
 <translation id="895586998699996576">Picha $1</translation>
@@ -1746,6 +1748,8 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="6199801702437275229">Inasubiri maelezo ya nafasi...</translation>
 <translation id="6485131920355264772">Imeshindwa kupata maelezo ya nafasi</translation>
 <translation id="7748626145866214022">Chaguo zaidi zinapatikana kwenye upau wa shughuli. Bonyeza Alt + A ili uangazie upau wa shughuli.</translation>
+<translation id="60628369828239652">Inafungua faili ya <ph name="FILE_NAME"/></translation>
+<translation id="353547388688256996">Inafungua faili <ph name="NUMBER_FILES"/></translation>
 <translation id="6710213216561001401">Iliyotangulia</translation>
 <translation id="1201402288615127009">Ifuatayo</translation>
 <translation id="1395262318152388157">Tafuta Kitelezi</translation>
@@ -1836,6 +1840,16 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="8710187907779883426">mfupi (sekunde 1)</translation>
 <translation id="4305227814872083840">mrefu (sekunde 2)</translation>
 <translation id="2860150991415616761">mrefu sana (sekunde 4)</translation>
+<translation id="5573248369095789351">Vitendo vya kuchukua hatua</translation>
+<translation id="2427507373259914951">Mbofyo wa kushoto</translation>
+<translation id="8203795194971602413">Mbofyo wa kulia</translation>
+<translation id="1999763610967697511">Kuburuta na kudondosha</translation>
+<translation id="8142441511840089262">Bofya mara mbili</translation>
+<translation id="485592688953820832">Hakuna kitendo (simamisha)</translation>
+<translation id="1217668622537098248">Rudi kwenye hali ya kubofya kushoto baada ya kitendo hiki</translation>
+<translation id="3682824389861648626">Kiasi cha usogezaji</translation>
+<translation id="5511379779384092781">Mdogo zaidi</translation>
+<translation id="7409549334477097887">Mkubwa zaidi</translation>
 <translation id="1330145147221172764">Washa kibodi ya skrini</translation>
 <translation id="1800308196794859773">Tuma sauti yako kwa Brave Software ili uruhusu kuandika kwa kutamka katika sehemu ya maandishi.</translation>
 <translation id="8758418656925882523">Washa kipengele cha kuandika kwa kutamka (tamka ili uandike)</translation>
@@ -1918,40 +1932,33 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="1763808908432309942">Itafungua katika kichupo kipya</translation>
 <translation id="6248988683584659830">Mipangilio ya Utafutaji</translation>
 <translation id="883304095704384301">Nenda kwenye <ph name="BEGIN_LINK_CHROMIUM"/>Usaidizi wa Brave Software Brave<ph name="END_LINK_CHROMIUM"/> ikiwa hupati unachotafuta</translation>
+<translation id="6406708970972405507">Mipangilio - <ph name="SECTION_TITLE"/></translation>
 <translation id="5860033963881614850">Kimezimwa</translation>
 <translation id="5916664084637901428">Imewashwa</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> kinadhibiti mipangilio hii</translation>
 <translation id="6643016212128521049">Futa</translation>
 <translation id="8465252176946159372">Si sahihi</translation>
 <translation id="8647834505253004544">Anwani ya wavuti si sahihi</translation>
-<translation id="2149850907588596975">Manenosiri na fomu</translation>
-<translation id="8639963783467694461">Mipangilio ya Kujaza Kiotomatiki</translation>
+<translation id="7946586320617670168">Lazima chanzo kiwe salama</translation>
+<translation id="2709516037105925701">Kujaza Kiotomatiki</translation>
 <translation id="7764225426217299476">Ongeza anwani</translation>
 <translation id="5595485650161345191">Badilisha anwani</translation>
 <translation id="6207937957461833379">Nchi/Eneo</translation>
 <translation id="4378154925671717803">Simu</translation>
 <translation id="5659593005791499971">Barua pepe</translation>
-<translation id="5762172915276660232">Mipangilio ya kadi ya mikopo</translation>
-<translation id="4499718683476608392">Ruhusu huduma ya Kujaza Kiotomatiki kadi za mikopo ijaze fomu kwa kubofya mara moja</translation>
 <translation id="9064275926664971810">Washa kipengele cha kujaza kiotomatiki ili kujaza fomu kwa mbofyo mmoja</translation>
 <translation id="5029568752722684782">Futa nakala</translation>
 <translation id="2154484045852737596">Badilisha kadi</translation>
 <translation id="5087580092889165836">Ongeza kadi</translation>
-<translation id="7284555534810614828">Hifadhi kadi ili utumie Brave Software Pay</translation>
-<translation id="6281511959351052816">Hifadhi kadi ili utumie Brave Software Pay</translation>
-<translation id="1904518222538904133">Mojawapo ya kadi zako inaweza kutumika kwenye kifaa hiki pekee</translation>
-<translation id="8065485338434000013">Baadhi ya kadi zako zinaweza kutumika tu kwenye kifaa hiki</translation>
 <translation id="4807098396393229769">Jina kwenye kadi</translation>
 <translation id="2612676031748830579">Nambari ya kadi</translation>
 <translation id="869891660844655955">Muda wake unakwisha tarehe</translation>
 <translation id="1149401351239820326">Mwezi wa kuisha kwa muda wa matumizi</translation>
 <translation id="8058655154417507695">Mwaka wa kuisha kwa muda wa matumizi</translation>
 <translation id="379082410132524484">Muda wa matumizi wa kadi yako umekwisha</translation>
-<translation id="5624120631404540903">Dhibiti manenosiri</translation>
 <translation id="6644512095122093795">Uliza kama manenosiri yahifadhiwe</translation>
 <translation id="2100273922101894616">Ingia katika Akaunti Kiotomatiki</translation>
 <translation id="7513029293694390567">Ingia katika tovuti kiotomatiki ukitumia kitambulisho kilichohifadhiwa. Kipengele kikizimwa, utaombwa kuthibitisha kila wakati kabla ya kuingia katika tovuti.</translation>
-<translation id="1511388193702657997">Jitolee kuhifadhi manenosiri yako ya wavuti</translation>
 <translation id="1375321115329958930">Manenosiri Yaliyohifadhiwa</translation>
 <translation id="152234381334907219">Hayatahifadhiwa Kamwe</translation>
 <translation id="5137501176474113045">Futa kipengee hiki</translation>
@@ -1961,7 +1968,6 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="8503813439785031346">Jina la mtumiaji</translation>
 <translation id="6657585470893396449">Nenosiri</translation>
 <translation id="137651782282853227">Anwani zilizohifadhiwa zitaonekana hapa</translation>
-<translation id="1529116897397289129">Kadi zilizohifadhiwa zitaonekana hapa</translation>
 <translation id="7930294771522048157">Njia za kulipa ulizohifadhi zitaonekana hapa</translation>
 <translation id="9124003689441359348">Manenosiri yaliyohifadhiwa yataonekana hapa</translation>
 <translation id="4400367121200150367">Tovuti ambazo hazihifadhi manenosiri kamwe zitaonekana hapa</translation>
@@ -2210,6 +2216,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="1164899421101904659">Weka Ufunguo wa Kufungua PIN</translation>
 <translation id="7582582252461552277">Pendelea mtandao huu</translation>
 <translation id="7469894403370665791">Unganisha otomatiki kwenye mtandao huu</translation>
+<translation id="7987814697832569482">Unganisha kupitia VPN hii wakati wote</translation>
 <translation id="8821045908425223359">Weka mipagilio ya anwani ya IP kiotomatiki</translation>
 <translation id="6596816719288285829">Anwani ya IP</translation>
 <translation id="8986362086234534611">Sahau</translation>
@@ -2376,8 +2383,6 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="490074449735753175">Tumia huduma ya wavuti ili kukosoa makosa ya maendelezo/tahajia</translation>
 <translation id="3523078749603005179">Ukaguzi bora wa tahajia kwa kutuma unachocharaza katika kivinjari hadi kwa Brave Software</translation>
 <translation id="2564653188463346023">Kikagua maendelezo kilichoboreshwa</translation>
-<translation id="7469406957790636836">Ili kuwasha kipengele hiki, kwanza washa kikagua maendelezo kwenye <ph name="BEGIN_LINK"/>Lugha na mbinu ya kuingiza data<ph name="END_LINK"/></translation>
-<translation id="8699566574894671540">Ili kuwasha kipengele hiki, kwanza chagua Kagua Maendelezo Unapoandika kwenye menyu ya Badilisha</translation>
 <translation id="9079153198295609735">Tumia Brave Software takwimu za matumizi na ripoti za mara ambazo kivinjari kinaacha kufanya kazi, moja kwa moja</translation>
 <translation id="5941220456342415404">Tuma data ya uchunguzi na matumizi kwa Brave Software kiotomatiki</translation>
 <translation id="918192811481327695">Tusaidie tuboreshe utendaji na vipengele vya Brave</translation>
@@ -2423,13 +2428,13 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="1545786162090505744">URL iliyo na %s katika nafasi ya hoja</translation>
 <translation id="7136694880210472378">Fanya iwe chaguomsingi</translation>
 <translation id="6953878494808481632">Maelezo yanayohusiana</translation>
-<translation id="7258619945375359543">Ruhusu programu ya Mratibu itoe mapendekezo kulingana na kilicho kwenye skrini yako</translation>
+<translation id="4145922204387553806">Ruhusu programu ya Mratibu ikuonyeshe maelezo yanayohusiana na kilicho kwenye skrini yako</translation>
 <translation id="472896694312062378">"Ok Brave Software"</translation>
 <translation id="6236033368436682108">Fikia programu ya Mratibu wakati wowote unaposema "Ok Brave Software" ukiwa umewasha skrini yako</translation>
 <translation id="2482878487686419369">Arifa</translation>
 <translation id="5355099869024327351">Ruhusu programu ya Mratibu ikuonyeshe arifa</translation>
-<translation id="1127216846847548354">Kuwasha sauti</translation>
-<translation id="3506093155988721483">Tumia matamshi badala ya kibodi unapowasha programu ya Mratibu</translation>
+<translation id="133535873114485416">Mbinu unayopendelea ya kuingiza sauti</translation>
+<translation id="6233154960150021497">Weka chaguomsingi iwe sauti badala ya kibodi</translation>
 <translation id="3908743412684152579">Mipangilio ya Mratibu wa Brave Software</translation>
 <translation id="4933484234309072027">chopeka kwenye <ph name="URL"/></translation>
 <translation id="8427292751741042100">pachika kwenye seva pangishi yoyote</translation>
@@ -2572,7 +2577,6 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="1296497012903089238">Aina ya Cheti</translation>
 <translation id="8553342806078037065">Dhibiti watumiaji wengine</translation>
 <translation id="8907706281008466056">Picha ya Wasifu katika Brave Software</translation>
-<translation id="127138278192656016">Tumia kipengele cha usawazishaji na huduma zote</translation>
 <translation id="2408955596600435184">Weka PIN yako</translation>
 <translation id="6619990499523117484">Thibitisha PIN yako</translation>
 <translation id="2023167225947895179">PIN hii ni rahisi kukisia</translation>
@@ -2647,10 +2651,10 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="2731700343119398978">Tafadhali subiri...</translation>
 <translation id="7529411698175791732">Angalia muunganisho wako wa intaneti. Iwapo tatizo litaendelea, jaribu kuondoka na uingie tena katika akaunti.</translation>
 <translation id="4684427112815847243">Sawazisha kila kitu</translation>
-<translation id="2709516037105925701">Kujaza Kiotomatiki</translation>
+<translation id="1125261911132334651">Dhibiti Akaunti yako ya Brave Software</translation>
+<translation id="4570387585180509432">Anwani, nambari za simu na zaidi</translation>
 <translation id="1644574205037202324">Historia</translation>
 <translation id="5117427536932535467">Mandhari</translation>
-<translation id="3259418918864581163">Kadi za mikopo na anwani zinazotumia Brave Software Pay.</translation>
 <translation id="3268451620468152448">Fungua Vichupo</translation>
 <translation id="5241892180459725878">Mapendekezo ya utafutaji ya Hifadhi ya Brave Software</translation>
 <translation id="2120297377148151361">Shughuli na ushirikiano</translation>
@@ -2827,7 +2831,6 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="2307631131458143837">Tenganisha simu yako na Bravebook yako</translation>
 <translation id="1146102139091738471">Tenganisha simu yako na Bravebook yako. Hazitaunganishwa tena kiotomatiki.</translation>
 <translation id="7878562273885520351">Huenda nenosiri lako limetambulika</translation>
-<translation id="6582421931165117398">Ili ulinde maelezo yako ya kibinafsi, badilisha nenosiri lako sasa. Kabla ya kubadilisha nenosiri lako, utaombwa uingie katika akaunti.</translation>
 <translation id="1089439967362294234">Badilisha Nenosiri</translation>
 <translation id="4635398712689569051"><ph name="PAGE_NAME"/> haipatikani kwa watumiaji Wageni</translation>
 <translation id="4893522937062257019">Kwenye skrini iliyofungwa</translation>
@@ -2836,6 +2839,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="7642778300616172920">Ficha maudhui nyeti</translation>
 <translation id="3341703758641437857">Ruhusu kufikia URL za faili</translation>
 <translation id="9003647077635673607">Ruhusu kwenye tovuti zote</translation>
+<translation id="2915102088417824677">Angalia Kumbukumbu ya shughuli</translation>
 <translation id="1744108098763830590">Ukurasa wa mandharinyuma</translation>
 <translation id="3378572629723696641">Huenda kiendelezi hiki kimepata virusi.</translation>
 <translation id="4348766275249686434">Kusanya hitilafu</translation>
@@ -2865,6 +2869,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="3729506734996624908">Tovuti zinazoruhusiwa</translation>
 <translation id="3732078975418297900">Hililafu kwenye mstari wa <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Hitilafu imepatikana kuanzia mstari wa <ph name="ERROR_LINE_START"/> hadi <ph name="ERROR_LINE_END"/></translation>
+<translation id="3104763887980088552">Kumbukumbu ya Shughuli</translation>
 <translation id="1890674179660343635">&lt;span&gt;Kitambulisho: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Kagua maoni</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> zaidi...</translation>
@@ -2888,6 +2893,8 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="3798449238516105146">Toleo</translation>
 <translation id="3838085852053358637">Haijafaulu kupakia kiendelezi</translation>
 <translation id="6370021412472292592">Haikupakia maelezo.</translation>
+<translation id="7235716375204803342">Inaleta shughuli...</translation>
+<translation id="7647403192093989392">Hakuna shughuli za hivi majuzi</translation>
 <translation id="2152198799932802652">Pata viendelezi na mandhari katika <ph name="BEGIN_LINK"/>Duka la Brave kwenye Wavuti<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">Hakuna maelezo yaliyotolewa</translation>
 <translation id="3855441664322950881">Fungasha kiendelezi</translation>
@@ -2920,12 +2927,22 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="1909880997794698664">Una uhakika unataka kuweka kifaa hiki kiwe cha kudumu katika modi ya kioski?</translation>
 <translation id="1512210426710821809">Njia pekee ya kutendua hili ni kusakinisha tena <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="4472575034687746823">Anza</translation>
-<translation id="6060991652695587932">Chagua huduma yako ya barua pepe ili uzifikie kwa haraka</translation>
-<translation id="296137235951584143">Weka mapendeleo kwenye Brave iwe unavyopenda</translation>
+<translation id="8281886186245836920">Ruka</translation>
+<translation id="2342740338116612727">Imeongeza alamisho</translation>
 <translation id="7835178595033117206">Alamisho imeondolewa</translation>
+<translation id="742130257665691897">Imeondoa alamisho</translation>
 <translation id="2785008241190445880">Alamisho imebadilishwa</translation>
+<translation id="4320948194796820126">Ongeza alamisho kwenye barua pepe yako</translation>
 <translation id="2950533317914339731">Ongeza alamisho kwenye Programu za Brave Software unazopenda</translation>
-<translation id="8846319957959474018">Fungua programu kwa urahisi ukitumia alamisho</translation>
+<translation id="239760341987199724">Weka Brave iwe kivinjari chako chaguomsingi</translation>
+<translation id="96037229054033864">Pata Huduma ya Tafuta na Brave Software na Brave Software smarts kila unapovinjari</translation>
+<translation id="296137235951584143">Weka mapendeleo kwenye Brave iwe unavyopenda</translation>
+<translation id="3982375475032951137">Weka mipangilio ya kivinjari chako kwa hatua chache rahisi</translation>
+<translation id="6972754398087986839">Anza</translation>
+<translation id="3707821975049107110">Unatumia Brave tayari? Ingia katika akaunti</translation>
+<translation id="1573150740912592860">Hifadhi maendeleo yako</translation>
+<translation id="567643736130151854">Ingia katika akaunti na uwashe kipengele cha kusawazisha ili upate alamisho, manenosiri na vipengee vyako vingine kwenye vifaa vyote</translation>
+<translation id="8282356762694872144">Ungependa kuendelea kwenye barua pepe yako?</translation>
 <translation id="5939847200023027600">Huduma ya PDF ya Kuunganisha Vipengee vya Picha</translation>
 <translation id="5877584842898320529">Printa iliyochaguliwa haipatikani au haijasakinishwa vizuri. <ph name="BR"/>Angalia printa yako au ujaribu kuchagua printa nyingine.</translation>
 <translation id="1526560967942511387">Andiko lisilo na kichwa</translation>

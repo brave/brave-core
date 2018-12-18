@@ -7,8 +7,6 @@
 <translation id="120759863357279975">Brave-এ <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>")এর অনুমতি দেওয়া হয় না।</translation>
 <translation id="7450557937477381864">Chrome বন্ধ করুন</translation>
 <translation id="7008934821596358692">আমদানি প্রক্রিয়া শেষ করতে, সমস্ত Chrome উইন্ডোগুলি বন্ধ করুন</translation>
-<translation id="7753103220327065417">Brave বন্ধ করুন</translation>
-<translation id="5588481533147090393">আমদানি প্রক্রিয়া শেষ করতে, সমস্ত Brave উইন্ডোগুলি বন্ধ করুন</translation>
 <translation id="6447842834002726250">কুকিসমূহ</translation>
 <translation id="4983925687993168579">সাংখ্যিক তথ্য</translation>
 <translation id="9173846700806833701">Widevine ইনস্টল করা হয়নি</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine একটি ডিজিটাল রাইটস ম্যানেজমেন্ট (DRM) কোড যা Brave সফ্টওয়ের মালিকানাধীন নয় এবং আমরা তা পরীক্ষাও করতে পারি না| Google Widevine Google সার্ভার থেকে লোড করা হয়, আমাদের সার্ভার থেকে নয়| এটি শুধু তখনি লোড করা হয় যখন আপনি এই বিকল্পটি সক্ষম করেন| আমরা DRM ব্যবহার করতে বারণ করি, কিন্তু আমরা ব্যবহারকারীদের পছন্দের সম্মান করি এবং স্বীকার করি যে কিছু Brave ব্যবহারকারী কিছু পরিষেবা ব্যবহার করতে চাইবেন যার জন্য এর প্রয়োজন হবে|
 
 এই এক্সটেনশনটি ইনস্টল করে আপনি Google Widevine এর ব্যবহারের শর্তাবলীর সাথে সম্মত হচ্ছেন| আপনি সম্মত হচ্ছেন আপনার Google Widevine এর ব্যবহারের সাথে সম্পর্কিত কোনো ক্ষতি বা লোকসানের জন্য Brave দায়ী নয়|</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Brave থেকে আমদানি করা</translation>
 <translation id="453977518730680921">মিডিয়া অটোপ্লে করুন</translation>
 <translation id="410351446219883937">স্বয়ংক্রিয়ভাবে চালান</translation>

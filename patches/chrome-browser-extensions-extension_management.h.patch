@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/extension_management.h b/chrome/browser/extensions/extension_management.h
-index 68accd1b92816c88c08709a2f7571a0bffaf8f27..b47c82d3702eaa73007ea48c1cf1ff44d659713d 100644
+index 7894fd13acf50e6de2a6ff376e4cf5bdb9eb9eb4..eee0f936265f2f31ecc27bad46fe037f41574a04 100644
 --- a/chrome/browser/extensions/extension_management.h
 +++ b/chrome/browser/extensions/extension_management.h
-@@ -164,6 +164,7 @@ class ExtensionManagement : public KeyedService {
+@@ -165,6 +165,7 @@ class ExtensionManagement : public KeyedService {
                             std::string* required_version) const;
  
   private:

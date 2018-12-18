@@ -47,7 +47,6 @@ Brave nu poate recupera setările.</translation>
 <translation id="8667808506758191620">Dispozitivul <ph name="DEVICE_TYPE"/> este actualizat.</translation>
 <translation id="6970811910055250180">Se actualizează dispozitivul...</translation>
 <translation id="8030318113982266900">Se actualizează dispozitivul pentru canalul <ph name="CHANNEL_NAME"/>...</translation>
-<translation id="7355059611036077582">Adăugați la Brave</translation>
 <translation id="7456658570432774853">Contribuie la îmbunătățirea browserului Brave raportând setările actuale</translation>
 <translation id="6134859571175647580">Avertisment: Brave nu poate împiedica extensiile să înregistreze istoricul de navigare. Pentru a dezactiva această extensie în modul incognito, debifează această opțiune.</translation>
 <translation id="777113543093865885">Elimină din Brave...</translation>
@@ -71,7 +70,6 @@ Brave nu poate recupera setările.</translation>
 <translation id="2887570477425111999">Salvați detaliile în Brave</translation>
 <translation id="193559141530782783">Brave va stoca în siguranță detaliile personale, pentru a nu fi necesar să le introduci din nou.</translation>
 <translation id="663059986967017181">Copiat în Brave</translation>
-<translation id="5225129378754387452">Afișează meniul Brave</translation>
 <translation id="300669147395456190">Aplicații Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> necesită să citiți și să acceptați Termenii și condițiile următoare înainte de a utiliza acest dispozitiv. Acești termeni nu extind, nu modifică și nu limitează Termenii pentru sistemul de operare Brave.</translation>
 <translation id="3293668930608086049">Brave utilizează camera foto și microfonul.</translation>
@@ -95,8 +93,8 @@ Brave nu poate recupera setările.</translation>
 <translation id="1705567146636171298">Actualizează Brave</translation>
 <translation id="4050175100176540509">În cea mai recentă versiune sunt disponibile îmbunătățiri de securitate și funcții noi importante.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave va reporni într-o secundă}few{Brave va reporni în # secunde}other{Brave va reporni în # de secunde}}</translation>
-<translation id="9159286371333817139">Îți recomandăm să repornești Brave acum.</translation>
-<translation id="9203540365585059272">Tocmai a fost aplicată o actualizare de securitate specială pentru Brave; pentru ca aceasta să intre în vigoare, îți recomandăm să repornești acum (filele vor fi restabilite).</translation>
+<translation id="5509303873219371662">Îți recomandăm să repornești Brave acum</translation>
+<translation id="8668413672647811944">Tocmai a fost aplicată o actualizare de securitate specială pentru Brave. Repornește acum, iar filele vor fi restabilite.</translation>
 <translation id="763369711159699222">Să îmbunătățim Brave</translation>
 <translation id="1156940037717341650">Puteți contribui la un produs Brave mai sigur și mai ușor de folosit raportând automat la Brave Software detaliile eventualelor incidente privind securitatea.</translation>
 <translation id="6791166902140255175">Fila Brave</translation>
@@ -118,7 +116,6 @@ Brave nu poate recupera setările.</translation>
 <translation id="8586264863973514035">Pentru a aplica modificările, relansează Brave</translation>
 <translation id="7021823858304886493">Permite conectarea la Brave</translation>
 <translation id="1649714546770135458">Dacă dezactivezi, te poți conecta la site-uri Brave Software ca Gmail fără a te conecta la Brave</translation>
-<translation id="6274110506580702455">Conectarea la Brave este dezactivată de administratorul acestui dispozitiv.</translation>
 <translation id="9220324636239049437">Astfel, se va șterge 1 element de pe acest dispozitiv. Pentru a recupera datele mai târziu, conectează-te la Brave ca <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Astfel, se vor șterge <ph name="ITEMS_COUNT"/> elemente de pe acest dispozitiv. Pentru a recupera datele mai târziu, conectează-te la Brave ca <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Astfel, se vor șterge datele de navigare de pe acest dispozitiv. Pentru a recupera datele mai târziu, conectează-te la Brave ca <ph name="USER_EMAIL"/>.</translation>

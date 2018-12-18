@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/extensions/extension_popup.cc b/chrome/browser/ui/views/extensions/extension_popup.cc
-index 4ee33a9f9b77b55f1d5848d06c25dd2ae6e31c2e..343f00bbb94c7e53ee08a9d9e55718f8476b7484 100644
+index 0099d584e25afff70947655441af850301459476..875637578e832939834a782148c5ffea6975d25b 100644
 --- a/chrome/browser/ui/views/extensions/extension_popup.cc
 +++ b/chrome/browser/ui/views/extensions/extension_popup.cc
 @@ -4,6 +4,7 @@

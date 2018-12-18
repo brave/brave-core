@@ -47,7 +47,6 @@
 <translation id="8667808506758191620">جهاز <ph name="DEVICE_TYPE"/> مُحدّث.</translation>
 <translation id="6970811910055250180">جارٍ تحديث الجهاز...</translation>
 <translation id="8030318113982266900">جارٍ تحديث جهازك إلى قناة <ph name="CHANNEL_NAME"/>...</translation>
-<translation id="7355059611036077582">‏إضافة إلى Brave</translation>
 <translation id="7456658570432774853">‏ساعد في تحسين Brave بالإبلاغ عن الإعدادات الحالية</translation>
 <translation id="6134859571175647580">‏تحذير: يتعذّر على Brave منع الإضافات من تسجيل سجل التصفح. لإيقاف هذه الإضافة في وضع التصفح المتخفي، ألغِ تحديد هذا الخيار.</translation>
 <translation id="777113543093865885">‏إزالة من Brave</translation>
@@ -71,7 +70,6 @@
 <translation id="2887570477425111999">‏حفظ التفاصيل في Brave</translation>
 <translation id="193559141530782783">‏سيخزّن Brave معلوماتك الشخصية بشكلٍ آمن حتى لا تُضطر إلى كتابتها مرةً أخرى.</translation>
 <translation id="663059986967017181">‏تم النسخ إلى Brave</translation>
-<translation id="5225129378754387452">‏إظهار قائمة Brave</translation>
 <translation id="300669147395456190">‏تطبيقات Brave</translation>
 <translation id="3421950102518690868">‏<ph name="DOMAIN"/> يتطلب قراءة وقبول بنود الخدمة التالية قبل استخدام هذا الجهاز. وهذه البنود لا توسع أو تعدّل أو تقيّد بنود نظام التشغيل Brave.</translation>
 <translation id="3293668930608086049">‏يستخدم Brave الكاميرا والميكروفون.</translation>
@@ -95,8 +93,8 @@
 <translation id="1705567146636171298">‏تحديث Brave</translation>
 <translation id="4050175100176540509">تحسينات الأمان المهمة والميزات الجديدة متاحة في أحدث إصدار.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{‏ستتم إعادة تشغيل Brave خلال ثانية واحدة}zero{‏ستتم إعادة تشغيل Brave خلال # ثانية}two{‏ستتم إعادة تشغيل Brave خلال ثانيتين (#)}few{‏ستتم إعادة تشغيل Brave خلال # ثوانٍ}many{‏ستتم إعادة تشغيل Brave خلال # ثانيةً}other{‏ستتم إعادة تشغيل Brave خلال # ثانية}}</translation>
-<translation id="9159286371333817139">‏يجب إعادة تشغيل Brave الآن.</translation>
-<translation id="9203540365585059272">‏تم الآن تطبيق تحديث أمان خاص لـ Brave؛ تجب إعادة التشغيل الآن لتسري التغييرات التي أجريتها (ستتم استعادة علامات التبويب).</translation>
+<translation id="5509303873219371662">‏يجب إعادة تشغيل Brave الآن</translation>
+<translation id="8668413672647811944">‏تم للتو تطبيق تحديث أمان خاص لمتصفِّح Brave. يمكنك إعادة التشغيل الآن وستتم استعادة علامات التبويب.</translation>
 <translation id="763369711159699222">‏المساعدة في تحسين Brave</translation>
 <translation id="1156940037717341650">‏يمكنك المساعدة في جعل Brave أكثر أمانًا وأسهل استخدامًا بإبلاغ Brave Software تلقائيًا بتفاصيل أي مخاطر أمنية محتملة.</translation>
 <translation id="6791166902140255175">‏علامة تبويب Brave</translation>
@@ -118,7 +116,6 @@
 <translation id="8586264863973514035">‏لتطبيق التغييرات، يُرجى إعادة تشغيل Brave</translation>
 <translation id="7021823858304886493">‏السماح بتسجيل الدخول إلى Brave</translation>
 <translation id="1649714546770135458">‏من خلال إيقاف هذا الإعداد، يمكنك تسجيل الدخول إلى "مواقع Brave Software" مثل Gmail بدون الحاجة إلى تسجيل الدخول إلى Brave</translation>
-<translation id="6274110506580702455">‏أوقف مشرف هذا الجهاز تسجيل الدخول إلى Brave.</translation>
 <translation id="9220324636239049437">‏سيعمل هذا على حذف عنصر واحد من هذا الجهاز. لاسترداد بياناتك لاحقًا، سجّل الدخول إلى Brave كـ <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">‏سيعمل هذا على حذف <ph name="ITEMS_COUNT"/> من العناصر من هذا الجهاز. لاسترداد بياناتك لاحقًا، سجّل الدخول إلى Brave كـ <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">‏سيؤدي هذا إلى حذف بيانات التصفح من هذا الجهاز. لاسترداد بياناتك لاحقًا، سجّل الدخول إلى Brave كـ <ph name="USER_EMAIL"/>.</translation>

@@ -49,7 +49,6 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="8667808506758191620">Kifaa chako cha <ph name="DEVICE_TYPE"/> kimesasishwa.</translation>
 <translation id="6970811910055250180">Inasasisha kifaa chako...</translation>
 <translation id="8030318113982266900">Inasasisha kituo chako kwenda kituo cha <ph name="CHANNEL_NAME"/>...</translation>
-<translation id="7355059611036077582">Ongeza kwenye Brave</translation>
 <translation id="7456658570432774853">Saidia kuboresha Brave kwa kuripoti mipangilio ya sasa</translation>
 <translation id="6134859571175647580">Ilani: Brave haiwezi kuzuia viendelezi kurekodi historia yako ya kuvinjari. Ili kuzima kiendelezi hiki katika hali fiche, batilisha chaguo hili.</translation>
 <translation id="777113543093865885">Ondoa kwenye Brave...</translation>
@@ -73,7 +72,6 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="2887570477425111999">Hifadhi maelezo katika Brave</translation>
 <translation id="193559141530782783">Brave itahifadhi salama maelezo yako ya kibinafsi ili usihitaji kuyaandika tena.</translation>
 <translation id="663059986967017181">Imenakiliwa kwenye Brave</translation>
-<translation id="5225129378754387452">Onyesha menyu ya Brave</translation>
 <translation id="300669147395456190">Programu za Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> huhitaji usome na ukubali Sheria na Masharti yafuatayo kabla ya kutumia kifaa hiki. Masharti haya hayapanui, kurekebisha au kupunguza Masharti ya Brave OS.</translation>
 <translation id="3293668930608086049">Brave inatumia kamera na maikrofoni yako.</translation>
@@ -97,8 +95,8 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="1705567146636171298">Sasisha Brave</translation>
 <translation id="4050175100176540509">Maboresho muhimu ya usalama na vipengele vipya vinapatikana katika toleo jipya.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave itazimika na kuwaka tena baada ya sekunde 1}other{Brave itazimika na kuwaka tena baada ya sekunde #}}</translation>
-<translation id="9159286371333817139">Unapaswa kuzima na kuwasha Brave sasa.</translation>
-<translation id="9203540365585059272">Sasisho maalum la usalama wa Brave limetumiwa; unapaswa kuzima na kuwasha Brave sasa ili lifanye kazi (tutarejesha vichupo vyako).</translation>
+<translation id="5509303873219371662">Unapaswa kufunga kisha ufungue Brave sasa</translation>
+<translation id="8668413672647811944">Sasisho maalum la usalama wa Brave limewekwa sasa hivi. Ifunge kisha uifungue na tutarejesha vichupo vyako.</translation>
 <translation id="763369711159699222">Saidia ili kuiboresha Brave</translation>
 <translation id="1156940037717341650">Unaweza kusaidia kuifanya Brave salama na rahisi zaidi kutumia kwa kuripoti maelezo ya uwezekano wa matukio yasiyo salama kwa Brave Software kiotomatiki.</translation>
 <translation id="6791166902140255175">Kichupo cha Brave</translation>
@@ -120,7 +118,6 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="8586264863973514035">Ili utumie mabadiliko uliyofanya, fungua Brave upya</translation>
 <translation id="7021823858304886493">Ruhusu kuingia katika akaunti ya Brave</translation>
 <translation id="1649714546770135458">Kwa kuzima kipengele hiki, unaweza kuingia katika tovuti za Brave Software kama vile Gmail bila kuingia katika akaunti ya Brave</translation>
-<translation id="6274110506580702455">Msimamizi wa kifaa hiki amezima kipengele cha kuingia katika akaunti ya Brave.</translation>
 <translation id="9220324636239049437">Hatua hii itafuta kipengee 1 kwenye kifaa hiki. Ili urejeshe data yako baadaye, ingia katika Brave ukitumia <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Hatua hii itafuta vipengee <ph name="ITEMS_COUNT"/> kwenye kifaa hiki. Ili urejeshe data yako baadaye, ingia katika Brave ukitumia <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Hatua hii itafuta data yako ya kuvinjari kwenye kifaa hiki. Ili urejeshe data yako baadaye, ingia katika Brave ukitumia <ph name="USER_EMAIL"/>.</translation>

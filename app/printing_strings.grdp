@@ -86,17 +86,8 @@
     <message name="IDS_PRINT_PREVIEW_EXAMPLE_PAGE_RANGE_TEXT" desc="Example page range text.">
       e.g. 1-5, 8, 11-13
     </message>
-    <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_TEXT" desc="Aria-label page range text.">
-      page range text box
-    </message>
-    <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_RADIO" desc="Aria-label page range radio.">
-      page range radio button
-    </message>
     <message name="IDS_PRINT_PREVIEW_PRINT_TO_PDF" desc="Option shown on printer drop-down list for saving previewed document as a PDF.">
       Save as PDF
-    </message>
-    <message name="IDS_PRINT_PREVIEW_PRINT_WITH_CLOUD_PRINT_WAIT" desc="Message shown in the print preview page after choosing cloud print before the dialog displays">
-      Loading <ph name="CLOUD_PRINT_NAME">$1<ex>Brave Cloud Print</ex></ph>
     </message>
     <message name="IDS_PRINT_PREVIEW_SUMMARY_FORMAT_LONG" desc="Print summary, explaining to the user how many pages will be printed.">
       Total: <ph name="NUMBER_OF_SHEETS">$1<ex>10</ex></ph> <ph name="SHEETS_LABEL">$2<ex>sheets of paper</ex></ph> (<ph name="NUMBER_OF_PAGES">$3<ex>4</ex></ph> <ph name="PAGE_OR_PAGES_LABEL">$4<ex>Pages</ex></ph>)
@@ -282,7 +273,7 @@
       Change printer options...
     </message>
     <message name="IDS_PRINT_PREVIEW_NEW_SHOW_ADVANCED_OPTIONS" desc="The text for the button to open the printer's advanced settings dialog in the new UI.">
-      Advanced printer options
+      Advanced settings
     </message>
     <message name="IDS_PRINT_PREVIEW_ACCEPT_INVITE" desc="Text for the button to accept the printer-sharing invitation.">
       Accept

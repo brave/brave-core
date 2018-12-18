@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ni dovoljena v brskalniku Brave.</translation>
 <translation id="7450557937477381864">Zapri Chrome</translation>
 <translation id="7008934821596358692">Če želite končati uvoz, zaprite vsa okna v brskalniku Chrome.</translation>
-<translation id="7753103220327065417">Zapri Brave</translation>
-<translation id="5588481533147090393">Če želite končati uvoz, zaprite vsa okna v brskalniku Brave.</translation>
 <translation id="6447842834002726250">Piškotki</translation>
 <translation id="4983925687993168579">Statistični podatki</translation>
 <translation id="9173846700806833701">Orodje Widevine ni nameščeno</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">Google Widevine je del kode za upravljanje digitalnih pravic (DRM), ki ni v lasti družbe Brave Software in ga ne moremo pregledati. Koda Google Widevine je naložena iz strežnikov Google, ne iz naših strežnikov. Naloži se le, če omogočite to možnost. Uporabo DRM-ja odsvetujemo, a kljub temu spoštujemo izbiro uporabnika in se zavedamo, da nekateri uporabniki Brave želijo uporabljati storitve, za katere je potrebna uporaba DRM-ja.
 
 Če namestite to razširitev, se strinjate s pogoji uporabe Google Widevine. S tem soglašate, da družba Brave ni odgovorna za morebitno škodo ali izgube v zvezi z vašo uporabo orodja Google Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Uvoženo iz brskalnika Brave</translation>
 <translation id="453977518730680921">Samodejno predvajanje posnetkov</translation>
 <translation id="410351446219883937">Samodejno predvajanje</translation>

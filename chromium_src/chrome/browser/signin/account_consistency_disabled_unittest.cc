@@ -15,7 +15,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_notifier_impl.h"
 #include "components/prefs/testing_pref_store.h"
-#include "components/signin/core/browser/profile_management_switches.h"
+#include "components/signin/core/browser/account_consistency_method.h"
 #include "components/signin/core/browser/signin_buildflags.h"
 #include "components/signin/core/browser/signin_pref_names.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"

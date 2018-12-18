@@ -4,21 +4,15 @@
 
 #include "chrome/browser/ui/content_settings/content_setting_bubble_model.h"
 
-class Profile;
-
 class BraveContentSettingPluginBubbleModel : public ContentSettingSimpleBubbleModel {
  public:
-  BraveContentSettingPluginBubbleModel(
-      ContentSettingBubbleModel::Delegate* delegate,
-      content::WebContents* web_contents,
-      Profile* profile);
-
+  BraveContentSettingPluginBubbleModel(Delegate* delegate,
+      content::WebContents* web_contents);
  private:
   void OnLearnMoreClicked() override;
   void OnCustomLinkClicked() override;
 
   void RunPluginsOnPage();
-  Profile* profile_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveContentSettingPluginBubbleModel);
 };

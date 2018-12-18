@@ -132,7 +132,7 @@ void DispatchBlockedEventFromIO(const GURL &request_url, int render_frame_id,
 bool ShouldSetReferrer(bool allow_referrers, bool shields_up,
     const GURL& original_referrer, const GURL& tab_origin,
     const GURL& target_url, const GURL& new_referrer_url,
-    blink::WebReferrerPolicy policy, Referrer *output_referrer) {
+    network::mojom::ReferrerPolicy policy, Referrer *output_referrer) {
   if (!output_referrer ||
       allow_referrers ||
       !shields_up ||

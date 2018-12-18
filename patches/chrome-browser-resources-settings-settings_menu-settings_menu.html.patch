@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/settings_menu/settings_menu.html b/chrome/browser/resources/settings/settings_menu/settings_menu.html
-index 5e2a1583e6701b6fba588754c9b0a1f292a3a1cd..050240ed2cb63960d05a87570f88a022f058399f 100644
+index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..a9a26fb1769dd360521d712d4edf31a73c77ae13 100644
 --- a/chrome/browser/resources/settings/settings_menu/settings_menu.html
 +++ b/chrome/browser/resources/settings/settings_menu/settings_menu.html
-@@ -187,10 +187,12 @@
+@@ -185,10 +185,12 @@
              <iron-icon icon="cr:print"></iron-icon>
              $i18n{printingPageTitle}
            </a>

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.h b/third_party/blink/renderer/modules/webaudio/audio_buffer.h
-index d9bdda78b091e90dc87d3d0d8c0c74f88be29642..60cd8e7c8eeb92ec8c502cdc46c9289086f80c0b 100644
+index 9867f77b9acb59f5623243d0dba15a41070d7adc..9ebdb337edcc39681fc57f8f0b458f18dd42429d 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.h
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.h
 @@ -41,6 +41,7 @@ namespace blink {
@@ -22,11 +22,11 @@ index d9bdda78b091e90dc87d3d0d8c0c74f88be29642..60cd8e7c8eeb92ec8c502cdc46c92890
 -  void copyFromChannel(NotShared<DOMFloat32Array>,
 +  void copyFromChannel(ScriptState*,
 +                       NotShared<DOMFloat32Array>,
-                        long channel_number,
+                        int32_t channel_number,
                         ExceptionState&);
 -  void copyFromChannel(NotShared<DOMFloat32Array>,
 +  void copyFromChannel(ScriptState*,
 +                       NotShared<DOMFloat32Array>,
-                        long channel_number,
-                        unsigned long start_in_channel,
+                        int32_t channel_number,
+                        uint32_t start_in_channel,
                         ExceptionState&);

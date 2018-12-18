@@ -30,6 +30,8 @@ using base::ASCIIToUTF16;
 
 namespace {
 
+const char kCountryIDAtInstall[] = "countryid_at_install";
+
 std::string GetHostFromTemplateURLData(const TemplateURLData& data) {
   return TemplateURL(data).url_ref().GetHost(SearchTermsData());
 }
@@ -88,7 +90,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
   };
 
   for (size_t i = 0; i < arraysize(kCountryIds); ++i) {
-    prefs_.SetInteger(prefs::kCountryIDAtInstall, kCountryIds[i]);
+    prefs_.SetInteger(kCountryIDAtInstall, kCountryIds[i]);
     std::vector<std::unique_ptr<TemplateURLData>> urls =
         GetPrepopulatedEngines(&prefs_, nullptr);
     std::set<int> unique_ids;
@@ -125,7 +127,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, ProvidersFromPrepopulated) {
 // Verifies default search provider for locale
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForLocale) {
   // Use United States.
-  prefs_.SetInteger(prefs::kCountryIDAtInstall, 'U' << 8 | 'S');
+  prefs_.SetInteger(kCountryIDAtInstall, 'U' << 8 | 'S');
   size_t default_index;
   std::vector<std::unique_ptr<TemplateURLData>> t_urls =
       TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
@@ -135,7 +137,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForLocale) {
   t_urls.clear();
 
   // Use Germany.
-  prefs_.SetInteger(prefs::kCountryIDAtInstall, 'D' << 8 | 'E');
+  prefs_.SetInteger(kCountryIDAtInstall, 'D' << 8 | 'E');
   t_urls = TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
                                                               &default_index);
   EXPECT_EQ(ASCIIToUTF16("Qwant"), t_urls[default_index]->short_name());
@@ -143,7 +145,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForLocale) {
   t_urls.clear();
 
   // Use France.
-  prefs_.SetInteger(prefs::kCountryIDAtInstall, 'F' << 8 | 'R');
+  prefs_.SetInteger(kCountryIDAtInstall, 'F' << 8 | 'R');
   t_urls = TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
                                                               &default_index);
   EXPECT_EQ(ASCIIToUTF16("Qwant"), t_urls[default_index]->short_name());

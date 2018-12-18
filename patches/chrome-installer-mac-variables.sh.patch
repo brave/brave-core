@@ -1,13 +1,12 @@
 diff --git a/chrome/installer/mac/variables.sh b/chrome/installer/mac/variables.sh
-index 3cb206fd1f6bbd637eae2129dad8a0c6cce9a9fc..00c389cea0cad4766559b1e99bb8c98584736f01 100644
+index cb07976f21bacda46b4a2b7db229d869dca80f1a..c060a134aeb8a708f59cfd45b2063499d815f219 100644
 --- a/chrome/installer/mac/variables.sh
 +++ b/chrome/installer/mac/variables.sh
-@@ -19,6 +19,6 @@ enforcement_flags_installer_tools="${enforcement_flags_helpers},kill"
+@@ -19,5 +19,6 @@ enforcement_flags_installer_tools="${enforcement_flags_helpers},kill"
  # contains the hash of the certificate used to sign Chrome. When transitioning
  # signing certs, this may include the hash of both the old and new certificate.
  requirement_suffix="\
--and (certificate leaf = H\"85cee8254216185620ddc8851c7a9fc4dfe120ef\" or \
--certificate leaf = H\"c9a99324ca3fcb23dbcc36bd5fd4f9753305130a\") \
-+and (certificate leaf = H\"${codesign_id}\" or \
-+certificate leaf = H\"${codesign_id}\") \
+-and certificate leaf = H\"c9a99324ca3fcb23dbcc36bd5fd4f9753305130a\" \
+++and (certificate leaf = H\"${codesign_id}\" or \
+++certificate leaf = H\"${codesign_id}\") \
  "

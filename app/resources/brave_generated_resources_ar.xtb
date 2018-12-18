@@ -7,8 +7,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") غير مسموح به في Brave.</translation>
 <translation id="7450557937477381864">أغلق Chrome</translation>
 <translation id="7008934821596358692">لإنهاء الاستيراد، أغلق جميع نوافذ كروم.</translation>
-<translation id="7753103220327065417">غلق Brave</translation>
-<translation id="5588481533147090393">لإنهاء الاستيراد، أغلق جميع نوافذ Brave.</translation>
 <translation id="6447842834002726250">ملفات تعريف الارتباط</translation>
 <translation id="4983925687993168579">الإحصائيات</translation>
 <translation id="9173846700806833701">Widevine غير مُثبَّت</translation>
@@ -17,7 +15,6 @@
 <translation id="8410111618231938546">إن Google Widevine هو جزء من رمز إدارة الحقوق الرقمية (DRM) التي لا نمتلكها ولا يمكننا فحصها في Brave Software. يتم تحميل رمز Google Widevine من خوادم Google، وليس من خوادمنا. يتم تحميله فقط عند تمكين هذا الخيار. نحن لا نشجع استخدام DRM، لكننا نحترم اختيار المستخدم ونقر بأن بعض مستخدمي Brave يرغبون في استخدام الخدمات التي تتطلب ذلك.
 
 عن طريق تثبيت هذا الملحق، إنك توافق على شروط استخدام Google Widevine. وتوافق على أن Brave ليست مسؤولة عن أية أضرار أو خسائر متعلقة باستخدامك لـ Google Widevine.</translation>
-<translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">تم الاستيراد من Brave</translation>
 <translation id="453977518730680921">وسائط التشغيل التلقائي</translation>
 <translation id="410351446219883937">تشغيل تلقائي</translation>
