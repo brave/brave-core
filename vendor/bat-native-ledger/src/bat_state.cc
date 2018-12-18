@@ -336,6 +336,10 @@ void BatState::SetCurrency(const std::string &currency) {
   SaveState();
 }
 
+uint64_t BatState::GetBootStamp() const {
+  return state_->bootStamp_;
+}
+
 void BatState::SetBootStamp(uint64_t stamp) {
   state_->bootStamp_ = stamp;
   SaveState();

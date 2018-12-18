@@ -79,6 +79,7 @@ class PageWallet extends React.Component<Props, State> {
     try {
       await clipboardCopy(backupKey)
       console.log('Copy successful')
+      chrome.send('brave_rewards.setBackupCompleted')
     } catch (e) {
       console.log('Copy failed')
     }
@@ -91,6 +92,7 @@ class PageWallet extends React.Component<Props, State> {
         win.document.body.innerText = utils.constructBackupString(backupKey) // this should be text, not HTML
         win.print()
         win.close()
+	chrome.send('brave_rewards.setBackupCompleted')
       }
     }
   }
@@ -107,6 +109,7 @@ class PageWallet extends React.Component<Props, State> {
     a.download = backupFileText
     a.click()
     window.URL.revokeObjectURL(url)
+    chrome.send('brave_rewards.setBackupCompleted')
   }
 
   onModalBackupOnRestore = (key: string | MouseEvent) => {

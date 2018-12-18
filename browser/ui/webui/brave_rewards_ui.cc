@@ -79,6 +79,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void CheckImported(const base::ListValue* args);
   void GetAdsData(const base::ListValue* args);
   void SaveAdsSetting(const base::ListValue* args);
+  void SetBackupCompleted(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -211,6 +212,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.saveAdsSetting",
                                     base::BindRepeating(&RewardsDOMHandler::SaveAdsSetting,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.setBackupCompleted",
+                                    base::BindRepeating(&RewardsDOMHandler::SetBackupCompleted,
                                                         base::Unretained(this)));
 }
 
@@ -737,6 +741,12 @@ void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
 
     base::ListValue* emptyArgs;
     GetAdsData(emptyArgs);
+  }
+}
+
+void RewardsDOMHandler::SetBackupCompleted(const base::ListValue *args) {
+  if (web_ui()->CanCallJavascript() && rewards_service_) {
+    rewards_service_->SetBackupCompleted();
   }
 }
 

@@ -128,6 +128,8 @@ class BatState {
 
   void SetCurrency(const std::string& currency);
 
+  uint64_t GetBootStamp() const;
+
   void SetBootStamp(uint64_t stamp);
 
   const std::string& GetMasterUserToken() const;
