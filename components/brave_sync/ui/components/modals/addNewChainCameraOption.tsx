@@ -51,10 +51,6 @@ export default class AddNewChainCameraOptionModal extends React.PureComponent<Pr
     const { fromMobileScreen, onClose, syncData, actions } = this.props
     const { useCameraInstead } = this.state
 
-    if (!syncData) {
-      return null
-    }
-
     return (
       <Modal id='addNewChainCameraOptionModal' onClose={onClose} size='small'>
         {
@@ -75,12 +71,18 @@ export default class AddNewChainCameraOptionModal extends React.PureComponent<Pr
           </div>
         </ModalHeader>
         <ModalContent>
-          <TextAreaClipboard
-            copiedString={getLocale('copied')}
-            wordCountString={getLocale('wordCount')}
-            readOnly={true}
-            defaultValue={syncData.syncWords}
-          />
+          {
+            syncData.syncWords
+            ? (
+              <TextAreaClipboard
+                copiedString={getLocale('copied')}
+                wordCountString={getLocale('wordCount')}
+                readOnly={true}
+                defaultValue={syncData.syncWords}
+              />
+            )
+            : null
+          }
         </ModalContent>
         <ThreeColumnButtonGrid>
           <ThreeColumnButtonGridCol1>
