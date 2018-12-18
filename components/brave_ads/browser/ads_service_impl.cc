@@ -1272,7 +1272,12 @@ void AdsServiceImpl::LoadSampleBundle(
 }
 
 bool AdsServiceImpl::IsNetworkConnectionAvailable() {
+#if defined(OS_ANDROID)
+  // TODO(bridiver) - fix for android
+  return true;
+#else
   return !net::NetworkChangeNotifier::IsOffline();
+#endif
 }
 
 void AdsServiceImpl::OnShow(
