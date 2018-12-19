@@ -4,11 +4,13 @@
 
 #include "brave/browser/ui/webui/brave_md_settings_ui.h"
 
+#include "base/command_line.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/resources/grit/brave_settings_resources.h"
 #include "brave/browser/resources/grit/brave_settings_resources_map.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
+#include "brave/common/brave_switches.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -43,4 +45,8 @@ void BraveMdSettingsUI::AddResources(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean("isPdfjsDisabled",
                           extensions::BraveComponentLoader::IsPdfjsDisabled());
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  html_source->AddBoolean("isSyncDisabled",
+                          command_line.HasSwitch(switches::kDisableBraveSync));
 }
