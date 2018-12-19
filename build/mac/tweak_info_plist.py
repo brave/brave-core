@@ -98,6 +98,9 @@ def Main(argv):
   # Explicitly disable profiling
   plist['SUEnableSystemProfiling'] = False
 
+  # Explicitly force user notification style to use alerts
+  plist['NSUserNotificationAlertStyle'] = "alert"
+
   # Now that all keys have been mutated, rewrite the file.
   with tempfile.NamedTemporaryFile() as temp_info_plist:
     plistlib.writePlist(plist, temp_info_plist.name)
