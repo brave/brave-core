@@ -308,10 +308,10 @@ Enable testing of notifications while viewing `www.iab.com` so that page refresh
 Enable diagnostic logging, where `#` should set to a minimum log level. Valid values are from 0 to 3 where INFO = 0, WARNING = 1, ERROR = 2 and FATAL = 3. So if you want INFO, WARNING and ERROR you would choose 2
 
 ```
---enable-logging --log-level=#
+--enable-logging=stderr --log-level=#
 ```
 
-i.e. to launch using Staging Server, Easter Egg and logging for INFO, WARNING and ERROR on macOS open the `Terminal` application and enter the below commands:
+i.e. to launch using Staging Server and logging for INFO, WARNING and ERROR on macOS open the `Terminal` application and enter the below commands:
 
 ```
 cd /Applications
@@ -320,7 +320,7 @@ cd Brave\ Browser\ Beta.app/
 
 cd Contents
 
-./Brave\ Browser\ Beta --brave-ads-staging --brave-ads-testing --enable-logging --log-level=2
+./Brave\ Browser\ Beta --brave-ads-staging --enable-logging=stderr --log-level=2
 ```
 
 ## Unit Tests
@@ -331,6 +331,7 @@ npm run test -- brave_unit_tests --filter=AdsTest.*
 ## Initial Limitations
 
 - Catalog is downloaded twice upon startup
+- Geo targeted Ads are shown in all regions
 - Coming soon for Linux
 - `EventLog`'s are persisted in the Console Log, whereas in Muon they were persisted in a JSON file
 - Implement DemoAPI logs
