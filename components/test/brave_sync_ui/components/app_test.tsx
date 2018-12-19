@@ -6,6 +6,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { types } from '../../../brave_sync/ui/constants/sync_types'
 import { syncInitialState } from '../../testData'
+import * as actions from '../../../brave_sync/ui/actions/sync_actions'
 import {
   SyncPage,
   mapStateToProps,
@@ -44,7 +45,7 @@ describe('sync page component', () => {
     it('renders the component', () => {
       const wrapper = shallow(
         <SyncPage
-          actions={{}}
+          actions={actions}
           syncData={syncInitialState.syncData as Sync.State}
         />
       )
