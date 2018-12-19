@@ -22,6 +22,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "content/public/browser/network_service_instance.h"
+#include "net/base/network_interfaces.h"
 
 namespace brave_sync {
 
@@ -166,11 +167,6 @@ void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
     return;
   }
 
-  if (device_name.empty()) {
-    OnSyncSetupError("ERR_SYNC_NO_DEVICE_NAME");
-    return;
-  }
-
   if (initializing_) {
     NotifyLogMessage("currently initializing");
     return;
@@ -181,7 +177,7 @@ void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
     return;
   }
 
-  sync_prefs_->SetThisDeviceName(device_name);
+  SetDeviceName(device_name);
   initializing_ = true;
 
   sync_prefs_->SetSyncEnabled(true);
@@ -193,11 +189,6 @@ void BraveSyncServiceImpl::OnSetupSyncNewToSync(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (content::GetNetworkConnectionTracker()->IsOffline()) {
     OnSyncSetupError("ERR_SYNC_NO_INTERNET");
-    return;
-  }
-
-  if (device_name.empty()) {
-    OnSyncSetupError("ERR_SYNC_NO_DEVICE_NAME");
     return;
   }
 
@@ -213,8 +204,7 @@ void BraveSyncServiceImpl::OnSetupSyncNewToSync(
 
   sync_words_.clear();  // If the previous attempt was connect to sync chain
                         // and failed to receive save-init-data
-
-  sync_prefs_->SetThisDeviceName(device_name);
+  SetDeviceName(device_name);
   initializing_ = true;
 
   sync_prefs_->SetSyncEnabled(true);
@@ -677,6 +667,24 @@ void BraveSyncServiceImpl::ResetSyncInternal() {
   sync_initialized_ = false;
 
   sync_prefs_->SetSyncEnabled(false);
+}
+
+void BraveSyncServiceImpl::SetDeviceName(const std::string& name) {
+  if (name.empty()) {
+    std::string hostname = net::GetHostName();
+    if (hostname.empty()) {
+#if defined(OS_MACOSX)
+      hostname = std::string("Mac Desktop");
+#elif defined(OS_LINUX)
+      hostname = std::string("Linux Desktop");
+#elif defined(OS_WIN)
+      hostname = std::string("Windows Desktop");
+#endif
+    }
+    sync_prefs_->SetThisDeviceName(hostname);
+  } else {
+    sync_prefs_->SetThisDeviceName(name);
+  }
 }
 
 } // namespace brave_sync

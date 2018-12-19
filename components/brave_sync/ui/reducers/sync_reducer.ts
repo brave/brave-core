@@ -76,9 +76,6 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       break
 
     case types.SYNC_ON_SETUP_NEW_TO_SYNC:
-      if (!payload.thisDeviceName) {
-        break
-      }
       chrome.send('setupSyncNewToSync', [payload.thisDeviceName])
       break
 
