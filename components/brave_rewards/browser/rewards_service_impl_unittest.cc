@@ -14,12 +14,12 @@
 #include "content/public/test/test_browser_thread_bundle.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=RewardsServiceTest.*
 
 using namespace brave_rewards;
 using ::testing::_;
+using ::testing::AtLeast;
 
 class MockRewardsServiceObserver : public RewardsServiceObserver {
  public:
@@ -55,7 +55,6 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
       void(RewardsService*, int, ledger::PublisherInfo*, uint64_t));
 };
 
-
 class RewardsServiceTest : public testing::Test {
  public:
   RewardsServiceTest() {}
@@ -72,10 +71,6 @@ class RewardsServiceTest : public testing::Test {
     ASSERT_TRUE(rewards_service() != NULL);
     observer_.reset(new MockRewardsServiceObserver);
     rewards_service_->AddObserver(observer_.get());
-
-    auto ledger_client = std::make_unique<MockLedgerClient>();
-    ledger_client_ = ledger_client.get();
-    rewards_service()->SetLedgerClient(std::move(ledger_client));
   }
 
   void TearDown() override {
@@ -86,7 +81,6 @@ class RewardsServiceTest : public testing::Test {
   Profile* profile() { return profile_.get(); }
   RewardsServiceImpl* rewards_service() { return rewards_service_; }
   MockRewardsServiceObserver* observer() { return observer_.get(); }
-  MockLedgerClient* ledger_client() { return ledger_client_; }
 
  private:
   // Need this as a very first member to run tests in UI thread
@@ -97,7 +91,6 @@ class RewardsServiceTest : public testing::Test {
   RewardsServiceImpl* rewards_service_;
   std::unique_ptr<MockRewardsServiceObserver> observer_;
   base::ScopedTempDir temp_dir_;
-  MockLedgerClient* ledger_client_; // not owned
 };
 
 TEST_F(RewardsServiceTest, HandleFlags) {
@@ -183,12 +176,6 @@ TEST_F(RewardsServiceTest, OnWalletProperties) {
   // We always need to call observer as we report errors back even when we have null pointer
   EXPECT_CALL(*observer(), OnWalletProperties(_, 1, _)).Times(1);
   rewards_service()->OnWalletProperties(ledger::Result::LEDGER_ERROR, nullptr);
-}
-
-TEST_F(RewardsServiceTest, OnLoad) {
-  EXPECT_CALL(*ledger_client(), OnLoad(_, _)).Times(1);
-  rewards_service()->OnLoad(SessionID::FromSerializedValue(1),
-                            GURL("https://brave.com"));
 }
 
 // add test for strange entries

@@ -93,7 +93,7 @@ class LEDGER_EXPORT Ledger {
   virtual void MakePayment(const PaymentData& payment_data) = 0;
   virtual void AddRecurringPayment(const std::string& publisher_id, const double& value) = 0;
   virtual void DoDirectDonation(const PublisherInfo& publisher, const int amount, const std::string& currency) = 0;
-  virtual void OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) = 0;
+  virtual void OnLoad(const VisitData& visit_data, const uint64_t& current_time) = 0;
   virtual void OnUnload(uint32_t tab_id, const uint64_t& current_time) = 0;
   virtual void OnShow(uint32_t tab_id, const uint64_t& current_time) = 0;
   virtual void OnHide(uint32_t tab_id, const uint64_t& current_time) = 0;
