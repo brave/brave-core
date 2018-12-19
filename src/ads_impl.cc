@@ -608,11 +608,10 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
 
   if (category.empty()) {
     // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'no ad (or permitted ad) for
+    // 'Notification not made', { reason: 'no classified pages) for
     // winnerOverTime', category, winnerOverTime, arbitraryKey }
 
-    LOG(INFO) << "Notification not made: No ad (or permitted ad) for \""
-        << category << "\" category";
+    LOG(INFO) << "Notification not made: No classified pages";
 
     return;
   }
