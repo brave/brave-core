@@ -24,11 +24,6 @@
       <structure name="IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_JS" file="brave_privacy_page/brave_personalization_options.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_HTML" file="brave_privacy_page/brave_privacy_page_browser_proxy.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_JS" file="brave_privacy_page/brave_privacy_page_browser_proxy.js" type="chrome_html" preprocess="true" />
-      <!-- brave sync -->
-      <structure name="IDR_SETTINGS_BRAVE_SYNC_BROWSER_PROXY_HTML" file="brave_sync_page/brave_sync_browser_proxy.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_BRAVE_SYNC_BROWSER_PROXY_JS" file="brave_sync_page/brave_sync_browser_proxy.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_SYNC_PAGE_JS" file="brave_sync_page/brave_sync_page.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_SETTINGS_BRAVE_SYNC_PAGE_HTML" file="brave_sync_page/brave_sync_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
     </structures>
     <includes>
       <include name="IDR_SETTINGS_BRAVE_STAMP" file="brave_unpack.stamp" type="BINDATA" />

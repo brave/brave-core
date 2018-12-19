@@ -76,11 +76,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"defaultPublicInterfaceOnly",
       IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_INTERFACE_ONLY},
     {"disableNonProxiedUdp",
-      IDS_SETTINGS_WEBRTC_POLICY_DISABLE_NON_PROXIED_UDP},
-    {"braveSync",
-      IDS_SETTINGS_BRAVE_SYNC_TITLE},
-    {"braveSyncLabel",
-      IDS_SETTINGS_BRAVE_SYNC_LINK_LABEL}
+      IDS_SETTINGS_WEBRTC_POLICY_DISABLE_NON_PROXIED_UDP}
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           arraysize(localized_strings));
