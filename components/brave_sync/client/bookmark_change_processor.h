@@ -35,7 +35,7 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   // ChangeProcessor implementation
   void Start() override;
   void Stop() override;
-  void Reset() override;
+  void Reset(bool clear_meta_info) override;
   void ApplyChangesFromSyncModel(const RecordsList &records) override;
   void GetAllSyncData(
       const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
