@@ -166,8 +166,8 @@
   <message name="IDS_SETTINGS_ACCESSIBILITY" desc="Name of the settings page which displays accessibility preferences.">
     Accessibility
   </message>
-  <message name="IDS_SETTINGS_ACCESSIBILITY_WEB_STORE" desc="Text for an external link explaining that additional accessibility features are found on the Brave Web Store.">
-    Open Brave Web Store
+  <message name="IDS_SETTINGS_ACCESSIBILITY_WEB_STORE" desc="Text for an external link explaining that additional accessibility features are found on the Web Store.">
+    Open Web Store
   </message>
   <message name="IDS_SETTINGS_MORE_FEATURES_LINK" desc="Link which opens page where users can install extensions which provide additional accessibility features.">
     Add accessibility features
@@ -546,8 +546,8 @@
   <message name="IDS_SETTINGS_CHANGE_HOME_PAGE" desc="Label of the control to change the home page.">
     Change
   </message>
-  <message name="IDS_SETTINGS_WEB_STORE" desc="Sub-label about choosing something from the Brave Web Store.">
-    Open Brave Web Store
+  <message name="IDS_SETTINGS_WEB_STORE" desc="Sub-label about choosing something from the Web Store.">
+    Open Web Store
   </message>
   <message name="IDS_SETTINGS_OPEN_WALLPAPER_APP" desc="Sub-label about opening the wallpaper app.">
     Open the wallpaper app
@@ -3834,7 +3834,7 @@
     The quick brown fox jumps over the lazy dog
   </message>
   <message name="IDS_SETTINGS_REQUIRES_WEB_STORE_EXTENSION" desc="Sub-label for advanced font settings explaining that an extension from the Web Store is required.">
-    Requires extension from the Brave Web Store
+    Requires extension from the Web Store
   </message>
 
   <!-- Device Page -->
