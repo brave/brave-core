@@ -31,8 +31,6 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
     setBadgeText(state)
   }
 
-  const startingState = state
-
   const payload = action.payload
   switch (action.type) {
     case types.CREATE_WALLET:
@@ -212,10 +210,6 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         chrome.braveRewards.getGrant()
         break
       }
-  }
-
-  if (state !== startingState) {
-    storage.debouncedSave(state)
   }
 
   return state
