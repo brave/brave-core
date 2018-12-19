@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Token Grants Claimed",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
