@@ -64,7 +64,9 @@ void AdsTabHelper::DidFinishNavigation(
             "cache-control", "private")) {
       run_distiller_ = false;
     } else {
-      run_distiller_ = true;
+      bool was_restored =
+          navigation_handle->GetRestoreType() != content::RestoreType::NONE;
+      run_distiller_ = !was_restored;
     }
   }
 }
