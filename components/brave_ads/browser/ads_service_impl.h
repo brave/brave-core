@@ -133,7 +133,7 @@ class AdsServiceImpl : public AdsService,
   bool GetUrlComponents(
       const std::string& url,
       ads::UrlComponents* components) const override;
-  void EventLog(const std::string& json) override {}
+  void EventLog(const std::string& json) override;
   std::unique_ptr<ads::LogStream> Log(
       const char* file,
       int line,

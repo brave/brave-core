@@ -931,6 +931,10 @@ bool AdsServiceImpl::GetUrlComponents(
   return true;
 }
 
+void AdsServiceImpl::EventLog(const std::string& json) {
+  VLOG(0) << "AdsService Event Log: " << json;
+}
+
 uint32_t AdsServiceImpl::SetTimer(const uint64_t time_offset) {
   if (next_timer_id_ == std::numeric_limits<uint32_t>::max())
     next_timer_id_ = 1;
