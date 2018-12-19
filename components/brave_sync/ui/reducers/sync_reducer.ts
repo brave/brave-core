@@ -30,7 +30,7 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
         return {
           name: device.name,
           id: device.device_id,
-          lastActive: (new Date(device.last_active)).toString()
+          lastActive: (new Date(device.last_active)).toDateString()
         }
       })
 
