@@ -203,13 +203,14 @@ std::string LoadOnFileTaskRunner(
 }
 
 std::vector<ads::AdInfo> GetAdsForCategoryOnFileTaskRunner(
+    const std::string region,
     const std::string category,
     BundleStateDatabase* backend) {
   std::vector<ads::AdInfo> ads;
   if (!backend)
     return ads;
 
-  backend->GetAdsForCategory(category, ads);
+  backend->GetAdsForCategory(region, category, ads);
 
   return ads;
 }
@@ -646,6 +647,7 @@ void AdsServiceImpl::GetAds(
       ads::OnGetAdsCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&GetAdsForCategoryOnFileTaskRunner,
+                    region,
                     category,
                     bundle_state_backend_.get()),
       base::BindOnce(&AdsServiceImpl::OnGetAdsForCategory,
