@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/basic_page/basic_page.html b/chrome/browser/resources/settings/basic_page/basic_page.html
-index 2e8fb6c622b75e53380e0e21c38e14e116d2c59e..34b9263a6dc8b17add19de4234822d45fecd7a6c 100644
+index 2e8fb6c622b75e53380e0e21c38e14e116d2c59e..7be523ba6a44f58ba02fd8c1936c8b703d32ae1c 100644
 --- a/chrome/browser/resources/settings/basic_page/basic_page.html
 +++ b/chrome/browser/resources/settings/basic_page/basic_page.html
 @@ -26,6 +26,8 @@
@@ -11,7 +11,7 @@ index 2e8fb6c622b75e53380e0e21c38e14e116d2c59e..34b9263a6dc8b17add19de4234822d45
  </if>
  
  <!-- TODO(michaelpg): Rename to something better than "basic" now that this page
-@@ -205,6 +207,16 @@
+@@ -205,6 +207,19 @@
            </settings-section>
          </template>
  </if>
@@ -22,9 +22,12 @@ index 2e8fb6c622b75e53380e0e21c38e14e116d2c59e..34b9263a6dc8b17add19de4234822d45
 +            <settings-default-brave-shields-page  prefs="{{prefs}}"></settings-default-brave-shields-page>
 +          </settings-section>
 +        </template>
-+        <settings-section page-title="$i18n{braveSync}" section="braveSync">
-+          <settings-brave-sync-page prefs="{{prefs}}"></settings-brave-sync-page>
-+        </settings-section>
++        <template is="dom-if" if="[[showPage_(pageVisibility.braveSync)]]"
++            restamp>
++          <settings-section page-title="$i18n{braveSync}" section="braveSync">
++            <settings-brave-sync-page prefs="{{prefs}}"></settings-brave-sync-page>
++          </settings-section>
++        </template>
          <template is="dom-if" if="[[showPage_(pageVisibility.onStartup)]]"
              restamp>
            <settings-section page-title="$i18n{onStartup}" section="onStartup">
