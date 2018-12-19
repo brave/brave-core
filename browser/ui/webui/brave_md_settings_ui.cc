@@ -4,11 +4,13 @@
 
 #include "brave/browser/ui/webui/brave_md_settings_ui.h"
 
+#include "base/command_line.h"
 #include "brave/browser/resources/grit/brave_settings_resources.h"
 #include "brave/browser/resources/grit/brave_settings_resources_map.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
+#include "brave/common/brave_switches.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -37,8 +39,13 @@ BraveMdSettingsUI::~BraveMdSettingsUI() {
 // static
 void BraveMdSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                 Profile* profile) {
-for (size_t i = 0; i < kBraveSettingsResourcesSize; ++i) {
+  for (size_t i = 0; i < kBraveSettingsResourcesSize; ++i) {
     html_source->AddResourcePath(kBraveSettingsResources[i].name,
                                  kBraveSettingsResources[i].value);
   }
+
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  html_source->AddBoolean("isSyncEnabled",
+                          command_line.HasSwitch(switches::kEnableBraveSync));
 }

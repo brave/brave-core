@@ -35,6 +35,11 @@ cr.define('settings', function() {
     get: function(obj, prop) {
       if (prop === 'appearance') return new Proxy({}, appearanceHandler);
       if (prop === 'braveShieldsDefaults') return new Proxy({}, braveShieldsDefaultsHandler);
+      if (prop === 'braveSync') {
+        if (loadTimeData.getBoolean('isSyncEnabled'))
+          return true;
+        return false;
+      }
       if (prop === 'privacy') return new Proxy({}, privacyHandler);
       return prop === 'a11y' ? false : true;
     }
