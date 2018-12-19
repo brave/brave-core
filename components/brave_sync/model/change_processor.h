@@ -21,7 +21,10 @@ class ChangeProcessor {
   virtual void Stop() = 0;
 
   // reset all sync data, but do not delete local records
-  virtual void Reset() = 0;
+  // with clear_meta_info == false, we perserve meta info for reconnecting to
+  // previous sync chain and only clear permanent nodes managed by sync.
+  // If we want to connect/create to new sync chain, we should clear meta info.
+  virtual void Reset(bool clear_meta_info) = 0;
 
   // setup permanent nodes
   virtual void InitialSync() = 0;
