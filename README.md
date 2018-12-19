@@ -331,7 +331,6 @@ npm run test -- brave_unit_tests --filter=AdsTest.*
 ## Initial Limitations
 
 - Catalog is downloaded twice upon startup
-- Pages should not be classified when restoring tabs for Brave Ads
 - For Linux:
     - In "debug" mode, notifications cause crashes
     - Foreground/Background notifications aren't implemented on Brave Core
