@@ -357,7 +357,7 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
     return;
   }
 
-  if (url == last_shown_notification_info_.url) {
+  if (IsUrlFromLastShownNotification(url)) {
     return;
   }
 
@@ -1446,6 +1446,14 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
 
   auto json = buffer.GetString();
   ads_client_->EventLog(json);
+}
+
+bool AdsImpl::IsUrlFromLastShownNotification(const std::string& url) {
+  if (url != last_shown_notification_info_.url) {
+    return false;
+  }
+
+  return true;
 }
 
 bool AdsImpl::IsValidScheme(const std::string& url) {

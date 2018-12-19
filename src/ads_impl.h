@@ -153,6 +153,7 @@ class AdsImpl : public Ads {
   void GenerateAdReportingRestartEvent();
   void GenerateAdReportingSettingsEvent();
 
+  bool IsUrlFromLastShownNotification(const std::string& url);
   bool IsValidScheme(const std::string& url);
   bool IsSearchEngine(const std::string& url);
 
