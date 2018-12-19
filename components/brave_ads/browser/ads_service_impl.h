@@ -181,7 +181,6 @@ class AdsServiceImpl : public AdsService,
   uint32_t next_timer_id_;
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
   NotificationDisplayService* display_service_;  // NOT OWNED
-  bool enabled_;
 #if !defined(OS_ANDROID)
   ui::IdleState last_idle_state_;
   bool is_foreground_;
