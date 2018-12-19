@@ -37,10 +37,10 @@ class SequencedTaskRunner;
 
 namespace brave_ads {
 
+class AdsNotificationHandler;
 class BundleStateDatabase;
 
 class AdsServiceImpl : public AdsService,
-                       public NotificationHandler,
                        public ads::AdsClient,
                        public net::URLFetcherDelegate,
                        public history::HistoryServiceObserver,
@@ -68,16 +68,9 @@ class AdsServiceImpl : public AdsService,
 
   void Shutdown() override;
 
-  // NotificationHandler implementation
-  void OnShow(Profile* profile, const std::string& notification_id) override;
-  void OnClose(Profile* profile,
-               const GURL& origin,
-               const std::string& notification_id,
-               bool by_user,
-               base::OnceClosure completed_closure) override;
-  void OpenSettings(Profile* profile, const GURL& origin) override;
-
  private:
+  friend class AdsNotificationHandler;
+
   typedef std::map<std::string, std::unique_ptr<const ads::NotificationInfo>>
       NotificationInfoMap;
 
@@ -89,6 +82,16 @@ class AdsServiceImpl : public AdsService,
   void OnIdleState(ui::IdleState idle_state);
 #endif
   int GetIdleThreshold();
+  void OnShow(Profile* profile, const std::string& notification_id);
+  void OnClose(Profile* profile,
+               const GURL& origin,
+               const std::string& notification_id,
+               bool by_user,
+               base::OnceClosure completed_closure);
+  void OpenSettings(Profile* profile,
+                    const GURL& origin,
+                    bool should_close);
+
 
   // AdsClient implementation
   bool IsAdsEnabled() const override;
