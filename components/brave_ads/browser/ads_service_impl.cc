@@ -290,8 +290,10 @@ void AdsServiceImpl::OnInitialize() {
 }
 
 void AdsServiceImpl::OnCreate() {
-  bat_ads_->Initialize(
-      base::BindOnce(&AdsServiceImpl::OnInitialize, AsWeakPtr()));
+  if (connected()) {
+    bat_ads_->Initialize(
+        base::BindOnce(&AdsServiceImpl::OnInitialize, AsWeakPtr()));
+  }
 }
 
 void AdsServiceImpl::MaybeStart(bool restart) {
