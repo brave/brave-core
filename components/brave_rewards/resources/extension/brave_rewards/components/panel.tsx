@@ -9,6 +9,7 @@ import { WalletAddIcon, BatColorIcon } from 'brave-ui/components/icons'
 import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
 import { NotificationType } from 'brave-ui/features/rewards/walletWrapper'
+import { RewardsNotificationType } from '../constants/rewards_panel_types'
 import { Type as AlertType } from 'brave-ui/features/rewards/alert'
 
 // Utils
@@ -192,18 +193,6 @@ export class Panel extends React.Component<Props, State> {
 
     const notification: RewardsExtension.Notification = notifications[currentNotification]
 
-    // Note: This declaration must match the RewardsNotificationType enum in
-    // brave/components/brave_rewards/browser/rewards_notification_service.h
-    enum RewardsNotificationType {
-      REWARDS_NOTIFICATION_INVALID = 0,
-      REWARDS_NOTIFICATION_AUTO_CONTRIBUTE,
-      REWARDS_NOTIFICATION_GRANT,
-      REWARDS_NOTIFICATION_FAILED_CONTRIBUTION,
-      REWARDS_NOTIFICATION_IMPENDING_CONTRIBUTION,
-      REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS,
-      REWARDS_NOTIFICATION_BACKUP_WALLET,
-    }
-
     let type: NotificationType = ''
     let text = ''
     let isAlert = ''
@@ -247,6 +236,10 @@ export class Panel extends React.Component<Props, State> {
       case RewardsNotificationType.REWARDS_NOTIFICATION_BACKUP_WALLET:
         type = 'backupWallet'
         text = getMessage('backupWalletNotification')
+        break
+      case RewardsNotificationType.REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS:
+        type = 'insufficientFunds'
+        text = getMessage('insufficientFundsNotification')
         break
       default:
         type = ''

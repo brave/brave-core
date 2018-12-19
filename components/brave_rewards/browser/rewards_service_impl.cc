@@ -365,6 +365,19 @@ void RewardsServiceImpl::MaybeShowBackupNotification() {
   }
 }
 
+void RewardsServiceImpl::MaybeShowAddFundsNotification() {
+  // Show add funds notification if reconciliation will occur in the
+  // next 3 days and balance is too low.
+  base::Time now = base::Time::Now();
+  if (ledger_->GetReconcileStamp() - now.ToDoubleT() <
+      3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour) {
+    if (!HasSufficientBalanceToReconcile() &&
+        ShouldShowNotificationAddFunds()) {
+      ShowNotificationAddFunds();
+    }
+  }
+}
+
 void RewardsServiceImpl::CreateWallet() {
   if (ready().is_signaled()) {
     ledger_->CreateWallet();
@@ -1684,6 +1697,26 @@ void RewardsServiceImpl::StopNotificationTimers() {
 
 void RewardsServiceImpl::OnNotificationTimerFired() {
   MaybeShowBackupNotification();
+  MaybeShowAddFundsNotification();
+}
+
+bool RewardsServiceImpl::HasSufficientBalanceToReconcile() const {
+  return (ledger_->GetBalance() >= ledger_->GetContributionAmount());
+}
+
+bool RewardsServiceImpl::ShouldShowNotificationAddFunds() const {
+  base::Time next_time =
+      profile_->GetPrefs()->GetTime(kRewardsAddFundsNotification);
+  return (next_time.is_null() || base::Time::Now() > next_time);
+}
+
+void RewardsServiceImpl::ShowNotificationAddFunds() {
+  base::Time next_time = base::Time::Now() + base::TimeDelta::FromDays(3);
+  profile_->GetPrefs()->SetTime(kRewardsAddFundsNotification, next_time);
+  RewardsNotificationService::RewardsNotificationArgs args;
+  notification_service_->AddNotification(
+      RewardsNotificationService::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS, args,
+      "rewards_notification_insufficient_funds");
 }
 
 std::unique_ptr<ledger::LogStream> RewardsServiceImpl::Log(

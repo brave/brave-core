@@ -202,6 +202,7 @@ class RewardsServiceImpl : public RewardsService,
       std::unique_ptr<ledger::PublisherInfo> info,
       uint64_t windowId);
   void MaybeShowBackupNotification();
+  void MaybeShowAddFundsNotification();
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -289,6 +290,10 @@ class RewardsServiceImpl : public RewardsService,
   void StartNotificationTimers();
   void StopNotificationTimers();
   void OnNotificationTimerFired();
+
+  bool HasSufficientBalanceToReconcile() const;
+  bool ShouldShowNotificationAddFunds() const;
+  void ShowNotificationAddFunds();
 
   Profile* profile_;  // NOT OWNED
   std::unique_ptr<ledger::Ledger> ledger_;
