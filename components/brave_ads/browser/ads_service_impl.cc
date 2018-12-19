@@ -110,13 +110,24 @@ class AdsNotificationHandler : public NotificationHandler {
         std::move(completed_closure));
   }
 
+  void OnClick(Profile* profile,
+               const GURL& origin,
+               const std::string& notification_id,
+               const base::Optional<int>& action_index,
+               const base::Optional<base::string16>& reply,
+               base::OnceClosure completed_closure) override {
+    if (ads_service_ && !action_index.has_value()) {
+      ads_service_->OpenSettings(profile, origin, true);
+    }
+  }
+
   void DisableNotifications(Profile* profile,
                             const GURL& origin) override {}
 
 
   void OpenSettings(Profile* profile, const GURL& origin) override {
     if (ads_service_)
-      ads_service_->OpenSettings(profile, origin);
+      ads_service_->OpenSettings(profile, origin, false);
   }
 
  private:
@@ -719,7 +730,8 @@ void AdsServiceImpl::OnClose(Profile* profile,
 }
 
 void AdsServiceImpl::OpenSettings(Profile* profile,
-                                  const GURL& origin) {
+                                  const GURL& origin,
+                                  bool should_close) {
   DCHECK(origin.has_query());
   auto notification_id = origin.query();
 
@@ -729,6 +741,10 @@ void AdsServiceImpl::OpenSettings(Profile* profile,
   auto notification_info = base::WrapUnique(
       notification_ids_[notification_id].release());
   notification_ids_.erase(notification_id);
+
+  if (should_close)
+    display_service_->Close(NotificationHandler::Type::BRAVE_ADS,
+                            notification_id);
 
   if (connected()) {
     bat_ads_->GenerateAdReportingNotificationResultEvent(
