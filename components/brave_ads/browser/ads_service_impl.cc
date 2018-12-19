@@ -252,7 +252,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     bundle_state_backend_(
         new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
     display_service_(NotificationDisplayService::GetForProfile(profile_)),
-    enabled_(false),
 #if !defined(OS_ANDROID)
     last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
     is_foreground_(!!chrome::FindBrowserWithActiveWindow()),
@@ -369,6 +368,10 @@ void AdsServiceImpl::Start() {
 }
 
 void AdsServiceImpl::Stop() {
+  if (connected()) {
+    // this is kind of weird, but we need to call Initialize on disable too
+    bat_ads_->Initialize(base::NullCallback());
+  }
   Shutdown();
 }
 
@@ -411,12 +414,6 @@ void AdsServiceImpl::Shutdown() {
   fetchers_.clear();
   idle_poll_timer_.Stop();
 
-  if (connected()) {
-    if (!enabled_) {
-      // this is kind of weird, but we need to call Initialize on disable too
-      bat_ads_->Initialize(base::NullCallback());
-    }
-  }
   bat_ads_.reset();
   bat_ads_client_binding_.Close();
 
@@ -431,11 +428,9 @@ void AdsServiceImpl::Shutdown() {
 
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
   if (pref == prefs::kBraveAdsEnabled) {
-    if (is_enabled() && !enabled_) {
-      enabled_ = true;
+    if (is_enabled()) {
       Start();
-    } else if (!is_enabled() && enabled_) {
-      enabled_ = false;
+    } else if (!is_enabled()) {
       Stop();
     }
   } else if (pref == prefs::kBraveAdsIdleThreshold) {
