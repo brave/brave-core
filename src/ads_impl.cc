@@ -985,8 +985,11 @@ void AdsImpl::StartSustainingAdInteraction(const uint64_t start_timer_in) {
 
 void AdsImpl::SustainAdInteraction() {
   if (!IsStillViewingAd()) {
+    LOG(INFO) << "Failed to Sustain ad interaction";
     return;
   }
+
+  LOG(INFO) << "Sustained ad interaction";
 
   GenerateAdReportingSustainEvent(last_shown_notification_info_);
 }
@@ -1011,7 +1014,20 @@ bool AdsImpl::IsSustainingAdInteraction() const {
 }
 
 bool AdsImpl::IsStillViewingAd() const {
-  if (last_shown_notification_info_.url != last_shown_tab_url_) {
+  UrlComponents last_shown_notification_info_url_components;
+  if (!ads_client_->GetUrlComponents(last_shown_notification_info_.url,
+      &last_shown_notification_info_url_components)) {
+    return false;
+  }
+
+  UrlComponents last_shown_tab_url_components;
+  if (!ads_client_->GetUrlComponents(last_shown_tab_url_,
+      &last_shown_tab_url_components)) {
+    return false;
+  }
+
+  if (last_shown_notification_info_url_components.hostname
+      != last_shown_tab_url_components.hostname) {
     return false;
   }
 
