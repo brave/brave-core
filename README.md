@@ -331,9 +331,7 @@ npm run test -- brave_unit_tests --filter=AdsTest.*
 ## Initial Limitations
 
 - Catalog is downloaded twice upon startup
-- For Linux:
-    - In "debug" mode, notifications cause crashes
-    - Foreground/Background notifications aren't implemented on Brave Core
+- Coming soon for Linux
 - `EventLog`'s are persisted in the Console Log, whereas in Muon they were persisted in a JSON file
 - Implement DemoAPI logs
 - Additional unit test coverage
