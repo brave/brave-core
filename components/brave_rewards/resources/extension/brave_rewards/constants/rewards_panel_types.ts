@@ -19,3 +19,15 @@ export const enum types {
   INCLUDE_IN_AUTO_CONTRIBUTION = '@@rewards_panel/INCLUDE_IN_AUTO_CONTRIBUTION',
   GET_GRANT = '@@rewards_panel/GET_GRANT'
 }
+
+// Note: This declaration must match the RewardsNotificationType enum in
+// brave/components/brave_rewards/browser/rewards_notification_service.h
+export const enum RewardsNotificationType {
+  REWARDS_NOTIFICATION_INVALID = 0,
+  REWARDS_NOTIFICATION_AUTO_CONTRIBUTE,
+  REWARDS_NOTIFICATION_GRANT,
+  REWARDS_NOTIFICATION_FAILED_CONTRIBUTION,
+  REWARDS_NOTIFICATION_IMPENDING_CONTRIBUTION,
+  REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS,
+  REWARDS_NOTIFICATION_BACKUP_WALLET,
+}

@@ -189,6 +189,14 @@
     "message": "Please backup your Brave wallet.",
     "description": "Description for backup wallet notification"
   },
+  "insufficientFundsNotification": {
+    "message": "Your Brave Payments account is waiting for a deposit.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Insufficient Funds",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Creating wallet",
     "description": "Used in a button displaying wallet creation process"
