@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/basic_page/basic_page.html b/chrome/browser/resources/settings/basic_page/basic_page.html
-index a99337c3d25ac4681807a57874fa7bb20713c1a3..0e2059f42862044d6369e247fcd5bbfef0166ce8 100644
+index a99337c3d25ac4681807a57874fa7bb20713c1a3..3c233c45a8f375a9261a4a4a67fd34144d4d2345 100644
 --- a/chrome/browser/resources/settings/basic_page/basic_page.html
 +++ b/chrome/browser/resources/settings/basic_page/basic_page.html
 @@ -27,6 +27,8 @@
@@ -15,6 +15,9 @@ index a99337c3d25ac4681807a57874fa7bb20713c1a3..0e2059f42862044d6369e247fcd5bbfe
            </settings-section>
          </template>
  </if>
++        <settings-section page-title="$i18n{braveSync}" section="braveSync">
++          <settings-brave-sync-page prefs="{{prefs}}"></settings-brave-sync-page>
++        </settings-section>
 +        <template is="dom-if" if="[[showPage_(pageVisibility.braveShieldsDefaults)]]"
 +            restamp>
 +          <settings-section page-title="$i18n{braveShieldsDefaults}"
@@ -22,9 +25,6 @@ index a99337c3d25ac4681807a57874fa7bb20713c1a3..0e2059f42862044d6369e247fcd5bbfe
 +            <settings-default-brave-shields-page  prefs="{{prefs}}"></settings-default-brave-shields-page>
 +          </settings-section>
 +        </template>
-+        <settings-section page-title="$i18n{braveSync}" section="braveSync">
-+          <settings-brave-sync-page prefs="{{prefs}}"></settings-brave-sync-page>
-+        </settings-section>
          <template is="dom-if" if="[[showPage_(pageVisibility.onStartup)]]"
              restamp>
            <settings-section page-title="$i18n{onStartup}" section="onStartup">
