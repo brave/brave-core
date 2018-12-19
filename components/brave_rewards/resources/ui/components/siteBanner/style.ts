@@ -108,7 +108,8 @@ export const StyledClose = styled<{}, 'button'>('button')`
   cursor: pointer;
   width: 27px;
   height: 27px;
-  color: #B8B9C4;
+  color: #FFF;
+  filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, .4));
 `
 
 export const StyledLogoWrapper = styled<StyleProps, 'div'>('div')`
