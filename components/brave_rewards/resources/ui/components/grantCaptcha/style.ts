@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
   text-align: center;
-  margin: 28px 0 0 -32px;
+  margin: 15px 0 0 -32px;
   width: 333px;
 `
 
@@ -18,7 +18,6 @@ export const StyledDropArea = styled<{}, 'img'>('img')`
 export const StyledDrag = styled<{}, 'div'>('div')`
   display: flex;
   justify-content: center;
-  padding-bottom: 20px;
 `
 
 export const StyledImageWrap = styled<{}, 'div'>('div')`
