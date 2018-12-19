@@ -355,7 +355,7 @@ bool BundleStateDatabase::GetAdsForCategory(const std::string& region,
   // TODO(tmancey) - use region in the query
   // info_sql.BindString(1, region);
 
-  if (info_sql.Step()) {
+  while (info_sql.Step()) {
     ads::AdInfo info;
     info.creative_set_id = info_sql.ColumnString(0);
     info.advertiser = info_sql.ColumnString(1);
