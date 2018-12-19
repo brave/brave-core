@@ -357,6 +357,10 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
     return;
   }
 
+  if (url == last_shown_notification_info_.url) {
+    return;
+  }
+
   if (!IsValidScheme(url)) {
     return;
   }
