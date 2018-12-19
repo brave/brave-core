@@ -94,6 +94,26 @@ class BraveRewardsGetPendingContributionsTotalFunction : public UIThreadExtensio
   void OnGetPendingTotal(double amount);
 };
 
+class BraveRewardsGetGrantCaptchaFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getGrantCaptcha", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetGrantCaptchaFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsSolveGrantCaptchaFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.solveGrantCaptcha", UNKNOWN)
+
+ protected:
+  ~BraveRewardsSolveGrantCaptchaFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

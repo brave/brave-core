@@ -280,6 +280,12 @@
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_TITLE" desc="">Brave Rewards</message>
       <message name="IDS_BRAVE_UI_BRAVE_VERIFIED" desc="">Brave Verified Publishers</message>
       <message name="IDS_BRAVE_UI_CANCEL" desc="">Cancel</message>
+      <message name="IDS_BRAVE_UI_CAPTCHA_DRAG" desc="">Drag the BAT Icon on to the</message>
+      <message name="IDS_BRAVE_UI_CAPTCHA_LUCKY_DAY" desc="">It’s your lucky day!</message>
+      <message name="IDS_BRAVE_UI_CAPTCHA_ON_THE_WAY" desc="">Your token grant is on its way.</message>
+      <message name="IDS_BRAVE_UI_CAPTCHA_PROVE_HUMAN" desc="">Prove that you are human!</message>
+      <message name="IDS_BRAVE_UI_CAPTCHA_TARGET" desc="">target.</message>
+      <message name="IDS_BRAVE_UI_CAPTCHA_MISSED_TARGET" desc="">Hmm… Not Quite. Try Again.</message>
       <message name="IDS_BRAVE_UI_CLAIM" desc="">Claim</message>
       <message name="IDS_BRAVE_UI_CLOSE_BALANCE" desc="">Closing Balance</message>
       <message name="IDS_BRAVE_UI_CONTRIBUTE" desc="">Contribute</message>

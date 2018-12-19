@@ -20,6 +20,18 @@ chrome.braveRewards.onCurrentReport.addListener((properties: RewardsExtension.Re
   rewardsPanelActions.onCurrentReport(properties)
 })
 
+chrome.braveRewards.onGrant.addListener((properties: RewardsExtension.GrantInfo) => {
+  rewardsPanelActions.onGrant(properties)
+})
+
+chrome.braveRewards.onGrantCaptcha.addListener((captcha: RewardsExtension.Captcha) => {
+  rewardsPanelActions.onGrantCaptcha(captcha)
+})
+
+chrome.braveRewards.onGrantFinish.addListener((properties: RewardsExtension.GrantFinish) => {
+  rewardsPanelActions.onGrantFinish(properties)
+})
+
 chrome.rewardsNotifications.onNotificationAdded.addListener((id: string, type: number, timestamp: number, args: string[]) => {
   rewardsPanelActions.onNotificationAdded(id, type, timestamp, args)
 })
