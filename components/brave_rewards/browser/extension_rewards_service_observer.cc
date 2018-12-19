@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/base64.h"
 #include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
 
 #include "brave/common/extensions/api/brave_rewards.h"
@@ -136,6 +137,78 @@ void ExtensionRewardsServiceObserver::OnGetPublisherActivityFromUrl(
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_ON_PUBLISHER_DATA,
       extensions::api::brave_rewards::OnPublisherData::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
+void ExtensionRewardsServiceObserver::OnGrant(
+    RewardsService* rewards_service,
+    unsigned int result,
+    brave_rewards::Grant grant) {
+  extensions::EventRouter* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
+  base::DictionaryValue newGrant;
+  newGrant.SetInteger("status", result);
+  newGrant.SetString("promotionId", grant.promotionId);
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::OnGrant::Create(newGrant)
+          .release());
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnGrant::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
+void ExtensionRewardsServiceObserver::OnGrantCaptcha(
+    RewardsService* rewards_service,
+    std::string image,
+    std::string hint) {
+  extensions::EventRouter* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
+  std::string encoded_string;
+  base::Base64Encode(image, &encoded_string);
+  base::DictionaryValue captcha;
+  captcha.SetString("image", std::move(encoded_string));
+  captcha.SetString("hint", hint);
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::OnGrantCaptcha::Create(captcha)
+          .release());
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnGrantCaptcha::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
+void ExtensionRewardsServiceObserver::OnGrantFinish(
+    RewardsService* rewards_service,
+    unsigned int result,
+    brave_rewards::Grant grant) {
+  extensions::EventRouter* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
+  base::DictionaryValue finish;
+  finish.SetInteger("status", result);
+  finish.SetInteger("expiryTime", grant.expiryTime);
+  finish.SetString("probi", grant.probi);
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::OnGrantFinish::Create(finish)
+          .release());
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnGrantFinish::kEventName,
       std::move(args)));
   event_router->BroadcastEvent(std::move(event));
 }

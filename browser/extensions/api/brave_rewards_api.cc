@@ -138,5 +138,33 @@ ExtensionFunction::ResponseAction BraveRewardsGetGrantFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+BraveRewardsGetGrantCaptchaFunction::~BraveRewardsGetGrantCaptchaFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveRewardsGetGrantCaptchaFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service_ =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service_) {
+    rewards_service_->GetGrantCaptcha();
+  }
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsSolveGrantCaptchaFunction::~BraveRewardsSolveGrantCaptchaFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveRewardsSolveGrantCaptchaFunction::Run() {
+  std::unique_ptr<brave_rewards::SolveGrantCaptcha::Params> params(
+      brave_rewards::SolveGrantCaptcha::Params::Create(*args_));
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service_ =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service_) {
+    rewards_service_->SolveGrantCaptcha(params->solution);
+  }
+  return RespondNow(NoArguments());
+}
+
 }  // namespace api
 }  // namespace extensions
