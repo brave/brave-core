@@ -4,6 +4,7 @@ declare namespace RewardsExtension {
     notifications: Record<number, Notification>
     publishers: Record<string, Publisher>
     report: Report
+    grant?: GrantInfo
     walletCreated: boolean
     walletCreateFailed: boolean
     walletProperties: WalletProperties
@@ -33,6 +34,44 @@ declare namespace RewardsExtension {
     altcurrency: string
     probi: string
     expiryTime: number
+  }
+
+  export interface GrantInfo {
+    promotionId?: string
+    altcurrency?: string
+    probi: string
+    expiryTime: number
+    captcha?: string
+    hint?: string
+    status?: 'wrongPosition' | 'grantGone' | 'generalError' | number | null
+  }
+
+  export interface GrantFinish {
+    result: Result,
+    statusCode: number,
+    expiryTime: number
+  }
+
+  export enum Result {
+    LEDGER_OK = 0,
+    LEDGER_ERROR = 1,
+    NO_PUBLISHER_STATE = 2,
+    NO_LEDGER_STATE = 3,
+    INVALID_PUBLISHER_STATE = 4,
+    INVALID_LEDGER_STATE = 5,
+    CAPTCHA_FAILED = 6,
+    NO_PUBLISHER_LIST = 7,
+    TOO_MANY_RESULTS = 8,
+    NOT_FOUND = 9,
+    REGISTRATION_VERIFICATION_FAILED = 10,
+    BAD_REGISTRATION_RESPONSE = 11,
+    WALLET_CREATED = 12,
+    GRANT_NOT_FOUND = 13
+  }
+
+  export interface Captcha {
+    image: string
+    hint: string
   }
 
   export interface WalletProperties {
