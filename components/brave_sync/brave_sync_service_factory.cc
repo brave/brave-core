@@ -51,6 +51,7 @@ void BraveSyncServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(prefs::kSyncDeviceId, std::string());
   registry->RegisterStringPref(prefs::kSyncSeed, std::string());
+  registry->RegisterStringPref(prefs::kSyncPrevSeed, std::string());
   registry->RegisterStringPref(prefs::kSyncDeviceName, std::string());
   registry->RegisterStringPref(prefs::kSyncBookmarksBaseOrder, std::string());
 

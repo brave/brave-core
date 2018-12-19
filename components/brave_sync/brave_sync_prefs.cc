@@ -14,6 +14,7 @@ namespace prefs {
 
 const char kSyncDeviceId[] = "brave_sync.device_id";
 const char kSyncSeed[] = "brave_sync.seed";
+const char kSyncPrevSeed[] = "brave_sync.previous_seed";
 const char kSyncDeviceName[] = "brave_sync.device_name";
 const char kSyncBookmarksBaseOrder[] = "brave_sync.bookmarks_base_order";
 const char kSyncEnabled[] = "brave_sync.enabled";
@@ -34,6 +35,14 @@ std::string Prefs::GetSeed() const {
 void Prefs::SetSeed(const std::string& seed) {
   DCHECK(!seed.empty());
   pref_service_->SetString(kSyncSeed, seed);
+}
+
+std::string Prefs::GetPrevSeed() const {
+  return pref_service_->GetString(kSyncPrevSeed);
+}
+
+void Prefs::SetPrevSeed(const std::string& seed) {
+  pref_service_->SetString(kSyncPrevSeed, seed);
 }
 
 std::string Prefs::GetThisDeviceId() const {

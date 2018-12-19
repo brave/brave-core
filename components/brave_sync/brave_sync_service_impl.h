@@ -172,6 +172,8 @@ class BraveSyncServiceImpl
   void NotifySyncStateChanged();
   void NotifyHaveSyncWords(const std::string& sync_words);
 
+  void ResetSyncInternal();
+
   std::unique_ptr<BraveSyncClient> sync_client_;
 
   // True when is in active sync chain
@@ -182,6 +184,8 @@ class BraveSyncServiceImpl
   // Prevent two sequential calls OnSetupSyncHaveCode or OnSetupSyncNewToSync
   // while being initializing
   bool initializing_ = false;
+
+  bool reseting_ = false;
 
   std::string sync_words_;
 
