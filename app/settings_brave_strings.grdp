@@ -60,9 +60,6 @@
   <message name="IDS_SETTINGS_SPELLING_DESCRIPTION_UNIFIED_CONSENT" desc="Description of using a web serviced to help resolve spelling errors. It is important to convey that what the user types will be sent to Brave.">
     To fix spelling errors, Brave sends the text you type in text fields to Brave
   </message>
-  <message name="IDS_SETTINGS_NON_PERSONALIZED_SERVICES_SECTION_DESC" desc="Brief explanation of the capability of Brave services.">
-    Communicates with Brave to improve browsing and Brave
-  </message>
   <message name="IDS_SETTINGS_RESTART_TO_APPLY_CHANGES" desc="Description in the snackbar to restart Brave and apply changes.">
     To apply your changes, relaunch Brave
   </message>
