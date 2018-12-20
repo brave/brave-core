@@ -36,6 +36,7 @@ import GrantClaim from '../../../src/features/rewards/grantClaim'
 const donate = require('../../assets/img/rewards_donate.svg')
 const bart = require('../../assets/img/bartBaker.jpeg')
 const tipScreen = require('../../assets/img/tip_site.jpg')
+const siteBgLogo = require('../../assets/img/ddgo_siteBanner.svg')
 
 const dummyClick = () => {
   console.log(dummyClick)
@@ -292,7 +293,8 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
                 success={boolean('Success', false)}
                 send={boolean('Is send page?', true)}
                 subText={text('Sub header', 'This is text.')}
-                domain={'brave.com'}
+                domain={'duckduckgo.com'}
+                logo={boolean('Show logo', false) ? siteBgLogo : null}
             />
             : null
           }

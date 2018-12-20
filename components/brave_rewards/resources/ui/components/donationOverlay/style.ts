@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import * as CSS from 'csstype'
 
 interface StyleProps {
+  bg?: string
   src?: string
   success?: boolean
   logoBgColor?: CSS.Color
@@ -146,15 +147,15 @@ export const StyleSubHeaderText = styled<{}, 'div'>('div')`
 export const StyledLetter = styled<StyleProps, 'div'>('div')`
   border: 6px solid #fff;
   border-radius: 50%;
-  width: 90px;
-  height: 90px;
+  width: 102px;
+  height: 102px;
   background: ${p => p.logoBgColor || '#DE4D26'};
   overflow: hidden;
-  margin-right: 25px;
+  margin: -12px 25px 0 0;
   color: #fff;
   text-align: center;
-  line-height: 78px;
-  font-size: 60px;
+  line-height: 90px;
+  font-size: 65px;
   text-transform: uppercase;
 `
 export const StyledClose = styled<{}, 'button'>('button')`
@@ -169,4 +170,26 @@ export const StyledClose = styled<{}, 'button'>('button')`
   height: 27px;
   color: #FFF;
   z-index: 2;
+`
+
+export const StyledLogoImage = styled<StyleProps, 'div'>('div')`
+  width: 90px;
+  height: 90px;
+  background: url(${p => p.bg}) no-repeat;
+  background-size: cover;
+`
+
+export const StyledLogoWrapper = styled<{}, 'div'>('div')`
+  padding-right: 25px;
+  flex-basis: 217px;
+`
+
+export const StyledLogoBorder = styled<StyleProps, 'div'>('div')`
+  border: 6px solid #fff;
+  border-radius: 50%;
+  width: 102px;
+  height: 102px;
+  margin-top: -12px;
+  background: ${p => p.bg || '#DE4D26'};
+  overflow: hidden;
 `

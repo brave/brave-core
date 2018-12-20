@@ -23,7 +23,10 @@ import {
   StyledImageBorder,
   StyleSubHeaderText,
   StyledLetter,
-  StyledClose
+  StyledClose,
+  StyledLogoWrapper,
+  StyledLogoBorder,
+  StyledLogoImage
 } from './style'
 import { getLocale } from '../../../helpers'
 import { CloseCircleIcon, CloseStrokeIcon, PaperAirplaneIcon } from '../../../components/icons'
@@ -35,6 +38,7 @@ export interface Props {
   siteImg?: string
   domain?: string
   logoBgColor?: CSS.Color
+  logo?: string
   subText?: React.ReactNode
   onClose: () => void
 }
@@ -58,7 +62,7 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
   }
 
   getOverlayContent = () => {
-    const { success, send, siteImg, subText, domain, logoBgColor } = this.props
+    const { success, send, siteImg, subText, logo, domain, logoBgColor } = this.props
     return (
       <StyledOverlayContent>
         {
@@ -80,10 +84,19 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
               : null
             }
             {
-              !send && !siteImg && domain
+              !send && !siteImg && !logo && domain
               ? <StyledLetter logoBgColor={logoBgColor}>
                 {(domain && domain.substring(0,1)) || ''}
               </StyledLetter>
+              : null
+            }
+            {
+              !send && !siteImg && logo
+              ? <StyledLogoWrapper>
+                  <StyledLogoBorder bg={logoBgColor}>
+                    <StyledLogoImage bg={logo} />
+                  </StyledLogoBorder>
+                </StyledLogoWrapper>
               : null
             }
             </StyledIconWrapper>
