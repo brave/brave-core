@@ -4,123 +4,99 @@
 
 export const images: NewTab.Image[] = [
   {
-    'name': 'Tuolumne Meadows',
-    'source': 'dksfoto1.jpg',
-    'author': 'Darrell Sano',
-    'link': 'https://dksfoto.smugmug.com'
+    'name': '1',
+    'source': 'ntp-1.webp',
+    'author': 'Pok Rie',
+    'link': 'https://www.pexels.com/@pok-rie-33563'
   },
   {
-    'name': 'South Tufa, Mono Lake',
-    'source': 'dksfoto2.jpg',
-    'author': 'Darrell Sano',
-    'link': 'https://dksfoto.smugmug.com'
+    'name': '2',
+    'source': 'ntp-2.webp',
+    'author': 'Jack Millard',
+    'link': 'https://unsplash.com/@millarjb'
   },
   {
-    'name': 'Little Lakes Valley',
-    'source': 'dksfoto3.jpg',
-    'author': 'Darrell Sano',
-    'link': 'https://dksfoto.smugmug.com'
+    'name': '3',
+    'source': 'ntp-3.webp',
+    'author': 'Buzz Andersen',
+    'link': 'https://unsplash.com/@ldandersen'
   },
   {
-    'name': 'Bay Bridge',
-    'source': 'dksfoto4.jpg',
-    'author': 'Darrell Sano',
-    'link': 'https://dksfoto.smugmug.com'
+    'name': '4',
+    'source': 'ntp-4.webp',
+    'author': 'Frank McKenna',
+    'link': 'https://unsplash.com/@frankiefoto'
   },
   {
-    'name': 'Yosemite',
-    'source': 'dksfoto5.jpg',
-    'author': 'Darrell Sano',
-    'link': 'https://dksfoto.smugmug.com'
+    'name': '5',
+    'source': 'ntp-5.webp',
+    'author': 'SpaceX',
+    'link': 'https://www.flickr.com/photos/spacex/'
   },
   {
-    'name': 'Beach Ice',
-    'source': 'dksfoto6.jpg',
-    'author': 'Darrell Sano',
-    'link': 'https://dksfoto.smugmug.com'
+    'name': '6',
+    'source': 'ntp-6.webp',
+    'author': 'SpaceX',
+    'link': 'https://www.flickr.com/photos/spacex/'
   },
   {
-    'name': 'Color and White Trunks',
-    'source': 'dksfoto7.jpg',
-    'author': 'Darrell Sano',
-    'link': 'https://dksfoto.smugmug.com'
+    'name': '7',
+    'source': 'ntp-7.webp',
+    'author': 'SpaceX',
+    'link': 'https://www.flickr.com/photos/spacex/'
   },
   {
-    'name': 'Golden Gate Bridge',
-    'source': 'dksfoto8.jpg',
-    'author': 'Darrell Sano',
-    'link': 'https://dksfoto.smugmug.com'
+    'name': '8',
+    'source': 'ntp-8.webp',
+    'author': 'Will Christiansen',
+    'link': 'https://www.theskyfolk.com'
   },
   {
-    'name': 'Long Lake',
-    'source': 'dksfoto9.jpg',
-    'author': 'Darrell Sano',
-    'link': 'https://dksfoto.smugmug.com'
+    'name': '9',
+    'source': 'ntp-9.webp',
+    'author': 'Will Christiansen',
+    'link': 'https://www.theskyfolk.com'
   },
   {
-    'name': 'San Francisco Skyline',
-    'source': 'dksfoto10.jpg',
-    'author': 'Darrell Sano',
-    'link': 'https://dksfoto.smugmug.com'
+    'name': '10',
+    'source': 'ntp-10.webp',
+    'author': 'Will Christiansen',
+    'link': 'https://www.theskyfolk.com'
   },
   {
-    'name': 'Across Mono Basin',
-    'source': 'dksfoto11.jpg',
-    'author': 'Darrell Sano',
-    'link': 'https://dksfoto.smugmug.com'
+    'name': '11',
+    'source': 'ntp-11.webp',
+    'author': 'Will Christiansen',
+    'link': 'http://www.noutgons.nl/'
   },
   {
-    'name': 'Corsica',
-    'source': 'Phoyoserge_Corsica.jpg',
-    'author': 'Serge Ramelli',
-    'link': 'https://www.photoserge.com/'
+    'name': '12',
+    'source': 'ntp-12.webp',
+    'author': 'Artem Bali',
+    'link': 'https://www.pexels.com/@belart84'
   },
   {
-    'name': 'Corsica',
-    'source': 'Phoyoserge_Corsica2.jpg',
-    'author': 'Serge Ramelli',
-    'link': 'https://www.photoserge.com/'
+    'name': '13',
+    'source': 'ntp-13.webp',
+    'author': 'Hristo Fidanov',
+    'link': 'https://www.pexels.com/@hristo-fidanov-520662'
   },
   {
-    'name': 'Griffith Park Observatory (Downtown Los Angeles)',
-    'source': 'Phoyoserge_DowntownGriffith.jpg',
-    'author': 'Serge Ramelli',
-    'link': 'https://www.photoserge.com/'
+    'name': '14',
+    'source': 'ntp-14.webp',
+    'author': 'Life of Pix',
+    'link': 'https://www.pexels.com/@life-of-pix'
   },
   {
-    'name': 'Elmatador Beach',
-    'source': 'Phoyoserge_ElmatadorBeach.jpg',
-    'author': 'Serge Ramelli',
-    'link': 'https://www.photoserge.com/'
+    'name': '15',
+    'source': 'ntp-15.webp',
+    'author': 'Cassie Boca',
+    'link': 'https://unsplash.com/@cassieboca'
   },
   {
-    'name': 'Paris: Conciergerie',
-    'source': 'Phoyoserge_ParisConciergeri.jpg',
-    'author': 'Serge Ramelli',
-    'link': 'https://www.photoserge.com/'
-  },
-  {
-    'name': 'Paris: The Roof',
-    'source': 'Phoyoserge_Theroofparis.jpg',
-    'author': 'Serge Ramelli',
-    'link': 'https://www.photoserge.com/'
-  },
-  {
-    'name': 'Paris: The Senate',
-    'source': 'Phoyoserge_TheSeantParis.jpg',
-    'author': 'Serge Ramelli',
-    'link': 'https://www.photoserge.com/'
-  },
-  {
-    'name': 'Venise Sunset',
-    'source': 'Phoyoserge_VeniseSunset.jpg',
-    'author': 'Serge Ramelli',
-    'link': 'https://www.photoserge.com/'
-  },
-  {
-    'name': 'Yosemite',
-    'source': 'Phoyoserge_Yosemite.jpg',
-    'author': 'Serge Ramelli',
-    'link': 'https://www.photoserge.com/'
+    'name': '16',
+    'source': 'ntp-16.webp',
+    'author': 'Braden Jarvis',
+    'link': 'https://unsplash.com/@jarvisphoto'
   }
 ]

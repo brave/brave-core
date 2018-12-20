@@ -7,7 +7,6 @@ import { DragDropContext } from 'react-dnd'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import HTML5Backend from 'react-dnd-html5-backend'
-import { Grid, Column } from 'brave-ui/components'
 import { Clock } from 'brave-ui/old'
 
 // Components
@@ -25,7 +24,6 @@ import * as newTabActions from '../actions/new_tab_actions'
 
 // Assets
 require('../../styles/newtab.less')
-require('font-awesome/css/font-awesome.css')
 require('../../fonts/poppins.css')
 require('../../fonts/muli.css')
 
@@ -149,15 +147,13 @@ class NewTabPage extends React.Component<Props, {}> {
         <div data-test-id={this.showImages ? 'bgGradient' : 'gradient'} className={gradientClassName} />
         <div className='content'>
           <main style={theme.newTab}>
-            <div style={theme.newTabStats}>
-              <Grid columns={3}>
-                <Column size={2}>
-                  <Stats stats={newTabData.stats}/>
-                </Column>
-                <Column size={1} customStyle={theme.clockContainer}>
-                  <Clock customStyle={theme.clock} />
-                </Column>
-              </Grid>
+            <div className='newTabStats'>
+              <div className='statsContainer'>
+                <Stats stats={newTabData.stats}/>
+              </div>
+              <div className='clockContainer'>
+                <Clock customStyle={theme.clock} />
+              </div>
             </div>
             <div className='topSitesContainer'>
               <nav className='topSitesGrid'>
