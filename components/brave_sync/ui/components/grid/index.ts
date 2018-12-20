@@ -19,7 +19,7 @@ export const EnabledContentButtonGrid = styled<{}, 'footer'>('footer')`
 export const SettingsToggleGrid = styled<{}, 'footer'>('footer')`
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
   grid-gap: 5px;
   align-items: center;
   margin: 15px 0 0;
