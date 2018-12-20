@@ -34,9 +34,10 @@
   },
   "include": [
     "./components/definitions/*",
-    "./components"
+    "./components/**/*"
   ],
   "exclude": [
+    "./components/test/**/*",
     "./components/brave_sync/extension"
   ]
 }

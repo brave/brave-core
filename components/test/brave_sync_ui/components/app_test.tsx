@@ -16,15 +16,7 @@ import {
 describe('sync page component', () => {
   describe('mapStateToProps', () => {
     it('should map the default state', () => {
-      expect(mapStateToProps(syncInitialState)).toEqual({
-        syncData: {
-          devices: [{ id: 0, lastActive: '', name: '' }],
-          isSyncConfigured: false,
-          seedQRImageSource: '',
-          syncWords: '',
-          thisDeviceName: ''
-        }
-      })
+      expect(mapStateToProps(syncInitialState)).toEqual(syncInitialState)
     })
   })
 

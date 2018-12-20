@@ -6,11 +6,12 @@
 import reducers from '../../../../brave_rewards/resources/ui/reducers/index'
 import { types } from '../../../../brave_rewards/resources/ui/constants/rewards_types'
 import { defaultState } from '../../../../brave_rewards/resources/ui/storage'
+import { rewardsInitialState } from '../../../testData'
 
 describe('publishers reducer', () => {
   describe('ON_CONTRIBUTE_LIST', () => {
     it('does not include excluded publishers in auto-contribute list', () => {
-      const initialState = reducers(defaultState, {
+      const initialState = reducers(rewardsInitialState, {
         type: types.ON_NUM_EXCLUDED_SITES,
         payload: {
           excludedSitesInfo: {
@@ -68,7 +69,7 @@ describe('publishers reducer', () => {
     })
 
     it('removes a recently restored publisher from state.excluded', () => {
-      let testState = reducers(defaultState, {
+      let testState = reducers(rewardsInitialState, {
         type: types.ON_NUM_EXCLUDED_SITES,
         payload: {
           excludedSitesInfo: {

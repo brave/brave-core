@@ -67,10 +67,10 @@ describe('sync_actions', () => {
   })
 
   it('onRemoveDevice', () => {
-    expect(actions.onRemoveDevice(1337)).toEqual({
+    expect(actions.onRemoveDevice(1337, 'clifton windows')).toEqual({
       type: types.SYNC_ON_REMOVE_DEVICE,
       meta: undefined,
-      payload: { id: 1337 }
+      payload: { id: 1337, deviceName: 'clifton windows' }
     })
   })
 
