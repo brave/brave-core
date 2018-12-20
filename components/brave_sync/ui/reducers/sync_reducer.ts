@@ -23,6 +23,10 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
     // inform SyncUIImpl we can start requesting sync settings data
     case types.SYNC_ON_PAGE_LOADED:
       chrome.send('pageLoaded')
+      // if there are errors coming from previous views, reset.
+      if (typeof state.error !== 'undefined') {
+        state = { ...state, error: undefined }
+      }
       break
 
     case types.SYNC_ON_SHOW_SETTINGS:
