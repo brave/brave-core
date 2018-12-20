@@ -25,6 +25,7 @@
 #include "content/public/browser/network_service_instance.h"
 #include "content/public/test/test_browser_thread_bundle.h"
 #include "services/network/test/test_network_connection_tracker.h"
+#include "net/base/network_interfaces.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -263,6 +264,17 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode) {
        brave_sync::prefs::kSyncEnabled));
 }
 
+TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_EmptyDeviceName) {
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged);
+  // Expecting sync state changed twice: for enabled state and for device name
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(2);
+  sync_service()->OnSetupSyncHaveCode("word1 word2 word3", "");
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncEnabled));
+  EXPECT_EQ(profile()->GetPrefs()->GetString(
+      brave_sync::prefs::kSyncDeviceName), net::GetHostName());
+}
+
 TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Offline) {
   TestNetworkConnectionTracker* tracker =
     TestNetworkConnectionTracker::GetInstance();
@@ -294,6 +306,17 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncNewToSync_Offline) {
        brave_sync::prefs::kSyncEnabled));
   // Restore network connection
   tracker->SetConnectionType(ConnectionType::CONNECTION_UNKNOWN);
+}
+
+TEST_F(BraveSyncServiceTest, OnSetupSyncNewToSync_EmptyDeviceName) {
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged);
+  // Expecting sync state changed twice: for enabled state and for device name
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(2);
+  sync_service()->OnSetupSyncNewToSync("");
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncEnabled));
+  EXPECT_EQ(profile()->GetPrefs()->GetString(
+      brave_sync::prefs::kSyncDeviceName), net::GetHostName());
 }
 
 TEST_F(BraveSyncServiceTest, OnConnectionChanged_After_OnSetupSyncNewToSync) {

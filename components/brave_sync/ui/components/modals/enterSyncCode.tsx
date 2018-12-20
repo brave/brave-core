@@ -21,7 +21,6 @@ import {
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { getDefaultDeviceName } from '../../helpers'
 
 interface Props {
   syncData: Sync.State
@@ -53,8 +52,7 @@ interface Props {
       return
     }
     const { passphrase } = this.state
-    const deviceName = getDefaultDeviceName()
-    this.props.actions.onSetupSyncHaveCode(passphrase, deviceName)
+    this.props.actions.onSetupSyncHaveCode(passphrase, '')
   }
 
   render () {
