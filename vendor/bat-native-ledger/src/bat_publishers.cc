@@ -246,7 +246,10 @@ void BatPublishers::saveVisitInternal(
                                                    visit_data.local_year));
   }
 
-  if (!ignoreMinTime(publisher_id) && duration < getPublisherMinVisitTime()) {
+  // set duration to 0 if you don't have sufficient visit time
+  // or if you set ac to only verified and site is not verified
+  if ((!ignoreMinTime(publisher_id) && duration < getPublisherMinVisitTime()) ||
+      (!ledger_->GetPublisherAllowNonVerified() && !verified)) {
     duration = 0;
   }
 
