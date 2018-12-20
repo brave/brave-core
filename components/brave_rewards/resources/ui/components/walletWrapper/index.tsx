@@ -65,7 +65,7 @@ type GrantClaim = {
   expiryTime: number
   captcha?: string
   hint?: string
-  status?: 'wrongPosition' | 'grantGone' | 'generalError' | number | null
+  status?: 'wrongPosition' | 'grantGone' | 'generalError' | 'grantAlreadyClaimed' | number | null
 }
 
 export interface AlertWallet {
@@ -183,6 +183,22 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           <GrantError
             buttonText={getLocale('grantGoneButton')}
             text={getLocale('grantGoneText')}
+            onButtonClick={this.onFinish}
+          />
+        </GrantWrapper>
+      )
+    }
+
+    if (status === 'grantAlreadyClaimed') {
+      return (
+        <GrantWrapper
+          onClose={this.onFinish}
+          title={getLocale('grantGoneTitle')}
+          text={''}
+        >
+          <GrantError
+            buttonText={getLocale('grantGoneButton')}
+            text={getLocale('grantAlreadyClaimedText')}
             onButtonClick={this.onFinish}
           />
         </GrantWrapper>
