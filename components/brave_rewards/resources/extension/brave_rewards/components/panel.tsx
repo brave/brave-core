@@ -348,7 +348,7 @@ export class Panel extends React.Component<Props, State> {
               donationAction={this.showDonateToSiteDetail}
               onAmountChange={this.doNothing}
               onIncludeInAuto={this.switchAutoContribute}
-              />
+            />
             : null
           }
           <WalletSummary compact={true} {...this.getWalletSummary()}/>

@@ -24,7 +24,7 @@ export const enum types {
   SOLVE_GRANT_CAPTCHA = '@@rewards_panel/SOLVE_GRANT_CAPTCHA',
   ON_GRANT_RESET = '@@rewards_panel/ON_GRANT_RESET',
   ON_GRANT_DELETE = '@@rewards_panel/ON_GRANT_DELETE',
-  ON_GRANT_FINISH = '@@rewards_panel/ON_GRANT_FINISH',
+  ON_GRANT_FINISH = '@@rewards_panel/ON_GRANT_FINISH'
 }
 
 // Note: This declaration must match the RewardsNotificationType enum in
@@ -36,5 +36,5 @@ export const enum RewardsNotificationType {
   REWARDS_NOTIFICATION_FAILED_CONTRIBUTION,
   REWARDS_NOTIFICATION_IMPENDING_CONTRIBUTION,
   REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS,
-  REWARDS_NOTIFICATION_BACKUP_WALLET,
+  REWARDS_NOTIFICATION_BACKUP_WALLET
 }

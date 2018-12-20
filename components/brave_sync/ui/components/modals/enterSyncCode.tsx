@@ -27,10 +27,11 @@ interface Props {
   actions: any
   onClose: () => void
 }
- interface State {
+interface State {
   passphrase: string
 }
- export default class EnterSyncCodeModal extends React.PureComponent<Props, State> {
+
+export default class EnterSyncCodeModal extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {

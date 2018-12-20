@@ -17,7 +17,7 @@ describe('rewards reducer', () => {
         return constantDate
       }
     }
-  });
+  })
 
   describe('INIT_AUTOCONTRIBUTE_SETTINGS', () => {
     describe('empty wallet', () => {

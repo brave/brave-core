@@ -19,7 +19,7 @@ describe('BraveWebtorrentPage component', () => {
 
   describe('render BraveWebtorrentPage component', () => {
     it('renders the MediaViewer component with a torrent and ix', () => {
-      const torrentStateWithIx : TorrentState = { ...torrentState, ix: 1 }
+      const torrentStateWithIx: TorrentState = { ...torrentState, ix: 1 }
       const wrapper = shallow(
         <BraveWebtorrentPage
           torrentState={torrentStateWithIx}

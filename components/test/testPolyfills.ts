@@ -11,16 +11,14 @@ import { getMockChrome } from './testData'
   setItem: jest.fn()
 } as any
 
-(window as any).location = {
+window.location = {
   search: '?testTorrentId'
 } as any
 
-(window as any).decodeURIComponent = (any) => 'test'
+global.decodeURIComponent = () => 'test'
 
-// This mocks rAF to avoid React console.error
-// while running Jest tests
-(global as any).requestAnimationFrame = function (cb: () => void) {
-  return setTimeout(cb, 0)
+window.requestAnimationFrame = function (cb: FrameRequestCallback) {
+  return window.setTimeout(cb, 0)
 }
 
 if ((global as any).chrome === undefined) {

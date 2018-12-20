@@ -85,4 +85,3 @@ export const onGrantFinish = (properties: RewardsExtension.GrantFinish) => actio
 export const onResetGrant = () => action(types.ON_GRANT_RESET)
 
 export const onDeleteGrant = () => action(types.ON_GRANT_DELETE)
-

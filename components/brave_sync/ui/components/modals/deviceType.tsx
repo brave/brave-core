@@ -53,7 +53,7 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
     // this allow us to request the qr code and sync words immediately
     const { thisDeviceName } = this.props.syncData
     if (thisDeviceName === '') {
-       this.props.actions.onSetupNewToSync('')
+      this.props.actions.onSetupNewToSync('')
     }
   }
 
