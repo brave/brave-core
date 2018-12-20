@@ -27,7 +27,6 @@ export type SetupErrorType =
   'ERR_SYNC_NO_INTERNET' |
   'ERR_SYNC_MISSING_WORDS' |
   'ERR_SYNC_WRONG_WORDS' |
-  'ERR_SYNC_NO_DEVICE_NAME' |
   'ERR_SYNC_INIT_FAILED' |
   undefined
 

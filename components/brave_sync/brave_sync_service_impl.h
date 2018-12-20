@@ -174,6 +174,8 @@ class BraveSyncServiceImpl
 
   void ResetSyncInternal();
 
+  void SetDeviceName(const std::string& name);
+
   std::unique_ptr<BraveSyncClient> sync_client_;
 
   // True when is in active sync chain
