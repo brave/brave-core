@@ -26,7 +26,7 @@ interface Props {
 export class SyncPage extends React.PureComponent<Props, {}> {
   componentDidMount () {
     // Inform the back-end that Sync can be loaded
-    syncActions.onPageLoaded()
+    this.props.actions.onPageLoaded()
   }
 
   render () {
