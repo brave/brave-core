@@ -33,6 +33,7 @@ source_set("js_sync_lib_impl") {
     "//content/public/browser",
     "//extensions/browser",
     "//services/network/public/cpp",
+    "//net",
     "//ui/base",
   ]
 }
