@@ -6,11 +6,11 @@
 
 #include "brave/common/tor/tor_launcher.mojom.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
-#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/utility/tor/tor_launcher_service.h"
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
 #include "brave/components/services/bat_ads/bat_ads_app.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #endif
 
 BraveContentUtilityClient::BraveContentUtilityClient()
