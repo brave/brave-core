@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "tslint --project tsconfig.json 'components/**/*.{ts,tsx}'",
+    "lint": "tslint --project tsconfig-lint.json 'components/**/*.{ts,tsx}'",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
     "web-ui": "webpack --config components/webpack/webpack.config.js --progress --colors",
