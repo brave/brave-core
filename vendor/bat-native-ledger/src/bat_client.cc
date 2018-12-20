@@ -487,6 +487,8 @@ void BatClient::setGrantCallback(bool success,
       ledger_->OnGrantFinish(ledger::Result::CAPTCHA_FAILED, grant);
     } else if (statusCode == 404 || statusCode == 410) {
       ledger_->OnGrantFinish(ledger::Result::GRANT_NOT_FOUND, grant);
+    } else if (statusCode == 409) {
+      ledger_->OnGrantFinish(ledger::Result::GRANT_ALREADY_CLAIMED, grant);
     } else {
       ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, grant);
     }
