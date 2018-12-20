@@ -11,8 +11,7 @@
       <!-- DO NOT PUT RESOURCES FOR SPECIFIC COMPONENTS IN THIS FILE
            create a new grd file in components/component_name/resources/ -->
       <!-- Common resources -->
-      <!-- TODO: Define only where needed, via webpack generated output,
-                  or use common chrome://resources DataSource -->
+      <!-- TODO: Define only where needed, via webpack generated output, or use common chrome://resources DataSource -->
       <include name="IDR_BRAVE_COMMON_TOOLBAR_IMG" file="../img/toolbar/menu_btn.svg" type="BINDATA" />
 
       <!-- Browser resources -->
@@ -33,28 +32,25 @@
       <include name="IDR_BRAVE_NEW_TAB_IMG1" file="../img/newtab/bookmarks_btn.svg" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_IMG4" file="../img/newtab/history_btn.svg" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_IMG2" file="../img/newtab/settings_prefs_btn.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_IMG14" file="../img/newtab/newtab_stock_image.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND1" file="../img/newtab/dksfoto1.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND2" file="../img/newtab/dksfoto2.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND3" file="../img/newtab/dksfoto3.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND4" file="../img/newtab/dksfoto4.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND5" file="../img/newtab/dksfoto5.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND6" file="../img/newtab/dksfoto6.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND7" file="../img/newtab/dksfoto7.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND8" file="../img/newtab/dksfoto8.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND9" file="../img/newtab/dksfoto9.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND10" file="../img/newtab/dksfoto10.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND11" file="../img/newtab/dksfoto11.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND12" file="../img/newtab/Phoyoserge_Corsica.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND13" file="../img/newtab/Phoyoserge_Corsica2.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND14" file="../img/newtab/Phoyoserge_DowntownGriffith.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND15" file="../img/newtab/Phoyoserge_ElmatadorBeach.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND16" file="../img/newtab/Phoyoserge_ParisConciergeri.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND17" file="../img/newtab/Phoyoserge_Theroofparis.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND18" file="../img/newtab/Phoyoserge_TheSeantParis.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND19" file="../img/newtab/Phoyoserge_VeniseSunset.jpg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND20" file="../img/newtab/Phoyoserge_Yosemite.jpg" type="BINDATA" />
-
+     
+      <!-- Imagery links -->
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND1" file="../img/newtab/ntp-1.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND2" file="../img/newtab/ntp-2.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND3" file="../img/newtab/ntp-3.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND4" file="../img/newtab/ntp-4.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND5" file="../img/newtab/ntp-5.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND6" file="../img/newtab/ntp-6.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND7" file="../img/newtab/ntp-7.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND8" file="../img/newtab/ntp-8.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND9" file="../img/newtab/ntp-9.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND10" file="../img/newtab/ntp-10.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND11" file="../img/newtab/ntp-11.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND12" file="../img/newtab/ntp-12.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND13" file="../img/newtab/ntp-13.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND14" file="../img/newtab/ntp-14.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND15" file="../img/newtab/ntp-15.webp" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_BACKGROUND16" file="../img/newtab/ntp-16.webp" type="BINDATA" />
+      
       <!-- WebUI private new tab resources -->
       <!-- TODO: move to brave_new_tab_ui component -->
       <include name="IDR_BRAVE_PRIVATE_TAB_IMG" file="../img/newtab/private-window.svg" type="BINDATA" />

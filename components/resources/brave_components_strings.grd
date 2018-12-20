@@ -122,7 +122,7 @@
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_TRACKERS_BLOCKED" desc="total number of trackers blocked">Trackers Blocked</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES" desc="total number of HTTPS upgrades">HTTPS Upgrades</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_TIME_SAVED" desc="total time saved from blocking ads and trackers">Estimated Time Saved</message>
-      <message name="IDS_BRAVE_NEW_TAB_THUMB_REMOVED" desc="Shown when a thumbnail is removed from the new tab page">Thumb Removed.</message>
+      <message name="IDS_BRAVE_NEW_TAB_THUMB_REMOVED" desc="Shown when a thumbnail is removed from the new tab page">Top site removed.</message>
       <message name="IDS_BRAVE_NEW_TAB_UNDO_REMOVED" desc="Shown when a user wants to undo removing a tile.">Undo</message>
       <message name="IDS_BRAVE_NEW_TAB_RESTORE_ALL" desc="Allows restoring all top sites back to the original.">Restore All</message>
       <message name="IDS_BRAVE_NEW_TAB_SECOND" desc="Displays the number of seconds.">second</message>

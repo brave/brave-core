@@ -16,24 +16,42 @@ export default class FooterInfo extends React.Component<Props, {}> {
     return (
       <footer className='footerContainer'>
         <div className='copyrightNotice'>
-          {
-            bgImage && bgImage.name
-            ? <div>
+          {bgImage && bgImage.name ? (
+            <div>
               <div className='copyrightCredits'>
                 <span className='photoBy'>{getLocale('photoBy')} </span>
-                <a className='copyrightOwner' href={bgImage.link} rel='noopener' target='_blank'>
+                <a
+                  className='copyrightOwner'
+                  href={bgImage.link}
+                  rel='noopener'
+                  target='_blank'
+                >
+                  {' '}
                   {bgImage.author}
                 </a>
               </div>
-              <span className='photoName'>{bgImage.name}</span>
             </div>
-            : null
-          }
+          ) : null}
         </div>
         <nav className='shortcutsContainer'>
-          <a href='chrome://settings'><span className='shortcutIcon settingsIcon' title={getLocale('preferencesPageTitle')} /></a>
-          <a href='chrome://bookmarks'><span className='shortcutIcon bookmarksIcon' title={getLocale('bookmarksPageTitle')} /></a>
-          <a href='chrome://history'><span className='shortcutIcon historyIcon' title={getLocale('historyPageTitle')} /></a>
+          <a href='chrome://settings'>
+            <span
+              className='shortcutIcon settingsIcon'
+              title={getLocale('preferencesPageTitle')}
+            />
+          </a>
+          <a href='chrome://bookmarks'>
+            <span
+              className='shortcutIcon bookmarksIcon'
+              title={getLocale('bookmarksPageTitle')}
+            />
+          </a>
+          <a href='chrome://history'>
+            <span
+              className='shortcutIcon historyIcon'
+              title={getLocale('historyPageTitle')}
+            />
+          </a>
         </nav>
       </footer>
     )

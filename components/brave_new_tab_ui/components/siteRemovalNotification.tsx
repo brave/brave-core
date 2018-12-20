@@ -25,7 +25,7 @@ export default class SiteRemovalNotification extends React.Component<Props, {}> 
         <span className='notification' i18n-content='thumbRemoved' />
         <span className='siteRemovalAction' onClick={onUndoIgnoredTopSite} i18n-content='undoRemoved' />
         <span className='siteRemovalAction' onClick={onRestoreAll} i18n-content='restoreAll' />
-        <button className='fa fa-close' onClick={onCloseNotification} i18n-content='close' />
+        <button className='icon-container close' onClick={onCloseNotification} i18n-content='close' />
       </div>
     )
   }
