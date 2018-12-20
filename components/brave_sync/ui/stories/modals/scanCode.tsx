@@ -14,7 +14,6 @@ import {
   ModalTitle,
   ModalSubTitle,
   ScanGrid,
-  QRCodeContainer,
   ThreeColumnButtonGrid,
   ThreeColumnButtonGridCol1,
   ThreeColumnButtonGridCol2
@@ -70,7 +69,7 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
         </ModalHeader>
           <ScanGrid>
             <SyncMobilePicture />
-            <QRCodeContainer><QRCode size='normal' src={qrCodeImage} /></QRCodeContainer>
+            <QRCode size='normal' src={qrCodeImage} />
           </ScanGrid>
           <ThreeColumnButtonGrid>
             <ThreeColumnButtonGridCol1>

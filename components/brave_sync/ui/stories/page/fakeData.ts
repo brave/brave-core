@@ -7,12 +7,12 @@ const data = {
   device1: {
     id: '0',
     name: 'MacOS without the ESC key',
-    lastActive: 'Thu Nov 15 2018 17:27:03 GMT -0200 (Brasilia Summer Time)'
+    lastActive: 'Thu Dec 20 2018'
   },
   device2: {
     id: '1',
     name: 'Windowz machineh',
-    lastActive: 'Thu Nov 15 2018 17:27:03 GMT -0200 (Brasilia Summer Time)'
+    lastActive: 'Thu Dec 20 2018'
   }
 }
 

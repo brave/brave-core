@@ -67,7 +67,7 @@ export default class SyncEnabledContent extends React.PureComponent<{}, State> {
     return [
       {
         content: [
-          { content: <TableRowDevice>{data.device1.name} (main device)</TableRowDevice> },
+          { content: <TableRowDevice>{data.device1.name} (This Device)</TableRowDevice> },
           { content: data.device1.lastActive },
           {
             content: (
@@ -180,14 +180,6 @@ export default class SyncEnabledContent extends React.PureComponent<{}, State> {
             <Toggle id='bookmarks' checked={false} />
             <SwitchLabel htmlFor='bookmarks'>
               {getLocale('bookmarks')}
-            </SwitchLabel>
-            <Toggle id='savedSiteSettings' checked={false} />
-            <SwitchLabel htmlFor='savedSiteSettings'>
-              {getLocale('savedSiteSettings')}
-            </SwitchLabel>
-            <Toggle id='browsingHistory' checked={false} />
-            <SwitchLabel htmlFor='browsingHistory'>
-              {getLocale('browsingHistory')}
             </SwitchLabel>
           </SettingsToggleGrid>
         </SectionBlock>

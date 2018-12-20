@@ -4,10 +4,12 @@
 
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
+import { FullPageStory } from '../../storyUtils'
 
 // Components
 import SyncPage from './page/index'
 
 storiesOf('Feature Components/Sync/Page', module)
+  .addDecorator(FullPageStory)
   .add('Disabled Content', () => <SyncPage disabled={true} />)
   .add('Enabled Content', () => <SyncPage />)
