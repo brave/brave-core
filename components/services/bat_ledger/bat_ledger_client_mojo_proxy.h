@@ -96,6 +96,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       bool excluded, uint64_t windowId) override;
 
  private:
+  bool Connected() const;
+
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void OnRemoveRecurring(const std::string& publisher_key,
       ledger::RecurringRemoveCallback callback) override;
