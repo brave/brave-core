@@ -50,13 +50,14 @@ class RewardsNotificationService {
 
   virtual void AddNotification(RewardsNotificationType type,
                                RewardsNotificationArgs args,
-                               RewardsNotificationID id = "") = 0;
+                               RewardsNotificationID id = "",
+                               bool only_once = false) = 0;
   virtual void DeleteNotification(RewardsNotificationID id) = 0;
   virtual void DeleteAllNotifications() = 0;
   virtual void GetNotification(RewardsNotificationID id) = 0;
   virtual void GetAllNotifications() = 0;
 
-  virtual void ReadRewardsNotifications() = 0;
+  virtual void ReadRewardsNotificationsJSON() = 0;
   virtual void StoreRewardsNotifications() = 0;
 
   void AddObserver(RewardsNotificationServiceObserver* observer);
