@@ -14,13 +14,15 @@ const defaultState = { currentWindowId: -1, activeTabIds: {},
   torrentStateMap: {}, torrentObjMap: {} }
 describe('webtorrent reducer test', () => {
   it('handle the initial state', () => {
-    const state = webtorrentReducer(undefined, tabActions.tabRemoved({ tabId: 1 }))
+    const state = webtorrentReducer(undefined, tabActions.tabRemoved(1))
     expect(state).toEqual(defaultState)
   })
 
   describe('WINDOW_CREATED', () => {
     it('sets currentWindowId if it is the first window', () => {
       const window: chrome.windows.Window = {
+        state: 'normal',
+        type: 'normal',
         id: 1,
         focused: false,
         incognito: false,
@@ -33,6 +35,8 @@ describe('webtorrent reducer test', () => {
 
     it('sets currentWindowId if it is focused', () => {
       const window: chrome.windows.Window = {
+        state: 'normal',
+        type: 'normal',
         id: 2,
         focused: true,
         incognito: false,
@@ -45,6 +49,8 @@ describe('webtorrent reducer test', () => {
 
     it('do not set currentWindowId if either focused or it is the first window', () => {
       const window: chrome.windows.Window = {
+        state: 'normal',
+        type: 'normal',
         id: 1,
         focused: false,
         incognito: false,
@@ -73,6 +79,8 @@ describe('webtorrent reducer test', () => {
   })
 
   const tab: chrome.tabs.Tab = {
+    discarded: false,
+    autoDiscardable: false,
     id: 0,
     index: 2,
     pinned: false,
@@ -94,24 +102,30 @@ describe('webtorrent reducer test', () => {
   const changeInfo = {}
   describe('TAB_UPDATED', () => {
     it('state is unchanged if tab url is not ready', () => {
-      const state = webtorrentReducer(torrentsState,
-        tabActions.tabUpdated(tab.id, changeInfo, tab))
-      expect(state).toEqual(state)
+      if (tab && tab.id) {
+        const state = webtorrentReducer(torrentsState,
+          tabActions.tabUpdated(tab.id, changeInfo, tab))
+        expect(state).toEqual(state)
+      }
     })
 
     it('update currentWindowID if it is not initialized yet', () => {
-      const stateWithoutWindowId = { ...torrentsState, currentWindowId: -1 }
-      const state = webtorrentReducer(stateWithoutWindowId,
-        tabActions.tabUpdated(tab.id, changeInfo, tab))
-      expect(state).toEqual({ ...stateWithoutWindowId, currentWindowId: 0 })
+      if (tab && tab.id) {
+        const stateWithoutWindowId = { ...torrentsState, currentWindowId: -1 }
+        const state = webtorrentReducer(stateWithoutWindowId,
+          tabActions.tabUpdated(tab.id, changeInfo, tab))
+        expect(state).toEqual({ ...stateWithoutWindowId, currentWindowId: 0 })
+      }
     })
 
     it('update activeTabIds if it is not initialized yet for this window', () => {
       const stateWithNoActiveTabIds = { ...torrentsState, activeTabIds: {} }
       const activeTab = { ...tab, active: true }
-      const state = webtorrentReducer(stateWithNoActiveTabIds,
-        tabActions.tabUpdated(activeTab.id, changeInfo, activeTab))
-      expect(state).toEqual({ ...torrentsState, activeTabIds: { 0: 0 } })
+      if (activeTab && activeTab.id) {
+        const state = webtorrentReducer(stateWithNoActiveTabIds,
+          tabActions.tabUpdated(activeTab.id, changeInfo, activeTab))
+        expect(state).toEqual({ ...torrentsState, activeTabIds: { 0: 0 } })
+      }
     })
     // TODO: mock ParseTorrent to test tab url case
   })

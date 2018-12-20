@@ -15,24 +15,7 @@ import {
 describe('rewardsPage component', () => {
   describe('mapStateToProps', () => {
     it('should map the default state', () => {
-      expect(mapStateToProps(rewardsInitialState)).toEqual({
-        rewardsData: {
-          walletCreated: false,
-          walletCreateFailed: false,
-          createdTimestamp: null,
-          enabledMain: false,
-          enabledAds: false,
-          enabledContribute: false,
-          firstLoad: null,
-          contributionMinTime: 8,
-          contributionMinVisits: 1,
-          contributionMonthly: 10,
-          contributionNonVerified: true,
-          contributionVideos: true,
-          donationAbilityYT: true,
-          donationAbilityTwitter: true
-        }
-      })
+      expect(mapStateToProps(rewardsInitialState)).toEqual(rewardsInitialState)
     })
   })
 

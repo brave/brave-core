@@ -9,7 +9,7 @@ import { types } from '../constants/welcome_types'
 
 export const importNowRequested = () => action(types.IMPORT_NOW_REQUESTED)
 
-export const goToTabRequested = (url: URL, target: string) => action(types.GO_TO_TAB_REQUESTED, {
+export const goToTabRequested = (url: string, target: string) => action(types.GO_TO_TAB_REQUESTED, {
   url,
   target
 })

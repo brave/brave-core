@@ -13,7 +13,9 @@ const tab: chrome.tabs.Tab = {
   windowId: 1,
   active: true,
   incognito: false,
-  selected: false
+  selected: false,
+  discarded: false,
+  autoDiscardable: false
 }
 
 const changeInfo: chrome.tabs.TabChangeInfo = {

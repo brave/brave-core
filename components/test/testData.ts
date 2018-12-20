@@ -2,6 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { defaultState as welcomeData } from '../../components/brave_welcome_ui/storage'
+import { defaultState as rewardsData } from '../../components/brave_rewards/resources/ui/storage'
+import { defaultState as adblockData } from '../../components/brave_adblock_ui/storage'
+import { defaultState as syncData } from '../../components/brave_sync/ui/storage'
+
 export class ChromeEvent {
   listeners: Array<() => void>
 
@@ -32,50 +37,10 @@ export const getMockChrome = () => {
   }
 }
 
-export const welcomeInitialState: Welcome.ApplicationState = {
-  welcomeData: {}
-}
+export const welcomeInitialState: Welcome.ApplicationState = { welcomeData }
 
-export const rewardsInitialState: Rewards.ApplicationState = {
-  rewardsData: {
-    walletCreated: false,
-    walletCreateFailed: false,
-    createdTimestamp: null,
-    enabledMain: false,
-    enabledAds: false,
-    enabledContribute: false,
-    firstLoad: null,
-    contributionMinTime: 8,
-    contributionMinVisits: 1,
-    contributionMonthly: 10,
-    contributionNonVerified: true,
-    contributionVideos: true,
-    donationAbilityYT: true,
-    donationAbilityTwitter: true
-  }
-}
+export const rewardsInitialState: Rewards.ApplicationState = { rewardsData }
 
-export const adblockInitialState: AdBlock.ApplicationState = {
-  adblockData: {
-    stats: {
-      numBlocked: 0,
-      regionalAdBlockEnabled: false
-    }
-  }
-}
+export const adblockInitialState: AdBlock.ApplicationState = { adblockData }
 
-export const syncInitialState: Sync.ApplicationState = {
-  syncData: {
-    thisDeviceName: '',
-    devices: [
-      {
-        name: '',
-        id: 0,
-        lastActive: ''
-      }
-    ],
-    isSyncConfigured: false,
-    seedQRImageSource: '',
-    syncWords: ''
-  }
-}
+export const syncInitialState: Sync.ApplicationState = { syncData }

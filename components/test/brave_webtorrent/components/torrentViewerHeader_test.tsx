@@ -21,8 +21,8 @@ describe('torrentViewerHeader component', () => {
           <TorrentViewerHeader
             tabId={tabId}
             torrentId={torrentId}
-            startTorrent={startTorrentMock}
-            stopDownload={stopDownloadMock}
+            onStartTorrent={startTorrentMock}
+            onStopDownload={stopDownloadMock}
           />
         </TestThemeProvider>
       )
@@ -36,8 +36,8 @@ describe('torrentViewerHeader component', () => {
             tabId={tabId}
             torrentId={torrentId}
             torrent={torrentObj}
-            startTorrent={startTorrentMock}
-            stopDownload={stopDownloadMock}
+            onStartTorrent={startTorrentMock}
+            onStopDownload={stopDownloadMock}
           />
         </TestThemeProvider>
       )
