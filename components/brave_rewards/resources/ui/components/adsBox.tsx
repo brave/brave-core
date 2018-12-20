@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 // Components
 import {
   Box,
-  DisabledContent,
+  DisabledContent
 } from 'brave-ui/features/rewards'
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 

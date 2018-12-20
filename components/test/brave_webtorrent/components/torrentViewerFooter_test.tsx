@@ -21,8 +21,6 @@ describe('torrentViewerFooter component', () => {
     })
 
     it('renders the component with privacy notice if no torrent object', () => {
-      const tabId = 123
-      const torrentId = 'id'
       const wrapper = shallow(
         <TorrentViewerFooter />
       )

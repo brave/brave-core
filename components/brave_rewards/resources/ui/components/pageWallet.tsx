@@ -92,7 +92,7 @@ class PageWallet extends React.Component<Props, State> {
         win.document.body.innerText = utils.constructBackupString(backupKey) // this should be text, not HTML
         win.print()
         win.close()
-	chrome.send('brave_rewards.setBackupCompleted')
+        chrome.send('brave_rewards.setBackupCompleted')
       }
     }
   }

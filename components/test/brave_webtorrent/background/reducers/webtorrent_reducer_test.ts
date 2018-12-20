@@ -4,7 +4,6 @@
 
 import { webtorrentReducer } from '../../../../brave_webtorrent/extension/background/reducers/webtorrent_reducer'
 import * as tabActions from '../../../../brave_webtorrent/extension/actions/tab_actions'
-import * as webtorrentActions from '../../../../brave_webtorrent/extension/actions/webtorrent_actions'
 import * as windowActions from '../../../../brave_webtorrent/extension/actions/window_actions'
 import { torrentsState } from '../../testData'
 
@@ -61,7 +60,7 @@ describe('webtorrent reducer test', () => {
     it('entry from activeTabIds should be deleted when window is removed', () => {
       const state = webtorrentReducer(torrentsState,
         windowActions.windowRemoved(0))
-      expect(state.activeTabIds).toEqual({1: 1})
+      expect(state.activeTabIds).toEqual({ 1: 1 })
     })
   })
 
@@ -112,7 +111,7 @@ describe('webtorrent reducer test', () => {
       const activeTab = { ...tab, active: true }
       const state = webtorrentReducer(stateWithNoActiveTabIds,
         tabActions.tabUpdated(activeTab.id, changeInfo, activeTab))
-      expect(state).toEqual({ ...torrentsState, activeTabIds: {0: 0} })
+      expect(state).toEqual({ ...torrentsState, activeTabIds: { 0: 0 } })
     })
     // TODO: mock ParseTorrent to test tab url case
   })

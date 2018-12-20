@@ -4,7 +4,6 @@
 /* global chrome */
 
 import reducers from '../../../../brave_rewards/resources/ui/reducers/index'
-import * as actions from '../../../../brave_rewards/resources/ui/actions/rewards_actions'
 import { types } from '../../../../brave_rewards/resources/ui/constants/rewards_types'
 import { defaultState } from '../../../../brave_rewards/resources/ui/storage'
 
@@ -25,9 +24,9 @@ describe('publishers reducer', () => {
         type: types.ON_CONTRIBUTE_LIST,
         payload: {
           list: [
-            {publisherKey: 'brave.com', percentage: 0, verified: true, excluded: 0, url: 'https://brave.com', name: 'brave.com', id: 'brave.com', provider: '', favicon: ''},
-            {publisherKey: 'test.com', percentage: 0, verified: true, excluded: 0, url: 'https://test.com', name: 'test.com', id: 'test.com', provider: '', favicon: ''},
-            {publisherKey: 'test2.com', percentage: 0, verified: true, excluded: 0, url: 'https://test2.com', name: 'test2.com', id: 'test2.com', provider: '', favicon: ''}
+            { publisherKey: 'brave.com', percentage: 0, verified: true, excluded: 0, url: 'https://brave.com', name: 'brave.com', id: 'brave.com', provider: '', favicon: '' },
+            { publisherKey: 'test.com', percentage: 0, verified: true, excluded: 0, url: 'https://test.com', name: 'test.com', id: 'test.com', provider: '', favicon: '' },
+            { publisherKey: 'test2.com', percentage: 0, verified: true, excluded: 0, url: 'https://test2.com', name: 'test2.com', id: 'test2.com', provider: '', favicon: '' }
           ]
         }
       })
@@ -37,8 +36,8 @@ describe('publishers reducer', () => {
       expectedState.excluded = ['brave.com']
       expectedState.contributeLoad = true
       expectedState.autoContributeList = [
-        {publisherKey: 'test.com', percentage: 0, verified: true, excluded: 0, url: 'https://test.com', name: 'test.com', id: 'test.com', provider: '', favicon: ''},
-        {publisherKey: 'test2.com', percentage: 0, verified: true, excluded: 0, url: 'https://test2.com', name: 'test2.com', id: 'test2.com', provider: '', favicon: ''}
+        { publisherKey: 'test.com', percentage: 0, verified: true, excluded: 0, url: 'https://test.com', name: 'test.com', id: 'test.com', provider: '', favicon: '' },
+        { publisherKey: 'test2.com', percentage: 0, verified: true, excluded: 0, url: 'https://test2.com', name: 'test2.com', id: 'test2.com', provider: '', favicon: '' }
       ]
 
       expect(assertion).toEqual({

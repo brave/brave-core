@@ -18,7 +18,7 @@ describe('wallet reducer', () => {
         return constantDate
       }
     }
-  });
+  })
 
   it('should handle initial state', () => {
     const assertion = reducers(undefined, actions.createWallet())
@@ -66,7 +66,6 @@ describe('wallet reducer', () => {
 
       const expectedState: Rewards.State = { ...defaultState }
       expectedState.walletCreateFailed = true
-
 
       expect(assertion).toEqual({
         rewardsData: expectedState

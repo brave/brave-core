@@ -68,11 +68,11 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
     return devices.map((device: any): Row => {
       const cell: Row = {
         content: [
-          { content:
+          { content: (
             <TableRowDevice>
-              {device.name} {device.id === this.props.syncData.thisDeviceId ? getLocale('thisDevice') : null }
+              {device.name} {device.id === this.props.syncData.thisDeviceId ? getLocale('thisDevice') : null}
             </TableRowDevice>
-          },
+          )},
           { content: device.lastActive },
           {
             content: (
@@ -166,12 +166,14 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
         }
         {
           removeDevice
-            ? <RemoveDeviceModal
-              deviceName={deviceToRemoveName}
-              deviceId={Number(deviceToRemoveId)}
-              actions={actions}
-              onClose={this.onClickRemoveDeviceButton}
+            ? (
+              <RemoveDeviceModal
+                deviceName={deviceToRemoveName}
+                deviceId={Number(deviceToRemoveId)}
+                actions={actions}
+                onClose={this.onClickRemoveDeviceButton}
               />
+            )
             : null
         }
         {

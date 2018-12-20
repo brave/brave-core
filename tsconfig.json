@@ -33,6 +33,10 @@
     "noUnusedLocals": true
   },
   "include": [
-    "./components/definitions/*"
+    "./components/definitions/*",
+    "./components"
+  ],
+  "exclude": [
+    "./components/brave_sync/extension"
   ]
 }

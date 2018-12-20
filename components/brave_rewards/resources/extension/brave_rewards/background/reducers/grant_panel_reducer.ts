@@ -94,7 +94,7 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
               ...state,
               grant
             }
-           chrome.braveRewards.getWalletProperties()
+            chrome.braveRewards.getWalletProperties()
           }
         } else if (properties.status === 6) {
           state = { ...state }
@@ -133,7 +133,7 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
         }
         break
       }
-    }
+  }
 
   return state
 }
