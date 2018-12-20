@@ -19,7 +19,6 @@
 
 using namespace brave_rewards;
 using ::testing::_;
-using ::testing::AtLeast;
 
 class MockRewardsServiceObserver : public RewardsServiceObserver {
  public:

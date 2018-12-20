@@ -2132,4 +2132,16 @@ bool RewardsServiceImpl::Connected() const {
   return bat_ledger_.is_bound();
 }
 
+void RewardsServiceImpl::SetLedgerEnvForTesting() {
+  bat_ledger_service_->SetTesting();
+
+  // this is needed because we are using braveledger_bat_helper::buildURL
+  // directly in BraveRewardsBrowserTest
+  #if defined(OFFICIAL_BUILD)
+  ledger::is_production = true;
+  #else
+  ledger::is_production = false;
+  #endif
+}
+
 }  // namespace brave_rewards

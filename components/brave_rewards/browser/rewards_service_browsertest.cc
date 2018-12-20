@@ -3,7 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
+#include "bat/ledger/ledger.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/brave_rewards/browser/rewards_service_impl.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/vendor/bat-native-ledger/src/bat_helper.h"
 #include "brave/vendor/bat-native-ledger/src/static_values.h"
 #include "chrome/browser/ui/browser.h"
@@ -12,6 +15,8 @@
 #include "content/public/test/browser_test_utils.h"
 #include "google_apis/gaia/mock_url_fetcher_factory.h"
 #include "net/url_request/url_fetcher_delegate.h"
+
+using namespace brave_rewards;
 
 namespace brave_test_resp {
   std::string registrarVK_;
@@ -106,7 +111,9 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     brave::RegisterPathProvider();
     ReadTestData();
-    braveledger_bat_helper::set_ignore_for_testing(true);
+    rewards_service_ = static_cast<RewardsServiceImpl*>(
+        RewardsServiceFactory::GetForProfile(browser()->profile()));
+    rewards_service_->SetLedgerEnvForTesting();
   }
 
   void TearDown() override {
@@ -166,6 +173,9 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(jsResult.ExtractBool());
   }
 
+  RewardsServiceImpl* rewards_service() { return rewards_service_; }
+
+  RewardsServiceImpl* rewards_service_;
   MockURLFetcherFactory<brave_net::BraveURLFetcher> factory;
 };
 

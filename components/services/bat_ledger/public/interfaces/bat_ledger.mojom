@@ -11,6 +11,7 @@ interface BatLedgerService {
   SetProduction(bool isProduction);
   SetReconcileTime(int32 time);
   SetShortRetries(bool short_retries);
+  SetTesting();
 };
 
 interface BatLedger {

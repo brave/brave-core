@@ -154,6 +154,9 @@ class RewardsServiceImpl : public RewardsService,
   void GetAutoContributeProps(
       const GetAutoContributePropsCallback& callback) override;
 
+  // Testing methods
+  void SetLedgerEnvForTesting();
+
  private:
   const extensions::OneShotEvent& ready() const { return ready_; }
   void OnLedgerStateSaved(ledger::LedgerCallbackHandler* handler,

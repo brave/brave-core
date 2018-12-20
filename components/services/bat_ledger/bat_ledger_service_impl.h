@@ -25,6 +25,7 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
     void SetProduction(bool isProduction) override;
     void SetReconcileTime(int32_t time) override;
     void SetShortRetries(bool short_retries) override;
+    void SetTesting() override;
 
   private:
     const std::unique_ptr<service_manager::ServiceContextRef> service_ref_;
