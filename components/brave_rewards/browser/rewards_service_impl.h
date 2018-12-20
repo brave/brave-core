@@ -319,6 +319,8 @@ class RewardsServiceImpl : public RewardsService,
       const GetAutoContributePropsCallback& callback,
       const std::string& json_props);
 
+  bool Connected() const;
+
   Profile* profile_;  // NOT OWNED
   mojo::AssociatedBinding<bat_ledger::mojom::BatLedgerClient>
     bat_ledger_client_binding_;
