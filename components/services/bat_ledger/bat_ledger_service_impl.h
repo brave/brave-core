@@ -23,6 +23,8 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
                 mojom::BatLedgerAssociatedRequest bat_ledger) override;
 
     void SetProduction(bool isProduction) override;
+    void SetReconcileTime(int32_t time) override;
+    void SetShortRetries(bool short_retries) override;
 
   private:
     const std::unique_ptr<service_manager::ServiceContextRef> service_ref_;

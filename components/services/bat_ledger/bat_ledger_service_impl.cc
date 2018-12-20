@@ -29,8 +29,18 @@ void BatLedgerServiceImpl::Create(
 }
 
 void BatLedgerServiceImpl::SetProduction(bool isProduction) {
-  DCHECK(!initialized_ || ledger::is_production == isProduction);
+  DCHECK(!initialized_);
   ledger::is_production = isProduction;
+}
+
+void BatLedgerServiceImpl::SetReconcileTime(int32_t time) {
+  DCHECK(!initialized_);
+  ledger::reconcile_time = time;
+}
+
+void BatLedgerServiceImpl::SetShortRetries(bool short_retries) {
+  DCHECK(!initialized_);
+  ledger::short_retries = short_retries;
 }
 
 } // namespace bat_ledger

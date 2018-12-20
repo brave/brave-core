@@ -9,6 +9,8 @@ interface BatLedgerService {
   Create(associated BatLedgerClient bat_ledger_client,
          associated BatLedger& bat_ledger);
   SetProduction(bool isProduction);
+  SetReconcileTime(int32 time);
+  SetShortRetries(bool short_retries);
 };
 
 interface BatLedger {

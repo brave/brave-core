@@ -74,6 +74,7 @@ class RewardsServiceImpl : public RewardsService,
   void Shutdown() override;
 
   void Init();
+  void StartLedger();
   void CreateWallet() override;
   void FetchWalletProperties() override;
   void FetchGrant(const std::string& lang, const std::string& paymentId) override;
@@ -144,7 +145,8 @@ class RewardsServiceImpl : public RewardsService,
   bool CheckImported() override;
   void SetBackupCompleted() override;
 
-  static void HandleFlags(const std::string& options);
+  static void HandleFlags(const std::string& options,
+      const bat_ledger::mojom::BatLedgerServicePtr& bat_ledger_service);
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
   void OnDonate(const std::string& publisher_key, int amount, bool recurring,
@@ -320,6 +322,7 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& json_props);
 
   bool Connected() const;
+  void ConnectionClosed();
 
   Profile* profile_;  // NOT OWNED
   mojo::AssociatedBinding<bat_ledger::mojom::BatLedgerClient>
