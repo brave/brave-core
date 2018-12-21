@@ -13,7 +13,7 @@ import {
   Paragraph,
   ModalHeader,
   // ModalIcon,
-  ModalTitle,
+  Title,
   ModalContent,
   TwoColumnButtonGrid,
   OneColumnButtonGrid
@@ -33,11 +33,10 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, {}
     return (
       <Modal id='removeMainDeviceModal' onClose={onClose} size='small'>
         <ModalHeader>
-          <ModalTitle level={1}>{getLocale('remove')} “{mainDeviceName}” {getLocale('thisSyncChain')}?</ModalTitle>
+          <Title level={1}>{getLocale('remove')} “{mainDeviceName}” {getLocale('thisSyncChain')}?</Title>
         </ModalHeader>
         <ModalContent>
           <Paragraph>{getLocale('thisDeviceRemovalDescription')}</Paragraph>
-          <Paragraph>{getLocale('joinSyncChain')}</Paragraph>
         </ModalContent>
         <TwoColumnButtonGrid>
             <OneColumnButtonGrid>

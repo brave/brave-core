@@ -38,7 +38,6 @@ const locale: any = {
   tryAgain: 'Please try again.',
   // [modal] Remove Main Device
   thisDeviceRemovalDescription: 'Local device data will remain intact on all devices. Other devices in this sync chain will remain synced.',
-  joinSyncChain: 'To join a sync chain again, choose “I have a Sync Code”.',
   // [modal] Remove Other Device
   otherDeviceRemovalDescription: 'Removing the device from the Sync Chain will not clear previously synced data from the device.',
   // [modal] Reset Sync
