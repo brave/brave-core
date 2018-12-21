@@ -53,6 +53,12 @@ class SettingsPage extends React.Component<Props, {}> {
     this.actions.checkImported()
     this.actions.getAdsData()
     this.actions.getCurrentReport()
+
+    // one time check (legacy fix)
+    // more info here https://github.com/brave/brave-browser/issues/2172
+    if (!this.props.rewardsData.ui.addressCheck) {
+      this.actions.getAddresses()
+    }
   }
 
   componentWillUnmount () {
