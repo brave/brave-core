@@ -559,6 +559,25 @@ void AdsServiceImpl::ShowNotification(
 
   display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
                             *notification);
+
+  uint32_t timer_id = next_timer_id();
+
+  timers_[timer_id] = std::make_unique<base::OneShotTimer>();
+  timers_[timer_id]->Start(FROM_HERE,
+      base::TimeDelta::FromSeconds(120),
+      base::BindOnce(
+          &AdsServiceImpl::NotificationTimedOut, AsWeakPtr(),
+              timer_id, notification_id));
+}
+
+void AdsServiceImpl::NotificationTimedOut(uint32_t timer_id,
+                                          const std::string& notification_id) {
+  timers_.erase(timer_id);
+  if (notification_ids_.find(notification_id) != notification_ids_.end()) {
+    display_service_->Close(NotificationHandler::Type::BRAVE_ADS,
+                            notification_id);
+    OnClose(profile_, GURL(), notification_id, false, base::OnceClosure());
+  }
 }
 
 void AdsServiceImpl::Save(const std::string& name,
@@ -724,7 +743,8 @@ void AdsServiceImpl::OnClose(Profile* profile,
     }
   }
 
-  std::move(completed_closure).Run();
+  if (completed_closure)
+    std::move(completed_closure).Run();
 }
 
 void AdsServiceImpl::OpenSettings(Profile* profile,
@@ -938,19 +958,24 @@ void AdsServiceImpl::EventLog(const std::string& json) {
   VLOG(0) << "AdsService Event Log: " << json;
 }
 
-uint32_t AdsServiceImpl::SetTimer(const uint64_t time_offset) {
+uint32_t AdsServiceImpl::next_timer_id() {
   if (next_timer_id_ == std::numeric_limits<uint32_t>::max())
     next_timer_id_ = 1;
   else
     ++next_timer_id_;
+  return next_timer_id_;
+}
 
-  timers_[next_timer_id_] = std::make_unique<base::OneShotTimer>();
-  timers_[next_timer_id_]->Start(FROM_HERE,
+uint32_t AdsServiceImpl::SetTimer(const uint64_t time_offset) {
+  uint32_t timer_id = next_timer_id();
+
+  timers_[timer_id] = std::make_unique<base::OneShotTimer>();
+  timers_[timer_id]->Start(FROM_HERE,
       base::TimeDelta::FromSeconds(time_offset),
       base::BindOnce(
-          &AdsServiceImpl::OnTimer, AsWeakPtr(), next_timer_id_));
+          &AdsServiceImpl::OnTimer, AsWeakPtr(), timer_id));
 
-  return next_timer_id_;
+  return timer_id;
 }
 
 void AdsServiceImpl::KillTimer(uint32_t timer_id) {
