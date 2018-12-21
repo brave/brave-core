@@ -47,8 +47,8 @@ class Banner extends React.Component<Props, State> {
 
     let amounts = [1, 5, 10]
 
-    if (publisher && publisher.amount) {
-      amounts = publisher.amount
+    if (publisher && publisher.amounts && publisher.amounts.length) {
+      amounts = publisher.amounts
     }
 
     return amounts.map((value: number) => {
