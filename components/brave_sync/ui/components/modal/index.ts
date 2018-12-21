@@ -41,6 +41,7 @@ export const TwoColumnButtonGrid = styled<{}, 'footer'>('footer')`
   align-items: center;
   grid-template-columns: 1fr auto;
   grid-gap: 20px;
+  margin-top: 10px;
 `
 
 export const ThreeColumnButtonGrid = styled<{}, 'div'>('div')`

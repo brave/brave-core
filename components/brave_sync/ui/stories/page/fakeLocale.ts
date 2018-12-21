@@ -43,9 +43,9 @@ const locale: any = {
   // [modal] Reset Sync
   warning: 'Warning!',
   removing: 'Removing',
-  deleteSyncChain: 'will delete this sync chain.',
-  deleteSyncDescription: 'Your local data on this device will be retained but all data in Brave’s Sync cache will be deleted.',
-  startSyncChainHowTo: 'You can start a new sync chain or sync with a new device by entering its sync chain code.',
+  deleteSyncChain: 'will delete the sync chain.',
+  deleteSyncDescription: 'Data currently synced will be retained but all data in Brave’s Sync cache will be deleted. You will need to start a new sync chain to sync device data again.',
+  deleteSyncChainButton: 'Delete Sync Chain',
   areYouSure: 'Are you sure?',
   // [modal] Add New Chain
   scanThisCode: 'Now, using Brave on your mobile device, scan this code.',

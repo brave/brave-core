@@ -12,12 +12,10 @@ import AlertBox from '../../../../src/components/popupModals/alertBox'
 // Feature-specific components
 import {
   ModalHeader,
-  ModalTitle,
-  ModalSubTitle,
+  Title,
   ModalContent,
   TwoColumnButtonGrid,
   OneColumnButtonGrid,
-  Title,
   Paragraph
 } from '../../../../src/features/sync'
 
@@ -68,13 +66,11 @@ export default class ResetSyncModal extends React.PureComponent<Props, State> {
         }
         <ModalHeader>
           <div>
-            <ModalSubTitle highlight={true}>{getLocale('warning')}</ModalSubTitle>
-            <ModalTitle level={1}>{getLocale('removing')} “{mainDeviceName}” {getLocale('deleteSyncChain')}</ModalTitle>
+            <Title level={1}>{getLocale('removing')} “{mainDeviceName}” {getLocale('deleteSyncChain')}</Title>
           </div>
         </ModalHeader>
         <ModalContent>
           <Paragraph>{getLocale('deleteSyncDescription')}</Paragraph>
-          <Paragraph>{getLocale('startSyncChainHowTo')}</Paragraph>
         </ModalContent>
         <TwoColumnButtonGrid>
             <OneColumnButtonGrid>
@@ -91,7 +87,7 @@ export default class ResetSyncModal extends React.PureComponent<Props, State> {
               type='warn'
               size='medium'
               onClick={this.onSetupSync}
-              text={getLocale('remove')}
+              text={getLocale('deleteSyncChainButton')}
             />
           </TwoColumnButtonGrid>
       </Modal>
