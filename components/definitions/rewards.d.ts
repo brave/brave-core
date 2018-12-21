@@ -69,6 +69,8 @@ declare namespace Rewards {
     actions: any
   }
 
+  export type GrantStatus = 'wrongPosition' | 'grantGone' | 'generalError' | 'grantAlreadyClaimed' | number | null
+
   export interface Grant {
     promotionId?: string
     altcurrency?: string
@@ -76,7 +78,7 @@ declare namespace Rewards {
     expiryTime: number
     captcha?: string
     hint?: string
-    status?: 'wrongPosition' | 'grantGone' | 'generalError' | number | null
+    status?: GrantStatus
   }
 
   export interface WalletProperties {
