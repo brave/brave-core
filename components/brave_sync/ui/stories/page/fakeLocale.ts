@@ -10,7 +10,7 @@ const locale: any = {
   wordCount: 'Word Count:',
   ok: 'Ok',
   cancel: 'Cancel',
-  thisSyncChain: 'from this sync chain',
+  thisSyncChain: 'from Sync Chain',
   // Enabled Content
   braveSync: 'Brave Sync',
   syncChainDevices: 'The device list below includes all devices in your sync chain. Each device can be managed from any other device.',
@@ -40,7 +40,7 @@ const locale: any = {
   thisDeviceRemovalDescription: 'Local device data will remain intact on all devices. Other devices in this sync chain will remain synced.',
   joinSyncChain: 'To join a sync chain again, choose “I have a Sync Code”.',
   // [modal] Remove Other Device
-  otherDeviceRemovalDescription: 'Note: Removing this device from this sync chain does not clear previously synced data from the device.',
+  otherDeviceRemovalDescription: 'Removing the device from the Sync Chain will not clear previously synced data from the device.',
   // [modal] Reset Sync
   warning: 'Warning!',
   removing: 'Removing',

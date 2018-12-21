@@ -12,7 +12,7 @@ import Modal from '../../../../src/components/popupModals/modal'
 import {
   Paragraph,
   ModalHeader,
-  ModalTitle,
+  Title,
   ModalContent,
   TwoColumnButtonGrid,
   OneColumnButtonGrid
@@ -32,7 +32,7 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, {}
     return (
       <Modal id='removeMainDeviceModal' onClose={onClose} size='small'>
         <ModalHeader>
-          <ModalTitle level={1}>{getLocale('remove')} “{otherDeviceName}” {getLocale('thisSyncChain')}</ModalTitle>
+          <Title level={1}>{getLocale('remove')} “{otherDeviceName}” {getLocale('thisSyncChain')}</Title>
         </ModalHeader>
         <ModalContent>
         <Paragraph>{getLocale('otherDeviceRemovalDescription')}</Paragraph>

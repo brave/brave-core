@@ -6,9 +6,6 @@ import styled from '../../../theme'
 import Heading from '../../../components/text/heading'
 
 export const ModalHeader = styled<{}, 'header'>('header')`
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-gap: 32px;
   margin-bottom: 8px;
 `
 
@@ -44,7 +41,6 @@ export const TwoColumnButtonGrid = styled<{}, 'footer'>('footer')`
   align-items: center;
   grid-template-columns: 1fr auto;
   grid-gap: 20px;
-  margin-top: 20px;
 `
 
 export const ThreeColumnButtonGrid = styled<{}, 'div'>('div')`
