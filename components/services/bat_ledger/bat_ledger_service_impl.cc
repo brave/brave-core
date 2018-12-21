@@ -9,6 +9,14 @@
 #include "brave/vendor/bat-native-ledger/src/bat_helper.h"
 #include "mojo/public/cpp/bindings/strong_associated_binding.h"
 
+namespace {
+
+bool testing() {
+  return ledger::is_testing;
+}
+
+}
+
 namespace bat_ledger {
 
 BatLedgerServiceImpl::BatLedgerServiceImpl(
@@ -29,23 +37,36 @@ void BatLedgerServiceImpl::Create(
   initialized_ = true;
 }
 
-void BatLedgerServiceImpl::SetProduction(bool isProduction) {
-  DCHECK(!initialized_);
-  ledger::is_production = isProduction;
+void BatLedgerServiceImpl::SetProduction(bool is_production) {
+  DCHECK(!initialized_ || testing());
+  ledger::is_production = is_production;
 }
 
 void BatLedgerServiceImpl::SetReconcileTime(int32_t time) {
-  DCHECK(!initialized_);
+  DCHECK(!initialized_ || testing());
   ledger::reconcile_time = time;
 }
 
 void BatLedgerServiceImpl::SetShortRetries(bool short_retries) {
-  DCHECK(!initialized_);
+  DCHECK(!initialized_ || testing());
   ledger::short_retries = short_retries;
 }
 
 void BatLedgerServiceImpl::SetTesting() {
+  ledger::is_testing = true;
   braveledger_bat_helper::set_ignore_for_testing(true);
+}
+
+void BatLedgerServiceImpl::GetProduction(GetProductionCallback callback) {
+  std::move(callback).Run(ledger::is_production);
+}
+
+void BatLedgerServiceImpl::GetReconcileTime(GetReconcileTimeCallback callback) {
+  std::move(callback).Run(ledger::reconcile_time);
+}
+
+void BatLedgerServiceImpl::GetShortRetries(GetShortRetriesCallback callback) {
+  std::move(callback).Run(ledger::short_retries);
 }
 
 } // namespace bat_ledger

@@ -314,8 +314,17 @@ void RewardsServiceImpl::Init() {
 }
 
 void RewardsServiceImpl::StartLedger() {
-  content::ServiceManagerConnection::GetForProcess()->GetConnector()
-    ->BindInterface(bat_ledger::mojom::kServiceName, &bat_ledger_service_);
+  bat_ledger::mojom::BatLedgerClientAssociatedPtrInfo client_ptr_info;
+  bat_ledger_client_binding_.Bind(mojo::MakeRequest(&client_ptr_info));
+
+  content::ServiceManagerConnection* connection =
+          content::ServiceManagerConnection::GetForProcess();
+  if (!connection) {
+    return;
+  }
+
+  connection->GetConnector()->BindInterface(
+      bat_ledger::mojom::kServiceName, &bat_ledger_service_);
   bat_ledger_service_.set_connection_error_handler(
       base::Bind(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
 
@@ -326,7 +335,7 @@ void RewardsServiceImpl::StartLedger() {
   #else
     isProduction = false;
   #endif
-  bat_ledger_service_->SetProduction(isProduction);
+  SetProduction(isProduction);
 
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
@@ -335,12 +344,10 @@ void RewardsServiceImpl::StartLedger() {
     std::string options = command_line.GetSwitchValueASCII(switches::kRewards);
 
     if (!options.empty()) {
-      HandleFlags(options, bat_ledger_service_);
+      HandleFlags(options);
     }
   }
 
-  bat_ledger::mojom::BatLedgerClientAssociatedPtrInfo client_ptr_info;
-  bat_ledger_client_binding_.Bind(mojo::MakeRequest(&client_ptr_info));
   bat_ledger_service_->Create(std::move(client_ptr_info),
       MakeRequest(&bat_ledger_));
 
@@ -2025,8 +2032,7 @@ std::unique_ptr<ledger::LogStream> RewardsServiceImpl::Log(
 }
 
 // static
-void RewardsServiceImpl::HandleFlags(const std::string& options,
-    const bat_ledger::mojom::BatLedgerServicePtr& bat_ledger_service) {
+void RewardsServiceImpl::HandleFlags(const std::string& options) {
   std::vector<std::string> flags = base::SplitString(
       options, ",", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
@@ -2059,7 +2065,7 @@ void RewardsServiceImpl::HandleFlags(const std::string& options,
         is_production = true;
       }
 
-      bat_ledger_service->SetProduction(is_production);
+      SetProduction(is_production);
       continue;
     }
 
@@ -2068,7 +2074,7 @@ void RewardsServiceImpl::HandleFlags(const std::string& options,
       bool success = base::StringToInt(value, &reconcile_int);
 
       if (success && reconcile_int > 0) {
-        bat_ledger_service->SetReconcileTime(reconcile_int);
+        SetReconcileTime(reconcile_int);
       }
 
       continue;
@@ -2084,7 +2090,7 @@ void RewardsServiceImpl::HandleFlags(const std::string& options,
         short_retries = false;
       }
 
-      bat_ledger_service->SetShortRetries(short_retries);
+      SetShortRetries(short_retries);
     }
   }
 }
@@ -2142,6 +2148,32 @@ void RewardsServiceImpl::SetLedgerEnvForTesting() {
   #else
   ledger::is_production = false;
   #endif
+}
+
+void RewardsServiceImpl::GetProduction(const GetProductionCallback& callback) {
+  bat_ledger_service_->GetProduction(callback);
+}
+
+void RewardsServiceImpl::GetReconcileTime(
+    const GetReconcileTimeCallback& callback) {
+  bat_ledger_service_->GetReconcileTime(callback);
+}
+
+void RewardsServiceImpl::GetShortRetries(
+    const GetShortRetriesCallback& callback) {
+  bat_ledger_service_->GetShortRetries(callback);
+}
+
+void RewardsServiceImpl::SetProduction(bool production) {
+  bat_ledger_service_->SetProduction(production);
+}
+
+void RewardsServiceImpl::SetReconcileTime(int32_t time) {
+  bat_ledger_service_->SetReconcileTime(time);
+}
+
+void RewardsServiceImpl::SetShortRetries(bool short_retries) {
+  bat_ledger_service_->SetShortRetries(short_retries);
 }
 
 }  // namespace brave_rewards

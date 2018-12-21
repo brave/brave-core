@@ -62,6 +62,10 @@ namespace brave_rewards {
 class PublisherInfoDatabase;
 class RewardsNotificationServiceImpl;
 
+using GetProductionCallback = base::Callback<void(bool)>;
+using GetReconcileTimeCallback = base::Callback<void(int32_t)>;
+using GetShortRetriesCallback = base::Callback<void(bool)>;
+
 class RewardsServiceImpl : public RewardsService,
                             public ledger::LedgerClient,
                             public net::URLFetcherDelegate,
@@ -145,8 +149,14 @@ class RewardsServiceImpl : public RewardsService,
   bool CheckImported() override;
   void SetBackupCompleted() override;
 
-  static void HandleFlags(const std::string& options,
-      const bat_ledger::mojom::BatLedgerServicePtr& bat_ledger_service);
+  void HandleFlags(const std::string& options);
+  void SetProduction(bool production);
+  void GetProduction(const GetProductionCallback& callback);
+  void SetReconcileTime(int32_t time);
+  void GetReconcileTime(const GetReconcileTimeCallback& callback);
+  void SetShortRetries(bool short_retries);
+  void GetShortRetries(const GetShortRetriesCallback& callback);
+
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
   void OnDonate(const std::string& publisher_key, int amount, bool recurring,

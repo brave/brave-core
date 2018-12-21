@@ -65,7 +65,7 @@ class RewardsServiceTest : public testing::Test {
     profile_ = CreateBraveRewardsProfile(temp_dir_.GetPath());
     ASSERT_TRUE(profile_.get() != NULL);
     rewards_service_ = static_cast<RewardsServiceImpl*>(
-        RewardsServiceFactory::GetInstance()->GetForProfile(profile()));
+        RewardsServiceFactory::GetForProfile(profile()));
     ASSERT_TRUE(RewardsServiceFactory::GetInstance() != NULL);
     ASSERT_TRUE(rewards_service() != NULL);
     observer_.reset(new MockRewardsServiceObserver);
@@ -91,85 +91,6 @@ class RewardsServiceTest : public testing::Test {
   std::unique_ptr<MockRewardsServiceObserver> observer_;
   base::ScopedTempDir temp_dir_;
 };
-
-TEST_F(RewardsServiceTest, HandleFlags) {
-  // Staging - true
-  ledger::is_production = true;
-  ASSERT_TRUE(ledger::is_production);
-  rewards_service()->HandleFlags("staging=true");
-  ASSERT_FALSE(ledger::is_production);
-
-  // Staging - 1
-  ledger::is_production = true;
-  ASSERT_TRUE(ledger::is_production);
-  RewardsServiceImpl::HandleFlags("staging=1");
-  ASSERT_FALSE(ledger::is_production);
-
-  // Staging - false
-  ledger::is_production = true;
-  ASSERT_TRUE(ledger::is_production);
-  RewardsServiceImpl::HandleFlags("staging=false");
-  ASSERT_TRUE(ledger::is_production);
-
-  // Staging - random
-  ledger::is_production = true;
-  ASSERT_TRUE(ledger::is_production);
-  RewardsServiceImpl::HandleFlags("staging=werwe");
-  ASSERT_TRUE(ledger::is_production);
-
-  // Reconcile interval - positive number
-  ledger::reconcile_time = 0;
-  ASSERT_EQ(ledger::reconcile_time, 0);
-  RewardsServiceImpl::HandleFlags("reconcile-interval=10");
-  ASSERT_EQ(ledger::reconcile_time, 10);
-
-  // Reconcile interval - negative number
-  ledger::reconcile_time = 0;
-  ASSERT_EQ(ledger::reconcile_time, 0);
-  RewardsServiceImpl::HandleFlags("reconcile-interval=-1");
-  ASSERT_EQ(ledger::reconcile_time, 0);
-
-  // Reconcile interval - string
-  ledger::reconcile_time = 0;
-  ASSERT_EQ(ledger::reconcile_time, 0);
-  RewardsServiceImpl::HandleFlags("reconcile-interval=sdf");
-  ASSERT_EQ(ledger::reconcile_time, 0);
-
-  // Short retries - on
-  ledger::short_retries = false;
-  ASSERT_FALSE(ledger::short_retries);
-  RewardsServiceImpl::HandleFlags("short-retries=true");
-  ASSERT_TRUE(ledger::short_retries);
-
-  // Short retries - off
-  ledger::short_retries = true;
-  ASSERT_TRUE(ledger::short_retries);
-  RewardsServiceImpl::HandleFlags("short-retries=false");
-  ASSERT_FALSE(ledger::short_retries);
-
-  // Mixture of flags
-  ASSERT_FALSE(ledger::short_retries);
-  ASSERT_TRUE(ledger::is_production);
-  ASSERT_EQ(ledger::reconcile_time, 0);
-  RewardsServiceImpl::HandleFlags(
-      "staging=true,short-retries=true,reconcile-interval=10");
-  ASSERT_TRUE(ledger::short_retries);
-  ASSERT_FALSE(ledger::is_production);
-  ASSERT_EQ(ledger::reconcile_time, 10);
-
-  // Wrong input
-  ledger::short_retries = false;
-  ledger::reconcile_time = 0;
-  ledger::is_production = true;
-  ASSERT_FALSE(ledger::short_retries);
-  ASSERT_TRUE(ledger::is_production);
-  ASSERT_EQ(ledger::reconcile_time, 0);
-  RewardsServiceImpl::HandleFlags(
-      "staging=,shortretries=true,reconcile-interval");
-  ASSERT_FALSE(ledger::short_retries);
-  ASSERT_TRUE(ledger::is_production);
-  ASSERT_EQ(ledger::reconcile_time, 0);
-}
 
 TEST_F(RewardsServiceTest, OnWalletProperties) {
   // We always need to call observer as we report errors back even when we have null pointer

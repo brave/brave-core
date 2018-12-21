@@ -27,6 +27,10 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
     void SetShortRetries(bool short_retries) override;
     void SetTesting() override;
 
+    void GetProduction(GetProductionCallback callback) override;
+    void GetReconcileTime(GetReconcileTimeCallback callback) override;
+    void GetShortRetries(GetShortRetriesCallback callback) override;
+
   private:
     const std::unique_ptr<service_manager::ServiceContextRef> service_ref_;
     bool initialized_;
