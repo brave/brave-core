@@ -78,20 +78,25 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       }
       break
     case types.RECOVER_WALLET:
-      if (!action.payload.key || action.payload.key.length === 0) {
-        let ui = state.ui
-        ui.walletRecoverySuccess = false
+      {
+        let key = action.payload.key
+        key = key.trim()
 
-        state = {
-          ...state,
-          ui
+        if (!key || key.length === 0) {
+          let ui = state.ui
+          ui.walletRecoverySuccess = false
+
+          state = {
+            ...state,
+            ui
+          }
+
+          break
         }
 
+        chrome.send('brave_rewards.recoverWallet', [key])
         break
       }
-
-      chrome.send('brave_rewards.recoverWallet', [action.payload.key])
-      break
     case types.ON_RECOVER_WALLET_DATA:
       {
         state = { ...state }
