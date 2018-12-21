@@ -33,6 +33,7 @@ LEDGER_EXPORT enum Result {
   NOT_ENOUGH_FUNDS = 15,
   TIP_ERROR = 16,
   CORRUPTED_WALLET = 17,
+  GRANT_ALREADY_CLAIMED = 18,
   // some more useful result codes should go here
 };
 

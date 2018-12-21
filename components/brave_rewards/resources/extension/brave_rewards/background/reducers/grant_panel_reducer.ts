@@ -119,6 +119,17 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
               grant
             }
           }
+        } else if (properties.status === 18) {
+          state = { ...state }
+          if (state.grant) {
+            let grant = state.grant
+            grant.status = 'grantAlreadyClaimed'
+
+            state = {
+              ...state,
+              grant
+            }
+          }
         } else {
           state = { ...state }
           if (state.grant) {

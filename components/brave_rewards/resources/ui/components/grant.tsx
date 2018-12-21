@@ -82,6 +82,22 @@ class Grant extends React.Component<Props, State> {
       )
     }
 
+    if (grant.status === 'grantAlreadyClaimed') {
+      return (
+        <GrantWrapper
+          onClose={this.onFinish}
+          title={getLocale('grantGoneTitle')}
+          text={''}
+        >
+          <GrantError
+            buttonText={getLocale('grantGoneButton')}
+            text={getLocale('grantAlreadyClaimedText')}
+            onButtonClick={this.onFinish}
+          />
+        </GrantWrapper>
+      )
+    }
+
     if (grant.status === 'generalError') {
       return (
         <GrantWrapper

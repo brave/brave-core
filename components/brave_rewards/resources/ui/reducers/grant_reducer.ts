@@ -125,6 +125,17 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
               grant
             }
           }
+        } else if (properties.status === 18) {
+          state = { ...state }
+          if (state.grant) {
+            let grant = state.grant
+            grant.status = 'grantAlreadyClaimed'
+
+            state = {
+              ...state,
+              grant
+            }
+          }
         } else {
           state = { ...state }
           if (state.grant) {
