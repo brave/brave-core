@@ -170,6 +170,10 @@ class AdsServiceImpl : public AdsService,
   void OnCreate();
   void OnInitialize();
   void MaybeStart(bool restart);
+  void NotificationTimedOut(uint32_t timer_id,
+                            const std::string& notification_id);
+
+  uint32_t next_timer_id();
 
   // are we still connected to the ads lib
   bool connected();
