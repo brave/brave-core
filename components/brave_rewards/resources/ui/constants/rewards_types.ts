@@ -47,5 +47,6 @@ export const enum types {
   GET_ADS_DATA = '@@rewards/GET_ADS_DATA',
   ON_ADS_DATA = '@@rewards/ON_ADS_DATA',
   ON_ADS_SETTING_SAVE = '@@rewards/ON_ADS_SETTING_SAVE',
-  GET_CURRENT_REPORT = '@@rewards/GET_CURRENT_REPORT'
+  GET_CURRENT_REPORT = '@@rewards/GET_CURRENT_REPORT',
+  GET_RECONCILE_STAMP = '@@rewards/GET_RECONCILE_STAMP'
 }
