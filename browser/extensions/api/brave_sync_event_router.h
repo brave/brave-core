@@ -57,6 +57,8 @@ class BraveSyncEventRouter {
 
   void NeedSyncWords(const std::string& seed);
 
+  void ClearOrderMap();
+
   void LoadClient();
 
 private:
