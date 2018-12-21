@@ -13,21 +13,22 @@ const locale: any = {
   thisSyncChain: 'from this sync chain',
   // Enabled Content
   braveSync: 'Brave Sync',
-  syncChainDevices: 'Devices in your sync chain',
+  syncChainDevices: 'The device list below includes all devices in your sync chain. Each device can be managed from any other device.',
   deviceName: 'device name',
-  addedOn: 'added on',
-  addDevice: 'add device',
-  viewSyncCode: 'view sync code',
-  dataToSync: 'Data to sync from',
+  addedOn: 'Date Added',
+  addDevice: 'Add New Device',
+  viewSyncCode: 'View Sync Code',
+  syncSettings: 'Brave Sync Settings',
+  syncSettingsDescription: 'Manage what information you would like to sync between devices. These settings only effect this device.',
   bookmarks: 'Bookmarks',
   savedSiteSettings: 'Saved Site Settings',
   browsingHistory: 'Browsing History',
   leaveSyncChain: 'Leave Sync Chain',
   // Disabled Content
-  syncTitle: 'Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on various devices.',
-  syncDescription: 'When you start a new sync chain, a new sync code is created. You will use this same code across your devices to link them together.',
-  startSyncChain: 'Start a new sync chain',
-  enterSyncChainCode: 'Enter a sync chain code',
+  syncTitle: 'Brave Sync Setup',
+  syncDescription: 'To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.',
+  startSyncChain: 'Start a New Sync Chain',
+  enterSyncChainCode: 'I Have a Sync Code',
   confirmSyncCode: 'Confirm Sync Code',
   // [modal] Enter Sync Code
   enterSyncCode: 'Enter a sync code',
@@ -37,7 +38,7 @@ const locale: any = {
   tryAgain: 'Please try again.',
   // [modal] Remove Main Device
   thisDeviceRemovalDescription: 'Local device data will remain intact on all devices. Other devices in this sync chain will remain synced.',
-  joinSyncChain: 'To join a sync chain again, choose “Enter a sync chain code”.',
+  joinSyncChain: 'To join a sync chain again, choose “I have a Sync Code”.',
   // [modal] Remove Other Device
   otherDeviceRemovalDescription: 'Note: Removing this device from this sync chain does not clear previously synced data from the device.',
   // [modal] Reset Sync

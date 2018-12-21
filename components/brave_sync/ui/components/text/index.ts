@@ -6,14 +6,14 @@ import styled from '../../../theme'
 import Heading from '../../../components/text/heading'
 
 export const Title = styled(Heading)`
-  font-weight: 500;
+  font-weight: 600;
   font-size: 24px;
   margin: 0 0 4px 0;
   line-height: 1.6;
 `
 
 export const SubTitle = styled(Heading)`
-  font-weight: 500;
+  font-weight: 600;
   font-size: 20px;
   margin: 16px 0 12px 0;
 `
