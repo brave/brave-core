@@ -70,6 +70,7 @@ export interface Props {
   logoBgColor?: CSS.Color
   showUnVerifiedNotice?: boolean
   learnMoreNotice?: string
+  addFundsLink?: string
 }
 
 interface State {
@@ -211,7 +212,8 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       name,
       isMobile,
       showUnVerifiedNotice,
-      learnMoreNotice
+      learnMoreNotice,
+      addFundsLink
     } = this.props
 
     return (
@@ -284,6 +286,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                 onAmountSelection={onAmountSelection}
                 donateType={'big'}
                 currentAmount={currentAmount}
+                addFundsLink={addFundsLink}
               >
                 {
                   !recurringDonation

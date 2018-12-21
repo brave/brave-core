@@ -40,6 +40,7 @@ export interface Props {
   donateType: DonateType
   children?: React.ReactNode
   isMobile?: boolean
+  addFundsLink?: string
 }
 
 interface State {
@@ -93,7 +94,17 @@ export default class Donate extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { id, donationAmounts, actionText, children, title, currentAmount, donateType, isMobile } = this.props
+    const {
+      id,
+      donationAmounts,
+      actionText,
+      children,
+      title,
+      currentAmount,
+      donateType,
+      isMobile,
+      addFundsLink
+    } = this.props
     const disabled = parseInt(currentAmount, 10) === 0
 
     return (
@@ -134,7 +145,9 @@ export default class Donate extends React.PureComponent<Props, State> {
               <StyledIconFace>
                 <EmoteSadIcon />
               </StyledIconFace>
-              <StyledFundsText>{getLocale('notEnoughTokens')} <a href='#'>{getLocale('addFunds')}</a>.</StyledFundsText>
+              <StyledFundsText>
+                {getLocale('notEnoughTokens')} <a href={addFundsLink} target={'_blank'}>{getLocale('addFunds')}</a>.
+              </StyledFundsText>
             </StyledFunds>
             : null
         }

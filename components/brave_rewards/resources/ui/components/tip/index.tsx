@@ -30,6 +30,7 @@ export interface Props {
   onClose: () => void
   id?: string
   title?: string
+  addFundsLink?: string
 }
 
 export default class Tip extends React.PureComponent<Props, {}> {
@@ -56,7 +57,7 @@ export default class Tip extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, title, balance, donationAmounts, allow, onClose, provider, currentAmount } = this.props
+    const { id, title, balance, donationAmounts, allow, onClose, provider, currentAmount, addFundsLink } = this.props
 
     return (
       <StyledWrapper id={id}>
@@ -73,6 +74,7 @@ export default class Tip extends React.PureComponent<Props, {}> {
           onDonate={this.onDonate}
           donateType={'small'}
           currentAmount={currentAmount}
+          addFundsLink={addFundsLink}
         >
           <StyledTipWrapper>
             <StyledAllowText>{getLocale('allowTip')} {provider}</StyledAllowText>
