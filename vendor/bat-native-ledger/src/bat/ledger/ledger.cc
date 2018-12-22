@@ -116,7 +116,8 @@ PublisherBanner::PublisherBanner(const PublisherBanner& info) :
     logo(info.logo),
     amounts(info.amounts),
     provider(info.provider),
-    social(info.social) {}
+    social(info.social),
+    verified(info.verified) {}
 
 PublisherBanner::~PublisherBanner() {}
 
