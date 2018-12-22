@@ -42,7 +42,7 @@ class ContributeBox extends React.Component<Props, State> {
   getContributeRows = (list: Rewards.Publisher[]) => {
     return list.map((item: Rewards.Publisher) => {
       let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
-      if (item.favIcon) {
+      if (item.favIcon && item.verified) {
         faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
       }
 

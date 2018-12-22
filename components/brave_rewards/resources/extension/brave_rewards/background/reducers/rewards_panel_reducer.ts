@@ -89,7 +89,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         if (publisher && !publisher.publisher_key) {
           delete publishers[id]
         } else {
-          publishers[id] = payload.publisher
+          publishers[id] = publisher
         }
 
         state = {

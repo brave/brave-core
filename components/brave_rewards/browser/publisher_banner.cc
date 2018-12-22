@@ -18,7 +18,8 @@ namespace brave_rewards {
     logo(""),
     amounts(std::vector<int>()),
     provider(""),
-    social(std::map<std::string, std::string>()) {}
+    social(std::map<std::string, std::string>()),
+    verified(false) {}
 
   PublisherBanner::~PublisherBanner() { }
 
@@ -32,6 +33,7 @@ namespace brave_rewards {
     amounts = properties.amounts;
     provider = properties.provider;
     social = properties.social;
+    verified = properties.verified;
   }
 
 }  // namespace brave_rewards
