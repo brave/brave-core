@@ -293,7 +293,7 @@ export class Panel extends React.Component<Props, State> {
     let faviconUrl
     if (publisher && publisher.url) {
       faviconUrl = `chrome://favicon/size/48@2x/${publisher.url}`
-      if (publisher.favicon_url) {
+      if (publisher.favicon_url && publisher.verified) {
         faviconUrl = `chrome://favicon/size/48@2x/${publisher.favicon_url}`
       }
     }

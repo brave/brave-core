@@ -24,6 +24,7 @@ namespace brave_rewards {
     std::vector<int> amounts;
     std::string provider;
     std::map<std::string, std::string> social;
+    bool verified;
   };
 
 }  // namespace brave_rewards
