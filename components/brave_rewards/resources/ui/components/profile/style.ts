@@ -27,9 +27,23 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   font-family: Poppins, sans-serif;
 `
 
-export const StyledImageWrapper = styled<{}, 'div'>('div')`
+export const StyledImageWrapper = styled<Partial<Props>, 'div'>('div')`
   flex-basis: 30px;
   position: relative;
+
+  ${p => p.type === 'big'
+    ? css`
+      height: 48px;
+    `
+    : ''
+  };
+
+  ${p => p.type !== 'big'
+    ? css`
+      height: 24px;
+    `
+    : ''
+  };
 `
 
 export const StyledImage = styled<Partial<Props>, 'img'>('img')`
@@ -134,6 +148,13 @@ export const StyledInlineVerified = styled<{}, 'span'>('span')`
   padding-top: 2px;
   margin-left: -2px;
   color: #392DD1;
+`
+
+export const StyledInlineUnVerified = styled<{}, 'span'>('span')`
+  width: 19px;
+  padding-top: 2px;
+  margin-left: -2px;
+  color: #D0D4D9;
 `
 
 export const StyledSubTitle = styled<{}, 'span'>('span')`

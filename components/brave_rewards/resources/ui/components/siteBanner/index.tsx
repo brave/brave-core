@@ -27,7 +27,11 @@ import {
   StyledSocialWrapper,
   StyledEmptyBox,
   StyledLogoImage,
-  StyledCheckbox
+  StyledCheckbox,
+  StyledNoticeWrapper,
+  StyledNoticeIcon,
+  StyledNoticeText,
+  StyledNoticeLink
 } from './style'
 
 import Donate from '../donate/index'
@@ -37,7 +41,8 @@ import {
   CloseStrokeIcon,
   TwitterColorIcon,
   YoutubeColorIcon,
-  TwitchColorIcon
+  TwitchColorIcon,
+  AlertCircleIcon
 } from '../../../components/icons'
 
 export type Social = {type: SocialType, url: string}
@@ -63,6 +68,8 @@ export interface Props {
   onClose?: () => void
   isMobile?: boolean
   logoBgColor?: CSS.Color
+  showUnVerifiedNotice?: boolean
+  learnMoreNotice?: string
 }
 
 interface State {
@@ -77,9 +84,15 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
     }
   }
 
-  getLogo (logo: string | undefined, domain: string) {
+  getLogo (logo: string | undefined, domain: string, name: string | undefined) {
+    let letter = domain && domain.substring(0, 1) || ''
+
+    if (name) {
+      letter = name.substring(0, 1)
+    }
+
     return !logo
-      ? <StyledLogoText isMobile={this.props.isMobile}>{(domain && domain.substring(0,1)) || ''}</StyledLogoText>
+      ? <StyledLogoText isMobile={this.props.isMobile}>{letter}</StyledLogoText>
       : <StyledLogoImage bg={logo} />
   }
 
@@ -196,7 +209,9 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       logoBgColor,
       currentAmount,
       name,
-      isMobile
+      isMobile,
+      showUnVerifiedNotice,
+      learnMoreNotice
     } = this.props
 
     return (
@@ -227,13 +242,26 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                   padding={!logo}
                   bg={logoBgColor}
                 >
-                  {this.getLogo(logo, domain)}
+                  {this.getLogo(logo, domain, name)}
                 </StyledLogoBorder>
               </StyledLogoWrapper>
               <StyledTextWrapper isMobile={isMobile}>
                 <StyledSocialWrapper isMobile={isMobile}>
                   {this.getSocial(social)}
                 </StyledSocialWrapper>
+                {
+                  showUnVerifiedNotice
+                  ? <StyledNoticeWrapper>
+                    <StyledNoticeIcon>
+                      <AlertCircleIcon/>
+                    </StyledNoticeIcon>
+                    <StyledNoticeText>
+                      <b>{getLocale('siteBannerNoticeNote')}</b> {getLocale('siteBannerNoticeText')}
+                      <StyledNoticeLink href={learnMoreNotice} target={'_blank'}>{getLocale('unVerifiedTextMore')}</StyledNoticeLink>
+                    </StyledNoticeText>
+                  </StyledNoticeWrapper>
+                  : null
+                }
                 <StyledTitle isMobile={isMobile}>
                   {this.getTitle(title)}
                 </StyledTitle>

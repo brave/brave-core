@@ -51,9 +51,12 @@ const donationAmounts = [
 storiesOf('Feature Components/Rewards/Other/Desktop', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
-  .add('Box', withState({ checked: false, toggle: true }, (store) => {
+  .add('Box', withState({ checked: false, toggle: true, settings: false }, (store) => {
     const onToggle = () => {
       store.set({ checked: !store.state.checked })
+    }
+    const onSettingsToggle = () => {
+      store.set({ settings: !store.state.settings })
     }
     return (
       <div style={{ width: '595px' }}>
@@ -69,6 +72,8 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
         }
         onToggle={onToggle}
         settingsChild={<div>Settings content</div>}
+        settingsOpened={store.state.settings}
+        onSettingsClick={onSettingsToggle}
       >
         <div>Some content</div>
       </Box>
@@ -180,6 +185,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
             verified={boolean('Verified', false)}
             provider={select('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
             src={bart}
+            showUnVerifiedIcon={boolean('Show unverified icon', false)}
           />
         </div>
       )

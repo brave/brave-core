@@ -169,6 +169,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   -ms-flex-preferred-size: 30px;
   flex-basis: 30px;
   position: relative;
+  height: 48px;
 }
 
 .c4 {
@@ -256,6 +257,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
       >
         <div
           className="c3"
+          type="big"
         >
           <img
             className="c4"

@@ -29,6 +29,7 @@ exports[`Profile tests basic tests matches the snapshot 1`] = `
   -ms-flex-preferred-size: 30px;
   flex-basis: 30px;
   position: relative;
+  height: 24px;
 }
 
 .c2 {
@@ -79,6 +80,7 @@ exports[`Profile tests basic tests matches the snapshot 1`] = `
 >
   <div
     className="c1"
+    type="small"
   >
     <img
       className="c2"

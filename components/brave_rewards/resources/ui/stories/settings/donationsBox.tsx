@@ -24,7 +24,8 @@ const doNothing = () => {
 type Check = {yt: boolean, tw: boolean, inst: boolean}
 
 interface State {
-  check: Check
+  check: Check,
+  settings: boolean
 }
 
 class DonationsBox extends React.Component<{}, State> {
@@ -35,7 +36,8 @@ class DonationsBox extends React.Component<{}, State> {
         yt: true,
         tw: false,
         inst: false
-      }
+      },
+      settings: false
     }
   }
 
@@ -122,6 +124,10 @@ class DonationsBox extends React.Component<{}, State> {
     )
   }
 
+  onSettingsToggle = () => {
+    this.setState({ settings: !this.state.settings })
+  }
+
   render () {
     return (
       <Box
@@ -130,6 +136,8 @@ class DonationsBox extends React.Component<{}, State> {
         description={locale.donationDesc}
         attachedAlert={this.donationAlertChild()}
         settingsChild={this.donationSettingsChild()}
+        settingsOpened={this.state.settings}
+        onSettingsClick={this.onSettingsToggle}
       >
         <List title={locale.donationTotal}>
           <Tokens value={'21.0'} converted={'7.00'} />

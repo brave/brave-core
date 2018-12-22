@@ -21,7 +21,10 @@ import {
   StyledSelectWrapper,
   StyledGrid,
   StyledColumn,
-  StyleToggleTips
+  StyleToggleTips,
+  StyledNoticeWrapper,
+  StyledNoticeLink,
+  StyledChangeButton
 } from './style'
 
 // Components
@@ -55,6 +58,10 @@ export interface Props {
   onToggleTips: () => void
   onAmountChange: () => void
   onIncludeInAuto: () => void
+  showUnVerified?: boolean
+  showChangeSetting?: boolean
+  moreLink?: string
+  onChangeSetting?: () => void
 }
 
 export default class WalletPanel extends React.PureComponent<Props, {}> {
@@ -69,6 +76,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
           provider={this.props.platform}
           src={this.props.publisherImg}
           verified={this.props.isVerified}
+          showUnVerifiedIcon={!this.props.isVerified && this.props.showUnVerified}
         />
       </StyledWrapper>
     )
@@ -156,13 +164,31 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
       attentionScore,
       tipsEnabled,
       donationAction,
-      toggleTips
+      toggleTips,
+      showUnVerified,
+      isVerified,
+      moreLink,
+      showChangeSetting,
+      onChangeSetting
     } = this.props
 
     return (
       <StyledWrapper>
         <StyledContainer id={id}>
           {this.publisherInfo()}
+          {
+            !isVerified && showUnVerified
+            ? <StyledNoticeWrapper>
+              {getLocale('unVerifiedText')}
+              <StyledNoticeLink href={moreLink} target={'_blank'}> {getLocale('unVerifiedTextMore')}</StyledNoticeLink>
+              {
+                showChangeSetting
+                ? <StyledChangeButton onClick={onChangeSetting}>{getLocale('changeSettingsButton')}</StyledChangeButton>
+                : null
+              }
+            </StyledNoticeWrapper>
+            : null
+          }
           <StyledScoreWrapper>
             <StyledGrid>
               <StyledColumn size={'5'}>

@@ -219,12 +219,9 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
       </div>
       <div
         className="c11"
-        open={false}
       >
         <button
           className="c12"
-          onClick={[Function]}
-          open={false}
         >
           <svg
             aria-hidden="true"

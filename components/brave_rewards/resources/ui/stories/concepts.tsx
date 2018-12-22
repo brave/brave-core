@@ -115,6 +115,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
                   url: 'https://www.twitch.tv/duckduckgo'
                 }
               ]}
+              showUnVerifiedNotice={boolean('Show unverified notice', false)}
             />
           </div>
           : null

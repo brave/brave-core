@@ -14,10 +14,11 @@ import {
   StyledProvider,
   StyledProviderWrap,
   StyledInlineVerified,
-  StyledVerifiedText
+  StyledVerifiedText,
+  StyledInlineUnVerified
 } from './style'
 import { getLocale } from '../../../helpers'
-import { VerifiedFillIcon } from '../../../components/icons'
+import { VerifiedFillIcon, UnVerifiedIcon } from '../../../components/icons'
 
 export type Provider = 'twitter' | 'youtube' | 'twitch'
 
@@ -29,6 +30,7 @@ export interface Props {
   provider?: Provider
   verified?: boolean
   tableCell?: boolean
+  showUnVerifiedIcon?: boolean
 }
 
 /*
@@ -56,11 +58,11 @@ export default class Profile extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, type, provider, src, title, verified, tableCell } = this.props
+    const { id, type, provider, src, title, verified, tableCell, showUnVerifiedIcon } = this.props
 
     return (
       <StyledWrapper id={id}>
-        <StyledImageWrapper>
+        <StyledImageWrapper type={type}>
           <StyledImage src={this.getSrc(src)} type={type} />
           {
             verified && type === 'small'
@@ -82,7 +84,11 @@ export default class Profile extends React.PureComponent<Props, {}> {
             ? <StyledProviderWrap>
               <StyledInlineVerified><VerifiedFillIcon /></StyledInlineVerified> <StyledVerifiedText>{getLocale('verifiedPublisher')}</StyledVerifiedText>
             </StyledProviderWrap>
-            : null
+            : showUnVerifiedIcon
+              ? <StyledProviderWrap>
+                <StyledInlineUnVerified><UnVerifiedIcon /></StyledInlineUnVerified> <StyledVerifiedText>{getLocale('unVerifiedPublisher')}</StyledVerifiedText>
+              </StyledProviderWrap>
+              : null
           }
         </StyledContent>
       </StyledWrapper>

@@ -134,6 +134,8 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
           donationAction={doNothing}
           onAmountChange={doNothing}
           onIncludeInAuto={doNothing}
+          showUnVerified={boolean('Show unverified content', true)}
+          showChangeSetting={boolean('Show change setting', true)}
         />
       </div>
     )

@@ -40,28 +40,15 @@ export interface Props {
   children?: React.ReactNode
   testId?: string
   type: Type
-}
-
-interface State {
-  settingsOpened: boolean
+  onSettingsClick?: () => void
+  settingsOpened?: boolean
 }
 
 /*
   TODO
   - add fade effect
  */
-export default class Box extends React.PureComponent<Props, State> {
-  constructor (props: Props) {
-    super(props)
-    this.state = {
-      settingsOpened: false
-    }
-  }
-
-  settingsClick = () => {
-    this.setState({ settingsOpened: !this.state.settingsOpened })
-  }
-
+export default class Box extends React.PureComponent<Props, {}> {
   getSettingsTitle = (title: string) => {
     return `${title} ${getLocale('settings')}`
   }
@@ -79,7 +66,9 @@ export default class Box extends React.PureComponent<Props, State> {
       description,
       type,
       children,
-      testId
+      testId,
+      settingsOpened,
+      onSettingsClick
     } = this.props
 
     const isDisabled = (toggle && !checked) || (!toggle && disabledContent)
@@ -91,7 +80,7 @@ export default class Box extends React.PureComponent<Props, State> {
           hasAlert={!!attachedAlert}
         >
           <StyledFlip>
-            <StyledContentWrapper open={!this.state.settingsOpened}>
+            <StyledContentWrapper open={!settingsOpened}>
               <StyledLeft>
                 <StyledTitle type={type} checked={checked}>{title}</StyledTitle>
               </StyledLeft>
@@ -115,7 +104,7 @@ export default class Box extends React.PureComponent<Props, State> {
                     id={'brave-ads-tip'}
                     content={this.getSettingsTitle(title)}
                   >
-                    <StyledSettingsIcon float={'right'} onClick={this.settingsClick}>
+                    <StyledSettingsIcon float={'right'} onClick={onSettingsClick}>
                       <SettingsIcon />
                     </StyledSettingsIcon>
                   </Tooltip>
@@ -130,8 +119,8 @@ export default class Box extends React.PureComponent<Props, State> {
                 }
               </StyledContent>
             </StyledContentWrapper>
-            <StyledSettingsWrapper open={this.state.settingsOpened}>
-              <StyledSettingsClose onClick={this.settingsClick} open={this.state.settingsOpened}>
+            <StyledSettingsWrapper open={settingsOpened}>
+              <StyledSettingsClose onClick={onSettingsClick} open={settingsOpened}>
                 <CloseStrokeIcon />
               </StyledSettingsClose>
               <StyledSettingsTitle>

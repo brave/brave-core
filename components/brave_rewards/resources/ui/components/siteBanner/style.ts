@@ -229,3 +229,34 @@ export const StyledCheckbox = styled<StyleProps, 'div'>('div')`
   padding-left: ${p => p.isMobile ? 40 : 0}px;
   margin: ${p => p.isMobile ? '15px auto 5px auto' : '15px 0 5px'};
 `
+export const StyledNoticeWrapper = styled<{}, 'div'>('div')`
+  background: #fff;
+  border: 1px solid rgba(155, 157, 192, 0);
+  border-radius: 4px;
+  width: 90%;
+  margin: 10px 0 18px;
+  padding: 7px 15px;
+  display: flex;
+`
+export const StyledNoticeIcon = styled<{}, 'div'>('div')`
+  width: 39px;
+  height: 39px;
+  color: #00AEFF;
+  margin: -2px 6px 0 0;
+`
+export const StyledNoticeText = styled<{}, 'div'>('div')`
+  flex: 1;
+  color: #67667D;
+  font-size: 12px;
+  font-family: ${p => p.theme.fontFamily.body};
+  letter-spacing: 0;
+  line-height: 18px;
+`
+export const StyledNoticeLink = styled<{}, 'a'>('a')`
+  color: #0095FF;
+  font-family: ${p => p.theme.fontFamily.body};
+  font-weight: bold;
+  display: inline-block;
+  text-decoration: none;
+  margin-left: 4px;
+`

@@ -35,6 +35,7 @@ const doNothing = () => {
 interface State {
   contributeToggle: boolean
   modalContribute: boolean
+  settings: boolean
 }
 
 class ContributeBox extends React.Component<{}, State> {
@@ -42,7 +43,8 @@ class ContributeBox extends React.Component<{}, State> {
     super(props)
     this.state = {
       contributeToggle: true,
-      modalContribute: false
+      modalContribute: false,
+      settings: false
     }
   }
 
@@ -171,6 +173,10 @@ class ContributeBox extends React.Component<{}, State> {
     this.setState({ modalContribute: true })
   }
 
+  onSettingsToggle = () => {
+    this.setState({ settings: !this.state.settings })
+  }
+
   render () {
     return (
       <Box
@@ -182,6 +188,8 @@ class ContributeBox extends React.Component<{}, State> {
         settingsChild={this.contributeSettingsChild()}
         disabledContent={this.contributeDisabled()}
         onToggle={this.onContributeToggle}
+        settingsOpened={this.state.settings}
+        onSettingsClick={this.onSettingsToggle}
       >
         {
           this.state.modalContribute
