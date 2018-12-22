@@ -85,6 +85,8 @@ class BraveSyncClient {
   virtual void OnExtensionInitialized() = 0;
 
   virtual void OnSyncEnabledChanged() = 0;
+
+  virtual void ClearOrderMap() = 0;
 };
 
 } // namespace brave_sync

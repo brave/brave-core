@@ -51,6 +51,7 @@ class MockBraveSyncClient : public BraveSyncClient {
   MOCK_METHOD1(NeedBytesFromSyncWords, void(const std::string& words));
   MOCK_METHOD0(OnExtensionInitialized, void());
   MOCK_METHOD0(OnSyncEnabledChanged, void());
+  MOCK_METHOD0(ClearOrderMap, void());
 };
 
 std::unique_ptr<Profile> CreateBraveSyncProfile(const base::FilePath& path);

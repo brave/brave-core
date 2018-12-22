@@ -827,6 +827,7 @@ void BookmarkChangeProcessor::SendUnsynced(
       jslib_const::SyncRecordType_BOOKMARKS, records);
     records.clear();
   }
+  sync_client_->ClearOrderMap();
 }
 
 void BookmarkChangeProcessor::InitialSync() {}

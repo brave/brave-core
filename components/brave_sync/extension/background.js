@@ -60,7 +60,6 @@ chrome.braveSync.onSendSyncRecords.addListener(function(category_name, records) 
   if (category_name == 'BOOKMARKS') {
     fixupSyncRecordsArrayExtensionToBrowser(records);
     chrome.braveSync.resolvedSyncRecords(category_name, records);
-    orderMap = {};
   }
 });
 
@@ -82,6 +81,10 @@ chrome.braveSync.onLoadClient.addListener(function() {
   LoadJsLibScript();
 });
 
+chrome.braveSync.onClearOrderMap.addListener(function() {
+  orderMap = {};
+});
+
 chrome.braveSync.extensionInitialized();
 console.log("chrome.braveSync.extensionInitialized");
 
@@ -96,6 +99,7 @@ function getOrder(record) {
           orderMap[record.objectId] = order;
         getBookmarkOrderCallback = null;
       }
+
       var prevOrder = record.bookmark.prevOrder;
       var parentOrder = record.bookmark.parentOrder;
       if (!prevOrder && orderMap[record.bookmark.prevObjectId])
