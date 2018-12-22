@@ -33,6 +33,9 @@ export const getMockChrome = () => {
       onStartup: new ChromeEvent(),
       onMessageExternal: new ChromeEvent(),
       onConnectExternal: new ChromeEvent()
+    },
+    braveRewards: {
+      getPublisherData: (id: number, url: string, favicon: string) => undefined
     }
   }
 }

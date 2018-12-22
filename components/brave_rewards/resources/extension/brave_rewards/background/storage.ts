@@ -7,7 +7,7 @@ import { debounce } from '../../../../../common/debounce'
 
 const keyName = 'rewards-panel-data'
 
-const defaultState: RewardsExtension.State = {
+export const defaultState: RewardsExtension.State = {
   walletCreated: false,
   walletCreateFailed: false,
   publishers: {},
