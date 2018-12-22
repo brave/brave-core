@@ -23,6 +23,7 @@ namespace brave_rewards {
     std::string logo;
     std::vector<int> amounts;
     std::map<std::string, std::string> social;
+    bool verified;
   };
 
 }  // namespace brave_rewards

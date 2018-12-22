@@ -25,6 +25,7 @@ declare namespace RewardsDonate {
     logo: string
     amount: number[],
     social: Record<string, string>
+    verified: boolean
   }
 
   export interface WalletProperties {

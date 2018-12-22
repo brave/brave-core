@@ -1369,6 +1369,7 @@ void RewardsServiceImpl::OnPublisherBanner(std::unique_ptr<ledger::PublisherBann
   new_banner.logo = banner->logo;
   new_banner.amounts = banner->amounts;
   new_banner.social = banner->social;
+  new_banner.verified = banner->verified;
 
   for (auto& observer : observers_)
     observer.OnPublisherBanner(this, new_banner);

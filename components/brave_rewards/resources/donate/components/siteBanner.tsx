@@ -123,6 +123,10 @@ class Banner extends React.Component<Props, State> {
       if (internalFavicon.test(publisher.logo)) {
         logo = `chrome://favicon/size/160@2x/${publisher.logo}`
       }
+
+      if (!publisher.verified) {
+        logo = ''
+      }
     }
 
     // TODO we need to use title and not publisherKey for domain for media publishers

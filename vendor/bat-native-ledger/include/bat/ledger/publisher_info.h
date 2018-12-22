@@ -91,6 +91,7 @@ LEDGER_EXPORT struct PublisherBanner {
   std::string logo;
   std::vector<int> amounts;
   std::map<std::string, std::string> social;
+  bool verified;
 };
 
 LEDGER_EXPORT struct PublisherInfo {
