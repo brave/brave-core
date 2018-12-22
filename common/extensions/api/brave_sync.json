@@ -288,6 +288,11 @@
         "type": "function",
         "description": "Browser informs extension page to load js sync library.",
         "parameters": []
+      },
+      {
+        "name": "onClearOrderMap",
+        "type": "function",
+        "description": "Browser informs extension page all portions of bookmarks are sent, so it is time to clear the order map"
       }
     ],
     "functions": [

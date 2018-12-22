@@ -253,6 +253,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ResetClearMeta) {
   AddSimpleHierarchy(&folder1, &node_a, &node_b, &node_c);
 
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
+  EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 
   EXPECT_TRUE(HasAnySyncMetaInfo(folder1));
@@ -291,6 +292,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ResetPreserveMeta) {
   AddSimpleHierarchy(&folder1, &node_a, &node_b, &node_c);
 
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
+  EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 
   EXPECT_TRUE(HasAnySyncMetaInfo(folder1));
@@ -333,6 +335,7 @@ void BraveBookmarkChangeProcessorTest::BookmarkAddedImpl() {
   using brave_sync::jslib::SyncRecord;
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
       ContainsRecord(SyncRecord::Action::A_CREATE, "https://a.com/"))).Times(1);
+  EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 }
 
@@ -353,6 +356,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkDeleted) {
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
       ContainsRecord(SyncRecord::Action::A_DELETE, "https://a.com/"))).Times(1);
   model()->Remove(nodes.at(0));
+  EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
   EXPECT_FALSE(GetDeletedNodeRoot()->IsVisible());
 }
@@ -370,6 +374,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkModified) {
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
       ContainsRecord(SyncRecord::Action::A_UPDATE, "https://a-m.com/"))).Times(1);
   model()->SetURL(nodes.at(0), GURL("https://a-m.com/"));
+  EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 }
 
@@ -390,6 +395,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkMovedInFolder) {
   EXPECT_EQ(intex_c, 2);
 
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
+  EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 
   EXPECT_TRUE(HasAnySyncMetaInfo(folder1));
@@ -414,6 +420,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkMovedInFolder) {
   // BookmarkNodeMoved does not reset "last_send_time" so SendUnsynced
   // ignores order change untill unsynced_send_interval passes,
   // so here below unsynced_send_interval is 0
+  EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(0));
 }
 
@@ -444,6 +451,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, DISABLED_MoveNodesBetweenDirs) {
   // Send all created objects
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
       RecordsNumber(4))).Times(1);
+  EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 }
 
@@ -466,10 +474,12 @@ TEST_F(BraveBookmarkChangeProcessorTest, DeleteFolderWithNodes) {
 
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
       RecordsNumber(4))).Times(1);
+  EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 
   model()->Remove(folder1);
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",_)).Times(1);
+  EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 }
 
