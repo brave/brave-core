@@ -151,3 +151,5 @@ export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS
   key,
   value
 })
+
+export const getAddresses = () => action(types.GET_ADDRESSES)
