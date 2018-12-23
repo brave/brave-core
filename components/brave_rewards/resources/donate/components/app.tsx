@@ -35,6 +35,7 @@ export class App extends React.Component<Props, {}> {
         onClose={this.onClose}
         success={true}
         domain={publisher && publisher.publisherKey}
+        logo={publisher && publisher.logo}
       />
     )
   }
