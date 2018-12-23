@@ -847,15 +847,10 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="9125982323641182972">Získajte inteligentné doplnky Googlu v Brave</translation>
 <translation id="3149880132460839085">Synchronizácia Chromu</translation>
 <translation id="3796902758602917951">Záložky, história, heslá a ďalšie nastavenia budú synchronizované s vaším účtom Brave Software a budete ich môcť použiť na všetkých zariadeniach</translation>
-<translation id="1371301976177520732">Záložky, heslá, história a ďalší obsah vo všetkých vašich zariadeniach</translation>
 <translation id="3111958038206230539">Prispôsobenie služieb Brave Software</translation>
 <translation id="295992419959320001">Brave Software môže používať vašu históriu prehliadania na prispôsobenie Vyhľadávania, reklám a ďalších služieb Brave Software</translation>
-<translation id="4205523465226408285">Viac osobných služieb Googlu, napríklad lepšie návrhy stránok</translation>
 <translation id="3070156078150543526">Brave Software môže používať vašu históriu prehliadania na prispôsobenie Vyhľadávania a ďalších služieb Brave Software</translation>
-<translation id="2532167245710864499">Zlepšite Brave a jeho zabezpečenie odosielaním informácií o systéme a využití do Googlu</translation>
 <translation id="2709453993673701466">Chcete pred zapnutím spravovať možnosti synchronizácie a prispôsobenia? Prejdite do <ph name="BEGIN_LINK"/>Nastavení<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">V <ph name="BEGIN_LINK"/>Nastaveniach<ph name="END_LINK"/> môžete kedykoľvek prispôsobiť, aké informácie Brave Software zhromažďuje.</translation>
-<translation id="6035247993547372482">Brave Software môže použiť obsah na weboch, ktoré navštívite, aktivitu prehliadača a interakcie na prispôsobenie Chromu a ďalších služieb Googlu, ako sú Prekladač, Vyhľadávanie a reklamy. Túto voľbu môžete prispôsobiť v Nastaveniach.</translation>
 <translation id="741204030948306876">Áno, súhlasím</translation>
 <translation id="2497852260688568942">Synchronizácia je zakázaná správcom</translation>
 <translation id="562935524653278697">Váš správca zakázal synchronizáciu záložiek, histórie, hesiel a ďalších nastavení.</translation>
@@ -2636,12 +2631,7 @@ s ostatnými, a to všetko na jednom mieste.<ph name="MARKUP_9"/></translation
 <translation id="5535941515421698170">Zároveň z tohto zariadenia odstrániť existujúce dáta</translation>
 <translation id="7243632151880336635">Vymazať a odhlásiť sa</translation>
 <translation id="6406506848690869874">Synchronizácia</translation>
-<translation id="1397854323885047133">Synchronizácia a prispôsobenie</translation>
-<translation id="1136155683023653803">Heslá, záložky, história a ďalší obsah sa synchronizujú do vášho účtu.</translation>
-<translation id="3267417306184901318">Dáta prehliadania a aktivita sa synchronizujú do vášho účtu Brave Software</translation>
-<translation id="1123187597739372905">Zobraziť nastavenia synchronizácie</translation>
 <translation id="5428209950370661546">Ďalšie služby Googlu</translation>
-<translation id="2055016640093734678">Zobraziť nastavenia služieb Googlu</translation>
 <translation id="7956662517480676674">Synchronizácia a služby Googlu</translation>
 <translation id="2453021845418314664">Rozšírené nastavenia synchronizácie</translation>
 <translation id="2731700343119398978">Počkajte...</translation>

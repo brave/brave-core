@@ -3,17 +3,22 @@
 <translationbundle lang="uk">
 <translation id="3333887201479867589">Винагороди Brave</translation>
 <translation id="7942180974165298215">Блокування реклами Brave</translation>
-<translation id="3149880132460839085">Синхронізація Brave</translation>
+<translation id="6406506848690869874">Синхронізація Brave</translation>
 <translation id="120759863357279975">У Brave немає дозволу на <ph name="EXTENSION_NAME">$1</ph> extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>".</translation>
 <translation id="7450557937477381864">Закрийте Chrome</translation>
 <translation id="7008934821596358692">Для завершення імпортування закрийте всі вікна Chrome.</translation>
+<translation id="5735465527556462863">Закрити Brave (стара версія)</translation>
+<translation id="7737066986958447692">Для завершення імпорту закрийте всі вікна Brave (стара версія).</translation>
 <translation id="6447842834002726250">Файли cookies</translation>
 <translation id="4983925687993168579">Статистика</translation>
+<translation id="6165477144235978006">Платежі Brave</translation>
+<translation id="3489524616427966890">Відкриті вікна та вкладки</translation>
 <translation id="9173846700806833701">Widevine не встановлено</translation>
 <translation id="2433569048491784801">Widevine не встановлено.</translation>
 <translation id="3699882589215410581">Встановіть та запустіть Widevine</translation>
 <translation id="8410111618231938546">Google Widevineє частиною коду Digital Rights Management (DRM), яким ми у Brave Software не володіємо і не можемо перевіряти. Код Google Widevine завантажується з серверів Google, не з наших серверів. Він завантажується тільки якщо ви увімкнете таку опцію. Ми не заохочуємо використання DRM, але ми поважаємо вибір користувача і беремо до уваги те, що деякі з користувачів Brave захочуть використовувати сервіси, які його вимагають. 
 Встановлюючи це розширення, ви погоджуєтесь з Умовами використання Google Widevine. Ви погоджуєтесь з тим, що Brave не несе жодної відповідальності за будь-яку шкоду або збитки, що настали у зв'язку з вашим використаням Google Widevine.</translation>
+<translation id="6499845530162974140">Brave (стара версія)</translation>
 <translation id="3198814717959506569">Імпортовано з Brave</translation>
 <translation id="453977518730680921">Автоматичне відтворення аудіо та відео</translation>
 <translation id="410351446219883937">Автоматичне відтворення</translation>
@@ -33,6 +38,7 @@
 <translation id="4703780849509456860">Відкрити посилання у Приватному вікні з Tor</translation>
 <translation id="3488584642074079080">Відкрити посилання у Приватному вікні Brave з Tor</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="2515126961943087659">Сервіс реклами з використанням BAT</translation>
 <translation id="7372129767729198111">Налаштування щитів Brave за замовчуванням</translation>
 <translation id="8029018702721078742">Контроль реклами</translation>
 <translation id="3544462288910360084">Управління файлами cookie</translation>
@@ -53,4 +59,5 @@
 <translation id="1822560017823072927">Публічний та приватний інтерфейси за замовчуванням</translation>
 <translation id="5825943197137337319">Тільки загальнодоступний інтерфейс за замовчуванням</translation>
 <translation id="1689062823386843231">Вимкнути non-proxied UDP</translation>
+<translation id="6645631466045614531">Доступ до синхронізації Brave за допомогою</translation>
 </translationbundle>

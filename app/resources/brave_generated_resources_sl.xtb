@@ -3,18 +3,23 @@
 <translationbundle lang="sl">
 <translation id="3333887201479867589">Storitev Brave Rewards</translation>
 <translation id="7942180974165298215">Blokiranje oglasov Brave</translation>
-<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="6406506848690869874">Brave Sync</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ni dovoljena v brskalniku Brave.</translation>
 <translation id="7450557937477381864">Zapri Chrome</translation>
 <translation id="7008934821596358692">Če želite končati uvoz, zaprite vsa okna v brskalniku Chrome.</translation>
+<translation id="5735465527556462863">Zapri Brave (staro)</translation>
+<translation id="7737066986958447692">Če želite končati uvažanje, zaprite vsa (stara) okna v brskalniku Brave.</translation>
 <translation id="6447842834002726250">Piškotki</translation>
 <translation id="4983925687993168579">Statistični podatki</translation>
+<translation id="6165477144235978006">Plačila Brave Payments</translation>
+<translation id="3489524616427966890">Odpri okna in zavihke</translation>
 <translation id="9173846700806833701">Orodje Widevine ni nameščeno</translation>
 <translation id="2433569048491784801">Orodje Widevine ni nameščeno.</translation>
 <translation id="3699882589215410581">Namesti in zaženi Widevine</translation>
 <translation id="8410111618231938546">Google Widevine je del kode za upravljanje digitalnih pravic (DRM), ki ni v lasti družbe Brave Software in ga ne moremo pregledati. Koda Google Widevine je naložena iz strežnikov Google, ne iz naših strežnikov. Naloži se le, če omogočite to možnost. Uporabo DRM-ja odsvetujemo, a kljub temu spoštujemo izbiro uporabnika in se zavedamo, da nekateri uporabniki Brave želijo uporabljati storitve, za katere je potrebna uporaba DRM-ja.
 
 Če namestite to razširitev, se strinjate s pogoji uporabe Google Widevine. S tem soglašate, da družba Brave ni odgovorna za morebitno škodo ali izgube v zvezi z vašo uporabo orodja Google Widevine.</translation>
+<translation id="6499845530162974140">Brave (staro)</translation>
 <translation id="3198814717959506569">Uvoženo iz brskalnika Brave</translation>
 <translation id="453977518730680921">Samodejno predvajanje posnetkov</translation>
 <translation id="410351446219883937">Samodejno predvajanje</translation>
@@ -34,6 +39,7 @@
 <translation id="4703780849509456860">Odpri povezavo v zasebnem oknu v brskalniku Tor</translation>
 <translation id="3488584642074079080">Odpri povezavo v zasebnem oknu Brave v brskalniku Tor</translation>
 <translation id="3155170474926428993">Zaganjalnik brskalnika Tor</translation>
+<translation id="2515126961943087659">Storitev oglasov BAT</translation>
 <translation id="7372129767729198111">Privzete nastavitve ščita brskalnika Brave</translation>
 <translation id="8029018702721078742">Upravljanje oglasov</translation>
 <translation id="3544462288910360084">Upravljanje piškotkov</translation>
@@ -54,4 +60,5 @@
 <translation id="1822560017823072927">Privzeti javni in zasebni vmesniki</translation>
 <translation id="5825943197137337319">Samo privzeti javni vmesnik</translation>
 <translation id="1689062823386843231">Onemogoči UDP, ki ne poteka prek strežnika proxy</translation>
+<translation id="6645631466045614531">Dostopaj do orodja Brave Sync prek</translation>
 </translationbundle>

@@ -846,15 +846,10 @@
 <translation id="9125982323641182972">‏هوشمندی‌های Brave Software را در Brave دریافت کنید</translation>
 <translation id="3149880132460839085">‏همگام‌سازی Brave</translation>
 <translation id="3796902758602917951">‏نشانک‌ها، سابقه، گذرواژه‌ها و سایر تنظیمات در حساب Brave Software شما همگام‌سازی می‌شوند تا بتوانید از آن‌ها در همه دستگاه‌هایتان استفاده کنید.</translation>
-<translation id="1371301976177520732">در همه دستگاه‌هایتان می‌توانید به نشانک‌ها، سابقه و موارد دیگر دسترسی داشته باشید</translation>
 <translation id="3111958038206230539">‏شخصی‌سازی خدمات Brave Software</translation>
 <translation id="295992419959320001">‏Brave Software ممکن است از سابقه مرور شما برای شخصی‌سازی جستجو، آگهی‌ها و سایر سرویس‌های Brave Software استفاده کند</translation>
-<translation id="4205523465226408285">‏سرویس‌های Brave Software شخصی‌شده بیشتر، مثل پیشنهادهای بهتر برای صفحه</translation>
 <translation id="3070156078150543526">‏Brave Software ممکن است از سابقه مرورتان برای شخصی‌سازی جستجو و سایر سرویس‌های Brave Software استفاده کند.</translation>
-<translation id="2532167245710864499">‏بهبود Brave و امنیت آن با ارسال اطلاعات و آمار استفاده سیستم به Brave Software</translation>
 <translation id="2709453993673701466">می‌خواهید همگام‌سازی و شخصی‌سازی را پیش از روشن کردن مدیریت کنید؟ از <ph name="BEGIN_LINK"/>تنظیمات<ph name="END_LINK"/> بازدید کنید.</translation>
-<translation id="2668128414154024727">‏هر وقت بخواهید می‌توانید اطلاعاتی را که Brave Software جمع‌آوری می‌کند، در <ph name="BEGIN_LINK"/>تنظیمات<ph name="END_LINK"/> سفارشی کنید.</translation>
-<translation id="6035247993547372482">‏ممکن است Brave Software از محتوای سایت‌هایی که بازدید می‌کنید و فعالیت و تعاملات مرورگر برای شخصی کردن Brave و سایر سرویس‌های Brave Software (مانند «مترجم»، «جستجو» و آگهی‌ها) استفاده کند. می‌توانید این مورد را در «تنظیمات» سفارشی کنید.</translation>
 <translation id="741204030948306876">بله، موافقم</translation>
 <translation id="2497852260688568942">سرپرستتان همگام‌سازی را غیرفعال کرده است</translation>
 <translation id="562935524653278697">سرپرست شما همگام‌سازی نشانک‌ها، سابقه، گذرواژه‌ها و سایر تنظیماتتان را غیرفعال کرده است.</translation>
@@ -2639,12 +2634,7 @@
 <translation id="5535941515421698170">همچنین داده‌های موجودتان را در این دستگاه پاک کنید</translation>
 <translation id="7243632151880336635">پاک کردن و خروج از سیستم</translation>
 <translation id="6406506848690869874">همگام‌سازی</translation>
-<translation id="1397854323885047133">همگام‌سازی و شخصی‌سازی</translation>
-<translation id="1136155683023653803">گذرواژه‌ها، نشانک‌ها، سابقه و سایر موارد با حسابتان همگام‌سازی شدند</translation>
-<translation id="3267417306184901318">‏داده‌های محصول مرور و فعالیتتان با حساب Brave Software شما همگام‌سازی شد</translation>
-<translation id="1123187597739372905">نمایش تنظیمات همگام‌سازی</translation>
 <translation id="5428209950370661546">‏سایر سرویس‌های Brave Software</translation>
-<translation id="2055016640093734678">‏نمایش تنظیمات سرویس‌های Brave Software</translation>
 <translation id="7956662517480676674">‏همگام‌سازی و سرویس‌های Brave Software</translation>
 <translation id="2453021845418314664">تنظیمات همگام‌سازی پیشرفته</translation>
 <translation id="2731700343119398978">لطفاً صبر کنید...</translation>

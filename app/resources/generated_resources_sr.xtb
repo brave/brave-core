@@ -848,15 +848,10 @@
 <translation id="9125982323641182972">Паметне Brave Software функције</translation>
 <translation id="3149880132460839085">Синхронизација Brave прегледача</translation>
 <translation id="3796902758602917951">Обележивачи, историја, лозинке и друга подешавања ће се синхронизовати са Brave Software налогом да бисте могли да их користите на свим уређајима</translation>
-<translation id="1371301976177520732">Обележивачи, историја и други садржај доступни на свим уређајима</translation>
 <translation id="3111958038206230539">Персонализујте Brave Software услуге</translation>
 <translation id="295992419959320001">Brave Software може да користи историју прегледања за персонализацију Претраге, огласа и других Brave Software услуга</translation>
-<translation id="4205523465226408285">Персонализованије Brave Software услуге, попут бољих предлога страница</translation>
 <translation id="3070156078150543526">Brave Software може да користи историју прегледања за персонализацију Претраге и других Brave Software услуга</translation>
-<translation id="2532167245710864499">Шаљите Brave Software-у информације о систему и коришћењу да бисте побољшали Brave и његову безбедност</translation>
 <translation id="2709453993673701466">Желите ли да управљате синхронизацијом и персонализацијом пре него што их укључите? Посетите <ph name="BEGIN_LINK"/>Подешавања<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Можете у сваком тренутку да прилагодите које информације Brave Software прикупља у <ph name="BEGIN_LINK"/>Подешавањима<ph name="END_LINK"/>.</translation>
-<translation id="6035247993547372482">Brave Software може да користи садржај на сајтовима које посећујете, активности прегледача и интеракције да би персонализовао Brave и друге Brave Software услуге, као што су Преводилац, Претрага и огласи. То можете да прилагодите у подешавањима.</translation>
 <translation id="741204030948306876">Да, омогући</translation>
 <translation id="2497852260688568942">Администратор је онемогућио синхронизацију</translation>
 <translation id="562935524653278697">Администратор је онемогућио синхронизацију обележивача, историје, лозинки и других подешавања.</translation>
@@ -2637,12 +2632,7 @@
 <translation id="5535941515421698170">Уклања и постојеће податке са овог уређаја</translation>
 <translation id="7243632151880336635">Обриши и одјави ме</translation>
 <translation id="6406506848690869874">Синхронизација</translation>
-<translation id="1397854323885047133">Синхронизација и персонализација</translation>
-<translation id="1136155683023653803">Лозинке, обележивачи, историја и друге ствари се синхронизују са налогом</translation>
-<translation id="3267417306184901318">Подаци и активност прегледања, синхронизовани на Brave Software налог</translation>
-<translation id="1123187597739372905">Прикажи подешавања синхронизације</translation>
 <translation id="5428209950370661546">Друге Brave Software услуге</translation>
-<translation id="2055016640093734678">Прикажи подешавања Brave Software услуга</translation>
 <translation id="7956662517480676674">Синхронизација и Brave Software услуге</translation>
 <translation id="2453021845418314664">Напредна подешавања синхронизације</translation>
 <translation id="2731700343119398978">Сачекајте…</translation>

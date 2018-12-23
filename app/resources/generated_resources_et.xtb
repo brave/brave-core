@@ -847,15 +847,10 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="9125982323641182972">Brave Software'i nutikus Brave'is</translation>
 <translation id="3149880132460839085">Brave'i sünkroonimine</translation>
 <translation id="3796902758602917951">Teie järjehoidjad, ajalugu, paroolid ja muud seaded sünkroonitakse teie Brave Software'i kontoga, et saaksite neid kasutada kõigis oma seadmetes</translation>
-<translation id="1371301976177520732">Teie järjehoidjad, paroolid, ajalugu ja muu kõigis teie seadmetes</translation>
 <translation id="3111958038206230539">Brave Software'i teenuste isikupärastamine</translation>
 <translation id="295992419959320001">Brave Software võib kasutada teie sirvimisajalugu otsingu, reklaamide ja muude Brave Software'i teenuste isikupärastamiseks</translation>
-<translation id="4205523465226408285">Isiklikumad Brave Software'i teenused, nt paremad lehesoovitused</translation>
 <translation id="3070156078150543526">Brave Software võib kasutada teie sirvimisajalugu otsingu ja teiste Brave Software'i teenuste isikupärastamiseks</translation>
-<translation id="2532167245710864499">Täiustage Brave'i ja selle turvalisust, saates Brave Software'ile süsteemi- ja kasutusteavet</translation>
 <translation id="2709453993673701466">Kas soovite sünkroonimist ja isikupärastamist enne nende sisselülitamist hallata? Avage jaotis <ph name="BEGIN_LINK"/>Seaded<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Menüüs <ph name="BEGIN_LINK"/>Seaded<ph name="END_LINK"/> saab alati kohandada, millist teavet Brave Software kogub.</translation>
-<translation id="6035247993547372482">Brave Software võib külastatud saitidel olevat sisu ning brauseri tegevusi ja interaktsioone kasutada Brave'i ning muude Brave Software'i teenuste, näiteks tõlke, otsingu ja reklaamide isikupärastamiseks. Seda saab kohandada jaotises Seaded.</translation>
 <translation id="741204030948306876">Jah, sobib</translation>
 <translation id="2497852260688568942">Administraator on sünkroonimise keelanud</translation>
 <translation id="562935524653278697">Teie administraator on järjehoidjate, ajaloo, paroolide ja muude seadete sünkroonimise keelanud.</translation>
@@ -1893,6 +1888,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="6352773953037195952">Kõige kõrgem</translation>
 <translation id="3677657024345889897">Kõige vaiksem</translation>
 <translation id="167160931442925455">Kõige valjem</translation>
+<translation id="2445007895943112260"><ph name="PERCENTAGE">$1<ex>120</ex>%</ph></translation>
 <translation id="9129010913019873477"><ph name="PERCENTAGE"/> (vaikeseade)</translation>
 <translation id="3602290021589620013">Eelvaade</translation>
 <translation id="7037509989619051237">Kõnesünteesi eelvaade</translation>
@@ -2640,12 +2636,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="5535941515421698170">Eemaldage sellest seadmest ka oma olemasolevad andmed</translation>
 <translation id="7243632151880336635">Kustuta ja logi välja</translation>
 <translation id="6406506848690869874">Sünkroonimine</translation>
-<translation id="1397854323885047133">Sünkroonimine ja isikupärastamine</translation>
-<translation id="1136155683023653803">Paroolid, järjehoidjad, ajalugu ja muu sisu sünkroonitakse teie kontoga</translation>
-<translation id="3267417306184901318">Teie sirvimisandmed ja -tegevused, mis on sünkroonitud teie Brave Software'i kontoga</translation>
-<translation id="1123187597739372905">Kuva sünkroonimisseaded</translation>
 <translation id="5428209950370661546">Muud Brave Software'i teenused</translation>
-<translation id="2055016640093734678">Kuva Brave Software'i teenuste seaded</translation>
 <translation id="7956662517480676674">Sünkroonimine ja Brave Software'i teen.</translation>
 <translation id="2453021845418314664">Täpsemad sünkroonimisseaded</translation>
 <translation id="2731700343119398978">Oodake ...</translation>
@@ -2774,6 +2765,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="3954469006674843813"><ph name="WIDTH"/> × <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> hertsi)</translation>
 <translation id="7889565820482017512">Kuvamissuurus</translation>
 <translation id="8448729345478502352">Muutke ekraanil kuvatud üksused väiksemaks või suuremaks</translation>
+<translation id="513425442047539523"><ph name="DISPLAY_ZOOM">$1<ex>120</ex>%</ph></translation>
 <translation id="2155772377859296191">Näib kui <ph name="WIDTH"/> × <ph name="HEIGHT"/></translation>
 <translation id="4863769717153320198">Näib kui <ph name="WIDTH"/> × <ph name="HEIGHT"/> (vaikeseade)</translation>
 <translation id="1125550662859510761">Näib kui <ph name="WIDTH"/> × <ph name="HEIGHT"/> (loomulik eraldusvõime)</translation>

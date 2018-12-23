@@ -847,15 +847,10 @@
 <translation id="9125982323641182972">Розумні функції в Brave</translation>
 <translation id="3149880132460839085">Синхронізація Brave</translation>
 <translation id="3796902758602917951">Ваші закладки, історія, паролі й інші налаштування синхронізуватимуться з обліковим записом Brave Software, щоб ви могли користуватися ними на всіх своїх пристроях</translation>
-<translation id="1371301976177520732">Ваші закладки, паролі, історія тощо на всіх ваших пристроях</translation>
 <translation id="3111958038206230539">Персоналізувати служби Brave Software</translation>
 <translation id="295992419959320001">Brave Software може використовувати вашу історію веб-перегляду, щоб персоналізувати Пошук, оголошення й інші служби Brave Software</translation>
-<translation id="4205523465226408285">Більш персоналізовані сервіси Brave Software, як-от кращі пропозиції сторінок</translation>
 <translation id="3070156078150543526">Brave Software може використовувати вашу історію веб-перегляду, щоб персоналізувати Пошук та інші служби Brave Software</translation>
-<translation id="2532167245710864499">Покращуйте Brave і функції безпеки, надсилаючи в Brave Software дані про систему та використання</translation>
 <translation id="2709453993673701466">Хочете налаштувати синхронізацію та персоналізацію, перш ніж їх буде ввімкнено? Перейдіть у меню <ph name="BEGIN_LINK"/>Налаштування<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">У <ph name="BEGIN_LINK"/>Налаштуваннях<ph name="END_LINK"/> можна будь-коли вибрати, яку інформацію збирає Brave Software.</translation>
-<translation id="6035247993547372482">Brave Software може використовувати вміст відвіданих сайтів, дані веб-перегляду й взаємодії, щоб персоналізувати Brave та інші служби Brave Software, як-от Перекладач, Пошук і оголошення. Ви можете змінити це в налаштуваннях.</translation>
 <translation id="741204030948306876">Увімкнути</translation>
 <translation id="2497852260688568942">Ваш адміністратор вимкнув синхронізацію</translation>
 <translation id="562935524653278697">Адміністратор вимкнув синхронізацію закладок, історії, паролів та інших налаштувань.</translation>
@@ -2636,12 +2631,7 @@
 <translation id="5535941515421698170">Також вилучити всі дані з цього пристрою</translation>
 <translation id="7243632151880336635">Очистити та вийти з облікового запису</translation>
 <translation id="6406506848690869874">Синхронізація</translation>
-<translation id="1397854323885047133">Синхронізація й персоналізація</translation>
-<translation id="1136155683023653803">Паролі, закладки, історія тощо синхронізуються з вашим обліковим записом</translation>
-<translation id="3267417306184901318">Дані веб-перегляду й історія активності, синхронізовані з обліковим записом Brave Software</translation>
-<translation id="1123187597739372905">Показати налаштування синхронізації</translation>
 <translation id="5428209950370661546">Інші сервіси Brave Software</translation>
-<translation id="2055016640093734678">Показувати налаштування сервісів Brave Software</translation>
 <translation id="7956662517480676674">Синхронізація та сервіси Brave Software</translation>
 <translation id="2453021845418314664">Розширені налаштування синхронізації</translation>
 <translation id="2731700343119398978">Зачекайте...</translation>

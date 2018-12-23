@@ -847,15 +847,10 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="9125982323641182972">Få Brave Softwares smarte funksjoner i Brave</translation>
 <translation id="3149880132460839085">Brave-synkronisering</translation>
 <translation id="3796902758602917951">Bokmerkene, loggoppføringene, passordene og de andre innstillingene dine blir synkronisert med Brave Software-kontoen din, slik at du kan bruke dem på alle enhetene dine.</translation>
-<translation id="1371301976177520732">Bokmerkene dine, loggen din med mer på alle enhetene dine.</translation>
 <translation id="3111958038206230539">Tilpass Brave Software-tjenester</translation>
 <translation id="295992419959320001">Brave Software kan bruke nettlesingsloggen din for å gi Søk, annonser og andre Brave Software-tjenester et personlig preg</translation>
-<translation id="4205523465226408285">Brave Software-tjenester med et mer personlig preg, som for eksempel bedre sideforslag</translation>
 <translation id="3070156078150543526">Brave Software kan bruke nettlesingsloggen din for å gi Søk og andre Brave Software-tjenester et personlig preg</translation>
-<translation id="2532167245710864499">Gjør Brave bedre og sikrere ved å sende systeminformasjon og bruksinformasjon til Brave Software</translation>
 <translation id="2709453993673701466">Vil du administrere synkronisering og personlig tilpasning før du slår det på? Gå til <ph name="BEGIN_LINK"/>innstillingene<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Du kan når som helst tilpasse hvilken informasjon Brave Software samler inn, i <ph name="BEGIN_LINK"/>innstillingene<ph name="END_LINK"/>.</translation>
-<translation id="6035247993547372482">Brave Software kan bruke innhold fra nettsteder du besøker, nettleseraktiviteten din og andre interaksjoner for å gi Brave og andre Brave Software-tjenester (som Oversetter, Søk og annonser) et personlig preg. Du kan tilpasse dette i innstillingene.</translation>
 <translation id="741204030948306876">Ja, jeg er med</translation>
 <translation id="2497852260688568942">Administratoren din har slått av synkronisering</translation>
 <translation id="562935524653278697">Administratoren din har slått av synkronisering av bokmerker, logg, passord og andre innstillinger du har.</translation>
@@ -2636,12 +2631,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="5535941515421698170">Fjern også de eksisterende dataene dine fra denne enheten</translation>
 <translation id="7243632151880336635">Slett og logg av</translation>
 <translation id="6406506848690869874">Synkroniser</translation>
-<translation id="1397854323885047133">Synkronisering og personlig tilpasning</translation>
-<translation id="1136155683023653803">Passord, bokmerker, loggoppføringer og så videre blir synkronisert med kontoen din</translation>
-<translation id="3267417306184901318">Nettleserdata og nettleseraktivitet blir synkronisert med Brave Software-kontoen din</translation>
-<translation id="1123187597739372905">Vis innstillingene for synkronisering</translation>
 <translation id="5428209950370661546">Andre Brave Software-tjenester</translation>
-<translation id="2055016640093734678">Vis innstillingene for Brave Software-tjenester</translation>
 <translation id="7956662517480676674">Synkronisering/Brave Software-tjenester</translation>
 <translation id="2453021845418314664">Avanserte synkroniseringsinnstillinger</translation>
 <translation id="2731700343119398978">Vent litt …</translation>

@@ -847,15 +847,10 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="9125982323641182972">Brave Softwareove značajke za Brave</translation>
 <translation id="3149880132460839085">Brave sinkronizacija</translation>
 <translation id="3796902758602917951">Vaše oznake, povijest, zaporke i ostale postavke sinkronizirat će se s vašim Brave Software računom kako biste ih mogli upotrebljavati na svim svojim uređajima.</translation>
-<translation id="1371301976177520732">Vaše oznake, zaporke, povijest i još mnogo na svim vašim uređajima</translation>
 <translation id="3111958038206230539">Prilagođavanje Brave Softwareovih usluga</translation>
 <translation id="295992419959320001">Brave Software može upotrebljavati vašu povijest pregledavanja za prilagodbu Pretraživanja, oglasa i drugih Brave Softwareovih usluga</translation>
-<translation id="4205523465226408285">Više prilagođenih Brave Softwareovih usluga, na primjer bolji prijedlozi stranica</translation>
 <translation id="3070156078150543526">Brave Software može upotrebljavati vašu povijest pregledavanja za prilagodbu Pretraživanja i drugih Brave Softwareovih usluga.</translation>
-<translation id="2532167245710864499">Poboljšajte Brave i njegovu sigurnost slanjem podataka o sustavu i upotrebi Brave Softwareu</translation>
 <translation id="2709453993673701466">Želite li upravljati sinkronizacijom i prilagodbom prije uključivanja? Otvorite <ph name="BEGIN_LINK"/>Postavke<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Informacije koje Brave Software prikuplja možete prilagoditi bilo kada u <ph name="BEGIN_LINK"/>Postavkama<ph name="END_LINK"/>.</translation>
-<translation id="6035247993547372482">Brave Software može upotrebljavati sadržaj na web-lokacijama koje posjećujete, kao i vaše aktivnosti i interakcije u pregledniku, kako bi prilagodio Brave i druge Brave Softwareove usluge kao što su Prevoditelj, Pretraživanje i oglasi. To možete prilagoditi u Postavkama.</translation>
 <translation id="741204030948306876">Da, u redu</translation>
 <translation id="2497852260688568942">Administrator je onemogućio sinkronizaciju</translation>
 <translation id="562935524653278697">Administrator je onemogućio sinkronizaciju vaših oznaka, povijesti, zaporki i ostalih postavki.</translation>
@@ -2637,12 +2632,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="5535941515421698170">Također uklonite postojeće podatke s uređaja</translation>
 <translation id="7243632151880336635">Izbriši i odjavi se</translation>
 <translation id="6406506848690869874">Sinkronizacija</translation>
-<translation id="1397854323885047133">Sinkronizacija i prilagodba</translation>
-<translation id="1136155683023653803">Zaporke, oznake, povijest i drugi podaci sinkroniziraju se s vašim računom</translation>
-<translation id="3267417306184901318">Vaši podaci o pregledavanju i aktivnost, sinkronizirani s vašim Brave Software računom</translation>
-<translation id="1123187597739372905">Prikaži postavke sinkronizacije</translation>
 <translation id="5428209950370661546">Ostale Brave Softwareove usluge</translation>
-<translation id="2055016640093734678">Prikaži postavke Brave Softwareovih usluga</translation>
 <translation id="7956662517480676674">Sinkronizacija i Brave Softwareove usluge</translation>
 <translation id="2453021845418314664">Napredne postavke sinkronizacije</translation>
 <translation id="2731700343119398978">Pričekajte...</translation>

@@ -847,15 +847,10 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="9125982323641182972">Obtén las mejores funciones de Brave Software en Brave</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">Tus favoritos, historial, contraseñas y otras opciones de configuración se sincronizarán con tu cuenta de Brave Software para que puedas usarlos en todos tus dispositivos</translation>
-<translation id="1371301976177520732">Tus favoritos, las contraseñas, el historial y mucho más en todos tus dispositivos</translation>
 <translation id="3111958038206230539">Personalizar los servicios de Brave Software</translation>
 <translation id="295992419959320001">Es posible que Brave Software use tu historial de navegación para personalizar Búsqueda, Ads y otros servicios de Brave Software</translation>
-<translation id="4205523465226408285">Servicios de Brave Software más personalizados, como mejores sugerencias de páginas</translation>
 <translation id="3070156078150543526">Es posible que Brave Software use tu historial de navegación para personalizar Búsqueda y otros servicios de Brave Software</translation>
-<translation id="2532167245710864499">Para mejorar Brave y su seguridad, envía información a Brave Software sobre el sistema y el uso</translation>
 <translation id="2709453993673701466">¿Deseas administrar la sincronización y la personalización antes de activarlas? Accede a la <ph name="BEGIN_LINK"/>Configuración<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Puedes personalizar la información que recopila Brave Software en la sección <ph name="BEGIN_LINK"/>Configuración<ph name="END_LINK"/> en cualquier momento.</translation>
-<translation id="6035247993547372482">Es posible que usemos contenido de los sitios que visitas (así como tus interacciones y actividad de navegación) a fin de personalizar Brave y otros servicios de Brave Software, como el Traductor, la Búsqueda y los anuncios. Para cambiar esta acción, visita la sección Configuración.</translation>
 <translation id="741204030948306876">Sí, acepto</translation>
 <translation id="2497852260688568942">Tu administrador inhabilitó la sincronización</translation>
 <translation id="562935524653278697">Tu administrador inhabilitó la sincronización de tus favoritos, historial, contraseñas y otras opciones de configuración.</translation>
@@ -2637,12 +2632,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="5535941515421698170">También quitar tus datos existentes de este dispositivo</translation>
 <translation id="7243632151880336635">Borrar y salir</translation>
 <translation id="6406506848690869874">Sincronización</translation>
-<translation id="1397854323885047133">Sincronización y personalización</translation>
-<translation id="1136155683023653803">Las contraseñas, los favoritos, el historial y otros datos se sincronizan con tu cuenta</translation>
-<translation id="3267417306184901318">Tus datos de navegación y actividad, sincronizados con tu cuenta de Brave Software</translation>
-<translation id="1123187597739372905">Mostrar la configuración de sincronización</translation>
 <translation id="5428209950370661546">Otros servicios de Brave Software</translation>
-<translation id="2055016640093734678">Mostrar las opciones de configuración de los servicios de Brave Software</translation>
 <translation id="7956662517480676674">Sincronización y servicios</translation>
 <translation id="2453021845418314664">Configuración avanzada de sincronización</translation>
 <translation id="2731700343119398978">Espera...</translation>

@@ -848,15 +848,10 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="9125982323641182972">Inteligên. Brave Software no Brave</translation>
 <translation id="3149880132460839085">Sincronização do Brave Software Brave</translation>
 <translation id="3796902758602917951">Os marcadores, o histórico, as palavras-passe e outras definições são sincronizados com a sua Conta Brave Software para que os possa utilizar em todos os dispositivos</translation>
-<translation id="1371301976177520732">Os seus marcadores, palavras-passe, histórico e muito mais em todos os seus dispositivos.</translation>
 <translation id="3111958038206230539">Personalizar os serviços Brave Software</translation>
 <translation id="295992419959320001">A Brave Software pode utilizar o seu histórico de navegação para personalizar a Pesquisa Brave Software, os anúncios e outros serviços Brave Software</translation>
-<translation id="4205523465226408285">Serviços Brave Software mais pessoais, como melhores sugestões de páginas</translation>
 <translation id="3070156078150543526">A Brave Software pode utilizar o seu histórico de navegação para personalizar a Pesquisa Brave Software e outros serviços Brave Software</translation>
-<translation id="2532167245710864499">Melhore o Brave e a sua segurança ao enviar informações do sistema e de utilização para a Brave Software.</translation>
 <translation id="2709453993673701466">Pretende gerir a sincronização e a personalização antes de serem ativadas? Aceda às <ph name="BEGIN_LINK"/>Definições<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Pode personalizar em qualquer altura as informações que a Brave Software recolhe nas <ph name="BEGIN_LINK"/>Definições<ph name="END_LINK"/>.</translation>
-<translation id="6035247993547372482">A Brave Software pode utilizar o conteúdo nos sites que visita, a atividade do navegador e as interações para personalizar o Brave e outros serviços Brave Software, como o Tradutor, a Pesquisa e os anúncios. Pode personalizar esta opção nas Definições.</translation>
 <translation id="741204030948306876">Sim, aceito</translation>
 <translation id="2497852260688568942">A sincronização foi desativada pelo gestor</translation>
 <translation id="562935524653278697">O seu gestor desativou a sincronização dos seus marcadores, histórico, palavras-passe e outras definições.</translation>
@@ -2637,12 +2632,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="5535941515421698170">Remover também os dados existentes deste dispositivo</translation>
 <translation id="7243632151880336635">Limpar e terminar sessão</translation>
 <translation id="6406506848690869874">Sincronização</translation>
-<translation id="1397854323885047133">Sincronização e personalização</translation>
-<translation id="1136155683023653803">As palavras-passe, os marcadores, o histórico e muito mais são sincronizados com a sua conta.</translation>
-<translation id="3267417306184901318">A sua atividade e os dados de navegação são sincronizados com a sua Conta Brave Software.</translation>
-<translation id="1123187597739372905">Mostrar definições de sincronização</translation>
 <translation id="5428209950370661546">Outros serviços Brave Software</translation>
-<translation id="2055016640093734678">Mostrar definições dos serviços Brave Software</translation>
 <translation id="7956662517480676674">Sincronização e serviços Brave Software</translation>
 <translation id="2453021845418314664">Definições de sincronização avançadas</translation>
 <translation id="2731700343119398978">Aguarde...</translation>

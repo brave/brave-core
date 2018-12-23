@@ -846,15 +846,10 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="9125982323641182972">Brave Software viedās tehnoloģijas pārlūkā Brave</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">Jūsu grāmatzīmes, vēsture, paroles un citi iestatījumi tiks sinhronizēti ar jūsu Brave Software kontu, lai jūs varētu tos izmantot visās savās ierīcēs.</translation>
-<translation id="1371301976177520732">Jūsu grāmatzīmes, paroles, vēsture un cits saturs visās jūsu ierīcēs</translation>
 <translation id="3111958038206230539">Brave Software pakalpojumu personalizēšana</translation>
 <translation id="295992419959320001">Brave Software var izmantot jūsu pārlūkošanas vēsturi, lai personalizētu Meklēšanu, reklāmas un citus Brave Software pakalpojumus.</translation>
-<translation id="4205523465226408285">Personalizētāki Brave Software pakalpojumi, piemēram, precīzāki lapu ieteikumi</translation>
 <translation id="3070156078150543526">Brave Software var izmantot jūsu pārlūkošanas vēsturi, lai personalizētu Meklēšanu un citus Brave Software pakalpojumus.</translation>
-<translation id="2532167245710864499">Uzlabojiet pārlūku Brave un tā drošību, nosūtot sistēmas informāciju un lietojuma datus Brave Software serveriem</translation>
 <translation id="2709453993673701466">Vai vēlaties pirms sinhronizēšanas un personalizēšanas ieslēgšanas pārvaldīt to iestatījumus? Apmeklējiet lapu <ph name="BEGIN_LINK"/>Iestatījumi<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Jebkurā brīdī sadaļā <ph name="BEGIN_LINK"/>Iestatījumi<ph name="END_LINK"/> varat pielāgot, kādu informāciju Brave Software apkopo.</translation>
-<translation id="6035247993547372482">Brave Software var izmantot jūsu apmeklēto vietņu saturu, kā arī pārlūkā veiktās darbības un mijiedarbības, lai personalizētu pārlūku Brave un citus Brave Software pakalpojumus, piemēram, Tulkotāju, Meklēšanu un reklāmas. Šos iestatījumus varat pielāgot sadaļā Iestatījumi.</translation>
 <translation id="741204030948306876">Jā, piekrītu</translation>
 <translation id="2497852260688568942">Administrators ir atspējojis sinhronizēšanu.</translation>
 <translation id="562935524653278697">Administrators ir atspējojis grāmatzīmju, vēstures, paroļu un citu iestatījumu sinhronizēšanu.</translation>
@@ -2636,12 +2631,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="5535941515421698170">Noņemt no šīs ierīces arī jūsu esošos datus</translation>
 <translation id="7243632151880336635">Dzēst un izrakstīties</translation>
 <translation id="6406506848690869874">Sinhronizācija</translation>
-<translation id="1397854323885047133">Sinhronizēšana un personalizācija</translation>
-<translation id="1136155683023653803">Paroles, grāmatzīmes, vēsture un citi dati tiek sinhronizēti ar jūsu kontu</translation>
-<translation id="3267417306184901318">Pārlūkošanas dati un darbības tiek sinhronizētas ar jūsu Brave Software kontu</translation>
-<translation id="1123187597739372905">Rādīt sinhronizācijas iestatījumus</translation>
 <translation id="5428209950370661546">Citi Brave Software pakalpojumi</translation>
-<translation id="2055016640093734678">Rādīt Brave Software pakalpojumu iestatījumus</translation>
 <translation id="7956662517480676674">Sinhronizēšana un Brave Software pakalp.</translation>
 <translation id="2453021845418314664">Papildu sinhronizācijas iestatījumi</translation>
 <translation id="2731700343119398978">Lūdzu, uzgaidiet...</translation>
