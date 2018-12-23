@@ -3,12 +3,16 @@
 <translationbundle lang="hi">
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
 <translation id="7942180974165298215">Brave विज्ञापन बाधा</translation>
-<translation id="3149880132460839085">ब्रेव सिंक</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ब्रेव में इसकी अनुमति नहीं है.</translation>
+<translation id="6406506848690869874">ब्रेव सिंक</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") की Brave में अनुमति नहीं है।</translation>
 <translation id="7450557937477381864">क्रोम को बंद करें</translation>
 <translation id="7008934821596358692">आयात समाप्त करने के लिए, सभी क्रोम विंडोज़ बंद करें।</translation>
+<translation id="5735465527556462863">Brave (पुराना) बंद करें</translation>
+<translation id="7737066986958447692">आयात खत्म करने के लिए, सभी Brave (पुराना) विंडोज बंद करें।</translation>
 <translation id="6447842834002726250">कुकीज़ के द्वारा</translation>
 <translation id="4983925687993168579">आँकड़े</translation>
+<translation id="6165477144235978006">Brave भुगतान</translation>
+<translation id="3489524616427966890">एक से अधिक विंडो और टैब खोलें</translation>
 <translation id="9173846700806833701">Widevine इनस्टॉल नहीं है</translation>
 <translation id="2433569048491784801">Widewine इंस्टॉल नही है|</translation>
 <translation id="3699882589215410581">Widevine को इंस्टॉल करें और चलाएँ</translation>
@@ -16,6 +20,7 @@
 
 
 इस एक्सटेंशन को इन्स्टॉल करने के साथ, आप Google Wivedine के उपयोग की शर्तों से सहमत हो रहे हैं| आप सहमत हैं की Google Wivedine के प्रयोग से किसी क्षति या नुकसान के सम्बन्ध में Brave ज़िम्मेदार नहीं है|</translation>
+<translation id="6499845530162974140">Brave (पुराना)</translation>
 <translation id="3198814717959506569">Brave से आयातित</translation>
 <translation id="453977518730680921">मीडिया स्वतः चालू</translation>
 <translation id="410351446219883937">स्वतः प्ले</translation>
@@ -35,6 +40,7 @@
 <translation id="4703780849509456860">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
 <translation id="3488584642074079080">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
+<translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
 <translation id="7372129767729198111">Brave शील्ड्स डिफॉल्ट्स</translation>
 <translation id="8029018702721078742">विज्ञापन नियंत्रण</translation>
 <translation id="3544462288910360084">कुकी नियंत्रण</translation>
@@ -55,4 +61,5 @@
 <translation id="1822560017823072927">डिफ़ॉल्ट सार्वजनिक और निजी इंटरफेस</translation>
 <translation id="5825943197137337319">केवल डिफ़ॉल्ट सार्वजनिक इंटरफ़ेस</translation>
 <translation id="1689062823386843231">गैर-प्रॉक्सी UDP अक्षम करें</translation>
+<translation id="6645631466045614531">इसके द्वारा Brave सिंक तक पहुँच प्राप्त करें</translation>
 </translationbundle>

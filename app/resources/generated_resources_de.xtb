@@ -847,15 +847,10 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="9125982323641182972">Brave cleverer nutzen – dank Brave Software</translation>
 <translation id="3149880132460839085">Brave Software Brave Sync</translation>
 <translation id="3796902758602917951">Lesezeichen, Verlauf, Passwörter und andere Einstellungen werden mit Ihrem Brave Software-Konto synchronisiert, damit Sie sie auf allen Ihren Geräten nutzen können.</translation>
-<translation id="1371301976177520732">Von all Ihren Geräten auf Lesezeichen, Passwörter, den Verlauf und andere Funktionen zugreifen</translation>
 <translation id="3111958038206230539">Brave Software-Dienste personalisieren</translation>
 <translation id="295992419959320001">Mithilfe Ihres Browserverlaufs kann Brave Software die Suche, Werbung und andere Brave Software-Dienste personalisieren</translation>
-<translation id="4205523465226408285">Personalisierte Brave Software-Dienste, z. B. bessere Seitenvorschläge</translation>
 <translation id="3070156078150543526">Brave Software kann die Suche und andere Brave Software-Dienste anhand Ihres Browserverlaufs für Sie personalisieren.</translation>
-<translation id="2532167245710864499">System- und Nutzungsdaten an Brave Software senden, um Brave noch besser und sicherer zu machen</translation>
 <translation id="2709453993673701466">Möchten Sie die Einstellungen für Synchronisierung und Personalisierung verwalten, bevor diese Funktionen aktiviert werden? Rufen Sie die <ph name="BEGIN_LINK"/>Einstellungen<ph name="END_LINK"/> auf.</translation>
-<translation id="2668128414154024727">Sie können die von Brave Software erfassten Informationen jederzeit in den <ph name="BEGIN_LINK"/>Einstellungen<ph name="END_LINK"/> anpassen.</translation>
-<translation id="6035247993547372482">Brave Software kann die Inhalte der von Ihnen besuchten Websites, Browseraktivitäten und Ihre anderen Interaktionen nutzen, um Brave und andere Brave Software-Dienste wie Übersetzer, die Brave Software-Suche und Werbung zu personalisieren. Dies lässt sich in den Einstellungen ändern.</translation>
 <translation id="741204030948306876">Ja, bitte</translation>
 <translation id="2497852260688568942">Die Synchronisierung wurde von Ihrem Administrator deaktiviert</translation>
 <translation id="562935524653278697">Ihr Administrator hat die Synchronisierung Ihres Verlaufs sowie Ihrer Lesezeichen, Passwörter und sonstigen Einstellungen deaktiviert.</translation>
@@ -2637,12 +2632,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="5535941515421698170">Auch vorhandene Daten von diesem Gerät entfernen</translation>
 <translation id="7243632151880336635">Löschen und abmelden</translation>
 <translation id="6406506848690869874">Synchronisierung</translation>
-<translation id="1397854323885047133">Synchronisieren und personalisieren</translation>
-<translation id="1136155683023653803">Passwörter, Lesezeichen, der Verlauf und mehr werden mit Ihrem Konto synchronisiert</translation>
-<translation id="3267417306184901318">Mit Ihrem Brave Software-Konto synchronisierte Browserdaten und -aktivitäten</translation>
-<translation id="1123187597739372905">Synchronisierungseinstellungen anzeigen</translation>
 <translation id="5428209950370661546">Weitere Brave Software-Dienste</translation>
-<translation id="2055016640093734678">Einstellungen für Brave Software-Dienste anzeigen</translation>
 <translation id="7956662517480676674">Synchronisierung und Brave Software-Dienste</translation>
 <translation id="2453021845418314664">Erweiterte Synchronisierungseinstellungen</translation>
 <translation id="2731700343119398978">Bitte warten...</translation>

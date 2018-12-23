@@ -848,15 +848,10 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="9125982323641182972">Brave Software zekası Brave'da</translation>
 <translation id="3149880132460839085">Brave Senkronizasyonu</translation>
 <translation id="3796902758602917951">Yer işaretleriniz, geçmişiniz, şifreleriniz ve diğer ayarlarınız tüm cihazlarınızda kullanabilmeniz için Brave Software Hesabınızla senkronize edilecek</translation>
-<translation id="1371301976177520732">Yer işaretleriniz, şifreleriniz, geçmişiniz ve daha fazlası tüm cihazlarınızda sizi bekliyor</translation>
 <translation id="3111958038206230539">Brave Software hizmetlerini kişiselleştirme</translation>
 <translation id="295992419959320001">Brave Software; Arama, reklamlar ve diğer Brave Software hizmetlerini kişiselleştirmek için tarama geçmişinizi kullanabilir</translation>
-<translation id="4205523465226408285">Daha iyi sayfa önerileri gibi daha kişisel Brave Software hizmetleri</translation>
 <translation id="3070156078150543526">Brave Software, Arama ve diğer Brave Software hizmetlerini kişiselleştirmek için tarama geçmişinizi kullanabilir</translation>
-<translation id="2532167245710864499">Brave Software'a sistem ve kullanım bilgilerini göndererek Brave'u ve güvenliğini iyileştirin</translation>
 <translation id="2709453993673701466">Senkronizasyonu ve kişiselleştirmeyi açılmadan önce yönetmek ister misiniz? <ph name="BEGIN_LINK"/>Ayarlar<ph name="END_LINK"/>'ı ziyaret edin.</translation>
-<translation id="2668128414154024727">Brave Software'ın hangi bilgileri toplayacağını, istediğiniz zaman <ph name="BEGIN_LINK"/>Ayarlar<ph name="END_LINK"/>'dan özelleştirebilirsiniz.</translation>
-<translation id="6035247993547372482">Brave Software, Brave ve diğer Brave Software hizmetlerini (Çeviri, Arama ve reklamlar gibi) kişiselleştirmek için, ziyaret ettiğiniz sitelerdeki içeriğin yanı sıra tarayıcı etkinliğinizi ve etkileşimlerinizi kullanabilir. Bunu Ayarlar'da özelleştirebilirsiniz.</translation>
 <translation id="741204030948306876">Evet, istiyorum</translation>
 <translation id="2497852260688568942">Yöneticiniz senkronizasyonu devre dışı bıraktı</translation>
 <translation id="562935524653278697">İşaretleyiciler, geçmiş, şifreler ve diğer ayarlarınızın senkronizasyonunu yöneticiniz tarafından devre dışı bırakıldı.</translation>
@@ -2637,12 +2632,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="5535941515421698170">Ayrıca, mevcut verilerinizi bu cihazdan kaldırın</translation>
 <translation id="7243632151880336635">Temizle ve Oturumu Kapat</translation>
 <translation id="6406506848690869874">Senkronizasyon</translation>
-<translation id="1397854323885047133">Senkronizasyon ve kişiselleştirme</translation>
-<translation id="1136155683023653803">Şifreler, yer işaretleri, geçmiş ve diğer bilgiler hesabınızla senkronize edilir</translation>
-<translation id="3267417306184901318">Brave Software Hesabınızla senkronize edilen tarama verileriniz ve etkinliğiniz</translation>
-<translation id="1123187597739372905">Senkronizasyon ayarlarını göster</translation>
 <translation id="5428209950370661546">Diğer Brave Software hizmetleri</translation>
-<translation id="2055016640093734678">Brave Software hizmetleri ayarlarını göster</translation>
 <translation id="7956662517480676674">Senkronizasyon ve Brave Software hizmetleri</translation>
 <translation id="2453021845418314664">Gelişmiş senkronizasyon ayarları</translation>
 <translation id="2731700343119398978">Lütfen bekleyin...</translation>

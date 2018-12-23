@@ -3,18 +3,23 @@
 <translationbundle lang="ko">
 <translation id="3333887201479867589">Brave 리워드</translation>
 <translation id="7942180974165298215">Brave 광고 차단</translation>
-<translation id="3149880132460839085">Brave 동기화</translation>
+<translation id="6406506848690869874">Brave 동기화</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>")은(는) Brave에서 허용되지 않습니다.</translation>
 <translation id="7450557937477381864">Chrome 닫기</translation>
 <translation id="7008934821596358692">가져오기를 완료하려면 모든 Chrome 창을 닫아야 합니다.</translation>
+<translation id="5735465527556462863">Brave(구버전) 닫기</translation>
+<translation id="7737066986958447692">가져오기를 완료하려면 모든 Brave(구버전) 창을 닫으세요.</translation>
 <translation id="6447842834002726250">쿠키</translation>
 <translation id="4983925687993168579">통계</translation>
+<translation id="6165477144235978006">Brave Payments</translation>
+<translation id="3489524616427966890">창과 탭 열기</translation>
 <translation id="9173846700806833701">Widevine 설치되지 않음</translation>
 <translation id="2433569048491784801">Widevine가 설치되지 않았습니다.</translation>
 <translation id="3699882589215410581">Widevine 설치 및 실행</translation>
 <translation id="8410111618231938546">Google Widevine는 Brave Software가 소유하거나 관리 할 수 없는 디지털 권한 관리(DRM) 코드입니다. Google Widevine 코드는 우리의 서버가 아닌 Google 서버에서 로드합니다. 이 기능을 활성화 한 경우에만 로드 되며, 우리는 DRM 사용을 권장하지 않지만 사용자의 선택을 존중하며, 일부 Brave 사용자는 이 서비스가 필요함을 인정합니다.
 
  이 확장 프로그램을 설치하면 Google Widevine의 이용 약관에 동의하게 됩니다. 당신은 Brave가 Google Widevine 사용과 관련하여 발생한 어떠한 손해 및 손실에 대해 책임지지 않음을 동의하게 됩니다.</translation>
+<translation id="6499845530162974140">Brave(구버전)</translation>
 <translation id="3198814717959506569">Brave에서 가져오기</translation>
 <translation id="453977518730680921">미디어 자동 재생</translation>
 <translation id="410351446219883937">자동 재생</translation>
@@ -34,6 +39,7 @@
 <translation id="4703780849509456860">Tor와 함께 비공개 윈도우에서 링크 열기</translation>
 <translation id="3488584642074079080">Brave 비공개 창의 링크를 Tor로 열기</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
+<translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="7372129767729198111">Brave 쉴드 기본값</translation>
 <translation id="8029018702721078742">광고 콘트롤</translation>
 <translation id="3544462288910360084">쿠키 제어</translation>
@@ -54,4 +60,5 @@
 <translation id="1822560017823072927">기본 공개 및 비공개 인터페이스</translation>
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
+<translation id="6645631466045614531">다음을 통해 Brave 동기화에 액세스</translation>
 </translationbundle>

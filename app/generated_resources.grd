@@ -6450,6 +6450,27 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SYNC_CONFIRMATION_UNITY_TITLE" desc="Title of the sync confirmation dialog in the tab modal signin flow when Unity is enabled">
         Get Brave smarts in Brave
       </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_SYNC_INFO_TITLE" desc="Title in the information about sync on the sync confirmation dialog when Unity is enabled">
+        Sync your bookmarks, passwords, history, and more on all your devices
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_SYNC_INFO_DESC" desc="Description in the information about sync on the sync confirmation dialog when Unity is enabled">
+        Brave may use your history to personalize Search, ads, and other Brave services.
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_SPELLCHECK_INFO_TITLE" desc="Title in the information about spellcheck on the sync confirmation dialog when Unity is enabled">
+        Fix spelling errors with enhanced spell check
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_SPELLCHECK_INFO_DESC" desc="Description in the information about spellcheck on the sync confirmation dialog when Unity is enabled">
+        The text you type in text fields will be sent to Brave.
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_IMPROVE_CHROME_INFO_TITLE" desc="Title in the information about improving Brave on the sync confirmation dialog when Unity is enabled">
+        Help improve Brave and its security
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_IMPROVE_CHROME_INFO_DESC" desc="Description in the information about improving Brave on the sync confirmation dialog when Unity is enabled">
+        Sends some system information and page content to Brave anonymously.
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_UNITY_SETTINGS_INFO" desc="Information about customizing Sync settings in the sync confirmation dialog when Unity is enabled">
+        You can customize these settings anytime.
+      </message>
 
       <!-- "Brave sync" is the Brave Cloud Based service used for sync. Thus this string resource is set to "Brave sync" even for Brave builds. -->
       <message name="IDS_SYNC_CONFIRMATION_CHROME_SYNC_TITLE" desc="Title of the chrome sync section of the sync confirmation dialog in the tab modal signin flow" formatter_data="android_java">
@@ -6458,32 +6479,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SYNC_CONFIRMATION_CHROME_SYNC_MESSAGE" desc="Body of the chrome sync section of the sync confirmation dialog in the tab modal signin flow" formatter_data="android_java">
         Your bookmarks, history, passwords, and other settings will be synced to your Brave Account so you can use them on all your devices
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_DICE_CHROME_SYNC_MESSAGE" desc="Body of the chrome sync section of the sync confirmation dialog in the tab modal signin flow">
-        Your bookmarks, passwords, history, and more on all your devices
-      </message>
       <message name="IDS_SYNC_CONFIRMATION_PERSONALIZE_SERVICES_TITLE" desc="Title of the personalize services section of the sync confirmation dialog in the tab modal signin flow" formatter_data="android_java">
         Personalize Brave services
       </message>
       <message name="IDS_SYNC_CONFIRMATION_PERSONALIZE_SERVICES_BODY" desc="Body of the personalize services section of the sync confirmation dialog in the tab modal signin flow" formatter_data="android_java">
         Brave may use your browsing history to personalize Search, ads, and other Brave services
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_DICE_PERSONALIZE_SERVICES_BODY" desc="Body of the personalize services section of the sync confirmation dialog in the tab modal signin flow">
-        More personal Brave services, like better page suggestions
-      </message>
       <message name="IDS_SYNC_CONFIRMATION_PERSONALIZE_SERVICES_BODY_CHILD_ACCOUNT" desc="Body of the personalize services section of the sync confirmation dialog in the tab modal signin flow for child accounts" formatter_data="android_java">
         Brave may use your browsing history to personalize Search and other Brave services
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_DICE_GOOGLE_SERVICES_BODY" desc="Body of the google services section of the sync confirmation dialog in the tab modal signin flow">
-        Improve Brave and its security by sending system and usage information to Brave
-      </message>
       <message name="IDS_SYNC_CONFIRMATION_SYNC_SETTINGS_LINK_BODY" desc="Label of the section containing the link to go to the sync setting page.">
         Want to manage sync and personalization before they’re turned on? Visit <ph name="BEGIN_LINK">&lt;a id="settingsLink" href="chrome://settings"&gt;</ph>Settings<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_DICE_SYNC_SETTINGS_LINK_BODY" desc="Label of the section containing the link to go to the sync setting page.">
-        You can customize what information Brave collects in <ph name="BEGIN_LINK">&lt;a id="settingsLink" href="chrome://settings"&gt;</ph>Settings<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> anytime.
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_DICE_SYNC_SETTINGS_DESCRIPTION" desc="Body of the personalize services section of the sync confirmation dialog in the tab modal signin flow for child accounts">
-        Brave may use content on sites you visit, plus browser activity and interactions, to personalize Brave and other Brave services like Translate, Search, and ads. You can customize this in Settings.
       </message>
       <message name="IDS_SYNC_CONFIRMATION_DICE_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
         Yes, I'm in

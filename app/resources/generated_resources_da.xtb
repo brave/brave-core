@@ -846,15 +846,10 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="9125982323641182972">Få Brave Softwares smarte funktioner i Brave</translation>
 <translation id="3149880132460839085">Brave-synkronisering</translation>
 <translation id="3796902758602917951">Dine bogmærker, din historik, dine adgangskoder og andre indstillinger synkroniseres med din Brave Software-konto, så du kan bruge dem på alle dine enheder</translation>
-<translation id="1371301976177520732">Din historik samt dine bogmærker, adgangskoder og meget mere på alle dine enheder</translation>
 <translation id="3111958038206230539">Tilpas Brave Software-tjenester</translation>
 <translation id="295992419959320001">Brave Software kan bruge din browserhistorik til at personliggøre Søgning, annoncer og andre Brave Software-tjenester.</translation>
-<translation id="4205523465226408285">Mere personlige Brave Software-tjenester, f.eks. bedre sideforslag</translation>
 <translation id="3070156078150543526">Brave Software bruger muligvis din browserhistorik til at personliggøre Søgning og andre Brave Software-tjenester</translation>
-<translation id="2532167245710864499">Gør Brave og dens sikkerhed bedre ved at sende systemoplysninger og oplysninger om brug til Brave Software</translation>
 <translation id="2709453993673701466">Vil du administrere synkronisering og tilpasning, før disse funktioner er slået til? Gå til <ph name="BEGIN_LINK"/>Indstillinger<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Du kan til enhver tid tilpasse, hvilke oplysninger Brave Software indsamler, i <ph name="BEGIN_LINK"/>Indstillinger<ph name="END_LINK"/>.</translation>
-<translation id="6035247993547372482">Brave Software kan bruge indhold på de websites, du besøger, samt browseraktivitet og -interaktioner til at tilpasse Brave og andre Brave Software-tjenester som f.eks. Oversæt, Søgning og annoncer. Du kan tilpasse dette i Indstillinger.</translation>
 <translation id="741204030948306876">Ja tak</translation>
 <translation id="2497852260688568942">Synkronisering er deaktiveret af din administrator.</translation>
 <translation id="562935524653278697">Din administrator har deaktiveret synkroniseringen af bogmærker, historik, adgangskoder og andre indstillinger.</translation>
@@ -2635,12 +2630,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5535941515421698170">Fjern også dine eksisterende data fra denne enhed</translation>
 <translation id="7243632151880336635">Ryd, og log ud</translation>
 <translation id="6406506848690869874">Synkronisering</translation>
-<translation id="1397854323885047133">Synkronisering og tilpasning</translation>
-<translation id="1136155683023653803">Adgangskoder, bogmærker, historik m.m. synkroniseres med din konto</translation>
-<translation id="3267417306184901318">Dine browserdata og -aktivitet, der synkroniseres med din Brave Software-konto</translation>
-<translation id="1123187597739372905">Vis indstillinger for synkronisering</translation>
 <translation id="5428209950370661546">Andre Brave Software-tjenester</translation>
-<translation id="2055016640093734678">Se indstillinger for Brave Software-tjenester</translation>
 <translation id="7956662517480676674">Synkr. og Brave Software-tjenester</translation>
 <translation id="2453021845418314664">Avancerede indstillinger for synkronisering</translation>
 <translation id="2731700343119398978">Vent et øjeblik...</translation>

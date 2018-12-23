@@ -847,15 +847,10 @@
 <translation id="9125982323641182972">在 Brave 中畅享 Brave Software 的智能技术</translation>
 <translation id="3149880132460839085">Brave 浏览器同步</translation>
 <translation id="3796902758602917951">您的书签、历史记录、密码及其他设置均将同步到您的 Brave Software 帐号，以便您在自己的任意设备上使用</translation>
-<translation id="1371301976177520732">在您的所有设备上都能访问您的书签、密码、历史记录等信息</translation>
 <translation id="3111958038206230539">对 Brave Software 服务进行个性化设置</translation>
 <translation id="295992419959320001">Brave Software 可能会利用您的浏览记录为您提供个性化的 Brave Software 搜索、广告和其他 Brave Software 服务</translation>
-<translation id="4205523465226408285">畅享更加个性化的 Brave Software 服务，例如更贴合个人需求的网页建议</translation>
 <translation id="3070156078150543526">Brave Software 可能会使用您的浏览记录对 Brave Software 搜索和其他 Brave Software 服务进行个性化设置</translation>
-<translation id="2532167245710864499">将系统信息和使用情况信息发送给 Brave Software，帮助改进 Brave 并提高其安全性</translation>
 <translation id="2709453993673701466">想在启用同步和个性化之前管理这些功能？请访问<ph name="BEGIN_LINK"/>设置<ph name="END_LINK"/>。</translation>
-<translation id="2668128414154024727">您可以随时在<ph name="BEGIN_LINK"/>设置<ph name="END_LINK"/>中自定义 Brave Software 可以收集哪些信息。</translation>
-<translation id="6035247993547372482">Brave Software 可能会根据您访问的网站上的内容以及您在浏览中的活动和互动行为，为您提供个性化的 Brave 体验和其他 Brave Software 服务体验（例如翻译、搜索和广告）。您可以在“设置”中自定义此设置。</translation>
 <translation id="741204030948306876">立即启用</translation>
 <translation id="2497852260688568942">您的管理员已停用同步</translation>
 <translation id="562935524653278697">您的管理员已停止同步您的书签、历史记录、密码及其他设置。</translation>
@@ -2631,12 +2626,7 @@
 <translation id="5535941515421698170">一并从这台设备中移除您的现有数据</translation>
 <translation id="7243632151880336635">清除并退出</translation>
 <translation id="6406506848690869874">同步</translation>
-<translation id="1397854323885047133">同步和个性化</translation>
-<translation id="1136155683023653803">密码、书签、历史记录等内容会同步到您的帐号</translation>
-<translation id="3267417306184901318">您的浏览数据和活动，会同步到您的 Brave Software 帐号</translation>
-<translation id="1123187597739372905">显示同步设置</translation>
 <translation id="5428209950370661546">其他 Brave Software 服务</translation>
-<translation id="2055016640093734678">显示 Brave Software 服务设置</translation>
 <translation id="7956662517480676674">同步功能和 Brave Software 服务</translation>
 <translation id="2453021845418314664">高级同步设置</translation>
 <translation id="2731700343119398978">请稍候...</translation>

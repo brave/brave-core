@@ -3,18 +3,23 @@
 <translationbundle lang="iw">
 <translation id="3333887201479867589">תגמולי Brave</translation>
 <translation id="7942180974165298215">Brave חוסם מודעות</translation>
-<translation id="3149880132460839085">סנכרון Brave</translation>
+<translation id="6406506848690869874">סנכרון Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") לא נתמך ב-Brave.</translation>
 <translation id="7450557937477381864">סגירת Chrome</translation>
 <translation id="7008934821596358692">על מנת לסיים את הייבוא, סגרו את כל חלונות הדפדפן.</translation>
+<translation id="5735465527556462863">סגירת Brave (ישן)</translation>
+<translation id="7737066986958447692">כדי לסיים את הייבוא, סגרו את כל חלונות Brave (ישן).</translation>
 <translation id="6447842834002726250">עוגיות</translation>
 <translation id="4983925687993168579">סטטיסטיקות</translation>
+<translation id="6165477144235978006">תשלומי Brave</translation>
+<translation id="3489524616427966890">פתיחת חלונות וכרטיסיות</translation>
 <translation id="9173846700806833701">Widevine איננו מותקן</translation>
 <translation id="2433569048491784801">Widevine איננו מותקן.</translation>
 <translation id="3699882589215410581">התקינו והפעילו Widevine</translation>
 <translation id="8410111618231938546">Google Widevine הוא מקטע קוד של ניהול זכויות דיגיטליות (DRM), שאיננו שייך לנו ב-Brave Software ואין באפשרותנו לפקח עליו. הקוד של Google Widevine הנטען ישירות מהשרתים של Google, ולא מהשרתים שלנו. הוא נטען רק בעת הפעלת אפשרות זו. אנחנו לא מעודדים שימוש ב-DRM, אך מכבדים את הבחירה של המשתמש ומודעים לכך שחלק מהמשתמשים של Brave מעדיפים להשתמש בשירותים אשר דורשים זאת.
 
 בעת התקנת התוסף הזה, אתם מסכימים לתנאי השימוש של Google Widevine. אתם מסכימים גם ש-Brave אינם אחראים לכל נזקים או הפסדים בהקשר השימוש שלכם ב-Google Widevine.</translation>
+<translation id="6499845530162974140">Brave (ישן)</translation>
 <translation id="3198814717959506569">מיובא מ-Brave</translation>
 <translation id="453977518730680921">ניגון אוטומטי של מדיה</translation>
 <translation id="410351446219883937">הפעלה אוטומטית</translation>
@@ -35,6 +40,7 @@
 <translation id="4703780849509456860">פתחו קישור בחלון פרטי בעזרת Tor</translation>
 <translation id="3488584642074079080">פתיחת קישור בחלון גלישה פרטית של Brave עם Tor</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
+<translation id="2515126961943087659">שירות Bat Ads</translation>
 <translation id="7372129767729198111">ברירות מחדל של מגני Brave</translation>
 <translation id="8029018702721078742">בקרת פרסומות</translation>
 <translation id="3544462288910360084">בקרת עוגיות</translation>
@@ -55,4 +61,5 @@
 <translation id="1822560017823072927">ממשקים ברירת מחדל ציבוריים ופרטיים</translation>
 <translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
 <translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
+<translation id="6645631466045614531">גישה ל-Brave Sync באמצעות</translation>
 </translationbundle>

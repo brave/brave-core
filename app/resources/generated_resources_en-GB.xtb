@@ -847,15 +847,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="9125982323641182972">Get Brave Software smarts in Brave</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">Your bookmarks, history, passwords and other settings will be synced to your Brave Software Account so that you can use them on all your devices</translation>
-<translation id="1371301976177520732">Your bookmarks, passwords, history and more on all your devices</translation>
 <translation id="3111958038206230539">Personalise Brave Software services</translation>
 <translation id="295992419959320001">Brave Software may use your browsing history to personalise Search, ads and other Brave Software services</translation>
-<translation id="4205523465226408285">More personal Brave Software services, such as better page suggestions</translation>
 <translation id="3070156078150543526">Brave Software may use your browsing history to personalise Search and other Brave Software services</translation>
-<translation id="2532167245710864499">Improve Brave and its security by sending system and usage information to Brave Software</translation>
 <translation id="2709453993673701466">Want to manage sync and personalisation before they’re turned on? Visit <ph name="BEGIN_LINK"/>Settings<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">You can customise what information Brave Software collects in <ph name="BEGIN_LINK"/>Settings<ph name="END_LINK"/> any time.</translation>
-<translation id="6035247993547372482">Brave Software may use content on sites that you visit, plus browser activity and interactions, to personalise Brave and other Brave Software services such as Translate, Search and ads. You can customise this in Settings.</translation>
 <translation id="741204030948306876">Yes, I'm in</translation>
 <translation id="2497852260688568942">Sync is disabled by your administrator</translation>
 <translation id="562935524653278697">Your administrator has disabled syncing of your bookmarks, history, passwords and other settings.</translation>
@@ -2636,12 +2631,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5535941515421698170">Also remove your existing data from this device</translation>
 <translation id="7243632151880336635">Clear and Sign Out</translation>
 <translation id="6406506848690869874">Sync</translation>
-<translation id="1397854323885047133">Sync and personalisation</translation>
-<translation id="1136155683023653803">Passwords, bookmarks, history and more are synced to your account</translation>
-<translation id="3267417306184901318">Your browsing data and activity, synced to your Brave Software account</translation>
-<translation id="1123187597739372905">Show sync settings</translation>
 <translation id="5428209950370661546">Other Brave Software services</translation>
-<translation id="2055016640093734678">Show Brave Software services settings</translation>
 <translation id="7956662517480676674">Sync and Brave Software services</translation>
 <translation id="2453021845418314664">Advanced sync settings</translation>
 <translation id="2731700343119398978">Please wait…</translation>

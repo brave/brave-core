@@ -848,15 +848,10 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="9125982323641182972">Eines intel·ligents a Brave</translation>
 <translation id="3149880132460839085">Sincronització de Brave Software Brave</translation>
 <translation id="3796902758602917951">Les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració se sincronitzaran amb el teu compte de Brave Software, perquè els puguis utilitzar en tots els dispositius</translation>
-<translation id="1371301976177520732">Tindràs les adreces d'interès, les contrasenyes, l'historial i altres elements en tots els dispositius</translation>
 <translation id="3111958038206230539">Personalitzeu els serveis de Brave Software</translation>
 <translation id="295992419959320001">És possible que Brave Software utilitzi el vostre historial de navegació per personalitzar la Cerca, els anuncis i altres serveis de Brave Software</translation>
-<translation id="4205523465226408285">Serveis de Brave Software més personals, com ara millors suggeriments de pàgines</translation>
 <translation id="3070156078150543526">És possible que Brave Software utilitzi el vostre historial de navegació per personalitzar la Cerca i altres serveis de Brave Software</translation>
-<translation id="2532167245710864499">Envia a Brave Software informació del sistema i dades sobre l'ús de Brave per millorar aquest servei i la seva seguretat</translation>
 <translation id="2709453993673701466">Vols gestionar la sincronització i la personalització abans que s'activin? Ves a <ph name="BEGIN_LINK"/>Configuració<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Per personalitzar la informació que Brave Software recopila, ves a <ph name="BEGIN_LINK"/>Configuració<ph name="END_LINK"/> en qualsevol moment.</translation>
-<translation id="6035247993547372482">Brave Software pot utilitzar contingut dels llocs web que visites, així com l'activitat i les interaccions del navegador per personalitzar Brave i altres serveis de Brave Software, com ara el Traductor, la Cerca i els anuncis. Pots personalitzar aquesta opció a Configuració.</translation>
 <translation id="741204030948306876">Sí, ho accepto</translation>
 <translation id="2497852260688568942">L'administrador ha desactivat la sincronització</translation>
 <translation id="562935524653278697">L'administrador ha desactivat la sincronització de les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració.</translation>
@@ -2641,12 +2636,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="5535941515421698170">Suprimeix també les teves dades d'aquest dispositiu</translation>
 <translation id="7243632151880336635">Esborra i tanca la sessió</translation>
 <translation id="6406506848690869874">Sincronització</translation>
-<translation id="1397854323885047133">Sincronització i personalització</translation>
-<translation id="1136155683023653803">Les contrasenyes, les adreces d'interès, l'historial i més elements se sincronitzen amb el teu compte</translation>
-<translation id="3267417306184901318">Les teves dades de navegació i activitat, sincronitzades al teu Compte de Brave Software</translation>
-<translation id="1123187597739372905">Mostra la configuració de sincronització</translation>
 <translation id="5428209950370661546">Altres serveis de Brave Software</translation>
-<translation id="2055016640093734678">Mostra la configuració dels serveis de Brave Software</translation>
 <translation id="7956662517480676674">Sincronització i serveis de Brave Software</translation>
 <translation id="2453021845418314664">Configuració avançada de sincronització</translation>
 <translation id="2731700343119398978">Espereu...</translation>

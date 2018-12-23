@@ -847,16 +847,11 @@
 <translation id="9125982323641182972">Brave-এ Brave Software স্মার্ট পান</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">আপনার বুকমার্ক, ইতিহাস এবং অন্যান্য সেটিংস আপনার Brave Software অ্যাকাউন্টে সিঙ্ক হবে যাতে আপনি আপনার সমস্ত ডিভাইসে সেগুলি ব্যবহার করতে পারেন।</translation>
-<translation id="1371301976177520732">আপনার সমস্ত ডিভাইসে বুকমার্ক, পাসওয়ার্ড, ইতিহাস এবং আরও অনেক কিছু সিঙ্ক হয়</translation>
 <translation id="3111958038206230539">Brave Software পরিষেবাগুলিকে ব্যক্তিগত করুন</translation>
 <translation id="295992419959320001">সার্চ, বিজ্ঞাপন এবং অন্যান্য Brave Software পরিষেবা ব্যক্তিগতকৃত করতে Brave Software আপনার ব্রাউজিং ইতিহাস ব্যবহার করতে পারে</translation>
-<translation id="4205523465226408285">ভাল পৃষ্ঠার সাজেশনের মতো আরও ব্যক্তিগত Brave Software পরিষেবা</translation>
 <translation id="3070156078150543526">সার্চ এবং অন্যান্য Brave Software পরিষেবাগুলি ব্যক্তিগতকৃত করতে Brave Software আপনার ব্রাউজিং ইতিহাস ব্যবহার করতে পারে</translation>
-<translation id="2532167245710864499">Brave Software-এ সিস্টেম ও ব্যবহারের তথ্য পাঠিয়ে Brave এবং তার নিরাপত্তা উন্নত করুন</translation>
 <translation id="2709453993673701466">চালু করার আগেই সিঙ্ক এবং ব্যক্তিগতকরণ পরিচালনা করতে চান?
 <ph name="BEGIN_LINK"/>সেটিংসে<ph name="END_LINK"/> দেখুন।</translation>
-<translation id="2668128414154024727">আপনি <ph name="BEGIN_LINK"/>সেটিংস<ph name="END_LINK"/> এ গিয়ে যেকোনও সময় Brave Software এর সংগ্রহ করা তথ্য কাস্টমাইজ করতে পারবেন।</translation>
-<translation id="6035247993547372482">Brave Software আপনার দেখা সাইটগুলির কন্টেন্ট, ব্রাউজারের অ্যাক্টিভিটি এবং ইন্টার‍্যাকশন ব্যবহার করে Brave এবং অন্যান্য Brave Software পরিষেবা যেমন অনুবাদ, সার্চ ও বিজ্ঞাপনগুলি নিজের মতো করে সাজিয়ে নিতে পারে। আপনি এটি সেটিংস থেকে কাস্টমাইজ করতে পারেন।</translation>
 <translation id="741204030948306876">হ্যাঁ, আমি রাজি</translation>
 <translation id="2497852260688568942">আপনার প্রশাসকের দ্বারা সিঙ্ক অক্ষম করা হয়েছে</translation>
 <translation id="562935524653278697">আপনার প্রশাসক বুকমার্ক, ইতিহাস, পাসওয়ার্ড এবং অন্যান্য সেটিংসের সিঙ্ক করা অক্ষম করেছে।</translation>
@@ -2637,12 +2632,7 @@
 <translation id="5535941515421698170">এছাড়াও এই ডিভাইস থেকে আপনার বিদ্যমান ডেটা মুছুন</translation>
 <translation id="7243632151880336635">সাফ করে প্রস্থান করুন</translation>
 <translation id="6406506848690869874">সিঙ্ক</translation>
-<translation id="1397854323885047133">সিঙ্ক এবং ব্যক্তিগতকরণ</translation>
-<translation id="1136155683023653803">পাসওয়ার্ড, বুকমার্ক, ইতিহাস এবং আরও অনেক কিছু আপনার অ্যাকাউন্টে সিঙ্ক করা হয়েছে</translation>
-<translation id="3267417306184901318">আপনার ব্রাউজ করা ডেটা ও অ্যাক্টিভিটি আপনার Brave Software অ্যাকাউন্টের সাথে সিঙ্ক করা আছে</translation>
-<translation id="1123187597739372905">সিঙ্ক সেটিংস দেখুন</translation>
 <translation id="5428209950370661546">Brave Software-এর অন্যান্য পরিষেবা</translation>
-<translation id="2055016640093734678">Brave Software পরিষেবার সেটিংস দেখুন</translation>
 <translation id="7956662517480676674">সিঙ্ক এবং Brave Software পরিষেবাগুলি</translation>
 <translation id="2453021845418314664">উন্নত সিঙ্ক সেটিংস</translation>
 <translation id="2731700343119398978">অনুগ্রহ করে অপেক্ষা করুন...</translation>

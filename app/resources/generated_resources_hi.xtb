@@ -847,15 +847,10 @@
 <translation id="9125982323641182972">Brave में Brave Software स्मार्ट पाएं</translation>
 <translation id="3149880132460839085">Brave सिंक</translation>
 <translation id="3796902758602917951">आपके बुकमार्क, इतिहास, पासवर्ड और अन्य सेटिंग को आपके Brave Software खाते में समन्वयित किया जाएगा ताकि आप उनका उपयोग अपने सभी डिवाइस पर कर सकें</translation>
-<translation id="1371301976177520732">आपके बुकमार्क, पासवर्ड, इतिहास और दूसरी कई चीज़ें आपके सभी डिवाइस पर</translation>
 <translation id="3111958038206230539">Brave Software सेवाओं को वैयक्तिकृत करें</translation>
 <translation id="295992419959320001">खोज, विज्ञापन और अन्य Brave Software सेवाओं को वैयक्तिकृत करने के लिए Brave Software आपके ब्राउज़िंग इतिहास का उपयोग कर सकता है</translation>
-<translation id="4205523465226408285">ज़्यादा निजी Brave Software सेवाएं, जैसे कि बेहतर पेज सुझाव</translation>
 <translation id="3070156078150543526">खोज और अन्य Brave Software सेवाओं को वैयक्तिकृत करने के लिए Brave Software आपके ब्राउज़िंग इतिहास का उपयोग कर सकता है</translation>
-<translation id="2532167245710864499">Brave Software को सिस्टम और इस्तेमाल से जुड़ी जानकारी भेजकर Brave और उसकी सुरक्षा को बेहतर बनाएं</translation>
 <translation id="2709453993673701466">सिंक और मनमुताबिक बनाने की सुविधा के चालू होने से पहले उन्हें प्रबंधित करना चाहते हैं? <ph name="BEGIN_LINK"/>सेटिंग<ph name="END_LINK"/> पर जाएं.</translation>
-<translation id="2668128414154024727">आप किसी भी समय <ph name="BEGIN_LINK"/>सेटिंग<ph name="END_LINK"/> में जाकर यह कस्टमाइज़ कर सकते हैं कि Brave Software कौन सी सामग्री इकट्ठा करेगा.</translation>
-<translation id="6035247993547372482">Brave Software उन साइटों की सामग्री, जिन पर आप जाते हैं, के साथ ही आपकी ब्राउज़र गतिविधि और इंटरैक्शन का इस्तेमाल Brave और दूसरी 'Brave Software सेवाओं', जैसे कि 'अनुवाद', 'सर्च' और विज्ञापनों को आपकी पसंद के मुताबिक बनाने के लिए कर सकता है. आप ‘सेटिंग‘ में जाकर इसे अपनी पसंद के मुताबिक बना सकते हैं.</translation>
 <translation id="741204030948306876">हां मैं सहमत हूं</translation>
 <translation id="2497852260688568942">सिंक को आपके व्यवस्थापक ने अक्षम कर दिया है</translation>
 <translation id="562935524653278697">आपके व्यवस्थापक ने आपके बुकमार्क, इतिहास, पासवर्ड और अन्य सेटिंग को सिंक करना अक्षम कर दिया है.</translation>
@@ -2636,12 +2631,7 @@
 <translation id="5535941515421698170">इस डिवाइस से अपना मौजूदा डेटा भी निकालें</translation>
 <translation id="7243632151880336635">साफ़ करें और प्रस्थान करें</translation>
 <translation id="6406506848690869874">समन्वय</translation>
-<translation id="1397854323885047133">सिंक करना और मनमुताबिक बनाना</translation>
-<translation id="1136155683023653803">पासवर्ड, बुकमार्क, इतिहास और कई चीज़ें आपके खाते में सिंक की जाती हैं</translation>
-<translation id="3267417306184901318">आपके 'Brave Software खाते' में सिंक किए गया आपका ब्राउज़िंग डेटा और गतिविधि</translation>
-<translation id="1123187597739372905">सिंक सेटिंग दिखाएं</translation>
 <translation id="5428209950370661546">Brave Software की दूसरी सेवाएंं</translation>
-<translation id="2055016640093734678">Brave Software सेवाओं की सेटिंग दिखाएं</translation>
 <translation id="7956662517480676674">सिंक और Brave Software सेवाएं</translation>
 <translation id="2453021845418314664">उन्‍नत समन्‍वयन सेटिंग</translation>
 <translation id="2731700343119398978">कृपया प्रतीक्षा करें...</translation>

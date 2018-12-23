@@ -846,15 +846,10 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="9125982323641182972">Brave Software-functies in Brave</translation>
 <translation id="3149880132460839085">Brave-synchronisatie</translation>
 <translation id="3796902758602917951">Je bladwijzers, geschiedenis, wachtwoorden en andere instellingen worden gesynchroniseerd met je Brave Software-account, zodat je ze op al je apparaten kunt gebruiken</translation>
-<translation id="1371301976177520732">Je bladwijzers, wachtwoorden, geschiedenis en meer op al je apparaten</translation>
 <translation id="3111958038206230539">Brave Software-services personaliseren</translation>
 <translation id="295992419959320001">Brave Software kan je browsegeschiedenis gebruiken om Brave Software Zoeken, advertenties en andere Brave Software-services te personaliseren</translation>
-<translation id="4205523465226408285">Meer persoonlijke Brave Software-services, zoals betere paginasuggesties</translation>
 <translation id="3070156078150543526">Brave Software kan je browsegeschiedenis gebruiken om Brave Software Zoeken en andere Brave Software-services te personaliseren</translation>
-<translation id="2532167245710864499">Verbeter Brave en de beveiliging ervan door systeem- en gebruiksgegevens naar Brave Software te verzenden</translation>
 <translation id="2709453993673701466">Wil je synchronisatie en personalisatie beheren voordat ze worden ingeschakeld? Ga naar <ph name="BEGIN_LINK"/>Instellingen<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Via <ph name="BEGIN_LINK"/>Instellingen<ph name="END_LINK"/> kun je op elk gewenst moment aanpassen welke informatie Brave Software verzamelt.</translation>
-<translation id="6035247993547372482">Brave Software kan content op sites die je bezoekt en je browseractiviteit en -interactie gebruiken om Brave en andere Brave Software-services (zoals Translate, Zoeken en advertenties) te personaliseren. Je kunt deze functies op elk gewenst moment aanpassen via Instellingen.</translation>
 <translation id="741204030948306876">Ja, inschakelen</translation>
 <translation id="2497852260688568942">Synchronisatie is uitgeschakeld door je beheerder</translation>
 <translation id="562935524653278697">Je beheerder heeft de synchronisatie van je bladwijzers, geschiedenis, wachtwoorden en andere instellingen uitgeschakeld.</translation>
@@ -2636,12 +2631,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="5535941515421698170">Ook je bestaande gegevens verwijderen van dit apparaat</translation>
 <translation id="7243632151880336635">Wissen en uitloggen</translation>
 <translation id="6406506848690869874">Synchronisatie</translation>
-<translation id="1397854323885047133">Synchronisatie en personalisatie</translation>
-<translation id="1136155683023653803">Wachtwoorden, bladwijzers, geschiedenis en meer worden gesynchroniseerd met je account</translation>
-<translation id="3267417306184901318">Je browsergegevens en activiteit die zijn gesynchroniseerd met je Brave Software-account</translation>
-<translation id="1123187597739372905">Synchronisatie-instellingen weergeven</translation>
 <translation id="5428209950370661546">Andere Brave Software-services</translation>
-<translation id="2055016640093734678">Instellingen van Brave Software-services weergeven</translation>
 <translation id="7956662517480676674">Synchronisatie &amp; Brave Software-services</translation>
 <translation id="2453021845418314664">Geavanceerde synchronisatie-instellingen</translation>
 <translation id="2731700343119398978">Even geduld...</translation>

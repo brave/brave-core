@@ -848,15 +848,10 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="9125982323641182972">Prejmite Googlove pametne rešitve v Chromu</translation>
 <translation id="3149880132460839085">Sinhronizacija za Brave</translation>
 <translation id="3796902758602917951">Vaši zaznamki, zgodovina, gesla in druge nastavitve bodo sinhronizirani z Brave Software Računom, tako da jih boste lahko uporabljali v vseh svojih napravah.</translation>
-<translation id="1371301976177520732">Zaznamki, gesla, zgodovina in drugi podatki v vseh vaših napravah</translation>
 <translation id="3111958038206230539">Prilagajanje Googlovih storitev</translation>
 <translation id="295992419959320001">Brave Software lahko vašo zgodovino brskanja uporabi za prilagajanje Iskanja Brave Software, oglasov in drugih Googlovih storitev.</translation>
-<translation id="4205523465226408285">Bolj osebne Googlove storitve, kot so boljši predlogi strani</translation>
 <translation id="3070156078150543526">Brave Software lahko vašo zgodovino brskanja uporabi za prilagajanje Iskanja Brave Software in drugih Googlovih storitev</translation>
-<translation id="2532167245710864499">Izboljšajte Brave in njegovo varnost tako, da pošiljate podatke o sistemu in uporabi Googlu</translation>
 <translation id="2709453993673701466">Ali želite upravljati sinhronizacijo in prilagajanje, preden ju vklopite? Odprite <ph name="BEGIN_LINK"/>nastavitve<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">V <ph name="BEGIN_LINK"/>nastavitvah<ph name="END_LINK"/> lahko kadar koli prilagodite, katere podatke zbira Brave Software.</translation>
-<translation id="6035247993547372482">Brave Software lahko vsebino na spletnih mestih, ki jih obiščete, ter vašo dejavnost brskanja in interakcije uporabi za prilagajanje Chroma ter drugih Googlovih storitev, kot so Prevajalnik, Iskanje Brave Software in oglasi. To lahko prilagodite v nastavitvah.</translation>
 <translation id="741204030948306876">Da, sem za</translation>
 <translation id="2497852260688568942">Sinhronizacijo je onemogočil skrbnik</translation>
 <translation id="562935524653278697">Skrbnik je onemogočil sinhroniziranje zaznamkov, zgodovine, gesel in drugih nastavitev.</translation>
@@ -2637,12 +2632,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="5535941515421698170">Odstranite tudi obstoječe podatke iz te naprave</translation>
 <translation id="7243632151880336635">Brisanje in odjava</translation>
 <translation id="6406506848690869874">Sinhronizacija</translation>
-<translation id="1397854323885047133">Sinhronizacija in prilagajanje</translation>
-<translation id="1136155683023653803">Gesla, zaznamki, zgodovina in drugo se sinhronizirajo z vašim računom</translation>
-<translation id="3267417306184901318">Podatki in dejavnost brskanja, sinhronizirani z Brave Software Računom</translation>
-<translation id="1123187597739372905">Prikaži nastavitve sinhronizacije</translation>
 <translation id="5428209950370661546">Druge Googlove storitve</translation>
-<translation id="2055016640093734678">Pokaži nastavitve Googlovih storitev</translation>
 <translation id="7956662517480676674">Sinhroniz. in Googlove storitve</translation>
 <translation id="2453021845418314664">Dodatne nastavitve sinhronizacije</translation>
 <translation id="2731700343119398978">Počakajte ...</translation>

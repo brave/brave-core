@@ -3,18 +3,23 @@
 <translationbundle lang="lt">
 <translation id="3333887201479867589">„Brave Rewards“</translation>
 <translation id="7942180974165298215">„Brave Ad Block“</translation>
-<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="6406506848690869874">Brave Sync</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (plėtinio ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nėra leidžiamas naršyklėje „Brave“.</translation>
 <translation id="7450557937477381864">Užverti „Chrome“</translation>
 <translation id="7008934821596358692">Kad užbaigtumėte importuoti, užverkite visus „Chrome“ langus.</translation>
+<translation id="5735465527556462863">Užverti „Brave“ (senąją)</translation>
+<translation id="7737066986958447692">Kad baigtumėte importuoti, užverkite visus „Brave“ (senosios) langus.</translation>
 <translation id="6447842834002726250">Slapukai</translation>
 <translation id="4983925687993168579">Statistika</translation>
+<translation id="6165477144235978006">„Brave“ mokėjimai</translation>
+<translation id="3489524616427966890">Atidaryti langai ir skirtukai</translation>
 <translation id="9173846700806833701">„Widevine“ neįdiegta</translation>
 <translation id="2433569048491784801">„Widevine“ neįdiegta.</translation>
 <translation id="3699882589215410581">Įdiekite ir paleiskite „Widevine“</translation>
 <translation id="8410111618231938546">„Google Widevine“ yra skaitmeninio teisių valdymo (DRM) kodo elementas, kuris nepriklauso „Brave Software“ ir todėl negalime jo patikrinti. „Google Widevine“ kodas įkeliamas iš „Google“ serverių, o ne iš mūsų serverių. Jis įkeliamas tik tada, kai aktyvinate šią parinktį. Mes neskatiname naudoti DRM, bet gerbiame naudotojų pasirinkimą ir pripažįstame, kad kai kurie „Brave“ naudotojai nori naudotis paslaugomis, kurioms DRM yra reikalingas.
 
 Įdiegdami šį plėtinį sutinkate su „Google Widevine“ naudojimo sąlygomis. Sutinkate, kad „Brave“ nebus atsakinga už jokią žalą ar nuostolius, patirtus dėl naudojimosi „Google Widevine“.</translation>
+<translation id="6499845530162974140">„Brave“ (senoji)</translation>
 <translation id="3198814717959506569">Importuota iš „Brave“</translation>
 <translation id="453977518730680921">Automatiškai leisti mediją</translation>
 <translation id="410351446219883937">Leisti automatiškai</translation>
@@ -34,6 +39,7 @@
 <translation id="4703780849509456860">Atverti nuorodą inkognito lange su „Tor“</translation>
 <translation id="3488584642074079080">Atverti nuorodą „Brave“ inkognito lange su „Tor“</translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
+<translation id="2515126961943087659">„Bat Ads“ paslauga</translation>
 <translation id="7372129767729198111">„Brave“ numatytieji skydai</translation>
 <translation id="8029018702721078742">Reklamos kontrolė</translation>
 <translation id="3544462288910360084">Slapukų kontrolė</translation>
@@ -54,4 +60,5 @@
 <translation id="1822560017823072927">Numatytosios viešos ir privačios sąsajos</translation>
 <translation id="5825943197137337319">Tik numatytoji vieša sąsaja</translation>
 <translation id="1689062823386843231">Išjungti neįgaliotąjį UDP</translation>
+<translation id="6645631466045614531">Naudoti „Brave Sync“ per</translation>
 </translationbundle>

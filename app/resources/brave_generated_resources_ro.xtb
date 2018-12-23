@@ -3,18 +3,23 @@
 <translationbundle lang="ro">
 <translation id="3333887201479867589">Recompense Brave</translation>
 <translation id="7942180974165298215">Blocare reclame Brave</translation>
-<translation id="3149880132460839085">Sincronizare Brave</translation>
+<translation id="6406506848690869874">Sincronizare Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID extensie "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nu este permis în Brave.</translation>
 <translation id="7450557937477381864">Închide Chrome</translation>
 <translation id="7008934821596358692">Pentru finalizarea importului, închideți toate ferestrele Chrome.</translation>
+<translation id="5735465527556462863">Închidere Brave (vechi)</translation>
+<translation id="7737066986958447692">Pentru finalizarea importului, închideți toate ferestrele Brave (vechi).</translation>
 <translation id="6447842834002726250">Cookie-uri</translation>
 <translation id="4983925687993168579">Statistici</translation>
+<translation id="6165477144235978006">Plăți Brave</translation>
+<translation id="3489524616427966890">Deschidere ferestre și file</translation>
 <translation id="9173846700806833701">Widevine nu este instalat</translation>
 <translation id="2433569048491784801">Widevine nu este instalat.</translation>
 <translation id="3699882589215410581">Instalați și rulați Widevine</translation>
 <translation id="8410111618231938546">Google Widevine este parte din codul de Administrarea Drepturilor Digitale (ADD) care nu este deținut de Brave și nu-l putem inspecta. Codul Google Widevine este încărcat din serverele Google, nu din serverele noastre. Este încărcat doar când activați această opțiune. Noi descurajăm utilizarea ADD, dar respectăm alegerea utilizatorului și confirmăm că unii utilizatori Brave doresc să utilizeze servicii care necesită acest cod.
 
 Instalând această extensie, sunteți de acord cu termenii de utilizare ai Google Widevine. Sunteți de acord că Brave nu este responsabil pentru nicio problemă sau pierdere a conexiunii în timpul utilizării Google Widevine.</translation>
+<translation id="6499845530162974140">Brave (vechi)</translation>
 <translation id="3198814717959506569">Importat din Brave</translation>
 <translation id="453977518730680921">Autoredare media</translation>
 <translation id="410351446219883937">Redare automată</translation>
@@ -34,6 +39,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4703780849509456860">Deschide Link în Fereastră Privată cu Tor</translation>
 <translation id="3488584642074079080">Deschide Link în Fereastra Privată Brave cu Tor</translation>
 <translation id="3155170474926428993">Lansatorul Tor</translation>
+<translation id="2515126961943087659">Serviciu de anunțuri Bat</translation>
 <translation id="7372129767729198111">Valori implicite scuturi Brave</translation>
 <translation id="8029018702721078742">Control reclame</translation>
 <translation id="3544462288910360084">Control cookie</translation>
@@ -54,4 +60,5 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1822560017823072927">Interfețe implicite publice și private</translation>
 <translation id="5825943197137337319">Doar interfața publică implicită</translation>
 <translation id="1689062823386843231">Dezactivează UDP fără proxy</translation>
+<translation id="6645631466045614531">Accesare sincronizare Brave prin</translation>
 </translationbundle>

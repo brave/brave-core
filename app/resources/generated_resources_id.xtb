@@ -847,15 +847,10 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="9125982323641182972">Dapatkan kecanggihan Brave Software di Brave</translation>
 <translation id="3149880132460839085">Sinkronisasi Brave</translation>
 <translation id="3796902758602917951">Bookmark, histori, sandi, dan setelan lainnya akan disinkronkan ke Akun Brave Software agar Anda dapat menggunakannya di semua perangkat</translation>
-<translation id="1371301976177520732">Bookmark, sandi, histori, dan lainnya di semua perangkat Anda</translation>
 <translation id="3111958038206230539">Personalisasi layanan Brave Software</translation>
 <translation id="295992419959320001">Brave Software dapat menggunakan histori penjelajahan Anda untuk mempersonalisasi Penelusuran, iklan, dan layanan Brave Software lainnya</translation>
-<translation id="4205523465226408285">Layanan Brave Software yang lebih personal, seperti saran halaman yang lebih baik</translation>
 <translation id="3070156078150543526">Brave Software dapat menggunakan histori penjelajahan Anda untuk mempersonalisasi Penelusuran dan layanan Brave Software lainnya</translation>
-<translation id="2532167245710864499">Sempurnakan Brave dan keamanannya dengan mengirimkan informasi penggunaan dan sistem ke Brave Software</translation>
 <translation id="2709453993673701466">Ingin mengelola sinkronisasi dan personalisasi sebelum diaktifkan? Buka <ph name="BEGIN_LINK"/>Setelan<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Anda dapat menyesuaikan informasi yang dikumpulkan Brave Software di <ph name="BEGIN_LINK"/>Setelan<ph name="END_LINK"/> kapan saja.</translation>
-<translation id="6035247993547372482">Brave Software dapat menggunakan konten di situs yang Anda buka, serta aktivitas browser dan interaksi untuk mempersonalisasi Brave dan layanan Brave Software lainnya seperti Terjemahan, Penelusuran, dan iklan. Anda dapat menyesuaikannya di Setelan.</translation>
 <translation id="741204030948306876">Ya, saya ikut</translation>
 <translation id="2497852260688568942">Sinkronisasi dinonaktifkan oleh administrator</translation>
 <translation id="562935524653278697">Administrator Anda telah menonaktifkan sinkronisasi bookmark, histori, sandi, dan setelan yang lain.</translation>
@@ -2636,12 +2631,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5535941515421698170">Tindakan ini juga menghapus data yang sudah ada dari perangkat ini</translation>
 <translation id="7243632151880336635">Hapus dan Keluar</translation>
 <translation id="6406506848690869874">Sinkronisasi</translation>
-<translation id="1397854323885047133">Sinkronisasi dan personalisasi</translation>
-<translation id="1136155683023653803">Sandi, bookmark, histori, dan lainnya disinkronkan ke akun Anda</translation>
-<translation id="3267417306184901318">Data dan aktivitas browsing internet Anda disinkronkan ke Akun Brave Software</translation>
-<translation id="1123187597739372905">Tampilkan setelan sinkronisasi</translation>
 <translation id="5428209950370661546">Layanan Brave Software lainnya</translation>
-<translation id="2055016640093734678">Tampilkan setelan layanan Brave Software</translation>
 <translation id="7956662517480676674">Sinkronisasi dan layanan Brave Software</translation>
 <translation id="2453021845418314664">Setelan sinkronisasi lanjutan</translation>
 <translation id="2731700343119398978">Harap tunggu...</translation>
