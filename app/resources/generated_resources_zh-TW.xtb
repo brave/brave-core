@@ -847,15 +847,10 @@
 <translation id="9125982323641182972">在 Brave 中體驗 Brave Software 智慧功能</translation>
 <translation id="3149880132460839085">Brave Software Brave 同步功能</translation>
 <translation id="3796902758602917951">您的書籤、歷史記錄、密碼和其他設定都會在您的 Brave Software 帳戶中保持同步，讓您在所有個人裝置上使用。</translation>
-<translation id="1371301976177520732">使用任何裝置均可取得自己的書籤、密碼、歷史記錄及其他設定</translation>
 <translation id="3111958038206230539">享有個人化的 Brave Software 服務</translation>
 <translation id="295992419959320001">Brave Software 可能會使用您的瀏覽記錄，為您提供個人化的搜尋服務、廣告內容和其他各項 Brave Software 服務</translation>
-<translation id="4205523465226408285">體驗更加個人化的 Brave Software 服務 (例如更適切的網頁建議)</translation>
 <translation id="3070156078150543526">Brave Software 可能會使用您的瀏覽記錄，為您提供個人化的搜尋服務和其他各項 Brave Software 服務。</translation>
-<translation id="2532167245710864499">傳送系統資訊和使用情形資料給 Brave Software，協助改善 Brave 及其安全性</translation>
 <translation id="2709453993673701466">想在開啟同步功能和個人化功能前先進行管理嗎？請前往「<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>」。</translation>
-<translation id="2668128414154024727">你隨時可以在<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>中自訂 Brave Software 可收集的資訊。</translation>
-<translation id="6035247993547372482">Brave Software 可能會根據你所造訪網站的內容、瀏覽器活動和瀏覽器互動行為，提供個人化的 Brave 體驗和其他 Brave Software 服務體驗，例如翻譯、搜尋和廣告。你可以在「設定」中自訂這項功能。</translation>
 <translation id="741204030948306876">是，我要啟用</translation>
 <translation id="2497852260688568942">你的管理員停用了同步功能</translation>
 <translation id="562935524653278697">你的管理員停用了書籤、歷史記錄、密碼和其他設定的同步功能。</translation>
@@ -2636,12 +2631,7 @@
 <translation id="5535941515421698170">將你現有的資料從這個裝置上一併移除</translation>
 <translation id="7243632151880336635">清除並登出</translation>
 <translation id="6406506848690869874">同步</translation>
-<translation id="1397854323885047133">同步處理和個人化</translation>
-<translation id="1136155683023653803">密碼、書籤、歷史記錄和其他設定會同步到你的帳戶</translation>
-<translation id="3267417306184901318">讓你的瀏覽資料和活動與你的 Brave Software 帳戶保持同步</translation>
-<translation id="1123187597739372905">顯示同步處理設定</translation>
 <translation id="5428209950370661546">其他 Brave Software 服務</translation>
-<translation id="2055016640093734678">顯示 Brave Software 服務設定</translation>
 <translation id="7956662517480676674">同步處理和 Brave Software 服務</translation>
 <translation id="2453021845418314664">進階同步處理設定</translation>
 <translation id="2731700343119398978">請稍候...</translation>

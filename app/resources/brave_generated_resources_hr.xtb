@@ -3,18 +3,23 @@
 <translationbundle lang="hr">
 <translation id="3333887201479867589">Sustav nagrada u pregledniku Brave</translation>
 <translation id="7942180974165298215">Blokiranje oglasa u pregledniku Brave</translation>
-<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="6406506848690869874">Brave Sync</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nije dopušteno u pregledniku Brave.</translation>
 <translation id="7450557937477381864">Zatvori Chrome</translation>
 <translation id="7008934821596358692">Kako biste dovršili uvoz, zatvorite sve prozore preglednika Chrome.</translation>
+<translation id="5735465527556462863">Zatvori Brave (staro)</translation>
+<translation id="7737066986958447692">Za završetak uvoza zatvorite sve (stare) prozore preglednika Brave.</translation>
 <translation id="6447842834002726250">Kolačići</translation>
 <translation id="4983925687993168579">Statistički podaci</translation>
+<translation id="6165477144235978006">Braveova plaćanja</translation>
+<translation id="3489524616427966890">Otvori prozore i kartice</translation>
 <translation id="9173846700806833701">Widevine nije instaliran</translation>
 <translation id="2433569048491784801">Widevine nije instaliran.</translation>
 <translation id="3699882589215410581">Instaliraj i pokreni Widevine</translation>
 <translation id="8410111618231938546">Widevine tvrtke Google dio je koda za upravljanje digitalnim pravima (DRM) koji tvrtka Brave Software ne posjeduje i ne može pregledati. Kȏd za Googleovo rješenje Widevine učitava se s poslužitelja tvrtke Google, a ne s naših poslužitelja. Učitava se samo kada omogućite tu opciju. Ne preporučujemo uporabu DRM-a, no poštujemo izbor korisnika i prihvaćamo činjenicu da bi neki korisnici preglednika Brave htjeli koristiti usluge koje to zahtijevaju.
 
 Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtke Google. Potvrđujete da Brave ne odgovora ni za kakvu štetu ni gubitke povezane s vašom uporabom Googleova rješenja Widevine.</translation>
+<translation id="6499845530162974140">Brave (staro)</translation>
 <translation id="3198814717959506569">Uvezeno iz preglednika Brave</translation>
 <translation id="453977518730680921">Automatski reproduciraj medije</translation>
 <translation id="410351446219883937">Automatska reprodukcija</translation>
@@ -34,6 +39,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="4703780849509456860">Otvori poveznicu u privatnom prozoru s funkcijom Tor</translation>
 <translation id="3488584642074079080">Otvori poveznicu u privatnom prozoru preglednika Brave s funkcijom Tor</translation>
 <translation id="3155170474926428993">Pokretač funkcije Tor</translation>
+<translation id="2515126961943087659">Usluga Bat oglašavanja</translation>
 <translation id="7372129767729198111">Zadane postavke štitova u pregledniku Brave</translation>
 <translation id="8029018702721078742">Upravljanje oglasima</translation>
 <translation id="3544462288910360084">Upravljanje kolačićima</translation>
@@ -54,4 +60,5 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="1822560017823072927">Zadana javna i privatna sučelja</translation>
 <translation id="5825943197137337319">Samo zadano javno sučelje</translation>
 <translation id="1689062823386843231">Onemogući UDP bez korištenja proxyja</translation>
+<translation id="6645631466045614531">Pristup Brave sinkronizaciji putem</translation>
 </translationbundle>

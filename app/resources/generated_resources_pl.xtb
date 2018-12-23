@@ -847,15 +847,10 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="9125982323641182972">Inteligentne rozwiązania Brave Software w Brave</translation>
 <translation id="3149880132460839085">Synchronizacja Brave</translation>
 <translation id="3796902758602917951">Zakładki, historia, hasła i inne ustawienia zostaną zsynchronizowane z kontem Brave Software, by można było z nich korzystać na dowolnym urządzeniu.</translation>
-<translation id="1371301976177520732">Twoje zakładki, hasła, historia i inne dane na wszystkich Twoich urządzeniach</translation>
 <translation id="3111958038206230539">Dostosowywanie usług Brave Software</translation>
 <translation id="295992419959320001">Brave Software może korzystać z Twojej historii przeglądania, by dostosowywać wyniki wyszukiwania, reklamy i działanie innych usług.</translation>
-<translation id="4205523465226408285">Bardziej spersonalizowane usługi Brave Software, na przykład lepsze podpowiedzi stron</translation>
 <translation id="3070156078150543526">Brave Software może korzystać z Twojej historii przeglądania, by dostosowywać wyniki wyszukiwania i działanie innych usług</translation>
-<translation id="2532167245710864499">Pomóż nam ulepszyć działanie i zwiększyć bezpieczeństwo Brave, wysyłając informacje o systemie i użytkowaniu do Brave Software</translation>
 <translation id="2709453993673701466">Chcesz dostosować ustawienia synchronizacji i personalizacji przed ich włączeniem? Wprowadź zmiany w <ph name="BEGIN_LINK"/>Ustawieniach<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">W <ph name="BEGIN_LINK"/>Ustawieniach<ph name="END_LINK"/> możesz w dowolnym momencie określić, jakie informacje będzie zbierać Brave Software.</translation>
-<translation id="6035247993547372482">Brave Software może używać zawartości odwiedzanych przez Ciebie stron oraz informacji o Twojej aktywności i interakcjach w przeglądarce, by personalizować Brave i inne usługi Brave Software takie jak Tłumacz, wyszukiwarka czy reklamy. Możesz to zmienić w Ustawieniach.</translation>
 <translation id="741204030948306876">Tak</translation>
 <translation id="2497852260688568942">Synchronizację wyłączył administrator</translation>
 <translation id="562935524653278697">Synchronizację zakładek, historii, haseł i innych ustawień wyłączył administrator.</translation>
@@ -1453,6 +1448,8 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="4582497162516204941">Zainstaluj za pomocą Linuksa (Beta)</translation>
 <translation id="4195249722193633765">Zainstaluj aplikację za pomocą Linuksa (Beta)</translation>
 <translation id="7248671827512403053">Aplikacja</translation>
+<translation id="3798449238516105146">Wersja</translation>
+<translation id="3866249974567520381">Opis</translation>
 <translation id="183183971458492120">Ładuję informacje…</translation>
 <translation id="8157684860301034423">Nie udało się pobrać informacji o aplikacji.</translation>
 <translation id="5678784840044122290">Aplikacja na Linuksa będzie dostępna na terminalu. Może mieć też ikonę w Menu z aplikacjami.</translation>
@@ -1598,6 +1595,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="1464724975715666883">1 błąd.</translation>
 <translation id="3495304270784461826">Błędy: <ph name="COUNT"/>.</translation>
 <translation id="5317780077021120954">Zapisz</translation>
+<translation id="6643016212128521049">Wyczyść</translation>
 <translation id="4284105660453474798">Czy na pewno chcesz usunąć plik „$1”?</translation>
 <translation id="4580526846085481512">Czy na pewno chcesz usunąć następującą liczbę elementów: $1?</translation>
 <translation id="7953739707111622108">Nie można otworzyć urządzenia, ponieważ jego system plików nie został rozpoznany.</translation>
@@ -1850,6 +1848,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="1217668622537098248">Przywróć działanie po kliknięciu lewego przycisku myszy</translation>
 <translation id="3682824389861648626">Próg ruchu</translation>
 <translation id="5511379779384092781">Bardzo mały</translation>
+<translation id="2765217105034171413">Mały</translation>
 <translation id="7409549334477097887">Bardzo duży</translation>
 <translation id="1330145147221172764">Włącz klawiaturę ekranową</translation>
 <translation id="1800308196794859773">Wysyła Twój głos do Brave Software, by umożliwić dyktowanie w dowolnym polu tekstowym.</translation>
@@ -1936,7 +1935,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="5860033963881614850">Wyłączone</translation>
 <translation id="5916664084637901428">Włączone</translation>
 <translation id="1378613616312864539">Tym ustawieniem zarządza <ph name="NAME"/></translation>
-<translation id="6643016212128521049">Wyczyść</translation>
 <translation id="8465252176946159372">Nieważne</translation>
 <translation id="8647834505253004544">Nieprawidłowy adres internetowy</translation>
 <translation id="7946586320617670168">Źródło musi być bezpieczne</translation>
@@ -1950,6 +1948,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="5029568752722684782">Usuń kopię</translation>
 <translation id="2154484045852737596">Edytowanie karty</translation>
 <translation id="5087580092889165836">Dodaj kartę</translation>
+<translation id="4835914736509775287">Zapisz karty na koncie Brave</translation>
 <translation id="4807098396393229769">Imię i nazwisko na karcie</translation>
 <translation id="2612676031748830579">Numer karty</translation>
 <translation id="869891660844655955">Data wygaśnięcia</translation>
@@ -2566,7 +2565,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="361106536627977100">Dane Flash</translation>
 <translation id="8557930019681227453">Plik manifestu</translation>
 <translation id="7868378670806575181">{NUM_COOKIES,plural, =1{1 plik cookie}few{# pliki cookie}many{# plików cookie}other{# pliku cookie}}</translation>
-<translation id="3866249974567520381">Opis</translation>
 <translation id="4530494379350999373">Pochodzenie</translation>
 <translation id="8195027750202970175">Rozmiar na dysku</translation>
 <translation id="9116465289595958864">Ostatnia modyfikacja</translation>
@@ -2640,12 +2638,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="5535941515421698170">Usuń też swoje dane z tego urządzenia</translation>
 <translation id="7243632151880336635">Wyczyść i wyloguj</translation>
 <translation id="6406506848690869874">Synchronizacja</translation>
-<translation id="1397854323885047133">Synchronizacja i personalizacja</translation>
-<translation id="1136155683023653803">Z Twoim kontem są synchronizowane hasła, zakładki, historia i inne elementy</translation>
-<translation id="3267417306184901318">Dane przeglądania i aktywność związana z przeglądaniem, które są synchronizowane z Twoim kontem Brave Software</translation>
-<translation id="1123187597739372905">Pokaż ustawienia synchronizacji</translation>
 <translation id="5428209950370661546">Inne usługi Brave Software</translation>
-<translation id="2055016640093734678">Pokaż ustawienia usług Brave Software</translation>
 <translation id="7956662517480676674">Synchronizacja i usługi Brave Software</translation>
 <translation id="2453021845418314664">Zaawansowane ustawienia synchronizacji</translation>
 <translation id="2731700343119398978">Czekaj...</translation>
@@ -2687,7 +2680,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="7719367874908701697">Powiększenie strony</translation>
 <translation id="4941627891654116707">Rozmiar czcionki</translation>
 <translation id="677965093459947883">Bardzo mała</translation>
-<translation id="2765217105034171413">Mały</translation>
 <translation id="2076672359661571384">Średnia (zalecana)</translation>
 <translation id="5739458112391494395">Bardzo duża</translation>
 <translation id="3405664148539009465">Dostosuj czcionki</translation>
@@ -2889,7 +2881,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="8523849605371521713">Dodane przez zasady</translation>
 <translation id="5087249366037322692">Dodane przez inną firmę</translation>
 <translation id="6788210894632713004">Rozszerzenie bez pakietu</translation>
-<translation id="3798449238516105146">Wersja</translation>
 <translation id="3838085852053358637">Nie udało się wczytać rozszerzenia</translation>
 <translation id="6370021412472292592">Nie można wczytać pliku manifestu.</translation>
 <translation id="7235716375204803342">Pobieram aktywność…</translation>

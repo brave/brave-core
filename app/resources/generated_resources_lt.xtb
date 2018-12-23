@@ -686,6 +686,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="7837776265184002579">Pagrindinis puslapis pakeistas į <ph name="URL"/>.</translation>
 <translation id="5442550868130618860">Įjungti automatinį naujinimą</translation>
 <translation id="6790428901817661496">Žaisti</translation>
+<translation id="3143754809889689516">Leisti nuo pradžių</translation>
 <translation id="2121825465123208577">Keisti dydį</translation>
 <translation id="4514610446763173167">Perjunkite mygtuką, kad paleistumėte ar pristabdytumėte vaizdo įrašą</translation>
 <translation id="2631120081682787498">Ar tikrai norite uždaryti šį skirtuką?</translation>
@@ -848,15 +849,10 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="9125982323641182972">„Brave Software“ išm. funkc. „Brave“</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">Žymės, istorija, slaptažodžiai ir kiti nustatymai bus sinchronizuojami su „Brave Software“ paskyra, kad galėtumėte juos naudoti visuose įrenginiuose</translation>
-<translation id="1371301976177520732">Žymės, slaptažodžiai, istorija ir daugiau visuose jūsų įrenginiuose</translation>
 <translation id="3111958038206230539">„Brave Software“ paslaugų suasmeninimas</translation>
 <translation id="295992419959320001">„Brave Software“ gali naudoti jūsų naršymo istoriją, kad suasmenintų Paiešką, skelbimus ir kitas „Brave Software“ paslaugas</translation>
-<translation id="4205523465226408285">Daugiau suasmenintų „Brave Software“ paslaugų, pvz., geresni puslapių pasiūlymai</translation>
 <translation id="3070156078150543526">„Brave Software“ gali naudoti jūsų naršymo istoriją, kad suasmenintų Paiešką ir kitas „Brave Software“ paslaugas</translation>
-<translation id="2532167245710864499">Patobulinkite „Brave“ ir jos saugą siųsdami sistemos bei naudojimo informaciją „Brave Software“</translation>
 <translation id="2709453993673701466">Norite tvarkyti sinchronizavimą ir suasmeninimą prieš įjungdami šias funkcijas? Apsilankykite skiltyje <ph name="BEGIN_LINK"/>„Nustatymai“<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Bet kuriuo metu galite tinkinti, kokią informaciją „Brave Software“ renka, nuėję į skiltį <ph name="BEGIN_LINK"/>„Nustatymai“<ph name="END_LINK"/>.</translation>
-<translation id="6035247993547372482">„Brave Software“ gali naudoti jūsų lankomų svetainių turinį ir naršyklės veiklą bei sąveikas suasmenindama „Brave“ ir kitas „Brave Software“ paslaugas, pvz., Vertėją, Paiešką bei skelbimus. Tai bet kada galite tinkinti skiltyje „Nustatymai“.</translation>
 <translation id="741204030948306876">Taip, sutinku</translation>
 <translation id="2497852260688568942">Sinchronizavimą išjungė jūsų administratorius</translation>
 <translation id="562935524653278697">Administratorius išjungė žymių, istorijos, slaptažodžių ir kitų nustatymų sinchronizavimą.</translation>
@@ -1118,6 +1114,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="874689135111202667">{0,plural, =1{Įkelti vieną failą į šią svetainę?}one{Įkelti # failą į šią svetainę?}few{Įkelti # failus į šią svetainę?}many{Įkelti # failo į šią svetainę?}other{Įkelti # failų į šią svetainę?}}</translation>
 <translation id="1956390763342388273">Bus įkelti visi failai iš „<ph name="FOLDER_PATH"/>“. Tai atlikite, tik jei svetainė patikima.</translation>
 <translation id="1243314992276662751">Įkelti</translation>
+<translation id="5186185447130319458">Privatus</translation>
 <translation id="8480139856920479206">{0,plural, =1{Turite vieną inkognito langą.}one{Turite # inkognito langą.}few{Turite # inkognito langus.}many{Turite # inkognito lango.}other{Turite # inkognito langų.}}</translation>
 <translation id="2545348954155066907">{0,plural, =1{Uždaryti šį langą}one{Uždaryti visus inkognito langus}few{Uždaryti visus inkognito langus}many{Uždaryti visus inkognito langus}other{Uždaryti visus inkognito langus}}</translation>
 <translation id="3785308913036335955">Rodyti spartųjį programų klavišą</translation>
@@ -1453,6 +1450,8 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="4582497162516204941">Diegimas sistemoje „Linux“ (beta vers.)</translation>
 <translation id="4195249722193633765">Programos diegimas sistemoje „Linux“ (beta vers.)</translation>
 <translation id="7248671827512403053">Programa</translation>
+<translation id="3798449238516105146">Versija</translation>
+<translation id="3866249974567520381">Aprašymas</translation>
 <translation id="183183971458492120">Įkeliama informacija...</translation>
 <translation id="8157684860301034423">Nepavyko nuskaityti programos informacijos.</translation>
 <translation id="5678784840044122290">„Linux“ programa pasiekiama jūsų terminale ir piktograma taip pat gali būti rodoma Paleidimo priemonėje.</translation>
@@ -1486,6 +1485,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6556866813142980365">Grąžinti</translation>
 <translation id="3144126448740580210">ATLIKTA</translation>
 <translation id="2453576648990281505">Failas jau yra</translation>
+<translation id="2631006050119455616">Įrašyta</translation>
 <translation id="5158593464696388225">Nepavyko išsaugoti vaizdo.</translation>
 <translation id="2787047795752739979">Perrašyti originalą</translation>
 <translation id="8775404590947523323">Keitimai saugomi automatiškai.<ph name="BREAKS"/>Jei norite išsaugoti originalaus vaizdo kopiją, panaikinkite parinkties „Perrašyti originalą“ žymėjimą</translation>
@@ -1597,6 +1597,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="1464724975715666883">1 klaida.</translation>
 <translation id="3495304270784461826">Klaidų: <ph name="COUNT"/>.</translation>
 <translation id="5317780077021120954">Išsaugoti</translation>
+<translation id="6643016212128521049">Išvalyti</translation>
 <translation id="4284105660453474798">Ar iš tikrųjų norite ištrinti „$1“?</translation>
 <translation id="4580526846085481512">Ar tikrai norite ištrinti $1 elementus?</translation>
 <translation id="7953739707111622108">Įrenginio negalima atidaryti, nes nepavyko atpažinti jo failų išdėstymo sistemos.</translation>
@@ -1750,6 +1751,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="7748626145866214022">Daugiau parinkčių pasiekiama veiksmų juostoje. Paspauskite „Alt“ + A, kad suaktyvintumėte veiksmų juostą.</translation>
 <translation id="60628369828239652">Atidaromas failas „<ph name="FILE_NAME"/>“</translation>
 <translation id="353547388688256996">Atidaroma <ph name="NUMBER_FILES"/></translation>
+<translation id="973975081056554264"><ph name="VOLUME_NAME">$1<ex>file_name.rar</ex> atmestas.</ph></translation>
 <translation id="6710213216561001401">Ankstesnis</translation>
 <translation id="1201402288615127009">Toliau</translation>
 <translation id="1395262318152388157">Paieškos šliaužiklis</translation>
@@ -1849,6 +1851,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="1217668622537098248">Grąžinti kairįjį paspaudimą po veiksmo</translation>
 <translation id="3682824389861648626">Judesių slenkstis</translation>
 <translation id="5511379779384092781">Labai mažas</translation>
+<translation id="2765217105034171413">Mažas</translation>
 <translation id="7409549334477097887">Itin didelis</translation>
 <translation id="1330145147221172764">Įgalinti ekrano klaviatūrą</translation>
 <translation id="1800308196794859773">Balsas siunčiamas į sistemą „Brave Software“, kad bet kuriame teksto lauke būtų galima diktuoti tekstą.</translation>
@@ -1892,6 +1895,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6352773953037195952">Aukščiausias</translation>
 <translation id="3677657024345889897">Tyliausiai</translation>
 <translation id="167160931442925455">Garsiausiai</translation>
+<translation id="2445007895943112260"><ph name="PERCENTAGE">$1<ex>120</ex>%</ph></translation>
 <translation id="9129010913019873477"><ph name="PERCENTAGE"/> (numatytasis)</translation>
 <translation id="3602290021589620013">Peržiūra</translation>
 <translation id="7037509989619051237">Tekstas, kurį galima išklausyti</translation>
@@ -1935,7 +1939,6 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="5860033963881614850">Išjungta</translation>
 <translation id="5916664084637901428">Įjungta</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> valdo šį nustatymą</translation>
-<translation id="6643016212128521049">Išvalyti</translation>
 <translation id="8465252176946159372">Negalioja</translation>
 <translation id="8647834505253004544">Netinkamas žiniatinklio adresas</translation>
 <translation id="7946586320617670168">Pradinis turinys turi būti saugus</translation>
@@ -1949,6 +1952,9 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="5029568752722684782">Išvalyti kopiją</translation>
 <translation id="2154484045852737596">Kortelės informacijos redagavimas</translation>
 <translation id="5087580092889165836">Pridėti kortelę</translation>
+<translation id="4835914736509775287">Įrašyti korteles į „Brave“ paskyrą</translation>
+<translation id="7255002516883565667">Dabar turite vieną kortelę, kurią galima naudoti šiame įrenginyje</translation>
+<translation id="6848388270925200958">Dabar turite kortelių, kurias galima naudoti šiame įrenginyje</translation>
 <translation id="4807098396393229769">Kortelėje nurodytas vardas ir pavardė</translation>
 <translation id="2612676031748830579">Kortelės numeris</translation>
 <translation id="869891660844655955">Galiojimo data</translation>
@@ -2086,6 +2092,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="4972129977812092092">Spausdintuvo informacijos redagavimas</translation>
 <translation id="5696679855467848181">Dabartinis naudojamas PPD failas: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">„Brave Software“ spausdinimas iš debesies</translation>
+<translation id="5646376287012673985">Vietovė</translation>
 <translation id="7754704193130578113">Prieš atsiunčiant failą klausti, kur jį išsaugoti</translation>
 <translation id="5713072761819014678">Atjungti „Brave Software“ disko paskyrą</translation>
 <translation id="486635084936119914">Automatiškai atidaryti tam tikrų tipų failus, kai jie atsisiunčiami</translation>
@@ -2401,6 +2408,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="8356197132883132838">„<ph name="TITLE"/>“ (<ph name="COUNT"/>)</translation>
 <translation id="3407837288045706722">Daugiau nustatymų, susijusių su privatumu, sauga ir duomenų rinkimu, žr. skiltyje <ph name="BEGIN_LINK"/>„Sinchronizavimas ir suasmeninimas“<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">Daugiau nustatymų, susijusių su privatumu, sauga ir duomenų rinkimu, žr. skiltyje <ph name="BEGIN_LINK"/>„Sinchronizavimas ir „Brave Software“ paslaugos“<ph name="END_LINK"/></translation>
+<translation id="6438234780621650381">Iš naujo nustatyti nustatymus</translation>
 <translation id="5293170712604732402">Atkurti pradinius numatytuosius nustatymus</translation>
 <translation id="892706138619340876">Kai kurie nustatymai nustatyti iš naujo</translation>
 <translation id="2334029754052191847">„Brave“ aptiko, kad kai kuriuos nustatymus sugadino kita programa, ir nustatė juos iš naujo į pirminius numatytuosius nustatymus.</translation>
@@ -2563,7 +2571,6 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="361106536627977100">„Flash“ duomenys</translation>
 <translation id="8557930019681227453">Aprašas</translation>
 <translation id="7868378670806575181">{NUM_COOKIES,plural, =1{1 slapukas}one{# slapukas}few{# slapukai}many{# slapuko}other{# slapukų}}</translation>
-<translation id="3866249974567520381">Aprašas</translation>
 <translation id="4530494379350999373">Kilmė</translation>
 <translation id="8195027750202970175">Diske užimama vieta</translation>
 <translation id="9116465289595958864">Paskutinį kartą pakeista</translation>
@@ -2637,12 +2644,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="5535941515421698170">Taip pat pašalinkite esamus duomenis iš šio įrenginio</translation>
 <translation id="7243632151880336635">Išvalyti ir atsijungti</translation>
 <translation id="6406506848690869874">Sinchronizavimas</translation>
-<translation id="1397854323885047133">Sinchronizavimas ir suasmeninimas</translation>
-<translation id="1136155683023653803">Slaptažodžiai, žymės, istorija ir kiti duomenys sinchronizuojami su paskyra</translation>
-<translation id="3267417306184901318">Su „Brave Software“ paskyra sinchronizuojami jūsų naršymo duomenys ir veikla</translation>
-<translation id="1123187597739372905">Rodyti sinchronizavimo nustatymus</translation>
 <translation id="5428209950370661546">Kitos „Brave Software“ paslaugos</translation>
-<translation id="2055016640093734678">Rodyti „Brave Software“ paslaugų nustatymus</translation>
 <translation id="7956662517480676674">Sinchron. ir „Brave Software“ paslaugos</translation>
 <translation id="2453021845418314664">Išplėstiniai sinchronizavimo nustatymai</translation>
 <translation id="2731700343119398978">Palaukite...</translation>
@@ -2684,7 +2686,6 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="7719367874908701697">Puslapio mastelis</translation>
 <translation id="4941627891654116707">Šrifto dydis</translation>
 <translation id="677965093459947883">Labai mažas</translation>
-<translation id="2765217105034171413">Mažas</translation>
 <translation id="2076672359661571384">Vidutinis (rekomenduojamas)</translation>
 <translation id="5739458112391494395">Labai didelis</translation>
 <translation id="3405664148539009465">Tinkinti šriftus</translation>
@@ -2771,6 +2772,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="3954469006674843813"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> Hz)</translation>
 <translation id="7889565820482017512">Ekrano dydis</translation>
 <translation id="8448729345478502352">Padidinkite arba sumažinkite elementus ekrane</translation>
+<translation id="513425442047539523"><ph name="DISPLAY_ZOOM">$1<ex>120</ex>%</ph></translation>
 <translation id="2155772377859296191">Atrodo kaip <ph name="WIDTH"/> × <ph name="HEIGHT"/></translation>
 <translation id="4863769717153320198">Atrodo kaip <ph name="WIDTH"/> × <ph name="HEIGHT"/> (numatytasis)</translation>
 <translation id="1125550662859510761">Atrodo kaip <ph name="WIDTH"/> × <ph name="HEIGHT"/> (savasis)</translation>
@@ -2886,7 +2888,6 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="8523849605371521713">Pridėta pagal politiką</translation>
 <translation id="5087249366037322692">Pridėjo trečioji šalis</translation>
 <translation id="6788210894632713004">Nesupakuotas plėtinys</translation>
-<translation id="3798449238516105146">Versija</translation>
 <translation id="3838085852053358637">Nepavyko įkelti plėtinio</translation>
 <translation id="6370021412472292592">Nepavyko įkelti aprašo.</translation>
 <translation id="7235716375204803342">Renkamos veiklos...</translation>
@@ -2977,7 +2978,6 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6112294629795967147">Palieskite, kad pakeistumėte dydį</translation>
 <translation id="2453860139492968684">Užbaigti</translation>
 <translation id="6336451774241870485">Naujas privatus skirtukas</translation>
-<translation id="6610147964972079463">Uždaryti privačius skirtuk.</translation>
+<translation id="6610147964972079463">Uždaryti privačius skirtukus</translation>
 <translation id="8076492880354921740">Skirtukai</translation>
-<translation id="5186185447130319458">Inkognito</translation>
 </translationbundle>

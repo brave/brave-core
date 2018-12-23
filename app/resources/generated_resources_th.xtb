@@ -847,15 +847,10 @@
 <translation id="9125982323641182972">ใช้ฟีเจอร์เจ๋งๆ จาก Brave Software ใน Brave</translation>
 <translation id="3149880132460839085">การทำข้อมูลให้ตรงกันของ Brave</translation>
 <translation id="3796902758602917951">บุ๊กมาร์ก ประวัติการเข้าชม รหัสผ่าน และการตั้งค่าอื่นๆ จะซิงค์กับบัญชี Brave Software เพื่อให้คุณสามารถใช้ข้อมูลเหล่านี้ได้กับอุปกรณ์ทุกเครื่อง</translation>
-<translation id="1371301976177520732">บุ๊กมาร์ก รหัสผ่าน ประวัติการเข้าชม และอื่นๆ ในอุปกรณ์ทุกเครื่อง</translation>
 <translation id="3111958038206230539">ปรับเปลี่ยนบริการ Brave Software ในแบบของคุณ</translation>
 <translation id="295992419959320001">Brave Software อาจใช้ประวัติการท่องเว็บของคุณเพื่อปรับเปลี่ยนการค้นหา โฆษณา และบริการอื่นๆ ของ Brave Software ในแบบของคุณ</translation>
-<translation id="4205523465226408285">บริการของ Brave Software ที่ตรงกับตัวคุณมากขึ้น เช่น คำแนะนำหน้าเว็บที่ดียิ่งขึ้น</translation>
 <translation id="3070156078150543526">Brave Software อาจใช้ประวัติการท่องเว็บของคุณเพื่อปรับเปลี่ยน Search และบริการอื่นๆ ของ Brave Software ในแบบของคุณ</translation>
-<translation id="2532167245710864499">ปรับปรุง Brave และความปลอดภัยด้วยการส่งข้อมูลระบบและการใช้งานไปยัง Brave Software</translation>
 <translation id="2709453993673701466">หากต้องการจัดการการซิงค์และการปรับเปลี่ยนในแบบของคุณก่อนเปิดใช้งาน ให้ไปที่<ph name="BEGIN_LINK"/>การตั้งค่า<ph name="END_LINK"/></translation>
-<translation id="2668128414154024727">คุณกำหนดข้อมูลที่ Brave Software จะรวบรวมได้ใน<ph name="BEGIN_LINK"/>การตั้งค่า<ph name="END_LINK"/>ได้ทุกเมื่อ</translation>
-<translation id="6035247993547372482">Brave Software อาจใช้เนื้อหาในเว็บไซต์ที่คุณเข้าชม รวมถึงกิจกรรมในเบราว์เซอร์และการโต้ตอบเพื่อปรับ Brave และบริการอื่นๆ ของ Brave Software เช่น แปลภาษา, Search และโฆษณาให้เหมาะกับคุณ คุณปรับแต่งค่านี้ได้ทุกเมื่อในการตั้งค่า</translation>
 <translation id="741204030948306876">ได้สิ ตกลง</translation>
 <translation id="2497852260688568942">ผู้ดูแลระบบปิดใช้การซิงค์</translation>
 <translation id="562935524653278697">ผู้ดูแลระบบของคุณได้ปิดใช้การซิงค์ของบุ๊กมาร์ก ประวัติการเข้าชม รหัสผ่าน และการตั้งค่าอื่นๆ</translation>
@@ -2636,12 +2631,7 @@
 <translation id="5535941515421698170">นำข้อมูลที่มีอยู่ของคุณออกจากอุปกรณ์นี้ด้วย</translation>
 <translation id="7243632151880336635">ล้างและออกจากระบบ</translation>
 <translation id="6406506848690869874">การซิงค์ข้อมูล</translation>
-<translation id="1397854323885047133">การซิงค์และการปรับเปลี่ยนในแบบของคุณ</translation>
-<translation id="1136155683023653803">ระบบจะซิงค์รหัสผ่าน บุ๊กมาร์ก ประวัติการเข้าชม และอื่นๆ ไปยังบัญชีของคุณ</translation>
-<translation id="3267417306184901318">ข้อมูลและกิจกรรมการท่องเว็บซึ่งซิงค์กับบัญชี Brave Software</translation>
-<translation id="1123187597739372905">แสดงการตั้งค่าการซิงค์</translation>
 <translation id="5428209950370661546">บริการอื่นๆ ของ Brave Software</translation>
-<translation id="2055016640093734678">แสดงการตั้งค่าบริการของ Brave Software</translation>
 <translation id="7956662517480676674">การซิงค์และบริการของ Brave Software</translation>
 <translation id="2453021845418314664">การตั้งค่าการซิงค์ขั้นสูง</translation>
 <translation id="2731700343119398978">โปรดรอสักครู่...</translation>

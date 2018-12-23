@@ -847,15 +847,10 @@
 <translation id="9125982323641182972">Brave で Brave Software の最先端技術を活用</translation>
 <translation id="3149880132460839085">Brave の同期</translation>
 <translation id="3796902758602917951">ブックマーク、履歴、パスワード、その他の設定が Brave Software アカウントに同期され、どの端末でも利用できるようになります</translation>
-<translation id="1371301976177520732">すべての端末で同じブックマーク、パスワード、その他の設定を使用できます</translation>
 <translation id="3111958038206230539">Brave Software サービスのカスタマイズ</translation>
 <translation id="295992419959320001">検索、広告、その他の Brave Software サービスをカスタマイズする目的で、Brave Software が閲覧履歴を使用することがあります</translation>
-<translation id="4205523465226408285">おすすめのページなど、カスタマイズされた Brave Software サービスを利用できます</translation>
 <translation id="3070156078150543526">検索やその他の Brave Software サービスをカスタマイズする目的で、Brave Software が閲覧履歴を使用することがあります</translation>
-<translation id="2532167245710864499">システムと使用状況に関する情報が Brave Software に送信され、Brave とそのセキュリティの向上に役立てられます</translation>
 <translation id="2709453993673701466">同期とパーソナライズを有効にする前に管理するには、[<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>] に移動します。</translation>
-<translation id="2668128414154024727">Brave Software に送信する情報は、いつでも [<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>] ページでカスタマイズできます。</translation>
-<translation id="6035247993547372482">Brave Software は、Brave や他の Brave Software サービス（翻訳、検索、広告など）をカスタマイズする目的で、ユーザーがアクセスしたサイトのコンテンツと、ブラウザのアクティビティおよび操作を使用することがあります。これは [設定] で変更できます。</translation>
 <translation id="741204030948306876">有効にする</translation>
 <translation id="2497852260688568942">同期は管理者により無効にされています</translation>
 <translation id="562935524653278697">管理者がブックマーク、履歴、パスワードなどの設定の同期を無効にしました。</translation>
@@ -2636,12 +2631,7 @@
 <translation id="5535941515421698170">この端末から既存のデータも削除する</translation>
 <translation id="7243632151880336635">削除してログアウト</translation>
 <translation id="6406506848690869874">同期</translation>
-<translation id="1397854323885047133">同期とカスタマイズ</translation>
-<translation id="1136155683023653803">パスワード、ブックマーク、履歴、その他の設定がアカウントに同期されます</translation>
-<translation id="3267417306184901318">閲覧データとアクティビティ（Brave Software アカウントに同期）</translation>
-<translation id="1123187597739372905">同期設定を表示</translation>
 <translation id="5428209950370661546">他の Brave Software サービス</translation>
-<translation id="2055016640093734678">Brave Software サービスの設定を表示</translation>
 <translation id="7956662517480676674">同期と Brave Software サービス</translation>
 <translation id="2453021845418314664">同期の詳細設定</translation>
 <translation id="2731700343119398978">お待ちください...</translation>

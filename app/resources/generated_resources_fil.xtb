@@ -847,15 +847,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="9125982323641182972">Magkaroon ng mga smart na feature ng Brave Software sa Brave</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">Masi-sync ang iyong mga bookmark, history, mga password at iba pang mga setting sa iyong Brave Software Account upang magamit mo ang mga ito sa lahat ng iyong device</translation>
-<translation id="1371301976177520732">Makita ang iyong mga bookmark, password, history, at higit pa sa lahat ng device mo</translation>
 <translation id="3111958038206230539">I-personalize ang mga serbisyo ng Brave Software</translation>
 <translation id="295992419959320001">Maaaring gamitin ng Brave Software ang iyong history ng pagba-browse upang i-personalize ang Search, mga ad at iba pang mga serbisyo ng Brave Software</translation>
-<translation id="4205523465226408285">Higit pang personal na serbisyo ng Brave Software, tulad ng mas mahuhusay na suhestyon sa page</translation>
 <translation id="3070156078150543526">Maaaring gamitin ng Brave Software ang iyong history ng pagba-browse upang ma-personalize ang Search at iba pang mga serbisyo ng Brave Software</translation>
-<translation id="2532167245710864499">Pahusayin ang Brave at ang seguridad nito sa pamamagitan ng pagpapadala ng impormasyon ng system at paggamit sa Brave Software</translation>
 <translation id="2709453993673701466">Gusto mong pamahalaan ang pag-sync at pag-personalize bago i-on ang mga ito? Bisitahin ang <ph name="BEGIN_LINK"/>Mga Setting<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Maaari mong i-customize kung anong impormasyon ang kinokolekta ng Brave Software sa <ph name="BEGIN_LINK"/>Mga Setting<ph name="END_LINK"/> anumang oras.</translation>
-<translation id="6035247993547372482">Maaaring gamitin ng Brave Software ang content sa mga site na binibisita mo at ang aktibidad at mga pakikipag-ugnayan sa browser para i-personalize ang Brave at ang iba pang serbisyo ng Brave Software tulad ng Translate, Search, at mga ad. Maaari mo itong i-customize sa Mga Setting.</translation>
 <translation id="741204030948306876">Oo, sali ako</translation>
 <translation id="2497852260688568942">Na-disable ng iyong administrator ang pag-sync</translation>
 <translation id="562935524653278697">Na-disable ng administrator mo ang pag-sync ng iyong mga bookmark, history, password at iba pang mga setting.</translation>
@@ -2636,12 +2631,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5535941515421698170">Alisin din ang iyong kasalukuyang data sa device na ito</translation>
 <translation id="7243632151880336635">I-clear at Mag-sign Out</translation>
 <translation id="6406506848690869874">Pag-sync</translation>
-<translation id="1397854323885047133">Pag-sync at pag-personalize</translation>
-<translation id="1136155683023653803">Masi-sync sa iyong account ang mga password, bookmark, history, at higit pa</translation>
-<translation id="3267417306184901318">Naka-sync sa iyong Brave Software Account ang data mula sa pag-browse at aktibidad.</translation>
-<translation id="1123187597739372905">Ipakita ang mga setting ng pag-sync</translation>
 <translation id="5428209950370661546">Iba pang serbisyo ng Brave Software</translation>
-<translation id="2055016640093734678">Ipakita ang mga setting ng mga serbisyo ng Brave Software</translation>
 <translation id="7956662517480676674">Sync at mga serbisyo ng Brave Software</translation>
 <translation id="2453021845418314664">Advanced na mga setting ng pag-sync</translation>
 <translation id="2731700343119398978">Mangyaring maghintay...</translation>

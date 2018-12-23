@@ -3,18 +3,23 @@
 <translationbundle lang="ar">
 <translation id="3333887201479867589">مكافآت Brave</translation>
 <translation id="7942180974165298215">Brave لحظر الإعلانات</translation>
-<translation id="3149880132460839085">مزامنة Brave</translation>
+<translation id="6406506848690869874">مزامنة Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") غير مسموح به في Brave.</translation>
 <translation id="7450557937477381864">أغلق Chrome</translation>
 <translation id="7008934821596358692">لإنهاء الاستيراد، أغلق جميع نوافذ كروم.</translation>
+<translation id="5735465527556462863">غلق Brave (قديم)</translation>
+<translation id="7737066986958447692">لإنهاء الاستيراد، أغلِق جميع نوافذ Brave (قديم).</translation>
 <translation id="6447842834002726250">ملفات تعريف الارتباط</translation>
 <translation id="4983925687993168579">الإحصائيات</translation>
+<translation id="6165477144235978006">دفعات Brave</translation>
+<translation id="3489524616427966890">فتح النوافذ وعلامات التبويب</translation>
 <translation id="9173846700806833701">Widevine غير مُثبَّت</translation>
 <translation id="2433569048491784801">Widevine غير مُثبَّت.</translation>
 <translation id="3699882589215410581">تثبيت وتشغيل Widevine</translation>
 <translation id="8410111618231938546">إن Google Widevine هو جزء من رمز إدارة الحقوق الرقمية (DRM) التي لا نمتلكها ولا يمكننا فحصها في Brave Software. يتم تحميل رمز Google Widevine من خوادم Google، وليس من خوادمنا. يتم تحميله فقط عند تمكين هذا الخيار. نحن لا نشجع استخدام DRM، لكننا نحترم اختيار المستخدم ونقر بأن بعض مستخدمي Brave يرغبون في استخدام الخدمات التي تتطلب ذلك.
 
 عن طريق تثبيت هذا الملحق، إنك توافق على شروط استخدام Google Widevine. وتوافق على أن Brave ليست مسؤولة عن أية أضرار أو خسائر متعلقة باستخدامك لـ Google Widevine.</translation>
+<translation id="6499845530162974140">Brave (قديم)</translation>
 <translation id="3198814717959506569">تم الاستيراد من Brave</translation>
 <translation id="453977518730680921">وسائط التشغيل التلقائي</translation>
 <translation id="410351446219883937">تشغيل تلقائي</translation>
@@ -34,6 +39,7 @@
 <translation id="4703780849509456860">افتح الرابط في نافذة خاصة بـ Tor</translation>
 <translation id="3488584642074079080">افتح الرابط في نافذة Brave الخاصة بـ Tor</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
+<translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="7372129767729198111">الإعدادات الافتراضية لدروع Brave</translation>
 <translation id="8029018702721078742">التحكم في الإعلان</translation>
 <translation id="3544462288910360084">التحكم في ملفات تعريف الارتباط</translation>
@@ -54,4 +60,5 @@
 <translation id="1822560017823072927">الواجهات الافتراضية العامة والخاصة</translation>
 <translation id="5825943197137337319">الواجهة العامة الافتراضية فقط</translation>
 <translation id="1689062823386843231">تعطيل UDP التي ليس لها وكيل</translation>
+<translation id="6645631466045614531">الوصول إلى مزامنة Brave عبر</translation>
 </translationbundle>

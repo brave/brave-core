@@ -64,7 +64,7 @@
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
-    "message": "Trimite o Plată...",
+    "message": "Trimite o plată...",
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
@@ -148,7 +148,7 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Plăți Lunare",
+    "message": "Plăți lunare",
     "description": "Title for monthly tips section in wallet summary"
   },
   "off": {
@@ -198,7 +198,7 @@
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
-    "message": "No activities yet…",
+    "message": "Încă nu există activități...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   }
 }

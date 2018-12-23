@@ -3,18 +3,23 @@
 <translationbundle lang="sr">
 <translation id="3333887201479867589">Brejv nagrade</translation>
 <translation id="7942180974165298215">Brejv blokiranje oglasa</translation>
-<translation id="3149880132460839085">Brave sinhronizacija</translation>
+<translation id="6406506848690869874">Brave sinhronizacija</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nije dozvoljeno u Brejvu</translation>
 <translation id="7450557937477381864">Zatvorite Hrom pregledač</translation>
 <translation id="7008934821596358692">Da biste završili uvoz, zatvorite sve prozore u Chrome-u.</translation>
+<translation id="5735465527556462863">Zatvorite Brave (staro)</translation>
+<translation id="7737066986958447692">Za završetak uvoza zatvorte sve prozore pregledača Brave (staro).</translation>
 <translation id="6447842834002726250">Kolačići</translation>
 <translation id="4983925687993168579">Statistike</translation>
+<translation id="6165477144235978006">Brave uplate</translation>
+<translation id="3489524616427966890">Otvoreni prozori i kartice</translation>
 <translation id="9173846700806833701">Widevine nije instaliran</translation>
 <translation id="2433569048491784801">Widevine nije instaliran.</translation>
 <translation id="3699882589215410581">Instaliraj i pokreni Vajdvajn</translation>
 <translation id="8410111618231938546">Google Widevine je deo Digital Rights Management (DRM) koda koji mi u Brave softveru ne posedujemo i ne možemo da ispitujemo. Google Widevine kod se učitava sa Google servera, a ne sa naših servera. Učitava se samo kada omogućite ovu opciju. Mi odvraćamo od upotrebe DRM-a, ali poštujemo izbor korisnika i razumemo da neki Brave korisnici žele da koriste usluge koje to zahtevaju.
 
 Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišćenja. Slažete se da Brave nije odgovoran za bilo kakve štete ili gubitke u vezi sa vašom upotrebom Google Widevine.</translation>
+<translation id="6499845530162974140">Brave (staro)</translation>
 <translation id="3198814717959506569">Uvezeno iz Brave-a</translation>
 <translation id="453977518730680921">Automatsko puštanje medija</translation>
 <translation id="410351446219883937">Automatsko puštanje</translation>
@@ -34,6 +39,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="4703780849509456860">Otvorite vezu u privatnom prozoru sa Tor-om</translation>
 <translation id="3488584642074079080">Otvorite vezu u Brejv privatnom Vinousu sa Torom</translation>
 <translation id="3155170474926428993">Tor pokretač</translation>
+<translation id="2515126961943087659">Bat Ads usluga</translation>
 <translation id="7372129767729198111">Podrazumevane vrednosti za Brave štit</translation>
 <translation id="8029018702721078742">Kontrola oglasa</translation>
 <translation id="3544462288910360084">Kontrole za kolačić</translation>
@@ -54,4 +60,5 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="1822560017823072927">Podrazumevane vrednosti interfejsa, javnih i privatnih</translation>
 <translation id="5825943197137337319">Samo interfejs sa podrazumevanom javnom vrednošću</translation>
 <translation id="1689062823386843231">Onemogućite neposrednički UDP</translation>
+<translation id="6645631466045614531">Pristupite Brave sinhronizaciji putem</translation>
 </translationbundle>

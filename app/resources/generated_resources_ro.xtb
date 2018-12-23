@@ -847,15 +847,10 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="9125982323641182972">Profită de ingeniozitatea Brave Software în Brave</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">Marcajele, istoricul, parolele și alte setări vor fi sincronizate cu Contul Brave Software, pentru a le putea folosi pe toate dispozitivele</translation>
-<translation id="1371301976177520732">Marcajele, parolele, istoricul și alte date, pe toate dispozitivele</translation>
 <translation id="3111958038206230539">Personalizează serviciile Brave Software</translation>
 <translation id="295992419959320001">Brave Software poate folosi istoricul de navigare pentru a personaliza Căutarea, anunțurile și alte servicii Brave Software</translation>
-<translation id="4205523465226408285">Servicii Brave Software personalizate, cum ar fi sugestiile îmbunătățite privind paginile</translation>
 <translation id="3070156078150543526">Brave Software poate folosi istoricul de navigare pentru a personaliza Căutarea și alte servicii Brave Software</translation>
-<translation id="2532167245710864499">Poți îmbunătăți browserul Brave și securitatea acestuia dacă trimiți la Brave Software informații despre sistem și utilizare</translation>
 <translation id="2709453993673701466">Dorești să gestionezi sincronizarea și personalizarea înainte de a fi activate? Accesează <ph name="BEGIN_LINK"/>Setările<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Poți personaliza oricând informațiile colectate de Brave Software în <ph name="BEGIN_LINK"/>Setări<ph name="END_LINK"/>.</translation>
-<translation id="6035247993547372482">Brave Software poate folosi conținutul de pe site-urile pe care le accesezi, activitatea browserului și interacțiunile pentru a personaliza Brave și alte servicii Brave Software, precum Traducere, Căutare și anunțuri. Poți personaliza această opțiune în Setări.</translation>
 <translation id="741204030948306876">Da, accept</translation>
 <translation id="2497852260688568942">Sincronizarea este dezactivată de administrator</translation>
 <translation id="562935524653278697">Administratorul a dezactivat sincronizarea marcajelor, istoricului, parolelor și a altor setări.</translation>
@@ -2636,12 +2631,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="5535941515421698170">De asemenea, elimină datele existente de pe acest dispozitiv</translation>
 <translation id="7243632151880336635">Șterge și deconectează-te</translation>
 <translation id="6406506848690869874">Sincronizare</translation>
-<translation id="1397854323885047133">Sincronizare și personalizare</translation>
-<translation id="1136155683023653803">Parolele, marcajele, istoricul și alte date sunt sincronizate cu contul tău</translation>
-<translation id="3267417306184901318">Datele de navigare și activitatea ta, sincronizate în Contul Brave Software</translation>
-<translation id="1123187597739372905">Afișează setările de sincronizare</translation>
 <translation id="5428209950370661546">Alte servicii Brave Software</translation>
-<translation id="2055016640093734678">Afișează setările pentru serviciile Brave Software</translation>
 <translation id="7956662517480676674">Sincronizarea și serviciile Brave Software</translation>
 <translation id="2453021845418314664">Setări de sincronizare avansate</translation>
 <translation id="2731700343119398978">Așteptați...</translation>
