@@ -109,7 +109,7 @@ class DonationBox extends React.Component<Props, State> {
     if (tipsList) {
       tips = tipsList.map((item: Rewards.Publisher) => {
         let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
-        if (item.favIcon) {
+        if (item.favIcon && item.verified) {
           faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
         }
 
