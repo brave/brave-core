@@ -110,6 +110,7 @@ class Banner extends React.Component<Props, State> {
     let publisherKey = ''
     let description = ''
     let name = ''
+    let verified = false
 
     if (publisher) {
       title = publisher.title
@@ -118,13 +119,14 @@ class Banner extends React.Component<Props, State> {
       publisherKey = publisher.publisherKey
       description = publisher.description
       name = publisher.name
+      verified = publisher.verified
 
       const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
       if (internalFavicon.test(publisher.logo)) {
         logo = `chrome://favicon/size/160@2x/${publisher.logo}`
       }
 
-      if (!publisher.verified) {
+      if (!verified) {
         logo = ''
       }
     }
@@ -147,6 +149,8 @@ class Banner extends React.Component<Props, State> {
         currentAmount={this.state.currentAmount}
         onClose={this.onClose}
         social={this.generateSocialLinks()}
+        showUnVerifiedNotice={!verified}
+        learnMoreNotice={'https://brave.com/faq-rewards/#unclaimed-funds'}
       >
         {description}
       </SiteBanner>

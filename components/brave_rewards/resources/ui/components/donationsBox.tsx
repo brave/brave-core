@@ -32,13 +32,15 @@ interface Props extends Rewards.ComponentProps {
 
 interface State {
   modalShowAll: boolean
+  settings: boolean
 }
 
 class DonationBox extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      modalShowAll: false
+      modalShowAll: false,
+      settings: false
     }
   }
 
@@ -153,6 +155,10 @@ class DonationBox extends React.Component<Props, State> {
     )
   }
 
+  onSettingsToggle = () => {
+    this.setState({ settings: !this.state.settings })
+  }
+
   render () {
     const { walletInfo, firstLoad, enabledMain, ui } = this.props.rewardsData
     const { walletImported } = ui
@@ -171,6 +177,8 @@ class DonationBox extends React.Component<Props, State> {
         description={getLocale('donationDesc')}
         disabledContent={showDisabled ? this.disabledContent() : null}
         attachedAlert={this.importAlert(walletImported)}
+        settingsOpened={this.state.settings}
+        onSettingsClick={this.onSettingsToggle}
       >
         {
           this.state.modalShowAll

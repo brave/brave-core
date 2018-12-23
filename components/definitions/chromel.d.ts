@@ -32,6 +32,7 @@ declare namespace chrome.braveRewards {
   }
   const includeInAutoContribution: (publisherKey: string, excluded: boolean, windowId: number) => {}
   const getGrant: () => {}
+  const getNonVerifiedSettings: (callback: (nonVerified: boolean) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {
