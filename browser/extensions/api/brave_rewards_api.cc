@@ -138,5 +138,23 @@ ExtensionFunction::ResponseAction BraveRewardsGetGrantFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+BraveRewardsGetNonVerifiedSettingsFunction::
+~BraveRewardsGetNonVerifiedSettingsFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetNonVerifiedSettingsFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service_ =
+    RewardsServiceFactory::GetForProfile(profile);
+  bool non_verified = true;
+
+  if (rewards_service_) {
+    non_verified = rewards_service_->GetPublisherAllowNonVerified();
+  }
+
+  return RespondNow(OneArgument(std::make_unique<base::Value>(non_verified)));
+}
+
 }  // namespace api
 }  // namespace extensions

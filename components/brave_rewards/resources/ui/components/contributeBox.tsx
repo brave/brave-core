@@ -21,6 +21,7 @@ const contributeDisabledIcon = require('../../img/contribute_disabled.svg')
 
 interface State {
   modalContribute: boolean
+  settings: boolean
 }
 
 interface MonthlyChoice {
@@ -35,8 +36,13 @@ class ContributeBox extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      modalContribute: false
+      modalContribute: false,
+      settings: false
     }
+  }
+
+  componentDidMount () {
+    this.isSettingsUrl()
   }
 
   getContributeRows = (list: Rewards.Publisher[]) => {
@@ -96,6 +102,14 @@ class ContributeBox extends React.Component<Props, State> {
 
   onCheckSettingChange = (key: string, selected: boolean) => {
     this.actions.onSettingSave(key, selected)
+  }
+
+  isSettingsUrl = () => {
+    if (window && window.location && window.location.hash && window.location.hash === '#ac-settings') {
+      this.setState({
+        settings: true
+      })
+    }
   }
 
   contributeSettings = (monthlyList: MonthlyChoice[]) => {
@@ -170,6 +184,10 @@ class ContributeBox extends React.Component<Props, State> {
     )
   }
 
+  onSettingsToggle = () => {
+    this.setState({ settings: !this.state.settings })
+  }
+
   render () {
     const {
       firstLoad,
@@ -199,6 +217,8 @@ class ContributeBox extends React.Component<Props, State> {
         disabledContent={this.contributeDisabled()}
         onToggle={this.onToggleContribution}
         testId={'autoContribution'}
+        settingsOpened={this.state.settings}
+        onSettingsClick={this.onSettingsToggle}
       >
         {
           this.state.modalContribute

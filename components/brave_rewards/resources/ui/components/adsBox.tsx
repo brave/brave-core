@@ -23,7 +23,17 @@ const adsDisabledIcon = require('../../img/ads_disabled.svg')
 interface Props extends Rewards.ComponentProps {
 }
 
-class AdsBox extends React.Component<Props, {}> {
+interface State {
+  settings: boolean
+}
+
+class AdsBox extends React.Component<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      settings: false
+    }
+  }
 
   adsDisabled = () => {
     return (
@@ -76,6 +86,10 @@ class AdsBox extends React.Component<Props, {}> {
     )
   }
 
+  onSettingsToggle = () => {
+    this.setState({ settings: !this.state.settings })
+  }
+
   render () {
     let adsEnabled
     const { adsData } = this.props.rewardsData
@@ -97,6 +111,8 @@ class AdsBox extends React.Component<Props, {}> {
         testId={'braveAdsSettings'}
         disabledContent={this.adsDisabled()}
         onToggle={this.onAdsSettingChange.bind(this, 'adsEnabled', '')}
+        settingsOpened={this.state.settings}
+        onSettingsClick={this.onSettingsToggle}
       />
     )
   }

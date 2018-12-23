@@ -256,6 +256,23 @@
         "type": "function",
         "description": "Retrieves grant when panel is mounted",
         "parameters": []
+      },
+      {
+        "name": "getNonVerifiedSettings",
+        "type": "function",
+        "description": "Gets auto contribute settings",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "nonVerified",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
       }
     ]
   }

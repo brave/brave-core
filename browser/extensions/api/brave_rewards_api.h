@@ -81,6 +81,16 @@ class BraveRewardsGetGrantFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsGetNonVerifiedSettingsFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getNonVerifiedSettings", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetNonVerifiedSettingsFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 
