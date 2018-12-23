@@ -43,6 +43,7 @@ declare namespace chrome.braveRewards {
   const getGrant: () => {}
   const getGrantCaptcha: () => {}
   const solveGrantCaptcha: (solution: string) => {}
+  const getNonVerifiedSettings: (callback: (nonVerified: boolean) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

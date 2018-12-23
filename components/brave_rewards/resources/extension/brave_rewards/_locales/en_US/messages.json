@@ -280,5 +280,21 @@
   "grantGoneTitle": {
     "message": "This grant is no longer available.",
     "description": "Error title when user missed a grant."
+  },
+  "changeSettingsButton": {
+    "message": "Change Auto-Contribute settings",
+    "description": "CAT that user can do to open auto contribute settings"
+  },
+  "unVerifiedPublisher": {
+    "message": "Not yet verified",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "This creator has not yet signed up to receive contributions from Brave users.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Learn more.",
+    "description": "Learn more button that opens FAQ"
   }
 }
