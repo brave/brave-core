@@ -848,15 +848,10 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="9125982323641182972">Brave Software-funkciók a Brave-ban</translation>
 <translation id="3149880132460839085">Brave - szinkronizálás</translation>
 <translation id="3796902758602917951">A böngésző szinkronizálni fogja a könyvjelzőket, az előzményeket, a jelszavakat és az egyéb beállításokat Brave Software-fiókjával, hogy bármelyik eszközén hozzájuk férjen.</translation>
-<translation id="1371301976177520732">Könyvjelzői, jelszavai, előzményei (és még sok más) valamennyi eszközén hozzáférhetők lesznek</translation>
 <translation id="3111958038206230539">A Brave Software-szolgáltatások személyre szabása</translation>
 <translation id="295992419959320001">A Brave Software felhasználhatja az Ön böngészési előzményeit a Keresés, a hirdetések és más Brave Software-szolgáltatások személyre szabására</translation>
-<translation id="4205523465226408285">Személyre szabottabb Brave Software-szolgáltatások, például jobb oldaljavaslatok</translation>
 <translation id="3070156078150543526">A Brave Software felhasználhatja a böngészési előzményeket a Keresés és más Brave Software-szolgáltatások személyre szabására.</translation>
-<translation id="2532167245710864499">Ha elküldi a rendszer- és használati adatokat a Brave Software-nak, hozzájárulhat a Brave fejlesztéséhez és a böngésző biztonságának javításához</translation>
 <translation id="2709453993673701466">Áttekinti a szinkronizálási és testreszabási beállításokat, mielőtt bekapcsolja őket? Keresse fel a <ph name="BEGIN_LINK"/>Beállítások<ph name="END_LINK"/> oldalt.</translation>
-<translation id="2668128414154024727">A <ph name="BEGIN_LINK"/>Beállításokban<ph name="END_LINK"/> bármikor személyre szabhatja, hogy milyen adatokat gyűjthet a Brave Software.</translation>
-<translation id="6035247993547372482">A Brave Software felhasználhatja az Ön által felkeresett webhelyeken lévő tartalmakat, a böngészési tevékenységeket és interakciókat a Brave és az egyéb Brave Software-szolgáltatások (például a Fordító, a Keresés és a megjelenő hirdetések) személyre szabásához. Ezt módosíthatja a Beállításokban.</translation>
 <translation id="741204030948306876">Igen, folytatom</translation>
 <translation id="2497852260688568942">A szinkronizálást letiltotta a rendszergazda</translation>
 <translation id="562935524653278697">A rendszergazda letiltotta a könyvjelzőinek, előzményeinek, jelszavainak és más beállításainak szinkronizálását.</translation>
@@ -2638,12 +2633,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="5535941515421698170">Továbbá a meglévő adatok eltávolítása az eszközről</translation>
 <translation id="7243632151880336635">Törlés és kijelentkezés</translation>
 <translation id="6406506848690869874">Szinkronizálás</translation>
-<translation id="1397854323885047133">Szinkronizálás és személyre szabás</translation>
-<translation id="1136155683023653803">Jelszavak, könyvjelzők, előzmények és egyebek szinkronizálása a fiókjával.</translation>
-<translation id="3267417306184901318">Böngészési adatai és tevékenységei, Brave Software-fiókjával szinkronizálva.</translation>
-<translation id="1123187597739372905">Szinkronizálási beállítások megjelenítése</translation>
 <translation id="5428209950370661546">Egyéb Brave Software-szolgáltatások</translation>
-<translation id="2055016640093734678">Brave Software-szolgáltatások beállításainak megjelenítése</translation>
 <translation id="7956662517480676674">Szinkronizálás és Brave Software</translation>
 <translation id="2453021845418314664">Speciális szinkronizálási beállítások</translation>
 <translation id="2731700343119398978">Kérjük, várjon...</translation>

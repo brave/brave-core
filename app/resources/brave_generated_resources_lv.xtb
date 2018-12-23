@@ -3,18 +3,23 @@
 <translationbundle lang="lv">
 <translation id="3333887201479867589">Brave balvas</translation>
 <translation id="7942180974165298215">Brave reklāmu bloķētājs</translation>
-<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="6406506848690869874">Brave Sync</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nav atļauts Brave.</translation>
 <translation id="7450557937477381864">Aizvērt Chrome</translation>
 <translation id="7008934821596358692">Lai pabeigtu importēšanu, aizveriet visus Chrome logus.</translation>
+<translation id="5735465527556462863">Aizvērt Brave (vecais)</translation>
+<translation id="7737066986958447692">Lai pabeigtu importēšanu, aizveriet visus Brave (vecais) logus.</translation>
 <translation id="6447842834002726250">Sīkfaili</translation>
 <translation id="4983925687993168579">Statistika</translation>
+<translation id="6165477144235978006">Brave maksājumi</translation>
+<translation id="3489524616427966890">Atvērts logus un cilnes</translation>
 <translation id="9173846700806833701">Widevine nav instalēta</translation>
 <translation id="2433569048491784801">Widevine nav instalēta.</translation>
 <translation id="3699882589215410581">Instalēt un palaist Widevine</translation>
 <translation id="8410111618231938546">Google Widevine ir Digitālā satura tiesību pārvaldības (DRM) koda daļa, kas mums, Brave Software, nepieder un ko mēs nevaram pārbaudīt. Google Widevine kods tiek ielādēts no Google serveriem, nevis no mūsu serveriem. Tas tiek ielādēts tikai tad, ja Jūs iespējojat šo opciju. Mēs atturam no DRM izmantošanas, bet mēs cienām lietotāju izvēli un pieņemam, ka daži Brave lietotāji vēlas izmantot pakalpojumus, kuriem tas ir nepieciešams.
 
 Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas noteikumiem. Jūs piekrītat, ka Brave neatbild ne par kādiem bojājumiem vai zaudējumiem saistībā ar Jūsu Google Widevine lietojumu.</translation>
+<translation id="6499845530162974140">Brave (vecais)</translation>
 <translation id="3198814717959506569">Importēts no Brave</translation>
 <translation id="453977518730680921">Automātiski atskaņot medijus</translation>
 <translation id="410351446219883937">Automātiska atskaņošana</translation>
@@ -34,6 +39,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="4703780849509456860">Atvērt saiti inkognito logā Tor</translation>
 <translation id="3488584642074079080">Atvērt saiti Brave inkognito logā Tor</translation>
 <translation id="3155170474926428993">Tor palaidējs</translation>
+<translation id="2515126961943087659">BAT reklāmu pakalpojums</translation>
 <translation id="7372129767729198111">Brave aizsarga noklusējumi</translation>
 <translation id="8029018702721078742">Reklāmu kontrole</translation>
 <translation id="3544462288910360084">Sīkfailu kontrole</translation>
@@ -54,4 +60,5 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="1822560017823072927">Noklusējuma publiskie un privātie interfeisi</translation>
 <translation id="5825943197137337319">Tikai noklusējuma publiskais interfeiss</translation>
 <translation id="1689062823386843231">Atspējot UDP protokolu, kam netiek izmantots starpniekserveris</translation>
+<translation id="6645631466045614531">Piekļūt Brave sinhronizācijai, izmantojot</translation>
 </translationbundle>

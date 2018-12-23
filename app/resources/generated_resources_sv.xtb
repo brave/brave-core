@@ -847,15 +847,10 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="9125982323641182972">Få Brave Software-teknik i Brave</translation>
 <translation id="3149880132460839085">Synkronisera med Brave</translation>
 <translation id="3796902758602917951">Bokmärken, historik, lösenord och andra inställningar synkroniseras med ditt Brave Software-konto så att du kan använda dem på alla enheter.</translation>
-<translation id="1371301976177520732">Bokmärken, lösenord, historik med mera på alla dina enheter</translation>
 <translation id="3111958038206230539">Anpassa Brave Softwares tjänster</translation>
 <translation id="295992419959320001">Brave Software kan anpassa Sök, annonser och andra Brave Software-tjänster utifrån webbhistoriken.</translation>
-<translation id="4205523465226408285">Personligare tjänster från Brave Software, till exempel förbättrade förslag på sidor</translation>
 <translation id="3070156078150543526">Brave Software kan använda webbhistoriken för att anpassa Sök och andra tjänster från Brave Software.</translation>
-<translation id="2532167245710864499">Gör Brave bättre och säkrare genom att skicka information om system och användning till Brave Software</translation>
 <translation id="2709453993673701466">Vill du hantera synkronisering och anpassning innan du aktiverar det? Öppna <ph name="BEGIN_LINK"/>inställningarna<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">I <ph name="BEGIN_LINK"/>Inställningar<ph name="END_LINK"/> kan du när som helst anpassa vilken information Brave Software samlar in.</translation>
-<translation id="6035247993547372482">Brave Software kan anpassa Brave och andra tjänster från Brave Software som Översätt, Sök och annonser utifrån innehållet på webbplatser du besöker samt aktivitet i och interaktion med webbläsaren. Du kan anpassa detta i inställningarna.</translation>
 <translation id="741204030948306876">Ja</translation>
 <translation id="2497852260688568942">Synkronisering har inaktiverats av administratören</translation>
 <translation id="562935524653278697">Administratören har inaktiverat synkronisering av bokmärken, historik, lösenord och andra inställningar.</translation>
@@ -2636,12 +2631,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5535941515421698170">Ta även bort befintlig data från den här enheten</translation>
 <translation id="7243632151880336635">Rensa och logga ut</translation>
 <translation id="6406506848690869874">Synkronisera</translation>
-<translation id="1397854323885047133">Synkronisering och anpassning</translation>
-<translation id="1136155683023653803">Bland annat bokmärken och historik synkroniseras med ditt konto</translation>
-<translation id="3267417306184901318">Din webbinformation och aktivitet som synkroniseras med Brave Software-kontot</translation>
-<translation id="1123187597739372905">Visa synkroniseringsinställningar</translation>
 <translation id="5428209950370661546">Andra Brave Software-tjänster</translation>
-<translation id="2055016640093734678">Visa inställningar för Brave Softwares tjänster</translation>
 <translation id="7956662517480676674">Synk och Brave Softwares tjänster</translation>
 <translation id="2453021845418314664">Avancerade synkroniseringsinställningar</translation>
 <translation id="2731700343119398978">Vänta ...</translation>

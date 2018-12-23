@@ -3,18 +3,23 @@
 <translationbundle lang="sw">
 <translation id="3333887201479867589">Zawadi za Brave</translation>
 <translation id="7942180974165298215">Kizuia Matangazo cha Brave</translation>
-<translation id="3149880132460839085">Upatanishaji wa Brave</translation>
+<translation id="6406506848690869874">Upatanishaji wa Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") is not allowed in Brave.</translation>
 <translation id="7450557937477381864">Funga Chrome</translation>
 <translation id="7008934821596358692">Ili kukamilisha kuingiza, funga madirisha yote ya Chrome.</translation>
+<translation id="5735465527556462863">Funga Brave (ya zamani)</translation>
+<translation id="7737066986958447692">Kumaliza kuingiza, funga madirisha yote ya Brave (ya zamani).</translation>
 <translation id="6447842834002726250">Vidakuzi</translation>
 <translation id="4983925687993168579">Takwimu</translation>
+<translation id="6165477144235978006">Malipo ya Brave</translation>
+<translation id="3489524616427966890">Madirisha na vichupo wazi</translation>
 <translation id="9173846700806833701">Widevine haijasanidiwa</translation>
 <translation id="2433569048491784801">Widevine haijasanidiwa</translation>
 <translation id="3699882589215410581">Sanidi na fungua Widevine</translation>
 <translation id="8410111618231938546">Google Widevine ni kipande cha msimbo wa Usimamizi wa Haki za Kidijiti (DRM) ambao sisi hapa Brave Software hatuumiliki na hatuwezi kuukagua. Msimbo wa Google Widevine inapakiwa kutoka katika seva za Google, si kutoka katika seva zetu. Hupakiwa pale tu ambapo unawezesha chaguo hili. Hatupendekezi matumizi ya DRM, lakini tunaheshimu uchaguzi wa mtumiaji na tunakiri kwamba baadhi ya watumiaji wa Brave wangependa kutumia huduma ambazo zinaitaka.
 
 Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Unakubali kwamba Brave haiwajibiki kwa madhara yoyote au upotevu unaohusiana na matumizi yako ya Google Widevine.</translation>
+<translation id="6499845530162974140">Brave (ya zamani)</translation>
 <translation id="3198814717959506569">Imeingizwa kutoka Brave</translation>
 <translation id="453977518730680921">Fungua video/picha kiotomati</translation>
 <translation id="410351446219883937">Kucheza kiotomati</translation>
@@ -34,6 +39,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="4703780849509456860">Fungua kiungo kwenye Dirisha Binafsi kwa Tor</translation>
 <translation id="3488584642074079080">Fungua kiungo kwenye Dirisha Binafsi la Brave kwa Tor</translation>
 <translation id="3155170474926428993">Kifungua Tor</translation>
+<translation id="2515126961943087659">Huduma ya Matangazo ya Bat</translation>
 <translation id="7372129767729198111">Machaguo msingi ya ngao za Brave</translation>
 <translation id="8029018702721078742">Kudhibiti Tangazo</translation>
 <translation id="3544462288910360084">Kudhibiti Vidakuzi</translation>
@@ -54,4 +60,5 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="1822560017823072927">Violesura chaguo-msingi vya umma na binafsi</translation>
 <translation id="5825943197137337319">Kiolesura cha umma chaguo-msingi pekee</translation>
 <translation id="1689062823386843231">Zima UDP zisizo na usalama</translation>
+<translation id="6645631466045614531">Fikia Brave Kuoanisha kupitia</translation>
 </translationbundle>

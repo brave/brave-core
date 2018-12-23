@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index a063a7c6dc0984fed360abf930f0ad4ecd32f261..6cc57647bb792a90653718f34c33ec84da20f32d 100644
+index 841f8ec0d8dafe6e289e847af4044a601024c1f1..fd7d1e054280b6b413967e2b8ca42e4d40ed98ba 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
-@@ -259,6 +259,8 @@ cr.define('settings', function() {
+@@ -260,6 +260,8 @@ cr.define('settings', function() {
  
      r.SEARCH = r.BASIC.createSection('/search', 'search');
      r.SEARCH_ENGINES = r.SEARCH.createChild('/searchEngines');
@@ -11,7 +11,7 @@ index a063a7c6dc0984fed360abf930f0ad4ecd32f261..6cc57647bb792a90653718f34c33ec84
      // <if expr="chromeos">
      r.GOOGLE_ASSISTANT = r.SEARCH.createChild('/googleAssistant');
  
-@@ -331,9 +333,12 @@ cr.define('settings', function() {
+@@ -333,9 +335,12 @@ cr.define('settings', function() {
  
        // TODO(tommycli): Find a way to refactor these repetitive category
        // routes.
@@ -24,7 +24,7 @@ index a063a7c6dc0984fed360abf930f0ad4ecd32f261..6cc57647bb792a90653718f34c33ec84
        r.SITE_SETTINGS_BACKGROUND_SYNC =
            r.SITE_SETTINGS.createChild('backgroundSync');
        r.SITE_SETTINGS_CAMERA = r.SITE_SETTINGS.createChild('camera');
-@@ -391,7 +396,9 @@ cr.define('settings', function() {
+@@ -393,7 +398,9 @@ cr.define('settings', function() {
        }
  
        r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');

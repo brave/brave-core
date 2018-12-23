@@ -845,15 +845,10 @@
 <translation id="9125982323641182972">Brave Software로 Brave을 더욱 스마트하게</translation>
 <translation id="3149880132460839085">크롬 동기화</translation>
 <translation id="3796902758602917951">북마크, 방문 기록, 비밀번호, 기타 설정이 Brave Software 계정에 동기화되므로 모든 기기에서 사용할 수 있습니다.</translation>
-<translation id="1371301976177520732">북마크, 비밀번호, 방문 기록 등을 모든 기기에 동기화</translation>
 <translation id="3111958038206230539">Brave Software 서비스 맞춤설정</translation>
 <translation id="295992419959320001">Brave Software에서 검색, 광고 및 다른 Brave Software 서비스를 맞춤설정하기 위하여 내 인터넷 사용 기록을 사용할 수 있습니다.</translation>
-<translation id="4205523465226408285">향상된 페이지 추천과 같이 더욱 맞춤설정된 Brave Software 서비스</translation>
 <translation id="3070156078150543526">검색 및 다른 Brave Software 서비스를 맞춤설정하기 위하여 Brave Software에서 인터넷 사용 기록을 사용할 수 있습니다.</translation>
-<translation id="2532167245710864499">시스템 정보와 사용 기록을 Brave Software에 전송하여 Brave 및 보안 개선</translation>
 <translation id="2709453993673701466">동기화 및 맞춤설정을 관리한 다음 사용 설정하시겠습니까? <ph name="BEGIN_LINK"/>설정<ph name="END_LINK"/>으로 이동하세요.</translation>
-<translation id="2668128414154024727"><ph name="BEGIN_LINK"/>설정<ph name="END_LINK"/>에서 언제든지 Brave Software에서 수집하는 정보를 맞춤설정할 수 있습니다.</translation>
-<translation id="6035247993547372482">Brave Software에서 Brave을 비롯한 번역, Brave Software 검색과 같은 기타 Brave Software 서비스 및 광고를 맞춤설정하기 위해 사용자가 방문한 사이트의 콘텐츠, 브라우저 활동 및 상호작용 기록을 사용할 수 있습니다. 이는 설정에서 변경할 수 있습니다.</translation>
 <translation id="741204030948306876">사용</translation>
 <translation id="2497852260688568942">관리자가 동기화를 사용 중지했습니다.</translation>
 <translation id="562935524653278697">관리자가 북마크, 방문 기록, 비밀번호 및 기타 설정의 동기화를 사용 중지했습니다.</translation>
@@ -2634,12 +2629,7 @@
 <translation id="5535941515421698170">기기에서 기존 데이터도 삭제</translation>
 <translation id="7243632151880336635">지우기 및 로그아웃</translation>
 <translation id="6406506848690869874">동기화</translation>
-<translation id="1397854323885047133">동기화 및 맞춤설정</translation>
-<translation id="1136155683023653803">비밀번호, 북마크, 방문 기록 등이 계정에 동기화됩니다.</translation>
-<translation id="3267417306184901318">Brave Software 계정에 동기화되는 인터넷 사용 기록 및 활동</translation>
-<translation id="1123187597739372905">동기화 설정 표시</translation>
 <translation id="5428209950370661546">다른 Brave Software 서비스</translation>
-<translation id="2055016640093734678">Brave Software 서비스 설정 표시</translation>
 <translation id="7956662517480676674">동기화 및 Brave Software 서비스</translation>
 <translation id="2453021845418314664">고급 동기화 설정</translation>
 <translation id="2731700343119398978">잠시 기다려 주세요...</translation>

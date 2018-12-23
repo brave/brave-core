@@ -3,18 +3,23 @@
 <translationbundle lang="et">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave'i reklaamiblokeerija</translation>
-<translation id="3149880132460839085">Brave''i Sync</translation>
+<translation id="6406506848690869874">Brave''i Sync</translation>
 <translation id="120759863357279975">Laiendus <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ei ole Brave''is lubatud.</translation>
 <translation id="7450557937477381864">Sulge Chrome</translation>
 <translation id="7008934821596358692">Importimise lõpetamiseks sulgege kõik Chrome'i vahelehed.</translation>
+<translation id="5735465527556462863">Sulge Brave (vana)</translation>
+<translation id="7737066986958447692">Importimise lõpetamiseks sulgege kõik (vana) Brave'i vahelehed.</translation>
 <translation id="6447842834002726250">Küpsisefailid</translation>
 <translation id="4983925687993168579">Statistika</translation>
+<translation id="6165477144235978006">Brave'i maksed</translation>
+<translation id="3489524616427966890">Ava aknad ja vahekaardid</translation>
 <translation id="9173846700806833701">Widevine ei ole installitud</translation>
 <translation id="2433569048491784801">Widevine ei ole installitud.</translation>
 <translation id="3699882589215410581">Installi ja käivita Widevine</translation>
 <translation id="8410111618231938546">Google Widevine on osa digitaalõiguste haldamise (DRM) süsteemist, mida Brave Software ei oma ega saa kontrollida. Google Widevine laaditakse alla Google'i serveritest, mitte meie omadest. See laaditakse alla ainult siis, kui annate selleks oma loa. Me ei soovita DRMi süsteemi kasutamist, kuid austame oma kasutajate valikut ja mõistame, et mõned Brave'i kasutajad soovivad kasutada teenuseid, kus seda vaja on.
 
 Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. Nõustute, et Brave ei vastuta mis tahes kahjude eest, mis tulenevad Google Widevine'i kasutamisest.</translation>
+<translation id="6499845530162974140">Brave (vana)</translation>
 <translation id="3198814717959506569">Imporditud Brave'ist</translation>
 <translation id="453977518730680921">Meedia automaatesitamine</translation>
 <translation id="410351446219883937">Automaatesita</translation>
@@ -34,6 +39,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="4703780849509456860">Ava link inkognito aknas Tor''iga</translation>
 <translation id="3488584642074079080">Ava link Brave''i inkognito aknas Tor''iga</translation>
 <translation id="3155170474926428993">Tori käivitaja</translation>
+<translation id="2515126961943087659">Bat reklaamide teenus</translation>
 <translation id="7372129767729198111">Brave'i kaitse vaikeseaded</translation>
 <translation id="8029018702721078742">Reklaamide kontroll</translation>
 <translation id="3544462288910360084">Küpsisefailide kontroll</translation>
@@ -54,4 +60,5 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="1822560017823072927">Vaikimisi määratud avalikud ja privaatsed liidesed</translation>
 <translation id="5825943197137337319">Ainult vaikimisi määratud avalik liides</translation>
 <translation id="1689062823386843231">Keela puhverserverita UDP</translation>
+<translation id="6645631466045614531">Mine Brace Sync'i</translation>
 </translationbundle>

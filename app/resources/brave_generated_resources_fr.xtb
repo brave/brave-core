@@ -3,18 +3,23 @@
 <translationbundle lang="fr">
 <translation id="3333887201479867589">Les Récompenses Brave</translation>
 <translation id="7942180974165298215">Bloqueur de publicité Brave</translation>
-<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="6406506848690869874">Brave Sync</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") n'est pas autorisé dans Brave.</translation>
 <translation id="7450557937477381864">Fermez Chrome</translation>
 <translation id="7008934821596358692">Pour terminer l'importation, fermez toutes les fenêtres Chrome.</translation>
+<translation id="5735465527556462863">Fermer Brave (ancien)</translation>
+<translation id="7737066986958447692">Pour terminer l'importation, fermez toutes les fenêtres Brave (ancien).</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="4983925687993168579">Statistiques</translation>
+<translation id="6165477144235978006">Paiements Brave</translation>
+<translation id="3489524616427966890">Ouvrir les fenêtres et les onglets</translation>
 <translation id="9173846700806833701">Widevine n'est pas installé</translation>
 <translation id="2433569048491784801">Windevine n'est pas installé.</translation>
 <translation id="3699882589215410581">Installer et exécuter Widevine</translation>
 <translation id="8410111618231938546">Google Widevine fait partie du code de Gestion des droits numériques (GDN) que nous, Brave Software, ne pouvons pas inspecter et dont nous ne sommes pas propriétaires. Le code de Google Widevine est téléchargé à partir des serveurs de Google, et non de nos serveurs. Il n'est téléchargé que lorsque vous activez cette option. Nous n'encourageons pas l'utilisation de GDN, mais respectons le choix de l'utilisateur et reconnaissons que certains utilisateurs de Brave souhaiteraient utiliser des services pour lesquels cela est nécessaire.
 
 En installant cette extension, vous acceptez les conditions d'utilisation de Google Widevine. Vous acceptez le fait que Brave ne peut être tenu responsable pour aucun dommage ou aucune perte en rapport avec votre utilisation de Google Widevine.</translation>
+<translation id="6499845530162974140">Brave (ancien)</translation>
 <translation id="3198814717959506569">Importé depuis Brave</translation>
 <translation id="453977518730680921">Médias en lecture automatique</translation>
 <translation id="410351446219883937">Lecture automatique</translation>
@@ -34,6 +39,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="4703780849509456860">Ouvrir le Lien dans une Fenêtre Privée avec Tor</translation>
 <translation id="3488584642074079080">Ouvrir le Lien dans une Fenêtre Privée Brave avec Tor</translation>
 <translation id="3155170474926428993">Lanceur Tor</translation>
+<translation id="2515126961943087659">Service de publicités BAT</translation>
 <translation id="7372129767729198111">Boucliers Brave par défaut</translation>
 <translation id="8029018702721078742">Contrôle des publicités</translation>
 <translation id="3544462288910360084">Contrôle des cookies</translation>
@@ -54,4 +60,5 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="1822560017823072927">Interfaces publiques et privées par défaut</translation>
 <translation id="5825943197137337319">Interface publique par défaut uniquement</translation>
 <translation id="1689062823386843231">Désactiver l'UDP pas en proxy</translation>
+<translation id="6645631466045614531">Accéder à la synchronisation Brave via</translation>
 </translationbundle>

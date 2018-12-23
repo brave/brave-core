@@ -3,18 +3,23 @@
 <translationbundle lang="da">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Annonceblokering</translation>
-<translation id="3149880132460839085">Brave-synkronisering</translation>
+<translation id="6406506848690869874">Brave-synkronisering</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") er ikke tilladt i Brave.</translation>
 <translation id="7450557937477381864">Luk Chrome</translation>
 <translation id="7008934821596358692">Luk alle Chrome-vinduer for at afslutte importeringen.</translation>
+<translation id="5735465527556462863">Luk Brave (gammel)</translation>
+<translation id="7737066986958447692">For at fuldføre importering skal du lukke alle Brave-vinduer (gammel).</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="4983925687993168579">Statistikker</translation>
+<translation id="6165477144235978006">Brave-betalinger</translation>
+<translation id="3489524616427966890">Åbn vinduer og faner</translation>
 <translation id="9173846700806833701">Widevine er ikke installeret</translation>
 <translation id="2433569048491784801">Widevine er ikke installeret</translation>
 <translation id="3699882589215410581">Installer og kør Widevine</translation>
 <translation id="8410111618231938546">Google Widevine er en del af Digital Rights Management (DRM)-koden, som vi på Brave Software ikke ejer og ikke kan inspicere. Google Widevine-koden indlæses fra Google-servere, ikke fra vores servere. Den indlæses kun, når du aktiverer denne mulighed. Vi fraråder brugen af DRM, men vi respekterer brugernes valg og anerkender at nogle Brave-brugere ønsker at bruge tjenester der kræver det.
 
 Ved at installere denne udvidelse accepterer du Google Widevines betingelser for brug. Du accepterer at Brave ikke er ansvarlige for nogen skader eller tab i forbindelse med din brug af Google Widevine.</translation>
+<translation id="6499845530162974140">Brave (gammel)</translation>
 <translation id="3198814717959506569">Importeret fra Brave</translation>
 <translation id="453977518730680921">Afspil medier automatisk</translation>
 <translation id="410351446219883937">Automatisk afspilning</translation>
@@ -34,6 +39,7 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="4703780849509456860">Åben link i Privat Vindue med Tor</translation>
 <translation id="3488584642074079080">Åbn link i Brave privat vindue med Tor</translation>
 <translation id="3155170474926428993">Tor Startprogram</translation>
+<translation id="2515126961943087659">Bat-annonceservice</translation>
 <translation id="7372129767729198111">Brave standard beskyttelsesindstillinger</translation>
 <translation id="8029018702721078742">Reklamekontrol</translation>
 <translation id="3544462288910360084">Cookie-kontrol</translation>
@@ -54,4 +60,5 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="1822560017823072927">Standard offentlige og private grænseflader</translation>
 <translation id="5825943197137337319">Kun standard offentlig grænseflade</translation>
 <translation id="1689062823386843231">Deaktiver UDP uden proxy</translation>
+<translation id="6645631466045614531">Få adgang til Brave-synkronisering via</translation>
 </translationbundle>

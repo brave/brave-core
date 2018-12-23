@@ -198,7 +198,7 @@
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
-    "message": "No activities yet…",
+    "message": "尚未有任何活動...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   }
 }

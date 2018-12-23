@@ -3,18 +3,23 @@
 <translationbundle lang="am">
 <translation id="3333887201479867589">የብሬቭ ሽልማት</translation>
 <translation id="7942180974165298215">ብሬቭ ኣድ ብሎክ</translation>
-<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="6406506848690869874">Brave Sync</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") በብሬቭ ውስጥ አይፈቀድም፡፡</translation>
 <translation id="7450557937477381864">ክሮም ዝጋ</translation>
 <translation id="7008934821596358692">ማስተላለፍ ለመጨረስ፣ ሁሉኑም የክሮም ዊንደው ይዝጉ፡፡</translation>
+<translation id="5735465527556462863">ብሬቭን ይዝጉ (የድሮ)</translation>
+<translation id="7737066986958447692">ማስገባትዎን ለመጨረስ ሁሉንም የብሬቭ (የድሮ) መስኮቶች ይዝጉ::</translation>
 <translation id="6447842834002726250">ኮኪስ</translation>
 <translation id="4983925687993168579">ሁነት</translation>
+<translation id="6165477144235978006">የብሬቭ ክፍያዎች</translation>
+<translation id="3489524616427966890">መስኮቶችን እና ትሮችን ክፈት</translation>
 <translation id="9173846700806833701">ዊንድቪን አልተገጠመም</translation>
 <translation id="2433569048491784801">ዊንድቬን አልተገጠመም፡፡</translation>
 <translation id="3699882589215410581">ዊንድቬን ገጥመው ይክፈቱ</translation>
 <translation id="8410111618231938546">Google Widevine የዲጂታል መብት አስተዳደር (DRM) አካል የሆነ ኮድ ሲሆን እኛ ብሬቭ ሶፍትዌር ባለቤትነት የሌለንና ምርመራ ማካሄድ አንችልም፡፡ Google Widevine ኮድ ከኛ ሰርቨር ሳይሆን ከ Google ሰርቨር ማግኘት ይችላሉ፡፡ የሚጀምረው ይህን አማራጭ ካበራቹህ ብቻ ነው፡፡ DRM እንዲጠቀሙ አናበረታታም፣ ቢሆንም የተጠቃሚዎቻችንን ምርጫ እናከብራለን እንዲሁም አንድ አንድ የብሬቭ ተጠቃሚዎች ይህን የሚጠይቅ አገልግሎት መጠቀም እንደሚፈልጉ እውቅና እነሰታለን፡፡
  
  ይህን ቅጥያ ሲገጥሙ፣ በGoogle Widevine የአጠቃቀም ሕግ እየተስማሙ ነው፡፡ ከGoogle Widevine ሲጠቀሙ ለሚገጥሞት አደጋ ወይ የግንኙነት መቋረጥ ብሬቭ ሀላፊነት እንደማይወስድ ይስማማሉ፡፡</translation>
+<translation id="6499845530162974140">ብሬቭ (የድሮ)</translation>
 <translation id="3198814717959506569">ከብሬቭ ኢምፖርት የተደረገ</translation>
 <translation id="453977518730680921">ሚድያ አውቶፕለይ</translation>
 <translation id="410351446219883937">አውቶፕለይ</translation>
@@ -34,6 +39,7 @@
 <translation id="4703780849509456860">ሊንኩን በግል መስኮትዎ ከቶር ጋር ይክፈቱ</translation>
 <translation id="3488584642074079080">ሊንኩን በብሬቭ የግል መስኮት ከቶር ጋር ይክፈቱ</translation>
 <translation id="3155170474926428993">ቶር ማስጀመርያ</translation>
+<translation id="2515126961943087659">የባት የማስታወቂያ አገልግሎት</translation>
 <translation id="7372129767729198111">የብሬቭ ጥበቃ ዲፎልት</translation>
 <translation id="8029018702721078742">የማሰወታወቅያ መቆጣጠርያ</translation>
 <translation id="3544462288910360084">ኩኪ መቆጣጠርያ</translation>
@@ -54,4 +60,5 @@
 <translation id="1822560017823072927">ዲፎልት የጋራና የግል ኢንተርፈረንስ</translation>
 <translation id="5825943197137337319">የጋራ ዲፎልት አጠቃቀም መጋራት ብቻ</translation>
 <translation id="1689062823386843231">ሮክሲ የሌለው UDP ያጥፉ</translation>
+<translation id="6645631466045614531">የብሬቭ ማመሳሰልን በሱ በኩል ይድረሱበት</translation>
 </translationbundle>
