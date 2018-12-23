@@ -182,7 +182,7 @@
       <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC" desc="Explainer text about shields">Brave shields protects you from unwanted ads and trackers while browsing. If you encounter an issue while browsing a particular site, adjust your protection level from the shields panel in the toolbar.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_BUTTON" desc="Button to open shield settings">Shield Settings</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_TITLE" desc="Welcome message title for search engines">Change your search engine</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_DESC" desc="Explainer text about search engines in Brave">Choose the seasrch engine you would like to use by default when searching the web from the address bar.</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_DESC" desc="Explainer text about search engines in Brave">Choose the search engine you would like to use by default when searching the web from the address bar.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_BUTTON" desc="Button to open the preferences page for search">Settings</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_THEME_TITLE" desc="Welcome message title for theming">Choose your color theme</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_THEME_DESC" desc="Explainer text about theminng in Brave">Set the color of your toolbar by selecting the light or dark option from the settings panel.</message>
