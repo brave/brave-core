@@ -539,6 +539,14 @@ void RewardsServiceImpl::OnCreateWallet(
   std::move(callback).Run(static_cast<int32_t>(result));
 }
 
+void RewardsServiceImpl::AddPrivateObserver(RewardsServicePrivateObserver* observer) {
+  private_observers_.AddObserver(observer);
+}
+
+void RewardsServiceImpl::RemovePrivateObserver(RewardsServicePrivateObserver* observer) {
+  private_observers_.RemoveObserver(observer);
+}
+
 void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
   if (ready().is_signaled()) {
     auto on_create = base::BindOnce(
