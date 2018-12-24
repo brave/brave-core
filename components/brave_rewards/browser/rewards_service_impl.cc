@@ -515,6 +515,14 @@ void RewardsServiceImpl::MaybeShowAddFundsNotification(
   }
 }
 
+void RewardsServiceImpl::AddPrivateObserver(RewardsServicePrivateObserver* observer) {
+  private_observers_.AddObserver(observer);
+}
+
+void RewardsServiceImpl::RemovePrivateObserver(RewardsServicePrivateObserver* observer) {
+  private_observers_.RemoveObserver(observer);
+}
+
 void RewardsServiceImpl::CreateWallet() {
   if (ready().is_signaled()) {
     if (Connected())
