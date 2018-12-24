@@ -45,6 +45,7 @@ bool IsMediaLink(const GURL& url,
 
 class RewardsNotificationService;
 class RewardsServiceObserver;
+class RewardsServicePrivateObserver;
 
 using GetContentSiteListCallback =
     base::Callback<void(std::unique_ptr<ContentSiteList>,
@@ -170,6 +171,8 @@ class RewardsService : public KeyedService {
   // as ledger
   virtual void SetCatalogIssuers(const std::string& json) = 0;
   virtual void AdSustained(const std::string& json) = 0;
+  virtual void AddPrivateObserver(RewardsServicePrivateObserver* observer) = 0;
+  virtual void RemovePrivateObserver(RewardsServicePrivateObserver* observer) = 0;
 
   virtual void GetAddressesForPaymentId(
       const GetAddressesCallback& callback) = 0;

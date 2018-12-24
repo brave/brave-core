@@ -8,7 +8,7 @@ import("//brave/vendor/challenge_bypass_ristretto_ffi/config.gni")
 if (is_android) {
   import("//build/config/android/rules.gni")
 }
-if (is_android || defined(is_docker)) {
+if (defined(is_docker)) {
   dep_base = rebase_path("./", "//")
 } else {
   dep_base = rebase_path("../..", "//")
