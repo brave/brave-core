@@ -684,6 +684,8 @@ class RewardsServiceImpl : public RewardsService,
 
   bool Connected() const;
   void ConnectionClosed();
+  void AddPrivateObserver(RewardsServicePrivateObserver* observer) override;
+  void RemovePrivateObserver(RewardsServicePrivateObserver* observer) override;
 
   void RecordBackendP3AStats() const;
 
