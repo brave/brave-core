@@ -338,6 +338,14 @@ void RewardsServiceImpl::Init() {
   ledger_->Initialize();
 }
 
+void RewardsServiceImpl::AddPrivateObserver(RewardsServicePrivateObserver* observer) {
+  private_observers_.AddObserver(observer);
+}
+
+void RewardsServiceImpl::RemovePrivateObserver(RewardsServicePrivateObserver* observer) {
+  private_observers_.RemoveObserver(observer);
+}
+
 void RewardsServiceImpl::CreateWallet() {
   if (ready().is_signaled()) {
     ledger_->CreateWallet();

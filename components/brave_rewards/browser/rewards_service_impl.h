@@ -282,6 +282,9 @@ class RewardsServiceImpl : public RewardsService,
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;
 
+  void AddPrivateObserver(RewardsServicePrivateObserver* observer) override;
+  void RemovePrivateObserver(RewardsServicePrivateObserver* observer) override;
+
   Profile* profile_;  // NOT OWNED
   std::unique_ptr<ledger::Ledger> ledger_;
 #if BUILDFLAG(ENABLE_EXTENSIONS)

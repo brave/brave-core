@@ -36,6 +36,7 @@ bool IsMediaLink(const GURL& url,
 
 class RewardsNotificationService;
 class RewardsServiceObserver;
+class RewardsServicePrivateObserver;
 
 using GetCurrentContributeListCallback =
     base::Callback<void(std::unique_ptr<ContentSiteList>,
@@ -111,6 +112,8 @@ class RewardsService : public KeyedService {
     std::string publisher_key, bool excluded, uint64_t windowId) = 0;
   virtual RewardsNotificationService* GetNotificationService() const = 0;
   virtual bool CheckImported() = 0;
+  virtual void AddPrivateObserver(RewardsServicePrivateObserver* observer) = 0;
+  virtual void RemovePrivateObserver(RewardsServicePrivateObserver* observer) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
