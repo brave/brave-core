@@ -67,9 +67,7 @@ const locale: any = {
   phoneTablet: 'Tablet or Phone',
   computer: 'Computer',
   // [modal] View Sync Code
-  qrCode: 'QR Code',
-  wordCode: 'Word Code',
-  privateKey: 'This is a private key. If you share it, your private data may be compromised.'
+  qrCode: 'View QR Code'
 }
 
 export default locale

@@ -26,7 +26,7 @@ import { SyncMobilePicture, QRCode } from '../../../../src/features/sync/images'
 import qrCodeImage from '../../../assets/img/fakeQRCodeImage.png'
 
 // Modals
-import AddNewChainCameraOption from './addNewChainCameraOption'
+import ViewSyncCodeModal from './viewSyncCode'
 
 // Utils
 import { getLocale } from '../page/fakeLocale'
@@ -58,7 +58,7 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
       <Modal id='scanCodeModal' onClose={onClose} size='small'>
       {
         enterCodeWordsInstead
-          ? <AddNewChainCameraOption fromMobileScreen={true} onClose={this.onClickEnterCodeWordsInstead} />
+          ? <ViewSyncCodeModal onClose={this.onClickEnterCodeWordsInstead} />
           : null
       }
         <ModalHeader>
