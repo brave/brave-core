@@ -11,6 +11,7 @@ const locale: any = {
   ok: 'Ok',
   cancel: 'Cancel',
   thisSyncChain: 'from Sync Chain',
+  lookingForDevice: 'Looking for device',
   // Enabled Content
   braveSync: 'Brave Sync',
   syncChainDevices: 'The device list below includes all devices in your sync chain. Each device can be managed from any other device.',
@@ -48,11 +49,9 @@ const locale: any = {
   deleteSyncChainButton: 'Delete Sync Chain',
   areYouSure: 'Are you sure?',
   // [modal] Add New Chain
-  scanThisCode: 'Now, using Brave on your mobile device, scan this code.',
-  scanThisCodeHowTo: 'Go to: Brave Settings > Sync > Scan Sync Code',
-  enterCodeWordsInstead: 'Enter code words instead',
-  previous: '< Previous',
-  lookingForDevice: 'Looking for device',
+  scanThisCode: 'Sync Chain QR Code',
+  scanThisCodeHowTo: 'On your mobile device, navigate to Brave Sync in the Settings panel and click the button “Scan Sync Code”. Use your camera to scan the QR Code below.',
+  viewCodeWords: 'View Code Words',
   // [modal] Add New Chain (Camera Option)
   enterThisCode: 'Now, using Brave on your computer, enter this code:',
   mobileEnterThisCode: 'Now, using Brave on your mobile device, enter this code:',

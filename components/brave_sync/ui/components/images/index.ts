@@ -40,7 +40,9 @@ interface QRCodeProps {
 }
 
 export const QRCode = styled<QRCodeProps, 'img'>('img')`
-  max-width: 100%;
   display: block;
-  width: ${p => p.size === 'normal' ? '180px' : '140px'};
+  width: 200px;
+  padding: 40px;
+  border: 1px solid #C8C8D5;
+  max-width: 100%;
 `

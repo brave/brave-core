@@ -41,7 +41,7 @@ export const TwoColumnButtonGrid = styled<{}, 'footer'>('footer')`
   align-items: center;
   grid-template-columns: 1fr auto;
   grid-gap: 20px;
-  margin-top: 10px;
+  margin-top: 20px;
 `
 
 export const ThreeColumnButtonGrid = styled<{}, 'div'>('div')`
@@ -91,10 +91,12 @@ export const DeviceContainer = styled<{}, 'a'>('a')`
 export const ScanGrid = styled<{}, 'div'>('div')`
   display: grid;
   height: 100%;
-  grid-template-columns: auto auto;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
   margin: 25px auto;
-  max-width: 550px;
+  grid-gap: 30px;
+  align-items: center;
+  width: fit-content;
 `
 
 export const QRCodeContainer = styled<{}, 'div'>('div')`

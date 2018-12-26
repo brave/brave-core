@@ -5,18 +5,16 @@
 import * as React from 'react'
 
 // Components
-import Button from '../../../../src/components/buttonsIndicators/button'
-import Modal from '../../../../src/components/popupModals/modal'
+import { Modal, Button } from '../../../../src/components'
 
 // Feature-specific components
 import {
   ModalHeader,
-  ModalTitle,
-  ModalSubTitle,
+  Title,
+  Paragraph,
   ScanGrid,
-  ThreeColumnButtonGrid,
-  ThreeColumnButtonGridCol1,
-  ThreeColumnButtonGridCol2
+  TwoColumnButtonGrid,
+  OneColumnButtonGrid
 } from '../../../../src/features/sync'
 
 // Images
@@ -63,42 +61,33 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
       }
         <ModalHeader>
           <div>
-            <ModalTitle level={1}>{getLocale('scanThisCode')}</ModalTitle>
-            <ModalSubTitle>{getLocale('scanThisCodeHowTo')}</ModalSubTitle>
+            <Title level={1}>{getLocale('scanThisCode')}</Title>
+            <Paragraph>{getLocale('scanThisCodeHowTo')}</Paragraph>
           </div>
         </ModalHeader>
           <ScanGrid>
             <SyncMobilePicture />
             <QRCode size='normal' src={qrCodeImage} />
           </ScanGrid>
-          <ThreeColumnButtonGrid>
-            <ThreeColumnButtonGridCol1>
-              <Button
-                level='secondary'
-                type='accent'
-                size='medium'
-                onClick={this.onClickEnterCodeWordsInstead}
-                text={getLocale('enterCodeWordsInstead')}
-              />
-            </ThreeColumnButtonGridCol1>
-            <ThreeColumnButtonGridCol2>
-              <Button
-                level='secondary'
-                type='accent'
-                size='medium'
-                onClick={onClose}
-                text={getLocale('previous')}
-              />
-              <Button
-                level='primary'
-                type='accent'
-                size='medium'
-                onClick={onClose}
-                disabled={true}
-                text={getLocale('lookingForDevice')}
-              />
-            </ThreeColumnButtonGridCol2>
-        </ThreeColumnButtonGrid>
+          <TwoColumnButtonGrid>
+          <OneColumnButtonGrid>
+            <Button
+              level='secondary'
+              type='accent'
+              size='medium'
+              onClick={onClose}
+              text={getLocale('cancel')}
+            />
+          </OneColumnButtonGrid>
+          <Button
+            level='secondary'
+            type='accent'
+            size='medium'
+            onClick={onClose}
+            disabled={true}
+            text={getLocale('viewCodeWords')}
+          />
+        </TwoColumnButtonGrid>
       </Modal>
     )
   }
