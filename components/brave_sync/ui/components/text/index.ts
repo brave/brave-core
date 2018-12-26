@@ -35,6 +35,10 @@ export const Link = styled<{}, 'a'>(Paragraph.withComponent('a') as any)`
   display: inline;
 `
 
+export const Bold = styled<{}, 'b'>('b')`
+  font-weight: 600;
+`
+
 export const SwitchLabel = styled<{}, 'label'>('label')`
   font-family: ${p => p.theme.fontFamily.body};
   color: ${p => p.theme.color.defaultControlActive};

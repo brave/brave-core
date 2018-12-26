@@ -5,10 +5,7 @@
 import * as React from 'react'
 
 // Components
-import Button from '../../../../src/components/buttonsIndicators/button'
-import Modal from '../../../../src/components/popupModals/modal'
-import AlertBox from '../../../../src/components/popupModals/alertBox'
-import TextAreaClipboard from '../../../../src/components/formControls/textareaClipboard'
+import { Modal, AlertBox, TextAreaClipboard, Button } from '../../../../src/components'
 
 // Feature-specific components
 import {
@@ -16,7 +13,6 @@ import {
   Title,
   SubTitle,
   Paragraph,
-  ModalContent,
   TwoColumnButtonGrid,
   OneColumnButtonGrid
 } from '../../../../src/features/sync'
@@ -75,19 +71,17 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
             <Paragraph>{getLocale('enterSyncCodeDescription')}</Paragraph>
           </div>
         </ModalHeader>
-        <ModalContent>
-          <TextAreaClipboard
-            copiedString={getLocale('copied')}
-            wordCountString={getLocale('wordCount')}
-            value={this.state.passphrase}
-            onChange={this.onEnterPassphrase}
-          />
-        </ModalContent>
+        <TextAreaClipboard
+          copiedString={getLocale('copied')}
+          wordCountString={getLocale('wordCount')}
+          value={this.state.passphrase}
+          onChange={this.onEnterPassphrase}
+        />
         <TwoColumnButtonGrid>
             <OneColumnButtonGrid>
               <Button
                 level='secondary'
-                type='accent'
+                type='subtle'
                 size='medium'
                 onClick={onClose}
                 text={getLocale('cancel')}

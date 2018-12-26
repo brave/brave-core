@@ -5,17 +5,15 @@
 import * as React from 'react'
 
 // Components
-import Button from '../../../../src/components/buttonsIndicators/button'
+import { Modal, TextAreaClipboard, Button } from '../../../../src/components'
 import { LoaderIcon } from '../../../../src/components/icons'
-import Modal from '../../../../src/components/popupModals/modal'
-import TextAreaClipboard from '../../../../src/components/formControls/textareaClipboard'
 
 // Feature-specific components
 import {
   ModalHeader,
   Title,
   Paragraph,
-  ModalContent,
+  Bold,
   TwoColumnButtonGrid,
   OneColumnButtonGrid
 } from '../../../../src/features/sync'
@@ -36,22 +34,22 @@ export default class AddNewChainNoCameraModal extends React.PureComponent<Props,
         <ModalHeader>
           <div>
             <Title level={1}>{getLocale('chainCode')}</Title>
-            <Paragraph>{getLocale('chainCodeDescription')}</Paragraph>
+            <Paragraph>
+              {getLocale('chainCodeDescriptionPartial1')} <Bold>{getLocale('chainCodeDescriptionPartial2')}</Bold> {getLocale('chainCodeDescriptionPartial3')}
+            </Paragraph>
           </div>
         </ModalHeader>
-        <ModalContent>
-          <TextAreaClipboard
-            copiedString='Copied!'
-            wordCountString='Word Count:'
-            readOnly={true}
-            defaultValue={data.passphrase}
-          />
-        </ModalContent>
+        <TextAreaClipboard
+          copiedString='Copied!'
+          wordCountString='Word Count:'
+          readOnly={true}
+          defaultValue={data.passphrase}
+        />
         <TwoColumnButtonGrid>
           <OneColumnButtonGrid>
             <Button
               level='secondary'
-              type='accent'
+              type='subtle'
               size='medium'
               onClick={onClose}
               text={getLocale('cancel')}

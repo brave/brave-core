@@ -20,6 +20,7 @@ const locale: any = {
   addDevice: 'Add New Device',
   viewSyncCode: 'View Sync Code',
   syncSettings: 'Brave Sync Settings',
+  settings: 'Settings',
   syncSettingsDescription: 'Manage what information you would like to sync between devices. These settings only effect this device.',
   bookmarks: 'Bookmarks',
   savedSiteSettings: 'Saved Site Settings',
@@ -58,7 +59,9 @@ const locale: any = {
   syncChainCodeHowTo: 'Go to: Brave Settings > Sync > Enter a Sync Chain Code',
   // [modal] Add New Chain (no Camera)
   chainCode: 'Sync Chain Code',
-  chainCodeDescription: 'On your target computer, navigate to Brave Sync in settings and click the button “I Have a Sync Code”. Type in the below sync chains code words.',
+  chainCodeDescriptionPartial1: 'On your target computer, navigate to Brave Sync in settings and click the button',
+  chainCodeDescriptionPartial2: '“I Have a Sync Code”.',
+  chainCodeDescriptionPartial3: 'Type in the below sync chains code words.',
   useCameraInstead: 'Use camera instead',
   // [modal] Choose Device Type
   letsSync: 'Choose Device Type',

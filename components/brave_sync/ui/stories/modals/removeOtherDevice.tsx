@@ -5,8 +5,7 @@
 import * as React from 'react'
 
 // Components
-import Button from '../../../../src/components/buttonsIndicators/button'
-import Modal from '../../../../src/components/popupModals/modal'
+import { Modal, Button } from '../../../../src/components'
 
 // Feature-specific components
 import {

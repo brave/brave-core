@@ -28,7 +28,7 @@ export const ModalSubTitle = styled<ModalSubTitleProps, 'span'>('span')`
 `
 
 export const ModalContent = styled<{}, 'div'>('div')`
-  margin-left: 0px;
+  margin-bottom: -12px;
 `
 
 export const OneColumnButtonGrid = styled<{}, 'div'>('div')`
@@ -40,7 +40,7 @@ export const TwoColumnButtonGrid = styled<{}, 'footer'>('footer')`
   display: grid;
   align-items: center;
   grid-template-columns: 1fr auto;
-  grid-gap: 20px;
+  grid-gap: 15px;
   margin-top: 20px;
 `
 

@@ -105,7 +105,7 @@ export default class SyncEnabledContent extends React.PureComponent<{}, State> {
 
   get settingsHeader (): Cell[] {
     return [
-      { content: <TableRowDevice>{getLocale('deviceName')}</TableRowDevice> },
+      { content: <TableRowDevice>{getLocale('settings')}</TableRowDevice> },
       { content: '' }
     ]
   }
@@ -177,8 +177,8 @@ export default class SyncEnabledContent extends React.PureComponent<{}, State> {
           }
           <SyncCard>
             <Title level={2}>{getLocale('braveSync')}</Title>
+            <Paragraph>{getLocale('syncChainDevices')}</Paragraph>
             <SectionBlock>
-              <Paragraph>{getLocale('syncChainDevices')}</Paragraph>
               <TableGrid isDeviceTable={true}>
                 <Table header={this.deviceHeader} rows={this.deviceRows} />
                 <TableButtonGrid>
@@ -200,9 +200,9 @@ export default class SyncEnabledContent extends React.PureComponent<{}, State> {
                 </TableButtonGrid>
               </TableGrid>
             </SectionBlock>
+            <Title level={2}>{getLocale('syncSettings')}</Title>
+            <Paragraph>{getLocale('syncSettingsDescription')}</Paragraph>
             <SectionBlock>
-              <Title level={2}>{getLocale('syncSettings')}</Title>
-              <Paragraph>{getLocale('syncSettingsDescription')}</Paragraph>
               <Table header={this.settingsHeader} rows={this.settingsRows} />
             </SectionBlock>
             <SectionBlock>

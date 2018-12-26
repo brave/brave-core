@@ -73,18 +73,17 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
           <OneColumnButtonGrid>
             <Button
               level='secondary'
-              type='accent'
+              type='subtle'
               size='medium'
               onClick={onClose}
               text={getLocale('cancel')}
             />
           </OneColumnButtonGrid>
           <Button
-            level='secondary'
+            level='primary'
             type='accent'
             size='medium'
             onClick={onClose}
-            disabled={true}
             text={getLocale('viewCodeWords')}
           />
         </TwoColumnButtonGrid>

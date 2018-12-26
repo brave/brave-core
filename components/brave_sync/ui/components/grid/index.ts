@@ -5,7 +5,7 @@
 import styled from '../../../theme'
 
 export const SectionBlock = styled<{}, 'section'>('section')`
-  margin: 10px 0 40px;
+  margin: 15px 0 40px;
 `
 
 export const EnabledContentButtonGrid = styled<{}, 'footer'>('footer')`
