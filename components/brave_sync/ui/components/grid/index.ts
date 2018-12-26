@@ -34,7 +34,7 @@ export const DisabledContentButtonGrid = styled<{}, 'footer'>('footer')`
 `
 
 interface TableGridProps {
-  isDeviceTable: boolean
+  isDeviceTable?: boolean
 }
 
 export const TableGrid = styled<TableGridProps, 'div'>('div')`
