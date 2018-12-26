@@ -167,7 +167,7 @@ export default class SyncEnabledContent extends React.PureComponent<{}, State> {
           }
           {
             addDevice
-              ? <DeviceTypeModal onClose={this.onClickAddDeviceButton} mainDeviceName={this.mainDeviceName} />
+              ? <DeviceTypeModal onClose={this.onClickAddDeviceButton} />
               : null
           }
           {

@@ -32,7 +32,7 @@ import AddNewChainCameraOption from './addNewChainCameraOption'
 import { getLocale } from '../page/fakeLocale'
 
 interface Props {
-  onClose: () => void
+  onClose: (event?: any) => void
 }
 
 interface State {

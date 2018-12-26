@@ -62,7 +62,7 @@ export default class SyncDisabledContent extends React.PureComponent<{}, State> 
         <Main>
           {
             newToSync
-              ? <DeviceType onClose={this.onClickNewSyncChainButton} mainDeviceName={this.mainDeviceName} />
+              ? <DeviceType onClose={this.onClickNewSyncChainButton} />
               : null
           }
           {

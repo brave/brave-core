@@ -23,7 +23,7 @@ const doNothing = () => {
 
 storiesOf('Feature Components/Sync/Popups and Modals', module)
   .add('Reset Sync', () => <ResetSyncModal onClose={doNothing} mainDeviceName={data.device1.name} />)
-  .add('Device Type', () => <DeviceTypeModal onClose={doNothing} mainDeviceName={data.device1.name} />)
+  .add('Device Type', () => <DeviceTypeModal onClose={doNothing} />)
   .add('Scan Code', () => <ScanCodeModal onClose={doNothing} />)
   .add('Add New Chain (camera option)', () => <AddNewChainCameraOptionModal onClose={doNothing} />)
   .add('Add New Chain (no camera)', () => <AddNewChainNoCameraModal onClose={doNothing} />)

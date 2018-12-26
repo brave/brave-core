@@ -8,8 +8,8 @@ import StartImageUrl from './start_icon.svg'
 import DefaultImageUrl from './default_icon.svg'
 import AddImageUrl from './add_icon.svg'
 import RemoveImageUrl from './remove_icon.svg'
-import DesktopImageUrl from './desktop_icon.svg'
-import MobileImageUrl from './mobile_icon.svg'
+import DesktopImageUrl from './desktop_icon.png'
+import MobileImageUrl from './mobile_icon.png'
 import MobileHandImageUrl from './mobile_picture.png'
 
 const iconStyles = `
@@ -18,8 +18,8 @@ const iconStyles = `
 `
 
 const deviceStyles = `
-  margin-bottom: 20px;
-  height: 100px;
+  margin-bottom: 10px;
+  height: 130px;
 `
 
 export const SyncStartIcon = styled<{}, 'img'>('img').attrs({ src: StartImageUrl })`

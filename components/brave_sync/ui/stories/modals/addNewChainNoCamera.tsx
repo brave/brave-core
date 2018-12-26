@@ -25,7 +25,7 @@ import { getLocale } from '../page/fakeLocale'
 import data from '../page/fakeData'
 
 interface Props {
-  onClose: () => void
+  onClose: (event?: any) => void
 }
 
 export default class AddNewChainNoCameraModal extends React.PureComponent<Props, {}> {

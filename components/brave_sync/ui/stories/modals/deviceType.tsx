@@ -5,16 +5,15 @@
 import * as React from 'react'
 
 // Components
-import Button from '../../../../src/components/buttonsIndicators/button'
 import Modal from '../../../../src/components/popupModals/modal'
 
 // Feature-specific components
 import {
   ModalHeader,
-  ModalTitle,
+  Title,
   DeviceGrid,
   DeviceContainer,
-  ModalSubTitle
+  Paragraph
 } from '../../../../src/features/sync'
 
 // Images
@@ -28,7 +27,6 @@ import ScanCode from './scanCode'
 import { getLocale } from '../page/fakeLocale'
 
 interface Props {
-  mainDeviceName: string
   onClose: () => void
 }
 
@@ -46,16 +44,18 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
     }
   }
 
-  onClickPhoneTabletButton = () => {
+  onClickPhoneTabletButton = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault()
     this.setState({ scanCode: !this.state.scanCode })
   }
 
-  onClickComputerButton = () => {
+  onClickComputerButton = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault()
     this.setState({ addNewChainNoCamera: !this.state.addNewChainNoCamera })
   }
 
   render () {
-    const { onClose, mainDeviceName } = this.props
+    const { onClose } = this.props
     const { addNewChainNoCamera, scanCode } = this.state
     return (
       <Modal id='deviceTypeModal' onClose={onClose} size='small'>
@@ -71,30 +71,18 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
         }
         <ModalHeader>
           <div>
-            <ModalTitle level={1}>{getLocale('letsSync')} “{mainDeviceName}”.</ModalTitle>
-            <ModalSubTitle>{getLocale('chooseDeviceType')}</ModalSubTitle>
+            <Title level={1}>{getLocale('letsSync')}</Title>
+            <Paragraph>{getLocale('chooseDeviceType')}</Paragraph>
           </div>
         </ModalHeader>
         <DeviceGrid>
-          <DeviceContainer>
+          <DeviceContainer onClick={this.onClickPhoneTabletButton}>
             <SyncMobileIcon />
-            <Button
-              level='primary'
-              type='accent'
-              size='medium'
-              onClick={this.onClickPhoneTabletButton}
-              text={getLocale('phoneTablet')}
-            />
+            <Title level={2}>{getLocale('phoneTablet')}</Title>
           </DeviceContainer>
-          <DeviceContainer>
+          <DeviceContainer onClick={this.onClickComputerButton}>
             <SyncDesktopIcon />
-            <Button
-              level='primary'
-              type='accent'
-              size='medium'
-              onClick={this.onClickComputerButton}
-              text={getLocale('computer')}
-            />
+            <Title level={2}>{getLocale('computer')}</Title>
           </DeviceContainer>
         </DeviceGrid>
       </Modal>

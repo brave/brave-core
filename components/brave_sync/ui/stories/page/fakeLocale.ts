@@ -62,9 +62,9 @@ const locale: any = {
   chainCodeDescription: 'On your target computer, navigate to Brave Sync in settings and click the button “I Have a Sync Code”. Type in the below sync chains code words.',
   useCameraInstead: 'Use camera instead',
   // [modal] Choose Device Type
-  letsSync: 'Let’s sync a new device with',
-  chooseDeviceType: 'Choose a device type:',
-  phoneTablet: 'Phone/Tablet',
+  letsSync: 'Choose Device Type',
+  chooseDeviceType: 'Choose the type of device you would like to sync to.',
+  phoneTablet: 'Tablet or Phone',
   computer: 'Computer',
   // [modal] View Sync Code
   qrCode: 'QR Code',
