@@ -31,8 +31,8 @@ const locale: any = {
   enterSyncChainCode: 'I Have a Sync Code',
   confirmSyncCode: 'Confirm Sync Code',
   // [modal] Enter Sync Code
-  enterSyncCode: 'Enter a sync code',
-  enterSyncCodeDescription: 'Go to Brave Settings > Sync > Display sync code',
+  enterSyncCode: 'Enter Your Sync Chain Code Words',
+  enterSyncCodeDescription: 'Type your supplied sync chain code words into the form below.',
   confirmCode: 'Confirm Sync Code',
   invalidCode: 'Invalid sync code.',
   tryAgain: 'Please try again.',

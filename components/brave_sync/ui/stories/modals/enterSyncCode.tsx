@@ -13,13 +13,12 @@ import TextAreaClipboard from '../../../../src/components/formControls/textareaC
 // Feature-specific components
 import {
   ModalHeader,
-  ModalTitle,
-  ModalSubTitle,
+  Title,
+  SubTitle,
+  Paragraph,
   ModalContent,
   TwoColumnButtonGrid,
-  OneColumnButtonGrid,
-  Title,
-  SubTitle
+  OneColumnButtonGrid
 } from '../../../../src/features/sync'
 
 // Utils
@@ -72,8 +71,8 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
       }
         <ModalHeader>
           <div>
-            <ModalTitle level={1}>{getLocale('enterSyncCode')}</ModalTitle>
-            <ModalSubTitle>{getLocale('enterSyncCodeDescription')}</ModalSubTitle>
+            <Title level={1}>{getLocale('enterSyncCode')}</Title>
+            <Paragraph>{getLocale('enterSyncCodeDescription')}</Paragraph>
           </div>
         </ModalHeader>
         <ModalContent>
