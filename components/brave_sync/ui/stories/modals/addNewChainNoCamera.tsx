@@ -6,14 +6,15 @@ import * as React from 'react'
 
 // Components
 import Button from '../../../../src/components/buttonsIndicators/button'
+import { LoaderIcon } from '../../../../src/components/icons'
 import Modal from '../../../../src/components/popupModals/modal'
 import TextAreaClipboard from '../../../../src/components/formControls/textareaClipboard'
 
 // Feature-specific components
 import {
   ModalHeader,
-  ModalTitle,
-  ModalSubTitle,
+  Title,
+  Paragraph,
   ModalContent,
   TwoColumnButtonGrid,
   OneColumnButtonGrid
@@ -34,8 +35,8 @@ export default class AddNewChainNoCameraModal extends React.PureComponent<Props,
       <Modal id='addNewChainNoCameraModal' onClose={onClose} size='small'>
         <ModalHeader>
           <div>
-            <ModalTitle level={1}>{getLocale('enterThisCode')}</ModalTitle>
-            <ModalSubTitle>{getLocale('syncChainCodeHowTo')}</ModalSubTitle>
+            <Title level={1}>{getLocale('chainCode')}</Title>
+            <Paragraph>{getLocale('chainCodeDescription')}</Paragraph>
           </div>
         </ModalHeader>
         <ModalContent>
@@ -53,16 +54,17 @@ export default class AddNewChainNoCameraModal extends React.PureComponent<Props,
               type='accent'
               size='medium'
               onClick={onClose}
-              text={getLocale('previous')}
+              text={getLocale('cancel')}
             />
           </OneColumnButtonGrid>
           <Button
-            level='primary'
+            level='secondary'
             type='accent'
             size='medium'
             onClick={onClose}
             disabled={true}
             text={getLocale('lookingForDevice')}
+            icon={{ position: 'before', image: <LoaderIcon /> }}
           />
         </TwoColumnButtonGrid>
       </Modal>
