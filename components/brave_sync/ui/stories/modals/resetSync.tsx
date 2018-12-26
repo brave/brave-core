@@ -47,7 +47,7 @@ export default class ResetSyncModal extends React.PureComponent<Props, State> {
     const { onClose, mainDeviceName } = this.props
     const { showAlert } = this.state
     return (
-      <Modal id='resetSyncModal' onClose={onClose} size='small'>
+      <Modal id='resetSyncModal' displayCloseButton={false} size='small'>
         {
           showAlert
           ? (

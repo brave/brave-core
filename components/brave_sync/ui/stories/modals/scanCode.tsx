@@ -53,7 +53,7 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
     const { onClose } = this.props
     const { enterCodeWordsInstead } = this.state
     return (
-      <Modal id='scanCodeModal' onClose={onClose} size='small'>
+      <Modal id='scanCodeModal' displayCloseButton={false} size='small'>
       {
         enterCodeWordsInstead
           ? <ViewSyncCodeModal onClose={this.onClickEnterCodeWordsInstead} />

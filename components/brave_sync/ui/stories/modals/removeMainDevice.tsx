@@ -29,7 +29,7 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, {}
   render () {
     const { onClose, mainDeviceName } = this.props
     return (
-      <Modal id='removeMainDeviceModal' onClose={onClose} size='small'>
+      <Modal id='removeMainDeviceModal' displayCloseButton={false} size='small'>
         <ModalHeader>
           <Title level={1}>{getLocale('remove')} “{mainDeviceName}” {getLocale('thisSyncChain')}?</Title>
         </ModalHeader>

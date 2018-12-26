@@ -54,7 +54,7 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
     const { onClose } = this.props
     const { showAlert } = this.state
     return (
-      <Modal id='enterSyncCodeModal' onClose={onClose} size='small'>
+      <Modal id='enterSyncCodeModal' displayCloseButton={false} size='small'>
       {
         showAlert
         ? (

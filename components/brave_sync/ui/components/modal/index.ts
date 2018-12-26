@@ -67,7 +67,6 @@ export const ThreeColumnButtonGridCol2 = styled<{}, 'div'>('div')`
 
 export const DeviceGrid = styled<{}, 'div'>('div')`
   display: grid;
-  height: 100%;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
   grid-gap: 30px;

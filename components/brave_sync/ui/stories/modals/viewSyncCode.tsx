@@ -34,7 +34,7 @@ export default class ViewSyncCodeModal extends React.PureComponent<Props, {}> {
   render () {
     const { onClose } = this.props
     return (
-      <Modal id='viewSyncCodeModal' onClose={onClose} size='small'>
+      <Modal id='viewSyncCodeModal' displayCloseButton={false} size='small'>
         <ModalHeader>
           <div>
             <Title level={1}>{getLocale('chainCode')}</Title>

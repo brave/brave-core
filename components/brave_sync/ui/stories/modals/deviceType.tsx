@@ -55,10 +55,9 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { onClose } = this.props
     const { addNewChainNoCamera, scanCode } = this.state
     return (
-      <Modal id='deviceTypeModal' onClose={onClose} size='small'>
+      <Modal id='deviceTypeModal' displayCloseButton={false} size='small'>
         {
           scanCode
           ? <ScanCode onClose={this.onClickPhoneTabletButton} />

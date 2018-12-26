@@ -123,8 +123,6 @@ export default class SyncEnabledContent extends React.PureComponent<{}, State> {
     ]
   }
 
-
-
   onClickRemoveOtherDeviceButton = () => {
     this.setState({ removeOtherDevice: !this.state.removeOtherDevice })
   }
