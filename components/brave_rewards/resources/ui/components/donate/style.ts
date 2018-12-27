@@ -110,6 +110,7 @@ export const StyledSendButton = styled<{}, 'button'>('button')`
   font-weight: 600;
   text-transform: uppercase;
   background: var(--donate-send-bg);
+  cursor: pointer;
 `
 
 export const StyledButtonWrapper = styled<StyleProps, 'div'>('div')`
