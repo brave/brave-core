@@ -471,10 +471,10 @@
       <message name="IDS_BRAVE_SYNC_ENABLED_HISTORY_LABEL" desc="The Sync label for the `browsing history` toggle">Browsing History</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_LEAVE_CHAIN_BUTTON" desc="The Sync button that opens a modal to leave the current sync chain">Leave Sync Chain</message>
       <!-- WebUI brave sync resources: Disabled Content -->
-      <message name="IDS_BRAVE_SYNC_DISABLED_DESCRIPTION" desc="The Sync phrase explaining what sync can do. Appears when sync is disabled.">Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices.</message>
-      <message name="IDS_BRAVE_SYNC_DISABLED_NEW_CHAIN_DESCRIPTION" desc="The Sync phrase explaining what happens when you start a new sync chain. Appears when sync is disabled.">When you start a new sync chain, a new sync code is created. You will use this same code across your devices to link them together.</message>
-      <message name="IDS_BRAVE_SYNC_DISABLED_START_NEW_CHAIN_BUTTON" desc="The Sync button that triggers a modal to start a new sync chian">Start a new sync chain</message>
-      <message name="IDS_BRAVE_SYNC_DISABLED_ENTER_CODE_BUTTON" desc="The Sync button that triggers a modal asking for the sync chain code passphrase">Enter a sync chain code</message>
+      <message name="IDS_BRAVE_SYNC_DISABLED_DESCRIPTION" desc="The Brave Sync title.">Brave Sync Setup</message>
+      <message name="IDS_BRAVE_SYNC_DISABLED_NEW_CHAIN_DESCRIPTION" desc="The Sync phrase explaining what happens when you start a new sync chain. Appears when sync is disabled.">To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.</message>
+      <message name="IDS_BRAVE_SYNC_DISABLED_START_NEW_CHAIN_BUTTON" desc="The Sync button that triggers a modal to start a new sync chian">Start a New Sync Chain</message>
+      <message name="IDS_BRAVE_SYNC_DISABLED_ENTER_CODE_BUTTON" desc="The Sync button that triggers a modal asking for the sync chain code passphrase">I Have a Sync Code</message>
       <message name="IDS_BRAVE_SYNC_DISABLED_CONFIRM_CODE_BUTTON" desc="The Sync button to confirm the Sync code that was inputed by the user">Confirm Sync Code</message>
       <!-- WebUI brave sync resources: [modal] Enter Sync Code -->
       <message name="IDS_BRAVE_SYNC_ENTER_CODE_TITLE" desc="The Sync modal title for `enter sync code`">Enter a sync code</message>
