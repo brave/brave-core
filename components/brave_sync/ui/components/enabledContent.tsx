@@ -6,6 +6,7 @@ import * as React from 'react'
 
 // Components
 import { Button, AlertBox } from 'brave-ui'
+import { CloseCircleIcon } from 'brave-ui/components/icons'
 import Table, { Cell, Row } from 'brave-ui/components/dataTables/table'
 import { Toggle } from 'brave-ui/features/shields'
 
@@ -13,15 +14,17 @@ import { Toggle } from 'brave-ui/features/shields'
 import {
   Main,
   Title,
-  SettingsToggleGrid,
-  SwitchLabel,
+  Paragraph,
   SectionBlock,
   SubTitle,
   TableRowDevice,
   TableRowRemove,
   TableRowRemoveButton,
+  TableRowToggleButton,
   TableGrid,
-  TableButtonGrid
+  TableButtonGrid,
+  EnabledContent,
+  SyncCard
 } from 'brave-ui/features/sync'
 
 // Modals
@@ -60,7 +63,7 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
     }
   }
 
-  getRows = (devices?: any): Row[] | undefined => {
+  getDevicesRows = (devices?: any): Row[] | undefined => {
     if (!devices) {
       return
     }
@@ -81,7 +84,7 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
                 data-name={device.name}
                 onClick={this.onClickRemoveDeviceButton}
               >
-                &times;
+                <CloseCircleIcon />
               </TableRowRemoveButton>
             )
           }
@@ -91,11 +94,38 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
     })
   }
 
-  get header (): Cell[] {
+  get devicesHeader (): Cell[] {
     return [
       { content: <TableRowDevice>{getLocale('deviceName')}</TableRowDevice> },
       { content: getLocale('addedOn') },
       { content: <TableRowRemove>{getLocale('remove')}</TableRowRemove> }
+    ]
+  }
+
+  get settingsHeader (): Cell[] {
+    return [
+      { content: <TableRowDevice>{getLocale('settings')}</TableRowDevice> },
+      { content: '' }
+    ]
+  }
+
+  get settingsRows (): Row[] {
+    return [
+      {
+        content: [
+          { content: getLocale('bookmarks') },
+          { content: (
+            <TableRowToggleButton>
+            <Toggle
+              id='bookmarks'
+              size='large'
+              checked={this.props.syncData.syncBookmarks}
+              onChange={this.onSyncBookmarks}
+            />
+            </TableRowToggleButton>
+          ) }
+        ]
+      }
     ]
   }
 
@@ -147,98 +177,95 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
     }
 
     return (
-      <Main>
-        {
-           syncData.error === 'ERR_SYNC_NO_INTERNET'
-           ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
-               <Title>{getLocale('errorNoInternetTitle')}</Title>
-               <SubTitle>{getLocale('errorNoInternetDescription')}</SubTitle>
-             </AlertBox>
-           : null
-        }
-        {
-          syncData.error === 'ERR_SYNC_INIT_FAILED'
-          ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
-              <Title>{getLocale('errorSyncInitFailedTitle')}</Title>
-              <SubTitle>{getLocale('errorSyncInitFailedDescription')}</SubTitle>
-            </AlertBox>
-          : null
-        }
-        {
-          removeDevice
-            ? (
-              <RemoveDeviceModal
-                deviceName={deviceToRemoveName}
-                deviceId={Number(deviceToRemoveId)}
-                actions={actions}
-                onClose={this.onClickRemoveDeviceButton}
-              />
-            )
+      <EnabledContent>
+        <Main>
+          {
+            syncData.error === 'ERR_SYNC_NO_INTERNET'
+            ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
+                <Title>{getLocale('errorNoInternetTitle')}</Title>
+                <SubTitle>{getLocale('errorNoInternetDescription')}</SubTitle>
+              </AlertBox>
             : null
-        }
-        {
-          viewSyncCode
-            ? <ViewSyncCodeModal syncData={syncData} actions={actions} onClose={this.onClickViewSyncCodeButton} />
+          }
+          {
+            syncData.error === 'ERR_SYNC_INIT_FAILED'
+            ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
+                <Title>{getLocale('errorSyncInitFailedTitle')}</Title>
+                <SubTitle>{getLocale('errorSyncInitFailedDescription')}</SubTitle>
+              </AlertBox>
             : null
-        }
-        {
-          addDevice
-            ? <DeviceTypeModal syncData={syncData} actions={actions} onClose={this.onClickAddDeviceButton} />
-            : null
-        }
-        {
-          resetSync
-            ? <ResetSyncModal syncData={syncData} actions={actions} onClose={this.onClickResetSyncButton} />
-            : null
-        }
-        <Title level={2}>{getLocale('braveSync')}</Title>
-        <SectionBlock>
-          <SubTitle level={2}>{getLocale('syncChainDevices')}</SubTitle>
-          <TableGrid>
-            <Table header={this.header} rows={this.getRows(syncData.devices)}>
-              Device list is empty
-            </Table>
-            <TableButtonGrid>
+          }
+          {
+            removeDevice
+              ? (
+                <RemoveDeviceModal
+                  deviceName={deviceToRemoveName}
+                  deviceId={Number(deviceToRemoveId)}
+                  actions={actions}
+                  onClose={this.onClickRemoveDeviceButton}
+                />
+              )
+              : null
+          }
+          {
+            viewSyncCode
+              ? <ViewSyncCodeModal syncData={syncData} actions={actions} onClose={this.onClickViewSyncCodeButton} />
+              : null
+          }
+          {
+            addDevice
+              ? <DeviceTypeModal syncData={syncData} actions={actions} onClose={this.onClickAddDeviceButton} />
+              : null
+          }
+          {
+            resetSync
+              ? <ResetSyncModal syncData={syncData} actions={actions} onClose={this.onClickResetSyncButton} />
+              : null
+          }
+          <SyncCard>
+            <Title level={2}>{getLocale('braveSync')}</Title>
+            <Paragraph>{getLocale('syncChainDevices')}</Paragraph>
+            <SectionBlock>
+              <TableGrid isDeviceTable={true}>
+                <Table header={this.devicesHeader} rows={this.getDevicesRows(syncData.devices)}>
+                  Device list is empty
+                </Table>
+                <TableButtonGrid>
+                  <br />
+                  <Button
+                    level='secondary'
+                    type='accent'
+                    size='medium'
+                    text={getLocale('viewSyncCode')}
+                    onClick={this.onClickViewSyncCodeButton}
+                  />
+                  <Button
+                    level='primary'
+                    type='accent'
+                    size='medium'
+                    text={getLocale('addDevice')}
+                    onClick={this.onClickAddDeviceButton}
+                  />
+                </TableButtonGrid>
+              </TableGrid>
+            </SectionBlock>
+            <Title level={2}>{getLocale('settingsTitle')}</Title>
+            <Paragraph>{getLocale('settingsDescription')}</Paragraph>
+            <SectionBlock>
+              <Table header={this.settingsHeader} rows={this.settingsRows} />
+            </SectionBlock>
+            <SectionBlock>
               <Button
-                level='secondary'
+                level='primary'
                 type='accent'
                 size='medium'
-                text={getLocale('addDevice')}
-                onClick={this.onClickAddDeviceButton}
+                text={getLocale('leaveSyncChain')}
+                onClick={this.onClickResetSyncButton}
               />
-              <Button
-                level='secondary'
-                type='accent'
-                size='medium'
-                text={getLocale('viewSyncCode')}
-                onClick={this.onClickViewSyncCodeButton}
-              />
-            </TableButtonGrid>
-          </TableGrid>
-        </SectionBlock>
-        <SectionBlock>
-          <SubTitle level={2}>{getLocale('dataToSync')} {syncData.thisDeviceName}</SubTitle>
-          <SettingsToggleGrid>
-            <Toggle
-              id='bookmarks'
-              checked={syncData.syncBookmarks}
-              onChange={this.onSyncBookmarks}
-            />
-            <SwitchLabel htmlFor='bookmarks'>
-              {getLocale('bookmarks')}
-            </SwitchLabel>
-          </SettingsToggleGrid>
-        </SectionBlock>
-        <SectionBlock>
-          <Button
-            level='primary'
-            type='accent'
-            size='medium'
-            text={getLocale('leaveSyncChain')}
-            onClick={this.onClickResetSyncButton}
-          />
-        </SectionBlock>
-      </Main>
+            </SectionBlock>
+          </SyncCard>
+        </Main>
+      </EnabledContent>
     )
   }
 }

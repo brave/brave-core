@@ -457,13 +457,15 @@
       <message name="IDS_BRAVE_SYNC_SHARED_FROM_THIS_CHAIN_PARTIAL" desc="The Sync partial phrase included in `remove X from this sync chain` where X is the user's device name">from this sync chain</message>
       <!-- WebUI brave sync resources: Enabled Content -->
       <message name="IDS_BRAVE_SYNC_ENABLED_BRAVE_TITLE" desc="The Brae Sync title">Brave Sync</message>
-      <message name="IDS_BRAVE_SYNC_ENABLED_DEVICES_CHAIN_TITLE" desc="The Sync title for the table of devices synced">Devices in your sync chain</message>
+      <message name="IDS_BRAVE_SYNC_ENABLED_DEVICES_CHAIN_TITLE" desc="The Sync title for the table of devices synced">The device list below includes all devices in your sync chain. Each device can be managed from any other device.</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_TABLE_DEVICE_NAME_TITLE" desc="The Sync table title for the device column">device name</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_TABLE_THIS_DEVICE_TEXT" desc="The Sync table title for the device column">(This Device)</message>
-      <message name="IDS_BRAVE_SYNC_ENABLED_TABLE_ADDED_ON_TITLE" desc="The Sync table title indicating when a device was added to the chain">added on</message>
-      <message name="IDS_BRAVE_SYNC_ENABLED_ADD_DEVICE_BUTTON" desc="The Sync button `add device` for adding a new device to the sync chain. triggers a modal with device options">add device</message>
-      <message name="IDS_BRAVE_SYNC_ENABLED_VIEW_CODE_BUTTON" desc="The Sync button `view sync code` for viewing the passphrase and qr code needed to add a new device. triggers a modal with sync code">view QR code and code words</message>
-      <message name="IDS_BRAVE_SYNC_ENABLED_DATA_TITLE" desc="The Sync title that shows the options for data syncing">Data to sync from</message>
+      <message name="IDS_BRAVE_SYNC_ENABLED_TABLE_ADDED_ON_TITLE" desc="The Sync table title indicating when a device was added to the chain">Date Added</message>
+      <message name="IDS_BRAVE_SYNC_ENABLED_ADD_DEVICE_BUTTON" desc="The Sync button `add device` for adding a new device to the sync chain. triggers a modal with device options">Add New Device</message>
+      <message name="IDS_BRAVE_SYNC_ENABLED_VIEW_CODE_BUTTON" desc="The Sync button `view sync code` for viewing the passphrase and qr code needed to add a new device. triggers a modal with sync code">View Sync Code</message>
+      <message name="IDS_BRAVE_SYNC_ENABLED_SETTINGS_TITLE" desc="The Sync title that shows the options for data syncing">Brave Sync Settings</message>
+      <message name="IDS_BRAVE_SYNC_ENABLED_SETTINGS_DESCRIPTION" desc="The Sync description that shows the options for data syncing">Manage what information you would like to sync between devices. These settings only effect this device.</message>
+      <message name="IDS_BRAVE_SYNC_ENABLED_TABLE_SETTINGS" desc="The Sync description that shows the options for data syncing">Settings</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_BOOKMARKS_LABEL" desc="The Sync label for the `bookmarks` toggle">Bookmarks</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_SITE_SETTINGS_LABEL" desc="The Sync label for the `saved site settings` toggle">Saved Site Settings</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_HISTORY_LABEL" desc="The Sync label for the `browsing history` toggle">Browsing History</message>
