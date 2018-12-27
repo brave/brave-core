@@ -574,6 +574,7 @@ void LedgerImpl::OnGrantFinish(ledger::Result result, const braveledger_bat_help
   newGrant.altcurrency = grant.altcurrency;
   newGrant.probi = grant.probi;
   newGrant.expiryTime = grant.expiryTime;
+  newGrant.promotionId = grant.promotionId;
 
   ledger_client_->OnGrantFinish(result, newGrant);
 }
