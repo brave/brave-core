@@ -108,4 +108,5 @@ export const StyledChangeButton = styled<StyleProps, 'button'>('button')`
   border: none;
   padding: 0;
   margin-top: 2px;
+  cursor: pointer;
 `

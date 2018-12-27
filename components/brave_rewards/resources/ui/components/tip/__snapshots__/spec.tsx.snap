@@ -108,6 +108,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
   font-weight: 600;
   text-transform: uppercase;
   background: var(--donate-send-bg);
+  cursor: pointer;
 }
 
 .c17 {
