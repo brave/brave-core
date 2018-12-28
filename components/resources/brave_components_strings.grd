@@ -455,6 +455,8 @@
       <message name="IDS_BRAVE_SYNC_SHARED_OK_BUTTON" desc="The Sync `ok` button that indicates user is aware of what is being written">Ok</message>
       <message name="IDS_BRAVE_SYNC_SHARED_CANCEL_BUTTON" desc="The Sync `cancel` button that closes the current modal">Cancel</message>
       <message name="IDS_BRAVE_SYNC_SHARED_FROM_THIS_CHAIN_PARTIAL" desc="The Sync partial phrase included in `remove X from this sync chain` where X is the user's device name">from this sync chain</message>
+      <message name="IDS_BRAVE_SYNC_SHARED_VIEW_CODE_BUTTON" desc="The Sync button to enter code words instead of scanning the current code">View Code Words</message>
+      <message name="IDS_BRAVE_SYNC_SCAN_CODE_LOOKING_FOR_DEVICE_BUTTON" desc="The Sync temporary button that holds while a device is not found yet">Looking for device</message>
       <!-- WebUI brave sync resources: Enabled Content -->
       <message name="IDS_BRAVE_SYNC_ENABLED_BRAVE_TITLE" desc="The Brae Sync title">Brave Sync</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_DEVICES_CHAIN_TITLE" desc="The Sync title for the table of devices synced">The device list below includes all devices in your sync chain. Each device can be managed from any other device.</message>
@@ -492,27 +494,23 @@
       <message name="IDS_BRAVE_SYNC_RESET_REMOVAL_INSTRUCTIONS" desc="The Sync phrase explaining what happens if you reset your sync chain. Used in the `reset sync` modal">Your local data on this device will be retained but all data in Brave’s Sync cache will be deleted.</message>
       <message name="IDS_BRAVE_SYNC_RESET_START_NEW_INSTRUCTIONS" desc="The Sync phrase explaining how you can start a new sync chain after reseting sync. Used in the `reset sync` modal">You can start a new sync chain or sync with a new device by entering its sync chain code.</message>
       <message name="IDS_BRAVE_SYNC_RESET_ARE_YOU_SURE_TITLE" desc="The Sync dialog title asking if user is sure about the action of reseting sync">Are you sure?</message>
-      <!-- WebUI brave sync resources: [modal] Add New Chain -->
-      <message name="IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_DESCRIPTION" desc="The Sync phrase in `add new chain` modal asking to scan the sync code">Now, using Brave on your mobile device, scan this code.</message>
-      <message name="IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_INSTRUCTIONS" desc="The Sync phrase in `add new chain` suggesting the step to accomplish the new chain syncing">Go to: Brave Settings &gt; Sync &gt; Scan Sync Code</message>
-      <message name="IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_CODE_WORDS_BUTTON" desc="The Sync button to enter code words instead of scanning the current code">Enter code words instead...</message>
-      <message name="IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_PREVIOUS_BUTTON" desc="The Sync button to go back to the previous action">&lt; Previous</message>
-      <message name="IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_LOOKING_FOR_DEVICE_BUTTON" desc="The Sync temporary button that holds while a device is not found yet">Looking for device</message>
-      <!-- WebUI brave sync resources: [modal] Add New Chain (Camera Option) -->
-      <!-- WebUI brave sync resources: [modal] Add New Chain (no Camera) -->
-      <message name="IDS_BRAVE_SYNC_NEW_CHAIN_DESKTOP_TITLE" desc="The Sync title phrase suggesting user to enter the sync code. Appears in the `add new chain` modal (both)">Now, using Brave on your computer, enter this code:</message>
-      <message name="IDS_BRAVE_SYNC_NEW_CHAIN_MOBILE_TITLE" desc="The Sync title phrase suggesting user to enter the sync code. Appears in the `add new chain` modal (both)">Now, using Brave on your mobile device, enter this code:</message>
-      <message name="IDS_BRAVE_SYNC_NEW_CHAIN_DESCRIPTION" desc="The Sync description suggesting where to go with the current sync code">Go to: Brave Settings &gt; Sync &gt; Enter a Sync Chain Code</message>
-      <message name="IDS_BRAVE_SYNC_NEW_CHAIN_USE_CAMERA_BUTTON" desc="The Sync button to use your camera to sync the code instead of copying the sync code">Use my camera instead...</message>
+      <!-- WebUI brave sync resources: [modal] Scan Code -->
+      <message name="IDS_BRAVE_SYNC_SCAN_CODE_TITLE" desc="The Sync title for the `scan sync code` modal">Sync Chain QR Code</message>
+      <message name="IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_1" desc="The Sync instructions for the `scan sync code` modal partial phrase (1)">On your mobile device, navigate to Brave Sync in the Settings panel and click the button</message>
+      <message name="IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_2" desc="The Sync instructions for the `scan sync code` modal partial phrase (2)">“Scan Sync Code”</message>
+      <message name="IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_3" desc="The Sync instructions for the `scan sync code` modal partial phrase (3)">Use your camera to scan the QR Code below.</message>
+      <!-- WebUI brave sync resources: [modal] View Code -->
+      <message name="IDS_BRAVE_SYNC_VIEW_CODE_TITLE" desc="The Sync title for the `view sync code` modal">Sync Chain Code</message>
+      <message name="IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_1" desc="The Sync instructions for the `view sync code` modal partial phrase (1)">On your target computer, navigate to Brave Sync in settings and click the button</message>
+      <message name="IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_2" desc="The Sync instructions for the `view sync code` modal partial phrase (2)">“I Have a Sync Code”.</message>
+      <message name="IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_3" desc="The Sync instructions for the `view sync code` modal partial phrase (3)">Type in the below sync chains code words.</message>
+      <message name="IDS_BRAVE_SYNC_VIEW_CODE_USE_CAMERA_BUTTON" desc="The Sync button to use your camera to sync the code instead of copying the sync code">Use my camera instead</message>
+      <message name="IDS_BRAVE_SYNC_VIEW_CODE_QR_CODE" desc="The Sync description suggesting where to go with the current sync code">View QR Code</message>
       <!-- WebUI brave sync resources: [modal] Choose Device Type -->
-      <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_NEW_DEVICE_TITLE" desc="The Sync title to sync a new device. Appears in the `choose device type` modal">Let’s sync a new device with</message>
-      <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_CHOOSE_DEVICE_TITLE" desc="The Sync title to select which device to sync. Appears in the `choose device type` modal">Choose a device type:</message>
+      <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_TITLE" desc="The Sync title to sync a new device. Appears in the `choose device type` modal">Choose Device Type</message>
+      <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_DESCRIPTION" desc="The Sync title to select which device to sync. Appears in the `choose device type` modal">Choose the type of device you would like to sync to.</message>
       <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_MOBILE_TITLE" desc="The Sync Phone/tablet word below the phone/tablet image. Appears in the `choose device type` modal">Phone/Tablet</message>
       <message name="IDS_BRAVE_SYNC_CHOOSE_DEVICE_COMPUTER_TITLE" desc="The Sync Computer word below the computer image. Appears in the `choose device type` modal">Computer</message>
-      <!-- WebUI brave sync resources: [modal] View Sync Code -->
-      <message name="IDS_BRAVE_SYNC_VIEW_CODE_QR_CODE_TITLE" desc="The Sync QR code title. Appears in the `view sync code` modal">QR Code</message>
-      <message name="IDS_BRAVE_SYNC_VIEW_CODE_WORD_CODE_TITLE" desc="The Sync Word Code title. Appears in the `view sync code` modal">Word Code</message>
-      <message name="IDS_BRAVE_SYNC_VIEW_CODE_PRIVATE_KEY_PHRASE" desc="The Sync explainer about the sync data. Appears in the `view sync code` modal">This is a private key. If you share it, your private data may be compromised.</message>
       <!-- WebUI brave sync resources: Errors -->
       <message name="IDS_BRAVE_SYNC_ERROR_WRONG_CODE_TITLE" desc="Error message in dialog for when sync words are invalid (title)">Invalid sync code.</message>
       <message name="IDS_BRAVE_SYNC_ERROR_WRONG_CODE_DESCRIPTION" desc="Error message in dialog for when sync words are invalid (description)">Please try again.</message>

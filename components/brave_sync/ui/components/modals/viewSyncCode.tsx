@@ -4,21 +4,25 @@
 
 import * as React from 'react'
 
- // Components
+// Components
 import { Button, Modal, TextAreaClipboard } from 'brave-ui'
+import { LoaderIcon } from 'brave-ui/components/icons'
 
 // Feature-specific components
 import {
-  ViewSyncCodeGrid,
-  ModalTitle,
-  TwoColumnButtonGrid
+  ModalHeader,
+  Title,
+  Paragraph,
+  ThreeColumnButtonGrid,
+  Bold,
+  Link
 } from 'brave-ui/features/sync'
+
+// Modals
+import ScanCode from './scanCode'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-
-// Images
-import { QRCode } from 'brave-ui/features/sync/images'
 
 interface Props {
   syncData: Sync.State
@@ -26,15 +30,46 @@ interface Props {
   onClose: () => void
 }
 
-export default class ViewSyncCodeModal extends React.PureComponent<Props, {}> {
+interface State {
+  useCameraInstead: boolean
+}
+
+export default class ViewSyncCodeModal extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      useCameraInstead: false
+    }
+  }
+
+  onClickUseCameraInsteadButton = () => {
+    this.setState({ useCameraInstead: !this.state.useCameraInstead })
+  }
+
+  onCancel = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault()
+    this.props.onClose()
+  }
+
   render () {
-    const { onClose, syncData } = this.props
+    const { onClose, actions, syncData } = this.props
+    const { useCameraInstead } = this.state
 
     return (
-      <Modal id='viewSyncCodeModal' onClose={onClose} size='small'>
-        <ViewSyncCodeGrid>
+      <Modal id='viewSyncCodeModal' displayCloseButton={false} size='small'>
+        {
+          useCameraInstead
+            ? <ScanCode syncData={syncData} actions={actions} onClose={this.onClickUseCameraInsteadButton} />
+            : null
+        }
+        <ModalHeader>
           <div>
-            <ModalTitle level={3}>{getLocale('wordCode')}</ModalTitle>
+            <Title level={1}>{getLocale('chainCode')}</Title>
+            <Paragraph>
+              {getLocale('chainCodeDescriptionPartial1')} <Bold>{getLocale('chainCodeDescriptionPartial2')}</Bold> {getLocale('chainCodeDescriptionPartial3')}
+            </Paragraph>
+          </div>
+        </ModalHeader>
           {
             syncData.syncWords
             ? (
@@ -47,35 +82,38 @@ export default class ViewSyncCodeModal extends React.PureComponent<Props, {}> {
             )
             : null
           }
+        <ThreeColumnButtonGrid>
+          <div>
+            <Link onClick={this.onCancel}>{getLocale('cancel')}</Link>
           </div>
           <div>
-            <ModalTitle level={3}>{getLocale('qrCode')}</ModalTitle>
-            {
-              syncData.seedQRImageSource
-                ? (
-                  <QRCode
-                    size='small'
-                    src={syncData.seedQRImageSource}
-                    style={{
-                      // TODO: @cezaraugusto fix this in brave-ui
-                      border: '1px solid #DFDFE8'
-                    }}
-                  />
-                )
-                : null
-            }
+            <Button
+              level='secondary'
+              type='subtle'
+              size='medium'
+              onClick={this.onClickUseCameraInsteadButton}
+              text={getLocale('qrCode')}
+            />
           </div>
-        </ViewSyncCodeGrid>
-        <TwoColumnButtonGrid>
-          <div>{getLocale('privateKey')}</div>
           <Button
             level='primary'
             type='accent'
             size='medium'
             onClick={onClose}
-            text={getLocale('done')}
+            disabled={syncData.devices.length < 2}
+            text={
+              syncData.devices.length < 2
+              ? getLocale('lookingForDevice')
+              : getLocale('ok')
+            }
+            icon={{
+              position: 'before',
+              image: syncData.devices.length < 2
+                ? <LoaderIcon />
+                : null
+            }}
           />
-        </TwoColumnButtonGrid>
+        </ThreeColumnButtonGrid>
       </Modal>
     )
   }

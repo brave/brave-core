@@ -439,13 +439,15 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
       }
     }, {
       std::string("sync"), {
-        { "done", IDS_BRAVE_SYNC_SHARED_DONE_BUTTON },
+        // Shared strings
         { "remove", IDS_BRAVE_SYNC_SHARED_REMOVE_PARTIAL },
         { "copied", IDS_BRAVE_SYNC_SHARED_COPIED_TEXT },
         { "wordCount",  IDS_BRAVE_SYNC_SHARED_WORD_COUNT_TEXT },
         { "ok", IDS_BRAVE_SYNC_SHARED_OK_BUTTON },
         { "cancel", IDS_BRAVE_SYNC_SHARED_CANCEL_BUTTON },
         { "thisSyncChain", IDS_BRAVE_SYNC_SHARED_FROM_THIS_CHAIN_PARTIAL },
+        { "lookingForDevice", IDS_BRAVE_SYNC_SCAN_CODE_LOOKING_FOR_DEVICE_BUTTON },
+        { "viewSyncCode", IDS_BRAVE_SYNC_ENABLED_VIEW_CODE_BUTTON },
         // Enabled Content
         { "braveSync", IDS_BRAVE_SYNC_ENABLED_BRAVE_TITLE },
         { "syncChainDevices", IDS_BRAVE_SYNC_ENABLED_DEVICES_CHAIN_TITLE },
@@ -453,7 +455,6 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "thisDevice", IDS_BRAVE_SYNC_ENABLED_TABLE_THIS_DEVICE_TEXT },
         { "addedOn", IDS_BRAVE_SYNC_ENABLED_TABLE_ADDED_ON_TITLE },
         { "addDevice", IDS_BRAVE_SYNC_ENABLED_ADD_DEVICE_BUTTON },
-        { "viewSyncCode", IDS_BRAVE_SYNC_ENABLED_VIEW_CODE_BUTTON },
         { "settingsTitle", IDS_BRAVE_SYNC_ENABLED_SETTINGS_TITLE },
         { "settingsDescription", IDS_BRAVE_SYNC_ENABLED_SETTINGS_DESCRIPTION },
         { "settings", IDS_BRAVE_SYNC_ENABLED_TABLE_SETTINGS },
@@ -466,7 +467,6 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "syncDescription", IDS_BRAVE_SYNC_DISABLED_NEW_CHAIN_DESCRIPTION },
         { "startSyncChain", IDS_BRAVE_SYNC_DISABLED_START_NEW_CHAIN_BUTTON },
         { "enterSyncChainCode", IDS_BRAVE_SYNC_DISABLED_ENTER_CODE_BUTTON },
-        { "confirmSyncCode", IDS_BRAVE_SYNC_DISABLED_CONFIRM_CODE_BUTTON },
         // [modal] Enter Sync Code
         { "enterSyncCode", IDS_BRAVE_SYNC_ENTER_CODE_TITLE },
         { "enterSyncCodeDescription", IDS_BRAVE_SYNC_ENTER_CODE_DESCRIPTION },
@@ -483,27 +483,23 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "deleteSyncDescription", IDS_BRAVE_SYNC_RESET_REMOVAL_INSTRUCTIONS },
         { "startSyncChainHowTo", IDS_BRAVE_SYNC_RESET_START_NEW_INSTRUCTIONS },
         { "areYouSure", IDS_BRAVE_SYNC_RESET_ARE_YOU_SURE_TITLE },
-        // [modal] Add New Chain
-        { "scanThisCode", IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_DESCRIPTION },
-        { "scanThisCodeHowTo", IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_INSTRUCTIONS },
-        { "enterCodeWordsInstead", IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_CODE_WORDS_BUTTON },
-        { "previous", IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_PREVIOUS_BUTTON },
-        { "lookingForDevice", IDS_BRAVE_SYNC_NEW_CHAIN_MAIN_LOOKING_FOR_DEVICE_BUTTON },
-        // [modal] Add New Chain (Camera Option)
-        // [modal] Add New Chain (no Camera)
-        { "enterThisCode", IDS_BRAVE_SYNC_NEW_CHAIN_DESKTOP_TITLE },
-        { "mobileEnterThisCode", IDS_BRAVE_SYNC_NEW_CHAIN_MOBILE_TITLE },
-        { "syncChainCodeHowTo", IDS_BRAVE_SYNC_NEW_CHAIN_DESCRIPTION },
-        { "useCameraInstead", IDS_BRAVE_SYNC_NEW_CHAIN_USE_CAMERA_BUTTON },
+        // [modal] Scan Code
+        { "scanThisCode", IDS_BRAVE_SYNC_SCAN_CODE_TITLE },
+        { "scanThisCodeHowToPartial1", IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_1 },
+        { "scanThisCodeHowToPartial2", IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_2 },
+        { "scanThisCodeHowToPartial3", IDS_BRAVE_SYNC_SCAN_CODE_DESCRIPTION_PARTIAL_3 },
+        // [modal] View Code
+        { "chainCode", IDS_BRAVE_SYNC_VIEW_CODE_TITLE },
+        { "chainCodeDescriptionPartial1", IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_1 },
+        { "chainCodeDescriptionPartial2", IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_2 },
+        { "chainCodeDescriptionPartial3", IDS_BRAVE_SYNC_VIEW_CODE_DESCRIPTION_PARTIAL_3 },
+        { "useCameraInstead", IDS_BRAVE_SYNC_VIEW_CODE_USE_CAMERA_BUTTON },
+        { "qrCode", IDS_BRAVE_SYNC_VIEW_CODE_QR_CODE },
         // [modal] Choose Device Type
-        { "letsSync", IDS_BRAVE_SYNC_CHOOSE_DEVICE_NEW_DEVICE_TITLE },
-        { "chooseDeviceType", IDS_BRAVE_SYNC_CHOOSE_DEVICE_CHOOSE_DEVICE_TITLE },
+        { "letsSync", IDS_BRAVE_SYNC_CHOOSE_DEVICE_TITLE },
+        { "chooseDeviceType", IDS_BRAVE_SYNC_CHOOSE_DEVICE_DESCRIPTION },
         { "phoneTablet", IDS_BRAVE_SYNC_CHOOSE_DEVICE_MOBILE_TITLE },
         { "computer", IDS_BRAVE_SYNC_CHOOSE_DEVICE_COMPUTER_TITLE },
-        // [modal] View Sync Code
-        { "qrCode", IDS_BRAVE_SYNC_VIEW_CODE_QR_CODE_TITLE },
-        { "wordCode", IDS_BRAVE_SYNC_VIEW_CODE_WORD_CODE_TITLE },
-        { "privateKey", IDS_BRAVE_SYNC_VIEW_CODE_PRIVATE_KEY_PHRASE },
         // errors
         { "errorWrongCodeTitle", IDS_BRAVE_SYNC_ERROR_WRONG_CODE_TITLE },
         { "errorWrongCodeDescription", IDS_BRAVE_SYNC_ERROR_WRONG_CODE_DESCRIPTION },

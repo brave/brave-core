@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Components
-import { Button, Modal, AlertBox } from 'brave-ui'
+import { Modal, AlertBox } from 'brave-ui'
 
 // Feature-specific components
 import {
@@ -19,8 +19,8 @@ import {
 } from 'brave-ui/features/sync'
 
 // Modals
-import AddNewChainNoCameraModal from './addNewChainNoCamera'
-import ScanCodeModal from './scanCode'
+import ViewSyncCode from './viewSyncCode'
+import ScanCode from './scanCode'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -35,7 +35,7 @@ interface Props {
 }
 
 interface State {
-  addNewChainNoCamera: boolean
+  viewSyncCode: boolean
   scanCode: boolean
 }
 
@@ -43,7 +43,7 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      addNewChainNoCamera: false,
+      viewSyncCode: false,
       scanCode: false
     }
   }
@@ -79,12 +79,12 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
   }
 
   onClickComputerButton = () => {
-    this.setState({ addNewChainNoCamera: !this.state.addNewChainNoCamera })
+    this.setState({ viewSyncCode: !this.state.viewSyncCode })
   }
 
   render () {
     const { actions, syncData } = this.props
-    const { addNewChainNoCamera, scanCode } = this.state
+    const { viewSyncCode, scanCode } = this.state
 
     return (
       <Modal id='deviceTypeModal' onClose={this.onClickClose} size='small'>
@@ -106,40 +106,28 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
         }
         {
           scanCode
-          ? <ScanCodeModal syncData={syncData} actions={actions} onClose={this.onClickPhoneTabletButton} />
+          ? <ScanCode syncData={syncData} actions={actions} onClose={this.onClickPhoneTabletButton} />
           : null
         }
         {
-          addNewChainNoCamera
-            ? <AddNewChainNoCameraModal syncData={syncData} actions={actions} onClose={this.onClickComputerButton} />
+          viewSyncCode
+            ? <ViewSyncCode syncData={syncData} actions={actions} onClose={this.onClickComputerButton} />
             : null
         }
         <ModalHeader>
           <div>
-            <ModalTitle level={1}>{getLocale('letsSync')} “{syncData.thisDeviceName}”.</ModalTitle>
+            <ModalTitle level={1}>{getLocale('letsSync')}</ModalTitle>
             <ModalSubTitle>{getLocale('chooseDeviceType')}</ModalSubTitle>
           </div>
         </ModalHeader>
         <DeviceGrid>
-          <DeviceContainer>
+          <DeviceContainer onClick={this.onClickPhoneTabletButton}>
             <SyncMobileIcon />
-            <Button
-              level='primary'
-              type='accent'
-              size='medium'
-              onClick={this.onClickPhoneTabletButton}
-              text={getLocale('phoneTablet')}
-            />
+            <Title level={2}>{getLocale('phoneTablet')}</Title>
           </DeviceContainer>
-          <DeviceContainer>
+          <DeviceContainer onClick={this.onClickComputerButton}>
           <SyncDesktopIcon />
-            <Button
-              level='primary'
-              type='accent'
-              size='medium'
-              onClick={this.onClickComputerButton}
-              text={getLocale('computer')}
-            />
+          <Title level={2}>{getLocale('computer')}</Title>
           </DeviceContainer>
         </DeviceGrid>
       </Modal>

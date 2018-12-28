@@ -3,8 +3,6 @@ import("//brave/components/common/typescript.gni")
 transpile_web_ui("ui") {
   inputs = [
     "actions/sync_actions.ts",
-    "components/modals/addNewChainCameraOption.tsx",
-    "components/modals/addNewChainNoCamera.tsx",
     "components/modals/deviceType.tsx",
     "components/modals/enterSyncCode.tsx",
     "components/modals/removeDevice.tsx",
