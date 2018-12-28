@@ -42,7 +42,7 @@ interface QRCodeProps {
 export const QRCode = styled<QRCodeProps, 'img'>('img')`
   display: block;
   width: 200px;
-  padding: 40px;
+  padding: 30px;
   border: 1px solid #C8C8D5;
   max-width: 100%;
 `
