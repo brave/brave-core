@@ -93,8 +93,6 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
 
   // Campaigns
   for (const auto& campaign : catalog.GetCampaigns()) {
-    std::vector<std::string> heirarchy = {};
-
     // Geo Targets
     std::vector<std::string>regions = {};
     for (const auto& geo_target : campaign.geo_targets) {
@@ -111,6 +109,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
     // Creative Sets
     for (const auto& creative_set : campaign.creative_sets) {
       // Segments
+      std::vector<std::string> heirarchy = {};
       for (const auto& segment : creative_set.segments) {
         auto name = helper::String::ToLower(segment.name);
 
