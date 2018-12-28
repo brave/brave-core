@@ -227,11 +227,17 @@ void BraveSyncServiceImpl::OnDeleteDevice(const std::string& device_id) {
 void BraveSyncServiceImpl::OnResetSync() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  const std::string device_id = sync_prefs_->GetThisDeviceId();
-
-  // We have to send delete record and wait for library deleted response then we
-  // can reset it by ResetInternal()
-  OnDeleteDevice(device_id);
+  auto sync_devices = sync_prefs_->GetSyncDevices();
+  // If there is only one or no devices left, we won't get back resolved sync
+  // record back.
+  if (sync_devices->size() <= 1)
+    ResetSyncInternal();
+  else {
+    // We have to send delete record and wait for library deleted response then
+    // we can reset it by ResetInternal()
+    const std::string device_id = sync_prefs_->GetThisDeviceId();
+    OnDeleteDevice(device_id);
+  }
 }
 
 void BraveSyncServiceImpl::GetSettingsAndDevices(
@@ -479,7 +485,8 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records) {
           record->action == jslib::SyncRecord::Action::A_DELETE &&
           actually_merged);
       contains_only_one_device = sync_devices->size() < 2 &&
-        record->action == jslib::SyncRecord::Action::A_DELETE;
+        record->action == jslib::SyncRecord::Action::A_DELETE &&
+          actually_merged;
     }
   } // for each device
 
