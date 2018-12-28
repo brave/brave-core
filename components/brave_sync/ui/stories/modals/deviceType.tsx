@@ -20,7 +20,7 @@ import {
 import { SyncMobileIcon, SyncDesktopIcon } from '../../../../src/features/sync/images'
 
 // Modals
-import AddNewChainNoCamera from './addNewChainNoCamera'
+import ViewSyncCode from './viewSyncCode'
 import ScanCode from './scanCode'
 
 // Utils
@@ -31,7 +31,7 @@ interface Props {
 }
 
 interface State {
-  addNewChainNoCamera: boolean
+  viewSyncCode: boolean
   scanCode: boolean
 }
 
@@ -39,7 +39,7 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      addNewChainNoCamera: false,
+      viewSyncCode: false,
       scanCode: false
     }
   }
@@ -51,11 +51,11 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
 
   onClickComputerButton = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
-    this.setState({ addNewChainNoCamera: !this.state.addNewChainNoCamera })
+    this.setState({ viewSyncCode: !this.state.viewSyncCode })
   }
 
   render () {
-    const { addNewChainNoCamera, scanCode } = this.state
+    const { viewSyncCode, scanCode } = this.state
     return (
       <Modal id='deviceTypeModal' displayCloseButton={false} size='small'>
         {
@@ -64,8 +64,8 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
           : null
         }
         {
-          addNewChainNoCamera
-            ? <AddNewChainNoCamera onClose={this.onClickComputerButton} />
+          viewSyncCode
+            ? <ViewSyncCode onClose={this.onClickComputerButton} />
             : null
         }
         <ModalHeader>

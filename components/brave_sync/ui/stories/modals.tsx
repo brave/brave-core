@@ -10,7 +10,6 @@ import data from './page/fakeData'
 import ResetSyncModal from './modals/resetSync'
 import DeviceTypeModal from './modals/deviceType'
 import ScanCodeModal from './modals/scanCode'
-import AddNewChainNoCameraModal from './modals/addNewChainNoCamera'
 import EnterSyncCodeModal from './modals/enterSyncCode'
 import ViewSyncCodeModal from './modals/viewSyncCode'
 import RemoveMainDeviceModal from './modals/removeMainDevice'
@@ -24,7 +23,6 @@ storiesOf('Feature Components/Sync/Popups and Modals', module)
   .add('Reset Sync', () => <ResetSyncModal onClose={doNothing} mainDeviceName={data.device1.name} />)
   .add('Device Type', () => <DeviceTypeModal onClose={doNothing} />)
   .add('Scan Code', () => <ScanCodeModal onClose={doNothing} />)
-  .add('Add New Chain (no camera)', () => <AddNewChainNoCameraModal onClose={doNothing} />)
   .add('Enter Sync Code', () => <EnterSyncCodeModal onClose={doNothing} />)
   .add('View Sync Code', () => <ViewSyncCodeModal onClose={doNothing} />)
   .add('Remove Main Device', () => <RemoveMainDeviceModal onClose={doNothing} mainDeviceName={data.device1.name} />)

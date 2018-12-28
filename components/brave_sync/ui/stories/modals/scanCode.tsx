@@ -12,9 +12,9 @@ import {
   ModalHeader,
   Title,
   Paragraph,
+  Link,
   ScanGrid,
-  TwoColumnButtonGrid,
-  OneColumnButtonGrid
+  ThreeColumnButtonGrid,
 } from '../../../../src/features/sync'
 
 // Images
@@ -49,6 +49,11 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
     this.setState({ enterCodeWordsInstead: !this.state.enterCodeWordsInstead })
   }
 
+  onCancel = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault()
+    this.props.onClose()
+  }
+
   render () {
     const { onClose } = this.props
     const { enterCodeWordsInstead } = this.state
@@ -69,24 +74,29 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
             <SyncMobilePicture />
             <QRCode size='normal' src={qrCodeImage} />
           </ScanGrid>
-          <TwoColumnButtonGrid>
-          <OneColumnButtonGrid>
+          <ThreeColumnButtonGrid>
+          <div>
+            <Link onClick={this.onCancel}>{getLocale('cancel')}</Link>
+          </div>
+          <div>
             <Button
               level='secondary'
               type='subtle'
               size='medium'
               onClick={onClose}
-              text={getLocale('cancel')}
+              text={getLocale('viewSyncCode')}
             />
-          </OneColumnButtonGrid>
-          <Button
-            level='primary'
-            type='accent'
-            size='medium'
-            onClick={onClose}
-            text={getLocale('viewCodeWords')}
-          />
-        </TwoColumnButtonGrid>
+          </div>
+          <div>
+            <Button
+              level='primary'
+              type='accent'
+              size='medium'
+              onClick={onClose}
+              text={getLocale('viewCodeWords')}
+            />
+          </div>
+        </ThreeColumnButtonGrid>
       </Modal>
     )
   }

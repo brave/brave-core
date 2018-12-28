@@ -58,18 +58,18 @@ const locale: any = {
   mobileEnterThisCode: 'Now, using Brave on your mobile device, enter this code:',
   syncChainCodeHowTo: 'Go to: Brave Settings > Sync > Enter a Sync Chain Code',
   // [modal] Add New Chain (no Camera)
+  // [modal] View Sync Code
   chainCode: 'Sync Chain Code',
   chainCodeDescriptionPartial1: 'On your target computer, navigate to Brave Sync in settings and click the button',
   chainCodeDescriptionPartial2: '“I Have a Sync Code”.',
   chainCodeDescriptionPartial3: 'Type in the below sync chains code words.',
   useCameraInstead: 'Use camera instead',
+  qrCode: 'View QR Code',
   // [modal] Choose Device Type
   letsSync: 'Choose Device Type',
   chooseDeviceType: 'Choose the type of device you would like to sync to.',
   phoneTablet: 'Tablet or Phone',
   computer: 'Computer',
-  // [modal] View Sync Code
-  qrCode: 'View QR Code'
 }
 
 export default locale
