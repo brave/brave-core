@@ -97,12 +97,11 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
 
     // Geo Targets
     std::vector<std::string>regions = {};
-
     for (const auto& geo_target : campaign.geo_targets) {
       std::string code = geo_target.code;
 
       if (std::find(regions.begin(), regions.end(), code)
-          != heirarchy.end()) {
+          != regions.end()) {
         continue;
       }
 
