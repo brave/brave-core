@@ -14,7 +14,7 @@ import {
   Paragraph,
   Link,
   ScanGrid,
-  ThreeColumnButtonGrid,
+  ThreeColumnButtonGrid
 } from '../../../../src/features/sync'
 
 // Images

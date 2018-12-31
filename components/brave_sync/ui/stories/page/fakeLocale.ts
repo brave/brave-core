@@ -69,7 +69,7 @@ const locale: any = {
   letsSync: 'Choose Device Type',
   chooseDeviceType: 'Choose the type of device you would like to sync to.',
   phoneTablet: 'Tablet or Phone',
-  computer: 'Computer',
+  computer: 'Computer'
 }
 
 export default locale
