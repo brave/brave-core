@@ -17,6 +17,10 @@ LEDGER_EXPORT struct WalletInfo {
   WalletInfo();
   ~WalletInfo();
   WalletInfo(const WalletInfo& info);
+
+  const std::string ToJson() const;
+  bool loadFromJson(const std::string& json);
+
   std::string altcurrency_;
   std::string probi_;
   double balance_;

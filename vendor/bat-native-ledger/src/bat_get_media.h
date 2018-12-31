@@ -11,7 +11,6 @@
 
 #include "bat/ledger/ledger.h"
 #include "bat_helper.h"
-#include "url_request_handler.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -203,8 +202,6 @@ class BatGetMedia {
   std::string getNameFromChannel(const std::string& data);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-
-  bat_ledger::URLRequestHandler handler_;
 
   std::map<std::string, ledger::TwitchEventInfo> twitchEvents;
 };

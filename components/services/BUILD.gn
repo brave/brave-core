@@ -11,6 +11,7 @@ service_manifest("brave_content_packaged_services_manifest_overlay") {
 
   packaged_services = [
     "//brave/components/services/bat_ads:manifest",
+    "//brave/components/services/bat_ledger:manifest",
   ]
 
   if (!is_android) {

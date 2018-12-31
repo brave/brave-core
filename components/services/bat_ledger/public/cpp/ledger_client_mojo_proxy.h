@@ -1,0 +1,169 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_PROXY_H_
+#define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_PROXY_H_
+
+#include <map>
+
+#include "base/memory/weak_ptr.h"
+#include "bat/ledger/ledger_client.h"
+#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+
+namespace bat_ledger {
+
+class LedgerClientMojoProxy : public mojom::BatLedgerClient,
+                          public base::SupportsWeakPtr<LedgerClientMojoProxy> {
+ public:
+  LedgerClientMojoProxy(ledger::LedgerClient* ledger_client);
+  ~LedgerClientMojoProxy() override;
+
+  // bat_ledger::mojom::BatLedgerClient
+  void GenerateGUID(GenerateGUIDCallback callback) override;
+  void LoadLedgerState(LoadLedgerStateCallback callback) override;
+  void OnWalletInitialized(int32_t result) override;
+  void OnWalletProperties(int32_t result, const std::string& info) override;
+  void OnGrant(int32_t result, const std::string& grant) override;
+  void OnGrantCaptcha(const std::string& image,
+      const std::string& hint) override;
+  void OnRecoverWallet(int32_t result, double balance,
+      const std::vector<std::string>& grants) override;
+  void OnReconcileComplete(int32_t result, const std::string& viewing_id,
+      int32_t category, const std::string& probi) override;
+  void OnGrantFinish(int32_t result, const std::string& grant) override;
+
+  void LoadPublisherState(LoadPublisherStateCallback callback) override;
+  void LoadPublisherList(LoadPublisherListCallback callback) override;
+  void SaveLedgerState(const std::string& ledger_state,
+      SaveLedgerStateCallback callback) override;
+  void SavePublisherState(const std::string& publisher_state,
+      SavePublisherStateCallback callback) override;
+  void SavePublishersList(const std::string& publishers_list,
+      SavePublishersListCallback callback) override;
+
+  void SavePublisherInfo(const std::string& publisher_info,
+      SavePublisherInfoCallback callback) override;
+  void LoadPublisherInfo(const std::string& filter,
+      LoadPublisherInfoCallback callback) override;
+  void LoadPublisherInfoList(uint32_t start, uint32_t limit,
+      const std::string& filter,
+      LoadPublisherInfoListCallback callback) override;
+  void LoadMediaPublisherInfo(const std::string& media_key,
+      LoadMediaPublisherInfoCallback callback) override;
+
+  void FetchFavIcon(const std::string& url, const std::string& favicon_key,
+      FetchFavIconCallback callback) override;
+  void GetRecurringDonations(GetRecurringDonationsCallback callback) override;
+
+  void LoadNicewareList(LoadNicewareListCallback callback) override;
+  void OnRemoveRecurring(const std::string& publisher_key,
+      OnRemoveRecurringCallback callback) override;
+
+  void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
+  void OnPublisherActivity(int32_t result, const std::string& info,
+      uint64_t window_id) override;
+  void OnExcludedSitesChanged(const std::string& publisher_id) override;
+  void SaveContributionInfo(const std::string& probi, int32_t month,
+      int32_t year, uint32_t date, const std::string& publisher_key,
+      int32_t category) override;
+  void SaveMediaPublisherInfo(const std::string& media_key,
+      const std::string& publisher_id) override;
+  void FetchWalletProperties() override;
+  void FetchGrant(const std::string& lang,
+      const std::string& payment_id) override;
+  void GetGrantCaptcha() override;
+
+  void URIEncode(const std::string& value,
+      URIEncodeCallback callback) override;
+
+  void SetContributionAutoInclude(const std::string& publisher_key,
+      bool excluded, uint64_t window_id) override;
+
+  void LoadURL(const std::string& url,
+    const std::vector<std::string>& headers,
+    const std::string& content,
+    const std::string& contentType,
+    int32_t method,
+    LoadURLCallback callback) override;
+
+ private:
+  // workaround to pass base::OnceCallback into std::bind
+  // also serves as a wrapper for passing ledger::LedgerCallbackHandler*
+  template <typename Callback>
+  class CallbackHolder : public ledger::LedgerCallbackHandler {
+   public:
+    CallbackHolder(base::WeakPtr<LedgerClientMojoProxy> client,
+        Callback callback)
+        : client_(client),
+          callback_(std::move(callback)) {}
+    ~CallbackHolder() = default;
+    bool is_valid() { return !!client_.get(); }
+    Callback& get() { return callback_; }
+
+    // ledger::LedgerCallbackHandler impl
+    void OnLedgerStateLoaded(ledger::Result result,
+        const std::string& data) override;
+    void OnPublisherStateLoaded(ledger::Result result,
+        const std::string& data) override;
+    void OnPublisherListLoaded(ledger::Result result,
+        const std::string& data) override;
+    void OnLedgerStateSaved(ledger::Result result) override;
+    void OnPublisherStateSaved(ledger::Result result) override;
+    void OnPublishersListSaved(ledger::Result result) override;
+   private:
+    base::WeakPtr<LedgerClientMojoProxy> client_;
+    Callback callback_;
+  };
+
+  static void OnSavePublisherInfo(
+      CallbackHolder<SavePublisherInfoCallback>* holder,
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> info);
+
+  static void OnLoadPublisherInfo(
+      CallbackHolder<LoadPublisherInfoCallback>* holder,
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> info);
+
+  static void OnLoadPublisherInfoList(
+      CallbackHolder<LoadPublisherInfoListCallback>* holder,
+      const ledger::PublisherInfoList& list,
+      uint32_t next_record);
+
+  static void OnLoadMediaPublisherInfo(
+      CallbackHolder<LoadMediaPublisherInfoCallback>* holder,
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> info);
+
+  static void OnFetchFavIcon(
+      CallbackHolder<FetchFavIconCallback>* holder,
+      bool success,
+      const std::string& favicon_url);
+
+  static void OnGetRecurringDonations(
+      CallbackHolder<GetRecurringDonationsCallback>* holder,
+      const ledger::PublisherInfoList& publisher_info_list,
+      uint32_t next_record);
+
+  static void OnLoadNicewareList(
+      CallbackHolder<LoadNicewareListCallback>* holder,
+      int32_t result, const std::string& data);
+
+  static void OnRecurringRemoved(
+      CallbackHolder<OnRemoveRecurringCallback>* holder,
+      int32_t result);
+
+  static void OnLoadURL(
+      CallbackHolder<LoadURLCallback>* holder,
+      bool success, const std::string& response,
+      const std::map<std::string, std::string>& headers);
+
+  ledger::LedgerClient* ledger_client_;
+
+  DISALLOW_COPY_AND_ASSIGN(LedgerClientMojoProxy);
+};
+
+} // namespace bat_ledger
+
+#endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_PROXY_H_

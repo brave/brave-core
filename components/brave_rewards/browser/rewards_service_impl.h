@@ -16,11 +16,13 @@
 #include "base/observer_list.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger_client.h"
+#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/buildflags/buildflags.h"
 #include "extensions/common/one_shot_event.h"
+#include "mojo/public/cpp/bindings/associated_binding.h"
 #include "net/url_request/url_fetcher_delegate.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
@@ -60,6 +62,10 @@ namespace brave_rewards {
 class PublisherInfoDatabase;
 class RewardsNotificationServiceImpl;
 
+using GetProductionCallback = base::Callback<void(bool)>;
+using GetReconcileTimeCallback = base::Callback<void(int32_t)>;
+using GetShortRetriesCallback = base::Callback<void(bool)>;
+
 class RewardsServiceImpl : public RewardsService,
                             public ledger::LedgerClient,
                             public net::URLFetcherDelegate,
@@ -72,17 +78,23 @@ class RewardsServiceImpl : public RewardsService,
   void Shutdown() override;
 
   void Init();
+  void StartLedger();
   void CreateWallet() override;
   void FetchWalletProperties() override;
   void FetchGrant(const std::string& lang, const std::string& paymentId) override;
   void GetGrantCaptcha() override;
   void SolveGrantCaptcha(const std::string& solution) const override;
-  std::string GetWalletPassphrase() const override;
-  unsigned int GetNumExcludedSites() const override;
+  void GetWalletPassphrase(
+      const GetWalletPassphraseCallback& callback) override;
+  void GetNumExcludedSites(
+      const GetNumExcludedSitesCallback& callback) override;
   void RecoverWallet(const std::string passPhrase) const override;
   void GetCurrentContributeList(
       uint32_t start,
       uint32_t limit,
+      uint64_t min_visit_time,
+      uint64_t reconcile_stamp,
+      bool allow_non_verified,
       const GetCurrentContributeListCallback& callback) override;
   void OnLoad(SessionID tab_id, const GURL& url) override;
   void OnUnload(SessionID tab_id) override;
@@ -102,48 +114,60 @@ class RewardsServiceImpl : public RewardsService,
                   const GURL& referrer,
                   const std::string& post_data) override;
   std::string URIEncode(const std::string& value) override;
-  uint64_t GetReconcileStamp() const override;
-  std::map<std::string, std::string> GetAddresses() const override;
-  bool GetAutoContribute() const override;
-  uint64_t GetPublisherMinVisitTime() const override;
-  unsigned int GetPublisherMinVisits() const override;
-  bool GetPublisherAllowNonVerified() const override;
-  bool GetPublisherAllowVideos() const override;
+  void GetReconcileStamp(const GetReconcileStampCallback& callback) override;
+  void GetAddresses(const GetAddressesCallback& callback) override;
+  void GetAutoContribute(
+      const GetAutoContributeCallback& callback) override;
+  void GetPublisherMinVisitTime(
+      const GetPublisherMinVisitTimeCallback& callback) override;
+  void GetPublisherMinVisits(
+      const GetPublisherMinVisitsCallback& callback) override;
+  void GetPublisherAllowNonVerified(
+      const GetPublisherAllowNonVerifiedCallback& callback) override;
+  void GetPublisherAllowVideos(
+      const GetPublisherAllowVideosCallback& callback) override;
   void LoadMediaPublisherInfo(
       const std::string& media_key,
       ledger::PublisherInfoCallback callback) override;
   void SaveMediaPublisherInfo(const std::string& media_key, const std::string& publisher_id) override;
   void ExcludePublisher(const std::string publisherKey) const override;
   void RestorePublishers() override;
-  std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() override;
+  void GetAllBalanceReports(
+      const GetAllBalanceReportsCallback& callback) override;
   void GetCurrentBalanceReport() override;
-  bool IsWalletCreated() override;
+  void IsWalletCreated(const IsWalletCreatedCallback& callback) override;
   void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url, const std::string& favicon_url) override;
-  double GetContributionAmount() override;
+  void GetContributionAmount(const GetContributionAmountCallback& callback) override;
   void GetPublisherBanner(const std::string& publisher_id) override;
   void OnPublisherBanner(std::unique_ptr<ledger::PublisherBanner> banner);
   void RemoveRecurring(const std::string& publisher_key) override;
   void UpdateRecurringDonationsList() override;
   void UpdateTipsList() override;
   void SetContributionAutoInclude(
-    std::string publisher_key, bool excluded, uint64_t windowId) override;
+    const std::string& publisher_key, bool excluded, uint64_t windowId) override;
   RewardsNotificationService* GetNotificationService() const override;
   bool CheckImported() override;
   void SetBackupCompleted() override;
 
-  static void HandleFlags(const std::string& options);
+  void HandleFlags(const std::string& options);
+  void SetProduction(bool production);
+  void GetProduction(const GetProductionCallback& callback);
+  void SetReconcileTime(int32_t time);
+  void GetReconcileTime(const GetReconcileTimeCallback& callback);
+  void SetShortRetries(bool short_retries);
+  void GetShortRetries(const GetShortRetriesCallback& callback);
+
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
   void OnDonate(const std::string& publisher_key, int amount, bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
-  void SetLedgerClient(std::unique_ptr<ledger::Ledger> new_ledger) override;
+  void GetAutoContributeProps(
+      const GetAutoContributePropsCallback& callback) override;
+
+  // Testing methods
+  void SetLedgerEnvForTesting();
 
  private:
-  friend void RunIOTaskCallback(
-      base::WeakPtr<RewardsServiceImpl>,
-      std::function<void(void)>);
-  typedef base::Callback<void(int, const std::string&, const std::map<std::string, std::string>& headers)> FetchCallback;
-
   const extensions::OneShotEvent& ready() const { return ready_; }
   void OnLedgerStateSaved(ledger::LedgerCallbackHandler* handler,
                           bool success);
@@ -201,8 +225,8 @@ class RewardsServiceImpl : public RewardsService,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> info,
       uint64_t windowId);
-  void MaybeShowBackupNotification();
-  void MaybeShowAddFundsNotification();
+  void MaybeShowBackupNotification(uint64_t boot_stamp);
+  void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -239,14 +263,13 @@ class RewardsServiceImpl : public RewardsService,
   void SetTimer(uint64_t time_offset, uint32_t& timer_id) override;
   void LoadPublisherList(ledger::LedgerCallbackHandler* handler) override;
 
-  std::unique_ptr<ledger::LedgerURLLoader> LoadURL(const std::string& url,
+  void LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,
       const ledger::URL_METHOD& method,
-      ledger::LedgerCallbackHandler* handler) override;
+      ledger::LoadURLCallback callback) override;
 
-  void RunIOTask(std::unique_ptr<ledger::LedgerTaskRunner> task) override;
   void SetRewardsMainEnabled(bool enabled) const override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
   void SetPublisherMinVisits(unsigned int visits) const override;
@@ -282,21 +305,44 @@ class RewardsServiceImpl : public RewardsService,
                      int line,
                      const ledger::LogLevel log_level) const override;
 
-  void OnIOTaskComplete(std::function<void(void)> callback);
-
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;
 
-  void StartNotificationTimers();
+  void StartNotificationTimers(bool main_enabled);
   void StopNotificationTimers();
   void OnNotificationTimerFired();
 
-  bool HasSufficientBalanceToReconcile() const;
+  void MaybeShowNotificationAddFunds();
   bool ShouldShowNotificationAddFunds() const;
-  void ShowNotificationAddFunds();
+  void ShowNotificationAddFunds(bool sufficient);
+
+  // Mojo Proxy methods
+  void OnPublisherBannerMojoProxy(const std::string& banner);
+  void OnGetPublisherInfoList(uint32_t start, uint32_t limit,
+      const GetCurrentContributeListCallback& callback,
+      const std::vector<std::string>& publisher_info_list,
+      uint32_t next_record);
+  void OnGetAllBalanceReports(
+      const GetAllBalanceReportsCallback& callback,
+      const base::flat_map<std::string, std::string>& json_reports);
+  void OnGetCurrentBalanceReport(
+      bool success, const std::string& json_report);
+  void OnGetAddresses(
+      const GetAddressesCallback& callback,
+      const base::flat_map<std::string, std::string>& addresses);
+  void OnGetAutoContributeProps(
+      const GetAutoContributePropsCallback& callback,
+      const std::string& json_props);
+
+  bool Connected() const;
+  void ConnectionClosed();
 
   Profile* profile_;  // NOT OWNED
-  std::unique_ptr<ledger::Ledger> ledger_;
+  mojo::AssociatedBinding<bat_ledger::mojom::BatLedgerClient>
+    bat_ledger_client_binding_;
+  bat_ledger::mojom::BatLedgerAssociatedPtr bat_ledger_;
+  bat_ledger::mojom::BatLedgerServicePtr bat_ledger_service_;
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   std::unique_ptr<ExtensionRewardsServiceObserver>
       extension_rewards_service_observer_;
@@ -314,7 +360,7 @@ class RewardsServiceImpl : public RewardsService,
 #endif
 
   extensions::OneShotEvent ready_;
-  std::map<const net::URLFetcher*, FetchCallback> fetchers_;
+  std::map<const net::URLFetcher*, ledger::LoadURLCallback> fetchers_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   std::vector<std::string> current_media_fetchers_;
   std::vector<BitmapFetcherService::RequestId> request_ids_;

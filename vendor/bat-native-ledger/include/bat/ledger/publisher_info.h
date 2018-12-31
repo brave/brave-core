@@ -57,6 +57,9 @@ LEDGER_EXPORT struct PublisherInfoFilter {
   PublisherInfoFilter(const PublisherInfoFilter& filter);
   ~PublisherInfoFilter();
 
+  const std::string ToJson() const;
+  bool loadFromJson(const std::string& json);
+
   std::string id;
   int category;
   PUBLISHER_MONTH month;
@@ -64,7 +67,7 @@ LEDGER_EXPORT struct PublisherInfoFilter {
   PUBLISHER_EXCLUDE_FILTER excluded;
   uint32_t percent;
   std::vector<std::pair<std::string, bool>> order_by;
-  unsigned int min_duration;
+  uint64_t min_duration;
   uint64_t reconcile_stamp;
   bool non_verified;
 };
@@ -75,6 +78,9 @@ LEDGER_EXPORT struct ContributionInfo {
     value(value_),
     date(date_) {}
 
+  const std::string ToJson() const;
+  bool loadFromJson(const std::string& json);
+
   std::string publisher;  // Filled only for recurrent donations
   double value;
   uint64_t date;
@@ -84,6 +90,9 @@ LEDGER_EXPORT struct PublisherBanner {
   PublisherBanner();
   PublisherBanner(const PublisherBanner& info);
   ~PublisherBanner();
+
+  const std::string ToJson() const;
+  bool loadFromJson(const std::string& json);
 
   std::string publisher_key;
   std::string title;
@@ -105,6 +114,9 @@ LEDGER_EXPORT struct PublisherInfo {
 
   bool operator<(const PublisherInfo& rhs) const;
   bool is_valid() const;
+
+  const std::string ToJson() const;
+  bool loadFromJson(const std::string& json);
 
   std::string id;
   uint64_t duration;

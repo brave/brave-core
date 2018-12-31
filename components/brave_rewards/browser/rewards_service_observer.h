@@ -6,6 +6,7 @@
 #define BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_
 
 #include "base/observer_list_types.h"
+#include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/grant.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"

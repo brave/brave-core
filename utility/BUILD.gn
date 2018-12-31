@@ -19,6 +19,7 @@ source_set("utility") {
   defines = []
   deps = [
     "tor",
+    "//brave/components/services/bat_ledger:lib",
     "//chrome/common",
     "//chrome/utility",
     "//content/public/common",

@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "ledger_impl.h"
-#include "ledger_task_runner_impl.h"
 
 #include "bat_client.h"
 #include "bat_contribution.h"
@@ -287,20 +286,14 @@ void LedgerImpl::OnWalletInitialized(ledger::Result result) {
   }
 }
 
-std::unique_ptr<ledger::LedgerURLLoader> LedgerImpl::LoadURL(const std::string& url,
+void LedgerImpl::LoadURL(const std::string& url,
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& contentType,
     const ledger::URL_METHOD& method,
-    ledger::LedgerCallbackHandler* handler) {
-  return ledger_client_->LoadURL(
-      url, headers, content, contentType, method, handler);
-}
-
-void LedgerImpl::RunIOTask(ledger::LedgerTaskRunner::Task io_task) {
-  std::unique_ptr<LedgerTaskRunnerImpl> task_runner(
-      new LedgerTaskRunnerImpl(io_task));
-  ledger_client_->RunIOTask(std::move(task_runner));
+    ledger::LoadURLCallback callback) {
+  ledger_client_->LoadURL(
+      url, headers, content, contentType, method, callback);
 }
 
 std::string LedgerImpl::URIEncode(const std::string& value) {
@@ -410,6 +403,15 @@ void LedgerImpl::SetAutoContribute(bool enabled) {
   bat_state_->SetAutoContribute(enabled);
 }
 
+void LedgerImpl::GetAutoContributeProps(ledger::AutoContributeProps& props) {
+  props.enabled_contribute = GetAutoContribute();
+  props.contribution_min_time = GetPublisherMinVisitTime();
+  props.contribution_min_visits = GetPublisherMinVisits();
+  props.contribution_non_verified = GetPublisherAllowNonVerified();
+  props.contribution_videos = GetPublisherAllowVideos();
+  props.reconcile_stamp = GetReconcileStamp();
+}
+
 bool LedgerImpl::GetRewardsMainEnabled() const {
   return bat_state_->GetRewardsMainEnabled();
 }
@@ -440,6 +442,15 @@ double LedgerImpl::GetContributionAmount() const {
 
 bool LedgerImpl::GetAutoContribute() const {
   return bat_state_->GetAutoContribute();
+}
+
+std::map<std::string, std::string> LedgerImpl::GetAddresses() {
+  std::map<std::string, std::string> addresses;
+  addresses.emplace("BAT", GetBATAddress());
+  addresses.emplace("BTC", GetBTCAddress());
+  addresses.emplace("ETH", GetETHAddress());
+  addresses.emplace("LTC", GetLTCAddress());
+  return addresses;
 }
 
 const std::string& LedgerImpl::GetBATAddress() const {
@@ -619,9 +630,10 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 
     //download the list
     std::string url = braveledger_bat_helper::buildURL(GET_PUBLISHERS_LIST_V1, "", braveledger_bat_helper::SERVER_TYPES::PUBLISHER);
-    auto url_loader = LoadURL(url, std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
-    handler_.AddRequestHandler(std::move(url_loader),
-      std::bind(&LedgerImpl::LoadPublishersListCallback,this,_1,_2,_3));
+    auto callback = std::bind(&LedgerImpl::LoadPublishersListCallback, this,
+        _1, _2, _3);
+    LoadURL(url, std::vector<std::string>(), "", "",
+        ledger::URL_METHOD::GET, callback);
   } else if (timer_id == last_grant_check_timer_id_) {
     last_grant_check_timer_id_ = 0;
     FetchGrant(std::string(), std::string());
@@ -1052,6 +1064,10 @@ LedgerImpl::GetCurrentReconciles() const {
 
 double LedgerImpl::GetDefaultContributionAmount() {
   return bat_state_->GetDefaultContributionAmount();
+}
+
+bool LedgerImpl::HasSufficientBalanceToReconcile() {
+  return GetBalance() >= GetContributionAmount();
 }
 
 }  // namespace bat_ledger
