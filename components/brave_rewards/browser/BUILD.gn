@@ -9,6 +9,8 @@ source_set("browser") {
   sources = [
     "switches.cc",
     "switches.h",
+    "auto_contribution_props.cc",
+    "auto_contribution_props.h",
     "balance_report.cc",
     "balance_report.h",
     "rewards_notification_service.cc",
@@ -92,7 +94,10 @@ source_set("browser") {
 
     deps += [
       "//brave/vendor/bat-native-ledger",
+      "//brave/components/services/bat_ledger/public/cpp",
+      "//mojo/public/cpp/bindings",
       "//net",
+      "//services/service_manager/public/cpp",
       "//url",
     ]
   }

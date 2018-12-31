@@ -278,6 +278,8 @@ test("brave_browser_tests") {
     "//chrome/browser/extensions/updater/extension_cache_fake.h",
   ]
 
+  deps = []
+
   if (enable_widevine_cdm_component) {
     sources += [
       "//brave/browser/ui/content_settings/brave_widevine_blocked_image_model_browsertest.cc",
@@ -288,6 +290,10 @@ test("brave_browser_tests") {
     sources += [
       "//brave/components/brave_rewards/browser/rewards_notification_service_browsertest.cc",
       "//brave/components/brave_rewards/browser/rewards_service_browsertest.cc",
+    ]
+
+    deps += [
+      "//brave/vendor/bat-native-ledger",
     ]
   }
 
@@ -315,7 +321,7 @@ test("brave_browser_tests") {
   }
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-  deps = [
+  deps += [
     "//chrome/browser/ui",
     "//ppapi/buildflags",
     ":brave_browser_tests_deps",

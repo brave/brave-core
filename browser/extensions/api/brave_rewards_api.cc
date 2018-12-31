@@ -6,6 +6,7 @@
 
 #include <string>
 
+#include "base/bind.h"
 #include "brave/browser/brave_rewards/donations_dialog.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -177,11 +178,20 @@ BraveRewardsGetNonVerifiedSettingsFunction::Run() {
     RewardsServiceFactory::GetForProfile(profile);
   bool non_verified = true;
 
-  if (rewards_service_) {
-    non_verified = rewards_service_->GetPublisherAllowNonVerified();
+  if (!rewards_service_) {
+    return RespondNow(OneArgument(
+          std::make_unique<base::Value>(non_verified)));
   }
 
-  return RespondNow(OneArgument(std::make_unique<base::Value>(non_verified)));
+  rewards_service_->GetPublisherAllowNonVerified(base::Bind(
+        &BraveRewardsGetNonVerifiedSettingsFunction::OnGetAllowNonVerified,
+        this));
+  return RespondLater();
+}
+
+void BraveRewardsGetNonVerifiedSettingsFunction::OnGetAllowNonVerified(
+    bool non_verified) {
+  Respond(OneArgument(std::make_unique<base::Value>(non_verified)));
 }
 
 }  // namespace api

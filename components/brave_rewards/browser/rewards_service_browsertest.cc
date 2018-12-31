@@ -2,8 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/run_loop.h"
 #include "base/path_service.h"
+#include "bat/ledger/ledger.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/brave_rewards/browser/rewards_service_impl.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/vendor/bat-native-ledger/src/bat_helper.h"
 #include "brave/vendor/bat-native-ledger/src/static_values.h"
 #include "chrome/browser/ui/browser.h"
@@ -12,6 +16,10 @@
 #include "content/public/test/browser_test_utils.h"
 #include "google_apis/gaia/mock_url_fetcher_factory.h"
 #include "net/url_request/url_fetcher_delegate.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+using namespace brave_rewards;
 
 namespace brave_test_resp {
   std::string registrarVK_;
@@ -106,11 +114,36 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     brave::RegisterPathProvider();
     ReadTestData();
-    braveledger_bat_helper::set_ignore_for_testing(true);
+    rewards_service_ = static_cast<RewardsServiceImpl*>(
+        RewardsServiceFactory::GetForProfile(browser()->profile()));
+    rewards_service_->SetLedgerEnvForTesting();
   }
 
   void TearDown() override {
     InProcessBrowserTest::TearDown();
+  }
+
+  void RunUntilIdle() {
+    base::RunLoop loop;
+    loop.RunUntilIdle();
+  }
+
+  void GetReconcileTime() {
+    rewards_service()->GetReconcileTime(
+        base::Bind(&BraveRewardsBrowserTest::OnGetReconcileTime,
+          base::Unretained(this)));
+  }
+
+  void GetShortRetries() {
+    rewards_service()->GetShortRetries(
+        base::Bind(&BraveRewardsBrowserTest::OnGetShortRetries,
+          base::Unretained(this)));
+  }
+
+  void GetProduction() {
+    rewards_service()->GetProduction(
+        base::Bind(&BraveRewardsBrowserTest::OnGetProduction,
+          base::Unretained(this)));
   }
 
   void ReadTestData() {
@@ -166,6 +199,13 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(jsResult.ExtractBool());
   }
 
+  RewardsServiceImpl* rewards_service() { return rewards_service_; }
+
+  MOCK_METHOD1(OnGetProduction, void(bool));
+  MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
+  MOCK_METHOD1(OnGetShortRetries, void(bool));
+
+  RewardsServiceImpl* rewards_service_;
   MockURLFetcherFactory<brave_net::BraveURLFetcher> factory;
 };
 
@@ -304,4 +344,116 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ActivateSettingsModal) {
       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
       content::ISOLATED_WORLD_ID_CONTENT_END);
   ASSERT_TRUE(modalResult.ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
+  testing::InSequence s;
+  // SetProduction(true)
+  EXPECT_CALL(*this, OnGetProduction(true));
+  // Staging - true and 1
+  EXPECT_CALL(*this, OnGetProduction(false)).Times(2);
+  // Staging - false and random
+  EXPECT_CALL(*this, OnGetProduction(true)).Times(2);
+
+  rewards_service()->SetProduction(true);
+  GetProduction();
+  RunUntilIdle();
+
+  // Staging - true
+  rewards_service()->SetProduction(true);
+  rewards_service()->HandleFlags("staging=true");
+  GetProduction();
+  RunUntilIdle();
+
+  // Staging - 1
+  rewards_service()->SetProduction(true);
+  rewards_service()->HandleFlags("staging=1");
+  GetProduction();
+  RunUntilIdle();
+
+  // Staging - false
+  rewards_service()->SetProduction(false);
+  rewards_service()->HandleFlags("staging=false");
+  GetProduction();
+  RunUntilIdle();
+
+  // Staging - random
+  rewards_service()->SetProduction(false);
+  rewards_service()->HandleFlags("staging=werwe");
+  GetProduction();
+  RunUntilIdle();
+
+  // positive number
+  EXPECT_CALL(*this, OnGetReconcileTime(10));
+  // negative number and string
+  EXPECT_CALL(*this, OnGetReconcileTime(0)).Times(2);
+
+  // Reconcile interval - positive number
+  rewards_service()->SetReconcileTime(0);
+  rewards_service()->HandleFlags("reconcile-interval=10");
+  GetReconcileTime();
+  RunUntilIdle();
+
+  // Reconcile interval - negative number
+  rewards_service()->SetReconcileTime(0);
+  rewards_service()->HandleFlags("reconcile-interval=-1");
+  GetReconcileTime();
+  RunUntilIdle();
+
+  // Reconcile interval - string
+  rewards_service()->SetReconcileTime(0);
+  rewards_service()->HandleFlags("reconcile-interval=sdf");
+  GetReconcileTime();
+  RunUntilIdle();
+
+  EXPECT_CALL(*this, OnGetShortRetries(true)); // on
+  EXPECT_CALL(*this, OnGetShortRetries(false)); // off
+
+  // Short retries - on
+  rewards_service()->SetShortRetries(false);
+  rewards_service()->HandleFlags("short-retries=true");
+  GetShortRetries();
+  RunUntilIdle();
+
+  // Short retries - off
+  rewards_service()->SetShortRetries(true);
+  rewards_service()->HandleFlags("short-retries=false");
+  GetShortRetries();
+  RunUntilIdle();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsMultipleFlags) {
+  EXPECT_CALL(*this, OnGetProduction(false));
+  EXPECT_CALL(*this, OnGetReconcileTime(10));
+  EXPECT_CALL(*this, OnGetShortRetries(true));
+
+  rewards_service()->SetProduction(true);
+  rewards_service()->SetReconcileTime(0);
+  rewards_service()->SetShortRetries(false);
+
+  rewards_service()->HandleFlags(
+      "staging=true,short-retries=true,reconcile-interval=10");
+
+  GetReconcileTime();
+  GetShortRetries();
+  GetProduction();
+  RunUntilIdle();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsWrongInput) {
+  EXPECT_CALL(*this, OnGetProduction(true));
+  EXPECT_CALL(*this, OnGetReconcileTime(0));
+  EXPECT_CALL(*this, OnGetShortRetries(false));
+
+  rewards_service()->SetProduction(true);
+  rewards_service()->SetReconcileTime(0);
+  rewards_service()->SetShortRetries(false);
+
+  rewards_service()->HandleFlags(
+      "staging=,shortretries=true,reconcile-interval");
+
+  GetReconcileTime();
+  GetShortRetries();
+  GetProduction();
+  RunUntilIdle();
 }

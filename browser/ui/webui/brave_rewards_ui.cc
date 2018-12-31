@@ -68,6 +68,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetCurrentContributeList(
       std::unique_ptr<brave_rewards::ContentSiteList>,
       uint32_t record);
+  void OnGetAllBalanceReports(
+      const std::map<std::string, brave_rewards::BalanceReport>& reports);
   void GetBalanceReports(const base::ListValue* args);
   void ExcludePublisher(const base::ListValue* args);
   void RestorePublishers(const base::ListValue* args);
@@ -81,6 +83,18 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetAdsData(const base::ListValue* args);
   void SaveAdsSetting(const base::ListValue* args);
   void SetBackupCompleted(const base::ListValue* args);
+  void OnGetWalletPassphrase(const std::string& pass);
+  void OnGetContributionAmount(double amount);
+  void OnGetAddresses(const std::map<std::string, std::string>& addresses);
+  void OnGetNumExcludedSites(const std::string& publisher_id, uint32_t num);
+  void OnGetAutoContributeProps(
+      int error_code,
+      std::unique_ptr<brave_rewards::WalletProperties> wallet_properties,
+      std::unique_ptr<brave_rewards::AutoContributeProps> auto_contri_props);
+  void OnGetReconcileStamp(uint64_t reconcile_stamp);
+  void OnAutoContributePropsReady(
+      std::unique_ptr<brave_rewards::AutoContributeProps> auto_contri_props);
+  void OnIsWalletCreated(bool created);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -230,9 +244,9 @@ void RewardsDOMHandler::Init() {
     rewards_service_->AddObserver(this);
 }
 
-void RewardsDOMHandler::GetAllBalanceReports() {
-  if (rewards_service_ && web_ui()->CanCallJavascript()) {
-    std::map<std::string, brave_rewards::BalanceReport> reports = rewards_service_->GetAllBalanceReports();
+void RewardsDOMHandler::OnGetAllBalanceReports(
+    const std::map<std::string, brave_rewards::BalanceReport>& reports) {
+  if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue newReports;
     if (!reports.empty()) {
       for (auto const& report : reports) {
@@ -251,8 +265,16 @@ void RewardsDOMHandler::GetAllBalanceReports() {
       }
     }
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.balanceReports", newReports);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.balanceReports",
+        newReports);
   }
+}
+
+void RewardsDOMHandler::GetAllBalanceReports() {
+  if (rewards_service_)
+    rewards_service_->GetAllBalanceReports(
+        base::Bind(&RewardsDOMHandler::OnGetAllBalanceReports,
+          weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::HandleCreateWalletRequested(const base::ListValue* args) {
@@ -281,22 +303,22 @@ void RewardsDOMHandler::OnWalletInitialized(
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreateFailed");
 }
 
-void RewardsDOMHandler::OnWalletProperties(
-    brave_rewards::RewardsService* rewards_service,
+void RewardsDOMHandler::OnGetAutoContributeProps(
     int error_code,
-    std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
+    std::unique_ptr<brave_rewards::WalletProperties> wallet_properties,
+    std::unique_ptr<brave_rewards::AutoContributeProps> auto_contri_props) {
   if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue values;
     values.SetBoolean("enabledContribute",
-      rewards_service->GetAutoContribute());
+        auto_contri_props->enabled_contribute);
     values.SetInteger("contributionMinTime",
-      rewards_service->GetPublisherMinVisitTime());
+        auto_contri_props->contribution_min_time);
     values.SetInteger("contributionMinVisits",
-      rewards_service->GetPublisherMinVisits());
+        auto_contri_props->contribution_min_visits);
     values.SetBoolean("contributionNonVerified",
-      rewards_service->GetPublisherAllowNonVerified());
+        auto_contri_props->contribution_non_verified);
     values.SetBoolean("contributionVideos",
-      rewards_service->GetPublisherAllowVideos());
+        auto_contri_props->contribution_videos);
 
     auto ui_values = std::make_unique<base::DictionaryValue>();
 
@@ -351,6 +373,16 @@ void RewardsDOMHandler::OnWalletProperties(
   }
 }
 
+void RewardsDOMHandler::OnWalletProperties(
+    brave_rewards::RewardsService* rewards_service,
+    int error_code,
+    std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
+  rewards_service->GetAutoContributeProps(
+      base::Bind(&RewardsDOMHandler::OnGetAutoContributeProps,
+        weak_factory_.GetWeakPtr(), error_code,
+        base::Passed(std::move(wallet_properties))));
+}
+
 void RewardsDOMHandler::OnGrant(
     brave_rewards::RewardsService* rewards_service,
     unsigned int result,
@@ -396,11 +428,18 @@ void RewardsDOMHandler::GetGrantCaptcha(const base::ListValue* args) {
   }
 }
 
-void RewardsDOMHandler::GetWalletPassphrase(const base::ListValue* args) {
-  if (rewards_service_ && web_ui()->CanCallJavascript()) {
-    std::string pass = rewards_service_->GetWalletPassphrase();
+void RewardsDOMHandler::OnGetWalletPassphrase(const std::string& pass) {
+  if (web_ui()->CanCallJavascript()) {
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletPassphrase",
+        base::Value(pass));
+  }
+}
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletPassphrase", base::Value(pass));
+void RewardsDOMHandler::GetWalletPassphrase(const base::ListValue* args) {
+  if (rewards_service_) {
+    rewards_service_->GetWalletPassphrase(
+        base::Bind(&RewardsDOMHandler::OnGetWalletPassphrase,
+          weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -459,47 +498,76 @@ void RewardsDOMHandler::OnGrantFinish(
   }
 }
 
-void RewardsDOMHandler::GetReconcileStamp(const base::ListValue* args) {
-  if (rewards_service_ && web_ui()->CanCallJavascript()) {
-    std::string stamp = std::to_string(rewards_service_->GetReconcileStamp());
-
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.reconcileStamp", base::Value(stamp));
+void RewardsDOMHandler::OnGetReconcileStamp(uint64_t reconcile_stamp) {
+  if (web_ui()->CanCallJavascript()) {
+    std::string stamp = std::to_string(reconcile_stamp);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.reconcileStamp",
+        base::Value(stamp));
   }
 }
 
-void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
-  if (rewards_service_ && web_ui()->CanCallJavascript()) {
-    std::map<std::string, std::string> addresses = rewards_service_->GetAddresses();
+void RewardsDOMHandler::GetReconcileStamp(const base::ListValue* args) {
+  if (rewards_service_)
+    rewards_service_->GetReconcileStamp(base::Bind(
+          &RewardsDOMHandler::OnGetReconcileStamp,
+          weak_factory_.GetWeakPtr()));
+}
 
+void RewardsDOMHandler::OnGetAddresses(
+    const std::map<std::string, std::string>& addresses) {
+  if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue data;
-    data.SetString("BAT", addresses["BAT"]);
-    data.SetString("BTC", addresses["BTC"]);
-    data.SetString("ETH", addresses["ETH"]);
-    data.SetString("LTC", addresses["LTC"]);
+    data.SetString("BAT", addresses.at("BAT"));
+    data.SetString("BTC", addresses.at("BTC"));
+    data.SetString("ETH", addresses.at("ETH"));
+    data.SetString("LTC", addresses.at("LTC"));
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.addresses", data);
   }
 }
 
-void RewardsDOMHandler::OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) {
-  rewards_service_->GetCurrentContributeList(
-      0,
-      0,
-      base::Bind(&RewardsDOMHandler::OnGetCurrentContributeList,
-                 weak_factory_.GetWeakPtr()));
+void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
+  if (rewards_service_)
+    rewards_service_->GetAddresses(base::Bind(
+          &RewardsDOMHandler::OnGetAddresses, weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service,
-                                               std::string publisher_id) {
-  if (rewards_service_ && web_ui()->CanCallJavascript()) {
-    base::DictionaryValue excludedSitesInfo;
-    int num = rewards_service_->GetNumExcludedSites();
+void RewardsDOMHandler::OnAutoContributePropsReady(
+    std::unique_ptr<brave_rewards::AutoContributeProps> props) {
+  rewards_service_->GetCurrentContributeList(0, 0,
+      props->contribution_min_time, props->reconcile_stamp,
+      props->contribution_non_verified,
+      base::Bind(&RewardsDOMHandler::OnGetCurrentContributeList,
+        weak_factory_.GetWeakPtr()));
+}
 
+void RewardsDOMHandler::OnContentSiteUpdated(
+    brave_rewards::RewardsService* rewards_service) {
+  rewards_service_->GetAutoContributeProps(
+      base::Bind(&RewardsDOMHandler::OnAutoContributePropsReady,
+        weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnGetNumExcludedSites(const std::string& publisher_id,
+    uint32_t num) {
+  if (web_ui()->CanCallJavascript()) {
+    base::DictionaryValue excludedSitesInfo;
     excludedSitesInfo.SetString("num", std::to_string(num));
     excludedSitesInfo.SetString("publisherKey", publisher_id);
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.numExcludedSites", excludedSitesInfo);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.numExcludedSites",
+        excludedSitesInfo);
   }
+}
+
+void RewardsDOMHandler::OnExcludedSitesChanged(
+    brave_rewards::RewardsService* rewards_service,
+    std::string publisher_id) {
+  if (rewards_service_)
+    rewards_service_->GetNumExcludedSites(base::Bind(
+          &RewardsDOMHandler::OnGetNumExcludedSites,
+          weak_factory_.GetWeakPtr(),
+          publisher_id));
 }
 
 void RewardsDOMHandler::OnNotificationAdded(
@@ -610,20 +678,31 @@ void RewardsDOMHandler::GetBalanceReports(const base::ListValue* args) {
   GetAllBalanceReports();
 }
 
-void RewardsDOMHandler::WalletExists(const base::ListValue* args) {
-  if (rewards_service_ && web_ui()->CanCallJavascript()) {
-    bool exist = rewards_service_->IsWalletCreated();
+void RewardsDOMHandler::OnIsWalletCreated(bool created) {
+  if (web_ui()->CanCallJavascript())
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletExists",
+        base::Value(created));
+}
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletExists", base::Value(exist));
+void RewardsDOMHandler::WalletExists(const base::ListValue* args) {
+  if (rewards_service_)
+    rewards_service_->IsWalletCreated(
+        base::Bind(&RewardsDOMHandler::OnIsWalletCreated,
+          weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnGetContributionAmount(double amount) {
+  if (web_ui()->CanCallJavascript()) {
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.contributionAmount",
+        base::Value(amount));
   }
 }
 
 void RewardsDOMHandler::GetContributionAmount(const base::ListValue* args) {
-  if (rewards_service_ && web_ui()->CanCallJavascript()) {
-    double amount = rewards_service_->GetContributionAmount();
-
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.contributionAmount", base::Value(amount));
-  }
+  if (rewards_service_)
+    rewards_service_->GetContributionAmount(
+        base::Bind(&RewardsDOMHandler::OnGetContributionAmount,
+          weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnReconcileComplete(

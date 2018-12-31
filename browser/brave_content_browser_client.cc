@@ -17,6 +17,7 @@
 #include "brave/common/tor/tor_launcher.mojom.h"
 #include "brave/common/tor/switches.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -47,6 +48,10 @@ using brave_shields::BraveShieldsWebContentsObserver;
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+#endif
+
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -193,6 +198,10 @@ void BraveContentBrowserClient::RegisterOutOfProcessServices(
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
   (*services)[bat_ads::mojom::kServiceName] = base::BindRepeating(
     l10n_util::GetStringUTF16, IDS_SERVICE_BAT_ADS);
+#endif
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  (*services)[bat_ledger::mojom::kServiceName] = base::BindRepeating(
+    l10n_util::GetStringUTF16, IDS_UTILITY_PROCESS_LEDGER_NAME);
 #endif
 }
 

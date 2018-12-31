@@ -2400,4 +2400,327 @@ static bool ignore_ = false;
     return dist(eng);
   }
 
+  void saveToJson(JsonWriter& writer, const ledger::VisitData& visitData) {
+    writer.StartObject();
+
+    writer.String("tld");
+    writer.String(visitData.tld.c_str());
+
+    writer.String("domain");
+    writer.String(visitData.domain.c_str());
+
+    writer.String("path");
+    writer.String(visitData.path.c_str());
+
+    writer.String("tab_id");
+    writer.Uint(visitData.tab_id);
+
+    writer.String("local_month");
+    writer.Int(visitData.local_month);
+
+    writer.String("local_year");
+    writer.Int(visitData.local_year);
+
+    writer.String("name");
+    writer.String(visitData.name.c_str());
+
+    writer.String("url");
+    writer.String(visitData.url.c_str());
+
+    writer.String("provider");
+    writer.String(visitData.provider.c_str());
+
+    writer.String("favicon_url");
+    writer.String(visitData.favicon_url.c_str());
+
+    writer.EndObject();
+  }
+
+  void saveToJson(JsonWriter& writer, const ledger::BalanceReportInfo& info) {
+    writer.StartObject();
+
+    writer.String("opening_balance_");
+    writer.String(info.opening_balance_.c_str());
+
+    writer.String("closing_balance_");
+    writer.String(info.closing_balance_.c_str());
+
+    writer.String("deposits_");
+    writer.String(info.deposits_.c_str());
+
+    writer.String("grants_");
+    writer.String(info.grants_.c_str());
+
+    writer.String("earning_from_ads_");
+    writer.String(info.earning_from_ads_.c_str());
+
+    writer.String("auto_contribute_");
+    writer.String(info.auto_contribute_.c_str());
+
+    writer.String("recurring_donation_");
+    writer.String(info.recurring_donation_.c_str());
+
+    writer.String("one_time_donation_");
+    writer.String(info.one_time_donation_.c_str());
+
+    writer.String("total_");
+    writer.String(info.total_.c_str());
+
+    writer.EndObject();
+  }
+
+  void saveToJson(JsonWriter& writer, const ledger::Grant& grant) {
+    writer.StartObject();
+
+    writer.String("altcurrency");
+    writer.String(grant.altcurrency.c_str());
+
+    writer.String("probi");
+    writer.String(grant.probi.c_str());
+
+    writer.String("promotionId");
+    writer.String(grant.promotionId.c_str());
+
+    writer.String("expiryTime");
+    writer.Uint64(grant.expiryTime);
+
+    writer.EndObject();
+  }
+
+  void saveToJson(JsonWriter & writer, const ledger::PublisherInfo& info) {
+    writer.StartObject();
+
+    writer.String("id");
+    writer.String(info.id.c_str());
+
+    writer.String("duration");
+    writer.Uint64(info.duration);
+
+    writer.String("score");
+    writer.Double(info.score);
+
+    writer.String("visits");
+    writer.Uint(info.visits);
+
+    writer.String("percent");
+    writer.Uint(info.percent);
+
+    writer.String("weight");
+    writer.Double(info.weight);
+
+    writer.String("excluded");
+    writer.Int(info.excluded);
+
+    writer.String("category");
+    writer.Int(info.category);
+
+    writer.String("month");
+    writer.Int(info.month);
+
+    writer.String("year");
+    writer.Int(info.year);
+
+    writer.String("reconcile_stamp");
+    writer.Uint64(info.reconcile_stamp);
+
+    writer.String("verified");
+    writer.Bool(info.verified);
+
+    writer.String("name");
+    writer.String(info.name.c_str());
+
+    writer.String("url");
+    writer.String(info.url.c_str());
+
+    writer.String("provider");
+    writer.String(info.provider.c_str());
+
+    writer.String("favicon_url");
+    writer.String(info.favicon_url.c_str());
+
+    writer.String("contributions");
+    writer.StartArray();
+    for (auto & contribution : info.contributions) {
+      saveToJson(writer, contribution);
+    }
+    writer.EndArray();
+
+    writer.EndObject();
+  }
+
+  void saveToJson(JsonWriter & writer, const ledger::ContributionInfo& info) {
+    writer.StartObject();
+
+    writer.String("publisher");
+    writer.String(info.publisher.c_str());
+
+    writer.String("value");
+    writer.Double(info.value);
+
+    writer.String("date");
+    writer.Uint64(info.date);
+
+    writer.EndObject();
+  }
+
+  void saveToJson(JsonWriter & writer,
+      const ledger::PublisherBanner& banner) {
+    writer.StartObject();
+
+    writer.String("publisher_key");
+    writer.String(banner.publisher_key.c_str());
+
+    writer.String("title");
+    writer.String(banner.title.c_str());
+
+    writer.String("name");
+    writer.String(banner.name.c_str());
+
+    writer.String("description");
+    writer.String(banner.description.c_str());
+
+    writer.String("background");
+    writer.String(banner.background.c_str());
+
+    writer.String("logo");
+    writer.String(banner.logo.c_str());
+
+    writer.String("amounts");
+    writer.StartArray();
+    for (auto & amount : banner.amounts) {
+      writer.Int(amount);
+    }
+    writer.EndArray();
+
+    writer.String("social");
+    writer.StartObject();
+    for (auto & i : banner.social) {
+      writer.String(i.first.c_str());
+      writer.String(i.second.c_str());
+    }
+    writer.EndObject();
+
+    writer.String("verified");
+    writer.Bool(banner.verified);
+
+    writer.EndObject();
+  }
+
+  void saveToJson(JsonWriter & writer,
+      const ledger::PublisherInfoFilter& info) {
+    writer.StartObject();
+
+    writer.String("id");
+    writer.String(info.id.c_str());
+
+    writer.String("category");
+    writer.Int(info.category);
+
+    writer.String("month");
+    writer.Int(info.month);
+
+    writer.String("year");
+    writer.Int(info.year);
+
+    writer.String("excluded");
+    writer.Int(info.excluded);
+
+    writer.String("percent");
+    writer.Uint(info.percent);
+
+    writer.String("min_duration");
+    writer.Uint64(info.min_duration);
+
+    writer.String("reconcile_stamp");
+    writer.Uint64(info.reconcile_stamp);
+
+    writer.String("order_by");
+    writer.StartObject();
+    for (auto & i : info.order_by) {
+      writer.String(i.first.c_str());
+      writer.Bool(i.second);
+    }
+    writer.EndObject();
+
+    writer.String("non_verified");
+    writer.Bool(info.non_verified);
+
+    writer.EndObject();
+  }
+
+  void saveToJson(JsonWriter & writer, const ledger::WalletInfo& info) {
+    writer.StartObject();
+
+    writer.String("altcurrency_");
+    writer.String(info.altcurrency_.c_str());
+
+    writer.String("probi_");
+    writer.String(info.probi_.c_str());
+
+    writer.String("balance_");
+    writer.Double(info.balance_);
+
+    writer.String("fee_amount_");
+    writer.Double(info.fee_amount_);
+
+    writer.String("rates_");
+    writer.StartObject();
+    for (const auto& rate : info.rates_) {
+      writer.String(rate.first.c_str());
+      writer.Double(rate.second);
+    }
+    writer.EndObject();
+
+    writer.String("parameters_choices_");
+    writer.StartArray();
+    for (const auto& choice : info.parameters_choices_) {
+      writer.Double(choice);
+    }
+    writer.EndArray();
+
+    writer.String("parameters_range_");
+    writer.StartArray();
+    for (const auto& range : info.parameters_range_) {
+      writer.Double(range);
+    }
+    writer.EndArray();
+
+    writer.String("parameters_days_");
+    writer.Uint(info.parameters_days_);
+
+    writer.String("grants_");
+    writer.StartArray();
+    for (const auto& grant : info.grants_) {
+      saveToJson(writer, grant);
+    }
+    writer.EndArray();
+
+    writer.EndObject();
+  }
+
+  void saveToJson(JsonWriter & writer,
+      const ledger::AutoContributeProps& props) {
+    writer.StartObject();
+
+    writer.String("enabled_contribute");
+    writer.Bool(props.enabled_contribute);
+
+    writer.String("contribution_min_time");
+    writer.Uint64(props.contribution_min_time);
+
+    writer.String("contribution_min_visits");
+    writer.Int(props.contribution_min_visits);
+
+    writer.String("contribution_non_verified");
+    writer.Bool(props.contribution_non_verified);
+
+    writer.String("contribution_videos");
+    writer.Bool(props.contribution_videos);
+
+    writer.String("reconcile_stamp");
+    writer.Uint64(props.reconcile_stamp);
+
+    writer.EndObject();
+  }
+
 }  // namespace braveledger_bat_helper

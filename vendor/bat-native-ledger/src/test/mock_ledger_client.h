@@ -42,7 +42,6 @@ class MockLedgerClient : public ledger::LedgerClient {
                    const std::string& contentType,
                    const ledger::URL_METHOD& method,
                    ledger::LedgerCallbackHandler* handler) override;
-  void RunIOTask(std::unique_ptr<ledger::LedgerTaskRunner> task) override;
 
   std::unique_ptr<ledger::Ledger> ledger_;
   std::string ledger_state_;

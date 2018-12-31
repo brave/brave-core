@@ -109,6 +109,9 @@ class BraveRewardsGetNonVerifiedSettingsFunction : public UIThreadExtensionFunct
   ~BraveRewardsGetNonVerifiedSettingsFunction() override;
 
   ResponseAction Run() override;
+
+ private:
+  void OnGetAllowNonVerified(bool non_verified);
 };
 
 }  // namespace api

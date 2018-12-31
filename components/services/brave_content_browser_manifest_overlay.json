@@ -5,6 +5,7 @@
     "service_manager:connector": {
       "requires": {
         "bat_ads": [ "bat_ads" ],
+        "bat_ledger": [ "bat_ledger" ],
         "tor_launcher": [ "tor_launcher" ]
       }
     }

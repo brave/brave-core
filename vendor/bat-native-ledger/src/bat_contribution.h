@@ -9,7 +9,6 @@
 
 #include "bat/ledger/ledger.h"
 #include "bat_helper.h"
-#include "url_request_handler.h"
 
 // Contribution has two big phases. PHASE 1 is starting the contribution,
 // getting surveyors and transferring BAT from the wallet.
@@ -62,13 +61,12 @@
 // 5. PrepareBatch
 // 6. PrepareBatchCallback
 // 7. ProofBatch
-// 8. ProofBatchCallback
-// 9. SetTimer
-// 10. PrepareVoteBatch
-// 11. SetTimer
-// 12. VoteBatch
-// 13. VoteBatchCallback
-// 14. SetTimer - we set timer until the whole batch is processed
+// 8. SetTimer
+// 9. PrepareVoteBatch
+// 10. SetTimer
+// 11. VoteBatch
+// 12. VoteBatchCallback
+// 13. SetTimer - we set timer until the whole batch is processed
 
 namespace bat_ledger {
   class LedgerImpl;
@@ -224,12 +222,7 @@ class BatContribution {
   void Proof();
 
   void ProofBatch(
-      const braveledger_bat_helper::BathProofs& batch_proof,
-      ledger::LedgerTaskRunner::CallerThreadCallback callback);
-
-  void ProofBatchCallback(
-      const braveledger_bat_helper::BathProofs& batch_proof,
-      const std::vector<std::string>& proofs);
+      const braveledger_bat_helper::BathProofs& batch_proof);
 
   void PrepareVoteBatch();
 
@@ -257,7 +250,6 @@ class BatContribution {
   void DoRetry(const std::string& viewing_id);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  bat_ledger::URLRequestHandler handler_;
   uint32_t last_reconcile_timer_id_;
   uint32_t last_prepare_vote_batch_timer_id_;
   uint32_t last_vote_batch_timer_id_;

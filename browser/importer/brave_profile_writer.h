@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/macros.h"
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/importer/profile_writer.h"
 #include "net/cookies/canonical_cookie.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -19,7 +20,8 @@ class BraveInProcessImporterBridge;
 struct ImportedWindowState;
 
 class BraveProfileWriter : public ProfileWriter,
-                           public brave_rewards::RewardsServiceObserver {
+                           public brave_rewards::RewardsServiceObserver,
+                           public base::SupportsWeakPtr<BraveProfileWriter>{
  public:
   explicit BraveProfileWriter(Profile* profile);
 
@@ -31,6 +33,8 @@ class BraveProfileWriter : public ProfileWriter,
   virtual void UpdateSettings(const SessionStoreSettings& settings);
 
   void SetBridge(BraveInProcessImporterBridge* bridge);
+
+  void OnIsWalletCreated(bool created);
 
   // brave_rewards::RewardsServiceObserver:
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,

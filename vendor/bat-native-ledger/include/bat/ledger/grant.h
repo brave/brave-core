@@ -18,6 +18,9 @@ LEDGER_EXPORT struct Grant {
   ~Grant();
   Grant(const Grant& properties);
 
+  const std::string ToJson() const;
+  bool loadFromJson(const std::string& json);
+
   std::string altcurrency;
   std::string probi;
   std::string promotionId;

@@ -10,6 +10,20 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
 
+namespace ledger {
+
+struct AutoContributeProps;
+struct BalanceReportInfo;
+struct ContributionInfo;
+struct Grant;
+struct PublisherBanner;
+struct PublisherInfo;
+struct PublisherInfoFilter;
+struct VisitData;
+struct WalletInfo;
+
+}
+
 namespace braveledger_bat_helper {
 
 struct BALLOT_ST;
@@ -39,6 +53,15 @@ void saveToJson(JsonWriter & writer, const TRANSACTION_BALLOT_ST&);
 void saveToJson(JsonWriter & writer, const TRANSACTION_ST&);
 void saveToJson(JsonWriter & writer, const TWITCH_EVENT_INFO&);
 void saveToJson(JsonWriter & writer, const WALLET_INFO_ST&);
+void saveToJson(JsonWriter & writer, const ledger::AutoContributeProps&);
+void saveToJson(JsonWriter & writer, const ledger::BalanceReportInfo&);
+void saveToJson(JsonWriter & writer, const ledger::ContributionInfo&);
+void saveToJson(JsonWriter & writer, const ledger::Grant&);
+void saveToJson(JsonWriter & writer, const ledger::PublisherBanner&);
+void saveToJson(JsonWriter & writer, const ledger::PublisherInfo&);
+void saveToJson(JsonWriter & writer, const ledger::PublisherInfoFilter&);
+void saveToJson(JsonWriter & writer, const ledger::VisitData&);
+void saveToJson(JsonWriter & writer, const ledger::WalletInfo&);
 
 template <typename T>
 void saveToJsonString(const T& t, std::string& json) {

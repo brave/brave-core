@@ -113,20 +113,14 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId,
   if (!publisher_info.get()) {
     std::string mediaURL = getMediaURL(mediaId, providerName);
     if (providerName == YOUTUBE_MEDIA_TYPE) {
-      auto request = ledger_->LoadURL((std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" + ledger_->URIEncode(mediaURL),
-        std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
-      handler_.AddRequestHandler(std::move(request),
-          std::bind(&BatGetMedia::getPublisherFromMediaPropsCallback,
-          this,
-          duration,
-          media_key,
-          providerName,
-          mediaURL,
-          visit_data,
-          window_id,
-          _1,
-          _2,
-          _3));
+      auto callback = std::bind(
+          &BatGetMedia::getPublisherFromMediaPropsCallback, this,
+          duration, media_key, providerName, mediaURL, visit_data, window_id,
+          _1, _2, _3);
+      ledger_->LoadURL(
+          (std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" +
+          ledger_->URIEncode(mediaURL),
+        std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, callback);
     } else if (providerName == TWITCH_MEDIA_TYPE) {
       if (mediaId.empty()) {
         return;
@@ -167,20 +161,16 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId,
         std::string oembed_url = (std::string)TWITCH_VOD_URL + media_props[media_props.size() - 1];
         updated_visit_data.name = twitchMediaID;
         updated_visit_data.url = mediaUrl + "/videos";
-        auto request = ledger_->LoadURL((std::string)TWITCH_PROVIDER_URL + "?json&url=" + ledger_->URIEncode(oembed_url),
-                                        std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
-        handler_.AddRequestHandler(std::move(request),
-                                   std::bind(&BatGetMedia::getPublisherFromMediaPropsCallback,
-                                             this,
-                                             realDuration,
-                                             media_key,
-                                             providerName,
-                                             mediaUrl,
-                                             updated_visit_data,
-                                             window_id,
-                                             _1,
-                                             _2,
-                                             _3));
+
+        auto callback = std::bind(
+            &BatGetMedia::getPublisherFromMediaPropsCallback, this,
+            realDuration, media_key, providerName, mediaUrl,
+            updated_visit_data, window_id, _1, _2, _3);
+        ledger_->LoadURL(
+            (std::string)TWITCH_PROVIDER_URL + "?json&url=" +
+            ledger_->URIEncode(oembed_url),
+            std::vector<std::string>(), "", "",
+            ledger::URL_METHOD::GET, callback);
         return;
       }
 
@@ -363,22 +353,11 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration,
     std::string publisherName;
     braveledger_bat_helper::getJSONValue("author_name", response, publisherName);
 
-    auto request = ledger_->LoadURL(publisherURL,
-        std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
-    handler_.AddRequestHandler(std::move(request),
-        std::bind(&BatGetMedia::getPublisherInfoCallback,
-                  this,
-                  duration,
-                  media_key,
-                  providerName,
-                  mediaURL,
-                  publisherURL,
-                  publisherName,
-                  visit_data,
-                  window_id,
-                  _1,
-                  _2,
-                  _3));
+    auto callback = std::bind(&BatGetMedia::getPublisherInfoCallback, this,
+        duration, media_key, providerName, mediaURL, publisherURL,
+        publisherName, visit_data, window_id, _1, _2, _3);
+    ledger_->LoadURL(publisherURL,
+        std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, callback);
     return;
   }
 
@@ -689,11 +668,9 @@ void BatGetMedia::onFetchPublisherFromDBResponse(ledger::Result result,
 }
 
 void BatGetMedia::fetchDataFromUrl(const std::string& url, FetchDataFromUrlCallback callback) {
-  auto request = ledger_->LoadURL(url,
+  ledger_->LoadURL(url,
     std::vector<std::string>(), "", "",
-    ledger::URL_METHOD::GET, &handler_);
-
-  handler_.AddRequestHandler(std::move(request), callback);
+    ledger::URL_METHOD::GET, callback);
 }
 
 void BatGetMedia::onGetChannelIdFromUserPage(uint64_t windowId,
