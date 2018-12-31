@@ -33,6 +33,7 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncReadyNewToSync);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetExistingObjects);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BackgroundSyncStarted);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BackgroundSyncStopped);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, LoopDelayVaries);
 
 class BraveSyncServiceTest;
 
@@ -110,6 +111,7 @@ class BraveSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetExistingObjects);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BackgroundSyncStarted);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BackgroundSyncStopped);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, LoopDelayVaries);
   friend class ::BraveSyncServiceTest;
 
   // SyncMessageHandler overrides
@@ -161,6 +163,7 @@ class BraveSyncServiceImpl
   void StopLoop();
   void LoopProc();
   void LoopProcThreadAligned();
+  base::TimeDelta GetLoopDelay() const;  // For tests only
 
   void GetExistingHistoryObjects(
     const RecordsList &records,
