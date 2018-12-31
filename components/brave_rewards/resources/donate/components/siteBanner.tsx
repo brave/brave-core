@@ -101,6 +101,10 @@ class Banner extends React.Component<Props, State> {
     return result
   }
 
+  get addFundsLink () {
+    return 'brave://rewards/#add-funds'
+  }
+
   render () {
     const { publisher, walletInfo, recurringList } = this.props.rewardsDonateData
     const { balance } = walletInfo
@@ -155,6 +159,7 @@ class Banner extends React.Component<Props, State> {
         social={this.generateSocialLinks()}
         showUnVerifiedNotice={!verified}
         learnMoreNotice={'https://brave.com/faq-rewards/#unclaimed-funds'}
+        addFundsLink={this.addFundsLink}
       >
         {description}
       </SiteBanner>
