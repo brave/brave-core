@@ -71,7 +71,7 @@ def get_base64_authorization(omahaid, omahapw):
 
 # To-Do: Add functions to create apps
 def get_appguid(channel, platform):
-    if channel in 'dev' or channel in 'release' and platform in 'darwin':
+    if channel in 'dev' or platform in 'darwin' and channel in ['beta', 'dev', 'release']:
         return '{CB2150F2-595F-4633-891A-E39720CE0531}'
     elif channel in 'beta':
         return '{103BD053-949B-43A8-9120-2E424887DE11}'
