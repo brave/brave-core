@@ -35,7 +35,7 @@ class BraveShieldStatsView: UIView, Themeable {
     }()
     
     lazy var stats: [StatView] = {
-        return [self.adsStatView/*, self.httpsStatView*/, self.timeStatView]
+        return [self.adsStatView, self.httpsStatView, self.timeStatView]
     }()
     
     override init(frame: CGRect) {

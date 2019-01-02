@@ -55,9 +55,9 @@ class BlocklistName: Hashable, CustomStringConvertible, ContentBlocker {
         
         // TODO #159: Setup image shield
         
-//        if domain.isShieldExpected(.HTTPSE) {
-//            onList.formUnion([.https])
-//        }
+        if domain.isShieldExpected(.HTTPSE) {
+            onList.formUnion([.https])
+        }
         
         return (onList, allLists.subtracting(onList))
     }
