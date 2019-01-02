@@ -1989,7 +1989,7 @@ extension BrowserViewController: TabManagerDelegate {
             updateTabCountUsingTabManager(tabManager)
         }
         
-        if PrivateBrowsingManager.shared.isPrivateBrowsing {
+        if PrivateBrowsingManager.shared.isPrivateBrowsing && presentedViewController == nil {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 self.presentDuckDuckGoCallout()
             }
