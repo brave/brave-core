@@ -115,8 +115,8 @@ export const onSyncSetupError = (error: Sync.SetupErrorType) => {
 /**
  * Reset the Sync Error
  */
-export const resetSyncSetupError = () => {
-  return action(types.SYNC_RESET_SETUP_ERROR)
+export const clearSyncSetupError = () => {
+  return action(types.SYNC_CLEAR_SETUP_ERROR)
 }
 
 /**

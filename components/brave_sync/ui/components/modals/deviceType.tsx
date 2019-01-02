@@ -58,7 +58,7 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
   }
 
   onUserNoticedError = () => {
-    this.props.actions.resetSyncSetupError()
+    this.props.actions.clearSyncSetupError()
     this.props.onClose()
   }
 

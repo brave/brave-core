@@ -63,7 +63,7 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
   }
 
   onUserNoticedError = () => {
-    this.props.actions.resetSyncSetupError()
+    this.props.actions.clearSyncSetupError()
   }
 
   onEnterPassphrase = (event: React.ChangeEvent<HTMLTextAreaElement>) => {

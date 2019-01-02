@@ -149,7 +149,7 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
   }
 
   onUserNoticedError = () => {
-    this.props.actions.resetSyncSetupError()
+    this.props.actions.clearSyncSetupError()
   }
 
   onClickCancelChildModals = () => {
