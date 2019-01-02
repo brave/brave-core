@@ -19,6 +19,9 @@ import {
   SubTitle
 } from 'brave-ui/features/sync'
 
+// Icons
+import { LoaderIcon } from 'brave-ui/components/icons'
+
 // Utils
 import { getLocale } from '../../../../common/locale'
 
@@ -29,13 +32,33 @@ interface Props {
 }
 interface State {
   passphrase: string
+  willCreateNewSyncChainFromCode: boolean
 }
 
 export default class EnterSyncCodeModal extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      passphrase: ''
+      passphrase: '',
+      willCreateNewSyncChainFromCode: false
+    }
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    // when component updates with a different config, disable the
+    // loading state and unfreeze the modal. at this point the component
+    // auto refresh and lead the user to the enabledContent view
+    if (
+      this.props.syncData.error !== undefined ||
+      (
+        this.state.willCreateNewSyncChainFromCode &&
+        prevProps.syncData.isSyncConfigured !==
+        this.props.syncData.isSyncConfigured &&
+        this.props.syncData.devices.length > 1
+      )
+    ) {
+      this.setState({ willCreateNewSyncChainFromCode: false })
+      this.props.onClose()
     }
   }
 
@@ -47,19 +70,26 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
     this.setState({ passphrase: event.target.value })
   }
 
+  onDismissModal = () => {
+    this.props.onClose()
+  }
+
   onClickConfirmSyncCode = () => {
     const { error, thisDeviceName } = this.props.syncData
     if (thisDeviceName !== '' || error) {
       return
     }
     const { passphrase } = this.state
+    this.setState({ willCreateNewSyncChainFromCode: true })
     this.props.actions.onSetupSyncHaveCode(passphrase, '')
   }
 
   render () {
-    const { onClose, syncData } = this.props
+    const { syncData } = this.props
+    const { willCreateNewSyncChainFromCode } = this.state
+
     return (
-      <Modal id='enterSyncCodeModal' onClose={onClose} size='small'>
+      <Modal id='enterSyncCodeModal' displayCloseButton={false} size='small'>
         {
            syncData.error === 'ERR_SYNC_WRONG_WORDS'
            ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
@@ -110,7 +140,8 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
               level='secondary'
               type='accent'
               size='medium'
-              onClick={onClose}
+              disabled={willCreateNewSyncChainFromCode}
+              onClick={this.onDismissModal}
               text={getLocale('cancel')}
             />
           </OneColumnButtonGrid>
@@ -120,6 +151,11 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
             size='medium'
             onClick={this.onClickConfirmSyncCode}
             text={getLocale('confirmCode')}
+            disabled={willCreateNewSyncChainFromCode}
+            icon={{
+              position: 'after',
+              image: willCreateNewSyncChainFromCode && <LoaderIcon />
+            }}
           />
         </TwoColumnButtonGrid>
       </Modal>

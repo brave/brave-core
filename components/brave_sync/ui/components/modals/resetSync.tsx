@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Components
-import { AlertBox, Button, Modal } from 'brave-ui'
+import { Button, Modal } from 'brave-ui'
 
 // Feature-specific components
 import {
@@ -15,9 +15,14 @@ import {
   ModalContent,
   TwoColumnButtonGrid,
   OneColumnButtonGrid,
-  Title,
   Paragraph
 } from 'brave-ui/features/sync'
+
+// Icons
+import { LoaderIcon } from 'brave-ui/components/icons'
+
+// Dialogs
+import AreYouSure from '../commonDialogs/areYouSure'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -30,45 +35,58 @@ interface Props {
 
 interface State {
   showAlert: boolean
+  willResetSync: boolean
 }
 
 export default class ResetSyncModal extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { showAlert: false }
+    this.state = {
+      showAlert: false,
+      willResetSync: false
+    }
   }
 
-  onResetSync = () => {
+  componentDidUpdate (prevProps: Props) {
+    // wait until sync is not configured to proceed
+    if (
+      prevProps.syncData.isSyncConfigured !==
+      this.props.syncData.isSyncConfigured
+    ) {
+      this.setState({ willResetSync: false })
+      this.props.onClose()
+    }
+  }
+
+  onDismissModal = () => {
+    this.props.onClose()
+  }
+
+  onClickResetSync = () => {
     this.setState({ showAlert: !this.state.showAlert })
   }
 
   onConfirmResetSync = () => {
+    this.setState({
+      showAlert: false,
+      willResetSync: true
+    })
     this.props.actions.onSyncReset()
   }
 
   render () {
-    const { onClose, syncData } = this.props
-    const { showAlert } = this.state
+    const { syncData } = this.props
+    const { showAlert, willResetSync } = this.state
 
     if (!syncData) {
       return null
     }
 
     return (
-      <Modal id='resetSyncModal' onClose={onClose} size='small'>
+      <Modal id='resetSyncModal' displayCloseButton={false} size='small'>
         {
-          showAlert
-          ? (
-              <AlertBox
-                okString={getLocale('ok')}
-                onClickOk={this.onConfirmResetSync}
-                cancelString={getLocale('cancel')}
-                onClickCancel={onClose}
-              >
-                <Title level={1}>{getLocale('areYouSure')}</Title>
-              </AlertBox>
-            )
-          : null
+          showAlert &&
+          <AreYouSure onClickOk={this.onConfirmResetSync} onClickCancel={this.onClickResetSync} />
         }
         <ModalHeader>
           <div>
@@ -84,18 +102,24 @@ export default class ResetSyncModal extends React.PureComponent<Props, State> {
             <OneColumnButtonGrid>
               <Button
                 level='secondary'
-                type='accent'
+                type='subtle'
                 size='medium'
-                onClick={onClose}
+                onClick={this.onDismissModal}
                 text={getLocale('cancel')}
+                disabled={willResetSync}
               />
             </OneColumnButtonGrid>
             <Button
               level='primary'
-              type='accent'
+              type='warn'
               size='medium'
-              onClick={this.onResetSync}
+              onClick={this.onClickResetSync}
               text={getLocale('remove')}
+              disabled={willResetSync}
+              icon={{
+                position: 'after',
+                image: willResetSync && <LoaderIcon />
+              }}
             />
           </TwoColumnButtonGrid>
       </Modal>

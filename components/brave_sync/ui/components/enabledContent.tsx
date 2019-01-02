@@ -137,8 +137,12 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
     this.setState({
       deviceToRemoveName: target.dataset.name,
       deviceToRemoveId: target.dataset.id,
-      removeDevice: !this.state.removeDevice
+      removeDevice: true
     })
+  }
+
+  onClickCancelRemoveDeviceButton = () => {
+    this.setState({ removeDevice: !this.state.removeDevice })
   }
 
   onUserNoticedError = () => {
@@ -199,10 +203,11 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
             removeDevice
               ? (
                 <RemoveDeviceModal
+                  syncData={syncData}
                   deviceName={deviceToRemoveName}
-                  deviceId={Number(deviceToRemoveId)}
+                  deviceId={deviceToRemoveId}
                   actions={actions}
-                  onClose={this.onClickRemoveDeviceButton}
+                  onClose={this.onClickCancelRemoveDeviceButton}
                 />
               )
               : null

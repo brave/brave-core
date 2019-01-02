@@ -3,6 +3,7 @@ import("//brave/components/common/typescript.gni")
 transpile_web_ui("ui") {
   inputs = [
     "actions/sync_actions.ts",
+    "components/commonDialogs/areYouSure.tsx",
     "components/modals/deviceType.tsx",
     "components/modals/enterSyncCode.tsx",
     "components/modals/removeDevice.tsx",
