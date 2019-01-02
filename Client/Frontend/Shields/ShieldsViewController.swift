@@ -74,7 +74,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     
     private func updateShieldBlockStats() {
         shieldsView.shieldsContainerStackView.adsTrackersStatView.valueLabel.text = String(tab.contentBlocker.stats.adCount + tab.contentBlocker.stats.trackerCount)
-//        shieldsView.shieldsContainerStackView.httpsUpgradesStatView.valueLabel.text = String(tab.contentBlocker.stats.httpsCount)
+        shieldsView.shieldsContainerStackView.httpsUpgradesStatView.valueLabel.text = String(tab.contentBlocker.stats.httpsCount)
         shieldsView.shieldsContainerStackView.scriptsBlockedStatView.valueLabel.text = String(tab.contentBlocker.stats.scriptCount)
         shieldsView.shieldsContainerStackView.fingerprintingStatView.valueLabel.text = String(tab.contentBlocker.stats.fingerprintingCount)
     }
@@ -122,7 +122,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
         (.AdblockAndTp, shieldsView.shieldsContainerStackView.adsTrackersControl, Preferences.Shields.blockAdsAndTracking),
         (.SafeBrowsing, shieldsView.shieldsContainerStackView.blockMalwareControl, Preferences.Shields.blockPhishingAndMalware),
         (.NoScript, shieldsView.shieldsContainerStackView.blockScriptsControl, Preferences.Shields.blockScripts),
-//        (.HTTPSE, shieldsView.shieldsContainerStackView.httpsUpgradesControl, Preferences.Shields.httpsEverywhere),
+        (.HTTPSE, shieldsView.shieldsContainerStackView.httpsUpgradesControl, Preferences.Shields.httpsEverywhere),
         (.FpProtection, shieldsView.shieldsContainerStackView.fingerprintingControl, Preferences.Shields.fingerprintingProtection),
     ]
     
