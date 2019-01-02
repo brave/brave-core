@@ -1,15 +1,18 @@
 import("//brave/build/config.gni")
+import("//build/config/mac/base_rules.gni")
 
 declare_args() {
+  # find with `security find-identity -v -p codesigning`
   mac_signing_identifier = ""
   mac_installer_signing_identifier = ""
   mac_signing_keychain = "login"
+  mac_signing_output_prefix = "signing"
 }
 
 _packaging_dir = "$root_out_dir/$chrome_product_full_name Packaging"
 keychain_db = getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
 
-_target_app_path = "$root_out_dir/signing/$brave_exe"
+_target_app_path = "$root_out_dir/$mac_signing_output_prefix/$brave_exe"
 
 group("brave") {}
 
@@ -18,19 +21,29 @@ action("sign_app") {
 
   script = "//build/gn_run_binary.py"
   shell_script = "//brave/build/mac/sign_app.sh"
-  if (brave_channel == "") {
-    provisioning_profile = "//brave/build/mac/release.provisionprofile"
-  }
-  else {
-    provisioning_profile = "//brave/build/mac/${brave_channel}.provisionprofile"
-  }
 
+  deps = [
+    "//brave:chrome_app",
+    "//chrome/installer/mac"
+  ]
+
+  if (is_official_build) {
+    if (brave_channel == "") {
+      provisioning_profile = "//brave/build/mac/release.provisionprofile"
+    } else {
+      provisioning_profile = "//brave/build/mac/${brave_channel}.provisionprofile"
+    }
+  } else {
+    # an empty dummy file just to simplify things
+    provisioning_profile = "//brave/build/mac/dummy.provisionprofile"
+  }
   inputs = [
     shell_script,
     brave_app,
     provisioning_profile,
     "$_packaging_dir/sign_app.sh",
     "$_packaging_dir/sign_versioned_dir.sh",
+    "$_packaging_dir/entitlements.plist",
   ]
   outputs = [ _target_app_path ]
   args = [
@@ -43,11 +56,12 @@ action("sign_app") {
     keychain_db,
     mac_signing_identifier,
     rebase_path(provisioning_profile, root_out_dir),
+    rebase_path("$_packaging_dir/entitlements.plist"),
   ]
-  deps = [
-    "//brave:chrome_app",
-    "//chrome/installer/mac"
-  ]
+
+  if (!is_official_build) {
+    args += [ "--development" ]
+  }
 }
 
 action("create_pkg") {
@@ -78,7 +92,7 @@ action("sign_pkg") {
     shell_script,
     "$root_out_dir/unsigned/$brave_pkg",
   ]
-  outputs = [ "${root_out_dir}/signing/$brave_pkg" ]
+  outputs = [ "${root_out_dir}/$mac_signing_output_prefix/$brave_pkg" ]
   args = [
     rebase_path(shell_script, root_build_dir),
     rebase_path("$root_out_dir/unsigned/$brave_pkg"),
@@ -150,7 +164,7 @@ action("sign_dmg") {
     shell_script,
     "$root_out_dir/unsigned/$brave_dmg",
   ]
-  outputs = [ "${root_out_dir}/signing/$brave_dmg" ]
+  outputs = [ "${root_out_dir}/$mac_signing_output_prefix/$brave_dmg" ]
   args = [
     rebase_path(shell_script, root_build_dir),
     rebase_path("$root_out_dir/unsigned/$brave_dmg"),
