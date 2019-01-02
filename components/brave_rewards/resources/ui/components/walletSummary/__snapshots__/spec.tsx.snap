@@ -185,9 +185,9 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
     <div
       className="c3"
     >
-      MISSING: monthDec
+      MISSING: monthJan
        
-      2018
+      2019
     </div>
     <div>
       <div
