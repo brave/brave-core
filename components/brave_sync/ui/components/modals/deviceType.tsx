@@ -62,32 +62,24 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
     this.props.onClose()
   }
 
-  onClickClose = () => {
-    const { devices, isSyncConfigured } = this.props.syncData
-    // sync is enabled when at least 2 devices are in the chain.
-    // this modal works both with sync enabled and disabled states.
-    // in case user opens it in the enabled content screen,
-    // check there are 2 devices in chain before reset
-    if (isSyncConfigured && devices.length < 2) {
-      this.props.actions.onSyncReset()
-    }
-    this.props.onClose()
+  onClickCancelChildModals = () => {
+    this.setState({ scanCode: false, viewSyncCode: false })
   }
 
   onClickPhoneTabletButton = () => {
-    this.setState({ scanCode: !this.state.scanCode })
+    this.setState({ scanCode: true, viewSyncCode: false })
   }
 
   onClickComputerButton = () => {
-    this.setState({ viewSyncCode: !this.state.viewSyncCode })
+    this.setState({ scanCode: false, viewSyncCode: true })
   }
 
   render () {
-    const { actions, syncData } = this.props
+    const { onClose, actions, syncData } = this.props
     const { viewSyncCode, scanCode } = this.state
 
     return (
-      <Modal id='deviceTypeModal' onClose={this.onClickClose} size='small'>
+      <Modal id='deviceTypeModal' displayCloseButton={false} size='small'>
         {
           syncData.error === 'ERR_SYNC_NO_INTERNET'
           ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
@@ -106,13 +98,27 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
         }
         {
           scanCode
-          ? <ScanCode syncData={syncData} actions={actions} onClose={this.onClickPhoneTabletButton} />
-          : null
+          ? (
+            <ScanCode
+              syncData={syncData}
+              actions={actions}
+              onClose={this.onClickCancelChildModals}
+              onClickViewSyncCodeInstead={this.onClickComputerButton}
+              onCloseDeviceTypeModal={onClose}
+            />
+          ) : null
         }
         {
           viewSyncCode
-            ? <ViewSyncCode syncData={syncData} actions={actions} onClose={this.onClickComputerButton} />
-            : null
+            ? (
+              <ViewSyncCode
+                syncData={syncData}
+                actions={actions}
+                onClose={this.onClickCancelChildModals}
+                onClickScanCodeInstead={this.onClickPhoneTabletButton}
+                onCloseDeviceTypeModal={onClose}
+              />
+            ) : null
         }
         <ModalHeader>
           <div>

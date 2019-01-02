@@ -30,6 +30,7 @@ import {
 // Modals
 import RemoveDeviceModal from './modals/removeDevice'
 import ViewSyncCodeModal from './modals/viewSyncCode'
+import ScanCodeModal from './modals/scanCode'
 import DeviceTypeModal from './modals/deviceType'
 import ResetSyncModal from './modals/resetSync'
 
@@ -44,6 +45,7 @@ interface Props {
 interface State {
   removeDevice: boolean
   viewSyncCode: boolean
+  scanCode: boolean
   addDevice: boolean
   resetSync: boolean
   deviceToRemoveName: string | undefined
@@ -56,6 +58,7 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
     this.state = {
       removeDevice: false,
       viewSyncCode: false,
+      scanCode: false,
       addDevice: false,
       resetSync: false,
       deviceToRemoveName: '',
@@ -149,8 +152,16 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
     this.props.actions.resetSyncSetupError()
   }
 
+  onClickCancelChildModals = () => {
+    this.setState({ scanCode: false, viewSyncCode: false })
+  }
+
   onClickViewSyncCodeButton = () => {
-    this.setState({ viewSyncCode: !this.state.viewSyncCode })
+    this.setState({ scanCode: false, viewSyncCode: true })
+  }
+
+  onClickScanCodeButton = () => {
+    this.setState({ scanCode: true, viewSyncCode: false })
   }
 
   onClickAddDeviceButton = () => {
@@ -170,6 +181,7 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
     const {
       removeDevice,
       viewSyncCode,
+      scanCode,
       addDevice,
       resetSync,
       deviceToRemoveName,
@@ -214,8 +226,25 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
           }
           {
             viewSyncCode
-              ? <ViewSyncCodeModal syncData={syncData} actions={actions} onClose={this.onClickViewSyncCodeButton} />
-              : null
+              ? (
+                <ViewSyncCodeModal
+                  onClickScanCodeInstead={this.onClickScanCodeButton}
+                  syncData={syncData}
+                  actions={actions}
+                  onClose={this.onClickCancelChildModals}
+                />
+              ) : null
+          }
+          {
+            scanCode
+              ? (
+                <ScanCodeModal
+                  onClickViewSyncCodeInstead={this.onClickViewSyncCodeButton}
+                  syncData={syncData}
+                  actions={actions}
+                  onClose={this.onClickCancelChildModals}
+                />
+              ) : null
           }
           {
             addDevice

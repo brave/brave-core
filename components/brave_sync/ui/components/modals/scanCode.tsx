@@ -19,9 +19,6 @@ import {
   Link
 } from 'brave-ui/features/sync'
 
-// Modals
-import ViewSyncCode from './viewSyncCode'
-
 // Dialogs
 import CancelDeviceSyncingDialog from '../commonDialogs/cancelDeviceSyncing'
 
@@ -35,24 +32,29 @@ interface Props {
   syncData: Sync.State
   actions: any
   onClose: () => void
+  onClickViewSyncCodeInstead: () => void
+  onCloseDeviceTypeModal?: () => void
 }
 
 interface State {
-  viewSyncCode: boolean
   willCancelScanCode: boolean
 }
 
 export default class ScanCodeModal extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = {
-      viewSyncCode: false,
-      willCancelScanCode: false
+    this.state = { willCancelScanCode: false }
+  }
+
+  dismissAllModals = () => {
+    this.props.onClose()
+    if (this.props.onCloseDeviceTypeModal) {
+      this.props.onCloseDeviceTypeModal()
     }
   }
 
-  onClickEnterCodeWordsInstead = () => {
-    this.setState({ viewSyncCode: !this.state.viewSyncCode })
+  onClickViewCodeWordsInstead = () => {
+    this.props.onClickViewSyncCodeInstead()
   }
 
   onDismissModal = () => {
@@ -61,7 +63,7 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
     // open the confirmation modal. otherwise close it
     isSyncConfigured && devices.length < 2
       ? this.setState({ willCancelScanCode: true })
-      : this.props.onClose()
+      : this.dismissAllModals()
   }
 
   onDismissDialog = () => {
@@ -76,22 +78,18 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
     // check there are 2 devices in chain before reset
     if (isSyncConfigured && devices.length < 2) {
       this.props.actions.onSyncReset()
+      this.dismissAllModals()
     }
     this.setState({ willCancelScanCode: false })
     this.props.onClose()
   }
 
   render () {
-    const { onClose, syncData, actions } = this.props
-    const { viewSyncCode, willCancelScanCode } = this.state
+    const { syncData } = this.props
+    const { willCancelScanCode } = this.state
 
     return (
       <Modal id='scanCodeModal' displayCloseButton={false} size='small'>
-        {
-          viewSyncCode
-            ? <ViewSyncCode syncData={syncData} actions={actions} onClose={this.onClickEnterCodeWordsInstead} />
-            : null
-        }
         {
           willCancelScanCode
           ? <CancelDeviceSyncingDialog onClickCancel={this.onDismissDialog} onClickOk={this.onConfirmDismissModal} />
@@ -122,7 +120,7 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
               level='secondary'
               type='subtle'
               size='medium'
-              onClick={this.onClickEnterCodeWordsInstead}
+              onClick={this.onClickViewCodeWordsInstead}
               text={getLocale('viewSyncCode')}
             />
           </div>
@@ -131,7 +129,7 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
               level='primary'
               type='accent'
               size='medium'
-              onClick={onClose}
+              onClick={this.onDismissModal}
               disabled={syncData.devices.length < 2}
               text={
                 syncData.devices.length < 2
