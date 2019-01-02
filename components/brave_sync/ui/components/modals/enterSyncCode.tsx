@@ -59,6 +59,19 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
     ) {
       this.setState({ willCreateNewSyncChainFromCode: false })
       this.props.onClose()
+      return
+    }
+
+    // eventually re-enable this dialog if it takes too long to process.
+    // this is useful when the back-end isn't responsive and avoids letting
+    // the user stuck in a blocked interface. this does not enable sync via code words
+    if (
+      this.state.willCreateNewSyncChainFromCode &&
+      this.props.syncData.isSyncConfigured === false
+      ) {
+      window.setTimeout(() =>
+        this.setState({ willCreateNewSyncChainFromCode: false }
+      ), 30000)
     }
   }
 
