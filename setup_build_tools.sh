@@ -8,15 +8,15 @@
 #
 
 #
-# Check if XCode Command Line Tools are installed
+# Check if Xcode Command Line Tools are installed
 #
 which -s xcode-select
 if [[ $? != 0 ]] ; then
-	echo "Installing XCode Command Line Tools"
-	# Install XCode Command Line Tools
+	echo "Installing Xcode Command Line Tools"
+	# Install Xcode Command Line Tools
 	xcode-select --install
 else
-	echo "XCode Command Line Tools already installed"
+	echo "Xcode Command Line Tools already installed"
 fi
 
 #

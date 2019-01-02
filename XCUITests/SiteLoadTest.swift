@@ -5,7 +5,7 @@
 import XCTest
 
 // NOTE: This test should be DISABLED on XCUITEST/UITEST scheme. This test should be run in conjunction with
-// XCode Profiler to measure the memory/CPU load
+// Xcode Profiler to measure the memory/CPU load
 class SiteLoadTest: BaseTestCase {
     func testLoadSite() {
 
