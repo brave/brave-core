@@ -1,0 +1,23 @@
+# Runs a script to compile a local Cargo package and all of its dependencies
+template("cargo_build") {
+  action(target_name) {
+    rust_deps_version = "0.1.0"
+
+    script = "//brave/script/cargo.py"
+
+    # make sure rebuilds when files change
+    forward_variables_from(invoker, "*")
+
+    outputs = [output]
+
+    args = [
+      "--rustup_bin=" + rebase_path("//brave/build/rustup/" + rust_deps_version + "/bin", root_build_dir),
+      "--rustup_home=" + rebase_path("//brave/build/rustup/" + rust_deps_version, root_build_dir),
+      "--cargo_home=" + rebase_path("//brave/build/rustup/" + rust_deps_version, root_build_dir),
+      "--manifest_path=" + rebase_path(manifest_path, root_build_dir),
+      "--build_path=" + rebase_path(build_path, root_build_dir),
+      "--platform=" + platform,
+      "--is_debug=$is_debug"
+    ]
+  }
+}
