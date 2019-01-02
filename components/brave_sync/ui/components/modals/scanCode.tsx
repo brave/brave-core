@@ -38,12 +38,32 @@ interface Props {
 
 interface State {
   willCancelScanCode: boolean
+  newDeviceFound: boolean
 }
 
 export default class ScanCodeModal extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { willCancelScanCode: false }
+    this.state = {
+      willCancelScanCode: false,
+      newDeviceFound: false
+    }
+  }
+
+  componentDidUpdate (prevProps: Readonly<Props>) {
+    if (
+        this.props.syncData.devices.length > 1 &&
+        prevProps.syncData.devices.length !==
+        this.props.syncData.devices.length
+    ) {
+      this.setState({ newDeviceFound: true })
+    }
+
+    const { newDeviceFound } = this.state
+    // when a device is found, self-close all modals
+    if (newDeviceFound) {
+      this.dismissAllModals()
+    }
   }
 
   dismissAllModals = () => {
@@ -86,7 +106,7 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
 
   render () {
     const { syncData } = this.props
-    const { willCancelScanCode } = this.state
+    const { willCancelScanCode, newDeviceFound } = this.state
 
     return (
       <Modal id='scanCodeModal' displayCloseButton={false} size='small'>
@@ -112,7 +132,7 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
           }
         </ScanGrid>
         <ThreeColumnButtonGrid>
-        <div>
+          <div>
             <Link onClick={this.onDismissModal}>{getLocale('cancel')}</Link>
           </div>
           <div>
@@ -130,15 +150,15 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
               type='accent'
               size='medium'
               onClick={this.onDismissModal}
-              disabled={syncData.devices.length < 2}
+              disabled={newDeviceFound === false}
               text={
-                syncData.devices.length < 2
+                newDeviceFound === false
                 ? getLocale('lookingForDevice')
                 : getLocale('ok')
               }
               icon={{
                 position: 'before',
-                image: syncData.devices.length < 2
+                image: newDeviceFound === false
                   ? <LoaderIcon />
                   : null
               }}
