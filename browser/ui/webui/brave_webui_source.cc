@@ -445,6 +445,8 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "wordCount",  IDS_BRAVE_SYNC_SHARED_WORD_COUNT_TEXT },
         { "ok", IDS_BRAVE_SYNC_SHARED_OK_BUTTON },
         { "cancel", IDS_BRAVE_SYNC_SHARED_CANCEL_BUTTON },
+        { "cancelDeviceSyncing", IDS_BRAVE_SYNC_SHARED_CANCEL_SYNCING_TITLE },
+        { "cancelDeviceSyncingButton", IDS_BRAVE_SYNC_SHARED_CANCEL_SYNCING_BUTTON },
         { "thisSyncChain", IDS_BRAVE_SYNC_SHARED_FROM_THIS_CHAIN_PARTIAL },
         { "lookingForDevice", IDS_BRAVE_SYNC_SCAN_CODE_LOOKING_FOR_DEVICE_BUTTON },
         { "viewSyncCode", IDS_BRAVE_SYNC_ENABLED_VIEW_CODE_BUTTON },

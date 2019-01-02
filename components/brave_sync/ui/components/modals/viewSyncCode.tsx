@@ -21,6 +21,9 @@ import {
 // Modals
 import ScanCode from './scanCode'
 
+// Dialogs
+import CancelDeviceSyncingDialog from '../commonDialogs/cancelDeviceSyncing'
+
 // Utils
 import { getLocale } from '../../../../common/locale'
 
@@ -32,13 +35,15 @@ interface Props {
 
 interface State {
   useCameraInstead: boolean
+  willCancelViewCode: boolean
 }
 
 export default class ViewSyncCodeModal extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      useCameraInstead: false
+      useCameraInstead: false,
+      willCancelViewCode: false
     }
   }
 
@@ -46,14 +51,35 @@ export default class ViewSyncCodeModal extends React.PureComponent<Props, State>
     this.setState({ useCameraInstead: !this.state.useCameraInstead })
   }
 
-  onCancel = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault()
+  onDismissModal = () => {
+    const { devices, isSyncConfigured } = this.props.syncData
+    // if user is still trying to build a sync chain,
+    // open the confirmation modal. otherwise close it
+    isSyncConfigured && devices.length < 2
+      ? this.setState({ willCancelViewCode: true })
+      : this.props.onClose()
+  }
+
+  onDismissDialog = () => {
+    this.setState({ willCancelViewCode: false })
+  }
+
+  onConfirmDismissModal = () => {
+    const { devices, isSyncConfigured } = this.props.syncData
+    // sync is enabled when at least 2 devices are in the chain.
+    // this modal works both with sync enabled and disabled states.
+    // in case user opens it in the enabled content screen,
+    // check there are 2 devices in chain before reset
+    if (isSyncConfigured && devices.length < 2) {
+      this.props.actions.onSyncReset()
+    }
+    this.setState({ willCancelViewCode: false })
     this.props.onClose()
   }
 
   render () {
     const { onClose, actions, syncData } = this.props
-    const { useCameraInstead } = this.state
+    const { useCameraInstead, willCancelViewCode } = this.state
 
     return (
       <Modal id='viewSyncCodeModal' displayCloseButton={false} size='small'>
@@ -61,6 +87,11 @@ export default class ViewSyncCodeModal extends React.PureComponent<Props, State>
           useCameraInstead
             ? <ScanCode syncData={syncData} actions={actions} onClose={this.onClickUseCameraInsteadButton} />
             : null
+        }
+        {
+          willCancelViewCode
+          ? <CancelDeviceSyncingDialog onClickCancel={this.onDismissDialog} onClickOk={this.onConfirmDismissModal} />
+          : null
         }
         <ModalHeader>
           <div>
@@ -84,7 +115,7 @@ export default class ViewSyncCodeModal extends React.PureComponent<Props, State>
           }
         <ThreeColumnButtonGrid>
           <div>
-            <Link onClick={this.onCancel}>{getLocale('cancel')}</Link>
+            <Link onClick={this.onDismissModal}>{getLocale('cancel')}</Link>
           </div>
           <div>
             <Button

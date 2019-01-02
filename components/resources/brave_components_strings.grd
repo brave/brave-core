@@ -454,6 +454,8 @@
       <message name="IDS_BRAVE_SYNC_SHARED_WORD_COUNT_TEXT" desc="The Sync `word count` phrase that shows how many words are in a textarea field">Word Count:</message>
       <message name="IDS_BRAVE_SYNC_SHARED_OK_BUTTON" desc="The Sync `ok` button that indicates user is aware of what is being written">Ok</message>
       <message name="IDS_BRAVE_SYNC_SHARED_CANCEL_BUTTON" desc="The Sync `cancel` button that closes the current modal">Cancel</message>
+      <message name="IDS_BRAVE_SYNC_SHARED_CANCEL_SYNCING_TITLE" desc="The Sync phrase for when the user is about to reset sync by closing the `view code` or `scan code` modal">Exiting this modal early will delete the current chain and the devices looking for this code will not be able to sync. This modal will exit automatically when a successful sync connection is made.</message>
+      <message name="IDS_BRAVE_SYNC_SHARED_CANCEL_SYNCING_BUTTON" desc="The Sync button label for when the user is about to reset sync by closing the `view code` or `scan code` modal">Exit Modal</message>
       <message name="IDS_BRAVE_SYNC_SHARED_FROM_THIS_CHAIN_PARTIAL" desc="The Sync partial phrase included in `remove X from this sync chain` where X is the user's device name">from this sync chain</message>
       <message name="IDS_BRAVE_SYNC_SHARED_VIEW_CODE_BUTTON" desc="The Sync button to enter code words instead of scanning the current code">View Code Words</message>
       <message name="IDS_BRAVE_SYNC_SCAN_CODE_LOOKING_FOR_DEVICE_BUTTON" desc="The Sync temporary button that holds while a device is not found yet">Looking for device</message>

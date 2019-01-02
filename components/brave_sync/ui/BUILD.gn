@@ -4,6 +4,7 @@ transpile_web_ui("ui") {
   inputs = [
     "actions/sync_actions.ts",
     "components/commonDialogs/areYouSure.tsx",
+    "components/commonDialogs/cancelDeviceSyncing.tsx",
     "components/modals/deviceType.tsx",
     "components/modals/enterSyncCode.tsx",
     "components/modals/removeDevice.tsx",

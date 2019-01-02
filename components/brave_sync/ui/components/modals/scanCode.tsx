@@ -22,6 +22,9 @@ import {
 // Modals
 import ViewSyncCode from './viewSyncCode'
 
+// Dialogs
+import CancelDeviceSyncingDialog from '../commonDialogs/cancelDeviceSyncing'
+
 // Utils
 import { getLocale } from '../../../../common/locale'
 
@@ -33,15 +36,18 @@ interface Props {
   actions: any
   onClose: () => void
 }
+
 interface State {
   viewSyncCode: boolean
+  willCancelScanCode: boolean
 }
 
 export default class ScanCodeModal extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      viewSyncCode: false
+      viewSyncCode: false,
+      willCancelScanCode: false
     }
   }
 
@@ -49,14 +55,35 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
     this.setState({ viewSyncCode: !this.state.viewSyncCode })
   }
 
-  onCancel = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault()
+  onDismissModal = () => {
+    const { devices, isSyncConfigured } = this.props.syncData
+    // if user is still trying to build a sync chain,
+    // open the confirmation modal. otherwise close it
+    isSyncConfigured && devices.length < 2
+      ? this.setState({ willCancelScanCode: true })
+      : this.props.onClose()
+  }
+
+  onDismissDialog = () => {
+    this.setState({ willCancelScanCode: false })
+  }
+
+  onConfirmDismissModal = () => {
+    const { devices, isSyncConfigured } = this.props.syncData
+    // sync is enabled when at least 2 devices are in the chain.
+    // this modal works both with sync enabled and disabled states.
+    // in case user opens it in the enabled content screen,
+    // check there are 2 devices in chain before reset
+    if (isSyncConfigured && devices.length < 2) {
+      this.props.actions.onSyncReset()
+    }
+    this.setState({ willCancelScanCode: false })
     this.props.onClose()
   }
 
   render () {
     const { onClose, syncData, actions } = this.props
-    const { viewSyncCode } = this.state
+    const { viewSyncCode, willCancelScanCode } = this.state
 
     return (
       <Modal id='scanCodeModal' displayCloseButton={false} size='small'>
@@ -64,6 +91,11 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
           viewSyncCode
             ? <ViewSyncCode syncData={syncData} actions={actions} onClose={this.onClickEnterCodeWordsInstead} />
             : null
+        }
+        {
+          willCancelScanCode
+          ? <CancelDeviceSyncingDialog onClickCancel={this.onDismissDialog} onClickOk={this.onConfirmDismissModal} />
+          : null
         }
         <ModalHeader>
           <div>
@@ -83,7 +115,7 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
         </ScanGrid>
         <ThreeColumnButtonGrid>
         <div>
-            <Link onClick={this.onCancel}>{getLocale('cancel')}</Link>
+            <Link onClick={this.onDismissModal}>{getLocale('cancel')}</Link>
           </div>
           <div>
             <Button
