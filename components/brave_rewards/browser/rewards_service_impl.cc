@@ -1761,7 +1761,11 @@ void RewardsServiceImpl::OnFetchFavIconCompleted(ledger::FetchIconCallback callb
       url,
       favicon_base::IconType::kFavicon,
       gfx_image,
+#if !defined(OS_ANDROID)
       base::BindOnce(&RewardsServiceImpl::OnSetOnDemandFaviconComplete, AsWeakPtr(), favicon_url.spec(), callback));
+#else
+      base::BindOnce(&RewardsServiceImpl::OnSetOnDemandFaviconComplete, AsWeakPtr(), url.spec(), callback));
+#endif
 
   std::vector<std::string>::iterator it_url;
   it_url = find(current_media_fetchers_.begin(), current_media_fetchers_.end(), url.spec());
