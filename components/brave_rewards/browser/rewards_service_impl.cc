@@ -252,20 +252,6 @@ void PostWriteCallback(
                               base::Bind(callback, write_success));
 }
 
-void GetContentSiteListInternal(
-    uint32_t start,
-    uint32_t limit,
-    const GetContentSiteListCallback& callback,
-    const ledger::PublisherInfoList& publisher_list,
-    uint32_t next_record) {
-  std::unique_ptr<ContentSiteList> site_list(new ContentSiteList);
-  for (ledger::PublisherInfoList::const_iterator it =
-      publisher_list.begin(); it != publisher_list.end(); ++it) {
-    site_list->push_back(PublisherInfoToContentSite(*it));
-  }
-  callback.Run(std::move(site_list), next_record);
-}
-
 time_t GetCurrentTimestamp() {
   return base::Time::NowFromSystemTime().ToTimeT();
 }
@@ -439,10 +425,6 @@ void RewardsServiceImpl::GetContentSiteList(
     uint64_t reconcile_stamp,
     bool allow_non_verified,
     const GetContentSiteListCallback& callback) {
-  if (!Connected()) {
-    return;
-  }
-
   ledger::ActivityInfoFilter filter;
   filter.month = ledger::ACTIVITY_MONTH::ANY;
   filter.year = -1;
@@ -454,29 +436,26 @@ void RewardsServiceImpl::GetContentSiteList(
   filter.percent = 1;
   filter.non_verified = allow_non_verified;
 
-  bat_ledger_->GetActivityInfoList(start, limit,
-      filter.ToJson(),
-      base::BindOnce(&RewardsServiceImpl::OnGetPublisherInfoList, AsWeakPtr(),
-                start,
-                limit,
-                callback));
+  GetActivityInfoList(start, limit,
+      filter,
+      std::bind(&RewardsServiceImpl::OnGetContentSiteList,
+                this,
+                callback,
+                std::placeholders::_1,
+                std::placeholders::_2));
 }
 
-void RewardsServiceImpl::OnGetPublisherInfoList(
-    uint32_t start, uint32_t limit,
+void RewardsServiceImpl::OnGetContentSiteList(
     const GetContentSiteListCallback& callback,
-    const std::vector<std::string>& publisher_info_list,
+    const ledger::PublisherInfoList& list,
     uint32_t next_record) {
-  ledger::PublisherInfoList list;
-
-  for (const auto& i : publisher_info_list) {
-    ledger::PublisherInfo info;
-    info.loadFromJson(i);
-    list.push_back(info);
+  std::unique_ptr<ContentSiteList> site_list(new ContentSiteList);
+  for (ledger::PublisherInfoList::const_iterator it =
+      list.begin(); it != list.end(); ++it) {
+    site_list->push_back(PublisherInfoToContentSite(*it));
   }
 
-  GetContentSiteListInternal(start, limit, callback, std::move(list),
-      next_record);
+  callback.Run(std::move(site_list), next_record);
 }
 
 void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
@@ -1057,7 +1036,7 @@ void RewardsServiceImpl::OnPanelPublisherInfoLoaded(
   callback(ledger::Result::LEDGER_OK, std::move(publisher_info));
 }
 
-void RewardsServiceImpl::LoadActivityInfoList(
+void RewardsServiceImpl::GetActivityInfoList(
     uint32_t start,
     uint32_t limit,
     ledger::ActivityInfoFilter filter,

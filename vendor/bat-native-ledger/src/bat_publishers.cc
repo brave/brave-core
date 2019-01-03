@@ -87,7 +87,7 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
     return;
   }
 
-  auto filter = CreatePublisherFilter(publisher_id,
+  auto filter = CreateActivityFilter(publisher_id,
       ledger::ACTIVITY_MONTH::ANY,
       -1,
       ledger::EXCLUDE_FILTER::FILTER_ALL,
@@ -241,10 +241,9 @@ void BatPublishers::saveVisitInternal(
 
   if (new_visit &&
       (excluded ||
-       !saveVisitAllowed() ||
+       !ledger_->GetAutoContribute() ||
        min_duration_new ||
-       verified_new ||
-       !ledger_->GetAutoContribute())) {
+       verified_new)) {
     panel_info = std::make_unique<ledger::PublisherInfo>(*publisher_info);
     ledger_->SetPublisherInfo(std::move(publisher_info),
                               std::bind(&onVisitSavedDummy, _1, _2));
@@ -273,16 +272,7 @@ void BatPublishers::saveVisitInternal(
 void BatPublishers::onFetchFavIcon(const std::string& publisher_key,
                                    bool success,
                                    const std::string& favicon_url) {
-  uint64_t currentReconcileStamp = ledger_->GetReconcileStamp();
-  auto filter = ledger_->CreatePublisherFilter(publisher_key,
-      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-      ledger::PUBLISHER_MONTH::ANY,
-      -1,
-      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
-      false,
-      currentReconcileStamp,
-      true);
-  ledger_->GetPublisherInfo(filter,
+  ledger_->GetPublisherInfo(publisher_key,
       std::bind(&BatPublishers::onFetchFavIconDBResponse,
       this, _1, _2, favicon_url));
 }

@@ -297,33 +297,6 @@ void BatLedgerImpl::GetPublisherBanner(const std::string& publisher_id,
       std::bind(BatLedgerImpl::OnGetPublisherBanner, holder, _1));
 }
 
-// static
-void BatLedgerImpl::OnGetPublisherInfoList(
-    CallbackHolder<GetPublisherInfoListCallback>* holder,
-    const ledger::PublisherInfoList& list,
-    uint32_t next_record) {
-  std::vector<std::string> publisher_info_list;
-  for (const auto& info : list) {
-    publisher_info_list.push_back(info.ToJson());
-  }
-
-  if (holder->is_valid())
-    std::move(holder->get()).Run(publisher_info_list, next_record);
-  delete holder;
-}
-
-void BatLedgerImpl::GetPublisherInfoList(uint32_t start, uint32_t limit,
-    const std::string& filter,
-    GetPublisherInfoListCallback callback) {
-  // delete in OnGetPublisherInfoList
-  auto* holder = new CallbackHolder<GetPublisherInfoListCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger::ActivityInfoFilter publisher_info_filter;
-  publisher_info_filter.loadFromJson(filter);
-  ledger_->GetPublisherInfoList(start, limit, publisher_info_filter,
-      std::bind(BatLedgerImpl::OnGetPublisherInfoList, holder, _1, _2));
-}
-
 void BatLedgerImpl::GetContributionAmount(
     GetContributionAmountCallback callback) {
   std::move(callback).Run(ledger_->GetContributionAmount());

@@ -267,43 +267,34 @@ void LedgerClientMojoProxy::OnLoadPublisherInfo(
 }
 
 void LedgerClientMojoProxy::LoadPublisherInfo(
-    const std::string& filter,
+    const std::string& publisher_key,
     LoadPublisherInfoCallback callback) {
   // deleted in OnLoadPublisherInfo
   auto* holder = new CallbackHolder<LoadPublisherInfoCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger::ActivityInfoFilter publisher_info_filter;
-  publisher_info_filter.loadFromJson(filter);
-  ledger_client_->LoadPublisherInfo(publisher_info_filter,
+  ledger_client_->LoadPublisherInfo(publisher_key,
       std::bind(LedgerClientMojoProxy::OnLoadPublisherInfo, holder, _1, _2));
 }
 
 // static
-void LedgerClientMojoProxy::OnLoadPublisherInfoList(
-    CallbackHolder<LoadPublisherInfoListCallback>* holder,
-    const ledger::PublisherInfoList& list,
-    uint32_t next_record) {
-  std::vector<std::string> publisher_info_list;
-  for (const auto& info : list) {
-    publisher_info_list.push_back(info.ToJson());
-  }
-
+void LedgerClientMojoProxy::OnLoadPanelPublisherInfo(
+    CallbackHolder<LoadPanelPublisherInfoCallback>* holder,
+    ledger::Result result, std::unique_ptr<ledger::PublisherInfo> info) {
+  std::string json_info = info ? info->ToJson() : "";
   if (holder->is_valid())
-    std::move(holder->get()).Run(publisher_info_list, next_record);
+    std::move(holder->get()).Run(ToMojomResult(result), json_info);
   delete holder;
 }
 
-void LedgerClientMojoProxy::LoadPublisherInfoList(uint32_t start,
-    uint32_t limit,
-    const std::string& filter,
-    LoadPublisherInfoListCallback callback) {
-  // deleted in OnLoadPublisherInfoList
-  auto* holder = new CallbackHolder<LoadPublisherInfoListCallback>(
+void LedgerClientMojoProxy::LoadPanelPublisherInfo(const std::string& filter,
+    LoadPanelPublisherInfoCallback callback) {
+  // deleted in OnLoadPanelPublisherInfo
+  auto* holder = new CallbackHolder<LoadPanelPublisherInfoCallback>(
       AsWeakPtr(), std::move(callback));
   ledger::ActivityInfoFilter publisher_info_filter;
   publisher_info_filter.loadFromJson(filter);
-  ledger_client_->LoadPublisherInfoList(start, limit, publisher_info_filter,
-      std::bind(LedgerClientMojoProxy::OnLoadPublisherInfoList,
+  ledger_client_->LoadPanelPublisherInfo(publisher_info_filter,
+      std::bind(LedgerClientMojoProxy::OnLoadPanelPublisherInfo,
         holder, _1, _2));
 }
 
@@ -496,6 +487,111 @@ void LedgerClientMojoProxy::SavePendingContribution(const std::string& list) {
   contribution_list.loadFromJson(list);
 
   ledger_client_->SavePendingContribution(contribution_list);
+}
+
+// static
+void LedgerClientMojoProxy::OnLoadActivityInfo(
+    CallbackHolder<LoadActivityInfoCallback>* holder,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info) {
+  std::string json_info = info ? info->ToJson() : "";
+  if (holder->is_valid())
+    std::move(holder->get()).Run(ToMojomResult(result), json_info);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::LoadActivityInfo(
+    const std::string& filter,
+    LoadActivityInfoCallback callback) {
+  // deleted in OnLoadActivityInfo
+  auto* holder = new CallbackHolder<LoadActivityInfoCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger::ActivityInfoFilter publisher_info_filter;
+  publisher_info_filter.loadFromJson(filter);
+  ledger_client_->LoadActivityInfo(publisher_info_filter,
+      std::bind(LedgerClientMojoProxy::OnLoadActivityInfo, holder, _1, _2));
+}
+
+// static
+void LedgerClientMojoProxy::OnSaveActivityInfo(
+    CallbackHolder<SaveActivityInfoCallback>* holder,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info) {
+  std::string json_info = info ? info->ToJson() : "";
+  if (holder->is_valid())
+    std::move(holder->get()).Run(ToMojomResult(result), json_info);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::SaveActivityInfo(
+    const std::string& publisher_info,
+    SaveActivityInfoCallback callback) {
+  // deleted in OnSaveActivityInfo
+  auto* holder = new CallbackHolder<SaveActivityInfoCallback>(
+      AsWeakPtr(), std::move(callback));
+  std::unique_ptr<ledger::PublisherInfo> info;
+  if (!publisher_info.empty()) {
+    info.reset(new ledger::PublisherInfo());
+    info->loadFromJson(publisher_info);
+  }
+
+  ledger_client_->SaveActivityInfo(std::move(info),
+      std::bind(LedgerClientMojoProxy::OnSaveActivityInfo, holder, _1, _2));
+}
+
+// static
+void LedgerClientMojoProxy::OnRestorePublishersDone(
+    CallbackHolder<OnRestorePublishersCallback>* holder,
+    bool result) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::OnRestorePublishers(
+    OnRestorePublishersCallback callback) {
+  // deleted in OnRestorePublishersDone
+  auto* holder = new CallbackHolder<OnRestorePublishersCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_client_->OnRestorePublishers(
+      std::bind(LedgerClientMojoProxy::OnRestorePublishersDone, holder, _1));
+}
+
+// static
+void LedgerClientMojoProxy::OnGetActivityInfoList(
+    CallbackHolder<GetActivityInfoListCallback>* holder,
+    const ledger::PublisherInfoList& publisher_info_list,
+    uint32_t next_record) {
+  std::vector<std::string> list;
+  for (const auto& publisher_info : publisher_info_list) {
+    list.push_back(publisher_info.ToJson());
+  }
+
+  if (holder->is_valid())
+    std::move(holder->get()).Run(list, next_record);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetActivityInfoList(uint32_t start,
+    uint32_t limit,
+    const std::string& filter,
+    GetActivityInfoListCallback callback) {
+  // deleted in OnGetActivityInfoList
+  auto* holder = new CallbackHolder<GetActivityInfoListCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger::ActivityInfoFilter publisher_info_filter;
+  publisher_info_filter.loadFromJson(filter);
+
+  ledger_client_->GetActivityInfoList(start,
+      limit,
+      publisher_info_filter,
+      std::bind(LedgerClientMojoProxy::OnGetActivityInfoList,
+                holder,
+                _1,
+                _2));
+
 }
 
 } // namespace bat_ledger

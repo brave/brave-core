@@ -47,13 +47,10 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void SavePublisherInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
                          ledger::PublisherInfoCallback callback) override;
-  void LoadPublisherInfo(ledger::ActivityInfoFilter filter,
+  void LoadPublisherInfo(const std::string& publisher_key,
                          ledger::PublisherInfoCallback callback) override;
-  void LoadPublisherInfoList(
-      uint32_t start,
-      uint32_t limit,
-      ledger::ActivityInfoFilter filter,
-      ledger::PublisherInfoListCallback callback) override;
+  void LoadPanelPublisherInfo(ledger::ActivityInfoFilter filter,
+                              ledger::PublisherInfoCallback callback) override;
   void SavePublishersList(const std::string& publishers_list,
                           ledger::LedgerCallbackHandler* handler) override;
   void SetTimer(uint64_t time_offset, uint32_t& timer_id) override;
@@ -97,6 +94,19 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void SavePendingContribution(
       const ledger::PendingContributionList& list) override;
+
+  void LoadActivityInfo(ledger::ActivityInfoFilter filter,
+                        ledger::PublisherInfoCallback callback) override;
+
+  void SaveActivityInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
+                        ledger::PublisherInfoCallback callback) override;
+
+  void OnRestorePublishers(ledger::OnRestoreCallback callback) override;
+
+  void GetActivityInfoList(uint32_t start,
+                           uint32_t limit,
+                           ledger::ActivityInfoFilter filter,
+                           ledger::PublisherInfoListCallback callback) override;
 
  private:
   bool Connected() const;

@@ -37,20 +37,15 @@ PublisherInfoDatabase::~PublisherInfoDatabase() {
 }
 
 bool PublisherInfoDatabase::Init() {
-  LOG(ERROR) << "INIT 0";
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  LOG(ERROR) << "INIT 1";
 
   if (initialized_) {
     return true;
   }
-  LOG(ERROR) << "INIT 2" << db_path_;
 
   if (!db_.Open(db_path_)) {
     return false;
   }
-  LOG(ERROR) << "INIT 3";
 
   // TODO - add error delegate
   sql::Transaction committer(&db_);
@@ -67,7 +62,7 @@ bool PublisherInfoDatabase::Init() {
       !CreateActivityInfoTable() ||
       !CreateMediaPublisherInfoTable() ||
       !CreateRecurringDonationTable() ||
-      !CreatePendingContributionsTable())
+      !CreatePendingContributionsTable()) {
     return false;
   }
 
@@ -1064,7 +1059,7 @@ sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {
 
   // to version 4
   if (old_version < 4 && cur_version < 5) {
-    if (!MigrateV2toV3()) {
+    if (!MigrateV3toV4()) {
       LOG(ERROR) << "DB: Error with MigrateV3toV4";
     }
   }

@@ -101,7 +101,7 @@ class MockLedgerClient : public ledger::Ledger {
   MOCK_METHOD0(GetRecurringDonationPublisherInfo,
                std::vector<ledger::ContributionInfo>());
 
-  MOCK_METHOD4(GetPublisherInfoList, void(
+  MOCK_METHOD4(GetActivityInfoList, void(
       uint32_t start,
       uint32_t limit,
       const ledger::ActivityInfoFilter& filter,

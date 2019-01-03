@@ -44,11 +44,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void SavePublisherInfo(const std::string& publisher_info,
       SavePublisherInfoCallback callback) override;
-  void LoadPublisherInfo(const std::string& filter,
+  void LoadPublisherInfo(const std::string& publisher_key,
       LoadPublisherInfoCallback callback) override;
-  void LoadPublisherInfoList(uint32_t start, uint32_t limit,
-      const std::string& filter,
-      LoadPublisherInfoListCallback callback) override;
+  void LoadPanelPublisherInfo(const std::string& filter,
+      LoadPanelPublisherInfoCallback callback) override;
   void LoadMediaPublisherInfo(const std::string& media_key,
       LoadMediaPublisherInfoCallback callback) override;
 
@@ -90,6 +89,19 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void SavePendingContribution(
       const std::string& list) override;
 
+  void LoadActivityInfo(const std::string& filter,
+      LoadActivityInfoCallback callback) override;
+
+  void SaveActivityInfo(const std::string& publisher_info,
+      SaveActivityInfoCallback callback) override;
+
+  void OnRestorePublishers(OnRestorePublishersCallback callback) override;
+
+  void GetActivityInfoList(uint32_t start,
+                           uint32_t limit,
+                           const std::string& filter,
+                           GetActivityInfoListCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*
@@ -129,10 +141,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> info);
 
-  static void OnLoadPublisherInfoList(
-      CallbackHolder<LoadPublisherInfoListCallback>* holder,
-      const ledger::PublisherInfoList& list,
-      uint32_t next_record);
+  static void OnLoadPanelPublisherInfo(
+      CallbackHolder<LoadPanelPublisherInfoCallback>* holder,
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> info);
 
   static void OnLoadMediaPublisherInfo(
       CallbackHolder<LoadMediaPublisherInfoCallback>* holder,
@@ -161,6 +173,25 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       CallbackHolder<LoadURLCallback>* holder,
       bool success, const std::string& response,
       const std::map<std::string, std::string>& headers);
+
+  static void OnLoadActivityInfo(
+      CallbackHolder<LoadActivityInfoCallback>* holder,
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> info);
+
+  static void OnSaveActivityInfo(
+      CallbackHolder<SaveActivityInfoCallback>* holder,
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> info);
+
+  static void OnRestorePublishersDone(
+    CallbackHolder<OnRestorePublishersCallback>* holder,
+    bool result);
+
+  static void OnGetActivityInfoList(
+      CallbackHolder<GetRecurringDonationsCallback>* holder,
+      const ledger::PublisherInfoList& publisher_info_list,
+      uint32_t next_record);
 
   ledger::LedgerClient* ledger_client_;
 

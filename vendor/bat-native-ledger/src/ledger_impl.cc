@@ -391,7 +391,7 @@ void LedgerImpl::GetActivityInfoList(
     uint32_t limit,
     const ledger::ActivityInfoFilter& filter,
     ledger::PublisherInfoListCallback callback) {
-  ledger_client_->LoadActivityInfoList(start, limit, filter, callback);
+  ledger_client_->GetActivityInfoList(start, limit, filter, callback);
 }
 
 void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
@@ -656,7 +656,7 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
     ledger::PendingContribution contribution;
     contribution.publisher_key = publisher.id;
     contribution.amount = amount;
-    contribution.category = ledger::PUBLISHER_CATEGORY::DIRECT_DONATION;
+    contribution.category = ledger::REWARDS_CATEGORY::DIRECT_DONATION;
 
     ledger::PendingContributionList list;
     list.list_ = std::vector<ledger::PendingContribution> { contribution };

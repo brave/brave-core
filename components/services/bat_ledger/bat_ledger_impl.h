@@ -106,9 +106,6 @@ class BatLedgerImpl : public mojom::BatLedger,
       GetContributionAmountCallback callback) override;
     void GetPublisherBanner(const std::string& publisher_id,
         GetPublisherBannerCallback callback) override;
-    void GetPublisherInfoList(uint32_t start, uint32_t limit,
-        const std::string& filter,
-        GetPublisherInfoListCallback callback) override;
 
     void DoDirectDonation(const std::string& publisher_info, int32_t amount,
         const std::string& currency) override;
@@ -143,11 +140,6 @@ class BatLedgerImpl : public mojom::BatLedger,
     static void OnGetPublisherBanner(
         CallbackHolder<GetPublisherBannerCallback>* holder,
         std::unique_ptr<ledger::PublisherBanner> banner);
-
-    static void OnGetPublisherInfoList(
-        CallbackHolder<GetPublisherInfoListCallback>* holder,
-        const ledger::PublisherInfoList& list,
-        uint32_t next_record);
 
     std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
     std::unique_ptr<ledger::Ledger> ledger_;

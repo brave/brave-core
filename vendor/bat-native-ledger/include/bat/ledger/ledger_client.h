@@ -102,7 +102,7 @@ class LEDGER_EXPORT LedgerClient {
                                 PublisherInfoCallback callback) = 0;
   virtual void SaveMediaPublisherInfo(const std::string& media_key,
                                 const std::string& publisher_id) = 0;
-  virtual void LoadActivityInfoList(uint32_t start, uint32_t limit,
+  virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
                                     ActivityInfoFilter filter,
                                     PublisherInfoListCallback callback) = 0;
 

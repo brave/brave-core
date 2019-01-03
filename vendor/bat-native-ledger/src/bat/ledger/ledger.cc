@@ -161,7 +161,6 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("id") && d["id"].IsString() &&
-        d.HasMember("category") && d["category"].IsInt() &&
         d.HasMember("month") && d["month"].IsInt() &&
         d.HasMember("year") && d["year"].IsInt() &&
         d.HasMember("excluded") && d["excluded"].IsInt() &&
@@ -174,7 +173,6 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
 
   if (false == error) {
     id = d["id"].GetString();
-    category = d["category"].GetInt();
     month = (ACTIVITY_MONTH)d["month"].GetInt();
     year = d["year"].GetInt();
     excluded = (EXCLUDE_FILTER)d["excluded"].GetInt();
@@ -320,7 +318,6 @@ bool PublisherInfo::is_valid() const {
   return !id.empty() && year > 0 && month != ACTIVITY_MONTH::ANY;
 }
 
-<<<<<<< HEAD
 const std::string PublisherInfo::ToJson() const {
   std::string json;
   braveledger_bat_helper::saveToJsonString(*this, json);
@@ -386,9 +383,6 @@ bool PublisherInfo::loadFromJson(const std::string& json) {
 }
 
 const PublisherInfo invalid("", ACTIVITY_MONTH::ANY, -1);
-=======
-const PublisherInfo invalid("", ACTIVITY_MONTH::ANY, -1);
->>>>>>> Ports ledger cahnges from seperate repo into core
 
 const std::string ContributionInfo::ToJson() const {
   std::string json;
@@ -702,7 +696,7 @@ bool PendingContribution::loadFromJson(const std::string& json) {
     amount = d["amount"].GetDouble();
     added_date = d["added_date"].GetUint64();
     viewing_id = d["viewing_id"].GetString();
-    category = static_cast<PUBLISHER_CATEGORY>(d["category"].GetInt());
+    category = static_cast<REWARDS_CATEGORY>(d["category"].GetInt());
   }
 
   return !error;
