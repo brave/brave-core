@@ -1,0 +1,21 @@
+diff --git a/services/service_manager/zygote/host/zygote_host_impl_linux.cc b/services/service_manager/zygote/host/zygote_host_impl_linux.cc
+index fe5cccb6d1288d422418356d1626a7e561ea6a87..c7dc00aa1e63cb5ca3505cdf26391fb0f379d6d2 100644
+--- a/services/service_manager/zygote/host/zygote_host_impl_linux.cc
++++ b/services/service_manager/zygote/host/zygote_host_impl_linux.cc
+@@ -114,13 +114,9 @@ void ZygoteHostImpl::Init(const base::CommandLine& command_line) {
+     use_suid_sandbox_for_adj_oom_score_ = use_suid_sandbox_;
+   } else {
+     LOG(FATAL)
+-        << "No usable sandbox! Update your kernel or see "
+-           "https://chromium.googlesource.com/chromium/src/+/master/"
+-           "docs/linux_suid_sandbox_development.md for more information on "
+-           "developing with the SUID sandbox. "
+-           "If you want to live dangerously and need an immediate workaround, "
+-           "you can try using --"
+-        << service_manager::switches::kNoSandbox << ".";
++        << "No usable sandbox! You probably need to enable user namespaces "
++           "in your kernel. See https://brave-browser.readthedocs.io/en/"
++           "latest/installing-brave.html#linux for more information.";
+   }
+ }
+ 
