@@ -8,9 +8,9 @@ import StartImageUrl from './start_icon.svg'
 import DefaultImageUrl from './default_icon.svg'
 import AddImageUrl from './add_icon.svg'
 import RemoveImageUrl from './remove_icon.svg'
-import DesktopImageUrl from './desktop_icon.png'
-import MobileImageUrl from './mobile_icon.png'
-import MobileHandImageUrl from './mobile_picture.png'
+import DesktopImageUrl from './sync_computer.svg'
+import MobileImageUrl from './sync_devices.svg'
+import MobileHandImageUrl from './sync_hand.svg'
 
 const iconStyles = `
   margin-top: 3px;
@@ -19,7 +19,7 @@ const iconStyles = `
 
 const deviceStyles = `
   margin-bottom: 10px;
-  height: 130px;
+  height: 100px;
 `
 
 export const SyncStartIcon = styled<{}, 'img'>('img').attrs({ src: StartImageUrl })`
@@ -32,6 +32,7 @@ export const SyncDesktopIcon = styled<{}, 'img'>('img').attrs({ src: DesktopImag
 export const SyncMobileIcon = styled<{}, 'img'>('img').attrs({ src: MobileImageUrl })`${deviceStyles}`
 export const SyncMobilePicture = styled<{}, 'img'>('img').attrs({ src: MobileHandImageUrl })`
   max-width: 100%;
+  height: 150px;
   display: block;
 `
 

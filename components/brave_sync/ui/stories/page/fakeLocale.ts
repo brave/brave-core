@@ -21,11 +21,11 @@ const locale: any = {
   viewSyncCode: 'View Sync Code',
   syncSettings: 'Brave Sync Settings',
   settings: 'Settings',
-  syncSettingsDescription: 'Manage what information you would like to sync between devices. These settings only effect this device.',
+  syncSettingsDescription: 'Manage the content you would like to sync between devices. These settings only effect this device.',
   bookmarks: 'Bookmarks',
   savedSiteSettings: 'Saved Site Settings',
   browsingHistory: 'Browsing History',
-  leaveSyncChain: 'Leave Sync Chain',
+  leaveSyncChain: 'Delete Sync Chain',
   // Disabled Content
   syncTitle: 'Brave Sync Setup',
   syncDescription: 'To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.',
@@ -54,8 +54,8 @@ const locale: any = {
   scanThisCodeHowTo: 'On your mobile device, navigate to Brave Sync in the Settings panel and click the button “Scan Sync Code”. Use your camera to scan the QR Code below.',
   viewCodeWords: 'View Code Words',
   // [modal] Add New Chain (Camera Option)
-  enterThisCode: 'Now, using Brave on your computer, enter this code:',
-  mobileEnterThisCode: 'Now, using Brave on your mobile device, enter this code:',
+  enterThisCode: 'Using Brave on your computer, enter this code:',
+  mobileEnterThisCode: 'Using Brave on your mobile device, enter this code:',
   syncChainCodeHowTo: 'Go to: Brave Settings > Sync > Enter a Sync Chain Code',
   // [modal] Add New Chain (no Camera)
   // [modal] View Sync Code

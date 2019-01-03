@@ -72,7 +72,6 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
           </div>
         </ModalHeader>
         <TextAreaClipboard
-          copiedString={getLocale('copied')}
           wordCountString={getLocale('wordCount')}
           value={this.state.passphrase}
           onChange={this.onEnterPassphrase}
