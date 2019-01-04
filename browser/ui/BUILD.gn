@@ -81,6 +81,8 @@ source_set("ui") {
     "webui/settings/default_brave_shields_handler.h",
     "webui/sync/sync_ui.cc",
     "webui/sync/sync_ui.h",
+    "webui/settings/brave_default_extensions_handler.cc",
+    "webui/settings/brave_default_extensions_handler.h",
   ]
 
   if (enable_widevine_cdm_component) {
