@@ -18,7 +18,6 @@ LEDGER_EXPORT struct AutoContributeProps {
   bool enabled_contribute;
   uint64_t contribution_min_time;
   int32_t contribution_min_visits;
-  bool contribution_non_verified;
   bool contribution_videos;
   uint64_t reconcile_stamp;
 };

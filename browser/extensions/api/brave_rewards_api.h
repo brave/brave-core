@@ -101,19 +101,6 @@ class BraveRewardsSolveGrantCaptchaFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetNonVerifiedSettingsFunction : public UIThreadExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getNonVerifiedSettings", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetNonVerifiedSettingsFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnGetAllowNonVerified(bool non_verified);
-};
-
 }  // namespace api
 }  // namespace extensions
 

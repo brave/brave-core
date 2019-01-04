@@ -408,7 +408,6 @@ void RewardsServiceImpl::GetCurrentContributeList(
     uint32_t limit,
     uint64_t min_visit_time,
     uint64_t reconcile_stamp,
-    bool allow_non_verified,
     const GetCurrentContributeListCallback& callback) {
   if (!Connected()) {
     return;
@@ -424,7 +423,6 @@ void RewardsServiceImpl::GetCurrentContributeList(
   filter.excluded =
     ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
   filter.percent = 1;
-  filter.non_verified = allow_non_verified;
 
   bat_ledger_->GetPublisherInfoList(start, limit,
       filter.ToJson(),
@@ -710,8 +708,6 @@ void RewardsServiceImpl::OnGetAutoContributeProps(
   auto_contri_props->enabled_contribute = props.enabled_contribute;
   auto_contri_props->contribution_min_time = props.contribution_min_time;
   auto_contri_props->contribution_min_visits = props.contribution_min_visits;
-  auto_contri_props->contribution_non_verified =
-    props.contribution_non_verified;
   auto_contri_props->contribution_videos = props.contribution_videos;
   auto_contri_props->reconcile_stamp = props.reconcile_stamp;
 
@@ -1298,23 +1294,6 @@ void RewardsServiceImpl::SetPublisherMinVisits(unsigned int visits) const {
   }
 
   bat_ledger_->SetPublisherMinVisits(visits);
-}
-
-void RewardsServiceImpl::GetPublisherAllowNonVerified(
-    const GetPublisherAllowNonVerifiedCallback& callback) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->GetPublisherAllowNonVerified(callback);
-}
-
-void RewardsServiceImpl::SetPublisherAllowNonVerified(bool allow) const {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->SetPublisherAllowNonVerified(allow);
 }
 
 void RewardsServiceImpl::GetPublisherAllowVideos(

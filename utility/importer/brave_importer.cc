@@ -452,11 +452,6 @@ bool ParsePaymentsPreferences(BraveLedger& ledger,
     payments->enabled = false;
   }
 
-  if (!TryFindBoolKey(settings, "payments.allow-non-verified-publishers",
-    payments->allow_non_verified)) {
-    payments->allow_non_verified = true;
-  }
-
   if (!TryFindBoolKey(settings, "payments.allow-media-publishers",
     payments->allow_media_publishers)) {
     payments->allow_media_publishers = true;

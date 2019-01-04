@@ -72,7 +72,6 @@ class LedgerImpl : public ledger::Ledger,
   void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
   void SetPublisherMinVisits(unsigned int visits) override;
-  void SetPublisherAllowNonVerified(bool allow) override;
   void SetPublisherAllowVideos(bool allow) override;
   void SetContributionAmount(double amount) override;
   void SetUserChangedContribution() override;
@@ -92,7 +91,6 @@ class LedgerImpl : public ledger::Ledger,
   uint64_t GetPublisherMinVisitTime() const override; // In milliseconds
   unsigned int GetPublisherMinVisits() const override;
   unsigned int GetNumExcludedSites() const override;
-  bool GetPublisherAllowNonVerified() const override;
   bool GetPublisherAllowVideos() const override;
   double GetContributionAmount() const override;
   bool GetAutoContribute() const override;
@@ -192,8 +190,7 @@ class LedgerImpl : public ledger::Ledger,
       int year,
       ledger::PUBLISHER_EXCLUDE_FILTER excluded,
       bool min_duration,
-      const uint64_t& currentReconcileStamp,
-      bool non_verified);
+      const uint64_t& currentReconcileStamp);
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,
       int line,

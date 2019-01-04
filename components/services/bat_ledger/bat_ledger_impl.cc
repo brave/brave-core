@@ -72,11 +72,6 @@ void BatLedgerImpl::GetPublisherMinVisits(
   std::move(callback).Run(ledger_->GetPublisherMinVisits());
 }
 
-void BatLedgerImpl::GetPublisherAllowNonVerified(
-    GetPublisherAllowNonVerifiedCallback callback) {
-  std::move(callback).Run(ledger_->GetPublisherAllowNonVerified());
-}
-
 void BatLedgerImpl::GetPublisherAllowVideos(
     GetPublisherAllowVideosCallback callback) {
   std::move(callback).Run(ledger_->GetPublisherAllowVideos());
@@ -223,10 +218,6 @@ void BatLedgerImpl::SetPublisherMinVisitTime(uint64_t duration_in_seconds) {
 
 void BatLedgerImpl::SetPublisherMinVisits(uint32_t visits) {
   ledger_->SetPublisherMinVisits(visits);
-}
-
-void BatLedgerImpl::SetPublisherAllowNonVerified(bool allow) {
-  ledger_->SetPublisherAllowNonVerified(allow);
 }
 
 void BatLedgerImpl::SetPublisherAllowVideos(bool allow) {

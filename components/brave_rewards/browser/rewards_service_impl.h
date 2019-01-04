@@ -94,7 +94,6 @@ class RewardsServiceImpl : public RewardsService,
       uint32_t limit,
       uint64_t min_visit_time,
       uint64_t reconcile_stamp,
-      bool allow_non_verified,
       const GetCurrentContributeListCallback& callback) override;
   void OnLoad(SessionID tab_id, const GURL& url) override;
   void OnUnload(SessionID tab_id) override;
@@ -122,8 +121,6 @@ class RewardsServiceImpl : public RewardsService,
       const GetPublisherMinVisitTimeCallback& callback) override;
   void GetPublisherMinVisits(
       const GetPublisherMinVisitsCallback& callback) override;
-  void GetPublisherAllowNonVerified(
-      const GetPublisherAllowNonVerifiedCallback& callback) override;
   void GetPublisherAllowVideos(
       const GetPublisherAllowVideosCallback& callback) override;
   void LoadMediaPublisherInfo(
@@ -273,7 +270,6 @@ class RewardsServiceImpl : public RewardsService,
   void SetRewardsMainEnabled(bool enabled) const override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
   void SetPublisherMinVisits(unsigned int visits) const override;
-  void SetPublisherAllowNonVerified(bool allow) const override;
   void SetPublisherAllowVideos(bool allow) const override;
   void SetContributionAmount(double amount) const override;
   void SetUserChangedContribution() const override;

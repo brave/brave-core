@@ -52,7 +52,6 @@ using GetAutoContributePropsCallback = base::Callback<void(
     std::unique_ptr<brave_rewards::AutoContributeProps>)>;
 using GetPublisherMinVisitTimeCallback = base::Callback<void(uint64_t)>;
 using GetPublisherMinVisitsCallback = base::Callback<void(uint32_t)>;
-using GetPublisherAllowNonVerifiedCallback = base::Callback<void(bool)>;
 using GetPublisherAllowVideosCallback = base::Callback<void(bool)>;
 using GetAutoContributeCallback = base::Callback<void(bool)>;
 using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
@@ -70,7 +69,6 @@ class RewardsService : public KeyedService {
       uint32_t limit,
       uint64_t min_visit_time,
       uint64_t reconcile_stamp,
-      bool allow_non_verified,
       const GetCurrentContributeListCallback& callback) = 0;
   virtual void FetchGrant(const std::string& lang, const std::string& paymentId) = 0;
   virtual void GetGrantCaptcha() = 0;
@@ -110,9 +108,6 @@ class RewardsService : public KeyedService {
   virtual void GetPublisherMinVisits(
       const GetPublisherMinVisitsCallback& callback) = 0;
   virtual void SetPublisherMinVisits(unsigned int visits) const = 0;
-  virtual void GetPublisherAllowNonVerified(
-      const GetPublisherAllowNonVerifiedCallback& callback) = 0;
-  virtual void SetPublisherAllowNonVerified(bool allow) const = 0;
   virtual void GetPublisherAllowVideos(
       const GetPublisherAllowVideosCallback& callback) = 0;
   virtual void SetPublisherAllowVideos(bool allow) const = 0;

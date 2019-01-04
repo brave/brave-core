@@ -33,8 +33,6 @@ class BatLedgerImpl : public mojom::BatLedger,
         GetPublisherMinVisitTimeCallback callback) override;
     void GetPublisherMinVisits(
         GetPublisherMinVisitsCallback callback) override;
-    void GetPublisherAllowNonVerified(
-        GetPublisherAllowNonVerifiedCallback callback) override;
     void GetPublisherAllowVideos(
         GetPublisherAllowVideosCallback callback) override;
     void GetAutoContribute(GetAutoContributeCallback callback) override;
@@ -85,7 +83,6 @@ class BatLedgerImpl : public mojom::BatLedger,
     void SetRewardsMainEnabled(bool enabled) override;
     void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
     void SetPublisherMinVisits(uint32_t visits) override;
-    void SetPublisherAllowNonVerified(bool allow) override;
     void SetPublisherAllowVideos(bool allow) override;
     void SetUserChangedContribution() override;
     void SetContributionAmount(double amount) override;

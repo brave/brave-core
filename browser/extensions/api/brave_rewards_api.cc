@@ -167,32 +167,5 @@ ExtensionFunction::ResponseAction BraveRewardsSolveGrantCaptchaFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsGetNonVerifiedSettingsFunction::
-~BraveRewardsGetNonVerifiedSettingsFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetNonVerifiedSettingsFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ =
-    RewardsServiceFactory::GetForProfile(profile);
-  bool non_verified = true;
-
-  if (!rewards_service_) {
-    return RespondNow(OneArgument(
-          std::make_unique<base::Value>(non_verified)));
-  }
-
-  rewards_service_->GetPublisherAllowNonVerified(base::Bind(
-        &BraveRewardsGetNonVerifiedSettingsFunction::OnGetAllowNonVerified,
-        this));
-  return RespondLater();
-}
-
-void BraveRewardsGetNonVerifiedSettingsFunction::OnGetAllowNonVerified(
-    bool non_verified) {
-  Respond(OneArgument(std::make_unique<base::Value>(non_verified)));
-}
-
 }  // namespace api
 }  // namespace extensions

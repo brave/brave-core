@@ -18,7 +18,6 @@ export const defaultState: Rewards.State = {
   contributionMinTime: 8,
   contributionMinVisits: 1,
   contributionMonthly: 10,
-  contributionNonVerified: true,
   contributionVideos: true,
   donationAbilityYT: true,
   donationAbilityTwitter: true,

@@ -10,7 +10,6 @@ AutoContributeProps::AutoContributeProps()
   : enabled_contribute(false),
     contribution_min_time(0),
     contribution_min_visits(0),
-    contribution_non_verified(false),
     contribution_videos(false),
     reconcile_stamp(0) {
 }

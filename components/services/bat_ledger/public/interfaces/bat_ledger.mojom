@@ -26,7 +26,6 @@ interface BatLedger {
   GetAutoContributeProps() => (string props);
   GetPublisherMinVisitTime() => (uint64 min_visit_time);
   GetPublisherMinVisits() => (uint32 min_visits);
-  GetPublisherAllowNonVerified() => (bool allowed);
   GetPublisherAllowVideos() => (bool allowed);
   GetAutoContribute() => (bool auto_contribute);
   GetReconcileStamp() => (uint64 reconcile_stamp);
@@ -71,7 +70,6 @@ interface BatLedger {
   SetRewardsMainEnabled(bool enabled);
   SetPublisherMinVisitTime(uint64 duration_in_seconds);
   SetPublisherMinVisits(uint32 visits);
-  SetPublisherAllowNonVerified(bool allow);
   SetPublisherAllowVideos(bool allow);
   SetUserChangedContribution();
   SetContributionAmount(double amount);

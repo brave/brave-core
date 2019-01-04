@@ -597,8 +597,7 @@ void BatGetMedia::fetchPublisherDataFromDB(uint64_t windowId,
       visit_data.local_year,
       ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
       false,
-      ledger_->GetReconcileStamp(),
-      true);
+      ledger_->GetReconcileStamp());
     ledger_->GetPublisherInfo(filter,
       std::bind(&BatGetMedia::onFetchPublisherFromDBResponse,
       this, _1, _2, windowId, visit_data, providerType, publisher_key));

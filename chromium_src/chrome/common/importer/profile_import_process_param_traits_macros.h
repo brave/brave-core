@@ -22,7 +22,6 @@ IPC_STRUCT_TRAITS_END()
 
 IPC_STRUCT_TRAITS_BEGIN(SessionStoreSettings::PaymentSettings)
   IPC_STRUCT_TRAITS_MEMBER(allow_media_publishers)
-  IPC_STRUCT_TRAITS_MEMBER(allow_non_verified)
   IPC_STRUCT_TRAITS_MEMBER(enabled)
   IPC_STRUCT_TRAITS_MEMBER(contribution_amount)
   IPC_STRUCT_TRAITS_MEMBER(min_visit_time)

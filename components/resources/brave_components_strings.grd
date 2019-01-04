@@ -223,7 +223,6 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_TIME" desc="">Minimum page time before logging a visit</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS" desc="">Minimum visits for publisher relevancy</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOWED" desc="">What should be allowed?</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOW_NON_VERIFIED" desc="">Allow contribution to non-verified sites</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOW_VIDEOS" desc="">Allow contribution to videos</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_1" desc="">1 visit</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_5" desc="">5 visits</message>

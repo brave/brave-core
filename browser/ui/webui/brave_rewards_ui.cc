@@ -315,8 +315,6 @@ void RewardsDOMHandler::OnGetAutoContributeProps(
         auto_contri_props->contribution_min_time);
     values.SetInteger("contributionMinVisits",
         auto_contri_props->contribution_min_visits);
-    values.SetBoolean("contributionNonVerified",
-        auto_contri_props->contribution_non_verified);
     values.SetBoolean("contributionVideos",
         auto_contri_props->contribution_videos);
 
@@ -536,7 +534,6 @@ void RewardsDOMHandler::OnAutoContributePropsReady(
     std::unique_ptr<brave_rewards::AutoContributeProps> props) {
   rewards_service_->GetCurrentContributeList(0, 0,
       props->contribution_min_time, props->reconcile_stamp,
-      props->contribution_non_verified,
       base::Bind(&RewardsDOMHandler::OnGetCurrentContributeList,
         weak_factory_.GetWeakPtr()));
 }
@@ -617,11 +614,6 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
 
     if (key == "contributionMinVisits") {
       rewards_service_->SetPublisherMinVisits(std::stoul(value));
-      OnContentSiteUpdated(rewards_service_);
-    }
-
-    if (key == "contributionNonVerified") {
-      rewards_service_->SetPublisherAllowNonVerified(value == "true");
       OnContentSiteUpdated(rewards_service_);
     }
 

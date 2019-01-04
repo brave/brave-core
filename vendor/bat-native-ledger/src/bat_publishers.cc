@@ -107,8 +107,7 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
       visit_data.local_year,
       ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
       false,
-      ledger_->GetReconcileStamp(),
-      true);
+      ledger_->GetReconcileStamp());
 
   ledger::PublisherInfoCallback callbackGetPublishers = std::bind(&BatPublishers::saveVisitInternal, this,
                 publisher_id,
@@ -131,8 +130,7 @@ ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
                                year,
                                ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
                                true,
-                               0,
-                               true);
+                               0);
 }
 
 ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
@@ -147,8 +145,7 @@ ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
                                year,
                                excluded,
                                true,
-                               0,
-                               true);
+                               0);
 }
 
 ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
@@ -163,8 +160,7 @@ ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
                                year,
                                ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
                                min_duration,
-                               0,
-                               true);
+                               0);
 }
 
 ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
@@ -174,8 +170,7 @@ ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
     int year,
     ledger::PUBLISHER_EXCLUDE_FILTER excluded,
     bool min_duration,
-    const uint64_t& currentReconcileStamp,
-    bool non_verified) {
+    const uint64_t& currentReconcileStamp) {
   ledger::PublisherInfoFilter filter;
   filter.id = publisher_id;
   filter.category = category;
@@ -184,7 +179,6 @@ ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
   filter.excluded = excluded;
   filter.min_duration = min_duration ? getPublisherMinVisitTime() : 0;
   filter.reconcile_stamp = currentReconcileStamp;
-  filter.non_verified = non_verified;
 
   return filter;
 }
@@ -237,7 +231,6 @@ void BatPublishers::saveVisitInternal(
   }
 
   bool verified = isVerified(publisher_id);
-
   bool new_visit = false;
   if (!publisher_info.get()) {
     new_visit = true;
@@ -247,9 +240,9 @@ void BatPublishers::saveVisitInternal(
   }
 
   // set duration to 0 if you don't have sufficient visit time
-  // or if you set ac to only verified and site is not verified
+  // or if site is not verified
   if ((!ignoreMinTime(publisher_id) && duration < getPublisherMinVisitTime()) ||
-      (!ledger_->GetPublisherAllowNonVerified() && !verified)) {
+      !verified) {
     duration = 0;
   }
 
@@ -304,8 +297,7 @@ void BatPublishers::onFetchFavIcon(const std::string& publisher_key,
       -1,
       ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
       false,
-      currentReconcileStamp,
-      true);
+      currentReconcileStamp);
   ledger_->GetPublisherInfo(filter,
       std::bind(&BatPublishers::onFetchFavIconDBResponse,
       this, _1, _2, favicon_url));
@@ -350,8 +342,7 @@ void BatPublishers::setExclude(const std::string& publisher_id, const ledger::PU
       -1,
       ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
       false,
-      currentReconcileStamp,
-      true);
+      currentReconcileStamp);
     ledger_->GetPublisherInfo(filter, std::bind(&BatPublishers::onSetExcludeInternal,
                             this, exclude, _1, _2));
 }
@@ -365,8 +356,7 @@ void BatPublishers::setPanelExclude(const std::string& publisher_id,
       -1,
       ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
       false,
-      currentReconcileStamp,
-      true);
+      currentReconcileStamp);
     ledger_->GetPublisherInfo(filter, std::bind(
       &BatPublishers::onSetPanelExcludeInternal,
       this, exclude, windowId, _1, _2));
@@ -453,8 +443,7 @@ void BatPublishers::restorePublishers() {
       -1,
       ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_EXCLUDED,
       false,
-      currentReconcileStamp,
-      true);
+      currentReconcileStamp);
   ledger_->GetPublisherInfoList(0, 0, filter, std::bind(&BatPublishers::onRestorePublishersInternal,
                                 this, _1, _2));
 }
@@ -491,11 +480,6 @@ void BatPublishers::setNumExcludedSites(const unsigned int& amount) {
   saveState();
 }
 
-void BatPublishers::setPublisherAllowNonVerified(const bool& allow) {
-  state_->allow_non_verified_ = allow;
-  saveState();
-}
-
 void BatPublishers::setPublisherAllowVideos(const bool& allow) {
   state_->allow_videos_ = allow;
   saveState();
@@ -507,10 +491,6 @@ uint64_t BatPublishers::getPublisherMinVisitTime() const {
 
 unsigned int BatPublishers::getPublisherMinVisits() const {
   return state_->min_visits_;
-}
-
-bool BatPublishers::getPublisherAllowNonVerified() const {
-  return state_->allow_non_verified_;
 }
 
 uint64_t BatPublishers::getLastPublishersListLoadTimestamp() const {
@@ -620,8 +600,7 @@ void BatPublishers::synopsisNormalizer(const ledger::PublisherInfo& info) {
       info.year,
       ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
-      ledger_->GetReconcileStamp(),
-      ledger_->GetPublisherAllowNonVerified());
+      ledger_->GetReconcileStamp());
   // TODO SZ: We pull the whole list currently, I don't think it consumes lots of RAM, but could.
   // We need to limit it and iterate.
   ledger_->GetPublisherInfoList(0, 0, filter, std::bind(&BatPublishers::synopsisNormalizerInternal, this,
@@ -667,8 +646,9 @@ bool BatPublishers::isExcluded(const std::string& publisher_id, const ledger::PU
 
 bool BatPublishers::isEligibleForContribution(const ledger::PublisherInfo& info) {
 
-  if (isExcluded(info.id, info.excluded) || (!state_->allow_non_verified_ && !isVerified(info.id)))
+  if (isExcluded(info.id, info.excluded) || !isVerified(info.id)) {
     return false;
+  }
 
   return info.score > 0 &&
     info.duration >= state_->min_publisher_duration_ &&
@@ -849,8 +829,7 @@ void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId, const ledger:
         visit_data.local_year,
         ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
         false,
-        ledger_->GetReconcileStamp(),
-        true);
+        ledger_->GetReconcileStamp());
 
   ledger::VisitData new_data;
   new_data.domain = visit_data.domain;
@@ -947,8 +926,7 @@ void BatPublishers::getPublisherBanner(const std::string& publisher_id,
       -1,
       ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
       false,
-      currentReconcileStamp,
-      true);
+      currentReconcileStamp);
 
   ledger::PublisherInfoCallback callbackGetPublisher = std::bind(&BatPublishers::onPublisherBanner,
                                       this,

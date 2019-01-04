@@ -601,7 +601,6 @@ static bool ignore_ = false;
     min_publisher_duration_(braveledger_ledger::_default_min_publisher_duration),
     min_visits_(1),
     num_excluded_sites_(0),
-    allow_non_verified_(true),
     pubs_load_timestamp_ (0ull),
     allow_videos_(true) {}
 
@@ -609,7 +608,6 @@ static bool ignore_ = false;
     min_publisher_duration_ = state.min_publisher_duration_;
     min_visits_ = state.min_visits_;
     num_excluded_sites_ = state.num_excluded_sites_;
-    allow_non_verified_ = state.allow_non_verified_;
     pubs_load_timestamp_ = state.pubs_load_timestamp_;
     allow_videos_ = state.allow_videos_;
     monthly_balances_ = state.monthly_balances_;
@@ -628,7 +626,6 @@ static bool ignore_ = false;
       error = !(d.HasMember("min_pubslisher_duration") && d["min_pubslisher_duration"].IsUint() &&
         d.HasMember("min_visits") && d["min_visits"].IsUint() &&
         d.HasMember("num_excluded_sites") && d["num_excluded_sites"].IsUint() &&
-        d.HasMember("allow_non_verified") && d["allow_non_verified"].IsBool() &&
         d.HasMember("pubs_load_timestamp") && d["pubs_load_timestamp"].IsUint64() &&
         d.HasMember("allow_videos") && d["allow_videos"].IsBool() &&
         d.HasMember("monthly_balances") && d["monthly_balances"].IsArray() &&
@@ -639,7 +636,6 @@ static bool ignore_ = false;
       min_publisher_duration_ = d["min_pubslisher_duration"].GetUint();
       min_visits_ = d["min_visits"].GetUint();
       num_excluded_sites_ = d["num_excluded_sites"].GetUint();
-      allow_non_verified_ = d["allow_non_verified"].GetBool();
       pubs_load_timestamp_ = d["pubs_load_timestamp"].GetUint64();
       allow_videos_ = d["allow_videos"].GetBool();
 
@@ -690,9 +686,6 @@ static bool ignore_ = false;
 
     writer.String("num_excluded_sites");
     writer.Uint(data.num_excluded_sites_);
-
-    writer.String("allow_non_verified");
-    writer.Bool(data.allow_non_verified_);
 
     writer.String("pubs_load_timestamp");
     writer.Uint64(data.pubs_load_timestamp_);
@@ -2642,9 +2635,6 @@ static bool ignore_ = false;
     }
     writer.EndObject();
 
-    writer.String("non_verified");
-    writer.Bool(info.non_verified);
-
     writer.EndObject();
   }
 
@@ -2710,9 +2700,6 @@ static bool ignore_ = false;
 
     writer.String("contribution_min_visits");
     writer.Int(props.contribution_min_visits);
-
-    writer.String("contribution_non_verified");
-    writer.Bool(props.contribution_non_verified);
 
     writer.String("contribution_videos");
     writer.Bool(props.contribution_videos);

@@ -32,7 +32,6 @@ declare namespace Rewards {
     contributionMinTime: number
     contributionMinVisits: number
     contributionMonthly: number
-    contributionNonVerified: boolean
     contributionVideos: boolean
     createdTimestamp: number | null
     donationAbilityTwitter: boolean

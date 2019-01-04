@@ -230,7 +230,6 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
   // Set the preferences read from session-store-1
   auto* payments = &ledger_.settings.payments;
   rewards_service->SetPublisherAllowVideos(payments->allow_media_publishers);
-  rewards_service->SetPublisherAllowNonVerified(payments->allow_non_verified);
   rewards_service->SetPublisherMinVisitTime(payments->min_visit_time);
   rewards_service->SetPublisherMinVisits(payments->min_visits);
 

@@ -379,10 +379,6 @@ void LedgerImpl::SetPublisherMinVisits(unsigned int visits) {
   bat_publishers_->setPublisherMinVisits(visits);
 }
 
-void LedgerImpl::SetPublisherAllowNonVerified(bool allow) {
-  bat_publishers_->setPublisherAllowNonVerified(allow);
-}
-
 void LedgerImpl::SetPublisherAllowVideos(bool allow) {
   bat_publishers_->setPublisherAllowVideos(allow);
 }
@@ -407,7 +403,6 @@ void LedgerImpl::GetAutoContributeProps(ledger::AutoContributeProps& props) {
   props.enabled_contribute = GetAutoContribute();
   props.contribution_min_time = GetPublisherMinVisitTime();
   props.contribution_min_visits = GetPublisherMinVisits();
-  props.contribution_non_verified = GetPublisherAllowNonVerified();
   props.contribution_videos = GetPublisherAllowVideos();
   props.reconcile_stamp = GetReconcileStamp();
 }
@@ -426,10 +421,6 @@ unsigned int LedgerImpl::GetPublisherMinVisits() const {
 
 unsigned int LedgerImpl::GetNumExcludedSites() const {
   return bat_publishers_->getNumExcludedSites();
-}
-
-bool LedgerImpl::GetPublisherAllowNonVerified() const {
-  return bat_publishers_->getPublisherAllowNonVerified();
 }
 
 bool LedgerImpl::GetPublisherAllowVideos() const {
@@ -825,16 +816,14 @@ ledger::PublisherInfoFilter LedgerImpl::CreatePublisherFilter(
     int year,
     ledger::PUBLISHER_EXCLUDE_FILTER excluded,
     bool min_duration,
-    const uint64_t& currentReconcileStamp,
-    bool non_verified) {
+    const uint64_t& currentReconcileStamp) {
   return bat_publishers_->CreatePublisherFilter(publisher_id,
                                                 category,
                                                 month,
                                                 year,
                                                 excluded,
                                                 min_duration,
-                                                currentReconcileStamp,
-                                                non_verified);
+                                                currentReconcileStamp);
 }
 
 

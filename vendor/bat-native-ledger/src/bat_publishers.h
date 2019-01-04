@@ -58,7 +58,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void restorePublishers();
 
-  void setPublisherAllowNonVerified(const bool& allow);
   void setPublisherAllowVideos(const bool& allow);
   void setBalanceReport(ledger::PUBLISHER_MONTH month,
                         int year,
@@ -70,7 +69,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   uint64_t getPublisherMinVisitTime() const; // In milliseconds
   unsigned int getPublisherMinVisits() const;
-  bool getPublisherAllowNonVerified() const;
   uint64_t getLastPublishersListLoadTimestamp() const;
   unsigned int getNumExcludedSites() const;
   bool getPublisherAllowVideos() const;
@@ -123,8 +121,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       int year,
       ledger::PUBLISHER_EXCLUDE_FILTER excluded,
       bool min_duration,
-      const uint64_t& currentReconcileStamp,
-      bool non_verified);
+      const uint64_t& currentReconcileStamp);
 
   void clearAllBalanceReports();
   void NormalizeContributeWinners(

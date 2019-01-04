@@ -132,8 +132,7 @@ PublisherInfoFilter::PublisherInfoFilter() :
     excluded(PUBLISHER_EXCLUDE_FILTER::FILTER_DEFAULT),
     percent(0),
     min_duration(0),
-    reconcile_stamp(0),
-    non_verified(true) {}
+    reconcile_stamp(0) {}
 
 PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
     id(filter.id),
@@ -144,8 +143,7 @@ PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
     percent(filter.percent),
     order_by(filter.order_by),
     min_duration(filter.min_duration),
-    reconcile_stamp(filter.reconcile_stamp),
-    non_verified(filter.non_verified) {}
+    reconcile_stamp(filter.reconcile_stamp) {}
 
 PublisherInfoFilter::~PublisherInfoFilter() {}
 
@@ -170,8 +168,7 @@ bool PublisherInfoFilter::loadFromJson(const std::string& json) {
         d.HasMember("percent") && d["percent"].IsUint() &&
         d.HasMember("order_by") && d["order_by"].IsObject() &&
         d.HasMember("min_duration") && d["min_duration"].IsUint64() &&
-        d.HasMember("reconcile_stamp") && d["reconcile_stamp"].IsUint64() &&
-        d.HasMember("non_verified") && d["non_verified"].IsBool());
+        d.HasMember("reconcile_stamp") && d["reconcile_stamp"].IsUint64());
   }
 
   if (false == error) {
@@ -183,7 +180,6 @@ bool PublisherInfoFilter::loadFromJson(const std::string& json) {
     percent = d["percent"].GetUint();
     min_duration = d["min_duration"].GetUint64();
     reconcile_stamp = d["reconcile_stamp"].GetUint64();
-    non_verified = d["non_verified"].GetBool();
 
     for (const auto& i : d["order_by"].GetObject()) {
       order_by.push_back(std::make_pair(i.name.GetString(),
@@ -614,7 +610,6 @@ AutoContributeProps::AutoContributeProps()
   : enabled_contribute(false),
     contribution_min_time(0),
     contribution_min_visits(0),
-    contribution_non_verified(false),
     contribution_videos(false),
     reconcile_stamp(0) { }
 
@@ -640,8 +635,6 @@ bool AutoContributeProps::loadFromJson(const std::string& json) {
         d["contribution_min_time"].IsUint64() &&
         d.HasMember("contribution_min_visits") &&
         d["contribution_min_visits"].IsInt() &&
-        d.HasMember("contribution_non_verified") &&
-        d["contribution_non_verified"].IsBool() &&
         d.HasMember("contribution_videos") &&
         d["contribution_videos"].IsBool() &&
         d.HasMember("reconcile_stamp") && d["reconcile_stamp"].IsUint64());
@@ -651,7 +644,6 @@ bool AutoContributeProps::loadFromJson(const std::string& json) {
     enabled_contribute = d["enabled_contribute"].GetBool();
     contribution_min_time = d["contribution_min_time"].GetUint64();
     contribution_min_visits = d["contribution_min_visits"].GetInt();
-    contribution_non_verified = d["contribution_non_verified"].GetBool();
     contribution_videos = d["contribution_videos"].GetBool();
     reconcile_stamp = d["reconcile_stamp"].GetUint64();
   }

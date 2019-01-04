@@ -26,7 +26,6 @@ struct BravePublisher {
 struct SessionStoreSettings {
   struct PaymentSettings {
     bool allow_media_publishers;
-    bool allow_non_verified;
     bool enabled;
     double contribution_amount;
     uint64_t min_visit_time;
