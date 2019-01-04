@@ -26,7 +26,7 @@ import {
   StyledButtonContainer
 } from './style'
 import { Modal } from '../../../components'
-import { AlertCircleIcon, SendTipsIcon } from '../../../components/icons'
+import { AlertCircleIcon, RewardsSendTipsIcon } from '../../../components/icons'
 import Button from '../../../components/buttonsIndicators/button'
 
 export interface Props {
@@ -65,7 +65,7 @@ export default class TipsMigrationAlert extends React.PureComponent<Props, State
       >
         <StyledModalContent>
           <StyledTipsIcon>
-            <SendTipsIcon />
+            <RewardsSendTipsIcon />
           </StyledTipsIcon>
           <StyledModalInfo>
             <StyledMessage modal={true}>

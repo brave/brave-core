@@ -8,7 +8,14 @@ import * as React from 'react'
 import Hero from '../hero'
 import Button from '../../../components/buttonsIndicators/button'
 import InfoCard, { CardProps } from '../infoCard'
-import { ArrowAnchorIcon, BatColorIcon, LoaderIcon } from '../../../components/icons'
+import {
+  AdsMegaphoneIcon,
+  ArrowAnchorIcon,
+  BatColorIcon,
+  LoaderIcon,
+  RewardsActivateIcon,
+  RewardsSendTipsIcon
+} from '../../../components/icons'
 import { Alert, RewardsButton, SettingsPage } from '../'
 
 // Utils
@@ -41,10 +48,6 @@ import {
   StyledAlertLeft,
   StyledAlertContent
 } from './style'
-
-import turnOnRewardsImage from './assets/turnOnRewards'
-import braveAdsImage from './assets/braveAds'
-import braveContributeImage from './assets/braveContribute'
 
 export interface Props {
   id?: string
@@ -187,17 +190,17 @@ class WelcomePage extends React.PureComponent<Props, {}> {
       {
         title: getLocale('turnOnRewardsTitle'),
         description: getLocale('turnOnRewardsDesc'),
-        icon: turnOnRewardsImage
+        icon: <RewardsActivateIcon />
       },
       {
         title: getLocale('braveAdsTitle'),
         description: getLocale('braveAdsDesc'),
-        icon: braveAdsImage
+        icon: <AdsMegaphoneIcon />
       },
       {
         title: getLocale('braveContributeTitle'),
         description: getLocale('braveContributeDesc'),
-        icon: braveContributeImage
+        icon: <RewardsSendTipsIcon />
       }
     ]
   }
