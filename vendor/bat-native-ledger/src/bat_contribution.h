@@ -141,9 +141,14 @@ class BatContribution {
                               const ledger::PublisherInfoList& list,
                               uint32_t next_record);
 
+  // Resets reconcile stamps
+  void ResetReconcileStamp();
+
   // Fetches recurring donations that will be then used for the contribution.
   // This is called from global timer in impl.
   void OnTimerReconcile();
+
+  bool ShouldStartAutoContribute();
 
   // Triggers contribution process for auto contribute table
   void StartAutoContribute();

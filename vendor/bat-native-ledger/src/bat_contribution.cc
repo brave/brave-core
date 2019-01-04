@@ -97,7 +97,17 @@ void BatContribution::ReconcilePublisherList(
   StartReconcile(ledger_->GenerateGUID(), category, new_list);
 }
 
+void BatContribution::ResetReconcileStamp() {
+  ledger_->ResetReconcileStamp();
+  SetReconcileTimer();
+}
+
 void BatContribution::OnTimerReconcile() {
+  if (!ledger_->GetRewardsMainEnabled()) {
+    ResetReconcileStamp();
+    return;
+  }
+
   ledger_->GetRecurringDonations(
       std::bind(&BatContribution::ReconcilePublisherList,
                 this,
@@ -106,7 +116,20 @@ void BatContribution::OnTimerReconcile() {
                 std::placeholders::_2));
 }
 
+bool BatContribution::ShouldStartAutoContribute() {
+  if (!ledger_->GetRewardsMainEnabled()) {
+    return false;
+  }
+
+  return ledger_->GetAutoContribute();
+}
+
 void BatContribution::StartAutoContribute() {
+  if (!ShouldStartAutoContribute()) {
+    ResetReconcileStamp();
+    return;
+  }
+
   uint64_t current_reconcile_stamp = ledger_->GetReconcileStamp();
   ledger::PublisherInfoFilter filter = ledger_->CreatePublisherFilter(
       "",
@@ -683,8 +706,7 @@ void BatContribution::OnReconcileComplete(ledger::Result result,
                                           const std::string& probi) {
   // Start the timer again if it wasn't a direct donation
   if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
-    ledger_->ResetReconcileStamp();
-    SetReconcileTimer();
+    ResetReconcileStamp();
   }
 
   // Trigger auto contribute after recurring donation
