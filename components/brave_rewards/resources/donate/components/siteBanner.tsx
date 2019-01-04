@@ -30,6 +30,11 @@ class Banner extends React.Component<Props, State> {
   }
 
   componentDidMount () {
+    const { publisher } = this.props.rewardsDonateData
+    if (publisher && publisher.verified) {
+      this.onClose()
+    }
+
     this.actions.getWalletProperties()
     this.actions.getRecurringDonations()
   }

@@ -600,7 +600,8 @@ void PublisherInfoDatabase::GetRecurringDonations(ledger::PublisherInfoList* lis
       db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
                              "rd.amount, rd.added_date, pi.verified, pi.provider "
                              "FROM recurring_donation as rd "
-                             "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "));
+                             "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "
+                             "WHERE pi.verified = 1"));
 
   while (info_sql.Step()) {
     std::string id(info_sql.ColumnString(0));

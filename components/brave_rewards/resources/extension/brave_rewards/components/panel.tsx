@@ -291,12 +291,6 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
-  openSettings = () => {
-    chrome.tabs.create({
-      url: 'brave://rewards/#ac-settings'
-    })
-  }
-
   render () {
     const { grant } = this.props.rewardsPanelData
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
@@ -355,7 +349,7 @@ export class Panel extends React.Component<Props, State> {
               publisherImg={faviconUrl}
               monthlyAmount={'10.0'}
               isVerified={publisher.verified}
-              tipsEnabled={true}
+              tipsEnabled={publisher.verified}
               includeInAuto={!publisher.excluded}
               attentionScore={(publisher.percentage || 0).toString()}
               onToggleTips={this.doNothing}
@@ -363,9 +357,7 @@ export class Panel extends React.Component<Props, State> {
               onAmountChange={this.doNothing}
               onIncludeInAuto={this.switchAutoContribute}
               showUnVerified={!publisher.verified}
-              showChangeSetting={this.state.nonVerified}
               moreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
-              onChangeSetting={this.openSettings}
             />
             : null
           }

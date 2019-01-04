@@ -281,10 +281,6 @@
     "message": "This grant is no longer available.",
     "description": "Error title when user missed a grant."
   },
-  "changeSettingsButton": {
-    "message": "Change Auto-Contribute settings",
-    "description": "CAT that user can do to open auto contribute settings"
-  },
   "unVerifiedPublisher": {
     "message": "Not yet verified",
     "description": "Status of the publisher shown in the panel"
