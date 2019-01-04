@@ -18,11 +18,6 @@ using namespace std::placeholders;
 
 namespace braveledger_bat_get_media {
 
-void onVisitSavedDummy(ledger::Result result,
-  std::unique_ptr<ledger::PublisherInfo> media_publisher_info) {
-// OnMediaPublisherInfoUpdated will always be called by LedgerImpl so do nothing
-}
-
 BatGetMedia::BatGetMedia(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger) {
 }
@@ -306,32 +301,6 @@ uint64_t BatGetMedia::getTwitchDuration(const ledger::TwitchEventInfo& oldEventI
   return (uint64_t)std::round(time);
 }
 
-void BatGetMedia::onFetchFavIcon(const std::string& publisher_key,
-                                 bool success,
-                                 const std::string& favicon_url) {
-  uint64_t currentReconcileStamp = ledger_->GetReconcileStamp();
-  auto filter = ledger_->CreatePublisherFilter(publisher_key,
-      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-      ledger::PUBLISHER_MONTH::ANY,
-      -1,
-      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
-      false,
-      currentReconcileStamp);
-  ledger_->GetPublisherInfo(filter,
-      std::bind(&BatGetMedia::onFetchFavIconDBResponse,
-      this, _1, _2, favicon_url));
-}
-
-void BatGetMedia::onFetchFavIconDBResponse(ledger::Result result,
-                                           std::unique_ptr<ledger::PublisherInfo> info,
-                                           const std::string& favicon_url) {
-  if (result == ledger::Result::LEDGER_OK && !favicon_url.empty()) {
-    info->favicon_url = favicon_url;
-    ledger_->SetPublisherInfo(std::move(info),
-      std::bind(&onVisitSavedDummy, _1, _2));
-  }
-}
-
 void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration,
                                                      const std::string& media_key,
                                                      const std::string& providerName,
@@ -383,13 +352,10 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration,
     std::string id = providerName + "#author:" + twitchMediaID;
 
     ledger::VisitData updated_visit_data(visit_data);
-    updated_visit_data.favicon_url = "https://" + ledger_->GenerateGUID() + ".invalid";
     updated_visit_data.name = author_name;
 
     if (fav_icon.length() > 0) {
-      ledger_->FetchFavIcon(fav_icon,
-                            updated_visit_data.favicon_url,
-                            std::bind(&BatGetMedia::onFetchFavIcon, this, id, _1, _2));
+      updated_visit_data.favicon_url = fav_icon;
     }
 
     ledger_->SaveMediaVisit(id, updated_visit_data, duration, window_id);
@@ -452,16 +418,12 @@ void BatGetMedia::savePublisherInfo(const uint64_t& duration,
       return;
   }
 
+  ledger::VisitData updated_visit_data(visit_data);
+
   if (favIconURL.length() > 0) {
-    std::string favicon_key = "https://" + ledger_->GenerateGUID() +
-      ".invalid";
-    ledger_->FetchFavIcon(favIconURL,
-                          favicon_key,
-                          std::bind(&BatGetMedia::onFetchFavIcon, this, publisher_id, _1, _2));
+    updated_visit_data.favicon_url = favIconURL;
   }
 
-  ledger::VisitData updated_visit_data(visit_data);
-  updated_visit_data.favicon_url = "";
   updated_visit_data.provider = providerName;
   updated_visit_data.name = publisherName;
   updated_visit_data.url = url;
