@@ -80,7 +80,13 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveSync",
       IDS_SETTINGS_BRAVE_SYNC_TITLE},
     {"braveSyncLabel",
-      IDS_SETTINGS_BRAVE_SYNC_LINK_LABEL}
+      IDS_SETTINGS_BRAVE_SYNC_LINK_LABEL},
+    {"braveDefaultExtensions",
+      IDS_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_TITLE},
+    {"webTorrentEnabledDesc",
+      IDS_SETTINGS_WEBTORRENT_ENABLED_DESC},
+    {"manageExtensionsLabel",
+      IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL}
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           arraysize(localized_strings));

@@ -8,6 +8,7 @@
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/ui/browser.h"
@@ -16,6 +17,7 @@
 #include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -53,13 +55,6 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
     void TearDown() override {
       browser_content_client_.reset();
       content_client_.reset();
-    }
-
-    void DisableWebTorrent() {
-      extensions::ExtensionService* service = extensions::ExtensionSystem::Get(
-          browser()->profile())->extension_service();
-      service->DisableExtension(brave_webtorrent_extension_id,
-          extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
     }
 
     const GURL& magnet_html_url() { return magnet_html_url_; }
@@ -166,11 +161,25 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, ReverseRewriteTorrentURL) 
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    NoRewriteMagnetURLURLBarWebTorrentDisabled) {
-  DisableWebTorrent();
+    WebTorrentExtensionEnabledByDefault) {
+  ASSERT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
   extensions::ExtensionRegistry* registry =
     extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_TRUE(registry->disabled_extensions().Contains(
+  ASSERT_TRUE(registry->enabled_extensions().Contains(
+        brave_webtorrent_extension_id));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+    PRE_NoRewriteMagnetURLURLBarWebTorrentDisabled) {
+  browser()->profile()->GetPrefs()->SetBoolean(kWebTorrentEnabled, false);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+    NoRewriteMagnetURLURLBarWebTorrentDisabled) {
+  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
+  extensions::ExtensionRegistry* registry =
+    extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_FALSE(registry->enabled_extensions().Contains(
         brave_webtorrent_extension_id));
 
   content::WebContents* contents =
@@ -184,11 +193,16 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+    PRE_NoRewriteMagnetURLLinkWebTorrentDisabled) {
+  browser()->profile()->GetPrefs()->SetBoolean(kWebTorrentEnabled, false);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
     NoRewriteMagnetURLLinkWebTorrentDisabled) {
-  DisableWebTorrent();
+  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
   extensions::ExtensionRegistry* registry =
     extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_TRUE(registry->disabled_extensions().Contains(
+  ASSERT_FALSE(registry->enabled_extensions().Contains(
         brave_webtorrent_extension_id));
 
   content::WebContents* contents =
@@ -210,11 +224,16 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+    PRE_NoReverseRewriteTorrentURLWebTorrentDisabled) {
+  browser()->profile()->GetPrefs()->SetBoolean(kWebTorrentEnabled, false);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
     NoReverseRewriteTorrentURLWebTorrentDisabled) {
-  DisableWebTorrent();
+  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
   extensions::ExtensionRegistry* registry =
     extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_TRUE(registry->disabled_extensions().Contains(
+  ASSERT_FALSE(registry->enabled_extensions().Contains(
         brave_webtorrent_extension_id));
 
   content::WebContents* contents =
