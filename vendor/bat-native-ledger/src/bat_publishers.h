@@ -156,6 +156,14 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
+  void onFetchFavIcon(const std::string& publisher_key,
+                      bool success,
+                      const std::string& favicon_url);
+
+  void onFetchFavIconDBResponse(ledger::Result result,
+                                std::unique_ptr<ledger::PublisherInfo> info,
+                                const std::string& favicon_url);
+
   void setNumExcludedSitesInternal(ledger::PUBLISHER_EXCLUDE exclude);
 
   void makePaymentInternal(
