@@ -139,6 +139,8 @@ class BatContribution {
                               const ledger::PublisherInfoList& list,
                               uint32_t next_record);
 
+  bool ShouldStartAutoContribute();
+
   // Fetches recurring donations that will be then used for the contribution.
   // This is called from global timer in impl.
   void OnTimerReconcile();

@@ -105,7 +105,19 @@ void BatContribution::OnTimerReconcile() {
                 ledger::PUBLISHER_CATEGORY::RECURRING_DONATION, _1, _2));
 }
 
+bool BatContribution::ShouldStartAutoContribute() {
+  if (!ledger_->GetRewardsMainEnabled()) {
+    return false;
+  }
+
+  return ledger_->GetAutoContribute();
+}
+
 void BatContribution::StartAutoContribute() {
+  if (!ShouldStartAutoContribute()) {
+    return;
+  }
+
   uint64_t current_reconcile_stamp = ledger_->GetReconcileStamp();
   ledger::PublisherInfoFilter filter = ledger_->CreatePublisherFilter(
       "",
