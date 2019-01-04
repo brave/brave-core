@@ -7,7 +7,7 @@ function getCurrentURL () {
 document.addEventListener('contextmenu', (event) => {
   let selector = unique(event.target) // this has to be done here, events can't be passed through the messaging API
   let baseURI = getCurrentURL()
-  console.log(selector, baseURI)
+
   chrome.runtime.sendMessage({
     selector: selector,
     baseURI: baseURI
