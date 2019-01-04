@@ -6,20 +6,21 @@ import * as React from 'react'
 
 // Components
 import { Button, Modal } from 'brave-ui'
+import { LoaderIcon } from 'brave-ui/components/icons'
 
 // Feature-specific components
 import {
   ModalHeader,
-  ModalTitle,
-  ModalSubTitle,
+  Title,
+  Bold,
+  Paragraph,
   ScanGrid,
   ThreeColumnButtonGrid,
-  ThreeColumnButtonGridCol1,
-  ThreeColumnButtonGridCol2
+  Link
 } from 'brave-ui/features/sync'
 
-// Modals
-import AddNewChainCameraOptionModal from './addNewChainCameraOption'
+// Dialogs
+import CancelDeviceSyncingDialog from '../commonDialogs/cancelDeviceSyncing'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -31,38 +32,95 @@ interface Props {
   syncData: Sync.State
   actions: any
   onClose: () => void
+  onClickViewSyncCodeInstead: () => void
+  onCloseDeviceTypeModal?: () => void
 }
+
 interface State {
-  enterCodeWordsInstead: boolean
+  willCancelScanCode: boolean
+  newDeviceFound: boolean
 }
 
 export default class ScanCodeModal extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      enterCodeWordsInstead: false
+      willCancelScanCode: false,
+      newDeviceFound: false
     }
   }
 
-  onClickEnterCodeWordsInstead = () => {
-    this.setState({ enterCodeWordsInstead: !this.state.enterCodeWordsInstead })
+  componentDidUpdate (prevProps: Readonly<Props>) {
+    if (
+        this.props.syncData.devices.length > 1 &&
+        prevProps.syncData.devices.length !==
+        this.props.syncData.devices.length
+    ) {
+      this.setState({ newDeviceFound: true })
+    }
+
+    const { newDeviceFound } = this.state
+    // when a device is found, self-close all modals
+    if (newDeviceFound) {
+      this.dismissAllModals()
+    }
+  }
+
+  dismissAllModals = () => {
+    this.props.onClose()
+    if (this.props.onCloseDeviceTypeModal) {
+      this.props.onCloseDeviceTypeModal()
+    }
+  }
+
+  onClickViewCodeWordsInstead = () => {
+    this.props.onClickViewSyncCodeInstead()
+  }
+
+  onDismissModal = () => {
+    const { devices, isSyncConfigured } = this.props.syncData
+    // if user is still trying to build a sync chain,
+    // open the confirmation modal. otherwise close it
+    isSyncConfigured && devices.length < 2
+      ? this.setState({ willCancelScanCode: true })
+      : this.dismissAllModals()
+  }
+
+  onDismissDialog = () => {
+    this.setState({ willCancelScanCode: false })
+  }
+
+  onConfirmDismissModal = () => {
+    const { devices, isSyncConfigured } = this.props.syncData
+    // sync is enabled when at least 2 devices are in the chain.
+    // this modal works both with sync enabled and disabled states.
+    // in case user opens it in the enabled content screen,
+    // check there are 2 devices in chain before reset
+    if (isSyncConfigured && devices.length < 2) {
+      this.props.actions.onSyncReset()
+      this.dismissAllModals()
+    }
+    this.setState({ willCancelScanCode: false })
+    this.props.onClose()
   }
 
   render () {
-    const { onClose, syncData, actions } = this.props
-    const { enterCodeWordsInstead } = this.state
+    const { syncData } = this.props
+    const { willCancelScanCode, newDeviceFound } = this.state
 
     return (
-      <Modal id='scanCodeModal' onClose={onClose} size='small'>
+      <Modal id='scanCodeModal' displayCloseButton={false} size='small'>
         {
-          enterCodeWordsInstead
-            ? <AddNewChainCameraOptionModal syncData={syncData} actions={actions} fromMobileScreen={true} onClose={this.onClickEnterCodeWordsInstead} />
-            : null
+          willCancelScanCode
+          ? <CancelDeviceSyncingDialog onClickCancel={this.onDismissDialog} onClickOk={this.onConfirmDismissModal} />
+          : null
         }
         <ModalHeader>
           <div>
-            <ModalTitle level={1}>{getLocale('scanThisCode')}</ModalTitle>
-            <ModalSubTitle>{getLocale('scanThisCodeHowTo')}</ModalSubTitle>
+            <Title level={1}>{getLocale('scanThisCode')}</Title>
+            <Paragraph>
+              {getLocale('scanThisCodeHowToPartial1')} <Bold>{getLocale('scanThisCodeHowToPartial2')}</Bold> {getLocale('scanThisCodeHowToPartial3')}
+            </Paragraph>
           </div>
         </ModalHeader>
         <ScanGrid>
@@ -74,36 +132,38 @@ export default class ScanCodeModal extends React.PureComponent<Props, State> {
           }
         </ScanGrid>
         <ThreeColumnButtonGrid>
-          <ThreeColumnButtonGridCol1>
+          <div>
+            <Link onClick={this.onDismissModal}>{getLocale('cancel')}</Link>
+          </div>
+          <div>
             <Button
               level='secondary'
-              type='accent'
+              type='subtle'
               size='medium'
-              onClick={this.onClickEnterCodeWordsInstead}
-              text={getLocale('enterCodeWordsInstead')}
+              onClick={this.onClickViewCodeWordsInstead}
+              text={getLocale('viewSyncCode')}
             />
-          </ThreeColumnButtonGridCol1>
-          <ThreeColumnButtonGridCol2>
-            <Button
-              level='secondary'
-              type='accent'
-              size='medium'
-              onClick={onClose}
-              text={getLocale('previous')}
-            />
+          </div>
+          <div>
             <Button
               level='primary'
               type='accent'
               size='medium'
-              onClick={onClose}
-              disabled={!syncData.isSyncConfigured}
+              onClick={this.onDismissModal}
+              disabled={newDeviceFound === false}
               text={
-                !syncData.isSyncConfigured
+                newDeviceFound === false
                 ? getLocale('lookingForDevice')
                 : getLocale('ok')
               }
+              icon={{
+                position: 'before',
+                image: newDeviceFound === false
+                  ? <LoaderIcon />
+                  : null
+              }}
             />
-          </ThreeColumnButtonGridCol2>
+          </div>
         </ThreeColumnButtonGrid>
       </Modal>
     )
