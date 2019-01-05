@@ -34,12 +34,13 @@ class BraveComponentLoader : public ComponentLoader {
     const std::string& manifest);
   void AddExtension(const std::string& id,
       const std::string& name, const std::string& public_key);
+  void ForceAddHangoutServicesExtension();
  
   static bool IsPdfjsDisabled();
 
  private:
-  friend class ::BravePDFExtensionTest;
   void AddHangoutServicesExtension() override;
+  friend class ::BravePDFExtensionTest;
   void ObserveOpenPdfExternallySetting();
   // Callback for changes to the AlwaysOpenPdfExternally setting.
   void UpdatePdfExtension(const std::string& pref_name);
