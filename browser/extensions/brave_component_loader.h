@@ -39,6 +39,7 @@ class BraveComponentLoader : public ComponentLoader {
 
  private:
   friend class ::BravePDFExtensionTest;
+  void AddHangoutServicesExtension() override;
   void ObserveOpenPdfExternallySetting();
   // Callback for changes to the AlwaysOpenPdfExternally setting.
   void UpdatePdfExtension(const std::string& pref_name);

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/component_loader.h b/chrome/browser/extensions/component_loader.h
-index 8a78a56e2425adf937754bd0b202549744597bd0..54badd2618b872ecdafff1457e0e955fdc057729 100644
+index 8a78a56e2425adf937754bd0b202549744597bd0..52a2735a5bf944e8f39e61ba8294d70ee3034a7f 100644
 --- a/chrome/browser/extensions/component_loader.h
 +++ b/chrome/browser/extensions/component_loader.h
 @@ -83,7 +83,7 @@ class ComponentLoader {
@@ -11,3 +11,19 @@ index 8a78a56e2425adf937754bd0b202549744597bd0..54badd2618b872ecdafff1457e0e955f
  
    // Similar to above but adds the default component extensions for kiosk mode.
    void AddDefaultComponentExtensionsForKioskMode(bool skip_session_components);
+@@ -118,6 +118,7 @@ class ComponentLoader {
+   }
+ 
+  private:
++  friend class BraveComponentLoader;
+   FRIEND_TEST_ALL_PREFIXES(ComponentLoaderTest, ParseManifest);
+ 
+   // Information about a registered component extension.
+@@ -166,6 +167,7 @@ class ComponentLoader {
+   void AddAudioPlayerExtension();
+   void AddGalleryExtension();
+   void AddZipArchiverExtension();
++  virtual
+   void AddHangoutServicesExtension();
+   void AddImageLoaderExtension();
+   void AddNetworkSpeechSynthesisExtension();
