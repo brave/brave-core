@@ -10,6 +10,7 @@
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -27,6 +28,13 @@
 
 class BraveContentBrowserClientTest : public InProcessBrowserTest {
   public:
+    void SetUp() override {
+      // This is needed because component extensions are not added by default
+      // without it.  Theyu are found to interfere with tests otherwise. It's needed
+      // for loading the hangouts extension of which there are tests for below.
+      extensions::ComponentLoader::EnableBackgroundExtensionsForTesting();
+      InProcessBrowserTest::SetUp();
+    }
     void SetUpOnMainThread() override {
       InProcessBrowserTest::SetUpOnMainThread();
 
@@ -247,4 +255,26 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
     contents->GetController().GetLastCommittedEntry();
   EXPECT_STREQ(entry->GetURL().spec().c_str(),
       torrent_extension_url().spec().c_str()) << "No changes on the real URL";
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+    HangoutsEnabledByDefault) {
+  ASSERT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
+  extensions::ExtensionRegistry* registry =
+    extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_TRUE(registry->enabled_extensions().Contains(hangouts_extension_id));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+    PRE_HangoutsDisabledDoesNotLoadComponent) {
+  browser()->profile()->GetPrefs()->SetBoolean(kHangoutsEnabled, false);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+    HangoutsDisabledDoesNotLoadComponent) {
+  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
+  extensions::ExtensionRegistry* registry =
+    extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_FALSE(registry->enabled_extensions().Contains(
+        hangouts_extension_id));
 }
