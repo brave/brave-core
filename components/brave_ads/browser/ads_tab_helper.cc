@@ -59,9 +59,7 @@ void AdsTabHelper::DidFinishNavigation(
   if (navigation_handle->IsInMainFrame() &&
       navigation_handle->GetResponseHeaders()) {
     if (navigation_handle->GetResponseHeaders()->HasHeaderValue(
-            "cache-control", "no-store") ||
-        navigation_handle->GetResponseHeaders()->HasHeaderValue(
-            "cache-control", "private")) {
+            "cache-control", "no-store")) {
       run_distiller_ = false;
     } else {
       bool was_restored =
