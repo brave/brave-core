@@ -60,6 +60,10 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
           break
         }
 
+        if (!state.excluded) {
+          state.excluded = []
+        }
+
         if (!state.excluded.includes(publisherKey)) {
           chrome.send('brave_rewards.excludePublisher', [publisherKey])
           state.excluded.push(publisherKey)
