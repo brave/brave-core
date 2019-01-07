@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, object, select, text, boolean } from '@storybook/addon-knobs'
+import { withKnobs, object, select, text, boolean, number } from '@storybook/addon-knobs'
 // @ts-ignore
 import centered from '@storybook/addon-centered/dist'
 
@@ -93,6 +93,8 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
             tips: object('Tips', { tokens: '19.0', converted: '5.25' })
           }}
           onActivity={doNothing}
+          reservedAmount={number('Reserved amount', 52)}
+          reservedMoreLink={'https://brave.com'}
         />
       </div>
     )

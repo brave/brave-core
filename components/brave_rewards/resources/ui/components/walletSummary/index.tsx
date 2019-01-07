@@ -11,7 +11,9 @@ import {
   StyledActivity,
   StyledActivityIcon,
   StyledNoActivity,
-  StyledNoActivityWrapper
+  StyledNoActivityWrapper,
+  StyledReservedWrapper,
+  StyledReservedLink
 } from './style'
 import ListToken from '../listToken'
 import { Type } from '../tokens'
@@ -36,6 +38,8 @@ export interface Props {
   }
   id?: string
   compact?: boolean
+  reservedAmount?: number
+  reservedMoreLink?: string
 }
 
 export default class WalletSummary extends React.PureComponent<Props, {}> {
@@ -117,7 +121,9 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
     const {
       id,
       onActivity,
-      compact
+      compact,
+      reservedAmount,
+      reservedMoreLink
     } = this.props
     const date = new Date()
     const month = getLocale(`month${date.toLocaleString('en-us', { month: 'short' })}`)
@@ -133,6 +139,16 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
           <StyledTitle>{month} {year}</StyledTitle>
           <div>
             {this.generateList()}
+            {
+              reservedAmount && reservedAmount > 0
+              ? <StyledReservedWrapper>
+                {getLocale('reservedAmountText', { reservedAmount })}
+                <StyledReservedLink href={reservedMoreLink} target={'_blank'}>
+                  {getLocale('reservedMoreLink')}
+                </StyledReservedLink>
+              </StyledReservedWrapper>
+              : null
+            }
           </div>
           {
             onActivity
