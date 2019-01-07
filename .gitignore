@@ -8,7 +8,7 @@
 /components/brave_sync/extension/brave-sync/
 /dist/
 /out/
-/vendor
+/vendor/*
 !/vendor/bat-native-ledger
 node_modules/
 *.xcodeproj
