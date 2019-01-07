@@ -15,6 +15,7 @@
 #include "base/sequence_checker.h"
 #include "bat/ledger/publisher_info.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
+#include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "build/build_config.h"
 #include "sql/database.h"
@@ -50,6 +51,8 @@ class PublisherInfoDatabase {
   void GetRecurringDonations(ledger::PublisherInfoList* list);
   void GetTips(ledger::PublisherInfoList* list, ledger::PUBLISHER_MONTH month, int year);
   bool RemoveRecurring(const std::string& publisher_key);
+  bool InsertPendingContribution(const brave_rewards::PendingContribution& data);
+  double GetReservedAmount();
 
   // Returns the current version of the publisher info database
   static int GetCurrentVersion();
@@ -72,6 +75,8 @@ class PublisherInfoDatabase {
   bool CreateActivityInfoIndex();
   bool CreateRecurringDonationTable();
   bool CreateRecurringDonationIndex();
+  bool CreatePendingContributionsTable();
+  bool CreatePendingContributionsIndex();
 
   std::string BuildClauses(int start,
                            int limit,
@@ -84,6 +89,7 @@ class PublisherInfoDatabase {
 
   sql::InitStatus EnsureCurrentVersion();
   bool MigrateV1toV2();
+  bool MigrateV2toV3();
 
   sql::Database db_;
   sql::MetaTable meta_table_;

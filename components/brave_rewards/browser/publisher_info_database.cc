@@ -22,7 +22,7 @@ namespace brave_rewards {
 
 namespace {
 
-const int kCurrentVersionNumber = 2;
+const int kCurrentVersionNumber = 3;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -56,12 +56,14 @@ bool PublisherInfoDatabase::Init() {
       !CreateContributionInfoTable() ||
       !CreateActivityInfoTable() ||
       !CreateMediaPublisherInfoTable() ||
-      !CreateRecurringDonationTable())
+      !CreateRecurringDonationTable() ||
+      !CreatePendingContributionsTable())
     return false;
 
   CreateContributionInfoIndex();
   CreateActivityInfoIndex();
   CreateRecurringDonationIndex();
+  CreatePendingContributionsIndex();
 
   // Version check.
   sql::InitStatus version_status = EnsureCurrentVersion();
@@ -675,6 +677,84 @@ bool PublisherInfoDatabase::RemoveRecurring(const std::string& publisher_key) {
   return statement.Run();
 }
 
+bool PublisherInfoDatabase::CreatePendingContributionsTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const char* name = "pending_contribution";
+  if (GetDB().DoesTableExist(name)) {
+    return true;
+  }
+
+  std::string sql;
+  sql.append("CREATE TABLE ");
+  sql.append(name);
+  sql.append(
+      "("
+      "publisher_id LONGVARCHAR NOT NULL PRIMARY KEY UNIQUE,"
+      "amount DOUBLE DEFAULT 0 NOT NULL,"
+      "added_date INTEGER DEFAULT 0 NOT NULL,"
+      "reconcile_date INTEGER DEFAULT 0 NOT NULL,"
+      "CONSTRAINT fk_pending_contribution_publisher_id"
+      "    FOREIGN KEY (publisher_id)"
+      "    REFERENCES publisher_info (publisher_id)"
+      "    ON DELETE CASCADE)");
+  return GetDB().Execute(sql.c_str());
+}
+
+bool PublisherInfoDatabase::CreatePendingContributionsIndex() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  return GetDB().Execute(
+      "CREATE INDEX IF NOT EXISTS pending_contribution_publisher_id_index "
+      "ON pending_contribution (publisher_id)");
+}
+
+bool PublisherInfoDatabase::InsertPendingContribution
+(const brave_rewards::PendingContribution& info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "INSERT pending_contribution "
+      "(publisher_id, amount, added_date, reconcile_date) "
+      "VALUES (?, ?, ?, ?)"));
+
+  statement.BindString(0, info.publisher_key);
+  statement.BindDouble(1, info.amount);
+  statement.BindInt64(2, info.added_date);
+  statement.BindInt64(3, info.reconcile_date);
+
+  return statement.Run();
+}
+
+double PublisherInfoDatabase::GetReservedAmount() {
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  double amount = 0.0;
+
+  if (!initialized) {
+    return amount;
+  }
+
+  sql::Statement info_sql(
+      db_.GetUniqueStatement("SELECT sum(amount) FROM pending_contribution"));
+
+  if (info_sql.Step()) {
+    amount = info_sql.ColumnDouble(0);
+  }
+
+  return amount;
+}
+
 // static
 int PublisherInfoDatabase::GetCurrentVersion() {
   return kCurrentVersionNumber;
@@ -762,6 +842,16 @@ bool PublisherInfoDatabase::MigrateV1toV2() {
   return CreateRecurringDonationIndex();
 }
 
+bool PublisherInfoDatabase::MigrateV2toV3() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (!CreatePendingContributionsTable()) {
+    return false;
+  }
+
+  return CreatePendingContributionsIndex();
+}
+
 sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -775,12 +865,37 @@ sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {
   const int cur_version = GetCurrentVersion();
 
   // Migration from version 1 to version 2
-  if (old_version == 1 && cur_version == 2) {
-    if (!MigrateV1toV2()) {
-      LOG(ERROR) << "DB: Error with MigrateV1toV2";
+   // Migration from version 1
+  if (old_version == 1) {
+    // to version 2
+    if (cur_version < 3) {
+      if (!MigrateV1toV2()) {
+        LOG(ERROR) << "DB: Error with MigrateV1toV2";
+      }
+    }
+
+    // to version 3
+    if (cur_version < 4) {
+      if (!MigrateV2toV3()) {
+        LOG(ERROR) << "DB: Error with MigrateV2toV3";
+      }
     }
 
     meta_table_.SetVersionNumber(cur_version);
+    return sql::INIT_OK;
+  }
+
+  // Migration from version 2
+  if (old_version == 2) {
+    // to version 3
+    if (cur_version < 4) {
+      if (!MigrateV2toV3()) {
+        LOG(ERROR) << "DB: Error with MigrateV2toV3";
+      }
+    }
+
+    meta_table_.SetVersionNumber(cur_version);
+    return sql::INIT_OK;
   }
 
   return sql::INIT_OK;
