@@ -118,7 +118,10 @@ private extension BrowserToTrayAnimator {
 
         let tabManager = bvc.tabManager
         let displayedTabs = tabManager.tabsForCurrentMode
-        guard let scrollToIndex = displayedTabs.index(of: selectedTab) else { return }
+        guard let scrollToIndex = displayedTabs.index(of: selectedTab) else {
+            transitionContext.completeTransition(false)
+            return
+        }
 
         tabTray.view.frame = transitionContext.finalFrame(for: tabTray)
 
