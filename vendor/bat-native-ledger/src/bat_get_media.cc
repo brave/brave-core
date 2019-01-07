@@ -7,6 +7,7 @@
 
 #include <sstream>
 #include <cmath>
+#include <vector>
 
 #include "bat_get_media.h"
 #include "bat_helper.h"
@@ -735,11 +736,28 @@ std::string BatGetMedia::parseChannelId(const std::string& data) {
   return id;
 }
 
+// static
 std::string BatGetMedia::getYoutubeMediaIdFromUrl(const ledger::VisitData& visit_data) {
-  std::vector<std::string> m_url =
-    braveledger_bat_helper::split(visit_data.url, '=');
-  if (m_url.size() > 1) {
-    return m_url[1];
+  std::vector<std::string> first_split =
+    braveledger_bat_helper::split(visit_data.url, '?');
+
+  if (first_split.size() < 2) {
+    return std::string();
+  }
+
+  std::vector<std::string> and_split =
+    braveledger_bat_helper::split(first_split[1], '&');
+
+  for (const auto& item : and_split) {
+    std::vector<std::string> m_url = braveledger_bat_helper::split(item, '=');
+
+    if (m_url.size() < 2) {
+      continue;
+    }
+
+    if (m_url[0] == "v") {
+      return m_url[1];
+    }
   }
 
   return std::string();
