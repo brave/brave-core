@@ -93,6 +93,10 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "2c6f798a519beabb327149c349912f5f.svg", IDR_BRAVE_REWARDS_IMG_LTC },
       }
     }, {
+      std::string("welcome"), {
+        { "favicon.ico", IDR_BRAVE_WELCOME_PAGE_FAVICON }
+      }
+    }, {
       std::string("adblock"), {
       }
     }, {
@@ -184,7 +188,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "theme", IDS_BRAVE_WELCOME_PAGE_THEME_BUTTON },
         { "skipWelcomeTour", IDS_BRAVE_WELCOME_PAGE_SKIP_BUTTON },
         { "next", IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON },
-        { "done", IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON }
+        { "done", IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON },
       }
     }, {
       std::string("rewards"), {
