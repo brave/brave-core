@@ -832,7 +832,7 @@ class BrowserViewController: UIViewController {
         let isShowing = !tabsBar.view.isHidden
         let shouldShow = shouldShowTabBar()
         
-        if isShowing != shouldShow {
+        if isShowing != shouldShow && presentedViewController == nil {
             UIView.animate(withDuration: 0.1) {
                 self.tabsBar.view.isHidden = !shouldShow
             }
