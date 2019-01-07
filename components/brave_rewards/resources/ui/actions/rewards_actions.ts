@@ -153,3 +153,5 @@ export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS
 })
 
 export const getAddresses = () => action(types.GET_ADDRESSES)
+
+export const getReconcileStamp = () => action(types.GET_RECONCILE_STAMP)
