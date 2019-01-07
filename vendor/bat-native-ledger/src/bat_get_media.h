@@ -44,6 +44,8 @@ class BatGetMedia {
                                const ledger::VisitData& visit_data,
                                const std::string& providerType);
 
+  static std::string getYoutubeMediaIdFromUrl(const ledger::VisitData& visit_data);
+
  private:
   std::string getMediaURL(const std::string& mediaId, const std::string& providerName);
   void getPublisherFromMediaPropsCallback(const uint64_t& duration,
@@ -169,8 +171,6 @@ class BatGetMedia {
   std::string parseFavIconUrl(const std::string& data);
 
   std::string parseChannelId(const std::string& data);
-
-  std::string getYoutubeMediaIdFromUrl(const ledger::VisitData& visit_data);
 
   std::string getYoutubeMediaKeyFromUrl(const std::string& provider_type, const std::string& media_id);
 
