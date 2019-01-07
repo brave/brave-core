@@ -31,6 +31,7 @@
 #include "chrome/common/url_constants.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "content/browser/frame_host/render_frame_host_impl.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/browser_url_handler.h"
@@ -258,6 +259,39 @@ void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
                                    path.BaseName());
   }
 }
+
+void BraveContentBrowserClient::PossiblyHideReferrer(
+    content::BrowserContext* browser_context,
+    const GURL& request_url,
+    const GURL& document_url,
+    content::Referrer* referrer) {
+  DCHECK(referrer);
+  if (document_url.SchemeIs(kChromeExtensionScheme)) {
+    return;
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  const bool allow_referrers =
+      brave_shields::IsAllowContentSettingsForProfile(
+          profile,
+          document_url,
+          document_url,
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kReferrers);
+  const bool shields_up =
+      brave_shields::IsAllowContentSettingsForProfile(
+          profile,
+          document_url,
+          GURL(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kBraveShields);
+   brave_shields::ShouldSetReferrer(allow_referrers, shields_up,
+                                    referrer->url, document_url, request_url,
+                                    request_url.GetOrigin(),
+                                    referrer->policy,
+                                    referrer);
+}
+
 
 GURL BraveContentBrowserClient::GetEffectiveURL(
     content::BrowserContext* browser_context,

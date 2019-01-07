@@ -8,6 +8,7 @@
 #include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -30,6 +31,8 @@ using namespace net::registry_controlled_domains;
 
 namespace brave_shields {
 
+namespace {
+
 bool GetDefaultFromResourceIdentifier(const std::string& resource_identifier,
     const GURL& primary_url, const GURL& secondary_url) {
   if (resource_identifier == brave_shields::kAds) {
@@ -47,6 +50,32 @@ bool GetDefaultFromResourceIdentifier(const std::string& resource_identifier,
   }
   return false;
 }
+
+bool IsAllowContentSetting(HostContentSettingsMap* content_settings,
+                           const GURL& primary_url,
+                           const GURL& secondary_url,
+                           ContentSettingsType setting_type,
+                           const std::string& resource_identifier) {
+  DCHECK(content_settings);
+  content_settings::SettingInfo setting_info;
+  std::unique_ptr<base::Value> value =
+      content_settings->GetWebsiteSetting(
+          primary_url, secondary_url, setting_type, resource_identifier,
+          &setting_info);
+  ContentSetting setting =
+      content_settings::ValueToContentSetting(value.get());
+
+  // TODO(bbondy): Add a static RegisterUserPrefs method for shields and use
+  // prefs instead of simply returning true / false below.
+  if (setting == CONTENT_SETTING_DEFAULT) {
+    return GetDefaultFromResourceIdentifier(resource_identifier, primary_url,
+                                            secondary_url);
+  }
+  return setting == CONTENT_SETTING_ALLOW;
+}
+
+}  // namespace
+
 
 bool IsAllowContentSettingFromIO(const net::URLRequest* request,
     const GURL& primary_url, const GURL& secondary_url,
@@ -66,31 +95,34 @@ bool IsAllowContentSettingFromIO(const net::URLRequest* request,
       secondary_url, setting_type, resource_identifier);
 }
 
+bool IsAllowContentSettingsForProfile(Profile* profile,
+                                      const GURL& primary_url,
+                                      const GURL& secondary_url,
+                                      ContentSettingsType setting_type,
+                                      const std::string& resource_identifier) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK(profile);
+  return IsAllowContentSetting(
+             HostContentSettingsMapFactory::GetForProfile(profile),
+             primary_url,
+             secondary_url,
+             setting_type,
+             resource_identifier);
+}
+
 bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
     const GURL& primary_url, const GURL& secondary_url,
     ContentSettingsType setting_type,
     const std::string& resource_identifier) {
-
   if (!io_data) {
     return GetDefaultFromResourceIdentifier(resource_identifier, primary_url,
                                             secondary_url);
   }
-  content_settings::SettingInfo setting_info;
-  std::unique_ptr<base::Value> value =
-      io_data->GetHostContentSettingsMap()->GetWebsiteSetting(
-          primary_url, secondary_url,
-          setting_type,
-          resource_identifier, &setting_info);
-  ContentSetting setting =
-      content_settings::ValueToContentSetting(value.get());
-
-  // TODO(bbondy): Add a static RegisterUserPrefs method for shields and use
-  // prefs instead of simply returning true / false below.
-  if (setting == CONTENT_SETTING_DEFAULT) {
-    return GetDefaultFromResourceIdentifier(resource_identifier, primary_url,
-                                            secondary_url);
-  }
-  return setting == CONTENT_SETTING_ALLOW;
+  return IsAllowContentSetting(io_data->GetHostContentSettingsMap(),
+                               primary_url,
+                               secondary_url,
+                               setting_type,
+                               resource_identifier);
 }
 
 void GetRenderFrameInfo(const URLRequest* request,

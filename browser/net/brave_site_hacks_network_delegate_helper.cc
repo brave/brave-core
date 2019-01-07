@@ -23,48 +23,7 @@
 using content::BrowserThread;
 using content::Referrer;
 
-namespace {
-
-bool ApplyPotentialReferrerBlock(net::URLRequest* request) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  GURL target_origin = GURL(request->url()).GetOrigin();
-  GURL tab_origin = request->site_for_cookies().GetOrigin();
-  if (tab_origin.SchemeIs(kChromeExtensionScheme)) {
-    return false;
-  }
-  bool allow_referrers = brave_shields::IsAllowContentSettingFromIO(
-      request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kReferrers);
-  bool shields_up = brave_shields::IsAllowContentSettingFromIO(
-      request, tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kBraveShields);
-  const std::string original_referrer = request->referrer();
-  Referrer new_referrer;
-  if (brave_shields::ShouldSetReferrer(allow_referrers, shields_up,
-          GURL(original_referrer), tab_origin, request->url(), target_origin,
-          Referrer::NetReferrerPolicyToBlinkReferrerPolicy(
-              request->referrer_policy()), &new_referrer)) {
-    request->SetReferrer(new_referrer.url.spec());
-    return true;
-  }
-  return false;
-}
-
-}  // namespace
-
 namespace brave {
-
-int OnBeforeURLRequest_SiteHacksWork(
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
-
-  if (ApplyPotentialReferrerBlock(const_cast<net::URLRequest*>(ctx->request))) {
-    ctx->new_url_spec = ctx->request_url.spec();
-    ctx->referrer_changed = true;
-  }
-
-  return net::OK;
-}
 
 void CheckForCookieOverride(const GURL& url, const URLPattern& pattern,
     net::HttpRequestHeaders* headers, const std::string& extra_cookies) {

@@ -10,6 +10,10 @@
 
 #include <memory>
 
+namespace content {
+class BrowserContext;
+}
+
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
   BraveContentBrowserClient(ChromeFeatureListCreator* chrome_feature_list_creator = nullptr);
@@ -59,6 +63,11 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   void AdjustUtilityServiceProcessCommandLine(
       const service_manager::Identity& identity,
       base::CommandLine* command_line) override;
+
+  void PossiblyHideReferrer(content::BrowserContext* browser_context,
+                            const GURL& request_url,
+                            const GURL& document_url,
+                            content::Referrer* referrer) override;
 
   GURL GetEffectiveURL(content::BrowserContext* browser_context,
                        const GURL& url) override;
