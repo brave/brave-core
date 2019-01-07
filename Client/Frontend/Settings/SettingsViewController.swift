@@ -303,6 +303,14 @@ class SettingsViewController: TableViewController {
         return Section(
             rows: [
                 Row(text: "Region: \(Locale.current.regionCode ?? "--")"),
+                Row(text: "Recompile Content Blockers", selection: { [weak self] in
+                    BlocklistName.allLists.forEach { $0.fileVersionPref?.value = nil }
+                    ContentBlockerHelper.compileLists().upon {
+                        let alert = UIAlertController(title: nil, message: "Recompiled Blockers", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self?.present(alert, animated: true)
+                    }
+                }, cellClass: ButtonCell.self),
                 Row(text: "View URP Logs", selection: {
                     self.navigationController?.pushViewController(UrpLogsViewController(), animated: true)
                 }, accessory: .disclosureIndicator),
