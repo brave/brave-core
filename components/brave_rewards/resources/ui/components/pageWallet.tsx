@@ -270,7 +270,15 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   render () {
-    const { connectedWallet, recoveryKey, enabledMain, addresses, walletInfo, ui } = this.props.rewardsData
+    const {
+      connectedWallet,
+      recoveryKey,
+      enabledMain,
+      addresses,
+      walletInfo,
+      ui,
+      pendingContributionTotal
+    } = this.props.rewardsData
     const { balance } = walletInfo
     const { walletRecoverySuccess, emptyWallet, modalBackup } = ui
     const addressArray = utils.getAddresses(addresses)
@@ -300,8 +308,8 @@ class PageWallet extends React.Component<Props, State> {
             ? emptyWallet
               ? <WalletEmpty />
               : <WalletSummary
-                reservedAmount={10.0}
-                reservedMoreLink={'https://brave.com/faq-rewards'}
+                reservedAmount={pendingContributionTotal || 0}
+                reservedMoreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
                 {...this.getWalletSummary()}
               />
             : <WalletOff/>

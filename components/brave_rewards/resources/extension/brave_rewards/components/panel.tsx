@@ -61,6 +61,10 @@ export class Panel extends React.Component<Props, State> {
         nonVerified
       })
     }))
+
+    chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
+      this.actions.OnPendingContributionsTotal(amount)
+    }))
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
@@ -298,7 +302,7 @@ export class Panel extends React.Component<Props, State> {
   }
 
   render () {
-    const { grant } = this.props.rewardsPanelData
+    const { grant, pendingContributionTotal } = this.props.rewardsPanelData
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const converted = utils.convertBalance(balance.toString(), rates)
@@ -371,8 +375,8 @@ export class Panel extends React.Component<Props, State> {
           }
           <WalletSummary
             compact={true}
-            reservedAmount={10.0}
-            reservedMoreLink={'https://brave.com/faq-rewards'}
+            reservedAmount={pendingContributionTotal || 0}
+            reservedMoreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
             {...this.getWalletSummary()}
           />
         </WalletSummarySlider>

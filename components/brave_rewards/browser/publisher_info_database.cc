@@ -864,40 +864,21 @@ sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {
   const int old_version = meta_table_.GetVersionNumber();
   const int cur_version = GetCurrentVersion();
 
-  // Migration from version 1 to version 2
-   // Migration from version 1
-  if (old_version == 1) {
-    // to version 2
-    if (cur_version < 3) {
-      if (!MigrateV1toV2()) {
-        LOG(ERROR) << "DB: Error with MigrateV1toV2";
-      }
+  // to version 2
+  if (old_version < 2 && cur_version < 3) {
+    if (!MigrateV1toV2()) {
+      LOG(ERROR) << "DB: Error with MigrateV1toV2";
     }
-
-    // to version 3
-    if (cur_version < 4) {
-      if (!MigrateV2toV3()) {
-        LOG(ERROR) << "DB: Error with MigrateV2toV3";
-      }
-    }
-
-    meta_table_.SetVersionNumber(cur_version);
-    return sql::INIT_OK;
   }
 
-  // Migration from version 2
-  if (old_version == 2) {
-    // to version 3
-    if (cur_version < 4) {
-      if (!MigrateV2toV3()) {
-        LOG(ERROR) << "DB: Error with MigrateV2toV3";
-      }
+  // to version 3
+  if (old_version < 3 && cur_version < 4) {
+    if (!MigrateV2toV3()) {
+      LOG(ERROR) << "DB: Error with MigrateV2toV3";
     }
-
-    meta_table_.SetVersionNumber(cur_version);
-    return sql::INIT_OK;
   }
 
+  meta_table_.SetVersionNumber(cur_version);
   return sql::INIT_OK;
 }
 

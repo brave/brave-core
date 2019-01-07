@@ -323,6 +323,23 @@
             ]
           }
         ]
+      },
+      {
+        "name": "getPendingContributionsTotal",
+        "type": "function",
+        "description": "Gets pending contributions total",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "amount",
+                "type": "number"
+              }
+            ]
+          }
+        ]
       }
     ]
   }

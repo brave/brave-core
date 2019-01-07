@@ -2176,4 +2176,14 @@ void RewardsServiceImpl::SetShortRetries(bool short_retries) {
   bat_ledger_service_->SetShortRetries(short_retries);
 }
 
+void RewardsServiceImpl::GetPendingContributionsTotal(
+    const GetPendingContributionsTotalCallback& callback) {
+  if (!Connected()) {
+    return;
+  }
+
+  // bat_ledger_->GetPublisherAllowNonVerified(callback);
+  LOG(ERROR) << "GetPendingContributionsTotal";
+}
+
 }  // namespace brave_rewards

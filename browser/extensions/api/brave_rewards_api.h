@@ -114,6 +114,19 @@ class BraveRewardsGetNonVerifiedSettingsFunction : public UIThreadExtensionFunct
   void OnGetAllowNonVerified(bool non_verified);
 };
 
+class BraveRewardsGetPendingContributionsTotalFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getPendingContributionsTotal", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetPendingContributionsTotalFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnGetPendingTotal(double amount);
+};
+
 }  // namespace api
 }  // namespace extensions
 

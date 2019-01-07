@@ -163,6 +163,8 @@ class RewardsServiceImpl : public RewardsService,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
   void GetAutoContributeProps(
       const GetAutoContributePropsCallback& callback) override;
+  void GetPendingContributionsTotal(
+    const GetPendingContributionsTotalCallback& callback) override;
 
   // Testing methods
   void SetLedgerEnvForTesting();
