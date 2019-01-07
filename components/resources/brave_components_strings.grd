@@ -365,6 +365,8 @@
       <message name="IDS_BRAVE_UI_RECURRING_DONATION" desc="">Monthly Tips</message>
       <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Monthly Tips</message>
       <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
+      <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="Notification about how much BAT do you have reserved">You’ve designated {{reservedAmount}} BAT for creators who haven’t yet signed up to receive contributions. We’ll keep trying to contribute until they verify, or until 90 days have passed.</message>
+      <message name="IDS_BRAVE_UI_RESERVED_MORE_LINK" desc="Text for the link that explains more about reserved amount">Learn more.</message>
       <message name="IDS_BRAVE_UI_RESTORE" desc="">Restore</message>
       <message name="IDS_BRAVE_UI_RESTORE_ALL" desc="">Restore All</message>
       <message name="IDS_BRAVE_UI_REVIEW_SITE_MSG" desc="">Your pinned sites have been moved to</message>
@@ -443,7 +445,7 @@
       <message name="IDS_BRAVE_UI_VIEW_DETAILS" desc="">View Details</message>
       <message name="IDS_BRAVE_UI_REWARDS_CREATING_TEXT" desc="">Creating wallet</message>
       <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_NOTE" desc="">NOTE:</message>
-      <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_TEXT" desc="">This creator has not yet verified their site. As soon as they verify with Brave, they will receive your tip.</message>
+      <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_TEXT" desc="">This creator has not yet signed up to receive contributions from Brave users. We’ll keep trying to contribute until they verify, or until 90 days have passed.</message>
       <message name="IDS_BRAVE_UI_SITE_UNVERIFIED_TEXT_MORE" desc="">Learn more.</message>
 
       <!-- WebUI brave sync resources -->

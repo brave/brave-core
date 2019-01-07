@@ -369,7 +369,12 @@ export class Panel extends React.Component<Props, State> {
             />
             : null
           }
-          <WalletSummary compact={true} {...this.getWalletSummary()}/>
+          <WalletSummary
+            compact={true}
+            reservedAmount={10.0}
+            reservedMoreLink={'https://brave.com/faq-rewards'}
+            {...this.getWalletSummary()}
+          />
         </WalletSummarySlider>
       </WalletWrapper>
     )

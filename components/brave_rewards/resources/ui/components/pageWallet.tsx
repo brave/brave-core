@@ -299,7 +299,11 @@ class PageWallet extends React.Component<Props, State> {
             enabledMain
             ? emptyWallet
               ? <WalletEmpty />
-              : <WalletSummary {...this.getWalletSummary()}/>
+              : <WalletSummary
+                reservedAmount={10.0}
+                reservedMoreLink={'https://brave.com/faq-rewards'}
+                {...this.getWalletSummary()}
+              />
             : <WalletOff/>
           }
         </WalletWrapper>

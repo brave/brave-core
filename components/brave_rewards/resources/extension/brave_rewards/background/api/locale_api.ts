@@ -72,6 +72,8 @@ export const getUIMessages = (): Record<string, string> => {
     'on',
     'oneTimeDonation',
     'recurringDonations',
+    'reservedAmountText',
+    'reservedMoreLink',
     'rewardsContribute',
     'rewardsContributeAttentionScore',
     'rewardsSummary',
