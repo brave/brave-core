@@ -123,4 +123,51 @@ describe('publishers reducer', () => {
       })
     })
   })
+
+  describe('ON_EXCLUDE_PUBLISHER', () => {
+    it('exclude is not defined in the state', () => {
+      let result = reducers({
+        rewardsData: { enabledMain: true }
+      }, {
+        type: types.ON_EXCLUDE_PUBLISHER,
+        payload: {
+          publisherKey: 'clifton.io'
+        }
+      })
+
+      const expectedState: Rewards.State = {
+        enabledMain: true,
+        excluded: [
+          'clifton.io'
+        ]
+      }
+
+      expect(result).toEqual({
+        rewardsData: expectedState
+      })
+    })
+
+    it('exclude already has some data', () => {
+      let result = reducers({
+        rewardsData: { ...defaultState, excluded: ['clifton.io'] }
+      }, {
+        type: types.ON_EXCLUDE_PUBLISHER,
+        payload: {
+          publisherKey: 'brave.com'
+        }
+      })
+
+      const expectedState: Rewards.State = {
+        ...defaultState,
+        excluded: [
+          'clifton.io',
+          'brave.com'
+        ]
+      }
+
+      expect(result).toEqual({
+        rewardsData: expectedState
+      })
+    })
+  })
 })
