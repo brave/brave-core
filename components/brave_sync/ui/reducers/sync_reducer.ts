@@ -125,7 +125,7 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       state = { ...state, error: payload.error }
       break
 
-    case types.SYNC_RESET_SETUP_ERROR:
+    case types.SYNC_CLEAR_SETUP_ERROR:
       state = { ...state, error: undefined }
       break
 
