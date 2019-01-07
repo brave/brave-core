@@ -2176,14 +2176,23 @@ void RewardsServiceImpl::SetShortRetries(bool short_retries) {
   bat_ledger_service_->SetShortRetries(short_retries);
 }
 
-void RewardsServiceImpl::GetPendingContributionsTotal(
-    const GetPendingContributionsTotalCallback& callback) {
-  if (!Connected()) {
-    return;
+double PendingContributionsTotalOnFileTaskRunner(
+    PublisherInfoDatabase* backend) {
+  if (!backend) {
+    return 0;
   }
 
-  // bat_ledger_->GetPublisherAllowNonVerified(callback);
-  LOG(ERROR) << "GetPendingContributionsTotal";
+  return backend->GetReservedAmount();
+}
+
+void RewardsServiceImpl::GetPendingContributionsTotal(
+    const GetPendingContributionsTotalCallback& callback) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
+      base::Bind(&PendingContributionsTotalOnFileTaskRunner,
+                 publisher_info_backend_.get()),
+      callback);
 }
 
 }  // namespace brave_rewards
