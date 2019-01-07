@@ -24,7 +24,6 @@ import ScanCodeModal from './scanCode'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { getDefaultDeviceName } from '../../helpers'
 
 // Images
 import { SyncDesktopIcon, SyncMobileIcon } from 'brave-ui/features/sync/images'
@@ -54,7 +53,7 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
     // this allow us to request the qr code and sync words immediately
     const { thisDeviceName } = this.props.syncData
     if (thisDeviceName === '') {
-       this.props.actions.onSetupNewToSync(getDefaultDeviceName())
+       this.props.actions.onSetupNewToSync('')
     }
   }
 
@@ -117,7 +116,7 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
         }
         <ModalHeader>
           <div>
-            <ModalTitle level={1}>{getLocale('letsSync')} “{getDefaultDeviceName()}”.</ModalTitle>
+            <ModalTitle level={1}>{getLocale('letsSync')} “{syncData.thisDeviceName}”.</ModalTitle>
             <ModalSubTitle>{getLocale('chooseDeviceType')}</ModalSubTitle>
           </div>
         </ModalHeader>
