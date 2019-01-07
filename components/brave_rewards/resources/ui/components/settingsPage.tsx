@@ -47,13 +47,14 @@ class SettingsPage extends React.Component<Props, {}> {
       this.actions.getWalletProperties()
     }, 60000)
 
-    this.actions.getGrant()
     this.actions.getDonationTable()
     this.actions.getContributeList()
-    this.actions.checkImported()
     this.actions.getAdsData()
+    this.actions.checkImported()
     this.actions.getPendingContributionsTotal()
     this.actions.getCurrentReport()
+    this.actions.getGrant()
+    this.actions.getReconcileStamp()
 
     // one time check (legacy fix)
     // more info here https://github.com/brave/brave-browser/issues/2172
