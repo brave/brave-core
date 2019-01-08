@@ -40,6 +40,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // WebTorrent
   registry->RegisterBooleanPref(kWebTorrentEnabled, true);
 
+  // Hangouts
+  registry->RegisterBooleanPref(kHangoutsEnabled, true);
+
   // No sign into Brave functionality
   registry->SetDefaultPrefValue(prefs::kSigninAllowed, base::Value(false));
 

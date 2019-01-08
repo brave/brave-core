@@ -40,5 +40,6 @@ extern const char kRewardsAddFundsNotification[];
 extern const char kMigratedMuonProfile[];
 extern const char kBravePaymentsPinnedItemCount[];
 extern const char kWebTorrentEnabled[];
+extern const char kHangoutsEnabled[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_
