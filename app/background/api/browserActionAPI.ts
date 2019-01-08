@@ -4,8 +4,26 @@
 
 import { isHttpOrHttps } from '../../helpers/urlUtils'
 
-export const shieldsOnIcon = 'img/icon.svg'
-export const shieldsOffIcon = 'img/icon-off.svg'
+// TODO: use `import` for these assets once the webpack build
+// for brave extension allows dynamic file serving like other brave-core
+// components
+const shieldsOnIcon18Url = 'img/shields-on.png'
+const shieldsOnIcon36Url = 'img/shields-on@2x.png'
+const shieldsOnIcon54Url = 'img/shields-on@3x.png'
+const shieldsOffIcon18Url = 'img/shields-off.png'
+const shieldsOffIcon36Url = 'img/shields-off@2x.png'
+const shieldsOffIcon54Url = 'img/shields-off@3x.png'
+
+export const shieldsOnIcon = {
+  18: shieldsOnIcon18Url,
+  36: shieldsOnIcon36Url,
+  54: shieldsOnIcon54Url
+}
+export const shieldsOffIcon = {
+  18: shieldsOffIcon18Url,
+  36: shieldsOffIcon36Url,
+  54: shieldsOffIcon54Url
+}
 
 /**
  * Initializes the browser action UI
@@ -13,7 +31,7 @@ export const shieldsOffIcon = 'img/icon-off.svg'
 export function init () {
   // Setup badge color
   chrome.browserAction.setBadgeBackgroundColor({
-    color: [66, 66, 66, 100]
+    color: '#636473'
   })
   // Initial / default icon
   chrome.browserAction.setIcon({
