@@ -80,28 +80,61 @@ std::string BatContribution::GetAnonizeProof(
   return proof;
 }
 
-ledger::PublisherInfoList BatContribution::GetVerifiedList(
-    const ledger::PublisherInfoList& all) {
-  ledger::PublisherInfoList result;
+ledger::PublisherInfoList BatContribution::GetVerifiedListAuto(
+    const std::string& viewing_id,
+    const ledger::PublisherInfoList& list) {
+  ledger::PublisherInfoList verified;
+  // ledger::PendingContributionList non_verified;
+
+//  for (const auto& publisher : list) {
+//
+//  }
 
   // TODO implement
 
-  return result;
+  return verified;
+}
+
+ledger::PublisherInfoList BatContribution::GetVerifiedListRecurring(
+    const std::string& viewing_id,
+    const ledger::PublisherInfoList& list) {
+  ledger::PublisherInfoList verified;
+  ledger::PendingContributionList non_verified;
+
+  for (const auto& publisher : list) {
+    if (publisher.verified) {
+      verified.push_back(publisher);
+    } else {
+      ledger::PendingContribution contribution;
+      contribution.amount = publisher.weight;
+      contribution.publisher_key = publisher.id;
+      contribution.viewing_id = viewing_id;
+
+      non_verified.list_.push_back(contribution);
+    }
+  }
+
+  if (non_verified.list_.size() > 0) {
+    ledger_->SaveUnverifiedContribution(non_verified);
+  }
+
+  return verified;
 }
 
 void BatContribution::ReconcilePublisherList(
     ledger::PUBLISHER_CATEGORY category,
     const ledger::PublisherInfoList& list,
     uint32_t next_record) {
+  std::string viewing_id = ledger_->GenerateGUID();
   ledger::PublisherInfoList verified_list;
 
   if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
     ledger::PublisherInfoList normalized_list;
     ledger_->NormalizeContributeWinners(&normalized_list, false, list, 0);
     std::sort(normalized_list.begin(), normalized_list.end());
-    verified_list = GetVerifiedList(normalized_list);
+    verified_list = GetVerifiedListAuto(viewing_id, normalized_list);
   } else {
-    verified_list = GetVerifiedList(list);
+    verified_list = GetVerifiedListRecurring(viewing_id, list);
   }
 
   braveledger_bat_helper::PublisherList new_list;
@@ -118,7 +151,7 @@ void BatContribution::ReconcilePublisherList(
     new_list.push_back(new_publisher);
   }
 
-  StartReconcile(ledger_->GenerateGUID(), category, new_list);
+  StartReconcile(viewing_id, category, new_list);
 }
 
 void BatContribution::ResetReconcileStamp() {

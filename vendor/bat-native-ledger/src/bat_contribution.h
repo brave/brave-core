@@ -134,9 +134,16 @@ class BatContribution {
                               const std::string& id,
                               std::string& pre_flight);
 
-  // from the list gets only verified publishers and
+  // AUTO CONTRIBUTE: from the list gets only verified publishers and
   // save unverified to the db
-  ledger::PublisherInfoList GetVerifiedList(
+  ledger::PublisherInfoList GetVerifiedListAuto(
+      const std::string& viewing_id,
+      const ledger::PublisherInfoList& all);
+
+  // RECURRING DONTAIONS: from the list gets only verified publishers and
+  // save unverified to the db
+  ledger::PublisherInfoList GetVerifiedListRecurring(
+      const std::string& viewing_id,
       const ledger::PublisherInfoList& all);
 
   // Entry point for contribution where we have publisher info list

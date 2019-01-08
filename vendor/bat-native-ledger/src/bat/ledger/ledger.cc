@@ -670,7 +670,7 @@ PendingContribution::PendingContribution (
   publisher_key = properties.publisher_key;
   amount = properties.amount;
   added_date = properties.added_date;
-  reconcile_date = properties.reconcile_date;
+  viewing_id = properties.viewing_id;
 }
 
 const std::string PendingContribution::ToJson() const {
@@ -690,14 +690,14 @@ bool PendingContribution::loadFromJson(const std::string& json) {
     error = !(d.HasMember("publisher_key") && d["publisher_key"].IsString() &&
         d.HasMember("amount") && d["amount"].IsDouble() &&
         d.HasMember("added_date") && d["added_date"].IsUint64() &&
-        d.HasMember("reconcile_date") && d["reconcile_date"].IsUint64());
+        d.HasMember("viewing_id") && d["viewing_id"].IsString());
   }
 
   if (false == error) {
     publisher_key = d["publisher_key"].GetString();
     amount = d["amount"].GetDouble();
     added_date = d["added_date"].GetUint64();
-    reconcile_date = d["reconcile_date"].GetUint64();
+    viewing_id = d["viewing_id"].GetString();
   }
 
   return !error;

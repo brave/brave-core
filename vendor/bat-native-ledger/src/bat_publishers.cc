@@ -534,8 +534,11 @@ void BatPublishers::NormalizeContributeWinners(
   synopsisNormalizerInternal(newList, saveData, list, record);
 }
 
-void BatPublishers::synopsisNormalizerInternal(ledger::PublisherInfoList* newList, bool saveData,
-    const ledger::PublisherInfoList& oldList, uint32_t /* next_record */) {
+void BatPublishers::synopsisNormalizerInternal(
+    ledger::PublisherInfoList* newList,
+    bool saveData,
+    const ledger::PublisherInfoList& oldList,
+    uint32_t /* next_record */) {
   // TODO SZ: We can pass non const value here to avoid copying
   ledger::PublisherInfoList list = oldList;
   if (list.size() == 0) {

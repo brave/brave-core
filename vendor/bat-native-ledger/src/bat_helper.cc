@@ -2746,8 +2746,8 @@ static bool ignore_ = false;
     writer.String("added_date");
     writer.Uint64(contribution.added_date);
 
-    writer.String("reconcile_date");
-    writer.Uint64(contribution.reconcile_date);
+    writer.String("viewing_id");
+    writer.String(contribution.viewing_id.c_str());
 
     writer.EndObject();
   }
