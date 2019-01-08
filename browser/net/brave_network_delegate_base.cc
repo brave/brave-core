@@ -284,12 +284,10 @@ void BraveNetworkDelegateBase::RunNextCallback(
 
   if (ctx->event_type == brave::kOnBeforeRequest) {
     if (!ctx->new_url_spec.empty() &&
-        (ctx->new_url_spec != ctx->request_url.spec() ||
-          ctx->referrer_changed) &&
+        (ctx->new_url_spec != ctx->request_url.spec()) &&
         IsRequestIdentifierValid(ctx->request_identifier)) {
       *ctx->new_url = GURL(ctx->new_url_spec);
     }
-
     rv = ChromeNetworkDelegate::OnBeforeURLRequest(request,
         std::move(wrapped_callback), ctx->new_url);
   } else if (ctx->event_type == brave::kOnBeforeStartTransaction) {

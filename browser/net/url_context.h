@@ -58,7 +58,6 @@ struct BraveRequestInfo {
   bool allow_http_upgradable_resource = false;
   bool allow_1p_cookies = true;
   bool allow_3p_cookies = false;
-  bool referrer_changed = false;
   int render_process_id = 0;
   int render_frame_id = 0;
   int frame_tree_node_id = 0;
@@ -81,6 +80,9 @@ struct BraveRequestInfo {
  private:
   // Please don't add any more friends here if it can be avoided.
   // We should also remove the ones below.
+  friend int OnBeforeURLRequest_SiteHacksWork(
+      const ResponseCallback& next_callback,
+      std::shared_ptr<BraveRequestInfo> ctx);
   friend int brave_rewards::OnBeforeURLRequest(
       const brave::ResponseCallback& next_callback,
       std::shared_ptr<brave::BraveRequestInfo> ctx);
