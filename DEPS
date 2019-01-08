@@ -43,6 +43,12 @@ hooks = [
     'action': ['python', 'src/brave/script/init-brave-extension.py'],
   },
   {
+    # Download rust deps if necessary
+    'name': 'download_rust_deps',
+    'pattern': '.',
+    'action': ['python', 'src/brave/script/download_rust_deps.py'],
+  },
+  {
     # Build brave-sync
     'name': 'build_brave_sync',
     'pattern': '.',

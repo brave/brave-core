@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import argparse
 import os
@@ -6,11 +9,12 @@ import sys
 import subprocess
 import shutil
 
+from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
+
 
 def main():
     args = parse_args()
 
-    rustup_bin = args.rustup_bin[0]
     rustup_home = args.rustup_home[0]
     cargo_home = args.cargo_home[0]
     manifest_path = args.manifest_path[0]
@@ -18,13 +22,12 @@ def main():
     platform = args.platform[0]
     is_debug = args.is_debug[0]
 
-    build(rustup_bin, rustup_home, cargo_home, manifest_path, build_path, platform, is_debug)
+    build(rustup_home, cargo_home, manifest_path, build_path, platform, is_debug)
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Cargo')
 
-    parser.add_argument('--rustup_bin', nargs=1)
     parser.add_argument('--rustup_home', nargs=1)
     parser.add_argument('--cargo_home', nargs=1)
     parser.add_argument('--manifest_path', nargs=1)
@@ -33,12 +36,6 @@ def parse_args():
     parser.add_argument('--is_debug', nargs=1)
 
     args = parser.parse_args()
-
-    # Validate rustup_bin args
-    if (args.rustup_bin is None or
-        len(args.rustup_bin) is not 1 or
-            len(args.rustup_bin[0]) is 0):
-        raise Exception("rustup_bin argument was not specified correctly")
 
     # Validate rustup_home args
     if (args.rustup_home is None or
@@ -86,7 +83,7 @@ def parse_args():
     return args
 
 
-def build(rustup_bin, rustup_home, cargo_home, manifest_path, build_path, platform, is_debug):
+def build(rustup_home, cargo_home, manifest_path, build_path, platform, is_debug):
     targets = []
 
     if platform == "Windows x86":
@@ -112,9 +109,15 @@ def build(rustup_bin, rustup_home, cargo_home, manifest_path, build_path, platfo
 
     # Set environment variables for rustup
     env = os.environ.copy()
-    env['PATH'] = rustup_bin + os.pathsep + env['PATH']
+
+    rustup_home = os.path.join(rustup_home, RUST_DEPS_PACKAGE_VERSION)
     env['RUSTUP_HOME'] = rustup_home
+
+    cargo_home = os.path.join(cargo_home, RUST_DEPS_PACKAGE_VERSION)
     env['CARGO_HOME'] = cargo_home
+
+    rustup_bin = os.path.join(rustup_home, 'bin')
+    env['PATH'] = rustup_bin + os.pathsep + env['PATH']
 
     # Set environment variables for Challenge Bypass Ristretto FFI
     env['NO_CXXEXCEPTIONS'] = "1"
