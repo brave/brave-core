@@ -14,11 +14,6 @@ MAC_SIGNING_KEYCHAIN="${4}"
 MAC_SIGNING_IDENTIFIER="${5}"
 MAC_PROVISIONING_PROFILE="${6}"
 MAC_ENTITLEMENTS_PLIST="${7}"
-if [[ ${#} -eq 8 ]]; then
-EXTRA_FLAGS="${8}"
-else
-EXTRA_FLAGS=""
-fi
 
 function check_exit() {
     return=$?;
@@ -42,6 +37,11 @@ mkdir -p "$tmpdir"
 
 cp -a "$SOURCE" "$DEST"
 
+if [[ ${#} -eq 8 ]]; then
+EXTRA_FLAGS="${8}"
 "${PKG_DIR}/sign_versioned_dir.sh" "$DEST" "$MAC_SIGNING_KEYCHAIN" "$MAC_SIGNING_IDENTIFIER" "$EXTRA_FLAGS"
-
 "${PKG_DIR}/sign_app.sh" "$DEST" "$MAC_SIGNING_KEYCHAIN" "$MAC_SIGNING_IDENTIFIER" "$MAC_PROVISIONING_PROFILE" "${MAC_ENTITLEMENTS_PLIST}" "$EXTRA_FLAGS"
+else
+"${PKG_DIR}/sign_versioned_dir.sh" "$DEST" "$MAC_SIGNING_KEYCHAIN" "$MAC_SIGNING_IDENTIFIER"
+"${PKG_DIR}/sign_app.sh" "$DEST" "$MAC_SIGNING_KEYCHAIN" "$MAC_SIGNING_IDENTIFIER" "$MAC_PROVISIONING_PROFILE" "${MAC_ENTITLEMENTS_PLIST}"
+fi
