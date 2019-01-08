@@ -18,6 +18,12 @@
         sub-label="$i18n{webTorrentEnabledDesc}"
         on-settings-boolean-control-change="onWebTorrentEnabledChange_">
     </settings-toggle-button>
+    <settings-toggle-button id="hangoutsEnabled"
+        pref="{{prefs.brave.hangouts_enabled}}"
+        label="Hangouts"
+        sub-label="$i18n{hangoutsEnabledDesc}"
+        on-settings-boolean-control-change="onHangoutsEnabledChange_">
+    </settings-toggle-button>
     <div class="settings-row continuation" id="manageExtensionsRow">
       <cr-link-row class="first" icon-class="icon-external"
         label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">

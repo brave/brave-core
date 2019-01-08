@@ -337,6 +337,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_WEBTORRENT_ENABLED_DESC" desc="The description for WebTorrent switch in settings">
         Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.
       </message>
+     <message name="IDS_SETTINGS_HANGOUTS_ENABLED_DESC" desc="The description for Hangouts switch in settings">
+        Uses Hangouts component to enable screen sharing and other features in the browser.
+      </message>
       <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL" desc="The label of manage extensions link in settings">
         Manage Extensions
       </message>

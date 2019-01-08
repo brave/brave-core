@@ -85,6 +85,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       IDS_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_TITLE},
     {"webTorrentEnabledDesc",
       IDS_SETTINGS_WEBTORRENT_ENABLED_DESC},
+    {"hangoutsEnabledDesc",
+      IDS_SETTINGS_HANGOUTS_ENABLED_DESC},
     {"manageExtensionsLabel",
       IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL}
   };
