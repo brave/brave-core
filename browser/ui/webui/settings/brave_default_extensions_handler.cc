@@ -8,6 +8,7 @@
 
 #include "base/bind.h"
 #include "base/values.h"
+#include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "chrome/browser/extensions/component_loader.h"
@@ -21,6 +22,10 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "setWebTorrentEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetWebTorrentEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setHangoutsEnabled",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::SetHangoutsEnabled,
                           base::Unretained(this)));
 }
 
@@ -45,6 +50,29 @@ void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
     service->EnableExtension(brave_webtorrent_extension_id);
   } else {
     service->DisableExtension(brave_webtorrent_extension_id,
+        extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
+  }
+}
+
+void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  CHECK(profile_);
+  bool value;
+  args->GetBoolean(0, &value);
+
+  extensions::ExtensionService* service =
+    extensions::ExtensionSystem::Get(profile_)->extension_service();
+
+  if (value) {
+    extensions::ComponentLoader* loader = service->component_loader();
+    if (!loader->Exists(hangouts_extension_id)) {
+      static_cast<extensions::BraveComponentLoader*>(loader)->
+          ForceAddHangoutServicesExtension();
+    }
+    service->EnableExtension(hangouts_extension_id);
+  } else {
+    service->DisableExtension(hangouts_extension_id,
         extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
   }
 }
