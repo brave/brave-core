@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index 3bfcba30be1ca17870b85acbc68ae15887f027fe..6a74ea76c00df34b9de30166cc891bba90a18f92 100644
+index 3bfcba30be1ca17870b85acbc68ae15887f027fe..b2a7449587219c9171654470ea871af78b44e6d2 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
 @@ -25,6 +25,7 @@
@@ -10,7 +10,17 @@ index 3bfcba30be1ca17870b85acbc68ae15887f027fe..6a74ea76c00df34b9de30166cc891bba
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/chrome_notification_types.h"
-@@ -1000,7 +1001,7 @@ void ProfileIOData::Init(
+@@ -663,6 +664,9 @@ bool ProfileIOData::IsHandledProtocol(const std::string& scheme) {
+     extensions::kExtensionScheme,
+ #endif
+     content::kChromeUIScheme,
++#if defined(BRAVE_CHROMIUM_BUILD)
++    kBraveUIScheme,
++#endif
+     url::kDataScheme,
+ #if defined(OS_CHROMEOS)
+     content::kExternalFileScheme,
+@@ -1000,7 +1004,7 @@ void ProfileIOData::Init(
          std::make_unique<network::URLRequestContextBuilderMojo>();
  
      std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(
