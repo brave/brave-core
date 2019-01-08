@@ -260,7 +260,7 @@ void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
   }
 }
 
-void BraveContentBrowserClient::PossiblyHideReferrer(
+void BraveContentBrowserClient::MaybeHideReferrer(
     content::BrowserContext* browser_context,
     const GURL& request_url,
     const GURL& document_url,

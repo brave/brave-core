@@ -340,17 +340,17 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
 
   // Should be hidden by default.
   content::Referrer referrer = kReferrer;
-  client()->PossiblyHideReferrer(browser()->profile(),
-                                 kRequestUrl, kDocumentUrl,
-                                 &referrer);
+  client()->MaybeHideReferrer(browser()->profile(),
+                              kRequestUrl, kDocumentUrl,
+                              &referrer);
   EXPECT_EQ(referrer.url, kRequestUrl.GetOrigin());
 
   // Special rule for extensions.
   const GURL kExtensionUrl("chrome-extension://abc/path?query");
   referrer.url = kExtensionUrl;
-  client()->PossiblyHideReferrer(browser()->profile(),
-                                 kRequestUrl, kExtensionUrl,
-                                 &referrer);
+  client()->MaybeHideReferrer(browser()->profile(),
+                              kRequestUrl, kExtensionUrl,
+                              &referrer);
   EXPECT_EQ(referrer.url, kExtensionUrl);
 
   // Allow referrers for certain URL.
@@ -360,8 +360,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
       CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kReferrers, CONTENT_SETTING_ALLOW);
   referrer = kReferrer;
-  client()->PossiblyHideReferrer(browser()->profile(),
-                                 kRequestUrl, kDocumentUrl,
-                                 &referrer);
+  client()->MaybeHideReferrer(browser()->profile(),
+                              kRequestUrl, kDocumentUrl,
+                              &referrer);
   EXPECT_EQ(referrer.url, kDocumentUrl);
 }

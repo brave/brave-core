@@ -64,10 +64,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const service_manager::Identity& identity,
       base::CommandLine* command_line) override;
 
-  void PossiblyHideReferrer(content::BrowserContext* browser_context,
-                            const GURL& request_url,
-                            const GURL& document_url,
-                            content::Referrer* referrer) override;
+  void MaybeHideReferrer(content::BrowserContext* browser_context,
+                         const GURL& request_url,
+                         const GURL& document_url,
+                         content::Referrer* referrer) override;
 
   GURL GetEffectiveURL(content::BrowserContext* browser_context,
                        const GURL& url) override;
