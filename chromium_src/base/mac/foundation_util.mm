@@ -37,7 +37,7 @@ const char* BaseBundleID() {
   }
 
 #if !defined(OFFICIAL_BUILD)
-  return "com.brave.Browser";
+  return "com.brave.Browser.development";
 #else
   switch (chrome::GetChannel()) {
     case version_info::Channel::CANARY:
