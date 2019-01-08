@@ -1,20 +1,8 @@
 diff --git a/chrome/installer/mac/sign_app.sh.in b/chrome/installer/mac/sign_app.sh.in
-index 89b0028a1fb782c72021c4ce7f5db54d6dcc9b22..8f7a7b36cd66f827cd48180f96422de4001a1c71 100644
+index 89b0028a1fb782c72021c4ce7f5db54d6dcc9b22..934363520f8212cddaab525e31c7bbf4a023dd73 100644
 --- a/chrome/installer/mac/sign_app.sh.in
 +++ b/chrome/installer/mac/sign_app.sh.in
-@@ -47,10 +47,7 @@ else
- fi
- 
- script_dir="$(dirname "${0}")"
--source "${script_dir}/variables.sh"
--
--# Use custom resource rules for the browser application.
--browser_app_rules="${script_dir}/app_resource_rules.plist"
-+codesign_id=$codesign_id source "${script_dir}/variables.sh"
- 
- contents_dir="${app_path}/Contents"
- versioned_dir="${contents_dir}/Versions/@VERSION@"
-@@ -70,10 +67,10 @@ fi
+@@ -70,10 +70,10 @@ fi
  
  requirement="\
  designated => \
@@ -29,7 +17,7 @@ index 89b0028a1fb782c72021c4ce7f5db54d6dcc9b22..8f7a7b36cd66f827cd48180f96422de4
  ${requirement_suffix} \
  "
  
-@@ -81,7 +78,6 @@ codesign_cmd=(
+@@ -81,7 +81,6 @@ codesign_cmd=(
    codesign --sign "${codesign_id}" --keychain "${codesign_keychain}"
    "${browser_app}"
    --options "${enforcement_flags_app}"
