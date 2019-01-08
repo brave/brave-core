@@ -230,6 +230,8 @@ void BatPublishers::saveVisitInternal(
     return;
   }
 
+  bool verified = isVerified(publisher_id);
+
   bool new_visit = false;
   if (!publisher_info.get()) {
     new_visit = true;
@@ -267,7 +269,7 @@ void BatPublishers::saveVisitInternal(
     }
   }
   publisher_info->score += concaveScore(duration);
-  publisher_info->verified = isVerified(publisher_info->id);
+  publisher_info->verified = verified;
   publisher_info->reconcile_stamp = ledger_->GetReconcileStamp();
 
   auto media_info = std::make_unique<ledger::PublisherInfo>(*publisher_info);
