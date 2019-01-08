@@ -15,6 +15,10 @@
 #include "bat_helper.h"
 #include "url_request_handler.h"
 
+#if defined(OS_ANDROID)
+#include "chrome/browser/android/brave/safetynet_check.h"
+#endif
+
 namespace bat_ledger {
 class LedgerImpl;
 }
@@ -58,6 +62,11 @@ class BatClient {
   void recoverWalletCallback(bool result, const std::string& response,
       const std::map<std::string, std::string>& headers, const std::string& paymentId);
   std::string getAnonizeProof(const std::string& registrarVK, const std::string& id, std::string& preFlight);
+#if defined(OS_ANDROID)
+  void getGrantAttestationResult(const std::string& arguments, bool result, const std::string& result_string);
+  void setGrantAttestationResult(const std::string& promoId, bool result, const std::string& result_string);
+  safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
+#endif
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 

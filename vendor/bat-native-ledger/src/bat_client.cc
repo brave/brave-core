@@ -397,6 +397,7 @@ void BatClient::getGrant(const std::string& lang, const std::string& forPaymentI
     }
   }
 
+#if !defined(OS_ANDROID)
   auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)GET_SET_PROMOTION + arguments, PREFIX_V2),
     std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
   handler_.AddRequestHandler(std::move(request_id),
@@ -405,7 +406,31 @@ void BatClient::getGrant(const std::string& lang, const std::string& forPaymentI
                                        _1,
                                        _2,
                                        _3));
+#else
+  safetynet_check::ClientAttestationCallback attest_callback = base::BindOnce(&BatClient::getGrantAttestationResult, base::Unretained(this), arguments);
+  safetynet_check_runner_.performSafetynetCheck("", std::move(attest_callback));
+#endif
 }
+
+#if defined(OS_ANDROID)
+void BatClient::getGrantAttestationResult(const std::string& arguments, bool result, const std::string& result_string) {
+  if (result) {
+    std::vector<std::string> headers;
+    headers.push_back("safetynet-token:" + result_string);
+    auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)GET_SET_PROMOTION + arguments, PREFIX_V3),
+      headers, "", "", ledger::URL_METHOD::GET, &handler_);
+
+    handler_.AddRequestHandler(std::move(request_id),
+                              std::bind(&BatClient::getGrantCallback,
+                                        this,
+                                        _1,
+                                        _2,
+                                        _3));
+  } else {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Failed to get attestation result to get grant: " << result_string;
+  }
+}
+#endif
 
 void BatClient::getGrantCallback(bool success,
                                  const std::string& response,
@@ -443,7 +468,11 @@ void BatClient::getGrantCallback(bool success,
   ledger_->OnGrant(ledger::Result::LEDGER_OK, properties);
 }
 
+#if !defined(OS_ANDROID)
 void BatClient::setGrant(const std::string& captchaResponse, const std::string& promotionId) {
+#else
+void BatClient::setGrant(const std::string& nonce, const std::string& promotionId) {
+#endif
   braveledger_bat_helper::GRANT state_grant = ledger_->GetGrant();
   std::string state_promotionId = state_grant.promotionId;
 
@@ -458,6 +487,7 @@ void BatClient::setGrant(const std::string& captchaResponse, const std::string& 
     promoId = promotionId;
   }
 
+#if !defined(OS_ANDROID)
   std::string keys[2] = {"promotionId", "captchaResponse"};
   std::string values[2] = {promoId, captchaResponse};
   std::string payload = braveledger_bat_helper::stringify(keys, values, 2);
@@ -470,7 +500,36 @@ void BatClient::setGrant(const std::string& captchaResponse, const std::string& 
                                        _1,
                                        _2,
                                        _3));
+#else
+  safetynet_check::ClientAttestationCallback attest_callback = base::BindOnce(&BatClient::setGrantAttestationResult, base::Unretained(this), promoId);
+  safetynet_check_runner_.performSafetynetCheck(nonce, std::move(attest_callback));
+#endif
 }
+
+#if defined(OS_ANDROID)
+void BatClient::setGrantAttestationResult(const std::string& promoId, bool result, const std::string& result_string) {
+  if (result) {
+    std::string keys[1] = {"promotionId"};
+    std::string values[1] = {promoId};
+
+    std::string payload = braveledger_bat_helper::stringify(keys, values, 1);
+
+    std::vector<std::string> headers;
+    headers.push_back("safetynet-token:" + result_string);
+
+    auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)GET_SET_PROMOTION + "/" + ledger_->GetPaymentId(), PREFIX_V3),
+        headers, payload, "application/json; charset=utf-8", ledger::URL_METHOD::PUT, &handler_);
+    handler_.AddRequestHandler(std::move(request_id),
+                              std::bind(&BatClient::setGrantCallback,
+                                        this,
+                                        _1,
+                                        _2,
+                                        _3));
+  } else {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Failed to get attestation result to set grant: " << result_string;
+  }
+}
+#endif
 
 void BatClient::setGrantCallback(bool success,
                                  const std::string& response,
@@ -484,7 +543,11 @@ void BatClient::setGrantCallback(bool success,
 
   if (!success) {
     if (statusCode == 403) {
+#if !defined(OS_ANDROID)
       ledger_->OnGrantFinish(ledger::Result::CAPTCHA_FAILED, grant);
+#else
+      ledger_->OnGrantFinish(ledger::Result::GRANT_NOT_FOUND, grant);
+#endif
     } else if (statusCode == 404 || statusCode == 410) {
       ledger_->OnGrantFinish(ledger::Result::GRANT_NOT_FOUND, grant);
     } else {
@@ -509,9 +572,15 @@ void BatClient::setGrantCallback(bool success,
 void BatClient::getGrantCaptcha() {
   std::vector<std::string> headers;
   headers.push_back("brave-product:brave-core");
+#if !defined(OS_ANDROID)
   auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)GET_PROMOTION_CAPTCHA + ledger_->GetPaymentId(), PREFIX_V2),
    headers, "", "",
       ledger::URL_METHOD::GET, &handler_);
+#else
+  auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)GET_PROMOTION_ATTESTATION + ledger_->GetPaymentId(), PREFIX_V1),
+   headers, "", "",
+      ledger::URL_METHOD::GET, &handler_);
+#endif
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::getGrantCaptchaCallback,
                                        this,
@@ -525,6 +594,7 @@ void BatClient::getGrantCaptchaCallback(bool success,
                                         const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, success, response, headers);
 
+#if !defined(OS_ANDROID)
   auto it = headers.find("captcha-hint");
   if (!success || it == headers.end()) {
     // TODO NZ Add error handler
@@ -532,6 +602,18 @@ void BatClient::getGrantCaptchaCallback(bool success,
   }
 
   ledger_->OnGrantCaptcha(response, it->second);
+#else
+  std::string nonce;
+  braveledger_bat_helper::getJSONValue("nonce", response, nonce);
+  if (!success) {
+    // Attestation failed
+    braveledger_bat_helper::GRANT grant;
+    ledger_->OnGrantFinish(ledger::Result::GRANT_NOT_FOUND, grant);
+    return;
+  }
+
+  setGrant(nonce, "");
+#endif
 }
 
 }  // namespace braveledger_bat_client
