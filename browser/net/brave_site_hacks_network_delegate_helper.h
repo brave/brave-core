@@ -7,8 +7,6 @@
 
 #include "brave/browser/net/url_context.h"
 
-struct BraveRequestInfo;
-
 namespace net {
 class URLRequest;
 }

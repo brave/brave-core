@@ -265,8 +265,8 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerCleared) {
     brave::ResponseCallback callback;
     int ret = brave::OnBeforeURLRequest_SiteHacksWork(callback, brave_request_info);
     EXPECT_EQ(ret, net::OK);
-    // new_url_spec must be set to trigger an internal redirect
-    EXPECT_STREQ(brave_request_info->new_url_spec.c_str(), url.spec().c_str());
+    // new_url should not be set
+    EXPECT_TRUE(brave_request_info->new_url_spec.empty());
     EXPECT_STREQ(request->referrer().c_str(), url.GetOrigin().spec().c_str());
   });
 }
