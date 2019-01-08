@@ -157,7 +157,7 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
         <StyledLeft>
           {
             isDetailView
-            ? <StyledBackArrow onClick={this.setView.bind(this, 'detailView')}>
+            ? <StyledBackArrow onClick={this.setView.bind(this, 'detailView') as any}>
                 <ArrowLeftIcon />
               </StyledBackArrow>
             : null
@@ -195,7 +195,7 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
 
     return (
       <StyledContent detailView={this.state.detailView}>
-        <StyleDetailsLink onClick={this.setView.bind(this, 'detailView')}>
+        <StyleDetailsLink onClick={this.setView.bind(this, 'detailView') as any}>
           {getLocale('viewDetails')}
           <StyledArrow>
             <CaratRightIcon/>
@@ -207,7 +207,7 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
 
   getSettingsListTitle = () => {
     return (
-      <StyledSettingsListTitle onClick={this.setView.bind(this, 'settings')}>
+      <StyledSettingsListTitle onClick={this.setView.bind(this, 'settings') as any}>
         <StyledSettingsIcon>
           <SettingsIcon />
         </StyledSettingsIcon>
@@ -231,7 +231,7 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
           <StyledSettingsTitle>
             {this.getSettingsTitle(title)}
           </StyledSettingsTitle>
-          <StyledSettingsClose onClick={this.setView.bind(this, 'settings')}>
+          <StyledSettingsClose onClick={this.setView.bind(this, 'settings') as any}>
             <CloseStrokeIcon />
           </StyledSettingsClose>
           <StyledSettingsContent>
