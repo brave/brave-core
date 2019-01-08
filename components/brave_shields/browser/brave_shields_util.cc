@@ -76,7 +76,6 @@ bool IsAllowContentSetting(HostContentSettingsMap* content_settings,
 
 }  // namespace
 
-
 bool IsAllowContentSettingFromIO(const net::URLRequest* request,
     const GURL& primary_url, const GURL& secondary_url,
     ContentSettingsType setting_type,

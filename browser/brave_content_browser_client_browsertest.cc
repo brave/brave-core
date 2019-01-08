@@ -12,9 +12,9 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -27,123 +27,152 @@
 #include "net/dns/mock_host_resolver.h"
 
 class BraveContentBrowserClientTest : public InProcessBrowserTest {
-  public:
-    void SetUp() override {
-      // This is needed because component extensions are not added by default
-      // without it.  Theyu are found to interfere with tests otherwise. It's needed
-      // for loading the hangouts extension of which there are tests for below.
-      extensions::ComponentLoader::EnableBackgroundExtensionsForTesting();
-      InProcessBrowserTest::SetUp();
-    }
-    void SetUpOnMainThread() override {
-      InProcessBrowserTest::SetUpOnMainThread();
+ public:
+  void SetUp() override {
+    // This is needed because component extensions are not added by default
+    // without it.  Theyu are found to interfere with tests otherwise. It's
+    // needed for loading the hangouts extension of which there are tests for
+    // below.
+    extensions::ComponentLoader::EnableBackgroundExtensionsForTesting();
+    InProcessBrowserTest::SetUp();
+  }
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
 
-      content_client_.reset(new ChromeContentClient);
-      content::SetContentClient(content_client_.get());
-      browser_content_client_.reset(new BraveContentBrowserClient());
-      content::SetBrowserClientForTesting(browser_content_client_.get());
+    content_client_.reset(new ChromeContentClient);
+    content::SetContentClient(content_client_.get());
+    browser_content_client_.reset(new BraveContentBrowserClient());
+    content::SetBrowserClientForTesting(browser_content_client_.get());
 
-      host_resolver()->AddRule("*", "127.0.0.1");
-      content::SetupCrossSiteRedirector(embedded_test_server());
+    host_resolver()->AddRule("*", "127.0.0.1");
+    content::SetupCrossSiteRedirector(embedded_test_server());
 
-      brave::RegisterPathProvider();
-      base::FilePath test_data_dir;
-      base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-      embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
-      ASSERT_TRUE(embedded_test_server()->Start());
+    ASSERT_TRUE(embedded_test_server()->Start());
 
-      magnet_html_url_ = embedded_test_server()->GetURL("a.com", "/magnet.html");
-      magnet_url_ = GURL("magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c&dn=Big+Buck+Bunny&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fbig-buck-bunny.torrent");
-      extension_url_ = GURL("chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/brave_webtorrent.html?magnet%3A%3Fxt%3Durn%3Abtih%3Add8255ecdc7ca55fb0bbf81323d87062db1f6d1c%26dn%3DBig%2BBuck%2BBunny%26tr%3Dudp%253A%252F%252Fexplodie.org%253A6969%26tr%3Dudp%253A%252F%252Ftracker.coppersurfer.tk%253A6969%26tr%3Dudp%253A%252F%252Ftracker.empire-js.us%253A1337%26tr%3Dudp%253A%252F%252Ftracker.leechers-paradise.org%253A6969%26tr%3Dudp%253A%252F%252Ftracker.opentrackr.org%253A1337%26tr%3Dwss%253A%252F%252Ftracker.btorrent.xyz%26tr%3Dwss%253A%252F%252Ftracker.fastcast.nz%26tr%3Dwss%253A%252F%252Ftracker.openwebtorrent.com%26ws%3Dhttps%253A%252F%252Fwebtorrent.io%252Ftorrents%252F%26xs%3Dhttps%253A%252F%252Fwebtorrent.io%252Ftorrents%252Fbig-buck-bunny.torrent");
-      torrent_url_ = GURL("https://webtorrent.io/torrents/sintel.torrent#ix=5");
-      torrent_extension_url_ = GURL("chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/brave_webtorrent.html?https://webtorrent.io/torrents/sintel.torrent#ix=5");
-    }
+    magnet_html_url_ = embedded_test_server()->GetURL("a.com", "/magnet.html");
+    magnet_url_ = GURL(
+        "magnet:?xt=urn:btih:dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c&dn=Big+"
+        "Buck+Bunny&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker."
+        "coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr="
+        "udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%"
+        "2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&"
+        "tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker."
+        "openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs="
+        "https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fbig-buck-bunny.torrent");
+    extension_url_ = GURL(
+        "chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/"
+        "brave_webtorrent.html?magnet%3A%3Fxt%3Durn%3Abtih%"
+        "3Add8255ecdc7ca55fb0bbf81323d87062db1f6d1c%26dn%3DBig%2BBuck%2BBunny%"
+        "26tr%3Dudp%253A%252F%252Fexplodie.org%253A6969%26tr%3Dudp%253A%252F%"
+        "252Ftracker.coppersurfer.tk%253A6969%26tr%3Dudp%253A%252F%252Ftracker."
+        "empire-js.us%253A1337%26tr%3Dudp%253A%252F%252Ftracker.leechers-"
+        "paradise.org%253A6969%26tr%3Dudp%253A%252F%252Ftracker.opentrackr.org%"
+        "253A1337%26tr%3Dwss%253A%252F%252Ftracker.btorrent.xyz%26tr%3Dwss%"
+        "253A%252F%252Ftracker.fastcast.nz%26tr%3Dwss%253A%252F%252Ftracker."
+        "openwebtorrent.com%26ws%3Dhttps%253A%252F%252Fwebtorrent.io%"
+        "252Ftorrents%252F%26xs%3Dhttps%253A%252F%252Fwebtorrent.io%"
+        "252Ftorrents%252Fbig-buck-bunny.torrent");
+    torrent_url_ = GURL("https://webtorrent.io/torrents/sintel.torrent#ix=5");
+    torrent_extension_url_ = GURL(
+        "chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/"
+        "brave_webtorrent.html?https://webtorrent.io/torrents/"
+        "sintel.torrent#ix=5");
+  }
 
-    void TearDown() override {
-      browser_content_client_.reset();
-      content_client_.reset();
-    }
+  void TearDown() override {
+    browser_content_client_.reset();
+    content_client_.reset();
+  }
 
-    const GURL& magnet_html_url() { return magnet_html_url_; }
-    const GURL& magnet_url() { return magnet_url_; }
-    const GURL& extension_url() { return extension_url_; }
-    const GURL& torrent_url() { return torrent_url_; }
-    const GURL& torrent_extension_url() { return torrent_extension_url_; }
+  const GURL& magnet_html_url() { return magnet_html_url_; }
+  const GURL& magnet_url() { return magnet_url_; }
+  const GURL& extension_url() { return extension_url_; }
+  const GURL& torrent_url() { return torrent_url_; }
+  const GURL& torrent_extension_url() { return torrent_extension_url_; }
 
-  private:
-    GURL magnet_html_url_;
-    GURL magnet_url_;
-    GURL extension_url_;
-    GURL torrent_url_;
-    GURL torrent_extension_url_;
-    ContentSettingsPattern top_level_page_pattern_;
-    ContentSettingsPattern empty_pattern_;
-    std::unique_ptr<ChromeContentClient> content_client_;
-    std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
+ private:
+  GURL magnet_html_url_;
+  GURL magnet_url_;
+  GURL extension_url_;
+  GURL torrent_url_;
+  GURL torrent_extension_url_;
+  ContentSettingsPattern top_level_page_pattern_;
+  ContentSettingsPattern empty_pattern_;
+  std::unique_ptr<ChromeContentClient> content_client_;
+  std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
   GURL chrome_settings_url("chrome://about/");
-  std::vector<GURL> urls {
-    chrome_settings_url,
-    GURL("about:about/"),
-    GURL("brave://about/")
-  };
-  std::for_each(urls.begin(), urls.end(), [this, &chrome_settings_url](const GURL& url) {
-    content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
-    ui_test_utils::NavigateToURL(browser(), url);
-    ASSERT_TRUE(WaitForLoadStop(contents));
-    EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-        chrome_settings_url.spec().c_str());
-  });
+  std::vector<GURL> urls{chrome_settings_url, GURL("about:about/"),
+                         GURL("brave://about/")};
+  std::for_each(urls.begin(), urls.end(),
+                [this, &chrome_settings_url](const GURL& url) {
+                  content::WebContents* contents =
+                      browser()->tab_strip_model()->GetActiveWebContents();
+                  ui_test_utils::NavigateToURL(browser(), url);
+                  ASSERT_TRUE(WaitForLoadStop(contents));
+                  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
+                               chrome_settings_url.spec().c_str());
+                });
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
   std::vector<GURL> urls {
     GURL("chrome://adblock/"),
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-    GURL("chrome://rewards/"),
+        GURL("chrome://rewards/"),
 #endif
-    GURL("chrome://welcome/"),
-    GURL("chrome://sync/")
+        GURL("chrome://welcome/"), GURL("chrome://sync/")
   };
   std::for_each(urls.begin(), urls.end(), [this](const GURL& url) {
-    content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+    content::WebContents* contents =
+        browser()->tab_strip_model()->GetActiveWebContents();
     ui_test_utils::NavigateToURL(browser(), url);
     ASSERT_TRUE(WaitForLoadStop(contents));
     EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-        url.spec().c_str());
+                 url.spec().c_str());
   });
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLURLBar) {
-  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
 
   ui_test_utils::NavigateToURL(browser(), magnet_url());
   ASSERT_TRUE(WaitForLoadStop(contents));
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-      magnet_url().spec().c_str()) << "URL visible to users should stay as the magnet URL";
-  content::NavigationEntry* entry = contents->GetController().GetLastCommittedEntry();
-  EXPECT_STREQ(entry->GetURL().spec().c_str(),
-      extension_url().spec().c_str()) << "Real URL should be extension URL";
+               magnet_url().spec().c_str())
+      << "URL visible to users should stay as the magnet URL";
+  content::NavigationEntry* entry =
+      contents->GetController().GetLastCommittedEntry();
+  EXPECT_STREQ(entry->GetURL().spec().c_str(), extension_url().spec().c_str())
+      << "Real URL should be extension URL";
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLLink) {
-  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
   ui_test_utils::NavigateToURL(browser(), magnet_html_url());
   ASSERT_TRUE(WaitForLoadStop(contents));
   bool value;
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents, "clickMagnetLink();",
-        &value));
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractBool(contents, "clickMagnetLink();", &value));
   EXPECT_TRUE(value);
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-      magnet_url().spec().c_str()) << "URL visible to users should stay as the magnet URL";
-  content::NavigationEntry* entry = contents->GetController().GetLastCommittedEntry();
-  EXPECT_STREQ(entry->GetURL().spec().c_str(),
-      extension_url().spec().c_str()) << "Real URL should be extension URL";
+               magnet_url().spec().c_str())
+      << "URL visible to users should stay as the magnet URL";
+  content::NavigationEntry* entry =
+      contents->GetController().GetLastCommittedEntry();
+  EXPECT_STREQ(entry->GetURL().spec().c_str(), extension_url().spec().c_str())
+      << "Real URL should be extension URL";
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, TypedMagnetURL) {
@@ -156,125 +185,134 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, TypedMagnetURL) {
   EXPECT_EQ(magnet_url(), web_contents->GetLastCommittedURL().spec());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, ReverseRewriteTorrentURL) {
-  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       ReverseRewriteTorrentURL) {
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
   ui_test_utils::NavigateToURL(browser(), torrent_extension_url());
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-      torrent_url().spec().c_str()) << "URL visible to users should stay as the torrent URL";
-  content::NavigationEntry* entry = contents->GetController().GetLastCommittedEntry();
+               torrent_url().spec().c_str())
+      << "URL visible to users should stay as the torrent URL";
+  content::NavigationEntry* entry =
+      contents->GetController().GetLastCommittedEntry();
   EXPECT_STREQ(entry->GetURL().spec().c_str(),
-      torrent_extension_url().spec().c_str()) << "Real URL should be extension URL";
+               torrent_extension_url().spec().c_str())
+      << "Real URL should be extension URL";
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    WebTorrentExtensionEnabledByDefault) {
+                       WebTorrentExtensionEnabledByDefault) {
   ASSERT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
   extensions::ExtensionRegistry* registry =
-    extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_TRUE(registry->enabled_extensions().Contains(
-        brave_webtorrent_extension_id));
+      extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_TRUE(
+      registry->enabled_extensions().Contains(brave_webtorrent_extension_id));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    PRE_NoRewriteMagnetURLURLBarWebTorrentDisabled) {
+                       PRE_NoRewriteMagnetURLURLBarWebTorrentDisabled) {
   browser()->profile()->GetPrefs()->SetBoolean(kWebTorrentEnabled, false);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    NoRewriteMagnetURLURLBarWebTorrentDisabled) {
-  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
+                       NoRewriteMagnetURLURLBarWebTorrentDisabled) {
+  ASSERT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
   extensions::ExtensionRegistry* registry =
-    extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_FALSE(registry->enabled_extensions().Contains(
-        brave_webtorrent_extension_id));
+      extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_FALSE(
+      registry->enabled_extensions().Contains(brave_webtorrent_extension_id));
 
   content::WebContents* contents =
-    browser()->tab_strip_model()->GetActiveWebContents();
+      browser()->tab_strip_model()->GetActiveWebContents();
   ui_test_utils::NavigateToURL(browser(), magnet_url());
   ASSERT_TRUE(WaitForLoadStop(contents));
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(), "about:blank");
   content::NavigationEntry* entry =
-    contents->GetController().GetLastCommittedEntry();
+      contents->GetController().GetLastCommittedEntry();
   EXPECT_STREQ(entry->GetURL().spec().c_str(), "about:blank");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    PRE_NoRewriteMagnetURLLinkWebTorrentDisabled) {
+                       PRE_NoRewriteMagnetURLLinkWebTorrentDisabled) {
   browser()->profile()->GetPrefs()->SetBoolean(kWebTorrentEnabled, false);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    NoRewriteMagnetURLLinkWebTorrentDisabled) {
-  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
+                       NoRewriteMagnetURLLinkWebTorrentDisabled) {
+  ASSERT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
   extensions::ExtensionRegistry* registry =
-    extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_FALSE(registry->enabled_extensions().Contains(
-        brave_webtorrent_extension_id));
+      extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_FALSE(
+      registry->enabled_extensions().Contains(brave_webtorrent_extension_id));
 
   content::WebContents* contents =
-    browser()->tab_strip_model()->GetActiveWebContents();
+      browser()->tab_strip_model()->GetActiveWebContents();
   ui_test_utils::NavigateToURL(browser(), magnet_html_url());
   ASSERT_TRUE(WaitForLoadStop(contents));
   bool value;
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents, "clickMagnetLink();",
-        &value));
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractBool(contents, "clickMagnetLink();", &value));
   EXPECT_TRUE(value);
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-      magnet_html_url().spec().c_str());
+               magnet_html_url().spec().c_str());
   content::NavigationEntry* entry =
-    contents->GetController().GetLastCommittedEntry();
+      contents->GetController().GetLastCommittedEntry();
   EXPECT_STREQ(entry->GetURL().spec().c_str(),
-      magnet_html_url().spec().c_str());
+               magnet_html_url().spec().c_str());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    PRE_NoReverseRewriteTorrentURLWebTorrentDisabled) {
+                       PRE_NoReverseRewriteTorrentURLWebTorrentDisabled) {
   browser()->profile()->GetPrefs()->SetBoolean(kWebTorrentEnabled, false);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    NoReverseRewriteTorrentURLWebTorrentDisabled) {
-  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
+                       NoReverseRewriteTorrentURLWebTorrentDisabled) {
+  ASSERT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
   extensions::ExtensionRegistry* registry =
-    extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_FALSE(registry->enabled_extensions().Contains(
-        brave_webtorrent_extension_id));
+      extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_FALSE(
+      registry->enabled_extensions().Contains(brave_webtorrent_extension_id));
 
   content::WebContents* contents =
-    browser()->tab_strip_model()->GetActiveWebContents();
+      browser()->tab_strip_model()->GetActiveWebContents();
   ui_test_utils::NavigateToURL(browser(), torrent_extension_url());
   WaitForLoadStop(contents);
 
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-      torrent_extension_url().spec().c_str()) << "No changes on the visible URL";
+               torrent_extension_url().spec().c_str())
+      << "No changes on the visible URL";
   content::NavigationEntry* entry =
-    contents->GetController().GetLastCommittedEntry();
+      contents->GetController().GetLastCommittedEntry();
   EXPECT_STREQ(entry->GetURL().spec().c_str(),
-      torrent_extension_url().spec().c_str()) << "No changes on the real URL";
+               torrent_extension_url().spec().c_str())
+      << "No changes on the real URL";
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    HangoutsEnabledByDefault) {
+                       HangoutsEnabledByDefault) {
   ASSERT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
   extensions::ExtensionRegistry* registry =
-    extensions::ExtensionRegistry::Get(browser()->profile());
+      extensions::ExtensionRegistry::Get(browser()->profile());
   ASSERT_TRUE(registry->enabled_extensions().Contains(hangouts_extension_id));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    PRE_HangoutsDisabledDoesNotLoadComponent) {
+                       PRE_HangoutsDisabledDoesNotLoadComponent) {
   browser()->profile()->GetPrefs()->SetBoolean(kHangoutsEnabled, false);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    HangoutsDisabledDoesNotLoadComponent) {
+                       HangoutsDisabledDoesNotLoadComponent) {
   ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
   extensions::ExtensionRegistry* registry =
-    extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_FALSE(registry->enabled_extensions().Contains(
-        hangouts_extension_id));
+      extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_FALSE(registry->enabled_extensions().Contains(hangouts_extension_id));
 }

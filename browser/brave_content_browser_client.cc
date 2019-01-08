@@ -292,7 +292,6 @@ void BraveContentBrowserClient::PossiblyHideReferrer(
                                     referrer);
 }
 
-
 GURL BraveContentBrowserClient::GetEffectiveURL(
     content::BrowserContext* browser_context,
     const GURL& url) {
