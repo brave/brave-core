@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, text } from '@storybook/addon-knobs'
+import { withKnobs, text, select } from '@storybook/addon-knobs'
 // @ts-ignore
 import centered from '@storybook/addon-centered/dist'
 // Components
@@ -26,6 +26,7 @@ storiesOf('Feature Components/Rewards/Grant', module)
     .add('Grant claim',() => {
       return (
         <GrantClaim
+          type={select('Type', { ugp: 'ugp', ads: 'ads' }, 'ugp')}
           onClaim={dummyClick}
         />
       )

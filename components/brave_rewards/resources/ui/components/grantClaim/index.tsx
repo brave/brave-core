@@ -5,27 +5,66 @@
 import * as React from 'react'
 import { StyledWrapper, StyledIcon, StyledText, StyledClaim } from './style'
 import { getLocale } from '../../../helpers'
-import { GiftIcon } from '../../../components/icons'
+import { GiftIcon, MegaphoneIcon } from '../../../components/icons'
+
+export type Type = 'ads' | 'ugp'
 
 export interface Props {
   id?: string
   isMobile?: boolean
   onClaim: () => void
+  type: Type
+  amount?: string
 }
 
 export default class GrantClaim extends React.PureComponent<Props, {}> {
+  getIcon = (type: Type) => {
+    let icon = null
+
+    switch (type) {
+      case 'ads':
+        icon = <MegaphoneIcon />
+        break
+      case 'ugp':
+        icon = <GiftIcon />
+        break
+    }
+
+    return icon
+  }
+
+  getGrantText = (type: Type, amount?: string) => {
+    if (type === 'ugp') {
+      return getLocale('newGrant')
+    }
+
+    if (!amount) {
+      return getLocale('earningsClaimDefault')
+    }
+
+    const formattedAmount = `${amount} ${getLocale('earningsClaimBat')}`
+
+    return (
+      <>
+        {getLocale('earningsClaimOne')} <b>{formattedAmount}</b> {getLocale('earningsClaimTwo')}
+      </>
+    )
+  }
+
   render () {
-    const { id, isMobile, onClaim } = this.props
+    const { id, isMobile, onClaim, type, amount } = this.props
 
     return (
       <StyledWrapper
         id={id}
         isMobile={isMobile}
       >
-        <StyledIcon>
-          <GiftIcon />
+        <StyledIcon type={type}>
+          {this.getIcon(type)}
         </StyledIcon>
-        <StyledText>{getLocale('newGrant')}</StyledText>
+        <StyledText>
+          {this.getGrantText(type, amount)}
+        </StyledText>
         <StyledClaim onClick={onClaim}>{getLocale('claim')}</StyledClaim>
       </StyledWrapper>
     )

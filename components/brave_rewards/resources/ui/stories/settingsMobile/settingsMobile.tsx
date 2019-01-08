@@ -68,7 +68,8 @@ class SettingsMobile extends React.PureComponent<{}, State> {
             </StyledDisabledContent>
           : null
         }
-        <GrantMobile />
+        <GrantMobile type={'ugp'}/>
+        <GrantMobile type={'ads'} amount={'30.0'}/>
         <WalletInfoHeader
           balance={'30.0'}
           id={'mobile-wallet'}

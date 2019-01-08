@@ -2,9 +2,11 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { Type } from './'
 import styled from 'styled-components'
 
 interface StyleProps {
+  type?: Type
   isMobile?: boolean
 }
 
@@ -22,12 +24,12 @@ export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
 `
 
-export const StyledIcon = styled<{}, 'div'>('div')`
+export const StyledIcon = styled<StyleProps, 'div'>('div')`
   flex-basis: 42px;
   height: 42px;
   width: 52px;
   flex-shrink: 0;
-  color: #FF9868;
+  color: ${p => p.type === 'ads' ? '#C12D7C' : '#FF9868'};
 `
 
 export const StyledText = styled<{}, 'div'>('div')`

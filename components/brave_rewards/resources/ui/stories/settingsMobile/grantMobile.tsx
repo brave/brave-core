@@ -10,6 +10,7 @@ import {
   GrantComplete,
   GrantWrapper
 } from '../../../../src/features/rewards'
+import { Type } from '../../../../src/features/rewards/grantClaim'
 
 type Step = '' | 'complete'
 
@@ -18,8 +19,13 @@ interface State {
   grantStep: Step
 }
 
-class GrantMobile extends React.Component<{}, State > {
-  constructor (props: {}) {
+interface Props {
+  type: Type
+  amount?: string
+}
+
+class GrantMobile extends React.Component<Props, State > {
+  constructor (props: Props) {
     super(props)
     this.state = {
       grantShow: true,
@@ -40,12 +46,16 @@ class GrantMobile extends React.Component<{}, State > {
   }
 
   render () {
+    const { type, amount } = this.props
+
     return (
       <>
         {
           this.state.grantShow
           ? <GrantClaim
             isMobile={true}
+            type={type}
+            amount={amount}
             onClaim={this.onClaim}
           />
           : null

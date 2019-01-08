@@ -11,6 +11,7 @@ import {
   GrantComplete,
   GrantWrapper
 } from '../../../../src/features/rewards'
+import { Type } from '../../../../src/features/rewards/grantClaim'
 
 // Assets
 const captchaDrop = require('../../../assets/img/captchaDrop.png')
@@ -22,8 +23,13 @@ interface State {
   grantStep: Step
 }
 
-class Grant extends React.Component<{}, State > {
-  constructor (props: {}) {
+interface Props {
+  type: Type
+  amount?: string
+}
+
+class Grant extends React.Component<Props, State > {
+  constructor (props: Props) {
     super(props)
     this.state = {
       grantShow: true,
@@ -48,11 +54,13 @@ class Grant extends React.Component<{}, State > {
   }
 
   render () {
+    const { type, amount } = this.props
+
     return (
       <>
         {
           this.state.grantShow
-          ? <GrantClaim onClaim={this.onGrantShow}/>
+          ? <GrantClaim type={type} amount={amount} onClaim={this.onGrantShow}/>
           : null
         }
         {

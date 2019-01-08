@@ -47,7 +47,8 @@ class Settings extends React.PureComponent<{}, State> {
             <DonationsBox/>
           </Column>
           <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Grant/>
+            <Grant type={'ugp'}/>
+            <Grant type={'ads'} amount={'30.0'}/>
             <PageWallet/>
           </Column>
         </Grid>
