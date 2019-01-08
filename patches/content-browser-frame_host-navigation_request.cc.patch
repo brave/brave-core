@@ -1,0 +1,16 @@
+diff --git a/content/browser/frame_host/navigation_request.cc b/content/browser/frame_host/navigation_request.cc
+index e7ca1318e3c0989b6c87cec874ca0d9328374a7e..90d5f2dbfc01400e9c4e9844c29b8226f2499836 100644
+--- a/content/browser/frame_host/navigation_request.cc
++++ b/content/browser/frame_host/navigation_request.cc
+@@ -1398,6 +1398,11 @@ void NavigationRequest::OnStartChecksComplete(
+       frame_tree_node_, begin_params_.get(), &report_raw_headers);
+   devtools_instrumentation::OnNavigationRequestWillBeSent(*this);
+ 
++  GetContentClient()->browser()->MaybeHideReferrer(browser_context,
++                                                   common_params_.url,
++                                                   top_document_url,
++                                                   &common_params_.referrer);
++
+   loader_ = NavigationURLLoader::Create(
+       browser_context->GetResourceContext(), partition,
+       std::make_unique<NavigationRequestInfo>(
