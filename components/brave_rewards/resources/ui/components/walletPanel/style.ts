@@ -100,13 +100,3 @@ export const StyledNoticeLink = styled<StyleProps, 'a'>('a')`
   display: inline-block;
   margin-left: 4px;
 `
-
-export const StyledChangeButton = styled<StyleProps, 'button'>('button')`
-  font-family: ${p => p.theme.fontFamily.body};
-  font-weight: bold;
-  background: none;
-  border: none;
-  padding: 0;
-  margin-top: 2px;
-  cursor: pointer;
-`
