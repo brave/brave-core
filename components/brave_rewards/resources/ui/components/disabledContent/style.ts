@@ -11,7 +11,7 @@ const getColors = (p: Props) => {
 
   switch (p.type) {
     case 'ads':
-      color = '#ceb4e1'
+      color = '#d666a2'
       boldColor = '#b490cf'
       break
     case 'contribute':
