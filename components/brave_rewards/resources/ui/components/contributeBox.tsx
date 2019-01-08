@@ -41,10 +41,6 @@ class ContributeBox extends React.Component<Props, State> {
     }
   }
 
-  componentDidMount () {
-    this.isSettingsUrl()
-  }
-
   getContributeRows = (list: Rewards.Publisher[]) => {
     return list.map((item: Rewards.Publisher) => {
       let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
@@ -102,14 +98,6 @@ class ContributeBox extends React.Component<Props, State> {
 
   onCheckSettingChange = (key: string, selected: boolean) => {
     this.actions.onSettingSave(key, selected)
-  }
-
-  isSettingsUrl = () => {
-    if (window && window.location && window.location.hash && window.location.hash === '#ac-settings') {
-      this.setState({
-        settings: true
-      })
-    }
   }
 
   contributeSettings = (monthlyList: MonthlyChoice[]) => {

@@ -266,8 +266,8 @@ void BatContribution::StartReconcile(
 
   if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
 
-    if (list.size() == 0 || budget > balance) {
-      if (list.size() == 0) {
+    if (list.size() == 0 || budget > balance || budget == 0) {
+      if (list.size() == 0 || budget == 0) {
         BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
           "Auto contribution table is empty";
         OnReconcileComplete(ledger::Result::AC_TABLE_EMPTY,

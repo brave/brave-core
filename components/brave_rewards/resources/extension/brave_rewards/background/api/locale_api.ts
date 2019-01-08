@@ -35,7 +35,6 @@ export const getUIMessages = (): Record<string, string> => {
     'captchaTarget',
     'captchaMissedTarget',
     'claim',
-    'changeSettingsButton',
     'donateMonthly',
     'donateNow',
     'earningsAds',

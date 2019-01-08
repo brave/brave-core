@@ -25,7 +25,6 @@ interface Props extends RewardsExtension.ComponentProps {
 interface State {
   showSummary: boolean
   publisherKey: string | null
-  nonVerified: boolean
 }
 
 export class Panel extends React.Component<Props, State> {
@@ -33,8 +32,7 @@ export class Panel extends React.Component<Props, State> {
     super(props)
     this.state = {
       showSummary: true,
-      publisherKey: null,
-      nonVerified: true
+      publisherKey: null
     }
   }
 
@@ -55,12 +53,6 @@ export class Panel extends React.Component<Props, State> {
 
     this.actions.getWalletProperties()
     this.actions.getCurrentReport()
-
-    chrome.braveRewards.getNonVerifiedSettings(((nonVerified: boolean) => {
-      this.setState({
-        nonVerified
-      })
-    }))
 
     chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
       this.actions.OnPendingContributionsTotal(amount)
@@ -295,12 +287,6 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
-  openSettings = () => {
-    chrome.tabs.create({
-      url: 'brave://rewards/#ac-settings'
-    })
-  }
-
   render () {
     const { grant, pendingContributionTotal } = this.props.rewardsPanelData
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
@@ -367,9 +353,7 @@ export class Panel extends React.Component<Props, State> {
               onAmountChange={this.doNothing}
               onIncludeInAuto={this.switchAutoContribute}
               showUnVerified={!publisher.verified}
-              showChangeSetting={this.state.nonVerified}
               moreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
-              onChangeSetting={this.openSettings}
             />
             : null
           }
