@@ -2176,6 +2176,32 @@ void RewardsServiceImpl::SetShortRetries(bool short_retries) {
   bat_ledger_service_->SetShortRetries(short_retries);
 }
 
+bool SavePendingContributionOnFileTaskRunner(PublisherInfoDatabase* backend,
+    const ledger::PendingContributionList& list) {
+  if (!backend) {
+    return 0;
+  }
+
+  return backend->InsertPendingContribution(list);
+}
+
+void RewardsServiceImpl::OnSavePendingContribution(bool result) {
+  // TODO(nejczdovc) add callback with db result
+  LOG(ERROR) << "OnSavePendingContribution" << result;
+}
+
+void RewardsServiceImpl::SavePendingContribution(
+      const ledger::PendingContributionList& list) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
+      base::Bind(&SavePendingContributionOnFileTaskRunner,
+                 publisher_info_backend_.get(),
+                 list),
+      base::Bind(&RewardsServiceImpl::OnSavePendingContribution,
+                 AsWeakPtr()));
+}
+
 double PendingContributionsTotalOnFileTaskRunner(
     PublisherInfoDatabase* backend) {
   if (!backend) {

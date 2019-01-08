@@ -80,12 +80,33 @@ std::string BatContribution::GetAnonizeProof(
   return proof;
 }
 
+ledger::PublisherInfoList BatContribution::GetVerifiedList(
+    const ledger::PublisherInfoList& all) {
+  ledger::PublisherInfoList result;
+
+  // TODO implement
+
+  return result;
+}
+
 void BatContribution::ReconcilePublisherList(
     ledger::PUBLISHER_CATEGORY category,
     const ledger::PublisherInfoList& list,
     uint32_t next_record) {
+  ledger::PublisherInfoList verified_list;
+
+  if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
+    ledger::PublisherInfoList normalized_list;
+    ledger_->NormalizeContributeWinners(&normalized_list, false, list, 0);
+    std::sort(normalized_list.begin(), normalized_list.end());
+    verified_list = GetVerifiedList(normalized_list);
+  } else {
+    verified_list = GetVerifiedList(list);
+  }
+
   braveledger_bat_helper::PublisherList new_list;
-  for (const auto &publisher : list) {
+
+  for (const auto &publisher : verified_list) {
     braveledger_bat_helper::PUBLISHER_ST new_publisher;
     new_publisher.id_ = publisher.id;
     new_publisher.percent_ = publisher.percent;
@@ -93,6 +114,7 @@ void BatContribution::ReconcilePublisherList(
     new_publisher.duration_ = publisher.duration;
     new_publisher.score_ = publisher.score;
     new_publisher.visits_ = publisher.visits;
+    new_publisher.verified_ = publisher.verified;
     new_list.push_back(new_publisher);
   }
 
@@ -742,30 +764,26 @@ void BatContribution::GetContributeWinners(
     const unsigned int& ballots,
     const std::string& viewing_id,
     const braveledger_bat_helper::PublisherList& list) {
-  ledger::PublisherInfoList new_list;
-  ledger_->NormalizeContributeWinners(&new_list, false, list, 0);
-  std::sort(new_list.begin(), new_list.end());
-
   unsigned int total_votes = 0;
   std::vector<unsigned int> votes;
   braveledger_bat_helper::Winners res;
-  // TODO there is underscore.shuffle
-  for (auto &item : new_list) {
-    if (item.percent <= 0) {
+
+  for (auto &item : list) {
+    if (item.percent_ <= 0) {
       continue;
     }
 
     braveledger_bat_helper::WINNERS_ST winner;
     winner.votes_ = (unsigned int)std::lround(
-        (double) item.percent * (double)ballots / 100.0);
+        (double) item.percent_* (double)ballots / 100.0);
 
     total_votes += winner.votes_;
-    winner.publisher_data_.id_ = item.id;
-    winner.publisher_data_.duration_ = item.duration;
-    winner.publisher_data_.score_ = item.score;
-    winner.publisher_data_.visits_ = item.visits;
-    winner.publisher_data_.percent_ = item.percent;
-    winner.publisher_data_.weight_ = item.weight;
+    winner.publisher_data_.id_ = item.id_;
+    winner.publisher_data_.duration_ = item.duration_;
+    winner.publisher_data_.score_ = item.score_;
+    winner.publisher_data_.visits_ = item.visits_;
+    winner.publisher_data_.percent_ = item.percent_;
+    winner.publisher_data_.weight_ = item.weight_;
     res.push_back(winner);
   }
 

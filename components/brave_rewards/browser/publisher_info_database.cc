@@ -7,6 +7,7 @@
 #include <stdint.h>
 
 #include <string>
+#include <bat/ledger/pending_contribution.h>
 
 #include "base/bind.h"
 #include "base/command_line.h"
@@ -710,7 +711,7 @@ bool PublisherInfoDatabase::CreatePendingContributionsIndex() {
 }
 
 bool PublisherInfoDatabase::InsertPendingContribution
-(const brave_rewards::PendingContribution& info) {
+(const ledger::PendingContributionList& list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -720,17 +721,28 @@ bool PublisherInfoDatabase::InsertPendingContribution
     return false;
   }
 
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "INSERT pending_contribution "
+  base::Time now = base::Time::Now();
+  double now_seconds = now.ToDoubleT();
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  for (const auto& item : list.list_) {
+    sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "INSERT INTO pending_contribution "
       "(publisher_id, amount, added_date, reconcile_date) "
       "VALUES (?, ?, ?, ?)"));
 
-  statement.BindString(0, info.publisher_key);
-  statement.BindDouble(1, info.amount);
-  statement.BindInt64(2, info.added_date);
-  statement.BindInt64(3, info.reconcile_date);
+    statement.BindString(0, item.publisher_key);
+    statement.BindDouble(1, item.amount);
+    statement.BindInt64(2, now_seconds);
+    statement.BindInt64(3, item.reconcile_date);
+    statement.Run();
+  }
 
-  return statement.Run();
+  return transaction.Commit();
 }
 
 double PublisherInfoDatabase::GetReservedAmount() {

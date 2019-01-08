@@ -14,6 +14,7 @@
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
 #include "bat/ledger/publisher_info.h"
+#include "bat/ledger/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/recurring_donation.h"
@@ -51,7 +52,7 @@ class PublisherInfoDatabase {
   void GetRecurringDonations(ledger::PublisherInfoList* list);
   void GetTips(ledger::PublisherInfoList* list, ledger::PUBLISHER_MONTH month, int year);
   bool RemoveRecurring(const std::string& publisher_key);
-  bool InsertPendingContribution(const brave_rewards::PendingContribution& data);
+  bool InsertPendingContribution(const ledger::PendingContributionList& list);
   double GetReservedAmount();
 
   // Returns the current version of the publisher info database

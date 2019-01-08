@@ -127,11 +127,12 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       bool non_verified);
 
   void clearAllBalanceReports();
-  void NormalizeContributeWinners(
-      ledger::PublisherInfoList* newList,
-      bool saveData,
-      const braveledger_bat_helper::PublisherList& list,
-      uint32_t /* next_record */);
+  void NormalizeContributeWinners(ledger::PublisherInfoList* newList,
+                                  bool saveData,
+                                  const ledger::PublisherInfoList& list,
+                                  uint32_t /* next_record */);
+
+  bool isVerified(const std::string& publisher_id);
 
  private:
 
@@ -146,7 +147,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
     std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
   bool isEligibleForContribution(const ledger::PublisherInfo& info);
-  bool isVerified(const std::string& publisher_id);
   bool isExcluded(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& excluded);
   void saveVisitInternal(
       std::string publisher_id,

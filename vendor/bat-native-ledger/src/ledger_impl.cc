@@ -606,12 +606,35 @@ void LedgerImpl::SetBalanceReport(ledger::PUBLISHER_MONTH month,
   bat_publishers_->setBalanceReport(month, year, report_info);
 }
 
-void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) {
+void LedgerImpl::SaveUnverifiedContribution(
+    const ledger::PendingContributionList& list) {
+  ledger_client_->SavePendingContribution(list);
+}
+
+void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
+                                  int amount,
+                                  const std::string& currency) {
   if (publisher.id.empty()) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
       "Failed direct donation due to missing publisher id";
 
     // TODO add error flow
+    return;
+  }
+
+  bool is_verified = bat_publishers_->isVerified(publisher.id);
+
+  // Save to the pending list if not verified
+  if (!is_verified) {
+    ledger::PendingContribution contribution;
+    contribution.publisher_key = publisher.id;
+    contribution.amount = amount;
+
+    ledger::PendingContributionList list;
+    list.list_ = std::vector<ledger::PendingContribution> { contribution };
+
+    SaveUnverifiedContribution(list);
+
     return;
   }
 
@@ -1038,7 +1061,7 @@ void LedgerImpl::SaveContributionInfo(const std::string& probi,
 void LedgerImpl::NormalizeContributeWinners(
     ledger::PublisherInfoList* newList,
     bool saveData,
-    const braveledger_bat_helper::PublisherList& list,
+    const ledger::PublisherInfoList& list,
     uint32_t record) {
   bat_publishers_->NormalizeContributeWinners(newList, saveData, list, record);
 }

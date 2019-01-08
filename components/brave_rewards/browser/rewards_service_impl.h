@@ -307,6 +307,11 @@ class RewardsServiceImpl : public RewardsService,
                      int line,
                      const ledger::LogLevel log_level) const override;
 
+  void SavePendingContribution(
+      const ledger::PendingContributionList& list) override;
+
+  void OnSavePendingContribution(bool result);
+
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;
 

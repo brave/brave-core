@@ -134,6 +134,11 @@ class BatContribution {
                               const std::string& id,
                               std::string& pre_flight);
 
+  // from the list gets only verified publishers and
+  // save unverified to the db
+  ledger::PublisherInfoList GetVerifiedList(
+      const ledger::PublisherInfoList& all);
+
   // Entry point for contribution where we have publisher info list
   void ReconcilePublisherList(ledger::PUBLISHER_CATEGORY category,
                               const ledger::PublisherInfoList& list,

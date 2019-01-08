@@ -19,6 +19,8 @@ namespace brave_rewards {
     uint32_t reconcile_date = 0;
   };
 
+  using PendingContributionList = std::vector<PendingContribution>;
+
 }  // namespace brave_rewards
 
 #endif //BRAVE_BROWSER_PAYMENTS_PENDING_CONTRIBUTION_

@@ -525,22 +525,11 @@ bool BatPublishers::getPublisherAllowVideos() const {
   return state_->allow_videos_;
 }
 
-void BatPublishers::NormalizeContributeWinners(ledger::PublisherInfoList* newList, bool saveData,
-    const braveledger_bat_helper::PublisherList& oldList, uint32_t record) {
-
-  ledger::PublisherInfoList list;
-
-  for(const auto& publisher: oldList) {
-    ledger::PublisherInfo new_publisher;
-    new_publisher.id = publisher.id_;
-    new_publisher.percent = publisher.percent_;
-    new_publisher.weight = publisher.weight_;
-    new_publisher.duration = publisher.duration_;
-    new_publisher.score = publisher.score_;
-    new_publisher.visits = publisher.visits_;
-
-    list.push_back(new_publisher);
-  }
+void BatPublishers::NormalizeContributeWinners(
+    ledger::PublisherInfoList* newList,
+    bool saveData,
+    const ledger::PublisherInfoList& list,
+    uint32_t record) {
 
   synopsisNormalizerInternal(newList, saveData, list, record);
 }
