@@ -435,9 +435,9 @@ class BookmarksViewController: SiteTableViewController {
       }
       
       if let children = item.children, !children.isEmpty {
-        let alert = UIAlertController(title: "Delete Folder?", message: "This will delete all folders and bookmarks inside. Are you sure you want to continue?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Yes, Delete", style: UIAlertActionStyle.destructive) { action in
+        let alert = UIAlertController(title: Strings.DeleteBookmarksFolderAlertTitle, message: Strings.DeleteBookmarksFolderAlertMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel))
+        alert.addAction(UIAlertAction(title: Strings.YesDeleteButtonTitle, style: .destructive) { _ in
           delete()
         })
         
