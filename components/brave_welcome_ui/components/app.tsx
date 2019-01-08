@@ -63,15 +63,15 @@ export class WelcomePage extends React.Component<Props, State> {
   }
 
   onClickConfirmDefaultSearchEngine = () => {
-    this.props.actions.goToTabRequested('brave://settings/search', '_blank')
+    this.props.actions.goToTabRequested('chrome://settings/search', '_blank')
   }
 
   onClickChooseYourTheme = () => {
-    this.props.actions.goToTabRequested('brave://settings/appearance', '_blank')
+    this.props.actions.goToTabRequested('chrome://settings/appearance', '_blank')
   }
 
   onClickRewardsGetStarted = () => {
-    this.props.actions.goToTabRequested('brave://rewards', '_blank')
+    this.props.actions.goToTabRequested('chrome://rewards', '_blank')
   }
 
   onClickSlideBullet = (nextScreen: number) => {
@@ -83,11 +83,11 @@ export class WelcomePage extends React.Component<Props, State> {
   }
 
   onClickDone = () => {
-    this.props.actions.goToTabRequested('brave://newtab', '_self')
+    this.props.actions.goToTabRequested('chrome://newtab', '_self')
   }
 
   onClickSkip = () => {
-    this.props.actions.goToTabRequested('brave://newtab', '_self')
+    this.props.actions.goToTabRequested('chrome://newtab', '_self')
   }
 
   render () {
