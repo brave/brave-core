@@ -1,0 +1,14 @@
+diff --git a/content/browser/child_process_security_policy_impl.cc b/content/browser/child_process_security_policy_impl.cc
+index 323f85836c334129b94351be360062ad4d4d5c36..3fc6f840cf1e7bf7a65a0f7964e56ee5e86b96b4 100644
+--- a/content/browser/child_process_security_policy_impl.cc
++++ b/content/browser/child_process_security_policy_impl.cc
+@@ -690,6 +690,9 @@ void ChildProcessSecurityPolicyImpl::GrantWebUIBindings(int child_id,
+ 
+   // Web UI bindings need the ability to request chrome: URLs.
+   state->second->GrantRequestScheme(kChromeUIScheme);
++#if defined(BRAVE_CHROMIUM_BUILD)
++  state->second->GrantRequestScheme(kBraveUIScheme);
++#endif
+ 
+   // Web UI pages can contain links to file:// URLs.
+   state->second->GrantRequestScheme(url::kFileScheme);
