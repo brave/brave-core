@@ -23,12 +23,15 @@
 using content::BrowserThread;
 using content::Referrer;
 
+namespace brave {
+
 namespace {
 
-bool ApplyPotentialReferrerBlock(net::URLRequest* request) {
+bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx,
+                                 net::URLRequest* request) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  GURL target_origin = GURL(request->url()).GetOrigin();
-  GURL tab_origin = request->site_for_cookies().GetOrigin();
+  GURL target_origin = request->url().GetOrigin();
+  GURL tab_origin = ctx->tab_origin;
   if (tab_origin.SchemeIs(kChromeExtensionScheme)) {
     return false;
   }
@@ -52,17 +55,10 @@ bool ApplyPotentialReferrerBlock(net::URLRequest* request) {
 
 }  // namespace
 
-namespace brave {
-
 int OnBeforeURLRequest_SiteHacksWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-
-  if (ApplyPotentialReferrerBlock(const_cast<net::URLRequest*>(ctx->request))) {
-    ctx->new_url_spec = ctx->request_url.spec();
-    ctx->referrer_changed = true;
-  }
-
+  ApplyPotentialReferrerBlock(ctx, const_cast<net::URLRequest*>(ctx->request));
   return net::OK;
 }
 
