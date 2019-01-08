@@ -43,6 +43,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   // WebTorrent pref
   (*s_brave_whitelist)[kWebTorrentEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  // Hangouts pref
+  (*s_brave_whitelist)[kHangoutsEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   return *s_brave_whitelist;
 }
 

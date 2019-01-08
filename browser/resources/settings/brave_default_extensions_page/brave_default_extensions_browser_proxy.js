@@ -9,6 +9,7 @@ cr.define('settings', function() {
      * @param {boolean} value name.
      */
     setWebTorrentEnabled(value) {}
+    setHangoutsEnabled(value) {}
   }
 
   /**
@@ -18,6 +19,9 @@ cr.define('settings', function() {
     /** @override */
     setWebTorrentEnabled(value) {
       chrome.send('setWebTorrentEnabled', [value]);
+    }
+    setHangoutsEnabled(value) {
+      chrome.send('setHangoutsEnabled', [value]);
     }
   }
 
