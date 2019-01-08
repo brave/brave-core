@@ -142,8 +142,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             {
               reservedAmount && reservedAmount > 0
               ? <StyledReservedWrapper>
-                {getLocale('reservedAmountText', { reservedAmount })}
-                <StyledReservedLink href={reservedMoreLink} target={'_blank'}>
+                {getLocale('reservedAmountText', { reservedAmount })} <StyledReservedLink href={reservedMoreLink} target={'_blank'}>
                   {getLocale('reservedMoreLink')}
                 </StyledReservedLink>
               </StyledReservedWrapper>
