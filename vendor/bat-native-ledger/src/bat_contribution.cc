@@ -82,28 +82,69 @@ std::string BatContribution::GetAnonizeProof(
 
 ledger::PublisherInfoList BatContribution::GetVerifiedListAuto(
     const std::string& viewing_id,
-    const ledger::PublisherInfoList& list) {
+    const ledger::PublisherInfoList& list,
+    double& budget) {
   ledger::PublisherInfoList verified;
-  // ledger::PendingContributionList non_verified;
+  ledger::PublisherInfoList temp;
+  ledger::PendingContributionList non_verified;
 
-//  for (const auto& publisher : list) {
-//
-//  }
+  double verified_total = 0.0;
+  double non_verified_bat = 0.0;
+  double ac_amount = ledger_->GetContributionAmount();
 
-  // TODO implement
+  for (const auto& publisher : list) {
+    if (publisher.verified) {
+      verified.push_back(publisher);
+      verified_total += publisher.percent;
+    } else {
+      temp.push_back(publisher);
+    }
+  }
+
+  // verified publishers
+  for (auto publisher : verified) {
+    ledger::PendingContribution contribution;
+    publisher.percent = static_cast<uint32_t>(
+        static_cast<double>(publisher.percent) / verified_total) * 100;
+  }
+
+  // non-verified publishers
+  for (const auto& publisher : temp) {
+    ledger::PendingContribution contribution;
+    // TODO do we need to round and if so how?
+    contribution.amount =
+        (static_cast<double>(publisher.percent) / 100) * ac_amount;
+    contribution.publisher_key = publisher.id;
+    contribution.viewing_id = viewing_id;
+
+    non_verified_bat += contribution.amount;
+    non_verified.list_.push_back(contribution);
+  }
+
+  if (non_verified.list_.size() > 0) {
+    ledger_->SaveUnverifiedContribution(non_verified);
+  }
+
+  budget = ac_amount - non_verified_bat;
 
   return verified;
 }
 
 ledger::PublisherInfoList BatContribution::GetVerifiedListRecurring(
     const std::string& viewing_id,
-    const ledger::PublisherInfoList& list) {
+    const ledger::PublisherInfoList& list,
+    double& budget) {
   ledger::PublisherInfoList verified;
   ledger::PendingContributionList non_verified;
 
   for (const auto& publisher : list) {
+    if (publisher.id.empty()) {
+      continue;
+    }
+
     if (publisher.verified) {
       verified.push_back(publisher);
+      budget += publisher.weight;
     } else {
       ledger::PendingContribution contribution;
       contribution.amount = publisher.weight;
@@ -127,14 +168,15 @@ void BatContribution::ReconcilePublisherList(
     uint32_t next_record) {
   std::string viewing_id = ledger_->GenerateGUID();
   ledger::PublisherInfoList verified_list;
+  double budget = 0.0;
 
   if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
     ledger::PublisherInfoList normalized_list;
     ledger_->NormalizeContributeWinners(&normalized_list, false, list, 0);
     std::sort(normalized_list.begin(), normalized_list.end());
-    verified_list = GetVerifiedListAuto(viewing_id, normalized_list);
+    verified_list = GetVerifiedListAuto(viewing_id, normalized_list, budget);
   } else {
-    verified_list = GetVerifiedListRecurring(viewing_id, list);
+    verified_list = GetVerifiedListRecurring(viewing_id, list, budget);
   }
 
   braveledger_bat_helper::PublisherList new_list;
@@ -151,7 +193,7 @@ void BatContribution::ReconcilePublisherList(
     new_list.push_back(new_publisher);
   }
 
-  StartReconcile(viewing_id, category, new_list);
+  StartReconcile(viewing_id, category, new_list, {}, budget);
 }
 
 void BatContribution::ResetReconcileStamp() {
@@ -209,7 +251,8 @@ void BatContribution::StartReconcile(
     const std::string& viewing_id,
     const ledger::PUBLISHER_CATEGORY category,
     const braveledger_bat_helper::PublisherList& list,
-    const braveledger_bat_helper::Directions& directions) {
+    const braveledger_bat_helper::Directions& directions,
+    double budget) {
   if (ledger_->ReconcileExists(viewing_id)) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Unable to reconcile with the same viewing id: " << viewing_id;
@@ -222,28 +265,29 @@ void BatContribution::StartReconcile(
   double balance = ledger_->GetBalance();
 
   if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
-    double ac_amount = ledger_->GetContributionAmount();
 
-    if (list.size() == 0 || ac_amount > balance) {
+    if (list.size() == 0 || budget > balance) {
       if (list.size() == 0) {
         BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
           "Auto contribution table is empty";
         OnReconcileComplete(ledger::Result::AC_TABLE_EMPTY,
                             viewing_id,
                             category);
+        return;
       }
 
-      if (ac_amount > balance) {
+      if (budget > balance) {
         BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
           "You do not have enough funds for auto contribution";
         OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
                             viewing_id,
                             category);
+        return;
       }
-      return;
     }
 
     reconcile.list_ = list;
+    fee = budget;
   }
 
   if (category == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
@@ -255,19 +299,7 @@ void BatContribution::StartReconcile(
       return;
     }
 
-    for (const auto& publisher : list) {
-      if (publisher.id_.empty()) {
-        BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-          "Recurring donation is missing publisher";
-        StartAutoContribute();
-        // TODO(nejczdovc) what should we do in this case?
-        return;
-      }
-
-      fee += publisher.weight_;
-    }
-
-    if (fee + ac_amount > balance) {
+    if (budget + ac_amount > balance) {
       BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
         "You do not have enough funds to do recurring and auto contribution";
         OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
@@ -378,11 +410,7 @@ void BatContribution::CurrentReconcile(const std::string& viewing_id) {
   std::ostringstream amount;
   auto reconcile = ledger_->GetReconcileById(viewing_id);
 
-  if (reconcile.category_ == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
-    amount << ledger_->GetContributionAmount();
-  } else {
-    amount << reconcile.fee_;
-  }
+  amount << reconcile.fee_;
 
   std::string currency = ledger_->GetCurrency();
   std::string path = (std::string)WALLET_PROPERTIES +
