@@ -6,13 +6,17 @@ import * as React from 'react'
 
 import { StatsContainer, StatsItem } from '../../../../src/features/newTab/default'
 
+// Helpers
+import { getLocale } from '../fakeLocale'
+
 export default class Stats extends React.PureComponent<{}, {}> {
   render () {
     return (
       <StatsContainer>
-        <StatsItem counter='42' description='Trackers Blocked' />
-        <StatsItem counter='105' description='Ads Blocked' />
-        <StatsItem counter='5' text='minutes' description='Estimated Time Saved' />
+        <StatsItem counter='42' description={getLocale('trackersBlocked')} />
+        <StatsItem counter='105' description={getLocale('adsBlocked')} />
+        <StatsItem counter='0' description={getLocale('httpsUpgrades')} />
+        <StatsItem counter='5' text={getLocale('minutes')} description={getLocale('estimatedTimeSaved')} />
       </StatsContainer>
     )
   }

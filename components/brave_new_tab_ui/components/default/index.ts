@@ -6,12 +6,28 @@
 import { StatsContainer, StatsItem } from './stats'
 import { Page, DynamicBackground, Gradient, Link, Navigation, IconLink, PhotoName } from './page'
 import { Header, Main, Footer } from './grid'
-import { List, Tile, TileActionsContainer, TileAction } from './topSites'
+import { List, Tile, TileActionsContainer, TileAction, TileFavicon } from './topSites'
+import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
 
 export {
   StatsContainer,
   StatsItem,
-  Page, DynamicBackground, Gradient, Link, Navigation, IconLink, PhotoName,
-  Header, Main, Footer,
-  List, Tile, TileActionsContainer, TileAction
+  Page,
+  DynamicBackground,
+  Gradient,
+  Link,
+  Navigation,
+  IconLink,
+  PhotoName,
+  Header,
+  Main,
+  Footer,
+  List,
+  Tile,
+  TileActionsContainer,
+  TileAction,
+  TileFavicon,
+  SiteRemovalNotification,
+  SiteRemovalText,
+  SiteRemovalAction
 }

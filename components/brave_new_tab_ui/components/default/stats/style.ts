@@ -5,8 +5,10 @@
 import styled from '../../../../theme'
 
 export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
-  display: flex;
-  flex-wrap: wrap;
+  -webkit-font-smoothing: antialiased;
+  display: grid;
+  grid-template-columns: repeat(4, fit-content(100%));
+  grid-gap: 25px 50px;
   font-weight: 400;
   margin: 0;
   padding: 0;
@@ -14,15 +16,13 @@ export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
   font-size: inherit;
   font-family: inherit;
 
-  & > li {
-    display: inline-block;
-    margin-right: 50px;
+  @media screen and (max-width: 630px) {
+    grid-template-columns: repeat(2, fit-content(100%));
   }
 
-  @media screen and (max-width: 904px) {
-    & > li {
-      margin: 20px;
-    }
+
+  @media screen and (max-width: 390px) {
+    grid-template-columns: repeat(1, fit-content(100%));
   }
 `
 
@@ -41,7 +41,7 @@ export const StyledStatsItem = styled<{}, 'li'>('li')`
     color: #4C54D2;
   }
   &:last-child {
-    color: #FFF;
+    color: #FFFFFF;
   }
 `
 
@@ -50,14 +50,16 @@ export const StyledStatsItemCounter = styled<{}, 'span'>('span')`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 46px;
   font-weight: 400;
+  width: 7ch;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 `
 
 export const StyledStatsItemText = styled<{}, 'span'>('span')`
-  color: #FFF;
-  margin-left: 5px;
+  font-size: 20px;
+  font-family: ${p => p.theme.fontFamily.heading};
+  margin-left: 4px;
   display: inline;
   letter-spacing: 0;
 `
@@ -65,6 +67,6 @@ export const StyledStatsItemText = styled<{}, 'span'>('span')`
 export const StyledStatsItemDescription = styled<{}, 'div'>('div')`
   font-size: 14px;
   font-weight: 400;
-  color: #FFF;
+  color: #FFFFFF;
   font-family: ${p => p.theme.fontFamily.heading};
 `

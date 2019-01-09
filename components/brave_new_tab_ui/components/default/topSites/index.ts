@@ -5,22 +5,80 @@
 import styled from '../../../../theme'
 
 export const List = styled<{}, 'div'>('div')`
-  padding: 0;
+  padding: 0 70px;
   height: 100%;
+  display: grid;
+  grid-template-columns: repeat(6, 92px);
+
+  @media screen and (max-width: 904px) {
+    justify-content: center;
+    padding: 40px;
+  }
+
+  @media screen and (max-width: 630px) {
+    grid-template-columns: repeat(3, 92px);
+  }
+
+  @media screen and (max-width: 390px) {
+    grid-template-columns: repeat(2, 92px);
+  }
+`
+
+export const TileActionsContainer = styled<{}, 'nav'>('nav')`
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.15s opacity linear;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  margin: 6px;
+  border-radius: 4px;
+  background-color: #FFFFFF;
+`
+
+interface TileActionProps {
+  standalone?: boolean
+}
+
+export const TileAction = styled<TileActionProps, 'a'>('a')`
+  box-sizing: border-box;
+  transition: color 0.1s linear;
+  color: #424242;
+  font-size: 14px;
+  width: 18px;
+  height: 18px;
+  padding: 2px 4px;
+  background: ${p => p.standalone && '#FFFFFF'};
+  position: ${p => p.standalone && 'absolute'};
+  top: ${p => p.standalone && '6px'};
+  left: ${p => p.standalone && '6px'};
+  border-radius: ${p => p.standalone && '4px'};
+  margin: 0;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+
+  &:hover {
+    color: #000;
+  }
 `
 
 interface TileProps {
-  isDragging: boolean
+  isDragging?: boolean
 }
 
 export const Tile = styled<TileProps, 'div'>('div')`
   box-sizing: border-box;
-  background-color: ${p => p.isDragging ? 'lightgray' : '#fff'};
+  background-color: ${p => p.isDragging ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.8)'};
   position: relative;
   user-select: none;
-  margin: 0 12px 0 0;
+  margin: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,29 +87,17 @@ export const Tile = styled<TileProps, 'div'>('div')`
   width: 80px;
   height: 80px;
   font-size: 38px;
+
+  &:hover {
+    ${TileActionsContainer} {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
 `
 
-export const TileActionsContainer = styled<{}, 'nav'>('nav')`
+export const TileFavicon = styled<{}, 'img'>('img')`
   box-sizing: border-box;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  text-align: center;
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 8px;
-`
-// these needs hover, and active states for the icons. BookmarkIcon and PinIcon
-
-export const TileAction = styled<{}, 'a'>('a')`
-  box-sizing: border-box;
-  color: #000;
-  width: 12px;
-  height: 12px;
-  font-size: 12px;
-  padding: 0;
-  margin: 0;
-  text-decoration: none;
   display: block;
+  height: 64px;
 `

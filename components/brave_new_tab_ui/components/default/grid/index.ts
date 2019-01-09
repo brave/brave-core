@@ -6,22 +6,24 @@ import styled from '../../../../theme'
 
 export const Header = styled<{}, 'header'>('header')`
   box-sizing: border-box;
-  align-items: center;
   display: grid;
   height: 100%;
+  margin: 70px 0 0;
   grid-template-columns: 1fr auto auto;
   grid-template-rows: 1fr;
-  grid-gap: 40px 0;
+  grid-gap: 30px 0;
   grid-template-areas:
     "stats clock"
     "topsites topsites";
 
   > *:first-child {
     grid-area: stats;
+    margin-left: 70px;
   }
 
   > *:nth-child(2) {
     grid-area: clock;
+    margin-right: 70px;
   }
 
   > *:nth-child(3) {
@@ -51,15 +53,14 @@ export const Header = styled<{}, 'header'>('header')`
 `
 
 export const Main = styled<{}, 'main'>('main')`
-  display: flex;
-  justify-content: flex-start;
+  box-sizing: border-box;
 `
 
 export const Footer = styled<{}, 'footer'>('footer')`
   box-sizing: border-box;
   display: grid;
   height: 100%;
-  margin-top: 60px;
+  margin: 70px;
   align-items: center;
   grid-template-columns: 1fr auto;
   grid-template-rows: auto;
@@ -75,6 +76,8 @@ export const Footer = styled<{}, 'footer'>('footer')`
     }
 
   @media screen and (max-width: 904px) {
+    margin: 70px 40px;
+
     grid-template-areas:
       "credits actions";
 
@@ -85,5 +88,19 @@ export const Footer = styled<{}, 'footer'>('footer')`
     > *:nth-child(2) {
       justify-content: flex-end;
     }
+  }
+
+  @media screen and (max-width: 390px) {
+    grid-template-areas:
+      "credits"
+      "actions";
+
+      > *:first-child {
+        text-align: center;
+      }
+
+      > *:nth-child(2) {
+        justify-content: center;
+      }
   }
 `

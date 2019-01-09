@@ -2,9 +2,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from '../../../../theme'
+import styled, { keyframes } from '../../../../theme'
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1
+  }
+`
 
 export const Page = styled<{}, 'div'>('div')`
+  -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   position: relative;
   z-index: 2;
@@ -16,7 +26,6 @@ export const Page = styled<{}, 'div'>('div')`
   justify-content: space-between;
   height: 100%;
   min-height: 100vh;
-  padding: 100px 100px;
 `
 
 interface DynamicBackgroundProps {
@@ -31,6 +40,9 @@ export const DynamicBackground = styled<DynamicBackgroundProps, 'div'>('div')`
   background-image: url(${p => p.background});
   display: flex;
   flex: 1;
+  opacity: 0;
+  animation: ${fadeIn} 300ms;
+  animation-fill-mode: forwards;
 `
 
 export const Gradient = styled<{}, 'div'>('div')`
@@ -44,34 +56,39 @@ export const Gradient = styled<{}, 'div'>('div')`
 `
 
 export const Link = styled<{}, 'a'>('a')`
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  font-weight: 200;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 12px;
+  font-weight: 800;
   text-decoration: none;
-  font-family: Muli, sans-serif;
+  transition: color 0.15s ease, filter 0.15s ease;
+  color: rgba(255, 255, 255, 0.6);
+
+  &:hover {
+    color: rgba(255, 255, 255, 1);
+  }
 `
 
 export const PhotoName = styled<{}, 'div'>('div')`
-  box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 15px;
+  box-sizing: border-box;
+  font-size: 12px;
   font-family: Muli, sans-serif;
+  color: rgba(255, 255, 255, 0.6);
 `
 
 export const Navigation = styled<{}, 'nav'>('nav')`
   display: flex;
 `
 
-export const IconLink = styled<{}, 'div'>('div')`
-  box-sizing: border-box;
+export const IconLink = styled<{}, 'a'>('a')`
   display: flex;
-  width: 32px;
-  height: 32px;
-  margin: 0px 10px;
-  cursor: default;
-  color: #fff;
+  width: 24px;
+  height: 24px;
+  margin: 12px;
+  cursor: pointer;
+  color: #FFFFFF;
+  opacity: 0.7;
+  transition: opacity 0.15s ease, filter 0.15s ease;
+
+  &:hover {
+    opacity: 0.95;
+  }
 `

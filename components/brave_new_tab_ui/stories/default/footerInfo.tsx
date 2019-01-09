@@ -8,25 +8,31 @@ import * as React from 'react'
 import { Link, Navigation, IconLink, PhotoName } from '../../../../src/features/newTab/default'
 
 // Icons
-import { SettingsIcon, FolderIcon, HistoryIcon } from '../../../../src/components/icons'
+import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon } from '../../../../src/components/icons'
 
-export default class FooterInfo extends React.PureComponent<{}, {}> {
+// Helpers
+import { getLocale } from '../fakeLocale'
+
+interface Props {
+  backgroundImageInfo: any
+}
+
+export default class FooterInfo extends React.PureComponent<Props, {}> {
   render () {
+    const { backgroundImageInfo } = this.props
     return (
       <>
       <div>
-        <PhotoName>Paris: The Roof</PhotoName>
-        <Link
-          href='https://www.photoserge.com/'
-          rel='noopener'
-          target='_blank'
-        >
-          Serge Ramelli
-        </Link>
+        <PhotoName>
+          {`${getLocale('photoBy')} `}
+          <Link href={backgroundImageInfo.link} rel='noopener' target='_blank'>
+            {backgroundImageInfo.author}
+          </Link>
+        </PhotoName>
       </div>
         <Navigation>
-          <IconLink><SettingsIcon /></IconLink>
-          <IconLink><FolderIcon /></IconLink>
+          <IconLink><SettingsAdvancedIcon /></IconLink>
+          <IconLink><BookmarkBook /></IconLink>
           <IconLink><HistoryIcon /></IconLink>
         </Navigation>
       </>

@@ -8,16 +8,18 @@ import * as React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 
 // Feature-specific components
-import { Tile, TileActionsContainer, TileAction } from '../../../../../src/features/newTab/default'
+import { Tile, TileActionsContainer, TileAction, TileFavicon } from '../../../../../src/features/newTab/default'
 
 // Icons
-import { PinIcon, BookmarkOIcon, TrashIcon } from '../../../../../src/components/icons'
-// import { BookmarkIcon } from '../../../../../src/components/icons'
+import { PinIcon, BookmarkOIcon, CloseStrokeIcon } from '../../../../../src/components/icons'
 
 interface Props {
   item: {
     id: string
-    content: any
+    name: string
+    url: string
+    favicon: string
+    background: string
   }
   index: number
 }
@@ -34,15 +36,15 @@ export default class TopSite extends React.PureComponent<Props, {}> {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             isDragging={snapshot.isDragging}
-            style={provided.draggableProps.style}
+            style={Object.assign({}, provided.draggableProps.style, { background: item.background })}
           >
             <TileActionsContainer>
               <TileAction><PinIcon /></TileAction>
               <TileAction><BookmarkOIcon /></TileAction>
               {/* Hover is BookmarkIcon */}
-              <TileAction><TrashIcon /></TileAction>
+              <TileAction><CloseStrokeIcon /></TileAction>
             </TileActionsContainer>
-            {item.content}
+              <TileFavicon src={item.favicon} />
           </Tile>
         )
       }

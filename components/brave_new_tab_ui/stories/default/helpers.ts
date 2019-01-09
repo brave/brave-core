@@ -2,10 +2,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const getItems = (count: number) => {
-  return Array
-    .from({ length: count }, (value, key) => key)
-    .map(key => ({ id: `item-${key}`, content: `${key}` }))
+import { defaultTopSitesData } from './data/topSites'
+
+export const getItems = () => {
+  return defaultTopSitesData
+    .map((value, key) => ({
+      id: `item-${key}`,
+      name: value.name,
+      url: value.url,
+      favicon: value.favicon,
+      background: value.background
+    }))
 }
 
 export const reorder = (list: any[], startIndex: number, endIndex: number) => {
@@ -16,6 +23,5 @@ export const reorder = (list: any[], startIndex: number, endIndex: number) => {
   return result
 }
 
-export const getListStyle = (isDraggingOver: boolean) => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey'
-})
+export const getRandomBackgroundData = (imagesArr: any[]) =>
+  imagesArr[Math.floor(Math.random() * imagesArr.length)]

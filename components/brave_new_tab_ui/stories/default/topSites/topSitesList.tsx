@@ -23,7 +23,7 @@ interface State {
 export default class TopSitesList extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { items: getItems(6) }
+    this.state = { items: getItems() }
   }
 
   onDragEnd = (result: any) => {

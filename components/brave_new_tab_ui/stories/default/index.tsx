@@ -10,21 +10,22 @@ import { Page, Header, Main, Footer, DynamicBackground, Gradient } from '../../.
 
 import TopSitesList from './topSites/topSitesList'
 import Stats from './stats'
+import SiteRemovalNotification from './siteRemovalNotification'
 import FooterInfo from './footerInfo'
 
 // Assets
-const fakeBackground = require('../../../assets/img/spacex_1.jpg')
-// Additional images are uploaded in img for randomizing functionality
+import { getRandomBackgroundData } from './helpers'
+import { images } from './data/background'
 
 import '../../../assets/fonts/muli.css'
 import '../../../assets/fonts/poppins.css'
 
-interface Props {}
+const generateRandomBackgroundData = getRandomBackgroundData(images)
 
-export default class NewTabPage extends React.PureComponent<Props, {}> {
+export default class NewTabPage extends React.PureComponent<{}, {}> {
   render () {
     return (
-      <DynamicBackground background={fakeBackground}>
+      <DynamicBackground background={generateRandomBackgroundData.source}>
         <Gradient />
         <Page>
           <Header>
@@ -32,10 +33,11 @@ export default class NewTabPage extends React.PureComponent<Props, {}> {
             <Clock />
             <Main>
               <TopSitesList />
+              <SiteRemovalNotification />
             </Main>
           </Header>
           <Footer>
-            <FooterInfo />
+            <FooterInfo backgroundImageInfo={generateRandomBackgroundData} />
           </Footer>
         </Page>
       </DynamicBackground>
