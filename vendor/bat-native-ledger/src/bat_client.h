@@ -48,12 +48,16 @@ class BatClient {
 
   void recoverWallet(const std::string& passPhrase);
 
-  void getGrants(const std::string& lang, const std::string& forPaymentId);
+  void getGrants(const std::string& lang, const std::string& forPaymentId,
+    const std::string& safetynet_token);
   
   void setGrant(const std::string& captchaResponse,
-                const std::string& promotionId);
+                const std::string& promotionId,
+                const std::string& safetynet_token);
 
   void getGrantCaptcha();
+
+  void getGrantViaSafetynetCheck();
 
   void getWalletProperties();
 
@@ -81,7 +85,8 @@ class BatClient {
   void setGrantCallback(
       int response_status_code,
       const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const std::map<std::string, std::string>& headers,
+      bool is_satetynet_check);
 
   void recoverWalletPublicKeyCallback(
       int response_status_code,
@@ -93,6 +98,9 @@ class BatClient {
       const std::string& response,
       const std::map<std::string, std::string>& headers,
       const std::string& paymentId);
+
+  void getGrantViaSafetynetCheckCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
 
   std::string getAnonizeProof(const std::string& registrarVK,
                               const std::string& id,

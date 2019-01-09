@@ -38,6 +38,10 @@
 #include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
 #endif
 
+#if defined(OS_ANDROID)
+#include "chrome/browser/android/brave/safetynet_check.h"
+#endif
+
 namespace base {
 class OneShotTimer;
 class RepeatingTimer;
@@ -93,6 +97,7 @@ class RewardsServiceImpl : public RewardsService,
       const GetWalletPassphraseCallback& callback) override;
   void GetNumExcludedSites(
       const GetNumExcludedSitesCallback& callback) override;
+  void GetGrantViaSafetynetCheck() const override;
   void RecoverWallet(const std::string passPhrase) const override;
   void GetContentSiteList(
       uint32_t start,
@@ -289,6 +294,7 @@ class RewardsServiceImpl : public RewardsService,
                            const std::string& probi) override;
   void OnGrantFinish(ledger::Result result,
                      const ledger::Grant& grant) override;
+  void OnGrantViaSafetynetCheck(const std::string& nonce) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler) override;
   void SaveLedgerState(const std::string& ledger_state,
@@ -425,6 +431,13 @@ class RewardsServiceImpl : public RewardsService,
   void ConnectionClosed();
   void AddPrivateObserver(RewardsServicePrivateObserver* observer) override;
   void RemovePrivateObserver(RewardsServicePrivateObserver* observer) override;
+
+#if defined(OS_ANDROID)
+  void FetchGrantAttestationResult(const std::string& lang, const std::string& payment_id,
+                                    bool result, const std::string& result_string);
+  void GrantAttestationResult(bool result, const std::string& result_string);
+  safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
+#endif
 
   Profile* profile_;  // NOT OWNED
   mojo::AssociatedBinding<bat_ledger::mojom::BatLedgerClient>
