@@ -15,7 +15,9 @@
 #define PUBLISHER_PRODUCTION_SERVER     "https://publishers.basicattentiontoken.org"
 
 
+#define PREFIX_V1                       "/v1"
 #define PREFIX_V2                       "/v2"
+#define PREFIX_V3                       "/v3"
 #define REGISTER_PERSONA                "/registrar/persona"
 #define REGISTER_VIEWING                "/registrar/viewing"
 #define WALLET_PROPERTIES               "/wallet/"
@@ -28,6 +30,7 @@
 #define RECOVER_WALLET_PUBLIC_KEY       "/wallet?publicKey="
 #define GET_SET_PROMOTION               "/grants"
 #define GET_PROMOTION_CAPTCHA           "/captchas/"
+#define GET_PROMOTION_ATTESTATION       "/attestations/"
 #define GET_PUBLISHERS_LIST_V1          "/api/v1/public/channels"
 
 #define REGISTRARVK_FIELDNAME           "registrarVK"

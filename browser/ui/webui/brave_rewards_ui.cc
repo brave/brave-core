@@ -387,9 +387,17 @@ void RewardsDOMHandler::OnGrantCaptcha(
 }
 
 void RewardsDOMHandler::GetGrantCaptcha(const base::ListValue* args) {
+#if defined(OS_ANDROID)
+  // TODO(samartnik): we need different call from JS, currently using this one to make sure it all work
+  // As soon as @ryanml adds separate action for safetynet, we will move that code
+  if (rewards_service_) {
+    rewards_service_->GetGrantViaSafetynetCheck();
+  }
+#else
   if (rewards_service_) {
     rewards_service_->GetGrantCaptcha();
   }
+#endif
 }
 
 void RewardsDOMHandler::GetWalletPassphrase(const base::ListValue* args) {
