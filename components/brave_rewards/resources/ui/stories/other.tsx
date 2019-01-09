@@ -33,7 +33,6 @@ import {
 import { BatColorIcon, SettingsIcon, UpholdColorIcon } from '../../../src/components/icons'
 import GrantClaim from '../../../src/features/rewards/grantClaim'
 
-const donate = require('../../assets/img/rewards_donate.svg')
 const bart = require('../../assets/img/bartBaker.jpeg')
 const tipScreen = require('../../assets/img/tip_site.jpg')
 const siteBgLogo = require('../../assets/img/ddgo_siteBanner.svg')
@@ -83,8 +82,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
   .add('Disabled content',() => {
     return (
       <DisabledContent
-        image={donate}
-        type={'donation'}
+        type={select('Type', { contribute: 'contribute', donation: 'donation', ads: 'ads' }, 'donation')}
       >
         • Donate on the spot as you find gems. <br/>
         • <b>Enable Tips </b> on Twitter, YouTube, and more, to give tips to posts you ‘Like’.

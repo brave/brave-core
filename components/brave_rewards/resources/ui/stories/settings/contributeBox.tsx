@@ -23,7 +23,6 @@ import locale from './fakeLocale'
 // Assets
 const bartBaker = require('../../../assets/img/bartBaker.jpeg')
 const buzz = require('../../../assets/img/buzz.jpg')
-const contributeImg = require('../../../assets/img/rewards_contribute.svg')
 const ddgo = require('../../../assets/img/ddgo.jpg')
 const guardian = require('../../../assets/img/guardian.jpg')
 const wiki = require('../../../assets/img/wiki.jpg')
@@ -152,7 +151,6 @@ class ContributeBox extends React.Component<{}, State> {
   contributeDisabled () {
     return (
       <DisabledContent
-        image={contributeImg}
         type={'contribute'}
       >
         • Pay directly for the content you love. <br/>

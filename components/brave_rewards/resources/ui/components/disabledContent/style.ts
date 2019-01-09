@@ -75,3 +75,7 @@ export const StyledTwoColumn = styled<{}, 'div'>('div')`
   flex-direction: column;
   grid-column: span 2;
 `
+
+export const StyledIcon = styled<{}, 'div'>('div')`
+  width: 110px;
+`

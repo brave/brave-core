@@ -7,27 +7,54 @@ import {
   StyledContent,
   StyledGrid,
   StyledOneColumn,
-  StyledTwoColumn
+  StyledTwoColumn,
+  StyledIcon
 } from './style'
+import {
+  AdsMegaphoneIcon,
+  RewardsActivateIcon,
+  RewardsSendTipsIcon
+} from '../../../components/icons'
 
 export type Type = 'ads' | 'contribute' | 'donation'
 
 export interface Props {
   children: React.ReactNode
   id?: string
-  image?: string
   type?: Type
 }
 
 export default class DisabledContent extends React.PureComponent<Props, {}> {
+  getIcon = (type?: Type) => {
+    let icon = null
+
+    switch (type) {
+      case 'ads':
+        icon = <AdsMegaphoneIcon />
+        break
+      case 'contribute':
+        icon = <RewardsActivateIcon />
+        break
+      case 'donation':
+        icon = <RewardsSendTipsIcon />
+        break
+    }
+
+    return (
+      <StyledIcon>
+        {icon}
+      </StyledIcon>
+    )
+  }
+
   render () {
-    const { id, image, children, type } = this.props
+    const { id, children, type } = this.props
 
     return (
       <div id={id}>
         <StyledGrid>
           <StyledOneColumn>
-            <img src={image} />
+            {this.getIcon(type)}
           </StyledOneColumn>
           <StyledTwoColumn>
             <StyledContent type={type}>

@@ -10,14 +10,10 @@ import { DisabledContent, Box } from '../../../../src/features/rewards'
 // Utils
 import locale from './fakeLocale'
 
-// Assets
-const adsImg = require('../../../assets/img/rewards_ads.svg')
-
 class AdsBox extends React.Component {
   adsDisabled () {
     return (
       <DisabledContent
-        image={adsImg}
         type={'ads'}
       >
         • {locale.adsDisabledTextOne} <br />
