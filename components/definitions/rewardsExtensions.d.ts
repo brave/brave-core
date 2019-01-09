@@ -5,6 +5,7 @@ declare namespace RewardsExtension {
     publishers: Record<string, Publisher>
     report: Report
     grant?: GrantInfo
+    pendingContributionTotal: number
     walletCreated: boolean
     walletCreateFailed: boolean
     walletProperties: WalletProperties

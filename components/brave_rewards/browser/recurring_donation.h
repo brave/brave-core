@@ -7,8 +7,6 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/browser/content_site.h"
-
 namespace brave_rewards {
   struct RecurringDonation {
     RecurringDonation();

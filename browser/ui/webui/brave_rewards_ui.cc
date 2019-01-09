@@ -95,6 +95,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnAutoContributePropsReady(
       std::unique_ptr<brave_rewards::AutoContributeProps> auto_contri_props);
   void OnIsWalletCreated(bool created);
+  void GetPendingContributionsTotal(const base::ListValue* args);
+  void OnGetPendingContributionsTotal(double amount);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -230,6 +232,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.setBackupCompleted",
                                     base::BindRepeating(&RewardsDOMHandler::SetBackupCompleted,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getPendingContributionsTotal",
+                                    base::BindRepeating(&RewardsDOMHandler::GetPendingContributionsTotal,
                                                         base::Unretained(this)));
 }
 
@@ -840,6 +845,22 @@ void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
 void RewardsDOMHandler::SetBackupCompleted(const base::ListValue *args) {
   if (web_ui()->CanCallJavascript() && rewards_service_) {
     rewards_service_->SetBackupCompleted();
+  }
+}
+
+void RewardsDOMHandler::GetPendingContributionsTotal(
+    const base::ListValue* args) {
+  if (rewards_service_) {
+    rewards_service_->GetPendingContributionsTotal(base::Bind(
+          &RewardsDOMHandler::OnGetPendingContributionsTotal,
+          weak_factory_.GetWeakPtr()));
+  }
+}
+
+void RewardsDOMHandler::OnGetPendingContributionsTotal(double amount) {
+  if (web_ui()->CanCallJavascript()) {
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.pendingContributionTotal", base::Value(amount));
   }
 }
 

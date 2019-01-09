@@ -154,4 +154,6 @@ interface BatLedgerClient {
 
   SetContributionAutoInclude(string publisher_key, bool excluded,
       uint64 window_id);
+
+  SavePendingContribution(string list);
 };

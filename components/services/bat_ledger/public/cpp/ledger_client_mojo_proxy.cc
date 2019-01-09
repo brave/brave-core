@@ -491,4 +491,11 @@ void LedgerClientMojoProxy::LoadURL(const std::string& url,
       std::bind(LedgerClientMojoProxy::OnLoadURL, holder, _1, _2, _3));
 }
 
+void LedgerClientMojoProxy::SavePendingContribution(const std::string& list) {
+  ledger::PendingContributionList contribution_list;
+  contribution_list.loadFromJson(list);
+
+  ledger_client_->SavePendingContribution(contribution_list);
+}
+
 } // namespace bat_ledger
