@@ -12,7 +12,9 @@
 #include "third_party/blink/renderer/platform/bindings/script_state.h"
 
 static bool AllowFingerprinting(blink::LocalFrame* frame) {
-  if (!frame) return true;
+  if (!frame || !frame->GetContentSettingsClient()) {
+    return true;
+  }
   return frame->GetContentSettingsClient()->AllowFingerprinting(true);
 }
 
