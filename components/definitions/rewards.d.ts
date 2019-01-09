@@ -44,6 +44,7 @@ declare namespace Rewards {
     firstLoad: boolean | null
     grant?: Grant
     numExcludedSites: number
+    pendingContributionTotal: number
     reconcileStamp: number
     recoveryKey: string
     recurringList: Publisher[]

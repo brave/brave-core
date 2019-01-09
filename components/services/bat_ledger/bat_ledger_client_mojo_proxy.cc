@@ -540,6 +540,14 @@ void BatLedgerClientMojoProxy::SetContributionAutoInclude(
       publisher_key, excluded, windowId);
 }
 
+void BatLedgerClientMojoProxy::SavePendingContribution(
+      const ledger::PendingContributionList& list) {
+  if (!Connected())
+    return;
+
+  bat_ledger_client_->SavePendingContribution(list.ToJson());
+}
+
 bool BatLedgerClientMojoProxy::Connected() const {
   return bat_ledger_client_.is_bound();
 }

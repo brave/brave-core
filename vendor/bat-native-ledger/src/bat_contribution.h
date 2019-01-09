@@ -112,7 +112,8 @@ class BatContribution {
       const std::string &viewing_id,
       const ledger::PUBLISHER_CATEGORY category,
       const braveledger_bat_helper::PublisherList& list,
-      const braveledger_bat_helper::Directions& directions = {});
+      const braveledger_bat_helper::Directions& directions = {},
+      double budget = 0);
 
   // Called when timer is triggered
   void OnTimer(uint32_t timer_id);
@@ -133,6 +134,20 @@ class BatContribution {
   std::string GetAnonizeProof(const std::string& registrar_VK,
                               const std::string& id,
                               std::string& pre_flight);
+
+  // AUTO CONTRIBUTE: from the list gets only verified publishers and
+  // save unverified to the db
+  ledger::PublisherInfoList GetVerifiedListAuto(
+      const std::string& viewing_id,
+      const ledger::PublisherInfoList& all,
+      double& budget);
+
+  // RECURRING DONTAIONS: from the list gets only verified publishers and
+  // save unverified to the db
+  ledger::PublisherInfoList GetVerifiedListRecurring(
+      const std::string& viewing_id,
+      const ledger::PublisherInfoList& all,
+      double& budget);
 
   // Entry point for contribution where we have publisher info list
   void ReconcilePublisherList(ledger::PUBLISHER_CATEGORY category,

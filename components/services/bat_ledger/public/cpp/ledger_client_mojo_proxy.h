@@ -87,6 +87,9 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     int32_t method,
     LoadURLCallback callback) override;
 
+  void SavePendingContribution(
+      const std::string& list) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*

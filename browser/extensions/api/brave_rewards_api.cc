@@ -167,31 +167,30 @@ ExtensionFunction::ResponseAction BraveRewardsSolveGrantCaptchaFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsGetNonVerifiedSettingsFunction::
-~BraveRewardsGetNonVerifiedSettingsFunction() {
+BraveRewardsGetPendingContributionsTotalFunction::
+~BraveRewardsGetPendingContributionsTotalFunction() {
 }
 
 ExtensionFunction::ResponseAction
-BraveRewardsGetNonVerifiedSettingsFunction::Run() {
+BraveRewardsGetPendingContributionsTotalFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service_ =
     RewardsServiceFactory::GetForProfile(profile);
-  bool non_verified = true;
 
   if (!rewards_service_) {
     return RespondNow(OneArgument(
-          std::make_unique<base::Value>(non_verified)));
+          std::make_unique<base::Value>(0.0)));
   }
 
-  rewards_service_->GetPublisherAllowNonVerified(base::Bind(
-        &BraveRewardsGetNonVerifiedSettingsFunction::OnGetAllowNonVerified,
+  rewards_service_->GetPendingContributionsTotal(base::Bind(
+        &BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal,
         this));
   return RespondLater();
 }
 
-void BraveRewardsGetNonVerifiedSettingsFunction::OnGetAllowNonVerified(
-    bool non_verified) {
-  Respond(OneArgument(std::make_unique<base::Value>(non_verified)));
+void BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal(
+    double amount) {
+  Respond(OneArgument(std::make_unique<base::Value>(amount)));
 }
 
 }  // namespace api

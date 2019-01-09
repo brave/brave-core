@@ -218,6 +218,12 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         chrome.braveRewards.getGrant()
         break
       }
+    case types.ON_PENDING_CONTRIBUTIONS_TOTAL:
+      {
+        state = { ...state }
+        state.pendingContributionTotal = payload.amount
+        break
+      }
   }
 
   return state

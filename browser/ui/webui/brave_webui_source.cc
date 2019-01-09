@@ -362,6 +362,8 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "recurringDonation", IDS_BRAVE_UI_RECURRING_DONATION },
         { "recurringDonations", IDS_BRAVE_UI_RECURRING_DONATIONS },
         { "remove", IDS_BRAVE_UI_REMOVE },
+        { "reservedAmountText", IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT },
+        { "reservedMoreLink", IDS_BRAVE_UI_RESERVED_MORE_LINK },
         { "restore", IDS_BRAVE_UI_RESTORE },
         { "restoreAll", IDS_BRAVE_UI_RESTORE_ALL },
         { "reviewSitesMsg", IDS_BRAVE_UI_REVIEW_SITE_MSG },

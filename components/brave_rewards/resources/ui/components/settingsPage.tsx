@@ -54,6 +54,7 @@ class SettingsPage extends React.Component<Props, {}> {
     this.actions.checkImported()
     this.actions.getReconcileStamp()
     this.actions.getGrant()
+    this.actions.getPendingContributionsTotal()
 
     // one time check (legacy fix)
     // more info here https://github.com/brave/brave-browser/issues/2172
