@@ -81,14 +81,17 @@ class BraveRewardsGetGrantFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetNonVerifiedSettingsFunction : public UIThreadExtensionFunction {
+class BraveRewardsGetPendingContributionsTotalFunction : public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getNonVerifiedSettings", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getPendingContributionsTotal", UNKNOWN)
 
  protected:
-  ~BraveRewardsGetNonVerifiedSettingsFunction() override;
+  ~BraveRewardsGetPendingContributionsTotalFunction() override;
 
   ResponseAction Run() override;
+
+ private:
+  void OnGetPendingTotal(double amount);
 };
 
 }  // namespace api

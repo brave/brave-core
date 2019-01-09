@@ -129,6 +129,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onAdsData(adsData)
   }
 
+  function pendingContributionTotal (amount: number) {
+    getActions().onPendingContributionTotal(amount)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -150,7 +154,8 @@ window.cr.define('brave_rewards', function () {
     currentTips,
     initAutoContributeSettings,
     imported,
-    adsData
+    adsData,
+    pendingContributionTotal
   }
 })
 

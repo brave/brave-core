@@ -39,6 +39,8 @@ void saveToJson(JsonWriter & writer, const TRANSACTION_BALLOT_ST&);
 void saveToJson(JsonWriter & writer, const TRANSACTION_ST&);
 void saveToJson(JsonWriter & writer, const TWITCH_EVENT_INFO&);
 void saveToJson(JsonWriter & writer, const WALLET_INFO_ST&);
+void saveToJson(JsonWriter & writer, const ledger::PendingContribution&);
+void saveToJson(JsonWriter & writer, const ledger::PendingContributionList&);
 
 template <typename T>
 void saveToJsonString(const T& t, std::string& json) {
