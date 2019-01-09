@@ -149,3 +149,9 @@ export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS
   key,
   value
 })
+
+export const getPendingContributionsTotal = () => action(types.GET_PENDING_CONTRIBUTION_TOTAL)
+
+export const onPendingContributionTotal = (amount: number) => action(types.ON_PENDING_CONTRIBUTION_TOTAL, {
+  amount
+})

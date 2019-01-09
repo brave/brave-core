@@ -40,6 +40,7 @@ class RewardsServiceObserver;
 using GetCurrentContributeListCallback =
     base::Callback<void(std::unique_ptr<ContentSiteList>,
         uint32_t /* next_record */)>;
+using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -111,6 +112,8 @@ class RewardsService : public KeyedService {
     std::string publisher_key, bool excluded, uint64_t windowId) = 0;
   virtual RewardsNotificationService* GetNotificationService() const = 0;
   virtual bool CheckImported() = 0;
+  virtual void GetPendingContributionsTotal(
+    const GetPendingContributionsTotalCallback& callback) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

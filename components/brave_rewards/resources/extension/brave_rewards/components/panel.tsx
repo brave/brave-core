@@ -24,7 +24,6 @@ interface Props extends RewardsExtension.ComponentProps {
 interface State {
   showSummary: boolean
   publisherKey: string | null
-  nonVerified: boolean
 }
 
 export class Panel extends React.Component<Props, State> {
@@ -32,8 +31,7 @@ export class Panel extends React.Component<Props, State> {
     super(props)
     this.state = {
       showSummary: true,
-      publisherKey: null,
-      nonVerified: true
+      publisherKey: null
     }
   }
 
@@ -55,10 +53,8 @@ export class Panel extends React.Component<Props, State> {
     this.actions.getWalletProperties()
     this.actions.getCurrentReport()
 
-    chrome.braveRewards.getNonVerifiedSettings(((nonVerified: boolean) => {
-      this.setState({
-        nonVerified
-      })
+    chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
+      this.actions.OnPendingContributionsTotal(amount)
     }))
   }
 
@@ -263,17 +259,15 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
-  openSettings = () => {
-    chrome.tabs.create({
-      url: 'brave://rewards/#ac-settings'
-    })
-  }
-
   render () {
+    const { pendingContributionTotal } = this.props.rewardsPanelData
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const converted = utils.convertBalance(balance.toString(), rates)
     const notification = this.getNotification()
+
+    const pendingTotal = parseFloat(
+      (pendingContributionTotal || 0).toFixed(1))
 
     let faviconUrl
     if (publisher && publisher.url) {
@@ -328,13 +322,16 @@ export class Panel extends React.Component<Props, State> {
               onAmountChange={this.doNothing}
               onIncludeInAuto={this.switchAutoContribute}
               showUnVerified={!publisher.verified}
-              showChangeSetting={this.state.nonVerified}
               moreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
-              onChangeSetting={this.openSettings}
             />
             : null
           }
-          <WalletSummary compact={true} {...this.getWalletSummary()}/>
+          <WalletSummary
+            compact={true}
+            reservedAmount={pendingTotal}
+            reservedMoreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
+            {...this.getWalletSummary()}
+          />
         </WalletSummarySlider>
       </WalletWrapper>
     )

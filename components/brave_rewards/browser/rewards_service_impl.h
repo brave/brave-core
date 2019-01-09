@@ -134,6 +134,8 @@ class RewardsServiceImpl : public RewardsService,
                           std::unique_ptr<ledger::WalletInfo> info) override;
   void OnDonate(const std::string& publisher_key, int amount, bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
+  void GetPendingContributionsTotal(
+    const GetPendingContributionsTotalCallback& callback) override;
 
  private:
   friend void RunIOTaskCallback(
@@ -278,6 +280,11 @@ class RewardsServiceImpl : public RewardsService,
                      const ledger::LogLevel log_level) const override;
 
   void OnIOTaskComplete(std::function<void(void)> callback);
+
+  void SavePendingContribution(
+      const ledger::PendingContributionList& list) override;
+
+  void OnSavePendingContribution(bool result);
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;

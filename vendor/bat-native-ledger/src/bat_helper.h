@@ -242,6 +242,7 @@ namespace braveledger_bat_helper {
     unsigned int visits_ = 0;
     unsigned int percent_ = 0;
     double weight_ = .0;
+    bool verified_ = false;
   };
 
   struct WINNERS_ST {
@@ -277,7 +278,9 @@ namespace braveledger_bat_helper {
 
   struct RECONCILE_DIRECTION {
     RECONCILE_DIRECTION();
-    RECONCILE_DIRECTION(const std::string& publisher_key, const int amount, const std::string& currency);
+    RECONCILE_DIRECTION(const std::string& publisher_key,
+                        int amount,
+                        const std::string& currency);
     ~RECONCILE_DIRECTION();
 
     bool loadFromJson(const std::string &json);

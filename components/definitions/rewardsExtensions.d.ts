@@ -4,6 +4,7 @@ declare namespace RewardsExtension {
     notifications: Record<number, Notification>
     publishers: Record<string, Publisher>
     report: Report
+    pendingContributionTotal: number
     walletCreated: boolean
     walletCreateFailed: boolean
     walletProperties: WalletProperties

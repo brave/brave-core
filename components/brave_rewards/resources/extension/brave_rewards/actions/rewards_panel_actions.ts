@@ -62,3 +62,7 @@ export const includeInAutoContribution = (publisherKey: string, excluded: boolea
 })
 
 export const getGrant = () => action(types.GET_GRANT, {})
+
+export const OnPendingContributionsTotal = (amount: number) => action(types.ON_PENDING_CONTRIBUTIONS_TOTAL, {
+  amount
+})

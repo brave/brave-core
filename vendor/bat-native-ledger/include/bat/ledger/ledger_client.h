@@ -21,6 +21,7 @@
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
 #include "bat/ledger/grant.h"
+#include "bat/ledger/pending_contribution.h"
 
 namespace ledger {
 
@@ -140,6 +141,9 @@ class LEDGER_EXPORT LedgerClient {
   virtual void SetContributionAutoInclude(std::string publisher_key,
                                           bool excluded,
                                           uint64_t windowId) = 0;
+
+  virtual void SavePendingContribution(
+      const ledger::PendingContributionList& list) = 0;
 
   // Logs debug information
   virtual std::unique_ptr<LogStream> Log(
