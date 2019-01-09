@@ -730,7 +730,8 @@ static bool ignore_ = false;
     score_(0),
     visits_(0),
     percent_(0),
-    weight_(0) {}
+    weight_(0),
+    verified_(false) {}
 
   PUBLISHER_ST::~PUBLISHER_ST() {}
 
@@ -760,6 +761,12 @@ static bool ignore_ = false;
       visits_ = d["visits"].GetUint();
       percent_ = d["percent"].GetUint();
       weight_ = d["pubs_load_timestamp"].GetDouble();
+
+      if (d.HasMember("verified") && d["verified"].IsBool()) {
+        verified_ = d["verified"].GetBool();
+      } else {
+        verified_ = false;
+      }
     }
 
     return !error;
@@ -785,6 +792,9 @@ static bool ignore_ = false;
 
     writer.String("weight");
     writer.Double(data.weight_);
+
+    writer.String("verified");
+    writer.Bool(data.verified_);
 
     writer.EndObject();
   }
@@ -2407,6 +2417,42 @@ static bool ignore_ = false;
     std::uniform_int_distribution <> dist(min, max);
 
     return dist(eng);
+  }
+
+  void saveToJson(JsonWriter& writer,
+                  const ledger::PendingContribution& contribution) {
+    writer.StartObject();
+
+    writer.String("publisher_key");
+    writer.String(contribution.publisher_key.c_str());
+
+    writer.String("amount");
+    writer.Double(contribution.amount);
+
+    writer.String("added_date");
+    writer.Uint64(contribution.added_date);
+
+    writer.String("viewing_id");
+    writer.String(contribution.viewing_id.c_str());
+
+    writer.String("category");
+    writer.Int(contribution.category);
+
+    writer.EndObject();
+  }
+
+  void saveToJson(JsonWriter& writer,
+                  const ledger::PendingContributionList& contributions) {
+    writer.StartObject();
+
+    writer.String("list");
+    writer.StartArray();
+    for (const auto& contribution : contributions.list_) {
+      saveToJson(writer, contribution);
+    }
+    writer.EndArray();
+
+    writer.EndObject();
   }
 
 }  // namespace braveledger_bat_helper

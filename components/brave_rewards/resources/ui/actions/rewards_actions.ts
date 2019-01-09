@@ -138,3 +138,9 @@ export const checkImported = () => action(types.CHECK_IMPORTED)
 export const onImportedCheck = (imported: boolean) => action(types.ON_IMPORTED_CHECK, {
   imported
 })
+
+export const getPendingContributionsTotal = () => action(types.GET_PENDING_CONTRIBUTION_TOTAL)
+
+export const onPendingContributionTotal = (amount: number) => action(types.ON_PENDING_CONTRIBUTION_TOTAL, {
+  amount
+})

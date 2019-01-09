@@ -67,6 +67,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void UpdateTipsList(const base::ListValue* args);
   void GetContributionList(const base::ListValue* args);
   void CheckImported(const base::ListValue* args);
+  void GetPendingContributionsTotal(const base::ListValue* args);
+  void OnGetPendingContributionsTotal(double amount);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -190,6 +192,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.checkImported",
                                     base::BindRepeating(&RewardsDOMHandler::CheckImported,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getPendingContributionsTotal",
+                                    base::BindRepeating(&RewardsDOMHandler::GetPendingContributionsTotal,
                                                         base::Unretained(this)));
 }
 
@@ -672,6 +677,22 @@ void RewardsDOMHandler::CheckImported(const base::ListValue *args) {
   if (web_ui()->CanCallJavascript() && rewards_service_) {
     bool imported = rewards_service_->CheckImported();
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.imported", base::Value(imported));
+  }
+}
+
+void RewardsDOMHandler::GetPendingContributionsTotal(
+    const base::ListValue* args) {
+  if (rewards_service_) {
+    rewards_service_->GetPendingContributionsTotal(base::Bind(
+          &RewardsDOMHandler::OnGetPendingContributionsTotal,
+          weak_factory_.GetWeakPtr()));
+  }
+}
+
+void RewardsDOMHandler::OnGetPendingContributionsTotal(double amount) {
+  if (web_ui()->CanCallJavascript()) {
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.pendingContributionTotal", base::Value(amount));
   }
 }
 
