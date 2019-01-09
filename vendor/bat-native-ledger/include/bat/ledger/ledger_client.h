@@ -176,6 +176,7 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void OnRemoveRecurring(const std::string& publisher_key,
                                  ledger::RecurringRemoveCallback callback) = 0;
+  virtual void OnGrantViaSafetynetCheck(const std::string& nonce) = 0;
 
   // uint64_t time_offset (input): timer offset in seconds.
   // uint32_t timer_id (output) : 0 in case of failure

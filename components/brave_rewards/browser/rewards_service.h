@@ -116,6 +116,7 @@ class RewardsService : public KeyedService {
   virtual void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) = 0;
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
+  virtual void GetGrantViaSafetynetCheck() const = 0;
   virtual void RestorePublishers() = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
   virtual void OnUnload(SessionID tab_id) = 0;

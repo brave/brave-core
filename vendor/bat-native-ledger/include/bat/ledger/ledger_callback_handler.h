@@ -41,6 +41,8 @@ LEDGER_EXPORT enum Result {
   PENDING_PUBLISHER_REMOVED = 21,
   PENDING_NOT_ENOUGH_FUNDS = 22,
   RECURRING_TABLE_EMPTY = 23,
+
+  SAFETYNET_ATTESTATION_FAILED = 24,
 };
 
 // LedgerCallbackHandler must not be destroyed if they have pending callbacks
