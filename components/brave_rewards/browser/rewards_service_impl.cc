@@ -2179,7 +2179,7 @@ void RewardsServiceImpl::SetShortRetries(bool short_retries) {
 bool SavePendingContributionOnFileTaskRunner(PublisherInfoDatabase* backend,
     const ledger::PendingContributionList& list) {
   if (!backend) {
-    return 0;
+    return false;
   }
 
   return backend->InsertPendingContribution(list);
@@ -2187,7 +2187,6 @@ bool SavePendingContributionOnFileTaskRunner(PublisherInfoDatabase* backend,
 
 void RewardsServiceImpl::OnSavePendingContribution(bool result) {
   // TODO(nejczdovc) add callback with db result
-  LOG(ERROR) << "OnSavePendingContribution" << result;
 }
 
 void RewardsServiceImpl::SavePendingContribution(

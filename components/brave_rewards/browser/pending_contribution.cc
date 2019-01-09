@@ -5,19 +5,12 @@
 
 namespace brave_rewards {
 
-  PendingContribution::PendingContribution() :
-    amount(0),
-    added_date(0),
-    reconcile_date(0) {
-  }
+PendingContribution::PendingContribution() :
+  amount(0),
+  added_date(0),
+  reconcile_date(0) {
+}
 
-  PendingContribution::~PendingContribution() { }
-
-  PendingContribution::PendingContribution(const PendingContribution &data) {
-    publisher_key = data.publisher_key;
-    amount = data.amount;
-    added_date = data.added_date;
-    reconcile_date = data.reconcile_date;
-  }
+PendingContribution::~PendingContribution() { }
 
 }  // namespace brave_rewards

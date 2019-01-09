@@ -283,6 +283,9 @@ class PageWallet extends React.Component<Props, State> {
     const { walletRecoverySuccess, emptyWallet, modalBackup } = ui
     const addressArray = utils.getAddresses(addresses)
 
+    const pendingTotal = parseFloat(
+      (pendingContributionTotal || 0).toFixed(1))
+
     return (
       <>
         <WalletWrapper
@@ -308,7 +311,7 @@ class PageWallet extends React.Component<Props, State> {
             ? emptyWallet
               ? <WalletEmpty />
               : <WalletSummary
-                reservedAmount={pendingContributionTotal || 0}
+                reservedAmount={pendingTotal}
                 reservedMoreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
                 {...this.getWalletSummary()}
               />

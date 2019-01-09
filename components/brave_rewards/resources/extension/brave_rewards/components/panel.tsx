@@ -294,6 +294,9 @@ export class Panel extends React.Component<Props, State> {
     const converted = utils.convertBalance(balance.toString(), rates)
     const notification = this.getNotification()
 
+    const pendingTotal = parseFloat(
+      (pendingContributionTotal || 0).toFixed(1))
+
     let faviconUrl
     if (publisher && publisher.url) {
       faviconUrl = `chrome://favicon/size/48@2x/${publisher.url}`
@@ -359,7 +362,7 @@ export class Panel extends React.Component<Props, State> {
           }
           <WalletSummary
             compact={true}
-            reservedAmount={pendingContributionTotal || 0}
+            reservedAmount={pendingTotal}
             reservedMoreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
             {...this.getWalletSummary()}
           />

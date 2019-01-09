@@ -7,7 +7,6 @@
 #include <stdint.h>
 
 #include <string>
-#include <bat/ledger/pending_contribution.h>
 
 #include "base/bind.h"
 #include "base/command_line.h"

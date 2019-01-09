@@ -8,18 +8,19 @@
 #include <string>
 
 namespace brave_rewards {
-  struct PendingContribution {
-    PendingContribution();
-    ~PendingContribution();
-    PendingContribution(const PendingContribution& data);
 
-    std::string publisher_key;
-    double amount = 0;
-    uint32_t added_date = 0;
-    uint32_t reconcile_date = 0;
-  };
+struct PendingContribution {
+  PendingContribution();
+  ~PendingContribution();
+  PendingContribution(const PendingContribution& data) = default;
 
-  using PendingContributionList = std::vector<PendingContribution>;
+  std::string publisher_key;
+  double amount = 0;
+  uint32_t added_date = 0;
+  uint32_t reconcile_date = 0;
+};
+
+using PendingContributionList = std::vector<PendingContribution>;
 
 }  // namespace brave_rewards
 

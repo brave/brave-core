@@ -22,7 +22,7 @@ LEDGER_EXPORT struct PendingContribution {
 
   std::string publisher_key;
   double amount = 0;
-  uint32_t added_date = 0;
+  uint64_t added_date = 0;
   std::string viewing_id;
 };
 
