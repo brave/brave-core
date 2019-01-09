@@ -25,11 +25,6 @@
 
 namespace brave_shields {
 
-std::string TrackingProtectionService::g_tracking_protection_component_id_(
-    kTrackingProtectionComponentId);
-std::string TrackingProtectionService::g_tracking_protection_component_base64_public_key_(
-    kTrackingProtectionComponentBase64PublicKey);
-
 TrackingProtectionService::TrackingProtectionService()
   : tracking_protection_client_(new CTPParser()),
     // See comment in tracking_protection_service.h for white_list_
@@ -50,10 +45,6 @@ TrackingProtectionService::TrackingProtectionService()
 }
 
 TrackingProtectionService::~TrackingProtectionService() {
-  Cleanup();
-}
-
-void TrackingProtectionService::Cleanup() {
   tracking_protection_client_.reset();
 }
 
@@ -88,13 +79,6 @@ bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
     return true;
   }
   return false;
-}
-
-bool TrackingProtectionService::Init() {
-  Register(kTrackingProtectionComponentName,
-           g_tracking_protection_component_id_,
-           g_tracking_protection_component_base64_public_key_);
-  return true;
 }
 
 void TrackingProtectionService::OnDATFileDataReady() {
@@ -183,8 +167,9 @@ TrackingProtectionService::GetThirdPartyHosts(const std::string& base_host) {
 void TrackingProtectionService::SetComponentIdAndBase64PublicKeyForTest(
     const std::string& component_id,
     const std::string& component_base64_public_key) {
-  g_tracking_protection_component_id_ = component_id;
-  g_tracking_protection_component_base64_public_key_ = component_base64_public_key;
+// TODO(mpilgrim)
+//  g_tracking_protection_component_id_ = component_id;
+//  g_tracking_protection_component_base64_public_key_ = component_base64_public_key;
 }
 
 scoped_refptr<base::SequencedTaskRunner> TrackingProtectionService::GetTaskRunner() {

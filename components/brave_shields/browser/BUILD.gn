@@ -8,6 +8,8 @@ source_set("brave_shields") {
     "ad_block_service.h",
     "base_brave_shields_service.cc",
     "base_brave_shields_service.h",
+    "base_local_data_files_observer.cc",
+    "base_local_data_files_observer.h",
     "brave_shields_util.cc",
     "brave_shields_util.h",
     "brave_shields_web_contents_observer.cc",
@@ -19,6 +21,8 @@ source_set("brave_shields") {
     "https_everywhere_recently_used_cache.h",
     "https_everywhere_service.cc",
     "https_everywhere_service.h",
+    "local_data_files_service.cc",
+    "local_data_files_service.h",
     "tracking_protection_service.cc",
     "tracking_protection_service.h",
   ]

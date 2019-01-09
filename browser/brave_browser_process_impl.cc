@@ -16,6 +16,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
+#include "brave/components/brave_shields/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/io_thread.h"
 #include "chrome/common/chrome_paths.h"
@@ -101,31 +102,35 @@ BraveBrowserProcessImpl::ad_block_service() {
 
 brave_shields::AdBlockRegionalService*
 BraveBrowserProcessImpl::ad_block_regional_service() {
-  if (ad_block_regional_service_)
-    return ad_block_regional_service_.get();
-
-  ad_block_regional_service_ = brave_shields::AdBlockRegionalServiceFactory();
+  if (!ad_block_regional_service_)
+    ad_block_regional_service_ = brave_shields::AdBlockRegionalServiceFactory();
   return ad_block_regional_service_.get();
 }
 
 brave_shields::TrackingProtectionService*
 BraveBrowserProcessImpl::tracking_protection_service() {
-  if (tracking_protection_service_)
-    return tracking_protection_service_.get();
-
-  tracking_protection_service_ =
-    brave_shields::TrackingProtectionServiceFactory();
+  if (!tracking_protection_service_) {
+    tracking_protection_service_ =
+        brave_shields::TrackingProtectionServiceFactory();
+    local_data_files_service()->AddObserver(tracking_protection_service_.get());
+  }
   return tracking_protection_service_.get();
 }
 
 brave_shields::HTTPSEverywhereService*
 BraveBrowserProcessImpl::https_everywhere_service() {
-  if (https_everywhere_service_)
-    return https_everywhere_service_.get();
-
-  https_everywhere_service_ =
-    brave_shields::HTTPSEverywhereServiceFactory();
+  if (!https_everywhere_service_)
+    https_everywhere_service_ =
+        brave_shields::HTTPSEverywhereServiceFactory();
   return https_everywhere_service_.get();
+}
+
+brave_shields::LocalDataFilesService*
+BraveBrowserProcessImpl::local_data_files_service() {
+  if (!local_data_files_service_)
+    local_data_files_service_ =
+        brave_shields::LocalDataFilesServiceFactory();
+  return local_data_files_service_.get();
 }
 
 extensions::BraveTorClientUpdater*
