@@ -1231,9 +1231,27 @@ void RewardsServiceImpl::FetchGrant(const std::string& lang,
   if (!Connected()) {
     return;
   }
-
+#if !defined(OS_ANDROID)
   bat_ledger_->FetchGrant(lang, payment_id);
+#else
+  safetynet_check::ClientAttestationCallback attest_callback = base::BindOnce(&RewardsServiceImpl::FetchGrantAttestationResult, base::Unretained(this),
+                                                                                lang, payment_id);
+  safetynet_check_runner_.performSafetynetCheck("", std::move(attest_callback));
+#endif
 }
+
+#if defined(OS_ANDROID)
+void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang, const std::string& payment_id,
+                                                      bool result, const std::string& result_string) {
+  if (result) {
+    ledger_->FetchGrant(lang, payment_id, result_string);
+  } else {
+    LOG(ERROR) << "FetchGrantAttestationResult error: " << result_string;
+    ledger::Grant grant;
+    OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, grant);
+  }
+}
+#endif
 
 void RewardsServiceImpl::TriggerOnGrant(ledger::Result result,
                                         const ledger::Grant& grant) {
@@ -2374,5 +2392,29 @@ void RewardsServiceImpl::OnRestorePublishersInternal(
     TriggerOnContentSiteUpdated();
   }
 }
+
+void RewardsServiceImpl::GetGrantViaSafetynetCheck() const {
+  bat_ledger_->GetGrantViaSafetynetCheck();
+}
+
+void RewardsServiceImpl::OnGrantViaSafetynetCheck(const std::string& nonce) {
+// This is used on Android only
+#if defined(OS_ANDROID)
+  safetynet_check::ClientAttestationCallback attest_callback = base::BindOnce(&RewardsServiceImpl::GrantAttestationResult, base::Unretained(this));
+  safetynet_check_runner_.performSafetynetCheck(nonce, std::move(attest_callback));
+#endif
+}
+
+#if defined(OS_ANDROID)
+void RewardsServiceImpl::GrantAttestationResult(bool result, const std::string& result_string) {
+  if (result) {
+    return bat_ledger_->ApplySafetynetToken(result_string);
+  } else {
+    LOG(ERROR) << "GrantAttestationResult error: " << result_string;
+    ledger::Grant grant;
+    OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, grant);
+  }
+}
+#endif
 
 }  // namespace brave_rewards

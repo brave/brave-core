@@ -553,9 +553,8 @@ void LedgerImpl::FetchWalletProperties() const {
   bat_client_->getWalletProperties();
 }
 
-void LedgerImpl::FetchGrant(const std::string& lang,
-                              const std::string& payment_id) const {
-  bat_client_->getGrant(lang, payment_id);
+void LedgerImpl::FetchGrant(const std::string& lang, const std::string& payment_id, const std::string& safetynet_token) const {
+  bat_client_->getGrant(lang, payment_id, safetynet_token);
 }
 
 void LedgerImpl::OnGrant(ledger::Result result, const braveledger_bat_helper::GRANT& properties) {
@@ -611,7 +610,7 @@ void LedgerImpl::OnRecoverWallet(ledger::Result result, double balance, const st
 }
 
 void LedgerImpl::SolveGrantCaptcha(const std::string& solution) const {
-  bat_client_->setGrant(solution, "");
+  bat_client_->setGrant(solution, "", "");
 }
 
 void LedgerImpl::OnGrantFinish(ledger::Result result, const braveledger_bat_helper::GRANT& grant) {
@@ -695,7 +694,7 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
         ledger::URL_METHOD::GET, callback);
   } else if (timer_id == last_grant_check_timer_id_) {
     last_grant_check_timer_id_ = 0;
-    FetchGrant(std::string(), std::string());
+    ledger_client_->FetchGrant(std::string(), std::string());
   }
 
   bat_contribution_->OnTimer(timer_id);
@@ -1133,6 +1132,18 @@ double LedgerImpl::GetDefaultContributionAmount() {
 
 bool LedgerImpl::HasSufficientBalanceToReconcile() {
   return GetBalance() >= GetContributionAmount();
+}
+
+void LedgerImpl::GetGrantViaSafetynetCheck() const {
+  bat_client_->getGrantViaSafetynetCheck();
+}
+
+void LedgerImpl::OnGrantViaSafetynetCheck(const std::string& nonce) {
+  ledger_client_->OnGrantViaSafetynetCheck(nonce);
+}
+
+void LedgerImpl::ApplySafetynetToken(const std::string& token) const {
+  bat_client_->setGrant("", "", token);
 }
 
 }  // namespace bat_ledger

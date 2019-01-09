@@ -34,6 +34,7 @@ LEDGER_EXPORT enum Result {
   TIP_ERROR = 16,
   CORRUPTED_WALLET = 17,
   GRANT_ALREADY_CLAIMED = 18,
+  SAFETYNET_ATTESTATION_FAILED = 19,
   // some more useful result codes should go here
 };
 
