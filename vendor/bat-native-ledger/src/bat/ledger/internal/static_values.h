@@ -27,7 +27,9 @@
 #define PUBLISHER_DISTRO_PRODUCTION_SERVER  \
 "https://publishers-distro.basicattentiontoken.org"
 
+#define PREFIX_V1                       "/v1"
 #define PREFIX_V2                       "/v2"
+#define PREFIX_V3                       "/v3"
 #define PREFIX_V4                       "/v4"
 #define REGISTER_PERSONA                "/registrar/persona"
 #define REGISTER_VIEWING                "/registrar/viewing"
@@ -44,6 +46,7 @@
 #define GET_SET_PROMOTION               "/grants"
 #define GET_PROMOTION_CAPTCHA           "/captchas/"
 #define GET_PUBLISHERS_LIST             "/api/v3/public/channels"
+#define GET_PROMOTION_ATTESTATION       "/attestations/"
 
 #define REGISTRARVK_FIELDNAME           "registrarVK"
 #define VERIFICATION_FIELDNAME          "verification"
