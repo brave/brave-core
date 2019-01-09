@@ -213,21 +213,27 @@ public class DAU {
             return nil
         }
         
-        let dSecs = Int(today.timeIntervalSince1970) - stat[0]
         let _month = stat[1]
         let _year = stat[2]
-        let SECONDS_IN_A_DAY = 86400
         
-        // On first ping, the user is all three of these
-        let daily = dSecs >= SECONDS_IN_A_DAY
-                
+        let lastPingDate = Date(timeIntervalSince1970: Double(stat[0]))
+        
+        guard let lastPingDay = DAU.calendar.components([.day], from: lastPingDate).day, let currentDay = todayComponents.day else {
+            log.error("Could not unwrap calendar components from date")
+            return nil
+        }
+         
         let weeksMonday = Preferences.DAU.lastPingFirstMonday.value
         // There is no lastPingFirstMondayKey preference set at first launch, meaning the week param should be set to true.
         let isFirstLaunchWeeksMonday = weeksMonday == nil
-        let weekly = todayComponents.weeksMonday != weeksMonday || isFirstLaunchWeeksMonday
-        
         let monthly = month != _month || year != _year
-        log.debug("Dau stat params, daily: \(daily), weekly: \(weekly), monthly:\(monthly), dSecs: \(dSecs)")
+        let weekly = todayComponents.weeksMonday != weeksMonday || isFirstLaunchWeeksMonday
+        // Day(of month) can stay the same if month or year changes.
+        // `monthly` parameter checks for both monthly and yearly difference.
+        // In other words, each time a monthly ping is sent, daily ping must equal true as well.
+        let daily = monthly || lastPingDay != currentDay
+        
+        log.debug("Dau stat params, daily: \(daily), weekly: \(weekly), monthly:\(monthly), lastPingDate: \(lastPingDate)")
         if !daily && !weekly && !monthly {
             // No changes, no ping
             return nil

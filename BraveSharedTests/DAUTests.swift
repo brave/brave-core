@@ -177,6 +177,22 @@ class DAUTests: XCTestCase {
         pingWithDateAndCompare(dateString: "2019-05-06", daily: true, weekly: true, monthly: false)
     }
     
+    func testNotFullDayPing() {
+        let format = "yyyy-MM-dd, HH:mm"
+        
+        pingWithDateAndCompare(dateString: "2019-12-31, 16:00", daily: true, weekly: true, monthly: true, first: true, dateFormat: format)
+        pingWithDateAndCompare(dateString: "2020-01-01, 02:00", daily: true, weekly: false, monthly: true, dateFormat: format)
+        pingWithDateAndCompare(dateString: "2020-01-01, 04:00", daily: false, weekly: false, monthly: false, dateFormat: format)
+    }
+    
+    func testNotFullDayNoPing() {
+        let format = "yyyy-MM-dd, HH:mm"
+        
+        pingWithDateAndCompare(dateString: "2019-12-31, 16:00", daily: true, weekly: true, monthly: true, first: true, dateFormat: format)
+        pingWithDateAndCompare(dateString: "2019-12-31, 23:00", daily: false, weekly: false, monthly: false, dateFormat: format)
+        pingWithDateAndCompare(dateString: "2020-01-01, 04:00", daily: true, weekly: false, monthly: true, dateFormat: format)
+    }
+    
     func testMondayOfWeek() {
         let monday = componentsOfDate("2017-11-20")
         XCTAssertEqual(monday.weeksMonday, "2017-11-20")
@@ -209,9 +225,9 @@ class DAUTests: XCTestCase {
     
     // MARK: Helpers
     
-    private func dateFrom(string: String) -> Date {
+    private func dateFrom(string: String, format: String? = nil) -> Date {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = format ?? "yyyy-MM-dd"
         
         return dateFormatter.date(from: string)!
     }
@@ -228,9 +244,9 @@ class DAUTests: XCTestCase {
     @discardableResult
     private func pingWithDateAndCompare(dateString: String = "2017-11-20", daily: Bool, weekly: Bool,
                                         monthly: Bool, first: Bool = false, woi: String? = nil,
-                                        firstPingPref: Bool = false) -> DAU.ParamsAndPrefs? {
+                                        firstPingPref: Bool = false, dateFormat: String? = nil) -> DAU.ParamsAndPrefs? {
         
-        let date = dateFrom(string: dateString)
+        let date = dateFrom(string: dateString, format: dateFormat)
         let dau = DAU(date: date)
         let params = dau.paramsAndPrefsSetup()
         
