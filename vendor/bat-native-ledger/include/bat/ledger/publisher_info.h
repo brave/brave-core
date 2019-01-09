@@ -14,10 +14,10 @@
 namespace ledger {
 
 LEDGER_EXPORT enum PUBLISHER_CATEGORY {
-  AUTO_CONTRIBUTE = 1 << 1,
+  AUTO_CONTRIBUTE = 1 << 1,  // 2
   TIPPING = 1 << 2,
-  DIRECT_DONATION = 1 << 3,
-  RECURRING_DONATION = 1 << 4,
+  DIRECT_DONATION = 1 << 3,  // 8
+  RECURRING_DONATION = 1 << 4,  // 21
   ALL_CATEGORIES = (1 << 5) - 1,
 };
 

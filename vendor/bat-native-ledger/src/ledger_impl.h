@@ -71,7 +71,7 @@ class LedgerImpl : public ledger::Ledger,
                             const ledger::PublisherInfoFilter& filter,
                             ledger::PublisherInfoListCallback callback) override;
 
-  void DoDirectDonation(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) override;
+  void DoDirectDonation(const ledger::PublisherInfo& publisher, int amount, const std::string& currency) override;
 
   void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
@@ -85,7 +85,7 @@ class LedgerImpl : public ledger::Ledger,
   void SetBalanceReport(ledger::PUBLISHER_MONTH month,
                         int year,
                         const ledger::BalanceReportInfo& report_info) override;
-
+  void SaveUnverifiedContribution(const ledger::PendingContributionList& list);
   const std::string& GetBATAddress() const override;
   const std::string& GetBTCAddress() const override;
   const std::string& GetETHAddress() const override;
@@ -268,7 +268,7 @@ class LedgerImpl : public ledger::Ledger,
   void NormalizeContributeWinners(
       ledger::PublisherInfoList* newList,
       bool saveData,
-      const braveledger_bat_helper::PublisherList& list,
+      const ledger::PublisherInfoList& list,
       uint32_t /* next_record */);
 
   void SetTimer(uint64_t time_offset, uint32_t& timer_id) const;

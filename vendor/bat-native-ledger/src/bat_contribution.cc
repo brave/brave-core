@@ -78,12 +78,109 @@ std::string BatContribution::GetAnonizeProof(
   return proof;
 }
 
+ledger::PublisherInfoList BatContribution::GetVerifiedListAuto(
+    const std::string& viewing_id,
+    const ledger::PublisherInfoList& list,
+    double& budget) {
+  ledger::PublisherInfoList verified;
+  ledger::PublisherInfoList temp;
+  ledger::PendingContributionList non_verified;
+
+  double verified_total = 0.0;
+  double non_verified_bat = 0.0;
+  double ac_amount = ledger_->GetContributionAmount();
+
+  for (const auto& publisher : list) {
+    if (publisher.verified) {
+      verified.push_back(publisher);
+      verified_total += publisher.percent;
+    } else {
+      temp.push_back(publisher);
+    }
+  }
+
+  // verified publishers
+  for (auto publisher : verified) {
+    ledger::PendingContribution contribution;
+    publisher.percent = static_cast<uint32_t>(
+        static_cast<double>(publisher.percent) / verified_total) * 100;
+  }
+
+  // non-verified publishers
+  for (const auto& publisher : temp) {
+    ledger::PendingContribution contribution;
+    contribution.amount =
+        (static_cast<double>(publisher.percent) / 100) * ac_amount;
+    contribution.publisher_key = publisher.id;
+    contribution.viewing_id = viewing_id;
+    contribution.category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;
+
+    non_verified_bat += contribution.amount;
+    non_verified.list_.push_back(contribution);
+  }
+
+  if (non_verified.list_.size() > 0) {
+    ledger_->SaveUnverifiedContribution(non_verified);
+  }
+
+  budget = ac_amount - non_verified_bat;
+
+  return verified;
+}
+
+ledger::PublisherInfoList BatContribution::GetVerifiedListRecurring(
+    const std::string& viewing_id,
+    const ledger::PublisherInfoList& list,
+    double& budget) {
+  ledger::PublisherInfoList verified;
+  ledger::PendingContributionList non_verified;
+
+  for (const auto& publisher : list) {
+    if (publisher.id.empty()) {
+      continue;
+    }
+
+    if (publisher.verified) {
+      verified.push_back(publisher);
+      budget += publisher.weight;
+    } else {
+      ledger::PendingContribution contribution;
+      contribution.amount = publisher.weight;
+      contribution.publisher_key = publisher.id;
+      contribution.viewing_id = viewing_id;
+      contribution.category = ledger::PUBLISHER_CATEGORY::RECURRING_DONATION;
+
+      non_verified.list_.push_back(contribution);
+    }
+  }
+
+  if (non_verified.list_.size() > 0) {
+    ledger_->SaveUnverifiedContribution(non_verified);
+  }
+
+  return verified;
+}
+
 void BatContribution::ReconcilePublisherList(
     ledger::PUBLISHER_CATEGORY category,
     const ledger::PublisherInfoList& list,
     uint32_t next_record) {
+  std::string viewing_id = ledger_->GenerateGUID();
+  ledger::PublisherInfoList verified_list;
+  double budget = 0.0;
+
+  if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
+    ledger::PublisherInfoList normalized_list;
+    ledger_->NormalizeContributeWinners(&normalized_list, false, list, 0);
+    std::sort(normalized_list.begin(), normalized_list.end());
+    verified_list = GetVerifiedListAuto(viewing_id, normalized_list, budget);
+  } else {
+    verified_list = GetVerifiedListRecurring(viewing_id, list, budget);
+  }
+
   braveledger_bat_helper::PublisherList new_list;
-  for (const auto &publisher : list) {
+
+  for (const auto &publisher : verified_list) {
     braveledger_bat_helper::PUBLISHER_ST new_publisher;
     new_publisher.id_ = publisher.id;
     new_publisher.percent_ = publisher.percent;
@@ -91,10 +188,11 @@ void BatContribution::ReconcilePublisherList(
     new_publisher.duration_ = publisher.duration;
     new_publisher.score_ = publisher.score;
     new_publisher.visits_ = publisher.visits;
+    new_publisher.verified_ = publisher.verified;
     new_list.push_back(new_publisher);
   }
 
-  StartReconcile(ledger_->GenerateGUID(), category, new_list);
+  StartReconcile(viewing_id, category, new_list, {}, budget);
 }
 
 void BatContribution::ResetReconcileStamp() {
@@ -154,7 +252,8 @@ void BatContribution::StartReconcile(
     const std::string& viewing_id,
     const ledger::PUBLISHER_CATEGORY category,
     const braveledger_bat_helper::PublisherList& list,
-    const braveledger_bat_helper::Directions& directions) {
+    const braveledger_bat_helper::Directions& directions,
+    double budget) {
   if (ledger_->ReconcileExists(viewing_id)) {
     ledger_->Log(__func__,
                  ledger::LogLevel::LOG_ERROR,
@@ -168,35 +267,42 @@ void BatContribution::StartReconcile(
   double balance = ledger_->GetBalance();
 
   if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
-    double ac_amount = ledger_->GetContributionAmount();
 
-    if (list.size() == 0 || ac_amount > balance) {
-      if (list.size() == 0) {
+    if (list.size() == 0 || budget > balance || budget == 0) {
+      if (list.size() == 0 || budget == 0) {
         ledger_->Log(__func__,
                      ledger::LogLevel::LOG_INFO,
                      {"AC table is empty"});
         OnReconcileComplete(ledger::Result::AC_TABLE_EMPTY,
                             viewing_id,
                             category);
+        return;
       }
 
-      if (ac_amount > balance) {
+      if (budget > balance) {
         ledger_->Log(__func__,
                      ledger::LogLevel::LOG_INFO,
                      {"You don't have enough funds for AC contribution"});
         OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
                             viewing_id,
                             category);
+        return;
       }
-      return;
     }
 
     reconcile.list_ = list;
+    fee = budget;
   }
 
   if (category == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
     double ac_amount = ledger_->GetContributionAmount();
-    if (list.size() == 0) {
+
+    // don't use ac amount if ac is disabled
+    if (!ShouldStartAutoContribute()) {
+      ac_amount = 0;
+    }
+
+    if (list.size() == 0 || budget == 0) {
       ledger_->Log(__func__,
                    ledger::LogLevel::LOG_INFO,
                    {"recurring donation list is empty"});
@@ -204,24 +310,11 @@ void BatContribution::StartReconcile(
       return;
     }
 
-    for (const auto& publisher : list) {
-      if (publisher.id_.empty()) {
-        ledger_->Log(__func__,
-                     ledger::LogLevel::LOG_ERROR,
-                     {"recurring donation is missing publisher"});
-        StartAutoContribute();
-        // TODO(nejczdovc) what should we do in this case?
-        return;
-      }
-
-      fee += publisher.weight_;
-    }
-
-    if (fee + ac_amount > balance) {
-        ledger_->Log(__func__,
-                     ledger::LogLevel::LOG_ERROR,
-                     {"You don't have enough funds to "
-                      "do recurring and AC contribution"});
+    if (budget + ac_amount > balance) {
+      ledger_->Log(__func__,
+                   ledger::LogLevel::LOG_ERROR,
+                   {"You don't have enough funds to "
+                    "do recurring and AC contribution"});
         OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
                             viewing_id,
                             ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE);
@@ -229,6 +322,7 @@ void BatContribution::StartReconcile(
     }
 
     reconcile.list_ = list;
+    fee = budget;
   }
 
   if (category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
@@ -243,7 +337,7 @@ void BatContribution::StartReconcile(
         return;
       }
 
-      if (direction.currency_ != CURRENCY) {
+      if (direction.currency_ != CURRENCY || direction.amount_ == 0) {
         ledger_->Log(__func__,
                      ledger::LogLevel::LOG_ERROR,
                      {"reconcile direction currency invalid for ",
@@ -338,11 +432,7 @@ void BatContribution::CurrentReconcile(const std::string& viewing_id) {
   std::ostringstream amount;
   auto reconcile = ledger_->GetReconcileById(viewing_id);
 
-  if (reconcile.category_ == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
-    amount << ledger_->GetContributionAmount();
-  } else {
-    amount << reconcile.fee_;
-  }
+  amount << reconcile.fee_;
 
   std::string currency = ledger_->GetCurrency();
   std::string path = (std::string)WALLET_PROPERTIES +
@@ -781,30 +871,26 @@ void BatContribution::GetContributeWinners(
     const unsigned int& ballots,
     const std::string& viewing_id,
     const braveledger_bat_helper::PublisherList& list) {
-  ledger::PublisherInfoList new_list;
-  ledger_->NormalizeContributeWinners(&new_list, false, list, 0);
-  std::sort(new_list.begin(), new_list.end());
-
   unsigned int total_votes = 0;
   std::vector<unsigned int> votes;
   braveledger_bat_helper::Winners res;
-  // TODO there is underscore.shuffle
-  for (auto &item : new_list) {
-    if (item.percent <= 0) {
+
+  for (auto &item : list) {
+    if (item.percent_ <= 0) {
       continue;
     }
 
     braveledger_bat_helper::WINNERS_ST winner;
     winner.votes_ = (unsigned int)std::lround(
-        (double) item.percent * (double)ballots / 100.0);
+        (double) item.percent_* (double)ballots / 100.0);
 
     total_votes += winner.votes_;
-    winner.publisher_data_.id_ = item.id;
-    winner.publisher_data_.duration_ = item.duration;
-    winner.publisher_data_.score_ = item.score;
-    winner.publisher_data_.visits_ = item.visits;
-    winner.publisher_data_.percent_ = item.percent;
-    winner.publisher_data_.weight_ = item.weight;
+    winner.publisher_data_.id_ = item.id_;
+    winner.publisher_data_.duration_ = item.duration_;
+    winner.publisher_data_.score_ = item.score_;
+    winner.publisher_data_.visits_ = item.visits_;
+    winner.publisher_data_.percent_ = item.percent_;
+    winner.publisher_data_.weight_ = item.weight_;
     res.push_back(winner);
   }
 

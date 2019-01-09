@@ -258,17 +258,17 @@
         "parameters": []
       },
       {
-        "name": "getNonVerifiedSettings",
+        "name": "getPendingContributionsTotal",
         "type": "function",
-        "description": "Gets auto contribute settings",
+        "description": "Gets pending contributions total",
         "parameters": [
           {
             "type": "function",
             "name": "callback",
             "parameters": [
               {
-                "name": "nonVerified",
-                "type": "boolean"
+                "name": "amount",
+                "type": "number"
               }
             ]
           }

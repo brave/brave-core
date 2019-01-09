@@ -138,22 +138,30 @@ ExtensionFunction::ResponseAction BraveRewardsGetGrantFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsGetNonVerifiedSettingsFunction::
-~BraveRewardsGetNonVerifiedSettingsFunction() {
+BraveRewardsGetPendingContributionsTotalFunction::
+~BraveRewardsGetPendingContributionsTotalFunction() {
 }
 
 ExtensionFunction::ResponseAction
-BraveRewardsGetNonVerifiedSettingsFunction::Run() {
+BraveRewardsGetPendingContributionsTotalFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service_ =
     RewardsServiceFactory::GetForProfile(profile);
-  bool non_verified = true;
 
-  if (rewards_service_) {
-    non_verified = rewards_service_->GetPublisherAllowNonVerified();
+  if (!rewards_service_) {
+    return RespondNow(OneArgument(
+          std::make_unique<base::Value>(0.0)));
   }
 
-  return RespondNow(OneArgument(std::make_unique<base::Value>(non_verified)));
+  rewards_service_->GetPendingContributionsTotal(base::Bind(
+        &BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal,
+        this));
+  return RespondLater();
+}
+
+void BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal(
+    double amount) {
+  Respond(OneArgument(std::make_unique<base::Value>(amount)));
 }
 
 }  // namespace api
