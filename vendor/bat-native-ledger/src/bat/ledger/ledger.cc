@@ -671,6 +671,7 @@ PendingContribution::PendingContribution (
   amount = properties.amount;
   added_date = properties.added_date;
   viewing_id = properties.viewing_id;
+  category = properties.category;
 }
 
 const std::string PendingContribution::ToJson() const {
@@ -690,7 +691,8 @@ bool PendingContribution::loadFromJson(const std::string& json) {
     error = !(d.HasMember("publisher_key") && d["publisher_key"].IsString() &&
         d.HasMember("amount") && d["amount"].IsDouble() &&
         d.HasMember("added_date") && d["added_date"].IsUint64() &&
-        d.HasMember("viewing_id") && d["viewing_id"].IsString());
+        d.HasMember("viewing_id") && d["viewing_id"].IsString() &&
+        d.HasMember("category") && d["category"].IsInt());
   }
 
   if (false == error) {
@@ -698,6 +700,7 @@ bool PendingContribution::loadFromJson(const std::string& json) {
     amount = d["amount"].GetDouble();
     added_date = d["added_date"].GetUint64();
     viewing_id = d["viewing_id"].GetString();
+    category = static_cast<PUBLISHER_CATEGORY>(d["category"].GetInt());
   }
 
   return !error;

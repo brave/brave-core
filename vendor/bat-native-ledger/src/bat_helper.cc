@@ -2749,6 +2749,9 @@ static bool ignore_ = false;
     writer.String("viewing_id");
     writer.String(contribution.viewing_id.c_str());
 
+    writer.String("category");
+    writer.Int(contribution.category);
+
     writer.EndObject();
   }
 

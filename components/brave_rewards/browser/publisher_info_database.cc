@@ -694,6 +694,7 @@ bool PublisherInfoDatabase::CreatePendingContributionsTable() {
       "amount DOUBLE DEFAULT 0 NOT NULL,"
       "added_date INTEGER DEFAULT 0 NOT NULL,"
       "viewing_id LONGVARCHAR NOT NULL,"
+      "category INTEGER NOT NULL,"
       "CONSTRAINT fk_pending_contribution_publisher_id"
       "    FOREIGN KEY (publisher_id)"
       "    REFERENCES publisher_info (publisher_id)"
@@ -731,13 +732,14 @@ bool PublisherInfoDatabase::InsertPendingContribution
   for (const auto& item : list.list_) {
     sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
       "INSERT INTO pending_contribution "
-      "(publisher_id, amount, added_date, viewing_id) "
-      "VALUES (?, ?, ?, ?)"));
+      "(publisher_id, amount, added_date, viewing_id, category) "
+      "VALUES (?, ?, ?, ?, ?)"));
 
     statement.BindString(0, item.publisher_key);
     statement.BindDouble(1, item.amount);
     statement.BindInt64(2, now_seconds);
     statement.BindString(3, item.viewing_id);
+    statement.BindInt(4, item.category);
     statement.Run();
   }
 

@@ -629,6 +629,7 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
     ledger::PendingContribution contribution;
     contribution.publisher_key = publisher.id;
     contribution.amount = amount;
+    contribution.category = ledger::PUBLISHER_CATEGORY::DIRECT_DONATION;
 
     ledger::PendingContributionList list;
     list.list_ = std::vector<ledger::PendingContribution> { contribution };

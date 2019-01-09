@@ -111,11 +111,11 @@ ledger::PublisherInfoList BatContribution::GetVerifiedListAuto(
   // non-verified publishers
   for (const auto& publisher : temp) {
     ledger::PendingContribution contribution;
-    // TODO do we need to round and if so how?
     contribution.amount =
         (static_cast<double>(publisher.percent) / 100) * ac_amount;
     contribution.publisher_key = publisher.id;
     contribution.viewing_id = viewing_id;
+    contribution.category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;
 
     non_verified_bat += contribution.amount;
     non_verified.list_.push_back(contribution);
@@ -150,6 +150,7 @@ ledger::PublisherInfoList BatContribution::GetVerifiedListRecurring(
       contribution.amount = publisher.weight;
       contribution.publisher_key = publisher.id;
       contribution.viewing_id = viewing_id;
+      contribution.category = ledger::PUBLISHER_CATEGORY::RECURRING_DONATION;
 
       non_verified.list_.push_back(contribution);
     }
