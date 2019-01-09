@@ -292,6 +292,12 @@ void BatContribution::StartReconcile(
 
   if (category == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
     double ac_amount = ledger_->GetContributionAmount();
+
+    // don't use ac amount if ac is disabled
+    if (!ShouldStartAutoContribute()) {
+      ac_amount = 0;
+    }
+
     if (list.size() == 0 || budget == 0) {
       BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
         "Recurring donation list is empty";
