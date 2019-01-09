@@ -57,6 +57,7 @@ using GetPublisherAllowVideosCallback = base::Callback<void(bool)>;
 using GetAutoContributeCallback = base::Callback<void(bool)>;
 using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
 using IsWalletCreatedCallback = base::Callback<void(bool)>;
+using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -143,7 +144,9 @@ class RewardsService : public KeyedService {
   virtual bool CheckImported() = 0;
   virtual void SetBackupCompleted() = 0;
   virtual void GetAutoContributeProps(
-      const GetAutoContributePropsCallback& callback) = 0;
+    const GetAutoContributePropsCallback& callback) = 0;
+  virtual void GetPendingContributionsTotal(
+    const GetPendingContributionsTotalCallback& callback) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

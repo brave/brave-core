@@ -155,3 +155,9 @@ export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS
 export const getAddresses = () => action(types.GET_ADDRESSES)
 
 export const getReconcileStamp = () => action(types.GET_RECONCILE_STAMP)
+
+export const getPendingContributionsTotal = () => action(types.GET_PENDING_CONTRIBUTION_TOTAL)
+
+export const onPendingContributionTotal = (amount: number) => action(types.ON_PENDING_CONTRIBUTION_TOTAL, {
+  amount
+})

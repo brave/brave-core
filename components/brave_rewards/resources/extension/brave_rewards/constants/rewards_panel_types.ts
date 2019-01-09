@@ -25,6 +25,8 @@ export const enum types {
   ON_GRANT_RESET = '@@rewards_panel/ON_GRANT_RESET',
   ON_GRANT_DELETE = '@@rewards_panel/ON_GRANT_DELETE',
   ON_GRANT_FINISH = '@@rewards_panel/ON_GRANT_FINISH',
+  GET_PENDING_CONTRIBUTIONS_TOTAL = '@@rewards_panel/GET_PENDING_CONTRIBUTIONS_TOTAL',
+  ON_PENDING_CONTRIBUTIONS_TOTAL = '@@rewards_panel/ON_PENDING_CONTRIBUTIONS_TOTAL'
 }
 
 // Note: This declaration must match the RewardsNotificationType enum in

@@ -662,4 +662,87 @@ bool AutoContributeProps::loadFromJson(const std::string& json) {
 bool Ledger::IsMediaLink(const std::string& url, const std::string& first_party_url, const std::string& referrer) {
   return braveledger_bat_get_media::BatGetMedia::GetLinkType(url, first_party_url, referrer) == TWITCH_MEDIA_TYPE;
 }
+
+PendingContribution::PendingContribution () {}
+PendingContribution::~PendingContribution () {}
+PendingContribution::PendingContribution (
+    const ledger::PendingContribution &properties) {
+  publisher_key = properties.publisher_key;
+  amount = properties.amount;
+  added_date = properties.added_date;
+  viewing_id = properties.viewing_id;
+  category = properties.category;
 }
+
+const std::string PendingContribution::ToJson() const {
+  std::string json;
+  braveledger_bat_helper::saveToJsonString(*this, json);
+  return json;
+}
+
+bool PendingContribution::loadFromJson(const std::string& json) {
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  // has parser errors or wrong types
+  bool error = d.HasParseError();
+
+  if (false == error) {
+    error = !(d.HasMember("publisher_key") && d["publisher_key"].IsString() &&
+        d.HasMember("amount") && d["amount"].IsDouble() &&
+        d.HasMember("added_date") && d["added_date"].IsUint64() &&
+        d.HasMember("viewing_id") && d["viewing_id"].IsString() &&
+        d.HasMember("category") && d["category"].IsInt());
+  }
+
+  if (false == error) {
+    publisher_key = d["publisher_key"].GetString();
+    amount = d["amount"].GetDouble();
+    added_date = d["added_date"].GetUint64();
+    viewing_id = d["viewing_id"].GetString();
+    category = static_cast<PUBLISHER_CATEGORY>(d["category"].GetInt());
+  }
+
+  return !error;
+}
+
+PendingContributionList::PendingContributionList () {}
+PendingContributionList::~PendingContributionList () {}
+PendingContributionList::PendingContributionList (
+    const ledger::PendingContributionList &properties) {
+  list_ = properties.list_;
+}
+
+const std::string PendingContributionList::ToJson() const {
+  std::string json;
+  braveledger_bat_helper::saveToJsonString(*this, json);
+  return json;
+}
+
+bool PendingContributionList::loadFromJson(const std::string& json) {
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  // has parser errors or wrong types
+  bool error = d.HasParseError();
+
+  if (false == error) {
+    error = !(d.HasMember("list") && d["list"].IsArray());
+  }
+
+  if (false == error) {
+    for (const auto& g : d["list"].GetArray()) {
+      rapidjson::StringBuffer sb;
+      rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+      g.Accept(writer);
+
+      PendingContribution contribution;
+      contribution.loadFromJson(sb.GetString());
+      list_.push_back(contribution);
+    }
+  }
+
+  return !error;
+}
+
+} // ledger

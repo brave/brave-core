@@ -226,6 +226,17 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         chrome.send('brave_rewards.getReconcileStamp')
         break
       }
+    case types.GET_PENDING_CONTRIBUTION_TOTAL:
+      {
+        chrome.send('brave_rewards.getPendingContributionsTotal')
+        break
+      }
+    case types.ON_PENDING_CONTRIBUTION_TOTAL:
+      {
+        state = { ...state }
+        state.pendingContributionTotal = action.payload.amount
+        break
+      }
   }
 
   return state
