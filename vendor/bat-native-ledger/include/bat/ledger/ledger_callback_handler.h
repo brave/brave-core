@@ -37,6 +37,8 @@ LEDGER_EXPORT enum Result {
   GRANT_ALREADY_CLAIMED = 18,
 
   CONTRIBUTION_AMOUNT_TOO_LOW = 19,
+
+  SAFETYNET_ATTESTATION_FAILED = 20,
 };
 
 // LedgerCallbackHandler must not be destroyed if they have pending callbacks

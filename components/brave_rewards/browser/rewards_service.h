@@ -109,6 +109,7 @@ class RewardsService : public KeyedService {
       const GetWalletPassphraseCallback& callback) = 0;
   virtual void GetExcludedPublishersNumber(
       const GetExcludedPublishersNumberCallback& callback) = 0;
+  virtual void GetGrantViaSafetynetCheck() const = 0;
   virtual void RecoverWallet(const std::string passPhrase) const = 0;
   virtual void ExcludePublisher(const std::string publisherKey) const = 0;
   virtual void RestorePublishers() = 0;

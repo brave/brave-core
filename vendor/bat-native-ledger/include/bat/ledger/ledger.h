@@ -202,7 +202,8 @@ class LEDGER_EXPORT Ledger {
       OnWalletPropertiesCallback callback) const = 0;
 
   virtual void FetchGrants(const std::string& lang,
-                           const std::string& paymentId) const = 0;
+                           const std::string& paymentId,
+                           const std::string& safetynet_token) const = 0;
 
   virtual void SolveGrantCaptcha(const std::string& solution,
                                  const std::string& promotionId) const = 0;
@@ -210,6 +211,9 @@ class LEDGER_EXPORT Ledger {
   virtual void GetGrantCaptcha(
       const std::string& promotion_id,
       const std::string& promotion_type) const = 0;
+  virtual void ApplySafetynetToken(const std::string& token) const = 0;
+
+  virtual void GetGrantViaSafetynetCheck() const = 0;
 
   virtual std::string GetWalletPassphrase() const = 0;
 
