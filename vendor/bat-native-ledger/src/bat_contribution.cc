@@ -292,7 +292,7 @@ void BatContribution::StartReconcile(
 
   if (category == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
     double ac_amount = ledger_->GetContributionAmount();
-    if (list.size() == 0) {
+    if (list.size() == 0 || budget == 0) {
       BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
         "Recurring donation list is empty";
       StartAutoContribute();
@@ -309,6 +309,7 @@ void BatContribution::StartReconcile(
     }
 
     reconcile.list_ = list;
+    fee = budget;
   }
 
   if (category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
@@ -322,7 +323,7 @@ void BatContribution::StartReconcile(
         return;
       }
 
-      if (direction.currency_ != CURRENCY) {
+      if (direction.currency_ != CURRENCY || direction.amount_ == 0) {
         BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
           "Reconcile direction currency invalid for " <<
           direction.publisher_key_;
