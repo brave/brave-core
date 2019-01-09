@@ -17,7 +17,7 @@ template("cargo_build") {
       "--cargo_home=" + rebase_path("//brave/build/rustup/", root_build_dir),
       "--manifest_path=" + rebase_path(manifest_path, root_build_dir),
       "--build_path=" + rebase_path(build_path, root_build_dir),
-      "--platform=" + platform,
+      "--target=" + target,
       "--is_debug=$is_debug"
     ]
   }

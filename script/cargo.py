@@ -19,10 +19,10 @@ def main():
     cargo_home = args.cargo_home[0]
     manifest_path = args.manifest_path[0]
     build_path = args.build_path[0]
-    platform = args.platform[0]
+    target = args.target[0]
     is_debug = args.is_debug[0]
 
-    build(rustup_home, cargo_home, manifest_path, build_path, platform, is_debug)
+    build(rustup_home, cargo_home, manifest_path, build_path, target, is_debug)
 
 
 def parse_args():
@@ -32,7 +32,7 @@ def parse_args():
     parser.add_argument('--cargo_home', nargs=1)
     parser.add_argument('--manifest_path', nargs=1)
     parser.add_argument('--build_path', nargs=1)
-    parser.add_argument('--platform', nargs=1)
+    parser.add_argument('--target', nargs=1)
     parser.add_argument('--is_debug', nargs=1)
 
     args = parser.parse_args()
@@ -64,11 +64,11 @@ def parse_args():
     if "out" not in args.build_path[0]:
         raise Exception("build_path did not contain 'out'")
 
-    # Validate platform args
-    if (args.platform is None or
-        len(args.platform) is not 1 or
-            len(args.platform[0]) is 0):
-        raise Exception("platform argument was not specified correctly")
+    # Validate target args
+    if (args.target is None or
+        len(args.target) is not 1 or
+            len(args.target[0]) is 0):
+        raise Exception("target argument was not specified correctly")
 
     # Validate is_debug args
     if (args.is_debug is None or
@@ -83,30 +83,7 @@ def parse_args():
     return args
 
 
-def build(rustup_home, cargo_home, manifest_path, build_path, platform, is_debug):
-    targets = []
-
-    if platform == "Windows x86":
-        targets = ["i686-pc-windows-msvc"]
-    elif platform == "Windows x64":
-        targets = ["x86_64-pc-windows-msvc"]
-    elif platform == "macOS x64":
-        targets = ["x86_64-apple-darwin"]
-    elif platform == "Linux x64":
-        targets = ["x86_64-unknown-linux-gnu"]
-    elif platform == "Android arm":
-        targets = ["arm-linux-androideabi"]
-    elif platform == "Android arm64":
-        targets = ["aarch64-linux-android"]
-    elif platform == "Android x86":
-        targets = ["i686-linux-android"]
-    elif platform == "Android x64":
-        targets = ["x86_64-linux-android"]
-    elif platform == "iOS":
-        targets = ["aarch64-apple-ios", "x86_64-apple-ios"]
-    else:
-        raise ValueError('Cannot build due to unknown platform')
-
+def build(rustup_home, cargo_home, manifest_path, build_path, target, is_debug):
     # Set environment variables for rustup
     env = os.environ.copy()
 
@@ -125,21 +102,20 @@ def build(rustup_home, cargo_home, manifest_path, build_path, platform, is_debug
         env['NDEBUG'] = "1"
 
     # Build targets
-    for target in targets:
-        args = []
-        args.append("cargo")
-        args.append("build")
-        if is_debug == "false":
-            args.append("--release")
-        args.append("--manifest-path=" + manifest_path)
-        args.append("--target-dir=" + build_path)
-        args.append("--target=" + target)
+    args = []
+    args.append("cargo")
+    args.append("build")
+    if is_debug == "false":
+        args.append("--release")
+    args.append("--manifest-path=" + manifest_path)
+    args.append("--target-dir=" + build_path)
+    args.append("--target=" + target)
 
-        try:
-            subprocess.check_call(args, env=env)
-        except subprocess.CalledProcessError as e:
-            print e.output
-            raise e
+    try:
+        subprocess.check_call(args, env=env)
+    except subprocess.CalledProcessError as e:
+        print e.output
+        raise e
 
 
 if __name__ == '__main__':
