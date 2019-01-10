@@ -53,6 +53,14 @@ class RewardsServiceObserver : public base::CheckedObserver {
                              brave_rewards::ContentSiteList) {};
   virtual void OnPublisherBanner(brave_rewards::RewardsService* rewards_service,
                                  const brave_rewards::PublisherBanner banner) {};
+  virtual void OnRewardsMainEnabled(brave_rewards::RewardsService* rewards_service,
+                                    bool rewards_main_enabled) {};
+  // DO NOT ADD ANY MORE METHODS HERE UNLESS IT IS A BROADCAST NOTIFICATION
+  // RewardsServiceObserver should not be used to return responses to the caller.
+  // Method calls on RewardsService should use callbacks to return responses.
+  // The observer is primarily for broadcast notifications of events from the
+  // the rewards service. OnWalletInitialized, OnContentSiteUpdated, etc...
+  // are examples of events that all observers will be interested in.
 };
 
 }  // namespace brave_rewards

@@ -48,6 +48,8 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   void OnGrantFinish(RewardsService* rewards_service,
                      unsigned int result,
                      brave_rewards::Grant grant) override;
+  void OnRewardsMainEnabled(RewardsService* rewards_service,
+                            bool rewards_main_enabled) override;
 
  private:
   Profile* profile_;
