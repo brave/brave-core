@@ -10,9 +10,6 @@
     <includes>
       <!-- WebUI Brave Rewards resources -->
       <include name="IDR_BRAVE_REWARDS_HTML" file="ui/brave_rewards.html" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_IMG_ADS_DISABLED" file="img/ads_disabled.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_IMG_CONTRIBUTE_DISABLED" file="img/contribute_disabled.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_IMG_DONATE_DISABLED" file="img/donate_disabled.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_WALLET_BG" file="img/wallet_bg.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT" file="img/captcha_bat.png" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_WELCOME_BG" file="img/welcome_bg.svg" type="BINDATA" />
