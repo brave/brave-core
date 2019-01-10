@@ -57,6 +57,14 @@ void LocalDataFilesService::OnComponentReady(
     observer->OnComponentReady(component_id, install_dir, manifest);
 }
 
+// static
+void LocalDataFilesService::SetComponentIdAndBase64PublicKeyForTest(
+    const std::string& component_id,
+    const std::string& component_base64_public_key) {
+  g_local_data_files_component_id_ = component_id;
+  g_local_data_files_component_base64_public_key_ = component_base64_public_key;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // The brave shields factory. Using the Brave Shields as a singleton

@@ -44,13 +44,7 @@ class TrackingProtectionService : public BaseLocalDataFilesObserver {
                         const std::string& manifest) override;
 
  private:
-// TODO(mpilgrim)
-//  friend class ::TrackingProtectionServiceTest;
-//  static std::string g_tracking_protection_component_id_;
-//  static std::string g_tracking_protection_component_base64_public_key_;
-    static void SetComponentIdAndBase64PublicKeyForTest(
-        const std::string& component_id,
-        const std::string& component_base64_public_key);
+  friend class ::TrackingProtectionServiceTest;
 
   void OnDATFileDataReady();
   std::vector<std::string> GetThirdPartyHosts(const std::string& base_host);

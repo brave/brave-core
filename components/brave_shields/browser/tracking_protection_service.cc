@@ -91,6 +91,7 @@ void TrackingProtectionService::OnDATFileDataReady() {
   if (!tracking_protection_client_->deserialize((char*)&buffer_.front())) {
     tracking_protection_client_.reset();
     LOG(ERROR) << "Failed to deserialize tracking protection data";
+    return;
   }
 }
 
@@ -162,15 +163,6 @@ TrackingProtectionService::GetThirdPartyHosts(const std::string& base_host) {
   }
 
   return hosts;
-}
-
-// static
-void TrackingProtectionService::SetComponentIdAndBase64PublicKeyForTest(
-    const std::string& component_id,
-    const std::string& component_base64_public_key) {
-// TODO(mpilgrim)
-//  g_tracking_protection_component_id_ = component_id;
-//  g_tracking_protection_component_base64_public_key_ = component_base64_public_key;
 }
 
 scoped_refptr<base::SequencedTaskRunner> TrackingProtectionService::GetTaskRunner() {
