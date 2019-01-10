@@ -165,6 +165,8 @@ class RewardsServiceImpl : public RewardsService,
       const GetAutoContributePropsCallback& callback) override;
   void GetPendingContributionsTotal(
     const GetPendingContributionsTotalCallback& callback) override;
+  void GetRewardsMainEnabled(
+    const GetRewardsMainEnabledCallback& callback) const override;
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -189,6 +191,7 @@ class RewardsServiceImpl : public RewardsService,
                               double balance,
                               const std::vector<ledger::Grant>& grants);
   void TriggerOnGrantFinish(ledger::Result result, const ledger::Grant& grant);
+  void TriggerOnRewardsMainEnabled(bool rewards_main_enabled);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             std::unique_ptr<ledger::PublisherInfo> info,
                             bool success);
@@ -272,7 +275,7 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::URL_METHOD& method,
       ledger::LoadURLCallback callback) override;
 
-  void SetRewardsMainEnabled(bool enabled) const override;
+  void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
   void SetPublisherMinVisits(unsigned int visits) const override;
   void SetPublisherAllowNonVerified(bool allow) const override;

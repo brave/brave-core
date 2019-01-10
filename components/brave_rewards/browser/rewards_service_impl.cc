@@ -1257,12 +1257,22 @@ void RewardsServiceImpl::GetAddresses(const GetAddressesCallback& callback) {
         AsWeakPtr(), callback));
 }
 
-void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) const {
+void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) {
   if (!Connected()) {
     return;
   }
 
   bat_ledger_->SetRewardsMainEnabled(enabled);
+  TriggerOnRewardsMainEnabled(enabled);
+}
+
+void RewardsServiceImpl::GetRewardsMainEnabled(
+    const GetRewardsMainEnabledCallback& callback) const {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->GetRewardsMainEnabled(callback);
 }
 
 void RewardsServiceImpl::GetPublisherMinVisitTime(
@@ -1374,6 +1384,11 @@ void RewardsServiceImpl::SetAutoContribute(bool enabled) const {
 void RewardsServiceImpl::TriggerOnContentSiteUpdated() {
   for (auto& observer : observers_)
     observer.OnContentSiteUpdated(this);
+}
+
+void RewardsServiceImpl::TriggerOnRewardsMainEnabled(bool rewards_main_enabled) {
+  for (auto& observer : observers_)
+    observer.OnRewardsMainEnabled(this, rewards_main_enabled);
 }
 
 void RewardsServiceImpl::SavePublishersList(const std::string& publishers_list,

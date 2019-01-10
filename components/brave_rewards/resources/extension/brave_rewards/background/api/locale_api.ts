@@ -90,7 +90,11 @@ export const getUIMessages = (): Record<string, string> => {
     'welcomeHeaderOne',
     'welcomeHeaderTwo',
     'yourWallet',
-    'noActivity'
+    'noActivity',
+    'disabledPanelOff',
+    'disabledPanelSettings',
+    'disabledPanelText',
+    'disabledPanelTitle'
   ]
 
   let translations = {}

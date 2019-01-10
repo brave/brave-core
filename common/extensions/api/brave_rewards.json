@@ -210,6 +210,17 @@
             }
           }
         ]
+      },
+      {
+        "name": "onEnabledMain",
+        "type": "function",
+        "description": "",
+        "parameters": [
+          {
+            "name": "enabledMain",
+            "type": "boolean"
+          }
+        ]
       }
     ],
     "functions": [
@@ -319,6 +330,23 @@
               {
                 "name": "amount",
                 "type": "number"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getRewardsMainEnabled",
+        "type": "function",
+        "description": "Gets whether rewards has been enabled explicitly",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "enabled",
+                "type": "boolean"
               }
             ]
           }
