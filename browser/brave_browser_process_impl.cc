@@ -112,7 +112,6 @@ BraveBrowserProcessImpl::tracking_protection_service() {
   if (!tracking_protection_service_) {
     tracking_protection_service_ =
         brave_shields::TrackingProtectionServiceFactory();
-    local_data_files_service()->AddObserver(tracking_protection_service_.get());
   }
   return tracking_protection_service_.get();
 }

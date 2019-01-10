@@ -16,6 +16,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/tracking-protection/TPParser.h"
 
@@ -179,10 +180,12 @@ scoped_refptr<base::SequencedTaskRunner> TrackingProtectionService::GetTaskRunne
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// The brave shields factory. Using the Brave Shields as a singleton
+// The tracking protection factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
 std::unique_ptr<TrackingProtectionService> TrackingProtectionServiceFactory() {
-  return std::make_unique<TrackingProtectionService>();
+  std::unique_ptr<TrackingProtectionService> service = std::make_unique<TrackingProtectionService>();
+  g_brave_browser_process->local_data_files_service()->AddObserver(service.get());
+  return service;
 }
 
 }  // namespace brave_shields

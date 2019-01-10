@@ -44,27 +44,17 @@ bool LocalDataFilesService::Start() {
 }
 
 void LocalDataFilesService::AddObserver(BaseLocalDataFilesObserver* observer) {
-  if (observers_already_called_) {
-    // OnComponentReady has already been called, so call back this observer
-    // immediately
-    observer->OnComponentReady(component_id_, install_dir_, manifest_);
-  } else {
-    // not ready to call this observer yet, so add it to the queue and we'll
-    // call it later
-    observers_.push_back(observer);
-  }
+  DCHECK(!observers_already_called_);
+  observers_.push_back(observer);
 }
 
 void LocalDataFilesService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-  component_id_ = component_id;
-  install_dir_ = install_dir;
-  manifest_ = manifest;
-  for (BaseLocalDataFilesObserver* observer : observers_)
-    observer->OnComponentReady(component_id_, install_dir_, manifest_);
   observers_already_called_ = true;
+  for (BaseLocalDataFilesObserver* observer : observers_)
+    observer->OnComponentReady(component_id, install_dir, manifest);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

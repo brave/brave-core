@@ -51,9 +51,6 @@ class LocalDataFilesService : public BraveComponentExtension {
  private:
   static std::string g_local_data_files_component_id_;
   static std::string g_local_data_files_component_base64_public_key_;
-  std::string component_id_;
-  base::FilePath install_dir_;
-  std::string manifest_;
 
   std::vector<BaseLocalDataFilesObserver*> observers_;
 
