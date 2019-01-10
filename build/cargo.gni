@@ -1,0 +1,24 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+# Runs a script to compile a local Cargo package and all of its dependencies
+template("cargo_build") {
+  action(target_name) {
+    script = "//brave/script/cargo.py"
+
+    # make sure rebuilds when files change
+    forward_variables_from(invoker, "*")
+
+    outputs = [output]
+
+    args = [
+      "--rustup_home=" + rebase_path("//brave/build/rustup/", root_build_dir),
+      "--cargo_home=" + rebase_path("//brave/build/rustup/", root_build_dir),
+      "--manifest_path=" + rebase_path(manifest_path, root_build_dir),
+      "--build_path=" + rebase_path(build_path, root_build_dir),
+      "--target=" + target,
+      "--is_debug=$is_debug"
+    ]
+  }
+}
