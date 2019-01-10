@@ -334,6 +334,23 @@
             ]
           }
         ]
+      },
+      {
+        "name": "getRewardsMainEnabled",
+        "type": "function",
+        "description": "Gets whether rewards has been enabled explicitly",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "enabled",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
       }
     ]
   }

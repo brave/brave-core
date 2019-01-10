@@ -32,6 +32,9 @@ export class RewardsPanel extends React.Component<Props, State> {
 
   componentDidMount () {
     chrome.windows.getCurrent({}, this.onWindowCallback)
+    chrome.braveRewards.getRewardsMainEnabled(((enabled: boolean) => {
+      this.props.actions.onEnabledMain(enabled)
+    }))
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {

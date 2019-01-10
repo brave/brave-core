@@ -165,6 +165,8 @@ class RewardsServiceImpl : public RewardsService,
       const GetAutoContributePropsCallback& callback) override;
   void GetPendingContributionsTotal(
     const GetPendingContributionsTotalCallback& callback) override;
+  void GetRewardsMainEnabled(
+    const GetRewardsMainEnabledCallback& callback) const override;
 
   // Testing methods
   void SetLedgerEnvForTesting();

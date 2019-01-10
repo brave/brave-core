@@ -1266,6 +1266,15 @@ void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) {
   TriggerOnRewardsMainEnabled(enabled);
 }
 
+void RewardsServiceImpl::GetRewardsMainEnabled(
+    const GetRewardsMainEnabledCallback& callback) const {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->GetRewardsMainEnabled(callback);
+}
+
 void RewardsServiceImpl::GetPublisherMinVisitTime(
     const GetPublisherMinVisitTimeCallback& callback) {
   if (!Connected()) {

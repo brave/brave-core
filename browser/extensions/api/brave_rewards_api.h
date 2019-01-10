@@ -114,6 +114,19 @@ class BraveRewardsGetPendingContributionsTotalFunction : public UIThreadExtensio
   void OnGetPendingTotal(double amount);
 };
 
+class BraveRewardsGetRewardsMainEnabledFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getRewardsMainEnabled", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetRewardsMainEnabledFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnGetRewardsMainEnabled(bool enabled);
+};
+
 }  // namespace api
 }  // namespace extensions
 
