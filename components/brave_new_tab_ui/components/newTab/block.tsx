@@ -17,7 +17,7 @@ import {
 } from 'react-dnd'
 
 // Utils
-import { cx } from '../../common/classSet'
+import { cx } from '../../../common/classSet'
 
 const Types = {
   BLOCK: 'block'

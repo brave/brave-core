@@ -3,10 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StatsContainer, StatsItem } from 'brave-ui/features/newTab'
+import { StatsContainer, StatsItem } from 'brave-ui/features/newTab/default'
 
 // Utils
-import { getLocale } from '../../common/locale'
+import { getLocale } from '../../../common/locale'
 
 interface Props {
   stats: NewTab.Stats
