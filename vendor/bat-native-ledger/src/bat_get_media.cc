@@ -603,8 +603,8 @@ void BatGetMedia::fetchPublisherDataFromDB(uint64_t windowId,
     auto filter = ledger_->CreatePublisherFilter(
       publisher_key,
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-      visit_data.local_month,
-      visit_data.local_year,
+      ledger::PUBLISHER_MONTH::ANY,
+      -1,
       ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
       false,
       ledger_->GetReconcileStamp());
