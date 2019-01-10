@@ -351,6 +351,21 @@
             ]
           }
         ]
+      },
+      {
+        "name": "saveAdsSetting",
+        "type": "function",
+        "description": "Updates settings related to ads service.",
+        "parameters": [
+          {
+            "name": "key",
+            "type": "string"
+          },
+          {
+            "name": "value",
+            "type": "string"
+          }
+        ]
       }
     ]
   }

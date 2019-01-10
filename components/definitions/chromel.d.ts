@@ -49,6 +49,7 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (enabledMain: boolean) => void) => void
   }
   const getRewardsMainEnabled: (callback: (enabled: boolean) => void) => {}
+  const saveAdsSetting: (key: string, value: string) => {}
 }
 
 declare namespace chrome.rewardsNotifications {
