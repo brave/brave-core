@@ -24,9 +24,6 @@ import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 import { DetailRow } from 'brave-ui/features/rewards/tableDonation'
 
-// Assets
-const donate = require('../../img/donate_disabled.svg')
-
 interface Props extends Rewards.ComponentProps {
 }
 
@@ -51,7 +48,6 @@ class DonationBox extends React.Component<Props, State> {
   disabledContent = () => {
     return (
       <DisabledContent
-        image={donate}
         type={'donation'}
       >
         • {getLocale('donationDisabledText1')}<br/>
