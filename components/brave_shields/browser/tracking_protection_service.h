@@ -44,8 +44,6 @@ class TrackingProtectionService : public BaseLocalDataFilesObserver {
                         const std::string& manifest) override;
 
  private:
-  friend class ::TrackingProtectionServiceTest;
-
   void OnDATFileDataReady();
   std::vector<std::string> GetThirdPartyHosts(const std::string& base_host);
 
