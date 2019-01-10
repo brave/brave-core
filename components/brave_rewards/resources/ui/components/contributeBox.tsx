@@ -16,9 +16,6 @@ import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 
-// Assets
-const contributeDisabledIcon = require('../../img/contribute_disabled.svg')
-
 interface State {
   modalContribute: boolean
   settings: boolean
@@ -69,7 +66,6 @@ class ContributeBox extends React.Component<Props, State> {
   contributeDisabled () {
     return (
       <DisabledContent
-        image={contributeDisabledIcon}
         type={'contribute'}
       >
         • {getLocale('contributionDisabledText1')} <br />
