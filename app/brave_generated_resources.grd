@@ -337,6 +337,19 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL" desc="The label of manage extensions link in settings">
         Manage Extensions
       </message>
+      <!-- Extensions page strings -->
+      <message name="IDS_MD_EXTENSIONS_BRAVE_MORE_EXTENSIONS" desc="The message shown to the user on the Extensions settings page under the list of installed extensions.">
+        <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Looking for even more extensions?<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+      </message>
+      <message name="IDS_MD_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE" desc="The text to indicate that an extension is from the Web Extensions Store.">
+        Web Extensions Store
+      </message>
+      <message name="IDS_MD_EXTENSIONS_BRAVE_ITEM_CHROME_WEB_STORE" desc="Label for button to visit the Web Extensions Store.">
+        View in Web Extensions Store
+      </message>
+      <message name="IDS_MD_EXTENSIONS_BRAVE_NO_INSTALLED_ITEMS" desc="The message shown to the user on the Extensions settings page when there are no extensions or apps installed.">
+        You don't have any extensions yet. Would you like to <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>install some<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>?
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />
