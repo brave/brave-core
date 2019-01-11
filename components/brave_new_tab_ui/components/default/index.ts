@@ -8,6 +8,7 @@ import { Page, DynamicBackground, Gradient, Link, Navigation, IconLink, PhotoNam
 import { Header, Main, Footer } from './grid'
 import { List, Tile, TileActionsContainer, TileAction, TileFavicon } from './topSites'
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
+import { Clock } from './clock'
 
 export {
   StatsContainer,
@@ -29,5 +30,6 @@ export {
   TileFavicon,
   SiteRemovalNotification,
   SiteRemovalText,
-  SiteRemovalAction
+  SiteRemovalAction,
+  Clock
 }
