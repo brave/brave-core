@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import { PanelWelcome } from 'brave-ui/features/rewards'
+import { DisabledPanel, PanelWelcome } from 'brave-ui/features/rewards'
 
 // Components
 import Panel from './panel'
@@ -32,6 +32,9 @@ export class RewardsPanel extends React.Component<Props, State> {
 
   componentDidMount () {
     chrome.windows.getCurrent({}, this.onWindowCallback)
+    chrome.braveRewards.getRewardsMainEnabled(((enabled: boolean) => {
+      this.props.actions.onEnabledMain(enabled)
+    }))
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
@@ -98,21 +101,29 @@ export class RewardsPanel extends React.Component<Props, State> {
   }
 
   render () {
-    const { walletCreateFailed, walletCreated } = this.props.rewardsPanelData
+    const { enabledMain, walletCreateFailed, walletCreated } = this.props.rewardsPanelData
+
+    if (!walletCreated) {
+      return (
+        <PanelWelcome
+          error={walletCreateFailed}
+          creating={this.state.creating}
+          variant={'two'}
+          optInAction={this.onCreate}
+          optInErrorAction={this.onCreate}
+          moreLink={this.openRewards}
+        />
+      )
+    }
 
     return (
       <>
         {
-          !walletCreated
-          ? <PanelWelcome
-            error={walletCreateFailed}
-            creating={this.state.creating}
-            variant={'two'}
-            optInAction={this.onCreate}
-            optInErrorAction={this.onCreate}
-            moreLink={this.openRewards}
-          />
-          : <Panel windowId={this.state.windowId} />
+          enabledMain
+          ? <Panel windowId={this.state.windowId} />
+          : <div style={{ width: '330px' }}>
+              <DisabledPanel onLinkOpen={this.openRewards} />
+            </div>
         }
       </>
     )

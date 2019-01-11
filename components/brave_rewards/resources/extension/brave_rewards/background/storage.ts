@@ -30,7 +30,8 @@ export const defaultState: RewardsExtension.State = {
   },
   notifications: {},
   currentNotification: undefined,
-  pendingContributionTotal: 0
+  pendingContributionTotal: 0,
+  enabledMain: false
 }
 
 const cleanData = (state: RewardsExtension.State) => {

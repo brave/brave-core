@@ -300,5 +300,21 @@
   "reservedMoreLink": {
     "message": "Learn more.",
     "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Off",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Settings.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "You are not currently accruing any Rewards benefits while browsing. Turn Rewards back on in",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Brave Rewards is",
+    "description": "Title for Panel's disabled state"
   }
 }

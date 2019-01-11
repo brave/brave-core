@@ -24,6 +24,9 @@ class RewardsServicePrivateObserver : public base::CheckedObserver {
       int error_code,
       std::unique_ptr<ledger::PublisherInfo> info,
       uint64_t windowId) {}
+  virtual void OnRewardsMainEnabled(
+      RewardsService* rewards_service,
+      bool rewards_main_enabled) {}
 };
 
 }  // namespace brave_rewards

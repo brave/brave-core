@@ -58,6 +58,7 @@ using GetAutoContributeCallback = base::Callback<void(bool)>;
 using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
 using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
+using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -104,7 +105,7 @@ class RewardsService : public KeyedService {
   virtual void GetReconcileStamp(
       const GetReconcileStampCallback& callback) = 0;
   virtual void GetAddresses(const GetAddressesCallback& callback) = 0;
-  virtual void SetRewardsMainEnabled(bool enabled) const = 0;
+  virtual void SetRewardsMainEnabled(bool enabled) = 0;
   virtual void GetPublisherMinVisitTime(
       const GetPublisherMinVisitTimeCallback& callback) = 0;
   virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const = 0;
@@ -147,6 +148,8 @@ class RewardsService : public KeyedService {
     const GetAutoContributePropsCallback& callback) = 0;
   virtual void GetPendingContributionsTotal(
     const GetPendingContributionsTotalCallback& callback) = 0;
+  virtual void GetRewardsMainEnabled(
+    const GetRewardsMainEnabledCallback& callback) const = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
