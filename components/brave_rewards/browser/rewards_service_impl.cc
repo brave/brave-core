@@ -1451,15 +1451,18 @@ void RewardsServiceImpl::FetchGrants(const std::string& lang,
       &RewardsServiceImpl::OnFetchGrants,
       AsWeakPtr()));
 #else
-  safetynet_check::ClientAttestationCallback attest_callback = base::BindOnce(&RewardsServiceImpl::FetchGrantAttestationResult, base::Unretained(this),
-                                                                                lang, payment_id);
-  safetynet_check_runner_.performSafetynetCheck("", std::move(attest_callback));
+  safetynet_check::ClientAttestationCallback attest_callback =
+      base::BindOnce(&RewardsServiceImpl::FetchGrantAttestationResult,
+          weak_ptr_factory_.GetWeakPtr(), lang, payment_id);
+  safetynet_check_runner_.performSafetynetCheck("",
+      std::move(attest_callback));
 #endif
 }
 
 #if defined(OS_ANDROID)
-void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang, const std::string& payment_id,
-                                                      bool result, const std::string& result_string) {
+void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang,
+    const std::string& payment_id,
+    bool result, const std::string& result_string) {
   if (result) {
     bat_ledger_->FetchGrants(lang, payment_id, base::BindOnce(
       &RewardsServiceImpl::OnFetchGrants,
@@ -3766,13 +3769,17 @@ void RewardsServiceImpl::GetGrantViaSafetynetCheck() const {
 void RewardsServiceImpl::OnGrantViaSafetynetCheck(const std::string& nonce) {
 // This is used on Android only
 #if defined(OS_ANDROID)
-  safetynet_check::ClientAttestationCallback attest_callback = base::BindOnce(&RewardsServiceImpl::GrantAttestationResult, base::Unretained(this));
-  safetynet_check_runner_.performSafetynetCheck(nonce, std::move(attest_callback));
+  safetynet_check::ClientAttestationCallback attest_callback =
+      base::BindOnce(&RewardsServiceImpl::GrantAttestationResult,
+          weak_ptr_factory_.GetWeakPtr());
+  safetynet_check_runner_.performSafetynetCheck(nonce,
+      std::move(attest_callback));
 #endif
 }
 
 #if defined(OS_ANDROID)
-void RewardsServiceImpl::GrantAttestationResult(bool result, const std::string& result_string) {
+void RewardsServiceImpl::GrantAttestationResult(bool result,
+    const std::string& result_string) {
   if (result) {
     return bat_ledger_->ApplySafetynetToken(result_string);
   } else {
