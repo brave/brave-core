@@ -15,7 +15,8 @@ import deps
 from rust_deps_config import RUST_DEPS_PACKAGES_URL, RUST_DEPS_PACKAGE_VERSION
 
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-RUSTUP_DIR = os.path.join(SOURCE_ROOT, 'build', 'rustup', RUST_DEPS_PACKAGE_VERSION)
+RUSTUP_DIR = os.path.join(SOURCE_ROOT, 'build', 'rustup')
+RUST_DEPS_DIR = os.path.join(RUSTUP_DIR, RUST_DEPS_PACKAGE_VERSION)
 
 
 def GetUrl(platform):
@@ -34,7 +35,7 @@ def GetUrl(platform):
 
 
 def AlreadyUpToDate():
-    if not os.path.exists(RUSTUP_DIR):
+    if not os.path.exists(RUST_DEPS_DIR):
         return False
 
     return True
@@ -49,7 +50,7 @@ def DownloadAndUnpackRustDeps(platform):
     try:
         deps.DownloadAndUnpack(url, RUSTUP_DIR)
     except urllib2.URLError:
-        print 'Failed to download Rust deps %s' % rust_deps_url
+        print 'Failed to download Rust deps %s' % url
         print 'Exiting.'
         sys.exit(1)
 
