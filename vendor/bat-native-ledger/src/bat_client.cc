@@ -121,7 +121,8 @@ void BatClient::requestCredentialsCallback(bool result, const std::string& respo
                                        _3));
 }
 
-std::string BatClient::getAnonizeProof(const std::string& registrar_vk, const std::string& id, std::string& pre_flight) {
+std::string BatClient::getAnonizeProof(const std::string& registrar_vk,
+    const std::string& id, std::string& pre_flight) {
   const char* cred = makeCred(id.c_str());
   if (nullptr != cred) {
     pre_flight = cred;
@@ -546,11 +547,14 @@ void BatClient::getGrantCaptchaCallback(bool success,
 }
 
 void BatClient::getGrantViaSafetynetCheck() {
-  auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)GET_PROMOTION_ATTESTATION + ledger_->GetPaymentId(), PREFIX_V1),
+  auto request_id =
+      ledger_->LoadURL(braveledger_bat_helper::buildURL(
+          (std::string)GET_PROMOTION_ATTESTATION + ledger_->GetPaymentId(),
+          PREFIX_V1),
       std::vector<std::string>(), "", "",
       ledger::URL_METHOD::GET, &handler_);
   handler_.AddRequestHandler(std::move(request_id),
-                             std::bind(&BatClient::getGrantViaSafetynetCheckCallback,
+                      std::bind(&BatClient::getGrantViaSafetynetCheckCallback,
                                        this,
                                        _1,
                                        _2,
@@ -559,13 +563,15 @@ void BatClient::getGrantViaSafetynetCheck() {
 
 void BatClient::getGrantViaSafetynetCheckCallback(bool success,
                                                   const std::string& response,
-                                                  const std::map<std::string, std::string>& headers) {
+                                                  const std::map<std::string,
+                                                  std::string>& headers) {
   ledger_->LogResponse(__func__, success, response, headers);
 
   if (!success) {
     // Attestation failed
     braveledger_bat_helper::GRANT grant;
-    ledger_->OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, grant);
+    ledger_->OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED,
+        grant);
     return;
   }
   std::string nonce;
