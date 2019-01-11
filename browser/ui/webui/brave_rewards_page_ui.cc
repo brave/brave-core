@@ -578,12 +578,11 @@ void RewardsDOMHandler::OnGrantCaptcha(
 
 void RewardsDOMHandler::GetGrantCaptcha(const base::ListValue* args) {
   CHECK_EQ(2U, args->GetSize());
-#if defined(OS_ANDROID)
-  // TODO(samartnik): we need different call from JS, currently using this one to make sure it all work
-  // As soon as @ryanml adds separate action for safetynet, we will move that code
   if (rewards_service_) {
+#if defined(OS_ANDROID)
+    // TODO(samartnik): we need different call from JS, currently using this one to make sure it all work
+    // As soon as @ryanml adds separate action for safetynet, we will move that code
     rewards_service_->GetGrantViaSafetynetCheck();
-  }
 #else
   if (rewards_service_) {
     const std::string promotion_id = args->GetList()[0].GetString();
@@ -591,6 +590,7 @@ void RewardsDOMHandler::GetGrantCaptcha(const base::ListValue* args) {
     rewards_service_->GetGrantCaptcha(promotion_id, promotion_type);
   }
 #endif
+  }
 }
 
 void RewardsDOMHandler::OnGetWalletPassphrase(const std::string& pass) {
