@@ -10,7 +10,7 @@
 #include <map>
 
 #include "campaign_info.h"
-#include "issuer_info.h"
+#include "bat/ads/issuer_info.h"
 #include "json_helper.h"
 
 namespace ads {

@@ -168,6 +168,11 @@ void MockAdsClient::KillTimer(uint32_t timer_id) {
   (void)timer_id;
 }
 
+void MockAdsClient::OnCatalogIssuersChanged(
+    const std::vector<IssuerInfo>& issuers) {
+  (void)issuers;
+}
+
 void MockAdsClient::URLRequest(
     const std::string& url,
     const std::vector<std::string>& headers,

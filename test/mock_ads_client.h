@@ -94,6 +94,9 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD1(SetTimer, uint32_t(
       const uint64_t time_offset));
 
+  MOCK_METHOD1(OnCatalogIssuersChanged, void(
+      const std::vector<IssuerInfo>& issuers));
+
   MOCK_METHOD1(KillTimer, void(
       uint32_t timer_id));
 

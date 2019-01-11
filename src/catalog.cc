@@ -60,6 +60,10 @@ const std::vector<CampaignInfo>& Catalog::GetCampaigns() const {
   return catalog_state_->campaigns;
 }
 
+const std::vector<IssuerInfo>& Catalog::GetIssuers() const {
+  return catalog_state_->issuers;
+}
+
 void Catalog::Save(const std::string& json, OnSaveCallback callback) {
   ads_client_->Save(_catalog_name, json, callback);
 }

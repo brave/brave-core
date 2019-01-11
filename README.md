@@ -205,6 +205,12 @@ uint32_t SetTimer(const uint64_t time_offset)
 void KillTimer(uint32_t timer_id)
 ```
 
+`OnCatalogIssuersChanged` should notify that the catalog issuers have changed
+```
+  virtual void OnCatalogIssuersChanged(
+      const std::vector<IssuerInfo>& issuers) = 0;
+```
+
 `URLRequest` should start a URL request
 ```
 void URLRequest(

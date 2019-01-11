@@ -156,6 +156,8 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
     return false;
   }
 
+  ads_client_->OnCatalogIssuersChanged(catalog.GetIssuers());
+
   auto callback = std::bind(&AdsServe::OnCatalogSaved, this, _1);
   catalog.Save(json, callback);
 

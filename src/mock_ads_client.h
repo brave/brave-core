@@ -58,12 +58,15 @@ class MockAdsClient : public AdsClient {
   uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(const uint32_t timer_id) override;
 
+  void OnCatalogIssuersChanged(
+    const std::vector<IssuerInfo>& issuers) override;
+
   void URLRequest(
       const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& content_type,
-      URLRequestMethod method,
+      const URLRequestMethod method,
       URLRequestCallback callback) override;
 
   void Save(

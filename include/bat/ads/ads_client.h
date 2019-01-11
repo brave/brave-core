@@ -14,6 +14,7 @@
 #include <functional>
 
 #include "bat/ads/ad_info.h"
+#include "bat/ads/issuer_info.h"
 #include "bat/ads/bundle_state.h"
 #include "bat/ads/client_info.h"
 #include "bat/ads/export.h"
@@ -119,6 +120,10 @@ class ADS_EXPORT AdsClient {
 
   // Should destroy the timer associated with the specified timer identifier
   virtual void KillTimer(uint32_t timer_id) = 0;
+
+  // Should notify that the catalog issuers have changed
+  virtual void OnCatalogIssuersChanged(
+      const std::vector<IssuerInfo>& issuers) = 0;
 
   // Should start a URL request
   virtual void URLRequest(

@@ -30,6 +30,8 @@ class Catalog {
 
   const std::vector<CampaignInfo>& GetCampaigns() const;
 
+  const std::vector<IssuerInfo>& GetIssuers() const;
+
   void Save(const std::string& json, OnSaveCallback callback);
   void Reset(OnSaveCallback callback);
 
