@@ -93,7 +93,8 @@ def build(rustup_home, cargo_home, manifest_path, build_path, target, is_debug):
     cargo_home = os.path.join(cargo_home, RUST_DEPS_PACKAGE_VERSION)
     env['CARGO_HOME'] = cargo_home
 
-    rustup_bin = os.path.join(rustup_home, 'bin')
+    rustup_bin = os.path.abspath(os.path.join(rustup_home, 'bin'))
+    rustup_bin_exe = os.path.join(rustup_bin, 'cargo.exe')
     env['PATH'] = rustup_bin + os.pathsep + env['PATH']
 
     # Set environment variables for Challenge Bypass Ristretto FFI
@@ -103,7 +104,7 @@ def build(rustup_home, cargo_home, manifest_path, build_path, target, is_debug):
 
     # Build targets
     args = []
-    args.append("cargo")
+    args.append("cargo" if sys.platform != "win32" else rustup_bin_exe)
     args.append("build")
     if is_debug == "false":
         args.append("--release")
