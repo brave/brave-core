@@ -3590,6 +3590,9 @@
     <message name="IDS_SETTINGS_SYNC_WILL_START" desc="The message to tell users that sync will start once they leave the sync setup page.">
       Sync will start once you leave this page
     </message>
+    <message name="IDS_SETTINGS_SYNC_WILL_START_UNITY" desc="The message to tell users that sync will start once they leave the sync setup page when unified consent is enabled.">
+      Sync will start once you leave sync settings
+    </message>
     <message name="IDS_SETTINGS_SYNC_SETTINGS_CANCEL_SYNC" desc="The label of button that allows user to cancel sync.">
       Cancel sync
     </message>
