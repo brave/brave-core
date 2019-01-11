@@ -70,10 +70,6 @@ void LedgerImpl::AddRecurringPayment(const std::string& publisher_id, const doub
   bat_publishers_->AddRecurringPayment(publisher_id, value);
 }
 
-void LedgerImpl::MakePayment(const ledger::PaymentData& payment_data) {
-  bat_publishers_->MakePayment(payment_data);
-}
-
 braveledger_bat_helper::CURRENT_RECONCILE LedgerImpl::GetReconcileById(const std::string& viewingId) {
   return bat_state_->GetReconcileById(viewingId);
 }
