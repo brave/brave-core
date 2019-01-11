@@ -17,6 +17,7 @@ const createWallet = (state: Rewards.State) => {
 
   chrome.send('brave_rewards.getReconcileStamp')
   chrome.send('brave_rewards.getAddresses')
+  chrome.send('brave_rewards.saveAdsSetting', ['adsEnabled', 'true'])
 
   return state
 }

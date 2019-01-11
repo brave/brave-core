@@ -44,6 +44,7 @@ declare namespace chrome.braveRewards {
   const getGrantCaptcha: () => {}
   const solveGrantCaptcha: (solution: string) => {}
   const getPendingContributionsTotal: (callback: (amount: number) => void) => {}
+  const saveAdsSetting: (key: string, value: string) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

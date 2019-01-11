@@ -41,6 +41,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
     case types.ON_WALLET_CREATED:
       state = { ...state }
       state.walletCreated = true
+      chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
       chrome.storage.local.get(['is_dismissed'], function (result) {
         if (result && result['is_dismissed'] === 'false') {
           chrome.browserAction.setBadgeText({
