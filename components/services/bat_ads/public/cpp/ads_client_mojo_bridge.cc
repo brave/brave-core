@@ -105,15 +105,6 @@ void AdsClientMojoBridge::GenerateUUID(GenerateUUIDCallback callback) {
   std::move(callback).Run(ads_client_->GenerateUUID());
 }
 
-bool AdsClientMojoBridge::GetSSID(std::string* out_ssid) {
-  *out_ssid = ads_client_->GetSSID();
-  return true;
-}
-
-void AdsClientMojoBridge::GetSSID(GetSSIDCallback callback) {
-  std::move(callback).Run(ads_client_->GetSSID());
-}
-
 bool AdsClientMojoBridge::IsNotificationsAvailable(bool* out_available) {
   *out_available = ads_client_->IsNotificationsAvailable();
   return true;
