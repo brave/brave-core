@@ -41,7 +41,6 @@ RewardsNotificationServiceImpl::RewardsNotificationServiceImpl(Profile* profile)
 }
 
 RewardsNotificationServiceImpl::~RewardsNotificationServiceImpl() {
-  StoreRewardsNotifications();
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   RemoveObserver(extension_rewards_notification_service_observer_.get());
 #endif
