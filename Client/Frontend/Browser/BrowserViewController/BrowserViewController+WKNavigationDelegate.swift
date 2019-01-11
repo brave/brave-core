@@ -149,14 +149,6 @@ extension BrowserViewController: WKNavigationDelegate {
             pendingRequests[url.absoluteString] = navigationAction.request
             
             if let urlHost = url.normalizedHost {
-                // If an upgraded https load happens with a host which was upgraded, increase the stats
-                if url.scheme == "https", let _ = pendingHTTPUpgrades.removeValue(forKey: urlHost) {
-                    BraveGlobalShieldStats.shared.httpse += 1
-                    if let stats = self.tabManager[webView]?.contentBlocker.stats {
-                        self.tabManager[webView]?.contentBlocker.stats = stats.create(byAddingListItem: .https)
-                    }
-                }
-                
                 if let mainDocumentURL = navigationAction.request.mainDocumentURL, url.scheme == "http" {
                     let domainForShields = Domain.getOrCreateForUrl(mainDocumentURL, context: DataController.viewContext)
                     if domainForShields.isShieldExpected(.HTTPSE) && HttpsEverywhereStats.shared.shouldUpgrade(url) {
@@ -221,6 +213,16 @@ extension BrowserViewController: WKNavigationDelegate {
         var request: URLRequest?
         if let url = responseURL {
             request = pendingRequests.removeValue(forKey: url.absoluteString)
+        }
+        
+        if let url = responseURL, let urlHost = responseURL?.normalizedHost {
+            // If an upgraded https load happens with a host which was upgraded, increase the stats
+            if url.scheme == "https", let _ = pendingHTTPUpgrades.removeValue(forKey: urlHost) {
+                BraveGlobalShieldStats.shared.httpse += 1
+                if let stats = self.tabManager[webView]?.contentBlocker.stats {
+                    self.tabManager[webView]?.contentBlocker.stats = stats.create(byAddingListItem: .https)
+                }
+            }
         }
 
         // We can only show this content in the web view if this URL is not pending
