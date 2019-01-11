@@ -113,6 +113,10 @@ class ADS_EXPORT AdsClient {
   // Should show a notification
   virtual void ShowNotification(std::unique_ptr<NotificationInfo> info) = 0;
 
+  // Should return true if Confirmations is ready to show ad otherwise returns
+  // false
+  virtual bool CanShowAd(const AdInfo& ad_info) = 0;
+
   // Should create a timer to trigger after the time offset specified in
   // seconds. If the timer was created successfully a unique identifier should
   // be returned, otherwise returns 0

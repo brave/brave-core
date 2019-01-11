@@ -195,6 +195,11 @@ bool IsNotificationsAvailable() const
 void ShowNotification(std::unique_ptr<NotificationInfo> info)
 ```
 
+`CanShowAd` should return `true` if Confirmations is ready to show ad otherwise returns `false`
+```
+bool CanShowAd(const AdInfo& ad_info);
+```
+
 `SetTimer` should create a timer to trigger after the time offset specified in seconds. If the timer was created successfully a unique identifier should be returned, otherwise returns `0`
 ```
 uint32_t SetTimer(const uint64_t time_offset)
@@ -207,8 +212,8 @@ void KillTimer(uint32_t timer_id)
 
 `OnCatalogIssuersChanged` should notify that the catalog issuers have changed
 ```
-  virtual void OnCatalogIssuersChanged(
-      const std::vector<IssuerInfo>& issuers) = 0;
+  void OnCatalogIssuersChanged(
+      const std::vector<IssuerInfo>& issuers);
 ```
 
 `URLRequest` should start a URL request
