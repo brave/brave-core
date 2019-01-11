@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+
 if (is_android) {
   import("//build/config/android/rules.gni")
 }
@@ -81,4 +83,9 @@ source_set("ledger") {
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
     rebase_path("bat-native-rapidjson", dep_base),
   ]
+
+  if (brave_ads_enabled && !is_linux) {
+    # TODO(bridiver): Required for all platforms once Brave Ads is building on Linux
+    deps += [ rebase_path("challenge_bypass_ristretto_ffi", dep_base) ]
+  }
 }
