@@ -726,7 +726,7 @@ bool AdsImpl::IsAdValid(const AdInfo& ad_info) {
     // category, winnerOverTime, arbitraryKey, notificationUrl,
     // notificationText, advertiser
 
-    LOG(INFO) << "Notification not made: Incomplete ad information for:"
+    LOG(INFO) << "Notification not made: Incomplete ad information"
         << std::endl << "  advertiser: " << ad_info.advertiser
         << std::endl << "  notificationText: " << ad_info.notification_text
         << std::endl << "  notificationUrl: " << ad_info.notification_url
@@ -743,6 +743,17 @@ bool AdsImpl::ShowAd(
     const AdInfo& ad_info,
     const std::string& category) {
   if (!IsAdValid(ad_info)) {
+    return false;
+  }
+
+  if (!ads_client_->CanShowAd(ad_info)) {
+    LOG(INFO) << "Notification not made: Confirmations not ready"
+        << std::endl << "  advertiser: " << ad_info.advertiser
+        << std::endl << "  notificationText: " << ad_info.notification_text
+        << std::endl << "  notificationUrl: " << ad_info.notification_url
+        << std::endl << "  creativeSetId: " << ad_info.notification_url
+        << std::endl << "  uuid: " << ad_info.notification_url;
+
     return false;
   }
 
