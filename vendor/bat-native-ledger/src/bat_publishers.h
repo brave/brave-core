@@ -40,8 +40,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                  const uint64_t& duration);
   bool saveVisitAllowed() const;
 
-  void MakePayment(const ledger::PaymentData& payment_data);
-
   void AddRecurringPayment(const std::string& publisher_id, const double& value);
 
   void setPublisherMinVisitTime(const uint64_t& duration); // In seconds
@@ -165,11 +163,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                                 const std::string& favicon_url);
 
   void setNumExcludedSitesInternal(ledger::PUBLISHER_EXCLUDE exclude);
-
-  void makePaymentInternal(
-      ledger::PaymentData payment_data,
-      ledger::Result result,
-      std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
   void onSetExcludeInternal(
     ledger::PUBLISHER_EXCLUDE exclude,
