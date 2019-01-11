@@ -139,15 +139,6 @@ const std::string BatAdsClientMojoBridge::GenerateUUID() const {
   return uuid;
 }
 
-const std::string BatAdsClientMojoBridge::GetSSID() const {
-  if (!connected())
-    return "";
-
-  std::string ssid;
-  bat_ads_client_->GetSSID(&ssid);
-  return ssid;
-}
-
 void BatAdsClientMojoBridge::ShowNotification(
     std::unique_ptr<ads::NotificationInfo> info) {
   if (!connected())
