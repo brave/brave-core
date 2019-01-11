@@ -67,6 +67,7 @@ void RewardsNotificationServiceImpl::AddNotification(
   RewardsNotification rewards_notification(
       id, type, GenerateRewardsNotificationTimestamp(), std::move(args));
   rewards_notifications_[id] = rewards_notification;
+  StoreRewardsNotifications();
   OnNotificationAdded(rewards_notification);
 
   if (only_once) {
@@ -91,11 +92,14 @@ void RewardsNotificationServiceImpl::DeleteNotification(
     rewards_notification = rewards_notifications_[id];
     rewards_notifications_.erase(id);
   }
+  StoreRewardsNotifications();
+
   OnNotificationDeleted(rewards_notification);
 }
 
 void RewardsNotificationServiceImpl::DeleteAllNotifications() {
   rewards_notifications_.clear();
+  StoreRewardsNotifications();
   OnAllNotificationsDeleted();
 }
 
