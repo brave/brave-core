@@ -11,6 +11,8 @@
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "content/public/browser/web_contents.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -18,6 +20,8 @@
 
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
+using brave_ads::AdsService;
+using brave_ads::AdsServiceFactory;
 
 namespace extensions {
 namespace api {
@@ -191,6 +195,22 @@ BraveRewardsGetPendingContributionsTotalFunction::Run() {
 void BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal(
     double amount) {
   Respond(OneArgument(std::make_unique<base::Value>(amount)));
+}
+
+BraveRewardsSaveAdsSettingFunction::~BraveRewardsSaveAdsSettingFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
+  std::unique_ptr<brave_rewards::SaveAdsSetting::Params> params(
+      brave_rewards::SaveAdsSetting::Params::Create(*args_));
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  AdsService* ads_service_ = AdsServiceFactory::GetForProfile(profile);
+  if (ads_service_) {
+    if (params->key == "adsEnabled") {
+      ads_service_->set_ads_enabled(params->value == "true");
+    }
+  }
+  return RespondNow(NoArguments());
 }
 
 }  // namespace api
