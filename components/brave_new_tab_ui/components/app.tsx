@@ -33,6 +33,12 @@ interface Props {
 }
 
 class NewTabPage extends React.Component<Props, {}> {
+  constructor (props: Props) {
+    super(props)
+    // Makes NTP start w/o SiteRemovalNotification.
+    this.onHideSiteRemovalNotification()
+  }
+
   get actions () {
     return this.props.actions
   }
