@@ -13,13 +13,15 @@ CatalogState::CatalogState() :
     catalog_id(""),
     version(0),
     ping(0),
-    campaigns({}) {}
+    campaigns({}),
+    issuers({}) {}
 
 CatalogState::CatalogState(const CatalogState& state) :
     catalog_id(state.catalog_id),
     version(state.version),
     ping(state.ping),
-    campaigns(state.campaigns) {}
+    campaigns(state.campaigns),
+    issuers(state.issuers) {}
 
 CatalogState::~CatalogState() = default;
 
@@ -37,6 +39,7 @@ bool CatalogState::FromJson(
   uint64_t new_version = 0;
   uint64_t new_ping = kDefaultCatalogPing * kMillisecondsInASecond;
   std::vector<CampaignInfo> new_campaigns = {};
+  std::vector<IssuerInfo> new_issuers = {};
 
   new_catalog_id = catalog["catalogId"].GetString();
 
@@ -49,6 +52,7 @@ bool CatalogState::FromJson(
 
   new_ping = catalog["ping"].GetUint64();
 
+  // Campaigns
   for (const auto& campaign : catalog["campaigns"].GetArray()) {
     CampaignInfo campaign_info;
 
@@ -148,10 +152,21 @@ bool CatalogState::FromJson(
     new_campaigns.push_back(campaign_info);
   }
 
+  // Issuers
+  for (const auto& issuer : catalog["issuers"].GetArray()) {
+    IssuerInfo issuer_info;
+
+    issuer_info.name = issuer["name"].GetString();
+    issuer_info.public_key = issuer["publicKey"].GetString();
+
+    new_issuers.push_back(issuer_info);
+  }
+
   catalog_id = new_catalog_id;
   version = new_version;
   ping = new_ping;
   campaigns = new_campaigns;
+  issuers = new_issuers;
 
   return true;
 }

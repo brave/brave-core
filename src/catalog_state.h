@@ -10,6 +10,7 @@
 #include <map>
 
 #include "campaign_info.h"
+#include "issuer_info.h"
 #include "json_helper.h"
 
 namespace ads {
@@ -25,6 +26,7 @@ struct CatalogState {
   uint64_t version;
   uint64_t ping;
   std::vector<CampaignInfo> campaigns;
+  std::vector<IssuerInfo> issuers;
 };
 
 }  // namespace ads
