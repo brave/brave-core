@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 import argparse
+import datetime
 import logging
 import os
 import re
@@ -11,7 +12,7 @@ import subprocess
 import sys
 
 from argparse import RawTextHelpFormatter
-from lib.config import get_brave_version, get_raw_version, get_env_var
+from lib.config import get_raw_version
 from lib.helpers import *
 from lib.github import GitHub
 
@@ -20,14 +21,13 @@ def main():
 
     args = parse_args()
 
-    brave_github_token = args.github_token
     channel = args.channel
     repo_dir = args.repo_dir
     dist_dir = os.path.join(repo_dir, 'dist')
     gpg_fingerprint = args.fingerprint
     gpg_full_key_signature = args.gpg_full_key_signature
     if channel in ['release']:
-        if not args.passphrase:
+        if not args.gpg_passphrase:
             logging.error("Error: --gpg_passphrase required for channel {}".format(channel))
             exit(1)
         else:
@@ -64,10 +64,6 @@ def main():
         message = ('Error: could not change directory to {}: {}'.format(dist_dir, ose))
         exit(message)
 
-    if os.getcwd() != dist_dir:
-        message = ('Error: Not in correct directory: {}. Exitting...'.format(dist_dir))
-        exit(message)
-
     logging.info("Downloading RPM/DEB packages to directory: {}".format(dist_dir))
 
     file_list = download_from_github(args, logging)
@@ -93,7 +89,7 @@ def main():
                 subprocess.check_output(cmd, shell=True)
                 logging.info("RPM signing successful!")
             except subprocess.CalledProcessError as cpe:
-                logging.error("Error: {}".format(cpe))
+                logging.error("Error running command: \"{}\"".format(log_cmd))
                 exit(1)
 
     try:
@@ -120,7 +116,7 @@ def main():
             upload_cmd = '{} {} {}'.format(upload_script, bucket + channel + '-' +
                                            TESTCHANNEL, gpg_fingerprint)
         else:
-            upload_cmd = '{} {} {}'.format(item, bucket + channel, gpg_fingerprint)
+            upload_cmd = '{} {} {}'.format(upload_script, bucket + channel, gpg_fingerprint)
         logging.info("Running command: \"{}\"".format(upload_cmd))
         try:
             subprocess.check_output(upload_cmd, shell=True)
@@ -145,7 +141,7 @@ def download_from_github(args, logging):
     # BRAVE_REPO defined in helpers.py
     repo = GitHub(args.github_token).repos(BRAVE_REPO)
     tag_name = args.tag
-    release = None
+    release = {}
     releases = get_releases_by_tag(repo, tag_name, include_drafts=True)
     if releases:
         if len(releases) > 1:
@@ -162,6 +158,20 @@ def download_from_github(args, logging):
                 logging.debug("GitHub asset_url: {}".format(
                     asset_url + '/' + filename))
 
+            # Check if the file exists on disk first, and rename it if so
+            # to prevent a situation where the expect script fails because
+            # the rpm has already been signed
+            if os.path.isfile(os.path.join(os.getcwd(), filename)):
+                now = datetime.datetime.now()
+                datestring = "{}{}{}.{}{}{}".format(now.year, now.month, now.day, now.hour,
+                             now.minute, now.second)
+                logging.info("Found file \'{}\' already exists, renaming to: \'{}\'.".format(filename,
+                              filename + '.' + datestring))
+                try:
+                    os.rename(filename, filename + '.' + datestring)
+                except Exception as e:
+                    logging.error("Error: could not rename file {}: {}".format(filename, e))
+
             # Instantiate new requests session, versus reusing the repo session above.
             # Headers was likely being reused in that session, and not allowing us
             # to set the Accept header to the below.
@@ -174,7 +184,14 @@ def download_from_github(args, logging):
                 logging.getLogger("urllib3").setLevel(logging.WARNING)
             logging.info("Downloading GitHub release asset: {}".format(
                 asset_url + '/' + filename))
-            r = requests.get(asset_auth_url, headers=headers, stream=True)
+            try:
+                r = requests.get(asset_auth_url, headers=headers, stream=True)
+            except requests.exceptions.ConnectionError as e:
+                logging.error("Error: Received requests.exceptions.ConnectionError, Exitting...")
+                exit(1)
+            except Exception as e:
+                logging.error("Error: Received exception {},  Exitting...".format(type(e)))
+                exit(1)
             if args.debug:
                 logging.getLogger("urllib3").setLevel(logging.DEBUG)
             with open(filename, 'wb') as f:
