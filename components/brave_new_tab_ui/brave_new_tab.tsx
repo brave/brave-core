@@ -21,9 +21,6 @@ import * as newTabActions from './actions/new_tab_actions'
 import '../fonts/poppins.css'
 import '../fonts/muli.css'
 
-// TODO: remove
-import '../styles/newtab.less'
-
 window.cr.define('brave_new_tab', function () {
   'use strict'
 

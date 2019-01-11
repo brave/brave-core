@@ -5,16 +5,22 @@
 import * as React from 'react'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
-import { Clock } from 'brave-ui/old'
+import {
+  Page,
+  Header,
+  Clock,
+  Main,
+  List,
+  Footer,
+  DynamicBackground,
+  Gradient
+} from 'brave-ui/features/newTab/default'
 
 // Components
 import Stats from './stats'
 import Block from './block'
 import FooterInfo from './footerInfo'
-import SiteRemovalNotification from './siteRemovalNotification'
-
-// Constants
-import { theme } from '../../constants/theme'
+import SiteRemovalNotification from './notification'
 
 interface Props {
   actions: any
@@ -22,100 +28,55 @@ interface Props {
 }
 
 class NewTabPage extends React.Component<Props, {}> {
-  get actions () {
-    return this.props.actions
-  }
-
-  get showImages () {
-    return this.props.newTabData.showImages && !!this.props.newTabData.backgroundImage
+  componentDidMount () {
+    // if a notification is open at component mounting time, close it
+    this.props.actions.onHideSiteRemovalNotification()
   }
 
   onDraggedSite = (fromUrl: string, toUrl: string, dragRight: boolean) => {
-    this.actions.siteDragged(fromUrl, toUrl, dragRight)
+    this.props.actions.siteDragged(fromUrl, toUrl, dragRight)
   }
 
   onDragEnd = (url: string, didDrop: boolean) => {
-    this.actions.siteDragEnd(url, didDrop)
+    this.props.actions.siteDragEnd(url, didDrop)
   }
 
   onToggleBookmark (site: NewTab.Site) {
     if (site.bookmarked === undefined) {
-      this.actions.bookmarkAdded(site.url)
+      this.props.actions.bookmarkAdded(site.url)
     } else {
-      this.actions.bookmarkRemoved(site.url)
+      this.props.actions.bookmarkRemoved(site.url)
     }
-  }
-
-  onHideSiteRemovalNotification = () => {
-    this.actions.onHideSiteRemovalNotification()
   }
 
   onTogglePinnedTopSite (site: NewTab.Site) {
     if (!site.pinned) {
-      this.actions.sitePinned(site.url)
+      this.props.actions.sitePinned(site.url)
     } else {
-      this.actions.siteUnpinned(site.url)
+      this.props.actions.siteUnpinned(site.url)
     }
   }
 
   onIgnoredTopSite (site: NewTab.Site) {
-    this.actions.siteIgnored(site.url)
-  }
-
-  onUndoIgnoredTopSite = () => {
-    this.actions.undoSiteIgnored()
-  }
-
-  /**
-   * Clear ignoredTopSites and pinnedTopSites list
-   */
-  onUndoAllSiteIgnored = () => {
-    this.actions.undoAllSiteIgnored()
-  }
-
-  /**
-   * This handler only fires when the image fails to load.
-   * If both the remote and local image fail, page defaults to gradients.
-   */
-  onBackgroundImageLoadFailed = () => {
-    this.actions.backgroundImageLoadFailed()
+    this.props.actions.siteIgnored(site.url)
   }
 
   render () {
-    const { newTabData } = this.props
+    const { newTabData, actions } = this.props
 
-    // don't render until object is found
-    if (!this.props.newTabData) {
+    if (!newTabData || !newTabData.backgroundImage) {
       return null
     }
 
-    const backgroundProps: Partial<NewTab.Image> = {}
-    const bgImage: NewTab.Image | undefined = this.props.newTabData.backgroundImage
-    let gradientClassName = 'gradient'
-    if (this.showImages && bgImage) {
-      backgroundProps.style = bgImage.style
-      gradientClassName = 'bgGradient'
-    }
     return (
-      <div data-test-id='dynamicBackground' className='dynamicBackground' {...backgroundProps}>
-        {
-          this.showImages && bgImage
-            ? <img src={bgImage.source} onError={this.onBackgroundImageLoadFailed} data-test-id='backgroundImage' />
-            : null
-        }
-        <div data-test-id={this.showImages ? 'bgGradient' : 'gradient'} className={gradientClassName} />
-        <div className='content'>
-          <main style={theme.newTab}>
-            <div className='newTabStats'>
-              <div className='statsContainer'>
-                <Stats stats={newTabData.stats}/>
-              </div>
-              <div className='clockContainer'>
-                <Clock />
-              </div>
-            </div>
-            <div className='topSitesContainer'>
-              <nav className='topSitesGrid'>
+      <DynamicBackground background={newTabData.backgroundImage.source}>
+        <Gradient />
+        <Page>
+          <Header>
+            <Stats stats={newTabData.stats} />
+            <Clock />
+            <Main>
+              <List>
                 {
                   this.props.newTabData.gridSites.map((site: NewTab.Site) =>
                     <Block
@@ -135,21 +96,19 @@ class NewTabPage extends React.Component<Props, {}> {
                     />
                   )
                 }
-              </nav>
-            </div>
-          </main>
-          {
-            this.props.newTabData.showSiteRemovalNotification
-              ? <SiteRemovalNotification
-                onUndoIgnoredTopSite={this.onUndoIgnoredTopSite}
-                onRestoreAll={this.onUndoAllSiteIgnored}
-                onCloseNotification={this.onHideSiteRemovalNotification}
-              />
-              : null
-          }
-          <FooterInfo backgroundImage={bgImage} />
-        </div>
-      </div>
+              </List>
+              {
+                this.props.newTabData.showSiteRemovalNotification
+                ? <SiteRemovalNotification actions={actions} />
+                : null
+              }
+            </Main>
+          </Header>
+          <Footer>
+            <FooterInfo backgroundImageInfo={newTabData.backgroundImage} />
+          </Footer>
+        </Page>
+      </DynamicBackground>
     )
   }
 }

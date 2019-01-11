@@ -11,8 +11,6 @@ export const topSitesDataUpdated = (topSites: NewTab.Site[]) => action(types.NEW
   topSites
 })
 
-export const backgroundImageLoadFailed = () => action(types.NEW_TAB_BACKGROUND_IMAGE_LOAD_FAILED)
-
 export const bookmarkAdded = (url: string) => action(types.BOOKMARK_ADDED, {
   url
 })
