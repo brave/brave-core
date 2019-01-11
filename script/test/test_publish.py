@@ -8,10 +8,8 @@ import publish_release
 import sys
 import unittest
 
-from githubmock import MockImport, Repo
+from githubmock import Repo
 
-# Mock requests module
-sys.modules['requests'] = MockImport
 
 dirname = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(dirname, '..'))

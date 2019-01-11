@@ -457,18 +457,22 @@ def upload_brave(github, release, file_path, filename=None, force=False):
     if filename is None:
         filename = os.path.basename(file_path)
 
-    print('[INFO] Uploading: ' + filename)
     try:
         for asset in release['assets']:
             if asset['name'] == filename:
+                print('[INFO] Asset "' + filename + '" exists; deleting...')
                 github.repos(BRAVE_REPO).releases.assets(asset['id']).delete()
+                print('[INFO] Asset "' + filename + '" deleted')
     except Exception:
         pass
 
     # Upload the file.
+    print('[INFO] Uploading: ' + filename)
     with open(file_path, 'rb') as f:
         if force:
+            print('[INFO] force deleting "' + filename + '" before upload...')
             delete_file(github, release, filename)
+            print('[INFO] force deleted "' + filename + '".')
 
         retry_func(
             lambda ran: upload_io_to_github(github, release, filename, f,
