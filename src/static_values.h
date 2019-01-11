@@ -36,9 +36,6 @@ static const uint64_t kDeliverNotificationsAfterSeconds =
 
 static const uint64_t kDefaultCatalogPing = 2 * kOneHourInSeconds;
 
-static char kUnknownSSID[] = "UNKNOWN";
-static char kUndisclosedPlace[] = "UNDISCLOSED";
-
 static char kDefaultLanguageCode[] = "en";
 static char kDefaultCountryCode[] = "US";
 

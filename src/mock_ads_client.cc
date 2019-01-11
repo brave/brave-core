@@ -132,10 +132,6 @@ const std::string MockAdsClient::GenerateUUID() const {
   return "298b76ac-dcd9-47d8-aa29-f799ea8e7e02";
 }
 
-const std::string MockAdsClient::GetSSID() const {
-  return "My WiFi Network";
-}
-
 bool MockAdsClient::IsForeground() const {
   return true;
 }

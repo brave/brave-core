@@ -82,8 +82,6 @@ class MockAdsClient : public AdsClient {
 
   MOCK_CONST_METHOD0(GenerateUUID, const std::string());
 
-  MOCK_CONST_METHOD0(GetSSID, const std::string());
-
   MOCK_CONST_METHOD0(IsForeground, bool());
 
   MOCK_CONST_METHOD0(IsNotificationsAvailable, bool());

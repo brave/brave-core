@@ -24,7 +24,6 @@ struct ClientState {
   std::string ad_uuid;
   std::map<std::string, uint64_t> ads_uuid_seen;
   bool available;
-  std::string current_ssid;
   bool expired;
   uint64_t last_search_time;
   uint64_t last_shop_time;
@@ -35,7 +34,6 @@ struct ClientState {
   std::deque<std::vector<double>> page_score_history;
   std::map<std::string, std::deque<uint64_t>> creative_set_history;
   std::map<std::string, std::deque<uint64_t>> campaign_history;
-  std::map<std::string, std::string> places;
   double score;
   bool search_activity;
   std::string search_url;

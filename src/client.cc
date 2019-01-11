@@ -93,12 +93,6 @@ bool Client::GetAvailable() const {
   return client_state_->available;
 }
 
-void Client::SetCurrentSSID(const std::string& ssid) {
-  client_state_->current_ssid = ssid;
-
-  SaveState();
-}
-
 void Client::FlagShoppingState(
     const std::string& url,
     const uint64_t score) {
@@ -234,15 +228,6 @@ void Client::AppendCurrentTimeToCampaignHistory(
 const std::map<std::string, std::deque<uint64_t>>
     Client::GetCampaignHistory() const {
   return client_state_->campaign_history;
-}
-
-const std::string Client::GetCurrentPlace() {
-  auto place = client_state_->places.find(client_state_->current_ssid);
-  if (place != client_state_->places.end()) {
-    return place->second;
-  } else {
-    return kUndisclosedPlace;
-  }
 }
 
 void Client::RemoveAllHistory() {

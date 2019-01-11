@@ -72,8 +72,6 @@ class AdsImpl : public Ads {
 
   void RemoveAllHistory() override;
 
-  void RetrieveSSID();
-
   void ConfirmAdUUIDIfAdEnabled();
 
   void ChangeLocale(const std::string& locale) override;

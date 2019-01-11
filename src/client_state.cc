@@ -13,7 +13,6 @@ ClientState::ClientState() :
     ad_uuid(""),
     ads_uuid_seen({}),
     available(false),
-    current_ssid(""),
     expired(false),
     last_search_time(0),
     last_shop_time(0),
@@ -24,7 +23,6 @@ ClientState::ClientState() :
     page_score_history({}),
     creative_set_history({}),
     campaign_history({}),
-    places({}),
     score(0.0),
     search_activity(false),
     search_url(""),
@@ -36,7 +34,6 @@ ClientState::ClientState(const ClientState& state) :
   ad_uuid(state.ad_uuid),
   ads_uuid_seen(state.ads_uuid_seen),
   available(state.available),
-  current_ssid(state.current_ssid),
   last_search_time(state.last_search_time),
   last_shop_time(state.last_shop_time),
   last_user_activity(state.last_user_activity),
@@ -46,7 +43,6 @@ ClientState::ClientState(const ClientState& state) :
   page_score_history(state.page_score_history),
   creative_set_history(state.creative_set_history),
   campaign_history(state.campaign_history),
-  places(state.places),
   score(state.score),
   search_activity(state.search_activity),
   search_url(state.search_url),
@@ -88,10 +84,6 @@ bool ClientState::FromJson(const std::string& json) {
 
   if (client.HasMember("available")) {
     available = client["available"].GetBool();
-  }
-
-  if (client.HasMember("currentSSID")) {
-    current_ssid = client["currentSSID"].GetString();
   }
 
   if (client.HasMember("lastSearchTime")) {
@@ -160,12 +152,6 @@ bool ClientState::FromJson(const std::string& json) {
     }
   }
 
-  if (client.HasMember("places")) {
-    for (const auto& place : client["places"].GetObject()) {
-      places.insert({place.name.GetString(), place.value.GetString()});
-    }
-  }
-
   if (client.HasMember("score")) {
     score = client["score"].GetDouble();
   }
@@ -212,9 +198,6 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
 
   writer->String("available");
   writer->Bool(state.available);
-
-  writer->String("currentSSID");
-  writer->String(state.current_ssid.c_str());
 
   writer->String("lastSearchTime");
   writer->Uint64(state.last_search_time);
@@ -270,14 +253,6 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
       writer->Uint64(timestamp);
     }
     writer->EndArray();
-  }
-  writer->EndObject();
-
-  writer->String("places");
-  writer->StartObject();
-  for (const auto& place : state.places) {
-    writer->String(place.first.c_str());
-    writer->String(place.second.c_str());
   }
   writer->EndObject();
 

@@ -48,8 +48,6 @@ class MockAdsClient : public AdsClient {
 
   const std::string GenerateUUID() const override;
 
-  const std::string GetSSID() const override;
-
   bool IsForeground() const override;
 
   bool IsNotificationsAvailable() const override;

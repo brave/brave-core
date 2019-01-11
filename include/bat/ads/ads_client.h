@@ -99,9 +99,6 @@ class ADS_EXPORT AdsClient {
   // Should generate return a v4 UUID
   virtual const std::string GenerateUUID() const = 0;
 
-  // Should return the network SSID or an empty string if not available
-  virtual const std::string GetSSID() const = 0;
-
   // Should return true if the browser is in the foreground otherwise returns
   // false
   virtual bool IsForeground() const = 0;

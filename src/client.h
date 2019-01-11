@@ -36,7 +36,6 @@ class Client {
   void ResetAdsUUIDSeen(const std::vector<AdInfo>& ads);
   void SetAvailable(const bool available);
   bool GetAvailable() const;
-  void SetCurrentSSID(const std::string& ssid);
   void FlagShoppingState(const std::string& url, const uint64_t score);
   void UnflagShoppingState();
   bool GetShoppingState();
@@ -61,7 +60,6 @@ class Client {
       const std::string& campaign_id);
   const std::map<std::string, std::deque<uint64_t>>
       GetCampaignHistory() const;
-  const std::string GetCurrentPlace();
 
   void RemoveAllHistory();
 
