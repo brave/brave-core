@@ -816,26 +816,6 @@ const std::string AdsServiceImpl::GenerateUUID() const {
   return base::GenerateGUID();
 }
 
-const std::string AdsServiceImpl::GetSSID() const {
-    std::string ssid;
-#if defined(OS_WIN) || defined(OS_MACOSX)
-  std::unique_ptr<wifi::WiFiService> wifi_service(wifi::WiFiService::Create());
-  wifi_service->Initialize(nullptr);
-  std::string error;
-  wifi_service->GetConnectedNetworkSSID(&ssid, &error);
-  if (!error.empty())
-    return std::string();
-#elif defined(OS_LINUX)
-  ssid = net::GetWifiSSID();
-#elif defined(OS_ANDROID)
-  ssid = net::android::GetWifiSSID();
-#endif
-  // TODO: Handle non UTF8 SSIDs.
-  if (!base::IsStringUTF8(ssid))
-    return std::string();
-  return ssid;
-}
-
 const std::vector<std::string> AdsServiceImpl::GetLocales() const {
   std::vector<std::string> locales;
 
