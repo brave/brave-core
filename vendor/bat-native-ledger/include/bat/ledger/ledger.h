@@ -91,7 +91,6 @@ class LEDGER_EXPORT Ledger {
   // returns false if wallet initialization is already in progress
   virtual bool CreateWallet() = 0;
 
-  virtual void MakePayment(const PaymentData& payment_data) = 0;
   virtual void AddRecurringPayment(const std::string& publisher_id, const double& value) = 0;
   virtual void DoDirectDonation(const PublisherInfo& publisher, int amount, const std::string& currency) = 0;
   virtual void OnLoad(const VisitData& visit_data, const uint64_t& current_time) = 0;

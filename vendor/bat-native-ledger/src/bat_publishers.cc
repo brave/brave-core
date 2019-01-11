@@ -75,16 +75,6 @@ void BatPublishers::AddRecurringPayment(const std::string& publisher_id, const d
   saveState();
 }
 
-void BatPublishers::MakePayment(const ledger::PaymentData& payment_data) {
-  auto filter = CreatePublisherFilter(payment_data.publisher_id,
-                                      payment_data.category,
-                                      payment_data.local_month,
-                                      payment_data.local_year);
-  ledger_->GetPublisherInfo(filter,
-      std::bind(&BatPublishers::makePaymentInternal, this,
-          payment_data, _1, _2));
-}
-
 bool BatPublishers::saveVisitAllowed() const {
   return (ledger_->GetRewardsMainEnabled() && ledger_->GetAutoContribute());
 }
@@ -200,27 +190,6 @@ void BatPublishers::setNumExcludedSitesInternal(ledger::PUBLISHER_EXCLUDE exclud
   setNumExcludedSites((exclude == ledger::PUBLISHER_EXCLUDE::EXCLUDED)
                       ? ++previousNum
                       : --previousNum);
-}
-
-void BatPublishers::makePaymentInternal(
-      ledger::PaymentData payment_data,
-      ledger::Result result,
-      std::unique_ptr<ledger::PublisherInfo> publisher_info) {
-  if (result != ledger::Result::LEDGER_OK) {
-    // TODO error handling
-    return;
-  }
-
-  if (!publisher_info.get())
-    publisher_info.reset(new ledger::PublisherInfo(payment_data.publisher_id,
-                                                   payment_data.local_month,
-                                                   payment_data.local_year));
-  publisher_info->category = payment_data.category;
-
-  publisher_info->contributions.push_back(ledger::ContributionInfo(payment_data.value, payment_data.timestamp));
-
-  ledger_->SetPublisherInfo(std::move(publisher_info),
-      std::bind(&onVisitSavedDummy, _1, _2));
 }
 
 void BatPublishers::saveVisitInternal(
