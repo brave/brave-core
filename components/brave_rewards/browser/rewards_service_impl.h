@@ -485,8 +485,9 @@ class RewardsServiceImpl : public RewardsService,
   void RemovePrivateObserver(RewardsServicePrivateObserver* observer) override;
 
 #if defined(OS_ANDROID)
-  void FetchGrantAttestationResult(const std::string& lang, const std::string& payment_id,
-                                    bool result, const std::string& result_string);
+  void FetchGrantAttestationResult(const std::string& lang,
+                                const std::string& payment_id,
+                                bool result, const std::string& result_string);
   void GrantAttestationResult(bool result, const std::string& result_string);
   safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
 #endif
@@ -523,6 +524,8 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
 
   uint32_t next_timer_id_;
+
+  base::WeakPtrFactory<RewardsServiceImpl> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);
 };
