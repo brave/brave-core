@@ -43,3 +43,11 @@ chrome.rewardsNotifications.onNotificationDeleted.addListener((id: string, type:
 chrome.braveRewards.onEnabledMain.addListener((enabledMain: boolean) => {
   rewardsPanelActions.onEnabledMain(enabledMain)
 })
+
+chrome.braveRewards.onPendingContributionSaved.addListener((result: number) => {
+  if (result === 0) {
+    chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
+      rewardsPanelActions.OnPendingContributionsTotal(amount)
+    }))
+  }
+})

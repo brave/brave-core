@@ -221,6 +221,17 @@
             "type": "boolean"
           }
         ]
+      },
+      {
+        "name": "onPendingContributionSaved",
+        "type": "function",
+        "description": "",
+        "parameters": [
+          {
+            "name": "result",
+            "type": "integer"
+          }
+        ]
       }
     ],
     "functions": [
