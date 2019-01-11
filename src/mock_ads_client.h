@@ -57,6 +57,8 @@ class MockAdsClient : public AdsClient {
 
   bool CanShowAd(const AdInfo& ad_info) override;
 
+  void AdSustained(const NotificationInfo& info) override;
+
   uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(const uint32_t timer_id) override;
 

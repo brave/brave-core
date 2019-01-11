@@ -1204,6 +1204,8 @@ void AdsImpl::GenerateAdReportingSustainEvent(
 
   auto json = buffer.GetString();
   ads_client_->EventLog(json);
+
+  ads_client_->AdSustained(info);
 }
 
 void AdsImpl::GenerateAdReportingLoadEvent(

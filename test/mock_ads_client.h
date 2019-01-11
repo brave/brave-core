@@ -94,6 +94,9 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD1(CanShowAd, bool(
       const AdInfo& ad_info));
 
+  MOCK_METHOD1(AdSustained, void(
+      const NotificationInfo& info));
+
   MOCK_METHOD1(SetTimer, uint32_t(
       const uint64_t time_offset));
 

@@ -117,6 +117,9 @@ class ADS_EXPORT AdsClient {
   // false
   virtual bool CanShowAd(const AdInfo& ad_info) = 0;
 
+  // Should be called to inform Confirmations that an ad was sustained
+  virtual void AdSustained(const NotificationInfo& info) = 0;
+
   // Should create a timer to trigger after the time offset specified in
   // seconds. If the timer was created successfully a unique identifier should
   // be returned, otherwise returns 0

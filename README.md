@@ -195,9 +195,14 @@ bool IsNotificationsAvailable() const
 void ShowNotification(std::unique_ptr<NotificationInfo> info)
 ```
 
-`CanShowAd` should return `true` if Confirmations is ready to show ad otherwise returns `false`
+`CanShowAd` should return `true` if Confirmations is ready to show the ad otherwise returns `false`
 ```
-bool CanShowAd(const AdInfo& ad_info);
+bool CanShowAd(const AdInfo& ad_info)
+```
+
+`AdSustained` should be called to inform Confirmations that an ad was sustained
+```
+void AdSustained(const AdInfo& ad_info)
 ```
 
 `SetTimer` should create a timer to trigger after the time offset specified in seconds. If the timer was created successfully a unique identifier should be returned, otherwise returns `0`

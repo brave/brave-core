@@ -160,6 +160,10 @@ bool MockAdsClient::CanShowAd(const AdInfo& ad_info) {
   return true;
 }
 
+void MockAdsClient::AdSustained(const NotificationInfo& info) {
+  (void)info;
+}
+
 uint32_t MockAdsClient::SetTimer(const uint64_t time_offset) {
   (void)time_offset;
 
