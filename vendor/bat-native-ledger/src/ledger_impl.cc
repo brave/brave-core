@@ -553,7 +553,8 @@ void LedgerImpl::FetchWalletProperties() const {
   bat_client_->getWalletProperties();
 }
 
-void LedgerImpl::FetchGrant(const std::string& lang, const std::string& payment_id, const std::string& safetynet_token) const {
+void LedgerImpl::FetchGrant(const std::string& lang,
+    const std::string& payment_id, const std::string& safetynet_token) const {
   bat_client_->getGrant(lang, payment_id, safetynet_token);
 }
 

@@ -164,7 +164,9 @@ class LEDGER_EXPORT Ledger {
   virtual double GetContributionAmount() const = 0;
   virtual bool GetAutoContribute() const = 0;
   virtual void FetchWalletProperties() const = 0;
-  virtual void FetchGrant(const std::string& lang, const std::string& payment_id, const std::string& safetynet_token) const = 0;
+  virtual void FetchGrant(const std::string& lang,
+      const std::string& payment_id,
+      const std::string& safetynet_token) const = 0;
   virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
   virtual void ApplySafetynetToken(const std::string& token) const = 0;
   virtual void GetGrantCaptcha() const = 0;

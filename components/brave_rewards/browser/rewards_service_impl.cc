@@ -1234,15 +1234,18 @@ void RewardsServiceImpl::FetchGrant(const std::string& lang,
 #if !defined(OS_ANDROID)
   bat_ledger_->FetchGrant(lang, payment_id);
 #else
-  safetynet_check::ClientAttestationCallback attest_callback = base::BindOnce(&RewardsServiceImpl::FetchGrantAttestationResult, base::Unretained(this),
-                                                                                lang, payment_id);
-  safetynet_check_runner_.performSafetynetCheck("", std::move(attest_callback));
+  safetynet_check::ClientAttestationCallback attest_callback =
+      base::BindOnce(&RewardsServiceImpl::FetchGrantAttestationResult,
+          weak_ptr_factory_.GetWeakPtr(), lang, payment_id);
+  safetynet_check_runner_.performSafetynetCheck("",
+      std::move(attest_callback));
 #endif
 }
 
 #if defined(OS_ANDROID)
-void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang, const std::string& payment_id,
-                                                      bool result, const std::string& result_string) {
+void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang,
+    const std::string& payment_id,
+    bool result, const std::string& result_string) {
   if (result) {
     ledger_->FetchGrant(lang, payment_id, result_string);
   } else {
@@ -2036,7 +2039,6 @@ void RewardsServiceImpl::TipsUpdated() {
                     publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnTipsUpdatedData,
                      AsWeakPtr()));
-
 }
 
 bool RemoveRecurringOnFileTaskRunner(const std::string publisher_key, PublisherInfoDatabase* backend) {
@@ -2400,13 +2402,17 @@ void RewardsServiceImpl::GetGrantViaSafetynetCheck() const {
 void RewardsServiceImpl::OnGrantViaSafetynetCheck(const std::string& nonce) {
 // This is used on Android only
 #if defined(OS_ANDROID)
-  safetynet_check::ClientAttestationCallback attest_callback = base::BindOnce(&RewardsServiceImpl::GrantAttestationResult, base::Unretained(this));
-  safetynet_check_runner_.performSafetynetCheck(nonce, std::move(attest_callback));
+  safetynet_check::ClientAttestationCallback attest_callback =
+      base::BindOnce(&RewardsServiceImpl::GrantAttestationResult,
+          weak_ptr_factory_.GetWeakPtr());
+  safetynet_check_runner_.performSafetynetCheck(nonce,
+      std::move(attest_callback));
 #endif
 }
 
 #if defined(OS_ANDROID)
-void RewardsServiceImpl::GrantAttestationResult(bool result, const std::string& result_string) {
+void RewardsServiceImpl::GrantAttestationResult(bool result,
+    const std::string& result_string) {
   if (result) {
     return bat_ledger_->ApplySafetynetToken(result_string);
   } else {
