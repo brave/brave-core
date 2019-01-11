@@ -90,21 +90,23 @@ class AdsBox extends React.Component<Props, State> {
   render () {
     let adsEnabled = false
     let adsUIEnabled = false
-    const { adsData } = this.props.rewardsData
+    const { adsData, enabledMain } = this.props.rewardsData
 
     if (adsData) {
       adsEnabled = adsData.adsEnabled
       adsUIEnabled = adsData.adsUIEnabled
     }
 
+    const toggle = !(!enabledMain || !adsUIEnabled)
+
     return (
       <Box
         title={getLocale('adsTitle')}
         type={'ads'}
         description={getLocale('adsDesc')}
-        toggle={adsUIEnabled}
+        toggle={toggle}
         checked={adsEnabled}
-        settingsChild={this.adsSettings(adsEnabled)}
+        settingsChild={this.adsSettings(adsEnabled && enabledMain)}
         testId={'braveAdsSettings'}
         disabledContent={this.adsDisabled()}
         onToggle={this.onAdsSettingChange.bind(this, 'adsEnabled', '')}
