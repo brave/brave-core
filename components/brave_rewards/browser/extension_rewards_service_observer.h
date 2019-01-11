@@ -51,6 +51,9 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   void OnRewardsMainEnabled(RewardsService* rewards_service,
                             bool rewards_main_enabled) override;
 
+  void OnPendingContributionSaved(RewardsService* rewards_service,
+                                  int result) override;
+
  private:
   Profile* profile_;
 

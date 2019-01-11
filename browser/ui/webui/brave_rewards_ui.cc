@@ -129,6 +129,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnCurrentTips(brave_rewards::RewardsService* rewards_service,
                                   brave_rewards::ContentSiteList) override;
 
+  void OnPendingContributionSaved(
+      brave_rewards::RewardsService* rewards_service,
+      int result) override;
+
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -862,6 +866,15 @@ void RewardsDOMHandler::OnGetPendingContributionsTotal(double amount) {
     web_ui()->CallJavascriptFunctionUnsafe(
         "brave_rewards.pendingContributionTotal", base::Value(amount));
   }
+}
+
+void RewardsDOMHandler::OnPendingContributionSaved(
+    brave_rewards::RewardsService* rewards_service,
+    int result) {
+    if (web_ui()->CanCallJavascript()) {
+      web_ui()->CallJavascriptFunctionUnsafe(
+          "brave_rewards.onPendingContributionSaved", base::Value(result));
+    }
 }
 
 }  // namespace
