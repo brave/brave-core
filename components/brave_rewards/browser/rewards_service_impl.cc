@@ -2191,17 +2191,20 @@ void RewardsServiceImpl::SetShortRetries(bool short_retries) {
   bat_ledger_service_->SetShortRetries(short_retries);
 }
 
-bool SavePendingContributionOnFileTaskRunner(PublisherInfoDatabase* backend,
+ledger::Result SavePendingContributionOnFileTaskRunner(PublisherInfoDatabase* backend,
     const ledger::PendingContributionList& list) {
   if (!backend) {
-    return false;
+    return ledger::Result::LEDGER_ERROR;
   }
 
-  return backend->InsertPendingContribution(list);
+  bool result = backend->InsertPendingContribution(list);
+
+  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
 }
 
-void RewardsServiceImpl::OnSavePendingContribution(bool result) {
-  // TODO(nejczdovc) add callback with db result
+void RewardsServiceImpl::OnSavePendingContribution(ledger::Result result) {
+  for (auto& observer : observers_)
+    observer.OnPendingContributionSaved(this, result);
 }
 
 void RewardsServiceImpl::SavePendingContribution(

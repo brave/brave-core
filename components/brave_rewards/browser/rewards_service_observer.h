@@ -55,6 +55,9 @@ class RewardsServiceObserver : public base::CheckedObserver {
                                  const brave_rewards::PublisherBanner banner) {};
   virtual void OnRewardsMainEnabled(brave_rewards::RewardsService* rewards_service,
                                     bool rewards_main_enabled) {};
+  virtual void OnPendingContributionSaved(
+      brave_rewards::RewardsService* rewards_service,
+      int result) {};
   // DO NOT ADD ANY MORE METHODS HERE UNLESS IT IS A BROADCAST NOTIFICATION
   // RewardsServiceObserver should not be used to return responses to the caller.
   // Method calls on RewardsService should use callbacks to return responses.
