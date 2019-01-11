@@ -695,8 +695,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void RecordBackendP3AStats() const;
 #if defined(OS_ANDROID)
-  void FetchGrantAttestationResult(const std::string& lang, const std::string& payment_id,
-                                    bool result, const std::string& result_string);
+  void FetchGrantAttestationResult(const std::string& lang,
+                                const std::string& payment_id,
+                                bool result, const std::string& result_string);
   void GrantAttestationResult(bool result, const std::string& result_string);
   safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
 #endif

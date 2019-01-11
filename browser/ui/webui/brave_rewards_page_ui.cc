@@ -580,8 +580,10 @@ void RewardsDOMHandler::GetGrantCaptcha(const base::ListValue* args) {
   CHECK_EQ(2U, args->GetSize());
   if (rewards_service_) {
 #if defined(OS_ANDROID)
-    // TODO(samartnik): we need different call from JS, currently using this one to make sure it all work
-    // As soon as @ryanml adds separate action for safetynet, we will move that code
+    // TODO(samartnik): we need different call from JS,
+    // currently using this one to make sure it all work
+    // As soon as @ryanml adds separate action for safetynet,
+    // we will move that code
     rewards_service_->GetGrantViaSafetynetCheck();
 #else
   if (rewards_service_) {
