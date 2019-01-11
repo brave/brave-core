@@ -81,11 +81,11 @@ export interface ActionWallet {
   action: () => void
 }
 
-export type NotificationType = 'ads' | 'backupWallet' | 'contribute' | 'grant' | 'insufficientFunds' | 'tipsProcessed' | 'error' | ''
+export type NotificationType = 'ads' | 'ads-launch' | 'backupWallet' | 'contribute' | 'grant' | 'insufficientFunds' | 'tipsProcessed' | 'error' | ''
 
 export interface Notification {
   id: string
-  date: string
+  date?: string
   type: NotificationType
   text: React.ReactNode
   onCloseNotification: (id: string) => void
@@ -246,12 +246,16 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
   }
 
   getNotificationButton = (type: NotificationType, onClose: any) => {
-    let buttonText
-    let buttonAction
+    let buttonText = 'OK'
+    let buttonAction = onClose
 
     switch (type) {
       case 'grant':
         buttonText = getLocale('claim')
+        buttonAction = this.onNotificationClick
+        break
+      case 'ads-launch':
+        buttonText = getLocale('turnOnAds')
         buttonAction = this.onNotificationClick
         break
       case 'backupWallet':
@@ -260,7 +264,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         break
       default:
         buttonText = getLocale('ok').toUpperCase()
-        buttonAction = onClose
         break
     }
 
@@ -290,6 +293,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         <StyledNotificationContent>
           {this.getNotificationIcon(notification)}
           {this.getNotificationMessage(notification)}
+
           <StyledButtonWrapper>
             {this.getNotificationButton(notification.type, onClose)}
           </StyledButtonWrapper>
@@ -311,6 +315,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
     switch (notification.type) {
       case 'ads':
+      case 'ads-launch':
       case 'backupWallet':
         icon = megaphoneIconUrl
         break
@@ -345,6 +350,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       case 'ads':
         typeText = getLocale('braveAdsTitle')
         break
+      case 'ads-launch':
+        typeText = getLocale('braveAdsLaunchTitle')
+        break
       case 'backupWallet':
         typeText = getLocale('backupWalletTitle')
         break
@@ -369,7 +377,11 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       <StyledNotificationMessage>
         <StyledTypeText>{typeText}</StyledTypeText> <StyledPipe>|</StyledPipe>
         <StyledMessageText>{notification.text}</StyledMessageText>
-        <StyledDateText>{notification.date}</StyledDateText>
+        {
+          notification.date
+          ? <StyledDateText>{notification.date}</StyledDateText>
+          : null
+        }
       </StyledNotificationMessage>
     )
   }
