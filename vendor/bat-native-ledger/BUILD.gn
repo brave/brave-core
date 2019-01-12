@@ -86,5 +86,6 @@ source_set("ledger") {
   if (brave_ads_enabled && !is_linux) {
     # TODO(bridiver): Required for all platforms once Brave Ads is building on Linux
     deps += [ rebase_path("challenge_bypass_ristretto_ffi", dep_base) ]
+    deps += [ rebase_path("bat-native-confirmations", dep_base) ]
   }
 }
