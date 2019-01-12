@@ -1282,7 +1282,7 @@ void RewardsServiceImpl::FetchGrants(const std::string& lang,
 #else
   safetynet_check::ClientAttestationCallback attest_callback =
       base::BindOnce(&RewardsServiceImpl::FetchGrantAttestationResult,
-          weak_ptr_factory_.GetWeakPtr(), lang, payment_id);
+          AsWeakPtr(), lang, payment_id);
   safetynet_check_runner_.performSafetynetCheck("",
       std::move(attest_callback));
 #endif
@@ -2701,7 +2701,7 @@ void RewardsServiceImpl::OnGrantViaSafetynetCheck(const std::string& nonce) {
 #if defined(OS_ANDROID)
   safetynet_check::ClientAttestationCallback attest_callback =
       base::BindOnce(&RewardsServiceImpl::GrantAttestationResult,
-          weak_ptr_factory_.GetWeakPtr());
+          AsWeakPtr());
   safetynet_check_runner_.performSafetynetCheck(nonce,
       std::move(attest_callback));
 #endif
