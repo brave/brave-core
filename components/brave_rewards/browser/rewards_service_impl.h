@@ -525,8 +525,6 @@ class RewardsServiceImpl : public RewardsService,
 
   uint32_t next_timer_id_;
 
-  base::WeakPtrFactory<RewardsServiceImpl> weak_ptr_factory_;
-
   DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);
 };
 
