@@ -301,8 +301,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       private_observer_(
           std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
 #endif
-      next_timer_id_(0),
-      weak_ptr_factory_(this) {
+      next_timer_id_(0) {
   // Environment
   #if defined(OFFICIAL_BUILD)
     ledger::is_production = true;
@@ -990,7 +989,7 @@ void RewardsServiceImpl::FetchGrant(const std::string& lang,
 #else
   safetynet_check::ClientAttestationCallback attest_callback =
       base::BindOnce(&RewardsServiceImpl::FetchGrantAttestationResult,
-          weak_ptr_factory_.GetWeakPtr(), lang, payment_id);
+          AsWeakPtr(), lang, payment_id);
   safetynet_check_runner_.performSafetynetCheck("",
       std::move(attest_callback));
 #endif
@@ -1755,7 +1754,7 @@ void RewardsServiceImpl::OnGrantViaSafetynetCheck(const std::string& nonce) {
 #if defined(OS_ANDROID)
   safetynet_check::ClientAttestationCallback attest_callback =
       base::BindOnce(&RewardsServiceImpl::GrantAttestationResult,
-          weak_ptr_factory_.GetWeakPtr());
+          AsWeakPtr());
   safetynet_check_runner_.performSafetynetCheck(nonce,
       std::move(attest_callback));
 #endif
