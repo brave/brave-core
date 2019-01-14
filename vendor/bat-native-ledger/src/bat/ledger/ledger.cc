@@ -88,6 +88,7 @@ PublisherInfoFilter::PublisherInfoFilter() :
     month(PUBLISHER_MONTH::ANY),
     year(-1),
     excluded(PUBLISHER_EXCLUDE_FILTER::FILTER_DEFAULT),
+    percent(0),
     min_duration(0),
     reconcile_stamp(0) {}
 PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
@@ -96,6 +97,7 @@ PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
     month(filter.month),
     year(filter.year),
     excluded(filter.excluded),
+    percent(filter.percent),
     order_by(filter.order_by),
     min_duration(filter.min_duration),
     reconcile_stamp(filter.reconcile_stamp) {}

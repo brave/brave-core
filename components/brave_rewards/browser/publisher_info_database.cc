@@ -485,6 +485,10 @@ std::string PublisherInfoDatabase::BuildClauses(int start,
     ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED)
     clauses += " AND pi.excluded != ?";
 
+  if (filter.percent > 0) {
+    clauses += " AND ai.percent >= ?";
+  }
+
   for (const auto& it : filter.order_by) {
     clauses += " ORDER BY " + it.first;
     clauses += (it.second ? " ASC" : " DESC");
@@ -530,6 +534,9 @@ void PublisherInfoDatabase::BindFilter(sql::Statement& statement,
   if (filter.excluded ==
     ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED)
     statement.BindInt(column++, ledger::PUBLISHER_EXCLUDE::EXCLUDED);
+
+  if (filter.percent > 0)
+    statement.BindInt(column++, filter.percent);
 }
 
 bool PublisherInfoDatabase::InsertContributionInfo(const brave_rewards::ContributionInfo& info) {
