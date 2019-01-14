@@ -18,9 +18,11 @@ class AdsService : public KeyedService {
   AdsService() = default;
 
   virtual bool is_enabled() const = 0;
+  virtual bool is_ui_enabled() const = 0;
   virtual uint64_t ads_per_hour() const = 0;
 
   virtual void set_ads_enabled(bool enabled) = 0;
+  virtual void set_ads_ui_enabled(bool enabled) = 0;
   virtual void set_ads_per_hour(int ads_per_hour) = 0;
 
   // ads::Ads proxy
