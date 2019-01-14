@@ -40,6 +40,9 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
       std::unique_ptr<ledger::PublisherInfo> info,
       uint64_t windowId) override;
 
+  void OnPendingContributionSaved(RewardsService* rewards_service,
+                                  int result) override;
+
  private:
   Profile* profile_;
 
