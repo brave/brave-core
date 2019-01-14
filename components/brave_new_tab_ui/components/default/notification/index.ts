@@ -5,24 +5,23 @@
 import styled from '../../../../theme'
 
 export const SiteRemovalNotification = styled<{}, 'header'>('header')`
-  box-sizing: border-box;
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: 1fr auto auto auto;
   font-family: ${p => p.theme.fontFamily.heading};
   border-radius: 8px;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
   background-color: #fff;
   width: 500px;
   height: 100px;
   align-items: center;
   padding: 30px 60px;
   margin: 80px auto 0;
+  display: flex;
+  justify-content: space-between;
 `
 
 export const SiteRemovalText = styled<{}, 'span'>('span')`
   box-sizing: border-box;
   user-select: none;
+  font-size: 18px;
 `
 
 interface SiteRemovalActionProps {
@@ -30,11 +29,9 @@ interface SiteRemovalActionProps {
 }
 
 export const SiteRemovalAction = styled<SiteRemovalActionProps, 'a'>('a')`
-  box-sizing: border-box;
-  font-size: 14px;
-  text-decoration: none;
+  font-size: 16px;
   cursor: pointer;
   color: #fb542b;
-  width: ${p => p.iconOnly && '14px'};
+  width: ${p => p.iconOnly && '16px'};
   line-height: 1;
 `

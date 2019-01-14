@@ -12,7 +12,7 @@ const locale: any = {
   // footer info
   photoBy: 'Photo by',
   // site removal notification
-  thumbRemoved: 'Thumb removed',
+  thumbRemoved: 'Top site removed',
   undoRemoved: 'Undo',
   restoreAll: 'Restore All',
   close: 'Close'

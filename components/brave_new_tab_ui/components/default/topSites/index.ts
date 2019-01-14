@@ -51,8 +51,8 @@ export const TileAction = styled<TileActionProps, 'a'>('a')`
   transition: color 0.1s linear;
   color: #424242;
   font-size: 14px;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   padding: 2px 4px;
   background: ${p => p.standalone && '#FFFFFF'};
   position: ${p => p.standalone && 'absolute'};
@@ -74,7 +74,6 @@ interface TileProps {
 }
 
 export const Tile = styled<TileProps, 'div'>('div')`
-  box-sizing: border-box;
   background-color: ${p => p.isDragging ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.8)'};
   position: relative;
   user-select: none;
@@ -97,7 +96,6 @@ export const Tile = styled<TileProps, 'div'>('div')`
 `
 
 export const TileFavicon = styled<{}, 'img'>('img')`
-  box-sizing: border-box;
   display: block;
-  height: 64px;
+  height: 40px;
 `

@@ -37,7 +37,7 @@ export const DynamicBackground = styled<DynamicBackgroundProps, 'div'>('div')`
   background-position: top center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url(${p => p.background});
+  background-image: url(${(p) => p.background});
   display: flex;
   flex: 1;
   opacity: 0;
@@ -46,20 +46,23 @@ export const DynamicBackground = styled<DynamicBackgroundProps, 'div'>('div')`
 `
 
 export const Gradient = styled<{}, 'div'>('div')`
-  box-sizing: border-box;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(#000000, rgba(0, 0, 0, 0));
-  height: 700px;
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 0) 35%,
+    rgba(0, 0, 0, 0) 80%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  height: 100vh;
 `
 
 export const Link = styled<{}, 'a'>('a')`
-  font-weight: 800;
   text-decoration: none;
   transition: color 0.15s ease, filter 0.15s ease;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.8);
 
   &:hover {
     color: rgba(255, 255, 255, 1);
@@ -84,7 +87,7 @@ export const IconLink = styled<{}, 'a'>('a')`
   height: 24px;
   margin: 12px;
   cursor: pointer;
-  color: #FFFFFF;
+  color: #ffffff;
   opacity: 0.7;
   transition: opacity 0.15s ease, filter 0.15s ease;
 
