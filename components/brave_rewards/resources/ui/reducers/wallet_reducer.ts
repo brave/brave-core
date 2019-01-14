@@ -170,6 +170,11 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         }
         break
       }
+    case types.GET_CURRENT_REPORT:
+      {
+        chrome.send('brave_rewards.getBalanceReports')
+        break
+      }
     case types.ON_BALANCE_REPORTS:
       {
         state = { ...state }

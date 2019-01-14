@@ -53,6 +53,7 @@ class SettingsPage extends React.Component<Props, {}> {
     this.actions.checkImported()
     this.actions.getAdsData()
     this.actions.getPendingContributionsTotal()
+    this.actions.getCurrentReport()
   }
 
   componentWillUnmount () {
