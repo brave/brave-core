@@ -1,0 +1,13 @@
+diff --git a/components/metrics/machine_id_provider_win.cc b/components/metrics/machine_id_provider_win.cc
+index eb7b0d7e8fde..1618ba826821 100644
+--- a/components/metrics/machine_id_provider_win.cc
++++ b/components/metrics/machine_id_provider_win.cc
+@@ -18,7 +18,7 @@ namespace metrics {
+ 
+ // static
+ bool MachineIdProvider::HasId() {
+-  return true;
++  return !IsMachineIdDisabled();
+ }
+ 
+ // On windows, the machine id is based on the serial number of the drive Chrome
