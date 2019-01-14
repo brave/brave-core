@@ -285,7 +285,6 @@ class LedgerImpl : public ledger::Ledger,
   bool HasSufficientBalanceToReconcile() override;
 
  private:
-  void MakePayment(const ledger::PaymentData& payment_data) override;
   void AddRecurringPayment(const std::string& publisher_id, const double& value) override;
   void OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) override;
   void OnUnload(uint32_t tab_id, const uint64_t& current_time) override;
