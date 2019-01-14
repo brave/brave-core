@@ -16,6 +16,7 @@ import App from './components/app'
 // Utils
 import store from './store'
 import * as newTabActions from './actions/new_tab_actions'
+import 'emptykit.css'
 
 // Fonts
 import '../fonts/poppins.css'
