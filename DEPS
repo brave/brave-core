@@ -19,7 +19,7 @@ deps = {
   "components/brave_sync/extension/brave-crypto": "https://github.com/brave/crypto@7e391cec6975106fa9f686016f494cb8a782afcd",
   "vendor/bat-native-ads": "https://github.com/brave-intl/bat-native-ads.git@fd6d9859a8327975aec0c11091066b0d3387bf4f",
   "vendor/bat-native-usermodel": "https://github.com/brave-intl/bat-native-usermodel.git@c3b6111aa862c5c452c84be8a225d5f1df32b284",
-  "vendor/challenge_bypass_ristretto_ffi": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi.git@0a9320a061b77f7682261eb7303ddfa4fc734595",
+  "vendor/challenge_bypass_ristretto_ffi": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi.git@23053f51c30316f705cd52820b7037b02f3adcb5",
 }
 
 hooks = [
