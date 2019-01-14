@@ -23,11 +23,16 @@ Polymer({
   /** @override */
   ready: function() {
     this.onWebTorrentEnabledChange_ = this.onWebTorrentEnabledChange_.bind(this)
+    this.onHangoutsEnabledChange_ = this.onHangoutsEnabledChange_.bind(this)
     this.openExtensionsPage_ = this.openExtensionsPage_.bind(this)
   },
 
   onWebTorrentEnabledChange_: function() {
     this.browserProxy_.setWebTorrentEnabled(this.$.webTorrentEnabled.checked);
+  },
+
+  onHangoutsEnabledChange_: function() {
+    this.browserProxy_.setHangoutsEnabled(this.$.hangoutsEnabled.checked);
   },
 
   openExtensionsPage_: function() {

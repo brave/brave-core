@@ -35,3 +35,4 @@ const char kRewardsNotifications[] = "brave.rewards.notifications";
 const char kMigratedMuonProfile[] = "brave.muon.migrated_profile";
 const char kBravePaymentsPinnedItemCount[] = "brave.muon.import_pinned_item_count";
 const char kWebTorrentEnabled[] = "brave.webtorrent_enabled";
+const char kHangoutsEnabled[] = "brave.hangouts_enabled";

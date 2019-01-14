@@ -21,6 +21,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptDisallowed() override {}
 
   void SetWebTorrentEnabled(const base::ListValue* args);
+  void SetHangoutsEnabled(const base::ListValue* args);
 
   Profile* profile_ = nullptr;
 
