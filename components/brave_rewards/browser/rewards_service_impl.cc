@@ -362,6 +362,7 @@ void RewardsServiceImpl::GetCurrentContributeList(
   filter.excluded =
     ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
   filter.percent = 1;
+  filter.non_verified = ledger_->GetPublisherAllowNonVerified();
 
   ledger_->GetPublisherInfoList(
       start,

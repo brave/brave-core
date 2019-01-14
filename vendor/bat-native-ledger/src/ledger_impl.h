@@ -187,13 +187,15 @@ class LedgerImpl : public ledger::Ledger,
                                   const uint32_t date) override;
   void GetRecurringDonations(ledger::PublisherInfoListCallback callback);
   void RemoveRecurring(const std::string& publisher_key) override;
-  ledger::PublisherInfoFilter CreatePublisherFilter(const std::string& publisher_id,
+  ledger::PublisherInfoFilter CreatePublisherFilter(
+      const std::string& publisher_id,
       ledger::PUBLISHER_CATEGORY category,
       ledger::PUBLISHER_MONTH month,
       int year,
       ledger::PUBLISHER_EXCLUDE_FILTER excluded,
       bool min_duration,
-      const uint64_t& currentReconcileStamp);
+      const uint64_t& currentReconcileStamp,
+      bool non_verified);
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,
       int line,

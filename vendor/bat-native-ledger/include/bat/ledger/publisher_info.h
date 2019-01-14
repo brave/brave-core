@@ -66,6 +66,7 @@ LEDGER_EXPORT struct PublisherInfoFilter {
   std::vector<std::pair<std::string, bool>> order_by;
   unsigned int min_duration;
   uint64_t reconcile_stamp;
+  bool non_verified;
 };
 
 LEDGER_EXPORT struct ContributionInfo {
