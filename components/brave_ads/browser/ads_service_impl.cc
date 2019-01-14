@@ -444,12 +444,20 @@ bool AdsServiceImpl::is_enabled() const {
   return profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
 }
 
+bool AdsServiceImpl::is_ui_enabled() const {
+  return profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsUIEnabled);
+}
+
 bool AdsServiceImpl::IsAdsEnabled() const {
   return is_enabled();
 }
 
 void AdsServiceImpl::set_ads_enabled(bool enabled) {
   profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabled, enabled);
+}
+
+void AdsServiceImpl::set_ads_ui_enabled(bool enabled) {
+  profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsUIEnabled, enabled);
 }
 
 void AdsServiceImpl::set_ads_per_hour(int ads_per_hour) {
