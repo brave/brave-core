@@ -17,6 +17,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -301,6 +302,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       << "No changes on the real URL";
 }
 
+#if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
                        HangoutsEnabledByDefault) {
   ASSERT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
@@ -321,6 +323,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       extensions::ExtensionRegistry::Get(browser()->profile());
   ASSERT_FALSE(registry->enabled_extensions().Contains(hangouts_extension_id));
 }
+#endif
 
 class BraveContentBrowserClientReferrerTest
     : public BraveContentBrowserClientTest {
