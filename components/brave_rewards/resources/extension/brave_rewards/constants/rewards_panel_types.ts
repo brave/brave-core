@@ -18,5 +18,12 @@ export const enum types {
   DELETE_NOTIFICATION = '@@rewards_panel/DELETE_NOTIFICATION',
   INCLUDE_IN_AUTO_CONTRIBUTION = '@@rewards_panel/INCLUDE_IN_AUTO_CONTRIBUTION',
   GET_GRANT = '@@rewards_panel/GET_GRANT',
-  ON_PENDING_CONTRIBUTIONS_TOTAL = '@@rewards_panel/ON_PENDING_CONTRIBUTIONS_TOTAL'
+  ON_PENDING_CONTRIBUTIONS_TOTAL = '@@rewards_panel/ON_PENDING_CONTRIBUTIONS_TOTAL',
+  ON_GRANT = '@@rewards_panel/ON_GRANT',
+  GET_GRANT_CAPTCHA = '@@rewards_panel/GET_GRANT_CAPTCHA',
+  ON_GRANT_CAPTCHA = '@@rewards_panel/ON_GRANT_CAPTCHA',
+  SOLVE_GRANT_CAPTCHA = '@@rewards_panel/SOLVE_GRANT_CAPTCHA',
+  ON_GRANT_RESET = '@@rewards_panel/ON_GRANT_RESET',
+  ON_GRANT_DELETE = '@@rewards_panel/ON_GRANT_DELETE',
+  ON_GRANT_FINISH = '@@rewards_panel/ON_GRANT_FINISH',
 }

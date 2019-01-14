@@ -66,3 +66,26 @@ export const getGrant = () => action(types.GET_GRANT, {})
 export const OnPendingContributionsTotal = (amount: number) => action(types.ON_PENDING_CONTRIBUTIONS_TOTAL, {
   amount
 })
+
+export const onGrant = (properties: RewardsExtension.GrantInfo) => action(types.ON_GRANT, {
+  properties
+})
+
+export const getGrantCaptcha = () => action(types.GET_GRANT_CAPTCHA)
+
+export const onGrantCaptcha = (captcha: RewardsExtension.Captcha) => action(types.ON_GRANT_CAPTCHA, {
+  captcha
+})
+
+export const solveGrantCaptcha = (x: number, y: number) => action(types.SOLVE_GRANT_CAPTCHA, {
+  x,
+  y
+})
+
+export const onGrantFinish = (properties: RewardsExtension.GrantFinish) => action(types.ON_GRANT_FINISH, {
+  properties
+})
+
+export const onResetGrant = () => action(types.ON_GRANT_RESET)
+
+export const onDeleteGrant = () => action(types.ON_GRANT_DELETE)
