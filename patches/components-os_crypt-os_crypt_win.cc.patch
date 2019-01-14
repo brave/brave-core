@@ -1,0 +1,20 @@
+diff --git a/components/os_crypt/os_crypt_win.cc b/components/os_crypt/os_crypt_win.cc
+index 792233d4405f..1fb45bb390db 100644
+--- a/components/os_crypt/os_crypt_win.cc
++++ b/components/os_crypt/os_crypt_win.cc
+@@ -26,6 +26,7 @@ bool OSCrypt::DecryptString16(const std::string& ciphertext,
+ 
+ bool OSCrypt::EncryptString(const std::string& plaintext,
+                             std::string* ciphertext) {
++  if (IsEncryptionDisabled(plaintext, ciphertext)) { return true; }
+   DATA_BLOB input;
+   input.pbData = const_cast<BYTE*>(
+       reinterpret_cast<const BYTE*>(plaintext.data()));
+@@ -49,6 +50,7 @@ bool OSCrypt::EncryptString(const std::string& plaintext,
+ 
+ bool OSCrypt::DecryptString(const std::string& ciphertext,
+                             std::string* plaintext) {
++  if (IsEncryptionDisabled(ciphertext, plaintext)) { return true; }
+   DATA_BLOB input;
+   input.pbData = const_cast<BYTE*>(
+       reinterpret_cast<const BYTE*>(ciphertext.data()));

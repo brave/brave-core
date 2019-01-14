@@ -40,4 +40,12 @@ const char kUiMode[] = "ui-mode";
 // available.
 const char kUpgradeFromMuon[] = "upgrade-from-muon";
 
+// Allows disabling the machine ID generation on Windows.
+const char kDisableMachineId[] = "disable-machine-id";
+
+// Allows disabling encryption on Windows for cookies, passwords, settings...
+// WARNING! Use ONLY if your hard drive is encrypted or if you know
+// what you are doing.
+const char kDisableEncryptionWin[] = "disable-encryption-win";
+
 }  // namespace switches

@@ -31,6 +31,10 @@ extern const char kUiMode[];
 
 extern const char kUpgradeFromMuon[];
 
+extern const char kDisableMachineId[];
+
+extern const char kDisableEncryptionWin[];
+
 }  // namespace switches
 
 #endif  // BRAVE_COMMON_BRAVE_SWITCHES_H_
