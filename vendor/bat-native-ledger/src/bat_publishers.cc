@@ -301,7 +301,8 @@ void BatPublishers::onFetchFavIcon(const std::string& publisher_key,
       -1,
       ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
       false,
-      currentReconcileStamp);
+      currentReconcileStamp,
+      true);
   ledger_->GetPublisherInfo(filter,
       std::bind(&BatPublishers::onFetchFavIconDBResponse,
       this, _1, _2, favicon_url));
