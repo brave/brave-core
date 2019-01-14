@@ -66,3 +66,5 @@ export class Clock extends React.PureComponent<{}, ClockState> {
     )
   }
 }
+
+export default Clock
