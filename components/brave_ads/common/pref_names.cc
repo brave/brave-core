@@ -8,6 +8,7 @@ namespace brave_ads {
 namespace prefs {
 
 const char kBraveAdsEnabled[] = "brave.brave_ads.enabled";
+const char kBraveAdsUIEnabled[] = "brave.brave_ads_ui_enabled";
 const char kBraveAdsPerHour[] = "brave.brave_ads.ads_per_hour";
 const char kBraveAdsPerDay[] = "brave.brave_ads.ads_per_day";
 const char kBraveAdsIdleThreshold[] = "brave.brave_ads.idle_threshold";
