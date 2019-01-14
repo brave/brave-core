@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import Clock from '../../../../src/features/newTab/default/clock/index'
+import { Clock } from '../../../../src/features/newTab/default/clock'
 import { Page, Header, Main, Footer, DynamicBackground, Gradient } from '../../../../src/features/newTab/default'
 
 import TopSitesList from './topSites/topSitesList'
