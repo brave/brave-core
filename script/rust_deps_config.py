@@ -5,4 +5,4 @@
 
 # Version number and URL for pre-configured rust dependency package, e.g. rust_deps_mac_0.1.0.gz
 RUST_DEPS_PACKAGES_URL = "https://s3-us-west-2.amazonaws.com/rust-pkg-brave-core"
-RUST_DEPS_PACKAGE_VERSION = "0.1.0"
+RUST_DEPS_PACKAGE_VERSION = "0.1.1"
