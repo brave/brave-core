@@ -610,7 +610,22 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
     args->GetString(1, &value);
 
     if (key == "enabledMain") {
-      rewards_service_->SetRewardsMainEnabled(value == "true");
+      bool rewards_enabled = (value == "true");
+
+      if (ads_service_) {
+        if (rewards_enabled) {
+          // When Rewards are enabled, set Ads enabled to whatever UI value is
+          bool ads_ui_enabled = ads_service_->is_ui_enabled();
+          ads_service_->set_ads_enabled(ads_ui_enabled);
+        } else {
+          // When Rewards are disabled, cache UI value and disable Ads
+          bool ads_enabled = ads_service_->is_enabled();
+          ads_service_->set_ads_ui_enabled(ads_enabled);
+          ads_service_->set_ads_enabled(rewards_enabled);
+        }
+      }
+
+      rewards_service_->SetRewardsMainEnabled(rewards_enabled);
     }
 
     if (key == "contributionMonthly") {
@@ -809,7 +824,7 @@ void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
     base::DictionaryValue adsData;
 
     bool ads_ui_enabled;
-    bool ads_enabled = ads_service_->is_enabled();
+    bool ads_enabled = ads_service_->is_ui_enabled();
     int ads_per_hour = ads_service_->ads_per_hour();
 
     #if BUILDFLAG(BRAVE_ADS_ENABLED)
@@ -835,6 +850,7 @@ void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
 
     if (key == "adsEnabled") {
       ads_service_->set_ads_enabled(value == "true");
+      ads_service_->set_ads_ui_enabled(value == "true");
     }
 
     if (key == "adsPerHour") {
