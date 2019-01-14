@@ -159,3 +159,5 @@ export const onPendingContributionTotal = (amount: number) => action(types.ON_PE
 })
 
 export const getAddresses = () => action(types.GET_ADDRESSES)
+
+export const getReconcileStamp = () => action(types.GET_RECONCILE_STAMP)

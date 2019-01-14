@@ -15,8 +15,8 @@ const createWallet = (state: Rewards.State) => {
   state.enabledContribute = true
   state.createdTimestamp = new Date().getTime()
 
-  chrome.send('brave_rewards.getReconcileStamp', [])
-  chrome.send('brave_rewards.getAddresses', [])
+  chrome.send('brave_rewards.getReconcileStamp')
+  chrome.send('brave_rewards.getAddresses')
 
   return state
 }
@@ -27,7 +27,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state = { ...state }
       state.walletCreateFailed = false
       state.walletCreated = false
-      chrome.send('brave_rewards.createWalletRequested', [])
+      chrome.send('brave_rewards.createWalletRequested')
       break
     case types.WALLET_CREATED:
       state = { ...state }
@@ -38,7 +38,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state.walletCreateFailed = true
       break
     case types.GET_WALLET_PROPERTIES:
-      chrome.send('brave_rewards.getWalletProperties', [])
+      chrome.send('brave_rewards.getWalletProperties')
       break
     case types.ON_WALLET_PROPERTIES:
       {
@@ -68,7 +68,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         break
       }
     case types.GET_WALLLET_PASSPHRASE:
-      chrome.send('brave_rewards.getWalletPassphrase', [])
+      chrome.send('brave_rewards.getWalletPassphrase')
       break
     case types.ON_WALLLET_PASSPHRASE:
       const value = action.payload.pass
@@ -106,8 +106,8 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         if (result === 0) {
           walletInfo.balance = balance
           walletInfo.grants = grants || []
-          chrome.send('brave_rewards.getWalletPassphrase', [])
-          chrome.send('brave_rewards.getAddresses', [])
+          chrome.send('brave_rewards.getWalletPassphrase')
+          chrome.send('brave_rewards.getAddresses')
           ui.emptyWallet = balance <= 0
           ui.modalBackup = false
           ui.walletCorrupted = false
@@ -225,7 +225,12 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
           ...state,
           ui
         }
-
+        break
+      }
+    case types.GET_RECONCILE_STAMP:
+      {
+        chrome.send('brave_rewards.getReconcileStamp')
+        break
       }
   }
 
