@@ -53,6 +53,7 @@ declare namespace Rewards {
     tipsList: Publisher[]
     tipsLoad: boolean
     ui: {
+      addressCheck: boolean
       emptyWallet: boolean
       modalBackup: boolean
       walletRecoverySuccess: boolean | null

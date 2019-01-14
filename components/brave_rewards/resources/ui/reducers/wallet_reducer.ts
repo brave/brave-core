@@ -213,6 +213,20 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         state.pendingContributionTotal = action.payload.amount
         break
       }
+    case types.GET_ADDRESSES:
+      {
+        state = { ...state }
+        let ui = state.ui
+        ui.addressCheck = true
+
+        chrome.send('brave_rewards.getAddresses')
+
+        state = {
+          ...state,
+          ui
+        }
+
+      }
   }
 
   return state

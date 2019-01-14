@@ -157,3 +157,5 @@ export const getPendingContributionsTotal = () => action(types.GET_PENDING_CONTR
 export const onPendingContributionTotal = (amount: number) => action(types.ON_PENDING_CONTRIBUTION_TOTAL, {
   amount
 })
+
+export const getAddresses = () => action(types.GET_ADDRESSES)
