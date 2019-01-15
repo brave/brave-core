@@ -30,6 +30,8 @@ interface BatAdsClient {
   [Sync]
   IsNotificationsAvailable() => (bool available);
   [Sync]
+  IsConfirmationsReadyToShowAds() => (bool can_show);
+  [Sync]
   SetTimer(uint64 time_offset) => (uint32 timer_id);
   [Sync]
   LoadJsonSchema(string name) => (string json);
@@ -54,6 +56,8 @@ interface BatAdsClient {
              string content_type, int32 method) =>
       (int32 status_code, string content, map<string, string> headers);
   ShowNotification(string notification_info);
+  SetCatalogIssuers(string issuers_info);
+  AdSustained(string notification_info);
   SaveBundleState(string bundle_state) => (int32 result);
   GetAds(string region, string category) =>
       (int32 result, string region, string category, array<string> ad_info);
