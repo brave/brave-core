@@ -46,7 +46,7 @@ def main():
         logging.debug('s3_test_buckets: {}'.format(s3_test_buckets))
 
     # verify we have the the GPG key we're expecting in the public keyring
-    list_keys_cmd = "gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(gpg_full_key_signature)
+    list_keys_cmd = "/usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(gpg_full_key_signature)
     logging.info("Verifying the GPG key \'{}\' is in our public keyring...".format(gpg_full_key_signature))
     logging.debug("Running command: {}".format(list_keys_cmd))
     try:
@@ -66,7 +66,7 @@ def main():
 
     logging.info("Downloading RPM/DEB packages to directory: {}".format(dist_dir))
 
-    file_list = download_from_github(args, logging)
+    file_list = download_linux_pkgs_from_github(args, logging)
 
     # Run rpmsign command for rpm
     for item in file_list:
@@ -134,7 +134,7 @@ def main():
         exit(message)
 
 
-def download_from_github(args, logging):
+def download_linux_pkgs_from_github(args, logging):
 
     file_list = []
 
@@ -147,6 +147,10 @@ def download_from_github(args, logging):
         if len(releases) > 1:
             exit("Error: More than 1 release exists with the tag: \'{}\'".format(tag_name))
         release = releases[0]
+    if release['assets'] is None:
+        logging.error('Error: Could not find GitHub release with tag {}. Exiting...'.format(tag_name))
+        exit(1)
+    else:
         logging.info("Searching for RPM/DEB packages in GitHub release: {}".format(release['url']))
     for asset in release['assets']:
         if re.match(r'.*\.rpm$', asset['name']) \
@@ -161,52 +165,12 @@ def download_from_github(args, logging):
             # Check if the file exists on disk first, and rename it if so
             # to prevent a situation where the expect script fails because
             # the rpm has already been signed
-            if os.path.isfile(os.path.join(os.getcwd(), filename)):
-                now = datetime.datetime.now()
-                datestring = "{}{}{}.{}{}{}".format(now.year, now.month, now.day, now.hour,
-                             now.minute, now.second)
-                logging.info("Found file \'{}\' already exists, renaming to: \'{}\'.".format(filename,
-                              filename + '.' + datestring))
-                try:
-                    os.rename(filename, filename + '.' + datestring)
-                except Exception as e:
-                    logging.error("Error: could not rename file {}: {}".format(filename, e))
+            rename_file_if_exists(filename, logging)
 
             # Instantiate new requests session, versus reusing the repo session above.
             # Headers was likely being reused in that session, and not allowing us
             # to set the Accept header to the below.
-            headers = {'Accept': 'application/octet-stream'}
-            asset_auth_url = asset_url + '?access_token=' + \
-                args.github_token
-            if args.debug:
-                # disable urllib3 logging for this session to avoid showing
-                # access_token in logs
-                logging.getLogger("urllib3").setLevel(logging.WARNING)
-            logging.info("Downloading GitHub release asset: {}".format(
-                asset_url + '/' + filename))
-            try:
-                r = requests.get(asset_auth_url, headers=headers, stream=True)
-            except requests.exceptions.ConnectionError as e:
-                logging.error("Error: Received requests.exceptions.ConnectionError, Exitting...")
-                exit(1)
-            except Exception as e:
-                logging.error("Error: Received exception {},  Exitting...".format(type(e)))
-                exit(1)
-            if args.debug:
-                logging.getLogger("urllib3").setLevel(logging.DEBUG)
-            with open(filename, 'wb') as f:
-                for chunk in r.iter_content(chunk_size=1024):
-                    if chunk:
-                        f.write(chunk)
-
-            logging.debug(
-                "Requests Response status_code: {}".format(r.status_code))
-            if r.status_code == 200:
-                logging.info("Download successful: Response Status Code {}".format(r.status_code))
-                file_list.append('./' + filename)
-            else:
-                logging.debug(
-                    "Requests Response status_code != 200: {}".format(r.status_code))
+            perform_github_download(asset_url, args, logging, filename, file_list)
 
     if len(file_list) < 2:
         logging.error(
@@ -215,6 +179,55 @@ def download_from_github(args, logging):
         remove_github_downloaded_files(file_list, logging)
         exit(1)
     return file_list
+
+def perform_github_download(asset_url, args, logging, filename, file_list):
+    # Instantiate new requests session, versus reusing the repo session above.
+    # Headers was likely being reused in that session, and not allowing us
+    # to set the Accept header to the below.
+    headers = {'Accept': 'application/octet-stream'}
+    asset_auth_url = asset_url + '?access_token=' + \
+        args.github_token
+    if args.debug:
+        # disable urllib3 logging for this session to avoid showing
+        # access_token in logs
+        logging.getLogger("urllib3").setLevel(logging.WARNING)
+    logging.info("Downloading GitHub release asset: {}".format(
+        asset_url + '/' + filename))
+    try:
+        r = requests.get(asset_auth_url, headers=headers, stream=True)
+    except requests.exceptions.ConnectionError as e:
+        logging.error("Error: Received requests.exceptions.ConnectionError, Exiting...")
+        exit(1)
+    except Exception as e:
+        logging.error("Error: Received exception {},  Exiting...".format(type(e)))
+        exit(1)
+    if args.debug:
+        logging.getLogger("urllib3").setLevel(logging.DEBUG)
+    with open(filename, 'wb') as f:
+        for chunk in r.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+
+    logging.debug(
+        "Requests Response status_code: {}".format(r.status_code))
+    if r.status_code == 200:
+        logging.info("Download successful: Response Status Code {}".format(r.status_code))
+        file_list.append('./' + filename)
+    else:
+        logging.debug(
+            "Requests Response status_code != 200: {}".format(r.status_code))
+
+def rename_file_if_exists(filename, logging):
+    if os.path.isfile(os.path.join(os.getcwd(), filename)):
+        now = datetime.datetime.now()
+        datestring = "{}{}{}.{}{}{}".format(now.year, now.month, now.day, now.hour,
+                     now.minute, now.second)
+        logging.info("Found file \'{}\' already exists, renaming to: \'{}\'.".format(filename,
+                      filename + '.' + datestring))
+        try:
+            os.rename(filename, filename + '.' + datestring)
+        except Exception as e:
+            logging.error("Error: could not rename file {}: {}".format(filename, e))
 
 
 def parse_args():
