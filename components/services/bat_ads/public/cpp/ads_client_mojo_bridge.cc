@@ -306,11 +306,33 @@ void AdsClientMojoBridge::LoadSampleBundle(LoadSampleBundleCallback callback) {
       std::bind( AdsClientMojoBridge::OnLoadSampleBundle, holder, _1, _2));
 }
 
-void AdsClientMojoBridge::ShowNotification(
-    const std::string& notification_info) {
+void AdsClientMojoBridge::ShowNotification(const std::string& notification_info) {
   auto info = std::make_unique<ads::NotificationInfo>();
   if (info->FromJson(notification_info))
     ads_client_->ShowNotification(std::move(info));
+}
+
+void AdsClientMojoBridge::SetCatalogIssuers(const std::string& issuers_info) {
+  auto info = std::make_unique<ads::IssuersInfo>();
+  if (info->FromJson(issuers_info))
+    ads_client_->SetCatalogIssuers(std::move(info));
+}
+
+bool AdsClientMojoBridge::IsConfirmationsReadyToShowAds(bool* out_can_show) {
+  *out_can_show = ads_client_->IsConfirmationsReadyToShowAds();
+
+  return true;
+}
+
+void AdsClientMojoBridge::AdSustained(const std::string& notification_info) {
+  auto info = std::make_unique<ads::NotificationInfo>();
+  if (info->FromJson(notification_info))
+    ads_client_->AdSustained(std::move(info));
+}
+
+void AdsClientMojoBridge::IsConfirmationsReadyToShowAds(
+    IsConfirmationsReadyToShowAdsCallback callback) {
+  std::move(callback).Run(ads_client_->IsConfirmationsReadyToShowAds());
 }
 
 // static
