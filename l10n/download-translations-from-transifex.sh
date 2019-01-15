@@ -62,6 +62,7 @@ for language_code in ${language_codes[@]} ; do
   fi
 
   if [ -e translation.xliff ] ; then
+    ./xliff-cleanup.py ./translation.xliff
     mv translation.xliff translated-xliffs/$language_code.xliff
   else
     report_error 4 "ERROR: \"translation.xliff\" file not found"

@@ -19,7 +19,8 @@ from lxml import etree
 NS = {'x':'urn:oasis:names:tc:xliff:document:1.2'}
 
 STRINGS_TO_REMOVE = ('CFBundleName',
-                     'CFBundleShortVersionString')
+                     'CFBundleShortVersionString',
+                     'CFBundleDisplayName')
 
 REMOVE_FILES = []
 
