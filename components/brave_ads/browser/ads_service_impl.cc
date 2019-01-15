@@ -563,8 +563,7 @@ uint64_t AdsServiceImpl::GetAdsPerDay() const {
   return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerDay);
 }
 
-void AdsServiceImpl::ShowNotification(
-    std::unique_ptr<ads::NotificationInfo> info) {
+void AdsServiceImpl::ShowNotification(std::unique_ptr<ads::NotificationInfo> info) {
   std::string notification_id;
   auto notification =
       CreateAdNotification(*info, &notification_id);
@@ -582,6 +581,21 @@ void AdsServiceImpl::ShowNotification(
       base::BindOnce(
           &AdsServiceImpl::NotificationTimedOut, AsWeakPtr(),
               timer_id, notification_id));
+}
+
+void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
+  // TODO(Terry Mancey): https://github.com/brave/brave-browser/issues/2906
+  (void)info;
+}
+
+bool AdsServiceImpl::IsConfirmationsReadyToShowAds() {
+  // TODO(Terry Mancey): https://github.com/brave/brave-browser/issues/2907
+  return true;
+}
+
+void AdsServiceImpl::AdSustained(std::unique_ptr<ads::NotificationInfo> info) {
+  // TODO(Terry Mancey): https://github.com/brave/brave-browser/issues/2908
+  (void)info;
 }
 
 void AdsServiceImpl::NotificationTimedOut(uint32_t timer_id,

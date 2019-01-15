@@ -147,6 +147,31 @@ void BatAdsClientMojoBridge::ShowNotification(
   bat_ads_client_->ShowNotification(info->ToJson());
 }
 
+void BatAdsClientMojoBridge::SetCatalogIssuers(
+    std::unique_ptr<ads::IssuersInfo> info) {
+  if (!connected())
+    return;
+
+  bat_ads_client_->SetCatalogIssuers(info->ToJson());
+}
+
+bool BatAdsClientMojoBridge::IsConfirmationsReadyToShowAds() {
+  if (!connected())
+    return false;
+
+  bool can_show;
+  bat_ads_client_->IsConfirmationsReadyToShowAds(&can_show);
+  return can_show;
+}
+
+void BatAdsClientMojoBridge::AdSustained(
+    std::unique_ptr<ads::NotificationInfo> info) {
+  if (!connected())
+    return;
+
+  bat_ads_client_->AdSustained(info->ToJson());
+}
+
 uint32_t BatAdsClientMojoBridge::SetTimer(const uint64_t time_offset) {
   if (!connected())
     return 0;
