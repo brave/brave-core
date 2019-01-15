@@ -11,4 +11,11 @@ extern const char kMagnetScheme[];
 extern const char kWidevineMoreInfoURL[];
 extern const char kWidevineTOS[];
 
+// This is introduced to replace |kDownloadChromeUrl| in
+// outdated_upgrade_bubble_view.cc"
+// |kDownloadChromeUrl| couldn't be replaced with char array because array
+// should be initialized with initialize list or string literal.
+// So, this macro is used.
+#define kDownloadBraveUrl "https://www.brave.com/download"
+
 #endif  // BRAVE_COMMON_URL_CONSTANTS_H_
