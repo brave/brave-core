@@ -20,8 +20,8 @@
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
 #include "brave/components/brave_ads/browser/bundle_state_database.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -268,7 +268,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
       base::Bind(&AdsServiceImpl::OnPrefsChanged,
                  base::Unretained(this)));
   profile_pref_change_registrar_.Add(
-      kBraveRewardsEnabled,
+      brave_rewards::prefs::kBraveRewardsEnabled,
       base::Bind(&AdsServiceImpl::OnPrefsChanged,
                  base::Unretained(this)));
   profile_pref_change_registrar_.Add(
@@ -435,7 +435,7 @@ void AdsServiceImpl::Shutdown() {
 
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
   if (pref == prefs::kBraveAdsEnabled ||
-      pref == kBraveRewardsEnabled) {
+      pref == brave_rewards::prefs::kBraveRewardsEnabled) {
     if (is_enabled()) {
       Start();
     } else if (!is_enabled()) {
@@ -448,7 +448,7 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
 
 bool AdsServiceImpl::is_enabled() const {
   bool ads_enabled = profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
-  bool rewards_enabled = profile_->GetPrefs()->GetBoolean(kBraveRewardsEnabled);
+  bool rewards_enabled = profile_->GetPrefs()->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled);
   return (ads_enabled && rewards_enabled);
 }
 

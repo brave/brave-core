@@ -30,17 +30,9 @@ extern const char kReferralHeaders[];
 extern const char kReferralCheckedForPromoCodeFile[];
 extern const char kHTTPSEVerywhereControlType[];
 extern const char kNoScriptControlType[];
-extern const char kRewardsNotifications[];
-extern const char kRewardsNotificationTimerInterval[];
-extern const char kRewardsBackupNotificationFrequency[];
-extern const char kRewardsBackupNotificationInterval[];
-extern const char kRewardsBackupSucceeded[];
-extern const char kRewardsUserHasFunded[];
-extern const char kRewardsAddFundsNotification[];
 extern const char kMigratedMuonProfile[];
 extern const char kBravePaymentsPinnedItemCount[];
 extern const char kWebTorrentEnabled[];
 extern const char kHangoutsEnabled[];
-extern const char kBraveRewardsEnabled[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

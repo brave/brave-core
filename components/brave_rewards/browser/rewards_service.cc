@@ -5,7 +5,7 @@
 
 #include "base/logging.h"
 #include "base/time/time.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -41,17 +41,17 @@ void RewardsService::RemoveObserver(RewardsServiceObserver* observer) {
 
 // static
 void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterStringPref(kRewardsNotifications, "");
-  registry->RegisterTimeDeltaPref(kRewardsNotificationTimerInterval,
+  registry->RegisterStringPref(prefs::kRewardsNotifications, "");
+  registry->RegisterTimeDeltaPref(prefs::kRewardsNotificationTimerInterval,
                                   base::TimeDelta::FromDays(1));
-  registry->RegisterTimeDeltaPref(kRewardsBackupNotificationFrequency,
+  registry->RegisterTimeDeltaPref(prefs::kRewardsBackupNotificationFrequency,
                                   base::TimeDelta::FromDays(7));
-  registry->RegisterTimeDeltaPref(kRewardsBackupNotificationInterval,
+  registry->RegisterTimeDeltaPref(prefs::kRewardsBackupNotificationInterval,
                                   base::TimeDelta::FromDays(7));
-  registry->RegisterBooleanPref(kRewardsBackupSucceeded, false);
-  registry->RegisterBooleanPref(kRewardsUserHasFunded, false);
-  registry->RegisterTimePref(kRewardsAddFundsNotification, base::Time());
-  registry->RegisterBooleanPref(kBraveRewardsEnabled, false);
+  registry->RegisterBooleanPref(prefs::kRewardsBackupSucceeded, false);
+  registry->RegisterBooleanPref(prefs::kRewardsUserHasFunded, false);
+  registry->RegisterTimePref(prefs::kRewardsAddFundsNotification, base::Time());
+  registry->RegisterBooleanPref(prefs::kBraveRewardsEnabled, false);
 }
 
 }  // namespace brave_rewards
