@@ -17,6 +17,7 @@
 #include "sql/statement.h"
 #include "sql/transaction.h"
 #include "content_site.h"
+#include "recurring_donation.h"
 
 namespace brave_rewards {
 
@@ -236,8 +237,9 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized)
+  if (!initialized || info.id.empty()) {
     return false;
+  }
 
   sql::Statement publisher_info_statement(
       GetDB().GetCachedStatement(SQL_FROM_HERE,
@@ -409,35 +411,26 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized)
-    return false;
-
-  // Insert publisher if it doesn't exist
-  sql::Statement publisher_info_statement(
-      GetDB().GetCachedStatement(SQL_FROM_HERE,
-          "INSERT OR IGNORE INTO publisher_info "
-          "(publisher_id, verified, excluded, "
-          "name, url, provider, favIcon) "
-          "VALUES (?, ?, ?, ?, ?, ?, ?)"));
-
-  publisher_info_statement.BindString(0, info.id);
-  publisher_info_statement.BindBool(1, info.verified);
-  publisher_info_statement.BindInt(2, static_cast<int>(info.excluded));
-  publisher_info_statement.BindString(3, info.name);
-  publisher_info_statement.BindString(4, info.url);
-  publisher_info_statement.BindString(5, info.provider);
-  publisher_info_statement.BindString(6, info.favicon_url);
-
-  if (!publisher_info_statement.Run()) {
+  if (!initialized) {
     return false;
   }
+
+  LOG(ERROR) << "NEJC 1";
+
+  if (!InsertOrUpdatePublisherInfo(info)) {
+    return false;
+  }
+
+  LOG(ERROR) << "NEJC 2";
+
+  LOG(ERROR) << info.year;
 
   sql::Statement activity_info_insert(
     GetDB().GetCachedStatement(SQL_FROM_HERE,
         "INSERT OR REPLACE INTO activity_info "
         "(publisher_id, duration, score, percent, "
-        "weight, month, year, reconcile_stamp) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"));
+        "weight, month, year, reconcile_stamp, visits) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"));
 
   activity_info_insert.BindString(0, info.id);
   activity_info_insert.BindInt64(1, static_cast<int>(info.duration));
@@ -447,6 +440,9 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
   activity_info_insert.BindInt(5, info.month);
   activity_info_insert.BindInt(6, info.year);
   activity_info_insert.BindInt64(7, info.reconcile_stamp);
+  activity_info_insert.BindInt64(8, info.visits);
+
+  LOG(ERROR) << "NEJC 3";
 
   return activity_info_insert.Run();
 }
@@ -629,7 +625,7 @@ bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized) {
+  if (!initialized || media_key.empty() || publisher_id.empty()) {
     return false;
   }
 
@@ -726,7 +722,7 @@ bool PublisherInfoDatabase::InsertOrUpdateRecurringDonation(
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized) {
+  if (!initialized || info.publisher_key.empty()) {
     return false;
   }
 

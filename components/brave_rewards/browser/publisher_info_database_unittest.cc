@@ -14,7 +14,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "sql/database.h"
 #include "sql/statement.h"
-#include "sql/transaction.h"
 #include "third_party/sqlite/sqlite3.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -23,61 +22,51 @@
 
 namespace brave_rewards {
 
-// Test data directory, relative to source root
-const base::FilePath::CharType kTestDataRelativePath[] =
-  FILE_PATH_LITERAL("brave/vendor/bat-native-ledger/test/data");
-
 class PublisherInfoDatabaseTest : public ::testing::Test {
  protected:
   PublisherInfoDatabaseTest() {
-    // You can do set-up work for each test here
   }
 
   ~PublisherInfoDatabaseTest() override {
-    // You can do clean-up work that doesn't throw exceptions here
-  }
-
-  // If the constructor and destructor are not enough for setting up and
-  // cleaning up each test, you can use the following methods
-
-  void SetUp() override {
-    // Code here will be called immediately after the constructor (right before
-    // each test)
-
-    base::ScopedTempDir temp_dir;
-    ASSERT_TRUE(temp_dir.CreateUniqueTempDir());
-    ASSERT_TRUE(base::DirectoryExists(temp_dir.GetPath()));
-    base::FilePath db_file =
-      temp_dir.GetPath().AppendASCII("PublisherInfoDatabaseTest.db");
-
-    base::FilePath temp_file;
-    ASSERT_TRUE(
-        base::CreateTemporaryFileInDir(temp_dir.GetPath(), &temp_file));
-
-    publisher_info_database_ = std::make_unique<PublisherInfoDatabase>(temp_file);
-    ASSERT_NE(publisher_info_database_, nullptr);
-  }
-
-  void TearDown() override {
-    // Code here will be called immediately after each test (right before the
-    // destructor)
-  }
-
-  // Objects declared here can be used by all tests in the test case
-  std::string GetMockDataPath(const std::string& filename) {
-    base::FilePath path(kTestDataRelativePath);
-    path = path.AppendASCII(filename);
-    return path.value();
   }
 
   sql::Database& GetDB() {
     return publisher_info_database_->GetDB();
   }
 
+  void CreateTempDatabase(base::ScopedTempDir* temp_dir,
+                          base::FilePath* db_file) {
+    ASSERT_TRUE(temp_dir->CreateUniqueTempDir());
+    *db_file = temp_dir->GetPath().AppendASCII("PublisherInfoDatabaseTest.db");
+    sql::Database::Delete(*db_file);
+
+    publisher_info_database_ =
+        std::make_unique<PublisherInfoDatabase>(*db_file);
+    ASSERT_NE(publisher_info_database_, nullptr);
+  }
+
+  int CountTableRows(const std::string& table) {
+    std::string sql = "SELECT COUNT(*) FROM " + table;
+    sql::Statement s(GetDB().GetUniqueStatement(sql.c_str()));
+
+    if (!s.Step()) {
+      return -1;
+    }
+
+    return static_cast<int>(s.ColumnInt64(0));
+  }
+
   std::unique_ptr<PublisherInfoDatabase> publisher_info_database_;
 };
 
 TEST_F(PublisherInfoDatabaseTest, InsertContributionInfo) {
+  /**
+   * Good path
+   */
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
   ContributionInfo info;
   info.probi = "12345678901234567890123456789012345678901234";
   info.month = ledger::ACTIVITY_MONTH::JANUARY;
@@ -95,12 +84,325 @@ TEST_F(PublisherInfoDatabaseTest, InsertContributionInfo) {
   info_sql.BindString(0, info.publisher_key);
 
   EXPECT_TRUE(info_sql.Step());
+  EXPECT_EQ(CountTableRows("contribution_info"), 1);
   EXPECT_EQ(info_sql.ColumnString(0), info.publisher_key);
   EXPECT_EQ(info_sql.ColumnString(1), info.probi);
   EXPECT_EQ(info_sql.ColumnInt64(2), info.date);
   EXPECT_EQ(info_sql.ColumnInt(3), info.category);
   EXPECT_EQ(info_sql.ColumnInt(4), info.month);
   EXPECT_EQ(info_sql.ColumnInt(5), info.year);
+}
+
+TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
+  /**
+   * Good path
+   */
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  ledger::PublisherInfo info;
+  info.id = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  info.verified = false;
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.name = "name";
+  info.url = "https://brave.com";
+  info.provider = "";
+  info.favicon_url = "";
+
+  bool success = publisher_info_database_->InsertOrUpdatePublisherInfo(info);
+  EXPECT_TRUE(success);
+
+  std::string query = "SELECT * FROM publisher_info WHERE publisher_id=?";
+  sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
+
+  info_sql.BindString(0, info.id);
+
+  EXPECT_TRUE(info_sql.Step());
+  EXPECT_EQ(CountTableRows("publisher_info"), 1);
+  EXPECT_EQ(info_sql.ColumnString(0), info.id);
+  EXPECT_EQ(info_sql.ColumnBool(1), info.verified);
+  EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(2)),
+      info.excluded);
+  EXPECT_EQ(info_sql.ColumnString(3), info.name);
+  EXPECT_EQ(info_sql.ColumnString(4), info.favicon_url);
+  EXPECT_EQ(info_sql.ColumnString(5), info.url);
+  EXPECT_EQ(info_sql.ColumnString(6), info.provider);
+
+  /**
+   * Make sure that second insert is update and not insert
+   */
+  info.verified = true;
+  info.excluded = ledger::PUBLISHER_EXCLUDE::ALL;
+  info.name = "updated";
+  info.url = "https://clifton.com";
+  info.provider = "";
+  info.favicon_url = "1";
+
+  success = publisher_info_database_->InsertOrUpdatePublisherInfo(info);
+  EXPECT_TRUE(success);
+
+  query = "SELECT * FROM publisher_info WHERE publisher_id=?";
+  sql::Statement info_sql_1(GetDB().GetUniqueStatement(query.c_str()));
+
+  info_sql_1.BindString(0, info.id);
+
+  EXPECT_TRUE(info_sql_1.Step());
+  EXPECT_EQ(CountTableRows("publisher_info"), 1);
+  EXPECT_EQ(info_sql_1.ColumnString(0), info.id);
+  EXPECT_EQ(info_sql_1.ColumnBool(1), info.verified);
+  EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql_1.ColumnInt(2)),
+      info.excluded);
+  EXPECT_EQ(info_sql_1.ColumnString(3), info.name);
+  EXPECT_EQ(info_sql_1.ColumnString(4), info.favicon_url);
+  EXPECT_EQ(info_sql_1.ColumnString(5), info.url);
+  EXPECT_EQ(info_sql_1.ColumnString(6), info.provider);
+
+  /**
+   * Publisher key is missing
+   */
+  info.id = "";
+
+  success = publisher_info_database_->InsertOrUpdatePublisherInfo(info);
+  EXPECT_FALSE(success);
+
+  query = "SELECT * FROM publisher_info WHERE publisher_id=?";
+  sql::Statement info_sql_2(GetDB().GetUniqueStatement(query.c_str()));
+
+  info_sql_2.BindString(0, info.id);
+
+  EXPECT_FALSE(info_sql_2.Step());
+}
+
+TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
+  /**
+   * Good path
+   */
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  ledger::PublisherInfo info;
+  info.id = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  info.verified = false;
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.name = "name";
+  info.url = "https://brave.com";
+  info.provider = "";
+  info.favicon_url = "";
+  info.duration = 10;
+  info.score = 1.1;
+  info.percent = 100;
+  info.weight = 1.5;
+  info.month = ledger::ACTIVITY_MONTH::JANUARY;
+  info.year = 1970;
+  info.reconcile_stamp = 0;
+  info.visits = 1;
+
+  bool success = publisher_info_database_->InsertOrUpdateActivityInfo(info);
+  EXPECT_TRUE(success);
+
+  std::string query = "SELECT * FROM activity_info WHERE publisher_id=?";
+  sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
+
+  info_sql.BindString(0, info.id);
+
+  EXPECT_TRUE(info_sql.Step());
+  EXPECT_EQ(CountTableRows("activity_info"), 1);
+  EXPECT_EQ(info_sql.ColumnString(0), info.id);
+  EXPECT_EQ(static_cast<uint64_t>(info_sql.ColumnInt64(1)), info.duration);
+  EXPECT_EQ(info_sql.ColumnInt64(2), info.visits);
+  EXPECT_EQ(info_sql.ColumnDouble(3), info.score);
+  EXPECT_EQ(info_sql.ColumnInt64(4), info.percent);
+  EXPECT_EQ(info_sql.ColumnDouble(5), info.weight);
+  EXPECT_EQ(info_sql.ColumnInt(6), info.month);
+  EXPECT_EQ(info_sql.ColumnInt(7), info.year);
+  EXPECT_EQ(static_cast<uint64_t>(info_sql.ColumnInt64(8)),
+            info.reconcile_stamp);
+
+  /**
+   * Make sure that second insert is update and not insert,
+   * month, year and stamp is unique key
+   */
+  info.verified = true;
+  info.excluded = ledger::PUBLISHER_EXCLUDE::ALL;
+  info.name = "update";
+  info.url = "https://slo-tech.com";
+  info.provider = "1";
+  info.favicon_url = "1";
+  info.duration = 11;
+  info.score = 2.1;
+  info.percent = 200;
+  info.weight = 2.5;
+  info.visits = 2;
+
+  success = publisher_info_database_->InsertOrUpdateActivityInfo(info);
+  EXPECT_TRUE(success);
+
+  query = "SELECT * FROM activity_info WHERE publisher_id=?";
+  sql::Statement info_sql_1(GetDB().GetUniqueStatement(query.c_str()));
+
+  info_sql_1.BindString(0, info.id);
+
+  EXPECT_TRUE(info_sql_1.Step());
+  EXPECT_EQ(CountTableRows("activity_info"), 1);
+  EXPECT_EQ(info_sql_1.ColumnString(0), info.id);
+  EXPECT_EQ(static_cast<uint64_t>(info_sql_1.ColumnInt64(1)), info.duration);
+  EXPECT_EQ(info_sql_1.ColumnInt64(2), info.visits);
+  EXPECT_EQ(info_sql_1.ColumnDouble(3), info.score);
+  EXPECT_EQ(info_sql_1.ColumnInt64(4), info.percent);
+  EXPECT_EQ(info_sql_1.ColumnDouble(5), info.weight);
+  EXPECT_EQ(info_sql_1.ColumnInt(6), info.month);
+  EXPECT_EQ(info_sql_1.ColumnInt(7), info.year);
+  EXPECT_EQ(static_cast<uint64_t>(info_sql_1.ColumnInt64(8)),
+            info.reconcile_stamp);
+
+}
+
+TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateMediaPublisherInfo) {
+  /**
+   * Good path
+   */
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  std::string publisher_id = "id";
+  std::string media_key = "key";
+
+  bool success = publisher_info_database_->InsertOrUpdateMediaPublisherInfo(
+      media_key,
+      publisher_id);
+  EXPECT_TRUE(success);
+
+  std::string query =
+      "SELECT * FROM media_publisher_info WHERE media_key=?";
+  sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
+
+  info_sql.BindString(0, media_key);
+
+  EXPECT_TRUE(info_sql.Step());
+  EXPECT_EQ(CountTableRows("media_publisher_info"), 1);
+  EXPECT_EQ(info_sql.ColumnString(0), media_key);
+  EXPECT_EQ(info_sql.ColumnString(1), publisher_id);
+
+  /**
+   * Make sure that second insert is update and not insert
+   */
+  publisher_id = "id_new";
+
+  success = publisher_info_database_->InsertOrUpdateMediaPublisherInfo(
+      media_key,
+      publisher_id);
+  EXPECT_TRUE(success);
+
+  query = "SELECT * FROM media_publisher_info WHERE media_key=?";
+  sql::Statement info_sql_1(GetDB().GetUniqueStatement(query.c_str()));
+
+  info_sql_1.BindString(0, media_key);
+
+  EXPECT_TRUE(info_sql_1.Step());
+  EXPECT_EQ(CountTableRows("media_publisher_info"), 1);
+  EXPECT_EQ(info_sql_1.ColumnString(0), media_key);
+  EXPECT_EQ(info_sql_1.ColumnString(1), publisher_id);
+
+  /**
+   * Publisher key is missing
+   */
+  media_key = "missing";
+  success = publisher_info_database_->InsertOrUpdateMediaPublisherInfo(
+      media_key,
+      "");
+  EXPECT_FALSE(success);
+
+  query = "SELECT * FROM media_publisher_info WHERE media_key=?";
+  sql::Statement info_sql_2(GetDB().GetUniqueStatement(query.c_str()));
+
+  info_sql_2.BindString(0, media_key);
+
+  EXPECT_FALSE(info_sql_2.Step());
+
+  /**
+   * Media key is missing
+   */
+  publisher_id = "new_stuff";
+  success = publisher_info_database_->InsertOrUpdateMediaPublisherInfo(
+      "",
+      publisher_id);
+  EXPECT_FALSE(success);
+
+  query = "SELECT * FROM media_publisher_info WHERE publisher_id=?";
+  sql::Statement info_sql_3(GetDB().GetUniqueStatement(query.c_str()));
+
+  info_sql_3.BindString(0, publisher_id);
+
+  EXPECT_FALSE(info_sql_3.Step());
+}
+
+TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringDonation) {
+  /**
+   * Good path
+   */
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  brave_rewards::RecurringDonation info;
+  info.publisher_key = "key";
+  info.amount = 20;
+  info.added_date = base::Time::Now().ToJsTime();
+
+  bool success = publisher_info_database_->InsertOrUpdateRecurringDonation(
+      info);
+  EXPECT_TRUE(success);
+
+  std::string query = "SELECT * FROM recurring_donation WHERE publisher_id=?";
+  sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
+
+  info_sql.BindString(0, info.publisher_key);
+
+  EXPECT_TRUE(info_sql.Step());
+  EXPECT_EQ(CountTableRows("recurring_donation"), 1);
+  EXPECT_EQ(info_sql.ColumnString(0), info.publisher_key);
+  EXPECT_EQ(info_sql.ColumnDouble(1), info.amount);
+  EXPECT_EQ(info_sql.ColumnInt64(2), info.added_date);
+
+  /**
+   * Make sure that second insert is update and not insert
+   */
+  info.amount = 30;
+
+  success = publisher_info_database_->InsertOrUpdateRecurringDonation(info);
+  EXPECT_TRUE(success);
+
+  query ="SELECT * FROM recurring_donation WHERE publisher_id=?";
+  sql::Statement info_sql_1(GetDB().GetUniqueStatement(query.c_str()));
+
+  info_sql_1.BindString(0, info.publisher_key);
+
+  EXPECT_TRUE(info_sql_1.Step());
+  EXPECT_EQ(CountTableRows("recurring_donation"), 1);
+  EXPECT_EQ(info_sql_1.ColumnString(0), info.publisher_key);
+  EXPECT_EQ(info_sql_1.ColumnDouble(1), info.amount);
+  EXPECT_EQ(info_sql_1.ColumnInt64(2), info.added_date);
+
+  /**
+   * Publisher key is missing
+   */
+  info.publisher_key = "";
+  success = publisher_info_database_->InsertOrUpdateRecurringDonation(info);
+  EXPECT_FALSE(success);
+
+  query = "SELECT * FROM recurring_donation WHERE publisher_id=?";
+  sql::Statement info_sql_2(GetDB().GetUniqueStatement(query.c_str()));
+
+  info_sql_2.BindString(0, info.publisher_key);
+
+  EXPECT_FALSE(info_sql_2.Step());
+}
+
+TEST_F(PublisherInfoDatabaseTest, InsertPendingContribution) {
+
 }
 
 }  // namespace brave_rewards
