@@ -218,10 +218,10 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
     )
   }
 
-  getSettingsContent = () => {
-    const { checked, title, children } = this.props
+  getSettingsContent = (show?: boolean) => {
+    const { title, children } = this.props
 
-    if (!checked || !this.state.settings) {
+    if (!show) {
       return null
     }
 
@@ -242,10 +242,10 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
     )
   }
 
-  getDetailContent = () => {
-    const { checked, children } = this.props
+  getDetailContent = (show?: boolean) => {
+    const { children } = this.props
 
-    if (!checked || !this.state.detailView) {
+    if (!show) {
       return null
     }
 
@@ -274,6 +274,9 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
       checked
     } = this.props
 
+    const showDetailView = checked && this.state.detailView
+    const showSettingsView = checked && this.state.settings
+
     return (
       <StyledCard
         testId={id}
@@ -291,8 +294,8 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
             {this.getBoxContent()}
           </StyledContentWrapper>
         </StyledFlip>
-        {this.getDetailContent()}
-        {this.getSettingsContent()}
+        {this.getDetailContent(showDetailView)}
+        {this.getSettingsContent(showSettingsView)}
       </StyledCard>
     )
   }
