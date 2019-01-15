@@ -41,7 +41,8 @@ class TestOmahaLib(unittest.TestCase):
                     chan = release_channel()[0:2]
                 elif release_channel() in ['release', 'dev']:
                     chan = release_channel()[0:3]
-                self.assertEquals('{}-{}'.format(mock_get_host_arch.return_value, chan), omaha_channel())
+                self.assertEquals('{}-{}'.format(mock_get_host_arch.return_value, chan),
+                                  omaha_channel(PLATFORM, TARGET_ARCH, False))
 
     @patch('lib.util.get_host_arch')
     @patch('lib.util.get_platform')
@@ -59,7 +60,8 @@ class TestOmahaLib(unittest.TestCase):
                 # print("DEBUG: TARGET_ARCH: {}".format(TARGET_ARCH))
                 # print("DEBUG: omaha_channel(): {}".format(omaha_channel()))
                 if PLATFORM is 'darwin':
-                    self.assertEquals(CHANNEL if CHANNEL not in 'release' else 'stable', omaha_channel())
+                    self.assertEquals(CHANNEL if CHANNEL not in 'release' else 'stable',
+                                      omaha_channel(PLATFORM, TARGET_ARCH, False))
 
 
 if __name__ == '__main__':

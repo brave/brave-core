@@ -10,7 +10,8 @@
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
     "web-ui": "webpack --config components/webpack/webpack.config.js --progress --colors",
     "test-unit": "jest -t",
-    "test-security": "npm audit"
+    "test-security": "npm audit",
+    "test-python-scripts": "npm run pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test"
   },
   "repository": {
     "type": "git",
