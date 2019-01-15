@@ -526,7 +526,7 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
   auto resolved_record = SyncRecord::Clone(*records.at(0));
   resolved_record->action = jslib::SyncRecord::Action::A_DELETE;
   resolved_records.push_back(std::move(resolved_record));
-  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(5);
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(AtLeast(3));
   sync_service()->OnResolvedPreferences(resolved_records);
 
   auto devices_final = sync_service()->sync_prefs_->GetSyncDevices();
@@ -696,5 +696,96 @@ TEST_F(BraveSyncServiceTest, BackgroundSyncStarted) {
 
 TEST_F(BraveSyncServiceTest, BackgroundSyncStopped) {
   sync_service()->BackgroundSyncStopped(false);
+  EXPECT_FALSE(sync_service()->timer_->IsRunning());
+}
+
+TEST_F(BraveSyncServiceTest, LoopDelayVaries) {
+  // This test is almost the same as BraveSyncServiceTest::OnDeleteDevice
+  // Loop delay should be:
+  // 1 sec when there is no sync chain yet
+  // 60 sec when 2 or more devices
+  // after sync chain destroy the loop should not be running
+
+  sync_service()->BackgroundSyncStarted(false);
+
+  EXPECT_TRUE(sync_service()->timer_->IsRunning());
+  EXPECT_EQ(sync_service()->GetLoopDelay().InSeconds(), 1u);
+
+  RecordsList records;
+  records.push_back(SimpleDeviceRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "1", "device1"));
+  records.push_back(SimpleDeviceRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "2", "device2"));
+  records.push_back(SimpleDeviceRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "3", "device3"));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
+  sync_service()->OnResolvedPreferences(records);
+
+  sync_service()->sync_prefs_->SetThisDeviceId("1");
+  auto devices = sync_service()->sync_prefs_->GetSyncDevices();
+
+  // Have 3 devices now
+  EXPECT_EQ(sync_service()->GetLoopDelay().InSeconds(), 60u);
+
+  EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "2", "device2"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "3", "device3"));
+
+  using brave_sync::jslib::SyncRecord;
+  EXPECT_CALL(*sync_client(), SendSyncRecords("PREFERENCES",
+      ContainsDeviceRecord(SyncRecord::Action::A_DELETE, "device3"))).Times(1);
+  sync_service()->OnDeleteDevice("3");
+
+  RecordsList resolved_records;
+  auto resolved_record = SyncRecord::Clone(*records.at(2));
+  resolved_record->action = jslib::SyncRecord::Action::A_DELETE;
+  resolved_records.push_back(std::move(resolved_record));{
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
+  sync_service()->OnResolvedPreferences(resolved_records);}
+
+  auto devices_final = sync_service()->sync_prefs_->GetSyncDevices();
+  EXPECT_TRUE(DevicesContains(devices_final.get(), "1", "device1"));
+  EXPECT_TRUE(DevicesContains(devices_final.get(), "2", "device2"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "3", "device3"));
+
+  // Have 2 devices now, still expecting 60 sec delay
+  EXPECT_EQ(sync_service()->GetLoopDelay().InSeconds(), 60u);
+
+  // Delete all remaining devices
+  resolved_records.clear();
+
+  auto resolved_record_0 = SyncRecord::Clone(*records.at(0));
+  resolved_record_0->action = jslib::SyncRecord::Action::A_DELETE;
+  resolved_records.push_back(std::move(resolved_record_0));
+
+  auto resolved_record_1 = SyncRecord::Clone(*records.at(1));
+  resolved_record_1->action = jslib::SyncRecord::Action::A_DELETE;
+  resolved_records.push_back(std::move(resolved_record_1));
+
+  {
+    // Expecting call of OnSyncStateChanged at least 3 times:
+    // delete "device1"
+    // delete "device2"
+    // brave_sync.enabled to false, several times
+    EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(AtLeast(3));
+    EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(AtLeast(1));
+    sync_service()->OnResolvedPreferences(resolved_records);
+  }
+
+  devices_final = sync_service()->sync_prefs_->GetSyncDevices();
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "2", "device2"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "3", "device3"));
+
+  // We have mock client, so emulate these steps when all devices removed
+  // 1) brave_sync.enabled goes to false
+  // 2) BraveSyncClientImpl::OnSyncEnabledChanged
+  // 3) BraveSyncClientImpl::LoadOrUnloadExtension(false)
+  // 4) BraveSyncClientImpl::OnExtensionUnloaded
+  // 5) BraveSyncServiceImpl::BackgroundSyncStopped
+  sync_service()->BackgroundSyncStopped(true);
   EXPECT_FALSE(sync_service()->timer_->IsRunning());
 }
