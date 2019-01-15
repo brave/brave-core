@@ -18,6 +18,18 @@ class SettingsNavigationController: UINavigationController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .default
     }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return .portrait
+    }
+    
+    override var shouldAutorotate: Bool {
+        return false
+    }
 }
 
 protocol PresentingModalViewControllerDelegate {
