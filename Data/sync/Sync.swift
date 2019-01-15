@@ -117,7 +117,7 @@ public class Sync: JSInjector {
     fileprivate let prefFetchTimestamp = "sync-fetch-timestamp"
     fileprivate let prefBaseOrder = "sync-base-order"
     
-    fileprivate lazy var isDebug: Bool = { return !AppConstants.BuildChannel.isRelease }()
+    fileprivate lazy var isDebug: Bool = { return AppConstants.BuildChannel == .developer }()
     
     fileprivate lazy var serverUrl: String = {
         return isDebug ? "https://sync-staging.brave.com" : "https://sync.brave.com"
