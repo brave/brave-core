@@ -463,6 +463,13 @@ extension PopoverController: UIGestureRecognizerDelegate {
             return false
         }
         
+        // Don't allow for pan gesture while table view is in editing mode.
+        // This bug only occurs for bookmarks at nested levels, see issue #687.
+        if let tableView = otherGestureRecognizer.view as? UITableView, tableView.isEditing {
+            gestureRecognizer.cancel()
+            return false
+        }
+                
         if let scrollView = otherGestureRecognizer.view as? UIScrollView {
             let topInset = scrollView.adjustedContentInset.top
             let leftInset = scrollView.adjustedContentInset.left
