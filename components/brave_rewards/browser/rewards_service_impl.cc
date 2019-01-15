@@ -812,6 +812,9 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
 
 void RewardsServiceImpl::LoadPublisherState(
     ledger::LedgerCallbackHandler* handler) {
+  bat_ledger_->GetRewardsMainEnabled(
+      base::BindOnce(&RewardsServiceImpl::SetRewardsMainEnabledPref,
+        AsWeakPtr()));
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadStateOnFileTaskRunner, publisher_state_path_),
       base::Bind(&RewardsServiceImpl::OnPublisherStateLoaded,
@@ -1262,6 +1265,7 @@ void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) {
     return;
   }
 
+  SetRewardsMainEnabledPref(enabled);
   bat_ledger_->SetRewardsMainEnabled(enabled);
   TriggerOnRewardsMainEnabled(enabled);
 }
@@ -1273,6 +1277,10 @@ void RewardsServiceImpl::GetRewardsMainEnabled(
   }
 
   bat_ledger_->GetRewardsMainEnabled(callback);
+}
+
+void RewardsServiceImpl::SetRewardsMainEnabledPref(bool enabled) {
+  profile_->GetPrefs()->SetBoolean(kBraveRewardsEnabled, enabled);
 }
 
 void RewardsServiceImpl::GetPublisherMinVisitTime(

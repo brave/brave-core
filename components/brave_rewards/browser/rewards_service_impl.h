@@ -343,6 +343,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetAutoContributeProps(
       const GetAutoContributePropsCallback& callback,
       const std::string& json_props);
+  void SetRewardsMainEnabledPref(bool enabled);
 
   bool Connected() const;
   void ConnectionClosed();
