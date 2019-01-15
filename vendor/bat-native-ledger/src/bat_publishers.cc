@@ -85,10 +85,6 @@ void BatPublishers::MakePayment(const ledger::PaymentData& payment_data) {
           payment_data, _1, _2));
 }
 
-bool BatPublishers::saveVisitAllowed() const {
-  return (ledger_->GetRewardsMainEnabled() && ledger_->GetAutoContribute());
-}
-
 void onVisitSavedDummy(ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info) {
   // onPublisherInfoUpdated will always be called by LedgerImpl so do nothing
@@ -97,7 +93,7 @@ void onVisitSavedDummy(ledger::Result result,
 void BatPublishers::saveVisit(const std::string& publisher_id,
                               const ledger::VisitData& visit_data,
                               const uint64_t& duration) {
-  if (!saveVisitAllowed() || publisher_id.empty()) {
+  if (!ledger_->GetRewardsMainEnabled() || publisher_id.empty()) {
     return;
   }
 
@@ -248,8 +244,10 @@ void BatPublishers::saveVisitInternal(
 
   // set duration to 0 if you don't have sufficient visit time
   // or if you set ac to only verified and site is not verified
+  // or if auto contribute if off
   if ((!ignoreMinTime(publisher_id) && duration < getPublisherMinVisitTime()) ||
-      (!ledger_->GetPublisherAllowNonVerified() && !verified)) {
+      (!ledger_->GetPublisherAllowNonVerified() && !verified) ||
+      !ledger_->GetAutoContribute()) {
     duration = 0;
   }
 
