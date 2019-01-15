@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/outdated_upgrade_bubble_view.cc b/chrome/browser/ui/views/outdated_upgrade_bubble_view.cc
-index f5d3be5bc95769b682080c53c7be08cb9ab2dfe2..0a6e86850cb40767b093f399c4eb717ec051c544 100644
+index f5d3be5bc95769b682080c53c7be08cb9ab2dfe2..83ddc64b25ffa1cab9d1ab2254e3b7d723054a12 100644
 --- a/chrome/browser/ui/views/outdated_upgrade_bubble_view.cc
 +++ b/chrome/browser/ui/views/outdated_upgrade_bubble_view.cc
 @@ -31,8 +31,12 @@ namespace {
@@ -7,7 +7,7 @@ index f5d3be5bc95769b682080c53c7be08cb9ab2dfe2..0a6e86850cb40767b093f399c4eb717e
  // The URL to be used to re-install Chrome when auto-update failed for too long.
  constexpr char kDownloadChromeUrl[] =
 +#if defined(BRAVE_CHROMIUM_BUILD)
-+    "https://www.brave.com/download";
++    kDownloadBraveUrl;
 +#else
      "https://www.google.com/chrome/?&brand=CHWL"
      "&utm_campaign=en&utm_source=en-et-na-us-chrome-bubble&utm_medium=et";
