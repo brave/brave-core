@@ -102,8 +102,10 @@ class AdsServiceImpl : public AdsService,
   void GetClientInfo(ads::ClientInfo* info) const override;
   const std::vector<std::string> GetLocales() const override;
   const std::string GenerateUUID() const override;
-  void ShowNotification(
-      std::unique_ptr<ads::NotificationInfo> info) override;
+  void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;
+  void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
+  bool IsConfirmationsReadyToShowAds() override;
+  void AdSustained(std::unique_ptr<ads::NotificationInfo> info) override;
   uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(uint32_t timer_id) override;
   void URLRequest(const std::string& url,
