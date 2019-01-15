@@ -69,9 +69,20 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
   }
 
   componentDidMount () {
+    this.handleUrl()
+    window.addEventListener('popstate', (e) => {
+      this.handleUrl()
+    })
+  }
+
+  handleUrl = () => {
     const path = window.location.pathname
     // Index view, no need to do anything here
     if (path === '/') {
+      this.setState({
+        detailView: false,
+        settings: false
+      })
       return
     }
 
