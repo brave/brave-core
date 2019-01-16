@@ -8,6 +8,7 @@ namespace brave_rewards {
 namespace prefs {
 
 const char kBraveRewardsEnabled[] = "brave.rewards.enabled";
+const char kBraveRewardsEnabledMigrated[] = "brave.rewards.enabled_migrated";
 const char kRewardsNotifications[] = "brave.rewards.notifications";
 const char kRewardsNotificationTimerInterval[] = "brave.rewards.notification_timer_interval";
 const char kRewardsBackupNotificationFrequency[] =

@@ -17,6 +17,7 @@ source_set("browser") {
     "//base",
     "//brave/components/brave_ads/common",
     "//brave/components/brave_rewards/common",
+    "//brave/components/brave_rewards/browser",
     "//components/dom_distiller/content/browser",
     "//components/dom_distiller/core",
     "//components/keyed_service/content",
