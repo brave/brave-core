@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #endif
 
 namespace brave_ads {
@@ -42,6 +43,7 @@ AdsServiceFactory::AdsServiceFactory()
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
   DependsOn(NotificationDisplayServiceFactory::GetInstance());
   DependsOn(dom_distiller::DomDistillerServiceFactory::GetInstance());
+  DependsOn(brave_rewards::RewardsServiceFactory::GetInstance());
 #endif
 }
 
@@ -75,7 +77,6 @@ bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {
 void AdsServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(prefs::kBraveAdsEnabled, false);
-  registry->RegisterBooleanPref(prefs::kBraveAdsUIEnabled, false);
   registry->RegisterUint64Pref(prefs::kBraveAdsPerHour, 2);
   registry->RegisterUint64Pref(prefs::kBraveAdsPerDay, 6);
   registry->RegisterIntegerPref(prefs::kBraveAdsIdleThreshold, 15);
