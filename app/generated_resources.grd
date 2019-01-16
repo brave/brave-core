@@ -3275,7 +3275,7 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_EXTENSION_USER_COUNT" desc="Number of users an app or extension has">
         <ph name="USER_COUNT">$1<ex>10,479</ex></ph> users
       </message>
-      <message name="IDS_EXTENSION_PROMPT_STORE_LINK" desc="Anchor text for link to Brave Web Store in app or extension installation dialog">
+      <message name="IDS_EXTENSION_PROMPT_STORE_LINK" desc="Anchor text for link to Web Store in app or extension installation dialog">
         Open in Web Store
       </message>
       <message name="IDS_EXTENSION_PROMPT_RETAINED_FILES" desc="A line of explanatory text that precedes the list of files the app has permanent access to, showing the number of files. This is shown when an app has persistent access to files. [ICU Syntax]">
@@ -3927,10 +3927,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSION_PROMPT_REPAIR_BUTTON_APP" desc="Text for the install button on the app reinstall prompt.">
         Repair app
       </message>
-      <message name="IDS_EXTENSION_WEB_STORE_TITLE" desc="Text for the Brave Web Store">
-        Brave Web Store
+      <message name="IDS_EXTENSION_WEB_STORE_TITLE" desc="Text for the Web Store">
+        Web Store
       </message>
-      <message name="IDS_EXTENSION_WEB_STORE_TITLE_SHORT" desc="Shortened version of text for the Brave Web Store">
+      <message name="IDS_EXTENSION_WEB_STORE_TITLE_SHORT" desc="Shortened version of text for the Web Store">
         Web Store
       </message>
       <message name="IDS_EXTENSIONS_SHOW_DETAILS" desc="Tooltip for the button next to an extension that shows more details">
@@ -3940,7 +3940,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Hide Details
       </message>
 
-      <!-- Error messages for Brave Web Store UI -->
+      <!-- Error messages for Web Store UI -->
       <message name="IDS_WEBSTORE_DOWNLOAD_ACCESS_DENIED" desc="Text displayed in the error prompt when a CRX cannot be downloaded due to an authentication error.">
         Access denied.
       </message>
@@ -3986,7 +3986,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       OK, got it
       </message>
       <message name="IDS_EXTENSIONS_ADDED_WITHOUT_KNOWLEDGE" desc="Text shown in the extensions settings for items that might have been forcefully added to Brave without the user's knowledge">
-        This extension is not listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Brave Web Store</ex></ph> and may have been added without your knowledge.
+        This extension is not listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
       </message>
       <message name="IDS_EXTENSIONS_DISABLE_DEVELOPER_MODE_TITLE" desc="Title of a dialog warning users they have development mode extensions running">
         Disable developer mode extensions
@@ -5880,7 +5880,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
         <!-- Extension install location strings -->
         <message name="IDS_EXTENSIONS_INSTALL_LOCATION_UNKNOWN" desc="The text explaining the the installation location is unknown.">
-          Not from Brave Web Store.
+          Not from Web Store.
         </message>
         <message name="IDS_EXTENSIONS_INSTALL_LOCATION_3RD_PARTY" desc="The text explaining the the installation came from a 3rd party app.">
           Installed by a third party.
@@ -5899,8 +5899,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_EXTENSIONS_BLACKLISTED_SECURITY_VULNERABILITY" desc="The text explaining the reason for disabling extension or app. The extension in question has a security vulnerability.">
           This extension contains a serious security vulnerability.
         </message>
-        <message name="IDS_EXTENSIONS_BLACKLISTED_CWS_POLICY_VIOLATION" desc="The text explaining the reason for disabling extension or app. The extension in question violates Brave Web Store policy.">
-          This extension violates the Brave Web Store policy.
+        <message name="IDS_EXTENSIONS_BLACKLISTED_CWS_POLICY_VIOLATION" desc="The text explaining the reason for disabling extension or app. The extension in question violates Web Store policy.">
+          This extension violates the Web Store policy.
         </message>
         <message name="IDS_EXTENSIONS_BLACKLISTED_POTENTIALLY_UNWANTED" desc="The text explaining the reason for disabling extension or app. The extension in question might have been installed without user consent.">
           Disabled by Brave. This extension may be unsafe.
@@ -7992,10 +7992,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_HIGH_CONTRAST_HEADER" desc="Section header for list of extensions or themes to try in conjunction with the High Contrast mode">
         Try:
       </message>
-      <message name="IDS_HIGH_CONTRAST_EXT" desc="The title of a link that will open the Brave Web Store with a High Contrast extension the user can install.">
+      <message name="IDS_HIGH_CONTRAST_EXT" desc="The title of a link that will open the Web Store with a High Contrast extension the user can install.">
         High Contrast Extension
       </message>
-      <message name="IDS_DARK_THEME" desc="The title of a link that will open the Brave Web Store with a dark theme the user might want to install, if they prefer light text on a dark background.">
+      <message name="IDS_DARK_THEME" desc="The title of a link that will open the Web Store with a dark theme the user might want to install, if they prefer light text on a dark background.">
         Dark Theme
       </message>
 
