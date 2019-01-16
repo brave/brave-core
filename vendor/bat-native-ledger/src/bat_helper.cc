@@ -2617,14 +2617,11 @@ static bool ignore_ = false;
   }
 
   void saveToJson(JsonWriter & writer,
-      const ledger::PublisherInfoFilter& info) {
+      const ledger::ActivityInfoFilter& info) {
     writer.StartObject();
 
     writer.String("id");
     writer.String(info.id.c_str());
-
-    writer.String("category");
-    writer.Int(info.category);
 
     writer.String("month");
     writer.Int(info.month);

@@ -38,7 +38,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void saveVisit(const std::string& publisher_id,
                  const ledger::VisitData& visit_data,
                  const uint64_t& duration);
-  bool saveVisitAllowed() const;
 
   void AddRecurringPayment(const std::string& publisher_id, const double& value);
 
@@ -54,14 +53,14 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void setPanelExclude(const std::string& publisher_id,
     const ledger::PUBLISHER_EXCLUDE& exclude, uint64_t windowId);
 
-  void restorePublishers();
+  void RestorePublishers();
 
   void setPublisherAllowNonVerified(const bool& allow);
   void setPublisherAllowVideos(const bool& allow);
-  void setBalanceReport(ledger::PUBLISHER_MONTH month,
+  void setBalanceReport(ledger::ACTIVITY_MONTH month,
                         int year,
                         const ledger::BalanceReportInfo& report_info);
-  bool getBalanceReport(ledger::PUBLISHER_MONTH month,
+  bool getBalanceReport(ledger::ACTIVITY_MONTH month,
                         int year,
                         ledger::BalanceReportInfo* report_info);
   std::map<std::string, ledger::BalanceReportInfo> getAllBalanceReports();
@@ -76,7 +75,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   std::unique_ptr<ledger::PublisherInfo> onPublisherInfoUpdated(
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo>);
-  std::string GetBalanceReportName(ledger::PUBLISHER_MONTH month, int year);
+  std::string GetBalanceReportName(ledger::ACTIVITY_MONTH month, int year);
   std::vector<ledger::ContributionInfo> GetRecurringDonationList();
 
   void RefreshPublishersList(const std::string & pubs_list);
@@ -89,37 +88,33 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void getPublisherBanner(const std::string& publisher_id,
                           ledger::PublisherBannerCallback callback);
 
-  void setBalanceReportItem(ledger::PUBLISHER_MONTH month,
+  void setBalanceReportItem(ledger::ACTIVITY_MONTH month,
                                int year,
                                ledger::ReportType type,
                                const std::string& probi);
 
-  ledger::PublisherInfoFilter CreatePublisherFilter(
+  ledger::ActivityInfoFilter CreateActivityFilter(
       const std::string& publisher_id,
-      ledger::PUBLISHER_CATEGORY category,
-      ledger::PUBLISHER_MONTH month,
+      ledger::ACTIVITY_MONTH month,
       int year);
 
-  ledger::PublisherInfoFilter CreatePublisherFilter(
+  ledger::ActivityInfoFilter CreateActivityFilter(
       const std::string& publisher_id,
-      ledger::PUBLISHER_CATEGORY category,
-      ledger::PUBLISHER_MONTH month,
+      ledger::ACTIVITY_MONTH month,
       int year,
-      ledger::PUBLISHER_EXCLUDE_FILTER excluded);
+      ledger::EXCLUDE_FILTER excluded);
 
-  ledger::PublisherInfoFilter CreatePublisherFilter(
+  ledger::ActivityInfoFilter CreateActivityFilter(
       const std::string& publisher_id,
-      ledger::PUBLISHER_CATEGORY category,
-      ledger::PUBLISHER_MONTH month,
+      ledger::ACTIVITY_MONTH month,
       int year,
       bool min_duration);
 
-  ledger::PublisherInfoFilter CreatePublisherFilter(
+  ledger::ActivityInfoFilter CreateActivityFilter(
       const std::string& publisher_id,
-      ledger::PUBLISHER_CATEGORY category,
-      ledger::PUBLISHER_MONTH month,
+      ledger::ACTIVITY_MONTH month,
       int year,
-      ledger::PUBLISHER_EXCLUDE_FILTER excluded,
+      ledger::EXCLUDE_FILTER excluded,
       bool min_duration,
       const uint64_t& currentReconcileStamp,
       bool non_verified);
@@ -174,7 +169,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
-  void onRestorePublishersInternal(const ledger::PublisherInfoList& publisherInfoList, uint32_t /* next_record */);
+  void OnRestorePublishersInternal(bool success);
 
   double concaveScore(const uint64_t& duration);
 
@@ -182,7 +177,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void calcScoreConsts();
 
-  void synopsisNormalizer(const ledger::PublisherInfo& info);
+  void synopsisNormalizer();
   void synopsisNormalizerInternal(ledger::PublisherInfoList* newList, bool saveData,
     const ledger::PublisherInfoList& list, uint32_t /* next_record */);
 

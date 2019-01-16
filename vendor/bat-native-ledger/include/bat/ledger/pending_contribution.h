@@ -24,7 +24,7 @@ LEDGER_EXPORT struct PendingContribution {
   double amount = 0;
   uint64_t added_date = 0;
   std::string viewing_id;
-  PUBLISHER_CATEGORY category;
+  REWARDS_CATEGORY category;
 };
 
 LEDGER_EXPORT struct PendingContributionList {

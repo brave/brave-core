@@ -56,18 +56,27 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
                         ledger::PublisherInfoCallback callback) override;
-  void GetPublisherInfo(const ledger::PublisherInfoFilter& filter,
+  void SetActivityInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
+                       ledger::PublisherInfoCallback callback) override;
+  void GetPublisherInfo(const std::string& publisher_key,
                         ledger::PublisherInfoCallback callback) override;
+  void GetActivityInfo(const ledger::ActivityInfoFilter& filter,
+                       ledger::PublisherInfoCallback callback) override;
+  void GetPanelPublisherInfo(const ledger::ActivityInfoFilter& filter,
+                             ledger::PublisherInfoCallback callback);
   void GetMediaPublisherInfo(const std::string& media_key,
-                                ledger::PublisherInfoCallback callback) override;
+                             ledger::PublisherInfoCallback callback) override;
   void SetMediaPublisherInfo(const std::string& media_key,
-                            const std::string& publisher_id) override;
+                             const std::string& publisher_id) override;
   std::vector<ledger::ContributionInfo> GetRecurringDonationPublisherInfo() override;
-  void GetPublisherInfoList(uint32_t start, uint32_t limit,
-                            const ledger::PublisherInfoFilter& filter,
-                            ledger::PublisherInfoListCallback callback) override;
+  void GetActivityInfoList(uint32_t start,
+                           uint32_t limit,
+                           const ledger::ActivityInfoFilter& filter,
+                           ledger::PublisherInfoListCallback callback) override;
 
-  void DoDirectDonation(const ledger::PublisherInfo& publisher, int amount, const std::string& currency) override;
+  void DoDirectDonation(const ledger::PublisherInfo& publisher,
+                        int amount,
+                        const std::string& currency) override;
 
   void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
@@ -78,7 +87,7 @@ class LedgerImpl : public ledger::Ledger,
   void SetUserChangedContribution() override;
   bool GetUserChangedContribution();
   void SetAutoContribute(bool enabled) override;
-  void SetBalanceReport(ledger::PUBLISHER_MONTH month,
+  void SetBalanceReport(ledger::ACTIVITY_MONTH month,
                         int year,
                         const ledger::BalanceReportInfo& report_info) override;
 
@@ -98,7 +107,7 @@ class LedgerImpl : public ledger::Ledger,
   bool GetPublisherAllowVideos() const override;
   double GetContributionAmount() const override;
   bool GetAutoContribute() const override;
-  bool GetBalanceReport(ledger::PUBLISHER_MONTH month,
+  bool GetBalanceReport(ledger::ACTIVITY_MONTH month,
                         int year,
                         ledger::BalanceReportInfo* report_info) const override;
   std::map<std::string, ledger::BalanceReportInfo> GetAllBalanceReports() const override;
@@ -157,6 +166,7 @@ class LedgerImpl : public ledger::Ledger,
     const ledger::PUBLISHER_EXCLUDE& exclude, uint64_t windowId) override;
 
   void RestorePublishers() override;
+  void OnRestorePublishers(ledger::OnRestoreCallback callback);
   bool IsWalletCreated() const override;
   void GetPublisherActivityFromUrl(uint64_t windowId, const ledger::VisitData& visit_data) override;
   void GetMediaActivityFromUrl(uint64_t windowId,
@@ -166,7 +176,7 @@ class LedgerImpl : public ledger::Ledger,
                            std::unique_ptr<ledger::PublisherInfo> info,
                            uint64_t windowId);
   void OnExcludedSitesChanged(const std::string& publisher_id);
-  void SetBalanceReportItem(ledger::PUBLISHER_MONTH month,
+  void SetBalanceReportItem(ledger::ACTIVITY_MONTH month,
                             int year,
                             ledger::ReportType type,
                             const std::string& probi) override;
@@ -180,19 +190,18 @@ class LedgerImpl : public ledger::Ledger,
                           ledger::PublisherBannerCallback callback) override;
   double GetBalance() override;
   void OnReconcileCompleteSuccess(const std::string& viewing_id,
-                                  const ledger::PUBLISHER_CATEGORY category,
+                                  const ledger::REWARDS_CATEGORY category,
                                   const std::string& probi,
-                                  const ledger::PUBLISHER_MONTH month,
+                                  const ledger::ACTIVITY_MONTH month,
                                   const int year,
                                   const uint32_t date) override;
   void GetRecurringDonations(ledger::PublisherInfoListCallback callback);
   void RemoveRecurring(const std::string& publisher_key) override;
-  ledger::PublisherInfoFilter CreatePublisherFilter(
+  ledger::ActivityInfoFilter CreateActivityFilter(
       const std::string& publisher_id,
-      ledger::PUBLISHER_CATEGORY category,
-      ledger::PUBLISHER_MONTH month,
+      ledger::ACTIVITY_MONTH month,
       int year,
-      ledger::PUBLISHER_EXCLUDE_FILTER excluded,
+      ledger::EXCLUDE_FILTER excluded,
       bool min_duration,
       const uint64_t& currentReconcileStamp,
       bool non_verified);
@@ -266,7 +275,7 @@ class LedgerImpl : public ledger::Ledger,
                             const int year,
                             const uint32_t date,
                             const std::string& publisher_key,
-                            const ledger::PUBLISHER_CATEGORY category);
+                            const ledger::REWARDS_CATEGORY category);
 
   void NormalizeContributeWinners(
       ledger::PublisherInfoList* newList,
