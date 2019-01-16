@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/browser/ad_notification.h"
 #include "brave/components/brave_ads/browser/bundle_state_database.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -267,6 +268,10 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
       base::Bind(&AdsServiceImpl::OnPrefsChanged,
                  base::Unretained(this)));
   profile_pref_change_registrar_.Add(
+      brave_rewards::prefs::kBraveRewardsEnabled,
+      base::Bind(&AdsServiceImpl::OnPrefsChanged,
+                 base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
       prefs::kBraveAdsIdleThreshold,
       base::Bind(&AdsServiceImpl::OnPrefsChanged,
                  base::Unretained(this)));
@@ -429,7 +434,8 @@ void AdsServiceImpl::Shutdown() {
 }
 
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
-  if (pref == prefs::kBraveAdsEnabled) {
+  if (pref == prefs::kBraveAdsEnabled ||
+      pref == brave_rewards::prefs::kBraveRewardsEnabled) {
     if (is_enabled()) {
       Start();
     } else if (!is_enabled()) {
@@ -441,11 +447,9 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
 }
 
 bool AdsServiceImpl::is_enabled() const {
-  return profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
-}
-
-bool AdsServiceImpl::is_ui_enabled() const {
-  return profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsUIEnabled);
+  bool ads_enabled = profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
+  bool rewards_enabled = profile_->GetPrefs()->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled);
+  return (ads_enabled && rewards_enabled);
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {
@@ -454,10 +458,6 @@ bool AdsServiceImpl::IsAdsEnabled() const {
 
 void AdsServiceImpl::set_ads_enabled(bool enabled) {
   profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabled, enabled);
-}
-
-void AdsServiceImpl::set_ads_ui_enabled(bool enabled) {
-  profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsUIEnabled, enabled);
 }
 
 void AdsServiceImpl::set_ads_per_hour(int ads_per_hour) {

@@ -29,6 +29,7 @@
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/auto_contribution_props.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
@@ -356,20 +357,20 @@ void RewardsServiceImpl::StartLedger() {
 
 void RewardsServiceImpl::MaybeShowBackupNotification(uint64_t boot_stamp) {
   PrefService* pref_service = profile_->GetPrefs();
-  bool user_has_funded = pref_service->GetBoolean(kRewardsUserHasFunded);
-  bool backup_succeeded = pref_service->GetBoolean(kRewardsBackupSucceeded);
+  bool user_has_funded = pref_service->GetBoolean(prefs::kRewardsUserHasFunded);
+  bool backup_succeeded = pref_service->GetBoolean(prefs::kRewardsBackupSucceeded);
   if (user_has_funded && !backup_succeeded) {
     base::Time now = base::Time::Now();
     base::Time boot_timestamp = base::Time::FromDoubleT(boot_stamp);
     base::TimeDelta backup_notification_frequency =
-        pref_service->GetTimeDelta(kRewardsBackupNotificationFrequency);
+        pref_service->GetTimeDelta(prefs::kRewardsBackupNotificationFrequency);
     base::TimeDelta backup_notification_interval =
-        pref_service->GetTimeDelta(kRewardsBackupNotificationInterval);
+        pref_service->GetTimeDelta(prefs::kRewardsBackupNotificationInterval);
     base::TimeDelta elapsed = now - boot_timestamp;
     if (elapsed > backup_notification_interval) {
       base::TimeDelta next_backup_notification_interval =
           backup_notification_interval + backup_notification_frequency;
-      pref_service->SetTimeDelta(kRewardsBackupNotificationInterval,
+      pref_service->SetTimeDelta(prefs::kRewardsBackupNotificationInterval,
                                  next_backup_notification_interval);
       RewardsNotificationService::RewardsNotificationArgs args;
       notification_service_->AddNotification(
@@ -812,6 +813,11 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
 
 void RewardsServiceImpl::LoadPublisherState(
     ledger::LedgerCallbackHandler* handler) {
+  if (!profile_->GetPrefs()->GetBoolean(prefs::kBraveRewardsEnabledMigrated)) {
+    bat_ledger_->GetRewardsMainEnabled(
+        base::BindOnce(&RewardsServiceImpl::SetRewardsMainEnabledPref,
+          AsWeakPtr()));
+  }
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadStateOnFileTaskRunner, publisher_state_path_),
       base::Bind(&RewardsServiceImpl::OnPublisherStateLoaded,
@@ -1090,7 +1096,7 @@ void RewardsServiceImpl::TriggerOnWalletInitialized(int error_code) {
 void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
     std::unique_ptr<ledger::WalletInfo> wallet_info) {
   if (wallet_info && wallet_info->balance_ > 0)
-    profile_->GetPrefs()->SetBoolean(kRewardsUserHasFunded, true);
+    profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);
 
   std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
   for (auto& observer : observers_) {
@@ -1262,6 +1268,7 @@ void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) {
     return;
   }
 
+  SetRewardsMainEnabledPref(enabled);
   bat_ledger_->SetRewardsMainEnabled(enabled);
   TriggerOnRewardsMainEnabled(enabled);
 }
@@ -1273,6 +1280,15 @@ void RewardsServiceImpl::GetRewardsMainEnabled(
   }
 
   bat_ledger_->GetRewardsMainEnabled(callback);
+}
+
+void RewardsServiceImpl::SetRewardsMainEnabledPref(bool enabled) {
+  profile_->GetPrefs()->SetBoolean(prefs::kBraveRewardsEnabled, enabled);
+  SetRewardsMainEnabledMigratedPref(true);
+}
+
+void RewardsServiceImpl::SetRewardsMainEnabledMigratedPref(bool enabled) {
+  profile_->GetPrefs()->SetBoolean(prefs::kBraveRewardsEnabledMigrated, enabled);
 }
 
 void RewardsServiceImpl::GetPublisherMinVisitTime(
@@ -1991,7 +2007,7 @@ void RewardsServiceImpl::StartNotificationTimers(bool main_enabled) {
   // Periodic timer, runs once per day by default.
   PrefService* pref_service = profile_->GetPrefs();
   base::TimeDelta periodic_timer_interval =
-      pref_service->GetTimeDelta(kRewardsNotificationTimerInterval);
+      pref_service->GetTimeDelta(prefs::kRewardsNotificationTimerInterval);
   notification_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
   notification_periodic_timer_->Start(
       FROM_HERE, periodic_timer_interval, this,
@@ -2024,7 +2040,7 @@ void RewardsServiceImpl::MaybeShowNotificationAddFunds() {
 
 bool RewardsServiceImpl::ShouldShowNotificationAddFunds() const {
   base::Time next_time =
-      profile_->GetPrefs()->GetTime(kRewardsAddFundsNotification);
+      profile_->GetPrefs()->GetTime(prefs::kRewardsAddFundsNotification);
   return (next_time.is_null() || base::Time::Now() > next_time);
 }
 
@@ -2032,7 +2048,7 @@ void RewardsServiceImpl::ShowNotificationAddFunds(bool sufficient) {
   if (sufficient) return;
 
   base::Time next_time = base::Time::Now() + base::TimeDelta::FromDays(3);
-  profile_->GetPrefs()->SetTime(kRewardsAddFundsNotification, next_time);
+  profile_->GetPrefs()->SetTime(prefs::kRewardsAddFundsNotification, next_time);
   RewardsNotificationService::RewardsNotificationArgs args;
   notification_service_->AddNotification(
       RewardsNotificationService::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS, args,
@@ -2122,7 +2138,7 @@ bool RewardsServiceImpl::CheckImported() {
 }
 
 void RewardsServiceImpl::SetBackupCompleted() {
-  profile_->GetPrefs()->SetBoolean(kRewardsBackupSucceeded, true);
+  profile_->GetPrefs()->SetBoolean(prefs::kRewardsBackupSucceeded, true);
 }
 
 void RewardsServiceImpl::OnDonate(
