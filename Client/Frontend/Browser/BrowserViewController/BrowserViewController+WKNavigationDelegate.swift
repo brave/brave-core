@@ -21,6 +21,14 @@ extension WKNavigationAction {
     }
 }
 
+extension URL {
+    /// Obtain a schemeless absolute string
+    fileprivate var schemelessAbsoluteString: String {
+        guard let scheme = self.scheme else { return absoluteString }
+        return absoluteString.replacingOccurrences(of: "\(scheme)://", with: "")
+    }
+}
+
 extension BrowserViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         if tabManager.selectedTab?.webView !== webView {
@@ -169,7 +177,7 @@ extension BrowserViewController: WKNavigationDelegate {
             // request then the page is reloaded with a proper url and adblocking rules are applied.
             if
                 let mainDocumentURL = navigationAction.request.mainDocumentURL,
-                mainDocumentURL == url,
+                mainDocumentURL.schemelessAbsoluteString == url.schemelessAbsoluteString,
                 !url.isSessionRestoreURL,
                 navigationAction.sourceFrame.isMainFrame || navigationAction.targetFrame?.isMainFrame == true {
                 
