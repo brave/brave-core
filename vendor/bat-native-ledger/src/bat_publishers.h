@@ -177,7 +177,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void calcScoreConsts();
 
-  void synopsisNormalizer(const ledger::PublisherInfo& info);
+  void synopsisNormalizer();
   void synopsisNormalizerInternal(ledger::PublisherInfoList* newList, bool saveData,
     const ledger::PublisherInfoList& list, uint32_t /* next_record */);
 

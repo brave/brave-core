@@ -303,7 +303,7 @@ std::unique_ptr<ledger::PublisherInfo> BatPublishers::onPublisherInfoUpdated(
     return info;
   }
 
-  synopsisNormalizer(*info);
+  synopsisNormalizer();
 
   return info;
 }
@@ -367,7 +367,7 @@ void BatPublishers::onSetPublisherInfo(ledger::Result result,
   if (result != ledger::Result::LEDGER_OK) {
     return;
   }
-  synopsisNormalizer(*publisher_info);
+  synopsisNormalizer();
 }
 
 void BatPublishers::onSetPanelExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
@@ -418,6 +418,7 @@ void BatPublishers::OnRestorePublishersInternal(bool success) {
   if (success) {
     setNumExcludedSites(0);
     OnExcludedSitesChanged("");
+    synopsisNormalizer();
   } else {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Could not restore publishers.";
@@ -558,7 +559,7 @@ void BatPublishers::synopsisNormalizerInternal(
   }
 }
 
-void BatPublishers::synopsisNormalizer(const ledger::PublisherInfo& info) {
+void BatPublishers::synopsisNormalizer() {
   auto filter = CreateActivityFilter("",
       ledger::ACTIVITY_MONTH::ANY,
       -1,
