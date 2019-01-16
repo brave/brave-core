@@ -21,13 +21,34 @@ extension TabBarVisibility: RepresentableOptionType {
     }
 }
 
+/// The same style switch accessory view as in Static framework, except will not be recreated each time the Cell
+/// is configured, since it will be stored as is in `Row.Accessory.view`
+private class SwitchAccessoryView: UISwitch {
+    typealias ValueChange = (Bool) -> Void
+    
+    init(initialValue: Bool, valueChange: (ValueChange)? = nil) {
+        self.valueChange = valueChange
+        super.init(frame: .zero)
+        isOn = initialValue
+        addTarget(self, action: #selector(valueChanged), for: .valueChanged)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    var valueChange: ValueChange?
+    
+    @objc func valueChanged() {
+        valueChange?(self.isOn)
+    }
+}
+
 /// Just creates a switch toggle `Row` which updates a `Preferences.Option<Bool>`
 private func BoolRow(title: String, option: Preferences.Option<Bool>) -> Row {
     return Row(
         text: title,
-        accessory: .switchToggle(
-            value: option.value, { option.value = $0 }
-        ),
+        accessory: .view(SwitchAccessoryView(initialValue: option.value, valueChange: { option.value = $0 })),
         uuid: option.key
     )
 }
