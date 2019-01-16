@@ -58,7 +58,6 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
       )
     ) {
       this.setState({ willCreateNewSyncChainFromCode: false })
-      this.props.onClose()
       return
     }
 
