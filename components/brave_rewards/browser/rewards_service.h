@@ -38,7 +38,7 @@ bool IsMediaLink(const GURL& url,
 class RewardsNotificationService;
 class RewardsServiceObserver;
 
-using GetCurrentContributeListCallback =
+using GetContentSiteListCallback =
     base::Callback<void(std::unique_ptr<ContentSiteList>,
         uint32_t /* next_record */)>;
 using GetAllBalanceReportsCallback = base::Callback<void(
@@ -67,13 +67,13 @@ class RewardsService : public KeyedService {
 
   virtual void CreateWallet() = 0;
   virtual void FetchWalletProperties() = 0;
-  virtual void GetCurrentContributeList(
+  virtual void GetContentSiteList(
       uint32_t start,
       uint32_t limit,
       uint64_t min_visit_time,
       uint64_t reconcile_stamp,
       bool allow_non_verified,
-      const GetCurrentContributeListCallback& callback) = 0;
+      const GetContentSiteListCallback& callback) = 0;
   virtual void FetchGrant(const std::string& lang, const std::string& paymentId) = 0;
   virtual void GetGrantCaptcha() = 0;
   virtual void SolveGrantCaptcha(const std::string& solution) const = 0;

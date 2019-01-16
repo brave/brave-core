@@ -21,15 +21,8 @@ describe('rewards panel reducer', () => {
 
   describe('ON_TAB_RETRIEVED', () => {
     describe('persist publisher info', () => {
-      it.skip('url is the same', () => {
+      it('url is the same', () => {
         const initState: Rewards.State = { ...defaultState, walletCreated: true }
-        const expectedState1: Rewards.State = { ...defaultState, walletCreated: true }
-        const expectedState2: Rewards.State = {
-          ...defaultState,
-          walletCreated: true,
-          publishers: { 1: 'clifton.io' }
-        }
-
         const payload = {
           tab: {
             url: 'https://clifton.io',
@@ -40,6 +33,16 @@ describe('rewards panel reducer', () => {
         }
 
         // first visit
+        const expectedState1: Rewards.State = {
+          ...defaultState,
+          walletCreated: true,
+          publishers: {
+            id_1: {
+              tabUrl: 'https://clifton.io'
+            }
+          }
+        }
+
         let state = reducers({ rewardsPanelData: initState }, {
           type: types.ON_TAB_RETRIEVED,
           payload
@@ -48,9 +51,25 @@ describe('rewards panel reducer', () => {
         expect(state.rewardsPanelData).toEqual(expectedState1)
 
         // imitates ON_PUBLISHER_DATA
-        state.rewardsPanelData.publishers = { id_1: 'clifton.io' }
+        state.rewardsPanelData.publishers = {
+          id_1: {
+            tabUrl: 'https://clifton.io',
+            name: 'Clifton'
+          }
+        }
 
         // second visit
+        const expectedState2: Rewards.State = {
+          ...defaultState,
+          walletCreated: true,
+          publishers: {
+            id_1: {
+              tabUrl: 'https://clifton.io',
+              name: 'Clifton'
+            }
+          }
+        }
+
         state = reducers(state, {
           type: types.ON_TAB_RETRIEVED,
           payload
@@ -61,9 +80,18 @@ describe('rewards panel reducer', () => {
 
       it('url is not the same', () => {
         const initState: Rewards.State = { ...defaultState, walletCreated: true }
-        const expectedState: Rewards.State = { ...defaultState, walletCreated: true }
 
         // first visit
+        const expectedState1: Rewards.State = {
+          ...defaultState,
+          walletCreated: true,
+          publishers: {
+            id_1: {
+              tabUrl: 'https://clifton.io'
+            }
+          }
+        }
+
         let state = reducers({ rewardsPanelData: initState }, {
           type: types.ON_TAB_RETRIEVED,
           payload: {
@@ -76,12 +104,27 @@ describe('rewards panel reducer', () => {
           }
         })
 
-        expect(state.rewardsPanelData).toEqual(expectedState)
+        expect(state.rewardsPanelData).toEqual(expectedState1)
 
         // imitates ON_PUBLISHER_DATA
-        state.rewardsPanelData.publishers = { id_1: 'clifton.io' }
+        state.rewardsPanelData.publishers = {
+          id_1: {
+            tabUrl: 'clifton.io',
+            name: 'Clifton'
+          }
+        }
 
         // second visit
+        const expectedState2: Rewards.State = {
+          ...defaultState,
+          walletCreated: true,
+          publishers: {
+            id_1: {
+              tabUrl: 'https://brave.com'
+            }
+          }
+        }
+
         state = reducers(state, {
           type: types.ON_TAB_RETRIEVED,
           payload: {
@@ -94,7 +137,7 @@ describe('rewards panel reducer', () => {
           }
         })
 
-        expect(state.rewardsPanelData).toEqual(expectedState)
+        expect(state.rewardsPanelData).toEqual(expectedState2)
       })
     })
   })

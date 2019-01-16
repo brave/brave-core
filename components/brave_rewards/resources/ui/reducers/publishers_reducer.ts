@@ -34,15 +34,17 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
 
         state.numExcludedSites = parseInt(newNum, 10)
 
-        if (previousNum < newNum) {
-          // On a new excluded publisher, add to excluded state
-          if (!state.excluded.includes(publisherKey)) {
-            state.excluded.push(publisherKey)
-          }
-        } else {
-          // Remove the publisher from excluded if it has been re-included
-          if (state.excluded.includes(publisherKey)) {
-            state.excluded = state.excluded.filter((key: string) => key !== publisherKey)
+        if (publisherKey.length > 0) {
+          if (previousNum < newNum) {
+            // On a new excluded publisher, add to excluded state
+            if (!state.excluded.includes(publisherKey)) {
+              state.excluded.push(publisherKey)
+            }
+          } else {
+            // Remove the publisher from excluded if it has been re-included
+            if (state.excluded.includes(publisherKey)) {
+              state.excluded = state.excluded.filter((key: string) => key !== publisherKey)
+            }
           }
         }
 

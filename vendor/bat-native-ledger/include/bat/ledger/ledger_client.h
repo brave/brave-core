@@ -56,6 +56,7 @@ using RecurringRemoveCallback = std::function<void(Result)>;
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 using LoadURLCallback = std::function<void(bool, const std::string&,
     const std::map<std::string, std::string>& headers)>;
+using OnRestoreCallback = std::function<void(bool)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -69,7 +70,7 @@ class LEDGER_EXPORT LedgerClient {
                                   std::unique_ptr<ledger::WalletInfo>) = 0;
   virtual void OnReconcileComplete(Result result,
                                    const std::string& viewing_id,
-                                   ledger::PUBLISHER_CATEGORY category,
+                                   ledger::REWARDS_CATEGORY category,
                                    const std::string& probi) = 0;
 
   virtual void LoadLedgerState(LedgerCallbackHandler* handler) = 0;
@@ -89,14 +90,20 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void SavePublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
                                 PublisherInfoCallback callback) = 0;
-  virtual void LoadPublisherInfo(PublisherInfoFilter filter,
+  virtual void SaveActivityInfo(std::unique_ptr<PublisherInfo> publisher_info,
                                 PublisherInfoCallback callback) = 0;
+  virtual void LoadPublisherInfo(const std::string& publisher_key,
+                                 PublisherInfoCallback callback) = 0;
+  virtual void LoadActivityInfo(ActivityInfoFilter filter,
+                                PublisherInfoCallback callback) = 0;
+  virtual void LoadPanelPublisherInfo(ActivityInfoFilter filter,
+                                      PublisherInfoCallback callback) = 0;
   virtual void LoadMediaPublisherInfo(const std::string& media_key,
                                 PublisherInfoCallback callback) = 0;
   virtual void SaveMediaPublisherInfo(const std::string& media_key,
                                 const std::string& publisher_id) = 0;
-  virtual void LoadPublisherInfoList(uint32_t start, uint32_t limit,
-                                    PublisherInfoFilter filter,
+  virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
+                                    ActivityInfoFilter filter,
                                     PublisherInfoListCallback callback) = 0;
 
   // TODO this can be removed
@@ -118,7 +125,7 @@ class LEDGER_EXPORT LedgerClient {
                                     const int year,
                                     const uint32_t date,
                                     const std::string& publisher_key,
-                                    const ledger::PUBLISHER_CATEGORY category) = 0;
+                                    const ledger::REWARDS_CATEGORY category) = 0;
   virtual void GetRecurringDonations(ledger::PublisherInfoListCallback callback) = 0;
   virtual void OnRemoveRecurring(const std::string& publisher_key,
                                  ledger::RecurringRemoveCallback callback) = 0;
@@ -148,6 +155,8 @@ class LEDGER_EXPORT LedgerClient {
       const char* file,
       int line,
       const ledger::LogLevel log_level) const = 0;
+
+  virtual void OnRestorePublishers(ledger::OnRestoreCallback callback) = 0;
 };
 
 }  // namespace ledger

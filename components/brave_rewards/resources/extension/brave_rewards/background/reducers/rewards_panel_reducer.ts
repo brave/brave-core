@@ -25,8 +25,6 @@ const getWindowId = (id: number) => {
   return `id_${id}`
 }
 
-let currentPublishers: string[] = []
-
 export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, action: any) => {
   if (state === undefined) {
     state = storage.load()
@@ -73,16 +71,19 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           break
         }
 
-        chrome.braveRewards.getPublisherData(tab.windowId, tab.url, tab.favIconUrl || '')
         const id = getWindowId(tab.windowId)
-        let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
+        const publishers: Record<string, RewardsExtension.Publisher> = state.publishers
+        const publisher = publishers[id]
+        chrome.braveRewards.getPublisherData(tab.windowId, tab.url, tab.favIconUrl || '')
+        if (!publisher || (publisher && publisher.tabUrl !== tab.url)) {
+          if (publisher) {
+            delete publishers[id]
+          }
 
-        if (publishers[id] && currentPublishers[id] !== tab.url) {
-          delete publishers[id]
+          publishers[id] = {
+            tabUrl: tab.url
+          }
         }
-
-        currentPublishers[id] = tab.url
-
         state = {
           ...state,
           publishers
@@ -98,7 +99,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         if (publisher && !publisher.publisher_key) {
           delete publishers[id]
         } else {
-          publishers[id] = publisher
+          publishers[id] = { ...publishers[id], ...publisher }
         }
 
         state = {
