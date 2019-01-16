@@ -34,6 +34,10 @@
 #include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
 #endif
 
+#if defined(OS_ANDROID)
+#include "chrome/browser/android/brave/safetynet_check.h"
+#endif
+
 namespace base {
 class SequencedTaskRunner;
 }  // namespace base
@@ -76,6 +80,7 @@ class RewardsServiceImpl : public RewardsService,
   void FetchGrant(const std::string& lang, const std::string& paymentId) override;
   void GetGrantCaptcha() override;
   void SolveGrantCaptcha(const std::string& solution) const override;
+  void GetGrantViaSafetynetCheck() const override;
   std::string GetWalletPassphrase() const override;
   unsigned int GetNumExcludedSites() const override;
   void RecoverWallet(const std::string passPhrase) const override;
@@ -213,6 +218,7 @@ class RewardsServiceImpl : public RewardsService,
                            const std::string& probi) override;
   void OnGrantFinish(ledger::Result result,
                      const ledger::Grant& grant) override;
+  void OnGrantViaSafetynetCheck(const std::string& nonce) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler) override;
   void SaveLedgerState(const std::string& ledger_state,
@@ -284,6 +290,14 @@ class RewardsServiceImpl : public RewardsService,
 
   void AddPrivateObserver(RewardsServicePrivateObserver* observer) override;
   void RemovePrivateObserver(RewardsServicePrivateObserver* observer) override;
+
+#if defined(OS_ANDROID)
+  void FetchGrantAttestationResult(const std::string& lang,
+                                const std::string& payment_id,
+                                bool result, const std::string& result_string);
+  void GrantAttestationResult(bool result, const std::string& result_string);
+  safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
+#endif
 
   Profile* profile_;  // NOT OWNED
   std::unique_ptr<ledger::Ledger> ledger_;

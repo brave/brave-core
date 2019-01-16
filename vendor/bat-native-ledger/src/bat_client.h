@@ -34,13 +34,17 @@ class BatClient {
   std::string getWalletPassphrase() const;
   void walletPropertiesCallback(bool success, const std::string& response,
       const std::map<std::string, std::string>& headers);
-  void recoverWallet(const std::string& passPhrase);
-  void getGrant(const std::string& lang, const std::string& forPaymentId);
-  void setGrant(const std::string& captchaResponse, const std::string& promotionId);
+  void recoverWallet(const std::string& pass_phrase);
+  void getGrant(const std::string& lang, const std::string& for_payment_id,
+      const std::string& safetynet_token);
+  void setGrant(const std::string& captcha_response,
+      const std::string& promotion_id, const std::string& safetynet_token);
   void getGrantCaptcha();
+  void getGrantViaSafetynetCheck();
   void getWalletProperties();
 
-  void continueRecover(int result, size_t *written, std::vector<uint8_t>& newSeed);
+  void continueRecover(int result, size_t *written,
+      std::vector<uint8_t>& new_seed);
 
   void OnNicewareListLoaded(const std::string& pass_phrase,
                                 ledger::Result result,
@@ -52,12 +56,18 @@ class BatClient {
   void getGrantCallback(bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
   void setGrantCallback(bool result, const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const std::map<std::string, std::string>& headers,
+      bool is_satetynet_check);
   void recoverWalletPublicKeyCallback(bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
   void recoverWalletCallback(bool result, const std::string& response,
-      const std::map<std::string, std::string>& headers, const std::string& paymentId);
-  std::string getAnonizeProof(const std::string& registrarVK, const std::string& id, std::string& preFlight);
+      const std::map<std::string, std::string>& headers,
+      const std::string& payment_id);
+  void getGrantViaSafetynetCheckCallback(bool result,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+  std::string getAnonizeProof(const std::string& registrar_vk,
+      const std::string& id, std::string& pre_flight);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 
