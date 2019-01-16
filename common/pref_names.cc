@@ -31,15 +31,6 @@ const char kReferralHeaders[] = "brave.referral.headers";
 const char kReferralCheckedForPromoCodeFile[] = "brave.referral.checked_for_promo_code_file";
 const char kHTTPSEVerywhereControlType[] = "brave.https_everywhere_default";
 const char kNoScriptControlType[] = "brave.no_script_default";
-const char kRewardsNotifications[] = "brave.rewards.notifications";
-const char kRewardsNotificationTimerInterval[] = "brave.rewards.notification_timer_interval";
-const char kRewardsBackupNotificationFrequency[] =
-    "brave.rewards.backup_notification_frequency";
-const char kRewardsBackupNotificationInterval[] =
-    "brave.rewards.backup_notification_interval";
-const char kRewardsBackupSucceeded[] = "brave.rewards.backup_succeeded";
-const char kRewardsUserHasFunded[] = "brave.rewards.user_has_funded";
-const char kRewardsAddFundsNotification[] = "brave.rewards.add_funds_notification";
 const char kMigratedMuonProfile[] = "brave.muon.migrated_profile";
 const char kBravePaymentsPinnedItemCount[] = "brave.muon.import_pinned_item_count";
 const char kWebTorrentEnabled[] = "brave.webtorrent_enabled";

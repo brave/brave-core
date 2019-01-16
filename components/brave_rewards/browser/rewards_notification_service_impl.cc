@@ -14,7 +14,7 @@
 #include "base/values.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/publisher_info.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
@@ -113,7 +113,7 @@ RewardsNotificationServiceImpl::GenerateRewardsNotificationTimestamp() const {
 }
 
 void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
-  std::string json = profile_->GetPrefs()->GetString(kRewardsNotifications);
+  std::string json = profile_->GetPrefs()->GetString(prefs::kRewardsNotifications);
   if (json.empty())
     return;
   std::unique_ptr<base::DictionaryValue> dictionary =
@@ -227,7 +227,7 @@ void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
     return;
   }
 
-  profile_->GetPrefs()->SetString(kRewardsNotifications, result);
+  profile_->GetPrefs()->SetString(prefs::kRewardsNotifications, result);
 }
 
 void RewardsNotificationServiceImpl::TriggerOnNotificationAdded(
