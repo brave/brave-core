@@ -25,7 +25,7 @@ VisitData::VisitData(const std::string& _tld,
             const std::string& _domain,
             const std::string& _path,
             uint32_t _tab_id,
-            PUBLISHER_MONTH _local_month,
+            ACTIVITY_MONTH _local_month,
             int _local_year,
             const std::string& _name,
             const std::string& _url,
@@ -86,7 +86,7 @@ bool VisitData::loadFromJson(const std::string& json) {
     domain = d["domain"].GetString();
     path = d["path"].GetString();
     tab_id = d["tab_id"].GetUint();
-    local_month = (PUBLISHER_MONTH)d["local_month"].GetInt();
+    local_month = (ACTIVITY_MONTH)d["local_month"].GetInt();
     local_year = d["local_year"].GetInt();
     name = d["name"].GetString();
     url = d["url"].GetString();
@@ -100,13 +100,13 @@ bool VisitData::loadFromJson(const std::string& json) {
 PaymentData::PaymentData():
   value(0),
   timestamp(0),
-  category(PUBLISHER_CATEGORY::TIPPING) {}
+  category(REWARDS_CATEGORY::TIPPING) {}
 
 PaymentData::PaymentData(const std::string& _publisher_id,
          const double& _value,
          const int64_t& _timestamp,
-         PUBLISHER_CATEGORY _category,
-         PUBLISHER_MONTH _local_month,
+         REWARDS_CATEGORY _category,
+         ACTIVITY_MONTH _local_month,
          int _local_year):
   publisher_id(_publisher_id),
   value(_value),
@@ -125,19 +125,17 @@ PaymentData::PaymentData(const PaymentData& data):
 
 PaymentData::~PaymentData() {}
 
-PublisherInfoFilter::PublisherInfoFilter() :
-    category(PUBLISHER_CATEGORY::ALL_CATEGORIES),
-    month(PUBLISHER_MONTH::ANY),
+ActivityInfoFilter::ActivityInfoFilter() :
+    month(ACTIVITY_MONTH::ANY),
     year(-1),
-    excluded(PUBLISHER_EXCLUDE_FILTER::FILTER_DEFAULT),
+    excluded(EXCLUDE_FILTER::FILTER_DEFAULT),
     percent(0),
     min_duration(0),
     reconcile_stamp(0),
     non_verified(true) {}
 
-PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
+ActivityInfoFilter::ActivityInfoFilter(const ActivityInfoFilter& filter) :
     id(filter.id),
-    category(filter.category),
     month(filter.month),
     year(filter.year),
     excluded(filter.excluded),
@@ -147,15 +145,15 @@ PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
     reconcile_stamp(filter.reconcile_stamp),
     non_verified(filter.non_verified) {}
 
-PublisherInfoFilter::~PublisherInfoFilter() {}
+ActivityInfoFilter::~ActivityInfoFilter() {}
 
-const std::string PublisherInfoFilter::ToJson() const {
+const std::string ActivityInfoFilter::ToJson() const {
   std::string json;
   braveledger_bat_helper::saveToJsonString(*this, json);
   return json;
 }
 
-bool PublisherInfoFilter::loadFromJson(const std::string& json) {
+bool ActivityInfoFilter::loadFromJson(const std::string& json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
@@ -163,7 +161,6 @@ bool PublisherInfoFilter::loadFromJson(const std::string& json) {
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("id") && d["id"].IsString() &&
-        d.HasMember("category") && d["category"].IsInt() &&
         d.HasMember("month") && d["month"].IsInt() &&
         d.HasMember("year") && d["year"].IsInt() &&
         d.HasMember("excluded") && d["excluded"].IsInt() &&
@@ -176,10 +173,9 @@ bool PublisherInfoFilter::loadFromJson(const std::string& json) {
 
   if (false == error) {
     id = d["id"].GetString();
-    category = d["category"].GetInt();
-    month = (PUBLISHER_MONTH)d["month"].GetInt();
+    month = (ACTIVITY_MONTH)d["month"].GetInt();
     year = d["year"].GetInt();
-    excluded = (PUBLISHER_EXCLUDE_FILTER)d["excluded"].GetInt();
+    excluded = (EXCLUDE_FILTER)d["excluded"].GetInt();
     percent = d["percent"].GetUint();
     min_duration = d["min_duration"].GetUint64();
     reconcile_stamp = d["reconcile_stamp"].GetUint64();
@@ -263,8 +259,8 @@ PublisherInfo::PublisherInfo() :
     percent(0u),
     weight(.0),
     excluded(PUBLISHER_EXCLUDE::DEFAULT),
-    category(PUBLISHER_CATEGORY::AUTO_CONTRIBUTE),
-    month(PUBLISHER_MONTH::ANY),
+    category(REWARDS_CATEGORY::AUTO_CONTRIBUTE),
+    month(ACTIVITY_MONTH::ANY),
     year(-1),
     reconcile_stamp(0),
     verified(false),
@@ -274,7 +270,7 @@ PublisherInfo::PublisherInfo() :
     favicon_url("") {}
 
 PublisherInfo::PublisherInfo(const std::string& publisher_id,
-                             PUBLISHER_MONTH _month,
+                             ACTIVITY_MONTH _month,
                              int _year) :
     id(publisher_id),
     duration(0u),
@@ -283,7 +279,7 @@ PublisherInfo::PublisherInfo(const std::string& publisher_id,
     percent(0u),
     weight(.0),
     excluded(PUBLISHER_EXCLUDE::DEFAULT),
-    category(PUBLISHER_CATEGORY::AUTO_CONTRIBUTE),
+    category(REWARDS_CATEGORY::AUTO_CONTRIBUTE),
     month(_month),
     year(_year),
     reconcile_stamp(0),
@@ -319,7 +315,7 @@ bool PublisherInfo::operator<(const PublisherInfo& rhs) const {
 }
 
 bool PublisherInfo::is_valid() const {
-  return !id.empty() && year > 0 && month != PUBLISHER_MONTH::ANY;
+  return !id.empty() && year > 0 && month != ACTIVITY_MONTH::ANY;
 }
 
 const std::string PublisherInfo::ToJson() const {
@@ -362,8 +358,8 @@ bool PublisherInfo::loadFromJson(const std::string& json) {
     percent = d["percent"].GetUint();
     weight = d["weight"].GetDouble();
     excluded = (PUBLISHER_EXCLUDE)d["excluded"].GetInt();
-    category = (PUBLISHER_CATEGORY)d["category"].GetInt();
-    month = (PUBLISHER_MONTH)d["month"].GetInt();
+    category = (REWARDS_CATEGORY)d["category"].GetInt();
+    month = (ACTIVITY_MONTH)d["month"].GetInt();
     year = d["year"].GetInt();
     reconcile_stamp = d["reconcile_stamp"].GetUint64();
     verified = d["verified"].GetBool();
@@ -386,7 +382,7 @@ bool PublisherInfo::loadFromJson(const std::string& json) {
   return !error;
 }
 
-const PublisherInfo invalid("", PUBLISHER_MONTH::ANY, -1);
+const PublisherInfo invalid("", ACTIVITY_MONTH::ANY, -1);
 
 const std::string ContributionInfo::ToJson() const {
   std::string json;
@@ -700,7 +696,7 @@ bool PendingContribution::loadFromJson(const std::string& json) {
     amount = d["amount"].GetDouble();
     added_date = d["added_date"].GetUint64();
     viewing_id = d["viewing_id"].GetString();
-    category = static_cast<PUBLISHER_CATEGORY>(d["category"].GetInt());
+    category = static_cast<REWARDS_CATEGORY>(d["category"].GetInt());
   }
 
   return !error;

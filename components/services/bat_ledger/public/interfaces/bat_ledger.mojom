@@ -31,9 +31,6 @@ interface BatLedger {
   GetAutoContribute() => (bool auto_contribute);
   GetReconcileStamp() => (uint64 reconcile_stamp);
 
-  GetPublisherInfoList(uint32 start, uint32 limit, string filter) => (
-      array<string> publisher_info_list, uint32 next_record);
-
   OnLoad(string visit_data, uint64 current_time);
   OnUnload(uint32 tab_id, uint64 current_time);
   OnShow(uint32 tab_id, uint64 current_time);
@@ -120,9 +117,9 @@ interface BatLedgerClient {
 
   SavePublisherInfo(string publisher_info) => (int32 result,
       string publisher_info);
-  LoadPublisherInfo(string filter) => (int32 result, string publisher_info);
-  LoadPublisherInfoList(uint32 start, uint32 limit, string filter) => (
-      array<string> publisher_info_list, uint32 next_record);
+  LoadPublisherInfo(string publisher_key) => (int32 result, string publisher_info);
+  LoadPanelPublisherInfo(string filter) => (int32 result,
+      string publisher_info);
   LoadMediaPublisherInfo(string media_key) => (int32 result,
       string publisher_info);
 
@@ -156,4 +153,14 @@ interface BatLedgerClient {
       uint64 window_id);
 
   SavePendingContribution(string list);
+
+  LoadActivityInfo(string filter) => (int32 result, string publisher_info);
+
+  SaveActivityInfo(string publisher_info) => (int32 result,
+      string publisher_info);
+
+  OnRestorePublishers() => (bool result);
+
+  GetActivityInfoList(uint32 start, uint32 limit, string filter) => (
+      array<string> publisher_info_list, uint32 next_record);
 };

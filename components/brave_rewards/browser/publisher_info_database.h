@@ -36,24 +36,44 @@ class PublisherInfoDatabase {
     db_.set_error_callback(error_callback);
   }
 
-  bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
-  bool InsertOrUpdateMediaPublisherInfo(const std::string& media_key, const std::string& publisher_id);
   bool InsertContributionInfo(const brave_rewards::ContributionInfo& info);
-  bool InsertOrUpdateRecurringDonation(const brave_rewards::RecurringDonation& info);
 
-  bool Find(int start,
-            int limit,
-            const ledger::PublisherInfoFilter& filter,
-            ledger::PublisherInfoList* list);
-  int Count(const ledger::PublisherInfoFilter& filter);
+  void GetTips(ledger::PublisherInfoList* list,
+               ledger::ACTIVITY_MONTH month,
+               int year);
+
+  bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
+
+  std::unique_ptr<ledger::PublisherInfo> GetPublisherInfo(
+     const std::string& media_key);
+
+  std::unique_ptr<ledger::PublisherInfo> GetPanelPublisher(
+     const ledger::ActivityInfoFilter& filter);
+
+  bool RestorePublishers();
+
+  bool InsertOrUpdateActivityInfo(const ledger::PublisherInfo& info);
+
+  bool GetActivityList(int start,
+                       int limit,
+                       const ledger::ActivityInfoFilter& filter,
+                       ledger::PublisherInfoList* list);
+
+  bool InsertOrUpdateMediaPublisherInfo(const std::string& media_key,
+                                        const std::string& publisher_id);
 
   std::unique_ptr<ledger::PublisherInfo> GetMediaPublisherInfo(
       const std::string& media_key);
+
+  bool InsertOrUpdateRecurringDonation(
+      const brave_rewards::RecurringDonation& info);
+
   void GetRecurringDonations(ledger::PublisherInfoList* list);
-  void GetTips(ledger::PublisherInfoList* list, ledger::PUBLISHER_MONTH month, int year);
+
   bool RemoveRecurring(const std::string& publisher_key);
   bool InsertPendingContribution(const ledger::PendingContributionList& list);
   double GetReservedAmount();
+
 
   // Returns the current version of the publisher info database
   static int GetCurrentVersion();
@@ -64,33 +84,42 @@ class PublisherInfoDatabase {
 
   std::string GetDiagnosticInfo(int extended_error, sql::Statement* statement);
 
- private:
+  sql::Database& GetDB();
+
   bool Init();
-  void OnMemoryPressure(
-    base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
+
+ private:
+
   bool CreateContributionInfoTable();
-  bool CreatePublisherInfoTable();
-  bool CreateMediaPublisherInfoTable();
-  bool CreateActivityInfoTable();
+
   bool CreateContributionInfoIndex();
+
+  bool CreatePublisherInfoTable();
+
+  bool CreateActivityInfoTable();
+
   bool CreateActivityInfoIndex();
+
+  bool CreateMediaPublisherInfoTable();
+
   bool CreateRecurringDonationTable();
+
   bool CreateRecurringDonationIndex();
   bool CreatePendingContributionsTable();
   bool CreatePendingContributionsIndex();
 
-  std::string BuildClauses(int start,
-                           int limit,
-                           const ledger::PublisherInfoFilter& filter);
-  void BindFilter(sql::Statement& statement,
-                  const ledger::PublisherInfoFilter& filter);
+  void OnMemoryPressure(
+    base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
-  sql::Database& GetDB();
   sql::MetaTable& GetMetaTable();
 
-  sql::InitStatus EnsureCurrentVersion();
   bool MigrateV1toV2();
+
   bool MigrateV2toV3();
+
+  bool MigrateV3toV4();
+
+  sql::InitStatus EnsureCurrentVersion();
 
   sql::Database db_;
   sql::MetaTable meta_table_;

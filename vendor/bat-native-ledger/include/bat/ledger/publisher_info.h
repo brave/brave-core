@@ -13,7 +13,7 @@
 
 namespace ledger {
 
-LEDGER_EXPORT enum PUBLISHER_CATEGORY {
+LEDGER_EXPORT enum REWARDS_CATEGORY {
   AUTO_CONTRIBUTE = 1 << 1,  // 2
   TIPPING = 1 << 2,
   DIRECT_DONATION = 1 << 3,  // 8
@@ -21,7 +21,7 @@ LEDGER_EXPORT enum PUBLISHER_CATEGORY {
   ALL_CATEGORIES = (1 << 5) - 1,
 };
 
-LEDGER_EXPORT enum PUBLISHER_MONTH {
+LEDGER_EXPORT enum ACTIVITY_MONTH {
   ANY = -1,
   JANUARY = 1,
   FEBRUARY = 2,
@@ -44,7 +44,7 @@ LEDGER_EXPORT enum PUBLISHER_EXCLUDE {
   INCLUDED = 2 // user manually changed it to include and is overriding server flags
 };
 
-LEDGER_EXPORT enum PUBLISHER_EXCLUDE_FILTER {
+LEDGER_EXPORT enum EXCLUDE_FILTER {
   FILTER_ALL = -1,
   FILTER_DEFAULT = 0,
   FILTER_EXCLUDED = 1,
@@ -52,19 +52,18 @@ LEDGER_EXPORT enum PUBLISHER_EXCLUDE_FILTER {
   FILTER_ALL_EXCEPT_EXCLUDED = 3
 };
 
-LEDGER_EXPORT struct PublisherInfoFilter {
-  PublisherInfoFilter();
-  PublisherInfoFilter(const PublisherInfoFilter& filter);
-  ~PublisherInfoFilter();
+LEDGER_EXPORT struct ActivityInfoFilter {
+  ActivityInfoFilter();
+  ActivityInfoFilter(const ActivityInfoFilter& filter);
+  ~ActivityInfoFilter();
 
   const std::string ToJson() const;
   bool loadFromJson(const std::string& json);
 
   std::string id;
-  int category;
-  PUBLISHER_MONTH month;
+  ACTIVITY_MONTH month;
   int year;
-  PUBLISHER_EXCLUDE_FILTER excluded;
+  EXCLUDE_FILTER excluded;
   uint32_t percent;
   std::vector<std::pair<std::string, bool>> order_by;
   uint64_t min_duration;
@@ -108,7 +107,7 @@ LEDGER_EXPORT struct PublisherBanner {
 
 LEDGER_EXPORT struct PublisherInfo {
   PublisherInfo();
-  PublisherInfo(const std::string& publisher_id, PUBLISHER_MONTH month, int year);
+  PublisherInfo(const std::string& publisher_id, ACTIVITY_MONTH month, int year);
   PublisherInfo(const PublisherInfo& info);
   ~PublisherInfo();
 
@@ -125,8 +124,8 @@ LEDGER_EXPORT struct PublisherInfo {
   uint32_t percent;
   double weight;
   PUBLISHER_EXCLUDE excluded;
-  PUBLISHER_CATEGORY category;
-  PUBLISHER_MONTH month;
+  REWARDS_CATEGORY category;
+  ACTIVITY_MONTH month;
   int year;
   uint64_t reconcile_stamp;
   bool verified;

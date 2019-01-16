@@ -28,7 +28,7 @@ LEDGER_EXPORT struct VisitData {
             const std::string& _domain,
             const std::string& _path,
             uint32_t _tab_id,
-            PUBLISHER_MONTH _local_month,
+            ACTIVITY_MONTH _local_month,
             int _local_year,
             const std::string& name,
             const std::string& url,
@@ -44,7 +44,7 @@ LEDGER_EXPORT struct VisitData {
   std::string domain;
   std::string path;
   uint32_t tab_id;
-  PUBLISHER_MONTH local_month;
+  ACTIVITY_MONTH local_month;
   int local_year;
   std::string name;
   std::string url;
@@ -57,8 +57,8 @@ LEDGER_EXPORT struct PaymentData {
   PaymentData(const std::string& _publisher_id,
            const double& _value,
            const int64_t& _timestamp,
-           PUBLISHER_CATEGORY _category,
-           PUBLISHER_MONTH _local_month,
+           REWARDS_CATEGORY _category,
+           ACTIVITY_MONTH _local_month,
            int _local_year);
   PaymentData(const PaymentData& data);
   ~PaymentData();
@@ -66,8 +66,8 @@ LEDGER_EXPORT struct PaymentData {
   std::string publisher_id;
   double value;
   int64_t timestamp;
-  PUBLISHER_CATEGORY category;
-  PUBLISHER_MONTH local_month;
+  REWARDS_CATEGORY category;
+  ACTIVITY_MONTH local_month;
   int local_year;
 };
 
@@ -122,15 +122,19 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetPublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
                                 PublisherInfoCallback callback) = 0;
-  virtual void GetPublisherInfo(const ledger::PublisherInfoFilter& filter,
+  virtual void SetActivityInfo(std::unique_ptr<PublisherInfo> publisher_info,
+                                PublisherInfoCallback callback) = 0;
+  virtual void GetPublisherInfo(const std::string& publisher_key,
+                                PublisherInfoCallback callback) = 0;
+  virtual void GetActivityInfo(const ledger::ActivityInfoFilter& filter,
                                 PublisherInfoCallback callback) = 0;
   virtual void SetMediaPublisherInfo(const std::string& media_key,
                                 const std::string& publisher_id) = 0;
   virtual void GetMediaPublisherInfo(const std::string& media_key,
                                 PublisherInfoCallback callback) = 0;
   virtual std::vector<ContributionInfo> GetRecurringDonationPublisherInfo() = 0;
-  virtual void GetPublisherInfoList(uint32_t start, uint32_t limit,
-                                    const ledger::PublisherInfoFilter& filter,
+  virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
+                                    const ledger::ActivityInfoFilter& filter,
                                     PublisherInfoListCallback callback) = 0;
 
   virtual void SetRewardsMainEnabled(bool enabled) = 0;
@@ -141,7 +145,7 @@ class LEDGER_EXPORT Ledger {
   virtual void SetContributionAmount(double amount) = 0;
   virtual void SetUserChangedContribution() = 0;
   virtual void SetAutoContribute(bool enabled) = 0;
-  virtual void SetBalanceReport(PUBLISHER_MONTH month,
+  virtual void SetBalanceReport(ACTIVITY_MONTH month,
                               int year,
                               const ledger::BalanceReportInfo& report_info) = 0;
 
@@ -164,7 +168,7 @@ class LEDGER_EXPORT Ledger {
   virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
   virtual void GetGrantCaptcha() const = 0;
   virtual std::string GetWalletPassphrase() const = 0;
-  virtual bool GetBalanceReport(PUBLISHER_MONTH month,
+  virtual bool GetBalanceReport(ACTIVITY_MONTH month,
                               int year,
                               ledger::BalanceReportInfo* report_info) const = 0;
   virtual std::map<std::string, ledger::BalanceReportInfo> GetAllBalanceReports() const = 0;
@@ -181,16 +185,16 @@ class LEDGER_EXPORT Ledger {
   virtual void RestorePublishers() = 0;
   virtual bool IsWalletCreated() const = 0;
   virtual void GetPublisherActivityFromUrl(uint64_t windowId, const ledger::VisitData& visit_data) = 0;
-  virtual void SetBalanceReportItem(PUBLISHER_MONTH month,
+  virtual void SetBalanceReportItem(ACTIVITY_MONTH month,
                                     int year,
                                     ledger::ReportType type,
                                     const std::string& probi) = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id, ledger::PublisherBannerCallback callback) = 0;
   virtual double GetBalance() = 0;
   virtual void OnReconcileCompleteSuccess(const std::string& viewing_id,
-                                          const ledger::PUBLISHER_CATEGORY category,
+                                          const ledger::REWARDS_CATEGORY category,
                                           const std::string& probi,
-                                          const ledger::PUBLISHER_MONTH month,
+                                          const ledger::ACTIVITY_MONTH month,
                                           const int year,
                                           const uint32_t date) = 0;
   virtual void RemoveRecurring(const std::string& publisher_key) = 0;

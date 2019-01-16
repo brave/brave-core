@@ -110,7 +110,7 @@ class BatContribution {
   // We determinate which contribution we want to do and do appropriate actions
   void StartReconcile(
       const std::string &viewing_id,
-      const ledger::PUBLISHER_CATEGORY category,
+      const ledger::REWARDS_CATEGORY category,
       const braveledger_bat_helper::PublisherList& list,
       const braveledger_bat_helper::Directions& directions = {},
       double budget = 0);
@@ -124,9 +124,9 @@ class BatContribution {
   // Does final stage in contribution
   // Sets reports and contribution info
   void OnReconcileCompleteSuccess(const std::string& viewing_id,
-                                  ledger::PUBLISHER_CATEGORY category,
+                                  ledger::REWARDS_CATEGORY category,
                                   const std::string& probi,
-                                  ledger::PUBLISHER_MONTH month,
+                                  ledger::ACTIVITY_MONTH month,
                                   int year,
                                   uint32_t date);
 
@@ -150,7 +150,7 @@ class BatContribution {
       double& budget);
 
   // Entry point for contribution where we have publisher info list
-  void ReconcilePublisherList(ledger::PUBLISHER_CATEGORY category,
+  void ReconcilePublisherList(ledger::REWARDS_CATEGORY category,
                               const ledger::PublisherInfoList& list,
                               uint32_t next_record);
 

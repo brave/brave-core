@@ -106,7 +106,7 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId,
     return;
   }
 
-  if (!publisher_info.get()) {
+  if (!publisher_info && !publisher_info.get()) {
     std::string mediaURL = getMediaURL(mediaId, providerName);
     if (providerName == YOUTUBE_MEDIA_TYPE) {
       auto callback = std::bind(
@@ -549,12 +549,12 @@ void BatGetMedia::onMediaUserActivity(ledger::Result result,
                                       const std::string& providerType,
                                       const std::string& media_key) {
   if (result != ledger::Result::LEDGER_OK  &&
-    result != ledger::Result::NOT_FOUND) {
+      result != ledger::Result::NOT_FOUND) {
     onMediaActivityError(visit_data, providerType, windowId);
     return;
   }
 
-  if (result == ledger::Result::NOT_FOUND) {
+  if (!info || result == ledger::Result::NOT_FOUND) {
     fetchDataFromUrl(visit_data.url, std::bind(&BatGetMedia::onGetChannelIdFromUserPage,
                                         this,
                                         windowId,
@@ -591,16 +591,15 @@ void BatGetMedia::fetchPublisherDataFromDB(uint64_t windowId,
                                            const ledger::VisitData& visit_data,
                                            const std::string& providerType,
                                            const std::string& publisher_key) {
-    auto filter = ledger_->CreatePublisherFilter(
+    auto filter = ledger_->CreateActivityFilter(
       publisher_key,
-      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-      ledger::PUBLISHER_MONTH::ANY,
+      ledger::ACTIVITY_MONTH::ANY,
       -1,
-      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
+      ledger::EXCLUDE_FILTER::FILTER_ALL,
       false,
       ledger_->GetReconcileStamp(),
       true);
-    ledger_->GetPublisherInfo(filter,
+    ledger_->GetPanelPublisherInfo(filter,
       std::bind(&BatGetMedia::onFetchPublisherFromDBResponse,
       this, _1, _2, windowId, visit_data, providerType, publisher_key));
 }
@@ -702,7 +701,7 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
     return;
   }
 
-  if (result == ledger::Result::NOT_FOUND) {
+  if (!info || result == ledger::Result::NOT_FOUND) {
     ledger::TwitchEventInfo twitchEventInfo;
     getPublisherInfoDataCallback(media_id,
                                  media_key,
