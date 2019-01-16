@@ -96,6 +96,10 @@ public class Sync: JSInjector {
     
     fileprivate var fetchTimer: Timer?
     
+    /// If sync initialization fails, we should inform user and remove all partial sync setup that happened.
+    /// Please note that sync initialization also happens on app launch, not only on first connection to Sync.
+    public var syncSetupFailureCallback: (() -> Void)?
+    
     var baseSyncOrder: String? {
         get {
             return UserDefaults.standard.string(forKey: prefBaseOrder)
@@ -630,6 +634,10 @@ extension Sync {
         
     }
     
+    func syncSetupError() {
+        syncSetupFailureCallback?()
+    }
+    
     func getBookmarkOrder(previousOrder: String?, nextOrder: String?) -> String? {
         
         // Empty string as a parameter means next/previous bookmark doesn't exist
@@ -692,6 +700,8 @@ extension Sync: WKScriptMessageHandler {
             self.isSyncFullyInitialized.deleteSiteSettingsReady = true
         case "delete-sync-category":
             self.isSyncFullyInitialized.deleteCategoryReady = true
+        case "sync-setup-error":
+            self.syncSetupError()
         default:
             print("\(messageName) not handled yet")
         }
