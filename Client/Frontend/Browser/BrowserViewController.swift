@@ -1371,7 +1371,15 @@ extension BrowserViewController: SettingsDelegate {
     }
     
     func settingsDidFinish(_ settingsViewController: SettingsViewController) {
-        settingsViewController.dismiss(animated: true)
+        settingsViewController.dismiss(animated: true, completion: {
+            // iPad doesn't receive a viewDidAppear because it displays settings as a floating modal window instead
+            // of a fullscreen overlay.
+            if UIDevice.isIpad && PrivateBrowsingManager.shared.isPrivateBrowsing {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    self.presentDuckDuckGoCallout()
+                }
+            }
+        })
     }
 }
 
