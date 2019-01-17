@@ -176,6 +176,8 @@ class LEDGER_EXPORT LedgerClient {
                                       ledger::OnLoadCallback callback) = 0;
   virtual void ResetConfirmationsState(const std::string& name,
                                        ledger::OnResetCallback callback) = 0;
+  virtual uint32_t SetConfirmationsTimer(const uint64_t time_offset) = 0;
+  virtual void KillConfirmationsTimer(uint32_t timer_id) = 0;
 };
 
 }  // namespace ledger

@@ -357,6 +357,7 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::VisitData& visit_data) override;
 
   void OnTimer(uint32_t timer_id) override;
+  void OnConfirmationsTimer(uint32_t timer_id) override;
 
   void saveVisitCallback(const std::string& publisher,
                          uint64_t verifiedTimestamp);

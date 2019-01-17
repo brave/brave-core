@@ -366,4 +366,8 @@ void BatLedgerImpl::AdSustained(const std::string& info) {
   ledger_->AdSustained(info);
 }
 
+void BatLedgerImpl::OnConfirmationsTimer(uint32_t timer_id) {
+  ledger_->OnConfirmationsTimer(timer_id);
+}
+
 } // namespace bat_ledger

@@ -196,6 +196,8 @@ class RewardsServiceImpl : public RewardsService,
                               ledger::OnLoadCallback callback) override;
   void ResetConfirmationsState(const std::string& name,
                                ledger::OnResetCallback callback) override;
+  uint32_t SetConfirmationsTimer(uint64_t time_offset) override;
+  void KillConfirmationsTimer(uint32_t timer_id) override;
 
   void OnSavedConfirmationsState(ledger::OnSaveCallback callback, bool success);
   void OnLoadedConfirmationsState(ledger::OnLoadCallback callback,
@@ -247,6 +249,8 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublishersListSaved(ledger::LedgerCallbackHandler* handler,
                              bool success);
   void OnTimer(uint32_t timer_id);
+  void OnConfirmationsTimer(uint32_t timer_id);
+  void TriggerOnContentSiteUpdated();
   void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
                              const std::string& data);
 
@@ -426,6 +430,7 @@ class RewardsServiceImpl : public RewardsService,
   extensions::OneShotEvent ready_;
   std::map<const net::URLFetcher*, ledger::LoadURLCallback> fetchers_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
+  std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> confirmations_timers_;
   std::vector<std::string> current_media_fetchers_;
   std::vector<BitmapFetcherService::RequestId> request_ids_;
   std::unique_ptr<base::OneShotTimer> notification_startup_timer_;
@@ -433,6 +438,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath confirmations_state_base_path_;
 
   uint32_t next_timer_id_;
+  uint32_t next_confirmations_timer_id_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);
 };
