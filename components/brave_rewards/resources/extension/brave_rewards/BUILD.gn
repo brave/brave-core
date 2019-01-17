@@ -24,6 +24,12 @@ transpile_web_ui("brave_rewards_panel") {
     "components/app.tsx",
     "components/panel.tsx",
     "constants/rewards_panel_types.ts",
+    "img/rewards-off.png",
+    "img/rewards-off@2x.png",
+    "img/rewards-off@3x.png",
+    "img/rewards-on.png",
+    "img/rewards-on@2x.png",
+    "img/rewards-on@3x.png",
     "utils.ts",
   ]
 

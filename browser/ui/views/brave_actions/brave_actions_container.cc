@@ -7,6 +7,8 @@
 #include <memory>
 
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
+#include "brave/browser/ui/views/brave_actions/brave_action_view.h"
+#include "brave/browser/ui/views/rounded_separator.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/extensions/extension_action_manager.h"
 #include "chrome/browser/profiles/profile.h"
@@ -18,7 +20,6 @@
 #include "extensions/browser/extension_registry_observer.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/one_shot_event.h"
-#include "ui/views/controls/separator.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/grid_layout.h"
 #include "ui/views/view.h"
@@ -68,11 +69,21 @@ void BraveActionsContainer::Init() {
   SetLayoutManager(std::move(vertical_container_layout));
 
   // children
-  views::Separator* brave_button_separator_ = new views::Separator();
+  RoundedSeparator* brave_button_separator_ = new RoundedSeparator();
   // TODO: theme color
   brave_button_separator_->SetColor(SkColorSetRGB(0xb2, 0xb5, 0xb7));
-  brave_button_separator_->SetPreferredSize(gfx::Size(2,
-                            GetLayoutConstant(LOCATION_BAR_ICON_SIZE)));
+  constexpr int kSeparatorRightMargin = 2;
+  constexpr int kSeparatorWidth = 1;
+  brave_button_separator_->SetPreferredSize(gfx::Size(
+                                    kSeparatorWidth + kSeparatorRightMargin,
+                                    GetLayoutConstant(LOCATION_BAR_ICON_SIZE)));
+  // separator right margin
+  brave_button_separator_->SetBorder(views::CreateEmptyBorder(
+    0,
+    0,
+    0,
+    kSeparatorRightMargin
+  ));
   // Just in case the extensions load before this function does (not likely!)
   // make sure separator is at index 0
   AddChildViewAt(brave_button_separator_, 0);
@@ -98,12 +109,12 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension,
     // do not require that logic.
     // If we do require notifications when popups are open or closed,
     // then we should inherit and pass |this| through.
-    actions_[id].view_controller_ = 
+    actions_[id].view_controller_ =
         std::make_unique<BraveActionViewController>(
         extension, browser_,
         extension_action_manager_->GetExtensionAction(*extension), nullptr);
     // The button view
-    actions_[id].view_ = std::make_unique<ToolbarActionView>(
+    actions_[id].view_ = std::make_unique<BraveActionView>(
         actions_[id].view_controller_.get(), this);
     // Add extension view after separator view
     // `AddChildView` should be called first, so that changes that modify
@@ -118,7 +129,7 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension,
     actions_[id].view_->set_owned_by_client();
     // Sets overall size of button but not image graphic. We set a large width
     // in order to give space for the bubble.
-    actions_[id].view_->SetPreferredSize(gfx::Size(32, 24));
+    actions_[id].view_->SetPreferredSize(gfx::Size(34, 24));
     Update();
   }
 }

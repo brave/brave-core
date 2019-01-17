@@ -5,6 +5,7 @@
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ui/brave_actions/constants.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/extensions/extension_action.h"
 #include "chrome/browser/ui/toolbar/toolbar_actions_bar.h"
@@ -18,6 +19,24 @@
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/skia_paint_util.h"
+
+using namespace brave_actions;
+
+base::Optional<int> BraveActionIconWithBadgeImageSource::GetCustomGraphicSize() {
+  return kBraveActionGraphicSize;
+}
+
+base::Optional<int> BraveActionIconWithBadgeImageSource::GetCustomGraphicXOffset() {
+  return std::floor(
+    (size().width() - kBraveActionRightMargin - kBraveActionGraphicSize) / 2.0
+  );
+}
+
+base::Optional<int> BraveActionIconWithBadgeImageSource::GetCustomGraphicYOffset() {
+  return std::floor(
+    (size().height() - kBraveActionGraphicSize) / 2.0
+  );
+}
 
 void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
     if (!badge_ || badge_->text.empty())
@@ -35,6 +54,7 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
   constexpr int kBadgeHeight = 12;
   constexpr int kBadgeMaxWidth = 14;
   constexpr int kVPadding = 1;
+  constexpr int kVMarginTop = 2;
   const int kTextHeightTarget = kBadgeHeight - (kVPadding * 2);
   int h_padding = 2;
   int text_max_width = kBadgeMaxWidth - (h_padding * 2);
@@ -113,10 +133,9 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
   if (icon_area.width() != 0 && (badge_width % 2 != icon_area.width() % 2))
     badge_width += 1;
 
-  // Calculate the badge background rect. It is usually right-aligned, but it
-  // can also be center-aligned if it is large.
-  const int badge_offset_x = icon_area.width() - badge_width;
-  const int badge_offset_y = 0;
+  // Calculate the badge background rect. It is anchored to a specific position
+  const int badge_offset_x = icon_area.width() - kBadgeMaxWidth;
+  const int badge_offset_y = kVMarginTop;
   gfx::Rect rect(icon_area.x() + badge_offset_x, icon_area.y() + badge_offset_y,
                  badge_width, kBadgeHeight);
   cc::PaintFlags rect_flags;
