@@ -4,34 +4,16 @@
 
 export const theme = {
   newTab: {
-    fontFamily: '"Poppins", sans-serif'
-  },
-  newTabStats: {
-    padding: '40px 0'
+    fontFamily: 'Poppins, sans-serif'
   },
   newPrivateTab: {
-    fontFamily: '"Poppins", sans-serif',
+    fontFamily: 'Poppins, sans-serif',
     padding: '80px 60px 40px',
     background: 'linear-gradient(#4b3c6e, #000)'
   },
-  trackersBlocked: {
-    counterColor: '#f39030',
-    descriptionColor: '#fff'
-  },
-  adsBlocked: {
-    counterColor: '#fe521d',
-    descriptionColor: '#fff'
-  },
-  httpsUpgrades: {
-    counterColor: '#0796fa',
-    descriptionColor: '#fff'
-  },
-  estimatedTime: {
-    counterColor: '#999999',
-    descriptionColor: '#fff'
-  },
   clock: {
-    color: '#fff'
+    color: '#fff',
+    fontSize: '90px'
   },
   clockContainer: {
     justifyContent: 'flex-end'
@@ -40,14 +22,14 @@ export const theme = {
     maxWidth: '650px',
     margin: '60px auto 0',
     color: 'rgba(255,255,255,0.8)',
-    fontFamily: '"Muli", sans-serif'
+    fontFamily: 'Muli, sans-serif'
   },
   media: {
     width: '80px',
     margin: '0 0 0 25px'
   },
   title: {
-    fontFamily: '"Poppins", sans-serif',
+    fontFamily: 'Poppins, sans-serif',
     fontWeight: '400',
     color: '#fff'
   },
