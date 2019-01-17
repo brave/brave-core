@@ -4,13 +4,10 @@ declare namespace NewTab {
   }
 
   export interface Image {
-    name: string,
-    source: string,
-    author: string,
-    link: string,
-    style?: {
-      backgroundImage: string
-    }
+    name: string
+    source: string
+    author: string
+    link: string
   }
 
   export interface Site {
@@ -44,12 +41,10 @@ declare namespace NewTab {
   }
 
   export interface State {
-    imageLoadFailed: boolean
     topSites: Site[],
     ignoredTopSites: Site[],
     pinnedTopSites: Site[],
     gridSites: Site[],
-    showImages: boolean,
     showEmptyPage: boolean,
     isIncognito: boolean,
     useAlternativePrivateSearchEngine: boolean,
