@@ -107,9 +107,16 @@ def get_transifex_translation_file_content(source_file_path, filename,
         'Aborting. Status code %d: %s' % (r.status_code, r.content))
     content = r.json()['content'].encode('utf-8')
     ext = os.path.splitext(source_file_path)[1]
-    # For .grd files, for some reason Transifex puts a \\" and \'
-    if ext == '.grd':
-        return content.replace('\\"', '"').replace("\\'", "'")
+    if ext == '.json':
+        # For .json files, for some reason Transifex puts a \'
+        content = content.replace("\\'", "'")
+        # Make sure it's parseable
+        json.loads(content)
+    elif ext == '.grd':
+        # For .grd and .json files, for some reason Transifex puts a \\" and \'
+        content = content.replace('\\"', '"').replace("\\'", "'")
+        # Make sure it's parseable
+        lxml.etree.fromstring(content)
     return content
 
 
