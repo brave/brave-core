@@ -3,7 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import argparse
 import json
+import logging
 import os
 import sys
 from lib.github import GitHub
@@ -16,28 +18,25 @@ from lib.config import (PLATFORM, DIST_URL, get_target_arch,
 from lib.helpers import *
 import requests
 
-
-RELEASE_NAME = 'Dev Channel Beta'
+from argparse import RawTextHelpFormatter
 
 
 def main():
+
+    args = parse_args()
+
+    if args.debug:
+        logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+        logging.debug('prerelease: {}'.format(args.prerelease))
+
     repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
 
     release = get_draft(repo, get_brave_version())
-    commit_tag = get_commit_tag(get_raw_version())
 
-    print("[INFO] Releasing {}".format(release['tag_name']))
-    publish_release(repo, release['id'], get_tag(), commit_tag)
+    tag_name = release['tag_name']
 
-
-def get_commit_tag(version):
-    parts = get_raw_version().split('.', 3)
-    if (len(parts) == 3):
-        parts[2] = 'x'
-        return '.'.join(parts)
-    else:
-        raise(UserWarning("[ERROR] Invalid version name '%s'",
-                          get_raw_version()))
+    logging.info("Releasing {}".format(tag_name))
+    publish_release(repo, release['id'], tag_name, args.prerelease, logging)
 
 
 def get_draft(repo, tag):
@@ -52,18 +51,28 @@ def get_draft(repo, tag):
     return releases[0]
 
 
-def publish_release(repo, release_id, tag, commit_tag):
-    data = dict(draft=False, prerelease=True, tag_name=tag,
-                target_commitish=commit_tag)
+def publish_release(repo, release_id, tag, prerelease, logging):
+    data = dict(prerelease=prerelease, draft=False, tag_name=tag)
 
     try:
         repo.releases(release_id).patch(data=data)
     except Exception as e:
         if any([err.get("field") == "tag_name" for
                 err in json.loads(e.message)['errors']]):
-            print("[ERROR] Please make sure tag_name exists and is pushed "
-                  "to github")
+            logging.error("[ERROR] Please make sure tag_name exists and is pushed "
+                          "to github")
             raise
+
+
+def parse_args():
+    desc = "Publish GitHub draft release"
+    parser = argparse.ArgumentParser(
+        description=desc, formatter_class=RawTextHelpFormatter)
+    parser.add_argument('-d', '--debug', action='store_true',
+                        help='Print debug statements')
+    parser.add_argument('-p', '--prerelease', help='Publish the release as a `prerelease` '
+                        '(Default: False)', action='store_true')
+    return parser.parse_args()
 
 
 if __name__ == '__main__':
