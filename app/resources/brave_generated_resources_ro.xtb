@@ -3,7 +3,7 @@
 <translationbundle lang="ro">
 <translation id="3333887201479867589">Recompense Brave</translation>
 <translation id="7942180974165298215">Blocare reclame Brave</translation>
-<translation id="6406506848690869874">Sincronizare Brave</translation>
+<translation id="6406506848690869874">Sincronizare</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID extensie "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nu este permis în Brave.</translation>
 <translation id="7450557937477381864">Închide Chrome</translation>
 <translation id="7008934821596358692">Pentru finalizarea importului, închideți toate ferestrele Chrome.</translation>
@@ -40,6 +40,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="3488584642074079080">Deschide Link în Fereastra Privată Brave cu Tor</translation>
 <translation id="3155170474926428993">Lansatorul Tor</translation>
 <translation id="2515126961943087659">Serviciu de anunțuri Bat</translation>
+<translation id="7924918279836988121">Serviciu Bat Ledger</translation>
 <translation id="7372129767729198111">Valori implicite scuturi Brave</translation>
 <translation id="8029018702721078742">Control reclame</translation>
 <translation id="3544462288910360084">Control cookie</translation>
@@ -55,10 +56,16 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8034285923190068220">Permite amprentarea</translation>
 <translation id="4540198958192073185">Blochează toate amprentările</translation>
 <translation id="8942080017911802454">Politica de manevrare a WebRTC IP</translation>
-<translation id="6165508094623778733">Află mai multe</translation>
-<translation id="8798099450830957504">Implicit</translation>
+<translation id="6165508094623778733">Aflați mai multe</translation>
+<translation id="8798099450830957504">Prestabilit</translation>
 <translation id="1822560017823072927">Interfețe implicite publice și private</translation>
 <translation id="5825943197137337319">Doar interfața publică implicită</translation>
 <translation id="1689062823386843231">Dezactivează UDP fără proxy</translation>
-<translation id="6645631466045614531">Accesare sincronizare Brave prin</translation>
+<translation id="6645631466045614531">Accesare Sincronizare prin</translation>
+<translation id="6786747875388722282">Extensii</translation>
+<translation id="2896916411183256228">Utilizează WebTorrent pentru afișarea torrent-elor direct în browser. Acceptă fișiere torrent și linkuri magnet.</translation>
+<translation id="6554397389149987360">Utilizează componenta Hangouts pentru activarea partajării ecranului și alte funcții din browser.</translation>
+<translation id="6916590542764765824">Administrare Extensii</translation>
+<translation id="4928988318462976765">Magazin Extensii Web</translation>
+<translation id="9181207987584064303">Vizualizare în Magazinul Extensii Web</translation>
 </translationbundle>

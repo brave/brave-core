@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Дарение с токени",
+    "message": "Изискани субсидии на жетони",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "Очаква Ви дарение.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Архивен портфейл",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Моля, направете архивно копие на вашия Brave портфейл.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Вашият акаунт за Brave плащания изчаква депозит.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Недостатъчно средства",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Създаване на портфейл",
     "description": "Used in a button displaying wallet creation process"
@@ -198,7 +214,107 @@
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
-    "message": "No activities yet…",
+    "message": "Все още няма активност…",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Провлачете BAT иконата върху",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "Днес имате късмет!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Субсидията на вашия жетон е на път.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Докажете, че не сте робот!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "цел.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Хммм....Не съвсем. Опитайте отново.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Поискай",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Безплатна субсидия жетон",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Дата на изтичане на субсидията",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Съжаляваме, тази субсидия вече беше поискана.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Brave Rewards има проблеми. Моля, опитайте отново по-късно.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Упс, нещо се обърка. Моля, опитайте отново по-късно.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Съжаляваме, тази субсидия вече е изтекла.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "Тази субсидия вече не е налична.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Все още не е потвърдено",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Този създател все още не се е регистрирал да получава вноски от Brave потребители. Всеки бакшиш който изпратите ще остава във вашия портфейл докато той потвърди.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Научете повече.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Определихте {{reservedAmount}} BAT за създатели, които все още не са се регистрирали за получаване на вноски. Вашият браузър ще продължава да се опитва да прави вноски докато те потвърдят или до 90 дена.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Научете повече.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Изкл",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Настройки.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "В момента не получавате никакви Награди от браузването. Включете отново Награди",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Brave Rewards е",
+    "description": "Title for Panel's disabled state"
   }
 }

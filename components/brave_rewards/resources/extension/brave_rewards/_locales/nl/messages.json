@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Token-donatie",
+    "message": "Geclaimde giften",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "Er staat een geschenk voor je klaar.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Back-up maken van wallet",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Maak een back-up van je Brave-wallet.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Je Brave Payments-account wacht op een storting.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Onvoldoende saldo",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Digitale Portemonnee aanmaken",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "Nog geen activiteiten...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Sleep het BAT-pictogram naar de",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "Je hebt vandaag geluk!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Je gift komt eraan.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Bewijs dat je een mens bent!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "doel.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Hmmm... niet helemaal. Probeer het opnieuw.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Claimen",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Gratis gift",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Vervaldatum gift",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Sorry, het lijkt erop dat deze gift al is geclaimd.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Brave Rewards ondervindt problemen. Probeer het later opnieuw.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Oeps, er is iets misgegaan. Probeer het later opnieuw.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Sorry, het lijkt erop dat deze gift al is verlopen.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "Deze gift is niet meer beschikbaar.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Nog niet geverifieerd",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Deze maker heeft zich nog niet aangemeld voor het ontvangen van bijdragen van Brave-gebruikers. Fooien die je stuurt, blijven in je wallet tot hij of zij verifieert.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Meer informatie.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Je hebt BAT {{reservedAmount}} toegewezen aan makers die zich nog niet hebben aangemeld voor het ontvangen van bijdragen. Je browser zal blijven proberen bij te dragen tot ze verifiëren of tot er 90 dagen zijn verstreken.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Meer informatie.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Uit",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Instellingen.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "Je verzamelt momenteel geen Rewards tijdens het browsen. Schakel Rewards weer in.",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Brave Rewards is",
+    "description": "Title for Panel's disabled state"
   }
 }

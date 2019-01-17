@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Tokenivõimalus",
+    "message": "Kasutatud tokenivõimalused",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "Teid ootab preemia.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Rahakoti varundamine",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Varundage oma Brave'i rahakotti",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Brave'i maksete konto ootab hoiust.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Ebapiisavad vahendid",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Rahakoti loomine",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "Tegevusi veel pole...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Lohistage BATi logo järgmisesse kohta:",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "See on hea päev!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Sinu tokenitoetus on teel.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Tõesta, et oled inimene!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "siht.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Hmm… Mitte päris nii. Proovi uuesti.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Hangi",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Tasuta tokenivõimalus",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Võimaluse aegumiskuupäev",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Kahjuks tundub, et see toetus on juba välja võetud.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Brave Rewards ei ole praegu saadaval. Proovige hiljem uuesti.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Ups, midagi on valesti. Palun proovi hiljem uuesti.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Kahjuks tundub, et see toetus on juba aegunud.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "See toetus pole enam saadaval.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Kinnitamata",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "See looja pole veel registreerunud, et saada Brave'i kasutajatelt sissemakseid. Kõik teie saadetud raha jääb kuni kinnitamiseni teie rahakotti.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Lisateave.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Olete määranud {{reservedAmount}} BATi loojatele, kes pole veel registreerunud, et sissemakseid saada. Teie brauser üritab panustada seni, kuni nad kinnitavad või kuni 90 päeva on möödunud.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Lisateave.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Väljas",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Seaded",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "Te ei kogu praegu sirvimise ajal mingeid hüvesid. Lülitage preemiad tagasi sisse.",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Brave Rewards on",
+    "description": "Title for Panel's disabled state"
   }
 }

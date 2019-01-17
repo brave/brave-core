@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "ಟೋಕನ್ ಅನುದಾನ",
+    "message": "ಟೋಕನ್ ಅನುದಾನಗಳು ಕ್ಲೈಮ್ ಮಾಡಿರುವುದು",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "ನಿಮಗಾಗಿ ಒಂದು ಅನುದಾನ ಕಾಯುತ್ತಿದೆ.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "ವಾಲೆಟ್ ಬ್ಯಾಕಪ್",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "ದಯವಿಟ್ಟು ನಿಮ್ಮ Brave ವ್ಯಾಲೆಟ್ ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಿ.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "ನಿಮ್ಮ Brave ಪಾವತಿಗಳ ಖಾತೆಯು ಡಿಪಾಸಿಟ್ ಆಗಲು ನಿರೀಕ್ಷಿಸುತ್ತಿದೆ.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "ಫಂಡ್‌ಗಳು ಸಾಕಷ್ಟಿಲ್ಲ",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "ವಾಲೆಟ್ ರಚಿಸಲಾಗುತ್ತಿದೆ",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "ಇನ್ನೂ ಯಾವುದೇ ಚಟುವಟಿಕೆಗಳಿಲ್ಲ…",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "ಇಲ್ಲಿಗೆ BAT ಐಕಾನ್ ಅನ್ನು ಎಳೆಯಿರಿ",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "ಇದು ನಿಮ್ಮ ಅದೃಷ್ಟ ದಿನವಾಗಿದೆ!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "ನಿಮ್ಮ ಟೋಕನ್ ಅನುದಾನವು ಶೀಘ್ರದಲ್ಲೇ ನಿಮ್ಮ ಕೈತಲುಪಲಿದೆ.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "ನೀವು ಮನುಷ್ಯ ಎಂಬುದನ್ನು ಸಾಬೀತುಪಡಿಸಿ!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "ಗುರಿ.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "ಹ್‌ಮ್... ನಿರ್ಗಮಿಸಿಲ್ಲ. ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "ಕ್ಲೈಮ್ ಮಾಡಿ",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "ಉಚಿತ ಟೋಕನ್ ಅನುದಾನ",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "ಅನುದಾನ ಅವಧಿ ಮೀರುವ ದಿನಾಂಕ",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "ಕ್ಷಮಿಸಿ, ಈ ಅನುದಾನವನ್ನು ಈಗಾಗಲೇ ಕ್ಲೈಮ್ ಮಾಡಲಾಗಿದೆ ಎಂಬಂತೆ ಕಾಣುತ್ತಿದೆ.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "ಸರಿ",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Brave Rewards ಏನೋ ಸಮಸ್ಯೆ ಎದುರಿಸುತ್ತಿದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "ಓಹೋ, ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "ಸರಿ",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "ಕ್ಷಮಿಸಿ, ಈ ಅನುದಾನ ಈಗಾಗಲೇ ಅವಧಿ ಮೀರಿರುವಂತಿದೆ.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "ಈ ಅನುದಾನ ಇನ್ನು ಮುಂದೆ ಲಭ್ಯವಿರುವುದಿಲ್ಲ.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "ಇನ್ನೂ ಪರಿಶೀಲಿಸಿಲ್ಲ",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Brave ಬಳಕೆದಾರರಿಂದ ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಈ ರಚನೆಕಾರ ಇನ್ನೂ ಸೈನ್ ಅಪ್ ಮಾಡಿಲ್ಲ. ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವವರೆಗೆ ನೀವು ಕಳುಹಿಸಿದ ಟಿಪ್‌ಗಳು ಉಳಿಯುತ್ತವೆ.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಇನ್ನೂ ಸೈನ್ ಅಪ್ ಮಾಡದ ರಚನೆಕಾರರಿಗಾಗಿ ನೀವು {{reservedAmount}} BAT ಅನ್ನು ಗೊತ್ತುಪಡಿಸಿದ್ದೀರಿ. ನಿಮ್ಮ ಬ್ರೌಸರ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವವರೆಗೆ ಅಥವಾ 90 ದಿನಗಳು ಮುಗಿಯುವವರೆಗೆ, ಕೊಡುಗೆ ನೀಡಲು ಅವು ಪ್ರಯತ್ನಿಸುತ್ತವೆ.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "ಆಫ್",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "ಬ್ರೌಸ್ ಮಾಡುವಾಗ ನೀವು ಪ್ರಸ್ತುತ ಯಾವುದೇ ಬಹುಮಾನ ಲಾಭಗಳನ್ನು ಪಡೆದುಕೊಳ್ಳುತ್ತಿಲ್ಲ. ಬಹುಮಾನಗಳನ್ನು ಮತ್ತೆ ಆನ್ ಮಾಡಿ",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Brave Rewards ಇದಾಗಿದೆ",
+    "description": "Title for Panel's disabled state"
   }
 }
