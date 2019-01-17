@@ -1010,6 +1010,13 @@ LedgerImpl::GetWalletInfo() const {
 void LedgerImpl::SetWalletInfo(
     const braveledger_bat_helper::WALLET_INFO_ST& info) {
   bat_state_->SetWalletInfo(info);
+
+  confirmations::WalletInfo confirmations_wallet_info;
+  confirmations_wallet_info.payment_id = info.paymentId_;
+  confirmations_wallet_info.signing_key =
+      braveledger_bat_helper::getBase64(info.keyInfoSeed_);
+  bat_confirmations_->SetWalletInfo(
+      std::make_unique<confirmations::WalletInfo>(confirmations_wallet_info));
 }
 
 const braveledger_bat_helper::WALLET_PROPERTIES_ST&
@@ -1223,10 +1230,20 @@ void LedgerImpl::Reset(const std::string& name,
 }
 
 uint32_t LedgerImpl::SetTimer(const uint64_t time_offset) {
-  return 0;
+  return ledger_client_->SetConfirmationsTimer(time_offset);
 }
 
 void LedgerImpl::KillTimer(uint32_t timer_id) {
+  ledger_client_->KillConfirmationsTimer(timer_id);
+}
+
+void LedgerImpl::OnConfirmationsTimer(uint32_t timer_id) {
+}
+
+std::unique_ptr<confirmations::LogStream> LedgerImpl::Log(
+    const char* file,
+    const int line,
+    const confirmations::LogLevel log_level) const {
 }
 
 }  // namespace bat_ledger
