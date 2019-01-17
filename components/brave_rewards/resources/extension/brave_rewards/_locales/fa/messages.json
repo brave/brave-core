@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "امتیاز توکن",
+    "message": "امتیازهای توکن مطالبه شد",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "امتیازی در انتظار شما است.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "از کیف پولتان پشتیبان‌گیری کنید",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "لطفاً از کیف پول Brave‌ خود پشتیبان‌گیری کنید.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "حساب «پرداخت‌های Brave» منتظر سپرده است.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "سرمایه ناکافی",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "ایجاد کیف پول",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "هنوز هیچ فعالیتی وجود ندارد…",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "نماد BAT را به اینجا بکشید:",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "روز شانستان است!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "امتیاز توکن شما در راه است.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "ثابت کنید انسان هستید!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "هدف.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "اوووم...نه کاملاً. دوباره امتحان کنید.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "مطالبه",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "امتیاز توکن رایگان",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "تاریخ انقضای امتیاز",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "متأسفیم، به‌نظر می‌رسد این امتیاز قبلاً مطالبه شده است.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "تأیید",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "«پاداش‌های Brave» با مشکل روبرو است. لطفاً بعداً دوباره امتحان کنید.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "متأسفیم، مشکلی پیش آمد. لطفاً بعداً دوباره امتحان کنید.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "تأیید",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "متأسفیم، اما به‌نظر می‌رسد این امتیاز منقضی شده است.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "این امتیاز دیگر دردسترس نیست.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "هنوز تأیید نشده است",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "این پدیدآورنده هنوز برای دریافت کمک از کاربران Brave ثبت‌نام نکرده است. تا زمانی که پدیدآورنده کمک را تأیید نکند، انعام‌هایی که ارسال می‌کنید در کیف پولتان باقی می‌مانند.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "بیشتر بدانید.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "{{reservedAmount}}‏ BAT برای پدیدآورندگانی که هنوز برای دریافت کمک ثبت‌نام نکرده‌اند در نظر گرفته‌اید. مرورگرتان تا زمانی که آنها کمک را تأیید کنند، یا حداکثر 90 روز تلاش می‌کند کمک را انتقال دهد.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "بیشتر بدانید.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "خاموش",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "تنظیمات.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "درحال‌حاضر از مزایای «پاداش‌ها» هنگام مرور بهره‌مند نمی‌شوید. «پاداش‌ها» را اینجا روشن کنید:",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "«پاداش‌های Brave»",
+    "description": "Title for Panel's disabled state"
   }
 }

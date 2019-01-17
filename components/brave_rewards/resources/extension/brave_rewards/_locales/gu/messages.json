@@ -24,7 +24,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "વધુ જાણો",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Token Grants Claimed",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -152,7 +152,7 @@
     "description": "Title for monthly tips section in wallet summary"
   },
   "off": {
-    "message": "Off",
+    "message": "બંધ",
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
@@ -181,6 +181,22 @@
     "message": "You have a grant waiting for you.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Backup Wallet",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Please backup your Brave wallet.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Your Brave Payments account is waiting for a deposit.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Insufficient Funds",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Creating wallet",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "No activities yet…",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Drag the BAT Icon on to the",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "It’s your lucky day!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Your token grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Prove that you are human!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "target.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Hmm… Not Quite. Try Again.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Claim",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Free Token Grant",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Grant Expiration Date",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Sorry, it appears that this grant has already been claimed.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "બરાબર, સમજાઇ ગયું",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Brave Rewards is having an issue. Please try again later.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Oops, something is wrong. Please try again later.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "બરાબર, સમજાઇ ગયું",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Sorry, it appears that this grant has already expired.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "This grant is no longer available.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Not yet verified",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "This creator has not yet signed up to receive contributions from Brave users. Any tips you send will remain in your wallet until they verify.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Learn more.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "You’ve designated {{reservedAmount}} BAT for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Learn more.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "બંધ",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Settings.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "You are not currently accruing any Rewards benefits while browsing. Turn Rewards back on in",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Brave Rewards is",
+    "description": "Title for Panel's disabled state"
   }
 }

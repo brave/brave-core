@@ -3,24 +3,34 @@
 <translationbundle lang="iw">
 <translation id="5194812628624740897">‏ניתוק <ph name="USERNAME"/> ינקה את ההיסטוריה, הסימניות, ההגדרות ונתוני Brave אחרים המאוחסנים במכשיר הזה. נתונים המאוחסנים בחשבון Brave Software לא ינוקו, וניתן לנהל אותם <ph name="GOOGLE_DASHBOARD_LINK"/>במרכז השליטה של Brave Software<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
+<translation id="6373767849825830651">‏Brave הוא דפדפן אינטרנט המפעיל דפי אינטרנט ואפליקציות במהירות הבזק. זהו דפדפן מהיר, יציב וקל לשימוש. תוכל לגלוש באינטרנט בצורה מאובטחת יותר הודות להגנה מפני תוכנות זדוניות ודיוג המובנית ב-Brave.</translation>
 <translation id="680297041157509674">‏מערכת ההפעלה של Brave</translation>
 <translation id="4847979153841887006">‏לוגו של Brave</translation>
+<translation id="7339898014177206373">חלון חדש</translation>
 <translation id="5935964611177478118">‏היכנס אל Brave</translation>
 <translation id="5516268345616100622">‏מנהל המשימות - Brave</translation>
 <translation id="7918740962659365265">‏עזור לשפר את Brave על ידי שליחת דוחות קריסה ו-<ph name="UMA_LINK"/> אל Brave Software</translation>
-<translation id="7830723774663008396">‏Brave‏ - <ph name="PAGE_TITLE"/></translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
+<translation id="7830723774663008396">‏Brave‏ - <ph name="PAGE_TITLE"/></translation>
 <translation id="1403270718080126244">‏<ph name="PAGE_TITLE"/> - Brave בגירסת ביטא</translation>
 <translation id="3943696263619956191">‏<ph name="PAGE_TITLE"/> - Brave בגירסת פיתוח</translation>
 <translation id="6236814935154483927">‏<ph name="PAGE_TITLE"/> - Brave בגירסת Canary</translation>
+<translation id="4685833011652060085">‏עזרה באמצעות Brave</translation>
 <translation id="6474707902830053522">‏עזרה באמצעות מערכת ההפעלה של Brave</translation>
 <translation id="8992261409816268381">‏מחברי Brave</translation>
 <translation id="4651430425715739110">‏Copyright <ph name="YEAR"/> The Brave Authors. כל הזכויות שמורות.</translation>
 <translation id="2310890394934209120">‏מערכת ההפעלה של Brave התאפשרה באמצעות <ph name="BEGIN_LINK_CROS_OSS"/>תוכנת קוד פתוח<ph name="END_LINK_CROS_OSS"/> נוספת.</translation>
 <translation id="8160794320557846790">‏הפיתוח של Brave OS אפשרי בזכות <ph name="BEGIN_LINK_CROS_OSS"/>תוכנות קוד פתוח<ph name="END_LINK_CROS_OSS"/> נוספות, כמו <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (בטא)<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="6913582816347128893">‏ייתכן ש-Brave לא יפעל כראוי כי הוא כבר לא נתמך בגירסה 10.9 של Mac OS X.</translation>
+<translation id="7977787072794666032">‏ייתכן ש-Brave לא יפעל כראוי כי הוא כבר לא נתמך ב-Windows XP וב-Windows Vista</translation>
+<translation id="189297655255130768">‏Brave אינו מגיב. להפעיל מחדש עכשיו?</translation>
+<translation id="8703492925273919597">‏סגור את כל חלונות Brave ונסה שוב.</translation>
+<translation id="335632367599648646">‏האם אתה בטוח שברצונך להסיר את התקנת Brave?</translation>
+<translation id="5590013613412457132">‏הסר את התקנת Brave</translation>
 <translation id="5019879183386042809">‏הפוך את Brave לדפדפן ברירת המחדל</translation>
 <translation id="5063987220091207247">‏מערכת ההפעלה של Brave אינה יכול לפתוח את הדף הזה.</translation>
 <translation id="4065288863231444640">‏Brave יכול לפעול ברקע</translation>
+<translation id="6797402139308059782">‏אפשר ל-Brave לפעול ברקע</translation>
 <translation id="2585240446624043880">‏Brave אינו יכול לקרוא ולכתוב בספריית הנתונים שלו: <ph name="USER_DATA_DIRECTORY"/></translation>
 <translation id="8417700129970341035">‏אופציונלי: עזור לנו לשפר את Brave באמצעות שליחת נתוני שימוש ודוחות קריסה אל Brave Software באופן אוטומטי.</translation>
 <translation id="1489465648257900784">‏לא ניתן להשתמש בפרופיל שלך משום שהוא מגיע מגרסה חדשה יותר של Brave.
@@ -30,30 +40,70 @@
 <translation id="3403365884036456766">‏קובץ ההעדפות שלך פגום או לא חוקי. 
 
 Brave לא יכול לשחזר את ההגדרות שלך.</translation>
+<translation id="1477146545787277177">‏וואו! Brave קרס. להפעיל מחדש עכשיו?</translation>
 <translation id="5785919770853225148">‏הסיסמה הזאת תישמר על ידי Brave בחשבון Brave Software שלך. אין צורך לזכור אותה.</translation>
+<translation id="113959764510199339">‏Brave מנסה להציג סיסמאות.</translation>
+<translation id="7503098128120083822">‏Brave רוצה לייצא את הסיסמאות שלך.</translation>
+<translation id="8285294305439559616">‏Brave מנסה להציג סיסמאות. הקלד את הסיסמה שלך ל-Windows כדי לאפשר זאת.</translation>
+<translation id="5918095577778020936">‏Brave רוצה לייצא את הסיסמאות שלך. יש להקליד את הסיסמה שלך ל-Windows כדי לאפשר זאת.</translation>
+<translation id="8320964054148936490">‏במחשב זה קיימת כבר גרסה מתקדמת יותר של Brave. אם התוכנה אינה פועלת, הסר את ההתקנה של Brave ונסה שוב.</translation>
+<translation id="7691786510374174420">‏ההתקנה נכשלה בשל שגיאה לא צפויה. אם Brave  פועל כעת, סגור אותו ונסה שוב.</translation>
+<translation id="2619516027171717873">‏לא ניתן להתקין את אותה גרסת Brave שפועלת כרגע. סגור את Brave ונסה שוב.</translation>
+<translation id="6283840329609797763">‏ההתקנה נכשלה בשל שגיאה לא מזוהה. הורד שוב את Brave.</translation>
+<translation id="95624393026532554">‏כדי להשתמש ב-Brave יש צורך ב-Windows מגירסה 7 ואילך.</translation>
+<translation id="7387051847644272380">‏במהלך ההתקנה ארעה שגיאה של מערכת ההפעלה. הורד שוב את Brave.</translation>
+<translation id="1819119299840995223">‏מתבצעת כרגע פעולה אחרת ב-Brave. נסה שוב מאוחר יותר.</translation>
+<translation id="7747138024166251722">המתקין לא הצליח ליצור ספריה זמנית. בדוק את המקום הפנוי בדיסק ואת האישור להתקנת תוכנה.</translation>
+<translation id="7365690458036015383">‏המתקין לא הצליח לבטל את דחיסת הארכיון. הורד שוב את Brave.</translation>
+<translation id="6914496861676471566">‏הארכיון של המתקין פגום או שאינו חוקי. הורד שוב את Brave.</translation>
+<translation id="8862326446509486874">אין לך זכויות שמתאימות להתקנה ברמת המערכת. נסה להפעיל שוב את המתקין כמנהל מערכת.</translation>
+<translation id="6666624454809779082">‏Brave כבר מותקן במחשב ונגיש לכל המשתמשים.</translation>
+<translation id="6676384891291319759">גישה אל האינטרנט</translation>
+<translation id="911206726377975832">למחוק גם את נתוני הגלישה שלך?</translation>
+<translation id="2770231113462710648">שנה את דפדפן ברירת המחדל ל:</translation>
+<translation id="2485422356828889247">הסר התקנה</translation>
 <translation id="3343095737966473035">‏Brave אינו דפדפן ברירת המחדל שלך</translation>
 <translation id="6715663530666325392">‏הגדר סנכרון כדי לשמור את תכונות הדפדפן המותאמות אישית שלך באינטרנט ולגשת אליהן מ-Brave בכל מחשב.</translation>
+<translation id="5536657158619734169">‏גרסה חדשה של Brave זמינה כעת.</translation>
+<translation id="505042220086416644">‏גרסה חדשה של Brave זמינה, והיא מהירה יותר מאי פעם.</translation>
+<translation id="5616153642055197778">‏גרסה חדשה ובטוחה יותר של Brave זמינה כעת.</translation>
+<translation id="2301993384336631869">‏Brave עודכן, אך לא השתמשת בו לפחות 30 ימים.</translation>
+<translation id="2106568569080763501">‏Brave מאפשר לך ללחוץ על מספר טלפון באינטרנט ולהתקשר אליו באמצעות Skype!</translation>
 <translation id="5874882355102994015">‏Brave לא יכול להראות את התצוגה המקדימה של ההדפסה כשמציג ה-PDF המובנה חסר.</translation>
 <translation id="8880183781256147665">‏הוספה ל-Brave</translation>
 <translation id="3561569806301739367">‏<ph name="FILE_NAME"/> עלול להיות מסוכן, ולכן Brave חסם אותו.</translation>
 <translation id="9067428552314418522">‏Brave‏ חסם את הקובץ הזה כי הוא מסוכן.</translation>
 <translation id="4168372721886011198">‏<ph name="FILE_NAME"/> מסוכן, ולכן Brave חסם אותו.</translation>
 <translation id="89367911614620585">‏Brave‏ חסם את הקובץ הזה כי הוא עלול להיות מסוכן.</translation>
+<translation id="9183662282810237335">‏לסגור את Brave בכל זאת?</translation>
+<translation id="3834935463915107022">‏לסגור את Brave בכל זאת?</translation>
+<translation id="8797356639448065696">‏Brave נמצא במצב רקע.</translation>
 <translation id="2339258256897053758">‏המפתחות של Brave Software API חסרים. פונקציונליות מסוימת של Brave תהיה מושבתת.</translation>
+<translation id="2182657378556811785">‏העדכון כמעט הושלם! הפעל מחדש את Brave‏ כדי לסיים את העדכון.</translation>
 <translation id="5906655207909574370">העדכון כמעט הושלם! הפעל מחדש את המכשיר כדי לסיים את העדכון.</translation>
 <translation id="5877064549588274448">הערוץ שונה. הפעל מחדש את המכשיר להחלת השינויים.</translation>
+<translation id="5131485705787281074">‏Brave‏ מעודכן.</translation>
 <translation id="8667808506758191620">ה-<ph name="DEVICE_TYPE"/> שלך מעודכן.</translation>
+<translation id="5047208012586153436">‏מעדכן את Brave‏...</translation>
 <translation id="6970811910055250180">מעדכן את המכשיר שלך...</translation>
 <translation id="8030318113982266900">מעדכן את המכשיר שלך לערוץ <ph name="CHANNEL_NAME"/>...</translation>
+<translation id="7861579472672677409">‏<ph name="EXTENSION_NAME"/> נוסף ל-‏Brave‏</translation>
+<translation id="4054452651944170004">‏הסתר בתפריט Brave</translation>
+<translation id="5660079256336839395">‏הסתרה בתפריט Brave</translation>
 <translation id="7456658570432774853">‏עזור לשפר את Brave על ידי דיווח ההגדרות הנוכחיות</translation>
 <translation id="6134859571175647580">‏אזהרה: Brave לא יכול למנוע מתוספים לתעד את היסטוריית הגלישה שלך. כדי להשבית את התוסף הזה במצב גלישה בסתר, צריך לבטל את הבחירה של האפשרות הזו.</translation>
 <translation id="777113543093865885">‏הסר מ-Brave...</translation>
 <translation id="6078442581074612226">‏ב-Brave</translation>
+<translation id="1448049584457347995">‏כדי לשפר את האבטחה של Brave, השבתנו חלק מהתוספים שלא רשומים ב<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> וייתכן שנוספו ללא ידיעתך.</translation>
+<translation id="8848045066928358658">‏כדי לשפר את האבטחה של Brave, השבתנו את התוסף הבא שאינו רשום ב-<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> וייתכן שנוסף ללא ידיעתך.</translation>
 <translation id="8148611988012584308">‏התאם אישית ושלוט ב-Brave</translation>
 <translation id="5849446944780602366">‏כדי להתאים אישית את Brave Software Brave ולשלוט בו טוב יותר, כדאי להוריד את העדכון החדש.</translation>
 <translation id="9071554113102421877">‏&amp;פתיחה ב-Brave</translation>
+<translation id="2176825726964012531">‏מידע על &amp;Brave‏</translation>
+<translation id="5450493308072741203">‏עדכן &amp;את Brave‏</translation>
 <translation id="1421502046520299169">‏מידע על &amp;מערכת ההפעלה של Brave‏</translation>
 <translation id="2534623228451928732">‏עדכן את &amp;מערכת ההפעלה של Brave‏</translation>
+<translation id="8447483940522230788">Brave Helper</translation>
 <translation id="3360368475735266712">‏כניסה לחשבון תסנכרן ותתאים אישית את Brave בכל המכשירים שברשותך</translation>
 <translation id="5477319665405831211">‏סינכרון והתאמה אישית של Brave בכל המכשירים שברשותך</translation>
 <translation id="4934157190377700991">‏אתה מחובר כעת ל-Brave</translation>
@@ -61,6 +111,23 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="8296145982386097283">‏משתף את המחשב? עכשיו תוכל להגדיר את Brave בדיוק כמו שאתה אוהב.</translation>
 <translation id="1672124279374861424">‏לאחר הסרת החשבון שלך מ-Braveium, ייתכן שתידרש לטעון מחדש את הכרטיסיות הפתוחות שלך כדי שההסרה תיושם בפועל.</translation>
 <translation id="9197493712748167998">‏אתה משתמש ב-<ph name="PROFILE_EMAIL"/> כדי לסנכרן את הפריטים שלך ב-Brave. עבור אל '<ph name="SETTINGS_LINK"/>' כדי לעדכן את העדפות הסנכרון או להשתמש ב-Brave ללא חשבון Brave Software.</translation>
+<translation id="8132634101975074716">‏נכנסת ל-Brave!</translation>
+<translation id="4567424176335768812">נכנסת למערכת בתור <ph name="USER_EMAIL_ADDRESS"/>. כעת אתה יכול לגשת אל הסימניות, ההיסטוריה והגדרות אחרות שלך בכל המכשירים שבהם אתה מחובר לחשבון.</translation>
+<translation id="6888049487162027489">‏אתה מחובר כעת ל-Brave! הסנכרון הושבת על ידי מנהל המערכת שלך.</translation>
+<translation id="2925193881330501265">‏נכנסת ל-Brave כ-<ph name="USER_EMAIL_ADDRESS"/>. השתמש באותו חשבון כדי להיכנס שוב.</translation>
+<translation id="386092803020435298">‏מישהו נכנס בעבר ל-Chromuim מהמחשב הזה כ-<ph name="ACCOUNT_EMAIL_LAST"/>. אם זה לא החשבון שלך, צור משתמש חדש ל-Chromuim כדי לשמור על הפרדת המידע שלך.
+
+אם תמשיך בכניסה, המידע ב-Chromuim , כמו סימניות, היסטוריה והגדרות אחרות, ימוזג עם <ph name="ACCOUNT_EMAIL_NEW"/>.</translation>
+<translation id="847561904663814268">‏מישהו נכנס בעבר ל-Brave מהמחשב הזה כ-<ph name="ACCOUNT_EMAIL_LAST"/>. צור משתמש חדש ל-Brave כדי לשמור על הפרדת המידע שלך.</translation>
+<translation id="1853997773668795891">‏האם לקשר את הנתונים שלך ב-Brave לחשבון זה?</translation>
+<translation id="1326766910007115955">‏אתה נכנס עם חשבון מנוהל ונותן למנהל המערכת שלו שליטה על הפרופיל שלך ב-Brave. הנתונים שלך ב-Brave, כגון יישומים, סימניות, היסטוריה, סיסמאות והגדרות אחרות ייקשרו באופן קבוע ל-<ph name="USER_NAME"/>. תוכל למחוק את הנתונים האלה באמצעות לוח הבקרה של חשבונות Brave Software, אבל לא תוכל לשייך את הנתונים האלה לחשבון אחר. <ph name="LEARN_MORE"/></translation>
+<translation id="650055380213106997">‏אתה נכנס עם חשבון מנוהל ונותן למנהל המערכת שלו שליטה על הפרופיל שלך ב-Brave. הנתונים שלך ב-Brave, כגון יישומים, סימניות, היסטוריה, סיסמאות והגדרות אחרות ייקשרו באופן קבוע ל-<ph name="USER_NAME"/>. תוכל למחוק את הנתונים האלה באמצעות לוח הבקרה של חשבונות Brave Software, אבל לא תוכל לשייך את הנתונים האלה לחשבון אחר. לחלופין, תוכל ליצור פרופיל חדש כדי לשמור את הנתונים הקיימים שלך ב-Brave בנפרד.<ph name="LEARN_MORE"/></translation>
+<translation id="2591326305549412656">‏בכתובת <ph name="USER_EMAIL_ADDRESS"/> השתמשו בעבר ב-Brave</translation>
+<translation id="5381681911713004932">‏יש תוכנה מזיקה במחשב. כדי להחזיר את הדפדפן לפעילות רגילה, Brave יכול להסיר את התוכנה ולשחזר את ההגדרות שלך.</translation>
+<translation id="8919921662052966648">‏Brave לא הצליח לסנכרן את הנתונים שלך. עדכן את משפט הסיסמה לסנכרון.</translation>
+<translation id="2262856633481902138">‏Brave לא הצליח לסנכרן את הנתונים שלך מפני שפרטי הכניסה של חשבונך אינם מעודכנים.</translation>
+<translation id="5419189641394808652">‏Brave לא הצליח לסנכרן את הנתונים שלך מפני שסנכרון אינו זמין עבור הדומיין שלך.</translation>
+<translation id="2577755334620061182">‏Brave לא הצליח לסנכרן את הנתונים שלך בשל שגיאת כניסה.</translation>
 <translation id="3968006371075376562">‏מערכת ההפעלה של Brave לא הצליחה לסנכרן את הנתונים שלך. עדכן את משפט הסיסמה לסנכרון.</translation>
 <translation id="6746636977031158624">‏מערכת ההפעלה של Brave לא הצליחה לסנכרן את הנתונים שלך מפני שפרטי הכניסה של חשבונך אינם מעודכנים.</translation>
 <translation id="2999152167963026588">‏מערכת ההפעלה של Brave לא הצליחה לסנכרן את הנתונים שלך מפני שסנכרון אינו זמין עבור הדומיין שלך.</translation>
@@ -68,27 +135,59 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="2887570477425111999">‏שמור פרטים ב-Brave</translation>
 <translation id="193559141530782783">‏Brave יאחסן את הפרטים האישיים שלך באופן מאובטח כדי שלא תידרש להקליד אותם שוב.</translation>
 <translation id="663059986967017181">‏הועתק אל Brave</translation>
+<translation id="1457432835062259213">Brave App Launcher</translation>
+<translation id="82609232232243542">‏כניסה ל-Brave</translation>
+<translation id="2924628237198507508">‏עליך להיות מחובר ל-Brave כדי להשתמש ביישומים. כך Brave יכול לסנכרן את היישומים, הסימניות, ההיסטוריה, הסיסמאות והגדרות נוספות בין מכשירים שונים.</translation>
+<translation id="380197516434040304">‏הסר מ-Brave...</translation>
 <translation id="300669147395456190">‏יישומי Brave</translation>
 <translation id="3421950102518690868">‏<ph name="DOMAIN"/> דורש שתקרא ותקבל את התנאים וההגבלות הבאים לפני שתשתמש במכשיר הזה. תנאים אלה אינם מרחיבים, משנים או מגבילים את התנאים של מערכת ההפעלה של Brave.</translation>
 <translation id="3293668930608086049">‏Brave משתמש במצלמה ובמיקרופון שלך.</translation>
 <translation id="8919461291440820124">‏Brave משתמש במיקרופון שלך.</translation>
 <translation id="3205074487970075628">‏Brave משתמש במצלמה שלך.</translation>
+<translation id="8142245354207161805">‏נראה שהפרופיל נמצא בשימוש על ידי תהליך Brave אחר (<ph name="PROCESS_ID"/>) במחשב אחר (<ph name="HOST_NAME"/>)‏. Brave נעל את הפרופיל כדי שלא ייפגם. אם אתה משוכנע שאף תהליך אחר אינו משתמש בפרופיל זה, תוכל לבטל את נעילת הפרופיל ולהפעיל את Brave מחדש.</translation>
+<translation id="239760341987199724">‏הגדר את Brave כדפדפן ברירת המחדל שלך</translation>
+<translation id="5344925500065984750">‏כדי להגדיר אילו אתרים <ph name="NEW_PROFILE_NAME"/> יכול להציג, באפשרותך לקבוע הגבלות והגדרות מ-<ph name="BEGIN_LINK_1"/><ph name="DISPLAY_LINK"/><ph name="END_LINK_1"/>. אם לא תשנה את הגדרות ברירת המחדל, <ph name="NEW_PROFILE_NAME"/> יוכל לגלוש בכל התוכן באינטרנט.
+
+כדי למנוע מ-<ph name="NEW_PROFILE_NAME"/> לגשת לחשבון שלך, הקפד לנעול את הפרופיל כשאינך משתמש ב-Brave. כדי לעשות זאת, לחץ על שם הפרופיל שלך בפינה השמאלית העליונה של הדפדפן ובחר באפשרות 'צא והגדר נעילת ילדים'.
+<ph name="BEGIN_LINK_2"/>למידע נוסף<ph name="END_LINK_2"/>
+
+בדוק את האימייל בחשבון <ph name="ACCOUNT_EMAIL"/> לקבלת הנחיות נוספות.</translation>
+<translation id="1820843143331379651">‏פרופילים של משתמשים בפיקוח יפסיקו להיות זמינים החל מ-Brave 70.</translation>
+<translation id="8797005356491520797">‏נתוני הגלישה של המשתמש הזה יימחקו מהמכשיר. כדי לשחזר את הנתונים, צריך להיכנס אל Brave בתור $2.</translation>
+<translation id="2827121003398607864">‏Brave השתפר</translation>
+<translation id="7192666605334070839">‏קל יותר כעת להשתמש ב-Brave באמצעות חשבון Brave Software שלך ובמחשבים משותפים.</translation>
+<translation id="3511996232906761537">‏היסטוריית האתרים, הסימניות ונתונים נוספים מ-Brave נמצאים כאן.</translation>
+<translation id="7406627712452599344">‏אורחים יכולים להשתמש ב-Brave בלי להשאיר דבר מאחור.</translation>
+<translation id="5659384504794665581">‏אם אתה משתף מחשב, חברים ובני משפחה יכולים לגלוש בנפרד ולהגדיר את Brave בדיוק כפי שהם רוצים.</translation>
+<translation id="7130675370997202556">‏לחץ על השם שלך כדי לפתוח את Brave ולהתחיל לגלוש.</translation>
+<translation id="5952898964075639679">‏הוסף את עצמך ל-Brave</translation>
 <translation id="3813272600615358652">‏התוסף שינה את הדף שמוצג כשאתה מפעיל את Brave.</translation>
 <translation id="2576129394594491151">‏התוסף "<ph name="EXTENSION_NAME"/>" שינה את הדף שמוצג כשאתה מפעיל את Brave.</translation>
 <translation id="2675662665675552980">‏הגדרה זו גם קובעת איזה דף מוצג כשאתה מפעיל את Brave.</translation>
 <translation id="3215652305414474626">‏הגדרה זו גם קובעת איזה דף מוצג שאתה מפעיל את Brave או לוחץ על הלחצן 'דף הבית'.</translation>
 <translation id="2433912322225810055">‏הגדרה זו גם קובעת איזה דף מוצג כשאתה מפעיל את Brave או מבצע חיפוש מסרגל הכתובות.</translation>
 <translation id="2871190378186459992">‏גלה יישומים, משחקים, תוספים ועיצובים מעולים בשביל Brave.</translation>
+<translation id="3350544518197210895">‏Brave ‏(mDNS-In)</translation>
+<translation id="1912973375560256099">‏כלל נכנס עבור Brave על מנת לאפשר תנועת mDNS.</translation>
+<translation id="7276297358157391541">‏Brave יכול לספק בדיקת איות חכמה יותר על ידי שליחת הטקסט שאתה מקליד בדפדפן אל שרתי Brave Software. כך אתה יכול להשתמש באותה טכנולוגיה של בדיקת איות שבה נעשה שימוש בחיפוש Brave Software.</translation>
+<translation id="1807774211756215222">‏פתח את הקישור ב&amp;כרטיסיית Brave חדשה</translation>
+<translation id="4624945300945265642">‏פתח את הקישור בחלון &amp;גלישה בסתר של Brave</translation>
+<translation id="7863882214613921971">‏פתח את הקישור &amp;בכרטיסיית Brave חדשה</translation>
+<translation id="6554952862405000915">‏פתח את הקישור בחלון &amp;גלישה בסתר של Brave</translation>
+<translation id="4805806622840861220">‏הפעל מחדש את Brave</translation>
+<translation id="2560046583427795596">‏יש עדכון בשביל Brave והמערכת תחיל אותו ברגע שתבוצע הפעלה מחדש.</translation>
+<translation id="2799223571221894425">הפעל מחדש</translation>
 <translation id="2522086024276534909">‏הפעלה מחדש של Brave OS</translation>
 <translation id="8183252473547465084">‏כדי להחיל עדכון זה, יש להפעיל מחדש את Brave OS.</translation>
 <translation id="5895138241574237353">הפעל מחדש</translation>
 <translation id="5875673934455379806">‏התקן מחדש את Brave</translation>
 <translation id="2097604701283463988">‏Brave אינו מעודכן</translation>
+<translation id="5173820533850252773">‏Brave אינו מעודכן</translation>
 <translation id="6389268239133412586">‏לא ניתן לעדכן את Brave</translation>
 <translation id="7963515534397191222">‏עדכון Brave לגירסה האחרונה לא הצליח, ולכן אין לך גישה אל תכונות חדשות ותיקוני אבטחה.</translation>
 <translation id="3472158705945346956">‏המנהל שלך צריך להסיר אותך מ-Brave ולאחר מכן להוסיף אותך חזרה.</translation>
-<translation id="5173820533850252773">‏Brave אינו מעודכן</translation>
 <translation id="1705567146636171298">‏עדכן את Brave‏</translation>
+<translation id="3598551856834560515">‏עדכן את Brave כדי להתחיל את הסנכרון</translation>
 <translation id="4050175100176540509">הגרסה החדשה כוללת שיפורי בטיחות חשובים ותכונות חדשות.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{‏Brave יבצע אתחול בעוד שנייה אחת}two{‏Brave יבצע אתחול בעוד # שניות}many{‏Brave יבצע אתחול בעוד # שניות}other{‏Brave יבצע אתחול בעוד # שניות}}</translation>
 <translation id="5509303873219371662">‏עליך להפעיל מחדש את Brave עכשיו</translation>
@@ -96,18 +195,63 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="763369711159699222">‏עזור לנו לשפר את Brave</translation>
 <translation id="1156940037717341650">‏אתה יכול לעזור לשפר את הבטיחות של Brave ולהקל את השימוש בו על ידי דיווח ל-Brave Software על פרטים של בעיות אבטחה אפשריות.</translation>
 <translation id="6791166902140255175">‏כרטיסייה של Brave</translation>
+<translation id="2555639463117073782">‏הפעל מחדש את Brave כדי להפעיל את <ph name="PLUGIN_NAME"/></translation>
 <translation id="8899693649891674038">‏התקן את Brave בטלפון שלך, ונשלח אליו הודעת SMS.</translation>
 <translation id="1570795130102031380">‏התקן את Brave בטלפון שלך, ונשלח הודעת SMS למספר: <ph name="PHONE_NUMBER"/></translation>
 <translation id="1609678321160597289">‏התקן את Brave בטלפון שלך, ונשלח הודעת SMS למספר שמוגדר לשחזור החשבון.</translation>
 <translation id="2965084188004448871">‏התקן את Brave בטלפון שלך, ונשלח הודעת SMS למספר שמוגדר לשחזור החשבון: <ph name="PHONE_NUMBER"/></translation>
 <translation id="8358191771897395012">‏להורדת Brave ל-iPhone</translation>
+<translation id="2034072705932785495">‏Brave זקוק להרשאת גישה למצלמה בשביל האתר הזה</translation>
+<translation id="3335606533094650083">‏Brave זקוק להרשאת גישה למיקרופון בשביל האתר הזה</translation>
+<translation id="4831743161813926460">‏Brave זקוק להרשאת גישה אל המצלמה והמיקרופון בשביל האתר הזה</translation>
+<translation id="696826782632239602">‏Brave זקוק לגישה למיקום שלך כדי לשתף אותו עם האתר הזה</translation>
+<translation id="7798069806040634998">‏Brave זקוק לגישה לאחסון כדי להוריד קבצים</translation>
+<translation id="7685904775439037072">‏אחרי מתן גישה ל-Brave, אתרים יוכלו לבקש ממך גישה.</translation>
+<translation id="5805364706385912897">‏הדף הזה מנצל יותר מדי זיכרון, כך שהוא הושהה על-ידי Brave.</translation>
+<translation id="5138664332909611586">‏הדף הזה מנצל יותר מדי זיכרון, כך שחלק מהתוכן הוסר על ידי Brave.</translation>
 <translation id="1744365871163268756">‏המתן בזמן ש-Brave מתקין את עדכוני המערכת האחרונים.</translation>
 <translation id="5693614905241031118">‏Brave מתעדכן באופן אוטומטי כך שתמיד ברשותך הגרסה העדכנית ביותר.</translation>
 <translation id="6141293433381251973">‏Brave מתעדכן באופן אוטומטי, כך שתמיד ברשותך הגרסה העדכנית ביותר. כשההורדה תסתיים, Brave יופעל מחדש ותוכל להמשיך.</translation>
 <translation id="7808415789955822133">‏תנאים עבור מערכת ההפעלה של Brave</translation>
+<translation id="7207456302801184289">‏ברוכים הבאים ל-Brave‏</translation>
+<translation id="5688839044908745927">‏Brave כמעט מוכן.</translation>
+<translation id="7758342895140862711">‏לוקחים את Brave לכל מקום</translation>
+<translation id="3610173904388112975">‏גלישה באינטרנט עם Brave Software Smarts</translation>
+<translation id="3479552764303398839">לא עכשיו</translation>
+<translation id="8013374903356993822">‏רוצה להגיע ל-Brave מהר יותר?</translation>
+<translation id="7625138338483121345">‏הגדר את Brave בתור דפדפן ברירת המחדל</translation>
+<translation id="5927044791090834489">‏הצמד את Brave לשורת המשימות</translation>
+<translation id="8933981935877469796">‏בחר ב-<ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
+<translation id="1585657529869845941">אם הלחצן <ph name="BEGIN_BOLD"/>אני רוצה להחליף בכל מקרה<ph name="END_BOLD"/> מופיע, צריך ללחוץ עליו</translation>
+<translation id="3507835409099344374">‏מעבר אל הגדרות ההודעות של Brave</translation>
+<translation id="9118654140804842635">{0,plural, =0{‏יש עדכון ל-Brave}=1{‏יש עדכון ל-Brave}two{‏עדכון של Brave זמין כבר יומיים}many{‏עדכון של Brave זמין כבר # ימים}other{‏עדכון של Brave זמין כבר # ימים}}</translation>
+<translation id="720532315408041257">‏לפי בקשת מנהל המערכת, יש להפעיל מחדש את Brave כדי להחיל את העדכון הזה</translation>
+<translation id="6639482638305253477">{0,plural, =1{‏צריך להפעיל מחדש את Brave תוך יום אחד}two{‏צריך להפעיל מחדש את Brave תוך יומיים}many{‏צריך להפעיל מחדש את Brave תוך # ימים}other{‏צריך להפעיל מחדש את Brave תוך # ימים}}</translation>
+<translation id="656910845148850955">{0,plural, =1{‏Brave יופעל מחדש בעוד שעה אחת}two{‏Brave יופעל מחדש בעוד שעתיים}many{‏Brave יופעל מחדש בעוד # שעות}other{‏Brave יופעל מחדש בעוד # שעות}}</translation>
+<translation id="2927768292099217319">{0,plural, =1{‏Brave יופעל מחדש בעוד דקה}two{‏Brave יופעל מחדש בעוד שתי דקות}many{‏Brave יופעל מחדש בעוד # דקות}other{‏Brave יופעל מחדש בעוד # דקות}}</translation>
+<translation id="2124855793980950516">{0,plural, =0{‏Brave יופעל מחדש עכשיו}=1{‏Brave יופעל מחדש בעוד שנייה אחת}two{‏Brave יופעל מחדש בעוד שתי שניות}many{‏Brave יופעל מחדש בעוד # שניות}other{‏Brave יופעל מחדש בעוד # שניות}}</translation>
+<translation id="7595187113648413294">‏לפי דרישת מנהל המערכת, יש להפעיל מחדש את Brave כדי להחיל עדכון</translation>
+<translation id="56801943271475640">{0,plural, =0{‏יש עדכון ל-Brave OS}=1{‏יש עדכון ל-Brave OS}two{‏עדכון של Brave OS זמין כבר יומיים}many{‏עדכון של Brave OS זמין כבר # ימים}other{‏עדכון של Brave OS זמין כבר # ימים}}</translation>
+<translation id="5715362474140341294">‏לפי הבקשה של מנהל המערכת, צריך להפעיל מחדש את Brave OS כדי להחיל את העדכון</translation>
+<translation id="8094834892392729950">{0,plural, =1{‏צריך להפעיל מחדש את Brave OS תוך יום אחד}two{‏צריך להפעיל מחדש את Brave OS תוך יומיים}many{‏צריך להפעיל מחדש את Brave OS תוך # ימים}other{‏צריך להפעיל מחדש את Brave OS תוך # ימים}}</translation>
+<translation id="1265795866000813420">{0,plural, =1{‏Brave OS תופעל מחדש בעוד שעה אחת}two{‏Brave OS תופעל מחדש בעוד שעתיים}many{‏Brave OS תופעל מחדש בעוד # שעות}other{‏Brave OS תופעל מחדש בעוד # שעות}}</translation>
+<translation id="2031312345409605311">{0,plural, =1{‏Brave OS תופעל מחדש בעוד דקה אחת}two{‏Brave OS תופעל מחדש בעוד שתי דקות}many{‏Brave OS תופעל מחדש בעוד # דקות}other{‏Brave OS תופעל מחדש בעוד # דקות}}</translation>
+<translation id="8624602604153953835">{0,plural, =0{‏Brave OS תופעל מחדש עכשיו}=1{‏Brave OS תופעל מחדש בעוד שנייה אחת}two{‏Brave OS תופעל מחדש בעוד שתי שניות}many{‏Brave OS תופעל מחדש בעוד # שניות}other{‏Brave OS תופעל מחדש בעוד # שניות}}</translation>
+<translation id="8559452515617838628">‏לפי הדרישה של מנהל המערכת, צריך להפעיל מחדש את Brave OS כדי להחיל עדכון</translation>
+<translation id="3052349005266761501">‏הפעלת Brave מתבצעת...</translation>
+<translation id="1197672524850678392">‏לא ניתן היה להפעיל את Brave. יש לנסות שוב.</translation>
+<translation id="6040143037577758943">סגור</translation>
+<translation id="8541922081612557424">‏על Brave</translation>
+<translation id="3262506503470845422">‏קבל עזרה בנושא Brave</translation>
+<translation id="1864557848095568223">‏מעדכן את Brave‏</translation>
+<translation id="1786715389543715322">‏מעדכן את Brave‏ (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="8208853227947884571">‏Brave‏ מעודכן</translation>
 <translation id="6686872257969654608">‏על מערכת ההפעלה של Brave</translation>
 <translation id="2280363356796735201">‏קבל עזרה בנושא Brave OS</translation>
 <translation id="5253815230176279256">‏Brave Software Pay (‏הועתק ל-Brave)</translation>
+<translation id="5468853758063275923">‏Brave מוגדר כדפדפן ברירת המחדל</translation>
+<translation id="1775322105159056176">‏ב-Brave לא ניתן לקבוע או להגדיר את דפדפן ברירת המחדל</translation>
+<translation id="6915252145142862992">‏זוהי התקנה משנית של Brave, ולא ניתן להפוך אותו לדפדפן ברירת המחדל שלך.</translation>
 <translation id="7977435741986383568">‏Brave עשוי להשתמש בשירותי אינטרנט לשיפור חוויית הגלישה. ניתן להשבית את השירותים האלה. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">‏Brave שולח את הטקסט שמוקלד בשדות טקסט ל-Brave Software כדי לתקן שגיאות כתיב</translation>
 <translation id="8586264863973514035">‏כדי להחיל את השינויים שביצעת, יש להפעיל מחדש את Brave</translation>
@@ -116,11 +260,14 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="9220324636239049437">‏הפעולה הזו תמחק פריט אחד מהמכשיר. כדי לשחזר את הנתונים מאוחר יותר, היכנס אל Brave עם <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">‏פעולה זו תמחק <ph name="ITEMS_COUNT"/> פריטים מהמכשיר. כדי לשחזר את הנתונים מאוחר יותר, היכנס אל Brave עם <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">‏פעולה זו תמחק את נתוני הגלישה מהמכשיר. כדי לשחזר את הנתונים מאוחר יותר, היכנס אל Brave עם <ph name="USER_EMAIL"/>.</translation>
-<translation id="82609232232243542">‏היכנס אל Brave</translation>
+<translation id="4518479204315969707">‏שם ותמונה ב-Brave</translation>
 <translation id="8372880274820509128">‏לשיפור האבטחה, Brave יצפין את הנתונים.</translation>
 <translation id="7445061995866044926">‏האם לצאת מ-Brave?</translation>
 <translation id="7453070689008684791">‏Brave ייגש ל-Drive שלך כדי להציג הצעות בסרגל הכתובות</translation>
 <translation id="7713466009760073734">‏Brave OS מוצג בשפה זו</translation>
 <translation id="3518788198614984730">‏הצג את Brave OS בשפה זו</translation>
+<translation id="8258976055610040706">‏Brave מוצג בשפה זו</translation>
+<translation id="2335583906071111058">‏הצג את Brave בשפה זו</translation>
+<translation id="8926637909431618259">‏המשך הפעלת יישומים ברקע כאשר Brave סגור</translation>
 <translation id="6056473803837713617">‏דיווח על <ph name="BEGIN_LINK"/>ההגדרות הנוכחיות<ph name="END_LINK"/> יעזור לשפר את Brave</translation>
 </translationbundle>

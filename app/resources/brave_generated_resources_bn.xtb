@@ -3,13 +3,13 @@
 <translationbundle lang="bn">
 <translation id="3333887201479867589">Brave রিওয়ার্ডস</translation>
 <translation id="7942180974165298215">Brave বিজ্ঞাপন অবরুদ্ধকারক</translation>
-<translation id="6406506848690869874">Brave সিঙ্ক</translation>
+<translation id="6406506848690869874">সিঙ্ক করুন</translation>
 <translation id="120759863357279975">Brave-এ <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>")এর অনুমতি দেওয়া হয় না।</translation>
 <translation id="7450557937477381864">Chrome বন্ধ করুন</translation>
 <translation id="7008934821596358692">আমদানি প্রক্রিয়া শেষ করতে, সমস্ত Chrome উইন্ডোগুলি বন্ধ করুন</translation>
 <translation id="5735465527556462863">Brave (পুরনো) বন্ধ করুন</translation>
 <translation id="7737066986958447692">আমদানি প্রক্রিয়া শেষ করতে, সমস্ত Brave (পুরনো) উইন্ডোগুলি বন্ধ করুন।</translation>
-<translation id="6447842834002726250">কুকিসমূহ</translation>
+<translation id="6447842834002726250">কুকিজ</translation>
 <translation id="4983925687993168579">সাংখ্যিক তথ্য</translation>
 <translation id="6165477144235978006">Brave পেমেন্ট</translation>
 <translation id="3489524616427966890">উইন্ডো এবং ট্যাবগুলি খুলুন</translation>
@@ -40,6 +40,7 @@
 <translation id="3488584642074079080">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3155170474926428993">টর লঞ্চার</translation>
 <translation id="2515126961943087659">Bat বিজ্ঞাপন পরিষেবা</translation>
+<translation id="7924918279836988121">Bat Ledger পরিষেবা</translation>
 <translation id="7372129767729198111">Brave শিল্ডস ডিফল্ট</translation>
 <translation id="8029018702721078742">বিজ্ঞাপন নিয়ন্ত্রণ</translation>
 <translation id="3544462288910360084">কুকি নিয়ন্ত্রণ</translation>
@@ -55,10 +56,16 @@
 <translation id="8034285923190068220">আঙ্গুলের ছাপ নেওয়ার অনুমতি দিন</translation>
 <translation id="4540198958192073185">সমস্ত আঙ্গুলের ছাপ নেওয়া অবরুদ্ধ করুন</translation>
 <translation id="8942080017911802454">WebRTC IP পরিচালনার নীতি</translation>
-<translation id="6165508094623778733">আরো জানুন</translation>
+<translation id="6165508094623778733">আরও জানুন</translation>
 <translation id="8798099450830957504">ডিফল্ট</translation>
 <translation id="1822560017823072927">ডিফল্ট সর্বজনীন এবং ব্যক্তিগত ইন্টারফেসগুলি</translation>
 <translation id="5825943197137337319">শুধু ডিফল্ট সর্বজনীন ইন্টারফেস</translation>
 <translation id="1689062823386843231">নন-প্রক্সি UDP অক্ষম করুন</translation>
-<translation id="6645631466045614531">এর মারফত Brave Sync অধিগত করুন</translation>
+<translation id="6645631466045614531">এর মাধ্যমে সিঙ্ক অ্যাক্সেস করুন</translation>
+<translation id="6786747875388722282">এক্সটেনশনগুলি</translation>
+<translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
+<translation id="6554397389149987360">ব্রাউজারে স্ক্রিন শেয়ারিং এবং অন্যান্য বৈশিষ্ট্য সক্ষম করতে Hangouts উপাদানগুলি ব্যবহার করে।</translation>
+<translation id="6916590542764765824">এক্সটেনশনগুলি পরিচালনা করুন</translation>
+<translation id="4928988318462976765">ওয়েব এক্সটেনশন স্টোর</translation>
+<translation id="9181207987584064303">ওয়েব এক্সটেনশন স্টোরে দেখুন</translation>
 </translationbundle>

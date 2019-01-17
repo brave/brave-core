@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "टोकन अनुदान ",
+    "message": "टोकन अनुदान पर दावा किया गया",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "आपके पास एक अनुदान है जो आपकी प्रतीक्षा कर रहा है।",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "बैकअप बटुआ",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "कृपया अपने Brave बटुए को बैकअप करें।",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "आपके Brave पेमेंट खाते को रकम जमा होने की प्रतीक्षा है।",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "अपर्याप्त धन",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "वॉलेट बन रहा है ",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "अभी तक कोई गतिविधि नहीं...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": " पर BAT आइकन को लाएं",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "आज आपका भाग्यशाली दिन है!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "आपकी टोकन अनुदान पहुँच रही है। ",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "साबित करें कि आप इंसान हैं!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "लक्ष्य।",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "हम्म्… सही नहीं, पुनः प्रयास करें।",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "दावा",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "मुफ़्त टोकन अनुदान",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "अनुदान समाप्ति तिथि",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "क्षमा करें, ऐसा लगता है कि इस अनुदान पर पहले ही दावा किया जा चुका है।",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "ठीक ",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Brave पुरस्कारों में कुछ समस्या आ रही है। कृपया बाद में पुनः प्रयास करें।",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "ओह, कुछ गड़बड़ी है। कृपया पुनः प्रयास करें।",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "ठीक",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "क्षमा करें, ऐसा लगता है कि यह अनुदान पहले ही समाप्त हो चुकी है।",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "यह अनुदान अब उपलब्ध नहीं है।",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "अभी तक सत्यापित नहीं",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "इस निर्माता ने Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए अभी तक साइन अप नहीं किया है। उनके सत्यापित होने तक आपके द्वारा भेजी गयी कोई भी बख्शीश आपके ही बटुए में रहेगी।",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "और जानें।",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "आपने {{reservedAmount}} BAT उन निर्माताओं के लिए निर्धारित किये हैं जिन्होंने अभी तक योगदान पाने के लिए साइन अप नहीं किया है।  जब तक कि वो सत्यापित न कर दें, या 90 दिनों के बीतने तक आपका ब्राउज़र निरंतर प्रयास करता रहेगा।",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "और जानें।",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "बंद",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "सेटिंग।",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "आप अभी ब्राउज़िंग के दौरान किसी भी पुरस्कार के लाभ को एकत्र नहीं कर पा रहे हैं। पुरस्कारों को पुनः चालू करें",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Brave पुरस्कार है ",
+    "description": "Title for Panel's disabled state"
   }
 }

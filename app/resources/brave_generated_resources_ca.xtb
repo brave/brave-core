@@ -3,7 +3,7 @@
 <translationbundle lang="ca">
 <translation id="3333887201479867589">Premis de Brave</translation>
 <translation id="7942180974165298215">Blocatge d'anuncis de Brave</translation>
-<translation id="6406506848690869874">Sincronització de Brave</translation>
+<translation id="6406506848690869874">Sincronització</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (amb identificador d'extensió "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") no es permet a Brave.</translation>
 <translation id="7450557937477381864">Tanqueu Chrome</translation>
 <translation id="7008934821596358692">Per a finalitzar la importació tanqueu totes les finestres de Chrome</translation>
@@ -39,8 +39,12 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="1434416574322382019">Nova finestra privada amb Tor</translation>
 <translation id="4703780849509456860">Obre l'enllaç a una finestra privada amb Tor</translation>
 <translation id="3488584642074079080">Obre l'enllaç a una finestra privada de Brave amb Tor</translation>
+<translation id="6313675821927505581">Nova finestra privada amb Tor</translation>
+<translation id="2638041073279639246">Obre l'enllaç a una finestra privada amb Tor</translation>
+<translation id="3425600262621021599">Obre l'enllaç a una finestra privada de Brave amb Tor</translation>
 <translation id="3155170474926428993">Llançador de Tor</translation>
 <translation id="2515126961943087659">Servei d'anuncis de BAT</translation>
+<translation id="7924918279836988121">Servei de comptabilitat Bat</translation>
 <translation id="7372129767729198111">Paràmetres per defecte dels escuts de Brave</translation>
 <translation id="8029018702721078742">Control d'anuncis</translation>
 <translation id="3544462288910360084">Control de galetes</translation>
@@ -56,10 +60,16 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8034285923190068220">Permet empremta digital</translation>
 <translation id="4540198958192073185">Bloqueja tot el sistema d'empremta digital</translation>
 <translation id="8942080017911802454">Política de gestió del WebRTC IP</translation>
-<translation id="6165508094623778733">Més informació</translation>
-<translation id="8798099450830957504">Per defecte</translation>
+<translation id="6165508094623778733">Saber més</translation>
+<translation id="8798099450830957504">Predeterminat</translation>
 <translation id="1822560017823072927">Interfícies públiques i privades predeterminades</translation>
 <translation id="5825943197137337319">Només interfície pública predeterminada</translation>
 <translation id="1689062823386843231">Desactiva UDP que no sigui a través de proxy</translation>
-<translation id="6645631466045614531">Accedeix a la sincronització de Brave amb</translation>
+<translation id="6645631466045614531">Accedir a la sincronització a través de</translation>
+<translation id="6786747875388722282">Extensions</translation>
+<translation id="2896916411183256228">Fa servir WebTorrent per mostrar torrents directament al navegador. Accepta arxius de torrent i magnet links.</translation>
+<translation id="6554397389149987360">Fa servir un component de Hangouts per permetre que es comparteixi la pantalla i altres característiques al navegador.</translation>
+<translation id="6916590542764765824">Gestionar extensions</translation>
+<translation id="4928988318462976765">Botiga d'extensions web</translation>
+<translation id="9181207987584064303">Veure a la botiga d'extensions web</translation>
 </translationbundle>

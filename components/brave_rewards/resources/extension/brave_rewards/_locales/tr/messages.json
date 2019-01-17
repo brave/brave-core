@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Token Yardımı",
+    "message": "Token Bağışları Talep Edildi",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "Sizin için bekleyen bir yardım var.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Cüzdanı Yedekle",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Lütfen Brave cüzdanınızı yedekleyin.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Brave Payments hesabınız bir depozito için bekliyor. ",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Yetersiz Bakiye",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Cüzdan oluşturuluyor",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "Henüz aktivite yok...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "BAT İkonunu şunun üzerine sürükleyin:",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "Bugün senin şanslı günün!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Token bağışınız yolda.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "İnsan olduğunuzu ispatlayın!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "hedef. ",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Hmm... Pek Sayılmaz. Tekrar Deneyin. ",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Talep et",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Ücretsiz Token Bağışı",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Bağış Bitiş Tarihi",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Üzgünüz, bu bağış zaten talep edilmiş görünüyor.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "Tamam",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Brave Rewards bir sorun yaşıyor. Lütfen daha sonra tekrar deneyiniz.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Eyvah, bir şeyler yanlış. Lütfen daha sonra tekrar deneyin.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "Tamam",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Üzgünüz, bu bağışın süresi dolmuş görünüyor.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "Bu bağış artık mevcut değil.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Henüz doğrulanmadı",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Bu içerik oluşturucusu henüz Brave kullanıcılarının katkılarını almak için kaydolmadı. Gönderdiğiniz bütün bahşişler, onlar doğrulayana kadar cüzdanınızda kalacaktır. ",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Daha fazla bilgi edinin. ",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Henüz katkı almak için kaydolmamış oluşturucular  için {{ayrılmışMiktar}} BAT belirlediniz. Tarayıcınız, onlar doğrulayana veya 90 gün geçene kadar katkıda bulunmaya çalışmaya devam edecektir.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Daha fazla bilgi edinin. ",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Kapalı",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Ayarlar. ",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "Mevcut durumda gezinirken herhangi bir Rewards avantajı biriktirmiyorsunuz. Rewards'u tekrar etkinleştirin",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Brave Rewards",
+    "description": "Title for Panel's disabled state"
   }
 }

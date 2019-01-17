@@ -3,7 +3,7 @@
 <translationbundle lang="pt-PT">
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="7942180974165298215">Bloqueador de Anúncios Brave</translation>
-<translation id="6406506848690869874">Sincronização Brave</translation>
+<translation id="6406506848690869874">Sincronização</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") não é permitida no Brave.</translation>
 <translation id="7450557937477381864">Fechar Chrome</translation>
 <translation id="7008934821596358692">Para terminar a importação, fechar todas as janelas do windows Chrome.</translation>
@@ -41,10 +41,10 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="2515126961943087659">Serviço de anúncios BAT</translation>
 <translation id="7372129767729198111">Escudos pré-definidos Brave</translation>
-<translation id="8029018702721078742">Controlo de Anúncios</translation>
+<translation id="8029018702721078742">Controlo de anúncios</translation>
 <translation id="3544462288910360084">Controlo de Cookies</translation>
 <translation id="8919235146866304148">Proteção de impressões digitais</translation>
-<translation id="520895744850022668">HTTPS Em todo o lado</translation>
+<translation id="520895744850022668">HTTPS em todo o lado</translation>
 <translation id="5259716416204774556">Bloquear script</translation>
 <translation id="6067014455220527258">Bloquear anúncios</translation>
 <translation id="6985711843506827936">Permite anúncios e monitorização</translation>
@@ -55,10 +55,11 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="8034285923190068220">Permitir recolha de impressões digitais</translation>
 <translation id="4540198958192073185">Bloquear toda a recolha de impressões digitais</translation>
 <translation id="8942080017911802454">Tratamento de reclamações do WebRTC IP</translation>
-<translation id="6165508094623778733">Saber mais</translation>
-<translation id="8798099450830957504">Predefinido</translation>
+<translation id="6165508094623778733">Aprenda mais</translation>
+<translation id="8798099450830957504">Predefinição</translation>
 <translation id="1822560017823072927">Interfaces públicas e privadas pré-definidas</translation>
 <translation id="5825943197137337319">Apenas pré-definida interface pública</translation>
 <translation id="1689062823386843231">Desativar UDP não-proxy</translation>
-<translation id="6645631466045614531">Aceder à Sincronização do Brave através de</translation>
+<translation id="6786747875388722282">Extensões</translation>
+<translation id="6916590542764765824">Gerir extensões</translation>
 </translationbundle>

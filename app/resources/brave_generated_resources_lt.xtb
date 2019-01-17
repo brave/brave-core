@@ -3,7 +3,7 @@
 <translationbundle lang="lt">
 <translation id="3333887201479867589">„Brave Rewards“</translation>
 <translation id="7942180974165298215">„Brave Ad Block“</translation>
-<translation id="6406506848690869874">Brave Sync</translation>
+<translation id="6406506848690869874">Sinchronizavimas</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (plėtinio ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nėra leidžiamas naršyklėje „Brave“.</translation>
 <translation id="7450557937477381864">Užverti „Chrome“</translation>
 <translation id="7008934821596358692">Kad užbaigtumėte importuoti, užverkite visus „Chrome“ langus.</translation>
@@ -56,9 +56,10 @@
 <translation id="4540198958192073185">Blokuoti visus kontrolinius kodus</translation>
 <translation id="8942080017911802454">„WebRTC“ IP tvarkymo politika</translation>
 <translation id="6165508094623778733">Sužinokite daugiau</translation>
-<translation id="8798099450830957504">Numatyta</translation>
+<translation id="8798099450830957504">Numatytasis</translation>
 <translation id="1822560017823072927">Numatytosios viešos ir privačios sąsajos</translation>
 <translation id="5825943197137337319">Tik numatytoji vieša sąsaja</translation>
 <translation id="1689062823386843231">Išjungti neįgaliotąjį UDP</translation>
-<translation id="6645631466045614531">Naudoti „Brave Sync“ per</translation>
+<translation id="6786747875388722282">Plėtiniai</translation>
+<translation id="6916590542764765824">Plėtinių tvarkymas</translation>
 </translationbundle>
