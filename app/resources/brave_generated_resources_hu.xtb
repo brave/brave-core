@@ -3,13 +3,13 @@
 <translationbundle lang="hu">
 <translation id="3333887201479867589">Brave jutalmak</translation>
 <translation id="7942180974165298215">Brave hirdetés blokkolása</translation>
-<translation id="6406506848690869874">Brave Sync</translation>
+<translation id="6406506848690869874">Szinkronizálás</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (kiterjesztésazonosító "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nem engedélyezett a Brave-ben.</translation>
 <translation id="7450557937477381864">Chrome bezárása</translation>
 <translation id="7008934821596358692">Az importálás befejezéséhez zárja be az összes Chrome ablakot.</translation>
 <translation id="5735465527556462863">Brave bezárása (régi)</translation>
 <translation id="7737066986958447692">Az importálás befejezésével zárja be az összes (régi) Brave ablakot.</translation>
-<translation id="6447842834002726250">Sütik</translation>
+<translation id="6447842834002726250">Cookie-k</translation>
 <translation id="4983925687993168579">Statisztikák</translation>
 <translation id="6165477144235978006">Brave kifizetések</translation>
 <translation id="3489524616427966890">Ablakok és lapok megnyitása</translation>
@@ -40,9 +40,10 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="3488584642074079080">Hivatkozás megnyitása Brave Privát Ablakkal a Torban</translation>
 <translation id="3155170474926428993">Tor indítóprogram</translation>
 <translation id="2515126961943087659">BAT hirdetési szolgáltatás</translation>
+<translation id="7924918279836988121">Bat főkönyvi szolgáltatás</translation>
 <translation id="7372129767729198111">Brave védelem beállítások</translation>
 <translation id="8029018702721078742">Hirdetések beállítása</translation>
-<translation id="3544462288910360084">Sütik beállítása</translation>
+<translation id="3544462288910360084">Sütik szabályzása</translation>
 <translation id="8919235146866304148">Ujjlenyomat-leolvasási védelem</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Script blokkolása</translation>
@@ -60,5 +61,11 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="1822560017823072927">Alapértelmezett publikus és privát interfészek</translation>
 <translation id="5825943197137337319">Kizárólag alapértelmezett publikus interfész</translation>
 <translation id="1689062823386843231">Proxy nélküli UDP letiltása</translation>
-<translation id="6645631466045614531">Brave szinkronizáció elérése a következőn keresztül</translation>
+<translation id="6645631466045614531">Szinkronizálás elérési útja</translation>
+<translation id="6786747875388722282">Kiterjesztések</translation>
+<translation id="2896916411183256228">WebTorrentet használ torrentek megjelenítésére közvetlenül a böngészőben. Támogatja a torrentfájlokat és mágneslinkeket.</translation>
+<translation id="6554397389149987360">Hangouts komponenseket használ, hogy lehetővé tegye a képernyőmegosztást és más funkciókat a böngészőben.</translation>
+<translation id="6916590542764765824">Kiterjesztések rendezése</translation>
+<translation id="4928988318462976765">Webes Kiterjesztések Áruháza</translation>
+<translation id="9181207987584064303">Megtekintés a Webes Kiterjesztések Áruházában</translation>
 </translationbundle>

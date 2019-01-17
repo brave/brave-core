@@ -1,15 +1,15 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sv">
-<translation id="3333887201479867589">Brave belöningar</translation>
+<translation id="3333887201479867589">Bravebelöningar</translation>
 <translation id="7942180974165298215">Brave annonsblockerare</translation>
-<translation id="6406506848690869874">Brave Sync</translation>
+<translation id="6406506848690869874">Synka</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") är inte tillåtet i Brave.</translation>
 <translation id="7450557937477381864">Stäng Brave</translation>
 <translation id="7008934821596358692">Stäng alla Brave fönster för att göra klart importen.</translation>
 <translation id="5735465527556462863">Stäng Brave (gammal)</translation>
 <translation id="7737066986958447692">Stäng alla fönster i Brave (gammal) så att importen kan slutföras.</translation>
-<translation id="6447842834002726250">Kakor</translation>
+<translation id="6447842834002726250">Cookies</translation>
 <translation id="4983925687993168579">Statistik</translation>
 <translation id="6165477144235978006">Brave-betalningar</translation>
 <translation id="3489524616427966890">Öppna fönster och flikar</translation>
@@ -38,8 +38,12 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="1434416574322382019">Nytt privat fönster med Tor</translation>
 <translation id="4703780849509456860">Öppna länk i privat fönster med Tor</translation>
 <translation id="3488584642074079080">Öppna länken med Tor i ett privat Bravefönster</translation>
+<translation id="6313675821927505581">Nytt privat fönster med Tor</translation>
+<translation id="2638041073279639246">Öppna länk i nytt privat fönster med Tor</translation>
+<translation id="3425600262621021599">Öppna länk i Brave i ett privat fönster med Tor</translation>
 <translation id="3155170474926428993">Tor launcher</translation>
 <translation id="2515126961943087659">BAT-annonstjänst</translation>
+<translation id="7924918279836988121">Bat huvudbokstjänst</translation>
 <translation id="7372129767729198111">Standardinställningar för Bravesköldar</translation>
 <translation id="8029018702721078742">Annonskontroll</translation>
 <translation id="3544462288910360084">Kontroll av cookies</translation>
@@ -60,5 +64,11 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="1822560017823072927">Offentliga och privata standardgränssnitt</translation>
 <translation id="5825943197137337319">Endast offentligt standardgränssnitt</translation>
 <translation id="1689062823386843231">Inaktivera icke-proxad UDP</translation>
-<translation id="6645631466045614531">Få åtkomst till Brave Sync via</translation>
+<translation id="6645631466045614531">Öppna synkning via</translation>
+<translation id="6786747875388722282">Tillägg</translation>
+<translation id="2896916411183256228">Använder WebTorrent för att visa torrenter direkt i webbläsaren. Stödjer torrentfiler och magnetlänkar.</translation>
+<translation id="6554397389149987360">Använder komponenten Hangouts för att aktivera skärmdelning och andra funktioner i webbläsaren.</translation>
+<translation id="6916590542764765824">Hantera tillägg</translation>
+<translation id="4928988318462976765">Web Extensions Store</translation>
+<translation id="9181207987584064303">Visa i Web Extensions Store</translation>
 </translationbundle>

@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "토큰 그랜트",
+    "message": "토큰 승인 요청됨",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "사용할 수 있는 보조금이 있습니다.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "지갑 백업",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "귀하의 브레이브 지갑을 백업해 주세요.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "귀하의 브레이브 결제 계좌가 예금을 기다리고 있습니다.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "부족한 자금",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "월렛 생성 중",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "아직 활동이 없습니다...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "배트 아이콘을 다음으로 드래그하세요",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "오늘은 당신의 행운의 날입니다!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "귀하의 토큰 승인이 진행 중입니다.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "귀하가 인간임을 증명하세요!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "타킷.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "음... 잘 모르겠어요. 다시 해 보세요.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "클레임",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "무료 토큰 승인",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "만료 일자 승인",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "죄송합니다, 이미 승인이 요청된 것 같습니다.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "오케이",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "브레이브 리워드에 문제가 있습니다. 나중에 다시 시도해 주세요.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "이런, 뭔가 잘못되었습니다. 나중에 다시 시도해 주세요.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "오케이",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "죄송합니다, 이 승인은 이미 만료된 것 같습니다.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "이 승인은 더 이상 유효하지 않습니다.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "아직 인증되지 않음",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "이 크리에이터가 아직 브레이브 유저들로부터 기부를 받기 위한 회원 가입을 하지 않으셨습니다. 그들이 확인할 때 까지 귀하께서 보내신 모든 팁들은 귀하의 지갑에 남아있게 됩니다.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "더 알아보기.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "귀하께서는 아직 기부를 받기 위해 회원 가입을 하지 않은 크리에이터에 대하여 {{reservedAmount}} 의 배트(BAT)를 지정했습니다. 귀하의 브라우저는 그들이 확인 할 때까지 혹은 90일이 지나기까지 계속 기부를 시도하게 됩니다.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "더 알아보기.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "끄기",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "설정.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "귀하께서는 현재 브라우징 중에 아무 리워드도 모으고 있지 않습니다. 리워드를 다음에 돌려 놓으세요 ",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "브레이브 리워드란",
+    "description": "Title for Panel's disabled state"
   }
 }

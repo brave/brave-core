@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Marķiera piešķīrums",
+    "message": "Pieprasītie marķieru piešķīrumi",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "Jums pieejams viens piešķīrums.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Maka dublēšana",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Lūdzu, izveidojiet sava Brave maka dublējumkopiju.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Veiciet iemaksu savā Brave maksājumu kontā.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Nepietiek līdzekļu",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Maka izveide",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "Vēl nav darbību...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Velciet BAT ikonu uz",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "Jums šodien veicas!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Drīzumā saņemsiet savu marķiera piešķīrumu.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Pierādiet, ka esat cilvēks!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "mērķi.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Hmm… Ne gluži. Mēģiniet vēlreiz.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Pieprasīt",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Bezmaksas marķiera piešķīrums",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Piešķīruma derīguma beigu termiņš",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Šķiet, ka šis piešķīrums diemžēl jau ir pieprasīts.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "Labi",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Radusies kļūda saistībā ar Brave balvām. Lūdzu, mēģiniet vēlreiz vēlāk.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Ak vai, šķiet, radās kļūda. Lūdzu, mēģiniet vēlreiz vēlāk.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "Labi",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Šķiet, ka šī piešķīruma derīguma termiņš diemžēl ir beidzies.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "Šis piešķīrums vairs nav pieejams.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Vēl nav verificēts",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Šis satura veidotājs vēl nav pierakstījies ziedojumu saņemšanai no Brave lietotājiem. Dzeramnauda, ko nosūtīsiet, paliks jūsu makā līdz brīdim, kad attiecīgais veidotājs to apstiprinās.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Uzzināt vairāk.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Jūs atvēlējāt {{reservedAmount}} BAT satura veidotājiem, kuri vēl nav pierakstījušies ziedojumu saņemšanai. Jūsu pārlūkprogramma atkārtoti mēģinās veikt ziedojumu līdz brīdim, kad tas tiks apstiprināts vai būs pagājušas 90 dienas.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Uzzināt vairāk.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Izsl.",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Iestatījumi.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "Šobrīd jūs pārlūkošanas laikā nesaņemat nekādas balvas. Ieslēdziet balvu saņemšanu",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Brave balvas ir",
+    "description": "Title for Panel's disabled state"
   }
 }

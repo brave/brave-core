@@ -3,7 +3,7 @@
 <translationbundle lang="pt-BR">
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="7942180974165298215">Bloqueador de Anúncios Brave</translation>
-<translation id="6406506848690869874">Sincronizar Brave</translation>
+<translation id="6406506848690869874">Sync</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (a extenção ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") não é permitida na Brave.</translation>
 <translation id="7450557937477381864">Fechar o Chrome</translation>
 <translation id="7008934821596358692">Para concluir a importação, feche todas as janelas do Chrome.</translation>
@@ -39,10 +39,11 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="4703780849509456860">Abrir Link em Janela Privada com Tor</translation>
 <translation id="3488584642074079080">Abrir o Link em Janela Privada da Brave com Tor</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
-<translation id="2515126961943087659">Bat Ads Service</translation>
+<translation id="2515126961943087659">Serviço de Anúncios Bat</translation>
+<translation id="7924918279836988121">Serviço Ledger do BAT</translation>
 <translation id="7372129767729198111">Padrões de proteção Brave</translation>
 <translation id="8029018702721078742">Controle de Anúncio</translation>
-<translation id="3544462288910360084">Controle de Cookies</translation>
+<translation id="3544462288910360084">Controle de Cookie</translation>
 <translation id="8919235146866304148">Proteção de impressão digital</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Bloqueio de texto</translation>
@@ -55,10 +56,16 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="8034285923190068220">Permitir impressão digital</translation>
 <translation id="4540198958192073185">Bloquear todas as impressões digitais</translation>
 <translation id="8942080017911802454">Política de Tratamento de IP WebRTC</translation>
-<translation id="6165508094623778733">Saiba mais</translation>
+<translation id="6165508094623778733">Saber mais</translation>
 <translation id="8798099450830957504">Padrão</translation>
 <translation id="1822560017823072927">Interfaces públicas e privadas padrão</translation>
 <translation id="5825943197137337319">Apenas interface pública padrão</translation>
 <translation id="1689062823386843231">Desativar UDP não proxy</translation>
-<translation id="6645631466045614531">Acessar Sincronização do Brave via</translation>
+<translation id="6645631466045614531">Acessar o Sync via</translation>
+<translation id="6786747875388722282">Extensões</translation>
+<translation id="2896916411183256228">Usa o WebTorrent para exibir torrents diretamente no navegador. Suporta arquivos torrent e links magnéticos.</translation>
+<translation id="6554397389149987360">Usa o componente Hangouts para ativar o compartilhamento de tela e outros recursos no navegador.</translation>
+<translation id="6916590542764765824">Gerenciar Extensões</translation>
+<translation id="4928988318462976765">Loja Virtual de Extensões</translation>
+<translation id="9181207987584064303">Visualizar na Loja Virtual de Extensões</translation>
 </translationbundle>

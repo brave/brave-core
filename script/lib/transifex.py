@@ -1,6 +1,7 @@
 from hashlib import md5
 from lib.config import get_env_var
 from xml.sax.saxutils import escape, unescape
+from collections import defaultdict
 import HTMLParser
 import io
 import json
@@ -106,9 +107,16 @@ def get_transifex_translation_file_content(source_file_path, filename,
         'Aborting. Status code %d: %s' % (r.status_code, r.content))
     content = r.json()['content'].encode('utf-8')
     ext = os.path.splitext(source_file_path)[1]
-    # For .grd files, for some reason Transifex puts a \\" and \'
-    if ext == '.grd':
-        return content.replace('\\"', '"').replace("\\'", "'")
+    if ext == '.json':
+        # For .json files, for some reason Transifex puts a \'
+        content = content.replace("\\'", "'")
+        # Make sure it's parseable
+        json.loads(content)
+    elif ext == '.grd':
+        # For .grd and .json files, for some reason Transifex puts a \\" and \'
+        content = content.replace('\\"', '"').replace("\\'", "'")
+        # Make sure it's parseable
+        lxml.etree.fromstring(content)
     return content
 
 
@@ -195,23 +203,10 @@ def textify(t):
 def get_grd_message_string_tags(grd_file_path):
     """Obtains all message tags of the specified GRD file"""
     output_elements = []
-    if grd_file_path.endswith('.grdp'):
-        elements = lxml.etree.parse(grd_file_path).findall('./*')
-    else:
-        elements = lxml.etree.parse(grd_file_path).findall('.//messages/*')
+    elements = lxml.etree.parse(grd_file_path).findall('//message')
     for element in elements:
         if element.tag == 'message':
             output_elements.append(element)
-        elif element.tag == 'if':
-            expr = element.get('expr')
-            if expr not in ['chromeos', 'use_titlecase']:
-                continue
-            children = list(element)
-            children = [child for child in children if child.tag == 'message']
-            for child in children:
-                output_elements.append(child)
-        elif element.tag == 'part':  # will be handled below
-            continue
         else:
             assert False, ('Unexpected tag name %s' % element.tag)
 
@@ -235,23 +230,43 @@ def get_fingerprint_for_xtb(message_tag):
     string_phs = message_tag.findall('ph')
     for string_ph in string_phs:
         string_to_hash = (
-            string_to_hash + string_ph.get('name').upper() + string_ph.tail)
+            string_to_hash + string_ph.get('name').upper() + (
+                string_ph.tail or ''))
     string_to_hash = (string_to_hash or '').strip().encode('utf-8')
     string_to_hash = clean_triple_quoted_string(string_to_hash)
-    return FP.FingerPrint(string_to_hash) & 0x7fffffffffffffffL
+    fp = FP.FingerPrint(string_to_hash)
+    meaning = (message_tag.get('meaning') if 'meaning' in message_tag.attrib
+               else None)
+    if meaning:
+        # combine the fingerprints of message and meaning
+        fp2 = FP.FingerPrint(meaning)
+        if fp < 0:
+          fp = fp2 + (fp << 1) + 1
+        else:
+          fp = fp2 + (fp << 1)
+    # To avoid negative ids we strip the high-order bit
+    return str(fp & 0x7fffffffffffffffL)
 
 
 def get_grd_strings(grd_file_path):
     """Obtains a tubple of (name, value, FP) for each string in a GRD file"""
     strings = []
+    # Keep track of duplicate mesasge_names
+    dupe_dict = defaultdict(int)
     all_message_tags = get_grd_message_string_tags(grd_file_path)
     for message_tag in all_message_tags:
         message_name = message_tag.get('name')
+        dupe_dict[message_name] += 1
+
+        # Check for a duplicate message_name, this can happen for example
+        # for the same message id but one is title case and the other isn't.
+        # Both need to be uploaded to Transifex with different message names.
+        # When XTB files are later generated, the ID doesn't matter at all.
+        # The only thing that matters is the fingerprint string hash.
+        if  dupe_dict[message_name] > 1:
+            message_name += "_%s" % dupe_dict[message_name]
         message_desc = message_tag.get('desc') or ''
         message_value = textify(message_tag)
-        translateable = message_tag.get('translateable')
-        if translateable == 'false':
-            continue
         assert not not message_name, 'Message name is empty'
         assert message_name.startswith('IDS_'), (
             'Invalid message ID: %s' % message_name)
@@ -448,7 +463,8 @@ def upload_missing_translations_to_transifex(source_string_path, lang_code,
 def fix_missing_xtb_strings_from_chromium_xtb_strings(
         src_root, grd_file_path):
     """Checks to make sure Brave GRD file vs the Chromium GRD has the same
-    amount of strings."""
+    amount of strings.  If they do this checks that the XTB files that we
+    manage have all the equivalent strings as the Chromium XTB files."""
     chromium_grd_file_path = get_original_grd(src_root, grd_file_path)
     if not chromium_grd_file_path:
         return
@@ -460,6 +476,7 @@ def fix_missing_xtb_strings_from_chromium_xtb_strings(
     grd_strings = get_grd_strings(grd_file_path)
     chromium_grd_strings = get_grd_strings(chromium_grd_file_path)
 
+    # Get the XTB files from each of the GRD files
     xtb_files = get_xtb_files(grd_file_path)
     chromium_xtb_files = get_xtb_files(chromium_grd_file_path)
     xtb_file_paths = [os.path.join(
@@ -467,6 +484,9 @@ def fix_missing_xtb_strings_from_chromium_xtb_strings(
     chromium_xtb_file_paths = [
         os.path.join(chromium_grd_base_path, path) for
         (lang, path) in chromium_xtb_files]
+
+    # langs is the same sized list as xtb_files but contains only the associated
+    # list of locales.
     langs = [lang for (lang, path) in xtb_files]
 
     for idx, xtb_file in enumerate(xtb_file_paths):
@@ -534,7 +554,8 @@ def upload_source_files_to_transifex(source_file_path, filename):
     if ext == '.grd':
         # Generate the intermediate Transifex format for the source
         # translations.
-        output_xml_file_handle, output_xml_path = tempfile.mkstemp('.xml')
+        temp_file = tempfile.mkstemp('.xml')
+        output_xml_file_handle, output_xml_path = temp_file
         content = generate_source_strings_xml_from_grd(output_xml_file_handle,
                                                        source_file_path)
         os.close(output_xml_file_handle)
@@ -599,7 +620,7 @@ def upload_string_desc(source_file_path, filename, string_name, string_desc):
     payload = {
         'comment': string_desc,
     }
-    print 'uploading string for url: ', url
+    print 'uploading string description for url: ', url
     headers = {'Content-Type': 'application/json'}
     r = requests.put(url, json=payload, auth=get_auth(), headers=headers)
     if r.status_code == 400 and 'Source string does not exist' in r.content:
@@ -611,7 +632,7 @@ def upload_string_desc(source_file_path, filename, string_name, string_desc):
 
 def upload_source_strings_desc(source_file_path, filename):
     ext = os.path.splitext(source_file_path)[1]
-    print 'Uploading string descriptions for ', source_file_path
+    print 'Uploading strings descriptions for ', source_file_path
     if ext == '.json':
         json_strings = get_json_strings(source_file_path)
         for (string_name, string_value, string_desc) in json_strings:
