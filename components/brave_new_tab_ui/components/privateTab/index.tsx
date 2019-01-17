@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Page, PageWrapper } from 'brave-ui/features/newTab'
+import { Page, PageWrapper } from 'brave-ui/features/newTab/private'
 
 // Components group
 import PrivateTab from './privateTab'
@@ -14,40 +14,33 @@ import QwantTorTab from './qwantTorTab'
 import TorTab from './torTab'
 
 interface Props {
-  isTor: boolean
-  isQwant: boolean
-  useAlternativePrivateSearchEngine: boolean
-  onChangePrivateSearchEngine: (e: React.ChangeEvent<HTMLInputElement>) => void
+  actions: any
+  newTabData: NewTab.State
 }
 
-export default class NewPrivateTab extends React.PureComponent<Props, {}> {
-  get currentWindow () {
-    const { isTor, isQwant, useAlternativePrivateSearchEngine, onChangePrivateSearchEngine } = this.props
-    if (isTor) {
-      if (isQwant) {
+export default class NewPrivateTabPage extends React.PureComponent<Props, {}> {
+  get currentWindowNewTabPage () {
+    const { newTabData, actions } = this.props
+    if (newTabData.isTor) {
+      if (newTabData.isQwant) {
         return <QwantTorTab />
       }
       return <TorTab />
     }
 
-    if (isQwant) {
+    if (newTabData.isQwant) {
       return <QwantTab />
     }
 
-    return (
-      <PrivateTab
-        useAlternativePrivateSearchEngine={useAlternativePrivateSearchEngine}
-        onChangePrivateSearchEngine={onChangePrivateSearchEngine}
-      />
-    )
+    return <PrivateTab actions={actions} newTabData={newTabData} />
   }
 
   render () {
-    const { isTor, isQwant } = this.props
+    const { isTor, isQwant } = this.props.newTabData
     return (
       <Page isPrivate={!isTor && !isQwant}>
         <PageWrapper>
-          {this.currentWindow}
+          {this.currentWindowNewTabPage}
         </PageWrapper>
       </Page>
     )

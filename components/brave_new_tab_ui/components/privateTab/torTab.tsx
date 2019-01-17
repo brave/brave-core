@@ -21,7 +21,7 @@ import {
   Separator,
   FakeButton,
   Link
-} from 'brave-ui/features/newTab'
+} from 'brave-ui/features/newTab/private'
 
 // Helpers
 import { getLocale } from '../../../common/locale'

@@ -15,8 +15,6 @@ const defaultState: NewTab.State = {
   ignoredTopSites: [],
   pinnedTopSites: [],
   gridSites: [],
-  showImages: true,
-  imageLoadFailed: false,
   showEmptyPage: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
@@ -35,9 +33,6 @@ const defaultState: NewTab.State = {
 const randomBackgroundImage = (): NewTab.Image => {
   const randomIndex: number = Math.floor(Math.random() * backgrounds.length)
   const image: NewTab.Image = Object.assign({}, backgrounds[randomIndex])
-  image.style = {
-    backgroundImage: 'url(' + image.source + ')'
-  }
   return image
 }
 
@@ -55,7 +50,6 @@ export const getLoadTimeData = (state: NewTab.State) => {
 const cleanData = (state: NewTab.State): NewTab.State => {
   state = { ...state }
   state.backgroundImage = randomBackgroundImage()
-  delete state.imageLoadFailed
   state = getLoadTimeData(state)
   return state
 }

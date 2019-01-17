@@ -105,30 +105,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state = { ...state, topSites: payload.topSites }
       calculateGridSites(state)
       break
-    case types.NEW_TAB_BACKGROUND_IMAGE_LOAD_FAILED: {
-      const source = '/50cc52a4f1743ea74a21da996fe44272.jpg'
-      const fallbackImage: NewTab.Image = {
-        name: 'Bay Bridge',
-        source,
-        style: { backgroundImage: 'url(' + source + ')' },
-        author: 'Darrell Sano',
-        link: 'https://dksfoto.smugmug.com'
-      }
-      if (!state.imageLoadFailed) {
-        state = {
-          ...state,
-          backgroundImage: fallbackImage,
-          imageLoadFailed: true
-        }
-      } else {
-        state = {
-          ...state,
-          backgroundImage: undefined,
-          showImages: false
-        }
-      }
-      break
-    }
 
     case types.NEW_TAB_SITE_PINNED: {
       const topSiteIndex: number = state.topSites.findIndex((site) => site.url === payload.url)

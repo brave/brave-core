@@ -73,7 +73,7 @@ export const getGridSites = (state: NewTab.State, checkBookmarkInfo?: boolean) =
   gridSites.forEach((gridSite: NewTab.Site) => {
     gridSite.letter = getLetterFromSite(gridSite)
     gridSite.thumb = `chrome://thumb/${gridSite.url}`
-    gridSite.favicon = `chrome://favicon/size/48@1x/${gridSite.url}`
+    gridSite.favicon = `chrome://favicon/size/64@1x/${gridSite.url}`
     gridSite.bookmarked = state.bookmarks[gridSite.url]
 
     if (checkBookmarkInfo && !gridSite.bookmarked) {
