@@ -668,4 +668,15 @@ void LedgerClientMojoProxy::ResetConfirmationsState(
       std::bind(LedgerClientMojoProxy::OnResetConfirmationsState, holder, _1));
 }
 
+void LedgerClientMojoProxy::SetConfirmationsTimer(
+    uint64_t time_offset,
+    SetConfirmationsTimerCallback callback) {
+  uint32_t timer_id = ledger_client_->SetConfirmationsTimer(time_offset);
+  std::move(callback).Run(timer_id);
+}
+
+void LedgerClientMojoProxy::KillConfirmationsTimer(uint32_t timer_id) {
+  ledger_client_->KillConfirmationsTimer(timer_id);
+}
+
 } // namespace bat_ledger

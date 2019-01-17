@@ -297,6 +297,8 @@ class LEDGER_EXPORT Ledger {
   virtual bool IsConfirmationsReadyToShowAds() = 0;
 
   virtual void AdSustained(const std::string& info) = 0;
+
+  virtual void OnConfirmationsTimer(uint32_t timer_id) = 0;
 };
 
 }  // namespace ledger

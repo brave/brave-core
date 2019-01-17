@@ -716,6 +716,22 @@ void BatLedgerClientMojoProxy::ResetConfirmationsState(
       name, base::BindOnce(&OnResetConfirmationsState, std::move(callback)));
 }
 
+uint32_t BatLedgerClientMojoProxy::SetConfirmationsTimer(uint64_t time_offset) {
+  if (!Connected())
+    return 0;
+
+  uint32_t timer_id;
+  bat_ledger_client_->SetConfirmationsTimer(time_offset, &timer_id);  // sync
+  return timer_id;
+}
+
+void BatLedgerClientMojoProxy::KillConfirmationsTimer(uint32_t timer_id) {
+  if (!Connected())
+    return;
+
+  bat_ledger_client_->KillConfirmationsTimer(timer_id);
+}
+
 bool BatLedgerClientMojoProxy::Connected() const {
   return bat_ledger_client_.is_bound();
 }

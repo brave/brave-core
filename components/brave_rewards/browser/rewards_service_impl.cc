@@ -337,7 +337,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 #endif
       confirmations_state_base_path_(
           profile_->GetPath().AppendASCII("confirmations_state")),
-      next_timer_id_(0) {
+      next_timer_id_(0),
+      next_confirmations_timer_id_(0) {
   // Set up the rewards data source
   content::URLDataSource::Add(profile_,
                               std::make_unique<BraveRewardsSource>(profile_));
@@ -1482,6 +1483,41 @@ void RewardsServiceImpl::OnLoadedConfirmationsState(
     callback(ledger::Result::LEDGER_ERROR, value);
   else
     callback(ledger::Result::LEDGER_OK, value);
+}
+
+uint32_t RewardsServiceImpl::SetConfirmationsTimer(uint64_t time_offset) {
+  if (next_confirmations_timer_id_ == std::numeric_limits<uint32_t>::max())
+    next_confirmations_timer_id_ = 1;
+  else
+    ++next_confirmations_timer_id_;
+
+  uint32_t timer_id = next_confirmations_timer_id_;
+
+  confirmations_timers_[next_confirmations_timer_id_] =
+      std::make_unique<base::OneShotTimer>();
+  confirmations_timers_[next_confirmations_timer_id_]->Start(
+      FROM_HERE, base::TimeDelta::FromSeconds(time_offset),
+      base::BindOnce(&RewardsServiceImpl::OnConfirmationsTimer, AsWeakPtr(),
+                     next_confirmations_timer_id_));
+
+  return timer_id;
+}
+
+void RewardsServiceImpl::KillConfirmationsTimer(uint32_t timer_id) {
+  if (confirmations_timers_.find(timer_id) == confirmations_timers_.end())
+    return;
+
+  confirmations_timers_[timer_id]->Stop();
+  confirmations_timers_.erase(timer_id);
+}
+
+void RewardsServiceImpl::OnConfirmationsTimer(uint32_t timer_id) {
+  if (!Connected()) {
+    return;
+  }
+
+  confirmations_timers_.erase(timer_id);
+  bat_ledger_->OnConfirmationsTimer(timer_id);
 }
 
 void RewardsServiceImpl::OnResetConfirmationsState(

@@ -113,6 +113,9 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void ResetConfirmationsState(
       const std::string& name,
       ResetConfirmationsStateCallback callback) override;
+  void SetConfirmationsTimer(uint64_t time_offset,
+                             SetConfirmationsTimerCallback callback) override;
+  void KillConfirmationsTimer(uint32_t timer_id) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
