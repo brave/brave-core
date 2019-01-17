@@ -57,7 +57,6 @@ interface Props {
       )
     ) {
       this.setState({ willCreateNewSyncChainFromCode: false })
-      this.props.onClose()
       return
     }
 
