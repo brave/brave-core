@@ -90,7 +90,7 @@ void BatAdsImpl::ServeSampleAd() {
 void BatAdsImpl::GenerateAdReportingNotificationShownEvent(
       const std::string& notification_info) {
   auto info = std::make_unique<ads::NotificationInfo>();
-  if (info->FromJson(notification_info)) {
+  if (info->FromJson(notification_info) == ads::Result::SUCCESS) {
     ads_->GenerateAdReportingNotificationShownEvent(*info);
   }
 }
@@ -99,7 +99,7 @@ void BatAdsImpl::GenerateAdReportingNotificationResultEvent(
       const std::string& notification_info,
       int32_t result_type) {
   auto info = std::make_unique<ads::NotificationInfo>();
-  if (info->FromJson(notification_info)) {
+  if (info->FromJson(notification_info) == ads::Result::SUCCESS) {
     ads_->GenerateAdReportingNotificationResultEvent(
         *info,
         ToNotificationResultInfoResultType(result_type));
