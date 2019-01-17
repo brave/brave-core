@@ -20,7 +20,7 @@ import {
   Separator,
   FakeButton,
   Link
-} from 'brave-ui/features/newTab'
+} from 'brave-ui/features/newTab/private'
 
 // Components
 import { Toggle } from 'brave-ui/features/shields'
@@ -33,13 +33,26 @@ import { getLocale } from '../../../common/locale'
 const privateWindowImg = require('../../../img/newtab/private-window.svg')
 
 interface Props {
-  useAlternativePrivateSearchEngine: boolean
-  onChangePrivateSearchEngine: (e: React.ChangeEvent<HTMLInputElement>) => void
+  actions: any
+  newTabData: NewTab.State
 }
 
 export default class PrivateTab extends React.PureComponent<Props, {}> {
+  get useAlternativePrivateSearchEngine () {
+    return (
+      this.props.newTabData &&
+      this.props.newTabData.useAlternativePrivateSearchEngine
+    )
+  }
+
+  onChangePrivateSearchEngine = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target) {
+      return
+    }
+    this.props.actions.changePrivateSearchEngine(e.target.checked)
+  }
+
   render () {
-    const { useAlternativePrivateSearchEngine, onChangePrivateSearchEngine } = this.props
     return (
       <Grid>
         <HeaderBox>
@@ -66,8 +79,8 @@ export default class PrivateTab extends React.PureComponent<Props, {}> {
               <span style={{ color: '#fff' }}>{getLocale('boxDdgButton')}</span>
               <Toggle
                 id='duckduckgo'
-                checked={useAlternativePrivateSearchEngine}
-                onChange={onChangePrivateSearchEngine}
+                checked={this.useAlternativePrivateSearchEngine}
+                onChange={this.onChangePrivateSearchEngine}
               />
             </FakeButton>
             <Link href='https://support.brave.com/hc/en-us/articles/360018266171' target='_blank'>{getLocale('learnMore')}</Link>

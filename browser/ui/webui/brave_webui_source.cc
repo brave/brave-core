@@ -109,6 +109,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "estimatedTimeSaved", IDS_BRAVE_NEW_TAB_TOTAL_TIME_SAVED },
         { "thumbRemoved", IDS_BRAVE_NEW_TAB_THUMB_REMOVED },
         { "undoRemoved", IDS_BRAVE_NEW_TAB_UNDO_REMOVED },
+        { "close", IDS_BRAVE_NEW_TAB_CLOSE },
         { "restoreAll", IDS_BRAVE_NEW_TAB_RESTORE_ALL },
         { "second", IDS_BRAVE_NEW_TAB_SECOND },
         { "seconds", IDS_BRAVE_NEW_TAB_SECONDS },
