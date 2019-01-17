@@ -211,6 +211,7 @@ void BatPublishers::saveVisitInternal(
                           std::bind(&BatPublishers::onFetchFavIcon,
                                     this,
                                     publisher_info->id,
+                                    window_id,
                                     _1,
                                     _2));
   }
@@ -272,22 +273,41 @@ void BatPublishers::saveVisitInternal(
 }
 
 void BatPublishers::onFetchFavIcon(const std::string& publisher_key,
+                                   uint64_t window_id,
                                    bool success,
                                    const std::string& favicon_url) {
+  if (!success || favicon_url.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
+      "Missing or corrupted favicon file";
+    return;
+  }
+
   ledger_->GetPublisherInfo(publisher_key,
       std::bind(&BatPublishers::onFetchFavIconDBResponse,
-      this, _1, _2, favicon_url));
+      this, _1, _2, favicon_url, window_id));
 }
 
 void BatPublishers::onFetchFavIconDBResponse(
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> info,
-    const std::string& favicon_url) {
+    const std::string& favicon_url,
+    uint64_t window_id) {
   if (result == ledger::Result::LEDGER_OK && !favicon_url.empty()) {
     info->favicon_url = favicon_url;
 
+    std::unique_ptr<ledger::PublisherInfo> panel_info =
+        std::make_unique<ledger::PublisherInfo>(*info);
+
     ledger_->SetPublisherInfo(std::move(info),
                               std::bind(&onVisitSavedDummy, _1, _2));
+
+    if (window_id > 0) {
+      ledger::VisitData visit_data;
+      onPublisherActivity(ledger::Result::LEDGER_OK,
+                          std::move(panel_info),
+                          window_id,
+                          visit_data);
+    }
   } else {
     BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
       "Missing or corrupted favicon file";

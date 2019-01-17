@@ -840,26 +840,31 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
     }
   } else {
     if (providerType == TWITCH_MEDIA_TYPE) {
-      // compare and update
-      LOG(ERROR) << "==========TRIPPING";
-      if (!info) {
-        LOG(ERROR) << "INFO IS NULL";
+      std::string media_id = getTwitchMediaIdFromUrl(visit_data,
+                                                     publisher_blob);
+      std::transform(media_id.begin(),
+                     media_id.end(),
+                     media_id.begin(), ::tolower);
+      std::string media_key = getTwitchMediaKeyFromUrl(providerType,
+                                                       media_id,
+                                                       visit_data.url);
+      std::string name;
+      std::string favicon_url;
+      updateTwitchPublisherData(name, favicon_url, publisher_blob);
+      if (name != info->name || favicon_url != info->favicon_url) {
+        info->name = name;
+        info->favicon_url = favicon_url;
+        savePublisherInfo(0,
+                          media_key,
+                          providerType,
+                          visit_data.url,
+                          info->name,
+                          visit_data,
+                          windowId,
+                          info->favicon_url,
+                          media_id);
       }
-      if (info->name != visit_data.name) {
-        LOG(ERROR) << "==========TRIPPING2";
 
-        std::string media_id = getTwitchMediaIdFromUrl(
-            visit_data, publisher_blob);
-        std::transform(media_id.begin(), media_id.end(),
-          media_id.begin(), ::tolower);
-        std::string media_key = getTwitchMediaKeyFromUrl(providerType, media_id,
-          visit_data.url);
-        info->name = getUserFacingHandle(publisher_blob);
-        LOG(ERROR) << "=======FAVICON BEFORE SAVE: " << info->favicon_url;
-        savePublisherInfo(0, media_key, providerType, visit_data.url,
-          info->name, visit_data, windowId, info->favicon_url,
-          media_id);
-      }
       ledger_->OnPublisherActivity(result, std::move(info), windowId);
     } else if (providerType == YOUTUBE_MEDIA_TYPE) {
       fetchPublisherDataFromDB(windowId, visit_data, providerType,
