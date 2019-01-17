@@ -8,7 +8,7 @@
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
-    "message": "Dołącz nagrody",
+    "message": "Dołącz do Nagród Brave",
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
@@ -40,7 +40,7 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Granty",
+    "message": "Przyznane środki",
     "description": "Title for grant section in wallet summary"
   },
   "on": {
@@ -48,7 +48,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Zweryfikowany wydawca przeglądarki Brave",
+    "message": "Zweryfikowany wydawca Brave",
     "description": "Tells user that this particular publisher is verified publisher"
   },
   "rewardsContributeAttentionScore": {
@@ -60,7 +60,7 @@
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
-    "message": "Wysyłaj automatycznie darowizny",
+    "message": "Uwzględnij w wsparciu automatycznym",
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Subwencja tokenów",
+    "message": "Odebrane tokeny",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -136,7 +136,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Dołóż się automatycznie",
+    "message": "Wspieraj automatycznie",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -164,7 +164,7 @@
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
-    "message": "Auto-darowizna",
+    "message": "Wspieraj automatycznie",
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
@@ -178,8 +178,24 @@
     }
   },
   "grantNotification": {
-    "message": "Czeka na ciebie darowizna.",
+    "message": "Czeka na Ciebie darowizna.",
     "description": "Description for new grant notification"
+  },
+  "backupWalletTitle": {
+    "message": "Uzupełnij portfel",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Uzupełnij portfel Brave.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Twoje konto płatności Brave oczekuje na depozyt.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Niewystarczające środki",
+    "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
     "message": "Tworzenie portfela",
@@ -190,7 +206,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Twoje zaplanowane miesięczne opłaty w celu realizacji auto-darowizn i comiesięcznych napiwków nie mogły zostać przetworzone ponieważ twój portfel ma niedostateczne środki. Spróbujemy ponownie po 30 dniach.",
+    "message": "Twoje zaplanowane miesięczne opłaty w celu realizacji wspierania automatycznego i comiesięcznych napiwków nie mogły zostać przetworzone, ponieważ Twój portfel ma niewystarczające środki. Spróbujemy ponownie po 30 dniach.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "Brak działań do tej pory…",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Przeciągnij ikonę BAT na",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "To Twój szczęśliwy dzień!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Twój grant tokenowy jest w drodze.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Dowiedź, że jesteś człowiekiem!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "cel.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Hmm... Niezupełnie. Spróbuj jeszcze raz.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Odbierz",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Bezpłatny grant tokenowy",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Data wygaśnięcia środków",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Przykro nam, wygląda na to, że te środki zostały już wykorzystane.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Wystąpił problem z nagrodami przeglądarki Brave. Spróbuj ponownie później.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Ups, coś poszło nie tak. Spróbuj ponownie później.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Przykro nam, wygląda na to, że ten grant już wygasł.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "Te środki nie są jest już dostępne.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Jeszcze nie zweryfikowano",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Ten twórca nie zarejestrował się jeszcze w celu otrzymywania wkładów od użytkowników przeglądarki Brave. Wszelkie przesłane mu przez Ciebie napiwki pozostaną w Twoim portfelu do czasu weryfikacji twórcy.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Dowiedz się więcej.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Przeznaczyłeś {{reservedAmount}} BAT dla twórców, którzy nie zarejestrowali się jeszcze, aby otrzymywać wsparcie. Twoja przeglądarka będzie próbowała wnieść wsparcia do czasu, gdy zostaną zweryfikowani lub gdy minie 90 dni.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Dowiedz się więcej.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Wył.",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Ustawienia.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "Aktualnie nie otrzymujesz żadnych korzyści w postaci nagród za przeszukiwanie. Włącz Nagrody z powrotem.",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Nagrody Brave są",
+    "description": "Title for Panel's disabled state"
   }
 }

@@ -3,13 +3,13 @@
 <translationbundle lang="uk">
 <translation id="3333887201479867589">Винагороди Brave</translation>
 <translation id="7942180974165298215">Блокування реклами Brave</translation>
-<translation id="6406506848690869874">Синхронізація Brave</translation>
+<translation id="6406506848690869874">Синхронізувати</translation>
 <translation id="120759863357279975">У Brave немає дозволу на <ph name="EXTENSION_NAME">$1</ph> extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>".</translation>
 <translation id="7450557937477381864">Закрийте Chrome</translation>
 <translation id="7008934821596358692">Для завершення імпортування закрийте всі вікна Chrome.</translation>
 <translation id="5735465527556462863">Закрити Brave (стара версія)</translation>
 <translation id="7737066986958447692">Для завершення імпорту закрийте всі вікна Brave (стара версія).</translation>
-<translation id="6447842834002726250">Файли cookies</translation>
+<translation id="6447842834002726250">Cookie-файли</translation>
 <translation id="4983925687993168579">Статистика</translation>
 <translation id="6165477144235978006">Платежі Brave</translation>
 <translation id="3489524616427966890">Відкриті вікна та вкладки</translation>
@@ -39,6 +39,7 @@
 <translation id="3488584642074079080">Відкрити посилання у Приватному вікні Brave з Tor</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="2515126961943087659">Сервіс реклами з використанням BAT</translation>
+<translation id="7924918279836988121">Сервіс реєстраційного журналу Bat</translation>
 <translation id="7372129767729198111">Налаштування щитів Brave за замовчуванням</translation>
 <translation id="8029018702721078742">Контроль реклами</translation>
 <translation id="3544462288910360084">Управління файлами cookie</translation>
@@ -54,10 +55,16 @@
 <translation id="8034285923190068220">Дозволити розпізнавання відбитку пальця</translation>
 <translation id="4540198958192073185">Блокувати всі цифрові сліди</translation>
 <translation id="8942080017911802454">Політика поводження з WebRTC IP</translation>
-<translation id="6165508094623778733">Детальніше</translation>
-<translation id="8798099450830957504">За замовчуванням</translation>
+<translation id="6165508094623778733">Дізнатись більше</translation>
+<translation id="8798099450830957504">За умовчанням</translation>
 <translation id="1822560017823072927">Публічний та приватний інтерфейси за замовчуванням</translation>
 <translation id="5825943197137337319">Тільки загальнодоступний інтерфейс за замовчуванням</translation>
 <translation id="1689062823386843231">Вимкнути non-proxied UDP</translation>
-<translation id="6645631466045614531">Доступ до синхронізації Brave за допомогою</translation>
+<translation id="6645631466045614531">Отримати доступ до Синхронізації через</translation>
+<translation id="6786747875388722282">Розширення</translation>
+<translation id="2896916411183256228">Використовує WebTorrent, щоб показувати торренти безпосередньо у браузері. Підтримує торрент файли та magnet посилання.</translation>
+<translation id="6554397389149987360">Використовує компоненти Hangouts, щоб увімкнути поширення екрану та інші функції у браузері.</translation>
+<translation id="6916590542764765824">Керувати розширеннями</translation>
+<translation id="4928988318462976765">Веб Магазин Розширень</translation>
+<translation id="9181207987584064303">Переглянути у Веб Магазині Розширень</translation>
 </translationbundle>

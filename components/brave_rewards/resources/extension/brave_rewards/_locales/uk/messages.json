@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Пожертвування з токенів",
+    "message": "Гранти з токенів запитано",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "На вас очікує грошова сума.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Резервний гаманець",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Будь ласка, зробіть резервну копію гаманця Brave.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Ваш рахунок Платежі Brave очікує депозиту.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Недостатньо коштів",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Створення гаманця",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "Немає дій…",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Перетягніть іконку BAT до",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "Це ваш щасливий день!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Ваш грант з токенів в дорозі.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Доведіть, що ви людина!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "ціль.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Гммм... Не зовсім. Спробуйте ще раз.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Запитати",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Безкоштовний грант з токенів",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Дата закінчення дії гранта",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Вибачте, здається цей грант вже забрали.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "Гаразд",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "У Винагород Brave сталася проблема. Будь ласка, спробуйте пізніше.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Отакої, щось пішло не так. Будь ласка, спробуйте ще раз пізніше.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "Гаразд",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Вибачте, здається цей грант вже недійсний.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "Цей грант більше не доступний.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Ще не верифіковано",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Цей творець ще не зареєструвався на отримання внесків від користувачів Brave. Всі кошти, які ви надсилатимете, залишатимуться у вашому гаманці, доки вони не верифіковані. ",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Дізнатись більше.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Ви призначили {{reservedAmount}} BAT для творців, які ще не зареєструвались для отримання внесків. Ваш браузер буде продовжувати спроби зробити внесок, доки вони не будуть верифіковані, або доки не пройде 90 днів.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Дізнатись більше.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Вимкнено",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Налаштування.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "На даний момент ви не отримуєте жодних бонусів Винагород під час перегляду. Увімкніть Винагороди знову",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Винагороди Brave - це",
+    "description": "Title for Panel's disabled state"
   }
 }

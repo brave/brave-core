@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Χορηγία Μάρκας",
+    "message": "Οι Χορηγίες Τόκεν Αποκτήθηκαν",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "Μία χορηγία σε περιμένει.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Εφεδρικό Πορτοφόλι",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Παρακαλώ κρατήστε αντίγραφο ασφαλείας του Brave πορτοφολιού σας.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Ο Brave λογαριασμός Πληρωμών σας περιμένει μια κατάθεση.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Ανεπαρκείς Πόροι",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Δημιουργία πορτοφολιού",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "Δεν υπάρχουν δραστηριότητες ακόμα...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Σύρετε το εικονίδιο BAT στο",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "Είναι η τυχερή σας μέρα!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Σε λίγο θα λάβετε την δική σας χορηγία τόκεν.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Αποδείξτε ότι είστε άνθρωπος!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "στόχος.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Χμμ... Όχι ακριβώς. Προσπάθησε ξανά.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Διεκδικήστε",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Δωρεάν Χορηγία Τόκεν",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Ημερομηνία Λήξης Χορηγίας",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Λυπούμαστε, φαίνεται ότι έχετε ήδη διεκδικήσει αυτή τη χορηγία.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "ΟΚ",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Οι Brave ανταμοιβές παρουσιάζουν κάποιο πρόβλημα. Παρακαλώ προσπαθήστε ξανά αργότερα.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Ωχ, κάτι πήγε λάθος. Παρακαλώ προσπαθήστε ξανά αργότερα.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "ΟΚ",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Λυπούμαστε, φαίνεται ότι αυτή η χορηγία έχει ήδη λήξει.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "Αυτή η χορηγία δεν είναι πλέον διαθέσιμη.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Δεν έχει ακόμη επαληθευτεί",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Αυτός ο δημιουργός δεν έχει ακόμη εγγραφεί για να λάβει συνεισφορές από χρήστες Brave. Οποιαδήποτε φιλοδωρήματα θα στείλετε θα παραμείνουν στο πορτοφόλι σας μέχρι να επαληθευτούν.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Μάθετε περισσότερα.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Έχετε ορίσει {{reservedAmount}} BAT για  τους δημιουργούς που δεν έχουν ακόμη εγγραφεί για να λάβουν συνεισφορές. Το πρόγραμμα περιήγησης σας θα συνεχίσει να προσπαθεί να πραγματοποιήσει συνεισφορά μέχρι να την επιβεβαιώσουν, ή μέχρι να περάσουν 90 ημέρες.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Μάθετε περισσότερα.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Ανενεργό",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Ρυθμίσεις.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "Δεν κερδίζετε τη στιγμή αυτή κανένα πλεονέκτημα Ανταμοιβής κατά την περιήγηση. Ενεργοποιήστε ξανά τις Ανταμοιβές ",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Η Brave ανταμοιβή είναι",
+    "description": "Title for Panel's disabled state"
   }
 }

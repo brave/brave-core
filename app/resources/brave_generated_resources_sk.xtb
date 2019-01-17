@@ -3,13 +3,13 @@
 <translationbundle lang="sk">
 <translation id="3333887201479867589">Odmeny Brave</translation>
 <translation id="7942180974165298215">Blokovanie reklám Brave</translation>
-<translation id="6406506848690869874">Synchronizácia Brave</translation>
+<translation id="6406506848690869874">Synchronizovať</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nie je povolené v prehliadači Brave.</translation>
 <translation id="7450557937477381864">Zatvoriť Chrome</translation>
 <translation id="7008934821596358692">Pre dokončenie importovania zatvorte všetky okná Chrome.</translation>
 <translation id="5735465527556462863">Zatvoriť Brave (stará verzia)</translation>
 <translation id="7737066986958447692">Ak chcete dokončiť importovanie, zatvorte všetky okná Brave (stará verzia).</translation>
-<translation id="6447842834002726250">Cookies</translation>
+<translation id="6447842834002726250">Súbory cookie</translation>
 <translation id="4983925687993168579">Štatistika</translation>
 <translation id="6165477144235978006">Platby Brave</translation>
 <translation id="3489524616427966890">Otvorené okná a karty</translation>
@@ -40,6 +40,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="3488584642074079080">Torom otvoriť odkaz v súkromnom okne Brave</translation>
 <translation id="3155170474926428993">Spúšťač Tor</translation>
 <translation id="2515126961943087659">Reklamná služba Bat</translation>
+<translation id="7924918279836988121">Služba Bat ledger</translation>
 <translation id="7372129767729198111">Predvolená ochrana Brave</translation>
 <translation id="8029018702721078742">Kontrola reklám</translation>
 <translation id="3544462288910360084">Kontrola súborov cookies</translation>
@@ -56,9 +57,15 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="4540198958192073185">Blokovať fingerprinting</translation>
 <translation id="8942080017911802454">Zásady manipulácie WebRTC IP</translation>
 <translation id="6165508094623778733">Dozvedieť sa viac</translation>
-<translation id="8798099450830957504">Štandardné</translation>
+<translation id="8798099450830957504">Predvolené</translation>
 <translation id="1822560017823072927">Štandardné verejné a súkromné rozhrania</translation>
 <translation id="5825943197137337319">Iba štandardné verejné rozhranie</translation>
 <translation id="1689062823386843231">Deaktivovať nezastupované UDP</translation>
-<translation id="6645631466045614531">Získať prístup k synchronizácii Brave pomocou</translation>
+<translation id="6645631466045614531">Prístup k synchronizácii cez</translation>
+<translation id="6786747875388722282">Rozšírenia</translation>
+<translation id="2896916411183256228">Na zobrazenie torrentov priamo v prehliadači používa WebTorrent. Podporuje torrentové súbory a magnetové odkazy.</translation>
+<translation id="6554397389149987360">Používa komponenty služby Hangouts, ktoré umožňujú zdieľanie obrazovky a ďalšie funkcie v prehliadači.</translation>
+<translation id="6916590542764765824">Spravovať rozšírenia</translation>
+<translation id="4928988318462976765">Obchod s webovými rozšíreniami</translation>
+<translation id="9181207987584064303">Zobraziť v Obchode webových rozšírení</translation>
 </translationbundle>

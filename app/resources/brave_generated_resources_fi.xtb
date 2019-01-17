@@ -1,20 +1,25 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fi">
-<translation id="3333887201479867589">Brave -palkinnot</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave-mainostenesto</translation>
-<translation id="6406506848690869874">Brave Sync</translation>
+<translation id="6406506848690869874">Synkronointi</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ei ole sallittu Bravessa.</translation>
 <translation id="7450557937477381864">Sulje Chrome</translation>
 <translation id="7008934821596358692">Sulje kaikki Chrome-ikkunat lopettaaksesi tuonnin.</translation>
+<translation id="5735465527556462863">Sulje (vanha)</translation>
+<translation id="7737066986958447692">Kun lopetat tuonnin, sulke kaikki Brave-ikkunat (vanha)</translation>
 <translation id="6447842834002726250">Evästeet</translation>
 <translation id="4983925687993168579">Tilastot</translation>
+<translation id="6165477144235978006">Brave-maksut</translation>
+<translation id="3489524616427966890">Avaa ikkunat ja välilehdet</translation>
 <translation id="9173846700806833701">Widevine ei ole asennettu</translation>
 <translation id="2433569048491784801">Widevine ei ole asennettu.</translation>
 <translation id="3699882589215410581">Asenna ja suorita Widevine</translation>
 <translation id="8410111618231938546">Google Widevine on osa digitaalisen käyttöoikeuksien hallinnan (DRM) koodia, jota me Brave Softwarella emme omista tai voi tarkkailla. Google Widevine -koodi ladataan Googlen palvelimilta, ei meidän palvelimiltamme. Se ladataan vain, kun sallit tämän vaihtoehdon. Emme suosittele DRM:n käyttöä, mutta kunnioitamme käyttäjiemme valintaa ja tiedostamme, että jotkut Braven käyttäjät saattavat haluta käyttää palveluita, jotka vaativat sitä.
 
 Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyväksyt, että Brave ei ole vastuussa mistään vahingoista tai menetyksistä, jotka liittyvät Google Widevinen käyttöön.</translation>
+<translation id="6499845530162974140">Sulje (vanha)</translation>
 <translation id="3198814717959506569">Tuotu Brave:sta</translation>
 <translation id="453977518730680921">Toista media automaattisesti</translation>
 <translation id="410351446219883937">Toista automaattisesti</translation>
@@ -34,6 +39,8 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="4703780849509456860">Avaa linkki yksityisessä ikkunassa tai Tor-selaimessa</translation>
 <translation id="3488584642074079080">Avaa linkki Braven yksityisessä ikkunassa Torilla.</translation>
 <translation id="3155170474926428993">Tor -laukaisin</translation>
+<translation id="2515126961943087659">Bat-mainospalvelu</translation>
+<translation id="7924918279836988121">BAT-tilikirjapalvelu</translation>
 <translation id="7372129767729198111">Braven oletussuojaus</translation>
 <translation id="8029018702721078742">Mainostenhallinta</translation>
 <translation id="3544462288910360084">Evästeiden hallinta</translation>
@@ -49,9 +56,16 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="8034285923190068220">Salli tunnisteet</translation>
 <translation id="4540198958192073185">Estä kaikki tunnisteet</translation>
 <translation id="8942080017911802454">WebRTC IP käsittelykäytäntö</translation>
-<translation id="6165508094623778733">Lue lisää</translation>
+<translation id="6165508094623778733">Lisätietoa</translation>
 <translation id="8798099450830957504">Oletus</translation>
 <translation id="1822560017823072927">Julkinen ja yksityinen oletuskäyttöliittymä</translation>
 <translation id="5825943197137337319">Vain julkinen oletuskäyttöliittymä</translation>
 <translation id="1689062823386843231">Estä yhteydetön UDP</translation>
+<translation id="6645631466045614531">Avaa synkronointi seuraavaa kautta:</translation>
+<translation id="6786747875388722282">Laajennukset</translation>
+<translation id="2896916411183256228">Käyttää WebTorrentia torrent-tiedostojen näyttämiseen suoraan selaimessa. Tukee torrent-tiedostoja sekä magneettilinkkejä.</translation>
+<translation id="6554397389149987360">Käytä Hangouts-komponenttia ruudunjaon sekä muiden ominaisuuksien käytön mahdollistamiseen selaimessa.</translation>
+<translation id="6916590542764765824">Hallinnoi laajennuksia</translation>
+<translation id="4928988318462976765">Verkkolaajennusten myymälä</translation>
+<translation id="9181207987584064303">Näytä verkkolaajennusmyymälässä</translation>
 </translationbundle>

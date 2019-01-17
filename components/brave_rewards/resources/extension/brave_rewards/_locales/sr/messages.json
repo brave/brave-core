@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Odobrenje tokena",
+    "message": "Traženi tokeni odobrenja",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "Imate grant koji vas čeka.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Napravite rezervnu kopiju novčanika",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Molim vas napravite rezervnu kopiju svog Brave novčanika.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Vaš Brave nalog za plaćanje čeka na Vaš depozit.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Nedovoljno sredstava",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Stvaranje novčanika",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "Još uvek nema aktivnosti...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Prevucite BAT ikonu na",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "Danas je Vaš srećan dan!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Vaš token odobrenja je na putu.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Dokažite da ste ljudsko biće!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "meta.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Hm...Ne baš..Pokušajte ponovo.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Zahtevaj",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Besplatan token odobrenja.",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Datum isteka odobrenja\n",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Izvinite, izgleda da je ovo odobrenje već traženo.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "U redu",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Brave nagrade ima problema. Molimo Vas pokušajte kasnije.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Ups, nešto nije u redu. Molimo Vas pokušajte ponovo kasnije.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "U redu",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Izvinite, izgleda da je ovo odobrenje već isteklo.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "Ovo odobrenje više nije dostupno.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Još nije verifikovano",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Ovaj kreator se još nije prijavio za primanje doprinosa od Brave korisnika. Sve napojnice koje pošaljete će ostati u Vašem novčaniku dok ne potvrde.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Saznajte više.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Odredili ste {{reservedAmount}} BAT za kreatore koji se još nisu prijavili za primanje doprinosa. Vaš pretraživač će nastaviti da pokušava da doprinese dok ne potvrde, ili dok ne prođe 90 dana.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Saznajte više.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Isključi",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Podešavanja.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "Trenutno ne prikupljate nikakve pogodnosti za Nagrade tokom pregledanja. Ponovo uključite Nagrade na",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Brave nagrade je",
+    "description": "Title for Panel's disabled state"
   }
 }

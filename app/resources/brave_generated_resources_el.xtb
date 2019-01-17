@@ -3,7 +3,7 @@
 <translationbundle lang="el">
 <translation id="3333887201479867589">Ανταμοιβές Brave</translation>
 <translation id="7942180974165298215">Αποκλεισμός Διαφήμισης Brave</translation>
-<translation id="6406506848690869874">Συγχρονισμός Brave</translation>
+<translation id="6406506848690869874">Συγχρονισμός</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") δεν επιτρέπεται στο Brave.</translation>
 <translation id="7450557937477381864">Κλείστε τον Chrome</translation>
 <translation id="7008934821596358692">Για να ολοκληρωθεί η εισαγωγή, κλείστε όλα τα παράθυρα Chrome.</translation>
@@ -40,6 +40,7 @@
 <translation id="3488584642074079080">Άνοιγμα συνδέσμου σε Ιδιωτικό Παράθυρο Brave μέσω Tor</translation>
 <translation id="3155170474926428993">Άνοιγμα Tor</translation>
 <translation id="2515126961943087659">Υπηρεσία διαφημίσεων BAT</translation>
+<translation id="7924918279836988121">Υπηρεσία Bat Ledger</translation>
 <translation id="7372129767729198111">Προεπιλογές ασπίδων Brave</translation>
 <translation id="8029018702721078742">Έλεγχος διαφημίσεων</translation>
 <translation id="3544462288910360084">Έλεγχος Cookies</translation>
@@ -55,10 +56,16 @@
 <translation id="8034285923190068220">Να επιτρέπονται τα δακτυλικά αποτυπώματα</translation>
 <translation id="4540198958192073185">Αποκλείστε όλα τα δακτυλικά αποτυπώματα</translation>
 <translation id="8942080017911802454">Πολιτική Διαχείρισης IP σε WebRTC</translation>
-<translation id="6165508094623778733">Μάθετε περισσότερα</translation>
-<translation id="8798099450830957504">Προκαθορισμένη Ρύθμιση</translation>
+<translation id="6165508094623778733">Μάθε περισσότερα</translation>
+<translation id="8798099450830957504">Προεπιλογή</translation>
 <translation id="1822560017823072927">Προεπιλεγμένο δημόσιο και ιδιωτικό περιβάλλον χρήστη</translation>
 <translation id="5825943197137337319">Μόνο προεπιλεγμένη δημόσια διεπαφή</translation>
 <translation id="1689062823386843231">Απενεργοποίηση UDP χωρίς διαμεσολάβηση</translation>
-<translation id="6645631466045614531">Πρόσβαση στον συγχρονισμό Brave μέσω</translation>
+<translation id="6645631466045614531">Πρόσβαση Συγχρονισμού μέσω</translation>
+<translation id="6786747875388722282">Επεκτάσεις</translation>
+<translation id="2896916411183256228">Χρησιμοποιεί το WebTorrent για την εμφάνιση torrents απευθείας στο πρόγραμμα περιήγησης. Υποστηρίζει αρχεία torrent και magnet συνδέσμους.</translation>
+<translation id="6554397389149987360">Χρησιμοποιεί το στοιχείο Hangouts για να ενεργοποιήσει την κοινή χρήση οθόνης και άλλες λειτουργίες στο πρόγραμμα περιήγησης.</translation>
+<translation id="6916590542764765824">Διαχείριση των Επεκτάσεων</translation>
+<translation id="4928988318462976765">Ηλεκτρονικό Κατάστημα Επεκτάσεων</translation>
+<translation id="9181207987584064303">Προβολή στο Ηλεκτρονικό Κατάστημα των Επεκτάσεων</translation>
 </translationbundle>

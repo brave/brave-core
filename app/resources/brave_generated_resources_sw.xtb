@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sw">
-<translation id="3333887201479867589">Zawadi za Brave</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Kizuia Matangazo cha Brave</translation>
-<translation id="6406506848690869874">Upatanishaji wa Brave</translation>
+<translation id="6406506848690869874">Oanisha</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") is not allowed in Brave.</translation>
 <translation id="7450557937477381864">Funga Chrome</translation>
 <translation id="7008934821596358692">Ili kukamilisha kuingiza, funga madirisha yote ya Chrome.</translation>
@@ -38,11 +38,15 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="1434416574322382019">Dirisha Jipya Binafsi na Tor</translation>
 <translation id="4703780849509456860">Fungua kiungo kwenye Dirisha Binafsi kwa Tor</translation>
 <translation id="3488584642074079080">Fungua kiungo kwenye Dirisha Binafsi la Brave kwa Tor</translation>
+<translation id="6313675821927505581">Dirisha Jipya la Binafsi na Tor</translation>
+<translation id="2638041073279639246">Fungua kiungo kwenye dirisha la binafsi na Tor</translation>
+<translation id="3425600262621021599">Fungua kiungo kwenye dirisha la binafsi la Brave na Tor</translation>
 <translation id="3155170474926428993">Kifungua Tor</translation>
 <translation id="2515126961943087659">Huduma ya Matangazo ya Bat</translation>
+<translation id="7924918279836988121">Huduma ya Leja ya Bat</translation>
 <translation id="7372129767729198111">Machaguo msingi ya ngao za Brave</translation>
-<translation id="8029018702721078742">Kudhibiti Tangazo</translation>
-<translation id="3544462288910360084">Kudhibiti Vidakuzi</translation>
+<translation id="8029018702721078742">Udhibiti wa Tangazo</translation>
+<translation id="3544462288910360084">Udhibiti wa Kidakuzi</translation>
 <translation id="8919235146866304148">Ulinzi wa alama za vidole</translation>
 <translation id="520895744850022668">HTTPS Kila mahali</translation>
 <translation id="5259716416204774556">Kuzuia maandishi</translation>
@@ -56,9 +60,15 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="4540198958192073185">Zuia alama zote za vidole</translation>
 <translation id="8942080017911802454">Sera ya Kushughulika na WebRTC IP</translation>
 <translation id="6165508094623778733">Jifunze zaidi</translation>
-<translation id="8798099450830957504">Chaguo Msingi</translation>
+<translation id="8798099450830957504">Chaguomsingi</translation>
 <translation id="1822560017823072927">Violesura chaguo-msingi vya umma na binafsi</translation>
 <translation id="5825943197137337319">Kiolesura cha umma chaguo-msingi pekee</translation>
 <translation id="1689062823386843231">Zima UDP zisizo na usalama</translation>
-<translation id="6645631466045614531">Fikia Brave Kuoanisha kupitia</translation>
+<translation id="6645631466045614531">Fikia Oanisha kupitia</translation>
+<translation id="6786747875388722282">Viendelezi</translation>
+<translation id="2896916411183256228">Hutumia Torenti ya Tovuti kuonyesha torenti moja kwa moja kwenye kisakuzi. Huwezesha mafaili ya torenti na viungo vya sumaku.</translation>
+<translation id="6554397389149987360">Hutumia vipengele vya Hangouts ili kuwezesha kushiriki skrini na vipengele vingine kwenye kisakuzi.</translation>
+<translation id="6916590542764765824">Dhibiti Viendelezi</translation>
+<translation id="4928988318462976765">Duka la Viendelezi vya Wavuti</translation>
+<translation id="9181207987584064303">Tazama kwenye Duka la Viendelezi vya Wavuti</translation>
 </translationbundle>

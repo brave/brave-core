@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Nguồn cấp Token",
+    "message": "Khoản thưởng Token Đã nhận",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "Bạn có một khoản thưởng đang chờ.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Sao lưu Ví",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Vui lòng sao lưu ví Brave của bạn.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Tài khoản Thanh toán Brave của bạn đang chờ tiền gửi.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Không đủ Tiền",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Tạo ví",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "Chưa có hoạt động nào…",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Kéo Biểu tượng BAT vào",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "Đây là ngày may mắn của bạn!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Khoản thưởng token của bạn đang đến.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Chứng minh rằng bạn là con người!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "mục tiêu.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Hmm... Không Hẳn. Thử Lại.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Nhận",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Khoản thưởng Token Miễn phí",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Ngày Khoản thưởng Hết hạn",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Rất tiếc, có vẻ như khoản thưởng này đã được nhận.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Phần thưởng Brave đang gặp sự cố. Vui lòng thử lại sau.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Rất tiếc, đã xảy ra lỗi. Vui lòng thử lại sau.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Rất tiếc, có vẻ như khoản thưởng này đã hết hạn.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "Khoản thưởng này không còn khả dụng.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Vẫn chưa được xác minh",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Người sáng tạo này vẫn chưa đăng ký để nhận đóng góp từ người dùng Brave. Bất kỳ khoản tiền tip nào mà bạn gửi sẽ vẫn còn trong ví của bạn cho đến khi họ xác minh.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Tìm hiểu thêm.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Bạn đã chỉ định {{reservedAmount}} BAT cho những người sáng tạo vẫn chưa đăng ký để nhận đóng góp. Trình duyệt của bạn sẽ tiếp tục cố gắng đóng góp cho đến khi họ xác minh hoặc cho đến khi đã qua 90 ngày.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Tìm hiểu thêm.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Tắt",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Cài đặt.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "Bạn hiện không tích lũy bất kỳ lợi ích Phần thưởng nào trong khi duyệt web. Hãy bật lại Phần thưởng trong",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Phần thưởng Brave là",
+    "description": "Title for Panel's disabled state"
   }
 }

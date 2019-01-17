@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Poletbevilling",
+    "message": "Token-Tilskud Taget ",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "Du har en uddeling der venter på dig.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Sikkerhedskopiér Tegnebog ",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Sikkerhedskopiér venligst din Brave Tegnebog. ",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Din Brave Betalingskonto venter på en indbetaling. ",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Utilstrækkeligt Beløb ",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Opretter tegnebog",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "Ingen aktiviteter endnu ...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Træk BAT-Ikonet hen til ",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "Det er din heldige dag! ",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Dit token-tilskud er på vej. ",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Bevis at du er et menneske! ",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "mål. ",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Hmm... Ikke Helt. Prøv Igen. ",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Indløs ",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Gratis Token-Tilskud ",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Tilskuddets Udløbsdato ",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Beklager, det ser ud til, at dette tilskud allerede er taget. ",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "OK ",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Brave Rewards har et problem. Prøv venligst igen senere. ",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Ups, noget er galt. Prøv venligst igen senere. ",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "OK ",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Beklager, det lader til at dette tilskud allerede er udløbet. ",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "Dette tilskud er ikke længere tilgængeligt. ",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Endnu ikke godkendt ",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Denne skaber har endnu ikke skrevet sig op til at modtage bidrag fra Brave-brugere. Alle tips du sender vil forblive i din Tegnebog indtil skaberen godkender. ",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Lær mere. ",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Du har angivet {{reservedAmount}} BAT for skabere som endnu ikke har skrevet sig op til at modtage bidrag. Din browser vil fortsat forsøge at bidrage indtil de godkender, eller indtil 90 dage er gået. ",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Lær mere. ",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Fra ",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Indstillinger. ",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "Du indsamler i øjeblikket ingen Præmiefordele mens du surfer. Slå Præmier til igen i ",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Brave Rewards er  ",
+    "description": "Title for Panel's disabled state"
   }
 }
