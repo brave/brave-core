@@ -163,6 +163,14 @@
     "message": "ok",
     "description": "Used in notification to dismiss notification"
   },
+  "braveAdsLaunchMsg": {
+    "message": "Now you can earn by viewing ads.",
+    "description": "Message for ads launch notification"
+  },
+  "braveAdsLaunchTitle": {
+    "message": "Brave Ads has arrived!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Brave Ads",
     "description": "Notification title when we display info about ads"
@@ -396,5 +404,9 @@
   "bat": {
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
+  },
+  "turnOnAds": {
+    "message": "Turn on Ads",
+    "description": "Prompt to turn on Ads via notification"
   }
 }

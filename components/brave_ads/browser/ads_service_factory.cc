@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 
+#include "base/time/time.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -103,6 +104,9 @@ void AdsServiceFactory::RegisterProfilePrefs(
   #endif
 
   registry->RegisterIntegerPref(prefs::kBraveAdsIdleThreshold, 15);
+  registry->RegisterBooleanPref(prefs::kBraveAdsShowAdsNotification, true);
+  registry->RegisterTimePref(
+      prefs::kBraveAdsLaunchNotificationTimestamp, base::Time());
 
   if (should_migrate_prefs_from_62) {
     registry->RegisterBooleanPref(prefs::kBraveAdsPrefsMigratedFrom62, true);

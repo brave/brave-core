@@ -20,6 +20,10 @@ const int kBraveAdsPrefsCurrentVersion = 2;
 const char kBraveAdsPrefsVersion[] = "brave.brave_ads.prefs.version";
 const char kBraveAdsPrefsMigratedFrom62[] =
     "brave.brave_ads.prefs.migrated.from_0_62.x";
+const char kBraveAdsShowAdsNotification[] =
+    "brave.brave_ads.show_ads_notification";
+const char kBraveAdsLaunchNotificationTimestamp[] =
+    "brave.brave_ads.launch_notification_timestamp";
 
 }  // namespace prefs
 

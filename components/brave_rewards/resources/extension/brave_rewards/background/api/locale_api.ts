@@ -27,6 +27,8 @@ export const getUIMessages = (): Record<string, string> => {
     'backupWalletNotification',
     'backupWalletTitle',
     'bat',
+    'braveAdsLaunchTitle',
+    'braveAdsLaunchMsg',
     'braveAdsTitle',
     'braveContributeTitle',
     'braveRewards',
@@ -90,7 +92,11 @@ export const getUIMessages = (): Record<string, string> => {
     'tipsProcessedNotification',
     'tokenGrant',
     'tokenGrantClaimed',
+<<<<<<< HEAD
     'unVerifiedCheck',
+=======
+    'turnOnAds',
+>>>>>>> Fixes brave-browser/issues#2914, adds launch notification for Rewards users about Ads
     'unVerifiedPublisher',
     'unVerifiedText',
     'unVerifiedTextMore',

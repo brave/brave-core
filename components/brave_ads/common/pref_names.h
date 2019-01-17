@@ -20,6 +20,8 @@ extern const int kBraveAdsPrefsDefaultVersion;
 extern const int kBraveAdsPrefsCurrentVersion;
 extern const char kBraveAdsPrefsVersion[];
 extern const char kBraveAdsPrefsMigratedFrom62[];
+extern const char kBraveAdsShowAdsNotification[];
+extern const char kBraveAdsLaunchNotificationTimestamp[];
 
 }  // namespace prefs
 
