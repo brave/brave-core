@@ -102,6 +102,15 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
                            const std::string& filter,
                            GetActivityInfoListCallback callback) override;
 
+  void SaveConfirmationsState(const std::string& name,
+                              const std::string& value,
+                              SaveConfirmationsStateCallback callback) override;
+  void LoadConfirmationsState(const std::string& name,
+                              LoadConfirmationsStateCallback callback) override;
+  void ResetConfirmationsState(
+      const std::string& name,
+      ResetConfirmationsStateCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*
@@ -192,6 +201,19 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       CallbackHolder<GetRecurringDonationsCallback>* holder,
       const ledger::PublisherInfoList& publisher_info_list,
       uint32_t next_record);
+
+  static void OnSaveConfirmationsState(
+      CallbackHolder<SaveConfirmationsStateCallback>* holder,
+      ledger::Result result);
+
+  static void OnLoadConfirmationsState(
+      CallbackHolder<LoadConfirmationsStateCallback>* holder,
+      ledger::Result result,
+      const std::string& value);
+
+  static void OnResetConfirmationsState(
+      CallbackHolder<ResetConfirmationsStateCallback>* holder,
+      ledger::Result result);
 
   ledger::LedgerClient* ledger_client_;
 

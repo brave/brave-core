@@ -10,6 +10,7 @@
 #include <string>
 #include <fstream>
 
+#include "bat/confirmations/confirmations_client.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
@@ -36,10 +37,15 @@ namespace braveledger_bat_contribution {
 class BatContribution;
 }
 
+namespace confirmations {
+class Confirmations;
+}
+
 namespace bat_ledger {
 
 class LedgerImpl : public ledger::Ledger,
-                   public ledger::LedgerCallbackHandler {
+                   public ledger::LedgerCallbackHandler,
+                   public confirmations::ConfirmationsClient {
  public:
   typedef std::map<uint32_t, ledger::VisitData>::const_iterator visit_data_iter;
 
@@ -298,6 +304,26 @@ class LedgerImpl : public ledger::Ledger,
   double GetDefaultContributionAmount() override;
   bool HasSufficientBalanceToReconcile() override;
 
+  void SetCatalogIssuers(const std::string& info) override;
+  bool IsConfirmationsReadyToShowAds() override;
+  void AdSustained(const std::string& info) override;
+
+  // ConfirmationsClient implementation
+  uint32_t SetTimer(const uint64_t time_offset) override;
+  void KillTimer(uint32_t timer_id) override;
+  void Save(
+      const std::string& name,
+      const std::string& value,
+      confirmations::OnSaveCallback callback) override;
+  void Load(const std::string& name,
+            confirmations::OnLoadCallback callback) override;
+  void Reset(const std::string& name,
+             confirmations::OnResetCallback callback) override;
+  std::unique_ptr<confirmations::LogStream> Log(
+      const char* file,
+      const int line,
+      const confirmations::LogLevel log_level) const override;
+
  private:
   void AddRecurringPayment(const std::string& publisher_id, const double& value) override;
   void OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) override;
@@ -352,6 +378,8 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_get_media::BatGetMedia> bat_get_media_;
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
   std::unique_ptr<braveledger_bat_contribution::BatContribution> bat_contribution_;
+  std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
+  
   bool initialized_;
   bool initializing_;
 
@@ -361,7 +389,7 @@ class LedgerImpl : public ledger::Ledger,
   uint32_t last_shown_tab_id_;
   uint32_t last_pub_load_timer_id_;
   uint32_t last_grant_check_timer_id_;
- };
+};
 }  // namespace bat_ledger
 
 #endif  // BAT_LEDGER_LEDGER_IMPL_H_

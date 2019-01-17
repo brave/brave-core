@@ -94,6 +94,7 @@ source_set("browser") {
     }
 
     deps += [
+      "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-ledger",
       "//brave/components/services/bat_ledger/public/cpp",
       "//mojo/public/cpp/bindings",
