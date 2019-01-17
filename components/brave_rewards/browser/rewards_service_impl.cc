@@ -1628,9 +1628,11 @@ void RewardsServiceImpl::IsWalletCreated(
   bat_ledger_->IsWalletCreated(callback);
 }
 
-void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId,
-                                                     const std::string& url,
-                                                     const std::string& favicon_url) {
+void RewardsServiceImpl::GetPublisherActivityFromUrl(
+    uint64_t windowId,
+    const std::string& url,
+    const std::string& favicon_url,
+    const std::string& publisher_blob) {
   GURL parsedUrl(url);
 
   if (!parsedUrl.is_valid()) {
@@ -1660,7 +1662,8 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId,
   visitData.url = origin.spec();
   visitData.favicon_url = favicon_url;
 
-  bat_ledger_->GetPublisherActivityFromUrl(windowId, visitData.ToJson());
+  bat_ledger_->GetPublisherActivityFromUrl(
+    windowId, visitData.ToJson(), publisher_blob);
 }
 
 void RewardsServiceImpl::OnExcludedSitesChanged(const std::string& publisher_id) {

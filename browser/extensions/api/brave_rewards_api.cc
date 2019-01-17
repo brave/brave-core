@@ -101,7 +101,8 @@ ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
   if (rewards_service_) {
     rewards_service_->GetPublisherActivityFromUrl(params->window_id,
                                                   params->url,
-                                                  params->favicon_url);
+                                                  params->favicon_url,
+                                                  params->publisher_blob);
   }
   return RespondNow(NoArguments());
 }

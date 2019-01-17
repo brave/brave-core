@@ -184,7 +184,10 @@ class LEDGER_EXPORT Ledger {
     const ledger::PUBLISHER_EXCLUDE& exclude, uint64_t windowId) = 0;
   virtual void RestorePublishers() = 0;
   virtual bool IsWalletCreated() const = 0;
-  virtual void GetPublisherActivityFromUrl(uint64_t windowId, const ledger::VisitData& visit_data) = 0;
+  virtual void GetPublisherActivityFromUrl(
+      uint64_t windowId,
+      const ledger::VisitData& visit_data,
+      const std::string& publisher_blob) = 0;
   virtual void SetBalanceReportItem(ACTIVITY_MONTH month,
                                     int year,
                                     ledger::ReportType type,

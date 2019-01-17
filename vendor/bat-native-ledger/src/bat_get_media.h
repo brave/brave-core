@@ -40,9 +40,11 @@ class BatGetMedia {
                     const std::string& type,
                     const ledger::VisitData& visit_data);
 
-  void getMediaActivityFromUrl(uint64_t windowId,
-                               const ledger::VisitData& visit_data,
-                               const std::string& providerType);
+  void getMediaActivityFromUrl(
+      uint64_t windowId,
+      const ledger::VisitData& visit_data,
+      const std::string& providerType,
+      const std::string& publisher_blob);
 
   static std::string getYoutubeMediaIdFromUrl(const ledger::VisitData& visit_data);
 
@@ -99,13 +101,15 @@ class BatGetMedia {
                             const std::string& providerType,
                             uint64_t windowId);
 
-  void onMediaPublisherActivity(ledger::Result result,
-                                std::unique_ptr<ledger::PublisherInfo> info,
-                                uint64_t windowId,
-                                const ledger::VisitData& visit_data,
-                                const std::string& providerType,
-                                const std::string& media_key,
-                                const std::string& media_id);
+  void onMediaPublisherActivity(
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> info,
+      uint64_t windowId,
+      const ledger::VisitData& visit_data,
+      const std::string& providerType,
+      const std::string& media_key,
+      const std::string& media_id,
+      const std::string& publisher_blob);
 
   void onGetChannelIdFromUserPage(uint64_t windowId,
                                   const ledger::VisitData& visit_data,
@@ -126,10 +130,27 @@ class BatGetMedia {
                                 const ledger::VisitData& visit_data,
                                 const std::string& providerType);
 
-  void processTwitchMediaPanel(uint64_t windowId,
-                               const ledger::VisitData& visit_data,
-                               const std::string& providerType);
-
+  void processTwitchMediaPanel(
+      uint64_t windowId,
+      const ledger::VisitData& visit_data,
+      const std::string& providerType,
+      const std::string& publisher_blob);
+  std::string getTwitchMediaIdFromUrl(
+      const ledger::VisitData& visit_data,
+      const std::string& publisher_blob) const;
+  std::string getTwitchMediaKeyFromUrl(
+      const std::string& provider_type,
+      const std::string& id,
+      const std::string& url) const;
+  std::string getUserFacingHandle(
+      const std::string& publisher_blob) const;
+  std::string getFaviconUrl(
+      const std::string& publisher_blob,
+      const std::string& twitchHandle) const;
+  void updateTwitchPublisherData(
+    std::string& publisher_name,
+    std::string& publisher_favicon_url,
+    const std::string& publisher_blob);
   void processYoutubeWatchPath(uint64_t windowId,
                                const ledger::VisitData& visit_data,
                                const std::string& providerType);
@@ -156,12 +177,14 @@ class BatGetMedia {
                                  const std::string& response,
                                  const std::map<std::string, std::string>& headers);
 
-  void onFetchPublisherFromDBResponse(ledger::Result result,
-                                      std::unique_ptr<ledger::PublisherInfo> info,
-                                      uint64_t windowId,
-                                      const ledger::VisitData& visit_data,
-                                      const std::string& providerType,
-                                      const std::string& publisher_key);
+  void onFetchPublisherFromDBResponse(
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> info,
+      uint64_t windowId,
+      const ledger::VisitData& visit_data,
+      const std::string& providerType,
+      const std::string& publisher_key,
+      const std::string& publisher_blob);
 
   void processYoutubeAsPublisherType(const std::string& data,
                                      uint64_t windowId,
@@ -180,14 +203,16 @@ class BatGetMedia {
 
   std::string extractData(const std::string& data,
                           const std::string& matchAfter,
-                          const std::string& matchUntil);
+                          const std::string& matchUntil) const;
 
   std::string getPublisherUrl(const std::string& publisher_key, const std::string& providerName);
 
-  void fetchPublisherDataFromDB(uint64_t windowId,
-                                const ledger::VisitData& visit_data,
-                                const std::string& providerType,
-                                const std::string& publisher_key);
+  void fetchPublisherDataFromDB(
+      uint64_t windowId,
+      const ledger::VisitData& visit_data,
+      const std::string& providerType,
+      const std::string& publisher_key,
+      const std::string& publisher_blob);
 
   void fetchDataFromUrl(const std::string& url, FetchDataFromUrlCallback callback);
 

@@ -82,7 +82,8 @@ void onVisitSavedDummy(ledger::Result result,
 
 void BatPublishers::saveVisit(const std::string& publisher_id,
                               const ledger::VisitData& visit_data,
-                              const uint64_t& duration) {
+                              const uint64_t& duration,
+                              uint64_t window_id) {
   if (!ledger_->GetRewardsMainEnabled() || publisher_id.empty()) {
     return;
   }
@@ -100,7 +101,7 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
                 publisher_id,
                 visit_data,
                 duration,
-                0,
+                window_id,
                 _1,
                 _2);
   ledger_->GetActivityInfo(filter, callbackGetPublishers);
@@ -192,7 +193,7 @@ void BatPublishers::saveVisitInternal(
     // TODO error handling
     return;
   }
-
+  LOG(ERROR) << "=========SAVE VISIT INTERNAL";
   bool verified = isVerified(publisher_id);
 
   bool new_visit = false;
@@ -262,6 +263,7 @@ void BatPublishers::saveVisitInternal(
   }
 
   if (panel_info && window_id > 0) {
+    LOG(ERROR) << "===========ONPUBLISHERACTIVITY: " << panel_info->name << " " << panel_info->favicon_url;
     onPublisherActivity(ledger::Result::LEDGER_OK,
                         std::move(panel_info),
                         window_id,
@@ -773,7 +775,10 @@ bool BatPublishers::loadPublisherList(const std::string& data) {
   return success;
 }
 
-void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId, const ledger::VisitData& visit_data) {
+void BatPublishers::getPublisherActivityFromUrl(
+    uint64_t windowId,
+    const ledger::VisitData& visit_data,
+    const std::string& publisher_blob) {
   if ((visit_data.domain == YOUTUBE_TLD || visit_data.domain == TWITCH_TLD) &&
       visit_data.path != "" && visit_data.path != "/") {
     std::string type = YOUTUBE_MEDIA_TYPE;
@@ -789,7 +794,8 @@ void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId, const ledger:
 
     new_visit_data.url = new_visit_data.url + new_visit_data.path;
 
-    ledger_->GetMediaActivityFromUrl(windowId, new_visit_data, type);
+    ledger_->GetMediaActivityFromUrl(
+        windowId, new_visit_data, type, publisher_blob);
     return;
   }
 

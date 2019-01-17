@@ -128,7 +128,11 @@ class RewardsService : public KeyedService {
       const GetAllBalanceReportsCallback& callback) = 0;
   virtual void GetCurrentBalanceReport() = 0;
   virtual void IsWalletCreated(const IsWalletCreatedCallback& callback) = 0;
-  virtual void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url, const std::string& favicon_url) = 0;
+  virtual void GetPublisherActivityFromUrl(
+      uint64_t windowId,
+      const std::string& url,
+      const std::string& favicon_url,
+      const std::string& publisher_blob) = 0;
   virtual void GetContributionAmount(
       const GetContributionAmountCallback& callback) = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id) = 0;
