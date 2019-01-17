@@ -308,13 +308,13 @@ void AdsClientMojoBridge::LoadSampleBundle(LoadSampleBundleCallback callback) {
 
 void AdsClientMojoBridge::ShowNotification(const std::string& notification_info) {
   auto info = std::make_unique<ads::NotificationInfo>();
-  if (info->FromJson(notification_info))
+  if (info->FromJson(notification_info) == ads::Result::SUCCESS)
     ads_client_->ShowNotification(std::move(info));
 }
 
 void AdsClientMojoBridge::SetCatalogIssuers(const std::string& issuers_info) {
   auto info = std::make_unique<ads::IssuersInfo>();
-  if (info->FromJson(issuers_info))
+  if (info->FromJson(issuers_info) == ads::Result::SUCCESS)
     ads_client_->SetCatalogIssuers(std::move(info));
 }
 
@@ -326,7 +326,7 @@ bool AdsClientMojoBridge::IsConfirmationsReadyToShowAds(bool* out_can_show) {
 
 void AdsClientMojoBridge::AdSustained(const std::string& notification_info) {
   auto info = std::make_unique<ads::NotificationInfo>();
-  if (info->FromJson(notification_info))
+  if (info->FromJson(notification_info) == ads::Result::SUCCESS)
     ads_client_->AdSustained(std::move(info));
 }
 
@@ -353,7 +353,7 @@ void AdsClientMojoBridge::SaveBundleState(const std::string& bundle_state_json,
 
   auto schema = ads_client_->LoadJsonSchema(ads::_bundle_schema_name);
 
-  if (bundle_state->FromJson(bundle_state_json, schema)) {
+  if (bundle_state->FromJson(bundle_state_json, schema) == ads::Result::SUCCESS) {
     ads_client_->SaveBundleState(std::move(bundle_state),
         std::bind( AdsClientMojoBridge::OnSaveBundleState, holder, _1));
   } else {
