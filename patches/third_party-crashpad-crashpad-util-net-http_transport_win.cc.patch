@@ -1,0 +1,13 @@
+diff --git a/third_party/crashpad/crashpad/util/net/http_transport_win.cc b/third_party/crashpad/crashpad/util/net/http_transport_win.cc
+index 2919bc11d0ba4bf84a11e146bf2961b830db35fe..56811eb3e2879e76404c836e6791f8c0ed317595 100644
+--- a/third_party/crashpad/crashpad/util/net/http_transport_win.cc
++++ b/third_party/crashpad/crashpad/util/net/http_transport_win.cc
+@@ -153,6 +153,8 @@ bool HTTPTransportWin::ExecuteSynchronously(std::string* response_body) {
+     return false;
+   }
+ 
++  BraveSetSessionOptions(session.get());
++
+   int timeout_in_ms = static_cast<int>(timeout() * 1000);
+   if (!WinHttpSetTimeouts(session.get(),
+                           timeout_in_ms,
