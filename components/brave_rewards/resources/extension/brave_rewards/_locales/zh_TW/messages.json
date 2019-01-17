@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "獲贈代幣",
+    "message": "代幣經費已領",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "您有一筆資助正在等您。",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "備份電子錢包",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "請備份您的 Brave 電子錢包。",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "您的 Brave Payments 帳戶正在等待存款。",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "資金不足",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "建立錢包",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "尚未有任何活動...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "將 BAT 圖示拖曳到",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "今天您走運了！",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "您的代幣經費已經發放。",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "證明您是人類！",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "目標。",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "嗯…不太對。再試一次。",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "領取",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "免費代幣經費",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "經費到期日",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "抱歉，看來這筆經費已經被領了。",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "「Brave 報酬」發生問題了。請待會再試一次。",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "唉呀，發生問題了。請待會再試一次。",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "抱歉，看來這筆經費已經過期了。",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "不再提供這筆經費。",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "未經驗證",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "這位建立者尚未登記接受 Brave 使用者的提撥金。您寄發的任何小費在他們驗證之前都會留在您的錢包中。",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "深入瞭解。",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "您已指定 {{reservedAmount}} BAT 給尚未登記接受提撥金的建立者。您的瀏覽器會不斷嘗試提撥，直到他們驗證或 90 天過後為止。",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "深入瞭解。",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "關",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "設定。",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "您目前並未在瀏覽時獲得任何「報酬」利益。在___重新開啟「報酬」",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "「Brave 報酬」是",
+    "description": "Title for Panel's disabled state"
   }
 }

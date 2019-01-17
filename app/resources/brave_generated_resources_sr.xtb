@@ -1,15 +1,15 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sr">
-<translation id="3333887201479867589">Brejv nagrade</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brejv blokiranje oglasa</translation>
-<translation id="6406506848690869874">Brave sinhronizacija</translation>
+<translation id="6406506848690869874">Sinhronizuj</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nije dozvoljeno u Brejvu</translation>
 <translation id="7450557937477381864">Zatvorite Hrom pregledač</translation>
 <translation id="7008934821596358692">Da biste završili uvoz, zatvorite sve prozore u Chrome-u.</translation>
 <translation id="5735465527556462863">Zatvorite Brave (staro)</translation>
 <translation id="7737066986958447692">Za završetak uvoza zatvorte sve prozore pregledača Brave (staro).</translation>
-<translation id="6447842834002726250">Kolačići</translation>
+<translation id="6447842834002726250">Колачићи</translation>
 <translation id="4983925687993168579">Statistike</translation>
 <translation id="6165477144235978006">Brave uplate</translation>
 <translation id="3489524616427966890">Otvoreni prozori i kartice</translation>
@@ -40,6 +40,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="3488584642074079080">Otvorite vezu u Brejv privatnom Vinousu sa Torom</translation>
 <translation id="3155170474926428993">Tor pokretač</translation>
 <translation id="2515126961943087659">Bat Ads usluga</translation>
+<translation id="7924918279836988121">Usluga knjiženja BAT</translation>
 <translation id="7372129767729198111">Podrazumevane vrednosti za Brave štit</translation>
 <translation id="8029018702721078742">Kontrola oglasa</translation>
 <translation id="3544462288910360084">Kontrole za kolačić</translation>
@@ -55,10 +56,16 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="8034285923190068220">Dozvoli uzimanje otiska prsta</translation>
 <translation id="4540198958192073185">Blokirajte sva posebna obeležja</translation>
 <translation id="8942080017911802454">Smernice za obradu WebRTC IP-a</translation>
-<translation id="6165508094623778733">Saznajte više</translation>
-<translation id="8798099450830957504">Podrazumevana vrednost</translation>
+<translation id="6165508094623778733">Nauči više</translation>
+<translation id="8798099450830957504">Подразумевано</translation>
 <translation id="1822560017823072927">Podrazumevane vrednosti interfejsa, javnih i privatnih</translation>
 <translation id="5825943197137337319">Samo interfejs sa podrazumevanom javnom vrednošću</translation>
 <translation id="1689062823386843231">Onemogućite neposrednički UDP</translation>
-<translation id="6645631466045614531">Pristupite Brave sinhronizaciji putem</translation>
+<translation id="6645631466045614531">Pristupi sinhronizaciji preko</translation>
+<translation id="6786747875388722282">Proširenja</translation>
+<translation id="2896916411183256228">Koristi WebTorrent da prikazuje torrente direktno u pretraživaču. Podržava torrent fajlove i magnetne veze.</translation>
+<translation id="6554397389149987360">Koristi komponentu Hangouts da biste omogućili deljenje ekrana i druge funkcije u pregledaču.</translation>
+<translation id="6916590542764765824">Upravljajte proširenjima</translation>
+<translation id="4928988318462976765">Prodavnica Veb proširenja</translation>
+<translation id="9181207987584064303">Prikaži u prodavnici Veb proširenja</translation>
 </translationbundle>

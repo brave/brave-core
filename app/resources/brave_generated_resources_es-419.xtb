@@ -3,7 +3,7 @@
 <translationbundle lang="es-419">
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="7942180974165298215">Bloqueador de Publicidad Brave</translation>
-<translation id="6406506848690869874">Brave Sync</translation>
+<translation id="6406506848690869874">Sincronización</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID de extensión "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") no se permite en Brave.</translation>
 <translation id="7450557937477381864">Cerrar Chrome</translation>
 <translation id="7008934821596358692">Para finalizar la importación, cierra todas las ventanas de Chrome.</translation>
@@ -40,6 +40,7 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="3488584642074079080">Abrir vínculo en una ventana privada de Brave con Tor</translation>
 <translation id="3155170474926428993">Selector de Tor</translation>
 <translation id="2515126961943087659">Servicio publicitario BAT</translation>
+<translation id="7924918279836988121">Servicio de contabilidad de BAT</translation>
 <translation id="7372129767729198111">Valores predeterminados de los escudos de Brave</translation>
 <translation id="8029018702721078742">Control de publicidad</translation>
 <translation id="3544462288910360084">Control de cookies</translation>
@@ -55,10 +56,16 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="8034285923190068220">Permitir huellas digitales</translation>
 <translation id="4540198958192073185">Bloquear todas las huellas digitales</translation>
 <translation id="8942080017911802454">Política de manejo de WebRTC IP</translation>
-<translation id="6165508094623778733">Más información</translation>
+<translation id="6165508094623778733">Aprender más</translation>
 <translation id="8798099450830957504">Predeterminado</translation>
 <translation id="1822560017823072927">Interfaces públicas y privadas predeterminadas</translation>
 <translation id="5825943197137337319">Solo la interfaz pública predeterminada</translation>
 <translation id="1689062823386843231">Desactivar UDP sin proxy</translation>
-<translation id="6645631466045614531">Acceda a Brave Sync a través de</translation>
+<translation id="6645631466045614531">Acceda a Sync a través de</translation>
+<translation id="6786747875388722282">Extensiones</translation>
+<translation id="2896916411183256228">Usa WebTorrnet para mostrar torrents directamente en el navegador. Admite archivos torrent y enlaces magnéticos.</translation>
+<translation id="6554397389149987360">Usa el componente Hangouts para compartir la pantalla y habilitar otras funciones en el navegador.</translation>
+<translation id="6916590542764765824">Administrar extensiones</translation>
+<translation id="4928988318462976765">Tienda virtual de extensiones</translation>
+<translation id="9181207987584064303">Ver en la Tienda virtual de extensiones</translation>
 </translationbundle>

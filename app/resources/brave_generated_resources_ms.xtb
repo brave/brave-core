@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ms">
-<translation id="3333887201479867589">Ganjaran Brave</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Sekatan Iklan Brave</translation>
-<translation id="6406506848690869874">Segerak Brave</translation>
+<translation id="6406506848690869874">Segerak</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") tidak dibenarkan dalam Brave.</translation>
 <translation id="7450557937477381864">Tutup Chrome</translation>
 <translation id="7008934821596358692">Untuk melengkapkan pengimportan, tutup semua tetingkap Chrome.</translation>
@@ -40,11 +40,12 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="3488584642074079080">Buka Pautan dalam Tetingkap Peribadi Brave dengan Tor</translation>
 <translation id="3155170474926428993">Pelancar Tor</translation>
 <translation id="2515126961943087659">Perkhidmatan Bat Ads</translation>
+<translation id="7924918279836988121">Perkhidmatan Lejar BAT</translation>
 <translation id="7372129767729198111">Perisai asal Brave</translation>
 <translation id="8029018702721078742">Kawalan Iklan</translation>
 <translation id="3544462288910360084">Kawalan Kuki</translation>
 <translation id="8919235146866304148">Perlindungan cap jari</translation>
-<translation id="520895744850022668">HTTPS Di mana-mana</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Sekatan skrip</translation>
 <translation id="6067014455220527258">Sekat iklan</translation>
 <translation id="6985711843506827936">Benarkan iklan dan penjejakan</translation>
@@ -55,10 +56,16 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="8034285923190068220">Benarkan cap jari</translation>
 <translation id="4540198958192073185">Sekat semua cap jari</translation>
 <translation id="8942080017911802454">Dasar Pengendalian IP WebRTC</translation>
-<translation id="6165508094623778733">Ketahui lebih lanjut</translation>
+<translation id="6165508094623778733">Maklumat lanjut</translation>
 <translation id="8798099450830957504">Lalai</translation>
 <translation id="1822560017823072927">Antara muka awam dan peribadi yang asal</translation>
 <translation id="5825943197137337319">Antara muka awam asal sahaja</translation>
 <translation id="1689062823386843231">Lumpuhkan UDP bukan proksi</translation>
-<translation id="6645631466045614531">Akses Penyegerakan Brave melalui</translation>
+<translation id="6645631466045614531">Akses ke Segerak melalui</translation>
+<translation id="6786747875388722282">Sambungan</translation>
+<translation id="2896916411183256228">Menggunakan WebTorrent untuk memaparkan torrent secara langsung dalam penyemak imbas. Menyokong fail torrent dan pautan magnet.</translation>
+<translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mendayakan perkongsian skrin dan lain-lain ciri dalam pelayar.</translation>
+<translation id="6916590542764765824">Uruskan Sambungan</translation>
+<translation id="4928988318462976765">Kedai Sambungan Web</translation>
+<translation id="9181207987584064303">Lihat di Kedai Sambungan Web</translation>
 </translationbundle>

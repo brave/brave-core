@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="da">
-<translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="3333887201479867589">Brave Belønninger</translation>
 <translation id="7942180974165298215">Brave Annonceblokering</translation>
-<translation id="6406506848690869874">Brave-synkronisering</translation>
+<translation id="6406506848690869874">Synkroniser</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") er ikke tilladt i Brave.</translation>
 <translation id="7450557937477381864">Luk Chrome</translation>
 <translation id="7008934821596358692">Luk alle Chrome-vinduer for at afslutte importeringen.</translation>
@@ -40,6 +40,7 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="3488584642074079080">Åbn link i Brave privat vindue med Tor</translation>
 <translation id="3155170474926428993">Tor Startprogram</translation>
 <translation id="2515126961943087659">Bat-annonceservice</translation>
+<translation id="7924918279836988121">Bat Regnskabsservice</translation>
 <translation id="7372129767729198111">Brave standard beskyttelsesindstillinger</translation>
 <translation id="8029018702721078742">Reklamekontrol</translation>
 <translation id="3544462288910360084">Cookie-kontrol</translation>
@@ -55,10 +56,16 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="8034285923190068220">Tillad fingeraftryk</translation>
 <translation id="4540198958192073185">Bloker altid for at der kan tages fingeraftryk</translation>
 <translation id="8942080017911802454">WebRTC IP håndteringspolitik</translation>
-<translation id="6165508094623778733">Få mere at vide</translation>
+<translation id="6165508094623778733">Lær mere</translation>
 <translation id="8798099450830957504">Standard</translation>
 <translation id="1822560017823072927">Standard offentlige og private grænseflader</translation>
 <translation id="5825943197137337319">Kun standard offentlig grænseflade</translation>
 <translation id="1689062823386843231">Deaktiver UDP uden proxy</translation>
-<translation id="6645631466045614531">Få adgang til Brave-synkronisering via</translation>
+<translation id="6645631466045614531">Få Adgang til Synkronisering via</translation>
+<translation id="6786747875388722282">Internetadresser</translation>
+<translation id="2896916411183256228">Bruger WebTorrent til at vise torrents direkte i browseren. Understøtter torrent-filer og magnetlinks.</translation>
+<translation id="6554397389149987360">Bruger Hangouts-komponent til at aktivere skærmdeling samt andre browserfunktioner.</translation>
+<translation id="6916590542764765824">Administrer Internetadresser</translation>
+<translation id="4928988318462976765">Internetadresse-Butik</translation>
+<translation id="9181207987584064303">Se i Internetadresse-Butik</translation>
 </translationbundle>

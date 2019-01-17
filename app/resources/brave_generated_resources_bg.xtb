@@ -3,18 +3,23 @@
 <translationbundle lang="bg">
 <translation id="3333887201479867589">Brave награди</translation>
 <translation id="7942180974165298215">Brave Блокер на реклами</translation>
-<translation id="6406506848690869874">Синхронизиране в Brave</translation>
+<translation id="6406506848690869874">Синхр</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID на разширението "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") не е разрешено в Brave.</translation>
 <translation id="7450557937477381864">Затваряне на Chrome</translation>
 <translation id="7008934821596358692">За да завършите импортирането, затворете всички прозорци на Chrome.</translation>
-<translation id="6447842834002726250">Бисквитки</translation>
+<translation id="5735465527556462863">Затваряне на Brave (стара версия)</translation>
+<translation id="7737066986958447692">За да завършите импортирането, затворете всички прозорци на Brave (стара версия).</translation>
+<translation id="6447842834002726250">„Бисквитки“</translation>
 <translation id="4983925687993168579">Статистика</translation>
+<translation id="6165477144235978006">Brave Payments</translation>
+<translation id="3489524616427966890">Отваряне на прозорци и раздели</translation>
 <translation id="9173846700806833701">Widevine не е инсталиран</translation>
 <translation id="2433569048491784801">Widevine не е инсталиран.</translation>
 <translation id="3699882589215410581">Инсталирайте и стартирайте Widevine</translation>
 <translation id="8410111618231938546">Google Widevine е част от кода за управление на цифровите права (DRM), който ние в Brave Software не притежаваме и не можем да проверим. Кодът на Google Widevine се зарежда от сървърите на Google, а не от нашите сървъри. Той се зарежда само когато активирате тази опция. Ние не подкрепяме употребата на DRM, но уважаваме избора на потребителя и признаваме, че някои потребители на Brave биха искали да използват услуги, които го изискват.
 
 Чрез инсталирането на това разширение приемате Общите условия на Google Widevine. Вие се съгласявате, че Brave не носи отговорност за щети или загуби във връзка с използването на Google Widevine.</translation>
+<translation id="6499845530162974140">Brave (стара версия)</translation>
 <translation id="3198814717959506569">Импортирано от Brave</translation>
 <translation id="453977518730680921">Автоматично възпр. на медия</translation>
 <translation id="410351446219883937">Автоматично изпълнение</translation>
@@ -34,8 +39,10 @@
 <translation id="4703780849509456860">Отвори връзката в поверителен прозорец с Tor</translation>
 <translation id="3488584642074079080">Отваряне на връзката в Поверителен прозорец на Brave чрез Tor</translation>
 <translation id="3155170474926428993">Програма за стартиране на Tor</translation>
+<translation id="2515126961943087659">Услуга за BAT реклами</translation>
+<translation id="7924918279836988121">Услуга "Bat Ledger"</translation>
 <translation id="7372129767729198111">Brave щитове по подразбиране</translation>
-<translation id="8029018702721078742">Управление на рекламата</translation>
+<translation id="8029018702721078742">Управление на рекламите</translation>
 <translation id="3544462288910360084">Управление на бисквитки</translation>
 <translation id="8919235146866304148">Защита с пръстов отпечатък</translation>
 <translation id="520895744850022668">HTTPS навсякъде</translation>
@@ -54,4 +61,11 @@
 <translation id="1822560017823072927">Публични и поверителни интерфейси по подразбиране</translation>
 <translation id="5825943197137337319">Само публичен интерфейс пп подразбиране</translation>
 <translation id="1689062823386843231">Деактивиране на UDP без прокси</translation>
+<translation id="6645631466045614531">Достъп до синхронизиране чрез</translation>
+<translation id="6786747875388722282">Разширения</translation>
+<translation id="2896916411183256228">Използва WebTorrent за да показва торенти директно в браузъра. Поддържа торент файлове и магнет линкове.</translation>
+<translation id="6554397389149987360">Използвайте "Hangouts" компоненти, за да разрешите споделяне на екрана и други функции в браузъра.</translation>
+<translation id="6916590542764765824">Управляване на разширения</translation>
+<translation id="4928988318462976765">Магазин за уеб разширения</translation>
+<translation id="9181207987584064303">Вижте в Магазина за уеб разширения</translation>
 </translationbundle>
