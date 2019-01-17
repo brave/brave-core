@@ -227,7 +227,18 @@ def get_fingerprint_for_xtb(message_tag):
                 string_ph.tail or ''))
     string_to_hash = (string_to_hash or '').strip().encode('utf-8')
     string_to_hash = clean_triple_quoted_string(string_to_hash)
-    return FP.FingerPrint(string_to_hash) & 0x7fffffffffffffffL
+    fp = FP.FingerPrint(string_to_hash)
+    meaning = (message_tag.get('meaning') if 'meaning' in message_tag.attrib
+               else None)
+    if meaning:
+        # combine the fingerprints of message and meaning
+        fp2 = FP.FingerPrint(meaning)
+        if fp < 0:
+          fp = fp2 + (fp << 1) + 1
+        else:
+          fp = fp2 + (fp << 1)
+    # To avoid negative ids we strip the high-order bit
+    return str(fp & 0x7fffffffffffffffL)
 
 
 def get_grd_strings(grd_file_path):
