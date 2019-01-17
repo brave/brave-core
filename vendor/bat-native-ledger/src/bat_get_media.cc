@@ -143,7 +143,6 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId,
       std::string mediaUrl = getMediaURL(twitchMediaID, providerName);
 
       ledger::VisitData updated_visit_data(visit_data);
-      LOG(ERROR) << "=============CLEARING FAVICON";
       updated_visit_data.favicon_url = "";
       updated_visit_data.provider = TWITCH_MEDIA_TYPE;
 
@@ -191,9 +190,6 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId,
       ledger_->SaveMediaVisit(id, updated_visit_data, duration, window_id);
     } else if (providerName == TWITCH_MEDIA_TYPE) {
       updated_visit_data.provider = TWITCH_MEDIA_TYPE;
-      LOG(ERROR) << "=============CLEARING FAVICON";
-      LOG(ERROR) << "VISIT DATA FAVICON: " << updated_visit_data.favicon_url;
-      LOG(ERROR) << "PUBLISHER INFO FAVICON: " << publisher_info->favicon_url << " with sizeof " << publisher_info->favicon_url.length();
       updated_visit_data.favicon_url = publisher_info->favicon_url;
 
       ledger::TwitchEventInfo oldEvent;
@@ -344,7 +340,6 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration,
     updated_visit_data.name = author_name;
 
     if (fav_icon.length() > 0) {
-      LOG(ERROR) << "=============CLEARING FAVICON";
       updated_visit_data.favicon_url = fav_icon;
     }
 
@@ -365,7 +360,6 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration,
                                            const std::string& response,
                                            const std::map<std::string, std::string>& headers) {
   if (success &&  providerName == YOUTUBE_MEDIA_TYPE) {
-    LOG(ERROR) << "============CLEARING FAVICON";
     std::string favIconURL = parseFavIconUrl(response);
     std::string channelId = parseChannelId(response);
 
@@ -423,7 +417,6 @@ void BatGetMedia::savePublisherInfo(const uint64_t& duration,
   ledger::VisitData updated_visit_data(visit_data);
 
   if (favIconURL.length() > 0) {
-    LOG(ERROR) << "=============SAVING FAVICON: " << favIconURL;
 
     updated_visit_data.favicon_url = favIconURL;
   }
@@ -630,8 +623,8 @@ void BatGetMedia::onFetchPublisherFromDBResponse(
     const std::string& providerType,
     const std::string& publisher_key,
     const std::string& publisher_blob) {
-  if (result == ledger::Result::NOT_FOUND &&
-    providerType == YOUTUBE_MEDIA_TYPE) {
+  if (!info || (result == ledger::Result::NOT_FOUND &&
+    providerType == YOUTUBE_MEDIA_TYPE)) {
     fetchDataFromUrl(visit_data.url, std::bind(&BatGetMedia::onGetChannelHeadlineVideo,
                                         this,
                                         windowId,
@@ -641,14 +634,8 @@ void BatGetMedia::onFetchPublisherFromDBResponse(
                                         _2,
                                         _3));
   } else {
-    LOG(ERROR) << "==========TRIPPING";
     if (providerType == TWITCH_MEDIA_TYPE) {
-      if (!info) {
-        LOG(ERROR) << "INFO IS NULL";
-      }
       if (info->name != visit_data.name) {
-        LOG(ERROR) << "==========TRIPPING2";
-
         std::string media_id = getTwitchMediaIdFromUrl(
             visit_data, publisher_blob);
         std::transform(media_id.begin(), media_id.end(),
@@ -661,7 +648,6 @@ void BatGetMedia::onFetchPublisherFromDBResponse(
           media_id);
       }
     }
-    LOG(ERROR) << "========OFF TO ONPUBLISHERACTIVITY";
     ledger_->OnPublisherActivity(result, std::move(info), windowId);
   }
 }
@@ -690,8 +676,6 @@ void BatGetMedia::onGetChannelIdFromUserPage(uint64_t windowId,
     new_data.path = path;
     new_data.url = url;
     new_data.name = "";
-    LOG(ERROR) << "=============CLEARING FAVICON";
-
     new_data.favicon_url = "";
 
     getMediaActivityFromUrl(windowId, new_data, providerType, std::string());
@@ -713,8 +697,6 @@ void BatGetMedia::onGetChannelHeadlineVideo(uint64_t windowId,
 
   if (visit_data.path.find("/channel/") != std::string::npos) {
     std::string title = getNameFromChannel(response);
-    LOG(ERROR) << "============CLEARING FAVICON";
-
     std::string favicon = parseFavIconUrl(response);
     std::string channelId = getYoutubePublisherKeyFromUrl(visit_data);
 
@@ -739,13 +721,11 @@ void BatGetMedia::processTwitchMediaPanel(
     const std::string& providerType,
     const std::string& publisher_blob) {
   if (!publisher_blob.empty()) {
-    LOG(ERROR) << "======VISIT URL: " << visit_data.url;
     std::string media_id = getTwitchMediaIdFromUrl(visit_data, publisher_blob);
-    LOG(ERROR) << "=======MEDIA ID: " << media_id;
     std::transform(media_id.begin(), media_id.end(), media_id.begin(), ::tolower);
     std::string media_key = getTwitchMediaKeyFromUrl(providerType, media_id,
       visit_data.url);
-    if (!media_key.empty() || !media_id.empty()) {
+    if (!media_key.empty() && !media_id.empty()) {
       ledger_->GetMediaPublisherInfo(media_key,
         std::bind(&BatGetMedia::onMediaPublisherActivity,
         this, _1, _2, windowId, visit_data,
@@ -809,23 +789,11 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
 
   if (!info || result == ledger::Result::NOT_FOUND) {
     if (providerType == TWITCH_MEDIA_TYPE) {
-      // ledger::TwitchEventInfo twitchEventInfo;
-      // getPublisherInfoDataCallback(media_id,
-      //                             media_key,
-      //                             providerType,
-      //                             0,
-      //                             twitchEventInfo,
-      //                             visit_data,
-      //                             windowId,
-      //                             result,
-      //                             std::move(info));
-      std::string publisher_name;
-      std::string publisher_favicon_url;
-      updateTwitchPublisherData(publisher_name, publisher_favicon_url,
-        publisher_blob);
-      savePublisherInfo(0, media_key, providerType, visit_data.url,
-        publisher_name, visit_data, windowId, publisher_favicon_url,
-        media_id);
+      // first see if we have the publisher a different way (VOD vs. livestream
+      ledger_->GetPublisherInfo("twitch#author:" + media_id,
+        std::bind(&BatGetMedia::onGetTwitchPublisherInfo, this, _1, _2,
+          windowId, visit_data, providerType, media_key, media_id,
+          publisher_blob));
     } else if (providerType == YOUTUBE_MEDIA_TYPE) {
       ledger::TwitchEventInfo twitchEventInfo;
       getPublisherInfoDataCallback(media_id,
@@ -840,35 +808,41 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
     }
   } else {
     if (providerType == TWITCH_MEDIA_TYPE) {
-      std::string media_id = getTwitchMediaIdFromUrl(visit_data,
-                                                     publisher_blob);
-      std::transform(media_id.begin(),
-                     media_id.end(),
-                     media_id.begin(), ::tolower);
-      std::string media_key = getTwitchMediaKeyFromUrl(providerType,
-                                                       media_id,
-                                                       visit_data.url);
-      std::string name;
-      std::string favicon_url;
-      updateTwitchPublisherData(name, favicon_url, publisher_blob);
-      if (name != info->name) {
-        info->name = name;
-        info->favicon_url = favicon_url;
-        savePublisherInfo(0,
-                          media_key,
-                          providerType,
-                          visit_data.url,
-                          info->name,
-                          visit_data,
-                          windowId,
-                          info->favicon_url,
-                          media_id);
-      }
-
       ledger_->OnPublisherActivity(result, std::move(info), windowId);
     } else if (providerType == YOUTUBE_MEDIA_TYPE) {
       fetchPublisherDataFromDB(windowId, visit_data, providerType,
         info->id, publisher_blob);
+    }
+  }
+}
+
+void BatGetMedia::onGetTwitchPublisherInfo(
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> publisher_info,
+    uint64_t windowId,
+    const ledger::VisitData visit_data,
+    const std::string& providerType,
+    const std::string& media_key,
+    const std::string& media_id,
+    const std::string& publisher_blob) {
+  if (result != ledger::Result::LEDGER_OK  &&
+    result != ledger::Result::NOT_FOUND) {
+    onMediaActivityError(visit_data, providerType, windowId);
+    return;
+  }
+  if (!publisher_info || result == ledger::Result::NOT_FOUND) {
+    if (providerType == TWITCH_MEDIA_TYPE) {
+      std::string publisher_name;
+      std::string publisher_favicon_url;
+      updateTwitchPublisherData(publisher_name, publisher_favicon_url,
+        publisher_blob);
+      savePublisherInfo(0, media_key, providerType, visit_data.url,
+        publisher_name, visit_data, windowId, publisher_favicon_url,
+        media_id);
+    }
+  } else {
+    if (providerType == TWITCH_MEDIA_TYPE) {
+      ledger_->OnPublisherActivity(result, std::move(publisher_info), windowId);
     }
   }
 }
@@ -878,9 +852,7 @@ void BatGetMedia::updateTwitchPublisherData(
     std::string& publisher_favicon_url,
     const std::string& publisher_blob) {
   publisher_name = getUserFacingHandle(publisher_blob);
-      LOG(ERROR) << "=========NAME: " << publisher_name;
   publisher_favicon_url = getFaviconUrl(publisher_blob, publisher_name);
-    LOG(ERROR) << "============CLEARING FAVICON: " << publisher_favicon_url;
 }
 
 std::string BatGetMedia::getUserFacingHandle(

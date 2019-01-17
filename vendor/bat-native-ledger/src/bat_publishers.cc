@@ -77,6 +77,7 @@ void BatPublishers::AddRecurringPayment(const std::string& publisher_id, const d
 
 void onVisitSavedDummy(ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+
   // onPublisherInfoUpdated will always be called by LedgerImpl so do nothing
 }
 
@@ -193,7 +194,6 @@ void BatPublishers::saveVisitInternal(
     // TODO error handling
     return;
   }
-  LOG(ERROR) << "=========SAVE VISIT INTERNAL";
   bool verified = isVerified(publisher_id);
 
   bool new_visit = false;
@@ -205,7 +205,8 @@ void BatPublishers::saveVisitInternal(
   }
 
   std::string fav_icon = visit_data.favicon_url;
-  if (verified && fav_icon.length() > 0) {
+  if (verified && !fav_icon.empty()) {
+    if (fav_icon.find(".invalid") == std::string::npos) {
     ledger_->FetchFavIcon(fav_icon,
                           "https://" + ledger_->GenerateGUID() + ".invalid",
                           std::bind(&BatPublishers::onFetchFavIcon,
@@ -214,6 +215,11 @@ void BatPublishers::saveVisitInternal(
                                     window_id,
                                     _1,
                                     _2));
+    } else {
+        publisher_info->favicon_url = fav_icon;
+    }
+  } else {
+    publisher_info->favicon_url = std::string();
   }
 
   publisher_info->name = visit_data.name;
@@ -247,6 +253,7 @@ void BatPublishers::saveVisitInternal(
        min_duration_new ||
        verified_new)) {
     panel_info = std::make_unique<ledger::PublisherInfo>(*publisher_info);
+
     ledger_->SetPublisherInfo(std::move(publisher_info),
                               std::bind(&onVisitSavedDummy, _1, _2));
   } else if (!excluded &&
@@ -259,12 +266,12 @@ void BatPublishers::saveVisitInternal(
     publisher_info->reconcile_stamp = ledger_->GetReconcileStamp();
 
     panel_info = std::make_unique<ledger::PublisherInfo>(*publisher_info);
+
     ledger_->SetActivityInfo(std::move(publisher_info),
                              std::bind(&onVisitSavedDummy, _1, _2));
   }
 
   if (panel_info && window_id > 0) {
-    LOG(ERROR) << "===========ONPUBLISHERACTIVITY: " << panel_info->name << " " << panel_info->favicon_url;
     onPublisherActivity(ledger::Result::LEDGER_OK,
                         std::move(panel_info),
                         window_id,
@@ -278,7 +285,7 @@ void BatPublishers::onFetchFavIcon(const std::string& publisher_key,
                                    const std::string& favicon_url) {
   if (!success || favicon_url.empty()) {
     BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
-      "Missing or corrupted favicon file";
+      "Missing or corrupted favicon file for: " << publisher_key;
     return;
   }
 

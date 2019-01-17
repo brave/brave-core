@@ -147,10 +147,19 @@ class BatGetMedia {
   std::string getFaviconUrl(
       const std::string& publisher_blob,
       const std::string& twitchHandle) const;
+  void onGetTwitchPublisherInfo(
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> publisher_info,
+      uint64_t windowId,
+      const ledger::VisitData visit_data,
+      const std::string& providerType,
+      const std::string& media_key,
+      const std::string& media_id,
+      const std::string& publisher_blob);
   void updateTwitchPublisherData(
-    std::string& publisher_name,
-    std::string& publisher_favicon_url,
-    const std::string& publisher_blob);
+      std::string& publisher_name,
+      std::string& publisher_favicon_url,
+      const std::string& publisher_blob);
   void processYoutubeWatchPath(uint64_t windowId,
                                const ledger::VisitData& visit_data,
                                const std::string& providerType);
