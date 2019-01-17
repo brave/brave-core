@@ -16,7 +16,7 @@ set -exu
 ### The first argument is the S3 bucket, the second is the GPG key fingerprint
 OPTION=${1:-brave-browser-apt-staging-nightly}
 GPG_KEY_ID=${2:-E85FFA8E2E90B40B33ED39274FE13824E3FFC656} # Defaults to New Brave Software signing key
-if [ "$GPG_KEY_ID" = "0x4FE13824E3FFC656" ]; then
+if [ "$GPG_KEY_ID" = "E85FFA8E2E90B40B33ED39274FE13824E3FFC656" ]; then
   KEY_NAME=brave-core.asc
 else
   KEY_NAME=brave-core-nightly.asc

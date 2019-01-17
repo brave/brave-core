@@ -24,8 +24,7 @@ def main():
     channel = args.channel
     repo_dir = args.repo_dir
     dist_dir = os.path.join(repo_dir, 'dist')
-    gpg_fingerprint = args.fingerprint
-    gpg_full_key_signature = args.gpg_full_key_signature
+    gpg_full_key_id = args.gpg_full_key_id
     if channel in ['release']:
         if not args.gpg_passphrase:
             logging.error("Error: --gpg_passphrase required for channel {}".format(channel))
@@ -40,19 +39,18 @@ def main():
         logging.debug('channel: {}'.format(channel))
         logging.debug('repo_dir: {}'.format(repo_dir))
         logging.debug('dist_dir: {}'.format(dist_dir))
-        logging.debug('gpg_fingerprint: {}'.format(gpg_fingerprint))
-        logging.debug('gpg_full_key_signature: {}'.format(gpg_full_key_signature))
+        logging.debug('gpg_full_key_id: {}'.format(gpg_full_key_id))
         logging.debug('gpg_passphrase: {}'.format("NOTAREALPASSWORD"))
         logging.debug('s3_test_buckets: {}'.format(s3_test_buckets))
 
     # verify we have the the GPG key we're expecting in the public keyring
-    list_keys_cmd = "/usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(gpg_full_key_signature)
-    logging.info("Verifying the GPG key \'{}\' is in our public keyring...".format(gpg_full_key_signature))
+    list_keys_cmd = "/usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(gpg_full_key_id)
+    logging.info("Verifying the GPG key \'{}\' is in our public keyring...".format(gpg_full_key_id))
     logging.debug("Running command: {}".format(list_keys_cmd))
     try:
         output = subprocess.check_output(list_keys_cmd, shell=True)
     except subprocess.CalledProcessError as cpe:
-        logging.error("Error: Expected GPG fingerprint not found in keyring!")
+        logging.error("Error: Expected GPG ID not found in keyring!")
         logging.error("Error: {}".format(cpe))
         exit(1)
 
@@ -78,10 +76,10 @@ def main():
             # when we use the same signing key for all channels.
             if channel in ['release']:
                 rpm_resign_cmd = os.path.join(repo_dir, "rpm-resign.exp")
-                cmd = "{} {} {} {}".format(rpm_resign_cmd, gpg_fingerprint, item, gpg_passphrase)
-                log_cmd = "{} {} {} {}".format(rpm_resign_cmd, gpg_fingerprint, item, 'NOTAREALPASSWORD')
+                cmd = "{} {} {} {}".format(rpm_resign_cmd, gpg_full_key_id, item, gpg_passphrase)
+                log_cmd = "{} {} {} {}".format(rpm_resign_cmd, gpg_full_key_id, item, 'NOTAREALPASSWORD')
             else:
-                cmd = "rpmsign --resign --key-id={} {}".format(gpg_fingerprint, item)
+                cmd = "rpmsign --resign --key-id={} {}".format(gpg_full_key_id, item)
                 log_cmd = cmd
             logging.info("Running command: \"{}\"".format(log_cmd))
 
@@ -114,9 +112,9 @@ def main():
 
         if s3_test_buckets:
             upload_cmd = '{} {} {}'.format(upload_script, bucket + channel + '-' +
-                                           TESTCHANNEL, gpg_fingerprint)
+                                           TESTCHANNEL, gpg_full_key_id)
         else:
-            upload_cmd = '{} {} {}'.format(upload_script, bucket + channel, gpg_fingerprint)
+            upload_cmd = '{} {} {}'.format(upload_script, bucket + channel, gpg_full_key_id)
         logging.info("Running command: \"{}\"".format(upload_cmd))
         try:
             subprocess.check_output(upload_cmd, shell=True)
@@ -237,9 +235,8 @@ def parse_args():
         description=desc, formatter_class=RawTextHelpFormatter)
     parser.add_argument('-c', '--channel', help='The Brave channel, i.e. \'release\', \'beta\', \'dev\'', required=True)
     parser.add_argument('-d', '--debug', action='store_true', help='Print debug output')
-    parser.add_argument('-f', '--fingerprint', help='GPG Fingerprint to use for signing packages', required=True)
     parser.add_argument('-g', '--github_token', help='GitHub token to use for downloading releases', required=True)
-    parser.add_argument('-k', '--gpg_full_key_signature', help='GPG full key signature to use for signing '
+    parser.add_argument('-k', '--gpg_full_key_id', help='GPG full key id to use for signing '
                         'packages', required=True)
     parser.add_argument(
         '-t', '--tag', help='The branch (actually tag) to download packages from GitHub. (i.e. v0.58.18)',
