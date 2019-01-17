@@ -415,15 +415,9 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
     return false;
   }
 
-  LOG(ERROR) << "NEJC 1";
-
   if (!InsertOrUpdatePublisherInfo(info)) {
     return false;
   }
-
-  LOG(ERROR) << "NEJC 2";
-
-  LOG(ERROR) << info.year;
 
   sql::Statement activity_info_insert(
     GetDB().GetCachedStatement(SQL_FROM_HERE,
@@ -441,8 +435,6 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
   activity_info_insert.BindInt(6, info.year);
   activity_info_insert.BindInt64(7, info.reconcile_stamp);
   activity_info_insert.BindInt64(8, info.visits);
-
-  LOG(ERROR) << "NEJC 3";
 
   return activity_info_insert.Run();
 }
