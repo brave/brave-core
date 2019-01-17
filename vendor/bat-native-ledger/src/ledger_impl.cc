@@ -9,6 +9,7 @@
 
 #include "ledger_impl.h"
 
+#include "bat/confirmations/confirmations.h"
 #include "bat_client.h"
 #include "bat_contribution.h"
 #include "bat_get_media.h"
@@ -36,6 +37,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_get_media_(new BatGetMedia(this)),
     bat_state_(new BatState(this)),
     bat_contribution_(new BatContribution(this)),
+    bat_confirmations_(confirmations::Confirmations::CreateInstance(this)),
     initialized_(false),
     initializing_(false),
     last_tab_active_time_(0),
@@ -1133,6 +1135,98 @@ double LedgerImpl::GetDefaultContributionAmount() {
 
 bool LedgerImpl::HasSufficientBalanceToReconcile() {
   return GetBalance() >= GetContributionAmount();
+}
+
+void LedgerImpl::SetCatalogIssuers(const std::string& info) {
+  ads::IssuersInfo issuers_info_ads;
+  if (!issuers_info_ads.FromJson(info))
+    return;
+
+  auto issuers_info = std::make_unique<confirmations::IssuersInfo>();
+  issuers_info->public_key = issuers_info_ads.public_key;
+  for (ads::IssuerInfo issuer_info_ad : issuers_info_ads.issuers) {
+    confirmations::IssuerInfo issuer_info;
+    issuer_info.name = issuer_info_ad.name;
+    issuer_info.public_key = issuer_info_ad.public_key;
+    issuers_info->issuers.push_back(issuer_info);
+  }
+
+  bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
+}
+
+bool LedgerImpl::IsConfirmationsReadyToShowAds() {
+  return bat_confirmations_->IsReadyToShowAds();
+}
+
+void LedgerImpl::AdSustained(const std::string& info) {
+  ads::NotificationInfo notification_info_ads;
+  if (!notification_info_ads.FromJson(info))
+    return;
+
+  auto notification_info = std::make_unique<confirmations::NotificationInfo>();
+  notification_info->creative_set_id = notification_info_ads.creative_set_id;
+  notification_info->category = notification_info_ads.category;
+  notification_info->advertiser = notification_info_ads.advertiser;
+  notification_info->text = notification_info_ads.text;
+  notification_info->url = notification_info_ads.url;
+  notification_info->uuid = notification_info_ads.uuid;
+
+  bat_confirmations_->AdSustained(std::move(notification_info));
+}
+
+void LedgerImpl::Save(const std::string& name,
+                      const std::string& value,
+                      confirmations::OnSaveCallback callback) {
+  std::function<void(const ledger::Result)> proxy_callback = std::bind(
+      [](confirmations::OnSaveCallback original_callback,
+         ledger::Result result) {
+        if (original_callback)
+          original_callback(result == ledger::Result::LEDGER_OK
+                                ? confirmations::Result::SUCCESS
+                                : confirmations::Result::FAILED);
+      },
+      std::move(callback), _1);
+
+  ledger_client_->SaveConfirmationsState(name, value, proxy_callback);
+}
+
+void LedgerImpl::Load(const std::string& name,
+                      confirmations::OnLoadCallback callback) {
+  std::function<void(const ledger::Result, const std::string&)> proxy_callback =
+      std::bind(
+          [](confirmations::OnLoadCallback original_callback,
+             ledger::Result result, const std::string& value) {
+            if (original_callback)
+              original_callback(result == ledger::Result::LEDGER_OK
+                                    ? confirmations::Result::SUCCESS
+                                    : confirmations::Result::FAILED,
+                                value);
+          },
+          std::move(callback), _1, _2);
+
+  ledger_client_->LoadConfirmationsState(name, proxy_callback);
+}
+
+void LedgerImpl::Reset(const std::string& name,
+                       confirmations::OnResetCallback callback) {
+  std::function<void(const ledger::Result)> proxy_callback = std::bind(
+      [](confirmations::OnResetCallback original_callback,
+         ledger::Result result) {
+        if (original_callback)
+          original_callback(result == ledger::Result::LEDGER_OK
+                                ? confirmations::Result::SUCCESS
+                                : confirmations::Result::FAILED);
+      },
+      std::move(callback), _1);
+
+  ledger_client_->ResetConfirmationsState(name, proxy_callback);
+}
+
+uint32_t LedgerImpl::SetTimer(const uint64_t time_offset) {
+  return 0;
+}
+
+void LedgerImpl::KillTimer(uint32_t timer_id) {
 }
 
 }  // namespace bat_ledger

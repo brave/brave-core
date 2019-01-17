@@ -95,6 +95,10 @@ interface BatLedger {
   GetRewardsMainEnabled() => (bool main_enabled);
 
   HasSufficientBalanceToReconcile() => (bool sufficient);
+
+  SetCatalogIssuers(string info);
+  IsConfirmationsReadyToShowAds() => (bool can_show);
+  AdSustained(string info);
 };
 
 interface BatLedgerClient {
@@ -164,4 +168,8 @@ interface BatLedgerClient {
 
   GetActivityInfoList(uint32 start, uint32 limit, string filter) => (
       array<string> publisher_info_list, uint32 next_record);
+
+  SaveConfirmationsState(string name, string value) => (int32 result);
+  LoadConfirmationsState(string name) => (int32 result, string value);
+  ResetConfirmationsState(string name) => (int32 result);
 };

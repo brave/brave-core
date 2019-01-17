@@ -121,7 +121,12 @@ class BatLedgerImpl : public mojom::BatLedger,
     void HasSufficientBalanceToReconcile(
         HasSufficientBalanceToReconcileCallback callback) override;
 
-  private:
+    void SetCatalogIssuers(const std::string& info) override;
+    void IsConfirmationsReadyToShowAds(
+        IsConfirmationsReadyToShowAdsCallback callback) override;
+    void AdSustained(const std::string& info) override;
+
+   private:
     // workaround to pass base::OnceCallback into std::bind
     template <typename Callback>
       class CallbackHolder {
