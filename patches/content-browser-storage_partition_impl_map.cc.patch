@@ -1,0 +1,21 @@
+diff --git a/content/browser/storage_partition_impl_map.cc b/content/browser/storage_partition_impl_map.cc
+index 871ab0738802d4d8d9b01b68489548cec19a53ee..c8b60e4e877e20443cecb416a72f3e242cf766fc 100644
+--- a/content/browser/storage_partition_impl_map.cc
++++ b/content/browser/storage_partition_impl_map.cc
+@@ -6,6 +6,7 @@
+ 
+ #include <utility>
+ 
++#include "../brave/content/browser/adblock_interceptor.h"
+ #include "base/bind.h"
+ #include "base/callback.h"
+ #include "base/command_line.h"
+@@ -417,6 +418,8 @@ StoragePartitionImpl* StoragePartitionImplMap::Get(
+   request_interceptors.push_back(ServiceWorkerRequestHandler::CreateInterceptor(
+       browser_context_->GetResourceContext()));
+   request_interceptors.push_back(std::make_unique<AppCacheInterceptor>());
++  request_interceptors.push_back(
++      std::make_unique<brave::content::AdBlockInterceptor>());
+ 
+   // These calls must happen after StoragePartitionImpl::Create().
+   if (partition_domain.empty()) {

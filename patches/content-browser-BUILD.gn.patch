@@ -1,13 +1,15 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index c89b65d27a7e0d639f9cc1468aca4083303860a3..cf3a9cfa10c608f1d7493d34206d34d206a3710a 100644
+index c89b65d27a7e0d639f9cc1468aca4083303860a3..5db63fc03ccf7f1f8d1d72743f23c537f377fa78 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -2122,6 +2122,12 @@ jumbo_source_set("browser") {
+@@ -2122,6 +2122,14 @@ jumbo_source_set("browser") {
        "//ppapi/proxy:ipc",
        "//ppapi/shared_impl",
      ]
 +    if (brave_chromium_build) {
 +      sources += [
++        "//brave/content/browser/adblock_interceptor.cc",
++        "//brave/content/browser/adblock_interceptor.h",
 +        "//brave/content/browser/renderer_host/brave_plugin_registry_impl.cc",
 +        "//brave/content/browser/renderer_host/brave_plugin_registry_impl.h",
 +      ]
