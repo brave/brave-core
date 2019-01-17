@@ -851,7 +851,7 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
       std::string name;
       std::string favicon_url;
       updateTwitchPublisherData(name, favicon_url, publisher_blob);
-      if (name != info->name || favicon_url != info->favicon_url) {
+      if (name != info->name) {
         info->name = name;
         info->favicon_url = favicon_url;
         savePublisherInfo(0,
