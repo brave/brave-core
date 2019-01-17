@@ -299,7 +299,7 @@ void OnGetAds(const ads::OnGetAdsCallback& callback,
 
   for (const auto it : ad_info_json_list) {
     ads::AdInfo ad_info;
-    if (ad_info.FromJson(it)) {
+    if (ad_info.FromJson(it) == ads::Result::SUCCESS) {
       ad_info_list.push_back(ad_info);
     } else {
       callback(
