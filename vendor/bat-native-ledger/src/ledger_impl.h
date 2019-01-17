@@ -349,6 +349,7 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::VisitData& visit_data) override;
 
   void OnTimer(uint32_t timer_id) override;
+  void OnConfirmationsTimer(uint32_t timer_id) override;
 
   void OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
                           ledger::Result result,

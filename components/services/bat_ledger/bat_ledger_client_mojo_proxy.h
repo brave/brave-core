@@ -115,6 +115,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                               ledger::OnLoadCallback callback) override;
   void ResetConfirmationsState(const std::string& name,
                                ledger::OnResetCallback callback) override;
+  uint32_t SetConfirmationsTimer(uint64_t time_offset) override;
+  void KillConfirmationsTimer(uint32_t timer_id) override;
 
  private:
   bool Connected() const;

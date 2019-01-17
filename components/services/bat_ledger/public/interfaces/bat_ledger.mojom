@@ -99,6 +99,8 @@ interface BatLedger {
   SetCatalogIssuers(string info);
   IsConfirmationsReadyToShowAds() => (bool can_show);
   AdSustained(string info);
+
+  OnConfirmationsTimer(uint32 timer_id);
 };
 
 interface BatLedgerClient {
@@ -172,4 +174,7 @@ interface BatLedgerClient {
   SaveConfirmationsState(string name, string value) => (int32 result);
   LoadConfirmationsState(string name) => (int32 result, string value);
   ResetConfirmationsState(string name) => (int32 result);
+  [Sync]
+  SetConfirmationsTimer(uint64 time_offset) => (uint32 timer_id);
+  KillConfirmationsTimer(uint32 timer_id);
 };

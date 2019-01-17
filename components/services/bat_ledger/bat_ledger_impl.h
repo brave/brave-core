@@ -126,6 +126,8 @@ class BatLedgerImpl : public mojom::BatLedger,
         IsConfirmationsReadyToShowAdsCallback callback) override;
     void AdSustained(const std::string& info) override;
 
+    void OnConfirmationsTimer(uint32_t timer_id) override;
+
    private:
     // workaround to pass base::OnceCallback into std::bind
     template <typename Callback>
