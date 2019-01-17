@@ -3,13 +3,13 @@
 <translationbundle lang="hi">
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
 <translation id="7942180974165298215">Brave विज्ञापन बाधा</translation>
-<translation id="6406506848690869874">ब्रेव सिंक</translation>
+<translation id="6406506848690869874">सिंक</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") की Brave में अनुमति नहीं है।</translation>
 <translation id="7450557937477381864">क्रोम को बंद करें</translation>
 <translation id="7008934821596358692">आयात समाप्त करने के लिए, सभी क्रोम विंडोज़ बंद करें।</translation>
 <translation id="5735465527556462863">Brave (पुराना) बंद करें</translation>
 <translation id="7737066986958447692">आयात खत्म करने के लिए, सभी Brave (पुराना) विंडोज बंद करें।</translation>
-<translation id="6447842834002726250">कुकीज़ के द्वारा</translation>
+<translation id="6447842834002726250">कुकी</translation>
 <translation id="4983925687993168579">आँकड़े</translation>
 <translation id="6165477144235978006">Brave भुगतान</translation>
 <translation id="3489524616427966890">एक से अधिक विंडो और टैब खोलें</translation>
@@ -41,6 +41,7 @@
 <translation id="3488584642074079080">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
+<translation id="7924918279836988121">Bat खाता सेवाएं</translation>
 <translation id="7372129767729198111">Brave शील्ड्स डिफॉल्ट्स</translation>
 <translation id="8029018702721078742">विज्ञापन नियंत्रण</translation>
 <translation id="3544462288910360084">कुकी नियंत्रण</translation>
@@ -56,10 +57,16 @@
 <translation id="8034285923190068220">फिंगरप्रिंटिंग की अनुमति दें</translation>
 <translation id="4540198958192073185">सभी फिंगरप्रिंटिंग को रोकें</translation>
 <translation id="8942080017911802454">वेबआरटीसी आईपी हैंडलिंग नीति</translation>
-<translation id="6165508094623778733">और जानें</translation>
-<translation id="8798099450830957504">डिफ़ॉल्ट</translation>
+<translation id="6165508094623778733">अधिक जानें</translation>
+<translation id="8798099450830957504">सामान्य</translation>
 <translation id="1822560017823072927">डिफ़ॉल्ट सार्वजनिक और निजी इंटरफेस</translation>
 <translation id="5825943197137337319">केवल डिफ़ॉल्ट सार्वजनिक इंटरफ़ेस</translation>
 <translation id="1689062823386843231">गैर-प्रॉक्सी UDP अक्षम करें</translation>
-<translation id="6645631466045614531">इसके द्वारा Brave सिंक तक पहुँच प्राप्त करें</translation>
+<translation id="6645631466045614531">के द्वारा सिंक एक्सेस करें</translation>
+<translation id="6786747875388722282">एक्सटेंशन</translation>
+<translation id="2896916411183256228">टोरेंट को सीधे अपने ब्राउज़र में देखने के लिए WebTorrent का उपयोग करें। टोरेंट फाइलों और मैग्नेट लिंक के लिए समर्थित।</translation>
+<translation id="6554397389149987360">ब्राउज़र में स्क्रीन साझा करने और अन्य सुविधाओं के लिए हैंगऑउट के घटकों का उपयोग करें।</translation>
+<translation id="6916590542764765824">एक्सटेंसन को प्रबंधित करें</translation>
+<translation id="4928988318462976765">वेब एक्सटेंशन स्टोर</translation>
+<translation id="9181207987584064303">वेब एक्सटेंशन स्टोर में देखें</translation>
 </translationbundle>

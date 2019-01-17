@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fr">
-<translation id="3333887201479867589">Les Récompenses Brave</translation>
+<translation id="3333887201479867589">Récompenses Brave</translation>
 <translation id="7942180974165298215">Bloqueur de publicité Brave</translation>
-<translation id="6406506848690869874">Brave Sync</translation>
+<translation id="6406506848690869874">Synchroniser</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") n'est pas autorisé dans Brave.</translation>
 <translation id="7450557937477381864">Fermez Chrome</translation>
 <translation id="7008934821596358692">Pour terminer l'importation, fermez toutes les fenêtres Chrome.</translation>
@@ -38,8 +38,12 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="1434416574322382019">Nouvelle Fenêtre Privée avec Tor</translation>
 <translation id="4703780849509456860">Ouvrir le Lien dans une Fenêtre Privée avec Tor</translation>
 <translation id="3488584642074079080">Ouvrir le Lien dans une Fenêtre Privée Brave avec Tor</translation>
+<translation id="6313675821927505581">Nouvelle fenêtre privée avec Tor</translation>
+<translation id="2638041073279639246">Ouvrir le lien dans une fenêtre privée avec Tor</translation>
+<translation id="3425600262621021599">Ouvrir le lien dans une fenêtre privée Brave avec Tor</translation>
 <translation id="3155170474926428993">Lanceur Tor</translation>
 <translation id="2515126961943087659">Service de publicités BAT</translation>
+<translation id="7924918279836988121">Service Bat Ledger</translation>
 <translation id="7372129767729198111">Boucliers Brave par défaut</translation>
 <translation id="8029018702721078742">Contrôle des publicités</translation>
 <translation id="3544462288910360084">Contrôle des cookies</translation>
@@ -60,5 +64,11 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="1822560017823072927">Interfaces publiques et privées par défaut</translation>
 <translation id="5825943197137337319">Interface publique par défaut uniquement</translation>
 <translation id="1689062823386843231">Désactiver l'UDP pas en proxy</translation>
-<translation id="6645631466045614531">Accéder à la synchronisation Brave via</translation>
+<translation id="6645631466045614531">Accédez à la synchronisation via</translation>
+<translation id="6786747875388722282">Extensions</translation>
+<translation id="2896916411183256228">Utilise WebTorrent pour afficher les torrents directement dans le navigateur. Compatible avec les fichiers torrent et les liens magnétiques.</translation>
+<translation id="6554397389149987360">Utilise le composant Hangouts pour activer le partage d'écran et d'autres fonctionnalités dans le navigateur.</translation>
+<translation id="6916590542764765824">Gérer les extensions</translation>
+<translation id="4928988318462976765">Magasin d'extensions Web</translation>
+<translation id="9181207987584064303">Afficher dans le magasin d'extensions Web</translation>
 </translationbundle>

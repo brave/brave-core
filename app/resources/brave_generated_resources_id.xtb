@@ -3,13 +3,13 @@
 <translationbundle lang="id">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Pemblokir Iklan Brave</translation>
-<translation id="6406506848690869874">Brave Sync</translation>
+<translation id="6406506848690869874">Sinkronkan</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") tidak diizinkan di Brave.</translation>
 <translation id="7450557937477381864">Tutup Chrome</translation>
 <translation id="7008934821596358692">Untuk menyelesaikan impor, tutup semua jendela Chrome.</translation>
 <translation id="5735465527556462863">Tutup Brave (lama)</translation>
 <translation id="7737066986958447692">Untuk menyelesaikan impor, tutup semua jendela Brave (lama)</translation>
-<translation id="6447842834002726250">Kuki</translation>
+<translation id="6447842834002726250">Cookie</translation>
 <translation id="4983925687993168579">Statistik</translation>
 <translation id="6165477144235978006">Pembayaran Brave</translation>
 <translation id="3489524616427966890">Buka jendela dan tab</translation>
@@ -38,8 +38,12 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1434416574322382019">Jendela Pribadi dengan Tor Baru</translation>
 <translation id="4703780849509456860">Buka Tautan di Jendela Pribadi dengan Tor</translation>
 <translation id="3488584642074079080">Buka Tautan di Jendela Pribadi dengan Tor Brave</translation>
+<translation id="6313675821927505581">Jendela pribadi dengan Tor baru</translation>
+<translation id="2638041073279639246">Buka tautan di jendela pribadi dengan Tor</translation>
+<translation id="3425600262621021599">Buka tautan di jendela pribadi dengan Tor Brave</translation>
 <translation id="3155170474926428993">Peluncur Tor</translation>
 <translation id="2515126961943087659">Layanan Iklan Bat</translation>
+<translation id="7924918279836988121">Layanan Buku Besar BAT</translation>
 <translation id="7372129767729198111">Perisai Brave baku</translation>
 <translation id="8029018702721078742">Kontrol Iklan</translation>
 <translation id="3544462288910360084">Kontrol Kuki</translation>
@@ -56,9 +60,17 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="4540198958192073185">Blokir semua sidik jari</translation>
 <translation id="8942080017911802454">Kebijakan Penanganan IP WebRTC</translation>
 <translation id="6165508094623778733">Pelajari lebih lanjut</translation>
-<translation id="8798099450830957504">Baku</translation>
+<translation id="8798099450830957504">Default</translation>
 <translation id="1822560017823072927">Antarmuka pribadi dan umum baku</translation>
 <translation id="5825943197137337319">Hanya antarmuka publik baku</translation>
 <translation id="1689062823386843231">Nonaktifkan UDP yang tidak di-proxy</translation>
-<translation id="6645631466045614531">Akses Sinkronisasi Brave melalui</translation>
+<translation id="6645631466045614531">Akses Sinkronisasi via</translation>
+<translation id="6786747875388722282">Ekstensi</translation>
+<translation id="2896916411183256228">Menggunakan WebTorrent untuk menampilkan torrent langsung di peramban. Mendukung file torrent dan tautan magnet.</translation>
+<translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mengaktifkan berbagi layar dan fitur lainnya di peramban.</translation>
+<translation id="6916590542764765824">Kelola Ekstensi</translation>
+<translation id="8166550967072664516"><ph name="BEGIN_LINK">&amp;lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&amp;gt;</ph>Mencari lebih banyak ekstensi?<ph name="END_LINK">&amp;lt;/a&amp;gt;&lt;ex&gt;&amp;lt;/a&amp;gt;&lt;/ex&gt;</ph></translation>
+<translation id="4928988318462976765">Toko Ekstensi Web</translation>
+<translation id="9181207987584064303">Lihat di Toko Ekstensi Web</translation>
+<translation id="6170571892200375298">Anda belum memiliki ekstensi. Anda ingin <ph name="BEGIN_LINK">&amp;lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&amp;gt;</ph>memasang sejumlah ekstensi<ph name="END_LINK">&amp;lt;/a&amp;gt;&lt;ex&gt;&amp;lt;/a&amp;gt;&lt;/ex&gt;</ph>?</translation>
 </translationbundle>

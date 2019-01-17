@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Concessão de Token",
+    "message": "Doações Token Reivindicadas",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "Você tem uma verba à sua espera.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Cópia de segurança da carteira",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Crie uma cópia de segurança da sua carteira Brave.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "A sua conta de pagamentos Brave está a aguardar um depósito.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Fundos insuficientes",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "A criar carteira",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "Sem atividade ainda...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Arraste o ícone BAT para",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "Está com sorte!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "A doação do token está a caminho.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Prove que é humano!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "destino.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Humm… Não está correto. Tente novamente.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Reivindicação",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Doação de Token Gratuita",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Data de expiração da oferta",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Lamentamos, mas esta doação já foi reivindicada.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "A Brave Rewards está a ter um problema. Por favor, tente novamente mais tarde.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Ups, algo está errado. Por favor, tente novamente mais tarde.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "OK",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Desculpe, parece que esta doação já expirou.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "Esta doação já não está disponível. ",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Ainda não verificado",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Este criador ainda não efetuou o registo para receber contribuições dos utilizadores do Brave. As gratificações que enviar irão permanecer na sua carteira até que seja verificado.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Obtenha mais informações.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Definiu {{reservedAmount}} BAT para criadores que ainda não efetuaram o registo para receber contribuições. O seu navegador irá continuar a tentar enviar a contribuição durante 90 dias ou até que os utilizadores estejam verificados.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Obtenha mais informações.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Desativado",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Definições.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "Atualmente, não está a acumular Recompensas ao navegar. Volte a ter Recompensas",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "As Recompensas Brave estão",
+    "description": "Title for Panel's disabled state"
   }
 }

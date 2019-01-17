@@ -3,17 +3,17 @@
 <translationbundle lang="fa">
 <translation id="3333887201479867589">پاداش‌های Brave</translation>
 <translation id="7942180974165298215">مسدود کردن آگهی با Brave</translation>
-<translation id="6406506848690869874">Brave Sync</translation>
+<translation id="6406506848690869874">همگام‌سازی</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (شناسه افزونه "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") در Brave مجاز نیست.</translation>
 <translation id="7450557937477381864">بستن Chrome</translation>
 <translation id="7008934821596358692">برای تکمیل وارد کردن، همه پنجره‌های Chrome را ببندید.</translation>
 <translation id="5735465527556462863">بستن Brave (قدیمی)</translation>
 <translation id="7737066986958447692">برای تکمیل وارد کردن، همه پنجره‌های Brave (قدیمی) را ببندید.</translation>
-<translation id="6447842834002726250">کوکی</translation>
+<translation id="6447842834002726250">کوکی‌ها</translation>
 <translation id="4983925687993168579">آمار</translation>
 <translation id="6165477144235978006">پرداخت‌های Brave</translation>
 <translation id="3489524616427966890">باز کردن پنجره‌ها و برگه‌ها</translation>
-<translation id="9173846700806833701">Widevine نصب نشده است</translation>
+<translation id="9173846700806833701">Widevine نصب نیست</translation>
 <translation id="2433569048491784801">Widevine نصب نشده است.</translation>
 <translation id="3699882589215410581">Widevine را نصب و اجرا کنید</translation>
 <translation id="8410111618231938546">Google Widevine قطعه‌ای از کد «مدیریت حقوق دیجیتال» (DRM) است که ما (Brave Software) مالک آن نیستیم و نمی‌توانیم آن را بازبینی کنیم. کد Google Widevine از سرورهای Google - نه سرورهای ما - بارگیری می‌شود. این کد فقط در صورتی بارگیری می‌شود که این گزینه را فعال کنید. کاربران را به استفاده از DRM تشویق نمی‌کنیم، اما به انتخاب کاربران احترام می‌گذاریم و اذعان داریم بعضی از کاربران Brave تمایل دارند از سرویس‌هایی که به DRM نیاز دارند استفاده کنند.
@@ -40,6 +40,7 @@
 <translation id="3488584642074079080">باز کردن پیوند در Window with Tor خصوصی Brave</translation>
 <translation id="3155170474926428993">راه‌انداز تور</translation>
 <translation id="2515126961943087659">سرویس آگهی‌های Bat</translation>
+<translation id="7924918279836988121">سرویس بت لجر</translation>
 <translation id="7372129767729198111">پیش‌فرض‌های سپرهای ایمنی Brave</translation>
 <translation id="8029018702721078742">کنترل آگهی</translation>
 <translation id="3544462288910360084">کنترل کوکی</translation>
@@ -60,5 +61,11 @@
 <translation id="1822560017823072927">رابط‌های عمومی و خصوصی پیش‌فرض</translation>
 <translation id="5825943197137337319">فقط رابط عمومی پیش‌فرض</translation>
 <translation id="1689062823386843231">غیرفعال کردن UDP غیرپروکسی</translation>
-<translation id="6645631466045614531">دسترسی به Brave Sync ازطریق</translation>
+<translation id="6645631466045614531">دسترسی به همگام‌سازی ازطریق</translation>
+<translation id="6786747875388722282">افزونه‌ها</translation>
+<translation id="2896916411183256228">از WebTorrent برای نمایش مستقیم تورنت‌ها در مرورگر استفاده می‌کند. از فایل‌های تورنت و پیوندهای آهنربایی پشتیبانی می‌کند.</translation>
+<translation id="6554397389149987360">از مؤلفه‌های Hangouts برای فعال کردن اشتراک‌گذاری صفحه و سایر ویژگی‌ها در مرورگر استفاده می‌کند.</translation>
+<translation id="6916590542764765824">مدیریت افزونه‌ها</translation>
+<translation id="4928988318462976765">فروشگاه افزونه‌های وب</translation>
+<translation id="9181207987584064303">مشاهده در «فروشگاه افزونه‌های وب»</translation>
 </translationbundle>

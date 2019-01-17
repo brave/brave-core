@@ -3,7 +3,7 @@
 <translationbundle lang="de">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Werbeblocker</translation>
-<translation id="6406506848690869874">Brave Sync</translation>
+<translation id="6406506848690869874">Sync</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ist in Brave nicht erlaubt.</translation>
 <translation id="7450557937477381864">Schließen Sie Chrome</translation>
 <translation id="7008934821596358692">Um Ihre Daten vollständig zu importieren, muss Chrome komplett geschlossen werden.</translation>
@@ -40,6 +40,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="3488584642074079080">Link in Brave in privatem Fenster mit Tor öffnen</translation>
 <translation id="3155170474926428993">Tor-Startprogramm</translation>
 <translation id="2515126961943087659">Bat Ads-Service</translation>
+<translation id="7924918279836988121">Bat-Ledger-Dienst</translation>
 <translation id="7372129767729198111">Brave Standardschilde</translation>
 <translation id="8029018702721078742">Anzeigensteuerung</translation>
 <translation id="3544462288910360084">Cookie-Kontrolle</translation>
@@ -56,9 +57,15 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="4540198958192073185">Alle Fingerabdrucknahmen sperren</translation>
 <translation id="8942080017911802454">WebRTC-IP-Handhabungs-Richtlinie</translation>
 <translation id="6165508094623778733">Mehr erfahren</translation>
-<translation id="8798099450830957504">Standard</translation>
+<translation id="8798099450830957504">Standardeinstellung</translation>
 <translation id="1822560017823072927">Voreingestellte öffentliche und private Benutzerschnittstellen</translation>
 <translation id="5825943197137337319">Nur die voreingestellte öffentliche Benutzerschnittstelle</translation>
 <translation id="1689062823386843231">Nicht-proxisiertes UDP deaktivieren</translation>
-<translation id="6645631466045614531">Auf Brace Sync zugreifen über</translation>
+<translation id="6645631466045614531">Zugriff auf Sync über</translation>
+<translation id="6786747875388722282">Erweiterungen</translation>
+<translation id="2896916411183256228">Nutzt WebTorrent, um Torrents direkt im Browser anzuzeigen. Unterstützt Torrent-Dateien und Magnet-Links.</translation>
+<translation id="6554397389149987360">Nutzt Hangouts-Komponente, um das Teilen des Bildschirms und andere Funktionen im Browser zu ermöglichen.</translation>
+<translation id="6916590542764765824">Erweiterungen verwalten</translation>
+<translation id="4928988318462976765">Web Extensions Store</translation>
+<translation id="9181207987584064303">Im Web Extensions Store anzeigen</translation>
 </translationbundle>

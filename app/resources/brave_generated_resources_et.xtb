@@ -3,13 +3,13 @@
 <translationbundle lang="et">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave'i reklaamiblokeerija</translation>
-<translation id="6406506848690869874">Brave''i Sync</translation>
+<translation id="6406506848690869874">Sünkroonimine</translation>
 <translation id="120759863357279975">Laiendus <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ei ole Brave''is lubatud.</translation>
 <translation id="7450557937477381864">Sulge Chrome</translation>
 <translation id="7008934821596358692">Importimise lõpetamiseks sulgege kõik Chrome'i vahelehed.</translation>
 <translation id="5735465527556462863">Sulge Brave (vana)</translation>
 <translation id="7737066986958447692">Importimise lõpetamiseks sulgege kõik (vana) Brave'i vahelehed.</translation>
-<translation id="6447842834002726250">Küpsisefailid</translation>
+<translation id="6447842834002726250">Küpsised</translation>
 <translation id="4983925687993168579">Statistika</translation>
 <translation id="6165477144235978006">Brave'i maksed</translation>
 <translation id="3489524616427966890">Ava aknad ja vahekaardid</translation>
@@ -60,5 +60,6 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="1822560017823072927">Vaikimisi määratud avalikud ja privaatsed liidesed</translation>
 <translation id="5825943197137337319">Ainult vaikimisi määratud avalik liides</translation>
 <translation id="1689062823386843231">Keela puhverserverita UDP</translation>
-<translation id="6645631466045614531">Mine Brace Sync'i</translation>
+<translation id="6786747875388722282">Laiendused</translation>
+<translation id="6916590542764765824">Laienduste haldamine</translation>
 </translationbundle>

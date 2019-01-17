@@ -3,7 +3,7 @@
 <translationbundle lang="fil">
 <translation id="3333887201479867589">Mga Reward ng Brave</translation>
 <translation id="7942180974165298215">Pag-block ng Ad ng Brave</translation>
-<translation id="6406506848690869874">Brave Sync</translation>
+<translation id="6406506848690869874">Mag-sync</translation>
 <translation id="120759863357279975">Ang <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ay hindi pinapayagan sa Brave.</translation>
 <translation id="7450557937477381864">Isara ang Chrome</translation>
 <translation id="7008934821596358692">Upang matapos ang pag-import, isara ang lahat ng window ng Chrome.</translation>
@@ -40,8 +40,9 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="3488584642074079080">Buksan ang Link sa Bagong Pribadong Window ng Brave na may Tor</translation>
 <translation id="3155170474926428993">Launcher ng Tor</translation>
 <translation id="2515126961943087659">Serbisyo ng Mga Ad ng Bat</translation>
+<translation id="7924918279836988121">Serbisyong Ledger ng Bat</translation>
 <translation id="7372129767729198111">Mga default ng mga shield ng Brave</translation>
-<translation id="8029018702721078742">Kontrol sa Ad</translation>
+<translation id="8029018702721078742">Kontrol ng Ad</translation>
 <translation id="3544462288910360084">Kontrol sa Cookie</translation>
 <translation id="8919235146866304148">Proteksyon gamit ang fingerprint</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
@@ -60,5 +61,11 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="1822560017823072927">Default na pampubliko at pampribadong interface</translation>
 <translation id="5825943197137337319">Default na pampublikong interface lang</translation>
 <translation id="1689062823386843231">I-disable ang UDP na walang proxy</translation>
-<translation id="6645631466045614531">I-access ang Brave Sync sa pamamagitan ng</translation>
+<translation id="6645631466045614531">I-access ang Pag-sync sa pamamagitan ng</translation>
+<translation id="6786747875388722282">Mga Extension</translation>
+<translation id="2896916411183256228">Ginagamit ang WebTorrent upang direktang ipakita sa browser ang mga torrent. Sinusuportahan ang mga torrent file at magnet link.</translation>
+<translation id="6554397389149987360">Ginagamit ang component ng Hangouts upang ma-enable ang pagbabahagi ng screen at iba pang feature sa browser.</translation>
+<translation id="6916590542764765824">Pamahalaan ang Mga Extension</translation>
+<translation id="4928988318462976765">Store ng Mga Web Extension</translation>
+<translation id="9181207987584064303">Tingnan sa Store ng Mga Web Extension</translation>
 </translationbundle>

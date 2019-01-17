@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Ruzuku ya Kianzio",
+    "message": "Ruzuku za Kianzio Zilizoombwa",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -181,6 +181,22 @@
     "message": "Una ruzuku inayokusubiri.",
     "description": "Description for new grant notification"
   },
+  "backupWalletTitle": {
+    "message": "Wallet Mbadala",
+    "description": "Notification title when we ask user to backup wallet"
+  },
+  "backupWalletNotification": {
+    "message": "Tafadhali hifadhi kwa njia mbadala wallet yako ya Brave.",
+    "description": "Description for backup wallet notification"
+  },
+  "insufficientFundsNotification": {
+    "message": "Akaunti yako ya Brave Malipo inasubiri iwekwe pesa.",
+    "description": "Description for new insufficient funds notification"
+  },
+  "insufficientFunds": {
+    "message": "Fedha Hazitoshi",
+    "description": "Title for insufficient funds notification"
+  },
   "braveRewardsCreatingText": {
     "message": "Kutengeneza waleti",
     "description": "Used in a button displaying wallet creation process"
@@ -200,5 +216,105 @@
   "noActivity": {
     "message": "Bado hakuna shughuli...",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
+  },
+  "captchaDrag": {
+    "message": "Buruza ikoni ya BAT ili kuiweka kwenye",
+    "description": "Directs the user to drag the BAT icon"
+  },
+  "captchaLuckyDay": {
+    "message": "Ni siku yako ya bahati!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "captchaOnTheWay": {
+    "message": "Ruzuku yako ya kianzio ipo njiani.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "captchaProveHuman": {
+    "message": "Thabitisha kwamba wewe ni binadamu!",
+    "description": "Cosmetic text for captcha prompt"
+  },
+  "captchaTarget": {
+    "message": "lengo.",
+    "description": "Captcha Target"
+  },
+  "captchaMissedTarget": {
+    "message": "Hmm... Si Sahihi. Jaribu Tena.",
+    "description": "Message upon failing captcha"
+  },
+  "claim": {
+    "message": "Dai",
+    "description": "Claim text"
+  },
+  "newTokenGrant": {
+    "message": "Ruzuku ya Bure ya Kianzio",
+    "description": "Token grant label"
+  },
+  "grantExpire": {
+    "message": "Tarehe ya Mwisho ya Kuisha Ruzuku",
+    "description": "Grant expiry label"
+  },
+  "grantAlreadyClaimedText": {
+    "message": "Samahani, inaonekana ruzuku hii imeshadaiwa tayari.",
+    "description": "Description of the error when grant is already claimed."
+  },
+  "grantGeneralErrorButton": {
+    "message": "SAWA",
+    "description": "Button text for clearing the error."
+  },
+  "grantGeneralErrorText": {
+    "message": "Kuna tatizo kwenye Zawadi za Brave. Tafadhali jaribu tena baadaye.",
+    "description": "Error text when user is having problems claiming a grant."
+  },
+  "grantGeneralErrorTitle": {
+    "message": "Ayaa, kuna kitu hakiko sawa. Tafadhali jaribu tena baadaye.",
+    "description": "Error title when user is having problems claiming a grant."
+  },
+  "grantGoneButton": {
+    "message": "SAWA",
+    "description": "Button text for clearing the error."
+  },
+  "grantGoneText": {
+    "message": "Samahani, inaonekana ruzuku hii imekwisha muda wake tayari.",
+    "description": "Error text when user missed a grant."
+  },
+  "grantGoneTitle": {
+    "message": "Ruzuku hii haipo tena.",
+    "description": "Error title when user missed a grant."
+  },
+  "unVerifiedPublisher": {
+    "message": "Bado hajathibitishwa",
+    "description": "Status of the publisher shown in the panel"
+  },
+  "unVerifiedText": {
+    "message": "Mtengeneza maudhui huyu bado hajajisajili ili kuanza kupokea michango kutoka kwa watumiaji wa Brave. Zawadi yoyote utakayotuma itabaki kwenye wallet yako hadi watakapothibitisha.",
+    "description": "Notice about unverified publisher."
+  },
+  "unVerifiedTextMore": {
+    "message": "Jifunze zaidi.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "reservedAmountText": {
+    "message": "Umepewa kiwango cha BAT {{reservedAmount}} BAT kwa watengenezaji ambao bado hawajajisajili ili kupokea michango. Kisakuzi chako kitaendelea kujaribu kuchangia hadi watakapothibitisha, au hadi siku 90 zitakapokuwa zimepita.",
+    "description": "Notification about how much BAT do you have reserved"
+  },
+  "reservedMoreLink": {
+    "message": "Jifunze zaidi.",
+    "description": "Text for the link that explains more about reserved amount"
+  },
+  "disabledPanelOff": {
+    "message": "Kimezimwa",
+    "description": "Off state text for Panel's disabled state"
+  },
+  "disabledPanelSettings": {
+    "message": "Mipangilio.",
+    "description": "Settings Link for Panel's disabled state"
+  },
+  "disabledPanelText": {
+    "message": "Kwa sasa hupati mafao ya Zawadi huku ukiwa unavinjari. Washa tena Zawadi kwenye",
+    "description": "Text for Panel's disabled state"
+  },
+  "disabledPanelTitle": {
+    "message": "Zawadi za Brave ni",
+    "description": "Title for Panel's disabled state"
   }
 }

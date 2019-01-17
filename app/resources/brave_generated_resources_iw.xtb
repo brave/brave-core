@@ -3,13 +3,13 @@
 <translationbundle lang="iw">
 <translation id="3333887201479867589">תגמולי Brave</translation>
 <translation id="7942180974165298215">Brave חוסם מודעות</translation>
-<translation id="6406506848690869874">סנכרון Brave</translation>
+<translation id="6406506848690869874">סנכרון</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") לא נתמך ב-Brave.</translation>
 <translation id="7450557937477381864">סגירת Chrome</translation>
 <translation id="7008934821596358692">על מנת לסיים את הייבוא, סגרו את כל חלונות הדפדפן.</translation>
 <translation id="5735465527556462863">סגירת Brave (ישן)</translation>
 <translation id="7737066986958447692">כדי לסיים את הייבוא, סגרו את כל חלונות Brave (ישן).</translation>
-<translation id="6447842834002726250">עוגיות</translation>
+<translation id="6447842834002726250">‏קובצי Cookie</translation>
 <translation id="4983925687993168579">סטטיסטיקות</translation>
 <translation id="6165477144235978006">תשלומי Brave</translation>
 <translation id="3489524616427966890">פתיחת חלונות וכרטיסיות</translation>
@@ -41,6 +41,7 @@
 <translation id="3488584642074079080">פתיחת קישור בחלון גלישה פרטית של Brave עם Tor</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
 <translation id="2515126961943087659">שירות Bat Ads</translation>
+<translation id="7924918279836988121">שירות יומן BAT</translation>
 <translation id="7372129767729198111">ברירות מחדל של מגני Brave</translation>
 <translation id="8029018702721078742">בקרת פרסומות</translation>
 <translation id="3544462288910360084">בקרת עוגיות</translation>
@@ -56,10 +57,16 @@
 <translation id="8034285923190068220">אפשרו טביעות אצבע</translation>
 <translation id="4540198958192073185">חסימת כל טביעות האצבע</translation>
 <translation id="8942080017911802454">WebRTC IP מדיניות תפעול</translation>
-<translation id="6165508094623778733">ספרו לי עוד</translation>
+<translation id="6165508094623778733">למדו עוד</translation>
 <translation id="8798099450830957504">ברירת מחדל</translation>
 <translation id="1822560017823072927">ממשקים ברירת מחדל ציבוריים ופרטיים</translation>
 <translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
 <translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
-<translation id="6645631466045614531">גישה ל-Brave Sync באמצעות</translation>
+<translation id="6645631466045614531">גישה לסנכרון באמצעות</translation>
+<translation id="6786747875388722282">תוספים</translation>
+<translation id="2896916411183256228">משתמש ב-WebTorrent להצגת טורנטים ישירות בדפדפן. תומך בקבצי torrent וקישורי מגנט.</translation>
+<translation id="6554397389149987360">משתמש ברכיב Hangouts כדי לאפשר שיתוף מסך ותכונות אחרות בדפדפן.</translation>
+<translation id="6916590542764765824">ניהול תוספים</translation>
+<translation id="4928988318462976765">חנות תוספי רשת</translation>
+<translation id="9181207987584064303">הצג בחנות תוספי רשת</translation>
 </translationbundle>

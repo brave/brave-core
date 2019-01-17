@@ -3,7 +3,7 @@
 <translationbundle lang="hr">
 <translation id="3333887201479867589">Sustav nagrada u pregledniku Brave</translation>
 <translation id="7942180974165298215">Blokiranje oglasa u pregledniku Brave</translation>
-<translation id="6406506848690869874">Brave Sync</translation>
+<translation id="6406506848690869874">Sinkronizacija</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nije dopušteno u pregledniku Brave.</translation>
 <translation id="7450557937477381864">Zatvori Chrome</translation>
 <translation id="7008934821596358692">Kako biste dovršili uvoz, zatvorite sve prozore preglednika Chrome.</translation>
@@ -38,6 +38,9 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="1434416574322382019">Novi privatni prozor s funkcijom Tor</translation>
 <translation id="4703780849509456860">Otvori poveznicu u privatnom prozoru s funkcijom Tor</translation>
 <translation id="3488584642074079080">Otvori poveznicu u privatnom prozoru preglednika Brave s funkcijom Tor</translation>
+<translation id="6313675821927505581">Novi privatni prozor s funkcijom Tor</translation>
+<translation id="2638041073279639246">Otvori poveznicu u privatnom prozoru s funkcijom Tor</translation>
+<translation id="3425600262621021599">Otvori poveznicu u privatnom prozoru preglednika Brave s funkcijom Tor</translation>
 <translation id="3155170474926428993">Pokretač funkcije Tor</translation>
 <translation id="2515126961943087659">Usluga Bat oglašavanja</translation>
 <translation id="7372129767729198111">Zadane postavke štitova u pregledniku Brave</translation>
@@ -60,5 +63,6 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="1822560017823072927">Zadana javna i privatna sučelja</translation>
 <translation id="5825943197137337319">Samo zadano javno sučelje</translation>
 <translation id="1689062823386843231">Onemogući UDP bez korištenja proxyja</translation>
-<translation id="6645631466045614531">Pristup Brave sinkronizaciji putem</translation>
+<translation id="6786747875388722282">Proširenja</translation>
+<translation id="6916590542764765824">Upravljanje proširenjima</translation>
 </translationbundle>

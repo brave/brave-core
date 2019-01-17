@@ -3,7 +3,7 @@
 <translationbundle lang="sl">
 <translation id="3333887201479867589">Storitev Brave Rewards</translation>
 <translation id="7942180974165298215">Blokiranje oglasov Brave</translation>
-<translation id="6406506848690869874">Brave Sync</translation>
+<translation id="6406506848690869874">Sinhronizacija</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ni dovoljena v brskalniku Brave.</translation>
 <translation id="7450557937477381864">Zapri Chrome</translation>
 <translation id="7008934821596358692">Če želite končati uvoz, zaprite vsa okna v brskalniku Chrome.</translation>
@@ -60,5 +60,6 @@
 <translation id="1822560017823072927">Privzeti javni in zasebni vmesniki</translation>
 <translation id="5825943197137337319">Samo privzeti javni vmesnik</translation>
 <translation id="1689062823386843231">Onemogoči UDP, ki ne poteka prek strežnika proxy</translation>
-<translation id="6645631466045614531">Dostopaj do orodja Brave Sync prek</translation>
+<translation id="6786747875388722282">Razširitve</translation>
+<translation id="6916590542764765824">Upravljanje razširitev</translation>
 </translationbundle>
