@@ -97,6 +97,10 @@ interface BatLedger {
   HasSufficientBalanceToReconcile() => (bool sufficient);
 
   GetAddressesForPaymentId() => (map<string, string> addresses);
+
+  SetCatalogIssuers(string info);
+  IsConfirmationsReadyToShowAds() => (bool can_show);
+  AdSustained(string info);
 };
 
 interface BatLedgerClient {
@@ -168,4 +172,8 @@ interface BatLedgerClient {
       array<string> publisher_info_list, uint32 next_record);
 
   SaveNormalizedPublisherList(string list);
+
+  SaveConfirmationsState(string name, string value) => (int32 result);
+  LoadConfirmationsState(string name) => (int32 result, string value);
+  ResetConfirmationsState(string name) => (int32 result);
 };

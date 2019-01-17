@@ -149,6 +149,7 @@ test("brave_unit_tests") {
 
   if (brave_rewards_enabled) {
     deps += [
+      "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-ledger",
     ]
   }

@@ -17,6 +17,8 @@
 #include "bat/ads/ads_client.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "components/history/core/browser/history_service_observer.h"
@@ -34,6 +36,10 @@ class Profile;
 namespace base {
 class SequencedTaskRunner;
 }  // namespace base
+
+namespace brave_rewards {
+class RewardsService;
+}  // namespace brave_rewards
 
 namespace brave_ads {
 
@@ -186,6 +192,7 @@ class AdsServiceImpl : public AdsService,
   uint32_t next_timer_id_;
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
   NotificationDisplayService* display_service_;  // NOT OWNED
+  brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 #if !defined(OS_ANDROID)
   ui::IdleState last_idle_state_;
   bool is_foreground_;

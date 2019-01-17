@@ -9,6 +9,8 @@
 #include <memory>
 #include <string>
 
+#include "bat/ads/issuers_info.h"
+#include "bat/ads/notification_info.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/auto_contribute_props.h"
 #include "bat/ledger/ledger_client.h"
@@ -208,6 +210,10 @@ class LEDGER_EXPORT Ledger {
   virtual bool HasSufficientBalanceToReconcile() = 0;
 
   virtual void GetAddressesForPaymentId(ledger::WalletAddressesCallback callback) = 0;
+
+  virtual void SetCatalogIssuers(const std::string& info) = 0;
+  virtual bool IsConfirmationsReadyToShowAds() = 0;
+  virtual void AdSustained(const std::string& info) = 0;
 };
 
 }  // namespace ledger

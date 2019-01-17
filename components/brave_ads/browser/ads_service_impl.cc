@@ -243,21 +243,23 @@ bool SaveBundleStateOnFileTaskRunner(
 
 }
 
-AdsServiceImpl::AdsServiceImpl(Profile* profile) :
-    profile_(profile),
-    file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
+AdsServiceImpl::AdsServiceImpl(Profile* profile)
+    : profile_(profile),
+      file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-    base_path_(profile_->GetPath().AppendASCII("ads_service")),
-    next_timer_id_(0),
-    bundle_state_backend_(
-        new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
-    display_service_(NotificationDisplayService::GetForProfile(profile_)),
+      base_path_(profile_->GetPath().AppendASCII("ads_service")),
+      next_timer_id_(0),
+      bundle_state_backend_(
+          new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
+      display_service_(NotificationDisplayService::GetForProfile(profile_)),
+      rewards_service_(
+          brave_rewards::RewardsServiceFactory::GetForProfile(profile_)),
 #if !defined(OS_ANDROID)
-    last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
-    is_foreground_(!!chrome::FindBrowserWithActiveWindow()),
+      last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
+      is_foreground_(!!chrome::FindBrowserWithActiveWindow()),
 #endif
-    bat_ads_client_binding_(new bat_ads::AdsClientMojoBridge(this)) {
+      bat_ads_client_binding_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(!profile_->IsOffTheRecord());
 
   file_task_runner_->PostTask(FROM_HERE,
@@ -584,18 +586,18 @@ void AdsServiceImpl::ShowNotification(std::unique_ptr<ads::NotificationInfo> inf
 }
 
 void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
-  // TODO(Terry Mancey): https://github.com/brave/brave-browser/issues/2906
-  (void)info;
+  rewards_service_->SetCatalogIssuers(std::move(info));
 }
 
 bool AdsServiceImpl::IsConfirmationsReadyToShowAds() {
-  // TODO(Terry Mancey): https://github.com/brave/brave-browser/issues/2907
-  return true;
+  // FIXME: This method must be refactored to take a callback
+  brave_rewards::IsConfirmationsReadyToShowAdsCallback callback;
+  rewards_service_->IsConfirmationsReadyToShowAds(callback);
+  return false;
 }
 
 void AdsServiceImpl::AdSustained(std::unique_ptr<ads::NotificationInfo> info) {
-  // TODO(Terry Mancey): https://github.com/brave/brave-browser/issues/2908
-  (void)info;
+  rewards_service_->AdSustained(std::move(info));
 }
 
 void AdsServiceImpl::NotificationTimedOut(uint32_t timer_id,
