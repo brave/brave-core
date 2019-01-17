@@ -603,4 +603,69 @@ void LedgerClientMojoProxy::SaveNormalizedPublisherList(
   ledger_client_->SaveNormalizedPublisherList(list);
 }
 
+// static
+void LedgerClientMojoProxy::OnSaveConfirmationsState(
+    CallbackHolder<SaveConfirmationsStateCallback>* holder,
+    const ledger::Result result) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::SaveConfirmationsState(
+    const std::string& name,
+    const std::string& value,
+    SaveConfirmationsStateCallback callback) {
+  // deleted in OnSaveConfirmationsState
+  auto* holder = new CallbackHolder<SaveConfirmationsStateCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_client_->SaveConfirmationsState(
+      name, value,
+      std::bind(LedgerClientMojoProxy::OnSaveConfirmationsState, holder, _1));
+}
+
+// static
+void LedgerClientMojoProxy::OnLoadConfirmationsState(
+    CallbackHolder<LoadConfirmationsStateCallback>* holder,
+    const ledger::Result result,
+    const std::string& value) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, value);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::LoadConfirmationsState(
+    const std::string& name,
+    LoadConfirmationsStateCallback callback) {
+  // deleted in OnSaveConfirmationsState
+  auto* holder = new CallbackHolder<LoadConfirmationsStateCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_client_->LoadConfirmationsState(
+      name, std::bind(LedgerClientMojoProxy::OnLoadConfirmationsState, holder,
+                      _1, _2));
+}
+
+// static
+void LedgerClientMojoProxy::OnResetConfirmationsState(
+    CallbackHolder<ResetConfirmationsStateCallback>* holder,
+    const ledger::Result result) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::ResetConfirmationsState(
+    const std::string& name,
+    ResetConfirmationsStateCallback callback) {
+  // deleted in OnResetConfirmationsState
+  auto* holder = new CallbackHolder<ResetConfirmationsStateCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_client_->ResetConfirmationsState(
+      name,
+      std::bind(LedgerClientMojoProxy::OnResetConfirmationsState, holder, _1));
+}
+
 } // namespace bat_ledger

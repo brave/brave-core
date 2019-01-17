@@ -125,6 +125,11 @@ class BatLedgerImpl : public mojom::BatLedger,
         GetAddressesForPaymentIdCallback callback) override;
 
   private:
+    void SetCatalogIssuers(const std::string& info) override;
+    void IsConfirmationsReadyToShowAds(
+        IsConfirmationsReadyToShowAdsCallback callback) override;
+    void AdSustained(const std::string& info) override;
+
     // workaround to pass base::OnceCallback into std::bind
     template <typename Callback>
       class CallbackHolder {

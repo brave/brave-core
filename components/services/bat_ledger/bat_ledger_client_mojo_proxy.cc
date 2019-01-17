@@ -66,6 +66,22 @@ class LogStreamImpl : public ledger::LogStream {
   DISALLOW_COPY_AND_ASSIGN(LogStreamImpl);
 };
 
+void OnSaveConfirmationsState(const ledger::OnSaveCallback& callback,
+                              int32_t result) {
+  callback(ToLedgerResult(result));
+}
+
+void OnLoadConfirmationsState(const ledger::OnLoadCallback& callback,
+                              int32_t result,
+                              const std::string& value) {
+  callback(ToLedgerResult(result), value);
+}
+
+void OnResetConfirmationsState(const ledger::OnSaveCallback& callback,
+                               int32_t result) {
+  callback(ToLedgerResult(result));
+}
+
 } // anonymous namespace
 
 BatLedgerClientMojoProxy::BatLedgerClientMojoProxy(
@@ -653,7 +669,6 @@ void BatLedgerClientMojoProxy::GetActivityInfoList(uint32_t start,
 }
 
 
-
 void BatLedgerClientMojoProxy::SaveNormalizedPublisherList(
     const ledger::PublisherInfoListStruct& normalized_list) {
   if (!Connected()) {
@@ -661,6 +676,44 @@ void BatLedgerClientMojoProxy::SaveNormalizedPublisherList(
   }
 
   bat_ledger_client_->SaveNormalizedPublisherList(normalized_list.ToJson());
+}
+
+void BatLedgerClientMojoProxy::SaveConfirmationsState(
+    const std::string& name,
+    const std::string& value,
+    ledger::OnSaveCallback callback) {
+  if (!Connected()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  bat_ledger_client_->SaveConfirmationsState(
+      name, value,
+      base::BindOnce(&OnSaveConfirmationsState, std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::LoadConfirmationsState(
+    const std::string& name,
+    ledger::OnLoadCallback callback) {
+  if (!Connected()) {
+    callback(ledger::Result::LEDGER_ERROR, std::string());
+    return;
+  }
+
+  bat_ledger_client_->LoadConfirmationsState(
+      name, base::BindOnce(&OnLoadConfirmationsState, std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::ResetConfirmationsState(
+    const std::string& name,
+    ledger::OnResetCallback callback) {
+  if (!Connected()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  bat_ledger_client_->ResetConfirmationsState(
+      name, base::BindOnce(&OnResetConfirmationsState, std::move(callback)));
 }
 
 bool BatLedgerClientMojoProxy::Connected() const {

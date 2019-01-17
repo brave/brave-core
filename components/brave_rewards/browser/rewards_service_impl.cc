@@ -274,6 +274,22 @@ time_t GetCurrentTimestamp() {
   return base::Time::NowFromSystemTime().ToTimeT();
 }
 
+std::string LoadOnFileTaskRunner(const base::FilePath& path) {
+  std::string data;
+  bool success = base::ReadFileToString(path, &data);
+
+  // Make sure the file isn't empty.
+  if (!success || data.empty()) {
+    LOG(ERROR) << "Failed to read file: " << path.MaybeAsASCII();
+    return std::string();
+  }
+  return data;
+}
+
+bool ResetOnFileTaskRunner(const base::FilePath& path) {
+  return base::DeleteFile(path, false);
+}
+
 }  // namespace
 
 bool IsMediaLink(const GURL& url,
@@ -319,6 +335,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       private_observer_(
           std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
 #endif
+      confirmations_state_base_path_(
+          profile_->GetPath().AppendASCII("confirmations_state")),
       next_timer_id_(0) {
   // Set up the rewards data source
   content::URLDataSource::Add(profile_,
@@ -1385,6 +1403,92 @@ void RewardsServiceImpl::SetRewardsMainEnabledPref(bool enabled) {
 void RewardsServiceImpl::SetRewardsMainEnabledMigratedPref(bool enabled) {
   profile_->GetPrefs()->SetBoolean(
       prefs::kBraveRewardsEnabledMigrated, enabled);
+}
+
+void RewardsServiceImpl::SetCatalogIssuers(
+    std::unique_ptr<ads::IssuersInfo> info) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->SetCatalogIssuers(info->ToJson());
+}
+
+void RewardsServiceImpl::IsConfirmationsReadyToShowAds(
+    const IsConfirmationsReadyToShowAdsCallback& callback) {
+  bat_ledger_->IsConfirmationsReadyToShowAds(callback);
+}
+
+void RewardsServiceImpl::AdSustained(
+    std::unique_ptr<ads::NotificationInfo> info) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->AdSustained(info->ToJson());
+}
+
+void RewardsServiceImpl::SaveConfirmationsState(const std::string& name,
+                                                const std::string& value,
+                                                ledger::OnSaveCallback callback) {
+  base::ImportantFileWriter writer(
+      confirmations_state_base_path_.AppendASCII(name), file_task_runner_);
+
+  writer.RegisterOnNextWriteCallbacks(
+      base::Closure(),
+      base::Bind(&PostWriteCallback,
+                 base::Bind(&RewardsServiceImpl::OnSavedConfirmationsState,
+                            AsWeakPtr(), std::move(callback)),
+                 base::SequencedTaskRunnerHandle::Get()));
+
+  writer.WriteNow(std::make_unique<std::string>(value));
+}
+
+void RewardsServiceImpl::LoadConfirmationsState(
+    const std::string& name,
+    ledger::OnLoadCallback callback) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&LoadOnFileTaskRunner,
+                     confirmations_state_base_path_.AppendASCII(name)),
+      base::BindOnce(&RewardsServiceImpl::OnLoadedConfirmationsState,
+                     AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::ResetConfirmationsState(
+    const std::string& name,
+    ledger::OnResetCallback callback) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&ResetOnFileTaskRunner,
+                     confirmations_state_base_path_.AppendASCII(name)),
+      base::BindOnce(&RewardsServiceImpl::OnResetConfirmationsState,
+                     AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnSavedConfirmationsState(
+  ledger::OnSaveCallback callback, bool success) {
+  if (!Connected())
+    return;
+  callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+}
+
+void RewardsServiceImpl::OnLoadedConfirmationsState(
+    ledger::OnLoadCallback callback,
+    const std::string& value) {
+  if (!Connected())
+    return;
+  if (value.empty())
+    callback(ledger::Result::LEDGER_ERROR, value);
+  else
+    callback(ledger::Result::LEDGER_OK, value);
+}
+
+void RewardsServiceImpl::OnResetConfirmationsState(
+  ledger::OnResetCallback callback, bool success) {
+  if (!Connected())
+    return;
+  callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
 }
 
 void RewardsServiceImpl::GetPublisherMinVisitTime(

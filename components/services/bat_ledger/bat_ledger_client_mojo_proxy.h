@@ -116,6 +116,14 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void SaveNormalizedPublisherList(
     const ledger::PublisherInfoListStruct& normalized_list) override;
 
+  void SaveConfirmationsState(const std::string& name,
+                              const std::string& value,
+                              ledger::OnSaveCallback callback) override;
+  void LoadConfirmationsState(const std::string& name,
+                              ledger::OnLoadCallback callback) override;
+  void ResetConfirmationsState(const std::string& name,
+                               ledger::OnResetCallback callback) override;
+
  private:
   bool Connected() const;
 

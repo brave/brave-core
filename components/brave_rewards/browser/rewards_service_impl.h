@@ -10,6 +10,8 @@
 #include <memory>
 #include <string>
 
+#include "bat/ads/issuers_info.h"
+#include "bat/ads/notification_info.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/wallet_info.h"
 #include "base/files/file_path.h"
@@ -181,6 +183,25 @@ class RewardsServiceImpl : public RewardsService,
     const GetRewardsMainEnabledCallback& callback) const override;
 
   void GetAddressesForPaymentId(const GetAddressesCallback& callback) override;
+
+  void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
+  void IsConfirmationsReadyToShowAds(
+      const IsConfirmationsReadyToShowAdsCallback& callback) override;
+  void AdSustained(std::unique_ptr<ads::NotificationInfo> info) override;
+
+  void SaveConfirmationsState(const std::string& name,
+                              const std::string& value,
+                              ledger::OnSaveCallback callback) override;
+  void LoadConfirmationsState(const std::string& name,
+                              ledger::OnLoadCallback callback) override;
+  void ResetConfirmationsState(const std::string& name,
+                               ledger::OnResetCallback callback) override;
+
+  void OnSavedConfirmationsState(ledger::OnSaveCallback callback, bool success);
+  void OnLoadedConfirmationsState(ledger::OnLoadCallback callback,
+                                  const std::string& value);
+  void OnResetConfirmationsState(ledger::OnResetCallback callback,
+                                 bool success);
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -409,6 +430,7 @@ class RewardsServiceImpl : public RewardsService,
   std::vector<BitmapFetcherService::RequestId> request_ids_;
   std::unique_ptr<base::OneShotTimer> notification_startup_timer_;
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
+  const base::FilePath confirmations_state_base_path_;
 
   uint32_t next_timer_id_;
 

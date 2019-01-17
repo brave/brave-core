@@ -353,4 +353,17 @@ void BatLedgerImpl::GetAddressesForPaymentId(
       std::bind(BatLedgerImpl::OnAddressesForPaymentId, holder, _1));
 }
 
+void BatLedgerImpl::SetCatalogIssuers(const std::string& info) {
+  ledger_->SetCatalogIssuers(info);
+}
+
+void BatLedgerImpl::IsConfirmationsReadyToShowAds(
+    IsConfirmationsReadyToShowAdsCallback callback) {
+  std::move(callback).Run(ledger_->IsConfirmationsReadyToShowAds());
+}
+
+void BatLedgerImpl::AdSustained(const std::string& info) {
+  ledger_->AdSustained(info);
+}
+
 } // namespace bat_ledger
