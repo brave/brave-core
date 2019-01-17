@@ -241,9 +241,9 @@ def get_fingerprint_for_xtb(message_tag):
         # combine the fingerprints of message and meaning
         fp2 = FP.FingerPrint(meaning)
         if fp < 0:
-          fp = fp2 + (fp << 1) + 1
+            fp = fp2 + (fp << 1) + 1
         else:
-          fp = fp2 + (fp << 1)
+            fp = fp2 + (fp << 1)
     # To avoid negative ids we strip the high-order bit
     return str(fp & 0x7fffffffffffffffL)
 
@@ -263,7 +263,7 @@ def get_grd_strings(grd_file_path):
         # Both need to be uploaded to Transifex with different message names.
         # When XTB files are later generated, the ID doesn't matter at all.
         # The only thing that matters is the fingerprint string hash.
-        if  dupe_dict[message_name] > 1:
+        if dupe_dict[message_name] > 1:
             message_name += "_%s" % dupe_dict[message_name]
         message_desc = message_tag.get('desc') or ''
         message_value = textify(message_tag)
