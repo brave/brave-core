@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/md_extensions/item_list.html b/chrome/browser/resources/md_extensions/item_list.html
-index 90244de120cf8fda71002f535810619b1e8aeb3e..84450aca34abf7b55e1289b8716b81d5323e6ec0 100644
+index 90244de120cf8fda71002f535810619b1e8aeb3e..2179e088994761f87353a3b278f985c43c5fd3a5 100644
 --- a/chrome/browser/resources/md_extensions/item_list.html
 +++ b/chrome/browser/resources/md_extensions/item_list.html
 @@ -106,6 +106,13 @@
@@ -10,7 +10,7 @@ index 90244de120cf8fda71002f535810619b1e8aeb3e..84450aca34abf7b55e1289b8716b81d5
 +            hidden$="[[shouldShowEmptyItemsMessage_(
 +                apps.length, extensions.length)]]">
 +          <span>
-+            $i18nRaw{moreExtensions}
++            $i18nRaw{noExtensionsOrApps}
 +          </span>
 +        </div>
        </div>

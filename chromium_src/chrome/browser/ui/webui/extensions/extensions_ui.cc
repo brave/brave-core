@@ -15,29 +15,5 @@
 #undef IDS_MD_EXTENSIONS_ITEM_SOURCE_WEBSTORE
 #define IDS_MD_EXTENSIONS_ITEM_SOURCE_WEBSTORE \
   IDS_MD_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE
-#undef IDS_MD_EXTENSIONS_NO_INSTALLED_ITEMS
-#define IDS_MD_EXTENSIONS_NO_INSTALLED_ITEMS \
-  IDS_MD_EXTENSIONS_BRAVE_NO_INSTALLED_ITEMS
-
-// Forward declarations needed due to extensions_ui.cc being patched with this
-// function name.
-namespace extensions {
-namespace {
-void BraveAddLocalizedStrings(content::WebUIDataSource* html_source);
-} // namespace
-} // namespace extensions
 
 #include "../../../../../../chrome/browser/ui/webui/extensions/extensions_ui.cc"
-
-namespace extensions {
-
-namespace {
-
-void BraveAddLocalizedStrings(content::WebUIDataSource* html_source) {
-  html_source->AddLocalizedString("moreExtensions",
-                                  IDS_MD_EXTENSIONS_BRAVE_MORE_EXTENSIONS);
-}
-
-} // namespace
-
-} // namespace extensions
