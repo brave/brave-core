@@ -8,6 +8,7 @@ declare namespace RewardsExtension {
     grant?: GrantInfo
     pendingContributionTotal: number
     walletCreated: boolean
+    walletCreating: boolean
     walletCreateFailed: boolean
     walletProperties: WalletProperties
   }

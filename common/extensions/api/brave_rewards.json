@@ -232,6 +232,12 @@
             "type": "integer"
           }
         ]
+      },
+      {
+        "name": "onWalletFailed",
+        "type": "function",
+        "description": "Fired when wallet creation failed",
+        "parameters": []
       }
     ],
     "functions": [

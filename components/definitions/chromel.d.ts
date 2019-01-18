@@ -53,6 +53,9 @@ declare namespace chrome.braveRewards {
   const onPendingContributionSaved: {
     addListener: (callback: (result: number) => void) => void
   }
+  const onWalletFailed: {
+    addListener: (callback: () => void) => void
+  }
 }
 
 declare namespace chrome.rewardsNotifications {

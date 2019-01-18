@@ -316,5 +316,13 @@
   "disabledPanelTitle": {
     "message": "Brave Rewards is",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Wallet creation failed",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Try again",
+    "description": "Button for re-try after wallet creation failed"
   }
 }
