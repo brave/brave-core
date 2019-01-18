@@ -33,7 +33,7 @@ class CONFIRMATIONS_EXPORT Confirmations {
   virtual void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) = 0;
 
   // Should be called to determine if Confirmations is ready to show ads
-  bool IsReadyToShowAds();
+  virtual bool IsReadyToShowAds() = 0;
 
   // Should be called when an ad is sustained in Brave Ads
   virtual void AdSustained(std::unique_ptr<NotificationInfo> info) = 0;

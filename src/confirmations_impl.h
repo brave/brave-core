@@ -57,7 +57,7 @@ class ConfirmationsImpl : public Confirmations,
 
   void SetWalletInfo(std::unique_ptr<WalletInfo> info) override;
   void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) override;
-  bool IsReadyToShowAds();
+  bool IsReadyToShowAds() override;
   void AdSustained(std::unique_ptr<NotificationInfo> info) override;
   void OnTimer(const uint32_t timer_id) override;
 
