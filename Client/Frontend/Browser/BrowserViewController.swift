@@ -1279,7 +1279,8 @@ class BrowserViewController: UIViewController {
             self.browserLockPopup = nil
             return .flyDown
         }
-        popup.addDefaultButton(title: Strings.Browser_lock_callout_enable) { [weak self] () -> PopupViewDismissType in
+        
+        popup.addButton(title: Strings.Browser_lock_callout_enable, type: .primary) { [weak self] () -> PopupViewDismissType in
             Preferences.Popups.browserLock.value = true
             self?.browserLockPopup = nil
             
@@ -1323,7 +1324,7 @@ class BrowserViewController: UIViewController {
             self.duckDuckGoPopup = nil
             return .flyDown
         }
-        popup.addDefaultButton(title: Strings.DDG_callout_enable) { [weak self] in
+        popup.addButton(title: Strings.DDG_callout_enable, type: .primary) { [weak self] in
             self?.duckDuckGoPopup = nil
             
             if self?.profile == nil {

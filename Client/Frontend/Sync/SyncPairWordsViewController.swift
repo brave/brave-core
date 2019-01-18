@@ -29,6 +29,13 @@ class SyncPairWordsViewController: SyncViewController {
         return button
     }()
     
+    let useCameraButton = UIButton().then {
+        $0.setTitle(Strings.SyncSwitchBackToCameraButton, for: .normal)
+        $0.addTarget(self, action: #selector(useCameraButtonTapped), for: .touchDown)
+        $0.setTitleColor(BraveUX.GreyH, for: .normal)
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
+    }
+    
     var loadingView: UIView!
     let loadingSpinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
@@ -64,7 +71,9 @@ class SyncPairWordsViewController: SyncViewController {
         loadingView.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
         loadingView.isHidden = true
         loadingView.addSubview(loadingSpinner)
+        
         view.addSubview(loadingView)
+        view.addSubview(useCameraButton)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.Confirm, style: .done, target: self, action: #selector(SEL_done))
         
@@ -106,6 +115,17 @@ class SyncPairWordsViewController: SyncViewController {
         loadingSpinner.snp.makeConstraints { (make) in
             make.center.equalTo(loadingView)
         }
+        
+        useCameraButton.snp.makeConstraints { make in
+            make.top.equalTo(containerView.snp.bottom).offset(16)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.centerX.equalTo(self.view)
+        }
+    }
+    
+    @objc func useCameraButtonTapped() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
+import UIKit
 
 public extension String {
     func escape() -> String? {
@@ -95,5 +95,18 @@ public extension String {
     func separatedBy(_ string: String) -> [String] {
         let cleaned = self.replacingOccurrences(of: "\n", with: " ")
         return cleaned.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: string)
+    }
+    
+    /// Makes a part of the string bold and returns a NSAttributedString.
+    /// Text size must be provided for bold system font and to make font size the same as rest of the string.
+    public func makePartiallyBoldAttributedString(stringToBold text: String, boldTextSize: CGFloat) -> NSAttributedString? {
+        let addWordsDescriptionBolded = NSMutableAttributedString(string: self)
+        guard let rangeOfBoldedText = self.range(of: text) else { return nil }
+        // NSMutableAttributedString still uses NSRange, a conversion from Swift's range is required.
+        let nsRangeOfBoldedText = NSRange(rangeOfBoldedText, in: self)
+        // Make sure we use the same font size for the bolded text.
+        let attributes: [NSAttributedStringKey: Any] = [.font: UIFont.boldSystemFont(ofSize: boldTextSize)]
+        addWordsDescriptionBolded.setAttributes(attributes, range: nsRangeOfBoldedText)
+        return addWordsDescriptionBolded
     }
 }
