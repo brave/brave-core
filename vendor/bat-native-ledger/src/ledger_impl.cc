@@ -1240,10 +1240,10 @@ void LedgerImpl::KillTimer(uint32_t timer_id) {
 void LedgerImpl::OnConfirmationsTimer(uint32_t timer_id) {
 }
 
-std::unique_ptr<confirmations::LogStream> LedgerImpl::Log(
-    const char* file,
-    const int line,
-    const confirmations::LogLevel log_level) const {
-}
+//std::unique_ptr<confirmations::LogStream> LedgerImpl::Log(
+//    const char* file,
+//    const int line,
+//    const confirmations::LogLevel log_level) const {
+//}
 
 }  // namespace bat_ledger
