@@ -29,9 +29,16 @@ def main():
         logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
         logging.debug('prerelease: {}'.format(args.prerelease))
 
+    if not os.environ.get('npm_config_brave_version'):
+        message = ('Error: Please set the $npm_config_brave_version'
+                   'environment variable')
+        exit(message)
+
+    BRAVE_VERSION = os.environ.get('npm_config_brave_version')
+
     repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
 
-    release = get_draft(repo, get_raw_version())
+    release = get_draft(repo, BRAVE_VERSION)
 
     tag_name = release['tag_name']
 
