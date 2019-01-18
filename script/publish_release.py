@@ -31,7 +31,7 @@ def main():
 
     repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
 
-    release = get_draft(repo, get_brave_version())
+    release = get_draft(repo, get_raw_version())
 
     tag_name = release['tag_name']
 
@@ -65,7 +65,10 @@ def publish_release(repo, release_id, tag, prerelease, logging):
 
 
 def parse_args():
-    desc = "Publish GitHub draft release"
+    desc = "Publish GitHub draft release" \
+    "\n\nRequires the following ENVIRONMENT VARIABLES be set:" \
+    "\n\nCHANNEL: The Brave channel, i.e. \'release\', \'beta\', \'dev\'"
+
     parser = argparse.ArgumentParser(
         description=desc, formatter_class=RawTextHelpFormatter)
     parser.add_argument('-d', '--debug', action='store_true',
