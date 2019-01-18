@@ -428,11 +428,13 @@ void BatPublishers::OnRestorePublishersInternal(bool success) {
 void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In seconds
   state_->min_publisher_duration_ = duration;
   saveState();
+  synopsisNormalizer();
 }
 
 void BatPublishers::setPublisherMinVisits(const unsigned int& visits) {
   state_->min_visits_ = visits;
   saveState();
+  synopsisNormalizer();
 }
 
 void BatPublishers::setPublishersLastRefreshTimestamp(uint64_t ts) {
@@ -448,11 +450,13 @@ void BatPublishers::setNumExcludedSites(const unsigned int& amount) {
 void BatPublishers::setPublisherAllowNonVerified(const bool& allow) {
   state_->allow_non_verified_ = allow;
   saveState();
+  synopsisNormalizer();
 }
 
 void BatPublishers::setPublisherAllowVideos(const bool& allow) {
   state_->allow_videos_ = allow;
   saveState();
+  synopsisNormalizer();
 }
 
 uint64_t BatPublishers::getPublisherMinVisitTime() const {
@@ -484,7 +488,6 @@ void BatPublishers::NormalizeContributeWinners(
     bool saveData,
     const ledger::PublisherInfoList& list,
     uint32_t record) {
-
   synopsisNormalizerInternal(newList, saveData, list, record);
 }
 
