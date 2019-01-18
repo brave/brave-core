@@ -25,13 +25,25 @@ void ExtensionRewardsServiceObserver::OnWalletInitialized(
     int error_code) {
   extensions::EventRouter* event_router =
       extensions::EventRouter::Get(profile_);
-  if (event_router && error_code == 0) {
+
+  // Don't report back if there is no ledger file
+  if (event_router && error_code != 3) {
     std::unique_ptr<base::ListValue> args(new base::ListValue());
-    std::unique_ptr<extensions::Event> event(new extensions::Event(
+
+    // wallet successfully created
+    if (error_code == 0) {
+      std::unique_ptr<extensions::Event> event(new extensions::Event(
         extensions::events::BRAVE_WALLET_CREATED,
         extensions::api::brave_rewards::OnWalletCreated::kEventName,
         std::move(args)));
-    event_router->BroadcastEvent(std::move(event));
+      event_router->BroadcastEvent(std::move(event));
+    } else {
+      std::unique_ptr<extensions::Event> event(new extensions::Event(
+        extensions::events::BRAVE_WALLET_FAILED,
+        extensions::api::brave_rewards::OnWalletFailed::kEventName,
+        std::move(args)));
+      event_router->BroadcastEvent(std::move(event));
+    }
   }
 }
 

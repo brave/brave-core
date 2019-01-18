@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index d3d964de413cc744fbabe87eb65fafc2cb1ddfd0..8f216d22b1223d7477f8b8523fd3a4d12c67e18f 100644
+index d3d964de413cc744fbabe87eb65fafc2cb1ddfd0..6580882379090d7c65e77ad16271faa5eadf7f6c 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -446,6 +446,18 @@ enum HistogramValue {
+@@ -446,6 +446,19 @@ enum HistogramValue {
    ARC_APPS_PRIVATE_ON_INSTALLED = 425,
    FILE_MANAGER_PRIVATE_ON_CROSTINI_SHARED_PATHS_CHANGED = 426,
    AUTOMATION_INTERNAL_ON_GET_TEXT_LOCATION_RESULT = 427,
@@ -18,6 +18,7 @@ index d3d964de413cc744fbabe87eb65fafc2cb1ddfd0..8f216d22b1223d7477f8b8523fd3a4d1
 +  BRAVE_REWARDS_ALL_NOTIFICATIONS_DELETED,
 +  BRAVE_REWARDS_GET_NOTIFICATION,
 +  BRAVE_REWARDS_GET_ALL_NOTIFICATIONS,
++  BRAVE_WALLET_FAILED,
    // Last entry: Add new entries above, then run:
    // python tools/metrics/histograms/update_extension_histograms.py
    ENUM_BOUNDARY

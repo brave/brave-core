@@ -195,8 +195,12 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
       bat_contribution_->OnStartUp();
     }
   } else {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to load ledger state";
-    BLOG(this, ledger::LogLevel::LOG_DEBUG) << "Failed ledger state: " << data;
+    if (result != ledger::Result::NO_LEDGER_STATE) {
+      BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to load ledger state";
+      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
+        "Failed ledger state: " <<
+        data;
+    }
 
     OnWalletInitialized(result);
   }
