@@ -29,12 +29,6 @@ enum CONFIRMATIONS_EXPORT Result {
   FAILED
 };
 
-class CONFIRMATIONS_EXPORT LogStream {
- public:
-  virtual ~LogStream() = default;
-  virtual std::ostream& stream() = 0;
-};
-
 using OnSaveCallback = std::function<void(const Result)>;
 using OnLoadCallback = std::function<void(const Result, const std::string&)>;
 
@@ -64,12 +58,6 @@ class CONFIRMATIONS_EXPORT ConfirmationsClient {
   // Should reset a previously saved value, i.e. remove the file from persistent
   // storage
   virtual void Reset(const std::string& name, OnResetCallback callback) = 0;
-
-  // Should log diagnostic information
-  virtual std::unique_ptr<LogStream> Log(
-      const char* file,
-      const int line,
-      const confirmations::LogLevel log_level) const = 0;
 };
 
 }  // namespace confirmations

@@ -170,7 +170,7 @@ void ConfirmationsImpl::Step1StoreTheServersConfirmationsPublicKeyAndGenerator(
 
   this->SaveState();
 
-  BLOG(INFO) << "step1.1 : key: " << this->server_confirmation_key_;
+  std::cout << "step1.1 : key: " << this->server_confirmation_key_;
 }
 
 std::string ConfirmationsImpl::toJSONString() {
@@ -208,7 +208,7 @@ void ConfirmationsImpl::Step2RefillConfirmationsIfNecessary(
     std::string real_wallet_address_secret_key,
     std::string local_server_confirmation_key) {
   if (this->blinded_confirmation_tokens.size() > low_token_threshold) {
-    BLOG(INFO) << "Not necessary to refill confirmations";
+    std::cout << "Not necessary to refill confirmations";
 
     return;
   }
@@ -233,7 +233,7 @@ void ConfirmationsImpl::Step2RefillConfirmationsIfNecessary(
     local_blinded_confirmation_tokens.push_back(blinded_token_base64);
   }
 
-  BLOG(INFO) << "step2.1 : batch generate, count: "
+  std::cout << "step2.1 : batch generate, count: "
       << local_original_confirmation_tokens.size();
 
   {
@@ -296,13 +296,13 @@ void ConfirmationsImpl::Step2RefillConfirmationsIfNecessary(
     std::unique_ptr<base::Value> value(base::JSONReader::Read(response_));
     base::DictionaryValue* dict;
     if (!value->GetAsDictionary(&dict)) {
-      BLOG(ERROR) << "2.2 post resp: no dict" << "\n";
+      std::cout << "2.2 post resp: no dict";
       return;
     }
 
     base::Value *v;
     if (!(v = dict->FindKey("nonce"))) {
-      BLOG(ERROR) << "2.2 no nonce\n";
+      std::cout << "2.2 no nonce";
       return;
     }
 
@@ -317,7 +317,7 @@ void ConfirmationsImpl::Step2RefillConfirmationsIfNecessary(
     // separate it more and account for the possibility of failures
 
     {
-      BLOG(INFO) << "step2.3 : GET /v1/confirmation/token/{payment_id}?nonce=: "
+      std::cout << "step2.3 : GET /v1/confirmation/token/{payment_id}?nonce=: "
           << nonce;
 
       std::string endpoint = std::string("/v1/confirmation/token/").append(
@@ -335,21 +335,21 @@ void ConfirmationsImpl::Step2RefillConfirmationsIfNecessary(
       std::unique_ptr<base::Value> value(base::JSONReader::Read(response_));
       base::DictionaryValue* dict;
       if (!value->GetAsDictionary(&dict)) {
-        BLOG(ERROR) << "2.3 get resp: no dict" << "\n";
+        std::cout << "2.3 get resp: no dict";
         return;
       }
 
       base::Value *v;
 
       if (!(v = dict->FindKey("batchProof"))) {
-        BLOG(ERROR) << "2.3 no batchProof\n";
+        std::cout << "2.3 no batchProof\n";
         return;
       }
 
       std::string real_batch_proof = v->GetString();
 
       if (!(v = dict->FindKey("signedTokens"))) {
-        BLOG(ERROR) << "2.3 no signedTokens\n";
+        std::cout << "2.3 no signedTokens\n";
         return;
       }
 
@@ -372,13 +372,13 @@ void ConfirmationsImpl::Step2RefillConfirmationsIfNecessary(
           server_signed_blinded_confirmations,
           local_server_confirmation_key);
       if (!real_verified) {
-        BLOG(ERROR) << "ERROR: Server confirmations proof invalid";
+        std::cout << "ERROR: Server confirmations proof invalid";
         return;
       }
 
       // finally, if everything succeeded we'll modify object state and
       // persist
-      BLOG(INFO) <<
+      std::cout <<
           "step2.4 : store the signed blinded confirmations tokens & pre data";
 
       VectorConcat(&this->original_confirmation_tokens,
@@ -395,11 +395,11 @@ void ConfirmationsImpl::Step2RefillConfirmationsIfNecessary(
 void ConfirmationsImpl::Step3RedeemConfirmation(
     std::string real_creative_instance_id) {
   if (this->signed_blinded_confirmation_tokens.size() <= 0) {
-    BLOG(INFO) << "ERROR: step 3.1a, no signed blinded confirmation tokens";
+    std::cout << "ERROR: step 3.1a, no signed blinded confirmation tokens";
     return;
   }
 
-  BLOG(INFO) << "step3.1a: unblinding signed blinded confirmations";
+  std::cout << "step3.1a: unblinding signed blinded confirmations";
 
   std::string orig_token_b64 = this->original_confirmation_tokens.front();
   std::string sb_token_b64 = this->signed_blinded_confirmation_tokens.front();
@@ -425,7 +425,7 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
   // persist
   this->SaveState();
 
-  BLOG(INFO) << "step3.1b: generate payment, count: "
+  std::cout << "step3.1b: generate payment, count: "
       << original_confirmation_tokens.size();
 
   // client prepares a random token and blinding scalar pair
@@ -492,7 +492,7 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
 
   // step_3_1c POST /v1/confirmation/{confirmation_id}/{credential}, which is
   // (t, MAC_(sk)(R))
-  BLOG(INFO) <<
+  std::cout <<
       "step3.1c: POST /v1/confirmation/{confirmation_id}/{credential} "
       << confirmation_id;
 
@@ -511,13 +511,13 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
     std::unique_ptr<base::Value> value(base::JSONReader::Read(response_));
     base::DictionaryValue* dict;
     if (!value->GetAsDictionary(&dict)) {
-      BLOG(ERROR) << "no 3.1c resp dict" << "\n";
+      std::cout << "no 3.1c resp dict" << "\n";
       return;
     }
 
     base::Value *v;
     if (!(v = dict->FindKey("id"))) {
-      BLOG(ERROR) << "3.1c could not get id\n";
+      std::cout << "3.1c could not get id\n";
       return;
     }
 
@@ -534,7 +534,7 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
     std::string timestamp = std::to_string(
         base::Time::NowFromSystemTime().ToTimeT());
 
-    BLOG(INFO) << "step3.2 : store confirmationId &such";
+    std::cout << "step3.2 : store confirmationId &such";
 
     base::DictionaryValue bundle;
     bundle.SetKey("confirmation_id",
@@ -565,34 +565,34 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
         base::JSONReader::Read(bundle_json));
     base::DictionaryValue* map;
     if (!bundle_value->GetAsDictionary(&map)) {
-      BLOG(ERROR) << "no 4 process iou bundle dict" << "\n";
+      std::cout << "no 4 process iou bundle dict" << "\n";
       return finished;
     }
 
     base::Value *u;
 
     if (!(u = map->FindKey("confirmation_id"))) {
-      BLOG(ERROR) << "4 process iou bundle, could not get confirmation_id";
+      std::cout << "4 process iou bundle, could not get confirmation_id";
       return finished;
     }
     confirmation_id = u->GetString();
 
     if (!(u = map->FindKey("original_payment_token"))) {
-      BLOG(ERROR) <<
+      std::cout <<
           "4 process iou bundle, could not get original_payment_token";
       return finished;
     }
     original_payment_token = u->GetString();
 
     if (!(u = map->FindKey("blinded_payment_token"))) {
-      BLOG(ERROR) <<
+      std::cout <<
           "4 process iou bundle, could not get blinded_payment_token";
       return finished;
     }
     blinded_payment_token = u->GetString();
 
     // 4.1 GET /v1/confirmation/{confirmation_id}/paymentToken
-    BLOG(INFO) <<
+    std::cout <<
         "step4.1 : GET /v1/confirmation/{confirmation_id}/paymentToken";
 
     std::string endpoint = std::string("/v1/confirmation/").append(
@@ -602,7 +602,7 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
 
     if (!(response_code_ == 200 || response_code_ == 202)) {
       // something broke before server could decide paid:true/false
-      BLOG(ERROR) << "ProcessIOUBundle response code: " << response_code_;
+      std::cout << "ProcessIOUBundle response code: " << response_code_;
 
       return unfinished;
     }
@@ -616,24 +616,24 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
       std::unique_ptr<base::Value> value(base::JSONReader::Read(response_));
       base::DictionaryValue* dict;
       if (!value->GetAsDictionary(&dict)) {
-        BLOG(ERROR) << "4.1 202 no dict" << "\n";
+        std::cout << "4.1 202 no dict" << "\n";
         return unfinished;
       }
 
       base::Value *v;
       if (!(v = dict->FindKey("estimateToken"))) {
-        BLOG(ERROR) << "4.1 202 no estimateToken\n";
+        std::cout << "4.1 202 no estimateToken\n";
         return unfinished;
       }
 
       base::DictionaryValue* et;
       if (!v->GetAsDictionary(&et)) {
-        BLOG(ERROR) << "4.1 202 no eT dict" << "\n";
+        std::cout << "4.1 202 no eT dict" << "\n";
         return unfinished;
       }
 
       if (!(v = et->FindKey("publicKey"))) {
-        BLOG(ERROR) << "4.1 202 no publicKey\n";
+        std::cout << "4.1 202 no publicKey\n";
         return unfinished;
       }
 
@@ -642,7 +642,7 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
       if (name != "") {
         std::string estimated_payment_worth = name;
       } else {
-        BLOG(ERROR) << "Step 4.1 202 verification empty name \n";
+        std::cout << "Step 4.1 202 verification empty name \n";
       }
 
       return unfinished;
@@ -653,41 +653,41 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
       std::unique_ptr<base::Value> value(base::JSONReader::Read(response_));
       base::DictionaryValue* dict;
       if (!value->GetAsDictionary(&dict)) {
-        BLOG(ERROR) << "4.1 200 no dict" << "\n";
+        std::cout << "4.1 200 no dict" << "\n";
         return unfinished;
       }
 
       if (!(v = dict->FindKey("id"))) {
-        BLOG(ERROR) << "4.1 200 no id\n";
+        std::cout << "4.1 200 no id\n";
         return unfinished;
       }
       std::string id = v->GetString();
 
       if (!(v = dict->FindKey("paymentToken"))) {
-        BLOG(ERROR) << "4.1 200 no paymentToken\n";
+        std::cout << "4.1 200 no paymentToken\n";
         return unfinished;
       }
 
       base::DictionaryValue* pt;
       if (!v->GetAsDictionary(&pt)) {
-        BLOG(ERROR) << "4.1 200 no pT dict" << "\n";
+        std::cout << "4.1 200 no pT dict" << "\n";
         return unfinished;
       }
 
       if (!(v = pt->FindKey("publicKey"))) {
-        BLOG(ERROR) << "4.1 200 no publicKey\n";
+        std::cout << "4.1 200 no publicKey\n";
         return unfinished;
       }
       std::string publicKey = v->GetString();
 
       if (!(v = pt->FindKey("batchProof"))) {
-        BLOG(ERROR) << "4.1 200 no batchProof\n";
+        std::cout << "4.1 200 no batchProof\n";
         return unfinished;
       }
       std::string batchProof = v->GetString();
 
       if (!(v = pt->FindKey("signedTokens"))) {
-        BLOG(ERROR) << "4.1 200 could not get signedTokens\n";
+        std::cout << "4.1 200 could not get signedTokens\n";
         return unfinished;
       }
 
@@ -695,7 +695,7 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
       std::vector<std::string> signedBlindedTokens = {};
 
       if (signedTokensList.GetSize() != 1) {
-        BLOG(ERROR) <<
+        std::cout <<
             "4.1 200 currently unsupported size for signedTokens array\n";
         return unfinished;
       }
@@ -719,7 +719,7 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
         // 2018.11.29 kevin - ok to log these only (maybe forever) but don't
         // consider failing until after we're versioned on "issuers" private
         // keys
-        BLOG(ERROR) << "ERROR: Real payment proof invalid";
+        std::cout << "ERROR: Real payment proof invalid";
       }
 
       std::string name = this->BATNameFromBATPublicKey(publicKey);
@@ -727,11 +727,11 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
       if (name != "") {
         payment_worth = name;
       } else {
-        BLOG(ERROR) << "Step 4.1/4.2 200 verification empty name \n";
+        std::cout << "Step 4.1/4.2 200 verification empty name \n";
       }
 
       for (auto signedBlindedPaymentToken : signedBlindedTokens) {
-        BLOG(INFO) << "step4.2 : store signed blinded payment token";
+        std::cout << "step4.2 : store signed blinded payment token";
         map->SetKey("signed_blinded_payment_token",
              base::Value(signedBlindedPaymentToken));
         map->SetKey("server_payment_key", base::Value(publicKey));
@@ -766,7 +766,7 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
 
   void ConfirmationsImpl::Step5CashInPaymentIOUs(
       std::string real_wallet_address) {
-    BLOG(INFO) << "step5.1 : unblind signed blinded payments";
+    std::cout << "step5.1 : unblind signed blinded payments";
 
     size_t n = this->signed_blinded_payment_token_json_bundles.size();
 
@@ -783,27 +783,27 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
       std::unique_ptr<base::Value> value(base::JSONReader::Read(json));
       base::DictionaryValue* map;
       if (!value->GetAsDictionary(&map)) {
-        BLOG(ERROR) << "5 cannot rehydrate: no map" << "\n";
+        std::cout << "5 cannot rehydrate: no map" << "\n";
         return;
       }
 
       base::Value *u;
 
       if (!(u = map->FindKey("server_payment_key"))) {
-        BLOG(ERROR) << "5 process iou bundle, could not get server_payment_key";
+        std::cout << "5 process iou bundle, could not get server_payment_key";
         return;
       }
       std::string server_payment_key = u->GetString();
 
       if (!(u = map->FindKey("original_payment_token"))) {
-        BLOG(ERROR) <<
+        std::cout <<
             "5 process iou bundle, could not get original_payment_token";
         return;
       }
       std::string original_payment_token = u->GetString();
 
       if (!(u = map->FindKey("signed_blinded_payment_token"))) {
-        BLOG(ERROR) <<
+        std::cout <<
             "5 process iou bundle, could not get signed_blinded_payment_token";
         return;
       }
@@ -898,12 +898,12 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
         net::URLFetcher::RequestType::PUT);
 
     if (response_code_ != 200) {
-      BLOG(ERROR) << "Step5CashInPaymentIOUs response code: " << response_code_;
+      std::cout << "Step5CashInPaymentIOUs response code: " << response_code_;
       return;
     }
 
     if (response_code_ == 200) {
-      BLOG(INFO) << "step5.2 : store txn ids and actual payment";
+      std::cout << "step5.2 : store txn ids and actual payment";
 
       VectorConcat(&this->fully_submitted_payment_bundles,
           &this->signed_blinded_payment_token_json_bundles);
@@ -1018,7 +1018,7 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
     size_t size = 0;
     if (!EVP_EncodedLength(&size, in.size())) {
       DCHECK(false);
-      BLOG(ERROR) << "EVP_EncodedLength failure in GetBase64";
+      std::cout << "EVP_EncodedLength failure in GetBase64";
 
       return "";
     }
@@ -1097,12 +1097,12 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
 
   void ConfirmationsImpl::OnStateSaved(const Result result) {
     if (result == FAILED) {
-      BLOG(ERROR) << "Failed to save confirmations state";
+      std::cout << "Failed to save confirmations state";
 
       return;
     }
 
-    BLOG(INFO) << "Successfully saved confirmations state";
+    std::cout << "Successfully saved confirmations state";
   }
 
   void ConfirmationsImpl::LoadState() {
@@ -1114,16 +1114,16 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
       const Result result,
       const std::string& json) {
     if (result == FAILED) {
-      BLOG(ERROR) << "Failed to load confirmations state";
+      std::cout << "Failed to load confirmations state";
       return;
     }
 
     if (!FromJSONString(json)) {
-      BLOG(ERROR) << "Failed to parse confirmations state: " << json;
+      std::cout << "Failed to parse confirmations state: " << json;
       return;
     }
 
-    BLOG(INFO) << "Successfully loaded confirmations state";
+    std::cout << "Successfully loaded confirmations state";
 
     is_initialized_ = true;
 
@@ -1133,7 +1133,7 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
   }
 
   void ConfirmationsImpl::ResetState() {
-    BLOG(INFO) << "Resetting confirmations to default state";
+    std::cout << "Resetting confirmations to default state";
 
     auto callback = std::bind(&ConfirmationsImpl::OnStateReset, this, _1);
     confirmations_client_->Reset(_confirmations_name, callback);
@@ -1141,12 +1141,12 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
 
   void ConfirmationsImpl::OnStateReset(const Result result) {
     if (result == FAILED) {
-      BLOG(ERROR) << "Failed to reset confirmations state";
+      std::cout << "Failed to reset confirmations state";
 
       return;
     }
 
-    BLOG(INFO) << "Successfully reset confirmations state";
+    std::cout << "Successfully reset confirmations state";
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -1239,13 +1239,13 @@ void ConfirmationsImpl::StartRefillingConfirmations(
   step_2_refill_confirmations_timer_id_ =
       confirmations_client_->SetTimer(start_timer_in);
   if (step_2_refill_confirmations_timer_id_ == 0) {
-    BLOG(ERROR) << "Failed to start refilling confirmations"
+    std::cout << "Failed to start refilling confirmations"
         << " due to an invalid timer";
 
     return;
   }
 
-  BLOG(INFO) << "Start refilling confirmations in " << start_timer_in
+  std::cout << "Start refilling confirmations in " << start_timer_in
       << " seconds";
 }
 
@@ -1254,7 +1254,7 @@ void ConfirmationsImpl::RefillConfirmations() {
     return;
   }
 
-  BLOG(INFO) << "Refill confirmations";
+  std::cout << "Refill confirmations";
 
   Step2RefillConfirmationsIfNecessary(
       wallet_info_.payment_id,
@@ -1273,7 +1273,7 @@ void ConfirmationsImpl::StopRefillingConfirmations() {
     return;
   }
 
-  BLOG(INFO) << "Stopped refilling confirmations";
+  std::cout << "Stopped refilling confirmations";
 
   confirmations_client_->KillTimer(step_2_refill_confirmations_timer_id_);
   step_2_refill_confirmations_timer_id_ = 0;
@@ -1294,13 +1294,13 @@ void ConfirmationsImpl::StartRetrievingPaymentIOUS(
   step_4_retrieve_payment_ious_timer_id_ =
       confirmations_client_->SetTimer(start_timer_in);
   if (step_4_retrieve_payment_ious_timer_id_ == 0) {
-    BLOG(ERROR) <<
+    std::cout <<
         "Failed to start retrieving payment IOUs due to an invalid timer";
 
     return;
   }
 
-  BLOG(INFO) << "Start retrieving payment IOUs in " << start_timer_in
+  std::cout << "Start retrieving payment IOUs in " << start_timer_in
       << " seconds";
 }
 
@@ -1309,7 +1309,7 @@ void ConfirmationsImpl::RetrievePaymentIOUS() {
     return;
   }
 
-  BLOG(INFO) << "Retrieve payment IOUs";
+  std::cout << "Retrieve payment IOUs";
 
   Step4RetrievePaymentIOUs();
 
@@ -1325,7 +1325,7 @@ void ConfirmationsImpl::StopRetrievingPaymentIOUS() {
     return;
   }
 
-  BLOG(INFO) << "Stopped retrieving payment IOUs";
+  std::cout << "Stopped retrieving payment IOUs";
 
   confirmations_client_->KillTimer(step_4_retrieve_payment_ious_timer_id_);
   step_4_retrieve_payment_ious_timer_id_ = 0;
@@ -1346,13 +1346,13 @@ void ConfirmationsImpl::StartCashingInPaymentIOUS(
   step_5_cash_in_payment_ious_timer_id_ =
       confirmations_client_->SetTimer(start_timer_in);
   if (step_5_cash_in_payment_ious_timer_id_ == 0) {
-    BLOG(ERROR) <<
+    std::cout <<
         "Failed to start cashing in payment IOUs due to an invalid timer";
 
     return;
   }
 
-  BLOG(INFO) << "Start cashing in payment IOUs in " << start_timer_in
+  std::cout << "Start cashing in payment IOUs in " << start_timer_in
       << " seconds";
 }
 
@@ -1361,7 +1361,7 @@ void ConfirmationsImpl::CashInPaymentIOUS() {
     return;
   }
 
-  BLOG(INFO) << "Cash in payment IOUs";
+  std::cout << "Cash in payment IOUs";
 
   Step5CashInPaymentIOUs(wallet_info_.payment_id);
 
@@ -1373,7 +1373,7 @@ void ConfirmationsImpl::StopCashingInPaymentIOUS() {
     return;
   }
 
-  BLOG(INFO) << "Stopped cashing in payment IOUs";
+  std::cout << "Stopped cashing in payment IOUs";
 
   confirmations_client_->KillTimer(step_5_cash_in_payment_ious_timer_id_);
   step_5_cash_in_payment_ious_timer_id_ = 0;
