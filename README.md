@@ -1,3 +1,3 @@
-# bat-native-confirmations
+# BAT Native Confirmations
 
 ## Limitations

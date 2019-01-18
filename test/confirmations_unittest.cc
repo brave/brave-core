@@ -42,10 +42,6 @@ class ConfirmationsTest : public ::testing::Test {
   void SetUp() override {
     // Code here will be called immediately after the constructor (right before
     // each test)
-
-    EXPECT_CALL(*mock_confirmations_client, IsAdsEnabled())
-        .WillRepeatedly(Return(true));
-
     confirmations->Initialize();
   }
 

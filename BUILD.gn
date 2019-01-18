@@ -12,9 +12,7 @@ if (is_android || defined(is_docker)) {
 }
 
 config("external_config") {
-  include_dirs = [ "include", 
-                   "deps/challenge-bypass-ristretto-ffi/src/",
-  ]
+  include_dirs = [ "include" ]
 }
 
 config("internal_config") {
@@ -22,14 +20,12 @@ config("internal_config") {
 }
 
 executable("bnc-test") {
+  include_dirs = [
+  ]
 
   sources = [
     "src/bat_native_confirmations.cc",
     "src/mock_confirmations_client.cc",
-  ]
-
-  include_dirs = [
-#    "src",
   ]
 
   deps = [
@@ -69,22 +65,19 @@ source_set("confirmations") {
 
   output_name = "bat_native_confirmations"
 
-  libs = [
-    "Security.framework",
-    "deps/challenge-bypass-ristretto-ffi/target/debug/libchallenge_bypass_ristretto.a",
-  ]
+  if (is_mac || is_ios ) { 
+    libs = [
+      "Security.framework"
+    ]
+  }
 
   include_dirs = [
-   "deps/happyhttp",
   ]
 
-
   sources = [
-    "deps/challenge-bypass-ristretto-ffi/src/wrapper.hpp",
-    "deps/challenge-bypass-ristretto-ffi/src/wrapper.cpp",
-    "deps/challenge-bypass-ristretto-ffi/src/lib.h",
-    "deps/happyhttp/happyhttp.cpp",
-    "src/bat/confirmations/ad_info.cc",
+    "src/bat/confirmations/notification_info.cc",
+    "src/bat/confirmations/issuer_info.cc",
+    "src/bat/confirmations/issuers_info.cc",
     "src/bat/confirmations/wallet_info.cc",
     "src/confirmations.cc",
     "src/confirmations_impl.cc",
@@ -94,6 +87,8 @@ source_set("confirmations") {
     "//base",
     "//net",
     "//third_party/boringssl",
+    "//brave/common",
+    "//chrome/common",
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
   ]
 }

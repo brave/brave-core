@@ -7,7 +7,7 @@
 #include <limits>
 
 #include "mock_confirmations_client.h"
-#include "bat/confirmations/ad_info.h"
+#include "bat/confirmations/notification_info.h"
 #include "static_values.h"
 
 class MockLogStreamImpl : public confirmations::LogStream {
@@ -61,15 +61,6 @@ MockConfirmationsClient::MockConfirmationsClient() :
 
 MockConfirmationsClient::~MockConfirmationsClient() = default;
 
-bool MockConfirmationsClient::IsAdsEnabled() const {
-  return true;
-}
-
-void MockConfirmationsClient::GetWalletInfo(WalletInfo* info) const {
-  info->payment_id = "1234567890";
-  info->signing_key = "abcdefghijklmnoprstuvwxyz";
-}
-
 uint32_t MockConfirmationsClient::SetTimer(const uint64_t time_offset) {
   (void)time_offset;
 
@@ -83,33 +74,23 @@ void MockConfirmationsClient::KillTimer(uint32_t timer_id) {
   (void)timer_id;
 }
 
-void MockConfirmationsClient::URLRequest(
-    const std::string& url,
-    const std::vector<std::string>& headers,
-    const std::string& content,
-    const std::string& content_type,
-    const URLRequestMethod method,
-    URLRequestCallback callback) {
-  (void)url;
-  (void)headers;
-  (void)content;
-  (void)content_type;
-  (void)method;
+void MockConfirmationsClient::Save(
+    const std::string& name,
+    const std::string& value,
+    OnSaveCallback callback) {
+  callback(FAILED);
+}
 
-  auto response_status_code = 200;
-  std::string response = "";
+void MockConfirmationsClient::Load(
+    const std::string& name,
+    OnLoadCallback callback) {
+  callback(FAILED, "");
+}
 
-  std::ifstream ifs{"test/data/catalog.json"};
-  if (ifs.fail()) {
-    response_status_code = 404;
-  } else {
-    std::stringstream stream;
-    stream << ifs.rdbuf();
-
-    response = stream.str();
-  }
-
-  callback(response_status_code, response, {});
+void MockConfirmationsClient::Reset(
+    const std::string& name,
+    OnResetCallback callback) {
+  callback(FAILED);
 }
 
 std::unique_ptr<LogStream> MockConfirmationsClient::Log(

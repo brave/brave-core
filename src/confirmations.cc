@@ -7,8 +7,9 @@
 
 namespace confirmations {
 
-bool _is_debug = false;
 bool _is_production = false;
+
+const char _confirmations_name[] = "confirmations.json";
 
 // static
 Confirmations* Confirmations::CreateInstance(

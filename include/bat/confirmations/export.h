@@ -2,7 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#pragma once
+#ifndef BAT_CONFIRMATIONS_EXPORT_H_
+#define BAT_CONFIRMATIONS_EXPORT_H_
 
 #if defined(STANDALONE_BUILD)
 #if defined(WIN32)
@@ -20,3 +21,5 @@
 #else  // defined(STANDALONE_BUILD)
 #define CONFIRMATIONS_EXPORT
 #endif
+
+#endif  // BAT_CONFIRMATIONS_EXPORT_H_

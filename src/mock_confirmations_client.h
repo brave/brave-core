@@ -2,7 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#pragma once
+#ifndef BAT_CONFIRMATIONS_MOCK_CONFIRMATIONS_CLIENT_H_
+#define BAT_CONFIRMATIONS_MOCK_CONFIRMATIONS_CLIENT_H_
 
 #include <sstream>
 #include <memory>
@@ -24,20 +25,17 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
  protected:
   // ConfirmationsClient
-  bool IsAdsEnabled() const override;
-
-  void GetWalletInfo(WalletInfo* info) const override;
-
   uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(const uint32_t timer_id) override;
 
-  void URLRequest(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      const URLRequestMethod method,
-      URLRequestCallback callback) override;
+  void Save(
+      const std::string& name,
+      const std::string& value,
+      OnSaveCallback callback) override;
+
+  void Load(const std::string& name, OnLoadCallback callback) override;
+
+  void Reset(const std::string& name, OnResetCallback callback) override;
 
   std::unique_ptr<LogStream> Log(
       const char* file,
@@ -46,3 +44,5 @@ class MockConfirmationsClient : public ConfirmationsClient {
 };
 
 }  // namespace confirmations
+
+#endif  // BAT_CONFIRMATIONS_MOCK_CONFIRMATIONS_CLIENT_H_

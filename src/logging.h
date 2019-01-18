@@ -2,7 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#pragma once
+#ifndef BAT_CONFIRMATIONS_LOGGING_H_
+#define BAT_CONFIRMATIONS_LOGGING_H_
 
 #include "bat/confirmations/confirmations_client.h"
 
@@ -23,3 +24,5 @@
 #if defined(ERROR)
 #define LOG_0 CONFIRMATIONS_LOG_ERROR
 #endif
+
+#endif  // BAT_CONFIRMATIONS_LOGGING_H_

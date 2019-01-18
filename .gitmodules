@@ -1,3 +1,0 @@
-[submodule "deps/challenge-bypass-ristretto-ffi"]
-	path = deps/challenge-bypass-ristretto-ffi
-	url = https://github.com/evq/challenge-bypass-ristretto-ffi
