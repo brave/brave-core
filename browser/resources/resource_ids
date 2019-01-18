@@ -80,4 +80,8 @@
     "includes": [41000],
     "structures": [42000],
   },
+  "brave/browser/resources/md_extensions/extensions_resources.grd": {
+    "structures": [43000],
+    "includes": [43500],
+  },
 }
