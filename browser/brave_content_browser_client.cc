@@ -61,29 +61,52 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 namespace {
 
-bool HandleURLRewrite(GURL* url,
-                      content::BrowserContext* browser_context) {
-  if (url->SchemeIs(content::kChromeUIScheme) &&
-      (url->host() == chrome::kChromeUIWelcomeHost ||
-       url->host() == chrome::kChromeUIWelcomeWin10Host)) {
-    *url = GURL(kBraveUIWelcomeURL);
+bool HandleURLOverrideRewrite(GURL* url,
+                              content::BrowserContext* browser_context) {
+  // redirect sync-internals
+  if (url->host() == chrome::kChromeUISyncInternalsHost ||
+      url->host() == chrome::kChromeUISyncHost) {
+    GURL::Replacements replacements;
+    replacements.SetHostStr(chrome::kChromeUISyncHost);
+    *url = url->ReplaceComponents(replacements);
     return true;
   }
-  if (url->SchemeIs(content::kChromeUIScheme) &&
-      (url->host() == kBraveUISyncHost)) {
-    *url = GURL(kBraveUISyncURL);
+
+  // no special win10 welcome page
+  if (url->host() == chrome::kChromeUIWelcomeWin10Host ||
+      url->host() == chrome::kChromeUIWelcomeHost) {
+    *url = GURL(chrome::kChromeUIWelcomeURL);
     return true;
   }
 
   return false;
 }
 
-bool HandleURLReverseRewrite(GURL* url,
+
+bool HandleURLReverseOverrideRewrite(GURL* url,
                              content::BrowserContext* browser_context) {
-  if (url->spec() == kBraveUIWelcomeURL ||
-      url->spec() == kBraveUISyncURL) {
+  if (url->host() == chrome::kChromeUIWelcomeHost ||
+      url->host() == chrome::kChromeUISyncHost) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(kBraveUIScheme);
+    *url = url->ReplaceComponents(replacements);
     return true;
   }
+
+  return false;
+}
+
+bool HandleURLRewrite(GURL* url,
+                      content::BrowserContext* browser_context) {
+  if (url->SchemeIs(kBraveUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kChromeUIScheme);
+    *url = url->ReplaceComponents(replacements);
+  }
+
+  if (HandleURLOverrideRewrite(url, browser_context))
+    return true;
+
   return false;
 }
 
@@ -110,8 +133,10 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   handler->AddHandlerPair(&webtorrent::HandleTorrentURLRewrite,
                           &webtorrent::HandleTorrentURLReverseRewrite);
   handler->AddHandlerPair(&HandleURLRewrite,
-                          &HandleURLReverseRewrite);
+                          &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
+  handler->AddHandlerPair(&HandleURLOverrideRewrite,
+                          &HandleURLReverseOverrideRewrite);
 }
 
 bool BraveContentBrowserClient::AllowAccessCookie(const GURL& url, const GURL& first_party,

@@ -162,7 +162,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
   }
 
   GURL rewards_url() {
-    GURL rewards_url("chrome://rewards");
+    GURL rewards_url("brave://rewards");
     return rewards_url;
   }
 

@@ -15,7 +15,6 @@ const char kDonateJS[] = "brave_donate.js";
 const char kBraveNewTabJS[] = "brave_new_tab.js";
 const char kBraveUISyncHost[] = "sync";
 const char kBraveSyncJS[] = "brave_sync.js";
-const char kBraveUIWelcomeURL[] = "chrome://welcome/";
 const char kBraveUIRewardsURL[] = "chrome://rewards/";
 const char kBraveUIAdblockURL[] = "chrome://adblock/";
 const char kBraveUIDonateURL[] = "chrome://donate/";

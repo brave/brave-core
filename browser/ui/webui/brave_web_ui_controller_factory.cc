@@ -70,7 +70,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kDonateHost ||
 #endif
       url.host_piece() == kWelcomeHost ||
-      url.host_piece() == kBraveUIWelcomeURL ||
+      url.host_piece() == chrome::kChromeUIWelcomeURL ||
       (url.host_piece() == kBraveUISyncHost &&
           brave_sync::BraveSyncService::is_enabled()) ||
       url.host_piece() == chrome::kChromeUINewTabHost ||

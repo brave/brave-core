@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
 
@@ -38,8 +39,10 @@ IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, PRE_StartupURLTest) {
   content::WebContents* web_contents = tab_strip->GetWebContentsAt(0);
   content::TestNavigationObserver observer(web_contents, 1);
   observer.Wait();
-  EXPECT_EQ(kBraveUIWelcomeURL,
-            tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
+  EXPECT_STREQ("brave://welcome/",
+            tab_strip->GetWebContentsAt(0)
+                ->GetController().GetLastCommittedEntry()
+                    ->GetVirtualURL().possibly_invalid_spec().c_str());
 }
 
 // Check wheter startup url is not welcome ui at second run.

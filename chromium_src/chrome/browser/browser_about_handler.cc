@@ -3,32 +3,33 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define FixupBrowserAboutURL FixupBrowserAboutURL_ChromiumImpl
-#define WillHandleBrowserAboutURL WillHandleBrowserAboutURL_ChromiumImpl
 #include "../../../../chrome/browser/browser_about_handler.cc"
 #undef FixupBrowserAboutURL
-#undef WillHandleBrowserAboutURL
 
 #include "brave/common/url_constants.h"
-
-bool FixupBrowserAboutURLBraveImpl(GURL* url,
-                                   content::BrowserContext* browser_context) {
-  if (url->SchemeIs(kBraveUIScheme)) {
-    GURL::Replacements replacements;
-    replacements.SetSchemeStr(content::kChromeUIScheme);
-    *url = url->ReplaceComponents(replacements);
-  }
-  return true;
-}
-
+#include "brave/common/webui_url_constants.h"
 
 bool FixupBrowserAboutURL(GURL* url,
                           content::BrowserContext* browser_context) {
-  FixupBrowserAboutURLBraveImpl(url, browser_context);
-  return FixupBrowserAboutURL_ChromiumImpl(url, browser_context);
-}
+  bool result = FixupBrowserAboutURL_ChromiumImpl(url, browser_context);
 
-bool WillHandleBrowserAboutURL(GURL* url,
-                               content::BrowserContext* browser_context) {
-  FixupBrowserAboutURLBraveImpl(url, browser_context);
-  return WillHandleBrowserAboutURL_ChromiumImpl(url, browser_context);
+  // no special win10 welcome page
+  if (url->host() == chrome::kChromeUIWelcomeWin10Host)
+    *url = GURL(chrome::kChromeUIWelcomeURL);
+
+  // redirect sync-internals
+  if (url->host() == chrome::kChromeUISyncInternalsHost) {
+    GURL::Replacements replacements;
+    replacements.SetHostStr(chrome::kChromeUISyncHost);
+    *url = url->ReplaceComponents(replacements);
+  }
+
+  if (url->SchemeIs(content::kChromeUIScheme) &&
+      url->host() != chrome::kChromeUINewTabHost) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(kBraveUIScheme);
+    *url = url->ReplaceComponents(replacements);
+  }
+
+  return result;
 }
