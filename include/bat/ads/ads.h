@@ -76,7 +76,7 @@ class ADS_EXPORT Ads {
   virtual void RemoveAllHistory() = 0;
 
   // Should be called to get the region, i.e. US
-  virtual std::string GetRegion() = 0;
+  virtual const std::string GetRegion() = 0;
 
   // Should be called when the user changes the operating system's locale, i.e.
   // en, en_US or en_GB.UTF-8 unless the operating system restarts the app

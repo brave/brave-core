@@ -308,7 +308,7 @@ void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
   }
 }
 
-std::string AdsImpl::GetRegion() {
+const std::string AdsImpl::GetRegion() {
   auto locale = ads_client_->GetAdsLocale();
   auto region = helper::Locale::GetCountryCode(locale);
 
