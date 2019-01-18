@@ -314,8 +314,9 @@ void AdsClientMojoBridge::ShowNotification(const std::string& notification_info)
 
 void AdsClientMojoBridge::SetCatalogIssuers(const std::string& issuers_info) {
   auto info = std::make_unique<ads::IssuersInfo>();
-  if (info->FromJson(issuers_info) == ads::Result::SUCCESS)
+  if (info->FromJson(issuers_info) == ads::Result::SUCCESS) {
     ads_client_->SetCatalogIssuers(std::move(info));
+  }
 }
 
 bool AdsClientMojoBridge::IsConfirmationsReadyToShowAds(bool* out_can_show) {
