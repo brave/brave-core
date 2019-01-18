@@ -154,7 +154,7 @@ class Banner extends React.Component<Props, State> {
         logoBgColor={''}
         onDonate={this.onDonate}
         onAmountSelection={this.onAmountSelection}
-        currentAmount={this.state.currentAmount}
+        currentAmount={this.state.currentAmount || '0'}
         onClose={this.onClose}
         social={this.generateSocialLinks()}
         showUnVerifiedNotice={!verified}
