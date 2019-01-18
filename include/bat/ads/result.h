@@ -2,24 +2,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_ISSUER_INFO_H_
-#define BAT_ADS_ISSUER_INFO_H_
-
-#include <string>
+#ifndef BAT_ADS_RESULT_H_
+#define BAT_ADS_RESULT_H_
 
 #include "bat/ads/export.h"
 
 namespace ads {
 
-struct ADS_EXPORT IssuerInfo {
-  IssuerInfo();
-  IssuerInfo(const IssuerInfo& info);
-  ~IssuerInfo();
-
-  std::string name;
-  std::string public_key;
+enum ADS_EXPORT Result {
+  SUCCESS,
+  FAILED
 };
 
 }  // namespace ads
 
-#endif  // BAT_ADS_ISSUER_INFO_H_
+#endif  // BAT_ADS_RESULT_H_

@@ -89,17 +89,16 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD1(ShowNotification, void(
       std::unique_ptr<NotificationInfo> info));
 
-  MOCK_METHOD1(CanShowAd, bool(
-      const AdInfo& ad_info));
+  MOCK_METHOD1(SetCatalogIssuers, void(
+      std::unique_ptr<IssuersInfo> info));
+
+  MOCK_METHOD0(IsConfirmationsReadyToShowAds, bool());
 
   MOCK_METHOD1(AdSustained, void(
-      const NotificationInfo& info));
+      std::unique_ptr<NotificationInfo> info));
 
   MOCK_METHOD1(SetTimer, uint32_t(
       const uint64_t time_offset));
-
-  MOCK_METHOD1(OnCatalogIssuersChanged, void(
-      const std::vector<IssuerInfo>& issuers));
 
   MOCK_METHOD1(KillTimer, void(
       uint32_t timer_id));

@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "bat/ads/export.h"
+#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -18,7 +19,9 @@ struct ADS_EXPORT AdInfo {
   ~AdInfo();
 
   const std::string ToJson() const;
-  bool FromJson(const std::string& json);
+  Result FromJson(
+      const std::string& json,
+      std::string* error_description = nullptr);
 
   std::string creative_set_id;
   std::string campaign_id;

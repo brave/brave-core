@@ -24,9 +24,14 @@ Catalog::~Catalog() {}
 
 bool Catalog::FromJson(const std::string& json) {
   auto catalog_state = std::make_unique<CatalogState>();
-
   auto json_schema = ads_client_->LoadJsonSchema(_catalog_schema_name);
-  if (!LoadFromJson(catalog_state.get(), json, json_schema)) {
+  std::string error_description;
+  auto result = LoadFromJson(catalog_state.get(), json, json_schema,
+      &error_description);
+  if (result != SUCCESS) {
+    LOG(ERROR) << "Failed to to load catalog JSON (" << error_description
+        << "): " << json;
+
     return false;
   }
 
@@ -60,7 +65,7 @@ const std::vector<CampaignInfo>& Catalog::GetCampaigns() const {
   return catalog_state_->campaigns;
 }
 
-const std::vector<IssuerInfo>& Catalog::GetIssuers() const {
+const IssuersInfo& Catalog::GetIssuers() const {
   return catalog_state_->issuers;
 }
 

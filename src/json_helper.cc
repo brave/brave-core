@@ -8,27 +8,42 @@
 
 namespace helper {
 
-bool JSON::Validate(
-    rapidjson::Document *document,
-    const std::string& jsonSchema) {
+ads::Result JSON::Validate(
+    rapidjson::Document* document,
+    const std::string& json_schema) {
+  if (!document) {
+    return ads::Result::FAILED;
+  }
+
   if (document->HasParseError()) {
-    return false;
+    return ads::Result::FAILED;
   }
 
   rapidjson::Document document_schema;
-  document_schema.Parse(jsonSchema.c_str());
+  document_schema.Parse(json_schema.c_str());
 
   if (document_schema.HasParseError()) {
-    return false;
+    return ads::Result::FAILED;
   }
 
   rapidjson::SchemaDocument schema(document_schema);
   rapidjson::SchemaValidator validator(schema);
   if (!document->Accept(validator)) {
-    return false;
+    return ads::Result::FAILED;
   }
 
-  return true;
+  return ads::Result::SUCCESS;
+}
+
+std::string JSON::GetLastError(rapidjson::Document* document) {
+  if (!document) {
+    return "Invalid document";
+  }
+
+  auto parse_error_code = document->GetParseError();
+  std::string description(rapidjson::GetParseError_En(parse_error_code));
+  std::string error_offset = std::to_string(document->GetErrorOffset());
+  return description + " (" + error_offset + ")";
 }
 
 }  // namespace helper

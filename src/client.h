@@ -49,8 +49,10 @@ class Client {
   const std::string GetLocale();
   void SetLocales(const std::vector<std::string>& locales);
   const std::vector<std::string> GetLocales();
+  void SetLastPageClassification(const std::string& classification);
+  const std::string GetLastPageClassification();
   void AppendPageScoreToPageScoreHistory(
-      const std::vector<double>& page_scores);
+      const std::vector<double>& page_score);
   const std::deque<std::vector<double>> GetPageScoreHistory();
   void AppendCurrentTimeToCreativeSetHistory(
       const std::string& creative_set_id);

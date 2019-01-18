@@ -2,35 +2,32 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_CLIENT_INFO_H_
-#define BAT_ADS_CLIENT_INFO_H_
+#ifndef BAT_ADS_ISSUERS_INFO_H_
+#define BAT_ADS_ISSUERS_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "bat/ads/export.h"
-#include "bat/ads/client_info_platform_type.h"
+#include "bat/ads/issuer_info.h"
 #include "bat/ads/result.h"
 
 namespace ads {
 
-struct ADS_EXPORT ClientInfo {
-  ClientInfo();
-  ClientInfo(const ClientInfo& info);
-  ~ClientInfo();
+struct ADS_EXPORT IssuersInfo {
+  IssuersInfo();
+  IssuersInfo(const IssuersInfo& info);
+  ~IssuersInfo();
 
   const std::string ToJson() const;
   Result FromJson(
       const std::string& json,
       std::string* error_description = nullptr);
 
-  const std::string GetPlatformName() const;
-
-  std::string application_version;
-
-  ClientInfoPlatformType platform;
-  std::string platform_version;
+  std::string public_key;
+  std::vector<IssuerInfo> issuers;
 };
 
 }  // namespace ads
 
-#endif  // BAT_ADS_CLIENT_INFO_H_
+#endif  // BAT_ADS_ISSUERS_INFO_H_

@@ -56,7 +56,7 @@ message(STATUS "URI Parser dependency")
 FetchContent_Declare(
   URIParserProject
   GIT_REPOSITORY git@github.com:uriparser/uriparser.git
-  GIT_TAG        master
+  GIT_TAG        uriparser-0.9.0
 )
 
 FetchContent_GetProperties(URIParserProject)
@@ -92,6 +92,8 @@ message(STATUS "BAT Native Ads")
 set(SOURCES
   "${PROJECT_SOURCE_DIR}/src/bat/ads/ad_info.cc"
   "${PROJECT_SOURCE_DIR}/src/bat/ads/client_info.cc"
+  "${PROJECT_SOURCE_DIR}/src/bat/ads/issuer_info.cc"
+  "${PROJECT_SOURCE_DIR}/src/bat/ads/issuers_info.cc"
   "${PROJECT_SOURCE_DIR}/src/bat/ads/notification_info.cc"
   "${PROJECT_SOURCE_DIR}/src/bat/ads/url_components.cc"
   "${PROJECT_SOURCE_DIR}/src/ads.cc"
@@ -105,6 +107,7 @@ set(SOURCES
   "${PROJECT_SOURCE_DIR}/src/client_state.cc"
   "${PROJECT_SOURCE_DIR}/src/json_helper.cc"
   "${PROJECT_SOURCE_DIR}/src/math_helper.cc"
+  "${PROJECT_SOURCE_DIR}/src/error_helper.cc"
   "${PROJECT_SOURCE_DIR}/src/locale_helper.cc"
   "${PROJECT_SOURCE_DIR}/src/search_providers.cc"
   "${PROJECT_SOURCE_DIR}/src/string_helper.cc"

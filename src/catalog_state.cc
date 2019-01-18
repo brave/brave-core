@@ -14,7 +14,7 @@ CatalogState::CatalogState() :
     version(0),
     ping(0),
     campaigns({}),
-    issuers({}) {}
+    issuers(IssuersInfo()) {}
 
 CatalogState::CatalogState(const CatalogState& state) :
     catalog_id(state.catalog_id),
@@ -25,21 +25,27 @@ CatalogState::CatalogState(const CatalogState& state) :
 
 CatalogState::~CatalogState() = default;
 
-bool CatalogState::FromJson(
+Result CatalogState::FromJson(
     const std::string& json,
-    const std::string& jsonSchema) {
+    const std::string& json_schema,
+    std::string* error_description) {
   rapidjson::Document catalog;
   catalog.Parse(json.c_str());
 
-  if (!helper::JSON::Validate(&catalog, jsonSchema)) {
-    return false;
+  auto result = helper::JSON::Validate(&catalog, json_schema);
+  if (result != SUCCESS) {
+    if (error_description != nullptr) {
+      *error_description = helper::JSON::GetLastError(&catalog);
+    }
+
+    return result;
   }
 
   std::string new_catalog_id = "";
   uint64_t new_version = 0;
   uint64_t new_ping = kDefaultCatalogPing * kMillisecondsInASecond;
   std::vector<CampaignInfo> new_campaigns = {};
-  std::vector<IssuerInfo> new_issuers = {};
+  IssuersInfo new_issuers = IssuersInfo();
 
   new_catalog_id = catalog["catalogId"].GetString();
 
@@ -47,7 +53,7 @@ bool CatalogState::FromJson(
   if (new_version != 1) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'patch invalid', { reason: 'unsupported version', version: version }
-    return false;
+    return SUCCESS;
   }
 
   new_ping = catalog["ping"].GetUint64();
@@ -83,10 +89,12 @@ bool CatalogState::FromJson(
 
       std::string execution = creative_set["execution"].GetString();
       if (execution != "per_click") {
-        // TODO(Terry Mancey): Implement Log (#44)
-        // 'Catalog invalid', 'creativeSet with unknown execution: '
-        // + creativeSet.execution
-        return false;
+        if (error_description != nullptr) {
+          *error_description = "Catalog invalid: creativeSet has unknown "
+              "execution: " + execution;
+        }
+
+        return FAILED;
       }
       creative_set_info.execution = execution;
 
@@ -97,9 +105,12 @@ bool CatalogState::FromJson(
       // Segments
       auto segments = creative_set["segments"].GetArray();
       if (segments.Size() == 0) {
-        // TODO(Terry Mancey): Implement Log (#44)
-        // 'Catalog invalid', 'creativeSet with no segments: ' + creativeSetId
-        return false;
+        if (error_description != nullptr) {
+          *error_description = "Catalog invalid: No segments for creativeSet "
+              "with creativeSetId: " + creative_set_info.creative_set_id;
+        }
+
+        return FAILED;
       }
 
       for (const auto& segment : segments) {
@@ -125,10 +136,13 @@ bool CatalogState::FromJson(
 
         std::string name = type["name"].GetString();
         if (name != "notification") {
-          // TODO(Terry Mancey): Implement Log (#44)
-          // 'Catalog invalid', 'creative with invalid type: '
-          // + creative.creativeId + ' type=' + type
-          return false;
+          if (error_description != nullptr) {
+            *error_description = "Catalog invalid: Invalid creative type: "
+                + name + " for creativeInstanceId: " +
+                creative_info.creative_instance_id;
+          }
+
+          return FAILED;
         }
         creative_info.type.name = name;
 
@@ -156,10 +170,18 @@ bool CatalogState::FromJson(
   for (const auto& issuer : catalog["issuers"].GetArray()) {
     IssuerInfo issuer_info;
 
-    issuer_info.name = issuer["name"].GetString();
-    issuer_info.public_key = issuer["publicKey"].GetString();
+    std::string name = issuer["name"].GetString();
+    std::string public_key = issuer["publicKey"].GetString();
 
-    new_issuers.push_back(issuer_info);
+    if (name == "confirmation") {
+      new_issuers.public_key = public_key;
+      continue;
+    }
+
+    issuer_info.name = name;
+    issuer_info.public_key = public_key;
+
+    new_issuers.issuers.push_back(issuer_info);
   }
 
   catalog_id = new_catalog_id;
@@ -168,7 +190,7 @@ bool CatalogState::FromJson(
   campaigns = new_campaigns;
   issuers = new_issuers;
 
-  return true;
+  return SUCCESS;
 }
 
 }  // namespace ads

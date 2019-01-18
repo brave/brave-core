@@ -130,11 +130,6 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
   LOG(INFO) << "Parsing catalog";
 
   if (!catalog.FromJson(json)) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Failed to parse catalog'
-
-    LOG(ERROR) << "Failed to parse catalog";
-
     return false;
   }
 
@@ -148,24 +143,22 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
   LOG(INFO) << "Generating bundle";
 
   if (!bundle_->UpdateFromCatalog(catalog)) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Failed to generate bundle'
-
     LOG(ERROR) << "Failed to generate bundle";
 
     return false;
   }
 
-  ads_client_->OnCatalogIssuersChanged(catalog.GetIssuers());
-
   auto callback = std::bind(&AdsServe::OnCatalogSaved, this, _1);
   catalog.Save(json, callback);
+
+  auto issuers_info = std::make_unique<IssuersInfo>(catalog.GetIssuers());
+  ads_client_->SetCatalogIssuers(std::move(issuers_info));
 
   return true;
 }
 
 void AdsServe::OnCatalogSaved(const Result result) {
-  if (result == FAILED) {
+  if (result != SUCCESS) {
     // If the catalog fails to save, we will retry the next time we collect
     // activity
 
@@ -202,7 +195,7 @@ void AdsServe::ResetCatalog() {
 }
 
 void AdsServe::OnCatalogReset(const Result result) {
-  if (result == FAILED) {
+  if (result != SUCCESS) {
     LOG(ERROR) << "Failed to reset catalog";
 
     return;

@@ -32,12 +32,18 @@ const std::string NotificationInfo::ToJson() const {
   return json;
 }
 
-bool NotificationInfo::FromJson(const std::string& json) {
+Result NotificationInfo::FromJson(
+    const std::string& json,
+    std::string* error_description) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
-    return false;
+    if (error_description != nullptr) {
+      *error_description = helper::JSON::GetLastError(&document);
+    }
+
+    return FAILED;
   }
 
   if (document.HasMember("creative_set_id")) {
@@ -64,7 +70,7 @@ bool NotificationInfo::FromJson(const std::string& json) {
     uuid = document["uuid"].GetString();
   }
 
-  return true;
+  return SUCCESS;
 }
 
 void SaveToJson(JsonWriter* writer, const NotificationInfo& info) {

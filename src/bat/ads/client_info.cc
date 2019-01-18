@@ -26,12 +26,18 @@ const std::string ClientInfo::ToJson() const {
   return json;
 }
 
-bool ClientInfo::FromJson(const std::string& json) {
+Result ClientInfo::FromJson(
+    const std::string& json,
+    std::string* error_description) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
-    return false;
+    if (error_description) {
+      *error_description = helper::JSON::GetLastError(&document);
+    }
+
+    return FAILED;
   }
 
   if (document.HasMember("application_version")) {
@@ -47,7 +53,7 @@ bool ClientInfo::FromJson(const std::string& json) {
     platform_version = document["platform_version"].GetString();
   }
 
-  return true;
+  return SUCCESS;
 }
 
 void SaveToJson(JsonWriter* writer, const ClientInfo& info) {

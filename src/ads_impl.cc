@@ -31,8 +31,8 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     is_first_run_(true),
     is_foreground_(false),
     media_playing_({}),
+    last_shown_tab_id_(0),
     last_shown_tab_url_(""),
-    last_page_classification_(""),
     page_score_cache_({}),
     last_shown_notification_info_(NotificationInfo()),
     collect_activity_timer_id_(0),
@@ -114,7 +114,6 @@ void AdsImpl::Deinitialize() {
 
   last_shown_notification_info_ = NotificationInfo();
 
-  last_page_classification_ = "";
   page_score_cache_.clear();
 
   is_first_run_ = true;
@@ -139,7 +138,7 @@ void AdsImpl::LoadUserModel() {
 }
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
-  if (result == FAILED) {
+  if (result != SUCCESS) {
     LOG(ERROR) << "Failed to load user model";
 
     return;
@@ -255,15 +254,11 @@ void AdsImpl::TabUpdated(
 
   client_->UpdateLastUserActivity();
 
-  LoadInfo load_info;
-  load_info.tab_id = tab_id;
-  load_info.tab_url = url;
-  GenerateAdReportingLoadEvent(load_info);
-
   if (is_active) {
     LOG(INFO) << "TabUpdated.IsFocused for tab id: " << tab_id
         << " and url: " << url;
 
+    last_shown_tab_id_ = tab_id;
     last_shown_tab_url_ = url;
 
     TestShoppingData(url);
@@ -313,6 +308,13 @@ void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
   }
 }
 
+std::string AdsImpl::GetRegion() {
+  auto locale = ads_client_->GetAdsLocale();
+  auto region = helper::Locale::GetCountryCode(locale);
+
+  return region;
+}
+
 void AdsImpl::ChangeLocale(const std::string& locale) {
   if (!IsInitialized()) {
     return;
@@ -343,18 +345,27 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
 
 void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
   if (!IsInitialized()) {
+    LOG(INFO) << "Site visited " << url << ", not initialized";
+
     return;
   }
 
   if (IsUrlFromLastShownNotification(url)) {
+    LOG(INFO) << "Site visited " << url
+        << ", URL is from last shown notification";
+
     return;
   }
 
   if (!IsValidScheme(url)) {
+    LOG(INFO) << "Site visited " << url << ", invalid URL scheme";
+
     return;
   }
 
   if (TestSearchState(url)) {
+    LOG(INFO) << "Site visited " << url << ", testing search state";
+
     return;
   }
 
@@ -369,7 +380,7 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
     return;
   }
 
-  last_page_classification_ = winning_category;
+  client_->SetLastPageClassification(winning_category);
 
   client_->AppendPageScoreToPageScoreHistory(page_score);
 
@@ -379,8 +390,16 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
   auto winner_over_time_category = GetWinnerOverTimeCategory();
 
   LOG(INFO) << "Site visited " << url << ", immediateWinner is "
-      << last_page_classification_ << " and winnerOverTime is "
+      << winning_category << " and winnerOverTime is "
       << winner_over_time_category;
+
+  if (last_shown_tab_url_ == url) {
+    LoadInfo load_info;
+    load_info.tab_id = last_shown_tab_id_;
+    load_info.tab_url = last_shown_tab_url_;
+    load_info.tab_classification = winning_category;
+    GenerateAdReportingLoadEvent(load_info);
+  }
 }
 
 std::string AdsImpl::GetWinnerOverTimeCategory() {
@@ -391,9 +410,9 @@ std::string AdsImpl::GetWinnerOverTimeCategory() {
 
   uint64_t count = page_score_history.front().size();
 
-  std::vector<double> winner_over_time_page_scores(count);
-  std::fill(winner_over_time_page_scores.begin(),
-      winner_over_time_page_scores.end(), 0);
+  std::vector<double> winner_over_time_page_score(count);
+  std::fill(winner_over_time_page_score.begin(),
+      winner_over_time_page_score.end(), 0);
 
   for (const auto& page_score : page_score_history) {
     if (page_score.size() != count) {
@@ -401,15 +420,21 @@ std::string AdsImpl::GetWinnerOverTimeCategory() {
     }
 
     for (size_t i = 0; i < page_score.size(); i++) {
-      winner_over_time_page_scores[i] += page_score[i];
+      winner_over_time_page_score[i] += page_score[i];
     }
   }
 
-  return GetWinningCategory(winner_over_time_page_scores);
+  return GetWinningCategory(winner_over_time_page_score);
 }
 
-std::string AdsImpl::GetWinningCategory(const std::vector<double>& page_score) {
+std::string AdsImpl::GetWinningCategory(
+    const std::vector<double>& page_score) {
   return user_model_->WinningCategory(page_score);
+}
+
+std::string AdsImpl::GetWinningCategory(const std::string& html) {
+  auto page_score = user_model_->ClassifyPage(html);
+  return GetWinningCategory(page_score);
 }
 
 void AdsImpl::CachePageScore(
@@ -470,7 +495,7 @@ void AdsImpl::ServeSampleAd() {
 void AdsImpl::OnLoadSampleBundle(
     const Result result,
     const std::string& json) {
-  if (result == FAILED) {
+  if (result != SUCCESS) {
     LOG(ERROR) << "Failed to load sample bundle";
 
     return;
@@ -478,10 +503,13 @@ void AdsImpl::OnLoadSampleBundle(
 
   LOG(INFO) << "Successfully loaded sample bundle";
 
-  BundleState sample_bundle_state;
-  if (!sample_bundle_state.FromJson(json,
-      ads_client_->LoadJsonSchema(_bundle_schema_name))) {
-    LOG(ERROR) << "Failed to parse sample bundle: " << json;
+  BundleState state;
+  std::string error_description;
+  std::string json_schema = ads_client_->LoadJsonSchema(_bundle_schema_name);
+  auto json_result = state.FromJson(json, json_schema, &error_description);
+  if (json_result != SUCCESS) {
+    LOG(ERROR) << "Failed to parse sample bundle (" << error_description
+        << "): " << json;
 
     return;
   }
@@ -492,8 +520,8 @@ void AdsImpl::OnLoadSampleBundle(
   // the below code should be abstracted into GetAdForSampleCategory once the
   // necessary changes have been made in Brave Core by Brian Johnson
 
-  auto categories = sample_bundle_state.categories.begin();
-  auto categories_count = sample_bundle_state.categories.size();
+  auto categories = state.categories.begin();
+  auto categories_count = state.categories.size();
   if (categories_count == 0) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no categories' }
@@ -556,6 +584,12 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
   }
 
   if (!forced) {
+    if (!ads_client_->IsConfirmationsReadyToShowAds()) {
+      LOG(INFO) << "Notification not made: Confirmations not ready";
+
+      return;
+    }
+
     if (!IsMobile() && !IsForeground()) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'not in foreground' }
@@ -621,7 +655,7 @@ void AdsImpl::OnGetAds(
     const std::string& region,
     const std::string& category,
     const std::vector<AdInfo>& ads) {
-  if (result == FAILED) {
+  if (result != SUCCESS) {
     auto pos = category.find_last_of('-');
     if (pos != std::string::npos) {
       std::string new_category = category.substr(0, pos);
@@ -735,17 +769,6 @@ bool AdsImpl::ShowAd(
     return false;
   }
 
-  if (!ads_client_->CanShowAd(ad_info)) {
-    LOG(INFO) << "Notification not made: Confirmations not ready"
-        << std::endl << "  advertiser: " << ad_info.advertiser
-        << std::endl << "  notificationText: " << ad_info.notification_text
-        << std::endl << "  notificationUrl: " << ad_info.notification_url
-        << std::endl << "  creativeSetId: " << ad_info.notification_url
-        << std::endl << "  uuid: " << ad_info.notification_url;
-
-    return false;
-  }
-
   auto notification_info = std::make_unique<NotificationInfo>();
   notification_info->advertiser = ad_info.advertiser;
   notification_info->category = category;
@@ -805,10 +828,17 @@ bool AdsImpl::IsAllowedToShowAds() {
   auto respects_hour_limit = HistoryRespectsRollingTimeConstraint(
     ads_shown_history, hour_window, hour_allowed);
 
+#if     0
+/*
+  TBD: [MTR] LEAVE UNTIL DESIGN/PRODUCT RESOLVES THE USE OF THIS FEATURE
+ */
   auto day_window = kOneDayInSeconds;
   auto day_allowed = ads_client_->GetAdsPerDay();
   auto respects_day_limit = HistoryRespectsRollingTimeConstraint(
     ads_shown_history, day_window, day_allowed);
+#else
+  auto respects_day_limit = true;
+#endif
 
   auto minimum_wait_time = hour_window / hour_allowed;
   bool respects_minimum_wait_time =
@@ -860,7 +890,6 @@ bool AdsImpl::IsCollectingActivity() const {
 
   return true;
 }
-
 
 void AdsImpl::StartDeliveringNotifications(const uint64_t start_timer_in) {
   StopDeliveringNotifications();
@@ -992,6 +1021,10 @@ void AdsImpl::SustainAdInteraction() {
   LOG(INFO) << "Sustained ad interaction";
 
   GenerateAdReportingSustainEvent(last_shown_notification_info_);
+
+  auto notification_info =
+      std::make_unique<NotificationInfo>(last_shown_notification_info_);
+  ads_client_->AdSustained(std::move(notification_info));
 }
 
 void AdsImpl::StopSustainingAdInteraction() {
@@ -1028,6 +1061,10 @@ bool AdsImpl::IsStillViewingAd() const {
 
   if (last_shown_notification_info_url_components.hostname
       != last_shown_tab_url_components.hostname) {
+    LOG(INFO) << "IsStillViewingAd last_shown_notification_info_url: "
+        << last_shown_notification_info_url_components.hostname
+        << " does not match last_shown_tab_url:"
+        << last_shown_tab_url_components.hostname;
     return false;
   }
 
@@ -1035,12 +1072,19 @@ bool AdsImpl::IsStillViewingAd() const {
 }
 
 void AdsImpl::OnTimer(const uint32_t timer_id) {
+  LOG(INFO) << "OnTimer: "
+            << std::endl << "  timer_id: " << std::to_string(timer_id)
+            << std::endl << "  collect_activity_timer_id_: " << std::to_string(collect_activity_timer_id_)
+            << std::endl << "  deliverying_notifications_timer_id_: " << std::to_string(delivering_notifications_timer_id_)
+            << std::endl << "  sustained_ad_interaction_timer_id_: " << std::to_string(sustained_ad_interaction_timer_id_);
   if (timer_id == collect_activity_timer_id_) {
     CollectActivity();
   } else if (timer_id == delivering_notifications_timer_id_) {
     DeliverNotification();
   } else if (timer_id == sustained_ad_interaction_timer_id_) {
     SustainAdInteraction();
+  } else {
+    LOG(WARNING) << "Unexpected OnTimer: " << std::to_string(timer_id);
   }
 }
 
@@ -1072,7 +1116,7 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
 
   writer.String("notificationClassification");
   writer.StartArray();
-  std::vector<std::string> classifications;
+  std::vector<std::string> classifications = {};
   helper::String::Split(info.category, '-', &classifications);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
@@ -1088,6 +1132,8 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
 
   writer.String("notificationUrl");
   writer.String(info.url.c_str());
+
+  writer.EndObject();
 
   writer.EndObject();
 
@@ -1143,7 +1189,7 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
   writer.String("notificationClassification");
   writer.StartArray();
-  std::vector<std::string> classifications;
+  std::vector<std::string> classifications = {};
   helper::String::Split(info.category, '-', &classifications);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
@@ -1159,6 +1205,8 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
   writer.String("notificationUrl");
   writer.String(info.url.c_str());
+
+  writer.EndObject();
 
   writer.EndObject();
 
@@ -1191,10 +1239,10 @@ void AdsImpl::GenerateAdReportingSustainEvent(
 
   writer.EndObject();
 
+  writer.EndObject();
+
   auto json = buffer.GetString();
   ads_client_->EventLog(json);
-
-  ads_client_->AdSustained(info);
 }
 
 void AdsImpl::GenerateAdReportingLoadEvent(
@@ -1233,8 +1281,8 @@ void AdsImpl::GenerateAdReportingLoadEvent(
 
   writer.String("tabClassification");
   writer.StartArray();
-  std::vector<std::string> classifications;
-  helper::String::Split(last_page_classification_, '-', &classifications);
+  std::vector<std::string> classifications = {};
+  helper::String::Split(info.tab_classification, '-', &classifications);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }
@@ -1249,6 +1297,8 @@ void AdsImpl::GenerateAdReportingLoadEvent(
     }
     writer.EndArray();
   }
+
+  writer.EndObject();
 
   writer.EndObject();
 
@@ -1276,6 +1326,8 @@ void AdsImpl::GenerateAdReportingBackgroundEvent() {
 
   writer.EndObject();
 
+  writer.EndObject();
+
   auto json = buffer.GetString();
   ads_client_->EventLog(json);
 }
@@ -1295,6 +1347,8 @@ void AdsImpl::GenerateAdReportingForegroundEvent() {
   writer.String("stamp");
   std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
+
+  writer.EndObject();
 
   writer.EndObject();
 
@@ -1324,6 +1378,8 @@ void AdsImpl::GenerateAdReportingBlurEvent(
 
   writer.EndObject();
 
+  writer.EndObject();
+
   auto json = buffer.GetString();
   ads_client_->EventLog(json);
 }
@@ -1347,6 +1403,8 @@ void AdsImpl::GenerateAdReportingDestroyEvent(
 
   writer.String("tabId");
   writer.Int(info.tab_id);
+
+  writer.EndObject();
 
   writer.EndObject();
 
@@ -1376,6 +1434,8 @@ void AdsImpl::GenerateAdReportingFocusEvent(
 
   writer.EndObject();
 
+  writer.EndObject();
+
   auto json = buffer.GetString();
   ads_client_->EventLog(json);
 }
@@ -1395,6 +1455,8 @@ void AdsImpl::GenerateAdReportingRestartEvent() {
   writer.String("stamp");
   std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
+
+  writer.EndObject();
 
   writer.EndObject();
 
@@ -1434,13 +1496,20 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   auto locale = client_->GetLocale();
   writer.String(locale.c_str());
 
+#if     0
+/*
+  TBD: [MTR] LEAVE UNTIL DESIGN/PRODUCT RESOLVES THE USE OF THIS FEATURE
+ */
   writer.String("adsPerDay");
   auto ads_per_day = ads_client_->GetAdsPerDay();
   writer.Uint64(ads_per_day);
+#endif
 
   writer.String("adsPerHour");
   auto ads_per_hour = ads_client_->GetAdsPerHour();
   writer.Uint64(ads_per_hour);
+
+  writer.EndObject();
 
   writer.EndObject();
 

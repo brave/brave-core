@@ -48,8 +48,7 @@ void SuccessfullyLoadUserModelForLocale(
   callback(SUCCESS, value);
 }
 
-const std::string SuccessfullyLoadJsonSchema(
-    const std::string& name) {
+const std::string SuccessfullyLoadJsonSchema(const std::string& name) {
   std::string path = "mock_data/" + name;
 
   std::ifstream ifs{path};
@@ -66,7 +65,7 @@ const std::string SuccessfullyLoadJsonSchema(
 
 class TabsTest : public ::testing::Test {
  protected:
-  MockAdsClient *mock_ads_client;
+  MockAdsClient* mock_ads_client;
   AdsImpl* ads;
 
   TabsTest() :

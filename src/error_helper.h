@@ -2,19 +2,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_LOCALE_HELPER_H_
-#define BAT_ADS_LOCALE_HELPER_H_
+#ifndef BAT_ADS_ERROR_HELPER_H_
+#define BAT_ADS_ERROR_HELPER_H_
 
 #include <string>
 
+#include "bat/ads/result.h"
+
 namespace helper {
 
-class Locale {
+class Error {
  public:
-  static const std::string GetLanguageCode(const std::string& locale);
-  static const std::string GetCountryCode(const std::string& locale);
+  static const std::string GetDescription(const ads::Result result);
 };
 
 }  // namespace helper
 
-#endif  // BAT_ADS_LOCALE_HELPER_H_
+#endif  // BAT_ADS_ERROR_HELPER_H_

@@ -44,12 +44,18 @@ const std::string AdInfo::ToJson() const {
   return json;
 }
 
-bool AdInfo::FromJson(const std::string& json) {
+Result AdInfo::FromJson(
+    const std::string& json,
+    std::string* error_description) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
-    return false;
+    if (error_description) {
+      *error_description = helper::JSON::GetLastError(&document);
+    }
+
+    return FAILED;
   }
 
   if (document.HasMember("creative_set_id")) {
@@ -103,7 +109,7 @@ bool AdInfo::FromJson(const std::string& json) {
     uuid = document["uuid"].GetString();
   }
 
-  return true;
+  return SUCCESS;
 }
 
 void SaveToJson(JsonWriter* writer, const AdInfo& info) {

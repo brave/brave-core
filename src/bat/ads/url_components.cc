@@ -28,12 +28,18 @@ UrlComponents::UrlComponents(const UrlComponents& components) :
 
 UrlComponents::~UrlComponents() = default;
 
-bool UrlComponents::FromJson(const std::string& json) {
+Result UrlComponents::FromJson(
+    const std::string& json,
+    std::string* error_description) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
-    return false;
+    if (error_description) {
+      *error_description = helper::JSON::GetLastError(&document);
+    }
+
+    return FAILED;
   }
 
   if (document.HasMember("url")) {
@@ -64,7 +70,7 @@ bool UrlComponents::FromJson(const std::string& json) {
     fragment = document["fragment"].GetString();
   }
 
-  return true;
+  return SUCCESS;
 }
 
 const std::string UrlComponents::ToJson() const {

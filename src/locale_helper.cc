@@ -13,7 +13,7 @@
 namespace helper {
 
 const std::string Locale::GetLanguageCode(const std::string& locale) {
-  std::vector<std::string> locale_components;
+  std::vector<std::string> locale_components = {};
   if (!helper::String::Split(locale, '_', &locale_components)) {
     return ads::kDefaultLanguageCode;
   }
@@ -23,7 +23,7 @@ const std::string Locale::GetLanguageCode(const std::string& locale) {
 }
 
 const std::string Locale::GetCountryCode(const std::string& locale) {
-  std::vector<std::string> locale_components;
+  std::vector<std::string> locale_components = {};
   if (!helper::String::Split(locale, '.', &locale_components)) {
     return ads::kDefaultCountryCode;
   }
@@ -31,7 +31,7 @@ const std::string Locale::GetCountryCode(const std::string& locale) {
   auto normalized_locale = locale_components.front();
   std::replace(normalized_locale.begin(), normalized_locale.end(), '-', '_');
 
-  std::vector<std::string> country_code_components;
+  std::vector<std::string> country_code_components = {};
   helper::String::Split(normalized_locale, '_', &country_code_components);
   if (country_code_components.size() != 2) {
     return ads::kDefaultCountryCode;

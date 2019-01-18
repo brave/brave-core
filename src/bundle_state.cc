@@ -31,14 +31,20 @@ const std::string BundleState::ToJson() const {
   return json;
 }
 
-bool BundleState::FromJson(
+Result BundleState::FromJson(
     const std::string& json,
-    const std::string& jsonSchema) {
+    const std::string& json_schema,
+    std::string* error_description) {
   rapidjson::Document bundle;
   bundle.Parse(json.c_str());
 
-  if (!helper::JSON::Validate(&bundle, jsonSchema)) {
-    return false;
+  auto result = helper::JSON::Validate(&bundle, json_schema);
+  if (result != SUCCESS) {
+    if (error_description != nullptr) {
+      *error_description = helper::JSON::GetLastError(&bundle);
+    }
+
+    return result;
   }
 
   std::map<std::string, std::vector<AdInfo>> new_categories = {};
@@ -101,7 +107,7 @@ bool BundleState::FromJson(
 
   categories = new_categories;
 
-  return true;
+  return SUCCESS;
 }
 
 void SaveToJson(JsonWriter* writer, const BundleState& state) {

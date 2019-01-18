@@ -179,9 +179,20 @@ const std::vector<std::string> Client::GetLocales() {
   return client_state_->locales;
 }
 
+void Client::SetLastPageClassification(
+    const std::string& classification) {
+  client_state_->last_page_classification = classification;
+
+  SaveState();
+}
+
+const std::string Client::GetLastPageClassification() {
+  return client_state_->last_page_classification;
+}
+
 void Client::AppendPageScoreToPageScoreHistory(
-    const std::vector<double>& page_scores) {
-  client_state_->page_score_history.push_front(page_scores);
+    const std::vector<double>& page_score) {
+  client_state_->page_score_history.push_front(page_score);
   if (client_state_->page_score_history.size() >
       kMaximumEntriesInPageScoreHistory) {
     client_state_->page_score_history.pop_back();
@@ -241,7 +252,7 @@ void Client::RemoveAllHistory() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Client::OnStateSaved(const Result result) {
-  if (result == FAILED) {
+  if (result != SUCCESS) {
     LOG(ERROR) << "Failed to save client state";
 
     return;
@@ -251,14 +262,12 @@ void Client::OnStateSaved(const Result result) {
 }
 
 void Client::OnStateLoaded(const Result result, const std::string& json) {
-  if (result == FAILED) {
+  if (result != SUCCESS) {
     LOG(ERROR) << "Failed to load client state, resetting to default values";
 
     client_state_.reset(new ClientState());
   } else {
     if (!FromJson(json)) {
-      LOG(ERROR) << "Failed to parse client state: " << json;
-
       return;
     }
 
@@ -270,7 +279,12 @@ void Client::OnStateLoaded(const Result result, const std::string& json) {
 
 bool Client::FromJson(const std::string& json) {
   ClientState state;
-  if (!LoadFromJson(&state, json)) {
+  std::string error_description;
+  auto result = LoadFromJson(&state, json, &error_description);
+  if (result != SUCCESS) {
+    LOG(ERROR) << "Failed to parse client JSON (" << error_description <<
+        "): " << json;
+
     return false;
   }
 

@@ -11,6 +11,7 @@
 #include "mock_ads_client.h"
 #include "bat/ads/bundle_state.h"
 #include "bat/ads/ad_info.h"
+#include "bat/ads/issuers_info.h"
 #include "math_helper.h"
 #include "string_helper.h"
 #include "time_helper.h"
@@ -140,8 +141,7 @@ bool MockAdsClient::IsNotificationsAvailable() const {
   return true;
 }
 
-void MockAdsClient::ShowNotification(
-    std::unique_ptr<NotificationInfo> info) {
+void MockAdsClient::ShowNotification(std::unique_ptr<NotificationInfo> info) {
   std::cout << std::endl << "------------------------------------------------";
   std::cout << std::endl << "Notification shown:";
   std::cout << std::endl << "  advertiser: " << info->advertiser;
@@ -151,12 +151,15 @@ void MockAdsClient::ShowNotification(
   std::cout << std::endl << "  uuid: " << info->uuid;
 }
 
-bool MockAdsClient::CanShowAd(const AdInfo& ad_info) {
-  (void)ad_info;
+void MockAdsClient::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
+  (void)info;
+}
+
+bool MockAdsClient::IsConfirmationsReadyToShowAds() {
   return true;
 }
 
-void MockAdsClient::AdSustained(const NotificationInfo& info) {
+void MockAdsClient::AdSustained(std::unique_ptr<NotificationInfo> info) {
   (void)info;
 }
 
@@ -171,11 +174,6 @@ uint32_t MockAdsClient::SetTimer(const uint64_t time_offset) {
 
 void MockAdsClient::KillTimer(uint32_t timer_id) {
   (void)timer_id;
-}
-
-void MockAdsClient::OnCatalogIssuersChanged(
-    const std::vector<IssuerInfo>& issuers) {
-  (void)issuers;
 }
 
 void MockAdsClient::URLRequest(
@@ -392,17 +390,19 @@ void MockAdsClient::LoadBundleState() {
 void MockAdsClient::OnBundleStateLoaded(
     const Result result,
     const std::string& json) {
-  if (result == FAILED) {
+  if (result != SUCCESS) {
     LOG(LOG_ERROR) << "Failed to load bundle: " << json;
 
     return;
   }
 
-  auto json_schema = LoadJsonSchema(_bundle_schema_name);
-
   BundleState state;
-  if (!state.FromJson(json, json_schema)) {
-    LOG(LOG_ERROR) << "Failed to parse bundle: " << json;
+  auto json_schema = LoadJsonSchema(_bundle_schema_name);
+  std::string error_description;
+  auto json_result = state.FromJson(json, json_schema, &error_description);
+  if (json_result != SUCCESS) {
+    LOG(LOG_ERROR) << "Failed to parse bundle (" << error_description
+        << "): " << json;
 
     return;
   }
@@ -426,17 +426,19 @@ void MockAdsClient::LoadSampleBundleState() {
 void MockAdsClient::OnSampleBundleStateLoaded(
     const Result result,
     const std::string& json) {
-  if (result == FAILED) {
+  if (result != SUCCESS) {
     LOG(LOG_ERROR) << "Failed to load sample bundle";
 
     return;
   }
 
-  auto json_schema = LoadJsonSchema(_bundle_schema_name);
-
   BundleState state;
-  if (!state.FromJson(json, json_schema)) {
-    LOG(LOG_ERROR) << "Failed to parse sample bundle: " << json;
+  auto json_schema = LoadJsonSchema(_bundle_schema_name);
+  std::string error_description;
+  auto json_result = state.FromJson(json, json_schema, &error_description);
+  if (json_result != SUCCESS) {
+    LOG(LOG_ERROR) << "Failed to parse sample bundle (" << error_description
+        << "): " << json;
 
     return;
   }

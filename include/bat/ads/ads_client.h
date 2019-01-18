@@ -14,12 +14,13 @@
 #include <functional>
 
 #include "bat/ads/ad_info.h"
-#include "bat/ads/issuer_info.h"
+#include "bat/ads/issuers_info.h"
 #include "bat/ads/bundle_state.h"
 #include "bat/ads/client_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/notification_info.h"
 #include "bat/ads/url_components.h"
+#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -33,11 +34,6 @@ enum ADS_EXPORT URLRequestMethod {
   GET = 0,
   PUT = 1,
   POST = 2
-};
-
-enum ADS_EXPORT Result {
-  SUCCESS,
-  FAILED
 };
 
 class ADS_EXPORT LogStream {
@@ -110,12 +106,15 @@ class ADS_EXPORT AdsClient {
   // Should show a notification
   virtual void ShowNotification(std::unique_ptr<NotificationInfo> info) = 0;
 
+  // Should notify that the catalog issuers have changed
+  virtual void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) = 0;
+
   // Should return true if Confirmations is ready to show ad otherwise returns
   // false
-  virtual bool CanShowAd(const AdInfo& ad_info) = 0;
+  virtual bool IsConfirmationsReadyToShowAds() = 0;
 
   // Should be called to inform Confirmations that an ad was sustained
-  virtual void AdSustained(const NotificationInfo& info) = 0;
+  virtual void AdSustained(std::unique_ptr<NotificationInfo> info) = 0;
 
   // Should create a timer to trigger after the time offset specified in
   // seconds. If the timer was created successfully a unique identifier should
@@ -124,10 +123,6 @@ class ADS_EXPORT AdsClient {
 
   // Should destroy the timer associated with the specified timer identifier
   virtual void KillTimer(uint32_t timer_id) = 0;
-
-  // Should notify that the catalog issuers have changed
-  virtual void OnCatalogIssuersChanged(
-      const std::vector<IssuerInfo>& issuers) = 0;
 
   // Should start a URL request
   virtual void URLRequest(
