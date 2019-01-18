@@ -1146,7 +1146,7 @@ bool LedgerImpl::HasSufficientBalanceToReconcile() {
 
 void LedgerImpl::SetCatalogIssuers(const std::string& info) {
   ads::IssuersInfo issuers_info_ads;
-  if (!issuers_info_ads.FromJson(info))
+  if (issuers_info_ads.FromJson(info) != ads::Result::SUCCESS)
     return;
 
   auto issuers_info = std::make_unique<confirmations::IssuersInfo>();
@@ -1167,7 +1167,7 @@ bool LedgerImpl::IsConfirmationsReadyToShowAds() {
 
 void LedgerImpl::AdSustained(const std::string& info) {
   ads::NotificationInfo notification_info_ads;
-  if (!notification_info_ads.FromJson(info))
+  if (notification_info_ads.FromJson(info) != ads::Result::SUCCESS)
     return;
 
   auto notification_info = std::make_unique<confirmations::NotificationInfo>();
