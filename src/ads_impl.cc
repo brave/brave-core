@@ -1072,11 +1072,14 @@ bool AdsImpl::IsStillViewingAd() const {
 }
 
 void AdsImpl::OnTimer(const uint32_t timer_id) {
-  LOG(INFO) << "OnTimer: "
-            << std::endl << "  timer_id: " << std::to_string(timer_id)
-            << std::endl << "  collect_activity_timer_id_: " << std::to_string(collect_activity_timer_id_)
-            << std::endl << "  deliverying_notifications_timer_id_: " << std::to_string(delivering_notifications_timer_id_)
-            << std::endl << "  sustained_ad_interaction_timer_id_: " << std::to_string(sustained_ad_interaction_timer_id_);
+  LOG(INFO) << "OnTimer: " << std::endl
+      << "  timer_id: " << std::to_string(timer_id) << std::endl
+      << "  collect_activity_timer_id_: "
+      << std::to_string(collect_activity_timer_id_) << std::endl
+      << "  deliverying_notifications_timer_id_: "
+      << std::to_string(delivering_notifications_timer_id_) << std::endl
+      << "  sustained_ad_interaction_timer_id_: "
+      << std::to_string(sustained_ad_interaction_timer_id_);
   if (timer_id == collect_activity_timer_id_) {
     CollectActivity();
   } else if (timer_id == delivering_notifications_timer_id_) {
