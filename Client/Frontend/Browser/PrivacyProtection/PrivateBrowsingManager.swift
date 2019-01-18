@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import Data
 
 final class PrivateBrowsingManager {
     
@@ -10,6 +11,9 @@ final class PrivateBrowsingManager {
         didSet {
             if oldValue != isPrivateBrowsing {
                 NotificationCenter.default.post(name: .PrivacyModeChanged, object: nil)
+                if !isPrivateBrowsing {
+                    Domain.resetPrivateBrowsingShieldOverrides()
+                }
             }
         }
     }
