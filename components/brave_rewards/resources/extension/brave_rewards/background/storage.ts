@@ -9,6 +9,7 @@ const keyName = 'rewards-panel-data'
 
 export const defaultState: RewardsExtension.State = {
   walletCreated: false,
+  walletCreating: false,
   walletCreateFailed: false,
   publishers: {},
   walletProperties: {

@@ -18,15 +18,13 @@ interface Props extends RewardsExtension.ComponentProps {
 
 interface State {
   windowId: number
-  creating: boolean
 }
 
 export class RewardsPanel extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      windowId: -1,
-      creating: false
+      windowId: -1
     }
   }
 
@@ -43,16 +41,6 @@ export class RewardsPanel extends React.Component<Props, State> {
       this.props.rewardsPanelData.walletCreated
     ) {
       this.getTabData()
-    }
-
-    if (
-      this.state.creating &&
-      !prevProps.rewardsPanelData.walletCreateFailed &&
-      this.props.rewardsPanelData.walletCreateFailed
-    ) {
-      this.setState({
-        creating: false
-      })
     }
   }
 
@@ -94,20 +82,22 @@ export class RewardsPanel extends React.Component<Props, State> {
   }
 
   onCreate = () => {
-    this.setState({
-      creating: true
-    })
     this.actions.createWallet()
   }
 
   render () {
-    const { enabledMain, walletCreateFailed, walletCreated } = this.props.rewardsPanelData
+    const {
+      enabledMain,
+      walletCreateFailed,
+      walletCreated,
+      walletCreating
+    } = this.props.rewardsPanelData
 
     if (!walletCreated) {
       return (
         <PanelWelcome
           error={walletCreateFailed}
-          creating={this.state.creating}
+          creating={walletCreating}
           variant={'two'}
           optInAction={this.onCreate}
           optInErrorAction={this.onCreate}

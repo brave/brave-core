@@ -35,10 +35,16 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
   switch (action.type) {
     case types.CREATE_WALLET:
       chrome.braveRewards.createWallet()
+      state = { ...state }
+      state.walletCreating = true
+      state.walletCreateFailed = false
+      state.walletCreated = false
       break
     case types.ON_WALLET_CREATED:
       state = { ...state }
       state.walletCreated = true
+      state.walletCreateFailed = false
+      state.walletCreating = false
       chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
       chrome.storage.local.get(['is_dismissed'], function (result) {
         if (result && result['is_dismissed'] === 'false') {
@@ -52,6 +58,8 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
     case types.ON_WALLET_CREATE_FAILED:
       state = { ...state }
       state.walletCreateFailed = true
+      state.walletCreating = false
+      state.walletCreated = false
       break
     case types.ON_TAB_ID:
       if (payload.tabId) {

@@ -306,10 +306,12 @@ void RewardsDOMHandler::OnWalletInitialized(
   if (!web_ui()->CanCallJavascript())
     return;
 
-  if (error_code == 0)
+  if (error_code == 0) {
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreated");
-  else
+  } else if (error_code != 3) {
+    // Report back all errors except when ledger_state is missing
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreateFailed");
+  }
 }
 
 void RewardsDOMHandler::OnGetAutoContributeProps(

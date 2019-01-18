@@ -85,6 +85,8 @@ export const getUIMessages = (): Record<string, string> => {
     'welcomeButtonTextTwo',
     'welcomeDescOne',
     'welcomeDescTwo',
+    'walletFailedButton',
+    'walletFailedTitle',
     'welcomeFooterTextOne',
     'welcomeFooterTextTwo',
     'welcomeHeaderOne',

@@ -832,7 +832,7 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
   if (!Connected())
     return;
 
-  handler->OnLedgerStateLoaded(data.empty() ? ledger::Result::LEDGER_ERROR
+  handler->OnLedgerStateLoaded(data.empty() ? ledger::Result::NO_LEDGER_STATE
                                             : ledger::Result::LEDGER_OK,
                                data);
   bat_ledger_->GetRewardsMainEnabled(
