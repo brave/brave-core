@@ -95,28 +95,51 @@ class SyncSelectDeviceTypeViewController: SyncViewController {
     var syncInitHandler: ((String, DeviceType) -> Void)?
 
     let loadingView = UIView()
-    let mobileButton = SyncDeviceTypeButton(image: "sync-mobile", title: Strings.SyncAddMobileButton, type: .mobile)
-    let computerButton = SyncDeviceTypeButton(image: "sync-computer", title: Strings.SyncAddComputerButton, type: .computer)
+    let chooseDeviceLabel = UILabel().then {
+        $0.text = Strings.SyncChooseDeviceHeader
+        $0.textAlignment = .center
+        $0.numberOfLines = 0
+        $0.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
+        $0.textColor = BraveUX.GreyH
+    }
+    
+    let mainStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.distribution = .fill
+        $0.spacing = 16
+    }
+    
+    let mobileButton = SyncDeviceTypeButton(image: "sync-mobile", title: Strings.SyncTabletOrMobileDevice, type: .mobile)
+    let computerButton = SyncDeviceTypeButton(image: "sync-computer", title: Strings.SyncComputerDevice, type: .computer)
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = Strings.SyncAddDevice
+        title = Strings.SyncChooseDevice
+        
+        let chooseDeviceStackView = UIStackView(arrangedSubviews: [UIView.spacer(.horizontal, amount: 24),
+                                                                   chooseDeviceLabel,
+                                                                   UIView.spacer(.horizontal, amount: 24)])
+        
+        chooseDeviceStackView.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
+        
+        let devicesStackView = UIStackView()
+        devicesStackView.axis = .vertical
+        devicesStackView.distribution = .fillEqually
+        devicesStackView.spacing = 16
+        
+        mainStackView.addArrangedSubview(chooseDeviceStackView)
+        mainStackView.addArrangedSubview(devicesStackView)
+        view.addSubview(mainStackView)
 
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        stackView.spacing = 16
-        view.addSubview(stackView)
-
-        stackView.snp.makeConstraints { make in
+        mainStackView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeArea.top).offset(16)
             make.left.right.equalTo(self.view).inset(16)
             make.bottom.equalTo(self.view.safeArea.bottom).inset(16)
         }
 
-        stackView.addArrangedSubview(mobileButton)
-        stackView.addArrangedSubview(computerButton)
+        devicesStackView.addArrangedSubview(mobileButton)
+        devicesStackView.addArrangedSubview(computerButton)
 
         mobileButton.addTarget(self, action: #selector(addDevice), for: .touchUpInside)
         computerButton.addTarget(self, action: #selector(addDevice), for: .touchUpInside)
