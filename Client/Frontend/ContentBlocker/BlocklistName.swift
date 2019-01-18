@@ -30,14 +30,18 @@ class BlocklistName: Hashable, CustomStringConvertible, ContentBlocker {
         return "<\(type(of: self)): \(self.filename)>"
     }
     
+    private static let blocklistFileVersionMap: [BlocklistName: Preferences.Option<String?>] = [
+        BlocklistName.ad: Preferences.BlockFileVersion.adblock,
+        BlocklistName.https: Preferences.BlockFileVersion.httpse
+    ]
+    
     lazy var fileVersionPref: Preferences.Option<String?>? = {
-        let prefMap = [BlocklistName.ad: Preferences.BlockFileVersion.adblock]
-        return prefMap[self]
+        return BlocklistName.blocklistFileVersionMap[self]
     }()
     
     lazy var fileVersion: String? = {
-        let adVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
-        return self == .ad ? adVersion : nil
+        guard let _ = BlocklistName.blocklistFileVersionMap[self] else { return nil }
+        return Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
     }()
     
     static func blocklists(forDomain domain: Domain) -> (on: Set<BlocklistName>, off: Set<BlocklistName>) {
