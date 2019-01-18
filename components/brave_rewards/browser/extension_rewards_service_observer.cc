@@ -25,7 +25,7 @@ void ExtensionRewardsServiceObserver::OnWalletInitialized(
     int error_code) {
   extensions::EventRouter* event_router =
       extensions::EventRouter::Get(profile_);
-  if (event_router) {
+  if (event_router && error_code == 0) {
     std::unique_ptr<base::ListValue> args(new base::ListValue());
     std::unique_ptr<extensions::Event> event(new extensions::Event(
         extensions::events::BRAVE_WALLET_CREATED,
