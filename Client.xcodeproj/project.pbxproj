@@ -96,7 +96,7 @@
 		0BF8F8DA1AEFF1C900E90BC2 /* noTitle.html in Resources */ = {isa = PBXBuildFile; fileRef = 0BF8F8D91AEFF1C900E90BC2 /* noTitle.html */; };
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
 		2718780A216526240006036E /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187809216526240006036E /* PopupView.swift */; };
-		2743464A21AC4AB200003B1F /* DomainShieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2743464921AC4AB200003B1F /* DomainShieldExtensions.swift */; };
+		2743464A21AC4AB200003B1F /* BraveShield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2743464921AC4AB200003B1F /* BraveShield.swift */; };
 		2760D2BF215ACCE20068E131 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2760D2BE215ACCE20068E131 /* BundleExtensions.swift */; };
 		2765825D2171263A00754B2F /* UserReferralProgram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2765825C2171263A00754B2F /* UserReferralProgram.swift */; };
 		276582692171266900754B2F /* ReferralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582652171266900754B2F /* ReferralData.swift */; };
@@ -451,7 +451,7 @@
 		5DE768A620B345C300FF5533 /* SharedExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE7687120B3417A00FF5533 /* SharedExtensions.swift */; };
 		5DE768A720B345C600FF5533 /* BraveStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE7687C20B342E600FF5533 /* BraveStrings.swift */; };
 		5DE768A920B3461300FF5533 /* BraveUX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE768A820B3461200FF5533 /* BraveUX.swift */; };
-		5DE768AB20B346B800FF5533 /* BraveShieldState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE768AA20B346B700FF5533 /* BraveShieldState.swift */; };
+		5DE768AB20B346B800FF5533 /* BraveGlobalShieldStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE768AA20B346B700FF5533 /* BraveGlobalShieldStats.swift */; };
 		5DE768AC20B43F9000FF5533 /* BraveShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE7688420B3456C00FF5533 /* BraveShared.framework */; };
 		5DE768AE20B443E500FF5533 /* JSONSerializationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE768AD20B443E500FF5533 /* JSONSerializationExtensions.swift */; };
 		5DE768B020B4601700FF5533 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE768AF20B4601600FF5533 /* UIColorExtensions.swift */; };
@@ -1178,7 +1178,7 @@
 		0BF8F8D91AEFF1C900E90BC2 /* noTitle.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = noTitle.html; sourceTree = "<group>"; };
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
 		27187809216526240006036E /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
-		2743464921AC4AB200003B1F /* DomainShieldExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainShieldExtensions.swift; sourceTree = "<group>"; };
+		2743464921AC4AB200003B1F /* BraveShield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveShield.swift; sourceTree = "<group>"; };
 		2760D2BE215ACCE20068E131 /* BundleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
 		2765825C2171263A00754B2F /* UserReferralProgram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserReferralProgram.swift; sourceTree = "<group>"; };
 		276582652171266900754B2F /* ReferralData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralData.swift; sourceTree = "<group>"; };
@@ -1743,7 +1743,7 @@
 		5DE7689320B3456E00FF5533 /* BraveSharedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveSharedTests.swift; sourceTree = "<group>"; };
 		5DE7689520B3456E00FF5533 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5DE768A820B3461200FF5533 /* BraveUX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveUX.swift; sourceTree = "<group>"; };
-		5DE768AA20B346B700FF5533 /* BraveShieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveShieldState.swift; sourceTree = "<group>"; };
+		5DE768AA20B346B700FF5533 /* BraveGlobalShieldStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveGlobalShieldStats.swift; sourceTree = "<group>"; };
 		5DE768AD20B443E500FF5533 /* JSONSerializationExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerializationExtensions.swift; sourceTree = "<group>"; };
 		5DE768AF20B4601600FF5533 /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		744B0FFD1B4F172E00100422 /* ToolbarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolbarTests.swift; sourceTree = "<group>"; };
@@ -2549,7 +2549,6 @@
 				C817B34C1FC609500086018E /* UIScrollViewSwizzled.swift */,
 				A1AD4BE020C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift */,
 				A1AD4BE220C0861D007A6EA1 /* UIBarButtonItemExtensions.swift */,
-				2743464921AC4AB200003B1F /* DomainShieldExtensions.swift */,
 			);
 			indentWidth = 4;
 			name = Extensions;
@@ -3165,7 +3164,7 @@
 			isa = PBXGroup;
 			children = (
 				5D6DDEDF214003A6001FF0AE /* Analytics */,
-				5DE768AA20B346B700FF5533 /* BraveShieldState.swift */,
+				5DE768AA20B346B700FF5533 /* BraveGlobalShieldStats.swift */,
 				5D6DDEF62141B6A0001FF0AE /* Preferences.swift */,
 				5DE7687C20B342E600FF5533 /* BraveStrings.swift */,
 				5DE7687120B3417A00FF5533 /* SharedExtensions.swift */,
@@ -3277,6 +3276,7 @@
 		A104E190210A380E00D2323E /* Shields */ = {
 			isa = PBXGroup;
 			children = (
+				2743464921AC4AB200003B1F /* BraveShield.swift */,
 				A104E198210A384400D2323E /* ShieldsViewController.swift */,
 				27C461DD211B76500088A441 /* ShieldsView.swift */,
 			);
@@ -5279,7 +5279,7 @@
 				5DE768B020B4601700FF5533 /* UIColorExtensions.swift in Sources */,
 				5DE768AE20B443E500FF5533 /* JSONSerializationExtensions.swift in Sources */,
 				2765826C2171266900754B2F /* UrpLogsViewController.swift in Sources */,
-				5DE768AB20B346B800FF5533 /* BraveShieldState.swift in Sources */,
+				5DE768AB20B346B800FF5533 /* BraveGlobalShieldStats.swift in Sources */,
 				A1510DA120E409E9008BF1F4 /* URLCacheExtensions.swift in Sources */,
 				2765826B2171266900754B2F /* CustomHeaderData.swift in Sources */,
 				5D6DDEFE2141B6A1001FF0AE /* Preferences.swift in Sources */,
@@ -5497,7 +5497,7 @@
 				0A4325AE21B1C5D70041625B /* no_fingerprint_domain.cc in Sources */,
 				4422D50721BFFB7600BF1855 /* port_posix.cc in Sources */,
 				E64ED8FA1BC55AE300DAF864 /* UIAlertControllerExtensions.swift in Sources */,
-				2743464A21AC4AB200003B1F /* DomainShieldExtensions.swift in Sources */,
+				2743464A21AC4AB200003B1F /* BraveShield.swift in Sources */,
 				A16DC67F20E585D90069C8E1 /* PasscodeSettingsViewController.swift in Sources */,
 				A1D8420320BC44F800BDAFF7 /* PopoverContainerView.swift in Sources */,
 				4422D56221BFFB7F00BF1855 /* dfa.cc in Sources */,
