@@ -63,6 +63,8 @@ class ConfirmationsImpl : public Confirmations,
 
  private:
   bool is_initialized_;
+  bool is_wallet_initialized_;
+  bool is_issuers_initialized_;
 
   const size_t low_token_threshold = 20;
   const size_t refill_amount = 5 * low_token_threshold;

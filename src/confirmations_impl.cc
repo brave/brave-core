@@ -37,6 +37,8 @@ namespace confirmations {
 ConfirmationsImpl::ConfirmationsImpl(
     ConfirmationsClient* confirmations_client) :
     is_initialized_(false),
+    is_wallet_initialized_(false),
+    is_issuers_initialized_(false),
     step_2_refill_confirmations_timer_id_(0),
     step_4_retrieve_payment_ious_timer_id_(0),
     step_5_cash_in_payment_ious_timer_id_(0),
@@ -1125,8 +1127,6 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
 
     std::cout << "Successfully loaded confirmations state";
 
-    is_initialized_ = true;
-
     RefillConfirmations();
     RetrievePaymentIOUS();
     CashInPaymentIOUS();
@@ -1200,6 +1200,12 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
 void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
   wallet_info_.payment_id = info->payment_id;
   wallet_info_.signing_key = info->signing_key;
+
+  is_wallet_initialized_ = true;
+
+  if (is_issuers_initialized_) {
+    is_initialized_ = true;
+  }
 }
 
 void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
@@ -1216,6 +1222,12 @@ void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
 
   Step1StoreTheServersConfirmationsPublicKeyAndGenerator(
       info->public_key, names, public_keys);
+
+  is_issuers_initialized_ = true;
+
+  if (is_wallet_initialized_) {
+    is_initialized_ = true;
+  }
 }
 
 void ConfirmationsImpl::AdSustained(std::unique_ptr<NotificationInfo> info) {
@@ -1251,6 +1263,7 @@ void ConfirmationsImpl::StartRefillingConfirmations(
 
 void ConfirmationsImpl::RefillConfirmations() {
   if (!is_initialized_) {
+    StartRefillingConfirmations(kOneMinuteInSeconds);
     return;
   }
 
@@ -1306,6 +1319,7 @@ void ConfirmationsImpl::StartRetrievingPaymentIOUS(
 
 void ConfirmationsImpl::RetrievePaymentIOUS() {
   if (!is_initialized_) {
+    StartRetrievingPaymentIOUS(kOneMinuteInSeconds);
     return;
   }
 
@@ -1358,6 +1372,7 @@ void ConfirmationsImpl::StartCashingInPaymentIOUS(
 
 void ConfirmationsImpl::CashInPaymentIOUS() {
   if (!is_initialized_) {
+    StartCashingInPaymentIOUS(kOneMinuteInSeconds);
     return;
   }
 
