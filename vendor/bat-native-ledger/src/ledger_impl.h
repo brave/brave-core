@@ -319,10 +319,10 @@ class LedgerImpl : public ledger::Ledger,
             confirmations::OnLoadCallback callback) override;
   void Reset(const std::string& name,
              confirmations::OnResetCallback callback) override;
-  //std::unique_ptr<confirmations::LogStream> Log(
-  //    const char* file,
-  //    const int line,
-  //    const confirmations::LogLevel log_level) const override;
+  std::unique_ptr<confirmations::LogStream> Log(
+      const char* file,
+      const int line,
+      const confirmations::LogLevel log_level) const override;
 
  private:
   void AddRecurringPayment(const std::string& publisher_id, const double& value) override;

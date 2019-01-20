@@ -7,6 +7,7 @@
 #include <string>
 
 #include "base/logging.h"
+#include "bat/confirmations/confirmations_client.h"
 #include "mojo/public/cpp/bindings/map.h"
 
 namespace bat_ledger {
@@ -57,6 +58,36 @@ class LogStreamImpl : public ledger::LogStream {
  private:
   std::unique_ptr<logging::LogMessage> log_message_;
   DISALLOW_COPY_AND_ASSIGN(LogStreamImpl);
+};
+
+class ConfirmationsLogStreamImpl : public confirmations::LogStream {
+ public:
+  ConfirmationsLogStreamImpl(const char* file,
+                int line,
+                const confirmations::LogLevel log_level) {
+    switch(log_level) {
+      case confirmations::LogLevel::LOG_INFO:
+        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_INFO);
+        break;
+      case confirmations::LogLevel::LOG_WARNING:
+        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_WARNING);
+        break;
+      case confirmations::LogLevel::LOG_ERROR:
+        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_ERROR);
+        break;
+      default:
+        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_VERBOSE);
+        break;
+    }
+  }
+
+  std::ostream& stream() override {
+    return log_message_->stream();
+  }
+
+ private:
+  std::unique_ptr<logging::LogMessage> log_message_;
+  DISALLOW_COPY_AND_ASSIGN(ConfirmationsLogStreamImpl);
 };
 
 void OnSaveConfirmationsState(const ledger::OnSaveCallback& callback,
@@ -175,6 +206,15 @@ std::unique_ptr<ledger::LogStream> BatLedgerClientMojoProxy::Log(
     const char* file, int line, ledger::LogLevel level) const {
   // There's no need to proxy this
   return std::make_unique<LogStreamImpl>(file, line, level);
+}
+
+std::unique_ptr<confirmations::LogStream>
+BatLedgerClientMojoProxy::LogConfirmations(const char* file,
+                                           int line,
+                                           int level) const {
+  // There's no need to proxy this
+  return std::make_unique<ConfirmationsLogStreamImpl>(
+      file, line, static_cast<confirmations::LogLevel>(level));
 }
 
 void BatLedgerClientMojoProxy::OnGrantFinish(ledger::Result result,
