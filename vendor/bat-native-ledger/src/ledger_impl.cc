@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <ctime>
+#include <iostream>
 #include <random>
 #include <sstream>
 #include <vector>
@@ -1240,10 +1241,11 @@ void LedgerImpl::KillTimer(uint32_t timer_id) {
 void LedgerImpl::OnConfirmationsTimer(uint32_t timer_id) {
 }
 
-//std::unique_ptr<confirmations::LogStream> LedgerImpl::Log(
-//    const char* file,
-//    const int line,
-//    const confirmations::LogLevel log_level) const {
-//}
+std::unique_ptr<confirmations::LogStream> LedgerImpl::Log(
+    const char* file,
+    const int line,
+    const confirmations::LogLevel log_level) const {
+  return ledger_client_->LogConfirmations(file, line, log_level);
+}
 
 }  // namespace bat_ledger
