@@ -78,6 +78,7 @@ source_set("ledger") {
   deps = [
     "//third_party/boringssl",
     rebase_path("bat-native-ads", dep_base),
+    rebase_path("bat-native-confirmations", dep_base),
     rebase_path("bat-native-anonize:anonize2", dep_base),
     rebase_path("bip39wally-core-native:bip39wally-core", dep_base),
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
@@ -87,6 +88,5 @@ source_set("ledger") {
   if (brave_ads_enabled && !is_linux) {
     # TODO(bridiver): Required for all platforms once Brave Ads is building on Linux
     deps += [ rebase_path("challenge_bypass_ristretto_ffi", dep_base) ]
-    deps += [ rebase_path("bat-native-confirmations", dep_base) ]
   }
 }
