@@ -21,6 +21,10 @@
 #include "bat/ledger/grant.h"
 #include "bat/ledger/pending_contribution.h"
 
+namespace confirmations {
+class LogStream;
+}
+
 namespace ledger {
 
 LEDGER_EXPORT enum LogLevel {
@@ -163,6 +167,12 @@ class LEDGER_EXPORT LedgerClient {
       const char* file,
       int line,
       int vlog_level) const = 0;
+
+  // Logs confirmations-related debug information
+  virtual std::unique_ptr<confirmations::LogStream> LogConfirmations(
+      const char* file,
+      int line,
+      const int log_level) const = 0;
 
   virtual void OnRestorePublishers(ledger::OnRestoreCallback callback) = 0;
 

@@ -17,6 +17,7 @@
 #include "base/files/file_path.h"
 #include "base/observer_list.h"
 #include "base/memory/weak_ptr.h"
+#include "bat/confirmations/confirmations_client.h"
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -352,10 +353,17 @@ class RewardsServiceImpl : public RewardsService,
                      const char* file,
                      int line,
                      const ledger::LogLevel log_level) const override;
+
   std::unique_ptr<ledger::LogStream> VerboseLog(
                      const char* file,
                      int line,
                      int log_level) const override;
+
+  std::unique_ptr<confirmations::LogStream> LogConfirmations(
+                     const char* file,
+                     int line,
+                     const int log_level) const override;
+
   void OnRestorePublishers(ledger::OnRestoreCallback callback) override;
   void OnPanelPublisherInfoLoaded(
       ledger::PublisherInfoCallback callback,

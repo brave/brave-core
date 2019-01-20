@@ -83,6 +83,10 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   std::unique_ptr<ledger::LogStream> VerboseLog(const char* file,
                                          int line,
                                          int verbosity_level) const override;
+  std::unique_ptr<confirmations::LogStream> LogConfirmations(
+      const char* file,
+      int line,
+      int level) const override;
   void LoadMediaPublisherInfo(
       const std::string& media_key,
       ledger::PublisherInfoCallback callback) override;

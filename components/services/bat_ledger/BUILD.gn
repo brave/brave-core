@@ -21,6 +21,7 @@ static_library("lib") {
   deps = [
     "//base",
     "//brave/vendor/bat-native-ads",
+    "//brave/vendor/bat-native-confirmations",
     "//brave/vendor/bat-native-ledger",
     "//services/service_manager/public/cpp",
   ]
