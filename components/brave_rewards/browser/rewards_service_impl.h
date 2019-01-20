@@ -435,7 +435,7 @@ class RewardsServiceImpl : public RewardsService,
   std::vector<BitmapFetcherService::RequestId> request_ids_;
   std::unique_ptr<base::OneShotTimer> notification_startup_timer_;
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
-  const base::FilePath confirmations_state_base_path_;
+  const base::FilePath confirmations_base_path_;
 
   uint32_t next_timer_id_;
   uint32_t next_confirmations_timer_id_;

@@ -290,6 +290,11 @@ bool ResetOnFileTaskRunner(const base::FilePath& path) {
   return base::DeleteFile(path, false);
 }
 
+void EnsureConfirmationsBaseDirectoryExists(const base::FilePath& path) {
+  if (!DirectoryExists(path))
+    base::CreateDirectory(path);
+}
+
 }  // namespace
 
 bool IsMediaLink(const GURL& url,
@@ -335,10 +340,13 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       private_observer_(
           std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
 #endif
-      confirmations_state_base_path_(
-          profile_->GetPath().AppendASCII("confirmations_state")),
+      confirmations_base_path_(
+          profile_->GetPath().AppendASCII("confirmations_service")),
       next_timer_id_(0),
       next_confirmations_timer_id_(0) {
+  file_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&EnsureConfirmationsBaseDirectoryExists,
+                                confirmations_base_path_));
   // Set up the rewards data source
   content::URLDataSource::Add(profile_,
                               std::make_unique<BraveRewardsSource>(profile_));
@@ -1433,7 +1441,7 @@ void RewardsServiceImpl::SaveConfirmationsState(const std::string& name,
                                                 const std::string& value,
                                                 ledger::OnSaveCallback callback) {
   base::ImportantFileWriter writer(
-      confirmations_state_base_path_.AppendASCII(name), file_task_runner_);
+      confirmations_base_path_.AppendASCII(name), file_task_runner_);
 
   writer.RegisterOnNextWriteCallbacks(
       base::Closure(),
@@ -1451,7 +1459,7 @@ void RewardsServiceImpl::LoadConfirmationsState(
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&LoadOnFileTaskRunner,
-                     confirmations_state_base_path_.AppendASCII(name)),
+                     confirmations_base_path_.AppendASCII(name)),
       base::BindOnce(&RewardsServiceImpl::OnLoadedConfirmationsState,
                      AsWeakPtr(), std::move(callback)));
 }
@@ -1462,7 +1470,7 @@ void RewardsServiceImpl::ResetConfirmationsState(
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&ResetOnFileTaskRunner,
-                     confirmations_state_base_path_.AppendASCII(name)),
+                     confirmations_base_path_.AppendASCII(name)),
       base::BindOnce(&RewardsServiceImpl::OnResetConfirmationsState,
                      AsWeakPtr(), std::move(callback)));
 }
