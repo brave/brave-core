@@ -93,4 +93,11 @@ void MockConfirmationsClient::Reset(
   callback(FAILED);
 }
 
+std::unique_ptr<LogStream> MockConfirmationsClient::Log(
+    const char* file,
+    const int line,
+    const LogLevel log_level) const {
+  return std::make_unique<MockLogStreamImpl>(file, line, log_level);
+}
+
 }  // namespace confirmations
