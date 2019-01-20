@@ -195,6 +195,14 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
 
       OnWalletInitialized(ledger::Result::INVALID_LEDGER_STATE);
     } else {
+      confirmations::WalletInfo confirmations_wallet_info;
+      confirmations_wallet_info.payment_id = bat_state_->GetWalletInfo().paymentId_;
+      confirmations_wallet_info.signing_key =
+      braveledger_bat_helper::getBase64(bat_state_->GetWalletInfo().keyInfoSeed_);
+      bat_confirmations_->SetWalletInfo(
+          std::make_unique<confirmations::WalletInfo>(
+          confirmations_wallet_info));
+
       LoadPublisherState(this);
       bat_contribution_->OnStartUp();
     }
