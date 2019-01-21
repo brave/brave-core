@@ -20,7 +20,7 @@ import {
 import { Tile, TileActionsContainer, TileAction, TileFavicon } from 'brave-ui/features/newTab/default'
 
 // Icons
-import { PinIcon, BookmarkOIcon, BookmarkIcon, CloseStrokeIcon } from 'brave-ui/components/icons'
+import { PinIcon, PinOIcon, BookmarkOIcon, BookmarkIcon, CloseStrokeIcon } from 'brave-ui/components/icons'
 
 const Types = {
   BLOCK: 'block'
@@ -97,7 +97,7 @@ interface Props {
   onToggleBookmark: () => void
   isBookmarked?: boolean
   onPinnedTopSite: () => void
-  isPinned: boolean
+  isPinned?: boolean
   onIgnoredTopSite: () => void
   title: string
   href: string
@@ -123,8 +123,8 @@ class Block extends React.Component<Props, {}> {
       style,
       favicon
     } = this.props
-    const starIcon = isBookmarked ? <BookmarkOIcon /> : <BookmarkIcon />
-    const pinIcon = <PinIcon />
+    const bookmarkIcon = isBookmarked ? <BookmarkIcon /> : <BookmarkOIcon />
+    const pinIcon = isPinned ? <PinIcon /> : <PinOIcon />
 
     return connectDragSource(
       connectDropTarget(
@@ -135,7 +135,7 @@ class Block extends React.Component<Props, {}> {
                 {pinIcon}
               </TileAction>
               <TileAction onClick={onToggleBookmark}>
-                {starIcon}
+                {bookmarkIcon}
               </TileAction>
               <TileAction onClick={onIgnoredTopSite}>
                 <CloseStrokeIcon />
@@ -143,8 +143,8 @@ class Block extends React.Component<Props, {}> {
             </TileActionsContainer>
             {
               isPinned
-              ? <TileAction onClick={onPinnedTopSite} standalone={true}><PinIcon /></TileAction>
-              : null
+                ? <TileAction onClick={onPinnedTopSite} standalone={true}><PinIcon /></TileAction>
+                : null
             }
             <a href={href}>
               <TileFavicon src={favicon} />
