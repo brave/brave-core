@@ -413,7 +413,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "titleBTC", IDS_BRAVE_UI_TITLE_BTC},
         { "titleETH", IDS_BRAVE_UI_TITLE_ETH},
         { "titleLTC", IDS_BRAVE_UI_TITLE_LTC},
-        { "tokenGrant", IDS_BRAVE_UI_TOKEN_GRANT },
+        { "tokenGrantClaimed", IDS_BRAVE_UI_TOKEN_GRANT_CLAIMED },
         { "tokens", IDS_BRAVE_UI_TOKENS },
         { "total", IDS_BRAVE_UI_TOTAL },
         { "transactions", IDS_BRAVE_UI_TRANSACTIONS },
