@@ -390,11 +390,11 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
   auto winner_over_time_category = GetWinnerOverTimeCategory();
 
   LOG(INFO) << "Site visited " << url << ", immediateWinner is "
-            << winning_category << " and winnerOverTime is "
-            << winner_over_time_category << "previous tab url "
-            << last_shown_tab_url_;
+      << winning_category << " and winnerOverTime is "
+      << winner_over_time_category << "previous tab url "
+      << last_shown_tab_url_;
 
-  if (url.compare(last_shown_tab_url_) == 0) {
+  if (last_shown_tab_url_ == url) {
     LoadInfo load_info;
     load_info.tab_id = last_shown_tab_id_;
     load_info.tab_url = last_shown_tab_url_;
