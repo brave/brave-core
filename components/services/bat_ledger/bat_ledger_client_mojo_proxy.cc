@@ -566,7 +566,7 @@ void BatLedgerClientMojoProxy::LoadActivityInfo(
     return;
   }
 
-  bat_ledger_client_->LoadPublisherInfo(filter.ToJson(),
+  bat_ledger_client_->LoadActivityInfo(filter.ToJson(),
       base::BindOnce(&OnLoadActivityInfo, std::move(callback)));
 }
 
