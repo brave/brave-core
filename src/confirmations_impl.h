@@ -6,16 +6,15 @@
 #define BAT_CONFIRMATIONS_CONFIRMATIONS_IMPL_H_
 
 #include <string>
-#include <mutex>
+#include <vector>
 
 #include "brave/vendor/challenge_bypass_ristretto_ffi/src/wrapper.hpp"
 #include "base/values.h"
 #include "bat/confirmations/confirmations.h"
 #include "bat/confirmations/notification_info.h"
 #include "bat/confirmations/issuers_info.h"
-#include "net/url_request/url_fetcher.h"
-#include "net/url_request/url_fetcher_delegate.h"
-#include "net/url_request/url_request_context.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 
 #define CONFIRMATIONS_SIGNATURE_ALGORITHM "ed25519"
 
@@ -23,34 +22,7 @@ namespace confirmations {
 
 using namespace challenge_bypass_ristretto;
 
-class Semaphore {
- public:
-  explicit Semaphore(int count = 0) : count_(count) {}
-
-  void signal() {
-    std::unique_lock<std::mutex> lock(mutex_);
-    count_++;
-    condition_variable_.notify_one();
-  }
-
-  void wait() {
-    std::unique_lock<std::mutex> lock(mutex_);
-
-    while (count_ == 0) {
-      condition_variable_.wait(lock);
-    }
-
-    count_--;
-  }
-
- private:
-  std::mutex mutex_;
-  std::condition_variable condition_variable_;
-  int count_;
-};
-
-class ConfirmationsImpl : public Confirmations,
-                          public net::URLFetcherDelegate {
+class ConfirmationsImpl : public Confirmations {
  public:
   explicit ConfirmationsImpl(ConfirmationsClient* confirmations_client);
   ~ConfirmationsImpl() override;
@@ -71,18 +43,6 @@ class ConfirmationsImpl : public Confirmations,
 
   WalletInfo wallet_info_;
 
-  Semaphore semaphore_;
-  std::string response_;
-  int response_code_;
-
-  void URLFetchSync(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      net::URLFetcher::RequestType request_type);
-  void OnURLFetchComplete(const net::URLFetcher* source) override;
-
   uint32_t step_2_refill_confirmations_timer_id_;
   void StartRefillingConfirmations(const uint64_t start_timer_in);
   void RefillConfirmations();
@@ -90,16 +50,17 @@ class ConfirmationsImpl : public Confirmations,
   bool IsRefillingConfirmations() const;
 
   uint32_t step_4_retrieve_payment_ious_timer_id_;
-  void StartRetrievingPaymentIOUS(const uint64_t start_timer_in);
-  void RetrievePaymentIOUS();
-  void StopRetrievingPaymentIOUS();
-  bool IsRetrievingPaymentIOUS() const;
+  void StartRetrievingPaymentIOUsTimer();
+  void StartRetrievingPaymentIOUs(const uint64_t start_timer_in);
+  void RetrievePaymentIOUs();
+  void StopRetrievingPaymentIOUs();
+  bool IsRetrievingPaymentIOUs() const;
 
   uint32_t step_5_cash_in_payment_ious_timer_id_;
-  void StartCashingInPaymentIOUS(const uint64_t start_timer_in);
-  void CashInPaymentIOUS();
-  void StopCashingInPaymentIOUS();
-  bool IsCashingInPaymentIOUS() const;
+  void StartCashingInPaymentIOUs(const uint64_t start_timer_in);
+  void CashInPaymentIOUs();
+  void StopCashingInPaymentIOUs();
+  bool IsCashingInPaymentIOUs() const;
 
   /////////////////////////////////////////////////////////////////////////////
   // persist these properties
@@ -123,6 +84,20 @@ class ConfirmationsImpl : public Confirmations,
 
   /////////////////////////////////////////////////////////////////////////////
 
+  std::string real_wallet_address_;
+  std::string real_wallet_address_secret_key_;
+  std::string local_server_confirmation_key_;
+  std::vector<std::string> local_original_confirmation_tokens_;
+  std::vector<std::string> local_blinded_confirmation_tokens_;
+  std::string confirmation_id_;
+  std::string local_original_payment_token_;
+  std::string local_blinded_payment_token_;
+  std::string blinded_payment_token_;
+  base::DictionaryValue* map_;
+  std::string bundle_json_;
+
+  /////////////////////////////////////////////////////////////////////////////
+
   std::string GetServerUrl();
   int GetServerPort();
 
@@ -130,13 +105,40 @@ class ConfirmationsImpl : public Confirmations,
       std::string confirmations_GH_pair,
       std::vector<std::string> bat_names,
       std::vector<std::string> bat_keys);
+
   void Step2RefillConfirmationsIfNecessary(
       std::string real_wallet_address,
       std::string real_wallet_address_secret_key,
       std::string server_confirmation_key);
+  void Step2bRefillConfirmationsIfNecessary(
+      const std::string& url,
+      const int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+  void Step2cRefillConfirmationsIfNecessary(
+      const std::string& url,
+      const int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+  void OnStep2RefillConfirmationsIfNecessary(const Result result);
+
   void Step3RedeemConfirmation(std::string real_creative_instance_id);
+  void Step3bRedeemConfirmation(
+      const std::string& url,
+      const int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+  void OnStep3RedeemConfirmation(const Result result);
+
   void Step4RetrievePaymentIOUs();
+
   void Step5CashInPaymentIOUs(std::string real_wallet_address);
+  void Step5bCashInPaymentIOUs(
+      const std::string& url,
+      const int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+  void OnStep5CashInPaymentIOUs(const Result result);
 
   bool VerifyBatchDLEQProof(
       std::string proof_string,
@@ -154,8 +156,8 @@ class ConfirmationsImpl : public Confirmations,
   void ResetState();
   void OnStateReset(const Result result);
 
-  std::string toJSONString();
-  bool FromJSONString(std::string json);
+  std::string ToJSON();
+  bool FromJSON(std::string json);
 
   void VectorConcat(
       std::vector<std::string>* dest,
@@ -163,7 +165,14 @@ class ConfirmationsImpl : public Confirmations,
   std::unique_ptr<base::ListValue> Munge(std::vector<std::string> v);
   std::vector<std::string> Unmunge(base::Value *value);
   std::string BATNameFromBATPublicKey(std::string token);
-  bool ProcessIOUBundle(std::string bundle_json);
+
+  void ProcessIOUBundle(std::string bundle_json);
+  void ProcessIOUBundleStep2(
+      const std::string& url,
+      const int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+  void OnProcessIOUBundle(const Result result);
 
   // convert std::string of ascii-hex to raw data vector<uint8_t>
   std::vector<uint8_t> RawDataBytesVectorFromASCIIHexString(std::string ascii);

@@ -38,6 +38,14 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD1(KillTimer, void(
       const uint32_t timer_id));
 
+  MOCK_METHOD6(URLRequest, void(
+      const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& content_type,
+      const URLRequestMethod method,
+      URLRequestCallback callback));
+
   MOCK_METHOD3(Save, void(
       const std::string& name,
       const std::string& value,

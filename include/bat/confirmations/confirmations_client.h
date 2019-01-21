@@ -12,6 +12,7 @@
 #include <functional>
 #include <sstream>
 #include <fstream>
+#include <functional>
 
 #include "bat/confirmations/export.h"
 #include "bat/confirmations/wallet_info.h"
@@ -29,11 +30,20 @@ enum CONFIRMATIONS_EXPORT Result {
   FAILED
 };
 
+enum CONFIRMATIONS_EXPORT URLRequestMethod {
+  GET = 0,
+  PUT = 1,
+  POST = 2
+};
+
 class CONFIRMATIONS_EXPORT LogStream {
  public:
   virtual ~LogStream() = default;
   virtual std::ostream& stream() = 0;
 };
+
+using URLRequestCallback = std::function<void(const int, const std::string&,
+  const std::map<std::string, std::string>& headers)>;
 
 using OnSaveCallback = std::function<void(const Result)>;
 using OnLoadCallback = std::function<void(const Result, const std::string&)>;
@@ -51,6 +61,15 @@ class CONFIRMATIONS_EXPORT ConfirmationsClient {
 
   // Should destroy the timer associated with the specified timer identifier
   virtual void KillTimer(uint32_t timer_id) = 0;
+
+  // Should start a URL request
+  virtual void URLRequest(
+      const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& content_type,
+      const URLRequestMethod method,
+      URLRequestCallback callback) = 0;
 
   // Should save a value to persistent storage
   virtual void Save(

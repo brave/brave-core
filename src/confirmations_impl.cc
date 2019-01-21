@@ -8,11 +8,11 @@
 #include "logging.h"
 #include "static_values.h"
 #include "base/rand_util.h"
-#include "chrome/browser/browser_process.h"
 
 #include <vector>
 #include <iostream>
 #include <memory>
+#include <map>
 #include <mutex>
 #include <condition_variable>
 
@@ -26,9 +26,6 @@
 #include <openssl/digest.h>
 #include <openssl/hkdf.h>
 #include <openssl/sha.h>
-
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 
 using namespace std::placeholders;
 
@@ -48,61 +45,8 @@ ConfirmationsImpl::ConfirmationsImpl(
 
 ConfirmationsImpl::~ConfirmationsImpl() {
   StopRefillingConfirmations();
-  StopRetrievingPaymentIOUS();
-  StopCashingInPaymentIOUS();
-}
-
-void ConfirmationsImpl::URLFetchSync(
-    const std::string& url,
-    const std::vector<std::string>& headers,
-    const std::string& content,
-    const std::string& content_type,
-    net::URLFetcher::RequestType request_type) {
-  net::URLFetcher* fetcher = net::URLFetcher::Create(
-      GURL(url), request_type, this).release();
-  fetcher->SetRequestContext(g_browser_process->system_request_context());
-
-  for (size_t i = 0; i < headers.size(); i++) {
-    fetcher->AddExtraRequestHeader(headers[i]);
-  }
-
-  if (!content.empty()) {
-    fetcher->SetUploadData(content_type, content);
-  }
-
-  fetcher->Start();
-
-  semaphore_.wait();
-}
-
-void ConfirmationsImpl::OnURLFetchComplete(
-    const net::URLFetcher* source) {
-  int response_code = source->GetResponseCode();
-  std::string body;
-  std::map<std::string, std::string> headers;
-  scoped_refptr<net::HttpResponseHeaders> headersList =
-      source->GetResponseHeaders();
-
-  if (headersList) {
-    size_t iter = 0;
-    std::string key;
-    std::string value;
-    while (headersList->EnumerateHeaderLines(&iter, &key, &value)) {
-      key = base::ToLowerASCII(key);
-      headers[key] = value;
-    }
-  }
-
-  if (response_code != net::URLFetcher::ResponseCode::RESPONSE_CODE_INVALID &&
-      source->GetStatus().is_success()) {
-    source->GetResponseAsString(&body);
-  }
-
-  delete source;
-
-  response_ = body;
-  response_code_ = response_code;
-  semaphore_.signal();
+  StopRetrievingPaymentIOUs();
+  StopCashingInPaymentIOUs();
 }
 
 void ConfirmationsImpl::VectorConcat(
@@ -175,7 +119,7 @@ void ConfirmationsImpl::Step1StoreTheServersConfirmationsPublicKeyAndGenerator(
   BLOG(INFO) << "step1.1 : key: " << this->server_confirmation_key_;
 }
 
-std::string ConfirmationsImpl::toJSONString() {
+std::string ConfirmationsImpl::ToJSON() {
   base::DictionaryValue dict;
 
   dict.SetKey("issuers_version",
@@ -211,12 +155,16 @@ void ConfirmationsImpl::Step2RefillConfirmationsIfNecessary(
     std::string local_server_confirmation_key) {
   if (this->blinded_confirmation_tokens.size() > low_token_threshold) {
     BLOG(INFO) << "Not necessary to refill confirmations";
-
+    OnStep2RefillConfirmationsIfNecessary(FAILED);
     return;
   }
 
-  std::vector<std::string> local_original_confirmation_tokens = {};
-  std::vector<std::string> local_blinded_confirmation_tokens = {};
+  real_wallet_address_ = real_wallet_address;
+  real_wallet_address_secret_key_ = real_wallet_address_secret_key;
+  local_server_confirmation_key_ = local_server_confirmation_key;
+
+  local_original_confirmation_tokens_ = {};
+  local_blinded_confirmation_tokens_ = {};
 
   size_t needed = refill_amount - blinded_confirmation_tokens.size();
 
@@ -231,173 +179,215 @@ void ConfirmationsImpl::Step2RefillConfirmationsIfNecessary(
 
     // client stores the original token and the blinded token
     // will send blinded token to server
-    local_original_confirmation_tokens.push_back(token_base64);
-    local_blinded_confirmation_tokens.push_back(blinded_token_base64);
+    local_original_confirmation_tokens_.push_back(token_base64);
+    local_blinded_confirmation_tokens_.push_back(blinded_token_base64);
   }
 
   BLOG(INFO) << "step2.1 : batch generate, count: "
-      << local_original_confirmation_tokens.size();
+      << local_original_confirmation_tokens_.size();
 
-  {
-    std::string digest = "digest";
-    std::string primary = "primary";
+  std::string digest = "digest";
+  std::string primary = "primary";
 
-    ///////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////
 
-    std::string build = "";
+  std::string build = "";
 
-    build.append("{\"blindedTokens\":");
-    build.append("[");
-    std::vector<std::string> a = local_blinded_confirmation_tokens;
+  build.append("{\"blindedTokens\":");
+  build.append("[");
+  std::vector<std::string> a = local_blinded_confirmation_tokens_;
 
-    for (size_t i = 0; i < a.size(); i++) {
-      if (i > 0) {
-        build.append(",");
-      }
-      build.append("\"");
-      build.append(a[i]);
-      build.append("\"");
+  for (size_t i = 0; i < a.size(); i++) {
+    if (i > 0) {
+      build.append(",");
     }
+    build.append("\"");
+    build.append(a[i]);
+    build.append("\"");
+  }
 
-    build.append("]");
-    build.append("}");
+  build.append("]");
+  build.append("}");
 
-    std::string real_body = build;
+  std::string real_body = build;
 
-    std::vector<uint8_t> real_sha_raw = this->GetSHA256(real_body);
-    std::string real_body_sha_256_b64 = this->GetBase64(real_sha_raw);
+  std::vector<uint8_t> real_sha_raw = this->GetSHA256(real_body);
+  std::string real_body_sha_256_b64 = this->GetBase64(real_sha_raw);
 
-    std::vector<uint8_t> real_skey = this->RawDataBytesVectorFromASCIIHexString(
-        real_wallet_address_secret_key);
+  std::vector<uint8_t> real_skey = this->RawDataBytesVectorFromASCIIHexString(
+      real_wallet_address_secret_key_);
 
-    std::string real_digest_field = std::string("SHA-256=").append(
-        real_body_sha_256_b64);
+  std::string real_digest_field = std::string("SHA-256=").append(
+      real_body_sha_256_b64);
 
-    std::string real_signature_field = this->Sign(
-        &digest, &real_digest_field, 1, primary, real_skey);
+  std::string real_signature_field = this->Sign(
+      &digest, &real_digest_field, 1, primary, real_skey);
 
-    ///////////////////////////////////////////////////////////////////////////
-    std::string endpoint = std::string("/v1/confirmation/token/").append(
-        real_wallet_address);
-    std::string url = GetServerUrl().append(endpoint);
-    std::vector<std::string> headers = {};
-    headers.push_back(std::string("digest: ").append(real_digest_field));
-    headers.push_back(std::string("signature: ").append(real_signature_field));
-    headers.push_back(std::string("accept: ").append("application/json"));
-    std::string content_type = "application/json";
-    URLFetchSync(url, headers, real_body, content_type,
-        net::URLFetcher::RequestType::POST);
+  ///////////////////////////////////////////////////////////////////////////
 
-    // This should be the `nonce` in the return. we need to
-    // make sure we get the nonce in the separate request observation. seems
-    // like we should move all of this (the tokens in-progress) data to a map
-    // keyed on the nonce, and then step the storage through (pump) in a
-    // state-wise (dfa) as well, so the storage types are coded (named) on a
-    // dfa-state-respecting basis
+  std::string endpoint = std::string("/v1/confirmation/token/").append(
+      real_wallet_address_);
+  std::string server_url = GetServerUrl().append(endpoint);
+  std::vector<std::string> headers = {};
+  headers.push_back(std::string("digest: ").append(real_digest_field));
+  headers.push_back(std::string("signature: ").append(real_signature_field));
+  headers.push_back(std::string("accept: ").append("application/json"));
+  std::string content_type = "application/json";
 
-    std::unique_ptr<base::Value> value(base::JSONReader::Read(response_));
-    base::DictionaryValue* dict;
-    if (!value->GetAsDictionary(&dict)) {
-      BLOG(ERROR) << "2.2 post resp: no dict" << "\n";
-      return;
-    }
+  auto callback = std::bind(
+      &ConfirmationsImpl::Step2bRefillConfirmationsIfNecessary,
+      this, server_url, _1, _2, _3);
 
-    base::Value *v;
-    if (!(v = dict->FindKey("nonce"))) {
-      BLOG(ERROR) << "2.2 no nonce\n";
-      return;
-    }
+  confirmations_client_->URLRequest(server_url, headers, real_body,
+      content_type, URLRequestMethod::POST, callback);
+}
 
-    std::string nonce = v->GetString();
+void ConfirmationsImpl::Step2bRefillConfirmationsIfNecessary(
+    const std::string& url,
+    const int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers) {
+  // This should be the `nonce` in the return. we need to
+  // make sure we get the nonce in the separate request observation. seems
+  // like we should move all of this (the tokens in-progress) data to a map
+  // keyed on the nonce, and then step the storage through (pump) in a
+  // state-wise (dfa) as well, so the storage types are coded (named) on a
+  // dfa-state-respecting basis
 
-    // Instead of pursuing true asynchronicity at this point, what we can do is
-    // sleep for a minute or two and blow away any work to this point on failure
-    // this solves the problem for now since the tokens have no value at this
-    // point
+  std::unique_ptr<base::Value> value(base::JSONReader::Read(response));
+  base::DictionaryValue* dict;
+  if (!value->GetAsDictionary(&dict)) {
+    BLOG(ERROR) << "2.2 post resp: no dict" << "\n";
+    OnStep2RefillConfirmationsIfNecessary(FAILED);
+    return;
+  }
 
-    // STEP 2.3 This is done blocking and assumes success but we need to
-    // separate it more and account for the possibility of failures
+  base::Value *v;
+  if (!(v = dict->FindKey("nonce"))) {
+    BLOG(ERROR) << "2.2 no nonce\n";
+    OnStep2RefillConfirmationsIfNecessary(FAILED);
+    return;
+  }
 
-    {
-      BLOG(INFO) << "step2.3 : GET /v1/confirmation/token/{payment_id}?nonce=: "
-          << nonce;
+  std::string nonce = v->GetString();
 
-      std::string endpoint = std::string("/v1/confirmation/token/").append(
-          real_wallet_address).append("?nonce=").append(nonce);
-      std::string url = GetServerUrl().append(endpoint);
-      URLFetchSync(url, {}, "", "", net::URLFetcher::RequestType::GET);
+  // Instead of pursuing true asynchronicity at this point, what we can do is
+  // sleep for a minute or two and blow away any work to this point on failure
+  // this solves the problem for now since the tokens have no value at this
+  // point
 
-      /////////////////////////////////////////////////////////////////////////
+  // STEP 2.3 This is done blocking and assumes success but we need to
+  // separate it more and account for the possibility of failures
 
-      // response_: {"batchProof":"r2qx2h5ENHASgBxEhN2TjUjtC2L2McDN6g/lZ+nTaQ6q+
-      // 6TZH0InhxRHIp0vdUlSbMMCHaPdLYsj/IJbseAtCw==","signedTokens":["VI27MCax4
-      // V9Gk60uC1dwCHHExHN2WbPwwlJk87fYAyo=","mhFmcWHLk5X8v+a/X0aea24OfGWsfAwWb
-      // P7RAeXXLV4="]}
+  BLOG(INFO) << "step2.3 : GET /v1/confirmation/token/{payment_id}?nonce=: "
+      << nonce;
 
-      std::unique_ptr<base::Value> value(base::JSONReader::Read(response_));
-      base::DictionaryValue* dict;
-      if (!value->GetAsDictionary(&dict)) {
-        BLOG(ERROR) << "2.3 get resp: no dict" << "\n";
-        return;
-      }
+  std::string endpoint = std::string("/v1/confirmation/token/").append(
+      real_wallet_address_).append("?nonce=").append(nonce);
+  std::string server_url = GetServerUrl().append(endpoint);
 
-      base::Value *v;
+  auto callback = std::bind(
+      &ConfirmationsImpl::Step2cRefillConfirmationsIfNecessary,
+      this, server_url, _1, _2, _3);
 
-      if (!(v = dict->FindKey("batchProof"))) {
-        BLOG(ERROR) << "2.3 no batchProof\n";
-        return;
-      }
+  confirmations_client_->URLRequest(server_url, {}, "", "",
+      URLRequestMethod::GET, callback);
+}
 
-      std::string real_batch_proof = v->GetString();
+void ConfirmationsImpl::Step2cRefillConfirmationsIfNecessary(
+    const std::string& url,
+    const int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers) {
+  // response_: {"batchProof":"r2qx2h5ENHASgBxEhN2TjUjtC2L2McDN6g/lZ+nTaQ6q+
+  // 6TZH0InhxRHIp0vdUlSbMMCHaPdLYsj/IJbseAtCw==","signedTokens":["VI27MCax4
+  // V9Gk60uC1dwCHHExHN2WbPwwlJk87fYAyo=","mhFmcWHLk5X8v+a/X0aea24OfGWsfAwWb
+  // P7RAeXXLV4="]}
 
-      if (!(v = dict->FindKey("signedTokens"))) {
-        BLOG(ERROR) << "2.3 no signedTokens\n";
-        return;
-      }
+  std::unique_ptr<base::Value> value(base::JSONReader::Read(response));
+  base::DictionaryValue* dict;
+  if (!value->GetAsDictionary(&dict)) {
+    BLOG(ERROR) << "2.3 get resp: no dict" << "\n";
+    OnStep2RefillConfirmationsIfNecessary(FAILED);
+    return;
+  }
 
-      base::ListValue list(v->GetList());
+  base::Value *v;
 
-      std::vector<std::string> server_signed_blinded_confirmations = {};
+  if (!(v = dict->FindKey("batchProof"))) {
+    BLOG(ERROR) << "2.3 no batchProof\n";
+    OnStep2RefillConfirmationsIfNecessary(FAILED);
+    return;
+  }
 
-      for (size_t i = 0; i < list.GetSize(); i++) {
-        base::Value *x;
-        list.Get(i, &x);
+  std::string real_batch_proof = v->GetString();
 
-        auto sbc = x->GetString();
+  if (!(v = dict->FindKey("signedTokens"))) {
+    BLOG(ERROR) << "2.3 no signedTokens\n";
+    OnStep2RefillConfirmationsIfNecessary(FAILED);
+    return;
+  }
 
-        server_signed_blinded_confirmations.push_back(sbc);
-      }
+  base::ListValue list(v->GetList());
 
-      bool real_verified = this->VerifyBatchDLEQProof(
-          real_batch_proof,
-          local_blinded_confirmation_tokens,
-          server_signed_blinded_confirmations,
-          local_server_confirmation_key);
-      if (!real_verified) {
-        BLOG(ERROR) << "ERROR: Server confirmations proof invalid";
-        return;
-      }
+  std::vector<std::string> server_signed_blinded_confirmations = {};
 
-      // finally, if everything succeeded we'll modify object state and
-      // persist
-      BLOG(INFO) <<
-          "step2.4 : store the signed blinded confirmations tokens & pre data";
+  for (size_t i = 0; i < list.GetSize(); i++) {
+    base::Value *x;
+    list.Get(i, &x);
 
-      VectorConcat(&this->original_confirmation_tokens,
-          &local_original_confirmation_tokens);
-      VectorConcat(&this->blinded_confirmation_tokens,
-          &local_blinded_confirmation_tokens);
-      VectorConcat(&this->signed_blinded_confirmation_tokens,
-          &server_signed_blinded_confirmations);
-      this->SaveState();
-    }  // 2.3
-  }  // 2.1
+    auto sbc = x->GetString();
+
+    server_signed_blinded_confirmations.push_back(sbc);
+  }
+
+  bool real_verified = this->VerifyBatchDLEQProof(
+      real_batch_proof,
+      local_blinded_confirmation_tokens_,
+      server_signed_blinded_confirmations,
+      local_server_confirmation_key_);
+  if (!real_verified) {
+    BLOG(ERROR) << "ERROR: Server confirmations proof invalid";
+    OnStep2RefillConfirmationsIfNecessary(FAILED);
+    return;
+  }
+
+  // finally, if everything succeeded we'll modify object state and
+  // persist
+  BLOG(INFO) <<
+      "step2.4 : store the signed blinded confirmations tokens & pre data";
+
+  VectorConcat(&this->original_confirmation_tokens,
+      &local_original_confirmation_tokens_);
+  VectorConcat(&this->blinded_confirmation_tokens,
+      &local_blinded_confirmation_tokens_);
+  VectorConcat(&this->signed_blinded_confirmation_tokens,
+      &server_signed_blinded_confirmations);
+  this->SaveState();
+
+  OnStep2RefillConfirmationsIfNecessary(SUCCESS);
+}
+
+void ConfirmationsImpl::OnStep2RefillConfirmationsIfNecessary(
+    const Result result) {
+  if (result == FAILED) {
+    BLOG(ERROR) << "OnStep2RefillConfirmationsIfNecessary failed";
+  } else {
+    BLOG(INFO) << "OnStep2RefillConfirmationsIfNecessary succeeded";
+  }
+
+  auto start_timer_in = kRefillConfirmationsAfterSeconds;
+  auto rand_delay = base::RandInt(0, start_timer_in / 10);
+  start_timer_in += rand_delay;
+
+  StartRefillingConfirmations(start_timer_in);
 }
 
 void ConfirmationsImpl::Step3RedeemConfirmation(
     std::string real_creative_instance_id) {
   if (this->signed_blinded_confirmation_tokens.size() <= 0) {
     BLOG(INFO) << "ERROR: step 3.1a, no signed blinded confirmation tokens";
+    OnStep3RedeemConfirmation(FAILED);
     return;
   }
 
@@ -438,14 +428,14 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
   BlindedToken blinded_token = token.blind();
   std::string blinded_token_base64 = blinded_token.encode_base64();
 
-  std::string local_original_payment_token = token_base64;
-  std::string local_blinded_payment_token = blinded_token_base64;
+  local_original_payment_token_ = token_base64;
+  local_blinded_payment_token_ = blinded_token_base64;
 
   // what's `t`? local_unblinded_signed_confirmation_token
   // what's `MAC_{sk}(R)`? item from blinded_payment_tokens
 
   // prePaymentToken changed to blindedPaymentToken
-  std::string blindedPaymentToken = local_blinded_payment_token;
+  std::string blindedPaymentToken = local_blinded_payment_token_;
   std::string json;
 
   // build body of POST request
@@ -486,51 +476,61 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
 
   // 3 pieces we need for our POST request, 1 for URL, 1 for body, and 1 for URL
   // that depends on body
-  std::string confirmation_id = base::GenerateGUID();
+  confirmation_id_ = base::GenerateGUID();
   std::string real_body = json;
   std::string credential = uri_encoded;
 
   /////////////////////////////////////////////////////////////////////////////
 
-  // step_3_1c POST /v1/confirmation/{confirmation_id}/{credential}, which is
+  // step_3_1c POST /v1/confirmation/{confirmation_id_}/{credential}, which is
   // (t, MAC_(sk)(R))
   BLOG(INFO) <<
-      "step3.1c: POST /v1/confirmation/{confirmation_id}/{credential} "
-      << confirmation_id;
+      "step3.1c: POST /v1/confirmation/{confirmation_id_}/{credential} "
+      << confirmation_id_;
 
   std::string endpoint = std::string("/v1/confirmation/").append(
-      confirmation_id).append("/").append(credential);
-  std::string url = GetServerUrl().append(endpoint);
+      confirmation_id_).append("/").append(credential);
+  std::string server_url = GetServerUrl().append(endpoint);
   std::vector<std::string> headers = {};
   headers.push_back(std::string("accept: ").append("application/json"));
   std::string content_type = "application/json";
-  URLFetchSync(url, headers, real_body, content_type,
-      net::URLFetcher::RequestType::POST);
 
-  /////////////////////////////////////////////////////////////////////////////
+  auto callback = std::bind(&ConfirmationsImpl::Step3bRedeemConfirmation,
+      this, server_url, _1, _2, _3);
 
-  if (response_code_ == 201) {  // 201 - created
-    std::unique_ptr<base::Value> value(base::JSONReader::Read(response_));
+  confirmations_client_->URLRequest(server_url, headers, real_body,
+      content_type, URLRequestMethod::POST, callback);
+}
+
+void ConfirmationsImpl::Step3bRedeemConfirmation(
+    const std::string& url,
+    const int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers) {
+  if (response_status_code == 201) {  // 201 - created
+    std::unique_ptr<base::Value> value(base::JSONReader::Read(response));
     base::DictionaryValue* dict;
     if (!value->GetAsDictionary(&dict)) {
       BLOG(ERROR) << "no 3.1c resp dict" << "\n";
+      OnStep3RedeemConfirmation(FAILED);
       return;
     }
 
     base::Value *v;
     if (!(v = dict->FindKey("id"))) {
       BLOG(ERROR) << "3.1c could not get id\n";
+      OnStep3RedeemConfirmation(FAILED);
       return;
     }
 
     std::string id31 = v->GetString();
-    DCHECK(confirmation_id == id31);
+    DCHECK(confirmation_id_ == id31);
 
     // check return code, check json for `id` key
+    //   ✓ confirmation_id_
     // for bundle:
-    //   ✓ confirmation_id
-    //   ✓ local_original_payment_token
-    //   ✓ local_blinded_payment_token - we do need: for DLEQ proof
+    //   ✓ local_original_payment_token_
+    //   ✓ local_blinded_payment_token_ - we do need: for DLEQ proof
     //   ✗ bundle_timestamp - nice to have in case we want to expire later
 
     std::string timestamp = std::to_string(
@@ -540,11 +540,11 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
 
     base::DictionaryValue bundle;
     bundle.SetKey("confirmation_id",
-        base::Value(confirmation_id));
+        base::Value(confirmation_id_));
     bundle.SetKey("original_payment_token",
-        base::Value(local_original_payment_token));
+        base::Value(local_original_payment_token_));
     bundle.SetKey("blinded_payment_token",
-        base::Value(local_blinded_payment_token));
+        base::Value(local_blinded_payment_token_));
     bundle.SetKey("bundle_timestamp",
         base::Value(timestamp));
 
@@ -552,648 +552,753 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
     base::JSONWriter::Write(bundle, &bundle_json);
     this->payment_token_json_bundles.push_back(bundle_json);
     this->SaveState();
+
+    OnStep3RedeemConfirmation(SUCCESS);
+    return;
+  }
+
+  OnStep3RedeemConfirmation(FAILED);
+}
+
+void ConfirmationsImpl::OnStep3RedeemConfirmation(
+    const Result result) {
+  if (result == FAILED) {
+    BLOG(ERROR) << "OnStep3RedeemConfirmation failed";
+  } else {
+    BLOG(INFO) << "OnStep3RedeemConfirmation succeeded";
   }
 }
 
-  bool ConfirmationsImpl::ProcessIOUBundle(std::string bundle_json) {
-    bool unfinished = false;
-    bool finished   = true;
+void ConfirmationsImpl::ProcessIOUBundle(std::string bundle_json) {
+  std::string confirmation_id;
+  std::string original_payment_token;
 
-    std::string confirmation_id;
-    std::string original_payment_token;
-    std::string blinded_payment_token;
+
+  bundle_json_ = bundle_json;
+  std::unique_ptr<base::Value> bundle_value(
+      base::JSONReader::Read(bundle_json_));
+  if (!bundle_value->GetAsDictionary(&map_)) {
+    BLOG(ERROR) << "no 4 process iou bundle dict" << "\n";
+    OnProcessIOUBundle(FAILED);
+    return;
+  }
+
+  base::Value *u;
+
+  if (!(u = map_->FindKey("confirmation_id"))) {
+    BLOG(ERROR) << "4 process iou bundle, could not get confirmation_id";
+    OnProcessIOUBundle(FAILED);
+    return;
+  }
+  confirmation_id = u->GetString();
+
+  if (!(u = map_->FindKey("original_payment_token"))) {
+    BLOG(ERROR) <<
+        "4 process iou bundle, could not get original_payment_token";
+    OnProcessIOUBundle(FAILED);
+    return;
+  }
+  original_payment_token = u->GetString();
+
+  if (!(u = map_->FindKey("blinded_payment_token"))) {
+    BLOG(ERROR) <<
+        "4 process iou bundle, could not get blinded_payment_token";
+    OnProcessIOUBundle(FAILED);
+    return;
+  }
+  blinded_payment_token_ = u->GetString();
+
+  // 4.1 GET /v1/confirmation/{confirmation_id}/paymentToken
+  BLOG(INFO) <<
+      "step4.1 : GET /v1/confirmation/{confirmation_id}/paymentToken";
+
+  std::string endpoint = std::string("/v1/confirmation/").append(
+      confirmation_id).append("/paymentToken");
+  std::string server_url = GetServerUrl().append(endpoint);
+
+  auto callback = std::bind(
+      &ConfirmationsImpl::ProcessIOUBundleStep2, this, server_url, _1, _2, _3);
+
+  confirmations_client_->URLRequest(server_url, {}, "", "",
+      URLRequestMethod::GET, callback);
+}
+
+void ConfirmationsImpl::ProcessIOUBundleStep2(
+    const std::string& url,
+    const int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers) {
+  if (!(response_status_code == 200 || response_status_code == 202)) {
+    // something broke before server could decide paid:true/false
+    BLOG(ERROR) << "ProcessIOUBundle response code: " << response_status_code;
+    OnProcessIOUBundle(FAILED);
+    return;
+  }
+
+  // 2018.12.10 apparently, server side has changed to always pay tokens, so
+  // we won't recv 202 response?
+  if (response_status_code == 202) {  // paid:false response
+    // 1. collect estimateToken from JSON
+    // 2. derive estimate
+
+    std::unique_ptr<base::Value> value(base::JSONReader::Read(response));
+    base::DictionaryValue* dict;
+    if (!value->GetAsDictionary(&dict)) {
+      BLOG(ERROR) << "4.1 202 no dict" << "\n";
+      OnProcessIOUBundle(FAILED);
+      return;
+    }
+
+    base::Value *v;
+    if (!(v = dict->FindKey("estimateToken"))) {
+      BLOG(ERROR) << "4.1 202 no estimateToken\n";
+      OnProcessIOUBundle(FAILED);
+      return;
+    }
+
+    base::DictionaryValue* et;
+    if (!v->GetAsDictionary(&et)) {
+      BLOG(ERROR) << "4.1 202 no eT dict" << "\n";
+      OnProcessIOUBundle(FAILED);
+      return;
+    }
+
+    if (!(v = et->FindKey("publicKey"))) {
+      BLOG(ERROR) << "4.1 202 no publicKey\n";
+      OnProcessIOUBundle(FAILED);
+      return;
+    }
+
+    std::string token = v->GetString();
+    std::string name = this->BATNameFromBATPublicKey(token);
+    if (name != "") {
+      std::string estimated_payment_worth = name;
+    } else {
+      BLOG(ERROR) << "Step 4.1 202 verification empty name \n";
+    }
+
+    OnProcessIOUBundle(FAILED);  // here
+    return;
+  }
+
+  if (response_status_code == 200) {  // paid:true response
+    base::Value *v;
+    std::unique_ptr<base::Value> value(base::JSONReader::Read(response));
+    base::DictionaryValue* dict;
+    if (!value->GetAsDictionary(&dict)) {
+      BLOG(ERROR) << "4.1 200 no dict" << "\n";
+      OnProcessIOUBundle(FAILED);
+      return;
+    }
+
+    if (!(v = dict->FindKey("id"))) {
+      BLOG(ERROR) << "4.1 200 no id\n";
+      OnProcessIOUBundle(FAILED);
+      return;
+    }
+    std::string id = v->GetString();
+
+    if (!(v = dict->FindKey("paymentToken"))) {
+      BLOG(ERROR) << "4.1 200 no paymentToken\n";
+      OnProcessIOUBundle(FAILED);
+      return;
+    }
+
+    base::DictionaryValue* pt;
+    if (!v->GetAsDictionary(&pt)) {
+      BLOG(ERROR) << "4.1 200 no pT dict" << "\n";
+      OnProcessIOUBundle(FAILED);
+      return;
+    }
+
+    if (!(v = pt->FindKey("publicKey"))) {
+      BLOG(ERROR) << "4.1 200 no publicKey\n";
+      OnProcessIOUBundle(FAILED);
+      return;
+    }
+    std::string publicKey = v->GetString();
+
+    if (!(v = pt->FindKey("batchProof"))) {
+      BLOG(ERROR) << "4.1 200 no batchProof\n";
+      OnProcessIOUBundle(FAILED);
+      return;
+    }
+    std::string batchProof = v->GetString();
+
+    if (!(v = pt->FindKey("signedTokens"))) {
+      BLOG(ERROR) << "4.1 200 could not get signedTokens\n";
+      OnProcessIOUBundle(FAILED);
+      return;
+    }
+
+    base::ListValue signedTokensList(v->GetList());
+    std::vector<std::string> signedBlindedTokens = {};
+
+    if (signedTokensList.GetSize() != 1) {
+      BLOG(ERROR) <<
+          "4.1 200 currently unsupported size for signedTokens array\n";
+      OnProcessIOUBundle(FAILED);
+      return;
+    }
+
+    for (size_t i = 0; i < signedTokensList.GetSize(); i++) {
+      base::Value *x;
+      signedTokensList.Get(i, &x);
+      signedBlindedTokens.push_back(x->GetString());
+    }
+
+    std::vector<std::string> local_blinded_payment_tokens =
+        {blinded_payment_token_};
+
+    bool real_verified = this->VerifyBatchDLEQProof(
+        batchProof,
+        local_blinded_payment_tokens,
+        signedBlindedTokens,
+        publicKey);
+
+    if (!real_verified) {
+      // 2018.11.29 kevin - ok to log these only (maybe forever) but don't
+      // consider failing until after we're versioned on "issuers" private
+      // keys
+      BLOG(ERROR) << "ERROR: Real payment proof invalid";
+    }
+
+    std::string name = this->BATNameFromBATPublicKey(publicKey);
+    std::string payment_worth = "";
+    if (name != "") {
+      payment_worth = name;
+    } else {
+      BLOG(ERROR) << "Step 4.1/4.2 200 verification empty name \n";
+    }
 
     std::unique_ptr<base::Value> bundle_value(
-        base::JSONReader::Read(bundle_json));
+        base::JSONReader::Read(bundle_json_));
+    if (!bundle_value->GetAsDictionary(&map_)) {
+      BLOG(ERROR) << "no 4.2 process iou bundle dict" << "\n";
+      OnProcessIOUBundle(FAILED);
+      return;
+    }
+
+    for (auto signedBlindedPaymentToken : signedBlindedTokens) {
+      BLOG(INFO) << "step4.2 : store signed blinded payment token";
+      map_->SetKey("signed_blinded_payment_token",
+            base::Value(signedBlindedPaymentToken));
+      map_->SetKey("server_payment_key", base::Value(publicKey));
+      map_->SetKey("payment_worth", base::Value(payment_worth));
+
+      std::string json_with_signed;
+      base::JSONWriter::Write(*map_, &json_with_signed);
+
+      this->signed_blinded_payment_token_json_bundles.push_back(
+          json_with_signed);
+      this->SaveState();
+    }
+
+    OnProcessIOUBundle(SUCCESS);
+    return;
+  }
+
+  OnProcessIOUBundle(FAILED);
+}
+
+void ConfirmationsImpl::OnProcessIOUBundle(const Result result) {
+  if (result == FAILED) {
+    BLOG(WARNING) << "Failed to process IOU bundle adding to back of queue";
+
+    auto payment_bundle_json = this->payment_token_json_bundles.front();
+    payment_token_json_bundles.push_back(payment_bundle_json);
+  } else {
+    BLOG(INFO) << "Successfully processed IOU bundle removing from queue";
+  }
+
+  this->payment_token_json_bundles.erase(
+      this->payment_token_json_bundles.begin());
+
+  this->SaveState();
+
+  StartRetrievingPaymentIOUsTimer();
+}
+
+void ConfirmationsImpl::Step4RetrievePaymentIOUs() {
+  if (this->payment_token_json_bundles.size() == 0) {
+    StartRetrievingPaymentIOUsTimer();
+    return;
+  }
+
+  auto payment_bundle_json = this->payment_token_json_bundles.front();
+  ProcessIOUBundle(payment_bundle_json);
+}
+
+void ConfirmationsImpl::StartRetrievingPaymentIOUsTimer() {
+  auto start_timer_in = kRetrievePaymentIOUsAfterSeconds;
+  auto rand_delay = base::RandInt(0, start_timer_in / 10);
+  start_timer_in += rand_delay;
+
+  StartRetrievingPaymentIOUs(start_timer_in);
+}
+
+void ConfirmationsImpl::Step5CashInPaymentIOUs(
+    std::string real_wallet_address) {
+  BLOG(INFO) << "step5.1 : unblind signed blinded payments";
+
+  size_t n = this->signed_blinded_payment_token_json_bundles.size();
+
+  if (n <= 0) {
+    OnStep5CashInPaymentIOUs(SUCCESS);
+    return;
+  }
+
+  std::vector<std::string> local_unblinded_signed_payment_tokens = {};
+  std::vector<std::string> local_payment_keys = {};
+
+  for (size_t i = 0; i < n; i++) {
+    std::string json = this->signed_blinded_payment_token_json_bundles[i];
+
+    std::unique_ptr<base::Value> value(base::JSONReader::Read(json));
     base::DictionaryValue* map;
-    if (!bundle_value->GetAsDictionary(&map)) {
-      BLOG(ERROR) << "no 4 process iou bundle dict" << "\n";
-      return finished;
+    if (!value->GetAsDictionary(&map)) {
+      BLOG(ERROR) << "5 cannot rehydrate: no map" << "\n";
+      OnStep5CashInPaymentIOUs(FAILED);
+      return;
     }
 
     base::Value *u;
 
-    if (!(u = map->FindKey("confirmation_id"))) {
-      BLOG(ERROR) << "4 process iou bundle, could not get confirmation_id";
-      return finished;
+    if (!(u = map->FindKey("server_payment_key"))) {
+      BLOG(ERROR) << "5 process iou bundle, could not get server_payment_key";
+      OnStep5CashInPaymentIOUs(FAILED);
+      return;
     }
-    confirmation_id = u->GetString();
+    std::string server_payment_key = u->GetString();
 
     if (!(u = map->FindKey("original_payment_token"))) {
       BLOG(ERROR) <<
-          "4 process iou bundle, could not get original_payment_token";
-      return finished;
+          "5 process iou bundle, could not get original_payment_token";
+      OnStep5CashInPaymentIOUs(FAILED);
+      return;
     }
-    original_payment_token = u->GetString();
+    std::string original_payment_token = u->GetString();
 
-    if (!(u = map->FindKey("blinded_payment_token"))) {
+    if (!(u = map->FindKey("signed_blinded_payment_token"))) {
       BLOG(ERROR) <<
-          "4 process iou bundle, could not get blinded_payment_token";
-      return finished;
+          "5 process iou bundle, could not get signed_blinded_payment_token";
+      OnStep5CashInPaymentIOUs(FAILED);
+      return;
     }
-    blinded_payment_token = u->GetString();
+    std::string signed_blinded_payment_token = u->GetString();
 
-    // 4.1 GET /v1/confirmation/{confirmation_id}/paymentToken
-    BLOG(INFO) <<
-        "step4.1 : GET /v1/confirmation/{confirmation_id}/paymentToken";
+    std::string orig_token_b64 = original_payment_token;
+    std::string sb_token_b64 = signed_blinded_payment_token;
 
-    std::string endpoint = std::string("/v1/confirmation/").append(
-        confirmation_id).append("/paymentToken");
-    std::string url = GetServerUrl().append(endpoint);
-    URLFetchSync(url, {}, "", "", net::URLFetcher::RequestType::GET);
-
-    if (!(response_code_ == 200 || response_code_ == 202)) {
-      // something broke before server could decide paid:true/false
-      BLOG(ERROR) << "ProcessIOUBundle response code: " << response_code_;
-
-      return unfinished;
-    }
-
-    // 2018.12.10 apparently, server side has changed to always pay tokens, so
-    // we won't recv 202 response?
-    if (response_code_ == 202) {  // paid:false response
-      // 1. collect estimateToken from JSON
-      // 2. derive estimate
-
-      std::unique_ptr<base::Value> value(base::JSONReader::Read(response_));
-      base::DictionaryValue* dict;
-      if (!value->GetAsDictionary(&dict)) {
-        BLOG(ERROR) << "4.1 202 no dict" << "\n";
-        return unfinished;
-      }
-
-      base::Value *v;
-      if (!(v = dict->FindKey("estimateToken"))) {
-        BLOG(ERROR) << "4.1 202 no estimateToken\n";
-        return unfinished;
-      }
-
-      base::DictionaryValue* et;
-      if (!v->GetAsDictionary(&et)) {
-        BLOG(ERROR) << "4.1 202 no eT dict" << "\n";
-        return unfinished;
-      }
-
-      if (!(v = et->FindKey("publicKey"))) {
-        BLOG(ERROR) << "4.1 202 no publicKey\n";
-        return unfinished;
-      }
-
-      std::string token = v->GetString();
-      std::string name = this->BATNameFromBATPublicKey(token);
-      if (name != "") {
-        std::string estimated_payment_worth = name;
-      } else {
-        BLOG(ERROR) << "Step 4.1 202 verification empty name \n";
-      }
-
-      return unfinished;
-    }
-
-    if (response_code_ == 200) {  // paid:true response
-      base::Value *v;
-      std::unique_ptr<base::Value> value(base::JSONReader::Read(response_));
-      base::DictionaryValue* dict;
-      if (!value->GetAsDictionary(&dict)) {
-        BLOG(ERROR) << "4.1 200 no dict" << "\n";
-        return unfinished;
-      }
-
-      if (!(v = dict->FindKey("id"))) {
-        BLOG(ERROR) << "4.1 200 no id\n";
-        return unfinished;
-      }
-      std::string id = v->GetString();
-
-      if (!(v = dict->FindKey("paymentToken"))) {
-        BLOG(ERROR) << "4.1 200 no paymentToken\n";
-        return unfinished;
-      }
-
-      base::DictionaryValue* pt;
-      if (!v->GetAsDictionary(&pt)) {
-        BLOG(ERROR) << "4.1 200 no pT dict" << "\n";
-        return unfinished;
-      }
-
-      if (!(v = pt->FindKey("publicKey"))) {
-        BLOG(ERROR) << "4.1 200 no publicKey\n";
-        return unfinished;
-      }
-      std::string publicKey = v->GetString();
-
-      if (!(v = pt->FindKey("batchProof"))) {
-        BLOG(ERROR) << "4.1 200 no batchProof\n";
-        return unfinished;
-      }
-      std::string batchProof = v->GetString();
-
-      if (!(v = pt->FindKey("signedTokens"))) {
-        BLOG(ERROR) << "4.1 200 could not get signedTokens\n";
-        return unfinished;
-      }
-
-      base::ListValue signedTokensList(v->GetList());
-      std::vector<std::string> signedBlindedTokens = {};
-
-      if (signedTokensList.GetSize() != 1) {
-        BLOG(ERROR) <<
-            "4.1 200 currently unsupported size for signedTokens array\n";
-        return unfinished;
-      }
-
-      for (size_t i = 0; i < signedTokensList.GetSize(); i++) {
-        base::Value *x;
-        signedTokensList.Get(i, &x);
-        signedBlindedTokens.push_back(x->GetString());
-      }
-
-      std::vector<std::string> local_blinded_payment_tokens =
-          {blinded_payment_token};
-
-      bool real_verified = this->VerifyBatchDLEQProof(
-          batchProof,
-          local_blinded_payment_tokens,
-          signedBlindedTokens,
-          publicKey);
-
-      if (!real_verified) {
-        // 2018.11.29 kevin - ok to log these only (maybe forever) but don't
-        // consider failing until after we're versioned on "issuers" private
-        // keys
-        BLOG(ERROR) << "ERROR: Real payment proof invalid";
-      }
-
-      std::string name = this->BATNameFromBATPublicKey(publicKey);
-      std::string payment_worth = "";
-      if (name != "") {
-        payment_worth = name;
-      } else {
-        BLOG(ERROR) << "Step 4.1/4.2 200 verification empty name \n";
-      }
-
-      for (auto signedBlindedPaymentToken : signedBlindedTokens) {
-        BLOG(INFO) << "step4.2 : store signed blinded payment token";
-        map->SetKey("signed_blinded_payment_token",
-             base::Value(signedBlindedPaymentToken));
-        map->SetKey("server_payment_key", base::Value(publicKey));
-        map->SetKey("payment_worth", base::Value(payment_worth));
-
-        std::string json_with_signed;
-        base::JSONWriter::Write(*map, &json_with_signed);
-
-        this->signed_blinded_payment_token_json_bundles.push_back(
-            json_with_signed);
-        this->SaveState();
-      }
-
-      return finished;
-    }
-
-    return unfinished;
+    // rehydrate
+    Token restored_token = Token::decode_base64(orig_token_b64);
+    SignedToken signed_token = SignedToken::decode_base64(sb_token_b64);
+    // use blinding scalar to unblind
+    UnblindedToken client_unblinded_token =
+        restored_token.unblind(signed_token);
+    // dehydrate
+    std::string base64_unblinded_token =
+        client_unblinded_token.encode_base64();
+    // put on object
+    local_unblinded_signed_payment_tokens.push_back(base64_unblinded_token);
+    local_payment_keys.push_back(server_payment_key);
   }
 
-  void ConfirmationsImpl::Step4RetrievePaymentIOUs() {
-    // we cycle through this multiple times until the token is marked paid
-    std::vector<std::string> remain = {};
-    for (auto payment_bundle_json : this->payment_token_json_bundles) {
-      bool finished = ProcessIOUBundle(payment_bundle_json);
-      if (!finished) {
-          remain.push_back(payment_bundle_json);
-      }
-    }
-    this->payment_token_json_bundles = remain;
+  // PUT /v1/confirmation/token/{payment_id}
+  std::string endpoint = std::string("/v1/confirmation/payment/").append(
+      real_wallet_address);
+
+  // {}->payload->{}->payment_id
+  // real_wallet_address
+
+  // {}->paymentCredentials->[]->{}->credential->{}->signature
+  // signature of payload
+
+  // {}->paymentCredentials->[]->{}->credential->{}->t
+  // uspt
+
+  // {}->paymentCredentials->[]->{}->publicKey
+  // server_payment_key
+
+  std::string primary = "primary";
+  std::string pay_key = "paymentId";
+  std::string pay_val = real_wallet_address;
+
+  base::DictionaryValue payload;
+  payload.SetKey(pay_key, base::Value(pay_val));
+
+  std::string payload_json;
+  base::JSONWriter::Write(payload, &payload_json);
+
+  base::ListValue * list = new base::ListValue();
+
+  for (size_t i = 0; i < local_unblinded_signed_payment_tokens.size(); i++) {
+    auto uspt = local_unblinded_signed_payment_tokens[i];
+    std::string server_payment_key = local_payment_keys[i];
+
+    UnblindedToken restored_unblinded_token =
+        UnblindedToken::decode_base64(uspt);
+    VerificationKey client_vKey =
+        restored_unblinded_token.derive_verification_key();
+    std::string message = payload_json;
+    VerificationSignature client_sig = client_vKey.sign(message);
+    std::string base64_signature = client_sig.encode_base64();
+    std::string base64_token_preimage =
+        restored_unblinded_token.preimage().encode_base64();
+
+    base::DictionaryValue cred;
+    cred.SetKey("signature", base::Value(base64_signature));
+    cred.SetKey("t", base::Value(base64_token_preimage));
+    // cred.SetKey("t", base::Value(uspt));
+
+    base::DictionaryValue * dict = new base::DictionaryValue();
+    dict->SetKey("credential", std::move(cred));
+    dict->SetKey("publicKey", base::Value(server_payment_key));
+
+    list->Append(std::unique_ptr<base::DictionaryValue>(dict));
+  }
+
+  base::DictionaryValue sdict;
+  sdict.SetWithoutPathExpansion("paymentCredentials",
+      std::unique_ptr<base::ListValue>(list));
+  // sdict.SetKey("payload", std::move(payload));
+  sdict.SetKey("payload", base::Value(payload_json));
+
+  std::string json;
+  base::JSONWriter::Write(sdict, &json);
+  std::string real_body = json;
+
+  std::string server_url = GetServerUrl().append(endpoint);
+  std::vector<std::string> headers = {};
+  headers.push_back(std::string("accept: ").append("application/json"));
+  std::string content_type = "application/json";
+
+  auto callback = std::bind(
+      &ConfirmationsImpl::Step5bCashInPaymentIOUs,
+      this, server_url, _1, _2, _3);
+
+  confirmations_client_->URLRequest(server_url, headers, real_body,
+      content_type, URLRequestMethod::PUT, callback);
+}
+
+void ConfirmationsImpl::Step5bCashInPaymentIOUs(
+    const std::string& url,
+    const int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers) {
+  if (response_status_code != 200) {
+    BLOG(ERROR) << "Step5CashInPaymentIOUs response code: "
+        << response_status_code;
+    OnStep5CashInPaymentIOUs(FAILED);
+    return;
+  }
+
+  if (response_status_code == 200) {
+    BLOG(INFO) << "step5.2 : store txn ids and actual payment";
+
+    VectorConcat(&this->fully_submitted_payment_bundles,
+        &this->signed_blinded_payment_token_json_bundles);
+    this->signed_blinded_payment_token_json_bundles.clear();
     this->SaveState();
+
+    OnStep5CashInPaymentIOUs(SUCCESS);
+    return;
   }
 
-  void ConfirmationsImpl::Step5CashInPaymentIOUs(
-      std::string real_wallet_address) {
-    BLOG(INFO) << "step5.1 : unblind signed blinded payments";
+  OnStep5CashInPaymentIOUs(FAILED);
+}
 
-    size_t n = this->signed_blinded_payment_token_json_bundles.size();
-
-    if (n <= 0) {
-      return;
-    }
-
-    std::vector<std::string> local_unblinded_signed_payment_tokens = {};
-    std::vector<std::string> local_payment_keys = {};
-
-    for (size_t i = 0; i < n; i++) {
-      std::string json = this->signed_blinded_payment_token_json_bundles[i];
-
-      std::unique_ptr<base::Value> value(base::JSONReader::Read(json));
-      base::DictionaryValue* map;
-      if (!value->GetAsDictionary(&map)) {
-        BLOG(ERROR) << "5 cannot rehydrate: no map" << "\n";
-        return;
-      }
-
-      base::Value *u;
-
-      if (!(u = map->FindKey("server_payment_key"))) {
-        BLOG(ERROR) << "5 process iou bundle, could not get server_payment_key";
-        return;
-      }
-      std::string server_payment_key = u->GetString();
-
-      if (!(u = map->FindKey("original_payment_token"))) {
-        BLOG(ERROR) <<
-            "5 process iou bundle, could not get original_payment_token";
-        return;
-      }
-      std::string original_payment_token = u->GetString();
-
-      if (!(u = map->FindKey("signed_blinded_payment_token"))) {
-        BLOG(ERROR) <<
-            "5 process iou bundle, could not get signed_blinded_payment_token";
-        return;
-      }
-      std::string signed_blinded_payment_token = u->GetString();
-
-      std::string orig_token_b64 = original_payment_token;
-      std::string sb_token_b64 = signed_blinded_payment_token;
-
-      // rehydrate
-      Token restored_token = Token::decode_base64(orig_token_b64);
-      SignedToken signed_token = SignedToken::decode_base64(sb_token_b64);
-      // use blinding scalar to unblind
-      UnblindedToken client_unblinded_token =
-          restored_token.unblind(signed_token);
-      // dehydrate
-      std::string base64_unblinded_token =
-          client_unblinded_token.encode_base64();
-      // put on object
-      local_unblinded_signed_payment_tokens.push_back(base64_unblinded_token);
-      local_payment_keys.push_back(server_payment_key);
-    }
-
-    // PUT /v1/confirmation/token/{payment_id}
-    std::string endpoint = std::string("/v1/confirmation/payment/").append(
-        real_wallet_address);
-
-    // {}->payload->{}->payment_id
-    // real_wallet_address
-
-    // {}->paymentCredentials->[]->{}->credential->{}->signature
-    // signature of payload
-
-    // {}->paymentCredentials->[]->{}->credential->{}->t
-    // uspt
-
-    // {}->paymentCredentials->[]->{}->publicKey
-    // server_payment_key
-
-    std::string primary = "primary";
-    std::string pay_key = "paymentId";
-    std::string pay_val = real_wallet_address;
-
-    base::DictionaryValue payload;
-    payload.SetKey(pay_key, base::Value(pay_val));
-
-    std::string payload_json;
-    base::JSONWriter::Write(payload, &payload_json);
-
-    base::ListValue * list = new base::ListValue();
-
-    for (size_t i = 0; i < local_unblinded_signed_payment_tokens.size(); i++) {
-      auto uspt = local_unblinded_signed_payment_tokens[i];
-      std::string server_payment_key = local_payment_keys[i];
-
-      UnblindedToken restored_unblinded_token =
-          UnblindedToken::decode_base64(uspt);
-      VerificationKey client_vKey =
-          restored_unblinded_token.derive_verification_key();
-      std::string message = payload_json;
-      VerificationSignature client_sig = client_vKey.sign(message);
-      std::string base64_signature = client_sig.encode_base64();
-      std::string base64_token_preimage =
-          restored_unblinded_token.preimage().encode_base64();
-
-      base::DictionaryValue cred;
-      cred.SetKey("signature", base::Value(base64_signature));
-      cred.SetKey("t", base::Value(base64_token_preimage));
-      // cred.SetKey("t", base::Value(uspt));
-
-      base::DictionaryValue * dict = new base::DictionaryValue();
-      dict->SetKey("credential", std::move(cred));
-      dict->SetKey("publicKey", base::Value(server_payment_key));
-
-      list->Append(std::unique_ptr<base::DictionaryValue>(dict));
-    }
-
-    base::DictionaryValue sdict;
-    sdict.SetWithoutPathExpansion("paymentCredentials",
-        std::unique_ptr<base::ListValue>(list));
-    // sdict.SetKey("payload", std::move(payload));
-    sdict.SetKey("payload", base::Value(payload_json));
-
-    std::string json;
-    base::JSONWriter::Write(sdict, &json);
-    std::string real_body = json;
-
-    std::string url = GetServerUrl().append(endpoint);
-    std::vector<std::string> headers = {};
-    headers.push_back(std::string("accept: ").append("application/json"));
-    std::string content_type = "application/json";
-    URLFetchSync(url, headers, real_body, content_type,
-        net::URLFetcher::RequestType::PUT);
-
-    if (response_code_ != 200) {
-      BLOG(ERROR) << "Step5CashInPaymentIOUs response code: " << response_code_;
-      return;
-    }
-
-    if (response_code_ == 200) {
-      BLOG(INFO) << "step5.2 : store txn ids and actual payment";
-
-      VectorConcat(&this->fully_submitted_payment_bundles,
-          &this->signed_blinded_payment_token_json_bundles);
-      this->signed_blinded_payment_token_json_bundles.clear();
-      this->SaveState();
-    }
+void ConfirmationsImpl::OnStep5CashInPaymentIOUs(
+    const Result result) {
+  if (result == FAILED) {
+    BLOG(ERROR) << "OnStep5CashInPaymentIOUs failed";
+  } else {
+    BLOG(INFO) << "OnStep5CashInPaymentIOUs succeeded";
   }
 
-  bool ConfirmationsImpl::VerifyBatchDLEQProof(
-      std::string proof_string,
-      std::vector<std::string> blinded_strings,
-      std::vector<std::string> signed_strings,
-      std::string public_key_string) {
-    bool failure = 0;
-    bool success = 1;
+  StartCashingInPaymentIOUs(kCashInPaymentIOUsAfterSeconds);
+}
 
-    BatchDLEQProof batch_proof = BatchDLEQProof::decode_base64(proof_string);
+bool ConfirmationsImpl::VerifyBatchDLEQProof(
+    std::string proof_string,
+    std::vector<std::string> blinded_strings,
+    std::vector<std::string> signed_strings,
+    std::string public_key_string) {
+  bool failure = 0;
+  bool success = 1;
 
-    std::vector<BlindedToken> blinded_tokens;
-    for (auto x : blinded_strings) {
-      blinded_tokens.push_back(BlindedToken::decode_base64(x));
+  BatchDLEQProof batch_proof = BatchDLEQProof::decode_base64(proof_string);
+
+  std::vector<BlindedToken> blinded_tokens;
+  for (auto x : blinded_strings) {
+    blinded_tokens.push_back(BlindedToken::decode_base64(x));
+  }
+
+  std::vector<SignedToken> signed_tokens;
+  for (auto x : signed_strings) {
+    signed_tokens.push_back(SignedToken::decode_base64(x));
+  }
+
+  PublicKey public_key = PublicKey::decode_base64(public_key_string);
+
+  if (!batch_proof.verify(blinded_tokens, signed_tokens, public_key)) {
+    return failure;
+  }
+
+  return success;
+}
+
+void ConfirmationsImpl::PopFrontConfirmation() {
+  auto &a = this->original_confirmation_tokens;
+  auto &b = this->blinded_confirmation_tokens;
+  auto &c = this->signed_blinded_confirmation_tokens;
+
+  a.erase(a.begin());
+  b.erase(b.begin());
+  c.erase(c.begin());
+}
+
+void ConfirmationsImpl::PopFrontPayment() {
+  auto &a = this->signed_blinded_payment_token_json_bundles;
+
+  a.erase(a.begin());
+}
+
+std::string ConfirmationsImpl::BATNameFromBATPublicKey(std::string token) {
+  std::vector<std::string> &k = this->server_bat_payment_keys;
+
+  // find position of public key in the BAT array (later use same pos to find
+  // the `name`)
+  ptrdiff_t pos = distance(k.begin(), find(k.begin(), k.end(), token));
+
+  bool found = pos < (ptrdiff_t)k.size();
+
+  if (!found) {
+    return "";
+  }
+
+  std::string name = this->server_bat_payment_names[pos];
+  return name;
+}
+
+std::string ConfirmationsImpl::Sign(
+    std::string* keys,
+    std::string* values,
+    const unsigned int& size,
+    const std::string& keyId,
+    const std::vector<uint8_t>& secretKey) {
+  std::string headers;
+  std::string message;
+  for (unsigned int i = 0; i < size; i++) {
+    if (0 != i) {
+      headers += " ";
+      message += "\n";
     }
+    headers += keys[i];
+    message += keys[i] + ": " + values[i];
+  }
+  std::vector<uint8_t> signedMsg(crypto_sign_BYTES + message.length());
 
-    std::vector<SignedToken> signed_tokens;
-    for (auto x : signed_strings) {
-      signed_tokens.push_back(SignedToken::decode_base64(x));
-    }
+  unsigned long long signedMsgSize = 0;
+  crypto_sign(&signedMsg.front(), &signedMsgSize,
+      (const unsigned char*)message.c_str(),
+      (unsigned long long)message.length(), &secretKey.front());
 
-    PublicKey public_key = PublicKey::decode_base64(public_key_string);
+  std::vector<uint8_t> signature(crypto_sign_BYTES);
+  std::copy(signedMsg.begin(), signedMsg.begin() +
+      crypto_sign_BYTES, signature.begin());
 
-    if (!batch_proof.verify(blinded_tokens, signed_tokens, public_key)) {
-      return failure;
-    }
+  return "keyId=\"" + keyId + "\",algorithm=\"" +
+      CONFIRMATIONS_SIGNATURE_ALGORITHM +
+      "\",headers=\"" + headers + "\",signature=\"" +
+          GetBase64(signature) + "\"";
+}
 
-    return success;
+std::vector<uint8_t> ConfirmationsImpl::GetSHA256(const std::string& in) {
+  std::vector<uint8_t> res(SHA256_DIGEST_LENGTH);
+  SHA256((uint8_t*)in.c_str(), in.length(), &res.front());
+  return res;
+}
+
+std::string ConfirmationsImpl::GetBase64(const std::vector<uint8_t>& in) {
+  std::string res;
+  size_t size = 0;
+  if (!EVP_EncodedLength(&size, in.size())) {
+    DCHECK(false);
+    BLOG(ERROR) << "EVP_EncodedLength failure in GetBase64";
+
+    return "";
+  }
+  std::vector<uint8_t> out(size);
+  int numEncBytes = EVP_EncodeBlock(&out.front(), &in.front(), in.size());
+  DCHECK_NE(numEncBytes, 0);
+  res = (char*)&out.front();
+  return res;
+}
+
+std::vector<uint8_t> ConfirmationsImpl::RawDataBytesVectorFromASCIIHexString(
+    std::string ascii) {
+  std::vector<uint8_t> bytes;
+  size_t len = ascii.length();
+  for (size_t i = 0; i < len; i += 2) {
+      std::string b =  ascii.substr(i, 2);
+      uint8_t x = std::strtol(b.c_str(), 0, 16);
+      bytes.push_back(x);
+  }
+  return bytes;
+}
+
+bool ConfirmationsImpl::FromJSON(std::string json_string) {
+  bool fail = 0;
+  bool succeed = 1;
+
+  std::unique_ptr<base::Value> value(base::JSONReader::Read(json_string));
+
+  if (!value) {
+    return fail;
   }
 
-  void ConfirmationsImpl::PopFrontConfirmation() {
-    auto &a = this->original_confirmation_tokens;
-    auto &b = this->blinded_confirmation_tokens;
-    auto &c = this->signed_blinded_confirmation_tokens;
-
-    a.erase(a.begin());
-    b.erase(b.begin());
-    c.erase(c.begin());
+  base::DictionaryValue* dict;
+  if (!value->GetAsDictionary(&dict)) {
+    return fail;
   }
 
-  void ConfirmationsImpl::PopFrontPayment() {
-    auto &a = this->signed_blinded_payment_token_json_bundles;
+  base::Value *v;
 
-    a.erase(a.begin());
-  }
+  if (!(v = dict->FindKey("issuers_version"))) return fail;
+  this->issuers_version_ = v->GetString();
 
-  std::string ConfirmationsImpl::BATNameFromBATPublicKey(std::string token) {
-    std::vector<std::string> &k = this->server_bat_payment_keys;
+  if (!(v = dict->FindKey("server_confirmation_key"))) return fail;
+  this->server_confirmation_key_ = v->GetString();
 
-    // find position of public key in the BAT array (later use same pos to find
-    // the `name`)
-    ptrdiff_t pos = distance(k.begin(), find(k.begin(), k.end(), token));
+  if (!(v = dict->FindKey("server_bat_payment_names"))) return fail;
+  this->server_bat_payment_names = Unmunge(v);
 
-    bool found = pos < (ptrdiff_t)k.size();
+  if (!(v = dict->FindKey("server_bat_payment_keys"))) return fail;
+  this->server_bat_payment_keys = Unmunge(v);
 
-    if (!found) {
-      return "";
-    }
+  if (!(v = dict->FindKey("original_confirmation_tokens"))) return fail;
+  this->original_confirmation_tokens = Unmunge(v);
 
-    std::string name = this->server_bat_payment_names[pos];
-    return name;
-  }
+  if (!(v = dict->FindKey("blinded_confirmation_tokens"))) return fail;
+  this->blinded_confirmation_tokens = Unmunge(v);
 
-  std::string ConfirmationsImpl::Sign(
-      std::string* keys,
-      std::string* values,
-      const unsigned int& size,
-      const std::string& keyId,
-      const std::vector<uint8_t>& secretKey) {
-    std::string headers;
-    std::string message;
-    for (unsigned int i = 0; i < size; i++) {
-      if (0 != i) {
-        headers += " ";
-        message += "\n";
-      }
-      headers += keys[i];
-      message += keys[i] + ": " + values[i];
-    }
-    std::vector<uint8_t> signedMsg(crypto_sign_BYTES + message.length());
+  if (!(v = dict->FindKey("signed_blinded_confirmation_tokens"))) return fail;
+  this->signed_blinded_confirmation_tokens = Unmunge(v);
 
-    unsigned long long signedMsgSize = 0;
-    crypto_sign(&signedMsg.front(), &signedMsgSize,
-        (const unsigned char*)message.c_str(),
-        (unsigned long long)message.length(), &secretKey.front());
-
-    std::vector<uint8_t> signature(crypto_sign_BYTES);
-    std::copy(signedMsg.begin(), signedMsg.begin() +
-        crypto_sign_BYTES, signature.begin());
-
-    return "keyId=\"" + keyId + "\",algorithm=\"" +
-        CONFIRMATIONS_SIGNATURE_ALGORITHM +
-        "\",headers=\"" + headers + "\",signature=\"" +
-            GetBase64(signature) + "\"";
-  }
-
-  std::vector<uint8_t> ConfirmationsImpl::GetSHA256(const std::string& in) {
-    std::vector<uint8_t> res(SHA256_DIGEST_LENGTH);
-    SHA256((uint8_t*)in.c_str(), in.length(), &res.front());
-    return res;
-  }
-
-  std::string ConfirmationsImpl::GetBase64(const std::vector<uint8_t>& in) {
-    std::string res;
-    size_t size = 0;
-    if (!EVP_EncodedLength(&size, in.size())) {
-      DCHECK(false);
-      BLOG(ERROR) << "EVP_EncodedLength failure in GetBase64";
-
-      return "";
-    }
-    std::vector<uint8_t> out(size);
-    int numEncBytes = EVP_EncodeBlock(&out.front(), &in.front(), in.size());
-    DCHECK_NE(numEncBytes, 0);
-    res = (char*)&out.front();
-    return res;
-  }
-
-  std::vector<uint8_t> ConfirmationsImpl::RawDataBytesVectorFromASCIIHexString(
-      std::string ascii) {
-    std::vector<uint8_t> bytes;
-    size_t len = ascii.length();
-    for (size_t i = 0; i < len; i += 2) {
-        std::string b =  ascii.substr(i, 2);
-        uint8_t x = std::strtol(b.c_str(), 0, 16);
-        bytes.push_back(x);
-    }
-    return bytes;
-  }
-
-  bool ConfirmationsImpl::FromJSONString(std::string json_string) {
-    bool fail = 0;
-    bool succeed = 1;
-
-    std::unique_ptr<base::Value> value(base::JSONReader::Read(json_string));
-
-    if (!value) {
+  if (!(v = dict->FindKey("signed_blinded_payment_token_json_bundles")))
       return fail;
-    }
+  this->signed_blinded_payment_token_json_bundles = Unmunge(v);
 
-    base::DictionaryValue* dict;
-    if (!value->GetAsDictionary(&dict)) {
-      return fail;
-    }
+  if (!(v = dict->FindKey("fully_submitted_payment_bundles"))) return fail;
+  this->fully_submitted_payment_bundles = Unmunge(v);
 
-    base::Value *v;
+  return succeed;
+}
 
-    if (!(v = dict->FindKey("issuers_version"))) return fail;
-    this->issuers_version_ = v->GetString();
+void ConfirmationsImpl::SaveState() {
+  std::string json = ToJSON();
+  auto callback = std::bind(&ConfirmationsImpl::OnStateSaved, this, _1);
+  confirmations_client_->Save(_confirmations_name, json, callback);
+}
 
-    if (!(v = dict->FindKey("server_confirmation_key"))) return fail;
-    this->server_confirmation_key_ = v->GetString();
-
-    if (!(v = dict->FindKey("server_bat_payment_names"))) return fail;
-    this->server_bat_payment_names = Unmunge(v);
-
-    if (!(v = dict->FindKey("server_bat_payment_keys"))) return fail;
-    this->server_bat_payment_keys = Unmunge(v);
-
-    if (!(v = dict->FindKey("original_confirmation_tokens"))) return fail;
-    this->original_confirmation_tokens = Unmunge(v);
-
-    if (!(v = dict->FindKey("blinded_confirmation_tokens"))) return fail;
-    this->blinded_confirmation_tokens = Unmunge(v);
-
-    if (!(v = dict->FindKey("signed_blinded_confirmation_tokens"))) return fail;
-    this->signed_blinded_confirmation_tokens = Unmunge(v);
-
-    if (!(v = dict->FindKey("signed_blinded_payment_token_json_bundles")))
-        return fail;
-    this->signed_blinded_payment_token_json_bundles = Unmunge(v);
-
-    if (!(v = dict->FindKey("fully_submitted_payment_bundles"))) return fail;
-    this->fully_submitted_payment_bundles = Unmunge(v);
-
-    return succeed;
-  }
-
-  void ConfirmationsImpl::SaveState() {
-    std::string json = toJSONString();
-    auto callback = std::bind(&ConfirmationsImpl::OnStateSaved, this, _1);
-    confirmations_client_->Save(_confirmations_name, json, callback);
-  }
-
-  void ConfirmationsImpl::OnStateSaved(const Result result) {
-    if (result == FAILED) {
-      BLOG(ERROR) << "Failed to save confirmations state";
-
-      return;
-    }
-
-    BLOG(INFO) << "Successfully saved confirmations state";
-  }
-
-  void ConfirmationsImpl::LoadState() {
-    auto callback = std::bind(&ConfirmationsImpl::OnStateLoaded, this, _1, _2);
-    confirmations_client_->Load(_confirmations_name, callback);
-  }
-
-  void ConfirmationsImpl::OnStateLoaded(
-      const Result result,
-      const std::string& json) {
-    if (result == FAILED) {
-      BLOG(ERROR) << "Failed to load confirmations state";
-      return;
-    }
-
-    if (!FromJSONString(json)) {
-      BLOG(ERROR) << "Failed to parse confirmations state: " << json;
-      return;
-    }
-
-    BLOG(INFO) << "Successfully loaded confirmations state";
-
-    RefillConfirmations();
-    RetrievePaymentIOUS();
-    CashInPaymentIOUS();
-  }
-
-  void ConfirmationsImpl::ResetState() {
-    BLOG(INFO) << "Resetting confirmations to default state";
-
-    auto callback = std::bind(&ConfirmationsImpl::OnStateReset, this, _1);
-    confirmations_client_->Reset(_confirmations_name, callback);
-  }
-
-  void ConfirmationsImpl::OnStateReset(const Result result) {
-    if (result == FAILED) {
-      BLOG(ERROR) << "Failed to reset confirmations state";
-
-      return;
-    }
-
-    BLOG(INFO) << "Successfully reset confirmations state";
-  }
-
-  /////////////////////////////////////////////////////////////////////////////
-
-  MockServer::MockServer() {
-  }
-
-  MockServer::~MockServer() {
-  }
-
-  void MockServer::Test() {
-  }
-
-  void MockServer::GenerateSignedBlindedTokensAndProof(
-      std::vector<std::string> blinded_tokens) {
-    std::vector<std::string> stamped;
-
-    std::vector<BlindedToken> rehydrated_blinded_tokens;
-    std::vector<SignedToken>  rehydrated_signed_tokens;
-
-    for (auto x : blinded_tokens) {
-      // rehydrate the token from the base64 string
-      BlindedToken blinded_token = BlindedToken::decode_base64(x);
-
-      // keep it for the proof later
-      rehydrated_blinded_tokens.push_back(blinded_token);
-
-      // server signs the blinded token
-      SignedToken signed_token = this->signing_key.sign(blinded_token);
-
-      // keep it for the proof later
-      rehydrated_signed_tokens.push_back(signed_token);
-
-      std::string base64_signed_token = signed_token.encode_base64();
-      stamped.push_back(base64_signed_token);
-    }
-
-    BatchDLEQProof server_batch_proof = BatchDLEQProof(
-        rehydrated_blinded_tokens, rehydrated_signed_tokens, this->signing_key);
-
-    std::string base64_batch_proof = server_batch_proof.encode_base64();
-
-    this->signed_tokens = stamped;
-    this->batch_dleq_proof = base64_batch_proof;
+void ConfirmationsImpl::OnStateSaved(const Result result) {
+  if (result == FAILED) {
+    BLOG(ERROR) << "Failed to save confirmations state";
 
     return;
   }
+
+  BLOG(INFO) << "Successfully saved confirmations state";
+}
+
+void ConfirmationsImpl::LoadState() {
+  auto callback = std::bind(&ConfirmationsImpl::OnStateLoaded, this, _1, _2);
+  confirmations_client_->Load(_confirmations_name, callback);
+}
+
+void ConfirmationsImpl::OnStateLoaded(
+    const Result result,
+    const std::string& json) {
+  if (result == FAILED) {
+    BLOG(ERROR) << "Failed to load confirmations state";
+    return;
+  }
+
+  if (!FromJSON(json)) {
+    BLOG(ERROR) << "Failed to parse confirmations state: " << json;
+    return;
+  }
+
+  BLOG(INFO) << "Successfully loaded confirmations state";
+
+  RefillConfirmations();
+  RetrievePaymentIOUs();
+  CashInPaymentIOUs();
+}
+
+void ConfirmationsImpl::ResetState() {
+  BLOG(INFO) << "Resetting confirmations to default state";
+
+  auto callback = std::bind(&ConfirmationsImpl::OnStateReset, this, _1);
+  confirmations_client_->Reset(_confirmations_name, callback);
+}
+
+void ConfirmationsImpl::OnStateReset(const Result result) {
+  if (result == FAILED) {
+    BLOG(ERROR) << "Failed to reset confirmations state";
+
+    return;
+  }
+
+  BLOG(INFO) << "Successfully reset confirmations state";
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+MockServer::MockServer() {
+}
+
+MockServer::~MockServer() {
+}
+
+void MockServer::Test() {
+}
+
+void MockServer::GenerateSignedBlindedTokensAndProof(
+    std::vector<std::string> blinded_tokens) {
+  std::vector<std::string> stamped;
+
+  std::vector<BlindedToken> rehydrated_blinded_tokens;
+  std::vector<SignedToken>  rehydrated_signed_tokens;
+
+  for (auto x : blinded_tokens) {
+    // rehydrate the token from the base64 string
+    BlindedToken blinded_token = BlindedToken::decode_base64(x);
+
+    // keep it for the proof later
+    rehydrated_blinded_tokens.push_back(blinded_token);
+
+    // server signs the blinded token
+    SignedToken signed_token = this->signing_key.sign(blinded_token);
+
+    // keep it for the proof later
+    rehydrated_signed_tokens.push_back(signed_token);
+
+    std::string base64_signed_token = signed_token.encode_base64();
+    stamped.push_back(base64_signed_token);
+  }
+
+  BatchDLEQProof server_batch_proof = BatchDLEQProof(
+      rehydrated_blinded_tokens, rehydrated_signed_tokens, this->signing_key);
+
+  std::string base64_batch_proof = server_batch_proof.encode_base64();
+
+  this->signed_tokens = stamped;
+  this->batch_dleq_proof = base64_batch_proof;
+
+  return;
+}
 
 ///////////////////////////////////////////////////////////////////
 
@@ -1231,16 +1336,16 @@ void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
 }
 
 void ConfirmationsImpl::AdSustained(std::unique_ptr<NotificationInfo> info) {
-  Step3RedeemConfirmation(info->creative_set_id);
+  Step3RedeemConfirmation(info->uuid);
 }
 
 void ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
   if (timer_id == step_2_refill_confirmations_timer_id_) {
     RefillConfirmations();
   } else if (timer_id == step_4_retrieve_payment_ious_timer_id_) {
-    RetrievePaymentIOUS();
+    RetrievePaymentIOUs();
   } else if (timer_id == step_5_cash_in_payment_ious_timer_id_) {
-    CashInPaymentIOUS();
+    CashInPaymentIOUs();
   }
 }
 
@@ -1273,12 +1378,6 @@ void ConfirmationsImpl::RefillConfirmations() {
       wallet_info_.payment_id,
       wallet_info_.signing_key,
       this->server_confirmation_key_);
-
-  auto start_timer_in = kRefillConfirmationsAfterSeconds;
-  auto rand_delay = base::RandInt(0, start_timer_in / 10);
-  start_timer_in += rand_delay;
-
-  StartRefillingConfirmations(start_timer_in);
 }
 
 void ConfirmationsImpl::StopRefillingConfirmations() {
@@ -1300,9 +1399,9 @@ bool ConfirmationsImpl::IsRefillingConfirmations() const {
   return true;
 }
 
-void ConfirmationsImpl::StartRetrievingPaymentIOUS(
+void ConfirmationsImpl::StartRetrievingPaymentIOUs(
     const uint64_t start_timer_in) {
-  StopRetrievingPaymentIOUS();
+  StopRetrievingPaymentIOUs();
 
   step_4_retrieve_payment_ious_timer_id_ =
       confirmations_client_->SetTimer(start_timer_in);
@@ -1317,25 +1416,19 @@ void ConfirmationsImpl::StartRetrievingPaymentIOUS(
       << " seconds";
 }
 
-void ConfirmationsImpl::RetrievePaymentIOUS() {
+void ConfirmationsImpl::RetrievePaymentIOUs() {
   if (!is_initialized_) {
-    StartRetrievingPaymentIOUS(kOneMinuteInSeconds);
+    StartRetrievingPaymentIOUs(kOneMinuteInSeconds);
     return;
   }
 
   BLOG(INFO) << "Retrieve payment IOUs";
 
   Step4RetrievePaymentIOUs();
-
-  auto start_timer_in = kRetrievePaymentIOUSAfterSeconds;
-  auto rand_delay = base::RandInt(0, start_timer_in / 10);
-  start_timer_in += rand_delay;
-
-  StartRetrievingPaymentIOUS(start_timer_in);
 }
 
-void ConfirmationsImpl::StopRetrievingPaymentIOUS() {
-  if (!IsRetrievingPaymentIOUS()) {
+void ConfirmationsImpl::StopRetrievingPaymentIOUs() {
+  if (!IsRetrievingPaymentIOUs()) {
     return;
   }
 
@@ -1345,7 +1438,7 @@ void ConfirmationsImpl::StopRetrievingPaymentIOUS() {
   step_4_retrieve_payment_ious_timer_id_ = 0;
 }
 
-bool ConfirmationsImpl::IsRetrievingPaymentIOUS() const {
+bool ConfirmationsImpl::IsRetrievingPaymentIOUs() const {
   if (step_4_retrieve_payment_ious_timer_id_ == 0) {
     return false;
   }
@@ -1353,9 +1446,9 @@ bool ConfirmationsImpl::IsRetrievingPaymentIOUS() const {
   return true;
 }
 
-void ConfirmationsImpl::StartCashingInPaymentIOUS(
+void ConfirmationsImpl::StartCashingInPaymentIOUs(
     const uint64_t start_timer_in) {
-  StopCashingInPaymentIOUS();
+  StopCashingInPaymentIOUs();
 
   step_5_cash_in_payment_ious_timer_id_ =
       confirmations_client_->SetTimer(start_timer_in);
@@ -1370,21 +1463,19 @@ void ConfirmationsImpl::StartCashingInPaymentIOUS(
       << " seconds";
 }
 
-void ConfirmationsImpl::CashInPaymentIOUS() {
+void ConfirmationsImpl::CashInPaymentIOUs() {
   if (!is_initialized_) {
-    StartCashingInPaymentIOUS(kOneMinuteInSeconds);
+    StartCashingInPaymentIOUs(kOneMinuteInSeconds);
     return;
   }
 
   BLOG(INFO) << "Cash in payment IOUs";
 
   Step5CashInPaymentIOUs(wallet_info_.payment_id);
-
-  StartCashingInPaymentIOUS(kCashInPaymentIOUSAfterSeconds);
 }
 
-void ConfirmationsImpl::StopCashingInPaymentIOUS() {
-  if (!IsCashingInPaymentIOUS()) {
+void ConfirmationsImpl::StopCashingInPaymentIOUs() {
+  if (!IsCashingInPaymentIOUs()) {
     return;
   }
 
@@ -1394,7 +1485,7 @@ void ConfirmationsImpl::StopCashingInPaymentIOUS() {
   step_5_cash_in_payment_ious_timer_id_ = 0;
 }
 
-bool ConfirmationsImpl::IsCashingInPaymentIOUS() const {
+bool ConfirmationsImpl::IsCashingInPaymentIOUs() const {
   if (step_5_cash_in_payment_ious_timer_id_ == 0) {
     return false;
   }

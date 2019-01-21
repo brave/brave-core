@@ -70,6 +70,35 @@ uint32_t MockConfirmationsClient::SetTimer(const uint64_t time_offset) {
   return mock_timer_id;
 }
 
+void URLRequest(
+    const std::string& url,
+    const std::vector<std::string>& headers,
+    const std::string& content,
+    const std::string& content_type,
+    const URLRequestMethod method,
+    URLRequestCallback callback) {
+  (void)url;
+  (void)headers;
+  (void)content;
+  (void)content_type;
+  (void)method;
+
+  auto response_status_code = 200;
+  std::string response = "";
+
+  std::ifstream ifs{"mock_data/catalog.json"};
+  if (ifs.fail()) {
+    response_status_code = 404;
+  } else {
+    std::stringstream stream;
+    stream << ifs.rdbuf();
+
+    response = stream.str();
+  }
+
+  callback(response_status_code, response, {});
+}
+
 void MockConfirmationsClient::KillTimer(uint32_t timer_id) {
   (void)timer_id;
 }

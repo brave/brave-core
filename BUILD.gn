@@ -87,8 +87,6 @@ source_set("confirmations") {
     "//base",
     "//net",
     "//third_party/boringssl",
-    "//brave/common",
-    "//chrome/common",
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
   ]
 }
