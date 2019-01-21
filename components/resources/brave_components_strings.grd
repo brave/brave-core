@@ -417,9 +417,9 @@
       <message name="IDS_BRAVE_UI_THANK_YOU" desc="">Thank you</message>
       <message name="IDS_BRAVE_UI_TIP_ON_LIKE" desc="">Tip on like</message>
       <message name="IDS_BRAVE_UI_TITLE_BAT" desc="">Basic Attention Token (BAT)</message>
-      <message name="IDS_BRAVE_UI_TITLE_BTC" desc="">BitCoin (BTC)</message>
+      <message name="IDS_BRAVE_UI_TITLE_BTC" desc="">Bitcoin (BTC)</message>
       <message name="IDS_BRAVE_UI_TITLE_ETH" desc="">Ethereum (ETH)</message>
-      <message name="IDS_BRAVE_UI_TITLE_LTC" desc="">LiteCoin (LTC)</message>
+      <message name="IDS_BRAVE_UI_TITLE_LTC" desc="">Litecoin (LTC)</message>
       <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grants Claimed</message>
       <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
       <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
