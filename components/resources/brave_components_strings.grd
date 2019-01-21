@@ -420,7 +420,7 @@
       <message name="IDS_BRAVE_UI_TITLE_BTC" desc="">Bitcoin (BTC)</message>
       <message name="IDS_BRAVE_UI_TITLE_ETH" desc="">Ethereum (ETH)</message>
       <message name="IDS_BRAVE_UI_TITLE_LTC" desc="">Litecoin (LTC)</message>
-      <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grants Claimed</message>
+      <message name="IDS_BRAVE_UI_TOKEN_GRANT_CLAIMED" desc="">Token Grants Claimed</message>
       <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
       <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
