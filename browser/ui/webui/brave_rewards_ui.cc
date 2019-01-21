@@ -560,6 +560,7 @@ void RewardsDOMHandler::OnAutoContributePropsReady(
       props->contribution_min_time,
       props->reconcile_stamp,
       props->contribution_non_verified,
+      props->contribution_min_visits,
       base::Bind(&RewardsDOMHandler::OnContentSiteList,
                  weak_factory_.GetWeakPtr()));
 }
