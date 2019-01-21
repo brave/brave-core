@@ -48,7 +48,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
     const list = [
       {
         key: 'grant',
-        translation: 'tokenGrant',
+        translation: 'tokenGrantClaimed',
         color: 'earnings'
       },
       {

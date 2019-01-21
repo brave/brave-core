@@ -196,7 +196,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
         <div
           className="c5"
         >
-          MISSING: tokenGrant
+          MISSING: tokenGrantClaimed
         </div>
         <div
           className="c6"
