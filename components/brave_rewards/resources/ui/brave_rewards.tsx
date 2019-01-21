@@ -139,6 +139,10 @@ window.cr.define('brave_rewards', function () {
     }
   }
 
+  function rewardsEnabled (enabled: boolean) {
+    getActions().onRewardsEnabled(enabled)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -162,7 +166,8 @@ window.cr.define('brave_rewards', function () {
     imported,
     adsData,
     pendingContributionTotal,
-    onPendingContributionSaved
+    onPendingContributionSaved,
+    rewardsEnabled
   }
 })
 

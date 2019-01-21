@@ -133,6 +133,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       brave_rewards::RewardsService* rewards_service,
       int result) override;
 
+  void OnRewardsMainEnabled(
+      brave_rewards::RewardsService* rewards_service,
+      bool rewards_main_enabled) override;
+
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -877,6 +881,15 @@ void RewardsDOMHandler::OnPendingContributionSaved(
       web_ui()->CallJavascriptFunctionUnsafe(
           "brave_rewards.onPendingContributionSaved", base::Value(result));
     }
+}
+
+void RewardsDOMHandler::OnRewardsMainEnabled(
+    brave_rewards::RewardsService* rewards_service,
+    bool rewards_main_enabled) {
+  if (web_ui()->CanCallJavascript()) {
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.rewardsEnabled",
+        base::Value(rewards_main_enabled));
+  }
 }
 
 }  // namespace
