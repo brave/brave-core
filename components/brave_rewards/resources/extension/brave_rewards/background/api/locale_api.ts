@@ -77,6 +77,7 @@ export const getUIMessages = (): Record<string, string> => {
     'rewardsContributeAttentionScore',
     'rewardsSummary',
     'tokenGrant',
+    'tokenGrantClaimed',
     'unVerifiedPublisher',
     'unVerifiedText',
     'unVerifiedTextMore',
