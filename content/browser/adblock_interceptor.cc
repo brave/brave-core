@@ -8,6 +8,7 @@
 #include "base/compiler_specific.h"
 #include "base/location.h"
 #include "base/single_thread_task_runner.h"
+#include "base/strings/string_split.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "base/memory/weak_ptr.h"
 #include "net/url_request/url_request_job.h"
@@ -33,12 +34,27 @@ class Http200OkJob : public net::URLRequestJob {
   ~Http200OkJob() override;
   void StartAsync();
 
+  // Intercepted from 'Accept:' (or empty if the header is empty).
+  std::string mime_type_ = "text/html";
+
   base::WeakPtrFactory<Http200OkJob> weak_factory_;
 };
 
 Http200OkJob::Http200OkJob(net::URLRequest* request,
                            net::NetworkDelegate* network_delegate)
-    : net::URLRequestJob(request, network_delegate), weak_factory_(this) {}
+    : net::URLRequestJob(request, network_delegate), weak_factory_(this) {
+  // Extract mime type that the request wants so we can provide it while
+  // preparing the response.
+  auto headers = request->extra_request_headers();
+  std::string accept_header;
+  headers.GetHeader("Accept", &accept_header);
+  auto mime_types = base::SplitString(accept_header, ",;",
+                                      base::TRIM_WHITESPACE,
+                                      base::SPLIT_WANT_NONEMPTY);
+  if (!mime_types.empty()) {
+    mime_type_ = mime_types.front();
+  }
+}
 
 void Http200OkJob::Start()  {
   // Start reading asynchronously so that all error reporting and data
@@ -54,7 +70,7 @@ void Http200OkJob::Kill() {
 }
 
 bool Http200OkJob::GetMimeType(std::string* mime_type) const {
-  *mime_type = "text/html";
+  *mime_type = mime_type_;
   return true;
 }
 
