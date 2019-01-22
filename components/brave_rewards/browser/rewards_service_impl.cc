@@ -1236,7 +1236,7 @@ void RewardsServiceImpl::OnURLFetchComplete(
     return;
   }
 
-  callback(response_code == 200, body, headers);
+  callback(response_code, body, headers);
 }
 
 void RewardsServiceImpl::TriggerOnWalletInitialized(int result) {
