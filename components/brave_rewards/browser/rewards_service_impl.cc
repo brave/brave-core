@@ -1447,6 +1447,29 @@ void RewardsServiceImpl::AdSustained(
   bat_ledger_->AdSustained(info->ToJson());
 }
 
+void RewardsServiceImpl::URLRequest(const std::string& url,
+                                    const std::vector<std::string>& headers,
+                                    const std::string& content,
+                                    const std::string& content_type,
+                                    ledger::URL_METHOD method,
+                                    ledger::URLRequestCallback callback) {
+  net::URLFetcher::RequestType request_type = URLMethodToRequestType(method);
+
+  net::URLFetcher* fetcher = net::URLFetcher::Create(
+      GURL(url), request_type, this).release();
+  fetcher->SetRequestContext(g_browser_process->system_request_context());
+
+  for (size_t i = 0; i < headers.size(); i++)
+    fetcher->AddExtraRequestHeader(headers[i]);
+
+  if (!content.empty())
+    fetcher->SetUploadData(content_type, content);
+
+  fetchers_[fetcher] = callback;
+
+  fetcher->Start();
+}
+
 void RewardsServiceImpl::SaveConfirmationsState(const std::string& name,
                                                 const std::string& value,
                                                 ledger::OnSaveCallback callback) {

@@ -1190,6 +1190,17 @@ void LedgerImpl::AdSustained(const std::string& info) {
   bat_confirmations_->AdSustained(std::move(notification_info));
 }
 
+void LedgerImpl::URLRequest(
+      const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& content_type,
+      const confirmations::URLRequestMethod method,
+      confirmations::URLRequestCallback callback) {
+  ledger_client_->URLRequest(url, headers, content, content_type,
+                             static_cast<ledger::URL_METHOD>(method), callback);
+}
+
 void LedgerImpl::Save(const std::string& name,
                       const std::string& value,
                       confirmations::OnSaveCallback callback) {

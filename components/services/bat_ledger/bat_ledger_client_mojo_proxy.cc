@@ -14,6 +14,19 @@ namespace bat_ledger {
 
 namespace {
 
+std::map<std::string, std::string> ToStdMap(
+    const base::flat_map<std::string, std::string>& map) {
+  std::map<std::string, std::string> std_map;
+  for (const auto it : map) {
+    std_map[it.first] = it.second;
+  }
+  return std_map;
+}
+
+int32_t ToMojomURLRequestMethod(ledger::URL_METHOD method) {
+  return (int32_t)method;
+}
+
 int32_t ToMojomResult(ledger::Result result) {
   return (int32_t)result;
 }
@@ -693,6 +706,30 @@ void BatLedgerClientMojoProxy::GetActivityInfoList(uint32_t start,
       limit,
       filter.ToJson(),
       base::BindOnce(&OnGetActivityInfoList, std::move(callback)));
+}
+
+void OnURLRequest(const confirmations::URLRequestCallback& callback,
+                  int32_t status_code,
+                  const std::string& content,
+                  const base::flat_map<std::string, std::string>& headers) {
+  callback(status_code, content, ToStdMap(headers));
+}
+
+void BatLedgerClientMojoProxy::URLRequest(
+    const std::string& url,
+    const std::vector<std::string>& headers,
+    const std::string& content,
+    const std::string& content_type,
+    ledger::URL_METHOD method,
+    ledger::URLRequestCallback callback) {
+  if (!Connected()) {
+    callback(418, "", std::map<std::string, std::string>());
+    return;
+  }
+
+  bat_ledger_client_->URLRequest(
+      url, headers, content, content_type, ToMojomURLRequestMethod(method),
+      base::BindOnce(&OnURLRequest, std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::SaveConfirmationsState(
