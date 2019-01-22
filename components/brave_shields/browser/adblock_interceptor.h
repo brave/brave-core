@@ -18,7 +18,7 @@ class CONTENT_EXPORT AdBlockInterceptor : public net::URLRequestInterceptor {
   AdBlockInterceptor();
   ~AdBlockInterceptor() override;
 
-protected:
+ protected:
   // net::URLRequestInterceptor:
   net::URLRequestJob* MaybeInterceptRequest(
       net::URLRequest* request,

@@ -7,14 +7,14 @@
 #include "base/bind.h"
 #include "base/compiler_specific.h"
 #include "base/location.h"
+#include "base/memory/weak_ptr.h"
 #include "base/single_thread_task_runner.h"
 #include "base/strings/string_split.h"
 #include "base/threading/thread_task_runner_handle.h"
-#include "base/memory/weak_ptr.h"
-#include "net/url_request/url_request_job.h"
-#include "net/http/http_response_info.h"
 #include "net/http/http_response_headers.h"
+#include "net/http/http_response_info.h"
 #include "net/http/http_util.h"
+#include "net/url_request/url_request_job.h"
 
 namespace brave_shields {
 
@@ -46,12 +46,12 @@ Http200OkJob::Http200OkJob(net::URLRequest* request,
   InitMime(request);
 }
 
-void Http200OkJob::Start()  {
+void Http200OkJob::Start() {
   // Start reading asynchronously so that all error reporting and data
   // callbacks happen as they would for network requests.
   base::ThreadTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE, base::BindOnce(&Http200OkJob::StartAsync,
-                                weak_factory_.GetWeakPtr()));
+      FROM_HERE,
+      base::BindOnce(&Http200OkJob::StartAsync, weak_factory_.GetWeakPtr()));
 }
 
 void Http200OkJob::Kill() {
@@ -70,10 +70,11 @@ void Http200OkJob::GetResponseInfo(net::HttpResponseInfo* info) {
   // Maybe we can provide something smarter here.
   std::string raw_headers =
       "HTTP/1.1 200 OK\r\n"
-      "Access-Control-Allow-Origin: *\r\n";;
-  new_info.headers = new net::HttpResponseHeaders(
-      net::HttpUtil::AssembleRawHeaders(raw_headers.c_str(),
-                                        raw_headers.size()));
+      "Access-Control-Allow-Origin: *\r\n";
+  ;
+  new_info.headers =
+      new net::HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(
+          raw_headers.c_str(), raw_headers.size()));
   *info = new_info;
 }
 
@@ -83,15 +84,14 @@ void Http200OkJob::StartAsync() {
   NotifyHeadersComplete();
 }
 
-void Http200OkJob::InitMime(net::URLRequest *request) {
+void Http200OkJob::InitMime(net::URLRequest* request) {
   // Extract mime type that the request wants so we can provide it while
   // preparing the response.
   auto headers = request->extra_request_headers();
   std::string accept_header;
   headers.GetHeader("Accept", &accept_header);
-  auto mime_types = base::SplitString(accept_header, ",;",
-                                      base::TRIM_WHITESPACE,
-                                      base::SPLIT_WANT_NONEMPTY);
+  auto mime_types = base::SplitString(
+      accept_header, ",;", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (!mime_types.empty()) {
     DCHECK(!mime_types.front().empty());
     // If the entry looks like "*/*", use the default value. Otherwise, use
