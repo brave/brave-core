@@ -196,9 +196,19 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
       OnWalletInitialized(ledger::Result::INVALID_LEDGER_STATE);
     } else {
       confirmations::WalletInfo confirmations_wallet_info;
-      confirmations_wallet_info.payment_id = bat_state_->GetWalletInfo().paymentId_;
-      confirmations_wallet_info.signing_key =
-      braveledger_bat_helper::getBase64(bat_state_->GetWalletInfo().keyInfoSeed_);
+
+      confirmations_wallet_info.payment_id =
+         bat_state_->GetWalletInfo().paymentId_;
+
+      std::vector<uint8_t> secretKey = braveledger_bat_helper::getHKDF(
+          bat_state_->GetWalletInfo().keyInfoSeed_);
+      std::vector<uint8_t> publicKey;
+      std::vector<uint8_t> newSecretKey;
+      braveledger_bat_helper::getPublicKeyFromSeed(secretKey, publicKey,
+          newSecretKey);
+      std::string newSecretKeyHex = braveledger_bat_helper::uint8ToHex(
+          newSecretKey);
+      confirmations_wallet_info.signing_key = newSecretKeyHex;
       bat_confirmations_->SetWalletInfo(
           std::make_unique<confirmations::WalletInfo>(
           confirmations_wallet_info));
@@ -1022,8 +1032,16 @@ void LedgerImpl::SetWalletInfo(
 
   confirmations::WalletInfo confirmations_wallet_info;
   confirmations_wallet_info.payment_id = info.paymentId_;
-  confirmations_wallet_info.signing_key =
-      braveledger_bat_helper::getBase64(info.keyInfoSeed_);
+
+  std::vector<uint8_t> secretKey = braveledger_bat_helper::getHKDF(
+      info.keyInfoSeed_);
+  std::vector<uint8_t> publicKey;
+  std::vector<uint8_t> newSecretKey;
+  braveledger_bat_helper::getPublicKeyFromSeed(secretKey, publicKey,
+      newSecretKey);
+  std::string newSecretKeyHex = braveledger_bat_helper::uint8ToHex(
+      newSecretKey);
+  confirmations_wallet_info.signing_key = newSecretKeyHex;
   bat_confirmations_->SetWalletInfo(
       std::make_unique<confirmations::WalletInfo>(confirmations_wallet_info));
 }
