@@ -247,6 +247,10 @@ bool PublisherBanner::loadFromJson(const std::string& json) {
       social.insert(std::make_pair(i.name.GetString(),
             i.value.GetString()));
     }
+
+    if (d.HasMember("provider")) {
+      provider = d["provider"].GetString();
+    }
   }
 
   return !error;

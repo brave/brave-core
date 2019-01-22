@@ -2613,6 +2613,9 @@ static bool ignore_ = false;
     writer.String("verified");
     writer.Bool(banner.verified);
 
+    writer.String("provider");
+    writer.String(banner.provider.c_str());
+
     writer.EndObject();
   }
 
