@@ -189,7 +189,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   static void OnLoadURL(
       CallbackHolder<LoadURLCallback>* holder,
-      bool success, const std::string& response,
+      int32_t response_code, const std::string& response,
       const std::map<std::string, std::string>& headers);
 
   static void OnLoadActivityInfo(

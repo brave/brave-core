@@ -460,11 +460,11 @@ void LedgerClientMojoProxy::SetContributionAutoInclude(
 // static
 void LedgerClientMojoProxy::OnLoadURL(
     CallbackHolder<LoadURLCallback>* holder,
-    bool success, const std::string& response,
+    int32_t response_code, const std::string& response,
     const std::map<std::string, std::string>& headers) {
   if (holder->is_valid())
-    std::move(holder->get()).Run(
-        success, response, mojo::MapToFlatMap(headers));
+    std::move(holder->get())
+        .Run(response_code, response, mojo::MapToFlatMap(headers));
   delete holder;
 }
 
