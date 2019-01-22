@@ -296,8 +296,9 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
                 onClose={onOverlayClose}
                 success={boolean('Success', false)}
                 send={boolean('Is send page?', true)}
-                subText={text('Sub header', 'This is text.')}
                 domain={'duckduckgo.com'}
+                amount={'5.0'}
+                monthlyDate={select('Recurring', { yes: 'October 31st, 2018', no: '' }, 'October 31st, 2018')}
                 logo={boolean('Show logo', false) ? siteBgLogo : null}
             />
             : null

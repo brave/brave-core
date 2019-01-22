@@ -10,6 +10,7 @@ interface StyleProps {
   bg?: string
   src?: string
   success?: boolean
+  monthly?: string
   logoBgColor?: CSS.Color
 }
 
@@ -62,6 +63,7 @@ export const StyledIcon = styled<{}, 'span'>('span')`
 export const StyledMessage = styled<StyleProps, 'div'>('div')`
   flex: 9 0 0;
   padding-top: 10px;
+  text-align: ${p => p.monthly ? 'center' : 'inherit'};
   margin-right: ${p => p.success ? 0 : '-10px'}
 `
 
@@ -192,4 +194,36 @@ export const StyledLogoBorder = styled<StyleProps, 'div'>('div')`
   margin-top: -12px;
   background: ${p => p.bg || '#DE4D26'};
   overflow: hidden;
+`
+
+export const StyledMonthlyInfo = styled<{}, 'div'>('div')`
+  color: #fff;
+`
+
+export const StyledDomainText = styled<{}, 'span'>('span')`
+  display: block;
+  font-size: 22px;
+  margin: 10px 0 25px;
+  font-weight: normal;
+  letter-spacing: 0;
+  line-height: 32px;
+`
+
+export const StyledDateText = styled<{}, 'span'>('span')`
+  display: block;
+  font-size: 16px;
+  font-weight: normal;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 28px;
+`
+
+export const StyledDate = styled<{}, 'span'>('span')`
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 28px;
+  color: ${p => p.theme.color.brandBrave};
 `

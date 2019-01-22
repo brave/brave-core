@@ -26,7 +26,11 @@ import {
   StyledClose,
   StyledLogoWrapper,
   StyledLogoBorder,
-  StyledLogoImage
+  StyledLogoImage,
+  StyledDomainText,
+  StyledDateText,
+  StyledDate,
+  StyledMonthlyInfo
 } from './style'
 import { getLocale } from '../../../helpers'
 import { CloseCircleIcon, CloseStrokeIcon, PaperAirplaneIcon } from '../../../components/icons'
@@ -39,7 +43,8 @@ export interface Props {
   domain?: string
   logoBgColor?: CSS.Color
   logo?: string
-  subText?: React.ReactNode
+  amount?: string
+  monthlyDate?: string
   onClose: () => void
 }
 
@@ -62,7 +67,16 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
   }
 
   getOverlayContent = () => {
-    const { success, send, siteImg, subText, logo, domain, logoBgColor } = this.props
+    const {
+      success,
+      send,
+      siteImg,
+      logo,
+      domain,
+      logoBgColor,
+      amount,
+      monthlyDate
+    } = this.props
     return (
       <StyledOverlayContent>
         {
@@ -100,7 +114,7 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
               : null
             }
             </StyledIconWrapper>
-            <StyledMessage success={success}>
+            <StyledMessage success={success} monthly={amount}>
               <StyledHeaderText>
                 {
                   send
@@ -111,9 +125,35 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
                   success
                   ? <>
                     {getLocale('thankYou')}
-                    <StyleSubHeaderText>
-                      {subText}
-                    </StyleSubHeaderText>
+                    <StyledMonthlyInfo>
+                      <StyleSubHeaderText>
+                        {
+                          monthlyDate
+                          ? getLocale('autoTipText')
+                          : getLocale('tipText')
+                        }
+                      </StyleSubHeaderText>
+                      <StyledDomainText>
+                        {domain}<br/>{amount} {getLocale('bat')}
+                        {
+                          monthlyDate
+                          ? `, ${getLocale('monthlyText')}`
+                          : null
+                        }
+                      </StyledDomainText>
+                      {
+                        monthlyDate
+                        ? <>
+                          <StyledDateText>
+                            {getLocale('firstTipDateText')}
+                          </StyledDateText>
+                          <StyledDate>
+                            {monthlyDate}
+                          </StyledDate>
+                          </>
+                        : null
+                      }
+                    </StyledMonthlyInfo>
                   </>
                   : null
                 }
