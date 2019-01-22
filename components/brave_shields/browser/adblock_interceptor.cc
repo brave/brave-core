@@ -33,6 +33,7 @@ class Http200OkJob : public net::URLRequestJob {
  private:
   ~Http200OkJob() override;
   void StartAsync();
+  void InitMime(net::URLRequest* request);
 
   // Intercepted from 'Accept:' (or empty if the header is empty).
   std::string mime_type_ = "text/html";
@@ -43,17 +44,7 @@ class Http200OkJob : public net::URLRequestJob {
 Http200OkJob::Http200OkJob(net::URLRequest* request,
                            net::NetworkDelegate* network_delegate)
     : net::URLRequestJob(request, network_delegate), weak_factory_(this) {
-  // Extract mime type that the request wants so we can provide it while
-  // preparing the response.
-  auto headers = request->extra_request_headers();
-  std::string accept_header;
-  headers.GetHeader("Accept", &accept_header);
-  auto mime_types = base::SplitString(accept_header, ",;",
-                                      base::TRIM_WHITESPACE,
-                                      base::SPLIT_WANT_NONEMPTY);
-  if (!mime_types.empty()) {
-    mime_type_ = mime_types.front();
-  }
+  InitMime(request);
 }
 
 void Http200OkJob::Start()  {
@@ -91,6 +82,25 @@ Http200OkJob::~Http200OkJob() {}
 
 void Http200OkJob::StartAsync() {
   NotifyHeadersComplete();
+}
+
+void Http200OkJob::InitMime(net::URLRequest *request) {
+  // Extract mime type that the request wants so we can provide it while
+  // preparing the response.
+  auto headers = request->extra_request_headers();
+  std::string accept_header;
+  headers.GetHeader("Accept", &accept_header);
+  auto mime_types = base::SplitString(accept_header, ",;",
+                                      base::TRIM_WHITESPACE,
+                                      base::SPLIT_WANT_NONEMPTY);
+  if (!mime_types.empty()) {
+    DCHECK(!mime_types.front().empty());
+    // If the entry looks like "*/*", use the default value. Otherwise, use
+    // the value from 'Accept', even if it is "text/*".
+    if (mime_types.front()[0] != '*') {
+      mime_type_ = mime_types.front();
+    }
+  }
 }
 
 AdBlockInterceptor::AdBlockInterceptor() {}
