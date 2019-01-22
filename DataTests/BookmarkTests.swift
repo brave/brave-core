@@ -151,17 +151,23 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertFalse(Bookmark.contains(url: wrongUrl))
     }
     
-    func testGetChildren() {
+    func testGetNonFolderChildren() {
         let folder = createAndWait(url: nil, title: nil, customTitle: "Folder", isFolder: true)
         
-        let nonNestedBookmarksToAdd = 3
-        insertBookmarks(amount: nonNestedBookmarksToAdd)
+        let nonFolderBookmarksCount = 3
+        insertBookmarks(amount: nonFolderBookmarksCount, parent: folder)
         
-        // Few bookmarks inside our folder.
-        let nestedBookmarksCount = 5
-        insertBookmarks(amount: nestedBookmarksCount, parent: folder)
+        // Add folder bookmark.
+        createAndWait(url: nil,
+                      title: nil,
+                      customTitle: "InFolder",
+                      parentFolder: folder,
+                      isFolder: true,
+                      isFavorite: false,
+                      color: nil,
+                      syncOrder: nil)
         
-        XCTAssertEqual(Bookmark.getChildren(forFolderUUID: folder.syncUUID)?.count, nestedBookmarksCount)
+        XCTAssertEqual(Bookmark.getNonFolderChildren(forFolderUUID: folder.syncUUID)?.count, nonFolderBookmarksCount)
     }
     
     func testGetTopLevelFolders() {
