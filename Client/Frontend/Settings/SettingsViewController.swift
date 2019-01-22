@@ -49,6 +49,7 @@ private func BoolRow(title: String, option: Preferences.Option<Bool>) -> Row {
     return Row(
         text: title,
         accessory: .view(SwitchAccessoryView(initialValue: option.value, valueChange: { option.value = $0 })),
+        cellClass: MultilineValue1Cell.self,
         uuid: option.key
     )
 }
@@ -141,7 +142,7 @@ class SettingsViewController: TableViewController {
                     viewController.model = self.profile.searchEngines
                     viewController.profile = self.profile
                     self.navigationController?.pushViewController(viewController, animated: true)
-                }, accessory: .disclosureIndicator),
+                }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 BoolRow(title: Strings.Save_Logins, option: Preferences.General.saveLogins),
                 BoolRow(title: Strings.Block_Popups, option: Preferences.General.blockPopups),
             ]
@@ -149,10 +150,10 @@ class SettingsViewController: TableViewController {
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             general.rows.append(
-                Row(text: Strings.Show_Tabs_Bar, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }))
+                Row(text: Strings.Show_Tabs_Bar, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)
             )
         } else {
-            var row = Row(text: Strings.Show_Tabs_Bar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, accessory: .disclosureIndicator)
+            var row = Row(text: Strings.Show_Tabs_Bar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
             row.selection = { [unowned self] in
                 // Show options for tab bar visibility
                 let optionsViewController = OptionSelectionViewController<TabBarVisibility>(
@@ -197,7 +198,8 @@ class SettingsViewController: TableViewController {
                         }
                         self.navigationController?.pushViewController(view, animated: true)
                     }
-                }, accessory: .disclosureIndicator)
+                }, accessory: .disclosureIndicator,
+                   cellClass: MultilineValue1Cell.self)
             ]
         )
     }()
@@ -216,7 +218,8 @@ class SettingsViewController: TableViewController {
                     }
                     self.navigationController?.pushViewController(clearPrivateData, animated: true)
                 },
-                accessory: .disclosureIndicator
+                accessory: .disclosureIndicator,
+                cellClass: MultilineValue1Cell.self
             )
         ]
         privacy.rows.append(BoolRow(title: Strings.Private_Browsing_Only, option: Preferences.Privacy.privateBrowsingOnly))
@@ -244,7 +247,7 @@ class SettingsViewController: TableViewController {
                 Row(text: passcodeTitle, selection: { [unowned self] in
                     let passcodeSettings = PasscodeSettingsViewController()
                     self.navigationController?.pushViewController(passcodeSettings, animated: true)
-                    }, accessory: .disclosureIndicator)
+                    }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
             ]
         )
     }()
@@ -274,21 +277,21 @@ class SettingsViewController: TableViewController {
                         self.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.BraveCommunityURL)
                         self.dismiss(animated: true)
                     },
-                    cellClass: ButtonCell.self),
+                    cellClass: MultilineButtonCell.self),
                 Row(text: Strings.Privacy_Policy,
                     selection: { [unowned self] in
                         // Show privacy policy
                         let privacy = SettingsContentViewController().then { $0.url = BraveUX.BravePrivacyURL }
                         self.navigationController?.pushViewController(privacy, animated: true)
                     },
-                    accessory: .disclosureIndicator),
+                    accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: Strings.Terms_of_Use,
                     selection: { [unowned self] in
                         // Show terms of use
                         let toc = SettingsContentViewController().then { $0.url = BraveUX.BraveTermsOfUseURL }
                         self.navigationController?.pushViewController(toc, animated: true)
                     },
-                    accessory: .disclosureIndicator)
+                    accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
             ]
         )
     }()
@@ -313,7 +316,7 @@ class SettingsViewController: TableViewController {
                     actionSheet.addAction(copyDebugInfoAction)
                     actionSheet.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
                     self.navigationController?.present(actionSheet, animated: true, completion: nil)
-                })
+                }, cellClass: MultilineValue1Cell.self)
             ]
         )
     }()
@@ -331,10 +334,10 @@ class SettingsViewController: TableViewController {
                         alert.addAction(UIAlertAction(title: "OK", style: .default))
                         self?.present(alert, animated: true)
                     }
-                }, cellClass: ButtonCell.self),
+                }, cellClass: MultilineButtonCell.self),
                 Row(text: "View URP Logs", selection: {
                     self.navigationController?.pushViewController(UrpLogsViewController(), animated: true)
-                }, accessory: .disclosureIndicator),
+                }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: "URP Code: \(UserReferralProgram.getReferralCode() ?? "--")"),
                 Row(text: "Load all QA Links", selection: {
                     let url = URL(string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json")!
@@ -342,7 +345,7 @@ class SettingsViewController: TableViewController {
                     let urls = JSON(parseJSON: string!)["links"].arrayValue.compactMap { URL(string: $0.stringValue) }
                     self.settingsDelegate?.settingsOpenURLs(urls)
                     self.dismiss(animated: true)
-                }, cellClass: ButtonCell.self),
+                }, cellClass: MultilineButtonCell.self),
                 Row(text: "CRASH!!!", selection: {
                     let alert = UIAlertController(title: "Force crash?", message: nil, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "Crash app", style: .destructive) { _ in
@@ -350,8 +353,44 @@ class SettingsViewController: TableViewController {
                     })
                     alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
                     self.present(alert, animated: true, completion: nil)
-                }, cellClass: ButtonCell.self)
+                }, cellClass: MultilineButtonCell.self)
             ]
         )
     }()
+}
+
+fileprivate class MultilineButtonCell: ButtonCell {
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        textLabel?.numberOfLines = 0
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+fileprivate class MultilineValue1Cell: Value1Cell {
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        textLabel?.numberOfLines = 0
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+fileprivate class MultilineSubtitleCell: SubtitleCell {
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        textLabel?.numberOfLines = 0
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
