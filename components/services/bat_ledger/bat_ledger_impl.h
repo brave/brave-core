@@ -99,8 +99,10 @@ class BatLedgerImpl : public mojom::BatLedger,
 
     void IsWalletCreated(IsWalletCreatedCallback callback) override;
 
-    void GetPublisherActivityFromUrl(uint64_t window_id,
-        const std::string& visit_data) override;
+    void GetPublisherActivityFromUrl(
+        uint64_t window_id,
+        const std::string& visit_data,
+        const std::string& publisher_blob) override;
 
     void GetContributionAmount(
       GetContributionAmountCallback callback) override;

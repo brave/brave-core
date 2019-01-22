@@ -271,11 +271,13 @@ void BatLedgerImpl::IsWalletCreated(IsWalletCreatedCallback callback) {
   std::move(callback).Run(ledger_->IsWalletCreated());
 }
 
-void BatLedgerImpl::GetPublisherActivityFromUrl(uint64_t window_id,
-    const std::string& visit_data) {
+void BatLedgerImpl::GetPublisherActivityFromUrl(
+    uint64_t window_id,
+    const std::string& visit_data,
+    const std::string& publisher_blob) {
   ledger::VisitData visitData;
   if (visitData.loadFromJson(visit_data))
-    ledger_->GetPublisherActivityFromUrl(window_id, visitData);
+    ledger_->GetPublisherActivityFromUrl(window_id, visitData, publisher_blob);
 }
 
 // static

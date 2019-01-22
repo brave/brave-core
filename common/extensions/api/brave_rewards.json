@@ -278,6 +278,10 @@
           {
             "name": "faviconUrl",
             "type": "string"
+          },
+          {
+            "name": "publisherBlob",
+            "type": "string"
           }
         ]
       },
