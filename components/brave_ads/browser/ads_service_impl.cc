@@ -363,6 +363,12 @@ void AdsServiceImpl::Start() {
   if (command_line.HasSwitch(switches::kTesting)) {
     is_testing = true;
   }
+  if (command_line.HasSwitch(switches::kLocale)) {
+    std::string locale = command_line.GetSwitchValueASCII(switches::kLocale);
+    if (!locale.empty()) {
+      command_line_switch_ads_locale_ = locale;
+    }
+  }
 
   bat_ads_service_->SetProduction(is_production, base::NullCallback());
   bat_ads_service_->SetDebug(is_debug, base::NullCallback());
@@ -838,6 +844,10 @@ const std::vector<std::string> AdsServiceImpl::GetLocales() const {
 }
 
 const std::string AdsServiceImpl::GetAdsLocale() const {
+  if (!command_line_switch_ads_locale_.empty()) {
+    return command_line_switch_ads_locale_;
+  }
+
   return g_browser_process->GetApplicationLocale();
 }
 

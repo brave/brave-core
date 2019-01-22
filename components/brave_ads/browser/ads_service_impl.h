@@ -200,6 +200,8 @@ class AdsServiceImpl : public AdsService,
   NotificationInfoMap notification_ids_;
   std::map<const net::URLFetcher*, ads::URLRequestCallback> fetchers_;
 
+  std::string command_line_switch_ads_locale_;
+
   DISALLOW_COPY_AND_ASSIGN(AdsServiceImpl);
 };
 
