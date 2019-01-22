@@ -61,6 +61,8 @@ using FetchIconCallback = std::function<void(bool, const std::string&)>;
 using LoadURLCallback = std::function<void(bool, const std::string&,
     const std::map<std::string, std::string>& headers)>;
 using OnRestoreCallback = std::function<void(bool)>;
+using URLRequestCallback = std::function<void(const int, const std::string&,
+  const std::map<std::string, std::string>& headers)>;
 using OnSaveCallback = std::function<void(const ledger::Result)>;
 using OnLoadCallback = std::function<void(const ledger::Result, const std::string&)>;
 using OnResetCallback = std::function<void(const ledger::Result)>;
@@ -178,6 +180,14 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void SaveNormalizedPublisherList(
     const ledger::PublisherInfoListStruct& normalized_list) = 0;
+
+  virtual void URLRequest(
+      const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& content_type,
+      const ledger::URL_METHOD method,
+      ledger::URLRequestCallback callback) = 0;
 
   virtual void SaveConfirmationsState(const std::string& name,
                                       const std::string& value,
