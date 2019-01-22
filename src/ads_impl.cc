@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <fstream>
+#include <vector>
 #include <algorithm>
 
 #include "rapidjson/document.h"
@@ -308,11 +309,18 @@ void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
   }
 }
 
-const std::string AdsImpl::GetRegion() {
+bool AdsImpl::IsSupportedRegion() {
+  auto supported_regions = {"US", "CA", "DE", "FR", "GB"};
+
   auto locale = ads_client_->GetAdsLocale();
   auto region = helper::Locale::GetCountryCode(locale);
 
-  return region;
+  if (std::find(supported_regions.begin(), supported_regions.end(), region)
+      == supported_regions.end()) {
+    return false;
+  }
+
+  return true;
 }
 
 void AdsImpl::ChangeLocale(const std::string& locale) {

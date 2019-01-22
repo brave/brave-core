@@ -75,7 +75,7 @@ class AdsImpl : public Ads {
 
   void ConfirmAdUUIDIfAdEnabled();
 
-  const std::string GetRegion() override;
+  bool IsSupportedRegion() override;
 
   void ChangeLocale(const std::string& locale) override;
 
