@@ -81,7 +81,8 @@ interface BatLedger {
 
   IsWalletCreated() => (bool wallet_created);
 
-  GetPublisherActivityFromUrl(uint64 window_id, string visit_data);
+  GetPublisherActivityFromUrl(uint64 window_id, string visit_data,
+      string publisher_blob);
   GetContributionAmount() => (double contribution_amount);
   GetPublisherBanner(string publisher_id) => (string banner);
 

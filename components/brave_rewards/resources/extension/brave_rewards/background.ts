@@ -46,12 +46,23 @@ chrome.runtime.onInstalled.addListener(function (details) {
 })
 
 chrome.runtime.onStartup.addListener(function () {
-  chrome.storage.local.get(['is_dismissed'], function (result) {
-    if (result && result['is_dismissed'] === 'false') {
-      chrome.browserAction.setBadgeText({
-        text: '1'
+  chrome.runtime.onConnect.addListener(function (externalPort) {
+    chrome.storage.local.set({
+      'rewards_panel_open': 'true'
+    })
+
+    chrome.storage.local.get(['is_dismissed'], function (result) {
+      if (result && result['is_dismissed'] === 'false') {
+        chrome.browserAction.setBadgeText({
+          text: '1'
+        })
+      }
+    })
+    externalPort.onDisconnect.addListener(function () {
+      chrome.storage.local.set({
+        'rewards_panel_open': 'false'
       })
-    }
+    })
   })
 })
 

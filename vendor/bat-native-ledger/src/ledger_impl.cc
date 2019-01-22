@@ -116,7 +116,8 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
     return;
   }
   DCHECK(last_tab_active_time_);
-  bat_publishers_->saveVisit(iter->second.tld, iter->second, current_time - last_tab_active_time_);
+  bat_publishers_->saveVisit(
+    iter->second.tld, iter->second, current_time - last_tab_active_time_, 0);
   last_tab_active_time_ = 0;
 }
 
@@ -333,7 +334,7 @@ void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
                                 const uint64_t& duration,
                                 const uint64_t window_id) {
   if (bat_publishers_->getPublisherAllowVideos()) {
-    bat_publishers_->saveVisit(publisher_id, visit_data, duration);
+    bat_publishers_->saveVisit(publisher_id, visit_data, duration, window_id);
   }
 }
 
@@ -800,15 +801,23 @@ bool LedgerImpl::IsWalletCreated() const {
   return bat_state_->IsWalletCreated();
 }
 
-void LedgerImpl::GetPublisherActivityFromUrl(uint64_t windowId,
-                                             const ledger::VisitData& visit_data) {
-  bat_publishers_->getPublisherActivityFromUrl(windowId, visit_data);
+void LedgerImpl::GetPublisherActivityFromUrl(
+    uint64_t windowId,
+    const ledger::VisitData& visit_data,
+    const std::string& publisher_blob) {
+  bat_publishers_->getPublisherActivityFromUrl(
+      windowId,
+      visit_data,
+      publisher_blob);
 }
 
-void LedgerImpl::GetMediaActivityFromUrl(uint64_t windowId,
-                                         const ledger::VisitData& visit_data,
-                                         const std::string& providerType) {
-  bat_get_media_->getMediaActivityFromUrl(windowId, visit_data, providerType);
+void LedgerImpl::GetMediaActivityFromUrl(
+    uint64_t windowId,
+    const ledger::VisitData& visit_data,
+    const std::string& providerType,
+    const std::string& publisher_blob) {
+  bat_get_media_->getMediaActivityFromUrl(
+      windowId, visit_data, providerType, publisher_blob);
 }
 
 void LedgerImpl::OnPublisherActivity(ledger::Result result,

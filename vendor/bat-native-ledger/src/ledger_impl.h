@@ -168,10 +168,15 @@ class LedgerImpl : public ledger::Ledger,
   void RestorePublishers() override;
   void OnRestorePublishers(ledger::OnRestoreCallback callback);
   bool IsWalletCreated() const override;
-  void GetPublisherActivityFromUrl(uint64_t windowId, const ledger::VisitData& visit_data) override;
-  void GetMediaActivityFromUrl(uint64_t windowId,
-                               const ledger::VisitData& visit_data,
-                               const std::string& providerType);
+  void GetPublisherActivityFromUrl(
+      uint64_t windowId,
+      const ledger::VisitData& visit_data,
+      const std::string& publisher_blob) override;
+  void GetMediaActivityFromUrl(
+      uint64_t windowId,
+      const ledger::VisitData& visit_data,
+      const std::string& providerType,
+      const std::string& publisher_blob);
   void OnPublisherActivity(ledger::Result result,
                            std::unique_ptr<ledger::PublisherInfo> info,
                            uint64_t windowId);
