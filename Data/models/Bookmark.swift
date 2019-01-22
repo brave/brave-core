@@ -209,7 +209,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         //  (e.g. sync sent down bookmark before parent folder)
         if bk.isFolder {
             // Find all children and attach them
-            if let children = Bookmark.getChildren(forFolderUUID: bk.syncUUID) {
+            if let children = Bookmark.getNonFolderChildren(forFolderUUID: bk.syncUUID) {
                 
                 // TODO: Setup via bk.children property instead
                 children.forEach { $0.syncParentUUID = bk.syncParentUUID }
@@ -412,7 +412,7 @@ extension Bookmark {
         return NSPredicate(format: "\(urlKeyPath) == %@ AND \(isFavoriteKeyPath) == \(NSNumber(value: getFavorites))", url.absoluteString)
     }
     
-    public static func getChildren(forFolderUUID syncUUID: [Int]?, ignoreFolders: Bool = false) -> [Bookmark]? {
+    public static func getNonFolderChildren(forFolderUUID syncUUID: [Int]?) -> [Bookmark]? {
         guard let searchableUUID = SyncHelpers.syncDisplay(fromUUID: syncUUID) else {
             return nil
         }
@@ -420,8 +420,8 @@ extension Bookmark {
         let syncParentDisplayUUIDKeyPath = #keyPath(Bookmark.syncParentDisplayUUID)
         let isFolderKeyPath = #keyPath(Bookmark.isFolder)
         
-        let predicate = NSPredicate(format: "\(syncParentDisplayUUIDKeyPath) == %@ AND \(isFolderKeyPath) == %@",
-            searchableUUID, NSNumber(value: ignoreFolders))
+        let predicate = NSPredicate(format: "\(syncParentDisplayUUIDKeyPath) == %@ AND \(isFolderKeyPath) == 0",
+            searchableUUID)
         
         return all(where: predicate)
     }
