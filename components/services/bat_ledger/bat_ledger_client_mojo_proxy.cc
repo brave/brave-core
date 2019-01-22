@@ -139,9 +139,9 @@ std::string BatLedgerClientMojoProxy::GenerateGUID() const {
 }
 
 void OnLoadURL(const ledger::LoadURLCallback& callback,
-    bool success, const std::string& response,
+    int32_t response_code, const std::string& response,
     const base::flat_map<std::string, std::string>& headers) {
-  callback(success, response, mojo::FlatMapToMap(headers));
+  callback(response_code, response, mojo::FlatMapToMap(headers));
 }
 
 void BatLedgerClientMojoProxy::LoadURL(

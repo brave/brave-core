@@ -140,7 +140,7 @@ interface BatLedgerClient {
   OnRemoveRecurring(string publisher_key) => (int32 result);
 
   LoadURL(string url, array<string> headers, string content,
-      string content_type, int32 method) => (bool success, string response,
+      string content_type, int32 method) => (int32 status_code, string response,
         map<string, string> headers);
 
   [Sync]
