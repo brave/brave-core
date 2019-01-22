@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/net/chrome_url_request_context_getter.cc b/chrome/browser/net/chrome_url_request_context_getter.cc
-index eca8e532e3ec27a97007d9be5f6781c6b2628cf8..1b6461c5ac901307fcb6e77b60d52dfc5922370f 100644
+index eca8e532e3ec27a97007d9be5f6781c6b2628cf8..315d92e3da48ee1cbf62f88a5c88a8d2db3841da 100644
 --- a/chrome/browser/net/chrome_url_request_context_getter.cc
 +++ b/chrome/browser/net/chrome_url_request_context_getter.cc
 @@ -5,7 +5,7 @@
@@ -15,7 +15,7 @@ index eca8e532e3ec27a97007d9be5f6781c6b2628cf8..1b6461c5ac901307fcb6e77b60d52dfc
        : profile_io_data_(profile_io_data),
          request_interceptors_(std::move(request_interceptors)) {
      std::swap(protocol_handlers_, *protocol_handlers);
-+    request_interceptors_.emplace_back(new brave::content::AdBlockInterceptor);
++    request_interceptors_.emplace_back(new brave_shields::AdBlockInterceptor);
    }
  
    net::URLRequestContext* Create() override {
@@ -23,7 +23,7 @@ index eca8e532e3ec27a97007d9be5f6781c6b2628cf8..1b6461c5ac901307fcb6e77b60d52dfc
          network_context_request_(std::move(network_context_request)),
          network_context_params_(std::move(network_context_params)) {
      std::swap(protocol_handlers_, *protocol_handlers);
-+    request_interceptors_.emplace_back(new brave::content::AdBlockInterceptor);
++    request_interceptors_.emplace_back(new brave_shields::AdBlockInterceptor);
    }
  
    net::URLRequestContext* Create() override {

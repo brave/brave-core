@@ -16,8 +16,7 @@
 #include "net/http/http_response_headers.h"
 #include "net/http/http_util.h"
 
-namespace brave {
-namespace content {
+namespace brave_shields {
 
 class Http200OkJob : public net::URLRequestJob {
  public:
@@ -117,5 +116,4 @@ net::URLRequestJob* AdBlockInterceptor::MaybeInterceptRequest(
   return nullptr;
 }
 
-}  // namespace brave
-}  // namespace content
+}  // namespace brave_shields

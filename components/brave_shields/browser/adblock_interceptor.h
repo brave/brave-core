@@ -9,8 +9,7 @@
 #include "content/common/content_export.h"
 #include "net/url_request/url_request_interceptor.h"
 
-namespace brave {
-namespace content {
+namespace brave_shields {
 
 // Intercepts certain requests and blocks them by silently returning 200 OK
 // and not allowing them to hit the network.
@@ -26,7 +25,6 @@ protected:
       net::NetworkDelegate* network_delegate) const override;
 };
 
-}  // namespace brave
-}  // namespace content
+}  // namespace brave_shields
 
 #endif  // BRAVE_CONTENT_BROWSER_ADBLOCK_INTERCEPTOR_H_
