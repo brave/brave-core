@@ -11,6 +11,7 @@ extern const char kStaging[];
 extern const char kProduction[];
 extern const char kDebug[];
 extern const char kTesting[];
+extern const char kLocale[];
 }  // namespace switches
 }  // namespace apps
 

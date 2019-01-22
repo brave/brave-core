@@ -340,20 +340,18 @@ bool BundleStateDatabase::GetAdsForCategory(const std::string& region,
       db_.GetUniqueStatement("SELECT ai.creative_set_id, ai.advertiser, "
                              "ai.notification_text, ai.notification_url, "
                              "ai.start_timestamp, ai.end_timestamp, "
-                             "ai.uuid, ai.campaign_id, ai.daily_cap, "
+                             "ai.uuid, ai.region, ai.campaign_id, ai.daily_cap, "
                              "ai.per_day, ai.total_max FROM ad_info AS ai "
                              "INNER JOIN ad_info_category AS aic "
                              "ON aic.ad_info_uuid = ai.uuid "
                              "WHERE aic.category_name = ? and "
-                             // TODO(tmancey) - use region in the query
-                             // "ai.region = ? and "
+                             "ai.region = ? and "
                              "ai.start_timestamp <= strftime('%Y-%m-%d %H:%M', "
                                "datetime('now','localtime')) and "
                              "ai.end_timestamp >= strftime('%Y-%m-%d %H:%M', "
                                "datetime('now','localtime'));"));
   info_sql.BindString(0, category);
-  // TODO(tmancey) - use region in the query
-  // info_sql.BindString(1, region);
+  info_sql.BindString(1, region);
 
   while (info_sql.Step()) {
     ads::AdInfo info;
