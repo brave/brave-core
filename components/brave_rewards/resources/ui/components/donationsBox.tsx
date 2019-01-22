@@ -14,7 +14,8 @@ import {
   List,
   Tokens,
   ModalDonation,
-  TipsMigrationAlert
+  TipsMigrationAlert,
+  NextContribution
 } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
 
@@ -156,7 +157,14 @@ class DonationBox extends React.Component<Props, State> {
   }
 
   render () {
-    const { walletInfo, firstLoad, enabledMain, ui } = this.props.rewardsData
+    const {
+      walletInfo,
+      firstLoad,
+      enabledMain,
+      ui,
+      recurringList,
+      reconcileStamp
+    } = this.props.rewardsData
     const { walletImported } = ui
     const showDisabled = firstLoad !== false || !enabledMain
     const donationRows = this.getDonationRows()
@@ -187,6 +195,16 @@ class DonationBox extends React.Component<Props, State> {
         <List title={getLocale('donationTotalDonations')}>
           <Tokens value={total} converted={converted} />
         </List>
+        {
+          recurringList && recurringList.length > 0
+          ? <List title={getLocale('contributionNextDate')}>
+            <NextContribution>
+              {new Date(reconcileStamp * 1000).toLocaleDateString()}
+            </NextContribution>
+          </List>
+          : null
+        }
+
         <TableDonation
           rows={topRows}
           allItems={allSites}
