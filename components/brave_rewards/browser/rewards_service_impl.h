@@ -190,6 +190,12 @@ class RewardsServiceImpl : public RewardsService,
       const IsConfirmationsReadyToShowAdsCallback& callback) override;
   void AdSustained(std::unique_ptr<ads::NotificationInfo> info) override;
 
+  void URLRequest(const std::string& url,
+                  const std::vector<std::string>& headers,
+                  const std::string& content,
+                  const std::string& content_type,
+                  const ledger::URL_METHOD method,
+                  ledger::URLRequestCallback callback) override;
   void SaveConfirmationsState(const std::string& name,
                               const std::string& value,
                               ledger::OnSaveCallback callback) override;

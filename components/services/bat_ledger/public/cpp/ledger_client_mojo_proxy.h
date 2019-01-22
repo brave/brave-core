@@ -105,6 +105,13 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void SaveNormalizedPublisherList(
     const std::string& normalized_list) override;
 
+  void URLRequest(const std::string& url,
+                  const std::vector<std::string>& headers,
+                  const std::string& content,
+                  const std::string& content_type,
+                  int32_t method,
+                  URLRequestCallback callback) override;
+
   void SaveConfirmationsState(const std::string& name,
                               const std::string& value,
                               SaveConfirmationsStateCallback callback) override;
@@ -220,6 +227,12 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnResetConfirmationsState(
       CallbackHolder<ResetConfirmationsStateCallback>* holder,
       ledger::Result result);
+
+  static void OnURLRequest(
+      CallbackHolder<URLRequestCallback>* holder,
+      int32_t response_code,
+      const std::string& body,
+      const std::map<std::string, std::string>& headers);
 
   ledger::LedgerClient* ledger_client_;
 

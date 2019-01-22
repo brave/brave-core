@@ -604,6 +604,33 @@ void LedgerClientMojoProxy::SaveNormalizedPublisherList(
 }
 
 // static
+void LedgerClientMojoProxy::OnURLRequest(
+    CallbackHolder<URLRequestCallback>* holder,
+    int32_t response_code,
+    const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  if (holder->is_valid())
+    std::move(holder->get())
+        .Run(response_code, body, mojo::MapToFlatMap(headers));
+  delete holder;
+}
+
+void LedgerClientMojoProxy::URLRequest(const std::string& url,
+    const std::vector<std::string>& headers,
+    const std::string& content,
+    const std::string& content_type,
+    int32_t method,
+    URLRequestCallback callback) {
+  // deleted in OnSaveConfirmationsState
+  auto* holder =
+      new CallbackHolder<URLRequestCallback>(AsWeakPtr(), std::move(callback));
+
+  ledger_client_->URLRequest(
+      url, headers, content, content_type, ToLedgerURLMethod(method),
+      std::bind(LedgerClientMojoProxy::OnURLRequest, holder, _1, _2, _3));
+}
+
+// static
 void LedgerClientMojoProxy::OnSaveConfirmationsState(
     CallbackHolder<SaveConfirmationsStateCallback>* holder,
     const ledger::Result result) {
