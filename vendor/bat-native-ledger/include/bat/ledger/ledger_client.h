@@ -58,7 +58,7 @@ using GetNicewareListCallback =
 using RecurringDonationCallback = std::function<void(const PublisherInfoList&)>;
 using RecurringRemoveCallback = std::function<void(Result)>;
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
-using LoadURLCallback = std::function<void(bool, const std::string&,
+using LoadURLCallback = std::function<void(const int, const std::string&,
     const std::map<std::string, std::string>& headers)>;
 using OnRestoreCallback = std::function<void(bool)>;
 using URLRequestCallback = std::function<void(const int, const std::string&,
