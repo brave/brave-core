@@ -5,6 +5,7 @@
 
 #include "bat_get_media.h"
 
+#include <algorithm>
 #include <sstream>
 #include <cmath>
 #include <vector>
@@ -396,6 +397,15 @@ void BatGetMedia::savePublisherInfo(const uint64_t& duration,
 
     publisher_id += channelId;
     url = publisherURL + "/videos";
+  } else if (providerName == TWITCH_MEDIA_TYPE) {
+    publisher_id = providerName + "#author:";
+    if (channelId.empty()) {
+      BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+        "author id is missing for: " << media_key;
+      return;
+    }
+    publisher_id += channelId;
+    url = publisherURL + "/videos";
   }
 
   if (publisher_id.empty()) {
@@ -407,6 +417,7 @@ void BatGetMedia::savePublisherInfo(const uint64_t& duration,
   ledger::VisitData updated_visit_data(visit_data);
 
   if (favIconURL.length() > 0) {
+
     updated_visit_data.favicon_url = favIconURL;
   }
 
@@ -468,7 +479,7 @@ void BatGetMedia::onMediaActivityError(const ledger::VisitData& visit_data,
     new_data.path = "/";
     new_data.name = name;
 
-    ledger_->GetPublisherActivityFromUrl(windowId, new_data);
+    ledger_->GetPublisherActivityFromUrl(windowId, new_data, std::string());
   } else {
       BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
         << "Media activity error for " << providerType << " (name: "
@@ -477,13 +488,15 @@ void BatGetMedia::onMediaActivityError(const ledger::VisitData& visit_data,
   }
 }
 
-void BatGetMedia::getMediaActivityFromUrl(uint64_t windowId,
-                                          const ledger::VisitData& visit_data,
-                                          const std::string& providerType) {
+void BatGetMedia::getMediaActivityFromUrl(
+    uint64_t windowId,
+    const ledger::VisitData& visit_data,
+    const std::string& providerType,
+    const std::string& publisher_blob) {
   if (providerType == YOUTUBE_MEDIA_TYPE) {
     processYoutubeMediaPanel(windowId, visit_data, providerType);
   } else if (providerType == TWITCH_MEDIA_TYPE) {
-    processTwitchMediaPanel(windowId, visit_data, providerType);
+    processTwitchMediaPanel(windowId, visit_data, providerType, publisher_blob);
   } else {
     onMediaActivityError(visit_data, providerType, windowId);
   }
@@ -503,11 +516,6 @@ void BatGetMedia::processYoutubeMediaPanel(uint64_t windowId,
   }
 }
 
-void BatGetMedia::processTwitchMediaPanel(uint64_t windowId,
-  const ledger::VisitData& visit_data, const std::string& providerType) {
-  // TODO add support for twitch
-}
-
 void BatGetMedia::processYoutubeWatchPath(uint64_t windowId,
   const ledger::VisitData& visit_data,
   const std::string& providerType) {
@@ -518,7 +526,7 @@ void BatGetMedia::processYoutubeWatchPath(uint64_t windowId,
     ledger_->GetMediaPublisherInfo(media_key,
       std::bind(&BatGetMedia::onMediaPublisherActivity,
       this, _1, _2, windowId, visit_data,
-      providerType, media_key, media_id));
+      providerType, media_key, media_id, std::string()));
   } else {
     onMediaActivityError(visit_data, providerType, windowId);
   }
@@ -534,13 +542,12 @@ void BatGetMedia::processYoutubeChannelPath(uint64_t windowId,
     fetchPublisherDataFromDB(windowId,
                              visit_data,
                              providerType,
-                             publisher_key);
+                             publisher_key,
+                             std::string());
   } else {
     onMediaActivityError(visit_data, providerType, windowId);
   }
 }
-
-
 
 void BatGetMedia::onMediaUserActivity(ledger::Result result,
                                       std::unique_ptr<ledger::PublisherInfo> info,
@@ -566,7 +573,8 @@ void BatGetMedia::onMediaUserActivity(ledger::Result result,
                                         _3));
 
   } else {
-    fetchPublisherDataFromDB(windowId, visit_data, providerType, info->id);
+    fetchPublisherDataFromDB(windowId, visit_data,
+      providerType, info->id, std::string());
   }
 }
 
@@ -587,10 +595,12 @@ void BatGetMedia::processYoutubeUserPath(uint64_t windowId,
   }
 }
 
-void BatGetMedia::fetchPublisherDataFromDB(uint64_t windowId,
-                                           const ledger::VisitData& visit_data,
-                                           const std::string& providerType,
-                                           const std::string& publisher_key) {
+void BatGetMedia::fetchPublisherDataFromDB(
+    uint64_t windowId,
+    const ledger::VisitData& visit_data,
+    const std::string& providerType,
+    const std::string& publisher_key,
+    const std::string& publisher_blob) {
     auto filter = ledger_->CreateActivityFilter(
       publisher_key,
       ledger::ACTIVITY_MONTH::ANY,
@@ -601,16 +611,20 @@ void BatGetMedia::fetchPublisherDataFromDB(uint64_t windowId,
       true);
     ledger_->GetPanelPublisherInfo(filter,
       std::bind(&BatGetMedia::onFetchPublisherFromDBResponse,
-      this, _1, _2, windowId, visit_data, providerType, publisher_key));
+      this, _1, _2, windowId, visit_data, providerType,
+      publisher_key, publisher_blob));
 }
 
-void BatGetMedia::onFetchPublisherFromDBResponse(ledger::Result result,
-                                                 std::unique_ptr<ledger::PublisherInfo> info,
-                                                 uint64_t windowId,
-                                                 const ledger::VisitData& visit_data,
-                                                 const std::string& providerType,
-                                                 const std::string& publisher_key) {
-  if (result == ledger::Result::NOT_FOUND) {
+void BatGetMedia::onFetchPublisherFromDBResponse(
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info,
+    uint64_t windowId,
+    const ledger::VisitData& visit_data,
+    const std::string& providerType,
+    const std::string& publisher_key,
+    const std::string& publisher_blob) {
+  if (!info || (result == ledger::Result::NOT_FOUND &&
+    providerType == YOUTUBE_MEDIA_TYPE)) {
     fetchDataFromUrl(visit_data.url, std::bind(&BatGetMedia::onGetChannelHeadlineVideo,
                                         this,
                                         windowId,
@@ -620,6 +634,20 @@ void BatGetMedia::onFetchPublisherFromDBResponse(ledger::Result result,
                                         _2,
                                         _3));
   } else {
+    if (providerType == TWITCH_MEDIA_TYPE) {
+      if (info->name != visit_data.name) {
+        std::string media_id = getTwitchMediaIdFromUrl(
+            visit_data, publisher_blob);
+        std::transform(media_id.begin(), media_id.end(),
+          media_id.begin(), ::tolower);
+        std::string media_key = getTwitchMediaKeyFromUrl(providerType, media_id,
+          visit_data.url);
+        info->name = getUserFacingHandle(publisher_blob);
+        savePublisherInfo(0, media_key, providerType, visit_data.url,
+          info->name, visit_data, windowId, info->favicon_url,
+          media_id);
+      }
+    }
     ledger_->OnPublisherActivity(result, std::move(info), windowId);
   }
 }
@@ -650,7 +678,7 @@ void BatGetMedia::onGetChannelIdFromUserPage(uint64_t windowId,
     new_data.name = "";
     new_data.favicon_url = "";
 
-    getMediaActivityFromUrl(windowId, new_data, providerType);
+    getMediaActivityFromUrl(windowId, new_data, providerType, std::string());
   } else {
     onMediaActivityError(visit_data, providerType, windowId);
   }
@@ -687,13 +715,71 @@ void BatGetMedia::onGetChannelHeadlineVideo(uint64_t windowId,
   }
 }
 
+void BatGetMedia::processTwitchMediaPanel(
+    uint64_t windowId,
+    const ledger::VisitData& visit_data,
+    const std::string& providerType,
+    const std::string& publisher_blob) {
+  if (!publisher_blob.empty()) {
+    std::string media_id = getTwitchMediaIdFromUrl(visit_data, publisher_blob);
+    std::transform(media_id.begin(), media_id.end(), media_id.begin(), ::tolower);
+    std::string media_key = getTwitchMediaKeyFromUrl(providerType, media_id,
+      visit_data.url);
+    if (!media_key.empty() && !media_id.empty()) {
+      ledger_->GetMediaPublisherInfo(media_key,
+        std::bind(&BatGetMedia::onMediaPublisherActivity,
+        this, _1, _2, windowId, visit_data,
+        providerType, media_key, media_id, publisher_blob));
+    } else {
+      onMediaActivityError(visit_data, providerType, windowId);
+    }
+  } else {
+    ledger::VisitData new_visit_data(visit_data);
+      new_visit_data.path = std::string();
+      ledger_->GetPublisherActivityFromUrl(
+        windowId,
+        new_visit_data,
+        std::string());
+  }
+}
+
+std::string BatGetMedia::getTwitchMediaIdFromUrl(
+  const ledger::VisitData& visit_data,
+  const std::string& publisher_blob) const {
+  std::string mediaId =
+    extractData(visit_data.url, "twitch.tv/", "/");
+  if (visit_data.url.find("twitch.tv/videos/") != std::string::npos) {
+    mediaId = extractData(publisher_blob,
+      "<a class=\"tw-interactive channel-header__user tw-align-items-center tw-fl"
+      "ex tw-flex-nowrap tw-flex-shrink-0 tw-link tw-link--hover-underline-none t"
+      "w-pd-r-2 tw-pd-y-05\" data-target=\"channel-header__channel-link\" data-a-"
+      "target=\"user-channel-header-item\" href=\"/", "\"");
+  }
+  return mediaId;
+}
+
+std::string BatGetMedia::getTwitchMediaKeyFromUrl(
+  const std::string& provider_type,
+  const std::string& id,
+  const std::string& url) const {
+  if (id == "twitch") {
+    return std::string();
+  }
+  if (url.find("twitch.tv/videos/") != std::string::npos) {
+    std::string vodId = extractData(url, "twitch.tv/videos/", "/");
+    return provider_type + "_" + id + "_vod_" + vodId;
+  }
+  return provider_type + "_" + id;
+}
+
 void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
   std::unique_ptr<ledger::PublisherInfo> info,
   uint64_t windowId,
   const ledger::VisitData& visit_data,
   const std::string& providerType,
   const std::string& media_key,
-  const std::string& media_id) {
+  const std::string& media_id,
+  const std::string& publisher_blob) {
 
   if (result != ledger::Result::LEDGER_OK  &&
     result != ledger::Result::NOT_FOUND) {
@@ -702,20 +788,89 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
   }
 
   if (!info || result == ledger::Result::NOT_FOUND) {
-    ledger::TwitchEventInfo twitchEventInfo;
-    getPublisherInfoDataCallback(media_id,
-                                 media_key,
-                                 providerType,
-                                 0,
-                                 twitchEventInfo,
-                                 visit_data,
-                                 windowId,
-                                 result,
-                                 std::move(info));
-
+    if (providerType == TWITCH_MEDIA_TYPE) {
+      // first see if we have the publisher a different way (VOD vs. livestream
+      ledger_->GetPublisherInfo("twitch#author:" + media_id,
+        std::bind(&BatGetMedia::onGetTwitchPublisherInfo, this, _1, _2,
+          windowId, visit_data, providerType, media_key, media_id,
+          publisher_blob));
+    } else if (providerType == YOUTUBE_MEDIA_TYPE) {
+      ledger::TwitchEventInfo twitchEventInfo;
+      getPublisherInfoDataCallback(media_id,
+                                  media_key,
+                                  providerType,
+                                  0,
+                                  twitchEventInfo,
+                                  visit_data,
+                                  windowId,
+                                  result,
+                                  std::move(info));
+    }
   } else {
-    fetchPublisherDataFromDB(windowId, visit_data, providerType, info->id);
+    if (providerType == TWITCH_MEDIA_TYPE) {
+      ledger_->OnPublisherActivity(result, std::move(info), windowId);
+    } else if (providerType == YOUTUBE_MEDIA_TYPE) {
+      fetchPublisherDataFromDB(windowId, visit_data, providerType,
+        info->id, publisher_blob);
+    }
   }
+}
+
+void BatGetMedia::onGetTwitchPublisherInfo(
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> publisher_info,
+    uint64_t windowId,
+    const ledger::VisitData visit_data,
+    const std::string& providerType,
+    const std::string& media_key,
+    const std::string& media_id,
+    const std::string& publisher_blob) {
+  if (result != ledger::Result::LEDGER_OK  &&
+    result != ledger::Result::NOT_FOUND) {
+    onMediaActivityError(visit_data, providerType, windowId);
+    return;
+  }
+  if (!publisher_info || result == ledger::Result::NOT_FOUND) {
+    if (providerType == TWITCH_MEDIA_TYPE) {
+      std::string publisher_name;
+      std::string publisher_favicon_url;
+      updateTwitchPublisherData(publisher_name, publisher_favicon_url,
+        publisher_blob);
+      savePublisherInfo(0, media_key, providerType, visit_data.url,
+        publisher_name, visit_data, windowId, publisher_favicon_url,
+        media_id);
+    }
+  } else {
+    if (providerType == TWITCH_MEDIA_TYPE) {
+      ledger_->OnPublisherActivity(result, std::move(publisher_info), windowId);
+    }
+  }
+}
+
+void BatGetMedia::updateTwitchPublisherData(
+    std::string& publisher_name,
+    std::string& publisher_favicon_url,
+    const std::string& publisher_blob) {
+  publisher_name = getUserFacingHandle(publisher_blob);
+  publisher_favicon_url = getFaviconUrl(publisher_blob, publisher_name);
+}
+
+std::string BatGetMedia::getUserFacingHandle(
+    const std::string& publisher_blob) const {
+  return extractData(publisher_blob,
+    "<figure class=\"tw-avatar tw-avatar--size-36\">"
+    "<div class=\"tw-border-radius-medium tw-overflow-hidden\">"
+    "<img class=\"tw-avatar__img tw-image\" alt=\"", "\"");
+}
+
+std::string BatGetMedia::getFaviconUrl(
+    const std::string& publisher_blob,
+    const std::string& twitchHandle) const {
+  return extractData(publisher_blob,
+    "<figure class=\"tw-avatar tw-avatar--size-36\">"
+    "<div class=\"tw-border-radius-medium tw-overflow-hidden\">"
+    "<img class=\"tw-avatar__img tw-image\" alt=\"" + twitchHandle + "\" src=\"",
+    "\"");
 }
 
 std::string BatGetMedia::parseFavIconUrl(const std::string& data) {
@@ -781,17 +936,21 @@ std::string BatGetMedia::getYoutubeUserFromUrl(const ledger::VisitData& visit_da
 }
 
 std::string BatGetMedia::extractData(const std::string& data,
-  const std::string& matchAfter, const std::string& matchUntil) {
+  const std::string& matchAfter, const std::string& matchUntil) const {
   std::string match;
   size_t matchAfterSize = matchAfter.size();
   size_t startPos = data.find(matchAfter);
   if (startPos != std::string::npos) {
     startPos += matchAfterSize;
     size_t endPos = data.find(matchUntil, startPos);
-    if (endPos != std::string::npos && endPos > startPos) {
-      match = data.substr(startPos, endPos - startPos);
-    } else if (endPos != std::string::npos) {
-      match = data.substr(startPos, endPos);
+    if (endPos != startPos) {
+      if (endPos != std::string::npos && endPos > startPos) {
+        match = data.substr(startPos, endPos - startPos);
+      } else if (endPos != std::string::npos) {
+        match = data.substr(startPos, endPos);
+      } else {
+        match = data.substr(startPos, std::string::npos);
+      }
     }
   }
   return match;

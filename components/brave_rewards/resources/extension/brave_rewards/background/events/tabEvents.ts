@@ -5,11 +5,11 @@
 import rewardsPanelActions from '../actions/rewardsPanelActions'
 
 chrome.tabs.onCreated.addListener((tab: chrome.tabs.Tab) => {
-  rewardsPanelActions.onTabRetrieved(tab)
+  rewardsPanelActions.onTabRetrieved(tab, '')
 })
 
 chrome.tabs.onUpdated.addListener((tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
-  rewardsPanelActions.onTabRetrieved(tab)
+  rewardsPanelActions.onTabRetrieved(tab, '')
 })
 
 chrome.tabs.onActivated.addListener((activeInfo: chrome.tabs.TabActiveInfo) => {

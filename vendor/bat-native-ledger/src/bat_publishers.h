@@ -37,7 +37,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void saveVisit(const std::string& publisher_id,
                  const ledger::VisitData& visit_data,
-                 const uint64_t& duration);
+                 const uint64_t& duration,
+                 uint64_t window_id);
 
   void AddRecurringPayment(const std::string& publisher_id, const double& value);
 
@@ -84,7 +85,10 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   bool loadPublisherList(const std::string& data);
 
-  void getPublisherActivityFromUrl(uint64_t windowId,const ledger::VisitData& visit_data);
+  void getPublisherActivityFromUrl(
+      uint64_t windowId,
+      const ledger::VisitData& visit_data,
+      const std::string& publisher_blob);
   void getPublisherBanner(const std::string& publisher_id,
                           ledger::PublisherBannerCallback callback);
 
@@ -150,12 +154,14 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
   void onFetchFavIcon(const std::string& publisher_key,
+                      uint64_t window_id,
                       bool success,
                       const std::string& favicon_url);
 
   void onFetchFavIconDBResponse(ledger::Result result,
                                 std::unique_ptr<ledger::PublisherInfo> info,
-                                const std::string& favicon_url);
+                                const std::string& favicon_url,
+                                uint64_t window_id);
 
   void setNumExcludedSitesInternal(ledger::PUBLISHER_EXCLUDE exclude);
 
