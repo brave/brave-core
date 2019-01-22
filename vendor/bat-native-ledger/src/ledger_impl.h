@@ -311,6 +311,13 @@ class LedgerImpl : public ledger::Ledger,
   // ConfirmationsClient implementation
   uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(uint32_t timer_id) override;
+  void URLRequest(
+      const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& content_type,
+      const confirmations::URLRequestMethod method,
+      confirmations::URLRequestCallback callback) override;
   void Save(
       const std::string& name,
       const std::string& value,
