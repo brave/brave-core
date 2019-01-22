@@ -30,11 +30,21 @@ export class App extends React.Component<Props, {}> {
     setTimeout(() => {
       this.onClose()
     }, 3000)
+
+    let domain = ''
+    if (publisher) {
+      if (publisher.provider && publisher.name) {
+        domain = publisher.name
+      } else {
+        domain = publisher.publisherKey
+      }
+    }
+
     return (
       <DonationOverlay
         onClose={this.onClose}
         success={true}
-        domain={publisher && publisher.publisherKey}
+        domain={domain}
         logo={publisher && publisher.logo}
       />
     )
