@@ -718,7 +718,6 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
     SetRewardsMainEnabled(true);
     SetAutoContribute(true);
     StartNotificationTimers(true);
-    result = ledger::Result::LEDGER_OK;
   }
 
   TriggerOnWalletInitialized(result);
@@ -1165,9 +1164,9 @@ void RewardsServiceImpl::OnURLFetchComplete(
   callback(response_code == 200, body, headers);
 }
 
-void RewardsServiceImpl::TriggerOnWalletInitialized(int error_code) {
+void RewardsServiceImpl::TriggerOnWalletInitialized(int result) {
   for (auto& observer : observers_)
-    observer.OnWalletInitialized(this, error_code);
+    observer.OnWalletInitialized(this, result);
 }
 
 void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,

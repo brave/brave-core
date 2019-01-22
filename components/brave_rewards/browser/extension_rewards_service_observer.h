@@ -25,7 +25,7 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(RewardsService* rewards_service,
-                           int error_code) override;
+                           int result) override;
   void OnWalletProperties(RewardsService* rewards_service,
                           int error_code,
                           std::unique_ptr<brave_rewards::WalletProperties>
