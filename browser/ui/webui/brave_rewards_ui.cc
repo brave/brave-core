@@ -100,7 +100,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
-                       int error_code) override;
+                       int result) override;
   void OnWalletProperties(brave_rewards::RewardsService* rewards_service,
       int error_code,
       std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) override;
@@ -306,13 +306,14 @@ void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnWalletInitialized(
     brave_rewards::RewardsService* rewards_service,
-    int error_code) {
+    int result) {
   if (!web_ui()->CanCallJavascript())
     return;
 
-  if (error_code == 0) {
+  // ledger::Result::WALLET_CREATED
+  if (result == 12) {
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreated");
-  } else if (error_code != 3) {
+  } else if (result != 3 && result != 0) {
     // Report back all errors except when ledger_state is missing
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletCreateFailed");
   }

@@ -9,6 +9,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/event_router.h"
+#include "bat/ledger/ledger_callback_handler.h"
 
 namespace brave_rewards {
 
@@ -22,22 +23,24 @@ ExtensionRewardsServiceObserver::~ExtensionRewardsServiceObserver() {
 
 void ExtensionRewardsServiceObserver::OnWalletInitialized(
     RewardsService* rewards_service,
-    int error_code) {
+    int result) {
   extensions::EventRouter* event_router =
       extensions::EventRouter::Get(profile_);
 
+  ledger::Result new_result = static_cast<ledger::Result>(result);
+
   // Don't report back if there is no ledger file
-  if (event_router && error_code != 3) {
+  if (event_router && new_result != ledger::Result::NO_LEDGER_STATE) {
     std::unique_ptr<base::ListValue> args(new base::ListValue());
 
     // wallet successfully created
-    if (error_code == 0) {
+    if (result == ledger::Result::WALLET_CREATED) {
       std::unique_ptr<extensions::Event> event(new extensions::Event(
         extensions::events::BRAVE_WALLET_CREATED,
         extensions::api::brave_rewards::OnWalletCreated::kEventName,
         std::move(args)));
       event_router->BroadcastEvent(std::move(event));
-    } else {
+    } else if (result != ledger::Result::LEDGER_OK) {
       std::unique_ptr<extensions::Event> event(new extensions::Event(
         extensions::events::BRAVE_WALLET_FAILED,
         extensions::api::brave_rewards::OnWalletFailed::kEventName,
