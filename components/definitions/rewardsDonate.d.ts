@@ -4,7 +4,9 @@ declare namespace RewardsDonate {
     walletInfo: WalletProperties
     finished: boolean
     error: boolean
-    recurringList?: string[]
+    currentTipAmount?: string
+    currentTipRecurring?: boolean
+    recurringDonations?: RecurringDonation[]
   }
 
   interface ApplicationState {
@@ -46,5 +48,10 @@ declare namespace RewardsDonate {
     captcha?: string
     hint?: string
     status?: 'wrongPosition' | 'serverError' | number | null
+  }
+
+  export interface RecurringDonation {
+    publisherKey?: string
+    monthlyDate?: number
   }
 }

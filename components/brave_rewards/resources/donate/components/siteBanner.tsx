@@ -101,12 +101,26 @@ class Banner extends React.Component<Props, State> {
     return result
   }
 
+  hasRecurringDonation = (publisherKey?: string) => {
+    const { recurringDonations } = this.props.rewardsDonateData
+
+    if (!publisherKey || !recurringDonations) {
+      return false
+    }
+
+    const recurringDonation = recurringDonations.find((donation: RewardsDonate.RecurringDonation) => {
+      return donation.publisherKey === publisherKey
+    })
+
+    return !!recurringDonation
+  }
+
   get addFundsLink () {
     return 'brave://rewards/#add-funds'
   }
 
   render () {
-    const { publisher, walletInfo, recurringList } = this.props.rewardsDonateData
+    const { publisher, walletInfo } = this.props.rewardsDonateData
     const { balance } = walletInfo
 
     let title = ''
@@ -146,7 +160,7 @@ class Banner extends React.Component<Props, State> {
         title={title}
         name={name}
         provider={provider as Provider}
-        recurringDonation={recurringList && recurringList.includes(publisherKey)}
+        recurringDonation={this.hasRecurringDonation(publisherKey)}
         balance={balance.toString() || '0'}
         bgImage={background}
         logo={logo}

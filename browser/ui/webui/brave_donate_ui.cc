@@ -182,7 +182,10 @@ void RewardsDonateDOMHandler::OnRecurringDonationUpdated(brave_rewards::RewardsS
    if (web_ui()->CanCallJavascript()) {
     auto publishers = std::make_unique<base::ListValue>();
     for (auto const& item : list) {
-      publishers->AppendString(item.id);
+      auto publisher = std::make_unique<base::DictionaryValue>();
+      publisher->SetString("publisherKey", item.id);
+      publisher->SetInteger("monthlyDate", item.reconcile_stamp);
+      publishers->Append(std::move(publisher));
     }
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_donate.recurringDonations", *publishers);

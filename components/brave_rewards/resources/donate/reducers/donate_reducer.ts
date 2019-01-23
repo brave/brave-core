@@ -11,6 +11,9 @@ export const defaultState: RewardsDonate.State = {
   finished: false,
   error: false,
   publisher: undefined,
+  currentTipAmount: '0.0',
+  currentTipRecurring: false,
+  recurringDonations: [],
   walletInfo: {
     balance: 0,
     choices: [],
@@ -45,13 +48,16 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
     case types.ON_DONATE:
       {
         if (state.publisher && state.publisher.publisherKey && payload.amount > 0) {
+          let amount = parseInt(payload.amount, 10)
           chrome.send('brave_rewards_donate.onDonate', [
             payload.publisherKey,
-            parseInt(payload.amount, 10),
+            amount,
             payload.recurring
           ])
           state = { ...state }
           state.finished = true
+          state.currentTipAmount = amount.toFixed(1)
+          state.currentTipRecurring = payload.recurring
         } else {
           // TODO return error
         }
@@ -62,7 +68,11 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
       break
     case types.ON_RECURRING_DONATIONS:
       state = { ...state }
-      state.recurringList = action.payload.list
+      const recurringDonations = action.payload.recurringDonations
+
+      if (recurringDonations) {
+        state.recurringDonations = recurringDonations
+      }
       break
   }
 
