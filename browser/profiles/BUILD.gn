@@ -10,6 +10,7 @@ source_set("profiles") {
     "//content/public/common",
     "//brave/browser/extensions",
     "//brave/browser/tor",
+    "//brave/content:browser",
     "//brave/common/tor",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_sync",
