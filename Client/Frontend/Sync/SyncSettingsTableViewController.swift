@@ -237,19 +237,6 @@ class SyncSettingsTableViewController: UITableViewController {
             return nil
         }
     }
-    
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section != Sections.deviceList.rawValue { return false }
-        
-        // First cell is our own device, we don't want to allow swipe to delete it.
-        return indexPath.row != 0
-     }
- 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
-        guard let deviceToDelete = frc?.object(at: indexPath), editingStyle == .delete else { return }
-        deviceToDelete.remove()
-    }
 }
 
 // MARK: - NSFetchedResultsControllerDelegate
