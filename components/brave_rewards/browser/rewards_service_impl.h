@@ -193,7 +193,7 @@ class RewardsServiceImpl : public RewardsService,
                              bool success);
   void OnPublisherStateLoaded(ledger::LedgerCallbackHandler* handler,
                               const std::string& data);
-  void TriggerOnWalletInitialized(int error_code);
+  void TriggerOnWalletInitialized(int result);
   void TriggerOnWalletProperties(int error_code,
                                  std::unique_ptr<ledger::WalletInfo> result);
   void TriggerOnGrant(ledger::Result result, const ledger::Grant& grant);
