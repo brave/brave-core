@@ -56,8 +56,8 @@ interface BatLedger {
   OnReconcileCompleteSuccess(string viewing_id, int32 category, string probi,
       int32 month, int32 year, uint32 data);
 
-  FetchGrants(string lang, string payment_id);
   GetGrantCaptcha(string promotion_id, string promotion_type);
+  FetchGrants(string lang, string payment_id, string safetynet_token);
   GetWalletPassphrase() => (string wallet_passphrase);
   GetExcludedPublishersNumber() => (uint32 num_excluded_sites);
   RecoverWallet(string passPhrase);
@@ -68,6 +68,9 @@ interface BatLedger {
   GetBTCAddress() => (string address);
   GetETHAddress() => (string address);
   GetLTCAddress() => (string address);
+
+  GetGrantViaSafetynetCheck();
+  ApplySafetynetToken(string token);
 
   SetRewardsMainEnabled(bool enabled);
   SetPublisherMinVisitTime(uint64 duration_in_seconds);
