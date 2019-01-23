@@ -178,6 +178,7 @@ def download_linux_pkgs_from_github(args, logging):
         exit(1)
     return file_list
 
+
 def perform_github_download(asset_url, args, logging, filename, file_list):
     # Instantiate new requests session, versus reusing the repo session above.
     # Headers was likely being reused in that session, and not allowing us
@@ -215,13 +216,14 @@ def perform_github_download(asset_url, args, logging, filename, file_list):
         logging.debug(
             "Requests Response status_code != 200: {}".format(r.status_code))
 
+
 def rename_file_if_exists(filename, logging):
     if os.path.isfile(os.path.join(os.getcwd(), filename)):
         now = datetime.datetime.now()
         datestring = "{}{}{}.{}{}{}".format(now.year, now.month, now.day, now.hour,
-                     now.minute, now.second)
-        logging.info("Found file \'{}\' already exists, renaming to: \'{}\'.".format(filename,
-                      filename + '.' + datestring))
+                                            now.minute, now.second)
+        logging.info("Found file \'{}\' already exists, renaming to: \'{}\'.".
+                     format(filename, filename + '.' + datestring))
         try:
             os.rename(filename, filename + '.' + datestring)
         except Exception as e:
