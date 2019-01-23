@@ -4,7 +4,7 @@
 
 import 'mocha'
 import * as assert from 'assert'
-import { isHttpOrHttps } from '../../../app/helpers/urlUtils'
+import { isHttpOrHttps, hasPortNumber } from '../../../app/helpers/urlUtils'
 
 describe('urlUtils test', function () {
   describe('isHttpOrHttps', function () {
@@ -39,6 +39,17 @@ describe('urlUtils test', function () {
     it('matches uppercase https', function () {
       const url = 'HTTP://SCREAMING-UNSAFE-WEBSITE.COM'
       assert.equal(isHttpOrHttps(url), true)
+    })
+  })
+
+  describe('hasPortNumber', function () {
+    it('not a port number if # is located in front of :XXXX', function () {
+      const url = 'http://brianbondy.com#:8080'
+      assert.equal(hasPortNumber(url), false)
+    })
+    it('port number if # is not existed in front of :XXXX', function () {
+      const url = 'http://brianbondy.com:8080'
+      assert.equal(hasPortNumber(url), true)
     })
   })
 })

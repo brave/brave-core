@@ -5,7 +5,7 @@
 import { Tab } from '../../types/state/shieldsPannelState'
 import { BlockOptions } from '../../types/other/blockTypes'
 import * as resourceIdentifiers from '../../constants/resourceIdentifiers'
-import { isHttpOrHttps } from '../../helpers/urlUtils'
+import { isHttpOrHttps, hasPortNumber } from '../../helpers/urlUtils'
 
 /**
  * Obtains the shields panel data for the specified tab data
@@ -86,6 +86,15 @@ export const requestShieldPanelData = (tabId: number) =>
       actions.default.shieldsPanelDataUpdated(details)
     })
 
+const getPrimaryPatternForOrigin = (origin: string) => {
+  // When url includes port w/o scheme, chromium parses it as an invalid port
+  // number.
+  if (hasPortNumber(origin) && isHttpOrHttps(origin)) {
+    return origin + '/*'
+  }
+  return origin.replace(/^(http|https):\/\//, '*://') + '/*'
+}
+
 /**
  * Changes the brave shields setting at origin to be allowed or blocked.
  * @param {string} origin the origin of the site to change the setting for
@@ -94,7 +103,7 @@ export const requestShieldPanelData = (tabId: number) =>
  */
 export const setAllowBraveShields = (origin: string, setting: string) =>
   chrome.braveShields.plugins.setAsync({
-    primaryPattern: origin.replace(/^(http|https):\/\//, '*://') + '/*',
+    primaryPattern: getPrimaryPatternForOrigin(origin),
     resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_BRAVE_SHIELDS },
     setting,
     scope: getScope()
@@ -137,7 +146,7 @@ export const setAllowTrackers = (origin: string, setting: string) =>
  * @return a promise which resolves when the setting is set
  */
 export const setAllowHTTPUpgradableResources = (origin: string, setting: BlockOptions) => {
-  const primaryPattern = origin.replace(/^(http|https):\/\//, '*://') + '/*'
+  const primaryPattern = getPrimaryPatternForOrigin(origin)
   return chrome.braveShields.plugins.setAsync({
     primaryPattern,
     resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES },
