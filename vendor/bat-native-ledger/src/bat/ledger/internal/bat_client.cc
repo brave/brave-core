@@ -732,19 +732,16 @@ void BatClient::CreateWalletIfNecessary() {
 }
 
 void BatClient::getGrantViaSafetynetCheck() {
-  auto request_id =
-      ledger_->LoadURL(braveledger_bat_helper::buildURL(
-          (std::string)GET_PROMOTION_ATTESTATION + ledger_->GetPaymentId(),
-          PREFIX_V1),
-      std::vector<std::string>(), "", "",
-      ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(std::move(request_id),
-                      std::bind(&BatClient::getGrantViaSafetynetCheckCallback,
-                                       this,
-                                       _1,
-                                       _2,
-                                       _3));
-}
+  ledger_->LoadURL(braveledger_bat_helper::buildURL(
+      (std::string)GET_PROMOTION_ATTESTATION + ledger_->GetPaymentId(),
+      PREFIX_V1),
+  std::vector<std::string>(), "", "",
+  ledger::URL_METHOD::GET, std::bind(&BatClient::getGrantViaSafetynetCheckCallback,
+                                   this,
+                                   _1,
+                                   _2,
+                                   _3));
+  }
 
 void BatClient::getGrantViaSafetynetCheckCallback(bool success,
                                                   const std::string& response,
