@@ -36,6 +36,10 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
+#if defined(OS_ANDROID)
+#include "content/public/browser/url_data_source.h"
+#include "chrome/browser/ui/webui/favicon_source.h"
+#endif
 
 using content::WebUIMessageHandler;
 
@@ -260,6 +264,14 @@ RewardsDOMHandler::~RewardsDOMHandler() {
 }
 
 void RewardsDOMHandler::RegisterMessages() {
+
+#if defined(OS_ANDROID)
+  // Create our favicon data source.
+  Profile* profile = Profile::FromWebUI(web_ui());
+  content::URLDataSource::Add(profile,
+                              std::make_unique<FaviconSource>(profile));
+#endif
+
   web_ui()->RegisterMessageCallback("brave_rewards.createWalletRequested",
       base::BindRepeating(&RewardsDOMHandler::HandleCreateWalletRequested,
       base::Unretained(this)));
