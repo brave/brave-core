@@ -22,10 +22,17 @@ class UserScriptManager {
         }
     }
     
-    init(tab: Tab, isFingerprintingProtectionEnabled: Bool) {
+    var isCookieBlockingEnabled: Bool {
+        didSet {
+            if oldValue == isCookieBlockingEnabled { return }
+            reloadUserScripts()
+        }
+    }
+    
+    init(tab: Tab, isFingerprintingProtectionEnabled: Bool, isCookieBlockingEnabled: Bool) {
         self.tab = tab
         self.isFingerprintingProtectionEnabled = isFingerprintingProtectionEnabled
-        
+        self.isCookieBlockingEnabled = isCookieBlockingEnabled
         reloadUserScripts()
     }
     
@@ -55,12 +62,29 @@ class UserScriptManager {
         return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()
     
+    private let cookieControlUserScript: WKUserScript? = {
+        guard let path = Bundle.main.path(forResource: "CookieControl", ofType: "js"), let source: String = try? String(contentsOfFile: path) else {
+            log.error("Failed to load cookie control user script")
+            return nil
+        }
+        var alteredSource: String = source
+        let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<local>", with: "L\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<session>", with: "S\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<cookie>", with: "C\(token)", options: .literal)
+        
+        return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }()
+    
     private func reloadUserScripts() {
         tab?.webView?.configuration.userContentController.do {
             $0.removeAllUserScripts()
             self.packedUserScripts.forEach($0.addUserScript)
             
             if isFingerprintingProtectionEnabled, let script = fingerprintingProtectionUserScript {
+                $0.addUserScript(script)
+            }
+            if isCookieBlockingEnabled, let script = cookieControlUserScript {
                 $0.addUserScript(script)
             }
         }

@@ -10,6 +10,7 @@ import SwiftKeychainWrapper
 import LocalAuthentication
 import SwiftyJSON
 import Data
+import WebKit
 
 extension TabBarVisibility: RepresentableOptionType {
     public var displayString: String {
@@ -45,10 +46,10 @@ private class SwitchAccessoryView: UISwitch {
 }
 
 /// Just creates a switch toggle `Row` which updates a `Preferences.Option<Bool>`
-private func BoolRow(title: String, option: Preferences.Option<Bool>) -> Row {
+private func BoolRow(title: String, option: Preferences.Option<Bool>, onValueChange: SwitchAccessoryView.ValueChange? = nil) -> Row {
     return Row(
         text: title,
-        accessory: .view(SwitchAccessoryView(initialValue: option.value, valueChange: { option.value = $0 })),
+        accessory: .view(SwitchAccessoryView(initialValue: option.value, valueChange: onValueChange ?? { option.value = $0 })),
         cellClass: MultilineValue1Cell.self,
         uuid: option.key
     )
@@ -220,7 +221,48 @@ class SettingsViewController: TableViewController {
                 },
                 accessory: .disclosureIndicator,
                 cellClass: MultilineValue1Cell.self
-            )
+            ),
+            BoolRow(title: Strings.Block_all_cookies, option: Preferences.Privacy.blockAllCookies, onValueChange: { [unowned self] in
+                func toggleCookieSetting(with status: Bool) {
+                    //Lock/Unlock Cookie Folder
+                    let success = FileManager.default.setFolderAccess([
+                        (.cookie, status),
+                        (.webSiteData, status)
+                        ])
+                    if success {
+                        Preferences.Privacy.blockAllCookies.value = status
+                    } else {
+                        //Revert the changes. Not handling success here to avoid a loop.
+                        _ = FileManager.default.setFolderAccess([
+                            (.cookie, false),
+                            (.webSiteData, false)
+                            ])
+                        self.toggleSwitch(on: false, section: self.privacySection, rowUUID: Preferences.Privacy.blockAllCookies.key)
+                        
+                        // TODO: Throw Alert to user to try again?
+                        let alert = UIAlertController(title: nil, message: Strings.Block_all_cookies_failed_alert_msg, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
+                        self.present(alert, animated: true)
+                    }
+                }
+                if $0 {
+                    let status = $0
+                    // THROW ALERT to inform user of the setting
+                    let alert = UIAlertController(title: Strings.Block_all_cookies_alert_title, message: Strings.Block_all_cookies_alert_info, preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: Strings.Block_all_cookies_action, style: .destructive, handler: { (action) in
+                        toggleCookieSetting(with: status)
+                    })
+                    alert.addAction(okAction)
+                    
+                    let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: { (action) in
+                        self.toggleSwitch(on: false, section: self.privacySection, rowUUID: Preferences.Privacy.blockAllCookies.key)
+                    })
+                    alert.addAction(cancelAction)
+                    self.present(alert, animated: true)
+                } else {
+                    toggleCookieSetting(with: $0)
+                }
+            })
         ]
         privacy.rows.append(BoolRow(title: Strings.Private_Browsing_Only, option: Preferences.Privacy.privateBrowsingOnly))
         return privacy
@@ -357,6 +399,14 @@ class SettingsViewController: TableViewController {
             ]
         )
     }()
+    
+    func toggleSwitch(on: Bool, section: Section, rowUUID: String) {
+        if let sectionRow: Row = section.rows.first(where: {$0.uuid == rowUUID}) {
+            if let switchView: UISwitch = sectionRow.accessory.view as? UISwitch {
+                switchView.setOn(on, animated: true)
+            }
+        }
+    }
 }
 
 fileprivate class MultilineButtonCell: ButtonCell {
