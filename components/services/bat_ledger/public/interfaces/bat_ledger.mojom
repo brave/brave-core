@@ -97,6 +97,7 @@ interface BatLedger {
   HasSufficientBalanceToReconcile() => (bool sufficient);
 
   SetCatalogIssuers(string info);
+  [Sync]
   IsConfirmationsReadyToShowAds() => (bool can_show);
   AdSustained(string info);
 
