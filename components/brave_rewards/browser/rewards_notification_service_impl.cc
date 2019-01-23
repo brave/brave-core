@@ -74,10 +74,19 @@ void RewardsNotificationServiceImpl::AddNotification(
 
 void RewardsNotificationServiceImpl::DeleteNotification(RewardsNotificationID id) {
   DCHECK(!id.empty());
-  if (rewards_notifications_.find(id) == rewards_notifications_.end())
-    return;
-  RewardsNotification rewards_notification = rewards_notifications_[id];
-  rewards_notifications_.erase(id);
+  RewardsNotification rewards_notification;
+  if (rewards_notifications_.find(id) == rewards_notifications_.end()) {
+    rewards_notification.id_ = id;
+    rewards_notification.type_ = RewardsNotificationType::REWARDS_NOTIFICATION_INVALID;
+
+    // clean up, so that we don't have long standing notifications
+    if (rewards_notifications_.size() == 1) {
+      rewards_notifications_.clear();
+    }
+  } else {
+    rewards_notification = rewards_notifications_[id];
+    rewards_notifications_.erase(id);
+  }
   OnNotificationDeleted(rewards_notification);
 }
 
