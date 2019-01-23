@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/settings.html b/chrome/browser/resources/settings/settings.html
+index 75e1fc2e7e4297cb332b1cc595f0f529f4cdb535..0230f35ce34fa7cd704dd33e32e6b47ed2af96bd 100644
+--- a/chrome/browser/resources/settings/settings.html
++++ b/chrome/browser/resources/settings/settings.html
+@@ -7,6 +7,7 @@
+ <if expr="not optimize_webui">
+   <base href="chrome://settings">
+ </if>
++  <link rel="stylesheet" href="chrome://brave-resources/page_specific/settings/settings_loading_shim.css">
+   <style>
+     html {
+       --toolbar-height: 56px;

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+  <structure name="IDR_BRAVE_WEBUI_PAGE_SPECIFIC_DOWNLOADS_LOADING_SHIM_CSS"
+              file="page_specific/downloads/downloads_loading_shim.css"
+              type="chrome_html" compress="gzip" />
+  <structure name="IDR_BRAVE_WEBUI_PAGE_SPECIFIC_SETTINGS_LOADING_SHIM_CSS"
+              file="page_specific/settings/settings_loading_shim.css"
+              type="chrome_html" compress="gzip" />
+</grit-part>

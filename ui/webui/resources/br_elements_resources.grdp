@@ -20,4 +20,8 @@
              file="br_elements/br_toolbar/br_toolbar_search_field.js"
              type="chrome_html"
              compress="gzip" />
+  <structure name="IDR_CR_ELEMENTS_BR_TOOLBAR_SELECTION_OVERLAY_OVERRIDES_CSS"
+             file="br_elements/br_toolbar/br_toolbar_selection_overlay_overrides.css"
+             type="chrome_html"
+             compress="gzip" />
 </grit-part>
