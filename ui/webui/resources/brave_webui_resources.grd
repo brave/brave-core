@@ -11,7 +11,7 @@
   </outputs>
   <release seq="1">
     <includes>
-      <!-- <part file="fonts_resources.grdp" /> -->
+      <part file="fonts_resources.grdp" />
     </includes>
 
     <structures>
