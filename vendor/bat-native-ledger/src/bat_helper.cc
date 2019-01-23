@@ -39,7 +39,7 @@ static bool ignore_ = false;
     }
 
     // checks if probi only contains numbers
-    return std::regex_match(probi, std::regex("^[0-9]*$"));
+    return std::regex_match(probi, std::regex("^-?[0-9]*$"));
   }
 
   REQUEST_CREDENTIALS_ST::REQUEST_CREDENTIALS_ST() {}
