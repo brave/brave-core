@@ -590,10 +590,7 @@ void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
 }
 
 bool AdsServiceImpl::IsConfirmationsReadyToShowAds() {
-  // FIXME: This method must be refactored to take a callback
-  brave_rewards::IsConfirmationsReadyToShowAdsCallback callback;
-  rewards_service_->IsConfirmationsReadyToShowAds(callback);
-  return false;
+  return rewards_service_->IsConfirmationsReadyToShowAds();
 }
 
 void AdsServiceImpl::AdSustained(std::unique_ptr<ads::NotificationInfo> info) {

@@ -99,6 +99,7 @@ interface BatLedger {
   GetAddressesForPaymentId() => (map<string, string> addresses);
 
   SetCatalogIssuers(string info);
+  [Sync]
   IsConfirmationsReadyToShowAds() => (bool can_show);
   AdSustained(string info);
 
