@@ -28,6 +28,7 @@
 #include "bat/ledger/media_publisher_info.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
+#include "brave/browser/version_info.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/common/pref_names.h"
@@ -401,7 +402,7 @@ void RewardsServiceImpl::MaybeShowAddFundsNotification(
   // next 3 days and balance is too low.
   base::Time now = base::Time::Now();
   if (reconcile_stamp - now.ToDoubleT() <
-      3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour) {
+      3 * base::Time::kHoursPerDay * BASE_TIME_KSECONDSPERHOUR) {
     if (ShouldShowNotificationAddFunds()) {
       MaybeShowNotificationAddFunds();
     }
@@ -1247,7 +1248,7 @@ void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang,
     const std::string& payment_id,
     bool result, const std::string& result_string) {
   if (result) {
-    ledger_->FetchGrant(lang, payment_id, result_string);
+    bat_ledger_->FetchGrant(lang, payment_id, result_string);
   } else {
     LOG(ERROR) << "FetchGrantAttestationResult error: " << result_string;
     ledger::Grant grant;
