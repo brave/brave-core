@@ -64,7 +64,6 @@ using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
 using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
 using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
-using IsConfirmationsReadyToShowAdsCallback = base::Callback<void(bool)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -161,8 +160,7 @@ class RewardsService : public KeyedService {
   virtual void GetRewardsMainEnabled(
     const GetRewardsMainEnabledCallback& callback) const = 0;
   virtual void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) = 0;
-  virtual void IsConfirmationsReadyToShowAds(
-      const IsConfirmationsReadyToShowAdsCallback& callback) = 0;
+  virtual bool IsConfirmationsReadyToShowAds() = 0;
   virtual void AdSustained(std::unique_ptr<ads::NotificationInfo> info) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
