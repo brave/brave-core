@@ -71,18 +71,7 @@ class TabManager: NSObject {
 
     // A WKWebViewConfiguration used for normal tabs
     lazy fileprivate var configuration: WKWebViewConfiguration = {
-        let configuration = WKWebViewConfiguration()
-        configuration.processPool = WKProcessPool()
-        configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General.blockPopups.value
-        return configuration
-    }()
-
-    // A WKWebViewConfiguration used for private mode tabs
-    lazy fileprivate var privateConfiguration: WKWebViewConfiguration = {
-        let configuration = WKWebViewConfiguration()
-        configuration.processPool = WKProcessPool()
-        configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General.blockPopups.value
-        return configuration
+        return TabManager.getNewConfiguration()
     }()
 
     fileprivate let imageStore: DiskImageStore?
@@ -165,6 +154,30 @@ class TabManager: NSObject {
     private func tabs(withType type: TabType) -> [Tab] {
         assert(Thread.isMainThread)
         return allTabs.filter { $0.type == type }
+    }
+    
+    private class func getNewConfiguration() -> WKWebViewConfiguration {
+        let configuration = WKWebViewConfiguration()
+        configuration.processPool = WKProcessPool()
+        configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General.blockPopups.value
+        return configuration
+    }
+    
+    private func resetConfiguration() {
+        configuration = TabManager.getNewConfiguration()
+    }
+    
+    func reset() {
+        resetConfiguration()
+        allTabs.filter({$0.webView != nil}).forEach({
+            $0.resetWebView(config: configuration)
+        })
+        let tab = selectedTab
+        _selectedIndex = -1
+        selectTab(tab)
+        if let url = selectedTab?.url {
+            selectedTab?.loadRequest(PrivilegedRequest(url: url) as URLRequest)
+        }
     }
 
     func getTabFor(_ url: URL) -> Tab? {
@@ -310,7 +323,7 @@ class TabManager: NSObject {
         assert(Thread.isMainThread)
 
         // Take the given configuration. Or if it was nil, take our default configuration for the current browsing mode.
-        let configuration: WKWebViewConfiguration = configuration ?? (isPrivate ? privateConfiguration : self.configuration)
+        let configuration: WKWebViewConfiguration = configuration ?? self.configuration
 
         let type: TabType = isPrivate ? .private : .regular
         let tab = Tab(configuration: configuration, type: type)
@@ -1043,7 +1056,6 @@ extension TabManager: PreferencesObserver {
             }
             // The default tab configurations also need to change.
             configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
-            privateConfiguration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
         default:
             break
         }
