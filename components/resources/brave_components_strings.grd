@@ -227,6 +227,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_SITES" desc="">Supported sites</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE" desc="">Tips</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">Tip content creators directly as you browse. You can also set up recurring monthly tips so you can support sites continuously.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT" desc="">Coming soon.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_ONE" desc="">Earnings are paid every month.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_TWO" desc="">Set your desired frequency to increase or decrease earnings.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT1" desc="">Reward creators for the content you love.</message>
@@ -489,6 +490,7 @@
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT2" desc="">Use your recovery key to restore your wallet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT3" desc="">Restoring with a recovery key will replace your current wallet. So make sure you empty or back up your current wallet before restoring.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT4" desc="">Enter your recovery key or</message>
+      <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grants Claimed</message>
       <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
       <message name="IDS_BRAVE_UI_REWARDS_WHY" desc="">Why Brave Rewards?</message>
       <message name="IDS_BRAVE_UI_SAVE_AS_FILE" desc="">Save as File</message>

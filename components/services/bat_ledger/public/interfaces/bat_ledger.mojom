@@ -62,12 +62,15 @@ interface BatLedger {
   OnReconcileCompleteSuccess(string viewing_id, ledger.mojom.RewardsCategory category, string probi,
       int32 month, int32 year, uint32 data);
 
-  FetchGrants(string lang, string payment_id) =>
+  FetchGrants(string lang, string payment_id, string safetynet_token) =>
       (ledger.mojom.Result result, array<ledger.mojom.Grant> grants);
   GetGrantCaptcha(array<string> headers) => (string image, string hint);
   GetWalletPassphrase() => (string wallet_passphrase);
   RecoverWallet(string passPhrase) => (ledger.mojom.Result result, double balance, array<ledger.mojom.Grant?> grants);
   SolveGrantCaptcha(string solution, string promotionId);
+
+  GetGrantViaSafetynetCheck();
+  ApplySafetynetToken(string token);
 
   SetRewardsMainEnabled(bool enabled);
   SetPublisherMinVisitTime(uint64 duration_in_seconds);
