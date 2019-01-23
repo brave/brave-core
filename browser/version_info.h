@@ -7,6 +7,16 @@
 
 #include <string>
 
+#define CHROMIUM_CR71 strcmp(BRAVE_BROWSER_VERSION, "71.0.3578.99")
+
+#if $CHROMIUM_CR71 == 0
+  #define MESSAGE_NOTIFIER_TYPE message_center::NotifierId::NotifierType::SYSTEM_COMPONENT
+  #define BASE_TIME_KSECONDSPERHOUR 60 * 60
+#else
+  #define MESSAGE_NOTIFIER_TYPE message_center::NotifierType::SYSTEM_COMPONENT
+  #define BASE_TIME_KSECONDSPERHOUR base::Time::kSecondsPerHour
+#endif
+
 namespace version_info {
 std::string GetBraveVersionWithoutChromiumMajorVersion();
 std::string GetBraveVersionNumberForDisplay();
