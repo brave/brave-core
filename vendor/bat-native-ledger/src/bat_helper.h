@@ -10,7 +10,6 @@
 #include <map>
 #include <functional>
 
-#include "bat_helper_platform.h"
 #include "static_values.h"
 
 namespace braveledger_bat_helper {

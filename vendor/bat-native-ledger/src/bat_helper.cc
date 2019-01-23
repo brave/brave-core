@@ -4,14 +4,7 @@
 
 #include "bat_helper.h"
 
-#include <sstream>
 #include <random>
-#include <utility>
-#include <iomanip>
-#include <ctime>
-#include <memory>
-#include <iostream>
-#include <string>
 #include <regex>
 
 #include <openssl/base64.h>
@@ -20,11 +13,10 @@
 #include <openssl/sha.h>
 
 #include "bat/ledger/ledger.h"
+#include "logging.h"
 #include "rapidjson_bat_helper.h"
 #include "static_values.h"
 #include "tweetnacl.h"
-
-//#include "crypto/hkdf.h"
 
 namespace braveledger_bat_helper {
 
@@ -2239,7 +2231,6 @@ static bool ignore_ = false;
     size_t pos = query.find("data=");
     if (std::string::npos != pos && query.length() > 5) {
       std::string varValue = query.substr(5);
-      //DecodeURLChars(query.substr(5), varValue);
       std::vector<uint8_t> decoded;
       bool succeded = braveledger_bat_helper::getFromBase64(varValue, decoded);
       if (succeded) {
