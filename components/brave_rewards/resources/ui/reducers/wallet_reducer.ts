@@ -17,7 +17,6 @@ const createWallet = (state: Rewards.State) => {
 
   chrome.send('brave_rewards.getReconcileStamp')
   chrome.send('brave_rewards.getAddresses')
-  chrome.send('brave_rewards.saveAdsSetting', ['adsEnabled', 'true'])
 
   return state
 }
@@ -33,6 +32,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     case types.WALLET_CREATED:
       state = { ...state }
       state = createWallet(state)
+      chrome.send('brave_rewards.saveAdsSetting', ['adsEnabled', 'true'])
       break
     case types.WALLET_CREATE_FAILED:
       state = { ...state }
