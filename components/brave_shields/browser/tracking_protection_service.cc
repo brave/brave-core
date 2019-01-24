@@ -16,6 +16,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/tracking-protection/TPParser.h"
 
@@ -24,11 +25,6 @@
 #define THIRD_PARTY_HOSTS_CACHE_SIZE 20
 
 namespace brave_shields {
-
-std::string TrackingProtectionService::g_tracking_protection_component_id_(
-    kTrackingProtectionComponentId);
-std::string TrackingProtectionService::g_tracking_protection_component_base64_public_key_(
-    kTrackingProtectionComponentBase64PublicKey);
 
 TrackingProtectionService::TrackingProtectionService()
   : tracking_protection_client_(new CTPParser()),
@@ -50,10 +46,6 @@ TrackingProtectionService::TrackingProtectionService()
 }
 
 TrackingProtectionService::~TrackingProtectionService() {
-  Cleanup();
-}
-
-void TrackingProtectionService::Cleanup() {
   tracking_protection_client_.reset();
 }
 
@@ -90,13 +82,6 @@ bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
   return false;
 }
 
-bool TrackingProtectionService::Init() {
-  Register(kTrackingProtectionComponentName,
-           g_tracking_protection_component_id_,
-           g_tracking_protection_component_base64_public_key_);
-  return true;
-}
-
 void TrackingProtectionService::OnDATFileDataReady() {
   if (buffer_.empty()) {
     LOG(ERROR) << "Could not obtain tracking protection data";
@@ -106,6 +91,7 @@ void TrackingProtectionService::OnDATFileDataReady() {
   if (!tracking_protection_client_->deserialize((char*)&buffer_.front())) {
     tracking_protection_client_.reset();
     LOG(ERROR) << "Failed to deserialize tracking protection data";
+    return;
   }
 }
 
@@ -179,14 +165,6 @@ TrackingProtectionService::GetThirdPartyHosts(const std::string& base_host) {
   return hosts;
 }
 
-// static
-void TrackingProtectionService::SetComponentIdAndBase64PublicKeyForTest(
-    const std::string& component_id,
-    const std::string& component_base64_public_key) {
-  g_tracking_protection_component_id_ = component_id;
-  g_tracking_protection_component_base64_public_key_ = component_base64_public_key;
-}
-
 scoped_refptr<base::SequencedTaskRunner> TrackingProtectionService::GetTaskRunner() {
   // We share the same task runner for all ad-block and TP code
   return g_brave_browser_process->ad_block_service()->GetTaskRunner();
@@ -194,10 +172,12 @@ scoped_refptr<base::SequencedTaskRunner> TrackingProtectionService::GetTaskRunne
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// The brave shields factory. Using the Brave Shields as a singleton
+// The tracking protection factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
 std::unique_ptr<TrackingProtectionService> TrackingProtectionServiceFactory() {
-  return std::make_unique<TrackingProtectionService>();
+  std::unique_ptr<TrackingProtectionService> service = std::make_unique<TrackingProtectionService>();
+  g_brave_browser_process->local_data_files_service()->AddObserver(service.get());
+  return service;
 }
 
 }  // namespace brave_shields

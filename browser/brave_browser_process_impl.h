@@ -16,6 +16,7 @@ namespace brave_shields {
 class AdBlockService;
 class AdBlockRegionalService;
 class HTTPSEverywhereService;
+class LocalDataFilesService;
 class TrackingProtectionService;
 }
 
@@ -37,6 +38,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave_shields::AdBlockRegionalService* ad_block_regional_service();
   brave_shields::TrackingProtectionService* tracking_protection_service();
   brave_shields::HTTPSEverywhereService* https_everywhere_service();
+  brave_shields::LocalDataFilesService* local_data_files_service();
   extensions::BraveTorClientUpdater* tor_client_updater();
 
  private:
@@ -49,6 +51,8 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       tracking_protection_service_;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;
+  std::unique_ptr<brave_shields::LocalDataFilesService>
+      local_data_files_service_;
   std::unique_ptr<brave::BraveStatsUpdater> brave_stats_updater_;
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;
   std::unique_ptr<extensions::BraveTorClientUpdater> tor_client_updater_;

@@ -9,6 +9,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_shields/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
@@ -63,7 +64,7 @@ public:
   void PreRunTestOnMainThread() override {
     ExtensionBrowserTest::PreRunTestOnMainThread();
     WaitForTrackingProtectionServiceThread();
-    ASSERT_TRUE(g_brave_browser_process->tracking_protection_service()->IsInitialized());
+    ASSERT_TRUE(g_brave_browser_process->local_data_files_service()->IsInitialized());
   }
 
   void InitEmbeddedTestServer() {
@@ -75,7 +76,7 @@ public:
   }
 
   void InitService() {
-    brave_shields::TrackingProtectionService::
+    brave_shields::LocalDataFilesService::
         SetComponentIdAndBase64PublicKeyForTest(
             kTrackingProtectionComponentTestId,
             kTrackingProtectionComponentTestBase64PublicKey);
