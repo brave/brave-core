@@ -175,7 +175,7 @@
       <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_TITLE" desc="Welcome message title for Brave Rewards">Enable Brave Rewards</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_DESC" desc="Explainer text about Brave Rewards">Your attention is valuable. Earn by viewing privacy-respecting ads while you browse, and pay it forward to support content creators you love.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_BUTTON" desc="Button to enable Brave Rewards from the welcome page">Enable Rewards</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_TITLE" desc="Welcome message title for import from another browser">Import bookmarks &amp; settings</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_TITLE" desc="Welcome message title for import from another browser">Import bookmarks and settings</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_DESC" desc="Explainer text about importing from another browser">Brave makes it easy to set up your usual environment by importing bookmarks and settings from other browsers installed on your computer.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_BUTTON" desc="Button to import from another browser">Import</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_TITLE" desc="Welcome message title for shields">Manage your shields</message>
