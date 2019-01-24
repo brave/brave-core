@@ -7,7 +7,6 @@ let expectedXHRLoaded = 0
 let expectedXHRBlocked = 0
 let numXHRLoaded = 0
 let numXHRBlocked = 0
-let numImgBlocked = 0
 
 // Performs an XHR for the specified src
 function xhr(src) {
@@ -33,7 +32,6 @@ function addImage(src) {
   img.src = src
   img.className = 'adImage'
   img.addEventListener('load', onLoad)
-  img.addEventListener('error', function(e) {numImgBlocked++; onLoad();})
   document.body.appendChild(img)
 }
 
@@ -52,17 +50,17 @@ function onLoad() {
     return;
   }
 
-  // Blocked image should have zero size
+  // Blocked image should be a 1x1 stub
   const numImgLoaded = adImages.reduce((total, adImage) => {
     if (adImage.complete &&
-        (adImage.naturalHeight !== 0 || adImage.naturalWidth !== 0)) {
+        (adImage.naturalHeight !== 1 || adImage.naturalWidth !== 1)) {
       return total + 1
     }
     return total
   }, 0);
 
-  const result = numImgBlocked == expectedImgBlocked
-      numImgLoaded == expectedImgLoaded
+  const numImgBlocked = adImages.length - numImgLoaded
+  const result = numImgLoaded == expectedImgLoaded &&
       expectedImgBlocked == numImgBlocked &&
       numXHRLoaded === expectedXHRLoaded &&
       numXHRBlocked === expectedXHRBlocked
