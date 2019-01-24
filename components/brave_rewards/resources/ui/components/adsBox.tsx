@@ -17,9 +17,6 @@ import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 
-// Assets
-const adsDisabledIcon = require('../../img/ads_disabled.svg')
-
 interface Props extends Rewards.ComponentProps {
 }
 
@@ -38,7 +35,6 @@ class AdsBox extends React.Component<Props, State> {
   adsDisabled = () => {
     return (
       <DisabledContent
-        image={adsDisabledIcon}
         type={'ads'}
       >
         <h3>{getLocale('adsDisabledText')}</h3>
@@ -105,7 +101,7 @@ class AdsBox extends React.Component<Props, State> {
         title={getLocale('adsTitle')}
         type={'ads'}
         description={getLocale('adsDesc')}
-        toggle={true}
+        toggle={false}
         checked={adsEnabled}
         settingsChild={this.adsSettings(adsEnabled)}
         testId={'braveAdsSettings'}
