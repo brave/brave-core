@@ -62,6 +62,13 @@ class ConfirmationsImpl : public Confirmations {
   void StopCashingInPaymentIOUs();
   bool IsCashingInPaymentIOUs() const;
 
+  uint32_t fetch_tokens_timer_id_;
+  std::string fetch_tokens_server_url_;
+  void StartFetchingTokens(const uint64_t start_timer_in);
+  void FetchTokens();
+  void StopFetchingTokens();
+  bool IsFetchingTokens() const;
+
   /////////////////////////////////////////////////////////////////////////////
   // persist these properties
 

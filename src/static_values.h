@@ -20,6 +20,7 @@ static const uint64_t kRefillConfirmationsAfterSeconds = kOneHourInSeconds;
 static const uint64_t kRetrievePaymentIOUsAfterSeconds =
     5 * kOneMinuteInSeconds;
 static const uint64_t kCashInPaymentIOUsAfterSeconds = kOneDayInSeconds;
+static const uint64_t kRetryFetchingTokensAfterSeconds = 15;
 
 }  // namespace confirmations
 

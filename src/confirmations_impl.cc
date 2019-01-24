@@ -39,6 +39,7 @@ ConfirmationsImpl::ConfirmationsImpl(
     step_2_refill_confirmations_timer_id_(0),
     step_4_retrieve_payment_ious_timer_id_(0),
     step_5_cash_in_payment_ious_timer_id_(0),
+    fetch_tokens_timer_id_(0),
     confirmations_client_(confirmations_client) {
   BLOG(INFO) << "Initializing Confirmations";
 
@@ -49,6 +50,7 @@ ConfirmationsImpl::~ConfirmationsImpl() {
   BLOG(INFO) << "Deinitializing Confirmations";
 
   StopRefillingConfirmations();
+  StopFetchingTokens();
   StopRetrievingPaymentIOUs();
   StopCashingInPaymentIOUs();
 }
@@ -306,21 +308,27 @@ void ConfirmationsImpl::Step2bRefillConfirmationsIfNecessary(
   // STEP 2.3 This is done blocking and assumes success but we need to
   // separate it more and account for the possibility of failures
 
+  std::string endpoint = std::string("/v1/confirmation/token/").append(
+      real_wallet_address_).append("?nonce=").append(nonce);
+  fetch_tokens_server_url_ = GetServerUrl().append(endpoint);
+
+  FetchTokens();
+}
+
+void ConfirmationsImpl::FetchTokens() {
+  BLOG(INFO) << "FetchTokens";
+
   BLOG(INFO) << "  Step2.3: GET /v1/confirmation/token/{payment_id}?"
       << "nonce={nonce}";
 
-  std::string endpoint = std::string("/v1/confirmation/token/").append(
-      real_wallet_address_).append("?nonce=").append(nonce);
-  std::string server_url = GetServerUrl().append(endpoint);
-
   BLOG(INFO) << "  URL Request:";
-  BLOG(INFO) << "    URL: " << server_url;
+  BLOG(INFO) << "    URL: " << fetch_tokens_server_url_;
 
   auto callback = std::bind(
       &ConfirmationsImpl::Step2cRefillConfirmationsIfNecessary,
-      this, server_url, _1, _2, _3);
+      this, fetch_tokens_server_url_, _1, _2, _3);
 
-  confirmations_client_->URLRequest(server_url, {}, "", "",
+  confirmations_client_->URLRequest(fetch_tokens_server_url_, {}, "", "",
       URLRequestMethod::GET, callback);
 }
 
@@ -343,6 +351,12 @@ void ConfirmationsImpl::Step2cRefillConfirmationsIfNecessary(
   BLOG(INFO) << "    Headers:";
   for (const auto& header : headers) {
     BLOG(INFO) << "      " << header.first << ": " << header.second;
+  }
+
+  if (response_status_code != 200) {
+    BLOG(WARNING) << "Failed to fetch tokens";
+    StartFetchingTokens(kRetryFetchingTokensAfterSeconds);
+    return;
   }
 
   std::unique_ptr<base::Value> value(base::JSONReader::Read(response));
@@ -1497,7 +1511,9 @@ void ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
       << "  step_4_retrieve_payment_ious_timer_id_: "
       << std::to_string(step_4_retrieve_payment_ious_timer_id_) << std::endl
       << "  step_5_cash_in_payment_ious_timer_id_: "
-      << std::to_string(step_5_cash_in_payment_ious_timer_id_) << std::endl;
+      << std::to_string(step_5_cash_in_payment_ious_timer_id_) << std::endl
+      << "  fetch_tokens_timer_id_: "
+      << std::to_string(fetch_tokens_timer_id_);
 
   if (timer_id == step_2_refill_confirmations_timer_id_) {
     RefillConfirmations();
@@ -1505,6 +1521,8 @@ void ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
     RetrievePaymentIOUs();
   } else if (timer_id == step_5_cash_in_payment_ious_timer_id_) {
     CashInPaymentIOUs();
+  } else if (timer_id == fetch_tokens_timer_id_) {
+    FetchTokens();
   } else {
     LOG(WARNING) << "Unexpected OnTimer: " << std::to_string(timer_id);
   }
@@ -1651,6 +1669,40 @@ void ConfirmationsImpl::StopCashingInPaymentIOUs() {
 
 bool ConfirmationsImpl::IsCashingInPaymentIOUs() const {
   if (step_5_cash_in_payment_ious_timer_id_ == 0) {
+    return false;
+  }
+
+  return true;
+}
+
+void ConfirmationsImpl::StartFetchingTokens(
+    const uint64_t start_timer_in) {
+  StopFetchingTokens();
+
+  fetch_tokens_timer_id_ = confirmations_client_->SetTimer(start_timer_in);
+  if (fetch_tokens_timer_id_ == 0) {
+    BLOG(ERROR) <<
+        "Failed to start fetching tokens due to an invalid timer";
+
+    return;
+  }
+
+  BLOG(INFO) << "Start fetching tokens in " << start_timer_in << " seconds";
+}
+
+void ConfirmationsImpl::StopFetchingTokens() {
+  if (!IsFetchingTokens()) {
+    return;
+  }
+
+  BLOG(INFO) << "Stopped fetching tokens";
+
+  confirmations_client_->KillTimer(fetch_tokens_timer_id_);
+  fetch_tokens_timer_id_ = 0;
+}
+
+bool ConfirmationsImpl::IsFetchingTokens() const {
+  if (fetch_tokens_timer_id_ == 0) {
     return false;
   }
 
