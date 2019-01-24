@@ -1,16 +1,7 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style.cc b/chrome/browser/ui/views/tabs/tab_style.cc
-index 8f21aa7edbb3b0409c68e0d850541573710f993c..791e5dc1c2c161325990a43f0bb2d960d152e95a 100644
+index 8f21aa7edbb3b0409c68e0d850541573710f993c..c77782443be84d1980cc36e54a89ed872807454d 100644
 --- a/chrome/browser/ui/views/tabs/tab_style.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style.cc
-@@ -128,7 +128,7 @@ class GM2TabStyle : public TabStyle {
- 
- // Thickness in DIPs of the separator painted on the left and right edges of
- // the tab.
--constexpr int kSeparatorThickness = 1;
-+constexpr int kSeparatorThickness = 2;
- 
- // Returns the radius of the outer corners of the tab shape.
- int GetCornerRadius() {
 @@ -144,7 +144,7 @@ int GetContentsHorizontalInsetSize() {
  
  // Returns the height of the separator between tabs.
@@ -37,11 +28,14 @@ index 8f21aa7edbb3b0409c68e0d850541573710f993c..791e5dc1c2c161325990a43f0bb2d960
                   separator_size.width(), separator_size.height());
  
    separator_bounds.trailing = separator_bounds.leading;
-@@ -696,12 +697,13 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -696,12 +697,16 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  
-+  const int separator_radius = separator_bounds.leading.width() / 2;
++  // Even if |separator_radius| becomes 1 native pixel the 'roundedness'
++  // will be approximated with color, although extremely subtle and
++  // likely only on screens >= 2x (i.e. separator width is 2+px)!
++  const int separator_radius =  separator_bounds.leading.width() / 2;
    cc::PaintFlags flags;
    flags.setAntiAlias(true);
    flags.setColor(separator_color(separator_opacities.left));
