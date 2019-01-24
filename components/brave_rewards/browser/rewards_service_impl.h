@@ -183,7 +183,8 @@ class RewardsServiceImpl : public RewardsService,
     const GetRewardsMainEnabledCallback& callback) const override;
 
   void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
-  bool IsConfirmationsReadyToShowAds() override;
+  void IsConfirmationsReadyToShowAds(
+      const IsConfirmationsReadyToShowAdsCallback& callback) override;
   void AdSustained(std::unique_ptr<ads::NotificationInfo> info) override;
 
   void URLRequest(const std::string& url,

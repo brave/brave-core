@@ -339,12 +339,6 @@ void BatLedgerImpl::SetCatalogIssuers(const std::string& info) {
   ledger_->SetCatalogIssuers(info);
 }
 
-bool BatLedgerImpl::IsConfirmationsReadyToShowAds(bool* out_can_show) {
-  *out_can_show = ledger_->IsConfirmationsReadyToShowAds();
-
-  return true;
-}
-
 void BatLedgerImpl::IsConfirmationsReadyToShowAds(
     IsConfirmationsReadyToShowAdsCallback callback) {
   std::move(callback).Run(ledger_->IsConfirmationsReadyToShowAds());
