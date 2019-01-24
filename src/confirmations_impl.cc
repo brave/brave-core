@@ -306,8 +306,8 @@ void ConfirmationsImpl::Step2bRefillConfirmationsIfNecessary(
   // STEP 2.3 This is done blocking and assumes success but we need to
   // separate it more and account for the possibility of failures
 
-  BLOG(INFO) << "  Step2.3: GET /v1/confirmation/token/{payment_id}?nonce=: "
-      << nonce;
+  BLOG(INFO) << "  Step2.3: GET /v1/confirmation/token/{payment_id}?"
+      << "nonce={nonce}";
 
   std::string endpoint = std::string("/v1/confirmation/token/").append(
       real_wallet_address_).append("?nonce=").append(nonce);
@@ -613,7 +613,7 @@ void ConfirmationsImpl::Step3bRedeemConfirmation(
         base::Time::NowFromSystemTime().ToTimeT());
 
     BLOG(INFO) << "  Step3.2: Store confirmation Id, original payment token,"
-        " blinding payment token and bundle timestamp";
+        << " blinding payment token and bundle timestamp";
 
     base::DictionaryValue bundle;
     bundle.SetKey("confirmation_id",
@@ -671,16 +671,14 @@ void ConfirmationsImpl::ProcessIOUBundle(std::string bundle_json) {
   confirmation_id = u->GetString();
 
   if (!(u = map_->FindKey("original_payment_token"))) {
-    BLOG(ERROR) <<
-        "  Step4: No original_payment_token";
+    BLOG(ERROR) << "  Step4: No original_payment_token";
     OnProcessIOUBundle(FAILED);
     return;
   }
   original_payment_token = u->GetString();
 
   if (!(u = map_->FindKey("blinded_payment_token"))) {
-    BLOG(ERROR) <<
-        "  Step4: No blinded_payment_token";
+    BLOG(ERROR) << "  Step4: No blinded_payment_token";
     OnProcessIOUBundle(FAILED);
     return;
   }
@@ -1460,11 +1458,11 @@ void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
 
   for (const auto& issuer : info->issuers) {
     auto name = issuer.name;
-    BLOG(INFO) << "  Name: " << name;
+    BLOG(INFO) << "    Name: " << name;
     names.push_back(name);
 
     auto public_key = issuer.public_key;
-    BLOG(INFO) << "  Public key: " << public_key;
+    BLOG(INFO) << "    Public key: " << public_key;
     public_keys.push_back(public_key);
   }
 
@@ -1492,14 +1490,14 @@ void ConfirmationsImpl::AdSustained(std::unique_ptr<NotificationInfo> info) {
 }
 
 void ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
-  BLOG(INFO) << "OnTimer:"
-      << "  timer_id: " << std::to_string(timer_id)
+  BLOG(INFO) << "OnTimer:" << std::endl
+      << "  timer_id: " << std::to_string(timer_id) << std::endl
       << "  step_2_refill_confirmations_timer_id_: "
-      << std::to_string(step_2_refill_confirmations_timer_id_)
+      << std::to_string(step_2_refill_confirmations_timer_id_) << std::endl
       << "  step_4_retrieve_payment_ious_timer_id_: "
-      << std::to_string(step_4_retrieve_payment_ious_timer_id_)
+      << std::to_string(step_4_retrieve_payment_ious_timer_id_) << std::endl
       << "  step_5_cash_in_payment_ious_timer_id_: "
-      << std::to_string(step_5_cash_in_payment_ious_timer_id_);
+      << std::to_string(step_5_cash_in_payment_ious_timer_id_) << std::endl;
 
   if (timer_id == step_2_refill_confirmations_timer_id_) {
     RefillConfirmations();
