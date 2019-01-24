@@ -379,6 +379,16 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         delete()
     }
     
+    /// Removes a single Bookmark of a given URL.
+    /// In case of having two bookmarks with the same url, a bookmark to delete is chosen randomly.
+    public class func remove(forUrl url: URL) {
+        let context = DataController.newBackgroundContext()
+        let predicate = isFavoriteOrBookmarkByUrlPredicate(url: url, getFavorites: false)
+        
+        let record = first(where: predicate, context: context)
+        record?.remove()
+    }
+    
     private func removeFolderAndSendSyncRecords(uuid: [Int]?) {
         if !isFolder { return }
         
@@ -450,14 +460,6 @@ extension Bookmark {
         let predicate = NSPredicate(format: "isFavorite == NO")
         
         return all(where: predicate) ?? []
-    }
-    
-    public class func remove(forUrl url: URL) {
-        let context = DataController.newBackgroundContext()
-        let predicate = isFavoriteOrBookmarkByUrlPredicate(url: url, getFavorites: false)
-        
-        let record = first(where: predicate, context: context)
-        record?.delete()
     }
     
     /// Gets all nested bookmarks recursively.
