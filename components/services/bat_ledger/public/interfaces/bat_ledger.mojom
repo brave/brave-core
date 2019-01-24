@@ -97,7 +97,6 @@ interface BatLedger {
   HasSufficientBalanceToReconcile() => (bool sufficient);
 
   SetCatalogIssuers(string info);
-  IsConfirmationsReadyToShowAds() => (bool can_show);
   AdSustained(string info);
 
   OnConfirmationsTimer(uint32 timer_id);
@@ -177,6 +176,7 @@ interface BatLedgerClient {
   [Sync]
   SetConfirmationsTimer(uint64 time_offset) => (uint32 timer_id);
   KillConfirmationsTimer(uint32 timer_id);
+  SetConfirmationsIsReady(bool is_ready);
   URLRequest(string url, array<string> headers, string content,
              string content_type, int32 method) =>
       (int32 status_code, string content, map<string, string> headers);

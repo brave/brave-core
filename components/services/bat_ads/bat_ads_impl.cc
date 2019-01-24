@@ -83,6 +83,10 @@ void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   std::move(callback).Run();
 }
 
+void BatAdsImpl::SetConfirmationsIsReady(const bool is_ready) {
+  ads_->SetConfirmationsIsReady(is_ready);
+}
+
 void BatAdsImpl::ServeSampleAd() {
   ads_->ServeSampleAd();
 }

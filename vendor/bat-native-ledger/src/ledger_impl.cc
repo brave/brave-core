@@ -1188,10 +1188,6 @@ void LedgerImpl::SetCatalogIssuers(const std::string& info) {
   bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
 }
 
-bool LedgerImpl::IsConfirmationsReadyToShowAds() {
-  return bat_confirmations_->IsReadyToShowAds();
-}
-
 void LedgerImpl::AdSustained(const std::string& info) {
   ads::NotificationInfo notification_info_ads;
   if (notification_info_ads.FromJson(info) != ads::Result::SUCCESS)
@@ -1277,6 +1273,10 @@ void LedgerImpl::KillTimer(uint32_t timer_id) {
 
 void LedgerImpl::OnConfirmationsTimer(uint32_t timer_id) {
   bat_confirmations_->OnTimer(timer_id);
+}
+
+void LedgerImpl::SetConfirmationsIsReady(const bool is_ready) {
+  ledger_client_->SetConfirmationsIsReady(is_ready);
 }
 
 std::unique_ptr<confirmations::LogStream> LedgerImpl::Log(

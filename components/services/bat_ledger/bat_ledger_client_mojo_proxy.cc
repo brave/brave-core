@@ -786,6 +786,13 @@ void BatLedgerClientMojoProxy::KillConfirmationsTimer(uint32_t timer_id) {
   bat_ledger_client_->KillConfirmationsTimer(timer_id);
 }
 
+void BatLedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
+  if (!Connected())
+    return;
+
+  bat_ledger_client_->SetConfirmationsIsReady(is_ready);
+}
+
 bool BatLedgerClientMojoProxy::Connected() const {
   return bat_ledger_client_.is_bound();
 }
