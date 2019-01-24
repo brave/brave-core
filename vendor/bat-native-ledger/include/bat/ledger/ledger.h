@@ -209,7 +209,6 @@ class LEDGER_EXPORT Ledger {
   virtual bool HasSufficientBalanceToReconcile() = 0;
 
   virtual void SetCatalogIssuers(const std::string& info) = 0;
-  virtual bool IsConfirmationsReadyToShowAds() = 0;
   virtual void AdSustained(const std::string& info) = 0;
 
   virtual void OnConfirmationsTimer(uint32_t timer_id) = 0;
