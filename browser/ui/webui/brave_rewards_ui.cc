@@ -97,6 +97,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnIsWalletCreated(bool created);
   void GetPendingContributionsTotal(const base::ListValue* args);
   void OnGetPendingContributionsTotal(double amount);
+  void OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) override;
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -116,7 +117,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGrantFinish(brave_rewards::RewardsService* rewards_service,
                        unsigned int result,
                        brave_rewards::Grant grant) override;
-  void OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) override;
   void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service,
                               std::string publisher_id) override;
   void OnReconcileComplete(brave_rewards::RewardsService* rewards_service,
@@ -136,6 +136,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnRewardsMainEnabled(
       brave_rewards::RewardsService* rewards_service,
       bool rewards_main_enabled) override;
+
+  void OnNormalizedPublisherList(
+      brave_rewards::RewardsService* rewards_service,
+      brave_rewards::ContentSiteList list) override;
 
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
@@ -550,11 +554,14 @@ void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnAutoContributePropsReady(
     std::unique_ptr<brave_rewards::AutoContributeProps> props) {
-  rewards_service_->GetContentSiteList(0, 0,
-      props->contribution_min_time, props->reconcile_stamp,
+  rewards_service_->GetContentSiteList(
+      0,
+      0,
+      props->contribution_min_time,
+      props->reconcile_stamp,
       props->contribution_non_verified,
       base::Bind(&RewardsDOMHandler::OnContentSiteList,
-        weak_factory_.GetWeakPtr()));
+                 weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnContentSiteUpdated(
@@ -887,6 +894,19 @@ void RewardsDOMHandler::OnRewardsMainEnabled(
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.rewardsEnabled",
         base::Value(rewards_main_enabled));
   }
+}
+
+
+void RewardsDOMHandler::OnNormalizedPublisherList(
+    brave_rewards::RewardsService* rewards_service,
+    brave_rewards::ContentSiteList list) {
+  std::unique_ptr<brave_rewards::ContentSiteList> site_list(
+      new brave_rewards::ContentSiteList);
+  for (auto& publisher : list) {
+    site_list->push_back(publisher);
+  }
+
+  OnContentSiteList(std::move(site_list), 0);
 }
 
 }  // namespace

@@ -55,9 +55,9 @@ class LedgerImpl : public ledger::Ledger,
   bool CreateWallet() override;
 
   void SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
-                        ledger::PublisherInfoCallback callback) override;
-  void SetActivityInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
-                       ledger::PublisherInfoCallback callback) override;
+                        uint64_t window_id = 0) override;
+  void SetActivityInfo(
+      std::unique_ptr<ledger::PublisherInfo> publisher_info) override;
   void GetPublisherInfo(const std::string& publisher_key,
                         ledger::PublisherInfoCallback callback) override;
   void GetActivityInfo(const ledger::ActivityInfoFilter& filter,
@@ -284,7 +284,6 @@ class LedgerImpl : public ledger::Ledger,
 
   void NormalizeContributeWinners(
       ledger::PublisherInfoList* newList,
-      bool saveData,
       const ledger::PublisherInfoList& list,
       uint32_t /* next_record */);
 
@@ -297,6 +296,9 @@ class LedgerImpl : public ledger::Ledger,
   const braveledger_bat_helper::CurrentReconciles& GetCurrentReconciles() const;
   double GetDefaultContributionAmount() override;
   bool HasSufficientBalanceToReconcile() override;
+
+  void SaveNormalizedPublisherList(
+      const ledger::PublisherInfoList& normalized_list);
 
  private:
   void AddRecurringPayment(const std::string& publisher_id, const double& value) override;
@@ -324,10 +326,6 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnTimer(uint32_t timer_id) override;
 
-  void OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
-                          ledger::Result result,
-                          std::unique_ptr<ledger::PublisherInfo> info);
-
   void saveVisitCallback(const std::string& publisher,
                          uint64_t verifiedTimestamp);
 
@@ -345,6 +343,11 @@ class LedgerImpl : public ledger::Ledger,
   void OnPublisherListLoaded(ledger::Result result,
                              const std::string& data) override;
   uint64_t retryRequestSetup(uint64_t min_time, uint64_t max_time);
+
+  void OnPublisherInfoSavedInternal(
+    uint64_t window_id,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info);
 
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_bat_client::BatClient> bat_client_;

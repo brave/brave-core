@@ -102,6 +102,9 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
                            const std::string& filter,
                            GetActivityInfoListCallback callback) override;
 
+  void SaveNormalizedPublisherList(
+    const std::string& normalized_list) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*

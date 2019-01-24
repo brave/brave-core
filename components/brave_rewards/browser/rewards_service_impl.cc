@@ -1471,12 +1471,6 @@ void RewardsServiceImpl::SetAutoContribute(bool enabled) const {
   bat_ledger_->SetAutoContribute(enabled);
 }
 
-void RewardsServiceImpl::TriggerOnContentSiteUpdated() {
-  // Should only be called from one point
-  for (auto& observer : observers_)
-    observer.OnContentSiteUpdated(this);
-}
-
 void RewardsServiceImpl::TriggerOnRewardsMainEnabled(bool rewards_main_enabled) {
   for (auto& observer : observers_)
     observer.OnRewardsMainEnabled(this, rewards_main_enabled);
@@ -2337,13 +2331,89 @@ bool RestorePublisherOnFileTaskRunner(PublisherInfoDatabase* backend) {
   return backend->RestorePublishers();
 }
 
-void RewardsServiceImpl::OnRestorePublishers(ledger::OnRestoreCallback callback) {
+void RewardsServiceImpl::OnRestorePublishers(
+    ledger::OnRestoreCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
       FROM_HERE,
       base::Bind(&RestorePublisherOnFileTaskRunner,
                  publisher_info_backend_.get()),
-      base::Bind(callback, AsWeakPtr());
+      base::Bind(&RewardsServiceImpl::OnRestorePublishersInternal,
+                 AsWeakPtr(),
+                 callback));
+}
+
+void RewardsServiceImpl::OnRestorePublishersInternal(
+    ledger::OnRestoreCallback callback,
+    bool result) {
+  callback(result);
+}
+
+std::unique_ptr<ledger::PublisherInfoList>
+SaveNormalizedPublisherListOnFileTaskRunner(PublisherInfoDatabase* backend,
+                                            const ledger::PublisherInfoList& list) {
+  if (!backend) {
+    return nullptr;
+  }
+
+  bool success = backend->InsertOrUpdateActivityInfos(list);
+
+  if (!success) {
+    return nullptr;
+  }
+
+  std::unique_ptr<ledger::PublisherInfoList> new_list(
+      new ledger::PublisherInfoList);
+
+  for (auto& publisher : list) {
+    new_list->push_back(publisher);
+  }
+
+  return new_list;
+}
+
+void RewardsServiceImpl::SaveNormalizedPublisherList(
+      const ledger::PublisherInfoListStruct& list) {
+
+  if (list.list_.size() == 0) {
+    std::unique_ptr<ledger::PublisherInfoList> empty_list(
+        new ledger::PublisherInfoList);
+    OnNormalizedPublisherListSaved(std::move(empty_list));
+    return;
+  }
+
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::Bind(&SaveNormalizedPublisherListOnFileTaskRunner,
+               publisher_info_backend_.get(),
+               list.list_),
+    base::Bind(&RewardsServiceImpl::OnNormalizedPublisherListSaved,
+               AsWeakPtr()));
+}
+
+bool sortPublisherByPercentage(ContentSite a, ContentSite b) {
+  return a.percentage > b.percentage;
+}
+
+void RewardsServiceImpl::OnNormalizedPublisherListSaved(
+    std::unique_ptr<ledger::PublisherInfoList> list) {
+  if (!list) {
+    LOG(ERROR) << "Problem saving normalized publishers "
+                  "in SaveNormalizedPublisherList";
+    return;
+  }
+
+  ContentSiteList site_list;
+  for (auto& publisher : *list) {
+    site_list.push_back(PublisherInfoToContentSite(publisher));
+  }
+
+  sort(site_list.begin(), site_list.end(), sortPublisherByPercentage);
+
+  for (auto& observer : observers_) {
+    observer.OnNormalizedPublisherList(this, site_list);
+  }
 }
 
 }  // namespace brave_rewards

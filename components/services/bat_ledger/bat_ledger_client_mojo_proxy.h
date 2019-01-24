@@ -108,6 +108,9 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                            ledger::ActivityInfoFilter filter,
                            ledger::PublisherInfoListCallback callback) override;
 
+  void SaveNormalizedPublisherList(
+    const ledger::PublisherInfoListStruct& normalized_list) override;
+
  private:
   bool Connected() const;
 

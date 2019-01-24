@@ -223,7 +223,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublishersListSaved(ledger::LedgerCallbackHandler* handler,
                              bool success);
   void OnTimer(uint32_t timer_id);
-  void TriggerOnContentSiteUpdated();
   void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
                              const std::string& data);
 
@@ -334,6 +333,15 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::PendingContributionList& list) override;
 
   void OnSavePendingContribution(ledger::Result result);
+
+  void OnRestorePublishersInternal(ledger::OnRestoreCallback callback,
+                                   bool result);
+
+  void SaveNormalizedPublisherList(
+      const ledger::PublisherInfoListStruct& list) override;
+
+  void OnNormalizedPublisherListSaved(
+    std::unique_ptr<ledger::PublisherInfoList> list);
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;

@@ -137,6 +137,17 @@ LEDGER_EXPORT struct PublisherInfo {
   std::vector<ContributionInfo> contributions;
 };
 
+LEDGER_EXPORT struct PublisherInfoListStruct {
+  PublisherInfoListStruct();
+  ~PublisherInfoListStruct();
+  PublisherInfoListStruct(const PublisherInfoListStruct& data);
+
+  const std::string ToJson() const;
+  bool loadFromJson(const std::string& json);
+
+  std::vector<PublisherInfo> list_;
+};
+
 using PublisherInfoList = std::vector<PublisherInfo>;
 
 }  // namespace ledger

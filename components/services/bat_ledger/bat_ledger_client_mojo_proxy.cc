@@ -639,6 +639,17 @@ void BatLedgerClientMojoProxy::GetActivityInfoList(uint32_t start,
       base::BindOnce(&OnGetActivityInfoList, std::move(callback)));
 }
 
+
+
+void BatLedgerClientMojoProxy::SaveNormalizedPublisherList(
+    const ledger::PublisherInfoListStruct& normalized_list) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_client_->SaveNormalizedPublisherList(normalized_list.ToJson());
+}
+
 bool BatLedgerClientMojoProxy::Connected() const {
   return bat_ledger_client_.is_bound();
 }

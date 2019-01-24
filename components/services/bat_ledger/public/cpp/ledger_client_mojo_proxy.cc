@@ -594,4 +594,13 @@ void LedgerClientMojoProxy::GetActivityInfoList(uint32_t start,
 
 }
 
+void LedgerClientMojoProxy::SaveNormalizedPublisherList(
+    const std::string& normalized_list) {
+
+  ledger::PublisherInfoListStruct list;
+  list.loadFromJson(normalized_list);
+
+  ledger_client_->SaveNormalizedPublisherList(list);
+}
+
 } // namespace bat_ledger

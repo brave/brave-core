@@ -164,4 +164,6 @@ interface BatLedgerClient {
 
   GetActivityInfoList(uint32 start, uint32 limit, string filter) => (
       array<string> publisher_info_list, uint32 next_record);
+
+  SaveNormalizedPublisherList(string list);
 };

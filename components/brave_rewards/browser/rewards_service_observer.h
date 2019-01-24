@@ -58,6 +58,9 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
       int result) {};
+  virtual void OnNormalizedPublisherList(
+      RewardsService* rewards_service,
+      brave_rewards::ContentSiteList list) {};
   // DO NOT ADD ANY MORE METHODS HERE UNLESS IT IS A BROADCAST NOTIFICATION
   // RewardsServiceObserver should not be used to return responses to the caller.
   // Method calls on RewardsService should use callbacks to return responses.

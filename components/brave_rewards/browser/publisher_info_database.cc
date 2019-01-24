@@ -310,14 +310,11 @@ PublisherInfoDatabase::GetPanelPublisher(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, pi.provider, "
       "pi.verified, pi.excluded, ai.percent FROM publisher_info AS pi "
       "LEFT JOIN activity_info AS ai ON pi.publisher_id = ai.publisher_id "
-      "WHERE pi.publisher_id=? AND ((ai.month = ? "
-      "AND ai.year = ? AND ai.reconcile_stamp = ?) OR "
-      "ai.percent IS NULL) LIMIT 1"));
+      "WHERE pi.publisher_id=? AND "
+      "(ai.reconcile_stamp = ? OR ai.percent IS NULL) LIMIT 1"));
 
   info_sql.BindString(0, filter.id);
-  info_sql.BindInt(1, filter.month);
-  info_sql.BindInt(2, filter.year);
-  info_sql.BindInt64(3, filter.reconcile_stamp);
+  info_sql.BindInt64(1, filter.reconcile_stamp);
 
   if (info_sql.Step()) {
     std::unique_ptr<ledger::PublisherInfo> info;
@@ -437,6 +434,29 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
   activity_info_insert.BindInt64(8, info.visits);
 
   return activity_info_insert.Run();
+}
+
+bool PublisherInfoDatabase::InsertOrUpdateActivityInfos(
+    const ledger::PublisherInfoList& list) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  for (const auto& info : list) {
+    InsertOrUpdateActivityInfo(info);
+  }
+
+  return transaction.Commit();
 }
 
 bool PublisherInfoDatabase::GetActivityList(

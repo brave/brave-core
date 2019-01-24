@@ -745,4 +745,43 @@ bool PendingContributionList::loadFromJson(const std::string& json) {
   return !error;
 }
 
+PublisherInfoListStruct::PublisherInfoListStruct () {}
+PublisherInfoListStruct::~PublisherInfoListStruct () {}
+PublisherInfoListStruct::PublisherInfoListStruct (
+    const ledger::PublisherInfoListStruct &properties) {
+  list_ = properties.list_;
+}
+
+const std::string PublisherInfoListStruct::ToJson() const {
+  std::string json;
+  braveledger_bat_helper::saveToJsonString(*this, json);
+  return json;
+}
+
+bool PublisherInfoListStruct::loadFromJson(const std::string& json) {
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  // has parser errors or wrong types
+  bool error = d.HasParseError();
+
+  if (false == error) {
+    error = !(d.HasMember("list") && d["list"].IsArray());
+  }
+
+  if (false == error) {
+    for (const auto& g : d["list"].GetArray()) {
+      rapidjson::StringBuffer sb;
+      rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+      g.Accept(writer);
+
+      PublisherInfo contribution;
+      contribution.loadFromJson(sb.GetString());
+      list_.push_back(contribution);
+    }
+  }
+
+  return !error;
+}
+
 } // ledger

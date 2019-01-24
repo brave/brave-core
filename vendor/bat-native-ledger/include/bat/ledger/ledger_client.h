@@ -157,6 +157,9 @@ class LEDGER_EXPORT LedgerClient {
       const ledger::LogLevel log_level) const = 0;
 
   virtual void OnRestorePublishers(ledger::OnRestoreCallback callback) = 0;
+
+  virtual void SaveNormalizedPublisherList(
+    const ledger::PublisherInfoListStruct& normalized_list) = 0;
 };
 
 }  // namespace ledger
