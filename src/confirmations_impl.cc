@@ -1348,12 +1348,16 @@ void ConfirmationsImpl::LoadState() {
 void ConfirmationsImpl::OnStateLoaded(
     const Result result,
     const std::string& json) {
-  if (result == FAILED) {
-    BLOG(ERROR) << "Failed to load confirmations state";
-    return;
+  auto confirmations_json = json;
+
+  if (result != SUCCESS) {
+    BLOG(ERROR) << "Failed to load confirmations state, resetting to default"
+        " values";
+
+    confirmations_json = ToJSON();
   }
 
-  if (!FromJSON(json)) {
+  if (!FromJSON(confirmations_json)) {
     BLOG(ERROR) << "Failed to parse confirmations state: " << json;
     return;
   }
