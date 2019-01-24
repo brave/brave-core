@@ -648,7 +648,7 @@ void BatGetMedia::onFetchPublisherFromDBResponse(
           media_id);
       }
     }
-    ledger_->OnPublisherActivity(result, std::move(info), windowId);
+    ledger_->OnPanelPublisherInfo(result, std::move(info), windowId);
   }
 }
 
@@ -808,7 +808,7 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
     }
   } else {
     if (providerType == TWITCH_MEDIA_TYPE) {
-      ledger_->OnPublisherActivity(result, std::move(info), windowId);
+      ledger_->OnPanelPublisherInfo(result, std::move(info), windowId);
     } else if (providerType == YOUTUBE_MEDIA_TYPE) {
       fetchPublisherDataFromDB(windowId, visit_data, providerType,
         info->id, publisher_blob);
@@ -842,7 +842,7 @@ void BatGetMedia::onGetTwitchPublisherInfo(
     }
   } else {
     if (providerType == TWITCH_MEDIA_TYPE) {
-      ledger_->OnPublisherActivity(result, std::move(publisher_info), windowId);
+      ledger_->OnPanelPublisherInfo(result, std::move(publisher_info), windowId);
     }
   }
 }

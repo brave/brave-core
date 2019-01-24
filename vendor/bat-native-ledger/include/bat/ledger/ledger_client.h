@@ -113,7 +113,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual void OnGrantCaptcha(const std::string& image, const std::string& hint) = 0;
   virtual void OnRecoverWallet(Result result, double balance, const std::vector<ledger::Grant>& grants) = 0;
   virtual void OnGrantFinish(ledger::Result result, const ledger::Grant& grant) = 0;
-  virtual void OnPublisherActivity(Result result,
+  virtual void OnPanelPublisherInfo(Result result,
                                    std::unique_ptr<ledger::PublisherInfo>,
                                    uint64_t windowId) = 0;
   virtual void OnExcludedSitesChanged(const std::string& publisher_id) = 0;

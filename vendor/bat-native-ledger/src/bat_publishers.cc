@@ -273,7 +273,7 @@ void BatPublishers::saveVisitInternal(
   }
 
   if (panel_info && window_id > 0) {
-    onPublisherActivity(ledger::Result::LEDGER_OK,
+    OnPanelPublisherInfo(ledger::Result::LEDGER_OK,
                         std::move(panel_info),
                         window_id,
                         visit_data);
@@ -311,7 +311,7 @@ void BatPublishers::onFetchFavIconDBResponse(
 
     if (window_id > 0) {
       ledger::VisitData visit_data;
-      onPublisherActivity(ledger::Result::LEDGER_OK,
+      OnPanelPublisherInfo(ledger::Result::LEDGER_OK,
                           std::move(panel_info),
                           window_id,
                           visit_data);
@@ -865,7 +865,7 @@ void BatPublishers::getPublisherActivityFromUrl(
   new_data.favicon_url = "";
 
   ledger_->GetPanelPublisherInfo(filter,
-        std::bind(&BatPublishers::onPublisherActivity,
+        std::bind(&BatPublishers::OnPanelPublisherInfo,
                   this,
                   _1,
                   _2,
@@ -873,12 +873,12 @@ void BatPublishers::getPublisherActivityFromUrl(
                   new_data));
 }
 
-void BatPublishers::onPublisherActivity(ledger::Result result,
+void BatPublishers::OnPanelPublisherInfo(ledger::Result result,
                                         std::unique_ptr<ledger::PublisherInfo> info,
                                         uint64_t windowId,
                                         const ledger::VisitData& visit_data) {
   if (result == ledger::Result::LEDGER_OK) {
-    ledger_->OnPublisherActivity(result, std::move(info), windowId);
+    ledger_->OnPanelPublisherInfo(result, std::move(info), windowId);
   }
 
   if (result == ledger::Result::NOT_FOUND && !visit_data.domain.empty()) {

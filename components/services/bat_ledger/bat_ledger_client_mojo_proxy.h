@@ -64,7 +64,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       ledger::LoadURLCallback callback) override;
 
   void OnExcludedSitesChanged(const std::string& publisher_id) override;
-  void OnPublisherActivity(ledger::Result result,
+  void OnPanelPublisherInfo(ledger::Result result,
                            std::unique_ptr<ledger::PublisherInfo> info,
                            uint64_t windowId) override;
   void FetchFavIcon(const std::string& url,

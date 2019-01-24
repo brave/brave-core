@@ -118,7 +118,7 @@ void ExtensionRewardsServiceObserver::OnGetCurrentBalanceReport(
   }
 }
 
-void ExtensionRewardsServiceObserver::OnGetPublisherActivityFromUrl(
+void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
     RewardsService* rewards_service,
     int error_code,
     std::unique_ptr<ledger::PublisherInfo> info,

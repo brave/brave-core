@@ -177,7 +177,7 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::VisitData& visit_data,
       const std::string& providerType,
       const std::string& publisher_blob);
-  void OnPublisherActivity(ledger::Result result,
+  void OnPanelPublisherInfo(ledger::Result result,
                            std::unique_ptr<ledger::PublisherInfo> info,
                            uint64_t windowId);
   void OnExcludedSitesChanged(const std::string& publisher_id);

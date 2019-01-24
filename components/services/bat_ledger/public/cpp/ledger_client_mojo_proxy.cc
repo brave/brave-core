@@ -331,14 +331,14 @@ void LedgerClientMojoProxy::OnExcludedSitesChanged(
   ledger_client_->OnExcludedSitesChanged(publisher_id);
 }
 
-void LedgerClientMojoProxy::OnPublisherActivity(int32_t result,
+void LedgerClientMojoProxy::OnPanelPublisherInfo(int32_t result,
     const std::string& info, uint64_t window_id) {
   std::unique_ptr<ledger::PublisherInfo> publisher_info;
   if (!info.empty()) {
     publisher_info.reset(new ledger::PublisherInfo());
     publisher_info->loadFromJson(info);
   }
-  ledger_client_->OnPublisherActivity(ToLedgerResult(result),
+  ledger_client_->OnPanelPublisherInfo(ToLedgerResult(result),
       std::move(publisher_info), window_id);
 }
 

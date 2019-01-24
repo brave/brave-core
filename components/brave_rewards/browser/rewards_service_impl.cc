@@ -1644,7 +1644,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
 
   if (baseDomain == "") {
     std::unique_ptr<ledger::PublisherInfo> info;
-    OnPublisherActivity(ledger::Result::NOT_FOUND, std::move(info), windowId);
+    OnPanelPublisherInfo(ledger::Result::NOT_FOUND, std::move(info), windowId);
     return;
   }
 

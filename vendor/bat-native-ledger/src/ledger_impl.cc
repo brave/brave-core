@@ -823,9 +823,9 @@ void LedgerImpl::GetMediaActivityFromUrl(
       windowId, visit_data, providerType, publisher_blob);
 }
 
-void LedgerImpl::OnPublisherActivity(ledger::Result result,
+void LedgerImpl::OnPanelPublisherInfo(ledger::Result result,
                                         std::unique_ptr<ledger::PublisherInfo> info, uint64_t windowId) {
-  ledger_client_->OnPublisherActivity(result, std::move(info), windowId);
+  ledger_client_->OnPanelPublisherInfo(result, std::move(info), windowId);
 }
 
 void LedgerImpl::OnExcludedSitesChanged(const std::string& publisher_id) {

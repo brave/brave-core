@@ -193,7 +193,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   bool isPublisherVisible(const braveledger_bat_helper::PUBLISHER_ST& publisher_st);
 
-  void onPublisherActivity(ledger::Result result,
+  void OnPanelPublisherInfo(ledger::Result result,
                            std::unique_ptr<ledger::PublisherInfo> publisher_info,
                            uint64_t windowId,
                            const ledger::VisitData& visit_data);
