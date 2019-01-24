@@ -1453,10 +1453,9 @@ void RewardsServiceImpl::SetCatalogIssuers(
   bat_ledger_->SetCatalogIssuers(info->ToJson());
 }
 
-bool RewardsServiceImpl::IsConfirmationsReadyToShowAds() {
-  bool can_show = false;
-  bat_ledger_->IsConfirmationsReadyToShowAds(&can_show);
-  return can_show;
+void RewardsServiceImpl::IsConfirmationsReadyToShowAds(
+    const IsConfirmationsReadyToShowAdsCallback& callback) {
+  bat_ledger_->IsConfirmationsReadyToShowAds(callback);
 }
 
 void RewardsServiceImpl::AdSustained(

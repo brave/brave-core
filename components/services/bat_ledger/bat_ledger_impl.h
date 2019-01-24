@@ -126,7 +126,6 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   private:
     void SetCatalogIssuers(const std::string& info) override;
-    bool IsConfirmationsReadyToShowAds(bool* out_can_show) override;
     void IsConfirmationsReadyToShowAds(
         IsConfirmationsReadyToShowAdsCallback callback) override;
     void AdSustained(const std::string& info) override;
