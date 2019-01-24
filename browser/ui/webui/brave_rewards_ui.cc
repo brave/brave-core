@@ -628,22 +628,18 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
 
     if (key == "contributionMinTime") {
       rewards_service_->SetPublisherMinVisitTime(std::stoull(value));
-      OnContentSiteUpdated(rewards_service_);
     }
 
     if (key == "contributionMinVisits") {
       rewards_service_->SetPublisherMinVisits(std::stoul(value));
-      OnContentSiteUpdated(rewards_service_);
     }
 
     if (key == "contributionNonVerified") {
       rewards_service_->SetPublisherAllowNonVerified(value == "true");
-      OnContentSiteUpdated(rewards_service_);
     }
 
     if (key == "contributionVideos") {
       rewards_service_->SetPublisherAllowVideos(value == "true");
-      OnContentSiteUpdated(rewards_service_);
     }
 
     if (key == "enabledContribute") {

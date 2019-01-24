@@ -242,14 +242,8 @@ class RewardsServiceImpl : public RewardsService,
   void OnRemovedRecurring(ledger::RecurringRemoveCallback callback, bool success);
   void OnRemoveRecurring(const std::string& publisher_key, ledger::RecurringRemoveCallback callback) override;
   void TriggerOnGetCurrentBalanceReport(const ledger::BalanceReportInfo& report);
-  void TriggerOnGetPublisherActivityFromUrl(
-      ledger::Result result,
-      std::unique_ptr<ledger::PublisherInfo> info,
-      uint64_t windowId);
   void MaybeShowBackupNotification(uint64_t boot_stamp);
   void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
-  void OnRestorePublishersInternal(ledger::OnRestoreCallback callback,
-                                   bool result);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -306,7 +300,7 @@ class RewardsServiceImpl : public RewardsService,
   void SetUserChangedContribution() const override;
   void SetAutoContribute(bool enabled) const override;
   void OnExcludedSitesChanged(const std::string& publisher_id) override;
-  void OnPublisherActivity(ledger::Result result,
+  void OnPanelPublisherInfo(ledger::Result result,
                           std::unique_ptr<ledger::PublisherInfo> info,
                           uint64_t windowId) override;
   void FetchFavIcon(const std::string& url,

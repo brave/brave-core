@@ -952,10 +952,8 @@ void RewardsServiceImpl::OnPublisherInfoSaved(
     bool success) {
   if (Connected()) {
     callback(success ? ledger::Result::LEDGER_OK
-        : ledger::Result::LEDGER_ERROR, std::move(info));
+                     : ledger::Result::LEDGER_ERROR, std::move(info));
   }
-
-  TriggerOnContentSiteUpdated();
 }
 
 void RewardsServiceImpl::SaveActivityInfo(
@@ -977,10 +975,10 @@ void RewardsServiceImpl::OnActivityInfoSaved(
     ledger::PublisherInfoCallback callback,
     std::unique_ptr<ledger::PublisherInfo> info,
     bool success) {
-  callback(success ? ledger::Result::LEDGER_OK
-                   : ledger::Result::LEDGER_ERROR, std::move(info));
-
-  TriggerOnContentSiteUpdated();
+  if (Connected()) {
+    callback(success ? ledger::Result::LEDGER_OK
+                     : ledger::Result::LEDGER_ERROR, std::move(info));
+  }
 }
 
 void RewardsServiceImpl::LoadActivityInfo(
@@ -1474,6 +1472,7 @@ void RewardsServiceImpl::SetAutoContribute(bool enabled) const {
 }
 
 void RewardsServiceImpl::TriggerOnContentSiteUpdated() {
+  // Should only be called from one point
   for (auto& observer : observers_)
     observer.OnContentSiteUpdated(this);
 }
@@ -1670,14 +1669,20 @@ void RewardsServiceImpl::OnExcludedSitesChanged(const std::string& publisher_id)
     observer.OnExcludedSitesChanged(this, publisher_id);
 }
 
-void RewardsServiceImpl::OnPublisherActivity(ledger::Result result,
-                                             std::unique_ptr<ledger::PublisherInfo> info,
-                                             uint64_t windowId) {
+void RewardsServiceImpl::OnPanelPublisherInfo(
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info,
+    uint64_t windowId) {
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
     return;
   }
-  TriggerOnGetPublisherActivityFromUrl(result, std::move(info), windowId);
+
+  for (auto& observer : private_observers_)
+    observer.OnPanelPublisherInfo(this,
+                                  result,
+                                  std::move(info),
+                                  windowId);
 }
 
 void RewardsServiceImpl::GetContributionAmount(
@@ -2050,15 +2055,6 @@ void RewardsServiceImpl::TriggerOnGetCurrentBalanceReport(
   }
 }
 
-void RewardsServiceImpl::TriggerOnGetPublisherActivityFromUrl(
-    ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info,
-    uint64_t windowId) {
-  for (auto& observer : private_observers_)
-    observer.OnGetPublisherActivityFromUrl(this, result, std::move(info),
-                                           windowId);
-}
-
 void RewardsServiceImpl::SetContributionAutoInclude(
     const std::string& publisher_key, bool excluded, uint64_t windowId) {
   if (!Connected())
@@ -2347,19 +2343,7 @@ void RewardsServiceImpl::OnRestorePublishers(ledger::OnRestoreCallback callback)
       FROM_HERE,
       base::Bind(&RestorePublisherOnFileTaskRunner,
                  publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnRestorePublishersInternal,
-                 AsWeakPtr(),
-                 callback));
-}
-
-void RewardsServiceImpl::OnRestorePublishersInternal(
-    ledger::OnRestoreCallback callback,
-    bool result) {
-  callback(result);
-
-  if (result) {
-    TriggerOnContentSiteUpdated();
-  }
+      base::Bind(callback, AsWeakPtr());
 }
 
 }  // namespace brave_rewards
