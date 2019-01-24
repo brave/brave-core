@@ -332,35 +332,16 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             >
               <WalletPanel
                 id={'wallet-panel'}
-                toggleTips={boolean('Toggle tips', true)}
                 platform={'youtube'}
                 publisherImg={bartBaker}
                 publisherName={'Bart Baker'}
                 monthlyAmount={'5.0'}
-                isVerified={true}
+                acEnabled={true}
+                isVerified={boolean('Verified', true)}
+                showUnVerified={boolean('Show Unverified', true)}
                 tipsEnabled={boolean('Tips enabled', store.state.tipsEnabled)}
                 includeInAuto={boolean('Tips enabled', store.state.includeInAuto)}
                 attentionScore={'17'}
-                donationAmounts={
-                  [
-                    {
-                      tokens: '0.0',
-                      converted: '0.00'
-                    },
-                    {
-                      tokens: '1.0',
-                      converted: '0.50'
-                    },
-                    {
-                      tokens: '5.0',
-                      converted: '2.50'
-                    },
-                    {
-                      tokens: '10.0',
-                      converted: '5.00'
-                    }
-                  ]
-                }
                 onToggleTips={onToggleTips}
                 donationAction={doNothing}
                 onAmountChange={doNothing}

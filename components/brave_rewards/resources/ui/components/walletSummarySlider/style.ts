@@ -13,7 +13,6 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   display: block;
   width: 100%;
   height: 100%;
-  position: relative;
 ` as any
 
 export const StyledTransitionWrapper = styled<StyleProps, 'div'>('div')`
@@ -28,7 +27,7 @@ export const StyledToggleWrapper = styled<StyleProps, 'div'>('div')`
   max-height: 56px;
   padding: ${p => p.show ? '18px 30px 20px 30px' : '20px'};
   top: ${p => p.show ? 'unset' : '12px'};
-  position: absolute;
+  position: ${p => p.show ? 'static' : 'absolute'};
   bottom: ${p => p.show ? '0px' : 'unset'};
   background: ${p => p.show ? '#E9EBFF' : 'inherit'};
 ` as any
