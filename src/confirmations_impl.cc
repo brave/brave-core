@@ -1350,13 +1350,13 @@ void ConfirmationsImpl::OnStateLoaded(
 
   if (result != SUCCESS) {
     BLOG(ERROR) << "Failed to load confirmations state, resetting to default"
-        " values";
+        << " values";
 
     confirmations_json = ToJSON();
   }
 
   if (!FromJSON(confirmations_json)) {
-    BLOG(ERROR) << "Failed to parse confirmations state: " << json;
+    BLOG(ERROR) << "Failed to parse confirmations state: " << confirmations_json;
     return;
   }
 
@@ -1442,7 +1442,7 @@ void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
 
   is_wallet_initialized_ = true;
 
-  if (is_issuers_initialized_) {
+  if (is_issuers_initialized_ && !is_initialized_) {
     is_initialized_ = true;
     BLOG(INFO) << "Successfully initialized";
   }
@@ -1471,7 +1471,7 @@ void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
 
   is_issuers_initialized_ = true;
 
-  if (is_wallet_initialized_) {
+  if (is_wallet_initialized_ && !is_initialized_) {
     is_initialized_ = true;
     BLOG(INFO) << "Successfully initialized";
   }
