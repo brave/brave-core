@@ -352,6 +352,7 @@ const base::FilePath::StringType kPublishers_list("publishers_list");
 RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
     : profile_(profile),
       bat_ledger_client_binding_(new bat_ledger::LedgerClientMojoProxy(this)),
+      ads_service_(brave_ads::AdsServiceFactory::GetForProfile(profile_)),
 #if BUILDFLAG(ENABLE_EXTENSIONS)
       extension_rewards_service_observer_(
           std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
@@ -1453,11 +1454,6 @@ void RewardsServiceImpl::SetCatalogIssuers(
   bat_ledger_->SetCatalogIssuers(info->ToJson());
 }
 
-void RewardsServiceImpl::IsConfirmationsReadyToShowAds(
-    const IsConfirmationsReadyToShowAdsCallback& callback) {
-  bat_ledger_->IsConfirmationsReadyToShowAds(callback);
-}
-
 void RewardsServiceImpl::AdSustained(
     std::unique_ptr<ads::NotificationInfo> info) {
   if (!Connected()) {
@@ -1579,6 +1575,14 @@ void RewardsServiceImpl::OnConfirmationsTimer(uint32_t timer_id) {
 
   confirmations_timers_.erase(timer_id);
   bat_ledger_->OnConfirmationsTimer(timer_id);
+}
+
+void RewardsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
+  if (!Connected()) {
+    return;
+  }
+
+  ads_service_->SetConfirmationsIsReady(is_ready);
 }
 
 void RewardsServiceImpl::OnResetConfirmationsState(

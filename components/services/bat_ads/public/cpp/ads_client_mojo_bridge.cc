@@ -319,21 +319,10 @@ void AdsClientMojoBridge::SetCatalogIssuers(const std::string& issuers_info) {
   }
 }
 
-bool AdsClientMojoBridge::IsConfirmationsReadyToShowAds(bool* out_can_show) {
-  *out_can_show = ads_client_->IsConfirmationsReadyToShowAds();
-
-  return true;
-}
-
 void AdsClientMojoBridge::AdSustained(const std::string& notification_info) {
   auto info = std::make_unique<ads::NotificationInfo>();
   if (info->FromJson(notification_info) == ads::Result::SUCCESS)
     ads_client_->AdSustained(std::move(info));
-}
-
-void AdsClientMojoBridge::IsConfirmationsReadyToShowAds(
-    IsConfirmationsReadyToShowAdsCallback callback) {
-  std::move(callback).Run(ads_client_->IsConfirmationsReadyToShowAds());
 }
 
 // static

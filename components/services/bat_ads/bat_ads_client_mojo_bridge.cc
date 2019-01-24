@@ -155,15 +155,6 @@ void BatAdsClientMojoBridge::SetCatalogIssuers(
   bat_ads_client_->SetCatalogIssuers(info->ToJson());
 }
 
-bool BatAdsClientMojoBridge::IsConfirmationsReadyToShowAds() {
-  if (!connected())
-    return false;
-
-  bool can_show;
-  bat_ads_client_->IsConfirmationsReadyToShowAds(&can_show);
-  return can_show;
-}
-
 void BatAdsClientMojoBridge::AdSustained(
     std::unique_ptr<ads::NotificationInfo> info) {
   if (!connected())

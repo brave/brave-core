@@ -706,4 +706,8 @@ void LedgerClientMojoProxy::KillConfirmationsTimer(uint32_t timer_id) {
   ledger_client_->KillConfirmationsTimer(timer_id);
 }
 
+void LedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
+  ledger_client_->SetConfirmationsIsReady(is_ready);
+}
+
 } // namespace bat_ledger

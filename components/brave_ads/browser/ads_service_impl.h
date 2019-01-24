@@ -72,6 +72,7 @@ class AdsServiceImpl : public AdsService,
   void OnMediaStart(SessionID tab_id) override;
   void OnMediaStop(SessionID tab_id) override;
   void ClassifyPage(const std::string& url, const std::string& page) override;
+  void SetConfirmationsIsReady(const bool is_ready) override;
 
   void Shutdown() override;
 
@@ -111,7 +112,6 @@ class AdsServiceImpl : public AdsService,
   const std::string GenerateUUID() const override;
   void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;
   void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
-  bool IsConfirmationsReadyToShowAds() override;
   void AdSustained(std::unique_ptr<ads::NotificationInfo> info) override;
   uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(uint32_t timer_id) override;

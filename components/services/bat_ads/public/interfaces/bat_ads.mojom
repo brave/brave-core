@@ -30,8 +30,6 @@ interface BatAdsClient {
   [Sync]
   IsNotificationsAvailable() => (bool available);
   [Sync]
-  IsConfirmationsReadyToShowAds() => (bool can_show);
-  [Sync]
   SetTimer(uint64 time_offset) => (uint32 timer_id);
   [Sync]
   LoadJsonSchema(string name) => (string json);
@@ -76,6 +74,7 @@ interface BatAds {
   OnMediaStopped(int32 tab_id);
   TabUpdated(int32 tab_id, string url, bool is_active, bool is_incognito);
   RemoveAllHistory() => ();
+  SetConfirmationsIsReady(bool is_ready);
   ServeSampleAd();
   GenerateAdReportingNotificationShownEvent(string notification_info);
   GenerateAdReportingNotificationResultEvent(
