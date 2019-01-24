@@ -102,12 +102,17 @@ void RewardsNotificationServiceImpl::GetNotification(RewardsNotificationID id) {
   OnGetNotification(rewards_notifications_[id]);
 }
 
-void RewardsNotificationServiceImpl::GetAllNotifications() {
+void RewardsNotificationServiceImpl::GetNotifications() {
   RewardsNotificationsList rewards_notifications_list;
   for (auto& item : rewards_notifications_) {
     rewards_notifications_list.push_back(item.second);
   }
   OnGetAllNotifications(rewards_notifications_list);
+}
+
+const RewardsNotificationService::RewardsNotificationsMap&
+RewardsNotificationServiceImpl::GetAllNotifications() const {
+  return rewards_notifications_;
 }
 
 RewardsNotificationServiceImpl::RewardsNotificationID

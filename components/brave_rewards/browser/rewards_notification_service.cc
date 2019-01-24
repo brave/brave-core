@@ -29,6 +29,12 @@ RewardsNotificationService::RewardsNotification::~RewardsNotification() {}
 
 void RewardsNotificationService::AddObserver(
     RewardsNotificationServiceObserver* observer) {
+  // Send any pending notifications immediately.
+  RewardsNotificationsMap notifications = GetAllNotifications();
+  for (auto& notification : notifications) {
+    observer->OnNotificationAdded(this, notification.second);
+  }
+
   observers_.AddObserver(observer);
 }
 
