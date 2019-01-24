@@ -313,12 +313,12 @@ class LedgerImpl : public ledger::Ledger,
   void SetAddresses(std::map<std::string, std::string> addresses);
 
   void SetCatalogIssuers(const std::string& info) override;
-  bool IsConfirmationsReadyToShowAds() override;
   void AdSustained(const std::string& info) override;
 
   // ConfirmationsClient implementation
   uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(uint32_t timer_id) override;
+  void SetConfirmationsIsReady(const bool is_ready) override;
   void URLRequest(
       const std::string& url,
       const std::vector<std::string>& headers,

@@ -21,6 +21,8 @@
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/buildflags/buildflags.h"
@@ -186,8 +188,6 @@ class RewardsServiceImpl : public RewardsService,
   void GetAddressesForPaymentId(const GetAddressesCallback& callback) override;
 
   void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
-  void IsConfirmationsReadyToShowAds(
-      const IsConfirmationsReadyToShowAdsCallback& callback) override;
   void AdSustained(std::unique_ptr<ads::NotificationInfo> info) override;
 
   void URLRequest(const std::string& url,
@@ -389,6 +389,8 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublisherListNormalizedSaved(
     std::unique_ptr<ledger::PublisherInfoList> list);
 
+  void SetConfirmationsIsReady(const bool is_ready) override;
+
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;
 
@@ -424,6 +426,7 @@ class RewardsServiceImpl : public RewardsService,
     bat_ledger_client_binding_;
   bat_ledger::mojom::BatLedgerAssociatedPtr bat_ledger_;
   bat_ledger::mojom::BatLedgerServicePtr bat_ledger_service_;
+  brave_ads::AdsService* ads_service_;  // NOT OWNED
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   std::unique_ptr<ExtensionRewardsServiceObserver>

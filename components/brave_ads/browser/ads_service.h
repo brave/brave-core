@@ -32,6 +32,7 @@ class AdsService : public KeyedService {
   virtual void OnMediaStart(SessionID tab_id) = 0;
   virtual void OnMediaStop(SessionID tab_id) = 0;
   virtual void ClassifyPage(const std::string& url, const std::string& page) = 0;
+  virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(AdsService);

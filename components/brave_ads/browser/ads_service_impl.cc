@@ -495,6 +495,13 @@ void AdsServiceImpl::TabClosed(SessionID tab_id) {
   bat_ads_->TabClosed(tab_id.id());
 }
 
+void AdsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
+  if (!connected())
+    return;
+
+  bat_ads_->SetConfirmationsIsReady(is_ready);
+}
+
 void AdsServiceImpl::ClassifyPage(const std::string& url,
                                   const std::string& page) {
   if (!connected())
@@ -587,13 +594,6 @@ void AdsServiceImpl::ShowNotification(std::unique_ptr<ads::NotificationInfo> inf
 
 void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
   rewards_service_->SetCatalogIssuers(std::move(info));
-}
-
-bool AdsServiceImpl::IsConfirmationsReadyToShowAds() {
-  // FIXME: This method must be refactored to take a callback
-  brave_rewards::IsConfirmationsReadyToShowAdsCallback callback;
-  rewards_service_->IsConfirmationsReadyToShowAds(callback);
-  return false;
 }
 
 void AdsServiceImpl::AdSustained(std::unique_ptr<ads::NotificationInfo> info) {

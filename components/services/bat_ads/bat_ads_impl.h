@@ -41,6 +41,7 @@ class BatAdsImpl : public mojom::BatAds {
                   bool is_active,
                   bool is_incognito) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
+  void SetConfirmationsIsReady(const bool is_ready) override;
   void ServeSampleAd() override;
   void GenerateAdReportingNotificationShownEvent(
       const std::string& notification_info) override;
