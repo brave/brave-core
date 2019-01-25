@@ -589,7 +589,7 @@ void BatClient::setGrant(const std::string& captchaResponse,
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)GET_SET_PROMOTION + "/" + ledger_->GetPaymentId(),
         safetynet_token.empty() ? PREFIX_V2 : PREFIX_V3),
-      std::vector<std::string>(), payload, "application/json; charset=utf-8",
+      headers, payload, "application/json; charset=utf-8",
       ledger::URL_METHOD::PUT, callback);
 }
 
