@@ -70,8 +70,8 @@ interface BatLedger {
   SolveGrantCaptcha(string solution, string promotionId);
 
   GetGrantViaSafetynetCheck();
-  ApplySafetynetToken(string token);
-
+  ApplySafetynetToken(string result_string);
+  
   SetRewardsMainEnabled(bool enabled);
   SetPublisherMinVisitTime(uint64 duration_in_seconds);
   SetPublisherMinVisits(uint32 visits);
@@ -192,6 +192,7 @@ interface BatLedgerClient {
 
   LoadNicewareList() => (ledger.mojom.Result result, string data);
   RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
+  OnGrantViaSafetynetCheck(string nonce);
 
   LoadURL(string url, array<string> headers, string content,
       string content_type, int32 method) => (int32 status_code, string response,

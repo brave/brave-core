@@ -145,6 +145,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void SetConfirmationsIsReady(const bool is_ready) override;
 
   void ConfirmationsTransactionHistoryDidChange() override;
+  void OnGrantViaSafetynetCheck(const std::string& nonce) override;
 
   void GetPendingContributions(
       GetPendingContributionsCallback callback) override;

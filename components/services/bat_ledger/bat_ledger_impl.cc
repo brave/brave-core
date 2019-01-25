@@ -256,13 +256,24 @@ void BatLedgerImpl::OnFetchGrants(
 
 void BatLedgerImpl::FetchGrants(const std::string& lang,
     const std::string& payment_id,
+    const std::string& result_string,
     FetchGrantsCallback callback) {
   // deleted in OnFetchGrants
   auto* holder = new CallbackHolder<FetchGrantsCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_->FetchGrants(lang, payment_id,
+  ledger_->FetchGrants(lang, payment_id, result_string,
       std::bind(BatLedgerImpl::OnFetchGrants, holder, _1, _2));
 }
+
+void BatLedgerImpl::GetGrantViaSafetynetCheck() {
+  ledger_->GetGrantViaSafetynetCheck();
+}
+
+void BatLedgerImpl::ApplySafetynetToken(const std::string& result_string) {
+  LOG(ERROR) << "!!!ApplySafetynetToken result_string == "  << result_string;
+  ledger_->ApplySafetynetToken(result_string);
+}
+
 
 // static
 void BatLedgerImpl::OnGetGrantCaptcha(
