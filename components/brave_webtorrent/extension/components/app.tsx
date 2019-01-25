@@ -11,7 +11,13 @@ import MediaViewer from './mediaViewer'
 import TorrentViewer from './torrentViewer'
 
 // Constants
-import { TorrentObj, TorrentState, ApplicationState, getTorrentObj, getTorrentState } from '../constants/webtorrentState'
+import {
+  TorrentObj,
+  TorrentState,
+  ApplicationState,
+  getTorrentObj,
+  getTorrentState
+} from '../constants/webtorrentState'
 
 // Utils
 import * as torrentActions from '../actions/webtorrent_actions'
@@ -37,12 +43,8 @@ export class BraveWebtorrentPage extends React.Component<Props, {}> {
 
     if (!torrentState) return null
 
-    if (torrentObj && typeof(torrentState.ix) === 'number') {
-      return (
-        <MediaViewer
-          torrent={torrentObj}
-          ix={torrentState.ix}
-        />)
+    if (torrentObj && typeof torrentState.ix === 'number') {
+      return <MediaViewer torrent={torrentObj} ix={torrentState.ix} />
     }
 
     return (
@@ -53,13 +55,19 @@ export class BraveWebtorrentPage extends React.Component<Props, {}> {
         errorMsg={torrentState.errorMsg}
         torrent={torrentObj}
         tabId={torrentState.tabId}
-      />)
+      />
+    )
   }
 }
 
-export const mapStateToProps = (state: ApplicationState, ownProps: { tabId: number }) => {
-  return { torrentState: getTorrentState(state.torrentsData, ownProps.tabId),
-    torrentObj: getTorrentObj(state.torrentsData, ownProps.tabId) }
+export const mapStateToProps = (
+  state: ApplicationState,
+  ownProps: { tabId: number }
+) => {
+  return {
+    torrentState: getTorrentState(state.torrentsData, ownProps.tabId),
+    torrentObj: getTorrentObj(state.torrentsData, ownProps.tabId)
+  }
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch) => ({

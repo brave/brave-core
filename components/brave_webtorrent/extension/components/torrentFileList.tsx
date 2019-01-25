@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { Table } from 'brave-ui/components'
 import { Cell, Row } from 'brave-ui/components/dataTables/table/index'
-import { Heading } from 'brave-ui/old'
+import { LoaderIcon } from 'brave-ui/components/icons'
 
 // Constants
 import { File, TorrentObj } from '../constants/webtorrentState'
@@ -20,8 +20,11 @@ export default class TorrentFileList extends React.PureComponent<Props, {}> {
     const { torrent } = this.props
     if (!torrent || !torrent.files) {
       return (
-        <div>
-          Click "Start Torrent" to load the torrent file list
+        <div className='torrentSubhead'>
+          <p>
+            Click "Start Torrent" to begin your download. WebTorrent can be
+            disabled from the extensions panel in Settings.
+          </p>
         </div>
       )
     }
@@ -47,23 +50,30 @@ export default class TorrentFileList extends React.PureComponent<Props, {}> {
       if (isDownload) {
         if (torrent.serverURL) {
           const url = torrent.serverURL + '/' + ix
-          return (<a href={url} download={file.name}>⇩</a>)
+          return (
+            <a href={url} download={file.name}>
+              ⇩
+            </a>
+          )
         } else {
-          return (<div />) // No download links until the server is ready
+          return <div /> // No download links until the server is ready
         }
       } else {
         // use # for .torrent links, since query params might cause the remote
         // server to return 404
-        const suffix = /^https?:/.test(torrentId)
-          ? '#ix=' + ix
-          : '&ix=' + ix
+        const suffix = /^https?:/.test(torrentId) ? '#ix=' + ix : '&ix=' + ix
         const href = torrentId + suffix
-        return (<a href={href} target='_blank'> {file.name} </a>)
+        return (
+          <a href={href} target='_blank'>
+            {' '}
+            {file.name}{' '}
+          </a>
+        )
       }
     }
 
     const rows: Row[] = torrent.files.map((file: File, index: number) => {
-      return ({
+      return {
         content: [
           {
             content: index + 1
@@ -78,20 +88,18 @@ export default class TorrentFileList extends React.PureComponent<Props, {}> {
             content: file.length
           }
         ]
-      })
+      }
     })
 
     return (
       <div>
-        <Heading
-          text='Files'
-          level={3}
-        />
-        <Table
-          header={header}
-          rows={rows}
-        >
-        'Loading the torrent file list...'
+        <Table header={header} rows={rows}>
+          <div className='loadingContainer'>
+            <div className='__icon'>
+              <LoaderIcon />
+            </div>
+            Loading the torrent file list
+          </div>
         </Table>
       </div>
     )
