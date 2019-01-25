@@ -624,6 +624,8 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
 }
 
 void AdsImpl::ServeAdFromCategory(const std::string& category) {
+  LOG(INFO) << "Notification for category " << category;
+
   std::string catalog_id = bundle_->GetCatalogId();
   if (catalog_id.empty()) {
     // TODO(Terry Mancey): Implement Log (#44)
@@ -639,7 +641,7 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
     // 'Notification not made', { reason: 'no classified pages) for
     // winnerOverTime', category, winnerOverTime, arbitraryKey }
 
-    LOG(INFO) << "Notification not made: No classified pages";
+    LOG(INFO) << "Notification not made: category is empty";
 
     return;
   }
