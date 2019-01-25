@@ -48,6 +48,8 @@ class RewardsNotificationService {
   };
 
   typedef std::vector<RewardsNotification> RewardsNotificationsList;
+  typedef std::map<RewardsNotificationID, RewardsNotification>
+      RewardsNotificationsMap;
 
   virtual void AddNotification(RewardsNotificationType type,
                                RewardsNotificationArgs args,
@@ -56,8 +58,8 @@ class RewardsNotificationService {
   virtual void DeleteNotification(RewardsNotificationID id) = 0;
   virtual void DeleteAllNotifications() = 0;
   virtual void GetNotification(RewardsNotificationID id) = 0;
-  virtual void GetAllNotifications() = 0;
-
+  virtual void GetNotifications() = 0;
+  virtual const RewardsNotificationsMap& GetAllNotifications() const = 0;
   virtual void ReadRewardsNotificationsJSON() = 0;
   virtual void StoreRewardsNotifications() = 0;
 

@@ -34,7 +34,8 @@ class RewardsNotificationServiceImpl
   void DeleteNotification(RewardsNotificationID id) override;
   void DeleteAllNotifications() override;
   void GetNotification(RewardsNotificationID id) override;
-  void GetAllNotifications() override;
+  void GetNotifications() override;
+  const RewardsNotificationsMap& GetAllNotifications() const override;
 
   void ReadRewardsNotificationsJSON() override;
   void ReadRewardsNotifications(std::unique_ptr<base::ListValue>);
@@ -75,7 +76,7 @@ class RewardsNotificationServiceImpl
   RewardsNotificationTimestamp GenerateRewardsNotificationTimestamp() const;
 
   Profile* profile_;
-  std::map<RewardsNotificationID, RewardsNotification> rewards_notifications_;
+  RewardsNotificationsMap rewards_notifications_;
   std::vector<RewardsNotificationID> rewards_notifications_displayed_;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   std::unique_ptr<ExtensionRewardsNotificationServiceObserver>
