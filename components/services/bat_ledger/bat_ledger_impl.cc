@@ -179,8 +179,17 @@ void BatLedgerImpl::OnReconcileCompleteSuccess(const std::string& viewing_id,
 }
 
 void BatLedgerImpl::FetchGrants(const std::string& lang,
-    const std::string& payment_id) {
-  ledger_->FetchGrants(lang, payment_id);
+    const std::string& payment_id, const std::string& result_string) {
+  ledger_->FetchGrants(lang, payment_id, result_string);
+}
+
+void BatLedgerImpl::GetGrantViaSafetynetCheck() {
+  ledger_->GetGrantViaSafetynetCheck();
+}
+
+void BatLedgerImpl::ApplySafetynetToken(const std::string& result_string) {
+  LOG(ERROR) << "!!!ApplySafetynetToken result_string == "  << result_string;
+  ledger_->ApplySafetynetToken(result_string);
 }
 
 void BatLedgerImpl::GetGrantCaptcha(
