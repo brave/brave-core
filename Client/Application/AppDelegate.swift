@@ -39,6 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     var receivedURLs: [URL]?
     
     var authenticator: AppAuthenticator?
+    
+    /// Object used to handle server pings
+    let dau = DAU()
 
     @discardableResult func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         //
@@ -295,7 +298,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         // We try to send DAU ping each time the app goes to foreground to work around network edge cases
         // (offline, bad connection etc.)
-        DAU().sendPingToServer()
+        dau.sendPingToServer()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
