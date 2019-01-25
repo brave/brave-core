@@ -23,7 +23,6 @@
 #include "chrome/common/chrome_switches.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
-#include "components/viz/common/features.h"
 #include "components/unified_consent/feature.h"
 #include "content/public/common/content_features.h"
 #include "extensions/common/extension_features.h"
@@ -135,7 +134,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   std::stringstream disabled_features;
   disabled_features << features::kSharedArrayBuffer.name
     << "," << features::kDefaultEnableOopRasterization.name
-    << "," << features::kVizDisplayCompositor.name
     << "," << autofill::features::kAutofillSaveCardSignInAfterLocalSave.name
     << "," << features::kAudioServiceOutOfProcess.name
     << "," << autofill::features::kAutofillServerCommunication.name
