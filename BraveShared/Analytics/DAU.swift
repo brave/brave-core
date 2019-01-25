@@ -21,12 +21,14 @@ public class DAU {
     fileprivate static var calendar: NSCalendar { return Calendar(identifier: .gregorian) as NSCalendar }
     
     private var launchTimer: Timer?
-    private let today: Date
+    private let today: Date?
+    /// Whether a current ping attempt is being made
+    private var processingPing = false
     private var todayComponents: DateComponents {
-        return DAU.calendar.components([.day, .month, .year, .weekday], from: today)
+        return DAU.calendar.components([.day, .month, .year, .weekday], from: today ?? Date())
     }
     
-    public init(date: Date = Date()) {
+    public init(date: Date? = nil) {
         today = date
     }
     
@@ -61,6 +63,12 @@ public class DAU {
             return
         }
         
+        if processingPing {
+            log.info("Currently processing a ping, blocking ping re-attempt")
+            return
+        }
+        processingPing = true
+        
         // Sending ping to server
         var pingRequest = URLComponents(string: DAU.baseUrl)
         pingRequest?.queryItems = paramsAndPrefs.queryParams
@@ -73,6 +81,10 @@ public class DAU {
         log.debug("send ping to server, url: \(pingRequestUrl)")
         
         let task = URLSession.shared.dataTask(with: pingRequestUrl) { _, _, error in
+            defer {
+                self.processingPing = false
+            }
+            
             if let e = error {
                 log.error("status update error: \(e)")
                 return
@@ -116,7 +128,6 @@ public class DAU {
         }
         
         guard let dauStatParams = dauStatParams(firstPing: firstLaunch) else {
-            log.debug("dau, no changes detected, no server ping")
             return nil
         }
         
@@ -132,7 +143,7 @@ public class DAU {
             UrpLog.log("DAU ping with added ref, params: \(params)")
         }
         
-        let secsMonthYear = [Int(today.timeIntervalSince1970), todayComponents.month, todayComponents.year]
+        let secsMonthYear = [Int((today ?? Date()).timeIntervalSince1970), todayComponents.month, todayComponents.year]
         
         // Using `secsMonthYear` with week component for weekly usage check is not robust enough and fails on edge cases.
         // To calculate weekly usage we store first monday of week to and then compare it with the
