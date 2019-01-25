@@ -77,6 +77,8 @@ class AdsImpl : public Ads {
 
   bool IsSupportedRegion() override;
 
+  void SetConfirmationsIsReady(const bool is_ready) override;
+
   void ChangeLocale(const std::string& locale) override;
 
   void ClassifyPage(const std::string& url, const std::string& html) override;
@@ -165,6 +167,8 @@ class AdsImpl : public Ads {
 
  private:
   bool is_initialized_;
+
+  bool is_confirmations_ready_;
 
   AdsClient* ads_client_;  // NOT OWNED
 

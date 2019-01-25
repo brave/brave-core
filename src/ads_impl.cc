@@ -45,6 +45,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     ads_serve_(std::make_unique<AdsServe>(this, ads_client, bundle_.get())),
     user_model_(nullptr),
     is_initialized_(false),
+    is_confirmations_ready_(false),
     ads_client_(ads_client) {
 }
 
@@ -136,7 +137,7 @@ void AdsImpl::LoadUserModel() {
   auto locale = client_->GetLocale();
   auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
   ads_client_->LoadUserModelForLocale(locale, callback);
-}
+}                  
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
   if (result != SUCCESS) {
@@ -321,6 +322,10 @@ bool AdsImpl::IsSupportedRegion() {
   }
 
   return true;
+}
+
+void AdsImpl::SetConfirmationsIsReady(const bool is_ready) {
+  is_confirmations_ready_ = is_ready;
 }
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
@@ -592,7 +597,7 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
   }
 
   if (!forced) {
-    if (!ads_client_->IsConfirmationsReadyToShowAds()) {
+    if (!is_confirmations_ready_) {
       LOG(INFO) << "Notification not made: Confirmations not ready";
 
       return;

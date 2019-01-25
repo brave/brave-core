@@ -155,10 +155,6 @@ void MockAdsClient::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
   (void)info;
 }
 
-bool MockAdsClient::IsConfirmationsReadyToShowAds() {
-  return true;
-}
-
 void MockAdsClient::AdSustained(std::unique_ptr<NotificationInfo> info) {
   (void)info;
 }

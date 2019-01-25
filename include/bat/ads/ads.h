@@ -78,6 +78,9 @@ class ADS_EXPORT Ads {
   // Should be called to determine if the operating system's region is supported
   virtual bool IsSupportedRegion() = 0;
 
+  // Should be called to inform ads if confirmations is ready
+  virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
+
   // Should be called when the user changes the operating system's locale, i.e.
   // en, en_US or en_GB.UTF-8 unless the operating system restarts the app
   virtual void ChangeLocale(const std::string& locale) = 0;

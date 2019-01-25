@@ -88,6 +88,12 @@ void TabClosed(
 void RemoveAllHistory()
 ```
 
+`SetConfirmationsIsReady` should be called to inform ads if confirmations is ready
+```
+void SetConfirmationsIsReady(
+    const bool is_ready)
+```
+
 `ChangeLocale` should be called when the user changes the operating system's locale, i.e. `en`, `en_US` or `en_GB.UTF-8`. This call is not required if the operating system restarts the app when the user changes their locale
 ```
 void ChangeLocale(
@@ -199,11 +205,6 @@ void ShowNotification(std::unique_ptr<NotificationInfo> info)
 `SetCatalogIssuers` should notify that the catalog issuers have changed
 ```
   void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info)
-```
-
-`IsConfirmationsReadyToShowAds` should return `true` if Confirmations is ready to show ads otherwise returns `false`
-```
-bool IsConfirmationsReadyToShowAds()
 ```
 
 `AdSustained` should be called to inform Confirmations that an ad was sustained

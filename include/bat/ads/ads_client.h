@@ -109,10 +109,6 @@ class ADS_EXPORT AdsClient {
   // Should notify that the catalog issuers have changed
   virtual void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) = 0;
 
-  // Should return true if Confirmations is ready to show ad otherwise returns
-  // false
-  virtual bool IsConfirmationsReadyToShowAds() = 0;
-
   // Should be called to inform Confirmations that an ad was sustained
   virtual void AdSustained(std::unique_ptr<NotificationInfo> info) = 0;
 
