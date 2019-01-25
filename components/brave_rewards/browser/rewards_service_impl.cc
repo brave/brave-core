@@ -352,7 +352,6 @@ const base::FilePath::StringType kPublishers_list("publishers_list");
 RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
     : profile_(profile),
       bat_ledger_client_binding_(new bat_ledger::LedgerClientMojoProxy(this)),
-      ads_service_(brave_ads::AdsServiceFactory::GetForProfile(profile_)),
 #if BUILDFLAG(ENABLE_EXTENSIONS)
       extension_rewards_service_observer_(
           std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
@@ -1582,7 +1581,8 @@ void RewardsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
     return;
   }
 
-  ads_service_->SetConfirmationsIsReady(is_ready);
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);  // NOT OWNED
+  ads_service->SetConfirmationsIsReady(is_ready);
 }
 
 void RewardsServiceImpl::OnResetConfirmationsState(
