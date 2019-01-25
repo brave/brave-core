@@ -122,6 +122,10 @@ void MockConfirmationsClient::Reset(
   callback(FAILED);
 }
 
+void MockConfirmationsClient::SetConfirmationsIsReady(const bool is_ready) {
+  (void)is_ready;
+}
+
 std::unique_ptr<LogStream> MockConfirmationsClient::Log(
     const char* file,
     const int line,

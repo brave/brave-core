@@ -86,12 +86,9 @@ std::vector<std::string> ConfirmationsImpl::Unmunge(base::Value* value) {
   return v;
 }
 
-bool ConfirmationsImpl::IsReadyToShowAds() {
-  // Whatever thread/service calls this in brave-core-client must also be the
-  // one that triggers ad showing, or we'll have a race condition
-  bool ready = (signed_blinded_confirmation_tokens.size() > 0);
-
-  return ready;
+void ConfirmationsImpl::SetConfirmationsStatus() {
+  bool is_ready = signed_blinded_confirmation_tokens.size() > 0 ? true : false;
+  confirmations_client_->SetConfirmationsIsReady(is_ready);
 }
 
 std::string ConfirmationsImpl::GetServerUrl() {
@@ -433,10 +430,13 @@ void ConfirmationsImpl::Step2cRefillConfirmationsIfNecessary(
   VectorConcat(&this->signed_blinded_confirmation_tokens,
       &server_signed_blinded_confirmations);
 
+  SetConfirmationsStatus();
+
   this->SaveState();
 
   OnStep2RefillConfirmationsIfNecessary(SUCCESS);
 }
+
 void ConfirmationsImpl::OnStep2RefillConfirmationsIfNecessary(
     const Result result) {
   if (result != SUCCESS) {
@@ -484,6 +484,7 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
   // success/failure since it's cheaper development wise. but optimization wise,
   // it "wastes" a (free) confirmation token on failure
   this->PopFrontConfirmation();
+  SetConfirmationsStatus();
 
   // persist
   this->SaveState();
@@ -1375,6 +1376,8 @@ void ConfirmationsImpl::OnStateLoaded(
   }
 
   BLOG(INFO) << "Successfully loaded confirmations state";
+
+  SetConfirmationsStatus();
 
   RefillConfirmations();
   RetrievePaymentIOUs();

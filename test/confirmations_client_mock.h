@@ -59,6 +59,9 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::string& name,
       OnResetCallback callback));
 
+  MOCK_METHOD1(SetConfirmationsIsReady, void(
+      const bool is_ready));
+
   std::unique_ptr<LogStream> Log(
       const char* file,
       const int line,

@@ -84,6 +84,9 @@ class CONFIRMATIONS_EXPORT ConfirmationsClient {
   // storage
   virtual void Reset(const std::string& name, OnResetCallback callback) = 0;
 
+  // Should be called to inform ads if confirmations is ready
+  virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
+
   // Should log diagnostic information
   virtual std::unique_ptr<LogStream> Log(
       const char* file,

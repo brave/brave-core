@@ -45,6 +45,8 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   void Reset(const std::string& name, OnResetCallback callback) override;
 
+  void SetConfirmationsIsReady(const bool is_ready) override;
+
   std::unique_ptr<LogStream> Log(
       const char* file,
       const int line,
