@@ -7,22 +7,9 @@ import * as React from 'react'
 // Constants
 import { TorrentObj } from '../constants/webtorrentState'
 
-const SUPPORTED_VIDEO_EXTENSIONS = [
-  'm4v',
-  'mkv',
-  'mov',
-  'mp4',
-  'ogv',
-  'webm'
-]
+const SUPPORTED_VIDEO_EXTENSIONS = ['m4v', 'mkv', 'mov', 'mp4', 'ogv', 'webm']
 
-const SUPPORTED_AUDIO_EXTENSIONS = [
-  'aac',
-  'mp3',
-  'ogg',
-  'wav',
-  'm4a'
-]
+const SUPPORTED_AUDIO_EXTENSIONS = ['aac', 'mp3', 'ogg', 'wav', 'm4a']
 
 // Given 'foo.txt', returns 'txt'
 // Given eg. null, undefined, '', or 'README', returns null
@@ -43,19 +30,27 @@ export default class MediaViewer extends React.PureComponent<Props, {}> {
     const { torrent, ix } = this.props
 
     const file = torrent.files ? torrent.files[ix] : undefined
-    const fileURL = torrent.serverURL && (torrent.serverURL + '/' + ix)
+    const fileURL = torrent.serverURL && torrent.serverURL + '/' + ix
 
     const fileExt = file && getExtension(file.name)
-    const isVideo = fileExt ? SUPPORTED_VIDEO_EXTENSIONS.includes(fileExt) : false
-    const isAudio = fileExt ? SUPPORTED_AUDIO_EXTENSIONS.includes(fileExt) : false
+    const isVideo = fileExt
+      ? SUPPORTED_VIDEO_EXTENSIONS.includes(fileExt)
+      : false
+    const isAudio = fileExt
+      ? SUPPORTED_AUDIO_EXTENSIONS.includes(fileExt)
+      : false
 
     let content
     if (!file || !torrent.serverURL) {
       content = <div className='loading'>Loading Media</div>
     } else if (isVideo) {
-      content = <video id='video' src={fileURL} autoPlay={true} controls={true} />
+      content = (
+        <video id='video' src={fileURL} autoPlay={true} controls={true} />
+      )
     } else if (isAudio) {
-      content = <audio id='audio' src={fileURL} autoPlay={true} controls={true} />
+      content = (
+        <audio id='audio' src={fileURL} autoPlay={true} controls={true} />
+      )
     } else {
       // For security, sandbox and disallow scripts.
       // We need allow-same-origin so that the iframe can load from
@@ -63,10 +58,6 @@ export default class MediaViewer extends React.PureComponent<Props, {}> {
       content = <iframe id='other' src={fileURL} sandbox='allow-same-origin' />
     }
 
-    return (
-      <div className='mediaViewer'>
-        {content}
-      </div>
-    )
+    return <div className='mediaViewer'>{content}</div>
   }
 }
