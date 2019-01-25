@@ -4,12 +4,17 @@
 import Foundation
 import CoreData
 import Shared
+import BraveShared
 import JavaScriptCore
 
 private let log = Logger.browserLogger
 
 // Sync related methods for Bookmark model.
 extension Bookmark {
+    /// If sync is not used, we still utilize its syncOrder algorithm to determine order of bookmarks.
+    /// Base order is needed to distinguish between bookmarks on different devices and platforms.
+    static var baseOrder: String { return Preferences.Sync.baseSyncOrder.value }
+    
     /// Sets order for all bookmarks. Needed after user joins sync group for the first time.
     /// Returns an array of bookmarks with updated `syncOrder`.
     class func updateBookmarksWithNewSyncOrder(parentFolder: Bookmark? = nil,
@@ -106,6 +111,6 @@ extension Bookmark {
         }
         
         DataController.save(context: context)
-        Sync.shared.baseSyncOrder = nil
+        Preferences.Sync.baseSyncOrder.reset()
     }
 }
