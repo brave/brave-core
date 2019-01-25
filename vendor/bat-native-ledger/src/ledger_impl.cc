@@ -38,7 +38,6 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_get_media_(new BatGetMedia(this)),
     bat_state_(new BatState(this)),
     bat_contribution_(new BatContribution(this)),
-    bat_confirmations_(confirmations::Confirmations::CreateInstance(this)),
     initialized_(false),
     initializing_(false),
     last_tab_active_time_(0),
@@ -185,7 +184,7 @@ void LedgerImpl::LoadLedgerState(ledger::LedgerCallbackHandler* handler) {
 }
 
 void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
-                                        const std::string& data) {
+                                     const std::string& data) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_state_->LoadState(data)) {
       BLOG(this, ledger::LogLevel::LOG_ERROR) <<
@@ -209,9 +208,13 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
       std::string newSecretKeyHex = braveledger_bat_helper::uint8ToHex(
           newSecretKey);
       confirmations_wallet_info.signing_key = newSecretKeyHex;
+
+      DCHECK(!bat_confirmations_);
+      bat_confirmations_.reset(
+          confirmations::Confirmations::CreateInstance(this));
       bat_confirmations_->SetWalletInfo(
           std::make_unique<confirmations::WalletInfo>(
-          confirmations_wallet_info));
+              confirmations_wallet_info));
 
       LoadPublisherState(this);
       bat_contribution_->OnStartUp();
