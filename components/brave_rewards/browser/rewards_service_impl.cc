@@ -1229,11 +1229,12 @@ void RewardsServiceImpl::FetchWalletProperties() {
 
 void RewardsServiceImpl::FetchGrant(const std::string& lang,
     const std::string& payment_id) {
+#if !defined(OS_ANDROID)
   if (!Connected()) {
     return;
   }
-#if !defined(OS_ANDROID)
-  bat_ledger_->FetchGrant(lang, payment_id);
+
+  bat_ledger_->FetchGrant(lang, payment_id, "");
 #else
   safetynet_check::ClientAttestationCallback attest_callback =
       base::BindOnce(&RewardsServiceImpl::FetchGrantAttestationResult,
@@ -2409,7 +2410,7 @@ void RewardsServiceImpl::OnGrantViaSafetynetCheck(const std::string& nonce) {
   safetynet_check_runner_.performSafetynetCheck(nonce,
       std::move(attest_callback));
 #endif
-}
+ }
 
 #if defined(OS_ANDROID)
 void RewardsServiceImpl::GrantAttestationResult(bool result,

@@ -102,6 +102,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
                            const std::string& filter,
                            GetActivityInfoListCallback callback) override;
 
+  void OnGrantViaSafetynetCheck(const std::string& nonce) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*

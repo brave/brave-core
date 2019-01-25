@@ -108,6 +108,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                            ledger::ActivityInfoFilter filter,
                            ledger::PublisherInfoListCallback callback) override;
 
+  void OnGrantViaSafetynetCheck(const std::string& nonce) override;
+
  private:
   bool Connected() const;
 
