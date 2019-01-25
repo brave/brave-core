@@ -1444,11 +1444,12 @@ void RewardsServiceImpl::OnFetchGrants(
 
 void RewardsServiceImpl::FetchGrants(const std::string& lang,
     const std::string& payment_id) {
+#if !defined(OS_ANDROID)
   if (!Connected()) {
     return;
   }
 #if !defined(OS_ANDROID)
-  bat_ledger_->FetchGrants(lang, payment_id, base::BindOnce(
+  bat_ledger_->FetchGrants(lang, payment_id, "", base::BindOnce(
       &RewardsServiceImpl::OnFetchGrants,
       AsWeakPtr()));
 #else
@@ -1465,7 +1466,7 @@ void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang,
     const std::string& payment_id,
     bool result, const std::string& result_string) {
   if (result) {
-    bat_ledger_->FetchGrants(lang, payment_id, base::BindOnce(
+    bat_ledger_->FetchGrants(lang, payment_id, result_string, base::BindOnce(
       &RewardsServiceImpl::OnFetchGrants,
       AsWeakPtr()));
   } else {
@@ -3776,7 +3777,7 @@ void RewardsServiceImpl::OnGrantViaSafetynetCheck(const std::string& nonce) {
   safetynet_check_runner_.performSafetynetCheck(nonce,
       std::move(attest_callback));
 #endif
-}
+ }
 
 #if defined(OS_ANDROID)
 void RewardsServiceImpl::GrantAttestationResult(bool result,
