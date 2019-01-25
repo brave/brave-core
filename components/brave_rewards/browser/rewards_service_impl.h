@@ -426,7 +426,6 @@ class RewardsServiceImpl : public RewardsService,
     bat_ledger_client_binding_;
   bat_ledger::mojom::BatLedgerAssociatedPtr bat_ledger_;
   bat_ledger::mojom::BatLedgerServicePtr bat_ledger_service_;
-  brave_ads::AdsService* ads_service_;  // NOT OWNED
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   std::unique_ptr<ExtensionRewardsServiceObserver>
