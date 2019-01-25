@@ -3,6 +3,7 @@
 import UIKit
 import WebKit
 import Shared
+import BraveShared
 import CoreData
 import SwiftKeychainWrapper
 import SwiftyJSON
@@ -100,23 +101,6 @@ public class Sync: JSInjector {
     /// Please note that sync initialization also happens on app launch, not only on first connection to Sync.
     public var syncSetupFailureCallback: (() -> Void)?
     
-    var baseSyncOrder: String? {
-        get {
-            return UserDefaults.standard.string(forKey: prefBaseOrder)
-        }
-        set(value) {
-            UserDefaults.standard.set(value, forKey: prefBaseOrder)
-            UserDefaults.standard.synchronize()
-        }
-    }
-    
-    // TODO: Move to a better place
-    fileprivate let prefNameId = "device-id-js-array"
-    fileprivate let prefNameName = "sync-device-name"
-    fileprivate let prefNameSeed = "seed-js-array"
-    fileprivate let prefFetchTimestamp = "sync-fetch-timestamp"
-    fileprivate let prefBaseOrder = "sync-base-order"
-    
     fileprivate lazy var isDebug: Bool = { return AppConstants.BuildChannel == .developer }()
     
     fileprivate lazy var serverUrl: String = {
@@ -157,6 +141,9 @@ public class Sync: JSInjector {
     }()
     
     private var syncFetchedHandlers = [() -> Void]()
+    
+    private var baseSyncOrder: String { return Preferences.Sync.baseSyncOrder.value }
+    private var lastSyncTimestamp: Int { return Preferences.Sync.lastFetchTimestamp.value }
     
     override init() {
         super.init()
@@ -217,15 +204,18 @@ public class Sync: JSInjector {
     
     fileprivate var syncSeed: String? {
         get {
-            if !UserDefaults.standard.bool(forKey: prefNameSeed) {
+            let seedName = Preferences.Sync.seedName.key
+            if !Preferences.Sync.seedName.value {
                 // This must be true to stay in sync group
-                KeychainWrapper.standard.removeObject(forKey: prefNameSeed)
+                KeychainWrapper.standard.removeObject(forKey: seedName)
                 return nil
             }
             
-            return KeychainWrapper.standard.string(forKey: prefNameSeed)
+            return KeychainWrapper.standard.string(forKey: seedName)
         }
         set(value) {
+            let seedName = Preferences.Sync.seedName.key
+            
             // TODO: Move syncSeed validation here, remove elsewhere
             
             if isInSyncGroup && value != nil {
@@ -235,10 +225,8 @@ public class Sync: JSInjector {
             }
             
             if let value = value {
-                KeychainWrapper.standard.set(value, forKey: prefNameSeed)
-                // Here, we are storing a value to signify a group has been joined
-                //  this is _only_ used on a re-installation to know that the app was deleted and re-installed
-                UserDefaults.standard.set(true, forKey: prefNameSeed)
+                KeychainWrapper.standard.set(value, forKey: seedName)
+                Preferences.Sync.seedName.value = true
                 return
             }
             
@@ -254,7 +242,8 @@ public class Sync: JSInjector {
             Device.deleteAll()
             
             lastFetchedRecordTimestamp = 0
-            lastSuccessfulSync = 0
+            Preferences.Sync.lastFetchTimestamp.reset()
+            
             lastFetchWasTrimmed = false
             syncReadyLock = false
             isSyncFullyInitialized = (false, false, false, false, false, false, false, false)
@@ -262,7 +251,7 @@ public class Sync: JSInjector {
             fetchTimer?.invalidate()
             fetchTimer = nil
             
-            KeychainWrapper.standard.removeObject(forKey: prefNameSeed)
+            KeychainWrapper.standard.removeObject(forKey: seedName)
         }
     }
     
@@ -276,16 +265,6 @@ public class Sync: JSInjector {
     // This includes just the last record that was fetched, used to store timestamp until full process has been completed
     //  then set into defaults
     fileprivate(set) var lastFetchedRecordTimestamp: Int? = 0
-    // This includes the entire process: fetching, resolving, insertion/update, and save
-    fileprivate var lastSuccessfulSync: Int {
-        get {
-            return UserDefaults.standard.integer(forKey: prefFetchTimestamp)
-        }
-        set(value) {
-            UserDefaults.standard.set(value, forKey: prefFetchTimestamp)
-            UserDefaults.standard.synchronize()
-        }
-    }
     
     // Same abstraction note as above
     //  Used to know if data on get-existing-objects was trimmed, this value is used inside resolved-sync-records
@@ -333,7 +312,7 @@ public class Sync: JSInjector {
             self.fetch(type: .devices)
             
             // Use proper variable and store in defaults
-            if lastSuccessfulSync == 0 {
+            if lastSyncTimestamp == 0 {
                 // Sync local bookmarks, then proceed with fetching
                 // Pull all local bookmarks and update their order with newly aquired device id and base sync order.
                 let context = DataController.newBackgroundContext()
@@ -361,7 +340,7 @@ public class Sync: JSInjector {
             getBaseBookmarksOrderFunction?.call(withArguments: [deviceId, "ios"]).toString() else { return nil }
         
         if baseOrder != "undefined" {
-            baseSyncOrder = baseOrder
+            Preferences.Sync.baseSyncOrder.value = baseOrder
             return Bookmark.updateBookmarksWithNewSyncOrder(context: context)
         }
         
@@ -447,7 +426,7 @@ extension Sync {
         executeBlockOnReady() {
             
             // Pass in `lastFetch` to get records since that time
-            let evaluate = "callbackList['\(type.syncFetchMethod)'](null, ['\(type.rawValue)'], \(self.lastSuccessfulSync), \(Sync.RecordFetchAmount))"
+            let evaluate = "callbackList['\(type.syncFetchMethod)'](null, ['\(type.rawValue)'], \(self.lastSyncTimestamp), \(Sync.RecordFetchAmount))"
             self.webView.evaluateJavaScript(evaluate,
                                             completionHandler: { (result, error) in
                                                 completion?(error)
@@ -528,7 +507,9 @@ extension Sync {
         // If there are more records with the same timestamp than the batch size, they will be dropped,
         //  however this is unimportant, as it actually prevents an infinitely recursive loop, of refetching the same records over
         //  and over again
-        if let stamp = self.lastFetchedRecordTimestamp { self.lastSuccessfulSync = stamp + 1 }
+        if let stamp = self.lastFetchedRecordTimestamp {
+            Preferences.Sync.lastFetchTimestamp.value = stamp + 1
+        }
         
         if self.lastFetchWasTrimmed {
             // Do fast refresh, do not wait for timer

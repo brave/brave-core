@@ -59,12 +59,6 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         return nil
     }
     
-    /// If sync is not used, we still utilize its syncOrder algorithm to determine order of bookmarks.
-    /// Base order is needed to distinguish between bookmarks on different devices and platforms.
-    static var baseOrder: String {
-        return Sync.shared.baseSyncOrder ?? "0.0."
-    }
-    
     override public func awakeFromInsert() {
         super.awakeFromInsert()
         lastVisited = created
