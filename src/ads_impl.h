@@ -133,6 +133,7 @@ class AdsImpl : public Ads {
 
   uint32_t sustained_ad_interaction_timer_id_;
   void StartSustainingAdInteraction(const uint64_t start_timer_in);
+  void SustainAdInteractionIfNeeded();
   void SustainAdInteraction();
   void StopSustainingAdInteraction();
   bool IsSustainingAdInteraction() const;
