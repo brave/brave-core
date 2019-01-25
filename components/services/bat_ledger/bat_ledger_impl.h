@@ -72,7 +72,8 @@ class BatLedgerImpl : public mojom::BatLedger,
       int32_t year, uint32_t data) override;
 
   void FetchGrants(
-      const std::string& lang, const std::string& payment_id) override;
+      const std::string& lang, const std::string& payment_id,
+      const std::string& result_string) override;
   void GetGrantCaptcha() override;
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
   void GetNumExcludedSites(GetNumExcludedSitesCallback callback) override;
@@ -123,6 +124,9 @@ class BatLedgerImpl : public mojom::BatLedger,
       GetRewardsMainEnabledCallback callback) override;
   void HasSufficientBalanceToReconcile(
       HasSufficientBalanceToReconcileCallback callback) override;
+
+  void GetGrantViaSafetynetCheck() override;
+  void ApplySafetynetToken(const std::string& result_string) override;
 
   void GetAddressesForPaymentId(
       GetAddressesForPaymentIdCallback callback) override;

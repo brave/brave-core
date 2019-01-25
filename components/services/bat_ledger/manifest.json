@@ -1,7 +1,7 @@
 {
   "name": "bat_ledger",
   "display_name": "Bat Ledger Service",
-  "sandbox_type": "none",
+  "sandbox_type": "utility",
   "options" : {
     "instance_sharing" : "shared_instance_across_users"
   },
