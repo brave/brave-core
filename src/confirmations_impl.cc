@@ -963,6 +963,7 @@ void ConfirmationsImpl::Step5CashInPaymentIOUs(
   size_t n = this->signed_blinded_payment_token_json_bundles.size();
 
   if (n <= 0) {
+    BLOG(INFO) << "  No payment IOUs to cash in";
     OnStep5CashInPaymentIOUs(SUCCESS);
     return;
   }
