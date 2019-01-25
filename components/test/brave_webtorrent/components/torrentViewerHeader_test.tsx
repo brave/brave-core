@@ -41,7 +41,7 @@ describe('torrentViewerHeader component', () => {
           />
         </TestThemeProvider>
       )
-      expect(wrapper.html()).toEqual(expect.stringContaining('Stop Download'))
+      expect(wrapper.html()).toEqual(expect.stringContaining('Stop Torrent'))
     })
   })
 })

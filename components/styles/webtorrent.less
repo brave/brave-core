@@ -1,20 +1,72 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Color variables
+@bravePrimary: #fb542b;
+@silverBase: #c8c8d5;
+@silverDarken10: darken(@silverBase, 10%);
 
 body {
-  padding: 20px
-}
-
-h3 {
-  color: rgb(255, 80, 0);
+  padding: 100px;
+  font-family: Muli, sans-serif;
 }
 
 a {
   text-decoration: none;
-  color: #686978;
+  color: @bravePrimary;
 }
 
-.mediaViewer, .torrent-viewer {
-  font-family: Muli, sans-serif;
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 18px;
+  .__column {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    .__torrentTitle {
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 36px;
+    }
+    .__button {
+      white-space: nowrap;
+      margin: 12px;
+    }
+  }
+}
+
+.torrentSubhead {
+  padding: 18px 0;
+  border-top: solid 1px @silverBase;
+  p {
+    font-size: 18px;
+  }
+  h3 {
+    font-size: 20px;
+    margin: 24px 0;
+    font-weight: 500;
+    color: @bravePrimary;
+  }
+}
+
+.privacyNotice {
+  padding: 18px 0;
+  border-top: solid 1px @silverBase;
+  color: @silverDarken10;
+  line-height: 24px;
+}
+
+#webTorrentCredit {
+  color: @silverBase;
+}
+
+.gridFix {
+  grid-template-columns: repeat(auto-fill, 50px);
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  .__icon {
+    height: 32px;
+    margin: 0 0 18px;
+  }
 }
