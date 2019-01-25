@@ -94,7 +94,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   // Campaigns
   for (const auto& campaign : catalog.GetCampaigns()) {
     // Geo Targets
-    std::vector<std::string>regions = {};
+    std::vector<std::string> regions = {};
     for (const auto& geo_target : campaign.geo_targets) {
       std::string code = geo_target.code;
 

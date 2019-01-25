@@ -86,12 +86,13 @@ Result AdInfo::FromJson(
     total_max = document["total_max"].GetUint();
   }
 
-  std::vector<std::string> regions = {};
+  std::vector<std::string> new_regions = {};
   if (document.HasMember("regions")) {
     for (const auto& region : document["regions"].GetArray()) {
-      regions.push_back(region.GetString());
+      new_regions.push_back(region.GetString());
     }
   }
+  regions = new_regions;
 
   if (document.HasMember("advertiser")) {
     advertiser = document["advertiser"].GetString();

@@ -54,7 +54,6 @@ class MockAdsClient : public AdsClient {
   void ShowNotification(std::unique_ptr<NotificationInfo> info) override;
 
   void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) override;
-  bool IsConfirmationsReadyToShowAds() override;
   void AdSustained(std::unique_ptr<NotificationInfo> info) override;
 
   uint32_t SetTimer(const uint64_t time_offset) override;

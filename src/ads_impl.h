@@ -75,7 +75,9 @@ class AdsImpl : public Ads {
 
   void ConfirmAdUUIDIfAdEnabled();
 
-  std::string GetRegion() override;
+  bool IsSupportedRegion() override;
+
+  void SetConfirmationsIsReady(const bool is_ready) override;
 
   void ChangeLocale(const std::string& locale) override;
 
@@ -131,6 +133,7 @@ class AdsImpl : public Ads {
 
   uint32_t sustained_ad_interaction_timer_id_;
   void StartSustainingAdInteraction(const uint64_t start_timer_in);
+  void SustainAdInteractionIfNeeded();
   void SustainAdInteraction();
   void StopSustainingAdInteraction();
   bool IsSustainingAdInteraction() const;
@@ -165,6 +168,8 @@ class AdsImpl : public Ads {
 
  private:
   bool is_initialized_;
+
+  bool is_confirmations_ready_;
 
   AdsClient* ads_client_;  // NOT OWNED
 

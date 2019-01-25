@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <fstream>
+#include <vector>
 #include <algorithm>
 
 #include "rapidjson/document.h"
@@ -44,6 +45,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     ads_serve_(std::make_unique<AdsServe>(this, ads_client, bundle_.get())),
     user_model_(nullptr),
     is_initialized_(false),
+    is_confirmations_ready_(false),
     ads_client_(ads_client) {
 }
 
@@ -135,7 +137,7 @@ void AdsImpl::LoadUserModel() {
   auto locale = client_->GetLocale();
   auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
   ads_client_->LoadUserModelForLocale(locale, callback);
-}
+}                  
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
   if (result != SUCCESS) {
@@ -308,11 +310,22 @@ void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
   }
 }
 
-std::string AdsImpl::GetRegion() {
+bool AdsImpl::IsSupportedRegion() {
+  auto supported_regions = {"US", "CA", "DE", "FR", "GB"};
+
   auto locale = ads_client_->GetAdsLocale();
   auto region = helper::Locale::GetCountryCode(locale);
 
-  return region;
+  if (std::find(supported_regions.begin(), supported_regions.end(), region)
+      == supported_regions.end()) {
+    return false;
+  }
+
+  return true;
+}
+
+void AdsImpl::SetConfirmationsIsReady(const bool is_ready) {
+  is_confirmations_ready_ = is_ready;
 }
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
@@ -585,7 +598,7 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
   }
 
   if (!forced) {
-    if (!ads_client_->IsConfirmationsReadyToShowAds()) {
+    if (!is_confirmations_ready_) {
       LOG(INFO) << "Notification not made: Confirmations not ready";
 
       return;
@@ -1015,7 +1028,7 @@ void AdsImpl::StartSustainingAdInteraction(const uint64_t start_timer_in) {
       << start_timer_in << " seconds";
 }
 
-void AdsImpl::SustainAdInteraction() {
+void AdsImpl::SustainAdInteractionIfNeeded() {
   if (!IsStillViewingAd()) {
     LOG(INFO) << "Failed to Sustain ad interaction";
     return;
@@ -1023,6 +1036,10 @@ void AdsImpl::SustainAdInteraction() {
 
   LOG(INFO) << "Sustained ad interaction";
 
+  SustainAdInteraction();
+}
+
+void AdsImpl::SustainAdInteraction() {
   GenerateAdReportingSustainEvent(last_shown_notification_info_);
 
   auto notification_info =
@@ -1075,17 +1092,20 @@ bool AdsImpl::IsStillViewingAd() const {
 }
 
 void AdsImpl::OnTimer(const uint32_t timer_id) {
-  LOG(INFO) << "OnTimer: "
-            << std::endl << "  timer_id: " << std::to_string(timer_id)
-            << std::endl << "  collect_activity_timer_id_: " << std::to_string(collect_activity_timer_id_)
-            << std::endl << "  deliverying_notifications_timer_id_: " << std::to_string(delivering_notifications_timer_id_)
-            << std::endl << "  sustained_ad_interaction_timer_id_: " << std::to_string(sustained_ad_interaction_timer_id_);
+  LOG(INFO) << "OnTimer: " << std::endl
+      << "  timer_id: " << std::to_string(timer_id) << std::endl
+      << "  collect_activity_timer_id_: "
+      << std::to_string(collect_activity_timer_id_) << std::endl
+      << "  deliverying_notifications_timer_id_: "
+      << std::to_string(delivering_notifications_timer_id_) << std::endl
+      << "  sustained_ad_interaction_timer_id_: "
+      << std::to_string(sustained_ad_interaction_timer_id_);
   if (timer_id == collect_activity_timer_id_) {
     CollectActivity();
   } else if (timer_id == delivering_notifications_timer_id_) {
     DeliverNotification();
   } else if (timer_id == sustained_ad_interaction_timer_id_) {
-    SustainAdInteraction();
+    SustainAdInteractionIfNeeded();
   } else {
     LOG(WARNING) << "Unexpected OnTimer: " << std::to_string(timer_id);
   }
@@ -1140,6 +1160,8 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
 
   writer.EndObject();
 
+  SustainAdInteraction();
+
   auto json = buffer.GetString();
   ads_client_->EventLog(json);
 }
@@ -1173,8 +1195,6 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
     case CLICKED: {
       writer.String("clicked");
       client_->UpdateAdsUUIDSeen(info.uuid, 1);
-
-      StartSustainingAdInteraction(kSustainAdInteractionAfterSeconds);
       break;
     }
 

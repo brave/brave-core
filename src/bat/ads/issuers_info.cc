@@ -58,14 +58,16 @@ Result IssuersInfo::FromJson(
     return FAILED;
   }
 
-  std::vector<IssuerInfo> issuers = {};
+  std::vector<IssuerInfo> new_issuers = {};
   for (const auto& issuer : document["issuers"].GetArray()) {
     IssuerInfo info;
     info.name = issuer["name"].GetString();
     info.public_key = issuer["public_key"].GetString();
 
-    issuers.push_back(info);
+    new_issuers.push_back(info);
   }
+
+  issuers = new_issuers;
 
   return SUCCESS;
 }

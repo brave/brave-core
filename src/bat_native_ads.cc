@@ -15,6 +15,8 @@ int main() {
 
   ads.ChangeLocale("fr");
 
+  ads.SetConfirmationsIsReady(true);
+
   ads.OnIdle();
 
   ads.TabUpdated(1, "https://brave.com", true, false);
