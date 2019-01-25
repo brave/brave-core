@@ -18,14 +18,14 @@ public class DAU {
     private let pingRefreshDuration = 5.minutes
     
     /// We always use gregorian calendar for DAU pings. This also adds more anonymity to the server call.
-    fileprivate static var calendar: NSCalendar { return Calendar(identifier: .gregorian) as NSCalendar }
+    fileprivate static var calendar: Calendar { return Calendar(identifier: .gregorian) }
     
     private var launchTimer: Timer?
     private let today: Date?
     /// Whether a current ping attempt is being made
     private var processingPing = false
     private var todayComponents: DateComponents {
-        return DAU.calendar.components([.day, .month, .year, .weekday], from: today ?? Date())
+        return DAU.calendar.dateComponents([.day, .month, .year, .weekday], from: today ?? Date())
     }
     
     public init(date: Date? = nil) {
@@ -96,8 +96,6 @@ public class DAU {
             
             // This preference is used to calculate whether user used the app in this month and/or day.
             Preferences.DAU.lastLaunchInfo.value = paramsAndPrefs.lastLaunchInfoPreference
-            
-            Preferences.DAU.lastPingFirstMonday.value = paramsAndPrefs.lastPingFirstMondayPreference
         }
         
         task.resume()
@@ -107,7 +105,6 @@ public class DAU {
     struct ParamsAndPrefs {
         let queryParams: [URLQueryItem]
         let lastLaunchInfoPreference: [Optional<Int>]
-        let lastPingFirstMondayPreference: String
     }
     
     /// Return params query or nil if no ping should be send to server and also preference values to set
@@ -124,7 +121,7 @@ public class DAU {
         
         // This could lead to an upgraded device having no `woi`, and that's fine
         if firstLaunch {
-            Preferences.DAU.weekOfInstallation.value = todayComponents.weeksMonday
+            Preferences.DAU.weekOfInstallation.value = today?.mondayOfCurrentWeekFormatted ?? DAU.defaultWoiDate
         }
         
         guard let dauStatParams = dauStatParams(firstPing: firstLaunch) else {
@@ -143,15 +140,9 @@ public class DAU {
             UrpLog.log("DAU ping with added ref, params: \(params)")
         }
         
-        let secsMonthYear = [Int((today ?? Date()).timeIntervalSince1970), todayComponents.month, todayComponents.year]
+        let lastPingTimestamp = [Int((today ?? Date()).timeIntervalSince1970)]
         
-        // Using `secsMonthYear` with week component for weekly usage check is not robust enough and fails on edge cases.
-        // To calculate weekly usage we store first monday of week to and then compare it with the
-        // current first monday of week to see if a user used the app on new week.
-        let lastPingFirstMonday = todayComponents.weeksMonday
-        
-        return ParamsAndPrefs(queryParams: params, lastLaunchInfoPreference: secsMonthYear,
-                              lastPingFirstMondayPreference: lastPingFirstMonday)
+        return ParamsAndPrefs(queryParams: params, lastLaunchInfoPreference: lastPingTimestamp)
     }
     
     func channelParam(for channel: AppBuildChannel = AppConstants.BuildChannel) -> URLQueryItem {
@@ -196,6 +187,37 @@ public class DAU {
         return URLQueryItem(name: "woi", value: woi)
     }
     
+    private enum PingType {
+        case daily
+        case weekly
+        case monthly
+    }
+    
+    private func getPings(forDate date: Date, lastPingDate: Date) -> [PingType] {
+        let calendar = DAU.calendar
+        var pings = [PingType]()
+
+        func eraDayOrdinal(_ date: Date) -> Int? {
+            return calendar.ordinality(of: .day, in: .era, for: date)
+        }
+        func nextDate(matching components: DateComponents) -> Date? {
+            return calendar.nextDate(after: lastPingDate, matching: components, matchingPolicy: .nextTime)
+        }
+        
+        if let nowDay = eraDayOrdinal(date), let lastPingDay = eraDayOrdinal(lastPingDate), nowDay > lastPingDay {
+            pings.append(.daily)
+        }
+        
+        let mondayWeekday = 2
+        if let nextMonday = nextDate(matching: DateComponents(weekday: mondayWeekday)), date >= nextMonday {
+            pings.append(.weekly)
+        }
+        if let nextFirstOfMonth = nextDate(matching: DateComponents(day: 1)), date >= nextFirstOfMonth {
+            pings.append(.monthly)
+        }
+        return pings
+    }
+    
     /// Returns nil if no dau changes detected.
     func dauStatParams(_ dauStat: [Int?]? = Preferences.DAU.lastLaunchInfo.value,
                        firstPing: Bool,
@@ -210,85 +232,63 @@ public class DAU {
         if firstPing {
             return dauParams(true, true, true)
         }
-        
-        let month = todayComponents.month
-        let year = todayComponents.year
-        
+
         guard let stat = dauStat?.compactMap({ $0 }) else {
             log.error("Cannot cast dauStat to [Int]")
             return nil
         }
         
-        guard stat.count == 3 else {
-            log.error("dauStat array must contain exactly 3 elements")
+        guard let lastPingStat = stat.first else {
+            log.error("Can't get last ping timestamp from dauStats")
             return nil
         }
         
-        let _month = stat[1]
-        let _year = stat[2]
+        let lastPingDate = Date(timeIntervalSince1970: TimeInterval(lastPingStat))
         
-        let lastPingDate = Date(timeIntervalSince1970: Double(stat[0]))
+        let pings = getPings(forDate: today ?? Date(), lastPingDate: lastPingDate)
         
-        guard let lastPingDay = DAU.calendar.components([.day], from: lastPingDate).day, let currentDay = todayComponents.day else {
-            log.error("Could not unwrap calendar components from date")
+        // No changes, no ping
+        if pings.isEmpty {
             return nil
         }
-         
-        let weeksMonday = Preferences.DAU.lastPingFirstMonday.value
-        // There is no lastPingFirstMondayKey preference set at first launch, meaning the week param should be set to true.
-        let isFirstLaunchWeeksMonday = weeksMonday == nil
-        let monthly = month != _month || year != _year
-        let weekly = todayComponents.weeksMonday != weeksMonday || isFirstLaunchWeeksMonday
-        // Day(of month) can stay the same if month or year changes.
-        // `monthly` parameter checks for both monthly and yearly difference.
-        // In other words, each time a monthly ping is sent, daily ping must equal true as well.
-        let daily = monthly || lastPingDay != currentDay
         
-        log.debug("Dau stat params, daily: \(daily), weekly: \(weekly), monthly:\(monthly), lastPingDate: \(lastPingDate)")
-        if !daily && !weekly && !monthly {
-            // No changes, no ping
-            return nil
-        }
+        let daily = pings.contains(.daily)
+        let weekly = pings.contains(.weekly)
+        let monthly = pings.contains(.monthly)
         
         return dauParams(daily, weekly, monthly)
     }
 }
 
-extension DateComponents {
-    /// Returns date of current week's monday in YYYY-MM-DD format
-    var weeksMonday: String {
-        var isSunday: Bool {
-            guard let weekday = weekday else {
-                log.error("Weekday is nil")
-                return false
-            }
-            return weekday == 1
+extension Date {
+    /// Returns date of current week's monday in YYYY-MM-DD formatted String
+    var mondayOfCurrentWeekFormatted: String? {
+        // We look for a previous monday because Sunday is considered a beggining of a new week using default gregorian calendar.
+        // For example if today is Sunday, the next Monday using Calendar would be the day after Sunday which is wrong.
+        // That's why backward search may sound counter intuitive.
+        guard let monday = self.next(.monday, direction: .backward, considerSelf: true) else { return nil }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        return dateFormatter.string(from: monday)
+    }
+    
+    private func next(_ weekday: Weekday, direction: Calendar.SearchDirection = .forward, considerSelf: Bool = false) -> Date? {
+        let calendar = DAU.calendar
+        let components = DateComponents(weekday: weekday.rawValue)
+        
+        if considerSelf && calendar.component(.weekday, from: self) == weekday.rawValue {
+            return self
         }
         
-        // Make sure all required date components are set.
-        guard let _ = day, let _ = month, let _ = year, let weekday = weekday else {
-            log.error("Date components are missing")
-            return ""
-        }
-        
-        guard let today = DAU.calendar.date(from: self) else {
-            log.error("Cannot create date from date components")
-            return ""
-        }
-        
-        let dayInSeconds = 60 * 60 * 24
-        // Sunday is first weekday so we need to handle this day differently, can't just substract it.
-        let sundayToMondayDayDifference = 6
-        let dayDifference = isSunday ? sundayToMondayDayDifference : weekday - 2 // -2 because monday is second weekday
-        
-        let monday = Date(timeInterval: -TimeInterval(dayDifference * dayInSeconds), since: today)
-        let mondayComponents = DAU.calendar.components([.day, .month, .year], from: monday)
-        
-        guard let mYear = mondayComponents.year, let mMonth = mondayComponents.month, let mDay = mondayComponents.day else {
-            log.error("First monday of the week components are nil")
-            return ""
-        }
-        
-        return "\(mYear)-\(mMonth)-\(mDay)"
+        return calendar.nextDate(after: self,
+                                 matching: components,
+                                 matchingPolicy: .nextTime,
+                                 direction: direction)
+    }
+    
+    enum Weekday: Int {
+        case sunday = 1, monday, tuesday, wednesday, thursday, friday, saturday
     }
 }
