@@ -303,10 +303,10 @@ public extension Strings {
 public extension Strings {
     public static let QRCode = NSLocalizedString("QRCode", tableName: "BraveShared", bundle: Bundle.braveShared, value: "QR Code", comment: "QR Code section title")
     public static let CodeWords = NSLocalizedString("CodeWords", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Code Words", comment: "Code words section title")
-    public static let Sync = NSLocalizedString("Sync", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Sync", comment: "Sync settings section title")
+    public static let Sync = NSLocalizedString("Sync", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Sync (beta)", comment: "Sync settings section title")
     public static let SyncSettingsHeader = NSLocalizedString("SyncSettingsHeader", tableName: "BraveShared", bundle: Bundle.braveShared, value: "The device list below includes all devices in your sync chain. Each device can be managed from any other device.", comment: "Header title for Sync settings")
     public static let SyncThisDevice = NSLocalizedString("SyncThisDevice", tableName: "BraveShared", bundle: Bundle.braveShared, value: "This Device", comment: "This device cell")
-    public static let BraveSync = NSLocalizedString("BraveSync", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Brave Sync", comment: "Brave sync page title")
+    public static let BraveSync = NSLocalizedString("BraveSync", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Brave Sync (beta)", comment: "Brave sync page title")
     public static let BraveSyncWelcome = NSLocalizedString("BraveSyncWelcome", tableName: "BraveShared", bundle: Bundle.braveShared, value: "To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.", comment: "Sync settings welcome")
     public static let NewSyncCode = NSLocalizedString("NewSyncCode", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Start a new Sync Chain", comment: "New sync code button title")
     public static let ScanSyncCode = NSLocalizedString("ScanSyncCode", tableName: "BraveShared", bundle: Bundle.braveShared, value: "I have a Sync Code", comment: "Scan sync code button title")
