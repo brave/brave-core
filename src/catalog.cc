@@ -35,11 +35,11 @@ bool Catalog::FromJson(const std::string& json) {
     return false;
   }
 
-  if (!IsIdValid(*catalog_state)) {
-    LOG(WARNING) << "New catalog id " << catalog_state->catalog_id <<
-        " does not match current catalog id " << bundle_->GetCatalogId();
+  if (IsMatchingId(*catalog_state)) {
+    LOG(WARNING) << "Catalog id " << catalog_state->catalog_id <<
+        " matches current catalog id " << bundle_->GetCatalogId();
 
-    return false;
+    return true;
   }
 
   catalog_state_.reset(catalog_state.release());
@@ -79,16 +79,15 @@ void Catalog::Reset(OnSaveCallback callback) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool Catalog::IsIdValid(const CatalogState& catalog_state) {
+bool Catalog::IsMatchingId(const CatalogState& catalog_state) {
   auto current_catalog_id = bundle_->GetCatalogId();
   auto new_catalog_id = catalog_state.catalog_id;
 
   if (current_catalog_id.empty()) {
-    // First time the catalog has been downloaded
-    return true;
+    // First time the catalog has been downloaded, so does not match
+    return false;
   }
 
-  // Catalog id should not change as it is used to download a catalog diff
   if (current_catalog_id != new_catalog_id) {
     return false;
   }

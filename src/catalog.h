@@ -36,7 +36,7 @@ class Catalog {
   void Reset(OnSaveCallback callback);
 
  private:
-  bool IsIdValid(const CatalogState& catalog_state);
+  bool IsMatchingId(const CatalogState& catalog_state);
 
   AdsClient* ads_client_;  // NOT OWNED
   Bundle* bundle_;  // NOT OWNED
