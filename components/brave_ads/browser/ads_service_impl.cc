@@ -286,12 +286,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
   file_task_runner_->PostTask(FROM_HERE,
       base::BindOnce(&EnsureBaseDirectoryExists, base_path_));
 
-  if (!profile_->GetPrefs()->GetBoolean(
-          brave_rewards::prefs::kBraveRewardsEnabled)) {
-    profile_->GetPrefs()->SetBoolean(
-        prefs::kBraveAdsShowAdsNotification, false);
-  }
-
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
   profile_pref_change_registrar_.Add(
       prefs::kBraveAdsEnabled,
@@ -305,6 +299,10 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
       prefs::kBraveAdsIdleThreshold,
       base::Bind(&AdsServiceImpl::OnPrefsChanged,
                  base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      brave_rewards::prefs::kBraveRewardsEnabledMigrated,
+      base::Bind(&AdsServiceImpl::MaybeShowFirstLaunchNotification,
+                 base::Unretained(this)));
 
   MigratePrefs();
 
@@ -316,7 +314,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
       std::make_unique<AdsNotificationHandler>(this));
 
   MaybeStart(false);
-  MaybeShowFirstLaunchNotification();
 }
 
 AdsServiceImpl::~AdsServiceImpl() {
@@ -433,13 +430,15 @@ void AdsServiceImpl::Start() {
 }
 
 void AdsServiceImpl::MaybeShowFirstLaunchNotification() {
-  if (!ShouldShowAdsNotification())
+  if (!ShouldShowAdsNotification() ||
+      !profile_->GetPrefs()->GetBoolean(
+          brave_rewards::prefs::kBraveRewardsEnabled))
     return;
 
   if (profile_->GetPrefs()->GetTime(
           prefs::kBraveAdsLaunchNotificationTimestamp) == base::Time()) {
       profile_->GetPrefs()->SetTime(
-          brave_ads::prefs::kBraveAdsLaunchNotificationTimestamp,
+          prefs::kBraveAdsLaunchNotificationTimestamp,
         base::Time::Now());
   }
 
@@ -455,18 +454,26 @@ void AdsServiceImpl::MaybeShowFirstLaunchNotification() {
       args,
       rewards_notification_ads_launch);
 
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+
+  uint32_t timeout_length = command_line.HasSwitch(switches::kTesting)
+      ? (5 * 60) /* 5 minutes */
+      : (24 * 60 * 60 * 7); /* 7 days */
+
   auto timeout = base::Time::Now() - profile_->GetPrefs()->GetTime(
-      brave_ads::prefs::kBraveAdsLaunchNotificationTimestamp) +
-      base::TimeDelta::FromSeconds(24 * 60 * 60 * 7);
+      prefs::kBraveAdsLaunchNotificationTimestamp) +
+      base::TimeDelta::FromSeconds(timeout_length);
 
   uint32_t timer_id = next_timer_id();
+  ads_launch_id_ = timer_id;
   timers_[timer_id] = std::make_unique<base::OneShotTimer>();
   timers_[timer_id]->Start(FROM_HERE,
       timeout,
       base::BindOnce(&AdsServiceImpl::FirstLaunchNotificationTimedOut,
           AsWeakPtr(),
           timer_id,
-          "rewards_notification_ads_launch"));
+          rewards_notification_ads_launch));
 }
 
 void AdsServiceImpl::FirstLaunchNotificationTimedOut(uint32_t timer_id,
@@ -486,7 +493,7 @@ void AdsServiceImpl::OnNotificationDeleted(
       const RewardsNotificationService::RewardsNotification& notification) {
   if (notification.id_ == rewards_notification_ads_launch) {
     profile_->GetPrefs()->SetBoolean(
-      brave_ads::prefs::kBraveAdsShowAdsNotification, false);
+      prefs::kBraveAdsShowAdsNotification, false);
   }
 }
 
@@ -713,7 +720,7 @@ uint64_t AdsServiceImpl::GetAdsPerDay() const {
   return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerDay);
 }
 
-bool AdsServiceImpl::ShouldShowAdsNotification() const {
+bool AdsServiceImpl::ShouldShowAdsNotification() {
   return profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsShowAdsNotification);
 }
 

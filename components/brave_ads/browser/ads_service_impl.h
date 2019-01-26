@@ -203,10 +203,10 @@ class AdsServiceImpl : public AdsService,
   void NotificationTimedOut(
       uint32_t timer_id,
       const std::string& notification_id);
-  bool ShouldShowAdsNotification() const;
-  void MaybeShowFirstLaunchNotification();
+  bool ShouldShowAdsNotification();
   void FirstLaunchNotificationTimedOut(uint32_t timer_id,
                                        const std::string& notification_id);
+  void MaybeShowFirstLaunchNotification();
 
   uint32_t next_timer_id();
 
@@ -219,6 +219,7 @@ class AdsServiceImpl : public AdsService,
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   uint32_t next_timer_id_;
   bool is_supported_region_;
+  uint32_t ads_launch_id_;
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
   NotificationDisplayService* display_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
