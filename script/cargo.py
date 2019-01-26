@@ -13,77 +13,37 @@ from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
 
 
 def main():
-    args = parse_args()
-
-    rustup_home = args.rustup_home[0]
-    cargo_home = args.cargo_home[0]
-    manifest_path = args.manifest_path[0]
-    build_path = args.build_path[0]
-    target = args.target[0]
-    is_debug = args.is_debug[0]
-
-    build(rustup_home, cargo_home, manifest_path, build_path, target, is_debug)
+    build(parse_args())
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Cargo')
 
-    parser.add_argument('--rustup_home', nargs=1)
-    parser.add_argument('--cargo_home', nargs=1)
-    parser.add_argument('--manifest_path', nargs=1)
-    parser.add_argument('--build_path', nargs=1)
-    parser.add_argument('--target', nargs=1)
-    parser.add_argument('--is_debug', nargs=1)
+    parser.add_argument('--rustup_home', required=True)
+    parser.add_argument('--cargo_home', required=True)
+    parser.add_argument('--manifest_path', required=True)
+    parser.add_argument('--build_path', required=True)
+    parser.add_argument('--target', required=True)
+    parser.add_argument('--is_debug', required=True)
+    parser.add_argument('--mac_deployment_target')
 
     args = parser.parse_args()
 
-    # Validate rustup_home args
-    if (args.rustup_home is None or
-        len(args.rustup_home) is not 1 or
-            len(args.rustup_home[0]) is 0):
-        raise Exception("rustup_home argument was not specified correctly")
-
-    # Validate cargo_home args
-    if (args.cargo_home is None or
-        len(args.cargo_home) is not 1 or
-            len(args.cargo_home[0]) is 0):
-        raise Exception("cargo_home argument was not specified correctly")
-
-    # Validate manifest_path args
-    if (args.manifest_path is None or
-        len(args.manifest_path) is not 1 or
-            len(args.manifest_path[0]) is 0):
-        raise Exception("manifest_path argument was not specified correctly")
-
-    # Validate build_path args
-    if (args.build_path is None or
-        len(args.build_path) is not 1 or
-            len(args.build_path[0]) is 0):
-        raise Exception("build_path argument was not specified correctly")
-
-    if "out" not in args.build_path[0]:
-        raise Exception("build_path did not contain 'out'")
-
-    # Validate target args
-    if (args.target is None or
-        len(args.target) is not 1 or
-            len(args.target[0]) is 0):
-        raise Exception("target argument was not specified correctly")
-
-    # Validate is_debug args
-    if (args.is_debug is None or
-        len(args.is_debug) is not 1 or
-            len(args.is_debug[0]) is 0):
-        raise Exception("is_debug argument was not specified correctly")
-
-    if (args.is_debug[0] != "false" and args.is_debug[0] != "true"):
+    if (args.is_debug != "false" and args.is_debug != "true"):
         raise Exception("is_debug argument was not specified correctly")
 
     # args are valid
     return args
 
 
-def build(rustup_home, cargo_home, manifest_path, build_path, target, is_debug):
+def build(args):
+    rustup_home = args.rustup_home
+    cargo_home = args.cargo_home
+    manifest_path = args.manifest_path
+    build_path = args.build_path
+    target = args.target
+    is_debug = args.is_debug
+
     # Set environment variables for rustup
     env = os.environ.copy()
 
@@ -97,23 +57,25 @@ def build(rustup_home, cargo_home, manifest_path, build_path, target, is_debug):
     rustup_bin_exe = os.path.join(rustup_bin, 'cargo.exe')
     env['PATH'] = rustup_bin + os.pathsep + env['PATH']
 
+    if args.mac_deployment_target is not None:
+        env['MACOSX_DEPLOYMENT_TARGET'] = args.mac_deployment_target
+
     # Set environment variables for Challenge Bypass Ristretto FFI
-    env['NO_CXXEXCEPTIONS'] = "1"
     if is_debug == "false":
         env['NDEBUG'] = "1"
 
     # Build targets
-    args = []
-    args.append("cargo" if sys.platform != "win32" else rustup_bin_exe)
-    args.append("build")
+    cargo_args = []
+    cargo_args.append("cargo" if sys.platform != "win32" else rustup_bin_exe)
+    cargo_args.append("build")
     if is_debug == "false":
-        args.append("--release")
-    args.append("--manifest-path=" + manifest_path)
-    args.append("--target-dir=" + build_path)
-    args.append("--target=" + target)
+        cargo_args.append("--release")
+    cargo_args.append("--manifest-path=" + manifest_path)
+    cargo_args.append("--target-dir=" + build_path)
+    cargo_args.append("--target=" + target)
 
     try:
-        subprocess.check_call(args, env=env)
+        subprocess.check_call(cargo_args, env=env)
     except subprocess.CalledProcessError as e:
         print e.output
         raise e
