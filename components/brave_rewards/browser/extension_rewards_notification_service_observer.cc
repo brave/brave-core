@@ -5,18 +5,35 @@
 #include "brave/components/brave_rewards/browser/extension_rewards_notification_service_observer.h"
 
 #include "brave/common/extensions/api/rewards_notifications.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/event_router.h"
 
 namespace brave_rewards {
 
 ExtensionRewardsNotificationServiceObserver::
-    ExtensionRewardsNotificationServiceObserver(Profile* profile)
-    : profile_(profile) {
+ExtensionRewardsNotificationServiceObserver(
+    RewardsNotificationService* notification_service,
+    Profile* profile)
+    : notification_service_(notification_service),
+      profile_(profile) {
+  extensions::EventRouter* event_router =
+      extensions::EventRouter::Get(profile_);
+  DCHECK(event_router);
+  event_router->RegisterObserver(this,
+      extensions::api::rewards_notifications::OnNotificationAdded::kEventName);
 }
 
 ExtensionRewardsNotificationServiceObserver::
-    ~ExtensionRewardsNotificationServiceObserver() {
+~ExtensionRewardsNotificationServiceObserver() {
+}
+
+void ExtensionRewardsNotificationServiceObserver::OnListenerAdded(
+    const extensions::EventListenerInfo& details) {
+  auto notifications = notification_service_->GetAllNotifications();
+  for (auto& notification : notifications) {
+    OnNotificationAdded(notification_service_, notification.second);
+  }
 }
 
 void ExtensionRewardsNotificationServiceObserver::OnNotificationAdded(

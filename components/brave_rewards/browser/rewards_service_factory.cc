@@ -9,8 +9,11 @@
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
-#include "extensions/browser/event_router_factory.h"
 #include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "extensions/browser/event_router_factory.h"
+#endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
