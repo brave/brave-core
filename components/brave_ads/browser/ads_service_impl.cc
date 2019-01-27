@@ -607,6 +607,9 @@ void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
 }
 
 void AdsServiceImpl::AdSustained(std::unique_ptr<ads::NotificationInfo> info) {
+  if (!connected())
+    return;
+
   rewards_service_->AdSustained(std::move(info));
 }
 
