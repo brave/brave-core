@@ -593,6 +593,9 @@ void AdsServiceImpl::ShowNotification(std::unique_ptr<ads::NotificationInfo> inf
 }
 
 void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
+  if (!connected())
+    return;
+
   rewards_service_->SetCatalogIssuers(std::move(info));
 }
 
