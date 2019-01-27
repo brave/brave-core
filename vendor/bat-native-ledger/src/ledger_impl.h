@@ -248,6 +248,9 @@ class LedgerImpl : public ledger::Ledger,
   const braveledger_bat_helper::WALLET_INFO_ST& GetWalletInfo() const;
   void SetWalletInfo(const braveledger_bat_helper::WALLET_INFO_ST& info);
 
+  const confirmations::WalletInfo GetConfirmationsWalletInfo(
+      const braveledger_bat_helper::WALLET_INFO_ST& info) const;
+
   const braveledger_bat_helper::WALLET_PROPERTIES_ST&
   GetWalletProperties() const;
 
