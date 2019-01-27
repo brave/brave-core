@@ -14,12 +14,11 @@
 
 namespace ads {
 
-class Bundle;
 struct CatalogState;
 
 class Catalog {
  public:
-  Catalog(AdsClient* ads_client, Bundle* bundle);
+  explicit Catalog(AdsClient* ads_client);
   ~Catalog();
 
   bool FromJson(const std::string& json);  // Deserialize
@@ -27,6 +26,8 @@ class Catalog {
   const std::string GetId() const;
   uint64_t GetVersion() const;
   uint64_t GetPing() const;
+
+  bool HasChanged(const std::string& current_catalog_id);
 
   const std::vector<CampaignInfo>& GetCampaigns() const;
 
@@ -36,10 +37,7 @@ class Catalog {
   void Reset(OnSaveCallback callback);
 
  private:
-  bool IsMatchingId(const CatalogState& catalog_state);
-
   AdsClient* ads_client_;  // NOT OWNED
-  Bundle* bundle_;  // NOT OWNED
 
   std::shared_ptr<CatalogState> catalog_state_;
 };

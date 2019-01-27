@@ -125,7 +125,7 @@ void AdsServe::UpdateNextCatalogCheck() {
 bool AdsServe::ProcessCatalog(const std::string& json) {
   // TODO(Terry Mancey): Refactor function to use callbacks
 
-  Catalog catalog(ads_client_, bundle_);
+  Catalog catalog(ads_client_);
 
   LOG(INFO) << "Parsing catalog";
 
@@ -139,6 +139,13 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
   // 'Catalog parsed', underscore.extend(underscore.clone(header),
   // { status: 'processed', campaigns: underscore.keys(campaigns).length,
   // creativeSets: underscore.keys(creativeSets).length
+
+  if (!catalog.HasChanged(bundle_->GetCatalogId())) {
+    LOG(WARNING) << "Catalog id " << catalog.GetId() <<
+        " matches current catalog id " << bundle_->GetCatalogId();
+
+    return true;
+  }
 
   LOG(INFO) << "Generating bundle";
 
@@ -189,7 +196,7 @@ void AdsServe::RetryDownloadingCatalog() {
 void AdsServe::ResetCatalog() {
   LOG(INFO) << "Resetting catalog to default state";
 
-  Catalog catalog(ads_client_, bundle_);
+  Catalog catalog(ads_client_);
   auto callback = std::bind(&AdsServe::OnCatalogReset, this, _1);
   catalog.Reset(callback);
 }

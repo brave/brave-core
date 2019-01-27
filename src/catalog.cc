@@ -5,7 +5,6 @@
 #include "catalog.h"
 
 #include "bat/ads/ads.h"
-#include "bundle.h"
 #include "catalog_state.h"
 #include "json_helper.h"
 #include "static_values.h"
@@ -15,9 +14,8 @@ using namespace std::placeholders;
 
 namespace ads {
 
-Catalog::Catalog(AdsClient* ads_client, Bundle* bundle) :
+Catalog::Catalog(AdsClient* ads_client) :
     ads_client_(ads_client),
-    bundle_(bundle),
     catalog_state_(nullptr) {}
 
 Catalog::~Catalog() {}
@@ -33,13 +31,6 @@ bool Catalog::FromJson(const std::string& json) {
         << "): " << json;
 
     return false;
-  }
-
-  if (IsMatchingId(*catalog_state)) {
-    LOG(WARNING) << "Catalog id " << catalog_state->catalog_id <<
-        " matches current catalog id " << bundle_->GetCatalogId();
-
-    return true;
   }
 
   catalog_state_.reset(catalog_state.release());
@@ -79,20 +70,17 @@ void Catalog::Reset(OnSaveCallback callback) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool Catalog::IsMatchingId(const CatalogState& catalog_state) {
-  auto current_catalog_id = bundle_->GetCatalogId();
-  auto new_catalog_id = catalog_state.catalog_id;
-
+bool Catalog::HasChanged(const std::string& current_catalog_id) {
   if (current_catalog_id.empty()) {
     // First time the catalog has been downloaded, so does not match
-    return false;
+    return true;
   }
 
-  if (current_catalog_id != new_catalog_id) {
-    return false;
+  if (current_catalog_id != catalog_state_->catalog_id) {
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 }  // namespace ads
