@@ -20,6 +20,8 @@ public protocol Syncable: class /* where Self: NSManagedObject */ {
     func update(syncRecord record: SyncRecord?)
     
     @discardableResult static func add(rootObject root: SyncRecord?, save: Bool, sendToSync: Bool, context: NSManagedObjectContext) -> Syncable?
+    
+    func remove(sendToSync: Bool)
 }
 
 extension Syncable {
