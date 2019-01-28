@@ -94,6 +94,21 @@ public final class Device: NSManagedObject, Syncable, CRUD {
         return sharedCurrentDevice
     }
     
+    public func remove(sendToSync: Bool = true) {
+        guard let context = managedObjectContext else { return }
+        
+        if sendToSync {
+            Sync.shared.sendSyncRecords(action: .delete, records: [self])
+        }
+        
+        if isCurrentDevice {
+            Sync.shared.leaveSyncGroup(sendToSync: false)
+        } else {
+            context.delete(self)
+            DataController.save(context: context)
+        }
+    }
+    
     public class func deleteAll() {
         sharedCurrentDevice = nil
         Device.deleteAll(includesPropertyValues: false)

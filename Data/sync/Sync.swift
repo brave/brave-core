@@ -157,9 +157,28 @@ public class Sync: JSInjector {
         initializeSync()
     }
     
-    public func leaveSyncGroup() {
-        // No, `leaving` logic should be here, any related logic should be in `syncSeed` setter
+    public func leaveSyncGroup(sendToSync: Bool = true) {
         syncSeed = nil
+        
+        // Leaving sync group can be triggered either on own device, or remotely, if another device in the sync chain
+        // will remove this device. In the second case we don't want to send deleted device sync record because it
+        // was already deleted and can cause an infinite loop.
+        if let device = Device.currentDevice(), sendToSync {
+            self.sendSyncRecords(action: .delete, records: [device])
+        }
+        
+        Device.deleteAll()
+        
+        lastFetchedRecordTimestamp = 0
+        Preferences.Sync.lastFetchTimestamp.reset()
+        lastFetchWasTrimmed = false
+        syncReadyLock = false
+        isSyncFullyInitialized = (false, false, false, false, false, false, false, false)
+        
+        fetchTimer?.invalidate()
+        fetchTimer = nil
+        
+        KeychainWrapper.standard.removeObject(forKey: Preferences.Sync.seedName.key)
     }
     
     func addFetchedHandler(_ handler: @escaping () -> Void) {
@@ -219,8 +238,7 @@ public class Sync: JSInjector {
             // TODO: Move syncSeed validation here, remove elsewhere
             
             if isInSyncGroup && value != nil {
-                // Error, cannot replace sync seed with another seed
-                //  must set syncSeed to nil prior to replacing it
+                log.error("Error, cannot replace sync seed with another seed must set syncSeed to nil prior to replacing it")
                 return
             }
             
@@ -229,29 +247,6 @@ public class Sync: JSInjector {
                 Preferences.Sync.seedName.value = true
                 return
             }
-            
-            // Leave group:
-            
-            // Clean up group specific items
-            // TODO: Update all records with originalSyncSeed
-            
-            if let device = Device.currentDevice() {
-                self.sendSyncRecords(action: .delete, records: [device])
-            }
-            
-            Device.deleteAll()
-            
-            lastFetchedRecordTimestamp = 0
-            Preferences.Sync.lastFetchTimestamp.reset()
-            
-            lastFetchWasTrimmed = false
-            syncReadyLock = false
-            isSyncFullyInitialized = (false, false, false, false, false, false, false, false)
-            
-            fetchTimer?.invalidate()
-            fetchTimer = nil
-            
-            KeychainWrapper.standard.removeObject(forKey: seedName)
         }
     }
     
