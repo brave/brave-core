@@ -5,6 +5,8 @@ import CoreData
 import Foundation
 import Shared
 
+private let log = Logger.browserLogger
+
 public final class Device: NSManagedObject, Syncable, CRUD {
     
     // Check if this can be nested inside the method
@@ -49,12 +51,27 @@ public final class Device: NSManagedObject, Syncable, CRUD {
         
         // No guard, let bleed through to allow 'empty' devices (e.g. local)
         let root = root as? SyncDevice
-        let device = Device(entity: Device.entity(context: context), insertInto: context)
         
-        device.created = root?.syncNativeTimestamp ?? Date()
-        device.syncUUID = root?.objectId ?? SyncCrypto.uniqueSerialBytes(count: 16)
+        let syncUUID = root?.objectId ?? SyncCrypto.uniqueSerialBytes(count: 16)
         
-        device.update(syncRecord: root)
+        var device: Device?
+        if let syncDisplayUUID = SyncHelpers.syncDisplay(fromUUID: syncUUID) {
+            // There can't be more than two device with the same syncUUID.
+            // A race condition could sometimes happen while getting two `Sync.resolvedSyncRecords` callbacks at the same time.
+            // Fixing issue #692 should help with it, until then we do a simple guard and disallow adding another device with the same syncUUID.
+            let predicate = NSPredicate(format: "syncDisplayUUID == %@", syncDisplayUUID)
+            device = Device.first(where: predicate, context: context)
+        }
+        
+        if device == nil {
+            device = Device(entity: Device.entity(context: context), insertInto: context)
+            device?.created = root?.syncNativeTimestamp ?? Date()
+            device?.syncUUID = syncUUID
+        }
+        
+        // Due to race conditions, there is a chance that we will get for example a different device name
+        // in insert(insead of update). Updating the Device regardless of whether it's already present.
+        device?.update(syncRecord: root)
         
         if save {
             DataController.save(context: context)

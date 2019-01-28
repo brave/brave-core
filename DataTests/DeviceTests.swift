@@ -59,6 +59,26 @@ class DeviceTests: CoreDataTestCase {
         XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
     }
     
+    func testUniqueSyncUUID() {
+        let context = DataController.newBackgroundContext()
+        var device: Device!
+        XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 0)
+        backgroundSaveAndWaitForExpectation {
+            device = Device.add(rootObject: nil, save: true, sendToSync: false, context: context) as? Device
+            XCTAssertNotNil(device)
+        }
+        XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
+        
+        let root = SyncDevice()
+        root.objectId = device.syncUUID
+        
+        backgroundSaveAndWaitForExpectation {
+            _ = Device.add(rootObject: root, save: true, sendToSync: false, context: context) as? Device
+        }
+        
+        XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
+    }
+    
     func testUpdate() {
         let newName = "newName"
         let newDeviceId = [1, 2, 3]
