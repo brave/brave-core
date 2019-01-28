@@ -8,6 +8,7 @@ import("//build/util/process_version.gni")
 import("//media/cdm/library_cdm/cdm_paths.gni")
 import("//brave/brave_paks.gni")
 import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 if (is_mac) {
   import("//build/config/mac/rules.gni")
@@ -268,6 +269,12 @@ copy("brave_dist_resources") {
         sources += [ "$root_out_dir/snapshot_blob.bin" ]
       }
     }
+  }
+
+  if (bundle_widevine_cdm) {
+    assert(is_linux, "cdm bundling is only enabled in linux")
+    sources += [ "$root_out_dir/libwidevinecdm.so" ]
+    deps += [ "//third_party/widevine/cdm:widevine_cdm_binary" ]
   }
 
   outputs = [
