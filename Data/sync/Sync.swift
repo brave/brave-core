@@ -443,52 +443,46 @@ extension Sync {
             fetchedRecords = fetchedRecords.sorted { device1, device2 in
                 device1.syncTimestamp ?? -1 > device2.syncTimestamp ?? -1 }.unique { $0.objectId ?? [] == $1.objectId ?? [] }
             
-        } else if recordType == .bookmark {
-            // Bookmarks are sorted to have the oldest bookmark to come in first, so it can be added before it's children.
-            fetchedRecords = fetchedRecords.sorted(by: {
-                let firstTimestamp = $0.syncTimestamp ?? 0
-                let secondTimestamp = $1.syncTimestamp ?? 0
-                
-                return firstTimestamp < secondTimestamp
-            })
         }
         
         let context = DataController.newBackgroundContext()
-        for fetchedRoot in fetchedRecords {
-            
-            guard
-                let fetchedId = fetchedRoot.objectId
-                else { return }
-            
-            let clientRecord = recordType.coredataModelType?.get(syncUUIDs: [fetchedId], context: context)?.first as? Syncable
-            
-            var action = SyncActions(rawValue: fetchedRoot.action ?? -1)
-            if action == SyncActions.delete {
-                clientRecord?.remove(sendToSync: false)
-            } else if action == SyncActions.create {
+        context.perform {
+            for fetchedRoot in fetchedRecords {
                 
-                if clientRecord != nil {
-                    // This can happen pretty often, especially for records that don't use diffs (e.g. prefs>devices)
-                    // They always return a create command, even if they already "exist", since there is no real 'resolving'
-                    //  Hence check below to prevent duplication
+                guard
+                    let fetchedId = fetchedRoot.objectId
+                    else { return }
+                
+                let clientRecord = recordType.coredataModelType?.get(syncUUIDs: [fetchedId], context: context)?.first as? Syncable
+                
+                var action = SyncActions(rawValue: fetchedRoot.action ?? -1)
+                if action == SyncActions.delete {
+                    clientRecord?.remove(sendToSync: false)
+                } else if action == SyncActions.create {
+                    
+                    if clientRecord != nil {
+                        // This can happen pretty often, especially for records that don't use diffs (e.g. prefs>devices)
+                        // They always return a create command, even if they already "exist", since there is no real 'resolving'
+                        //  Hence check below to prevent duplication
+                    }
+                    
+                    // TODO: Needs favicon
+                    if clientRecord == nil {
+                        _ = recordType.coredataModelType?.add(rootObject: fetchedRoot, save: false, sendToSync: false, context: context)
+                    } else {
+                        // TODO: use Switch with `fallthrough`
+                        action = .update
+                    }
                 }
                 
-                // TODO: Needs favicon
-                if clientRecord == nil {
-                    _ = recordType.coredataModelType?.add(rootObject: fetchedRoot, save: false, sendToSync: false, context: context)
-                } else {
-                    // TODO: use Switch with `fallthrough`
-                    action = .update
+                // Handled outside of else block since .create, can modify to an .update
+                if action == .update {
+                    clientRecord?.update(syncRecord: fetchedRoot)
                 }
             }
             
-            // Handled outside of else block since .create, can modify to an .update
-            if action == .update {
-                clientRecord?.update(syncRecord: fetchedRoot)
-            }
+            DataController.save(context: context)
         }
-        
-        DataController.save(context: context)
         print("\(fetchedRecords.count) \(recordType.rawValue) processed")
         
         // Make generic when other record types are supported
