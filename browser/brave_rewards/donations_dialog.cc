@@ -27,7 +27,7 @@ using content::WebUIMessageHandler;
 namespace {
 
 constexpr int kDialogMargin = 25;
-constexpr int kDialogMinHeight = 300;
+constexpr int kDialogMinHeight = 400;
 constexpr int kDialogMaxHeight = 700;
 
 // A ui::WebDialogDelegate that specifies the donation dialog appearance.
