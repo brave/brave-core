@@ -306,18 +306,29 @@ PublisherInfoDatabase::GetPanelPublisher(
     return nullptr;
   }
 
-  sql::Statement info_sql(db_.GetUniqueStatement(
-      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, pi.provider, "
+  std::string query = "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, pi.provider, "
       "pi.verified, pi.excluded, ai.percent FROM publisher_info AS pi "
       "LEFT JOIN activity_info AS ai ON pi.publisher_id = ai.publisher_id "
-      "WHERE pi.publisher_id=? AND ((ai.month = ? "
-      "AND ai.year = ? AND ai.reconcile_stamp = ?) OR "
-      "ai.percent IS NULL) LIMIT 1"));
+      "WHERE pi.publisher_id=? AND ((ai.reconcile_stamp = ?";
 
+  if (filter.month != ledger::ACTIVITY_MONTH::ANY) {
+    query += " AND ai.month = ?";
+  }
+  if (filter.year > 0) {
+    query += " AND ai.year = ?";
+  }
+  query += ") OR ai.percent IS NULL) LIMIT 1";
+
+  sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
   info_sql.BindString(0, filter.id);
-  info_sql.BindInt(1, filter.month);
-  info_sql.BindInt(2, filter.year);
-  info_sql.BindInt64(3, filter.reconcile_stamp);
+  info_sql.BindInt64(1, filter.reconcile_stamp);
+  if (filter.month != ledger::ACTIVITY_MONTH::ANY) {
+    info_sql.BindInt(2, filter.month);
+  }
+  if (filter.year > 0) {
+    info_sql.BindInt(3, filter.year);
+  }
+
 
   if (info_sql.Step()) {
     std::unique_ptr<ledger::PublisherInfo> info;
@@ -435,7 +446,7 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
   activity_info_insert.BindInt(6, info.year);
   activity_info_insert.BindInt64(7, info.reconcile_stamp);
   activity_info_insert.BindInt64(8, info.visits);
-
+  
   return activity_info_insert.Run();
 }
 
