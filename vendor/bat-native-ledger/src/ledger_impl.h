@@ -54,8 +54,8 @@ class LedgerImpl : public ledger::Ledger,
   void Initialize() override;
   bool CreateWallet() override;
 
-  void SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
-                        uint64_t window_id = 0) override;
+  void SetPublisherInfo(
+      std::unique_ptr<ledger::PublisherInfo> publisher_info) override;
   void SetActivityInfo(
       std::unique_ptr<ledger::PublisherInfo> publisher_info) override;
   void GetPublisherInfo(const std::string& publisher_key,
@@ -345,7 +345,6 @@ class LedgerImpl : public ledger::Ledger,
   uint64_t retryRequestSetup(uint64_t min_time, uint64_t max_time);
 
   void OnPublisherInfoSavedInternal(
-    uint64_t window_id,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> info);
 

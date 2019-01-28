@@ -74,7 +74,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   bool getPublisherAllowVideos() const;
 
   void OnPublisherInfoSaved(
-      uint64_t window_id,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo>);
   std::string GetBalanceReportName(ledger::ACTIVITY_MONTH month, int year);

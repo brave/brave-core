@@ -2375,10 +2375,10 @@ SaveNormalizedPublisherListOnFileTaskRunner(PublisherInfoDatabase* backend,
 void RewardsServiceImpl::SaveNormalizedPublisherList(
       const ledger::PublisherInfoListStruct& list) {
 
-  if (list.list_.size() == 0) {
+  if (list.list.size() == 0) {
     std::unique_ptr<ledger::PublisherInfoList> empty_list(
         new ledger::PublisherInfoList);
-    OnNormalizedPublisherListSaved(std::move(empty_list));
+    OnPublisherListNormalizedSaved(std::move(empty_list));
     return;
   }
 
@@ -2387,16 +2387,12 @@ void RewardsServiceImpl::SaveNormalizedPublisherList(
     FROM_HERE,
     base::Bind(&SaveNormalizedPublisherListOnFileTaskRunner,
                publisher_info_backend_.get(),
-               list.list_),
-    base::Bind(&RewardsServiceImpl::OnNormalizedPublisherListSaved,
+               list.list),
+    base::Bind(&RewardsServiceImpl::OnPublisherListNormalizedSaved,
                AsWeakPtr()));
 }
 
-bool sortPublisherByPercentage(ContentSite a, ContentSite b) {
-  return a.percentage > b.percentage;
-}
-
-void RewardsServiceImpl::OnNormalizedPublisherListSaved(
+void RewardsServiceImpl::OnPublisherListNormalizedSaved(
     std::unique_ptr<ledger::PublisherInfoList> list) {
   if (!list) {
     LOG(ERROR) << "Problem saving normalized publishers "
@@ -2409,10 +2405,10 @@ void RewardsServiceImpl::OnNormalizedPublisherListSaved(
     site_list.push_back(PublisherInfoToContentSite(publisher));
   }
 
-  sort(site_list.begin(), site_list.end(), sortPublisherByPercentage);
+  sort(site_list.begin(), site_list.end());
 
   for (auto& observer : observers_) {
-    observer.OnNormalizedPublisherList(this, site_list);
+    observer.OnPublisherListNormalized(this, site_list);
   }
 }
 

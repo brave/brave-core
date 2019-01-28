@@ -120,8 +120,8 @@ class LEDGER_EXPORT Ledger {
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
-  virtual void SetPublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
-                                uint64_t window_id) = 0;
+  virtual void SetPublisherInfo(
+      std::unique_ptr<PublisherInfo> publisher_info) = 0;
   virtual void SetActivityInfo(
       std::unique_ptr<PublisherInfo> publisher_info) = 0;
   virtual void GetPublisherInfo(const std::string& publisher_key,

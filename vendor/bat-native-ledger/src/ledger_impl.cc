@@ -302,19 +302,16 @@ std::string LedgerImpl::URIEncode(const std::string& value) {
 }
 
 void LedgerImpl::OnPublisherInfoSavedInternal(
-    uint64_t window_id,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> info) {
-  bat_publishers_->OnPublisherInfoSaved(window_id, result, std::move(info));
+  bat_publishers_->OnPublisherInfoSaved(result, std::move(info));
 }
 
-void LedgerImpl::SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> info,
-                                  uint64_t window_id) {
+void LedgerImpl::SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> info) {
   ledger_client_->SavePublisherInfo(
       std::move(info),
       std::bind(&LedgerImpl::OnPublisherInfoSavedInternal,
                 this,
-                window_id,
                 _1,
                 _2));
 }
@@ -324,7 +321,6 @@ void LedgerImpl::SetActivityInfo(std::unique_ptr<ledger::PublisherInfo> info) {
       std::move(info),
       std::bind(&LedgerImpl::OnPublisherInfoSavedInternal,
                 this,
-                0,
                 _1,
                 _2));
 }
@@ -1137,7 +1133,7 @@ bool LedgerImpl::HasSufficientBalanceToReconcile() {
 void LedgerImpl::SaveNormalizedPublisherList(
     const ledger::PublisherInfoList& normalized_list) {
   ledger::PublisherInfoListStruct list;
-  list.list_ = normalized_list;
+  list.list = normalized_list;
   ledger_client_->SaveNormalizedPublisherList(list);
 }
 

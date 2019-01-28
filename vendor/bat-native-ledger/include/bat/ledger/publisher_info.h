@@ -145,7 +145,7 @@ LEDGER_EXPORT struct PublisherInfoListStruct {
   const std::string ToJson() const;
   bool loadFromJson(const std::string& json);
 
-  std::vector<PublisherInfo> list_;
+  std::vector<PublisherInfo> list;
 };
 
 using PublisherInfoList = std::vector<PublisherInfo>;

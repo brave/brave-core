@@ -749,7 +749,7 @@ PublisherInfoListStruct::PublisherInfoListStruct () {}
 PublisherInfoListStruct::~PublisherInfoListStruct () {}
 PublisherInfoListStruct::PublisherInfoListStruct (
     const ledger::PublisherInfoListStruct &properties) {
-  list_ = properties.list_;
+  list = properties.list;
 }
 
 const std::string PublisherInfoListStruct::ToJson() const {
@@ -777,7 +777,7 @@ bool PublisherInfoListStruct::loadFromJson(const std::string& json) {
 
       PublisherInfo contribution;
       contribution.loadFromJson(sb.GetString());
-      list_.push_back(contribution);
+      list.push_back(contribution);
     }
   }
 

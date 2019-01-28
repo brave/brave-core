@@ -137,7 +137,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       brave_rewards::RewardsService* rewards_service,
       bool rewards_main_enabled) override;
 
-  void OnNormalizedPublisherList(
+  void OnPublisherListNormalized(
       brave_rewards::RewardsService* rewards_service,
       brave_rewards::ContentSiteList list) override;
 
@@ -897,7 +897,7 @@ void RewardsDOMHandler::OnRewardsMainEnabled(
 }
 
 
-void RewardsDOMHandler::OnNormalizedPublisherList(
+void RewardsDOMHandler::OnPublisherListNormalized(
     brave_rewards::RewardsService* rewards_service,
     brave_rewards::ContentSiteList list) {
   std::unique_ptr<brave_rewards::ContentSiteList> site_list(

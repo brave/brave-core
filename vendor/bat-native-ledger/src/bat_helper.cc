@@ -2787,7 +2787,7 @@ static bool ignore_ = false;
 
     writer.String("list");
     writer.StartArray();
-    for (const auto& publisher : publishers.list_) {
+    for (const auto& publisher : publishers.list) {
       saveToJson(writer, publisher);
     }
     writer.EndArray();

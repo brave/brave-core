@@ -340,7 +340,7 @@ class RewardsServiceImpl : public RewardsService,
   void SaveNormalizedPublisherList(
       const ledger::PublisherInfoListStruct& list) override;
 
-  void OnNormalizedPublisherListSaved(
+  void OnPublisherListNormalizedSaved(
     std::unique_ptr<ledger::PublisherInfoList> list);
 
   // URLFetcherDelegate impl
