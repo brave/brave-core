@@ -26,25 +26,50 @@ export class App extends React.Component<Props, {}> {
     this.actions.onCloseDialog()
   }
 
-  generateDonationOverlay = (publisher: RewardsDonate.Publisher | undefined) => {
+  generateDonationOverlay = (publisher: RewardsDonate.Publisher) => {
+    let domain = ''
+    let monthlyDate
+    let recurringDonation
+    const {
+      currentTipAmount,
+      currentTipRecurring,
+      recurringDonations
+    } = this.props.rewardsDonateData
+
+    const publisherKey = publisher && publisher.publisherKey
+
+    if (!publisherKey ||
+        (currentTipRecurring && !recurringDonations)) {
+      return null
+    }
+
+    if (recurringDonations) {
+      recurringDonation = recurringDonations.find((donation: RewardsDonate.RecurringDonation) => {
+        return donation.publisherKey === publisherKey
+      })
+    }
+
+    if (recurringDonation && recurringDonation.monthlyDate) {
+      monthlyDate = new Date(recurringDonation.monthlyDate * 1000).toLocaleDateString()
+    }
+
+    if (publisher.provider && publisher.name) {
+      domain = publisher.name
+    } else {
+      domain = publisherKey
+    }
+
     setTimeout(() => {
       this.onClose()
     }, 3000)
-
-    let domain = ''
-    if (publisher) {
-      if (publisher.provider && publisher.name) {
-        domain = publisher.name
-      } else {
-        domain = publisher.publisherKey
-      }
-    }
 
     return (
       <DonationOverlay
         onClose={this.onClose}
         success={true}
         domain={domain}
+        amount={currentTipAmount}
+        monthlyDate={monthlyDate}
         logo={publisher && publisher.logo}
       />
     )
@@ -52,6 +77,11 @@ export class App extends React.Component<Props, {}> {
 
   render () {
     const { finished, error, publisher } = this.props.rewardsDonateData
+
+    if (!publisher) {
+      return null
+    }
+
     return (
       <>
         {
