@@ -24,19 +24,6 @@
 
 using content::ResourceType;
 
-namespace {
-
-  bool IsImageResourceType(ResourceType resource_type) {
-    return resource_type == content::RESOURCE_TYPE_FAVICON ||
-      resource_type == content::RESOURCE_TYPE_IMAGE;
-  }
-  GURL GetBlankDataURLForResourceType(ResourceType resource_type) {
-    return GURL(IsImageResourceType(resource_type) ?
-        kEmptyImageDataURI : kEmptyDataURI);
-  }
-
-}  // namespace
-
 namespace brave {
 
 std::string GetGoogleTagManagerPolyfillJS() {
@@ -101,14 +88,12 @@ void OnBeforeURLRequestAdBlockTPOnTaskRunner(std::shared_ptr<BraveRequestInfo> c
   std::string tab_host = ctx->tab_origin.host();
   if (!g_brave_browser_process->tracking_protection_service()->
       ShouldStartRequest(ctx->request_url, ctx->resource_type, tab_host)) {
-    ctx->new_url_spec = GetBlankDataURLForResourceType(ctx->resource_type).spec();
     ctx->blocked_by = kTrackerBlocked;
   } else if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
            ctx->request_url, ctx->resource_type, tab_host) ||
        !g_brave_browser_process->ad_block_regional_service()
             ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
                                  tab_host)) {
-    ctx->new_url_spec = GetBlankDataURLForResourceType(ctx->resource_type).spec();
     ctx->blocked_by = kAdBlocked;
   }
 }
@@ -117,17 +102,14 @@ void OnBeforeURLRequestDispatchOnIOThread(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
-  if (!ctx->new_url_spec.empty() &&
-    ctx->new_url_spec != ctx->request_url.spec()) {
-    if (ctx->blocked_by == kAdBlocked) {
-      brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
-          ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
-          brave_shields::kAds);
-    } else if (ctx->blocked_by == kTrackerBlocked) {
-      brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
-          ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
-          brave_shields::kTrackers);
-    }
+  if (ctx->blocked_by == kAdBlocked) {
+    brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
+        ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
+        brave_shields::kAds);
+  } else if (ctx->blocked_by == kTrackerBlocked) {
+    brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
+        ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
+        brave_shields::kTrackers);
   }
 
   next_callback.Run();

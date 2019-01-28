@@ -6,6 +6,8 @@ source_set("brave_shields") {
     "ad_block_regional_service.h",
     "ad_block_service.cc",
     "ad_block_service.h",
+    "adblock_interceptor.cc",
+    "adblock_interceptor.h",
     "base_brave_shields_service.cc",
     "base_brave_shields_service.h",
     "base_local_data_files_observer.cc",
