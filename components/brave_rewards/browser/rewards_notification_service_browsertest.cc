@@ -10,6 +10,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
+#include "rewards_notification_service.h"
 
 using namespace brave_rewards;
 
@@ -46,8 +47,14 @@ class BraveRewardsNotificationBrowserTest
   void OnNotificationDeleted(
       RewardsNotificationService* rewards_notification_service,
       const RewardsNotificationService::RewardsNotification& notification) override {
-    EXPECT_STREQ(notification.id_.c_str(), "rewards_notification_grant");
-    EXPECT_TRUE(notification.timestamp_ != 0);
+
+    if (notification.id_ == "not_valid") {
+      EXPECT_TRUE(notification.type_ ==
+        RewardsNotificationService::REWARDS_NOTIFICATION_INVALID);
+    } else {
+      EXPECT_STREQ(notification.id_.c_str(), "rewards_notification_grant");
+      EXPECT_TRUE(notification.timestamp_ != 0);
+    }
 
     delete_notification_callback_was_called_ = true;
   }
@@ -114,6 +121,26 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsNotificationBrowserTest, AddGrantNotification
   EXPECT_STREQ(notification_id_.c_str(), "rewards_notification_grant");
 
   rewards_notification_service_->DeleteNotification(notification_id_);
+  WaitForDeleteNotificationCallback();
+
+  rewards_notification_service_->RemoveObserver(this);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsNotificationBrowserTest, AddGrantNotificationAndFakeItAndDeleteIt) {
+  rewards_notification_service_->AddObserver(this);
+
+  RewardsNotificationService::RewardsNotificationArgs args;
+  args.push_back("foo");
+  args.push_back("bar");
+
+  rewards_notification_service_->AddNotification(
+      RewardsNotificationService::REWARDS_NOTIFICATION_GRANT, args,
+      "rewards_notification_grant");
+  WaitForAddNotificationCallback();
+
+  EXPECT_STREQ(notification_id_.c_str(), "rewards_notification_grant");
+
+  rewards_notification_service_->DeleteNotification("not_valid");
   WaitForDeleteNotificationCallback();
 
   rewards_notification_service_->RemoveObserver(this);
