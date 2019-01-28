@@ -167,7 +167,7 @@ class BookmarkTests: CoreDataTestCase {
                       color: nil,
                       syncOrder: nil)
         
-        XCTAssertEqual(Bookmark.getNonFolderChildren(forFolderUUID: folder.syncUUID)?.count, nonFolderBookmarksCount)
+        XCTAssertEqual(Bookmark.getChildren(forFolderUUID: folder.syncUUID, includeFolders: false)?.count, nonFolderBookmarksCount)
     }
     
     func testGetTopLevelFolders() {

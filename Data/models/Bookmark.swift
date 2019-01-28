@@ -196,17 +196,24 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
             bk.domain = Domain.getOrCreateForUrl(url, context: context, save: false)
         }
         
-        // This also sets up a parent folder
-        bk.syncParentUUID = bookmark?.parentFolderObjectId ?? bk.syncParentUUID
+        // Update parent folder if one exists
+        if let newParent = bookmark?.parentFolderObjectId {
+            bk.syncParentUUID = newParent
+        }
         
         // For folders that are saved _with_ a syncUUID, there may be child bookmarks
         //  (e.g. sync sent down bookmark before parent folder)
         if bk.isFolder {
             // Find all children and attach them
-            if let children = Bookmark.getNonFolderChildren(forFolderUUID: bk.syncUUID) {
-                
-                // TODO: Setup via bk.children property instead
-                children.forEach { $0.syncParentUUID = bk.syncParentUUID }
+            if let children = Bookmark.getChildren(forFolderUUID: bk.syncUUID, context: context) {
+                // Re-link all orphaned children
+                children.forEach {
+                    $0.syncParentUUID = bk.syncUUID
+                    // The setter for syncParentUUID creates the parent/child relationship in CD, however in this specific instance
+                    // the objects have not been written to disk, so cannot be fetched on a different context and the relationship
+                    // will not be properly established. Manual attachment is necessary here during these batch additions.
+                    $0.parentFolder = bk
+                }
             }
         }
         
@@ -416,7 +423,8 @@ extension Bookmark {
         return NSPredicate(format: "\(urlKeyPath) == %@ AND \(isFavoriteKeyPath) == \(NSNumber(value: getFavorites))", url.absoluteString)
     }
     
-    public static func getNonFolderChildren(forFolderUUID syncUUID: [Int]?) -> [Bookmark]? {
+    public static func getChildren(forFolderUUID syncUUID: [Int]?, includeFolders: Bool = true,
+                                   context: NSManagedObjectContext = DataController.viewContext) -> [Bookmark]? {
         guard let searchableUUID = SyncHelpers.syncDisplay(fromUUID: syncUUID) else {
             return nil
         }
@@ -424,10 +432,15 @@ extension Bookmark {
         let syncParentDisplayUUIDKeyPath = #keyPath(Bookmark.syncParentDisplayUUID)
         let isFolderKeyPath = #keyPath(Bookmark.isFolder)
         
-        let predicate = NSPredicate(format: "\(syncParentDisplayUUIDKeyPath) == %@ AND \(isFolderKeyPath) == 0",
-            searchableUUID)
+        var query = "\(syncParentDisplayUUIDKeyPath) == %@"
         
-        return all(where: predicate)
+        if !includeFolders {
+            query += " AND \(isFolderKeyPath) == false"
+        }
+        
+        let predicate = NSPredicate(format: query, searchableUUID)
+        
+        return all(where: predicate, context: context)
     }
     
     static func get(parentSyncUUID parentUUID: [Int]?, context: NSManagedObjectContext?) -> Bookmark? {
