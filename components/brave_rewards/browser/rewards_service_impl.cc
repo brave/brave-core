@@ -87,20 +87,32 @@ class LogStreamImpl : public ledger::LogStream {
   LogStreamImpl(const char* file,
                 int line,
                 const ledger::LogLevel log_level) {
+    logging::LogSeverity severity;
+
     switch(log_level) {
       case ledger::LogLevel::LOG_INFO:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_INFO);
+        severity = logging::LOG_INFO;
         break;
       case ledger::LogLevel::LOG_WARNING:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_WARNING);
+        severity = logging::LOG_WARNING;
         break;
       case ledger::LogLevel::LOG_ERROR:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_ERROR);
+        severity = logging::LOG_ERROR;
         break;
       default:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_VERBOSE);
+        severity = logging::LOG_VERBOSE;
         break;
     }
+
+    log_message_ = std::make_unique<logging::LogMessage>(file, line, severity);
+  }
+
+  LogStreamImpl(const char* file,
+                int line,
+                int log_level) {
+    // VLOG has negative log level
+    log_message_ =
+        std::make_unique<logging::LogMessage>(file, line, -log_level);
   }
 
   std::ostream& stream() override {
@@ -2138,6 +2150,13 @@ std::unique_ptr<ledger::LogStream> RewardsServiceImpl::Log(
     const char* file,
     int line,
     const ledger::LogLevel log_level) const {
+  return std::make_unique<LogStreamImpl>(file, line, log_level);
+}
+
+std::unique_ptr<ledger::LogStream> RewardsServiceImpl::VerboseLog(
+                     const char* file,
+                     int line,
+                     int log_level) const {
   return std::make_unique<LogStreamImpl>(file, line, log_level);
 }
 

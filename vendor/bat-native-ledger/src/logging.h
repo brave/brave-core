@@ -8,4 +8,7 @@
 #define BLOG(client, severity) \
   client->Log(__FILE__, __LINE__, severity)->stream()
 
+#define BVLOG(client, severity) \
+  client->LogVerbose(__FILE__, __LINE__, severity)->stream()
+
 #endif  // BAT_REWARDS_LOGGING_H_

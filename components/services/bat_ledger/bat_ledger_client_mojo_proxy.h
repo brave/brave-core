@@ -77,7 +77,12 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                             const std::string& publisher_key,
                             const ledger::REWARDS_CATEGORY category) override;
   void GetRecurringDonations(ledger::PublisherInfoListCallback callback) override;
-  std::unique_ptr<ledger::LogStream> Log(const char* file, int line, ledger::LogLevel level) const override;
+  std::unique_ptr<ledger::LogStream> Log(const char* file,
+                                         int line,
+                                         ledger::LogLevel level) const override;
+  std::unique_ptr<ledger::LogStream> VerboseLog(const char* file,
+                                         int line,
+                                         int verbosity_level) const override;
   void LoadMediaPublisherInfo(
       const std::string& media_key,
       ledger::PublisherInfoCallback callback) override;

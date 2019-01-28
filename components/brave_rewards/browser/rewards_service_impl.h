@@ -331,6 +331,10 @@ class RewardsServiceImpl : public RewardsService,
                      const char* file,
                      int line,
                      const ledger::LogLevel log_level) const override;
+  std::unique_ptr<ledger::LogStream> VerboseLog(
+                     const char* file,
+                     int line,
+                     int log_level) const override;
   void OnRestorePublishers(ledger::OnRestoreCallback callback) override;
   void OnPanelPublisherInfoLoaded(
       ledger::PublisherInfoCallback callback,

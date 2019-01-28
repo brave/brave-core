@@ -50,6 +50,13 @@ class LogStreamImpl : public ledger::LogStream {
     }
   }
 
+  LogStreamImpl(const char* file,
+                int line,
+                int level) {
+    // VLOG has negative log level
+    log_message_ = std::make_unique<logging::LogMessage>(file, line, -level);
+  }
+
   std::ostream& stream() override {
     return log_message_->stream();
   }
@@ -157,6 +164,12 @@ void BatLedgerClientMojoProxy::OnReconcileComplete(ledger::Result result,
 
 std::unique_ptr<ledger::LogStream> BatLedgerClientMojoProxy::Log(
     const char* file, int line, ledger::LogLevel level) const {
+  // There's no need to proxy this
+  return std::make_unique<LogStreamImpl>(file, line, level);
+}
+
+std::unique_ptr<ledger::LogStream> BatLedgerClientMojoProxy::VerboseLog(
+    const char* file, int line, int level) const {
   // There's no need to proxy this
   return std::make_unique<LogStreamImpl>(file, line, level);
 }

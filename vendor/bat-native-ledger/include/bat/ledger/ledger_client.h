@@ -156,6 +156,11 @@ class LEDGER_EXPORT LedgerClient {
       int line,
       const ledger::LogLevel log_level) const = 0;
 
+  virtual std::unique_ptr<LogStream> VerboseLog(
+      const char* file,
+      int line,
+      int vlog_level) const = 0;
+
   virtual void OnRestorePublishers(ledger::OnRestoreCallback callback) = 0;
 };
 
