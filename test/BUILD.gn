@@ -303,6 +303,8 @@ test("brave_browser_tests") {
     ]
 
     deps += [
+      "//brave/vendor/bat-native-ads",
+      "//brave/vendor/bat-native-confirmations",
       "//brave/vendor/bat-native-ledger",
     ]
   }
