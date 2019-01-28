@@ -95,6 +95,8 @@ test("brave_unit_tests") {
       "//brave/components/brave_rewards/browser/publisher_info_database_unittest.cc",
       "//brave/vendor/bat-native-usermodel/test/usermodel_unittest.cc",
       "//brave/components/brave_rewards/browser/rewards_service_impl_unittest.cc",
+      "//brave/vendor/bat-native-confirmations/test/confirmations_unittest.cc",
+      "//brave/vendor/bat-native-confirmations/test/confirmations_client_mock.cc",
     ]
   }
 
@@ -134,7 +136,6 @@ test("brave_unit_tests") {
   deps = [
     "//brave/components/brave_rewards/browser:testutil",
     "//brave/components/brave_sync:testutil",
-    "//brave/vendor/bat-native-usermodel",
     "//brave/vendor/bat-native-rapidjson",
     "//chrome:browser_dependencies",
     "//chrome:child_dependencies",
@@ -150,6 +151,7 @@ test("brave_unit_tests") {
 
   if (brave_rewards_enabled) {
     deps += [
+      "//brave/vendor/bat-native-usermodel",
       "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-confirmations",
       "//brave/vendor/bat-native-ledger",
