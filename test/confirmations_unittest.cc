@@ -22,11 +22,12 @@ const base::FilePath::CharType kTestDataRelativePath[] =
 class ConfirmationsTest : public ::testing::Test {
  protected:
   confirmations::MockConfirmationsClient *mock_confirmations_client;
-  ConfirmationsImpl* confirmations;
+  confirmations::ConfirmationsImpl* confirmations;
 
   ConfirmationsTest() :
       mock_confirmations_client(new confirmations::MockConfirmationsClient()),
-      confirmations(new ConfirmationsImpl(mock_confirmations_client)) {
+      confirmations(new confirmations::ConfirmationsImpl(
+          mock_confirmations_client)) {
     // You can do set-up work for each test here
   }
 
@@ -42,7 +43,6 @@ class ConfirmationsTest : public ::testing::Test {
   void SetUp() override {
     // Code here will be called immediately after the constructor (right before
     // each test)
-    confirmations->Initialize();
   }
 
   void TearDown() override {
