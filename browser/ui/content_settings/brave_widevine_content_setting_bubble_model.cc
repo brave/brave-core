@@ -16,6 +16,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
 
 BraveWidevineContentSettingPluginBubbleModel::BraveWidevineContentSettingPluginBubbleModel(
@@ -51,7 +52,11 @@ void BraveWidevineContentSettingPluginBubbleModel::RunPluginsOnPage() {
 
   PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
   prefs->SetBoolean(kWidevineOptedIn, true);
+  // This bubble model is used for bundle and component install of widevine.
+  // So, registering widevine as component is needed for component install.
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
   RegisterWidevineCdmComponent(g_brave_browser_process->component_updater());
+#endif
   ChromeSubresourceFilterClient::FromWebContents(web_contents())
         ->OnReloadRequested();
 }

@@ -157,7 +157,7 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
   ASSERT_FALSE(model->is_visible());
 }
 
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 class BraveWidevineIconVisibilityBrowserTest : public CertVerifierBrowserTest {
  public:
   BraveWidevineIconVisibilityBrowserTest()
@@ -248,4 +248,4 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineIconVisibilityBrowserTest,
   EXPECT_TRUE(content::ExecuteScript(active_contents(), widevine_js));
   EXPECT_TRUE(IsWidevineIconVisible());
 }
-#endif  //  BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+#endif  //  BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)

@@ -7,7 +7,9 @@
 #include "brave/browser/ui/content_settings/brave_autoplay_blocked_image_model.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+// On Windows and MacOS, widevine is supported by component updater.
+// On linux, it is supported by bundle.
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 #include "brave/browser/ui/content_settings/brave_widevine_blocked_image_model.h"
 #endif
 
@@ -26,7 +28,7 @@ void BraveGenerateContentSettingImageModels(
     }
   }
 
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   result.push_back(std::make_unique<BraveWidevineBlockedImageModel>(
       BraveWidevineBlockedImageModel::ImageType::PLUGINS,
       CONTENT_SETTINGS_TYPE_PLUGINS));
