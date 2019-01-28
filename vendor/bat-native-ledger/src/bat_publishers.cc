@@ -637,16 +637,6 @@ bool BatPublishers::isExcluded(const std::string& publisher_id, const ledger::PU
   return values.excluded;
 }
 
-bool BatPublishers::isEligibleForContribution(const ledger::PublisherInfo& info) {
-
-  if (isExcluded(info.id, info.excluded) || (!state_->allow_non_verified_ && !isVerified(info.id)))
-    return false;
-
-  return info.duration >= state_->min_publisher_duration_ &&
-         info.visits >= state_->min_visits_;
-
-}
-
 void BatPublishers::clearAllBalanceReports() {
   if (state_->monthly_balances_.empty()) {
     return;

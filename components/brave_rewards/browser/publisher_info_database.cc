@@ -302,7 +302,7 @@ PublisherInfoDatabase::GetPanelPublisher(
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized) {
+  if (!initialized || filter.id.empty()) {
     return nullptr;
   }
 
@@ -408,7 +408,7 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized) {
+  if (!initialized || info.id.empty()) {
     return false;
   }
 
@@ -443,7 +443,7 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfos(
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized) {
+  if (!initialized || list.size() == 0) {
     return false;
   }
 
@@ -453,7 +453,10 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfos(
   }
 
   for (const auto& info : list) {
-    InsertOrUpdateActivityInfo(info);
+    if (!InsertOrUpdateActivityInfo(info)) {
+      transaction.Rollback();
+      return false;
+    }
   }
 
   return transaction.Commit();
