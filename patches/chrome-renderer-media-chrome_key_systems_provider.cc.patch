@@ -1,0 +1,22 @@
+diff --git a/chrome/renderer/media/chrome_key_systems_provider.cc b/chrome/renderer/media/chrome_key_systems_provider.cc
+index e1ba75626fea8e5018964a51ff12561a41cc75e5..13e9c18f0b0fe742d482815e7a4e75bb63245488 100644
+--- a/chrome/renderer/media/chrome_key_systems_provider.cc
++++ b/chrome/renderer/media/chrome_key_systems_provider.cc
+@@ -8,7 +8,7 @@
+ #include "chrome/renderer/media/chrome_key_systems.h"
+ #include "third_party/widevine/cdm/buildflags.h"
+ 
+-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
++#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+ #include "third_party/widevine/cdm/widevine_cdm_common.h"
+ #endif
+ 
+@@ -35,7 +35,7 @@ void ChromeKeySystemsProvider::AddSupportedKeySystems(
+ 
+ // Check whether all potentially supported key systems are supported. If so,
+ // no need to update again.
+-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
++#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+   for (const auto& properties : *key_systems) {
+     if (properties->GetKeySystemName() == kWidevineKeySystem) {
+       is_update_needed_ = false;
