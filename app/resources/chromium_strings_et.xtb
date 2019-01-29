@@ -3,6 +3,9 @@
 <translationbundle lang="et">
 <translation id="5194812628624740897">Kui katkestate ühenduse kasutajaga <ph name="USERNAME"/>, siis kustutatakse sellesse seadmesse salvestatud ajalugu, järjehoidjad, seaded ja muud Bravei andmed. Brave Software'i kontole salvestatud andmeid ei kustutata ja neid saab hallata <ph name="GOOGLE_DASHBOARD_LINK"/>Brave Software'i juhtpaneelil<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
+<translation id="2069994121511856876">Brave Nightly</translation>
+<translation id="4947625801334180582">Brave Beeta</translation>
+<translation id="2566435362010629810">Brave Dev</translation>
 <translation id="6373767849825830651">Brave on veebibrauser, mis avab veebilehti ja rakendusi välgukiirusel. See on kiire, stabiilne ja hõlpsasti kasutatav. Sirvige veebi turvalisemalt tänu Bravei sisseehitatud pahavara- ja andmepüügikaitsele.</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Bravei logo</translation>
@@ -21,6 +24,8 @@
 <translation id="4651430425715739110">Autoriõigus <ph name="YEAR"/> The Brave Authors. Kõik õigused on kaitstud.</translation>
 <translation id="2310890394934209120">Brave OS-i aluseks on täiendav <ph name="BEGIN_LINK_CROS_OSS"/>avatud lähtekoodiga tarkvara<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8160794320557846790">Brave OS töötab täiendava <ph name="BEGIN_LINK_CROS_OSS"/>avatud lähtekoodiga tarkvara<ph name="END_LINK_CROS_OSS"/> toel, nagu ka näiteks <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (beetaversioon)<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="8948097099929452692">Brave'is ei kasutata. Kohatäide ressursikaartide sünkroonis hoidmiseks.</translation>
+<translation id="5009217320733452434">Brave'is ei kasutata. Kohatäide ressursikaartide sünkroonis hoidmiseks. See ootab ühte argumenti: <ph name="ARGUMENT">$1</ph>.</translation>
 <translation id="6913582816347128893">Brave ei pruugi õigesti töötada, kuna seda ei toetata enam operatsioonisüsteemis Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">Brave ei pruugi õigesti töötada, kuna seda ei toetata enam Windows XP-s ega Windows Vistas</translation>
 <translation id="189297655255130768">Brave ei reageeri. Kas soovite kohe taaskäivitada?</translation>
@@ -93,7 +98,7 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="4054452651944170004">Bravei menüüs peitmine</translation>
 <translation id="5660079256336839395">Bravei menüüs peitmine</translation>
 <translation id="7456658570432774853">Aidake muuta Bravei paremaks, teavitades meid praegustest seadetest</translation>
-<translation id="6134859571175647580">Hoiatus. Brave ei saa takistada laiendustel teie sirvimisajalugu salvestada. Kui soovite laienduse inkognito režiimis keelata, siis tühistage see valik.</translation>
+<translation id="6134859571175647580">Hoiatus. Brave ei saa takistada laiendustel teie sirvimisajalugu salvestada. Kui soovite laienduse privaatses režiimis keelata, tühistage see valik.</translation>
 <translation id="777113543093865885">Braveist eemaldamine ...</translation>
 <translation id="6078442581074612226">Braveis</translation>
 <translation id="1448049584457347995">Bravei turvalisemaks muutmiseks keelasime mõned laiendused, mida ei leidu veebipoes <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ja mille lisamisest te ei pruugi teadlik olla.</translation>
@@ -170,7 +175,13 @@ Täiendavad juhised leiate aadressilt <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="2433912322225810055">Lisaks juhib see seda, mis leht kuvatakse Bravei käivitamisel või omnikastikeses otsingu tegemisel.</translation>
 <translation id="2871190378186459992">Avastage Bravei jaoks suurepäraseid rakendusi, mänge, laiendusi ja teemasid.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="5846303060623790781">Brave Beeta (mDNS-In)</translation>
+<translation id="3599046180970731601">Brave Nightly (mDNS-In)</translation>
+<translation id="7881806463410697784">Brave Dev (mDNS-In)</translation>
 <translation id="1912973375560256099">Sissetuleku reegel Braveile mDNS-liikluse lubamiseks.</translation>
+<translation id="7272074097076644710">Sissetuleku reegel Brave Beetas mDNS-liikluse lubamiseks.</translation>
+<translation id="4991512282053949769">Sissetuleku reegel Brave Nightly's mDNS-liikluse lubamiseks.</translation>
+<translation id="3856641371299712128">Sissetuleku reegel Brave Dev'is mDNS-liikluse lubamiseks.</translation>
 <translation id="7276297358157391541">Brave võib õigekirjakontrolli täiustada, saates brauserisse sisestatud teksti Brave Software'i serveritesse ja võimaldades kasutada sama õigekirjakontrolli tehnoloogiat, mida kasutatakse Brave Software'i otsingus.</translation>
 <translation id="1807774211756215222">Ava link Bravei uuel &amp;vahekaardil</translation>
 <translation id="4624945300945265642">Ava link Bravei inko&amp;gnito aknas</translation>

@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Procenjeno vreme je sačuvano</translation>
 <translation id="5206618227023752085">Vrhunska lokacija je uklonjena.</translation>
 <translation id="2079545284768500474">Opozovi radnju</translation>
+<translation id="6040143037577758943">Затвори</translation>
 <translation id="8529752221839395787">Sve vrati u prethodno stanje</translation>
 <translation id="3022168349636134570">sekunda</translation>
 <translation id="8664519043722036194">sekunde</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Omogućite Brave Rewards</translation>
 <translation id="2862598513212603756">Vaša pažnja je dragocena. Surfujte internetom i zaradite pregledanjem reklama koje poštuju privatnost, a zaradu iskoristite da podržite kreatore sadržaja koji vam se dopada.</translation>
 <translation id="4942016616604700968">Omogući nagrade</translation>
-<translation id="1964278139527989987">Uvoz obeleživača &amp; podešavanja</translation>
+<translation id="3958088479270651626">Увезите обележиваче и подешавања</translation>
 <translation id="5633840519079139680">Brave vam omogućava da lako stvorite željeno okruženje tako što ćete uvesti obeleživače i podešavanja iz drugih pregledača koji su instalirani na vašem računaru.</translation>
 <translation id="8275038454117074363">Uvoz</translation>
 <translation id="5540323067375019678">Upravljajte svojim štitovima</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Tviter</translation>
 <translation id="3920963435109110161">Savetujte na licu mesta kako pronalazite dragulje.</translation>
-<translation id="1638706606242137268">Pošaljite napojnice na Tviter, Jutjub i još mnogo njih, da nagradite postove koji se vama ‘Sviđaju’.</translation>
+<translation id="6135431587052937035">Podržavajte svoje omiljene veb lokacije periodičnim mesečnim savetima.</translation>
 <translation id="2788596505277705686">{{balance}} BAT je oporavljen. Šifra vašeg novčanika je verifikovana i uspešno učitana.</translation>
 <translation id="1083279119532577005">Novčanik je vraćen u prethodno stanje!</translation>
 <translation id="7841456038054167122">Ponovo unesite šifre ili probajte neke druge šifre.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">Hvala vam</translation>
 <translation id="6432779622695508363">Savet za sviđanje</translation>
 <translation id="8424370624815730676">Token za osnovnu pažnju (BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitkojn (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Traženi tokeni odobrenja</translation>
 <translation id="1634828734222219955">Ukupno</translation>
 <translation id="3535654229833214438">Transakcije</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">iz ovog lanca sinhronizacije</translation>
 <translation id="610118613261910287">Vidi reči šifre</translation>
 <translation id="8588535459744752615">Traži se uređaj</translation>
-<translation id="6406506848690869874">Sinhronizuj</translation>
+<translation id="391177677159359824">Sinhronizacija (beta)</translation>
 <translation id="28332161031213248">Donja lista uređaja uključuje sve uređaje u vašem lancu sinhronizacije. Svakim uređajem se može upravljati sa bilo kog drugog uređaja.</translation>
 <translation id="8153617760825732120">naziv uređaja</translation>
 <translation id="4241512165288542484">(Ovaj uređaj)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Podešavanja za sačuvane sajtove</translation>
 <translation id="7859704718976024901">Istorija pregledanja</translation>
 <translation id="2339730291919608488">Napusti lanac sinhronizacije</translation>
-<translation id="4332558599726753990">Konfigurisanje sinhronizacije</translation>
+<translation id="4797449295451979552">Sinhronizuj (beta) postavku</translation>
 <translation id="298546024891487702">Da biste započeli, moraćete da instalirate Brave na svim uređajima koje planirate da sinhronizujete. Da biste ih povezali, pokrenite lanac sinhronizacije koji ćete koristiti da bezbedno povežete sve svoje uređaje zajedno.</translation>
 <translation id="6200528822592747640">Započnite novi lanac sinhronizacije</translation>
 <translation id="5184726904895809379">Imam šifru sinhronizacije</translation>

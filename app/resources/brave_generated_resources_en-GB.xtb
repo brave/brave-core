@@ -38,8 +38,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="1434416574322382019">New Private Window with Tor</translation>
 <translation id="4703780849509456860">Open Link in Private Window with Tor</translation>
 <translation id="3488584642074079080">Open Link in Brave Private Window with Tor</translation>
+<translation id="6313675821927505581">New private window with Tor</translation>
+<translation id="2638041073279639246">Open link in private window with Tor</translation>
+<translation id="3425600262621021599">Open link in Brave private window with Tor</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="2515126961943087659">Bat Ads Service</translation>
+<translation id="7924918279836988121">Bat Ledger Service</translation>
 <translation id="7372129767729198111">Brave shields defaults</translation>
 <translation id="8029018702721078742">Ad Control</translation>
 <translation id="3544462288910360084">Cookie Control</translation>
@@ -60,6 +64,11 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="1822560017823072927">Default public and private interfaces</translation>
 <translation id="5825943197137337319">Default public interface only</translation>
 <translation id="1689062823386843231">Disable non-proxied UDP</translation>
+<translation id="6645631466045614531">Access Sync via</translation>
 <translation id="6786747875388722282">Extensions</translation>
+<translation id="2896916411183256228">Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.</translation>
+<translation id="6554397389149987360">Uses Hangouts component to enable screen sharing and other features in the browser.</translation>
 <translation id="6916590542764765824">Manage Extensions</translation>
+<translation id="4928988318462976765">Web Extensions Store</translation>
+<translation id="9181207987584064303">View in Web Extensions Store</translation>
 </translationbundle>

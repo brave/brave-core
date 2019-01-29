@@ -38,8 +38,12 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="1434416574322382019">Nova Janela Privada com o Tor</translation>
 <translation id="4703780849509456860">Abrir Ligação em Janela Privada com o Tor</translation>
 <translation id="3488584642074079080">Abrir Ligação em Janela Privada Brave com o Tor</translation>
+<translation id="6313675821927505581">Nova janela privada com Tor</translation>
+<translation id="2638041073279639246">Abrir ligação em janela privada com Tor</translation>
+<translation id="3425600262621021599">Abrir ligação em janela privada Brave com Tor</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="2515126961943087659">Serviço de anúncios BAT</translation>
+<translation id="7924918279836988121">Serviço de Ledger Bat</translation>
 <translation id="7372129767729198111">Escudos pré-definidos Brave</translation>
 <translation id="8029018702721078742">Controlo de anúncios</translation>
 <translation id="3544462288910360084">Controlo de Cookies</translation>
@@ -60,6 +64,11 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="1822560017823072927">Interfaces públicas e privadas pré-definidas</translation>
 <translation id="5825943197137337319">Apenas pré-definida interface pública</translation>
 <translation id="1689062823386843231">Desativar UDP não-proxy</translation>
+<translation id="6645631466045614531">Aceder a Sync via</translation>
 <translation id="6786747875388722282">Extensões</translation>
+<translation id="2896916411183256228">Utiliza WebTorrent para exibir torrents diretamente no navegador. É compatível com ficheiros de torrents e magnet links.</translation>
+<translation id="6554397389149987360">Utiliza um componente de Hangouts para permitir a partilha de ecrã e outras funcionalidades no navegador.</translation>
 <translation id="6916590542764765824">Gerir extensões</translation>
+<translation id="4928988318462976765">Loja de Extensões Web</translation>
+<translation id="9181207987584064303">Ver na Loja de Extensões Web</translation>
 </translationbundle>

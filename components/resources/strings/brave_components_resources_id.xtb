@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">± Waktu Dihemat</translation>
 <translation id="5206618227023752085">Situs teratas dihapus.</translation>
 <translation id="2079545284768500474">Urungkan</translation>
+<translation id="6040143037577758943">Tutup</translation>
 <translation id="8529752221839395787">Pulihkan Semua</translation>
 <translation id="3022168349636134570">detik</translation>
 <translation id="8664519043722036194">detik</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Aktifkan Brave Rewards</translation>
 <translation id="2862598513212603756">Ketertarikan Anda begitu berharga. Dapatkan penghasilan dengan melihat iklan yang menghormati privasi sewaktu melakukan penelusuran, dan bayarkan kembali untuk mendukung pembuat konten yang Anda sukai.</translation>
 <translation id="4942016616604700968">Aktifkan Rewards</translation>
-<translation id="1964278139527989987">Mengimpor bookmark &amp; pengaturan</translation>
+<translation id="3958088479270651626">Impor bookmark dan setelan</translation>
 <translation id="5633840519079139680">Brave memudahkan Anda mengkonfigurasi lingkungan yang biasa digunakan dengan mengimpor bookmark dan pengaturan dari browser yang terinstal di komputer Anda.</translation>
 <translation id="8275038454117074363">Impor</translation>
 <translation id="5540323067375019678">Mengelola perisai</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Beri tip secara langsung saat Anda menemukan permata.</translation>
-<translation id="1638706606242137268">Kirim Tip di Twitter, YouTube, dan lainnya, untuk menghadiahi kiriman yang Anda ‘Suka’.</translation>
+<translation id="6135431587052937035">Dukung situs favorit Anda dengan tip bulanan berulang.</translation>
 <translation id="2788596505277705686">{{balance}} BAT telah dipulihkan. Kunci dompet Anda telah sukses diverifikasi dan dimuat.</translation>
 <translation id="1083279119532577005">Dompet dipulihkan!</translation>
 <translation id="7841456038054167122">Masukkan ulang kunci atau coba kunci lain.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">Terima kasih</translation>
 <translation id="6432779622695508363">Tip pada suka</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Hibah Token Diklaim</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transaksi</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">dari rantai sinkronisasi ini</translation>
 <translation id="610118613261910287">Lihat Kata Kode</translation>
 <translation id="8588535459744752615">Mencari perangkat</translation>
-<translation id="6406506848690869874">Sinkronkan</translation>
+<translation id="391177677159359824">Sinkronisasi (beta)</translation>
 <translation id="28332161031213248">Daftar perangkat di bawah ini mencakup semua perangkat di dalam untai sinkronisasi Anda. Setiap perangkat dapat dikelola dari perangkat lain.</translation>
 <translation id="8153617760825732120">nama perangkat</translation>
 <translation id="4241512165288542484">(Perangkat Ini)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Pengaturan Situs Tersimpan</translation>
 <translation id="7859704718976024901">Riwayat Penelusuran</translation>
 <translation id="2339730291919608488">Keluar dai Rantai Sinkronisasi</translation>
-<translation id="4332558599726753990">Pengaturan Sinkronisasi</translation>
+<translation id="4797449295451979552">Pengaturan Sinkronisasi (beta)</translation>
 <translation id="298546024891487702">Untuk memulai, Anda harus memasang Brave pada semua perangkat ingin Anda sinkronkan. Untuk menyatukan semuanya, mulailah rantai sinkronisasi yang akan Anda gunakan untuk menghubungkan semua perangkat Anda dengan aman.</translation>
 <translation id="6200528822592747640">Mulai Untai Sinkronisasi baru</translation>
 <translation id="5184726904895809379">Saya punya Kode Sinkronisasi</translation>

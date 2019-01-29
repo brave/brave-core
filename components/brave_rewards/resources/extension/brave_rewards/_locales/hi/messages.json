@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "टोकन ग्रांट्स",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "टोकन अनुदान पर दावा किया गया",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Brave पुरस्कार है ",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "वालेट निर्माण असफल",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "दोबारा कोशिश करें",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

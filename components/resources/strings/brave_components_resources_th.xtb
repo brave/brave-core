@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">เวลาโดยประมาณที่บันทึกไว้</translation>
 <translation id="5206618227023752085">ลบเว็บไซต์ที่เข้าชมบ่อยออกแล้ว</translation>
 <translation id="2079545284768500474">แก้</translation>
+<translation id="6040143037577758943">ปิด</translation>
 <translation id="8529752221839395787">กู้คืนทั้งหมด</translation>
 <translation id="3022168349636134570">วินาที</translation>
 <translation id="8664519043722036194">วินาที</translation>
@@ -51,7 +52,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8050847734948770789">เปิด Brave Rewards</translation>
 <translation id="2862598513212603756">ความสนใจของคุณมีค่า รับรายได้จากการชมโฆษณาที่เคารพความเป็นส่วนตัวในขณะที่คุณเรียกดูเว็บ และส่งต่อสิ่งดีๆ ตอบแทนเพื่อสนับสนุนผู้สร้างสรรค์คอนเทนต์ที่คุณชื่นชอบ</translation>
 <translation id="4942016616604700968">เปิดการให้รางวัล</translation>
-<translation id="1964278139527989987">นำเข้าบุ๊กมาร์กและการตั้งค่า</translation>
+<translation id="3958088479270651626">นำเข้าบุ๊กมาร์กและการตั้งค่า</translation>
 <translation id="5633840519079139680">Brave ช่วยให้การตั้งค่าสภาพแวดล้อมที่คุณใช้เป็นประจำเป็นเรื่องง่าย โดยการนำเข้าบุ๊กมาร์กและการตั้งค่าจากบราว์เซอร์อื่นๆ ที่ติดตั้งอยู่บนคอมพิวเตอร์ของคุณ</translation>
 <translation id="8275038454117074363">นำเข้า</translation>
 <translation id="5540323067375019678">จัดการการป้องกันของคุณ</translation>
@@ -109,7 +110,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">ทิปในจุดที่คุณพบอัญมณี</translation>
-<translation id="1638706606242137268">ส่งทิปทางทวิตเตอร์ ยูทูบ ฯลฯ เพื่อให้รางวัลแก่โพสต์ที่คุณ ‘ ชอบ ’</translation>
+<translation id="6135431587052937035">สนับสนุนเว็บไซต์โปรดของคุณด้วยคำแนะนำเวียนซ้ำรายเดือน</translation>
 <translation id="2788596505277705686">{{balance}} BAT ได้รับการกู้คืน กุญแจกระเป๋าได้รับการยืนยันและโหลดเป็นที่เรียบร้อย</translation>
 <translation id="1083279119532577005">กู้คืนกระเป๋าเงินแล้ว!</translation>
 <translation id="7841456038054167122">โปรดใส่รหัสใหม่อีกครั้งหรือลองใช้รหัสอื่น</translation>
@@ -274,9 +275,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8826007068782654809">ขอบคุณ</translation>
 <translation id="6432779622695508363">ทิปเกี่ยวกับการถูกใจ</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">บิทคอยน์ (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">ไลท์คอยน์ (LTC)</translation>
 <translation id="4914597931214386232">โทเค็นเงินบริจาคที่เบิกแล้ว</translation>
 <translation id="1634828734222219955">รวม</translation>
 <translation id="3535654229833214438">ธุรกรรม</translation>
@@ -314,7 +315,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1555452132857939218">จากกลุ่มการซิงค์นี้</translation>
 <translation id="610118613261910287">ดูรหัสอักษร</translation>
 <translation id="8588535459744752615">กำลังหาอุปกรณ์</translation>
-<translation id="6406506848690869874">ซิงค์</translation>
+<translation id="391177677159359824">ซิงค์ (เบตา)</translation>
 <translation id="28332161031213248">รายการอุปกรณ์ด้านล่างแสดงอุปกรณ์ทั้งหมดในซิงค์เชนของคุณ คุณสามารถจัดการอุปกรณ์แต่ละรายการจากอุปกรณ์อื่นได้ทั้งหมด</translation>
 <translation id="8153617760825732120">ชื่ออุปกรณ์</translation>
 <translation id="4241512165288542484">(อุปกรณ์นี้)</translation>
@@ -327,7 +328,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5591129654353352557">การตั้งค่าไซต์ที่บันทึก</translation>
 <translation id="7859704718976024901">ประวัติการเรียกดู</translation>
 <translation id="2339730291919608488">ออกจากกลุ่มการซิงค์</translation>
-<translation id="4332558599726753990">ตั้งค่าการซิงค์</translation>
+<translation id="4797449295451979552">การตั้งค่าซิงค์ (เบตา)</translation>
 <translation id="298546024891487702">ขั้นตอนแรก คุณจะต้องทำการติดตั้ง Brave บนอุปกรณ์ทั้งหมดที่คุณต้องการซิงค์ จากนั้นหากต้องการผูกอุปกรณ์ทั้งหมดไว้ด้วยกัน ให้เริ่มทำซิงค์เชนที่คุณต้องการใช้งานขึ้นมาเพื่อเชื่อมโยงอุปกรณ์ทั้งหมดของคุณเข้าด้วยกันอย่างปลอดภัย</translation>
 <translation id="6200528822592747640">เริ่มซิงค์เชนใหม่</translation>
 <translation id="5184726904895809379">ฉันมีซิงค์โค้ด</translation>

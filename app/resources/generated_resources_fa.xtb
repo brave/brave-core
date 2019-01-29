@@ -1017,7 +1017,6 @@
 <translation id="5483785310822538350">لغو دسترسی به فایل و دستگاه</translation>
 <translation id="93766956588638423">تعمیر افزونه</translation>
 <translation id="3905761538810670789">تعمیر برنامه</translation>
-<translation id="7246778686271518284">Brave Web Store</translation>
 <translation id="8808478386290700967">Web Store</translation>
 <translation id="488785315393301722">نمایش جزئیات</translation>
 <translation id="8962083179518285172">پنهان کردن جزئیات</translation>
@@ -1512,13 +1511,13 @@
 <translation id="4620809267248568679">این تنظیم توسط یک برنامهٔ افزودنی به اجرا گذاشته می‌شود.</translation>
 <translation id="4846680374085650406">شما از توصیه‌های سرپرست سیستم برای این تنظیم پیروی می‌کنید.</translation>
 <translation id="1223853788495130632">سرپرست شما توصیه می‌کند که مقدار خاصی را برای این گزینه وارد کنید.</translation>
-<translation id="2573343962518858459">‏از فروشگاه وب Brave نیست.</translation>
+<translation id="8839398440242019256">‏از فروشگاه وب Brave نیست.</translation>
 <translation id="5337771866151525739">توسط یک شخص ثالث نصب شده است.</translation>
 <translation id="4538792345715658285">نصب شده توسط خط‌مشی سازمانی.</translation>
 <translation id="4359408040881008151">به دلیل برنامه(های) افزودنی وابسته نصب شد.</translation>
 <translation id="4980805016576257426">این افزونه بدافزار دارد.</translation>
 <translation id="5522156646677899028">این برنامه افزودنی از لحاظ امنیتی اصلاً مطمئن نیست.</translation>
-<translation id="1168617370053816436">‏این برنامه افزودنی حریم خصوصی فروشگاه وب Brave را نقض می‌کند.</translation>
+<translation id="6945695820322143954">‏این برنامه افزودنی حریم خصوصی فروشگاه وب Brave را نقض می‌کند.</translation>
 <translation id="177808131755847449">‏توسط Brave غیرفعال شده است. ممکن است این افزونه ناامن باشد.</translation>
 <translation id="1434696352799406980">این گزینه صفحه شروع، صفحه برگه جدید، موتور جستجو و برگه‌های پین‌شده شما را بازنشانی می‌کند. همچنین همه افزونه‌ها را غیرفعال می‌کند و داده‌های موقتی مانند کوکی‌ها را پاک می‌کند. نشانک‌ها، سابقه و گذرواژه‌های ذخیره‌شده شما پاک نمی‌شوند.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> می‌خواهد تنظیمات شما را بازنشانی کند.</translation>
@@ -2908,10 +2907,10 @@
        فایل‌ها را با دیگران <ph name="MARKUP_7"/>اشتراک‌گذاری، ایجاد و مشارکت<ph name="MARKUP_8"/>
        کنید، همه این کارها را در یک مکان انجام دهید.<ph name="MARKUP_9"/></translation>
 <translation id="7489605380874780575">بررسی وجود شرایط لازم</translation>
-<translation id="4997096511442832556">‏این نوع فایل پشتیبانی نمی‌شود. لطفاً از <ph name="BEGIN_LINK"/>فروشگاه وب<ph name="END_LINK"/> Brave بازدید کنید تا برنامه‌ای پیدا کنید که بتواند این نوع فایل را باز کند.
+<translation id="4878716980734452132">‏این نوع فایل پشتیبانی نمی‌شود. لطفاً از <ph name="BEGIN_LINK"/>فروشگاه وب<ph name="END_LINK"/> Brave بازدید کنید تا برنامه‌ای پیدا کنید که بتواند این نوع فایل را باز کند.
  <ph name="BEGIN_LINK_HELP"/>بیشتر بدانید<ph name="END_LINK_HELP"/></translation>
-<translation id="5097366979999786201">‏این فایل برای رایانه‌ای است که از نرم‌افزار Windows استفاده می‌کند، این فایل با دستگاه شما که Brave OS روی آن نصب است سازگار نیست. لطفاً <ph name="BEGIN_LINK"/>فروشگاه وب Brave‏<ph name="END_LINK"/> را برای برنامه مناسب جایگزین بررسی کنید.<ph name="BEGIN_LINK_HELP"/>بیشتر بدانید<ph name="END_LINK_HELP"/></translation>
-<translation id="6041399778584119390">‏این فایل برای رایانه‌ای طراحی شده است که از نرم‌افزار Macintosh استفاده می‌کند. این فایل با دستگاه شما که Brave OS روی آن نصب است، سازگار نیست. لطفاً <ph name="BEGIN_LINK"/>فروشگاه وب Brave‏<ph name="END_LINK"/> را برای برنامه مناسب جایگزین بررسی کنید.<ph name="BEGIN_LINK_HELP"/>بیشتر بدانید<ph name="END_LINK_HELP"/></translation>
+<translation id="3376900196170631953">‏این فایل برای رایانه‌ای است که از نرم‌افزار Windows استفاده می‌کند، این فایل با دستگاه شما که Brave OS روی آن نصب است سازگار نیست. لطفاً <ph name="BEGIN_LINK"/>فروشگاه وب Brave‏<ph name="END_LINK"/> را برای برنامه مناسب جایگزین بررسی کنید.<ph name="BEGIN_LINK_HELP"/>بیشتر بدانید<ph name="END_LINK_HELP"/></translation>
+<translation id="3072401511615920367">‏این فایل برای رایانه‌ای طراحی شده است که از نرم‌افزار Macintosh استفاده می‌کند. این فایل با دستگاه شما که Brave OS روی آن نصب است، سازگار نیست. لطفاً <ph name="BEGIN_LINK"/>فروشگاه وب Brave‏<ph name="END_LINK"/> را برای برنامه مناسب جایگزین بررسی کنید.<ph name="BEGIN_LINK_HELP"/>بیشتر بدانید<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">چند ثانیه صبر کنید</translation>
 <translation id="3096967955765855393">‏همواره به دنبال راه‌هایی هستیم تا مرورتان را ایمن‌تر کنیم. قبلاً هر وب‌سایتی از شما می‌خواست برنامه‌افزودنی‌ای را در مرورگرتان اضافه کنید. در جدیدترین نسخه Brave Software Brave، باید به Brave صراحتاً بگویید که می‌خواهید با افزودن این برنامه‌های افزودنی از طریق صفحه افزونه‌ها آنها را نصب کنید. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">باز کردن با $1 ممکن نیست</translation>
@@ -2946,9 +2945,9 @@
 <translation id="7452737073539387970">‏سایت Brave Software</translation>
 <translation id="4445959220475380548">‏پیوند Brave Software Drive</translation>
 <translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="2599249317139964094">‏این نوع فایل پشتیبانی نمی‌شود. لطفاً فروشگاه وب Brave را بازدید کنید تا برنامه‌ای را پیدا کنید که بتواند این نوع فایل را باز کند.</translation>
-<translation id="3495282670559481871">‏این فایل برای رایانه‌ای که از نرم‌افزار Macintosh استفاده می‌کند طراحی شده است. با دستگاه شما که سیستم عامل Brave را اجرا می‌کند، سازگار نیست. لطفاً فروشگاه وب Brave را برای یک برنامه جایگزین مناسب جستجو کنید.</translation>
-<translation id="3213197099265624265">‏این فایل برای رایانه‌ای که از نرم‌افزار Windows استفاده می‌کند طراحی شده است. این فایل با دستگاه شما که سیستم عامل Brave را اجرا می‌کند، سازگار نیست. لطفاً «فروشگاه وب Brave» را برای یک برنامه جایگزین مناسب جستجو کنید.</translation>
+<translation id="1131292764548273687">‏این نوع فایل پشتیبانی نمی‌شود. لطفاً فروشگاه وب Brave را بازدید کنید تا برنامه‌ای را پیدا کنید که بتواند این نوع فایل را باز کند.</translation>
+<translation id="9010211493509471179">‏این فایل برای رایانه‌ای که از نرم‌افزار Macintosh استفاده می‌کند طراحی شده است. با دستگاه شما که سیستم عامل Brave را اجرا می‌کند، سازگار نیست. لطفاً فروشگاه وب Brave را برای یک برنامه جایگزین مناسب جستجو کنید.</translation>
+<translation id="5059989099965370411">‏این فایل برای رایانه‌ای که از نرم‌افزار Windows استفاده می‌کند طراحی شده است. این فایل با دستگاه شما که سیستم عامل Brave را اجرا می‌کند، سازگار نیست. لطفاً «فروشگاه وب Brave» را برای یک برنامه جایگزین مناسب جستجو کنید.</translation>
 <translation id="5833610766403489739">این فایل در جایی سرگردان شده است. لطفاً تنظیم محل دانلودتان را بررسی کنید و دوباره امتحان کنید.</translation>
 <translation id="3966388904776714213">پخش‌کننده صوتی</translation>
 <translation id="3245321423178950146">هنرمند ناشناس</translation>
@@ -3029,7 +3028,7 @@
 <translation id="4570609078116869893">‏به‌روزرسانی‌ خودکار Brave برای همه کاربران</translation>
 <translation id="7102687220333134671">به‌روزرسانی‌های خودکار روشن هستند</translation>
 <translation id="6981982820502123353">قابلیت دسترسی</translation>
-<translation id="5392220887878025825">‏باز کردن نت‌بازار Brave</translation>
+<translation id="5840822070878669614">‏باز کردن نت‌بازار Brave</translation>
 <translation id="6073903501322152803">افزودن قابلیت‌های دسترس‌پذیری</translation>
 <translation id="7988355189918024273">فعالسازی ویژگی‌های دسترسی</translation>
 <translation id="2558896001721082624">گزینه‌های دسترس‌پذیری در منوی سیستم همیشه نمایش داده شوند</translation>
@@ -4004,7 +4003,7 @@
 <translation id="437184764829821926">تنظیمات پیشرفته قلم</translation>
 <translation id="323803881985677942">باز کردن گزینه‌های افزونه</translation>
 <translation id="2166369534954157698">روباه قهوه‌ای چالاک از روی سگ تنبل پرید</translation>
-<translation id="6121729889904235649">‏نیازمند افزونه از فروشگاه وب Brave است</translation>
+<translation id="8911765336506423117">‏نیازمند افزونه از فروشگاه وب Brave است</translation>
 <translation id="6965978654500191972">دستگاه</translation>
 <translation id="8260864402787962391">ماوس</translation>
 <translation id="155865706765934889">صفحه لمسی</translation>
@@ -4222,7 +4221,6 @@
 <translation id="3777806571986431400">برنامه افزودنی فعال شد</translation>
 <translation id="6851497530878285708">برنامه فعال شد</translation>
 <translation id="5018207570537526145">باز کردن وب‌سایت افزونه</translation>
-<translation id="8158441856257599022">‏مشاهده در «نت‌بازار Brave»</translation>
 <translation id="4617270414136722281">گزینه‌های افزونه</translation>
 <translation id="7152478047064750137">این افزونه به مجوز خاصی نیاز ندارد</translation>
 <translation id="8523849605371521713">به‌موجب خط‌مشی اضافه شد</translation>
@@ -4232,7 +4230,7 @@
 <translation id="6370021412472292592">مانیفیست بارگیری نشد.</translation>
 <translation id="7235716375204803342">درحال واکشی فعالیت‌ها…</translation>
 <translation id="7647403192093989392">فعالیت اخیری وجود ندارد</translation>
-<translation id="2152198799932802652">‏افزونه‌ها و طرح‌های زمینه را در <ph name="BEGIN_LINK"/>نت‌بازار Brave<ph name="END_LINK"/> پیدا کنید</translation>
+<translation id="38046578254905003">‏افزونه‌ها و طرح‌های زمینه را در <ph name="BEGIN_LINK"/>نت‌بازار Brave<ph name="END_LINK"/> پیدا کنید</translation>
 <translation id="7272674038937250585">توضیحی ارائه نشده است</translation>
 <translation id="3855441664322950881">فشرده کردن افزونه....</translation>
 <translation id="2958721676848865875">هشدار در مورد بسته‌بندی افزونه</translation>

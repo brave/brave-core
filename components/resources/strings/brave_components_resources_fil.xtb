@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Tinatantyang Oras na Natipid</translation>
 <translation id="5206618227023752085">Naalis ang nangungunang site.</translation>
 <translation id="2079545284768500474">I-undo</translation>
+<translation id="6040143037577758943">Isara</translation>
 <translation id="8529752221839395787">I-restore Lahat</translation>
 <translation id="3022168349636134570">segundo</translation>
 <translation id="8664519043722036194">mga segundo</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">I-enable ang Mga Reward ng Brave</translation>
 <translation id="2862598513212603756">Mahalaga ang iyong atensyon. Kumita sa pamamagitan ng panonood ng mga ad na nagpapahalaga sa privacy habang nagba-browse ka, magbigay ng tip upang suportahan ang mga creator ng content na gusto mo.</translation>
 <translation id="4942016616604700968">I-enable ang Mga Reward</translation>
-<translation id="1964278139527989987">Mag-import ng mga bookmark at setting</translation>
+<translation id="3958088479270651626">I-import ang mga bookmark at setting</translation>
 <translation id="5633840519079139680">Pinapadali ng Brave ang pag-set up ng iyong karaniwang environment sa pamamagitan ng pag-import ng mga bookmark at setting mula sa iba pang browser na naka-install sa iyong computer.</translation>
 <translation id="8275038454117074363">I-import</translation>
 <translation id="5540323067375019678">Pamahalaan ang iyong mga shield</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Magbigay kaagad ng tip kapag nakahanap ka ng mga gem.</translation>
-<translation id="1638706606242137268">Magpadala ng Mga Tip sa Twitter, YouTube, at higit pa upang bigyan ng reward ang mga post na ‘Nila-like’ mo.</translation>
+<translation id="6135431587052937035">Suportahan ang mga paborito mong site gamit ang mga umuulit na buwanang tip.</translation>
 <translation id="2788596505277705686">Na-recover ang {{balance}} BAT. Na-verify at na-load na ang key ng wallet mo.</translation>
 <translation id="1083279119532577005">Na-restore ang wallet!</translation>
 <translation id="7841456038054167122">Pakilagay muli ang mga key o sumubok ng ibang mga key.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">Salamat</translation>
 <translation id="6432779622695508363">Tip sa pag-like</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Mga Na-claim na Grant para sa Token</translation>
 <translation id="1634828734222219955">Kabuuan</translation>
 <translation id="3535654229833214438">Mga transaksyon</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">mula sa chain ng pag-sync na ito</translation>
 <translation id="610118613261910287">Tingnan ang Mga Code Word</translation>
 <translation id="8588535459744752615">Naghahanap ng device</translation>
-<translation id="6406506848690869874">Mag-sync</translation>
+<translation id="391177677159359824">Sync (beta)</translation>
 <translation id="28332161031213248">Kasama sa listahan ng device sa ibaba ang lahat ng device sa iyong chain ng pag-sync. Maaaring pamahalaan ang bawat device mula sa anupamang device.</translation>
 <translation id="8153617760825732120">pangalan ng device</translation>
 <translation id="4241512165288542484">(ANG DEVICE NA ITO)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Mga Naka-save na Setting ng Site</translation>
 <translation id="7859704718976024901">History ng Pag-browse</translation>
 <translation id="2339730291919608488">Umalis sa Chain ng Pag-sync</translation>
-<translation id="4332558599726753990">Pag-set Up ng Pag-sync</translation>
+<translation id="4797449295451979552">Sync (beta) Setup</translation>
 <translation id="298546024891487702">Upang makapagsimula, kakailanganin mong i-install ang Brave sa lahat ng device na pinaplano mong i-sync. Para maipagkabit ang mga ito, magsimula ng chain ng pag-sync na gagamitin mo upang secure na magkasamang ma-link ang lahat ng iyong device.</translation>
 <translation id="6200528822592747640">Magsimula ng bagong Chain ng Pag-sync</translation>
 <translation id="5184726904895809379">Mayroon akong Code ng Pag-sync</translation>

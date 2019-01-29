@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Becsült idő elmentve</translation>
 <translation id="5206618227023752085">Felső oldal eltávolítva.</translation>
 <translation id="2079545284768500474">Visszavonás</translation>
+<translation id="6040143037577758943">Bezárás</translation>
 <translation id="8529752221839395787">Összes helyreállítása</translation>
 <translation id="3022168349636134570">másodperc</translation>
 <translation id="8664519043722036194">másodperc</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Brave jutalmak engedélyezése</translation>
 <translation id="2862598513212603756">Figyelme értékes. Keressen pénzt személyes adatai védelmét tiszteletben tartó hirdetések megtekintésével és befektetéseivel támogassa kedvelt tartalomszolgáltatóit.</translation>
 <translation id="4942016616604700968">Jutalmak engedélyezése</translation>
-<translation id="1964278139527989987">Könyvjelzők importálása &amp; beállítások</translation>
+<translation id="3958088479270651626">Könyvjelzők és beállítások importálása</translation>
 <translation id="5633840519079139680">A számítógépre telepített más böngészők könyvjelzőinek és beállításainak importálásával a Brave egyszerűvé teszi a megszokott felhasználói környezet létrehozását.</translation>
 <translation id="8275038454117074363">Importálás</translation>
 <translation id="5540323067375019678">Adatvédelmi pajzsok kezelése</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Adakozz helyben, ha ékszerre bukkansz.</translation>
-<translation id="1638706606242137268">Küldj adományokat Twitteren, YouTube-on és sok más helyen, hogy jutalmazd a ‘Kedvelt’ bejegyzéseket.</translation>
+<translation id="6135431587052937035">Támogassa kedvenc honlapját ismétlődő havi adományokkal.</translation>
 <translation id="2788596505277705686">{{balance}} BAT helyreállítva. Tárcáját sikeresen ellenőrizték és betöltötték.</translation>
 <translation id="1083279119532577005">Tárca helyreállítva!</translation>
 <translation id="7841456038054167122">Adja meg újra a kódokat vagy próbáljon meg más kódokat.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">Köszönjük</translation>
 <translation id="6432779622695508363">Borravaló a lájkra</translation>
 <translation id="8424370624815730676">Alap figyelem token (BAT - Basic Attention Token)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Beváltott zseton adományok</translation>
 <translation id="1634828734222219955">Összesen</translation>
 <translation id="3535654229833214438">Tranzakciók</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">ebből a szinkronizációs láncból</translation>
 <translation id="610118613261910287">Kódszavak megtekintése</translation>
 <translation id="8588535459744752615">Eszköz keresése</translation>
-<translation id="6406506848690869874">Szinkronizálás</translation>
+<translation id="391177677159359824">Szinkronizálás (béta)</translation>
 <translation id="28332161031213248">Az alábbi készülékek listáján megtalálható szinkronláncod minden készüléke. Minden készülék kezelhető minden másik készülékről.</translation>
 <translation id="8153617760825732120">eszköz neve</translation>
 <translation id="4241512165288542484">(Ez az eszköz)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Mentett oldalbeállítások</translation>
 <translation id="7859704718976024901">Böngészési előzmények</translation>
 <translation id="2339730291919608488">Szinkronizációs lánc elhagyása</translation>
-<translation id="4332558599726753990">Szinkronizálási beállítások</translation>
+<translation id="4797449295451979552">Szinkronizálás (béta) Beállítás</translation>
 <translation id="298546024891487702">A kezdéshez telepítsd minden szinkronizálni kívánt készülékre a Brave-et. Az összeláncolásukhoz indíts egy szinkronláncot, amellyel minden készülékedet biztonságosan összeláncolhatod.</translation>
 <translation id="6200528822592747640">Új szinkronlác indítása</translation>
 <translation id="5184726904895809379">Rendelkezek szinkronizálási kóddal</translation>
