@@ -19,6 +19,10 @@
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+#include "brave/browser/ui/content_settings/brave_widevine_bundle_util.h"
+#endif
+
 BraveWidevineContentSettingPluginBubbleModel::BraveWidevineContentSettingPluginBubbleModel(
     ContentSettingBubbleModel::Delegate* delegate,
         content::WebContents* web_contents) :
@@ -57,6 +61,11 @@ void BraveWidevineContentSettingPluginBubbleModel::RunPluginsOnPage() {
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
   RegisterWidevineCdmComponent(g_brave_browser_process->component_updater());
 #endif
+
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+  RegisterWidevineCdmToCdmRegistry();
+#endif
+
   ChromeSubresourceFilterClient::FromWebContents(web_contents())
         ->OnReloadRequested();
 }

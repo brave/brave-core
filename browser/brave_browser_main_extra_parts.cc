@@ -4,6 +4,7 @@
 
 #include "brave/browser/brave_browser_main_extra_parts.h"
 
+#include "brave/browser/ui/content_settings/brave_widevine_bundle_util.h"
 #include "chrome/browser/first_run/first_run.h"
 
 BraveBrowserMainExtraParts::BraveBrowserMainExtraParts() {
@@ -14,4 +15,7 @@ BraveBrowserMainExtraParts::~BraveBrowserMainExtraParts() {
 
 void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
   brave::AutoImportMuon();
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+  RegisterWidevineCdmToCdmRegistry();
+#endif
 }

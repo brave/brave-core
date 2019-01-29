@@ -1,0 +1,20 @@
+diff --git a/content/browser/media/cdm_registry_impl.cc b/content/browser/media/cdm_registry_impl.cc
+index 81936b7601aa72effc5f99a188da72f8b9469568..e030f292f44e9e731ed5c10b404d3156e482dd44 100644
+--- a/content/browser/media/cdm_registry_impl.cc
++++ b/content/browser/media/cdm_registry_impl.cc
+@@ -27,8 +27,15 @@ CdmRegistryImpl::CdmRegistryImpl() {}
+ CdmRegistryImpl::~CdmRegistryImpl() {}
+ 
+ void CdmRegistryImpl::Init() {
++  // In linux, we want to register widevine cdm to CdmRegistry when users opted
++  // in. If not, widevine is initialized by default.
++  // Instead, we tries to register it in
++  // BraveBrowserMainExtraParts::PreMainMessageLoopRun() by checking opted in
++  // prefs.
++#if defined(BRAVE_CHROMIUM_BUILD) && !defined(OS_LINUX)
+   // Let embedders register CDMs.
+   GetContentClient()->AddContentDecryptionModules(&cdms_, nullptr);
++#endif
+ }
+ 
+ void CdmRegistryImpl::RegisterCdm(const CdmInfo& info) {
