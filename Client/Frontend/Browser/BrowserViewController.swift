@@ -420,8 +420,6 @@ class BrowserViewController: UIViewController {
         #if NO_SYNC
         if sync.syncSeedArray == nil { return }
         
-        sync.leaveSyncGroup()
-        
         let msg = """
             Sync has been disabled, as it will not be included in the next couple of production builds.
             Your iOS device has been auto-removed from any sync groups.
