@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Odhad ušetreného času</translation>
 <translation id="5206618227023752085">Top lokalita bola odstránená.</translation>
 <translation id="2079545284768500474">Otvoriť</translation>
+<translation id="6040143037577758943">Zavrieť</translation>
 <translation id="8529752221839395787">Obnoviť všetko</translation>
 <translation id="3022168349636134570">sekunda</translation>
 <translation id="8664519043722036194">sekundy</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Povoliť odmeny Brave</translation>
 <translation id="2862598513212603756">Ceníme si vašu pozornosť. Zarábajte počas prehliadania sledovaním reklám, ktoré rešpektujú vaše súkromie, a pošlite to ďalej! Podporte tvorcov, ktorých obsah máte radi.</translation>
 <translation id="4942016616604700968">Povoliť odmeny</translation>
-<translation id="1964278139527989987">Importuje záložky a nastavenia</translation>
+<translation id="3958088479270651626">Importovať záložky a nastavenia</translation>
 <translation id="5633840519079139680">S prehliadačom Brave je jednoduché nastaviť si svoje obvyklé prostredie pomocou importovania vašich záložiek a nastavení z iných prehliadačov vo vašom počítači.</translation>
 <translation id="8275038454117074363">Importovať</translation>
 <translation id="5540323067375019678">Spravujte svoje štíty</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Prispejte na mieste keď nájdete drahokamy.</translation>
-<translation id="1638706606242137268">Pošlite príspevky na Twitter, YouTube a ďalšie, takto oceňte príspevky, ktoré sa vám páčia.</translation>
+<translation id="6135431587052937035">Podporujte svoje obľúbené stránky pravidelnými mesačnými príspevkami.</translation>
 <translation id="2788596505277705686">{{balance}} TZP bol obnovený. Kľúč vašej peňaženky bol overený a úspešne načítaný.</translation>
 <translation id="1083279119532577005">Peňaženka bola obnovená!</translation>
 <translation id="7841456038054167122">Prosím znovu zadajte kľúč, alebo použite iný kľúč.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">Ďakujeme</translation>
 <translation id="6432779622695508363">Tip na like</translation>
 <translation id="8424370624815730676">Token základnej pozornosti (TZP)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Kupónové granty nárokované</translation>
 <translation id="1634828734222219955">Súčet</translation>
 <translation id="3535654229833214438">Transakcie</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">z tohto synchronizačného reťazca</translation>
 <translation id="610118613261910287">Zobraziť kódové slová</translation>
 <translation id="8588535459744752615">Hľadanie zariadenia</translation>
-<translation id="6406506848690869874">Synchronizovať</translation>
+<translation id="391177677159359824">Synchronizácia (beta)</translation>
 <translation id="28332161031213248">Nižšie uvedený zoznam zariadení obsahuje všetky zariadenia v synchronizačnom reťazci. Každé zariadenie môže byť spravované z akéhokoľvek iného zariadenia.</translation>
 <translation id="8153617760825732120">názov zariadenia</translation>
 <translation id="4241512165288542484">(toto zariadenie)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Uložené nastavenia stránky</translation>
 <translation id="7859704718976024901">História prehliadania</translation>
 <translation id="2339730291919608488">Ukončiť synchronizačný reťazec</translation>
-<translation id="4332558599726753990">Nastavenie synchronizácie</translation>
+<translation id="4797449295451979552">Nastavenie synchronizácie (beta)</translation>
 <translation id="298546024891487702">Ak chcete začať, na všetkých zariadeniach, ktoré plánujete synchronizovať, si budete musieť nainštalovať Brave. Ak ich chcete spojiť, spustite reťazec synchronizácie, ktorý použijete na bezpečné prepojenie všetkých vašich zariadení.</translation>
 <translation id="6200528822592747640">Spustiť nový synchronizačný reťazec</translation>
 <translation id="5184726904895809379">Mám kód synchronizácie</translation>

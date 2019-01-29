@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Octrois de jetons",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Allocations de jetons réclamées\n",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Brave Récompenses est",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Une erreur est survenue lors de la création du portefeuille",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Réessayer",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Szacowany zaoszczędzony czas</translation>
 <translation id="5206618227023752085">Usunięto topową stronę.</translation>
 <translation id="2079545284768500474">Cofnij</translation>
+<translation id="6040143037577758943">Zamknij</translation>
 <translation id="8529752221839395787">Przywróć wszystko</translation>
 <translation id="3022168349636134570">sekunda</translation>
 <translation id="8664519043722036194">sekund</translation>
@@ -24,17 +25,17 @@
 <translation id="8730621377337864115">Zrobione</translation>
 <translation id="6248988683584659830">Przeszukaj ustawienia</translation>
 <translation id="730042046912793465">To jest</translation>
-<translation id="2055363275850890030">Tryb Prywatności</translation>
-<translation id="9133213713928851646">Brave nie zapamiętuje Twojej aktywności w Trybie Prywatnym. Strony, które odwiedzisz, nie pojawią się w Twojej historii przeglądania, a pliki cookie znikną, gdy zamkniesz przeglądarkę. Tryb Prywatny nie czyni cię jednak całkowicie anonimowym online.</translation>
+<translation id="2055363275850890030">Prywatne okno</translation>
+<translation id="9133213713928851646">Brave nie zapamiętuje Twojej aktywności w prywatnym oknie. Strony, które odwiedzisz, nie pojawią się w Twojej historii przeglądania, a pliki cookie znikną, gdy zamkniesz przeglądarkę. Prywatne okno nie czyni cię jednak całkowicie anonimowym w sieci.</translation>
 <translation id="8760415064721320867">Prywatne okno z obsługą sieci Tor</translation>
-<translation id="4844209912525464363">Brave nigdy nie zapamiętuje tego, co robisz w Trybie Prywatnym. Dzięki zintegrowanemu klientowi sieci Tor, nie tylko dostawca Internetu czy Twój pracodawca nie mogą podejrzeć, jakie strony odwiedzasz, ale też same strony docelowe nie poznają Twojego adresu IP.</translation>
-<translation id="778096729652828897">Dowiedz się więcej na temat korzystania z sieci Tor w Trybie Prywatnym.</translation>
-<translation id="7919374705736538787">Prywatne Wyszukiwanie z</translation>
+<translation id="4844209912525464363">Brave nigdy nie zapamiętuje tego, co robisz w prywatnym oknie. Dzięki zintegrowanemu klientowi sieci Tor, nie tylko dostawca Internetu czy Twój pracodawca nie mogą podejrzeć, jakie strony odwiedzasz, ale też same strony docelowe nie poznają Twojego adresu IP.</translation>
+<translation id="778096729652828897">Dowiedz się więcej na temat korzystania z prywatnego okna z obsługą sieci Tor</translation>
+<translation id="7919374705736538787">Prywatne wyszukiwanie z</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">W Trybie Prywatnym Brave korzysta z wyszukiwarki DuckDuckGo, dzięki czemu Twoja aktywność w sieci nie jest nigdzie zapisywana. DuckDuckGo nie śledzi historii wyszukiwania, więc możesz wyszukiwać bez obaw o swoją prywatność.</translation>
 <translation id="1925197199485958903">W Trybie Prywatnym z obsługą sieci Tor, domyślną przeglądarką jest DuckDuckGo. Niektóre z innych popularnych wyszukiwarek są bardziej skomplikowane w obsłudze sieci Tor. DuckDuckGo nie śledzi Twojej historii wyszukiwania. W sieci Tor, strony, które przeglądasz nie znają nawet Twojego adresu IP.</translation>
 <translation id="4371533307685765155">Wyszukaj korzystając z DuckDuckGo</translation>
-<translation id="5576876180131651996">Spraw, aby Tryb Prywatny zapewniał jeszcze więcej prywatności</translation>
+<translation id="5576876180131651996">Spraw, aby prywatne okno zapewniało jeszcze więcej prywatności</translation>
 <translation id="1129265576134014816">Od teraz przeglądanie w Trybie Prywatnym gwarantuje jeszcze więcej prywatności</translation>
 <translation id="805807983419360524">z obsługą sieci Tor</translation>
 <translation id="8958799246752641148">Sieć Tor ukrywa Twój adres IP przed witrynami, które odwiedzasz, przekierowując Cię przez kilka serwerów w sieci Tor, zanim ostatecznie dotrze do celu. Połączenia te są szyfrowane, więc Twój dostawca usług internetowych lub pracodawca nie zobaczy, jakie strony odwiedzasz. Sieć Tor może spowolnić przeglądanie stron, a niektóre z nich mogą w ogóle nie działać.</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Włącz Nagrody Brave</translation>
 <translation id="2862598513212603756">Twoja uwaga jest cenna. Zarabiaj, oglądając szanujące prywatność reklamy, i przekazuj, to co zarobisz, twórcom treści, które lubisz.</translation>
 <translation id="4942016616604700968">Włącz Nagrody Brave</translation>
-<translation id="1964278139527989987">Importuj zakładki i ustawienia</translation>
+<translation id="3958088479270651626">Importuj zakładki i ustawienia</translation>
 <translation id="5633840519079139680">W przeglądarce Brave łatwo jest skonfigurować swoje zwykłe środowisko, importując zakładki i ustawienia z innych przeglądarek zainstalowanych na komputerze.</translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="5540323067375019678">Zarządzaj tarczami</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Przekazuj napiwek od razu, gdy trafisz na prawdziwą perełkę.</translation>
-<translation id="1638706606242137268">Przekazuj napiwki na Twitterze, Youtube i innych, aby docenić treści, które ‘Lubisz’.</translation>
+<translation id="6135431587052937035">Wspieraj swoje ulubione strony poprzez comiesięczne donacje</translation>
 <translation id="2788596505277705686">Odzyskano {{balance}} BAT. Zweryfikowanie i wczytanie Twojego klucza portfela powiodło się.</translation>
 <translation id="1083279119532577005">Portfel przywrócony!</translation>
 <translation id="7841456038054167122">Wpisz ponownie klucze lub wypróbuj różne klucze.</translation>
@@ -119,7 +120,7 @@
 <translation id="2323069945529668668">Oho!</translation>
 <translation id="4929019589540826496">Te środki nie są jest już dostępne.</translation>
 <translation id="6965382102122355670">OK</translation>
-<translation id="2209002173101598046">Przykro nam, wygląda na to, że ten grant już wygasł.</translation>
+<translation id="2209002173101598046">Przepraszamy, te środki straciły już ważność.</translation>
 <translation id="717952606991220586">Ups, coś poszło nie tak. Spróbuj ponownie później.</translation>
 <translation id="7210234701206674260">Wystąpił problem z nagrodami przeglądarki Brave. Spróbuj ponownie później.</translation>
 <translation id="570208820610947248">Wykryliśmy, że coś jest nie tak z Twoim portfelem. Musisz przywrócić kopię zapasową ze swojego portfela, zanim jakiekolwiek transakcje będą mogły być przetwarzane.</translation>
@@ -182,7 +183,7 @@
 <translation id="1759104587873258696">wygasa dnia</translation>
 <translation id="6149218349077925111">dla</translation>
 <translation id="7314491422865740556">Tokeny niewykorzystane przed datą wygaśnięcia zostaną automatycznie zwrócone do puli wzrostu użytkowników przeglądarki Brave.</translation>
-<translation id="279567716178902927">Data wygaśnięcia grantu</translation>
+<translation id="279567716178902927">Data wygaśnięcia środków</translation>
 <translation id="2104073734684466851">Przyznane środki</translation>
 <translation id="1389143276807887637">importuj</translation>
 <translation id="7335371657242627509">Uwzględnij w wsparciu automatycznym</translation>
@@ -202,7 +203,7 @@
 <translation id="7828956995407538686">Październik</translation>
 <translation id="5502713021410870035">Wrzesień</translation>
 <translation id="211044356803193224">Miesięczne napiwki!</translation>
-<translation id="606865182719489911">Dostępny darmowy pakiet tokenów</translation>
+<translation id="606865182719489911">Dostępny jest darmowy pakiet tokenów</translation>
 <translation id="3453206261112715431">Bezpłatne tokeny</translation>
 <translation id="5736183007277264868">Aktualnie brak dostępnych tokenów.</translation>
 <translation id="8307851765167460403">Brak działań do tej pory…</translation>
@@ -210,7 +211,7 @@
 <translation id="8051372105644249165">Brak tokenów. Proszę</translation>
 <translation id="3630697955794050612">wył.</translation>
 <translation id="4921250468871504777">ok</translation>
-<translation id="7866482334467279021">wł.</translation>
+<translation id="7866482334467279021">włączone</translation>
 <translation id="8370173854533168890">Jeden raz</translation>
 <translation id="9182287025588539628">Jednorazowy napiwek</translation>
 <translation id="6381574025952123568">Saldo otwarcia</translation>
@@ -273,10 +274,10 @@
 <translation id="8826007068782654809">Dziękujemy</translation>
 <translation id="6432779622695508363">Daj napiwek z polubieniem</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
-<translation id="4914597931214386232">Wykorzystano granty tokenowe</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
+<translation id="4914597931214386232">Tokeny odebrane</translation>
 <translation id="1634828734222219955">Razem</translation>
 <translation id="3535654229833214438">Transakcje</translation>
 <translation id="8987812599455325915">Włącza to zarówno reklamy jak i wspieranie automatyczne. Możesz je w każdej chwili niezależnie włączyć lub wyłączyć.</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">z łańcucha synchronizacji</translation>
 <translation id="610118613261910287">Zobacz słowa kodu</translation>
 <translation id="8588535459744752615">Szukanie urządzenia</translation>
-<translation id="6406506848690869874">Synchronizacja</translation>
+<translation id="391177677159359824">Synchronizacja (beta)</translation>
 <translation id="28332161031213248">Poniższa lista urządzeń zawiera wszystkie urządzenia w Twoim łańcuchu synchronizacji. Każdym urządzeniem można zarządzać z dowolnego innego urządzenia.</translation>
 <translation id="8153617760825732120">nazwa urządzenia</translation>
 <translation id="4241512165288542484">(To urządzenie)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Zapisane ustawienia strony</translation>
 <translation id="7859704718976024901">Historia przeglądania</translation>
 <translation id="2339730291919608488">Opuść łańcuch synchronizacji</translation>
-<translation id="4332558599726753990">Konfiguracja synchronizacji</translation>
+<translation id="4797449295451979552">Instalacja synchronizacji (beta)</translation>
 <translation id="298546024891487702">Na początek trzeba zainstalować przeglądarkę Brave na wszystkich urządzeniach, które chcesz zsynchronizować. Aby je połączyć, rozpocznij łańcuch synchronizacji, którego użyjesz do bezpiecznego połączenia wszystkich swoich urządzeń.</translation>
 <translation id="6200528822592747640">Rozpocznij nowy łańcuch synchronizacji</translation>
 <translation id="5184726904895809379">Mam kod synchronizacji</translation>

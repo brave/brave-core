@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Donaciones de vales",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Vale de concesión reclamado",
     "description": "Title for grant section in wallet summary"
   },
@@ -302,7 +306,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
-    "message": "Desactivar",
+    "message": "Desactivado",
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
@@ -314,7 +318,15 @@
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
-    "message": "Las recompensas de Brave son",
+    "message": "Brave Rewards está",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Creación de Wallet fallida",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Reintentar",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Temps économisé estimé</translation>
 <translation id="5206618227023752085">Site du haut supprimé.</translation>
 <translation id="2079545284768500474">Annuler</translation>
+<translation id="6040143037577758943">Fermer</translation>
 <translation id="8529752221839395787">Tout Restaurer</translation>
 <translation id="3022168349636134570">seconde</translation>
 <translation id="8664519043722036194">secondes</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Activer les Récompenses Brave</translation>
 <translation id="2862598513212603756">Votre attention est précieuse. Gagnez de l'argent en visionnant des publicités respectueuses de la vie privée pendant que vous naviguez, et reversez vos gains afin de soutenir les créateurs de contenu que vous aimez.</translation>
 <translation id="4942016616604700968">Activer les Récompenses</translation>
-<translation id="1964278139527989987">Importez vos favoris et vos paramètres</translation>
+<translation id="3958088479270651626">Importer les favoris et les paramètres</translation>
 <translation id="5633840519079139680">Brave vous permet de configurer facilement votre environnement habituel en important vos signets et réglages depuis les autres navigateurs installés sur votre ordinateur.</translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="5540323067375019678">Gérez vos protections</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Donnez à la volée quand vous tombez sur des joyaux</translation>
-<translation id="1638706606242137268">Envoyez des Dons sur Twitter, YouTube et d'autres pour récompensez les publications que vous "likez"</translation>
+<translation id="6135431587052937035">Soutenez vos sites favoris en leur versant un pourboire mensuel récurrent.</translation>
 <translation id="2788596505277705686">On a récupéré {{balance}} BAT. Votre clé de portefeuille a été vérifiée et chargée avec succès.</translation>
 <translation id="1083279119532577005">Portefeuille restauré !</translation>
 <translation id="7841456038054167122">Veuillez resaisir les clés ou essayer des clés différentes.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">Merci</translation>
 <translation id="6432779622695508363">Donner de l'argent quand vous aimez</translation>
 <translation id="8424370624815730676">Jeton d'attention de base (BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Allocations de jetons réclamées</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transactions</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">de cette chaîne de synchronisation</translation>
 <translation id="610118613261910287">Afficher les mots de code</translation>
 <translation id="8588535459744752615">Recherche d'appareil</translation>
-<translation id="6406506848690869874">Synchroniser</translation>
+<translation id="391177677159359824">Synchronisation (bêta)</translation>
 <translation id="28332161031213248">La liste des appareils ci-dessous comprend tous les appareils de votre chaîne de synchronisation. Chaque appareil peut être géré à partir de n'importe quel autre appareil.</translation>
 <translation id="8153617760825732120">nom de l'appareil</translation>
 <translation id="4241512165288542484">(Cet appareil)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Paramètres du site enregistrés</translation>
 <translation id="7859704718976024901">Historique de navigation</translation>
 <translation id="2339730291919608488">Quitter la chaîne de synchronisation</translation>
-<translation id="4332558599726753990">Synchroniser la configuration</translation>
+<translation id="4797449295451979552">Configuration de la synchronisation (bêta)</translation>
 <translation id="298546024891487702">Pour commencer, vous aurez besoin de Brave installé sur tous les appareils que vous prévoyez de synchroniser. Pour les enchaîner, démarrez une chaîne de synchronisation que vous utiliserez pour relier tous vos appareils en toute sécurité.</translation>
 <translation id="6200528822592747640">Démarrer une nouvelle chaîne de synchronisation</translation>
 <translation id="5184726904895809379">J'ai un code de synchronisation</translation>

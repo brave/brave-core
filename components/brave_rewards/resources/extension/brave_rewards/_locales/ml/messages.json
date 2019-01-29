@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Token Grants",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Token Grants Claimed",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Brave Rewards is",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Wallet creation failed",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "വീണ്ടും ശ്രമിക്കുക",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "토큰 보조금",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "토큰 승인 요청됨",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "브레이브 리워드란",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "월렛 생성 실패됨",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "다시 시도",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

@@ -1017,7 +1017,6 @@
 <translation id="5483785310822538350">בטל גישה לקבצים ולמכשירים</translation>
 <translation id="93766956588638423">תיקון התוסף</translation>
 <translation id="3905761538810670789">תקן את היישום</translation>
-<translation id="7246778686271518284">Brave Web Store</translation>
 <translation id="8808478386290700967">חנות אינטרנט</translation>
 <translation id="488785315393301722">הצג פרטים</translation>
 <translation id="8962083179518285172">הסתר פרטים</translation>
@@ -1512,13 +1511,13 @@
 <translation id="4620809267248568679">הגדרה זו נאכפת על ידי תוסף.</translation>
 <translation id="4846680374085650406">אתה פועל בהתאם להמלצה של מנהל המערכת לגבי הגדרה זו.</translation>
 <translation id="1223853788495130632">מנהל המערכת ממליץ על ערך מסוים עבור הגדרה זו.</translation>
-<translation id="2573343962518858459">‏לא מחנות האינטרנט של Brave.</translation>
+<translation id="8839398440242019256">‏לא מחנות האינטרנט של Brave.</translation>
 <translation id="5337771866151525739">הותקן על ידי צד שלישי.</translation>
 <translation id="4538792345715658285">מותקן לפי מדיניות של ארגון.</translation>
 <translation id="4359408040881008151">הותקן מפני שיש תוספים התלויים בו.</translation>
 <translation id="4980805016576257426">התוסף הזה מכיל תוכנה זדונית.</translation>
 <translation id="5522156646677899028">התוסף הזה מכיל נקודת תורפה חמורה באבטחה.</translation>
-<translation id="1168617370053816436">‏התוסף מפר את המדיניות בחנות האינטרנט של Brave.</translation>
+<translation id="6945695820322143954">‏התוסף מפר את המדיניות בחנות האינטרנט של Brave.</translation>
 <translation id="177808131755847449">‏הושבת על-ידי Brave. ייתכן שהתוסף הזה לא בטוח.</translation>
 <translation id="1434696352799406980">‏פעולה זו תאפס את דף הפתיחה, את דף הכרטיסייה החדשה, את מנוע החיפוש ואת הכרטיסיות המוצמדות שלך. היא גם תשבית את כל התוספים ותמחק נתונים זמניים כגון קובצי Cookie. הסימניות, ההיסטוריה והסיסמאות השמורות לא יימחקו.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> רוצה לאפס את ההגדרות שלך.</translation>
@@ -2909,10 +2908,10 @@
     <ph name="MARKUP_7"/>שתף, צור ועבוד במשותף<ph name="MARKUP_8"/>
     על קבצים עם אנשים נוספים - הכל במקום אחד.<ph name="MARKUP_9"/></translation>
 <translation id="7489605380874780575">בדוק כשירות</translation>
-<translation id="4997096511442832556">‏סוג קובץ זה אינו נתמך. בקר ב<ph name="BEGIN_LINK"/>חנות האינטרנט של Brave‏<ph name="END_LINK"/> כדי למצוא יישום שבאמצעותו ניתן לפתוח קובץ מסוג זה.
+<translation id="4878716980734452132">‏סוג קובץ זה אינו נתמך. בקר ב<ph name="BEGIN_LINK"/>חנות האינטרנט של Brave‏<ph name="END_LINK"/> כדי למצוא יישום שבאמצעותו ניתן לפתוח קובץ מסוג זה.
 	      <ph name="BEGIN_LINK_HELP"/>למידע נוסף<ph name="END_LINK_HELP"/></translation>
-<translation id="5097366979999786201">‏קובץ זה מיועד למחשב עם תוכנת Windows. הוא אינו תואם למכשיר שלך שבו פועלת מערכת ההפעלה של Brave. חפש ב<ph name="BEGIN_LINK"/>חנות האינטרנט של Brave<ph name="END_LINK"/> כדי לאתר יישום חלופי מתאים.<ph name="BEGIN_LINK_HELP"/>למידע נוסף<ph name="END_LINK_HELP"/></translation>
-<translation id="6041399778584119390">‏קובץ זה מיועד למחשב עם תוכנת Macintosh. הוא אינו תואם למכשיר שלך שבו פועלת מערכת ההפעלה של Brave. חפש ב<ph name="BEGIN_LINK"/>חנות האינטרנט של Brave<ph name="END_LINK"/> כדי לאתר יישום חלופי מתאים.<ph name="BEGIN_LINK_HELP"/>למידע נוסף<ph name="END_LINK_HELP"/></translation>
+<translation id="3376900196170631953">‏קובץ זה מיועד למחשב עם תוכנת Windows. הוא אינו תואם למכשיר שלך שבו פועלת מערכת ההפעלה של Brave. חפש ב<ph name="BEGIN_LINK"/>חנות האינטרנט של Brave<ph name="END_LINK"/> כדי לאתר יישום חלופי מתאים.<ph name="BEGIN_LINK_HELP"/>למידע נוסף<ph name="END_LINK_HELP"/></translation>
+<translation id="3072401511615920367">‏קובץ זה מיועד למחשב עם תוכנת Macintosh. הוא אינו תואם למכשיר שלך שבו פועלת מערכת ההפעלה של Brave. חפש ב<ph name="BEGIN_LINK"/>חנות האינטרנט של Brave<ph name="END_LINK"/> כדי לאתר יישום חלופי מתאים.<ph name="BEGIN_LINK_HELP"/>למידע נוסף<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">המתן מספר רגעים</translation>
 <translation id="3096967955765855393">‏אנחנו מחפשים כל הזמן דרכים לגלישה בטוחה יותר. בעבר, כל אתר יכול היה להציע לך להוסיף תוסף לדפדפן. בגרסאות האחרונות של Brave Software Brave, עליך לציין באופן מפורש ל-Brave שברצונך להתקין תוספים אלה על-ידי הוספתם דרך הדף 'תוספים'. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">לא ניתן לפתוח עם $1</translation>
@@ -2947,9 +2946,9 @@
 <translation id="7452737073539387970">‏אתר שנוצר באמצעות Brave Software Sites</translation>
 <translation id="4445959220475380548">‏קישור ל-Brave Software Drive</translation>
 <translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="2599249317139964094">‏סוג קובץ זה אינו נתמך. בקר בחנות האינטרנט של Brave כדי למצוא יישום שיכול לפתוח קובץ מסוג זה.</translation>
-<translation id="3495282670559481871">‏קובץ זה מיועד למחשב המשתמש בתוכנה של Macintosh. הוא אינו מתאים למכשירך שעובד עם מערכת הפעלה של Brave. חפש יישום חלופי בחנות האינטרנט של Brave.</translation>
-<translation id="3213197099265624265">‏קובץ זה מיועד עבור מחשב אישי המשתמש בתוכנת Windows. הוא אינו מתאים למכשירך שעובד עם מערכת הפעלה של Brave. חפש יישום חלופי מתאים בחנות האינטרנט של Brave.</translation>
+<translation id="1131292764548273687">‏סוג קובץ זה אינו נתמך. בקר בחנות האינטרנט של Brave כדי למצוא יישום שיכול לפתוח קובץ מסוג זה.</translation>
+<translation id="9010211493509471179">‏קובץ זה מיועד למחשב המשתמש בתוכנה של Macintosh. הוא אינו מתאים למכשירך שעובד עם מערכת הפעלה של Brave. חפש יישום חלופי בחנות האינטרנט של Brave.</translation>
+<translation id="5059989099965370411">‏קובץ זה מיועד עבור מחשב אישי המשתמש בתוכנת Windows. הוא אינו מתאים למכשירך שעובד עם מערכת הפעלה של Brave. חפש יישום חלופי מתאים בחנות האינטרנט של Brave.</translation>
 <translation id="5833610766403489739">הקובץ הזה עבר למקום אחר. בדוק את הגדרות מיקום ההורדה ונסה שוב.</translation>
 <translation id="3966388904776714213">נגן אודיו</translation>
 <translation id="3245321423178950146">אמן לא ידוע</translation>
@@ -3030,7 +3029,7 @@
 <translation id="4570609078116869893">‏עדכון אוטומטי של Brave אצל כל המשתמשים</translation>
 <translation id="7102687220333134671">עדכונים אוטומטיים מופעלים</translation>
 <translation id="6981982820502123353">נגישות</translation>
-<translation id="5392220887878025825">‏פתח את חנות האינטרנט של Brave</translation>
+<translation id="5840822070878669614">‏פתח את חנות האינטרנט של Brave</translation>
 <translation id="6073903501322152803">הוסף תכונות נגישות</translation>
 <translation id="7988355189918024273">הפוך תכונות נגישות לפעילות</translation>
 <translation id="2558896001721082624">אפשרויות נגישות מוצגות תמיד בתפריט המערכת</translation>
@@ -4004,7 +4003,7 @@
 <translation id="437184764829821926">הגדרות גופן מתקדמות</translation>
 <translation id="323803881985677942">פתח אפשרויות תוסף</translation>
 <translation id="2166369534954157698">דג סקרן שט בים זך ולפתע מצא חבורה נחמדה</translation>
-<translation id="6121729889904235649">‏דרוש תוסף מחנות האינטרנט של Brave</translation>
+<translation id="8911765336506423117">‏דרוש תוסף מחנות האינטרנט של Brave</translation>
 <translation id="6965978654500191972">התקן</translation>
 <translation id="8260864402787962391">עכבר</translation>
 <translation id="155865706765934889">לוח מגע</translation>
@@ -4221,7 +4220,6 @@
 <translation id="3777806571986431400">התוסף הופעל</translation>
 <translation id="6851497530878285708">האפליקציה הופעלה</translation>
 <translation id="5018207570537526145">פתיחת אתר התוסף</translation>
-<translation id="8158441856257599022">‏הצגה בחנות האינטרנט של Brave</translation>
 <translation id="4617270414136722281">אפשרויות של תוספים</translation>
 <translation id="7152478047064750137">אין צורך בהרשאות מיוחדות כדי להשתמש בתוסף זה</translation>
 <translation id="8523849605371521713">נוסף על-ידי מדיניות</translation>
@@ -4231,7 +4229,7 @@
 <translation id="6370021412472292592">לא ניתן היה לטעון את המניפסט.</translation>
 <translation id="7235716375204803342">מתבצע אחזור פעילויות...</translation>
 <translation id="7647403192093989392">אין פעילויות אחרונות</translation>
-<translation id="2152198799932802652">‏תוספים ועיצובים זמינים ב<ph name="BEGIN_LINK"/>חנות האינטרנט של Brave<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">‏תוספים ועיצובים זמינים ב<ph name="BEGIN_LINK"/>חנות האינטרנט של Brave<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">לא סופק תיאור</translation>
 <translation id="3855441664322950881">ארוז תוסף</translation>
 <translation id="2958721676848865875">אזהרת 'ארוז תוסף'</translation>
