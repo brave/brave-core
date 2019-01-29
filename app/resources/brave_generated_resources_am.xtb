@@ -38,8 +38,12 @@
 <translation id="1434416574322382019">አዲስ የግል መስኮት ከቶር ጋር</translation>
 <translation id="4703780849509456860">ሊንኩን በግል መስኮትዎ ከቶር ጋር ይክፈቱ</translation>
 <translation id="3488584642074079080">ሊንኩን በብሬቭ የግል መስኮት ከቶር ጋር ይክፈቱ</translation>
+<translation id="6313675821927505581">አዲስ የግል መስኮት በ Brave</translation>
+<translation id="2638041073279639246">Torን በመጠቀም ሊንኩን በግል መስኮት ይክፈቱ።</translation>
+<translation id="3425600262621021599">Torን በመጠቀም ሊንኩን በ Brave የግል መስኮት ይክፈቱ።</translation>
 <translation id="3155170474926428993">ቶር ማስጀመርያ</translation>
 <translation id="2515126961943087659">የባት የማስታወቂያ አገልግሎት</translation>
+<translation id="7924918279836988121">የBat Ledger አገልግሎት</translation>
 <translation id="7372129767729198111">የብሬቭ ጥበቃ ዲፎልት</translation>
 <translation id="8029018702721078742">ማስተዋቅያን መቆጣጠር</translation>
 <translation id="3544462288910360084">ኮኬ መቆጣጠር</translation>
@@ -60,6 +64,11 @@
 <translation id="1822560017823072927">ዲፎልት የጋራና የግል ኢንተርፈረንስ</translation>
 <translation id="5825943197137337319">የጋራ ዲፎልት አጠቃቀም መጋራት ብቻ</translation>
 <translation id="1689062823386843231">ሮክሲ የሌለው UDP ያጥፉ</translation>
+<translation id="6645631466045614531">ሲንክን ያግኙ በ</translation>
 <translation id="6786747875388722282">ቅጥያዎች</translation>
+<translation id="2896916411183256228">WebTorrent ን በመጠቀም በቀጥታ ቶረንቶችን ማሰሻ ላይ ያሳያል። ለቶረንት ፋይሎች እና ማግኔት ሊንኮች ድጋፍ ያደርጋል።</translation>
+<translation id="6554397389149987360">በማሰሻው ላይ የማያ መጋራትን እና ሌሎች ባህሪያትን ለመጠቀም የ Hangouts ክፍሎችን ይጠቀሙ።</translation>
 <translation id="6916590542764765824">ቅጥያዎችን አስተዳድር</translation>
+<translation id="4928988318462976765">የድረገጽ ተቀጥላ ማከማቻ</translation>
+<translation id="9181207987584064303">የድር ቅጥያዎችን መደብር ውስጥ ይመልከቱ።</translation>
 </translationbundle>

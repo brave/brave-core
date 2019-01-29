@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">যে আনুমানিক সময় বাঁচানো গেছে</translation>
 <translation id="5206618227023752085">শীর্ষস্থানীয় সাইট অপসারিত হয়েছে।</translation>
 <translation id="2079545284768500474">পূর্বাবস্থায় ফেরান</translation>
+<translation id="6040143037577758943">বন্ধ করুন</translation>
 <translation id="8529752221839395787">সমস্ত পুনঃস্থাপন করুন</translation>
 <translation id="3022168349636134570">সেকন্ড</translation>
 <translation id="8664519043722036194">সেকন্ড</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Brave রিওয়ার্ডস সক্ষম করুন</translation>
 <translation id="2862598513212603756">আপনার মনোযোগ মূল্যবান| গোপনীয়তা সম্মান করে যে বিজ্ঞাপন তা দেখে উপার্জন করুন, এবং আপনি যে বিষয়বস্তু প্রস্তুতকারকদের ভালবাসেন তাদের সহায়তার জন্য অর্থ প্রদান করুন|</translation>
 <translation id="4942016616604700968">রিওয়ার্ডস সক্ষম করুন</translation>
-<translation id="1964278139527989987">বুকমার্ক &amp; সেটিংস আমদানি</translation>
+<translation id="3958088479270651626">বুকমার্কস এবং সেটিংস আমদানি করুন</translation>
 <translation id="5633840519079139680">Brave আপনার কম্পিউটারে ইনস্টল করা অন্যান্য ব্রাউজার থেকে বুকমার্ক এবং সেটিংস আমদানি করার মাধ্যমে আপনার প্রথাগত পরিবেশ স্থাপন করা সহজ করে তোলে।</translation>
 <translation id="8275038454117074363">আমদানি করুন</translation>
 <translation id="5540323067375019678">আপনার শিল্ডগুলি নিয়ন্ত্রণ করুন</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">ইউটিউব</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">রত্ন পাওয়া মাত্র দান করুন|</translation>
-<translation id="1638706606242137268">টুইটার, ইউটিউব এবং আরো স্থানে পরামর্শ দেওয়ার ক্ষমতা সক্ষম করুন যাতে আপনার  ‘লাইক ’ করা পোস্টে পরামর্শ দিতে পারেন;</translation>
+<translation id="6135431587052937035">পুনরাবৃত্ত মাসিক পরামর্শগুলি দিয়ে আপনার পছন্দের সাইটগুলিকে সহায়তা করুন।</translation>
 <translation id="2788596505277705686">{{balance}} BAT পুনরুদ্ধার করা হয়েছে| আপনার ওয়ালেট কি যাচাই করা হয়েছে এবং সফলভাবে লোড করা হয়েছে|</translation>
 <translation id="1083279119532577005">ওয়ালেট পুনরুদ্ধার করা হয়েছে!</translation>
 <translation id="7841456038054167122">অনুগ্রহ করে কিগুলি আবার প্রবেশ করুন অথবা বিভিন্ন কি ব্যবহারের চেষ্টা করুন|</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">আপনাকে ধন্যবাদ</translation>
 <translation id="6432779622695508363">লাইকের উপর পরামর্শ</translation>
 <translation id="8424370624815730676">বেসিক অ্যাটেশন টোকেন (BAT)</translation>
-<translation id="5808753495166759239">বিটকয়েন (BTC)</translation>
+<translation id="4588241643143931775">বিটকয়েন (BTC)</translation>
 <translation id="4837149400263828922">এথেরিয়াম (ETH)</translation>
-<translation id="3324022052501075296">লাইটকয়েন (LTC)</translation>
+<translation id="8746837129291133068">লাইটকয়েন (LTC)</translation>
 <translation id="4914597931214386232">মঞ্জুরি দেওয়া টোকেনের দাবি করা হয়েছে</translation>
 <translation id="1634828734222219955">মোট</translation>
 <translation id="3535654229833214438">লেনদেন</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">এই sync শৃঙ্খল থেকে</translation>
 <translation id="610118613261910287">কোড শব্দগুলি দেখুন</translation>
 <translation id="8588535459744752615">ডিভাইস খোঁজা হচ্ছে</translation>
-<translation id="6406506848690869874">সিঙ্ক করুন</translation>
+<translation id="391177677159359824">সিঙ্ক (বেটা)</translation>
 <translation id="28332161031213248">নীচে দেওয়া ডিভাইসের তালিকাটিতে আপনার sync শৃঙ্খলে থাকা সমস্ত ডিভাইস অন্তর্ভুক্ত রয়েছে। প্রতিটি ডিভাইস অন্য কোনও ডিভাইস থেকে চালনা করা যাবে।</translation>
 <translation id="8153617760825732120">ডিভাইসের</translation>
 <translation id="4241512165288542484">(এই ডিভাইস)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">সংরক্ষিত সাইটের সেটিংস</translation>
 <translation id="7859704718976024901">ব্রাউজিং ইতিহাস</translation>
 <translation id="2339730291919608488">Sync শৃঙ্খল ত্যাগ করুন</translation>
-<translation id="4332558599726753990">সিঙ্ক সেটআপ</translation>
+<translation id="4797449295451979552">সিঙ্ক (বেটা) সেটআপ</translation>
 <translation id="298546024891487702">শুরু করতে আপনি সিঙ্ক করার পরিকল্পনা করেছেন এমন সমস্ত ডিভাইসে আপনাকে Brave ইনস্টল করতে হবে। সেগুলিকে একসাথে শৃঙ্খলিত করতে আপনি আপনার সবকয়টি ডিভাইস নিরাপদে লিঙ্ক করতে যে sync শৃঙ্খলটি ব্যবহার করতে চান সেটি শুরু করুন।</translation>
 <translation id="6200528822592747640">একটি নতুন Sync শৃঙ্খল শুরু করুন</translation>
 <translation id="5184726904895809379">আমার একটি Sync কোড রয়েছে</translation>

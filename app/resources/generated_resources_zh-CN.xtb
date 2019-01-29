@@ -1018,7 +1018,6 @@
 <translation id="5483785310822538350">撤消对文件和设备的访问权限</translation>
 <translation id="93766956588638423">修复扩展程序</translation>
 <translation id="3905761538810670789">修复应用</translation>
-<translation id="7246778686271518284">Brave 网上应用店</translation>
 <translation id="8808478386290700967">Brave 网上应用店</translation>
 <translation id="488785315393301722">显示详细信息</translation>
 <translation id="8962083179518285172">隐藏详细信息</translation>
@@ -1512,13 +1511,13 @@
 <translation id="4620809267248568679">此设置是由扩展程序强制设置的。</translation>
 <translation id="4846680374085650406">您目前所采用的是管理员的建议设置。</translation>
 <translation id="1223853788495130632">您的管理员建议将此设置设为某个特定值。</translation>
-<translation id="2573343962518858459">并非来自 Brave 网上应用店。</translation>
+<translation id="8839398440242019256">并非来自 Brave 网上应用店。</translation>
 <translation id="5337771866151525739">由第三方安装。</translation>
 <translation id="4538792345715658285">按企业政策安装。</translation>
 <translation id="4359408040881008151">安装此扩展程序是因为某个/些扩展程序需要安装它才能正常使用。</translation>
 <translation id="4980805016576257426">此扩展程序包含恶意软件。</translation>
 <translation id="5522156646677899028">该扩展程序存在严重的安全漏洞。</translation>
-<translation id="1168617370053816436">此扩展程序违反了 Brave 网上应用店政策。</translation>
+<translation id="6945695820322143954">此扩展程序违反了 Brave 网上应用店政策。</translation>
 <translation id="177808131755847449">已被 Brave 停用。此扩展程序可能不安全。</translation>
 <translation id="1434696352799406980">这将重置您的启动页、“打开新的标签页”页面、搜索引擎和固定标签页，同时还会停用所有扩展程序并清除临时数据（例如 Cookie）。但是，系统不会清除您的书签、历史记录和保存的密码。</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/>要重置您的设置。</translation>
@@ -2901,10 +2900,10 @@
 <translation id="6862635236584086457">系统会自动在线备份保存在此文件夹中的所有文件</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>可随时随地访问文件，即使处于离线状态也没关系。<ph name="MARKUP_2"/>Brave Software 云端硬盘上的文件是最新的，并可通过任意设备访问。<ph name="MARKUP_3"/><ph name="MARKUP_4"/>可确保文件安全。<ph name="MARKUP_5"/>无论您的设备出现什么状况，您的文件都会安全地存储在 Brave Software 云端硬盘上。<ph name="MARKUP_6"/><ph name="MARKUP_7"/>文件集中存储，方便您与他人在同一个地方共享、创建和协作处理<ph name="MARKUP_8"/>文件。<ph name="MARKUP_9"/></translation>
 <translation id="7489605380874780575">检查资格</translation>
-<translation id="4997096511442832556">不支持此文件类型。请在<ph name="BEGIN_LINK"/>Brave网上应用店<ph name="END_LINK"/>中查找可打开此类文件的应用。
+<translation id="4878716980734452132">不支持此文件类型。请在<ph name="BEGIN_LINK"/>Brave网上应用店<ph name="END_LINK"/>中查找可打开此类文件的应用。
     <ph name="BEGIN_LINK_HELP"/>了解详情<ph name="END_LINK_HELP"/></translation>
-<translation id="5097366979999786201">此文件适用于采用Windows软件的PC，不适用于运行Brave操作系统的设备。请在<ph name="BEGIN_LINK"/>Brave网上应用店<ph name="END_LINK"/>中搜索合适的替代应用。<ph name="BEGIN_LINK_HELP"/>了解详情<ph name="END_LINK_HELP"/></translation>
-<translation id="6041399778584119390">此文件适用于采用Macintosh软件的计算机，不适用于运行Brave操作系统的设备。请在<ph name="BEGIN_LINK"/>Brave网上应用店<ph name="END_LINK"/>中搜索合适的替代应用。<ph name="BEGIN_LINK_HELP"/>了解详情<ph name="END_LINK_HELP"/></translation>
+<translation id="3376900196170631953">此文件适用于采用Windows软件的PC，不适用于运行Brave操作系统的设备。请在<ph name="BEGIN_LINK"/>Brave网上应用店<ph name="END_LINK"/>中搜索合适的替代应用。<ph name="BEGIN_LINK_HELP"/>了解详情<ph name="END_LINK_HELP"/></translation>
+<translation id="3072401511615920367">此文件适用于采用Macintosh软件的计算机，不适用于运行Brave操作系统的设备。请在<ph name="BEGIN_LINK"/>Brave网上应用店<ph name="END_LINK"/>中搜索合适的替代应用。<ph name="BEGIN_LINK_HELP"/>了解详情<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">请稍候</translation>
 <translation id="3096967955765855393">我们在不断寻找各种方式来提高上网安全。之前，任何网站都可以提示您在浏览器中添加扩展程序；而在最新版本的Brave Software Brave中，您必须明确告诉Brave您想要安装这些扩展程序（即：在“扩展程序”页添加它们）后才可以。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">无法使用$1打开</translation>
@@ -2939,9 +2938,9 @@
 <translation id="7452737073539387970">Brave Software 网站</translation>
 <translation id="4445959220475380548">Brave Software 云端硬盘链接</translation>
 <translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="2599249317139964094">不支持此文件类型。请访问 Brave 网上应用店，找到能打开此文件类型的应用。</translation>
-<translation id="3495282670559481871">此文件适用于采用 Macintosh 软件的计算机，不适用于运行 Brave 操作系统的设备。请在 Brave 网上应用店中搜索合适的替代应用。</translation>
-<translation id="3213197099265624265">此文件适用于采用 Windows 软件的 PC，不适用于运行 Brave 操作系统的设备。请在 Brave 网上应用店中搜索合适的替代应用。</translation>
+<translation id="1131292764548273687">不支持此文件类型。请访问 Brave 网上应用店，找到能打开此文件类型的应用。</translation>
+<translation id="9010211493509471179">此文件适用于采用 Macintosh 软件的计算机，不适用于运行 Brave 操作系统的设备。请在 Brave 网上应用店中搜索合适的替代应用。</translation>
+<translation id="5059989099965370411">此文件适用于采用 Windows 软件的 PC，不适用于运行 Brave 操作系统的设备。请在 Brave 网上应用店中搜索合适的替代应用。</translation>
 <translation id="5833610766403489739">此文件已移至其他位置。请查看您的下载位置设置并重试。</translation>
 <translation id="3966388904776714213">音频播放器</translation>
 <translation id="3245321423178950146">未知艺术家</translation>
@@ -3022,7 +3021,7 @@
 <translation id="4570609078116869893">自动为所有用户更新 Brave</translation>
 <translation id="7102687220333134671">已开启自动更新功能</translation>
 <translation id="6981982820502123353">无障碍</translation>
-<translation id="5392220887878025825">打开 Brave 网上应用店</translation>
+<translation id="5840822070878669614">打开 Brave 网上应用店</translation>
 <translation id="6073903501322152803">添加无障碍功能</translation>
 <translation id="7988355189918024273">启用辅助功能</translation>
 <translation id="2558896001721082624">始终在系统菜单中显示无障碍选项</translation>
@@ -3996,7 +3995,7 @@
 <translation id="437184764829821926">高级字体设置</translation>
 <translation id="323803881985677942">打开扩展程序选项</translation>
 <translation id="2166369534954157698">The quick brown fox jumps over the lazy dog</translation>
-<translation id="6121729889904235649">需要安装 Brave 网上应用店中的扩展程序</translation>
+<translation id="8911765336506423117">需要安装 Brave 网上应用店中的扩展程序</translation>
 <translation id="6965978654500191972">设备</translation>
 <translation id="8260864402787962391">鼠标</translation>
 <translation id="155865706765934889">触控板</translation>
@@ -4213,7 +4212,6 @@
 <translation id="3777806571986431400">扩展程序已启用</translation>
 <translation id="6851497530878285708">已启用此应用</translation>
 <translation id="5018207570537526145">打开扩展程序网站</translation>
-<translation id="8158441856257599022">在 Brave 网上应用店中查看详情</translation>
 <translation id="4617270414136722281">扩展程序选项</translation>
 <translation id="7152478047064750137">此扩展程序无需任何特殊权限</translation>
 <translation id="8523849605371521713">按政策添加</translation>
@@ -4223,7 +4221,7 @@
 <translation id="6370021412472292592">无法加载清单。</translation>
 <translation id="7235716375204803342">正在获取活动…</translation>
 <translation id="7647403192093989392">近期无活动</translation>
-<translation id="2152198799932802652">在 <ph name="BEGIN_LINK"/>Brave 网上应用店<ph name="END_LINK"/>中查找扩展程序和主题背景</translation>
+<translation id="38046578254905003">在 <ph name="BEGIN_LINK"/>Brave 网上应用店<ph name="END_LINK"/>中查找扩展程序和主题背景</translation>
 <translation id="7272674038937250585">未提供说明</translation>
 <translation id="3855441664322950881">打包扩展程序</translation>
 <translation id="2958721676848865875">打包扩展程序警告</translation>

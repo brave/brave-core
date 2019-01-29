@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Tahmini Tasarruf Zamanı</translation>
 <translation id="5206618227023752085">En iyi site kaldırıldı.</translation>
 <translation id="2079545284768500474">Geri al</translation>
+<translation id="6040143037577758943">Kapat</translation>
 <translation id="8529752221839395787">Tümünü Geri Yükle</translation>
 <translation id="3022168349636134570">saniye</translation>
 <translation id="8664519043722036194">saniyeler</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Brave Ödülleri'ni Etkinleştir</translation>
 <translation id="2862598513212603756">Dikkatiniz değerlidir. İnternette gezinirken gizliliğe saygılı reklamları görüntüleyerek para kazanın ve bunu yönlendirerek sevdiğiniz içerik oluşturucularını destekleyin.</translation>
 <translation id="4942016616604700968">Ödülleri Etkinleştir</translation>
-<translation id="1964278139527989987">Yer imlerini ve ayarları içe aktarın</translation>
+<translation id="3958088479270651626">Yer işaretlerini ve ayarları içe aktar</translation>
 <translation id="5633840519079139680">Brave, bilgisayarınızda yüklü diğer tarayıcılardan yer imleri ve ayarları içe aktararak olağan ortamınızı ayarlamanızı kolaylaştırır.</translation>
 <translation id="8275038454117074363">İçe aktar</translation>
 <translation id="5540323067375019678">Kalkanlarınızı yönetin</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Mücevherleri bulduğunuz noktaya dokunun.</translation>
-<translation id="1638706606242137268">Twitter, Youtube ve daha fazlasından 'Beğendiğin' gönderileri ödüllendirmek için bahşiş gönder.</translation>
+<translation id="6135431587052937035">Favori sitelerinizi aylık tekrarlayan bağışlar ile destekleyin</translation>
 <translation id="2788596505277705686">{{balance}} BAT kurtarıldı. Cüzdan anahtarınız doğrulandı ve başarıyla yüklendi.</translation>
 <translation id="1083279119532577005">Cüzdan geri yüklendi!</translation>
 <translation id="7841456038054167122">Lütfen anahtarları yeniden girin ya da başka anahtarlar deneyin.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">Teşekkürler</translation>
 <translation id="6432779622695508363">Beğenince bahşiş ver</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Token Bağışları Talep Edildi</translation>
 <translation id="1634828734222219955">Toplam</translation>
 <translation id="3535654229833214438">İşlemler</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">bu senkronizasyon zincirinden</translation>
 <translation id="610118613261910287">Kod Kelimelerini Görüntüle</translation>
 <translation id="8588535459744752615">Cihaz aranıyor</translation>
-<translation id="6406506848690869874">Sync</translation>
+<translation id="391177677159359824">Sync (beta)</translation>
 <translation id="28332161031213248">Aşağıdaki cihaz listesi, senkronizasyon zincirinizdeki tüm cihazları kapsar. Her cihaz başka herhangi bir cihazdan yönetilebilir.</translation>
 <translation id="8153617760825732120">cihaz adı</translation>
 <translation id="4241512165288542484">(Bu Cihaz)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Kayıtlı Site Ayarları</translation>
 <translation id="7859704718976024901">Gözatma Geçmişi</translation>
 <translation id="2339730291919608488">Senkronizasyon Zincirinden Ayrıl</translation>
-<translation id="4332558599726753990">Sync Kurulumu</translation>
+<translation id="4797449295451979552">Sync (beta) Kurulumu</translation>
 <translation id="298546024891487702">Başlamak için, senkronize etmeyi planladığınız tüm cihazlarda Brave uygulamasının kurulu olması gerekir. Onları bir araya getirmek için, tüm cihazlarınızı birbirine güvenli bir şekilde bağlamak için kullanacağınız bir senkronizasyon zinciri başlatın.</translation>
 <translation id="6200528822592747640">Yeni bir Sync Chain başlat</translation>
 <translation id="5184726904895809379">Bir Sync Kodum var</translation>

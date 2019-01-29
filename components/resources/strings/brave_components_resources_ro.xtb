@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Timp Estimativ Salvat</translation>
 <translation id="5206618227023752085">Siteul de sus a fost eliminat.</translation>
 <translation id="2079545284768500474">Anulare acțiune</translation>
+<translation id="6040143037577758943">Închide</translation>
 <translation id="8529752221839395787">Recuperează tot</translation>
 <translation id="3022168349636134570">secundă</translation>
 <translation id="8664519043722036194">secunde</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Activează recompense Brave</translation>
 <translation id="2862598513212603756">Atenția dumneavoastră este valoroasă. Câștigați vizualizând reclame care respectă confidențialitatea și plătiți mai departe pentru a susține creatorii de conținut care vă plac.</translation>
 <translation id="4942016616604700968">Activează recompense</translation>
-<translation id="1964278139527989987">Importă marcaje și setări</translation>
+<translation id="3958088479270651626">Importați marcaje și setări</translation>
 <translation id="5633840519079139680">Brave facilitează configurarea mediului obișnuit prin importarea de marcaje și setări de la alte browsere instalate pe calculator.</translation>
 <translation id="8275038454117074363">Importă</translation>
 <translation id="5540323067375019678">Administrați scuturile</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Atingeți pe spot când găsiți pietre prețioase.</translation>
-<translation id="1638706606242137268">Trimiteți cadouri bănești pe Twitter, YouTube și multe altele, pentru a răsplăti postările pe care le ‘Apreciați’.</translation>
+<translation id="6135431587052937035">Susțineți-vă site-urile preferate cu recompense lunare repetate.</translation>
 <translation id="2788596505277705686">{{balance}} BAT a fost recuperat. Codul portofelului dumneavoastră a fost verificat și încărcat cu succes.</translation>
 <translation id="1083279119532577005">Portofel recuperat!</translation>
 <translation id="7841456038054167122">Vă rugăm reintroduceți codurile sau încercați alte coduri.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">Vă mulțumim</translation>
 <translation id="6432779622695508363">Dă bacșiș la apreciere</translation>
 <translation id="8424370624815730676">Simbol de atenție simplu (Basic Attention Token - BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Granturi Token Revendicate</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Tranzacții</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">din acest lanț de sincronizare</translation>
 <translation id="610118613261910287">Vizualizare Cuvinte Cod</translation>
 <translation id="8588535459744752615">Căutare dispozitiv</translation>
-<translation id="6406506848690869874">Sincronizare</translation>
+<translation id="391177677159359824">Sync (beta)</translation>
 <translation id="28332161031213248">Lista de dispozitive de mai jos include toate dispozitivele din lanțul de sincronizare. Fiecare dispozitiv poate fi administrat de pe orice alt dispozitiv.</translation>
 <translation id="8153617760825732120">nume dispozitiv</translation>
 <translation id="4241512165288542484">(Acest dispozitiv)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Setări site salvate</translation>
 <translation id="7859704718976024901">Istoric de navigare</translation>
 <translation id="2339730291919608488">Părăsire lanț de sincronizare</translation>
-<translation id="4332558599726753990">Setare Sincronizare</translation>
+<translation id="4797449295451979552">Configurare Sync (beta)</translation>
 <translation id="298546024891487702">Pentru a porni, trebuie să aveți Brave instalat pe toate dispozitivele pe care vreți să le sincronizați. Pentru a le înlănțui, începeți un lanț de sincronizare pe care îl veți utiliza pentru a conecta în siguranță toate dispozitivele dumneavoastră.</translation>
 <translation id="6200528822592747640">Începeți un nou Lanț de Sincronizare</translation>
 <translation id="5184726904895809379">Am un Cod de Sincronizare</translation>

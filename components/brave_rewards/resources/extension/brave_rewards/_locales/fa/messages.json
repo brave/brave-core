@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "امتیازهای توکن",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "امتیازهای توکن مطالبه شد",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "«پاداش‌های Brave»",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "کیف پول ایجاد نشد",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "امتحان مجدد",
+    "description": "Button for re-try after wallet creation failed"
   }
 }
