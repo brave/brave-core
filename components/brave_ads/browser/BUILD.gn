@@ -40,6 +40,8 @@ source_set("browser") {
       "ads_service_impl.h",
       "background_helper.cc",
       "background_helper.h",
+      "background_helper_linux.cc",
+      "background_helper_linux.h",
       "background_helper_mac.mm",
       "background_helper_mac.h",
       "background_helper_win.cc",
