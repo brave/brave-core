@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">预计节省时间</translation>
 <translation id="5206618227023752085">已移除常用网站。</translation>
 <translation id="2079545284768500474">撤消</translation>
+<translation id="6040143037577758943">关闭</translation>
 <translation id="8529752221839395787">恢复所有</translation>
 <translation id="3022168349636134570">秒</translation>
 <translation id="8664519043722036194">秒</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">启用 Brave 奖励</translation>
 <translation id="2862598513212603756">您的注意力很有价值。在浏览期间通过观看尊重隐私的广告来赚取收入，并支付给您喜爱的内容创作者。</translation>
 <translation id="4942016616604700968">启用奖励</translation>
-<translation id="1964278139527989987">导入书签和设置</translation>
+<translation id="3958088479270651626">导入书签和设置</translation>
 <translation id="5633840519079139680">通过从计算机上安装的其他浏览器导入书签和设置，Brave 可以轻松设置您的常用环境。</translation>
 <translation id="8275038454117074363">导入</translation>
 <translation id="5540323067375019678">管理 Shield</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">当您找到宝石时当场打赏。</translation>
-<translation id="1638706606242137268">在 Twitter、YouTube 及其他平台上进行打赏以转发您喜欢的帖文</translation>
+<translation id="6135431587052937035">每月重复给予小费，支持您喜欢的网站。</translation>
 <translation id="2788596505277705686">{{balance}} BAT 已恢复。您的钱包密钥已成功验证和加载。</translation>
 <translation id="1083279119532577005">钱包已恢复！</translation>
 <translation id="7841456038054167122">请重新输入密钥或尝试不同密钥。</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">谢谢</translation>
 <translation id="6432779622695508363">给喜欢的内容打赏</translation>
 <translation id="8424370624815730676">注意力币（BTA）</translation>
-<translation id="5808753495166759239">比特币（BTC）</translation>
+<translation id="4588241643143931775">比特币 (BTC)</translation>
 <translation id="4837149400263828922">以太币（ETH）</translation>
-<translation id="3324022052501075296">莱特币（LTC）</translation>
+<translation id="8746837129291133068">莱特币 (LTC)</translation>
 <translation id="4914597931214386232">已领取代币补助</translation>
 <translation id="1634828734222219955">总额</translation>
 <translation id="3535654229833214438">交易</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">从此同步链</translation>
 <translation id="610118613261910287">查看密码词</translation>
 <translation id="8588535459744752615">正在查找设备</translation>
-<translation id="6406506848690869874">同步</translation>
+<translation id="391177677159359824">同步（测试版）</translation>
 <translation id="28332161031213248">下方的设备列表包括了您的同步链中的全部设备。每一台设备均可通过任意一台其他设备管理。</translation>
 <translation id="8153617760825732120">设备名称</translation>
 <translation id="4241512165288542484">（此设备）</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">保存的网站设置</translation>
 <translation id="7859704718976024901">浏览记录</translation>
 <translation id="2339730291919608488">离开同步链</translation>
-<translation id="4332558599726753990">同步设置</translation>
+<translation id="4797449295451979552">同步（测试版）设置</translation>
 <translation id="298546024891487702">首先，请在所有需要同步的设备上安装Brave。要链接所有设备，请创建一个同步链，即可把所有设备安全连接到一起。</translation>
 <translation id="6200528822592747640">创建新的同步链</translation>
 <translation id="5184726904895809379">我有同步密码</translation>

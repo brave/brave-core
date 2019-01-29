@@ -38,8 +38,12 @@
 <translation id="1434416574322382019">Novo zasebno okno v brskalniku Tor</translation>
 <translation id="4703780849509456860">Odpri povezavo v zasebnem oknu v brskalniku Tor</translation>
 <translation id="3488584642074079080">Odpri povezavo v zasebnem oknu Brave v brskalniku Tor</translation>
+<translation id="6313675821927505581">Novo zasebno okno z uporabo Tor</translation>
+<translation id="2638041073279639246">Odpri povezavo v zasebnem oknu z uporabo Tor</translation>
+<translation id="3425600262621021599">Odpri povezave v zasebnem oknu Brave z uporabo Tor</translation>
 <translation id="3155170474926428993">Zaganjalnik brskalnika Tor</translation>
 <translation id="2515126961943087659">Storitev oglasov BAT</translation>
+<translation id="7924918279836988121">Storitev poslovne knjige Bat</translation>
 <translation id="7372129767729198111">Privzete nastavitve ščita brskalnika Brave</translation>
 <translation id="8029018702721078742">Upravljanje oglasov</translation>
 <translation id="3544462288910360084">Upravljanje piškotkov</translation>
@@ -60,6 +64,11 @@
 <translation id="1822560017823072927">Privzeti javni in zasebni vmesniki</translation>
 <translation id="5825943197137337319">Samo privzeti javni vmesnik</translation>
 <translation id="1689062823386843231">Onemogoči UDP, ki ne poteka prek strežnika proxy</translation>
+<translation id="6645631466045614531">Dostop do sinhronizacije prek</translation>
 <translation id="6786747875388722282">Razširitve</translation>
+<translation id="2896916411183256228">Uporablja WebTorrent za prikaz torrentov, neposredno v brskalniku. Podpira datoteke torrent in povezave magnet.</translation>
+<translation id="6554397389149987360">Uporabi komponento Hangouts za omogočanje skupne rabe zaslona in drugih funkcij v brskalniku.</translation>
 <translation id="6916590542764765824">Upravljanje razširitev</translation>
+<translation id="4928988318462976765">Trgovina s spletnimi razširitvami</translation>
+<translation id="9181207987584064303">Ogled v trgovini s spletnimi razširitvami</translation>
 </translationbundle>

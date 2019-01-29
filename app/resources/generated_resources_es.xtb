@@ -1018,7 +1018,6 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="5483785310822538350">Revocar acceso al archivo y al dispositivo</translation>
 <translation id="93766956588638423">Reparar extensión</translation>
 <translation id="3905761538810670789">Reparar aplicación</translation>
-<translation id="7246778686271518284">Brave Web Store</translation>
 <translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="488785315393301722">Mostrar detalles</translation>
 <translation id="8962083179518285172">Ocultar detalles</translation>
@@ -1512,13 +1511,13 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="4620809267248568679">Una extensión aplica esta opción.</translation>
 <translation id="4846680374085650406">Estás siguiendo la recomendación del administrador para esta opción.</translation>
 <translation id="1223853788495130632">El administrador recomienda un valor específico para esta opción.</translation>
-<translation id="2573343962518858459">No procede de Brave Web Store.</translation>
+<translation id="8839398440242019256">No procede de Brave Web Store.</translation>
 <translation id="5337771866151525739">Instalada por una aplicación externa</translation>
 <translation id="4538792345715658285">Instalada por una política empresarial</translation>
 <translation id="4359408040881008151">Instalada debido a las extensiones dependientes</translation>
 <translation id="4980805016576257426">Esta extensión contiene software malicioso.</translation>
 <translation id="5522156646677899028">Esta extensión tiene una vulnerabilidad de seguridad grave.</translation>
-<translation id="1168617370053816436">Esta extensión infringe la política de Brave Web Store.</translation>
+<translation id="6945695820322143954">Esta extensión infringe la política de Brave Web Store.</translation>
 <translation id="177808131755847449">Brave ha inhabilitado esta extensión porque es posible que no sea segura.</translation>
 <translation id="1434696352799406980">Se restablecerán la página de inicio, la página Nueva pestaña, el motor de búsqueda y las pestañas fijadas. También se inhabilitarán todas las extensiones y se borrarán los datos temporales como las cookies. Los marcadores, el historial y las contraseñas guardadas no se borrarán.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> quiere restablecer la configuración.</translation>
@@ -2908,10 +2907,10 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
     <ph name="MARKUP_7"/>Comparte y crea archivos<ph name="MARKUP_8"/>
     y colabora en archivos con otros usuarios desde un único lugar.<ph name="MARKUP_9"/></translation>
 <translation id="7489605380874780575">Comprobar elegibilidad</translation>
-<translation id="4997096511442832556">No se admite este tipo de archivo. Accede a <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> para buscar una aplicación que pueda abrir este tipo de archivo.
+<translation id="4878716980734452132">No se admite este tipo de archivo. Accede a <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> para buscar una aplicación que pueda abrir este tipo de archivo.
     <ph name="BEGIN_LINK_HELP"/>Más información<ph name="END_LINK_HELP"/></translation>
-<translation id="5097366979999786201">Este archivo está diseñado para un ordenador que utilice software de Windows. No es compatible con tu dispositivo, que utiliza Brave OS. Puedes buscar una aplicación equivalente adecuada en <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>.<ph name="BEGIN_LINK_HELP"/>Más información<ph name="END_LINK_HELP"/></translation>
-<translation id="6041399778584119390">Este archivo está diseñado para un ordenador que utilice software de Macintosh. No es compatible con tu dispositivo, que utiliza Brave OS. Puedes buscar una aplicación equivalente adecuada en <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>.<ph name="BEGIN_LINK_HELP"/>Más información<ph name="END_LINK_HELP"/></translation>
+<translation id="3376900196170631953">Este archivo está diseñado para un ordenador que utilice software de Windows. No es compatible con tu dispositivo, que utiliza Brave OS. Puedes buscar una aplicación equivalente adecuada en <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>.<ph name="BEGIN_LINK_HELP"/>Más información<ph name="END_LINK_HELP"/></translation>
+<translation id="3072401511615920367">Este archivo está diseñado para un ordenador que utilice software de Macintosh. No es compatible con tu dispositivo, que utiliza Brave OS. Puedes buscar una aplicación equivalente adecuada en <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>.<ph name="BEGIN_LINK_HELP"/>Más información<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">Espera un segundo</translation>
 <translation id="3096967955765855393">No dejamos de buscar formas de ofrecerte una navegación más segura. Anteriormente, cualquier sitio web podía solicitarte que añadieras una extensión al navegador. En las últimas versiones de Brave Software Brave, debes indicarle explícitamente a Brave que quieres instalar esas extensiones añadiéndolas a través de la página Extensiones. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">No se puede abrir con $1</translation>
@@ -2946,9 +2945,9 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="7452737073539387970">Sitio de Brave Software</translation>
 <translation id="4445959220475380548">Enlace de Brave Software Drive</translation>
 <translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="2599249317139964094">No se admite este tipo de archivo. Accede a Brave Web Store para buscar una aplicación que pueda abrir este tipo de archivo.</translation>
-<translation id="3495282670559481871">Este archivo está diseñado para un ordenador que utilice software de Macintosh. No es compatible con tu dispositivo, que utiliza Brave OS. Puedes buscar una aplicación equivalente adecuada en Brave Web Store.</translation>
-<translation id="3213197099265624265">Este archivo está diseñado para un PC que utilice software de Windows, por lo que no es compatible con tu dispositivo, que utiliza Brave OS. Puedes buscar una aplicación equivalente adecuada en Brave Web Store.</translation>
+<translation id="1131292764548273687">No se admite este tipo de archivo. Accede a Brave Web Store para buscar una aplicación que pueda abrir este tipo de archivo.</translation>
+<translation id="9010211493509471179">Este archivo está diseñado para un ordenador que utilice software de Macintosh. No es compatible con tu dispositivo, que utiliza Brave OS. Puedes buscar una aplicación equivalente adecuada en Brave Web Store.</translation>
+<translation id="5059989099965370411">Este archivo está diseñado para un PC que utilice software de Windows, por lo que no es compatible con tu dispositivo, que utiliza Brave OS. Puedes buscar una aplicación equivalente adecuada en Brave Web Store.</translation>
 <translation id="5833610766403489739">Este archivo se ha perdido. Comprueba la opción de ubicación de descargas e inténtalo de nuevo.</translation>
 <translation id="3966388904776714213">Reproductor de audio</translation>
 <translation id="3245321423178950146">Artista desconocido</translation>
@@ -3029,7 +3028,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="4570609078116869893">Actualizar Brave automáticamente para todos los usuarios</translation>
 <translation id="7102687220333134671">Las actualizaciones automáticas están activadas</translation>
 <translation id="6981982820502123353">Accesibilidad</translation>
-<translation id="5392220887878025825">Abrir Brave Web Store</translation>
+<translation id="5840822070878669614">Abrir Brave Web Store</translation>
 <translation id="6073903501322152803">Añadir funciones de accesibilidad</translation>
 <translation id="7988355189918024273">Habilitar funciones de accesibilidad</translation>
 <translation id="2558896001721082624">Mostrar siempre opciones de accesibilidad en el menú del sistema</translation>
@@ -4004,7 +4003,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="437184764829821926">Configuración de fuentes avanzada</translation>
 <translation id="323803881985677942">Abrir opciones de la extensión</translation>
 <translation id="2166369534954157698">Benjamín pidió una bebida de kiwi y fresa. Noé, sin vergüenza, la más exquisita champaña del menú.</translation>
-<translation id="6121729889904235649">Se necesita una extensión de Brave Web Store</translation>
+<translation id="8911765336506423117">Se necesita una extensión de Brave Web Store</translation>
 <translation id="6965978654500191972">Dispositivo</translation>
 <translation id="8260864402787962391">Ratón</translation>
 <translation id="155865706765934889">Panel táctil</translation>
@@ -4222,7 +4221,6 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3777806571986431400">Extensión activada</translation>
 <translation id="6851497530878285708">Aplicación habilitada</translation>
 <translation id="5018207570537526145">Abrir sitio web de la extensión</translation>
-<translation id="8158441856257599022">Ver en Brave Web Store</translation>
 <translation id="4617270414136722281">Opciones de extensión</translation>
 <translation id="7152478047064750137">Esta extensión no requiere permisos especiales</translation>
 <translation id="8523849605371521713">Añadida por política</translation>
@@ -4232,7 +4230,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="6370021412472292592">No se ha podido cargar el archivo de manifiesto.</translation>
 <translation id="7235716375204803342">Recuperando actividades...</translation>
 <translation id="7647403192093989392">Ninguna actividad reciente</translation>
-<translation id="2152198799932802652">Busca extensiones y temas en <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Busca extensiones y temas en <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">No se ha especificado ninguna descripción</translation>
 <translation id="3855441664322950881">Empaquetar extensión</translation>
 <translation id="2958721676848865875">Advertencia sobre el empaquetado de extensión</translation>

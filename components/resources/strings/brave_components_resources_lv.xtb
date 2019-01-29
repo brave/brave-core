@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Aprēķinātais ietaupītais laiks</translation>
 <translation id="5206618227023752085">Augšējā vietne ir noņemta.</translation>
 <translation id="2079545284768500474">Atsaukt</translation>
+<translation id="6040143037577758943">Aizvērt</translation>
 <translation id="8529752221839395787">Atjaunot visu</translation>
 <translation id="3022168349636134570">sekunde</translation>
 <translation id="8664519043722036194">sekundes</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Iespējot Brave balvas</translation>
 <translation id="2862598513212603756">Jūsu veltītā uzmanība ir vērtīga. Nopelniet par privātumu cienošu reklāmu skatīšanos pārlūkošanas laikā un atbalstiet savus iecienītos satura veidotājus.</translation>
 <translation id="4942016616604700968">Iespējot balvas</translation>
-<translation id="1964278139527989987">Importējiet grāmatzīmes un iestatījumus.</translation>
+<translation id="3958088479270651626">Grāmatzīmju un iestatījumu importēšana</translation>
 <translation id="5633840519079139680">Brave atvieglo ierastās vides iestatīšanu, importējot grāmatzīmes un iestatījumus no citiem datorā instalētiem pārlūkiem.</translation>
 <translation id="8275038454117074363">Importēt</translation>
 <translation id="5540323067375019678">Pārvaldiet savus aizsargus</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Iedodiet dzeramnaudu, tiklīdz atrodat dārgakmeņus.</translation>
-<translation id="1638706606242137268">Sūtiet dzeramnaudu vietnēs Twitter, Youtube un citur, atalgojot ziņas, kas jums "Patīk".</translation>
+<translation id="6135431587052937035">Atbalstiet iecienītākās vietnes ar periodiskiem ikmēneša maksājumiem.</translation>
 <translation id="2788596505277705686">{{balance}} BAT tika atkopti. Jūsu maka atslēga ir verificēta un ielādēta veiksmīgi.</translation>
 <translation id="1083279119532577005">Maks ir atjaunots!</translation>
 <translation id="7841456038054167122">Lūdzu, ievadiet atslēgas vēlreiz vai mēģiniet citas atslēgas.</translation>
@@ -273,10 +274,10 @@
 <translation id="8826007068782654809">Paldies!</translation>
 <translation id="6432779622695508363">Iedot dzeramnaudu, ja patīk</translation>
 <translation id="8424370624815730676">Pamata uzmanības marķieris (Basic Attention Token — BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
-<translation id="4914597931214386232">Izņemtie marķieru piešķīrumi</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
+<translation id="4914597931214386232">Pieprasītie marķieru piešķīrumi</translation>
 <translation id="1634828734222219955">Kopā</translation>
 <translation id="3535654229833214438">Pārskaitījumi</translation>
 <translation id="8987812599455325915">Tas iespējo gan reklāmas, gan automātisko ziedošanu. Jūs jebkurā laikā varat tās individuāli ieslēgt vai izslēgt.</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">no šīs sinhronizācijas ķēdes</translation>
 <translation id="610118613261910287">Skatīt koda vārdus</translation>
 <translation id="8588535459744752615">Notiek ierīces meklēšana</translation>
-<translation id="6406506848690869874">Sinhronizācija</translation>
+<translation id="391177677159359824">Sync (beta)</translation>
 <translation id="28332161031213248">Tālāk dotajā ierīču sarakstā ir ietvertas visas jūsu sinhronizācijas ķēdē esošās ierīces. Jebkuru no šīm ierīcēm var pārvaldīt no jebkuras citas ierīces.</translation>
 <translation id="8153617760825732120">ierīces nosaukums</translation>
 <translation id="4241512165288542484">(Šī ierīce)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Saglabātie vietnes iestatījumi</translation>
 <translation id="7859704718976024901">Pārlūkošanas vēsture</translation>
 <translation id="2339730291919608488">Pamest sinhronizācijas ķēdi</translation>
-<translation id="4332558599726753990">Sinhronizācijas iestatīšana</translation>
+<translation id="4797449295451979552">Sync (beta) iestatīšana</translation>
 <translation id="298546024891487702">Vispirms, visās ierīcēs, kuras vēlaties sinhronizēt, jābūt instalētam Brave. Lai savienotu tās ķēdē, aktivizējiet sinhronizācijas ķēdi, ko izmantosiet, lai droši savienotu visas ierīces.</translation>
 <translation id="6200528822592747640">Sākt jaunu sinhronizācijas ķēdi</translation>
 <translation id="5184726904895809379">Man ir sinhronizācijas kods</translation>

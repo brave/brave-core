@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Davanje žetona",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Zatražena odobrenja za token",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Nagrade Brave su",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Izrada novčanika nije uspjela",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Pokušaj ponovo",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

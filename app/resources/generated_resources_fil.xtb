@@ -1018,7 +1018,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5483785310822538350">Bawiin ang access sa file at device</translation>
 <translation id="93766956588638423">Ayusin ang extension</translation>
 <translation id="3905761538810670789">Ayusin ang app</translation>
-<translation id="7246778686271518284">Brave Web Store</translation>
 <translation id="8808478386290700967">Web Store</translation>
 <translation id="488785315393301722">Ipakita ang Mga Detalye</translation>
 <translation id="8962083179518285172">Itago ang Mga Detalye</translation>
@@ -1513,13 +1512,13 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4620809267248568679">Ipinapatupad ng isang extension ang setting na ito.</translation>
 <translation id="4846680374085650406">Sinusunod mo ang rekomendasyon ng administrator para sa setting na ito.</translation>
 <translation id="1223853788495130632">Inirerekomenda ng iyong administrator ang isang tukoy na halaga para sa setting na ito.</translation>
-<translation id="2573343962518858459">Hindi mula sa Brave Web Store.</translation>
+<translation id="8839398440242019256">Hindi mula sa Brave Web Store.</translation>
 <translation id="5337771866151525739">Na-install ng third party.</translation>
 <translation id="4538792345715658285">Na-install ng patakaran ng enterprise.</translation>
 <translation id="4359408040881008151">Na-install dahil sa (mga) nakadependeng extension.</translation>
 <translation id="4980805016576257426">May malware ang extension na ito.</translation>
 <translation id="5522156646677899028">Naglalaman ang extension na ito ng isang malubhang kahinaan sa seguridad.</translation>
-<translation id="1168617370053816436">Lumalabag ang extension na ito sa patakaran ng Brave Web Store.</translation>
+<translation id="6945695820322143954">Lumalabag ang extension na ito sa patakaran ng Brave Web Store.</translation>
 <translation id="177808131755847449">Na-disable ng Brave. Maaaring hindi ligtas ang extension na ito.</translation>
 <translation id="1434696352799406980">Ire-reset nito ang iyong page sa pagsisimula, page ng bagong tab, search engine at mga naka-pin na tab. Idi-disable din nito ang lahat ng extension at iki-clear ang pansamantalang data tulad ng cookies. Hindi iki-clear ang iyong mga bookmark, history at naka-save na password.</translation>
 <translation id="1242633766021457174">Gustong i-reset ng <ph name="THIRD_PARTY_TOOL_NAME"/> ang iyong mga setting.</translation>
@@ -2909,10 +2908,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
     <ph name="MARKUP_7"/>Magbahagi, gumawa at mag-collaborate<ph name="MARKUP_8"/>
     sa mga file kasama ng iba pa, lahat sa iisang lugar.<ph name="MARKUP_9"/></translation>
 <translation id="7489605380874780575">Suriin ang pagiging karapat-dapat</translation>
-<translation id="4997096511442832556">Hindi sinusuportahan ang uri ng file na ito. Pakibisita ang <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> upang maghanap ng app na makakapagbukas sa ganitong uri ng file.
+<translation id="4878716980734452132">Hindi sinusuportahan ang uri ng file na ito. Pakibisita ang <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> upang maghanap ng app na makakapagbukas sa ganitong uri ng file.
     <ph name="BEGIN_LINK_HELP"/>Matuto Nang Higit Pa<ph name="END_LINK_HELP"/></translation>
-<translation id="5097366979999786201">Idinisenyo ang file na ito para sa PC na gumagamit ng Windows software. Hindi ito tugma sa iyong device na nagpapatakbo ng Brave OS. Mangyaring maghanap sa <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>para sa naaangkop na pamalit na app.<ph name="BEGIN_LINK_HELP"/>Matuto nang Higit Pa<ph name="END_LINK_HELP"/></translation>
-<translation id="6041399778584119390">Idinisenyo ang file na ito para sa computer na gumagamit ng Macintosh software. Hindi ito tugma sa iyong device na nagpapatakbo ng Brave OS. Mangyaring maghanap sa <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> para sa isang naaangkop na pamalit na app. <ph name="BEGIN_LINK_HELP"/>Matuto nang Higit Pa<ph name="END_LINK_HELP"/></translation>
+<translation id="3376900196170631953">Idinisenyo ang file na ito para sa PC na gumagamit ng Windows software. Hindi ito tugma sa iyong device na nagpapatakbo ng Brave OS. Mangyaring maghanap sa <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>para sa naaangkop na pamalit na app.<ph name="BEGIN_LINK_HELP"/>Matuto nang Higit Pa<ph name="END_LINK_HELP"/></translation>
+<translation id="3072401511615920367">Idinisenyo ang file na ito para sa computer na gumagamit ng Macintosh software. Hindi ito tugma sa iyong device na nagpapatakbo ng Brave OS. Mangyaring maghanap sa <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> para sa isang naaangkop na pamalit na app. <ph name="BEGIN_LINK_HELP"/>Matuto nang Higit Pa<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">Maghintay lamang ng isang segundo</translation>
 <translation id="3096967955765855393">Patuloy kaming naghahanap ng mga paraan upang gawing mas ligtas ang iyong pagba-browse. Noong nakaraan, maaari kang i-prompt ng anumang website na magdagdag ng extension sa iyong browser. Sa mga pinakabagong bersyon ng Brave Software Brave, dapat na tahasan mong sabihin sa Brave na gusto mong i-install ang mga extension na ito sa pamamagitan ng pagdaragdag sa mga ito sa page ng Mga Extension. <ph name="BEGIN_LINK"/>Matuto nang higit pa<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">Hindi mabuksan gamit ang $1</translation>
@@ -2947,9 +2946,9 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7452737073539387970">Site ng Brave Software</translation>
 <translation id="4445959220475380548">link ng Brave Software Drive</translation>
 <translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="2599249317139964094">Hindi sinusuportahan ang uri ng file na ito. Pakibisita ang Brave Web Store upang makahanap ng app na makakapagbukas ng ganitong uri ng file.</translation>
-<translation id="3495282670559481871">Idinisenyo ang file na ito para sa isang computer na gumagamit ng Macintosh software. Hindi ito tugma sa iyong device na nagpapatakbo ng Brave OS. Mangyaring maghanap sa Brave Web Store ng naaangkop na pamalit na app.</translation>
-<translation id="3213197099265624265">Idinisenyo ang file na ito para sa isang PC na gumagamit ng Windows software. Hindi ito tugma sa iyong device na nagpapatakbo ng Brave OS. Mangyaring maghanap sa Brave Web Store ng naaangkop na pamalit na app.</translation>
+<translation id="1131292764548273687">Hindi sinusuportahan ang uri ng file na ito. Pakibisita ang Brave Web Store upang makahanap ng app na makakapagbukas ng ganitong uri ng file.</translation>
+<translation id="9010211493509471179">Idinisenyo ang file na ito para sa isang computer na gumagamit ng Macintosh software. Hindi ito tugma sa iyong device na nagpapatakbo ng Brave OS. Mangyaring maghanap sa Brave Web Store ng naaangkop na pamalit na app.</translation>
+<translation id="5059989099965370411">Idinisenyo ang file na ito para sa isang PC na gumagamit ng Windows software. Hindi ito tugma sa iyong device na nagpapatakbo ng Brave OS. Mangyaring maghanap sa Brave Web Store ng naaangkop na pamalit na app.</translation>
 <translation id="5833610766403489739">Nawala ang file na ito. Pakitingnan ang iyong setting ng lokasyon ng pag-download at subukang muli.</translation>
 <translation id="3966388904776714213">Audio Player</translation>
 <translation id="3245321423178950146">Hindi Kilalang Artist</translation>
@@ -3030,7 +3029,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4570609078116869893">Awtomatikong i-update ang Brave para sa lahat ng user</translation>
 <translation id="7102687220333134671">Naka-on ang mga awtomatikong update</translation>
 <translation id="6981982820502123353">Pagiging Maa-access</translation>
-<translation id="5392220887878025825">Buksan ang Brave Web Store</translation>
+<translation id="5840822070878669614">Buksan ang Brave Web Store</translation>
 <translation id="6073903501322152803">Magdagdag ng mga feature ng pagiging naa-access</translation>
 <translation id="7988355189918024273">Paganahin ang mga tampok sa pagiging maa-access</translation>
 <translation id="2558896001721082624">Ipakita ang mga opsyon sa accessibility sa menu ng system</translation>
@@ -4004,7 +4003,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="437184764829821926">Mga advanced na setting ng font</translation>
 <translation id="323803881985677942">Buksan ang mga opsyon ng extension</translation>
 <translation id="2166369534954157698">The quick brown fox jumps over the lazy dog</translation>
-<translation id="6121729889904235649">Nangangailangan ng extension mula sa Brave Web Store</translation>
+<translation id="8911765336506423117">Nangangailangan ng extension mula sa Brave Web Store</translation>
 <translation id="6965978654500191972">Device</translation>
 <translation id="8260864402787962391">Mouse</translation>
 <translation id="155865706765934889">Touchpad</translation>
@@ -4221,7 +4220,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3777806571986431400">Pinagana na ang Extension</translation>
 <translation id="6851497530878285708">Naka-enable ang App</translation>
 <translation id="5018207570537526145">Buksan ang website ng extension</translation>
-<translation id="8158441856257599022">Tingnan sa Brave Web Store</translation>
 <translation id="4617270414136722281">Mga opsyon ng extension</translation>
 <translation id="7152478047064750137">Hindi nangangailangan ang extension na ito ng mga espesyal na pahintulot</translation>
 <translation id="8523849605371521713">Idinagdag ng patakaran</translation>
@@ -4231,7 +4229,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6370021412472292592">Hindi mai-load ang manifest.</translation>
 <translation id="7235716375204803342">Kinukuha ang mga aktibidad...</translation>
 <translation id="7647403192093989392">Walang kamakailang aktibidad</translation>
-<translation id="2152198799932802652">Maghanap ng mga extension at tema sa <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Maghanap ng mga extension at tema sa <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">Walang ibinigay na paglalarawan</translation>
 <translation id="3855441664322950881">Extension ng pack</translation>
 <translation id="2958721676848865875">Babala sa extension ng pack</translation>

@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "ಟೋಕನ್ ಅನುದಾನಗಳು",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "ಟೋಕನ್ ಅನುದಾನಗಳು ಕ್ಲೈಮ್ ಮಾಡಿರುವುದು",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Brave Rewards ಇದಾಗಿದೆ",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "ವಾಲೆಟ್ ರಚನೆ ವಿಫಲಗೊಂಡಿದೆ",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "ಪುನಃ ಪ್ರಯತ್ನಿಸಿ",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

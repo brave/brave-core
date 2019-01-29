@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Tokenové granty",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Nárokovaných grantů",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Odměny Brave jsou",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Tvorba peněženky se nezdařila ",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Zkusit znovu",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

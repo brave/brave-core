@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Donații în jetoane",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Granturi Token Revendicate",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Brave Rewards reprezintă",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Crearea portofelului a eșuat",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Încearcă din nou",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

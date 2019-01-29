@@ -1017,7 +1017,6 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="5483785310822538350">Atsaukt piekļuvi failiem un ierīcei</translation>
 <translation id="93766956588638423">Labot paplašinājumu</translation>
 <translation id="3905761538810670789">Lietotnes labošana</translation>
-<translation id="7246778686271518284">Brave Web Store</translation>
 <translation id="8808478386290700967">Web Store</translation>
 <translation id="488785315393301722">Rādīt detaļas</translation>
 <translation id="8962083179518285172">Slēpt detaļas</translation>
@@ -1512,13 +1511,13 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="4620809267248568679">Šis iestatījums tiek kontrolēts, izmantojot paplašinājumu.</translation>
 <translation id="4846680374085650406">Jūs ievērojat administratora ieteikumus attiecībā uz šo iestatījumu.</translation>
 <translation id="1223853788495130632">Jūsu administrators šim iestatījumam iesaka konkrētu vērtību.</translation>
-<translation id="2573343962518858459">Nav iegūts no Brave interneta veikala.</translation>
+<translation id="8839398440242019256">Nav iegūts no Brave interneta veikala.</translation>
 <translation id="5337771866151525739">Instalēts, izmantojot trešās puses lietotni.</translation>
 <translation id="4538792345715658285">Instalēts atbilstoši uzņēmuma politikai.</translation>
 <translation id="4359408040881008151">Paplašinājums tika instalēts atkarīga(-u) paplašinājuma(-u) dēļ.</translation>
 <translation id="4980805016576257426">Šis paplašinājums satur ļaunprātīgu programmatūru.</translation>
 <translation id="5522156646677899028">Šis paplašinājums nopietni apdraud drošību.</translation>
-<translation id="1168617370053816436">Šis paplašinājums pārkāpj Brave interneta veikala politiku.</translation>
+<translation id="6945695820322143954">Šis paplašinājums pārkāpj Brave interneta veikala politiku.</translation>
 <translation id="177808131755847449">Atspējoja pārlūks Brave. Šis paplašinājums, iespējams, nav drošs.</translation>
 <translation id="1434696352799406980">Tādējādi tiks atiestatīta jūsu sākumlapa, jaunas cilnes lapa, meklētājprogramma un piespraustās cilnes. Turklāt tiks atspējoti visi paplašinājumi, kā arī tiks notīrīti pagaidu dati, piemēram, sīkfaili. Netiks notīrītas jūsu grāmatzīmes, vēsture un saglabātās paroles.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> vēlas atiestatīt jūsu iestatījumus.</translation>
@@ -2909,10 +2908,10 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
     <ph name="MARKUP_7"/>Koplietojiet un veidojiet failus vienuviet, kā arī sadarbojieties,<ph name="MARKUP_8"/>
     izmantojot failus kopā ar citiem lietotājiem.<ph name="MARKUP_9"/></translation>
 <translation id="7489605380874780575">Pārbaudīt piemērotību</translation>
-<translation id="4997096511442832556">Šis faila tips netiek atbalstīts. Lūdzu, apmeklējiet <ph name="BEGIN_LINK"/>Brave interneta veikalu<ph name="END_LINK"/>, lai atrastu lietotni, ar kuru var atvērt šo failu.
+<translation id="4878716980734452132">Šis faila tips netiek atbalstīts. Lūdzu, apmeklējiet <ph name="BEGIN_LINK"/>Brave interneta veikalu<ph name="END_LINK"/>, lai atrastu lietotni, ar kuru var atvērt šo failu.
     <ph name="BEGIN_LINK_HELP"/>Uzziniet vairāk<ph name="END_LINK_HELP"/></translation>
-<translation id="5097366979999786201">Šis fails ir paredzēts datoram, kurā tiek izmantota Windows programmatūra. Tas nav saderīgs ar jūsu ierīci, kurā darbojas Brave OS. Atbilstošu lietotni meklējiet <ph name="BEGIN_LINK"/>Brave interneta veikalā<ph name="END_LINK"/>. <ph name="BEGIN_LINK_HELP"/>Uzziniet vairāk<ph name="END_LINK_HELP"/>.</translation>
-<translation id="6041399778584119390">Šis fails ir paredzēts datoram, kurā tiek izmantota Macintosh programmatūra. Tas nav saderīgs ar jūsu ierīci, kurā darbojas Brave OS. Atbilstošu lietotni meklējiet <ph name="BEGIN_LINK"/>Brave interneta veikalā<ph name="END_LINK"/>. <ph name="BEGIN_LINK_HELP"/>Uzziniet vairāk<ph name="END_LINK_HELP"/>.</translation>
+<translation id="3376900196170631953">Šis fails ir paredzēts datoram, kurā tiek izmantota Windows programmatūra. Tas nav saderīgs ar jūsu ierīci, kurā darbojas Brave OS. Atbilstošu lietotni meklējiet <ph name="BEGIN_LINK"/>Brave interneta veikalā<ph name="END_LINK"/>. <ph name="BEGIN_LINK_HELP"/>Uzziniet vairāk<ph name="END_LINK_HELP"/>.</translation>
+<translation id="3072401511615920367">Šis fails ir paredzēts datoram, kurā tiek izmantota Macintosh programmatūra. Tas nav saderīgs ar jūsu ierīci, kurā darbojas Brave OS. Atbilstošu lietotni meklējiet <ph name="BEGIN_LINK"/>Brave interneta veikalā<ph name="END_LINK"/>. <ph name="BEGIN_LINK_HELP"/>Uzziniet vairāk<ph name="END_LINK_HELP"/>.</translation>
 <translation id="7589661784326793847">Mirkli uzgaidiet!</translation>
 <translation id="3096967955765855393">Mēs arvien meklējam veidus, kā papildus aizsargāt pārlūkošanu. Iepriekš jebkura vietne varēja aicināt pievienot paplašinājumu pārlūkā. Jaunākajās Brave Software Brave versijās lapā “Paplašinājumi” ir precīzi jānorāda, ka vēlaties instalēt šos paplašinājumus. <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/>.</translation>
 <translation id="2004663115385769400">Nevar atvērt, izmantojot $1</translation>
@@ -2947,9 +2946,9 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="7452737073539387970">Brave Software vietne</translation>
 <translation id="4445959220475380548">Brave Software diska saite</translation>
 <translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="2599249317139964094">Šī tipa fails netiek atbalstīts. Lūdzu, apmeklējiet Brave interneta veikalu, lai atrastu lietotni, kas var atvērt šī tipa failus.</translation>
-<translation id="3495282670559481871">Šis fails ir paredzēts datoram, kurā tiek izmantota Macintosh programmatūra. Tas nav saderīgs ar jūsu ierīci, kurā darbojas operētājsistēma Brave OS. Lūdzu, meklējiet Brave interneta veikalā atbilstošu aizstājošo lietotni.</translation>
-<translation id="3213197099265624265">Šis fails ir paredzēts datoram, kurā tiek izmantota Windows programmatūra. Tas nav saderīgs ar jūsu ierīci, kurā darbojas operētājsistēma Brave OS. Lūdzu, meklējiet Brave interneta veikalā atbilstošu aizstājošo lietotni.</translation>
+<translation id="1131292764548273687">Šī tipa fails netiek atbalstīts. Lūdzu, apmeklējiet Brave interneta veikalu, lai atrastu lietotni, kas var atvērt šī tipa failus.</translation>
+<translation id="9010211493509471179">Šis fails ir paredzēts datoram, kurā tiek izmantota Macintosh programmatūra. Tas nav saderīgs ar jūsu ierīci, kurā darbojas operētājsistēma Brave OS. Lūdzu, meklējiet Brave interneta veikalā atbilstošu aizstājošo lietotni.</translation>
+<translation id="5059989099965370411">Šis fails ir paredzēts datoram, kurā tiek izmantota Windows programmatūra. Tas nav saderīgs ar jūsu ierīci, kurā darbojas operētājsistēma Brave OS. Lūdzu, meklējiet Brave interneta veikalā atbilstošu aizstājošo lietotni.</translation>
 <translation id="5833610766403489739">Šo failu nevar atrast. Lūdzu, pārbaudiet lejupielādes vietas iestatījumu un mēģiniet vēlreiz.</translation>
 <translation id="3966388904776714213">Audio atskaņotājs</translation>
 <translation id="3245321423178950146">Nezināms izpildītājs</translation>
@@ -3030,7 +3029,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="4570609078116869893">Automātiski atjaunināt pārlūku Brave visiem lietotājiem</translation>
 <translation id="7102687220333134671">Automātiskie atjauninājumi ir ieslēgti.</translation>
 <translation id="6981982820502123353">Pieejamība</translation>
-<translation id="5392220887878025825">Atveriet Brave interneta veikalu</translation>
+<translation id="5840822070878669614">Atveriet Brave interneta veikalu</translation>
 <translation id="6073903501322152803">Pievienot pieejamības funkcijas</translation>
 <translation id="7988355189918024273">Iespējot pieejamības funkcijas</translation>
 <translation id="2558896001721082624">Vienmēr rādīt piekļūstamības opcijas sistēmas izvēlnē</translation>
@@ -4004,7 +4003,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="437184764829821926">Uzlaboti fonta iestatījumi</translation>
 <translation id="323803881985677942">Atvērt paplašinājumu opcijas</translation>
 <translation id="2166369534954157698">Muļķa hipiji turpat brīvi mēģina nogaršot celofāna žņaudzējčūsku</translation>
-<translation id="6121729889904235649">Nepieciešams paplašinājums no Brave interneta veikala</translation>
+<translation id="8911765336506423117">Nepieciešams paplašinājums no Brave interneta veikala</translation>
 <translation id="6965978654500191972">Ierīce</translation>
 <translation id="8260864402787962391">Pele</translation>
 <translation id="155865706765934889">Skārienpaliktnis</translation>
@@ -4221,7 +4220,6 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="3777806571986431400">Paplašinājums iespējots</translation>
 <translation id="6851497530878285708">Lietotne ir iespējota</translation>
 <translation id="5018207570537526145">Atvērt paplašinājuma vietni</translation>
-<translation id="8158441856257599022">Skatīt Brave interneta veikalā</translation>
 <translation id="4617270414136722281">Paplašinājumu opcijas</translation>
 <translation id="7152478047064750137">Šim paplašinājumam nav nepieciešamas īpašas atļaujas.</translation>
 <translation id="8523849605371521713">Pievienots, jo iestatīts politikā</translation>
@@ -4231,7 +4229,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="6370021412472292592">Nevarēja ielādēt manifestu.</translation>
 <translation id="7235716375204803342">Notiek darbību iegūšana...</translation>
 <translation id="7647403192093989392">Nav nesen veiktu darbību</translation>
-<translation id="2152198799932802652">Atrodiet paplašinājumus un motīvus <ph name="BEGIN_LINK"/>Brave interneta veikalā<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Atrodiet paplašinājumus un motīvus <ph name="BEGIN_LINK"/>Brave interneta veikalā<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">Apraksts nav sniegts.</translation>
 <translation id="3855441664322950881">Pakot paplašinājumu</translation>
 <translation id="2958721676848865875">Paplašinājuma pakošanas brīdinājums</translation>
