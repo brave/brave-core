@@ -92,7 +92,6 @@ class ConfirmationsImpl : public Confirmations {
 
   std::string real_wallet_address_;
   std::string real_wallet_address_secret_key_;
-  std::string local_server_confirmation_key_;
   std::vector<std::string> local_original_confirmation_tokens_;
   std::vector<std::string> local_blinded_confirmation_tokens_;
   std::string confirmation_id_;
@@ -101,6 +100,7 @@ class ConfirmationsImpl : public Confirmations {
   std::string blinded_payment_token_;
   base::DictionaryValue* map_;
   std::string bundle_json_;
+  std::string real_batch_proof_;
 
   /////////////////////////////////////////////////////////////////////////////
 
@@ -116,8 +116,7 @@ class ConfirmationsImpl : public Confirmations {
 
   void Step2RefillConfirmationsIfNecessary(
       std::string real_wallet_address,
-      std::string real_wallet_address_secret_key,
-      std::string server_confirmation_key);
+      std::string real_wallet_address_secret_key);
   void Step2bRefillConfirmationsIfNecessary(
       const std::string& url,
       const int response_status_code,

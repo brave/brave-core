@@ -129,6 +129,8 @@ std::string ConfirmationsImpl::ToJSON() {
       base::Value(issuers_version_));
   dict.SetKey("server_confirmation_key",
       base::Value(server_confirmation_key_));
+  dict.SetKey("real_batch_proof",
+      base::Value(real_batch_proof_));
   dict.SetWithoutPathExpansion("server_bat_payment_names",
       Munge(server_bat_payment_names));
   dict.SetWithoutPathExpansion("server_bat_payment_keys",
@@ -154,18 +156,19 @@ std::string ConfirmationsImpl::ToJSON() {
 
 void ConfirmationsImpl::Step2RefillConfirmationsIfNecessary(
     std::string real_wallet_address,
-    std::string real_wallet_address_secret_key,
-    std::string local_server_confirmation_key) {
+    std::string real_wallet_address_secret_key) {
   BLOG(INFO) << "Step2RefillConfirmationsIfNecessary";
 
   if (this->blinded_confirmation_tokens.size() > low_token_threshold) {
-    OnStep2RefillConfirmationsIfNecessary(FAILED);
+    BLOG(INFO) << "  We have " << this->blinded_confirmation_tokens.size()
+        << " blinded confirmations tokens which is above the low threshold of "
+        << low_token_threshold;
+    OnStep2RefillConfirmationsIfNecessary(SUCCESS);
     return;
   }
 
   real_wallet_address_ = real_wallet_address;
   real_wallet_address_secret_key_ = real_wallet_address_secret_key;
-  local_server_confirmation_key_ = local_server_confirmation_key;
 
   local_original_confirmation_tokens_ = {};
   local_blinded_confirmation_tokens_ = {};
@@ -372,7 +375,7 @@ void ConfirmationsImpl::Step2cRefillConfirmationsIfNecessary(
     return;
   }
 
-  std::string real_batch_proof = v->GetString();
+  real_batch_proof_ = v->GetString();
 
   if (!(v = dict->FindKey("signedTokens"))) {
     BLOG(ERROR) << "  Step2.3: No signedTokens";
@@ -394,14 +397,14 @@ void ConfirmationsImpl::Step2cRefillConfirmationsIfNecessary(
   }
 
   bool real_verified = this->VerifyBatchDLEQProof(
-      real_batch_proof,
+      real_batch_proof_,
       local_blinded_confirmation_tokens_,
       server_signed_blinded_confirmations,
-      local_server_confirmation_key_);
+      server_confirmation_key_);
   if (!real_verified) {
     BLOG(ERROR) << "  Invalid server confirmations proof";
 
-    BLOG(ERROR) << "    Batch proof: " << real_batch_proof;
+    BLOG(ERROR) << "    Batch proof: " << real_batch_proof_;
     BLOG(ERROR) << "    Blinded confirmation tokens:";
     for (const auto& blinded_confirmation_token :
         local_blinded_confirmation_tokens_) {
@@ -412,7 +415,7 @@ void ConfirmationsImpl::Step2cRefillConfirmationsIfNecessary(
         server_signed_blinded_confirmations) {
       BLOG(ERROR) << "      " << signed_confirmation_token;
     }
-    BLOG(ERROR) << "    Public key: " << local_server_confirmation_key_;
+    BLOG(ERROR) << "    Public key: " << server_confirmation_key_;
 
     OnStep2RefillConfirmationsIfNecessary(FAILED);
     return;
@@ -467,16 +470,42 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
   std::string orig_token_b64 = this->original_confirmation_tokens.front();
   std::string sb_token_b64 = this->signed_blinded_confirmation_tokens.front();
 
+  // client prepares a random token and blinding scalar pair
+  Token token = Token::random();
+  std::string token_base64 = token.encode_base64();
+
+  // client blinds the token
+  BlindedToken blinded_token = token.blind();
+  std::string blinded_token_base64 = blinded_token.encode_base64();
+
+  local_original_payment_token_ = token_base64;
+  local_blinded_payment_token_ = blinded_token_base64;
+
   // rehydrate
   Token restored_token = Token::decode_base64(orig_token_b64);
   SignedToken signed_token = SignedToken::decode_base64(sb_token_b64);
 
   // use blinding scalar to unblind
-  UnblindedToken client_unblinded_token = restored_token.unblind(signed_token);
+  BatchDLEQProof batch_proof = BatchDLEQProof::decode_base64(real_batch_proof_);
+
+  std::vector<Token> restored_tokens = {restored_token};
+  std::vector<BlindedToken> blinded_tokens = {blinded_token};
+  std::vector<SignedToken> signed_tokens = {signed_token};
+  PublicKey public_key = PublicKey::decode_base64(server_confirmation_key_);
+
+  auto unblinded_tokens = batch_proof.verify_and_unblind(
+      restored_tokens, blinded_tokens, signed_tokens, public_key);
+
+  if (unblinded_tokens.size() == 0) {
+    BLOG(ERROR) << "  Step3.1a: Failed to verify and unblind tokens";
+    OnStep3RedeemConfirmation(FAILED);
+    return;
+  }
 
   // dehydrate
-  std::string base64_unblinded_token = client_unblinded_token.encode_base64();
+  auto client_unblinded_token = unblinded_tokens.front();
 
+  std::string base64_unblinded_token = client_unblinded_token.encode_base64();
   std::string local_unblinded_signed_confirmation_token =
       base64_unblinded_token;
 
@@ -491,17 +520,6 @@ void ConfirmationsImpl::Step3RedeemConfirmation(
 
   BLOG(INFO) << "  Step3.1b: generate payment, count: "
       << original_confirmation_tokens.size();
-
-  // client prepares a random token and blinding scalar pair
-  Token token = Token::random();
-  std::string token_base64 = token.encode_base64();
-
-  // client blinds the token
-  BlindedToken blinded_token = token.blind();
-  std::string blinded_token_base64 = blinded_token.encode_base64();
-
-  local_original_payment_token_ = token_base64;
-  local_blinded_payment_token_ = blinded_token_base64;
 
   // what's `t`? local_unblinded_signed_confirmation_token
   // what's `MAC_{sk}(R)`? item from blinded_payment_tokens
@@ -1011,10 +1029,32 @@ void ConfirmationsImpl::Step5CashInPaymentIOUs(
     // rehydrate
     Token restored_token = Token::decode_base64(orig_token_b64);
     SignedToken signed_token = SignedToken::decode_base64(sb_token_b64);
+
+    // client blinds the token
+    Token token = Token::random();
+    auto blinded_token = token.blind();
+
     // use blinding scalar to unblind
-    UnblindedToken client_unblinded_token =
-        restored_token.unblind(signed_token);
+    BatchDLEQProof batch_proof =
+        BatchDLEQProof::decode_base64(real_batch_proof_);
+
+    std::vector<Token> restored_tokens = {restored_token};
+    std::vector<BlindedToken> blinded_tokens = {blinded_token};
+    std::vector<SignedToken> signed_tokens = {signed_token};
+    PublicKey public_key = PublicKey::decode_base64(server_confirmation_key_);
+
+    auto unblinded_tokens = batch_proof.verify_and_unblind(
+        restored_tokens, blinded_tokens, signed_tokens, public_key);
+
+    if (unblinded_tokens.size() == 0) {
+      BLOG(ERROR) << "  Step5: Failed to verify and unblind tokens";
+      OnStep5CashInPaymentIOUs(FAILED);
+      return;
+    }
+
     // dehydrate
+    auto client_unblinded_token = unblinded_tokens.front();
+
     std::string base64_unblinded_token =
         client_unblinded_token.encode_base64();
     // put on object
@@ -1309,6 +1349,9 @@ bool ConfirmationsImpl::FromJSON(std::string json_string) {
   if (!(v = dict->FindKey("server_confirmation_key"))) return fail;
   this->server_confirmation_key_ = v->GetString();
 
+  if (!(v = dict->FindKey("real_batch_proof"))) return fail;
+  this->real_batch_proof_ = v->GetString();
+
   if (!(v = dict->FindKey("server_bat_payment_names"))) return fail;
   this->server_bat_payment_names = Unmunge(v);
 
@@ -1372,7 +1415,8 @@ void ConfirmationsImpl::OnStateLoaded(
   }
 
   if (!FromJSON(confirmations_json)) {
-    BLOG(ERROR) << "Failed to parse confirmations state: " << confirmations_json;
+    BLOG(ERROR) << "Failed to parse confirmations state: "
+        << confirmations_json;
     return;
   }
 
@@ -1560,8 +1604,7 @@ void ConfirmationsImpl::RefillConfirmations() {
 
   Step2RefillConfirmationsIfNecessary(
       wallet_info_.payment_id,
-      wallet_info_.signing_key,
-      this->server_confirmation_key_);
+      wallet_info_.signing_key);
 }
 
 void ConfirmationsImpl::StopRefillingConfirmations() {
