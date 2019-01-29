@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Pilnvaras piešķiršana",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Pieprasītie marķieru piešķīrumi",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Brave balvas ir",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Maka izveide neizdevās",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Mēģināt vēlreiz",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

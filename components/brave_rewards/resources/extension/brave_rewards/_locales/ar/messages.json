@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "منح العملة الرمزية",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "تم جمع المكافأة المالية التي منحت لك",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "مكافآت Brave",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "فشل إنشاء المحفظة",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "إعادة المحاولة",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

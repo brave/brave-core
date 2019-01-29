@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Tilskudd til polletter",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Tokenstipender gjort krav på",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Brave Rewards er",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Opprettelse av lommebok var mislykket",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Prøv igjen",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Anslået mængde tid sparet</translation>
 <translation id="5206618227023752085">Topside fjernet.</translation>
 <translation id="2079545284768500474">Fortryd</translation>
+<translation id="6040143037577758943">Luk</translation>
 <translation id="8529752221839395787">Gendan Alle...</translation>
 <translation id="3022168349636134570">sekund</translation>
 <translation id="8664519043722036194">sekunder</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Aktiver Brave Rewards</translation>
 <translation id="2862598513212603756">Din opmærksomhed er værdifuld. Tjen ved at se annoncer, mens du browser, og støt de indholdsskabere, som du kan lide.</translation>
 <translation id="4942016616604700968">Aktiver belønninger</translation>
-<translation id="1964278139527989987">Importér bogmærker og indstillinger</translation>
+<translation id="3958088479270651626">Importér bogmærker og indstillinger</translation>
 <translation id="5633840519079139680">Brave gør det nemt at indrette omgivelserne, som du kender dem, ved at importere bogmærker og indstillinger fra andre browsere, der er installeret på din computer.</translation>
 <translation id="8275038454117074363">Importér</translation>
 <translation id="5540323067375019678">Administrér dine beskyttelser</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Donér på stedet, når du finder perler.</translation>
-<translation id="1638706606242137268">Send donationer på Twitter, YouTube og mere for at belønne indlæg du ‘synes godt om’.</translation>
+<translation id="6135431587052937035">Støt dine yndlingssider med faste månedlige tips.</translation>
 <translation id="2788596505277705686">{{balance}} BAT blev gendannet. Din tegnebogsnøgle er blevet verificeret og indlæst korrekt.</translation>
 <translation id="1083279119532577005">Tegnebog gendannet!</translation>
 <translation id="7841456038054167122">Skriv venligst koderne igen eller prøv andre koder.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">Tak</translation>
 <translation id="6432779622695508363">Tip om like</translation>
 <translation id="8424370624815730676">Basal Opmærksomhedspolet (BOP)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Token-Tilskud Taget</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transaktioner</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">fra denne synkroniseringskæde</translation>
 <translation id="610118613261910287">Se Kodeord</translation>
 <translation id="8588535459744752615">Leder efter enhed</translation>
-<translation id="6406506848690869874">Synkroniser</translation>
+<translation id="391177677159359824">Synkroniser (beta)</translation>
 <translation id="28332161031213248">Listen over enheder herunder inkluderer alle enheder i din synkroniseringskæde. Hver enhed kan administreres fra alle andre enheder.</translation>
 <translation id="8153617760825732120">enhedens navn</translation>
 <translation id="4241512165288542484">(Denne enhed)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Gemte sideindstillinger</translation>
 <translation id="7859704718976024901">Browserhistorik</translation>
 <translation id="2339730291919608488">Forlad synkroniseringskæde</translation>
-<translation id="4332558599726753990">Synkroniseringsopsætning</translation>
+<translation id="4797449295451979552">Synkroniser (beta) Opsætning</translation>
 <translation id="298546024891487702">For at begynde skal du have installeret Brave på alle de enheder du planlægger at Synkronisere. For at kæde dem sammen skal du oprette en synkroniseringskæde, som du skal bruge til at forbinde alle dine enheder sikkert.</translation>
 <translation id="6200528822592747640">Start en ny Synkroniseringskæde</translation>
 <translation id="5184726904895809379">Jeg har en Synkroniseringskode</translation>

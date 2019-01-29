@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Estimativa de Tempo Economizado</translation>
 <translation id="5206618227023752085">Site principal removido.</translation>
 <translation id="2079545284768500474">Desfazer</translation>
+<translation id="6040143037577758943">Fechar</translation>
 <translation id="8529752221839395787">Restaurar Tudo</translation>
 <translation id="3022168349636134570">segundo</translation>
 <translation id="8664519043722036194">segundo</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Ativar Recompensas Brave</translation>
 <translation id="2862598513212603756">Sua atenção é valiosa. Ganhe enquanto navega vendo anúncios que respeitam a sua privacidade e pague para apoiar os criadores de conteúdo que você adora.</translation>
 <translation id="4942016616604700968">Ativar Recompensas</translation>
-<translation id="1964278139527989987">Importar favoritos e configurações</translation>
+<translation id="3958088479270651626">Importar favoritos e configurações</translation>
 <translation id="5633840519079139680">O Brave facilita a configuração do seu ambiente de navegação, importando os favoritos e as configurações de outros navegadores instalados no seu computador.</translation>
 <translation id="8275038454117074363">Importar</translation>
 <translation id="5540323067375019678">Gerenciar suas proteções</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Faça doações no local à medida que encontra preciosidades.</translation>
-<translation id="1638706606242137268">Envie doações no Twitter, YouTube e outros, para recompensar as postagens que você ‘Gosta’.</translation>
+<translation id="6135431587052937035">Apoie os seus sites favoritos com dicas mensais recorrentes.</translation>
 <translation id="2788596505277705686">{{balance}} BAT foi recuperado. A senha da sua carteira foi verificada e carregada com sucesso.</translation>
 <translation id="1083279119532577005">Carteira restaurada!</translation>
 <translation id="7841456038054167122">Digite a senha novamente ou tente senhas diferentes.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">Obrigado</translation>
 <translation id="6432779622695508363">Gorjeta ao gostar</translation>
 <translation id="8424370624815730676">Token de Atenção Básica (BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Auxílios Token Reivindicados</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transações</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">desta cadeia de sincronização</translation>
 <translation id="610118613261910287">Visualizar as Palavras do Código</translation>
 <translation id="8588535459744752615">Procurando dispositivo</translation>
-<translation id="6406506848690869874">Sync</translation>
+<translation id="391177677159359824">Sync (beta)</translation>
 <translation id="28332161031213248">A lista de dispositivos abaixo inclui todos os dispositivos na sua cadeia de sincronização. Cada dispositivo pode ser gerenciado de qualquer outro dispositivo.</translation>
 <translation id="8153617760825732120">nome do dispositivo</translation>
 <translation id="4241512165288542484">(Este dispositivo)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Configurações do site salvas</translation>
 <translation id="7859704718976024901">Histórico de navegação</translation>
 <translation id="2339730291919608488">Sair da cadeia de sincronização</translation>
-<translation id="4332558599726753990">Instalação do Sync</translation>
+<translation id="4797449295451979552">Instalação do Sync (beta)</translation>
 <translation id="298546024891487702">Para começar, você vai ter que instalar o Brave em todos os dispositivos que planeja sincronizar. Para agrupá-los, inicie uma cadeia de sincronização que você vai usar para vincular todos os seus dispositivos com segurança.</translation>
 <translation id="6200528822592747640">Iniciar uma nova Cadeia Sync</translation>
 <translation id="5184726904895809379">Eu tenho um Código Sync</translation>

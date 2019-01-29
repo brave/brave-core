@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Kadirio la Muda Uliookolewa</translation>
 <translation id="5206618227023752085">Tovuti maarufu imeondolewa.</translation>
 <translation id="2079545284768500474">Tendua</translation>
+<translation id="6040143037577758943">Funga</translation>
 <translation id="8529752221839395787">Rejesha Zote</translation>
 <translation id="3022168349636134570">sekunde</translation>
 <translation id="8664519043722036194">sekunde</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Wezesha Zawadi za Brave</translation>
 <translation id="2862598513212603756">Umakini wako ni wa thamani. Pata kipato kwa kutazama matangazo yanayoheshimu faragha huku ukivinjari, na yalipie moja kwa moja kuwasaidia watengeneza maudhui unaowapenda.</translation>
 <translation id="4942016616604700968">Wezesha Zawadi</translation>
-<translation id="1964278139527989987">Ingiza mipangilio ya &amp; vialamisho</translation>
+<translation id="3958088479270651626">Leta alamisho na mipangilio</translation>
 <translation id="5633840519079139680">Brave inafanya iwe rahisi kupangilia mazingira yako ya kawaida kwa kuingiza kumbukumbu za kisakuzi na mipangilio kutoka katika visakuzi vingine vilivyosanidiwa katika kompyuta yako.</translation>
 <translation id="8275038454117074363">Ingiza</translation>
 <translation id="5540323067375019678">Dhibiti ngao zako</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Changia papo hapo unapoona kito.</translation>
-<translation id="1638706606242137268">Tuma michango kwenye Twitter, YouTube, na zaidi, ili kuzawadia mapachiko ‘Unayoyapenda’.</translation>
+<translation id="6135431587052937035">Ziwezeshe tovuti zako unazozipenda kwa michango ya kujirudia kila mwezi.</translation>
 <translation id="2788596505277705686">{{balance}} BAT ilrejeshwa. Ufunguo wako wa waleti umethibitishwa na umefanikiwa kupakiwa.</translation>
 <translation id="1083279119532577005">Waleti imerejeshwa!</translation>
 <translation id="7841456038054167122">Tafadhali ingiza tena ufunguo au jaribu funguo tofauti.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">Asante</translation>
 <translation id="6432779622695508363">Changia kwenye penda</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Ruzuku za Kianzio Zilizoombwa</translation>
 <translation id="1634828734222219955">Jumla</translation>
 <translation id="3535654229833214438">Miamala</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">kutoka katika mnyororo huu wa kuoanisha</translation>
 <translation id="610118613261910287">Tazama Maneno ya Msimbo</translation>
 <translation id="8588535459744752615">Inatafuta kifaa</translation>
-<translation id="6406506848690869874">Oanisha</translation>
+<translation id="391177677159359824">Oanisha (beta)</translation>
 <translation id="28332161031213248">Orodha ya vifaa hapa chini hujumuisha vifaa vyote katika mnyororo wako wa kuoanisha. Kila kifaa kinaweza kusimamiwa kutoka katika kifaa kingine chochote.</translation>
 <translation id="8153617760825732120">jina la kifaa</translation>
 <translation id="4241512165288542484">(Kifaa Hiki)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Mipangilio ya Tovuti Zilizohifadhiwa</translation>
 <translation id="7859704718976024901">Historia ya Kuvinjari</translation>
 <translation id="2339730291919608488">Ondoka katika Mnyororo wa Kuoanisha</translation>
-<translation id="4332558599726753990">Mipangilio ya Kuoanisha</translation>
+<translation id="4797449295451979552">Mipangilio ya Kuoanisha (beta)</translation>
 <translation id="298546024891487702">Ili kuanza, utahitaji kusanidi Brave katika vifaa vyote unavyopanga kuoanisha. Kuviunganisha pamoja, anzisha mnyororo wa kuaoanisha, ambao utautumia kuunganisha vifaa vyako vyote kwa pamoja.</translation>
 <translation id="6200528822592747640">Anzisha Mnyororo Mpya wa Kuoanisha</translation>
 <translation id="5184726904895809379">Nina Msimbo wa Kuoanisha</translation>
