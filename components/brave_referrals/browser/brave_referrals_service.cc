@@ -91,7 +91,10 @@ void BraveReferralsService::Start() {
                          base::Bind(&BraveReferralsService::GetFirstRunTime,
                                     base::Unretained(this)));
 
-  // Periodically fetch referral headers.
+  // Fetch the referral headers on startup.
+  FetchReferralHeaders();
+
+  // Also, periodically fetch the referral headers.
   DCHECK(!fetch_referral_headers_timer_);
   fetch_referral_headers_timer_ = std::make_unique<base::RepeatingTimer>();
   fetch_referral_headers_timer_->Start(
@@ -113,8 +116,6 @@ void BraveReferralsService::Start() {
                    base::Unretained(this)),
         base::Bind(&BraveReferralsService::OnReadPromoCodeComplete,
                    weak_factory_.GetWeakPtr()));
-  else
-    FetchReferralHeaders();
 
   initialized_ = true;
 }
