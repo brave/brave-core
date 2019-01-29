@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { StyledWrapper, StyledHeader, StyledTitle, StyledClose, StyledText, StyledGrantIcon, StyledPanelText, StyledHint } from './style'
-import { CloseStrokeIcon } from '../../../components/icons'
+import { CloseCircleOIcon } from '../../../components/icons'
 import { getLocale } from '../../../helpers'
 
 import header from './assets/header'
@@ -32,31 +32,31 @@ export default class GrantWrapper extends React.PureComponent<Props, {}> {
         fullScreen={fullScreen}
       >
         <StyledClose onClick={onClose}>
-          <CloseStrokeIcon />
+          <CloseCircleOIcon />
         </StyledClose>
         {
           !isPanel
-          ? <StyledHeader>
+            ? <StyledHeader>
               {header}
             </StyledHeader>
-          : <StyledGrantIcon src={giftIconUrl} />
+            : <StyledGrantIcon src={giftIconUrl} />
         }
         <StyledTitle isPanel={isPanel}>
           {title}
         </StyledTitle>
         {
           !isPanel || !hint
-          ? <StyledText>
+            ? <StyledText>
               {text}
             </StyledText>
-          : null
+            : null
         }
         {
           isPanel && hint
-          ? <StyledPanelText>
+            ? <StyledPanelText>
               {getLocale('captchaDrag')} <StyledHint>{hint}</StyledHint> {getLocale('captchaTarget')}
             </StyledPanelText>
-          : null
+            : null
         }
         {children}
       </StyledWrapper>

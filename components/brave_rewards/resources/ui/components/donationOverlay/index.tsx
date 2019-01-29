@@ -33,7 +33,7 @@ import {
   StyledMonthlyInfo
 } from './style'
 import { getLocale } from '../../../helpers'
-import { CloseCircleIcon, CloseStrokeIcon, PaperAirplaneIcon } from '../../../components/icons'
+import { CloseCircleOIcon, PaperAirplaneIcon } from '../../../components/icons'
 
 export interface Props {
   id?: string
@@ -54,7 +54,7 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
     return (
       <StyledFailWrapper>
         <StyledCloseIcon>
-          <CloseCircleIcon onClick={this.props.onClose}/>
+          <CloseCircleOIcon onClick={this.props.onClose} />
         </StyledCloseIcon>
         <StyledFailTitle>
           {getLocale('uhOh')}
@@ -81,86 +81,86 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
       <StyledOverlayContent>
         {
           success || send
-          ? <StyledOverlayTop>
-            <StyledIconWrapper success={success}>
-            {
-              send
-              ? <StyledIcon>
-                  <PaperAirplaneIcon/>
-                </StyledIcon>
-              : null
-            }
-            {
-              !send && siteImg
-              ? <StyledProviderImage src={siteImg}>
-                <StyledImageBorder/>
-              </StyledProviderImage>
-              : null
-            }
-            {
-              !send && !siteImg && !logo && domain
-              ? <StyledLetter logoBgColor={logoBgColor}>
-                {(domain && domain.substring(0,1)) || ''}
-              </StyledLetter>
-              : null
-            }
-            {
-              !send && !siteImg && logo
-              ? <StyledLogoWrapper>
-                  <StyledLogoBorder bg={logoBgColor}>
-                    <StyledLogoImage bg={logo} />
-                  </StyledLogoBorder>
-                </StyledLogoWrapper>
-              : null
-            }
-            </StyledIconWrapper>
-            <StyledMessage success={success} monthly={amount}>
-              <StyledHeaderText>
+            ? <StyledOverlayTop>
+              <StyledIconWrapper success={success}>
                 {
                   send
-                  ? getLocale('donationSent')
-                  : null
+                    ? <StyledIcon>
+                      <PaperAirplaneIcon />
+                    </StyledIcon>
+                    : null
                 }
                 {
-                  success
-                  ? <>
-                    {getLocale('thankYou')}
-                    <StyledMonthlyInfo>
-                      <StyleSubHeaderText>
-                        {
-                          monthlyDate
-                          ? getLocale('autoTipText')
-                          : getLocale('tipText')
-                        }
-                      </StyleSubHeaderText>
-                      <StyledDomainText>
-                        {domain}<br/>{amount} {getLocale('bat')}
-                        {
-                          monthlyDate
-                          ? `, ${getLocale('monthlyText')}`
-                          : null
-                        }
-                      </StyledDomainText>
-                      {
-                        monthlyDate
-                        ? <>
-                          <StyledDateText>
-                            {getLocale('firstTipDateText')}
-                          </StyledDateText>
-                          <StyledDate>
-                            {monthlyDate}
-                          </StyledDate>
-                          </>
-                        : null
-                      }
-                    </StyledMonthlyInfo>
-                  </>
-                  : null
+                  !send && siteImg
+                    ? <StyledProviderImage src={siteImg}>
+                      <StyledImageBorder />
+                    </StyledProviderImage>
+                    : null
                 }
-              </StyledHeaderText>
-            </StyledMessage>
-          </StyledOverlayTop>
-          : this.getFailureContent()
+                {
+                  !send && !siteImg && !logo && domain
+                    ? <StyledLetter logoBgColor={logoBgColor}>
+                      {(domain && domain.substring(0, 1)) || ''}
+                    </StyledLetter>
+                    : null
+                }
+                {
+                  !send && !siteImg && logo
+                    ? <StyledLogoWrapper>
+                      <StyledLogoBorder bg={logoBgColor}>
+                        <StyledLogoImage bg={logo} />
+                      </StyledLogoBorder>
+                    </StyledLogoWrapper>
+                    : null
+                }
+              </StyledIconWrapper>
+              <StyledMessage success={success} monthly={amount}>
+                <StyledHeaderText>
+                  {
+                    send
+                      ? getLocale('donationSent')
+                      : null
+                  }
+                  {
+                    success
+                      ? <>
+                        {getLocale('thankYou')}
+                        <StyledMonthlyInfo>
+                          <StyleSubHeaderText>
+                            {
+                              monthlyDate
+                                ? getLocale('autoTipText')
+                                : getLocale('tipText')
+                            }
+                          </StyleSubHeaderText>
+                          <StyledDomainText>
+                            {domain}<br />{amount} {getLocale('bat')}
+                            {
+                              monthlyDate
+                                ? `, ${getLocale('monthlyText')}`
+                                : null
+                            }
+                          </StyledDomainText>
+                          {
+                            monthlyDate
+                              ? <>
+                                <StyledDateText>
+                                  {getLocale('firstTipDateText')}
+                                </StyledDateText>
+                                <StyledDate>
+                                  {monthlyDate}
+                                </StyledDate>
+                              </>
+                              : null
+                          }
+                        </StyledMonthlyInfo>
+                      </>
+                      : null
+                  }
+                </StyledHeaderText>
+              </StyledMessage>
+            </StyledOverlayTop>
+            : this.getFailureContent()
         }
       </StyledOverlayContent>
     )
@@ -173,12 +173,12 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
       <StyledOuterWrapper>
         {
           send
-          ? <StyledBackgroundCurve/>
-          : null
+            ? <StyledBackgroundCurve />
+            : null
         }
         <StyledWrapper id={id}>
           <StyledClose onClick={onClose}>
-            <CloseStrokeIcon />
+            <CloseCircleOIcon />
           </StyledClose>
           {this.getOverlayContent()}
         </StyledWrapper>

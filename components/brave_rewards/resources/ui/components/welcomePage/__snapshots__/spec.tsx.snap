@@ -12,7 +12,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   border-bottom-right-radius: 150% 120px;
 }
 
-.c33 {
+.c34 {
   height: 290px;
   border-radius: 4px;
   text-align: center;
@@ -24,7 +24,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   font-family: Poppins,sans-serif;
 }
 
-.c36 {
+.c37 {
   color: #222326;
   font-size: 18px;
   font-weight: 500;
@@ -35,7 +35,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   letter-spacing: 0.16px;
 }
 
-.c37 {
+.c38 {
   color: #686978;
   font-size: 16px;
   line-height: 22px;
@@ -48,7 +48,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   font-weight: 400;
 }
 
-.c34 {
+.c35 {
   box-sizing: border-box;
   display: block;
   max-width: 100%;
@@ -56,7 +56,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   height: 80px;
 }
 
-.c31 {
+.c32 {
   display: grid;
   grid-gap: 0px;
   grid-template-columns: 1fr 1fr 1fr;
@@ -70,17 +70,23 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   justify-content: center;
 }
 
-.c32 {
+.c33 {
   padding: 0 10px;
 }
 
-.c22 {
+.c23 {
   width: 100%;
   height: 100%;
   fill: currentColor;
 }
 
-.c38 {
+.c22 {
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.c39 {
   width: 100%;
   height: 100%;
   fill: currentColor;
@@ -92,13 +98,13 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   fill: currentColor;
 }
 
-.c35 {
+.c36 {
   width: 100%;
   height: 100%;
   fill: currentColor;
 }
 
-.c39 {
+.c40 {
   width: 100%;
   height: 100%;
   fill: currentColor;
@@ -116,7 +122,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   font-size: 40px;
 }
 
-.c28 {
+.c29 {
   box-sizing: border-box;
   font-family: Poppins,sans-serif;
   font-weight: 400;
@@ -124,7 +130,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   margin: 0;
 }
 
-.c27 {
+.c28 {
   font-size: 32px;
 }
 
@@ -164,7 +170,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   background: rgba(0,0,0,0.05);
 }
 
-.c44 {
+.c45 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -217,20 +223,20 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   max-width: 303px;
 }
 
-.c43 {
+.c44 {
   max-width: 303px;
   margin: 0 auto;
 }
 
-.c41 {
+.c42 {
   text-align: center;
 }
 
-.c23 {
+.c24 {
   padding: 15px 0 0;
 }
 
-.c24 {
+.c25 {
   margin: 0 auto;
   max-width: 692px;
   padding: 67px 0 20px;
@@ -240,12 +246,12 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   display: block;
 }
 
-.c30 {
+.c31 {
   margin: 22px auto 0;
   max-width: 900px;
 }
 
-.c40 {
+.c41 {
   margin: 0 auto;
   padding: 64px 0 79px;
   max-width: 500px;
@@ -268,14 +274,14 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   margin: 17px 0 4px;
 }
 
-.c42 {
+.c43 {
   color: #5C58C2;
   font-weight: normal;
   line-height: 28px;
   margin: 18px 0 30px;
 }
 
-.c26 {
+.c27 {
   color: #222326;
   font-weight: normal;
   text-align: left;
@@ -317,7 +323,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   opacity: 0.5;
 }
 
-.c29 {
+.c30 {
   font-size: 16px;
   line-height: 28px;
   color: #686978;
@@ -353,7 +359,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 }
 
 @media (max-width:640px) {
-  .c31 {
+  .c32 {
     grid-gap: 20px;
     grid-template-columns: 1fr;
   }
@@ -367,7 +373,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 }
 
 @media (max-width:767px) {
-  .c24 {
+  .c25 {
     max-width: none;
     width: 100%;
     padding-top: 30px;
@@ -375,7 +381,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 }
 
 @media (max-width:767px) {
-  .c25 {
+  .c26 {
     margin: 0 auto;
     width: 80%;
   }
@@ -520,55 +526,42 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                className="c22"
+                className="c22 c23"
                 focusable="false"
                 viewBox="0 0 32 32"
               >
-                <g
-                  fill="#FFF"
-                  fillRule="evenodd"
-                  opacity=".3"
-                >
-                  <path
-                    d="M15 33.1a2.093 2.093 0 0 1-1.484-.614l-12.9-12.9a2.1 2.1 0 0 1 0-2.972 2.104 2.104 0 0 1 2.972 0l11.411 11.414 11.415-11.412a2.1 2.1 0 0 1 2.97 2.97l-12.9 12.9c-.407.41-.947.614-1.485.614z"
-                  />
-                  <rect
-                    fillRule="nonzero"
-                    height="29"
-                    rx="2"
-                    width="4"
-                    x="13"
-                  />
-                </g>
+                <path
+                  d="M28 15H6.28l4.85-5.25a1 1 0 0 0-.05-1.42 1 1 0 0 0-1.41.06l-6.4 6.93a.7.7 0 0 0-.1.16.75.75 0 0 0-.09.15 1 1 0 0 0 0 .74.75.75 0 0 0 .09.15.7.7 0 0 0 .1.16l6.4 6.93a1 1 0 0 0 1.41.06 1 1 0 0 0 .05-1.42L6.28 17H28a1 1 0 0 0 0-2z"
+                />
               </svg>
             </button>
           </div>
         </div>
       </div>
       <section
-        className="c23"
+        className="c24"
       >
         <section
-          className="c23"
+          className="c24"
         >
           <div
-            className="c24"
+            className="c25"
           >
             <section
-              className="c25"
+              className="c26"
             >
               <h3
-                className="c26 c27 c28"
+                className="c27 c28 c29"
               >
                 MISSING: whyBraveRewards
               </h3>
               <p
-                className="c29"
+                className="c30"
               >
                 MISSING: whyBraveRewardsDesc1
               </p>
               <p
-                className="c29"
+                className="c30"
               >
                 MISSING: whyBraveRewardsDesc2
               </p>
@@ -576,26 +569,26 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
           </div>
         </section>
         <section
-          className="c30"
+          className="c31"
         >
           <section
             id="rewards-info"
           >
             <div
-              className="c31"
+              className="c32"
             >
               <div
-                className="c32"
+                className="c33"
               >
                 <div
-                  className="c33"
+                  className="c34"
                 >
                   <figure
-                    className="c34"
+                    className="c35"
                   >
                     <svg
                       aria-hidden="true"
-                      className="c35"
+                      className="c36"
                       focusable="false"
                       viewBox="0 0 32 32"
                     >
@@ -614,29 +607,29 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
                     </svg>
                   </figure>
                   <strong
-                    className="c36"
+                    className="c37"
                   >
                     MISSING: turnOnRewardsTitle
                   </strong>
                   <p
-                    className="c37"
+                    className="c38"
                   >
                     MISSING: turnOnRewardsDesc
                   </p>
                 </div>
               </div>
               <div
-                className="c32"
+                className="c33"
               >
                 <div
-                  className="c33"
+                  className="c34"
                 >
                   <figure
-                    className="c34"
+                    className="c35"
                   >
                     <svg
                       aria-hidden="true"
-                      className="c38"
+                      className="c39"
                       focusable="false"
                       viewBox="0 0 32 32"
                     >
@@ -655,29 +648,29 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
                     </svg>
                   </figure>
                   <strong
-                    className="c36"
+                    className="c37"
                   >
                     MISSING: braveAdsTitle
                   </strong>
                   <p
-                    className="c37"
+                    className="c38"
                   >
                     MISSING: braveAdsDesc
                   </p>
                 </div>
               </div>
               <div
-                className="c32"
+                className="c33"
               >
                 <div
-                  className="c33"
+                  className="c34"
                 >
                   <figure
-                    className="c34"
+                    className="c35"
                   >
                     <svg
                       aria-hidden="true"
-                      className="c39"
+                      className="c40"
                       focusable="false"
                       viewBox="0 0 32 32"
                     >
@@ -704,12 +697,12 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
                     </svg>
                   </figure>
                   <strong
-                    className="c36"
+                    className="c37"
                   >
                     MISSING: braveContributeTitle
                   </strong>
                   <p
-                    className="c37"
+                    className="c38"
                   >
                     MISSING: braveContributeDesc
                   </p>
@@ -719,21 +712,21 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
           </section>
         </section>
         <section
-          className="c40"
+          className="c41"
         >
           <section
-            className="c41"
+            className="c42"
           >
             <h4
-              className="c42 c14 c15"
+              className="c43 c14 c15"
             >
               MISSING: readyToTakePart
             </h4>
             <section
-              className="c43"
+              className="c44"
             >
               <button
-                className="c44"
+                className="c45"
                 onClick={[Function]}
                 type="cta-opt-in"
               >

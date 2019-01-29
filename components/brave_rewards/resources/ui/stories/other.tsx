@@ -59,37 +59,35 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
     }
     return (
       <div style={{ width: '595px' }}>
-      <Box
-        title={text('Title', 'Brave ads')}
-        toggle={boolean('Show toggle', store.state.toggle)}
-        checked={boolean('Toggle checked', store.state.checked)}
-        type={select('Type', { contribute: 'contribute', donation: 'donation', ads: 'ads' }, 'contribute')}
-        description={
-          text('Description', `Earn tokens by seeing ads on Brave. Ads are matched
-          from machine learning and the data temporarily present in your browser without tracking your
-          information or sending it outside.`)
-        }
-        onToggle={onToggle}
-        settingsChild={<div>Settings content</div>}
-        settingsOpened={store.state.settings}
-        onSettingsClick={onSettingsToggle}
-      >
-        <div>Some content</div>
-      </Box>
-    </div>
+        <Box
+          title={text('Title', 'Brave ads')}
+          toggle={boolean('Show toggle', store.state.toggle)}
+          checked={boolean('Toggle checked', store.state.checked)}
+          type={select('Type', { contribute: 'contribute', donation: 'donation', ads: 'ads' }, 'contribute')}
+          description={
+            text('Description', `Earn tokens by seeing ads on Brave. Ads are matched from machine learning and the data temporarily present in your browser without tracking your information or sending it outside.`)
+          }
+          onToggle={onToggle}
+          settingsChild={<div>Settings content</div>}
+          settingsOpened={store.state.settings}
+          onSettingsClick={onSettingsToggle}
+        >
+          <div>Some content</div>
+        </Box>
+      </div>
     )
   }))
-  .add('Disabled content',() => {
+  .add('Disabled content', () => {
     return (
       <DisabledContent
         type={select('Type', { contribute: 'contribute', donation: 'donation', ads: 'ads' }, 'donation')}
       >
-        • Donate on the spot as you find gems. <br/>
+        • Donate on the spot as you find gems. <br />
         • <b>Enable Tips </b> on Twitter, YouTube, and more, to give tips to posts you ‘Like’.
       </DisabledContent>
     )
   })
-  .add('Alert',() => {
+  .add('Alert', () => {
     return (
       <Alert
         type={select('Type', { error: 'error', success: 'success', warning: 'warning' }, 'success')}
@@ -124,204 +122,203 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
 
     return (
       <div style={{ background: '#696fdc' }}>
-      <Donate
-        donateType={select('Type', { big: 'big', small: 'small' }, 'small')}
-        balance={number('Balance ', 5)}
-        donationAmounts={object('Donations', store.state.donationAmounts)}
-        onDonate={onDonate}
-        title={'Donation amount'}
-        actionText={text('Action text', 'Send my Donation')}
-        onAmountSelection={onAmountSelection}
-        currentAmount={text('Current amount', store.state.currentAmount)}
-      />
-    </div>
+        <Donate
+          donateType={select('Type', { big: 'big', small: 'small' }, 'small')}
+          balance={number('Balance ', 5)}
+          donationAmounts={object('Donations', store.state.donationAmounts)}
+          onDonate={onDonate}
+          title={'Donation amount'}
+          actionText={text('Action text', 'Send my Donation')}
+          onAmountSelection={onAmountSelection}
+          currentAmount={text('Current amount', store.state.currentAmount)}
+        />
+      </div>
     )
   }))
-    .add('List',() => {
-      return (
-        <div style={{ width: '595px' }}>
-          <List
-            title={text('Title', 'Earnings this month')}
-          >
-            Some content
-          </List>
-        </div>
-      )
-    })
-    .add('List - Token',() => {
-      return (
-        <div style={{ width: '400px' }}>
-          <ListToken
-            title={text('Title', 'Brave Contribute')}
-            value={text('Value', '10.0')}
-            converted={text('Converted', '0.25')}
-            isNegative={boolean('Is negative', false)}
-            color={select('Color', { contribute: 'contribute', donation: 'donation', earnings: 'earnings', notPaid: 'notPaid', default: 'default' }, 'default')}
-            size={select('Size', { normal: 'normal', small: 'small' }, 'small')}
-          />
-        </div>
-      )
-    })
-    .add('Tokens',() => {
-      return (
-        <Tokens
-          value={text('Tokens value', '10.0')}
-          converted={text('Converted value', '4.00')}
-          currency={text('Currency', 'USD')}
+  .add('List', () => {
+    return (
+      <div style={{ width: '595px' }}>
+        <List
+          title={text('Title', 'Earnings this month')}
+        >
+          Some content
+        </List>
+      </div>
+    )
+  })
+  .add('List - Token', () => {
+    return (
+      <div style={{ width: '400px' }}>
+        <ListToken
+          title={text('Title', 'Brave Contribute')}
+          value={text('Value', '10.0')}
+          converted={text('Converted', '0.25')}
           isNegative={boolean('Is negative', false)}
           color={select('Color', { contribute: 'contribute', donation: 'donation', earnings: 'earnings', notPaid: 'notPaid', default: 'default' }, 'default')}
           size={select('Size', { normal: 'normal', small: 'small' }, 'small')}
         />
-      )
-    })
-    .add('Profile',() => {
-      return (
-        <div style={{ width: '400px' }}>
-          <Profile
-            type={select('Type', { big: 'big', small: 'small' }, 'big')}
-            title={'Bart Baker'}
-            verified={boolean('Verified', false)}
-            provider={select('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
-            src={bart}
-            showUnVerifiedIcon={boolean('Show unverified icon', false)}
-          />
-        </div>
-      )
-    })
-    .add('Amount', withState({ selected: false }, (store) => {
-      const onSelect = () => {
-        store.set({ selected: !store.state.selected })
-      }
-
-      return (
-        <div style={{ background: '#696fdc', width: '335px', padding: '50px' }}>
-          <Amount
-            amount={text('Amount', '5.0')}
-            converted={text('Converted', '1.50')}
-            selected={boolean('Selected', store.state.selected)}
-            type={select('Type', { big: 'Big', small: 'Small' }, 'big')}
-            onSelect={onSelect}
-          />
-        </div>
-      )
-    }))
-    .add('Grant claim',() => {
-      return (
-        <GrantClaim
-          onClaim={dummyClick}
-        />
-      )
-    })
-    .add('Panel Welcome', () => {
-      return (
-        <div style={{ width: '373px', minHeight: '446px' }}>
-          <PanelWelcome
-            optInAction={dummyClick}
-            optInErrorAction={dummyClick}
-            variant={select('Variant', { one: 'One', two: 'Two' }, 'one')}
-            moreLink={dummyClick}
-          />
-        </div>
-      )
-    })
-    .add('Toggle Tips', withState({ tipsEnabled: true }, (store) => {
-      const onToggle = () => {
-        store.set({ tipsEnabled: !store.state.tipsEnabled })
-      }
-      return (
-        <ToggleTips
-          id={'toggle-tips'}
-          onToggleTips={onToggle}
-          tipsEnabled={boolean('Selected', store.state.tipsEnabled)}
+      </div>
+    )
+  })
+  .add('Tokens', () => {
+    return (
+      <Tokens
+        value={text('Tokens value', '10.0')}
+        converted={text('Converted value', '4.00')}
+        currency={text('Currency', 'USD')}
+        isNegative={boolean('Is negative', false)}
+        color={select('Color', { contribute: 'contribute', donation: 'donation', earnings: 'earnings', notPaid: 'notPaid', default: 'default' }, 'default')}
+        size={select('Size', { normal: 'normal', small: 'small' }, 'small')}
+      />
+    )
+  })
+  .add('Profile', () => {
+    return (
+      <div style={{ width: '400px' }}>
+        <Profile
+          type={select('Type', { big: 'big', small: 'small' }, 'big')}
+          title={'Bart Baker'}
+          verified={boolean('Verified', false)}
           provider={select('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
+          src={bart}
         />
-      )
-    }))
-    .add('Tooltip', () => {
-      const braveAdsText = <span>Brave Ads Settings</span>
-      const batLogoText = <span>BAT Logo</span>
-      const styledUpholdContent = (
-        <div>
-          <span style={{ fontWeight: 'bold', color: '#4AAF57' }}>
-            Uphold. The Internet of Money.
-          </span>
-        </div>
-      )
+      </div>
+    )
+  })
+  .add('Amount', withState({ selected: false }, (store) => {
+    const onSelect = () => {
+      store.set({ selected: !store.state.selected })
+    }
 
-      return (
-        <div>
-          <div style={{ position: 'absolute', top: '200px', left: '700px' }}>
-            <Tooltip
-              id={'tooltip-test'}
-              content={braveAdsText}
-            >
-              <div style={{ width: '30px' }}>
-                <SettingsIcon color={'#A1A8F2'}/>
-              </div>
-            </Tooltip>
-          </div>
-          <div style={{ position: 'absolute', top: '280px', left: '685px' }}>
-            <Tooltip
-              id={'tooltip-test'}
-              content={batLogoText}
-            >
-              <div style={{ width: '60px' }}>
-                <BatColorIcon/>
-              </div>
-            </Tooltip>
-          </div>
-          <div style={{ position: 'absolute', top: '390px', left: '670px' }}>
-            <Tooltip
-              id={'tooltip-test'}
-              content={styledUpholdContent}
-            >
-              <div style={{ width: '90px' }}>
-                <UpholdColorIcon/>
-              </div>
-            </Tooltip>
-          </div>
-        </div>
-      )
-    })
-    .add('Donation Overlay', withState({ displayed: true }, (store) => {
-      const onOverlayClose = () => {
-        store.set({ displayed: false })
-      }
+    return (
+      <div style={{ background: '#696fdc', width: '335px', padding: '50px' }}>
+        <Amount
+          amount={text('Amount', '5.0')}
+          converted={text('Converted', '1.50')}
+          selected={boolean('Selected', store.state.selected)}
+          type={select('Type', { big: 'Big', small: 'Small' }, 'big')}
+          onSelect={onSelect}
+        />
+      </div>
+    )
+  }))
+  .add('Grant claim', () => {
+    return (
+      <GrantClaim
+        onClaim={dummyClick}
+      />
+    )
+  })
+  .add('Panel Welcome', () => {
+    return (
+      <div style={{ width: '373px', minHeight: '446px' }}>
+        <PanelWelcome
+          optInAction={dummyClick}
+          optInErrorAction={dummyClick}
+          variant={select('Variant', { one: 'One', two: 'Two' }, 'one')}
+          moreLink={dummyClick}
+        />
+      </div>
+    )
+  })
+  .add('Toggle Tips', withState({ tipsEnabled: true }, (store) => {
+    const onToggle = () => {
+      store.set({ tipsEnabled: !store.state.tipsEnabled })
+    }
+    return (
+      <ToggleTips
+        id={'toggle-tips'}
+        onToggleTips={onToggle}
+        tipsEnabled={boolean('Selected', store.state.tipsEnabled)}
+        provider={select('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
+      />
+    )
+  }))
+  .add('Tooltip', () => {
+    const braveAdsText = <span>Brave Ads Settings</span>
+    const batLogoText = <span>BAT Logo</span>
+    const styledUpholdContent = (
+      <div>
+        <span style={{ fontWeight: 'bold', color: '#4AAF57' }}>
+          Uphold. The Internet of Money.
+        </span>
+      </div>
+    )
 
-      return (
-        <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '100vh', margin: '0 auto', position: 'relative' }}>
-          {
-            store.state.displayed
+    return (
+      <div>
+        <div style={{ position: 'absolute', top: '200px', left: '700px' }}>
+          <Tooltip
+            id={'tooltip-test'}
+            content={braveAdsText}
+          >
+            <div style={{ width: '30px' }}>
+              <SettingsIcon color={'#A1A8F2'} />
+            </div>
+          </Tooltip>
+        </div>
+        <div style={{ position: 'absolute', top: '280px', left: '685px' }}>
+          <Tooltip
+            id={'tooltip-test'}
+            content={batLogoText}
+          >
+            <div style={{ width: '60px' }}>
+              <BatColorIcon />
+            </div>
+          </Tooltip>
+        </div>
+        <div style={{ position: 'absolute', top: '390px', left: '670px' }}>
+          <Tooltip
+            id={'tooltip-test'}
+            content={styledUpholdContent}
+          >
+            <div style={{ width: '90px' }}>
+              <UpholdColorIcon />
+            </div>
+          </Tooltip>
+        </div>
+      </div>
+    )
+  })
+  .add('Donation Overlay', withState({ displayed: true }, (store) => {
+    const onOverlayClose = () => {
+      store.set({ displayed: false })
+    }
+
+    return (
+      <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '100vh', margin: '0 auto', position: 'relative' }}>
+        {
+          store.state.displayed
             ? <DonationOverlay
-                onClose={onOverlayClose}
-                success={boolean('Success', false)}
-                send={boolean('Is send page?', true)}
-                domain={'duckduckgo.com'}
-                amount={'5.0'}
-                monthlyDate={select('Recurring', { yes: 'October 31st, 2018', no: '' }, 'October 31st, 2018')}
-                logo={boolean('Show logo', false) ? siteBgLogo : null}
+              onClose={onOverlayClose}
+              success={boolean('Success', false)}
+              send={boolean('Is send page?', true)}
+              domain={'duckduckgo.com'}
+              amount={'5.0'}
+              monthlyDate={select('Recurring', { yes: 'October 31st, 2018', no: '' }, 'October 31st, 2018')}
+              logo={boolean('Show logo', false) ? siteBgLogo : null}
             />
             : null
-          }
-        </div>
-      )
-    }))
-    .add('Tab', withState({ tabIndexSelected: 0 }, (store) => {
-      const onSwitch = () => {
-        const newIndex = store.state.tabIndexSelected === 0 ? 1 : 0
-        store.set({ tabIndexSelected: newIndex })
-      }
+        }
+      </div>
+    )
+  }))
+  .add('Tab', withState({ tabIndexSelected: 0 }, (store) => {
+    const onSwitch = () => {
+      const newIndex = store.state.tabIndexSelected === 0 ? 1 : 0
+      store.set({ tabIndexSelected: newIndex })
+    }
 
-      return (
-        <div style={{ width: '350px' }}>
-          <Tab
-            tabTitles={['Backup', 'Restore']}
-            onChange={onSwitch}
-            tabIndexSelected={store.state.tabIndexSelected}
-          />
-        </div>
-      )
-    }))
+    return (
+      <div style={{ width: '350px' }}>
+        <Tab
+          tabTitles={['Backup', 'Restore']}
+          onChange={onSwitch}
+          tabIndexSelected={store.state.tabIndexSelected}
+        />
+      </div>
+    )
+  }))
 storiesOf('Feature Components/Rewards/Other/Mobile', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)

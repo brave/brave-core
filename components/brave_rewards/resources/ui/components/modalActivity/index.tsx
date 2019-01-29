@@ -34,7 +34,7 @@ import {
 import TableContribute, { DetailRow as ContributeRow } from '../tableContribute'
 import TableTransactions, { DetailRow as TransactionRow } from '../tableTransactions'
 import { Select, ControlWrapper, Modal } from '../../../components'
-import { AlertCircleIcon, DownloadIcon, PrintIcon, VerifiedFillIcon } from '../../../components/icons'
+import { AlertCircleIcon, DownloadIcon, PrintIcon, VerifiedIcon } from '../../../components/icons'
 import ListToken from '../listToken'
 import { Type as TokenType } from '../tokens'
 
@@ -170,43 +170,43 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
             <StyledLeft>
               {
                 months
-                ? <ControlWrapper text={this.selectTitle}>
-                  <Select
-                    value={currentMonth}
-                    onChange={onMonthChange}
-                  >
-                    {
-                      Object.keys(months).map((item: string) => {
-                        return <div data-value={item} key={`${id}-monthly-${item}`}>
-                          <StyledSelectOption>{months[item]}</StyledSelectOption>
-                        </div>
-                      })
-                    }
-                  </Select>
-                </ControlWrapper>
-                : null
+                  ? <ControlWrapper text={this.selectTitle}>
+                    <Select
+                      value={currentMonth}
+                      onChange={onMonthChange}
+                    >
+                      {
+                        Object.keys(months).map((item: string) => {
+                          return <div data-value={item} key={`${id}-monthly-${item}`}>
+                            <StyledSelectOption>{months[item]}</StyledSelectOption>
+                          </div>
+                        })
+                      }
+                    </Select>
+                  </ControlWrapper>
+                  : null
               }
               {
                 openBalance && closingBalance
-                ? <StyledBalance>
-                  <ListToken
-                    title={getLocale('openBalance')}
-                    value={openBalance.value}
-                    converted={openBalance.converted}
-                    color={'earnings'}
-                    border={'last'}
-                  />
-                  <StyledClosing>
+                  ? <StyledBalance>
                     <ListToken
-                      title={<b>{getLocale('closeBalance')}</b>}
-                      value={closingBalance.value}
-                      converted={closingBalance.converted}
-                      color={'contribute'}
+                      title={getLocale('openBalance')}
+                      value={openBalance.value}
+                      converted={openBalance.converted}
+                      color={'earnings'}
                       border={'last'}
                     />
-                  </StyledClosing>
-                </StyledBalance>
-                : null
+                    <StyledClosing>
+                      <ListToken
+                        title={<b>{getLocale('closeBalance')}</b>}
+                        value={closingBalance.value}
+                        converted={closingBalance.converted}
+                        color={'contribute'}
+                        border={'last'}
+                      />
+                    </StyledClosing>
+                  </StyledBalance>
+                  : null
               }
 
             </StyledLeft>
@@ -230,15 +230,15 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
           </StyledHeader>
           {
             this.hasWarnings
-            ? <StyledWarning>
+              ? <StyledWarning>
                 <StyledAlertWrapper>
                   <AlertCircleIcon />
                 </StyledAlertWrapper>
                 <StyledWarningText>
                   <b>{getLocale('paymentNotMade')}</b> {getLocale('paymentWarning')}
                 </StyledWarningText>
-            </StyledWarning>
-            : null
+              </StyledWarning>
+              : null
           }
           <StyledTables>
             <StyledTableTitle>{getLocale('transactions')}</StyledTableTitle>
@@ -250,7 +250,7 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
               <StyledTableSubTitle>
                 {getLocale('paymentMonthly', { day: paymentDay })}
               </StyledTableSubTitle>
-              </StyledTableTitle>
+            </StyledTableTitle>
             <TableContribute
               header={this.headers}
               rows={contributeRows}
@@ -259,14 +259,14 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
             />
             <StyledVerified>
               <StyledVerifiedIcon>
-                <VerifiedFillIcon />
+                <VerifiedIcon />
               </StyledVerifiedIcon>
               <StyledVerifiedText>{getLocale('braveVerified')}</StyledVerifiedText>
             </StyledVerified>
           </StyledTables>
           <StyledNote>
             <b>{getLocale('pleaseNote')}</b> {getLocale('activityNote')}
-            <br/><br/>
+            <br /><br />
             {getLocale('activityCopy')}
           </StyledNote>
         </StyledWrapper>

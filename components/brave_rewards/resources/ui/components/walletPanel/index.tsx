@@ -27,10 +27,7 @@ import {
 } from './style'
 
 // Components
-import {
-  Select,
-  Toggle
-} from '../../../components'
+import { Select, Toggle } from '../../../components'
 
 import { RewardsButton, Tokens } from '../'
 import ToggleTips from '../toggleTips/index'
@@ -73,7 +70,9 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
           provider={this.props.platform}
           src={this.props.publisherImg}
           verified={this.props.isVerified}
-          showUnVerifiedIcon={!this.props.isVerified && this.props.showUnVerified}
+          showUnVerifiedHelpIcon={
+            !this.props.isVerified && this.props.showUnVerified
+          }
         />
       </StyledWrapper>
     )
@@ -97,10 +96,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
         >
           {donationAmounts.map((token: Token, index: number) => {
             return (
-              <div
-                key={`donationAmount-${index}`}
-                data-value={token.tokens}
-              >
+              <div key={`donationAmount-${index}`} data-value={token.tokens}>
                 <Tokens
                   size={'small'}
                   value={token.tokens}
@@ -121,9 +117,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
       <StyledWrapper>
         <StyledGrid>
           <StyledColumn size={'5'}>
-            <StyledDonateText>
-              {getLocale('includeInAuto')}
-            </StyledDonateText>
+            <StyledDonateText>{getLocale('includeInAuto')}</StyledDonateText>
           </StyledColumn>
           <StyledColumn size={'1'}>
             <StyledToggleWrapper>
@@ -135,20 +129,14 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
             </StyledToggleWrapper>
           </StyledColumn>
         </StyledGrid>
-        {
-          donationAmounts
-          ? <StyledGrid>
+        {donationAmounts ? (
+          <StyledGrid>
             <StyledColumn size={'5'}>
-              <StyledDonateText>
-                {getLocale('donateMonthly')}
-              </StyledDonateText>
+              <StyledDonateText>{getLocale('donateMonthly')}</StyledDonateText>
             </StyledColumn>
-            <StyledColumn size={'1'}>
-              {this.donationDropDown()}
-            </StyledColumn>
+            <StyledColumn size={'1'}>{this.donationDropDown()}</StyledColumn>
           </StyledGrid>
-          : null
-        }
+        ) : null}
       </StyledWrapper>
     )
   }
@@ -171,13 +159,15 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
       <StyledWrapper>
         <StyledContainer id={id}>
           {this.publisherInfo()}
-          {
-            !isVerified && showUnVerified
-            ? <StyledNoticeWrapper>
-              {getLocale('unVerifiedText')} <StyledNoticeLink href={moreLink} target={'_blank'}> {getLocale('unVerifiedTextMore')}</StyledNoticeLink>
+          {!isVerified && showUnVerified ? (
+            <StyledNoticeWrapper>
+              {getLocale('unVerifiedText')}{' '}
+              <StyledNoticeLink href={moreLink} target={'_blank'}>
+                {' '}
+                {getLocale('unVerifiedTextMore')}
+              </StyledNoticeLink>
             </StyledNoticeWrapper>
-            : null
-          }
+          ) : null}
           <StyledScoreWrapper>
             <StyledGrid>
               <StyledColumn size={'5'}>
@@ -186,9 +176,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
                 </StyledAttentionScoreTitle>
               </StyledColumn>
               <StyledColumn size={'1'}>
-                <StyledAttentionScore>
-                  {attentionScore}%
-                </StyledAttentionScore>
+                <StyledAttentionScore>{attentionScore}%</StyledAttentionScore>
               </StyledColumn>
             </StyledGrid>
           </StyledScoreWrapper>

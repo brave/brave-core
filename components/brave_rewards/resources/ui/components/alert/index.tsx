@@ -12,10 +12,12 @@ import {
   StyledSuccess,
   StyledWarning
 } from './style'
-import { AlertCircleIcon,
+import {
+  AlertCircleIcon,
   CheckCircleIcon,
-  CloseCircleIcon,
-  CloseStrokeIcon } from '../../../components/icons'
+  CloseCircleOIcon,
+  CloseStrokeIcon
+} from '../../../components/icons'
 
 export type Type = 'error' | 'success' | 'warning'
 
@@ -34,7 +36,7 @@ export default class Alert extends React.PureComponent<Props, {}> {
       case 'error':
         return (
           <StyledError>
-            <CloseCircleIcon />
+            <CloseCircleOIcon />
           </StyledError>
         )
       case 'success':
@@ -60,16 +62,14 @@ export default class Alert extends React.PureComponent<Props, {}> {
     return (
       <StyledWrapper id={id} type={type} bg={bg}>
         <StyledIcon>{this.icon}</StyledIcon>
-        <StyledContent type={type} colored={colored} >
+        <StyledContent type={type} colored={colored}>
           {children}
         </StyledContent>
-        {
-          onClose
-          ? <StyledClose>
+        {onClose ? (
+          <StyledClose>
             <CloseStrokeIcon />
           </StyledClose>
-          : null
-        }
+        ) : null}
       </StyledWrapper>
     )
   }

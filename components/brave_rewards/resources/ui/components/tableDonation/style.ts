@@ -8,8 +8,8 @@ export const StyledRemove = styled<{}, 'button'>('button')`
   font-family: Muli, sans-serif;
   font-size: 14px;
   line-height: 1;
-  margin-top: 3px;
-  color: #d1d1db;
+  margin-top: 4px;
+  color: #9E9FAB;
   padding: 0;
   border: none;
   background: none;
@@ -18,7 +18,7 @@ export const StyledRemove = styled<{}, 'button'>('button')`
 
 export const StyledRemoveIcon = styled<{}, 'span'>('span')`
   vertical-align: middle;
-  color: #DFDFE8;
+  color: #9E9FAB;
   width: 12px;
   height: 12px;
   display: inline-block;

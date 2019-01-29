@@ -17,7 +17,7 @@ import Table, { Row } from '../../../components/dataTables/table'
 import Profile, { Provider } from '../profile'
 import { getLocale } from '../../../helpers'
 import { RestoreSites, Tokens, Tooltip } from '../'
-import { CloseStrokeIcon } from '../../../components/icons'
+import { CloseCircleOIcon } from '../../../components/icons'
 
 interface ProfileCell {
   verified: boolean
@@ -75,10 +75,10 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
     return header.map((item: string, i: number) => {
       return {
         content: i === 0
-        ? <div>{item}</div>
-        : i === header.length - 1
-          ? <StyledTHLast>{item}</StyledTHLast>
-          : <StyledTHOther>{item}</StyledTHOther>,
+          ? <div>{item}</div>
+          : i === header.length - 1
+            ? <StyledTHLast>{item}</StyledTHLast>
+            : <StyledTHOther>{item}</StyledTHOther>,
         customStyle
       }
     })
@@ -136,7 +136,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
           content: (
             <Tooltip content={getLocale('excludeSite')}>
               <StyledRemove onClick={row.onRemove}>
-                <CloseStrokeIcon />
+                <CloseCircleOIcon />
               </StyledRemove>
             </Tooltip>
           ),
@@ -185,20 +185,20 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
         />
         {
           !allSites && numSites > 0
-          ? <StyledToggleWrap>
+            ? <StyledToggleWrap>
               <StyledToggle onClick={onShowAll}>{getLocale('seeAllSites', { numSites })}</StyledToggle>
             </StyledToggleWrap>
-          : null
+            : null
         }
         {
           allSites && numExcludedSites && numExcludedSites > 0
-          ? <StyledRestoreSites>
+            ? <StyledRestoreSites>
               <RestoreSites
                 onRestore={onRestore}
                 numExcludedSites={numExcludedSites}
               />
             </StyledRestoreSites>
-          : null
+            : null
         }
       </div>
     )

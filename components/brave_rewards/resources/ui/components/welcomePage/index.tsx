@@ -10,7 +10,7 @@ import Button from '../../../components/buttonsIndicators/button'
 import InfoCard, { CardProps } from '../infoCard'
 import {
   AdsMegaphoneIcon,
-  ArrowAnchorIcon,
+  ArrowDownIcon,
   BatColorIcon,
   LoaderIcon,
   RewardsActivateIcon,
@@ -114,19 +114,19 @@ class WelcomePage extends React.PureComponent<Props, {}> {
         <StyledOptInSection>
           {
             this.props.creating
-            ? <RewardsButton
-              type={'opt-in'}
-              disabled={true}
-              testId={'optInAction'}
-              text={getLocale('braveRewardsCreatingText')}
-              icon={<LoaderIcon/>}
-            />
-            : <RewardsButton
-              type={'opt-in'}
-              onClick={this.optInAction}
-              testId={'optInAction'}
-              text={getLocale('braveRewardsOptInText')}
-            />
+              ? <RewardsButton
+                type={'opt-in'}
+                disabled={true}
+                testId={'optInAction'}
+                text={getLocale('braveRewardsCreatingText')}
+                icon={<LoaderIcon />}
+              />
+              : <RewardsButton
+                type={'opt-in'}
+                onClick={this.optInAction}
+                testId={'optInAction'}
+                text={getLocale('braveRewardsOptInText')}
+              />
           }
         </StyledOptInSection>
         <StyledSection>
@@ -134,7 +134,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
             {getLocale('braveRewardsTeaser')}
           </StyledTeaserParagraph>
           <StyledAnchor onClick={this.scrollToCenter}>
-            <ArrowAnchorIcon />
+            <ArrowDownIcon />
           </StyledAnchor>
         </StyledSection>
       </Hero>
@@ -168,17 +168,17 @@ class WelcomePage extends React.PureComponent<Props, {}> {
         <StyledOptInSecond>
           {
             this.props.creating
-            ? <RewardsButton
-              type={'cta-opt-in'}
-              disabled={true}
-              text={getLocale('braveRewardsCreatingText')}
-              icon={<LoaderIcon/>}
-            />
-            : <RewardsButton
-              type={'cta-opt-in'}
-              onClick={this.optInAction}
-              text={getLocale('readyToTakePartOptInText')}
-            />
+              ? <RewardsButton
+                type={'cta-opt-in'}
+                disabled={true}
+                text={getLocale('braveRewardsCreatingText')}
+                icon={<LoaderIcon />}
+              />
+              : <RewardsButton
+                type={'cta-opt-in'}
+                onClick={this.optInAction}
+                text={getLocale('readyToTakePartOptInText')}
+              />
           }
         </StyledOptInSecond>
       </StyledOptInInnerSection>
@@ -210,22 +210,22 @@ class WelcomePage extends React.PureComponent<Props, {}> {
       <>
         {
           this.props.onReTry
-          ? <StyledAlert>
-            <Alert type={'error'}>
-              <StyledAlertContent>
-                <StyledAlertLeft>
-                  <b>{getLocale('walletFailedTitle')}</b><br/>{getLocale('walletFailedText')}
-                </StyledAlertLeft>
+            ? <StyledAlert>
+              <Alert type={'error'}>
+                <StyledAlertContent>
+                  <StyledAlertLeft>
+                    <b>{getLocale('walletFailedTitle')}</b><br />{getLocale('walletFailedText')}
+                  </StyledAlertLeft>
                   <Button
                     level={'primary'}
                     type={'accent'}
                     text={getLocale('walletFailedButton')}
                     onClick={this.props.onReTry}
                   />
-              </StyledAlertContent>
-            </Alert>
-          </StyledAlert>
-          : null
+                </StyledAlertContent>
+              </Alert>
+            </StyledAlert>
+            : null
         }
         <StyledBackground>
           <StyledSection>

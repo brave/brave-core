@@ -68,10 +68,14 @@ export const StyledImage = styled<Partial<Props>, 'img'>('img')`
 
 export const StyledVerified = styled<{}, 'span'>('span')`
   position: absolute;
-  bottom: -1px;
-  right: -3px;
-  width: 19px;
+  top: -5px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
   color: #392DD1;
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  padding: 1px;
 `
 
 export const StyledContent = styled<Partial<Props>, 'div'>('div')`

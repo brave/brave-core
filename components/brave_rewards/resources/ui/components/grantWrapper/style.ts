@@ -58,15 +58,15 @@ export const StyledTitle = styled<StyleProps, 'div'>('div')`
 
 export const StyledClose = styled<{}, 'button'>('button')`
   top: 16px;
-  right: 15px;
+  right: 16px;
   position: absolute;
   padding: 0;
   border: none;
   background: none;
   cursor: pointer;
-  color: #B8B9C4;
-  width: 15px;
-  height: 15px;
+  color: #9E9FAB;
+  width: 20px;
+  height: 20px;
 `
 
 export const StyledText = styled<{}, 'div'>('div')`

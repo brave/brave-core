@@ -14,9 +14,9 @@ import {
 import Donate from '../donate'
 import Toggle from '../../../components/formControls/toggle'
 import { getLocale } from '../../../helpers'
-import { CloseStrokeIcon } from '../../../components/icons'
+import { CloseCircleOIcon } from '../../../components/icons'
 
-type Donation = {tokens: string, converted: string, selected?: boolean}
+type Donation = { tokens: string, converted: string, selected?: boolean }
 
 export interface Props {
   allow: boolean
@@ -62,7 +62,7 @@ export default class Tip extends React.PureComponent<Props, {}> {
     return (
       <StyledWrapper id={id}>
         <StyledClose onClick={onClose}>
-          <CloseStrokeIcon />
+          <CloseCircleOIcon />
         </StyledClose>
         <StyledTitle>Send my tip to</StyledTitle>
         <Donate

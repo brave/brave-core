@@ -99,15 +99,15 @@ export const StyledBannerImage = styled<Partial<Props>, 'div'>('div')`
 `
 
 export const StyledClose = styled<{}, 'button'>('button')`
-  top: 14px;
-  right: 17px;
+  top: 16px;
+  right: 16px;
   position: absolute;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  width: 27px;
-  height: 27px;
+  width: 24px;
+  height: 24px;
   color: #FFF;
   filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, .4));
 `

@@ -15,7 +15,10 @@ import {
   StyledColumn
 } from './style'
 
-import { CaratCircleUpIcon, CaratCircleDownIcon } from '../../../components/icons'
+import {
+  CaratCircleOUpIcon,
+  CaratCircleODownIcon
+} from '../../../components/icons'
 
 export interface Props {
   id?: string
@@ -28,7 +31,10 @@ interface State {
   panelTwoShown: boolean
 }
 
-export default class WalletSummarySlider extends React.PureComponent<Props, State> {
+export default class WalletSummarySlider extends React.PureComponent<
+  Props,
+  State
+> {
   constructor (props: object) {
     super(props)
     this.state = {
@@ -52,41 +58,24 @@ export default class WalletSummarySlider extends React.PureComponent<Props, Stat
   getPanel (panel: React.ReactNode, showTitle: boolean = false) {
     return (
       <StyledWrapper>
-        {
-          showTitle
-          ? panel
-          : null
-        }
-        <StyledToggleWrapper
-          show={showTitle}
-          onClick={this.togglePanels}
-        >
+        {showTitle ? panel : null}
+        <StyledToggleWrapper show={showTitle} onClick={this.togglePanels}>
           <StyledGrid>
             <StyledColumn size={'5'}>
-              {
-                showTitle
-                ? <StyledSummaryText>
-                    {getLocale('rewardsSummary')}
-                  </StyledSummaryText>
-                : null
-              }
+              {showTitle ? (
+                <StyledSummaryText>
+                  {getLocale('rewardsSummary')}
+                </StyledSummaryText>
+              ) : null}
             </StyledColumn>
             <StyledColumn size={'1'}>
               <StyledArrowIcon show={showTitle}>
-                {
-                  !showTitle
-                  ? <CaratCircleDownIcon />
-                  : <CaratCircleUpIcon />
-                }
+                {!showTitle ? <CaratCircleODownIcon /> : <CaratCircleOUpIcon />}
               </StyledArrowIcon>
             </StyledColumn>
           </StyledGrid>
         </StyledToggleWrapper>
-        {
-          !showTitle
-          ? panel
-          : null
-        }
+        {!showTitle ? panel : null}
       </StyledWrapper>
     )
   }
@@ -95,11 +84,7 @@ export default class WalletSummarySlider extends React.PureComponent<Props, Stat
     const { id, children } = this.props
 
     if (!Array.isArray(children) || children[0] === null) {
-      return (
-        <StyledWrapper id={id}>
-          {children}
-        </StyledWrapper>
-      )
+      return <StyledWrapper id={id}>{children}</StyledWrapper>
     }
 
     if (!children || children.length !== 2) {

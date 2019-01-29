@@ -43,21 +43,18 @@ export const StyledSummaryText = styled<{}, 'span'>('span')`
 ` as any
 
 export const StyledArrowIcon = styled<StyleProps, 'span'>('span')`
-  width: 26px;
-  height: 26px;
-  display: block;
-  margin-left: 32px;
-  margin-right: -6px;
-  margin-top: ${p => p.show ? 1 : -2}px;
+  width: 24px;
+  height: 24px;
+  display: flex;
   color: #696FDC;
 ` as any
 
 export const StyledGrid = styled<{}, 'div'>('div')`
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
 `
 
 export const StyledColumn = styled<StyleProps, 'div'>('div')`
-  flex: ${p => p.size} 0 0;
+  display: flex;
 `

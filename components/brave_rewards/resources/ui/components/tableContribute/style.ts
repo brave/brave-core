@@ -17,9 +17,9 @@ export const StyledRemove = styled<{}, 'button'>('button')`
   background: none;
   border: none;
   cursor: pointer;
-  width: 12px;
-  height: 12px;
-  color: #B8B9C4;
+  width: 16px;
+  height: 16px;
+  color: #9E9FAB;
   padding: 0;
 `
 

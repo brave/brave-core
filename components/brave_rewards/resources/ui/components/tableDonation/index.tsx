@@ -16,7 +16,7 @@ import Table, { Cell, Row } from '../../../components/dataTables/table/index'
 import Profile, { Provider } from '../profile/index'
 import Tokens from '../tokens/index'
 import { getLocale } from '../../../helpers'
-import { CloseStrokeIcon } from '../../../components/icons'
+import { CloseCircleIcon } from '../../../components/icons'
 
 interface ProfileCell {
   verified: boolean
@@ -58,7 +58,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
             <>
               <StyledType>{getLocale('recurring')}</StyledType>
               <StyledRemove onClick={row.onRemove}>
-                <StyledRemoveIcon><CloseStrokeIcon /></StyledRemoveIcon>{getLocale('remove')}
+                <StyledRemoveIcon><CloseCircleIcon /></StyledRemoveIcon>{getLocale('remove')}
               </StyledRemove>
             </>
           )
@@ -168,12 +168,12 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
         />
         {
           !allItems && numItems > 0
-          ? <StyledToggleWrap>
-            <StyledToggle onClick={onShowAll}>
+            ? <StyledToggleWrap>
+              <StyledToggle onClick={onShowAll}>
                 {getLocale('seeAllItems', { numItems })}
-            </StyledToggle>
-          </StyledToggleWrap>
-          : null
+              </StyledToggle>
+            </StyledToggleWrap>
+            : null
         }
       </div>
     )

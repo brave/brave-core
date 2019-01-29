@@ -47,14 +47,24 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
 }
 
 .c6 {
-  width: 55px;
-  color: #E2052A;
-  display: block;
-  cursor: pointer;
-  margin-bottom: 40px;
+  color: #FFF;
 }
 
-.c8 {
+.c2 {
+  top: 20px;
+  right: 20px;
+  position: absolute;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  color: #FFF;
+  padding: 0;
+  z-index: 2;
+}
+
+.c7 {
   color: #FFFFFF;
   font-size: 28px;
   font-weight: 600;
@@ -67,7 +77,7 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
   margin-bottom: 10px;
 }
 
-.c9 {
+.c8 {
   color: #FFFFFF;
   font-size: 16px;
   font-family: "Muli",sans-serif;
@@ -80,26 +90,6 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
   display: block;
   text-align: center;
   width: 249px;
-}
-
-.c2 {
-  top: 14px;
-  right: 17px;
-  position: absolute;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  width: 27px;
-  height: 27px;
-  color: #FFF;
-  z-index: 2;
-}
-
-.c7 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
 }
 
 .c3 {
@@ -125,7 +115,10 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
         viewBox="0 0 32 32"
       >
         <path
-          d="M28.71 27.29L17.41 16l11.3-11.29a1 1 0 1 0-1.42-1.42L16 14.59 4.71 3.29a1 1 0 0 0-1.42 1.42L14.59 16 3.29 27.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0L16 17.41l11.29 11.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"
+          d="M16 3a13 13 0 1 0 13 13A13 13 0 0 0 16 3zm0 24a11 11 0 1 1 11-11 11 11 0 0 1-11 11z"
+        />
+        <path
+          d="M20.71 11.29a1 1 0 0 0-1.42 0L16 14.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l3.3 3.29-3.3 3.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.29-3.3 3.29 3.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L17.41 16l3.3-3.29a1 1 0 0 0 0-1.42z"
         />
       </svg>
     </button>
@@ -140,7 +133,7 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
         >
           <svg
             aria-hidden="true"
-            className="c7"
+            className="c3"
             focusable="false"
             viewBox="0 0 32 32"
           >
@@ -153,12 +146,12 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
           </svg>
         </span>
         <span
-          className="c8"
+          className="c7"
         >
           MISSING: uhOh
         </span>
         <span
-          className="c9"
+          className="c8"
         >
           MISSING: donationFailureMsg
         </span>

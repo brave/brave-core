@@ -97,11 +97,21 @@ export const StyledFailWrapper = styled<{}, 'div'>('div')`
 `
 
 export const StyledCloseIcon = styled<{}, 'span'>('span')`
-  width: 55px;
-  color: #E2052A;
-  display: block;
+  color: #FFF;
+`
+
+export const StyledClose = styled<{}, 'button'>('button')`
+  top: 20px;
+  right: 20px;
+  position: absolute;
+  background: none;
+  border: none;
   cursor: pointer;
-  margin-bottom: 40px;
+  width: 24px;
+  height: 24px;
+  color: #FFF;
+  padding: 0;
+  z-index: 2;
 `
 
 export const StyledFailTitle = styled<{}, 'span'>('span')`
@@ -159,19 +169,6 @@ export const StyledLetter = styled<StyleProps, 'div'>('div')`
   line-height: 90px;
   font-size: 65px;
   text-transform: uppercase;
-`
-export const StyledClose = styled<{}, 'button'>('button')`
-  top: 14px;
-  right: 17px;
-  position: absolute;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  width: 27px;
-  height: 27px;
-  color: #FFF;
-  z-index: 2;
 `
 
 export const StyledLogoImage = styled<StyleProps, 'div'>('div')`

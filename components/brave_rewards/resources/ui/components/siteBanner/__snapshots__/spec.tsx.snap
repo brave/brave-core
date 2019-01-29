@@ -93,15 +93,15 @@ exports[`List tests basic tests matches the snapshot 1`] = `
 }
 
 .c2 {
-  top: 14px;
-  right: 17px;
+  top: 16px;
+  right: 16px;
   position: absolute;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  width: 27px;
-  height: 27px;
+  width: 24px;
+  height: 24px;
   color: #FFF;
   -webkit-filter: drop-shadow(0px 0px 2px rgba(0,0,0,.4));
   filter: drop-shadow(0px 0px 2px rgba(0,0,0,.4));
@@ -383,7 +383,10 @@ exports[`List tests basic tests matches the snapshot 1`] = `
         viewBox="0 0 32 32"
       >
         <path
-          d="M28.71 27.29L17.41 16l11.3-11.29a1 1 0 1 0-1.42-1.42L16 14.59 4.71 3.29a1 1 0 0 0-1.42 1.42L14.59 16 3.29 27.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0L16 17.41l11.29 11.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"
+          d="M16 3a13 13 0 1 0 13 13A13 13 0 0 0 16 3zm0 24a11 11 0 1 1 11-11 11 11 0 0 1-11 11z"
+        />
+        <path
+          d="M20.71 11.29a1 1 0 0 0-1.42 0L16 14.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l3.3 3.29-3.3 3.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.29-3.3 3.29 3.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L17.41 16l3.3-3.29a1 1 0 0 0 0-1.42z"
         />
       </svg>
     </button>

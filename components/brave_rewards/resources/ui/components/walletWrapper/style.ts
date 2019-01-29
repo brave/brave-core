@@ -248,16 +248,17 @@ export const StyledBAT = styled<{}, 'div'>('div')`
 `
 
 export const StyledNotificationIcon = styled<StyledProps, 'img'>('img')`
-  height: 53px;
-  width: 53px;
-  margin: 9px 5px 0px 15px;
+  height: 48px;
+  width: 48px;
+  margin: 8px 0px 12px;
 `
 
 export const StyledNotificationCloseIcon = styled<StyledProps, 'div'>('div')`
-  height: 15px;
-  width: 15px;
-  float: right;
-  margin-right: -6px;
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
   color: #9E9FAB;
   cursor: pointer;
 `

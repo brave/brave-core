@@ -18,7 +18,7 @@ import {
   StyledInlineUnVerified
 } from './style'
 import { getLocale } from '../../../helpers'
-import { VerifiedFillIcon, UnVerifiedIcon } from '../../../components/icons'
+import { VerifiedIcon, UnVerifiedIcon } from '../../../components/icons'
 
 export type Provider = 'twitter' | 'youtube' | 'twitch'
 
@@ -30,7 +30,7 @@ export interface Props {
   provider?: Provider
   verified?: boolean
   tableCell?: boolean
-  showUnVerifiedIcon?: boolean
+  showUnVerifiedHelpIcon?: boolean
 }
 
 /*
@@ -58,38 +58,59 @@ export default class Profile extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, type, provider, src, title, verified, tableCell, showUnVerifiedIcon } = this.props
+    const {
+      id,
+      type,
+      provider,
+      src,
+      title,
+      verified,
+      tableCell,
+      showUnVerifiedHelpIcon
+    } = this.props
 
     return (
       <StyledWrapper id={id}>
         <StyledImageWrapper type={type}>
           <StyledImage src={this.getSrc(src)} type={type} />
-          {
-            verified && type === 'small'
-            ? <StyledVerified><VerifiedFillIcon /></StyledVerified>
-            : null
-          }
+          {verified && type === 'small' ? (
+            <StyledVerified>
+              <VerifiedIcon />
+            </StyledVerified>
+          ) : null}
         </StyledImageWrapper>
         <StyledContent type={type}>
-          <StyledTitleWrap type={type} tableCell={tableCell} provider={provider}>
+          <StyledTitleWrap
+            type={type}
+            tableCell={tableCell}
+            provider={provider}
+          >
             <StyledTitle type={type}>{title}</StyledTitle>
-            {
-              provider
-              ? <StyledProvider type={type}>{this.getProviderName(provider)}</StyledProvider>
-              : null
-            }
+            {provider ? (
+              <StyledProvider type={type}>
+                {this.getProviderName(provider)}
+              </StyledProvider>
+            ) : null}
           </StyledTitleWrap>
-          {
-            verified && type === 'big'
-            ? <StyledProviderWrap>
-              <StyledInlineVerified><VerifiedFillIcon /></StyledInlineVerified> <StyledVerifiedText>{getLocale('verifiedPublisher')}</StyledVerifiedText>
+          {verified && type === 'big' ? (
+            <StyledProviderWrap>
+              <StyledInlineVerified>
+                <VerifiedIcon />
+              </StyledInlineVerified>{' '}
+              <StyledVerifiedText>
+                {getLocale('verifiedPublisher')}
+              </StyledVerifiedText>
             </StyledProviderWrap>
-            : showUnVerifiedIcon
-              ? <StyledProviderWrap>
-                <StyledInlineUnVerified><UnVerifiedIcon /></StyledInlineUnVerified> <StyledVerifiedText>{getLocale('unVerifiedPublisher')}</StyledVerifiedText>
-              </StyledProviderWrap>
-              : null
-          }
+          ) : showUnVerifiedHelpIcon ? (
+            <StyledProviderWrap>
+              <StyledInlineUnVerified>
+                <UnVerifiedIcon />
+              </StyledInlineUnVerified>{' '}
+              <StyledVerifiedText>
+                {getLocale('unVerifiedPublisher')}
+              </StyledVerifiedText>
+            </StyledProviderWrap>
+          ) : null}
         </StyledContent>
       </StyledWrapper>
     )

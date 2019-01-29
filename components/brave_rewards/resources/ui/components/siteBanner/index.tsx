@@ -38,16 +38,16 @@ import Donate from '../donate/index'
 import Checkbox from '../../../components/formControls/checkbox/index'
 import { getLocale } from '../../../helpers'
 import {
-  CloseStrokeIcon,
+  CloseCircleOIcon,
   TwitterColorIcon,
   YoutubeColorIcon,
   TwitchColorIcon,
   AlertCircleIcon
 } from '../../../components/icons'
 
-export type Social = {type: SocialType, url: string}
+export type Social = { type: SocialType, url: string }
 export type SocialType = 'twitter' | 'youtube' | 'twitch'
-export type Donation = {tokens: string, converted: string, selected?: boolean}
+export type Donation = { tokens: string, converted: string, selected?: boolean }
 
 export interface Props {
   balance: string
@@ -225,15 +225,15 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       >
         <StyledBanner isMobile={isMobile}>
           <StyledClose onClick={onClose}>
-            <CloseStrokeIcon />
+            <CloseCircleOIcon />
           </StyledClose>
           <StyledBannerImage bgImage={bgImage}>
             {
               !isMobile
-              ? <StyledCenter>
+                ? <StyledCenter>
                   {this.getBannerTitle(name, domain, provider)}
                 </StyledCenter>
-              : null
+                : null
             }
           </StyledBannerImage>
           <StyledContentWrapper isMobile={isMobile}>
@@ -253,16 +253,16 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                 </StyledSocialWrapper>
                 {
                   showUnVerifiedNotice
-                  ? <StyledNoticeWrapper>
-                    <StyledNoticeIcon>
-                      <AlertCircleIcon/>
-                    </StyledNoticeIcon>
-                    <StyledNoticeText>
-                      <b>{getLocale('siteBannerNoticeNote')}</b> {getLocale('siteBannerNoticeText')}
-                      <StyledNoticeLink href={learnMoreNotice} target={'_blank'}>{getLocale('unVerifiedTextMore')}</StyledNoticeLink>
-                    </StyledNoticeText>
-                  </StyledNoticeWrapper>
-                  : null
+                    ? <StyledNoticeWrapper>
+                      <StyledNoticeIcon>
+                        <AlertCircleIcon />
+                      </StyledNoticeIcon>
+                      <StyledNoticeText>
+                        <b>{getLocale('siteBannerNoticeNote')}</b> {getLocale('siteBannerNoticeText')}
+                        <StyledNoticeLink href={learnMoreNotice} target={'_blank'}>{getLocale('unVerifiedTextMore')}</StyledNoticeLink>
+                      </StyledNoticeText>
+                    </StyledNoticeWrapper>
+                    : null
                 }
                 <StyledTitle isMobile={isMobile}>
                   {this.getTitle(title)}
@@ -290,7 +290,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
               >
                 {
                   !recurringDonation
-                  ? <StyledCheckbox isMobile={isMobile}>
+                    ? <StyledCheckbox isMobile={isMobile}>
                       <Checkbox
                         value={{ make: this.state.monthly }}
                         onChange={this.onMonthlyChange}
@@ -301,7 +301,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                         </div>
                       </Checkbox>
                     </StyledCheckbox>
-                  : <StyledEmptyBox />
+                    : <StyledEmptyBox />
                 }
               </Donate>
             </StyledDonation>
