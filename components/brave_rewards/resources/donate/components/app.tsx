@@ -14,6 +14,7 @@ import DonationOverlay from 'brave-ui/features/rewards/donationOverlay'
 import * as rewardsActions from '../actions/donate_actions'
 
 interface Props extends RewardsDonate.ComponentProps {
+  publisherKey: string
 }
 
 export class App extends React.Component<Props, {}> {
@@ -76,7 +77,13 @@ export class App extends React.Component<Props, {}> {
   }
 
   render () {
-    const { finished, error, publisher } = this.props.rewardsDonateData
+    const { finished, error, publishers } = this.props.rewardsDonateData
+
+    if (!publishers) {
+      return null
+    }
+
+    const publisher = publishers[this.props.publisherKey]
 
     if (!publisher) {
       return null
@@ -86,7 +93,7 @@ export class App extends React.Component<Props, {}> {
       <>
         {
           !finished && !error
-          ? <Banner />
+          ? <Banner publisher={publisher} />
           : null
         }
         {

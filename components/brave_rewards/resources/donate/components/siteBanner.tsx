@@ -15,6 +15,7 @@ import * as donateActions from '../actions/donate_actions'
 import * as utils from '../utils'
 
 interface Props extends RewardsDonate.ComponentProps {
+  publisher: RewardsDonate.Publisher
 }
 
 interface State {
@@ -43,12 +44,12 @@ class Banner extends React.Component<Props, State> {
   }
 
   generateAmounts = () => {
-    const { publisher, walletInfo } = this.props.rewardsDonateData
+    const { walletInfo } = this.props.rewardsDonateData
 
     let amounts = [1, 5, 10]
-
-    if (publisher && publisher.amounts && publisher.amounts.length) {
-      amounts = publisher.amounts
+    const amount = this.props.publisher.amounts
+    if (amount && amount.length) {
+      amounts = amount
     }
 
     return amounts.map((value: number) => {
@@ -67,10 +68,11 @@ class Banner extends React.Component<Props, State> {
   }
 
   onDonate = (amount: string, recurring: boolean) => {
-    const { publisher, walletInfo } = this.props.rewardsDonateData
+    const { walletInfo } = this.props.rewardsDonateData
     const { balance } = walletInfo
+    const publisher = this.props.publisher
 
-    if (publisher && publisher.publisherKey && balance >= parseInt(amount, 10)) {
+    if (publisher.publisherKey && balance >= parseInt(amount, 10)) {
       this.actions.onDonate(publisher.publisherKey, amount, recurring)
     } else {
       // TODO return error
@@ -78,7 +80,7 @@ class Banner extends React.Component<Props, State> {
   }
 
   generateSocialLinks = () => {
-    const publisher = this.props.rewardsDonateData.publisher
+    const publisher = this.props.publisher
 
     if (!publisher || !publisher.social) {
       return []
@@ -120,49 +122,31 @@ class Banner extends React.Component<Props, State> {
   }
 
   render () {
-    const { publisher, walletInfo } = this.props.rewardsDonateData
+    const { walletInfo } = this.props.rewardsDonateData
     const { balance } = walletInfo
 
-    let title = ''
-    let background = ''
-    let logo = ''
-    let publisherKey = ''
-    let description = ''
-    let name = ''
-    let provider = ''
-    let verified = false
+    const publisher = this.props.publisher
+    const verified = publisher.verified
+    let logo = publisher.logo
 
-    if (publisher) {
-      title = publisher.title
-      background = publisher.background
-      logo = publisher.logo
-      publisherKey = publisher.publisherKey
-      description = publisher.description
-      name = publisher.name
-      provider = publisher.provider
-      verified = publisher.verified
-
-      const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
-      if (internalFavicon.test(publisher.logo)) {
-        logo = `chrome://favicon/size/160@2x/${publisher.logo}`
-      }
-
-      if (!verified) {
-        logo = ''
-      }
+    const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
+    if (internalFavicon.test(publisher.logo)) {
+      logo = `chrome://favicon/size/160@2x/${publisher.logo}`
     }
 
-    // TODO we need to use title and not publisherKey for domain for media publishers
+    if (!verified) {
+      logo = ''
+    }
 
     return (
       <SiteBanner
-        domain={publisherKey}
-        title={title}
-        name={name}
-        provider={provider as Provider}
-        recurringDonation={this.hasRecurringDonation(publisherKey)}
+        domain={publisher.publisherKey}
+        title={publisher.title}
+        name={publisher.name}
+        provider={publisher.provider as Provider}
+        recurringDonation={this.hasRecurringDonation(publisher.publisherKey)}
         balance={balance.toString() || '0'}
-        bgImage={background}
+        bgImage={publisher.background}
         logo={logo}
         donationAmounts={this.generateAmounts()}
         logoBgColor={''}
@@ -175,7 +159,7 @@ class Banner extends React.Component<Props, State> {
         learnMoreNotice={'https://brave.com/faq-rewards/#unclaimed-funds'}
         addFundsLink={this.addFundsLink}
       >
-        {description}
+        {publisher.description}
       </SiteBanner>
     )
   }
