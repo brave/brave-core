@@ -25,6 +25,19 @@ class ProfileIOData;
 
 namespace brave_shields {
 
+enum class ShieldState {kBlock, kBlock3rd, kAllow};
+
+// Sets shield state bearing in mind product logic, e.g. changing cookies shield
+// state also changes referrer protection.
+void SetDefaultValueForShield(Profile* profile,
+                              const std::string& shield_id,
+                              ShieldState state);
+
+// Iterates over all switches that are able to change defaults and adjusts
+// content settings accordingly. May DCHECK if switch values have anything
+// unexpected!
+void SetShieldsDefaultsFromCommandLineForTesting(Profile* profile);
+
 bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
     const GURL& primary_url, const GURL& secondary_url,
     ContentSettingsType setting_type,

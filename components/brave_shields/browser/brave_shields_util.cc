@@ -4,16 +4,20 @@
 
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 
+#include "base/command_line.h"
 #include "base/task/post_task.h"
+#include "brave/common/pref_names.h"
 #include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/common/brave_shield_switches.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/common/referrer.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/resource_request_info.h"
@@ -74,7 +78,100 @@ bool IsAllowContentSetting(HostContentSettingsMap* content_settings,
   return setting == CONTENT_SETTING_ALLOW;
 }
 
+// Sets only individual content settings for a given |resource_id|.
+void SetDefaultContentSettingForShield(Profile* profile,
+                                       const std::string& resource_id,
+                                       ShieldState state) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+  map->SetContentSettingCustomScope(
+      ContentSettingsPattern::Wildcard(),
+      ContentSettingsPattern::Wildcard(),
+      CONTENT_SETTINGS_TYPE_PLUGINS,
+      resource_id,
+      state == ShieldState::kAllow ? CONTENT_SETTING_ALLOW
+                                   : CONTENT_SETTING_BLOCK);
+
+  if (resource_id == brave_shields::kCookies ||
+      resource_id == brave_shields::kFingerprinting) {
+    map->SetContentSettingCustomScope(
+        ContentSettingsPattern::Wildcard(),
+        ContentSettingsPattern::FromString("https://firstParty/*"),
+        CONTENT_SETTINGS_TYPE_PLUGINS,
+        resource_id,
+        state == ShieldState::kBlock ? CONTENT_SETTING_BLOCK
+                                     : CONTENT_SETTING_ALLOW);
+  } else {
+    DCHECK_NE(ShieldState::kBlock3rd, state);
+  }
+}
+
 }  // namespace
+
+void SetDefaultValueForShield(Profile* profile,
+                              const std::string& shield_id,
+                              ShieldState state) {
+  if (shield_id == kJavaScript) {
+    // Special case for scripts.
+    const bool allow = state == ShieldState::kAllow;
+    HostContentSettingsMapFactory::GetForProfile(profile)->
+        SetContentSettingCustomScope(
+            ContentSettingsPattern::Wildcard(),
+            ContentSettingsPattern::Wildcard(),
+            CONTENT_SETTINGS_TYPE_JAVASCRIPT,
+            "",
+            allow ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
+    profile->GetPrefs()->SetBoolean(kNoScriptControlType, !allow);
+    return;
+  }
+  if (shield_id == kHTTPUpgradableResources) {
+    const bool allow = state == ShieldState::kAllow;
+    profile->GetPrefs()->SetBoolean(kHTTPSEVerywhereControlType, !allow);
+  }
+
+  SetDefaultContentSettingForShield(profile, shield_id, state);
+  if (shield_id == kCookies) {
+    const ShieldState referrer_state =
+        state == ShieldState::kAllow ? ShieldState::kAllow
+                                     : ShieldState::kBlock;
+    SetDefaultContentSettingForShield(profile, kReferrers, referrer_state);
+    return;
+  }
+  if (shield_id == kAds) {
+    SetDefaultContentSettingForShield(profile, kTrackers, state);
+    return;
+  }
+}
+
+void SetShieldsDefaultsFromCommandLineForTesting(Profile* profile) {
+  using namespace brave_shields::switches;
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+
+  auto handle_switch = [&](base::StringPiece swtch, base::StringPiece shield) {
+    const std::string state_string = command_line->GetSwitchValueASCII(swtch);
+    if (!state_string.empty()) {
+      ShieldState state;
+      if (state_string == kBlock) {
+        state = ShieldState::kBlock;
+      } else if (state_string == kBlock3rd) {
+        state = ShieldState::kBlock3rd;
+      } else if (state_string == kAllow) {
+        state = ShieldState::kAllow;
+      } else {
+        LOG(ERROR) << "Unknown value for command-line parameter: " << swtch
+                   << ", skipping.";
+        return;
+      }
+      SetDefaultValueForShield(profile, shield.data(), state);
+    }
+  };
+
+  handle_switch(kShieldsAdsSetDefaultForTesting, kAds);
+  handle_switch(kShieldsHttpsSetDefaultForTesting, kHTTPUpgradableResources);
+  handle_switch(kShieldsJavaScriptSetDefaultForTesting, kJavaScript);
+  handle_switch(kShieldsFingerprintingSetDefaultForTesting, kFingerprinting);
+  handle_switch(kShieldsSetDefaultForTesting, kBraveShields);
+  handle_switch(kShieldsCookiesSetDefaultForTesting, kCookies);
+}
 
 bool IsAllowContentSettingFromIO(const net::URLRequest* request,
     const GURL& primary_url, const GURL& secondary_url,
