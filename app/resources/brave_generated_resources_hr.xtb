@@ -43,6 +43,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="3425600262621021599">Otvori poveznicu u privatnom prozoru preglednika Brave s funkcijom Tor</translation>
 <translation id="3155170474926428993">Pokretač funkcije Tor</translation>
 <translation id="2515126961943087659">Usluga Bat oglašavanja</translation>
+<translation id="7924918279836988121">Usluga bat registra</translation>
 <translation id="7372129767729198111">Zadane postavke štitova u pregledniku Brave</translation>
 <translation id="8029018702721078742">Upravljanje oglasima</translation>
 <translation id="3544462288910360084">Upravljanje kolačićima</translation>
@@ -63,6 +64,11 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="1822560017823072927">Zadana javna i privatna sučelja</translation>
 <translation id="5825943197137337319">Samo zadano javno sučelje</translation>
 <translation id="1689062823386843231">Onemogući UDP bez korištenja proxyja</translation>
+<translation id="6645631466045614531">Pristupiti sinkronizaciji putem</translation>
 <translation id="6786747875388722282">Proširenja</translation>
+<translation id="2896916411183256228">Rabi WebTorrent za prikazivanje torenta izravno u pregledniku. Podržava datoteke i magnetne poveznice za torente.</translation>
+<translation id="6554397389149987360">Rabi komponentu Hangouts za omogućavanje dijeljenja zaslona i drugih značajki u pregledniku.</translation>
 <translation id="6916590542764765824">Upravljanje proširenjima</translation>
+<translation id="4928988318462976765">Prodavniza mrežnih ekstenzija</translation>
+<translation id="9181207987584064303">Pogledati u Prodavnici mrežnih ekstenzija</translation>
 </translationbundle>

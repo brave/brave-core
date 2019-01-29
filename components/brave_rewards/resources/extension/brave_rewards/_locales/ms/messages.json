@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Pemberian Token",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Pemberian Token Dituntut",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Ganjaran Brave ialah",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Penghasilan dompet gagal",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Cuba lagi",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

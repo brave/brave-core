@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">保存された推定時間</translation>
 <translation id="5206618227023752085">トップサイトが移動しました。</translation>
 <translation id="2079545284768500474">取り消す</translation>
+<translation id="6040143037577758943">近い</translation>
 <translation id="8529752221839395787">すべてを復元する</translation>
 <translation id="3022168349636134570">秒</translation>
 <translation id="8664519043722036194">数秒</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Brave Rewardsを有効にする</translation>
 <translation id="2862598513212603756">あなたの注目度は重要です。閲覧中にプライバシー重視型の広告を閲覧することで報酬を得て、あなたのお気に入りのサイトを支援することができます。</translation>
 <translation id="4942016616604700968">リワードを有効にする</translation>
-<translation id="1964278139527989987">ブックマークと設定をインポート</translation>
+<translation id="3958088479270651626">ブックマークと設定のインポート</translation>
 <translation id="5633840519079139680">Brave では、インストール済みの他のブラウザからブックマークや設定をインポートできるため、使い慣れた使用環境が簡単に再現できます。</translation>
 <translation id="8275038454117074363">インポート</translation>
 <translation id="5540323067375019678">シールドを管理</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">宝石を見つけたその場でチップを払いましょう。</translation>
-<translation id="1638706606242137268">Twitter、YouTubeなどでチップを送り、「いいね」をもらいましょう。</translation>
+<translation id="6135431587052937035">毎月紹介されるコツを活用してあなたのお気に入りのサイトをサポートしましょう。</translation>
 <translation id="2788596505277705686">{{balance}} BATは回収されました。お客様のウォレットキーの確認と読込は成功しました。</translation>
 <translation id="1083279119532577005">ウォレットは復元されました！</translation>
 <translation id="7841456038054167122">キーを再入力または別のキーを入力してください。</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">ありがとうございます</translation>
 <translation id="6432779622695508363">「いいね」でチップを送る</translation>
 <translation id="8424370624815730676">Basic Attention Token　ベーシック・アテンション・トークン (BAT)</translation>
-<translation id="5808753495166759239">ビットコイン（BTC）</translation>
+<translation id="4588241643143931775">ビットコイン (BTC)</translation>
 <translation id="4837149400263828922">イーサリアム (ETH)</translation>
-<translation id="3324022052501075296">ライトコイン (LTC)</translation>
+<translation id="8746837129291133068">ライトコイン (LTC)</translation>
 <translation id="4914597931214386232">取得されたトークン助成金</translation>
 <translation id="1634828734222219955">合計</translation>
 <translation id="3535654229833214438">取引</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">この同期チェーンから</translation>
 <translation id="610118613261910287">コードワードを見る</translation>
 <translation id="8588535459744752615">デバイスを探しています</translation>
-<translation id="6406506848690869874">同期</translation>
+<translation id="391177677159359824">同期する（ベータ版）</translation>
 <translation id="28332161031213248">以下のデバイスリストは、あなたの同期チェーンにある全てのデバイスを表示しています。それぞれのデバイスは、他のデバイスから管理することができます。</translation>
 <translation id="8153617760825732120">デバイス名</translation>
 <translation id="4241512165288542484">(このデバイス)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">保存済みのサイト設定</translation>
 <translation id="7859704718976024901">閲覧履歴</translation>
 <translation id="2339730291919608488">同期チェーンから離れる</translation>
-<translation id="4332558599726753990">同期設定</translation>
+<translation id="4797449295451979552">同期（ベータ版）の設定</translation>
 <translation id="298546024891487702">始めるためには、同期予定の全てのデバイスに Brave をインストールする必要があります。それらを一つに繋ぐには、安全にあなたのデバイス全てをリンクさせる、同期チェーンを開始してください。</translation>
 <translation id="6200528822592747640">新たな同期チェーンを開始する</translation>
 <translation id="5184726904895809379">同期コードを持っています</translation>

@@ -1018,7 +1018,6 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="5483785310822538350">Opozovi pristup datotekama i uređaju</translation>
 <translation id="93766956588638423">Popravi proširenje</translation>
 <translation id="3905761538810670789">Popravi aplikaciju</translation>
-<translation id="7246778686271518284">Brave web-trgovina</translation>
 <translation id="8808478386290700967">Web Store</translation>
 <translation id="488785315393301722">Pokaži pojedinosti</translation>
 <translation id="8962083179518285172">Sakrij pojedinosti</translation>
@@ -1513,13 +1512,13 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="4620809267248568679">Ovom postavkom upravlja proširenje.</translation>
 <translation id="4846680374085650406">Vi pratite preporuku administratora za ovu postavku.</translation>
 <translation id="1223853788495130632">Administrator preporučuje određenu vrijednost za tu postavku.</translation>
-<translation id="2573343962518858459">Nije iz web-trgovine Brave.</translation>
+<translation id="8839398440242019256">Nije iz web-trgovine Brave.</translation>
 <translation id="5337771866151525739">Instalirala treća strana.</translation>
 <translation id="4538792345715658285">Instalirano pravilima tvrtke.</translation>
 <translation id="4359408040881008151">Instalirano zbog ovisnih proširenja.</translation>
 <translation id="4980805016576257426">Proširenje sadrži zlonamjerni softver.</translation>
 <translation id="5522156646677899028">To proširenje sadrži ozbiljni sigurnosni propust.</translation>
-<translation id="1168617370053816436">To proširenje krši pravila Brave web-trgovine.</translation>
+<translation id="6945695820322143954">To proširenje krši pravila Brave web-trgovine.</translation>
 <translation id="177808131755847449">Onemogućio Brave. To proširenje možda nije sigurno.</translation>
 <translation id="1434696352799406980">Polazna stranica, web-stranica nove kartice, tražilica i prikvačene kartice vratit će se na zadano. Onemogućit će se sva proširenja i izbrisati privremeni podaci kao što su kolačići. Vaše oznake, povijest i spremljene zaporke neće se izbrisati.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> želi vratiti vaše postavke na zadano.</translation>
@@ -2910,10 +2909,10 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
     <ph name="MARKUP_7"/>Dijelite, stvarajte i surađujte<ph name="MARKUP_8"/>
     na datotekama s drugima i sve to na jednom mjestu.<ph name="MARKUP_9"/></translation>
 <translation id="7489605380874780575">Provjera prikladnosti</translation>
-<translation id="4997096511442832556">Ta vrsta datoteke nije podržana. Posjetite <ph name="BEGIN_LINK"/>Brave web-trgovinu<ph name="END_LINK"/> da biste pronašli aplikaciju koja može otvoriti tu vrstu datoteke.
+<translation id="4878716980734452132">Ta vrsta datoteke nije podržana. Posjetite <ph name="BEGIN_LINK"/>Brave web-trgovinu<ph name="END_LINK"/> da biste pronašli aplikaciju koja može otvoriti tu vrstu datoteke.
     <ph name="BEGIN_LINK_HELP"/>Saznajte više<ph name="END_LINK_HELP"/></translation>
-<translation id="5097366979999786201">Ova datoteka predviđena je za računalo koje upotrebljava Windows softver. Nije kompatibilna s vašim uređajem koji radi na Brave OS-u. Potražite odgovarajuću zamjensku datoteku u <ph name="BEGIN_LINK"/>Brave web-trgovini<ph name="END_LINK"/>.<ph name="BEGIN_LINK_HELP"/>Saznajte više<ph name="END_LINK_HELP"/></translation>
-<translation id="6041399778584119390">Ova datoteka predviđena je za računalo koje upotrebljava Macintosh softver. Nije kompatibilna s vašim uređajem koji radi na Brave OS-u. Potražite odgovarajuću zamjensku aplikaciju u <ph name="BEGIN_LINK"/>Brave web-trgovini<ph name="END_LINK"/>.<ph name="BEGIN_LINK_HELP"/>Saznajte više<ph name="END_LINK_HELP"/></translation>
+<translation id="3376900196170631953">Ova datoteka predviđena je za računalo koje upotrebljava Windows softver. Nije kompatibilna s vašim uređajem koji radi na Brave OS-u. Potražite odgovarajuću zamjensku datoteku u <ph name="BEGIN_LINK"/>Brave web-trgovini<ph name="END_LINK"/>.<ph name="BEGIN_LINK_HELP"/>Saznajte više<ph name="END_LINK_HELP"/></translation>
+<translation id="3072401511615920367">Ova datoteka predviđena je za računalo koje upotrebljava Macintosh softver. Nije kompatibilna s vašim uređajem koji radi na Brave OS-u. Potražite odgovarajuću zamjensku aplikaciju u <ph name="BEGIN_LINK"/>Brave web-trgovini<ph name="END_LINK"/>.<ph name="BEGIN_LINK_HELP"/>Saznajte više<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">Pričekajte trenutak</translation>
 <translation id="3096967955765855393">Neprestano nastojimo učiniti pregledavanje interneta sigurnijim. Ranije je bilo koja web-lokacija mogla tražiti da dodate proširenje u preglednik. Najnovije verzije Brave Software Bravea traže da izričito odobrite instalaciju ovih proširenja tako da ih dodate na stranici Proširenja. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">Otvaranje pomoću aplikacije $1 nije moguće</translation>
@@ -2948,9 +2947,9 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="7452737073539387970">Brave Software web-lokacija</translation>
 <translation id="4445959220475380548">Veza na Brave Software disk</translation>
 <translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="2599249317139964094">Ta vrsta datoteke nije podržana. Posjetite Brave web-trgovinu da biste pronašli aplikaciju koja može otvoriti tu vrstu datoteke.</translation>
-<translation id="3495282670559481871">Ova je datoteka predviđena za računalo koje upotrebljava Macintosh softver. Nije kompatibilna s vašim uređajem na kojem se izvodi Brave OS. Potražite odgovarajuću zamjensku aplikaciju u Braveovoj web-trgovini.</translation>
-<translation id="3213197099265624265">Ova je datoteka predviđena za računalo s softverom Windows. Nije kompatibilna s vašim uređajem na kojem se izvodi Brave OS. Potražite odgovarajuću zamjensku aplikaciju u Braveovoj web-trgovini.</translation>
+<translation id="1131292764548273687">Ta vrsta datoteke nije podržana. Posjetite Brave web-trgovinu da biste pronašli aplikaciju koja može otvoriti tu vrstu datoteke.</translation>
+<translation id="9010211493509471179">Ova je datoteka predviđena za računalo koje upotrebljava Macintosh softver. Nije kompatibilna s vašim uređajem na kojem se izvodi Brave OS. Potražite odgovarajuću zamjensku aplikaciju u Braveovoj web-trgovini.</translation>
+<translation id="5059989099965370411">Ova je datoteka predviđena za računalo s softverom Windows. Nije kompatibilna s vašim uređajem na kojem se izvodi Brave OS. Potražite odgovarajuću zamjensku aplikaciju u Braveovoj web-trgovini.</translation>
 <translation id="5833610766403489739">Datoteka nije pronađena. Provjerite postavku lokacije preuzimanja i pokušajte ponovo.</translation>
 <translation id="3966388904776714213">Audio Player</translation>
 <translation id="3245321423178950146">Nepoznati izvođač</translation>
@@ -3031,7 +3030,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="4570609078116869893">Automatski ažuriraj Brave za sve korisnike</translation>
 <translation id="7102687220333134671">Automatska su ažuriranja uključena</translation>
 <translation id="6981982820502123353">Pristupačnost</translation>
-<translation id="5392220887878025825">Otvori Brave web-trgovinu</translation>
+<translation id="5840822070878669614">Otvori Brave web-trgovinu</translation>
 <translation id="6073903501322152803">Dodajte značajke pristupačnosti</translation>
 <translation id="7988355189918024273">Omogući značajke dostupnosti</translation>
 <translation id="2558896001721082624">Uvijek prikaži opcije pristupačnosti u izborniku sustava</translation>
@@ -4005,7 +4004,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="437184764829821926">Napredne postavke fonta</translation>
 <translation id="323803881985677942">Otvori opcije proširenja</translation>
 <translation id="2166369534954157698">Đačić sjedi u hladu i čita zanimljivu knjigu, u džepu mu šljiva, boca, frula i puž.</translation>
-<translation id="6121729889904235649">Zahtijeva proširenje iz Brave web-trgovine</translation>
+<translation id="8911765336506423117">Zahtijeva proširenje iz Brave web-trgovine</translation>
 <translation id="6965978654500191972">Uređaj</translation>
 <translation id="8260864402787962391">Miš</translation>
 <translation id="155865706765934889">Dodirna površina</translation>
@@ -4222,7 +4221,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="3777806571986431400">Proširenje omogućeno</translation>
 <translation id="6851497530878285708">Aplikacija je omogućena</translation>
 <translation id="5018207570537526145">Otvori web-lokaciju proširenja</translation>
-<translation id="8158441856257599022">Prikaz u Brave web-trgovini</translation>
 <translation id="4617270414136722281">Opcije proširenja</translation>
 <translation id="7152478047064750137">To proširenje ne zahtijeva nikakva posebna dopuštenja</translation>
 <translation id="8523849605371521713">Dodala pravila</translation>
@@ -4232,7 +4230,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="6370021412472292592">Manifest nije učitan.</translation>
 <translation id="7235716375204803342">Dohvaćanje aktivnosti...</translation>
 <translation id="7647403192093989392">Nema nedavne aktivnosti</translation>
-<translation id="2152198799932802652">Pronađite proširenja i teme u <ph name="BEGIN_LINK"/>Brave web-trgovini<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Pronađite proširenja i teme u <ph name="BEGIN_LINK"/>Brave web-trgovini<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">Nije naveden opis</translation>
 <translation id="3855441664322950881">Zapakiraj proširenje</translation>
 <translation id="2958721676848865875">Upozorenje proširenja paketa</translation>

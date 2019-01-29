@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Donación de tokens",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Donaciones de tokens reclamadas",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Las Recompensas Brave están",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Error al crear la billetera",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Reintentar",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

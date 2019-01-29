@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Estimert tid lagret</translation>
 <translation id="5206618227023752085">Det øverste nettstedet er fjernet.</translation>
 <translation id="2079545284768500474">Angre</translation>
+<translation id="6040143037577758943">Lukk</translation>
 <translation id="8529752221839395787">Gjenopprett alle</translation>
 <translation id="3022168349636134570">sekund</translation>
 <translation id="8664519043722036194">sekunder</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Aktiver Brave-belønninger</translation>
 <translation id="2862598513212603756">Din oppmerksomhet er verdifull. Tjen ved å se annonser som støtter personvern mens du surfer, og send den videre for å støtte skaperene du elsker.</translation>
 <translation id="4942016616604700968">Aktiver belønninger</translation>
-<translation id="1964278139527989987">Importer bokmerker og innstillinger</translation>
+<translation id="3958088479270651626">Importér bokmerker og innstillinger</translation>
 <translation id="5633840519079139680">Brave gjør det enkelt å sette opp det vante nettleser-miljøet ditt ved å importere bokmerker og innstillinger fra andre nettlesere som er installert på datamaskinen.</translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="5540323067375019678">Administrer dine skjold</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Gi tips på stedet når du finner skatter.</translation>
-<translation id="1638706606242137268">Send tips på Twitter, YouTube m.m. for å belønne innlegg du ‘liker’.</translation>
+<translation id="6135431587052937035">Støtt favorittsidene dine med gjentakende månedlige tips.</translation>
 <translation id="2788596505277705686">{{balanse}} BAT ble gjenopprettet. Lommeboken din har blitt bekreftet og lastet inn vellykket.</translation>
 <translation id="1083279119532577005">Lommebok gjenopprettet!</translation>
 <translation id="7841456038054167122">Vennligst tast inn nøkler på nytt, eller prøv andre nøkler.</translation>
@@ -274,9 +275,9 @@ dag i hver måned.</translation>
 <translation id="8826007068782654809">Tusen takk</translation>
 <translation id="6432779622695508363">Tips ved likerklikk</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Tokenstipender gjort krav på</translation>
 <translation id="1634828734222219955">Totalt</translation>
 <translation id="3535654229833214438">Transaksjoner</translation>
@@ -314,7 +315,7 @@ dag i hver måned.</translation>
 <translation id="1555452132857939218">fra denne synkroniseringskjeden</translation>
 <translation id="610118613261910287">Vis kodeord</translation>
 <translation id="8588535459744752615">Leter etter enhet</translation>
-<translation id="6406506848690869874">Synkroniser</translation>
+<translation id="391177677159359824">Synk (beta)</translation>
 <translation id="28332161031213248">Enhetslisten under inneholder alle enhetene i synkroniseringskjeden. Hver enhet kan administreres fra en hvilken som helst annen enhet.</translation>
 <translation id="8153617760825732120">navn på enhet</translation>
 <translation id="4241512165288542484">(Denne enheten)</translation>
@@ -327,7 +328,7 @@ dag i hver måned.</translation>
 <translation id="5591129654353352557">Lagret nettsideinnstillinger</translation>
 <translation id="7859704718976024901">Nettleserlogg</translation>
 <translation id="2339730291919608488">Forlat synkroniseringskjede</translation>
-<translation id="4332558599726753990">Synkroniseringsoppsett</translation>
+<translation id="4797449295451979552">Synk (beta) Oppsett</translation>
 <translation id="298546024891487702">For å begynne må du ha Brave installert på alle enhetene du planlegger å synkronisere. Du sammenkjeder dem ved å starte en synkroniseringskjede som brukes til å knytte alle enhetene dine sikkert sammen.</translation>
 <translation id="6200528822592747640">Start en ny synkroniseringskjede</translation>
 <translation id="5184726904895809379">Jeg har en synkroniseringskode</translation>

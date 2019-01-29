@@ -8,7 +8,7 @@
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
-    "message": "Dołącz do Nagród Brave",
+    "message": "Dołącz do nagród",
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
@@ -44,7 +44,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "on": {
-    "message": "wł.",
+    "message": "na",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
@@ -128,7 +128,11 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Odebrane tokeny",
+    "message": "Przyznane tokeny",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
+    "message": "Tokeny odebrane",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -226,7 +230,7 @@
     "description": "Cosmetic text upon captcha success"
   },
   "captchaOnTheWay": {
-    "message": "Twój grant tokenowy jest w drodze.",
+    "message": "Twoje tokeny są już w drodze.",
     "description": "Cosmetic text indicating grant funds are on the way"
   },
   "captchaProveHuman": {
@@ -246,7 +250,7 @@
     "description": "Claim text"
   },
   "newTokenGrant": {
-    "message": "Bezpłatny grant tokenowy",
+    "message": "Bezpłatne tokeny",
     "description": "Token grant label"
   },
   "grantExpire": {
@@ -254,7 +258,7 @@
     "description": "Grant expiry label"
   },
   "grantAlreadyClaimedText": {
-    "message": "Przykro nam, wygląda na to, że te środki zostały już wykorzystane.",
+    "message": "Przepraszamy, te środki zostały już odebrane.",
     "description": "Description of the error when grant is already claimed."
   },
   "grantGeneralErrorButton": {
@@ -274,7 +278,7 @@
     "description": "Button text for clearing the error."
   },
   "grantGoneText": {
-    "message": "Przykro nam, wygląda na to, że ten grant już wygasł.",
+    "message": "Przepraszamy, te środki straciły już ważność.",
     "description": "Error text when user missed a grant."
   },
   "grantGoneTitle": {
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Nagrody Brave są",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Tworzenie portfela nie powiodło się",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Spróbuj ponownie",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">절약된 시간 예상</translation>
 <translation id="5206618227023752085">맨 위 사이트 제거됨.</translation>
 <translation id="2079545284768500474">원상태로 돌리기</translation>
+<translation id="6040143037577758943">닫기</translation>
 <translation id="8529752221839395787">모두 복원</translation>
 <translation id="3022168349636134570">초</translation>
 <translation id="8664519043722036194">초</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Brave 리워드 사용</translation>
 <translation id="2862598513212603756">귀하의 관심은 소중합니다. 검색 중 개인 정보를 존중하는 광고를 시청해서 보상을 받고 선행을 베풀어 귀하가 사랑하는 콘텐츠 제작자를 지원해 보세요.</translation>
 <translation id="4942016616604700968">리워드 사용</translation>
-<translation id="1964278139527989987">북마크 및 설정 가져오기</translation>
+<translation id="3958088479270651626">북마크 및 설정 가져오기</translation>
 <translation id="5633840519079139680">컴퓨터에 설치된 다른 브라우저에서 북마크 및 설정을 가져와 Brave 브라우저의 기본 설정을 쉽게 할 수 있습니다.</translation>
 <translation id="8275038454117074363">가져오기</translation>
 <translation id="5540323067375019678">차단 관리</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">보석을 찾을 때 바로 팁을 주세요.</translation>
-<translation id="1638706606242137268">Twitter, YouTube 등에 팁을 보내서, ‘좋아요’를 누른 게시물에 보상을 주세요.</translation>
+<translation id="6135431587052937035">매달 정기적인 팁으로 선호하는 사이트를 지원하세요.</translation>
 <translation id="2788596505277705686">{{balance}} BAT가 복구되었습니다. 귀하의 월렛키가 인증되었고 성공적으로 로드되었습니다.</translation>
 <translation id="1083279119532577005">지갑을 복구했습니다!</translation>
 <translation id="7841456038054167122">키를 다시 입력하거나 다른 키로 시도해 주세요.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">감사합니다</translation>
 <translation id="6432779622695508363">좋아요 팁</translation>
 <translation id="8424370624815730676">베이직 어텐션 토큰 (BAT)</translation>
-<translation id="5808753495166759239">비트코인 (BTC)</translation>
+<translation id="4588241643143931775">비트코인 (BTC))</translation>
 <translation id="4837149400263828922">이더리움 (ETH)</translation>
-<translation id="3324022052501075296">라이트코인 (LTC)</translation>
+<translation id="8746837129291133068">라이트코인 ((LTC))</translation>
 <translation id="4914597931214386232">토큰 승인 요청됨</translation>
 <translation id="1634828734222219955">전체</translation>
 <translation id="3535654229833214438">트랜잭션</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">이 동기화 체인에서</translation>
 <translation id="610118613261910287">코드 단어들 보기</translation>
 <translation id="8588535459744752615">장치 찾는 중</translation>
-<translation id="6406506848690869874">동기화</translation>
+<translation id="391177677159359824">동기화 (베타)</translation>
 <translation id="28332161031213248">아래의 장치 목록에 귀하의 동기화 체인의 모든 장치들이 포함되어 있습니다. 각 장치들은 모든 다른 장치들로부터 관리될 수 있습니다.</translation>
 <translation id="8153617760825732120">기기 이름</translation>
 <translation id="4241512165288542484">(이 기기)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">저장된 사이트 설정</translation>
 <translation id="7859704718976024901">검색 내역</translation>
 <translation id="2339730291919608488">동기화 체인에서 나가기</translation>
-<translation id="4332558599726753990">동기화 설정</translation>
+<translation id="4797449295451979552">동기화 (베타) 설정</translation>
 <translation id="298546024891487702">시작하시려면 동기화를 계획한 모든 장치들에 브레이브가 설치되어 있어야 합니다. 그들을 한데 묶으시려면, 귀하께서 안전하게 모든 장치들을 함께 연결할 때 사용하게 돌 동기화 체인을 시작하세요.</translation>
 <translation id="6200528822592747640">새 동기화 체인 시작하기</translation>
 <translation id="5184726904895809379">저는동기화 코드를 갖고 있습니다</translation>

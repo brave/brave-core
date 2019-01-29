@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">זמן משוער שנחסך</translation>
 <translation id="5206618227023752085">תצוגה ממוזערת הוסרה.</translation>
 <translation id="2079545284768500474">בטל</translation>
+<translation id="6040143037577758943">סגירה</translation>
 <translation id="8529752221839395787">שחזרו הכל</translation>
 <translation id="3022168349636134570">שנייה</translation>
 <translation id="8664519043722036194">שניות</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">הפעל תגמולי גלישה</translation>
 <translation id="2862598513212603756">תשומת הלב שלכם מוערכת. הרוויחו על ידי צפייה במודעות מכבדות פרטיות, ותמכו ביוצרי התוכן המועדפים עליכם.</translation>
 <translation id="4942016616604700968">אפשרו תגמולים</translation>
-<translation id="1964278139527989987">יבאו סימניות &amp; הגדרות</translation>
+<translation id="3958088479270651626">יבא סימניות והגדרות</translation>
 <translation id="5633840519079139680">Brave מקל על הגדרת הסביבה הרגילה שלכם על ידי יבוא סימניות והגדרות מדפדפנים אחרים המותקנים במחשב שלכם.</translation>
 <translation id="8275038454117074363">יבוא</translation>
 <translation id="5540323067375019678">נהלו את המגן שלכם</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">טוויטר</translation>
 <translation id="3920963435109110161">תגמלו מיידית, כשתגלו אוצרות</translation>
-<translation id="1638706606242137268">שלחו טיפים באמצעות טוויטר, יוטיוב ועוד, כדי לתגמל פוסטים ‘ שאהבתם ’.</translation>
+<translation id="6135431587052937035">תמכו באתרים האהובים עליכם במתן טיפים חודשיים</translation>
 <translation id="2788596505277705686">{{balance}} BAT שוחזרו. מפתח הארנק שלכם אומת ונטען בהצלחה.</translation>
 <translation id="1083279119532577005">הארנק שוחזר!</translation>
 <translation id="7841456038054167122">אנא הכניסו מחדש את המפתחות או נסו מפתחות שונים.</translation>
@@ -274,9 +275,9 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="8826007068782654809">תודה</translation>
 <translation id="6432779622695508363">טיפ לכל לייק</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">ביטקוין (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">לייטקוין (LTC)</translation>
 <translation id="4914597931214386232">מענקי אסימון נתבעו</translation>
 <translation id="1634828734222219955">סך הכל</translation>
 <translation id="3535654229833214438">העברות</translation>
@@ -314,7 +315,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="1555452132857939218">משרשרת הסנכרון הזו</translation>
 <translation id="610118613261910287">הצג מילות קוד</translation>
 <translation id="8588535459744752615">מחפש מכשיר</translation>
-<translation id="6406506848690869874">סנכרון</translation>
+<translation id="391177677159359824">סנכרון (בטא)</translation>
 <translation id="28332161031213248">רשימת ההתקנים שלהלן כוללת את כל ההתקנים בשרשרת הסנכרון שלכם. כל מכשיר יכול להיות מנוהל מכל מכשיר אחר.</translation>
 <translation id="8153617760825732120">שם המכשיר</translation>
 <translation id="4241512165288542484">(מכשיר זה)</translation>
@@ -327,7 +328,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="5591129654353352557">הגדרות אתר שנשמרו</translation>
 <translation id="7859704718976024901">היסטוריית גלישה</translation>
 <translation id="2339730291919608488">השאר שרשרת סנכרון</translation>
-<translation id="4332558599726753990">הגדרות סנכרון</translation>
+<translation id="4797449295451979552">הגדרות סנכרון (בטא)</translation>
 <translation id="298546024891487702">כדי להתחיל, תצטרכו להתקין את Brave בכל המכשירים שאתם מתכננים לסנכרן. כדי לחבר את המכשירים, הפעילו שרשרת סנכרון שבה תשתמשו כדי לקשר את כל המכשירים שלכם בצורה מאובטחת.</translation>
 <translation id="6200528822592747640">התחילו שרשרת סנכרון חדשה</translation>
 <translation id="5184726904895809379">יש לי קוד סנכרון</translation>

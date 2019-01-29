@@ -2,10 +2,12 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="mr">
 <translation id="2079545284768500474">पहिल्यासारखे करा</translation>
+<translation id="6040143037577758943">बंद करा</translation>
 <translation id="8730621377337864115">पूर्ण झाले</translation>
 <translation id="6248988683584659830">शोध सेटिंग</translation>
 <translation id="59174027418879706">सक्षम केलेले</translation>
 <translation id="4176463684765177261">अक्षम</translation>
+<translation id="3958088479270651626">बुकमार्क आणि सेटिंग्ज इंपोर्ट करा</translation>
 <translation id="8275038454117074363">इंपोर्ट</translation>
 <translation id="8428213095426709021">सेटिंग्ज</translation>
 <translation id="1201402288615127009">पुढील</translation>
@@ -23,6 +25,5 @@
 <translation id="8725066075913043281">पुन्हा प्रयत्न करा</translation>
 <translation id="1181037720776840403">काढून टाका</translation>
 <translation id="2740531572673183784">ठीक आहे</translation>
-<translation id="6406506848690869874">Sync</translation>
 <translation id="8820817407110198400">Bookmarks</translation>
 </translationbundle>

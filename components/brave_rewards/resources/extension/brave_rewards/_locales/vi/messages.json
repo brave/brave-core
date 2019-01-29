@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Tặng Token",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Khoản thưởng Token Đã nhận",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Phần thưởng Brave là",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Tạo ví thất bại",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Thử lại",
+    "description": "Button for re-try after wallet creation failed"
   }
 }
