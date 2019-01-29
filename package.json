@@ -9,7 +9,6 @@
     "compress-keygen": "crx keygen",
     "clean": "rimraf build/ dev/ *.zip *.crx",
     "lint": "tslint --project tsconfig.json '{app, test}/**/*.{ts,tsx}'",
-    "test-e2e": "cross-env NODE_ENV=test TS_NODE_TYPE_CHECK=true mocha ./test/setupApp.ts test/e2e/braveShieldsPanel.ts && mocha ./test/setupApp.ts",
     "test-unit": "cross-env NODE_ENV=test TS_NODE_TYPE_CHECK=true mocha -r ignore-styles ./test/setupApp.ts test/app/**/**/**/*.{ts,tsx}",
     "test-security": "npm audit",
     "test-suite": "node ./scripts/tests.js"
@@ -61,7 +60,6 @@
     "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-runtime": "^6.26.0",
-    "chromedriver": "^2.33.2",
     "cross-env": "^5.1.1",
     "crx": "https://github.com/oncletom/crx.git#20df2e1363b54076e55067489cfed59bc4ee428c",
     "css-loader": "^0.28.7",
@@ -76,7 +74,6 @@
     "pug-cli": "^1.0.0-alpha6",
     "react-addons-test-utils": "^15.6.2",
     "rimraf": "^2.6.2",
-    "selenium-webdriver": "^4.0.0-alpha.1",
     "shelljs": "^0.8.1",
     "sinon": "^7.2.3",
     "style-loader": "^0.21.0",
