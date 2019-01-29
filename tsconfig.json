@@ -23,6 +23,6 @@
         "noUnusedLocals": true
     },
     "include": [
-       "./app/**/*"
+        "./app/types/global"
     ]
 }

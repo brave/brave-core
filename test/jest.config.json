@@ -1,0 +1,24 @@
+{
+  "preset": "ts-jest",
+  "moduleFileExtensions": [
+    "js",
+    "tsx",
+    "ts",
+    "json"
+  ],
+  "transform": {
+    ".(jsx|js|ts|tsx)": "ts-jest"
+  },
+  "resetMocks": true,
+  "resetModules": true,
+  "collectCoverage": false,
+  "testMatch": [],
+  "transformIgnorePatterns": [
+    "<rootDir>/node_modules"
+  ],
+  "setupTestFrameworkScriptFile": "./setupApp.ts",
+  "moduleNameMapper": {
+    "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/test/fileMock.ts",
+    "\\.(css|less)$": "identity-obj-proxy"
+  }
+}
