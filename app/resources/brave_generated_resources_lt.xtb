@@ -38,8 +38,12 @@
 <translation id="1434416574322382019">Naujas inkognito langas su „Tor“</translation>
 <translation id="4703780849509456860">Atverti nuorodą inkognito lange su „Tor“</translation>
 <translation id="3488584642074079080">Atverti nuorodą „Brave“ inkognito lange su „Tor“</translation>
+<translation id="6313675821927505581">Naujas privatus langas su Tor</translation>
+<translation id="2638041073279639246">Atidaryti saitą privačiame lange su Tor</translation>
+<translation id="3425600262621021599">Atidaryti saitą Brave privačiame lange su Tor</translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
 <translation id="2515126961943087659">„Bat Ads“ paslauga</translation>
+<translation id="7924918279836988121">BAT žurnalo paslauga</translation>
 <translation id="7372129767729198111">„Brave“ numatytieji skydai</translation>
 <translation id="8029018702721078742">Reklamos kontrolė</translation>
 <translation id="3544462288910360084">Slapukų kontrolė</translation>
@@ -60,6 +64,11 @@
 <translation id="1822560017823072927">Numatytosios viešos ir privačios sąsajos</translation>
 <translation id="5825943197137337319">Tik numatytoji vieša sąsaja</translation>
 <translation id="1689062823386843231">Išjungti neįgaliotąjį UDP</translation>
+<translation id="6645631466045614531">Eiti į Sync per</translation>
 <translation id="6786747875388722282">Plėtiniai</translation>
+<translation id="2896916411183256228">Naudoja WebTorrent rodyti srautus tiesiogiai naršyklėje. Palaiko srauto failus ir magneto saitus.</translation>
+<translation id="6554397389149987360">Naudodamas Hangouts komponentą įjunk ekrano bendrinimą ir kitas naršyklės funkcijas.</translation>
 <translation id="6916590542764765824">Plėtinių tvarkymas</translation>
+<translation id="4928988318462976765">Plėtinių parduotuvė</translation>
+<translation id="9181207987584064303">Žiūrėti plėtinių parduotuvėje</translation>
 </translationbundle>

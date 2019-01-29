@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">زمان تخمینی ذخیره شد</translation>
 <translation id="5206618227023752085">سایت برتر برداشته شد.</translation>
 <translation id="2079545284768500474">واگرد</translation>
+<translation id="6040143037577758943">بستن</translation>
 <translation id="8529752221839395787">بازیابی همه</translation>
 <translation id="3022168349636134570">ثانیه</translation>
 <translation id="8664519043722036194">ثانیه</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">فعال کردن «پاداش‌های Brave»</translation>
 <translation id="2862598513212603756">توجهتان ارزش زیادی دارد. درحین مرور کردن با دیدن آگهی‌هایی که حریم خصوصی را رعایت می‌کنند پاداش دریافت کنید و از پدیدآورندگان محتوایی که دوست دارید حمایت مالی کنید.</translation>
 <translation id="4942016616604700968">فعال کردن پاداش‌ها</translation>
-<translation id="1964278139527989987">وارد کردن نشانک‌ها و تنظیمات</translation>
+<translation id="3958088479270651626">وارد کردن نشانک‌ها و تنظیمات</translation>
 <translation id="5633840519079139680">Brave راه‌اندازی محیط معمول شما را با وارد کردن نشانک‌ها و تنظیمات از سایر مرورگرهای نصب‌شده در رایانه‌تان تسهیل می‌بخشد.</translation>
 <translation id="8275038454117074363">وارد کردن</translation>
 <translation id="5540323067375019678">مدیریت سپر ایمنی</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">وقتی جواهر پیدا می‌کنید، انعام بدهید.</translation>
-<translation id="1638706606242137268">با ارسال پاداش در Twitter،‏ YouTube و غیره، به پست‌هایی که ‘می‌پسندید’ پاداش دهید.</translation>
+<translation id="6135431587052937035">با انعام‌های ماهانه تکرارشونده، از سایت‌های دلخواهتان پشتیبانی کنید.</translation>
 <translation id="2788596505277705686">{{balance}} BAT بازیابی شد. کلید کیف پولتان به تأیید رسید و با موفقیت بارگیری شد.</translation>
 <translation id="1083279119532577005">کیف پول بازیابی شد!‍</translation>
 <translation id="7841456038054167122">لطفاً دوباره کلید را وارد کنید یا کلیدهای دیگری را امتحان کنید.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">سپاسگزاریم</translation>
 <translation id="6432779622695508363">انعام پسندیدن</translation>
 <translation id="8424370624815730676">توکن توجه پایه (BAT)</translation>
-<translation id="5808753495166759239">بیت‌کوین (BTC)</translation>
+<translation id="4588241643143931775">بیت‌کوین (BTC)</translation>
 <translation id="4837149400263828922">اتریوم (ETH)</translation>
-<translation id="3324022052501075296">لایت‌کوین (LTC)</translation>
+<translation id="8746837129291133068">لایت‌کوین (LTC)</translation>
 <translation id="4914597931214386232">امتیازهای توکن مطالبه شد</translation>
 <translation id="1634828734222219955">مجموع</translation>
 <translation id="3535654229833214438">تراکنش‌ها</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">از این زنجیره همگام‌سازی</translation>
 <translation id="610118613261910287">مشاهده کدواژه‌ها</translation>
 <translation id="8588535459744752615">درحال جستجوی عکس</translation>
-<translation id="6406506848690869874">همگام‌سازی</translation>
+<translation id="391177677159359824">Sync (بتا)</translation>
 <translation id="28332161031213248">فهرست دستگاه زیر حاوی همه دستگاه‌های موجود در زنجیره همگام‌سازی شما است. هر دستگاه می‌تواند از دستگاه دیگری مدیریت شود.</translation>
 <translation id="8153617760825732120">نام دستگاه</translation>
 <translation id="4241512165288542484">(این دستگاه)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">تنظیمات سایت ذخیره‌شده</translation>
 <translation id="7859704718976024901">سابقه مرور</translation>
 <translation id="2339730291919608488">خروج از زنجیره همگام‌سازی</translation>
-<translation id="4332558599726753990">راه‌اندازی همگام‌سازی</translation>
+<translation id="4797449295451979552">راه‌اندازی Sync (بتا)</translation>
 <translation id="298546024891487702">برای شروع، باید Brave را در همه دستگاه‌هایی که قصد همگام‌سازی‌شان را دارید نصب کنید. برای زنجیر کردن آنها به یکدیگر، یک زنجیره همگام‌سازی شروع کنید. برای پیوند کردن ایمن همه دستگاه‌هایتان به یکدیگر از این زنجیره استفاده خواهید کرد.</translation>
 <translation id="6200528822592747640">شروع «زنجیره همگام‌سازی» جدید</translation>
 <translation id="5184726904895809379">کد همگام‌سازی دارم</translation>

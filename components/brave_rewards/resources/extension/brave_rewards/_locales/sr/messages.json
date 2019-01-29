@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Žeton Grants",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Traženi tokeni odobrenja",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Brave nagrade je",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Kreiranje novčanika nije uspelo",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Пробај поново",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

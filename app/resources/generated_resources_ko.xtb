@@ -1016,7 +1016,6 @@
 <translation id="5483785310822538350">파일 및 기기 액세스 취소</translation>
 <translation id="93766956588638423">확장 프로그램 복구</translation>
 <translation id="3905761538810670789">앱 복구</translation>
-<translation id="7246778686271518284">Brave Web Store</translation>
 <translation id="8808478386290700967">웹 스토어</translation>
 <translation id="488785315393301722">세부정보 표시</translation>
 <translation id="8962083179518285172">세부정보 숨기기</translation>
@@ -1511,13 +1510,13 @@
 <translation id="4620809267248568679">이 설정은 확장 프로그램에서 시행합니다.</translation>
 <translation id="4846680374085650406">이 설정에 대한 관리자 권장사항을 따릅니다.</translation>
 <translation id="1223853788495130632">관리자가 이 설정에 대해 특정 값을 추천합니다.</translation>
-<translation id="2573343962518858459">Brave 웹 스토어에서 설치되지 않았습니다.</translation>
+<translation id="8839398440242019256">Brave 웹 스토어에서 설치되지 않았습니다.</translation>
 <translation id="5337771866151525739">제3자에 의해 설치되었습니다.</translation>
 <translation id="4538792345715658285">엔터프라이즈 정책에 의해 설치됨</translation>
 <translation id="4359408040881008151">함께 설치된 확장 프로그램입니다.</translation>
 <translation id="4980805016576257426">확장 프로그램에 멀웨어가 포함되어 있습니다.</translation>
 <translation id="5522156646677899028">이 확장 프로그램에는 보안이 심각하게 취약한 요소가 있습니다.</translation>
-<translation id="1168617370053816436">이 확장 프로그램은 Brave 웹 스토어 정책을 위반합니다.</translation>
+<translation id="6945695820322143954">이 확장 프로그램은 Brave 웹 스토어 정책을 위반합니다.</translation>
 <translation id="177808131755847449">Brave에서 사용 중지했습니다. 이 확장 프로그램은 안전하지 않을 수 있습니다.</translation>
 <translation id="1434696352799406980">시작 페이지, 새 탭 페이지, 검색 엔진, 고정 탭이 재설정됩니다. 또한 모든 확장 프로그램이 사용 중지되고 쿠키와 같은 임시 데이터가 삭제됩니다. 북마크, 기록, 저장된 비밀번호는 삭제되지 않습니다.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/>에서 설정을 재설정하려 합니다.</translation>
@@ -2907,10 +2906,10 @@
     <ph name="MARKUP_7"/>다른 사용자와 한 곳에서 파일을<ph name="MARKUP_8"/>
     공유하고 만들고 공동작업하세요.<ph name="MARKUP_9"/></translation>
 <translation id="7489605380874780575">자격 확인</translation>
-<translation id="4997096511442832556">이 파일 형식은 지원되지 않습니다. 이 파일 형식을 열 수 있는 앱을 찾으려면 <ph name="BEGIN_LINK"/>Brave 웹 스토어<ph name="END_LINK"/>를 방문하세요.
+<translation id="4878716980734452132">이 파일 형식은 지원되지 않습니다. 이 파일 형식을 열 수 있는 앱을 찾으려면 <ph name="BEGIN_LINK"/>Brave 웹 스토어<ph name="END_LINK"/>를 방문하세요.
     <ph name="BEGIN_LINK_HELP"/>자세히 알아보기<ph name="END_LINK_HELP"/></translation>
-<translation id="5097366979999786201">이 파일은 Windows 소프트웨어를 사용하는 PC용으로 설계되었으며 Brave OS를 실행하는 기기와 호환되지 않습니다. 적합한 대체 앱을 찾으려면 <ph name="BEGIN_LINK"/>Brave 웹 스토어<ph name="END_LINK"/>를 검색하세요. <ph name="BEGIN_LINK_HELP"/>자세히 알아보기<ph name="END_LINK_HELP"/></translation>
-<translation id="6041399778584119390">이 파일은 Macintosh 소프트웨어를 사용하는 컴퓨터용으로 설계되었으며 Brave OS를 실행하는 기기와 호환될 수 없습니다. 적합한 대체 앱을 찾으려면 <ph name="BEGIN_LINK"/>Brave 웹 스토어<ph name="END_LINK"/>를 검색하세요. <ph name="BEGIN_LINK_HELP"/>자세히 알아보기<ph name="END_LINK_HELP"/></translation>
+<translation id="3376900196170631953">이 파일은 Windows 소프트웨어를 사용하는 PC용으로 설계되었으며 Brave OS를 실행하는 기기와 호환되지 않습니다. 적합한 대체 앱을 찾으려면 <ph name="BEGIN_LINK"/>Brave 웹 스토어<ph name="END_LINK"/>를 검색하세요. <ph name="BEGIN_LINK_HELP"/>자세히 알아보기<ph name="END_LINK_HELP"/></translation>
+<translation id="3072401511615920367">이 파일은 Macintosh 소프트웨어를 사용하는 컴퓨터용으로 설계되었으며 Brave OS를 실행하는 기기와 호환될 수 없습니다. 적합한 대체 앱을 찾으려면 <ph name="BEGIN_LINK"/>Brave 웹 스토어<ph name="END_LINK"/>를 검색하세요. <ph name="BEGIN_LINK_HELP"/>자세히 알아보기<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">잠시만 기다려 주세요.</translation>
 <translation id="3096967955765855393">Brave Software은 더 안전한 인터넷 사용 방법을 끊임없이 모색하고 있습니다. 이전에는 브라우저에 확장 프로그램을 추가하라는 메시지가 어느 웹사이트에서나 표시되었습니다. 하지만 Brave의 최신 버전에서는 확장 프로그램 페이지를 통해 확장 프로그램을 추가함으로써 설치를 원한다는 사실을 Brave에 명시적으로 알려야 합니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">$1(으)로 열 수 없음</translation>
@@ -2945,9 +2944,9 @@
 <translation id="7452737073539387970">Brave Software 사이트</translation>
 <translation id="4445959220475380548">Brave Software 드라이브 링크</translation>
 <translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="2599249317139964094">이 파일 형식은 지원되지 않습니다. Brave 웹 스토어에서 이 파일 형식을 열 수 있는 앱을 검색하세요.</translation>
-<translation id="3495282670559481871">이 파일은 Macintosh 소프트웨어를 사용하는 컴퓨터용으로 설계되었으며 Brave OS를 실행하는 기기와 호환될 수 없습니다. 적합한 대체 앱을 찾으려면 Brave 웹 스토어를 검색해 보세요.</translation>
-<translation id="3213197099265624265">이 파일은 Windows 소프트웨어를 사용하는 PC용으로 설계되었으며 Brave OS를 실행하는 기기와 호환되지 않습니다. 적합한 대체 앱을 찾으려면 Brave 웹 스토어를 검색하세요.</translation>
+<translation id="1131292764548273687">이 파일 형식은 지원되지 않습니다. Brave 웹 스토어에서 이 파일 형식을 열 수 있는 앱을 검색하세요.</translation>
+<translation id="9010211493509471179">이 파일은 Macintosh 소프트웨어를 사용하는 컴퓨터용으로 설계되었으며 Brave OS를 실행하는 기기와 호환될 수 없습니다. 적합한 대체 앱을 찾으려면 Brave 웹 스토어를 검색해 보세요.</translation>
+<translation id="5059989099965370411">이 파일은 Windows 소프트웨어를 사용하는 PC용으로 설계되었으며 Brave OS를 실행하는 기기와 호환되지 않습니다. 적합한 대체 앱을 찾으려면 Brave 웹 스토어를 검색하세요.</translation>
 <translation id="5833610766403489739">파일이 어디론가 사라졌습니다. 다운로드 위치 설정을 확인하고 다시 시도해 주세요.</translation>
 <translation id="3966388904776714213">오디오 플레이어</translation>
 <translation id="3245321423178950146">알 수 없는 아티스트</translation>
@@ -3028,7 +3027,7 @@
 <translation id="4570609078116869893">모든 사용자의 Brave 자동 업데이트</translation>
 <translation id="7102687220333134671">자동 업데이트가 사용 설정되어 있습니다.</translation>
 <translation id="6981982820502123353">접근성</translation>
-<translation id="5392220887878025825">Brave 웹 스토어 열기</translation>
+<translation id="5840822070878669614">Brave 웹 스토어 열기</translation>
 <translation id="6073903501322152803">접근성 기능 추가</translation>
 <translation id="7988355189918024273">접근성 기능 사용</translation>
 <translation id="2558896001721082624">시스템 메뉴에 접근성 옵션 항상 표시</translation>
@@ -4002,7 +4001,7 @@
 <translation id="437184764829821926">고급 글꼴 설정</translation>
 <translation id="323803881985677942">확장 프로그램 옵션 열기</translation>
 <translation id="2166369534954157698">재빠른 갈색 여우가 게으른 개를 뛰어넘습니다.</translation>
-<translation id="6121729889904235649">Brave 웹 스토어의 확장 프로그램 필요</translation>
+<translation id="8911765336506423117">Brave 웹 스토어의 확장 프로그램 필요</translation>
 <translation id="6965978654500191972">기기</translation>
 <translation id="8260864402787962391">마우스</translation>
 <translation id="155865706765934889">터치패드</translation>
@@ -4219,7 +4218,6 @@
 <translation id="3777806571986431400">확장 프로그램을 사용하도록 설정됨</translation>
 <translation id="6851497530878285708">앱 사용 설정됨</translation>
 <translation id="5018207570537526145">확장 프로그램 웹사이트 열기</translation>
-<translation id="8158441856257599022">Brave 웹 스토어에서 보기</translation>
 <translation id="4617270414136722281">확장 프로그램 옵션</translation>
 <translation id="7152478047064750137">이 확장 프로그램에는 특별한 권한이 필요하지 않습니다</translation>
 <translation id="8523849605371521713">정책에 의해 추가</translation>
@@ -4229,7 +4227,7 @@
 <translation id="6370021412472292592">매니페스트를 로드할 수 없습니다.</translation>
 <translation id="7235716375204803342">활동을 가져오는 중...</translation>
 <translation id="7647403192093989392">최근 활동이 없음</translation>
-<translation id="2152198799932802652"><ph name="BEGIN_LINK"/>Brave 웹 스토어<ph name="END_LINK"/>에서 확장 프로그램과 테마를 찾아보세요</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave 웹 스토어<ph name="END_LINK"/>에서 확장 프로그램과 테마를 찾아보세요</translation>
 <translation id="7272674038937250585">제공된 설명이 없음</translation>
 <translation id="3855441664322950881">확장 프로그램 압축</translation>
 <translation id="2958721676848865875">확장 프로그램 패키지 경고</translation>

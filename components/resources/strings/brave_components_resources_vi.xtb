@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Dự tính Thời gian Tiết kiệm được</translation>
 <translation id="5206618227023752085">Đã xóa trang hàng đầu.</translation>
 <translation id="2079545284768500474">Hoàn tác</translation>
+<translation id="6040143037577758943">Đóng</translation>
 <translation id="8529752221839395787">Khôi phục tất cả</translation>
 <translation id="3022168349636134570">giây</translation>
 <translation id="8664519043722036194">giây</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Kích hoạt Phần thưởng của Brave</translation>
 <translation id="2862598513212603756">Sự chú ý của bạn rất đáng giá. Kiếm tiền bằng cách xem các quảng cáo tôn trọng quyền riêng tư khi bạn duyệt web và sau đó trả tiền đi để hỗ trợ các nhà sáng tạo nội dung mà bạn yêu thích.</translation>
 <translation id="4942016616604700968">Kích hoạt Phần thưởng</translation>
-<translation id="1964278139527989987">Nhập dấu trang &amp; cài đặt</translation>
+<translation id="3958088479270651626">Nhập dấu trang và các mục cài đặt</translation>
 <translation id="5633840519079139680">Brave khiến việc thiết lập môi trường thông thường của bạn trở nên dễ dàng bằng cách nhập dấu trang và cài đặt từ các trình duyệt khác đã cài đặt trên máy tính của bạn.</translation>
 <translation id="8275038454117074363">Nhập</translation>
 <translation id="5540323067375019678">Quản lý lá chắn của bạn</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Gửi tiền tip ngay khi bạn tìm thấy điều hay.</translation>
-<translation id="1638706606242137268">Gửi tiền boa trên Twitter, YouTube, và nhiều hơn thế nữa, để thưởng cho bài viết bạn ‘Thích’.</translation>
+<translation id="6135431587052937035">Hỗ trợ trang web yêu thích của bạn với những món tiền thưởng định kỳ hàng tháng.</translation>
 <translation id="2788596505277705686">{{balance}} BAT đã được khôi phục. Khoá ví của bạn đã được chứng thực và tải thành công.</translation>
 <translation id="1083279119532577005">Ví đã phục hồi!</translation>
 <translation id="7841456038054167122">Vui lòng nhập lại khóa hoặc thử khóa khác.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">Xin cám ơn</translation>
 <translation id="6432779622695508363">Gợi ý khi thích</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Khoản thưởng Token Đã nhận</translation>
 <translation id="1634828734222219955">Tổng cộng</translation>
 <translation id="3535654229833214438">Giao dịch</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">khỏi chuỗi đồng bộ này</translation>
 <translation id="610118613261910287">Xem Từ Mã</translation>
 <translation id="8588535459744752615">Đang tìm thiết bị</translation>
-<translation id="6406506848690869874">Đồng bộ</translation>
+<translation id="391177677159359824">Đồng bộ (beta)</translation>
 <translation id="28332161031213248">Danh sách thiết bị bên dưới bao gồm tất cả các thiết bị trong chuỗi đồng bộ của bạn. Mỗi thiết bị có thể được quản lý từ bất kỳ thiết bị nào khác.</translation>
 <translation id="8153617760825732120">tên thiết bị</translation>
 <translation id="4241512165288542484">(Thiết bị này)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">Thiết lập trang đã lưu</translation>
 <translation id="7859704718976024901">Lịch sử duyệt web</translation>
 <translation id="2339730291919608488">Rời chuỗi đồng bộ</translation>
-<translation id="4332558599726753990">Cài đặt Đồng bộ</translation>
+<translation id="4797449295451979552">Cài đặt Đồng bộ (beta)</translation>
 <translation id="298546024891487702">Để bắt đầu, bạn sẽ cần cài đặt Brave trên tất cả các thiết bị bạn dự định đồng bộ. Để liên kết các thiết bị này lại với nhau, hãy bắt đầu chuỗi đồng bộ mà bạn sẽ sử dụng để liên kết bảo mật tất cả các thiết bị của bạn lại với nhau.</translation>
 <translation id="6200528822592747640">Bắt đầu Chuỗi Đồng bộ mới</translation>
 <translation id="5184726904895809379">Tôi có Mã Đồng bộ</translation>

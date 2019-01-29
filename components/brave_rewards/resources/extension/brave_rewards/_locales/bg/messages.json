@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Субсидии за жетони",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Изискани субсидии на жетони",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Brave Rewards е",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Създаването на портфейл не беше успешно",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Нов опит",
+    "description": "Button for re-try after wallet creation failed"
   }
 }
