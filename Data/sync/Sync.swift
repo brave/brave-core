@@ -437,6 +437,10 @@ extension Sync {
                 //                                        print(error)
                 //                                    }
         })
+        
+        #if NO_SYNC
+        leaveSyncGroup()
+        #endif
     }
     
     /// Makes call to sync to fetch new records, instead of just returning records, sync sends `get-existing-objects` message
