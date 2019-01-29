@@ -50,4 +50,4 @@ def revert_changes_for_dir(directory):
 
 
 if __name__ == '__main__':
-        sys.exit(main())
+    sys.exit(main())
