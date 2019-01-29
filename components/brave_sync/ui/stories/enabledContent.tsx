@@ -7,7 +7,7 @@ import * as React from 'react'
 // Components
 import { Toggle } from '../../../src/features/shields'
 import Button from '../../../src/components/buttonsIndicators/button'
-import { CloseCircleIcon } from '../../../src/components/icons'
+import { CloseCircleOIcon } from '../../../src/components/icons'
 import Table, { Cell, Row } from '../../../src/components/dataTables/table'
 
 // Feature-specific components
@@ -68,12 +68,20 @@ export default class SyncEnabledContent extends React.PureComponent<{}, State> {
     return [
       {
         content: [
-          { content: <TableRowDevice>{data.device1.name} (This Device)</TableRowDevice> },
+          {
+            content: (
+              <TableRowDevice>{data.device1.name} (This Device)</TableRowDevice>
+            )
+          },
           { content: data.device1.lastActive },
           {
             content: (
-              <TableRowRemoveButton data-id={''} data-name={''} onClick={this.onClickRemoveMainDeviceButton}>
-                <CloseCircleIcon />
+              <TableRowRemoveButton
+                data-id={''}
+                data-name={''}
+                onClick={this.onClickRemoveMainDeviceButton}
+              >
+                <CloseCircleOIcon />
               </TableRowRemoveButton>
             )
           }
@@ -85,8 +93,12 @@ export default class SyncEnabledContent extends React.PureComponent<{}, State> {
           { content: data.device2.lastActive },
           {
             content: (
-              <TableRowRemoveButton data-id={''} data-name={''} onClick={this.onClickRemoveOtherDeviceButton}>
-                <CloseCircleIcon />
+              <TableRowRemoveButton
+                data-id={''}
+                data-name={''}
+                onClick={this.onClickRemoveOtherDeviceButton}
+              >
+                <CloseCircleOIcon />
               </TableRowRemoveButton>
             )
           }
@@ -117,7 +129,13 @@ export default class SyncEnabledContent extends React.PureComponent<{}, State> {
           {
             content: getLocale('bookmarks')
           },
-          { content: <TableRowToggleButton><Toggle id='bookmarks' checked={true} size='large' /></TableRowToggleButton> }
+          {
+            content: (
+              <TableRowToggleButton>
+                <Toggle id='bookmarks' checked={true} size='large' />
+              </TableRowToggleButton>
+            )
+          }
         ]
       }
     ]
@@ -144,35 +162,40 @@ export default class SyncEnabledContent extends React.PureComponent<{}, State> {
   }
 
   render () {
-    const { removeOtherDevice, removeMainDevice, viewSyncCode, addDevice, resetSync } = this.state
+    const {
+      removeOtherDevice,
+      removeMainDevice,
+      viewSyncCode,
+      addDevice,
+      resetSync
+    } = this.state
     return (
       <EnabledContent>
         <Main>
-          {
-            removeOtherDevice
-              ? <RemoveOtherDevice onClose={this.onClickRemoveOtherDeviceButton} otherDeviceName={this.otherDeviceName} />
-              : null
-          }
-          {
-            removeMainDevice
-              ? <RemoveMainDevice onClose={this.onClickRemoveMainDeviceButton} mainDeviceName={this.mainDeviceName} />
-              : null
-          }
-          {
-            viewSyncCode
-              ? <ViewSyncCodeModal onClose={this.onClickViewSyncCodeButton} />
-              : null
-          }
-          {
-            addDevice
-              ? <DeviceTypeModal onClose={this.onClickAddDeviceButton} />
-              : null
-          }
-          {
-            resetSync
-              ? <ResetSyncModal onClose={this.onClickResetSyncButton} mainDeviceName={this.mainDeviceName} />
-              : null
-          }
+          {removeOtherDevice ? (
+            <RemoveOtherDevice
+              onClose={this.onClickRemoveOtherDeviceButton}
+              otherDeviceName={this.otherDeviceName}
+            />
+          ) : null}
+          {removeMainDevice ? (
+            <RemoveMainDevice
+              onClose={this.onClickRemoveMainDeviceButton}
+              mainDeviceName={this.mainDeviceName}
+            />
+          ) : null}
+          {viewSyncCode ? (
+            <ViewSyncCodeModal onClose={this.onClickViewSyncCodeButton} />
+          ) : null}
+          {addDevice ? (
+            <DeviceTypeModal onClose={this.onClickAddDeviceButton} />
+          ) : null}
+          {resetSync ? (
+            <ResetSyncModal
+              onClose={this.onClickResetSyncButton}
+              mainDeviceName={this.mainDeviceName}
+            />
+          ) : null}
           <SyncCard>
             <Title level={2}>{getLocale('braveSync')}</Title>
             <Paragraph>{getLocale('syncChainDevices')}</Paragraph>
