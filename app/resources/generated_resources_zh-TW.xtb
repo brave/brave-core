@@ -561,6 +561,24 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">憑證簽署值</translation>
 <translation id="4104163789986725820">匯出(&amp;X)...</translation>
+<translation id="2029156652561216312">CN</translation>
+<translation id="7822286184239325970">ST</translation>
+<translation id="8180262569555229595">O</translation>
+<translation id="7252376466538759696">OU</translation>
+<translation id="5734574586460918465">dnQualifier</translation>
+<translation id="964324710553558337">C</translation>
+<translation id="511291565806773566">序號</translation>
+<translation id="5912292566401425135">L</translation>
+<translation id="5725734596824080201">DC</translation>
+<translation id="2948789661744572780">MAIL</translation>
+<translation id="7481079953250545971">UID</translation>
+<translation id="4196967880387277612">E</translation>
+<translation id="5887772116581657016">商業分類</translation>
+<translation id="6561757256477115975">jurisdictionLocalityName</translation>
+<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
+<translation id="8904360804686555987">jurisdictionCountryName</translation>
+<translation id="8718098216622210506">STREET</translation>
+<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 RSA 加密</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 (使用 RSA 加密)</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 (使用 RSA 加密)</translation>
@@ -1018,7 +1036,6 @@
 <translation id="5483785310822538350">撤銷檔案和裝置存取權</translation>
 <translation id="93766956588638423">修復擴充功能</translation>
 <translation id="3905761538810670789">修復應用程式</translation>
-<translation id="7246778686271518284">Brave 線上應用程式商店</translation>
 <translation id="8808478386290700967">線上應用程式商店</translation>
 <translation id="488785315393301722">顯示詳細資料</translation>
 <translation id="8962083179518285172">隱藏詳細資料</translation>
@@ -1512,13 +1529,13 @@
 <translation id="4620809267248568679">這項設定是由擴充功能執行。</translation>
 <translation id="4846680374085650406">你目前所採用的是管理員的建議設定。</translation>
 <translation id="1223853788495130632">管理員為這項設定推薦特定的值。</translation>
-<translation id="2573343962518858459">來源不是 Brave 線上應用程式商店。</translation>
+<translation id="8839398440242019256">來源不是 Brave 線上應用程式商店。</translation>
 <translation id="5337771866151525739">由第三方安裝。</translation>
 <translation id="4538792345715658285">由公司政策安裝</translation>
 <translation id="4359408040881008151">你已安裝相依的擴充功能，因此必須一併安裝這個擴充功能。</translation>
 <translation id="4980805016576257426">這個擴充功能含有惡意軟體。</translation>
 <translation id="5522156646677899028">這個擴充功能內含嚴重安全性漏洞。</translation>
-<translation id="1168617370053816436">這個擴充功能違反了 Brave 線上應用程式商店政策。</translation>
+<translation id="6945695820322143954">這個擴充功能違反了 Brave 線上應用程式商店政策。</translation>
 <translation id="177808131755847449">這個擴充功能可能不安全，因此遭到 Brave 停用。</translation>
 <translation id="1434696352799406980">這項功能會重設您的起始網頁、新分頁、搜尋引擎和固定分頁，同時停用所有擴充功能並清除 Cookie 等暫存資料，但不會清除您的書籤、歷史記錄和已儲存的密碼。</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> 要求重設您的設定。</translation>
@@ -1605,6 +1622,7 @@
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">快取儲存空間</translation>
+<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">應用程式</translation>
 <translation id="542872847390508405">你目前是以訪客身分瀏覽</translation>
 <translation id="537813040452600081">你在這個視窗瀏覽的網頁不會顯示在瀏覽器記錄中，而且在你登出之後，電腦也不會留下 Cookie 等其他記錄。此外，系統不會保留你下載的檔案和建立的書籤。</translation>
@@ -1923,6 +1941,7 @@
 <translation id="8282947398454257691">存取您的專屬裝置識別碼</translation>
 <translation id="8329449853370113380"><ph name="URL"/> 要求播放受保護的內容。Brave Software 會驗證你裝置的識別資訊。</translation>
 <translation id="1322046419516468189">你可以查看及管理 <ph name="SAVED_PASSWORDS_STORE"/>中儲存的密碼</translation>
+<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">密碼已儲存。你可以查看及管理 <ph name="SAVED_PASSWORDS_STORE"/>中儲存的密碼。</translation>
 <translation id="5713644099811900409">Brave Software 帳戶</translation>
 <translation id="3785727820640310185">已儲存這個網站的密碼</translation>
@@ -2269,9 +2288,9 @@
 <translation id="399179161741278232">已匯入</translation>
 <translation id="5225324770654022472">顯示應用程式捷徑</translation>
 <translation id="5072836811783999860">顯示受管理書籤</translation>
+<translation id="3613134908380545408">顯示 <ph name="FOLDER_NAME">$1<ex>管制書籤</ex></ph></translation>
 <translation id="3785308913036335955">顯示應用程式捷徑</translation>
 <translation id="711840821796638741">顯示受管理書籤</translation>
-<translation id="3613134908380545408">顯示「<ph name="FOLDER_NAME"/>」</translation>
 <translation id="2367972762794486313">顯示應用程式</translation>
 <translation id="8368859634510605990">開啟所有書籤(&amp;O)</translation>
 <translation id="7484964289312150019">在新視窗中開啟所有書籤(&amp;N)</translation>
@@ -2906,10 +2925,10 @@
     <ph name="MARKUP_7"/>檔案集中存放，<ph name="MARKUP_8"/>
     方便共用、建立檔案並與他人協同合作。<ph name="MARKUP_9"/></translation>
 <translation id="7489605380874780575">檢查資格</translation>
-<translation id="4997096511442832556">系統不支援這個檔案類型。請造訪 <ph name="BEGIN_LINK"/>Brave 線上應用程式商店<ph name="END_LINK"/>，尋找是否有可開啟這類檔案的應用程式。
+<translation id="4878716980734452132">系統不支援這個檔案類型。請造訪 <ph name="BEGIN_LINK"/>Brave 線上應用程式商店<ph name="END_LINK"/>，尋找是否有可開啟這類檔案的應用程式。
     <ph name="BEGIN_LINK_HELP"/>瞭解詳情<ph name="END_LINK_HELP"/></translation>
-<translation id="5097366979999786201">這個檔案是專為使用 Windows 軟體的 PC 電腦所設計，與搭載 Brave 作業系統的裝置不相容。請前往 <ph name="BEGIN_LINK"/>Brave 線上應用程式商店<ph name="END_LINK"/>尋找適合的替代應用程式。<ph name="BEGIN_LINK_HELP"/>瞭解詳情<ph name="END_LINK_HELP"/></translation>
-<translation id="6041399778584119390">這個檔案是專為使用 Macintosh 軟體的電腦所設計，與搭載 Brave 作業系統的裝置不相容。請前往 <ph name="BEGIN_LINK"/>Brave 線上應用程式商店<ph name="END_LINK"/>尋找適合的替代應用程式。<ph name="BEGIN_LINK_HELP"/>瞭解詳情<ph name="END_LINK_HELP"/></translation>
+<translation id="3376900196170631953">這個檔案是專為使用 Windows 軟體的 PC 電腦所設計，與搭載 Brave 作業系統的裝置不相容。請前往 <ph name="BEGIN_LINK"/>Brave 線上應用程式商店<ph name="END_LINK"/>尋找適合的替代應用程式。<ph name="BEGIN_LINK_HELP"/>瞭解詳情<ph name="END_LINK_HELP"/></translation>
+<translation id="3072401511615920367">這個檔案是專為使用 Macintosh 軟體的電腦所設計，與搭載 Brave 作業系統的裝置不相容。請前往 <ph name="BEGIN_LINK"/>Brave 線上應用程式商店<ph name="END_LINK"/>尋找適合的替代應用程式。<ph name="BEGIN_LINK_HELP"/>瞭解詳情<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">請稍候片刻</translation>
 <translation id="3096967955765855393">我們不斷努力提升網路瀏覽的安全性。過去，任何網站都可以提示你在瀏覽器中新增擴充功能。在最新版本的 Brave Software Brave 中，你必須統一透過「擴充功能」頁面新增擴充功能，讓 Brave 確實瞭解你要安裝的各項擴充功能。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">無法使用「$1」開啟</translation>
@@ -2944,9 +2963,9 @@
 <translation id="7452737073539387970">Brave Software 網站</translation>
 <translation id="4445959220475380548">Brave Software 雲端硬碟連結</translation>
 <translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="2599249317139964094">系統不支援這個檔案類型。請造訪 Brave 線上應用程式商店，尋找是否有可開啟這類檔案的應用程式。</translation>
-<translation id="3495282670559481871">這個檔案是專為使用 Macintosh 軟體的電腦所設計，與搭載 Brave 作業系統的裝置不相容。請前往 Brave 線上應用程式商店尋找適合的替代應用程式。</translation>
-<translation id="3213197099265624265">這個檔案是專為使用 Windows 軟體的 PC 電腦所設計，與搭載 Brave 作業系統的裝置不相容。請前往 Brave 線上應用程式商店尋找適合的替代應用程式。</translation>
+<translation id="1131292764548273687">系統不支援這個檔案類型。請造訪 Brave 線上應用程式商店，尋找是否有可開啟這類檔案的應用程式。</translation>
+<translation id="9010211493509471179">這個檔案是專為使用 Macintosh 軟體的電腦所設計，與搭載 Brave 作業系統的裝置不相容。請前往 Brave 線上應用程式商店尋找適合的替代應用程式。</translation>
+<translation id="5059989099965370411">這個檔案是專為使用 Windows 軟體的 PC 電腦所設計，與搭載 Brave 作業系統的裝置不相容。請前往 Brave 線上應用程式商店尋找適合的替代應用程式。</translation>
 <translation id="5833610766403489739">這個檔案不見了！請檢查你的下載位置設定，然後再試一次。</translation>
 <translation id="3966388904776714213">音訊播放器</translation>
 <translation id="3245321423178950146">演出者不明</translation>
@@ -3028,7 +3047,7 @@
 <translation id="4570609078116869893">自動為所有使用者更新 Brave</translation>
 <translation id="7102687220333134671">自動更新功能已開啟</translation>
 <translation id="6981982820502123353">協助工具</translation>
-<translation id="5392220887878025825">開啟 Brave 線上應用程式商店</translation>
+<translation id="5840822070878669614">開啟 Brave 線上應用程式商店</translation>
 <translation id="6073903501322152803">新增協助工具功能</translation>
 <translation id="7988355189918024273">啟用協助工具功能</translation>
 <translation id="2558896001721082624">一律在系統選單中顯示協助工具選項</translation>
@@ -4003,7 +4022,7 @@
 <translation id="437184764829821926">進階字型設定</translation>
 <translation id="323803881985677942">開啟擴充功能選項</translation>
 <translation id="2166369534954157698">狐狗大戰</translation>
-<translation id="6121729889904235649">需要來自 Brave 線上應用程式商店的擴充功能</translation>
+<translation id="8911765336506423117">需要來自 Brave 線上應用程式商店的擴充功能</translation>
 <translation id="6965978654500191972">裝置</translation>
 <translation id="8260864402787962391">滑鼠</translation>
 <translation id="155865706765934889">觸控板</translation>
@@ -4124,6 +4143,7 @@
 <translation id="2789927670850159391">將你的手機與 Bravebook 連結。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">沒有適用裝置。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">等待驗證中。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
+<translation id="6518133107902771759">驗證</translation>
 <translation id="7179187931092694802">使用你的手機解鎖 Bravebook。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">即時網路共用</translation>
 <translation id="6415900369006735853">透過手機連上網際網路</translation>
@@ -4221,7 +4241,6 @@
 <translation id="3777806571986431400">擴充功能已啟用</translation>
 <translation id="6851497530878285708">應用程式已啟用</translation>
 <translation id="5018207570537526145">開啟擴充功能網站</translation>
-<translation id="8158441856257599022">前往 Brave 線上應用程式商店查看</translation>
 <translation id="4617270414136722281">擴充功能選項</translation>
 <translation id="7152478047064750137">這個擴充功能不需要特殊權限</translation>
 <translation id="8523849605371521713">依政策新增</translation>
@@ -4231,7 +4250,7 @@
 <translation id="6370021412472292592">無法載入資訊清單。</translation>
 <translation id="7235716375204803342">正在擷取活動...</translation>
 <translation id="7647403192093989392">最近沒有活動</translation>
-<translation id="2152198799932802652">歡迎前往 <ph name="BEGIN_LINK"/>Brave 線上應用程式商店<ph name="END_LINK"/>尋找擴充功能和主題</translation>
+<translation id="38046578254905003">歡迎前往 <ph name="BEGIN_LINK"/>Brave 線上應用程式商店<ph name="END_LINK"/>尋找擴充功能和主題</translation>
 <translation id="7272674038937250585">沒有任何說明</translation>
 <translation id="3855441664322950881">封裝擴充功能</translation>
 <translation id="2958721676848865875">封裝擴充功能警告</translation>

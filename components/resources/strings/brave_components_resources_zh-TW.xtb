@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">預計節省時間</translation>
 <translation id="5206618227023752085">熱門網站已移除。</translation>
 <translation id="2079545284768500474">復原</translation>
+<translation id="6040143037577758943">關閉</translation>
 <translation id="8529752221839395787">還原全部</translation>
 <translation id="3022168349636134570">秒</translation>
 <translation id="8664519043722036194">秒</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">啟用 Brave Rewards</translation>
 <translation id="2862598513212603756">您的注意力具有無比價值。透過觀看尊重隱私的廣告獲得收入，並將其轉以支持您喜愛的內容創作者。</translation>
 <translation id="4942016616604700968">啟用 Rewards</translation>
-<translation id="1964278139527989987">匯入書籤 &amp; 設定</translation>
+<translation id="3958088479270651626">匯入書籤和設定</translation>
 <translation id="5633840519079139680">透過從電腦上其他瀏覽器匯入書籤及設定，Brave 讓您可方便快速地設定您的慣用環境。</translation>
 <translation id="8275038454117074363">匯入</translation>
 <translation id="5540323067375019678">管理您的防護</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">當您找到寶石時馬上給小費。</translation>
-<translation id="1638706606242137268">在 Twitter、YouTube 以及更多網站上給小費來獎勵您喜愛的貼文。</translation>
+<translation id="6135431587052937035">經常性每月給予小費支持您喜歡的網站</translation>
 <translation id="2788596505277705686">{{balance}} BAT 已復原。已驗證您的錢包金鑰並成功載入。</translation>
 <translation id="1083279119532577005">錢包已復原！</translation>
 <translation id="7841456038054167122">請重新輸入或嘗試其他金鑰。</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">謝謝您</translation>
 <translation id="6432779622695508363">在喜歡的時候給小費</translation>
 <translation id="8424370624815730676">基本注意力代幣 (BAT)</translation>
-<translation id="5808753495166759239">比特幣 (BTC)</translation>
+<translation id="4588241643143931775">比特幣 (BTC)</translation>
 <translation id="4837149400263828922">以太幣 (ETH)</translation>
-<translation id="3324022052501075296">萊特幣 (LTC)</translation>
+<translation id="8746837129291133068">萊特幣 (LTC)</translation>
 <translation id="4914597931214386232">代幣經費已領</translation>
 <translation id="1634828734222219955">總計</translation>
 <translation id="3535654229833214438">交易</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">從此同步鏈結</translation>
 <translation id="610118613261910287">檢視碼字</translation>
 <translation id="8588535459744752615">正在尋找裝置</translation>
-<translation id="6406506848690869874">同步</translation>
+<translation id="391177677159359824">同步 (測試版)</translation>
 <translation id="28332161031213248">以下的裝置清單包括您的同步鏈中的所有裝置。每項裝置都能從任何其它裝置進行管理。</translation>
 <translation id="8153617760825732120">裝置名稱</translation>
 <translation id="4241512165288542484">(本裝置)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">已儲存網站設定</translation>
 <translation id="7859704718976024901">瀏覽記錄</translation>
 <translation id="2339730291919608488">離開同步鏈結</translation>
-<translation id="4332558599726753990">同步設定</translation>
+<translation id="4797449295451979552">同步設定 (測試版)</translation>
 <translation id="298546024891487702">要開始，您需要在所有計劃進行同步的裝置上安裝 Brave。要將它們鏈結在一起，請開始一條您會用來安全連結所有裝置的同步鏈。</translation>
 <translation id="6200528822592747640">開始一條新的同步鏈</translation>
 <translation id="5184726904895809379">我有組「同步代碼」</translation>

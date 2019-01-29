@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "トークン付与の通知",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "取得されたトークン助成金",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Brave リワードは、",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "ウォレットの作成に失敗しました",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "再試行",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

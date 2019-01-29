@@ -1019,7 +1019,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="5483785310822538350">Retirer les droits d'accès aux fichiers et aux appareils</translation>
 <translation id="93766956588638423">Réparer l'extension</translation>
 <translation id="3905761538810670789">Réparer l'application</translation>
-<translation id="7246778686271518284">Brave Web Store</translation>
 <translation id="8808478386290700967">Web Store</translation>
 <translation id="488785315393301722">Afficher les détails</translation>
 <translation id="8962083179518285172">Masquer les détails</translation>
@@ -1514,13 +1513,13 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4620809267248568679">Ce paramètre est appliqué par une extension.</translation>
 <translation id="4846680374085650406">Vous suivez la recommandation de l'administrateur pour ce paramètre.</translation>
 <translation id="1223853788495130632">Votre administrateur recommande une valeur spécifique pour ce paramètre.</translation>
-<translation id="2573343962518858459">Pas depuis le Brave Web Store</translation>
+<translation id="8839398440242019256">Pas depuis le Brave Web Store</translation>
 <translation id="5337771866151525739">Installé par un tiers</translation>
 <translation id="4538792345715658285">Installée conformément à une règle d'entreprise</translation>
 <translation id="4359408040881008151">Installée, car une ou plusieurs extensions dépendent de celle-ci.</translation>
 <translation id="4980805016576257426">Cette extension contient des logiciels malveillants.</translation>
 <translation id="5522156646677899028">Cette extension contient une grave faille de sécurité.</translation>
-<translation id="1168617370053816436">Cette extension ne respecte pas les règles du Brave Web Store.</translation>
+<translation id="6945695820322143954">Cette extension ne respecte pas les règles du Brave Web Store.</translation>
 <translation id="177808131755847449">Désactivée par Brave. Cette extension est peut-être dangereuse.</translation>
 <translation id="1434696352799406980">Cette fonctionnalité réinitialise la page de démarrage, la page Nouvel onglet, le moteur de recherche et les onglets épinglés. Elle désactive en outre toutes les extensions, et efface les données temporaires telles que les cookies. Vos favoris, votre historique et vos mots de passe enregistrés ne sont pas supprimés.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> souhaite rétablir vos paramètres.</translation>
@@ -2910,10 +2909,10 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
     <ph name="MARKUP_7"/>Travaillez en groupe, et créez et partagez<ph name="MARKUP_8"/>
     des fichiers depuis une seule et même interface.<ph name="MARKUP_9"/></translation>
 <translation id="7489605380874780575">Vérifier l'éligibilité</translation>
-<translation id="4997096511442832556">Ce type de fichier n'est pas compatible. Veuillez accéder au <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> pour trouver une application qui permet de l'ouvrir.
+<translation id="4878716980734452132">Ce type de fichier n'est pas compatible. Veuillez accéder au <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> pour trouver une application qui permet de l'ouvrir.
     <ph name="BEGIN_LINK_HELP"/>En savoir plus<ph name="END_LINK_HELP"/></translation>
-<translation id="5097366979999786201">Ce fichier est destiné à un ordinateur utilisant un logiciel Windows. Il n'est pas compatible avec votre appareil qui exécute Brave OS. Veuillez effectuer une recherche sur le <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> pour trouver une application de remplacement appropriée. <ph name="BEGIN_LINK_HELP"/>En savoir plus<ph name="END_LINK_HELP"/></translation>
-<translation id="6041399778584119390">Ce fichier est conçu pour un ordinateur utilisant un logiciel Mac. Il n'est pas compatible avec votre appareil qui exécute Brave OS. Veuillez effectuer une recherche sur le <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> pour trouver une application de remplacement appropriée. <ph name="BEGIN_LINK_HELP"/>En savoir plus<ph name="END_LINK_HELP"/></translation>
+<translation id="3376900196170631953">Ce fichier est destiné à un ordinateur utilisant un logiciel Windows. Il n'est pas compatible avec votre appareil qui exécute Brave OS. Veuillez effectuer une recherche sur le <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> pour trouver une application de remplacement appropriée. <ph name="BEGIN_LINK_HELP"/>En savoir plus<ph name="END_LINK_HELP"/></translation>
+<translation id="3072401511615920367">Ce fichier est conçu pour un ordinateur utilisant un logiciel Mac. Il n'est pas compatible avec votre appareil qui exécute Brave OS. Veuillez effectuer une recherche sur le <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> pour trouver une application de remplacement appropriée. <ph name="BEGIN_LINK_HELP"/>En savoir plus<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">Veuillez patienter un court instant.</translation>
 <translation id="3096967955765855393">Nous recherchons constamment à rendre votre navigation plus sûre. Auparavant, vous pouviez être invité à ajouter une extension dans votre navigateur par n'importe quel site Web. Dans les dernières versions de Brave Software Brave, vous devez explicitement indiquer que vous souhaitez installer une extension en l'ajoutant via la page "Extensions". <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">Impossible d'ouvrir le fichier avec $1</translation>
@@ -2948,9 +2947,9 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="7452737073539387970">Site Brave Software</translation>
 <translation id="4445959220475380548">Lien Brave Software Drive</translation>
 <translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="2599249317139964094">Ce type de fichier n'est pas compatible. Veuillez accéder au Brave Web Store pour trouver une application pouvant l'ouvrir.</translation>
-<translation id="3495282670559481871">Ce fichier est conçu pour un ordinateur utilisant un logiciel Macintosh. Il n'est pas compatible avec votre appareil qui exécute Brave OS. Veuillez rechercher une application de remplacement appropriée sur le Brave Web Store.</translation>
-<translation id="3213197099265624265">Ce fichier est destiné à un ordinateur utilisant un logiciel Windows. Il n'est pas compatible avec votre appareil qui exécute Brave OS. Veuillez chercher une application de remplacement appropriée sur le Brave Web Store.</translation>
+<translation id="1131292764548273687">Ce type de fichier n'est pas compatible. Veuillez accéder au Brave Web Store pour trouver une application pouvant l'ouvrir.</translation>
+<translation id="9010211493509471179">Ce fichier est conçu pour un ordinateur utilisant un logiciel Macintosh. Il n'est pas compatible avec votre appareil qui exécute Brave OS. Veuillez rechercher une application de remplacement appropriée sur le Brave Web Store.</translation>
+<translation id="5059989099965370411">Ce fichier est destiné à un ordinateur utilisant un logiciel Windows. Il n'est pas compatible avec votre appareil qui exécute Brave OS. Veuillez chercher une application de remplacement appropriée sur le Brave Web Store.</translation>
 <translation id="5833610766403489739">Ce fichier s'est égaré. Veuillez vérifier le paramètre correspondant à votre emplacement de téléchargement, puis réessayer.</translation>
 <translation id="3966388904776714213">Lecteur audio</translation>
 <translation id="3245321423178950146">Artiste inconnu</translation>
@@ -3031,7 +3030,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4570609078116869893">Mettre à jour Brave automatiquement pour tous les utilisateurs</translation>
 <translation id="7102687220333134671">Les mises à jour automatiques sont activées</translation>
 <translation id="6981982820502123353">Accessibilité</translation>
-<translation id="5392220887878025825">Ouvrir le Brave Web Store</translation>
+<translation id="5840822070878669614">Ouvrir le Brave Web Store</translation>
 <translation id="6073903501322152803">Ajouter des fonctionnalités d'accessibilité</translation>
 <translation id="7988355189918024273">Activer les fonctionnalités d'accessibilité</translation>
 <translation id="2558896001721082624">Toujours afficher les options d'accessibilité dans le menu système</translation>
@@ -4005,7 +4004,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="437184764829821926">Paramètres de police avancés</translation>
 <translation id="323803881985677942">Ouvrir les options d'extension</translation>
 <translation id="2166369534954157698">Voici à quoi ressemblera votre texte.</translation>
-<translation id="6121729889904235649">Nécessite une extension du Brave Web Store.</translation>
+<translation id="8911765336506423117">Nécessite une extension du Brave Web Store.</translation>
 <translation id="6965978654500191972">Périphérique</translation>
 <translation id="8260864402787962391">Souris</translation>
 <translation id="155865706765934889">Pavé tactile</translation>
@@ -4222,7 +4221,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="3777806571986431400">Extension activée</translation>
 <translation id="6851497530878285708">Application activée</translation>
 <translation id="5018207570537526145">Ouvrir le site Web de l'extension</translation>
-<translation id="8158441856257599022">Afficher sur le Brave Web Store</translation>
 <translation id="4617270414136722281">Options d'extension</translation>
 <translation id="7152478047064750137">Cette extension ne nécessite aucune autorisation spéciale</translation>
 <translation id="8523849605371521713">Ajoutée en raison des règles</translation>
@@ -4232,7 +4230,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="6370021412472292592">Impossible de charger le fichier manifeste.</translation>
 <translation id="7235716375204803342">Récupération des activités…</translation>
 <translation id="7647403192093989392">Aucune activité récente.</translation>
-<translation id="2152198799932802652">Découvrez des extensions et des thèmes sur le <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Découvrez des extensions et des thèmes sur le <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">Aucune description fournie</translation>
 <translation id="3855441664322950881">Empaqueter l'extension</translation>
 <translation id="2958721676848865875">Avertissement relatif à la mise en package des extensions</translation>

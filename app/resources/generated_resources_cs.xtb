@@ -1018,7 +1018,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="5483785310822538350">Zrušit přístup k souborům a zařízení</translation>
 <translation id="93766956588638423">Opravit rozšíření</translation>
 <translation id="3905761538810670789">Opravit aplikaci</translation>
-<translation id="7246778686271518284">Internetový obchod Brave</translation>
 <translation id="8808478386290700967">Obchod Brave</translation>
 <translation id="488785315393301722">Zobrazit podrobnosti</translation>
 <translation id="8962083179518285172">Skrýt podrobnosti</translation>
@@ -1512,13 +1511,13 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="4620809267248568679">Toto nastavení bylo vynuceno rozšířením.</translation>
 <translation id="4846680374085650406">Řídíte se doporučením administrátora pro toto nastavení.</translation>
 <translation id="1223853788495130632">Váš administrátor doporučuje pro toto nastavení konkrétní hodnotu.</translation>
-<translation id="2573343962518858459">Nepochází z Internetového obchodu Brave.</translation>
+<translation id="8839398440242019256">Nepochází z Internetového obchodu Brave.</translation>
 <translation id="5337771866151525739">Nainstalováno třetí stranou.</translation>
 <translation id="4538792345715658285">Nainstalováno podnikovými zásadami.</translation>
 <translation id="4359408040881008151">Rozšíření bylo nainstalováno kvůli závislým rozšířením.</translation>
 <translation id="4980805016576257426">Toto rozšíření obsahuje malware.</translation>
 <translation id="5522156646677899028">Toto rozšíření představuje závažné bezpečnostní riziko.</translation>
-<translation id="1168617370053816436">Toto rozšíření porušuje zásady Internetového obchodu Brave.</translation>
+<translation id="6945695820322143954">Toto rozšíření porušuje zásady Internetového obchodu Brave.</translation>
 <translation id="177808131755847449">Toto rozšíření Brave zakázal, protože může být nebezpečné.</translation>
 <translation id="1434696352799406980">Bude resetována vaše počáteční stránka, stránka Nová karta, vyhledávač a připnuté karty. Budou také zakázána všechna rozšíření a vymazána dočasná data, jako jsou soubory cookie. Uložené záložky, historie ani hesla vymazána nebudou.</translation>
 <translation id="1242633766021457174">Nástroj <ph name="THIRD_PARTY_TOOL_NAME"/> chce resetovat vaše nastavení.</translation>
@@ -2905,10 +2904,10 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
     Vaše soubory jsou bezpečně uloženy na Disku Brave Software bez ohledu na to, co se stane s vaším zařízením.<ph name="MARKUP_6"/>
     <ph name="MARKUP_7"/>Sdílejte, vytvářejte a spolupracujte<ph name="MARKUP_8"/> na souborech s ostatními, a to vše na jednom místě.<ph name="MARKUP_9"/></translation>
 <translation id="7489605380874780575">Zkontrolovat způsobilost</translation>
-<translation id="4997096511442832556">Tento typ souboru není podporován. Aplikaci, pomocí které lze tento typ souboru otevřít, naleznete v <ph name="BEGIN_LINK"/>Internetovém obchodu Brave<ph name="END_LINK"/>.
+<translation id="4878716980734452132">Tento typ souboru není podporován. Aplikaci, pomocí které lze tento typ souboru otevřít, naleznete v <ph name="BEGIN_LINK"/>Internetovém obchodu Brave<ph name="END_LINK"/>.
     <ph name="BEGIN_LINK_HELP"/>Další informace<ph name="END_LINK_HELP"/></translation>
-<translation id="5097366979999786201">Tento soubor je určen pro počítač se softwarem Windows. Není kompatibilní s vaším zařízením se systémem Brave OS. Vyhledejte v <ph name="BEGIN_LINK"/>Internetovém obchodě Brave<ph name="END_LINK"/> vhodnou náhradní aplikaci. <ph name="BEGIN_LINK_HELP"/>Další informace<ph name="END_LINK_HELP"/></translation>
-<translation id="6041399778584119390">Tento soubor je určen pro počítač se softwarem Macintosh. Není kompatibilní s vaším zařízením se systémem Brave OS. Vyhledejte v <ph name="BEGIN_LINK"/>Internetovém obchodě Brave<ph name="END_LINK"/> vhodnou náhradní aplikaci.<ph name="BEGIN_LINK_HELP"/>Další informace<ph name="END_LINK_HELP"/></translation>
+<translation id="3376900196170631953">Tento soubor je určen pro počítač se softwarem Windows. Není kompatibilní s vaším zařízením se systémem Brave OS. Vyhledejte v <ph name="BEGIN_LINK"/>Internetovém obchodě Brave<ph name="END_LINK"/> vhodnou náhradní aplikaci. <ph name="BEGIN_LINK_HELP"/>Další informace<ph name="END_LINK_HELP"/></translation>
+<translation id="3072401511615920367">Tento soubor je určen pro počítač se softwarem Macintosh. Není kompatibilní s vaším zařízením se systémem Brave OS. Vyhledejte v <ph name="BEGIN_LINK"/>Internetovém obchodě Brave<ph name="END_LINK"/> vhodnou náhradní aplikaci.<ph name="BEGIN_LINK_HELP"/>Další informace<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">Chvilku strpení</translation>
 <translation id="3096967955765855393">Neustále hledáme způsoby, jak zvýšit bezpečnost prohlížení. V minulosti vás k přidání rozšíření do prohlížeče mohl vyzvat kterýkoliv web. V nejnovějších verzích Brave Software Brave musíte Chromu výslovně sdělit, že rozšíření chcete nainstalovat. Učiníte tak tím, že rozšíření přidáte na stránce Rozšíření. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">Nelze otevřít pomocí aplikace $1</translation>
@@ -2943,9 +2942,9 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7452737073539387970">Web Brave Software</translation>
 <translation id="4445959220475380548">Odkaz na Disk Brave Software</translation>
 <translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="2599249317139964094">Tento typ souboru není podporován. Navštivte prosím Internetový obchod Brave, kde najdete aplikaci, ve které lze otevřít tento typ souboru.</translation>
-<translation id="3495282670559481871">Tento soubor je určen pro počítač se softwarem Macintosh. S vaším zařízením se systémem Brave OS není kompatibilní. Vyhledejte v Internetovém obchodě Brave vhodnou náhradní aplikaci.</translation>
-<translation id="3213197099265624265">Tento soubor je určen pro počítač se softwarem Windows. S vaším zařízením se systémem Brave OS není kompatibilní. Vyhledejte v Internetovém obchodě Brave vhodnou náhradní aplikaci.</translation>
+<translation id="1131292764548273687">Tento typ souboru není podporován. Navštivte prosím Internetový obchod Brave, kde najdete aplikaci, ve které lze otevřít tento typ souboru.</translation>
+<translation id="9010211493509471179">Tento soubor je určen pro počítač se softwarem Macintosh. S vaším zařízením se systémem Brave OS není kompatibilní. Vyhledejte v Internetovém obchodě Brave vhodnou náhradní aplikaci.</translation>
+<translation id="5059989099965370411">Tento soubor je určen pro počítač se softwarem Windows. S vaším zařízením se systémem Brave OS není kompatibilní. Vyhledejte v Internetovém obchodě Brave vhodnou náhradní aplikaci.</translation>
 <translation id="5833610766403489739">Soubor ve spravovaných umístěních nebyl nalezen. Zkontrolujte prosím nastavení umístění stažených souborů a zkuste to znovu.</translation>
 <translation id="3966388904776714213">Zvukový přehrávač</translation>
 <translation id="3245321423178950146">Neznámý interpret</translation>
@@ -3026,7 +3025,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="4570609078116869893">Automaticky aktualizovat Brave pro všechny uživatele</translation>
 <translation id="7102687220333134671">Automatické aktualizace jsou zapnuté</translation>
 <translation id="6981982820502123353">Usnadnění</translation>
-<translation id="5392220887878025825">Otevřít Internetový obchod Brave</translation>
+<translation id="5840822070878669614">Otevřít Internetový obchod Brave</translation>
 <translation id="6073903501322152803">Přidat funkce přístupnosti</translation>
 <translation id="7988355189918024273">Aktivovat funkce usnadnění přístupu</translation>
 <translation id="2558896001721082624">Vždy v nabídce systému zobrazovat možnosti usnadnění přístupu</translation>
@@ -4000,7 +3999,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="437184764829821926">Rozšířené nastavení písma</translation>
 <translation id="323803881985677942">Otevřít možnosti rozšíření</translation>
 <translation id="2166369534954157698">Příliš žluťoučký kůň úpěl ďábelské ódy</translation>
-<translation id="6121729889904235649">Vyžaduje rozšíření z Internetového obchodu Brave</translation>
+<translation id="8911765336506423117">Vyžaduje rozšíření z Internetového obchodu Brave</translation>
 <translation id="6965978654500191972">Zařízení</translation>
 <translation id="8260864402787962391">Myš</translation>
 <translation id="155865706765934889">Touchpad</translation>
@@ -4217,7 +4216,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3777806571986431400">Rozšíření povoleno</translation>
 <translation id="6851497530878285708">Aplikace povolena</translation>
 <translation id="5018207570537526145">Otevřít web rozšíření</translation>
-<translation id="8158441856257599022">Zobrazit v Internetovém obchodu Brave</translation>
 <translation id="4617270414136722281">Možnosti rozšíření</translation>
 <translation id="7152478047064750137">Toto rozšíření nevyžaduje žádná speciální oprávnění.</translation>
 <translation id="8523849605371521713">Přidáno zásadou</translation>
@@ -4227,7 +4225,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6370021412472292592">Načtení manifestu se nezdařilo.</translation>
 <translation id="7235716375204803342">Načítání aktivit...</translation>
 <translation id="7647403192093989392">Žádné nedávné aktivity</translation>
-<translation id="2152198799932802652">Rozšíření a motivy najdete v <ph name="BEGIN_LINK"/>Internetovém obchodě Brave<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Rozšíření a motivy najdete v <ph name="BEGIN_LINK"/>Internetovém obchodě Brave<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">K dispozici není žádný popis</translation>
 <translation id="3855441664322950881">Zabalit rozšíření</translation>
 <translation id="2958721676848865875">Upozornění na zabalení rozšíření</translation>

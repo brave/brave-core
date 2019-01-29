@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Dodeljeni žetoni",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Zahteva za sredstva v obliki žetonov",
     "description": "Title for grant section in wallet summary"
   },
@@ -182,19 +186,19 @@
     "description": "Description for new grant notification"
   },
   "backupWalletTitle": {
-    "message": "Backup Wallet",
+    "message": "Varnostna kopija denarnice",
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Please backup your Brave wallet.",
+    "message": "Prosimo, da varnostno kopirate svojo denarnico Brave.",
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "Your Brave Payments account is waiting for a deposit.",
+    "message": "Vaš račun za plačila Brave Payments čaka na polog.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
-    "message": "Insufficient Funds",
+    "message": "Nezadostna sredstva",
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
@@ -218,15 +222,15 @@
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   },
   "captchaDrag": {
-    "message": "Drag the BAT Icon on to the",
+    "message": "Ikono BAT povlecite na",
     "description": "Directs the user to drag the BAT icon"
   },
   "captchaLuckyDay": {
-    "message": "It’s your lucky day!",
+    "message": "Danes je vaš srečen dan!",
     "description": "Cosmetic text upon captcha success"
   },
   "captchaOnTheWay": {
-    "message": "Your token grant is on its way.",
+    "message": "Vaše sredstvo v obliki žetonov je na poti.",
     "description": "Cosmetic text indicating grant funds are on the way"
   },
   "captchaProveHuman": {
@@ -234,11 +238,11 @@
     "description": "Cosmetic text for captcha prompt"
   },
   "captchaTarget": {
-    "message": "target.",
+    "message": "cilj.",
     "description": "Captcha Target"
   },
   "captchaMissedTarget": {
-    "message": "Hmm… Not Quite. Try Again.",
+    "message": "Hmm ... Ni pravilno. Poskusite znova.",
     "description": "Message upon failing captcha"
   },
   "claim": {
@@ -254,7 +258,7 @@
     "description": "Grant expiry label"
   },
   "grantAlreadyClaimedText": {
-    "message": "Sorry, it appears that this grant has already been claimed.",
+    "message": "Žal je videti, da je bilo to sredstvo že uveljavljeno.",
     "description": "Description of the error when grant is already claimed."
   },
   "grantGeneralErrorButton": {
@@ -282,23 +286,23 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedPublisher": {
-    "message": "Not yet verified",
+    "message": "Ni še preverjeno",
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "This creator has not yet signed up to receive contributions from Brave users. Any tips you send will remain in your wallet until they verify.",
+    "message": "Ta ustvarjalec se še ni vpisal, da bi prejel donacije uporabnikov Brave. Vse donacije, ki jih pošiljate, bodo ostale v vaši denarnici, dokler se ustvarjalec ne vpiše.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
-    "message": "Learn more.",
+    "message": "Več o tem",
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "You’ve designated {{reservedAmount}} BAT for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.",
+    "message": "Ustvarjalcem, ki se niso še vpisali, da bi prejeli donacije, ste namenili {{reservedAmount}} BAT. Vaš brskalnik bo poskušal prenesti donacije, dokler se ustvarjalec ne vpiše ali do poteka 90 dni.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
-    "message": "Learn more.",
+    "message": "Več o tem",
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
@@ -306,15 +310,23 @@
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
-    "message": "Settings.",
+    "message": "Nastavitve.",
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
-    "message": "You are not currently accruing any Rewards benefits while browsing. Turn Rewards back on in",
+    "message": "Trenutno med brskanjem ne pridobivate ugodnosti nagrad Rewards. Ponovno vklopite nagrade Rewards",
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
-    "message": "Brave Rewards is",
+    "message": "Nagrade Brave so",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "Denarnice ni bilo mogoče ustvariti.",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Poskusi znova",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "จำนวนโทเคนที่ให้",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "โทเค็นเงินบริจาคที่เบิกแล้ว",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Brave Rewards คือ",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "การสร้างกระเป๋าสตางค์ล้มเหลว",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "ลองอีกครั้ง",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

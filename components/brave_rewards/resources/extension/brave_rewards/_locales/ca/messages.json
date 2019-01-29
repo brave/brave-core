@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "Fitxes de recompensa",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "Donacions sol·licitades",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Brave Rewards és",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "La creació de Wallet (cartera) ha fallat",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "Torna-ho a provar",
+    "description": "Button for re-try after wallet creation failed"
   }
 }

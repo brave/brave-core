@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">تم حفظ الوقت المقدر</translation>
 <translation id="5206618227023752085">تمت إزالة أفضل موقع.</translation>
 <translation id="2079545284768500474">تراجع</translation>
+<translation id="6040143037577758943">إغلاق</translation>
 <translation id="8529752221839395787">استعد الكلّ</translation>
 <translation id="3022168349636134570">ثانية</translation>
 <translation id="8664519043722036194">ثوانٍ</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">تمكين مكافآت Brave</translation>
 <translation id="2862598513212603756">اهتمامك ذو قيمة. اربح من خلال مشاهدة الإعلانات التي تحترم الخصوصية أثناء التصفّح، وادفع ما ربحته لدعم منشئي المحتوى المفضّلين لديك.</translation>
 <translation id="4942016616604700968">تمكين المكافآت</translation>
-<translation id="1964278139527989987">استيراد الإشارات المرجعية والإعدادات</translation>
+<translation id="3958088479270651626">استيراد الإشارات المرجعية والإعدادات</translation>
 <translation id="5633840519079139680">يسهّل Brave إعداد بيئتك المعتادة عن طريق استيراد الإشارات المرجعية والإعدادات من المتصفحات الأخرى المثبتة على جهاز الكمبيوتر الخاص بك.</translation>
 <translation id="8275038454117074363">استيراد</translation>
 <translation id="5540323067375019678">إدارة إعدادات الدرع الخاص بك</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">قدم المكافأة على الفور بينما تجد الأحجار الكريمة.</translation>
-<translation id="1638706606242137268">أرسل المكافآت على Twitter و YouTube والمزيد، لمكافأة المشاركات التي تعجبك.</translation>
+<translation id="6135431587052937035">ادعم المواقع المفضلة لديك من خلال منحة شهرية دورية.</translation>
 <translation id="2788596505277705686">تم استرداد {{balance}} BAT. لقد تم التحقق من مفتاح محفظتك وتحميّله بنجاح.</translation>
 <translation id="1083279119532577005">تمت استعادة المحفظة!</translation>
 <translation id="7841456038054167122">يرجى إعادة إدخال المفاتيح أو تجربة مفاتيح مختلفة.</translation>
@@ -273,9 +274,9 @@
 <translation id="8826007068782654809">شكراً لك</translation>
 <translation id="6432779622695508363">نصيحة عن الإعجاب</translation>
 <translation id="8424370624815730676">رمز الانتباه الأساسي (BAT)</translation>
-<translation id="5808753495166759239">بيتكوين (BTC)</translation>
+<translation id="4588241643143931775">بيتكوين (BTC)</translation>
 <translation id="4837149400263828922">إيثريوم (ETH)</translation>
-<translation id="3324022052501075296">لايتكوين (LTC)</translation>
+<translation id="8746837129291133068">لايتكوين (LTC)</translation>
 <translation id="4914597931214386232">تم جمع المكافأة المالية التي منحت لك</translation>
 <translation id="1634828734222219955">الإجمالي</translation>
 <translation id="3535654229833214438">المعاملات</translation>
@@ -313,7 +314,7 @@
 <translation id="1555452132857939218">من سلسلة المزامنة هذه</translation>
 <translation id="610118613261910287">عرض كلمات الرمز</translation>
 <translation id="8588535459744752615">جاري البحث عن جهاز</translation>
-<translation id="6406506848690869874">مزامنة</translation>
+<translation id="391177677159359824">Sync (بيتا)</translation>
 <translation id="28332161031213248">قائمة الأجهزة أدناه تحتوي على جميع الأجهزة في سلسلة المزامنة لديك. يمكن إدارة كل جهاز من الأجهزة الأخرى.</translation>
 <translation id="8153617760825732120">اسم الجهاز</translation>
 <translation id="4241512165288542484">(هذا الجهاز)</translation>
@@ -326,7 +327,7 @@
 <translation id="5591129654353352557">إعدادات الموقع المحفوظة</translation>
 <translation id="7859704718976024901">سجلّ التصفّح</translation>
 <translation id="2339730291919608488">مغادرة سلسلة المزامنة</translation>
-<translation id="4332558599726753990">تهيئة المزامنة</translation>
+<translation id="4797449295451979552">إعداد Sync (بيتا)</translation>
 <translation id="298546024891487702">للبدء، تحتاج لأن تثبت Brave على جميع الأجهزة التي تنوي مزامنتها. ولكي تربط هذه الأجهزة معًا، ابدأ سلسلة المزامنة التي ستستخدمها لربط جميع أجهزتك معًا بشكل آمن.</translation>
 <translation id="6200528822592747640">بدء سلسلة مزامنة جديدة</translation>
 <translation id="5184726904895809379">لدي رمز مزامنة</translation>

@@ -7,6 +7,7 @@
 <translation id="7679428712334662192">Очаквано спестено време</translation>
 <translation id="5206618227023752085">Горният сайт е премахнат.</translation>
 <translation id="2079545284768500474">Отмяна</translation>
+<translation id="6040143037577758943">Затваряне</translation>
 <translation id="8529752221839395787">Възстанови всички</translation>
 <translation id="3022168349636134570">секунда</translation>
 <translation id="8664519043722036194">секунди</translation>
@@ -50,7 +51,7 @@
 <translation id="8050847734948770789">Активирайте Brave награди</translation>
 <translation id="2862598513212603756">Вашето внимание е ценно. Печелете, като гледате реклами, които зачитат поверителността, докато сърфирате, и препращайте печалбата, за да подкрепите създателите на съдържание, които харесвате.</translation>
 <translation id="4942016616604700968">Активиране на възнагражденията</translation>
-<translation id="1964278139527989987">Импортиране на отметки &amp;amp; настройки</translation>
+<translation id="3958088479270651626">Импортиране на отметки и настройки</translation>
 <translation id="5633840519079139680">С Brave можете лесно да настроите обичайната си среда за работа, като импортирате отметките и настройките си от другите браузъри, инсталирани на компютъра ви.</translation>
 <translation id="8275038454117074363">Импортиране</translation>
 <translation id="5540323067375019678">Управление на щитовете ви</translation>
@@ -108,7 +109,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Давайте дарения на място, когато намерите скъпоценни камъни.</translation>
-<translation id="1638706606242137268">Изпращайте дарения в Twitter, YouTube и други, за да възнаградите публикации, които харесвате.</translation>
+<translation id="6135431587052937035">Поддържайте вашите любими сайтове с ежемесечни бакшиши.</translation>
 <translation id="2788596505277705686">{{balance}} BAT бе възстановен. Ключът за портфейла ви бе потвърден и зареден успешно.</translation>
 <translation id="1083279119532577005">Портфейлът е възстановен!</translation>
 <translation id="7841456038054167122">Моля, въведете отново ключовете или опитайте с различни ключове.</translation>
@@ -274,9 +275,9 @@
 <translation id="8826007068782654809">Благодарим Ви</translation>
 <translation id="6432779622695508363">Съвет за харесване</translation>
 <translation id="8424370624815730676">Токен за основно внимание (BAT)</translation>
-<translation id="5808753495166759239">BitCoin (BTC)</translation>
+<translation id="4588241643143931775">Биткойн (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
-<translation id="3324022052501075296">LiteCoin (LTC)</translation>
+<translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Изискани субсидии на жетони</translation>
 <translation id="1634828734222219955">Общо</translation>
 <translation id="3535654229833214438">Транзакции</translation>
@@ -314,7 +315,7 @@
 <translation id="1555452132857939218">от тази верига за синхронизиране</translation>
 <translation id="610118613261910287">Вижте кодовите думи</translation>
 <translation id="8588535459744752615">Търсене на устройство</translation>
-<translation id="6406506848690869874">Синхр</translation>
+<translation id="391177677159359824">Синхр. (бета)</translation>
 <translation id="28332161031213248">По-долният списък с устройства включва всички устройства във вашата верига за синхронизиране. Всяко устройство може да се управлява от което и да е друго устройство.</translation>
 <translation id="8153617760825732120">име на устройството</translation>
 <translation id="4241512165288542484">(това устройство)</translation>
@@ -327,7 +328,7 @@
 <translation id="5591129654353352557">Запазени настройки за сайта</translation>
 <translation id="7859704718976024901">История на сърфирането</translation>
 <translation id="2339730291919608488">Излизане от веригата за синхронизиране</translation>
-<translation id="4332558599726753990">Синхронизиране настройка</translation>
+<translation id="4797449295451979552">Синхр. (бета) настройка</translation>
 <translation id="298546024891487702">За да започнете, трябва да имате инсталиран Brave на всички устройства, които искате да синхронизирате. За да ги свържете, стартирайте верига на синхронизиране, която ще използвате за надеждно свързване на всички ваши устройства.</translation>
 <translation id="6200528822592747640">Стартирайте нова верига на синхронизиране</translation>
 <translation id="5184726904895809379">Имам код за синхронизиране</translation>

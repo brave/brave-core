@@ -128,6 +128,10 @@
     "description": "Month"
   },
   "tokenGrant": {
+    "message": "টোকেন মঞ্জুরি",
+    "description": "Title for grant notification"
+  },
+  "tokenGrantClaimed": {
     "message": "মঞ্জুরি দেওয়া টোকেনের দাবি করা হয়েছে",
     "description": "Title for grant section in wallet summary"
   },
@@ -316,5 +320,13 @@
   "disabledPanelTitle": {
     "message": "Brave রিওয়ার্ডস হল",
     "description": "Title for Panel's disabled state"
+  },
+  "walletFailedTitle": {
+    "message": "ওয়ালেট তৈরি ব্যর্থ হয়েছে",
+    "description": "Failure title for wallet creation"
+  },
+  "walletFailedButton": {
+    "message": "আবার করুন",
+    "description": "Button for re-try after wallet creation failed"
   }
 }
