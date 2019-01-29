@@ -11,7 +11,7 @@ import {
   CaratDownIcon,
   CaratUpIcon,
   CloseStrokeIcon,
-  CloseCircleIcon,
+  CloseCircleOIcon,
   CheckCircleIcon
 } from '../../../components/icons'
 import palette from '../../../theme/palette'
@@ -46,7 +46,7 @@ export const CloseIcon = styled(CloseStrokeIcon as ComponentType)`
   color: ${palette.blue200};
 `
 
-export const BlockedScriptsIcon = styled(CloseCircleIcon as ComponentType)`
+export const BlockedScriptsIcon = styled(CloseCircleOIcon as ComponentType)`
   width: 16px;
   height: 16px;
   color: ${palette.red500};
