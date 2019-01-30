@@ -226,6 +226,7 @@ namespace braveledger_bat_helper {
     bool allow_videos_ = true;
     std::map<std::string, REPORT_BALANCE_ST> monthly_balances_;
     std::map<std::string, double> recurring_donation_;
+    bool migrate_score = false;
   };
 
   struct PUBLISHER_ST {
