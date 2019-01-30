@@ -19,20 +19,6 @@ config("internal_config") {
   include_dirs = [ "src" ]
 }
 
-executable("bnc-test") {
-  include_dirs = [
-  ]
-
-  sources = [
-    "src/bat_native_confirmations.cc",
-    "src/mock_confirmations_client.cc",
-  ]
-
-  deps = [
-    ":confirmations",
-  ]
-}
-
 group("bat-native-confirmations") {
   public_deps = [
     ":confirmations",
@@ -44,6 +30,7 @@ group("bat-native-confirmations") {
 }
 
 static_library("bat-native-confirmations-standalone") {
+  # TODO(bridiver) - only export symbols from `include`
   complete_static_lib = true
 
   output_dir = root_out_dir
@@ -71,15 +58,18 @@ source_set("confirmations") {
     ]
   }
 
-  include_dirs = [
-  ]
-
   sources = [
     "src/bat/confirmations/notification_info.cc",
     "src/bat/confirmations/issuer_info.cc",
     "src/bat/confirmations/issuers_info.cc",
     "src/bat/confirmations/wallet_info.cc",
     "src/confirmations.cc",
+    "src/refill_tokens.cc",
+    "src/redeem_token.cc",
+    "src/payout_tokens.cc",
+    "src/ads_serve_helper.cc",
+    "src/string_helper.cc",
+    "src/security_helper.cc",
     "src/confirmations_impl.cc",
   ]
 
