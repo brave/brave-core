@@ -187,6 +187,10 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void synopsisNormalizerInternal(ledger::PublisherInfoList* newList, bool saveData,
     const ledger::PublisherInfoList& list, uint32_t /* next_record */);
 
+  bool GetMigrateScore() const;
+
+  void SetMigrateScore(bool value);
+
   bool isPublisherVisible(const braveledger_bat_helper::PUBLISHER_ST& publisher_st);
 
   void onPublisherActivity(ledger::Result result,
