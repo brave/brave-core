@@ -54,10 +54,10 @@ class TestGetBravePackages(unittest.TestCase):
                                           else '', chan))
                         with open(os.path.join(self.get_pkgs_dir,
                                                'win32', name), 'w') as f:
-                                f.write(name)
+                            f.write(name)
                         with open(os.path.join(self.get_pkgs_dir,
                                                'win32', name32), 'w') as f:
-                                f.write(name32)
+                            f.write(name32)
                 else:
                     for mode in ['Stub', 'Standalone']:
                         name = 'BraveBrowser{}Setup_70_0_56_8.exe'.format(
@@ -66,10 +66,10 @@ class TestGetBravePackages(unittest.TestCase):
                             mode if mode not in 'Stub' else '')
                         with open(os.path.join(
                                 self.get_pkgs_dir, 'win32', name), 'w') as f:
-                                f.write(name)
+                            f.write(name)
                         with open(os.path.join(
                                 self.get_pkgs_dir, 'win32', name32), 'w') as f:
-                                f.write(name32)
+                            f.write(name32)
         self.__class__._is_setup = True
 
     def test_only_returns_dev_darwin_package(self):

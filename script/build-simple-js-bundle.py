@@ -9,7 +9,7 @@ from shutil import copyfile
 
 
 def is_verbose_mode():
-        return 1
+    return 1
 
 
 def execute_stdout(argv, env=os.environ):
