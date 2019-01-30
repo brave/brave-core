@@ -6,6 +6,11 @@ import re
 import requests
 import sys
 
+"""
+REQUESTS_DIR and other python packages in the brave-core DEPS
+appear to be unused, we will leave it here for now but this might be
+determined unnecessary at a later date.
+"""
 REQUESTS_DIR = os.path.abspath(os.path.join(__file__, '..', '..', '..',
                                             'vendor', 'requests'))
 sys.path.append(os.path.join(REQUESTS_DIR, 'build', 'lib'))
@@ -26,7 +31,7 @@ class GitHub:
     def __getattr__(self, attr):
         return _Callable(self, '/%s' % attr)
 
-    def send(self, method, path, **kw):
+    def send(self, method, path, timeout, **kw):
         if 'headers' not in kw:
             kw['headers'] = dict()
         headers = kw['headers']
@@ -43,7 +48,7 @@ class GitHub:
                 kw['data'] = json.dumps(kw['data'])
 
         try:
-            r = getattr(requests, method)(url, **kw).json()
+            r = getattr(requests, method, timeout)(url, **kw).json()
         except ValueError:
             # Returned response may be empty in some cases
             r = {}
@@ -53,13 +58,14 @@ class GitHub:
 
 
 class _Executable:
-    def __init__(self, gh, method, path):
+    def __init__(self, gh, method, path, timeout):
         self._gh = gh
         self._method = method
         self._path = path
+        self._timeout = timeout
 
     def __call__(self, **kw):
-        return self._gh.send(self._method, self._path, **kw)
+        return self._gh.send(self._method, self._path, self._timeout, **kw)
 
 
 class _Callable(object):
@@ -76,7 +82,7 @@ class _Callable(object):
 
     def __getattr__(self, attr):
         if attr in ['get', 'put', 'post', 'patch', 'delete']:
-            return _Executable(self._gh, attr, self._name)
+            return _Executable(self._gh, attr, self._name, timeout=60)
 
         name = '%s/%s' % (self._name, attr)
         return _Callable(self._gh, name)
