@@ -7,156 +7,96 @@
 
 #include <string>
 #include <vector>
+#include <map>
+#include <memory>
 
-#include "brave/vendor/challenge_bypass_ristretto_ffi/src/wrapper.hpp"
-#include "base/values.h"
 #include "bat/confirmations/confirmations.h"
+#include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/notification_info.h"
 #include "bat/confirmations/issuers_info.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
+#include "refill_tokens.h"
+#include "redeem_token.h"
+#include "payout_tokens.h"
 
-#define CONFIRMATIONS_SIGNATURE_ALGORITHM "ed25519"
+#include "base/values.h"
 
 namespace confirmations {
 
-using namespace challenge_bypass_ristretto;
+class RefillTokens;
+class RedeemToken;
+class PayoutTokens;
 
 class ConfirmationsImpl : public Confirmations {
  public:
   explicit ConfirmationsImpl(ConfirmationsClient* confirmations_client);
   ~ConfirmationsImpl() override;
 
+  void UpdateConfirmationsIsReadyStatus();
+
+  // Wallet
   void SetWalletInfo(std::unique_ptr<WalletInfo> info) override;
+
+  // Catalog issuers
   void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) override;
-  void AdSustained(std::unique_ptr<NotificationInfo> info) override;
+  std::map<std::string, std::string> GetCatalogIssuers() const;
+
+  // Scheduled events
   void OnTimer(const uint32_t timer_id) override;
+
+  // Refill tokens
+  void StartRefillingConfirmations(const uint64_t start_timer_in);
+  void StartRetryGettingSignedTokens(const uint64_t start_timer_in);
+  std::vector<UnblindedToken> GetUnblindedTokens() const;
+  void SetUnblindedTokens(const std::vector<UnblindedToken>& tokens);
+
+  // Redeem token
+  void AdSustained(std::unique_ptr<NotificationInfo> info) override;
+  std::vector<UnblindedToken> GetUnblindedPaymentTokens() const;
+  void SetUnblindedPaymentTokens(const std::vector<UnblindedToken>& tokens);
+
+  // Payout tokens
+  void StartPayingOutConfirmations(const uint64_t start_timer_in);
+
+  // State
+  void SaveState();
 
  private:
   bool is_initialized_;
+
+  // Wallet
   bool is_wallet_initialized_;
-  bool is_issuers_initialized_;
-
-  const size_t low_token_threshold = 20;
-  const size_t refill_amount = 5 * low_token_threshold;
-
   WalletInfo wallet_info_;
+  std::string public_key_;
 
-  uint32_t step_2_refill_confirmations_timer_id_;
-  void StartRefillingConfirmations(const uint64_t start_timer_in);
+  // Catalog issuers
+  bool is_catalog_issuers_initialized_;
+  std::map<std::string, std::string> catalog_issuers_;
+
+  // Refill tokens
+  uint32_t refill_confirmations_timer_id_;
   void RefillConfirmations();
   void StopRefillingConfirmations();
   bool IsRefillingConfirmations() const;
+  std::unique_ptr<RefillTokens> refill_tokens_;
 
-  uint32_t step_4_retrieve_payment_ious_timer_id_;
-  void StartRetrievingPaymentIOUsTimer();
-  void StartRetrievingPaymentIOUs(const uint64_t start_timer_in);
-  void RetrievePaymentIOUs();
-  void StopRetrievingPaymentIOUs();
-  bool IsRetrievingPaymentIOUs() const;
+  uint32_t retry_getting_signed_tokens_timer_id_;
+  void RetryGettingSignedTokens();
+  void StopRetryGettingSignedTokens();
+  bool IsRetryingToGetSignedTokens() const;
+  std::vector<UnblindedToken> unblinded_tokens_;
 
-  uint32_t step_5_cash_in_payment_ious_timer_id_;
-  void StartCashingInPaymentIOUs(const uint64_t start_timer_in);
-  void CashInPaymentIOUs();
-  void StopCashingInPaymentIOUs();
-  bool IsCashingInPaymentIOUs() const;
+  // Redeem token
+  std::unique_ptr<RedeemToken> redeem_token_;
+  std::vector<UnblindedToken> unblinded_payment_tokens_;
 
-  uint32_t fetch_tokens_timer_id_;
-  std::string fetch_tokens_server_url_;
-  void StartFetchingTokens(const uint64_t start_timer_in);
-  void FetchTokens();
-  void StopFetchingTokens();
-  bool IsFetchingTokens() const;
+  // Payout tokens
+  uint32_t payout_confirmations_timer_id_;
+  void PayoutConfirmations();
+  void StopPayingOutConfirmations();
+  bool IsPayingOutConfirmations() const;
+  std::unique_ptr<PayoutTokens> payout_tokens_;
 
-  /////////////////////////////////////////////////////////////////////////////
-  // persist these properties
-
-  // If unset or "0", assume we haven't gotten one
-  std::string issuers_version_ = "0";
-
-  // If this changes what we can do is burn .*confirmation_tokens.* & repop
-  std::string server_confirmation_key_;
-
-  std::vector<std::string> server_bat_payment_names;
-  std::vector<std::string> server_bat_payment_keys;
-
-  std::vector<std::string> original_confirmation_tokens;
-  std::vector<std::string> blinded_confirmation_tokens;
-  std::vector<std::string> signed_blinded_confirmation_tokens;
-
-  std::vector<std::string> payment_token_json_bundles;
-  std::vector<std::string> signed_blinded_payment_token_json_bundles;
-  std::vector<std::string> fully_submitted_payment_bundles;
-
-  /////////////////////////////////////////////////////////////////////////////
-
-  std::string real_wallet_address_;
-  std::string real_wallet_address_secret_key_;
-  std::vector<std::string> local_original_confirmation_tokens_;
-  std::vector<std::string> local_blinded_confirmation_tokens_;
-  std::string confirmation_id_;
-  std::string local_original_payment_token_;
-  std::string local_blinded_payment_token_;
-  std::string blinded_payment_token_;
-  base::DictionaryValue* map_;
-  std::string bundle_json_;
-  std::string real_batch_proof_;
-
-  /////////////////////////////////////////////////////////////////////////////
-
-  void SetConfirmationsStatus();
-
-  std::string GetServerUrl();
-  int GetServerPort();
-
-  void Step1StoreTheServersConfirmationsPublicKeyAndGenerator(
-      std::string confirmations_GH_pair,
-      std::vector<std::string> bat_names,
-      std::vector<std::string> bat_keys);
-
-  void Step2RefillConfirmationsIfNecessary(
-      std::string real_wallet_address,
-      std::string real_wallet_address_secret_key);
-  void Step2bRefillConfirmationsIfNecessary(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-  void Step2cRefillConfirmationsIfNecessary(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-  void OnStep2RefillConfirmationsIfNecessary(const Result result);
-
-  void Step3RedeemConfirmation(std::string real_creative_instance_id);
-  void Step3bRedeemConfirmation(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-  void OnStep3RedeemConfirmation(const Result result);
-
-  void Step4RetrievePaymentIOUs();
-
-  void Step5CashInPaymentIOUs(std::string real_wallet_address);
-  void Step5bCashInPaymentIOUs(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-  void OnStep5CashInPaymentIOUs(const Result result);
-
-  bool VerifyBatchDLEQProof(
-      std::string proof_string,
-      std::vector<std::string> blind_strings,
-      std::vector<std::string> signed_strings,
-      std::string public_key_string);
-
-  void PopFrontConfirmation();
-  void PopFrontPayment();
-
-  void SaveState();
+  // State
   void OnStateSaved(const Result result);
   void LoadState();
   void OnStateLoaded(const Result result, const std::string& json);
@@ -164,59 +104,17 @@ class ConfirmationsImpl : public Confirmations {
   void OnStateReset(const Result result);
 
   std::string ToJSON();
-  bool FromJSON(std::string json);
+  bool FromJSON(const std::string& json);
 
-  void VectorConcat(
-      std::vector<std::string>* dest,
-      std::vector<std::string>* source);
-  std::unique_ptr<base::ListValue> Munge(std::vector<std::string> v);
+  std::unique_ptr<base::ListValue> Munge(const std::vector<std::string>& v);
   std::vector<std::string> Unmunge(base::Value *value);
-  std::string BATNameFromBATPublicKey(std::string token);
 
-  void ProcessIOUBundle(std::string bundle_json);
-  void ProcessIOUBundleStep2(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-  void OnProcessIOUBundle(const Result result);
-
-  // convert std::string of ascii-hex to raw data vector<uint8_t>
-  std::vector<uint8_t> RawDataBytesVectorFromASCIIHexString(std::string ascii);
-
-  // these functions are copy-pasta from the ledger library and in the future
-  // should be refactored somehow
-  std::string Sign(
-      std::string* keys,
-      std::string* values,
-      const unsigned int& size,
-      const std::string& keyId,
-      const std::vector<uint8_t>& secretKey);
-  std::vector<uint8_t> GetSHA256(const std::string& in);
-  std::string GetBase64(const std::vector<uint8_t>& in);
-
+  // Confirmations::Client
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
 
   // Not copyable, not assignable
   ConfirmationsImpl(const ConfirmationsImpl&) = delete;
   ConfirmationsImpl& operator=(const ConfirmationsImpl&) = delete;
-};
-
-class MockServer {
- public:
-  MockServer();
-  ~MockServer();
-
-  SigningKey signing_key = SigningKey::random();
-  PublicKey public_key = signing_key.public_key();
-
-  std::vector<std::string> signed_tokens;
-  std::string batch_dleq_proof;
-
-  void GenerateSignedBlindedTokensAndProof(
-      std::vector<std::string> blinded_tokens);
-
-  void Test();
 };
 
 }  // namespace confirmations
