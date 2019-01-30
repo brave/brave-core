@@ -1950,6 +1950,33 @@ static bool ignore_ = false;
     return !hasError;
   }
 
+  bool getJSONAddresses(const std::string& json,
+                        std::map<std::string, std::string>& addresses) {
+    rapidjson::Document d;
+    d.Parse(json.c_str());
+
+    //has parser errors or wrong types
+    bool error = d.HasParseError();
+    if (false == error) {
+      error = !(d.HasMember("addresses") && d["addresses"].IsObject());
+    }
+
+    if (false == error) {
+      addresses.insert(
+          std::make_pair("BAT", d["addresses"]["BAT"].GetString()));
+      addresses.insert(
+          std::make_pair("BTC", d["addresses"]["BTC"].GetString()));
+      addresses.insert(
+          std::make_pair("CARD_ID", d["addresses"]["CARD_ID"].GetString()));
+      addresses.insert(
+          std::make_pair("ETH", d["addresses"]["ETH"].GetString()));
+      addresses.insert(
+          std::make_pair("LTC", d["addresses"]["LTC"].GetString()));
+    }
+
+    return !error;
+  }
+
   std::vector<uint8_t> generateSeed() {
     //std::ostringstream seedStr;
 

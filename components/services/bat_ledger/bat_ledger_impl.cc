@@ -335,4 +335,22 @@ void BatLedgerImpl::HasSufficientBalanceToReconcile(
   std::move(callback).Run(ledger_->HasSufficientBalanceToReconcile());
 }
 
+// static
+void BatLedgerImpl::OnAddressesForPaymentId(
+    CallbackHolder<GetAddressesForPaymentIdCallback>* holder,
+    std::map<std::string, std::string> addresses) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(mojo::MapToFlatMap(addresses));
+  delete holder;
+}
+
+void BatLedgerImpl::GetAddressesForPaymentId(
+    GetAddressesForPaymentIdCallback callback) {
+  // delete in OnAddressesForPaymentId
+  auto* holder = new CallbackHolder<GetAddressesForPaymentIdCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->GetAddressesForPaymentId(
+      std::bind(BatLedgerImpl::OnAddressesForPaymentId, holder, _1));
+}
+
 } // namespace bat_ledger

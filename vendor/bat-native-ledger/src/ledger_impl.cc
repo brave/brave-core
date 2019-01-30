@@ -1137,4 +1137,13 @@ void LedgerImpl::SaveNormalizedPublisherList(
   ledger_client_->SaveNormalizedPublisherList(list);
 }
 
+void LedgerImpl::GetAddressesForPaymentId(
+    ledger::WalletAddressesCallback callback) {
+  bat_client_->GetAddressesForPaymentId(callback);
+}
+
+void LedgerImpl::SetAddresses(std::map<std::string, std::string> addresses) {
+  bat_state_->SetAddress(addresses);
+}
+
 }  // namespace bat_ledger

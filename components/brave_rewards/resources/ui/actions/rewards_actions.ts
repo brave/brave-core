@@ -76,7 +76,7 @@ export const onReconcileStamp = (stamp: number) => action(types.ON_RECONCILE_STA
   stamp
 })
 
-export const onAddresses = (addresses: Record<string, string>) => action(types.ON_ADDRESSES, {
+export const onAddresses = (addresses: Record<Rewards.AddressesType, string>) => action(types.ON_ADDRESSES, {
   addresses
 })
 
@@ -165,3 +165,10 @@ export const onPendingContributionTotal = (amount: number) => action(types.ON_PE
 export const onRewardsEnabled = (enabled: boolean) => action(types.ON_REWARDS_ENABLED, {
   enabled
 })
+
+export const getAddressesForPaymentId = () => action(types.GET_ADDRESSES_FOR_PAYMENT_ID)
+
+export const onAddressesForPaymentId = (addresses: Record<Rewards.AddressesType, string>) =>
+  action(types.ON_ADDRESSES_FOR_PAYMENT_ID, {
+    addresses
+  })

@@ -32,9 +32,10 @@ export const defaultState: Rewards.State = {
   recoveryKey: '',
   reconcileStamp: 0,
   ui: {
-    addressCheck: false,
+    addressCheck: true,
     emptyWallet: true,
     modalBackup: false,
+    paymentIdCheck: true,
     walletCorrupted: false,
     walletImported: false,
     walletRecoverySuccess: null,
