@@ -524,6 +524,15 @@ bool BatPublishers::getPublisherAllowVideos() const {
   return state_->allow_videos_;
 }
 
+bool BatPublishers::GetMigrateScore() const {
+  return state_->migrate_score;
+}
+
+void BatPublishers::SetMigrateScore(bool value) {
+  state_->migrate_score = value;
+  saveState();
+}
+
 void BatPublishers::NormalizeContributeWinners(
     ledger::PublisherInfoList* newList,
     bool saveData,
@@ -547,11 +556,16 @@ void BatPublishers::synopsisNormalizerInternal(
   for (size_t i = 0; i < list.size(); i++) {
     // Check which would test uint problem from this issue
     // https://github.com/brave/brave-browser/issues/3134
-    if (list[i].score < -100000) {
+    if (GetMigrateScore()) {
       list[i].score = concaveScore(list[i].duration);
     }
     totalScores += list[i].score;
   }
+
+  if (GetMigrateScore()) {
+    SetMigrateScore(false);
+  }
+
   std::vector<unsigned int> percents;
   std::vector<double> weights;
   std::vector<double> realPercents;
@@ -668,9 +682,8 @@ bool BatPublishers::isEligibleForContribution(const ledger::PublisherInfo& info)
   if (isExcluded(info.id, info.excluded) || (!state_->allow_non_verified_ && !isVerified(info.id)))
     return false;
 
-  return info.score > 0 &&
-    info.duration >= state_->min_publisher_duration_ &&
-    info.visits >= state_->min_visits_;
+  return info.duration >= state_->min_publisher_duration_ &&
+         info.visits >= state_->min_visits_;
 
 }
 

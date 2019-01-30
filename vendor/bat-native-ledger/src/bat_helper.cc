@@ -614,6 +614,7 @@ static bool ignore_ = false;
     allow_videos_ = state.allow_videos_;
     monthly_balances_ = state.monthly_balances_;
     recurring_donation_ = state.recurring_donation_;
+    migrate_score = state.migrate_score;
   }
 
   PUBLISHER_STATE_ST::~PUBLISHER_STATE_ST() {}
@@ -661,6 +662,7 @@ static bool ignore_ = false;
           monthly_balances_.insert(std::make_pair(itr->name.GetString(), r));
         }
       }
+
       for (const auto & i : d["recurring_donation"].GetArray()) {
         rapidjson::StringBuffer sb;
         rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
@@ -673,6 +675,12 @@ static bool ignore_ = false;
         if (itr != d1.MemberEnd()) {
           recurring_donation_.insert(std::make_pair(itr->name.GetString(), itr->value.GetDouble()));
         }
+      }
+
+      if (d.HasMember("migrate_score") && d["migrate_score"].IsBool()) {
+        migrate_score = d["migrate_score"].GetBool();
+      } else {
+        migrate_score = true;
       }
     }
 
@@ -718,7 +726,11 @@ static bool ignore_ = false;
       writer.Double(p.second);
       writer.EndObject();
     }
+
     writer.EndArray();
+
+    writer.String("migrate_score");
+    writer.Bool(data.migrate_score);
 
     writer.EndObject();
   }
