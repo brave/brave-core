@@ -15,6 +15,7 @@
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat_helper.h"
+#include "base/gtest_prod_util.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -25,6 +26,8 @@ struct PUBLISHER_STATE_ST;
 }
 
 namespace braveledger_bat_publishers {
+
+// FORWARD_DECLARE_TEST(BatPublishersTest, calcScoreConsts);
 
 class BatPublishers : public ledger::LedgerCallbackHandler {
  public:
@@ -132,7 +135,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   bool isVerified(const std::string& publisher_id);
 
  private:
-
+  friend class BatPublishersTest;
+  FRIEND_TEST_ALL_PREFIXES(BatPublishersTest, calcScoreConsts);
   void onPublisherActivitySave(uint64_t windowId,
                                const ledger::VisitData& visit_data,
                                ledger::Result result,
