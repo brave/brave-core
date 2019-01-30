@@ -543,15 +543,17 @@ void BatPublishers::synopsisNormalizerInternal(
   std::vector<double> roundoffs;
   unsigned int totalPercents = 0;
   for (size_t i = 0; i < list.size(); i++) {
-    realPercents.push_back((double)list[i].score / (double)totalScores * 100.0);
-    percents.push_back((unsigned int)std::lround(realPercents[realPercents.size() - 1]));
-    double roundoff = percents[percents.size() - 1] - realPercents[realPercents.size() - 1];
+    double floatNumber = (list[i].score / totalScores) * 100.0;
+    double roundNumber = (unsigned int)std::lround(floatNumber);
+    realPercents.push_back(floatNumber);
+    percents.push_back(roundNumber);
+    double roundoff = roundNumber - floatNumber;
     if (roundoff < 0.0) {
       roundoff *= -1.0;
     }
     roundoffs.push_back(roundoff);
-    totalPercents += percents[percents.size() - 1];
-    weights.push_back((double)list[i].score / (double)list.size() * 100.0);
+    totalPercents += roundNumber;
+    weights.push_back(floatNumber);
   }
   while (totalPercents != 100) {
     size_t valueToChange = 0;
