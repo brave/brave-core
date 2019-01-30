@@ -49,6 +49,9 @@ action("create_signed_installer") {
     "--root_out_dir=$out_dir",
     "--brave_installer_exe=$brave_installer_exe",
   ]
+
+  if (skip_signing) { args += [ "--skip_signing" ] }
+
   deps = [
     "//chrome/installer/mini_installer"
   ]
