@@ -35,25 +35,26 @@ BatPublishers::BatPublishers(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
   state_(new braveledger_bat_helper::PUBLISHER_STATE_ST),
   server_list_(std::map<std::string, braveledger_bat_helper::SERVER_LIST>()) {
-  calcScoreConsts();
+  calcScoreConsts(state_->min_publisher_duration_);
 }
 
 BatPublishers::~BatPublishers() {
 }
 
-void BatPublishers::calcScoreConsts() {
-  uint64_t min_duration_ms = state_->min_publisher_duration_ * 1000;
-  //TODO: check Warning	C4244	'=': conversion from 'double' to 'unsigned int', possible loss of data
-  a_ = 1.0 / (braveledger_ledger::_d * 2.0) - min_duration_ms;
-  a2_ = a_ * 2;
-  a4_ = a2_ * 2;
+void BatPublishers::calcScoreConsts(const uint64_t& min_duration) {
+  uint64_t min_duration_ms = min_duration *
+      braveledger_ledger::_milliseconds_second;
+  a_ = (1.0 / (braveledger_ledger::_d * 2.0)) - min_duration_ms;
+  a2_ = a_ * 2.0;
+  a4_ = a2_ * 2.0;
   b_ = min_duration_ms - a_;
   b2_ = b_ * b_;
 }
 
 // courtesy of @dimitry-xyz: https://github.com/brave/ledger/issues/2#issuecomment-221752002
 double BatPublishers::concaveScore(const uint64_t& duration) {
-  return (std::sqrt(b2_ + a4_ * duration) - b_) / (double)a2_;
+  uint64_t duration_ms = duration * braveledger_ledger::_milliseconds_second;
+  return (-b_ + std::sqrt(b2_ + (a4_ * duration_ms))) / a2_;
 }
 
 std::string getProviderName(const std::string& publisher_id) {
@@ -544,6 +545,11 @@ void BatPublishers::synopsisNormalizerInternal(
   }
   double totalScores = 0.0;
   for (size_t i = 0; i < list.size(); i++) {
+    // Check which would test uint problem from this issue
+    // https://github.com/brave/brave-browser/issues/3134
+    if (list[i].score < -100000) {
+      list[i].score = concaveScore(list[i].duration);
+    }
     totalScores += list[i].score;
   }
   std::vector<unsigned int> percents;
@@ -763,7 +769,7 @@ bool BatPublishers::loadState(const std::string& data) {
     return false;
 
   state_.reset(new braveledger_bat_helper::PUBLISHER_STATE_ST(state));
-  calcScoreConsts();
+  calcScoreConsts(state_->min_publisher_duration_);
   return true;
 }
 

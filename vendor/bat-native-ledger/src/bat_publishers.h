@@ -183,11 +183,11 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void onRestorePublishersInternal(const ledger::PublisherInfoList& publisherInfoList, uint32_t /* next_record */);
 
+  void calcScoreConsts(const uint64_t& duration);
+
   double concaveScore(const uint64_t& duration);
 
   void saveState();
-
-  void calcScoreConsts();
 
   void synopsisNormalizer(const ledger::PublisherInfo& info);
   void synopsisNormalizerInternal(ledger::PublisherInfoList* newList, bool saveData,
@@ -213,15 +213,15 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   std::map<std::string, braveledger_bat_helper::SERVER_LIST> server_list_;
 
-  unsigned int a_;
+  double a_;
 
-  unsigned int a2_;
+  double a2_;
 
-  unsigned int a4_;
+  double a4_;
 
-  unsigned int b_;
+  double b_;
 
-  unsigned int b2_;
+  double b2_;
 };
 
 }  // namespace braveledger_bat_publishers
