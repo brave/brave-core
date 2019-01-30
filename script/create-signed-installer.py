@@ -27,7 +27,7 @@ def create_signed_installer(root_out_dir, brave_installer_exe, skip_signing, env
     shutil.copyfile(os.path.join(root_out_dir, 'mini_installer.exe'),
                     installer_file)
     if not skip_signing:
-      sign_binary(installer_file)
+        sign_binary(installer_file)
     # Copy signed installer to version appended name
     installer_file_with_version = os.path.join(root_out_dir,
                                                brave_installer_exe)
