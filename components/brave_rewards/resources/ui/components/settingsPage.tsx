@@ -58,7 +58,22 @@ class SettingsPage extends React.Component<Props, {}> {
     this.refreshActions()
     this.actions.getAdsData()
     this.actions.checkImported()
-    this.actions.getGrant()
+    this.actions.getGrants()
+    // Temporary (ryanml)
+    this.actions.onGrants([
+      {
+        promotionId: 'test-promo-id-1',
+        expiryTime: 0,
+        probi: '',
+        type: 'ugp'
+      },
+      {
+        promotionId: 'test-promo-id-2',
+        expiryTime: 0,
+        probi: '',
+        type: 'ads'
+      }
+    ])
 
     // one time check (legacy fix)
     // more info here https://github.com/brave/brave-browser/issues/2172
@@ -84,12 +99,34 @@ class SettingsPage extends React.Component<Props, {}> {
     }
   }
 
+  getGrantClaims = () => {
+    const { grants } = this.props.rewardsData
+
+    if (!grants) {
+      return null
+    }
+
+    return (
+      <>
+        {grants.map((grant?: Rewards.Grant) => {
+          if (!grant || !grant.promotionId) {
+            return null
+          }
+
+          return (
+            <Grant grant={grant} />
+          )
+        })}
+      </>
+    )
+  }
+
   componentWillUnmount () {
     clearInterval(this.balanceTimerId)
   }
 
   render () {
-    const { enabledMain, grant } = this.props.rewardsData
+    const { enabledMain } = this.props.rewardsData
 
     return (
       <Page>
@@ -106,9 +143,9 @@ class SettingsPage extends React.Component<Props, {}> {
           </Column>
           <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             {
-              enabledMain && grant && grant.promotionId
-                ? <Grant/>
-                : null
+              enabledMain
+              ? this.getGrantClaims()
+              : null
             }
             <PageWallet />
           </Column>

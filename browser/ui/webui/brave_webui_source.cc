@@ -307,6 +307,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "done", IDS_BRAVE_UI_DONE },
         { "downloadPDF", IDS_BRAVE_UI_DOWNLOAD_PDF },
         { "earningsAds", IDS_BRAVE_UI_EARNINGS_ADS },
+        { "earningsClaimDefault", IDS_BRAVE_UI_EARNINGS_CLAIM_DEFAULT },
         { "enableTips", IDS_BRAVE_UI_ENABLE_TIPS },
         { "excludeSite", IDS_BRAVE_UI_EXCLUDE_SITE },
         { "excludedSitesText", IDS_BRAVE_UI_EXCLUDED_SITES },

@@ -8,11 +8,11 @@ import { connect } from 'react-redux'
 
 // Components
 import {
-  GrantClaim,
   GrantWrapper,
   GrantCaptcha,
   GrantComplete
 } from 'brave-ui/features/rewards'
+import GrantClaim, { Type } from 'brave-ui/features/rewards/grantClaim'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
@@ -25,6 +25,7 @@ interface State {
 }
 
 interface Props extends Rewards.ComponentProps {
+  grant: Rewards.Grant
 }
 
 // TODO add local when we know what we will get from the server
@@ -60,7 +61,7 @@ class Grant extends React.Component<Props, State> {
   }
 
   grantCaptcha = () => {
-    const { grant } = this.props.rewardsData
+    const { grant } = this.props
 
     if (!grant) {
       return
@@ -135,13 +136,18 @@ class Grant extends React.Component<Props, State> {
   }
 
   render () {
-    const { grant } = this.props.rewardsData
+    const { grant } = this.props
 
     if (!grant) {
       return null
     }
 
+    let type
     let tokens = '0.0'
+
+    if (grant.type) {
+      type = grant.type
+    }
     if (grant.probi) {
       tokens = convertProbiToFixed(grant.probi)
     }
@@ -149,8 +155,8 @@ class Grant extends React.Component<Props, State> {
     return (
       <>
         {
-          this.state.grantShow
-            ? <GrantClaim onClaim={this.onGrantShow}/>
+          this.state.grantShow && type
+            ? <GrantClaim type={type as Type} onClaim={this.onGrantShow}/>
             : null
         }
         {
