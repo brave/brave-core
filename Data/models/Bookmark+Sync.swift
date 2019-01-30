@@ -113,4 +113,25 @@ extension Bookmark {
         DataController.save(context: context)
         Preferences.Sync.baseSyncOrder.reset()
     }
+    
+    /// We use a special String-based ordering algorithm for Bookmarks, which can't be sorted
+    /// by using NSSortDescriptor.
+    /// Therefore after each change of syncOrder, we recalculate position of all bookmarks on a given level
+    /// and set correct `order` attribute.
+    /// Thanks to this, we can utilize FetchedRequestController to handle changes within table views.
+    /// Unfortunately this approach is not too performant, as each insert and update requires to update
+    /// all other bookmarks on the same level too.
+    class func setOrderForAllBookmarksOnGivenLevel(parent: Bookmark?, forFavorites: Bool, context: NSManagedObjectContext) {
+        let predicate = forFavorites ?
+            NSPredicate(format: "isFavorite == true") : allBookmarksOfAGivenLevelPredicate(parent: parent)
+        
+        guard let allBookmarks = all(where: predicate, context: context), allBookmarks.count > 1 else { return }
+        // Bookmark implements custom sorting based on `syncOrder`
+        let sortedBookmarks = allBookmarks.sorted()
+        
+        for (updatedOrder, bookmark) in sortedBookmarks.enumerated() {
+            bookmark.order = Int16(updatedOrder)
+        }
+        // Saving context is handled outside of this method.
+    }
 }
