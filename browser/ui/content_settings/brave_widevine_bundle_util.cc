@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -16,9 +17,9 @@
 #include "media/base/video_codecs.h"
 #include "media/media_buildflags.h"
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
-#include "widevine_cdm_version.h"
+#include "widevine_cdm_version.h"  // NOLINT
 
-void RegisterWidevineCdmToCdmRegistry() {
+void MaybeRegisterWidevineCdm() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();

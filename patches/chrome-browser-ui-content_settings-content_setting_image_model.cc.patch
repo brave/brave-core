@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/content_settings/content_setting_image_model.cc b/chrome/browser/ui/content_settings/content_setting_image_model.cc
-index afaee36cf39fae81aef937aa9fe3189ba7b1f2f6..c1ada370ccc002eac0a87282896b3dbda0b0db82 100644
+index afaee36cf39fae81aef937aa9fe3189ba7b1f2f6..e6f9ea69069e7f258b47163658f0d1765e704fad 100644
 --- a/chrome/browser/ui/content_settings/content_setting_image_model.cc
 +++ b/chrome/browser/ui/content_settings/content_setting_image_model.cc
 @@ -10,6 +10,7 @@
@@ -15,7 +15,7 @@ index afaee36cf39fae81aef937aa9fe3189ba7b1f2f6..c1ada370ccc002eac0a87282896b3dbd
    for (auto type : kContentSettingImageOrder)
      result.push_back(CreateForContentType(type));
 +#if defined(BRAVE_CHROMIUM_BUILD)
-+  BraveGenerateContentSettingImageModels(result);
++  BraveGenerateContentSettingImageModels(&result);
 +#endif
  
    return result;

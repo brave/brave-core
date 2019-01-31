@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -57,7 +58,8 @@ class BraveWidevineBlockedImageModelBrowserTest : public InProcessBrowserTest {
 };
 
 // Tests that every model creates a valid bubble.
-IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest, CreateBubbleModel) {
+IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
+                       CreateBubbleModel) {
   WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   auto model = CreateModel();
@@ -85,9 +87,11 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
   // The animation has run for the current WebContents, but not for any other.
   Profile* profile = browser()->profile();
   WebContents::CreateParams create_params(profile);
-  std::unique_ptr<WebContents> other_web_contents(WebContents::Create(create_params));
+  std::unique_ptr<WebContents> other_web_contents(
+      WebContents::Create(create_params));
   content::WebContents* raw_other_web_contents = other_web_contents.get();
-  browser()->tab_strip_model()->AppendWebContents(std::move(other_web_contents), true);
+  browser()->tab_strip_model()->AppendWebContents(std::move(other_web_contents),
+                                                  true);
   EXPECT_TRUE(model->ShouldRunAnimation(raw_other_web_contents));
 }
 
@@ -110,8 +114,8 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
   EXPECT_EQ(link_value, observer.last_navigation_url().spec());
 }
 
-// Tests that the content setting model shows and that runninng plugins changes the
-// opt in setting.
+// Tests that the content setting model shows and that runninng plugins changes
+// the opt in setting.
 IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
                        RunPluginsOnPageClicked) {
   GURL url = embedded_test_server()->GetURL("www.netflix.com", "/blank.html");
@@ -122,14 +126,16 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   std::unique_ptr<ContentSettingBubbleModel> bubble(
           model->CreateBubbleModel(
-              browser()->content_setting_bubble_model_delegate(), web_contents));
+              browser()->content_setting_bubble_model_delegate(),
+              web_contents));
 
   PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
 
   // Before we allow, opted in should be false
   ASSERT_FALSE(prefs->GetBoolean(kWidevineOptedIn));
 
-  ((BraveWidevineContentSettingPluginBubbleModel*)bubble.get())->RunPluginsOnPage();
+  reinterpret_cast<BraveWidevineContentSettingPluginBubbleModel*>(bubble.get())
+      ->RunPluginsOnPage();
 
   // After we allow, opted in pref should be true
   ASSERT_TRUE(prefs->GetBoolean(kWidevineOptedIn));
@@ -152,7 +158,8 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineBlockedImageModelBrowserTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   std::unique_ptr<ContentSettingBubbleModel> bubble(
           model->CreateBubbleModel(
-              browser()->content_setting_bubble_model_delegate(), web_contents));
+              browser()->content_setting_bubble_model_delegate(),
+              web_contents));
 
   ASSERT_FALSE(model->is_visible());
 }
@@ -248,4 +255,5 @@ IN_PROC_BROWSER_TEST_F(BraveWidevineIconVisibilityBrowserTest,
   EXPECT_TRUE(content::ExecuteScript(active_contents(), widevine_js));
   EXPECT_TRUE(IsWidevineIconVisible());
 }
-#endif  //  BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+#endif  // BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) ||
+        // BUILDFLAG(BUNDLE_WIDEVINE_CDM)

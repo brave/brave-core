@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -23,14 +24,16 @@
 #include "brave/browser/ui/content_settings/brave_widevine_bundle_util.h"
 #endif
 
-BraveWidevineContentSettingPluginBubbleModel::BraveWidevineContentSettingPluginBubbleModel(
+BraveWidevineContentSettingPluginBubbleModel::
+    BraveWidevineContentSettingPluginBubbleModel(
     ContentSettingBubbleModel::Delegate* delegate,
         content::WebContents* web_contents) :
         ContentSettingSimpleBubbleModel(delegate,
             web_contents,
             CONTENT_SETTINGS_TYPE_PLUGINS),
         brave_content_settings_delegate_(
-            (BraveBrowserContentSettingBubbleModelDelegate*)delegate) {
+            reinterpret_cast<BraveBrowserContentSettingBubbleModelDelegate*>(
+                delegate)) {
   SetTitle();
   SetLearnMore();
   SetMessage();
@@ -63,7 +66,7 @@ void BraveWidevineContentSettingPluginBubbleModel::RunPluginsOnPage() {
 #endif
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  RegisterWidevineCdmToCdmRegistry();
+  MaybeRegisterWidevineCdm();
 #endif
 
   ChromeSubresourceFilterClient::FromWebContents(web_contents())
