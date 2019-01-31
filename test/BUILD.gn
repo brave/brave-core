@@ -56,6 +56,7 @@ test("brave_unit_tests") {
     "//brave/chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
     "//brave/chromium_src/components/search_engines/brave_template_url_service_util_unittest.cc",
     "//brave/chromium_src/components/version_info/brave_version_info_unittest.cc",
+    "//brave/chromium_src/content/browser/media/cdm_registry_impl_unittest.cc",
     "//brave/common/importer/brave_mock_importer_bridge.cc",
     "//brave/common/importer/brave_mock_importer_bridge.h",
     "//brave/common/shield_exceptions_unittest.cc",

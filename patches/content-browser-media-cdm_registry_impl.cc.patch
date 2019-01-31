@@ -1,5 +1,5 @@
 diff --git a/content/browser/media/cdm_registry_impl.cc b/content/browser/media/cdm_registry_impl.cc
-index 81936b7601aa72effc5f99a188da72f8b9469568..d9b72afeb545b7b7ce445ac0ffaf6f378d94a5bb 100644
+index 81936b7601aa72effc5f99a188da72f8b9469568..6886a4e834b0e51f85348758d3eadeac2846d741 100644
 --- a/content/browser/media/cdm_registry_impl.cc
 +++ b/content/browser/media/cdm_registry_impl.cc
 @@ -9,6 +9,10 @@
@@ -13,12 +13,9 @@ index 81936b7601aa72effc5f99a188da72f8b9469568..d9b72afeb545b7b7ce445ac0ffaf6f37
  namespace content {
  
  // static
-@@ -27,8 +31,25 @@ CdmRegistryImpl::CdmRegistryImpl() {}
- CdmRegistryImpl::~CdmRegistryImpl() {}
- 
+@@ -29,6 +33,24 @@ CdmRegistryImpl::~CdmRegistryImpl() {}
  void CdmRegistryImpl::Init() {
--  // Let embedders register CDMs.
-+    // Let embedders register CDMs.
+   // Let embedders register CDMs.
    GetContentClient()->AddContentDecryptionModules(&cdms_, nullptr);
 +#if defined(BRAVE_CHROMIUM_BUILD) && defined(OS_LINUX)
 +  // On linux, we want to register widevine cdm to CdmRegistry when users opt
@@ -33,9 +30,10 @@ index 81936b7601aa72effc5f99a188da72f8b9469568..d9b72afeb545b7b7ce445ac0ffaf6f37
 +        // using "com.widevine.alpha". To use constant, it requires adding
 +        // widevine dependency to content module.
 +        // However, using this string directly seems fine because it would not
-+        // be changed and can avoid addtional patching for this.
++        // be changed and can avoid additional patching for this.
 +        return info.supported_key_system == "com.widevine.alpha";
-+      }));
++      }),
++      cdms_.end());
 +#endif
  }
  
