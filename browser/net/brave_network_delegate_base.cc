@@ -46,18 +46,13 @@ BraveNetworkDelegateBase::BraveNetworkDelegateBase(
   // Initialize the preference change registrar.
   base::PostTaskWithTraits(
       FROM_HERE, {BrowserThread::UI},
-      base::Bind(&BraveNetworkDelegateBase::InitPrefChangeRegistrar,
-                 base::Unretained(this)));
-  // Retrieve the current referral headers, if any.
-  base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::UI},
-      base::Bind(&BraveNetworkDelegateBase::GetReferralHeaders,
+      base::Bind(&BraveNetworkDelegateBase::InitPrefChangeRegistrarOnUI,
                  base::Unretained(this)));
 }
 
 BraveNetworkDelegateBase::~BraveNetworkDelegateBase() {}
 
-void BraveNetworkDelegateBase::InitPrefChangeRegistrar() {
+void BraveNetworkDelegateBase::InitPrefChangeRegistrarOnUI() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   PrefService* prefs = g_browser_process->local_state();
   pref_change_registrar_.reset(new PrefChangeRegistrar());
@@ -66,22 +61,26 @@ void BraveNetworkDelegateBase::InitPrefChangeRegistrar() {
       kReferralHeaders,
       base::Bind(&BraveNetworkDelegateBase::OnReferralHeadersChanged,
                  base::Unretained(this)));
+  // Retrieve current referral headers, if any.
+  OnReferralHeadersChanged();
 }
 
 void BraveNetworkDelegateBase::OnReferralHeadersChanged() {
-  // Retrieve the current referral headers, if any.
-  base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::UI},
-      base::Bind(&BraveNetworkDelegateBase::GetReferralHeaders,
-                 base::Unretained(this)));
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  if (const base::ListValue* referral_headers =
+      g_browser_process->local_state()->GetList(kReferralHeaders)) {
+    base::PostTaskWithTraits(
+        FROM_HERE, {BrowserThread::IO},
+        base::Bind(&BraveNetworkDelegateBase::SetReferralHeaders,
+                   base::Unretained(this),
+                   referral_headers->DeepCopy()));
+  }
 }
 
-void BraveNetworkDelegateBase::GetReferralHeaders() {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  const base::ListValue* referral_headers =
-      g_browser_process->local_state()->GetList(kReferralHeaders);
-  if (referral_headers)
-    referral_headers_list_ = referral_headers->CreateDeepCopy();
+void BraveNetworkDelegateBase::SetReferralHeaders(
+    base::ListValue* referral_headers) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  referral_headers_list_.reset(referral_headers);
 }
 
 int BraveNetworkDelegateBase::OnBeforeURLRequest(
