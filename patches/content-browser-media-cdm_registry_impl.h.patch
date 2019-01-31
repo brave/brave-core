@@ -1,0 +1,15 @@
+diff --git a/content/browser/media/cdm_registry_impl.h b/content/browser/media/cdm_registry_impl.h
+index 303f3c59b3201ab78c84ae3803b48b37d9f8c998..3eac8905fb8ec6a4f4c050bc290f92065894b4f0 100644
+--- a/content/browser/media/cdm_registry_impl.h
++++ b/content/browser/media/cdm_registry_impl.h
+@@ -32,6 +32,10 @@ class CONTENT_EXPORT CdmRegistryImpl : public CdmRegistry {
+   CdmRegistryImpl();
+   ~CdmRegistryImpl() override;
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++  void Init_ChromiumImpl();
++#endif
++
+   std::vector<CdmInfo> cdms_;
+ 
+   DISALLOW_COPY_AND_ASSIGN(CdmRegistryImpl);
