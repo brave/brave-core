@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableDonation tests basic tests matches the snapshot 1`] = `
+.c4 {
+  text-align: center;
+  padding: 30px 0;
+  color: #999ea2;
+  font-size: 14px;
+}
+
+.c0 {
+  min-width: 100%;
+  margin: 24px 0;
+}
+
+.c1 {
+  text-transform: uppercase;
+  text-align: left;
+  font-family: Muli,sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  border-bottom: 2px solid #dedfe4;
+  border-top: 2px solid #dedfe4;
+  color: #4B4C5C;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid #696FDC;
+  padding: 0;
+  color: #696FDC;
+}
+
+.c2 {
+  text-transform: uppercase;
+  text-align: left;
+  font-family: Muli,sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  border-bottom: 2px solid #dedfe4;
+  border-top: 2px solid #dedfe4;
+  color: #4B4C5C;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid #696FDC;
+  padding: 0;
+  color: #696FDC;
+  text-align: right;
+}
+
+.c3 {
+  text-transform: uppercase;
+  text-align: left;
+  font-family: Muli,sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  border-bottom: 2px solid #dedfe4;
+  border-top: 2px solid #dedfe4;
+  color: #4B4C5C;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid #696FDC;
+  padding: 0 10px;
+  color: #696FDC;
+  text-align: center;
+}
+
+<div
+  id="table"
+>
+  <div>
+    <table
+      className="c0"
+    >
+      <thead>
+        <tr>
+          <th
+            className="c1"
+          >
+            MISSING: site
+          </th>
+          <th
+            className="c1"
+          >
+            MISSING: type
+          </th>
+          <th
+            className="c1"
+          >
+            MISSING: pendingUntil
+          </th>
+          <th
+            className="c2"
+          >
+            MISSING: amount
+          </th>
+          <th
+            className="c3"
+          >
+            MISSING: remove
+          </th>
+        </tr>
+      </thead>
+    </table>
+    <div
+      className="c4"
+    />
+  </div>
+</div>
+`;

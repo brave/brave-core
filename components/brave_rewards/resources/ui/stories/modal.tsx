@@ -11,7 +11,14 @@ import { withKnobs, text } from '@storybook/addon-knobs'
 import { DetailRow as ContributeRow } from '../../../src/features/rewards/tableContribute'
 import { DetailRow as DonationDetailRow } from '../../../src/features/rewards/tableDonation'
 import { DetailRow as TransactionsRow } from '../../../src/features/rewards/tableTransactions'
-import { ModalContribute, ModalBackupRestore, ModalActivity, ModalDonation } from '../../../src/features/rewards'
+import { DetailRow as PendingDetailRow } from '../../../src/features/rewards/tablePending'
+import {
+  ModalContribute,
+  ModalBackupRestore,
+  ModalActivity,
+  ModalDonation,
+  ModalPending
+} from '../../../src/features/rewards'
 import ModalAddFunds, { Address } from '../../../src/features/rewards/modalAddFunds'
 
 const favicon = require('../../assets/img/brave-favicon.png')
@@ -438,6 +445,64 @@ storiesOf('Feature Components/Rewards/Modal', module)
       <ModalDonation
         rows={rows}
         onClose={doNothing}
+      />
+    )
+  })
+  .add('Pending contributions',() => {
+    const rows: PendingDetailRow[] = [
+      {
+        profile: {
+          name: 'Bart Baker',
+          verified: false,
+          provider: 'youtube',
+          src: bart
+        },
+        url: 'https://brave.com',
+        type: 'recurring',
+        amount: {
+          tokens: '2.0',
+          converted: '0.20'
+        },
+        date: 'Jan 2',
+        onRemove: doNothing
+      },
+      {
+        profile: {
+          verified: false,
+          name: 'theguardian.com',
+          src: guardian
+        },
+        url: 'https://brave.com',
+        type: 'tip',
+        amount: {
+          tokens: '12000.0',
+          converted: '6000.20'
+        },
+        date: 'May 7',
+        onRemove: doNothing
+      },
+      {
+        profile: {
+          verified: false,
+          name: 'BrendanEich',
+          provider: 'twitter',
+          src: eich
+        },
+        url: 'https://brave.com',
+        type: 'ac',
+        amount: {
+          tokens: '1.0',
+          converted: '0.20'
+        },
+        date: 'May 2',
+        onRemove: doNothing
+      }
+    ]
+    return (
+      <ModalPending
+        rows={rows}
+        onClose={doNothing}
+        onRemoveAll={doNothing}
       />
     )
   })

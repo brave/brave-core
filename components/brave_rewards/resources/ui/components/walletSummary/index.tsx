@@ -13,7 +13,8 @@ import {
   StyledNoActivity,
   StyledNoActivityWrapper,
   StyledReservedWrapper,
-  StyledReservedLink
+  StyledReservedLink,
+  StyledAllReserved
 } from './style'
 import ListToken from '../listToken'
 import { Type } from '../tokens'
@@ -40,6 +41,7 @@ export interface Props {
   compact?: boolean
   reservedAmount?: number
   reservedMoreLink?: string
+  onSeeAllReserved?: () => void
 }
 
 export default class WalletSummary extends React.PureComponent<Props, {}> {
@@ -123,7 +125,8 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
       onActivity,
       compact,
       reservedAmount,
-      reservedMoreLink
+      reservedMoreLink,
+      onSeeAllReserved
     } = this.props
     const date = new Date()
     const month = getLocale(`month${date.toLocaleString('en-us', { month: 'short' })}`)
@@ -145,6 +148,13 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
                 {getLocale('reservedAmountText', { reservedAmount })} <StyledReservedLink href={reservedMoreLink} target={'_blank'}>
                   {getLocale('reservedMoreLink')}
                 </StyledReservedLink>
+                {
+                  onSeeAllReserved
+                  ? <StyledAllReserved onClick={onSeeAllReserved} data-test-id={'reservedAllLink'}>
+                    {getLocale('reservedAllLink')}
+                  </StyledAllReserved>
+                  : null
+                }
               </StyledReservedWrapper>
               : null
             }

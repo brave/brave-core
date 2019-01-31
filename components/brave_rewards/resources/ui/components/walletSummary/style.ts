@@ -94,3 +94,13 @@ export const StyledReservedLink = styled<StyleProps, 'a'>('a')`
   text-decoration: none;
   display: inline-block;
 `
+
+export const StyledAllReserved = styled<StyleProps, 'button'>('button')`
+  background: none;
+  border: none;
+  padding: 0;
+  display: block;
+  margin-top: 10px;
+  color: ${palette.blue400};
+  cursor: pointer;
+`

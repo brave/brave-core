@@ -11,6 +11,7 @@ import centered from '@storybook/addon-centered'
 import TableContribute, { DetailRow as ContributeDetailRow } from '../../../src/features/rewards/tableContribute'
 import TableDonation, { DetailRow as DonationDetailRow } from '../../../src/features/rewards/tableDonation'
 import TableTransactions, { DetailRow as TransactionsRow } from '../../../src/features/rewards/tableTransactions'
+import TablePending, { DetailRow as PendingDetailRow } from '../../../src/features/rewards/tablePending'
 
 const favicon = require('../../assets/img/brave-favicon.png')
 const ddgo = require('../../assets/img/ddgo.jpg')
@@ -203,6 +204,66 @@ storiesOf('Feature Components/Rewards/Table', module)
         >
           Sorry no transactions.
         </TableTransactions>
+      </div>
+    )
+  })
+  .add('Pending contributions',() => {
+    const rows: PendingDetailRow[] = [
+      {
+        profile: {
+          name: 'Bart Baker',
+          verified: false,
+          provider: 'youtube',
+          src: bart
+        },
+        url: 'https://brave.com',
+        type: 'recurring',
+        amount: {
+          tokens: '2.0',
+          converted: '0.20'
+        },
+        date: 'Jan 2',
+        onRemove: doNothing
+      },
+      {
+        profile: {
+          verified: false,
+          name: 'theguardian.com',
+          src: guardian
+        },
+        url: 'https://brave.com',
+        type: 'tip',
+        amount: {
+          tokens: '12000.0',
+          converted: '6000.20'
+        },
+        date: 'May 7',
+        onRemove: doNothing
+      },
+      {
+        profile: {
+          verified: false,
+          name: 'BrendanEich',
+          provider: 'twitter',
+          src: eich
+        },
+        url: 'https://brave.com',
+        type: 'ac',
+        amount: {
+          tokens: '1.0',
+          converted: '0.20'
+        },
+        date: 'May 2',
+        onRemove: doNothing
+      }
+    ]
+    return (
+      <div style={{ width: '595px' }}>
+        <TablePending
+          rows={object('Rows', rows)}
+        >
+          Please visit some sites
+        </TablePending>
       </div>
     )
   })
