@@ -135,7 +135,7 @@ class LedgerImpl : public ledger::Ledger,
                           const braveledger_bat_helper::WALLET_PROPERTIES_ST&);
   void FetchWalletProperties() const override;
 
-  void FetchGrant(const std::string& lang, const std::string& paymentId) const override;
+  void FetchGrants(const std::string& lang, const std::string& paymentId) const override;
   void OnGrant(ledger::Result result, const braveledger_bat_helper::GRANT& grant);
 
   void GetGrantCaptcha() const override;
@@ -235,8 +235,8 @@ class LedgerImpl : public ledger::Ledger,
 
   const std::string& GetPaymentId() const;
   void SetPaymentId(const std::string& payment_id);
-  const braveledger_bat_helper::GRANT& GetGrant() const;
-  void SetGrant(braveledger_bat_helper::GRANT grant);
+  const braveledger_bat_helper::Grants& GetGrants() const;
+  void SetGrants(braveledger_bat_helper::Grants grants);
   const std::string& GetPersonaId() const;
   void SetPersonaId(const std::string& persona_id);
   const std::string& GetUserId() const;

@@ -80,7 +80,7 @@ class RewardsService : public KeyedService {
       bool allow_non_verified,
       uint32_t min_visits,
       const GetContentSiteListCallback& callback) = 0;
-  virtual void FetchGrant(const std::string& lang, const std::string& paymentId) = 0;
+  virtual void FetchGrants(const std::string& lang, const std::string& paymentId) = 0;
   virtual void GetGrantCaptcha() = 0;
   virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
   virtual void GetWalletPassphrase(

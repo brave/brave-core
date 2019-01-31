@@ -437,9 +437,9 @@ void LedgerClientMojoProxy::FetchWalletProperties() {
   ledger_client_->FetchWalletProperties();
 }
 
-void LedgerClientMojoProxy::FetchGrant(const std::string& lang,
+void LedgerClientMojoProxy::FetchGrants(const std::string& lang,
     const std::string& payment_id) {
-  ledger_client_->FetchGrant(lang, payment_id);
+  ledger_client_->FetchGrants(lang, payment_id);
 }
 
 void LedgerClientMojoProxy::GetGrantCaptcha() {

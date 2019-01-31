@@ -69,7 +69,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void SaveMediaPublisherInfo(const std::string& media_key,
       const std::string& publisher_id) override;
   void FetchWalletProperties() override;
-  void FetchGrant(const std::string& lang,
+  void FetchGrants(const std::string& lang,
       const std::string& payment_id) override;
   void GetGrantCaptcha() override;
 

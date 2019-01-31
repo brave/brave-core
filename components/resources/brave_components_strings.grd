@@ -316,6 +316,7 @@
       <message name="IDS_BRAVE_UI_DO_MONTHLY" desc="">Set monthly tip</message>
       <message name="IDS_BRAVE_UI_DOWNLOAD_PDF" desc="">Download as PDF</message>
       <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="">Earnings from Ads</message>
+      <message name="IDS_BRAVE_UI_EARNINGS_CLAIM_DEFAULT" desc="">Your Ads earnings are available.</message>
       <message name="IDS_BRAVE_UI_ENABLE_TIPS" desc="">Enable Tips</message>
       <message name="IDS_BRAVE_UI_EXCLUDE_SITE" desc="">Exclude this site</message>
       <message name="IDS_BRAVE_UI_EXCLUDED_SITES" desc="">Total number of sites you excluded from Auto-Contribute:</message>

@@ -42,7 +42,7 @@ declare namespace Rewards {
     enabledMain: boolean
     excluded: string[]
     firstLoad: boolean | null
-    grant?: Grant
+    grants?: Grant[]
     numExcludedSites: number
     pendingContributionTotal: number
     reconcileStamp: number
@@ -82,6 +82,13 @@ declare namespace Rewards {
     captcha?: string
     hint?: string
     status?: GrantStatus
+    type?: string
+  }
+
+  export interface GrantResponse {
+    promotionId?: string
+    status?: number
+    type?: string
   }
 
   export interface WalletProperties {

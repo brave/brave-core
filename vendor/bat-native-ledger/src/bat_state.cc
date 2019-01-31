@@ -203,12 +203,12 @@ void BatState::SetPaymentId(const std::string& payment_id) {
   SaveState();
 }
 
-const braveledger_bat_helper::GRANT& BatState::GetGrant() const {
-  return state_->grant_;
+const braveledger_bat_helper::Grants& BatState::GetGrants() const {
+  return state_->grants_;
 }
 
-void BatState::SetGrant(braveledger_bat_helper::GRANT grant) {
-  state_->grant_ = grant;
+void BatState::SetGrants(braveledger_bat_helper::Grants grants) {
+  state_->grants_ = grants;
   SaveState();
 }
 

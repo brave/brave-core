@@ -38,6 +38,7 @@ struct TRANSACTION_BALLOT_ST;
 struct TRANSACTION_ST;
 struct TWITCH_EVENT_INFO;
 struct WALLET_INFO_ST;
+struct GRANTS_PROPERTIES_ST;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
@@ -53,6 +54,7 @@ void saveToJson(JsonWriter & writer, const TRANSACTION_BALLOT_ST&);
 void saveToJson(JsonWriter & writer, const TRANSACTION_ST&);
 void saveToJson(JsonWriter & writer, const TWITCH_EVENT_INFO&);
 void saveToJson(JsonWriter & writer, const WALLET_INFO_ST&);
+void saveToJson(JsonWriter & writer, const GRANTS_PROPERTIES_ST&);
 void saveToJson(JsonWriter & writer, const ledger::AutoContributeProps&);
 void saveToJson(JsonWriter & writer, const ledger::BalanceReportInfo&);
 void saveToJson(JsonWriter & writer, const ledger::ContributionInfo&);

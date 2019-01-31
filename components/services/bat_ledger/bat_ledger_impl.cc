@@ -168,9 +168,9 @@ void BatLedgerImpl::OnReconcileCompleteSuccess(const std::string& viewing_id,
       ToLedgerPublisherMonth(month), year, data);
 }
 
-void BatLedgerImpl::FetchGrant(const std::string& lang,
+void BatLedgerImpl::FetchGrants(const std::string& lang,
     const std::string& payment_id) {
-  ledger_->FetchGrant(lang, payment_id);
+  ledger_->FetchGrants(lang, payment_id);
 }
 
 void BatLedgerImpl::GetGrantCaptcha() {

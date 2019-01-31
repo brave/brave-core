@@ -16,6 +16,7 @@
 
 
 #define PREFIX_V2                       "/v2"
+#define PREFIX_V4                       "/v4"
 #define REGISTER_PERSONA                "/registrar/persona"
 #define REGISTER_VIEWING                "/registrar/viewing"
 #define WALLET_PROPERTIES               "/wallet/"

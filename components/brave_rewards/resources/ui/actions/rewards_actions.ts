@@ -25,9 +25,9 @@ export const onWalletProperties = (properties: {status: number, wallet: Rewards.
     properties
   })
 
-export const getGrant = () => action(types.GET_GRANT)
+export const getGrants = () => action(types.GET_GRANTS)
 
-export const onGrant = (properties: Rewards.Grant) => action(types.ON_GRANT, {
+export const onGrant = (properties: Rewards.GrantResponse) => action(types.ON_GRANT, {
   properties
 })
 

@@ -25,6 +25,7 @@ LEDGER_EXPORT struct Grant {
   std::string probi;
   std::string promotionId;
   uint64_t expiryTime;
+  std::string type;
 };
 
 }  // namespace ledger

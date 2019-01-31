@@ -588,12 +588,12 @@ void BatLedgerClientMojoProxy::FetchWalletProperties() {
   bat_ledger_client_->FetchWalletProperties();
 }
 
-void BatLedgerClientMojoProxy::FetchGrant(const std::string& lang,
+void BatLedgerClientMojoProxy::FetchGrants(const std::string& lang,
     const std::string& paymentId) {
   if (!Connected())
     return;
 
-  bat_ledger_client_->FetchGrant(lang, paymentId);
+  bat_ledger_client_->FetchGrants(lang, paymentId);
 }
 
 void BatLedgerClientMojoProxy::GetGrantCaptcha() {
