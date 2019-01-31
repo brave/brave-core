@@ -239,5 +239,29 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+BraveRewardsGetACEnabledFunction::
+~BraveRewardsGetACEnabledFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetACEnabledFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service_ =
+    RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service_) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  rewards_service_->GetAutoContribute(base::Bind(
+        &BraveRewardsGetACEnabledFunction::OnGetACEnabled,
+        this));
+  return RespondLater();
+}
+
+void BraveRewardsGetACEnabledFunction::OnGetACEnabled(bool enabled) {
+  Respond(OneArgument(std::make_unique<base::Value>(enabled)));
+}
+
 }  // namespace api
 }  // namespace extensions

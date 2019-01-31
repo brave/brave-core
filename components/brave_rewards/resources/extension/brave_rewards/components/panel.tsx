@@ -289,7 +289,7 @@ export class Panel extends React.Component<Props, State> {
   }
 
   render () {
-    const { grant, pendingContributionTotal } = this.props.rewardsPanelData
+    const { grant, pendingContributionTotal, enabledAC } = this.props.rewardsPanelData
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const converted = utils.convertBalance(balance.toString(), rates)
@@ -357,6 +357,7 @@ export class Panel extends React.Component<Props, State> {
               onAmountChange={this.doNothing}
               onIncludeInAuto={this.switchAutoContribute}
               showUnVerified={!publisher.verified}
+              acEnabled={enabledAC}
               moreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
             />
             : null

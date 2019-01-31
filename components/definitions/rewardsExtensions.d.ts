@@ -1,6 +1,7 @@
 declare namespace RewardsExtension {
   interface State {
     currentNotification?: string
+    enabledAC: boolean
     enabledMain: boolean
     notifications: Record<number, Notification>
     publishers: Record<string, Publisher>
