@@ -31,7 +31,9 @@ export const onGrant = (properties: Rewards.GrantResponse) => action(types.ON_GR
   properties
 })
 
-export const getGrantCaptcha = () => action(types.GET_GRANT_CAPTCHA)
+export const getGrantCaptcha = (promotionId?: string) => action(types.GET_GRANT_CAPTCHA, {
+  promotionId
+})
 
 export const onGrantCaptcha = (captcha: Rewards.Captcha) => action(types.ON_GRANT_CAPTCHA, {
   captcha

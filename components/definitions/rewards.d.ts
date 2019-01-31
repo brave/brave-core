@@ -35,6 +35,7 @@ declare namespace Rewards {
     contributionNonVerified: boolean
     contributionVideos: boolean
     createdTimestamp: number | null
+    currentGrant?: Grant
     donationAbilityTwitter: boolean
     donationAbilityYT: boolean
     enabledAds: boolean

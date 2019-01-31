@@ -41,8 +41,8 @@ class Grant extends React.Component<Props, State> {
     return this.props.actions
   }
 
-  onGrantShow = () => {
-    this.actions.getGrantCaptcha()
+  onGrantShow = (promotionId?: string) => {
+    this.actions.getGrantCaptcha(promotionId)
   }
 
   onGrantHide = () => {
@@ -143,10 +143,14 @@ class Grant extends React.Component<Props, State> {
     }
 
     let type
+    let promoId
     let tokens = '0.0'
 
     if (grant.type) {
       type = grant.type
+    }
+    if (grant.promotionId) {
+      promoId = grant.promotionId
     }
     if (grant.probi) {
       tokens = convertProbiToFixed(grant.probi)
@@ -156,7 +160,7 @@ class Grant extends React.Component<Props, State> {
       <>
         {
           this.state.grantShow && type
-            ? <GrantClaim type={type as Type} onClaim={this.onGrantShow}/>
+            ? <GrantClaim type={type as Type} onClaim={this.onGrantShow.bind(this, promoId)}/>
             : null
         }
         {
