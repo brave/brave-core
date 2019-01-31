@@ -56,6 +56,7 @@ declare namespace chrome.braveRewards {
   const onWalletFailed: {
     addListener: (callback: () => void) => void
   }
+  const getACEnabled: (callback: (enabled: boolean) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

@@ -374,6 +374,23 @@
         ]
       },
       {
+        "name": "getACEnabled",
+        "type": "function",
+        "description": "Gets whether auto contribute is enabled",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "enabled",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "saveAdsSetting",
         "type": "function",
         "description": "Updates settings related to ads service.",
