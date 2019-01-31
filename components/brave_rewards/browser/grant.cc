@@ -16,6 +16,7 @@ namespace brave_rewards {
     probi = properties.probi;
     promotionId = properties.promotionId;
     expiryTime = properties.expiryTime;
+    type = properties.type;
   }
 
 }  // namespace brave_rewards

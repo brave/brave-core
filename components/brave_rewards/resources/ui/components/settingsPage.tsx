@@ -60,7 +60,7 @@ class SettingsPage extends React.Component<Props, {}> {
       this.actions.getAdsData()
     }
     this.actions.checkImported()
-    this.actions.getGrant()
+    this.actions.getGrants()
 
     // one time check (legacy fix)
     // more info here https://github.com/brave/brave-browser/issues/2172
@@ -95,12 +95,34 @@ class SettingsPage extends React.Component<Props, {}> {
     }
   }
 
+  getGrantClaims = () => {
+    const { grants } = this.props.rewardsData
+
+    if (!grants) {
+      return null
+    }
+
+    return (
+      <>
+        {grants.map((grant?: Rewards.Grant) => {
+          if (!grant || !grant.promotionId) {
+            return null
+          }
+
+          return (
+            <Grant grant={grant} />
+          )
+        })}
+      </>
+    )
+  }
+
   componentWillUnmount () {
     clearInterval(this.balanceTimerId)
   }
 
   render () {
-    const { enabledMain, grant } = this.props.rewardsData
+    const { enabledMain } = this.props.rewardsData
 
     return (
       <Page>
@@ -117,9 +139,9 @@ class SettingsPage extends React.Component<Props, {}> {
           </Column>
           <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             {
-              enabledMain && grant && grant.promotionId
-                ? <Grant/>
-                : null
+              enabledMain
+              ? this.getGrantClaims()
+              : null
             }
             <PageWallet />
           </Column>

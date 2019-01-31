@@ -25,7 +25,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/bindings_policy.h"
-
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_generated_map.h"
@@ -57,7 +56,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetAllBalanceReports();
   void HandleCreateWalletRequested(const base::ListValue* args);
   void GetWalletProperties(const base::ListValue* args);
-  void GetGrant(const base::ListValue* args);
+  void GetGrants(const base::ListValue* args);
   void GetGrantCaptcha(const base::ListValue* args);
   void GetWalletPassphrase(const base::ListValue* args);
   void RecoverWallet(const base::ListValue* args);
@@ -184,8 +183,8 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.getWalletProperties",
       base::BindRepeating(&RewardsDOMHandler::GetWalletProperties,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.getGrant",
-                                    base::BindRepeating(&RewardsDOMHandler::GetGrant,
+  web_ui()->RegisterMessageCallback("brave_rewards.getGrants",
+                                    base::BindRepeating(&RewardsDOMHandler::GetGrants,
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getGrantCaptcha",
                                     base::BindRepeating(&RewardsDOMHandler::GetGrantCaptcha,
@@ -415,19 +414,20 @@ void RewardsDOMHandler::OnGrant(
   if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue newGrant;
     newGrant.SetInteger("status", result);
+    newGrant.SetString("type", grant.type);
     newGrant.SetString("promotionId", grant.promotionId);
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grant", newGrant);
   }
 }
 
-void RewardsDOMHandler::GetGrant(const base::ListValue* args) {
+void RewardsDOMHandler::GetGrants(const base::ListValue* args) {
   if (rewards_service_) {
     std::string lang;
     std::string paymentId;
     args->GetString(0, &lang);
     args->GetString(1, &paymentId);
-    rewards_service_->FetchGrant(lang, paymentId);
+    rewards_service_->FetchGrants(lang, paymentId);
   }
 }
 

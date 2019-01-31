@@ -1292,13 +1292,13 @@ void RewardsServiceImpl::FetchWalletProperties() {
   }
 }
 
-void RewardsServiceImpl::FetchGrant(const std::string& lang,
+void RewardsServiceImpl::FetchGrants(const std::string& lang,
     const std::string& payment_id) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->FetchGrant(lang, payment_id);
+  bat_ledger_->FetchGrants(lang, payment_id);
 }
 
 void RewardsServiceImpl::TriggerOnGrant(ledger::Result result,
@@ -1309,6 +1309,7 @@ void RewardsServiceImpl::TriggerOnGrant(ledger::Result result,
   properties.altcurrency = grant.altcurrency;
   properties.probi = grant.probi;
   properties.expiryTime = grant.expiryTime;
+  properties.type = grant.type;
 
   for (auto& observer : observers_)
     observer.OnGrant(this, result, properties);

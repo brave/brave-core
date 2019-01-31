@@ -17,6 +17,7 @@ namespace brave_rewards {
     std::string probi;
     std::string promotionId;
     uint64_t expiryTime;
+    std::string type;
   };
 
 }  // namespace brave_rewards

@@ -54,7 +54,8 @@ export const defaultState: Rewards.State = {
     adsPerHour: 0,
     adsUIEnabled: false
   },
-  pendingContributionTotal: 0
+  pendingContributionTotal: 0,
+  grants: []
 }
 
 const cleanData = (state: Rewards.State) => state

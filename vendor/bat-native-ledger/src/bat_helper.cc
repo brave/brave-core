@@ -8,7 +8,6 @@
 #include <random>
 #include <regex>
 #include <algorithm>
-
 #include <openssl/base64.h>
 #include <openssl/digest.h>
 #include <openssl/hkdf.h>
@@ -967,6 +966,80 @@ void saveToJson(JsonWriter & writer, const WALLET_PROPERTIES_ST& data) {
 }
 
 /////////////////////////////////////////////////////////////////////////////
+GRANTS_PROPERTIES_ST::GRANTS_PROPERTIES_ST() {}
+
+GRANTS_PROPERTIES_ST::GRANTS_PROPERTIES_ST(const GRANTS_PROPERTIES_ST& properties) {
+  grants_ = properties.grants_;
+}
+
+GRANTS_PROPERTIES_ST::~GRANTS_PROPERTIES_ST() {}
+
+bool GRANTS_PROPERTIES_ST::loadFromJson(const std::string & json) {
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  bool error = d.HasParseError();
+  if (false == error) {
+    error = !(d.HasMember("grants") && d["grants"].IsArray());
+  }
+
+  if (false == error) {
+    for (auto &i : d["grants"].GetArray()) {
+      GRANT_RESPONSE grant;
+      auto obj = i.GetObject();
+
+      if (obj.HasMember("promotionId")) {
+        grant.promotionId = obj["promotionId"].GetString();
+      }
+
+      if (obj.HasMember("minimumReconcileTimestamp")) {
+        grant.minimumReconcileTimestamp = obj["minimumReconcileTimestamp"].GetUint64();
+      }
+
+      if (obj.HasMember("protocolVersion")) {
+        grant.protocolVersion = obj["protocolVersion"].GetUint64();
+      }
+
+      if (obj.HasMember("type")) {
+        grant.type = obj["type"].GetString();
+      }
+
+      grants_.push_back(grant);
+    }
+  } else {
+    grants_.clear();
+  }
+  return !error;
+}
+
+void saveToJson(JsonWriter & writer, const GRANTS_PROPERTIES_ST& properties) {
+  writer.StartObject();
+
+  writer.String("grants");
+  writer.StartArray();
+  for (const auto& grant : properties.grants_) {
+    writer.StartObject();
+
+    writer.String("promotionId");
+    writer.String(grant.promotionId.c_str());
+
+    writer.String("minimumReconcileTimestamp");
+    writer.Uint64(grant.minimumReconcileTimestamp);
+
+    writer.String("protocolVersion");
+    writer.Uint64(grant.protocolVersion);
+
+    writer.String("type");
+    writer.String(grant.type.c_str());
+
+    writer.EndObject();
+  }
+  writer.EndArray();
+
+  writer.EndObject();
+}
+
+/////////////////////////////////////////////////////////////////////////////
 GRANT::GRANT() : expiryTime(0) {}
 
 GRANT::~GRANT() {}
@@ -976,9 +1049,59 @@ GRANT::GRANT(const GRANT &properties) {
   altcurrency = properties.altcurrency;
   expiryTime = properties.expiryTime;
   probi = properties.probi;
+  type = properties.type;
 }
 
 bool GRANT::loadFromJson(const std::string & json) {
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  //has parser errors or wrong types
+  bool error = d.HasParseError();
+  if (error == true) {
+    return !error;
+  }
+
+  // First grant get
+  error = !(
+      d.HasMember("promotionId") && d["promotionId"].IsString()
+  );
+
+  if (error == false) {
+    promotionId = d["promotionId"].GetString();
+    return !error;
+  }
+
+  // On successful grant
+  error = !(
+      d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
+      d.HasMember("expiryTime") && d["expiryTime"].IsNumber() &&
+      d.HasMember("probi") && d["probi"].IsString() &&
+      d.HasMember("type") && d["type"].IsString()
+  );
+
+  if (error == false) {
+    altcurrency = d["altcurrency"].GetString();
+    expiryTime = d["expiryTime"].GetUint64();
+    probi = d["probi"].GetString();
+    type = d["type"].GetString();
+  }
+
+  return !error;
+}
+
+GRANT_RESPONSE::GRANT_RESPONSE () {}
+
+GRANT_RESPONSE::~GRANT_RESPONSE () {}
+
+GRANT_RESPONSE::GRANT_RESPONSE(const GRANT_RESPONSE &properties) {
+  promotionId = properties.promotionId;
+  minimumReconcileTimestamp = properties.minimumReconcileTimestamp;
+  protocolVersion = properties.protocolVersion;
+  type = properties.type;
+}
+
+bool GRANT_RESPONSE::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
@@ -2676,6 +2799,9 @@ void saveToJson(JsonWriter& writer, const ledger::Grant& grant) {
 
   writer.String("expiryTime");
   writer.Uint64(grant.expiryTime);
+
+  writer.String("type");
+  writer.String(grant.type.c_str());
 
   writer.EndObject();
 }

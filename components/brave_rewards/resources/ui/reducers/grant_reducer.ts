@@ -5,32 +5,44 @@
 import { Reducer } from 'redux'
 
 // Constant
+// Temporary (ryanml)
 import { types } from '../constants/rewards_types'
 
 const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
-    case types.GET_GRANT:
-      chrome.send('brave_rewards.getGrant', [])
+    case types.GET_GRANTS:
+      chrome.send('brave_rewards.getGrants', [])
       break
     case types.ON_GRANT:
       state = { ...state }
-      // TODO NZ check why enum can't be used inside Rewards namespace
       if (action.payload.properties.status === 1) {
-        state.grant = undefined
         break
       }
 
-      state.grant = {
+      if (!state.grants) {
+        state.grants = []
+      }
+
+      state.grants.push({
         promotionId: action.payload.properties.promotionId,
         expiryTime: 0,
-        probi: ''
+        probi: '',
+        type: action.payload.properties.type
+      })
+
+      state = {
+        ...state,
+        grants: state.grants
       }
+
       break
     case types.GET_GRANT_CAPTCHA:
       chrome.send('brave_rewards.getGrantCaptcha', [])
       break
     case types.ON_GRANT_CAPTCHA:
       {
+        // Temporary (ryanml)
+        /*
         if (state.grant) {
           let grant = state.grant
           const props = action.payload.captcha
@@ -43,6 +55,7 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
         }
 
         break
+        */
       }
     case types.SOLVE_GRANT_CAPTCHA:
       if (action.payload.x && action.payload.y) {
@@ -54,6 +67,8 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
       break
     case types.ON_GRANT_RESET:
       {
+        // Temporary (ryanml)
+        /*
         if (state.grant) {
           const grant: Rewards.Grant = {
             promotionId: state.grant.promotionId,
@@ -68,9 +83,12 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
         }
 
         break
+        */
       }
     case types.ON_GRANT_DELETE:
       {
+        // Temporary (ryanml)
+        /*
         if (state.grant) {
           delete state.grant
 
@@ -80,9 +98,12 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
         }
 
         break
+        */
       }
     case types.ON_GRANT_FINISH:
       {
+        // Temporary (ryanml)
+        /*
         state = { ...state }
         const properties: Rewards.Grant = action.payload.properties
         // TODO NZ check why enum can't be used inside Rewards namespace
@@ -149,6 +170,7 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
           }
         }
         break
+        */
       }
   }
 

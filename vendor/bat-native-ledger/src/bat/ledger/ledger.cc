@@ -519,6 +519,7 @@ Grant::Grant(const ledger::Grant &properties) {
   expiryTime = properties.expiryTime;
   probi = properties.probi;
   altcurrency = properties.altcurrency;
+  type = properties.type;
 }
 
 const std::string Grant::ToJson() const {
@@ -538,7 +539,8 @@ bool Grant::loadFromJson(const std::string& json) {
     error = !(d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
         d.HasMember("probi") && d["probi"].IsString() &&
         d.HasMember("promotionId") && d["promotionId"].IsString() &&
-        d.HasMember("expiryTime") && d["expiryTime"].IsUint64());
+        d.HasMember("expiryTime") && d["expiryTime"].IsUint64()) &&
+        d.HasMember("type") && d["type"].IsString();
   }
 
   if (false == error) {
@@ -546,6 +548,7 @@ bool Grant::loadFromJson(const std::string& json) {
     probi = d["probi"].GetString();
     promotionId = d["promotionId"].GetString();
     expiryTime = d["expiryTime"].GetUint64();
+    type = d["type"].GetString();
   }
 
   return !error;

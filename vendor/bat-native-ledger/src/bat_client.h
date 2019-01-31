@@ -48,11 +48,10 @@ class BatClient {
 
   void recoverWallet(const std::string& passPhrase);
 
-  void getGrant(const std::string& lang, const std::string& forPaymentId);
+  void getGrants(const std::string& lang, const std::string& forPaymentId);
 
-  void setGrant(const std::string& captchaResponse,
-                const std::string& promotionId);
-
+  void setGrants(const std::string& captchaResponse,
+                 const std::string& promotionId);
   void getGrantCaptcha();
 
   void getWalletProperties();
@@ -73,7 +72,7 @@ class BatClient {
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
-  void getGrantCallback(
+  void getGrantsCallback(
       bool result,
       const std::string& response,
       const std::map<std::string, std::string>& headers);

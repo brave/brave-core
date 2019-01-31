@@ -93,7 +93,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void SaveMediaPublisherInfo(const std::string& media_key, const std::string& publisher_id) override;
 
   void FetchWalletProperties() override;
-  void FetchGrant(const std::string& lang, const std::string& paymentId) override;
+  void FetchGrants(const std::string& lang, const std::string& paymentId) override;
   void GetGrantCaptcha() override;
 
   std::string URIEncode(const std::string& value) override;

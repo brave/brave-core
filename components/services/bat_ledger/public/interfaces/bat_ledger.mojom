@@ -52,7 +52,7 @@ interface BatLedger {
   OnReconcileCompleteSuccess(string viewing_id, int32 category, string probi,
       int32 month, int32 year, uint32 data);
 
-  FetchGrant(string lang, string payment_id);
+  FetchGrants(string lang, string payment_id);
   GetGrantCaptcha();
   GetWalletPassphrase() => (string wallet_passphrase);
   GetNumExcludedSites() => (uint32 num_excluded_sites);
@@ -151,7 +151,7 @@ interface BatLedgerClient {
       string publisher_key, int32 category);
   SaveMediaPublisherInfo(string media_key, string publisher_id);
   FetchWalletProperties();
-  FetchGrant(string lang, string payment_id);
+  FetchGrants(string lang, string payment_id);
   GetGrantCaptcha();
 
   [Sync]
