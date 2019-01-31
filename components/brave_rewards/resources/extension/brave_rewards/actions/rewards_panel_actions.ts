@@ -94,3 +94,7 @@ export const OnPendingContributionsTotal = (amount: number) => action(types.ON_P
 export const onEnabledMain = (enabledMain: boolean) => action(types.ON_ENABLED_MAIN, {
   enabledMain
 })
+
+export const onEnabledAC = (enabled: boolean) => action(types.ON_ENABLED_AC, {
+  enabled
+})
