@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -9,7 +10,7 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/common/extensions/api/settings_private.h"
 
-namespace extensions{
+namespace extensions {
 
 namespace settings_api = api::settings_private;
 
@@ -40,6 +41,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   // appearance prefs
   (*s_brave_whitelist)[kLocationBarIsWide] =
     settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kHideBraveRewardsButton] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // WebTorrent pref
   (*s_brave_whitelist)[kWebTorrentEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
@@ -49,4 +52,4 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   return *s_brave_whitelist;
 }
 
-}
+}  // namespace extensions

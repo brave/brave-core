@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -25,13 +26,17 @@ const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
 const char kReferralPromoCode[] = "brave.referral.promo_code";
 const char kReferralDownloadID[] = "brave.referral.download_id";
 const char kReferralTimestamp[] = "brave.referral.timestamp";
-const char kReferralAttemptTimestamp[] = "brave.referral.referral_attempt_timestamp";
+const char kReferralAttemptTimestamp[] =
+    "brave.referral.referral_attempt_timestamp";
 const char kReferralAttemptCount[] = "brave.referral.referral_attempt_count";
 const char kReferralHeaders[] = "brave.referral.headers";
-const char kReferralCheckedForPromoCodeFile[] = "brave.referral.checked_for_promo_code_file";
+const char kReferralCheckedForPromoCodeFile[] =
+    "brave.referral.checked_for_promo_code_file";
 const char kHTTPSEVerywhereControlType[] = "brave.https_everywhere_default";
 const char kNoScriptControlType[] = "brave.no_script_default";
 const char kMigratedMuonProfile[] = "brave.muon.migrated_profile";
-const char kBravePaymentsPinnedItemCount[] = "brave.muon.import_pinned_item_count";
+const char kBravePaymentsPinnedItemCount[] =
+    "brave.muon.import_pinned_item_count";
 const char kWebTorrentEnabled[] = "brave.webtorrent_enabled";
 const char kHangoutsEnabled[] = "brave.hangouts_enabled";
+const char kHideBraveRewardsButton[] = "brave.hide_brave_rewards_button";
