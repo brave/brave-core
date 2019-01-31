@@ -23,7 +23,8 @@ import {
   StyledColumn,
   StyleToggleTips,
   StyledNoticeWrapper,
-  StyledNoticeLink
+  StyledNoticeLink,
+  StyledProfileWrapper
 } from './style'
 
 // Components
@@ -56,6 +57,7 @@ export interface Props {
   onIncludeInAuto: () => void
   showUnVerified?: boolean
   moreLink?: string
+  acEnabled?: boolean
 }
 
 export default class WalletPanel extends React.PureComponent<Props, {}> {
@@ -63,7 +65,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
     const publisherTitle = this.props.publisherName || ''
 
     return (
-      <StyledWrapper>
+      <StyledProfileWrapper>
         <Profile
           type={'big'}
           title={publisherTitle}
@@ -74,7 +76,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
             !this.props.isVerified && this.props.showUnVerified
           }
         />
-      </StyledWrapper>
+      </StyledProfileWrapper>
     )
   }
 
@@ -112,31 +114,42 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
   }
 
   donationControls () {
-    const { donationAmounts } = this.props
+    const { donationAmounts, acEnabled } = this.props
+
+    if (!donationAmounts && !acEnabled) {
+      return null
+    }
+
     return (
       <StyledWrapper>
-        <StyledGrid>
-          <StyledColumn size={'5'}>
-            <StyledDonateText>{getLocale('includeInAuto')}</StyledDonateText>
-          </StyledColumn>
-          <StyledColumn size={'1'}>
-            <StyledToggleWrapper>
-              <Toggle
-                size={'small'}
-                checked={this.props.includeInAuto}
-                onToggle={this.props.onIncludeInAuto}
-              />
-            </StyledToggleWrapper>
-          </StyledColumn>
-        </StyledGrid>
-        {donationAmounts ? (
-          <StyledGrid>
+        {
+          acEnabled
+          ? <StyledGrid>
+            <StyledColumn size={'5'}>
+              <StyledDonateText>{getLocale('includeInAuto')}</StyledDonateText>
+            </StyledColumn>
+            <StyledColumn size={'1'}>
+              <StyledToggleWrapper>
+                <Toggle
+                  size={'small'}
+                  checked={this.props.includeInAuto}
+                  onToggle={this.props.onIncludeInAuto}
+                />
+              </StyledToggleWrapper>
+            </StyledColumn>
+          </StyledGrid>
+          : null
+        }
+        {
+          donationAmounts
+          ? <StyledGrid>
             <StyledColumn size={'5'}>
               <StyledDonateText>{getLocale('donateMonthly')}</StyledDonateText>
             </StyledColumn>
             <StyledColumn size={'1'}>{this.donationDropDown()}</StyledColumn>
           </StyledGrid>
-        ) : null}
+          : null
+        }
       </StyledWrapper>
     )
   }
@@ -152,37 +165,50 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
       toggleTips,
       showUnVerified,
       isVerified,
-      moreLink
+      moreLink,
+      acEnabled
     } = this.props
+
+    const donationControls = this.donationControls()
 
     return (
       <StyledWrapper>
         <StyledContainer id={id}>
           {this.publisherInfo()}
-          {!isVerified && showUnVerified ? (
-            <StyledNoticeWrapper>
+          {
+            !isVerified && showUnVerified
+            ? <StyledNoticeWrapper>
               {getLocale('unVerifiedText')}{' '}
               <StyledNoticeLink href={moreLink} target={'_blank'}>
                 {' '}
                 {getLocale('unVerifiedTextMore')}
               </StyledNoticeLink>
             </StyledNoticeWrapper>
-          ) : null}
-          <StyledScoreWrapper>
-            <StyledGrid>
-              <StyledColumn size={'5'}>
-                <StyledAttentionScoreTitle>
-                  {getLocale('rewardsContributeAttentionScore')}
-                </StyledAttentionScoreTitle>
-              </StyledColumn>
-              <StyledColumn size={'1'}>
-                <StyledAttentionScore>{attentionScore}%</StyledAttentionScore>
-              </StyledColumn>
-            </StyledGrid>
-          </StyledScoreWrapper>
-          <StyledControlsWrapper>
-            {this.donationControls()}
-          </StyledControlsWrapper>
+            : null
+          }
+          {
+            acEnabled
+            ? <StyledScoreWrapper>
+              <StyledGrid>
+                <StyledColumn size={'5'}>
+                  <StyledAttentionScoreTitle>
+                    {getLocale('rewardsContributeAttentionScore')}
+                  </StyledAttentionScoreTitle>
+                </StyledColumn>
+                <StyledColumn size={'1'}>
+                  <StyledAttentionScore>{attentionScore}%</StyledAttentionScore>
+                </StyledColumn>
+              </StyledGrid>
+            </StyledScoreWrapper>
+            : null
+          }
+          {
+            donationControls
+            ? <StyledControlsWrapper>
+              {donationControls}
+            </StyledControlsWrapper>
+            : null
+          }
           <StyledDonateWrapper>
             <RewardsButton
               type={'tip'}

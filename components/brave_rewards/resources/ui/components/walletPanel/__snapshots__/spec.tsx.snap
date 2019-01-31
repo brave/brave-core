@@ -5,143 +5,25 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   display: block;
 }
 
+.c2 {
+  margin-bottom: 15px;
+}
+
 .c1 {
   padding: 25px 30px 25px 30px;
 }
 
-.c13 {
-  margin-left: 30px;
-  font-weight: 500;
-  color: #4B4C5C;
-  font-size: 14px;
-}
-
-.c11 {
-  font-weight: 400;
-  color: #4B4C5C;
-  font-size: 14px;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  margin: 0 0 0 2px;
-}
-
-.c8 {
-  padding: 15px 0px 6px;
-}
-
-.c14 {
-  padding: 5px 0px;
-  border-top: 1px solid #DBDFE3;
-  border-bottom: 1px solid #DBDFE3;
-}
-
-.c15 {
-  display: inline-block;
-  font-size: 14px;
-  font-weight: normal;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  line-height: 26px;
-  margin-left: 2px;
-  color: #7C7D8C;
-}
-
-.c22 {
+.c9 {
   text-align: center;
   padding: 15px 0 0;
   margin: 0 auto;
 }
 
-.c16 {
-  margin-top: 6px;
-}
-
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-}
-
-.c10 {
-  -webkit-flex: 5 0 0;
-  -ms-flex: 5 0 0;
-  flex: 5 0 0;
-}
-
 .c12 {
-  -webkit-flex: 1 0 0;
-  -ms-flex: 1 0 0;
-  flex: 1 0 0;
-}
-
-.c25 {
   display: none;
 }
 
-.c17 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.c19 {
-  position: relative;
-  display: block;
-  height: 16px;
-  width: 28px;
-}
-
-.c20 {
-  background: #A7ACB2;
-  height: 6px;
-  margin-top: 5px;
-  width: 100%;
-  border-radius: 3px;
-}
-
-.c21 {
-  position: relative;
-  border-radius: 50%;
-  -webkit-transition: all .4s ease;
-  transition: all .4s ease;
-  --toggle-bullet-size: 16px;
-  --toggle-bullet-transform: translate(-1px,calc(-50% - 3px));
-  --toggle-bullet-background: #CDD1D5;
-  width: var(--toggle-bullet-size);
-  height: var(--toggle-bullet-size);
-  -webkit-transform: var(--toggle-bullet-transform);
-  -ms-transform: var(--toggle-bullet-transform);
-  transform: var(--toggle-bullet-transform);
-  background-color: var(--toggle-bullet-background);
-  box-shadow: 0 3px 3px rgba(0,0,0,0.05);
-}
-
-.c18 {
-  color: #838391;
-  font-size: 12px;
-  font-family: Poppins,sans-serif;
-  text-align: right;
-  -webkit-letter-spacing: 0.4px;
-  -moz-letter-spacing: 0.4px;
-  -ms-letter-spacing: 0.4px;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  margin: 0px 8px 0 0;
-  opacity: 1;
-  -webkit-transition: 100ms ease-out;
-  transition: 100ms ease-out;
-}
-
-.c2 {
+.c3 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -164,7 +46,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   font-family: Poppins,sans-serif;
 }
 
-.c3 {
+.c4 {
   -webkit-flex-basis: 30px;
   -ms-flex-preferred-size: 30px;
   flex-basis: 30px;
@@ -172,13 +54,13 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   height: 48px;
 }
 
-.c4 {
+.c5 {
   border-radius: 50%;
   width: 48px;
   height: 48px;
 }
 
-.c5 {
+.c6 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -193,7 +75,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   padding-left: 11px;
 }
 
-.c6 {
+.c7 {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -202,7 +84,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   margin-left: 0px;
 }
 
-.c7 {
+.c8 {
   font-size: 18px;
   font-weight: 500;
   line-height: 1.22;
@@ -213,7 +95,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   color: #4B4C5C;
 }
 
-.c23 {
+.c10 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -231,7 +113,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   border: 1px solid #A1A8F2;
 }
 
-.c24 {
+.c11 {
   font-family: Poppins,sans-serif;
   font-weight: 600;
   text-transform: uppercase;
@@ -250,31 +132,31 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
     id="wallet-panel"
   >
     <div
-      className="c0"
+      className="c2"
     >
       <div
-        className="c2"
+        className="c3"
       >
         <div
-          className="c3"
+          className="c4"
           type="big"
         >
           <img
-            className="c4"
+            className="c5"
             src=""
             type="big"
           />
         </div>
         <div
-          className="c5"
+          className="c6"
           type="big"
         >
           <div
-            className="c6"
+            className="c7"
             type="big"
           >
             <span
-              className="c7"
+              className="c8"
               type="big"
             >
               
@@ -283,99 +165,15 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
         </div>
       </div>
     </div>
-    <section
-      className="c8"
-    >
-      <div
-        className="c9"
-      >
-        <div
-          className="c10"
-          size="5"
-        >
-          <span
-            className="c11"
-          >
-            MISSING: rewardsContributeAttentionScore
-          </span>
-        </div>
-        <div
-          className="c12"
-          size="1"
-        >
-          <span
-            className="c13"
-          >
-            %
-          </span>
-        </div>
-      </div>
-    </section>
-    <section
-      className="c14"
-    >
-      <div
-        className="c0"
-      >
-        <div
-          className="c9"
-        >
-          <div
-            className="c10"
-            size="5"
-          >
-            <span
-              className="c15"
-            >
-              MISSING: includeInAuto
-            </span>
-          </div>
-          <div
-            className="c12"
-            size="1"
-          >
-            <div
-              className="c16"
-            >
-              <div
-                className="c17"
-              >
-                <div
-                  className="c18"
-                  size="small"
-                >
-                  MISSING: off
-                </div>
-                <div
-                  className="c19"
-                  data-test-id="toggle"
-                  size="small"
-                >
-                  <div
-                    className="c20"
-                    size="small"
-                  />
-                  <div
-                    className="c21"
-                    size="small"
-                    type="dark"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
     <div
-      className="c22"
+      className="c9"
     >
       <button
-        className="c23"
+        className="c10"
         type="tip"
       >
         <span
-          className="c24"
+          className="c11"
         >
           MISSING: donateNow
         </span>
@@ -383,7 +181,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
     </div>
   </div>
   <div
-    className="c25"
+    className="c12"
   />
 </div>
 `;

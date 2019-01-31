@@ -111,6 +111,7 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
           isVerified={boolean('Verified', true)}
           tipsEnabled={boolean('Tips Enabled', true)}
           includeInAuto={boolean('Include in monthly', true)}
+          acEnabled={boolean('AC enabled?', true)}
           attentionScore={'15'}
           donationAmounts={
             [

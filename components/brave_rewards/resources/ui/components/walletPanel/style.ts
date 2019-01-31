@@ -14,6 +14,10 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   display: block;
 ` as any
 
+export const StyledProfileWrapper = styled<{}, 'div'>('div')`
+  margin-bottom: 15px;
+` as any
+
 export const StyledContainer = styled<{}, 'div'>('div')`
   padding: 25px 30px 25px 30px;
 ` as any
@@ -34,7 +38,7 @@ export const StyledAttentionScoreTitle = styled<{}, 'span'>('span')`
 ` as any
 
 export const StyledScoreWrapper = styled<{}, 'section'>('section')`
-  padding: 15px 0px 6px;
+  padding: 0 0px 6px;
 ` as any
 
 export const StyledControlsWrapper = styled<{}, 'section'>('section')`
