@@ -576,4 +576,77 @@ void BatLedgerImpl::GetShareURL(
   std::move(callback).Run(ledger_->GetShareURL(type, mojo::FlatMapToMap(args)));
 }
 
+// static
+void BatLedgerImpl::OnGetPendingContributions(
+    CallbackHolder<GetPendingContributionsCallback>* holder,
+    const ledger::PendingContributionInfoList& list) {
+
+  std::vector<std::string> json_list;
+  for (auto const& item : list) {
+    json_list.push_back(item.ToJson());
+  }
+
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(json_list);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::GetPendingContributions(
+    GetPendingContributionsCallback callback) {
+  auto* holder = new CallbackHolder<GetPendingContributionsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetPendingContributions(std::bind(
+      BatLedgerImpl::OnGetPendingContributions, holder, _1));
+}
+
+// static
+void BatLedgerImpl::OnRemovePendingContribution(
+    CallbackHolder<RemovePendingContributionCallback>* holder,
+    ledger::Result result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::RemovePendingContribution(
+    const std::string& publisher_key,
+    const std::string& viewing_id,
+    uint64_t added_date,
+    RemovePendingContributionCallback callback) {
+  auto* holder = new CallbackHolder<RemovePendingContributionCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->RemovePendingContribution(
+      publisher_key,
+      viewing_id,
+      added_date,
+      std::bind(BatLedgerImpl::OnRemovePendingContribution,
+                holder,
+                _1));
+}
+
+// static
+void BatLedgerImpl::OnRemoveAllPendingContributions(
+    CallbackHolder<RemovePendingContributionCallback>* holder,
+    ledger::Result result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::RemoveAllPendingContributions(
+    RemovePendingContributionCallback callback) {
+  auto* holder = new CallbackHolder<RemovePendingContributionCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->RemoveAllPendingContributions(
+      std::bind(BatLedgerImpl::OnRemoveAllPendingContributions,
+                holder,
+                _1));
+}
+
 }  // namespace bat_ledger

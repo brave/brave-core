@@ -82,6 +82,9 @@ class RewardsServiceObserver : public base::CheckedObserver {
       brave_rewards::RewardsService* rewards_service,
       bool success,
       int category) {}
+  virtual void OnPendingContributionRemoved(
+      brave_rewards::RewardsService* rewards_service,
+      int32_t result) {}
   // DO NOT ADD ANY MORE METHODS HERE UNLESS IT IS A BROADCAST NOTIFICATION
   // RewardsServiceObserver should not be used to return responses to the
   // caller. Method calls on RewardsService should use callbacks to return

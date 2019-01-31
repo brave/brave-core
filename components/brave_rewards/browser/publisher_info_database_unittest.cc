@@ -36,6 +36,8 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
   ~PublisherInfoDatabaseTest() override {
   }
 
+  void PreparePendingContributions();
+
   sql::Database& GetDB() {
     return publisher_info_database_->GetDB();
   }
@@ -1004,6 +1006,153 @@ TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   EXPECT_EQ(list.at(0)->id, "publisher_1");
   EXPECT_EQ(list.at(0)->reconcile_stamp, 1u);
   EXPECT_EQ(list.at(1)->id, "publisher_2");
+}
+
+void PublisherInfoDatabaseTest::PreparePendingContributions() {
+  // Insert publishers
+  ledger::PublisherInfo info;
+  info.id = "key1";
+  info.verified = false;
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.name = "key1";
+  info.url = "https://key1.com";
+  info.provider = "";
+  info.favicon_url = "";
+
+  bool success = publisher_info_database_->InsertOrUpdatePublisherInfo(info);
+  EXPECT_TRUE(success);
+
+  info.id = "key2";
+  info.name = "key2";
+  info.url = "https://key2.com";
+  success = publisher_info_database_->InsertOrUpdatePublisherInfo(info);
+  EXPECT_TRUE(success);
+
+  info.id = "key3";
+  info.name = "key3";
+  info.url = "https://key3.com";
+  success = publisher_info_database_->InsertOrUpdatePublisherInfo(info);
+  EXPECT_TRUE(success);
+
+  info.id = "key4";
+  info.name = "key4";
+  info.url = "https://key4.com";
+  success = publisher_info_database_->InsertOrUpdatePublisherInfo(info);
+  EXPECT_TRUE(success);
+
+  EXPECT_EQ(CountTableRows("publisher_info"), 4);
+
+  // Insert some pending contributions
+  ledger::PendingContribution contribution1;
+  contribution1.publisher_key = "key1";
+  contribution1.amount = 10;
+  contribution1.viewing_id = "fsodfsdnf23r23rn";
+  contribution1.category = ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE;
+
+  ledger::PendingContribution contribution2;
+  contribution2.publisher_key = "key2";
+  contribution2.amount = 20;
+  contribution2.viewing_id = "aafsoffdffdfsdnf23r23rn";
+  contribution2.category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
+
+  ledger::PendingContribution contribution3;
+  contribution3.publisher_key = "key3";
+  contribution3.amount = 30;
+  contribution3.viewing_id = "aafszxfzcofdfsdnf23r23rn";
+  contribution3.category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
+
+  ledger::PendingContribution contribution4;
+  contribution4.publisher_key = "key4";
+  contribution4.amount = 40;
+  contribution4.viewing_id = "aafsofdfs12333dnf23r23rn";
+  contribution4.category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
+
+  ledger::PendingContributionList list;
+  list.list_.push_back(contribution1);
+  list.list_.push_back(contribution2);
+  list.list_.push_back(contribution3);
+  list.list_.push_back(contribution4);
+
+  success = publisher_info_database_->InsertPendingContribution(
+      list);
+  EXPECT_TRUE(success);
+  EXPECT_EQ(CountTableRows("pending_contribution"), 4);
+}
+
+TEST_F(PublisherInfoDatabaseTest, GetPendingContributions) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  PreparePendingContributions();
+
+  /**
+   * Good path
+  */
+  ledger::PendingContributionInfoList select_list;
+  publisher_info_database_->GetPendingContributions(&select_list);
+  EXPECT_EQ(static_cast<int>(select_list.size()), 4);
+
+  EXPECT_EQ(select_list.at(0).publisher_key, "key1");
+  EXPECT_EQ(select_list.at(1).publisher_key, "key2");
+  EXPECT_EQ(select_list.at(2).publisher_key, "key3");
+  EXPECT_EQ(select_list.at(3).publisher_key, "key4");
+
+  EXPECT_EQ(select_list.at(0).url, "https://key1.com");
+}
+
+TEST_F(PublisherInfoDatabaseTest, RemovePendingContributions) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  PreparePendingContributions();
+
+  /**
+   * Good path
+  */
+  ledger::PendingContributionInfoList select_list;
+  publisher_info_database_->GetPendingContributions(&select_list);
+  EXPECT_EQ(select_list.at(0).publisher_key, "key1");
+  bool success = publisher_info_database_->RemovePendingContributions(
+      "key1",
+      "fsodfsdnf23r23rn",
+      select_list.at(0).added_date);
+  EXPECT_TRUE(success);
+
+  ledger::PendingContributionInfoList list;
+  publisher_info_database_->GetPendingContributions(&list);
+  EXPECT_EQ(static_cast<int>(list.size()), 3);
+
+  EXPECT_EQ(list.at(0).publisher_key, "key2");
+  EXPECT_EQ(list.at(1).publisher_key, "key3");
+  EXPECT_EQ(list.at(2).publisher_key, "key4");
+
+  /**
+   * Trying to delete not existing row
+  */
+  success = publisher_info_database_->RemovePendingContributions(
+      "key0",
+      "viewing_id",
+      10);
+  EXPECT_TRUE(success);
+  EXPECT_EQ(CountTableRows("pending_contribution"), 3);
+}
+
+
+TEST_F(PublisherInfoDatabaseTest, RemoveAllPendingContributions) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  PreparePendingContributions();
+
+  /**
+   * Good path
+  */
+  bool success = publisher_info_database_->RemoveAllPendingContributions();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(CountTableRows("pending_contribution"), 0);
 }
 
 }  // namespace brave_rewards

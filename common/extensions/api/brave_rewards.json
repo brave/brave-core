@@ -330,6 +330,17 @@
             "type": "boolean"
           }
         ]
+      },
+      {
+        "name": "onPendingContributionRemoved",
+        "type": "function",
+        "description": "",
+        "parameters": [
+          {
+            "name": "result",
+            "type": "integer"
+          }
+        ]
       }
     ],
     "functions": [

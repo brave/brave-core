@@ -728,4 +728,69 @@ void BatLedgerClientMojoProxy::GetExcludedPublishersNumberDB(
       base::BindOnce(&OnExcludedNumberDB, std::move(callback)));
 }
 
+void OnGetPendingContributions(
+    const ledger::PendingContributionInfoListCallback& callback,
+    const std::vector<std::string>& info_list) {
+  ledger::PendingContributionInfoList list;
+
+  for (const auto& info : info_list) {
+    ledger::PendingContributionInfo new_info;
+    new_info.loadFromJson(info);
+    list.push_back(new_info);
+  }
+
+  callback(list);
+}
+
+void BatLedgerClientMojoProxy::GetPendingContributions(
+    const ledger::PendingContributionInfoListCallback& callback) {
+  if (!Connected()) {
+    callback(std::vector<ledger::PendingContributionInfo>());
+    return;
+  }
+
+  bat_ledger_client_->GetPendingContributions(
+      base::BindOnce(&OnGetPendingContributions, std::move(callback)));
+}
+
+void OnRemovePendingContribution(
+    const ledger::RemovePendingContributionCallback& callback,
+    int32_t result) {
+  callback(ToLedgerResult(result));
+}
+
+void BatLedgerClientMojoProxy::RemovePendingContribution(
+    const std::string& publisher_key,
+    const std::string& viewing_id,
+    uint64_t added_date,
+    const ledger::RemovePendingContributionCallback& callback) {
+  if (!Connected()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  bat_ledger_client_->RemovePendingContribution(
+      publisher_key,
+      viewing_id,
+      added_date,
+      base::BindOnce(&OnRemovePendingContribution, std::move(callback)));
+}
+
+void OnRemoveAllPendingContributions(
+    const ledger::RemovePendingContributionCallback& callback,
+    int32_t result) {
+  callback(ToLedgerResult(result));
+}
+
+void BatLedgerClientMojoProxy::RemoveAllPendingContributions(
+    const ledger::RemovePendingContributionCallback& callback) {
+  if (!Connected()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  bat_ledger_client_->RemoveAllPendingContributions(
+      base::BindOnce(&OnRemoveAllPendingContributions, std::move(callback)));
+}
+
 }  // namespace bat_ledger

@@ -127,6 +127,18 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void GetExcludedPublishersNumberDB(
       GetExcludedPublishersNumberDBCallback callback) override;
 
+  void GetPendingContributions(
+      GetPendingContributionsCallback callback) override;
+
+  void RemovePendingContribution(
+      const std::string& publisher_key,
+      const std::string& viewing_id,
+      uint64_t added_date,
+      RemovePendingContributionCallback callback) override;
+
+  void RemoveAllPendingContributions(
+      RemovePendingContributionCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*
@@ -239,6 +251,18 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       CallbackHolder<GetOneTimeTipsCallback>* holder,
       ledger::PublisherInfoList publisher_info_list,
       uint32_t next_record);
+
+  static void OnGetPendingContributions(
+      CallbackHolder<GetPendingContributionsCallback>* holder,
+      const ledger::PendingContributionInfoList& info_list);
+
+  static void OnRemovePendingContribution(
+      CallbackHolder<RemovePendingContributionCallback>* holder,
+      ledger::Result result);
+
+  static void OnRemoveAllPendingContributions(
+      CallbackHolder<RemovePendingContributionCallback>* holder,
+      ledger::Result result);
 
   ledger::LedgerClient* ledger_client_;
 

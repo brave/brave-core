@@ -140,6 +140,18 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void GetExcludedPublishersNumberDB(
       ledger::GetExcludedPublishersNumberDBCallback callback) override;
 
+  void GetPendingContributions(
+      const ledger::PendingContributionInfoListCallback& callback) override;
+
+  void RemovePendingContribution(
+    const std::string& publisher_key,
+    const std::string& viewing_id,
+    uint64_t added_date,
+    const ledger::RemovePendingContributionCallback& callback) override;
+
+  void RemoveAllPendingContributions(
+    const ledger::RemovePendingContributionCallback& callback) override;
+
  private:
   bool Connected() const;
 

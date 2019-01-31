@@ -128,6 +128,13 @@ interface BatLedger {
 
   GetShareURL(string type, map<string, string> args) =>
       (string url);
+
+  GetPendingContributions() => (array<string> list);
+
+  RemovePendingContribution(string publisher_key, string viewing_id,
+      uint64 added_date) => (int32 result);
+
+  RemoveAllPendingContributions() => (int32 result);
 };
 
 interface BatLedgerClient {
@@ -212,4 +219,11 @@ interface BatLedgerClient {
   ConfirmationsTransactionHistoryDidChange();
 
   GetExcludedPublishersNumberDB() => (uint32 number);
+
+  GetPendingContributions() => (array<string> info_list);
+
+  RemovePendingContribution(string publisher_key, string viewing_id,
+      uint64 added_date) => (int32 result);
+
+  RemoveAllPendingContributions() => (int32 result);
 };

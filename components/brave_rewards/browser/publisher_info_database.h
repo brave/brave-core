@@ -82,6 +82,15 @@ class PublisherInfoDatabase {
 
   double GetReservedAmount();
 
+  void GetPendingContributions(
+      ledger::PendingContributionInfoList* list);
+
+  bool RemovePendingContributions(const std::string& publisher_key,
+                                  const std::string& viewing_id,
+                                  uint64_t added_date);
+
+  bool RemoveAllPendingContributions();
+
   // Returns the current version of the publisher info database
   int GetCurrentVersion();
 

@@ -14,6 +14,7 @@
 #include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "bat/ledger/media_publisher_info.h"
+#include "bat/ledger/pending_contribution.h"
 #include "build/build_config.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
@@ -941,7 +942,7 @@ bool PublisherInfoDatabase::InsertPendingContribution
 }
 
 double PublisherInfoDatabase::GetReservedAmount() {
-    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
   DCHECK(initialized);
@@ -960,6 +961,84 @@ double PublisherInfoDatabase::GetReservedAmount() {
   }
 
   return amount;
+}
+
+void PublisherInfoDatabase::GetPendingContributions(
+    ledger::PendingContributionInfoList* list) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return;
+  }
+
+  sql::Statement info_sql(db_.GetUniqueStatement(
+      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
+      "pi.verified, pi.provider, pc.amount, pc.added_date, "
+      "pc.viewing_id, pc.category "
+      "FROM pending_contribution as pc "
+      "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id"));
+
+  while (info_sql.Step()) {
+    ledger::PendingContributionInfo info;
+    info.publisher_key = info_sql.ColumnString(0);
+    info.name = info_sql.ColumnString(1);
+    info.url = info_sql.ColumnString(2);
+    info.favicon_url = info_sql.ColumnString(3);
+    info.verified = info_sql.ColumnBool(4);
+    info.provider = info_sql.ColumnString(5);
+    info.amount = info_sql.ColumnDouble(6);
+    info.added_date = info_sql.ColumnInt64(7);
+    info.viewing_id = info_sql.ColumnString(8);
+    info.category =
+        static_cast<ledger::REWARDS_CATEGORY>(info_sql.ColumnInt(9));
+
+    list->push_back(info);
+  }
+}
+
+bool PublisherInfoDatabase::RemovePendingContributions(
+    const std::string& publisher_key,
+    const std::string& viewing_id,
+    uint64_t added_date) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  sql::Statement statement(GetDB().GetCachedStatement(
+      SQL_FROM_HERE,
+      "DELETE FROM pending_contribution "
+      "WHERE publisher_id = ? AND viewing_id=? AND added_date=?"));
+
+  statement.BindString(0, publisher_key);
+  statement.BindString(1, viewing_id);
+  statement.BindInt64(2, added_date);
+
+  return statement.Run();
+}
+
+bool PublisherInfoDatabase::RemoveAllPendingContributions() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  sql::Statement statement(GetDB().GetCachedStatement(
+      SQL_FROM_HERE,
+      "DELETE FROM pending_contribution"));
+
+  return statement.Run();
 }
 
 int PublisherInfoDatabase::GetCurrentVersion() {

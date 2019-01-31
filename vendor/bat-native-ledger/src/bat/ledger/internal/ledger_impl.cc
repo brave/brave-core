@@ -1547,4 +1547,45 @@ std::string LedgerImpl::GetShareURL(
   return bat_get_media_->GetShareURL(type, args);
 }
 
+void LedgerImpl::OnGetPendingContributions(
+    const ledger::PendingContributionInfoList& list,
+    ledger::PendingContributionInfoListCallback callback) {
+  std::vector<ledger::PendingContributionInfo> new_list;
+  for (const auto& item : list) {
+    ledger::PendingContributionInfo new_item(item);
+    new_item.expiration_date =
+        new_item.added_date +
+        braveledger_ledger::_pending_contribution_expiration;
+
+    new_list.push_back(new_item);
+  }
+
+  callback(new_list);
+}
+
+void LedgerImpl::GetPendingContributions(
+    ledger::PendingContributionInfoListCallback callback) {
+  ledger_client_->GetPendingContributions(
+      std::bind(&LedgerImpl::OnGetPendingContributions,
+                this,
+                _1,
+                callback));
+}
+
+void LedgerImpl::RemovePendingContribution(
+    const std::string& publisher_key,
+    const std::string& viewing_id,
+    uint64_t added_date,
+    const ledger::RemovePendingContributionCallback& callback) {
+  ledger_client_->RemovePendingContribution(publisher_key,
+                                            viewing_id,
+                                            added_date,
+                                            callback);
+}
+
+void LedgerImpl::RemoveAllPendingContributions(
+    const ledger::RemovePendingContributionCallback& callback) {
+  ledger_client_->RemoveAllPendingContributions(callback);
+}
+
 }  // namespace bat_ledger

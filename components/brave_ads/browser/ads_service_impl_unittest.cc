@@ -155,6 +155,12 @@ class MockRewardsService : public RewardsService {
              void(const std::string& type,
                   const std::map<std::string, std::string>& args,
                   brave_rewards::GetShareURLCallback callback));
+  MOCK_METHOD1(GetPendingContributionsUI,
+      void(brave_rewards::GetPendingContributionsCallback));
+  MOCK_METHOD3(RemovePendingContributionUI, void(const std::string&,
+                                                 const std::string&,
+                                                 uint64_t));
+  MOCK_METHOD0(RemoveAllPendingContributionsUI, void());
 };
 
 class AdsServiceTest : public testing::Test {

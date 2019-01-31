@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
+#include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/rewards_internals_info.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "build/build_config.h"
@@ -81,6 +82,8 @@ using SaveMediaInfoCallback =
     base::OnceCallback<void(std::unique_ptr<brave_rewards::ContentSite>)>;
 using GetInlineTipSettingCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
+using GetPendingContributionsCallback = base::OnceCallback<void(
+    std::unique_ptr<brave_rewards::PendingContributionInfoList>)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -198,6 +201,14 @@ class RewardsService : public KeyedService {
   virtual void RefreshPublisher(
       const std::string& publisher_key,
       RefreshPublisherCallback callback) = 0;
+
+  virtual void GetPendingContributionsUI(
+    GetPendingContributionsCallback callback) = 0;
+
+  virtual void RemovePendingContributionUI(const std::string& publisher_key,
+                                         const std::string& viewing_id,
+                                         uint64_t added_date) = 0;
+  virtual void RemoveAllPendingContributionsUI() = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

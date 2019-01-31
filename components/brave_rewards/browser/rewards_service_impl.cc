@@ -3003,4 +3003,182 @@ void RewardsServiceImpl::OnShareURL(
   std::move(callback).Run(url);
 }
 
+ledger::PendingContributionInfoList PendingContributionsOnFileTaskRunner(
+    PublisherInfoDatabase* backend) {
+  ledger::PendingContributionInfoList list;
+  if (!backend) {
+    return list;
+  }
+
+  backend->GetPendingContributions(&list);
+
+  return list;
+}
+
+PendingContributionInfo PendingContributionLedgerToRewards(
+    const ledger::PendingContributionInfo& contribution) {
+  PendingContributionInfo info;
+  info.publisher_key = contribution.publisher_key;
+  info.category = contribution.category;
+  info.verified = contribution.verified;
+  info.name = contribution.name;
+  info.url = contribution.url;
+  info.provider = contribution.provider;
+  info.favicon_url = contribution.favicon_url;
+  info.amount = contribution.amount;
+  info.added_date = contribution.added_date;
+  info.viewing_id = contribution.viewing_id;
+  info.expiration_date = contribution.expiration_date;
+  return info;
+}
+
+void RewardsServiceImpl::OnGetPendingContributionsUI(
+    GetPendingContributionsCallback callback,
+    const std::vector<std::string>& json_list) {
+  std::unique_ptr<brave_rewards::PendingContributionInfoList> new_list(
+      new brave_rewards::PendingContributionInfoList);
+  for (auto &json_contribution : json_list) {
+    ledger::PendingContributionInfo contribution;
+    contribution.loadFromJson(json_contribution);
+    brave_rewards::PendingContributionInfo new_contribution =
+        PendingContributionLedgerToRewards(contribution);
+    new_list->push_back(new_contribution);
+  }
+
+  std::move(callback).Run(std::move(new_list));
+}
+
+void RewardsServiceImpl::GetPendingContributionsUI(
+    GetPendingContributionsCallback callback) {
+  bat_ledger_->GetPendingContributions(
+      base::BindOnce(&RewardsServiceImpl::OnGetPendingContributionsUI,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetPendingContributions(
+    const ledger::PendingContributionInfoListCallback& callback,
+    const ledger::PendingContributionInfoList& list) {
+  if (!Connected()) {
+    return;
+  }
+
+  callback(list);
+}
+
+void RewardsServiceImpl::GetPendingContributions(
+    const ledger::PendingContributionInfoListCallback& callback) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
+      base::Bind(&PendingContributionsOnFileTaskRunner,
+                 publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnGetPendingContributions,
+                 AsWeakPtr(),
+                 callback));
+}
+
+void RewardsServiceImpl::OnPendingContributionRemovedUI(int32_t result) {
+  for (auto& observer : observers_) {
+    observer.OnPendingContributionRemoved(this, result);
+  }
+}
+
+void RewardsServiceImpl::RemovePendingContributionUI(
+    const std::string& publisher_key,
+    const std::string& viewing_id,
+    uint64_t added_date) {
+  bat_ledger_->RemovePendingContribution(
+      publisher_key,
+      viewing_id,
+      added_date,
+      base::BindOnce(&RewardsServiceImpl::OnPendingContributionRemovedUI,
+                     AsWeakPtr()));
+}
+
+bool RemovePendingContributionOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::string& publisher_key,
+    const std::string& viewing_id,
+    uint64_t added_date) {
+  if (!backend) {
+    return false;
+  }
+
+  return backend->RemovePendingContributions(publisher_key,
+                                             viewing_id,
+                                             added_date);
+}
+
+void RewardsServiceImpl::RemovePendingContribution(
+    const std::string& publisher_key,
+    const std::string& viewing_id,
+    uint64_t added_date,
+    const ledger::RemovePendingContributionCallback& callback) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
+      base::Bind(&RemovePendingContributionOnFileTaskRunner,
+                 publisher_info_backend_.get(),
+                 publisher_key,
+                 viewing_id,
+                 added_date),
+      base::Bind(&RewardsServiceImpl::OnPendingContributionRemoved,
+                 AsWeakPtr(),
+                 callback));
+}
+
+void RewardsServiceImpl::OnPendingContributionRemoved(
+    ledger::RemovePendingContributionCallback callback,
+    bool result) {
+  ledger::Result result_new = result
+      ? ledger::Result::LEDGER_OK
+      : ledger::Result::LEDGER_ERROR;
+
+  callback(result_new);
+}
+
+bool RemoveAllPendingContributionOnFileTaskRunner(
+    PublisherInfoDatabase* backend) {
+  if (!backend) {
+    return false;
+  }
+
+  return backend->RemoveAllPendingContributions();
+}
+
+void RewardsServiceImpl::OnRemoveAllPendingContributionsUI(int32_t result) {
+  for (auto& observer : observers_) {
+    observer.OnPendingContributionRemoved(this, result);
+  }
+}
+
+void RewardsServiceImpl::RemoveAllPendingContributionsUI() {
+  bat_ledger_->RemoveAllPendingContributions(
+      base::BindOnce(&RewardsServiceImpl::OnRemoveAllPendingContributionsUI,
+                     AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnRemoveAllPendingContribution(
+    ledger::RemovePendingContributionCallback callback,
+    bool result) {
+  ledger::Result result_new = result
+      ? ledger::Result::LEDGER_OK
+      : ledger::Result::LEDGER_ERROR;
+
+  callback(result_new);
+}
+
+void RewardsServiceImpl::RemoveAllPendingContributions(
+    const ledger::RemovePendingContributionCallback& callback) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
+      base::Bind(&RemoveAllPendingContributionOnFileTaskRunner,
+                 publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnRemoveAllPendingContribution,
+                 AsWeakPtr(),
+                 callback));
+}
+
 }  // namespace brave_rewards

@@ -453,6 +453,18 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& type,
       const std::map<std::string, std::string>& args) override;
 
+  void GetPendingContributions(
+      ledger::PendingContributionInfoListCallback callback) override;
+
+  void RemovePendingContribution(
+      const std::string& publisher_key,
+      const std::string& viewing_id,
+      uint64_t added_date,
+      const ledger::RemovePendingContributionCallback& callback) override;
+
+  void RemoveAllPendingContributions(
+    const ledger::RemovePendingContributionCallback& callback) override;
+
  private:
   void AddRecurringPayment(const std::string& publisher_id,
                            const double& value) override;
@@ -508,6 +520,10 @@ class LedgerImpl : public ledger::Ledger,
     ledger::PublisherInfoList,
     uint32_t record,
     ledger::PublisherInfoListCallback callback);
+
+  void OnGetPendingContributions(
+    const ledger::PendingContributionInfoList& list,
+    ledger::PendingContributionInfoListCallback callback);
 
   // ledger::LedgerCallbacHandler implementation
   void OnPublisherStateLoaded(ledger::Result result,

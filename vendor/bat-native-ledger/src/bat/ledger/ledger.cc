@@ -660,4 +660,59 @@ bool PendingContributionList::loadFromJson(const std::string& json) {
   return !error;
 }
 
+PendingContributionInfo::PendingContributionInfo() {}
+PendingContributionInfo::~PendingContributionInfo() {}
+PendingContributionInfo::PendingContributionInfo(
+    const ledger::PendingContributionInfo &properties) {
+  publisher_key = properties.publisher_key;
+  category = properties.category;
+  verified = properties.verified;
+  name = properties.name;
+  url = properties.url;
+  provider = properties.provider;
+  favicon_url = properties.favicon_url;
+  amount = properties.amount;
+  added_date = properties.added_date;
+  viewing_id = properties.viewing_id;
+  expiration_date = properties.expiration_date;
+}
+
+const std::string PendingContributionInfo::ToJson() const {
+  std::string json;
+  braveledger_bat_helper::saveToJsonString(*this, &json);
+  return json;
+}
+
+bool PendingContributionInfo::loadFromJson(const std::string& json) {
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  // has parser errors or wrong types
+  bool error = d.HasParseError();
+
+  if (!error) {
+    error = !(d.HasMember("publisher_key") && d["publisher_key"].IsString() &&
+        d.HasMember("amount") && d["amount"].IsDouble() &&
+        d.HasMember("added_date") && d["added_date"].IsUint64() &&
+        d.HasMember("viewing_id") && d["viewing_id"].IsString() &&
+        d.HasMember("category") && d["category"].IsInt());
+  }
+
+  if (!error) {
+    publisher_key = d["publisher_key"].GetString();
+    category = static_cast<REWARDS_CATEGORY>(d["category"].GetInt());
+    verified = d["verified"].GetBool();
+    name = d["name"].GetString();
+    url = d["url"].GetString();
+    provider = d["provider"].GetString();
+    favicon_url = d["favicon_url"].GetString();
+    amount = d["amount"].GetDouble();
+    added_date = d["added_date"].GetUint64();
+    viewing_id = d["viewing_id"].GetString();
+    expiration_date = d["expiration_date"].GetUint64();
+  }
+
+  return !error;
+}
+
 }  // namespace ledger

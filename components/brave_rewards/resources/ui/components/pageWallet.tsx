@@ -5,18 +5,19 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
-
 // Components
 import {
   ModalActivity,
   ModalBackupRestore,
-  WalletWrapper,
+  ModalPending,
   WalletEmpty,
-  WalletSummary
+  WalletSummary,
+  WalletWrapper
 } from 'brave-ui/features/rewards'
 import { WalletAddIcon } from 'brave-ui/components/icons'
 import { AlertWallet } from 'brave-ui/features/rewards/walletWrapper'
-
+import { Provider } from 'brave-ui/features/rewards/profile'
+import { DetailRow as PendingDetailRow, PendingType } from 'brave-ui/features/rewards/tablePending'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
@@ -31,6 +32,7 @@ interface State {
   modalBackup: boolean
   modalActivity: boolean
   modalAddFunds: boolean
+  modalPendingContribution: boolean
 }
 
 interface Props extends Rewards.ComponentProps {
@@ -43,7 +45,8 @@ class PageWallet extends React.Component<Props, State> {
       activeTabId: 0,
       modalBackup: false,
       modalActivity: false,
-      modalAddFunds: false
+      modalAddFunds: false,
+      modalPendingContribution: false
     }
   }
 
@@ -185,6 +188,12 @@ class PageWallet extends React.Component<Props, State> {
     )
   }
 
+  onModalPendingToggle = () => {
+    this.setState({
+      modalPendingContribution: !this.state.modalPendingContribution
+    })
+  }
+
   isAddFundsUrl = () => {
     if (this.urlHashIs('#add-funds')) {
       this.setState({
@@ -262,7 +271,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getWalletSummary = () => {
-    const { walletInfo, reports } = this.props.rewardsData
+    const { walletInfo, reports, pendingContributionTotal } = this.props.rewardsData
     const { rates } = walletInfo
 
     let props = {}
@@ -284,9 +293,57 @@ class PageWallet extends React.Component<Props, State> {
       }
     }
 
-    return {
-      report: props
+    let result: {report: Record<string, {tokens: string, converted: string}>, onSeeAllReserved?: () => {}} = {
+      report: props,
+      onSeeAllReserved: undefined
     }
+
+    if (pendingContributionTotal > 0) {
+      result.onSeeAllReserved = this.onModalPendingToggle.bind(this)
+    }
+
+    return result
+  }
+
+  getPendingRows = (): PendingDetailRow[] => {
+    const { walletInfo, pendingContributions } = this.props.rewardsData
+    return pendingContributions.map((item: Rewards.PendingContribution) => {
+      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+      if (item.favIcon && item.verified) {
+        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+      }
+
+      let type: PendingType = 'ac'
+
+      if (item.category === 8) { // one time tip
+        type = 'tip'
+      } else if (item.category === 16) { // recurring tip
+        type = 'recurring'
+      }
+
+      return {
+        profile: {
+          name: item.name,
+          verified: item.verified,
+          provider: (item.provider ? item.provider : undefined) as Provider,
+          src: faviconUrl
+        },
+        url: item.url,
+        type,
+        amount: {
+          tokens: item.amount.toFixed(1),
+          converted: utils.convertBalance(item.amount.toString(), walletInfo.rates)
+        },
+        date: new Date(item.expirationDate * 1000).toLocaleDateString(),
+        onRemove: () => {
+          this.actions.removePendingContribution(item.publisherKey, item.viewingId, item.addedDate)
+        }
+      }
+    })
+  }
+
+  removeAllPendingContribution = () => {
+    this.actions.removeAllPendingContribution()
   }
 
   render () {
@@ -303,8 +360,7 @@ class PageWallet extends React.Component<Props, State> {
     const { walletRecoverySuccess, emptyWallet, modalBackup } = ui
     const addressArray = utils.getAddresses(addresses)
 
-    const pendingTotal = parseFloat(
-      (pendingContributionTotal || 0).toFixed(1))
+    const pendingTotal = parseFloat((pendingContributionTotal || 0).toFixed(1))
 
     return (
       <>
@@ -358,6 +414,15 @@ class PageWallet extends React.Component<Props, State> {
             ? <ModalAddFunds
               onClose={this.closeModalAddFunds}
               addresses={addressArray}
+            />
+            : null
+        }
+        {
+          this.state.modalPendingContribution
+            ? <ModalPending
+              onClose={this.onModalPendingToggle}
+              rows={this.getPendingRows()}
+              onRemoveAll={this.removeAllPendingContribution}
             />
             : null
         }
