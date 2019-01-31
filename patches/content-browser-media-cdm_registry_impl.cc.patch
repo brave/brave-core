@@ -1,19 +1,41 @@
 diff --git a/content/browser/media/cdm_registry_impl.cc b/content/browser/media/cdm_registry_impl.cc
-index 81936b7601aa72effc5f99a188da72f8b9469568..e030f292f44e9e731ed5c10b404d3156e482dd44 100644
+index 81936b7601aa72effc5f99a188da72f8b9469568..d9b72afeb545b7b7ce445ac0ffaf6f378d94a5bb 100644
 --- a/content/browser/media/cdm_registry_impl.cc
 +++ b/content/browser/media/cdm_registry_impl.cc
-@@ -27,8 +27,15 @@ CdmRegistryImpl::CdmRegistryImpl() {}
+@@ -9,6 +9,10 @@
+ #include "content/public/common/cdm_info.h"
+ #include "content/public/common/content_client.h"
+ 
++#if defined(BRAVE_CHROMIUM_BUILD) && defined(OS_LINUX)
++#include <algorithm>
++#endif
++
+ namespace content {
+ 
+ // static
+@@ -27,8 +31,25 @@ CdmRegistryImpl::CdmRegistryImpl() {}
  CdmRegistryImpl::~CdmRegistryImpl() {}
  
  void CdmRegistryImpl::Init() {
-+  // In linux, we want to register widevine cdm to CdmRegistry when users opted
-+  // in. If not, widevine is initialized by default.
-+  // Instead, we tries to register it in
+-  // Let embedders register CDMs.
++    // Let embedders register CDMs.
+   GetContentClient()->AddContentDecryptionModules(&cdms_, nullptr);
++#if defined(BRAVE_CHROMIUM_BUILD) && defined(OS_LINUX)
++  // On linux, we want to register widevine cdm to CdmRegistry when users opt
++  // in. Otherwise, widevine is initialized by default w/o user accept.
++  // So, widevine cdm is erased from |cdms_| and it is registered when users opt
++  // in. Also, we try to register it during the startup in
 +  // BraveBrowserMainExtraParts::PreMainMessageLoopRun() by checking opted in
 +  // prefs.
-+#if defined(BRAVE_CHROMIUM_BUILD) && !defined(OS_LINUX)
-   // Let embedders register CDMs.
-   GetContentClient()->AddContentDecryptionModules(&cdms_, nullptr);
++  cdms_.erase(
++      std::remove_if(cdms_.begin(), cdms_.end(), [](const CdmInfo& info) {
++        // It would be better to use |kWidevineKeySystem| constant instead of
++        // using "com.widevine.alpha". To use constant, it requires adding
++        // widevine dependency to content module.
++        // However, using this string directly seems fine because it would not
++        // be changed and can avoid addtional patching for this.
++        return info.supported_key_system == "com.widevine.alpha";
++      }));
 +#endif
  }
  
