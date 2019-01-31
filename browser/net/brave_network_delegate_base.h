@@ -24,7 +24,6 @@ class URLRequest;
 // add hooks into the network stack.
 class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
  public:
-
   using ResponseCallback = base::Callback<void(const base::DictionaryValue&)>;
   using ResponseListener = base::Callback<void(const base::DictionaryValue&,
                                                const ResponseCallback&)>;
@@ -61,19 +60,14 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
   void RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv);
 
  protected:
-  void RunNextCallback(
-    net::URLRequest* request,
-    std::shared_ptr<brave::BraveRequestInfo> ctx);
-  std::vector<brave::OnBeforeURLRequestCallback>
-      before_url_request_callbacks_;
+  void RunNextCallback(net::URLRequest* request,
+                       std::shared_ptr<brave::BraveRequestInfo> ctx);
+  std::vector<brave::OnBeforeURLRequestCallback> before_url_request_callbacks_;
   std::vector<brave::OnBeforeStartTransactionCallback>
       before_start_transaction_callbacks_;
-  std::vector<brave::OnHeadersReceivedCallback>
-      headers_received_callbacks_;
-  std::vector<brave::OnCanGetCookiesCallback>
-      can_get_cookies_callbacks_;
-  std::vector<brave::OnCanSetCookiesCallback>
-      can_set_cookies_callbacks_;
+  std::vector<brave::OnHeadersReceivedCallback> headers_received_callbacks_;
+  std::vector<brave::OnCanGetCookiesCallback> can_get_cookies_callbacks_;
+  std::vector<brave::OnCanSetCookiesCallback> can_set_cookies_callbacks_;
 
  private:
   void InitPrefChangeRegistrar();
