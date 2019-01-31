@@ -9,3 +9,10 @@
   client->Log(__FILE__, __LINE__, severity)->stream()
 
 #endif  // BAT_REWARDS_LOGGING_H_
+
+#if defined(NDEBUG)
+#define DCHECK(x) (void)(x)
+#else
+#include "assert.h"
+#define DCHECK(x) assert(x)
+#endif
