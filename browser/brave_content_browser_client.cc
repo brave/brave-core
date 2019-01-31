@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_content_browser_client.h"
+
+#include <string>
+#include <utility>
 
 #include "base/bind.h"
 #include "base/json/json_reader.h"
@@ -43,6 +47,7 @@
 #include "ui/base/resource/resource_bundle.h"
 
 using content::BrowserThread;
+using content::ContentBrowserClient;
 using content::RenderFrameHost;
 using content::WebContents;
 using brave_shields::BraveShieldsWebContentsObserver;
@@ -61,44 +66,67 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 namespace {
 
-bool HandleURLRewrite(GURL* url,
-                      content::BrowserContext* browser_context) {
-  if (url->SchemeIs(content::kChromeUIScheme) &&
-      (url->host() == chrome::kChromeUIWelcomeHost ||
-       url->host() == chrome::kChromeUIWelcomeWin10Host)) {
-    *url = GURL(kBraveUIWelcomeURL);
+bool HandleURLOverrideRewrite(GURL* url,
+                              content::BrowserContext* browser_context) {
+  // redirect sync-internals
+  if (url->host() == chrome::kChromeUISyncInternalsHost ||
+      url->host() == chrome::kChromeUISyncHost) {
+    GURL::Replacements replacements;
+    replacements.SetHostStr(chrome::kChromeUISyncHost);
+    *url = url->ReplaceComponents(replacements);
     return true;
   }
-  if (url->SchemeIs(content::kChromeUIScheme) &&
-      (url->host() == kBraveUISyncHost)) {
-    *url = GURL(kBraveUISyncURL);
+
+  // no special win10 welcome page
+  if (url->host() == chrome::kChromeUIWelcomeWin10Host ||
+      url->host() == chrome::kChromeUIWelcomeHost) {
+    *url = GURL(chrome::kChromeUIWelcomeURL);
     return true;
   }
 
   return false;
 }
 
-bool HandleURLReverseRewrite(GURL* url,
+
+bool HandleURLReverseOverrideRewrite(GURL* url,
                              content::BrowserContext* browser_context) {
-  if (url->spec() == kBraveUIWelcomeURL ||
-      url->spec() == kBraveUISyncURL) {
+  if (url->host() == chrome::kChromeUIWelcomeHost ||
+      url->host() == chrome::kChromeUISyncHost) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(kBraveUIScheme);
+    *url = url->ReplaceComponents(replacements);
     return true;
   }
+
+  return false;
+}
+
+bool HandleURLRewrite(GURL* url,
+                      content::BrowserContext* browser_context) {
+  if (url->SchemeIs(kBraveUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kChromeUIScheme);
+    *url = url->ReplaceComponents(replacements);
+  }
+
+  if (HandleURLOverrideRewrite(url, browser_context))
+    return true;
+
   return false;
 }
 
 }  // namespace
 
-BraveContentBrowserClient::BraveContentBrowserClient(ChromeFeatureListCreator* chrome_feature_list_creator) :
-    ChromeContentBrowserClient(chrome_feature_list_creator)
-{}
+BraveContentBrowserClient::BraveContentBrowserClient(
+    ChromeFeatureListCreator* chrome_feature_list_creator)
+    : ChromeContentBrowserClient(chrome_feature_list_creator) {}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
 
 content::BrowserMainParts* BraveContentBrowserClient::CreateBrowserMainParts(
       const content::MainFunctionParams& parameters) {
-  ChromeBrowserMainParts* main_parts = (ChromeBrowserMainParts*)
-      ChromeContentBrowserClient::CreateBrowserMainParts(parameters);
+  ChromeBrowserMainParts* main_parts = static_cast<ChromeBrowserMainParts*>(
+      ChromeContentBrowserClient::CreateBrowserMainParts(parameters));
   main_parts->AddParts(new BraveBrowserMainExtraParts());
   return main_parts;
 }
@@ -110,12 +138,18 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   handler->AddHandlerPair(&webtorrent::HandleTorrentURLRewrite,
                           &webtorrent::HandleTorrentURLReverseRewrite);
   handler->AddHandlerPair(&HandleURLRewrite,
-                          &HandleURLReverseRewrite);
+                          &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
+  handler->AddHandlerPair(&HandleURLOverrideRewrite,
+                          &HandleURLReverseOverrideRewrite);
 }
 
-bool BraveContentBrowserClient::AllowAccessCookie(const GURL& url, const GURL& first_party,
-    content::ResourceContext* context, int render_process_id, int render_frame_id) {
+bool BraveContentBrowserClient::AllowAccessCookie(
+    const GURL& url,
+    const GURL& first_party,
+    content::ResourceContext* context,
+    int render_process_id,
+    int render_frame_id) {
   GURL tab_origin =
       BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
           render_process_id, render_frame_id, -1).GetOrigin();
@@ -169,7 +203,7 @@ BraveContentBrowserClient::AllowWebBluetooth(
     content::BrowserContext* browser_context,
     const url::Origin& requesting_origin,
     const url::Origin& embedding_origin) {
-  return content::ContentBrowserClient::AllowWebBluetoothResult::BLOCK_GLOBALLY_DISABLED;
+  return ContentBrowserClient::AllowWebBluetoothResult::BLOCK_GLOBALLY_DISABLED;
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
@@ -188,7 +222,8 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
   }
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
-      url, web_contents_getter, child_id, navigation_data, is_main_frame, page_transition, has_user_gesture, method, headers);
+      url, web_contents_getter, child_id, navigation_data, is_main_frame,
+      page_transition, has_user_gesture, method, headers);
 }
 
 void BraveContentBrowserClient::RegisterOutOfProcessServices(
@@ -217,7 +252,6 @@ BraveContentBrowserClient::GetNavigationUIData(
   TorProfileServiceFactory::SetTorNavigationUIData(profile,
                                                    navigation_ui_data.get());
   return std::move(navigation_ui_data);
-
 }
 
 std::unique_ptr<base::Value>
@@ -285,11 +319,14 @@ void BraveContentBrowserClient::MaybeHideReferrer(
           GURL(),
           CONTENT_SETTINGS_TYPE_PLUGINS,
           brave_shields::kBraveShields);
-   brave_shields::ShouldSetReferrer(allow_referrers, shields_up,
-                                    referrer->url, document_url, request_url,
-                                    request_url.GetOrigin(),
-                                    referrer->policy,
-                                    referrer);
+  brave_shields::ShouldSetReferrer(allow_referrers,
+                                   shields_up,
+                                   referrer->url,
+                                   document_url,
+                                   request_url,
+                                   request_url.GetOrigin(),
+                                   referrer->policy,
+                                   referrer);
 }
 
 GURL BraveContentBrowserClient::GetEffectiveURL(

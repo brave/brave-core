@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -19,6 +20,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_content_client.h"
+#include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -114,36 +116,127 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
-  GURL chrome_settings_url("chrome://about/");
-  std::vector<GURL> urls{chrome_settings_url, GURL("about:about/"),
-                         GURL("brave://about/")};
-  std::for_each(urls.begin(), urls.end(),
-                [this, &chrome_settings_url](const GURL& url) {
-                  content::WebContents* contents =
-                      browser()->tab_strip_model()->GetActiveWebContents();
-                  ui_test_utils::NavigateToURL(browser(), url);
-                  ASSERT_TRUE(WaitForLoadStop(contents));
-                  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-                               chrome_settings_url.spec().c_str());
-                });
+  std::vector<std::string> pages {
+    chrome::kChromeUIWelcomeHost,
+  };
+
+  std::vector<std::string> schemes {
+    "about:",
+    "brave://",
+    "chrome://",
+  };
+
+  for (const std::string& page : pages) {
+    for (const std::string& scheme : schemes) {
+      content::WebContents* contents =
+          browser()->tab_strip_model()->GetActiveWebContents();
+      ui_test_utils::NavigateToURL(browser(), GURL(scheme + page + "/"));
+      ASSERT_TRUE(WaitForLoadStop(contents));
+
+      EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                       ->GetVirtualURL().spec().c_str(),
+                   ("brave://" + page + "/").c_str());
+      EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                       ->GetURL().spec().c_str(),
+                   ("chrome://" + page + "/").c_str());
+    }
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
-  std::vector<GURL> urls {
-    GURL("chrome://adblock/"),
+  std::vector<std::string> pages {
+    "adblock",
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-        GURL("chrome://rewards/"),
+    "rewards",
 #endif
-        GURL("chrome://welcome/"), GURL("chrome://sync/")
+    chrome::kChromeUISyncHost,
   };
-  std::for_each(urls.begin(), urls.end(), [this](const GURL& url) {
+
+  std::vector<std::string> schemes {
+    "brave://",
+    "chrome://",
+  };
+
+  for (const std::string& page : pages) {
+    for (const std::string& scheme : schemes) {
+      content::WebContents* contents =
+          browser()->tab_strip_model()->GetActiveWebContents();
+      ui_test_utils::NavigateToURL(browser(), GURL(scheme + page + "/"));
+      ASSERT_TRUE(WaitForLoadStop(contents));
+
+      EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                       ->GetVirtualURL().spec().c_str(),
+                   ("brave://" + page + "/").c_str());
+      EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                       ->GetURL().spec().c_str(),
+                   ("chrome://" + page + "/").c_str());
+    }
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadAboutHost) {
+  std::vector<std::string> schemes {
+    "chrome://",
+    "brave://",
+  };
+
+  for (const std::string& scheme : schemes) {
     content::WebContents* contents =
         browser()->tab_strip_model()->GetActiveWebContents();
-    ui_test_utils::NavigateToURL(browser(), url);
+    ui_test_utils::NavigateToURL(browser(), GURL(scheme + "about/"));
+      ASSERT_TRUE(WaitForLoadStop(contents));
+
+      EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                       ->GetVirtualURL().spec().c_str(),
+                   "brave://about/");
+      EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                       ->GetURL().spec().c_str(),
+                   "chrome://chrome-urls/");
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+    RewriteChromeSyncInternals) {
+  std::vector<std::string> schemes {
+    "brave://",
+    "chrome://",
+  };
+
+  for (const std::string& scheme : schemes) {
+    content::WebContents* contents =
+        browser()->tab_strip_model()->GetActiveWebContents();
+    ui_test_utils::NavigateToURL(browser(), GURL(scheme + "sync-internals/"));
+      ASSERT_TRUE(WaitForLoadStop(contents));
+
+      EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                       ->GetVirtualURL().spec().c_str(),
+                   "brave://sync/");
+      EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                       ->GetURL().spec().c_str(),
+                   "chrome://sync/");
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+    RewriteChromeWelcomeWin10) {
+  std::vector<std::string> schemes {
+    "brave://",
+    "chrome://",
+  };
+
+  for (const std::string& scheme : schemes) {
+    content::WebContents* contents =
+        browser()->tab_strip_model()->GetActiveWebContents();
+    ui_test_utils::NavigateToURL(browser(), GURL(scheme + "welcome-win10/"));
     ASSERT_TRUE(WaitForLoadStop(contents));
-    EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
-                 url.spec().c_str());
-  });
+
+    EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                     ->GetVirtualURL().spec().c_str(),
+                 "brave://welcome/");
+    EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                     ->GetURL().spec().c_str(),
+                 "chrome://welcome/");
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLURLBar) {
@@ -327,7 +420,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 
 class BraveContentBrowserClientReferrerTest
     : public BraveContentBrowserClientTest {
-public:
+ public:
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }

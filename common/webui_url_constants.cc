@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -15,7 +16,6 @@ const char kDonateJS[] = "brave_donate.js";
 const char kBraveNewTabJS[] = "brave_new_tab.js";
 const char kBraveUISyncHost[] = "sync";
 const char kBraveSyncJS[] = "brave_sync.js";
-const char kBraveUIWelcomeURL[] = "chrome://welcome/";
 const char kBraveUIRewardsURL[] = "chrome://rewards/";
 const char kBraveUIAdblockURL[] = "chrome://adblock/";
 const char kBraveUIDonateURL[] = "chrome://donate/";

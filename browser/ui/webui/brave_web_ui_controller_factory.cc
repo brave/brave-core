@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
+
+#include <memory>
 
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_md_settings_ui.h"
@@ -70,7 +73,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kDonateHost ||
 #endif
       url.host_piece() == kWelcomeHost ||
-      url.host_piece() == kBraveUIWelcomeURL ||
+      url.host_piece() == chrome::kChromeUIWelcomeURL ||
       (url.host_piece() == kBraveUISyncHost &&
           brave_sync::BraveSyncService::is_enabled()) ||
       url.host_piece() == chrome::kChromeUINewTabHost ||
@@ -85,7 +88,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 
 WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
       content::BrowserContext* browser_context, const GURL& url) const {
-
   WebUIFactoryFunction function = GetWebUIFactoryFunction(NULL, url);
   if (function) {
     return reinterpret_cast<WebUI::TypeID>(function);
