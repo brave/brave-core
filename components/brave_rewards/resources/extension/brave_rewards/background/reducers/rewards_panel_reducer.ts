@@ -227,11 +227,6 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           windowId)
         break
       }
-    case types.GET_GRANT:
-      {
-        chrome.braveRewards.getGrant()
-        break
-      }
     case types.ON_PENDING_CONTRIBUTIONS_TOTAL:
       {
         state = { ...state }

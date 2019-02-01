@@ -131,10 +131,10 @@ ExtensionFunction::ResponseAction BraveRewardsGetCurrentReportFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsGetGrantFunction::~BraveRewardsGetGrantFunction() {
+BraveRewardsGetGrantsFunction::~BraveRewardsGetGrantsFunction() {
 }
 
-ExtensionFunction::ResponseAction BraveRewardsGetGrantFunction::Run() {
+ExtensionFunction::ResponseAction BraveRewardsGetGrantsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service_ =
     RewardsServiceFactory::GetForProfile(profile);

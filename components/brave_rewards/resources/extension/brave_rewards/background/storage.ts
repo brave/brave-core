@@ -33,7 +33,9 @@ export const defaultState: RewardsExtension.State = {
   currentNotification: undefined,
   pendingContributionTotal: 0,
   enabledMain: false,
-  enabledAC: false
+  enabledAC: false,
+  grants: [],
+  currentGrant: undefined
 }
 
 const cleanData = (state: RewardsExtension.State) => {

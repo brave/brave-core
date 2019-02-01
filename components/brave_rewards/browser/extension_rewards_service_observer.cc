@@ -167,6 +167,7 @@ void ExtensionRewardsServiceObserver::OnGrant(
 
   base::DictionaryValue newGrant;
   newGrant.SetInteger("status", result);
+  newGrant.SetString("type", grant.type);
   newGrant.SetString("promotionId", grant.promotionId);
 
   std::unique_ptr<base::ListValue> args(

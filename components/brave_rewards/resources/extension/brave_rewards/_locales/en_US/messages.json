@@ -340,5 +340,9 @@
   "rewardsSettings": {
     "message": "Rewards Settings",
     "description": "Button for opening settings page"
+  },
+  "earningsClaimDefault": {
+    "message": "Your Ads earnings are available.",
+    "description": "Panel notification text for Ads grant"
   }
 }

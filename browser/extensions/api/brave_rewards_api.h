@@ -71,12 +71,12 @@ class BraveRewardsIncludeInAutoContributionFunction :
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetGrantFunction : public UIThreadExtensionFunction {
+class BraveRewardsGetGrantsFunction : public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getGrant", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getGrants", UNKNOWN)
 
  protected:
-  ~BraveRewardsGetGrantFunction() override;
+  ~BraveRewardsGetGrantsFunction() override;
 
   ResponseAction Run() override;
 };

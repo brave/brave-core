@@ -63,13 +63,15 @@ export const includeInAutoContribution = (publisherKey: string, excluded: boolea
   windowId
 })
 
-export const getGrant = () => action(types.GET_GRANT, {})
+export const getGrants = () => action(types.GET_GRANTS)
 
-export const onGrant = (properties: RewardsExtension.GrantInfo) => action(types.ON_GRANT, {
+export const onGrant = (properties: RewardsExtension.GrantResponse) => action(types.ON_GRANT, {
   properties
 })
 
-export const getGrantCaptcha = () => action(types.GET_GRANT_CAPTCHA)
+export const getGrantCaptcha = (promotionId?: string) => action(types.GET_GRANT_CAPTCHA, {
+  promotionId
+})
 
 export const onGrantCaptcha = (captcha: RewardsExtension.Captcha) => action(types.ON_GRANT_CAPTCHA, {
   captcha
