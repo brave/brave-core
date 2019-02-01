@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright 2016 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 
@@ -29,57 +30,61 @@
 #define HTTPSE_URL_MAX_REDIRECTS_COUNT      5
 
 namespace {
-  std::vector<std::string> Split(const std::string& s, char delim) {
-    std::stringstream ss(s);
-    std::string item;
-    std::vector<std::string> result;
-    while (getline(ss, item, delim)) {
-      result.push_back(item);
-    }
-    return result;
+
+std::vector<std::string> Split(const std::string& s, char delim) {
+  std::stringstream ss(s);
+  std::string item;
+  std::vector<std::string> result;
+  while (getline(ss, item, delim)) {
+    result.push_back(item);
   }
+  return result;
+}
 
-  // returns parts in reverse order, makes list of lookup domains like com.foo.*
-  std::vector<std::string> ExpandDomainForLookup(const std::string& domain) {
-    std::vector<std::string> resultDomains;
-    std::vector<std::string> domainParts = Split(domain, '.');
-    if (domainParts.empty()) {
-      return resultDomains;
-    }
-
-    for (size_t i = 0; i < domainParts.size() - 1; i++) {  // i < size()-1 is correct: don't want 'com.*' added to resultDomains
-      std::string slice = "";
-      std::string dot = "";
-      for (int j = domainParts.size() - 1; j >= (int)i; j--) {
-        slice += dot + domainParts[j];
-        dot = ".";
-      }
-      if (0 != i) {
-        // We don't want * on the top URL
-        resultDomains.push_back(slice + ".*");
-      } else {
-        resultDomains.push_back(slice);
-      }
-    }
+// returns parts in reverse order, makes list of lookup domains like com.foo.*
+std::vector<std::string> ExpandDomainForLookup(const std::string& domain) {
+  std::vector<std::string> resultDomains;
+  std::vector<std::string> domainParts = Split(domain, '.');
+  if (domainParts.empty()) {
     return resultDomains;
   }
-  std::string leveldbGet(leveldb::DB* db, const std::string &key) {
-    if (!db) {
-      return "";
-    }
 
-    std::string value;
-    leveldb::Status s = db->Get(leveldb::ReadOptions(), key, &value);
-    return s.ok() ? value : "";
+  for (size_t i = 0; i < domainParts.size() - 1; i++) {
+    // i < size()-1 is correct: don't want 'com.*' added to resultDomains
+    std::string slice = "";
+    std::string dot = "";
+    for (int j = domainParts.size() - 1; j >= static_cast<int>(i); j--) {
+      slice += dot + domainParts[j];
+      dot = ".";
+    }
+    if (0 != i) {
+      // We don't want * on the top URL
+      resultDomains.push_back(slice + ".*");
+    } else {
+      resultDomains.push_back(slice);
+    }
   }
+  return resultDomains;
 }
+std::string leveldbGet(leveldb::DB* db, const std::string &key) {
+  if (!db) {
+    return "";
+  }
+
+  std::string value;
+  leveldb::Status s = db->Get(leveldb::ReadOptions(), key, &value);
+  return s.ok() ? value : "";
+}
+
+}  // namespace
 
 namespace brave_shields {
 
 bool HTTPSEverywhereService::g_ignore_port_for_test_(false);
 std::string HTTPSEverywhereService::g_https_everywhere_component_id_(
     kHTTPSEverywhereComponentId);
-std::string HTTPSEverywhereService::g_https_everywhere_component_base64_public_key_(
+std::string
+HTTPSEverywhereService::g_https_everywhere_component_base64_public_key_(
     kHTTPSEverywhereComponentBase64PublicKey);
 
 HTTPSEverywhereService::HTTPSEverywhereService() : level_db_(nullptr) {
@@ -147,8 +152,10 @@ bool HTTPSEverywhereService::GetHTTPSURL(
     const GURL* url, const uint64_t& request_identifier,
     std::string& new_url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  base::ScopedBlockingCall scoped_blocking_call(
-      base::BlockingType::WILL_BLOCK);
+
+  if (!url->is_valid())
+    return false;
+
   if (!IsInitialized() || !level_db_ || url->scheme() == url::kHttpsScheme) {
     return false;
   }
@@ -156,9 +163,8 @@ bool HTTPSEverywhereService::GetHTTPSURL(
     return false;
   }
 
-  if (recently_used_cache_.data.count(url->spec()) > 0) {
+  if (recently_used_cache_.get(url->spec(), &new_url)) {
     AddHTTPSEUrlToRedirectList(request_identifier);
-    new_url = recently_used_cache_.data[url->spec()];
     return true;
   }
 
@@ -169,19 +175,20 @@ bool HTTPSEverywhereService::GetHTTPSURL(
     candidate_url = candidate_url.ReplaceComponents(replacements);
   }
 
-  const std::vector<std::string> domains = ExpandDomainForLookup(candidate_url.host());
+  const std::vector<std::string> domains =
+      ExpandDomainForLookup(candidate_url.host());
   for (auto domain : domains) {
     std::string value = leveldbGet(level_db_, domain);
     if (!value.empty()) {
       new_url = ApplyHTTPSRule(candidate_url.spec(), value);
       if (0 != new_url.length()) {
-        recently_used_cache_.data[candidate_url.spec()] = new_url;
+        recently_used_cache_.add(candidate_url.spec(), new_url);
         AddHTTPSEUrlToRedirectList(request_identifier);
         return true;
       }
     }
   }
-  recently_used_cache_.data[candidate_url.spec()].clear();
+  recently_used_cache_.remove(candidate_url.spec());
   return false;
 }
 
@@ -189,6 +196,9 @@ bool HTTPSEverywhereService::GetHTTPSURLFromCacheOnly(
     const GURL* url,
     const uint64_t& request_identifier,
     std::string& cached_url) {
+  if (!url->is_valid())
+    return false;
+
   if (!IsInitialized() || url->scheme() == url::kHttpsScheme) {
     return false;
   }
@@ -196,9 +206,8 @@ bool HTTPSEverywhereService::GetHTTPSURLFromCacheOnly(
     return false;
   }
 
-  if (recently_used_cache_.data.count(url->spec()) > 0) {
+  if (recently_used_cache_.get(url->spec(), &cached_url)) {
     AddHTTPSEUrlToRedirectList(request_identifier);
-    cached_url = recently_used_cache_.data[url->spec()];
     return true;
   }
   return false;
