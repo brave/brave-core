@@ -397,6 +397,8 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
 
   client_->AppendPageScoreToPageScoreHistory(page_score);
 
+  CachePageScore(last_shown_tab_url_, page_score);
+
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Site visited', { url, immediateWinner, winnerOverTime }
 
@@ -404,7 +406,7 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
 
   LOG(INFO) << "Site visited " << url << ", immediateWinner is "
       << winning_category << " and winnerOverTime is "
-      << winner_over_time_category << "previous tab url "
+      << winner_over_time_category << ", previous tab url "
       << last_shown_tab_url_;
 
   if (last_shown_tab_url_ == url) {
