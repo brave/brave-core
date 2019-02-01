@@ -7,13 +7,14 @@ import styled from 'styled-components'
 export const StyledRemove = styled<{}, 'button'>('button')`
   font-family: Muli, sans-serif;
   font-size: 14px;
-  line-height: 1;
-  margin-top: 4px;
+  line-height: 0;
+  height: 20px;
   color: #9E9FAB;
   padding: 0;
   border: none;
   background: none;
   cursor: pointer;
+  display: inline-block;
 `
 
 export const StyledRemoveIcon = styled<{}, 'span'>('span')`

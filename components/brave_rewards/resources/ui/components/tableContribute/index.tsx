@@ -17,7 +17,7 @@ import Table, { Row } from '../../../components/dataTables/table'
 import Profile, { Provider } from '../profile'
 import { getLocale } from '../../../helpers'
 import { RestoreSites, Tokens, Tooltip } from '../'
-import { CloseCircleOIcon } from '../../../components/icons'
+import { TrashOIcon } from '../../../components/icons'
 
 interface ProfileCell {
   verified: boolean
@@ -136,7 +136,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
           content: (
             <Tooltip content={getLocale('excludeSite')}>
               <StyledRemove onClick={row.onRemove}>
-                <CloseCircleOIcon />
+                <TrashOIcon />
               </StyledRemove>
             </Tooltip>
           ),
