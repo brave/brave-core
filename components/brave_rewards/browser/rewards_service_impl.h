@@ -223,7 +223,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublishersListSaved(ledger::LedgerCallbackHandler* handler,
                              bool success);
   void OnTimer(uint32_t timer_id);
-  void TriggerOnContentSiteUpdated();
   void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
                              const std::string& data);
 
@@ -242,14 +241,8 @@ class RewardsServiceImpl : public RewardsService,
   void OnRemovedRecurring(ledger::RecurringRemoveCallback callback, bool success);
   void OnRemoveRecurring(const std::string& publisher_key, ledger::RecurringRemoveCallback callback) override;
   void TriggerOnGetCurrentBalanceReport(const ledger::BalanceReportInfo& report);
-  void TriggerOnGetPublisherActivityFromUrl(
-      ledger::Result result,
-      std::unique_ptr<ledger::PublisherInfo> info,
-      uint64_t windowId);
   void MaybeShowBackupNotification(uint64_t boot_stamp);
   void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
-  void OnRestorePublishersInternal(ledger::OnRestoreCallback callback,
-                                   bool result);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -306,7 +299,7 @@ class RewardsServiceImpl : public RewardsService,
   void SetUserChangedContribution() const override;
   void SetAutoContribute(bool enabled) const override;
   void OnExcludedSitesChanged(const std::string& publisher_id) override;
-  void OnPublisherActivity(ledger::Result result,
+  void OnPanelPublisherInfo(ledger::Result result,
                           std::unique_ptr<ledger::PublisherInfo> info,
                           uint64_t windowId) override;
   void FetchFavIcon(const std::string& url,
@@ -344,6 +337,15 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::PendingContributionList& list) override;
 
   void OnSavePendingContribution(ledger::Result result);
+
+  void OnRestorePublishersInternal(ledger::OnRestoreCallback callback,
+                                   bool result);
+
+  void SaveNormalizedPublisherList(
+      const ledger::PublisherInfoListStruct& list) override;
+
+  void OnPublisherListNormalizedSaved(
+    std::unique_ptr<ledger::PublisherInfoList> list);
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;

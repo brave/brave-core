@@ -401,6 +401,106 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringDonation) {
   EXPECT_FALSE(info_sql_2.Step());
 }
 
+TEST_F(PublisherInfoDatabaseTest, GetPanelPublisher) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  /**
+   * Publisher ID is missing
+   */
+  ledger::ActivityInfoFilter filter_1;
+  EXPECT_EQ(publisher_info_database_->GetPanelPublisher(filter_1), nullptr);
+
+  /**
+   * Empty table
+   */
+  ledger::ActivityInfoFilter filter_2;
+  filter_2.id = "test";
+  EXPECT_EQ(publisher_info_database_->GetPanelPublisher(filter_2), nullptr);
+
+  /**
+   * Ignore month and year filter
+   */
+  ledger::PublisherInfo info_1;
+  info_1.id = "brave.com";
+  info_1.url = "https://brave.com";
+  info_1.percent = 11;
+  info_1.month = ledger::ACTIVITY_MONTH::JANUARY;
+  info_1.year = 2019;
+  info_1.reconcile_stamp = 10;
+
+  bool success = publisher_info_database_->InsertOrUpdateActivityInfo(info_1);
+  EXPECT_TRUE(success);
+
+  ledger::ActivityInfoFilter filter_3;
+  filter_3.id = "brave.com";
+  filter_3.month = ledger::ACTIVITY_MONTH::ANY;
+  filter_3.year = -1;
+  filter_3.reconcile_stamp = 10;
+  std::unique_ptr<ledger::PublisherInfo> result =
+      publisher_info_database_->GetPanelPublisher(filter_3);
+  EXPECT_TRUE(result);
+  EXPECT_EQ(result->id, "brave.com");
+}
+
+TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfos) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  /**
+   * Good path
+   */
+  ledger::PublisherInfo info_1;
+  info_1.id = "brave.com";
+  info_1.url = "https://brave.com";
+  info_1.percent = 11;
+  info_1.month = ledger::ACTIVITY_MONTH::JANUARY;
+  info_1.year = 2019;
+  info_1.reconcile_stamp = 10;
+
+  ledger::PublisherInfo info_2;
+  info_2.id = "clifton.io";
+  info_2.url = "https://clifton.io";
+  info_2.percent = 11;
+  info_2.month = ledger::ACTIVITY_MONTH::JANUARY;
+  info_2.year = 2019;
+  info_2.reconcile_stamp = 10;
+
+  ledger::PublisherInfoList list;
+  list.push_back(info_1);
+  list.push_back(info_2);
+
+  bool success = publisher_info_database_->InsertOrUpdateActivityInfos(list);
+  EXPECT_TRUE(success);
+
+  /**
+   * Empty list
+   */
+  ledger::PublisherInfoList list_empty;
+
+  success = publisher_info_database_->InsertOrUpdateActivityInfos(list_empty);
+  EXPECT_FALSE(success);
+
+  /**
+   * One publisher has empty ID
+   */
+
+  ledger::PublisherInfo info_3;
+  info_3.id = "";
+  info_3.url = "https://page.io";
+  info_3.percent = 11;
+  info_3.month = ledger::ACTIVITY_MONTH::JANUARY;
+  info_3.year = 2019;
+  info_3.reconcile_stamp = 10;
+
+  list.push_back(info_3);
+
+  success = publisher_info_database_->InsertOrUpdateActivityInfos(list);
+  EXPECT_FALSE(success);
+}
+
 TEST_F(PublisherInfoDatabaseTest, InsertPendingContribution) {
 
 }

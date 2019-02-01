@@ -34,7 +34,7 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   // RewardsServicePrivateObserver implementation
   void OnGetCurrentBalanceReport(RewardsService* rewards_service,
                                  const BalanceReport& balance_report) override;
-  void OnGetPublisherActivityFromUrl(
+  void OnPanelPublisherInfo(
       RewardsService* rewards_service,
       int error_code,
       std::unique_ptr<ledger::PublisherInfo> info,
