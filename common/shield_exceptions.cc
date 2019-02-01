@@ -76,11 +76,17 @@ bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
     }
   }
 
-  static std::map<GURL, std::vector<URLPattern> > whitelist_patterns_map = {{
+  static std::map<GURL, std::vector<URLPattern> > whitelist_patterns_map = {
+    {
       GURL("https://www.facebook.com/"), {
         URLPattern(URLPattern::SCHEME_HTTPS, "https://*.fbcdn.net/*"),
       }
-    }
+    },
+    {
+      GURL("https://accounts.google.com/"), {
+        URLPattern(URLPattern::SCHEME_HTTPS, "https://content.googleapis.com/*"),
+      }
+    },
   };
   std::map<GURL, std::vector<URLPattern> >::iterator i =
       whitelist_patterns_map.find(firstPartyOrigin);
