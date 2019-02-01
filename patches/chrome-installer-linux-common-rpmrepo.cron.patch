@@ -1,0 +1,14 @@
+diff --git a/chrome/installer/linux/common/rpmrepo.cron b/chrome/installer/linux/common/rpmrepo.cron
+index f7fe2bcf7d7cbf95b23067f21f87422706c5e4d0..3541826a03009e2adb8dbd6c258d254d31247a77 100755
+--- a/chrome/installer/linux/common/rpmrepo.cron
++++ b/chrome/installer/linux/common/rpmrepo.cron
+@@ -14,6 +14,9 @@
+ # setting "repo_add_once" to "true" or "false" as desired. An empty
+ # $DEFAULTS_FILE is the same as setting the value to "false".
+ 
++# Don't add the Chrome repo (brave/brave-browser#1967)
++exit 0
++
+ @@include@@rpm.include
+ 
+ ## MAIN ##
