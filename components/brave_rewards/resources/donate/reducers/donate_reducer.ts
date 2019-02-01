@@ -10,7 +10,7 @@ import { types } from '../constants/donate_types'
 export const defaultState: RewardsDonate.State = {
   finished: false,
   error: false,
-  publisher: undefined,
+  publishers: {},
   currentTipAmount: '0.0',
   currentTipRecurring: false,
   recurringDonations: [],
@@ -31,7 +31,11 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
     case types.ON_PUBLISHER_BANNER:
       {
         state = { ...state }
-        state.publisher = payload.data
+        if (!state.publishers) {
+          state.publishers = {}
+        }
+        const publisher: RewardsDonate.Publisher = payload.data
+        state.publishers[publisher.publisherKey] = publisher
         break
       }
     case types.GET_WALLET_PROPERTIES:
@@ -47,7 +51,7 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
       }
     case types.ON_DONATE:
       {
-        if (state.publisher && state.publisher.publisherKey && payload.amount > 0) {
+        if (payload.publisherKey && payload.amount > 0) {
           let amount = parseInt(payload.amount, 10)
           chrome.send('brave_rewards_donate.onDonate', [
             payload.publisherKey,
