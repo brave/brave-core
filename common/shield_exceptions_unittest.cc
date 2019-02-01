@@ -20,7 +20,7 @@ TEST_F(BraveShieldsExceptionsTest, IsWhitelistedReferrer) {
   EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.facebook.com"),
         GURL("https://video-zyz1-9.xy.fbcdn.net")));
   // Facebook doesn't allow just anything
-  EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://www.facebook.com.com"),
+  EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://www.facebook.com"),
         GURL("https://test.com")));
   // Allowed for reddit.com
   EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.reddit.com/"),
