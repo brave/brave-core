@@ -678,9 +678,9 @@ void AdsImpl::OnGetAds(
     if (pos != std::string::npos) {
       std::string new_category = category.substr(0, pos);
 
-      LOG(INFO) << "Notification not made: No ads found for \"" << category
-          << "\" category, trying again with \"" << new_category
-          << "\" category";
+      LOG(INFO) << "Notification not made: No ads found in \"" << category
+          << "\" category for " << region << " region, trying again with \""
+          << new_category << "\" category";
 
       auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3, _4);
       ads_client_->GetAds(region, new_category, callback);
@@ -692,8 +692,8 @@ void AdsImpl::OnGetAds(
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'no ads for category', category }
 
-      LOG(INFO) << "Notification not made: No ads found for \"" << category
-          << "\" category";
+      LOG(INFO) << "Notification not made: No ads found in \"" << category
+          << "\" category for " << region << "region";
 
       return;
     }
