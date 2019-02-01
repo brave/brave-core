@@ -8,8 +8,8 @@
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 
-#define BrowserContentSettingBubbleModelDelegate
-    BraveBrowserContentSettingBubbleModelDelegate
+#define BrowserContentSettingBubbleModelDelegate \
+  BraveBrowserContentSettingBubbleModelDelegate
 #define BrowserCommandController BraveBrowserCommandController
 #include "../../../../../chrome/browser/ui/browser.cc"  // NOLINT
 #undef BrowserContentSettingBubbleModelDelegate
