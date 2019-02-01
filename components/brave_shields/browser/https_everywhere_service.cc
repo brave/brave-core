@@ -152,8 +152,10 @@ bool HTTPSEverywhereService::GetHTTPSURL(
     const GURL* url, const uint64_t& request_identifier,
     std::string& new_url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  base::ScopedBlockingCall scoped_blocking_call(
-      base::BlockingType::WILL_BLOCK);
+
+  if (!url->is_valid())
+    return false;
+
   if (!IsInitialized() || !level_db_ || url->scheme() == url::kHttpsScheme) {
     return false;
   }
@@ -195,6 +197,9 @@ bool HTTPSEverywhereService::GetHTTPSURLFromCacheOnly(
     const GURL* url,
     const uint64_t& request_identifier,
     std::string& cached_url) {
+  if (!url->is_valid())
+    return false;
+
   if (!IsInitialized() || url->scheme() == url::kHttpsScheme) {
     return false;
   }
