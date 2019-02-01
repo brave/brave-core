@@ -48,6 +48,11 @@ TEST_F(BraveShieldsExceptionsTest, IsWhitelistedReferrer) {
   // not allowed with a different scheme
   EXPECT_FALSE(IsWhitelistedReferrer(GURL("http://binance.com"),
       GURL("http://api.geetest.com/")));
+  // Google Accounts only allows a specific hostname
+  EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://accounts.google.com"),
+      GURL("https://content.googleapis.com/cryptauth/v1/authzen/awaittx")));
+  EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://accounts.google.com"),
+      GURL("https://ajax.googleapis.com/ajax/libs/d3js/5.7.0/d3.min.js")));
 }
 
 }  // namespace
