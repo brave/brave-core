@@ -60,7 +60,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       OnRemoveRecurringCallback callback) override;
 
   void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
-  void OnPublisherActivity(int32_t result, const std::string& info,
+  void OnPanelPublisherInfo(int32_t result, const std::string& info,
       uint64_t window_id) override;
   void OnExcludedSitesChanged(const std::string& publisher_id) override;
   void SaveContributionInfo(const std::string& probi, int32_t month,
@@ -101,6 +101,9 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
                            uint32_t limit,
                            const std::string& filter,
                            GetActivityInfoListCallback callback) override;
+
+  void SaveNormalizedPublisherList(
+    const std::string& normalized_list) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind

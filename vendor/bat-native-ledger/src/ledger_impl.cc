@@ -301,25 +301,28 @@ std::string LedgerImpl::URIEncode(const std::string& value) {
   return ledger_client_->URIEncode(value);
 }
 
-void LedgerImpl::SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> info,
-                                  ledger::PublisherInfoCallback callback) {
+void LedgerImpl::OnPublisherInfoSavedInternal(
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info) {
+  bat_publishers_->OnPublisherInfoSaved(result, std::move(info));
+}
+
+void LedgerImpl::SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> info) {
   ledger_client_->SavePublisherInfo(
       std::move(info),
-      std::bind(&LedgerImpl::OnSetPublisherInfo,
+      std::bind(&LedgerImpl::OnPublisherInfoSavedInternal,
                 this,
-                callback,
                 _1,
                 _2));
 }
 
-void LedgerImpl::SetActivityInfo(std::unique_ptr<ledger::PublisherInfo> info,
-                                  ledger::PublisherInfoCallback callback) {
-  ledger_client_->SaveActivityInfo(std::move(info),
-                                   std::bind(&LedgerImpl::OnSetPublisherInfo,
-                                             this,
-                                             callback,
-                                             _1,
-                                             _2));
+void LedgerImpl::SetActivityInfo(std::unique_ptr<ledger::PublisherInfo> info) {
+  ledger_client_->SaveActivityInfo(
+      std::move(info),
+      std::bind(&LedgerImpl::OnPublisherInfoSavedInternal,
+                this,
+                _1,
+                _2));
 }
 
 void LedgerImpl::SetMediaPublisherInfo(const std::string& media_key,
@@ -360,13 +363,6 @@ void LedgerImpl::OnRestorePublishers(ledger::OnRestoreCallback callback) {
 
 void LedgerImpl::LoadNicewareList(ledger::GetNicewareListCallback callback) {
   ledger_client_->LoadNicewareList(callback);
-}
-
-void LedgerImpl::OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
-                                    ledger::Result result,
-                                    std::unique_ptr<ledger::PublisherInfo> info) {
-  info = bat_publishers_->onPublisherInfoUpdated(result, std::move(info));
-  callback(result, std::move(info));
 }
 
 std::vector<ledger::ContributionInfo> LedgerImpl::GetRecurringDonationPublisherInfo() {
@@ -823,9 +819,9 @@ void LedgerImpl::GetMediaActivityFromUrl(
       windowId, visit_data, providerType, publisher_blob);
 }
 
-void LedgerImpl::OnPublisherActivity(ledger::Result result,
+void LedgerImpl::OnPanelPublisherInfo(ledger::Result result,
                                         std::unique_ptr<ledger::PublisherInfo> info, uint64_t windowId) {
-  ledger_client_->OnPublisherActivity(result, std::move(info), windowId);
+  ledger_client_->OnPanelPublisherInfo(result, std::move(info), windowId);
 }
 
 void LedgerImpl::OnExcludedSitesChanged(const std::string& publisher_id) {
@@ -1102,10 +1098,9 @@ void LedgerImpl::SaveContributionInfo(const std::string& probi,
 
 void LedgerImpl::NormalizeContributeWinners(
     ledger::PublisherInfoList* newList,
-    bool saveData,
     const ledger::PublisherInfoList& list,
     uint32_t record) {
-  bat_publishers_->NormalizeContributeWinners(newList, saveData, list, record);
+  bat_publishers_->NormalizeContributeWinners(newList, list, record);
 }
 
 void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t& timer_id) const {
@@ -1133,6 +1128,13 @@ double LedgerImpl::GetDefaultContributionAmount() {
 
 bool LedgerImpl::HasSufficientBalanceToReconcile() {
   return GetBalance() >= GetContributionAmount();
+}
+
+void LedgerImpl::SaveNormalizedPublisherList(
+    const ledger::PublisherInfoList& normalized_list) {
+  ledger::PublisherInfoListStruct list;
+  list.list = normalized_list;
+  ledger_client_->SaveNormalizedPublisherList(list);
 }
 
 }  // namespace bat_ledger

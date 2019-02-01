@@ -18,6 +18,11 @@ struct ContentSite {
   ContentSite(const ContentSite& properties);
   ~ContentSite();
 
+  // DESC sort
+  bool operator<(const ContentSite& other) const {
+    return percentage > other.percentage;
+  }
+
   std::string id;
   double percentage;
   bool verified;

@@ -73,7 +73,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   unsigned int getNumExcludedSites() const;
   bool getPublisherAllowVideos() const;
 
-  std::unique_ptr<ledger::PublisherInfo> onPublisherInfoUpdated(
+  void OnPublisherInfoSaved(
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo>);
   std::string GetBalanceReportName(ledger::ACTIVITY_MONTH month, int year);
@@ -125,7 +125,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void clearAllBalanceReports();
   void NormalizeContributeWinners(ledger::PublisherInfoList* newList,
-                                  bool saveData,
                                   const ledger::PublisherInfoList& list,
                                   uint32_t /* next_record */);
 
@@ -140,10 +139,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   // LedgerCallbackHandler impl
   void OnPublisherStateSaved(ledger::Result result) override;
-  void onSetPublisherInfo(ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
-  bool isEligibleForContribution(const ledger::PublisherInfo& info);
   bool isExcluded(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& excluded);
   void saveVisitInternal(
       std::string publisher_id,
@@ -183,9 +179,13 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void saveState();
 
-  void synopsisNormalizer();
-  void synopsisNormalizerInternal(ledger::PublisherInfoList* newList, bool saveData,
-    const ledger::PublisherInfoList& list, uint32_t /* next_record */);
+  void SynopsisNormalizer();
+
+  void SynopsisNormalizerCallback(const ledger::PublisherInfoList& list,
+                                  uint32_t /* next_record */);
+  void synopsisNormalizerInternal(ledger::PublisherInfoList* newList,
+                                  const ledger::PublisherInfoList& list,
+                                  uint32_t /* next_record */);
 
   bool GetMigrateScore() const;
 
@@ -193,7 +193,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   bool isPublisherVisible(const braveledger_bat_helper::PUBLISHER_ST& publisher_st);
 
-  void onPublisherActivity(ledger::Result result,
+  void OnPanelPublisherInfo(ledger::Result result,
                            std::unique_ptr<ledger::PublisherInfo> publisher_info,
                            uint64_t windowId,
                            const ledger::VisitData& visit_data);

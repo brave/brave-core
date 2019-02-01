@@ -50,7 +50,7 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
       void(RewardsService*, brave_rewards::ContentSiteList));
   MOCK_METHOD2(OnPublisherBanner,
       void(RewardsService*, const brave_rewards::PublisherBanner));
-  MOCK_METHOD4(OnGetPublisherActivityFromUrl,
+  MOCK_METHOD4(OnPanelPublisherInfo,
       void(RewardsService*, int, ledger::PublisherInfo*, uint64_t));
 };
 
