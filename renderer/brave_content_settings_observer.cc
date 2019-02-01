@@ -270,6 +270,9 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
       "[*.]pscp.tv",
       "[*.]hangouts.google.com",
       "[*.]meet.google.com",
+      "[*.]rainway.com",
+      "[*.]rainway.io",
+      "[*.]cheddar.com",
   };
   for (const auto& pattern : kWhitelistPatterns) {
     if (ContentSettingsPattern::FromString(pattern).Matches(primary_url))
