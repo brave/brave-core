@@ -4,6 +4,7 @@
 
 #include "bat_helper.h"
 
+#include <iomanip>
 #include <random>
 #include <regex>
 
