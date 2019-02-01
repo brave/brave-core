@@ -14,40 +14,10 @@
 namespace ads {
 
 struct CampaignInfo {
-  CampaignInfo() :
-      campaign_id(""),
-      name(""),
-      start_at(""),
-      end_at(""),
-      daily_cap(0),
-      budget(0),
-      advertiser_id(""),
-      geo_targets({}),
-      creative_sets({}) {}
-
-  explicit CampaignInfo(const std::string& campaign_id) :
-      campaign_id(campaign_id),
-      name(""),
-      start_at(""),
-      end_at(""),
-      daily_cap(0),
-      budget(0),
-      advertiser_id(""),
-      geo_targets({}),
-      creative_sets({}) {}
-
-  CampaignInfo(const CampaignInfo& info) :
-      campaign_id(info.campaign_id),
-      name(info.name),
-      start_at(info.start_at),
-      end_at(info.end_at),
-      daily_cap(info.daily_cap),
-      budget(info.budget),
-      advertiser_id(info.advertiser_id),
-      geo_targets(info.geo_targets),
-      creative_sets(info.creative_sets) {}
-
-  ~CampaignInfo() {}
+  CampaignInfo();
+  explicit CampaignInfo(const std::string& campaign_id);
+  explicit CampaignInfo(const CampaignInfo& info);
+  ~CampaignInfo();
 
   std::string campaign_id;
   std::string name;

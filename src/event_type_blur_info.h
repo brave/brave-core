@@ -10,13 +10,9 @@
 namespace ads {
 
 struct BlurInfo {
-  BlurInfo() :
-      tab_id(-1) {}
-
-  explicit BlurInfo(const BlurInfo& info) :
-      tab_id(info.tab_id) {}
-
-  ~BlurInfo() {}
+  BlurInfo();
+  explicit BlurInfo(const BlurInfo& info);
+  ~BlurInfo();
 
   int32_t tab_id;
 };

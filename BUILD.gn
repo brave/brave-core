@@ -51,15 +51,6 @@ source_set("ads") {
 
   output_name = "bat_native_ads"
 
-  # TODO(bridiver) - fix chromium-style issues and remove these
-  configs -= [
-    "//build/config/compiler:chromium_code",
-    "//build/config/clang:find_bad_constructs",
-  ]
-  configs += [
-    "//build/config/compiler:no_chromium_code",
-  ]
-
   sources = [
     "src/ads.cc",
     "src/ads_impl.cc",
@@ -78,6 +69,18 @@ source_set("ads") {
     "src/time_helper.cc",
     "src/json_helper.cc",
     "src/uri_helper.cc",
+    "src/campaign_info.cc",
+    "src/search_provider_info.cc",
+    "src/catalog_type_info.cc",
+    "src/catalog_creative_set_info.cc",
+    "src/catalog_creative_info.cc",
+    "src/catalog_geo_target_info.cc",
+    "src/catalog_payload_info.cc",
+    "src/catalog_segment_info.cc",
+    "src/event_type_blur_info.cc",
+    "src/event_type_destroy_info.cc",
+    "src/event_type_focus_info.cc",
+    "src/event_type_load_info.cc",
     "src/bat/ads/ad_info.cc",
     "src/bat/ads/issuer_info.cc",
     "src/bat/ads/issuers_info.cc",

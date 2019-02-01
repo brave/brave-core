@@ -10,15 +10,9 @@
 namespace ads {
 
 struct GeoTargetInfo {
-  GeoTargetInfo() :
-      code(""),
-      name("") {}
-
-  explicit GeoTargetInfo(const GeoTargetInfo& info) :
-      code(info.code),
-      name(info.name) {}
-
-  ~GeoTargetInfo() {}
+  GeoTargetInfo();
+  explicit GeoTargetInfo(const GeoTargetInfo& info);
+  ~GeoTargetInfo();
 
   std::string code;
   std::string name;

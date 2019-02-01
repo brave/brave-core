@@ -1164,7 +1164,7 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
 
   SustainAdInteraction();
 
-  auto json = buffer.GetString();
+  auto* json = buffer.GetString();
   ads_client_->EventLog(json);
 }
 
@@ -1235,7 +1235,7 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
   writer.EndObject();
 
-  auto json = buffer.GetString();
+  auto* json = buffer.GetString();
   ads_client_->EventLog(json);
 }
 
@@ -1266,7 +1266,7 @@ void AdsImpl::GenerateAdReportingSustainEvent(
 
   writer.EndObject();
 
-  auto json = buffer.GetString();
+  auto* json = buffer.GetString();
   ads_client_->EventLog(json);
 }
 
@@ -1327,7 +1327,7 @@ void AdsImpl::GenerateAdReportingLoadEvent(
 
   writer.EndObject();
 
-  auto json = buffer.GetString();
+  auto* json = buffer.GetString();
   ads_client_->EventLog(json);
 
   CheckEasterEgg(info.tab_url);
@@ -1353,7 +1353,7 @@ void AdsImpl::GenerateAdReportingBackgroundEvent() {
 
   writer.EndObject();
 
-  auto json = buffer.GetString();
+  auto* json = buffer.GetString();
   ads_client_->EventLog(json);
 }
 
@@ -1377,7 +1377,7 @@ void AdsImpl::GenerateAdReportingForegroundEvent() {
 
   writer.EndObject();
 
-  auto json = buffer.GetString();
+  auto* json = buffer.GetString();
   ads_client_->EventLog(json);
 }
 
@@ -1405,7 +1405,7 @@ void AdsImpl::GenerateAdReportingBlurEvent(
 
   writer.EndObject();
 
-  auto json = buffer.GetString();
+  auto* json = buffer.GetString();
   ads_client_->EventLog(json);
 }
 
@@ -1433,7 +1433,7 @@ void AdsImpl::GenerateAdReportingDestroyEvent(
 
   writer.EndObject();
 
-  auto json = buffer.GetString();
+  auto* json = buffer.GetString();
   ads_client_->EventLog(json);
 }
 
@@ -1461,7 +1461,7 @@ void AdsImpl::GenerateAdReportingFocusEvent(
 
   writer.EndObject();
 
-  auto json = buffer.GetString();
+  auto* json = buffer.GetString();
   ads_client_->EventLog(json);
 }
 
@@ -1485,7 +1485,7 @@ void AdsImpl::GenerateAdReportingRestartEvent() {
 
   writer.EndObject();
 
-  auto json = buffer.GetString();
+  auto* json = buffer.GetString();
   ads_client_->EventLog(json);
 }
 
@@ -1540,7 +1540,7 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
 
   writer.EndObject();
 
-  auto json = buffer.GetString();
+  auto* json = buffer.GetString();
   ads_client_->EventLog(json);
 }
 

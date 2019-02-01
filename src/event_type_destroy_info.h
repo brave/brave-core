@@ -10,13 +10,9 @@
 namespace ads {
 
 struct DestroyInfo {
-  DestroyInfo() :
-      tab_id(-1) {}
-
-  explicit DestroyInfo(const DestroyInfo& info) :
-      tab_id(info.tab_id) {}
-
-  ~DestroyInfo() {}
+  DestroyInfo();
+  explicit DestroyInfo(const DestroyInfo& info);
+  ~DestroyInfo();
 
   int32_t tab_id;
 };

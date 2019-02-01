@@ -112,7 +112,19 @@ set(SOURCES
   "${PROJECT_SOURCE_DIR}/src/search_providers.cc"
   "${PROJECT_SOURCE_DIR}/src/string_helper.cc"
   "${PROJECT_SOURCE_DIR}/src/time_helper.cc"
-  "${PROJECT_SOURCE_DIR}/src/uri_helper.cc")
+  "${PROJECT_SOURCE_DIR}/src/uri_helper.cc"
+  "${PROJECT_SOURCE_DIR}/src/campaign_info.cc"
+  "${PROJECT_SOURCE_DIR}/src/search_provider_info.cc"
+  "${PROJECT_SOURCE_DIR}/src/catalog_type_info.cc"
+  "${PROJECT_SOURCE_DIR}/src/catalog_creative_set_info.cc"
+  "${PROJECT_SOURCE_DIR}/src/catalog_creative_info.cc"
+  "${PROJECT_SOURCE_DIR}/src/catalog_geo_target_info.cc"
+  "${PROJECT_SOURCE_DIR}/src/catalog_payload_info.cc"
+  "${PROJECT_SOURCE_DIR}/src/catalog_segment_info.cc"
+  "${PROJECT_SOURCE_DIR}/src/event_type_blur_info.cc"
+  "${PROJECT_SOURCE_DIR}/src/event_type_destroy_info.cc"
+  "${PROJECT_SOURCE_DIR}/src/event_type_focus_info.cc"
+  "${PROJECT_SOURCE_DIR}/src/event_type_load_info.cc")
 
 include_directories(
   "${PROJECT_SOURCE_DIR}"
