@@ -6,9 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_HTTPS_EVERYWHERE_RECENTLY_USED_CACHE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_HTTPS_EVERYWHERE_RECENTLY_USED_CACHE_H_
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 #include <vector>
+
+#include "base/synchronization/lock.h"
 
 template <class T> class RingBuffer {
  public:
@@ -42,21 +44,41 @@ template <class T> class HTTPSERecentlyUsedCache {
   explicit HTTPSERecentlyUsedCache(unsigned int size = 100) : keysByAge(size) {}
 
   void add(const std::string& key, const T& value) {
-    std::string old = keysByAge.oldest();
-    if (!old.empty()) {
-      keysByAge.data.erase(old);
+    base::AutoLock create(lock_);
+
+    data_[key] = value;
+    // https://github.com/brave/brave-browser/issues/3193
+    // std::string old = keysByAge.oldest();
+    // if (!old.empty()) {
+    //   keysByAge.data.erase(old);
+    // }
+    // keysByAge[key] = value;
+  }
+
+  bool get(const std::string& key, T* value) {
+    base::AutoLock create(lock_);
+
+    auto search = data_.find(key);
+    if (search != data_.end()) {
+      *value = search->second;
+      return true;
     }
-    keysByAge[key] = value;
+    return false;
+  }
+
+  void remove(const std::string& key) {
+    data_.erase(key);
   }
 
   void clear() {
-    data.clear();
-    keysByAge.clear();
+    data_.clear();
+    // https://github.com/brave/brave-browser/issues/3193
+    // keysByAge.clear();
   }
 
-  std::unordered_map<std::string, T> data;
-
  private:
+  std::unordered_map<std::string, T> data_;
+  base::Lock lock_;
   RingBuffer<T> keysByAge;
 };
 

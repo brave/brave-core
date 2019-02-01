@@ -163,9 +163,8 @@ bool HTTPSEverywhereService::GetHTTPSURL(
     return false;
   }
 
-  if (recently_used_cache_.data.count(url->spec()) > 0) {
+  if (recently_used_cache_.get(url->spec(), &new_url)) {
     AddHTTPSEUrlToRedirectList(request_identifier);
-    new_url = recently_used_cache_.data[url->spec()];
     return true;
   }
 
@@ -183,13 +182,13 @@ bool HTTPSEverywhereService::GetHTTPSURL(
     if (!value.empty()) {
       new_url = ApplyHTTPSRule(candidate_url.spec(), value);
       if (0 != new_url.length()) {
-        recently_used_cache_.data[candidate_url.spec()] = new_url;
+        recently_used_cache_.add(candidate_url.spec(), new_url);
         AddHTTPSEUrlToRedirectList(request_identifier);
         return true;
       }
     }
   }
-  recently_used_cache_.data[candidate_url.spec()].clear();
+  recently_used_cache_.remove(candidate_url.spec());
   return false;
 }
 
@@ -207,9 +206,8 @@ bool HTTPSEverywhereService::GetHTTPSURLFromCacheOnly(
     return false;
   }
 
-  if (recently_used_cache_.data.count(url->spec()) > 0) {
+  if (recently_used_cache_.get(url->spec(), &cached_url)) {
     AddHTTPSEUrlToRedirectList(request_identifier);
-    cached_url = recently_used_cache_.data[url->spec()];
     return true;
   }
   return false;
