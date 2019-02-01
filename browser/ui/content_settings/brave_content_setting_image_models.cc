@@ -14,10 +14,8 @@
 
 void BraveGenerateContentSettingImageModels(
     std::vector<std::unique_ptr<ContentSettingImageModel>>* result) {
-  // lint complains to use pointer or const referencc for |result|.
-  // So, changed to pointer because it is modified in this function.
-  // Assigned to ref again to make it clear.
-  // Otherwise, we need to use (*result)[i] for deferencing its element.
+  // Assigned to ref to make it clear. Otherwise, we need to use (*result)[i]
+  // for deferencing its element.
   std::vector<std::unique_ptr<ContentSettingImageModel>>& result_ref = *result;
   // Remove the cookies content setting image model
   // https://github.com/brave/brave-browser/issues/1197
