@@ -35,7 +35,7 @@ def main():
     args = parse_args()
     print('[INFO] Running upload...')
 
-    # Repo is defined in lib/helpers.py for now
+    # BRAVE_REPO is defined in lib/helpers.py for now
     repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
 
     tag = get_brave_version()
@@ -112,12 +112,12 @@ def main():
 def get_brave_packages(dir, channel, version):
     pkgs = []
 
-    def rename(file_path, file_desired):
+    def filecopy(file_path, file_desired):
         file_desired_path = os.path.join(dir, file_desired)
         if os.path.isfile(file_path):
-            print('[INFO] Renaming' + file_path + ' to ' +
+            print('[INFO] Copying file ' + file_path + ' to ' +
                   file_desired_path)
-            os.rename(file_path, file_desired_path)
+            shutil.copy(file_path, file_desired_path)
         return file_desired_path
 
     channel_capitalized = channel.capitalize()
@@ -129,10 +129,10 @@ def get_brave_packages(dir, channel, version):
                     file_desired = 'Brave-Browser.dmg'
                     file_desired_pkg = 'Brave-Browser.pkg'
                     if file == 'Brave Browser.dmg':
-                        rename(file_path, file_desired)
+                        filecopy(file_path, file_desired)
                         pkgs.append(file_desired)
                     elif file == 'Brave Browser.pkg':
-                        rename(file_path, file_desired_pkg)
+                        filecopy(file_path, file_desired_pkg)
                         pkgs.append(file_desired)
                     elif file == file_desired:
                         pkgs.append(file_desired)
@@ -143,7 +143,7 @@ def get_brave_packages(dir, channel, version):
                                     channel_capitalized + '.dmg')
                     if re.match(r'Brave Browser ' +
                                 channel_capitalized + r'.*\.dmg$', file):
-                        rename(file_path, file_desired)
+                        filecopy(file_path, file_desired)
                         pkgs.append(file_desired)
                     elif file == file_desired:
                         pkgs.append(file_desired)
@@ -173,28 +173,28 @@ def get_brave_packages(dir, channel, version):
                         file_desired_stub_silent = 'BraveBrowserSilentSetup.exe'
                         file_desired_stub_untagged = 'BraveBrowserUntaggedSetup.exe'
                         if re.match(r'BraveBrowserSetup_.*\.exe', file):
-                            rename(file_path, file_desired_stub)
+                            filecopy(file_path, file_desired_stub)
                             pkgs.append(file_desired_stub)
                         elif re.match(r'BraveBrowserSilentSetup_.*\.exe', file):
-                            rename(file_path, file_desired_stub_silent)
+                            filecopy(file_path, file_desired_stub_silent)
                             pkgs.append(file_desired_stub_silent)
                         elif re.match(r'BraveBrowserUntaggedSetup_.*\.exe', file):
-                            rename(file_path, file_desired_stub_untagged)
+                            filecopy(file_path, file_desired_stub_untagged)
                             pkgs.append(file_desired_stub_untagged)
                         elif re.match(
                                 r'BraveBrowserStandaloneSetup_.*\.exe',
                                 file):
-                            rename(file_path, file_desired_standalone)
+                            filecopy(file_path, file_desired_standalone)
                             pkgs.append(file_desired_standalone)
                         elif re.match(
                                 r'BraveBrowserStandaloneSilentSetup_.*\.exe',
                                 file):
-                            rename(file_path, file_desired_standalone_silent)
+                            filecopy(file_path, file_desired_standalone_silent)
                             pkgs.append(file_desired_standalone_silent)
                         elif re.match(
                                 r'BraveBrowserStandaloneUntaggedSetup_.*\.exe',
                                 file):
-                            rename(file_path, file_desired_standalone_untagged)
+                            filecopy(file_path, file_desired_standalone_untagged)
                             pkgs.append(file_desired_standalone_untagged)
                     elif channel_capitalized == 'Beta':
                         file_desired_standalone = (
@@ -218,30 +218,30 @@ def get_brave_packages(dir, channel, version):
                         file_desired_stub_untagged = 'BraveBrowserUntaggedDevSetup.exe'
                     if re.match(r'BraveBrowser' + channel_capitalized +
                                 r'Setup_.*\.exe', file):
-                        rename(file_path, file_desired_stub)
+                        filecopy(file_path, file_desired_stub)
                         pkgs.append(file_desired_stub)
                     elif re.match(r'BraveBrowserSilent' + channel_capitalized +
                                   r'Setup_.*\.exe', file):
-                        rename(file_path, file_desired_stub_silent)
+                        filecopy(file_path, file_desired_stub_silent)
                         pkgs.append(file_desired_stub_silent)
                     elif re.match(r'BraveBrowserUntagged' + channel_capitalized +
                                   r'Setup_.*\.exe', file):
-                        rename(file_path, file_desired_stub_untagged)
+                        filecopy(file_path, file_desired_stub_untagged)
                         pkgs.append(file_desired_stub_untagged)
                     elif re.match(r'BraveBrowserStandalone' +
                                   channel_capitalized + r'Setup_.*\.exe',
                                   file):
-                        rename(file_path, file_desired_standalone)
+                        filecopy(file_path, file_desired_standalone)
                         pkgs.append(file_desired_standalone)
                     elif re.match(r'BraveBrowserStandaloneSilent' +
                                   channel_capitalized + r'Setup_.*\.exe',
                                   file):
-                        rename(file_path, file_desired_standalone_silent)
+                        filecopy(file_path, file_desired_standalone_silent)
                         pkgs.append(file_desired_standalone_silent)
                     elif re.match(r'BraveBrowserStandaloneUntagged' +
                                   channel_capitalized + r'Setup_.*\.exe',
                                   file):
-                        rename(file_path, file_desired_standalone_untagged)
+                        filecopy(file_path, file_desired_standalone_untagged)
                         pkgs.append(file_desired_standalone_untagged)
                 else:
                     if channel_capitalized == 'Release':
@@ -255,28 +255,28 @@ def get_brave_packages(dir, channel, version):
                         file_desired_stub_silent = 'BraveBrowserSilentSetup32.exe'
                         file_desired_stub_untagged = 'BraveBrowserUntaggedSetup32.exe'
                         if re.match(r'BraveBrowserSetup32_.*\.exe', file):
-                            rename(file_path, file_desired_stub)
+                            filecopy(file_path, file_desired_stub)
                             pkgs.append(file_desired_stub)
                         elif re.match(r'BraveBrowserSilentSetup32_.*\.exe', file):
-                            rename(file_path, file_desired_stub_silent)
+                            filecopy(file_path, file_desired_stub_silent)
                             pkgs.append(file_desired_stub_silent)
                         elif re.match(r'BraveBrowserUntaggedSetup32_.*\.exe', file):
-                            rename(file_path, file_desired_stub_untagged)
+                            filecopy(file_path, file_desired_stub_untagged)
                             pkgs.append(file_desired_stub_untagged)
                         elif re.match(
                                 r'BraveBrowserStandaloneSetup32_.*\.exe',
                                 file):
-                            rename(file_path, file_desired_standalone)
+                            filecopy(file_path, file_desired_standalone)
                             pkgs.append(file_desired_standalone)
                         elif re.match(
                                 r'BraveBrowserStandaloneSilentSetup32_.*\.exe',
                                 file):
-                            rename(file_path, file_desired_standalone_silent)
+                            filecopy(file_path, file_desired_standalone_silent)
                             pkgs.append(file_desired_standalone_silent)
                         elif re.match(
                                 r'BraveBrowserStandaloneUntaggedSetup32_.*\.exe',
                                 file):
-                            rename(file_path, file_desired_standalone_untagged)
+                            filecopy(file_path, file_desired_standalone_untagged)
                             pkgs.append(file_desired_standalone_untagged)
                     elif channel_capitalized == 'Beta':
                         file_desired_standalone = (
@@ -300,30 +300,30 @@ def get_brave_packages(dir, channel, version):
                         file_desired_stub_untagged = 'BraveBrowserUntaggedDevSetup32.exe'
                     if re.match(r'BraveBrowser' + channel_capitalized +
                                 r'Setup32_.*\.exe', file):
-                        rename(file_path, file_desired_stub)
+                        filecopy(file_path, file_desired_stub)
                         pkgs.append(file_desired_stub)
                     elif re.match(r'BraveBrowserSilent' + channel_capitalized +
                                   r'Setup32_.*\.exe', file):
-                        rename(file_path, file_desired_stub_silent)
+                        filecopy(file_path, file_desired_stub_silent)
                         pkgs.append(file_desired_stub_silent)
                     elif re.match(r'BraveBrowserUntagged' + channel_capitalized +
                                   r'Setup32_.*\.exe', file):
-                        rename(file_path, file_desired_stub_untagged)
+                        filecopy(file_path, file_desired_stub_untagged)
                         pkgs.append(file_desired_stub_untagged)
                     elif re.match(r'BraveBrowserStandalone' +
                                   channel_capitalized + r'Setup32_.*\.exe',
                                   file):
-                        rename(file_path, file_desired_standalone)
+                        filecopy(file_path, file_desired_standalone)
                         pkgs.append(file_desired_standalone)
                     elif re.match(r'BraveBrowserStandaloneSilent' +
                                   channel_capitalized + r'Setup32_.*\.exe',
                                   file):
-                        rename(file_path, file_desired_standalone_silent)
+                        filecopy(file_path, file_desired_standalone_silent)
                         pkgs.append(file_desired_standalone_silent)
                     elif re.match(r'BraveBrowserStandaloneUntagged' +
                                   channel_capitalized + r'Setup32_.*\.exe',
                                   file):
-                        rename(file_path, file_desired_standalone_untagged)
+                        filecopy(file_path, file_desired_standalone_untagged)
                         pkgs.append(file_desired_standalone_untagged)
     return pkgs
 
