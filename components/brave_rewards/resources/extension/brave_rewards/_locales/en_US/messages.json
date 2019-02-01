@@ -328,5 +328,9 @@
   "walletFailedButton": {
     "message": "Try again",
     "description": "Button for re-try after wallet creation failed"
+  },
+  "earningsClaimDefault": {
+    "message": "Your Ads earnings are available.",
+    "description": "Panel notification text for Ads grant"
   }
 }

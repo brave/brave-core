@@ -124,8 +124,8 @@ export class RewardsPanel extends React.Component<Props, State> {
     })
   }
 
-  getGrant () {
-    this.props.actions.getGrant()
+  getGrants () {
+    this.props.actions.getGrants()
   }
 
   onWindowCallback = (window: chrome.windows.Window) => {
@@ -134,7 +134,7 @@ export class RewardsPanel extends React.Component<Props, State> {
     })
 
     if (this.props.rewardsPanelData.walletCreated) {
-      this.getGrant()
+      this.getGrants()
       this.getTabData()
     }
   }

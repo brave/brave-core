@@ -301,10 +301,19 @@ void RewardsNotificationServiceImpl::OnGrant(RewardsService* rewards_service,
                                              unsigned int error_code,
                                              Grant properties) {
 if (error_code == ledger::Result::LEDGER_OK) {
+    std::string grant_type = properties.type;
+    std::string prefix = grant_type == "ugp"
+        ? "rewards_notification_grant_"
+        : "rewards_notification_grant_ads_";
+    RewardsNotificationService::RewardsNotificationType notification_type
+        = grant_type == "ugp"
+        ? RewardsNotificationService::REWARDS_NOTIFICATION_GRANT
+        : RewardsNotificationService::REWARDS_NOTIFICATION_GRANT_ADS;
+
     RewardsNotificationService::RewardsNotificationArgs args;
-    AddNotification(RewardsNotificationService::REWARDS_NOTIFICATION_GRANT,
+    AddNotification(notification_type,
                     args,
-                    "rewards_notification_grant_" + properties.promotionId,
+                    prefix + properties.promotionId,
                     true);
   }
 }
@@ -313,9 +322,16 @@ void RewardsNotificationServiceImpl::OnGrantFinish(
     RewardsService* rewards_service,
     unsigned int result,
     Grant grant) {
-  DeleteNotification("rewards_notification_grant_" + grant.promotionId);
+  std::string grant_type = grant.type;
+  std::string prefix = grant_type == "ugp"
+      ? "rewards_notification_grant_"
+      : "rewards_notification_grant_ads_";
+
+  DeleteNotification(prefix + grant.promotionId);
   // We keep it for back compatibility
-  DeleteNotification("rewards_notification_grant");
+  if (grant_type == "ugp") {
+    DeleteNotification("rewards_notification_grant");
+  }
 }
 
 void RewardsNotificationServiceImpl::OnReconcileComplete(
