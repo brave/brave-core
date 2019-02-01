@@ -290,9 +290,7 @@ void BraveSyncServiceImpl::BackgroundSyncStarted(bool startup) {
   if (startup)
     bookmark_change_processor_->Start();
 
-  const bool waiting_for_second_device =
-                            !sync_prefs_->GetSyncDevices()->has_second_device();
-  StartLoop(waiting_for_second_device);
+  StartLoop();
 }
 
 void BraveSyncServiceImpl::BackgroundSyncStopped(bool shutdown) {
@@ -468,10 +466,9 @@ BraveSyncServiceImpl::PrepareResolvedPreferences(const RecordsList& records) {
 void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records) {
   const std::string this_device_id = sync_prefs_->GetThisDeviceId();
   bool this_device_deleted = false;
-  bool at_least_one_deleted = false;
+  bool contains_only_one_device = false;
 
   auto sync_devices = sync_prefs_->GetSyncDevices();
-  const bool waiting_for_second_device = !sync_devices->has_second_device();
   for (const auto &record : records) {
     DCHECK(record->has_device() || record->has_sitesetting());
     if (record->has_device()) {
@@ -487,20 +484,18 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records) {
         (record->deviceId == this_device_id &&
           record->action == jslib::SyncRecord::Action::A_DELETE &&
           actually_merged);
-      at_least_one_deleted = at_least_one_deleted ||
-          (record->action == jslib::SyncRecord::Action::A_DELETE &&
-          actually_merged);
+      contains_only_one_device = sync_devices->size() < 2 &&
+        record->action == jslib::SyncRecord::Action::A_DELETE &&
+          actually_merged;
     }
   } // for each device
 
   sync_prefs_->SetSyncDevices(*sync_devices);
-  if (this_device_deleted ||
-                 (at_least_one_deleted && !sync_devices->has_second_device())) {
+
+  if (this_device_deleted)
     ResetSyncInternal();
-  } else if (waiting_for_second_device && sync_devices->has_second_device()) {
-    // Restart loop with 30 sec interval
-    StartLoop(false);
-  }
+  if (contains_only_one_device)
+    OnResetSync();
 }
 
 void BraveSyncServiceImpl::OnSyncPrefsChanged(const std::string& pref) {
@@ -615,14 +610,10 @@ void BraveSyncServiceImpl::SendDeviceSyncRecord(
 }
 
 static const int64_t kCheckUpdatesIntervalSec = 60;
-static const int64_t kCheckInitialUpdatesIntervalSec = 1;
 
-void BraveSyncServiceImpl::StartLoop(const bool use_initial_update_interval) {
+void BraveSyncServiceImpl::StartLoop() {
   timer_->Start(FROM_HERE,
-                  base::TimeDelta::FromSeconds(
-                    use_initial_update_interval ?
-                        kCheckInitialUpdatesIntervalSec :
-                        kCheckUpdatesIntervalSec),
+                  base::TimeDelta::FromSeconds(kCheckUpdatesIntervalSec),
                   this,
                   &BraveSyncServiceImpl::LoopProc);
 }
@@ -647,10 +638,6 @@ void BraveSyncServiceImpl::LoopProcThreadAligned() {
   }
 
   RequestSyncData();
-}
-
-base::TimeDelta BraveSyncServiceImpl::GetLoopDelay() const {
-  return timer_->GetCurrentDelay();
 }
 
 void BraveSyncServiceImpl::NotifyLogMessage(const std::string& message) {
