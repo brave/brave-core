@@ -693,7 +693,7 @@ void AdsImpl::OnGetAds(
       // 'Notification not made', { reason: 'no ads for category', category }
 
       LOG(INFO) << "Notification not made: No ads found in \"" << category
-          << "\" category for " << region << "region";
+          << "\" category for " << region << " region";
 
       return;
     }
