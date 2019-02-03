@@ -90,6 +90,7 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="6970811910055250180">Päivitetään laitetta...</translation>
 <translation id="8030318113982266900">Päivitetään laitteeseen kanavaa <ph name="CHANNEL_NAME"/>…</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> on lisätty Braveiin</translation>
+<translation id="8516116288943000095">Poista data myös Braveista (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Piilota Brave-valikossa</translation>
 <translation id="5660079256336839395">Piilota Brave-valikossa</translation>
 <translation id="7456658570432774853">Auta parantamaan Braveia ilmoittamalla nykyiset asetukset.</translation>
@@ -125,11 +126,12 @@ Jos kirjaudut silti sisään, Brave-tiedot, kuten kirjanmerkit, historia ja aset
 <translation id="1326766910007115955">Olet kirjautumassa sisään hallinnoidulla tilillä ja antamassa tilin järjestelmänvalvojalle oikeuden hallita Brave-profiiliasi. Brave-tietosi, kuten sovelluksesi, kirjanmerkkisi, historiasi, salasanasi ja muut asetuksesi, yhdistetään pysyvästi käyttäjätiliin <ph name="USER_NAME"/>. Voit poistaa nämä tiedot Brave Software-tilien Hallintapaneelissa, mutta et voi liittää tietoja toiseen tiliin. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Olet kirjautumassa sisään hallinnoidulla tilillä ja antamassa tilin järjestelmänvalvojalle oikeuden hallita Brave-profiiliasi. Brave-tietosi, kuten sovelluksesi, kirjanmerkkisi, historiasi, salasanasi ja muut asetuksesi, yhdistetään pysyvästi käyttäjätiliin <ph name="USER_NAME"/>. Voit poistaa nämä tiedot Brave Software-tilien Hallintapaneelissa, mutta et voi liittää tietoja toiseen tiliin. Halutessasi voit luoda uuden profiilin, jolloin aiemmat Brave-tietosi pysyvät erillään. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> käytti aiemmin Braveia</translation>
-<translation id="5381681911713004932">Tietokoneellasi on havaittu haittaohjelmia. Brave voi poistaa ne ja palauttaa asetuksesi, jotta selaimesi toimii taas normaalisti.</translation>
+<translation id="1384923383737428730">Tietokoneellasi on haitallinen ohjelmisto. Brave voi poistaa sen, palauttaa asetuksesi ja poistaa laajennukset käytöstä, jotta selaimesi toimii taas normaalisti.</translation>
 <translation id="8919921662052966648">Brave ei voinut synkronoida tietoja. Päivitä synkronoinnin tunnuslause.</translation>
 <translation id="2262856633481902138">Brave ei voinut synkronoida tietoja, sillä tilin kirjautumistiedot ovat vanhentuneet.</translation>
 <translation id="5419189641394808652">Brave ei voinut synkronoida tietoja, koska synkronointi ei ole käytettävissä verkkotunnuksessasi.</translation>
 <translation id="2577755334620061182">Brave ei voinut synkronoida tietoja kirjautumisvirheen vuoksi.</translation>
+<translation id="8583885258305961947">Brave-käyttöjärjestelmä</translation>
 <translation id="3968006371075376562">Brave-käyttöjärjestelmä ei voi synkronoida tietoja. Päivitä synkronoinnin tunnuslause.</translation>
 <translation id="6746636977031158624">Brave-käyttöjärjestelmä ei voi synkronoida tietoja, sillä tilin kirjautumistiedot ovat vanhentuneet.</translation>
 <translation id="2999152167963026588">Brave-käyttöjärjestelmä ei voi synkronoida tietoja, koska synkronointi ei ole käytettävissä verkkotunnuksessasi.</translation>
@@ -155,7 +157,7 @@ Jotta <ph name="NEW_PROFILE_NAME"/> ei voi käyttää tiliäsi, lukitse profiili
 
 Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="1820843143331379651">Brave 70:n myötä valvotut käyttäjäprofiilit eivät enää ole saatavilla.</translation>
-<translation id="8797005356491520797">Käyttäjän selaustiedot poistetaan pysyvästi tältä laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä $2.</translation>
+<translation id="3066805437003400520">Käyttäjän selaustiedot poistetaan tältä laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave on nyt entistä parempi</translation>
 <translation id="7192666605334070839">Nyt voit helpommin käyttää Braveia Brave Software-tililläsi ja jaetuilla tietokoneilla.</translation>
 <translation id="3511996232906761537">Tämä on verkkosi, kirjanmerkkiesi ja muun Brave-sisältösi koti.</translation>
@@ -171,6 +173,7 @@ Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.
 <translation id="2871190378186459992">Löydät hienoja sovelluksia, pelejä, laajennuksia ja teemoja Braveille.</translation>
 <translation id="3350544518197210895">Brave (saapuva mDNS)</translation>
 <translation id="1912973375560256099">Bravein saapuvien yhteyksien sääntö, joka sallii mDNS-liikenteen.</translation>
+<translation id="3795403186582265456">Kun lähetät kuvia sivusta Brave Softwaren palvelimille, Brave voi tunnistaa kuvia ja kuvien tekstiä, jolloin ymmärrät sivun sisältöä paremmin.</translation>
 <translation id="7276297358157391541">Brave voi tarjota älykkäämmän oikeinkirjoituksen tarkistuspalvelun lähettämällä selaimeen kirjoittamasi tekstin Brave Softwaren palvelimille. Näin voit käyttää Brave Software-haun kanssa samaa oikeinkirjoituksen tarkistustekniikkaa.</translation>
 <translation id="1807774211756215222">Avaa linkki uudella Bravein välilehdellä</translation>
 <translation id="4624945300945265642">Avaa linkki Bravein inco&amp;gnito-ikkunassa</translation>

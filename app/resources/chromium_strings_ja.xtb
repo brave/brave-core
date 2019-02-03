@@ -90,6 +90,7 @@
 <translation id="6970811910055250180">お使いの端末を更新しています...</translation>
 <translation id="8030318113982266900">デバイスを <ph name="CHANNEL_NAME"/> チャンネルに更新しています...</translation>
 <translation id="7861579472672677409">「<ph name="EXTENSION_NAME"/>」が Brave に追加されました</translation>
+<translation id="8516116288943000095">Brave のデータ（<ph name="URL"/>）も消去する</translation>
 <translation id="4054452651944170004">Brave メニューで非表示</translation>
 <translation id="5660079256336839395">Brave メニューで非表示</translation>
 <translation id="7456658570432774853">現在の設定を送信して Brave の品質向上にご協力ください</translation>
@@ -125,11 +126,12 @@
 <translation id="1326766910007115955">現在、管理対象アカウントでログインしており、あなたの Brave プロフィールを管理者が制御できる状態になっています。あなたの Brave データ（アプリ、ブックマーク、履歴、パスワードなどの設定）は永続的に <ph name="USER_NAME"/> に関連付けられます。このデータは Brave Software アカウントのダッシュボードを介して削除できますが、このデータを別のアカウントに関連付けることはできなくなります。<ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">現在、管理対象アカウントでログインしており、あなたの Brave プロフィールを管理者が制御できる状態になっています。あなたの Brave データ（アプリ、ブックマーク、履歴、パスワードなどの設定）は永続的に <ph name="USER_NAME"/> に関連付けられます。このデータは Brave Software アカウントのダッシュボードを介して削除できますが、このデータを別のアカウントに関連付けることはできなくなります。新しいプロフィールを作成して、既存の Brave データを別に保管することができます。<ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656">Brave の前回の使用者は <ph name="USER_EMAIL_ADDRESS"/> です</translation>
-<translation id="5381681911713004932">お使いのパソコンに有害なソフトウェアが見つかりました。Brave ではこのソフトウェアを削除し、ブラウザを正常な動作に戻すために設定を復元することができます。</translation>
+<translation id="1384923383737428730">お使いのパソコンに有害なソフトウェアが見つかりました。Brave では、ブラウザを正常な動作に戻すためにこのソフトウェアを削除し、設定を復元して、拡張機能を無効化することができます。</translation>
 <translation id="8919921662052966648">Brave はデータを同期できませんでした。同期パスフレーズを更新してください。</translation>
 <translation id="2262856633481902138">アカウントのログイン情報が最新ではないため、Brave はデータを同期できませんでした。</translation>
 <translation id="5419189641394808652">お使いのドメインでは同期を利用できないため、Brave はデータを同期できませんでした。</translation>
 <translation id="2577755334620061182">ログイン時にエラーが発生したため、Brave はデータを同期できませんでした。</translation>
+<translation id="8583885258305961947">Brave OS システム</translation>
 <translation id="3968006371075376562">Brave OS はデータを同期できませんでした。同期パスフレーズを更新してください。</translation>
 <translation id="6746636977031158624">アカウントのログイン情報が最新ではないため、Brave OS はデータを同期できませんでした。</translation>
 <translation id="2999152167963026588">お使いのドメインでは同期を利用できないため、Brave OS はデータを同期できませんでした。</translation>
@@ -155,7 +157,7 @@
 
 詳しくは、<ph name="ACCOUNT_EMAIL"/> 宛にメールをお送りしましたのでご確認ください。</translation>
 <translation id="1820843143331379651">監視対象ユーザーのプロフィールは、Brave 70 よりご利用いただけなくなります。</translation>
-<translation id="8797005356491520797">この操作を行うと、このユーザーの閲覧データがこの端末から削除されます。データを復元するには、$2 として Brave にログインしてください。</translation>
+<translation id="3066805437003400520">この操作を行うと、このユーザーの閲覧データがこのデバイスから削除されます。データを復元するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
 <translation id="2827121003398607864">進化する Brave</translation>
 <translation id="7192666605334070839">共有パソコンの Brave で Brave Software アカウントが簡単に使用できるようになりました。</translation>
 <translation id="3511996232906761537">ウェブ、ブックマーク、その他の Brave データを好みに設定できます。</translation>
@@ -171,6 +173,7 @@
 <translation id="2871190378186459992">Brave の優れたアプリ、ゲーム、拡張機能、テーマをぜひご利用ください。</translation>
 <translation id="3350544518197210895">Brave（mDNS インバウンド）</translation>
 <translation id="1912973375560256099">mDNS トラフィックを許可する Brave のインバウンド ルールです。</translation>
+<translation id="3795403186582265456">Brave では、ページの画像を Brave Software のサーバーに送信することで、画像内に含まれる画像とテキストを認識できるようになり、これによって、ユーザーはページのコンテンツをより理解できるようになります。</translation>
 <translation id="7276297358157391541">Brave ではブラウザに入力された内容を Brave Software のサーバーに送信することで高度なスペルチェックを実現し、Brave Software 検索で使用されるスペルチェック テクノロジーを活用できます。</translation>
 <translation id="1807774211756215222">新しい Brave タブでリンクを開く(&amp;T)</translation>
 <translation id="4624945300945265642">Brave のシークレット ウインドウでリンクを開く(&amp;G)</translation>

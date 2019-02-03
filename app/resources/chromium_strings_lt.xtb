@@ -92,6 +92,7 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="6970811910055250180">Įrenginys atnaujinamas...</translation>
 <translation id="8030318113982266900">Atnaujinamas įrenginys į „<ph name="CHANNEL_NAME"/>“ kanalą...</translation>
 <translation id="7861579472672677409">„<ph name="EXTENSION_NAME"/>“ pridėtas prie „Brave“</translation>
+<translation id="8516116288943000095">Taip pat išvalyti duomenis iš „Brave“ (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Paslėpti „Brave“ meniu elementą</translation>
 <translation id="5660079256336839395">Paslėpti „Brave“ meniu elementą</translation>
 <translation id="7456658570432774853">Padėkite tobulinti „Brave“ pateikę ataskaitą apie dabartinius nustatymus</translation>
@@ -127,11 +128,12 @@ Prisijungus bet kuriuo būdu, „Brave“ informacija, pvz., žymės, istorija i
 <translation id="1326766910007115955">Prisijungiate su valdoma paskyra ir leidžiate jos administratoriui valdyti jūsų „Brave“ profilį. „Brave“ duomenys, pvz., programos, žymės, istorija, slaptažodžiai ir kiti nustatymai, bus visam laikui susieti su <ph name="USER_NAME"/>. Galėsite ištrinti šiuos duomenis naudodami „Brave Software“ paskyrų informacijos suvestinę, bet negalėsite susieti šių duomenų su kita paskyra. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Prisijungiate su valdoma paskyra ir leidžiate jos administratoriui valdyti jūsų „Brave“ profilį. „Brave“ duomenys, pvz., programos, žymės, istorija, slaptažodžiai ir kiti nustatymai, bus visam laikui susieti su <ph name="USER_NAME"/>. Galėsite ištrinti šiuos duomenis naudodami „Brave Software“ paskyrų informacijos suvestinę, bet negalėsite susieti šių duomenų su kita paskyra. Galite pasirinktinai sukurti naują profilį, kad esami „Brave“ duomenys būtų saugomi atskirai. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> anksčiau naudojo „Brave“</translation>
-<translation id="5381681911713004932">Jūsų kompiuteryje yra žalingos programinės įrangos. „Brave“ gali ją pašalinti ir atkurti nustatymus, kad naršyklė vėl veiktų įprastai.</translation>
+<translation id="1384923383737428730">Kompiuteryje yra kenkėjiškos programinės įrangos. „Brave“ gali ją pašalinti, atkurti nustatymus ir išjungti plėtinius, kad naršyklė vėl veiktų įprastai.</translation>
 <translation id="8919921662052966648">„Brave“ negali sinchronizuoti jūsų duomenų. Atnaujinkite sinchronizavimo slaptafrazę.</translation>
 <translation id="2262856633481902138">„Brave“ negali sinchronizuoti jūsų duomenų, nes paskyros išsami prisijungimo informacija yra pasenusi.</translation>
 <translation id="5419189641394808652">„Brave“ negali sinchronizuoti duomenų, nes jūsų domene sinchronizavimas nepasiekiamas.</translation>
 <translation id="2577755334620061182">„Brave“ negali sinchronizuoti duomenų, nes prisijungiant įvyko klaida.</translation>
+<translation id="8583885258305961947">„Brave“ OS sistema</translation>
 <translation id="3968006371075376562">„Brave“ OS negali sinchronizuoti duomenų. Atnaujinkite sinchronizavimo slaptafrazę.</translation>
 <translation id="6746636977031158624">„Brave“ OS negali sinchronizuoti duomenų, nes paskyros išsami prisijungimo informacija yra pasenusi.</translation>
 <translation id="2999152167963026588">„Brave“ OS negali sinchronizuoti duomenų, nes jūsų domene sinchronizavimas nepasiekiamas.</translation>
@@ -157,7 +159,7 @@ Kad <ph name="NEW_PROFILE_NAME"/> negalėtų pasiekti jūsų paskyros, būtinai 
 
 Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, kuriame rasite daugiau instrukcijų.</translation>
 <translation id="1820843143331379651">Prižiūrimų naudotojų profiliai nebebus pasiekiami nuo 70 vers. „Brave“.</translation>
-<translation id="8797005356491520797">Šio asmens naršymo duomenys bus ištrinti iš šio įrenginio. Jei norite atkurti duomenis, prisijunkite prie „Brave“ kaip $2.</translation>
+<translation id="3066805437003400520">Šio asmens naršymo duomenys bus ištrinti iš šio įrenginio. Jei norite atkurti duomenis, prisijunkite prie „Brave“ kaip <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">„Brave“ dabar dar tobulesnė</translation>
 <translation id="7192666605334070839">Dabar galite lengviau naudoti „Brave“ naudodami „Brave Software“ paskyrą ir bendrinamus kompiuterius.</translation>
 <translation id="3511996232906761537">Čia saugoma žiniatinklio informacija, žymės ir kiti „Brave“ duomenys.</translation>
@@ -173,6 +175,7 @@ Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, 
 <translation id="2871190378186459992">Atraskite puikių „Brave“ programų, žaidimų, plėtinių ir temų.</translation>
 <translation id="3350544518197210895">„Brave“ (mDNS-In)</translation>
 <translation id="1912973375560256099">„Brave“ skirta taisyklė, pagal kurią leidžiamas mDNS srautas.</translation>
+<translation id="3795403186582265456">„Brave“ gali atpažinti vaizdus ir tekstą vaizde siųsdama puslapių vaizdus „Brave Software“ serveriams, kad geriau suprastumėte puslapių turinį.</translation>
 <translation id="7276297358157391541">„Brave“ gali teikti išmanesnę rašybos tikrinimo funkciją, siųsdama tai, ką įvedate naršyklėje, „Brave Software“ serveriams. Tai suteikia galimybę naudoti tą pačią rašybos tikrinimo technologiją, kuri naudojama „Brave Software“ paieškoje.</translation>
 <translation id="1807774211756215222">Atidaryti nuorodą naujame „Brave“ &amp;skirtuke</translation>
 <translation id="4624945300945265642">Atidaryti nuorodą „Brave“ inko&amp;gnito lange</translation>

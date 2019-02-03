@@ -164,7 +164,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsTitle": {
-    "message": "Reklamy Brave (Brave Ads)",
+    "message": "Reklamy Brave",
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {

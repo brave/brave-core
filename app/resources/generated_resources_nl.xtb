@@ -91,6 +91,7 @@
 <translation id="2218515861914035131">Plakken als tekst zonder opmaak</translation>
 <translation id="5329858601952122676">Verwij&amp;deren</translation>
 <translation id="1017280919048282932">Toevoegen &amp;aan woordenboek</translation>
+<translation id="7658239707568436148">Annuleren</translation>
 <translation id="4572259796527554261">Brave Software om suggesties vragen</translation>
 <translation id="3435896845095436175">Inschakelen</translation>
 <translation id="780301667611848630">Nee, bedankt</translation>
@@ -212,6 +213,7 @@
 <translation id="5801568494490449797">Voorkeuren</translation>
 <translation id="7607274158153386860">Tabletsite aanvragen</translation>
 <translation id="4408599188496843485">H&amp;elp</translation>
+<translation id="8378714024927312812">Beheerd door je organisatie</translation>
 <translation id="6723661294526996303">Bladwijzers en instellingen importeren...</translation>
 <translation id="9203398526606335860">&amp;Profiling ingeschakeld</translation>
 <translation id="3819800052061700452">&amp;Volledig scherm</translation>
@@ -224,14 +226,12 @@
 <translation id="4891089016822695758">Bètaforum</translation>
 <translation id="7199158086730159431">H&amp;ulp vragen</translation>
 <translation id="630065524203833229">&amp;Sluiten</translation>
-<translation id="8378714024927312812">Beheerd door je organisatie</translation>
 <translation id="3855676282923585394">Bladwijzers en instellingen importeren...</translation>
 <translation id="4821935166599369261">&amp;Profiling ingeschakeld</translation>
 <translation id="3827774300009121996">&amp;Volledig scherm</translation>
 <translation id="3616741288025931835">&amp;Browsegegevens wissen...</translation>
 <translation id="1618268899808219593">H&amp;elpcentrum</translation>
 <translation id="7324297612904500502">Bètaforum</translation>
-<translation id="2052369079215022979">Beheerd door je organisatie</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5912378097832178659">Zo&amp;ekmachines bewerken...</translation>
 <translation id="5702898740348134351">Zo&amp;ekmachines bewerken...</translation>
@@ -335,7 +335,6 @@
 <translation id="8200772114523450471">Hervatten</translation>
 <translation id="2770465223704140727">Verwijderen uit lijst</translation>
 <translation id="7702574632857388784"><ph name="FILE_NAME"/> uit lijst verwijderen</translation>
-<translation id="7658239707568436148">Annuleren</translation>
 <translation id="7144878232160441200">Opnieuw proberen</translation>
 <translation id="5170568018924773124">Weergeven in map</translation>
 <translation id="1581962803218266616">Toon in Finder</translation>
@@ -448,7 +447,6 @@
 <translation id="6527303717912515753">Delen</translation>
 <translation id="3249950116250264636"><ph name="APP_NAME"/> (<ph name="APP_URL"/>)</translation>
 <translation id="3810973564298564668">Beheren</translation>
-<translation id="7837307963048806839">•  $1</translation>
 <translation id="2344028582131185878">Automatische downloads</translation>
 <translation id="8217399928341212914">Automatische downloads van meerdere bestanden blijven blokkeren</translation>
 <translation id="2580889980133367162"><ph name="HOST"/> altijd toestaan meerdere bestanden te downloaden</translation>
@@ -561,6 +559,24 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Handtekeningwaarde van certificaat</translation>
 <translation id="4104163789986725820">E&amp;xporteren...</translation>
+<translation id="2029156652561216312">CN</translation>
+<translation id="7822286184239325970">ST</translation>
+<translation id="8180262569555229595">O</translation>
+<translation id="7252376466538759696">OU</translation>
+<translation id="5734574586460918465">dnQualifier</translation>
+<translation id="964324710553558337">C</translation>
+<translation id="511291565806773566">serieNummer</translation>
+<translation id="5912292566401425135">L</translation>
+<translation id="5725734596824080201">DC</translation>
+<translation id="2948789661744572780">MAIL</translation>
+<translation id="7481079953250545971">UID</translation>
+<translation id="4196967880387277612">E</translation>
+<translation id="5887772116581657016">bedrijfsCategorie</translation>
+<translation id="6561757256477115975">jurisdictieLokaalNaam</translation>
+<translation id="7150038968052501583">jurisdictieStaatOfProvincienaam</translation>
+<translation id="8904360804686555987">jurisdictieLandNaam</translation>
+<translation id="8718098216622210506">STRAAT</translation>
+<translation id="6969275223369931223">postCode</translation>
 <translation id="5434065355175441495">PKCS nr. 1 met RSA-encryptie</translation>
 <translation id="1221024147024329929">PKCS nr. 1 MD2 met RSA-encryptie</translation>
 <translation id="1640283014264083726">PKCS nr. 1 MD4 met RSA-encryptie</translation>
@@ -953,8 +969,6 @@
 <translation id="316854673539778496">Log in en schakel synchronisatie in om al je extensies op al je apparaten beschikbaar te maken.</translation>
 <translation id="8079938625609335826">Schakel synchronisatie in om al je extensies op al je apparaten beschikbaar te maken.</translation>
 <translation id="4977942889532008999">Toegang bevestigen</translation>
-<translation id="496226124210045887">De map die je hebt geselecteerd, bevat gevoelige bestanden. Weet je zeker dat je '$1' permanente leestoegang wilt geven tot deze map?</translation>
-<translation id="4547992677060857254">De map die je hebt geselecteerd, bevat gevoelige bestanden. Weet je zeker dat je '$1' permanente schrijftoegang wilt geven tot deze map?</translation>
 <translation id="6220413761270491930">Fout bij laden van extensie</translation>
 <translation id="5707185214361380026">Laden van extensie mislukt vanuit:</translation>
 <translation id="7341834142292923918">Wil toegang tot deze site</translation>
@@ -1112,7 +1126,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="224940702122312781">Deze pagina gebruikt veel data.</translation>
 <translation id="3861241522664181545">Pagina is onderbroken.</translation>
 <translation id="6921709132208495314">Geen data meer gebruiken op deze pagina</translation>
-<translation id="1683850629661177840">In de lite-versie kun je nu sneller browsen op alle pagina's, inclusief HTTPS.</translation>
 <translation id="8428213095426709021">Instellingen</translation>
 <translation id="2724841811573117416">WebRTC-logboeken</translation>
 <translation id="1969654639948595766">WebRTC-tekstlogboeken (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
@@ -1170,7 +1183,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="444134486829715816">Uitvouwen...</translation>
 <translation id="2737363922397526254">Samenvouwen...</translation>
 <translation id="6690659332373509948">Fout bij het parseren van dit bestand: <ph name="FILE_NAME"/></translation>
-<translation id="3011284594919057757">Over Flash</translation>
 <translation id="1962233722219655970">Deze pagina gebruikt een Native Client-app die niet werkt op je computer.</translation>
 <translation id="7540972813190816353">Er is een fout opgetreden bij het ​​controleren op updates: <ph name="ERROR"/></translation>
 <translation id="7088434364990739311">Het starten van de updatecontrole is mislukt (foutcode <ph name="ERROR"/>).</translation>
@@ -1224,6 +1236,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="385051799172605136">Vorige</translation>
 <translation id="4628948037717959914">Foto</translation>
 <translation id="8033827949643255796">geselecteerd</translation>
+<translation id="2635094637295383009">Twitter</translation>
 <translation id="5376169624176189338">Klik om terug te gaan, houd ingedrukt om de geschiedenis weer te geven</translation>
 <translation id="9103868373786083162">Druk op Terug &gt; contextmenu om de geschiedenis te bekijken</translation>
 <translation id="2961695502793809356">Klik om verder te gaan, houd ingedrukt om de geschiedenis weer te geven</translation>
@@ -1339,8 +1352,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="4206323443866416204">Feedbackrapport</translation>
 <translation id="3681311097828166361">Bedankt voor je feedback. Je bent nu offline en je rapport wordt later verzonden.</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>Systeemgegevens<ph name="END_LINK1"/> verzenden</translation>
-<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>Systeeminformatie<ph name="END_LINK1"/> en <ph name="BEGIN_LINK2"/>statistische gegevens<ph name="END_LINK2"/> verzenden</translation>
-<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>Systeem- en app-gegevens<ph name="END_LINK1"/> en <ph name="BEGIN_LINK2"/>statistieken<ph name="END_LINK2"/> verzenden</translation>
 <translation id="8329196515830093443">Bestanden worden naar Brave Software gestuurd voor foutopsporing</translation>
 <translation id="8227119283605456246">Bestand bijvoegen</translation>
 <translation id="5367091008316207019">Bestand lezen...</translation>
@@ -1413,39 +1424,11 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="9009369504041480176">Uploaden (<ph name="PROGRESS_PERCENT"/>%)...</translation>
 <translation id="7925285046818567682">Wachten op <ph name="HOST_NAME"/>...</translation>
 <translation id="7887334752153342268">Dupliceren</translation>
-<translation id="5210365745912300556">Tabblad sluiten</translation>
-<translation id="5453029940327926427">Tabbladen sluiten</translation>
 <translation id="68541483639528434">Andere tabbladen sluiten</translation>
 <translation id="6686490380836145850">Tabbladen aan de rechterkant sluiten</translation>
-<translation id="855081842937141170">Tabblad vastzetten</translation>
-<translation id="5105855035535475848">Tabbladen vastzetten</translation>
-<translation id="2074527029802029717">Tabblad losmaken</translation>
-<translation id="1812631533912615985">Tabbladen losmaken</translation>
-<translation id="527605719918376753">Tabblad dempen</translation>
-<translation id="8373553483208508744">Tabbladen dempen</translation>
-<translation id="9203478404496196495">Dempen tabblad opheffen</translation>
-<translation id="1438632560381091872">Dempen tabbladen opheffen</translation>
-<translation id="1568067597247500137">Geluid van site dempen</translation>
-<translation id="1216654534877302979">Geluid van sites dempen</translation>
-<translation id="612596694132302162">Geluid van site dempen opheffen</translation>
-<translation id="6778959797435875428">Geluid van sites dempen opheffen</translation>
 <translation id="4474155171896946103">Bladwijzer toevoegen aan alle tabbladen...</translation>
-<translation id="3551320343578183772">Tabblad sluiten</translation>
-<translation id="7268365133021434339">Tabbladen sluiten</translation>
 <translation id="4322394346347055525">Andere tabbladen sluiten</translation>
 <translation id="1166212789817575481">Tabbladen aan de rechterkant sluiten</translation>
-<translation id="21133533946938348">Tabblad vastzetten</translation>
-<translation id="8072988827236813198">Tabbladen vastzetten</translation>
-<translation id="6442697326824312960">Tabblad losmaken</translation>
-<translation id="1732215134274276513">Tabbladen losmaken</translation>
-<translation id="474217410105706308">Tabblad dempen</translation>
-<translation id="9039890312082871605">Tabbladen dempen</translation>
-<translation id="4632483769545853758">Dempen tabblad opheffen</translation>
-<translation id="304826556400666995">Dempen tabbladen opheffen</translation>
-<translation id="2973324205039581528">Geluid van site dempen</translation>
-<translation id="7579149537961810247">Geluid van sites dempen</translation>
-<translation id="1293177648337752319">Geluid van site dempen opheffen</translation>
-<translation id="109758035718544977">Geluid van sites dempen opheffen</translation>
 <translation id="2336228925368920074">Bladwijzer toevoegen aan alle tabbladen...</translation>
 <translation id="2278562042389100163">Browservenster openen</translation>
 <translation id="756445078718366910">Browservenster openen</translation>
@@ -1493,14 +1476,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">Platform</translation>
 <translation id="7022562585984256452">Je homepage is ingesteld.</translation>
-<translation id="2709516037105925701">Automatisch aanvullen</translation>
-<translation id="4378154925671717803">Telefoon</translation>
-<translation id="4807098396393229769">Naam op kaart</translation>
-<translation id="2612676031748830579">Kaartnummer</translation>
-<translation id="869891660844655955">Vervaldatum</translation>
-<translation id="1149401351239820326">Vervalmaand</translation>
-<translation id="8058655154417507695">Vervaljaar</translation>
-<translation id="2286841657746966508">Factuuradres</translation>
 <translation id="7274626204661209194">Brave Software Cloudprinter</translation>
 <translation id="4973307593867026061">Printers toevoegen</translation>
 <translation id="9052208328806230490">Je hebt met het account <ph name="EMAIL"/> je printers geregistreerd bij <ph name="CLOUD_PRINT_NAME"/></translation>
@@ -1604,6 +1579,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Cache-opslag</translation>
+<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Apps</translation>
 <translation id="542872847390508405">Je browst momenteel als gast</translation>
 <translation id="537813040452600081">Pagina's die je in dit venster bekijkt, worden niet in de browser- of zoekgeschiedenis vermeld en laten geen sporen (zoals cookies) achter op de computer nadat je bent uitgelogd. Bestanden die je downloadt en bladwijzers die je instelt, worden niet bewaard. Meer informatie over de gastmodus.</translation>
@@ -1645,12 +1621,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="1231733316453485619">Synchronisatie inschakelen?</translation>
 <translation id="9125982323641182972">Brave Software-functies in Brave</translation>
 <translation id="4736292055110123391">Je bladwijzers, wachtwoorden, geschiedenis en meer synchroniseren op al je apparaten</translation>
-<translation id="328921709097406258">Brave Software kan je geschiedenis gebruiken om Brave Software Zoeken, advertenties en andere Brave Software-services te personaliseren.</translation>
 <translation id="363863692969456324">Spelfouten corrigeren met een uitgebreide spellingcontrole</translation>
-<translation id="1493787485275784624">De tekst die je in tekstvelden typt, wordt verzonden naar Brave Software.</translation>
 <translation id="561013949633009906">Help Brave en de beveiliging daarvan te verbeteren</translation>
-<translation id="725079085443555687">Hiermee worden bepaalde systeemgegevens en paginacontent anoniem naar Brave Software verzonden.</translation>
-<translation id="2895734772884435517">Je kunt deze instellingen op elk gewenst moment aanpassen.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">Je bladwijzers, geschiedenis, wachtwoorden en andere instellingen worden gesynchroniseerd met je Brave Software-account, zodat je ze op al je apparaten kunt gebruiken</translation>
 <translation id="3111958038206230539">Brave Software-services personaliseren</translation>
@@ -1760,8 +1732,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="2562743677925229011">Niet ingelogd bij <ph name="SHORT_PRODUCT_NAME"/></translation>
 <translation id="4027804175521224372">(Dit kan handiger: <ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK"/>)</translation>
 <translation id="3574210789297084292">inloggen</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
-<translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="237828693408258535">Deze pagina vertalen?</translation>
 <translation id="4613765529964435709">Wil je dat Brave Software deze pagina vertaalt van het <ph name="SOURCE_LANGUAGE"/> naar het <ph name="TARGET_LANGUAGE"/>?</translation>
 <translation id="5990386583461751448">Vertaald</translation>
@@ -1824,6 +1794,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8214489666383623925">Open bestand...</translation>
 <translation id="7456847797759667638">Open locatie...</translation>
 <translation id="3265459715026181080">Sluit venster</translation>
+<translation id="3551320343578183772">Tabblad sluiten</translation>
 <translation id="4780321648949301421">Bewaar pagina als...</translation>
 <translation id="6212752530110374741">Link e-mailen</translation>
 <translation id="457386861538956877">Meer...</translation>
@@ -1872,6 +1843,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7831754656372780761"><ph name="TAB_TITLE"/> <ph name="EMOJI_MUTING"/></translation>
 <translation id="6315493146179903667">Alles op voorgrond</translation>
 <translation id="3007771295016901659">Tabblad dupliceren</translation>
+<translation id="2973324205039581528">Geluid van site dempen</translation>
+<translation id="21133533946938348">Tabblad vastzetten</translation>
 <translation id="2007404777272201486">Een probleem melden...</translation>
 <translation id="3118319026408854581"><ph name="PRODUCT_NAME"/> Help</translation>
 <translation id="6721972322305477112">&amp;Archief</translation>
@@ -1924,6 +1897,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8282947398454257691">Je unieke apparaat-ID weten</translation>
 <translation id="8329449853370113380"><ph name="URL"/> wil beveiligde content afspelen. De identiteit van je apparaat wordt geverifieerd door Brave Software.</translation>
 <translation id="1322046419516468189">Bekijk en beheer opgeslagen wachtwoorden in je <ph name="SAVED_PASSWORDS_STORE"/></translation>
+<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Het wachtwoord is opgeslagen. Bekijk en beheer opgeslagen wachtwoorden in je <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software-account</translation>
 <translation id="3785727820640310185">Opgeslagen wachtwoorden voor deze site</translation>
@@ -2262,8 +2236,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="4079799245038595838">Er is een melding verstuurd naar je telefoon. Volg de aanwijzingen om te bevestigen dat jij het bent.</translation>
 <translation id="88870264962436283">Touch ID gebruiken voor <ph name="APP_NAME"/></translation>
 <translation id="5186185447130319458">Incognito</translation>
-<translation id="8480139856920479206">{0,plural, =1{Je hebt één incognitovenster geopend.}other{Je hebt # incognitovensters geopend.}}</translation>
-<translation id="2545348954155066907">{0,plural, =1{Dit venster sluiten}other{Alle incognitovensters sluiten}}</translation>
 <translation id="394984172568887996">Geïmporteerd uit Internet Explorer</translation>
 <translation id="1543284117603151572">Geïmporteerd uit Edge</translation>
 <translation id="5502500733115278303">Geïmporteerd uit Firefox</translation>
@@ -2271,9 +2243,9 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="399179161741278232">Geïmporteerd</translation>
 <translation id="5225324770654022472">Snelle link voor apps weergeven</translation>
 <translation id="5072836811783999860">Beheerde bladwijzers weergeven</translation>
+<translation id="3613134908380545408">Toon <ph name="FOLDER_NAME">$1<ex>managed bookmarks</ex></ph></translation>
 <translation id="3785308913036335955">Snelle link voor apps weergeven</translation>
 <translation id="711840821796638741">Beheerde bladwijzers weergeven</translation>
-<translation id="3613134908380545408"><ph name="FOLDER_NAME"/> weergeven</translation>
 <translation id="2367972762794486313">Apps weergeven</translation>
 <translation id="8368859634510605990">Alle bladwijzers &amp;openen</translation>
 <translation id="7484964289312150019">Alle bladwijzers openen in een &amp;nieuw venster</translation>
@@ -2327,7 +2299,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6455894534188563617">&amp;Nieuwe map</translation>
 <translation id="1015318665228971643">Mapnaam bewerken</translation>
 <translation id="5449588825071916739">Bladwijzer toevoegen aan alle tabbladen</translation>
-<translation id="5528368756083817449">Bookmarkmanager</translation>
 <translation id="3828029223314399057">Zoeken in bladwijzers</translation>
 <translation id="8116972784401310538">&amp;Bladwijzerbeheer</translation>
 <translation id="6973630695168034713">Mappen</translation>
@@ -2383,6 +2354,10 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="1774833706453699074">Bladwijzer toevoegen voor geopende pagina's...</translation>
 <translation id="6949306908218145636">Bladwijzer toevoegen voor geopende pagina's...</translation>
 <translation id="4422347585044846479">Bladwijzer voor deze pagina bewerken</translation>
+<translation id="1620510694547887537">Camera</translation>
+<translation id="5646376287012673985">Locatie</translation>
+<translation id="3227137524299004712">Microfoon</translation>
+<translation id="2482878487686419369">Meldingen</translation>
 <translation id="6005695835120147974">Mediarouter</translation>
 <translation id="7787308148023287649">Weergeven op een ander scherm</translation>
 <translation id="7710568461918838723">&amp;Casten...</translation>
@@ -2594,7 +2569,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="2653659639078652383">Verzenden</translation>
 <translation id="8392451568018454956">Optiemenu voor <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="6164005077879661055">Alle bestanden en lokale gegevens gekoppeld aan de gebruiker met beperkte rechten worden permanent verwijderd zodra de gebruiker met beperkte rechten is verwijderd. Bezochte websites en instellingen voor deze gebruiker met beperkte rechten kunnen nog steeds zichtbaar zijn voor de beheerder op <ph name="MANAGEMENT_URL"/>.</translation>
-<translation id="1646102270785326155">Alle bestanden en lokale gegevens die zijn gekoppeld aan deze gebruiker, worden definitief verwijderd zodra deze gebruiker is verwijderd. $1 kan later nog steeds inloggen.</translation>
 <translation id="672213144943476270">Ontgrendel je profiel voordat je browst als gast.</translation>
 <translation id="3478685642445675458">Ontgrendel je profiel voordat je een persoon verwijdert.</translation>
 <translation id="4648499713050786492">Ontgrendel je profiel voordat je een persoon toevoegt.</translation>
@@ -2630,12 +2604,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6146563240635539929">Video's</translation>
 <translation id="3616113530831147358">Audio</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Let op:<ph name="END_BOLD"/> Deze bestanden zijn tijdelijk en kunnen automatisch worden verwijderd om schijfruimte vrij te maken. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
-<translation id="7361039089383199231">$1 bytes</translation>
-<translation id="4871210892959306034">$1  KB</translation>
-<translation id="641105183165925463">$1 MB</translation>
-<translation id="7221155467930685510">$1 GB</translation>
-<translation id="5039512255859636053">$1 TB</translation>
-<translation id="6840313690797192085">$1 PB</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
@@ -2652,7 +2620,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="5145331109270917438">Bijgewerkt op</translation>
 <translation id="8487700953926739672">Offline beschikbaar</translation>
 <translation id="2230062665678605299">Kan map '<ph name="FOLDER_NAME"/>' niet maken. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4630590996962964935">Ongeldig teken: $1</translation>
 <translation id="642282551015776456">Deze naam mag niet worden gebruikt als de naam van een bestand of map.</translation>
 <translation id="2070909990982335904">Namen die beginnen met een stip, zijn gereserveerd voor het systeem. Kies een andere naam.</translation>
 <translation id="8456681095658380701">Ongeldige naam</translation>
@@ -2663,8 +2630,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3749289110408117711">Bestandsnaam</translation>
 <translation id="3280431534455935878">Voorbereiden</translation>
 <translation id="6607272825297743757">Bestandsinformatie</translation>
-<translation id="3429599832623003132">$1 items</translation>
-<translation id="532360961509278431">'$1' kan niet worden geopend: $2</translation>
 <translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>Verwijder je apparaat nog niet!<ph name="END_BOLD"/>
    <ph name="LINE_BREAKS"/>
    
@@ -2719,9 +2684,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="5158593464696388225">Kan afbeelding niet opslaan.</translation>
 <translation id="2787047795752739979">Oorspronkelijk bestand overschrijven</translation>
 <translation id="8775404590947523323">Je bewerkingen worden automatisch opgeslagen.<ph name="BREAKS"/>Als je een kopie van de oorspronkelijke afbeelding wilt behouden, verwijder je het vinkje uit het selectievakje 'Oorspronkelijk bestand overschrijven'.</translation>
-<translation id="6653525630739667879">Kan niet opslaan naar $1. Alle bewerkingen worden opgeslagen naar $2 in de map Downloads.</translation>
-<translation id="3184560914950696195">Kan niet opslaan naar $1. Bewerkte afbeeldingen worden opgeslagen in de map 'Downloads'.</translation>
-<translation id="6983991971286645866">Alle bewerkingen worden opgeslagen in $1.</translation>
 <translation id="8153607920959057464">Dit bestand kan niet worden weergegeven.</translation>
 <translation id="6227235786875481728">Dit bestand kan niet worden afgespeeld.</translation>
 <translation id="9154418932169119429">Deze afbeelding is offline niet beschikbaar.</translation>
@@ -2731,9 +2693,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="4801956050125744859">Beide behouden</translation>
 <translation id="1062407476771304334">Vervangen</translation>
 <translation id="1556189134700913550">Op alles toepassen</translation>
-<translation id="3206175707080061730">Er bestaat al een bestand met de naam '$1'. Wil je dit bestand vervangen?</translation>
-<translation id="8059178146866384858">Er bestaat al een bestand met de naam '$1'. Kies een andere naam.</translation>
-<translation id="5653140146600257126">Er bestaat al een map met de naam '$1'. Kies een andere naam.</translation>
 <translation id="1497522201463361063">Kan de naam van '<ph name="FILE_NAME"/>' niet wijzigen. <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5330512191124428349">Informatie ophalen</translation>
 <translation id="8312871300878166382">Plakken in map</translation>
@@ -2792,20 +2751,13 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="4724850507808590449">Er is een back-up van <ph name="FILE_COUNT"/> foto's gemaakt</translation>
 <translation id="1351692861129622852"><ph name="FILE_COUNT"/> bestanden importeren...</translation>
 <translation id="117624967391683467"><ph name="FILE_NAME"/> kopiëren...</translation>
-<translation id="8453482423012550001">$1 items kopiëren...</translation>
 <translation id="7627790789328695202"><ph name="FILE_NAME"/> bestaat al. Geef een nieuwe naam op en probeer het opnieuw.</translation>
 <translation id="5691596662111998220"><ph name="FILE_NAME"/> bestaat niet meer.</translation>
 <translation id="4336032328163998280">Kopiëren mislukt. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1503914375822320413">Kopiëren mislukt. Onverwachte fout: $1</translation>
 <translation id="6133173853026656527"><ph name="FILE_NAME"/> verplaatsen...</translation>
-<translation id="3039828483675273919">$1 items verplaatsen...</translation>
 <translation id="6007237601604674381">Verplaatsen mislukt. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="8954952943849489823">Verplaatsen mislukt. Onverwachte fout: $1</translation>
 <translation id="3326821416087822643"><ph name="FILE_NAME"/> inpakken...</translation>
-<translation id="5694501201003948907">$1 items inpakken...</translation>
-<translation id="7464490149090366184">Inpakken mislukt, item bestaat al: '$1'</translation>
 <translation id="9133055936679483811">Inpakken mislukt. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1711973684025117106">Inpakken mislukt, onverwachte fout: $1</translation>
 <translation id="653019979737152879"><ph name="FILE_NAME"/> synchroniseren...</translation>
 <translation id="8579285237314169903"><ph name="NUMBER_OF_FILES"/> items synchroniseren...</translation>
 <translation id="8137331602592933310">'<ph name="FILENAME"/>' is met je gedeeld. Je kunt dit niet verwijderen omdat jij niet de eigenaar bent.</translation>
@@ -2825,8 +2777,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="1464724975715666883">1 fout.</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> fouten.</translation>
 <translation id="6643016212128521049">Wissen</translation>
-<translation id="4284105660453474798">Weet je zeker dat je '$1' wilt verwijderen?</translation>
-<translation id="4580526846085481512">Weet je zeker dat je $1 items wilt verwijderen?</translation>
 <translation id="7953739707111622108">Dit apparaat kan niet worden geopend omdat het bijbehorende bestandssysteem niet wordt herkend.</translation>
 <translation id="3726463242007121105">Dit apparaat kan niet worden geopend omdat het bijbehorende bestandssysteem niet wordt ondersteund.</translation>
 <translation id="3414856743105198592">Als je het verwisselbare medium formatteert, worden alle gegevens gewist. Wil je doorgaan?</translation>
@@ -2900,7 +2850,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
     <ph name="MARKUP_4"/>Verwijder bestanden uit je map 'Downloads'<ph name="MARKUP_5"/></translation>
 <translation id="7606199793785990727">Brave Software Drive kan niet worden bereikt. <ph name="BEGIN_LINK"/>Log uit<ph name="END_LINK"/> en log weer in.</translation>
 <translation id="585883343689351092">Welkom bij Brave Software Drive!</translation>
-<translation id="1788440444874291920">Ontvang 100 GB gratis met Brave Software Drive</translation>
 <translation id="6862635236584086457">Er wordt automatisch online een back-up gemaakt van alle bestanden die in deze map zijn opgeslagen</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Open bestanden op alle locaties, zelfs offline.<ph name="MARKUP_2"/> 
     Bestanden in Brave Software Drive zijn up-to-date en beschikbaar vanaf elk apparaat.<ph name="MARKUP_3"/>
@@ -2908,24 +2857,14 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
     Wat er ook gebeurt met je apparaat, je bestanden worden veilig opgeslagen in Brave Software Drive.<ph name="MARKUP_6"/>
     <ph name="MARKUP_7"/>Bestanden delen, maken en eraan samenwerken<ph name="MARKUP_8"/>
     met anderen allemaal op één locatie.<ph name="MARKUP_9"/></translation>
-<translation id="7489605380874780575">Geschiktheid controleren</translation>
 <translation id="4878716980734452132">Dit bestandstype wordt niet ondersteund. Ga naar de <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> om een app te vinden die dit type bestand kan openen.
     <ph name="BEGIN_LINK_HELP"/>Meer informatie<ph name="END_LINK_HELP"/></translation>
-<translation id="3376900196170631953">Dit bestand is ontworpen voor een pc met Windows-software. Dit is niet compatibel met je apparaat met Brave OS. Zoek in de <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> naar een geschikte, vervangende app.<ph name="BEGIN_LINK_HELP"/>Meer informatie<ph name="END_LINK_HELP"/></translation>
 <translation id="3072401511615920367">Dit bestand is ontworpen voor een computer met Macintosh-software. Dit is niet compatibel met je apparaat met Brave OS. Zoek in de <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> naar een geschikte, vervangende app.<ph name="BEGIN_LINK_HELP"/>Meer informatie<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">Een ogenblik geduld</translation>
 <translation id="3096967955765855393">We zijn altijd op zoek naar manieren om het surfen veiliger te maken. Vroeger kon elke website je vragen een extensie toe te voegen aan je browser. In de nieuwste versies van Brave Software Brave moet je Brave expliciet toestemming geven om deze extensies te installeren door ze toe te voegen via de pagina 'Extensies'. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
-<translation id="2004663115385769400">Kan niet openen met $1</translation>
-<translation id="639777613761517128">Als je bestanden wilt openen met $1, moet je ze eerst kopiëren naar de map met Linux-bestanden.</translation>
 <translation id="5368191757080475556">Map delen met Linux</translation>
-<translation id="6803594270782834876">Linux-apps toestemming geven om bestanden in de map $1 te openen</translation>
-<translation id="9204140378020726578">Linux-apps toestemming geven om bestanden in je Brave Software Drive te openen. De wijzigingen worden gesynchroniseerd met je andere apparaten.</translation>
 <translation id="4290535918735525311">1 map gedeeld met Linux</translation>
-<translation id="984401732412731005">$1 mappen gedeeld met Linux</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/>-bestand</translation>
-<translation id="895586998699996576">$1-afbeelding</translation>
-<translation id="2853916256216444076">$1-video</translation>
-<translation id="7006844981395428048">$1-audio</translation>
 <translation id="7799329977874311193">HTML-document</translation>
 <translation id="2208158072373999562">Zip-archiefbestand</translation>
 <translation id="2028997212275086731">RAR-archief</translation>
@@ -2974,8 +2913,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6199801702437275229">Wachten op ruimte-informatie...</translation>
 <translation id="6485131920355264772">Kan ruimte-informatie niet ophalen</translation>
 <translation id="7748626145866214022">Meer opties beschikbaar op de actiebalk. Druk op Alt+A om de focus op de actiebalk te plaatsen.</translation>
-<translation id="60628369828239652">Bestand <ph name="FILE_NAME"/> openen</translation>
-<translation id="353547388688256996"><ph name="NUMBER_FILES"/> openen</translation>
 <translation id="6710213216561001401">Vorige</translation>
 <translation id="1395262318152388157">Zoekbalk</translation>
 <translation id="4880214202172289027">Volumeregelaar</translation>
@@ -3118,8 +3055,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6352773953037195952">Hoogste</translation>
 <translation id="3677657024345889897">Stilst</translation>
 <translation id="167160931442925455">Luidst</translation>
-<translation id="2445007895943112260"><ph name="PERCENTAGE">$1<ex>120</ex>%</ph></translation>
-<translation id="9129010913019873477"><ph name="PERCENTAGE"/> (standaard)</translation>
 <translation id="3602290021589620013">Voorbeeld</translation>
 <translation id="7037509989619051237">Tekst voor voorbeeld</translation>
 <translation id="5471768120198416576">Hallo. Ik ben je stem voor tekst-naar-spraak.</translation>
@@ -3172,9 +3107,11 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8465252176946159372">Ongeldig</translation>
 <translation id="8647834505253004544">Geen geldig webadres</translation>
 <translation id="7946586320617670168">Herkomst moet zijn beveiligd</translation>
+<translation id="2709516037105925701">Automatisch aanvullen</translation>
 <translation id="7764225426217299476">Adres toevoegen</translation>
 <translation id="5595485650161345191">Adres bewerken</translation>
 <translation id="6207937957461833379">Land/regio</translation>
+<translation id="4378154925671717803">Telefoon</translation>
 <translation id="9064275926664971810">Automatisch aanvullen inschakelen om formulieren met één klik in te vullen</translation>
 <translation id="9095253524804455615">Verwijderen</translation>
 <translation id="451515744433878153">Verwijderen</translation>
@@ -3184,6 +3121,11 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="4835914736509775287">Kaarten opslaan in je Brave Software-account</translation>
 <translation id="7255002516883565667">Je hebt momenteel één kaart die alleen op dit apparaat kan worden gebruikt</translation>
 <translation id="6848388270925200958">Je hebt momenteel enkele kaarten die alleen op dit apparaat kunnen worden gebruikt</translation>
+<translation id="4807098396393229769">Naam op kaart</translation>
+<translation id="2612676031748830579">Kaartnummer</translation>
+<translation id="869891660844655955">Vervaldatum</translation>
+<translation id="1149401351239820326">Vervalmaand</translation>
+<translation id="8058655154417507695">Vervaljaar</translation>
 <translation id="379082410132524484">Je kaart is verlopen</translation>
 <translation id="6644512095122093795">Aanbieden wachtwoorden op te slaan</translation>
 <translation id="2100273922101894616">Automatisch inloggen</translation>
@@ -3513,7 +3455,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6921033294337262045">Tik op App-meldingen &gt; Brave Software Play-services.</translation>
 <translation id="5624710179837914896">Schakel Brave Software Play-services in.</translation>
 <translation id="2705736684557713153">Scroll naar de onderkant van het scherm en schakel instant-tethering in als deze optie wordt weergegeven. Als de optie niet wordt weergegeven, ben je helemaal klaar.</translation>
-<translation id="3604048165392640554">Geen mobiele verbinding gevonden. Schakel Instant-tethering op je andere apparaten in en probeer het opnieuw. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Meer informatie&lt;/a&gt;</translation>
 <translation id="7240339475467890413">Verbinding maken met nieuwe hotspot?</translation>
 <translation id="6514010653036109809">Beschikbaar apparaat:</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/>% batterijlading</translation>
@@ -3691,8 +3632,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="5487521232677179737">Gegevens wissen</translation>
 <translation id="3151562827395986343">Geschiedenis, cookies, cache en meer wissen</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
-<translation id="3407837288045706722">Zie <ph name="BEGIN_LINK"/>Synchronisatie en personalisatie<ph name="END_LINK"/> voor meer instellingen die zijn gerelateerd aan privacy, beveiliging en gegevensverzameling</translation>
-<translation id="7222718784508482526">Bekijk <ph name="BEGIN_LINK"/>Synchronisatie en Brave Software-services<ph name="END_LINK"/> voor meer instellingen die verband houden met privacy, beveiliging en gegevensverzameling.</translation>
 <translation id="8632933437936028548">Instellingen resetten</translation>
 <translation id="5293170712604732402">Instellingen terugzetten naar de oorspronkelijke standaardwaarden</translation>
 <translation id="892706138619340876">Sommige instellingen zijn gereset</translation>
@@ -3717,12 +3656,9 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7098447629416471489">Andere opgeslagen zoekmachines worden hier weergegeven</translation>
 <translation id="1459967076783105826">Zoekmachines toegevoegd door extensies</translation>
 <translation id="6678717876183468697">Query-URL</translation>
-<translation id="1545786162090505744">URL met %s ipv. zoekterm</translation>
 <translation id="6953878494808481632">Gerelateerde informatie</translation>
 <translation id="4145922204387553806">Laat de Assistent informatie weergeven over wat er op je scherm staat</translation>
 <translation id="472896694312062378">'Oké Brave Software'</translation>
-<translation id="6236033368436682108">Open de Assistent wanneer je scherm is ingeschakeld door 'Oké Brave Software' te zeggen</translation>
-<translation id="2482878487686419369">Meldingen</translation>
 <translation id="5355099869024327351">Hiermee kan de Assistent meldingen aan jou weergeven</translation>
 <translation id="133535873114485416">Voorkeursinvoer</translation>
 <translation id="6233154960150021497">Standaard spraak in plaats van toetsenbord gebruiken</translation>
@@ -3738,14 +3674,12 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="1919345977826869612">Advertenties</translation>
 <translation id="5649053991847567735">Automatische downloads</translation>
 <translation id="3744111561329211289">Synchronisatie op de achtergrond</translation>
-<translation id="1620510694547887537">Camera</translation>
 <translation id="2586657967955657006">Klembord</translation>
 <translation id="5518219166343146486">Vragen wanneer een site tekst en afbeeldingen wil bekijken die naar het klembord zijn gekopieerd</translation>
 <translation id="2089795179672254991">Vragen wanneer een site de tekst en afbeeldingen wil bekijken die naar het klembord zijn gekopieerd (aanbevolen)</translation>
 <translation id="16815041330799488">Niet toestaan dat sites tekst en afbeeldingen kunnen zien die naar het klembord zijn gekopieerd</translation>
 <translation id="3668823961463113931">Handlers</translation>
 <translation id="5689516760719285838">Locatie</translation>
-<translation id="3227137524299004712">Microfoon</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Betalingshandlers</translation>
@@ -3890,12 +3824,9 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6029292188939175871">[<ph name="FINGERPRINT_NAME"/>] verwijderen, knop</translation>
 <translation id="1927632033341042996">Vinger <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">Account toevoegen</translation>
-<translation id="3422989461909154470">Hier kun je alle ingelogde Brave Software-accounts voor apps en websites beheren.</translation>
 <translation id="1987317783729300807">Accounts</translation>
 <translation id="8418661265246754237">Brave Software-accounts</translation>
 <translation id="3297951628821704004">Account verwijderen van dit apparaat</translation>
-<translation id="1059855432287631118">Vingerafdruk registreren</translation>
-<translation id="878068003854005405">Ga aan de slag door je vinger op de sensor te plaatsen.</translation>
 <translation id="176193854664720708">De vingerafdruksensor bevindt zich in de aan/uit-knop. Raak deze kort aan met een vinger.</translation>
 <translation id="7189965711416741966">Vingerafdruk is toegevoegd.</translation>
 <translation id="9220820413868316583">Til je vinger op en probeer het opnieuw.</translation>
@@ -4075,7 +4006,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3954469006674843813"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> hertz)</translation>
 <translation id="7889565820482017512">Schermgrootte</translation>
 <translation id="8448729345478502352">Items op het scherm kleiner of groter maken</translation>
-<translation id="513425442047539523"><ph name="DISPLAY_ZOOM">$1<ex>120</ex>%</ph></translation>
 <translation id="2155772377859296191">Ziet eruit als <ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
 <translation id="4863769717153320198">Ziet eruit als <ph name="WIDTH"/> x <ph name="HEIGHT"/> (standaardresolutie)</translation>
 <translation id="1125550662859510761">Ziet eruit als <ph name="WIDTH"/> x <ph name="HEIGHT"/> (systeemeigen resolutie)</translation>
@@ -4126,6 +4056,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="2789927670850159391">Koppel je Bravebook aan je telefoon. <ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">Geen geschikte apparaten. <ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">Wachten op verificatie. <ph name="LINK_BEGIN"/>Meer informatie.<ph name="LINK_END"/></translation>
+<translation id="6518133107902771759">Verifieer</translation>
 <translation id="7179187931092694802">Je Bravebook ontgrendelen met je telefoon. <ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant-tethering</translation>
 <translation id="6415900369006735853">Verbinding maken met internet via je telefoon</translation>
@@ -4137,24 +4068,19 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7878562273885520351">Je wachtwoord is mogelijk gehackt</translation>
 <translation id="1089439967362294234">Wachtwoord wijzigen</translation>
 <translation id="6187156085111579405">Items die hier niet worden vermeld, worden zo nodig ook verwijderd. Lees meer informatie over &lt;a href="<ph name="URL"/>"&gt;bescherming tegen ongewenste software&lt;/a&gt; in de whitepaper over privacy in Brave.</translation>
-<translation id="928985544179707652">Extensies:</translation>
 <translation id="7712836429117959503">Onbekende extensie met ID <ph name="EXTENSION_ID"/></translation>
-<translation id="2600115369439982409">Bestanden en programma's:</translation>
-<translation id="1372681413396468867">{NUM_ITEMS,plural, =1{1 item dat wordt verwijderd}other{# items die worden verwijderd}}</translation>
 <translation id="7187428571767585875">Registervermeldingen die moeten worden verwijderd of gewijzigd:</translation>
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{Nog 1 item}other{Nog # items}}</translation>
 <translation id="2749608811030566578">Er is een fout opgetreden terwijl Brave schadelijke software verwijderde</translation>
 <translation id="8189483132214844139">Brave kan schadelijke software op je computer vinden en verwijderen</translation>
 <translation id="2910318910161511225">Maak verbinding met een netwerk en probeer het opnieuw</translation>
 <translation id="1426870617281699524">Klik op 'Opnieuw proberen' en accepteer de prompt op je computer</translation>
-<translation id="2201358555632643970">Er staat schadelijke software op je computer. Brave verwijdert deze software en herstelt je instellingen zodat je browser weer normaal werkt.</translation>
 <translation id="1484912962860902625">Er is een fout opgetreden terwijl Brave naar schadelijke software zocht</translation>
 <translation id="451407183922382411">Mogelijk gemaakt door <ph name="COMPANY_NAME"/></translation>
 <translation id="5254368820972107711">Bestanden weergeven die worden verwijderd</translation>
 <translation id="296026337010986570">Klaar. Schadelijke software is verwijderd. Als je de extensies weer wilt inschakelen, ga je naar &lt;a href="chrome://extensions"&gt;Extensies&lt;/a&gt;.</translation>
 <translation id="284975061945174219">Opschonen is mislukt</translation>
 <translation id="9014750448058570312">Brave heeft toestemming nodig om verder te gaan</translation>
-<translation id="3806965327722135869">Schadelijke software zoeken en verwijderen</translation>
 <translation id="4320177379694898372">Geen internetverbinding</translation>
 <translation id="850875081535031620">Er is geen schadelijke software gevonden</translation>
 <translation id="1186771945450942097">Schadelijke software verwijderen</translation>
@@ -4163,7 +4089,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8639047128869322042">Controleren op schadelijke software...</translation>
 <translation id="2653033005692233957">Zoeken is mislukt</translation>
 <translation id="655483977608336153">Opnieuw</translation>
-<translation id="6312400084708441752">Hieronder valt informatie over schadelijke software, systeeminstellingen en processen op je computer</translation>
 <translation id="6555810572223193255">Opschonen is momenteel niet beschikbaar</translation>
 <translation id="7117228822971127758">Probeer het later opnieuw</translation>
 <translation id="443475966875174318">Ongeschikte apps updaten en verwijderen</translation>
@@ -4200,8 +4125,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3264582393905923483">Context</translation>
 <translation id="1607139524282324606">Item wissen</translation>
 <translation id="6025215716629925253">Stack-tracering</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 regel niet weergegeven&gt;}other{&lt;$1 regels niet weergegeven&gt;}}</translation>
-<translation id="5334899159203764908">Meer informatie over <ph name="BEGIN_LINK"/>sitetoegang<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Hiermee kan deze extensie al je gegevens lezen en wijzigen op de websites die je bezoekt:</translation>
 <translation id="407173827865827707">Bij klik</translation>
 <translation id="6455264371803474013">Op specifieke sites</translation>
@@ -4274,6 +4197,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="2785008241190445880">Bladwijzer vervangen</translation>
 <translation id="4320948194796820126">Voeg een bladwijzer toe aan je e-mailservice</translation>
 <translation id="2950533317914339731">Voeg bladwijzers toe voor je favoriete Brave Software-apps</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="239760341987199724">Brave instellen als je standaardbrowser</translation>
 <translation id="96037229054033864">Brave Software Zoeken en slimme Brave Software-functies standaard instellen voor browsen</translation>
 <translation id="296137235951584143">Personaliseer Brave voor jou</translation>
@@ -4306,14 +4230,12 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3706463572498736864">Pagina's per blad</translation>
 <translation id="2249605167705922988">bijv. 1-5, 8, 11-13</translation>
 <translation id="5746169159649715125">Opslaan als pdf</translation>
-<translation id="1731589410171062430">Totaal: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/> (<ph name="NUMBER_OF_PAGES"/> <ph name="PAGE_OR_PAGES_LABEL"/>)</translation>
 <translation id="2580924999637585241">Totaal: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">vellen papier</translation>
 <translation id="8813811964357448561">vel papier</translation>
 <translation id="8180239481735238521">pagina</translation>
 <translation id="3725367690636977613">pagina's</translation>
 <translation id="7005848115657603926">Ongeldig paginabereik, gebruik <ph name="EXAMPLE_PAGE_RANGE"/></translation>
-<translation id="2890678560483811744">Paginaverwijzing valt buiten bereik</translation>
 <translation id="5398572795982417028">Paginaverwijzing valt buiten bereik, limiet is <ph name="MAXIMUM_PAGE"/></translation>
 <translation id="218070003709087997">Gebruik een cijfer om aan te geven hoeveel exemplaren er moeten worden afgedrukt (1-999).</translation>
 <translation id="2509495747794740764">De waarde voor de schaal moet een getal tussen de 10 en 200 zijn.</translation>
@@ -4333,19 +4255,14 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6273677812470008672">Kwaliteit</translation>
 <translation id="7288676996127329262"><ph name="HORIZONTAL_DPI"/>x<ph name="VERTICAL_DPI"/> dpi</translation>
 <translation id="1921584744613111023"><ph name="DPI"/> dpi</translation>
-<translation id="2212126039311489237">Afdrukken via systeemdialoogvenster</translation>
 <translation id="6991665348624301627">Een bestemming selecteren</translation>
 <translation id="8800004011501252845">Bestemmingen weergeven voor</translation>
 <translation id="8996526648899750015">Account toevoegen…</translation>
 <translation id="5002959368039764681">Afdrukken naar Brave Software Documenten en andere cloudbestemmingen. <ph name="BEGIN_LINK"/>Inloggen<ph name="END_LINK"/> om af te drukken naar Brave Software Cloudprinter.</translation>
 <translation id="2150139952286079145">Bestemmingen zoeken</translation>
 <translation id="8569682776816196752">Geen bestemmingen gevonden</translation>
-<translation id="6807889908376551050">Alles weergeven...</translation>
-<translation id="7328162502911382168">(<ph name="COUNT"/>)</translation>
 <translation id="7885253890047913815">Recente bestemmingen</translation>
 <translation id="4929386379796360314">Afdrukbestemmingen</translation>
-<translation id="5829401023154985950">Beheren...</translation>
-<translation id="4628314759732363424">Wijzigen...</translation>
 <translation id="3899879303189199559">Langer dan een jaar offline</translation>
 <translation id="3154429428035006212">Langer dan een maand offline</translation>
 <translation id="5265562206369321422">Langer dan een week offline</translation>
@@ -4354,18 +4271,15 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6317318380444133405">Niet meer ondersteund.</translation>
 <translation id="5759728514498647443">Documenten die je via <ph name="APP_NAME"/> verzendt om af te drukken, kunnen door <ph name="APP_NAME"/> worden gelezen.</translation>
 <translation id="2080070583977670716">Meer instellingen</translation>
-<translation id="6510568984200103950">Minder instellingen</translation>
 <translation id="3360297538363969800">Afdrukken is mislukt. Controleer je printer en probeer het opnieuw.</translation>
 <translation id="5154108062446123722">Geavanceerde instellingen voor <ph name="PRINTING_DESTINATION"/></translation>
 <translation id="9056810968620647706">Geen overeenkomsten gevonden.</translation>
-<translation id="8658595122208653918">Printeropties wijzigen...</translation>
 <translation id="4088095054444612037">Accepteren voor groep</translation>
 <translation id="357886715122934472">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; wil een printer delen &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt; met een van je groepen: &lt;strong&gt;<ph name="GROUP_NAME"/>&lt;/strong&gt;. Als je akkoord gaat, kunnen alle groepsleden de printer gebruiken voor afdrukken.</translation>
 <translation id="8783093612333542422">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; wil een printer &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt; met je delen.</translation>
 <translation id="7210499381659830293">Printers via extensie</translation>
 <translation id="7453008956351770337">Door het selecteren van deze printer geef je de volgende extensie toegang tot je printer:</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> kan niet communiceren met deze printer. Controleer of de printer is aangesloten en probeer het opnieuw.</translation>
-<translation id="5352285283572729470">Deze instelling wordt beheerd</translation>
 <translation id="4994754230098574403">Instellen</translation>
 <translation id="1396139853388185343">Fout bij instellen van printer</translation>
 <translation id="2379281330731083556">Afdrukken via systeemdialoogvenster... <ph name="SHORTCUT_KEY"/></translation>
@@ -4394,8 +4308,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7681095912841365527">Site kan Bluetooth gebruiken</translation>
 <translation id="3085412380278336437">Site kan je camera gebruiken</translation>
 <translation id="9180380851667544951">Site kan je scherm delen</translation>
-<translation id="7503127198245469314">Verwijder de headset om dit te blokkeren of sta dit toe op het desktopdisplay</translation>
-<translation id="5592010267127539419"><ph name="URL_HOST"/> wil met apparaten koppelen</translation>
 <translation id="4992630054488400221">Installeer of update het Daydream-toetsenbord om Brave in VR te gebruiken</translation>
 <translation id="983511809958454316">Deze functie wordt niet ondersteund in VR</translation>
 <translation id="4008291085758151621">Sitegegevens zijn niet beschikbaar in VR</translation>

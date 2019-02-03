@@ -88,6 +88,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="6970811910055250180">Cihazınız güncelleniyor...</translation>
 <translation id="8030318113982266900">Cihazınız <ph name="CHANNEL_NAME"/> kanalına güncelleniyor...</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> Brave'a eklendi</translation>
+<translation id="8516116288943000095">Brave'daki verileri de temizle (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Brave menüsünde gizle</translation>
 <translation id="5660079256336839395">Brave Menüsünde Gizle</translation>
 <translation id="7456658570432774853">Mevcut ayarlarınızı bildirerek Brave'u daha iyi hale getirmemize yardımcı olun</translation>
@@ -123,11 +124,12 @@ Yine de oturum açarsanız, yer işaretleriniz, geçmişiniz ve diğer ayarları
 <translation id="1326766910007115955">Yönetilen bir hesapla oturum açıyor ve hesabın yöneticisine Brave profilinizi denetleme izni veriyorsunuz. Uygulamalarınız, yer işaretleriniz, geçmişiniz, şifreleriniz ve diğer ayarlarınız gibi Brave verileriniz kalıcı olarak <ph name="USER_NAME"/> ile bağlantılandırılacaktır. Brave Software Hesapları Hesap Özeti'ni kullanarak bu verileri silebilecek, ancak bu verileri başka bir hesapla ilişkilendiremeyeceksiniz. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Yönetilen bir hesapla oturum açıyor ve hesabın yöneticisine Brave profilinizi denetleme izni veriyorsunuz. Uygulamalarınız, yer işaretleriniz, geçmişiniz, şifreleriniz ve diğer ayarlarınız gibi Brave verileriniz kalıcı olarak <ph name="USER_NAME"/> ile bağlantılandırılacaktır. Brave Software Hesapları Hesap Özeti'ni kullanarak bu verileri silebilecek, ancak bu verileri başka bir hesapla ilişkilendiremeyeceksiniz. İsterseniz mevcut Brave verilerinizi ayrı tutmak için yeni bir profil oluşturabilirsiniz. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> önceden Brave kullanıyordu</translation>
-<translation id="5381681911713004932">Bilgisayarınızda zararlı yazılım var. Brave bu yazılımı kaldırabilir ve tarayıcınızın tekrar normal şekilde çalışması için ayarlarınızı geri yükleyebilir.</translation>
+<translation id="1384923383737428730">Bilgisayarınızda zararlı yazılım var. Brave, tarayıcınızın tekrar normal şekilde çalışmasını sağlamak için bunu kaldırabilir, ayarlarınızı geri yükleyebilir ve uzantıları devre dışı bırakabilir.</translation>
 <translation id="8919921662052966648">Brave, verilerinizi senkronize edemedi. Lütfen Senkronizasyon parolanızı güncelleyin.</translation>
 <translation id="2262856633481902138">Hesap oturum açma ayrıntılarınız güncel olmadığından Brave, verilerinizi senkronize edemedi.</translation>
 <translation id="5419189641394808652">Senkronizasyon alan adınızda kullanılamadığından Brave, verilerinizi senkronize edemedi.</translation>
 <translation id="2577755334620061182">Oturum açma sırasındaki bir hata nedeniyle Brave, verilerinizi senkronize edemedi.</translation>
+<translation id="8583885258305961947">Brave OS Sistemi</translation>
 <translation id="3968006371075376562">Brave OS, verilerinizi senkronize edemedi. Lütfen Senkronizasyon parolanızı güncelleyin.</translation>
 <translation id="6746636977031158624">Hesap oturum açma ayrıntılarınız güncel olmadığından Brave OS, verilerinizi senkronize edemedi.</translation>
 <translation id="2999152167963026588">Senkronizasyon alan adınızda kullanılamadığından Brave OS, verilerinizi senkronize edemedi.</translation>
@@ -153,7 +155,7 @@ Yine de oturum açarsanız, yer işaretleriniz, geçmişiniz ve diğer ayarları
 
 Daha fazla talimat için lütfen e-postanızı (<ph name="ACCOUNT_EMAIL"/>) kontrol edin.</translation>
 <translation id="1820843143331379651">Brave 70 sürümünden itibaren denetlenen kullanıcı profilleri artık kullanılmayacaktır.</translation>
-<translation id="8797005356491520797">Bu kullanıcının göz atma verileri bu cihazdan silinecektir. Verileri kurtarmak için Brave'da $2 olarak oturum açın.</translation>
+<translation id="3066805437003400520">Bu kullanıcının tarama verileri bu cihazdan silinecektir. Verileri kurtarmak için Brave'da <ph name="USER_EMAIL"/> olarak oturum açın.</translation>
 <translation id="2827121003398607864">Brave daha da iyi bir hale geldi</translation>
 <translation id="7192666605334070839">Brave'u Brave Software Hesabınızla ve paylaşılan bilgisayarlarda kullanmak artık daha kolay.</translation>
 <translation id="3511996232906761537">Web, yer işaretleri ve diğer Brave bilgileriniz burada bulunur.</translation>
@@ -169,6 +171,7 @@ Daha fazla talimat için lütfen e-postanızı (<ph name="ACCOUNT_EMAIL"/>) kont
 <translation id="2871190378186459992">Brave'a özgü harika uygulamaları, oyunları, uzantıları ve temaları keşfedin.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Brave'un mDNS trafiğine izin vermeyi sağlayan gelen trafik kuralı.</translation>
+<translation id="3795403186582265456">Brave, sayfa resimlerini Brave Software sunucularına göndererek resimleri ve bir resim içindeki metni tanıyabilir. Böylece, sayfa içeriğini daha iyi anlamanıza olanak tanır.</translation>
 <translation id="7276297358157391541">Brave, tarayıcıda yazdıklarınızı Brave Software sunucularına gönderip akıllı yazım denetimi olanağı sağlayabilir ve Brave Software arama tarafından kullanılan yazım denetimi teknolojisini kullanmanıza olanak tanır.</translation>
 <translation id="1807774211756215222">Bağlantıyı yeni Brave &amp;sekmesinde aç</translation>
 <translation id="4624945300945265642">Bağlantıyı Brave &amp;gizli penceresinde aç</translation>

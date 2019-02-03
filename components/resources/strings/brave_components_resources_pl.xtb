@@ -10,11 +10,11 @@
 <translation id="6040143037577758943">Zamknij</translation>
 <translation id="8529752221839395787">Przywróć wszystko</translation>
 <translation id="3022168349636134570">sekunda</translation>
-<translation id="8664519043722036194">sekund</translation>
+<translation id="8664519043722036194">sekund(y)</translation>
 <translation id="755854589635502953">minuta</translation>
-<translation id="7210211103303402262">minut</translation>
+<translation id="7210211103303402262">minut(y)</translation>
 <translation id="679011980069501619">godzina</translation>
-<translation id="8344569602005188545">godzin</translation>
+<translation id="8344569602005188545">godzin(y)</translation>
 <translation id="7100907433458266664">dzień</translation>
 <translation id="4971389353431353387">dni</translation>
 <translation id="8427933533533814946">Zdjęcie autorstwa</translation>
@@ -45,7 +45,7 @@
 <translation id="6200814343085745765">Blokada reklam regionalnych:</translation>
 <translation id="59174027418879706">Włączone</translation>
 <translation id="4176463684765177261">Wyłączone</translation>
-<translation id="2974339193389078578">Przeglądaj Internet z Brave</translation>
+<translation id="2974339193389078578">Przeglądaj internet z Brave</translation>
 <translation id="7735138632831241257">Przygotuj się na szybsze i bezpieczniejsze przeglądanie stron dzięki przeglądarce stworzonej w celu ochrony prywatności.</translation>
 <translation id="6001839398155993679">Zaczynamy</translation>
 <translation id="8050847734948770789">Włącz Nagrody Brave</translation>
@@ -79,8 +79,8 @@
 <translation id="2232753742630178222">3 reklamy na godzinę</translation>
 <translation id="905529390827000221">4 reklamy na godzinę</translation>
 <translation id="7694167481321619202">5 reklam na godzinę</translation>
-<translation id="4684554059837592728">Miesięczna Płatność</translation>
-<translation id="2846354907189538">Data kolejnego wkładu</translation>
+<translation id="4684554059837592728">Miesięczna płatność</translation>
+<translation id="2846354907189538">Data kolejnego wsparcia</translation>
 <translation id="8759716059844800317">Wspierane strony</translation>
 <translation id="2365740070488517695">Napiwki</translation>
 <translation id="1309807437617560451">Wskazówki dla twórców treści bezpośrednio podczas przeglądania. Możesz również ustawić powtarzające się co miesiąc wskazówki, aby móc stale wspierać witryny.</translation>
@@ -131,6 +131,8 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave jest zastrzeżonym znakiem handlowym Brave Software. Nazwy stron mogą być znakami towarowymi lub zastrzeżonymi znakami towarowymi właściciela strony.</translation>
 <translation id="9026369588205476247">Aby chronić Twoją prywatność, to oświadczenie Nagród Brave nie jest zapisywane ani raportowane nigdzie indziej poza Twoim urządzeniem. W razie utraty danych z urządzenia nie można odzyskać oświadczenia.</translation>
 <translation id="1036277985068412734">dodaj środki</translation>
+<translation id="5441565662498481293">Wysyłasz automatyczne napiwki do:</translation>
+<translation id="8845154268466251503">BAT</translation>
 <translation id="4496990471549986619">Często zadawane pytania</translation>
 <translation id="1688876543043079268">Pamiętaj: Portfel Brave działa jednokierunkowo i BAT jest przesyłany wyłącznie do stron twórców. Więcej informacji o Nagrodach Brave możesz znaleźć na stronie</translation>
 <translation id="2790014973538267577">Pokaż kod QR</translation>
@@ -174,6 +176,7 @@
 <translation id="245015745140252435">Wartość napiwka</translation>
 <translation id="3520817231440482449">Przekazuj tej stronie comiesięczne napiwki</translation>
 <translation id="1827184134638345603">Wyślij napiwek…</translation>
+<translation id="1628742278973105368">Twój pierwszy miesięczny napiwek zostanie wysłany do:</translation>
 <translation id="7277134233385925078">Ustaw miesięczny napiwek</translation>
 <translation id="8003573781961874199">Pobierz jako PDF</translation>
 <translation id="298067735430872465">Zarobki z reklam</translation>
@@ -212,6 +215,7 @@
 <translation id="3630697955794050612">wył.</translation>
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">włączone</translation>
+<translation id="1166682575529520472">Miesięcznie</translation>
 <translation id="8370173854533168890">Jeden raz</translation>
 <translation id="9182287025588539628">Jednorazowy napiwek</translation>
 <translation id="6381574025952123568">Saldo otwarcia</translation>
@@ -272,6 +276,7 @@
 <translation id="1792148354504719133">strona</translation>
 <translation id="5944430251223015324">strony</translation>
 <translation id="8826007068782654809">Dziękujemy</translation>
+<translation id="6665366815203065060">Wysłałeś własnie napiwek do:</translation>
 <translation id="6432779622695508363">Daj napiwek z polubieniem</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>

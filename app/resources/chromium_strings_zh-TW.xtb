@@ -95,6 +95,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="6970811910055250180">正在更新裝置...</translation>
 <translation id="8030318113982266900">正在將裝置更新至「<ph name="CHANNEL_NAME"/>」...</translation>
 <translation id="7861579472672677409">已將「<ph name="EXTENSION_NAME"/>」加到 Brave</translation>
+<translation id="8516116288943000095">一併清除 Brave 中的資料 (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">在 Brave 選單中隱藏</translation>
 <translation id="5660079256336839395">在 Brave 選單中隱藏</translation>
 <translation id="7456658570432774853">只要回報目前的設定，就能助我們一臂之力，讓 Brave 更臻完美</translation>
@@ -105,6 +106,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="8848045066928358658">為了讓 Brave 的安全性更有保障，我們停用了以下這個未列在「<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>」中的擴充功能 (它可能是在您不知情的情況下加入瀏覽器)。</translation>
 <translation id="8148611988012584308">自訂及控制 Brave</translation>
 <translation id="5849446944780602366">有可用的更新，歡迎自訂及控制 Brave。</translation>
+<translation id="6315734375101223238">自訂並控制 Brave。有些東西需要您注意，點選以取得更多資訊。</translation>
 <translation id="9071554113102421877">在 Brave 中開啟(&amp;O)</translation>
 <translation id="2176825726964012531">關於 Brave(&amp;C)</translation>
 <translation id="5450493308072741203">更新 Brave(&amp;C)</translation>
@@ -130,11 +132,12 @@ Brave 無法復原你的設定。</translation>
 <translation id="1326766910007115955">你已登入管理化環境下的帳戶，並將管理控制權授予你的 Brave 設定檔。你的 Brave 資料 (例如應用程式、書籤、記錄、密碼和其他設定) 均將永久與 <ph name="USER_NAME"/> 建立關聯。你可以透過 Brave Software 帳戶資訊主頁刪除這些資料，但你無法將這些資料與其他帳戶建立關聯。<ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">你已登入管理化環境下的帳戶，並將管理控制權授予你的 Brave 設定檔。你的 Brave 資料 (例如應用程式、書籤、記錄、密碼和其他設定) 均將永久與 <ph name="USER_NAME"/> 建立關聯。你可以透過 Brave Software 帳戶資訊主頁刪除這些資料，但你無法將這些資料與其他帳戶建立關聯。如要另行保留現有的 Brave 資料，你可以選擇建立新的設定檔。<ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> 先前使用的是 Brave</translation>
-<translation id="5381681911713004932">在你的電腦上發現有害軟體。Brave 正在進行移除，並且會還原相關設定，讓你的瀏覽器恢復正常運作。</translation>
+<translation id="1384923383737428730">你的電腦安裝了有害軟體。Brave 可以移除該軟體、復原設定及停用擴充功能，讓你的瀏覽器恢復正常運作。</translation>
 <translation id="8919921662052966648">Brave 無法同步處理你的資料，請更新你的同步通關密語。</translation>
 <translation id="2262856633481902138">你的帳戶登入詳細資料尚未更新，因此 Brave 無法同步處理你的資料。</translation>
 <translation id="5419189641394808652">你的網域無法使用「同步功能」，因此 Brave 無法同步處理你的資料。</translation>
 <translation id="2577755334620061182">登入時發生錯誤，因此 Brave 無法同步處理你的資料。</translation>
+<translation id="8583885258305961947">Brave 作業系統</translation>
 <translation id="3968006371075376562">Brave 作業系統無法同步處理你的資料，請更新你的同步通關密語。</translation>
 <translation id="6746636977031158624">你的帳戶登入詳細資料尚未更新，因此 Brave 作業系統無法同步處理你的資料。</translation>
 <translation id="2999152167963026588">你的網域無法使用「同步功能」，因此 Brave 作業系統無法同步處理你的資料。</translation>
@@ -160,7 +163,7 @@ Brave 無法復原你的設定。</translation>
 
 如需進一步的操作說明，請登入您的 <ph name="ACCOUNT_EMAIL"/> 帳戶，查看系統寄給您的電子郵件。</translation>
 <translation id="1820843143331379651">Brave 從 70 版本起將不再支援受監管的使用者設定檔。</translation>
-<translation id="8797005356491520797">這位使用者的瀏覽資料將從這個裝置上刪除。如要還原資料，請以「$2」的身分登入 Brave。</translation>
+<translation id="3066805437003400520">這位使用者的瀏覽資料將從這個裝置上刪除。如要還原資料，請使用 <ph name="USER_EMAIL"/> 登入 Brave。</translation>
 <translation id="2827121003398607864">Brave 變得更進步了</translation>
 <translation id="7192666605334070839">無論是登入 Brave Software 帳戶使用 Brave，還是以 Brave Software 帳戶使用共用電腦，現在都變得更容易了。</translation>
 <translation id="3511996232906761537">你瀏覽的網頁、書籤和其他 Brave 設定都在這裡。</translation>
@@ -182,6 +185,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="7272074097076644710">Brave Beta 允許 mDNS 流量的連入規則。</translation>
 <translation id="4991512282053949769">Brave Nightly 允許 mDNS 流量的連入規則。</translation>
 <translation id="3856641371299712128">Brave Dev 允許 mDNS 流量的連入規則。</translation>
+<translation id="3795403186582265456">Brave 可將網頁圖片傳送到 Brave Software 伺服器，運用相關技術辨識圖片和圖片所含文字，讓你更瞭解網頁內容。</translation>
 <translation id="7276297358157391541">Brave 可將您在瀏覽器中輸入的字詞傳送給 Brave Software 伺服器，並透過 Brave Software 搜尋所使用的拼字檢查技術，為您提供更精確的拼字檢查功能。</translation>
 <translation id="1807774211756215222">在新的 Brave 分頁中開啟連結(&amp;T)</translation>
 <translation id="4624945300945265642">在 Brave 無痕式視窗中開啟連結(&amp;G)</translation>

@@ -90,6 +90,7 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="6970811910055250180">Opdaterer din enhed...</translation>
 <translation id="8030318113982266900">Opdaterer din enhed til kanalen <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> er føjet til Brave</translation>
+<translation id="8516116288943000095">Ryd også data fra Brave (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Skjul i Brave-menuen</translation>
 <translation id="5660079256336839395">Skjul i Brave-menuen</translation>
 <translation id="7456658570432774853">Hjælp med at gøre Brave bedre ved at rapportere de aktuelle indstillinger</translation>
@@ -125,11 +126,12 @@ Hvis du logger ind alligevel, flettes Brave-oplysninger, som f.eks. bogmærker, 
 <translation id="1326766910007115955">Du er ved at logge ind med en administreret konto og giver dens administrator kontrol over din profil i Brave. Dine Brave-data, f.eks. dine apps, bogmærker, historikdata, adgangskoder og andre indstillinger, knyttes permanent til <ph name="USER_NAME"/>. Du kan slette disse data via betjeningspanelet for Brave Software Konti, men du kan ikke knytte disse data til en anden konto. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Du er ved at logge ind med en administreret konto og give dens administrator kontrol over din profil i Brave. Dine Brave-data, f.eks. dine apps, bogmærker, historikdata, adgangskoder og andre indstillinger, knyttes permanent til <ph name="USER_NAME"/>. Du kan slette disse data via betjeningspanelet for Brave Software Konti, men du kan ikke knytte disse data til en anden konto. Du kan eventuelt oprette en ny profil for at holde dine Brave-data adskilt. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> brugte tidligere Brave</translation>
-<translation id="5381681911713004932">Der er skadelig software på din computer. Brave kan slette den og gendanne dine indstillinger, så din browser fungerer normalt igen.</translation>
+<translation id="1384923383737428730">Der er skadelig software på din computer. Brave kan fjerne den, gendanne dine indstillinger og deaktivere udgivelser, så din browser fungerer normalt igen.</translation>
 <translation id="8919921662052966648">Brave kunne ikke synkronisere dine data. Opdater din adgangssætning til synkronisering.</translation>
 <translation id="2262856633481902138">Brave kunne ikke synkronisere dine data, fordi loginoplysningerne for din konto er forældede.</translation>
 <translation id="5419189641394808652">Brave kunne ikke synkronisere dine data, fordi synkronisering ikke er tilgængelig for dit domæne.</translation>
 <translation id="2577755334620061182">Brave kunne ikke synkronisere dine data på grund af en loginfejl.</translation>
+<translation id="8583885258305961947">Brave OS-system</translation>
 <translation id="3968006371075376562">Brave OS kunne ikke synkronisere dine data. Opdater din adgangssætning til synkronisering.</translation>
 <translation id="6746636977031158624">Brave OS kunne ikke synkronisere dine data, fordi loginoplysningerne til din konto er forældede.</translation>
 <translation id="2999152167963026588">Brave OS kunne ikke synkronisere dine data, fordi synkronisering ikke er tilgængeligt på dit domæne.</translation>
@@ -155,7 +157,7 @@ Du kan forhindre <ph name="NEW_PROFILE_NAME"/> i at få adgang til din konto ved
 
 Gå til din mail på <ph name="ACCOUNT_EMAIL"/> for at få yderligere vejledning.</translation>
 <translation id="1820843143331379651">Administrerede brugerprofiler vil ikke længere være tilgængelige fra og med Brave 70.</translation>
-<translation id="8797005356491520797">Denne brugers browserdata slettes fra denne enhed. Log ind på Brave som $2 for at gendanne dataene.</translation>
+<translation id="3066805437003400520">Brugerens browserdata slettes fra denne enhed. Log ind på Brave som <ph name="USER_EMAIL"/> for at gendanne dataene.</translation>
 <translation id="2827121003398607864">Brave er blevet bedre</translation>
 <translation id="7192666605334070839">Det er nu blevet nemmere at bruge Brave med din Brave Software-konto og på delte computere.</translation>
 <translation id="3511996232906761537">Dit webindhold, dine bogmærker og andre Brave-ting kan findes her.</translation>
@@ -171,6 +173,7 @@ Gå til din mail på <ph name="ACCOUNT_EMAIL"/> for at få yderligere vejledning
 <translation id="2871190378186459992">Find fantastiske apps, spil, udvidelser og temaer til Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Indgående regel for Brave om at tillade mDNS-trafik.</translation>
+<translation id="3795403186582265456">Brave kan genkende billeder og tekst på et billede ved at sende sidebilleder til Brave Softwares servere, så du får bedre indblik i sideindholdet.</translation>
 <translation id="7276297358157391541">Brave kan anvende smartere stavekontrol ved at sende dine indtastninger i browseren til Brave Softwares servere, så du kan bruge den samme teknologi til stavekontrol, som der anvendes i Brave Software-søgninger.</translation>
 <translation id="1807774211756215222">Åbn linket på en ny Brave-&amp;fane</translation>
 <translation id="4624945300945265642">Åbn linket i et Brave-inko&amp;gnitovindue</translation>
