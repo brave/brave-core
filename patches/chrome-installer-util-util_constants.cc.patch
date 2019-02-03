@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/util_constants.cc b/chrome/installer/util/util_constants.cc
-index b6142a7b402e5ceff8f59c78d007358052814d6d..074921cd21c94d5dad492d44c0d3ff6d93570bf7 100644
+index e3f9cc439f83e49291721cbf045119e1de5e1156..6e2421346cb600c35768e0906c568af74ba32c70 100644
 --- a/chrome/installer/util/util_constants.cc
 +++ b/chrome/installer/util/util_constants.cc
 @@ -177,7 +177,13 @@ namespace env_vars {
@@ -27,4 +27,4 @@ index b6142a7b402e5ceff8f59c78d007358052814d6d..074921cd21c94d5dad492d44c0d3ff6d
 +#endif
  const wchar_t kChromeNewExe[] = L"new_chrome.exe";
  const wchar_t kChromeOldExe[] = L"old_chrome.exe";
- const wchar_t kCmdOnOsUpgrade[] = L"on-os-upgrade";
+ const wchar_t kChromeProxyExe[] = L"chrome_proxy.exe";

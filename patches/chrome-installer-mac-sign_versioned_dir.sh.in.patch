@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/sign_versioned_dir.sh.in b/chrome/installer/mac/sign_versioned_dir.sh.in
-index 7a853e3dcbffa5e7a218742ba55e4e629544d27b..04c77355a2db7a64e62a41253369570bd9a7650b 100644
+index 2a784e232339e8c9259991096b1098eb6f5721f0..0336010e635879a3e34a91ea81653d838cbf1d93 100644
 --- a/chrome/installer/mac/sign_versioned_dir.sh.in
 +++ b/chrome/installer/mac/sign_versioned_dir.sh.in
 @@ -24,7 +24,6 @@ ME="$(basename "${0}")"
@@ -26,7 +26,7 @@ index 7a853e3dcbffa5e7a218742ba55e4e629544d27b..04c77355a2db7a64e62a41253369570b
  notification_service="${framework}/XPCServices/AlertNotificationService.xpc"
  crashpad_handler="${framework}/Helpers/crashpad_handler"
  helper_app="${versioned_dir}/@MAC_PRODUCT_NAME@ Helper.app"
-@@ -115,22 +116,29 @@ xpc_plist="${notification_service}/Contents/Info"
+@@ -124,6 +125,13 @@ xpc_plist="${notification_service}/Contents/Info"
  xpc_bundle_id="$(__CFPREFERENCES_AVOID_DAEMON=1 defaults read \
      "${xpc_plist}" "CFBundleIdentifier")"
  
@@ -40,6 +40,9 @@ index 7a853e3dcbffa5e7a218742ba55e4e629544d27b..04c77355a2db7a64e62a41253369570b
  codesign_with_options "${notification_service}" \
                        "${enforcement_flags_helpers}" \
                        "${xpc_bundle_id}"
+@@ -137,19 +145,18 @@ for library in "${libraries[@]}"; do
+   fi
+ done
  
 +codesign_with_options "${sparkle_framework}" "" "org.sparkle-project.Sparkle"
  # The framework is a dylib, so ${enforcement_flags_helpers} are meaningless.
@@ -50,7 +53,6 @@ index 7a853e3dcbffa5e7a218742ba55e4e629544d27b..04c77355a2db7a64e62a41253369570b
                        "${enforcement_flags_app}" \
 -                      "com.google.Chrome.helper"
 +                      "${helper_app_id}"
-+
  
  codesign_display_and_verify "${crashpad_handler}" --deep
  codesign_display_and_verify "${app_mode_loader}" --ignore-resources
@@ -61,3 +63,4 @@ index 7a853e3dcbffa5e7a218742ba55e4e629544d27b..04c77355a2db7a64e62a41253369570b
 +codesign_display_and_verify "${framework}" --deep
  codesign_display_and_verify "${framework}" --strict
  codesign_display_and_verify "${helper_app}" --deep
+ 

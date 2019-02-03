@@ -1,12 +1,13 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index d3d964de413cc744fbabe87eb65fafc2cb1ddfd0..6580882379090d7c65e77ad16271faa5eadf7f6c 100644
+index d29bd5d6776c488a5d24dc40ca102946044131f9..b953ecdf34dd83ffce42347785b38c38b8be7eb8 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -446,6 +446,19 @@ enum HistogramValue {
-   ARC_APPS_PRIVATE_ON_INSTALLED = 425,
-   FILE_MANAGER_PRIVATE_ON_CROSTINI_SHARED_PATHS_CHANGED = 426,
-   AUTOMATION_INTERNAL_ON_GET_TEXT_LOCATION_RESULT = 427,
-+  BRAVE_START = 5000,
+@@ -453,6 +453,20 @@ enum HistogramValue {
+   STORAGE_MANAGED_ON_CHANGE = 432,
+   AUTOFILL_PRIVATE_ON_LOCAL_CREDIT_CARD_LIST_CHANGED = 433,
+   AUTOFILL_PRIVATE_ON_SERVER_CREDIT_CARD_LIST_CHANGED = 434,
++
++  BRAVE_START = 600,
 +  BRAVE_AD_BLOCKED,
 +  BRAVE_WALLET_CREATED,
 +  BRAVE_ON_WALLET_PROPERTIES,

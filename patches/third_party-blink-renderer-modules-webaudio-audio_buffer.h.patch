@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.h b/third_party/blink/renderer/modules/webaudio/audio_buffer.h
-index 9867f77b9acb59f5623243d0dba15a41070d7adc..9ebdb337edcc39681fc57f8f0b458f18dd42429d 100644
+index ae3389cbc3c3e24771436e0b8b21b8fecde8b41d..d0066a4e163c3e03d2648b013536d03f61d0d63c 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.h
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.h
 @@ -41,6 +41,7 @@ namespace blink {
@@ -10,7 +10,7 @@ index 9867f77b9acb59f5623243d0dba15a41070d7adc..9ebdb337edcc39681fc57f8f0b458f18
  
  class MODULES_EXPORT AudioBuffer final : public ScriptWrappable {
    DEFINE_WRAPPERTYPEINFO();
-@@ -81,13 +82,16 @@ class MODULES_EXPORT AudioBuffer final : public ScriptWrappable {
+@@ -91,13 +92,16 @@ class MODULES_EXPORT AudioBuffer final : public ScriptWrappable {
  
    // Channel data access
    unsigned numberOfChannels() const { return channels_.size(); }

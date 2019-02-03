@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_info/page_info.cc b/chrome/browser/ui/page_info/page_info.cc
-index 4b8dacdbec6136ab6aaa38a7dc9f2d29b2b46a7a..85f4c826a0dfba05f52a785340d36271f897f08b 100644
+index 9972ecbbe5e9c2e89bea5b0edb6f1340eea97c28..41041de912fbed880e5503d5a5e42e717e696e63 100644
 --- a/chrome/browser/ui/page_info/page_info.cc
 +++ b/chrome/browser/ui/page_info/page_info.cc
-@@ -152,6 +152,7 @@ bool ShouldShowPermission(
+@@ -151,6 +151,7 @@ bool ShouldShowPermission(
      HostContentSettingsMap* content_settings,
      content::WebContents* web_contents,
      TabSpecificContentSettings* tab_specific_content_settings) {
@@ -10,7 +10,7 @@ index 4b8dacdbec6136ab6aaa38a7dc9f2d29b2b46a7a..85f4c826a0dfba05f52a785340d36271
    // Note |CONTENT_SETTINGS_TYPE_ADS| will show up regardless of its default
    // value when it has been activated on the current origin.
    if (info.type == CONTENT_SETTINGS_TYPE_ADS) {
-@@ -197,7 +198,7 @@ bool ShouldShowPermission(
+@@ -196,7 +197,7 @@ bool ShouldShowPermission(
    }
  #endif
  
@@ -19,10 +19,10 @@ index 4b8dacdbec6136ab6aaa38a7dc9f2d29b2b46a7a..85f4c826a0dfba05f52a785340d36271
    // Autoplay is Android-only at the moment.
    if (info.type == CONTENT_SETTINGS_TYPE_AUTOPLAY)
      return false;
-@@ -973,7 +974,7 @@ void PageInfo::PresentSiteIdentity() {
+@@ -979,7 +980,7 @@ void PageInfo::PresentSiteIdentity() {
  std::vector<ContentSettingsType> PageInfo::GetAllPermissionsForTesting() {
    std::vector<ContentSettingsType> permission_list;
-   for (size_t i = 0; i < arraysize(kPermissionType); ++i) {
+   for (size_t i = 0; i < base::size(kPermissionType); ++i) {
 -#if !defined(OS_ANDROID)
 +#if !defined(OS_ANDROID) && !defined(BRAVE_CHROMIUM_BUILD)
      if (kPermissionType[i] == CONTENT_SETTINGS_TYPE_AUTOPLAY)

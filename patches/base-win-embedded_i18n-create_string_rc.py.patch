@@ -1,0 +1,16 @@
+diff --git a/base/win/embedded_i18n/create_string_rc.py b/base/win/embedded_i18n/create_string_rc.py
+index d404cfd37d327e149771557cb37f56ed3a30b788..3f021ebd0f157a7d68058adb52d345ce187d02eb 100755
+--- a/base/win/embedded_i18n/create_string_rc.py
++++ b/base/win/embedded_i18n/create_string_rc.py
+@@ -342,7 +342,10 @@ Extra input files:
+     # Read the source (en-US) string from the .grd file.
+     grd_handler = GrdHandler(self.string_id_set)
+     sax_parser.setContentHandler(grd_handler)
+-    sax_parser.parse(grd_file)
++    # A base name is calculated from grd_file so that's why we don't
++    # just change that from chrome/installer/util/BUILD.gn
++    sax_parser.parse("../../chrome/app/brave_strings.grd")
++
+     source_strings = grd_handler.messages
+ 
+     grd_file_path = os.path.dirname(grd_file)

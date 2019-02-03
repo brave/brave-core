@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/languages_page/languages_page.html b/chrome/browser/resources/settings/languages_page/languages_page.html
-index 948ac4ecd1b65d3706d75af62622ab57d6141c51..cabda3dea95cfa8ce1867a638eadd67e5ee38d2b 100644
+index 803dccb2a8a68f83f082605bccc1ab3753f3de53..887ced9241a112e242749411a37ccc10383fcc77 100644
 --- a/chrome/browser/resources/settings/languages_page/languages_page.html
 +++ b/chrome/browser/resources/settings/languages_page/languages_page.html
-@@ -183,10 +183,12 @@
+@@ -179,10 +179,12 @@
                </a>
              </div>
            </div>
@@ -14,4 +14,4 @@ index 948ac4ecd1b65d3706d75af62622ab57d6141c51..cabda3dea95cfa8ce1867a638eadd67e
 +-->
          </iron-collapse>
  <if expr="chromeos">
-         <div id="manageInputMethodsSubpageTrigger"
+         <cr-expand-button

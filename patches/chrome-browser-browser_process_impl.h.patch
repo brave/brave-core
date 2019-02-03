@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index 143e7442ca050594dfb51a8e2fb5eb662a3f24c0..b68aeb1e147898eb013e5444009b1030683abc94 100644
+index d70dd33f4f41c97f62897b66d00f4fe8709b631f..589a3a8940ac31a4e525dfb284a4681e538b1093 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
-@@ -205,6 +205,7 @@ class BrowserProcessImpl : public BrowserProcess,
-   std::string actual_locale();
+@@ -202,6 +202,7 @@ class BrowserProcessImpl : public BrowserProcess,
+   static void RegisterPrefs(PrefRegistrySimple* registry);
  
   private:
 +  friend class BraveBrowserProcessImpl;

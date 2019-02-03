@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.cc b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-index dd58b32e4301741ca46c64ec3158c778881ecc97..85911418b1042f567d2f1436c2bda36c2a0cbdb7 100644
+index bf28289c6edd427baf753673aa0a411ff7ef0cde..2e9eb7c50e77f47128eea99a429bf9403df501bc 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-@@ -330,7 +330,7 @@ void ProfileChooserView::ShowBubble(
+@@ -316,7 +316,7 @@ void ProfileChooserView::ShowBubble(
      return;
  
    profile_bubble_ =
@@ -11,7 +11,7 @@ index dd58b32e4301741ca46c64ec3158c778881ecc97..85911418b1042f567d2f1436c2bda36c
                               manage_accounts_params.service_type, access_point);
    if (anchor_button) {
      anchor_button->AnimateInkDrop(views::InkDropState::ACTIVATED, nullptr);
-@@ -1331,9 +1331,12 @@ views::View* ProfileChooserView::CreateOptionsView(bool display_lock,
+@@ -1322,9 +1322,12 @@ views::View* ProfileChooserView::CreateOptionsView(bool display_lock,
        layout->AddView(guest_profile_button_);
      }
    }
@@ -23,4 +23,4 @@ index dd58b32e4301741ca46c64ec3158c778881ecc97..85911418b1042f567d2f1436c2bda36c
 +    text = l10n_util::GetStringUTF16(IDS_PROFILES_EXIT_TOR);
    const gfx::VectorIcon& settings_icon =
        is_guest ? kCloseAllIcon : kSettingsIcon;
-   users_button_ = new HoverButton(
+   users_button_ = new HoverButton(this, CreateVectorIcon(settings_icon), text);
