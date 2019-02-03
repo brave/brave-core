@@ -92,22 +92,22 @@
   </message>
 
   <message name="IDS_FILE_BROWSER_SIZE_BYTES" desc="Size in bytes.">
-    $1 bytes
+    <ph name="NUMBER_OF_BYTES">$1<ex>42</ex></ph> bytes
   </message>
   <message name="IDS_FILE_BROWSER_SIZE_KB" desc="Size in kilo bytes.">
-    $1 KB
+    <ph name="NUMBER_OF_KB">$1<ex>42</ex></ph> KB
   </message>
   <message name="IDS_FILE_BROWSER_SIZE_MB" desc="Size in mega bytes.">
-    $1 MB
+    <ph name="NUMBER_OF_MB">$1<ex>42</ex></ph> MB
   </message>
   <message name="IDS_FILE_BROWSER_SIZE_GB" desc="Size in giga bytes.">
-    $1 GB
+    <ph name="NUMBER_OF_GB">$1<ex>42</ex></ph> GB
   </message>
   <message name="IDS_FILE_BROWSER_SIZE_TB" desc="Size in tera bytes.">
-    $1 TB
+    <ph name="NUMBER_OF_TB">$1<ex>42</ex></ph> TB
   </message>
   <message name="IDS_FILE_BROWSER_SIZE_PB" desc="Size in peta bytes.">
-    $1 PB
+    <ph name="NUMBER_OF_PB">$1<ex>42</ex></ph> PB
   </message>
 
   <message name="IDS_FILE_BROWSER_SHORTCUT_CTRL" desc="[Ctrl] key name to use in shortcuts descriptions. Shouldn't be translated in many languages actually.">
@@ -163,10 +163,10 @@
     Unable to create folder "<ph name="FOLDER_NAME">$1<ex>Documents</ex></ph>". <ph name="ERROR_MESSAGE">$2<ex>An error occurred (code: ABORT)</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_ERROR_INVALID_CHARACTER" desc="Error message displayed when the user enters an invalid character in a file or directory name.">
-    Invalid character: $1
+    Invalid character: <ph name="CHARACTER_NAME">$1<ex>/ (forward slash)</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_ERROR_EXTERNAL_DRIVE_INVALID_CHARACTER" desc="Error message displayed when the user enters an invalid character in an external drive's name.">
-    Invalid character: $1
+    Invalid character: <ph name="CHARACTER_NAME">$1<ex>/ (forward slash)</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_ERROR_RESERVED_NAME" desc="Error message displayed when the user enters a file name which is reserved.">
     This name may not be used as a file of folder name
@@ -212,11 +212,11 @@
     File info
   </message>
   <message name="IDS_FILE_BROWSER_DRAGGING_MULTIPLE_ITEMS" desc="Tooltip message for dragging multiple files.">
-    $1 items
+    <ph name="NUMBER_OF_FILES">$1<ex>3</ex></ph> items
   </message>
 
   <message name="IDS_FILE_BROWSER_ARCHIVE_MOUNT_FAILED" desc="Title of the error dialog when file mount operation failed.">
-    Unable to open "$1": $2
+    Unable to open "<ph name="PATH">$1<ex>/path/to/zipfile.zip</ex></ph>": <ph name="ERROR_MESSAGE">$2<ex>Bad zip file format</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_UNMOUNT_FAILED" desc="Title of the error dialog when device unmount operation failed.">
    <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Don't remove your device just yet!<ph name="END_BOLD">&lt;/b&gt;</ph>
@@ -418,14 +418,17 @@
   <message name="IDS_FILE_BROWSER_GALLERY_OVERWRITE_BUBBLE" desc="In the Gallery, text in the bubble informing user about saving and overwriting original file.">
     Your edits are saved automatically.<ph name="BREAKS">&lt;br&gt;&lt;br&gt;<ex>&lt;br&gt;&lt;br&gt;</ex></ph>To keep a copy of the original image, uncheck "Overwrite original"
   </message>
+  <message name="IDS_FILE_BROWSER_GALLERY_OVERWRITE_BUBBLE_CLOSE" desc="In the Gallery, close button on the bubble notifying user of overwriting original file.">
+    Close
+  </message>
   <message name="IDS_FILE_BROWSER_GALLERY_READONLY_AND_NON_WRITABLE_FORMAT_WARNING" desc="In the Gallery, message informing that all edits will be saved to Downloads directory since the directory is readonly and the file is non-writable format of Gallery.">
-    Cannot save to $1. All edits will be saved to $2 in the Downloads folder.
+    Cannot save to <ph name="FOLDER_NAME">$1<ex>readonly-dir</ex></ph>. All edits will be saved to <ph name="DOWNLOADS_FOLDER">$2<ex>Downloads/fallbackdir</ex></ph> in the Downloads folder.
   </message>
   <message name="IDS_FILE_BROWSER_GALLERY_READONLY_WARNING" desc="In the Gallery, message informing that directory is readonly, and edited files will be saved to Downloads directory.">
-    Cannot save to $1. Edited images will be saved in the Downloads folder.
+    Cannot save to <ph name="FOLDER_NAME">$1<ex>readonly-dir</ex></ph>. Edited images will be saved in the Downloads folder.
   </message>
   <message name="IDS_FILE_BROWSER_GALLERY_NON_WRITABLE_FORMAT_WARNING" desc="In the Gallery, message informing that Gallery cannot overwrite to the original file and all edits will be saved to a copy.">
-    All edits will be saved to $1.
+    All edits will be saved to <ph name="DOWNLOADS_FOLDER">$1<ex>Downloads/fallbackdir</ex></ph>.
   </message>
   <message name="IDS_FILE_BROWSER_GALLERY_IMAGE_ERROR" desc="In the Gallery, message informing that the image failed to load.">
     This file could not be displayed.
@@ -458,13 +461,13 @@
   </message>
 
   <message name="IDS_FILE_BROWSER_CONFIRM_OVERWRITE_FILE" desc="Asks the user if they are sure they want to overwrite an existing file with another one.">
-    A file named "$1" already exists. Do you want to replace it?
+    A file named "<ph name="FILE_NAME">$1<ex>existing.txt</ex></ph>" already exists. Do you want to replace it?
   </message>
   <message name="IDS_FILE_BROWSER_FILE_ALREADY_EXISTS" desc="Error message displayed when user tries to create a file with an existing name.">
-    The file named "$1" already exists. Please choose a different name.
+    The file named "<ph name="FILE_NAME">$1<ex>existing.txt</ex></ph>" already exists. Please choose a different name.
   </message>
   <message name="IDS_FILE_BROWSER_DIRECTORY_ALREADY_EXISTS" desc="Error message displayed when user tries to create a directory with an existing name.">
-    The folder named "$1" already exists. Please choose a different name.
+    The folder named "<ph name="FOLDER_NAME">$1<ex>existing/dir</ex></ph>" already exists. Please choose a different name.
   </message>
   <message name="IDS_FILE_BROWSER_ERROR_RENAMING" desc="Error message.">
     Unable to rename "<ph name="FILE_NAME">$1<ex>document.pdf</ex></ph>". <ph name="ERROR_MESSAGE">$2<ex>An error occurred (code: ABORT)</ex></ph>
@@ -644,7 +647,7 @@
     Copying <ph name="FILE_NAME">$1<ex>movie.avi</ex></ph>...
   </message>
   <message name="IDS_FILE_BROWSER_COPY_ITEMS_REMAINING" desc="File Manager status message. 'Item' is used here as a generic term for file or directory.">
-    Copying $1 items...
+    Copying <ph name="NUMBER_OF_ITEMS">$1<ex>3</ex></ph> items...
   </message>
   <message name="IDS_FILE_BROWSER_COPY_TARGET_EXISTS_ERROR" desc="File Manager error message. 'Item' is used here as a generic term for file or directory.">
     Whoops, <ph name="FILE_NAME">$1<ex>movie.avi</ex></ph> already exists. Rename it and try again.
@@ -656,13 +659,13 @@
     Copy operation failed. <ph name="ERROR_MESSAGE">$1<ex>An error occurred (code: ABORT)</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_COPY_UNEXPECTED_ERROR" desc="File Manager error message.">
-    Copy operation failed, unexpected error: $1
+    Copy operation failed, unexpected error: <ph name="ERROR_MESSAGE">$1<ex>Could not copy</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_MOVE_FILE_NAME" desc="File Manager status message.">
     Moving <ph name="FILE_NAME">$1<ex>movie.avi</ex></ph>...
   </message>
   <message name="IDS_FILE_BROWSER_MOVE_ITEMS_REMAINING" desc="File Manager status message. 'Item' is used here as a generic term for file or directory.">
-    Moving $1 items...
+    Moving <ph name="NUMBER_OF_ITEMS">$1<ex>3</ex></ph> items...
   </message>
   <message name="IDS_FILE_BROWSER_MOVE_TARGET_EXISTS_ERROR" desc="File Manager error message. 'Item' is used here as a generic term for file or directory.">
     Whoops, <ph name="FILE_NAME">$1<ex>movie.avi</ex></ph> already exists. Rename it and try again.
@@ -674,22 +677,22 @@
     Move failed. <ph name="ERROR_MESSAGE">$1<ex>An error occurred (code: ABORT)</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_MOVE_UNEXPECTED_ERROR" desc="File Manager error message.">
-    Move failed, unexpected error: $1
+    Move failed, unexpected error: <ph name="ERROR_MESSAGE">$1<ex>Could not move</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_ZIP_FILE_NAME" desc="File Manager status message.">
     Zipping <ph name="FILE_NAME">$1<ex>movie.avi</ex></ph>...
   </message>
   <message name="IDS_FILE_BROWSER_ZIP_ITEMS_REMAINING" desc="File Manager status message. 'Item' is used here as a generic term for file or directory.">
-    Zipping $1 items...
+    Zipping <ph name="NUMBER_OF_ITEMS">$1<ex>3</ex></ph> items...
   </message>
   <message name="IDS_FILE_BROWSER_ZIP_TARGET_EXISTS_ERROR" desc="File Manager error message. 'Item' is used here as a generic term for file or directory.">
-    Zipping failed, item exists: "$1"
+    Zipping failed, item exists: "<ph name="FILE_NAME">$1<ex>existing.txt</ex></ph>"
   </message>
   <message name="IDS_FILE_BROWSER_ZIP_FILESYSTEM_ERROR" desc="File Manager error message.">
     Zipping failed. <ph name="ERROR_MESSAGE">$1<ex>An error occurred (code: ABORT)</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_ZIP_UNEXPECTED_ERROR" desc="File Manager error message.">
-    Zipping failed, unexpected error: $1
+    Zipping failed, unexpected error: <ph name="ERROR_MESSAGE">$1<ex>Could not zip</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_SYNC_FILE_NAME" desc="File Manager status message.">
     Syncing <ph name="FILE_NAME">$1<ex>movie.avi</ex></ph>...
@@ -774,10 +777,10 @@
   </message>
 
  <message name="IDS_FILE_BROWSER_CONFIRM_DELETE_ONE" desc="Asks the user if they are sure they want to delete a single file.">
-   Are you sure you want to delete "$1"?
+   Are you sure you want to delete "<ph name="FILE_NAME">$1<ex>file.txt</ex></ph>"?
  </message>
  <message name="IDS_FILE_BROWSER_CONFIRM_DELETE_SOME" desc="Asks the user if they are sure they want to delete multiple files/directories.">
-   Are you sure you want to delete $1 items?
+   Are you sure you want to delete <ph name="NUMBER_OF_ITEMS">$1<ex>3</ex></ph> items?
  </message>
 
   <message name="IDS_FILE_BROWSER_UNKNOWN_FILESYSTEM_WARNING" desc="Displayed when device contents cannot be read because filesystem is unknown.">
@@ -1022,9 +1025,6 @@
   <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_TITLE" desc="In the Welcome to Brave Drive banner, title of banner.">
     Welcome to Brave Drive!
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_TITLE_ALTERNATIVE" desc="In the Welcome to Brave Drive banner, title of the alternative banner offering 100GB free storage.">
-    Get 100 GB free with Brave Drive
-  </message>
   <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_TEXT_SHORT" desc="In the Welcome to Brave Drive banner, text of the welcome message, short version.">
     All files saved in this folder are backed up online automatically
   </message>
@@ -1036,9 +1036,6 @@
     <ph name="MARKUP_7">&lt;p&gt;&lt;strong&gt;<ex>&lt;strong&gt;</ex></ph>Share, create and collaborate<ph name="MARKUP_8">&lt;/strong&gt;<ex>&lt;/strong&gt;</ex></ph>
     on files with others all in one place.<ph name="MARKUP_9">&lt;/p&gt;<ex>&lt;/p&gt;</ex></ph>
   </message>
-  <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_CHECK_ELIGIBILITY" desc="In the Welcome to Brave Drive banner, a text on the button to check promo eligibility.">
-    Check eligibility
-  </message>
   <message name="IDS_FILE_BROWSER_DRIVE_WELCOME_DISMISS" desc="In the Welcome to Brave Drive banner, a text on the button to dismiss the banner.">
     Dismiss
   </message>
@@ -1047,7 +1044,7 @@
     <ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$2'&gt;<ex>&lt;a target='_blank' href='$2'&gt;</ex></ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_NO_TASK_FOR_EXECUTABLE" desc="Message shown when user tries to open a windows executable file, which we can't handle.">
-    This file is designed for a PC using Windows software. This is not compatible with your device which runs Brave OS. Please search the <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;<ex>&lt;a target='_blank' href='$1'&gt;</ex></ph>Web Store<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> for a suitable replacement app.<ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$2'&gt;<ex>&lt;a target='_blank' href='$2'&gt;</ex></ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+    This file is designed for a PC using Windows software. This is not compatible with your device which runs Brave OS. <ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$2'&gt;<ex>&lt;a target='_blank' href='$2'&gt;</ex></ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_NO_TASK_FOR_DMG" desc="Message shown when user tries to open a windows executable file, which we can't handle.">
     This file is designed for a computer using Macintosh software. This is not compatible with your device which runs Brave OS. Please search the <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;<ex>&lt;a target='_blank' href='$1'&gt;</ex></ph>Web Store<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> for a suitable replacement app.<ph name="BEGIN_LINK_HELP">&lt;a target='_blank' href='$2'&gt;<ex>&lt;a target='_blank' href='$2'&gt;</ex></ph>Learn More<ph name="END_LINK_HELP">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
@@ -1059,25 +1056,25 @@
     We're constantly looking for ways to make your browsing safer. Previously, any website could prompt you to add an extension into your browser. In the latest versions of Brave, you must explicitly tell Brave that you want to install these extensions by adding them through the Extensions page. <ph name="BEGIN_LINK">&lt;a target='_blank' href='https://support.google.com/chrome_webstore/answer/2664769?p=crx_warning&amp;rd=1'&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_FILE_BROWSER_UNABLE_TO_OPEN_CROSTINI_TITLE" desc="Message title shown when a user tries to use a crostini app to open a file which cannot be shared with the crostini container (e.g. in Play or USB).  This message will be removed once we support this action.">
-    Unable to open with $1
+    Unable to open with <ph name="APP_NAME">$1<ex>Visual Studio Code</ex></ph>
   </message>
   <message name="IDS_FILE_BROWSER_UNABLE_TO_OPEN_CROSTINI" desc="Message shown when a user tries to use a crostini app to open a file which cannot be shared with the crostini container (e.g. in Play or USB).  This message will be removed once we support this action.">
-    To open files with $1, first copy to Linux files folder.
+    To open files with <ph name="APP_NAME">$1<ex>Visual Studio Code</ex></ph>, first copy to Linux files folder.
   </message>
   <message name="IDS_FILE_BROWSER_SHARE_ROOT_FOLDER_WITH_CROSTINI_TITLE" desc="Message title shown when a user shares the root of a volume such as Downloads with the crostini container.">
     Share folder with Linux
   </message>
   <message name="IDS_FILE_BROWSER_SHARE_ROOT_FOLDER_WITH_CROSTINI" desc="Confirmation message shown when a user shares the root of a volume such as Downloads with the crostini container.">
-    Give Linux apps permission to open files in the $1 folder
+    Give Linux apps permission to modify files in the <ph name="FOLDER_NAME">$1<ex>Downloads</ex></ph> folder
   </message>
   <message name="IDS_FILE_BROWSER_SHARE_ROOT_FOLDER_WITH_CROSTINI_DRIVE" desc="Confirmation message shown when a user shares the root of a Drive volume (My Drive, Team Drives, Computers) with the crostini container.">
-    Give Linux apps permission to open files in your Brave Drive. Changes will sync to your other devices.
+    Give Linux apps permission to modify files in your Brave Drive. Changes will sync to your other devices.
   </message>
   <message name="IDS_FILE_BROWSER_FOLDER_SHARED_WITH_CROSTINI" desc="Confirmation message shown when a user shares a folder with the crostini container.">
     1 folder shared with Linux
   </message>
   <message name="IDS_FILE_BROWSER_FOLDER_SHARED_WITH_CROSTINI_PLURAL" desc="Confirmation message shown when a user shares more than 1 folder with the crostini container.">
-    $1 folders shared with Linux
+    <ph name="NUMBER_OF_ITEMS">$1<ex>3</ex></ph> folders shared with Linux
   </message>
 
   <message name="IDS_FILE_BROWSER_FOLDER" desc="Folder entry type">
@@ -1090,13 +1087,13 @@
     File
   </message>
   <message name="IDS_FILE_BROWSER_IMAGE_FILE_TYPE" desc="Image file type">
-    $1 image
+    <ph name="IMAGE_TYPE">$1<ex>jpeg</ex></ph> image
   </message>
   <message name="IDS_FILE_BROWSER_VIDEO_FILE_TYPE" desc="Video file type">
-    $1 video
+    <ph name="VIDEO_TYPE">$1<ex>mpeg 4</ex></ph> video
   </message>
   <message name="IDS_FILE_BROWSER_AUDIO_FILE_TYPE" desc="Audio file type">
-    $1 audio
+    <ph name="AUDIO_TYPE">$1<ex>mp3</ex></ph> audio
   </message>
   <message name="IDS_FILE_BROWSER_HTML_DOCUMENT_FILE_TYPE" desc="HTML document file type">
     HTML document
@@ -1267,13 +1264,13 @@
     More options available on the action bar. Press Alt + A to focus the action bar.
   </message>
   <message name="IDS_FILE_BROWSER_OPEN_A11Y" desc="Text to be used by screen reader to indicate users that the opening one single file is being executed.">
-    Opening file <ph name="FILE_NAME"> $1<ex>file_name.txt</ex>.</ph>
+    Opening file <ph name="FILE_NAME">$1<ex>file_name.txt</ex></ph>.
   </message>
   <message name="IDS_FILE_BROWSER_OPEN_A11Y_PLURAL" desc="Text to be used by screen reader to indicate users that the opening multiple files is being executed.">
-    Opening <ph name="NUMBER_FILES"> $1<ex>3</ex> files.</ph>
+    Opening <ph name="NUMBER_OF_FILES">$1<ex>3</ex></ph> files.
   </message>
   <message name="IDS_FILE_BROWSER_A11Y_VOLUME_EJECT" desc="Text to be used by screen reader to indicate users that the eject volume action has finished.">
-    <ph name="VOLUME_NAME">$1<ex>file_name.rar</ex> has been ejected.</ph>
+    <ph name="VOLUME_NAME">$1<ex>file_name.rar</ex></ph> has been ejected.
   </message>
 
 <!-- Common for Audio player and Media player -->

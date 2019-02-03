@@ -306,7 +306,7 @@
 
   <!-- Begin of Bookmarks Manager strings. -->
   <message name="IDS_BOOKMARK_MANAGER_TITLE" desc="Title of the bookmark manager window.">
-    Bookmark Manager
+    Bookmarks
   </message>
   <message name="IDS_BOOKMARK_MANAGER_SEARCH_BUTTON" desc="Title of the button in the bookmark manager that triggers a search">
     Search bookmarks
@@ -378,133 +378,127 @@
   <message name="IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME" desc="Filename that pre-populates the filename field when user attempts to export their bookmarks from Bookmark Manager.">
     bookmarks_<ph name="DATESTAMP">$1<ex>02_11_11</ex></ph>.html
   </message>
-  <!-- End of Bookmarks Manager strings. -->
-
-  <!-- Begin of material design Bookmarks Manager strings. -->
-  <message name="IDS_MD_BOOKMARK_MANAGER_ADD_BOOKMARK_TITLE" desc="Title of the dialog in the bookmark manager that creates a new bookmark.">
+  <message name="IDS_BOOKMARK_MANAGER_ADD_BOOKMARK_TITLE" desc="Title of the dialog in the bookmark manager that creates a new bookmark.">
     Add bookmark
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_ADD_FOLDER_TITLE" desc="Title of the dialog in the bookmark manager that creates a new bookmark folder.">
+  <message name="IDS_BOOKMARK_MANAGER_ADD_FOLDER_TITLE" desc="Title of the dialog in the bookmark manager that creates a new bookmark folder.">
     Add folder
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_CLEAR_SEARCH" desc="Title of the button in the bookmark manager that stops a search.">
+  <message name="IDS_BOOKMARK_MANAGER_CLEAR_SEARCH" desc="Title of the button in the bookmark manager that stops a search.">
     Clear search
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_EMPTY_LIST" desc="The message shown when the user has no bookmarks added. 'Star' refers to the icon in the omnibox for adding to bookmarks.">
+  <message name="IDS_BOOKMARK_MANAGER_EMPTY_LIST" desc="The message shown when the user has no bookmarks added. 'Star' refers to the icon in the omnibox for adding to bookmarks.">
     To bookmark pages, click the star in the address bar
   </message>
-   <message name="IDS_MD_BOOKMARK_MANAGER_EMPTY_UNMODIFIABLE_LIST" desc="The message shown when an unmodifiable bookmark folder is empty.">
+   <message name="IDS_BOOKMARK_MANAGER_EMPTY_UNMODIFIABLE_LIST" desc="The message shown when an unmodifiable bookmark folder is empty.">
     This folder is empty
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_FOLDER_LABEL" desc="Label for a folder of bookmarks which is used to label folders for screen reader users.">
+  <message name="IDS_BOOKMARK_MANAGER_FOLDER_LABEL" desc="Label for a folder of bookmarks which is used to label folders for screen reader users.">
     Folder
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_FOLDER_RENAME_TITLE" desc="Title of the bookmark editor window when editing folders.">
+  <message name="IDS_BOOKMARK_MANAGER_FOLDER_RENAME_TITLE" desc="Title of the bookmark editor window when editing folders.">
     Rename folder
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_FOLDER_LIST_CHANGED" desc="Message announced by screenreaders when the bookmark list changes.">
+  <message name="IDS_BOOKMARK_MANAGER_FOLDER_LIST_CHANGED" desc="Message announced by screenreaders when the bookmark list changes.">
     {COUNT, plural,
       =1 {1 item in bookmark list}
       other {# items in bookmark list}}
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_LIST_AX_LABEL" desc="Spoken feedback for focusing the bookmark list.">
+  <message name="IDS_BOOKMARK_MANAGER_LIST_AX_LABEL" desc="Spoken feedback for focusing the bookmark list.">
     Bookmark list
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_ADD_BOOKMARK" desc="Title of the bookmark toolbar dropdown menu item that adds a new bookmark.">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_ADD_BOOKMARK" desc="Title of the bookmark toolbar dropdown menu item that adds a new bookmark.">
     Add new bookmark
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_ADD_FOLDER" desc="Title of the bookmark toolbar dropdown menu item that adds a new folder.">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_ADD_FOLDER" desc="Title of the bookmark toolbar dropdown menu item that adds a new folder.">
     Add new folder
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_COPY_URL" desc="Title of the bookmark dropdown menu item that copies the url of the bookmark.">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_COPY_URL" desc="Title of the bookmark dropdown menu item that copies the url of the bookmark.">
     Copy URL
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_EXPORT" desc="Title of the bookmark toolbar dropdown menu item that exports bookmarks.">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_EXPORT" desc="Title of the bookmark toolbar dropdown menu item that exports bookmarks.">
     Export bookmarks
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_HELP_CENTER" desc="Title of the bookmark toolbar dropdown menu item that opens the help center.">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_HELP_CENTER" desc="Title of the bookmark toolbar dropdown menu item that opens the help center.">
     Help center
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_IMPORT" desc="Title of the bookmark toolbar dropdown menu item that imports bookmarks.">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_IMPORT" desc="Title of the bookmark toolbar dropdown menu item that imports bookmarks.">
     Import bookmarks
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_OPEN_ALL" desc="Menu title for opening all urls in a bookmark folder">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_ALL" desc="Menu title for opening all urls in a bookmark folder">
     Open all bookmarks
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_OPEN_ALL_NEW_WINDOW" desc="Menu title for opening all urls in a bookmark folder in a new window">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_ALL_NEW_WINDOW" desc="Menu title for opening all urls in a bookmark folder in a new window">
     Open all in new window
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_OPEN_ALL_INCOGNITO" desc="Menu description for opening all urls in a bookmark folder in a private window">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_ALL_INCOGNITO" desc="Menu description for opening all urls in a bookmark folder in a private window">
     Open all in private window
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_OPEN_IN_NEW_TAB" desc="Menu description for opening a bookmark in a new tab">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_IN_NEW_TAB" desc="Menu description for opening a bookmark in a new tab">
     Open in new tab
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_OPEN_IN_NEW_WINDOW" desc="Menu description for opening a bookmark in a new window">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_IN_NEW_WINDOW" desc="Menu description for opening a bookmark in a new window">
     Open in new window
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_OPEN_INCOGNITO" desc="Menu description for opening a bookmark in private window">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_INCOGNITO" desc="Menu description for opening a bookmark in private window">
     Open in private window
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_RENAME" desc="Title of the bookmark list dropdown menu item that renames folders.">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_RENAME" desc="Title of the bookmark list dropdown menu item that renames folders.">
     Rename
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_SHOW_IN_FOLDER" desc="The label of the menu item in the bookmark manager context menu that changes the selection in the tree to match the folder of the selected item in the list.">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_SHOW_IN_FOLDER" desc="The label of the menu item in the bookmark manager context menu that changes the selection in the tree to match the folder of the selected item in the list.">
     Show in folder
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_SORT" desc="Title of the bookmark toolbar dropdown menu item that sorts bookmarks by title.">
+  <message name="IDS_BOOKMARK_MANAGER_MENU_SORT" desc="Title of the bookmark toolbar dropdown menu item that sorts bookmarks by title.">
     Sort by name
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MORE_ACTIONS" desc="Tooltip of the button in the bookmark manager which shows an action menu for a bookmark, with actions like 'Edit' or 'Delete'">
+  <message name="IDS_BOOKMARK_MANAGER_MORE_ACTIONS" desc="Tooltip of the button in the bookmark manager which shows an action menu for a bookmark, with actions like 'Edit' or 'Delete'">
     More actions
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MORE_ACTIONS_AX_LABEL" desc="Spoken text for the button in the bookmark manager which shows an action menu for a bookmark, with actions like 'Edit' or 'Delete'">
+  <message name="IDS_BOOKMARK_MANAGER_MORE_ACTIONS_AX_LABEL" desc="Spoken text for the button in the bookmark manager which shows an action menu for a bookmark, with actions like 'Edit' or 'Delete'">
     More actions for <ph name="BOOKMARK_NAME">$1<ex>Bookmark X</ex></ph>
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_OPEN_DIALOG_TITLE" desc="Title of the dialog confirming whether a large number of bookmarks should be opened.">
+  <message name="IDS_BOOKMARK_MANAGER_OPEN_DIALOG_TITLE" desc="Title of the dialog confirming whether a large number of bookmarks should be opened.">
     Open selected items
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_OPEN_DIALOG_CONFIRM" desc="Label for the button to confirm opening a large number of bookmarks.">
+  <message name="IDS_BOOKMARK_MANAGER_OPEN_DIALOG_CONFIRM" desc="Label for the button to confirm opening a large number of bookmarks.">
     Open
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_ITEMS_SELECTED" desc="Label displayed in bookmark manager toolbar telling the user how many items they have selected.">
+  <message name="IDS_BOOKMARK_MANAGER_ITEMS_SELECTED" desc="Label displayed in bookmark manager toolbar telling the user how many items they have selected.">
     <ph name="NUMBER_OF_ITEMS_SELECTED">$1</ph> selected
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_SIDEBAR_AX_LABEL" desc="Message announced by screenreaders for the bookmark manager sidebar.">
+  <message name="IDS_BOOKMARK_MANAGER_SIDEBAR_AX_LABEL" desc="Message announced by screenreaders for the bookmark manager sidebar.">
     Bookmark folder tree
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_SIDEBAR_NODE_COLLAPSE_AX_LABEL" desc="Message announced by screenreaders for button to collapse a folder in the bookmark manager sidebar.">
+  <message name="IDS_BOOKMARK_MANAGER_SIDEBAR_NODE_COLLAPSE_AX_LABEL" desc="Message announced by screenreaders for button to collapse a folder in the bookmark manager sidebar.">
     Collapse <ph name="FOLDER_NAME">$1<ex>Recipes</ex></ph>
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_SIDEBAR_NODE_EXPAND_AX_LABEL" desc="Message announced by screenreaders for button to expand a folder in the bookmark manager sidebar.">
+  <message name="IDS_BOOKMARK_MANAGER_SIDEBAR_NODE_EXPAND_AX_LABEL" desc="Message announced by screenreaders for button to expand a folder in the bookmark manager sidebar.">
     Expand <ph name="FOLDER_NAME">$1<ex>Recipes</ex></ph>
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_TITLE" desc="Title of the bookmark manager window.">
-    Bookmarks
-  </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_TOAST_FOLDER_SORTED" desc="Label displayed in toast popup message when a folder's children are sorted.">
+  <message name="IDS_BOOKMARK_MANAGER_TOAST_FOLDER_SORTED" desc="Label displayed in toast popup message when a folder's children are sorted.">
     Folder sorted
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_TOAST_ITEM_DELETED" desc="Label displayed in toast popup message when a single item is deleted.">
+  <message name="IDS_BOOKMARK_MANAGER_TOAST_ITEM_DELETED" desc="Label displayed in toast popup message when a single item is deleted.">
     '<ph name="DELETED_ITEM_NAME">$1<ex>Bookmark X</ex></ph>' deleted
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_TOAST_ITEMS_DELETED" desc="Label displayed in toast popup message when two or more items are deleted.">
+  <message name="IDS_BOOKMARK_MANAGER_TOAST_ITEMS_DELETED" desc="Label displayed in toast popup message when two or more items are deleted.">
     {COUNT, plural,
       =1 {1 bookmark deleted}
       other {# bookmarks deleted}}
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_TOAST_URL_COPIED" desc="Label displayed in toast popup message when a URL is copied.">
+  <message name="IDS_BOOKMARK_MANAGER_TOAST_URL_COPIED" desc="Label displayed in toast popup message when a URL is copied.">
     URL copied
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_TOAST_ITEM_COPIED" desc="Label displayed in toast popup message when a single item is copied.">
+  <message name="IDS_BOOKMARK_MANAGER_TOAST_ITEM_COPIED" desc="Label displayed in toast popup message when a single item is copied.">
     '<ph name="COPIED_ITEM_NAME">$1<ex>Bookmark X</ex></ph>' copied
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_TOAST_ITEMS_COPIED" desc="Label displayed in a toast popup message when two or more bookmark items are copied">
+  <message name="IDS_BOOKMARK_MANAGER_TOAST_ITEMS_COPIED" desc="Label displayed in a toast popup message when two or more bookmark items are copied">
     {COUNT, plural,
       =1 {1 item copied}
       other {# items copied}}
   </message>
-  <!-- End of material design Bookmarks Manager strings. -->
+  <!-- End of Bookmarks Manager strings. -->
 
   <!-- Begin of Bookmarks Menu (in the Main Menu) strings. -->
   <message name="IDS_BOOKMARKS_MENU" desc="The title of the Bookmarks menu in the Main menu and in the Mac menu bar.">

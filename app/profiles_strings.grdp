@@ -55,6 +55,9 @@
       Add Person...
     </message>
   </if>
+  <message name="IDS_PROFILES_PROFILE_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu bubble.">
+    Accounts and sync
+  </message>
   <message name="IDS_PROFILES_PROFILE_SIGNOUT_BUTTON" desc="Button in the avatar menu bubble view to sign-out the current profile.">
     Exit and childlock
   </message>
@@ -522,7 +525,7 @@
       All files and local data associated with the supervised user will be permanently deleted once this supervised user is removed. Visited websites and settings for this supervised user may still be visible by the manager at <ph name="MANAGEMENT_URL">$1<ex>www.example.com</ex></ph>.
     </message>
     <message name="IDS_LOGIN_POD_NON_OWNER_USER_REMOVE_WARNING" desc="Text shown as a warning when attempting to remove non-owner user.">
-      All files and local data associated with this user will be permanently deleted once this user is removed. $1 can still sign in later.
+      All files and local data associated with this user will be permanently deleted once this user is removed. <ph name="USER_EMAIL">$1<ex>john.doe@example.com</ex></ph> can still sign in later.
     </message>
     <if expr="not chromeos">
       <message name="IDS_USER_MANAGER_GO_GUEST_PROFILES_LOCKED_ERROR" desc="Error message displayed when trying to browser as guest while all profiles are locked.">

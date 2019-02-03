@@ -58,10 +58,10 @@
   <!-- Desktop-specific permission prompts -->
   <if expr="not is_android">
     <message name="IDS_DESKTOP_PROMPT_DOFF_HEADSET" desc="Text displayed in a dialog in a VR headset to notify the user to take the headset off and take some action on the desktop monitor.">
-      Remove headset to block or allow on the desktop display
+      Remove headset to block or allow.
     </message>
-    <message name="IDS_VR_DESKTOP_BLUETOOTH_PROMPT" desc="Text displayed in a dialog in VR headset to notify the user that the current webpage is requesting bluetooth permissions.">
-      <ph name="URL_HOST">$1<ex>google.com</ex></ph> wants to pair to devices
+    <message name="IDS_VR_DESKTOP_GENERIC_PERMISSION_PROMPT" desc="Text displayed in a dialog in VR headset to notify the user that the current webpage is requesting a new permission, but we don't know which one specifically.">
+      <ph name="URL_HOST">$1<ex>google.com</ex></ph> has requested additional permissions.
     </message>
   </if>
 

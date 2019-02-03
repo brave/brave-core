@@ -175,6 +175,12 @@
   <message name="IDS_SETTINGS_MORE_FEATURES_LINK_DESCRIPTION" desc="Description for the link about additional accessibility features.">
     Enable accessibility features
   </message>
+  <message name="IDS_SETTINGS_ACCESSIBLE_IMAGE_LABELS_TITLE" desc="Description for screen reader image labels feature.">
+    Image labeling
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBLE_IMAGE_LABELS_SUBTITLE" desc="Subtitle for screen reader image labels feature.">
+    Send images to Brave servers to get labels.
+  </message>
   <if expr="chromeos">
     <message name="IDS_SETTINGS_OPTIONS_IN_MENU_LABEL" desc="Label for checkbox which enables showing accessibility options in the system menu.">
       Always show accessibility options in the system menu
@@ -447,10 +453,10 @@
       Loudest
     </message>
     <message name="IDS_SETTINGS_PERCENTAGE" desc="A number displayed as a percentage">
-      <ph name="PERCENTAGE">$1<ex>120</ex>%</ph>
+      <ph name="PERCENTAGE">$1<ex>120</ex></ph>%
     </message>
     <message name="IDS_SETTINGS_DEFAULT_PERCENTAGE" desc="A number displayed as a percentage, which is the normal or default.">
-      <ph name="PERCENTAGE">$1<ex>120</ex>%</ph> (default)
+      <ph name="PERCENTAGE">$1<ex>120</ex></ph>% (default)
     </message>
     <message name="IDS_SETTINGS_TEXT_TO_SPEECH_PREVIEW_HEADING" desc="The heading for a section of the text-to-speech settings page where a user can preview text to speech">
       Preview
@@ -488,6 +494,18 @@
     </message>
     <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS" desc="Label for managing shared folders in Crostini.">
       Manage shared files &amp; folders
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS_INSTRUCTIONS_ADD" desc="Instructions for how to add shared folders in Crostini.">
+      To share, right-click on a folder in Files app, then select "Share with Linux".
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS_INSTRUCTIONS_REMOVE" desc="Instructions for removing shared folders in Crostini.">
+      Removing folders from here will stop sharing but will not delete files.
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_LABEL" desc="Label for managing shared USB devices.">
+      USB Device preferences
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices.">
+      Share a USB device with Linux by turning the toggle on. Sharing will only last until the device is detached.
     </message>
 
     <!-- Android Apps Page -->
@@ -714,6 +732,12 @@
   </message>
   <message name="IDS_SETTINGS_MIGRATABLE_CARDS_LABEL" desc="Label for the field to migrate the locally cached credit card to Brave Payments. Clicking this will upload migratable credit cards to Brave Payments.">
     Save cards in your Brave Account
+  </message>
+  <message name="IDS_SETTINGS_SINGLE_MIGRATABLE_CARD_LABEL_V2" desc="The label for the field to migrate one locally cached credit card to Brave Payments. Clicking this will show a dialog to upload migratable credit cards to Brave Payments.">
+    To use this card on all your devices, save it in your Brave Account
+  </message>
+  <message name="IDS_SETTINGS_MULTIPLE_MIGRATABLE_CARD_LABEL_V2" desc="The label for the field to migrate multiple locally cached credit cards to Brave Payments. Clicking this will show a dialog to upload migratable credit cards to Brave Payments.">
+    To use these cards on all your devices, save them in your Brave Account
   </message>
   <message name="IDS_SETTINGS_SINGLE_MIGRATABLE_CARD_INFO" desc="Display text under the save cards to Brave Pay label. This text indicates one of local cards can only be used on this device.">
     Right now, you have one card that can only be used on this device
@@ -1214,9 +1238,6 @@
   </message>
   <message name="IDS_SETTINGS_CLEAR_HOSTED_APP_DATA" desc="Checkbox for deleting data of hosted apps">
     Hosted app data
-  </message>
-  <message name="IDS_SETTINGS_CLEAR_MEDIA_LICENSES" desc="Checkbox for deleting media licenses (premium content, etc.)">
-    Media licenses
   </message>
   <message name="IDS_SETTINGS_CLEAR_PERIOD_HOUR" desc="The option to delete browsing data from the last hour.">
     Last hour
@@ -1936,8 +1957,8 @@
     <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_FOURTH_STEP" desc="Fourth instruction for how to enable Brave Play Services notifications on an Android phone. This step teaches the user how to enable the Instant Tethering notification channel for Brave Play Services.">
       Scroll to the bottom of the screen and turn on Instant Tethering, if it appears. If it doesn't, you're all set.
     </message>
-    <message name="IDS_SETTINGS_INTERNET_NO_NETWORKS_MOBILE_DATA" desc="Text shown when viewing the Mobile data page when there are no cellular or tether networks available.">
-      No mobile connection found. Turn on Instant Tethering on your other devices and try again. &lt;a target="_blank" href="<ph name="URL">$1<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
+    <message name="IDS_SETTINGS_INTERNET_LOOKING_FOR_MOBILE_NETWORK" desc="Text shown when viewing the Mobile data page when there are no cellular or tether networks available.">
+      Looking for a mobile network. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_DIALOG_TITLE" desc="Settings &gt; Internet &gt; Tether Connection Dialog &gt; Title asking the user to create a new hotspot.">
       Connect to new hotspot?
@@ -2507,7 +2528,7 @@
     Help improve Brave's features and performance
   </message>
   <message name="IDS_SETTINGS_ENABLE_LOGGING_DESC_UNIFIED_CONSENT" desc="The description of the checkbox to enable/disable crash and user metrics logging">
-    Automatically send crash reports to Brave
+    Automatically sends crash reports to Brave
   </message>
   <message name="IDS_SETTINGS_ENABLE_URL_KEYED_ANONYMIZED_DATA_COLLECTION" desc="The label of the checkbox to enable/disable url keyed anonymized data collection.">
     Make searches and browsing better
@@ -2557,11 +2578,8 @@
   <message name="IDS_SETTINGS_TITLE_AND_COUNT" desc="The title of a section in the settings page with a count of the total number of items in the section">
     <ph name="TITLE">$1<ex>Block</ex></ph> - <ph name="COUNT">$2<ex>42</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_MORE_SETTINGS" desc="The text with a link to point users to more sync and personalization settings">
-    For more settings that relate to privacy, security, and data collection, see <ph name="BEGIN_LINK">&lt;a href="chrome://settings/syncSetup"&gt;<ex>&lt;a href="chrome://settings/syncSetup"&gt;</ex></ph>Sync and personalization<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_PRIVACY_MORE_SETTINGS_UNIFIED_CONSENT" desc="The text with a link to point users to Sync and Brave services settings">
-    For more settings that relate to privacy, security, and data collection, see <ph name="BEGIN_LINK">&lt;a href="chrome://settings/syncSetup"&gt;<ex>&lt;a href="chrome://settings/syncSetup"&gt;</ex></ph>Sync and Brave services<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  <message name="IDS_SETTINGS_SYNC_AND_GOOGLE_SERVICES_PRIVACY_DESC_UNIFIED_CONSENT" desc="The description of the 'Sync and Brave services' row in the privacy section">
+    More settings that relate to privacy, security, and data collection
   </message>
 
   <!-- Reset Settings Page -->
@@ -2672,7 +2690,7 @@
     Query URL
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_QUERY_URL_EXPLANATION" desc="Label for explaining the format of the URL that should be entered by the user in the add/edit search engine dialog.">
-    URL with %s in place of query
+    URL with <ph name="SPECIAL_SYMBOL">%s</ph> in place of query
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_MAKE_DEFAULT" desc="Text of the button that makes the selected engine the default search engine">
     Make default
@@ -2699,7 +2717,31 @@
     "Ok Brave"
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_DESCRIPTION" desc="Sub label for hotword-enable toggle.">
-    Access your Assistant any time you say "Ok Brave" when your screen is on
+    Access your Assistant any time you say "Ok Brave"
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_DESCRIPTION" desc="Sub label for hotword-enable dropdown without DSP support.">
+    Activate the Assistant when anyone says “Ok Brave”. To save battery, “Ok Brave” is on only when your device is connected to a power source.
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_RECOMMENDED" desc="Default label for hotword-enable dropdown without DSP support.">
+    On (Recommended)
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_ALWAYS_ON" desc="Always-on label for hotword-enable dropdown without DSP support.">
+    Always on
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_OFF" desc="Off label for hotword-enable dropdown without DSP support.">
+    Off
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_VOICE_SETTINGS" desc="Title for the Assistant voice settings.">
+    Voice match
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_VOICE_SETTINGS_DESCRIPTION" desc="Sub label for the Assistant voice settings.">
+    Teach your Assistant to recognize your voice
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_VOICE_SETTINGS_RETRAIN" desc="Button label for retrain voice model.">
+    Retrain
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_VOICE_SETTINGS_DELETE" desc="Button label for delete voice model.">
+    Delete
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_NOTIFICATION" desc="Title for a toggle that lets the assistant show you notifications.">
     Notifications
@@ -3079,6 +3121,12 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_DELETE" desc="The clear storage button label, used to delete non-cookie storage on the Site Details page.">
     Clear data
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GROUP_RESET" desc="The Reset button, used to clear all permissions for a group of sites.">
+    Reset permissions
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GROUP_DELETE" desc="The clear storage button label, used to delete storage data for a group of sites.">
+    Clear data
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_HEADER" desc="A header for the list of showing all cookies and site data.">
     All cookies and site data
   </message>
@@ -3114,6 +3162,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_RESET_CONFIRMATION" desc="Text for the dialog that warns about resetting all permissions for a group of sites.">
     Sites under <ph name="SITE_GROUP_NAME">$1<ex>google.co.uk</ex></ph> will also be reset.
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_DELETE_DIALOG_TITLE" desc="Title of the dialog that warns about clearing all storage data for a group of sites.">
+    Clear site data?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_DELETE_CONFIRMATION" desc="Text for the dialog that warns about clearing all storage data for a group of sites.">
+    All data stored by <ph name="SITE_GROUP_NAME">$1<ex>google.co.uk</ex></ph> and any sites under it will be deleted. This includes cookies. You'll be signed out of these sites, including in open tabs.
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_REMOVE_MULTIPLE" desc="Text for the dialog that warns about deleting all site data.">
     This will delete any data stored on your device for all the sites shown. Do you want to continue?
@@ -3171,6 +3225,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BLOCK_AUTOPLAY" desc="A label for a toggle in site settings to block autoplay. If the toggle is on then Brave will block autoplay by default and use an algorithm to determine which sites should still be able to autoplay. If the toggle is off then autoplay will be enabled for all sites.">
     Let Brave choose when sites can play sound (recommended)
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_EMPTY_ALL_SITES_PAGE" desc="Explanation shown when there are no sites that have appeared yet on the All Sites page.">
+    Sites you visit will appear here
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_NO_SITES_FOUND" desc="Explanation shown when there are no matching search results on All Sites page.">
+    No sites found
   </message>
 
   <message name="IDS_SETTINGS_NO_USB_DEVICES_FOUND" desc="Explanation for not showing USB devices in site settings.">
@@ -3395,7 +3455,7 @@
       Add account
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_DESCRIPTION" desc="Description of the Account Manager Settings page. Shown just below the title of the page.">
-      All of your signed in Brave accounts from apps and websites can be managed here.
+      All of your signed in Brave Accounts from apps and websites can be managed here. Apps and websites that have your permission can access the account information they need to work properly.
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_LIST_HEADER" desc="List header for Account List in Account Manager Settings page.">
       Accounts
@@ -3406,14 +3466,20 @@
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SUBMENU_LABEL" desc="Label of Account Manager submenu in Settings page.">
       Brave Accounts
     </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SIGNED_OUT_ACCOUNT_PLACEHOLDER" desc="Placeholder text for the full name of a signed out account in Account Manager.">
+      Sign in again
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REAUTHENTICATION_LABEL" desc="Label of the re-authentication button on Account Manager Settings page.">
+      Sign in
+    </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_ACCOUNT_LABEL" desc="Label of the Remove account button in Account Manager.">
       Remove account from this device
     </message>
     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_TITLE" desc="Title of the add fingerprint dialog popup.">
-      Registering fingerprint
+      Set up your fingerprint
     </message>
     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER" desc="Text in the add fingerprint dialog telling users to place finger on the sensor.">
-      Let's get started. Place your finger on the sensor.
+      Touch the power button with your finger
     </message>
      <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users where the fingerprint sensor is. Only visible by screen reader software.">
       The fingerprint sensor is in the power button. Touch it lightly with any finger.
@@ -3595,6 +3661,12 @@
     </message>
     <message name="IDS_SETTINGS_SYNC_SETTINGS_CANCEL_SYNC" desc="The label of button that allows user to cancel sync.">
       Cancel sync
+    </message>
+    <message name="IDS_SETTINGS_SYNC_SETUP_CANCEL_DIALOG_TITLE" desc="The title of the dialog to confirm the sync cancellation.">
+      Cancel sync?
+    </message>
+    <message name="IDS_SETTINGS_SYNC_SETUP_CANCEL_DIALOG_BODY" desc="The body text of the dialog to confirm the sync cancellation.">
+      You can turn on sync anytime in settings
     </message>
   </if>
   <message name="IDS_SETTINGS_SYNC_TIMEOUT" desc="Text explaining what to do if sync times out.">
@@ -4104,7 +4176,7 @@
       Make items on your screen smaller or larger
     </message>
     <message name="IDS_SETTINGS_DISPLAY_ZOOM_VALUE" desc="The currently selected display zoom percentage.">
-      <ph name="DISPLAY_ZOOM">$1<ex>120</ex>%</ph>
+      <ph name="DISPLAY_ZOOM">$1<ex>120</ex></ph>%
     </message>
     <message name="IDS_SETTINGS_DISPLAY_ZOOM_SLIDER_MINIMUM" desc="In Device Settings &gt; Displays, the label of the minimum value for the display size slider">
       Tiny
@@ -4356,18 +4428,18 @@
       Items not listed here will also be removed, if needed. Learn more about &lt;a href="<ph name="URL">$1<ex>https://www.google.com/chrome/browser/privacy/whitepaper.html#unwantedsoftware</ex></ph>"&gt;unwanted software protection&lt;/a&gt; in the Brave privacy white paper.
     </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_DETAILS_EXTENSIONS" desc="Introduces a bullet list containing the names of extensions to be removed by Brave.">
-      Extensions:
+      Extensions to be removed:
     </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_DETAILS_EXTENSION_UNKNOWN" desc="Text for a list item among a list of extensions, where we could not determine the name of the extension being cleaned up.">
       Unknown extension with ID <ph name="EXTENSION_ID">$1<ex>exampleextensionababababcdcdcdcd</ex></ph>
     </message>
-    <message name="IDS_SETTINGS_RESET_CLEANUP_DETAILS_FILES_AND_PROGRAMS" desc="Introduces a bullet list containing the names of files and programs to be removed by Brave.">
-      Files and programs:
+    <message name="IDS_SETTINGS_RESET_CLEANUP_DETAILS_FILES_AND_PROGRAMS" desc="Introduces a bullet list containing the names of files and programs to be quarantined by Brave (i.e. removed from the original location, moved and archived in the Quarantine folder).">
+      Files and programs to be quarantined:
     </message>
-    <message name="IDS_SETTINGS_RESET_CLEANUP_DETAILS_ITEMS_TO_BE_REMOVED" desc="Label for an expansion arrow. On expansion, the screen displays a list of files and programs that Brave will remove. Placeholder can be 2 or more items.">
+    <message name="IDS_SETTINGS_RESET_CLEANUP_DETAILS_ITEMS_TO_BE_REMOVED" desc="Label for an expansion arrow. On expansion, the screen displays a list of files and programs that Brave will remove or quarantine. Placeholder can be 2 or more items.">
       {NUM_ITEMS, plural,
-        =1 {1 item to be removed}
-        other {# items to be removed}}
+        =1 {1 item}
+        other {# items}}
     </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_DETAILS_REGISTRY_ENTRIES" desc="Introduces a bullet list containing the names of registry entries to be removed/changed by Brave.">
       Registry entries to be removed or changed:
@@ -4390,12 +4462,12 @@
       Click Try Again, and accept the prompt on your computer
     </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_EXPLANATION_CURRENTLY_REMOVING" desc="Description in the Brave Cleanup web page that Brave browser shows when unwanted software, like ad injectors or software that changes the user's settings without their knowledge, is being removed by Brave from the user's computer. Appears under the title 'Removing harmful software...' Actor is Brave; we are indicating that harmful software is currently being removed. 'it' is harmful software. Preferrably, the translation for this string should parallel IDS_CHROME_CLEANUP_PROMPT_EXPLANATION.">
-      There's harmful software on your computer. Brave is removing it and will restore your settings to make your browser work normally again.
+      There's harmful software on your computer. Brave is removing it, restoring your settings, and disabling extensions. This will make your browser work normally again.
     </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_EXPLANATION_SCAN_ERROR" desc="Body of error message that could appear during the cleanup of harmful software.">
       An error occurred while Brave was searching for harmful software
     </message>
-    <message name="IDS_SETTINGS_RESET_CLEANUP_FIND_BUTTON_LABEL" desc="Button for the 'Find and remove harmful software' item in Brave Settings. Imperative. On click, Brave looks for harmful software on the user's computer. Imperative.">
+    <message name="IDS_SETTINGS_RESET_CLEANUP_FIND_BUTTON_LABEL" desc="Button for the 'Find harmful software' item in Brave Settings. Imperative. On click, Brave looks for harmful software on the user's computer. Imperative.">
       Find
     </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_FOOTER_POWERED_BY" desc="Branding footer on the web page for Brave Cleanup. COMPANY_NAME is the name of a technology service that Brave uses to remove harmful software from the user's computer. It is not necessary to translate 'powered by' literally; use an appropriate word for your language to convey the meaning of 'uses'. A similar use in other Brave products is 'Powered by Brave Translate.'">
@@ -4419,8 +4491,8 @@
     <message name="IDS_SETTINGS_RESET_CLEANUP_TITLE_ERROR_PERMISSIONS_NEEDED" desc="Title of error message that could appear during the cleanup of harmful software. 'permission' refers to the user granting permission, e.g. from an operating system prompt, before the cleanup operation can continue.">
       Brave needs permission to continue
     </message>
-    <message name="IDS_SETTINGS_RESET_CLEANUP_TITLE_FIND_AND_REMOVE" desc="Title of an item in Brave Settings. Imperative.">
-      Find and remove harmful software
+    <message name="IDS_SETTINGS_RESET_CLEANUP_TITLE_FIND_HARMFUL_SOFTWARE" desc="Title of an item in Brave Settings. Imperative.">
+      Find harmful software
     </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_TITLE_NO_INTERNET_CONNECTION" desc="Title of error message that could appear during the cleanup of harmful software.">
       No internet connection
@@ -4449,8 +4521,8 @@
     <message name="IDS_SETTINGS_RESET_CLEANUP_TRY_AGAIN_BUTTON_LABEL" desc="Generic button that appears next to a message indicating that an operation failed during the cleanup of harmful software." meaning="Button referred to in the string 'Click Try Again, and accept the prompt on your computer', IDS_SETTINGS_RESET_CLEANUP_EXPLANATION_PERMISSIONS_NEEDED">
       Try again
     </message>
-    <message name="IDS_SETTINGS_RESET_CLEANUP_LOGS_PERMISSION_EXPLANATION" desc="Description for the 'Report details to Brave' option. Subject, 'Details', is omitted. Although the plural subject would indicate usage of the plural verb, here, we use the plural form of the verb, 'includes', to avoid the impression that 'include' is an infinitive verb. 'Includes' is a present tense main verb. ">
-      Includes information about harmful software, system settings, and processes on your computer
+    <message name="IDS_SETTINGS_RESET_CLEANUP_LOGS_PERMISSION_PREF" desc="A checkbox label for the 'Report harmful software removal details' preference.">
+      Report details to Brave about harmful software, system settings, and processes that were found on your computer during this cleanup
     </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_TITLE_CLEANUP_UNAVAILABLE" desc="Title of error message that could appear before the cleanup of harmful software because Brave failed to contact the server. This message will only appear on Windows desktop/laptop computers.">
       Cleanup is currently unavailable
