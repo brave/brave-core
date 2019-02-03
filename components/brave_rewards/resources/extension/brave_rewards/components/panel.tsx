@@ -307,7 +307,7 @@ export class Panel extends React.Component<Props, State> {
   }
 
   render () {
-    const { pendingContributionTotal } = this.props.rewardsPanelData
+    const { pendingContributionTotal, enabledAC } = this.props.rewardsPanelData
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const converted = utils.convertBalance(balance.toString(), rates)

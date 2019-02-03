@@ -21,7 +21,7 @@ const getGrant = (id?: string, grants?: Rewards.Grant[]) => {
 const updateGrant = (newGrant: Rewards.Grant, grants: Rewards.Grant[]) => {
   return grants.map((grant: Rewards.Grant) => {
     if (newGrant.promotionId === grant.promotionId) {
-      return Object.assign(newGrant, grant)
+      return Object.assign(grant, newGrant)
     }
     return grant
   })
@@ -76,18 +76,18 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
     case types.ON_GRANT_CAPTCHA:
       {
         if (state.currentGrant && state.grants) {
-          let grant = state.currentGrant
           const props = action.payload.captcha
-          grant.captcha = `data:image/jpeg;base64,${props.image}`
-          grant.hint = props.hint
+          let hint = props.hint
+          let captcha = `data:image/jpeg;base64,${props.image}`
 
           const grants = state.grants.map((item: Rewards.Grant) => {
             let newGrant = item
+            let promotionId = state.currentGrant && state.currentGrant.promotionId
 
-            if (grant.promotionId === item.promotionId) {
+            if (promotionId === item.promotionId) {
               newGrant = Object.assign({
-                captcha: grant.captcha,
-                hint: props.hint,
+                captcha: captcha,
+                hint: hint,
               }, item)
             }
 
@@ -139,7 +139,6 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
     case types.ON_GRANT_DELETE:
       {
         if (state.currentGrant && state.grants) {
-          let grants
           let grantIndex = -1
           let currentGrant: any = state.currentGrant
 
@@ -150,13 +149,12 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
           })
 
           if (grantIndex > -1) {
-            grants = state.grants.splice(1, grantIndex)
+            state.grants.splice(1, grantIndex)
             currentGrant = undefined
           }
 
           state = {
             ...state,
-            grants,
             currentGrant
           }
         }
@@ -165,19 +163,21 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
     case types.ON_GRANT_FINISH:
       {
         state = { ...state }
-        let currentGrant: any = state.currentGrant
+        let newGrant: any = {}
         const properties: Rewards.Grant = action.payload.properties
 
         if (!state.grants || !state.currentGrant) {
           break
         }
 
+        newGrant.promotionId = state.currentGrant.promotionId
+
         switch (properties.status) {
           case 0:
             let ui = state.ui
-            currentGrant.expiryTime = properties.expiryTime * 1000
-            currentGrant.probi = properties.probi
-            currentGrant.status = null
+            newGrant.expiryTime = properties.expiryTime * 1000
+            newGrant.probi = properties.probi
+            newGrant.status = null
             ui.emptyWallet = false
 
             state = {
@@ -188,22 +188,22 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
             chrome.send('brave_rewards.getWalletProperties', [])
             break
           case 6:
-            currentGrant.status = 'wrongPosition'
+            newGrant.status = 'wrongPosition'
             chrome.send('brave_rewards.getGrantCaptcha', [])
             break
           case 13:
-            currentGrant.status = 'grantGone'
+            newGrant.status = 'grantGone'
             break
           case 18:
-            currentGrant.status = 'grantAlreadyClaimed'
+            newGrant.status = 'grantAlreadyClaimed'
             break
           default:
-            currentGrant.status = 'generalError'
+            newGrant.status = 'generalError'
             break
         }
 
         if (state.grants) {
-          const grants = updateGrant(currentGrant, state.grants)
+          const grants = updateGrant(newGrant, state.grants)
 
           state = {
             ...state,

@@ -454,7 +454,7 @@ void BatClient::setGrants(const std::string& captchaResponse, const std::string&
     auto callback = std::bind(&BatClient::setGrantCallback, this, _1, _2, _3);
     ledger_->LoadURL(braveledger_bat_helper::buildURL(
           (std::string)GET_SET_PROMOTION + "/" + ledger_->GetPaymentId(),
-          PREFIX_V2),
+          PREFIX_V4),
         std::vector<std::string>(), payload, "application/json; charset=utf-8",
         ledger::URL_METHOD::PUT, callback);
   }
@@ -508,7 +508,7 @@ void BatClient::getGrantCaptcha() {
       _1, _2, _3);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)GET_PROMOTION_CAPTCHA + ledger_->GetPaymentId(),
-        PREFIX_V2),
+        PREFIX_V4),
       headers, "", "", ledger::URL_METHOD::GET, callback);
 }
 
