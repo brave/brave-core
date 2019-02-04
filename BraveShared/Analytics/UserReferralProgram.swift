@@ -4,10 +4,15 @@
 
 import Foundation
 import Shared
+import Deferred
+import WebKit
 
 private let log = Logger.browserLogger
 
 public class UserReferralProgram {
+    
+    /// Domains must match server HTTP header ones _exactly_
+    private static let urpCookieOnlyDomains = ["coinbase.com"]
     public static let shared = UserReferralProgram()
     
     private static let apiKeyPlistKey = "API_KEY"
@@ -44,7 +49,6 @@ public class UserReferralProgram {
         
         service.referralCodeLookup { referral, _ in
             guard let ref = referral else {
-                self.getCustomHeaders()
                 log.info("No referral code found")
                 UrpLog.log("No referral code found")
                 return
@@ -152,8 +156,7 @@ public class UserReferralProgram {
                 UrpLog.log("Network error or isFinalized returned false, decrementing retry counter and trying again next time.")
                 // Decrement counter, next retry happens on next day
                 Preferences.URP.retryCountdown.value = counter - 1
-                let _1dayInSeconds = Double(1 * 24 * 60 * 60)
-                Preferences.URP.nextCheckDate.value = checkDate + _1dayInSeconds
+                Preferences.URP.nextCheckDate.value = checkDate + 1.days
             }
         }
     }
@@ -180,7 +183,11 @@ public class UserReferralProgram {
         return nil
     }
     
-    public func getCustomHeaders() {
+    /// Same as `customHeaders` only blocking on result, to gaurantee data is available
+    private func fetchNewCustomHeaders() -> Deferred<[CustomHeaderData]> {
+        let result = Deferred<[CustomHeaderData]>()
+        
+        // No early return, even if data exists, still want to flush the storage
         service.fetchCustomHeaders() { headers, error in
             if headers.isEmpty { return }
             
@@ -189,27 +196,55 @@ public class UserReferralProgram {
             } catch {
                 log.error("Failed to save URP custom header data \(headers) with error: \(error.localizedDescription)")
             }
+            result.fill(headers)
         }
+        
+        return result
+    }
+    
+    /// Returns custom headers synchronously
+    private var customHeaders: [CustomHeaderData]? {
+        guard let customHeadersAsData = Preferences.URP.customHeaderData.value else { return nil }
+        
+        do {
+            return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(customHeadersAsData) as? [CustomHeaderData]
+        } catch {
+            log.error("Failed to unwrap custom headers with error: \(error.localizedDescription)")
+        }
+        return nil
     }
     
     /// Checks if a custom header should be added to the request and returns its value and field.
     public class func shouldAddCustomHeader(for request: URLRequest) -> (value: String, field: String)? {
-        guard let customHeadersAsData = Preferences.URP.customHeaderData.value,
-            let customHeaders = (try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(customHeadersAsData)) as? [CustomHeaderData],
+        guard let customHeaders = UserReferralProgram.shared?.customHeaders,
             let hostUrl = request.url?.host else { return nil }
         
         for customHeader in customHeaders {
             // There could be an egde case when we would have two domains withing different domain groups, that would
             // cause to return only the first domain-header it approaches.
-            for domain in customHeader.domainList {
-                if hostUrl.contains(domain) {
-                    if let allFields = request.allHTTPHeaderFields, !allFields.keys.contains(customHeader.headerField) {
-                        return (customHeader.headerValue, customHeader.headerField)
-                    }
+            for domain in customHeader.domainList where hostUrl.contains(domain) {
+                // If `domain` is "cookie only", we exclude it from HTTP Headers, and just use cookie approach
+                let cookieOnly = urpCookieOnlyDomains.contains(domain)
+                if !cookieOnly, let allFields = request.allHTTPHeaderFields, !allFields.keys.contains(customHeader.headerField) {
+                    return (customHeader.headerValue, customHeader.headerField)
                 }
             }
         }
         
         return nil
+    }
+    
+    public func insertCookies(intoStore store: WKHTTPCookieStore) {
+        assertIsMainThread("Setting up cookies for URP, must happen on main thread")
+        
+        func attachCookies(from headers: [CustomHeaderData]?) {
+            headers?.flatMap { $0.cookies() }.forEach { store.setCookie($0) }
+        }
+        
+        // Attach all existing cookies
+        attachCookies(from: customHeaders)
+        
+        // Pull new ones and attach them async
+        fetchNewCustomHeaders().uponQueue(.main, block: attachCookies)
     }
 }
