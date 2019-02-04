@@ -19,7 +19,7 @@ class RewardsServicePrivateObserver : public base::CheckedObserver {
 
   virtual void OnGetCurrentBalanceReport(RewardsService* rewards_service,
                                          const BalanceReport& balance_report) {}
-  virtual void OnGetPublisherActivityFromUrl(
+  virtual void OnPanelPublisherInfo(
       RewardsService* rewards_service,
       int error_code,
       std::unique_ptr<ledger::PublisherInfo> info,

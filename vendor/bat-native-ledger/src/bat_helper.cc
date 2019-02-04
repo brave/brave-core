@@ -2781,4 +2781,18 @@ static bool ignore_ = false;
     writer.EndObject();
   }
 
+  void saveToJson(JsonWriter& writer,
+                  const ledger::PublisherInfoListStruct& publishers) {
+    writer.StartObject();
+
+    writer.String("list");
+    writer.StartArray();
+    for (const auto& publisher : publishers.list) {
+      saveToJson(writer, publisher);
+    }
+    writer.EndArray();
+
+    writer.EndObject();
+  }
+
 }  // namespace braveledger_bat_helper

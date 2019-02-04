@@ -391,7 +391,7 @@ void BatLedgerClientMojoProxy::OnExcludedSitesChanged(
   bat_ledger_client_->OnExcludedSitesChanged(publisher_id);
 }
 
-void BatLedgerClientMojoProxy::OnPublisherActivity(ledger::Result result,
+void BatLedgerClientMojoProxy::OnPanelPublisherInfo(ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> info,
     uint64_t windowId) {
   if (!Connected()) {
@@ -399,7 +399,7 @@ void BatLedgerClientMojoProxy::OnPublisherActivity(ledger::Result result,
   }
 
   std::string json_info = info ? info->ToJson() : "";
-  bat_ledger_client_->OnPublisherActivity(ToMojomResult(result),
+  bat_ledger_client_->OnPanelPublisherInfo(ToMojomResult(result),
       json_info, windowId);
 }
 
@@ -637,6 +637,17 @@ void BatLedgerClientMojoProxy::GetActivityInfoList(uint32_t start,
       limit,
       filter.ToJson(),
       base::BindOnce(&OnGetActivityInfoList, std::move(callback)));
+}
+
+
+
+void BatLedgerClientMojoProxy::SaveNormalizedPublisherList(
+    const ledger::PublisherInfoListStruct& normalized_list) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_client_->SaveNormalizedPublisherList(normalized_list.ToJson());
 }
 
 bool BatLedgerClientMojoProxy::Connected() const {
