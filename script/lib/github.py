@@ -5,6 +5,8 @@ import os
 import re
 import requests
 import sys
+import base64
+from util import execute, scoped_cwd
 
 REQUESTS_DIR = os.path.abspath(os.path.join(__file__, '..', '..', '..',
                                             'vendor', 'requests'))
@@ -80,3 +82,143 @@ class _Callable(object):
 
         name = '%s/%s' % (self._name, attr)
         return _Callable(self._gh, name)
+
+
+def get_authenticated_user_login(token):
+    """given a valid GitHub access token, return the associated GitHub user login"""
+    # for more info see: https://developer.github.com/v3/users/#get-the-authenticated-user
+    user = GitHub(token).user()
+    try:
+        response = user.get()
+        return response['login']
+    except Exception as e:
+        print('[ERROR] ' + str(e))
+
+
+def parse_user_logins(token, login_csv, verbose=False):
+    """given a list of logins in csv format, parse into a list and validate logins"""
+    if login_csv is None:
+        return []
+    login_csv = login_csv.replace(" ", "")
+    parsed_logins = login_csv.split(',')
+
+    users = GitHub(token).users()
+
+    invalid_logins = []
+
+    # check login/username against GitHub
+    # for more info see: https://developer.github.com/v3/users/#get-a-single-user
+    for login in parsed_logins:
+        try:
+            user = users(login).get()
+        except Exception as e:
+            if verbose:
+                print('Login "' + login + '" does not appear to be valid. ' + str(e))
+            invalid_logins.append(login)
+
+    if len(invalid_logins) > 0:
+        raise Exception('Invalid logins found. Are they misspelled? ' + ','.join(invalid_logins))
+
+    return parsed_logins
+
+
+def get_file_contents(token, repo_name, filename, branch=None):
+    # NOTE: API only supports files up to 1MB in size
+    # for more info see: https://developer.github.com/v3/repos/contents/
+    repo = GitHub(token).repos(repo_name)
+    get_data = {}
+    if branch:
+        get_data['ref'] = branch
+    file = repo.contents(filename).get(params=get_data)
+    if file['encoding'] == 'base64':
+        return base64.b64decode(file['content'])
+    return file['content']
+
+
+def add_reviewers_to_pull_request(token, repo_name, pr_number, reviewers=[], verbose=False, dryrun=False):
+    # add reviewers to pull request
+    # for more info see: https://developer.github.com/v3/pulls/review_requests/
+    repo = GitHub(token).repos(repo_name)
+    patch_data = {}
+    if len(reviewers) > 0:
+        patch_data['reviewers'] = reviewers
+    if dryrun:
+        print('[INFO] would call `repo.pulls(' + str(pr_number) +
+              ').requested_reviewers.post(' + str(patch_data) + ')`')
+        return
+    response = repo.pulls(pr_number).requested_reviewers.post(data=patch_data)
+    if verbose:
+        print('repo.pulls(' + str(pr_number) + ').requested_reviewers.post(data) response:\n' + str(response))
+    return response
+
+
+def get_milestones(token, repo_name, verbose=False):
+    # get all milestones for a repo
+    # for more info see: https://developer.github.com/v3/issues/milestones/
+    repo = GitHub(token).repos(repo_name)
+    response = repo.milestones.get()
+    if verbose:
+        print('repo.milestones.get() response:\n' + str(response))
+    return response
+
+
+def create_pull_request(token, repo_name, title, body, branch_src, branch_dst, verbose=False, dryrun=False):
+    post_data = {
+        'title': title,
+        'head': branch_src,
+        'base': branch_dst,
+        'body': body,
+        'maintainer_can_modify': True
+    }
+    # create the pull request
+    # for more info see: http://developer.github.com/v3/pulls
+    if dryrun:
+        print('[INFO] would call `repo.pulls.post(' + str(post_data) + ')`')
+        return 1234
+    repo = GitHub(token).repos(repo_name)
+    response = repo.pulls.post(data=post_data)
+    if verbose:
+        print('repo.pulls.post(data) response:\n' + str(response))
+    return int(response['number'])
+
+
+def set_issue_details(token, repo_name, issue_number, milestone_number=None, assignees=[], verbose=False, dryrun=False):
+    patch_data = {}
+    if milestone_number:
+        patch_data['milestone'] = milestone_number
+    if len(assignees) > 0:
+        patch_data['assignees'] = assignees
+    # TODO: error if no keys in patch_data
+
+    # add milestone and assignee to issue / pull request
+    # for more info see: https://developer.github.com/v3/issues/#edit-an-issue
+    if dryrun:
+        print('[INFO] would call `repo.issues(' + str(issue_number) + ').patch(' + str(patch_data) + ')`')
+        return
+    repo = GitHub(token).repos(repo_name)
+    response = repo.issues(issue_number).patch(data=patch_data)
+    if verbose:
+        print('repo.issues(' + str(issue_number) + ').patch(data) response:\n' + str(response))
+
+
+def fetch_origin_check_staged(path):
+    """given a path on disk (to a git repo), fetch origin and ensure there aren't unstaged files"""
+    with scoped_cwd(path):
+        execute(['git', 'fetch', 'origin'])
+        status = execute(['git', 'status', '-s']).strip()
+        if len(status) > 0:
+            print('[ERROR] There appear to be unstaged changes.\n' +
+                  'Please resolve these before running (ex: `git status`).')
+            return 1
+    return 0
+
+
+def push_branches_to_remote(path, branches_to_push, dryrun=False):
+    if dryrun:
+        print('[INFO] would push the following local branches to remote: ' + str(branches_to_push))
+    else:
+        with scoped_cwd(path):
+            for branch_to_push in branches_to_push:
+                print('- pushing ' + branch_to_push + '...')
+                # TODO: if they already exist, force push?? or error??
+                execute(['git', 'push', '-u', 'origin', branch_to_push])
