@@ -12,7 +12,9 @@ class BraveContentUtilityClient : public ChromeContentUtilityClient {
   BraveContentUtilityClient();
   ~BraveContentUtilityClient() override;
 
-  void RegisterServices(StaticServiceMap* services) override;
+  bool HandleServiceRequest(
+      const std::string& service_name,
+      service_manager::mojom::ServiceRequest request) override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentUtilityClient);

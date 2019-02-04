@@ -11,16 +11,14 @@
 #include "mojo/public/cpp/bindings/binding_set.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
 #include "services/service_manager/public/cpp/service.h"
-#include "services/service_manager/public/cpp/service_context.h"
-#include "services/service_manager/public/cpp/service_context_ref.h"
+#include "services/service_manager/public/cpp/service_binding.h"
+#include "services/service_manager/public/cpp/service_keepalive.h"
 
 namespace bat_ads {
 
 class BatAdsApp : public service_manager::Service {
  public:
-  static std::unique_ptr<service_manager::Service> CreateService();
-
-  BatAdsApp();
+  BatAdsApp(service_manager::mojom::ServiceRequest request);
   ~BatAdsApp() override;
 
  private:
@@ -30,7 +28,8 @@ class BatAdsApp : public service_manager::Service {
                        const std::string& interface_name,
                        mojo::ScopedMessagePipeHandle interface_pipe) override;
 
-  std::unique_ptr<service_manager::ServiceContextRefFactory> ref_factory_;
+  service_manager::ServiceBinding service_binding_;
+  service_manager::ServiceKeepalive service_keepalive_;
   service_manager::BinderRegistry registry_;
   mojo::BindingSet<mojom::BatAdsService> bindings_;
 

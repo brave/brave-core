@@ -27,6 +27,8 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
+#include "brave/components/services/brave_content_browser_manifest_overlay.h"
+#include "brave/components/services/brave_content_packaged_services_manifest_overlay.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/extensions/chrome_content_browser_client_extensions_part.h"
@@ -34,6 +36,7 @@
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "content/browser/frame_host/render_frame_host_impl.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -42,9 +45,8 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/common/service_names.mojom.h"
 #include "extensions/buildflags/buildflags.h"
-#include "services/service_manager/embedder/manifest_utils.h"
+#include "services/service_manager/public/cpp/manifest_builder.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/base/resource/resource_bundle.h"
 
 using content::BrowserThread;
 using content::ContentBrowserClient;
@@ -254,29 +256,15 @@ BraveContentBrowserClient::GetNavigationUIData(
   return std::move(navigation_ui_data);
 }
 
-std::unique_ptr<base::Value>
+base::Optional<service_manager::Manifest>
 BraveContentBrowserClient::GetServiceManifestOverlay(base::StringPiece name) {
-  auto chrome_overlay =
-    ChromeContentBrowserClient::GetServiceManifestOverlay(name);
-
-  ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
-  int id = -1;
-  if (name == content::mojom::kBrowserServiceName)
-    id = IDR_BRAVE_CONTENT_BROWSER_MANIFEST_OVERLAY;
-  else if (name == content::mojom::kPackagedServicesServiceName)
-    id = IDR_BRAVE_CONTENT_PACKAGED_SERVICES_MANIFEST_OVERLAY;
-  else
-    return chrome_overlay;
-
-  base::StringPiece manifest_contents =
-      rb.GetRawDataResourceForScale(id, ui::ScaleFactor::SCALE_FACTOR_NONE);
-
-  auto brave_overlay = base::JSONReader::Read(manifest_contents);
-
-  service_manager::MergeManifestWithOverlay(brave_overlay.get(),
-                                            chrome_overlay.get());
-
-  return brave_overlay;
+  auto manifest = ChromeContentBrowserClient::GetServiceManifestOverlay(name);
+  if (name == content::mojom::kBrowserServiceName) {
+    manifest->Amend(brave_content_browser_manifest_overlay::GetManifest());
+  } else if (name == content::mojom::kPackagedServicesServiceName) {
+    manifest->Amend(brave_content_packaged_services_manifest_overlay::GetManifest());
+  }
+  return manifest;
 }
 
 void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(

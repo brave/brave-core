@@ -19,31 +19,73 @@
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #endif
 
+#include "content/public/utility/utility_thread.h"
+
 BraveContentUtilityClient::BraveContentUtilityClient()
     : ChromeContentUtilityClient() {}
 
 BraveContentUtilityClient::~BraveContentUtilityClient() = default;
 
-void BraveContentUtilityClient::RegisterServices(
-    ChromeContentUtilityClient::StaticServiceMap* services) {
-  ChromeContentUtilityClient::RegisterServices(services);
+namespace {
 
-  service_manager::EmbeddedServiceInfo tor_launcher_info;
-  tor_launcher_info.factory = base::BindRepeating(
-      &tor::TorLauncherService::CreateService);
-  services->emplace(tor::mojom::kTorLauncherServiceName, tor_launcher_info);
+void RunServiceAsyncThenTerminateProcess(
+    std::unique_ptr<service_manager::Service> service) {
+  service_manager::Service::RunAsyncUntilTermination(
+      std::move(service),
+      base::BindOnce([] { content::UtilityThread::Get()->ReleaseProcess(); }));
+}
+
+std::unique_ptr<service_manager::Service> CreateTorLauncherService(
+    service_manager::mojom::ServiceRequest request) {
+  return std::make_unique<tor::TorLauncherService>(
+      std::move(request));
+}
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-  service_manager::EmbeddedServiceInfo bat_ads_service;
-  bat_ads_service.factory = base::BindRepeating(
-      &bat_ads::BatAdsApp::CreateService);
-  services->emplace(bat_ads::mojom::kServiceName, bat_ads_service);
+std::unique_ptr<service_manager::Service> CreateBatAdsService(
+    service_manager::mojom::ServiceRequest request) {
+  return std::make_unique<bat_ads::BatAdsApp>(
+      std::move(request));
+}
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  service_manager::EmbeddedServiceInfo bat_ledger_info;
-  bat_ledger_info.factory = base::BindRepeating(
-    &bat_ledger::BatLedgerApp::CreateService);
-  services->emplace(bat_ledger::mojom::kServiceName, bat_ledger_info);
-#endif
+std::unique_ptr<service_manager::Service> CreateBatLedgerService(
+    service_manager::mojom::ServiceRequest request) {
+  return std::make_unique<bat_ledger::BatLedgerApp>(
+      std::move(request));
 }
+#endif
+
+}  // namespace
+
+bool BraveContentUtilityClient::HandleServiceRequest(
+    const std::string& service_name,
+    service_manager::mojom::ServiceRequest request) {
+
+  if (service_name == tor::mojom::kTorLauncherServiceName) {
+    RunServiceAsyncThenTerminateProcess(
+        CreateTorLauncherService(std::move(request)));
+    return true;
+  }
+
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+  if (service_name == bat_ads::mojom::kServiceName) {
+    RunServiceAsyncThenTerminateProcess(
+        CreateBatAdsService(std::move(request)));
+    return true;
+  }
+#endif
+
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  if (service_name == bat_ledger::mojom::kServiceName) {
+    RunServiceAsyncThenTerminateProcess(
+        CreateBatLedgerService(std::move(request)));
+    return true;
+  }
+#endif
+
+  return ChromeContentUtilityClient::HandleServiceRequest(
+      service_name, std::move(request));
+}
+
