@@ -85,7 +85,7 @@ window.cr.define('brave_rewards', function () {
     getActions().onReconcileStamp(stamp)
   }
 
-  function addresses (addresses: Record<string, string>) {
+  function addresses (addresses: Record<Rewards.AddressesType, string>) {
     getActions().onAddresses(addresses)
   }
 
@@ -143,6 +143,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onRewardsEnabled(enabled)
   }
 
+  function addressesForPaymentId (addresses: Record<Rewards.AddressesType, string>) {
+    getActions().onAddressesForPaymentId(addresses)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -167,7 +171,8 @@ window.cr.define('brave_rewards', function () {
     adsData,
     pendingContributionTotal,
     onPendingContributionSaved,
-    rewardsEnabled
+    rewardsEnabled,
+    addressesForPaymentId
   }
 })
 

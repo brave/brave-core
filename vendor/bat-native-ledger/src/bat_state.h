@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <string>
+#include <map>
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -143,6 +144,8 @@ class BatState {
   const braveledger_bat_helper::CurrentReconciles& GetCurrentReconciles() const;
 
   double GetDefaultContributionAmount();
+
+  void SetAddress(std::map<std::string, std::string> addresses);
 
  private:
   void SaveState();

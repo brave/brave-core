@@ -85,7 +85,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void SetBackupCompleted(const base::ListValue* args);
   void OnGetWalletPassphrase(const std::string& pass);
   void OnGetContributionAmount(double amount);
-  void OnGetAddresses(const std::map<std::string, std::string>& addresses);
+  void OnGetAddresses(const std::string func_name,
+                      const std::map<std::string, std::string>& addresses);
   void OnGetNumExcludedSites(const std::string& publisher_id, uint32_t num);
   void OnGetAutoContributeProps(
       int error_code,
@@ -97,6 +98,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnIsWalletCreated(bool created);
   void GetPendingContributionsTotal(const base::ListValue* args);
   void OnGetPendingContributionsTotal(double amount);
+  void GetAddressesForPaymentId(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -243,6 +245,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getPendingContributionsTotal",
                                     base::BindRepeating(&RewardsDOMHandler::GetPendingContributionsTotal,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getAddressesForPaymentId",
+                                    base::BindRepeating(&RewardsDOMHandler::GetAddressesForPaymentId,
                                                         base::Unretained(this)));
 }
 
@@ -530,22 +535,26 @@ void RewardsDOMHandler::GetReconcileStamp(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnGetAddresses(
+    const std::string func_name,
     const std::map<std::string, std::string>& addresses) {
-  if (web_ui()->CanCallJavascript()) {
+  if (web_ui()->CanCallJavascript() && (
+      func_name == "addresses" || func_name == "addressesForPaymentId")) {
     base::DictionaryValue data;
     data.SetString("BAT", addresses.at("BAT"));
     data.SetString("BTC", addresses.at("BTC"));
     data.SetString("ETH", addresses.at("ETH"));
     data.SetString("LTC", addresses.at("LTC"));
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.addresses", data);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards." + func_name, data);
   }
 }
 
 void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
   if (rewards_service_)
     rewards_service_->GetAddresses(base::Bind(
-          &RewardsDOMHandler::OnGetAddresses, weak_factory_.GetWeakPtr()));
+          &RewardsDOMHandler::OnGetAddresses,
+          weak_factory_.GetWeakPtr(),
+          "addresses"));
 }
 
 void RewardsDOMHandler::OnAutoContributePropsReady(
@@ -890,6 +899,16 @@ void RewardsDOMHandler::OnRewardsMainEnabled(
   if (web_ui()->CanCallJavascript()) {
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.rewardsEnabled",
         base::Value(rewards_main_enabled));
+  }
+}
+
+void RewardsDOMHandler::GetAddressesForPaymentId(
+    const base::ListValue* args) {
+  if (rewards_service_) {
+    rewards_service_->GetAddressesForPaymentId(base::Bind(
+          &RewardsDOMHandler::OnGetAddresses,
+          weak_factory_.GetWeakPtr(),
+          "addressesForPaymentId"));
   }
 }
 

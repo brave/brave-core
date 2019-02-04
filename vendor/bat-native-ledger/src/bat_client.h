@@ -9,6 +9,7 @@
 #include <vector>
 #include <mutex>
 
+#include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat_helper.h"
@@ -44,6 +45,8 @@ class BatClient {
       ledger::Result result,
       const std::string& data);
 
+  void GetAddressesForPaymentId(ledger::WalletAddressesCallback callback);
+
  private:
   void getGrantCaptchaCallback(bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
@@ -56,6 +59,12 @@ class BatClient {
   void recoverWalletCallback(bool result, const std::string& response,
       const std::map<std::string, std::string>& headers, const std::string& paymentId);
   std::string getAnonizeProof(const std::string& registrarVK, const std::string& id, std::string& preFlight);
+
+  void GetAddressesForPaymentIdCallback(
+    bool success,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    ledger::WalletAddressesCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
