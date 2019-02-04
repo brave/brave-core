@@ -209,7 +209,7 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertEqual(object.url, url)
         
         backgroundSaveAndWaitForExpectation {
-            object.update(customTitle: newCustomTitle, url: newUrl, save: true)
+            object.update(customTitle: newCustomTitle, url: newUrl)
         }
         DataController.viewContext.refreshAllObjects()
         
@@ -233,7 +233,7 @@ class BookmarkTests: CoreDataTestCase {
         let object = createAndWait(url: URL(string: url), title: "title", customTitle: customTitle)
         XCTAssertEqual(Bookmark.getAllBookmarks(context: context).count, 1)
         
-        object.update(customTitle: customTitle, url: object.url, save: true)
+        object.update(customTitle: customTitle, url: object.url)
         sleep(UInt32(1))
         
         // Make sure not any new record was added to DB
@@ -255,7 +255,7 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertNotNil(object.domain)
         
         backgroundSaveAndWaitForExpectation {
-            object.update(customTitle: customTitle, url: badUrl, save: true)
+            object.update(customTitle: customTitle, url: badUrl)
         }
         DataController.viewContext.refreshAllObjects()
         
@@ -275,7 +275,7 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertEqual(object.displayTitle, customTitle)
         
         backgroundSaveAndWaitForExpectation {
-            object.update(customTitle: newCustomTitle, url: nil, save: true)
+            object.update(customTitle: newCustomTitle, url: nil)
         }
         DataController.viewContext.refreshAllObjects()
         
@@ -404,7 +404,8 @@ class BookmarkTests: CoreDataTestCase {
         bookmark.site = site
         
         backgroundSaveAndWaitForExpectation {
-            Bookmark.add(rootObject: bookmark, save: true, sendToSync: true, context: DataController.newBackgroundContext())
+            Bookmark.createResolvedRecord(rootObject: bookmark, save: true,
+                                          context: DataController.newBackgroundContext())
         }
         
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
@@ -433,7 +434,7 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertNotEqual(object.url, newUrl)
         
         // No CD autosave, see the method internals.
-        object.update(syncRecord: syncBookmark)
+        object.updateResolvedRecord(syncBookmark)
         DataController.viewContext.refreshAllObjects()
         
         XCTAssertEqual(object.title, newTitle)

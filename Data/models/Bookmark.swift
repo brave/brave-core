@@ -64,10 +64,6 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         lastVisited = created
     }
     
-    public func asDictionary(deviceId: [Int]?, action: Int?) -> [String: Any] {
-        return SyncBookmark(record: self, deviceId: deviceId, action: action).dictionaryRepresentation()
-    }
-    
     public class func frc(forFavorites: Bool = false, parentFolder: Bookmark?) -> NSFetchedResultsController<Bookmark> {
         let context = DataController.viewContext
         let fetchRequest = NSFetchRequest<Bookmark>()
@@ -86,19 +82,8 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
                                           sectionNameKeyPath: nil, cacheName: nil)
     }
     
-    // Syncable
-    public func update(syncRecord record: SyncRecord?) {
-        guard let bookmark = record as? SyncBookmark, let site = bookmark.site else { return }
-        title = site.title
-        update(customTitle: site.customTitle, url: site.location, newSyncOrder: bookmark.syncOrder)
-        lastVisited = Date(timeIntervalSince1970: (Double(site.lastAccessedTime ?? 0) / 1000.0))
-        syncParentUUID = bookmark.parentFolderObjectId
-        created = record?.syncNativeTimestamp
-        // No auto-save, must be handled by caller if desired
-    }
-    
-    public func update(customTitle: String?, url: String?, newSyncOrder: String? = nil, save: Bool = false,
-                       sendToSync: Bool = false) {
+    public func update(customTitle: String?, url: String?, newSyncOrder: String? = nil, save: Bool = true,
+                       sendToSync: Bool = true) {
         var contextToUpdate: NSManagedObjectContext?
         
         // Syncable.update() doesn't save to CD at the moment, we need to use managedObjectContext here.
@@ -150,25 +135,12 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         }
     }
     
-    public static func add(rootObject root: SyncRecord?, save: Bool, sendToSync: Bool, context: NSManagedObjectContext) -> Syncable? {
-        add(rootObject: root as? SyncBookmark,
-            save: save,
-            sendToSync: sendToSync,
-            parentFolder: nil,
-            context: context)
-        
-        // TODO: Saving is done asynchronously, we should return a completion handler.
-        // Will probably need a refactor in Syncable protocol.
-        // As for now, the return value for adding bookmark is never used.
-        return nil
-    }
-    
     // Should not be used for updating, modify to increase protection
-    class func add(rootObject root: SyncBookmark?,
-                   save: Bool = false,
-                   sendToSync: Bool = false,
-                   parentFolder: Bookmark? = nil,
-                   context: NSManagedObjectContext = DataController.newBackgroundContext()) -> Bookmark? {
+    private class func add(rootObject root: SyncBookmark?,
+                           save: Bool = true,
+                           sendToSync: Bool = true,
+                           parentFolder: Bookmark? = nil,
+                           context: NSManagedObjectContext = DataController.newBackgroundContext()) -> Bookmark? {
         
         let bookmark = root
         let site = bookmark?.site
@@ -284,7 +256,8 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         bookmark.parentFolderObjectId = parentFolder?.syncUUID
         bookmark.site = site
         
-        _ = add(rootObject: bookmark, save: save, sendToSync: true, parentFolder: parentFolder, context: context ?? DataController.newBackgroundContext())
+        _ = add(rootObject: bookmark, save: save, parentFolder: parentFolder,
+                context: context ?? DataController.newBackgroundContext())
     }
     
     public class func contains(url: URL, getFavorites: Bool = false) -> Bool {
@@ -411,24 +384,36 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         // bookmark.parentFolderObjectId = [parentFolder]
         bookmark.site = site
         
-        return self.add(rootObject: bookmark, save: true)
+        return self.add(rootObject: bookmark)
     }
     
-    public func remove(sendToSync: Bool = true) {
-        if isFavorite { delete() }
-        
-        // Before we delete a folder and its children, we need to grab all children bookmarks
-        // and send them to sync with `delete` action.
-        if isFolder && sendToSync {
-            removeFolderAndSendSyncRecords(uuid: syncUUID)
-            return
+    public func delete(sendToSync: Bool = true) {
+        func deleteFromStore() {
+            let context = DataController.newBackgroundContext()
+            
+            do {
+                let objectOnContext = try context.existingObject(with: self.objectID)
+                context.delete(objectOnContext)
+                
+                DataController.save(context: context)
+            } catch {
+                log.warning("Could not find object: \(self) on a background context.")
+            }
         }
+        
+        if isFavorite { deleteFromStore() }
         
         if sendToSync {
-            Sync.shared.sendSyncRecords(action: .delete, records: [self])
+            // Before we delete a folder and its children, we need to grab all children bookmarks
+            // and send them to sync with `delete` action.
+            if isFolder {
+                removeFolderAndSendSyncRecords(uuid: syncUUID)
+            } else {
+                Sync.shared.sendSyncRecords(action: .delete, records: [self])
+            }
         }
         
-        delete()
+        deleteFromStore()
     }
     
     /// Removes a single Bookmark of a given URL.
@@ -438,7 +423,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         let predicate = isFavoriteOrBookmarkByUrlPredicate(url: url, getFavorites: false)
         
         let record = first(where: predicate, context: context)
-        record?.remove()
+        record?.delete()
     }
     
     private func removeFolderAndSendSyncRecords(uuid: [Int]?) {
@@ -454,8 +439,6 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         }
         
         Sync.shared.sendSyncRecords(action: .delete, records: allBookmarks)
-        
-        delete()
     }
 }
 
@@ -568,6 +551,42 @@ extension Bookmark {
     }
 }
 
+
+// MARK: - Syncable methods
+extension Bookmark {
+    public static func createResolvedRecord(rootObject root: SyncRecord?, save: Bool,
+                                            context: NSManagedObjectContext) {
+        add(rootObject: root as? SyncBookmark,
+            save: save,
+            sendToSync: false,
+            context: context)
+        
+        // TODO: Saving is done asynchronously, we should return a completion handler.
+        // Will probably need a refactor in Syncable protocol.
+        // As for now, the return value for adding bookmark is never used.
+    }
+
+    public func updateResolvedRecord(_ record: SyncRecord?) {
+        guard let bookmark = record as? SyncBookmark, let site = bookmark.site else { return }
+        title = site.title
+        update(customTitle: site.customTitle, url: site.location,
+               newSyncOrder: bookmark.syncOrder, save: false, sendToSync: false)
+        lastVisited = Date(timeIntervalSince1970: (Double(site.lastAccessedTime ?? 0) / 1000.0))
+        syncParentUUID = bookmark.parentFolderObjectId
+        created = record?.syncNativeTimestamp
+        // No auto-save, must be handled by caller if desired
+    }
+    
+    public func deleteResolvedRecord() {
+        delete(sendToSync: false)
+    }
+    
+    public func asDictionary(deviceId: [Int]?, action: Int?) -> [String: Any] {
+        return SyncBookmark(record: self, deviceId: deviceId, action: action).dictionaryRepresentation()
+    }
+}
+
+// MARK: - Comparable
 extension Bookmark: Comparable {
     // Please note that for equality check `syncUUID` is used
     // but for checking if a Bookmark is less/greater than another Bookmark we check using `syncOrder`

@@ -17,11 +17,11 @@ public protocol Syncable: class /* where Self: NSManagedObject */ {
     
     func asDictionary(deviceId: [Int]?, action: Int?) -> [String: Any]
     
-    func update(syncRecord record: SyncRecord?)
-    
-    @discardableResult static func add(rootObject root: SyncRecord?, save: Bool, sendToSync: Bool, context: NSManagedObjectContext) -> Syncable?
-    
-    func remove(sendToSync: Bool)
+    // The most important difference between these methods and regular CRUD operations is that
+    // resolved records from sync should be never sent back to the sync server.
+    static func createResolvedRecord(rootObject root: SyncRecord?, save: Bool, context: NSManagedObjectContext)
+    func updateResolvedRecord(_ record: SyncRecord?)
+    func deleteResolvedRecord()
 }
 
 extension Syncable {
@@ -93,23 +93,6 @@ extension Syncable {
         }
         
         return nil
-    }
-}
-
-extension Syncable /* where Self: NSManagedObject */ {
-    public func remove(sendToSync: Bool = true) {
-        
-        // This is r annoying, and can be fixed in Swift 4, but since objects can't be cast to a class & protocol,
-        //  but given extension on Syncable, if this passes the object is both Syncable and an NSManagedObject subclass
-        guard let s = self as? NSManagedObject, let context = s.managedObjectContext else { return }
-        
-        if sendToSync {
-            Sync.shared.sendSyncRecords(action: .delete, records: [self])
-        }
-        
-        // Should actually delay, and wait for server to refetch records to confirm deletion.
-        // Force a sync resync instead, should not be slow
-        context.delete(s)
     }
 }
 
