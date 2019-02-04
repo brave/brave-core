@@ -95,6 +95,7 @@ class RewardsServiceImpl : public RewardsService,
       uint64_t min_visit_time,
       uint64_t reconcile_stamp,
       bool allow_non_verified,
+      uint32_t min_visits,
       const GetContentSiteListCallback& callback) override;
   void OnGetContentSiteList(
     const GetContentSiteListCallback& callback,
