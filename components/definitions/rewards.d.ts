@@ -56,6 +56,7 @@ declare namespace Rewards {
       addressCheck: boolean
       emptyWallet: boolean
       modalBackup: boolean
+      paymentIdCheck: boolean
       walletRecoverySuccess: boolean | null
       walletServerProblem: boolean
       walletCorrupted: boolean

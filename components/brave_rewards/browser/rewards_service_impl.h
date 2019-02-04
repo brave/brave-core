@@ -180,6 +180,8 @@ class RewardsServiceImpl : public RewardsService,
   void GetRewardsMainEnabled(
     const GetRewardsMainEnabledCallback& callback) const override;
 
+  void GetAddressesForPaymentId(const GetAddressesCallback& callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
 
