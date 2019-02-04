@@ -788,7 +788,10 @@ void AdsServiceImpl::OpenSettings(Profile* profile,
 #if defined(OS_ANDROID)
   NavigateParams nav_params(profile, url, ui::PAGE_TRANSITION_LINK);
 #else
-  Browser* browser = chrome::FindLastActiveWithProfile(profile);
+  Browser* browser = chrome::FindTabbedBrowser(profile, false);
+  if (!browser)
+    browser = new Browser(Browser::CreateParams(profile, true));
+
   NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
 #endif
   nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
