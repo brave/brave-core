@@ -64,7 +64,7 @@ class BookmarkEditingViewController: FormViewController {
       block(self)
     }
     
-    self.bookmark.update(customTitle: self.titleRow?.value, url: self.urlRow?.value?.absoluteString, save: true, sendToSync: true)
+    self.bookmark.update(customTitle: self.titleRow?.value, url: self.urlRow?.value?.absoluteString)
   }
   
   var isEditingFolder: Bool {
@@ -247,7 +247,7 @@ class BookmarksViewController: SiteTableViewController {
     }
     
     // TODO: Needs to be recursive
-    currentFolder.remove()
+    currentFolder.delete()
     
     self.navigationController?.popViewController(animated: true)
   }
@@ -435,12 +435,12 @@ class BookmarksViewController: SiteTableViewController {
         let alert = UIAlertController(title: Strings.DeleteBookmarksFolderAlertTitle, message: Strings.DeleteBookmarksFolderAlertMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel))
         alert.addAction(UIAlertAction(title: Strings.YesDeleteButtonTitle, style: .destructive) { _ in
-          item.remove()
+          item.delete()
         })
         
         self.present(alert, animated: true, completion: nil)
       } else {
-        item.remove()
+        item.delete()
       }
     })
     

@@ -51,7 +51,7 @@ class FavoriteTests: CoreDataTestCase {
         XCTAssertEqual(object.url, url)
         
         backgroundSaveAndWaitForExpectation {
-            object.update(customTitle: nil, url: newUrl, save: true)
+            object.update(customTitle: nil, url: newUrl)
         }
         // Make sure only one record was added to DB
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
@@ -71,7 +71,7 @@ class FavoriteTests: CoreDataTestCase {
         XCTAssertEqual(object.url, url)
         
         backgroundSaveAndWaitForExpectation {
-            object.update(customTitle: newTitle, url: nil, save: true)
+            object.update(customTitle: newTitle, url: nil)
         }
         // Make sure only one record was added to DB
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)

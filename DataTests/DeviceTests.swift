@@ -52,8 +52,7 @@ class DeviceTests: CoreDataTestCase {
     func testAddWithSave() {
         let context = DataController.newBackgroundContext()
         backgroundSaveAndWaitForExpectation {
-            let device = Device.add(rootObject: nil, save: true, sendToSync: false, context: context) as? Device
-            XCTAssertNotNil(device)
+            Device.createResolvedRecord(rootObject: nil, save: true, context: context)
         }
         
         XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
@@ -61,19 +60,20 @@ class DeviceTests: CoreDataTestCase {
     
     func testUniqueSyncUUID() {
         let context = DataController.newBackgroundContext()
-        var device: Device!
+        
         XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 0)
         backgroundSaveAndWaitForExpectation {
-            device = Device.add(rootObject: nil, save: true, sendToSync: false, context: context) as? Device
-            XCTAssertNotNil(device)
+            Device.createResolvedRecord(rootObject: nil, save: true, context: context)
         }
         XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
         
+        let device = try! DataController.viewContext.fetch(fetchRequest).first
+        
         let root = SyncDevice()
-        root.objectId = device.syncUUID
+        root.objectId = device?.syncUUID
         
         backgroundSaveAndWaitForExpectation {
-            _ = Device.add(rootObject: root, save: true, sendToSync: false, context: context) as? Device
+            Device.createResolvedRecord(rootObject: root, save: true, context: context)
         }
         
         XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
@@ -97,7 +97,7 @@ class DeviceTests: CoreDataTestCase {
         XCTAssertNotEqual(device?.deviceId, newDeviceId)
         
         // No CD save
-        device?.update(syncRecord: root)
+        device?.updateResolvedRecord(root)
         
         XCTAssertEqual(device?.name, newName)
         XCTAssertEqual(device?.deviceId, newDeviceId)

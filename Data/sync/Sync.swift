@@ -457,7 +457,7 @@ extension Sync {
                 
                 var action = SyncActions(rawValue: fetchedRoot.action ?? -1)
                 if action == SyncActions.delete {
-                    clientRecord?.remove(sendToSync: false)
+                    clientRecord?.deleteResolvedRecord()
                 } else if action == SyncActions.create {
                     
                     if clientRecord != nil {
@@ -468,7 +468,7 @@ extension Sync {
                     
                     // TODO: Needs favicon
                     if clientRecord == nil {
-                        _ = recordType.coredataModelType?.add(rootObject: fetchedRoot, save: false, sendToSync: false, context: context)
+                        _ = recordType.coredataModelType?.createResolvedRecord(rootObject: fetchedRoot, save: false, context: context)
                     } else {
                         // TODO: use Switch with `fallthrough`
                         action = .update
@@ -477,7 +477,7 @@ extension Sync {
                 
                 // Handled outside of else block since .create, can modify to an .update
                 if action == .update {
-                    clientRecord?.update(syncRecord: fetchedRoot)
+                    clientRecord?.updateResolvedRecord(fetchedRoot)
                 }
             }
             
