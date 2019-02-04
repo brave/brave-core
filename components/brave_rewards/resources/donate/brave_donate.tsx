@@ -31,22 +31,23 @@ window.cr.define('brave_rewards_donate', function () {
       initLocale(window.loadTimeData.data_)
     }
 
-    render(
-      <Provider store={store}>
-        <ThemeProvider theme={Theme}>
-          <App />
-        </ThemeProvider>
-      </Provider>,
-      document.getElementById('root'))
-
-    // TODO call rewards service to get dialog data
     const dialogArgsRaw = chrome.getVariableValue('dialogArguments')
+    let publisherKey
     try {
       const args = JSON.parse(dialogArgsRaw)
       chrome.send('brave_rewards_donate.getPublisherBanner', [args.publisherKey])
+      publisherKey = args.publisherKey
     } catch (e) {
       console.error('Error parsing incoming dialog args', dialogArgsRaw, e)
     }
+
+    render(
+      <Provider store={store}>
+        <ThemeProvider theme={Theme}>
+          <App publisherKey={publisherKey} />
+        </ThemeProvider>
+      </Provider>,
+      document.getElementById('root'))
   }
 
   function getActions () {

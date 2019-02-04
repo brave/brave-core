@@ -1,6 +1,6 @@
 declare namespace RewardsDonate {
   interface State {
-    publisher?: Publisher
+    publishers: Record<string, Publisher>
     walletInfo: WalletProperties
     finished: boolean
     error: boolean
