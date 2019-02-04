@@ -1526,6 +1526,15 @@ void BatContribution::AddRetry(
     reconcile = ledger_->GetReconcileById(viewing_id);
   }
 
+  // Don't retry one-time tip if in phase 1
+  if (GetRetryPhase(step) == 1 &&
+      reconcile.category_ == ledger::REWARDS_CATEGORY::DIRECT_DONATION) {
+    OnReconcileComplete(ledger::Result::TIP_ERROR,
+                        viewing_id,
+                        reconcile.category_);
+    return;
+  }
+
   uint64_t start_timer_in = GetRetryTimer(step, viewing_id, reconcile);
   bool success = ledger_->AddReconcileStep(viewing_id,
                                            reconcile.retry_step_,
