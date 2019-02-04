@@ -18,7 +18,7 @@ import {
 } from 'brave-ui/features/sync'
 
 // Icons
-import { LoaderIcon } from 'brave-ui/components/icons'
+import { LoaderIcon } from 'brave-ui/components/icon'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -101,7 +101,7 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, St
             </OneColumnButtonGrid>
             <Button
               level='primary'
-              type='warn'
+              type='destructive'
               size='medium'
               onClick={this.onClickConfirmRemoveDeviceButton}
               text={getLocale('remove')}

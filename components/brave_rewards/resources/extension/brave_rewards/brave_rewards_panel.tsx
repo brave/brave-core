@@ -7,8 +7,8 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Store } from 'react-chrome-redux'
 
-import Theme from 'brave-ui/theme/brave-default'
-import { ThemeProvider } from 'brave-ui/theme'
+import Theme from 'brave-ui/components/style/theme/default'
+import { ThemeProvider } from 'brave-ui/components/style/theme'
 import { initLocale } from 'brave-ui/helpers'
 require('emptykit.css')
 require('../../../../fonts/muli.css')

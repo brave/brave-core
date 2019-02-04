@@ -6,7 +6,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { torrentObj } from '../testData'
 import TorrentViewerHeader from '../../../brave_webtorrent/extension/components/torrentViewerHeader'
-import { TestThemeProvider } from 'brave-ui/theme'
+import { TestThemeProvider } from 'brave-ui/components/style/theme'
 
 describe('torrentViewerHeader component', () => {
   const startTorrentMock = jest.fn()

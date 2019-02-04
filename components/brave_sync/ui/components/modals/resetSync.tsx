@@ -19,7 +19,7 @@ import {
 } from 'brave-ui/features/sync'
 
 // Icons
-import { LoaderIcon } from 'brave-ui/components/icons'
+import { LoaderIcon } from 'brave-ui/components/icon'
 
 // Dialogs
 import AreYouSure from '../commonDialogs/areYouSure'
@@ -111,7 +111,7 @@ export default class ResetSyncModal extends React.PureComponent<Props, State> {
             </OneColumnButtonGrid>
             <Button
               level='primary'
-              type='warn'
+              type='destructive'
               size='medium'
               onClick={this.onClickResetSync}
               text={getLocale('remove')}

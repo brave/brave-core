@@ -6,7 +6,7 @@ import * as React from 'react'
 
 // Components
 import { Button, Modal } from 'brave-ui'
-import { LoaderIcon } from 'brave-ui/components/icons'
+import { LoaderIcon } from 'brave-ui/components/icon'
 
 // Feature-specific components
 import {

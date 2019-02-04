@@ -20,7 +20,7 @@ import {
 } from 'brave-ui/features/sync'
 
 // Icons
-import { LoaderIcon } from 'brave-ui/components/icons'
+import { LoaderIcon } from 'brave-ui/components/icon'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -103,27 +103,27 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
     return (
       <Modal id='enterSyncCodeModal' displayCloseButton={false} size='small'>
         {
-           syncData.error === 'ERR_SYNC_WRONG_WORDS'
-           ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
-               <Title>{getLocale('errorWrongCodeTitle')}</Title>
-               <SubTitle>{getLocale('errorWrongCodeDescription')}</SubTitle>
-           </AlertBox>
-           : null
+          syncData.error === 'ERR_SYNC_WRONG_WORDS'
+          ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
+              <Title>{getLocale('errorWrongCodeTitle')}</Title>
+              <SubTitle>{getLocale('errorWrongCodeDescription')}</SubTitle>
+          </AlertBox>
+          : null
         }
         {
-           syncData.error === 'ERR_SYNC_MISSING_WORDS'
-           ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
-               <Title>{getLocale('errorMissingCodeTitle')}</Title>
-           </AlertBox>
-           : null
+          syncData.error === 'ERR_SYNC_MISSING_WORDS'
+          ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
+              <Title>{getLocale('errorMissingCodeTitle')}</Title>
+          </AlertBox>
+          : null
         }
         {
-           syncData.error === 'ERR_SYNC_NO_INTERNET'
-           ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
-               <Title>{getLocale('errorNoInternetTitle')}</Title>
-               <SubTitle>{getLocale('errorNoInternetDescription')}</SubTitle>
-             </AlertBox>
-           : null
+          syncData.error === 'ERR_SYNC_NO_INTERNET'
+          ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
+              <Title>{getLocale('errorNoInternetTitle')}</Title>
+              <SubTitle>{getLocale('errorNoInternetDescription')}</SubTitle>
+            </AlertBox>
+          : null
         }
         {
           syncData.error === 'ERR_SYNC_INIT_FAILED'

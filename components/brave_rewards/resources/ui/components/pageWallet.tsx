@@ -14,7 +14,7 @@ import {
   WalletEmpty,
   WalletSummary
 } from 'brave-ui/features/rewards'
-import { WalletAddIcon } from 'brave-ui/components/icons'
+import { WalletAddIcon } from 'brave-ui/components/icon'
 import { AlertWallet } from 'brave-ui/features/rewards/walletWrapper'
 
 // Utils
@@ -230,8 +230,8 @@ class PageWallet extends React.Component<Props, State> {
         node: (
           <>
             <b>{getLocale('uhOh')}</b> {getLocale('walletCorrupted')} <a href={'#'} style={{ 'color': '#838391' }} onClick={this.onModalBackupOpen}>
-               {getLocale('walletCorruptedNow')}
-             </a>
+              {getLocale('walletCorruptedNow')}
+            </a>
           </>
         ),
         type: 'error'

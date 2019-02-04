@@ -6,8 +6,8 @@ import * as React from 'react'
 
 // Components
 import { Button, AlertBox } from 'brave-ui'
-import { CloseCircleIcon } from 'brave-ui/components/icons'
-import Table, { Cell, Row } from 'brave-ui/components/dataTables/table'
+import { CloseCircleIcon } from 'brave-ui/components/icon'
+import Table, { Cell, Row } from 'brave-ui/components/table/table'
 import { Toggle } from 'brave-ui/features/shields'
 
 // Feature-specific components

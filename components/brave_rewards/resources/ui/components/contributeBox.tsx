@@ -7,8 +7,8 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { Checkbox, Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
-import { Box, TableContribute, DisabledContent, List, ModalContribute, Tokens, NextContribution } from 'brave-ui/features/rewards'
+import { Checkbox, Grid, Column, Select, ControlWrapper } from 'brave-ui'
+import { Box, TableContribute, DisabledContent, List, ModalContribute, Tokens, NextContribution } from 'brave-ui'
 import { Provider } from 'brave-ui/features/rewards/profile'
 
 // Utils

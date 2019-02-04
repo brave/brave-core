@@ -4,8 +4,8 @@
 
 import * as React from 'react'
 import { Table } from 'brave-ui/components'
-import { Cell, Row } from 'brave-ui/components/dataTables/table/index'
-import { LoaderIcon } from 'brave-ui/components/icons'
+import { Cell, Row } from 'brave-ui/components/table/table/index'
+import { LoaderIcon } from 'brave-ui/components/icon'
 
 // Constants
 import { File, TorrentObj } from '../constants/webtorrentState'

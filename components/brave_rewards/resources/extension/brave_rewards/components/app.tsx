@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import { DisabledPanel, PanelWelcome } from 'brave-ui/features/rewards'
+import { DisabledPanel, PanelWelcome } from 'brave-ui'
 
 // Components
 import Panel from './panel'

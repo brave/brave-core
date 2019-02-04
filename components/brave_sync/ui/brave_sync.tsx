@@ -11,8 +11,8 @@ import App from './components/app'
 
 // Utils
 import store from './store'
-import { ThemeProvider } from 'brave-ui/theme'
-import Theme from 'brave-ui/theme/brave-default'
+import { ThemeProvider } from 'brave-ui/components/style/theme'
+import Theme from 'brave-ui/components/style/theme/default'
 import { getActions as getUtilActions, setActions } from './helpers'
 import * as syncActions from './actions/sync_actions'
 import { bindActionCreators } from 'redux'

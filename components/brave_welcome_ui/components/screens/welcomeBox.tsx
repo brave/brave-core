@@ -9,7 +9,7 @@ import { Content, Title, Paragraph } from 'brave-ui/features/welcome'
 
 // Shared components
 import { Button } from 'brave-ui'
-import { ArrowRightIcon } from 'brave-ui/components/icons'
+import { ArrowRightIcon } from 'brave-ui/components/icon'
 
 // Images
 import { WelcomeLionImage } from 'brave-ui/features/welcome/images'

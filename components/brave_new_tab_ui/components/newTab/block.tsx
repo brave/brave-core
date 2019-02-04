@@ -20,7 +20,7 @@ import {
 import { Tile, TileActionsContainer, TileAction, TileFavicon } from 'brave-ui/features/newTab/default'
 
 // Icons
-import { PinIcon, BookmarkOIcon, BookmarkIcon, CloseStrokeIcon } from 'brave-ui/components/icons'
+import { PinIcon, BookmarkOIcon, BookmarkIcon, CloseStrokeIcon } from 'brave-ui/components/icon'
 
 const Types = {
   BLOCK: 'block'

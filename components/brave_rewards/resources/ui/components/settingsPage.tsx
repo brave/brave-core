@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { Column, Grid } from 'brave-ui/components'
+import { Column, Grid } from 'brave-ui'
 import { MainToggle, SettingsPage as Page } from 'brave-ui/features/rewards'
 import PageWallet from './pageWallet'
 import AdsBox from './adsBox'

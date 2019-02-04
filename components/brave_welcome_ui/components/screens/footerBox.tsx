@@ -15,7 +15,7 @@ import {
 } from 'brave-ui/features/welcome'
 
 // Shared components
-import { ArrowRightIcon } from 'brave-ui/components/icons'
+import { ArrowRightIcon } from 'brave-ui/components/icon'
 import { Button } from 'brave-ui'
 
 // Utils

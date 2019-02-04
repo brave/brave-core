@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { Button, Heading } from 'brave-ui/components'
+import { Button, Heading } from 'brave-ui'
 
 // Constants
 import { TorrentObj } from '../constants/webtorrentState'

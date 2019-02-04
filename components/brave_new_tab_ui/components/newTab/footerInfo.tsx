@@ -8,7 +8,7 @@ import * as React from 'react'
 import { Link, Navigation, IconLink, PhotoName } from 'brave-ui/features/newTab/default'
 
 // Icons
-import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon } from 'brave-ui/components/icons'
+import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon } from 'brave-ui/components/icon'
 
 // Helpers
 import { getLocale } from '../../../common/locale'
