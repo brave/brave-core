@@ -228,11 +228,12 @@ void BraveSyncServiceImpl::OnResetSync() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   auto sync_devices = sync_prefs_->GetSyncDevices();
-  // If there is only one or no devices left, we won't get back resolved sync
-  // record back.
-  if (sync_devices->size() <= 1)
+
+  if (sync_devices->size() == 0) {
+    // Fail safe option
+    VLOG(2) << "[Sync] " << __func__ << " unexpected zero device size";
     ResetSyncInternal();
-  else {
+  } else {
     // We have to send delete record and wait for library deleted response then
     // we can reset it by ResetInternal()
     const std::string device_id = sync_prefs_->GetThisDeviceId();
@@ -365,12 +366,20 @@ void BraveSyncServiceImpl::OnSaveInitData(const Uint8Array& seed,
 
   sync_words_.clear();
   DCHECK(!seed_str.empty());
-  if (prev_seed_str == seed_str) { // reconnecitng to previous sync chain
+
+  if (prev_seed_str == seed_str) { // reconnecting to previous sync chain
     sync_prefs_->SetPrevSeed(std::string());
   } else if (!prev_seed_str.empty()) { // connect/create to new sync chain
     bookmark_change_processor_->Reset(true);
     sync_prefs_->SetPrevSeed(std::string());
-  } // else {} no previous sync chain
+  } else {
+    // This is not required, because when there is no previous seed, bookmarks
+    // should not have a metadata. However, this is done by intention, to be
+    // a remedy for cases when sync had been reset and prev_seed_str had been
+    // cleared when it shouldn't (brave-browser#3188).
+    bookmark_change_processor_->Reset(true);
+  }
+
   sync_prefs_->SetSeed(seed_str);
   sync_prefs_->SetThisDeviceId(device_id_str);
 
@@ -492,10 +501,14 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records) {
 
   sync_prefs_->SetSyncDevices(*sync_devices);
 
-  if (this_device_deleted)
+  if (this_device_deleted) {
     ResetSyncInternal();
-  if (contains_only_one_device)
+  } else if (contains_only_one_device) {
+    // We see amount of devices had been decreased to 1 and it is not this
+    // device had been deleted. So call OnResetSync which will send DELETE
+    // record for this device
     OnResetSync();
+  }
 }
 
 void BraveSyncServiceImpl::OnSyncPrefsChanged(const std::string& pref) {
