@@ -214,9 +214,6 @@ const PrepopulatedEngine* GetLocalizedYahooEngineForCountryID(int country_id) {
     UNHANDLED_COUNTRY(W, F)  // Wallis and Futuna
     UNHANDLED_COUNTRY(Y, T)  // Mayotte
     return &yahoo_fr;
-    UNHANDLED_COUNTRY(G, R)  // Greece and countries that default to it
-    UNHANDLED_COUNTRY(C, Y)  // Cyprus
-    return &yahoo_gr;
     UNHANDLED_COUNTRY(H, K)  // Hong Kong
     return &yahoo_hk;
     UNHANDLED_COUNTRY(I, D)  // Indonesia
@@ -225,23 +222,6 @@ const PrepopulatedEngine* GetLocalizedYahooEngineForCountryID(int country_id) {
     return &yahoo_in;
     UNHANDLED_COUNTRY(J, P)  // Japan
     return &yahoo_jp;
-    UNHANDLED_COUNTRY(A, E)  // United Arab Emirates
-    UNHANDLED_COUNTRY(B, H)  // Bahrain
-    UNHANDLED_COUNTRY(D, Z)  // Algeria
-    UNHANDLED_COUNTRY(E, G)  // Egypt
-    UNHANDLED_COUNTRY(I, Q)  // Iraq
-    UNHANDLED_COUNTRY(J, O)  // Jordan
-    UNHANDLED_COUNTRY(K, W)  // Kuwait
-    UNHANDLED_COUNTRY(L, B)  // Lebanon
-    UNHANDLED_COUNTRY(L, Y)  // Libya
-    UNHANDLED_COUNTRY(M, A)  // Morocco
-    UNHANDLED_COUNTRY(O, M)  // Oman
-    UNHANDLED_COUNTRY(Q, A)  // Qatar
-    UNHANDLED_COUNTRY(S, A)  // Saudi Arabia
-    UNHANDLED_COUNTRY(S, Y)  // Syria
-    UNHANDLED_COUNTRY(T, N)  // Tunisia
-    UNHANDLED_COUNTRY(Y, E)  // Yemen
-    return &yahoo_maktoob;
     UNHANDLED_COUNTRY(M, X)  // Mexico
     return &yahoo_mx;
     UNHANDLED_COUNTRY(M, Y)  // Malaysia
@@ -259,8 +239,6 @@ const PrepopulatedEngine* GetLocalizedYahooEngineForCountryID(int country_id) {
     return &yahoo_pe;
     UNHANDLED_COUNTRY(P, H)  // Philippines
     return &yahoo_ph;
-    UNHANDLED_COUNTRY(R, O)  // Romania
-    return &yahoo_ro;
     UNHANDLED_COUNTRY(S, E)  // Sweden
     return &yahoo_se;
     UNHANDLED_COUNTRY(S, G)  // Singapore
