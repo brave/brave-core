@@ -10,9 +10,18 @@ from .config import get_raw_version
 BRAVE_REPO = "brave/brave-browser"
 
 
+def channels():
+    return ['nightly', 'dev', 'beta', 'release']
+
+
 def get_channel_display_name():
-    d = {'beta': 'Beta', 'canary': 'Canary', 'dev': 'Developer',
-         'release': 'Release'}
+    raw = channels()
+    d = {
+        'canary': 'Canary',
+        raw[1]: 'Developer',
+        raw[2]: 'Beta',
+        raw[3]: 'Release'
+    }
     return d[release_channel()]
 
 
