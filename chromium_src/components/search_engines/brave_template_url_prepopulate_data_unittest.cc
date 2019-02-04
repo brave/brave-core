@@ -12,6 +12,7 @@
 #include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/macros.h"
+#include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -89,7 +90,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
     -1
   };
 
-  for (size_t i = 0; i < arraysize(kCountryIds); ++i) {
+  for (size_t i = 0; i < base::size(kCountryIds); ++i) {
     prefs_.SetInteger(kCountryIDAtInstall, kCountryIds[i]);
     std::vector<std::unique_ptr<TemplateURLData>> urls =
         GetPrepopulatedEngines(&prefs_, nullptr);

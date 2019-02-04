@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "components/country_codes/country_codes.h"
 
@@ -393,16 +394,16 @@ GetBravePrepopulatedEnginesForCountryID(
   // Check for exceptions from the default list of engines
   if (country_codes::CountryCharsToCountryID('C', 'A') == country_id) {
     brave_engines = brave_engines_CA;
-    num_brave_engines = arraysize(brave_engines_CA);
+    num_brave_engines = base::size(brave_engines_CA);
   } else if (country_codes::CountryCharsToCountryID('D', 'E') == country_id) {
     brave_engines = brave_engines_DE;
-    num_brave_engines = arraysize(brave_engines_DE);
+    num_brave_engines = base::size(brave_engines_DE);
   } else if (country_codes::CountryCharsToCountryID('F', 'R') == country_id) {
     brave_engines = brave_engines_FR;
-    num_brave_engines = arraysize(brave_engines_FR);
+    num_brave_engines = base::size(brave_engines_FR);
   } else {
     brave_engines = brave_engines_default;
-    num_brave_engines = arraysize(brave_engines_default);
+    num_brave_engines = base::size(brave_engines_default);
   }
   DCHECK(brave_engines);
   DCHECK(num_brave_engines);

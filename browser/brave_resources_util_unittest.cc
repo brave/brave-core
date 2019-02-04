@@ -7,6 +7,7 @@
 #include <stddef.h>
 
 #include "base/macros.h"
+#include "base/stl_util.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -29,7 +30,7 @@ TEST(BraveResourcesUtil, CheckIds) {
     {"IDR_PRODUCT_LOGO_32_DEVELOPMENT", IDR_PRODUCT_LOGO_32_DEVELOPMENT},
   };
 
-  for (size_t i = 0; i < arraysize(kCases); ++i)
+  for (size_t i = 0; i < base::size(kCases); ++i)
     EXPECT_EQ(kCases[i].id, ResourcesUtil::GetThemeResourceId(kCases[i].name));
 }
 

@@ -6,6 +6,7 @@
 #include "../../../../../../chrome/browser/extensions/component_extensions_whitelist/whitelist.cc"
 #undef IsComponentExtensionWhitelisted
 
+#include "base/stl_util.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
@@ -23,7 +24,7 @@ namespace extensions {
       brave_webtorrent_extension_id
     };
 
-    for (size_t i = 0; i < arraysize(kAllowed); ++i) {
+    for (size_t i = 0; i < base::size(kAllowed); ++i) {
       if (extension_id == kAllowed[i])
         return true;
     }

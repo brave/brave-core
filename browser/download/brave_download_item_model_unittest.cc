@@ -12,6 +12,7 @@
 #include "base/i18n/rtl.h"
 #include "base/logging.h"
 #include "base/macros.h"
+#include "base/stl_util.h"
 #include "base/strings/string16.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -104,7 +105,7 @@ TEST_F(BraveDownloadItemModelTest, GetOriginUrlText) {
   };
 
   SetupDownloadItemDefaults();
-  for (unsigned i = 0; i < arraysize(kTestCases); ++i) {
+  for (unsigned i = 0; i < base::size(kTestCases); ++i) {
     const TestCase& test_case = kTestCases[i];
     EXPECT_CALL(item(), GetURL())
         .WillRepeatedly(ReturnRefOfCopy(GURL(test_case.url)));
@@ -135,7 +136,7 @@ TEST_F(BraveDownloadItemModelTest, GetTooltipText) {
           ui::ResourceBundle::BaseFont);
 
   SetupDownloadItemDefaults();
-  for (unsigned i = 0; i < arraysize(kTestCases); ++i) {
+  for (unsigned i = 0; i < base::size(kTestCases); ++i) {
     const TestCase& test_case = kTestCases[i];
     EXPECT_CALL(item(), GetURL())
         .WillRepeatedly(ReturnRefOfCopy(GURL(test_case.url)));

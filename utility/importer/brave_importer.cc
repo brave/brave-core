@@ -11,6 +11,7 @@
 
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
+#include "base/stl_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -712,7 +713,7 @@ bool CanImportURL(const GURL& url) {
     return false;
 
   const char* const kInvalidSchemes[] = {"about", "chrome-extension"};
-  for (size_t i = 0; i < arraysize(kInvalidSchemes); i++) {
+  for (size_t i = 0; i < base::size(kInvalidSchemes); i++) {
     if (url.SchemeIs(kInvalidSchemes[i]))
       return false;
   }

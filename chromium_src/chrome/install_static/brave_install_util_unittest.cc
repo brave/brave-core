@@ -9,6 +9,7 @@
 #include <tuple>
 
 #include "base/macros.h"
+#include "base/stl_util.h"
 #include "base/test/test_reg_util_win.h"
 #include "chrome/install_static/install_details.h"
 #include "chrome/install_static/install_modes.h"
@@ -362,7 +363,7 @@ TEST_P(InstallStaticUtilTest, GetChromeInstallSubDirectory) {
       L"BraveSoftware\\Brave-Browser-Development",
   };
 #endif
-  static_assert(arraysize(kInstallDirs) == NUM_INSTALL_MODES,
+  static_assert(base::size(kInstallDirs) == NUM_INSTALL_MODES,
                 "kInstallDirs out of date.");
   EXPECT_THAT(GetChromeInstallSubDirectory(),
               StrCaseEq(kInstallDirs[std::get<0>(GetParam())]));
@@ -385,7 +386,7 @@ TEST_P(InstallStaticUtilTest, GetRegistryPath) {
       L"Software\\BraveSoftware\\Brave-Browser-Development",
   };
 #endif
-  static_assert(arraysize(kRegistryPaths) == NUM_INSTALL_MODES,
+  static_assert(base::size(kRegistryPaths) == NUM_INSTALL_MODES,
                 "kRegistryPaths out of date.");
   EXPECT_THAT(GetRegistryPath(),
               StrCaseEq(kRegistryPaths[std::get<0>(GetParam())]));
@@ -413,7 +414,7 @@ TEST_P(InstallStaticUtilTest, GetUninstallRegistryPath) {
       L"BraveSoftware Brave-Browser-Development",
   };
 #endif
-  static_assert(arraysize(kUninstallRegistryPaths) == NUM_INSTALL_MODES,
+  static_assert(base::size(kUninstallRegistryPaths) == NUM_INSTALL_MODES,
                 "kUninstallRegistryPaths out of date.");
   EXPECT_THAT(GetUninstallRegistryPath(),
               StrCaseEq(kUninstallRegistryPaths[std::get<0>(GetParam())]));
@@ -435,7 +436,7 @@ TEST_P(InstallStaticUtilTest, GetAppGuid) {
       L"{CB2150F2-595F-4633-891A-E39720CE0531}",  // Brave-Browser-Dev.
       L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // Brave-Browser-Nightly.
   };
-  static_assert(arraysize(kAppGuids) == NUM_INSTALL_MODES,
+  static_assert(base::size(kAppGuids) == NUM_INSTALL_MODES,
                 "kAppGuids out of date.");
   EXPECT_THAT(GetAppGuid(), StrCaseEq(kAppGuids[std::get<0>(GetParam())]));
 #else
@@ -455,7 +456,7 @@ TEST_P(InstallStaticUtilTest, GetBaseAppId) {
       L"BraveDevelopment",
   };
 #endif
-  static_assert(arraysize(kBaseAppIds) == NUM_INSTALL_MODES,
+  static_assert(base::size(kBaseAppIds) == NUM_INSTALL_MODES,
                 "kBaseAppIds out of date.");
   EXPECT_THAT(GetBaseAppId(), StrCaseEq(kBaseAppIds[std::get<0>(GetParam())]));
 }
@@ -510,7 +511,7 @@ TEST_P(InstallStaticUtilTest, GetToastActivatorClsid) {
       L"{EB41C6E8-BA35-4C06-96E8-6F30F18CA55C}"  // Brave-Browser-Development.
   };
 #endif
-  static_assert(arraysize(kToastActivatorClsids) == NUM_INSTALL_MODES,
+  static_assert(base::size(kToastActivatorClsids) == NUM_INSTALL_MODES,
                 "kToastActivatorClsids out of date.");
 
   EXPECT_EQ(GetToastActivatorClsid(),
