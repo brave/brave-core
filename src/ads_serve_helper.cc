@@ -4,19 +4,16 @@
 
 #include "ads_serve_helper.h"
 #include "static_values.h"
-
-// Determines whether to use the staging or production Ad Serve
-// extern bool _is_production;
+#include "bat/confirmations/confirmations.h"
 
 namespace helper {
 
 std::string AdsServe::GetURL() {
-  // TODO(Terry Mancey): Fix extern bool
-  // if (_is_production) {
-  //   return BAT_ADS_PRODUCTION_SERVER;
-  // } else {
+  if (confirmations::_is_production) {
+    return BAT_ADS_PRODUCTION_SERVER;
+  } else {
     return BAT_ADS_STAGING_SERVER;
-  // }
+  }
 }
 
 }  // namespace helper
