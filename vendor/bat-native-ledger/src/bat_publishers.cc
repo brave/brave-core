@@ -96,7 +96,8 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
       ledger::EXCLUDE_FILTER::FILTER_ALL,
       false,
       ledger_->GetReconcileStamp(),
-      true);
+      true,
+      false);
 
   ledger::PublisherInfoCallback callbackGetPublishers =
       std::bind(&BatPublishers::saveVisitInternal, this,
@@ -119,7 +120,8 @@ ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
                               ledger::EXCLUDE_FILTER::FILTER_ALL,
                               true,
                               0,
-                              true);
+                              true,
+                              false);
 }
 
 ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
@@ -133,7 +135,8 @@ ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
                               excluded,
                               true,
                               0,
-                              true);
+                              true,
+                              false);
 }
 
 ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
@@ -147,7 +150,8 @@ ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
                               ledger::EXCLUDE_FILTER::FILTER_ALL,
                               min_duration,
                               0,
-                              true);
+                              true,
+                              false);
 }
 
 ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
@@ -157,7 +161,8 @@ ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
     ledger::EXCLUDE_FILTER excluded,
     bool min_duration,
     const uint64_t& currentReconcileStamp,
-    bool non_verified) {
+    bool non_verified,
+    bool min_visits) {
   ledger::ActivityInfoFilter filter;
   filter.id = publisher_id;
   filter.month = month;
@@ -166,6 +171,7 @@ ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
   filter.min_duration = min_duration ? getPublisherMinVisitTime() : 0;
   filter.reconcile_stamp = currentReconcileStamp;
   filter.non_verified = non_verified;
+  filter.min_visits = min_visits ? getPublisherMinVisits() : 0;
 
   return filter;
 }
@@ -617,7 +623,8 @@ void BatPublishers::synopsisNormalizer() {
       ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       ledger_->GetReconcileStamp(),
-      ledger_->GetPublisherAllowNonVerified());
+      ledger_->GetPublisherAllowNonVerified(),
+      ledger_->GetPublisherMinVisits());
   // TODO SZ: We pull the whole list currently, I don't think it consumes lots of RAM, but could.
   // We need to limit it and iterate.
   ledger_->GetActivityInfoList(
@@ -853,7 +860,8 @@ void BatPublishers::getPublisherActivityFromUrl(
         ledger::EXCLUDE_FILTER::FILTER_ALL,
         false,
         ledger_->GetReconcileStamp(),
-        true);
+        true,
+        false);
 
   ledger::VisitData new_data;
   new_data.domain = visit_data.domain;

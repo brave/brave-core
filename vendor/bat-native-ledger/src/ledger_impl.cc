@@ -892,14 +892,16 @@ ledger::ActivityInfoFilter LedgerImpl::CreateActivityFilter(
     ledger::EXCLUDE_FILTER excluded,
     bool min_duration,
     const uint64_t& currentReconcileStamp,
-    bool non_verified) {
+    bool non_verified,
+    bool min_visits) {
   return bat_publishers_->CreateActivityFilter(publisher_id,
                                         month,
                                         year,
                                         excluded,
                                         min_duration,
                                         currentReconcileStamp,
-                                        non_verified);
+                                        non_verified,
+                                        min_visits);
 }
 
 

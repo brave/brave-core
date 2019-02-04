@@ -121,7 +121,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       ledger::EXCLUDE_FILTER excluded,
       bool min_duration,
       const uint64_t& currentReconcileStamp,
-      bool non_verified);
+      bool non_verified,
+      bool min_visits);
 
   void clearAllBalanceReports();
   void NormalizeContributeWinners(ledger::PublisherInfoList* newList,

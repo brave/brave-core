@@ -553,6 +553,7 @@ void RewardsDOMHandler::OnAutoContributePropsReady(
   rewards_service_->GetContentSiteList(0, 0,
       props->contribution_min_time, props->reconcile_stamp,
       props->contribution_non_verified,
+      props->contribution_min_visits,
       base::Bind(&RewardsDOMHandler::OnContentSiteList,
         weak_factory_.GetWeakPtr()));
 }

@@ -69,6 +69,7 @@ LEDGER_EXPORT struct ActivityInfoFilter {
   uint64_t min_duration;
   uint64_t reconcile_stamp;
   bool non_verified;
+  uint32_t min_visits;
 };
 
 LEDGER_EXPORT struct ContributionInfo {

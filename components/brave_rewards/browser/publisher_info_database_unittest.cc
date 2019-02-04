@@ -184,12 +184,12 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
 
   ledger::PublisherInfo info;
   info.id = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  info.verified = false;
+  info.verified = true;
   info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info.name = "name";
   info.url = "https://brave.com";
-  info.provider = "";
-  info.favicon_url = "";
+  info.provider = "youtube";
+  info.favicon_url = "favicon.ico";
   info.duration = 10;
   info.score = 1.1;
   info.percent = 100;
@@ -219,6 +219,22 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
   EXPECT_EQ(info_sql.ColumnInt(7), info.year);
   EXPECT_EQ(static_cast<uint64_t>(info_sql.ColumnInt64(8)),
             info.reconcile_stamp);
+
+  query = "SELECT * FROM publisher_info WHERE publisher_id=?";
+  sql::Statement info_sql_0(GetDB().GetUniqueStatement(query.c_str()));
+
+  info_sql_0.BindString(0, info.id);
+
+  EXPECT_TRUE(info_sql_0.Step());
+  EXPECT_EQ(CountTableRows("publisher_info"), 1);
+  EXPECT_EQ(info_sql_0.ColumnString(0), info.id);
+  EXPECT_EQ(info_sql_0.ColumnBool(1), info.verified);
+  EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql_0.ColumnInt(2)),
+      info.excluded);
+  EXPECT_EQ(info_sql_0.ColumnString(3), info.name);
+  EXPECT_EQ(info_sql_0.ColumnString(4), info.favicon_url);
+  EXPECT_EQ(info_sql_0.ColumnString(5), info.url);
+  EXPECT_EQ(info_sql_0.ColumnString(6), info.provider);
 
   /**
    * Make sure that second insert is update and not insert,
@@ -402,7 +418,183 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringDonation) {
 }
 
 TEST_F(PublisherInfoDatabaseTest, InsertPendingContribution) {
+  /**
+   * Good path
+   */
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
 
+  ledger::PendingContribution contribution1;
+  contribution1.publisher_key = "key1";
+  contribution1.amount = 10;
+  contribution1.added_date = 10;
+  contribution1.viewing_id = "fsodfsdnf23r23rn";
+  contribution1.category = ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE;
+
+  ledger::PendingContribution contribution2;
+  contribution2.publisher_key = "key2";
+  contribution2.amount = 20;
+  contribution2.viewing_id = "aafsofdfsdnf23r23rn";
+  contribution2.category = ledger::REWARDS_CATEGORY::DIRECT_DONATION;
+
+  ledger::PendingContributionList list;
+  list.list_.push_back(contribution1);
+  list.list_.push_back(contribution2);
+
+  bool success = publisher_info_database_->InsertPendingContribution(
+      list);
+  EXPECT_TRUE(success);
+
+  std::string query = "SELECT * FROM pending_contribution";
+  sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
+
+  EXPECT_EQ(CountTableRows("pending_contribution"), 2);
+
+  // First contribution
+  EXPECT_TRUE(info_sql.Step());
+  EXPECT_EQ(info_sql.ColumnString(0), contribution1.publisher_key);
+  EXPECT_EQ(info_sql.ColumnDouble(1), contribution1.amount);
+  EXPECT_GE(info_sql.ColumnInt64(2), 20);
+  EXPECT_EQ(info_sql.ColumnString(3), contribution1.viewing_id);
+  EXPECT_EQ(static_cast<ledger::REWARDS_CATEGORY>(info_sql.ColumnInt(4)),
+      contribution1.category);
+
+  // Second contribution
+  EXPECT_TRUE(info_sql.Step());
+  EXPECT_EQ(info_sql.ColumnString(0), contribution2.publisher_key);
+  EXPECT_EQ(info_sql.ColumnDouble(1), contribution2.amount);
+  EXPECT_GE(info_sql.ColumnInt64(2), 0);
+  EXPECT_EQ(info_sql.ColumnString(3), contribution2.viewing_id);
+  EXPECT_EQ(static_cast<ledger::REWARDS_CATEGORY>(info_sql.ColumnInt(4)),
+      contribution2.category);
+}
+
+TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  // first entry publisher
+  ledger::PublisherInfo info;
+  info.id = "publisher_1";
+  info.name = "publisher_name_1";
+  info.url = "https://publisher1.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.duration = 0;
+  info.verified = false;
+  info.visits = 0;
+  info.month = ledger::ACTIVITY_MONTH::JANUARY;
+  info.year = 1970;
+  info.reconcile_stamp = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // with duration
+  info.id = "publisher_2";
+  info.name = "publisher_name_2";
+  info.url = "https://publisher2.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.duration = 100;
+  info.verified = false;
+  info.visits = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // verified publisher
+  info.id = "publisher_3";
+  info.name = "publisher_name_3";
+  info.url = "https://publisher3.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.duration = 1;
+  info.verified = true;
+  info.visits = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // excluded publisher
+  info.id = "publisher_4";
+  info.name = "publisher_name_4";
+  info.url = "https://publisher4.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
+  info.duration = 1;
+  info.verified = false;
+  info.visits = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // with visits
+  info.id = "publisher_5";
+  info.name = "publisher_name_5";
+  info.url = "https://publisher5.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.duration = 1;
+  info.verified = false;
+  info.visits = 10;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // full
+  info.id = "publisher_6";
+  info.name = "publisher_name_6";
+  info.url = "https://publisher6.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::INCLUDED;
+  info.duration = 5000;
+  info.verified = true;
+  info.visits = 10;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  EXPECT_EQ(CountTableRows("activity_info"), 6);
+  EXPECT_EQ(CountTableRows("publisher_info"), 6);
+
+  /**
+   * Get publisher with min_duration
+  */
+  ledger::PublisherInfoList list_1;
+  ledger::ActivityInfoFilter filter_1;
+  filter_1.min_duration = 50;
+  filter_1.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter_1, &list_1));
+  EXPECT_EQ(static_cast<int>(list_1.size()), 2);
+
+  EXPECT_EQ(list_1.at(0).id, "publisher_2");
+  EXPECT_EQ(list_1.at(1).id, "publisher_6");
+
+  /**
+   * Get verified publishers
+  */
+  ledger::PublisherInfoList list_2;
+  ledger::ActivityInfoFilter filter_2;
+  filter_2.non_verified = false;
+  filter_2.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter_2, &list_2));
+  EXPECT_EQ(static_cast<int>(list_2.size()), 2);
+
+  EXPECT_EQ(list_2.at(0).id, "publisher_3");
+  EXPECT_EQ(list_2.at(1).id, "publisher_6");
+
+  /**
+   * Get all publishers that are not excluded
+  */
+  ledger::PublisherInfoList list_3;
+  ledger::ActivityInfoFilter filter_3;
+  filter_3.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter_3, &list_3));
+  EXPECT_EQ(static_cast<int>(list_3.size()), 5);
+
+  EXPECT_EQ(list_3.at(0).id, "publisher_1");
+  EXPECT_EQ(list_3.at(1).id, "publisher_2");
+  EXPECT_EQ(list_3.at(2).id, "publisher_3");
+  EXPECT_EQ(list_3.at(3).id, "publisher_5");
+  EXPECT_EQ(list_3.at(4).id, "publisher_6");
+
+  /**
+   * Get publisher with min_visits
+  */
+  ledger::PublisherInfoList list_4;
+  ledger::ActivityInfoFilter filter_4;
+  filter_4.min_visits = 5;
+  filter_4.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter_4, &list_4));
+  EXPECT_EQ(static_cast<int>(list_4.size()), 2);
+
+  EXPECT_EQ(list_4.at(0).id, "publisher_5");
+  EXPECT_EQ(list_4.at(1).id, "publisher_6");
 }
 
 }  // namespace brave_rewards

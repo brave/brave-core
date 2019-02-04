@@ -434,7 +434,7 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
   activity_info_insert.BindInt(5, info.month);
   activity_info_insert.BindInt(6, info.year);
   activity_info_insert.BindInt64(7, info.reconcile_stamp);
-  activity_info_insert.BindInt64(8, info.visits);
+  activity_info_insert.BindInt(8, info.visits);
 
   return activity_info_insert.Run();
 }
@@ -458,7 +458,7 @@ bool PublisherInfoDatabase::GetActivityList(
   std::string query = "SELECT ai.publisher_id, ai.duration, ai.score, "
                       "ai.percent, ai.weight, pi.verified, pi.excluded, "
                       "ai.month, ai.year, pi.name, pi.url, pi.provider, "
-                      "pi.favIcon, ai.reconcile_stamp "
+                      "pi.favIcon, ai.reconcile_stamp, ai.visits "
                       "FROM activity_info AS ai "
                       "INNER JOIN publisher_info AS pi "
                       "ON ai.publisher_id = pi.publisher_id "
@@ -497,6 +497,10 @@ bool PublisherInfoDatabase::GetActivityList(
 
   if (filter.percent > 0) {
     query += " AND ai.percent >= ?";
+  }
+
+  if (filter.min_visits > 0) {
+    query += " AND ai.visits >= ?";
   }
 
   if (!filter.non_verified) {
@@ -554,6 +558,10 @@ bool PublisherInfoDatabase::GetActivityList(
     info_sql.BindInt(column++, filter.percent);
   }
 
+  if (filter.min_visits > 0) {
+    info_sql.BindInt(column++, filter.min_visits);
+  }
+
   while (info_sql.Step()) {
     std::string id(info_sql.ColumnString(0));
     ledger::ACTIVITY_MONTH month(
@@ -572,6 +580,7 @@ bool PublisherInfoDatabase::GetActivityList(
     info.provider = info_sql.ColumnString(11);
     info.favicon_url = info_sql.ColumnString(12);
     info.reconcile_stamp = info_sql.ColumnInt64(13);
+    info.visits = info_sql.ColumnInt(14);
 
     info.excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
         info_sql.ColumnInt(6));
@@ -579,7 +588,7 @@ bool PublisherInfoDatabase::GetActivityList(
     list->push_back(info);
   }
 
-  return list;
+  return true;
 }
 
 /**

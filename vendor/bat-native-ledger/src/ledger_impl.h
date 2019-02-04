@@ -209,7 +209,8 @@ class LedgerImpl : public ledger::Ledger,
       ledger::EXCLUDE_FILTER excluded,
       bool min_duration,
       const uint64_t& currentReconcileStamp,
-      bool non_verified);
+      bool non_verified,
+      bool min_visits);
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,
       int line,
