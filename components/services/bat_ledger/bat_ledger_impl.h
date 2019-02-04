@@ -121,6 +121,9 @@ class BatLedgerImpl : public mojom::BatLedger,
     void HasSufficientBalanceToReconcile(
         HasSufficientBalanceToReconcileCallback callback) override;
 
+    void GetAddressesForPaymentId(
+        GetAddressesForPaymentIdCallback callback) override;
+
   private:
     // workaround to pass base::OnceCallback into std::bind
     template <typename Callback>
@@ -142,6 +145,10 @@ class BatLedgerImpl : public mojom::BatLedger,
     static void OnGetPublisherBanner(
         CallbackHolder<GetPublisherBannerCallback>* holder,
         std::unique_ptr<ledger::PublisherBanner> banner);
+
+    static void OnAddressesForPaymentId(
+        CallbackHolder<GetAddressesForPaymentIdCallback>* holder,
+        std::map<std::string, std::string> addresses);
 
     std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
     std::unique_ptr<ledger::Ledger> ledger_;

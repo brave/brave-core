@@ -73,6 +73,7 @@ LEDGER_EXPORT struct PaymentData {
 
 
 using PublisherBannerCallback = std::function<void(std::unique_ptr<ledger::PublisherBanner> banner)>;
+using WalletAddressesCallback = std::function<void(std::map<std::string, std::string> addresses)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -205,6 +206,8 @@ class LEDGER_EXPORT Ledger {
 
   virtual uint64_t GetBootStamp() const = 0;
   virtual bool HasSufficientBalanceToReconcile() = 0;
+
+  virtual void GetAddressesForPaymentId(ledger::WalletAddressesCallback callback) = 0;
 };
 
 }  // namespace ledger

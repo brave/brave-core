@@ -450,6 +450,9 @@ namespace braveledger_bat_helper {
 
   bool getJSONServerList(const std::string& json, std::map<std::string, SERVER_LIST>& list);
 
+  bool getJSONAddresses(const std::string& json,
+                        std::map<std::string, std::string>& addresses);
+
   std::vector<uint8_t> generateSeed();
 
   std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed);
