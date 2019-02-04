@@ -425,6 +425,7 @@ void RewardsServiceImpl::GetContentSiteList(
     uint64_t min_visit_time,
     uint64_t reconcile_stamp,
     bool allow_non_verified,
+    uint32_t min_visits,
     const GetContentSiteListCallback& callback) {
   ledger::ActivityInfoFilter filter;
   filter.month = ledger::ACTIVITY_MONTH::ANY;
@@ -436,6 +437,7 @@ void RewardsServiceImpl::GetContentSiteList(
     ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
   filter.percent = 1;
   filter.non_verified = allow_non_verified;
+  filter.min_visits = min_visits;
 
   GetActivityInfoList(start, limit,
       filter,

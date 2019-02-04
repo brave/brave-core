@@ -132,7 +132,8 @@ ActivityInfoFilter::ActivityInfoFilter() :
     percent(0),
     min_duration(0),
     reconcile_stamp(0),
-    non_verified(true) {}
+    non_verified(true),
+    min_visits(0u) {}
 
 ActivityInfoFilter::ActivityInfoFilter(const ActivityInfoFilter& filter) :
     id(filter.id),
@@ -143,7 +144,8 @@ ActivityInfoFilter::ActivityInfoFilter(const ActivityInfoFilter& filter) :
     order_by(filter.order_by),
     min_duration(filter.min_duration),
     reconcile_stamp(filter.reconcile_stamp),
-    non_verified(filter.non_verified) {}
+    non_verified(filter.non_verified),
+    min_visits(filter.min_visits) {}
 
 ActivityInfoFilter::~ActivityInfoFilter() {}
 
@@ -184,6 +186,12 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
     for (const auto& i : d["order_by"].GetObject()) {
       order_by.push_back(std::make_pair(i.name.GetString(),
             i.value.GetBool()));
+    }
+
+    if (d.HasMember("min_visits") && d["min_visits"].IsUint()) {
+      min_visits = d["min_visits"].GetUint();
+    } else {
+      min_visits = 0u;
     }
   }
 

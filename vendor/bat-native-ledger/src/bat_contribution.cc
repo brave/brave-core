@@ -238,7 +238,8 @@ void BatContribution::StartAutoContribute() {
       ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       current_reconcile_stamp,
-      ledger_->GetPublisherAllowNonVerified());
+      ledger_->GetPublisherAllowNonVerified(),
+      ledger_->GetPublisherMinVisits());
   ledger_->GetActivityInfoList(
       0,
       0,
