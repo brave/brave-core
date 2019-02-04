@@ -65,6 +65,14 @@ class SettingsPage extends React.Component<Props, {}> {
     if (!this.props.rewardsData.ui.addressCheck) {
       this.actions.getAddresses()
     }
+
+    // one time check (legacy fix)
+    if (!this.props.rewardsData.ui.paymentIdCheck) {
+      // https://github.com/brave/brave-browser/issues/3060
+      this.actions.getAddressesForPaymentId()
+      // https://github.com/brave/brave-browser/issues/3061
+      this.actions.getWalletPassphrase()
+    }
   }
 
   componentDidUpdate (prevProps: Props) {

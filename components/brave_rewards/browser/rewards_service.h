@@ -156,6 +156,9 @@ class RewardsService : public KeyedService {
   virtual void GetRewardsMainEnabled(
     const GetRewardsMainEnabledCallback& callback) const = 0;
 
+  virtual void GetAddressesForPaymentId(
+      const GetAddressesCallback& callback) = 0;
+
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
 

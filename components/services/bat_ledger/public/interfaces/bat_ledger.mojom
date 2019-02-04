@@ -95,6 +95,8 @@ interface BatLedger {
   GetRewardsMainEnabled() => (bool main_enabled);
 
   HasSufficientBalanceToReconcile() => (bool sufficient);
+
+  GetAddressesForPaymentId() => (map<string, string> addresses);
 };
 
 interface BatLedgerClient {
