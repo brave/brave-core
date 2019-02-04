@@ -490,13 +490,29 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice) {
   auto resolved_record = SyncRecord::Clone(*records.at(1));
   resolved_record->action = jslib::SyncRecord::Action::A_DELETE;
   resolved_records.push_back(std::move(resolved_record));
-  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(3);
+  // Expecting to be called one time to set the new devices list
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
+
+  EXPECT_CALL(*sync_client(), SendSyncRecords).Times(1);
+
   sync_service()->OnResolvedPreferences(resolved_records);
+
+  auto devices_semi_final = sync_service()->sync_prefs_->GetSyncDevices();
+  EXPECT_FALSE(DevicesContains(devices_semi_final.get(), "2", "device2"));
+  EXPECT_TRUE(DevicesContains(devices_semi_final.get(), "1", "device1"));
+
+  // Emulate sending DELETE for this device
+  RecordsList resolved_records2;
+  auto resolved_record2 = SyncRecord::Clone(*records.at(0));
+  resolved_record2->action = SyncRecord::Action::A_DELETE;
+  resolved_records2.push_back(std::move(resolved_record2));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(3);
+
+  sync_service()->OnResolvedPreferences(resolved_records2);
 
   auto devices_final = sync_service()->sync_prefs_->GetSyncDevices();
   EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
   EXPECT_FALSE(DevicesContains(devices_final.get(), "2", "device2"));
-
   EXPECT_FALSE(sync_service()->IsSyncConfigured());
 }
 
@@ -526,7 +542,8 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
   auto resolved_record = SyncRecord::Clone(*records.at(0));
   resolved_record->action = jslib::SyncRecord::Action::A_DELETE;
   resolved_records.push_back(std::move(resolved_record));
-  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(5);
+  // If you have to modify .Times(3) to another value, double re-check
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(3);
   sync_service()->OnResolvedPreferences(resolved_records);
 
   auto devices_final = sync_service()->sync_prefs_->GetSyncDevices();
