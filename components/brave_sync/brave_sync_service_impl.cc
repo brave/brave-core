@@ -1,8 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright 2016 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_sync/brave_sync_service_impl.h"
+
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "base/task/post_task.h"
 #include "brave/browser/ui/webui/sync/sync_ui.h"
@@ -40,7 +46,7 @@ RecordsListPtr CreateDeviceCreationRecordExtension(
   record->action = action;
   record->deviceId = deviceId;
   record->objectId = objectId;
-  record->objectData = jslib_const::SyncObjectData_DEVICE; // "device"
+  record->objectData = jslib_const::SyncObjectData_DEVICE;  // "device"
 
   std::unique_ptr<jslib::Device> device = std::make_unique<jslib::Device>();
   device->name = deviceName;
@@ -62,7 +68,7 @@ SyncRecordPtr PrepareResolvedDevice(
       brave_sync::jslib::SyncRecord::Action::A_INVALID);
   record->deviceId = device->device_id_;
   record->objectId = device->object_id_;
-  record->objectData = jslib_const::SyncObjectData_DEVICE; // "device"
+  record->objectData = jslib_const::SyncObjectData_DEVICE;  // "device"
 
   std::unique_ptr<jslib::Device> device_record =
       std::make_unique<jslib::Device>();
@@ -367,9 +373,9 @@ void BraveSyncServiceImpl::OnSaveInitData(const Uint8Array& seed,
   sync_words_.clear();
   DCHECK(!seed_str.empty());
 
-  if (prev_seed_str == seed_str) { // reconnecting to previous sync chain
+  if (prev_seed_str == seed_str) {  // reconnecting to previous sync chain
     sync_prefs_->SetPrevSeed(std::string());
-  } else if (!prev_seed_str.empty()) { // connect/create to new sync chain
+  } else if (!prev_seed_str.empty()) {  // connect/create to new sync chain
     bookmark_change_processor_->Reset(true);
     sync_prefs_->SetPrevSeed(std::string());
   } else {
@@ -450,7 +456,6 @@ void BraveSyncServiceImpl::OnResolvedSyncRecords(
   } else if (category_name == brave_sync::jslib_const::kHistorySites) {
     NOTIMPLEMENTED();
   }
-
 }
 
 std::unique_ptr<SyncRecordAndExistingList>
@@ -497,7 +502,7 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records) {
         record->action == jslib::SyncRecord::Action::A_DELETE &&
           actually_merged;
     }
-  } // for each device
+  }  // for each device
 
   sync_prefs_->SetSyncDevices(*sync_devices);
 
@@ -571,15 +576,17 @@ void BraveSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
   }
 
   std::vector<std::string> category_names;
-  using namespace brave_sync::jslib_const;
+  using brave_sync::jslib_const::kHistorySites;
+  using brave_sync::jslib_const::kBookmarks;
+  using brave_sync::jslib_const::kPreferences;
   if (history) {
-    category_names.push_back(kHistorySites); // "HISTORY_SITES";
+    category_names.push_back(kHistorySites);  // "HISTORY_SITES";
   }
   if (bookmarks) {
-    category_names.push_back(kBookmarks);//"BOOKMARKS";
+    category_names.push_back(kBookmarks);    // "BOOKMARKS";
   }
   if (preferences) {
-    category_names.push_back(kPreferences);//"PREFERENCES";
+    category_names.push_back(kPreferences);  // "PREFERENCES";
   }
 
   DCHECK(sync_client_);
@@ -707,4 +714,4 @@ void BraveSyncServiceImpl::SetDeviceName(const std::string& name) {
   }
 }
 
-} // namespace brave_sync
+}  // namespace brave_sync
