@@ -325,15 +325,3 @@ void BraveToolbarView::Layout() {
   app_menu_button_->SetBounds(next_element_x, toolbar_button_y, app_menu_width,
                               toolbar_button_height);
 }
-
-gfx::Size BraveToolbarView::GetSizeInternal(
-    gfx::Size (View::*get_size)() const) const {
-  // Increase the base class width via our added Views
-  gfx::Size size = ToolbarView::GetSizeInternal(get_size);
-  if (is_display_mode_normal() && bookmark_ && bookmark_->visible()) {
-    const int extra_width = GetLayoutConstant(TOOLBAR_ELEMENT_PADDING) +
-                            (bookmark_->*get_size)().width();
-    size.Enlarge(extra_width, 0);
-  }
-  return size;
-}
