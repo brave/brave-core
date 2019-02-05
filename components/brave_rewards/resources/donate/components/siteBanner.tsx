@@ -102,7 +102,7 @@ class Banner extends React.Component<Props, State> {
   }
 
   get addFundsLink () {
-    return 'brave://rewards/#add-funds'
+    return 'chrome://rewards/#add-funds'
   }
 
   render () {
