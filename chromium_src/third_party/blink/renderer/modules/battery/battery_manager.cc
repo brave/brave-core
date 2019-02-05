@@ -19,18 +19,19 @@ namespace blink {
   : PausableObject(context), PlatformEventController(To<Document>(context)) {}
 
   BatteryManager* BatteryManager::Create(ExecutionContext* context) {
-    BatteryManager* battery_manager = new BatteryManager(context);
+    BatteryManager* battery_manager =
+    MakeGarbageCollected<BatteryManager>(context);
     battery_manager->PauseIfNeeded();
     return battery_manager;
   }
 
   ScriptPromise BatteryManager::StartRequest(ScriptState* script_state) {
     if (!battery_property_) {
-      battery_property_ = new BatteryProperty(
-            ExecutionContext::From(script_state), this, BatteryProperty::kReady);
+      battery_property_ = MakeGarbageCollected<BatteryProperty>(
+        ExecutionContext::From(script_state), this, BatteryProperty::kReady);
       battery_property_->Resolve(this);
-      }
-      return battery_property_->Promise(script_state->World());
+    }
+    return battery_property_->Promise(script_state->World());
   }
 
   bool BatteryManager::charging() {
@@ -60,11 +61,11 @@ namespace blink {
     return false;
   }
 
-  void BatteryManager::Pause() { 
+  void BatteryManager::ContextPaused(PauseState) {
     return;
   }
 
-  void BatteryManager::Unpause() { 
+  void BatteryManager::ContextUnpaused() {
     return;
   }
 

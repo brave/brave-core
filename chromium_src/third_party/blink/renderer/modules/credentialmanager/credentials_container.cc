@@ -38,7 +38,7 @@ namespace blink {
   }
 
   CredentialsContainer* CredentialsContainer::Create() {
-    return new CredentialsContainer();
+    return MakeGarbageCollected<CredentialsContainer>();
   }
 
   ScriptPromise CredentialsContainer::create(ScriptState* script_state,
