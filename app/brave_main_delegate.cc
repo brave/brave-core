@@ -126,8 +126,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitch(switches::kNoPings);
 
   std::stringstream enabled_features;
-  enabled_features << features::kEnableEmojiContextMenu.name
-    << "," << features::kDesktopPWAWindowing.name
+  enabled_features << features::kDesktopPWAWindowing.name
     << "," << password_manager::features::kFillOnAccountSelect.name
     << "," << extensions_features::kNewExtensionUpdaterService.name;
 
