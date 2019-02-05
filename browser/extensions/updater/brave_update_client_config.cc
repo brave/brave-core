@@ -221,6 +221,15 @@ BraveUpdateClientConfig::GetProtocolHandlerFactory() const {
   return std::make_unique<update_client::ProtocolHandlerFactoryXml>();
 }
 
+update_client::RecoveryCRXElevator BraveUpdateClientConfig::GetRecoveryCRXElevator()
+    const {
+#if defined(GOOGLE_CHROME_BUILD) && defined(OS_WIN)
+  return base::BindOnce(&RunRecoveryCRXElevated);
+#else
+  return {};
+#endif
+}
+
 BraveUpdateClientConfig::~BraveUpdateClientConfig() {}
 
 // static

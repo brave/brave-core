@@ -69,6 +69,7 @@ class BraveConfigurator : public update_client::Configurator {
   std::vector<uint8_t> GetRunActionKeyHash() const override;
   std::string GetAppGuid() const override;
   std::unique_ptr<update_client::ProtocolHandlerFactory> GetProtocolHandlerFactory() const override;
+  update_client::RecoveryCRXElevator GetRecoveryCRXElevator() const override;
 
  private:
   friend class base::RefCountedThreadSafe<BraveConfigurator>;
@@ -204,6 +205,15 @@ std::string BraveConfigurator::GetAppGuid() const {
 std::unique_ptr<update_client::ProtocolHandlerFactory>
 BraveConfigurator::GetProtocolHandlerFactory() const {
   return std::make_unique<update_client::ProtocolHandlerFactoryXml>();
+}
+
+update_client::RecoveryCRXElevator BraveConfigurator::GetRecoveryCRXElevator()
+    const {
+#if defined(GOOGLE_CHROME_BUILD) && defined(OS_WIN)
+  return base::BindOnce(&RunRecoveryCRXElevated);
+#else
+  return {};
+#endif
 }
 
 }  // namespace

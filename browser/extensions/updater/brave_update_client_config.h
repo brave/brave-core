@@ -66,6 +66,7 @@ class BraveUpdateClientConfig : public update_client::Configurator {
   std::string GetAppGuid() const override;
   std::unique_ptr<update_client::ProtocolHandlerFactory>
   GetProtocolHandlerFactory() const override;
+  update_client::RecoveryCRXElevator GetRecoveryCRXElevator() const override;
 
  protected:
   friend class base::RefCountedThreadSafe<BraveUpdateClientConfig>;
