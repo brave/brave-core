@@ -448,10 +448,12 @@ export class Panel extends React.Component<Props, State> {
       ? this.generateAmounts(publisher)
       : undefined
 
-    if (notificationType === 'ads-launch') {
-      delete notification.notification['date']    
+    if (notification &&
+        notification.notification &&
+        notificationType === 'ads-launch') {
+      delete notification.notification['date']
     }
-  
+
     const pendingTotal = parseFloat(
       (pendingContributionTotal || 0).toFixed(1))
 

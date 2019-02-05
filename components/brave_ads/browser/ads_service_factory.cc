@@ -76,7 +76,7 @@ content::BrowserContext* AdsServiceFactory::GetBrowserContextToUse(
 }
 
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {
-  return true;
+  return false;
 }
 
 void AdsServiceFactory::RegisterProfilePrefs(

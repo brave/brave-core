@@ -21,11 +21,17 @@
 
 namespace brave_rewards {
 
+RewardsService* testing_service_;
+
 // static
 RewardsService* RewardsServiceFactory::GetForProfile(
     Profile* profile) {
   if (profile->IsOffTheRecord())
     return NULL;
+
+  if (testing_service_) {
+    return testing_service_;
+  }
 
   return static_cast<RewardsService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
@@ -58,6 +64,11 @@ KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
 #else
   return NULL;
 #endif
+}
+
+// static
+void RewardsServiceFactory::SetServiceForTesting(RewardsService* service) {
+  testing_service_ = service;
 }
 
 content::BrowserContext* RewardsServiceFactory::GetBrowserContextToUse(
