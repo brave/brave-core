@@ -25,6 +25,21 @@ class CustomHeaderData: NSObject {
         self.headerField = headerKey
         self.headerValue = headerValue
     }
+    
+    func cookies() -> [HTTPCookie] {
+        let domains = domainList.compactMap { URL(string: $0)?.absoluteString }
+        return domains.compactMap {
+            HTTPCookie(properties: [
+                // Must include `.` prefix to be included in subdomains
+                .domain: ".\($0)",
+                .path: "/",
+                .name: "__Secure-\(headerField)",
+                .value: headerValue,
+                .secure: "TRUE",
+                .expires: NSDate(timeIntervalSinceNow: 7.days)
+                ])
+        }
+    }
 
     static func customHeaders(from json: JSON) -> [CustomHeaderData] {
         var customHeaders: [CustomHeaderData] = []
