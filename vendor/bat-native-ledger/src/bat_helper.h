@@ -400,7 +400,8 @@ namespace braveledger_bat_helper {
   enum class SERVER_TYPES {
     LEDGER,
     BALANCE,
-    PUBLISHER
+    PUBLISHER,
+    PUBLISHER_DISTRO
   };
 
   struct SERVER_LIST_BANNER {
