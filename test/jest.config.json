@@ -15,7 +15,8 @@
   "testMatch": [
     "<rootDir>/app/actions/*.ts",
     "<rootDir>/app/background/api/*.ts",
-    "<rootDir>/app/components/**/*.tsx"
+    "<rootDir>/app/components/**/*.tsx",
+    "<rootDir>/app/helpers/*.tsx"
   ],
   "transformIgnorePatterns": [
     "<rootDir>/node_modules"
