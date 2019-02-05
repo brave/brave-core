@@ -1135,4 +1135,13 @@ bool LedgerImpl::HasSufficientBalanceToReconcile() {
   return GetBalance() >= GetContributionAmount();
 }
 
+void LedgerImpl::GetAddressesForPaymentId(
+    ledger::WalletAddressesCallback callback) {
+  bat_client_->GetAddressesForPaymentId(callback);
+}
+
+void LedgerImpl::SetAddresses(std::map<std::string, std::string> addresses) {
+  bat_state_->SetAddress(addresses);
+}
+
 }  // namespace bat_ledger

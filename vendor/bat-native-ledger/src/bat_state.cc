@@ -384,4 +384,29 @@ double BatState::GetDefaultContributionAmount() {
   return state_->walletProperties_.fee_amount_;
 }
 
+void BatState::SetAddress(std::map<std::string, std::string> addresses) {
+  for (auto& address : addresses) {
+    if (address.first == "BAT") {
+      state_->walletInfo_.addressBAT_ = address.second;
+    }
+
+    if (address.first == "BTC") {
+      state_->walletInfo_.addressBTC_ = address.second;
+    }
+
+    if (address.first == "CARD_ID") {
+      state_->walletInfo_.addressCARD_ID_ = address.second;
+    }
+
+    if (address.first == "ETH") {
+      state_->walletInfo_.addressETH_ = address.second;
+    }
+
+    if (address.first == "LTC") {
+      state_->walletInfo_.addressLTC_ = address.second;
+    }
+  }
+  SaveState();
+}
+
 }  // namespace braveledger_bat_state

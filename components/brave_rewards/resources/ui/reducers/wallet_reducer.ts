@@ -21,6 +21,36 @@ const createWallet = (state: Rewards.State) => {
   return state
 }
 
+const saveAddresses = (state: Rewards.State, addresses: Record<Rewards.AddressesType, string>) => {
+  if (!addresses) {
+    return state
+  }
+
+  state = { ...state }
+  state.addresses = {
+    BAT: {
+      address: addresses.BAT,
+      qr: null
+    },
+    BTC: {
+      address: addresses.BTC,
+      qr: null
+    },
+    ETH: {
+      address: addresses.ETH,
+      qr: null
+    },
+    LTC: {
+      address: addresses.LTC,
+      qr: null
+    }
+  }
+
+  generateQR(addresses)
+
+  return state
+}
+
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
     case types.CREATE_WALLET:
@@ -128,30 +158,15 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       }
     case types.ON_ADDRESSES:
       {
-        if (!action.payload.addresses) {
-          break
-        }
-
         state = { ...state }
-        state.addresses = {
-          BAT: {
-            address: action.payload.addresses.BAT,
-            qr: null
-          },
-          BTC: {
-            address: action.payload.addresses.BTC,
-            qr: null
-          },
-          ETH: {
-            address: action.payload.addresses.ETH,
-            qr: null
-          },
-          LTC: {
-            address: action.payload.addresses.LTC,
-            qr: null
-          }
+        state = saveAddresses(state, action.payload.addresses)
+        let ui = state.ui
+        ui.addressCheck = true
+
+        state = {
+          ...state,
+          ui
         }
-        generateQR(action.payload.addresses)
         break
       }
     case types.ON_QR_GENERATED:
@@ -210,16 +225,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       }
     case types.GET_ADDRESSES:
       {
-        state = { ...state }
-        let ui = state.ui
-        ui.addressCheck = true
-
         chrome.send('brave_rewards.getAddresses')
-
-        state = {
-          ...state,
-          ui
-        }
         break
       }
     case types.GET_RECONCILE_STAMP:
@@ -236,6 +242,26 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       {
         state = { ...state }
         state.pendingContributionTotal = action.payload.amount
+        break
+      }
+    case types.GET_ADDRESSES_FOR_PAYMENT_ID:
+      {
+        chrome.send('brave_rewards.getAddressesForPaymentId')
+        break
+      }
+    case types.ON_ADDRESSES_FOR_PAYMENT_ID:
+      {
+        state = { ...state }
+
+        state = saveAddresses(state, action.payload.addresses)
+
+        let ui = state.ui
+        ui.paymentIdCheck = true
+
+        state = {
+          ...state,
+          ui
+        }
         break
       }
   }

@@ -2362,4 +2362,16 @@ void RewardsServiceImpl::OnRestorePublishersInternal(
   }
 }
 
+void RewardsServiceImpl::GetAddressesForPaymentId(
+    const GetAddressesCallback& callback) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->GetAddressesForPaymentId(
+      base::BindOnce(&RewardsServiceImpl::OnGetAddresses,
+                     AsWeakPtr(),
+                     callback));
+}
+
 }  // namespace brave_rewards

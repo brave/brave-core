@@ -298,6 +298,11 @@ class LedgerImpl : public ledger::Ledger,
   double GetDefaultContributionAmount() override;
   bool HasSufficientBalanceToReconcile() override;
 
+  void GetAddressesForPaymentId(ledger::WalletAddressesCallback callback)
+    override;
+
+  void SetAddresses(std::map<std::string, std::string> addresses);
+
  private:
   void AddRecurringPayment(const std::string& publisher_id, const double& value) override;
   void OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) override;
