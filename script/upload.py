@@ -121,8 +121,8 @@ def get_brave_packages(dir, channel, version):
         return file_desired_path
 
     channel_capitalized = channel.capitalize()
-    for _, _, files in os.walk(dir):
-        for file in files:
+    for file in os.listdir(dir):
+        if os.path.isfile(os.path.join(dir, file)):
             file_path = os.path.join(dir, file)
             if PLATFORM == 'darwin':
                 if channel_capitalized == 'Release':
