@@ -73,7 +73,7 @@ SkColor GetOmniboxColor(OmniboxPart part,
                           : SkColorSetRGB(0x42, 0x42, 0x42);
     }
     case OmniboxPart::RESULTS_BACKGROUND:
-      return color_utils::BlendTowardOppositeLuma(
+      return color_utils::BlendTowardMaxContrast(
           DarkPrivateLight(tint,
             high_contrast ? gfx::kGoogleGrey900 : gfx::kGoogleGrey800,
             color_utils::HSLShift(kPrivateLocationBarBackground, {
@@ -82,7 +82,7 @@ SkColor GetOmniboxColor(OmniboxPart part,
                                     high_contrast ? 0.45
                                                   : 0.56 }),
             SK_ColorWHITE),
-          gfx::ToRoundedInt(GetOmniboxStateAlpha(state) * 0xff));
+          gfx::ToRoundedInt(GetOmniboxStateOpacity(state) * 0xff));
     default:
         break;
   }
