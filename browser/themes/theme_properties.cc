@@ -38,7 +38,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kLightToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
-      return color_utils::AlphaBlend(kLightToolbarIcon, kLightToolbar, 77);
+      return color_utils::AlphaBlend(kLightToolbarIcon, kLightToolbar, 0.3f);
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kLightColorForTest;
     default:
@@ -77,7 +77,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kDarkToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
-      return color_utils::AlphaBlend(kDarkToolbarIcon, kDarkToolbar, 0x4d);
+      return color_utils::AlphaBlend(kDarkToolbarIcon, kDarkToolbar, 0.3f);
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kDarkColorForTest;
     default:
@@ -116,7 +116,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kDarkToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
-      return color_utils::AlphaBlend(kDarkToolbarIcon, kPrivateToolbar, 0x4d);
+      return color_utils::AlphaBlend(kDarkToolbarIcon, kPrivateToolbar, 0.3f);
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kPrivateColorForTest;
     // The rest is covered by a dark-appropriate value

@@ -64,7 +64,7 @@ SkColor GetOmniboxColor(OmniboxPart part,
                                   hovered ? 0.54 : 0.52 })
                           : (hovered ? color_utils::AlphaBlend(SK_ColorWHITE,
                                               SkColorSetRGB(0xf3, 0xf3, 0xf3),
-                                              178)
+                                              0.7f)
                                       : SK_ColorWHITE));
     }
     case OmniboxPart::LOCATION_BAR_TEXT_DEFAULT:
