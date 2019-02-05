@@ -137,4 +137,6 @@ void RewardsHelper::OnBrowserNoLongerActive(Browser* browser) {
   }
 }
 
+WEB_CONTENTS_USER_DATA_KEY_IMPL(RewardsHelper)
+
 }  // namespace brave_rewards

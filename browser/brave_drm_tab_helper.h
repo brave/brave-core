@@ -28,6 +28,8 @@ class BraveDrmTabHelper final
   // blink::mojom::BraveDRM
   void OnWidevineKeySystemAccessRequest() override;
 
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
+
  private:
   content::WebContentsFrameBindingSet<blink::mojom::BraveDRM> bindings_;
 

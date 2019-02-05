@@ -347,4 +347,6 @@ void BraveShieldsWebContentsObserver::AllowScriptsOnce(
   allowed_script_origins_ = std::move(origins);
 }
 
+WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveShieldsWebContentsObserver)
+
 }  // namespace brave_shields

@@ -56,6 +56,7 @@ class RewardsHelper : public content::WebContentsObserver,
   SessionID tab_id_;
   RewardsService* rewards_service_;  // NOT OWNED
 
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
   DISALLOW_COPY_AND_ASSIGN(RewardsHelper);
 };
 

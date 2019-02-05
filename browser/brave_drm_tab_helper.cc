@@ -42,3 +42,5 @@ void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
   Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
   browser->window()->UpdateToolbar(web_contents());
 }
+
+WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveDrmTabHelper)
