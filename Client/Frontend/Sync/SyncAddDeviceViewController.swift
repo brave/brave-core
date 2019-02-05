@@ -79,7 +79,7 @@ class SyncAddDeviceViewController: SyncViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = pageTitle
+        title = deviceType == .computer ? Strings.SyncAddComputerTitle : Strings.SyncAddTabletOrPhoneTitle
 
         view.addSubview(stackView)
         stackView.snp.makeConstraints { make in
@@ -247,10 +247,17 @@ class SyncAddDeviceViewController: SyncViewController {
         
         titleLabel.text = isFirstIndex ? Strings.SyncAddDeviceScan : Strings.SyncAddDeviceWords
         
-        if deviceType == .mobile {
-            descriptionLabel.text = isFirstIndex ? Strings.SyncAddMobileScanDescription : Strings.SyncAddMobileWordsDescription
-        } else if deviceType == .computer {
-            descriptionLabel.text = isFirstIndex ? Strings.SyncAddComputerScanDescription : Strings.SyncAddComputerWordsDescription
+        if isFirstIndex {
+            descriptionLabel.text = Strings.SyncAddDeviceScanDescription
+        } else {
+            // The button name should be the same as in codewords instructions.
+            let buttonName = Strings.ScanSyncCode
+            let addDeviceWords = String(format: Strings.SyncAddDeviceWordsDescription, buttonName)
+            let fontSize = descriptionLabel.font.pointSize
+            
+            // For codewords instructions copy, we want to bold the button name which needs to be tapped.
+            descriptionLabel.attributedText =
+                addDeviceWords.makePartiallyBoldAttributedString(stringToBold: buttonName, boldTextSize: fontSize)
         }
     }
     

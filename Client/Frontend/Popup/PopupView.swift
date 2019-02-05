@@ -39,14 +39,32 @@ protocol PopupViewDelegate {
     func popupViewDidDismiss(_ popupView: PopupView)
 }
 
-class ButtonData: NSObject {
-    var title: String = ""
-    var isDefault: Bool = true
-    var button: UIButton?
-    var handler: (() -> PopupViewDismissType)?
-}
-
 class PopupView: UIView, UIGestureRecognizerDelegate {
+    class ButtonData: NSObject {
+        var title: String = ""
+        var button: UIButton?
+        var handler: (() -> PopupViewDismissType)?
+        var type: ButtonType = .secondary
+        var font: UIFont = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.semibold)
+    }
+    
+    enum ButtonType {
+        case primary
+        case secondary
+        case destructive
+        
+        var color: UIColor {
+            switch self {
+            case .primary:
+                return BraveUX.Blue
+            case .secondary:
+                return BraveUX.GreyE
+            case .destructive:
+                return BraveUX.Red
+            }
+        }
+    }
+    
     static let popupView = PopupView()
     
     fileprivate var keyboardState: KeyboardState?
@@ -93,10 +111,6 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
     
     var dialogButtons: Array<ButtonData> = []
     var dialogButtonsContainer: UIView!
-    var dialogButtonDefaultTextColor: UIColor = UIColor.white
-    var dialogButtonDefaultBackgroundColor: UIColor = BraveUX.Blue
-    var dialogButtonTextColor: UIColor = UIColor.white
-    var dialogButtonBackgroundColor: UIColor = BraveUX.GreyE
     
     var delegate: PopupViewDelegate?
     
@@ -163,19 +177,17 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
             buttonWidth = rint(buttonWidth)
             
             var buttonFrame: CGRect = CGRect(x: kPopupDialogButtonPadding, y: 0, width: buttonWidth, height: kPopupDialogButtonHeight)
-            let defaultButtonFont: UIFont = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.semibold)
-            let normalButtonFont: UIFont = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.semibold)
             
             for buttonData in dialogButtons {
-                var button: UIButton? = buttonData.button
+                var button = buttonData.button
                 if button == nil {
-                    let defaultButton: Bool = buttonData.isDefault
                     button = UIButton(type: .system)
-                    button!.titleLabel!.font = defaultButton ? defaultButtonFont : normalButtonFont
+                    button!.titleLabel!.font = buttonData.font
+                    button!.titleLabel!.adjustsFontSizeToFitWidth = true
                     button!.layer.cornerRadius = buttonFrame.height / 2.0 //kPopupDialogButtonRadius
-                    button!.backgroundColor = defaultButton ? dialogButtonDefaultBackgroundColor : dialogButtonBackgroundColor
+                    button!.backgroundColor = buttonData.type.color
                     button!.setTitle(buttonData.title, for: .normal)
-                    button!.setTitleColor(defaultButton ? dialogButtonDefaultTextColor : dialogButtonTextColor, for: .normal)
+                    button!.setTitleColor(UIColor.white, for: .normal)
                     button!.addTarget(self, action: #selector(dialogButtonTapped(button:)), for: .touchUpInside)
                     buttonData.button = button
                     dialogButtonsContainer.addSubview(button!)
@@ -427,32 +439,6 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
         }
     }
     
-    func setButtonTextColor(color: UIColor) {
-        dialogButtonTextColor = color
-        
-        for buttonData in dialogButtons {
-            if let button: UIButton = buttonData.button {
-                button.setTitleColor(color, for: .normal)
-            }
-        }
-    }
-    
-    func setButtonBackgroundColor(color: UIColor) {
-        dialogButtonBackgroundColor = color
-        
-        let fadeTransition: CATransition = CATransition()
-        fadeTransition.type = kCATransitionFade
-        fadeTransition.duration = 0.2
-        dialogButtonsContainer.layer.add(fadeTransition, forKey: kCATransition)
-        
-        for buttonData in dialogButtons {
-            if let button: UIButton = buttonData.button {
-                button.layer.add(fadeTransition, forKey: kCATransition)
-                button.backgroundColor = color
-            }
-        }
-    }
-    
     func setPopupContentView(view: UIView) {
         contentView?.removeFromSuperview()
         contentView = view
@@ -461,20 +447,15 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
         setNeedsLayout()
     }
     
-    func addDefaultButton(title: String, tapped: (() -> PopupViewDismissType)?) {
+    func addButton(title: String, type: ButtonType = .secondary, fontSize: CGFloat? = nil, tapped: (() -> PopupViewDismissType)?) {
         let buttonData: ButtonData = ButtonData()
         buttonData.title = title
-        buttonData.isDefault = true
         buttonData.handler = tapped
-        dialogButtons.append(buttonData)
-        layoutIfNeeded()
-    }
-    
-    func addButton(title: String, tapped: (() -> PopupViewDismissType)?) {
-        let buttonData: ButtonData = ButtonData()
-        buttonData.title = title
-        buttonData.isDefault = false
-        buttonData.handler = tapped
+        buttonData.type = type
+        if let fontSize = fontSize {
+            buttonData.font = UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.semibold)
+        }
+        
         dialogButtons.append(buttonData)
         setNeedsLayout()
     }

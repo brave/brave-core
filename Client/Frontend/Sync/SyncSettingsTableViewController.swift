@@ -13,11 +13,9 @@ class SyncSettingsTableViewController: UITableViewController {
     
     private enum Sections: Int { case deviceList, buttons }
     
-    private struct ButtonsSection {
-        enum Position: Int, CaseIterable { case addAnotherDevice, removeDevice }
-        
-        static let count = Position.allCases.count
-    }
+    /// A different logic and UI is used depending on what device was selected to remove and if it is the only device
+    /// left in the Sync Chain.
+    enum DeviceRemovalType { case lastDeviceLeft, currentDevice, otherDevice }
     
     /// Handles dismissing parent view controller.
     var dismissHandler: (() -> Void)?
@@ -41,8 +39,19 @@ class SyncSettingsTableViewController: UITableViewController {
             log.error("frc fetch error: \(error)")
         }
         
-        // Hiding empty rows from table view.
-        tableView.tableFooterView = UIView()
+        let text = UITextView().then {
+            $0.text = Strings.SyncSettingsHeader
+            $0.textContainerInset = UIEdgeInsets(top: 36, left: 16, bottom: 16, right: 16)
+            $0.isEditable = false
+            $0.isSelectable = false
+            $0.textColor = BraveUX.GreyH
+            $0.textAlignment = .center
+            $0.font = UIFont.systemFont(ofSize: 15)
+            $0.sizeToFit()
+            $0.backgroundColor = UIColor.clear
+        }
+        
+        tableView.tableHeaderView = text
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,23 +98,77 @@ class SyncSettingsTableViewController: UITableViewController {
     // MARK: - Table view methods.
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Only button section is tappable.
-        if indexPath.section != Sections.buttons.rawValue { return }
+        defer { tableView.deselectRow(at: indexPath, animated: true) }
         
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        switch indexPath.row {
-        case ButtonsSection.Position.addAnotherDevice.rawValue:
+        if indexPath.section == Sections.buttons.rawValue {
             addAnotherDeviceAction()
-        case ButtonsSection.Position.removeDevice.rawValue:
-            removeDeviceAction()
-        default:
-            log.error("IndexPath row for SyncDeviceList buttons out of range")
+            return
         }
+        
+        guard let frc = frc, let deviceCount = frc.fetchedObjects?.count else { return }
+        let device = frc.object(at: indexPath)
+        
+        let actionShet = UIAlertController(title: device.name, message: nil, preferredStyle: .actionSheet)
+        
+        let removeAction = UIAlertAction(title: Strings.SyncRemoveDeviceAction, style: .destructive) { _ in
+            var alertType = DeviceRemovalType.otherDevice
+            
+            if deviceCount == 1 {
+                alertType = .lastDeviceLeft
+            } else if device.isCurrentDevice {
+                alertType = .currentDevice
+            }
+            
+            self.presentAlertPopup(for: alertType, device: device)
+        }
+        
+        let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil)
+        
+        actionShet.addAction(removeAction)
+        actionShet.addAction(cancelAction)
+        
+        present(actionShet, animated: true)
     }
     
-    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section != Sections.deviceList.rawValue
+    private func presentAlertPopup(for type: DeviceRemovalType, device: Device) {
+        var title: String?
+        var message: String?
+        var removeButtonName: String?
+        let deviceName = device.name ?? Strings.SyncRemoveDeviceDefaultName
+        
+        switch type {
+        case .lastDeviceLeft:
+            title = String(format: Strings.SyncRemoveLastDeviceTitle, deviceName)
+            message = Strings.SyncRemoveLastDeviceMessage
+            removeButtonName = Strings.SyncRemoveLastDeviceRemoveButtonName
+        case .currentDevice:
+            title = String(format: Strings.SyncRemoveCurrentDeviceTitle, "\(deviceName) (\(Strings.SyncThisDevice))")
+            message = Strings.SyncRemoveCurrentDeviceMessage
+            removeButtonName = Strings.RemoveDevice
+        case .otherDevice:
+            title = String(format: Strings.SyncRemoveOtherDeviceTitle, deviceName)
+            message = Strings.SyncRemoveOtherDeviceMessage
+            removeButtonName = Strings.RemoveDevice
+        }
+        
+        guard let popupTitle = title, let popupMessage = message, let popupButtonName = removeButtonName else { fatalError() }
+        
+        let popup = AlertPopupView(image: nil, title: popupTitle, message: popupMessage)
+        let fontSize: CGFloat = 15
+        
+        popup.addButton(title: Strings.CancelButtonTitle, fontSize: fontSize) { return .flyDown }
+        popup.addButton(title: popupButtonName, type: .destructive, fontSize: fontSize) {
+            switch type {
+            case .lastDeviceLeft, .currentDevice:
+                Sync.shared.leaveSyncGroup()
+                self.navigationController?.popToRootViewController(animated: true)
+            case .otherDevice:
+                device.remove()
+            }
+            return .flyDown
+        }
+        
+        popup.showWithType(showType: .flyUp)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -114,8 +177,9 @@ class SyncSettingsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let deviceCount = frc?.fetchedObjects?.count ?? 0
+        let buttonsCount = 1
         
-        return section == Sections.buttons.rawValue ? ButtonsSection.count : deviceCount
+        return section == Sections.buttons.rawValue ? buttonsCount : deviceCount
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -129,7 +193,10 @@ class SyncSettingsTableViewController: UITableViewController {
         switch indexPath.section {
         case Sections.deviceList.rawValue:
             let device = frc.object(at: indexPath)
-            cell.textLabel?.text = device.name
+            guard let name = device.name else { break }
+            let deviceName = device.isCurrentDevice ? "\(name) (\(Strings.SyncThisDevice))" : name
+            
+            cell.textLabel?.text = deviceName
         case Sections.buttons.rawValue:
             // By default all cells have separators with left inset. Our buttons are based on table cells,
             // we need to style them so they look more like buttons with full width separator between them.
@@ -155,29 +222,10 @@ class SyncSettingsTableViewController: UITableViewController {
                  NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)])
         }
         
-        var decoratedText: NSAttributedString?
-        
-        switch buttonIndex {
-        case ButtonsSection.Position.addAnotherDevice.rawValue:
-            decoratedText = attributedString(for: Strings.SyncAddAnotherDevice, color: BraveUX.Blue)
-        case ButtonsSection.Position.removeDevice.rawValue:
-            decoratedText = attributedString(for: Strings.SyncRemoveThisDevice, color: BraveUX.Red)
-        default:
-            log.error("IndexPath row for SyncDeviceList buttons out of range")
-        }
+        let decoratedText = attributedString(for: Strings.SyncAddAnotherDevice, color: BraveUX.BraveOrange)
         
         cell.textLabel?.attributedText = decoratedText
         cell.textLabel?.textAlignment = .center
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        
-        switch section {
-        case Sections.deviceList.rawValue:
-            return Strings.SyncDeviceSettingsFooter
-        default:
-            return nil
-        }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -188,19 +236,6 @@ class SyncSettingsTableViewController: UITableViewController {
         default:
             return nil
         }
-    }
-    
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section != Sections.deviceList.rawValue { return false }
-        
-        // First cell is our own device, we don't want to allow swipe to delete it.
-        return indexPath.row != 0
-     }
- 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
-        guard let deviceToDelete = frc?.object(at: indexPath), editingStyle == .delete else { return }
-        deviceToDelete.remove()
     }
 }
 

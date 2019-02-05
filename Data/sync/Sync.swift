@@ -3,6 +3,7 @@
 import UIKit
 import WebKit
 import Shared
+import BraveShared
 import CoreData
 import SwiftKeychainWrapper
 import SwiftyJSON
@@ -100,24 +101,7 @@ public class Sync: JSInjector {
     /// Please note that sync initialization also happens on app launch, not only on first connection to Sync.
     public var syncSetupFailureCallback: (() -> Void)?
     
-    var baseSyncOrder: String? {
-        get {
-            return UserDefaults.standard.string(forKey: prefBaseOrder)
-        }
-        set(value) {
-            UserDefaults.standard.set(value, forKey: prefBaseOrder)
-            UserDefaults.standard.synchronize()
-        }
-    }
-    
-    // TODO: Move to a better place
-    fileprivate let prefNameId = "device-id-js-array"
-    fileprivate let prefNameName = "sync-device-name"
-    fileprivate let prefNameSeed = "seed-js-array"
-    fileprivate let prefFetchTimestamp = "sync-fetch-timestamp"
-    fileprivate let prefBaseOrder = "sync-base-order"
-    
-    fileprivate lazy var isDebug: Bool = { return !AppConstants.BuildChannel.isRelease }()
+    fileprivate lazy var isDebug: Bool = { return AppConstants.BuildChannel == .developer }()
     
     fileprivate lazy var serverUrl: String = {
         return isDebug ? "https://sync-staging.brave.com" : "https://sync.brave.com"
@@ -158,6 +142,9 @@ public class Sync: JSInjector {
     
     private var syncFetchedHandlers = [() -> Void]()
     
+    private var baseSyncOrder: String { return Preferences.Sync.baseSyncOrder.value }
+    private var lastSyncTimestamp: Int { return Preferences.Sync.lastFetchTimestamp.value }
+    
     override init() {
         super.init()
         
@@ -170,9 +157,28 @@ public class Sync: JSInjector {
         initializeSync()
     }
     
-    public func leaveSyncGroup() {
-        // No, `leaving` logic should be here, any related logic should be in `syncSeed` setter
+    public func leaveSyncGroup(sendToSync: Bool = true) {
         syncSeed = nil
+        
+        // Leaving sync group can be triggered either on own device, or remotely, if another device in the sync chain
+        // will remove this device. In the second case we don't want to send deleted device sync record because it
+        // was already deleted and can cause an infinite loop.
+        if let device = Device.currentDevice(), sendToSync {
+            self.sendSyncRecords(action: .delete, records: [device])
+        }
+        
+        Device.deleteAll()
+        
+        lastFetchedRecordTimestamp = 0
+        Preferences.Sync.lastFetchTimestamp.reset()
+        lastFetchWasTrimmed = false
+        syncReadyLock = false
+        isSyncFullyInitialized = (false, false, false, false, false, false, false, false)
+        
+        fetchTimer?.invalidate()
+        fetchTimer = nil
+        
+        KeychainWrapper.standard.removeObject(forKey: Preferences.Sync.seedName.key)
     }
     
     func addFetchedHandler(_ handler: @escaping () -> Void) {
@@ -217,52 +223,30 @@ public class Sync: JSInjector {
     
     fileprivate var syncSeed: String? {
         get {
-            if !UserDefaults.standard.bool(forKey: prefNameSeed) {
+            let seedName = Preferences.Sync.seedName.key
+            if !Preferences.Sync.seedName.value {
                 // This must be true to stay in sync group
-                KeychainWrapper.standard.removeObject(forKey: prefNameSeed)
+                KeychainWrapper.standard.removeObject(forKey: seedName)
                 return nil
             }
             
-            return KeychainWrapper.standard.string(forKey: prefNameSeed)
+            return KeychainWrapper.standard.string(forKey: seedName)
         }
         set(value) {
+            let seedName = Preferences.Sync.seedName.key
+            
             // TODO: Move syncSeed validation here, remove elsewhere
             
             if isInSyncGroup && value != nil {
-                // Error, cannot replace sync seed with another seed
-                //  must set syncSeed to nil prior to replacing it
+                log.error("Error, cannot replace sync seed with another seed must set syncSeed to nil prior to replacing it")
                 return
             }
             
             if let value = value {
-                KeychainWrapper.standard.set(value, forKey: prefNameSeed)
-                // Here, we are storing a value to signify a group has been joined
-                //  this is _only_ used on a re-installation to know that the app was deleted and re-installed
-                UserDefaults.standard.set(true, forKey: prefNameSeed)
+                KeychainWrapper.standard.set(value, forKey: seedName)
+                Preferences.Sync.seedName.value = true
                 return
             }
-            
-            // Leave group:
-            
-            // Clean up group specific items
-            // TODO: Update all records with originalSyncSeed
-            
-            if let device = Device.currentDevice() {
-                self.sendSyncRecords(action: .delete, records: [device])
-            }
-            
-            Device.deleteAll()
-            
-            lastFetchedRecordTimestamp = 0
-            lastSuccessfulSync = 0
-            lastFetchWasTrimmed = false
-            syncReadyLock = false
-            isSyncFullyInitialized = (false, false, false, false, false, false, false, false)
-            
-            fetchTimer?.invalidate()
-            fetchTimer = nil
-            
-            KeychainWrapper.standard.removeObject(forKey: prefNameSeed)
         }
     }
     
@@ -276,16 +260,6 @@ public class Sync: JSInjector {
     // This includes just the last record that was fetched, used to store timestamp until full process has been completed
     //  then set into defaults
     fileprivate(set) var lastFetchedRecordTimestamp: Int? = 0
-    // This includes the entire process: fetching, resolving, insertion/update, and save
-    fileprivate var lastSuccessfulSync: Int {
-        get {
-            return UserDefaults.standard.integer(forKey: prefFetchTimestamp)
-        }
-        set(value) {
-            UserDefaults.standard.set(value, forKey: prefFetchTimestamp)
-            UserDefaults.standard.synchronize()
-        }
-    }
     
     // Same abstraction note as above
     //  Used to know if data on get-existing-objects was trimmed, this value is used inside resolved-sync-records
@@ -333,7 +307,7 @@ public class Sync: JSInjector {
             self.fetch(type: .devices)
             
             // Use proper variable and store in defaults
-            if lastSuccessfulSync == 0 {
+            if lastSyncTimestamp == 0 {
                 // Sync local bookmarks, then proceed with fetching
                 // Pull all local bookmarks and update their order with newly aquired device id and base sync order.
                 let context = DataController.newBackgroundContext()
@@ -361,7 +335,7 @@ public class Sync: JSInjector {
             getBaseBookmarksOrderFunction?.call(withArguments: [deviceId, "ios"]).toString() else { return nil }
         
         if baseOrder != "undefined" {
-            baseSyncOrder = baseOrder
+            Preferences.Sync.baseSyncOrder.value = baseOrder
             return Bookmark.updateBookmarksWithNewSyncOrder(context: context)
         }
         
@@ -451,7 +425,7 @@ extension Sync {
         executeBlockOnReady() {
             
             // Pass in `lastFetch` to get records since that time
-            let evaluate = "callbackList['\(type.syncFetchMethod)'](null, ['\(type.rawValue)'], \(self.lastSuccessfulSync), \(Sync.RecordFetchAmount))"
+            let evaluate = "callbackList['\(type.syncFetchMethod)'](null, ['\(type.rawValue)'], \(self.lastSyncTimestamp), \(Sync.RecordFetchAmount))"
             self.webView.evaluateJavaScript(evaluate,
                                             completionHandler: { (result, error) in
                                                 completion?(error)
@@ -473,52 +447,46 @@ extension Sync {
             fetchedRecords = fetchedRecords.sorted { device1, device2 in
                 device1.syncTimestamp ?? -1 > device2.syncTimestamp ?? -1 }.unique { $0.objectId ?? [] == $1.objectId ?? [] }
             
-        } else if recordType == .bookmark {
-            // Bookmarks are sorted to have the oldest bookmark to come in first, so it can be added before it's children.
-            fetchedRecords = fetchedRecords.sorted(by: {
-                let firstTimestamp = $0.syncTimestamp ?? 0
-                let secondTimestamp = $1.syncTimestamp ?? 0
-                
-                return firstTimestamp < secondTimestamp
-            })
         }
         
         let context = DataController.newBackgroundContext()
-        for fetchedRoot in fetchedRecords {
-            
-            guard
-                let fetchedId = fetchedRoot.objectId
-                else { return }
-            
-            let clientRecord = recordType.coredataModelType?.get(syncUUIDs: [fetchedId], context: context)?.first as? Syncable
-            
-            var action = SyncActions(rawValue: fetchedRoot.action ?? -1)
-            if action == SyncActions.delete {
-                clientRecord?.remove(sendToSync: false)
-            } else if action == SyncActions.create {
+        context.perform {
+            for fetchedRoot in fetchedRecords {
                 
-                if clientRecord != nil {
-                    // This can happen pretty often, especially for records that don't use diffs (e.g. prefs>devices)
-                    // They always return a create command, even if they already "exist", since there is no real 'resolving'
-                    //  Hence check below to prevent duplication
+                guard
+                    let fetchedId = fetchedRoot.objectId
+                    else { return }
+                
+                let clientRecord = recordType.coredataModelType?.get(syncUUIDs: [fetchedId], context: context)?.first as? Syncable
+                
+                var action = SyncActions(rawValue: fetchedRoot.action ?? -1)
+                if action == SyncActions.delete {
+                    clientRecord?.deleteResolvedRecord()
+                } else if action == SyncActions.create {
+                    
+                    if clientRecord != nil {
+                        // This can happen pretty often, especially for records that don't use diffs (e.g. prefs>devices)
+                        // They always return a create command, even if they already "exist", since there is no real 'resolving'
+                        //  Hence check below to prevent duplication
+                    }
+                    
+                    // TODO: Needs favicon
+                    if clientRecord == nil {
+                        _ = recordType.coredataModelType?.createResolvedRecord(rootObject: fetchedRoot, save: false, context: context)
+                    } else {
+                        // TODO: use Switch with `fallthrough`
+                        action = .update
+                    }
                 }
                 
-                // TODO: Needs favicon
-                if clientRecord == nil {
-                    _ = recordType.coredataModelType?.add(rootObject: fetchedRoot, save: false, sendToSync: false, context: context)
-                } else {
-                    // TODO: use Switch with `fallthrough`
-                    action = .update
+                // Handled outside of else block since .create, can modify to an .update
+                if action == .update {
+                    clientRecord?.updateResolvedRecord(fetchedRoot)
                 }
             }
             
-            // Handled outside of else block since .create, can modify to an .update
-            if action == .update {
-                clientRecord?.update(syncRecord: fetchedRoot)
-            }
+            DataController.save(context: context)
         }
-        
-        DataController.save(context: context)
         print("\(fetchedRecords.count) \(recordType.rawValue) processed")
         
         // Make generic when other record types are supported
@@ -532,7 +500,9 @@ extension Sync {
         // If there are more records with the same timestamp than the batch size, they will be dropped,
         //  however this is unimportant, as it actually prevents an infinitely recursive loop, of refetching the same records over
         //  and over again
-        if let stamp = self.lastFetchedRecordTimestamp { self.lastSuccessfulSync = stamp + 1 }
+        if let stamp = self.lastFetchedRecordTimestamp {
+            Preferences.Sync.lastFetchTimestamp.value = stamp + 1
+        }
         
         if self.lastFetchWasTrimmed {
             // Do fast refresh, do not wait for timer

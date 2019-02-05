@@ -29,11 +29,8 @@ class SafeBrowsing {
             return false
         }
         
-        let safeBrowsingLocalShield = Domain.getBraveShield(forUrl: url, shield: .SafeBrowsing,
-                                                            context: DataController.viewContext)
-        let isGlobalShieldOn = Preferences.Shields.blockPhishingAndMalware.value
-        
-        let isSafeBrowsingEnabled = Bool(truncating: (safeBrowsingLocalShield ?? NSNumber(value: isGlobalShieldOn)))
+        let domain = Domain.getOrCreateForUrl(url, context: DataController.viewContext)
+        let isSafeBrowsingEnabled = domain.isShieldExpected(.SafeBrowsing)
         let isUrlBlacklisted = domainList.contains(baseDomain)
 
         return isSafeBrowsingEnabled && isUrlBlacklisted
