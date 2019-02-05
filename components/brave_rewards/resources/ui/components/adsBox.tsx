@@ -90,7 +90,7 @@ class AdsBox extends React.Component<Props, State> {
   render () {
     let adsEnabled = false
     let adsUIEnabled = false
-    const { adsData, enabledMain } = this.props.rewardsData
+    const { adsData, enabledMain, firstLoad } = this.props.rewardsData
 
     if (adsData) {
       adsEnabled = adsData.adsEnabled
@@ -98,6 +98,7 @@ class AdsBox extends React.Component<Props, State> {
     }
 
     const toggle = !(!enabledMain || !adsUIEnabled)
+    const showDisabled = firstLoad !== false || !toggle || !adsEnabled
 
     return (
       <Box
@@ -108,7 +109,7 @@ class AdsBox extends React.Component<Props, State> {
         checked={adsEnabled}
         settingsChild={this.adsSettings(adsEnabled && enabledMain)}
         testId={'braveAdsSettings'}
-        disabledContent={this.adsDisabled()}
+        disabledContent={showDisabled ? this.adsDisabled() : null}
         onToggle={this.onAdsSettingChange.bind(this, 'adsEnabled', '')}
         settingsOpened={this.state.settings}
         onSettingsClick={this.onSettingsToggle}

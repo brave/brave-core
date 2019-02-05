@@ -55,8 +55,10 @@ class SettingsPage extends React.Component<Props, {}> {
       this.actions.getWalletProperties()
     }, 60000)
 
-    this.refreshActions()
-    this.actions.getAdsData()
+    if (this.props.rewardsData.firstLoad === false) {
+      this.refreshActions()
+      this.actions.getAdsData()
+    }
     this.actions.checkImported()
     this.actions.getGrant()
 
@@ -78,7 +80,8 @@ class SettingsPage extends React.Component<Props, {}> {
   componentDidUpdate (prevProps: Props) {
     if (
       !prevProps.rewardsData.enabledMain &&
-      this.props.rewardsData.enabledMain
+      this.props.rewardsData.enabledMain &&
+      this.props.rewardsData.firstLoad === false
     ) {
       this.refreshActions()
     }
