@@ -57,8 +57,10 @@ open class UserAgent {
 
         let webView = UIWebView()
 
-        let appVersion = AppInfo.appVersion
-        let buildNumber = AppInfo.buildNumber
+        // Currently our UA is hardcoded to match Firefoxes UA.
+        // TODO: Make it dynamic(#838)
+        let appVersion = "14.0" // AppInfo.appVersion
+        let buildNumber = "12646" // AppInfo.buildNumber
         let currentiOSVersion = UIDevice.current.systemVersion
         defaults.set(currentiOSVersion, forKey: "LastDeviceSystemVersionNumber")
         defaults.set(appVersion, forKey: "LastFirefoxVersionNumber")
@@ -83,7 +85,7 @@ open class UserAgent {
         }
 
         let mutableUA = NSMutableString(string: userAgent)
-        mutableUA.insert("FxiOS/\(appVersion)b\(AppInfo.buildNumber) ", at: mobileRange.location)
+        mutableUA.insert("FxiOS/\(appVersion)b\(buildNumber) ", at: mobileRange.location)
 
         let firefoxUA = "\(mutableUA) Safari/\(webKitVersion)"
 
