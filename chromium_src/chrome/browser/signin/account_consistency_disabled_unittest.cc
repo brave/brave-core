@@ -58,7 +58,7 @@ TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {
     TestingProfile profile;
     EXPECT_FALSE(
         AccountConsistencyModeManager::IsDiceEnabledForProfile(&profile));
-    EXPECT_EQ(signin::AccountConsistencyMethod::kDiceFixAuthErrors,
+    EXPECT_EQ(signin::AccountConsistencyMethod::kDisabled,
               AccountConsistencyModeManager::GetMethodForProfile(&profile));
 
     // Incognito profile.
@@ -68,7 +68,7 @@ TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {
     EXPECT_FALSE(
         AccountConsistencyModeManager::GetForProfile(incognito_profile));
     EXPECT_EQ(
-        signin::AccountConsistencyMethod::kDiceFixAuthErrors,
+        signin::AccountConsistencyMethod::kDisabled,
         AccountConsistencyModeManager::GetMethodForProfile(incognito_profile));
   }
 
@@ -81,7 +81,7 @@ TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {
     EXPECT_FALSE(
         AccountConsistencyModeManager::IsDiceEnabledForProfile(profile.get()));
     EXPECT_EQ(
-        signin::AccountConsistencyMethod::kDiceFixAuthErrors,
+        signin::AccountConsistencyMethod::kDisabled,
         AccountConsistencyModeManager::GetMethodForProfile(profile.get()));
   }
 
@@ -94,7 +94,7 @@ TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {
     EXPECT_FALSE(
         AccountConsistencyModeManager::IsDiceEnabledForProfile(profile.get()));
     EXPECT_EQ(
-        signin::AccountConsistencyMethod::kDiceFixAuthErrors,
+        signin::AccountConsistencyMethod::kDisabled,
         AccountConsistencyModeManager::GetMethodForProfile(profile.get()));
   }
 }

@@ -93,6 +93,7 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   // continually tries to load the same blocked URLs.
   std::set<std::string> blocked_url_paths_;
 
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
   DISALLOW_COPY_AND_ASSIGN(BraveShieldsWebContentsObserver);
 };
 

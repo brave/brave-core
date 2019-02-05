@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/signin/account_consistency_mode_manager.cc b/chrome/browser/signin/account_consistency_mode_manager.cc
-index c219e2254f8f5c8100b2c1cbef5c68f34faedfa2..2cfa9101214ee1bdd477ac823cb1e4a23f1c9dbb 100644
+index c219e2254f8f5c8100b2c1cbef5c68f34faedfa2..8cd89526ee503add8265af566259ffde1ab7beb9 100644
 --- a/chrome/browser/signin/account_consistency_mode_manager.cc
 +++ b/chrome/browser/signin/account_consistency_mode_manager.cc
 @@ -179,7 +179,9 @@ void AccountConsistencyModeManager::SetIgnoreMissingOAuthClientForTesting() {
@@ -8,7 +8,7 @@ index c219e2254f8f5c8100b2c1cbef5c68f34faedfa2..2cfa9101214ee1bdd477ac823cb1e4a2
  AccountConsistencyModeManager::GetAccountConsistencyMethod() {
 -#if defined(OS_CHROMEOS)
 +#if defined(BRAVE_CHROMIUM_BUILD)
-+  return AccountConsistencyMethod::kDiceFixAuthErrors;
++  return AccountConsistencyMethod::kDisabled;
 +#elif defined(OS_CHROMEOS)
    // TODO(https://crbug.com/860671): ChromeOS should use the cached value.
    // Changing the value dynamically is not supported.
