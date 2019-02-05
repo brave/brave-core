@@ -707,6 +707,49 @@ TEST_F(BraveBookmarkChangeProcessorTest, Utf8FromSync) {
   EXPECT_EQ(folder1->GetTitle(), title_utf16);
 }
 
+TEST_F(BraveBookmarkChangeProcessorTest, ChangeOrderUnderSameParentFromSync) {
+  BookmarkCreatedFromSyncImpl();
+
+  RecordsList records;
+  records.push_back(SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_UPDATE,
+      "121, 194, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
+      "https://a.com/",
+      "A.com - title",
+      "1.1.1.2", ""));
+  records.push_back(SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::A_UPDATE,
+      "",
+      "https://b.com/",
+      "B.com - title",
+      "1.1.1.1", ""));
+
+  change_processor()->ApplyChangesFromSyncModel(records);
+
+  // Expecting we can find the bookmarks in a model
+  std::vector<const BookmarkNode*> nodes_a;
+  model()->GetNodesByURL(GURL("https://a.com/"), &nodes_a);
+  ASSERT_EQ(nodes_a.size(), 1u);
+  const auto* node_a = nodes_a.at(0);
+  EXPECT_EQ(node_a->url().spec(), "https://a.com/");
+
+  std::vector<const BookmarkNode*> nodes_b;
+  model()->GetNodesByURL(GURL("https://b.com/"), &nodes_b);
+  ASSERT_EQ(nodes_b.size(), 1u);
+  const auto* node_b = nodes_b.at(0);
+  EXPECT_EQ(node_b->url().spec(), "https://b.com/");
+
+  EXPECT_EQ(node_a->parent(), node_b->parent());
+
+  int index_a = node_a->parent()->GetIndexOf(node_a);
+  EXPECT_NE(index_a, -1);
+
+  int index_b = node_b->parent()->GetIndexOf(node_b);
+  EXPECT_NE(index_b, -1);
+
+  EXPECT_LT(index_b, index_a);
+}
+
 using brave_sync::jslib::SyncRecord;
 ::testing::AssertionResult AssertSyncRecordsBookmarkEqual(const char* left_expr,
                                                           const char* right_expr,
