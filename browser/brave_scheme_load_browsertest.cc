@@ -62,7 +62,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, NotAllowedToLoadTest) {
 
   EXPECT_TRUE(base::MatchPattern(
       console_delegate.message(),
-      "Not allowed to load local resource: brave://settings"));
+      "Not allowed to load local resource: brave://settings/"));
 }
 
 // Test whether brave page is not loaded from different host by window.open().
@@ -103,7 +103,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   console_delegate.Wait();
   EXPECT_TRUE(base::MatchPattern(
       console_delegate.message(),
-      "Not allowed to load local resource: brave://settings"));
+      "Not allowed to load local resource: brave://settings/"));
 }
 
 // Test whether brave page is not loaded from different host indirectly by
@@ -125,7 +125,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 
   EXPECT_TRUE(base::MatchPattern(
       console_delegate.message(),
-      "Not allowed to load local resource: brave://settings"));
+      "Not allowed to load local resource: brave://settings/"));
 }
 
 // Test whether brave page is not loaded from chrome page.
@@ -143,7 +143,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   console_delegate.Wait();
   EXPECT_TRUE(base::MatchPattern(
       console_delegate.message(),
-      "Not allowed to load local resource: brave://settings"));
+      "Not allowed to load local resource: brave://settings/"));
 }
 
 // Test whether brave page is not loaded by click.
@@ -160,7 +160,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, NotAllowedToBraveByClick) {
   console_delegate.Wait();
   EXPECT_TRUE(base::MatchPattern(
       console_delegate.message(),
-      "Not allowed to load local resource: brave://settings"));
+      "Not allowed to load local resource: brave://settings/"));
 }
 
 // Test whether brave page is not loaded by middle click.
@@ -178,5 +178,5 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   console_delegate.Wait();
   EXPECT_TRUE(base::MatchPattern(
       console_delegate.message(),
-      "Not allowed to load local resource: brave://settings"));
+      "Not allowed to load local resource: brave://settings/"));
 }
