@@ -151,17 +151,23 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertFalse(Bookmark.contains(url: wrongUrl))
     }
     
-    func testGetChildren() {
+    func testGetNonFolderChildren() {
         let folder = createAndWait(url: nil, title: nil, customTitle: "Folder", isFolder: true)
         
-        let nonNestedBookmarksToAdd = 3
-        insertBookmarks(amount: nonNestedBookmarksToAdd)
+        let nonFolderBookmarksCount = 3
+        insertBookmarks(amount: nonFolderBookmarksCount, parent: folder)
         
-        // Few bookmarks inside our folder.
-        let nestedBookmarksCount = 5
-        insertBookmarks(amount: nestedBookmarksCount, parent: folder)
+        // Add folder bookmark.
+        createAndWait(url: nil,
+                      title: nil,
+                      customTitle: "InFolder",
+                      parentFolder: folder,
+                      isFolder: true,
+                      isFavorite: false,
+                      color: nil,
+                      syncOrder: nil)
         
-        XCTAssertEqual(Bookmark.getChildren(forFolderUUID: folder.syncUUID)?.count, nestedBookmarksCount)
+        XCTAssertEqual(Bookmark.getChildren(forFolderUUID: folder.syncUUID, includeFolders: false)?.count, nonFolderBookmarksCount)
     }
     
     func testGetTopLevelFolders() {
@@ -203,7 +209,7 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertEqual(object.url, url)
         
         backgroundSaveAndWaitForExpectation {
-            object.update(customTitle: newCustomTitle, url: newUrl, save: true)
+            object.update(customTitle: newCustomTitle, url: newUrl)
         }
         DataController.viewContext.refreshAllObjects()
         
@@ -227,7 +233,7 @@ class BookmarkTests: CoreDataTestCase {
         let object = createAndWait(url: URL(string: url), title: "title", customTitle: customTitle)
         XCTAssertEqual(Bookmark.getAllBookmarks(context: context).count, 1)
         
-        object.update(customTitle: customTitle, url: object.url, save: true)
+        object.update(customTitle: customTitle, url: object.url)
         sleep(UInt32(1))
         
         // Make sure not any new record was added to DB
@@ -249,7 +255,7 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertNotNil(object.domain)
         
         backgroundSaveAndWaitForExpectation {
-            object.update(customTitle: customTitle, url: badUrl, save: true)
+            object.update(customTitle: customTitle, url: badUrl)
         }
         DataController.viewContext.refreshAllObjects()
         
@@ -269,7 +275,7 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertEqual(object.displayTitle, customTitle)
         
         backgroundSaveAndWaitForExpectation {
-            object.update(customTitle: newCustomTitle, url: nil, save: true)
+            object.update(customTitle: newCustomTitle, url: nil)
         }
         DataController.viewContext.refreshAllObjects()
         
@@ -342,6 +348,27 @@ class BookmarkTests: CoreDataTestCase {
         // Assert nothing.
     }
     
+    func testSyncOrderComparator() {
+        var bookmarks = [Bookmark]()
+        
+        let syncOrders = ["1.0.10", "1.0.4", "1.0.5", "1.0.6", "1.0.7", "2.1.1", "1.0.5.1.2",
+                          "1.0.1", "1.0.2", "1.0.3", "1.0.8", "1.0.9","1.0.11", "1.0.12", "1.0.13"]
+        
+        syncOrders.forEach {
+            let bookmark = Bookmark(context: DataController.viewContext)
+            bookmark.syncOrder = $0
+            bookmarks.append(bookmark)
+        }
+        
+        let expectedOrder = ["1.0.1", "1.0.2", "1.0.3", "1.0.4", "1.0.5", "1.0.5.1.2", "1.0.6", "1.0.7",
+                             "1.0.8", "1.0.9", "1.0.10", "1.0.11", "1.0.12", "1.0.13", "2.1.1"]
+        
+        let bookmarksSorted = bookmarks.sorted()
+        let syncOrdersSorted = bookmarksSorted.compactMap { $0.syncOrder }
+        
+        XCTAssertEqual(syncOrdersSorted, expectedOrder)
+    }
+    
     // MARK: - Delete
     
     func testRemoveByUrl() {
@@ -377,7 +404,8 @@ class BookmarkTests: CoreDataTestCase {
         bookmark.site = site
         
         backgroundSaveAndWaitForExpectation {
-            Bookmark.add(rootObject: bookmark, save: true, sendToSync: true, context: DataController.newBackgroundContext())
+            Bookmark.createResolvedRecord(rootObject: bookmark, save: true,
+                                          context: DataController.newBackgroundContext())
         }
         
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
@@ -406,7 +434,7 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertNotEqual(object.url, newUrl)
         
         // No CD autosave, see the method internals.
-        object.update(syncRecord: syncBookmark)
+        object.updateResolvedRecord(syncBookmark)
         DataController.viewContext.refreshAllObjects()
         
         XCTAssertEqual(object.title, newTitle)

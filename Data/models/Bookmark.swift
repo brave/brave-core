@@ -59,19 +59,9 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         return nil
     }
     
-    /// If sync is not used, we still utilize its syncOrder algorithm to determine order of bookmarks.
-    /// Base order is needed to distinguish between bookmarks on different devices and platforms.
-    static var baseOrder: String {
-        return Sync.shared.baseSyncOrder ?? "0.0."
-    }
-    
     override public func awakeFromInsert() {
         super.awakeFromInsert()
         lastVisited = created
-    }
-    
-    public func asDictionary(deviceId: [Int]?, action: Int?) -> [String: Any] {
-        return SyncBookmark(record: self, deviceId: deviceId, action: action).dictionaryRepresentation()
     }
     
     public class func frc(forFavorites: Bool = false, parentFolder: Bookmark?) -> NSFetchedResultsController<Bookmark> {
@@ -92,19 +82,8 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
                                           sectionNameKeyPath: nil, cacheName: nil)
     }
     
-    // Syncable
-    public func update(syncRecord record: SyncRecord?) {
-        guard let bookmark = record as? SyncBookmark, let site = bookmark.site else { return }
-        title = site.title
-        update(customTitle: site.customTitle, url: site.location, newSyncOrder: bookmark.syncOrder)
-        lastVisited = Date(timeIntervalSince1970: (Double(site.lastAccessedTime ?? 0) / 1000.0))
-        syncParentUUID = bookmark.parentFolderObjectId
-        created = record?.syncNativeTimestamp
-        // No auto-save, must be handled by caller if desired
-    }
-    
-    public func update(customTitle: String?, url: String?, newSyncOrder: String? = nil, save: Bool = false,
-                       sendToSync: Bool = false) {
+    public func update(customTitle: String?, url: String?, newSyncOrder: String? = nil, save: Bool = true,
+                       sendToSync: Bool = true) {
         var contextToUpdate: NSManagedObjectContext?
         
         // Syncable.update() doesn't save to CD at the moment, we need to use managedObjectContext here.
@@ -139,8 +118,12 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
             }
         }
         
-        if newSyncOrder != nil {
+        // Checking if syncOrder has changed is imporant here for performance reasons.
+        // Currently to do bookmark sorting right, we have to grab all bookmarks in a given directory
+        // and update their order which is a costly operation.
+        if newSyncOrder != nil && syncOrder != newSyncOrder {
             syncOrder = newSyncOrder
+            Bookmark.setOrderForAllBookmarksOnGivenLevel(parent: parentFolder, forFavorites: isFavorite, context: context)
         }
         
         if save {
@@ -152,25 +135,12 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         }
     }
     
-    public static func add(rootObject root: SyncRecord?, save: Bool, sendToSync: Bool, context: NSManagedObjectContext) -> Syncable? {
-        add(rootObject: root as? SyncBookmark,
-            save: save,
-            sendToSync: sendToSync,
-            parentFolder: nil,
-            context: context)
-        
-        // TODO: Saving is done asynchronously, we should return a completion handler.
-        // Will probably need a refactor in Syncable protocol.
-        // As for now, the return value for adding bookmark is never used.
-        return nil
-    }
-    
     // Should not be used for updating, modify to increase protection
-    class func add(rootObject root: SyncBookmark?,
-                   save: Bool = false,
-                   sendToSync: Bool = false,
-                   parentFolder: Bookmark? = nil,
-                   context: NSManagedObjectContext = DataController.newBackgroundContext()) -> Bookmark? {
+    private class func add(rootObject root: SyncBookmark?,
+                           save: Bool = true,
+                           sendToSync: Bool = true,
+                           parentFolder: Bookmark? = nil,
+                           context: NSManagedObjectContext = DataController.newBackgroundContext()) -> Bookmark? {
         
         let bookmark = root
         let site = bookmark?.site
@@ -196,10 +166,20 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         bk.isFavorite = bookmark?.isFavorite ?? bk.isFavorite
         bk.isFolder = bookmark?.isFolder ?? bk.isFolder
         bk.syncUUID = root?.objectId ?? bk.syncUUID ?? SyncCrypto.uniqueSerialBytes(count: 16)
+        bk.syncOrder = root?.syncOrder
         bk.created = root?.syncNativeTimestamp ?? Date()
         
         if let location = site?.location, let url = URL(string: location) {
             bk.domain = Domain.getOrCreateForUrl(url, context: context, save: false)
+        }
+        
+        // Update parent folder if one exists
+        if let newParent = bookmark?.parentFolderObjectId {
+            bk.syncParentUUID = newParent
+        }
+        
+        if bk.syncOrder == nil {
+            bk.newSyncOrder(forFavorites: bk.isFavorite, context: context)
         }
         
         // This also sets up a parent folder
@@ -209,12 +189,19 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         //  (e.g. sync sent down bookmark before parent folder)
         if bk.isFolder {
             // Find all children and attach them
-            if let children = Bookmark.getChildren(forFolderUUID: bk.syncUUID) {
-                
-                // TODO: Setup via bk.children property instead
-                children.forEach { $0.syncParentUUID = bk.syncParentUUID }
+            if let children = Bookmark.getChildren(forFolderUUID: bk.syncUUID, context: context) {
+                // Re-link all orphaned children
+                children.forEach {
+                    $0.syncParentUUID = bk.syncUUID
+                    // The setter for syncParentUUID creates the parent/child relationship in CD, however in this specific instance
+                    // the objects have not been written to disk, so cannot be fetched on a different context and the relationship
+                    // will not be properly established. Manual attachment is necessary here during these batch additions.
+                    $0.parentFolder = bk
+                }
             }
         }
+        
+        setOrderForAllBookmarksOnGivenLevel(parent: bk.parentFolder, forFavorites: bk.isFavorite, context: context)
         
         if save {
             DataController.save(context: context)
@@ -269,7 +256,8 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         bookmark.parentFolderObjectId = parentFolder?.syncUUID
         bookmark.site = site
         
-        _ = add(rootObject: bookmark, save: save, sendToSync: true, parentFolder: parentFolder, context: context ?? DataController.newBackgroundContext())
+        _ = add(rootObject: bookmark, save: save, parentFolder: parentFolder,
+                context: context ?? DataController.newBackgroundContext())
     }
     
     public class func contains(url: URL, getFavorites: Bool = false) -> Bool {
@@ -277,37 +265,74 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         return count > 0
     }
     
-    public class func reorderBookmarks(
-        frc: NSFetchedResultsController<Bookmark>?,
-        sourceIndexPath: IndexPath,
-        destinationIndexPath: IndexPath) {
+    /// Reordering bookmarks has two steps:
+    /// 1. Sets new `syncOrder` for the source(moving) Bookmark
+    /// 2. Recalculates `syncOrder` for all Bookmarks on a given level. This is required because
+    /// we use a special String-based order and algorithg. Simple String comparision doesn't work here.
+    public class func reorderBookmarks(frc: NSFetchedResultsController<Bookmark>?, sourceIndexPath: IndexPath,
+                                       destinationIndexPath: IndexPath) {
         guard let frc = frc else { return }
         
         let dest = frc.object(at: destinationIndexPath)
         let src = frc.object(at: sourceIndexPath)
         
-        if dest === src {
+        if dest === src { return }
+        
+        let context = DataController.newBackgroundContext()
+        // Note: sync order is also used for ordering favorites and non synchronized bookmarks.
+        updateSyncOrderOfMovedBookmark(frc: frc, sourceBookmark: src,
+                                       destinationBookmark: dest,
+                                       sourceIndexPath: sourceIndexPath,
+                                       destinationIndexPath: destinationIndexPath,
+                                       context: context)
+        
+        setOrderForAllBookmarksOnGivenLevel(parent: src.parentFolder, forFavorites: src.isFavorite, context: context)
+        
+        DataController.save(context: context)
+        // Updating sync orders is not supported on server side yet, see issue #772 for more details.
+        if !src.isFavorite { Sync.shared.sendSyncRecords(action: .update, records: [src]) }
+    }
+    
+    private class func updateSyncOrderOfMovedBookmark(frc: NSFetchedResultsController<Bookmark>,
+                                                      sourceBookmark src: Bookmark,
+                                                      destinationBookmark dest: Bookmark,
+                                                      sourceIndexPath: IndexPath,
+                                                      destinationIndexPath: IndexPath,
+                                                      context: NSManagedObjectContext) {
+        
+        guard let srcBgContext = context.object(with: src.objectID) as? Bookmark,
+            let destBgContext = context.object(with: dest.objectID) as? Bookmark else {
             return
         }
         
-        // Warning, this could be a bottleneck, grabs ALL the bookmarks in the current folder
-        // But realistically, with a batch size of 20, and most reads around 1ms, a bottleneck here is an edge case.
-        // Optionally: grab the parent folder, and the on a bg thread iterate the bms and update their order. Seems like overkill.
-        var bms = frc.fetchedObjects!
-        bms.remove(at: bms.index(of: src)!)
-        if sourceIndexPath.row > destinationIndexPath.row {
-            // insert before
-            bms.insert(src, at: bms.index(of: dest)!)
+        // Depending on drag direction, all other bookmarks are pushed up or down.
+        let isMovingUp = sourceIndexPath.row > destinationIndexPath.row
+        
+        var previousOrder: String?
+        var nextOrder: String?
+        
+        if isMovingUp {
+            let bookmarkMovedToTop = destinationIndexPath.row == 0
+            // A Bookmark that is moved to top has no previous bookmark.
+            if !bookmarkMovedToTop {
+                let index = IndexPath(row: destinationIndexPath.row - 1, section: destinationIndexPath.section)
+                let objectAtIndexOnBgContext = context.object(with: frc.object(at: index).objectID) as? Bookmark
+                previousOrder = objectAtIndexOnBgContext?.syncOrder
+            }
+            
+            nextOrder = destBgContext.syncOrder
         } else {
-            let end = bms.index(of: dest)! + 1
-            bms.insert(src, at: end)
+            previousOrder = destBgContext.syncOrder
+            
+            // A Bookmark that is moved to bottom has no next bookmark.
+            if let objects = frc.fetchedObjects, destinationIndexPath.row + 1 < objects.count {
+                let index = IndexPath(row: destinationIndexPath.row + 1, section: destinationIndexPath.section)
+                let objectAtIndexOnBgContext = context.object(with: frc.object(at: index).objectID) as? Bookmark
+                nextOrder = objectAtIndexOnBgContext?.syncOrder
+            }
         }
         
-        for i in 0..<bms.count {
-            bms[i].order = Int16(i)
-        }
-        
-        DataController.save(context: frc.managedObjectContext)
+        srcBgContext.syncOrder = Sync.shared.getBookmarkOrder(previousOrder: previousOrder, nextOrder: nextOrder)
     }
     
     /// Takes all Bookmarks and Favorites from 1.6 and sets correct order for them.
@@ -359,24 +384,46 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         // bookmark.parentFolderObjectId = [parentFolder]
         bookmark.site = site
         
-        return self.add(rootObject: bookmark, save: true)
+        return self.add(rootObject: bookmark)
     }
     
-    public func remove(sendToSync: Bool = true) {
-        if isFavorite { delete() }
-        
-        // Before we delete a folder and its children, we need to grab all children bookmarks
-        // and send them to sync with `delete` action.
-        if isFolder && sendToSync {
-            removeFolderAndSendSyncRecords(uuid: syncUUID)
-            return
+    public func delete(sendToSync: Bool = true) {
+        func deleteFromStore() {
+            let context = DataController.newBackgroundContext()
+            
+            do {
+                let objectOnContext = try context.existingObject(with: self.objectID)
+                context.delete(objectOnContext)
+                
+                DataController.save(context: context)
+            } catch {
+                log.warning("Could not find object: \(self) on a background context.")
+            }
         }
+        
+        if isFavorite { deleteFromStore() }
         
         if sendToSync {
-            Sync.shared.sendSyncRecords(action: .delete, records: [self])
+            // Before we delete a folder and its children, we need to grab all children bookmarks
+            // and send them to sync with `delete` action.
+            if isFolder {
+                removeFolderAndSendSyncRecords(uuid: syncUUID)
+            } else {
+                Sync.shared.sendSyncRecords(action: .delete, records: [self])
+            }
         }
         
-        delete()
+        deleteFromStore()
+    }
+    
+    /// Removes a single Bookmark of a given URL.
+    /// In case of having two bookmarks with the same url, a bookmark to delete is chosen randomly.
+    public class func remove(forUrl url: URL) {
+        let context = DataController.newBackgroundContext()
+        let predicate = isFavoriteOrBookmarkByUrlPredicate(url: url, getFavorites: false)
+        
+        let record = first(where: predicate, context: context)
+        record?.delete()
     }
     
     private func removeFolderAndSendSyncRecords(uuid: [Int]?) {
@@ -392,8 +439,6 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         }
         
         Sync.shared.sendSyncRecords(action: .delete, records: allBookmarks)
-        
-        delete()
     }
 }
 
@@ -412,7 +457,8 @@ extension Bookmark {
         return NSPredicate(format: "\(urlKeyPath) == %@ AND \(isFavoriteKeyPath) == \(NSNumber(value: getFavorites))", url.absoluteString)
     }
     
-    public static func getChildren(forFolderUUID syncUUID: [Int]?, ignoreFolders: Bool = false) -> [Bookmark]? {
+    public static func getChildren(forFolderUUID syncUUID: [Int]?, includeFolders: Bool = true,
+                                   context: NSManagedObjectContext = DataController.viewContext) -> [Bookmark]? {
         guard let searchableUUID = SyncHelpers.syncDisplay(fromUUID: syncUUID) else {
             return nil
         }
@@ -420,10 +466,15 @@ extension Bookmark {
         let syncParentDisplayUUIDKeyPath = #keyPath(Bookmark.syncParentDisplayUUID)
         let isFolderKeyPath = #keyPath(Bookmark.isFolder)
         
-        let predicate = NSPredicate(format: "\(syncParentDisplayUUIDKeyPath) == %@ AND \(isFolderKeyPath) == %@",
-            searchableUUID, NSNumber(value: ignoreFolders))
+        var query = "\(syncParentDisplayUUIDKeyPath) == %@"
         
-        return all(where: predicate)
+        if !includeFolders {
+            query += " AND \(isFolderKeyPath) == false"
+        }
+        
+        let predicate = NSPredicate(format: query, searchableUUID)
+        
+        return all(where: predicate, context: context)
     }
     
     static func get(parentSyncUUID parentUUID: [Int]?, context: NSManagedObjectContext?) -> Bookmark? {
@@ -450,14 +501,6 @@ extension Bookmark {
         let predicate = NSPredicate(format: "isFavorite == NO")
         
         return all(where: predicate) ?? []
-    }
-    
-    public class func remove(forUrl url: URL) {
-        let context = DataController.newBackgroundContext()
-        let predicate = isFavoriteOrBookmarkByUrlPredicate(url: url, getFavorites: false)
-        
-        let record = first(where: predicate, context: context)
-        record?.delete()
     }
     
     /// Gets all nested bookmarks recursively.
@@ -505,5 +548,90 @@ extension Bookmark {
             log.error(error)
         }
         return [Bookmark]()
+    }
+}
+
+
+// MARK: - Syncable methods
+extension Bookmark {
+    public static func createResolvedRecord(rootObject root: SyncRecord?, save: Bool,
+                                            context: NSManagedObjectContext) {
+        add(rootObject: root as? SyncBookmark,
+            save: save,
+            sendToSync: false,
+            context: context)
+        
+        // TODO: Saving is done asynchronously, we should return a completion handler.
+        // Will probably need a refactor in Syncable protocol.
+        // As for now, the return value for adding bookmark is never used.
+    }
+
+    public func updateResolvedRecord(_ record: SyncRecord?) {
+        guard let bookmark = record as? SyncBookmark, let site = bookmark.site else { return }
+        title = site.title
+        update(customTitle: site.customTitle, url: site.location,
+               newSyncOrder: bookmark.syncOrder, save: false, sendToSync: false)
+        lastVisited = Date(timeIntervalSince1970: (Double(site.lastAccessedTime ?? 0) / 1000.0))
+        syncParentUUID = bookmark.parentFolderObjectId
+        created = record?.syncNativeTimestamp
+        // No auto-save, must be handled by caller if desired
+    }
+    
+    public func deleteResolvedRecord() {
+        delete(sendToSync: false)
+    }
+    
+    public func asDictionary(deviceId: [Int]?, action: Int?) -> [String: Any] {
+        return SyncBookmark(record: self, deviceId: deviceId, action: action).dictionaryRepresentation()
+    }
+}
+
+// MARK: - Comparable
+extension Bookmark: Comparable {
+    // Please note that for equality check `syncUUID` is used
+    // but for checking if a Bookmark is less/greater than another Bookmark we check using `syncOrder`
+    public static func == (lhs: Bookmark, rhs: Bookmark) -> Bool {
+        return lhs.syncUUID == rhs.syncUUID
+    }
+    
+    public static func < (lhs: Bookmark, rhs: Bookmark) -> Bool {
+        return lhs.compare(rhs) == .orderedAscending
+    }
+    
+    private func compare(_ rhs: Bookmark) -> ComparisonResult {
+        
+        guard let lhsSyncOrder = syncOrder, let rhsSyncOrder = rhs.syncOrder else {
+            log.info("""
+                Wanting to compare bookmark: \(String(describing: displayTitle)) \
+                and \(String(describing: rhs.displayTitle)) but no syncOrder is set \
+                in at least one of them.
+                """)
+            return .orderedSame
+        }
+        
+        // Split is O(n)
+        let lhsSyncOrderBits = lhsSyncOrder.split(separator: ".").compactMap { Int($0) }
+        let rhsSyncOrderBits = rhsSyncOrder.split(separator: ".").compactMap { Int($0) }
+        
+        // Preventing going out of bounds.
+        for i in 0..<min(lhsSyncOrderBits.count, rhsSyncOrderBits.count) {
+            let comparison = lhsSyncOrderBits[i].compare(rhsSyncOrderBits[i])
+            if comparison != .orderedSame { return comparison }
+        }
+        
+        // We went through all numbers and everything is equal.
+        // Need to check if one of arrays has more numbers because 0.0.1.1 > 0.0.1
+        //
+        // Alternatively, we could append zeros to make int arrays between the two objects
+        // have same length. 0.0.1 vs 0.0.1.2 would convert to 0.0.1.0 vs 0.0.1.2
+        return lhsSyncOrderBits.count.compare(rhsSyncOrderBits.count)
+    }
+}
+
+extension Int {
+    func compare(_ against: Int) -> ComparisonResult {
+        if self > against { return .orderedDescending }
+        if self < against { return .orderedAscending }
+        return .orderedSame
     }
 }

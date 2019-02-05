@@ -44,6 +44,11 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     // MARK: - State
     
     private func updateToggleStatus() {
+        var domain: Domain?
+        if let url = url {
+            domain = Domain.getOrCreateForUrl(url, context: DataController.viewContext)
+        }
+        
         shieldControlMapping.forEach { shield, view, option in
             
             // Updating based on global settings
@@ -59,10 +64,9 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
             
             // Domain specific overrides after defaults have already been setup
             
-            if let url = url, let shieldState = Domain.getBraveShield(forUrl: url, shield: shield) {
+            if let domain = domain {
                 // site-specific shield has been overridden, update
-                
-                view.toggleSwitch.isOn = Bool(truncating: shieldState)
+                view.toggleSwitch.isOn = domain.isShieldExpected(shield)
                 if shield == .AllOff {
                     // Reverse, as logic is inverted
                     view.toggleSwitch.isOn.toggle()
@@ -79,14 +83,14 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
         shieldsView.shieldsContainerStackView.fingerprintingStatView.valueLabel.text = String(tab.contentBlocker.stats.fingerprintingCount)
     }
     
-    private func updateBraveShieldState(shield: BraveShieldState.Shield, on: Bool, option: Preferences.Option<Bool>?) {
+    private func updateBraveShieldState(shield: BraveShield, on: Bool, option: Preferences.Option<Bool>?) {
         guard let url = url else { return }
         let allOff = shield == .AllOff
         // `.AllOff` uses inverse logic. Technically we set "all off" when the switch is OFF, unlike all the others
         // If the new state is the same as the global preference, reset it to nil so future shield state queries
         // respect the global preference rather than the overridden value. (Prevents toggling domain state from
         // affecting future changes to the global pref)
-        let isOn = allOff ? !on : (on == option?.value ? nil : on)
+        let isOn = allOff ? !on : on
         Domain.setBraveShield(forUrl: url, shield: shield, isOn: isOn)
     }
     
@@ -117,7 +121,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     // MARK: -
     
     /// Groups the shield types with their control and global preference
-    private lazy var shieldControlMapping: [(BraveShieldState.Shield, ToggleView, Preferences.Option<Bool>?)] = [
+    private lazy var shieldControlMapping: [(BraveShield, ToggleView, Preferences.Option<Bool>?)] = [
         (.AllOff, shieldsView.shieldOverrideControl, nil),
         (.AdblockAndTp, shieldsView.shieldsContainerStackView.adsTrackersControl, Preferences.Shields.blockAdsAndTracking),
         (.SafeBrowsing, shieldsView.shieldsContainerStackView.blockMalwareControl, Preferences.Shields.blockPhishingAndMalware),

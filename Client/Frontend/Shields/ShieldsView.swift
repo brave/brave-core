@@ -191,6 +191,7 @@ extension ShieldsViewController {
             let l = UILabel()
             l.font = .systemFont(ofSize: 15.0)
             l.adjustsFontSizeToFitWidth = true
+            l.numberOfLines = 0
             return l
         }()
         /// Create the stat view with a given title and color

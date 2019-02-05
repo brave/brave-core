@@ -26,7 +26,10 @@ private extension TrayToBrowserAnimator {
         let tabManager = bvc.tabManager
         let displayedTabs = tabManager.tabsForCurrentMode
         guard let expandFromIndex = displayedTabs.index(of: selectedTab) else { return }
-
+        guard displayedTabs.index(of: selectedTab) != nil else {
+            transitionContext.completeTransition(false)
+            return
+        }
         bvc.view.frame = transitionContext.finalFrame(for: bvc)
 
         // Hide browser components

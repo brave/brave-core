@@ -52,8 +52,28 @@ class DeviceTests: CoreDataTestCase {
     func testAddWithSave() {
         let context = DataController.newBackgroundContext()
         backgroundSaveAndWaitForExpectation {
-            let device = Device.add(rootObject: nil, save: true, sendToSync: false, context: context) as? Device
-            XCTAssertNotNil(device)
+            Device.createResolvedRecord(rootObject: nil, save: true, context: context)
+        }
+        
+        XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
+    }
+    
+    func testUniqueSyncUUID() {
+        let context = DataController.newBackgroundContext()
+        
+        XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 0)
+        backgroundSaveAndWaitForExpectation {
+            Device.createResolvedRecord(rootObject: nil, save: true, context: context)
+        }
+        XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
+        
+        let device = try! DataController.viewContext.fetch(fetchRequest).first
+        
+        let root = SyncDevice()
+        root.objectId = device?.syncUUID
+        
+        backgroundSaveAndWaitForExpectation {
+            Device.createResolvedRecord(rootObject: root, save: true, context: context)
         }
         
         XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
@@ -77,7 +97,7 @@ class DeviceTests: CoreDataTestCase {
         XCTAssertNotEqual(device?.deviceId, newDeviceId)
         
         // No CD save
-        device?.update(syncRecord: root)
+        device?.updateResolvedRecord(root)
         
         XCTAssertEqual(device?.name, newName)
         XCTAssertEqual(device?.deviceId, newDeviceId)

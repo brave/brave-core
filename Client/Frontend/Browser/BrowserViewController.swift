@@ -186,7 +186,7 @@ class BrowserViewController: UIViewController {
         Preferences.Privacy.privateBrowsingOnly.observe(from: self)
         Preferences.General.tabBarVisibility.observe(from: self)
         Preferences.Shields.allShields.forEach { $0.observe(from: self) }
-        
+        Preferences.Privacy.blockAllCookies.observe(from: self)
         // Lists need to be compiled before attempting tab restoration
         contentBlockListDeferred = ContentBlockerHelper.compileLists()
     }
@@ -1277,7 +1277,8 @@ class BrowserViewController: UIViewController {
             self.browserLockPopup = nil
             return .flyDown
         }
-        popup.addDefaultButton(title: Strings.Browser_lock_callout_enable) { [weak self] () -> PopupViewDismissType in
+        
+        popup.addButton(title: Strings.Browser_lock_callout_enable, type: .primary) { [weak self] () -> PopupViewDismissType in
             Preferences.Popups.browserLock.value = true
             self?.browserLockPopup = nil
             
@@ -1321,7 +1322,7 @@ class BrowserViewController: UIViewController {
             self.duckDuckGoPopup = nil
             return .flyDown
         }
-        popup.addDefaultButton(title: Strings.DDG_callout_enable) { [weak self] in
+        popup.addButton(title: Strings.DDG_callout_enable, type: .primary) { [weak self] in
             self?.duckDuckGoPopup = nil
             
             if self?.profile == nil {
@@ -2918,6 +2919,8 @@ extension BrowserViewController: PreferencesObserver {
              Preferences.Shields.blockImages.key,
              Preferences.Shields.fingerprintingProtection.key:
             tabManager.allTabs.forEach { $0.webView?.reload() }
+        case Preferences.Privacy.blockAllCookies.key:
+            tabManager.reset()
         default:
             log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
             break
