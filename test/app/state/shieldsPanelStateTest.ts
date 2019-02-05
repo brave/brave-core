@@ -1,10 +1,7 @@
-/* global describe, it */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import 'mocha'
-import * as assert from 'assert'
 import * as deepFreeze from 'deep-freeze-node'
 import * as shieldsPanelState from '../../../app/state/shieldsPanelState'
 import { State } from '../../../app/types/state/shieldsPannelState'
@@ -36,13 +33,13 @@ const state: State = deepFreeze({
 
 describe('shieldsPanelState test', () => {
   describe('getActiveTabId', () => {
-    it('Obtains the active tab ID based on the current window', function () {
-      assert.equal(shieldsPanelState.getActiveTabId(state), 2)
+    it('Obtains the active tab ID based on the current window', () => {
+      expect(shieldsPanelState.getActiveTabId(state)).toEqual(2)
     })
   })
   describe('getActiveTabData', () => {
-    it('', function () {
-      assert.deepEqual(shieldsPanelState.getActiveTabData(state), {
+    it('', () => {
+      expect(shieldsPanelState.getActiveTabData(state)).toEqual({
         id: 2,
         ads: 'block',
         trackers: 'block',
@@ -54,8 +51,8 @@ describe('shieldsPanelState test', () => {
     })
   })
   describe('updateActiveTab', () => {
-    it('can update focused window', function () {
-      assert.deepEqual(shieldsPanelState.updateActiveTab(state, 1, 4), {
+    it('can update focused window', () => {
+      expect(shieldsPanelState.updateActiveTab(state, 1, 4)).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -80,8 +77,8 @@ describe('shieldsPanelState test', () => {
         }
       })
     })
-    it('can update a window which is not focused', function () {
-      assert.deepEqual(shieldsPanelState.updateActiveTab(state, 2, 4), {
+    it('can update a window which is not focused', () => {
+      expect(shieldsPanelState.updateActiveTab(state, 2, 4)).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -108,8 +105,8 @@ describe('shieldsPanelState test', () => {
     })
   })
   describe('removeWindowInfo', () => {
-    it('can remove the focused window', function () {
-      assert.deepEqual(shieldsPanelState.removeWindowInfo(state, 1), {
+    it('can remove the focused window', () => {
+      expect(shieldsPanelState.removeWindowInfo(state, 1)).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -133,8 +130,8 @@ describe('shieldsPanelState test', () => {
         }
       })
     })
-    it('can remove a window which is not focused', function () {
-      assert.deepEqual(shieldsPanelState.removeWindowInfo(state, 2), {
+    it('can remove a window which is not focused', () => {
+      expect(shieldsPanelState.removeWindowInfo(state, 2)).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -160,8 +157,8 @@ describe('shieldsPanelState test', () => {
     })
   })
   describe('updateFocusedWindow', () => {
-    it('updates the currentWindowId', function () {
-      assert.deepEqual(shieldsPanelState.updateFocusedWindow(state, 2), {
+    it('updates the currentWindowId', () => {
+      expect(shieldsPanelState.updateFocusedWindow(state, 2)).toEqual({
         currentWindowId: 2,
         tabs: {
           2: {
@@ -188,16 +185,16 @@ describe('shieldsPanelState test', () => {
     })
   })
   describe('updateTabShieldsData', () => {
-    it('updates the correct tabId data', function () {
+    it('updates the correct tabId data', () => {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.updateTabShieldsData(state, this.tabId, {
+      expect(shieldsPanelState.updateTabShieldsData(state, this.tabId, {
         ads: 'allow',
         trackers: 'allow',
         httpUpgradableResources: 'allow',
         javascript: 'allow',
         fingerprinting: 'allow',
         cookies: 'allow'
-      }), {
+      })).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -237,7 +234,7 @@ describe('shieldsPanelState test', () => {
     })
   })
   describe('resetBlockingStats', () => {
-    it('sets the specified stats back to 0 for the active tab', function () {
+    it('sets the specified stats back to 0 for the active tab', () => {
       this.tabId = 2
       const stateWithStats: State = {
         currentWindowId: 1,
@@ -329,7 +326,7 @@ describe('shieldsPanelState test', () => {
       stateWithStats.tabs[this.tabId].httpsRedirected = 5
       stateWithStats.tabs[this.tabId].javascriptBlocked = 6
       stateWithStats.tabs[this.tabId].fingerprintingBlocked = 7
-      assert.deepEqual(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId), {
+      expect(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId)).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -414,7 +411,7 @@ describe('shieldsPanelState test', () => {
         }
       })
     })
-    it('sets the specified stats back to 0 for the a non active tab', function () {
+    it('sets the specified stats back to 0 for the a non active tab', () => {
       this.tabId = 4
       const stateWithStats: State = {
         currentWindowId: 1,
@@ -501,7 +498,7 @@ describe('shieldsPanelState test', () => {
         }
       }
 
-      assert.deepEqual(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId), {
+      expect(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId)).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -588,9 +585,9 @@ describe('shieldsPanelState test', () => {
     })
   })
   describe('updateResourceBlocked', () => {
-    it('can update ads blocked count', function () {
+    it('can update ads blocked count', () => {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads', 'https://test.brave.com'), {
+      expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads', 'https://test.brave.com')).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -626,9 +623,9 @@ describe('shieldsPanelState test', () => {
         }
       })
     })
-    it('can update tracking protection blocked count', function () {
+    it('can update tracking protection blocked count', () => {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'trackers', 'https://test.brave.com'), {
+      expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'trackers', 'https://test.brave.com')).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -664,9 +661,9 @@ describe('shieldsPanelState test', () => {
         }
       })
     })
-    it('can update javascript blocked count and noScriptInfo', function () {
+    it('can update javascript blocked count and noScriptInfo', () => {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'javascript', 'https://test.brave.com'), {
+      expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'javascript', 'https://test.brave.com')).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -771,10 +768,10 @@ describe('shieldsPanelState test', () => {
         2: 3
       }
     }
-    it('reset noScriptInfo for a specific tab without navigating away', function () {
+    it('reset noScriptInfo for a specific tab without navigating away', () => {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.resetNoScriptInfo(
-        stateWithAllowedScriptOrigins, this.tabId, 'https://brave.com'), {
+      expect(shieldsPanelState.resetNoScriptInfo(
+        stateWithAllowedScriptOrigins, this.tabId, 'https://brave.com')).toEqual({
           currentWindowId: 1,
           tabs: {
             2: {
@@ -839,10 +836,10 @@ describe('shieldsPanelState test', () => {
           }
       })
     })
-    it('reset noScriptInfo for a specific tab with navigating away', function () {
+    it('reset noScriptInfo for a specific tab with navigating away', () => {
       this.tabId = 2
-      assert.deepEqual(shieldsPanelState.resetNoScriptInfo(
-        stateWithAllowedScriptOrigins, this.tabId, 'https://test.brave.com'), {
+      expect(shieldsPanelState.resetNoScriptInfo(
+        stateWithAllowedScriptOrigins, this.tabId, 'https://test.brave.com')).toEqual({
           currentWindowId: 1,
           tabs: {
             2: {
