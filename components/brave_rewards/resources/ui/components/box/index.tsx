@@ -71,8 +71,6 @@ export default class Box extends React.PureComponent<Props, {}> {
       onSettingsClick
     } = this.props
 
-    const isDisabled = (toggle && !checked) || (!toggle && disabledContent)
-
     return (
       <StyledWrapper>
         <StyledCard
@@ -113,7 +111,7 @@ export default class Box extends React.PureComponent<Props, {}> {
               </StyledRight>
               <StyledContent>
                 {
-                  isDisabled
+                  disabledContent
                   ? disabledContent
                   : children
                 }

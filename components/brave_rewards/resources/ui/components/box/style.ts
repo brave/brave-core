@@ -64,10 +64,7 @@ export const StyledTitle = styled<StyleProps, 'div'>('div')`
   font-weight: 600;
   line-height: 1.27;
   letter-spacing: normal;
-  color: ${p => {
-    if (p.checked === false) return '#838391'
-    return p.type && colors[p.type] || '#4b4c5c'
-  }};
+  color: ${p => p.type && colors[p.type] || '#4b4c5c'};
 `
 
 export const StyledBreak = styled<{}, 'div'>('div')`
