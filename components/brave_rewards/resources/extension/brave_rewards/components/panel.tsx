@@ -173,7 +173,7 @@ export class Panel extends React.Component<Props, State> {
 
   openRewardsAddFundsPage () {
     chrome.tabs.create({
-      url: 'brave://rewards/#add-funds'
+      url: 'chrome://rewards/#add-funds'
     })
   }
 
