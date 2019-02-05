@@ -36,7 +36,7 @@ void SetDefaultValueForShield(Profile* profile,
 // Iterates over all switches that are able to change defaults and adjusts
 // content settings accordingly. May DCHECK if switch values have anything
 // unexpected!
-void SetShieldsDefaultsFromCommandLineForTesting(Profile* profile);
+void SetShieldsDefaultsFromCommandLine(Profile* profile);
 
 bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
     const GURL& primary_url, const GURL& secondary_url,

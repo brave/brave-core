@@ -142,7 +142,7 @@ void SetDefaultValueForShield(Profile* profile,
   }
 }
 
-void SetShieldsDefaultsFromCommandLineForTesting(Profile* profile) {
+void SetShieldsDefaultsFromCommandLine(Profile* profile) {
   using namespace brave_shields::switches;
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
 
@@ -165,12 +165,12 @@ void SetShieldsDefaultsFromCommandLineForTesting(Profile* profile) {
     }
   };
 
-  handle_switch(kShieldsAdsSetDefaultForTesting, kAds);
-  handle_switch(kShieldsHttpsSetDefaultForTesting, kHTTPUpgradableResources);
-  handle_switch(kShieldsJavaScriptSetDefaultForTesting, kJavaScript);
-  handle_switch(kShieldsFingerprintingSetDefaultForTesting, kFingerprinting);
-  handle_switch(kShieldsSetDefaultForTesting, kBraveShields);
-  handle_switch(kShieldsCookiesSetDefaultForTesting, kCookies);
+  handle_switch(kShieldsAdsSetDefault, kAds);
+  handle_switch(kShieldsHttpseSetDefault, kHTTPUpgradableResources);
+  handle_switch(kShieldsNoScriptSetDefault, kJavaScript);
+  handle_switch(kShieldsFingerprintingSetDefault, kFingerprinting);
+  handle_switch(kShieldsSetDefault, kBraveShields);
+  handle_switch(kShieldsCookiePolicySetDefault, kCookies);
 }
 
 bool IsAllowContentSettingFromIO(const net::URLRequest* request,

@@ -13,25 +13,22 @@ namespace switches {
 // a given value in content settings of any loaded user profile. Switches
 // behavior mirrors the behavior of toggles on brave://settings/shields.
 //
-// Example: --set-shields-ads-default-for-testing=block
+// Example: --set-shields-ads-default=block
 
-constexpr char kShieldsAdsSetDefaultForTesting[] =
-    "set-shields-ads-default-for-testing";
+constexpr char kShieldsAdsSetDefault[] = "set-shields-ads-default";
 
-constexpr char kShieldsHttpsSetDefaultForTesting[] =
-    "set-shields-https-default-for-testing";
+constexpr char kShieldsHttpseSetDefault[] = "set-shields-httpse-default";
 
-constexpr char kShieldsJavaScriptSetDefaultForTesting[] =
-    "set-shields-javascript-default-for-testing";
+constexpr char kShieldsNoScriptSetDefault[] =
+    "set-shields-noscript-default";
 
-constexpr char kShieldsFingerprintingSetDefaultForTesting[] =
-    "set-shields-fingerprinting-default-for-testing";
+constexpr char kShieldsFingerprintingSetDefault[] =
+    "set-shields-fingerprinting-default";
 
-constexpr char kShieldsSetDefaultForTesting[] =
-    "set-shields-default-for-testing";
+constexpr char kShieldsSetDefault[] = "set-shields-default";
 
-constexpr char kShieldsCookiesSetDefaultForTesting[] =
-    "set-shields-cookies-default-for-testing";
+constexpr char kShieldsCookiePolicySetDefault[] =
+    "set-shields-cookie-policy-default";
 
 constexpr char kBlock[] = "block";
 constexpr char kBlock3rd[] = "block3rd";

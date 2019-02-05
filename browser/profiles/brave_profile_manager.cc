@@ -109,13 +109,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   brave_sync::BraveSyncServiceFactory::GetForProfile(profile);
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-<<<<<<< HEAD
   content::URLDataSource::Add(profile,
       std::make_unique<brave_content::BraveSharedResourcesDataSource>());
-=======
-
-  brave_shields::SetShieldsDefaultsFromCommandLineForTesting(profile);
->>>>>>> Issue 3076: Introduce command line overrides for shield prefs.
+  brave_shields::SetShieldsDefaultsFromCommandLine(profile);
 }
 
 void BraveProfileManager::LaunchTorProcess(Profile* profile) {
