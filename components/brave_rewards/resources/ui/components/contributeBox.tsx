@@ -183,22 +183,22 @@ class ContributeBox extends React.Component<Props, State> {
       numExcludedSites,
       autoContributeList
     } = this.props.rewardsData
-    const toggleOn = !(firstLoad !== false || !enabledMain)
     const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(walletInfo.choices, walletInfo.rates)
     const contributeRows = this.getContributeRows(autoContributeList)
     const topRows = contributeRows.slice(0, 5)
     const numRows = contributeRows && contributeRows.length
     const allSites = !(numRows > 5)
+    const showDisabled = firstLoad !== false || !enabledMain || !enabledContribute
 
     return (
       <Box
         title={getLocale('contributionTitle')}
         type={'contribute'}
         description={getLocale('contributionDesc')}
-        toggle={toggleOn}
-        checked={toggleOn ? enabledContribute : false}
+        toggle={enabledMain}
+        checked={enabledMain ? enabledContribute : false}
         settingsChild={this.contributeSettings(monthlyList)}
-        disabledContent={this.contributeDisabled()}
+        disabledContent={showDisabled ? this.contributeDisabled() : null}
         onToggle={this.onToggleContribution}
         testId={'autoContribution'}
         settingsOpened={this.state.settings}
