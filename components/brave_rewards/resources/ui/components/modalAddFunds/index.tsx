@@ -114,10 +114,10 @@ export default class ModalAddFunds extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { id, onClose, addresses } = this.props
+    const { id, onClose, addresses, isMobile } = this.props
 
     return (
-      <Modal id={id} onClose={onClose}>
+      <Modal id={id} onClose={onClose} isMobile={isMobile}>
         <StyledWrapper>
           <StyledTitle>{getLocale('addFundsTitle')}</StyledTitle>
           <StyledText>

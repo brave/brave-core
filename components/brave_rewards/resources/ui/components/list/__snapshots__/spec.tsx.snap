@@ -57,6 +57,14 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   text-align: right;
 }
 
+@media (max-width:390px) {
+  .c2 {
+    -webkit-flex-basis: 80%;
+    -ms-flex-preferred-size: 80%;
+    flex-basis: 80%;
+  }
+}
+
 <div
   className="c0"
   id="list"
