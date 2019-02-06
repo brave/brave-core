@@ -1,11 +1,7 @@
-/* global describe, it, before, after, afterEach */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import 'mocha'
-import * as sinon from 'sinon'
-import * as assert from 'assert'
 import * as types from '../../../../app/constants/shieldsPanelTypes'
 import * as windowTypes from '../../../../app/constants/windowTypes'
 import * as tabTypes from '../../../../app/constants/tabTypes'
@@ -23,217 +19,212 @@ import { State } from '../../../../app/types/state/shieldsPannelState'
 
 describe('braveShieldsPanelReducer', () => {
   it('should handle initial state', () => {
-    assert.deepEqual(
-      shieldsPanelReducer(undefined, actions.blockAdsTrackers('allow'))
-    , initialState.shieldsPanel)
+    expect(shieldsPanelReducer(undefined, actions.blockAdsTrackers('allow')))
+      .toEqual(initialState.shieldsPanel)
   })
 
-  describe('ON_COMMITTED', function () {
-    before(function () {
-      this.spy = sinon.spy(shieldsPanelState, 'resetBlockingStats')
-      this.resetNoScriptInfoSpy = sinon.spy(shieldsPanelState, 'resetNoScriptInfo')
-      this.resetBlockingResourcesSpy = sinon.spy(shieldsPanelState, 'resetBlockingResources')
-      this.tabId = 1
+  describe('ON_COMMITTED', () => {
+    let spy: jest.SpyInstance
+    let resetNoScriptInfoSpy: jest.SpyInstance
+    let resetBlockingResourcesSpy: jest.SpyInstance
+    const tabId = 1
+    beforeEach(() => {
+      spy = jest.spyOn(shieldsPanelState, 'resetBlockingStats')
+      resetNoScriptInfoSpy = jest.spyOn(shieldsPanelState, 'resetNoScriptInfo')
+      resetBlockingResourcesSpy = jest.spyOn(shieldsPanelState, 'resetBlockingResources')
     })
-    after(function () {
-      this.spy.restore()
-      this.resetNoScriptInfoSpy.restore()
-      this.resetBlockingResourcesSpy.restore()
+    afterEach(() => {
+      spy.mockRestore()
+      resetNoScriptInfoSpy.mockRestore()
+      resetBlockingResourcesSpy.mockRestore()
     })
-    afterEach(function () {
-      this.spy.resetHistory()
-      this.resetNoScriptInfoSpy.resetHistory()
-    })
-    it('calls resetBlockingStats when isMainFrame is true', function () {
+    it('calls resetBlockingStats when isMainFrame is true', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: webNavigationTypes.ON_COMMITTED,
-        tabId: this.tabId,
+        tabId: tabId,
         url: 'https://www.brave.com',
         isMainFrame: true
       })
-      assert.equal(this.spy.calledOnce, true)
-      assert.equal(this.spy.getCall(0).args[1], this.tabId)
+      expect(spy).toBeCalledTimes(1)
+      expect(spy.mock.calls[0][1]).toBe(tabId)
     })
-    it('does not call resetBlockingStats when isMainFrame is false', function () {
+    it('does not call resetBlockingStats when isMainFrame is false', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: webNavigationTypes.ON_COMMITTED,
-        tabId: this.tabId,
+        tabId: tabId,
         url: 'https://www.brave.com',
         isMainFrame: false
       })
-      assert.equal(this.spy.notCalled, true)
+      expect(spy).not.toBeCalled()
     })
-    it('calls resetNoScriptInfo when isMainFrame is true', function () {
+    it('calls resetNoScriptInfo when isMainFrame is true', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: webNavigationTypes.ON_COMMITTED,
-        tabId: this.tabId,
+        tabId: tabId,
         url: 'https://www.brave.com',
         isMainFrame: true
       })
-      assert.equal(this.resetNoScriptInfoSpy.calledOnce, true)
-      assert.equal(this.resetNoScriptInfoSpy.getCall(0).args[1], this.tabId)
-      assert.equal(this.resetNoScriptInfoSpy.getCall(0).args[2], 'https://www.brave.com')
+      expect(resetNoScriptInfoSpy).toBeCalledTimes(1)
+      expect(resetNoScriptInfoSpy.mock.calls[0][1]).toBe(tabId)
+      expect(resetNoScriptInfoSpy.mock.calls[0][2]).toBe('https://www.brave.com')
     })
-    it('does not call resetNoScriptInfo when isMainFrame is false', function () {
+    it('does not call resetNoScriptInfo when isMainFrame is false', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: webNavigationTypes.ON_COMMITTED,
-        tabId: this.tabId,
+        tabId: tabId,
         url: 'https://www.brave.com',
         isMainFrame: false
       })
-      assert.equal(this.resetNoScriptInfoSpy.notCalled, true)
+      expect(resetNoScriptInfoSpy).not.toBeCalled()
     })
-    it('calls resetBlockingResources when isMainFrame is true', function () {
+    it('calls resetBlockingResources when isMainFrame is true', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: webNavigationTypes.ON_COMMITTED,
-        tabId: this.tabId,
+        tabId: tabId,
         url: 'https://www.brave.com',
         isMainFrame: true
       })
-      assert.equal(this.spy.calledOnce, true)
-      assert.equal(this.spy.getCall(0).args[1], this.tabId)
+      expect(spy).toBeCalledTimes(1)
+      expect(spy.mock.calls[0][1]).toBe(tabId)
     })
-    it('does not call resetBlockingResources when isMainFrame is false', function () {
+    it('does not call resetBlockingResources when isMainFrame is false', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: webNavigationTypes.ON_COMMITTED,
-        tabId: this.tabId,
+        tabId: tabId,
         url: 'https://www.brave.com',
         isMainFrame: false
       })
-      assert.equal(this.spy.notCalled, true)
+      expect(spy).not.toBeCalled()
     })
   })
 
-  describe('WINDOW_REMOVED', function () {
-    before(function () {
-      this.spy = sinon.spy(shieldsPanelState, 'removeWindowInfo')
-      this.windowId = 1
+  describe('WINDOW_REMOVED', () => {
+    const windowId = 1
+    let spy: jest.SpyInstance
+    beforeEach(() => {
+      spy = jest.spyOn(shieldsPanelState, 'removeWindowInfo')
     })
-    after(function () {
-      this.spy.restore()
+    afterEach(() => {
+      spy.mockRestore()
     })
-    it('calls shieldsPanelState.removeWindowInfo', function () {
+    it('calls shieldsPanelState.removeWindowInfo', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: windowTypes.WINDOW_REMOVED,
-        windowId: this.windowId
+        windowId: windowId
       })
-      assert.equal(this.spy.calledOnce, true)
-      assert.equal(this.spy.getCall(0).args[1], this.windowId)
+      expect(spy).toBeCalledTimes(1)
+      expect(spy.mock.calls[0][1]).toBe(windowId)
     })
   })
 
-  describe('WINDOW_FOCUS_CHANGED', function () {
-    before(function () {
-      this.updateFocusedWindowSpy = sinon.spy(shieldsPanelState, 'updateFocusedWindow')
-      this.requestShieldPanelDataSpy = sinon.spy(shieldsAPI, 'requestShieldPanelData')
-      this.windowId = 1
-      this.tabId = 2
-      const state = deepFreeze({
-        ...initialState.shieldsPanel,
-        windows: {
-          1: this.tabId
-        },
-        tabs: {
-          [this.tabId]: { url: 'https://brave.com' }
-        }
-      })
-      shieldsPanelReducer(state, {
-        type: windowTypes.WINDOW_FOCUS_CHANGED,
-        windowId: this.windowId
-      })
-    })
-    after(function () {
-      this.updateFocusedWindowSpy.restore()
-      this.requestShieldPanelDataSpy.restore()
-    })
-    it('calls shieldsPanelState.updateFocusedWindow', function () {
-      assert.equal(this.updateFocusedWindowSpy.calledOnce, true)
-      assert.equal(this.updateFocusedWindowSpy.getCall(0).args[1], this.windowId)
-    })
-    it('calls shieldsPanelState.requestShieldPanelDataSpy ', function () {
-      assert.equal(this.requestShieldPanelDataSpy.withArgs(this.tabId).calledOnce, true)
-    })
-  })
-
-  describe('TAB_DATA_CHANGED', function () {
-    before(function () {
-      this.updateActiveTabSpy = sinon.spy(shieldsPanelState, 'updateActiveTab')
-      this.windowId = 1
-      this.tabId = 2
-      this.state = deepFreeze({ ...initialState.shieldsPanel, windows: { 1: this.tabId }, tabs: {} })
-    })
-    after(function () {
-      this.updateActiveTabSpy.restore()
-    })
-    afterEach(function () {
-      this.updateActiveTabSpy.resetHistory()
-    })
-    it('calls shieldsPanelState.updateActiveTab when the tab is active', function () {
-      shieldsPanelReducer(this.state, {
-        type: tabTypes.TAB_DATA_CHANGED,
-        tabId: this.tabId,
-        tab: {
-          active: true,
-          id: this.tabId,
-          windowId: this.windowId,
-          index: 1,
-          pinned: false,
-          highlighted: false,
-          incognito: false,
-          selected: false
-        },
-        changeInfo: {}
-      })
-      assert.equal(this.updateActiveTabSpy.calledOnce, true)
-      assert.equal(this.updateActiveTabSpy.getCall(0).args[1], this.windowId)
-      assert.equal(this.updateActiveTabSpy.getCall(0).args[2], this.tabId)
-    })
-    it('does not call shieldsPanelState.updateActiveTab when the tab is not active', function () {
-      shieldsPanelReducer(this.state, {
-        type: tabTypes.TAB_DATA_CHANGED,
-        tabId: this.tabId,
-        tab: {
-          active: false,
-          id: this.tabId,
-          windowId: this.windowId,
-          index: 1,
-          pinned: false,
-          highlighted: false,
-          incognito: false,
-          selected: false
-        },
-        changeInfo: {}
-      })
-      assert.equal(this.updateActiveTabSpy.notCalled, true)
-    })
-  })
-
-  describe('TAB_CREATED', function () {
-    before(function () {
-      this.updateActiveTabSpy = sinon.spy(shieldsPanelState, 'updateActiveTab')
-      this.windowId = 1
-      this.tabId = 2
-      this.state = {
-        ...initialState.shieldsPanel,
-        windows: {
-          1: this.tabId
-        },
-        tabs: {}
+  describe('WINDOW_FOCUS_CHANGED', () => {
+    const windowId = 1
+    const tabId = 2
+    let updateFocusedWindowSpy: jest.SpyInstance
+    let requestShieldPanelDataSpy: jest.SpyInstance
+    const state = deepFreeze({
+      ...initialState.shieldsPanel,
+      windows: {
+        1: tabId
+      },
+      tabs: {
+        [tabId]: { url: 'https://brave.com' }
       }
     })
-    after(function () {
-      this.updateActiveTabSpy.restore()
+    beforeEach(() => {
+      updateFocusedWindowSpy = jest.spyOn(shieldsPanelState, 'updateFocusedWindow')
+      requestShieldPanelDataSpy = jest.spyOn(shieldsAPI, 'requestShieldPanelData')
     })
-    afterEach(function () {
-      this.updateActiveTabSpy.resetHistory()
+    afterEach(() => {
+      updateFocusedWindowSpy.mockRestore()
+      requestShieldPanelDataSpy.mockRestore()
     })
-    it('calls shieldsPanelState.updateActiveTab when the tab is active', function () {
-      shieldsPanelReducer(this.state, {
+    it('calls shieldsPanelState.updateFocusedWindow', () => {
+      shieldsPanelReducer(state, { type: windowTypes.WINDOW_FOCUS_CHANGED, windowId: windowId })
+      expect(updateFocusedWindowSpy).toBeCalledTimes(1)
+      expect(updateFocusedWindowSpy.mock.calls[0][1]).toBe(windowId)
+    })
+    it('calls shieldsPanelState.requestShieldPanelDataSpy ', () => {
+      shieldsPanelReducer(state, { type: windowTypes.WINDOW_FOCUS_CHANGED, windowId: windowId })
+      expect(requestShieldPanelDataSpy).toBeCalledWith(tabId)
+    })
+  })
+
+  describe('TAB_DATA_CHANGED', () => {
+    let updateActiveTabSpy: jest.SpyInstance
+    const windowId = 1
+    const tabId = 2
+    const state = deepFreeze({ ...initialState.shieldsPanel, windows: { 1: tabId }, tabs: {} })
+    beforeEach(() => {
+      updateActiveTabSpy = jest.spyOn(shieldsPanelState, 'updateActiveTab')
+    })
+    afterEach(() => {
+      updateActiveTabSpy.mockRestore()
+    })
+    it('calls shieldsPanelState.updateActiveTab when the tab is active', () => {
+      shieldsPanelReducer(state, {
+        type: tabTypes.TAB_DATA_CHANGED,
+        tabId: tabId,
+        tab: {
+          active: true,
+          id: tabId,
+          windowId: windowId,
+          index: 1,
+          pinned: false,
+          highlighted: false,
+          incognito: false,
+          selected: false
+        },
+        changeInfo: {}
+      })
+      expect(updateActiveTabSpy).toBeCalledTimes(1)
+      expect(updateActiveTabSpy.mock.calls[0][1]).toBe(windowId)
+      expect(updateActiveTabSpy.mock.calls[0][2]).toBe(tabId)
+    })
+    it('does not call shieldsPanelState.updateActiveTab when the tab is not active', () => {
+      shieldsPanelReducer(state, {
+        type: tabTypes.TAB_DATA_CHANGED,
+        tabId: tabId,
+        tab: {
+          active: false,
+          id: tabId,
+          windowId: windowId,
+          index: 1,
+          pinned: false,
+          highlighted: false,
+          incognito: false,
+          selected: false
+        },
+        changeInfo: {}
+      })
+      expect(updateActiveTabSpy).not.toBeCalled()
+    })
+  })
+
+  describe('TAB_CREATED', () => {
+    const windowId = 1
+    const tabId = 2
+    const state = {
+      ...initialState.shieldsPanel,
+      windows: {
+        1: tabId
+      },
+      tabs: {}
+    }
+    let updateActiveTabSpy: jest.SpyInstance
+    beforeEach(() => {
+      updateActiveTabSpy = jest.spyOn(shieldsPanelState, 'updateActiveTab')
+    })
+    afterEach(() => {
+      updateActiveTabSpy.mockRestore()
+    })
+    it('calls shieldsPanelState.updateActiveTab when the tab is active', () => {
+      shieldsPanelReducer(state, {
         type: tabTypes.TAB_CREATED,
         tab: {
           active: true,
-          id: this.tabId,
-          windowId: this.windowId,
+          id: tabId,
+          windowId: windowId,
           index: 1,
           pinned: false,
           highlighted: false,
@@ -241,17 +232,17 @@ describe('braveShieldsPanelReducer', () => {
           selected: false
         }
       })
-      assert.equal(this.updateActiveTabSpy.calledOnce, true)
-      assert.equal(this.updateActiveTabSpy.getCall(0).args[1], this.windowId)
-      assert.equal(this.updateActiveTabSpy.getCall(0).args[2], this.tabId)
+      expect(updateActiveTabSpy).toBeCalledTimes(1)
+      expect(updateActiveTabSpy.mock.calls[0][1]).toBe(windowId)
+      expect(updateActiveTabSpy.mock.calls[0][2]).toBe(tabId)
     })
-    it('does not call shieldsPanelState.updateActiveTab when the tab is not active', function () {
-      shieldsPanelReducer(this.state, {
+    it('does not call shieldsPanelState.updateActiveTab when the tab is not active', () => {
+      shieldsPanelReducer(state, {
         type: tabTypes.TAB_CREATED,
         tab: {
           active: false,
-          id: this.tabId,
-          windowId: this.windowId,
+          id: tabId,
+          windowId: windowId,
           index: 1,
           pinned: false,
           highlighted: false,
@@ -259,7 +250,7 @@ describe('braveShieldsPanelReducer', () => {
           selected: false
         }
       })
-      assert.equal(this.updateActiveTabSpy.notCalled, true)
+      expect(updateActiveTabSpy).not.toBeCalled()
     })
   })
 
@@ -296,8 +287,8 @@ describe('braveShieldsPanelReducer', () => {
     },
     currentWindowId: 1
   })
-  describe('SHIELDS_PANEL_DATA_UPDATED', function () {
-    it('updates state detail', function () {
+  describe('SHIELDS_PANEL_DATA_UPDATED', () => {
+    it('updates state detail', () => {
       const tabId = 2
       const details: ShieldDetails = {
         id: tabId,
@@ -310,11 +301,11 @@ describe('braveShieldsPanelReducer', () => {
         fingerprinting: 'block',
         cookies: 'block'
       }
-      assert.deepEqual(
+      expect(
         shieldsPanelReducer(initialState.shieldsPanel, {
           type: types.SHIELDS_PANEL_DATA_UPDATED,
           details
-        }), {
+        })).toEqual({
           currentWindowId: -1,
           tabs: {
             [tabId]: {
@@ -347,109 +338,120 @@ describe('braveShieldsPanelReducer', () => {
     })
   })
 
-  describe('SHIELDS_TOGGLED', function () {
-    before(function () {
-      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
-      this.setAllowBraveShieldsSpy = sinon.spy(shieldsAPI, 'setAllowBraveShields')
+  describe('SHIELDS_TOGGLED', () => {
+    let reloadTabSpy: jest.SpyInstance
+    let setAllowBraveShieldsSpy: jest.SpyInstance
+    beforeEach(() => {
+      reloadTabSpy = jest.spyOn(tabsAPI, 'reloadTab')
+      setAllowBraveShieldsSpy = jest.spyOn(shieldsAPI, 'setAllowBraveShields')
     })
-    after(function () {
-      this.reloadTabSpy.restore()
-      this.setAllowBraveShieldsSpy.restore()
+    afterEach(() => {
+      reloadTabSpy.mockRestore()
+      setAllowBraveShieldsSpy.mockRestore()
     })
-    it('should call setAllowBraveShields', function () {
-      assert.deepEqual(
+    it('should call setAllowBraveShields', () => {
+      expect(
         shieldsPanelReducer(state, {
           type: types.SHIELDS_TOGGLED,
           setting: 'allow'
-        }), state)
-      assert.equal(this.setAllowBraveShieldsSpy.withArgs(origin, 'allow').calledOnce, true)
+        })).toEqual(state)
+      expect(setAllowBraveShieldsSpy).toBeCalledWith(origin, 'allow')
     })
   })
 
-  describe('HTTPS_EVERYWHERE_TOGGLED', function () {
-    before(function () {
-      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
-      this.setAllowHTTPUpgradableResourcesSpy = sinon.spy(shieldsAPI, 'setAllowHTTPUpgradableResources')
+  describe('HTTPS_EVERYWHERE_TOGGLED', () => {
+    let reloadTabSpy: jest.SpyInstance
+    let setAllowHTTPUpgradableResourcesSpy: jest.SpyInstance
+    beforeEach(() => {
+      reloadTabSpy = jest.spyOn(tabsAPI, 'reloadTab')
+      setAllowHTTPUpgradableResourcesSpy = jest.spyOn(shieldsAPI, 'setAllowHTTPUpgradableResources')
     })
-    after(function () {
-      this.reloadTabSpy.restore()
-      this.setAllowHTTPUpgradableResourcesSpy.restore()
+    afterEach(() => {
+      reloadTabSpy.mockRestore()
+      setAllowHTTPUpgradableResourcesSpy.mockRestore()
     })
-    it('should call setAllowHTTPUpgradableResources', function () {
-      assert.deepEqual(
+    it('should call setAllowHTTPUpgradableResources', () => {
+      expect(
         shieldsPanelReducer(state, {
           type: types.HTTPS_EVERYWHERE_TOGGLED,
           setting: 'block'
-        }), state)
-      assert.equal(this.setAllowHTTPUpgradableResourcesSpy.withArgs(origin, 'allow').calledOnce, true)
+        })).toEqual(state)
+      expect(setAllowHTTPUpgradableResourcesSpy).toBeCalledWith(origin, 'allow')
     })
   })
 
-  describe('JAVASCRIPT_TOGGLED', function () {
-    before(function () {
-      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
-      this.setAllowJavaScriptSpy = sinon.spy(shieldsAPI, 'setAllowJavaScript')
+  describe('JAVASCRIPT_TOGGLED', () => {
+    let reloadTabSpy: jest.SpyInstance
+    let setAllowJavaScriptSpy: jest.SpyInstance
+    beforeEach(() => {
+      reloadTabSpy = jest.spyOn(tabsAPI, 'reloadTab')
+      setAllowJavaScriptSpy = jest.spyOn(shieldsAPI, 'setAllowJavaScript')
     })
-    after(function () {
-      this.reloadTabSpy.restore()
-      this.setAllowJavaScriptSpy.restore()
+    afterEach(() => {
+      reloadTabSpy.mockRestore()
+      setAllowJavaScriptSpy.mockRestore()
     })
-    it('should call setAllowJavaScript', function () {
-      assert.deepEqual(
+    it('should call setAllowJavaScript', () => {
+      expect(
         shieldsPanelReducer(state, {
           type: types.JAVASCRIPT_TOGGLED,
           setting: 'allow'
-        }), state)
-      assert.equal(this.setAllowJavaScriptSpy.withArgs(origin, 'allow').calledOnce, true)
+        })).toEqual(state)
+      expect(setAllowJavaScriptSpy).toBeCalledWith(origin, 'allow')
     })
   })
 
-  describe('BLOCK_FINGERPRINTING', function () {
-    before(function () {
-      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
-      this.setAllowFingerprintingSpy = sinon.spy(shieldsAPI, 'setAllowFingerprinting')
+  describe('BLOCK_FINGERPRINTING', () => {
+    let reloadTabSpy: jest.SpyInstance
+    let setAllowFingerprintingSpy: jest.SpyInstance
+    beforeEach(() => {
+      reloadTabSpy = jest.spyOn(tabsAPI, 'reloadTab')
+      setAllowFingerprintingSpy = jest.spyOn(shieldsAPI, 'setAllowFingerprinting')
     })
-    after(function () {
-      this.reloadTabSpy.restore()
-      this.setAllowFingerprintingSpy.restore()
+    afterEach(() => {
+      reloadTabSpy.mockRestore()
+      setAllowFingerprintingSpy.mockRestore()
     })
-    it('should call setAllowFingerprinting', function () {
-      assert.deepEqual(
+    it('should call setAllowFingerprinting', () => {
+      expect(
         shieldsPanelReducer(state, {
           type: types.BLOCK_FINGERPRINTING,
           setting: 'allow'
-        }), state)
-      assert.equal(this.setAllowFingerprintingSpy.withArgs(origin, 'allow').calledOnce, true)
+        })).toEqual(state)
+      expect(setAllowFingerprintingSpy).toBeCalledWith(origin, 'allow')
     })
   })
 
-  describe('BLOCK_COOKIES', function () {
-    before(function () {
-      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
-      this.setAllowCookiesSpy = sinon.spy(shieldsAPI, 'setAllowCookies')
+  describe('BLOCK_COOKIES', () => {
+    let reloadTabSpy: jest.SpyInstance
+    let setAllowCookiesSpy: jest.SpyInstance
+    beforeEach(() => {
+      reloadTabSpy = jest.spyOn(tabsAPI, 'reloadTab')
+      setAllowCookiesSpy = jest.spyOn(shieldsAPI, 'setAllowCookies')
     })
-    after(function () {
-      this.reloadTabSpy.restore()
-      this.setAllowCookiesSpy.restore()
+    afterEach(() => {
+      reloadTabSpy.mockRestore()
+      setAllowCookiesSpy.mockRestore()
     })
-    it('should call setAllowCookies', function () {
-      assert.deepEqual(
+    it('should call setAllowCookies', () => {
+      expect(
         shieldsPanelReducer(state, {
           type: types.BLOCK_COOKIES,
           setting: 'allow'
-        }), state)
-      assert.equal(this.setAllowCookiesSpy.withArgs(origin, 'allow').calledOnce, true)
+        })).toEqual(state)
+      expect(setAllowCookiesSpy).toBeCalledWith(origin, 'allow')
     })
   })
 
-  describe('RESOURCE_BLOCKED', function () {
-    before(function () {
-      this.spy = sinon.spy(browserActionAPI, 'setBadgeText')
+  describe('RESOURCE_BLOCKED', () => {
+    let spy: jest.SpyInstance
+    beforeEach(() => {
+      spy = jest.spyOn(browserActionAPI, 'setBadgeText')
     })
-    after(function () {
-      this.spy.restore()
+    afterEach(() => {
+      spy.mockRestore()
     })
-    it('badge text update should include all resource types', function () {
+    it('badge text update should include all resource types', () => {
       const stateWithBlockStats: State = {
         tabs: {
           2: {
@@ -491,10 +493,10 @@ describe('braveShieldsPanelReducer', () => {
           subresource: 'https://a.com/index.js'
         }
       })
-      assert.equal(this.spy.calledOnce, true)
-      assert.equal(this.spy.getCall(0).args[1], '12')
+      expect(spy).toBeCalledTimes(1)
+      expect(spy.mock.calls[0][1]).toBe('12')
     })
-    it('increments for JS blocking', function () {
+    it('increments for JS blocking', () => {
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
@@ -504,7 +506,7 @@ describe('braveShieldsPanelReducer', () => {
         }
       })
 
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -540,7 +542,7 @@ describe('braveShieldsPanelReducer', () => {
       })
     })
 
-    it('increments JS blocking consecutively', function () {
+    it('increments JS blocking consecutively', () => {
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
@@ -549,7 +551,7 @@ describe('braveShieldsPanelReducer', () => {
           subresource: 'https://a.com/index.js'
         }
       })
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -592,7 +594,7 @@ describe('braveShieldsPanelReducer', () => {
           subresource: 'https://b.com/index.js'
         }
       })
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -639,7 +641,7 @@ describe('braveShieldsPanelReducer', () => {
           subresource: 'https://a.com/index.js'
         }
       })
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -679,18 +681,17 @@ describe('braveShieldsPanelReducer', () => {
       })
     })
 
-    it('increments JS blocking consecutively without duplicates', function () {
-      this.tabId = 2
+    it('increments JS blocking consecutively without duplicates', () => {
+      const tabId = 2
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'javascript',
-          tabId: this.tabId,
+          tabId: tabId,
           subresource: 'https://a.com/index.js'
         }
       })
-      assert.deepEqual(
-        nextState.tabs[this.tabId].javascriptBlockedResources,
+      expect(nextState.tabs[tabId].javascriptBlockedResources).toEqual(
         [ 'https://a.com/index.js' ]
       )
 
@@ -698,12 +699,11 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'javascript',
-          tabId: this.tabId,
+          tabId: tabId,
           subresource: 'https://b.com/index.js'
         }
       })
-      assert.deepEqual(
-        nextState.tabs[this.tabId].javascriptBlockedResources,
+      expect(nextState.tabs[tabId].javascriptBlockedResources).toEqual(
         [
           'https://a.com/index.js',
           'https://b.com/index.js'
@@ -714,12 +714,11 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'javascript',
-          tabId: this.tabId,
+          tabId: tabId,
           subresource: 'https://b.com/index.js'
         }
       })
-      assert.deepEqual(
-        nextState.tabs[this.tabId].javascriptBlockedResources,
+      expect(nextState.tabs[tabId].javascriptBlockedResources).toEqual(
         [
           'https://a.com/index.js',
           'https://b.com/index.js'
@@ -727,7 +726,7 @@ describe('braveShieldsPanelReducer', () => {
       )
     })
 
-    it('increments for fingerprinting blocked', function () {
+    it('increments for fingerprinting blocked', () => {
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
@@ -736,7 +735,7 @@ describe('braveShieldsPanelReducer', () => {
           subresource: 'https://test.brave.com'
         }
       })
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -770,7 +769,7 @@ describe('braveShieldsPanelReducer', () => {
       })
     })
 
-    it('increases same count consecutively', function () {
+    it('increases same count consecutively', () => {
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
@@ -779,7 +778,7 @@ describe('braveShieldsPanelReducer', () => {
           subresource: 'https://test.brave.com'
         }
       })
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -820,7 +819,7 @@ describe('braveShieldsPanelReducer', () => {
           subresource: 'https://test2.brave.com'
         }
       })
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -856,18 +855,17 @@ describe('braveShieldsPanelReducer', () => {
         }
       })
     })
-    it('increases same count consecutively without duplicates', function () {
-      this.tabId = 2
+    it('increases same count consecutively without duplicates', () => {
+      const tabId = 2
       let nextState = shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'ads',
-          tabId: this.tabId,
+          tabId: tabId,
           subresource: 'https://test.brave.com'
         }
       })
-      assert.deepEqual(
-        nextState.tabs[this.tabId].adsBlockedResources,
+      expect(nextState.tabs[tabId].adsBlockedResources).toEqual(
         [ 'https://test.brave.com' ]
       )
 
@@ -875,12 +873,11 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'ads',
-          tabId: this.tabId,
+          tabId: tabId,
           subresource: 'https://test2.brave.com'
         }
       })
-      assert.deepEqual(
-        nextState.tabs[this.tabId].adsBlockedResources,
+      expect(nextState.tabs[tabId].adsBlockedResources).toEqual(
         [
           'https://test.brave.com',
           'https://test2.brave.com'
@@ -891,12 +888,11 @@ describe('braveShieldsPanelReducer', () => {
         type: types.RESOURCE_BLOCKED,
         details: {
           blockType: 'ads',
-          tabId: this.tabId,
+          tabId: tabId,
           subresource: 'https://test2.brave.com'
         }
       })
-      assert.deepEqual(
-        nextState.tabs[this.tabId].adsBlockedResources,
+      expect(nextState.tabs[tabId].adsBlockedResources).toEqual(
         [
           'https://test.brave.com',
           'https://test2.brave.com'
@@ -904,7 +900,7 @@ describe('braveShieldsPanelReducer', () => {
       )
     })
 
-    it('increases different tab counts separately', function () {
+    it('increases different tab counts separately', () => {
       let nextState = deepFreeze(shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
@@ -913,7 +909,7 @@ describe('braveShieldsPanelReducer', () => {
           subresource: 'https://test.brave.com'
         }
       }))
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -957,7 +953,7 @@ describe('braveShieldsPanelReducer', () => {
         }
       })
 
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -1003,7 +999,7 @@ describe('braveShieldsPanelReducer', () => {
         }
       })
     })
-    it('increases different resource types separately', function () {
+    it('increases different resource types separately', () => {
       let nextState = deepFreeze(shieldsPanelReducer(state, {
         type: types.RESOURCE_BLOCKED,
         details: {
@@ -1012,7 +1008,7 @@ describe('braveShieldsPanelReducer', () => {
           subresource: 'https://test.brave.com'
         }
       }))
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -1054,7 +1050,7 @@ describe('braveShieldsPanelReducer', () => {
         }
       })
 
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -1095,7 +1091,7 @@ describe('braveShieldsPanelReducer', () => {
           subresource: 'https://test.brave.com'
         }
       })
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -1135,7 +1131,7 @@ describe('braveShieldsPanelReducer', () => {
           subresource: 'https://test.brave.com/index.js'
         }
       })
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -1177,7 +1173,7 @@ describe('braveShieldsPanelReducer', () => {
           subresource: 'https://test.brave.com'
         }
       })
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         currentWindowId: 1,
         tabs: {
           2: {
@@ -1214,76 +1210,63 @@ describe('braveShieldsPanelReducer', () => {
     })
   })
 
-  describe('BLOCK_ADS_TRACKERS', function () {
-    before(function () {
-      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
-      this.setAllowAdsSpy = sinon.spy(shieldsAPI, 'setAllowAds')
-      this.setAllowTrackersSpy = sinon.spy(shieldsAPI, 'setAllowTrackers')
+  describe('BLOCK_ADS_TRACKERS', () => {
+    let reloadTabSpy: jest.SpyInstance
+    let setAllowAdsSpy: jest.SpyInstance
+    let setAllowTrackersSpy: jest.SpyInstance
+    beforeEach(() => {
+      reloadTabSpy = jest.spyOn(tabsAPI, 'reloadTab')
+      setAllowAdsSpy = jest.spyOn(shieldsAPI, 'setAllowAds')
+      setAllowTrackersSpy = jest.spyOn(shieldsAPI, 'setAllowTrackers')
     })
-    after(function () {
-      this.reloadTabSpy.restore()
-      this.setAllowAdsSpy.restore()
-      this.setAllowTrackersSpy.restore()
+    afterEach(() => {
+      reloadTabSpy.mockRestore()
+      setAllowAdsSpy.mockRestore()
+      setAllowTrackersSpy.mockRestore()
     })
-    it('should call setAllowAds and setAllowTrackers', function () {
-      assert.deepEqual(
+    it('should call setAllowAds and setAllowTrackers', () => {
+      expect(
         shieldsPanelReducer(state, {
           type: types.BLOCK_ADS_TRACKERS,
           setting: 'allow'
-        }), state)
-      assert.equal(this.setAllowAdsSpy.withArgs(origin, 'block').calledOnce, true)
-      assert.equal(this.setAllowTrackersSpy.withArgs(origin, 'block').calledOnce, true)
+        })).toEqual(state)
+      expect(setAllowAdsSpy).toBeCalledWith(origin, 'block')
+      expect(setAllowTrackersSpy).toBeCalledWith(origin, 'block')
     })
   })
 
-  describe('CONTROLS_TOGGLED', function () {
-    before(function () {
-      this.spy = sinon.spy(shieldsPanelState, 'updateTabShieldsData')
+  describe('ALLOW_SCRIPT_ORIGINS_ONCE', () => {
+    let reloadTabSpy: jest.SpyInstance
+    let setAllowScriptOriginsOnceSpy: jest.SpyInstance
+    beforeEach(() => {
+      reloadTabSpy = jest.spyOn(tabsAPI, 'reloadTab')
+      setAllowScriptOriginsOnceSpy = jest.spyOn(shieldsAPI, 'setAllowScriptOriginsOnce')
     })
-    after(function () {
-      this.spy.restore()
+    afterEach(() => {
+      reloadTabSpy.mockRestore()
+      setAllowScriptOriginsOnceSpy.mockRestore()
     })
-    it('should call updateTabShieldsData', function () {
-      assert.deepEqual(
-        shieldsPanelReducer(state, {
-          type: types.CONTROLS_TOGGLED,
-          setting: true
-        }), state)
-
-      assert.equal(this.spy.calledOnce, true)
-      assert.equal(this.spy.getCall(0).args[2].controlsOpen, true)
-    })
-  })
-
-  describe('ALLOW_SCRIPT_ORIGINS_ONCE', function () {
-    before(function () {
-      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
-      this.setAllowScriptOriginsOnceSpy = sinon.spy(shieldsAPI, 'setAllowScriptOriginsOnce')
-    })
-    after(function () {
-      this.reloadTabSpy.restore()
-      this.setAllowScriptOriginsOnceSpy.restore()
-    })
-    it('should call setAllowScriptOriginsOnce', function () {
+    it('should call setAllowScriptOriginsOnce', () => {
       const origins = ['https://a.com/', 'https://b.com/']
       const tabId = 2
-      assert.deepEqual(
+      expect(
         shieldsPanelReducer(state, {
           type: types.ALLOW_SCRIPT_ORIGINS_ONCE,
           origins
-        }), state)
-      assert.equal(this.setAllowScriptOriginsOnceSpy.withArgs(origins, tabId).calledOnce, true)
+        })).toEqual(state)
+      expect(setAllowScriptOriginsOnceSpy).toBeCalledWith(origins, tabId)
     })
   })
 
-  describe('CHANGE_NO_SCRIPT_SETTINGS', function () {
-    before(function () {
-      this.spy = sinon.spy(shieldsPanelState, 'changeNoScriptSettings')
+  describe('CHANGE_NO_SCRIPT_SETTINGS', () => {
+    let spy: jest.SpyInstance
+    beforeEach(() => {
+      spy = jest.spyOn(shieldsPanelState, 'changeNoScriptSettings')
     })
-    after(function () {
-      this.spy.restore()
+    afterEach(() => {
+      spy.mockRestore()
     })
-    it('should call changeNoScriptSettings', function () {
+    it('should call changeNoScriptSettings', () => {
       const tabId = 2
       const stateWithNoScriptInfo: State = {
         tabs: {
@@ -1327,7 +1310,7 @@ describe('braveShieldsPanelReducer', () => {
         type: types.CHANGE_NO_SCRIPT_SETTINGS,
         origin
       })
-      assert.deepEqual(nextState, {
+      expect(nextState).toEqual({
         tabs: {
           2: {
             origin,
@@ -1365,7 +1348,7 @@ describe('braveShieldsPanelReducer', () => {
         },
         currentWindowId: 1
       })
-      assert.equal(this.spy.withArgs(stateWithNoScriptInfo, tabId, origin).calledOnce, true)
+      expect(spy).toBeCalledWith(stateWithNoScriptInfo, tabId, origin)
     })
   })
 })

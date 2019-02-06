@@ -1,11 +1,7 @@
-/* global describe, it, before, after, afterEach */
 /* This Source Code Form is subject to the terms of the Mozilla Public
 * License, v. 2.0. If a copy of the MPL was not distributed with this file,
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import 'mocha'
-import * as sinon from 'sinon'
-import * as assert from 'assert'
 import * as shieldPanelTypes from '../../../../app/constants/shieldsPanelTypes'
 import * as cosmeticFilterTypes from '../../../../app/constants/cosmeticFilterTypes'
 import * as windowTypes from '../../../../app/constants/windowTypes'
@@ -25,154 +21,154 @@ import { State } from '../../../../app/types/state/shieldsPannelState'
 
 describe('cosmeticFilterReducer', () => {
   it('should handle initial state', () => {
-    assert.deepEqual(
-      shieldsPanelReducer(undefined, actions.blockAdsTrackers('allow')), initialState.cosmeticFilter)
+    expect(shieldsPanelReducer(undefined, actions.blockAdsTrackers('allow')))
+      .toEqual(initialState.cosmeticFilter)
   })
-  describe('ON_COMMITTED', function () {
-    before(function () {
-      this.spy = sinon.spy(shieldsPanelState, 'resetBlockingStats')
-      this.resetNoScriptInfoSpy = sinon.spy(shieldsPanelState, 'resetNoScriptInfo')
-      this.resetBlockingResourcesSpy = sinon.spy(shieldsPanelState, 'resetBlockingResources')
-      this.tabId = 1
+  describe('ON_COMMITTED', () => {
+    const tabId = 1
+    let spy: jest.SpyInstance
+    let resetNoScriptInfoSpy: jest.SpyInstance
+    let resetBlockingResourcesSpy: jest.SpyInstance
+    beforeEach(() => {
+      spy = jest.spyOn(shieldsPanelState, 'resetBlockingStats')
+      resetNoScriptInfoSpy = jest.spyOn(shieldsPanelState, 'resetNoScriptInfo')
+      resetBlockingResourcesSpy = jest.spyOn(shieldsPanelState, 'resetBlockingResources')
     })
-    after(function () {
-      this.spy.restore()
-      this.resetNoScriptInfoSpy.restore()
-      this.resetBlockingResourcesSpy.restore()
+    afterEach(() => {
+      spy.mockRestore()
+      resetNoScriptInfoSpy.mockRestore()
+      resetBlockingResourcesSpy.mockRestore()
     })
-    afterEach(function () {
-      this.spy.resetHistory()
-      this.resetNoScriptInfoSpy.resetHistory()
-    })
-    it('calls resetBlockingStats when isMainFrame is true', function () {
+    it('calls resetBlockingStats when isMainFrame is true', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: webNavigationTypes.ON_COMMITTED,
-        tabId: this.tabId,
+        tabId: tabId,
         url: 'https://www.brave.com',
         isMainFrame: true
       })
-      assert.equal(this.spy.calledOnce, true)
-      assert.equal(this.spy.getCall(0).args[1], this.tabId)
+      expect(spy).toBeCalledTimes(1)
+      expect(spy.mock.calls[0][1]).toBe(tabId)
     })
-    it('does not call resetBlockingStats when isMainFrame is false', function () {
+    it('does not call resetBlockingStats when isMainFrame is false', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: webNavigationTypes.ON_COMMITTED,
-        tabId: this.tabId,
+        tabId: tabId,
         url: 'https://www.brave.com',
         isMainFrame: false
       })
-      assert.equal(this.spy.notCalled, true)
+      expect(spy).not.toBeCalled()
     })
-    it('calls resetNoScriptInfo when isMainFrame is true', function () {
+    it('calls resetNoScriptInfo when isMainFrame is true', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: webNavigationTypes.ON_COMMITTED,
-        tabId: this.tabId,
+        tabId: tabId,
         url: 'https://www.brave.com',
         isMainFrame: true
       })
-      assert.equal(this.resetNoScriptInfoSpy.calledOnce, true)
-      assert.equal(this.resetNoScriptInfoSpy.getCall(0).args[1], this.tabId)
-      assert.equal(this.resetNoScriptInfoSpy.getCall(0).args[2], 'https://www.brave.com')
+      expect(resetNoScriptInfoSpy).toBeCalledTimes(1)
+      expect(resetNoScriptInfoSpy.mock.calls[0][1]).toBe(tabId)
+      expect(resetNoScriptInfoSpy.mock.calls[0][2]).toBe('https://www.brave.com')
     })
-    it('does not call resetNoScriptInfo when isMainFrame is false', function () {
+    it('does not call resetNoScriptInfo when isMainFrame is false', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: webNavigationTypes.ON_COMMITTED,
-        tabId: this.tabId,
+        tabId: tabId,
         url: 'https://www.brave.com',
         isMainFrame: false
       })
-      assert.equal(this.resetNoScriptInfoSpy.notCalled, true)
+      expect(resetNoScriptInfoSpy).not.toBeCalled()
     })
-    it('calls resetBlockingResources when isMainFrame is true', function () {
+    it('calls resetBlockingResources when isMainFrame is true', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: webNavigationTypes.ON_COMMITTED,
-        tabId: this.tabId,
+        tabId: tabId,
         url: 'https://www.brave.com',
         isMainFrame: true
       })
-      assert.equal(this.spy.calledOnce, true)
-      assert.equal(this.spy.getCall(0).args[1], this.tabId)
+      expect(spy).toBeCalledTimes(1)
+      expect(spy.mock.calls[0][1]).toBe(tabId)
     })
-    it('does not call resetBlockingResources when isMainFrame is false', function () {
+    it('does not call resetBlockingResources when isMainFrame is false', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: webNavigationTypes.ON_COMMITTED,
-        tabId: this.tabId,
+        tabId: tabId,
         url: 'https://www.brave.com',
         isMainFrame: false
       })
-      assert.equal(this.spy.notCalled, true)
+      expect(spy).not.toBeCalled()
     })
   })
-  describe('WINDOW_REMOVED', function () {
-    before(function () {
-      this.spy = sinon.spy(shieldsPanelState, 'removeWindowInfo')
-      this.windowId = 1
+  describe('WINDOW_REMOVED', () => {
+    const windowId = 1
+    let spy: jest.SpyInstance
+    beforeEach(() => {
+      spy = jest.spyOn(shieldsPanelState, 'removeWindowInfo')
     })
-    after(function () {
-      this.spy.restore()
+    afterEach(() => {
+      spy.mockRestore()
     })
-    it('calls shieldsPanelState.removeWindowInfo', function () {
+    it('calls shieldsPanelState.removeWindowInfo', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: windowTypes.WINDOW_REMOVED,
-        windowId: this.windowId
+        windowId
       })
-      assert.equal(this.spy.calledOnce, true)
-      assert.equal(this.spy.getCall(0).args[1], this.windowId)
+      expect(spy).toBeCalledTimes(1)
+      expect(spy.mock.calls[0][1]).toBe(windowId)
     })
   })
-  describe('WINDOW_FOCUS_CHANGED', function () {
-    before(function () {
-      this.updateFocusedWindowSpy = sinon.spy(shieldsPanelState, 'updateFocusedWindow')
-      this.requestShieldPanelDataSpy = sinon.spy(shieldsAPI, 'requestShieldPanelData')
-      this.windowId = 1
-      this.tabId = 2
+  describe('WINDOW_FOCUS_CHANGED', () => {
+    const windowId = 1
+    const tabId = 2
+    let updateFocusedWindowSpy: jest.SpyInstance
+    let requestShieldPanelDataSpy: jest.SpyInstance
+    beforeEach(() => {
+      updateFocusedWindowSpy = jest.spyOn(shieldsPanelState, 'updateFocusedWindow')
+      requestShieldPanelDataSpy = jest.spyOn(shieldsAPI, 'requestShieldPanelData')
       const state = deepFreeze({
         ...initialState.shieldsPanel,
         windows: {
-          1: this.tabId
+          1: tabId
         },
         tabs: {
-          [this.tabId]: { url: 'https://brave.com' }
+          [tabId]: { url: 'https://brave.com' }
         }
       })
       shieldsPanelReducer(state, {
         type: windowTypes.WINDOW_FOCUS_CHANGED,
-        windowId: this.windowId
+        windowId: windowId
       })
     })
-    after(function () {
-      this.updateFocusedWindowSpy.restore()
-      this.requestShieldPanelDataSpy.restore()
+    afterEach(() => {
+      updateFocusedWindowSpy.mockRestore()
+      requestShieldPanelDataSpy.mockRestore()
     })
-    it('calls shieldsPanelState.updateFocusedWindow', function () {
-      assert.equal(this.updateFocusedWindowSpy.calledOnce, true)
-      assert.equal(this.updateFocusedWindowSpy.getCall(0).args[1], this.windowId)
+    it('calls shieldsPanelState.updateFocusedWindow', () => {
+      expect(updateFocusedWindowSpy).toBeCalledTimes(1)
+      expect(updateFocusedWindowSpy.mock.calls[0][1]).toBe(windowId)
     })
-    it('calls shieldsPanelState.requestShieldPanelDataSpy ', function () {
-      assert.equal(this.requestShieldPanelDataSpy.withArgs(this.tabId).calledOnce, true)
+    it('calls shieldsPanelState.requestShieldPanelDataSpy ', () => {
+      expect(requestShieldPanelDataSpy).toBeCalledWith(tabId)
     })
   })
-  describe('TAB_DATA_CHANGED', function () {
-    before(function () {
-      this.updateActiveTabSpy = sinon.spy(shieldsPanelState, 'updateActiveTab')
-      this.windowId = 1
-      this.tabId = 2
-      this.state = deepFreeze({ ...initialState.shieldsPanel, windows: { 1: this.tabId }, tabs: {} })
+  describe('TAB_DATA_CHANGED', () => {
+    const windowId = 1
+    const tabId = 2
+    const state = deepFreeze({ ...initialState.shieldsPanel, windows: { 1: tabId }, tabs: {} })
+    let updateActiveTabSpy: jest.SpyInstance
+    beforeEach(() => {
+      updateActiveTabSpy = jest.spyOn(shieldsPanelState, 'updateActiveTab')
     })
-    after(function () {
-      this.updateActiveTabSpy.restore()
+    afterEach(() => {
+      updateActiveTabSpy.mockRestore()
     })
-    afterEach(function () {
-      this.updateActiveTabSpy.resetHistory()
-    })
-    it('calls shieldsPanelState.updateActiveTab when the tab is active', function () {
-      shieldsPanelReducer(this.state, {
+    it('calls shieldsPanelState.updateActiveTab when the tab is active', () => {
+      shieldsPanelReducer(state, {
         type: tabTypes.TAB_DATA_CHANGED,
-        tabId: this.tabId,
+        tabId: tabId,
         tab: {
           active: true,
-          id: this.tabId,
-          windowId: this.windowId,
+          id: tabId,
+          windowId,
           index: 1,
           pinned: false,
           highlighted: false,
@@ -181,18 +177,18 @@ describe('cosmeticFilterReducer', () => {
         },
         changeInfo: {}
       })
-      assert.equal(this.updateActiveTabSpy.calledOnce, true)
-      assert.equal(this.updateActiveTabSpy.getCall(0).args[1], this.windowId)
-      assert.equal(this.updateActiveTabSpy.getCall(0).args[2], this.tabId)
+      expect(updateActiveTabSpy).toBeCalledTimes(1)
+      expect(updateActiveTabSpy.mock.calls[0][1]).toBe(windowId)
+      expect(updateActiveTabSpy.mock.calls[0][2]).toBe(tabId)
     })
-    it('does not call shieldsPanelState.updateActiveTab when the tab is not active', function () {
-      shieldsPanelReducer(this.state, {
+    it('does not call shieldsPanelState.updateActiveTab when the tab is not active', () => {
+      shieldsPanelReducer(state, {
         type: tabTypes.TAB_DATA_CHANGED,
-        tabId: this.tabId,
+        tabId: tabId,
         tab: {
           active: false,
-          id: this.tabId,
-          windowId: this.windowId,
+          id: tabId,
+          windowId,
           index: 1,
           pinned: false,
           highlighted: false,
@@ -201,35 +197,33 @@ describe('cosmeticFilterReducer', () => {
         },
         changeInfo: {}
       })
-      assert.equal(this.updateActiveTabSpy.notCalled, true)
+      expect(updateActiveTabSpy).not.toBeCalled()
     })
   })
-  describe('TAB_CREATED', function () {
-    before(function () {
-      this.updateActiveTabSpy = sinon.spy(shieldsPanelState, 'updateActiveTab')
-      this.windowId = 1
-      this.tabId = 2
-      this.state = {
-        ...initialState.shieldsPanel,
-        windows: {
-          1: this.tabId
-        },
-        tabs: {}
-      }
+  describe('TAB_CREATED', () => {
+    const windowId = 1
+    const tabId = 2
+    const state = {
+      ...initialState.shieldsPanel,
+      windows: {
+        1: tabId
+      },
+      tabs: {}
+    }
+    let updateActiveTabSpy: jest.SpyInstance
+    beforeEach(() => {
+      updateActiveTabSpy = jest.spyOn(shieldsPanelState, 'updateActiveTab')
     })
-    after(function () {
-      this.updateActiveTabSpy.restore()
+    afterEach(() => {
+      updateActiveTabSpy.mockRestore()
     })
-    afterEach(function () {
-      this.updateActiveTabSpy.resetHistory()
-    })
-    it('calls shieldsPanelState.updateActiveTab when the tab is active', function () {
-      shieldsPanelReducer(this.state, {
+    it('calls shieldsPanelState.updateActiveTab when the tab is active', () => {
+      shieldsPanelReducer(state, {
         type: tabTypes.TAB_CREATED,
         tab: {
           active: true,
-          id: this.tabId,
-          windowId: this.windowId,
+          id: tabId,
+          windowId,
           index: 1,
           pinned: false,
           highlighted: false,
@@ -237,17 +231,17 @@ describe('cosmeticFilterReducer', () => {
           selected: false
         }
       })
-      assert.equal(this.updateActiveTabSpy.calledOnce, true)
-      assert.equal(this.updateActiveTabSpy.getCall(0).args[1], this.windowId)
-      assert.equal(this.updateActiveTabSpy.getCall(0).args[2], this.tabId)
+      expect(updateActiveTabSpy).toBeCalledTimes(1)
+      expect(updateActiveTabSpy.mock.calls[0][1]).toBe(windowId)
+      expect(updateActiveTabSpy.mock.calls[0][2]).toBe(tabId)
     })
-    it('does not call shieldsPanelState.updateActiveTab when the tab is not active', function () {
-      shieldsPanelReducer(this.state, {
+    it('does not call shieldsPanelState.updateActiveTab when the tab is not active', () => {
+      shieldsPanelReducer(state, {
         type: tabTypes.TAB_CREATED,
         tab: {
           active: false,
-          id: this.tabId,
-          windowId: this.windowId,
+          id: tabId,
+          windowId,
           index: 1,
           pinned: false,
           highlighted: false,
@@ -255,7 +249,7 @@ describe('cosmeticFilterReducer', () => {
           selected: false
         }
       })
-      assert.equal(this.updateActiveTabSpy.notCalled, true)
+      expect(updateActiveTabSpy).not.toBeCalled()
     })
   })
   const origin = 'https://brave.com'
@@ -291,8 +285,8 @@ describe('cosmeticFilterReducer', () => {
     },
     currentWindowId: 1
   })
-  describe('SHIELDS_PANEL_DATA_UPDATED', function () {
-    it('updates state detail', function () {
+  describe('SHIELDS_PANEL_DATA_UPDATED', () => {
+    it('updates state detail', () => {
       const tabId = 2
       const details: ShieldDetails = {
         id: tabId,
@@ -305,11 +299,11 @@ describe('cosmeticFilterReducer', () => {
         fingerprinting: 'block',
         cookies: 'block'
       }
-      assert.deepEqual(
+      expect(
           shieldsPanelReducer(initialState.shieldsPanel, {
             type: shieldPanelTypes.SHIELDS_PANEL_DATA_UPDATED,
             details
-          }), {
+          })).toEqual({
             currentWindowId: -1,
             tabs: {
               [tabId]: {
@@ -341,68 +335,73 @@ describe('cosmeticFilterReducer', () => {
           })
     })
   })
-  describe('SHIELDS_TOGGLED', function () {
-    before(function () {
-      this.reloadTabSpy = sinon.spy(tabsAPI, 'reloadTab')
-      this.setAllowBraveShieldsSpy = sinon.spy(shieldsAPI, 'setAllowBraveShields')
+  describe('SHIELDS_TOGGLED', () => {
+    let reloadTabSpy: jest.SpyInstance
+    let setAllowBraveShieldsSpy: jest.SpyInstance
+    beforeEach(() => {
+      reloadTabSpy = jest.spyOn(tabsAPI, 'reloadTab')
+      setAllowBraveShieldsSpy = jest.spyOn(shieldsAPI, 'setAllowBraveShields')
     })
-    after(function () {
-      this.reloadTabSpy.restore()
-      this.setAllowBraveShieldsSpy.restore()
+    afterEach(() => {
+      reloadTabSpy.mockRestore()
+      setAllowBraveShieldsSpy.mockRestore()
     })
-    it('should call setAllowBraveShields', function () {
-      assert.deepEqual(
+    it('should call setAllowBraveShields', () => {
+      expect(
         shieldsPanelReducer(state, {
           type: shieldPanelTypes.SHIELDS_TOGGLED,
           setting: 'allow'
-        }), state)
-      assert.equal(this.setAllowBraveShieldsSpy.withArgs(origin, 'allow').calledOnce, true)
+        })).toEqual(state)
+      expect(setAllowBraveShieldsSpy).toBeCalledWith(origin, 'allow')
     })
   })
-  describe('SITE_COSMETIC_FILTER_REMOVED', function () {
-    before(function () {
-      this.removeSiteFilterSpy = sinon.spy(cosmeticFilterAPI, 'removeSiteFilter')
+  describe('SITE_COSMETIC_FILTER_REMOVED', () => {
+    let removeSiteFilterSpy: jest.SpyInstance
+    beforeEach(() => {
+      removeSiteFilterSpy = jest.spyOn(cosmeticFilterAPI, 'removeSiteFilter')
     })
-    after(function () {
-      this.removeSiteFilterSpy.restore()
+    afterEach(() => {
+      removeSiteFilterSpy.mockRestore()
     })
-    it('should call removeSiteFilter', function () {
-      assert.deepEqual(
-              cosmeticFilterReducer(state, {
-                type: cosmeticFilterTypes.SITE_COSMETIC_FILTER_REMOVED,
-                origin
-              }), state)
+    it('should call removeSiteFilter', () => {
+      expect(
+        cosmeticFilterReducer(state, {
+          type: cosmeticFilterTypes.SITE_COSMETIC_FILTER_REMOVED,
+          origin
+        })).toEqual(state)
     })
   })
-  describe('ALL_COSMETIC_FILTERS_REMOVED', function () {
-    before(function () {
-      this.removeSiteFilterSpy = sinon.spy(cosmeticFilterAPI, 'removeAllFilters')
+  describe('ALL_COSMETIC_FILTERS_REMOVED', () => {
+    let removeSiteFilterSpy: jest.SpyInstance
+    beforeEach(() => {
+      removeSiteFilterSpy = jest.spyOn(cosmeticFilterAPI, 'removeAllFilters')
     })
-    after(function () {
-      this.removeSiteFilterSpy.restore()
+    afterEach(() => {
+      removeSiteFilterSpy.mockRestore()
     })
-    it('should call removeAllFilters', function () {
-      assert.deepEqual(
+    it('should call removeAllFilters', () => {
+      expect(
         cosmeticFilterReducer(state, {
           type: cosmeticFilterTypes.ALL_COSMETIC_FILTERS_REMOVED
-        }), state)
+        })).toEqual(state)
     })
   })
-  describe('SITE_COSMETIC_FILTER_ADDED', function () {
-    before(function () {
-      this.removeSiteFilterSpy = sinon.spy(cosmeticFilterAPI, 'addSiteCosmeticFilter')
+  describe('SITE_COSMETIC_FILTER_ADDED', () => {
+    let removeSiteFilterSpy: jest.SpyInstance
+    beforeEach(() => {
+      removeSiteFilterSpy = jest.spyOn(cosmeticFilterAPI, 'addSiteCosmeticFilter')
     })
-    after(function () {
-      this.removeSiteFilterSpy.restore()
+    afterEach(() => {
+      removeSiteFilterSpy.mockRestore()
     })
-    it('should call addSiteCosmeticFilter', function () {
+    it('should call addSiteCosmeticFilter', () => {
       const cssfilter = '#test'
-      assert.deepEqual(
+      expect(
         cosmeticFilterReducer(state, {
           type: cosmeticFilterTypes.SITE_COSMETIC_FILTER_ADDED,
           origin,
           cssfilter
-        }), state)
+        })).toEqual(state)
     })
   })
 })
