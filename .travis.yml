@@ -7,6 +7,7 @@ cache:
 branches:
    only:
      - "development"
+     - "master"
 
 install: true
 
