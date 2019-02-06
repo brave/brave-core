@@ -465,7 +465,7 @@ extension Sync {
                 
                 var action = SyncActions(rawValue: fetchedRoot.action ?? -1)
                 if action == SyncActions.delete {
-                    clientRecord?.deleteResolvedRecord()
+                    clientRecord?.deleteResolvedRecord(save: false, context: context)
                 } else if action == SyncActions.create {
                     
                     if clientRecord != nil {

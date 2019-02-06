@@ -390,15 +390,14 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         return self.add(rootObject: bookmark)
     }
     
-    public func delete(sendToSync: Bool = true) {
+    public func delete(save: Bool = true, sendToSync: Bool = true, context: NSManagedObjectContext? = nil) {
         func deleteFromStore() {
-            let context = DataController.newBackgroundContext()
+            let context = context ?? DataController.newBackgroundContext()
             
             do {
                 let objectOnContext = try context.existingObject(with: self.objectID)
                 context.delete(objectOnContext)
-                
-                DataController.save(context: context)
+                if save { DataController.save(context: context)}
             } catch {
                 log.warning("Could not find object: \(self) on a background context.")
             }
@@ -580,8 +579,8 @@ extension Bookmark {
         // No auto-save, must be handled by caller if desired
     }
     
-    public func deleteResolvedRecord() {
-        delete(sendToSync: false)
+    public func deleteResolvedRecord(save: Bool, context: NSManagedObjectContext?) {
+        delete(save: save, sendToSync: false, context: context)
     }
     
     public func asDictionary(deviceId: [Int]?, action: Int?) -> [String: Any] {

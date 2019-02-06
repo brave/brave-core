@@ -64,7 +64,7 @@ public final class Device: NSManagedObject, Syncable, CRUD {
         return sharedCurrentDevice
     }
     
-    public func remove(sendToSync: Bool = true) {
+    public func remove(save: Bool = true, sendToSync: Bool = true) {
         guard let context = managedObjectContext else { return }
         
         if sendToSync {
@@ -75,7 +75,7 @@ public final class Device: NSManagedObject, Syncable, CRUD {
             Sync.shared.leaveSyncGroup(sendToSync: false)
         } else {
             context.delete(self)
-            DataController.save(context: context)
+            if save { DataController.save(context: context) }
         }
     }
     
@@ -142,8 +142,8 @@ extension Device {
         // No save currently
     }
     
-    public func deleteResolvedRecord() {
-        remove(sendToSync: false)
+    public func deleteResolvedRecord(save: Bool, context: NSManagedObjectContext?) {
+        remove(save: save, sendToSync: false)
     }
     
     // This should be abstractable

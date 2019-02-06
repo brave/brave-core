@@ -13,7 +13,7 @@ private let log = Logger.browserLogger
 typealias CRUD = Readable & Deletable
 
 public protocol Deletable where Self: NSManagedObject {
-    func delete()
+    func delete(context: NSManagedObjectContext)
     static func deleteAll(predicate: NSPredicate?, context: NSManagedObjectContext,
                           includesPropertyValues: Bool, save: Bool)
 }
@@ -27,8 +27,7 @@ public protocol Readable where Self: NSManagedObject {
 
 // MARK: - Implementations
 public extension Deletable where Self: NSManagedObject {
-    func delete() {
-        let context = DataController.newBackgroundContext()
+    func delete(context: NSManagedObjectContext = DataController.newBackgroundContext()) {
         
         do {
             let objectOnContext = try context.existingObject(with: self.objectID)

@@ -21,7 +21,7 @@ public protocol Syncable: class /* where Self: NSManagedObject */ {
     // resolved records from sync should be never sent back to the sync server.
     static func createResolvedRecord(rootObject root: SyncRecord?, save: Bool, context: NSManagedObjectContext)
     func updateResolvedRecord(_ record: SyncRecord?)
-    func deleteResolvedRecord()
+    func deleteResolvedRecord(save: Bool, context: NSManagedObjectContext?)
 }
 
 extension Syncable {
