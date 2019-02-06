@@ -19,6 +19,11 @@ open class UserAgent {
     public static var defaultClientUserAgent: String {
         return clientUserAgent(prefix: "Firefox-iOS")
     }
+    
+    // Currently our UA version numbers are hardcoded to match Firefoxes UA.
+    // TODO: Make it dynamic(#838)
+    private static let appVersion = "14.0" // AppInfo.appVersion
+    private static let buildNumber = "12646" // AppInfo.buildNumber
 
     /**
      * Use this if you know that a value must have been computed before your
@@ -28,8 +33,8 @@ open class UserAgent {
         let currentiOSVersion = UIDevice.current.systemVersion
         let lastiOSVersion = defaults.string(forKey: "LastDeviceSystemVersionNumber")
 
-        let currentFirefoxBuildNumber = AppInfo.buildNumber
-        let currentFirefoxVersion = AppInfo.appVersion
+        let currentFirefoxBuildNumber = buildNumber
+        let currentFirefoxVersion = appVersion
         let lastFirefoxVersion = defaults.string(forKey: "LastFirefoxVersionNumber")
         let lastFirefoxBuildNumber = defaults.string(forKey: "LastFirefoxBuildNumber")
         
@@ -57,10 +62,6 @@ open class UserAgent {
 
         let webView = UIWebView()
 
-        // Currently our UA is hardcoded to match Firefoxes UA.
-        // TODO: Make it dynamic(#838)
-        let appVersion = "14.0" // AppInfo.appVersion
-        let buildNumber = "12646" // AppInfo.buildNumber
         let currentiOSVersion = UIDevice.current.systemVersion
         defaults.set(currentiOSVersion, forKey: "LastDeviceSystemVersionNumber")
         defaults.set(appVersion, forKey: "LastFirefoxVersionNumber")
