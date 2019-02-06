@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/net/net_error_diagnostics_dialog_win.cc b/chrome/browser/net/net_error_diagnostics_dialog_win.cc
+index 4a3768f6b14d1f66482999366f85772073302e65..a433884fb320e998b20e34fb9f42088c46f71f42 100644
+--- a/chrome/browser/net/net_error_diagnostics_dialog_win.cc
++++ b/chrome/browser/net/net_error_diagnostics_dialog_win.cc
+@@ -83,6 +83,9 @@ class NetErrorDiagnosticsDialog : public ui::BaseShellDialogImpl {
+ }  // namespace
+ 
+ bool CanShowNetworkDiagnosticsDialog() {
++#if defined(BRAVE_CHROMIUM_BUILD)
++  return false;
++#endif
+   return true;
+ }
+ 
