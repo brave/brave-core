@@ -141,7 +141,7 @@ class LedgerImpl : public ledger::Ledger,
   void GetGrantCaptcha() const override;
   void OnGrantCaptcha(const std::string& image, const std::string& hint);
 
-  void SolveGrantCaptcha(const std::string& solution) const override;
+  void SolveGrantCaptcha(const std::string& solution, const std::string& promotionId) const override;
   void OnGrantFinish(ledger::Result result, const braveledger_bat_helper::GRANT& grant);
 
   std::string GetWalletPassphrase() const override;

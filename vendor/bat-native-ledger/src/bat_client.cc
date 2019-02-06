@@ -430,34 +430,23 @@ void BatClient::getGrantsCallback(bool success,
   ledger_->SetGrants(grants);
 }
 
-void BatClient::setGrants(const std::string& captchaResponse, const std::string& promotionId) {
-  braveledger_bat_helper::Grants state_grants = ledger_->GetGrants();
-
-  for (auto state_grant : state_grants) {
-    std::string state_promotionId = state_grant.promotionId;
-
-    if (promotionId.empty() && state_promotionId.empty()) {
-      braveledger_bat_helper::GRANT properties;
-      ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, properties);
-      return;
-    }
-
-    std::string promoId = state_promotionId;
-    if (!promotionId.empty()) {
-      promoId = promotionId;
-    }
-
-    std::string keys[2] = {"promotionId", "captchaResponse"};
-    std::string values[2] = {promoId, captchaResponse};
-    std::string payload = braveledger_bat_helper::stringify(keys, values, 2);
-
-    auto callback = std::bind(&BatClient::setGrantCallback, this, _1, _2, _3);
-    ledger_->LoadURL(braveledger_bat_helper::buildURL(
-          (std::string)GET_SET_PROMOTION + "/" + ledger_->GetPaymentId(),
-          PREFIX_V4),
-        std::vector<std::string>(), payload, "application/json; charset=utf-8",
-        ledger::URL_METHOD::PUT, callback);
+void BatClient::setGrant(const std::string& captchaResponse, const std::string& promotionId) {
+  if (promotionId.empty()) {
+    braveledger_bat_helper::GRANT properties;
+    ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, properties);
+    return;    
   }
+
+  std::string keys[2] = {"promotionId", "captchaResponse"};
+  std::string values[2] = {promotionId, captchaResponse};
+  std::string payload = braveledger_bat_helper::stringify(keys, values, 2);
+
+  auto callback = std::bind(&BatClient::setGrantCallback, this, _1, _2, _3);
+  ledger_->LoadURL(braveledger_bat_helper::buildURL(
+        (std::string)GET_SET_PROMOTION + "/" + ledger_->GetPaymentId(),
+        PREFIX_V2),
+      std::vector<std::string>(), payload, "application/json; charset=utf-8",
+      ledger::URL_METHOD::PUT, callback);
 }
 
 void BatClient::setGrantCallback(bool success,
@@ -493,9 +482,13 @@ void BatClient::setGrantCallback(bool success,
   braveledger_bat_helper::Grants state_grants = ledger_->GetGrants();
 
   for (auto state_grant : state_grants) {
-    grant.promotionId = state_grant.promotionId;
-    ledger_->OnGrantFinish(ledger::Result::LEDGER_OK, grant);
-    updated_grants.push_back(grant);
+    if (grant.type == state_grant.type) {
+      grant.promotionId = state_grant.promotionId;
+      ledger_->OnGrantFinish(ledger::Result::LEDGER_OK, grant);
+      updated_grants.push_back(grant);
+    } else {
+      updated_grants.push_back(state_grant);
+    }
   }
 
   ledger_->SetGrants(updated_grants);

@@ -189,8 +189,8 @@ void BatLedgerImpl::RecoverWallet(const std::string& passPhrase) {
   ledger_->RecoverWallet(passPhrase);
 }
 
-void BatLedgerImpl::SolveGrantCaptcha(const std::string& solution) {
-  ledger_->SolveGrantCaptcha(solution);
+void BatLedgerImpl::SolveGrantCaptcha(const std::string& solution, const std::string& promotionId) {
+  ledger_->SolveGrantCaptcha(solution, promotionId);
 }
 
 void BatLedgerImpl::GetAddresses(GetAddressesCallback callback) {

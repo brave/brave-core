@@ -503,8 +503,10 @@ void RewardsDOMHandler::OnRecoverWallet(
 void RewardsDOMHandler::SolveGrantCaptcha(const base::ListValue *args) {
   if (rewards_service_) {
     std::string solution;
+    std::string promotionId;
     args->GetString(0, &solution);
-    rewards_service_->SolveGrantCaptcha(solution);
+    args->GetString(1, &promotionId);
+    rewards_service_->SolveGrantCaptcha(solution, promotionId);
   }
 }
 

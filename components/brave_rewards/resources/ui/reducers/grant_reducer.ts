@@ -102,13 +102,17 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
         break
       }
     case types.SOLVE_GRANT_CAPTCHA:
-      if (action.payload.x && action.payload.y) {
-        chrome.send('brave_rewards.solveGrantCaptcha', [JSON.stringify({
-          x: action.payload.x,
-          y: action.payload.y
-        })])
+      {
+        const promotionId = state.currentGrant && state.currentGrant.promotionId
+
+        if (promotionId && action.payload.x && action.payload.y) {
+          chrome.send('brave_rewards.solveGrantCaptcha', [JSON.stringify({
+            x: action.payload.x,
+            y: action.payload.y
+          }), promotionId])
+        }
+        break
       }
-      break
     case types.ON_GRANT_RESET:
       {
         if (state.currentGrant && state.grants) {

@@ -35,7 +35,7 @@ class BatClient {
       const std::map<std::string, std::string>& headers);
   void recoverWallet(const std::string& passPhrase);
   void getGrants(const std::string& lang, const std::string& forPaymentId);
-  void setGrants(const std::string& captchaResponse, const std::string& promotionId);
+  void setGrant(const std::string& captchaResponse, const std::string& promotionId);
   void getGrantCaptcha();
   void getWalletProperties();
 
