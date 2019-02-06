@@ -458,6 +458,24 @@ TEST_F(PublisherInfoDatabaseTest, GetPanelPublisher) {
       publisher_info_database_->GetPanelPublisher(filter_3);
   EXPECT_TRUE(result);
   EXPECT_EQ(result->id, "brave.com");
+
+  /**
+   * Still get data if reconcile stamp is not found
+   */
+  info_1.id = "page.com";
+  info_1.url = "https://page.com";
+  info_1.reconcile_stamp = 9;
+
+  success = publisher_info_database_->InsertOrUpdateActivityInfo(info_1);
+  EXPECT_TRUE(success);
+
+  ledger::ActivityInfoFilter filter_4;
+  filter_4.id = "page.com";
+  filter_4.reconcile_stamp = 10;
+  result = publisher_info_database_->GetPanelPublisher(filter_4);
+  EXPECT_TRUE(result);
+  EXPECT_EQ(result->id, "page.com");
+  EXPECT_EQ(result->percent, 0u);
 }
 
 TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfos) {
