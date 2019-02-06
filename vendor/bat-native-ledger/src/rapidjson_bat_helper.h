@@ -65,6 +65,8 @@ void saveToJson(JsonWriter & writer, const ledger::WalletInfo&);
 void saveToJson(JsonWriter & writer, const ledger::PendingContribution&);
 void saveToJson(JsonWriter & writer, const ledger::PendingContributionList&);
 void saveToJson(JsonWriter & writer, const ledger::PublisherInfoListStruct&);
+void saveToJson(JsonWriter & writer, const WALLET_PROPERTIES_ST&);
+void saveToJson(JsonWriter & writer, const GRANT&);
 
 template <typename T>
 void saveToJsonString(const T& t, std::string& json) {
