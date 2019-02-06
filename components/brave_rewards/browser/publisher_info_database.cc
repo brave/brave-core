@@ -307,14 +307,17 @@ PublisherInfoDatabase::GetPanelPublisher(
   }
 
   sql::Statement info_sql(db_.GetUniqueStatement(
-      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, pi.provider, "
-      "pi.verified, pi.excluded, ai.percent FROM publisher_info AS pi "
-      "LEFT JOIN activity_info AS ai ON pi.publisher_id = ai.publisher_id "
-      "WHERE pi.publisher_id=? AND "
-      "(ai.reconcile_stamp = ? OR ai.percent IS NULL) LIMIT 1"));
+      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
+      "pi.provider, pi.verified, pi.excluded, "
+      "("
+      "SELECT IFNULL(percent, 0) FROM activity_info WHERE "
+      "publisher_id = ? AND reconcile_stamp = ? "
+      ") as percent "
+      "FROM publisher_info AS pi WHERE pi.publisher_id = ? LIMIT 1"));
 
   info_sql.BindString(0, filter.id);
   info_sql.BindInt64(1, filter.reconcile_stamp);
+  info_sql.BindString(2, filter.id);
 
   if (info_sql.Step()) {
     std::unique_ptr<ledger::PublisherInfo> info;
