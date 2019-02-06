@@ -59,6 +59,8 @@ class SyncPairCameraViewController: SyncViewController {
                 
                 Scanner.Lock = true
                 self.cameraView.cameraOverlaySucess()
+                // Freezing the camera frame after QR has been scanned.
+                self.cameraView.captureSession?.stopRunning()
                 
                 // Vibrate.
                 AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))  
