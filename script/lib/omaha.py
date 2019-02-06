@@ -43,7 +43,8 @@ def get_channel_ids_from_omaha_server(host, headers, logging):
     response = get(url, headers)
     if response.status_code != 200:
         logging.error("ERROR: Cannot GET /api/channel from Omaha host {}! "
-                      "response.status_code : {}".format(host, response.status_code))
+                      "response.status_code: {}".format(host, response.status_code))
+        logging.error(response.raise_for_status())
         exit(1)
     return response.json()
 

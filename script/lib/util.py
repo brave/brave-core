@@ -254,7 +254,12 @@ def get_platform():
 def omaha_channel(platform, arch, preview):
     if platform == 'darwin':
         if preview:
-            return 'test'
+            if release_channel() in ['beta']:
+                return 'test-beta'
+            elif release_channel() in ['dev']:
+                return 'test-dev'
+            elif release_channel() in ['release']:
+                return 'test'
         else:
             return release_channel() if release_channel() not in 'release' else 'stable'
     elif platform == 'win32':
