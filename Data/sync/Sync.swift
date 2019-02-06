@@ -297,7 +297,11 @@ public class Sync: JSInjector {
             
             func startFetching() {
                 // Perform first fetch manually
-                self.fetchWrapper()
+                // First fetch has a slight delay to prevent race conditions when joining to an existing group.
+                // Fixing concurrency problem(#692) will most likely resolve this issue.
+                let delayBeforeFirstFetchInSeconds: TimeInterval = 3
+                DispatchQueue.main.asyncAfter(deadline: .now() + delayBeforeFirstFetchInSeconds,
+                                              execute: fetchWrapper)
                 
                 // Fetch timer to run on regular basis
                 fetchTimer = Timer.scheduledTimer(timeInterval: 30.0, target: self, selector: #selector(Sync.fetchWrapper), userInfo: nil, repeats: true)
