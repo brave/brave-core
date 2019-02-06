@@ -28,7 +28,7 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
   return size;
 }
 
-gfx::Path BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
+SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
                                       float scale,
                                       bool extend_to_top) const {
   // Overriden to use Brave's non-circular shape
@@ -36,7 +36,7 @@ gfx::Path BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
   scaled_origin.Scale(scale);
   const float radius = GetCornerRadius() * scale;
 
-  gfx::Path path;
+  SkPath path;
   const gfx::Rect contents_bounds = GetContentsBounds();
   const gfx::Rect path_rect(scaled_origin.x(), extend_to_top ? 0 : scaled_origin.y(),
               contents_bounds.width() * scale,

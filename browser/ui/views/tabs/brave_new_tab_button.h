@@ -6,6 +6,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_NEW_TAB_BUTTON_H_
 
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
+#include "third_party/skia/include/core/SkPath.h"
 
 class TabStrip;
 namespace views {
@@ -20,7 +21,7 @@ class BraveNewTabButton : public NewTabButton {
 
   private:
     gfx::Size CalculatePreferredSize() const override;
-    gfx::Path GetBorderPath(const gfx::Point& origin,
+    SkPath GetBorderPath(const gfx::Point& origin,
                           float scale,
                           bool extend_to_top) const override;
     void PaintPlusIcon(gfx::Canvas* canvas) const override;
