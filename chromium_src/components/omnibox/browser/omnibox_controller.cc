@@ -4,6 +4,7 @@
 
 #include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
+#include "components/omnibox/browser/omnibox_controller_emitter.h"
 
 #define AutocompleteController BraveAutocompleteController
 #include "../../../../../../../components/omnibox/browser/omnibox_controller.cc"

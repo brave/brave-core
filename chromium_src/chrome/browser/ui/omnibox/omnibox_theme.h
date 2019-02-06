@@ -12,20 +12,9 @@
 // and override GetOmniboxColor to support it. So that means allowing the many
 // places which pass around the enum value to support our enum values instead.
 
-// re-define original enum
-#define OmniboxTint OmniboxTint_Chromium
-#define GetOmniboxColor GetOmniboxColor_ChromiumImpl
-#include "../../../chrome/browser/ui/omnibox/omnibox_theme.h"
-#undef OmniboxTint
-#undef GetOmniboxColor
-
 // define new enum
 enum class OmniboxTint { DARK, LIGHT, NATIVE, PRIVATE };
 
-// Returns the color for the given |part| and |tint|. An optional |state| can be
-// provided for OmniboxParts that support stateful colors.
-SkColor GetOmniboxColor(OmniboxPart part,
-                        OmniboxTint tint,
-                        OmniboxPartState state = OmniboxPartState::NORMAL);
+#include "../../../chrome/browser/ui/omnibox/omnibox_theme.h"
 
-#endif
+#endif  // CHROME_BROWSER_UI_OMNIBOX_OMNIBOX_THEME_H_OVERRIDE_

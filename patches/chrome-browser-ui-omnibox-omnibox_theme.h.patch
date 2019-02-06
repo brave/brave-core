@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/omnibox/omnibox_theme.h b/chrome/browser/ui/omnibox/omnibox_theme.h
+index 3790fa4fcb601b12c81ff79b5f34fa625e54d6e9..c6c7e56f2633717a141ea52a5c8a043ea3f906c3 100644
+--- a/chrome/browser/ui/omnibox/omnibox_theme.h
++++ b/chrome/browser/ui/omnibox/omnibox_theme.h
+@@ -33,7 +33,7 @@ enum class OmniboxPart {
+ 
+ // The tint of the omnibox theme. E.g. Incognito may use a DARK tint. NATIVE is
+ // only used on Desktop Linux.
+-enum class OmniboxTint { DARK, LIGHT, NATIVE };
++enum class OmniboxTint_Chromium { DARK, LIGHT, NATIVE };
+ 
+ // An optional state for a given |OmniboxPart|.
+ enum class OmniboxPartState {
