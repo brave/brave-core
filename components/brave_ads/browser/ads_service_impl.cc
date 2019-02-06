@@ -398,14 +398,12 @@ void AdsServiceImpl::ResetTimer() {
 
 void AdsServiceImpl::CheckIdleState() {
 #if !defined(OS_ANDROID)
-  ui::CalculateIdleState(GetIdleThreshold(),
-      base::BindRepeating(&AdsServiceImpl::OnIdleState,
-          base::Unretained(this)));
+  ProcessIdleState(ui::CalculateIdleState(GetIdleThreshold()));
 #endif
 }
 
 #if !defined(OS_ANDROID)
-void AdsServiceImpl::OnIdleState(ui::IdleState idle_state) {
+void AdsServiceImpl::ProcessIdleState(ui::IdleState idle_state) {
   if (!connected() || idle_state == last_idle_state_)
     return;
 

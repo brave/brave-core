@@ -79,7 +79,7 @@ class AdsServiceImpl : public AdsService,
   void ResetTimer();
   void CheckIdleState();
 #if !defined(OS_ANDROID)
-  void OnIdleState(ui::IdleState idle_state);
+  void ProcessIdleState(ui::IdleState idle_state);
 #endif
   int GetIdleThreshold();
   void OnShow(Profile* profile, const std::string& notification_id);
