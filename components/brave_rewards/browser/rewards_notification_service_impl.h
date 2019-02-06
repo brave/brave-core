@@ -42,6 +42,8 @@ class RewardsNotificationServiceImpl
   void StoreRewardsNotifications() override;
 
  private:
+  std::string GetGrantIdPrefix(const std::string& grant_type);
+
   // RewardsServiceObserver impl
   void OnGrant(RewardsService* rewards_service,
                unsigned int error_code,
