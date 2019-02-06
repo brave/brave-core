@@ -50,7 +50,7 @@ void BraveToolbarView::Init() {
       base::Bind(&BraveToolbarView::OnLocationBarIsWideChanged,
                  base::Unretained(this)));
   // Only location bar in non-normal mode
-  if (!is_display_mode_normal()) {
+  if (display_mode_ != DisplayMode::NORMAL) {
     return;
   }
 
@@ -106,7 +106,7 @@ int BraveToolbarView::SetLocationBarBounds(const int available_width,
                                           const int next_element_x,
                                           const int element_padding) {
   DCHECK(initialized_);
-  DCHECK(is_display_mode_normal());
+  DCHECK(display_mode_ == DisplayMode::NORMAL);
   // Allow the option of the LocationBar having horizontal margin.
   // With this option, we support a dynamic percentage of margin, with
   // a maximum width.
@@ -187,7 +187,7 @@ void BraveToolbarView::Layout() {
   if (!initialized_)
     return;
 
-  if (!is_display_mode_normal()) {
+  if (display_mode_ != DisplayMode::NORMAL) {
     location_bar_->SetBounds(0, 0, width(),
                              location_bar_->GetPreferredSize().height());
     return;
