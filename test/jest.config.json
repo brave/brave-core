@@ -17,7 +17,8 @@
     "<rootDir>/app/background/api/*.ts",
     "<rootDir>/app/components/**/*.tsx",
     "<rootDir>/app/helpers/*.tsx",
-    "<rootDir>/app/background/reducersTest.ts"
+    "<rootDir>/app/background/reducersTest.ts",
+    "<rootDir>/app/background/storeTest.ts"
   ],
   "transformIgnorePatterns": [
     "<rootDir>/node_modules"
