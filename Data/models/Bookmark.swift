@@ -280,17 +280,19 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         
         let context = DataController.newBackgroundContext()
         // Note: sync order is also used for ordering favorites and non synchronized bookmarks.
-        updateSyncOrderOfMovedBookmark(frc: frc, sourceBookmark: src,
-                                       destinationBookmark: dest,
-                                       sourceIndexPath: sourceIndexPath,
-                                       destinationIndexPath: destinationIndexPath,
-                                       context: context)
+        let srcUpdated = updateSyncOrderOfMovedBookmark(frc: frc, sourceBookmark: src,
+                                                        destinationBookmark: dest,
+                                                        sourceIndexPath: sourceIndexPath,
+                                                        destinationIndexPath: destinationIndexPath,
+                                                        context: context)
         
         setOrderForAllBookmarksOnGivenLevel(parent: src.parentFolder, forFavorites: src.isFavorite, context: context)
         
         DataController.save(context: context)
-        // Updating sync orders is not supported on server side yet, see issue #772 for more details.
-        if !src.isFavorite { Sync.shared.sendSyncRecords(action: .update, records: [src]) }
+        
+        if let bookmarkWithUpdatedSyncOrder = srcUpdated, !bookmarkWithUpdatedSyncOrder.isFavorite {
+            Sync.shared.sendSyncRecords(action: .update, records: [bookmarkWithUpdatedSyncOrder])
+        }
     }
     
     private class func updateSyncOrderOfMovedBookmark(frc: NSFetchedResultsController<Bookmark>,
@@ -298,11 +300,11 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
                                                       destinationBookmark dest: Bookmark,
                                                       sourceIndexPath: IndexPath,
                                                       destinationIndexPath: IndexPath,
-                                                      context: NSManagedObjectContext) {
+                                                      context: NSManagedObjectContext) -> Bookmark? {
         
         guard let srcBgContext = context.object(with: src.objectID) as? Bookmark,
             let destBgContext = context.object(with: dest.objectID) as? Bookmark else {
-            return
+            return nil
         }
         
         // Depending on drag direction, all other bookmarks are pushed up or down.
@@ -333,6 +335,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         }
         
         srcBgContext.syncOrder = Sync.shared.getBookmarkOrder(previousOrder: previousOrder, nextOrder: nextOrder)
+        return srcBgContext
     }
     
     /// Takes all Bookmarks and Favorites from 1.6 and sets correct order for them.
