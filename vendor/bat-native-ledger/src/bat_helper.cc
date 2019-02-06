@@ -896,6 +896,56 @@ static bool ignore_ = false;
     return !error;
   }
 
+  void saveToJson(JsonWriter & writer, const WALLET_PROPERTIES_ST& data) {
+    writer.StartObject();
+
+    writer.String("altcurrency");
+    writer.String(data.altcurrency_.c_str());
+
+    writer.String("probi_");
+    writer.String(data.probi_.c_str());
+
+    writer.String("balance");
+    writer.Double(data.balance_);
+
+    writer.String("fee_amount");
+    writer.Double(data.fee_amount_);
+
+    writer.String("rates");
+    writer.StartObject();
+    for (auto & p : data.rates_) {
+      writer.String(p.first.c_str());
+      writer.Double(p.second);
+    }
+    writer.EndObject();
+
+    writer.String("parameters_choices");
+    writer.StartArray();
+    for (auto & choice : data.parameters_choices_) {
+      writer.Double(choice);
+    }
+    writer.EndArray();
+
+    writer.String("parameters_range");
+    writer.StartArray();
+    for (auto & choice : data.parameters_range_) {
+      writer.Double(choice);
+    }
+    writer.EndArray();
+
+    writer.String("parameters_days");
+    writer.Int(data.parameters_days_);
+
+    writer.String("grants");
+    writer.StartArray();
+    for (auto & grant : data.grants_) {
+      saveToJson(writer, grant);
+    }
+    writer.EndArray();
+
+    writer.EndObject();
+  }
+
   /////////////////////////////////////////////////////////////////////////////
   GRANT::GRANT() : expiryTime(0) {}
 
@@ -942,6 +992,24 @@ static bool ignore_ = false;
     }
 
     return !error;
+  }
+
+  void saveToJson(JsonWriter & writer, const GRANT& data) {
+    writer.StartObject();
+
+    writer.String("altcurrency");
+    writer.String(data.altcurrency.c_str());
+
+    writer.String("probi");
+    writer.String(data.probi.c_str());
+
+    writer.String("expiryTime");
+    writer.Uint64(data.expiryTime);
+
+    writer.String("promotionId");
+    writer.String(data.promotionId.c_str());
+
+    writer.EndObject();
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -1386,6 +1454,14 @@ static bool ignore_ = false;
           current_reconciles_[i.name.GetString()] = b;
         }
       }
+
+      if (d.HasMember("walletProperties") && d["walletProperties"].IsObject()) {
+        auto & i = d["walletProperties"];
+        rapidjson::StringBuffer sb;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+        i.Accept(writer);
+        walletProperties_.loadFromJson(sb.GetString());
+      }
     }
 
     return !error;
@@ -1476,6 +1552,9 @@ static bool ignore_ = false;
       saveToJson(writer, t.second);
     }
     writer.EndObject();
+
+    writer.String("walletProperties");
+    saveToJson(writer, data.walletProperties_);
 
     writer.EndObject();
   }
