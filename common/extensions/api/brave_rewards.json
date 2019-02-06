@@ -336,6 +336,10 @@
           {
             "name": "solution",
             "type": "string"
+          },
+          {
+            "name": "promotionId",
+            "type": "string"
           }
         ]
       },

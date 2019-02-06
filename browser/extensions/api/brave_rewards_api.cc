@@ -167,7 +167,7 @@ ExtensionFunction::ResponseAction BraveRewardsSolveGrantCaptchaFunction::Run() {
   RewardsService* rewards_service_ =
     RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service_) {
-    rewards_service_->SolveGrantCaptcha(params->solution);
+    rewards_service_->SolveGrantCaptcha(params->solution, params->promotion_id);
   }
   return RespondNow(NoArguments());
 }

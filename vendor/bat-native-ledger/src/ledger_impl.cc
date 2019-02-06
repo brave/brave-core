@@ -655,8 +655,8 @@ void LedgerImpl::OnRecoverWallet(
                                   ledgerGrants);
 }
 
-void LedgerImpl::SolveGrantCaptcha(const std::string& solution) const {
-  bat_client_->setGrants(solution, "");
+void LedgerImpl::SolveGrantCaptcha(const std::string& solution, const std::string& promotionId) const {
+  bat_client_->setGrant(solution, promotionId);
 }
 
 void LedgerImpl::OnGrantFinish(ledger::Result result,

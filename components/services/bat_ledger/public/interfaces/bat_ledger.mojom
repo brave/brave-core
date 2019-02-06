@@ -57,7 +57,7 @@ interface BatLedger {
   GetWalletPassphrase() => (string wallet_passphrase);
   GetNumExcludedSites() => (uint32 num_excluded_sites);
   RecoverWallet(string passPhrase);
-  SolveGrantCaptcha(string solution);
+  SolveGrantCaptcha(string solution, string promotionId);
 
   GetAddresses() => (map<string, string> addresses);
   GetBATAddress() => (string address);
