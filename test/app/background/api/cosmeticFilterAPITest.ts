@@ -19,8 +19,8 @@ describe('cosmeticFilterTestSuite', () => {
       this.setStorageStub.restore()
     })
     beforeEach(function () {
-      this.getStorageStub.reset()
-      this.setStorageStub.reset()
+      this.getStorageStub.resetHistory()
+      this.setStorageStub.resetHistory()
     })
 
     it('passes only 1 arg to chrome.storage.local.set', function () {
@@ -77,8 +77,8 @@ describe('cosmeticFilterTestSuite', () => {
       this.setStorageStub.restore()
     })
     beforeEach(function () {
-      this.getStorageStub.reset()
-      this.setStorageStub.reset()
+      this.getStorageStub.resetHistory()
+      this.setStorageStub.resetHistory()
     })
     it('passes only 1 arg to chrome.storage.local.set', function () {
       this.getStorageStub.yields({
@@ -141,8 +141,8 @@ describe('cosmeticFilterTestSuite', () => {
       this.setStorageStub.restore()
     })
     beforeEach(function () {
-      this.getStorageStub.reset()
-      this.setStorageStub.reset()
+      this.getStorageStub.resetHistory()
+      this.setStorageStub.resetHistory()
     })
 
     it('sets empty list object', function () {
@@ -172,9 +172,9 @@ describe('cosmeticFilterTestSuite', () => {
       this.insertCSSStub.restore()
     })
     beforeEach(function () {
-      this.getStorageStub.reset()
-      this.setStorageStub.reset()
-      this.insertCSSStub.reset()
+      this.getStorageStub.resetHistory()
+      this.setStorageStub.resetHistory()
+      this.insertCSSStub.resetHistory()
     })
     it('applies the correct filter', function () {
       this.getStorageStub.yields({

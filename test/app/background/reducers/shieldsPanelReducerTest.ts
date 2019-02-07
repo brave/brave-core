@@ -41,8 +41,8 @@ describe('braveShieldsPanelReducer', () => {
       this.resetBlockingResourcesSpy.restore()
     })
     afterEach(function () {
-      this.spy.reset()
-      this.resetNoScriptInfoSpy.reset()
+      this.spy.resetHistory()
+      this.resetNoScriptInfoSpy.resetHistory()
     })
     it('calls resetBlockingStats when isMainFrame is true', function () {
       shieldsPanelReducer(initialState.shieldsPanel, {
@@ -166,7 +166,7 @@ describe('braveShieldsPanelReducer', () => {
       this.updateActiveTabSpy.restore()
     })
     afterEach(function () {
-      this.updateActiveTabSpy.reset()
+      this.updateActiveTabSpy.resetHistory()
     })
     it('calls shieldsPanelState.updateActiveTab when the tab is active', function () {
       shieldsPanelReducer(this.state, {
@@ -225,7 +225,7 @@ describe('braveShieldsPanelReducer', () => {
       this.updateActiveTabSpy.restore()
     })
     afterEach(function () {
-      this.updateActiveTabSpy.reset()
+      this.updateActiveTabSpy.resetHistory()
     })
     it('calls shieldsPanelState.updateActiveTab when the tab is active', function () {
       shieldsPanelReducer(this.state, {
