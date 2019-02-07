@@ -2920,7 +2920,15 @@ extension BrowserViewController: PreferencesObserver {
              Preferences.Shields.fingerprintingProtection.key:
             tabManager.allTabs.forEach { $0.webView?.reload() }
         case Preferences.Privacy.blockAllCookies.key:
-            tabManager.reset()
+            if Preferences.Privacy.blockAllCookies.value {
+                tabManager.reset()
+            } else {
+                tabManager.allTabs.forEach {
+                    if let url: URL = $0.webView?.url {
+                        $0.loadRequest(PrivilegedRequest(url: url) as URLRequest)
+                    }
+                }
+            }
         default:
             log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
             break
