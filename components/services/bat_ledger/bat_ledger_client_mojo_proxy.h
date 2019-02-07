@@ -54,13 +54,14 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void SavePublishersList(const std::string& publishers_list,
                           ledger::LedgerCallbackHandler* handler) override;
   void SetTimer(uint64_t time_offset, uint32_t& timer_id) override;
+  void KillTimer(const uint32_t timer_id) override;
   void LoadPublisherList(ledger::LedgerCallbackHandler* handler) override;
 
   void LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,
-      const ledger::URL_METHOD& method,
+      const ledger::URL_METHOD method,
       ledger::LoadURLCallback callback) override;
 
   void OnExcludedSitesChanged(const std::string& publisher_id) override;
@@ -83,10 +84,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   std::unique_ptr<ledger::LogStream> VerboseLog(const char* file,
                                          int line,
                                          int verbosity_level) const override;
-  std::unique_ptr<confirmations::LogStream> LogConfirmations(
-      const char* file,
-      int line,
-      int level) const override;
   void LoadMediaPublisherInfo(
       const std::string& media_key,
       ledger::PublisherInfoCallback callback) override;
@@ -120,22 +117,13 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void SaveNormalizedPublisherList(
     const ledger::PublisherInfoListStruct& normalized_list) override;
 
-  void URLRequest(const std::string& url,
-                  const std::vector<std::string>& headers,
-                  const std::string& content,
-                  const std::string& content_type,
-                  const ledger::URL_METHOD method,
-                  ledger::URLRequestCallback callback) override;
-
-  void SaveConfirmationsState(const std::string& name,
-                              const std::string& value,
-                              ledger::OnSaveCallback callback) override;
-  void LoadConfirmationsState(const std::string& name,
-                              ledger::OnLoadCallback callback) override;
-  void ResetConfirmationsState(const std::string& name,
-                               ledger::OnResetCallback callback) override;
-  uint32_t SetConfirmationsTimer(uint64_t time_offset) override;
-  void KillConfirmationsTimer(uint32_t timer_id) override;
+  void SaveState(const std::string& name,
+                 const std::string& value,
+                 ledger::OnSaveCallback callback) override;
+  void LoadState(const std::string& name,
+                 ledger::OnLoadCallback callback) override;
+  void ResetState(const std::string& name,
+                  ledger::OnResetCallback callback) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
 
  private:

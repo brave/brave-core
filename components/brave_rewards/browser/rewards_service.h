@@ -160,8 +160,9 @@ class RewardsService : public KeyedService {
     const GetPendingContributionsTotalCallback& callback) = 0;
   virtual void GetRewardsMainEnabled(
     const GetRewardsMainEnabledCallback& callback) const = 0;
-  virtual void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) = 0;
-  virtual void AdSustained(std::unique_ptr<ads::NotificationInfo> info) = 0;
+  // TODO remove this hack when ads is moved to the same process as ledger
+  virtual void SetCatalogIssuers(const std::string& json) = 0;
+  virtual void AdSustained(const std::string& json) = 0;
 
   virtual void GetAddressesForPaymentId(
       const GetAddressesCallback& callback) = 0;

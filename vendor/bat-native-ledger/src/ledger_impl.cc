@@ -10,6 +10,8 @@
 
 #include "ledger_impl.h"
 
+#include "bat/ads/issuers_info.h"
+#include "bat/ads/notification_info.h"
 #include "bat/confirmations/confirmations.h"
 #include "bat_client.h"
 #include "bat_contribution.h"
@@ -196,7 +198,7 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
     } else {
       DCHECK(!bat_confirmations_);
       bat_confirmations_.reset(
-          confirmations::Confirmations::CreateInstance(this));
+          confirmations::Confirmations::CreateInstance(ledger_client_));
 
       auto wallet_info = bat_state_->GetWalletInfo();
       auto confirmations_wallet_info = GetConfirmationsWalletInfo(wallet_info);
@@ -303,7 +305,7 @@ void LedgerImpl::LoadURL(const std::string& url,
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& contentType,
-    const ledger::URL_METHOD& method,
+    const ledger::URL_METHOD method,
     ledger::LoadURLCallback callback) {
   ledger_client_->LoadURL(
       url, headers, content, contentType, method, callback);
@@ -694,6 +696,9 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
+  if (bat_confirmations_->OnTimer(timer_id))
+    return;
+
   if (timer_id == last_pub_load_timer_id_) {
     last_pub_load_timer_id_ = 0;
 
@@ -1213,88 +1218,6 @@ void LedgerImpl::AdSustained(const std::string& info) {
   notification_info->uuid = notification_info_ads.uuid;
 
   bat_confirmations_->AdSustained(std::move(notification_info));
-}
-
-void LedgerImpl::URLRequest(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      const confirmations::URLRequestMethod method,
-      confirmations::URLRequestCallback callback) {
-  ledger_client_->URLRequest(url, headers, content, content_type,
-                             static_cast<ledger::URL_METHOD>(method), callback);
-}
-
-void LedgerImpl::Save(const std::string& name,
-                      const std::string& value,
-                      confirmations::OnSaveCallback callback) {
-  std::function<void(const ledger::Result)> proxy_callback = std::bind(
-      [](confirmations::OnSaveCallback original_callback,
-         ledger::Result result) {
-        if (original_callback)
-          original_callback(result == ledger::Result::LEDGER_OK
-                                ? confirmations::Result::SUCCESS
-                                : confirmations::Result::FAILED);
-      },
-      std::move(callback), _1);
-
-  ledger_client_->SaveConfirmationsState(name, value, proxy_callback);
-}
-
-void LedgerImpl::Load(const std::string& name,
-                      confirmations::OnLoadCallback callback) {
-  std::function<void(const ledger::Result, const std::string&)> proxy_callback =
-      std::bind(
-          [](confirmations::OnLoadCallback original_callback,
-             ledger::Result result, const std::string& value) {
-            if (original_callback)
-              original_callback(result == ledger::Result::LEDGER_OK
-                                    ? confirmations::Result::SUCCESS
-                                    : confirmations::Result::FAILED,
-                                value);
-          },
-          std::move(callback), _1, _2);
-
-  ledger_client_->LoadConfirmationsState(name, proxy_callback);
-}
-
-void LedgerImpl::Reset(const std::string& name,
-                       confirmations::OnResetCallback callback) {
-  std::function<void(const ledger::Result)> proxy_callback = std::bind(
-      [](confirmations::OnResetCallback original_callback,
-         ledger::Result result) {
-        if (original_callback)
-          original_callback(result == ledger::Result::LEDGER_OK
-                                ? confirmations::Result::SUCCESS
-                                : confirmations::Result::FAILED);
-      },
-      std::move(callback), _1);
-
-  ledger_client_->ResetConfirmationsState(name, proxy_callback);
-}
-
-uint32_t LedgerImpl::SetTimer(const uint64_t time_offset) {
-  return ledger_client_->SetConfirmationsTimer(time_offset);
-}
-
-void LedgerImpl::KillTimer(uint32_t timer_id) {
-  ledger_client_->KillConfirmationsTimer(timer_id);
-}
-
-void LedgerImpl::OnConfirmationsTimer(uint32_t timer_id) {
-  bat_confirmations_->OnTimer(timer_id);
-}
-
-void LedgerImpl::SetConfirmationsIsReady(const bool is_ready) {
-  ledger_client_->SetConfirmationsIsReady(is_ready);
-}
-
-std::unique_ptr<confirmations::LogStream> LedgerImpl::Log(
-    const char* file,
-    const int line,
-    const confirmations::LogLevel log_level) const {
-  return ledger_client_->LogConfirmations(file, line, log_level);
 }
 
 }  // namespace bat_ledger

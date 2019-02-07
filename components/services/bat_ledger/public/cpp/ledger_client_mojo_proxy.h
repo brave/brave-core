@@ -60,6 +60,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       OnRemoveRecurringCallback callback) override;
 
   void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
+  void KillTimer(const uint32_t timer_id) override;
   void OnPanelPublisherInfo(int32_t result, const std::string& info,
       uint64_t window_id) override;
   void OnExcludedSitesChanged(const std::string& publisher_id) override;
@@ -104,25 +105,14 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void SaveNormalizedPublisherList(
     const std::string& normalized_list) override;
-
-  void URLRequest(const std::string& url,
-                  const std::vector<std::string>& headers,
-                  const std::string& content,
-                  const std::string& content_type,
-                  int32_t method,
-                  URLRequestCallback callback) override;
-
-  void SaveConfirmationsState(const std::string& name,
+  void SaveState(const std::string& name,
                               const std::string& value,
-                              SaveConfirmationsStateCallback callback) override;
-  void LoadConfirmationsState(const std::string& name,
-                              LoadConfirmationsStateCallback callback) override;
-  void ResetConfirmationsState(
+                              SaveStateCallback callback) override;
+  void LoadState(const std::string& name,
+                              LoadStateCallback callback) override;
+  void ResetState(
       const std::string& name,
-      ResetConfirmationsStateCallback callback) override;
-  void SetConfirmationsTimer(uint64_t time_offset,
-                             SetConfirmationsTimerCallback callback) override;
-  void KillConfirmationsTimer(uint32_t timer_id) override;
+      ResetStateCallback callback) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
 
  private:
@@ -216,24 +206,18 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const ledger::PublisherInfoList& publisher_info_list,
       uint32_t next_record);
 
-  static void OnSaveConfirmationsState(
-      CallbackHolder<SaveConfirmationsStateCallback>* holder,
+  static void OnSaveState(
+      CallbackHolder<SaveStateCallback>* holder,
       ledger::Result result);
 
-  static void OnLoadConfirmationsState(
-      CallbackHolder<LoadConfirmationsStateCallback>* holder,
+  static void OnLoadState(
+      CallbackHolder<LoadStateCallback>* holder,
       ledger::Result result,
       const std::string& value);
 
-  static void OnResetConfirmationsState(
-      CallbackHolder<ResetConfirmationsStateCallback>* holder,
+  static void OnResetState(
+      CallbackHolder<ResetStateCallback>* holder,
       ledger::Result result);
-
-  static void OnURLRequest(
-      CallbackHolder<URLRequestCallback>* holder,
-      int32_t response_code,
-      const std::string& body,
-      const std::map<std::string, std::string>& headers);
 
   ledger::LedgerClient* ledger_client_;
 

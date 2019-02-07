@@ -20,10 +20,6 @@
 
 namespace braveledger_bat_helper {
 
-namespace {
-static bool ignore_ = false;
-}  // namespace
-
   bool isProbiValid(const std::string& probi) {
     // probi shouldn't be longer then 44
     if (probi.length() > 44) {
@@ -2518,12 +2514,8 @@ static bool ignore_ = false;
       return result;
   }
 
-  void set_ignore_for_testing(bool ignore) {
-    ignore_ = ignore;
-  }
-
   bool ignore_for_testing() {
-    return ignore_;
+    return ledger::is_testing;
   }
 
   std::string toLowerCase(std::string word) {

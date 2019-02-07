@@ -11,10 +11,15 @@ if (is_android) {
 dep_base = rebase_path("../..", "//")
 
 config("external_config") {
+  visibility = [ ":*" ]
   include_dirs = [ "include" ]
 }
 
 config("internal_config") {
+  visibility = [
+    ":*",
+    "//brave/test:*",
+  ]
   include_dirs = [ "src" ]
 }
 
@@ -45,16 +50,37 @@ static_library("bat-native-ledger-standalone") {
   ]
 }
 
-source_set("ledger") {
+source_set("headers") {
+  visibility = [
+    ":*",
+    rebase_path("bat-native-confirmations", dep_base),
+    # add this only when ads is in the same process
+    # rebase_path("bat-native-ads", dep_base),
+  ]
+
   public_configs = [ ":external_config" ]
+
+  sources = [
+    "include/bat/ledger/auto_contribute_props.h",
+    "include/bat/ledger/balance_report_info.h",
+    "include/bat/ledger/export.h",
+    "include/bat/ledger/grant.h",
+    "include/bat/ledger/ledger.h",
+    "include/bat/ledger/ledger_callback_handler.h",
+    "include/bat/ledger/ledger_client.h",
+    "include/bat/ledger/media_publisher_info.h",
+    "include/bat/ledger/pending_contribution.h",
+    "include/bat/ledger/publisher_info.h",
+    "include/bat/ledger/wallet_info.h",
+  ]
+}
+
+source_set("ledger") {
   configs += [ ":internal_config" ]
 
   output_name = "bat_native_ledger"
 
   sources = [
-    "include/bat/ledger/ledger.h",
-    "include/bat/ledger/ledger_callback_handler.h",
-    "include/bat/ledger/ledger_client.h",
     "src/bat/ledger/ledger.cc",
     "src/bat_client.cc",
     "src/bat_client.h",
@@ -84,8 +110,7 @@ source_set("ledger") {
     rebase_path("bat-native-rapidjson", dep_base),
   ]
 
-  if (brave_ads_enabled && !is_linux) {
-    # TODO(bridiver): Required for all platforms once Brave Ads is building on Linux
-    deps += [ rebase_path("challenge_bypass_ristretto_ffi", dep_base) ]
-  }
+  public_deps = [
+    ":headers",
+  ]
 }

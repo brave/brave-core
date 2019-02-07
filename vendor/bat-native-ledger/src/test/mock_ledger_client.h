@@ -40,7 +40,7 @@ class MockLedgerClient : public ledger::LedgerClient {
                    const std::vector<std::string>& headers,
                    const std::string& content,
                    const std::string& contentType,
-                   const ledger::URL_METHOD& method,
+                   const ledger::URL_METHOD method,
                    ledger::LedgerCallbackHandler* handler) override;
 
   std::unique_ptr<ledger::Ledger> ledger_;

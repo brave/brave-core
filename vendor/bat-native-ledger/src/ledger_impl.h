@@ -44,8 +44,7 @@ class Confirmations;
 namespace bat_ledger {
 
 class LedgerImpl : public ledger::Ledger,
-                   public ledger::LedgerCallbackHandler,
-                   public confirmations::ConfirmationsClient {
+                   public ledger::LedgerCallbackHandler {
  public:
   typedef std::map<uint32_t, ledger::VisitData>::const_iterator visit_data_iter;
 
@@ -157,7 +156,7 @@ class LedgerImpl : public ledger::Ledger,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,
-      const ledger::URL_METHOD& method,
+      const ledger::URL_METHOD method,
       ledger::LoadURLCallback callback);
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
@@ -217,10 +216,6 @@ class LedgerImpl : public ledger::Ledger,
       const uint64_t& currentReconcileStamp,
       bool non_verified,
       bool min_visits);
-  std::unique_ptr<ledger::LogStream> Log(
-      const char* file,
-      int line,
-      const ledger::LogLevel log_level) const;
   void LogResponse(const std::string& func_name,
                    bool result,
                    const std::string& response,
@@ -318,29 +313,10 @@ class LedgerImpl : public ledger::Ledger,
   void SetCatalogIssuers(const std::string& info) override;
   void AdSustained(const std::string& info) override;
 
-  // ConfirmationsClient implementation
-  uint32_t SetTimer(const uint64_t time_offset) override;
-  void KillTimer(uint32_t timer_id) override;
-  void SetConfirmationsIsReady(const bool is_ready) override;
-  void URLRequest(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      const confirmations::URLRequestMethod method,
-      confirmations::URLRequestCallback callback) override;
-  void Save(
-      const std::string& name,
-      const std::string& value,
-      confirmations::OnSaveCallback callback) override;
-  void Load(const std::string& name,
-            confirmations::OnLoadCallback callback) override;
-  void Reset(const std::string& name,
-             confirmations::OnResetCallback callback) override;
-  std::unique_ptr<confirmations::LogStream> Log(
+  std::unique_ptr<ledger::LogStream> Log(
       const char* file,
       const int line,
-      const confirmations::LogLevel log_level) const override;
+      const ledger::LogLevel log_level) const;
 
  private:
   void AddRecurringPayment(const std::string& publisher_id, const double& value) override;
@@ -367,7 +343,6 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::VisitData& visit_data) override;
 
   void OnTimer(uint32_t timer_id) override;
-  void OnConfirmationsTimer(uint32_t timer_id) override;
 
   void saveVisitCallback(const std::string& publisher,
                          uint64_t verifiedTimestamp);
@@ -398,7 +373,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
   std::unique_ptr<braveledger_bat_contribution::BatContribution> bat_contribution_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
-  
+
   bool initialized_;
   bool initializing_;
 

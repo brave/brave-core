@@ -61,8 +61,6 @@ using FetchIconCallback = std::function<void(bool, const std::string&)>;
 using LoadURLCallback = std::function<void(const int, const std::string&,
     const std::map<std::string, std::string>& headers)>;
 using OnRestoreCallback = std::function<void(bool)>;
-using URLRequestCallback = std::function<void(const int, const std::string&,
-  const std::map<std::string, std::string>& headers)>;
 using OnSaveCallback = std::function<void(const ledger::Result)>;
 using OnLoadCallback = std::function<void(const ledger::Result, const std::string&)>;
 using OnResetCallback = std::function<void(const ledger::Result)>;
@@ -141,7 +139,8 @@ class LEDGER_EXPORT LedgerClient {
 
   //uint64_t time_offset (input): timer offset in seconds.
   //uint32_t timer_id (output) : 0 in case of failure
-  virtual void SetTimer(uint64_t time_offset, uint32_t & timer_id) = 0;
+  virtual void SetTimer(uint64_t time_offset, uint32_t& timer_id) = 0;
+  virtual void KillTimer(const uint32_t timer_id) = 0;
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
@@ -150,8 +149,9 @@ class LEDGER_EXPORT LedgerClient {
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,
-      const ledger::URL_METHOD& method,
+      const ledger::URL_METHOD method,
       ledger::LoadURLCallback callback) = 0;
+
   virtual void SetContributionAutoInclude(const std::string& publisher_key,
                                           bool excluded,
                                           uint64_t windowId) = 0;
@@ -170,34 +170,18 @@ class LEDGER_EXPORT LedgerClient {
       int line,
       int vlog_level) const = 0;
 
-  // Logs confirmations-related debug information
-  virtual std::unique_ptr<confirmations::LogStream> LogConfirmations(
-      const char* file,
-      int line,
-      const int log_level) const = 0;
-
   virtual void OnRestorePublishers(ledger::OnRestoreCallback callback) = 0;
 
   virtual void SaveNormalizedPublisherList(
     const ledger::PublisherInfoListStruct& normalized_list) = 0;
 
-  virtual void URLRequest(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      const ledger::URL_METHOD method,
-      ledger::URLRequestCallback callback) = 0;
-
-  virtual void SaveConfirmationsState(const std::string& name,
-                                      const std::string& value,
-                                      ledger::OnSaveCallback callback) = 0;
-  virtual void LoadConfirmationsState(const std::string& name,
-                                      ledger::OnLoadCallback callback) = 0;
-  virtual void ResetConfirmationsState(const std::string& name,
-                                       ledger::OnResetCallback callback) = 0;
-  virtual uint32_t SetConfirmationsTimer(const uint64_t time_offset) = 0;
-  virtual void KillConfirmationsTimer(uint32_t timer_id) = 0;
+  virtual void SaveState(const std::string& name,
+                         const std::string& value,
+                         ledger::OnSaveCallback callback) = 0;
+  virtual void LoadState(const std::string& name,
+                         ledger::OnLoadCallback callback) = 0;
+  virtual void ResetState(const std::string& name,
+                          ledger::OnResetCallback callback) = 0;
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 };
 

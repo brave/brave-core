@@ -7,25 +7,11 @@
 #include <string>
 
 #include "base/logging.h"
-#include "bat/confirmations/confirmations_client.h"
 #include "mojo/public/cpp/bindings/map.h"
 
 namespace bat_ledger {
 
 namespace {
-
-std::map<std::string, std::string> ToStdMap(
-    const base::flat_map<std::string, std::string>& map) {
-  std::map<std::string, std::string> std_map;
-  for (const auto it : map) {
-    std_map[it.first] = it.second;
-  }
-  return std_map;
-}
-
-int32_t ToMojomURLRequestMethod(ledger::URL_METHOD method) {
-  return (int32_t)method;
-}
 
 int32_t ToMojomResult(ledger::Result result) {
   return (int32_t)result;
@@ -80,49 +66,19 @@ class LogStreamImpl : public ledger::LogStream {
   DISALLOW_COPY_AND_ASSIGN(LogStreamImpl);
 };
 
-class ConfirmationsLogStreamImpl : public confirmations::LogStream {
- public:
-  ConfirmationsLogStreamImpl(const char* file,
-                int line,
-                const confirmations::LogLevel log_level) {
-    switch(log_level) {
-      case confirmations::LogLevel::LOG_INFO:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_INFO);
-        break;
-      case confirmations::LogLevel::LOG_WARNING:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_WARNING);
-        break;
-      case confirmations::LogLevel::LOG_ERROR:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_ERROR);
-        break;
-      default:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_VERBOSE);
-        break;
-    }
-  }
-
-  std::ostream& stream() override {
-    return log_message_->stream();
-  }
-
- private:
-  std::unique_ptr<logging::LogMessage> log_message_;
-  DISALLOW_COPY_AND_ASSIGN(ConfirmationsLogStreamImpl);
-};
-
-void OnSaveConfirmationsState(const ledger::OnSaveCallback& callback,
-                              int32_t result) {
+void OnSaveState(const ledger::OnSaveCallback& callback,
+                 int32_t result) {
   callback(ToLedgerResult(result));
 }
 
-void OnLoadConfirmationsState(const ledger::OnLoadCallback& callback,
-                              int32_t result,
-                              const std::string& value) {
+void OnLoadState(const ledger::OnLoadCallback& callback,
+                 int32_t result,
+                 const std::string& value) {
   callback(ToLedgerResult(result), value);
 }
 
-void OnResetConfirmationsState(const ledger::OnSaveCallback& callback,
-                               int32_t result) {
+void OnResetState(const ledger::OnSaveCallback& callback,
+                  int32_t result) {
   callback(ToLedgerResult(result));
 }
 
@@ -156,7 +112,7 @@ void BatLedgerClientMojoProxy::LoadURL(
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& contentType,
-    const ledger::URL_METHOD& method,
+    const ledger::URL_METHOD method,
     ledger::LoadURLCallback callback) {
   if (!Connected())
     return;
@@ -232,15 +188,6 @@ std::unique_ptr<ledger::LogStream> BatLedgerClientMojoProxy::VerboseLog(
     const char* file, int line, int level) const {
   // There's no need to proxy this
   return std::make_unique<LogStreamImpl>(file, line, level);
-}
-
-std::unique_ptr<confirmations::LogStream>
-BatLedgerClientMojoProxy::LogConfirmations(const char* file,
-                                           int line,
-                                           int level) const {
-  // There's no need to proxy this
-  return std::make_unique<ConfirmationsLogStreamImpl>(
-      file, line, static_cast<confirmations::LogLevel>(level));
 }
 
 void BatLedgerClientMojoProxy::OnGrantFinish(ledger::Result result,
@@ -462,6 +409,14 @@ void BatLedgerClientMojoProxy::SetTimer(uint64_t time_offset,
   }
 
   bat_ledger_client_->SetTimer(time_offset, &timer_id); // sync
+}
+
+void BatLedgerClientMojoProxy::KillTimer(const uint32_t timer_id) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_client_->KillTimer(timer_id); // sync
 }
 
 void BatLedgerClientMojoProxy::OnExcludedSitesChanged(
@@ -731,31 +686,7 @@ void BatLedgerClientMojoProxy::SaveNormalizedPublisherList(
   bat_ledger_client_->SaveNormalizedPublisherList(normalized_list.ToJson());
 }
 
-void OnURLRequest(const confirmations::URLRequestCallback& callback,
-                  int32_t status_code,
-                  const std::string& content,
-                  const base::flat_map<std::string, std::string>& headers) {
-  callback(status_code, content, ToStdMap(headers));
-}
-
-void BatLedgerClientMojoProxy::URLRequest(
-    const std::string& url,
-    const std::vector<std::string>& headers,
-    const std::string& content,
-    const std::string& content_type,
-    ledger::URL_METHOD method,
-    ledger::URLRequestCallback callback) {
-  if (!Connected()) {
-    callback(418, "", std::map<std::string, std::string>());
-    return;
-  }
-
-  bat_ledger_client_->URLRequest(
-      url, headers, content, content_type, ToMojomURLRequestMethod(method),
-      base::BindOnce(&OnURLRequest, std::move(callback)));
-}
-
-void BatLedgerClientMojoProxy::SaveConfirmationsState(
+void BatLedgerClientMojoProxy::SaveState(
     const std::string& name,
     const std::string& value,
     ledger::OnSaveCallback callback) {
@@ -764,12 +695,12 @@ void BatLedgerClientMojoProxy::SaveConfirmationsState(
     return;
   }
 
-  bat_ledger_client_->SaveConfirmationsState(
+  bat_ledger_client_->SaveState(
       name, value,
-      base::BindOnce(&OnSaveConfirmationsState, std::move(callback)));
+      base::BindOnce(&OnSaveState, std::move(callback)));
 }
 
-void BatLedgerClientMojoProxy::LoadConfirmationsState(
+void BatLedgerClientMojoProxy::LoadState(
     const std::string& name,
     ledger::OnLoadCallback callback) {
   if (!Connected()) {
@@ -777,11 +708,11 @@ void BatLedgerClientMojoProxy::LoadConfirmationsState(
     return;
   }
 
-  bat_ledger_client_->LoadConfirmationsState(
-      name, base::BindOnce(&OnLoadConfirmationsState, std::move(callback)));
+  bat_ledger_client_->LoadState(
+      name, base::BindOnce(&OnLoadState, std::move(callback)));
 }
 
-void BatLedgerClientMojoProxy::ResetConfirmationsState(
+void BatLedgerClientMojoProxy::ResetState(
     const std::string& name,
     ledger::OnResetCallback callback) {
   if (!Connected()) {
@@ -789,24 +720,8 @@ void BatLedgerClientMojoProxy::ResetConfirmationsState(
     return;
   }
 
-  bat_ledger_client_->ResetConfirmationsState(
-      name, base::BindOnce(&OnResetConfirmationsState, std::move(callback)));
-}
-
-uint32_t BatLedgerClientMojoProxy::SetConfirmationsTimer(uint64_t time_offset) {
-  if (!Connected())
-    return 0;
-
-  uint32_t timer_id;
-  bat_ledger_client_->SetConfirmationsTimer(time_offset, &timer_id);  // sync
-  return timer_id;
-}
-
-void BatLedgerClientMojoProxy::KillConfirmationsTimer(uint32_t timer_id) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->KillConfirmationsTimer(timer_id);
+  bat_ledger_client_->ResetState(
+      name, base::BindOnce(&OnResetState, std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
