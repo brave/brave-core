@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -24,35 +25,38 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DownloadPromptDefault) {
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kWidevineOptedIn));
-  EXPECT_TRUE(
-      browser()->profile()->GetPrefs()->GetBoolean(kHTTPSEVerywhereControlType));
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      kHTTPSEVerywhereControlType));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kNoScriptControlType));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(kHideBraveRewardsButton));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DisableGoogleServicesByDefault) {
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(prefs::kAlternateErrorPagesEnabled));
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(spellcheck::prefs::kSpellCheckUseSpellingService));
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(prefs::kSafeBrowsingExtendedReportingOptInAllowed));
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(prefs::kSearchSuggestEnabled));
-  EXPECT_TRUE(
-      browser()->profile()->GetPrefs()->GetBoolean(syncer::prefs::kSyncManaged));
-  EXPECT_EQ(
-      browser()->profile()->GetPrefs()->GetInteger(prefs::kNetworkPredictionOptions),
-      chrome_browser_net::NETWORK_PREDICTION_NEVER);
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(prefs::kSigninAllowedOnNextStartup));
+IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
+                       DisableGoogleServicesByDefault) {
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      prefs::kAlternateErrorPagesEnabled));
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      spellcheck::prefs::kSpellCheckUseSpellingService));
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      prefs::kSafeBrowsingExtendedReportingOptInAllowed));
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      prefs::kSearchSuggestEnabled));
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      syncer::prefs::kSyncManaged));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
+                prefs::kNetworkPredictionOptions),
+            chrome_browser_net::NETWORK_PREDICTION_NEVER);
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      prefs::kSigninAllowedOnNextStartup));
   // Verify cloud print is disabled.
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(prefs::kCloudPrintProxyEnabled));
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(prefs::kCloudPrintSubmitEnabled));
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      prefs::kCloudPrintProxyEnabled));
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      prefs::kCloudPrintSubmitEnabled));
 }
