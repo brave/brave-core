@@ -326,6 +326,10 @@ void LedgerClientMojoProxy::SetTimer(uint64_t time_offset,
   std::move(callback).Run(timer_id);
 }
 
+void LedgerClientMojoProxy::KillTimer(const uint32_t timer_id) {
+  ledger_client_->KillTimer(timer_id);
+}
+
 void LedgerClientMojoProxy::OnExcludedSitesChanged(
     const std::string& publisher_id) {
   ledger_client_->OnExcludedSitesChanged(publisher_id);
@@ -604,57 +608,30 @@ void LedgerClientMojoProxy::SaveNormalizedPublisherList(
 }
 
 // static
-void LedgerClientMojoProxy::OnURLRequest(
-    CallbackHolder<URLRequestCallback>* holder,
-    int32_t response_code,
-    const std::string& body,
-    const std::map<std::string, std::string>& headers) {
-  if (holder->is_valid())
-    std::move(holder->get())
-        .Run(response_code, body, mojo::MapToFlatMap(headers));
-  delete holder;
-}
-
-void LedgerClientMojoProxy::URLRequest(const std::string& url,
-    const std::vector<std::string>& headers,
-    const std::string& content,
-    const std::string& content_type,
-    int32_t method,
-    URLRequestCallback callback) {
-  // deleted in OnSaveConfirmationsState
-  auto* holder =
-      new CallbackHolder<URLRequestCallback>(AsWeakPtr(), std::move(callback));
-
-  ledger_client_->URLRequest(
-      url, headers, content, content_type, ToLedgerURLMethod(method),
-      std::bind(LedgerClientMojoProxy::OnURLRequest, holder, _1, _2, _3));
-}
-
-// static
-void LedgerClientMojoProxy::OnSaveConfirmationsState(
-    CallbackHolder<SaveConfirmationsStateCallback>* holder,
+void LedgerClientMojoProxy::OnSaveState(
+    CallbackHolder<SaveStateCallback>* holder,
     const ledger::Result result) {
   if (holder->is_valid())
     std::move(holder->get()).Run(result);
   delete holder;
 }
 
-void LedgerClientMojoProxy::SaveConfirmationsState(
+void LedgerClientMojoProxy::SaveState(
     const std::string& name,
     const std::string& value,
-    SaveConfirmationsStateCallback callback) {
-  // deleted in OnSaveConfirmationsState
-  auto* holder = new CallbackHolder<SaveConfirmationsStateCallback>(
+    SaveStateCallback callback) {
+  // deleted in OnSaveState
+  auto* holder = new CallbackHolder<SaveStateCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger_client_->SaveConfirmationsState(
+  ledger_client_->SaveState(
       name, value,
-      std::bind(LedgerClientMojoProxy::OnSaveConfirmationsState, holder, _1));
+      std::bind(LedgerClientMojoProxy::OnSaveState, holder, _1));
 }
 
 // static
-void LedgerClientMojoProxy::OnLoadConfirmationsState(
-    CallbackHolder<LoadConfirmationsStateCallback>* holder,
+void LedgerClientMojoProxy::OnLoadState(
+    CallbackHolder<LoadStateCallback>* holder,
     const ledger::Result result,
     const std::string& value) {
   if (holder->is_valid())
@@ -662,48 +639,37 @@ void LedgerClientMojoProxy::OnLoadConfirmationsState(
   delete holder;
 }
 
-void LedgerClientMojoProxy::LoadConfirmationsState(
+void LedgerClientMojoProxy::LoadState(
     const std::string& name,
-    LoadConfirmationsStateCallback callback) {
-  // deleted in OnSaveConfirmationsState
-  auto* holder = new CallbackHolder<LoadConfirmationsStateCallback>(
+    LoadStateCallback callback) {
+  // deleted in OnSaveState
+  auto* holder = new CallbackHolder<LoadStateCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger_client_->LoadConfirmationsState(
-      name, std::bind(LedgerClientMojoProxy::OnLoadConfirmationsState, holder,
+  ledger_client_->LoadState(
+      name, std::bind(LedgerClientMojoProxy::OnLoadState, holder,
                       _1, _2));
 }
 
 // static
-void LedgerClientMojoProxy::OnResetConfirmationsState(
-    CallbackHolder<ResetConfirmationsStateCallback>* holder,
+void LedgerClientMojoProxy::OnResetState(
+    CallbackHolder<ResetStateCallback>* holder,
     const ledger::Result result) {
   if (holder->is_valid())
     std::move(holder->get()).Run(result);
   delete holder;
 }
 
-void LedgerClientMojoProxy::ResetConfirmationsState(
+void LedgerClientMojoProxy::ResetState(
     const std::string& name,
-    ResetConfirmationsStateCallback callback) {
-  // deleted in OnResetConfirmationsState
-  auto* holder = new CallbackHolder<ResetConfirmationsStateCallback>(
+    ResetStateCallback callback) {
+  // deleted in OnResetState
+  auto* holder = new CallbackHolder<ResetStateCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger_client_->ResetConfirmationsState(
+  ledger_client_->ResetState(
       name,
-      std::bind(LedgerClientMojoProxy::OnResetConfirmationsState, holder, _1));
-}
-
-void LedgerClientMojoProxy::SetConfirmationsTimer(
-    uint64_t time_offset,
-    SetConfirmationsTimerCallback callback) {
-  uint32_t timer_id = ledger_client_->SetConfirmationsTimer(time_offset);
-  std::move(callback).Run(timer_id);
-}
-
-void LedgerClientMojoProxy::KillConfirmationsTimer(uint32_t timer_id) {
-  ledger_client_->KillConfirmationsTimer(timer_id);
+      std::bind(LedgerClientMojoProxy::OnResetState, holder, _1));
 }
 
 void LedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {

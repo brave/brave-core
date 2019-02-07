@@ -34,6 +34,8 @@
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/auto_contribution_props.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
@@ -126,36 +128,6 @@ class LogStreamImpl : public ledger::LogStream {
  private:
   std::unique_ptr<logging::LogMessage> log_message_;
   DISALLOW_COPY_AND_ASSIGN(LogStreamImpl);
-};
-
-class ConfirmationsLogStreamImpl : public confirmations::LogStream {
- public:
-  ConfirmationsLogStreamImpl(const char* file,
-                int line,
-                const confirmations::LogLevel log_level) {
-    switch(log_level) {
-      case confirmations::LogLevel::LOG_INFO:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_INFO);
-        break;
-      case confirmations::LogLevel::LOG_WARNING:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_WARNING);
-        break;
-      case confirmations::LogLevel::LOG_ERROR:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_ERROR);
-        break;
-      default:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_VERBOSE);
-        break;
-    }
-  }
-
-  std::ostream& stream() override {
-    return log_message_->stream();
-  }
-
- private:
-  std::unique_ptr<logging::LogMessage> log_message_;
-  DISALLOW_COPY_AND_ASSIGN(ConfirmationsLogStreamImpl);
 };
 
 namespace {
@@ -320,7 +292,7 @@ bool ResetOnFileTaskRunner(const base::FilePath& path) {
   return base::DeleteFile(path, false);
 }
 
-void EnsureConfirmationsBaseDirectoryExists(const base::FilePath& path) {
+void EnsureRewardsBaseDirectoryExists(const base::FilePath& path) {
   if (!DirectoryExists(path))
     base::CreateDirectory(path);
 }
@@ -342,11 +314,13 @@ const base::FilePath::StringType kLedger_state(L"ledger_state");
 const base::FilePath::StringType kPublisher_state(L"publisher_state");
 const base::FilePath::StringType kPublisher_info_db(L"publisher_info_db");
 const base::FilePath::StringType kPublishers_list(L"publishers_list");
+const base::FilePath::StringType kRewardsStatePath(L"rewards_service");
 #else
 const base::FilePath::StringType kLedger_state("ledger_state");
 const base::FilePath::StringType kPublisher_state("publisher_state");
 const base::FilePath::StringType kPublisher_info_db("publisher_info_db");
 const base::FilePath::StringType kPublishers_list("publishers_list");
+const base::FilePath::StringType kRewardsStatePath("rewards_service");
 #endif
 
 RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
@@ -363,6 +337,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
       publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
       publisher_list_path_(profile->GetPath().Append(kPublishers_list)),
+      rewards_base_path_(profile_->GetPath().Append(kRewardsStatePath)),
       publisher_info_backend_(
           new PublisherInfoDatabase(publisher_info_db_path_)),
       notification_service_(new RewardsNotificationServiceImpl(profile)),
@@ -370,13 +345,10 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       private_observer_(
           std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
 #endif
-      confirmations_base_path_(
-          profile_->GetPath().AppendASCII("confirmations_service")),
-      next_timer_id_(0),
-      next_confirmations_timer_id_(0) {
+      next_timer_id_(0) {
   file_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&EnsureConfirmationsBaseDirectoryExists,
-                                confirmations_base_path_));
+      FROM_HERE, base::BindOnce(&EnsureRewardsBaseDirectoryExists,
+                                rewards_base_path_));
   // Set up the rewards data source
   content::URLDataSource::Add(profile_,
                               std::make_unique<BraveRewardsSource>(profile_));
@@ -1152,7 +1124,7 @@ void RewardsServiceImpl::LoadURL(
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& contentType,
-    const ledger::URL_METHOD& method,
+    const ledger::URL_METHOD method,
     ledger::LoadURLCallback callback) {
   net::URLFetcher::RequestType request_type = URLMethodToRequestType(method);
 
@@ -1445,93 +1417,75 @@ void RewardsServiceImpl::SetRewardsMainEnabledMigratedPref(bool enabled) {
       prefs::kBraveRewardsEnabledMigrated, enabled);
 }
 
-void RewardsServiceImpl::SetCatalogIssuers(
-    std::unique_ptr<ads::IssuersInfo> info) {
+void RewardsServiceImpl::SetCatalogIssuers(const std::string& json) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->SetCatalogIssuers(info->ToJson());
+  bat_ledger_->SetCatalogIssuers(json);
 }
 
-void RewardsServiceImpl::AdSustained(
-    std::unique_ptr<ads::NotificationInfo> info) {
+void RewardsServiceImpl::AdSustained(const std::string& json) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->AdSustained(info->ToJson());
+  bat_ledger_->AdSustained(json);
 }
 
-void RewardsServiceImpl::URLRequest(const std::string& url,
-                                    const std::vector<std::string>& headers,
-                                    const std::string& content,
-                                    const std::string& content_type,
-                                    ledger::URL_METHOD method,
-                                    ledger::URLRequestCallback callback) {
-  net::URLFetcher::RequestType request_type = URLMethodToRequestType(method);
-
-  net::URLFetcher* fetcher = net::URLFetcher::Create(
-      GURL(url), request_type, this).release();
-  fetcher->SetRequestContext(g_browser_process->system_request_context());
-
-  for (size_t i = 0; i < headers.size(); i++)
-    fetcher->AddExtraRequestHeader(headers[i]);
-
-  if (!content.empty())
-    fetcher->SetUploadData(content_type, content);
-
-  fetchers_[fetcher] = callback;
-
-  fetcher->Start();
+void RewardsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+  if (ads_service)
+    ads_service->SetConfirmationsIsReady(is_ready);
 }
 
-void RewardsServiceImpl::SaveConfirmationsState(const std::string& name,
-                                                const std::string& value,
-                                                ledger::OnSaveCallback callback) {
+void RewardsServiceImpl::SaveState(const std::string& name,
+                                   const std::string& value,
+                                   ledger::OnSaveCallback callback) {
   base::ImportantFileWriter writer(
-      confirmations_base_path_.AppendASCII(name), file_task_runner_);
+      rewards_base_path_.AppendASCII(name), file_task_runner_);
 
   writer.RegisterOnNextWriteCallbacks(
       base::Closure(),
       base::Bind(&PostWriteCallback,
-                 base::Bind(&RewardsServiceImpl::OnSavedConfirmationsState,
-                            AsWeakPtr(), std::move(callback)),
+                 base::Bind(&RewardsServiceImpl::OnSavedState,
+                            AsWeakPtr(),
+                            std::move(callback)),
                  base::SequencedTaskRunnerHandle::Get()));
 
   writer.WriteNow(std::make_unique<std::string>(value));
 }
 
-void RewardsServiceImpl::LoadConfirmationsState(
+void RewardsServiceImpl::LoadState(
     const std::string& name,
     ledger::OnLoadCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&LoadOnFileTaskRunner,
-                     confirmations_base_path_.AppendASCII(name)),
-      base::BindOnce(&RewardsServiceImpl::OnLoadedConfirmationsState,
+                     rewards_base_path_.AppendASCII(name)),
+      base::BindOnce(&RewardsServiceImpl::OnLoadedState,
                      AsWeakPtr(), std::move(callback)));
 }
 
-void RewardsServiceImpl::ResetConfirmationsState(
+void RewardsServiceImpl::ResetState(
     const std::string& name,
     ledger::OnResetCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&ResetOnFileTaskRunner,
-                     confirmations_base_path_.AppendASCII(name)),
-      base::BindOnce(&RewardsServiceImpl::OnResetConfirmationsState,
+                     rewards_base_path_.AppendASCII(name)),
+      base::BindOnce(&RewardsServiceImpl::OnResetState,
                      AsWeakPtr(), std::move(callback)));
 }
 
-void RewardsServiceImpl::OnSavedConfirmationsState(
+void RewardsServiceImpl::OnSavedState(
   ledger::OnSaveCallback callback, bool success) {
   if (!Connected())
     return;
   callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
 }
 
-void RewardsServiceImpl::OnLoadedConfirmationsState(
+void RewardsServiceImpl::OnLoadedState(
     ledger::OnLoadCallback callback,
     const std::string& value) {
   if (!Connected())
@@ -1542,51 +1496,15 @@ void RewardsServiceImpl::OnLoadedConfirmationsState(
     callback(ledger::Result::LEDGER_OK, value);
 }
 
-uint32_t RewardsServiceImpl::SetConfirmationsTimer(uint64_t time_offset) {
-  if (next_confirmations_timer_id_ == std::numeric_limits<uint32_t>::max())
-    next_confirmations_timer_id_ = 1;
-  else
-    ++next_confirmations_timer_id_;
-
-  uint32_t timer_id = next_confirmations_timer_id_;
-
-  confirmations_timers_[next_confirmations_timer_id_] =
-      std::make_unique<base::OneShotTimer>();
-  confirmations_timers_[next_confirmations_timer_id_]->Start(
-      FROM_HERE, base::TimeDelta::FromSeconds(time_offset),
-      base::BindOnce(&RewardsServiceImpl::OnConfirmationsTimer, AsWeakPtr(),
-                     next_confirmations_timer_id_));
-
-  return timer_id;
-}
-
-void RewardsServiceImpl::KillConfirmationsTimer(uint32_t timer_id) {
-  if (confirmations_timers_.find(timer_id) == confirmations_timers_.end())
+void RewardsServiceImpl::KillTimer(uint32_t timer_id) {
+  if (timers_.find(timer_id) == timers_.end())
     return;
 
-  confirmations_timers_[timer_id]->Stop();
-  confirmations_timers_.erase(timer_id);
+  timers_[timer_id]->Stop();
+  timers_.erase(timer_id);
 }
 
-void RewardsServiceImpl::OnConfirmationsTimer(uint32_t timer_id) {
-  if (!Connected()) {
-    return;
-  }
-
-  confirmations_timers_.erase(timer_id);
-  bat_ledger_->OnConfirmationsTimer(timer_id);
-}
-
-void RewardsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
-  if (!Connected()) {
-    return;
-  }
-
-  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);  // NOT OWNED
-  ads_service->SetConfirmationsIsReady(is_ready);
-}
-
-void RewardsServiceImpl::OnResetConfirmationsState(
+void RewardsServiceImpl::OnResetState(
   ledger::OnResetCallback callback, bool success) {
   if (!Connected())
     return;
@@ -2382,14 +2300,6 @@ std::unique_ptr<ledger::LogStream> RewardsServiceImpl::VerboseLog(
                      int line,
                      int log_level) const {
   return std::make_unique<LogStreamImpl>(file, line, log_level);
-}
-
-std::unique_ptr<confirmations::LogStream> RewardsServiceImpl::LogConfirmations(
-    const char* file,
-    int line,
-    const int log_level) const {
-  return std::make_unique<ConfirmationsLogStreamImpl>(
-      file, line, static_cast<confirmations::LogLevel>(log_level));
 }
 
 // static

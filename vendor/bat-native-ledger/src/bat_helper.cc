@@ -21,10 +21,6 @@
 
 namespace braveledger_bat_helper {
 
-namespace {
-static bool ignore_ = false;
-}  // namespace
-
 bool isProbiValid(const std::string& probi) {
   // probi shouldn't be longer then 44
   if (probi.length() > 44) {
@@ -2660,22 +2656,18 @@ std::string buildURL(const std::string& path,
 }
 
 std::vector<std::string> split(const std::string& s, char delim) {
-    std::stringstream ss(s);
-    std::string item;
-    std::vector<std::string> result;
-    while (getline(ss, item, delim)) {
-        result.push_back(item);
-    }
+  std::stringstream ss(s);
+  std::string item;
+  std::vector<std::string> result;
+  while (getline(ss, item, delim)) {
+    result.push_back(item);
+  }
 
-    return result;
-}
-
-void set_ignore_for_testing(bool ignore) {
-  ignore_ = ignore;
+  return result;
 }
 
 bool ignore_for_testing() {
-  return ignore_;
+  return ledger::is_testing;
 }
 
 std::string toLowerCase(std::string word) {

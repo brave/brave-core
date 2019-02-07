@@ -600,17 +600,11 @@ void AdsServiceImpl::ShowNotification(std::unique_ptr<ads::NotificationInfo> inf
 }
 
 void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
-  if (!connected())
-    return;
-
-  rewards_service_->SetCatalogIssuers(std::move(info));
+  rewards_service_->SetCatalogIssuers(info->ToJson());
 }
 
 void AdsServiceImpl::AdSustained(std::unique_ptr<ads::NotificationInfo> info) {
-  if (!connected())
-    return;
-
-  rewards_service_->AdSustained(std::move(info));
+  rewards_service_->AdSustained(info->ToJson());
 }
 
 void AdsServiceImpl::NotificationTimedOut(uint32_t timer_id,

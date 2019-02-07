@@ -10,19 +10,14 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/issuers_info.h"
-#include "bat/ads/notification_info.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/wallet_info.h"
 #include "base/files/file_path.h"
 #include "base/observer_list.h"
 #include "base/memory/weak_ptr.h"
-#include "bat/confirmations/confirmations_client.h"
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/buildflags/buildflags.h"
@@ -187,29 +182,23 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetAddressesForPaymentId(const GetAddressesCallback& callback) override;
 
-  void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
-  void AdSustained(std::unique_ptr<ads::NotificationInfo> info) override;
+  void SetCatalogIssuers(const std::string& json) override;
+  void AdSustained(const std::string& json) override;
+  void SetConfirmationsIsReady(const bool is_ready) override;
 
-  void URLRequest(const std::string& url,
-                  const std::vector<std::string>& headers,
-                  const std::string& content,
-                  const std::string& content_type,
-                  const ledger::URL_METHOD method,
-                  ledger::URLRequestCallback callback) override;
-  void SaveConfirmationsState(const std::string& name,
-                              const std::string& value,
-                              ledger::OnSaveCallback callback) override;
-  void LoadConfirmationsState(const std::string& name,
-                              ledger::OnLoadCallback callback) override;
-  void ResetConfirmationsState(const std::string& name,
-                               ledger::OnResetCallback callback) override;
-  uint32_t SetConfirmationsTimer(uint64_t time_offset) override;
-  void KillConfirmationsTimer(uint32_t timer_id) override;
+  void SaveState(const std::string& name,
+                 const std::string& value,
+                 ledger::OnSaveCallback callback) override;
+  void LoadState(const std::string& name,
+                 ledger::OnLoadCallback callback) override;
+  void ResetState(const std::string& name,
+                  ledger::OnResetCallback callback) override;
+  void KillTimer(uint32_t timer_id) override;
 
-  void OnSavedConfirmationsState(ledger::OnSaveCallback callback, bool success);
-  void OnLoadedConfirmationsState(ledger::OnLoadCallback callback,
+  void OnSavedState(ledger::OnSaveCallback callback, bool success);
+  void OnLoadedState(ledger::OnLoadCallback callback,
                                   const std::string& value);
-  void OnResetConfirmationsState(ledger::OnResetCallback callback,
+  void OnResetState(ledger::OnResetCallback callback,
                                  bool success);
 
   // Testing methods
@@ -256,7 +245,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublishersListSaved(ledger::LedgerCallbackHandler* handler,
                              bool success);
   void OnTimer(uint32_t timer_id);
-  void OnConfirmationsTimer(uint32_t timer_id);
   void TriggerOnContentSiteUpdated();
   void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
                              const std::string& data);
@@ -322,7 +310,7 @@ class RewardsServiceImpl : public RewardsService,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,
-      const ledger::URL_METHOD& method,
+      const ledger::URL_METHOD method,
       ledger::LoadURLCallback callback) override;
 
   void SetRewardsMainEnabled(bool enabled) override;
@@ -365,11 +353,6 @@ class RewardsServiceImpl : public RewardsService,
                      int line,
                      int log_level) const override;
 
-  std::unique_ptr<confirmations::LogStream> LogConfirmations(
-                     const char* file,
-                     int line,
-                     const int log_level) const override;
-
   void OnRestorePublishers(ledger::OnRestoreCallback callback) override;
   void OnPanelPublisherInfoLoaded(
       ledger::PublisherInfoCallback callback,
@@ -388,8 +371,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnPublisherListNormalizedSaved(
     std::unique_ptr<ledger::PublisherInfoList> list);
-
-  void SetConfirmationsIsReady(const bool is_ready) override;
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;
@@ -436,6 +417,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath publisher_state_path_;
   const base::FilePath publisher_info_db_path_;
   const base::FilePath publisher_list_path_;
+  const base::FilePath rewards_base_path_;
   std::unique_ptr<PublisherInfoDatabase> publisher_info_backend_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   base::ObserverList<RewardsServicePrivateObserver> private_observers_;
@@ -446,12 +428,10 @@ class RewardsServiceImpl : public RewardsService,
   extensions::OneShotEvent ready_;
   std::map<const net::URLFetcher*, ledger::LoadURLCallback> fetchers_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
-  std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> confirmations_timers_;
   std::vector<std::string> current_media_fetchers_;
   std::vector<BitmapFetcherService::RequestId> request_ids_;
   std::unique_ptr<base::OneShotTimer> notification_startup_timer_;
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
-  const base::FilePath confirmations_base_path_;
 
   uint32_t next_timer_id_;
   uint32_t next_confirmations_timer_id_;
