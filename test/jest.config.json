@@ -12,7 +12,9 @@
   "resetMocks": true,
   "resetModules": true,
   "collectCoverage": false,
-  "testMatch": [],
+  "testMatch": [
+    "<rootDir>/app/actions/*.{ts, tsx}"
+  ],
   "transformIgnorePatterns": [
     "<rootDir>/node_modules"
   ],
