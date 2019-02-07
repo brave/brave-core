@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/vendor/challenge_bypass_ristretto_ffi/src/wrapper.hpp"
+#include "wrapper.hpp"
 
 namespace helper {
 

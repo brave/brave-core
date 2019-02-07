@@ -2,6 +2,8 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("//brave/vendor/challenge_bypass_ristretto_ffi/config.gni")
+
 if (is_android) {
   import("//build/config/android/rules.gni")
 }
@@ -12,51 +14,29 @@ if (is_android || defined(is_docker)) {
 }
 
 config("external_config") {
+  visibility = [
+    ":*",
+  ]
   include_dirs = [ "include" ]
 }
 
 config("internal_config") {
+  visibility = [
+    ":*",
+    "//brave/test:*",
+  ]
   include_dirs = [ "src" ]
 }
 
-group("bat-native-confirmations") {
-  public_deps = [
-    ":confirmations",
-  ]
-
-  data_deps = [
-    ":bat-native-confirmations-standalone",
-  ]
-}
-
-static_library("bat-native-confirmations-standalone") {
-  # TODO(bridiver) - only export symbols from `include`
-  complete_static_lib = true
-
-  output_dir = root_out_dir
-
-  configs -= [ "//build/config/compiler:thin_archive" ]
-
-  defines = [
-    "STANDALONE_BUILD",
-  ]
-
-  deps = [
-    ":confirmations",
-  ]
-}
-
-source_set("confirmations") {
+source_set("bat-native-confirmations") {
   public_configs = [ ":external_config" ]
   configs += [ ":internal_config" ]
 
-  output_name = "bat_native_confirmations"
-
-  if (is_mac || is_ios) { 
-    libs = [
-      "Security.framework"
-    ]
-  }
+  visibility = [
+    ":*",
+    rebase_path("bat-native-ledger", dep_base) + ":*",
+    "//brave/test:*",
+  ]
 
   sources = [
     "src/bat/confirmations/notification_info.cc",
@@ -79,9 +59,29 @@ source_set("confirmations") {
     "src/confirmations_impl.cc",
   ]
 
+  public_deps = [
+    ":challenge_bypass_libs",
+  ]
+
   deps = [
     "//base",
     "//third_party/boringssl",
+    rebase_path("bat-native-ledger:headers", dep_base),
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
+    rebase_path("challenge_bypass_ristretto_ffi", dep_base),
   ]
+}
+
+if (is_mac) {
+  bundle_data("challenge_bypass_libs") {
+    sources = [
+      challenge_bypass_lib_path,
+    ]
+    outputs = [
+      "{{bundle_contents_dir}}/Libraries/{{source_file_part}}",
+    ]
+    public_deps = [
+      rebase_path("challenge_bypass_ristretto_ffi:challenge_bypass_ristretto", dep_base),
+    ]
+  }
 }

@@ -11,11 +11,12 @@
 #include "confirmations_impl.h"
 #include "bat/confirmations/confirmations_client.h"
 
-#include "brave/vendor/challenge_bypass_ristretto_ffi/src/wrapper.hpp"
+#include "wrapper.hpp"
+
+using challenge_bypass_ristretto::UnblindedToken;
+using challenge_bypass_ristretto::PublicKey;
 
 namespace confirmations {
-
-using namespace challenge_bypass_ristretto;
 
 class ConfirmationsImpl;
 class UnblindedTokens;

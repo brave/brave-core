@@ -5,20 +5,15 @@
 #ifndef BAT_CONFIRMATIONS_EXPORT_H_
 #define BAT_CONFIRMATIONS_EXPORT_H_
 
-#if defined(STANDALONE_BUILD)
+#if defined(COMPONENT_BUILD)
 #if defined(WIN32)
-
-#if defined(BASE_IMPLEMENTATION)
 #define CONFIRMATIONS_EXPORT __declspec(dllexport)
-#else
 #define CONFIRMATIONS_EXPORT __declspec(dllimport)
-#endif  // defined(BASE_IMPLEMENTATION)
-
 #else  // defined(WIN32)
 #define CONFIRMATIONS_EXPORT __attribute__((visibility("default")))
 #endif
 
-#else  // defined(STANDALONE_BUILD)
+#else  // defined(COMPONENT_BUILD)
 #define CONFIRMATIONS_EXPORT
 #endif
 

@@ -9,15 +9,15 @@
 
 #define CONFIRMATIONS_LOG_INFO \
   confirmations_client_->Log( \
-    __FILE__, __LINE__, ::confirmations::LogLevel::LOG_INFO)
+    __FILE__, __LINE__, ::ledger::LogLevel::LOG_INFO)
 
 #define CONFIRMATIONS_LOG_WARNING \
   confirmations_client_->Log( \
-    __FILE__, __LINE__, ::confirmations::LogLevel::LOG_WARNING)
+    __FILE__, __LINE__, ::ledger::LogLevel::LOG_WARNING)
 
 #define CONFIRMATIONS_LOG_ERROR \
   confirmations_client_->Log( \
-    __FILE__, __LINE__, ::confirmations::LogLevel::LOG_ERROR)
+    __FILE__, __LINE__, ::ledger::LogLevel::LOG_ERROR)
 
 #define BLOG(severity) CONFIRMATIONS_LOG_ ## severity->stream()
 

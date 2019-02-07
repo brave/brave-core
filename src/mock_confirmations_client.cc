@@ -70,7 +70,7 @@ uint32_t MockConfirmationsClient::SetTimer(const uint64_t time_offset) {
   return mock_timer_id;
 }
 
-void URLRequest(
+void LoadURL(
     const std::string& url,
     const std::vector<std::string>& headers,
     const std::string& content,

@@ -5,94 +5,24 @@
 #ifndef BAT_CONFIRMATIONS_CONFIRMATIONS_CLIENT_H_
 #define BAT_CONFIRMATIONS_CONFIRMATIONS_CLIENT_H_
 
-#include <string>
-#include <vector>
-#include <map>
-#include <memory>
-#include <functional>
-#include <sstream>
-#include <fstream>
-#include <functional>
-
+#include "bat/ledger/ledger_client.h"
 #include "bat/confirmations/export.h"
 #include "bat/confirmations/wallet_info.h"
 
 namespace confirmations {
 
-CONFIRMATIONS_EXPORT enum LogLevel {
-  LOG_ERROR = 1,
-  LOG_WARNING = 2,
-  LOG_INFO = 3
-};
+// backwards compat for now
+using URLRequestMethod = ::ledger::URL_METHOD;
+using Result = ::ledger::Result;
+const auto SUCCESS = ::ledger::Result::LEDGER_OK;
+const auto FAILED = ::ledger::Result::LEDGER_ERROR;
 
-enum CONFIRMATIONS_EXPORT Result {
-  SUCCESS,
-  FAILED
-};
+using OnSaveCallback = ::ledger::OnSaveCallback;
+using OnLoadCallback = ::ledger::OnLoadCallback;
+using OnResetCallback = ::ledger::OnResetCallback;
+using URLRequestCallback = ::ledger::LoadURLCallback;
 
-enum CONFIRMATIONS_EXPORT URLRequestMethod {
-  GET = 0,
-  PUT = 1,
-  POST = 2
-};
-
-class CONFIRMATIONS_EXPORT LogStream {
- public:
-  virtual ~LogStream() = default;
-  virtual std::ostream& stream() = 0;
-};
-
-using URLRequestCallback = std::function<void(const int, const std::string&,
-  const std::map<std::string, std::string>& headers)>;
-
-using OnSaveCallback = std::function<void(const Result)>;
-using OnLoadCallback = std::function<void(const Result, const std::string&)>;
-
-using OnResetCallback = std::function<void(const Result)>;
-
-class CONFIRMATIONS_EXPORT ConfirmationsClient {
- public:
-  virtual ~ConfirmationsClient() = default;
-
-  // Should create a timer to trigger after the time offset specified in
-  // seconds. If the timer was created successfully a unique identifier should
-  // be returned, otherwise returns 0
-  virtual uint32_t SetTimer(const uint64_t time_offset) = 0;
-
-  // Should destroy the timer associated with the specified timer identifier
-  virtual void KillTimer(uint32_t timer_id) = 0;
-
-  // Should start a URL request
-  virtual void URLRequest(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      const URLRequestMethod method,
-      URLRequestCallback callback) = 0;
-
-  // Should save a value to persistent storage
-  virtual void Save(
-      const std::string& name,
-      const std::string& value,
-      OnSaveCallback callback) = 0;
-
-  // Should load a value from persistent storage
-  virtual void Load(const std::string& name, OnLoadCallback callback) = 0;
-
-  // Should reset a previously saved value, i.e. remove the file from persistent
-  // storage
-  virtual void Reset(const std::string& name, OnResetCallback callback) = 0;
-
-  // Should be called to inform ads if confirmations is ready
-  virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
-
-  // Should log diagnostic information
-  virtual std::unique_ptr<LogStream> Log(
-      const char* file,
-      const int line,
-      const confirmations::LogLevel log_level) const = 0;
-};
+using ConfirmationsClient = ::ledger::LedgerClient;
 
 }  // namespace confirmations
 

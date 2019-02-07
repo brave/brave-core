@@ -75,7 +75,7 @@ void PayoutTokens::RedeemPaymentTokens() {
   auto callback = std::bind(&PayoutTokens::OnRedeemPaymentTokens,
       this, url, _1, _2, _3);
 
-  confirmations_client_->URLRequest(url, headers, body, content_type, method,
+  confirmations_client_->LoadURL(url, headers, body, content_type, method,
       callback);
 }
 

@@ -42,7 +42,7 @@ class ConfirmationsImpl : public Confirmations {
   bool IsValidPublicKeyForCatalogIssues(const std::string& public_key);
 
   // Scheduled events
-  void OnTimer(const uint32_t timer_id) override;
+  bool OnTimer(const uint32_t timer_id) override;
 
   // Refill tokens
   void RefillTokensIfNecessary();

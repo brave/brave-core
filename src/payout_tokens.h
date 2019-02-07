@@ -11,8 +11,7 @@
 #include "confirmations_impl.h"
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/wallet_info.h"
-
-#include "brave/vendor/challenge_bypass_ristretto_ffi/src/wrapper.hpp"
+#include "wrapper.hpp"
 
 namespace confirmations {
 

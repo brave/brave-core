@@ -180,7 +180,7 @@ void ConfirmationsImpl::SaveState() {
 
   std::string json = ToJSON();
   auto callback = std::bind(&ConfirmationsImpl::OnStateSaved, this, _1);
-  confirmations_client_->Save(_confirmations_name, json, callback);
+  confirmations_client_->SaveState(_confirmations_name, json, callback);
 
   NotifyAdsIfConfirmationsIsReady();
 }
@@ -199,7 +199,7 @@ void ConfirmationsImpl::LoadState() {
   BLOG(INFO) << "Loading confirmations state";
 
   auto callback = std::bind(&ConfirmationsImpl::OnStateLoaded, this, _1, _2);
-  confirmations_client_->Load(_confirmations_name, callback);
+  confirmations_client_->LoadState(_confirmations_name, callback);
 }
 
 void ConfirmationsImpl::OnStateLoaded(
@@ -231,7 +231,7 @@ void ConfirmationsImpl::ResetState() {
   BLOG(INFO) << "Resetting confirmations to default state";
 
   auto callback = std::bind(&ConfirmationsImpl::OnStateReset, this, _1);
-  confirmations_client_->Reset(_confirmations_name, callback);
+  confirmations_client_->ResetState(_confirmations_name, callback);
 }
 
 void ConfirmationsImpl::OnStateReset(const Result result) {
@@ -306,21 +306,24 @@ void ConfirmationsImpl::AdSustained(std::unique_ptr<NotificationInfo> info) {
   redeem_token_->Redeem(info->uuid);
 }
 
-void ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
+bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
   BLOG(INFO) << "OnTimer:" << std::endl
-      << "  timer_id: " << std::to_string(timer_id) << std::endl
+      << "  timer_id: " << timer_id << std::endl
       << "  retry_getting_signed_tokens_timer_id_: "
-      << std::to_string(retry_getting_signed_tokens_timer_id_) << std::endl
+      << retry_getting_signed_tokens_timer_id_ << std::endl
       << "  payout_redeemed_tokens_timer_id_: "
-      << std::to_string(payout_redeemed_tokens_timer_id_);
+      << payout_redeemed_tokens_timer_id_;
 
   if (timer_id == retry_getting_signed_tokens_timer_id_) {
     RetryGettingRefillSignedTokens();
+    return true;
   } else if (timer_id == payout_redeemed_tokens_timer_id_) {
     PayoutRedeemedTokens();
-  } else {
-    BLOG(WARNING) << "Unexpected OnTimer with timer_id: " << timer_id;
+    return true;
   }
+
+  BLOG(WARNING) << "Unexpected OnTimer with timer_id: " << timer_id;
+  return false;
 }
 
 void ConfirmationsImpl::RefillTokensIfNecessary() {
@@ -331,9 +334,9 @@ void ConfirmationsImpl::StartPayingOutRedeemedTokens(
     const uint64_t start_timer_in) {
   StopPayingOutRedeemedTokens();
 
-  payout_redeemed_tokens_timer_id_ =
-      confirmations_client_->SetTimer(start_timer_in);
-  if (payout_redeemed_tokens_timer_id_ == 0) {
+  confirmations_client_->SetTimer(start_timer_in,
+                                  payout_confirmations_timer_id_);
+  if (payout_confirmations_timer_id_ == 0) {
     BLOG(ERROR)
         << "Failed to start paying out redeemed tokens due to an invalid timer";
     return;
@@ -370,8 +373,8 @@ void ConfirmationsImpl::StartRetryingToGetRefillSignedTokens(
     const uint64_t start_timer_in) {
   StopRetryingToGetRefillSignedTokens();
 
-  retry_getting_signed_tokens_timer_id_ =
-      confirmations_client_->SetTimer(start_timer_in);
+  confirmations_client_->SetTimer(start_timer_in,
+                                  retry_getting_signed_tokens_timer_id_);
   if (retry_getting_signed_tokens_timer_id_ == 0) {
     BLOG(ERROR)
         << "Failed to start getting signed tokens due to an invalid timer";

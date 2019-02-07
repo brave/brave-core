@@ -90,7 +90,7 @@ void RefillTokens::RequestSignedTokens() {
   auto callback = std::bind(&RefillTokens::OnRequestSignedTokens,
       this, url, _1, _2, _3);
 
-  confirmations_client_->URLRequest(url, headers, body, content_type, method,
+  confirmations_client_->LoadURL(url, headers, body, content_type, method,
       callback);
 }
 
@@ -156,7 +156,7 @@ void RefillTokens::GetSignedTokens() {
   auto callback = std::bind(&RefillTokens::OnGetSignedTokens,
       this, url, _1, _2, _3);
 
-  confirmations_client_->URLRequest(url, {}, "", "", method, callback);
+  confirmations_client_->LoadURL(url, {}, "", "", method, callback);
 }
 
 void RefillTokens::OnGetSignedTokens(

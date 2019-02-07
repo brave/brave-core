@@ -36,7 +36,7 @@ class CONFIRMATIONS_EXPORT Confirmations {
   virtual void AdSustained(std::unique_ptr<NotificationInfo> info) = 0;
 
   // Should be called when a timer is triggered
-  virtual void OnTimer(const uint32_t timer_id) = 0;
+  virtual bool OnTimer(const uint32_t timer_id) = 0;
 
  private:
   // Not copyable, not assignable

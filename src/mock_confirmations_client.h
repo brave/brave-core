@@ -28,7 +28,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
   uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(const uint32_t timer_id) override;
 
-  void URLRequest(
+  void LoadURL(
       const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,

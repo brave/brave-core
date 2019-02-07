@@ -98,7 +98,7 @@ void RedeemToken::CreateConfirmation(
       this, url, _1, _2, _3, confirmation_id, payment_token,
       blinded_payment_token, unblinded_token);
 
-  confirmations_client_->URLRequest(url, headers, body, content_type,
+  confirmations_client_->LoadURL(url, headers, body, content_type,
       method, callback);
 }
 
@@ -182,7 +182,7 @@ void RedeemToken::FetchPaymentToken(
       this, url, _1, _2, _3, payment_token, blinded_payment_token,
       unblinded_token);
 
-  confirmations_client_->URLRequest(url, {}, "", "", method, callback);
+  confirmations_client_->LoadURL(url, {}, "", "", method, callback);
 }
 
 void RedeemToken::OnFetchPaymentToken(
