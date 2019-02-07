@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/net/net_error_tab_helper.cc b/chrome/browser/net/net_error_tab_helper.cc
+index 0d094df161accd5740306543fc938ab6e58da296..91daf4ecf22ab5c1dbee3e6c2aa857d986e62dea 100644
+--- a/chrome/browser/net/net_error_tab_helper.cc
++++ b/chrome/browser/net/net_error_tab_helper.cc
+@@ -89,7 +89,8 @@ void NetErrorTabHelper::RenderFrameCreated(
+ 
+   chrome::mojom::NetworkDiagnosticsClientAssociatedPtr client;
+   render_frame_host->GetRemoteAssociatedInterfaces()->GetInterface(&client);
+-  client->SetCanShowNetworkDiagnosticsDialog(CanShowNetworkDiagnosticsDialog());
++  client->SetCanShowNetworkDiagnosticsDialog(
++      CanShowNetworkDiagnosticsDialog(web_contents()));
+ }
+ 
+ void NetErrorTabHelper::DidStartNavigation(
+@@ -293,6 +294,11 @@ void NetErrorTabHelper::RunNetworkDiagnostics(const GURL& url) {
+ 
+ void NetErrorTabHelper::RunNetworkDiagnosticsHelper(
+     const std::string& sanitized_url) {
++  // The button shouldn't even be shown in this case, but still best to be safe,
++  // since the renderer isn't trusted.
++  if (!CanShowNetworkDiagnosticsDialog(web_contents()))
++    return;
++
+   if (network_diagnostics_bindings_.GetCurrentTargetFrame()
+           != web_contents()->GetMainFrame()) {
+     return;
