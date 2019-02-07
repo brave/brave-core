@@ -1,8 +1,13 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.h"
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
-} // namespace settings
-#include "../../../../../../chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc"
+}  // namespace settings
+#include "../../../../../../chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc"  // NOLINT
 
 #include "brave/browser/ui/webui/brave_md_settings_ui.h"
 
@@ -20,7 +25,8 @@ void BraveAddImportDataStrings(content::WebUIDataSource* html_source) {
 }
 
 const char kWebRTCLearnMoreURL[] =
-  "https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -37,6 +43,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES},
     {"appearanceSettingsLocationBarIsWide",
       IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE},
+    {"appearanceSettingsHideBraveRewardsButtonLabel",
+       IDS_SETTINGS_HIDE_BRAVE_REWARDS_BUTTON_LABEL},
+    {"appearanceSettingsHideBraveRewardsButtonDesc",
+       IDS_SETTINGS_HIDE_BRAVE_REWARDS_BUTTON_DESC},
     {"braveShieldsDefaults",
       IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE},
     {"adControlLabel",
@@ -108,4 +118,4 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BraveAddResources(html_source, profile);
 }
 
-} // namespace settings
+}  // namespace settings
