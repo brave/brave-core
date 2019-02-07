@@ -283,10 +283,12 @@ void BatPublishers::onFetchFavIcon(const std::string& publisher_key,
                                    uint64_t window_id,
                                    bool success,
                                    const std::string& favicon_url) {
-  if (!success || favicon_url.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
-      "Missing or corrupted favicon file for: " << publisher_key;
-    return;
+  if ( favicon_url.find(".invalid") == std::string::npos){   
+    if ( !success || favicon_url.empty()) {
+      BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
+        "Missing or corrupted favicon file for: " << publisher_key;
+      return;
+    }
   }
 
   ledger_->GetPublisherInfo(publisher_key,
