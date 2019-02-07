@@ -214,6 +214,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE" desc="The label for whether the location bar should display wide or not">
         Use wide location bar
       </message>
+      <message name="IDS_SETTINGS_HIDE_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
+        Hide Brave Rewards button
+      </message>
+      <message name="IDS_SETTINGS_HIDE_BRAVE_REWARDS_BUTTON_DESC" desc="The description for settings switch controlling the visibility of Brave Rewards button">
+        Hides the Brave Rewards button in the location bar when Brave Rewards is not enabled
+      </message>
       <!-- Tor -->
       <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">
         New Tor Identity
