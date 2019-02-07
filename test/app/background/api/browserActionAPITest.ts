@@ -42,9 +42,9 @@ describe('BrowserAction API', () => {
       this.enableSpy.restore()
     })
     afterEach(function () {
-      this.setIconSpy.reset()
-      this.disableSpy.reset()
-      this.enableSpy.reset()
+      this.setIconSpy.resetHistory()
+      this.disableSpy.resetHistory()
+      this.enableSpy.resetHistory()
     })
     it('sets enabled when protocol is http', function () {
       this.url = 'http://not-very-awesome-http-page.com'

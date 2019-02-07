@@ -34,7 +34,7 @@ describe('tabs API', () => {
       this.spy.restore()
     })
     afterEach(function () {
-      this.spy.reset()
+      this.spy.resetHistory()
     })
     it('calls chrome.tabs.reload without bypassing the cache', function (cb) {
       const tabId = 42
