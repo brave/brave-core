@@ -10,6 +10,13 @@
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "build/build_config.h"
+#include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+#include "base/native_library.h"
+#include "chrome/common/chrome_paths.h"
+#include "third_party/widevine/cdm/widevine_cdm_common.h"
+#endif
 
 namespace brave {
 
@@ -37,6 +44,23 @@ bool PathProvider(int key, base::FilePath* result) {
 
 void RegisterPathProvider() {
   base::PathService::RegisterProvider(PathProvider, PATH_START, PATH_END);
+}
+
+void OverridePath() {
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+  // Brave downloads cdm lib to user dir when user accepts instead of shippig by
+  // default. So, override |FILE_WIDEVINE_CDM| to new path in user dir.
+  base::FilePath widevine_cdm_path;
+  if (base::PathService::Get(chrome::DIR_USER_DATA, &widevine_cdm_path)) {
+    widevine_cdm_path =
+        widevine_cdm_path.AppendASCII(kWidevineCdmBaseDirectory)
+            .AppendASCII(base::GetNativeLibraryName(kWidevineCdmLibraryName));
+    base::PathService::OverrideAndCreateIfNeeded(chrome::FILE_WIDEVINE_CDM,
+                                                 widevine_cdm_path,
+                                                 true,
+                                                 false);
+  }
+#endif
 }
 
 }  // namespace brave

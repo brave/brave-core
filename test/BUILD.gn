@@ -152,6 +152,13 @@ test("brave_unit_tests") {
     ]
   }
 
+  if (bundle_widevine_cdm) {
+    sources += [
+      "//brave/browser/widevine/brave_widevine_bundle_manager_unittest.cc",
+    ]
+    deps += [ "//third_party/widevine/cdm:headers" ]
+  }
+
   public_deps = [
     "//base",
     "//base/test:test_support",

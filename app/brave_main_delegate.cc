@@ -29,7 +29,12 @@
 #include "content/public/common/content_features.h"
 #include "extensions/common/extension_features.h"
 #include "gpu/config/gpu_finch_features.h"
+#include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/ui_base_features.h"
+
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+#include "brave/common/brave_paths.h"
+#endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
 #include "components/dom_distiller/core/dom_distiller_switches.h"
@@ -144,5 +149,15 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       enabled_features.str());
   command_line.AppendSwitchASCII(switches::kDisableFeatures,
       disabled_features.str());
-  return ChromeMainDelegate::BasicStartupComplete(exit_code);
+
+  bool ret = ChromeMainDelegate::BasicStartupComplete(exit_code);
+
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+  // Override chrome::FILE_WIDEVINE_CDM path because we install it in user data
+  // dir. Must call after ChromeMainDelegate::BasicStartupComplete() to use
+  // chrome paths.
+  brave::OverridePath();
+#endif
+
+  return ret;
 }

@@ -22,6 +22,9 @@ enum {
 // Call once to register the provider for the path keys defined above.
 void RegisterPathProvider();
 
+// Call once to override chrome's path with brave's new path.
+void OverridePath();
+
 }  // namespace brave
 
 #endif  // BRAVE_COMMON_BRAVE_PATHS_H

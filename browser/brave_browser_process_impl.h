@@ -6,11 +6,16 @@
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_
 
 #include "chrome/browser/browser_process_impl.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 namespace brave {
 class BraveReferralsService;
 class BraveStatsUpdater;
 }
+
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+class BraveWidevineBundleManager;
+#endif
 
 namespace brave_shields {
 class AdBlockService;
@@ -40,6 +45,9 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave_shields::HTTPSEverywhereService* https_everywhere_service();
   brave_shields::LocalDataFilesService* local_data_files_service();
   extensions::BraveTorClientUpdater* tor_client_updater();
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+  BraveWidevineBundleManager* brave_widevine_bundle_manager();
+#endif
 
  private:
   void CreateProfileManager();
@@ -56,6 +64,9 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<brave::BraveStatsUpdater> brave_stats_updater_;
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;
   std::unique_ptr<extensions::BraveTorClientUpdater> tor_client_updater_;
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+  std::unique_ptr<BraveWidevineBundleManager> brave_widevine_bundle_manager_;
+#endif
 
   SEQUENCE_CHECKER(sequence_checker_);
 

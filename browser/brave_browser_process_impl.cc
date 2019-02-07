@@ -24,6 +24,10 @@
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
 
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+#include "brave/browser/widevine/brave_widevine_bundle_manager.h"
+#endif
+
 BraveBrowserProcessImpl* g_brave_browser_process = nullptr;
 
 using content::BrowserThread;
@@ -149,3 +153,12 @@ void BraveBrowserProcessImpl::CreateProfileManager() {
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
   profile_manager_ = std::make_unique<BraveProfileManager>(user_data_dir);
 }
+
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+BraveWidevineBundleManager*
+BraveBrowserProcessImpl::brave_widevine_bundle_manager() {
+  if (!brave_widevine_bundle_manager_)
+    brave_widevine_bundle_manager_.reset(new BraveWidevineBundleManager);
+  return brave_widevine_bundle_manager_.get();
+}
+#endif

@@ -1,5 +1,6 @@
 import("//brave/build/config.gni")
 import("//build/config/features.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 source_set("browser_process") {
   sources = [
@@ -79,7 +80,10 @@ source_set("browser_process") {
     "//content/public/browser",
     "//brave/chromium_src:browser",
     "themes",
+    "//third_party/widevine/cdm:buildflags",
   ]
+
+  if (bundle_widevine_cdm) { deps += [ "//brave/browser/widevine" ] }
 
   if (is_win && is_official_build) {
     sources += [
