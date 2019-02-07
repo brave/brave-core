@@ -63,6 +63,9 @@ using brave_shields::BraveShieldsWebContentsObserver;
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/common/extensions/extension_constants.h"
+#include "extensions/common/constants.h"
+
 using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
@@ -117,6 +120,49 @@ bool HandleURLRewrite(GURL* url,
   return false;
 }
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+bool HandlePDFjsURLRewrite(GURL* url,
+                           content::BrowserContext* browser_context) {
+  if (url->SchemeIs(extensions::kExtensionScheme) &&
+      url->DomainIs(pdfjs_extension_id) &&
+      url->has_query()) {
+    return true;
+  }
+
+  return false;
+}
+
+bool HandlePDFjsURLReverseRewrite(GURL* url,
+                                  content::BrowserContext* browser_context) {
+  // Remove the PDF.js prefix from display URLs unless that's all there is.
+  if (url->SchemeIs(extensions::kExtensionScheme) &&
+      url->DomainIs(pdfjs_extension_id) &&
+      url->has_query()) {
+    // The path looks like this:
+    //   /content/web/viewer.html?file=https%3A%2F%2Fexample.com%2Ftest.pdf
+    const std::string query = url->query();
+    url::Component cursor(0, query.size());
+    url::Component key_range, value_range;
+    while (url::ExtractQueryKeyValue(query.data(), &cursor, &key_range,
+                                     &value_range)) {
+      const base::StringPiece key(query.data() + key_range.begin,
+                                  key_range.len);
+      const base::StringPiece value(query.data() + value_range.begin,
+                                    value_range.len);
+      if (key == "file" && !value.empty()) {
+        net::UnescapeRule::Type rule =
+            net::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS |
+            net::UnescapeRule::PATH_SEPARATORS;
+        *url = GURL(net::UnescapeURLComponent(value, rule));
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+#endif
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient(
@@ -144,6 +190,10 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
   handler->AddHandlerPair(&HandleURLOverrideRewrite,
                           &HandleURLReverseOverrideRewrite);
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  handler->AddHandlerPair(&HandlePDFjsURLRewrite,
+                          &HandlePDFjsURLReverseRewrite);
+#endif
 }
 
 bool BraveContentBrowserClient::AllowAccessCookie(

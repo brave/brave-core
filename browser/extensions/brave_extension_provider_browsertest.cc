@@ -16,6 +16,7 @@
 #include "chrome/browser/net/url_request_mock_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test_utils.h"
 
 using BraveExtensionProviderTest = extensions::ExtensionFunctionalTest;
@@ -47,7 +48,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, PDFJSInstalls) {
 
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  GURL url = embedded_test_server()->GetURL("/test.pdf");
+  GURL url = embedded_test_server()->GetURL("/test.pdf?a=b&c=d");
   ui_test_utils::NavigateToURL(browser(), url);
   ASSERT_TRUE(WaitForLoadStop(contents));
 
@@ -65,6 +66,15 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, PDFJSInstalls) {
       "window.domAutomationController.send("
         "!!document.body.querySelector(\"#chrome-pdfjs-logo-bg\"))", &pdfjs_exists));
   ASSERT_TRUE(pdfjs_exists);
+
+  // Ensure that the extension prefix is not in the display URL (brave-browser#368)
+  EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                   ->GetVirtualURL().spec().c_str(),
+               url.spec().c_str()); // no "chrome-extension://" prefix
+  std::string internal_url =
+      "chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/" + url.spec();
+  EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
+                   ->GetURL().spec().c_str(), internal_url.c_str());
 }
 
 // Load an extension page with an ad image, and make sure it is NOT blocked.
