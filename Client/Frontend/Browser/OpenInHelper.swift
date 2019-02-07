@@ -21,8 +21,9 @@ struct MIMEType {
     static let PlainText = "text/plain"
     static let PNG = "image/png"
     static let WebP = "image/webp"
+    static let xHTML = "application/xhtml+xml"
 
-    private static let webViewViewableTypes: [String] = [MIMEType.Bitmap, MIMEType.GIF, MIMEType.JPEG, MIMEType.HTML, MIMEType.PDF, MIMEType.PlainText, MIMEType.PNG, MIMEType.WebP]
+    private static let webViewViewableTypes: [String] = [MIMEType.Bitmap, MIMEType.GIF, MIMEType.JPEG, MIMEType.HTML, MIMEType.PDF, MIMEType.PlainText, MIMEType.PNG, MIMEType.WebP, MIMEType.xHTML]
 
     static func canShowInWebView(_ mimeType: String) -> Bool {
         return webViewViewableTypes.contains(mimeType.lowercased())
@@ -34,6 +35,12 @@ struct MIMEType {
         }
 
         return MIMEType.OctetStream
+    }
+}
+
+extension String {
+    var isKindOfHTML: Bool {
+        return [MIMEType.HTML, MIMEType.xHTML].contains(self)
     }
 }
 
