@@ -92,8 +92,6 @@ bool BraveExtensionProvider::IsVetted(const Extension* extension) {
     "dlpmaigjliompnelofkljgcmlenklieh",
     // Test ID: Brave Tracking Protection Updater
     "eclbkhjphkhalklhipiicaldjbnhdfkc",
-    // Test ID: PDFJS
-    "kpbdcmcgkedhpbcpfndimofjnefgjidd",
     // Test ID: Brave HTTPS Everywhere Updater
     "bhlmpjhncoojbkemjkeppfahkglffilp",
     // Test ID: Brave Tor Client Updater
