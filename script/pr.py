@@ -17,13 +17,13 @@ import base64
 import json
 
 from io import StringIO
-from lib.config import PLATFORM, DIST_URL, get_target_arch, get_chromedriver_version, \
-                       get_env_var, get_zip_name, product_name, project_name, \
-                       SOURCE_ROOT, dist_dir, output_dir, get_brave_version, get_raw_version
-from lib.util import execute, parse_version, scoped_cwd
+from lib.config import get_env_var, SOURCE_ROOT, get_raw_version
+from lib.util import execute, scoped_cwd
 from lib.helpers import *
-
 from lib.github import GitHub
+
+
+channel_names = channels()
 
 
 def main():
@@ -35,66 +35,134 @@ def main():
     repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
 
     # get local version + latest version on remote (master)
+    # for more info see: http://developer.github.com/v3/repos/contents
     local_version = get_raw_version()
     file = repo.contents("package.json").get()
     decoded_file = base64.b64decode(file['content'])
     json_file = json.loads(decoded_file)
-    remote_version = json_file['version']
+    remote_nightly_version = json_file['version']
 
     # if they don't match, rebase is needed
-    print('local version: ' + local_version + '; remote version: ' + remote_version)
-    if local_version != remote_version:
+    print('local version: ' + local_version + '; remote version: ' + remote_nightly_version)
+    if local_version != remote_nightly_version:
         print('[ERROR] Your branch is out of sync; please rebase against master')
         return 1
 
+    # determine a title for the pull request
+    # TODO: ...
+    with scoped_cwd(SOURCE_ROOT):
+        title = execute(['git', 'log', '--pretty=format:%s', '-n', '1'])
+        local_branch = execute(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
+
+    # mapping of channels to versions
+    base = get_channel_bases(remote_nightly_version)
+
     # uplift to all applicable channels
-    for channel in channels():
-        submit_pr(channel)
+    for channel in channel_names:
+        branch = create_branch(channel, base[channel], local_branch)
+        submit_pr(channel, title, base[channel], branch)
         if channel == args.uplift_to:
             break
 
     return 0
 
 
-def submit_pr(channel):
+# given something like "0.60.x", get previous version ("0.59.x")
+def get_previous_version(version):
+    version = str(version)
+    if version[0] == 'v':
+        version = version[1:]
+
+    parts = version.split('.', 3)
+    parts[1] = str(int(parts[1]) - 1)
+    return '.'.join(parts)
+
+
+def get_channel_bases(nightly_version):
+    dev_version = get_previous_version(nightly_version)
+    beta_version = get_previous_version(dev_version)
+    release_version = get_previous_version(beta_version)
+    return {
+        channel_names[0]: nightly_version,
+        channel_names[1]: dev_version,
+        channel_names[2]: beta_version,
+        channel_names[3]: release_version
+    }
+
+
+def create_branch(channel, base, local_branch):
+    if channel != channel_names[0]:
+        channel_branch = base + '_' + local_branch
+        print('Creating "' + channel_branch + '" branch (based on ' + channel + '/' + base + ')...')
+        # TODO: actually create the branch
+        # ...
+
+        # TODO: pull in all commits
+        # ...
+
+        return channel_branch
+    return local_branch
+
+
+def submit_pr(channel, title, base, branch):
     print('Creating pull request for the ' + channel + ' channel...')
-    return 0
+
+    # for more info see: http://developer.github.com/v3/pulls
     try:
-        pr = repo.create_pull(
-            "Update from {}".format(full_upstream_name),
-            wrap_text(r"""
-                The upstream repository `{}` has some new changes that aren't in this fork.
-                So, here they are, ready to be merged!
-                This Pull Request was created programmatically by the
-                [githubpullrequests](https://github.com/evandrocoan/githubpullrequests).
-                """.format(full_upstream_name), single_lines=True),
-            local_branch,
-            '{}:{}'.format(upstream_user, upstream_branch),
-            False
-        )
+        pr_details = {
+            'title': title,
+            'head': branch,
+            'base': base,
+            'body': '',
+            'maintainer_can_modify': True
+        }
+
+        if channel != channel_names[0]:
+            pr_details['title'] += ' (uplift to ' + base + ')'
+            pr_details['body'] = 'Uplift of X'
+
+        print('BSC]] OBJ=', pr_details)
+
+        return 0
+
+    except Error as e:
+        print('whoops:', str(e))
+
+        # pr = repo.create_pull(
+        #     "Update from {}".format(full_upstream_name),
+        #     wrap_text(r"""
+        #         The upstream repository `{}` has some new changes that aren't in this fork.
+        #         So, here they are, ready to be merged!
+        #         This Pull Request was created programmatically by the
+        #         [githubpullrequests](https://github.com/evandrocoan/githubpullrequests).
+        #         """.format(full_upstream_name), single_lines=True),
+        #     local_branch,
+        #     '{}:{}'.format(upstream_user, upstream_branch),
+        #     False
+        # )
 
         # pull = self.repo.create_pull("Pull request created by PyGithub",
         # "Body of the pull request", "topic/RewriteWithGeneratedCode", "BeaverSoftware:master", True)
         # self.assertEqual(pull.id, 1436215)
 
         # Then play with your Github objects
-        successful_resquests += 1
-        log(1, 'Successfully Created:', pr)
+        # successful_resquests += 1
+        # log(1, 'Successfully Created:', pr)
 
-        self.repositories_results['Successfully Created'].append(full_downstream_name)
-        pr.add_to_labels("backstroke")
+        # self.repositories_results['Successfully Created'].append(full_downstream_name)
+        # pr.add_to_labels("backstroke")
 
-    except github.GithubException as error:
-        error = "%s, %s" % (full_downstream_name, str(error))
-        log(1, 'Skipping... %s', error)
+    # except github.GithubException as error:
+    #     error = "%s, %s" % (full_downstream_name, str(error))
+    #     log(1, 'Skipping... %s', error)
 
-        for reason in self.skip_reasons:
-            if reason in error:
-                self.repositories_results[reason].append(full_downstream_name)
-                break
+    #     for reason in self.skip_reasons:
+    #         if reason in error:
+    #             self.repositories_results[reason].append(full_downstream_name)
+    #             break
 
-        else:
-            self.repositories_results['Unknown Reason'].append(error)
+    #     else:
+    #         self.repositories_results['Unknown Reason'].append(error)
 
 
 def parse_args():
