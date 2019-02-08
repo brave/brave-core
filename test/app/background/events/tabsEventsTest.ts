@@ -1,11 +1,7 @@
-/* global describe, it, before, after */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import 'mocha'
-import * as sinon from 'sinon'
-import * as assert from 'assert'
 import '../../../../app/background/events/tabsEvents'
 import actions from '../../../../app/background/actions/tabActions'
 
@@ -22,29 +18,31 @@ interface TabUpdatedEvent extends chrome.events.Event<(tabId: number, changeInfo
 }
 
 describe('tabsEvents events', () => {
-  describe('chrome.tabs.onActivated', function () {
-    before(function () {
-      this.stub = sinon.stub(actions, 'activeTabChanged')
+  describe('chrome.tabs.onActivated', () => {
+    let spy: jest.SpyInstance
+    beforeEach(() => {
+      spy = jest.spyOn(actions, 'activeTabChanged')
     })
-    after(function () {
-      this.stub.restore()
+    afterEach(() => {
+      spy.mockRestore()
     })
-    it('calls actions.activeTabChanged with the correct args', function (cb) {
+    it('calls actions.activeTabChanged with the correct args', (cb) => {
       const inputWindowId = 1
       const inputTabId = 2
 
       const onActivated = chrome.tabs.onActivated as TabActivatedEvent
 
       onActivated.addListener((activeInfo) => {
-        assert.equal(activeInfo.windowId, inputWindowId)
-        assert.equal(activeInfo.tabId, inputTabId)
-        assert.equal(this.stub.withArgs(inputWindowId, inputTabId).calledOnce, true)
+        expect(activeInfo.windowId).toBe(inputWindowId)
+        expect(activeInfo.tabId).toBe(inputTabId)
+        expect(spy).toBeCalledWith(inputWindowId, inputTabId)
         cb()
       })
       onActivated.emit({ windowId: inputWindowId, tabId: inputTabId })
     })
   })
-  describe('chrome.tabs.onCreated', function () {
+  describe('chrome.tabs.onCreated', () => {
+    let spy: jest.SpyInstance
     const inputTab = {
       id: 3,
       index: 0,
@@ -55,26 +53,27 @@ describe('tabsEvents events', () => {
       incognito: false,
       selected: true
     }
-    before(function () {
-      this.stub = sinon.stub(actions, 'tabCreated')
+    beforeEach(() => {
+      spy = jest.spyOn(actions, 'tabCreated')
     })
-    after(function () {
-      this.stub.restore()
+    afterEach(() => {
+      spy.mockRestore()
     })
-    it('calls tabCreated with the correct args', function (cb) {
+    it('calls tabCreated with the correct args', (cb) => {
 
       const onCreated = chrome.tabs.onCreated as TabCreatedEvent
 
       onCreated.addListener((tab) => {
-        assert.equal(tab, inputTab)
-        assert.equal(this.stub.withArgs(inputTab).calledOnce, true)
+        expect(tab).toBe(inputTab)
+        expect(spy).toBeCalledWith(inputTab)
         cb()
       })
       onCreated.emit(inputTab)
     })
   })
 
-  describe('chrome.tabs.onUpdated', function () {
+  describe('chrome.tabs.onUpdated', () => {
+    let spy: jest.SpyInstance
     const inputTabId = 3
     const inputChangeInfo = {}
     const inputTab = {
@@ -87,20 +86,20 @@ describe('tabsEvents events', () => {
       incognito: false,
       selected: true
     }
-    before(function () {
-      this.stub = sinon.stub(actions, 'tabDataChanged')
+    beforeEach(() => {
+      spy = jest.spyOn(actions, 'tabDataChanged')
     })
-    after(function () {
-      this.stub.restore()
+    afterEach(() => {
+      spy.mockRestore()
     })
-    it('calls tabDataChanged', function (cb) {
+    it('calls tabDataChanged', (cb) => {
       const onUpdated = chrome.tabs.onUpdated as TabUpdatedEvent
 
       onUpdated.addListener((tabId, changeInfo, tab) => {
-        assert.equal(tabId, inputTabId)
-        assert.equal(changeInfo, inputChangeInfo)
-        assert.equal(tab, inputTab)
-        assert.equal(this.stub.withArgs(tabId, changeInfo, tab).calledOnce, true)
+        expect(tabId).toBe(inputTabId)
+        expect(changeInfo).toBe(inputChangeInfo)
+        expect(tab).toBe(inputTab)
+        expect(spy).toBeCalledWith(tabId, changeInfo, tab)
         cb()
       })
       onUpdated.emit(inputTabId, inputChangeInfo, inputTab)

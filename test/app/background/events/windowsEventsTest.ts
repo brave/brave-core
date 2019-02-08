@@ -1,11 +1,7 @@
-/* global describe, it, before, after */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import 'mocha'
-import * as sinon from 'sinon'
-import * as assert from 'assert'
 import '../../../../app/background/events/windowsEvents'
 import actions from '../../../../app/background/actions/windowActions'
 
@@ -18,25 +14,27 @@ interface WindowReferenceEvent extends chrome.events.Event<(window: chrome.windo
 }
 
 describe('windowsEvents events', () => {
-  describe('chrome.windows.onFocusChanged', function () {
-    before(function () {
-      this.stub = sinon.stub(actions, 'windowFocusChanged')
+  describe('chrome.windows.onFocusChanged', () => {
+    let spy: jest.SpyInstance
+    beforeEach(() => {
+      spy = jest.spyOn(actions, 'windowFocusChanged')
     })
-    after(function () {
-      this.stub.restore()
+    afterEach(() => {
+      spy.mockRestore()
     })
-    it('calls actions.windowFocusChanged', function (cb) {
+    it('calls actions.windowFocusChanged', (cb) => {
       const inputWindowId = 1
       const onFocusChanged = chrome.windows.onFocusChanged as WindowIdEvent
       onFocusChanged.addListener((windowId) => {
-        assert.equal(windowId, inputWindowId)
-        assert.equal(this.stub.withArgs(inputWindowId).calledOnce, true)
+        expect(windowId).toBe(inputWindowId)
+        expect(spy).toBeCalledWith(inputWindowId)
         cb()
       })
       onFocusChanged.emit(inputWindowId)
     })
   })
-  describe('chrome.windows.onCreated', function () {
+  describe('chrome.windows.onCreated', () => {
+    let spy: jest.SpyInstance
     const window = {
       id: 1,
       state: 'normal',
@@ -45,38 +43,39 @@ describe('windowsEvents events', () => {
       incognito: false,
       type: 'normal'
     }
-    before(function () {
-      this.stub = sinon.stub(actions, 'windowCreated')
+    beforeEach(() => {
+      spy = jest.spyOn(actions, 'windowCreated')
     })
-    after(function () {
-      this.stub.restore()
+    afterEach(() => {
+      spy.mockRestore()
     })
-    it('calls windowCreated', function (cb) {
+    it('calls windowCreated', (cb) => {
       const onCreated = chrome.windows.onCreated as WindowReferenceEvent
 
       onCreated.addListener((windowId) => {
-        assert.equal(windowId, window)
-        assert.equal(this.stub.withArgs(window).calledOnce, true)
+        expect(windowId).toBe(window)
+        expect(spy).toBeCalledWith(window)
         cb()
       })
       onCreated.emit(window)
     })
   })
 
-  describe('chrome.windows.onRemoved', function () {
-    before(function () {
-      this.stub = sinon.stub(actions, 'windowRemoved')
+  describe('chrome.windows.onRemoved', () => {
+    let spy: jest.SpyInstance
+    beforeEach(() => {
+      spy = jest.spyOn(actions, 'windowRemoved')
     })
-    after(function () {
-      this.stub.restore()
+    afterEach(() => {
+      spy.mockRestore()
     })
-    it('calls updateShieldsSettings', function (cb) {
+    it('calls updateShieldsSettings', (cb) => {
       const inputWindowId = 1
       const onRemoved = chrome.windows.onRemoved as WindowIdEvent
 
       onRemoved.addListener((windowId) => {
-        assert.equal(windowId, inputWindowId)
-        assert.equal(this.stub.withArgs(inputWindowId).calledOnce, true)
+        expect(windowId).toBe(inputWindowId)
+        expect(spy).toBeCalledWith(inputWindowId)
         cb()
       })
       onRemoved.emit(inputWindowId)

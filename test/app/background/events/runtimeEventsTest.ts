@@ -1,11 +1,7 @@
-/* global describe, it, before, after */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import 'mocha'
-import * as sinon from 'sinon'
-import * as assert from 'assert'
 import '../../../../app/background/events/runtimeEvents'
 import windowActions from '../../../../app/background/actions/windowActions'
 import tabActions from '../../../../app/background/actions/tabActions'
@@ -21,7 +17,7 @@ interface InputWindows {
 interface RuntimeEvent extends chrome.events.Event<() => void>, ChromeEvent {}
 
 describe('runtimeEvents events', () => {
-  describe('chrome.runtime.onStartup listener', function () {
+  describe('chrome.runtime.onStartup listener', () => {
     const inputWindows: InputWindows[] = [
       {
         id: 1,
@@ -45,10 +41,13 @@ describe('runtimeEvents events', () => {
     const p = new Promise((resolve, reject) => {
       deferred = resolve
     })
-    before(function (cb) {
-      this.windowCreatedStub = sinon.stub(windowActions, 'windowCreated')
-      this.tabCreatedStub = sinon.stub(tabActions, 'tabCreated')
-      this.windowGetAllStub = sinon.stub(chrome.windows, 'getAllAsync').callsFake(() => {
+    let windowCreatedSpy: jest.SpyInstance
+    let tabCreatedSpy: jest.SpyInstance
+    let windowGetAllSpy: jest.SpyInstance
+    beforeEach((cb) => {
+      windowCreatedSpy = jest.spyOn(windowActions, 'windowCreated')
+      tabCreatedSpy = jest.spyOn(tabActions, 'tabCreated')
+      windowGetAllSpy = jest.spyOn(chrome.windows, 'getAllAsync').mockImplementation(() => {
         deferred(inputWindows)
         return p
       })
@@ -57,29 +56,31 @@ describe('runtimeEvents events', () => {
       event.addListener(cb)
       event.emit()
     })
-    after(function () {
-      this.windowCreatedStub.restore()
-      this.tabCreatedStub.restore()
-      this.windowGetAllStub.restore()
+    afterEach(() => {
+      windowCreatedSpy.mockRestore()
+      tabCreatedSpy.mockRestore()
+      windowGetAllSpy.mockRestore()
     })
-    it('calls windowActions.windowCreated for each window', function (cb) {
+    it('calls windowActions.windowCreated for each window', (cb) => {
+      expect.assertions(5)
       p.then((inputWindows) => {
-        assert.equal(this.windowCreatedStub.getCalls().length, 2)
-        assert.equal(this.windowCreatedStub.getCall(0).args.length, 1)
-        assert.equal(this.windowCreatedStub.getCall(0).args[0], inputWindows[0])
-        assert.equal(this.windowCreatedStub.getCall(1).args.length, 1)
-        assert.equal(this.windowCreatedStub.getCall(1).args[0], inputWindows[1])
+        expect(windowCreatedSpy.mock.calls.length).toBe(2)
+        expect(windowCreatedSpy.mock.calls[0].length).toBe(1)
+        expect(windowCreatedSpy.mock.calls[0][0]).toBe(inputWindows[0])
+        expect(windowCreatedSpy.mock.calls[1].length).toBe(1)
+        expect(windowCreatedSpy.mock.calls[1][0]).toBe(inputWindows[1])
         cb()
       })
     })
-    it('calls tabActions.tabCreated for each tab in each window', function (cb) {
+    it('calls tabActions.tabCreated for each tab in each window', (cb) => {
+      expect.assertions(6)
       p.then((inputWindows) => {
-        assert.equal(this.tabCreatedStub.getCalls().length, 3)
-        assert.equal(this.tabCreatedStub.getCall(0).args.length, 1)
-        assert.equal(this.tabCreatedStub.getCall(0).args[0], inputWindows[0].tabs[0])
-        assert.equal(this.tabCreatedStub.getCall(1).args[0], inputWindows[0].tabs[1])
-        assert.equal(this.tabCreatedStub.getCall(2).args.length, 1)
-        assert.equal(this.tabCreatedStub.getCall(2).args[0], inputWindows[1].tabs[0])
+        expect(tabCreatedSpy.mock.calls.length).toBe(3)
+        expect(tabCreatedSpy.mock.calls[0].length).toBe(1)
+        expect(tabCreatedSpy.mock.calls[0][0]).toBe(inputWindows[0].tabs[0])
+        expect(tabCreatedSpy.mock.calls[1][0]).toBe(inputWindows[0].tabs[1])
+        expect(tabCreatedSpy.mock.calls[2].length).toBe(1)
+        expect(tabCreatedSpy.mock.calls[2][0]).toBe(inputWindows[1].tabs[0])
         cb()
       })
     })

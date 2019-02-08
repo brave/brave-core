@@ -20,7 +20,8 @@
     "<rootDir>/app/background/reducersTest.ts",
     "<rootDir>/app/background/storeTest.ts",
     "<rootDir>/app/background/reducers/*.ts",
-    "<rootDir>/app/state/*.ts"
+    "<rootDir>/app/state/*.ts",
+    "<rootDir>/app/background/events/*.ts"
   ],
   "transformIgnorePatterns": [
     "<rootDir>/node_modules"
