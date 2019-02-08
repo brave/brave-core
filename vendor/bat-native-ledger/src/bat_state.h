@@ -139,7 +139,7 @@ class BatState {
   void SetMasterUserToken(const std::string& token);
 
   bool AddReconcileStep(const std::string& viewing_id,
-                        braveledger_bat_helper::ContributionRetry step,
+                        ledger::ContributionRetry step,
                         int level);
 
   const braveledger_bat_helper::CurrentReconciles& GetCurrentReconciles() const;

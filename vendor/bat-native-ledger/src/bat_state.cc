@@ -357,7 +357,7 @@ void BatState::SetMasterUserToken(const std::string &token) {
 }
 
 bool BatState::AddReconcileStep(const std::string& viewing_id,
-                                braveledger_bat_helper::ContributionRetry step,
+                                ledger::ContributionRetry step,
                                 int level) {
   braveledger_bat_helper::CURRENT_RECONCILE reconcile =
       GetReconcileById(viewing_id);

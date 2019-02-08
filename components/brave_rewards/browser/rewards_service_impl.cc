@@ -804,15 +804,13 @@ void RewardsServiceImpl::OnGetRewardsInternalsInfo(
   rewards_internals_info->payment_id = info.payment_id;
   rewards_internals_info->is_key_info_seed_valid = info.is_key_info_seed_valid;
   for (const auto& item : info.current_reconciles) {
-    RewardsInternalsInfo::CurrentReconcileInfo current_reconcile_info;
-    current_reconcile_info.viewing_id = item.second.viewing_id;
-    current_reconcile_info.amount = item.second.amount;
-    current_reconcile_info.retry_step =
-        static_cast<RewardsInternalsInfo::ContributionRetry>(
-            item.second.retry_step);
-    current_reconcile_info.retry_level = item.second.retry_level;
-    rewards_internals_info->current_reconciles[item.first] =
-        current_reconcile_info;
+    CurrentReconcileInfo current_reconcile_info;
+    current_reconcile_info.viewing_id_ = item.second.viewingId_;
+    current_reconcile_info.amount_ = item.second.amount_;
+    current_reconcile_info.retry_step_ =
+        static_cast<ContributionRetry>(item.second.retry_step_);
+    current_reconcile_info.retry_level_ = item.second.retry_level_;
+    rewards_internals_info->current_reconciles[item.first] = current_reconcile_info;
   }
 
   callback.Run(std::move(rewards_internals_info));

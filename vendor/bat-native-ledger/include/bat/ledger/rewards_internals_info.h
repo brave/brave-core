@@ -7,6 +7,8 @@
 
 namespace ledger {
 
+struct CurrentReconcileInfo;
+
 LEDGER_EXPORT struct RewardsInternalsInfo {
   RewardsInternalsInfo();
   ~RewardsInternalsInfo();
@@ -14,13 +16,6 @@ LEDGER_EXPORT struct RewardsInternalsInfo {
 
   const std::string ToJson() const;
   bool loadFromJson(const std::string& json);
-
-  struct CurrentReconcileInfo {
-    std::string viewing_id;
-    std::string amount;
-    int retry_step;
-    int retry_level;
-  };
 
   std::string payment_id;
   bool is_key_info_seed_valid;

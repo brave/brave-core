@@ -264,15 +264,15 @@ class BatContribution {
   void SetTimer(uint32_t* timer_id, uint64_t start_timer_in = 0);
 
   void AddRetry(
-    braveledger_bat_helper::ContributionRetry step,
+    ledger::ContributionRetry step,
     const std::string& viewing_id,
     braveledger_bat_helper::CURRENT_RECONCILE reconcile = {});
 
-  uint64_t GetRetryTimer(braveledger_bat_helper::ContributionRetry step,
+  uint64_t GetRetryTimer(ledger::ContributionRetry step,
                          const std::string& viewing_id,
                          braveledger_bat_helper::CURRENT_RECONCILE* reconcile);
 
-  int GetRetryPhase(braveledger_bat_helper::ContributionRetry step);
+  int GetRetryPhase(ledger::ContributionRetry step);
 
   void DoRetry(const std::string& viewing_id);
 

@@ -1147,11 +1147,11 @@ void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo& info) {
   const braveledger_bat_helper::CurrentReconciles current_reconciles =
       GetCurrentReconciles();
   for (const auto& reconcile : current_reconciles) {
-    ledger::RewardsInternalsInfo::CurrentReconcileInfo current_reconcile_info;
-    current_reconcile_info.viewing_id = reconcile.second.viewingId_;
-    current_reconcile_info.amount = reconcile.second.amount_;
-    current_reconcile_info.retry_step = reconcile.second.retry_step_;
-    current_reconcile_info.retry_level = reconcile.second.retry_level_;
+    ledger::CurrentReconcileInfo current_reconcile_info;
+    current_reconcile_info.viewingId_ = reconcile.second.viewingId_;
+    current_reconcile_info.amount_ = reconcile.second.amount_;
+    current_reconcile_info.retry_step_ = reconcile.second.retry_step_;
+    current_reconcile_info.retry_level_ = reconcile.second.retry_level_;
     info.current_reconciles.insert(
         std::make_pair(reconcile.second.viewingId_, current_reconcile_info));
   }
@@ -1261,7 +1261,7 @@ void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t* timer_id) const {
 
 bool LedgerImpl::AddReconcileStep(
     const std::string& viewing_id,
-    braveledger_bat_helper::ContributionRetry step,
+    ledger::ContributionRetry step,
     int level) {
   BLOG(this, ledger::LogLevel::LOG_DEBUG)
     << "Contribution step"

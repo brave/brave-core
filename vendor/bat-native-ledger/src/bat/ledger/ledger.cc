@@ -620,14 +620,55 @@ bool AutoContributeProps::loadFromJson(const std::string& json) {
   return !error;
 }
 
-RewardsInternalsInfo::RewardsInternalsInfo() { }
+CurrentReconcileInfo::CurrentReconcileInfo()
+    : retry_step_(ContributionRetry::STEP_NO), retry_level_(0) {}
+CurrentReconcileInfo::~CurrentReconcileInfo() {}
+CurrentReconcileInfo::CurrentReconcileInfo(const ledger::CurrentReconcileInfo& info) {
+  viewingId_ = info.viewingId_;
+  amount_ = info.amount_;
+  retry_step_ = info.retry_step_;
+  retry_level_ = info.retry_level_;
+}
+
+const std::string CurrentReconcileInfo::ToJson() const {
+  std::string json;
+  braveledger_bat_helper::saveToJsonString(*this, json);
+  return json;
+}
+
+bool CurrentReconcileInfo::loadFromJson(const std::string& json) {
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  // has parser errors or wrong types
+  bool error = d.HasParseError();
+
+  if (false == error) {
+    error =
+        !(d.HasMember("viewingId") && d["viewingId"].IsString() &&
+          d.HasMember("amount") && d["amount"].IsString() &&
+          d.HasMember("retry_step") && d["retry_step"].IsInt() &&
+          d.HasMember("retry_level") && d["retry_level"].IsInt());
+  }
+
+  if (false == error) {
+    viewingId_ = d["viewingId"].GetString();
+    amount_ = d["amount"].GetString();
+    retry_step_ = static_cast<ContributionRetry>(d["retry_step"].GetInt());
+    retry_level_ = d["retry_level"].GetInt();
+  }
+  
+  return !error;
+}
+
+RewardsInternalsInfo::RewardsInternalsInfo() {}
 
 RewardsInternalsInfo::RewardsInternalsInfo(const RewardsInternalsInfo& info)
     : payment_id(info.payment_id),
       is_key_info_seed_valid(info.is_key_info_seed_valid),
-      current_reconciles(info.current_reconciles) { }
+      current_reconciles(info.current_reconciles) {}
 
-RewardsInternalsInfo::~RewardsInternalsInfo() { }
+RewardsInternalsInfo::~RewardsInternalsInfo() {}
 
 const std::string RewardsInternalsInfo::ToJson() const {
   std::string json;
@@ -655,14 +696,14 @@ bool RewardsInternalsInfo::loadFromJson(const std::string& json) {
     is_key_info_seed_valid = d["is_key_info_seed_valid"].GetBool();
 
     for (const auto& i : d["current_reconciles"].GetArray()) {
-      auto value = i.GetObject();
+      rapidjson::StringBuffer sb;
+      rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+      i.Accept(writer);
+
       CurrentReconcileInfo current_reconcile_info;
-      current_reconcile_info.viewing_id = value["viewing_id"].GetString();
-      current_reconcile_info.amount = value["amount"].GetString();
-      current_reconcile_info.retry_step = value["retry_step"].GetInt();
-      current_reconcile_info.retry_level = value["retry_level"].GetInt();
+      current_reconcile_info.loadFromJson(sb.GetString());
       current_reconciles.insert(std::make_pair(
-          current_reconcile_info.viewing_id, current_reconcile_info));
+          current_reconcile_info.viewingId_, current_reconcile_info));
     }
   }
 

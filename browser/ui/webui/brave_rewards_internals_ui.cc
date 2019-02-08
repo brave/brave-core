@@ -59,12 +59,12 @@ void BraveRewardsInternalsUI::OnGetRewardsInternalsInfo(
 
     base::ListValue current_reconciles;
     for (const auto& item : info->current_reconciles) {
-      auto current_reconcile = std::make_unique<base::DictionaryValue>();
-      current_reconcile->SetString("viewingId", item.second.viewing_id);
-      current_reconcile->SetString("amount", item.second.amount);
-      current_reconcile->SetInteger("retryStep", item.second.retry_step);
-      current_reconcile->SetInteger("retryLevel", item.second.retry_level);
-      current_reconciles.Append(std::move(current_reconcile));
+      auto current_reconcile_info = std::make_unique<base::DictionaryValue>();
+      current_reconcile_info->SetString("viewingId", item.second.viewing_id_);
+      current_reconcile_info->SetString("amount", item.second.amount_);
+      current_reconcile_info->SetInteger("retryStep", item.second.retry_step_);
+      current_reconcile_info->SetInteger("retryLevel", item.second.retry_level_);
+      current_reconciles.Append(std::move(current_reconcile_info));
     }
 
     std::string json;

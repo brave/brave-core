@@ -33,6 +33,8 @@ source_set("browser") {
     "publisher_banner.h",
     "contribution_info.cc",
     "contribution_info.h",
+    "current_reconcile_info.cc",
+    "current_reconcile_info.h",
     "recurring_donation.cc",
     "recurring_donation.h",
     "rewards_internals_info.cc",
