@@ -231,12 +231,11 @@ class GCMClientImplTest : public testing::Test,
                        const std::string& registration_id);
 
   // GCMClient::Delegate overrides
-  void OnRegisterFinished(const linked_ptr<RegistrationInfo>& registration_info,
+  void OnRegisterFinished(scoped_refptr<RegistrationInfo> registration_info,
                           const std::string& registration_id,
                           GCMClient::Result result) override;
-  void OnUnregisterFinished(
-      const linked_ptr<RegistrationInfo>& registration_info,
-      GCMClient::Result result) override {}
+  void OnUnregisterFinished(scoped_refptr<RegistrationInfo> registration_info,
+                            GCMClient::Result result) override {}
   void OnSendFinished(const std::string& app_id,
                       const std::string& message_id,
                       GCMClient::Result result) override {}
@@ -419,7 +418,7 @@ void GCMClientImplTest::AddRegistration(
     const std::string& app_id,
     const std::vector<std::string>& sender_ids,
     const std::string& registration_id) {
-  linked_ptr<GCMRegistrationInfo> registration(new GCMRegistrationInfo);
+  auto registration = base::MakeRefCounted<GCMRegistrationInfo>();
   registration->app_id = app_id;
   registration->sender_ids = sender_ids;
   gcm_client_->registrations_[registration] = registration_id;
@@ -449,14 +448,14 @@ void GCMClientImplTest::StartGCMClient() {
 
 void GCMClientImplTest::Register(const std::string& app_id,
                                  const std::vector<std::string>& senders) {
-  std::unique_ptr<GCMRegistrationInfo> gcm_info(new GCMRegistrationInfo);
+  auto gcm_info = base::MakeRefCounted<GCMRegistrationInfo>();
   gcm_info->app_id = app_id;
   gcm_info->sender_ids = senders;
-  gcm_client()->Register(make_linked_ptr<RegistrationInfo>(gcm_info.release()));
+  gcm_client()->Register(std::move(gcm_info));
 }
 
 void GCMClientImplTest::OnRegisterFinished(
-    const linked_ptr<RegistrationInfo>& registration_info,
+    scoped_refptr<RegistrationInfo> registration_info,
     const std::string& registration_id,
     GCMClient::Result result) {
   // this callback should never be called because registration should be blocked

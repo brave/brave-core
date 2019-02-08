@@ -205,7 +205,9 @@ class FCMNetworkHandlerTest : public testing::Test {
 
   std::unique_ptr<FCMNetworkHandler> MakeHandler() {
     return std::make_unique<FCMNetworkHandler>(mock_gcm_driver_.get(),
-                                               mock_instance_id_driver_.get());
+                                               mock_instance_id_driver_.get(),
+                                               "fake_sender_id",
+                                               kInvalidationsAppId);
   }
 
   StrictMock<MockInstanceID>* mock_instance_id() {
