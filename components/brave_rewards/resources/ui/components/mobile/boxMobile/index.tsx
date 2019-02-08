@@ -219,9 +219,9 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
   }
 
   getSettingsContent = (show?: boolean) => {
-    const { title, children } = this.props
+    const { title, settingsChild } = this.props
 
-    if (!show) {
+    if (!show || !settingsChild) {
       return null
     }
 
@@ -235,7 +235,7 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
             <CloseStrokeIcon />
           </StyledSettingsClose>
           <StyledSettingsContent>
-            {children}
+            {settingsChild}
           </StyledSettingsContent>
         </StyledSettingsHeader>
       </StyledFullSizeWrapper>
