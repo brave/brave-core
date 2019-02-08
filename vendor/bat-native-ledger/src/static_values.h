@@ -7,12 +7,14 @@
 #include <cstdint>
 #include <string>
 
-#define LEDGER_STAGING_SERVER           "https://ledger-staging.mercury.basicattentiontoken.org"
-#define LEDGER_PRODUCTION_SERVER        "https://ledger.mercury.basicattentiontoken.org"
-#define BALANCE_STAGING_SERVER          "https://balance-staging.mercury.basicattentiontoken.org"
-#define BALANCE_PRODUCTION_SERVER       "https://balance.mercury.basicattentiontoken.org"
-#define PUBLISHER_STAGING_SERVER        "https://publishers-staging.basicattentiontoken.org"
-#define PUBLISHER_PRODUCTION_SERVER     "https://publishers.basicattentiontoken.org"
+#define LEDGER_STAGING_SERVER               "https://ledger-staging.mercury.basicattentiontoken.org"
+#define LEDGER_PRODUCTION_SERVER            "https://ledger.mercury.basicattentiontoken.org"
+#define BALANCE_STAGING_SERVER              "https://balance-staging.mercury.basicattentiontoken.org"
+#define BALANCE_PRODUCTION_SERVER           "https://balance.mercury.basicattentiontoken.org"
+#define PUBLISHER_STAGING_SERVER            "https://publishers-staging.basicattentiontoken.org"
+#define PUBLISHER_PRODUCTION_SERVER         "https://publishers.basicattentiontoken.org"
+#define PUBLISHER_DISTRO_STAGING_SERVER     "https://publishers-staging-distro.basicattentiontoken.org"
+#define PUBLISHER_DISTRO_PRODUCTION_SERVER  "https://publishers-distro.basicattentiontoken.org"
 
 
 #define PREFIX_V2                       "/v2"
