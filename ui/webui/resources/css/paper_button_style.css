@@ -1,0 +1,39 @@
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * you can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+/* Refer to:
+ * ui/webui/resources/cr_elements/paper_button_style_css.html
+ * for styles to override.
+ *
+ * Translation of variants from Paper to Brave:
+ * action-button = Primary (solid fill bg, white fg)
+ * default = Secondary (outline color bg, white bg, color fg)
+ *
+ */
+
+paper-button {
+  --brave-hover-color: #e7e7ec;
+  --paper-button-ink-color: #242536 !important;
+
+  /* normal button */
+  --text-color: #242536 !important;
+  --border-color: var(--text-color) !important;
+  --hover-bg-color: var(--brave-hover-color) !important;
+  --hover-border-color: var(--text-color) !important;
+
+  /* action button */
+  --flat-text-color-action: white !important;
+  --flat-bg-action: var(--text-color) !important;
+  --hover-bg-action: var(--flat-bg-action) !important;
+
+  font-family: Poppins;
+  /* NOTE(petemill): some pages override default line-height for text,
+     but that shouldn't flow to buttons. It affects text centering. */
+  line-height: 1 !important;
+
+  border-radius: 20px !important;
+  border-color: currentColor !important;
+}

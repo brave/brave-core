@@ -1,0 +1,12 @@
+diff --git a/ui/webui/resources/cr_elements/paper_button_style_css.html b/ui/webui/resources/cr_elements/paper_button_style_css.html
+index 608cf8a16cb6e08ea02eb1f6266d40249d8cc057..975e411898a036656ab94ad0e219b66d7b32d4b2 100644
+--- a/ui/webui/resources/cr_elements/paper_button_style_css.html
++++ b/ui/webui/resources/cr_elements/paper_button_style_css.html
+@@ -5,6 +5,7 @@
+ 
+ <!-- Common paper-button styling for Material Design WebUI. -->
+ <dom-module id="paper-button-style">
++  <link rel="import" type="css" href="chrome://brave-resources/css/paper_button_style.css">
+   <template>
+     <style>
+       paper-button {
