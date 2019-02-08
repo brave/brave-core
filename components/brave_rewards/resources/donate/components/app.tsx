@@ -40,12 +40,24 @@ export class App extends React.Component<Props, {}> {
       }
     }
 
+    const verified = publisher.verified
+    let logo = publisher.logo
+
+    const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
+    if (internalFavicon.test(publisher.logo)) {
+      logo = `chrome://favicon/size/160@2x/${publisher.logo}`
+    }
+
+    if (!verified) {
+      logo = ''
+    }
+
     return (
       <DonationOverlay
         onClose={this.onClose}
         success={true}
         domain={domain}
-        logo={publisher && publisher.logo}
+        logo={logo}
       />
     )
   }
