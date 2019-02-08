@@ -9,10 +9,9 @@
     "compress-keygen": "crx keygen",
     "clean": "rimraf build/ dev/ *.zip *.crx",
     "lint": "tslint --project tsconfig.json '{app, test}/**/*.{ts,tsx}'",
-    "test-unit": "cross-env NODE_ENV=test TS_NODE_TYPE_CHECK=true mocha -r ignore-styles ./test/setupApp.ts test/app/**/**/**/*.{ts,tsx}",
+    "test-unit": "cross-env NODE_ENV=test TS_NODE_TYPE_CHECK=true jest --config=./test/jest.config.json",
     "test-security": "npm audit",
-    "test-suite": "node ./scripts/tests.js",
-    "test-jest": "jest --config=./test/jest.config.json"
+    "test-suite": "node ./scripts/tests.js"
   },
   "repository": {
     "type": "git",
@@ -35,15 +34,11 @@
   "author": "Brian Bondy <netzen@gmail.com>",
   "license": "MPL-2.0",
   "devDependencies": {
-    "@types/assert": "^0.0.31",
     "@types/bluebird": "^3.5.18",
-    "@types/chai": "^4.0.8",
     "@types/chrome": "^0.0.64",
     "@types/enzyme": "^3.1.10",
     "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/jest": "^23.3.13",
-    "@types/jsdom": "11.0.4",
-    "@types/mocha": "^5.2.0",
     "@types/node": "^8.0.54",
     "@types/react": "^16.4.16",
     "@types/react-dom": "^16.0.3",
@@ -69,11 +64,8 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^2.0.0",
     "identity-obj-proxy": "^3.0.0",
-    "ignore-styles": "^5.0.1",
     "jest": "^23.4.1",
-    "jsdom": "^11.4.0",
     "minimist": "^1.2.0",
-    "mocha": "^5.1.1",
     "postcss-loader": "^2.0.8",
     "pug-cli": "^1.0.0-alpha6",
     "react-addons-test-utils": "^15.6.2",
@@ -94,10 +86,8 @@
     "webpack-httpolyglot-server": "github:brave/webpack-httpolyglot-server"
   },
   "dependencies": {
-    "@types/selenium-webdriver": "^3.0.8",
     "bluebird": "^3.5.1",
     "brave-ui": "^0.30.8",
-    "classnames": "^2.2.5",
     "deep-freeze-node": "^1.1.3",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
