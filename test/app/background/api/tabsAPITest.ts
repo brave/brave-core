@@ -1,62 +1,70 @@
-/* global describe, it, before, after, afterEach */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import 'mocha'
-import * as sinon from 'sinon'
-import * as assert from 'assert'
 import * as tabsAPI from '../../../../app/background/api/tabsAPI'
 
 describe('tabs API', () => {
-  describe('createTab', function () {
-    before(function () {
-      this.spy = sinon.spy(chrome.tabs, 'create')
-      this.createProperties = { url: 'https://www.brave.com' }
-      this.p = tabsAPI.createTab(this.createProperties)
+  describe('createTab', () => {
+    let spy: jest.SpyInstance
+    const createProperties = { url: 'https://www.brave.com' }
+    beforeEach(() => {
+      spy = jest.spyOn(chrome.tabs, 'create')
     })
-    after(function () {
-      this.spy.restore()
+    afterEach(() => {
+      spy.mockRestore()
     })
-    it('calls chrome.tabs.create with the createProperties', function (cb) {
-      this.p.then(() => {
-        assert(this.spy.calledOnce)
-        assert.deepEqual(this.spy.getCall(0).args[0], this.createProperties)
-        cb()
-      })
+    it('calls chrome.tabs.create with the createProperties', (cb) => {
+      expect.assertions(2)
+      tabsAPI.createTab(createProperties)
+        .then(() => {
+          expect(spy).toBeCalledTimes(1)
+          expect(spy.mock.calls[0][0]).toEqual(createProperties)
+          cb()
+        })
+        .catch((e: Error) => {
+          console.error(e.toString())
+        })
     })
   })
-  describe('reloadTab', function () {
-    before(function () {
-      this.spy = sinon.spy(chrome.tabs, 'reload')
+  describe('reloadTab', () => {
+    
+    let spy: jest.SpyInstance
+    beforeEach(() => {
+      spy = jest.spyOn(chrome.tabs, 'reload')
     })
-    after(function () {
-      this.spy.restore()
+    afterEach(() => {
+      spy.mockRestore()
     })
-    afterEach(function () {
-      this.spy.resetHistory()
-    })
-    it('calls chrome.tabs.reload without bypassing the cache', function (cb) {
+    it('calls chrome.tabs.reload without bypassing the cache', (cb) => {
       const tabId = 42
       const bypassCache = false
-      const p = tabsAPI.reloadTab(tabId, bypassCache)
-      p.then(() => {
-        assert(this.spy.calledOnce)
-        assert.equal(this.spy.getCall(0).args[0], tabId)
-        assert.deepEqual(this.spy.getCall(0).args[1], { bypassCache })
-        cb()
-      })
+      expect.assertions(3)
+      tabsAPI.reloadTab(tabId, bypassCache)
+        .then(() => {
+          expect(spy).toBeCalledTimes(1)
+          expect(spy.mock.calls[0][0]).toBe(tabId)
+          expect(spy.mock.calls[0][1]).toEqual({ bypassCache })
+          cb()
+        })
+        .catch((e: Error) => {
+          console.error(e.toString())
+        })
     })
-    it('calls chrome.tabs.reload with bypassing the cache', function (cb) {
+    it('calls chrome.tabs.reload with bypassing the cache', (cb) => {
       const tabId = 42
       const bypassCache = true
-      const p = tabsAPI.reloadTab(tabId, bypassCache)
-      p.then(() => {
-        assert(this.spy.calledOnce)
-        assert.equal(this.spy.getCall(0).args[0], tabId)
-        assert.deepEqual(this.spy.getCall(0).args[1], { bypassCache })
-        cb()
-      })
+      expect.assertions(3)
+      tabsAPI.reloadTab(tabId, bypassCache)
+        .then(() => {
+          expect(spy).toBeCalledTimes(1)
+          expect(spy.mock.calls[0][0]).toBe(tabId)
+          expect(spy.mock.calls[0][1]).toEqual({ bypassCache })
+          cb()
+        })
+        .catch((e: Error) => {
+          console.error(e.toString())
+        })
     })
   })
 })

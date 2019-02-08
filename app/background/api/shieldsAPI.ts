@@ -2,10 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { Tab } from '../../types/state/shieldsPannelState'
+import { ShieldDetails } from '../../types/actions/shieldsPanelActions';
 import { BlockOptions } from '../../types/other/blockTypes'
 import * as resourceIdentifiers from '../../constants/resourceIdentifiers'
 import { isHttpOrHttps, hasPortNumber } from '../../helpers/urlUtils'
+import actions from '../actions/shieldsPanelActions'
 
 /**
  * Obtains the shields panel data for the specified tab data
@@ -54,6 +55,7 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       origin,
       hostname,
       id: tabData.id,
+      braveShields: 'block',
       ads: 0,
       trackers: 0,
       httpUpgradableResources: 0,
@@ -81,9 +83,8 @@ export const getTabData = (tabId: number) =>
 export const requestShieldPanelData = (tabId: number) =>
   getTabData(tabId)
     .then(getShieldSettingsForTabData)
-    .then((details: Partial<Tab>) => {
-      const actions = require('../actions/shieldsPanelActions')
-      actions.default.shieldsPanelDataUpdated(details)
+    .then((details: ShieldDetails) => {
+      actions.shieldsPanelDataUpdated(details)
     })
 
 const getPrimaryPatternForOrigin = (origin: string) => {
