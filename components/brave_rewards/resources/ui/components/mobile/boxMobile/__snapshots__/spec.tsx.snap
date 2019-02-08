@@ -73,10 +73,10 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: normal;
   letter-spacing: normal;
   display: inline-block;
-  vertical-align: default;
-  margin-left: 0px;
+  vertical-align: middle;
+  margin-left: 10px;
   color: #4b4c5c;
-  margin-top: 0px;
+  margin-top: -5px;
 }
 
 .c8 {

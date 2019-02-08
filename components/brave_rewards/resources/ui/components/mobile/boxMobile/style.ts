@@ -74,13 +74,13 @@ export const StyledTitle = styled<StyleProps, 'div'>('div')`
   line-height: 1.27;
   letter-spacing: normal;
   display: inline-block;
-  vertical-align: ${p => p.contentShown ? 'top' : 'default'};
-  margin-left: ${p => p.contentShown ? 10 : 0}px;
+  vertical-align: ${p => p.contentShown ? 'top' : 'middle'};
+  margin-left: ${p => p.contentShown ? 10 : 10}px;
   color: ${p => {
     if (p.enabled === false) return '#838391'
     return p.type && colors[p.type] || '#4b4c5c'
   }};
-  margin-top: ${p => p.contentShown ? 3 : 0}px;
+  margin-top: ${p => p.contentShown ? 3 : -5}px;
 `
 
 export const StyledBreak = styled<{}, 'div'>('div')`
@@ -164,7 +164,7 @@ export const StyledDetailInfo = styled<{}, 'div'>('div')`
 `
 
 export const StyledDetailContent = styled<{}, 'div'>('div')`
-  margin-top: 75px;
+  margin-top: 80px;
 `
 
 export const StyledChildContent = styled<{}, 'div'>('div')`
@@ -240,6 +240,6 @@ export const StyledSettingsIcon = styled<{}, 'button'>('button')`
 `
 
 export const StyledToggleWrapper = styled<StyleProps, 'div'>('div')`
-  margin-right: ${p => p.contentShown ? '-5' : '-15'}px;
-  margin-top: ${p => p.contentShown ? 5 : 2}px;
+  margin-right: -5px;
+  margin-top: ${p => p.contentShown ? 5 : 6}px;
 `
