@@ -683,12 +683,20 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
   if (timer_id == last_pub_load_timer_id_) {
     last_pub_load_timer_id_ = 0;
 
+    std::vector<std::string> headers;
+    headers.push_back("Accept-Encoding: gzip");
+
     //download the list
-    std::string url = braveledger_bat_helper::buildURL(GET_PUBLISHERS_LIST_V1, "", braveledger_bat_helper::SERVER_TYPES::PUBLISHER);
-    auto callback = std::bind(&LedgerImpl::LoadPublishersListCallback, this,
-        _1, _2, _3);
-    LoadURL(url, std::vector<std::string>(), "", "",
-        ledger::URL_METHOD::GET, callback);
+    std::string url = braveledger_bat_helper::buildURL(
+        GET_PUBLISHERS_LIST_V1,
+        "",
+        braveledger_bat_helper::SERVER_TYPES::PUBLISHER_DISTRO);
+    auto callback = std::bind(&LedgerImpl::LoadPublishersListCallback,
+                              this,
+                              _1,
+                              _2,
+                              _3);
+    LoadURL(url, headers, "", "", ledger::URL_METHOD::GET, callback);
   } else if (timer_id == last_grant_check_timer_id_) {
     last_grant_check_timer_id_ = 0;
     FetchGrant(std::string(), std::string());

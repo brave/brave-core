@@ -2451,6 +2451,13 @@ static bool ignore_ = false;
           url = PUBLISHER_STAGING_SERVER;
         }
         break;
+      case SERVER_TYPES::PUBLISHER_DISTRO:
+        if (ledger::is_production) {
+          url = PUBLISHER_DISTRO_PRODUCTION_SERVER;
+        } else {
+          url = PUBLISHER_DISTRO_STAGING_SERVER;
+        }
+        break;
       default:
         if (ledger::is_production) {
           url = LEDGER_PRODUCTION_SERVER;
