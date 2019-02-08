@@ -28,5 +28,10 @@ template("cargo_build") {
     if (is_mac) {
       args += [ "--mac_deployment_target=" + mac_deployment_target ]
     }
+
+    if (defined(invoker.rust_flags)) {
+      args += [ "--rust_flags=$rust_flags" ]
+    }
+
   }
 }
