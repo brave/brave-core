@@ -1,8 +1,16 @@
 #include "ui/base/webui/web_ui_util.h"
 
+#include "brave/ui/webui/resources/grit/brave_webui_resources.h"
+#include "ui/resources/grit/webui_resources.h"
+
 #define SetLoadTimeDataDefaults SetLoadTimeDataDefaults_ChromiumImpl
+#define IDR_WEBUI_CSS_TEXT_DEFAULTS_MD_PREVIOUS IDR_WEBUI_CSS_TEXT_DEFAULTS_MD
+#undef IDR_WEBUI_CSS_TEXT_DEFAULTS_MD
+#define IDR_WEBUI_CSS_TEXT_DEFAULTS_MD IDR_BRAVE_WEBUI_CSS_TEXT_DEFAULTS
 #include "../../../../../ui/base/webui/web_ui_util.cc"
 #undef SetLoadTimeDataDefaults
+#undef IDR_WEBUI_CSS_TEXT_DEFAULTS_MD
+#define IDR_WEBUI_CSS_TEXT_DEFAULTS_MD IDR_WEBUI_CSS_TEXT_DEFAULTS_MD_PREVIOUS
 
 #include "chrome/grit/generated_resources.h"
 #include "components/strings/grit/components_strings.h"
