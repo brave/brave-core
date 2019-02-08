@@ -33,5 +33,5 @@ List any dependencies that are required for this change.
   - [ ] `bug` / `enhancement`
 - [ ] Necessary security reviews have taken place.
 - [ ] Adequate test coverage exists to prevent regressions.
-- [ ] Adaquate test plan exists for QA to validate (if applicable)
+- [ ] Adequate test plan exists for QA to validate (if applicable)
 
