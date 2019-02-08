@@ -24,6 +24,7 @@ from lib.github import GitHub
 
 
 channel_names = channels()
+branches_to_push = []
 
 
 def main():
@@ -48,11 +49,17 @@ def main():
         print('[ERROR] Your branch is out of sync; please rebase against master')
         return 1
 
-    # determine a title for the pull request
-    # TODO: ...
+    # TODO: check if there are unstaged changes. Error out.
+
+    # get the branch name and the first commit subject (used as the title of the pull request)
     with scoped_cwd(SOURCE_ROOT):
-        title = execute(['git', 'log', '--pretty=format:%s', '-n', '1'])
         local_branch = execute(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
+        title_list = execute(['git', 'log', 'origin/master..HEAD', '--pretty=format:%s', '--reverse'])
+        title_list = title_list.split('\n')
+        if len(title_list) == 0:
+            print('whoops- no commits?!')
+            # TODO: throw exception
+        title = title_list[0]
 
     # mapping of channels to versions
     base = get_channel_bases(remote_nightly_version)
@@ -64,8 +71,20 @@ def main():
         if channel == args.uplift_to:
             break
 
+    # TODO: push any branches to remote
+    # TODO: if any failures happen, clean up
+
     return 0
 
+
+# put the X in for patch level
+def get_branch_name(version):
+    version = str(version)
+    if version[0] == 'v':
+        version = version[1:]
+    parts = version.split('.', 3)
+    parts[2] = 'x'
+    return '.'.join(parts)
 
 # given something like "0.60.x", get previous version ("0.59.x")
 def get_previous_version(version):
@@ -75,10 +94,12 @@ def get_previous_version(version):
 
     parts = version.split('.', 3)
     parts[1] = str(int(parts[1]) - 1)
+    parts[2] = 'x'
     return '.'.join(parts)
 
 
-def get_channel_bases(nightly_version):
+def get_channel_bases(raw_nightly_version):
+    nightly_version = get_branch_name(raw_nightly_version)
     dev_version = get_previous_version(nightly_version)
     beta_version = get_previous_version(dev_version)
     release_version = get_previous_version(beta_version)
@@ -93,19 +114,43 @@ def get_channel_bases(nightly_version):
 def create_branch(channel, base, local_branch):
     if channel != channel_names[0]:
         channel_branch = base + '_' + local_branch
-        print('Creating "' + channel_branch + '" branch (based on ' + channel + '/' + base + ')...')
-        # TODO: actually create the branch
-        # ...
 
-        # TODO: pull in all commits
-        # ...
+        with scoped_cwd(SOURCE_ROOT):
+            # get SHA for all commits (in order)
+            sha_list = execute(['git', 'log', 'origin/master..HEAD', '--pretty=format:%h', '--reverse'])
+            sha_list = sha_list.split('\n')
+            try:
+                # check if branch exists already
+                try:
+                    branch_sha = execute(['git', 'rev-parse', '-q', '--verify', channel_branch])
+                except:
+                    branch_sha = ''
+
+                if len(branch_sha) > 0:
+                    # branch exists; reset it
+                    print('(' + channel + ') Branch "' + channel_branch + '" exists; resetting to ' + base)
+                    execute(['git', 'reset', '--hard', 'origin/' + base])
+                else:
+                    # create the branch
+                    print('(' + channel + ') Creating "' + channel_branch + '" from ' + channel)
+                    execute(['git', 'checkout', base])
+                    execute(['git', 'checkout', '-b', channel_branch])
+
+                for sha in sha_list:
+                    output = execute(['git', 'cherry-pick', sha]).split('\n')
+                    print('- picked ' + sha + '(' + output[0] + ')')
+
+            finally:
+                # switch back to original branch
+                execute(['git', 'checkout', local_branch])
+                execute(['git', 'reset', '--hard', sha_list[-1]])
 
         return channel_branch
     return local_branch
 
 
 def submit_pr(channel, title, base, branch):
-    print('Creating pull request for the ' + channel + ' channel...')
+    print('\nCreating pull request for the ' + channel + ' channel...')
 
     # for more info see: http://developer.github.com/v3/pulls
     try:
@@ -121,11 +166,11 @@ def submit_pr(channel, title, base, branch):
             pr_details['title'] += ' (uplift to ' + base + ')'
             pr_details['body'] = 'Uplift of X'
 
-        print('BSC]] OBJ=', pr_details)
+        print(str(pr_details) + '\n')
 
         return 0
 
-    except Error as e:
+    except Exception as e:
         print('whoops:', str(e))
 
         # pr = repo.create_pull(
