@@ -60,6 +60,18 @@ export class App extends React.Component<Props, {}> {
       domain = publisherKey
     }
 
+    const verified = publisher.verified
+    let logo = publisher.logo
+
+    const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
+    if (internalFavicon.test(publisher.logo)) {
+      logo = `chrome://favicon/size/160@2x/${publisher.logo}`
+    }
+
+    if (!verified) {
+      logo = ''
+    }
+
     setTimeout(() => {
       this.onClose()
     }, 3000)
@@ -71,7 +83,7 @@ export class App extends React.Component<Props, {}> {
         domain={domain}
         amount={currentTipAmount}
         monthlyDate={monthlyDate}
-        logo={publisher && publisher.logo}
+        logo={logo}
       />
     )
   }
