@@ -15,9 +15,9 @@
     </includes>
 
     <structures>
-      <!-- <if expr="not is_android and not is_ios">
+      <if expr="not is_android and not is_ios">
         <part file="br_elements_resources.grdp" />
-      </if> -->
+      </if>
       <structure name="IDR_BRAVE_WEBUI_CSS_PAPER_BUTTON_STYLE"
              file="css/paper_button_style.css" type="chrome_html" compress="gzip" />
     </structures>

@@ -1,0 +1,33 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<!-- Use 'custom-style' to inject style (mainly override css vars)
+    in most chromium polymer modules.
+    This will only work for properties which cascade through
+    shadow DOM.
+    See https://polymer-library.polymer-project.org/1.0/docs/devguide/styling
+-->
+<custom-style>
+  <style is="custom-style">
+    :root {
+      --interactive-color: var(--cr-link-color) !important;
+      --disabled-color: rgb(241, 243, 244);
+      --cr-link-color: #ff4530 !important;
+    }
+  </style>
+</custom-style>
+
+<!-- Some modules declare variables in :host
+      which cannot be overriden by custom-style (e.g. cr-checkbox)
+      For these, we define a style module and use it as an 'include'
+      in containing apps.
+-->
+<dom-module id="br-shared-style">
+  <template>
+    <style>
+      cr-checkbox {
+        --cr-checkbox-checked-box-color: var(--cr-link-color) !important;
+        --cr-checkbox-ripple-checked-color: var(--cr-link-color) !important;
+      }
+    </style>
+  </template>
+</dom-module>
