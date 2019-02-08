@@ -198,6 +198,10 @@ void BraveMockRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
   RenderViewContextMenu::AddSpellCheckServiceItem(nullptr, is_checked);
 }
 
+void BraveMockRenderViewContextMenu::AddAccessibilityLabelsServiceItem(
+    bool is_checked) {
+}
+
 content::RenderViewHost* BraveMockRenderViewContextMenu::GetRenderViewHost()
     const {
   return nullptr;
