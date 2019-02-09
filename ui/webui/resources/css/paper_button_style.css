@@ -16,6 +16,7 @@
 
 paper-button {
   --brave-hover-color: #e7e7ec;
+  --brave-active-color: white;
   --paper-button-ink-color: #242536 !important;
 
   /* normal button */
@@ -23,12 +24,12 @@ paper-button {
   --border-color: var(--text-color) !important;
   --hover-bg-color: var(--brave-hover-color) !important;
   --hover-border-color: var(--text-color) !important;
+  --active-bg: var(--brave-active-color) !important;
 
   /* action button */
   --flat-text-color-action: white !important;
   --flat-bg-action: var(--text-color) !important;
   --hover-bg-action: var(--flat-bg-action) !important;
-
   font-family: Poppins;
   /* NOTE(petemill): some pages override default line-height for text,
      but that shouldn't flow to buttons. It affects text centering. */
@@ -38,4 +39,26 @@ paper-button {
   border-color: currentColor !important;
 
   --flat-focus-shadow-color: rgba(255, 69, 48, .4)  !important;
+}
+
+paper-button:not(.action-button):hover {
+  /* background handled in chromium but not foreground */
+  color: var(--hover-fg-color, var(--text-color));
+}
+
+paper-button:not(.action-button):active {
+  /* background handled in chromium but not foreground */
+  color: var(--active-fg-color, var(--text-color));
+}
+
+paper-button.warn {
+  --text-color: #E2052A !important;
+  /* normal (looks filled in on hover) */
+  --brave-active-color: #99022F;
+  --hover-fg-color: white;
+  --brave-hover-color: #BE032D;
+  --active-fg-color: white;
+  /* action */
+  --hover-bg-action: #BE032D !important;
+  --active-shadow-action-rgb: 153,2,47 !important;
 }

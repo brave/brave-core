@@ -244,6 +244,15 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD1(GetExcludedPublishersNumberDB, void(
       ledger::GetExcludedPublishersNumberDBCallback callback));
+
+  MOCK_METHOD3(DeleteData, void(
+      int32_t remove_mask,
+      uint64_t reconcile_stamp,
+      ledger::DeleteDataCallback callback));
+
+  MOCK_METHOD2(RetrieveAutoContributeCount, void(
+      uint64_t reconcile_stamp,
+      ledger::RetrieveAutoContributeCountCallback callback));
 };
 
 }  // namespace confirmations

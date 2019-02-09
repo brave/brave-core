@@ -15,6 +15,7 @@
 #include "brave/components/brave_rewards/browser/auto_contribution_props.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
+#include "brave/components/brave_rewards/browser/counters/rewards_counter.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/rewards_internals_info.h"
 #include "build/build_config.h"
@@ -71,6 +72,8 @@ using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
 using ConfirmationsHistoryCallback = base::Callback<void(int, double)>;
 using GetRewardsInternalsInfoCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::RewardsInternalsInfo>)>;
+using OnRemoveDataCallback = base::OnceCallback<void(bool)>;
+using IsContributionInProgressCallback = base::Callback<void(bool)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -182,6 +185,16 @@ class RewardsService : public KeyedService {
       const GetAddressesCallback& callback) = 0;
   virtual void GetConfirmationsHistory(
       brave_rewards::ConfirmationsHistoryCallback callback) = 0;
+
+  virtual void GetAutoContributeCount(
+      const rewards_counter::OnDataCountedCallback callback) = 0;
+
+  virtual void RemoveData(
+      int remove_mask,
+      OnRemoveDataCallback callback) = 0;
+
+  virtual void IsContributionInProgress(
+      IsContributionInProgressCallback callback) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

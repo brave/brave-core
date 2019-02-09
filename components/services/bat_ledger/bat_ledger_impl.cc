@@ -14,6 +14,7 @@
 #include "mojo/public/cpp/bindings/map.h"
 
 using std::placeholders::_1;
+using std::placeholders::_2;
 
 namespace bat_ledger {
 
@@ -407,4 +408,43 @@ void BatLedgerImpl::GetRewardsInternalsInfo(
   std::move(callback).Run(info.ToJson());
 }
 
-}  // namespace bat_ledger
+void BatLedgerImpl::OnRemoveData(
+    CallbackHolder<RemoveDataCallback>* holder,
+    bool result) {
+
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::RemoveData(
+    int32_t remove_mask,
+    RemoveDataCallback callback) {
+  auto* holder = new CallbackHolder<RemoveDataCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->RemoveData(remove_mask,
+      std::bind(BatLedgerImpl::OnRemoveData, holder, _1));
+}
+
+void BatLedgerImpl::OnGetAutoContributeCount(
+    CallbackHolder<GetAutoContributeCountCallback>* holder,
+    int64_t count,
+    uint64_t previous_reconcile_stamp) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(count, previous_reconcile_stamp);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::GetAutoContributeCount(
+    GetAutoContributeCountCallback callback) {
+  auto* holder = new CallbackHolder<GetAutoContributeCountCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetAutoContributeCount(
+      std::bind(BatLedgerImpl::OnGetAutoContributeCount, holder, _1, _2));
+}
+
+} // namespace bat_ledger

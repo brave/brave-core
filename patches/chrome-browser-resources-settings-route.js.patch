@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index 337b8c13d19ca4ed3848057608f4a6de62dde82e..14dd9a6c8b348aedb0e482050d8c0c26e7bb84b3 100644
+index 337b8c13d19ca4ed3848057608f4a6de62dde82e..d0f544d377b5f336e85db10067e1dbd5b971e773 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
 @@ -263,6 +263,9 @@ cr.define('settings', function() {
@@ -12,7 +12,17 @@ index 337b8c13d19ca4ed3848057608f4a6de62dde82e..14dd9a6c8b348aedb0e482050d8c0c26
      // <if expr="chromeos">
      if (loadTimeData.valueExists('assistantEnabled') &&
          loadTimeData.getBoolean('assistantEnabled')) {
-@@ -341,9 +344,12 @@ cr.define('settings', function() {
+@@ -320,6 +323,9 @@ cr.define('settings', function() {
+       r.CLEAR_BROWSER_DATA = r.ADVANCED.createChild('/clearBrowserData');
+       r.CLEAR_BROWSER_DATA.isNavigableDialog = true;
+ 
++      r.CLEAR_REWARDS_DATA = r.ADVANCED.createChild('/clearRewardsData');
++      r.CLEAR_REWARDS_DATA.isNavigableDialog = true;
++
+       if (pageVisibility.privacy !== false) {
+         r.PRIVACY = r.ADVANCED.createSection('/privacy', 'privacy');
+         r.CERTIFICATES = r.PRIVACY.createChild('/certificates');
+@@ -341,9 +347,12 @@ cr.define('settings', function() {
  
        // TODO(tommycli): Find a way to refactor these repetitive category
        // routes.
@@ -25,7 +35,7 @@ index 337b8c13d19ca4ed3848057608f4a6de62dde82e..14dd9a6c8b348aedb0e482050d8c0c26
        r.SITE_SETTINGS_BACKGROUND_SYNC =
            r.SITE_SETTINGS.createChild('backgroundSync');
        r.SITE_SETTINGS_CAMERA = r.SITE_SETTINGS.createChild('camera');
-@@ -401,7 +407,9 @@ cr.define('settings', function() {
+@@ -401,7 +410,9 @@ cr.define('settings', function() {
        }
  
        r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');

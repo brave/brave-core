@@ -299,6 +299,30 @@ void EnsureRewardsBaseDirectoryExists(const base::FilePath& path) {
     base::CreateDirectory(path);
 }
 
+bool RemoveDataOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    int32_t remove_mask,
+    uint64_t reconcile_stamp) {
+  bool success = false;
+  if (remove_mask & ledger::ClearDataTypes::DELETE_OTHER_DATA) {
+    success = backend->RemoveAllEntries();
+  }
+  if (remove_mask & ledger::ClearDataTypes::DELETE_AUTO_CONTRIBUTE_DATA) {
+    success = backend->RemoveAutoContributeEntries(reconcile_stamp);
+  }
+  backend->Vacuum();
+  return success;
+}
+
+std::pair<int64_t, uint64_t> GetAutoContributionCountOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    uint64_t reconcile_stamp) {
+  int64_t count = backend->GetAutoContributeCount(reconcile_stamp);
+  uint64_t last_reconcile_timestamp =
+      backend->GetLastReconcileTimestamp();
+  return std::make_pair(count, last_reconcile_timestamp);
+}
+
 }  // namespace
 
 bool IsMediaLink(const GURL& url,
@@ -347,7 +371,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       private_observer_(
           std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
 #endif
-      next_timer_id_(0) {
+      next_timer_id_(0),
+      contribution_count_(0) {
   file_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&EnsureRewardsBaseDirectoryExists,
                                 rewards_base_path_));
@@ -868,6 +893,13 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
   const std::string& viewing_id,
   ledger::REWARDS_CATEGORY category,
   const std::string& probi) {
+  if (contribution_count_ > 0) {
+    contribution_count_--;
+    if (contribution_count_ == 0) {
+      TriggerOnContributionComplete();
+    }
+  }
+
   if (result == ledger::Result::LEDGER_OK) {
     auto now = base::Time::Now();
     if (!Connected())
@@ -889,6 +921,11 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
                                  viewing_id,
                                  std::to_string(category),
                                  probi);
+}
+
+void RewardsServiceImpl::OnReconcileStarted(const std::string& viewing_id) {
+  contribution_count_++;
+  TriggerOnContributionStarted();
 }
 
 void RewardsServiceImpl::LoadLedgerState(
@@ -2809,6 +2846,103 @@ void RewardsServiceImpl::OnDeleteActivityInfo(
     LOG(ERROR) << "Problem deleting activity info for "
                << publisher_key;
   }
+}
+
+void RewardsServiceImpl::GetAutoContributeCount(
+    rewards_counter::OnDataCountedCallback callback) {
+  bat_ledger_->GetAutoContributeCount(
+      base::BindOnce(&RewardsServiceImpl::OnGetAutoContributeCount,
+      AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetAutoContributeCount(
+    rewards_counter::OnDataCountedCallback callback,
+    int64_t count,
+    uint64_t previous_reconcile_stamp) {
+  base::string16 previous_reconcile_date;
+  if (previous_reconcile_stamp != 0) {
+    previous_reconcile_date = TimeFormatShortDate(
+        base::Time::FromDoubleT(previous_reconcile_stamp));
+  }
+  std::move(callback).Run(count, previous_reconcile_date);
+}
+
+void RewardsServiceImpl::RemoveData(
+    int remove_mask,
+    OnRemoveDataCallback callback) {
+  if (!Connected()) {
+    return;
+  }
+  bat_ledger_->RemoveData(remove_mask,
+    base::BindOnce(&RewardsServiceImpl::OnRemoveData,
+      AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnRemoveData(
+    OnRemoveDataCallback callback,
+    bool result) {
+  std::move(callback).Run(result);
+
+  for (auto& observer : observers_) {
+    observer.OnDataRemoved(this);
+  }
+}
+
+void RewardsServiceImpl::TriggerOnContributionStarted() {
+  for (auto& observer_ : observers_) {
+    observer_.OnContributionStarted();
+  }
+}
+
+void RewardsServiceImpl::TriggerOnContributionComplete() {
+  for (auto& observer_ : observers_) {
+    observer_.OnContributionComplete();
+  }
+}
+
+void RewardsServiceImpl::IsContributionInProgress(
+    IsContributionInProgressCallback callback) {
+  callback.Run(contribution_count_ != 0);
+}
+
+void RewardsServiceImpl::DeleteData(
+    int32_t remove_mask,
+    uint64_t reconcile_stamp,
+    ledger::DeleteDataCallback callback) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
+      base::BindOnce(&RemoveDataOnFileTaskRunner,
+          publisher_info_backend_.get(),
+          remove_mask,
+          reconcile_stamp),
+      base::BindOnce(&RewardsServiceImpl::OnDeleteData,
+          AsWeakPtr(), callback));
+}
+
+void RewardsServiceImpl::OnDeleteData(
+    ledger::DeleteDataCallback callback,
+    bool result) {
+  callback(result);
+}
+
+void RewardsServiceImpl::RetrieveAutoContributeCount(
+    uint64_t reconcile_stamp,
+    ledger::RetrieveAutoContributeCountCallback callback) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
+      base::BindOnce(&GetAutoContributionCountOnFileTaskRunner,
+          publisher_info_backend_.get(),
+          reconcile_stamp),
+      base::BindOnce(&RewardsServiceImpl::OnRetrieveAutoContributeCount,
+          AsWeakPtr(), callback));
+}
+
+void RewardsServiceImpl::OnRetrieveAutoContributeCount(
+    ledger::RetrieveAutoContributeCountCallback callback,
+    std::pair<int64_t, uint64_t> pair) {
+  callback(pair.first, pair.second);
 }
 
 }  // namespace brave_rewards

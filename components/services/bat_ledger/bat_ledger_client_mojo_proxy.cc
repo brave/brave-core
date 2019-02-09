@@ -95,6 +95,19 @@ void OnExcludedNumberDB(const ledger::GetExcludedPublishersNumberDBCallback& cal
   callback(result);
 }
 
+void OnDeleteData(
+    ledger::DeleteDataCallback callback,
+    bool result) {
+  callback(result);
+}
+
+void OnRetrieveAutoContributeCount(
+    ledger::RetrieveAutoContributeCountCallback callback,
+    int64_t count,
+    uint64_t previous_reconcile_count) {
+  callback(count, previous_reconcile_count);
+}
+
 }  // namespace
 
 BatLedgerClientMojoProxy::BatLedgerClientMojoProxy(
@@ -760,6 +773,41 @@ void BatLedgerClientMojoProxy::GetExcludedPublishersNumberDB(
 
   bat_ledger_client_->GetExcludedPublishersNumberDB(
       base::BindOnce(&OnExcludedNumberDB, std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::OnReconcileStarted(
+    const std::string& viewing_id) {
+  bat_ledger_client_->OnReconcileStarted(viewing_id);
+}
+
+void BatLedgerClientMojoProxy::DeleteData(
+    int32_t remove_mask,
+    uint64_t reconcile_stamp,
+    ledger::DeleteDataCallback callback) {
+  if (!Connected()) {
+    callback(false);
+    return;
+  }
+
+  bat_ledger_client_->DeleteData(
+      remove_mask,
+      reconcile_stamp,
+      base::BindOnce(&OnDeleteData,
+        std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::RetrieveAutoContributeCount(
+      uint64_t reconcile_stamp,
+      ledger::RetrieveAutoContributeCountCallback callback) {
+  if (!Connected()) {
+    callback(0, 0);
+    return;
+  }
+
+  bat_ledger_client_->RetrieveAutoContributeCount(
+      reconcile_stamp,
+      base::BindOnce(&OnRetrieveAutoContributeCount,
+        std::move(callback)));
 }
 
 }  // namespace bat_ledger

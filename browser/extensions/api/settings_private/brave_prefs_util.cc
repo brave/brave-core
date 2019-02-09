@@ -6,6 +6,7 @@
 #include "brave/browser/extensions/api/settings_private/brave_prefs_util.h"
 
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/extensions/api/settings_private.h"
@@ -77,6 +78,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Hangouts pref
   (*s_brave_whitelist)[kHangoutsEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[brave_rewards::prefs::kRewardsAutoContributeSites] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[brave_rewards::prefs::kRewardsAllData] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   return *s_brave_whitelist;
 }

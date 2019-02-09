@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 #include <string>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/command_line.h"
@@ -512,6 +513,103 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfos(
   }
 
   return transaction.Commit();
+}
+
+uint64_t PublisherInfoDatabase::GetLastReconcileTimestamp() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+  if (!initialized) {
+    return 0;
+  }
+
+  std::string query =
+      "SELECT DISTINCT MAX(date) FROM contribution_info WHERE category = ?";
+  sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
+  int column = 0;
+  info_sql.BindInt(column++, ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE);
+
+  if (info_sql.Step()) {
+    return info_sql.ColumnInt64(0);
+  }
+  return 0;
+}
+
+uint64_t PublisherInfoDatabase::GetAutoContributeCount(
+    uint64_t reconcile_stamp) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+  if (!initialized || reconcile_stamp == 0) {
+    return 0;
+  }
+
+  std::string query =
+      "SELECT DISTINCT COUNT(publisher_id) FROM activity_info AS ai "
+      "WHERE ai.reconcile_stamp = ?";
+
+  sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
+  int column = 0;
+  info_sql.BindInt64(column++, reconcile_stamp);
+  if (info_sql.Step()) {
+    return info_sql.ColumnInt64(0);
+  }
+  return 0;
+}
+
+bool PublisherInfoDatabase::RemoveAllEntries() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  bool initialized = Init();
+  DCHECK(initialized);
+  if (!initialized) {
+    return false;
+  }
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  std::vector<std::string> tables;
+  tables.push_back("activity_info");
+  tables.push_back("contribution_info");
+  tables.push_back("media_publisher_info");
+  tables.push_back("pending_contribution");
+  tables.push_back("recurring_donation");
+  tables.push_back("publisher_info");
+
+  for (const std::string table : tables) {
+    const std::string query = "DELETE FROM " + table;
+    sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
+    info_sql.Run();
+  }
+  return transaction.Commit();
+}
+
+bool PublisherInfoDatabase::RemoveAutoContributeEntries(
+    uint64_t reconcile_stamp) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+  if (!initialized) {
+    return false;
+  }
+
+  if (reconcile_stamp == 0) {
+    // no sites exist
+    return false;
+  }
+
+  std::string query = "DELETE FROM activity_info AS ai "
+      "WHERE ai.reconcile_stamp = ?";
+
+  sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
+  int column = 0;
+  info_sql.BindInt64(column++, reconcile_stamp);
+  return info_sql.Run();
 }
 
 bool PublisherInfoDatabase::GetActivityList(

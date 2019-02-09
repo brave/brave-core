@@ -141,6 +141,16 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void GetExcludedPublishersNumberDB(
       ledger::GetExcludedPublishersNumberDBCallback callback) override;
 
+  void OnReconcileStarted(const std::string& viewing_id) override;
+
+  void DeleteData(int32_t remove_mask,
+      uint64_t reconcile_stamp,
+      ledger::DeleteDataCallback callback) override;
+
+  void RetrieveAutoContributeCount(
+      uint64_t reconcile_stamp,
+      ledger::RetrieveAutoContributeCountCallback callback) override;
+
  private:
   bool Connected() const;
 

@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include <fstream>
 #include <streambuf>
@@ -871,16 +872,16 @@ TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
 
   ledger::PublisherInfo info;
   info.id = "publisher_1";
-  info.verified = true;
-  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info.name = "publisher1";
   info.url = "https://publisher1.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info.duration = 10;
+  info.verified = true;
+  info.visits = 1;
+  info.reconcile_stamp = 1;
   info.score = 1.1;
   info.percent = 33;
   info.weight = 1.5;
-  info.reconcile_stamp = 1;
-  info.visits = 1;
 
   EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
 
@@ -912,7 +913,188 @@ TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   EXPECT_EQ(list.at(0).id, "publisher_1");
   EXPECT_EQ(list.at(0).reconcile_stamp, 1u);
   EXPECT_EQ(list.at(1).id, "publisher_2");
+}
 
+TEST_F(PublisherInfoDatabaseTest, RewardsAutoContributeCountEmpty) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+  EXPECT_EQ(
+    static_cast<int>(publisher_info_database_->GetAutoContributeCount(0)), 0);
+}
+
+TEST_F(PublisherInfoDatabaseTest, RewardsAutoContributeCountOne) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  // first entry publisher
+  ledger::PublisherInfo info;
+  info.id = "publisher_1";
+  info.name = "publisher_name_1";
+  info.url = "https://publisher1.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.duration = 0;
+  info.verified = false;
+  info.visits = 0;
+  info.reconcile_stamp = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  EXPECT_EQ(
+    static_cast<int>(publisher_info_database_->GetAutoContributeCount(1)), 1);
+}
+
+TEST_F(PublisherInfoDatabaseTest, RewardsAutoContributeCountMoreThanOne) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  // first entry publisher
+  ledger::PublisherInfo info;
+  info.id = "publisher_1";
+  info.name = "publisher_name_1";
+  info.url = "https://publisher1.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.duration = 0;
+  info.verified = false;
+  info.visits = 0;
+  info.reconcile_stamp = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // with duration
+  info.id = "publisher_2";
+  info.name = "publisher_name_2";
+  info.url = "https://publisher2.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.duration = 100;
+  info.verified = false;
+  info.visits = 1;
+  info.reconcile_stamp = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // verified publisher
+  info.id = "publisher_3";
+  info.name = "publisher_name_3";
+  info.url = "https://publisher3.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.duration = 1;
+  info.verified = true;
+  info.visits = 1;
+  info.reconcile_stamp = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // excluded publisher
+  info.id = "publisher_4";
+  info.name = "publisher_name_4";
+  info.url = "https://publisher4.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
+  info.duration = 1;
+  info.verified = false;
+  info.visits = 1;
+  info.reconcile_stamp = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // with visits
+  info.id = "publisher_5";
+  info.name = "publisher_name_5";
+  info.url = "https://publisher5.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.duration = 1;
+  info.verified = false;
+  info.visits = 10;
+  info.reconcile_stamp = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // full
+  info.id = "publisher_6";
+  info.name = "publisher_name_6";
+  info.url = "https://publisher6.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::INCLUDED;
+  info.duration = 5000;
+  info.verified = true;
+  info.visits = 10;
+  info.reconcile_stamp = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  EXPECT_EQ(
+    static_cast<int>(publisher_info_database_->GetAutoContributeCount(1)), 6);
+}
+
+TEST_F(PublisherInfoDatabaseTest,
+  RewardsAutoContributeCountPreviousReconciliation) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  // first entry publisher
+  ledger::PublisherInfo info;
+  info.id = "publisher_1";
+  info.name = "publisher_name_1";
+  info.url = "https://publisher1.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.duration = 0;
+  info.verified = false;
+  info.visits = 0;
+  info.reconcile_stamp = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // with duration
+  info.id = "publisher_2";
+  info.name = "publisher_name_2";
+  info.url = "https://publisher2.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.duration = 100;
+  info.verified = false;
+  info.visits = 1;
+  info.reconcile_stamp = 2;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // verified publisher
+  info.id = "publisher_3";
+  info.name = "publisher_name_3";
+  info.url = "https://publisher3.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.duration = 1;
+  info.verified = true;
+  info.visits = 1;
+  info.reconcile_stamp = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // excluded publisher
+  info.id = "publisher_4";
+  info.name = "publisher_name_4";
+  info.url = "https://publisher4.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
+  info.duration = 1;
+  info.verified = false;
+  info.visits = 1;
+  info.reconcile_stamp = 2;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // with visits
+  info.id = "publisher_5";
+  info.name = "publisher_name_5";
+  info.url = "https://publisher5.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.duration = 1;
+  info.verified = false;
+  info.visits = 10;
+  info.reconcile_stamp = 1;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // full
+  info.id = "publisher_6";
+  info.name = "publisher_name_6";
+  info.url = "https://publisher6.com";
+  info.excluded = ledger::PUBLISHER_EXCLUDE::INCLUDED;
+  info.duration = 5000;
+  info.verified = true;
+  info.visits = 10;
+  info.reconcile_stamp = 2;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  EXPECT_EQ(
+    static_cast<int>(publisher_info_database_->GetAutoContributeCount(1)), 3);
 }
 
 }  // namespace brave_rewards

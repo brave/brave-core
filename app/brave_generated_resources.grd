@@ -396,6 +396,43 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_ON_EXIT" desc="Clear Browsing Data dialog On exit tab label">
         On exit
       </message>
+      <!-- Clear Rewards Browsing Data -->
+      <message name="IDS_CLEAR_REWARDS_AUTO_CONTRIBUTE" desc="Clear Brave Rewards Auto-Contribute Label.">
+        Brave Rewards Auto-Contribute Data
+      </message>
+      <message name="IDS_CLEAR_REWARDS_ALL" desc="Clear All Brave Rewards Label.">
+        All Brave Rewards Data
+      </message>
+      <message name="IDS_CLEAR_REWARDS_ALL_DESCRIPTION" desc="Clear All Brave Rewards Description.">
+        Clears All Brave Rewards Data
+      </message>
+      <message name="IDS_REWARDS_CONTRIBUTION_IN_PROGRESS" desc="The subtext used for autocontribute when a contribution is in progress">
+        A contribution is in progress. Rewards data cannot be cleared at this time.
+      </message>
+      <message name="IDS_DEL_REWARDS_COUNTER" desc="A counter showing how many sites is in current autocontribute list.">
+        {COUNT, plural,
+        =0 {None }
+        =1 {1 site }
+        other {# sites }}
+      </message>
+      <message name="IDS_DEL_REWARDS_COUNTER_LAST_DATE_TEXT" desc="Text to follow after number of sites.">
+        since your last contribution on <ph name="DATE">$1<ex>1/22/1111</ex></ph>
+      </message>
+      <message name="IDS_CLEAR_ALL_REWARDS_WARNING" desc="Warning message shown in modal when user selects Clear All Rewards to warn of the permanent loss of data">
+        This action cannot be undone. All transaction history and reports will no longer be available. Please note that Brave does not store a copy of your data on our servers, so deleting this data from your browser is final.
+      </message>
+      <message name="IDS_CLEAR_REWARDS_DATA" desc="Warning message shown in modal when user selects Clear All Rewards to warn of the permanent loss of data">
+        Clear Brave Rewards data
+      </message>
+      <message name="IDS_CLEAR_REWARDS_DATA_DESCRIPTION" desc="Warning message shown in modal when user selects Clear All Rewards to warn of the permanent loss of data">
+        Clear Auto-Contribute history or clear all Rewards data.
+      </message>
+      <message name="IDS_CLEAR_REWARDS_DATA_SECONDARY" desc="Warning message shown in modal when user selects Clear All Rewards to warn of the permanent loss of data">
+        secondary
+      </message>
+      <message name="IDS_CLEAR_REWARDS_CONTRIBUTION_IN_PROGRESS" desc="Message that displays on the Clear Rewards dialog when a contribution is in progress">
+        A Brave Rewards contribution is currently in progress. Rewards data cannot be cleared at this time.
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />

@@ -1,0 +1,127 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_dialog/cr_dialog.html">
+<link rel="import" href="chrome://resources/cr_elements/shared_vars_css.html">
+<link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
+<link rel="import" href="chrome://resources/polymer/v1_0/paper-button/paper-button.html">
+<link rel="import" href="chrome://resources/polymer/v1_0/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../i18n_setup.html">
+<link rel="import" href="brave_clear_rewards_data_dialog_browser_proxy.html">
+<link rel="import" href="../controls/settings_checkbox.html">
+<link rel="import" href="../settings_shared_css.html">
+<link rel="import" href="../settings_vars_css.html">
+
+<dom-module id="settings-brave-clear-rewards-data-dialog">
+  <template>
+    <style include="settings-shared">
+        :host {
+          --body-container-height: 122px;
+          /* origin CBD height is 322px  */
+        }
+
+        #clearRewardsDataDialog {
+          --cr-dialog-top-container-min-height: 42px;
+          --cr-dialog-title: {
+            padding-bottom: 8px;
+          };
+          --cr-dialog-body-container: {
+            border-top: 1px solid var(--paper-grey-300);
+            height: var(--body-container-height);
+          };
+        }
+
+        #clearRewardsDataDialog [slot=body] {
+          padding-top: 8px;
+        }
+
+        .row {
+          align-items: center;
+          display: flex;
+          min-height: 40px;
+        }
+
+        paper-spinner-lite {
+          margin-bottom: auto;
+          margin-inline-end: 16px;
+          margin-top: auto;
+        }
+
+        settings-checkbox {
+          --settings-row-two-line-min-height: 48px;
+          --settings-checkbox-label: {
+            line-height: 1.25rem;
+          }
+        }
+
+        [slot=title] .secondary {
+          font-size: calc(13 / 15 * 100%);
+          padding-top: 8px;
+        }
+
+        .divider {
+          border-top: var(--settings-separator-line);
+          margin: 0 16px;
+        }
+    </style>
+    <cr-dialog id="confirmClearRewardsDataDialog"
+        close-text="$i18n{close}" ignore-popstate>
+      <div slot="title">
+        <div>Clear Rewards Data</div>
+      </div>
+      <div slot="body">
+        $i18n{clearAllRewardsWarning}
+      </div>
+      <div slot="button-container">
+        <paper-button class="cancel-button"
+              on-click="onCancelTap_">$i18n{cancel}
+        </paper-button>
+        <paper-button id="clearRewardsDataConfirm"
+              class="warn action-button" on-click="clearRewardsData_">
+              $i18n{clearData}
+        </paper-button>
+      </div>
+    </cr-dialog>
+    <cr-dialog id="clearRewardsDataDialog"
+    close-text="$i18n{close}" ignore-popstate>
+      <div slot="title">
+        <div>$i18n{rewardsPageTitle}</div>
+      </div>
+      <div slot="body">
+        <div id="rewardsData">
+          <settings-checkbox id="rewardsAutoContribute"
+            pref="{{prefs.brave.clear_data.rewards_autocontribute}}"
+            label="$i18n{clearRewardsAutoContribute}"
+            sub-label="[[counters_.rewards_autocontribute]]"
+            disabled="[[autoContributeDisabled_]]">
+          </settings-checkbox>
+          <settings-checkbox id="rewardsAllData"
+            pref="{{prefs.brave.clear_data.rewards_all_data}}"
+            label="$i18n{clearAllRewardsData}"
+            sub-label="$i18n{clearAllRewardsDataDescription}"
+            disabled="[[clearingInProgress_]]">
+          </settings-checkbox>
+        </div>
+      </div>
+      <div slot="button-container">
+        <paper-spinner-lite active="[[showSpinner_]]">
+        </paper-spinner-lite>
+        <paper-button class="cancel-button" disabled="[[cancelButtonDisabled_]]"
+        on-click="onCancelTap_">$i18n{cancel}</paper-button>
+        <paper-button id="clearRewardsDataConfirm"
+            class="action-button" on-click="clearRewardsData_"
+            disabled="[[isClearButtonDisabled_(clearingInProgress_,
+                                               clearButtonDisabled_)]]">
+            $i18n{clearData}
+        </paper-button>
+      </div>
+      <div slot="footer"
+          hidden="[[!shouldShowFooter_]]">
+        <div id="footer-description">
+          <span id="contribution-in-progress" hidden="[[!shouldShowFooter_]]">
+            $i18nRaw{rewardsContributionInProgress}
+          </span>
+        </div>
+      </div>
+    </cr-dialog>
+  </template>
+  <script src="brave_clear_rewards_data_dialog.js"></script>
+</dom-module>

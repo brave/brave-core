@@ -69,6 +69,9 @@ using OnLoadCallback = std::function<void(const ledger::Result,
                                           const std::string&)>;
 using OnResetCallback = std::function<void(const ledger::Result)>;
 using GetExcludedPublishersNumberDBCallback = std::function<void(uint32_t)>;
+using DeleteDataCallback = std::function<void(bool)>;
+using RetrieveAutoContributeCountCallback =
+    std::function<void(int64_t, uint64_t)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -222,6 +225,17 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void GetExcludedPublishersNumberDB(
       ledger::GetExcludedPublishersNumberDBCallback callback) = 0;
+
+  virtual void DeleteData(
+      int32_t remove_mask,
+      uint64_t reconcile_stamp,
+      ledger::DeleteDataCallback callback) = 0;
+
+  virtual void OnReconcileStarted(const std::string& viewing_id) {}
+
+  virtual void RetrieveAutoContributeCount(
+      uint64_t reconcile_stamp,
+      ledger::RetrieveAutoContributeCountCallback callback) = 0;
 };
 
 }  // namespace ledger
