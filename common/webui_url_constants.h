@@ -23,5 +23,6 @@ extern const char kBraveUIAdblockURL[];
 extern const char kBraveUIDonateHost[];
 extern const char kBraveUIDonateURL[];
 extern const char kBraveUISyncURL[];
+extern const char kClearRewardsDataSubPage[];
 
 #endif  // BRAVE_COMMON_WEBUI_URL_CONSTANTS_H_

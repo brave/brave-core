@@ -1045,6 +1045,7 @@ void LedgerImpl::AddReconcile(
       const std::string& viewing_id,
       const braveledger_bat_helper::CURRENT_RECONCILE& reconcile) {
   bat_state_->AddReconcile(viewing_id, reconcile);
+  ledger_client_->OnReconcileStarted(viewing_id);
 }
 
 const std::string& LedgerImpl::GetPaymentId() const {
@@ -1368,6 +1369,36 @@ void LedgerImpl::GetConfirmationsHistory(
     ledger::ConfirmationsHistoryCallback callback) {
   bat_confirmations_->GetTransactionHistory(from_timestamp_seconds,
       to_timestamp_seconds, callback);
+}
+
+void LedgerImpl::RemoveData(int32_t remove_mask,
+      ledger::OnDataRemovedCallback callback) {
+  ledger_client_->DeleteData(remove_mask,
+      GetReconcileStamp(),
+      std::bind(&LedgerImpl::OnRemoveData,
+                this,
+                callback,
+                _1));
+}
+
+void LedgerImpl::OnRemoveData(
+    ledger::OnDataRemovedCallback callback,
+    bool result) {
+  callback(result);
+}
+
+void LedgerImpl::GetAutoContributeCount(
+    ledger::GetAutoContributeCountCallback callback) {
+  ledger_client_->RetrieveAutoContributeCount(
+      GetReconcileStamp(),
+      std::bind(&LedgerImpl::OnGetAutoContributeCount, this, callback, _1, _2));
+}
+
+void LedgerImpl::OnGetAutoContributeCount(
+    ledger::GetAutoContributeCountCallback callback,
+    int64_t count,
+    uint64_t previous_reconcile_stamp) {
+  callback(count, previous_reconcile_stamp);
 }
 
 scoped_refptr<base::SequencedTaskRunner> LedgerImpl::GetTaskRunner() {

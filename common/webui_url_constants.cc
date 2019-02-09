@@ -21,3 +21,4 @@ const char kBraveUIRewardsURL[] = "chrome://rewards/";
 const char kBraveUIAdblockURL[] = "chrome://adblock/";
 const char kBraveUIDonateURL[] = "chrome://donate/";
 const char kBraveUISyncURL[] = "chrome://sync/";
+const char kClearRewardsDataSubPage[] = "clearRewardsData";

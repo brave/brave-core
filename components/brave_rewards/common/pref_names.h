@@ -18,6 +18,8 @@ extern const char kRewardsBackupSucceeded[];
 extern const char kRewardsUserHasFunded[];
 extern const char kRewardsAddFundsNotification[];
 extern const char kRewardsNotificationStartupDelay[];
+extern const char kRewardsAutoContributeSites[];
+extern const char kRewardsAllData[];
 
 }  // namespace prefs
 }  // namespace brave_rewards

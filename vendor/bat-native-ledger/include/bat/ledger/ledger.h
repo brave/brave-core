@@ -27,6 +27,12 @@ extern bool is_testing;
 extern int reconcile_time;  // minutes
 extern bool short_retries;
 
+enum ClearDataTypes {
+  DELETE_AUTO_CONTRIBUTE_DATA = 1 << 0,
+  DELETE_OTHER_DATA = 1 << 1,
+  DELETE_ALL_DATA = DELETE_AUTO_CONTRIBUTE_DATA | DELETE_OTHER_DATA,
+};
+
 LEDGER_EXPORT struct VisitData {
   VisitData();
   VisitData(const std::string& _tld,
@@ -60,6 +66,8 @@ using WalletAddressesCallback =
 using ConfirmationsHistoryCallback = std::function<void(
     std::unique_ptr<ledger::TransactionsInfo> info)>;
 using GetExcludedPublishersNumberDBCallback = std::function<void(uint32_t)>;
+using OnDataRemovedCallback = std::function<void(bool)>;
+using GetAutoContributeCountCallback = std::function<void(int64_t, uint64_t)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -279,6 +287,13 @@ class LEDGER_EXPORT Ledger {
       const uint64_t to_timestamp_seconds,
       ledger::ConfirmationsHistoryCallback callback) = 0;
   virtual void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) = 0;
+
+  virtual void RemoveData(int32_t remove_mask,
+      OnDataRemovedCallback callback) = 0;
+
+  virtual void GetAutoContributeCount(
+      GetAutoContributeCountCallback callback) = 0;
+
 };
 
 }  // namespace ledger

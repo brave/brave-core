@@ -124,6 +124,17 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void GetExcludedPublishersNumberDB(GetExcludedPublishersNumberDBCallback callback) override;
 
+  void OnReconcileStarted(const std::string& viewing_id) override;
+
+  void DeleteData(
+      int32_t remove_mask,
+      uint64_t reconcile_stamp,
+      DeleteDataCallback callback) override;
+
+  void RetrieveAutoContributeCount(
+      uint64_t reconcile_stamp,
+      RetrieveAutoContributeCountCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*
@@ -231,6 +242,15 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnGetExcludedPublishersNumberDB(
       CallbackHolder<GetExcludedPublishersNumberDBCallback>* holder,
       uint32_t number);
+
+  static void OnRemovedDataCallback(
+      CallbackHolder<DeleteDataCallback>* holder,
+      bool result);
+
+  static void OnRetrieveAutoContributeCount(
+    CallbackHolder<RetrieveAutoContributeCountCallback>* holder,
+    int64_t count,
+    uint64_t previous_reconcile_stamp);
 
   ledger::LedgerClient* ledger_client_;
 

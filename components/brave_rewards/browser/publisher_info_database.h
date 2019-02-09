@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_PUBLISHER_INFO_DATABASE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_PUBLISHER_INFO_DATABASE_H_
@@ -77,6 +78,14 @@ class PublisherInfoDatabase {
   bool RemoveRecurring(const std::string& publisher_key);
   bool InsertPendingContribution(const ledger::PendingContributionList& list);
   double GetReservedAmount();
+
+  uint64_t GetAutoContributeCount(uint64_t reconcile_stamp);
+
+  bool RemoveAutoContributeEntries(uint64_t reconcile_stamp);
+
+  bool RemoveAllEntries();
+
+  uint64_t GetLastReconcileDate();
 
 
   // Returns the current version of the publisher info database

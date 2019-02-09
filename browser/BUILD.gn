@@ -38,6 +38,7 @@ source_set("browser_process") {
     "browser_context_keyed_service_factories.h",
     "browsing_data/brave_clear_browsing_data.cc",
     "browsing_data/brave_clear_browsing_data.h",
+    "browsing_data/brave_browsing_data_remover_delegate.h",
     "component_updater/brave_component_installer.cc",
     "component_updater/brave_component_installer.h",
     "component_updater/brave_component_updater_configurator.cc",

@@ -112,7 +112,17 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"hangoutsEnabledDesc",
       IDS_SETTINGS_HANGOUTS_ENABLED_DESC},
     {"manageExtensionsLabel",
-      IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL}
+      IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL},
+    {"clearRewardsAutoContribute", IDS_CLEAR_REWARDS_AUTO_CONTRIBUTE},
+    {"clearAllRewardsData", IDS_CLEAR_REWARDS_ALL},
+    {"clearAllRewardsDataDescription", IDS_CLEAR_REWARDS_ALL_DESCRIPTION},
+    {"clearAllRewardsWarning", IDS_CLEAR_ALL_REWARDS_WARNING},
+    {"clearRewardsData", IDS_CLEAR_REWARDS_DATA},
+    {"clearRewardsDataDescription", IDS_CLEAR_REWARDS_DATA_DESCRIPTION},
+    {"clearRewardsDataSecondary", IDS_CLEAR_REWARDS_DATA_SECONDARY},
+    {"rewardsPageTitle", IDS_CLEAR_REWARDS_DATA},
+    {"rewardsContributionInProgress",
+      IDS_CLEAR_REWARDS_CONTRIBUTION_IN_PROGRESS},
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           base::size(localized_strings));

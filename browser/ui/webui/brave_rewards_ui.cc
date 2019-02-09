@@ -184,6 +184,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
           notifications_list) override;
 
+  void OnDataRemoved(
+      brave_rewards::RewardsService* rewards_service) override;
+
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   brave_ads::AdsService* ads_service_;
   base::WeakPtrFactory<RewardsDOMHandler> weak_factory_;
@@ -1041,6 +1044,14 @@ void RewardsDOMHandler::OnAdsIsSupportedRegion(
   if (web_ui()->CanCallJavascript()) {
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsIsSupportedRegion",
         base::Value(is_supported));
+  }
+}
+
+void RewardsDOMHandler::OnDataRemoved(
+    brave_rewards::RewardsService* rewards_service) {
+  if (rewards_service) {
+    OnContentSiteUpdated(rewards_service);
+    OnCurrentTips(rewards_service, {});
   }
 }
 

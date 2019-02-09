@@ -135,6 +135,13 @@ class BatLedgerImpl : public mojom::BatLedger,
   void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) override;
 
+  void RemoveData(
+      int32_t remove_mask,
+      RemoveDataCallback callback) override;
+
+  void GetAutoContributeCount(
+      GetAutoContributeCountCallback callback) override;
+
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
@@ -171,6 +178,15 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnGetExcludedPublishersNumber(
       CallbackHolder<GetExcludedPublishersNumberCallback>* holder,
       uint32_t number);
+
+  static void OnRemoveData(
+      CallbackHolder<RemoveDataCallback>* holder,
+      bool result);
+
+  static void OnGetAutoContributeCount(
+    CallbackHolder<GetAutoContributeCountCallback>* holder,
+    int64_t count,
+    uint64_t previous_reconcile_stamp);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

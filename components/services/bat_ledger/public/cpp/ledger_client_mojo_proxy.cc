@@ -701,4 +701,49 @@ void LedgerClientMojoProxy::GetExcludedPublishersNumberDB(
         holder, _1));
 }
 
+void LedgerClientMojoProxy::OnReconcileStarted(const std::string& viewing_id) {
+  ledger_client_->OnReconcileStarted(viewing_id);
+}
+
+void LedgerClientMojoProxy::OnRemovedDataCallback(
+    CallbackHolder<DeleteDataCallback>* holder,
+    bool result) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::DeleteData(
+    int32_t remove_mask,
+    uint64_t reconcile_stamp,
+    DeleteDataCallback callback) {
+  auto* holder = new CallbackHolder<DeleteDataCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->DeleteData(
+      remove_mask,
+      reconcile_stamp,
+      std::bind(LedgerClientMojoProxy::OnRemovedDataCallback,
+        holder, _1));
+}
+
+void LedgerClientMojoProxy::OnRetrieveAutoContributeCount(
+    CallbackHolder<RetrieveAutoContributeCountCallback>* holder,
+    int64_t count,
+    uint64_t previous_reconcile_stamp) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(count, previous_reconcile_stamp);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::RetrieveAutoContributeCount(
+    uint64_t reconcile_stamp,
+    RetrieveAutoContributeCountCallback callback) {
+  auto* holder = new CallbackHolder<RetrieveAutoContributeCountCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->RetrieveAutoContributeCount(
+      reconcile_stamp,
+      std::bind(LedgerClientMojoProxy::OnRetrieveAutoContributeCount,
+        holder, _1, _2));
+}
+
 }  // namespace bat_ledger

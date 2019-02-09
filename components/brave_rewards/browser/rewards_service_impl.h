@@ -20,6 +20,7 @@
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "brave/components/brave_rewards/browser/counters/rewards_counter.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "content/public/browser/browser_thread.h"
@@ -193,6 +194,15 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetAddressesForPaymentId(const GetAddressesCallback& callback) override;
   std::pair<uint64_t, uint64_t> GetEarningsRange();
+
+  void GetAutoContributeCount(
+      rewards_counter::OnDataCountedCallback) override;
+
+  void RemoveData(int remove_mask,
+      OnRemoveDataCallback callback) override;
+
+  void IsContributionInProgress(
+      IsContributionInProgressCallback callback) override;
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -445,6 +455,36 @@ class RewardsServiceImpl : public RewardsService,
   void SetRewardsMainEnabledPref(bool enabled);
   void SetRewardsMainEnabledMigratedPref(bool enabled);
 
+  void OnGetAutoContributeCount(
+      rewards_counter::OnDataCountedCallback callback,
+      int64_t count,
+      uint64_t previous_reconcile_stamp);
+
+  void OnRemoveData(
+      OnRemoveDataCallback callback,
+      bool result);
+
+  void DeleteData(
+      int32_t remove_mask,
+      uint64_t reconcile_stamp,
+      ledger::DeleteDataCallback callback) override;
+
+  void OnDeleteData(
+      ledger::DeleteDataCallback callback,
+      bool result);
+
+  void OnReconcileStarted(const std::string& viewing_id) override;
+
+  void BroadcastReconcile(bool contribution_in_progress);
+
+  void RetrieveAutoContributeCount(
+      uint64_t reconcile_stamp,
+      ledger::RetrieveAutoContributeCountCallback callback) override;
+
+  void OnRetrieveAutoContributeCount(
+      ledger::RetrieveAutoContributeCountCallback callback,
+    std::pair<int64_t, uint64_t> pair);
+
   bool Connected() const;
   void ConnectionClosed();
 
@@ -480,6 +520,8 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
 
   uint32_t next_timer_id_;
+
+  uint32_t contribution_count_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);
 };

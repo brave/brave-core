@@ -1,3 +1,4 @@
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -103,6 +104,8 @@ interface BatLedger {
   GetConfirmationsHistory(uint64 from_timestamp_seconds,
       uint64 to_timestamp_seconds) => (string transactions);
   GetRewardsInternalsInfo() => (string info);
+  RemoveData(int32 remove_mask) => (bool result);
+  GetAutoContributeCount() => (int64 count, uint64 previous_reconcile_stamp);
 };
 
 interface BatLedgerClient {
@@ -180,4 +183,8 @@ interface BatLedgerClient {
   ConfirmationsTransactionHistoryDidChange();
 
   GetExcludedPublishersNumberDB() => (uint32 number);
+  OnReconcileStarted(string viewing_id);
+  DeleteData(int32 remove_mask, uint64 reconcile_stamp) => (bool result);
+  RetrieveAutoContributeCount(uint64 reconcile_stamp) => (
+      int64 count, uint64 previous_reconcile_stamp);
 };
