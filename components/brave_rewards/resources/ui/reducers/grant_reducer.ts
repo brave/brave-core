@@ -149,7 +149,7 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
           })
 
           if (grantIndex > -1) {
-            state.grants.splice(1, grantIndex)
+            state.grants.splice(grantIndex, 1)
             currentGrant = undefined
           }
 

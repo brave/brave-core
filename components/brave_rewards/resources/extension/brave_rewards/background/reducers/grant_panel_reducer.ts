@@ -153,7 +153,7 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
           })
 
           if (grantIndex > -1) {
-            grants = state.grants.splice(1, grantIndex)
+            grants = state.grants.splice(grantIndex, 1)
             currentGrant = undefined
           }
 

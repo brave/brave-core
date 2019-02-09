@@ -329,6 +329,42 @@ describe('Grant Reducer', () => {
         rewardsData: expectedState
       })
     })
+    it('deletes last grant', () => {
+      const initialState = {
+        ...defaultState
+      }
+      initialState.grants = [
+        {
+          promotionId: 'test-promotion-id-2',
+          expiryTime: 0,
+          probi: '',
+          type: 'ads',
+          captcha: 'data:image/jpeg;base64,XXX',
+          hint: 'blue'
+        }
+      ]
+      initialState.currentGrant = {
+        promotionId: 'test-promotion-id-2',
+        expiryTime: 0,
+        probi: '',
+        type: 'ads'
+      }
+
+      const assertion = reducers({
+        rewardsData: initialState
+      }, {
+        type: types.ON_GRANT_DELETE,
+        payload: {}
+      })
+
+      const expectedState: Rewards.State = { ...defaultState }
+      expectedState.currentGrant = undefined
+      expectedState.grants = []
+
+      expect(assertion).toEqual({
+        rewardsData: expectedState
+      })
+    })
   })
 
   describe('ON_GRANT_FINISH', () => {
