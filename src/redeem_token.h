@@ -5,6 +5,9 @@
 #ifndef BAT_CONFIRMATIONS_REDEEM_TOKEN_H_
 #define BAT_CONFIRMATIONS_REDEEM_TOKEN_H_
 
+#include <string>
+#include <vector>
+
 #include "confirmations_impl.h"
 #include "bat/confirmations/confirmations_client.h"
 
@@ -15,55 +18,57 @@ namespace confirmations {
 using namespace challenge_bypass_ristretto;
 
 class ConfirmationsImpl;
+class UnblindedTokens;
 
 class RedeemToken {
  public:
   RedeemToken(
       ConfirmationsImpl* confirmations,
-      ConfirmationsClient* confirmations_client);
+      ConfirmationsClient* confirmations_client,
+      UnblindedTokens* unblinded_tokens,
+      UnblindedTokens* unblinded_payment_tokens);
 
   ~RedeemToken();
 
   void Redeem(
-      const std::string& creative_instance_id,
-      const std::string& public_key);
+      const std::string& creative_instance_id);
 
  private:
-  PublicKey public_key_;
-
   void CreateConfirmation(
       const std::string& creative_instance_id,
-      const std::string& unblinded_token_base64);
+      const UnblindedToken& unblinded_token);
   void OnCreateConfirmation(
       const std::string& url,
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
       const std::string& confirmation_id,
-      const std::string& token_base64,
-      const std::string& blinded_payment_token_base64);
+      const Token& payment_token,
+      const BlindedToken& blinded_payment_token,
+      const UnblindedToken& unblinded_token);
 
   void FetchPaymentToken(
       const std::string& confirmation_id,
-      const std::string& token_base64,
-      const std::string& blinded_payment_token_base64);
+      const Token& payment_token,
+      const BlindedToken& blinded_payment_token,
+      const UnblindedToken& unblinded_token);
   void OnFetchPaymentToken(
       const std::string& url,
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      const std::string& token_base64,
-      const std::string& blinded_payment_token_base64);
+      const Token& payment_token,
+      const BlindedToken& blinded_payment_token,
+      const UnblindedToken& unblinded_token);
 
-  void OnRedeem(const Result result);
-
-  void RemoveUnblindedToken();
-
-  void AppendUnblindedPaymentTokens(
-      const std::vector<UnblindedToken>& unblinded_paymemt_tokens);
+  void OnRedeem(
+      const Result result,
+      const UnblindedToken& unblinded_token);
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
+  UnblindedTokens* unblinded_tokens_;  // NOT OWNED
+  UnblindedTokens* unblinded_payment_tokens_;  // NOT OWNED
 };
 
 }  // namespace confirmations

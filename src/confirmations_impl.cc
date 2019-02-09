@@ -18,14 +18,16 @@ ConfirmationsImpl::ConfirmationsImpl(
     is_initialized_(false),
     is_wallet_initialized_(false),
     is_catalog_issuers_initialized_(false),
-    refill_confirmations_timer_id_(0),
-    refill_tokens_(std::make_unique<RefillTokens>(this, confirmations_client)),
+    unblinded_tokens_(std::make_unique<UnblindedTokens>(this)),
+    unblinded_payment_tokens_(std::make_unique<UnblindedTokens>(this)),
     retry_getting_signed_tokens_timer_id_(0),
-    unblinded_tokens_({}),
-    redeem_token_(std::make_unique<RedeemToken>(this, confirmations_client)),
-    unblinded_payment_tokens_({}),
-    payout_confirmations_timer_id_(0),
-    payout_tokens_(std::make_unique<PayoutTokens>(this, confirmations_client)),
+    refill_tokens_(std::make_unique<RefillTokens>(
+        this, confirmations_client, unblinded_tokens_.get())),
+    redeem_token_(std::make_unique<RedeemToken>(this, confirmations_client,
+        unblinded_tokens_.get(), unblinded_payment_tokens_.get())),
+    payout_redeemed_tokens_timer_id_(0),
+    payout_tokens_(std::make_unique<PayoutTokens>(this, confirmations_client,
+        unblinded_payment_tokens_.get())),
     confirmations_client_(confirmations_client) {
   BLOG(INFO) << "Initializing Confirmations";
 
@@ -35,11 +37,32 @@ ConfirmationsImpl::ConfirmationsImpl(
 ConfirmationsImpl::~ConfirmationsImpl() {
   BLOG(INFO) << "Deinitializing Confirmations";
 
-  StopRefillingConfirmations();
-  StopRetryGettingSignedTokens();
-  StopPayingOutConfirmations();
+  StopRetryingToGetRefillSignedTokens();
+  StopPayingOutRedeemedTokens();
 }
 
+void ConfirmationsImpl::CheckReady() {
+  if (is_initialized_) {
+    return;
+  }
+
+  if (!is_wallet_initialized_ || !is_catalog_issuers_initialized_) {
+    return;
+  }
+
+  is_initialized_ = true;
+  BLOG(INFO) << "Successfully initialized";
+
+  PayoutRedeemedTokens();
+  RefillTokensIfNecessary();
+}
+
+void ConfirmationsImpl::NotifyAdsIfConfirmationsIsReady() {
+  bool is_ready = unblinded_tokens_->IsEmpty() ? false : true;
+  confirmations_client_->SetConfirmationsIsReady(is_ready);
+}
+
+// TODO(Terry Mancey): Refactor for unit tests
 std::unique_ptr<base::ListValue> ConfirmationsImpl::Munge(
     const std::vector<std::string>& v) {
   base::ListValue* list = new base::ListValue();
@@ -51,6 +74,7 @@ std::unique_ptr<base::ListValue> ConfirmationsImpl::Munge(
   return std::unique_ptr<base::ListValue>(list);
 }
 
+// TODO(Terry Mancey): Refactor for unit tests
 std::vector<std::string> ConfirmationsImpl::Unmunge(base::Value* value) {
   std::vector<std::string> v;
 
@@ -65,32 +89,7 @@ std::vector<std::string> ConfirmationsImpl::Unmunge(base::Value* value) {
   return v;
 }
 
-void ConfirmationsImpl::UpdateConfirmationsIsReadyStatus() {
-  bool is_ready = unblinded_tokens_.size() > 0 ? true : false;
-  confirmations_client_->SetConfirmationsIsReady(is_ready);
-}
-
-std::vector<UnblindedToken> ConfirmationsImpl::GetUnblindedTokens() const {
-  return unblinded_tokens_;
-}
-
-void ConfirmationsImpl::SetUnblindedTokens(
-    const std::vector<UnblindedToken>& tokens) {
-  unblinded_tokens_ = tokens;
-  SaveState();
-}
-
-std::vector<UnblindedToken> ConfirmationsImpl::GetUnblindedPaymentTokens()
-    const {
-  return unblinded_payment_tokens_;
-}
-
-void ConfirmationsImpl::SetUnblindedPaymentTokens(
-    const std::vector<UnblindedToken>& tokens) {
-  unblinded_payment_tokens_ = tokens;
-  SaveState();
-}
-
+// TODO(Terry Mancey): Refactor for unit tests
 std::string ConfirmationsImpl::ToJSON() {
   base::DictionaryValue dictionary;
 
@@ -109,22 +108,14 @@ std::string ConfirmationsImpl::ToJSON() {
   dictionary.SetWithoutPathExpansion("catalog_issuers_public_keys",
       Munge(catalog_issuers_public_keys));
 
-  std::vector<std::string> unblinded_tokens;
-  for (auto& unblinded_token : unblinded_tokens_) {
-    auto unblinded_token_base64 = unblinded_token.encode_base64();
-    unblinded_tokens.push_back(unblinded_token_base64);
-  }
+  auto unblinded_tokens_base64 = unblinded_tokens_->ToBase64();
   dictionary.SetWithoutPathExpansion("unblinded_tokens",
-      Munge(unblinded_tokens));
+      Munge(unblinded_tokens_base64));
 
-  std::vector<std::string> unblinded_payment_tokens;
-  for (auto& unblinded_payment_token : unblinded_payment_tokens_) {
-    auto unblinded_payment_token_base64 =
-        unblinded_payment_token.encode_base64();
-    unblinded_payment_tokens.push_back(unblinded_payment_token_base64);
-  }
+  auto unblinded_payment_tokens_base64 =
+      unblinded_payment_tokens_->ToBase64();
   dictionary.SetWithoutPathExpansion("unblinded_payment_tokens",
-      Munge(unblinded_payment_tokens));
+      Munge(unblinded_payment_tokens_base64));
 
   std::string json;
   base::JSONWriter::Write(dictionary, &json);
@@ -132,6 +123,7 @@ std::string ConfirmationsImpl::ToJSON() {
   return json;
 }
 
+// TODO(Terry Mancey): Refactor for unit tests
 bool ConfirmationsImpl::FromJSON(const std::string& json) {
   std::unique_ptr<base::Value> value(base::JSONReader::Read(json));
   if (!value) {
@@ -172,26 +164,13 @@ bool ConfirmationsImpl::FromJSON(const std::string& json) {
     return false;
   }
   auto unblinded_tokens_base64 = Unmunge(v);
-  std::vector<UnblindedToken> unblinded_tokens;
-  for (auto& unblinded_token_base64 : unblinded_tokens_base64) {
-    auto unblinded_token =
-        UnblindedToken::decode_base64(unblinded_token_base64);
-    unblinded_tokens.push_back(unblinded_token);
-  }
-  unblinded_tokens_ = unblinded_tokens;
+  unblinded_tokens_->FromBase64(unblinded_tokens_base64);
 
   if (!(v = dictionary->FindKey("unblinded_payment_tokens"))) {
     return false;
   }
   auto unblinded_payment_tokens_base64 = Unmunge(v);
-  std::vector<UnblindedToken> unblinded_payment_tokens;
-  for (auto& unblinded_payment_token_base64 :
-      unblinded_payment_tokens_base64) {
-    auto unblinded_payment_token =
-        UnblindedToken::decode_base64(unblinded_payment_token_base64);
-    unblinded_payment_tokens.push_back(unblinded_payment_token);
-  }
-  unblinded_payment_tokens_ = unblinded_payment_tokens;
+  unblinded_payment_tokens_->FromBase64(unblinded_payment_tokens_base64);
 
   return true;
 }
@@ -203,7 +182,7 @@ void ConfirmationsImpl::SaveState() {
   auto callback = std::bind(&ConfirmationsImpl::OnStateSaved, this, _1);
   confirmations_client_->Save(_confirmations_name, json, callback);
 
-  UpdateConfirmationsIsReadyStatus();
+  NotifyAdsIfConfirmationsIsReady();
 }
 
 void ConfirmationsImpl::OnStateSaved(const Result result) {
@@ -243,10 +222,9 @@ void ConfirmationsImpl::OnStateLoaded(
 
   BLOG(INFO) << "Successfully loaded confirmations state";
 
-  UpdateConfirmationsIsReadyStatus();
+  NotifyAdsIfConfirmationsIsReady();
 
-  RefillConfirmations();
-  PayoutConfirmations();
+  CheckReady();
 }
 
 void ConfirmationsImpl::ResetState() {
@@ -267,19 +245,14 @@ void ConfirmationsImpl::OnStateReset(const Result result) {
 }
 
 void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
-  wallet_info_.payment_id = info->payment_id;
-  wallet_info_.signing_key = info->signing_key;
-
+  wallet_info_ = WalletInfo(*info);
   BLOG(INFO) << "SetWalletInfo:";
-  BLOG(INFO) << "  Payment Id: " << wallet_info_.payment_id;
-  BLOG(INFO) << "  Signing key: " << wallet_info_.signing_key;
+  BLOG(INFO) << "  Payment id: " << wallet_info_.payment_id;
+  BLOG(INFO) << "  Public key: " << wallet_info_.public_key;
 
   is_wallet_initialized_ = true;
 
-  if (is_catalog_issuers_initialized_ && !is_initialized_) {
-    is_initialized_ = true;
-    BLOG(INFO) << "Successfully initialized";
-  }
+  CheckReady();
 }
 
 void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
@@ -303,15 +276,22 @@ void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
 
   is_catalog_issuers_initialized_ = true;
 
-  if (is_wallet_initialized_ && !is_initialized_) {
-    is_initialized_ = true;
-    BLOG(INFO) << "Successfully initialized";
-  }
+  CheckReady();
 }
 
 std::map<std::string, std::string> ConfirmationsImpl::GetCatalogIssuers()
     const {
   return catalog_issuers_;
+}
+
+bool ConfirmationsImpl::IsValidPublicKeyForCatalogIssues(
+    const std::string& public_key) {
+  auto it = catalog_issuers_.find(public_key);
+  if (it == catalog_issuers_.end()) {
+    return false;
+  }
+
+  return true;
 }
 
 void ConfirmationsImpl::AdSustained(std::unique_ptr<NotificationInfo> info) {
@@ -323,129 +303,72 @@ void ConfirmationsImpl::AdSustained(std::unique_ptr<NotificationInfo> info) {
   BLOG(INFO) << "  advertiser: " << info->advertiser;
   BLOG(INFO) << "  uuid: " << info->uuid;
 
-  redeem_token_->Redeem(info->uuid, public_key_);
+  redeem_token_->Redeem(info->uuid);
 }
 
 void ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
   BLOG(INFO) << "OnTimer:" << std::endl
       << "  timer_id: " << std::to_string(timer_id) << std::endl
-      << "  refill_confirmations_timer_id_: "
-      << std::to_string(refill_confirmations_timer_id_) << std::endl
       << "  retry_getting_signed_tokens_timer_id_: "
       << std::to_string(retry_getting_signed_tokens_timer_id_) << std::endl
-      << "  payout_confirmations_timer_id_: "
-      << std::to_string(payout_confirmations_timer_id_);
+      << "  payout_redeemed_tokens_timer_id_: "
+      << std::to_string(payout_redeemed_tokens_timer_id_);
 
-  if (timer_id == refill_confirmations_timer_id_) {
-    RefillConfirmations();
-  } else if (timer_id == retry_getting_signed_tokens_timer_id_) {
-    RetryGettingSignedTokens();
-  } else if (timer_id == payout_confirmations_timer_id_) {
-    PayoutConfirmations();
+  if (timer_id == retry_getting_signed_tokens_timer_id_) {
+    RetryGettingRefillSignedTokens();
+  } else if (timer_id == payout_redeemed_tokens_timer_id_) {
+    PayoutRedeemedTokens();
   } else {
-    LOG(WARNING) << "Unexpected OnTimer: " << std::to_string(timer_id);
+    BLOG(WARNING) << "Unexpected OnTimer with timer_id: " << timer_id;
   }
 }
 
-void ConfirmationsImpl::StartRefillingConfirmations(
-    const uint64_t start_timer_in) {
-  StopRefillingConfirmations();
-
-  refill_confirmations_timer_id_ =
-      confirmations_client_->SetTimer(start_timer_in);
-  if (refill_confirmations_timer_id_ == 0) {
-    BLOG(ERROR)
-        << "Failed to start refilling confirmations due to an invalid timer";
-
-    return;
-  }
-
-  BLOG(INFO) << "Start refilling confirmations in " << start_timer_in
-  << " seconds";
-}
-
-void ConfirmationsImpl::RefillConfirmations() {
-  BLOG(INFO) << "Refill confirmations";
-
-  if (!is_initialized_) {
-    BLOG(INFO) << "Failed to refill confirmations as not initialized";
-    StartRefillingConfirmations(kOneMinuteInSeconds);
-    return;
-  }
-
+void ConfirmationsImpl::RefillTokensIfNecessary() {
   refill_tokens_->Refill(wallet_info_, public_key_);
 }
 
-void ConfirmationsImpl::StopRefillingConfirmations() {
-  if (!IsRefillingConfirmations()) {
-    return;
-  }
-
-  BLOG(INFO) << "Stopped refilling confirmations";
-
-  confirmations_client_->KillTimer(refill_confirmations_timer_id_);
-  refill_confirmations_timer_id_ = 0;
-}
-
-bool ConfirmationsImpl::IsRefillingConfirmations() const {
-  if (refill_confirmations_timer_id_ == 0) {
-    return false;
-  }
-
-  return true;
-}
-
-void ConfirmationsImpl::StartPayingOutConfirmations(
+void ConfirmationsImpl::StartPayingOutRedeemedTokens(
     const uint64_t start_timer_in) {
-  StopPayingOutConfirmations();
+  StopPayingOutRedeemedTokens();
 
-  payout_confirmations_timer_id_ =
+  payout_redeemed_tokens_timer_id_ =
       confirmations_client_->SetTimer(start_timer_in);
-  if (payout_confirmations_timer_id_ == 0) {
+  if (payout_redeemed_tokens_timer_id_ == 0) {
     BLOG(ERROR)
-        << "Failed to start paying out confirmations due to an invalid timer";
-
+        << "Failed to start paying out redeemed tokens due to an invalid timer";
     return;
   }
 
-  BLOG(INFO) << "Start paying out confirmations in " << start_timer_in
+  BLOG(INFO) << "Start paying out redeemed tokens in " << start_timer_in
       << " seconds";
 }
 
-void ConfirmationsImpl::PayoutConfirmations() {
-  BLOG(INFO) << "Payout confirmations";
+void ConfirmationsImpl::PayoutRedeemedTokens() {
+  payout_tokens_->Payout(wallet_info_);
+}
 
-  if (!is_initialized_) {
-    BLOG(INFO) << "Failed to payout confirmations as not initialized";
-    StartPayingOutConfirmations(kOneMinuteInSeconds);
+void ConfirmationsImpl::StopPayingOutRedeemedTokens() {
+  if (!IsPayingOutRedeemedTokens()) {
     return;
   }
 
-  payout_tokens_->Payout(wallet_info_, public_key_);
+  BLOG(INFO) << "Stopped paying out redeemed tokens";
+
+  confirmations_client_->KillTimer(payout_redeemed_tokens_timer_id_);
+  payout_redeemed_tokens_timer_id_ = 0;
 }
 
-void ConfirmationsImpl::StopPayingOutConfirmations() {
-  if (!IsPayingOutConfirmations()) {
-    return;
-  }
-
-  BLOG(INFO) << "Stopped paying out confirmations";
-
-  confirmations_client_->KillTimer(payout_confirmations_timer_id_);
-  payout_confirmations_timer_id_ = 0;
-}
-
-bool ConfirmationsImpl::IsPayingOutConfirmations() const {
-  if (payout_confirmations_timer_id_ == 0) {
+bool ConfirmationsImpl::IsPayingOutRedeemedTokens() const {
+  if (payout_redeemed_tokens_timer_id_ == 0) {
     return false;
   }
 
   return true;
 }
 
-void ConfirmationsImpl::StartRetryGettingSignedTokens(
+void ConfirmationsImpl::StartRetryingToGetRefillSignedTokens(
     const uint64_t start_timer_in) {
-  StopRetryGettingSignedTokens();
+  StopRetryingToGetRefillSignedTokens();
 
   retry_getting_signed_tokens_timer_id_ =
       confirmations_client_->SetTimer(start_timer_in);
@@ -460,20 +383,12 @@ void ConfirmationsImpl::StartRetryGettingSignedTokens(
       << " seconds";
 }
 
-void ConfirmationsImpl::RetryGettingSignedTokens() {
-  BLOG(INFO) << "Retry getting signed tokens";
-
-  if (!is_initialized_) {
-    BLOG(INFO) << "Failed to retry getting signed tokens as not initialized";
-    StartRetryGettingSignedTokens(kOneMinuteInSeconds);
-    return;
-  }
-
+void ConfirmationsImpl::RetryGettingRefillSignedTokens() {
   refill_tokens_->RetryGettingSignedTokens();
 }
 
-void ConfirmationsImpl::StopRetryGettingSignedTokens() {
-  if (!IsRetryingToGetSignedTokens()) {
+void ConfirmationsImpl::StopRetryingToGetRefillSignedTokens() {
+  if (!IsRetryingToGetRefillSignedTokens()) {
     return;
   }
 
@@ -483,7 +398,7 @@ void ConfirmationsImpl::StopRetryGettingSignedTokens() {
   retry_getting_signed_tokens_timer_id_ = 0;
 }
 
-bool ConfirmationsImpl::IsRetryingToGetSignedTokens() const {
+bool ConfirmationsImpl::IsRetryingToGetRefillSignedTokens() const {
   if (retry_getting_signed_tokens_timer_id_ == 0) {
     return false;
   }

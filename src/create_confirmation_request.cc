@@ -1,0 +1,102 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "create_confirmation_request.h"
+#include "ads_serve_helper.h"
+#include "security_helper.h"
+
+#include "base/json/json_writer.h"
+#include "base/values.h"
+
+namespace confirmations {
+
+CreateConfirmationRequest::CreateConfirmationRequest() = default;
+
+CreateConfirmationRequest::~CreateConfirmationRequest() = default;
+
+// POST /v1/confirmation/{confirmation_id}/{credential}
+
+std::string CreateConfirmationRequest::BuildUrl(
+    const std::string& confirmation_id,
+    const std::string& credential) const {
+  std::string endpoint = "/v1/confirmation/";
+  endpoint += confirmation_id;
+  endpoint += "/";
+  endpoint += credential;
+
+  return helper::AdsServe::GetURL().append(endpoint);
+}
+
+URLRequestMethod CreateConfirmationRequest::GetMethod() const {
+  return POST;
+}
+
+std::string CreateConfirmationRequest::BuildBody(
+    const std::string& payload) const {
+  return payload;
+}
+
+std::vector<std::string> CreateConfirmationRequest::BuildHeaders() const {
+  std::string accept_header = "accept: ";
+  accept_header += GetAcceptHeaderValue();
+
+  return {
+    accept_header
+  };
+}
+
+std::string CreateConfirmationRequest::GetAcceptHeaderValue() const {
+  return "application/json";
+}
+
+std::string CreateConfirmationRequest::GetContentType() const {
+  return "application/json";
+}
+
+std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
+    const std::string& creative_instance_id,
+    const BlindedToken& token) const {
+  base::Value payload(base::Value::Type::DICTIONARY);
+
+  payload.SetKey("creativeInstanceId", base::Value(creative_instance_id));
+
+  payload.SetKey("payload", base::Value(base::Value::Type::DICTIONARY));
+
+  auto token_base64 = token.encode_base64();
+  payload.SetKey("blindedPaymentToken", base::Value(token_base64));
+
+  payload.SetKey("type", base::Value("landed"));
+
+  std::string json;
+  base::JSONWriter::Write(payload, &json);
+
+  return json;
+}
+
+std::string CreateConfirmationRequest::CreateCredential(
+    const UnblindedToken& token,
+    const std::string& payload) const {
+  base::Value dictionary(base::Value::Type::DICTIONARY);
+
+  dictionary.SetKey("payload", base::Value(payload));
+
+  auto verification_key = token.derive_verification_key();
+  auto signed_verification_key = verification_key.sign(payload);
+  auto signed_verification_key_base64 = signed_verification_key.encode_base64();
+  dictionary.SetKey("signature", base::Value(signed_verification_key_base64));
+
+  auto preimage = token.preimage();
+  auto preimage_base64 = preimage.encode_base64();
+  dictionary.SetKey("t", base::Value(preimage_base64));
+
+  std::string json;
+  base::JSONWriter::Write(dictionary, &json);
+
+  std::vector<uint8_t> credential(json.begin(), json.end());
+  std::string credential_base64 = helper::Security::GetBase64(credential);
+
+  return credential_base64;
+}
+
+}  // namespace confirmations

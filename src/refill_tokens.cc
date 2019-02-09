@@ -6,13 +6,12 @@
 #include "static_values.h"
 #include "logging.h"
 #include "ads_serve_helper.h"
-#include "string_helper.h"
 #include "security_helper.h"
+#include "request_signed_tokens_request.h"
+#include "get_signed_tokens_request.h"
 
 #include "base/rand_util.h"
 #include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
-#include "base/values.h"
 
 using namespace std::placeholders;
 
@@ -20,10 +19,11 @@ namespace confirmations {
 
 RefillTokens::RefillTokens(
     ConfirmationsImpl* confirmations,
-    ConfirmationsClient* confirmations_client) :
-    public_key_(nullptr),
+    ConfirmationsClient* confirmations_client,
+    UnblindedTokens* unblinded_tokens) :
     confirmations_(confirmations),
-    confirmations_client_(confirmations_client) {
+    confirmations_client_(confirmations_client),
+    unblinded_tokens_(unblinded_tokens) {
   BLOG(INFO) << "Initializing refill tokens";
 }
 
@@ -36,10 +36,9 @@ void RefillTokens::Refill(
     const std::string& public_key) {
   BLOG(INFO) << "Refill";
 
-  payment_id_ = wallet_info.payment_id;
-  secret_key_ = helper::String::decode_hex(wallet_info.signing_key);
+  wallet_info_ = WalletInfo(wallet_info);
 
-  public_key_ = PublicKey::decode_base64(public_key);
+  public_key_ = public_key;
 
   RequestSignedTokens();
 }
@@ -55,86 +54,44 @@ void RefillTokens::RetryGettingSignedTokens() {
 void RefillTokens::RequestSignedTokens() {
   BLOG(INFO) << "RequestSignedTokens";
 
-  auto unblinded_tokens = confirmations_->GetUnblindedTokens();
-  auto unblinded_tokens_count = unblinded_tokens.size();
-
-  if (unblinded_tokens_count >= kMinimumUnblindedTokens) {
+  if (!ShouldRefillTokens()) {
     BLOG(INFO) << "No need to refill tokens as we already have "
-        << unblinded_tokens_count << " unblinded tokens which is above the"
+        << unblinded_tokens_->Count() << " unblinded tokens which is above the"
         << " minimum threshold of " << kMinimumUnblindedTokens;
     return;
   }
 
-  // Generate tokens
-  auto refill_amount = kMaximumUnblindedTokens - unblinded_tokens_count;
-  tokens_ = helper::Security::GenerateTokens(refill_amount);
-  BLOG(INFO) << "Generated " << tokens_.size() << " tokens";
-
-  // Blind tokens
-  blinded_tokens_ = helper::Security::BlindTokens(tokens_);
-  BLOG(INFO) << "Blinded " << blinded_tokens_.size() << " tokens";
-
-  // Create request body
-  std::string body = "";
-
-  body.append("{\"blindedTokens\":");
-  body.append("[");
-
-  for (size_t i = 0; i < blinded_tokens_.size(); i++) {
-    if (i > 0) {
-      body.append(",");
-    }
-
-    body.append("\"");
-    auto blinded_token = blinded_tokens_.at(i).encode_base64();
-    body.append(blinded_token);
-    body.append("\"");
-  }
-
-  body.append("]");
-  body.append("}");
-
-  // Create request headers
-  std::vector<std::string> headers;
-
-  auto body_sha256 = helper::Security::GetSHA256(body);
-  auto body_sha256_base64 = helper::Security::GetBase64(body_sha256);
-  auto digest_header_value = std::string("SHA-256=").append(body_sha256_base64);
-  auto digest_header = std::string("digest: ").append(digest_header_value);
-  headers.push_back(digest_header);
-
-  auto signature_header_value = helper::Security::Sign(
-      {"digest"}, {digest_header_value}, 1, {"primary"}, secret_key_);
-  auto signature_header = std::string("signature: ").append(
-      signature_header_value);
-  headers.push_back(signature_header);
-
-  auto accept_header = std::string("accept: ").append("application/json");
-  headers.push_back(accept_header);
-
-  // Create request content type
-  std::string content_type = "application/json";
-
-  // POST /v1/confirmation/token/{payment_id}
   BLOG(INFO) << "POST /v1/confirmation/token/{payment_id}";
+  RequestSignedTokensRequest request;
 
-  auto endpoint = std::string("/v1/confirmation/token/").append(payment_id_);
-  auto ads_serve_url = helper::AdsServe::GetURL().append(endpoint);
+  auto refill_amount = CalculateAmountOfTokensToRefill();
+  GenerateAndBlindTokens(refill_amount);
 
   BLOG(INFO) << "URL Request:";
-  BLOG(INFO) << "  URL: " << ads_serve_url;
+
+  auto url = request.BuildUrl(wallet_info_);
+  BLOG(INFO) << "  URL: " << url;
+
+  auto method = request.GetMethod();
+
+  auto body = request.BuildBody(blinded_tokens_);
+  BLOG(INFO) << "  Body: " << body;
+
+  auto headers = request.BuildHeaders(body, wallet_info_);
+
   BLOG(INFO) << "  Headers:";
   for (const auto& header : headers) {
     BLOG(INFO) << "    " << header;
   }
-  BLOG(INFO) << "  Body: " << body;
+
+  auto content_type = request.GetContentType();
   BLOG(INFO) << "  Content_type: " << content_type;
 
   auto callback = std::bind(&RefillTokens::OnRequestSignedTokens,
-      this, ads_serve_url, _1, _2, _3);
+      this, url, _1, _2, _3);
 
-  confirmations_client_->URLRequest(ads_serve_url, headers, body, content_type,
-      URLRequestMethod::POST, callback);
+  confirmations_client_->URLRequest(url, headers, body, content_type, method,
+      callback);
 }
 
 void RefillTokens::OnRequestSignedTokens(
@@ -154,37 +111,32 @@ void RefillTokens::OnRequestSignedTokens(
   }
 
   if (response_status_code != 201) {
-    BLOG(ERROR) << "Failed to receive blinded tokens";
+    BLOG(ERROR) << "Failed to get blinded tokens";
     OnRefill(FAILED);
     return;
   }
 
   // Parse JSON response
-  std::unique_ptr<base::Value> value(base::JSONReader::Read(response));
-  base::DictionaryValue* dictionary;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(ERROR) << "Invalid response";
+  std::unique_ptr<base::DictionaryValue> dictionary =
+      base::DictionaryValue::From(base::JSONReader::Read(response));
+
+  if (!dictionary) {
+    BLOG(ERROR) << "Failed to parse response: " << response;
     OnRefill(FAILED);
     return;
   }
 
-  base::Value *v;
-
   // Get nonce
-  if (!(v = dictionary->FindKey("nonce"))) {
+  auto* nonce_value = dictionary->FindKey("nonce");
+  if (!nonce_value) {
     BLOG(ERROR) << "Response missing nonce";
     OnRefill(FAILED);
     return;
   }
 
-  auto nonce = v->GetString();
+  nonce_ = nonce_value->GetString();
 
-  // GET /v1/confirmation/token/{payment_id}?nonce={nonce}
-  auto endpoint = std::string("/v1/confirmation/token/").append(payment_id_)
-      .append("?nonce=").append(nonce);
-  last_fetch_tokens_ads_serve_url_ =
-      helper::AdsServe::GetURL().append(endpoint);
-
+  // Get signed tokens
   GetSignedTokens();
 }
 
@@ -192,15 +144,19 @@ void RefillTokens::GetSignedTokens() {
   BLOG(INFO) << "GetSignedTokens";
 
   BLOG(INFO) << "GET /v1/confirmation/token/{payment_id}?nonce={nonce}";
+  GetSignedTokensRequest request;
 
   BLOG(INFO) << "URL Request:";
-  BLOG(INFO) << "  URL: " << last_fetch_tokens_ads_serve_url_;
 
-  auto callback = std::bind(&RefillTokens::OnGetSignedTokens, this,
-      last_fetch_tokens_ads_serve_url_, _1, _2, _3);
+  auto url = request.BuildUrl(wallet_info_, nonce_);
+  BLOG(INFO) << "  URL: " << url;
 
-  confirmations_client_->URLRequest(last_fetch_tokens_ads_serve_url_, {}, "",
-      "", URLRequestMethod::GET, callback);
+  auto method = request.GetMethod();
+
+  auto callback = std::bind(&RefillTokens::OnGetSignedTokens,
+      this, url, _1, _2, _3);
+
+  confirmations_client_->URLRequest(url, {}, "", "", method, callback);
 }
 
 void RefillTokens::OnGetSignedTokens(
@@ -221,106 +177,109 @@ void RefillTokens::OnGetSignedTokens(
 
   if (response_status_code != 200) {
     BLOG(ERROR) << "Failed to get signed tokens";
-    confirmations_->StartRetryGettingSignedTokens(
-        kRetryGettingSignedTokensAfterSeconds);
+
+    if (response_status_code == 202) {  // Tokens are not ready yet
+      confirmations_->StartRetryingToGetRefillSignedTokens(
+          kRetryGettingRefillSignedTokensAfterSeconds);
+    }
+
     return;
   }
 
   // Parse JSON response
-  std::unique_ptr<base::Value> value(base::JSONReader::Read(response));
-  base::DictionaryValue* dictionary;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(ERROR) << "Invalid response";
+  std::unique_ptr<base::DictionaryValue> dictionary =
+      base::DictionaryValue::From(base::JSONReader::Read(response));
+
+  if (!dictionary) {
+    BLOG(ERROR) << "Failed to parse response: " << response;
     OnRefill(FAILED);
     return;
   }
 
-  base::Value *v;
-
   // Get public key
-  if (!(v = dictionary->FindKey("publicKey"))) {
+  auto* public_key_value = dictionary->FindKey("publicKey");
+  if (!public_key_value) {
     BLOG(ERROR) << "Response missing publicKey";
     OnRefill(FAILED);
     return;
   }
 
-  auto public_key_base64 = v->GetString();
+  auto public_key_base64 = public_key_value->GetString();
 
   // Validate public key
-  auto catalog_issuers_public_key_base64 = public_key_.encode_base64();
-  if (public_key_base64 != catalog_issuers_public_key_base64) {
-    BLOG(ERROR) << "Response public_key: " << public_key_base64
-        << " does not match catalog issuers public key: "
-        << catalog_issuers_public_key_base64;
+  if (public_key_base64 != public_key_) {
+    BLOG(ERROR) << "Response public_key: " << public_key_value->GetString()
+        << " does not match catalog issuers public key: " << public_key_;
     OnRefill(FAILED);
     return;
   }
 
   // Get batch proof
-  if (!(v = dictionary->FindKey("batchProof"))) {
+  auto* batch_proof_value = dictionary->FindKey("batchProof");
+  if (!batch_proof_value) {
     BLOG(ERROR) << "Response missing batchProof";
     OnRefill(FAILED);
     return;
   }
 
-  auto batch_dleq_proof_base64 = v->GetString();
+  auto batch_proof_base64 = batch_proof_value->GetString();
+  auto batch_proof = BatchDLEQProof::decode_base64(batch_proof_base64);
 
   // Get signed tokens
-  if (!(v = dictionary->FindKey("signedTokens"))) {
+  auto* signed_tokens_value = dictionary->FindKey("signedTokens");
+  if (!signed_tokens_value) {
     BLOG(ERROR) << "Response missing signedTokens";
     OnRefill(FAILED);
     return;
   }
 
-  base::ListValue list(v->GetList());
   std::vector<SignedToken> signed_tokens;
-  for (size_t i = 0; i < list.GetSize(); i++) {
-    base::Value *signed_token_value;
-    list.Get(i, &signed_token_value);
-
-    auto signed_token_base64 = signed_token_value->GetString();
+  base::ListValue signed_token_base64_values(signed_tokens_value->GetList());
+  for (const auto& signed_token_base64_value : signed_token_base64_values) {
+    auto signed_token_base64 = signed_token_base64_value.GetString();
     auto signed_token = SignedToken::decode_base64(signed_token_base64);
     signed_tokens.push_back(signed_token);
   }
 
-  auto batch_dleq_proof =
-      BatchDLEQProof::decode_base64(batch_dleq_proof_base64);
-  auto unblinded_tokens = batch_dleq_proof.verify_and_unblind(tokens_,
-      blinded_tokens_, signed_tokens, public_key_);
+  // Verify and unblind tokens
+  auto unblinded_tokens = batch_proof.verify_and_unblind(tokens_,
+      blinded_tokens_, signed_tokens, PublicKey::decode_base64(public_key_));
 
   if (unblinded_tokens.size() == 0) {
-    BLOG(ERROR) << "Failed to unblinded tokens";
+    BLOG(ERROR) << "Failed to verify and unblind tokens";
 
-    BLOG(ERROR) << "  Batch proof: " << batch_dleq_proof_base64;
+    BLOG(ERROR) << "  Batch proof: " << batch_proof_base64;
 
-    BLOG(ERROR) << "  Tokens:";
-    for (auto& token : tokens_) {
+    BLOG(ERROR) << "  Tokens (" << tokens_.size() << "):";
+    for (const auto& token : tokens_) {
       auto token_base64 = token.encode_base64();
       BLOG(ERROR) << "    " << token_base64;
     }
 
-    BLOG(ERROR) << "  Blinded tokens:";
-    for (auto& blinded_token : blinded_tokens_) {
+    BLOG(ERROR) << "  Blinded tokens (" << blinded_tokens_.size() << "):";
+    for (const auto& blinded_token : blinded_tokens_) {
       auto blinded_token_base64 = blinded_token.encode_base64();
       BLOG(ERROR) << "    " << blinded_token_base64;
     }
 
-    BLOG(ERROR) << "  Signed tokens:";
-    for (auto& signed_token : signed_tokens) {
+    BLOG(ERROR) << "  Signed tokens (" << signed_tokens.size() << "):";
+    for (const auto& signed_token : signed_tokens) {
       auto signed_token_base64 = signed_token.encode_base64();
       BLOG(ERROR) << "    " << signed_token_base64;
     }
 
-    auto public_key_base64 = public_key_.encode_base64();
-    BLOG(ERROR) << "  Public key: " << public_key_base64;
+    BLOG(ERROR) << "  Public key: " << public_key_;
 
     OnRefill(FAILED);
     return;
   }
 
-  BLOG(INFO) << "Unblinded " << unblinded_tokens.size() << " tokens";
+  // Add tokens
+  unblinded_tokens_->AddTokens(unblinded_tokens);
 
-  AppendUnblindedTokens(unblinded_tokens);
+  BLOG(INFO) << "Added " << unblinded_tokens.size()
+      << " unblinded tokens, you now have " << unblinded_tokens_->Count()
+      << " unblinded tokens";
 
   OnRefill(SUCCESS);
 }
@@ -330,31 +289,32 @@ void RefillTokens::OnRefill(const Result result) {
     BLOG(ERROR) << "Failed to refill tokens";
   } else {
     confirmations_->SaveState();
+
     BLOG(INFO) << "Successfully refilled tokens";
   }
 
   blinded_tokens_.clear();
   tokens_.clear();
-
-  auto start_timer_in = kRefillTokensAfterSeconds;
-  auto rand_delay = base::RandInt(0, start_timer_in / 10);
-  start_timer_in += rand_delay;
-
-  confirmations_->StartRefillingConfirmations(start_timer_in);
 }
 
-void RefillTokens::AppendUnblindedTokens(
-    const std::vector<UnblindedToken>& tokens) {
-  auto unblinded_tokens = confirmations_->GetUnblindedTokens();
+bool RefillTokens::ShouldRefillTokens() {
+  if (unblinded_tokens_->Count() >= kMinimumUnblindedTokens) {
+    return false;
+  }
 
-  unblinded_tokens.insert(unblinded_tokens.end(),
-      tokens.begin(), tokens.end());
+  return true;
+}
 
-  BLOG(INFO) << "Added " << tokens.size()
-      << " unblinded tokens, you now have " << unblinded_tokens.size()
-      << " unblinded tokens";
+int RefillTokens::CalculateAmountOfTokensToRefill() {
+  return kMaximumUnblindedTokens - unblinded_tokens_->Count();
+}
 
-  confirmations_->SetUnblindedTokens(unblinded_tokens);
+void RefillTokens::GenerateAndBlindTokens(const int count) {
+  tokens_ = helper::Security::GenerateTokens(count);
+  BLOG(INFO) << "Generated " << tokens_.size() << " tokens";
+
+  blinded_tokens_ = helper::Security::BlindTokens(tokens_);
+  BLOG(INFO) << "Blinded " << blinded_tokens_.size() << " tokens";
 }
 
 }  // namespace confirmations

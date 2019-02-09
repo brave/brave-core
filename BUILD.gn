@@ -52,7 +52,7 @@ source_set("confirmations") {
 
   output_name = "bat_native_confirmations"
 
-  if (is_mac || is_ios ) { 
+  if (is_mac || is_ios) { 
     libs = [
       "Security.framework"
     ]
@@ -65,8 +65,14 @@ source_set("confirmations") {
     "src/bat/confirmations/wallet_info.cc",
     "src/confirmations.cc",
     "src/refill_tokens.cc",
+    "src/request_signed_tokens_request.cc",
+    "src/get_signed_tokens_request.cc",
     "src/redeem_token.cc",
+    "src/create_confirmation_request.cc",
+    "src/fetch_payment_token_request.cc",
     "src/payout_tokens.cc",
+    "src/redeem_payment_tokens_request.cc",
+    "src/unblinded_tokens.cc",
     "src/ads_serve_helper.cc",
     "src/string_helper.cc",
     "src/security_helper.cc",
@@ -75,7 +81,6 @@ source_set("confirmations") {
 
   deps = [
     "//base",
-    "//net",
     "//third_party/boringssl",
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
   ]

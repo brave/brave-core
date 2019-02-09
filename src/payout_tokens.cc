@@ -5,12 +5,9 @@
 #include "payout_tokens.h"
 #include "static_values.h"
 #include "logging.h"
-#include "ads_serve_helper.h"
+#include "redeem_payment_tokens_request.h"
 
 #include "base/rand_util.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
-#include "base/values.h"
 
 using namespace std::placeholders;
 
@@ -18,10 +15,11 @@ namespace confirmations {
 
 PayoutTokens::PayoutTokens(
     ConfirmationsImpl* confirmations,
-    ConfirmationsClient* confirmations_client) :
-    public_key_(nullptr),
+    ConfirmationsClient* confirmations_client,
+    UnblindedTokens* unblinded_payment_tokens) :
     confirmations_(confirmations),
-    confirmations_client_(confirmations_client) {
+    confirmations_client_(confirmations_client),
+    unblinded_payment_tokens_(unblinded_payment_tokens) {
   BLOG(INFO) << "Initializing payout tokens";
 }
 
@@ -29,12 +27,10 @@ PayoutTokens::~PayoutTokens() {
   BLOG(INFO) << "Deinitializing payout tokens";
 }
 
-void PayoutTokens::Payout(
-    const WalletInfo& wallet_info,
-    const std::string& public_key) {
-  payment_id_ = wallet_info.payment_id;
+void PayoutTokens::Payout(const WalletInfo& wallet_info) {
+  BLOG(INFO) << "Payout";
 
-  public_key_ = PublicKey::decode_base64(public_key);
+  wallet_info_ = WalletInfo(wallet_info);
 
   RedeemPaymentTokens();
 }
@@ -44,92 +40,43 @@ void PayoutTokens::Payout(
 void PayoutTokens::RedeemPaymentTokens() {
   BLOG(INFO) << "RedeemPaymentTokens";
 
-  auto unblinded_payment_tokens = confirmations_->GetUnblindedPaymentTokens();
-  if (unblinded_payment_tokens.size() == 0) {
-    BLOG(ERROR) << "No unblinded payment tokens";
-
+  if (unblinded_payment_tokens_->IsEmpty()) {
+    BLOG(INFO) << "No unblinded payment tokens to redeem";
+    ScheduleNextPayout();
     return;
   }
 
-  // Create payload
-  base::DictionaryValue payload;
-  payload.SetKey("paymentId", base::Value(payment_id_));
-
-  std::string payload_json;
-  base::JSONWriter::Write(payload, &payload_json);
-
-  // Create payment credentials
-  auto payment_credentials_list = std::make_unique<base::ListValue>();
-  for (auto& unblinded_payment_token : unblinded_payment_tokens) {
-    // Create credential
-    base::DictionaryValue credential_dictionary;
-
-    auto verification_key = unblinded_payment_token.derive_verification_key();
-
-    auto verification_signature = verification_key.sign(payload_json);
-    auto verification_signature_base64 = verification_signature.encode_base64();
-    credential_dictionary.SetKey("signature",
-        base::Value(verification_signature_base64));
-
-    auto preimage = unblinded_payment_token.preimage();
-    auto preimage_base64 = preimage.encode_base64();
-    credential_dictionary.SetKey("t", base::Value(preimage_base64));
-
-    // Create payment credential
-    auto* payment_credential_dictionary = new base::DictionaryValue();
-
-    payment_credential_dictionary->SetKey("credential",
-        base::DictionaryValue(std::move(credential_dictionary)));
-
-    auto public_key_base64 = public_key_.encode_base64();
-    payment_credential_dictionary->SetKey("publicKey",
-        base::Value(public_key_base64));
-
-    payment_credentials_list->Append(
-        std::unique_ptr<base::DictionaryValue>(payment_credential_dictionary));
-  }
-
-  // Create request body
-  base::DictionaryValue body_dictionary;
-
-  body_dictionary.SetWithoutPathExpansion("paymentCredentials",
-      std::move(payment_credentials_list));
-
-  body_dictionary.SetKey("payload", base::Value(payload_json));
-
-  std::string json;
-  base::JSONWriter::Write(body_dictionary, &json);
-  std::string body = json;
-
-  // Create request headers
-  std::vector<std::string> headers;
-
-  auto accept_header = std::string("accept: ").append("application/json");
-  headers.push_back(accept_header);
-
-  // Create request content type
-  std::string content_type = "application/json";
-
-  // PUT /v1/confirmation/payment/{payment_id}
   BLOG(INFO) << "PUT /v1/confirmation/payment/{payment_id}";
+  RedeemPaymentTokensRequest request;
 
-  auto endpoint = std::string("/v1/confirmation/payment/").append(payment_id_);
-  auto ads_serve_url = helper::AdsServe::GetURL().append(endpoint);
+  auto tokens = unblinded_payment_tokens_->GetAllTokens();
+
+  auto payload = request.CreatePayload(wallet_info_);
 
   BLOG(INFO) << "URL Request:";
-  BLOG(INFO) << "  URL: " << ads_serve_url;
+
+  auto url = request.BuildUrl(wallet_info_);
+  BLOG(INFO) << "  URL: " << url;
+
+  auto method = request.GetMethod();
+
+  auto body = request.BuildBody(tokens, payload, wallet_info_);
+  BLOG(INFO) << "  Body: " << body;
+
+  auto headers = request.BuildHeaders();
   BLOG(INFO) << "  Headers:";
   for (const auto& header : headers) {
     BLOG(INFO) << "    " << header;
   }
-  BLOG(INFO) << "  Body: " << body;
+
+  auto content_type = request.GetContentType();
   BLOG(INFO) << "  Content_type: " << content_type;
 
   auto callback = std::bind(&PayoutTokens::OnRedeemPaymentTokens,
-      this, ads_serve_url, _1, _2, _3);
+      this, url, _1, _2, _3);
 
-  confirmations_client_->URLRequest(ads_serve_url, headers, body, content_type,
-      URLRequestMethod::PUT, callback);
+  confirmations_client_->URLRequest(url, headers, body, content_type, method,
+      callback);
 }
 
 void PayoutTokens::OnRedeemPaymentTokens(
@@ -149,7 +96,7 @@ void PayoutTokens::OnRedeemPaymentTokens(
   }
 
   if (response_status_code != 200) {
-    BLOG(ERROR) << "Failed to redeem payout tokens";
+    BLOG(ERROR) << "Failed to redeem payment tokens";
     OnPayout(FAILED);
     return;
   }
@@ -161,23 +108,25 @@ void PayoutTokens::OnPayout(const Result result) {
   if (result != SUCCESS) {
     BLOG(ERROR) << "Failed to payout tokens";
   } else {
-    RemoveAllUnblindedPaymentTokens();
+    unblinded_payment_tokens_->RemoveAllTokens();
+
     BLOG(INFO) << "Successfully paid out tokens";
   }
 
-  auto start_timer_in = kPayoutTokensAfterSeconds;
+  ScheduleNextPayout();
+}
+
+void PayoutTokens::ScheduleNextPayout() {
+  auto start_timer_in = CalculateTimerForNextPayout();
+  confirmations_->StartPayingOutRedeemedTokens(start_timer_in);
+}
+
+uint64_t PayoutTokens::CalculateTimerForNextPayout() {
+  auto start_timer_in = kPayoutAfterSeconds;
   auto rand_delay = base::RandInt(0, start_timer_in / 10);
   start_timer_in += rand_delay;
 
-  confirmations_->StartPayingOutConfirmations(start_timer_in);
-}
-
-void PayoutTokens::RemoveAllUnblindedPaymentTokens() {
-  BLOG(INFO) << "Removing all unblinded payment tokens";
-
-  confirmations_->SetUnblindedPaymentTokens({});
-
-  BLOG(INFO) << "Removed all unblinded payment tokens";
+  return start_timer_in;
 }
 
 }  // namespace confirmations

@@ -19,7 +19,7 @@ std::string Security::Sign(
     const std::vector<std::string>& values,
     const unsigned int size,
     const std::string& key_id,
-    const std::vector<uint8_t>& secret_key) {
+    const std::vector<uint8_t>& public_key) {
   std::string headers = "";
   std::string message = "";
 
@@ -38,7 +38,7 @@ std::string Security::Sign(
   uint64_t signed_message_size = 0;
   crypto_sign(&signed_message.front(), &signed_message_size,
       (const unsigned char*)message.c_str(), (uint64_t)message.length(),
-      &secret_key.front());
+      &public_key.front());
 
   std::vector<uint8_t> signature(crypto_sign_BYTES);
   std::copy(signed_message.begin(), signed_message.begin() +

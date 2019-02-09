@@ -8,11 +8,11 @@ namespace confirmations {
 
 WalletInfo::WalletInfo() :
     payment_id(""),
-    signing_key("") {}
+    public_key("") {}
 
 WalletInfo::WalletInfo(const WalletInfo& info) :
     payment_id(info.payment_id),
-    signing_key(info.signing_key) {}
+    public_key(info.public_key) {}
 
 WalletInfo::~WalletInfo() = default;
 

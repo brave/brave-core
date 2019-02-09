@@ -21,7 +21,7 @@ class Security {
       const std::vector<std::string>& values,
       const unsigned int size,
       const std::string& key_id,
-      const std::vector<uint8_t>& secret_key);
+      const std::vector<uint8_t>& public_key);
 
   static std::vector<Token> GenerateTokens(const unsigned int count);
 

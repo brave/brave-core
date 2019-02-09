@@ -7,7 +7,7 @@
 
 #include <string>
 #include <vector>
-#include <memory>
+#include <map>
 
 #include "confirmations_impl.h"
 #include "bat/confirmations/confirmations_client.h"
@@ -20,12 +20,14 @@ namespace confirmations {
 using namespace challenge_bypass_ristretto;
 
 class ConfirmationsImpl;
+class UnblindedTokens;
 
 class RefillTokens {
  public:
   RefillTokens(
       ConfirmationsImpl* confirmations,
-      ConfirmationsClient* confirmations_client);
+      ConfirmationsClient* confirmations_client,
+      UnblindedTokens* unblinded_tokens);
 
   ~RefillTokens();
 
@@ -34,12 +36,11 @@ class RefillTokens {
   void RetryGettingSignedTokens();
 
  private:
-  std::string payment_id_;
-  std::vector<uint8_t> secret_key_;
+  WalletInfo wallet_info_;
 
-  PublicKey public_key_;
+  std::string public_key_;
 
-  std::string last_fetch_tokens_ads_serve_url_;
+  std::string nonce_;
 
   std::vector<Token> tokens_;
   std::vector<BlindedToken> blinded_tokens_;
@@ -60,11 +61,14 @@ class RefillTokens {
 
   void OnRefill(const Result result);
 
-  void AppendUnblindedTokens(
-      const std::vector<UnblindedToken>& unblinded_tokens);
+  bool ShouldRefillTokens();
+
+  int CalculateAmountOfTokensToRefill();
+  void GenerateAndBlindTokens(const int count);
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
+  UnblindedTokens* unblinded_tokens_;  // NOT OWNED
 };
 
 }  // namespace confirmations

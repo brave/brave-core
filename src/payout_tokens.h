@@ -5,6 +5,9 @@
 #ifndef BAT_CONFIRMATIONS_PAYOUT_TOKENS_H_
 #define BAT_CONFIRMATIONS_PAYOUT_TOKENS_H_
 
+#include <string>
+#include <map>
+
 #include "confirmations_impl.h"
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/wallet_info.h"
@@ -16,21 +19,21 @@ namespace confirmations {
 using namespace challenge_bypass_ristretto;
 
 class ConfirmationsImpl;
+class UnblindedTokens;
 
 class PayoutTokens {
  public:
   PayoutTokens(
       ConfirmationsImpl* confirmations,
-      ConfirmationsClient* confirmations_client);
+      ConfirmationsClient* confirmations_client,
+      UnblindedTokens* unblinded_payment_tokens);
 
   ~PayoutTokens();
 
-  void Payout(const WalletInfo& wallet_info, const std::string& public_key);
+  void Payout(const WalletInfo& wallet_info);
 
  private:
-  std::string payment_id_;
-
-  PublicKey public_key_;
+  WalletInfo wallet_info_;
 
   void RedeemPaymentTokens();
   void OnRedeemPaymentTokens(
@@ -41,10 +44,12 @@ class PayoutTokens {
 
   void OnPayout(const Result result);
 
-  void RemoveAllUnblindedPaymentTokens();
+  void ScheduleNextPayout();
+  uint64_t CalculateTimerForNextPayout();
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
+  UnblindedTokens* unblinded_payment_tokens_;  // NOT OWNED
 };
 
 }  // namespace confirmations

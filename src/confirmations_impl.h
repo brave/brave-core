@@ -17,11 +17,13 @@
 #include "refill_tokens.h"
 #include "redeem_token.h"
 #include "payout_tokens.h"
+#include "unblinded_tokens.h"
 
 #include "base/values.h"
 
 namespace confirmations {
 
+class UnblindedTokens;
 class RefillTokens;
 class RedeemToken;
 class PayoutTokens;
@@ -31,40 +33,37 @@ class ConfirmationsImpl : public Confirmations {
   explicit ConfirmationsImpl(ConfirmationsClient* confirmations_client);
   ~ConfirmationsImpl() override;
 
-  void UpdateConfirmationsIsReadyStatus();
-
   // Wallet
   void SetWalletInfo(std::unique_ptr<WalletInfo> info) override;
 
   // Catalog issuers
   void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) override;
   std::map<std::string, std::string> GetCatalogIssuers() const;
+  bool IsValidPublicKeyForCatalogIssues(const std::string& public_key);
 
   // Scheduled events
   void OnTimer(const uint32_t timer_id) override;
 
   // Refill tokens
-  void StartRefillingConfirmations(const uint64_t start_timer_in);
-  void StartRetryGettingSignedTokens(const uint64_t start_timer_in);
-  std::vector<UnblindedToken> GetUnblindedTokens() const;
-  void SetUnblindedTokens(const std::vector<UnblindedToken>& tokens);
+  void RefillTokensIfNecessary();
+  void StartRetryingToGetRefillSignedTokens(const uint64_t start_timer_in);
 
-  // Redeem token
+  // Redeem unblinded tokens
   void AdSustained(std::unique_ptr<NotificationInfo> info) override;
-  std::vector<UnblindedToken> GetUnblindedPaymentTokens() const;
-  void SetUnblindedPaymentTokens(const std::vector<UnblindedToken>& tokens);
 
-  // Payout tokens
-  void StartPayingOutConfirmations(const uint64_t start_timer_in);
+  // Payout redeemed tokens
+  void StartPayingOutRedeemedTokens(const uint64_t start_timer_in);
 
   // State
   void SaveState();
 
  private:
   bool is_initialized_;
+  void CheckReady();
 
   // Wallet
   bool is_wallet_initialized_;
+
   WalletInfo wallet_info_;
   std::string public_key_;
 
@@ -72,28 +71,27 @@ class ConfirmationsImpl : public Confirmations {
   bool is_catalog_issuers_initialized_;
   std::map<std::string, std::string> catalog_issuers_;
 
+  // Unblinded tokens
+  std::unique_ptr<UnblindedTokens> unblinded_tokens_;
+  void NotifyAdsIfConfirmationsIsReady();
+
+  std::unique_ptr<UnblindedTokens> unblinded_payment_tokens_;
+
   // Refill tokens
-  uint32_t refill_confirmations_timer_id_;
-  void RefillConfirmations();
-  void StopRefillingConfirmations();
-  bool IsRefillingConfirmations() const;
+  uint32_t retry_getting_signed_tokens_timer_id_;
+  void RetryGettingRefillSignedTokens();
+  void StopRetryingToGetRefillSignedTokens();
+  bool IsRetryingToGetRefillSignedTokens() const;
   std::unique_ptr<RefillTokens> refill_tokens_;
 
-  uint32_t retry_getting_signed_tokens_timer_id_;
-  void RetryGettingSignedTokens();
-  void StopRetryGettingSignedTokens();
-  bool IsRetryingToGetSignedTokens() const;
-  std::vector<UnblindedToken> unblinded_tokens_;
-
-  // Redeem token
+  // Redeem unblinded tokens
   std::unique_ptr<RedeemToken> redeem_token_;
-  std::vector<UnblindedToken> unblinded_payment_tokens_;
 
-  // Payout tokens
-  uint32_t payout_confirmations_timer_id_;
-  void PayoutConfirmations();
-  void StopPayingOutConfirmations();
-  bool IsPayingOutConfirmations() const;
+  // Payout redeemed tokens
+  uint32_t payout_redeemed_tokens_timer_id_;
+  void PayoutRedeemedTokens();
+  void StopPayingOutRedeemedTokens();
+  bool IsPayingOutRedeemedTokens() const;
   std::unique_ptr<PayoutTokens> payout_tokens_;
 
   // State

@@ -17,7 +17,7 @@ struct CONFIRMATIONS_EXPORT WalletInfo {
   ~WalletInfo();
 
   std::string payment_id;
-  std::string signing_key;
+  std::string public_key;
 };
 
 }  // namespace confirmations

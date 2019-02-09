@@ -58,8 +58,11 @@ class ConfirmationsTest : public ::testing::Test {
   }
 };
 
-TEST_F(ConfirmationsTest, DummyTest) {
-  EXPECT_TRUE(true);
+TEST_F(ConfirmationsTest, RefillTest) {
+  confirmations::MockConfirmationsClient confirmations_client;
+
+  EXPECT_CALL(confirmations_client, Foobar());
+  EXPECT_TRUE(false);
 }
 
 }  // namespace bat_confirmations
