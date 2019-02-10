@@ -1097,7 +1097,7 @@ const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
   std::vector<uint8_t> secretKey = {};
   braveledger_bat_helper::getPublicKeyFromSeed(seed, publicKey, secretKey);
 
-  wallet_info.signing_key = braveledger_bat_helper::uint8ToHex(secretKey);
+  wallet_info.public_key = braveledger_bat_helper::uint8ToHex(secretKey);
 
   return wallet_info;
 }
