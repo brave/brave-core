@@ -8,6 +8,8 @@
 
 // npm run test -- brave_unit_tests --filter=BatPublishersTest.*
 
+namespace braveledger_bat_publishers {
+
 class BatPublishersTest : public testing::Test {
 };
 
@@ -23,4 +25,6 @@ TEST_F(BatPublishersTest, calcScoreConsts) {
   ASSERT_EQ(publishers->a4_, 28000);
   ASSERT_EQ(publishers->b_, 1000);
   ASSERT_EQ(publishers->b2_, 1000000);
+}
+
 }
