@@ -6,6 +6,7 @@
 
 #include "base/values.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/common/network_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/common/url_pattern.h"
@@ -27,7 +28,9 @@ int OnBeforeStartTransaction_ReferralsWork(
           *ctx->referral_headers_list, &request_headers_dict, request->url()))
     return net::OK;
   for (const auto& it : request_headers_dict->DictItems()) {
-    headers->SetHeader(it.first, it.second.GetString());
+    if (it.first == kBravePartnerHeader) {
+      headers->SetHeader(it.first, it.second.GetString());
+    }
   }
   return net::OK;
 }
