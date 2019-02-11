@@ -30,7 +30,7 @@ class UnblindedTokens {
   base::Value GetTokensAsList();
 
   void SetTokens(const std::vector<UnblindedToken>& tokens);
-  void SetTokensFromList(const base::ListValue& list);
+  void SetTokensFromList(const base::Value& list);
 
   void AddTokens(const std::vector<UnblindedToken>& tokens);
 

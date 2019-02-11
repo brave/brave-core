@@ -41,10 +41,12 @@ void UnblindedTokens::SetTokens(const std::vector<UnblindedToken>& tokens) {
   confirmations_->SaveState();
 }
 
-void UnblindedTokens::SetTokensFromList(const base::ListValue& list) {
+void UnblindedTokens::SetTokensFromList(const base::Value& list) {
+  base::ListValue list_values(list.GetList());
+
   std::vector<UnblindedToken> unblinded_tokens;
-  for (const auto& token_value : list) {
-    auto token_base64 = token_value.GetString();
+  for (const auto& value : list_values) {
+    auto token_base64 = value.GetString();
     auto token = UnblindedToken::decode_base64(token_base64);
     unblinded_tokens.push_back(token);
   }
@@ -53,8 +55,13 @@ void UnblindedTokens::SetTokensFromList(const base::ListValue& list) {
 }
 
 void UnblindedTokens::AddTokens(const std::vector<UnblindedToken>& tokens) {
-  unblinded_tokens_.insert(unblinded_tokens_.end(), tokens.begin(),
-      tokens.end());
+  for (const auto& token : tokens) {
+    if (TokenExists(token)) {
+      continue;
+    }
+
+    unblinded_tokens_.push_back(token);
+  }
 
   confirmations_->SaveState();
 }

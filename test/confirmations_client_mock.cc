@@ -9,29 +9,54 @@ namespace confirmations {
 MockLogStreamImpl::MockLogStreamImpl(
     const char* file,
     const int line,
-    const LogLevel log_level) {
+    const ledger::LogLevel log_level) {
   std::string level;
 
   switch (log_level) {
-    case LogLevel::LOG_ERROR: {
+    case ledger::LogLevel::LOG_ERROR: {
       level = "ERROR";
       break;
     }
-    case LogLevel::LOG_WARNING: {
+    case ledger::LogLevel::LOG_WARNING: {
       level = "WARNING";
       break;
     }
-    case LogLevel::LOG_INFO: {
+    case ledger::LogLevel::LOG_INFO: {
       level = "INFO";
+      break;
+    }
+    case ledger::LogLevel::LOG_DEBUG: {
+      level = "DEBUG";
+      break;
+    }
+    case ledger::LogLevel::LOG_REQUEST: {
+      level = "REQUEST";
+      break;
+    }
+    case ledger::LogLevel::LOG_RESPONSE: {
+      level = "RESPONSE";
       break;
     }
   }
 
-  log_message_ = level + ": in " + file + " on line "
-    + std::to_string(line) + ": ";
+  log_message_ = level + ": in " + std::string(file) + " on line "
+      + std::to_string(line) + ": ";
 }
 
 std::ostream& MockLogStreamImpl::stream() {
+  std::cout << std::endl << log_message_;
+  return std::cout;
+}
+
+MockVerboseLogStreamImpl::MockVerboseLogStreamImpl(
+    const char* file,
+    int line,
+    int vlog_level) {
+  log_message_ = "VLOG: in " + std::string(file) + " on line "
+      + std::to_string(line) + ": ";
+}
+
+std::ostream& MockVerboseLogStreamImpl::stream() {
   std::cout << std::endl << log_message_;
   return std::cout;
 }
@@ -40,11 +65,18 @@ MockConfirmationsClient::MockConfirmationsClient() = default;
 
 MockConfirmationsClient::~MockConfirmationsClient() = default;
 
-std::unique_ptr<LogStream> MockConfirmationsClient::Log(
+std::unique_ptr<ledger::LogStream> MockConfirmationsClient::Log(
     const char* file,
-    const int line,
-    const LogLevel log_level) const {
+    int line,
+    const ledger::LogLevel log_level) const {
   return std::make_unique<MockLogStreamImpl>(file, line, log_level);
+}
+
+std::unique_ptr<ledger::LogStream> MockConfirmationsClient::VerboseLog(
+    const char* file,
+    int line,
+    int vlog_level) const {
+  return std::make_unique<MockVerboseLogStreamImpl>(file, line, vlog_level);
 }
 
 }  // namespace confirmations
