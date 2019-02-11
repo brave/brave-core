@@ -21,7 +21,8 @@ const char kTestReferralHeaders[] = R"(
          "barrons.com"
       ],
       "headers": {
-         "X-Brave-Partner":"dowjones"
+         "X-Brave-Partner":"dowjones",
+         "X-Invalid": "test"
       },
       "cookieNames": [
       ],
@@ -88,6 +89,10 @@ TEST_F(BraveReferralsNetworkDelegateHelperTest, ReplaceHeadersForMatchingDomain)
   std::string partner_header;
   headers.GetHeader("X-Brave-Partner", &partner_header);
   EXPECT_EQ(partner_header, "dowjones");
+
+  std::string invalid_partner_header;
+  EXPECT_EQ(headers.GetHeader("X-Invalid", &invalid_partner_header), false);
+  EXPECT_EQ(invalid_partner_header, "");
 
   EXPECT_EQ(ret, net::OK);
 }
