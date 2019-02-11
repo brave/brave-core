@@ -50,9 +50,11 @@ int OnBeforeURLRequest_StaticRedirectWork(
     URLPattern(URLPattern::SCHEME_HTTPS, "https://ledger.mercury.basicattentiontoken.org/*"),
     URLPattern(URLPattern::SCHEME_HTTPS, "https://balance.mercury.basicattentiontoken.org/*"),
     URLPattern(URLPattern::SCHEME_HTTPS, "https://publishers.basicattentiontoken.org/*"),
+    URLPattern(URLPattern::SCHEME_HTTPS, "https://publishers-distro.basicattentiontoken.org/*"),
     URLPattern(URLPattern::SCHEME_HTTPS, "https://ledger-staging.mercury.basicattentiontoken.org/*"),
     URLPattern(URLPattern::SCHEME_HTTPS, "https://balance-staging.mercury.basicattentiontoken.org/*"),
     URLPattern(URLPattern::SCHEME_HTTPS, "https://publishers-staging.basicattentiontoken.org/*"),
+    URLPattern(URLPattern::SCHEME_HTTPS, "https://publishers-staging-distro.basicattentiontoken.org/*"),
 
     // Safe browsing
     URLPattern(URLPattern::SCHEME_HTTPS, "https://safebrowsing.brave.com/v4/*"),
