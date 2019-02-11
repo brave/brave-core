@@ -1283,3 +1283,19 @@ TEST_F(BraveBookmarkChangeProcessorTest, IgnoreRapidCreateDelete) {
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(0);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 }
+
+TEST_F(BraveBookmarkChangeProcessorTest, IgnoreMetadataSet) {
+  change_processor()->Start();
+
+  const auto* node_a = model()->AddURL(model()->other_node(), 0,
+                           base::ASCIIToUTF16("A.com - title"),
+                           GURL("https://a.com/"));
+
+  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
+  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+
+  model()->SetNodeMetaInfo(node_a, "last_visited", "2019");
+  // Not interested in metadata changes, expecting no calls
+  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(0);
+  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+}

@@ -358,7 +358,6 @@ void BookmarkChangeProcessor::BookmarkAllUserNodesRemoved(
 
 void BookmarkChangeProcessor::BookmarkNodeChanged(BookmarkModel* model,
                                                   const BookmarkNode* node) {
-  ScopedPauseObserver pause(this);
   // clearing the sync_timestamp will put the record back in the `Unsynced` list
   model->DeleteNodeMetaInfo(node, "sync_timestamp");
   // also clear the last send time because this is a new change
@@ -371,7 +370,14 @@ void BookmarkChangeProcessor::BookmarkNodeChanged(BookmarkModel* model,
 
 void BookmarkChangeProcessor::BookmarkMetaInfoChanged(
     BookmarkModel* model, const BookmarkNode* node) {
-  BookmarkNodeChanged(model, node);
+  // Ignore metadata changes.
+  // These are:
+  // Brave managed: "object_id", "order", "sync_timestamp",
+  //      "last_send_time", "last_updated_time"
+  // Chromium managed: kBookmarkLastVisitDateOnMobileKey,
+  //      kBookmarkLastVisitDateOnDesktopKey, kBookmarkDismissedFromNTP,
+  //      submitted by private JS API
+  // Not interested in any of these.
 }
 
 void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
@@ -379,16 +385,19 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
       const BookmarkNode* new_parent, int new_index) {
   auto* node = new_parent->GetChild(new_index);
   model->DeleteNodeMetaInfo(node, "order");
+  BookmarkNodeChanged(model, node);
   // TODO(darkdh): handle old_parent == new_parent to avoid duplicate order
   // clearing. Also https://github.com/brave/sync/issues/231 blocks update to
   // another devices
   for (int i = old_index; i < old_parent->child_count(); ++i) {
     auto* shifted_node = old_parent->GetChild(i);
     model->DeleteNodeMetaInfo(shifted_node, "order");
+    BookmarkNodeChanged(model, shifted_node);
   }
   for (int i = new_index; i < new_parent->child_count(); ++i) {
     auto* shifted_node = new_parent->GetChild(i);
     model->DeleteNodeMetaInfo(shifted_node, "order");
+    BookmarkNodeChanged(model, shifted_node);
   }
 }
 
@@ -411,7 +420,6 @@ void BookmarkChangeProcessor::Reset(bool clear_meta_info) {
   bookmark_model_->BeginExtensiveChanges();
 
   if (clear_meta_info) {
-    ScopedPauseObserver pause(this);
     while (iterator.has_next()) {
       const bookmarks::BookmarkNode* node = iterator.Next();
       bookmark_model_->DeleteNodeMetaInfo(node, "object_id");
@@ -701,7 +709,6 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
   }
 
   if (record->objectId.empty()) {
-    ScopedPauseObserver pause(this);
     record->objectId = tools::GenerateObjectId();
     record->action = jslib::SyncRecord::Action::A_CREATE;
     bookmark_model_->SetNodeMetaInfo(node, "object_id", record->objectId);
@@ -814,11 +821,9 @@ void BookmarkChangeProcessor::SendUnsynced(
           unsynced_send_interval)
         continue;
 
-      {
-        ScopedPauseObserver pause(this);
-        bookmark_model_->SetNodeMetaInfo(node,
-            "last_send_time", std::to_string(base::Time::Now().ToJsTime()));
-      }
+      bookmark_model_->SetNodeMetaInfo(node,
+          "last_send_time", std::to_string(base::Time::Now().ToJsTime()));
+
       auto record = BookmarkNodeToSyncBookmark(node);
       if (record)
         records.push_back(std::move(record));
