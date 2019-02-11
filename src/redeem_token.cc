@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "redeem_token.h"
 #include "logging.h"
 #include "ads_serve_helper.h"
@@ -9,11 +11,15 @@
 #include "create_confirmation_request.h"
 #include "fetch_payment_token_request.h"
 
+#include "base/logging.h"
 #include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/values.h"
 
 using namespace std::placeholders;
+using challenge_bypass_ristretto::SignedToken;
+using challenge_bypass_ristretto::BatchDLEQProof;
+using challenge_bypass_ristretto::PublicKey;
 
 namespace confirmations {
 
@@ -34,6 +40,8 @@ RedeemToken::~RedeemToken() {
 }
 
 void RedeemToken::Redeem(const std::string& creative_instance_id) {
+  DCHECK(!creative_instance_id.empty());
+
   BLOG(INFO) << "Redeem";
 
   if (unblinded_tokens_->IsEmpty()) {
@@ -50,6 +58,8 @@ void RedeemToken::Redeem(const std::string& creative_instance_id) {
 void RedeemToken::CreateConfirmation(
     const std::string& creative_instance_id,
     const UnblindedToken& unblinded_token) {
+  DCHECK(!creative_instance_id.empty());
+
   BLOG(INFO) << "CreateConfirmation";
 
   if (!unblinded_tokens_->TokenExists(unblinded_token)) {
@@ -111,6 +121,8 @@ void RedeemToken::OnCreateConfirmation(
     const Token& payment_token,
     const BlindedToken& blinded_payment_token,
     const UnblindedToken& unblinded_token) {
+  DCHECK(!confirmation_id.empty());
+
   BLOG(INFO) << "OnCreateConfirmation";
 
   BLOG(INFO) << "URL Request Response:";
@@ -166,6 +178,8 @@ void RedeemToken::FetchPaymentToken(
     const Token& payment_token,
     const BlindedToken& blinded_payment_token,
     const UnblindedToken& unblinded_token) {
+  DCHECK(!confirmation_id.empty());
+
   BLOG(INFO) << "FetchPaymentToken";
 
   BLOG(INFO) << "GET /v1/confirmation/{confirmation_id}/paymentToken";
@@ -257,7 +271,7 @@ void RedeemToken::OnFetchPaymentToken(
   auto public_key = PublicKey::decode_base64(public_key_base64);
 
   // Validate public key
-  if (!confirmations_->IsValidPublicKeyForCatalogIssues(public_key_base64)) {
+  if (!confirmations_->IsValidPublicKeyForCatalogIssuers(public_key_base64)) {
     BLOG(ERROR) << "Response public_key: " << public_key_base64
         << " was not found in the catalog issuers";
     OnRedeem(FAILED, unblinded_token);

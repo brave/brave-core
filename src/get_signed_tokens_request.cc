@@ -5,6 +5,8 @@
 #include "get_signed_tokens_request.h"
 #include "ads_serve_helper.h"
 
+#include "base/logging.h"
+
 namespace confirmations {
 
 GetSignedTokensRequest::GetSignedTokensRequest() = default;
@@ -16,6 +18,9 @@ GetSignedTokensRequest::~GetSignedTokensRequest() = default;
 std::string GetSignedTokensRequest::BuildUrl(
     const WalletInfo& wallet_info,
     const std::string& nonce) const {
+  DCHECK(!wallet_info.payment_id.empty());
+  DCHECK(!nonce.empty());
+
   std::string endpoint = "/v1/confirmation/token/";
   endpoint += wallet_info.payment_id;
   endpoint += "?nonce=";
@@ -25,7 +30,7 @@ std::string GetSignedTokensRequest::BuildUrl(
 }
 
 URLRequestMethod GetSignedTokensRequest::GetMethod() const {
-  return GET;
+  return URLRequestMethod::GET;
 }
 
 }  // namespace confirmations

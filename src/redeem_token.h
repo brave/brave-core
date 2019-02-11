@@ -13,8 +13,9 @@
 
 #include "wrapper.hpp"
 
+using challenge_bypass_ristretto::Token;
+using challenge_bypass_ristretto::BlindedToken;
 using challenge_bypass_ristretto::UnblindedToken;
-using challenge_bypass_ristretto::PublicKey;
 
 namespace confirmations {
 

@@ -62,115 +62,150 @@ void ConfirmationsImpl::NotifyAdsIfConfirmationsIsReady() {
   confirmations_client_->SetConfirmationsIsReady(is_ready);
 }
 
-// TODO(Terry Mancey): Refactor for unit tests
-std::unique_ptr<base::ListValue> ConfirmationsImpl::Munge(
-    const std::vector<std::string>& v) {
-  base::ListValue* list = new base::ListValue();
+std::string ConfirmationsImpl::ToJSON() const {
+  base::Value dictionary(base::Value::Type::DICTIONARY);
 
-  for (auto x : v) {
-    list->AppendString(x);
-  }
+  // Catalog issuers
+  auto catalog_issuers =
+      GetCatalogIssuersAsDictionary(public_key_, catalog_issuers_);
+  dictionary.SetKey("catalog_issuers", base::Value(std::move(catalog_issuers)));
 
-  return std::unique_ptr<base::ListValue>(list);
-}
+  // Unblinded tokens
+  auto unblinded_tokens = unblinded_tokens_->GetTokensAsList();
+  dictionary.SetKey("unblinded_tokens", base::Value(
+      std::move(unblinded_tokens)));
 
-// TODO(Terry Mancey): Refactor for unit tests
-std::vector<std::string> ConfirmationsImpl::Unmunge(base::Value* value) {
-  std::vector<std::string> v;
+  // Unblinded payment tokens
+  auto unblinded_payment_tokens = unblinded_payment_tokens_->GetTokensAsList();
+  dictionary.SetKey("unblinded_payment_tokens", base::Value(
+      std::move(unblinded_payment_tokens)));
 
-  base::ListValue list(value->GetList());
-
-  for (size_t i = 0; i < list.GetSize(); i++) {
-    base::Value* x;
-    list.Get(i, &x);
-    v.push_back(x->GetString());
-  }
-
-  return v;
-}
-
-// TODO(Terry Mancey): Refactor for unit tests
-std::string ConfirmationsImpl::ToJSON() {
-  base::DictionaryValue dictionary;
-
-  dictionary.SetKey("public_key", base::Value(public_key_));
-
-  std::vector<std::string> catalog_issuers_names;
-  std::vector<std::string> catalog_issuers_public_keys;
-  for (const auto& issuer : catalog_issuers_) {
-    catalog_issuers_names.push_back(issuer.second);
-    catalog_issuers_public_keys.push_back(issuer.first);
-  }
-
-  dictionary.SetWithoutPathExpansion("catalog_issuers_names",
-      Munge(catalog_issuers_names));
-
-  dictionary.SetWithoutPathExpansion("catalog_issuers_public_keys",
-      Munge(catalog_issuers_public_keys));
-
-  auto unblinded_tokens_base64 = unblinded_tokens_->ToBase64();
-  dictionary.SetWithoutPathExpansion("unblinded_tokens",
-      Munge(unblinded_tokens_base64));
-
-  auto unblinded_payment_tokens_base64 =
-      unblinded_payment_tokens_->ToBase64();
-  dictionary.SetWithoutPathExpansion("unblinded_payment_tokens",
-      Munge(unblinded_payment_tokens_base64));
-
+  // Write to JSON
   std::string json;
   base::JSONWriter::Write(dictionary, &json);
 
   return json;
 }
 
-// TODO(Terry Mancey): Refactor for unit tests
+base::Value ConfirmationsImpl::GetCatalogIssuersAsDictionary(
+    const std::string& public_key,
+    const std::map<std::string, std::string>& issuers) const {
+  base::Value dictionary(base::Value::Type::DICTIONARY);
+  dictionary.SetKey("public_key", base::Value(public_key));
+
+  base::Value list(base::Value::Type::LIST);
+  for (const auto& issuer : issuers) {
+    base::Value issuer_dictionary(base::Value::Type::DICTIONARY);
+
+    issuer_dictionary.SetKey("name", base::Value(issuer.second));
+    issuer_dictionary.SetKey("public_key", base::Value(issuer.first));
+
+    list.GetList().push_back(std::move(issuer_dictionary));
+  }
+
+  dictionary.SetKey("issuers", base::Value(std::move(list)));
+
+  return dictionary;
+}
+
 bool ConfirmationsImpl::FromJSON(const std::string& json) {
-  std::unique_ptr<base::Value> value(base::JSONReader::Read(json));
-  if (!value) {
+  std::unique_ptr<base::DictionaryValue> dictionary =
+      base::DictionaryValue::From(base::JSONReader::Read(json));
+
+  if (!dictionary) {
+    BLOG(ERROR) << "Failed to parse JSON: " << json;
     return false;
   }
 
-  base::DictionaryValue* dictionary;
-  if (!value->GetAsDictionary(&dictionary)) {
+  // Catalog issuers
+  auto* catalog_issuers_value = dictionary->FindKey("catalog_issuers");
+  if (!catalog_issuers_value) {
     return false;
   }
 
-  base::Value *v;
-
-  if (!(v = dictionary->FindKey("public_key"))) {
+  base::DictionaryValue* catalog_issuers_dictionary;
+  if (!catalog_issuers_value->GetAsDictionary(&catalog_issuers_dictionary)) {
     return false;
   }
-  public_key_ = v->GetString();
 
-  if (!(v = dictionary->FindKey("catalog_issuers_names"))) {
+  std::string public_key;
+  std::map<std::string, std::string> catalog_issuers;
+  if (!GetCatalogIssuersFromDictionary(catalog_issuers_dictionary, &public_key,
+      &catalog_issuers)) {
     return false;
   }
-  auto catalog_issuers_names = Unmunge(v);
 
-  if (!(v = dictionary->FindKey("catalog_issuers_public_keys"))) {
+  // Unblinded tokens
+  auto* unblinded_tokens_value = dictionary->FindKey("unblinded_tokens");
+  if (!unblinded_tokens_value) {
     return false;
   }
-  auto catalog_issuers_public_keys = Unmunge(v);
 
-  catalog_issuers_.clear();
-  for (size_t i = 0; i < catalog_issuers_names.size(); i++) {
-    auto name = catalog_issuers_names.at(i);
-    auto public_key = catalog_issuers_public_keys.at(i);
+  base::ListValue unblinded_token_values(unblinded_tokens_value->GetList());
 
-    catalog_issuers_.insert({public_key, name});
-  }
-
-  if (!(v = dictionary->FindKey("unblinded_tokens"))) {
+  // Unblinded payment tokens
+  auto* unblinded_payment_tokens_value =
+      dictionary->FindKey("unblinded_payment_tokens");
+  if (!unblinded_payment_tokens_value) {
     return false;
   }
-  auto unblinded_tokens_base64 = Unmunge(v);
-  unblinded_tokens_->FromBase64(unblinded_tokens_base64);
 
-  if (!(v = dictionary->FindKey("unblinded_payment_tokens"))) {
+  base::ListValue unblinded_payment_token_values(
+      unblinded_payment_tokens_value->GetList());
+
+  public_key_ = public_key;
+  catalog_issuers_ = catalog_issuers;
+  unblinded_tokens_->SetTokensFromList(unblinded_token_values);
+  unblinded_payment_tokens_->SetTokensFromList(unblinded_payment_token_values);
+
+  return true;
+}
+
+bool ConfirmationsImpl::GetCatalogIssuersFromDictionary(
+    base::DictionaryValue* dictionary,
+    std::string* public_key,
+    std::map<std::string, std::string>* issuers) const {
+  DCHECK(dictionary);
+  DCHECK(public_key);
+  DCHECK(issuers);
+
+  // Public key
+  auto* public_key_value = dictionary->FindKey("public_key");
+  if (!public_key_value) {
     return false;
   }
-  auto unblinded_payment_tokens_base64 = Unmunge(v);
-  unblinded_payment_tokens_->FromBase64(unblinded_payment_tokens_base64);
+  *public_key = public_key_value->GetString();
+
+  // Issuers
+  auto* issuers_value = dictionary->FindKey("issuers");
+  if (!issuers_value) {
+    return false;
+  }
+
+  issuers->clear();
+  base::ListValue issuers_list_value(issuers_value->GetList());
+  for (auto& issuer_value : issuers_list_value) {
+    base::DictionaryValue* issuer_dictionary;
+    if (!issuer_value.GetAsDictionary(&issuer_dictionary)) {
+      return false;
+    }
+
+    // Public key
+    auto* public_key_value = issuer_dictionary->FindKey("public_key");
+    if (!public_key_value) {
+      return false;
+    }
+    auto public_key = public_key_value->GetString();
+
+    // Name
+    auto* name_value = issuer_dictionary->FindKey("name");
+    if (!name_value) {
+      return false;
+    }
+    auto name = name_value->GetString();
+
+    issuers->insert({public_key, name});
+  }
 
   return true;
 }
@@ -188,7 +223,6 @@ void ConfirmationsImpl::SaveState() {
 void ConfirmationsImpl::OnStateSaved(const Result result) {
   if (result != SUCCESS) {
     BLOG(ERROR) << "Failed to save confirmations state";
-
     return;
   }
 
@@ -284,8 +318,8 @@ std::map<std::string, std::string> ConfirmationsImpl::GetCatalogIssuers()
   return catalog_issuers_;
 }
 
-bool ConfirmationsImpl::IsValidPublicKeyForCatalogIssues(
-    const std::string& public_key) {
+bool ConfirmationsImpl::IsValidPublicKeyForCatalogIssuers(
+    const std::string& public_key) const {
   auto it = catalog_issuers_.find(public_key);
   if (it == catalog_issuers_.end()) {
     return false;
@@ -308,7 +342,8 @@ void ConfirmationsImpl::AdSustained(std::unique_ptr<NotificationInfo> info) {
 
 bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
   BLOG(INFO) << "OnTimer:" << std::endl
-      << "  timer_id: " << timer_id << std::endl
+      << "  timer_id: "
+      << timer_id << std::endl
       << "  retry_getting_signed_tokens_timer_id_: "
       << retry_getting_signed_tokens_timer_id_ << std::endl
       << "  payout_redeemed_tokens_timer_id_: "
@@ -322,11 +357,10 @@ bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
     return true;
   }
 
-  BLOG(WARNING) << "Unexpected OnTimer with timer_id: " << timer_id;
   return false;
 }
 
-void ConfirmationsImpl::RefillTokensIfNecessary() {
+void ConfirmationsImpl::RefillTokensIfNecessary() const {
   refill_tokens_->Refill(wallet_info_, public_key_);
 }
 
@@ -335,8 +369,8 @@ void ConfirmationsImpl::StartPayingOutRedeemedTokens(
   StopPayingOutRedeemedTokens();
 
   confirmations_client_->SetTimer(start_timer_in,
-                                  payout_confirmations_timer_id_);
-  if (payout_confirmations_timer_id_ == 0) {
+      payout_redeemed_tokens_timer_id_);
+  if (payout_redeemed_tokens_timer_id_ == 0) {
     BLOG(ERROR)
         << "Failed to start paying out redeemed tokens due to an invalid timer";
     return;
@@ -346,7 +380,7 @@ void ConfirmationsImpl::StartPayingOutRedeemedTokens(
       << " seconds";
 }
 
-void ConfirmationsImpl::PayoutRedeemedTokens() {
+void ConfirmationsImpl::PayoutRedeemedTokens() const {
   payout_tokens_->Payout(wallet_info_);
 }
 
@@ -374,7 +408,7 @@ void ConfirmationsImpl::StartRetryingToGetRefillSignedTokens(
   StopRetryingToGetRefillSignedTokens();
 
   confirmations_client_->SetTimer(start_timer_in,
-                                  retry_getting_signed_tokens_timer_id_);
+      retry_getting_signed_tokens_timer_id_);
   if (retry_getting_signed_tokens_timer_id_ == 0) {
     BLOG(ERROR)
         << "Failed to start getting signed tokens due to an invalid timer";
@@ -386,7 +420,7 @@ void ConfirmationsImpl::StartRetryingToGetRefillSignedTokens(
       << " seconds";
 }
 
-void ConfirmationsImpl::RetryGettingRefillSignedTokens() {
+void ConfirmationsImpl::RetryGettingRefillSignedTokens() const {
   refill_tokens_->RetryGettingSignedTokens();
 }
 

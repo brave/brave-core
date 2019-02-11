@@ -5,6 +5,8 @@
 #ifndef BAT_CONFIRMATIONS_CONFIRMATIONS_H_
 #define BAT_CONFIRMATIONS_CONFIRMATIONS_H_
 
+#include <memory>
+
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/export.h"
 #include "bat/confirmations/notification_info.h"

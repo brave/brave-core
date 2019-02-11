@@ -7,23 +7,23 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 #include "wrapper.hpp"
 
-namespace helper {
+using challenge_bypass_ristretto::Token;
+using challenge_bypass_ristretto::BlindedToken;
 
-using namespace challenge_bypass_ristretto;
+namespace helper {
 
 class Security {
  public:
   static std::string Sign(
-      const std::vector<std::string>& keys,
-      const std::vector<std::string>& values,
-      const unsigned int size,
+      const std::map<std::string, std::string>& headers,
       const std::string& key_id,
       const std::vector<uint8_t>& public_key);
 
-  static std::vector<Token> GenerateTokens(const unsigned int count);
+  static std::vector<Token> GenerateTokens(const int count);
 
   static std::vector<BlindedToken> BlindTokens(
       const std::vector<Token>& tokens);

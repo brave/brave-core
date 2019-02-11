@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "refill_tokens.h"
 #include "static_values.h"
 #include "logging.h"
@@ -10,10 +12,14 @@
 #include "request_signed_tokens_request.h"
 #include "get_signed_tokens_request.h"
 
+#include "base/logging.h"
 #include "base/rand_util.h"
 #include "base/json/json_reader.h"
 
 using namespace std::placeholders;
+using challenge_bypass_ristretto::SignedToken;
+using challenge_bypass_ristretto::BatchDLEQProof;
+using challenge_bypass_ristretto::PublicKey;
 
 namespace confirmations {
 
@@ -34,6 +40,10 @@ RefillTokens::~RefillTokens() {
 void RefillTokens::Refill(
     const WalletInfo& wallet_info,
     const std::string& public_key) {
+  DCHECK(!wallet_info.payment_id.empty());
+  DCHECK(!wallet_info.public_key.empty());
+  DCHECK(!public_key.empty());
+
   BLOG(INFO) << "Refill";
 
   wallet_info_ = WalletInfo(wallet_info);
@@ -297,7 +307,7 @@ void RefillTokens::OnRefill(const Result result) {
   tokens_.clear();
 }
 
-bool RefillTokens::ShouldRefillTokens() {
+bool RefillTokens::ShouldRefillTokens() const {
   if (unblinded_tokens_->Count() >= kMinimumUnblindedTokens) {
     return false;
   }
@@ -305,7 +315,7 @@ bool RefillTokens::ShouldRefillTokens() {
   return true;
 }
 
-int RefillTokens::CalculateAmountOfTokensToRefill() {
+int RefillTokens::CalculateAmountOfTokensToRefill() const {
   return kMaximumUnblindedTokens - unblinded_tokens_->Count();
 }
 

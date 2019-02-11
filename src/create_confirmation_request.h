@@ -9,11 +9,12 @@
 
 #include "bat/confirmations/confirmations_client.h"
 
-#include "brave/vendor/challenge_bypass_ristretto_ffi/src/wrapper.hpp"
+#include "wrapper.hpp"
+
+using challenge_bypass_ristretto::BlindedToken;
+using challenge_bypass_ristretto::UnblindedToken;
 
 namespace confirmations {
-
-using namespace challenge_bypass_ristretto;
 
 class CreateConfirmationRequest {
  public:

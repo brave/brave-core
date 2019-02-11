@@ -39,13 +39,13 @@ class ConfirmationsImpl : public Confirmations {
   // Catalog issuers
   void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) override;
   std::map<std::string, std::string> GetCatalogIssuers() const;
-  bool IsValidPublicKeyForCatalogIssues(const std::string& public_key);
+  bool IsValidPublicKeyForCatalogIssuers(const std::string& public_key) const;
 
   // Scheduled events
   bool OnTimer(const uint32_t timer_id) override;
 
   // Refill tokens
-  void RefillTokensIfNecessary();
+  void RefillTokensIfNecessary() const;
   void StartRetryingToGetRefillSignedTokens(const uint64_t start_timer_in);
 
   // Redeem unblinded tokens
@@ -79,7 +79,7 @@ class ConfirmationsImpl : public Confirmations {
 
   // Refill tokens
   uint32_t retry_getting_signed_tokens_timer_id_;
-  void RetryGettingRefillSignedTokens();
+  void RetryGettingRefillSignedTokens() const;
   void StopRetryingToGetRefillSignedTokens();
   bool IsRetryingToGetRefillSignedTokens() const;
   std::unique_ptr<RefillTokens> refill_tokens_;
@@ -89,7 +89,7 @@ class ConfirmationsImpl : public Confirmations {
 
   // Payout redeemed tokens
   uint32_t payout_redeemed_tokens_timer_id_;
-  void PayoutRedeemedTokens();
+  void PayoutRedeemedTokens() const;
   void StopPayingOutRedeemedTokens();
   bool IsPayingOutRedeemedTokens() const;
   std::unique_ptr<PayoutTokens> payout_tokens_;
@@ -101,11 +101,18 @@ class ConfirmationsImpl : public Confirmations {
   void ResetState();
   void OnStateReset(const Result result);
 
-  std::string ToJSON();
+  std::string ToJSON() const;
+
+  base::Value GetCatalogIssuersAsDictionary(
+      const std::string& public_key,
+      const std::map<std::string, std::string>& issuers) const;
+
   bool FromJSON(const std::string& json);
 
-  std::unique_ptr<base::ListValue> Munge(const std::vector<std::string>& v);
-  std::vector<std::string> Unmunge(base::Value *value);
+  bool GetCatalogIssuersFromDictionary(
+      base::DictionaryValue* dictionary,
+      std::string* public_key,
+      std::map<std::string, std::string>* issuers) const;
 
   // Confirmations::Client
   ConfirmationsClient* confirmations_client_;  // NOT OWNED

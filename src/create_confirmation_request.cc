@@ -6,6 +6,7 @@
 #include "ads_serve_helper.h"
 #include "security_helper.h"
 
+#include "base/logging.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 
@@ -20,6 +21,9 @@ CreateConfirmationRequest::~CreateConfirmationRequest() = default;
 std::string CreateConfirmationRequest::BuildUrl(
     const std::string& confirmation_id,
     const std::string& credential) const {
+  DCHECK(!confirmation_id.empty());
+  DCHECK(!credential.empty());
+
   std::string endpoint = "/v1/confirmation/";
   endpoint += confirmation_id;
   endpoint += "/";
@@ -29,11 +33,13 @@ std::string CreateConfirmationRequest::BuildUrl(
 }
 
 URLRequestMethod CreateConfirmationRequest::GetMethod() const {
-  return POST;
+  return URLRequestMethod::POST;
 }
 
 std::string CreateConfirmationRequest::BuildBody(
     const std::string& payload) const {
+  DCHECK(!payload.empty());
+
   return payload;
 }
 
@@ -57,6 +63,8 @@ std::string CreateConfirmationRequest::GetContentType() const {
 std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
     const std::string& creative_instance_id,
     const BlindedToken& token) const {
+  DCHECK(!creative_instance_id.empty());
+
   base::Value payload(base::Value::Type::DICTIONARY);
 
   payload.SetKey("creativeInstanceId", base::Value(creative_instance_id));
@@ -77,6 +85,8 @@ std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
 std::string CreateConfirmationRequest::CreateCredential(
     const UnblindedToken& token,
     const std::string& payload) const {
+  DCHECK(!payload.empty());
+
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
   dictionary.SetKey("payload", base::Value(payload));

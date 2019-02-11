@@ -28,6 +28,9 @@ PayoutTokens::~PayoutTokens() {
 }
 
 void PayoutTokens::Payout(const WalletInfo& wallet_info) {
+  DCHECK(!wallet_info.payment_id.empty());
+  DCHECK(!wallet_info.public_key.empty());
+
   BLOG(INFO) << "Payout";
 
   wallet_info_ = WalletInfo(wallet_info);
@@ -116,12 +119,12 @@ void PayoutTokens::OnPayout(const Result result) {
   ScheduleNextPayout();
 }
 
-void PayoutTokens::ScheduleNextPayout() {
+void PayoutTokens::ScheduleNextPayout() const {
   auto start_timer_in = CalculateTimerForNextPayout();
   confirmations_->StartPayingOutRedeemedTokens(start_timer_in);
 }
 
-uint64_t PayoutTokens::CalculateTimerForNextPayout() {
+uint64_t PayoutTokens::CalculateTimerForNextPayout() const {
   auto start_timer_in = kPayoutAfterSeconds;
   auto rand_delay = base::RandInt(0, start_timer_in / 10);
   start_timer_in += rand_delay;

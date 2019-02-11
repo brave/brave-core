@@ -15,44 +15,52 @@
 namespace helper {
 
 std::string Security::Sign(
-    const std::vector<std::string>& keys,
-    const std::vector<std::string>& values,
-    const unsigned int size,
+    const std::map<std::string, std::string>& headers,
     const std::string& key_id,
     const std::vector<uint8_t>& public_key) {
-  std::string headers = "";
-  std::string message = "";
+  DCHECK_NE(headers.size(), 0UL);
+  DCHECK(!key_id.empty());
+  DCHECK_NE(public_key.size(), 0UL);
 
-  for (unsigned i = 0; i < size; i++) {
-    if (i != 0) {
-      headers += " ";
-      message += "\n";
+  std::string concatenated_header = "";
+  std::string concatenated_message = "";
+
+  unsigned int index = 0;
+  for (const auto& header : headers) {
+    if (index != 0) {
+      concatenated_header += " ";
+      concatenated_message += "\n";
     }
 
-    headers += keys.at(i);
-    message += keys.at(i) + ": " + values.at(i);
+    concatenated_header += header.first;
+    concatenated_message += header.first + ": " + header.second;
+
+    index++;
   }
 
-  std::vector<uint8_t> signed_message(crypto_sign_BYTES + message.length());
+  std::vector<uint8_t> signed_message(crypto_sign_BYTES +
+      concatenated_message.length());
 
   uint64_t signed_message_size = 0;
   crypto_sign(&signed_message.front(), &signed_message_size,
-      (const unsigned char*)message.c_str(), (uint64_t)message.length(),
-      &public_key.front());
+      (const unsigned char*)concatenated_message.c_str(),
+      (uint64_t)concatenated_message.length(), &public_key.front());
 
   std::vector<uint8_t> signature(crypto_sign_BYTES);
   std::copy(signed_message.begin(), signed_message.begin() +
       crypto_sign_BYTES, signature.begin());
 
   return "keyId=\"" + key_id + "\",algorithm=\"" + crypto_sign_PRIMITIVE +
-      "\",headers=\"" + headers + "\",signature=\"" +
+      "\",headers=\"" + concatenated_header + "\",signature=\"" +
       GetBase64(signature) + "\"";
 }
 
-std::vector<Token> Security::GenerateTokens(const unsigned int count) {
+std::vector<Token> Security::GenerateTokens(const int count) {
+  DCHECK_NE(count, 0);
+
   std::vector<Token> tokens;
 
-  for (unsigned int i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     auto token = Token::random();
     tokens.push_back(token);
   }
@@ -62,6 +70,8 @@ std::vector<Token> Security::GenerateTokens(const unsigned int count) {
 
 std::vector<BlindedToken> Security::BlindTokens(
     const std::vector<Token>& tokens) {
+  DCHECK_NE(tokens.size(), 0UL);
+
   std::vector<BlindedToken> blinded_tokens;
   for (unsigned int i = 0; i < tokens.size(); i++) {
     auto token = tokens.at(i);
@@ -74,22 +84,26 @@ std::vector<BlindedToken> Security::BlindTokens(
 }
 
 std::vector<uint8_t> Security::GetSHA256(const std::string& string) {
+  DCHECK(!string.empty());
+
   std::vector<uint8_t> string_sha256(SHA256_DIGEST_LENGTH);
   SHA256((uint8_t*)string.c_str(), string.length(), &string_sha256.front());
   return string_sha256;
 }
 
 std::string Security::GetBase64(const std::vector<uint8_t>& data) {
+  DCHECK_NE(data.size(), 0UL);
+
   size_t size = 0;
   if (!EVP_EncodedLength(&size, data.size())) {
-    DCHECK(false);
     return "";
   }
 
   std::vector<uint8_t> string(size);
-  int num_encoded_bytes = EVP_EncodeBlock(
-      &string.front(), &data.front(), data.size());
-  DCHECK_NE(num_encoded_bytes, 0);
+  int encoded_bytes_count =
+      EVP_EncodeBlock(&string.front(), &data.front(), data.size());
+  DCHECK_NE(encoded_bytes_count, 0);
+
   return std::string(reinterpret_cast<char*>(&string.front()));
 }
 

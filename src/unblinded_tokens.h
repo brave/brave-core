@@ -10,11 +10,13 @@
 
 #include "confirmations_impl.h"
 
-#include "brave/vendor/challenge_bypass_ristretto_ffi/src/wrapper.hpp"
+#include "base/values.h"
+
+#include "wrapper.hpp"
+
+using challenge_bypass_ristretto::UnblindedToken;
 
 namespace confirmations {
-
-using namespace challenge_bypass_ristretto;
 
 class ConfirmationsImpl;
 
@@ -25,10 +27,10 @@ class UnblindedTokens {
 
   UnblindedToken GetToken() const;
   std::vector<UnblindedToken> GetAllTokens() const;
-  void SetTokens(const std::vector<UnblindedToken>& tokens);
+  base::Value GetTokensAsList();
 
-  std::vector<std::string> ToBase64() const;
-  void FromBase64(const std::vector<std::string>& tokens_base64);
+  void SetTokens(const std::vector<UnblindedToken>& tokens);
+  void SetTokensFromList(const base::ListValue& list);
 
   void AddTokens(const std::vector<UnblindedToken>& tokens);
 

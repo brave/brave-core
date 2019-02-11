@@ -5,6 +5,7 @@
 #include "redeem_payment_tokens_request.h"
 #include "ads_serve_helper.h"
 
+#include "base/logging.h"
 #include "base/json/json_writer.h"
 
 namespace confirmations {
@@ -17,6 +18,8 @@ RedeemPaymentTokensRequest::~RedeemPaymentTokensRequest() = default;
 
 std::string RedeemPaymentTokensRequest::BuildUrl(
     const WalletInfo& wallet_info) const {
+  DCHECK(!wallet_info.payment_id.empty());
+
   std::string endpoint = "/v1/confirmation/payment/";
   endpoint += wallet_info.payment_id;
 
@@ -24,13 +27,15 @@ std::string RedeemPaymentTokensRequest::BuildUrl(
 }
 
 URLRequestMethod RedeemPaymentTokensRequest::GetMethod() const {
-  return PUT;
+  return URLRequestMethod::PUT;
 }
 
 std::string RedeemPaymentTokensRequest::BuildBody(
     const std::vector<UnblindedToken>& tokens,
     const std::string& payload,
     const WalletInfo& wallet_info) const {
+  DCHECK(!payload.empty());
+
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
   auto payment_request_dto = CreatePaymentRequestDTO(tokens, payload,
@@ -48,6 +53,8 @@ std::string RedeemPaymentTokensRequest::BuildBody(
 
 std::string RedeemPaymentTokensRequest::CreatePayload(
     const WalletInfo& wallet_info) const {
+  DCHECK(!wallet_info.payment_id.empty());
+
   base::Value payload(base::Value::Type::DICTIONARY);
   payload.SetKey("paymentId", base::Value(wallet_info.payment_id));
 
@@ -80,6 +87,9 @@ base::Value RedeemPaymentTokensRequest::CreatePaymentRequestDTO(
     const std::vector<UnblindedToken>& tokens,
     const std::string& payload,
     const WalletInfo& wallet_info) const {
+  DCHECK_NE(tokens.size(), 0UL);
+  DCHECK(!wallet_info.public_key.empty());
+
   base::Value payment_credentials(base::Value::Type::LIST);
 
   for (const auto& token : tokens) {
@@ -99,18 +109,20 @@ base::Value RedeemPaymentTokensRequest::CreatePaymentRequestDTO(
 base::Value RedeemPaymentTokensRequest::CreateCredential(
     const UnblindedToken& token,
     const std::string& payload) const {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
+  DCHECK(!payload.empty());
+
+  base::Value credential(base::Value::Type::DICTIONARY);
 
   auto verification_key = token.derive_verification_key();
   auto signed_verification_key = verification_key.sign(payload);
   auto signed_verification_key_base64 = signed_verification_key.encode_base64();
-  dictionary.SetKey("signature", base::Value(signed_verification_key_base64));
+  credential.SetKey("signature", base::Value(signed_verification_key_base64));
 
   auto preimage = token.preimage();
   auto preimage_base64 = preimage.encode_base64();
-  dictionary.SetKey("t", base::Value(preimage_base64));
+  credential.SetKey("t", base::Value(preimage_base64));
 
-  return dictionary;
+  return credential;
 }
 
 }  // namespace confirmations

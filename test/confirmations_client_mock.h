@@ -6,6 +6,7 @@
 #define BAT_CONFIRMATIONS_CONFIRMATIONS_CLIENT_MOCK_H_
 
 #include <iostream>
+#include <memory>
 
 #include "testing/gmock/include/gmock/gmock.h"
 

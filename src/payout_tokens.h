@@ -11,11 +11,8 @@
 #include "confirmations_impl.h"
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/wallet_info.h"
-#include "wrapper.hpp"
 
 namespace confirmations {
-
-using namespace challenge_bypass_ristretto;
 
 class ConfirmationsImpl;
 class UnblindedTokens;
@@ -43,8 +40,8 @@ class PayoutTokens {
 
   void OnPayout(const Result result);
 
-  void ScheduleNextPayout();
-  uint64_t CalculateTimerForNextPayout();
+  void ScheduleNextPayout() const;
+  uint64_t CalculateTimerForNextPayout() const;
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED

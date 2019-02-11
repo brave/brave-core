@@ -7,6 +7,7 @@
 #include "string_helper.h"
 #include "security_helper.h"
 
+#include "base/logging.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 
@@ -20,6 +21,8 @@ RequestSignedTokensRequest::~RequestSignedTokensRequest() = default;
 
 std::string RequestSignedTokensRequest::BuildUrl(
     const WalletInfo& wallet_info) const {
+  DCHECK(!wallet_info.payment_id.empty());
+
   std::string endpoint = "/v1/confirmation/token/";
   endpoint += wallet_info.payment_id;
 
@@ -27,11 +30,13 @@ std::string RequestSignedTokensRequest::BuildUrl(
 }
 
 URLRequestMethod RequestSignedTokensRequest::GetMethod() const {
-  return POST;
+  return URLRequestMethod::POST;
 }
 
 std::string RequestSignedTokensRequest::BuildBody(
     const std::vector<BlindedToken>& tokens) const {
+  DCHECK_NE(tokens.size(), 0UL);
+
   base::Value list(base::Value::Type::LIST);
   for (const auto& token : tokens) {
     auto token_base64 = token.encode_base64();
@@ -69,6 +74,8 @@ std::vector<std::string> RequestSignedTokensRequest::BuildHeaders(
 
 std::string RequestSignedTokensRequest::BuildDigestHeaderValue(
     const std::string& body) const {
+  DCHECK(!body.empty());
+
   auto body_sha256 = helper::Security::GetSHA256(body);
   auto body_sha256_base64 = helper::Security::GetBase64(body_sha256);
   return "SHA-256=" + body_sha256_base64;
@@ -77,10 +84,15 @@ std::string RequestSignedTokensRequest::BuildDigestHeaderValue(
 std::string RequestSignedTokensRequest::BuildSignatureHeaderValue(
     const std::string& body,
     const WalletInfo& wallet_info) const {
-  auto public_key = helper::String::decode_hex(wallet_info.public_key);
+  DCHECK(!body.empty());
+  DCHECK(!wallet_info.public_key.empty());
+
   auto digest_header_value = BuildDigestHeaderValue(body);
-  return helper::Security::Sign({"digest"}, {digest_header_value}, 1,
-      {"primary"}, public_key);
+
+  auto public_key = helper::String::decode_hex(wallet_info.public_key);
+
+  return helper::Security::Sign({{"digest", digest_header_value}}, "primary",
+      public_key);
 }
 
 std::string RequestSignedTokensRequest::GetAcceptHeaderValue() const {

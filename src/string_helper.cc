@@ -4,9 +4,13 @@
 
 #include "string_helper.h"
 
+#include "base/logging.h"
+
 namespace helper {
 
 std::vector<uint8_t> String::decode_hex(const std::string& hexadecimal) {
+  DCHECK(!hexadecimal.empty());
+
   std::vector<uint8_t> bytes;
 
   for (size_t i = 0; i < hexadecimal.length(); i += 2) {

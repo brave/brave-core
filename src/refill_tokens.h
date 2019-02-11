@@ -15,9 +15,10 @@
 
 #include "wrapper.hpp"
 
-namespace confirmations {
+using challenge_bypass_ristretto::Token;
+using challenge_bypass_ristretto::BlindedToken;
 
-using namespace challenge_bypass_ristretto;
+namespace confirmations {
 
 class ConfirmationsImpl;
 class UnblindedTokens;
@@ -61,9 +62,9 @@ class RefillTokens {
 
   void OnRefill(const Result result);
 
-  bool ShouldRefillTokens();
+  bool ShouldRefillTokens() const;
+  int CalculateAmountOfTokensToRefill() const;
 
-  int CalculateAmountOfTokensToRefill();
   void GenerateAndBlindTokens(const int count);
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED

@@ -5,6 +5,8 @@
 #include "fetch_payment_token_request.h"
 #include "ads_serve_helper.h"
 
+#include "base/logging.h"
+
 namespace confirmations {
 
 FetchPaymentTokenRequest::FetchPaymentTokenRequest() = default;
@@ -15,6 +17,8 @@ FetchPaymentTokenRequest::~FetchPaymentTokenRequest() = default;
 
 std::string FetchPaymentTokenRequest::BuildUrl(
     const std::string& confirmation_id) const {
+  DCHECK(!confirmation_id.empty());
+
   std::string endpoint = "/v1/confirmation/";
   endpoint += confirmation_id;
   endpoint += "/paymentToken";
@@ -23,7 +27,7 @@ std::string FetchPaymentTokenRequest::BuildUrl(
 }
 
 URLRequestMethod FetchPaymentTokenRequest::GetMethod() const {
-  return GET;
+  return URLRequestMethod::GET;
 }
 
 }  // namespace confirmations

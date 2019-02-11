@@ -3,7 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "unblinded_tokens.h"
-#include "logging.h"
+
+#include "base/logging.h"
 
 namespace confirmations {
 
@@ -22,33 +23,33 @@ std::vector<UnblindedToken> UnblindedTokens::GetAllTokens() const {
   return unblinded_tokens_;
 }
 
+base::Value UnblindedTokens::GetTokensAsList() {
+  base::Value list(base::Value::Type::LIST);
+
+  for (const auto& token : unblinded_tokens_) {
+    auto token_base64 = token.encode_base64();
+    auto token_value = base::Value(token_base64);
+    list.GetList().push_back(std::move(token_value));
+  }
+
+  return list;
+}
+
 void UnblindedTokens::SetTokens(const std::vector<UnblindedToken>& tokens) {
   unblinded_tokens_ = tokens;
 
   confirmations_->SaveState();
 }
 
-std::vector<std::string> UnblindedTokens::ToBase64() const {
-  std::vector<std::string> tokens_base64;
-
-  for (const auto& unblinded_token : unblinded_tokens_) {
-    auto token_base64 = unblinded_token.encode_base64();
-    tokens_base64.push_back(token_base64);
-  }
-
-  return tokens_base64;
-}
-
-void UnblindedTokens::FromBase64(
-    const std::vector<std::string>& tokens_base64) {
-  unblinded_tokens_.clear();
-
-  for (const auto& token_base64 : tokens_base64) {
+void UnblindedTokens::SetTokensFromList(const base::ListValue& list) {
+  std::vector<UnblindedToken> unblinded_tokens;
+  for (const auto& token_value : list) {
+    auto token_base64 = token_value.GetString();
     auto token = UnblindedToken::decode_base64(token_base64);
-    unblinded_tokens_.push_back(token);
+    unblinded_tokens.push_back(token);
   }
 
-  confirmations_->SaveState();
+  SetTokens(unblinded_tokens);
 }
 
 void UnblindedTokens::AddTokens(const std::vector<UnblindedToken>& tokens) {
