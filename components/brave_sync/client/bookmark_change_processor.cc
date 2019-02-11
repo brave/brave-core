@@ -1,8 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2016 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_sync/client/bookmark_change_processor.h"
+
+#include <string>
+#include <tuple>
+#include <memory>
+#include <utility>
+#include <vector>
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/bookmark_order_util.h"
@@ -26,7 +33,7 @@ namespace {
 
 class ScopedPauseObserver {
  public:
-  ScopedPauseObserver(brave_sync::BookmarkChangeProcessor* processor) :
+  explicit ScopedPauseObserver(brave_sync::BookmarkChangeProcessor* processor) :
       processor_(processor) {
     DCHECK_NE(processor_, nullptr);
     processor_->Stop();
@@ -44,7 +51,8 @@ const char kPendingBookmarksTitle[] = "Pending Bookmarks";
 
 std::unique_ptr<brave_sync::BraveBookmarkPermanentNode>
     MakePermanentNode(const std::string& title, int64_t* next_node_id) {
-  auto node = std::make_unique<brave_sync::BraveBookmarkPermanentNode>(*next_node_id);
+  using brave_sync::BraveBookmarkPermanentNode;
+  auto node = std::make_unique<BraveBookmarkPermanentNode>(*next_node_id);
   (*next_node_id)++;
   node->set_type(bookmarks::BookmarkNode::FOLDER);
   node->set_visible(false);
@@ -95,7 +103,7 @@ void GetOrder(const bookmarks::BookmarkNode* parent,
               std::string* prev_order,
               std::string* next_order,
               std::string* parent_order) {
-  DCHECK(index >= 0);
+  DCHECK_GE(index, 0);
   auto* prev_node = index == 0 ?
     nullptr :
     parent->GetChild(index - 1);
@@ -115,7 +123,7 @@ void GetOrder(const bookmarks::BookmarkNode* parent,
 void GetPrevObjectId(const bookmarks::BookmarkNode* parent,
                      int index,
                      std::string* prev_object_id) {
-  DCHECK(index >= 0);
+  DCHECK_GE(index, 0);
   auto* prev_node = index == 0 ?
     nullptr :
     parent->GetChild(index - 1);
@@ -171,7 +179,7 @@ void UpdateNode(bookmarks::BookmarkModel* model,
     // SetDateFolderModified
   } else {
     model->SetURL(node, GURL(bookmark.site.location));
-    // TODO, AB: apply these:
+    // TODO(alexeyb): apply these:
     // sync_bookmark.site.customTitle
     // sync_bookmark.site.lastAccessedTime
     // sync_bookmark.site.favicon
@@ -269,7 +277,8 @@ void BookmarkChangeProcessor::BookmarkModelLoaded(BookmarkModel* model,
   VLOG(1) << __func__;
 }
 
-void BookmarkChangeProcessor::BookmarkModelBeingDeleted(bookmarks::BookmarkModel* model) {
+void BookmarkChangeProcessor::BookmarkModelBeingDeleted(
+    bookmarks::BookmarkModel* model) {
   NOTREACHED();
   bookmark_model_ = nullptr;
 }
@@ -485,7 +494,8 @@ void ValidateFolderOrders(const bookmarks::BookmarkNode* folder_node) {
     if (!compare_result) {
       DLOG(ERROR) << "ValidateFolderOrders failed";
       DLOG(ERROR) << "folder_node=" << folder_node->GetTitle();
-      DLOG(ERROR) << "folder_node->child_count()=" << folder_node->child_count();
+      DLOG(ERROR) << "folder_node->child_count()=" <<
+                                                  folder_node->child_count();
       DLOG(ERROR) << "i=" << i;
       DLOG(ERROR) << "left_order=" << left_order;
       DLOG(ERROR) << "right_order=" << right_order;
@@ -577,7 +587,8 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
           profile_->GetPrefs()->SetBoolean(bookmarks::prefs::kShowBookmarkBar,
                                           true);
       }
-      UpdateNode(bookmark_model_, node, sync_record.get(), GetPendingNodeRoot());
+      UpdateNode(bookmark_model_, node, sync_record.get(),
+          GetPendingNodeRoot());
 
 #ifndef NDEBUG
       if (parent_node) {
@@ -655,10 +666,9 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
   bookmark->site.location = node->url().spec();
   bookmark->site.title = base::UTF16ToUTF8(node->GetTitledUrlNodeTitle());
   bookmark->site.customTitle = base::UTF16ToUTF8(node->GetTitle());
-  //bookmark->site.lastAccessedTime - ignored
+  // bookmark->site.lastAccessedTime - ignored
   bookmark->site.creationTime = node->date_added();
   bookmark->site.favicon = node->icon_url() ? node->icon_url()->spec() : "";
-  //bookmark->isFolder = node->is_folder();
   // Url may have type OTHER_NODE if it is in Deleted Bookmarks
   bookmark->isFolder = (node->type() != bookmarks::BookmarkNode::URL &&
                            node->type() != bookmarks::BookmarkNode::OTHER_NODE);
