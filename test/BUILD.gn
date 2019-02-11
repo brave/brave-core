@@ -95,7 +95,14 @@ test("brave_unit_tests") {
       "//brave/components/brave_rewards/browser/publisher_info_database_unittest.cc",
       "//brave/vendor/bat-native-usermodel/test/usermodel_unittest.cc",
       "//brave/components/brave_rewards/browser/rewards_service_impl_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/test/confirmations_unittest.cc",
+      "//brave/vendor/bat-native-confirmations/test/confirmations_create_confirmation_request_unittest.cc",
+      "//brave/vendor/bat-native-confirmations/test/confirmations_fetch_payment_token_request_unittest.cc",
+      "//brave/vendor/bat-native-confirmations/test/confirmations_get_signed_tokens_request_unittest.cc",
+      "//brave/vendor/bat-native-confirmations/test/confirmations_redeem_payment_tokens_request_unittest.cc",
+      "//brave/vendor/bat-native-confirmations/test/confirmations_request_signed_tokens_request_unittest.cc",
+      "//brave/vendor/bat-native-confirmations/test/confirmations_security_helper_unittest.cc",
+      "//brave/vendor/bat-native-confirmations/test/confirmations_string_helper_unittest.cc",
+      "//brave/vendor/bat-native-confirmations/test/confirmations_unblinded_tokens_unittest.cc",
       "//brave/vendor/bat-native-confirmations/test/confirmations_client_mock.cc",
     ]
   }
@@ -154,6 +161,7 @@ test("brave_unit_tests") {
       "//brave/vendor/bat-native-usermodel",
       "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-confirmations",
+      "//brave/vendor/challenge_bypass_ristretto_ffi",
       "//brave/vendor/bat-native-ledger",
     ]
   }
