@@ -405,4 +405,65 @@ TEST_F(PublisherInfoDatabaseTest, InsertPendingContribution) {
 
 }
 
+TEST_F(PublisherInfoDatabaseTest, GetPanelPublisher) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  /**
+   * Publisher ID is missing
+   */
+  ledger::ActivityInfoFilter filter_1;
+  EXPECT_EQ(publisher_info_database_->GetPanelPublisher(filter_1), nullptr);
+
+  /**
+   * Empty table
+   */
+  ledger::ActivityInfoFilter filter_2;
+  filter_2.id = "test";
+  EXPECT_EQ(publisher_info_database_->GetPanelPublisher(filter_2), nullptr);
+
+  /**
+   * Ignore month and year filter
+   */
+  ledger::PublisherInfo info_1;
+  info_1.id = "brave.com";
+  info_1.url = "https://brave.com";
+  info_1.percent = 11;
+  info_1.month = ledger::ACTIVITY_MONTH::JANUARY;
+  info_1.year = 2019;
+  info_1.reconcile_stamp = 10;
+
+  bool success = publisher_info_database_->InsertOrUpdateActivityInfo(info_1);
+  EXPECT_TRUE(success);
+
+  ledger::ActivityInfoFilter filter_3;
+  filter_3.id = "brave.com";
+  filter_3.month = ledger::ACTIVITY_MONTH::ANY;
+  filter_3.year = -1;
+  filter_3.reconcile_stamp = 10;
+  std::unique_ptr<ledger::PublisherInfo> result =
+      publisher_info_database_->GetPanelPublisher(filter_3);
+  EXPECT_TRUE(result);
+  EXPECT_EQ(result->id, "brave.com");
+
+  /**
+   * Still get data if reconcile stamp is not found
+   */
+  info_1.id = "page.com";
+  info_1.url = "https://page.com";
+  info_1.reconcile_stamp = 9;
+
+  success = publisher_info_database_->InsertOrUpdateActivityInfo(info_1);
+  EXPECT_TRUE(success);
+
+  ledger::ActivityInfoFilter filter_4;
+  filter_4.id = "page.com";
+  filter_4.reconcile_stamp = 10;
+  result = publisher_info_database_->GetPanelPublisher(filter_4);
+  EXPECT_TRUE(result);
+  EXPECT_EQ(result->id, "page.com");
+  EXPECT_EQ(result->percent, 0u);
+}
+
 }  // namespace brave_rewards
