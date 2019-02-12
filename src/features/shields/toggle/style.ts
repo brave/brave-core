@@ -4,10 +4,17 @@
 
 import styled, { css } from '../../../theme'
 import { Props } from './index'
+import palette from '../../../theme/palette'
 
-export const StyledCheckbox = styled<{}, 'input'>('input')`
-  display: none;
-` as any
+export const StyledCheckbox = styled<Props, 'input'>('input')`
+  -webkit-appearance: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  outline-offset: ${(p) => p.size === 'large' ? '6px' : '1px'};
+  outline-color: ${palette.orange400};
+  outline-width: 2px;
+`
 
 export const StyledWrapper = styled<Props, 'div'>('div')`
   box-sizing: border-box;

@@ -22,21 +22,22 @@ export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
   -webkit-font-smoothing: antialiased;
   border-radius: 3px;
   display: block;
-  outline: none;
   padding: 6px 12px 6px 6px;
   width: 100%;
   appearance: none;
   min-height: 36px;
-  color: ${palette.grey100};
+  color: #343546;
   font-size: 12px;
-  font-weight: normal;
+  font-weight: 500;
   line-height: 18px;
   font-family: ${p => p.theme.fontFamily.heading};
-  border: 1px solid ${palette.grey500};
+  border: 1px solid #E9E9F4;
   background: url(${caratUrl}) 98% / 10% no-repeat transparent;
   /* avoid text overflow w/ carat */
   -webkit-padding-start: 10px;
   -webkit-padding-end: 32px;
+  outline-color: ${palette.orange400};
+  outline-width: 2px;
 
   > option {
     color: ${palette.black};
