@@ -192,7 +192,8 @@ def get_milestones(token, repo_name, verbose=False):
     return response
 
 
-def create_pull_request(token, repo_name, title, body, branch_src, branch_dst, open_in_browser=False, verbose=False, dryrun=False):
+def create_pull_request(token, repo_name, title, body, branch_src, branch_dst,
+                        open_in_browser=False, verbose=False, dryrun=False):
     post_data = {
         'title': title,
         'head': branch_src,
