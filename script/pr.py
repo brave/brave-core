@@ -65,7 +65,8 @@ class PrConfig:
                         raise Exception('`BRAVE_GITHUB_TOKEN` value not found!')
                     self.github_token = result
                 except Exception as e:
-                    print('[ERROR] no valid GitHub token was found either in npmrc or via environment variables (BRAVE_GITHUB_TOKEN)')
+                    print('[ERROR] no valid GitHub token was found either in npmrc or ' +
+                          'via environment variables (BRAVE_GITHUB_TOKEN)')
                     return 1
             self.parsed_reviewers = parse_user_logins(self.github_token, args.reviewers, verbose=self.is_verbose)
             # if `--owners` is not provided, fall back to user owning token
@@ -143,6 +144,9 @@ def parse_args():
     parser.add_argument('--uplift-to',
                         help='starting at nightly (master), how far back to uplift the changes',
                         default='nightly')
+    parser.add_argument('--uplift-using-pr',
+                        help='link to already existing pull request (number) to use as a reference for uplifting',
+                        default=None)
     parser.add_argument('--start-from',
                         help='instead of starting from nightly (default), start from beta/dev/release',
                         default='nightly')
@@ -169,6 +173,12 @@ def get_remote_version(branch_to_compare):
     return json_file['version']
 
 
+def fancy_print(text):
+    print('#' * len(text))
+    print(text)
+    print('#' * len(text))
+
+
 def main():
     args = parse_args()
     if args.verbose:
@@ -187,9 +197,9 @@ def main():
     # also, find the branch which should be used for diffs (for cherry-picking)
     local_version = get_raw_version()
     remote_branches = get_remote_channel_branches(local_version)
-    top_level_branch = 'master'
+    top_level_base = 'master'
     if not is_nightly(args.start_from):
-        top_level_branch = remote_branches[args.start_from]
+        top_level_base = remote_branches[args.start_from]
         try:
             start_index = config.channel_names.index(args.start_from)
             config.channels_to_process = config.channel_names[start_index:]
@@ -197,32 +207,75 @@ def main():
             print('[ERROR] specified `start-from` value "' + args.start_from + '" not found in channel list')
             return 1
 
+    # optionally (instead of having a local branch), allow uplifting a specific PR
+    # this pulls down the pr locally (in a special branch)
+    if args.uplift_using_pr:
+        pr_number = int(args.uplift_using_pr)
+        repo = GitHub(config.github_token).repos(BRAVE_CORE_REPO)
+        try:
+            # get enough details from PR to check out locally
+            response = repo.pulls(pr_number).get()
+            head = response['head']
+            local_branch = 'pr' + str(pr_number) + '_' + head['ref']
+            head_sha = head['sha']
+            top_level_base = response['base']['ref']
+
+        except Exception as e:
+            print('[ERROR] API returned an error when looking up pull request "' + str(pr_number) + '"\n' + str(e))
+            return 1
+
+        # set starting point AHEAD of the PR provided
+        config.master_pr_number = pr_number
+        if top_level_base == 'master':
+            config.channels_to_process = config.channel_names[1:]
+        else:
+            branch_index = remote_branches.index(top_level_base)
+            config.channels_to_process = config.channel_names[branch_index:]
+
+        # create local branch which matches the contents of the PR
+        with scoped_cwd(BRAVE_CORE_ROOT):
+            # check if branch exists already
+            try:
+                branch_sha = execute(['git', 'rev-parse', '-q', '--verify', local_branch])
+            except Exception as e:
+                branch_sha = ''
+            if len(branch_sha) > 0:
+                # branch exists; reset it
+                print('branch "' + local_branch + '" exists; resetting to origin/' + head['ref'] + ' (' + head_sha + ')')
+                execute(['git', 'checkout', local_branch])
+                execute(['git', 'reset', '--hard', head_sha])
+            else:
+                # create the branch
+                print('creating branch "' + local_branch + '" using origin/' + head['ref'] + ' (' + head_sha + ')')
+                execute(['git', 'checkout', '-b', local_branch, head_sha])
+            # now that branch exists, switch back to previous local branch
+            execute(['git', 'checkout', '-'])
+
     # get local version + latest version on remote (master)
     # if they don't match, rebase is needed
-    # TODO: FIXME. needs to be changed from 'master' to top_level_branch
-    #       see TODO notes in create_branch() for more info
-    # remote_version = get_remote_version(top_level_branch)
-    remote_version = get_remote_version('master')
+    remote_version = get_remote_version(top_level_base)
     if local_version != remote_version:
         if not args.force:
             print('[ERROR] Your branch is out of sync (local=' + local_version +
                   ', remote=' + remote_version + '); please rebase (ex: "git rebase origin/' +
-                  top_level_branch + '"). NOTE: You can bypass this check by using -f')
+                  top_level_base + '"). NOTE: You can bypass this check by using -f')
             return 1
         print('[WARNING] Your branch is out of sync (local=' + local_version +
               ', remote=' + remote_version + '); continuing since -f was provided')
 
+    # If title isn't set already, generate one from first commit
     local_branch = get_local_branch_name(BRAVE_CORE_ROOT)
     if not config.title:
-        config.title = get_title_from_first_commit(BRAVE_CORE_ROOT, top_level_branch)
+        config.title = get_title_from_first_commit(BRAVE_CORE_ROOT, top_level_base)
 
     # Create a branch for each channel
     print('\nCreating branches...')
+    fancy_print('NOTE: Commits are being detected by diffing "' + local_branch + '" against "' + top_level_base + '"')
     remote_branches = get_remote_channel_branches(local_version)
     local_branches = {}
     try:
         for channel in config.channels_to_process:
-            branch = create_branch(channel, top_level_branch, remote_branches[channel], local_branch)
+            branch = create_branch(channel, top_level_base, remote_branches[channel], local_branch)
             local_branches[channel] = branch
             if channel == args.uplift_to:
                 break
@@ -238,7 +291,7 @@ def main():
         for channel in config.channels_to_process:
             submit_pr(
                 channel,
-                top_level_branch,
+                top_level_base,
                 remote_branches[channel],
                 local_branches[channel])
             if channel == args.uplift_to:
@@ -251,24 +304,17 @@ def main():
     return 0
 
 
-def create_branch(channel, top_level_branch, remote_branch, local_branch):
+def create_branch(channel, top_level_base, remote_base, local_branch):
     global config
 
     if is_nightly(channel):
         return local_branch
 
-    channel_branch = remote_branch + '_' + local_branch
+    channel_branch = remote_base + '_' + local_branch
 
     with scoped_cwd(BRAVE_CORE_ROOT):
         # get SHA for all commits (in order)
-        # TODO: FIXME. needs to be changed from 'master' to top_level_branch
-        #       however... there are complications with cherry-picking when that happens
-        #       (ex: users feature branch would need to be based off 0.60.x for example)
-        #       It would be good to detect if local branch is related (?) to the branch specified.
-        #       ex: try against master- if no ancestor within X commits, then try against top_level_branch instead
-        #       Basically: there needs to be a way to get ONLY the commits in this branch (and nothing more)
-        # sha_list = execute(['git', 'log', 'origin/' + top_level_branch + '..HEAD', '--pretty=format:%h', '--reverse'])
-        sha_list = execute(['git', 'log', 'origin/master..HEAD', '--pretty=format:%h', '--reverse'])
+        sha_list = execute(['git', 'log', 'origin/' + top_level_base + '..HEAD', '--pretty=format:%h', '--reverse'])
         sha_list = sha_list.split('\n')
         try:
             # check if branch exists already
@@ -280,12 +326,12 @@ def create_branch(channel, top_level_branch, remote_branch, local_branch):
             if len(branch_sha) > 0:
                 # branch exists; reset it
                 print('(' + channel + ') branch "' + channel_branch +
-                      '" exists; resetting to origin/' + remote_branch)
-                execute(['git', 'reset', '--hard', 'origin/' + remote_branch])
+                      '" exists; resetting to origin/' + remote_base)
+                execute(['git', 'reset', '--hard', 'origin/' + remote_base])
             else:
                 # create the branch
                 print('(' + channel + ') creating "' + channel_branch + '" from ' + channel)
-                execute(['git', 'checkout', remote_branch])
+                execute(['git', 'checkout', remote_base])
                 execute(['git', 'checkout', '-b', channel_branch])
 
             # TODO: handle errors thrown by cherry-pick
@@ -313,26 +359,26 @@ def get_milestone_for_branch(channel_branch):
     return None
 
 
-def submit_pr(channel, top_level_branch, remote_branch, local_branch):
+def submit_pr(channel, top_level_base, remote_base, local_branch):
     global config
 
     try:
-        milestone_number = get_milestone_for_branch(remote_branch)
+        milestone_number = get_milestone_for_branch(remote_base)
         if milestone_number is None:
-            print('milestone for "' + remote_branch + '"" was not found!')
+            print('milestone for "' + remote_base + '"" was not found!')
             return 0
 
         print('(' + channel + ') creating pull request')
         pr_title = config.title
-        pr_dst = remote_branch
+        pr_dst = remote_base
         if is_nightly(channel):
             pr_dst = 'master'
 
         # add uplift specific details (if needed)
-        if is_nightly(channel) or local_branch.startswith(top_level_branch):
+        if is_nightly(channel) or local_branch.startswith(top_level_base):
             pr_body = 'TODO: fill me in\n(created using `npm run pr`)'
         else:
-            pr_title += ' (uplift to ' + remote_branch + ')'
+            pr_title += ' (uplift to ' + remote_base + ')'
             pr_body = 'Uplift of #' + str(config.master_pr_number)
 
         number = create_pull_request(config.github_token, BRAVE_CORE_REPO, pr_title, pr_body,
@@ -340,7 +386,7 @@ def submit_pr(channel, top_level_branch, remote_branch, local_branch):
                                      open_in_browser=True, verbose=config.is_verbose, dryrun=config.is_dryrun)
 
         # store the original PR number so that it can be referenced in uplifts
-        if is_nightly(channel) or local_branch.startswith(top_level_branch):
+        if is_nightly(channel) or local_branch.startswith(top_level_base):
             config.master_pr_number = number
 
         # assign milestone / reviewer(s) / owner(s)
