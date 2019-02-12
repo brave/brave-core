@@ -41,8 +41,11 @@ BatPublishers::BatPublishers(bat_ledger::LedgerImpl* ledger):
 BatPublishers::~BatPublishers() {
 }
 
-void BatPublishers::calcScoreConsts(const uint64_t& min_duration) {
-  uint64_t min_duration_big = min_duration * 100;
+void BatPublishers::calcScoreConsts(const uint64_t& min_duration_seconds) {
+  // we increase duration for 100 to keep it as close to muon implementation
+  // as possible (we used 1000 in muon)
+  // keeping it with only seconds visits are not spaced out equally
+  uint64_t min_duration_big = min_duration_seconds * 100;
   a_ = (1.0 / (braveledger_ledger::_d * 2.0)) - min_duration_big;
   a2_ = a_ * 2.0;
   a4_ = a2_ * 2.0;
@@ -51,8 +54,8 @@ void BatPublishers::calcScoreConsts(const uint64_t& min_duration) {
 }
 
 // courtesy of @dimitry-xyz: https://github.com/brave/ledger/issues/2#issuecomment-221752002
-double BatPublishers::concaveScore(const uint64_t& duration) {
-  uint64_t duration_big = duration * 100;
+double BatPublishers::concaveScore(const uint64_t& duration_seconds) {
+  uint64_t duration_big = duration_seconds * 100;
   return (-b_ + std::sqrt(b2_ + (a4_ * duration_big))) / a2_;
 }
 
@@ -488,11 +491,11 @@ bool BatPublishers::getPublisherAllowVideos() const {
 }
 
 bool BatPublishers::GetMigrateScore() const {
-  return state_->migrate_score;
+  return state_->migrate_score_2;
 }
 
 void BatPublishers::SetMigrateScore(bool value) {
-  state_->migrate_score = value;
+  state_->migrate_score_2 = value;
   saveState();
 }
 

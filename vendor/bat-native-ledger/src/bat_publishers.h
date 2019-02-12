@@ -175,9 +175,9 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void OnRestorePublishersInternal(bool success);
 
-  void calcScoreConsts(const uint64_t& duration);
+  void calcScoreConsts(const uint64_t& min_duration_seconds);
 
-  double concaveScore(const uint64_t& duration);
+  double concaveScore(const uint64_t& duration_seconds);
 
   void saveState();
 
