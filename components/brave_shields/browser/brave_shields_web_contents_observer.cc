@@ -1,8 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+
+#include <map>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/extensions/api/brave_shields.h"
@@ -37,10 +44,11 @@ namespace {
 // Content Settings are only sent to the main frame currently.
 // Chrome may fix this at some point, but for now we do this as a work-around.
 // You can verify if this is fixed by running the following test:
-// npm run test -- brave_browser_tests --filter=BraveContentSettingsObserverBrowserTest.*
-// Chrome seems to also have a bug with RenderFrameHostChanged not updating the content settings
-// so this is fixed here too. That case is coveredd in tests by:
-// npm run test -- brave_browser_tests --filter=BraveContentSettingsObserverBrowserTest.*
+// npm run test -- brave_browser_tests --filter=BraveContentSettingsObserverBrowserTest.*  // NOLINT
+// Chrome seems to also have a bug with RenderFrameHostChanged not updating
+// the content settings so this is fixed here too. That case is covered in
+// tests by:
+// npm run test -- brave_browser_tests --filter=BraveContentSettingsObserverBrowserTest.*  // NOLINT
 void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
   for (content::RenderFrameHost* frame : web_contents->GetAllFrames()) {
     Profile* profile =

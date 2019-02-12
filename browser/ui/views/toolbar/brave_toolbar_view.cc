@@ -1,8 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+
+#include <algorithm>
+#include <memory>
+#include <utility>
 
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/common/pref_names.h"
@@ -55,7 +60,8 @@ void BraveToolbarView::Init() {
   }
 
   bookmark_ = new BookmarkButton(this);
-  bookmark_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON | ui::EF_MIDDLE_MOUSE_BUTTON);
+  bookmark_->set_triggerable_event_flags(
+      ui::EF_LEFT_MOUSE_BUTTON | ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->Init();
   AddChildView(bookmark_);
 }
@@ -94,7 +100,8 @@ void BraveToolbarView::ShowBookmarkBubble(
   delegate.reset(new BookmarkBubbleSignInDelegate(browser()));
   views::Widget* bubble_widget = BookmarkBubbleView::ShowBubble(
       anchor_view, star_view, gfx::Rect(), nullptr,
-      observer, std::move(delegate), browser_->profile(), url, already_bookmarked);
+      observer, std::move(delegate), browser_->profile(),
+      url, already_bookmarked);
 
   if (bubble_widget && star_view)
     star_view->OnBubbleWidgetCreated(bubble_widget);
@@ -130,16 +137,10 @@ int BraveToolbarView::SetLocationBarBounds(const int available_width,
     // Make sure any margin doesn't shrink the LocationBar beyond minimum width
     if (available_width > location_bar_min_width) {
       int location_bar_max_margin_h = (
-                                        available_width -
-                                        location_bar_min_width
-                                      ) /
-                                      2;
-      location_bar_margin_h = std::min(
-                                      (int)(
-                                        toolbar_width * location_bar_margin_h_pc
-                                      ),
-                                      location_bar_max_margin_h
-                                    );
+          available_width - location_bar_min_width) / 2;
+      location_bar_margin_h = std::min(static_cast<int>(toolbar_width *
+                                           location_bar_margin_h_pc),
+                                       location_bar_max_margin_h);
       location_bar_width = available_width - (location_bar_margin_h * 2);
       // Allow the margin to expand so LocationBar is restrained to max width
       if (location_bar_width > location_bar_max_width) {
@@ -162,8 +163,9 @@ int BraveToolbarView::SetLocationBarBounds(const int available_width,
     location_bar_center_offset = (location_bar_center_offset > 0)
                                 ? std::min(location_bar_margin_h,
                                           location_bar_center_offset)
-                                : std::max((int)(-location_bar_margin_h * .25),
-                                          location_bar_center_offset);
+                                : std::max(static_cast<int>(
+                                      -location_bar_margin_h * .25),
+                                    location_bar_center_offset);
   }
   // Apply offset to margin
   const int location_bar_margin_l = location_bar_margin_h -

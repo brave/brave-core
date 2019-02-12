@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -8,7 +9,7 @@
 
 // Pull in definitions for Brave prepopulated engines. It's ugly but these need
 // to be built as part of the search_engines static library.
-#include "../../../components/search_engines/brave_prepopulated_engines.cc"
+#include "../../../components/search_engines/brave_prepopulated_engines.cc"  // NOLINT
 #include "../../../components/search_engines/brave_prepopulated_engines.h"
 
 #define GetDataVersion GetDataVersion_ChromiumImpl
@@ -18,7 +19,7 @@
 #define GetPrepopulatedDefaultSearch GetPrepopulatedDefaultSearch_Unused
 #define GetPrepopulatedEngine GetPrepopulatedEngine_Unused
 #define GetPrepopulatedEngines GetPrepopulatedEngines_Unused
-#include "../../../../components/search_engines/template_url_prepopulate_data.cc"
+#include "../../../../components/search_engines/template_url_prepopulate_data.cc"  // NOLINT
 #undef GetDataVersion
 #if defined(OS_ANDROID)
 #undef GetLocalPrepopulatedEngines
@@ -70,8 +71,10 @@ const BravePrepopulatedEngineID kDefaultEngineID =
 // regular default engine.
 const std::map<int, BravePrepopulatedEngineID>
     default_engine_by_country_id_map = {
-        {country_codes::CountryCharsToCountryID('D', 'E'), PREPOPULATED_ENGINE_ID_QWANT},
-        {country_codes::CountryCharsToCountryID('F', 'R'), PREPOPULATED_ENGINE_ID_QWANT}
+        {country_codes::CountryCharsToCountryID('D', 'E'),
+          PREPOPULATED_ENGINE_ID_QWANT},
+        {country_codes::CountryCharsToCountryID('F', 'R'),
+          PREPOPULATED_ENGINE_ID_QWANT}
 };
 
 // Default order in which engines will appear in the UI.
@@ -360,7 +363,8 @@ std::vector<const PrepopulatedEngine*> GetEnginesFromEngineIDs(
   return engines;
 }
 
-void UpdateTemplateURLDataKeyword(std::unique_ptr<TemplateURLData>& t_urld) {
+void UpdateTemplateURLDataKeyword(
+    const std::unique_ptr<TemplateURLData>& t_urld) {
   DCHECK(t_urld.get());
   switch (t_urld->prepopulate_id) {
     case PREPOPULATED_ENGINE_ID_GOOGLE:
@@ -462,8 +466,9 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
   if (!t_urls.empty())
     return t_urls;
 
-  return GetBravePrepopulatedEnginesForCountryID(country_codes::GetCountryIDFromPrefs(prefs),
-                                                 default_search_provider_index);
+  return GetBravePrepopulatedEnginesForCountryID(
+      country_codes::GetCountryIDFromPrefs(prefs),
+      default_search_provider_index);
 }
 
 // Redefines function with the same name in Chromium. Modifies the function to

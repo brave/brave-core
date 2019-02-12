@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -13,7 +14,7 @@ SkColor GetOmniboxColor(OmniboxPart part,
                         OmniboxTint tint,
                         OmniboxPartState state);
 
-#include "../../../chrome/browser/ui/omnibox/omnibox_theme.cc"
+#include "../../../chrome/browser/ui/omnibox/omnibox_theme.cc"  // NOLINT
 
 namespace {
 
@@ -47,7 +48,7 @@ constexpr SkColor DarkPrivateLight(OmniboxTint tint,
 
 const SkColor kPrivateLocationBarBackground = SkColorSetRGB(0x1b, 0x0e, 0x2c);
 
-}
+}  // namespace
 
 // Overriden version
 SkColor GetOmniboxColor(OmniboxPart part,

@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "chrome/install_static/install_util.h"
-
 #include <objbase.h>
 
 #include <tuple>
@@ -13,6 +11,7 @@
 #include "base/test/test_reg_util_win.h"
 #include "chrome/install_static/install_details.h"
 #include "chrome/install_static/install_modes.h"
+#include "chrome/install_static/install_util.h"
 #include "chrome/install_static/test/scoped_install_details.h"
 #include "chrome_elf/nt_registry/nt_registry.h"
 #include "components/version_info/channel.h"
@@ -353,8 +352,10 @@ TEST_P(InstallStaticUtilTest, GetChromeInstallSubDirectory) {
   // The directory strings for the brand's install modes; parallel to
   // kInstallModes.
   static constexpr const wchar_t* kInstallDirs[] = {
-      L"BraveSoftware\\Brave-Browser", L"BraveSoftware\\Brave-Browser-Beta",
-      L"BraveSoftware\\Brave-Browser-Dev", L"BraveSoftware\\Brave-Browser-Nightly",
+      L"BraveSoftware\\Brave-Browser",
+      L"BraveSoftware\\Brave-Browser-Beta",
+      L"BraveSoftware\\Brave-Browser-Dev",
+      L"BraveSoftware\\Brave-Browser-Nightly",
   };
 #else
   // The directory strings for the brand's install modes; parallel to
@@ -410,7 +411,7 @@ TEST_P(InstallStaticUtilTest, GetUninstallRegistryPath) {
   // The registry path strings for the brand's install modes; parallel to
   // kInstallModes.
   static constexpr const wchar_t* kUninstallRegistryPaths[] = {
-      L"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" // (cont'd)
+      L"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\"  // (cont'd)
       L"BraveSoftware Brave-Browser-Development",
   };
 #endif

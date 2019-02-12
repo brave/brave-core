@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -16,8 +17,8 @@
 #include "sql/meta_table.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
-#include "content_site.h"
-#include "recurring_donation.h"
+#include "brave/components/brave_rewards/browser/content_site.h"
+#include "brave/components/brave_rewards/browser/recurring_donation.h"
 
 namespace brave_rewards {
 
@@ -48,7 +49,7 @@ bool PublisherInfoDatabase::Init() {
     return false;
   }
 
-  // TODO - add error delegate
+  // TODO(brave): Add error delegate
   sql::Transaction committer(&db_);
   if (!committer.Begin()) {
     return false;
@@ -894,7 +895,7 @@ bool PublisherInfoDatabase::InsertPendingContribution
 }
 
 double PublisherInfoDatabase::GetReservedAmount() {
-   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
   DCHECK(initialized);

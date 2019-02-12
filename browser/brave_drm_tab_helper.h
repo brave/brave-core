@@ -1,9 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_DRM_TAB_HELPER_H_
-#define BRAVE_BROWSER_DRM_TAB_HELPER_H_
+#ifndef BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_
+#define BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_
 
 #include "content/public/browser/web_contents_binding_set.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -16,7 +17,7 @@ class BraveDrmTabHelper final
       public content::WebContentsUserData<BraveDrmTabHelper>,
       public blink::mojom::BraveDRM {
  public:
-  BraveDrmTabHelper(content::WebContents* contents);
+  explicit BraveDrmTabHelper(content::WebContents* contents);
   ~BraveDrmTabHelper() override;
 
   bool ShouldShowWidevineOptIn() const;
@@ -37,4 +38,4 @@ class BraveDrmTabHelper final
   bool is_widevine_requested_ = false;
 };
 
-#endif  // BRAVE_BROWSER_DRM_TAB_HELPER_H_
+#endif  // BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_

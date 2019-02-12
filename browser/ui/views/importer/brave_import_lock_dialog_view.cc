@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/importer/brave_import_lock_dialog_view.h"
+
+#include <memory>
 
 #include "base/bind.h"
 #include "base/location.h"
@@ -57,7 +60,8 @@ ImportLockDialogView::ImportLockDialogView(
   views::Label* description_label;
   if (source_profile_.importer_type == ::importer::TYPE_CHROME) {
     description_label =
-      new views::Label(l10n_util::GetStringUTF16(IDS_CHROME_IMPORTER_LOCK_TEXT));
+      new views::Label(l10n_util::GetStringUTF16(
+            IDS_CHROME_IMPORTER_LOCK_TEXT));
   } else {  // if (source_profile_.importer_type == ::importer::TYPE_BRAVE)
     description_label =
       new views::Label(l10n_util::GetStringUTF16(IDS_BRAVE_IMPORTER_LOCK_TEXT));

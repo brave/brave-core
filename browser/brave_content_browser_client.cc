@@ -262,7 +262,8 @@ BraveContentBrowserClient::GetServiceManifestOverlay(base::StringPiece name) {
   if (name == content::mojom::kBrowserServiceName) {
     manifest->Amend(brave_content_browser_manifest_overlay::GetManifest());
   } else if (name == content::mojom::kPackagedServicesServiceName) {
-    manifest->Amend(brave_content_packaged_services_manifest_overlay::GetManifest());
+    manifest->Amend(
+        brave_content_packaged_services_manifest_overlay::GetManifest());
   }
   return manifest;
 }

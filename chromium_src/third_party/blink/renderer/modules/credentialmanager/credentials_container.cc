@@ -1,3 +1,8 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "third_party/blink/renderer/modules/credentialmanager/credentials_container.h"
 
 #include "gin/converter.h"
@@ -13,7 +18,8 @@ namespace blink {
   ScriptPromise CredentialsContainer::get(
       ScriptState* script_state,
       const CredentialRequestOptions* options) {
-    ScriptPromiseResolver* resolver = ScriptPromiseResolver::Create(script_state);
+    ScriptPromiseResolver* resolver =
+        ScriptPromiseResolver::Create(script_state);
     ScriptPromise promise = resolver->Promise();
     v8::Isolate* isolate = script_state->GetIsolate();
     resolver->Resolve(v8::Null(isolate));
@@ -22,7 +28,8 @@ namespace blink {
 
   ScriptPromise CredentialsContainer::store(ScriptState* script_state,
       Credential* credential) {
-    ScriptPromiseResolver* resolver = ScriptPromiseResolver::Create(script_state);
+    ScriptPromiseResolver* resolver =
+        ScriptPromiseResolver::Create(script_state);
     ScriptPromise promise = resolver->Promise();
     v8::Isolate* isolate = script_state->GetIsolate();
     resolver->Resolve(v8::Null(isolate));
@@ -31,7 +38,8 @@ namespace blink {
 
   ScriptPromise CredentialsContainer::preventSilentAccess(
       ScriptState* script_state) {
-    ScriptPromiseResolver* resolver = ScriptPromiseResolver::Create(script_state);
+    ScriptPromiseResolver* resolver =
+        ScriptPromiseResolver::Create(script_state);
     ScriptPromise promise = resolver->Promise();
     resolver->Resolve();
     return promise;
@@ -44,10 +52,11 @@ namespace blink {
   ScriptPromise CredentialsContainer::create(ScriptState* script_state,
       const CredentialCreationOptions* options,
       ExceptionState& exception_state) {
-    ScriptPromiseResolver* resolver = ScriptPromiseResolver::Create(script_state);
+    ScriptPromiseResolver* resolver =
+        ScriptPromiseResolver::Create(script_state);
     ScriptPromise promise = resolver->Promise();
     v8::Isolate* isolate = script_state->GetIsolate();
     resolver->Resolve(v8::Null(isolate));
     return promise;
   }
-} // namespace blink
+}  // namespace blink

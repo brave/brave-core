@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -62,8 +63,7 @@ BraveImporter::~BraveImporter() {
 }
 
 void BraveImporter::StartImport(const importer::SourceProfile& source_profile,
-				uint16_t items,
-				ImporterBridge* bridge) {
+    uint16_t items, ImporterBridge* bridge) {
   bridge_ = bridge;
   source_path_ = source_profile.source_path;
 
@@ -196,7 +196,7 @@ void BraveImporter::ParseBookmarks(
                                       base::Value::Type::DICTIONARY);
   base::Value* bookmark_order_dict =
     session_store_json->FindPathOfType({"cache", "bookmarkOrder"},
-				       base::Value::Type::DICTIONARY);
+    base::Value::Type::DICTIONARY);
   if (!(bookmark_folders_dict && bookmarks_dict && bookmark_order_dict))
     return;
 
@@ -379,24 +379,23 @@ void BraveImporter::ImportStats() {
   bridge_->UpdateStats(stats);
 }
 
-bool ParseWalletPassphrase(BraveLedger& ledger,
+bool ParseWalletPassphrase(BraveLedger* ledger,
   const base::Value& session_store_json) {
   const base::Value* wallet_passphrase_value =
     session_store_json.FindPathOfType(
       {"ledger", "info", "passphrase"},
-      base::Value::Type::STRING
-    );
+      base::Value::Type::STRING);
   if (!wallet_passphrase_value) {
     LOG(ERROR) << "Wallet passphrase not found in session-store-1";
     return false;
   }
 
-  ledger.passphrase = wallet_passphrase_value->GetString();
-  return !ledger.passphrase.empty();
+  ledger->passphrase = wallet_passphrase_value->GetString();
+  return !ledger->passphrase.empty();
 }
 
 bool TryFindBoolKey(const base::Value* dict,
-  const std::string key, bool& value_to_set) {
+  const std::string key, bool& value_to_set) {  // NOLINT
   auto* value_read = dict->FindKeyOfType(key, base::Value::Type::BOOLEAN);
   if (value_read) {
     value_to_set = value_read->GetBool();
@@ -406,7 +405,7 @@ bool TryFindBoolKey(const base::Value* dict,
 }
 
 bool TryFindStringKey(const base::Value* dict,
-  const std::string key, std::string& value_to_set) {
+  const std::string key, std::string& value_to_set) {  // NOLINT
   auto* value_read = dict->FindKeyOfType(key, base::Value::Type::STRING);
   if (value_read) {
     value_to_set = value_read->GetString();
@@ -416,7 +415,7 @@ bool TryFindStringKey(const base::Value* dict,
 }
 
 bool TryFindIntKey(const base::Value* dict, const std::string key,
-  int& value_to_set) {
+  int& value_to_set) {  // NOLINT
   auto* value_read = dict->FindKeyOfType(key, base::Value::Type::INTEGER);
   if (value_read) {
     value_to_set = value_read->GetInt();
@@ -425,7 +424,8 @@ bool TryFindIntKey(const base::Value* dict, const std::string key,
   return false;
 }
 
-bool TryFindUInt64Key(const base::Value* dict, const std::string key, uint64_t& value_to_set) {
+bool TryFindUInt64Key(const base::Value* dict,
+    const std::string key, uint64_t& value_to_set) {  // NOLINT
   auto* value_read = dict->FindKeyOfType(key, base::Value::Type::DOUBLE);
   if (value_read) {
     value_to_set = (uint64_t)value_read->GetDouble();
@@ -434,7 +434,7 @@ bool TryFindUInt64Key(const base::Value* dict, const std::string key, uint64_t& 
   return false;
 }
 
-bool ParsePaymentsPreferences(BraveLedger& ledger,
+bool ParsePaymentsPreferences(BraveLedger* ledger,
   const base::Value& session_store_json) {
   const base::Value* settings = session_store_json.FindKeyOfType(
     "settings",
@@ -444,7 +444,7 @@ bool ParsePaymentsPreferences(BraveLedger& ledger,
     return false;
   }
 
-  auto* payments = &ledger.settings.payments;
+  auto* payments = &ledger->settings.payments;
 
   // Boolean prefs. If any of these settings are missing,
   // let's fall back to the default value from browser-laptop.
@@ -464,7 +464,7 @@ bool ParsePaymentsPreferences(BraveLedger& ledger,
   }
 
   // Contribution amount
-  // TODO: get default amount from rewards service
+  // TODO(brave): Get default amount from rewards service
   const int default_monthly_contribution = 20;
   std::string contribution_amount = "";
   payments->contribution_amount = -1;
@@ -531,7 +531,7 @@ bool ParsePaymentsPreferences(BraveLedger& ledger,
   return true;
 }
 
-bool ParseExcludedSites(BraveLedger& ledger,
+bool ParseExcludedSites(BraveLedger* ledger,
   const base::Value& session_store_json) {
   const base::Value* site_settings = session_store_json.FindKeyOfType(
     "siteSettings",
@@ -541,7 +541,7 @@ bool ParseExcludedSites(BraveLedger& ledger,
     return false;
   }
 
-  ledger.excluded_publishers = std::vector<std::string>();
+  ledger->excluded_publishers = std::vector<std::string>();
   bool host_pattern_included;
 
   for (const auto& item : site_settings->DictItems()) {
@@ -557,7 +557,7 @@ bool ParseExcludedSites(BraveLedger& ledger,
         // The protocol part can be removed (to get publisher key)
         size_t protocol_index = host_pattern.find("//");
         if (protocol_index != std::string::npos) {
-          ledger.excluded_publishers.push_back(
+          ledger->excluded_publishers.push_back(
             host_pattern.substr(protocol_index + 2));
         }
       }
@@ -570,12 +570,13 @@ bool ParseExcludedSites(BraveLedger& ledger,
 // implemented in C++20
 bool ends_with(const std::string &input, const std::string &test) {
   if (input.length() >= test.length()) {
-    return (0 == input.compare (input.length() - test.length(), test.length(), test));
+    return (0 == input.compare (input.length() - test.length(), test.length(),
+          test));
   }
   return false;
 }
 
-bool ParsePinnedSites(BraveLedger& ledger,
+bool ParsePinnedSites(BraveLedger* ledger,
   const base::Value& session_store_json) {
   const base::Value* publishers = session_store_json.FindPathOfType(
       {"ledger", "about", "synopsis"}, base::Value::Type::LIST);
@@ -585,7 +586,7 @@ bool ParsePinnedSites(BraveLedger& ledger,
     return false;
   }
 
-  ledger.pinned_publishers = std::vector<BravePublisher>();
+  ledger->pinned_publishers = std::vector<BravePublisher>();
 
   for (const auto& item : publishers->GetList()) {
     BravePublisher publisher;
@@ -614,7 +615,7 @@ bool ParsePinnedSites(BraveLedger& ledger,
           if (!ends_with(publisher.url, "/")) {
             publisher.url += "/";
           }
-          ledger.pinned_publishers.push_back(publisher);
+          ledger->pinned_publishers.push_back(publisher);
         }
       }
     }
@@ -634,7 +635,7 @@ bool BraveImporter::ImportLedger() {
 
   BraveLedger ledger;
 
-  if (!ParsePaymentsPreferences(ledger, *session_store_json)) {
+  if (!ParsePaymentsPreferences(&ledger, *session_store_json)) {
     LOG(ERROR) << "Failed to parse preferences for Brave Payments";
     return false;
   }
@@ -642,7 +643,7 @@ bool BraveImporter::ImportLedger() {
   // It should be considered fatal if an error occurs while
   // parsing any of the below expected fields. This could
   // indicate a corrupt session-store-1
-  if (!ParseWalletPassphrase(ledger, *session_store_json)) {
+  if (!ParseWalletPassphrase(&ledger, *session_store_json)) {
     LOG(ERROR) << "Failed to parse wallet passphrase";
     return false;
   }
@@ -653,12 +654,12 @@ bool BraveImporter::ImportLedger() {
   }
 
   // only do the import if Brave Payments is enabled
-  if (!ParseExcludedSites(ledger, *session_store_json)) {
+  if (!ParseExcludedSites(&ledger, *session_store_json)) {
     LOG(ERROR) << "Failed to parse list of excluded sites for Brave Payments";
     return false;
   }
 
-  if (!ParsePinnedSites(ledger, *session_store_json)) {
+  if (!ParsePinnedSites(&ledger, *session_store_json)) {
     LOG(ERROR) << "Failed to parse list of pinned sites for Brave Payments";
     return false;
   }
@@ -697,11 +698,13 @@ void BraveImporter::ImportReferral() {
     referral.download_id = "";
   }
 
-  if (!TryFindUInt64Key(updates, "referralTimestamp", referral.finalize_timestamp)) {
+  if (!TryFindUInt64Key(updates, "referralTimestamp",
+        referral.finalize_timestamp)) {
     referral.finalize_timestamp = 0;
   }
 
-  if (!TryFindStringKey(updates, "weekOfInstallation", referral.week_of_installation)) {
+  if (!TryFindStringKey(updates, "weekOfInstallation",
+        referral.week_of_installation)) {
     referral.week_of_installation = "";
   }
 
@@ -906,7 +909,8 @@ void BraveImporter::ImportSettings() {
     user_settings.use_alternate_private_search_engine = false;
   }
 
-  if (!TryFindBoolKey(settings, "search.use-alternate-private-search-engine-tor",
+  if (!TryFindBoolKey(settings,
+        "search.use-alternate-private-search-engine-tor",
       user_settings.use_alternate_private_search_engine_tor)) {
     user_settings.use_alternate_private_search_engine_tor = true;
   }

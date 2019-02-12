@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -6,6 +7,7 @@
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_APP_H_
 
 #include <memory>
+#include <string>
 
 #include "services/service_manager/public/cpp/binder_registry.h"
 #include "services/service_manager/public/cpp/service.h"
@@ -16,7 +18,7 @@ namespace bat_ledger {
 
 class BatLedgerApp : public service_manager::Service {
  public:
-  BatLedgerApp(service_manager::mojom::ServiceRequest request);
+  explicit BatLedgerApp(service_manager::mojom::ServiceRequest request);
   ~BatLedgerApp() override;
 
   // Lifescycle events that occur after the service has started to spinup.
@@ -33,6 +35,6 @@ class BatLedgerApp : public service_manager::Service {
   DISALLOW_COPY_AND_ASSIGN(BatLedgerApp);
 };
 
-} // namespace rewards
+}  // namespace bat_ledger
 
-#endif // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_APP_H_
+#endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_APP_H_

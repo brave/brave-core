@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -10,22 +11,21 @@
 
 class TabStrip;
 namespace views {
-  class ButtonListener;
+class ButtonListener;
 }
 
 class BraveNewTabButton : public NewTabButton {
-  public:
-    static const gfx::Size kButtonSize;
+ public:
+  static const gfx::Size kButtonSize;
+  using NewTabButton::NewTabButton;
 
-    using NewTabButton::NewTabButton;
-
-  private:
-    gfx::Size CalculatePreferredSize() const override;
-    SkPath GetBorderPath(const gfx::Point& origin,
-                          float scale,
-                          bool extend_to_top) const override;
-    void PaintPlusIcon(gfx::Canvas* canvas) const override;
-    DISALLOW_COPY_AND_ASSIGN(BraveNewTabButton);
+ private:
+  gfx::Size CalculatePreferredSize() const override;
+  SkPath GetBorderPath(const gfx::Point& origin,
+                       float scale,
+                       bool extend_to_top) const override;
+  void PaintPlusIcon(gfx::Canvas* canvas) const override;
+  DISALLOW_COPY_AND_ASSIGN(BraveNewTabButton);
 };
 
-#endif
+#endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_NEW_TAB_BUTTON_H_

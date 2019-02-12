@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -49,7 +50,6 @@ class BraveDownloadItemModelTest : public testing::Test {
   ~BraveDownloadItemModelTest() override {}
 
  protected:
-
   void SetupDownloadItemDefaults() {
     ON_CALL(item_, GetReceivedBytes()).WillByDefault(Return(1));
     ON_CALL(item_, GetTotalBytes()).WillByDefault(Return(2));
