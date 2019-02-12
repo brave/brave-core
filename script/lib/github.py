@@ -110,16 +110,46 @@ def parse_user_logins(token, login_csv, verbose=False):
     # for more info see: https://developer.github.com/v3/users/#get-a-single-user
     for login in parsed_logins:
         try:
-            user = users(login).get()
+            response = users(login).get()
+            if verbose:
+                print('[INFO] Login "' + login + '" found: ' + str(response))
         except Exception as e:
             if verbose:
-                print('Login "' + login + '" does not appear to be valid. ' + str(e))
+                print('[INFO] Login "' + login + '" does not appear to be valid. ' + str(e))
             invalid_logins.append(login)
 
     if len(invalid_logins) > 0:
         raise Exception('Invalid logins found. Are they misspelled? ' + ','.join(invalid_logins))
 
     return parsed_logins
+
+
+def parse_labels(token, repo_name, label_csv, verbose=False):
+    global config
+    if label_csv is None:
+        return []
+    label_csv = label_csv.replace(" ", "")
+    parsed_labels = label_csv.split(',')
+
+    invalid_labels = []
+
+    # validate labels passed in are correct
+    # for more info see: https://developer.github.com/v3/issues/labels/#get-a-single-label
+    repo = GitHub(token).repos(repo_name)
+    for label in parsed_labels:
+        try:
+            response = repo.labels(label).get()
+            if verbose:
+                print('[INFO] Label "' + label + '" found: ' + str(response))
+        except Exception as e:
+            if verbose:
+                print('[INFO] Label "' + label + '" does not appear to be valid. ' + str(e))
+            invalid_labels.append(label)
+
+    if len(invalid_labels) > 0:
+        raise Exception('Invalid labels found. Are they misspelled? ' + ','.join(invalid_labels))
+
+    return parsed_labels
 
 
 def get_file_contents(token, repo_name, filename, branch=None):
@@ -182,12 +212,15 @@ def create_pull_request(token, repo_name, title, body, branch_src, branch_dst, v
     return int(response['number'])
 
 
-def set_issue_details(token, repo_name, issue_number, milestone_number=None, assignees=[], verbose=False, dryrun=False):
+def set_issue_details(token, repo_name, issue_number, milestone_number=None,
+                      assignees=[], labels=[], verbose=False, dryrun=False):
     patch_data = {}
     if milestone_number:
         patch_data['milestone'] = milestone_number
     if len(assignees) > 0:
         patch_data['assignees'] = assignees
+    if len(labels) > 0:
+        patch_data['labels'] = labels
     # TODO: error if no keys in patch_data
 
     # add milestone and assignee to issue / pull request
@@ -211,6 +244,23 @@ def fetch_origin_check_staged(path):
                   'Please resolve these before running (ex: `git status`).')
             return 1
     return 0
+
+
+def get_local_branch_name(path):
+    with scoped_cwd(path):
+        return execute(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
+
+
+def get_title_from_first_commit(path, branch_to_compare):
+    """get the first commit subject (useful for the title of a pull request)"""
+    with scoped_cwd(path):
+        local_branch = execute(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
+        title_list = execute(['git', 'log', 'origin/' + branch_to_compare +
+                             '..HEAD', '--pretty=format:%s', '--reverse'])
+        title_list = title_list.split('\n')
+        if len(title_list) == 0:
+            raise Exception('No commits found! Local branch matches "' + branch_to_compare + '"')
+        return title_list[0]
 
 
 def push_branches_to_remote(path, branches_to_push, dryrun=False):
