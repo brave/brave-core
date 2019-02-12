@@ -29,7 +29,6 @@ from lib.github import (GitHub, get_authenticated_user_login, parse_user_logins,
 # TODOs for this version
 #####
 # - parse out issue (so it can be included in body). ex: git log --pretty=format:%b
-# - open PRs in default browser (shell exec) BY DEFAULT. Offer a quiet that DOESN'T open
 # - discover associated issues
 #    - put them in the uplift / original PR body
 #    - set milestone! (on the ISSUE)
@@ -57,13 +56,17 @@ class PrConfig:
             # validate channel names
             validate_channel(args.uplift_to)
             validate_channel(args.start_from)
-            # TODO: read github token FIRST from CLI, then from .npmrc
+            # read github token FIRST from CLI, then from .npmrc
             self.github_token = get_env_var('GITHUB_TOKEN')
             if len(self.github_token) == 0:
-                # TODO: check .npmrc
-                # if not there, error out!
-                print('[ERROR] no valid GitHub token was found')
-                return 1
+                try:
+                    result = execute(['npm', 'config', 'get', 'BRAVE_GITHUB_TOKEN']).strip()
+                    if result == 'undefined':
+                        raise Exception('`BRAVE_GITHUB_TOKEN` value not found!')
+                    self.github_token = result
+                except Exception as e:
+                    print('[ERROR] no valid GitHub token was found either in npmrc or via environment variables (BRAVE_GITHUB_TOKEN)')
+                    return 1
             self.parsed_reviewers = parse_user_logins(self.github_token, args.reviewers, verbose=self.is_verbose)
             # if `--owners` is not provided, fall back to user owning token
             self.parsed_owners = parse_user_logins(self.github_token, args.owners, verbose=self.is_verbose)
@@ -196,7 +199,10 @@ def main():
 
     # get local version + latest version on remote (master)
     # if they don't match, rebase is needed
-    remote_version = get_remote_version(top_level_branch)
+    # TODO: FIXME. needs to be changed from 'master' to top_level_branch
+    #       see TODO notes in create_branch() for more info
+    # remote_version = get_remote_version(top_level_branch)
+    remote_version = get_remote_version('master')
     if local_version != remote_version:
         if not args.force:
             print('[ERROR] Your branch is out of sync (local=' + local_version +
@@ -255,7 +261,14 @@ def create_branch(channel, top_level_branch, remote_branch, local_branch):
 
     with scoped_cwd(BRAVE_CORE_ROOT):
         # get SHA for all commits (in order)
-        sha_list = execute(['git', 'log', 'origin/' + top_level_branch + '..HEAD', '--pretty=format:%h', '--reverse'])
+        # TODO: FIXME. needs to be changed from 'master' to top_level_branch
+        #       however... there are complications with cherry-picking when that happens
+        #       (ex: users feature branch would need to be based off 0.60.x for example)
+        #       It would be good to detect if local branch is related (?) to the branch specified.
+        #       ex: try against master- if no ancestor within X commits, then try against top_level_branch instead
+        #       Basically: there needs to be a way to get ONLY the commits in this branch (and nothing more)
+        # sha_list = execute(['git', 'log', 'origin/' + top_level_branch + '..HEAD', '--pretty=format:%h', '--reverse'])
+        sha_list = execute(['git', 'log', 'origin/master..HEAD', '--pretty=format:%h', '--reverse'])
         sha_list = sha_list.split('\n')
         try:
             # check if branch exists already
@@ -316,7 +329,7 @@ def submit_pr(channel, top_level_branch, remote_branch, local_branch):
             pr_dst = 'master'
 
         # add uplift specific details (if needed)
-        if local_branch.startswith(top_level_branch):
+        if is_nightly(channel) or local_branch.startswith(top_level_branch):
             pr_body = 'TODO: fill me in\n(created using `npm run pr`)'
         else:
             pr_title += ' (uplift to ' + remote_branch + ')'
@@ -324,10 +337,10 @@ def submit_pr(channel, top_level_branch, remote_branch, local_branch):
 
         number = create_pull_request(config.github_token, BRAVE_CORE_REPO, pr_title, pr_body,
                                      branch_src=local_branch, branch_dst=pr_dst,
-                                     verbose=config.is_verbose, dryrun=config.is_dryrun)
+                                     open_in_browser=True, verbose=config.is_verbose, dryrun=config.is_dryrun)
 
         # store the original PR number so that it can be referenced in uplifts
-        if local_branch.startswith(top_level_branch):
+        if is_nightly(channel) or local_branch.startswith(top_level_branch):
             config.master_pr_number = number
 
         # assign milestone / reviewer(s) / owner(s)
