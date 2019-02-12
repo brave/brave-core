@@ -321,7 +321,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             ])}
             grant={store.state.grant}
             onGrantHide={onGrantHide}
-            onFetchCaptcha={onFetchCaptcha}
+            onNotificationClick={onFetchCaptcha}
             onSolution={onSolution}
             onFinish={onFinish}
             convertProbiToFixed={convertProbiToFixed}

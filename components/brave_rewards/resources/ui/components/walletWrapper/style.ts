@@ -11,6 +11,8 @@ interface StyledProps {
   compact?: boolean,
   background?: string,
   isMobile?: boolean,
+  type?: string,
+  onClick?: Function | undefined,
   notification?: Notification | undefined
 }
 
@@ -279,6 +281,7 @@ export const StyledTypeText = styled<StyledProps, 'span'>('span')`
   font-weight: 500;
   margin-right: 5px;
   display: inline-block;
+  cursor: ${p => p.onClick ? 'pointer' : 'default'};
 `
 
 export const StyledMessageText = styled<StyledProps, 'span'>('span')`
@@ -297,8 +300,8 @@ export const StyledDateText = styled<StyledProps, 'span'>('span')`
 `
 
 export const StyledButton = styled<StyledProps, 'div'>('div')`
-  width: 88px;
-  margin: 12px 122px 15px 125px;
+  width: ${p => p.type === 'backupWallet' ? 101 : 88}px;
+  margin: 12px 122px 15px ${p => p.type === 'backupWallet' ? 123 : 125}px;
 `
 
 export const StyledPipe = styled<StyledProps, 'span'>('span')`
