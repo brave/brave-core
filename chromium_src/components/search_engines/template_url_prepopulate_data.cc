@@ -6,6 +6,11 @@
 #include "base/strings/utf_string_conversions.h"
 #include "components/country_codes/country_codes.h"
 
+// Pull in definitions for Brave prepopulated engines. It's ugly but these need
+// to be built as part of the search_engines static library.
+#include "../../../components/search_engines/brave_prepopulated_engines.cc"
+#include "../../../components/search_engines/brave_prepopulated_engines.h"
+
 #define GetDataVersion GetDataVersion_ChromiumImpl
 #if defined(OS_ANDROID)
 #define GetLocalPrepopulatedEngines GetLocalPrepopulatedEngines_Unused
@@ -21,11 +26,6 @@
 #undef GetPrepopulatedDefaultSearch
 #undef GetPrepopulatedEngine
 #undef GetPrepopulatedEngines
-
-// Pull in definitions for Brave prepopulated engines. It's ugly but these need
-// to be built as part of the search_engines static library.
-#include "../../../components/search_engines/brave_prepopulated_engines.cc"
-#include "../../../components/search_engines/brave_prepopulated_engines.h"
 
 namespace TemplateURLPrepopulateData {
 
