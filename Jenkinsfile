@@ -5,53 +5,72 @@ pipeline {
         timestamps()
     }
     agent {
-        node { label 'master' }
+        node { label "master" }
     }
     environment {
-        GITHUB_CREDENTIALS = credentials('brave-builds-github-token-for-pr-builder')
-        BC_REPO = "https://${GITHUB_CREDENTIALS}@github.com/brave/brave-browser"
+        GITHUB_CREDENTIALS = credentials("brave-builds-github-token-for-pr-builder")
+        BB_REPO = "https://${GITHUB_CREDENTIALS}@github.com/brave/brave-browser"
     }
     stages {
-        stage('config') {
+        stage("env") {
+            steps {
+                script {
+                    BRANCH_TO_BUILD = ("${CHANGE_BRANCH}" == null ? "${BRANCH_NAME}" : "${CHANGE_BRANCH}")
+                    TARGET_BRANCH = ("${CHANGE_TARGET}" == null ? "${BRANCH_TO_BUILD}" : "${CHANGE_TARGET}")
+                }
+            }
+        }
+        stage("config") {
             steps {
                 sh """
-                    if [ -d brave-browser ]; then
-                        rm -rf brave-browser
-                    fi
+                    if [ "`curl -s -w %{http_code} -o /dev/null ${BB_REPO}/tree/${BRANCH_TO_BUILD}`" = "404" ]; then
+                        if [ -d brave-browser ]; then
+                            rm -rf brave-browser
+                        fi
 
-                    echo "Cloning brave-browser..."
-                    git clone -b ${CHANGE_TARGET} ${BC_REPO}
+                        echo "Cloning brave-browser..."
+                        git clone -b ${TARGET_BRANCH} ${BB_REPO}
+                        cd brave-browser
 
-                    cd brave-browser
-
-                    if [ -z "`git ls-remote --heads ${BC_REPO} ${CHANGE_BRANCH}`" ]; then
                         git config user.name brave-builds
                         git config user.email devops@brave.com
                         git config push.default simple
 
-                        echo "Creating ${CHANGE_BRANCH} branch in brave-browser..."
-                        git checkout -f -b ${CHANGE_BRANCH}
+                        echo "Creating ${BRANCH_TO_BUILD} branch in brave-browser..."
+                        git checkout -f -b ${BRANCH_TO_BUILD}
 
-                        echo "Pinning brave-core to branch ${CHANGE_BRANCH}..."
-                        jq "del(.config.projects[\\"brave-core\\"].branch) | .config.projects[\\"brave-core\\"].branch=\\"${CHANGE_BRANCH}\\"" package.json > package.json.new
+                        echo "Pinning brave-core to branch ${BRANCH_TO_BUILD}..."
+                        jq "del(.config.projects[\\"brave-core\\"].branch) | .config.projects[\\"brave-core\\"].branch=\\"${BRANCH_TO_BUILD}\\"" package.json > package.json.new
                         mv package.json.new package.json
 
                         echo "Pushing changes..."
-                        git commit -a -m "pin brave-core to branch ${CHANGE_BRANCH}"
-                        git push ${BC_REPO}
-
-                        echo "Sleeping 5m so new branch is discovered..."
-                        sleep 300
+                        git commit -a -m "pin brave-core to branch ${BRANCH_TO_BUILD}"
+                        git push ${BB_REPO}
                     fi
+
                 """
+
+                echo "Sleeping 5m so new branch is discovered or associated PR created in brave-browser..."
+                sleep 300
             }
         }
-        stage('build') {
+        stage("build") {
             steps {
                 script {
-                    def buildResult = build(job: "brave-browser-build-pr/${CHANGE_BRANCH}", propagate: false).result
-                    echo "Browser build ${buildResult} at ${JENKINS_URL}/job/brave-browser-build-pr/${CHANGE_BRANCH}"
-                    if (buildResult == 'ABORTED') { currentBuild.result = 'FAILURE' } else { currentBuild.result = buildResult }
+                    def response = httpRequest(url: "https://api.github.com/repos/brave/brave-browser/pulls?head=brave:${BRANCH_TO_BUILD}")
+                    def prDetails = readJSON(text: response.content)[0]
+                    def prNumber = prDetails ? prDetails.number : ""
+                    def refToBuild = prNumber ? "PR-" + prNumber : "${BRANCH_TO_BUILD}"
+                    def buildResult = build(job: "brave-browser-build-pr/" + refToBuild, propagate: false).result
+
+                    echo "Browser build ${buildResult} at ${JENKINS_URL}/job/brave-browser-build-pr/" + refToBuild
+
+                    if (buildResult == "ABORTED") {
+                        currentBuild.result = "FAILURE"
+                    }
+                    else {
+                        currentBuild.result = buildResult
+                    }
                 }
             }
         }
