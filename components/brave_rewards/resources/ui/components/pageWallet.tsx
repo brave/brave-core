@@ -53,9 +53,13 @@ class PageWallet extends React.Component<Props, State> {
 
   componentDidMount () {
     this.isAddFundsUrl()
+    this.isBackupUrl()
   }
 
   onModalBackupClose = () => {
+    if (this.urlHashIs('#backup-restore')) {
+      window.location.hash = ''
+    }
     this.actions.onModalBackupClose()
   }
 
@@ -171,8 +175,17 @@ class PageWallet extends React.Component<Props, State> {
     })
   }
 
+  urlHashIs = (hash: string) => {
+    return (
+      window &&
+      window.location &&
+      window.location.hash &&
+      window.location.hash === hash
+    )
+  }
+
   isAddFundsUrl = () => {
-    if (window && window.location && window.location.hash && window.location.hash === '#add-funds') {
+    if (this.urlHashIs('#add-funds')) {
       this.setState({
         modalAddFunds: true
       })
@@ -183,8 +196,14 @@ class PageWallet extends React.Component<Props, State> {
     }
   }
 
+  isBackupUrl = () => {
+    if (this.urlHashIs('#backup-restore')) {
+      this.onModalBackupOpen()
+    }
+  }
+
   closeModalAddFunds = () => {
-    if (window && window.location && window.location.hash && window.location.hash === '#add-funds') {
+    if (this.urlHashIs('#add-funds')) {
       window.location.hash = ''
     }
     this.onModalAddFundsToggle()

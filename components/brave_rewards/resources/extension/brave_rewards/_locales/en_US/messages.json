@@ -185,6 +185,10 @@
     "message": "You have a grant waiting for you.",
     "description": "Description for new grant notification"
   },
+  "backupNow": {
+    "message": "Backup Now",
+    "description": "Notification button text when we ask user to backup wallet"
+  },
   "backupWalletTitle": {
     "message": "Backup Wallet",
     "description": "Notification title when we ask user to backup wallet"
