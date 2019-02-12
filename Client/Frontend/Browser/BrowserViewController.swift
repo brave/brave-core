@@ -2096,7 +2096,7 @@ extension BrowserViewController: TabManagerDelegate {
 }
 
 /// List of schemes that are allowed to be opened in new tabs.
-private let schemesAllowedToBeOpenedAsPopups = ["http", "https", "javascript", "data", "about"]
+private let schemesAllowedToBeOpenedAsPopups = ["http", "https", "javascript", "about"]
 
 extension BrowserViewController: WKUIDelegate {
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
