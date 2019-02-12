@@ -1,8 +1,16 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/importer/brave_profile_writer.h"
+
+#include <map>
+#include <memory>
+#include <sstream>
+#include <string>
+#include <utility>
+
 #include "brave/common/importer/brave_stats.h"
 #include "brave/common/importer/brave_referral.h"
 #include "brave/common/importer/imported_browser_window.h"
@@ -42,8 +50,6 @@
 #include "net/url_request/url_request_context_getter.h"
 #include "services/network/public/mojom/cookie_manager.mojom.h"
 #include "ui/base/ui_base_types.h"
-
-#include <sstream>
 
 BraveProfileWriter::BraveProfileWriter(Profile* profile)
     : ProfileWriter(profile),
@@ -119,7 +125,8 @@ void BraveProfileWriter::BackupWallet() {
   const base::FilePath profile_default_directory = profile_->GetPath();
   std::ostringstream backup_filename;
   backup_filename << "ledger_import_backup_"
-    << base::NumberToString((unsigned long long)base::Time::Now().ToJsTime());
+                  << base::NumberToString(static_cast<unsigned long long>(
+                         base::Time::Now().ToJsTime()));
 
   LOG(INFO) << "Making backup of current \"ledger_state\" as "
     << "\"" << backup_filename.str() << "\"";
@@ -244,8 +251,9 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
   pinned_item_count_ = 0;
   for (const auto& publisher : ledger_.pinned_publishers) {
     // NOTE: this will truncate (ex: 0.90 would be 0, not 1)
-    const int amount_in_bat = (int)((publisher.pin_percentage / 100.0) *
-      ledger_.settings.payments.contribution_amount);
+    const int amount_in_bat =
+        static_cast<int>((publisher.pin_percentage / 100.0) *
+                         ledger_.settings.payments.contribution_amount);
     if (amount_in_bat > 0) {
       pinned_item_count_++;
       sum_of_monthly_tips += amount_in_bat;
@@ -400,7 +408,6 @@ void OpenImportedBrowserTabs(Browser* browser,
         "", false, pinned, true,
         base::TimeTicks::UnixEpoch(), nullptr,
         "", true /* from_session_restore */);
-
   }
 }
 
@@ -408,7 +415,7 @@ int GetSelectedTabIndex(const ImportedBrowserWindow& window) {
   // The window has an activeFrameKey, which may be equal to the key for one of
   // its tabs. Find the matching tab, if one exists, and return its index in
   // the tabs vector.
-  for (int i = 0; i < (int)window.tabs.size(); i++) {
+  for (int i = 0; i < static_cast<int>(window.tabs.size()); i++) {
     if (window.activeFrameKey == window.tabs[i].key)
       return i;
   }
@@ -455,28 +462,16 @@ void BraveProfileWriter::UpdateWindows(
 
 // NOTE: the strings used as keys match the values found in Muon:
 // browser-laptop/js/data/searchProviders.js
+// Providers that aren't in this map are no longer prepopulated (Amazon,
+// Ecosia, GitHub, etc.) and the current default provider won't be changed.
 const std::map<std::string,
         const TemplateURLPrepopulateData::PrepopulatedEngine>
     importable_engines = {
-      {"Amazon", TemplateURLPrepopulateData::amazon},
       {"Bing", TemplateURLPrepopulateData::bing},
       {"DuckDuckGo", TemplateURLPrepopulateData::duckduckgo},
-      {"Ecosia", TemplateURLPrepopulateData::ecosia},
-      {"GitHub", TemplateURLPrepopulateData::github},
       {"Google", TemplateURLPrepopulateData::google},
-      {"Infogalactic", TemplateURLPrepopulateData::infogalactic},
-      {"MDN Web Docs", TemplateURLPrepopulateData::mdnwebdocs},
       {"Qwant", TemplateURLPrepopulateData::qwant},
-      {"searx", TemplateURLPrepopulateData::searx},
-      {"Semantic Scholar", TemplateURLPrepopulateData::semanticscholar},
-      {"Stack Overflow", TemplateURLPrepopulateData::stackoverflow},
       {"StartPage", TemplateURLPrepopulateData::startpage},
-      {"Twitter", TemplateURLPrepopulateData::twitter},
-      {"Wikipedia", TemplateURLPrepopulateData::wikipedia},
-      {"Wolfram Alpha", TemplateURLPrepopulateData::wolframalpha},
-      {"Yahoo", TemplateURLPrepopulateData::yahoo},
-      {"Yandex", TemplateURLPrepopulateData::yandex},
-      {"YouTube", TemplateURLPrepopulateData::youtube}
     };
 
 void BraveProfileWriter::UpdateSettings(const SessionStoreSettings& settings) {
