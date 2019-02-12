@@ -192,7 +192,7 @@ def get_milestones(token, repo_name, verbose=False):
     return response
 
 
-def create_pull_request(token, repo_name, title, body, branch_src, branch_dst, verbose=False, dryrun=False):
+def create_pull_request(token, repo_name, title, body, branch_src, branch_dst, open_in_browser=False, verbose=False, dryrun=False):
     post_data = {
         'title': title,
         'head': branch_src,
@@ -204,11 +204,16 @@ def create_pull_request(token, repo_name, title, body, branch_src, branch_dst, v
     # for more info see: http://developer.github.com/v3/pulls
     if dryrun:
         print('[INFO] would call `repo.pulls.post(' + str(post_data) + ')`')
+        if open_in_browser:
+            print('[INFO] would open PR in web browser')
         return 1234
     repo = GitHub(token).repos(repo_name)
     response = repo.pulls.post(data=post_data)
     if verbose:
         print('repo.pulls.post(data) response:\n' + str(response))
+    if open_in_browser:
+        import webbrowser
+        webbrowser.open(response['html_url'])
     return int(response['number'])
 
 
