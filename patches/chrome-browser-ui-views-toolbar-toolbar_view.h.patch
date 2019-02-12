@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index 23b8a086b7f7e754e284412fd232ee49d2ba768b..51556ad1372d7acec40c56ddc4fb63fe8941d41c 100644
+index 41801d1242ec488235c9202138273b754352b6f9..e6cdd3f40fe7e47081db99789f08c88de9979a32 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
-@@ -75,12 +75,14 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -87,12 +87,14 @@ class ToolbarView : public views::AccessiblePaneView,
    ~ToolbarView() override;
  
    // Create the contents of the Browser Toolbar.
@@ -17,7 +17,7 @@ index 23b8a086b7f7e754e284412fd232ee49d2ba768b..51556ad1372d7acec40c56ddc4fb63fe
    void Update(content::WebContents* tab);
  
    // Updates the visibility of the toolbar, potentially animating the
-@@ -106,6 +108,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -118,6 +120,7 @@ class ToolbarView : public views::AccessiblePaneView,
  #endif  // defined(OS_CHROMEOS)
  
    // Shows a bookmark bubble and anchors it appropriately.
@@ -25,19 +25,11 @@ index 23b8a086b7f7e754e284412fd232ee49d2ba768b..51556ad1372d7acec40c56ddc4fb63fe
    void ShowBookmarkBubble(const GURL& url,
                            bool already_bookmarked,
                            bookmarks::BookmarkBubbleObserver* observer);
-@@ -192,6 +195,7 @@ class ToolbarView : public views::AccessiblePaneView,
-   void SetToolbarVisibility(bool visible);
+@@ -183,6 +186,7 @@ class ToolbarView : public views::AccessiblePaneView,
+   void ChildPreferredSizeChanged(views::View* child) override;
  
-  private:
+  protected:
 +  friend class BraveToolbarView;
-   // Types of display mode this toolbar can have.
-   enum DisplayMode {
-     DISPLAYMODE_NORMAL,   // Normal toolbar with buttons, etc.
-@@ -225,6 +229,7 @@ class ToolbarView : public views::AccessiblePaneView,
-   // ToolbarView::CalculatePreferredSize() and ToolbarView::GetMinimumSize().
-   // These two functions call through to GetSizeInternal(), passing themselves
-   // as the function pointer |View::*get_size|.
-+  virtual
-   gfx::Size GetSizeInternal(gfx::Size (View::*get_size)() const) const;
+   // AccessiblePaneView:
+   bool SetPaneFocusAndFocusDefault() override;
  
-   // Given toolbar contents of size |size|, returns the total toolbar size.

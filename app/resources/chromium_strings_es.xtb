@@ -92,6 +92,7 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="6970811910055250180">Actualizando el dispositivo...</translation>
 <translation id="8030318113982266900">Actualizando el canal del dispositivo a <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> se ha añadido a Brave</translation>
+<translation id="8516116288943000095">Borrar también los datos de Brave (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Ocultar en el menú de Brave</translation>
 <translation id="5660079256336839395">Ocultar en el menú de Brave</translation>
 <translation id="7456658570432774853">Ayuda a mejorar Brave informando de la configuración actual</translation>
@@ -127,11 +128,12 @@ Si decides iniciar sesión de todas formas, se fusionará la información de Bra
 <translation id="1326766910007115955">Vas a iniciar sesión con una cuenta gestionada, lo que significa que proporcionarás a su administrador control sobre tu perfil de Brave. Tus datos de Brave como, por ejemplo, tus aplicaciones, tus marcadores, tu historial, tus contraseñas y otras opciones se vincularán de forma permanente a la cuenta <ph name="USER_NAME"/>. Podrás eliminar estos datos a través del Panel de control de cuentas de Brave Software, pero no podrás asociarlos a otra cuenta. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Vas a iniciar sesión con una cuenta gestionada, lo que significa que proporcionarás a su administrador control sobre tu perfil de Brave. Tus datos de Brave como, por ejemplo, tus aplicaciones, tus marcadores, tu historial, tus contraseñas y otras opciones se vincularán de forma permanente a la cuenta <ph name="USER_NAME"/>. Podrás eliminar estos datos a través del Panel de control de cuentas de Brave Software, pero no podrás asociarlos a otra cuenta. De forma opcional, puedes crear un nuevo perfil para mantener separados tus datos de Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> usaba Brave anteriormente</translation>
-<translation id="5381681911713004932">Se ha detectado software dañino en tu ordenador. Brave puede eliminarlo y restaurar tu configuración para que el navegador vuelva a funcionar con normalidad.</translation>
+<translation id="1384923383737428730">Se ha detectado software dañino en tu ordenador. Brave puede eliminarlo, restaurar tu configuración y desactivar las extensiones para que el navegador vuelva a funcionar con normalidad.</translation>
 <translation id="8919921662052966648">Brave no ha podido sincronizar los datos. Actualiza la frase de contraseña de sincronización.</translation>
 <translation id="2262856633481902138">Brave no ha podido sincronizar los datos porque tu información de inicio de sesión está obsoleta.</translation>
 <translation id="5419189641394808652">Brave no ha podido sincronizar los datos porque la función de sincronización no está disponible para tu dominio.</translation>
 <translation id="2577755334620061182">Brave no ha podido sincronizar los datos debido a un error de inicio de sesión.</translation>
+<translation id="8583885258305961947">Sistema Brave OS</translation>
 <translation id="3968006371075376562">Brave OS no ha podido sincronizar tus datos. Actualiza tu frase de contraseña de sincronización.</translation>
 <translation id="6746636977031158624">Brave OS no ha podido sincronizar los datos porque la información de inicio de sesión de tu cuenta está obsoleta.</translation>
 <translation id="2999152167963026588">Brave OS no ha podido sincronizar los datos porque la función de sincronización no está disponible para tu dominio.</translation>
@@ -157,7 +159,7 @@ Para evitar que <ph name="NEW_PROFILE_NAME"/> acceda a tu cuenta, bloquea tu per
 
 Consulta tu correo electrónico (<ph name="ACCOUNT_EMAIL"/>) para obtener más información.</translation>
 <translation id="1820843143331379651">Los perfiles de usuario supervisado no estarán disponibles a partir de la versión 70 de Brave.</translation>
-<translation id="8797005356491520797">Los datos de navegación de este usuario se eliminarán de este dispositivo. Para recuperarlos, inicia sesión en Brave como $2.</translation>
+<translation id="3066805437003400520">Los datos de navegación de este usuario se eliminarán del dispositivo. Para recuperar tus datos, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave mejor que nunca</translation>
 <translation id="7192666605334070839">Ahora es más fácil utilizar Brave con tu cuenta de Brave Software y en ordenadores compartidos.</translation>
 <translation id="3511996232906761537">Aquí puedes encontrar tus páginas web, marcadores y otros contenidos de Brave.</translation>
@@ -173,6 +175,7 @@ Consulta tu correo electrónico (<ph name="ACCOUNT_EMAIL"/>) para obtener más i
 <translation id="2871190378186459992">Descubre aplicaciones, juegos, extensiones y temas increíbles para Brave.</translation>
 <translation id="3350544518197210895">Brave (tráfico mDNS entrante)</translation>
 <translation id="1912973375560256099">Regla entrante para que Brave permita tráfico mDNS.</translation>
+<translation id="3795403186582265456">Brave puede reconocer imágenes y texto en una imagen enviando imágenes de páginas a los servidores de Brave Software, lo que te permitirá entender mejor el contenido de las páginas.</translation>
 <translation id="7276297358157391541">Brave puede proporcionar un corrector ortográfico más inteligente si envías el texto que introduces en el navegador a los servidores de Brave Software, lo que te permitirá utilizar la misma tecnología de corrección ortográfica que usa la Búsqueda de Brave Software.</translation>
 <translation id="1807774211756215222">Abrir enlace en una pes&amp;taña nueva de Brave</translation>
 <translation id="4624945300945265642">Abrir enlace en una ventana de incó&amp;gnito de Brave</translation>

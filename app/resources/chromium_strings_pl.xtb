@@ -24,6 +24,8 @@
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> Autorzy Brave. Wszelkie prawa zastrzeżone.</translation>
 <translation id="2310890394934209120">Stworzenie systemu operacyjnego Brave było możliwe dzięki dodatkowym <ph name="BEGIN_LINK_CROS_OSS"/>programom o otwartym kodzie źródłowym<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8160794320557846790">Opracowanie systemu operacyjnego Brave było możliwe dzięki dodatkowemu <ph name="BEGIN_LINK_CROS_OSS"/>oprogramowaniu open source<ph name="END_LINK_CROS_OSS"/>. To samo dotyczy funkcji <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="8948097099929452692">Nie używany w Brave. Symbol zastępczy umożliwiający synchronizację map zasobów.</translation>
+<translation id="5009217320733452434">Nie używany w Chromium. Symbol zastępczy umożliwiający synchronizację map zasobów. Oczekuje jednego argumentu: <ph name="ARGUMENT">$1</ph>.</translation>
 <translation id="6913582816347128893">Brave może działać nieprawidłowo, bo nie jest już zgodny z systemem Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">Brave może działać nieprawidłowo, bo nie jest już zgodny z Windows XP ani Windows Vista</translation>
 <translation id="189297655255130768">Brave nie odpowiada. Uruchomić go teraz ponownie?</translation>
@@ -91,6 +93,7 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="6970811910055250180">Aktualizowanie urządzenia...</translation>
 <translation id="8030318113982266900">Aktualizuję Twoje urządzenie do kanału: <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7861579472672677409">Rozszerzenie <ph name="EXTENSION_NAME"/> zostało dodane do Brave</translation>
+<translation id="8516116288943000095">Wyczyść też dane z Brave (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Ukryj w menu Brave</translation>
 <translation id="5660079256336839395">Ukryj w menu Brave</translation>
 <translation id="7456658570432774853">Pomóż ulepszyć Brave, zgłaszając bieżące ustawienia</translation>
@@ -101,6 +104,7 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="8848045066928358658">Aby poprawić bezpieczeństwo Brave, wyłączyliśmy to rozszerzenie. Nie jest ono dostępne w <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i mogło zostać dodane bez Twojej wiedzy.</translation>
 <translation id="8148611988012584308">Dostosowywanie i kontrolowanie Brave</translation>
 <translation id="5849446944780602366">Dostosowywanie i kontrolowanie Brave. Dostępna jest aktualizacja.</translation>
+<translation id="6315734375101223238">Dostosuj i kontroluj Brave. Coś wymaga Twojej uwagi - kliknij, aby zobaczyć szczegóły.</translation>
 <translation id="9071554113102421877">&amp;Otwórz w Brave</translation>
 <translation id="2176825726964012531">&amp;Brave – informacje</translation>
 <translation id="5450493308072741203">Aktualizuj &amp;Brave</translation>
@@ -126,11 +130,12 @@ Jeśli jednak zalogujesz się teraz, informacje Brave, takie jak zakładki, hist
 <translation id="1326766910007115955">Logujesz się na zarządzane konto i przekazujesz jego administratorowi kontrolę nad swoim profilem Brave. Twoje dane Brave, takie jak aplikacje, zakładki, historia, hasła i inne ustawienia, zostaną trwale powiązane z użytkownikiem <ph name="USER_NAME"/>. Będzie można je usunąć w Panelu kont Brave Software, ale nie będzie można ich powiązać z innym kontem. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Logujesz się na zarządzane konto i przekazujesz jego administratorowi kontrolę nad swoim profilem Brave. Twoje dane Brave, takie jak aplikacje, zakładki, historia, hasła i inne ustawienia, zostaną trwale powiązane z użytkownikiem <ph name="USER_NAME"/>. Będzie można je usunąć w Panelu kont Brave Software, ale nie będzie można ich powiązać z innym kontem. Możesz też utworzyć nowy profil, by przechowywać swoje dotychczasowe dane Brave osobno. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656">Użytkownik <ph name="USER_EMAIL_ADDRESS"/> wcześniej używał Brave</translation>
-<translation id="5381681911713004932">Na Twoim komputerze jest szkodliwe oprogramowanie. Przeglądarka Brave może je usunąć i przywrócić ustawienia, by znów mogła działać normalnie.</translation>
+<translation id="1384923383737428730">Masz na komputerze szkodliwe oprogramowanie. Brave może je usunąć, przywrócić Twoje ustawienia i wyłączyć rozszerzenia, by przeglądarka znów działała normalnie.</translation>
 <translation id="8919921662052966648">Brave nie może zsynchronizować Twoich danych. Zaktualizuj hasło synchronizacji.</translation>
 <translation id="2262856633481902138">Brave nie może zsynchronizować danych, ponieważ dane logowania na Twoje konto są nieaktualne.</translation>
 <translation id="5419189641394808652">Brave nie może zsynchronizować danych, ponieważ synchronizacja jest niedostępna w Twojej domenie.</translation>
 <translation id="2577755334620061182">Brave nie może zsynchronizować Twoich danych w związku z błędem logowania.</translation>
+<translation id="8583885258305961947">System operacyjny Brave</translation>
 <translation id="3968006371075376562">System operacyjny Brave nie może zsynchronizować danych. Zaktualizuj hasło synchronizacji.</translation>
 <translation id="6746636977031158624">System operacyjny Brave nie może zsynchronizować danych, ponieważ dane logowania na Twoje konto są nieaktualne.</translation>
 <translation id="2999152167963026588">System operacyjny Brave nie może zsynchronizować danych, ponieważ synchronizacja jest niedostępna w Twojej domenie.</translation>
@@ -156,7 +161,7 @@ Aby uniemożliwić użytkownikowi <ph name="NEW_PROFILE_NAME"/> korzystanie z T
 
 Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="1820843143331379651">Profile nadzorowanych użytkowników nie będą dostępne począwszy od Brave 70.</translation>
-<translation id="8797005356491520797">Dane przeglądania tej osoby zostaną usunięte z tego urządzenia. Aby je odzyskać, zaloguj się w Brave jako $2.</translation>
+<translation id="3066805437003400520">Dane przeglądania tej osoby zostaną usunięte z tego urządzenia. Aby je odzyskać, zaloguj się w Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Przeglądarka Brave jest jeszcze lepsza</translation>
 <translation id="7192666605334070839">Korzystanie z Brave na wspólnych komputerach i przy użyciu konta Brave Software jest teraz jeszcze łatwiejsze.</translation>
 <translation id="3511996232906761537">Tu są Twoje strony, zakładki i inne dane z Brave.</translation>
@@ -171,10 +176,14 @@ Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EM
 <translation id="2433912322225810055">Kontroluje także to, jaka strona wyświetla się po uruchomieniu Brave lub wyszukiwaniu w omniboksie.</translation>
 <translation id="2871190378186459992">Odkryj znakomite aplikacje, gry, rozszerzenia i motywy do Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="5846303060623790781">Brave Beta (mDNS - przychodzący)</translation>
+<translation id="3599046180970731601">Brave Nightly (mDNS - przychodzący)</translation>
+<translation id="7881806463410697784">Brave Dev (mDNS - przychodzący)</translation>
 <translation id="1912973375560256099">Reguła dla ruchu przychodzącego w Brave zezwalająca na ruch mDNS.</translation>
-<translation id="7272074097076644710">Reguła przychodząca dla Brave Beta, aby zezwolić na ruch mDNS.</translation>
-<translation id="4991512282053949769">Reguła przychodząca dla Brave Nightly, aby zezwolić na ruch mDNS.</translation>
-<translation id="3856641371299712128">Reguła przychodząca dla Brave Dev, aby zezwolić na ruch mDNS.</translation>
+<translation id="7272074097076644710">Reguła dla ruchu przychodzącego w Brave Beta zezwalająca na ruch mDNS.</translation>
+<translation id="4991512282053949769">Reguła dla ruchu przychodzącego w Brave Nightly zezwalająca na ruch mDNS.</translation>
+<translation id="3856641371299712128">Reguła dla ruchu przychodzącego w Brave Dev zezwalająca na ruch mDNS.</translation>
+<translation id="3795403186582265456">Brave może rozpoznawać obrazy i napisy na nich dzięki wysyłaniu obrazów stron na serwery Brave Software. Pozwoli Ci to lepiej rozumieć zawartość stron.</translation>
 <translation id="7276297358157391541">Brave może lepiej sprawdzać pisownię, przesyłając do serwerów Brave Software tekst, który wpisujesz w przeglądarce. Dzięki temu możesz korzystać z tej samej technologii sprawdzania pisowni co wyszukiwarka Brave Software.</translation>
 <translation id="1807774211756215222">O&amp;twórz link w nowej karcie Brave</translation>
 <translation id="4624945300945265642">Otwórz link w oknie inco&amp;gnito Brave</translation>

@@ -1,0 +1,14 @@
+diff --git a/components/search_engines/search_engine_type.h b/components/search_engines/search_engine_type.h
+index 50b5cb896806c9f801cb3eeb27a7df190d482ebc..e5eecb7cc7212d4ede48cfb350ddd891b4207a62 100644
+--- a/components/search_engines/search_engine_type.h
++++ b/components/search_engines/search_engine_type.h
+@@ -64,9 +64,7 @@ enum SearchEngineType {
+   SEARCH_ENGINE_ZOZNAM,
+   SEARCH_ENGINE_360,
+   SEARCH_ENGINE_COCCOC,
+-  SEARCH_ENGINE_DUCKDUCKGO,
+   SEARCH_ENGINE_PARSIJOO,
+-  SEARCH_ENGINE_QWANT,
+ 
+   SEARCH_ENGINE_MAX  // Bounding value needed for UMA histogram macro.
+ };

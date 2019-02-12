@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/chrome.release b/chrome/installer/mini_installer/chrome.release
-index 01f69e59f0f547762f2b2a216d5c77046636725e..cd9d6fe3df20b0c89cc1abb525c8a21cb04c291a 100644
+index bdf0219561c2e52fbe2e16407ac0fa9ae2e3ef30..cda55a0113704a0fd6bf719b1b785a0b66077392 100644
 --- a/chrome/installer/mini_installer/chrome.release
 +++ b/chrome/installer/mini_installer/chrome.release
 @@ -6,7 +6,7 @@
@@ -8,10 +8,10 @@ index 01f69e59f0f547762f2b2a216d5c77046636725e..cd9d6fe3df20b0c89cc1abb525c8a21c
  #
 -chrome.exe: %(ChromeDir)s\
 +brave.exe: %(ChromeDir)s\
+ chrome_proxy.exe: %(ChromeDir)s\
  #
  # Chrome version dir assembly manifest.
- # The name of this file must match the name of the version dir, so we cannot
-@@ -18,6 +18,8 @@ chrome.exe: %(ChromeDir)s\
+@@ -19,6 +19,8 @@ chrome_proxy.exe: %(ChromeDir)s\
  # Chrome version dir entries, sorted alphabetically.
  #
  chrome.dll: %(VersionDir)s\
@@ -20,7 +20,7 @@ index 01f69e59f0f547762f2b2a216d5c77046636725e..cd9d6fe3df20b0c89cc1abb525c8a21c
  chrome_100_percent.pak: %(VersionDir)s\
  chrome_child.dll: %(VersionDir)s\
  chrome_elf.dll: %(VersionDir)s\
-@@ -69,6 +71,7 @@ swiftshader\libGLESv2.dll: %(VersionDir)s\swiftshader\
+@@ -75,6 +77,7 @@ MEIPreload\preloaded_data.pb: %(VersionDir)s\MEIPreload\
  
  [HIDPI]
  chrome_200_percent.pak: %(VersionDir)s\

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/extensions/extension_popup.cc b/chrome/browser/ui/views/extensions/extension_popup.cc
-index 0099d584e25afff70947655441af850301459476..875637578e832939834a782148c5ffea6975d25b 100644
+index 80b5a17eb84f27c84f6d37296c97f7b35f324960..9371b2200900b927595add17c46a4db79bd1c72c 100644
 --- a/chrome/browser/ui/views/extensions/extension_popup.cc
 +++ b/chrome/browser/ui/views/extensions/extension_popup.cc
 @@ -4,6 +4,7 @@
@@ -10,7 +10,7 @@ index 0099d584e25afff70947655441af850301459476..875637578e832939834a782148c5ffea
  #include "chrome/browser/chrome_notification_types.h"
  #include "chrome/browser/devtools/devtools_window.h"
  #include "chrome/browser/extensions/extension_view_host.h"
-@@ -142,8 +143,23 @@ gfx::Size ExtensionPopup::CalculatePreferredSize() const {
+@@ -143,8 +144,23 @@ gfx::Size ExtensionPopup::CalculatePreferredSize() const {
  }
  
  void ExtensionPopup::AddedToWidget() {

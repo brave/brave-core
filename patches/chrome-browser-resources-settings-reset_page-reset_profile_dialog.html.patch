@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/reset_page/reset_profile_dialog.html b/chrome/browser/resources/settings/reset_page/reset_profile_dialog.html
-index 64a6823036bac014e4b1a1f3736d2c082b00a304..e29c828edc6936c97e99afb7a024b9be789b6058 100644
+index fc3b7521d2a00a2c2a29e856b418ed7f0a7d3c8a..5ad61ba475b6a08a93754967d2f905471cef1420 100644
 --- a/chrome/browser/resources/settings/reset_page/reset_profile_dialog.html
 +++ b/chrome/browser/resources/settings/reset_page/reset_profile_dialog.html
-@@ -44,10 +44,12 @@
+@@ -51,10 +51,12 @@
            $i18n{resetDialogCommit}
          </paper-button>
        </div>

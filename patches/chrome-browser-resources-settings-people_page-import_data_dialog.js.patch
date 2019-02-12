@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/people_page/import_data_dialog.js b/chrome/browser/resources/settings/people_page/import_data_dialog.js
-index f59448f4b4a25ab8b5e13c23feafa7957e83fa82..c6b7510e288db3dc6259ca80730f62235b1220d3 100644
+index 4192db5cdfb0ff0600460ac20b7151e4794a9d40..94033e6abd64c1cefdc7ae9a721f8bda2e6df0a6 100644
 --- a/chrome/browser/resources/settings/people_page/import_data_dialog.js
 +++ b/chrome/browser/resources/settings/people_page/import_data_dialog.js
-@@ -84,7 +84,15 @@ Polymer({
+@@ -86,7 +86,15 @@ Polymer({
          !(this.getPref('import_dialog_search_engine').value &&
            this.selected_.search) &&
          !(this.getPref('import_dialog_autofill_form_data').value &&

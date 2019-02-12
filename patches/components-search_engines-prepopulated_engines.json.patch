@@ -1,0 +1,38 @@
+diff --git a/components/search_engines/prepopulated_engines.json b/components/search_engines/prepopulated_engines.json
+index 64e8cb51c352e9b89ae94099edd52a9eab412f46..a8d99c67164b7826474cad26fbb103c342532c87 100644
+--- a/components/search_engines/prepopulated_engines.json
++++ b/components/search_engines/prepopulated_engines.json
+@@ -95,16 +95,6 @@
+       "id": 68
+     },
+ 
+-    "duckduckgo": {
+-      "name": "DuckDuckGo",
+-      "keyword": "duckduckgo.com",
+-      "favicon_url": "https://duckduckgo.com/favicon.ico",
+-      "search_url": "https://duckduckgo.com/?q={searchTerms}",
+-      "suggest_url": "https://duckduckgo.com/ac/?q={searchTerms}&type=list",
+-      "type": "SEARCH_ENGINE_DUCKDUCKGO",
+-      "id": 92
+-    },
+-
+     "google": {
+       "name": "Google",
+       "keyword": "google.com",
+@@ -159,16 +149,6 @@
+       "id": 93
+     },
+ 
+-    "qwant": {
+-      "name": "Qwant",
+-      "keyword": "qwant.com",
+-      "favicon_url": "https://www.qwant.com/favicon.ico",
+-      "search_url": "https://www.qwant.com/?q={searchTerms}&client=opensearch",
+-      "suggest_url": "https://api.qwant.com/api/suggest/?q={searchTerms}&client=opensearch",
+-      "type": "SEARCH_ENGINE_QWANT",
+-      "id": 94
+-    },
+-
+     "seznam": {
+       "name": "Seznam",
+       "keyword": "seznam.cz",

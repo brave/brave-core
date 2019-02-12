@@ -131,6 +131,8 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software 。 Brave 是 Brave Software 的註冊商標。網站名稱可能是網站所有者的商標或註冊商標。</translation>
 <translation id="9026369588205476247">為了保護您的隱私，此 Brave Rewards 聲明不會保存、收錄或記錄在除了您的裝置（這部電腦）以外的任一位置。若您的裝置遺失了這份資料，則無法自 Brave 取回資料。</translation>
 <translation id="1036277985068412734">增加資金</translation>
+<translation id="5441565662498481293">您正在自動傳送小費給：</translation>
+<translation id="8845154268466251503">BAT</translation>
 <translation id="4496990471549986619">常見問題</translation>
 <translation id="1688876543043079268">提醒：Brave 錢包是單向的，BAT 只會流向出版者的網站。更多關於 Brave Rewards 的資訊，請見</translation>
 <translation id="2790014973538267577">顯示 QR Code</translation>
@@ -174,6 +176,7 @@
 <translation id="245015745140252435">小費金額</translation>
 <translation id="3520817231440482449">每月給此網站小費</translation>
 <translation id="1827184134638345603">傳送小費……</translation>
+<translation id="1628742278973105368">您的第一個每月小費將會傳送給：</translation>
 <translation id="7277134233385925078">設定每月小費</translation>
 <translation id="8003573781961874199">以 PDF 格式下載</translation>
 <translation id="298067735430872465">自廣告而來的收益</translation>
@@ -212,6 +215,7 @@
 <translation id="3630697955794050612">關閉</translation>
 <translation id="4921250468871504777">確定</translation>
 <translation id="7866482334467279021">在</translation>
+<translation id="1166682575529520472">每月</translation>
 <translation id="8370173854533168890">一次</translation>
 <translation id="9182287025588539628">一次性小費</translation>
 <translation id="6381574025952123568">開始餘額</translation>
@@ -272,6 +276,7 @@
 <translation id="1792148354504719133">網站</translation>
 <translation id="5944430251223015324">網站</translation>
 <translation id="8826007068782654809">謝謝您</translation>
+<translation id="6665366815203065060">您已經傳送小費給：</translation>
 <translation id="6432779622695508363">在喜歡的時候給小費</translation>
 <translation id="8424370624815730676">基本注意力代幣 (BAT)</translation>
 <translation id="4588241643143931775">比特幣 (BTC)</translation>

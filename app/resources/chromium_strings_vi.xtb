@@ -90,6 +90,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="6970811910055250180">Đang cập nhật thiết bị của bạn...</translation>
 <translation id="8030318113982266900">Đang cập nhật thiết bị tới kênh <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> đã được thêm vào Brave</translation>
+<translation id="8516116288943000095">Đồng thời xóa dữ liệu khỏi Brave (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Ẩn trong menu Brave</translation>
 <translation id="5660079256336839395">Ẩn trong menu Brave</translation>
 <translation id="7456658570432774853">Giúp cải thiện Brave bằng cách báo cáo cài đặt hiện tại</translation>
@@ -125,11 +126,12 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="1326766910007115955">Bạn đang đăng nhập bằng tài khoản được quản lý và cấp cho quản trị viên của tài khoản quyền kiểm soát cấu hình Brave của bạn. Dữ liệu Brave của bạn, chẳng hạn như ứng dụng, dấu trang, lịch sử, mật khẩu và các cài đặt khác sẽ vĩnh viễn được liên kết với <ph name="USER_NAME"/>. Bạn có thể xóa dữ liệu này thông qua Trang tổng quan của tài khoản Brave Software nhưng không thể liên kết dữ liệu này với tài khoản khác. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Bạn đang đăng nhập bằng tài khoản được quản lý và cấp cho quản trị viên của tài khoản quyền kiểm soát cấu hình Brave của bạn. Dữ liệu Brave của bạn, chẳng hạn như ứng dụng, dấu trang, lịch sử, mật khẩu và các cài đặt khác sẽ vĩnh viễn được liên kết với <ph name="USER_NAME"/>. Bạn có thể xóa dữ liệu này thông qua Trang tổng quan của tài khoản Brave Software nhưng không thể liên kết dữ liệu này với tài khoản khác. Bạn có thể tùy chọn tạo cấu hình mới để giữ cho dữ liệu Brave hiện có của bạn riêng biệt. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> trước đó đã sử dụng Brave</translation>
-<translation id="5381681911713004932">Có phần mềm độc hại trên máy tính của bạn. Brave có thể xóa phần mềm này và khôi phục cài đặt của bạn để trình duyệt có thể hoạt động bình thường trở lại.</translation>
+<translation id="1384923383737428730">Máy tính của bạn có phần mềm độc hại. Brave có thể xóa phần mềm này, khôi phục các tùy chọn cài đặt của bạn và tắt tiện ích để giúp trình duyệt hoạt động lại bình thường.</translation>
 <translation id="8919921662052966648">Brave không thể đồng bộ hóa dữ liệu của bạn. Vui lòng cập nhật cụm mật khẩu Đồng bộ hóa của bạn.</translation>
 <translation id="2262856633481902138">Brave không thể đồng bộ hóa dữ liệu của bạn vì chi tiết đăng nhập tài khoản của bạn đã cũ.</translation>
 <translation id="5419189641394808652">Brave không thể đồng bộ hóa dữ liệu của bạn vì Đồng bộ hóa không khả dụng cho miền của bạn.</translation>
 <translation id="2577755334620061182">Brave không thể đồng bộ hóa dữ liệu của bạn do lỗi khi đăng nhập.</translation>
+<translation id="8583885258305961947">Hệ thống Brave OS</translation>
 <translation id="3968006371075376562">Brave OS không thể đồng bộ hóa dữ liệu của bạn. Vui lòng cập nhật cụm mật khẩu Đồng bộ hóa của bạn.</translation>
 <translation id="6746636977031158624">Brave OS không thể đồng bộ hóa dữ liệu của bạn vì chi tiết đăng nhập tài khoản của bạn đã lỗi thời.</translation>
 <translation id="2999152167963026588">Brave OS không thể đồng bộ hóa dữ liệu của bạn vì Đồng bộ hóa không khả dụng với miền của bạn.</translation>
@@ -155,7 +157,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 
 Vui lòng xem email của bạn tại <ph name="ACCOUNT_EMAIL"/> để được hướng dẫn thêm.</translation>
 <translation id="1820843143331379651">Kể từ Brave 70, tính năng hồ sơ người dùng được giám sát sẽ không còn được cung cấp nữa.</translation>
-<translation id="8797005356491520797">Dữ liệu duyệt web của người này sẽ bị xóa khỏi thiết bị này. Để khôi phục dữ liệu, hãy đăng nhập vào Brave bằng $2.</translation>
+<translation id="3066805437003400520">Dữ liệu duyệt web của người này sẽ bị xóa khỏi thiết bị này. Để khôi phục dữ liệu, hãy đăng nhập vào Brave bằng <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave được cải tiến hơn</translation>
 <translation id="7192666605334070839">Giờ đây, việc sử dụng Brave bằng tài khoản Brave Software của bạn và trên máy tính dùng chung trở nên dễ dàng hơn.</translation>
 <translation id="3511996232906761537">Web, dấu trang và các nội dung khác của bạn trên Brave đều có ở đây.</translation>
@@ -171,6 +173,7 @@ Vui lòng xem email của bạn tại <ph name="ACCOUNT_EMAIL"/> để được 
 <translation id="2871190378186459992">Khám phá các ứng dụng, trò chơi, tiện ích và chủ đề tuyệt vời cho Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Quy tắc kết nối để Brave cho phép lưu lượng truy cập mDNS.</translation>
+<translation id="3795403186582265456">Brave có thể nhận dạng hình ảnh và văn bản trên một hình ảnh bằng cách gửi hình ảnh trang tới máy chủ của Brave Software. Nhờ vậy, bạn có thể hiểu rõ hơn nội dung trang.</translation>
 <translation id="7276297358157391541">Brave có thể cung cấp tính năng kiểm tra chính tả thông minh hơn bằng cách gửi những gì bạn nhập vào trình duyệt tới máy chủ Brave Software, cho phép bạn sử dụng cùng một công nghệ kiểm tra chính tả mà tìm kiếm của Brave Software sử dụng.</translation>
 <translation id="1807774211756215222">Mở liên kết trong tab mới của Brave</translation>
 <translation id="4624945300945265642">Mở liên kết trong cửa sổ ẩn danh của Brave</translation>

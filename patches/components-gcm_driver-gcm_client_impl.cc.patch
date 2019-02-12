@@ -1,5 +1,5 @@
 diff --git a/components/gcm_driver/gcm_client_impl.cc b/components/gcm_driver/gcm_client_impl.cc
-index 7e12cd5fdad159e1a21fa7ef7324b8dba0dc7b9b..df490a2ad476fee3e19421dba2db93e5a46a5aa5 100644
+index a3e6564d0207a7e4739a8f4325d161aee758db31..1a3bac3720059def1b789bc7b5c875a1bd7cba0a 100644
 --- a/components/gcm_driver/gcm_client_impl.cc
 +++ b/components/gcm_driver/gcm_client_impl.cc
 @@ -357,6 +357,7 @@ void GCMClientImpl::Initialize(
@@ -13,7 +13,7 @@ index 7e12cd5fdad159e1a21fa7ef7324b8dba0dc7b9b..df490a2ad476fee3e19421dba2db93e5
 @@ -864,6 +865,7 @@ void GCMClientImpl::ResetCache() {
  
  void GCMClientImpl::Register(
-     const linked_ptr<RegistrationInfo>& registration_info) {
+     scoped_refptr<RegistrationInfo> registration_info) {
 +  return; // GCM disabled in Brave
    DCHECK_EQ(state_, READY);
  

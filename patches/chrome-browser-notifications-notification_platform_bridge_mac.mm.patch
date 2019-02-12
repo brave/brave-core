@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/notifications/notification_platform_bridge_mac.mm b/chrome/browser/notifications/notification_platform_bridge_mac.mm
-index a1a646445a7a0394e41acaf67fc3e2dc8822185d..87cc035b6c820953aeec2f5bd4bd62790c3e67c2 100644
+index 2ad35ce53343edb0a37118caeb0e489c99ee9da6..a8cd67a8a437c8c27c786747ad63ab270e20b5ab 100644
 --- a/chrome/browser/notifications/notification_platform_bridge_mac.mm
 +++ b/chrome/browser/notifications/notification_platform_bridge_mac.mm
-@@ -224,6 +224,7 @@ void NotificationPlatformBridgeMac::Display(
+@@ -225,6 +225,7 @@ void NotificationPlatformBridgeMac::Display(
        initWithCloseLabel:l10n_util::GetNSString(IDS_NOTIFICATION_BUTTON_CLOSE)
              optionsLabel:l10n_util::GetNSString(IDS_NOTIFICATION_BUTTON_MORE)
             settingsLabel:l10n_util::GetNSString(

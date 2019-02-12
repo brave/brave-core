@@ -3,6 +3,9 @@
 <translationbundle lang="it">
 <translation id="5194812628624740897">Se ti disconnetti da <ph name="USERNAME"/> verranno cancellati la cronologia, i Preferiti, le impostazioni e gli altri dati di Brave memorizzati sul dispositivo. I dati memorizzati nel tuo account Brave Software non verranno cancellati e potrai gestirli su <ph name="GOOGLE_DASHBOARD_LINK"/>Brave Software Dashboard<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
+<translation id="2069994121511856876">Brave Nightly</translation>
+<translation id="4947625801334180582">Brave Beta</translation>
+<translation id="2566435362010629810">Brave Dev</translation>
 <translation id="6373767849825830651">Brave è un browser web che esegue le pagine web e le applicazioni alla velocità della luce. È veloce, stabile e facile da utilizzare. Naviga su Internet in modo più sicuro grazie alla protezione da malware e phishing integrata in Brave.</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logo di Brave</translation>
@@ -90,6 +93,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="6970811910055250180">Aggiornamento del dispositivo in corso...</translation>
 <translation id="8030318113982266900">Aggiornamento del dispositivo al canale <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7861579472672677409">L'estensione <ph name="EXTENSION_NAME"/> è stata aggiunta a Brave</translation>
+<translation id="8516116288943000095">Cancella anche i dati di Brave (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Nascondi in menu Brave</translation>
 <translation id="5660079256336839395">Nascondi in menu Brave</translation>
 <translation id="7456658570432774853">Contribuisci a migliorare Brave indicando le impostazioni attuali</translation>
@@ -125,11 +129,12 @@ Se esegui comunque l'accesso, le informazioni di Brave come Preferiti, cronologi
 <translation id="1326766910007115955">Stai per accedere con un account gestito e per dare al relativo amministratore il controllo del tuo profilo Brave. I tuoi dati di Brave, come app, Preferiti, cronologia, password e altre impostazioni, verranno collegati definitivamente a <ph name="USER_NAME"/>. Potrai eliminare questi dati tramite la Dashboard di Brave Software Account, ma non potrai associare questi dati a un altro account. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Stai per accedere con un account gestito e per dare al relativo amministratore il controllo del tuo profilo Brave. I tuoi dati di Brave, come app, Preferiti, cronologia, password e altre impostazioni, verranno collegati definitivamente a <ph name="USER_NAME"/>. Potrai eliminare questi dati tramite la Dashboard di Brave Software Account, ma non potrai associare questi dati a un altro account. Se preferisci puoi creare un nuovo profilo per mantenere separati i dati di Brave esistenti. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656">L'indirizzo <ph name="USER_EMAIL_ADDRESS"/> utilizzava in precedenza Brave</translation>
-<translation id="5381681911713004932">Rilevato software dannoso sul computer. Brave può rimuoverlo e ripristinare le tue impostazioni per ristabilire il normale funzionamento del browser.</translation>
+<translation id="1384923383737428730">È stato rilevato software dannoso sul tuo computer. Brave può rimuoverlo, ripristinare le tue impostazioni e disattivare le estensioni per ristabilire il normale funzionamento del browser.</translation>
 <translation id="8919921662052966648">Impossibile sincronizzare i dati in Brave. Aggiorna la passphrase di sincronizzazione.</translation>
 <translation id="2262856633481902138">Impossibile sincronizzare i dati in Brave perché i dati di accesso dell'account sono obsoleti.</translation>
 <translation id="5419189641394808652">Impossibile sincronizzare i dati in Brave perché la sincronizzazione non è disponibile per il tuo dominio.</translation>
 <translation id="2577755334620061182">Impossibile sincronizzare i dati in Brave a causa di un errore durante l'accesso.</translation>
+<translation id="8583885258305961947">Sistema Brave OS</translation>
 <translation id="3968006371075376562">Impossibile sincronizzare i dati in Brave OS. Aggiorna la passphrase di sincronizzazione.</translation>
 <translation id="6746636977031158624">Impossibile sincronizzare i dati in Brave OS perché i dati di accesso dell'account sono obsoleti.</translation>
 <translation id="2999152167963026588">Impossibile sincronizzare i dati in Brave OS perché la sincronizzazione non è disponibile per il tuo dominio.</translation>
@@ -155,7 +160,7 @@ Per impedire a <ph name="NEW_PROFILE_NAME"/> di accedere al tuo account, assicur
 
 Per ulteriori informazioni, controlla l'email all'indirizzo <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="1820843143331379651">I profili utente supervisionati non saranno più disponibili a partire da Brave 70.</translation>
-<translation id="8797005356491520797">I dati di navigazione di questa persona verranno eliminati dal dispositivo. Per recuperare i dati, accedi a Brave con il nome utente $2.</translation>
+<translation id="3066805437003400520">I dati di navigazione di questa persona verranno eliminati dal dispositivo. Per recuperare i dati, accedi a Brave con il nome utente <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Da oggi Brave è ancora meglio</translation>
 <translation id="7192666605334070839">Ora è più facile utilizzare Brave con il tuo account Brave Software e sui computer condivisi.</translation>
 <translation id="3511996232906761537">I tuoi siti web, i tuoi segnalibri e gli altri contenuti Brave sempre disponibili e aggiornati qui.</translation>
@@ -170,7 +175,11 @@ Per ulteriori informazioni, controlla l'email all'indirizzo <ph name="ACCOUNT_EM
 <translation id="2433912322225810055">Controlla anche la pagina visualizzata all'avvio di Brave o quando esegui ricerche dalla Omnibox.</translation>
 <translation id="2871190378186459992">Scopri app, giochi, estensioni e temi straordinari per Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="5846303060623790781">Brave Beta (mDNS-In)</translation>
+<translation id="3599046180970731601">Brave Nightly (mDNS-In)</translation>
+<translation id="7881806463410697784">Brave Dev (mDNS-In)</translation>
 <translation id="1912973375560256099">Regola inbound per consentire il traffico mDNS in Brave.</translation>
+<translation id="3795403186582265456">Brave è in grado di riconoscere le immagini e il testo presente in un'immagine inviando immagini delle pagine ai server di Brave Software per permetterti di comprendere meglio i contenuti delle pagine.</translation>
 <translation id="7276297358157391541">Brave può offrire una funzione di controllo ortografico migliore inviando il testo digitato nel browser ai server di Brave Software. Puoi, così, usufruire della stessa tecnologia di controllo ortografico utilizzata dalla Ricerca Brave Software.</translation>
 <translation id="1807774211756215222">Apri link in una nuova &amp;scheda di Brave</translation>
 <translation id="4624945300945265642">Apri link in una finestra di navigazione in inco&amp;gnito di Brave</translation>

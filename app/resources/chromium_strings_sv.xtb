@@ -92,6 +92,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="6970811910055250180">Enheten uppdateras ...</translation>
 <translation id="8030318113982266900">Uppdaterar din enhet till kanalen <ph name="CHANNEL_NAME"/> ...</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> har lagts till i Brave</translation>
+<translation id="8516116288943000095">Rensa även data från Brave (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Dölj i Brave-menyn</translation>
 <translation id="5660079256336839395">Dölj i Brave-menyn</translation>
 <translation id="7456658570432774853">Hjälp oss att förbättra Brave genom att rapportera dina aktuella inställningar</translation>
@@ -127,11 +128,12 @@ Om du loggar in ändå kommer information som bokmärken, historik och andra ins
 <translation id="1326766910007115955">Du loggar in med ett hanterat konto och ger dess administratör kontroll över din Brave-profil. Dina uppgifter i Brave, t.ex. dina appar, bokmärken, din historik, ditt lösenord och andra inställningar, kopplas då permanent till <ph name="USER_NAME"/>. Du kommer att kunna ta bort dessa uppgifter via instrumentpanelen i Brave Software Konton, men du kommer inte att kunna koppla dem till något annat konto. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Du loggar in med ett hanterat konto och ger dess administratör kontroll över din Brave-profil. Dina uppgifter i Brave, t.ex. dina appar, bokmärken, din historik, ditt lösenord och andra inställningar, kopplas då permanent till <ph name="USER_NAME"/>. Du kommer att kunna ta bort dessa uppgifter via instrumentpanelen i Brave Software Konton, men du kommer inte att kunna koppla dem till något annat konto. Du kan skapa en ny profil om du vill hålla dina befintliga Brave-uppgifter separata. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656">Brave användes tidigare av <ph name="USER_EMAIL_ADDRESS"/></translation>
-<translation id="5381681911713004932">Det finns skadlig programvara på datorn. Brave tar bort den och återställer inställningarna så att webbläsaren fungerar som den ska igen.</translation>
+<translation id="1384923383737428730">Det finns skadlig programvara på datorn. Den skadliga programvaran kan tas bort, inställningarna återställas och tillägg inaktiveras så att webbläsaren fungerar som den ska igen.</translation>
 <translation id="8919921662052966648">Brave kunde inte synkronisera data. Uppdatera lösenfrasen för synkroniseringen.</translation>
 <translation id="2262856633481902138">Brave kunde inte synkronisera data eftersom inloggningsuppgifterna för kontot är inaktuella.</translation>
 <translation id="5419189641394808652">Brave kunde inte synkronisera data eftersom synkronisering inte är tillgängligt för domänen.</translation>
 <translation id="2577755334620061182">Brave kunde inte synkronisera data på grund av ett fel vid inloggningen.</translation>
+<translation id="8583885258305961947">Brave OS-system</translation>
 <translation id="3968006371075376562">Det gick inte att synkronisera data med Brave. Uppdatera lösenfrasen för synkronisering.</translation>
 <translation id="6746636977031158624">Det gick inte att synkronisera data med Brave eftersom inloggningsuppgifterna för kontot är inaktuella.</translation>
 <translation id="2999152167963026588">Det gick inte att synkronisera data med Brave eftersom synkronisering inte är tillgängligt för domänen.</translation>
@@ -157,7 +159,7 @@ Kom ihåg att låsa din profil när du inte använder Brave om <ph name="NEW_PRO
 
 Ytterligare anvisningar har skickats med e-post till dig på <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="1820843143331379651">Från och med Brave 70 är kontrollerade användarprofiler inte längre tillgängliga.</translation>
-<translation id="8797005356491520797">Den här personens webbinformation raderas från enheten. Om du vill återställa informationen loggar du in i Brave som $2.</translation>
+<translation id="3066805437003400520">Den här personens webbläsardata tas bort från enheten. Logga in i Brave som <ph name="USER_EMAIL"/> om du vill återställa data.</translation>
 <translation id="2827121003398607864">Vi har förbättrat Brave</translation>
 <translation id="7192666605334070839">Nu är det enklare att använda Brave med ditt Brave Software-konto och på delade datorer.</translation>
 <translation id="3511996232906761537">Här finns webben, bokmärken och allt annat du använder Brave till.</translation>
@@ -173,6 +175,7 @@ Ytterligare anvisningar har skickats med e-post till dig på <ph name="ACCOUNT_E
 <translation id="2871190378186459992">Upptäck fantastiska appar, spel, tillägg och teman för Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Regel som tillåter inkommande mDNS-trafik för Brave.</translation>
+<translation id="3795403186582265456">Du kan få bilder och text i bilder identifierade genom att skicka bilder på sidan i Brave till Brave Softwares servrar, så att du får en bättre uppfattning om vad som finns på sidan.</translation>
 <translation id="7276297358157391541">Med Braves stavningskontroll skickas det du skriver i webbläsaren till Brave Softwares servrar så att du kan använda samma stavningsteknik som används i Brave Softwares webbsökning.</translation>
 <translation id="1807774211756215222">Öppna länken i en ny &amp;flik i Brave</translation>
 <translation id="4624945300945265642">Öppna länken i ett inko&amp;gnitofönster i Brave.</translation>

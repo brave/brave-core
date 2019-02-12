@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -56,7 +57,8 @@ class BraveConfigurator : public update_client::Configurator {
   std::string GetOSLongName() const override;
   base::flat_map<std::string, std::string> ExtraRequestParams() const override;
   std::string GetDownloadPreference() const override;
-  scoped_refptr<network::SharedURLLoaderFactory> URLLoaderFactory() const override;
+  scoped_refptr<network::SharedURLLoaderFactory>
+      URLLoaderFactory() const override;
   std::unique_ptr<service_manager::Connector> CreateServiceManagerConnector()
       const override;
   bool EnabledDeltas() const override;
@@ -68,7 +70,9 @@ class BraveConfigurator : public update_client::Configurator {
   bool IsPerUserInstall() const override;
   std::vector<uint8_t> GetRunActionKeyHash() const override;
   std::string GetAppGuid() const override;
-  std::unique_ptr<update_client::ProtocolHandlerFactory> GetProtocolHandlerFactory() const override;
+  std::unique_ptr<update_client::ProtocolHandlerFactory>
+      GetProtocolHandlerFactory() const override;
+  update_client::RecoveryCRXElevator GetRecoveryCRXElevator() const override;
 
  private:
   friend class base::RefCountedThreadSafe<BraveConfigurator>;
@@ -85,7 +89,8 @@ class BraveConfigurator : public update_client::Configurator {
 BraveConfigurator::BraveConfigurator(
     const base::CommandLine* cmdline,
     PrefService* pref_service)
-    : configurator_impl_(ComponentUpdaterCommandLineConfigPolicy(cmdline), false),
+    : configurator_impl_(ComponentUpdaterCommandLineConfigPolicy(cmdline),
+        false),
       pref_service_(pref_service) {
   DCHECK(pref_service_);
 }
@@ -138,7 +143,8 @@ std::string BraveConfigurator::GetOSLongName() const {
   return configurator_impl_.GetOSLongName();
 }
 
- base::flat_map<std::string, std::string> BraveConfigurator::ExtraRequestParams() const {
+base::flat_map<std::string, std::string>
+BraveConfigurator::ExtraRequestParams() const {
   return configurator_impl_.ExtraRequestParams();
 }
 
@@ -204,6 +210,15 @@ std::string BraveConfigurator::GetAppGuid() const {
 std::unique_ptr<update_client::ProtocolHandlerFactory>
 BraveConfigurator::GetProtocolHandlerFactory() const {
   return std::make_unique<update_client::ProtocolHandlerFactoryXml>();
+}
+
+update_client::RecoveryCRXElevator BraveConfigurator::GetRecoveryCRXElevator()
+    const {
+#if defined(GOOGLE_CHROME_BUILD) && defined(OS_WIN)
+  return base::BindOnce(&RunRecoveryCRXElevated);
+#else
+  return {};
+#endif
 }
 
 }  // namespace

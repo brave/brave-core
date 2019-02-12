@@ -314,7 +314,7 @@
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
-    "message": "Actualmente no está acumulando ninguna ganancia por recompensas cuando navega. Active de nuevo las recompensas en",
+    "message": "Actualmente no estás acumulando ninguna ganancia por navegar. Activa de nuevo las recompensas en",
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {

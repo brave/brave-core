@@ -91,6 +91,7 @@
 <translation id="2218515861914035131">Als unformatierten Text einfügen</translation>
 <translation id="5329858601952122676">&amp;Löschen</translation>
 <translation id="1017280919048282932">&amp;Zum Wörterbuch hinzufügen</translation>
+<translation id="7658239707568436148">Abbrechen</translation>
 <translation id="4572259796527554261">Vorschläge von Brave Software</translation>
 <translation id="3435896845095436175">Aktivieren</translation>
 <translation id="780301667611848630">Kein Interesse</translation>
@@ -212,6 +213,7 @@
 <translation id="5801568494490449797">Einstellungen</translation>
 <translation id="7607274158153386860">Tablet-Website anfordern</translation>
 <translation id="4408599188496843485">&amp;Hilfe</translation>
+<translation id="8378714024927312812">Von Ihrer Organisation verwaltet</translation>
 <translation id="6723661294526996303">Lesezeichen und Einstellungen importieren...</translation>
 <translation id="9203398526606335860">&amp;Profilerstellung aktiviert</translation>
 <translation id="3819800052061700452">V&amp;ollbildmodus</translation>
@@ -224,14 +226,12 @@
 <translation id="4891089016822695758">Beta-Forum</translation>
 <translation id="7199158086730159431">H&amp;ilfe erhalten</translation>
 <translation id="630065524203833229">&amp;Beenden</translation>
-<translation id="8378714024927312812">Von Ihrer Organisation verwaltet</translation>
 <translation id="3855676282923585394">Lesezeichen und Einstellungen importieren...</translation>
 <translation id="4821935166599369261">&amp;Profilerstellung aktiviert</translation>
 <translation id="3827774300009121996">&amp;Vollbildmodus</translation>
 <translation id="3616741288025931835">&amp;Browserdaten löschen...</translation>
 <translation id="1618268899808219593">H&amp;ilfe</translation>
 <translation id="7324297612904500502">Beta-Forum</translation>
-<translation id="2052369079215022979">Von Ihrer Organisation verwaltet</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5912378097832178659">Such&amp;maschinen bearbeiten...</translation>
 <translation id="5702898740348134351">Suchmaschin&amp;en bearbeiten...</translation>
@@ -335,7 +335,6 @@
 <translation id="8200772114523450471">Fortsetzen</translation>
 <translation id="2770465223704140727">Aus Liste entfernen</translation>
 <translation id="7702574632857388784"><ph name="FILE_NAME"/> aus der Liste entfernen</translation>
-<translation id="7658239707568436148">Abbrechen</translation>
 <translation id="7144878232160441200">Wiederholen</translation>
 <translation id="5170568018924773124">In Ordner anzeigen</translation>
 <translation id="1581962803218266616">Im Finder anzeigen</translation>
@@ -448,7 +447,6 @@
 <translation id="6527303717912515753">Teilen</translation>
 <translation id="3249950116250264636"><ph name="APP_NAME"/> (<ph name="APP_URL"/>)</translation>
 <translation id="3810973564298564668">Verwalten</translation>
-<translation id="7837307963048806839">•  $1</translation>
 <translation id="2344028582131185878">Auto-Downloads</translation>
 <translation id="8217399928341212914">Weiterhin automatisches Herunterladen mehrerer Dateien blockieren</translation>
 <translation id="2580889980133367162"><ph name="HOST"/> immer das Herunterladen mehrerer Dateien gestatten</translation>
@@ -561,6 +559,8 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Wert für Zertifikatsignatur</translation>
 <translation id="4104163789986725820">E&amp;xportieren...</translation>
+<translation id="8718098216622210506">Straße</translation>
+<translation id="6969275223369931223">Postleitzahl</translation>
 <translation id="5434065355175441495">PKCS #1 RSA-Verschlüsselung</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 mit RSA-Verschlüsselung</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 mit RSA-Verschlüsselung</translation>
@@ -954,8 +954,6 @@
 <translation id="316854673539778496">Wenn Sie Ihre Erweiterungen auf allen Ihren Geräten verfügbar haben möchten, melden Sie sich an und aktivieren Sie die Synchronisierung.</translation>
 <translation id="8079938625609335826">Wenn Sie Ihre Erweiterungen auf allen Ihren Geräten verfügbar haben möchten, aktivieren Sie die Synchronisierung.</translation>
 <translation id="4977942889532008999">Zugriff bestätigen</translation>
-<translation id="496226124210045887">Der ausgewählte Ordner enthält sensible Dateien. Möchten Sie "$1" wirklich dauerhaft Lesezugriff auf diesen Ordner gewähren?</translation>
-<translation id="4547992677060857254">Der ausgewählte Ordner enthält sensible Dateien. Möchten Sie "$1" wirklich dauerhaft Schreibzugriff auf diesen Ordner gewähren?</translation>
 <translation id="6220413761270491930">Fehler beim Laden der Erweiterung</translation>
 <translation id="5707185214361380026">Fehler beim Laden der Erweiterung aus:</translation>
 <translation id="7341834142292923918">Möchte auf diese Website zugreifen</translation>
@@ -1113,7 +1111,6 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="224940702122312781">Diese Seite verbraucht eine große Menge an Daten.</translation>
 <translation id="3861241522664181545">Seite pausiert.</translation>
 <translation id="6921709132208495314">Datenverbrauch auf dieser Seite stoppen</translation>
-<translation id="1683850629661177840">Mit dem Lite-Modus surfen Sie noch schneller im Internet – auch auf HTTPS-Seiten.</translation>
 <translation id="8428213095426709021">Einstellungen</translation>
 <translation id="2724841811573117416">WebRTC-Protokolle</translation>
 <translation id="1969654639948595766">WebRTC-Textprotokolle (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
@@ -1171,7 +1168,6 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="444134486829715816">Anzeigen...</translation>
 <translation id="2737363922397526254">Minimieren...</translation>
 <translation id="6690659332373509948">Datei kann nicht geparst werden: <ph name="FILE_NAME"/></translation>
-<translation id="3011284594919057757">Über Flash</translation>
 <translation id="1962233722219655970">Diese Seite verwendet eine Native Client App, die auf Ihrem Computer nicht funktioniert.</translation>
 <translation id="7540972813190816353">Fehler beim Suchen nach Updates: <ph name="ERROR"/></translation>
 <translation id="7088434364990739311">Update-Prüfung konnte nicht gestartet werden. Fehlercode: <ph name="ERROR"/></translation>
@@ -1225,6 +1221,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="385051799172605136">Zurück</translation>
 <translation id="4628948037717959914">Foto</translation>
 <translation id="8033827949643255796">Ausgewählt</translation>
+<translation id="2635094637295383009">Twitter</translation>
 <translation id="5376169624176189338">Klicken, um zurückzugehen. Gedrückt halten, um den Verlauf aufzurufen</translation>
 <translation id="9103868373786083162">Drücken, um zurückzugehen. Kontextmenü, um Verlauf aufzurufen</translation>
 <translation id="2961695502793809356">Klicken, um weiterzugehen. Gedrückt halten, um den Verlauf aufzurufen</translation>
@@ -1340,8 +1337,6 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="4206323443866416204">Feedbackbericht</translation>
 <translation id="3681311097828166361">Vielen Dank für Ihr Feedback. Sie sind jetzt offline und Ihr Bericht wird später versendet.</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>Systeminformation<ph name="END_LINK1"/> senden</translation>
-<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>Systeminformationen<ph name="END_LINK1"/> und <ph name="BEGIN_LINK2"/>Messwerte<ph name="END_LINK2"/> senden</translation>
-<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>System- und App-Informationen<ph name="END_LINK1"/> sowie <ph name="BEGIN_LINK2"/>Messwerte<ph name="END_LINK2"/> senden</translation>
 <translation id="8329196515830093443">Datei wird zur Fehlerbehebung an Brave Software gesendet</translation>
 <translation id="8227119283605456246">Datei anhängen</translation>
 <translation id="5367091008316207019">Datei wird gelesen...</translation>
@@ -1414,39 +1409,11 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="9009369504041480176">Hochgeladen (<ph name="PROGRESS_PERCENT"/> %)...</translation>
 <translation id="7925285046818567682">Warten auf <ph name="HOST_NAME"/>...</translation>
 <translation id="7887334752153342268">Duplizieren</translation>
-<translation id="5210365745912300556">Schließen</translation>
-<translation id="5453029940327926427">Tabs schließen</translation>
 <translation id="68541483639528434">Andere Tabs schließen</translation>
 <translation id="6686490380836145850">Tabs rechts schließen</translation>
-<translation id="855081842937141170">Anpinnen</translation>
-<translation id="5105855035535475848">Tabs anpinnen</translation>
-<translation id="2074527029802029717">Tab loslösen</translation>
-<translation id="1812631533912615985">Tabs loslösen</translation>
-<translation id="527605719918376753">Stummschalten</translation>
-<translation id="8373553483208508744">Tabs stummschalten</translation>
-<translation id="9203478404496196495">Stummschaltung des Tabs aufheben</translation>
-<translation id="1438632560381091872">Stummschaltung der Tabs aufheben</translation>
-<translation id="1568067597247500137">Website stummschalten</translation>
-<translation id="1216654534877302979">Websites stummschalten</translation>
-<translation id="612596694132302162">Stummschaltung für Website aufheben</translation>
-<translation id="6778959797435875428">Stummschaltung für Websites aufheben</translation>
 <translation id="4474155171896946103">Alle Tabs als Lesezeichen speichern...</translation>
-<translation id="3551320343578183772">Tab schließen</translation>
-<translation id="7268365133021434339">Tabs schließen</translation>
 <translation id="4322394346347055525">Andere Tabs schließen</translation>
 <translation id="1166212789817575481">Tabs rechts schließen</translation>
-<translation id="21133533946938348">Tab anheften</translation>
-<translation id="8072988827236813198">Tabs anheften</translation>
-<translation id="6442697326824312960">Tab loslösen</translation>
-<translation id="1732215134274276513">Tabs loslösen</translation>
-<translation id="474217410105706308">Tab stummschalten</translation>
-<translation id="9039890312082871605">Tabs stummschalten</translation>
-<translation id="4632483769545853758">Stummschaltung des Tabs aufheben</translation>
-<translation id="304826556400666995">Stummschaltung der Tabs aufheben</translation>
-<translation id="2973324205039581528">Website stummschalten</translation>
-<translation id="7579149537961810247">Websites stummschalten</translation>
-<translation id="1293177648337752319">Stummschaltung für Website aufheben</translation>
-<translation id="109758035718544977">Stummschaltung für Websites aufheben</translation>
 <translation id="2336228925368920074">Alle Tabs als Lesezeichen speichern...</translation>
 <translation id="2278562042389100163">Browserfenster öffnen</translation>
 <translation id="756445078718366910">Browserfenster öffnen</translation>
@@ -1494,14 +1461,6 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">Plattform</translation>
 <translation id="7022562585984256452">Ihre Startseite wurde eingerichtet.</translation>
-<translation id="2709516037105925701">AutoFill</translation>
-<translation id="4378154925671717803">Telefon</translation>
-<translation id="4807098396393229769">Name auf Karte</translation>
-<translation id="2612676031748830579">Kartennummer</translation>
-<translation id="869891660844655955">Ablaufdatum</translation>
-<translation id="1149401351239820326">Ablaufmonat</translation>
-<translation id="8058655154417507695">Ablaufjahr</translation>
-<translation id="2286841657746966508">Rechnungsadresse</translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Drucker hinzufügen</translation>
 <translation id="9052208328806230490">Sie haben Ihre Drucker unter dem Konto <ph name="EMAIL"/> bei <ph name="CLOUD_PRINT_NAME"/> registriert.</translation>
@@ -1646,12 +1605,8 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="1231733316453485619">Synchronisierung aktivieren?</translation>
 <translation id="9125982323641182972">Brave cleverer nutzen – dank Brave Software</translation>
 <translation id="4736292055110123391">Lesezeichen, Passwörter, Verlauf und mehr auf allen Geräten synchronisieren</translation>
-<translation id="328921709097406258">Mithilfe Ihres Verlaufs kann Brave Software die Brave Software-Suche, Werbung und andere Brave Software-Dienste personalisieren.</translation>
 <translation id="363863692969456324">Rechtschreibfehler mit der erweiterten Rechtschreibprüfung korrigieren</translation>
-<translation id="1493787485275784624">Wenn Sie etwas in ein Textfeld eingeben, wird dieser Text an Brave Software gesendet.</translation>
 <translation id="561013949633009906">Helfen Sie, die Sicherheit und Funktionen von Brave zu verbessern</translation>
-<translation id="725079085443555687">Einige Systeminformationen und Seiteninhalte werden anonym an Brave Software gesendet.</translation>
-<translation id="2895734772884435517">Sie können diese Einstellungen jederzeit anpassen.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">Lesezeichen, Verlauf, Passwörter und andere Einstellungen werden mit Ihrem Brave Software-Konto synchronisiert, damit Sie sie auf allen Ihren Geräten nutzen können.</translation>
 <translation id="3111958038206230539">Brave Software-Dienste personalisieren</translation>
@@ -1759,8 +1714,6 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="2562743677925229011">Nicht in <ph name="SHORT_PRODUCT_NAME"/> angemeldet</translation>
 <translation id="4027804175521224372">(Keine Synchronisierung Ihrer Daten – <ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK"/>)</translation>
 <translation id="3574210789297084292">Anmelden</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
-<translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="237828693408258535">Diese Seite übersetzen?</translation>
 <translation id="4613765529964435709">Soll Brave Software diese Seite von <ph name="SOURCE_LANGUAGE"/> in <ph name="TARGET_LANGUAGE"/> übersetzen?</translation>
 <translation id="5990386583461751448">Übersetzt</translation>
@@ -1823,6 +1776,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="8214489666383623925">Datei öffnen...</translation>
 <translation id="7456847797759667638">Adresse öffnen...</translation>
 <translation id="3265459715026181080">Fenster schließen</translation>
+<translation id="3551320343578183772">Tab schließen</translation>
 <translation id="4780321648949301421">Seite speichern unter...</translation>
 <translation id="6212752530110374741">Link per E-Mail versenden</translation>
 <translation id="457386861538956877">Mehr...</translation>
@@ -1871,6 +1825,8 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="7831754656372780761"><ph name="TAB_TITLE"/> <ph name="EMOJI_MUTING"/></translation>
 <translation id="6315493146179903667">Alle nach vorn bringen</translation>
 <translation id="3007771295016901659">Tab duplizieren</translation>
+<translation id="2973324205039581528">Website stummschalten</translation>
+<translation id="21133533946938348">Tab anheften</translation>
 <translation id="2007404777272201486">Problem melden...</translation>
 <translation id="3118319026408854581"><ph name="PRODUCT_NAME"/>-Hilfe</translation>
 <translation id="6721972322305477112">&amp;Ablage</translation>
@@ -2260,8 +2216,6 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="4079799245038595838">An Ihr Smartphone wurde eine Benachrichtigung gesendet. Folgen Sie den Schritten darin, um Ihre Identität zu bestätigen.</translation>
 <translation id="88870264962436283">Touch ID mit <ph name="APP_NAME"/> verwenden</translation>
 <translation id="5186185447130319458">Inkognito</translation>
-<translation id="8480139856920479206">{0,plural, =1{Es ist ein Inkognitofenster geöffnet.}other{Es sind # Inkognitofenster geöffnet.}}</translation>
-<translation id="2545348954155066907">{0,plural, =1{Dieses Fenster schließen}other{Alle Inkognitofenster schließen}}</translation>
 <translation id="394984172568887996">Aus Internet Explorer importiert</translation>
 <translation id="1543284117603151572">Aus Edge importiert</translation>
 <translation id="5502500733115278303">Aus Firefox importiert</translation>
@@ -2325,7 +2279,6 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="6455894534188563617">&amp;Neuer Ordner</translation>
 <translation id="1015318665228971643">Ordnernamen bearbeiten</translation>
 <translation id="5449588825071916739">Alle Tabs als Lesezeichen speichern</translation>
-<translation id="5528368756083817449">Lesezeichenmanager</translation>
 <translation id="3828029223314399057">In Lesezeichen suchen</translation>
 <translation id="8116972784401310538">&amp;Lesezeichen-Manager</translation>
 <translation id="6973630695168034713">Ordner</translation>
@@ -2381,6 +2334,10 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="1774833706453699074">Offene Seiten als Lesezeichen speichern...</translation>
 <translation id="6949306908218145636">Offene Seiten als Lesezeichen speichern...</translation>
 <translation id="4422347585044846479">Lesezeichen für diese Seite bearbeiten</translation>
+<translation id="1620510694547887537">Kamera</translation>
+<translation id="5646376287012673985">Ort</translation>
+<translation id="3227137524299004712">Mikrofon</translation>
+<translation id="2482878487686419369">Benachrichtigungen</translation>
 <translation id="6005695835120147974">Media Router</translation>
 <translation id="7787308148023287649">Anzeige auf einem anderen Display</translation>
 <translation id="7710568461918838723">&amp;Streamen...</translation>
@@ -2593,7 +2550,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="2653659639078652383">Senden</translation>
 <translation id="8392451568018454956">Optionsmenü für <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="6164005077879661055">Durch das Entfernen des betreuten Nutzers werden alle mit ihm verknüpften Dateien und lokalen Daten endgültig gelöscht. Besuchte Websites und Einstellungen des betreuten Nutzers kann der Manager möglicherweise weiterhin unter <ph name="MANAGEMENT_URL"/> einsehen.</translation>
-<translation id="1646102270785326155">Durch das Entfernen des Nutzers werden alle mit ihm verknüpften Dateien und lokalen Daten endgültig gelöscht. $1 kann sich später immer noch anmelden.</translation>
 <translation id="672213144943476270">Bitte entsperren Sie Ihr Profil, bevor Sie als Gast surfen.</translation>
 <translation id="3478685642445675458">Entsperren Sie Ihr Profil, bevor Sie eine Person entfernen.</translation>
 <translation id="4648499713050786492">Entsperren Sie Ihr Profil, bevor Sie eine Person hinzufügen.</translation>
@@ -2629,12 +2585,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6146563240635539929">Videos</translation>
 <translation id="3616113530831147358">Audio</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Vorsicht:<ph name="END_BOLD"/>Hierbei handelt es sich um Temporärdateien, die möglicherweise automatisch gelöscht werden, um Speicherplatz freizugeben. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
-<translation id="7361039089383199231">$1 Byte</translation>
-<translation id="4871210892959306034">$1 KB</translation>
-<translation id="641105183165925463">$1 MB</translation>
-<translation id="7221155467930685510">$1 GB</translation>
-<translation id="5039512255859636053">$1 TB</translation>
-<translation id="6840313690797192085">$1 PB</translation>
 <translation id="3126026824346185272">Strg</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Umschalttaste</translation>
@@ -2651,7 +2601,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="5145331109270917438">Änderungsdatum</translation>
 <translation id="8487700953926739672">Offline verfügbar</translation>
 <translation id="2230062665678605299">Ordner "<ph name="FOLDER_NAME"/>" kann nicht erstellt werden. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4630590996962964935">Ungültiges Zeichen: $1</translation>
 <translation id="642282551015776456">Dieser Name darf nicht als Datei- oder Ordnername verwendet werden.</translation>
 <translation id="2070909990982335904">Namen, die mit einem Punkt beginnen, sind für das System reserviert. Wählen Sie einen anderen Namen aus.</translation>
 <translation id="8456681095658380701">Ungültiger Name</translation>
@@ -2662,8 +2611,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="3749289110408117711">Dateiname</translation>
 <translation id="3280431534455935878">In Vorbereitung</translation>
 <translation id="6607272825297743757">Dateiinformationen</translation>
-<translation id="3429599832623003132">$1 Elemente</translation>
-<translation id="532360961509278431">"$1" kann nicht geöffnet werden: $2</translation>
 <translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>Entfernen Sie Ihr Gerät noch nicht!<ph name="END_BOLD"/>
    <ph name="LINE_BREAKS"/>
    Wenn Sie Ihr Gerät entfernen, während es verwendet wird, können Daten verloren gehen. Warten Sie, bis der Vorgang abgeschlossen ist, und werfen Sie das Gerät dann über die App "Dateien" aus.</translation>
@@ -2717,9 +2664,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="5158593464696388225">Bild konnte nicht gespeichert werden.</translation>
 <translation id="2787047795752739979">Original überschreiben</translation>
 <translation id="8775404590947523323">Ihre Änderungen werden automatisch gespeichert.<ph name="BREAKS"/>Um eine Kopie des Originalbilds beizubehalten, deaktivieren Sie die Funktion "Original überschreiben".</translation>
-<translation id="6653525630739667879">Speichern in $1 nicht möglich. Alle Änderungen werden in $2 im Downloads-Ordner gespeichert.</translation>
-<translation id="3184560914950696195">Fehler beim Speichern unter $1. Bearbeitete Bilder werden im Ordner "Downloads" gespeichert.</translation>
-<translation id="6983991971286645866">Alle Änderungen werden in $1 gespeichert.</translation>
 <translation id="8153607920959057464">Diese Datei kann nicht angezeigt werden.</translation>
 <translation id="6227235786875481728">Diese Datei kann nicht wiedergegeben werden.</translation>
 <translation id="9154418932169119429">Dieses Bild ist offline nicht verfügbar.</translation>
@@ -2729,9 +2673,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="4801956050125744859">Beide behalten</translation>
 <translation id="1062407476771304334">Ersetzen</translation>
 <translation id="1556189134700913550">Auf alle anwenden</translation>
-<translation id="3206175707080061730">Eine Datei mit dem Namen "$1" existiert bereits. Möchten Sie sie ersetzen?</translation>
-<translation id="8059178146866384858">Die Datei mit dem Namen "$1" existiert bereits. Wählen Sie einen anderen Namen aus.</translation>
-<translation id="5653140146600257126">Es existiert bereits ein Ordner mit dem Namen "$1". Wählen Sie bitte einen anderen Namen aus.</translation>
 <translation id="1497522201463361063">"<ph name="FILE_NAME"/>" kann nicht umbenannt werden. <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5330512191124428349">Informationen abrufen</translation>
 <translation id="8312871300878166382">In Ordner einfügen</translation>
@@ -2790,20 +2731,13 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="4724850507808590449"><ph name="FILE_COUNT"/> Fotos gesichert</translation>
 <translation id="1351692861129622852"><ph name="FILE_COUNT"/> Dateien werden importiert...</translation>
 <translation id="117624967391683467"><ph name="FILE_NAME"/> wird kopiert...</translation>
-<translation id="8453482423012550001">$1-Elemente werden kopiert...</translation>
 <translation id="7627790789328695202">Hoppla, <ph name="FILE_NAME"/> existiert bereits. Geben Sie einen anderen Namen ein und versuchen Sie es erneut.</translation>
 <translation id="5691596662111998220">Hoppla, <ph name="FILE_NAME"/> existiert nicht mehr.</translation>
 <translation id="4336032328163998280">Fehler beim Kopieren. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1503914375822320413">Unerwarteter Fehler beim Kopieren: $1</translation>
 <translation id="6133173853026656527"><ph name="FILE_NAME"/> wird verschoben...</translation>
-<translation id="3039828483675273919">$1-Elemente werden verschoben...</translation>
 <translation id="6007237601604674381">Fehler beim Verschieben. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="8954952943849489823">Unerwarteter Fehler beim Verschieben: $1</translation>
 <translation id="3326821416087822643"><ph name="FILE_NAME"/> wird gezippt...</translation>
-<translation id="5694501201003948907">$1-Elemente werden gezippt...</translation>
-<translation id="7464490149090366184">Fehler beim Zippen, Element bereits vorhanden: "$1"</translation>
 <translation id="9133055936679483811">Fehler beim Zippen. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1711973684025117106">Fehler beim Zippen, unerwarteter Fehler: $1</translation>
 <translation id="653019979737152879"><ph name="FILE_NAME"/> wird synchronisiert...</translation>
 <translation id="8579285237314169903"><ph name="NUMBER_OF_FILES"/> Elemente werden synchronisiert...</translation>
 <translation id="8137331602592933310">"<ph name="FILENAME"/>" wurde mit Ihnen geteilt. Sie können die Datei nicht löschen, da Sie nicht der Eigentümer sind.</translation>
@@ -2823,8 +2757,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="1464724975715666883">1 Fehler</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> Fehler</translation>
 <translation id="6643016212128521049">Löschen</translation>
-<translation id="4284105660453474798">Möchten Sie "$1" wirklich löschen?</translation>
-<translation id="4580526846085481512">Möchten Sie wirklich $1 Elemente löschen?</translation>
 <translation id="7953739707111622108">Dieses Gerät kann nicht geöffnet werden, da das Dateisystem nicht erkannt wurde.</translation>
 <translation id="3726463242007121105">Dieses Gerät kann nicht geöffnet werden, da das zugehörige Dateisystem nicht unterstützt wird.</translation>
 <translation id="3414856743105198592">Durch die Formatierung der Wechselmedien werden alle Daten gelöscht. Möchten Sie fortfahren?</translation>
@@ -2898,7 +2830,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
     <ph name="MARKUP_4"/>Löschen Sie Dateien aus dem Ordner "Downloads".<ph name="MARKUP_5"/></translation>
 <translation id="7606199793785990727">Brave Software Drive konnte nicht erreicht werden. Bitte <ph name="BEGIN_LINK"/>melden Sie sich ab<ph name="END_LINK"/> und melden Sie sich dann erneut an.</translation>
 <translation id="585883343689351092">Willkommen bei Brave Software Drive!</translation>
-<translation id="1788440444874291920">Erhalten Sie kostenlos 100 GB bei Brave Software Drive.</translation>
 <translation id="6862635236584086457">Alle in diesem Ordner gespeicherten Dateien werden automatisch online gesichert.</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Greifen Sie überall auf Ihre Dateien zu, auch offline.<ph name="MARKUP_2"/>
     Dateien in Brave Software Drive sind aktuell und auf jedem Gerät verfügbar.<ph name="MARKUP_3"/>
@@ -2906,24 +2837,14 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
     Was auch immer mit Ihrem Gerät passiert, Ihre Dateien sind in Brave Software Drive sicher gespeichert.<ph name="MARKUP_6"/>
     <ph name="MARKUP_7"/>Teilen, erstellen und bearbeiten<ph name="MARKUP_8"/>
     Sie Ihre Dateien mit anderen an einem zentralen Ort.<ph name="MARKUP_9"/></translation>
-<translation id="7489605380874780575">Unterstützung überprüfen</translation>
 <translation id="4878716980734452132">Dieser Dateityp wird nicht unterstützt. Im <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> können Sie nach einer App suchen, mit der sich dieser Dateityp öffnen lässt.
    <ph name="BEGIN_LINK_HELP"/>Weitere Informationen<ph name="END_LINK_HELP"/></translation>
-<translation id="3376900196170631953">Diese Datei wurde für einen PC mit Windows-Software entwickelt und ist nicht mit Ihrem Brave OS-Gerät kompatibel. Suchen Sie im <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> nach einer geeigneten Ersatz-App. <ph name="BEGIN_LINK_HELP"/>Weitere Informationen<ph name="END_LINK_HELP"/></translation>
 <translation id="3072401511615920367">Diese Datei wurde für einen Computer mit Macintosh-Software entwickelt und ist nicht mit Ihrem Brave OS-Gerät kompatibel. Suchen Sie im <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> nach einer geeigneten Ersatz-App. <ph name="BEGIN_LINK_HELP"/>Weitere Informationen<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">Einen Moment bitte</translation>
 <translation id="3096967955765855393">Wir arbeiten stets daran, das Surfen für Sie sicherer zu machen. Früher konnten Sie von jeder beliebigen Website aufgefordert werden, eine Erweiterung zu Ihrem Browser hinzuzufügen. In neueren Versionen von Brave Software Brave müssen Sie Brave ausdrücklich mitteilen, dass Sie diese Erweiterungen installieren möchten, indem Sie sie über die Seite "Erweiterungen" hinzufügen. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
-<translation id="2004663115385769400">Öffnen mit "$1" nicht möglich</translation>
-<translation id="639777613761517128">Um Dateien mit "$1" zu öffnen, kopieren Sie sie zuerst in den Ordner "Linux-Dateien".</translation>
 <translation id="5368191757080475556">Ordner für Linux freigeben</translation>
-<translation id="6803594270782834876">Sie geben Linux-Apps die Berechtigung, Dateien im $1-Ordner zu öffnen</translation>
-<translation id="9204140378020726578">Sie geben Linux-Apps die Berechtigung, Dateien in Brave Software Drive zu öffnen. Änderungen werden mit Ihren anderen Geräten synchronisiert.</translation>
 <translation id="4290535918735525311">1 Ordner für Linux freigegeben</translation>
-<translation id="984401732412731005">$1 Ordner für Linux freigegeben</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/>-Datei</translation>
-<translation id="895586998699996576">$1-Bild</translation>
-<translation id="2853916256216444076">$1-Video</translation>
-<translation id="7006844981395428048">$1-Audio</translation>
 <translation id="7799329977874311193">HTML-Dokument</translation>
 <translation id="2208158072373999562">ZIP-Archiv</translation>
 <translation id="2028997212275086731">RAR-Archiv</translation>
@@ -2972,8 +2893,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6199801702437275229">Speicherplatzangaben werden abgerufen...</translation>
 <translation id="6485131920355264772">Angaben zum Speicherplatz konnten nicht abgerufen werden.</translation>
 <translation id="7748626145866214022">Auf der Aktionsleiste sind weitere Optionen verfügbar. Drücken Sie Alt + A, um den Fokus auf die Aktionsleiste zu setzen.</translation>
-<translation id="60628369828239652">Datei "<ph name="FILE_NAME"/>" wird geöffnet</translation>
-<translation id="353547388688256996"><ph name="NUMBER_FILES"/> werden geöffnet</translation>
 <translation id="6710213216561001401">Zurück</translation>
 <translation id="1395262318152388157">Schieberegler für die Suche</translation>
 <translation id="4880214202172289027">Schieberegler für die Lautstärke</translation>
@@ -3116,7 +3035,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6352773953037195952">Höchste</translation>
 <translation id="3677657024345889897">Am leisesten</translation>
 <translation id="167160931442925455">Am lautesten</translation>
-<translation id="9129010913019873477"><ph name="PERCENTAGE"/> (Standard)</translation>
 <translation id="3602290021589620013">Vorschau</translation>
 <translation id="7037509989619051237">Text zum Anhören</translation>
 <translation id="5471768120198416576">Hallo! Ich bin die Stimme Ihrer Sprachausgabe.</translation>
@@ -3169,9 +3087,11 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="8465252176946159372">Ungültig</translation>
 <translation id="8647834505253004544">Keine gültige Webadresse</translation>
 <translation id="7946586320617670168">Quelle muss sicher sein</translation>
+<translation id="2709516037105925701">AutoFill</translation>
 <translation id="7764225426217299476">Adresse hinzufügen</translation>
 <translation id="5595485650161345191">Adresse bearbeiten</translation>
 <translation id="6207937957461833379">Land/Region</translation>
+<translation id="4378154925671717803">Telefon</translation>
 <translation id="9064275926664971810">AutoFill aktivieren, um Webformulare mit nur einem Klick auszufüllen</translation>
 <translation id="9095253524804455615">Entfernen</translation>
 <translation id="451515744433878153">Entfernen</translation>
@@ -3181,6 +3101,11 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="4835914736509775287">Karten in Ihrem Brave Software-Konto speichern</translation>
 <translation id="7255002516883565667">Derzeit kann eine Ihrer Karten nur auf diesem Gerät verwendet werden</translation>
 <translation id="6848388270925200958">Zurzeit können einige Ihrer Karten nur auf diesem Gerät verwendet werden</translation>
+<translation id="4807098396393229769">Name auf Karte</translation>
+<translation id="2612676031748830579">Kartennummer</translation>
+<translation id="869891660844655955">Ablaufdatum</translation>
+<translation id="1149401351239820326">Ablaufmonat</translation>
+<translation id="8058655154417507695">Ablaufjahr</translation>
 <translation id="379082410132524484">Ihre Karte ist abgelaufen.</translation>
 <translation id="6644512095122093795">Speichern von Passwörtern anbieten</translation>
 <translation id="2100273922101894616">Automatisch anmelden</translation>
@@ -3510,7 +3435,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6921033294337262045">Tippen Sie auf "App-Benachrichtigungen" &gt; "Brave Software Play-Dienste".</translation>
 <translation id="5624710179837914896">Aktivieren Sie die Brave Software Play-Dienste.</translation>
 <translation id="2705736684557713153">Scrollen Sie auf dem Bildschirm nach unten und aktivieren Sie die Option "Instant Tethering", wenn diese angezeigt wird. Falls nicht, brauchen Sie nichts weiter zu tun.</translation>
-<translation id="3604048165392640554">Keine Mobilfunkverbindung gefunden. Aktivieren Sie das Instant Tethering auf Ihren anderen Geräten und versuchen Sie es noch einmal. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Weitere Informationen&lt;/a&gt;</translation>
 <translation id="7240339475467890413">Mit neuem Hotspot verbinden?</translation>
 <translation id="6514010653036109809">Verfügbares Gerät:</translation>
 <translation id="2075474481720804517">Akkustand <ph name="BATTERY_PERCENTAGE"/> %</translation>
@@ -3688,8 +3612,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="5487521232677179737">Daten löschen</translation>
 <translation id="3151562827395986343">Cache leeren sowie Verlauf, Cookies und andere Daten löschen</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> – <ph name="COUNT"/></translation>
-<translation id="3407837288045706722">Weitere Einstellungen in Verbindung mit Datenschutz, Sicherheit und der Erhebung von Daten finden Sie unter <ph name="BEGIN_LINK"/>Synchronisieren und personalisieren<ph name="END_LINK"/></translation>
-<translation id="7222718784508482526">Weitere Einstellungen in Verbindung mit Datenschutz, Sicherheit und der Erhebung von Daten finden Sie unter <ph name="BEGIN_LINK"/>Synchronisierung und Brave Software-Dienste<ph name="END_LINK"/></translation>
 <translation id="8632933437936028548">Einstellungen zurücksetzen</translation>
 <translation id="5293170712604732402">Einstellungen auf ursprüngliche Standardwerte zurücksetzen</translation>
 <translation id="892706138619340876">Einige Einstellungen wurden zurückgesetzt</translation>
@@ -3714,12 +3636,9 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="7098447629416471489">Hier werden andere gespeicherte Suchmaschinen angezeigt</translation>
 <translation id="1459967076783105826">Von Erweiterungen hinzugefügte Suchmaschinen</translation>
 <translation id="6678717876183468697">Abfrage-URL</translation>
-<translation id="1545786162090505744">URL mit %s statt der Suchanfrage</translation>
 <translation id="6953878494808481632">Weitere Informationen</translation>
 <translation id="4145922204387553806">Zulassen, dass Assistant Ihnen Informationen zu den Inhalten auf Ihrem Bildschirm anzeigt</translation>
 <translation id="472896694312062378">Ok Brave Software</translation>
-<translation id="6236033368436682108">Bei eingeschaltetem Bildschirm steht Ihnen Brave Software Assistant jederzeit zur Verfügung, wenn Sie "Ok Brave Software" sagen</translation>
-<translation id="2482878487686419369">Benachrichtigungen</translation>
 <translation id="5355099869024327351">Zulassen, dass Assistant Ihnen Benachrichtigungen anzeigt</translation>
 <translation id="133535873114485416">Bevorzugte Eingabe</translation>
 <translation id="6233154960150021497">Standardmäßig Sprachsteuerung anstatt Tastatur verwenden</translation>
@@ -3735,14 +3654,12 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="1919345977826869612">Werbung</translation>
 <translation id="5649053991847567735">Auto-Downloads</translation>
 <translation id="3744111561329211289">Hintergrundsync</translation>
-<translation id="1620510694547887537">Kamera</translation>
 <translation id="2586657967955657006">Zwischenablage</translation>
 <translation id="5518219166343146486">Nachfragen, wenn eine Website Texte und Bilder aus der Zwischenablage abrufen möchte</translation>
 <translation id="2089795179672254991">Nachfragen, wenn eine Website Texte und Bilder aus der Zwischenablage abrufen möchte (empfohlen)</translation>
 <translation id="16815041330799488">Websites keinen Zugriff auf Texte und Bilder gewähren, die sich in der Zwischenablage befinden</translation>
 <translation id="3668823961463113931">Handler</translation>
 <translation id="5689516760719285838">Ort</translation>
-<translation id="3227137524299004712">Mikrofon</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Zahlungs-Handler</translation>
@@ -3887,12 +3804,9 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6029292188939175871">[<ph name="FINGERPRINT_NAME"/>] löschen, Schaltfläche</translation>
 <translation id="1927632033341042996">Finger <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">Konto hinzufügen</translation>
-<translation id="3422989461909154470">Hier können alle Ihre angemeldeten Brave Software-Konten von Apps und Websites verwaltet werden.</translation>
 <translation id="1987317783729300807">Konten</translation>
 <translation id="8418661265246754237">Brave Software Konten</translation>
 <translation id="3297951628821704004">Konto von diesem Gerät entfernen</translation>
-<translation id="1059855432287631118">Registrieren des Fingerabdrucks</translation>
-<translation id="878068003854005405">Fangen wir an. Legen Sie Ihren Finger auf den Sensor.</translation>
 <translation id="176193854664720708">Der Fingerabdrucksensor ist in die Ein-/Aus-Taste integriert. Berühren Sie diese leicht mit dem Finger.</translation>
 <translation id="7189965711416741966">Fingerabdruck hinzugefügt.</translation>
 <translation id="9220820413868316583">Finger hochheben und dann Versuch wiederholen.</translation>
@@ -4122,6 +4036,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="2789927670850159391">Sie können Ihr Bravebook mit Ihrem Smartphone verbinden. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">Keine geeigneten Geräte vorhanden. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">Bestätigung steht aus. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
+<translation id="6518133107902771759">Überprüfen</translation>
 <translation id="7179187931092694802">Sie können Ihr Bravebook mit Ihrem Smartphone entsperren. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant Tethering</translation>
 <translation id="6415900369006735853">Internetverbindung über Ihr Smartphone herstellen</translation>
@@ -4133,24 +4048,19 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="7878562273885520351">Ihr Passwort könnte gefährdet sein</translation>
 <translation id="1089439967362294234">Passwort ändern</translation>
 <translation id="6187156085111579405">Elemente, die hier nicht aufgeführt sind, werden bei Bedarf ebenfalls entfernt. Weitere Informationen zum &lt;a href="<ph name="URL"/>"&gt;Schutz vor unerwünschter Software&lt;/a&gt; finden Sie im Whitepaper zum Datenschutz in Brave.</translation>
-<translation id="928985544179707652">Erweiterungen:</translation>
 <translation id="7712836429117959503">Unbekannte Erweiterung mit der ID "<ph name="EXTENSION_ID"/>"</translation>
-<translation id="2600115369439982409">Dateien und Programme:</translation>
-<translation id="1372681413396468867">{NUM_ITEMS,plural, =1{1 zu entfernendes Element}other{# zu entfernende Elemente}}</translation>
 <translation id="7187428571767585875">Registrierungseinträge, die entfernt oder geändert werden:</translation>
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{1 mehr}other{# mehr}}</translation>
 <translation id="2749608811030566578">Beim Entfernen schädlicher Software ist ein Fehler aufgetreten</translation>
 <translation id="8189483132214844139">Brave kann auf Ihrem Computer schädliche Software suchen und entfernen</translation>
 <translation id="2910318910161511225">Stellen Sie eine Verbindung zu einem Netzwerk her und versuchen Sie es noch einmal</translation>
 <translation id="1426870617281699524">Klicken Sie auf "Wiederholen" und akzeptieren Sie die Aufforderung auf Ihrem Computer</translation>
-<translation id="2201358555632643970">Schädliche Software wurde auf Ihrem Computer gefunden. Brave entfernt diese Software und stellt Ihre Einstellungen wieder her, sodass Ihr Browser wieder wie gewohnt funktioniert.</translation>
 <translation id="1484912962860902625">Bei der Brave-Suche nach schädlicher Software ist ein Fehler aufgetreten</translation>
 <translation id="451407183922382411">Powered by <ph name="COMPANY_NAME"/></translation>
 <translation id="5254368820972107711">Zu entfernende Dateien anzeigen</translation>
 <translation id="296026337010986570">Fertig! Die schädliche Software wurde entfernt. Sie können Ihre Erweiterungen jetzt wieder aktivieren. Rufen Sie dazu einfach &lt;a href="chrome://extensions"&gt;Erweiterungen&lt;/a&gt; auf.</translation>
 <translation id="284975061945174219">Fehler bei der Bereinigung</translation>
 <translation id="9014750448058570312">Brave benötigt eine Berechtigung, um fortzufahren</translation>
-<translation id="3806965327722135869">Schädliche Software suchen und entfernen</translation>
 <translation id="4320177379694898372">Keine Internetverbindung</translation>
 <translation id="850875081535031620">Keine schädliche Software gefunden</translation>
 <translation id="1186771945450942097">Schädliche Software entfernen</translation>
@@ -4159,7 +4069,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="8639047128869322042">Nach schädlicher Software wird gesucht...</translation>
 <translation id="2653033005692233957">Fehler bei der Suche</translation>
 <translation id="655483977608336153">Erneut versuchen</translation>
-<translation id="6312400084708441752">Die Angaben umfassen Informationen zu schädlicher Software, Systemeinstellungen und Prozessen auf Ihrem Computer</translation>
 <translation id="6555810572223193255">Die Bereinigung ist derzeit nicht verfügbar</translation>
 <translation id="7117228822971127758">Bitte versuchen Sie es später noch einmal</translation>
 <translation id="443475966875174318">Nicht kompatible Anwendungen aktualisieren oder entfernen</translation>
@@ -4196,8 +4105,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="3264582393905923483">Kontext</translation>
 <translation id="1607139524282324606">Eintrag löschen</translation>
 <translation id="6025215716629925253">Stacktrace</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 Zeile wird nicht angezeigt&gt;}other{&lt;$1 Zeilen werden nicht angezeigt&gt;}}</translation>
-<translation id="5334899159203764908">Weitere Informationen zum <ph name="BEGIN_LINK"/>Websitezugriff<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Dieser Erweiterung erlauben, alle Ihre Daten auf von Ihnen besuchten Websites zu lesen und zu ändern:</translation>
 <translation id="407173827865827707">Bei Klick</translation>
 <translation id="6455264371803474013">Auf bestimmten Websites</translation>
@@ -4270,6 +4177,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="2785008241190445880">Lesezeichen ersetzt</translation>
 <translation id="4320948194796820126">Wählen Sie einen E-Mail-Dienst aus, um ihn als Lesezeichen hinzuzufügen</translation>
 <translation id="2950533317914339731">Lesezeichen für Ihre Lieblings-Apps von Brave Software hinzufügen</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="239760341987199724">Brave als Standardbrowser festlegen</translation>
 <translation id="96037229054033864">Cleverer suchen und surfen mit Brave Software</translation>
 <translation id="296137235951584143">Brave personalisieren</translation>
@@ -4302,14 +4210,12 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="3706463572498736864">Seiten pro Blatt</translation>
 <translation id="2249605167705922988">z. B. 1-5, 8, 11-13</translation>
 <translation id="5746169159649715125">Als PDF speichern</translation>
-<translation id="1731589410171062430">Gesamt: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/> (<ph name="NUMBER_OF_PAGES"/> <ph name="PAGE_OR_PAGES_LABEL"/>)</translation>
 <translation id="2580924999637585241">Gesamt: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">Blatt Papier</translation>
 <translation id="8813811964357448561">Blatt Papier</translation>
 <translation id="8180239481735238521">Seite</translation>
 <translation id="3725367690636977613">Seiten</translation>
 <translation id="7005848115657603926">Ungültiger Seitenbereich, verwenden Sie <ph name="EXAMPLE_PAGE_RANGE"/>.</translation>
-<translation id="2890678560483811744">Seitenbereich ist zu groß</translation>
 <translation id="5398572795982417028">Der Seitenbereich ist zu groß. Die maximale Seitenanzahl liegt bei <ph name="MAXIMUM_PAGE"/></translation>
 <translation id="218070003709087997">Geben Sie eine Zahl ein, um die Anzahl der zu druckenden Exemplare festzulegen (1 bis 999).</translation>
 <translation id="2509495747794740764">Der Wert für die Skalierung muss zwischen 10 und 200 liegen.</translation>
@@ -4329,19 +4235,14 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6273677812470008672">Qualität</translation>
 <translation id="7288676996127329262"><ph name="HORIZONTAL_DPI"/> x <ph name="VERTICAL_DPI"/> dpi</translation>
 <translation id="1921584744613111023"><ph name="DPI"/> dpi</translation>
-<translation id="2212126039311489237">Über das Systemdialogfeld drucken</translation>
 <translation id="6991665348624301627">Ziel auswählen</translation>
 <translation id="8800004011501252845">Ziele werden angezeigt für</translation>
 <translation id="8996526648899750015">Konto hinzufügen...</translation>
 <translation id="5002959368039764681">Drucken Sie über Brave Software Docs und andere Cloud-Ziele. <ph name="BEGIN_LINK"/>Melden Sie sich an<ph name="END_LINK"/>, um über Brave Software Cloud Print zu drucken.</translation>
 <translation id="2150139952286079145">Ziele suchen</translation>
 <translation id="8569682776816196752">Keine Ziele gefunden</translation>
-<translation id="6807889908376551050">Alle anzeigen...</translation>
-<translation id="7328162502911382168">(<ph name="COUNT"/>)</translation>
 <translation id="7885253890047913815">Letzte Ziele</translation>
 <translation id="4929386379796360314">Druckziele</translation>
-<translation id="5829401023154985950">Verwalten...</translation>
-<translation id="4628314759732363424">Ändern...</translation>
 <translation id="3899879303189199559">Seit über einem Jahr offline</translation>
 <translation id="3154429428035006212">Seit über einem Monat offline</translation>
 <translation id="5265562206369321422">Seit über einer Woche offline</translation>
@@ -4350,18 +4251,15 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6317318380444133405">Wird nicht mehr unterstützt.</translation>
 <translation id="5759728514498647443">Dokumente, die Sie über <ph name="APP_NAME"/> zum Druck senden, können von <ph name="APP_NAME"/> gelesen werden.</translation>
 <translation id="2080070583977670716">Weitere Einstellungen</translation>
-<translation id="6510568984200103950">Weniger Einstellungen</translation>
 <translation id="3360297538363969800">Fehler beim Drucken. Bitte überprüfen Sie Ihren Drucker und versuchen Sie es erneut.</translation>
 <translation id="5154108062446123722">Erweiterte Einstellungen für <ph name="PRINTING_DESTINATION"/></translation>
 <translation id="9056810968620647706">Keine Übereinstimmungen gefunden.</translation>
-<translation id="8658595122208653918">Druckeroptionen ändern...</translation>
 <translation id="4088095054444612037">Für Gruppe akzeptieren</translation>
 <translation id="357886715122934472">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; möchte den Drucker &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt; für eine Gruppe freigeben, deren Inhaber Sie sind: &lt;strong&gt;<ph name="GROUP_NAME"/>&lt;/strong&gt;. Falls Sie zustimmen, können alle Gruppenmitglieder diesen Drucker nutzen.</translation>
 <translation id="8783093612333542422">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; möchte den Drucker &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt; für Sie freigeben.</translation>
 <translation id="7210499381659830293">Erweiterungsdrucker</translation>
 <translation id="7453008956351770337">Durch die Auswahl dieses Druckers berechtigen Sie die folgende Erweiterung, auf Ihren Drucker zuzugreifen:</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> konnte nicht mit diesem Drucker kommunizieren. Vergewissern Sie sich, dass der Drucker angeschlossen ist, und versuchen Sie es dann erneut.</translation>
-<translation id="5352285283572729470">Diese Einstellung wird verwaltet</translation>
 <translation id="4994754230098574403">Wird eingerichtet</translation>
 <translation id="1396139853388185343">Fehler beim Einrichten des Druckers</translation>
 <translation id="2379281330731083556">Über das Systemdialogfeld drucken... <ph name="SHORTCUT_KEY"/></translation>
@@ -4390,8 +4288,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="7681095912841365527">Website kann Bluetooth verwenden</translation>
 <translation id="3085412380278336437">Die Website kann Ihre Kamera verwenden</translation>
 <translation id="9180380851667544951">Die Website kann Ihren Bildschirm freigeben</translation>
-<translation id="7503127198245469314">Entfernen Sie das Headset, um die Anzeige auf dem Desktop zu blockieren oder zuzulassen</translation>
-<translation id="5592010267127539419"><ph name="URL_HOST"/> möchte sich mit Geräten koppeln</translation>
 <translation id="4992630054488400221">Installieren oder aktualisieren Sie Daydream Keyboard, um Brave im VR-Modus zu verwenden</translation>
 <translation id="983511809958454316">Diese Funktion wird im VR-Modus nicht unterstützt</translation>
 <translation id="4008291085758151621">Im VR-Modus stehen keine Website-Informationen zur Verfügung</translation>

@@ -91,6 +91,7 @@
 <translation id="2218515861914035131">Pegar como texto simple</translation>
 <translation id="5329858601952122676">&amp;Suprimir</translation>
 <translation id="1017280919048282932">&amp;Añadir al diccionario</translation>
+<translation id="7658239707568436148">Cancelar</translation>
 <translation id="4572259796527554261">Pedir sugerencias a Brave Software</translation>
 <translation id="3435896845095436175">Habilitar</translation>
 <translation id="780301667611848630">No, gracias</translation>
@@ -212,6 +213,7 @@
 <translation id="5801568494490449797">Preferencias</translation>
 <translation id="7607274158153386860">Solicitar sitio para tablet</translation>
 <translation id="4408599188496843485">A&amp;yuda</translation>
+<translation id="8378714024927312812">Administrado por tu organización</translation>
 <translation id="6723661294526996303">Importar favoritos y configuración...</translation>
 <translation id="9203398526606335860">&amp;Perfiles activados</translation>
 <translation id="3819800052061700452">&amp;Pantalla completa</translation>
@@ -224,14 +226,12 @@
 <translation id="4891089016822695758">Foro de la versión Beta</translation>
 <translation id="7199158086730159431">Obtener ayuda</translation>
 <translation id="630065524203833229">&amp;Salir</translation>
-<translation id="8378714024927312812">Administrado por tu organización</translation>
 <translation id="3855676282923585394">Importar favoritos y configuración...</translation>
 <translation id="4821935166599369261">&amp;Perfiles activados</translation>
 <translation id="3827774300009121996">&amp;Pantalla completa</translation>
 <translation id="3616741288025931835">Eliminar datos de navega&amp;ción...</translation>
 <translation id="1618268899808219593">C&amp;entro de ayuda</translation>
 <translation id="7324297612904500502">Foro de la versión Beta</translation>
-<translation id="2052369079215022979">Administrado por tu organización</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5912378097832178659">&amp;Editar motores de búsqueda...</translation>
 <translation id="5702898740348134351">&amp;Modificar los motores de búsqueda...</translation>
@@ -335,7 +335,6 @@
 <translation id="8200772114523450471">Reanudar</translation>
 <translation id="2770465223704140727">Eliminar de la lista</translation>
 <translation id="7702574632857388784">Quitar <ph name="FILE_NAME"/> de la lista</translation>
-<translation id="7658239707568436148">Cancelar</translation>
 <translation id="7144878232160441200">Volver a intentarlo</translation>
 <translation id="5170568018924773124">Mostrar en carpeta</translation>
 <translation id="1581962803218266616">Mostrar en Buscador</translation>
@@ -448,7 +447,6 @@
 <translation id="6527303717912515753">Compartir</translation>
 <translation id="3249950116250264636"><ph name="APP_NAME"/> (<ph name="APP_URL"/>)</translation>
 <translation id="3810973564298564668">Administrar</translation>
-<translation id="7837307963048806839">•  $1</translation>
 <translation id="2344028582131185878">Descargas automáticas</translation>
 <translation id="8217399928341212914">Seguir bloqueando las descargas automáticas de varios archivos</translation>
 <translation id="2580889980133367162">Siempre permitir que <ph name="HOST"/> descargue varios archivos</translation>
@@ -954,8 +952,6 @@
 <translation id="316854673539778496">Para obtener todas tus extensiones en todos los dispositivos, accede a tu cuenta y activa la sincronización.</translation>
 <translation id="8079938625609335826">Para obtener todas tus extensiones en todos los dispositivos, activa la sincronización.</translation>
 <translation id="4977942889532008999">Confirmar acceso</translation>
-<translation id="496226124210045887">La carpeta seleccionada contiene archivos confidenciales. ¿Confirmas que deseas otorgar a "$1" acceso de lectura permanente a esta carpeta?</translation>
-<translation id="4547992677060857254">La carpeta seleccionada contiene archivos confidenciales. ¿Confirmas que deseas otorgar a "$1" acceso de escritura permanente a esta carpeta?</translation>
 <translation id="6220413761270491930">Error al cargar la extensión</translation>
 <translation id="5707185214361380026">Error al cargar la extensión desde:</translation>
 <translation id="7341834142292923918">Requiere acceso a este sitio</translation>
@@ -1113,7 +1109,6 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="224940702122312781">Esta página usará muchos datos.</translation>
 <translation id="3861241522664181545">Se pausó la página.</translation>
 <translation id="6921709132208495314">Dejar de usar datos en esta página</translation>
-<translation id="1683850629661177840">El modo básico ahora permite navegar de forma más rápida por todas las páginas, incluidas las que tienen el protocolo HTTPS.</translation>
 <translation id="8428213095426709021">Configuración</translation>
 <translation id="2724841811573117416">Registros de WebRTC</translation>
 <translation id="1969654639948595766">Registros de texto de WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
@@ -1171,7 +1166,6 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="444134486829715816">Mostrar...</translation>
 <translation id="2737363922397526254">Contraer...</translation>
 <translation id="6690659332373509948">Error al analizar el archivo: <ph name="FILE_NAME"/></translation>
-<translation id="3011284594919057757">Acerca de Flash</translation>
 <translation id="1962233722219655970">Esta página usa una aplicación con tecnología Native Client que no funciona en tu computadora.</translation>
 <translation id="7540972813190816353">Se produjo un error al buscar actualizaciones: <ph name="ERROR"/></translation>
 <translation id="7088434364990739311">Error al iniciar la verificación de actualizaciones (código de error <ph name="ERROR"/>).</translation>
@@ -1225,6 +1219,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="385051799172605136">Atrás</translation>
 <translation id="4628948037717959914">Foto</translation>
 <translation id="8033827949643255796">seleccionados</translation>
+<translation id="2635094637295383009">Twitter</translation>
 <translation id="5376169624176189338">Haz clic para volver atrás o espera para ver el historial</translation>
 <translation id="9103868373786083162">Presiona para retroceder; usa el menú contextual para consultar el historial</translation>
 <translation id="2961695502793809356">Haz clic para continuar o espera para ver el historial</translation>
@@ -1340,8 +1335,6 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="4206323443866416204">Informe de comentarios</translation>
 <translation id="3681311097828166361">Gracias por tus comentarios. Tu informe se enviará cuando tengas conexión.</translation>
 <translation id="8713570323158206935">Enviar <ph name="BEGIN_LINK1"/>información del sistema<ph name="END_LINK1"/></translation>
-<translation id="6395423953133416962">Enviar <ph name="BEGIN_LINK1"/>información del sistema<ph name="END_LINK1"/> y <ph name="BEGIN_LINK2"/>métricas<ph name="END_LINK2"/></translation>
-<translation id="6270770586500173387">Enviar <ph name="BEGIN_LINK2"/>métricas<ph name="END_LINK2"/> e <ph name="BEGIN_LINK1"/>información de apps y el sistema<ph name="END_LINK1"/></translation>
 <translation id="8329196515830093443">El archivo se envió a Brave Software para depurarlo</translation>
 <translation id="8227119283605456246">Adjuntar un archivo</translation>
 <translation id="5367091008316207019">Leyendo el archivo...</translation>
@@ -1414,39 +1407,11 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="9009369504041480176">Cargando (<ph name="PROGRESS_PERCENT"/>%)...</translation>
 <translation id="7925285046818567682">Esperando <ph name="HOST_NAME"/>...</translation>
 <translation id="7887334752153342268">Duplicar</translation>
-<translation id="5210365745912300556">Cerrar pestaña</translation>
-<translation id="5453029940327926427">Cerrar pestañas</translation>
 <translation id="68541483639528434">Cerrar las demás pestañas</translation>
 <translation id="6686490380836145850">Cerrar pestañas a la derecha</translation>
-<translation id="855081842937141170">Fijar pestaña</translation>
-<translation id="5105855035535475848">Marcar pestañas</translation>
-<translation id="2074527029802029717">Anular fijación de pestaña</translation>
-<translation id="1812631533912615985">Desmarcar pestañas</translation>
-<translation id="527605719918376753">Silenciar pestaña</translation>
-<translation id="8373553483208508744">Silenciar pestañas</translation>
-<translation id="9203478404496196495">Activar sonido de la pestaña</translation>
-<translation id="1438632560381091872">Activar sonido de las pestañas</translation>
-<translation id="1568067597247500137">Silenciar el sitio</translation>
-<translation id="1216654534877302979">Silenciar los sitios</translation>
-<translation id="612596694132302162">Activar el sonido del sitio</translation>
-<translation id="6778959797435875428">Activar el sonido de los sitios</translation>
 <translation id="4474155171896946103">Agregar a favoritos todas las pestañas...</translation>
-<translation id="3551320343578183772">Cerrar pestaña</translation>
-<translation id="7268365133021434339">Cerrar pestañas</translation>
 <translation id="4322394346347055525">Cerrar las demás pestañas</translation>
 <translation id="1166212789817575481">Cerrar pestañas a la derecha</translation>
-<translation id="21133533946938348">Fijar pestaña</translation>
-<translation id="8072988827236813198">Marcar pestañas</translation>
-<translation id="6442697326824312960">Anular fijación de pestaña</translation>
-<translation id="1732215134274276513">Desmarcar pestañas</translation>
-<translation id="474217410105706308">Silenciar pestaña</translation>
-<translation id="9039890312082871605">Silenciar pestañas</translation>
-<translation id="4632483769545853758">Activar sonido de la pestaña</translation>
-<translation id="304826556400666995">Activar sonido de las pestañas</translation>
-<translation id="2973324205039581528">Silenciar el sitio</translation>
-<translation id="7579149537961810247">Silenciar los sitios</translation>
-<translation id="1293177648337752319">Activar el sonido del sitio</translation>
-<translation id="109758035718544977">Activar el sonido de los sitios</translation>
 <translation id="2336228925368920074">Agregar a favoritos todas las pestañas...</translation>
 <translation id="2278562042389100163">Abrir ventana del navegador</translation>
 <translation id="756445078718366910">Abrir la ventana del navegador</translation>
@@ -1494,14 +1459,6 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">Plataforma</translation>
 <translation id="7022562585984256452">Se configuró tu página principal.</translation>
-<translation id="2709516037105925701">Autocompletar</translation>
-<translation id="4378154925671717803">Teléfono</translation>
-<translation id="4807098396393229769">Nombre en la tarjeta</translation>
-<translation id="2612676031748830579">Número de tarjeta</translation>
-<translation id="869891660844655955">Fecha de vencimiento</translation>
-<translation id="1149401351239820326">Mes de vencimiento</translation>
-<translation id="8058655154417507695">Año de vencimiento</translation>
-<translation id="2286841657746966508">Dirección de facturación</translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Agregar impresoras</translation>
 <translation id="9052208328806230490">Registraste tus impresoras con <ph name="CLOUD_PRINT_NAME"/> utilizando la cuenta <ph name="EMAIL"/></translation>
@@ -1646,12 +1603,8 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="1231733316453485619">¿Quieres activar la sincronización?</translation>
 <translation id="9125982323641182972">Obtén las mejores funciones de Brave Software en Brave</translation>
 <translation id="4736292055110123391">Sincroniza tus favoritos, contraseñas, historial y mucho más en todos tus dispositivos</translation>
-<translation id="328921709097406258">Es posible que Brave Software use tu historial para personalizar la Búsqueda, los anuncios y otros servicios de Brave Software.</translation>
 <translation id="363863692969456324">Revisa los errores de escritura con el corrector ortográfico mejorado</translation>
-<translation id="1493787485275784624">El texto que escribas en los campos de texto se enviará a Brave Software.</translation>
 <translation id="561013949633009906">Ayuda a mejorar Brave y la seguridad</translation>
-<translation id="725079085443555687">Envía información del sistema y contenido de la página a Brave Software de forma anónima.</translation>
-<translation id="2895734772884435517">Puedes personalizar estas opciones de configuración en cualquier momento.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">Tus favoritos, historial, contraseñas y otras opciones de configuración se sincronizarán con tu cuenta de Brave Software para que puedas usarlos en todos tus dispositivos</translation>
 <translation id="3111958038206230539">Personalizar los servicios de Brave Software</translation>
@@ -1761,8 +1714,6 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="2562743677925229011">No accediste a <ph name="SHORT_PRODUCT_NAME"/></translation>
 <translation id="4027804175521224372">(Te estás perdiendo <ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK"/>)</translation>
 <translation id="3574210789297084292">acceder</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
-<translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="237828693408258535">¿Deseas traducir esta página?</translation>
 <translation id="4613765529964435709">¿Deseas que Brave Software traduzca esta página de <ph name="SOURCE_LANGUAGE"/> a <ph name="TARGET_LANGUAGE"/>?</translation>
 <translation id="5990386583461751448">Traducida</translation>
@@ -1825,6 +1776,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="8214489666383623925">Abrir archivo...</translation>
 <translation id="7456847797759667638">Abrir ubicación...</translation>
 <translation id="3265459715026181080">Cerrar ventana</translation>
+<translation id="3551320343578183772">Cerrar pestaña</translation>
 <translation id="4780321648949301421">Guardar página como...</translation>
 <translation id="6212752530110374741">Compartir vínculo por correo electrónico</translation>
 <translation id="457386861538956877">Más ...</translation>
@@ -1873,6 +1825,8 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="7831754656372780761"><ph name="TAB_TITLE"/> <ph name="EMOJI_MUTING"/></translation>
 <translation id="6315493146179903667">Traer todo adelante</translation>
 <translation id="3007771295016901659">Duplicar pestaña</translation>
+<translation id="2973324205039581528">Silenciar el sitio</translation>
+<translation id="21133533946938348">Fijar pestaña</translation>
 <translation id="2007404777272201486">Informar de un problema...</translation>
 <translation id="3118319026408854581"><ph name="PRODUCT_NAME"/> Ayuda</translation>
 <translation id="6721972322305477112">&amp;Archivo</translation>
@@ -2262,8 +2216,6 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="4079799245038595838">Se envió una notificación a tu teléfono. Sigue los mensajes para confirmar que eres tú.</translation>
 <translation id="88870264962436283">Usar Touch ID con <ph name="APP_NAME"/></translation>
 <translation id="5186185447130319458">Incógnito</translation>
-<translation id="8480139856920479206">{0,plural, =1{Tienes una ventana de incógnito.}other{Tienes # ventanas de incógnito.}}</translation>
-<translation id="2545348954155066907">{0,plural, =1{Cerrar esta ventana}other{Cerrar todas las ventanas de incógnito}}</translation>
 <translation id="394984172568887996">Importado de Internet Explorer</translation>
 <translation id="1543284117603151572">Importados desde Edge</translation>
 <translation id="5502500733115278303">Importado desde Firefox</translation>
@@ -2327,7 +2279,6 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="6455894534188563617">&amp;Nueva carpeta</translation>
 <translation id="1015318665228971643">Editar nombre de carpeta</translation>
 <translation id="5449588825071916739">Agregar a favoritos todas las pestañas</translation>
-<translation id="5528368756083817449">Administrador de favoritos</translation>
 <translation id="3828029223314399057">Buscar favoritos</translation>
 <translation id="8116972784401310538">&amp;Administrador de favoritos</translation>
 <translation id="6973630695168034713">Carpetas</translation>
@@ -2383,6 +2334,10 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="1774833706453699074">Agregar las páginas abiertas a Favoritos...</translation>
 <translation id="6949306908218145636">Agregar páginas abiertas a Favoritos…</translation>
 <translation id="4422347585044846479">Editar marcador para esta página</translation>
+<translation id="1620510694547887537">Cámara</translation>
+<translation id="5646376287012673985">Ubicación</translation>
+<translation id="3227137524299004712">Micrófono</translation>
+<translation id="2482878487686419369">Notificaciones</translation>
 <translation id="6005695835120147974">Router multimedia</translation>
 <translation id="7787308148023287649">Mostrar en otra pantalla</translation>
 <translation id="7710568461918838723">&amp;Transmitir…</translation>
@@ -2595,7 +2550,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2653659639078652383">Enviar</translation>
 <translation id="8392451568018454956">Menú de opciones para <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="6164005077879661055">Todos los archivos y los datos locales asociados al usuario supervisado se eliminarán de forma permanente una vez que se elimine este usuario supervisado. Es posible que el administrador pueda seguir viendo la configuración y los sitios web visitados de este usuario supervisado en <ph name="MANAGEMENT_URL"/>.</translation>
-<translation id="1646102270785326155">Una vez que se quite este usuario, todos los archivos y datos locales asociados a él se borrarán de forma permanente. $1 puede acceder después.</translation>
 <translation id="672213144943476270">Desbloquea tu perfil antes de navegar como invitado.</translation>
 <translation id="3478685642445675458">Desbloquea tu perfil antes de quitar a una persona.</translation>
 <translation id="4648499713050786492">Desbloquea tu perfil antes de agregar una persona.</translation>
@@ -2631,12 +2585,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6146563240635539929">Videos</translation>
 <translation id="3616113530831147358">Audio</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Precaución:<ph name="END_BOLD"/> Estos archivos son temporales y pueden eliminarse automáticamente para liberar espacio en el disco. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
-<translation id="7361039089383199231">$1 bytes</translation>
-<translation id="4871210892959306034">$1 KB</translation>
-<translation id="641105183165925463">$1 MB</translation>
-<translation id="7221155467930685510">$1 GB</translation>
-<translation id="5039512255859636053">$1 TB</translation>
-<translation id="6840313690797192085">$1 PB</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
@@ -2653,7 +2601,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="5145331109270917438">Fecha de modificación</translation>
 <translation id="8487700953926739672">Disponible sin conexión</translation>
 <translation id="2230062665678605299">No se puede crear la carpeta "<ph name="FOLDER_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4630590996962964935">Carácter no válido: $1</translation>
 <translation id="642282551015776456">Este nombre no se puede utilizar como archivo del nombre de la carpeta</translation>
 <translation id="2070909990982335904">Los nombres que comienzan con un punto se reservan para el sistema. Elige otro nombre.</translation>
 <translation id="8456681095658380701">Nombre no válido</translation>
@@ -2664,8 +2611,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="3749289110408117711">Nombre del archivo</translation>
 <translation id="3280431534455935878">Preparando la descarga</translation>
 <translation id="6607272825297743757">Información del archivo</translation>
-<translation id="3429599832623003132">$1 elementos</translation>
-<translation id="532360961509278431">No se puede abrir "$1": $2.</translation>
 <translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>¡Todavía no retires el dispositivo!<ph name="END_BOLD"/>
        <ph name="LINE_BREAKS"/>
        Si retiras el dispositivo mientras está en uso, puedes perder datos. Espera hasta que la operación finalice y, luego, expulsa el dispositivo con la aplicación Archivos.</translation>
@@ -2719,9 +2664,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="5158593464696388225">Se produjo un error al guardar la imagen.</translation>
 <translation id="2787047795752739979">Sobrescribir en el original</translation>
 <translation id="8775404590947523323">Los cambios se guardan automáticamente.<ph name="BREAKS"/>Para mantener una copia de la imagen original, desactiva la opción Sobrescribir en el original.</translation>
-<translation id="6653525630739667879">No se puede guardar el elemento en $1. Todas las modificaciones se guardarán en $2 en la carpeta de descargas.</translation>
-<translation id="3184560914950696195">No se puede guardar en $1. Las imágenes editadas se guardarán en la carpeta de descargas.</translation>
-<translation id="6983991971286645866">Todas las modificaciones se guardarán en $1.</translation>
 <translation id="8153607920959057464">Este archivo no se puede mostrar.</translation>
 <translation id="6227235786875481728">Este archivo no se puede reproducir.</translation>
 <translation id="9154418932169119429">Esta imagen no está disponible sin conexión.</translation>
@@ -2731,9 +2673,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="4801956050125744859">Conservar ambas versiones</translation>
 <translation id="1062407476771304334">Reemplazar</translation>
 <translation id="1556189134700913550">Aplicar a todo</translation>
-<translation id="3206175707080061730">Ya existe un archivo llamado "$1". ¿Deseas reemplazarlo?</translation>
-<translation id="8059178146866384858">El archivo llamado "$1" ya existe. Elige otro nombre.</translation>
-<translation id="5653140146600257126">El directorio llamado "$1" ya existe. Elige otro nombre.</translation>
 <translation id="1497522201463361063">No se puede cambiar el nombre de "<ph name="FILE_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5330512191124428349">Obtener información</translation>
 <translation id="8312871300878166382">Pegar en la carpeta</translation>
@@ -2792,20 +2731,13 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="4724850507808590449">Se guardaron <ph name="FILE_COUNT"/> fotos en una copia de seguridad.</translation>
 <translation id="1351692861129622852">Importando <ph name="FILE_COUNT"/> archivos…</translation>
 <translation id="117624967391683467">Copiando <ph name="FILE_NAME"/>…</translation>
-<translation id="8453482423012550001">Copiando $1 elementos…</translation>
 <translation id="7627790789328695202">El archivo <ph name="FILE_NAME"/> ya existe. Cambia el nombre y vuelve a intentarlo.</translation>
 <translation id="5691596662111998220">El archivo <ph name="FILE_NAME"/> ya no existe.</translation>
 <translation id="4336032328163998280">Se produjo un error al realizar la operación de copia (<ph name="ERROR_MESSAGE"/>).</translation>
-<translation id="1503914375822320413">Se produjo un error al realizar la operación de copia (error inesperado "$1").</translation>
 <translation id="6133173853026656527">Moviendo <ph name="FILE_NAME"/>…</translation>
-<translation id="3039828483675273919">Moviendo $1 elementos…</translation>
 <translation id="6007237601604674381">Se produjo un error en al mover el archivo (<ph name="ERROR_MESSAGE"/>).</translation>
-<translation id="8954952943849489823">Se produjo un error al mover el archivo (error inesperado "$1").</translation>
 <translation id="3326821416087822643">Comprimiendo <ph name="FILE_NAME"/>…</translation>
-<translation id="5694501201003948907">Comprimiendo $1 elementos…</translation>
-<translation id="7464490149090366184">Se produjo en error al comprimir: ya existe el elemento "$1".</translation>
 <translation id="9133055936679483811">Se produjo un error al comprimir. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1711973684025117106">Se produjo un error inesperado al comprimir $1.</translation>
 <translation id="653019979737152879">Sincronizando <ph name="FILE_NAME"/>…</translation>
 <translation id="8579285237314169903">Sincronizando <ph name="NUMBER_OF_FILES"/> elementos…</translation>
 <translation id="8137331602592933310">"<ph name="FILENAME"/>" se compartió contigo. No puedes eliminarlo porque no eres el propietario.</translation>
@@ -2825,8 +2757,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="1464724975715666883">1 error</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> errores</translation>
 <translation id="6643016212128521049">Borrar</translation>
-<translation id="4284105660453474798">¿Estás seguro de que deseas eliminar "$1"?</translation>
-<translation id="4580526846085481512">¿Estás seguro de que deseas eliminar los elementos $1?</translation>
 <translation id="7953739707111622108">Este dispositivo no puede abrirse porque no se reconoció su sistema de archivos.</translation>
 <translation id="3726463242007121105">Este dispositivo no puede abrirse porque su sistema de archivos no es compatible.</translation>
 <translation id="3414856743105198592">El formato de los medios extraíbles borrará todos los datos. ¿Deseas continuar?</translation>
@@ -2900,7 +2830,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
     <ph name="MARKUP_4"/>Elimina archivos de la carpeta de descargas.<ph name="MARKUP_5"/></translation>
 <translation id="7606199793785990727">No se pudo establecer conexión con Brave Software Drive. <ph name="BEGIN_LINK"/>Sal de la cuenta<ph name="END_LINK"/> y vuelve a acceder.</translation>
 <translation id="585883343689351092">Te damos la bienvenida a Brave Software Drive</translation>
-<translation id="1788440444874291920">Obtén 100 GB de espacio libre con Brave Software Drive</translation>
 <translation id="6862635236584086457">Se realiza automáticamente una copia de seguridad en línea de todos los archivos guardados en esta carpeta.</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Accede a los archivos desde cualquier lugar, incluso sin conexión.<ph name="MARKUP_2"/>
     Los archivos en Brave Software Drive están actualizados, y se puede acceder a ellos desde cualquier dispositivo.<ph name="MARKUP_3"/>
@@ -2908,24 +2837,14 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
     Tus archivos se almacenan de forma segura en Brave Software Drive, sin importar lo que le suceda a tu dispositivo.<ph name="MARKUP_6"/>
     <ph name="MARKUP_7"/>Crea archivos, compártelos y colabora en ellos<ph name="MARKUP_8"/>
     con otras personas, todo desde un solo lugar.<ph name="MARKUP_9"/></translation>
-<translation id="7489605380874780575">Comprobar disponibilidad</translation>
 <translation id="4878716980734452132">No se admite este tipo de archivo. Visita <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> para buscar una aplicación que pueda abrir este tipo de archivo.
     <ph name="BEGIN_LINK_HELP"/>Más información<ph name="END_LINK_HELP"/></translation>
-<translation id="3376900196170631953">Este archivo se diseñó para una PC con software Windows. No es compatible con tu dispositivo que ejecuta el Sistema operativo Brave. Busca en <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> para encontrar una aplicación equivalente. <ph name="BEGIN_LINK_HELP"/>Más información<ph name="END_LINK_HELP"/></translation>
 <translation id="3072401511615920367">Este archivo se diseñó para una computadora con software Macintosh. No es compatible con tu dispositivo que ejecuta el Sistema operativo Brave. Busca en <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> para encontrar una aplicación equivalente. <ph name="BEGIN_LINK_HELP"/>Más información<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">Espera un momento.</translation>
 <translation id="3096967955765855393">Constantemente buscamos la forma de ofrecerte una navegación más segura. Antes, cualquier sitio web podía pedirte agregar una extensión al navegador. En las últimas versiones de Brave Software Brave, debes indicar a Brave explícitamente que deseas instalar estas extensiones al agregarlas en la página Extensiones. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
-<translation id="2004663115385769400">No se puede abrir con $1</translation>
-<translation id="639777613761517128">Para abrir archivos con $1, primero cópialos a la carpeta Archivos de Linux.</translation>
 <translation id="5368191757080475556">Compartir carpeta con Linux</translation>
-<translation id="6803594270782834876">Permitir que las apps de Linux abran archivos en la carpeta $1</translation>
-<translation id="9204140378020726578">Permite que las apps de Linux abran archivos en tu cuenta de Brave Software Drive. Los cambios se sincronizarán con tus otros dispositivos.</translation>
 <translation id="4290535918735525311">Se compartió 1 carpeta con Linux</translation>
-<translation id="984401732412731005">$1 carpetas compartidas con Linux</translation>
 <translation id="4572815280350369984">Archivo <ph name="FILE_TYPE"/></translation>
-<translation id="895586998699996576">Imagen $1</translation>
-<translation id="2853916256216444076">Video $1</translation>
-<translation id="7006844981395428048">Audio $1</translation>
 <translation id="7799329977874311193">Documento HTML</translation>
 <translation id="2208158072373999562">Archivo Zip</translation>
 <translation id="2028997212275086731">Archivo RAR</translation>
@@ -2974,8 +2893,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6199801702437275229">Esperando información sobre espacio...</translation>
 <translation id="6485131920355264772">No se pudo recuperar la información sobre el espacio.</translation>
 <translation id="7748626145866214022">Hay más opciones disponibles en la barra de acciones. Presiona Alt + A para cambiar el foco a la barra de acciones.</translation>
-<translation id="60628369828239652">Abriendo el archivo <ph name="FILE_NAME"/></translation>
-<translation id="353547388688256996">Abriendo <ph name="NUMBER_FILES"/></translation>
 <translation id="6710213216561001401">Anterior</translation>
 <translation id="1395262318152388157">Buscar control deslizante</translation>
 <translation id="4880214202172289027">Control deslizante del volumen</translation>
@@ -3118,8 +3035,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6352773953037195952">Muy alto</translation>
 <translation id="3677657024345889897">Mínimo</translation>
 <translation id="167160931442925455">Máximo</translation>
-<translation id="2445007895943112260"><ph name="PERCENTAGE">$1<ex>120</ex>%</ph></translation>
-<translation id="9129010913019873477"><ph name="PERCENTAGE"/> (predeterminado)</translation>
 <translation id="3602290021589620013">Vista previa</translation>
 <translation id="7037509989619051237">Texto de prueba</translation>
 <translation id="5471768120198416576">Hola, soy la voz que leerá tus textos.</translation>
@@ -3172,9 +3087,11 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="8465252176946159372">No válido</translation>
 <translation id="8647834505253004544">No es una dirección web válida</translation>
 <translation id="7946586320617670168">El origen debe ser seguro</translation>
+<translation id="2709516037105925701">Autocompletar</translation>
 <translation id="7764225426217299476">Agregar dirección</translation>
 <translation id="5595485650161345191">Editar dirección</translation>
 <translation id="6207937957461833379">País/Región</translation>
+<translation id="4378154925671717803">Teléfono</translation>
 <translation id="9064275926664971810">Habilita Autocompletar para llenar formularios con un solo clic</translation>
 <translation id="9095253524804455615">Quitar</translation>
 <translation id="451515744433878153">Quitar</translation>
@@ -3184,6 +3101,11 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="4835914736509775287">Guarda tarjetas en tu Cuenta de Brave Software</translation>
 <translation id="7255002516883565667">En este momento, tienes una tarjeta que puede usarse solo en este dispositivo</translation>
 <translation id="6848388270925200958">En este momento, tienes algunas tarjetas que solo se pueden usar en este dispositivo</translation>
+<translation id="4807098396393229769">Nombre en la tarjeta</translation>
+<translation id="2612676031748830579">Número de tarjeta</translation>
+<translation id="869891660844655955">Fecha de vencimiento</translation>
+<translation id="1149401351239820326">Mes de vencimiento</translation>
+<translation id="8058655154417507695">Año de vencimiento</translation>
 <translation id="379082410132524484">La tarjeta está vencida</translation>
 <translation id="6644512095122093795">Sugerir que se guarden las contraseñas</translation>
 <translation id="2100273922101894616">Acceso automático</translation>
@@ -3513,7 +3435,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6921033294337262045">Presiona Notificaciones de apps &gt; Servicios de Brave Software Play.</translation>
 <translation id="5624710179837914896">Activa los Servicios de Brave Software Play.</translation>
 <translation id="2705736684557713153">Desplázate hasta el final de la pantalla y, si aparece, activa la conexión instantánea mediante dispositivo portátil. Caso contrario, no debes realizar ninguna acción.</translation>
-<translation id="3604048165392640554">No se encontró ninguna conexión móvil. Activa la conexión instantánea mediante dispositivo portátil en tus dispositivos y vuelve a intentarlo. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Más información&lt;/a&gt;</translation>
 <translation id="7240339475467890413">¿Deseas conectarte a un nuevo hotspot?</translation>
 <translation id="6514010653036109809">Dispositivo disponible:</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/>% de batería</translation>
@@ -3691,8 +3612,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="5487521232677179737">Borrar datos</translation>
 <translation id="3151562827395986343">Borra el historial, las cookies, la caché y más</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> (<ph name="COUNT"/>)</translation>
-<translation id="3407837288045706722">Para obtener más opciones de configuración relacionadas con la privacidad, la seguridad y la recopilación de datos, visita <ph name="BEGIN_LINK"/>Sincronización y personalización<ph name="END_LINK"/></translation>
-<translation id="7222718784508482526">Para obtener más opciones de configuración relacionadas con la privacidad, la seguridad y la recopilación de datos, visita <ph name="BEGIN_LINK"/>Sincronización y servicios<ph name="END_LINK"/></translation>
 <translation id="8632933437936028548">Restablecer configuración</translation>
 <translation id="5293170712604732402">Permite restaurar la configuración a los valores predeterminados originales</translation>
 <translation id="892706138619340876">Algunas opciones de configuración se restablecieron</translation>
@@ -3717,12 +3636,9 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="7098447629416471489">Los otros motores de búsqueda guardados aparecerán aquí</translation>
 <translation id="1459967076783105826">Motores de búsqueda agregados por extensiones</translation>
 <translation id="6678717876183468697">URL de consulta</translation>
-<translation id="1545786162090505744">URL con %s en el lugar de la consulta</translation>
 <translation id="6953878494808481632">Información relacionada</translation>
 <translation id="4145922204387553806">Permitir que el Asistente proporcione información relacionada con lo que aparece en tu pantalla</translation>
 <translation id="472896694312062378">Ok Brave Software</translation>
-<translation id="6236033368436682108">Di "Ok Brave Software" con la pantalla encendida para acceder al Asistente en cualquier momento</translation>
-<translation id="2482878487686419369">Notificaciones</translation>
 <translation id="5355099869024327351">Permite que el Asistente te muestre notificaciones</translation>
 <translation id="133535873114485416">Método de entrada preferido</translation>
 <translation id="6233154960150021497">Usar de forma predeterminada la voz en lugar del teclado</translation>
@@ -3738,14 +3654,12 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="1919345977826869612">Anuncios</translation>
 <translation id="5649053991847567735">Descargas automáticas</translation>
 <translation id="3744111561329211289">Sincronización en segundo plano</translation>
-<translation id="1620510694547887537">Cámara</translation>
 <translation id="2586657967955657006">Portapapeles</translation>
 <translation id="5518219166343146486">Preguntarme cuando un sitio desee ver el texto y las imágenes copiados en el portapapeles</translation>
 <translation id="2089795179672254991">Preguntarme cuando un sitio desee ver el texto y las imágenes copiados en el portapapeles (recomendado)</translation>
 <translation id="16815041330799488">No permitir que los sitios vean el texto ni las imágenes copiados en el portapapeles</translation>
 <translation id="3668823961463113931">Controladores</translation>
 <translation id="5689516760719285838">Ubicación</translation>
-<translation id="3227137524299004712">Micrófono</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Controladores de pago</translation>
@@ -3890,12 +3804,9 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6029292188939175871">borrar [<ph name="FINGERPRINT_NAME"/>], botón</translation>
 <translation id="1927632033341042996">Dedo <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">Agregar cuenta</translation>
-<translation id="3422989461909154470">Aquí puedes administrar todas las cuentas de Brave Software con la que hayas accedido en apps y sitios web.</translation>
 <translation id="1987317783729300807">Cuentas</translation>
 <translation id="8418661265246754237">Cuentas de Brave Software</translation>
 <translation id="3297951628821704004">Quitar cuenta de este dispositivo</translation>
-<translation id="1059855432287631118">Registro de huella digital</translation>
-<translation id="878068003854005405">Comencemos. Coloca tu dedo en el sensor.</translation>
 <translation id="176193854664720708">El sensor de huellas digitales es el botón de encendido. Tócalo suavemente con cualquier dedo.</translation>
 <translation id="7189965711416741966">Se agregó una huella digital.</translation>
 <translation id="9220820413868316583">Levanta el dedo y vuelve a intentarlo.</translation>
@@ -4075,7 +3986,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="3954469006674843813"><ph name="WIDTH"/> × <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> Hertz)</translation>
 <translation id="7889565820482017512">Tamaño de la pantalla</translation>
 <translation id="8448729345478502352">Aumenta o reduce el tamaño de los elementos en tu pantalla</translation>
-<translation id="513425442047539523"><ph name="DISPLAY_ZOOM">$1<ex>120</ex>%</ph></translation>
 <translation id="2155772377859296191">Resolución: <ph name="WIDTH"/> × <ph name="HEIGHT"/></translation>
 <translation id="4863769717153320198">Resolución: <ph name="WIDTH"/> × <ph name="HEIGHT"/> (predeterminada)</translation>
 <translation id="1125550662859510761">Resolución: <ph name="WIDTH"/> × <ph name="HEIGHT"/> (nativa)</translation>
@@ -4137,24 +4047,19 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="7878562273885520351">Es posible que tu contraseña esté en peligro</translation>
 <translation id="1089439967362294234">Cambiar contraseña</translation>
 <translation id="6187156085111579405">Los elementos que no se muestran aquí también se quitarán si es necesario. Obtén más información sobre &lt;a href="<ph name="URL"/>"&gt;la protección contra software no deseado&lt;/a&gt; en el informe de privacidad de Brave.</translation>
-<translation id="928985544179707652">Extensiones:</translation>
 <translation id="7712836429117959503">Extensión desconocida con ID <ph name="EXTENSION_ID"/></translation>
-<translation id="2600115369439982409">Archivos y programas:</translation>
-<translation id="1372681413396468867">{NUM_ITEMS,plural, =1{Se quitará 1 elemento}other{Se quitarán # elementos}}</translation>
 <translation id="7187428571767585875">Entradas de registro que se quitarán o cambiarán:</translation>
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{1 más}other{# más}}</translation>
 <translation id="2749608811030566578">Se produjo un error cuando Brave intentaba quitar software dañino</translation>
 <translation id="8189483132214844139">Brave puede buscar software dañino en tu computadora y quitarlo</translation>
 <translation id="2910318910161511225">Conéctate a una red y vuelve a intentarlo</translation>
 <translation id="1426870617281699524">Haz clic en Reintentar y acepta el mensaje en la computadora</translation>
-<translation id="2201358555632643970">Se detectó software dañino en tu computadora. Brave lo está quitando y restaurará tu configuración para que el navegador vuelva a funcionar con normalidad.</translation>
 <translation id="1484912962860902625">Se produjo un error cuando Brave buscaba software dañino</translation>
 <translation id="451407183922382411">Con la tecnología de <ph name="COMPANY_NAME"/></translation>
 <translation id="5254368820972107711">Mostrar los archivos que se quitarán</translation>
 <translation id="296026337010986570">Se quitó el software dañino. Para volver a activar las extensiones, visita la sección &lt;a href="chrome://extensions"&gt;Extensiones&lt;/a&gt;.</translation>
 <translation id="284975061945174219">Se produjo un error en la limpieza</translation>
 <translation id="9014750448058570312">Brave necesita permiso para continuar</translation>
-<translation id="3806965327722135869">Encuentra y quita software dañino</translation>
 <translation id="4320177379694898372">Sin conexión a Internet</translation>
 <translation id="850875081535031620">No se encontró software dañino</translation>
 <translation id="1186771945450942097">Quitar software dañino</translation>
@@ -4163,7 +4068,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="8639047128869322042">Buscando software dañino…</translation>
 <translation id="2653033005692233957">Error en la búsqueda</translation>
 <translation id="655483977608336153">Reintentar</translation>
-<translation id="6312400084708441752">Incluyen información sobre el software dañino, la configuración del sistema y los procesos en la computadora</translation>
 <translation id="6555810572223193255">La limpieza no está disponible en este momento</translation>
 <translation id="7117228822971127758">Vuelve a intentarlo más tarde</translation>
 <translation id="443475966875174318">Actualizar o quitar las aplicaciones incompatibles</translation>
@@ -4200,8 +4104,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="3264582393905923483">Contexto</translation>
 <translation id="1607139524282324606">Borrar entrada</translation>
 <translation id="6025215716629925253">Seguimiento de la pila</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;no se muestra 1 línea&gt;}other{&lt;no se muestran $1 líneas&gt;}}</translation>
-<translation id="5334899159203764908">Más información sobre el <ph name="BEGIN_LINK"/>acceso del sitio<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Permitir que esta extensión lea y cambie todos tus datos en los sitios web que visitas:</translation>
 <translation id="407173827865827707">Al hacer clic</translation>
 <translation id="6455264371803474013">En sitios específicos</translation>
@@ -4274,6 +4176,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2785008241190445880">Se reemplazó un favorito</translation>
 <translation id="4320948194796820126">Agregar tu correo electrónico como favorito</translation>
 <translation id="2950533317914339731">Agrega tus apps de Brave Software preferidas como favoritos</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="239760341987199724">Establecer Brave como navegador predeterminado</translation>
 <translation id="96037229054033864">Utiliza Búsqueda de Brave Software y las funciones inteligentes de Brave Software cada vez que navegas</translation>
 <translation id="296137235951584143">Personaliza Brave a tu medida</translation>
@@ -4306,14 +4209,12 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="3706463572498736864">Páginas por hoja</translation>
 <translation id="2249605167705922988">p. ej. 1-5, 8, 11-13</translation>
 <translation id="5746169159649715125">Guardar como PDF</translation>
-<translation id="1731589410171062430">Total: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/> (<ph name="NUMBER_OF_PAGES"/> <ph name="PAGE_OR_PAGES_LABEL"/>)</translation>
 <translation id="2580924999637585241">Total: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">hojas de papel</translation>
 <translation id="8813811964357448561">hoja de papel</translation>
 <translation id="8180239481735238521">página</translation>
 <translation id="3725367690636977613">páginas</translation>
 <translation id="7005848115657603926">Rango de páginas no válido, utiliza <ph name="EXAMPLE_PAGE_RANGE"/></translation>
-<translation id="2890678560483811744">Referencia de página fuera de los límites</translation>
 <translation id="5398572795982417028">Referencia de página fuera de los límites; el valor máximo es <ph name="MAXIMUM_PAGE"/></translation>
 <translation id="218070003709087997">Usa un número para indicar la cantidad de copias que deseas imprimir (1 a 999).</translation>
 <translation id="2509495747794740764">El valor de la escala debe ser un número entre 10 y 200.</translation>
@@ -4333,19 +4234,14 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6273677812470008672">Calidad</translation>
 <translation id="7288676996127329262"><ph name="HORIZONTAL_DPI"/>x<ph name="VERTICAL_DPI"/> ppp</translation>
 <translation id="1921584744613111023"><ph name="DPI"/> ppp</translation>
-<translation id="2212126039311489237">Imprimir utilizando el diálogo del sistema</translation>
 <translation id="6991665348624301627">Seleccionar un destino</translation>
 <translation id="8800004011501252845">Mostrando destinos para</translation>
 <translation id="8996526648899750015">Agregar cuenta…</translation>
 <translation id="5002959368039764681">Imprimir en Documentos de Brave Software y en otros destinos en la nube. <ph name="BEGIN_LINK"/>Inicia sesión<ph name="END_LINK"/> para imprimir en Brave Software Cloud Print.</translation>
 <translation id="2150139952286079145">Buscar destinos</translation>
 <translation id="8569682776816196752">No se encontró ningún destino.</translation>
-<translation id="6807889908376551050">Mostrar todos...</translation>
-<translation id="7328162502911382168">(<ph name="COUNT"/>)</translation>
 <translation id="7885253890047913815">Destinos recientes</translation>
 <translation id="4929386379796360314">Destinos de impresión</translation>
-<translation id="5829401023154985950">Administrar...</translation>
-<translation id="4628314759732363424">Cambiar</translation>
 <translation id="3899879303189199559">Sin conexión durante más de un año</translation>
 <translation id="3154429428035006212">Sin conexión durante más de un mes</translation>
 <translation id="5265562206369321422">Sin conexión durante más de una semana</translation>
@@ -4354,18 +4250,15 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6317318380444133405">Ya no es compatible.</translation>
 <translation id="5759728514498647443"><ph name="APP_NAME"/> podrá leer los documentos que envíes a imprimir a través de <ph name="APP_NAME"/>.</translation>
 <translation id="2080070583977670716">Más opciones de configuración</translation>
-<translation id="6510568984200103950">Menos opciones de configuración</translation>
 <translation id="3360297538363969800">Se produjo un error al imprimir. Revisa la impresora y vuelve a intentarlo.</translation>
 <translation id="5154108062446123722">Configuración avanzada para <ph name="PRINTING_DESTINATION"/></translation>
 <translation id="9056810968620647706">No se encontraron coincidencias.</translation>
-<translation id="8658595122208653918">Cambiar opciones de impresora…</translation>
 <translation id="4088095054444612037">Aceptar la invitación realizada al grupo</translation>
 <translation id="357886715122934472">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; quiere compartir una impresora &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt; con un grupo del cual eres propietario: &lt;strong&gt;<ph name="GROUP_NAME"/>&lt;/strong&gt;. Si aceptas, todos los miembros del grupo podrán usar esa impresora para imprimir.</translation>
 <translation id="8783093612333542422">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; quiere compartir una impresora (&lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt;) contigo.</translation>
 <translation id="7210499381659830293">Impresoras de extensiones</translation>
 <translation id="7453008956351770337">Al seleccionar esta impresora, concedes a la siguiente extensión permiso para acceder a tu impresora.</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> no pudo comunicarse con esta impresora. Asegúrate de que la impresora esté conectada y vuelve a intentarlo.</translation>
-<translation id="5352285283572729470">Esta configuración está administrada</translation>
 <translation id="4994754230098574403">Configurando</translation>
 <translation id="1396139853388185343">Se produjo un error al configurar la impresora</translation>
 <translation id="2379281330731083556">Imprimir mediante el sistema de diálogo... <ph name="SHORTCUT_KEY"/></translation>
@@ -4394,8 +4287,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="7681095912841365527">El sitio puede usar la conexión Bluetooth</translation>
 <translation id="3085412380278336437">El sitio puede usar la cámara</translation>
 <translation id="9180380851667544951">El sitio puede compartir la pantalla</translation>
-<translation id="7503127198245469314">Quita los auriculares para bloquear o permitir en la pantalla del escritorio</translation>
-<translation id="5592010267127539419"><ph name="URL_HOST"/> quiere sincronizar los dispositivos</translation>
 <translation id="4992630054488400221">Instalar o actualizar el teclado Daydream para usar Brave en la realidad virtual</translation>
 <translation id="983511809958454316">Esta función no es compatible con RV</translation>
 <translation id="4008291085758151621">La información del sitio no está disponible en RV</translation>

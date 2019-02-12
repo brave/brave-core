@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/install_verifier.cc b/chrome/browser/extensions/install_verifier.cc
-index 8fd766ce2a3c6342db24822582a01f11e138df31..1292adc1cf814c4b288c90025e3889b9e33ad3df 100644
+index 1f4e4f27248764e9b375a5c46af8c9a2179bb964..5839db767901a1953d3571bbb2e22b4d84c3d418 100644
 --- a/chrome/browser/extensions/install_verifier.cc
 +++ b/chrome/browser/extensions/install_verifier.cc
 @@ -15,6 +15,7 @@

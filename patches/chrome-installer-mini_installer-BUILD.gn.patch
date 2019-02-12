@@ -1,12 +1,13 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 931761ff27de83f8ac6ce6b0211b7eaa1151c5cb..14fcfe917fbff1a7147135e4e7b96b2a9078d267 100644
+index 8d19c74ebe9d96a6e53a0b8cd228626bfc3d78b6..4be23b1dc63e19e5e3e91b222e5ece493e435c75 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
-@@ -181,6 +181,21 @@ template("generate_mini_installer") {
+@@ -182,6 +182,22 @@ template("generate_mini_installer") {
        "//third_party/icu:icudata",
        chrome_dll_target,
      ]
 +    if (brave_chromium_build) {
++      if (skip_signing) { args += [ "--skip_signing" ] }
 +      inputs -= [
 +        "$root_out_dir/chrome.exe",
 +      ]

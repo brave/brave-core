@@ -90,6 +90,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="6970811910055250180">正在更新设备...</translation>
 <translation id="8030318113982266900">正在将您的设备更新至“<ph name="CHANNEL_NAME"/>”版…</translation>
 <translation id="7861579472672677409">“<ph name="EXTENSION_NAME"/>”已添加到 Brave</translation>
+<translation id="8516116288943000095">一并清除 Brave (<ph name="URL"/>) 中的数据</translation>
 <translation id="4054452651944170004">在 Brave 菜单中隐藏</translation>
 <translation id="5660079256336839395">在 Brave 菜单中隐藏</translation>
 <translation id="7456658570432774853">报告当前设置，帮助我们完善 Brave</translation>
@@ -125,11 +126,12 @@ Brave 无法恢复您的设置。</translation>
 <translation id="1326766910007115955">您目前登录的帐号是一个托管帐号，该帐号的管理员将能够控制您的 Brave 个人资料。您的 Brave 数据（例如您的应用、书签、历史记录、密码和其他设置）将永远与 <ph name="USER_NAME"/> 相关联。您可以通过 Brave Software 帐号信息中心删除这些数据，但无法将这些数据与其他帐号相关联。<ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">您目前登录的帐号是一个托管帐号，该帐号的管理员将能够控制您的 Brave 个人资料。您的 Brave 数据（例如您的应用、书签、历史记录、密码和其他设置）将永远与 <ph name="USER_NAME"/> 相关联。您可以通过 Brave Software 帐号信息中心删除这些数据，但无法将这些数据与其他帐号相关联。您可以选择创建新的个人资料来单独存储您现有的 Brave 数据。<ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> 之前使用的是 Brave</translation>
-<translation id="5381681911713004932">我们在您的计算机上发现了有害软件。Brave 可以移除该软件并恢复您的设置，以确保您的浏览器能够重新正常运行。</translation>
+<translation id="1384923383737428730">您的计算机上存在有害软件。Brave 可以移除该软件、恢复您的设置并停用扩展程序，以确保您的浏览器能够重新正常运行。</translation>
 <translation id="8919921662052966648">Brave无法同步您的数据。请更新您的同步密码。</translation>
 <translation id="2262856633481902138">由于您的帐号登录详细信息已过期，Brave无法同步您的数据。</translation>
 <translation id="5419189641394808652">由于您的网域停用了同步功能，Brave无法同步您的数据。</translation>
 <translation id="2577755334620061182">由于在登录时出现错误，Brave无法同步您的数据。</translation>
+<translation id="8583885258305961947">Brave 操作系统</translation>
 <translation id="3968006371075376562">Brave操作系统无法同步您的数据。请更新您的同步密码。</translation>
 <translation id="6746636977031158624">您的帐号登录详细信息已过期，Brave操作系统无法同步您的数据。</translation>
 <translation id="2999152167963026588">由于您的网域停用了同步功能，Brave操作系统无法同步您的数据。</translation>
@@ -155,7 +157,7 @@ Brave 无法恢复您的设置。</translation>
 
 有关详细说明，请查看 <ph name="ACCOUNT_EMAIL"/> 中的电子邮件。</translation>
 <translation id="1820843143331379651">Brave 将从 70 版本起不再支持受监管用户个人资料。</translation>
-<translation id="8797005356491520797">系统将会从此设备上删除该用户的浏览数据。要想恢复这些数据，请以“$2”的身份登录 Brave。</translation>
+<translation id="3066805437003400520">系统将会从此设备上删除该用户的浏览数据。要想恢复这些数据，请以“<ph name="USER_EMAIL"/>”的身份登录 Brave。</translation>
 <translation id="2827121003398607864">Brave现在更好用了</translation>
 <translation id="7192666605334070839">现在，无论是通过Brave Software帐号还是在共用的计算机上，您都可以更轻松地使用Brave。</translation>
 <translation id="3511996232906761537">您的上网记录、书签和其他Brave内容都保存在此处。</translation>
@@ -171,6 +173,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="2871190378186459992">在这里，您可以找到适用于 Brave 的精彩应用、游戏、扩展程序和主题背景。</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Brave的入站规则，允许mDNS流量。</translation>
+<translation id="3795403186582265456">Brave 可通过向 Brave Software 服务器发送网页图片来识别图片和图片中的文字，从而让您更好地了解网页内容。</translation>
 <translation id="7276297358157391541">Brave 会将您在浏览器中输入的内容发送到 Brave Software 服务器，并让您使用 Brave Software 搜索所用的拼写检查技术，从而为您提供更智能的拼写检查功能。</translation>
 <translation id="1807774211756215222">在 Brave 新标签页中打开链接(&amp;T)</translation>
 <translation id="4624945300945265642">在 Brave 无痕式窗口中打开链接(&amp;G)</translation>

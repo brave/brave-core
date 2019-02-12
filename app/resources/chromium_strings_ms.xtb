@@ -90,6 +90,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="6970811910055250180">Mengemas kini peranti anda...</translation>
 <translation id="8030318113982266900">Mengemas kini peranti anda kepada saluran <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> telah ditambahkan pada Brave</translation>
+<translation id="8516116288943000095">Kosongkan data daripada Brave (<ph name="URL"/>) juga</translation>
 <translation id="4054452651944170004">Sembunyikan dalam menu Brave</translation>
 <translation id="5660079256336839395">Sembunyikan dalam Menu Brave</translation>
 <translation id="7456658570432774853">Bantu jadikan Brave lebih baik dengan melaporkan tetapan semasa</translation>
@@ -125,11 +126,12 @@ Meneruskan juga log masuk akan menggabungkan maklumat Brave seperti penanda hala
 <translation id="1326766910007115955">Anda log masuk menggunakan akaun yang terurus dan memberikan pentadbirnya kawalan ke atas profil Brave anda. Data Brave anda, seperti apl, penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan terikat kepada <ph name="USER_NAME"/> secara kekal. Anda akan dapat memadamkan data ini melalui Papan Pemuka Akaun Brave Software, tetapi anda tidak akan dapat mengaitkan data ini dengan akaun lain. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Anda log masuk menggunakan akaun yang terurus dan memberikan pentadbirnya kawalan ke atas profil Brave anda. Data Brave anda, seperti apl, penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan terikat kepada <ph name="USER_NAME"/> secara kekal. Anda akan dapat memadamkan data ini melalui Papan Pemuka Akaun Brave Software, tetapi anda tidak akan dapat mengaitkan data ini dengan akaun lain. Anda boleh memilih untuk membuat profil baharu untuk mengasingkan data Brave anda yang sedia ada. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> menggunakan Brave sebelum ini</translation>
-<translation id="5381681911713004932">Terdapat perisian yang berbahaya pada komputer anda. Brave boleh mengalih keluar perisian tersebut dan memulihkan tetapan supaya penyemak imbas anda dapat berfungsi seperti biasa semula.</translation>
+<translation id="1384923383737428730">Terdapat perisian yang berbahaya pada komputer anda. Brave boleh mengalih keluar perisian tersebut, memulihkan tetapan anda dan melumpuhkan sambungan supaya penyemak imbas anda dapat berfungsi seperti biasa semula.</translation>
 <translation id="8919921662052966648">Brave tidak dapat menyegerakkan data anda. Sila kemas kini frasa laluan Segerak anda.</translation>
 <translation id="2262856633481902138">Brave tidak dapat menyegerakkan data anda kerana butiran log masuk akaun anda sudah lapuk.</translation>
 <translation id="5419189641394808652">Brave tidak dapat menyegerakkan data anda kerana Segerak tidak tersedia untuk domain anda.</translation>
 <translation id="2577755334620061182">Brave tidak dapat menyegerakkan data anda disebabkan ralat melog masuk.</translation>
+<translation id="8583885258305961947">Sistem OS Brave</translation>
 <translation id="3968006371075376562">OS Brave tidak dapat menyegerakkan data anda. Sila kemas kini frasa laluan Segerak anda.</translation>
 <translation id="6746636977031158624">OS Brave tidak dapat menyegerakkan data anda kerana butiran log masuk akaun anda sudah lapuk.</translation>
 <translation id="2999152167963026588">OS Brave tidak dapat menyegerakkan data anda kerana Segerak tidak tersedia untuk domain anda.</translation>
@@ -155,7 +157,7 @@ Untuk menghalang <ph name="NEW_PROFILE_NAME"/> daripada mengakses akaun anda, pa
 
 Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</translation>
 <translation id="1820843143331379651">Profil pengguna di bawah seliaan tidak tersedia lagi bermula dengan Brave 70.</translation>
-<translation id="8797005356491520797">Data semakan imbas orang ini akan dipadamkan daripada peranti ini. Untuk memulihkan data itu, log masuk ke Brave sebagai $2.</translation>
+<translation id="3066805437003400520">Data semakan imbas orang ini akan dipadamkan daripada peranti ini. Untuk memulihkan data itu, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave kini lebih baik</translation>
 <translation id="7192666605334070839">Kini lebih mudah menggunakan Brave dengan Akaun Brave Software anda dan pada komputer yang dikongsi.</translation>
 <translation id="3511996232906761537">Web, penanda halaman dan barangan Brave anda yang lain tinggal di sini.</translation>
@@ -171,6 +173,7 @@ Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</transl
 <translation id="2871190378186459992">Temui apl, permainan, sambungan dan tema yang hebat untuk Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Peraturan masuk bagi Brave untuk membolehkan trafik mDNS.</translation>
+<translation id="3795403186582265456">Brave boleh mengecam imej dan teks dalam imej dengan menghantar imej halaman ke pelayan Brave Software. Perkara ini membolehkan anda lebih memahami kandungan halaman.</translation>
 <translation id="7276297358157391541">Brave dapat menyediakan semakan ejaan yang lebih pintar dengan menghantar apa yang anda taip dalam penyemak imbas kepada pelayan Brave Software, membolehkan anda menggunakan teknologi semakan ejaan yang sama seperti yang digunakan oleh carian Brave Software.</translation>
 <translation id="1807774211756215222">Buka pautan dalam &amp;tab Brave baharu</translation>
 <translation id="4624945300945265642">Buka pautan dalam tetingkap inko&amp;gnito Brave</translation>

@@ -92,6 +92,7 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="6970811910055250180">Prebieha aktualizácia zariadenia...</translation>
 <translation id="8030318113982266900">Prebieha aktualizácia vášho zariadenia na kanál <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7861579472672677409">Rozšírenie <ph name="EXTENSION_NAME"/> bolo pridané do prehliadača Brave</translation>
+<translation id="8516116288943000095">Tiež vymazať údaje z prehliadača Brave (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Skryť v Ponuke Brave</translation>
 <translation id="5660079256336839395">Skryť v Ponuke Brave</translation>
 <translation id="7456658570432774853">Nahláste aktuálne nastavenia a pomôžte tak zlepšiť prehliadač Brave</translation>
@@ -127,11 +128,12 @@ Ak sa chcete aj napriek tomu prihlásiť, informácie prehliadača Brave, ako s�
 <translation id="1326766910007115955">Prihlasujete sa pomocou spravovaného účtu a jeho správcovi dávate kontrolu nad vaším profilom Brave. Vaše údaje prehliadača Brave, ako sú aplikácie, záložky, história, heslá a iné nastavenia, sa natrvalo priradia k účtu <ph name="USER_NAME"/>. Tieto údaje budete môcť odstrániť len pomocou panela Dashboard v Účtoch Brave Software, ale nebudete ich môcť priradiť k inému účtu. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Prihlasujete sa pomocou spravovaného účtu a jeho správcovi dávate kontrolu nad vaším profilom Brave. Vaše údaje prehliadača Brave, ako sú aplikácie, záložky, história, heslá a iné nastavenia, sa natrvalo priradia k účtu <ph name="USER_NAME"/>. Tieto údaje budete môcť odstrániť len pomocou panela Dashboard v Účtoch Brave Software, ale nebudete ich môcť priradiť k inému účtu. Ak chcete, aby boli existujúce údaje prehliadača Brave oddelené, môžete vytvoriť nový profil. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656">Účet <ph name="USER_EMAIL_ADDRESS"/> predtým používal Brave</translation>
-<translation id="5381681911713004932">V počítači máte škodlivý softvér. Brave ho môže odstrániť a uložiť vaše nastavenia, aby prehliadač znova normálne fungoval.</translation>
+<translation id="1384923383737428730">V počítači máte škodlivý softvér. Brave ho môže odstrániť, obnoviť nastavenia a deaktivovať rozšírenia, aby prehliadač znova normálne fungoval.</translation>
 <translation id="8919921662052966648">Prehliadaču Brave sa nepodarilo synchronizovať vaše údaje. Aktualizujte prístupovú frázu synchronizácie.</translation>
 <translation id="2262856633481902138">Prehliadaču Brave sa nepodarilo synchronizovať vaše údaje, pretože vaše prihlasovacie údaje účtu sú zastarané.</translation>
 <translation id="5419189641394808652">Prehliadaču Brave sa nepodarilo synchronizovať vaše údaje, pretože možnosť synchronizácie nie je pre vašu doménu k dispozícii.</translation>
 <translation id="2577755334620061182">Prehliadaču Brave sa nepodarilo synchronizovať vaše údaje pre chybu prihlásenia.</translation>
+<translation id="8583885258305961947">Systém Brave OS</translation>
 <translation id="3968006371075376562">Systému OS Brave sa nepodarilo synchronizovať vaše údaje. Aktualizujte prístupovú frázu synchronizácie.</translation>
 <translation id="6746636977031158624">Systému OS Brave sa nepodarilo synchronizovať vaše údaje, pretože vaše prihlasovacie údaje účtu sú zastarané.</translation>
 <translation id="2999152167963026588">Systému OS Brave sa nepodarilo synchronizovať vaše údaje, pretože možnosť synchronizácie nie je pre vašu doménu k dispozícii.</translation>
@@ -157,7 +159,7 @@ Ak chcete profilu <ph name="NEW_PROFILE_NAME"/> zabrániť pristupovať do váš
 
 Ďalšie pokyny si prečítajte v e-mailovej správe odoslanej na adresu <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="1820843143331379651">Od verzie 70 už nebudú v prehliadači Brave ďalej k dispozícii kontrolované profily používateľov.</translation>
-<translation id="8797005356491520797">Dáta prehliadania tejto osoby sa odstránia zo zariadenia. Ak ich chcete obnoviť, prihláste sa do Chromu ako $2.</translation>
+<translation id="3066805437003400520">Dáta prehliadania tejto osoby sa odstránia z tohto zariadenia. Ak ich chcete obnoviť, prihláste sa do prehliadača Brave ako <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Prehliadač Brave bol práve vylepšený</translation>
 <translation id="7192666605334070839">Teraz je používanie prehliadača Brave s účtom Brave Software a na zdieľaných počítačoch oveľa ľahšie.</translation>
 <translation id="3511996232906761537">Tu nájdete svoj obsah na webe, záložky a ďalšie položky prehliadača Brave.</translation>
@@ -173,6 +175,7 @@ Ak chcete profilu <ph name="NEW_PROFILE_NAME"/> zabrániť pristupovať do váš
 <translation id="2871190378186459992">Objavte skvelé aplikácie, hry, rozšírenia a motívy pre prehliadač Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Pravidlo pre prichádzajúce prenosy pre prehliadač Brave, ktoré povoľuje prenos dát mDNS.</translation>
+<translation id="3795403186582265456">Brave dokáže rozpoznať obrázky a text na obrázku odoslaním obrázkov na stránke na servery Googlu, čím vám pomôže lepšie pochopiť obsah stránky.</translation>
 <translation id="7276297358157391541">Prehliadač Brave vám ponúka inteligentnejšiu kontrolu pravopisu tým, že text zadaný do prehliadača odošle serverom spoločnosti Brave Software. Umožňuje vám tak využiť rovnakú technológiu kontroly pravopisu, aká sa používa vo Vyhľadávaní Brave Software.</translation>
 <translation id="1807774211756215222">Otvoriť odkaz na novej &amp;karte prehliadača Brave</translation>
 <translation id="4624945300945265642">Otvoriť odkaz v okne inko&amp;gnito prehliadača Brave</translation>

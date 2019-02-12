@@ -92,6 +92,7 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="6970811910055250180">Ina-update ang iyong device...</translation>
 <translation id="8030318113982266900">Ina-update ang iyong device sa <ph name="CHANNEL_NAME"/> na channel...</translation>
 <translation id="7861579472672677409">Naidagdag na ang <ph name="EXTENSION_NAME"/> sa Brave</translation>
+<translation id="8516116288943000095">I-clear din ang data sa Brave (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Itago sa menu ng Brave</translation>
 <translation id="5660079256336839395">Itago sa Menu ng Brave</translation>
 <translation id="7456658570432774853">Tumulong na pahusayin ang Brave sa pamamagitan ng pag-uulat sa mga kasalukuyang setting</translation>
@@ -127,11 +128,12 @@ Kapag nag-sign in ka pa rin, isasama sa <ph name="ACCOUNT_EMAIL_NEW"/> ang impor
 <translation id="1326766910007115955">Nagsa-sign in ka gamit ang isang pinamamahalaang account at nagbibigay sa administrator nito ng kontrol sa iyong profile sa Brave. Permanenteng mauugnay ang iyong data sa Brave, gaya ng iyong apps, mga bookmark, kasaysayan, password, at iba pang mga setting sa <ph name="USER_NAME"/>. Matatanggal mo ang data na ito sa Brave Software Accounts Dashboard, ngunit hindi mo maiuugnay ang data na ito sa isa pang account. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Nagsa-sign in ka gamit ang isang pinamamahalaang account at nagbibigay sa administrator nito ng kontrol sa iyong profile sa Brave. Permanenteng mauugnay ang iyong data sa Brave, gaya ng iyong apps, mga bookmark, kasaysayan, password, at iba pang mga setting sa <ph name="USER_NAME"/>. Matatanggal mo ang data na ito sa Brave Software Accounts Dashboard, ngunit hindi mo maiuugnay ang data na ito sa isa pang account. Maaari ka ring gumawa ng bagong profile upang ihiwalay ang iyong umiiral na data sa Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656">Brave ang dating ginagamit ng <ph name="USER_EMAIL_ADDRESS"/></translation>
-<translation id="5381681911713004932">May mapaminsalang software sa iyong computer. Maaari itong alisin ng Brave at i-restore ang mga setting mo para mapaganang muli nang normal ang iyong browser.</translation>
+<translation id="1384923383737428730">May mapaminsalang software sa iyong computer. Magagawa ng Brave na alisin ito, i-restore ang iyong mga setting, at i-disable ang mga extension para muling mapagana nang normal ang browser mo.</translation>
 <translation id="8919921662052966648">Hindi mai-sync ng Brave ang iyong data. Paki-update ang iyong passphrase sa Pag-sync.</translation>
 <translation id="2262856633481902138">Hindi mai-sync ng Brave ang iyong data dahil hindi napapanahon ang mga detalye sa pag-sign in ng iyong account.</translation>
 <translation id="5419189641394808652">Hindi mai-sync ng Brave ang iyong data dahil hindi available ang Pag-sync para sa iyong domain.</translation>
 <translation id="2577755334620061182">Hindi mai-sync ng Brave ang iyong data dahil sa isang error sa pagsa-sign in.</translation>
+<translation id="8583885258305961947">Brave OS System</translation>
 <translation id="3968006371075376562">Hindi ma-sync ng Brave OS ang iyong data. Paki-update ang iyong Passphrase sa pag-sync.</translation>
 <translation id="6746636977031158624">Hindi ma-sync ng Brave OS ang iyong data dahil hindi napapanahon ang mga detalye sa pag-sign in sa iyong account.</translation>
 <translation id="2999152167963026588">Hindi ma-sync ng Brave OS ang iyong data dahil hindi available ang Pag-sync para sa iyong domain.</translation>
@@ -157,7 +159,7 @@ Upang mapigilan si <ph name="NEW_PROFILE_NAME"/> na ma-access ang iyong account,
 
 Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagang tagubilin.</translation>
 <translation id="1820843143331379651">Mawawala na ang mga profile ng pinangangasiwaang user simula sa Brave 70.</translation>
-<translation id="8797005356491520797">Made-delete sa device na ito ang data mula sa pag-browse ng taong ito. Para ma-recover ang data, mag-sign in sa Brave bilang $2.</translation>
+<translation id="3066805437003400520">Made-delete sa device na ito ang data mula sa pag-browse ng taong ito. Para ma-recover ang data, mag-sign in sa Brave bilang <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Mas mahusay na ang Brave</translation>
 <translation id="7192666605334070839">Ngayon, mas madali nang gamitin ang Brave sa iyong Brave Software Account at sa mga nakabahaging computer.</translation>
 <translation id="3511996232906761537">Makikita dito ang iyong web, mga bookmark at iba pang mga bagay-bagay sa Brave.</translation>
@@ -173,6 +175,7 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="2871190378186459992">Tumuklas ng mahuhusay na app, laro, extension at tema para sa Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Inbound na panuntunan para sa Brave upang payagan ang trapiko ng mDNS.</translation>
+<translation id="3795403186582265456">Makikilala ng Brave ang mga larawan at text sa isang larawan sa pamamagitan ng pagpapadala ng mga larawan ng page sa mga server ng Brave Software, na nagbibigay-daan sa iyong mas maunawaan ang content ng page.</translation>
 <translation id="7276297358157391541">Maaaring magbigay ang Brave ng mas pinahusay na pag-i-spell check sa pamamagitan ng pagpapadala sa mga server ng Brave Software ng tina-type mo sa browser, na nagbibigay-daan sa iyo na gamitin ang parehong teknolohiya ng pag-i-spell check na ginamit ng paghahanap sa Brave Software.</translation>
 <translation id="1807774211756215222">Buksan ang link sa bagong &amp;tab ng Brave</translation>
 <translation id="4624945300945265642">Buksan ang link sa inco&amp;gnito window ng Brave</translation>

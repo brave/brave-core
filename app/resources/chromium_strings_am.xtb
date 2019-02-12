@@ -95,6 +95,7 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="6970811910055250180">መሣሪያዎን በማዘመን ላይ...</translation>
 <translation id="8030318113982266900">መሳሪያዎን ወደ <ph name="CHANNEL_NAME"/> ሰርጥ በማዘመን ላይ...</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> ወደ Brave ታክሏል።</translation>
+<translation id="8516116288943000095">በተጨማሪ ከBrave (<ph name="URL"/>) ውሂብን አጽዳ</translation>
 <translation id="4054452651944170004">በBrave ምናሌ ውስጥ ደብቅ</translation>
 <translation id="5660079256336839395">በBrave ምናሌ ውስጥ ደብቅ</translation>
 <translation id="7456658570432774853">የአሁኖቹ ቅንብሮችን ሪፖርት በማድረግ Brave የተሻለ እንዲሆን ያግዙ</translation>
@@ -130,11 +131,12 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="1326766910007115955">በሚተዳደር መለያ እየገቡ ነው፣ እና አስተዳዳሪው በእርስዎ Brave መገለጫ ላይ ቁጥጥር እየሰጡት ነው። እንደ እርስዎ  መተግበሪያዎች፣ ዕልባቶች፣ ታሪክ፣ የይለፍ ቃላት እና ሌሎች ቅንብሮች ያሉ የእርስዎ Brave ውሂብ እስከ መጨረሻው ከ<ph name="USER_NAME"/> ጋር የተያያዙ ይሆናሉ። ይህን ውሂብ በBrave Software የመለያዎች Dashboard አማካኝነት ሊሰርዙት ይችላሉ፣ ነገር ግን ይህን ውሂብ ከሌላ መለያ ጋር ሊያጎዳኙት አይችሉም። <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">በሚተዳደር መለያ እየገቡ ነው፣ እና አስተዳዳሪው በእርስዎ Brave መገለጫ ላይ ቁጥጥር እየሰጡት ነው። እንደ እርስዎ መተግበሪያዎች፣ ዕልባቶች፣ ታሪክ፣ የይለፍ ቃላት እና ሌሎች ቅንብሮች ያሉ የእርስዎ Brave ውሂብ እስከ መጨረሻው ከ<ph name="USER_NAME"/> ጋር የተያያዙ ይሆናሉ። ይህን ውሂብ በBrave Software የመለያዎች Dashboard አማካኝነት ሊሰርዙት ይችላሉ፣ ነገር ግን ይህን ውሂብ ከሌላ መለያ ጋር ሊያጎዳኙት አይችሉም። ነባሩ የእርስዎ Brave ውሂብ ለይተው ለማስቀመጥም አዲስ መገለጫ እንደ አማራጭ መፍጠር ይችላሉ። <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> ከዚህ ቀደም Braveን እየተጠቀመ ነበር</translation>
-<translation id="5381681911713004932">በእርስዎ ኮምፒውተር ላይ ጎጂ ሶፍትዌር አለ። Brave የእርስዎን አሰሳ እንደገና በጤናማነት እንዲሠራ ለማድረግ ሊያስወግደው እና የእርስዎን ቅንብሮች እንደነበሩ ሊመልሳቸውይችላል።</translation>
+<translation id="1384923383737428730">በእርስዎ ኮምፒውተር ላይ ጎጂ ሶፍትዌር አለ። Brave የእርስዎን አሰሳ እንደገና በጤናማነት እንዲሠራ ለማድረግ ሊያስወግደው፣ የእርስዎን ቅንብሮች እንደነበሩ ሊመልሳቸው እና ቅጥያዎችን ሊያሰናክል ይችላል።</translation>
 <translation id="8919921662052966648">Brave የእርስዎን ውሂብ ማመሳሰል አልቻለም። የእርስዎን የማመሳሰያ የይለፍ ሐረግ እባክዎ ያዘምኑ።</translation>
 <translation id="2262856633481902138">የመለያ መግቢያ ዝርዝሮችዎ ጊዜ ያለፈባቸው ስለሆኑ Brave ውሂብዎን ማመሳሰል አልቻለም።</translation>
 <translation id="5419189641394808652">ማመሳሰል ለጎራዎ ስለማይገኝ Brave ውሂብዎን ማመሳሰል አይችልም።</translation>
 <translation id="2577755334620061182">በመለያ ሲገባ በነበረ ስህተት ምክንያት Brave ውሂብዎን ማመሳሰል አልቻለም።</translation>
+<translation id="8583885258305961947">Brave OS ሥርዓት</translation>
 <translation id="3968006371075376562">Brave OS የእርስዎን ውሂብ ማመሳሰል አልቻለም። የእርስዎን የማመሳሰያ የይለፍ ሐረግ እባክዎ ያዘምኑ።</translation>
 <translation id="6746636977031158624">የመለያ መግቢያ ዝርዝሮችዎ ጊዜ ያለፈባቸው ስለሆኑ Brave OS ውሂብዎን ማመሳሰል አልቻለም።</translation>
 <translation id="2999152167963026588">ማመሳሰል ለጎራዎ ስለማይገኝ Brave OS ውሂብዎን ማመሳሰል አይችልም።</translation>
@@ -160,7 +162,7 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 
 ለተጨማሪ መመሪያዎች እባክዎ በ<ph name="ACCOUNT_EMAIL"/> ላይ የእርስዎን ኢሜይል ይፈትሹ።</translation>
 <translation id="1820843143331379651">ክትትል የሚደረግበት ተጠቃሚ መገለጫዎች ከBrave 70 ከሚጀምሩ ላይ ከእንግዲህ አይገኙም።</translation>
-<translation id="8797005356491520797">የዚህ ግለሰብ የአሰሳ ውሂብ ከዚህ መሣሪያ ላይ ይሰረዛል። ውሂቡን ወደነበረበት ለመመለስ እንደ $2 ሆነው በመለያ ወደ Brave ይግቡ።</translation>
+<translation id="3066805437003400520">ይህ ሰው የአሰሳ ውሂብ ከዚህ መሣሪያ ይሰረዛል። ውሂቡን መልሶ ለማግኘት እንደ <ph name="USER_EMAIL"/> ሆነው ወደ Brave ይግቡ።</translation>
 <translation id="2827121003398607864">Brave አሁን ይበልጥ ተሻሽሏል</translation>
 <translation id="7192666605334070839">አሁን Braveን ከBrave Software መለያዎ ጋር እና በተጋሩ ኮምፒውተሮች ላይ መጠቀም ይበልጥ ቀላል ነው።</translation>
 <translation id="3511996232906761537">የእርስዎ ድር፣ ዕልባቶች እና ሌሎች የBrave ነገሮች እዚህ ይኖራሉ።</translation>
@@ -182,6 +184,7 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="7272074097076644710">ዳግም አስጀምር</translation>
 <translation id="4991512282053949769">Brave OSን ዳግም አስጀምር</translation>
 <translation id="3856641371299712128">Brave OS ዝማኔውን ለመተግበር ዳግም መጀመር አለበት።</translation>
+<translation id="3795403186582265456">Brave የገጽ ምስሎችን ወደ Brave Software አገልጋዮች በመላክ ምስል ውስጥ ያሉ ምስሎችን እና ጽሑፍን ለይቶ ማወቅ ስለሚችል የገጽ ይዘትን እርስዎ የበለጠ እንዲረዱ ያስችልዎታል።</translation>
 <translation id="7276297358157391541">Brave አሳሹ ላይ የሚተይቡትን ለBrave Software አገልጋዮች በመላክ ይበልጥ አዋቂ የሆነ ፊደል አራሚ ሊያቀርብልዎት ይችላል፣ ይህም Brave Software ፍለጋ የሚጠቀመውን ተመሳሳዩ የፊደል አራሚ ቴክኖሎጂ እንዲጠቀሙ ያስችልዎታል።</translation>
 <translation id="1807774211756215222">አገናኙን በBrave አዲስ &amp;ትር ውስጥ ክፈት</translation>
 <translation id="4624945300945265642">አገናኙን በBrave ማን&amp;ነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
