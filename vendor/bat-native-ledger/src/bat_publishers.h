@@ -27,8 +27,6 @@ struct PUBLISHER_STATE_ST;
 
 namespace braveledger_bat_publishers {
 
-// FORWARD_DECLARE_TEST(BatPublishersTest, calcScoreConsts);
-
 class BatPublishers : public ledger::LedgerCallbackHandler {
  public:
 
@@ -135,8 +133,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   bool isVerified(const std::string& publisher_id);
 
  private:
-  friend class BatPublishersTest;
-  FRIEND_TEST_ALL_PREFIXES(BatPublishersTest, calcScoreConsts);
+
   void onPublisherActivitySave(uint64_t windowId,
                                const ledger::VisitData& visit_data,
                                ledger::Result result,
@@ -225,6 +222,11 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   double b_;
 
   double b2_;
+
+  // For testing purposes
+  friend class BatPublishersTest;
+  FRIEND_TEST_ALL_PREFIXES(BatPublishersTest, calcScoreConsts);
+  FRIEND_TEST_ALL_PREFIXES(BatPublishersTest, concaveScore);
 };
 
 }  // namespace braveledger_bat_publishers
