@@ -12,7 +12,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
-#include "services/network/public/cpp/network_connection_tracker.h"
 #include "components/prefs/pref_change_registrar.h"
 
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkAdded);
@@ -57,8 +56,7 @@ using SendDeviceSyncRecordCallback = base::OnceCallback<void(const int,
 
 class BraveSyncServiceImpl
     : public BraveSyncService,
-      public SyncMessageHandler,
-      public network::NetworkConnectionTracker::NetworkConnectionObserver {
+      public SyncMessageHandler {
  public:
   BraveSyncServiceImpl(Profile *profile);
   ~BraveSyncServiceImpl() override;
@@ -86,9 +84,6 @@ class BraveSyncServiceImpl
   bool IsSyncInitialized();
 
   BraveSyncClient* GetSyncClient() override;
-
-  // network::NetworkConnectionTracker::NetworkConnectionObserver:
-  void OnConnectionChanged(network::mojom::ConnectionType type) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkAdded);

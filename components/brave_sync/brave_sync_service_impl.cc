@@ -27,7 +27,6 @@
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "components/bookmarks/browser/bookmark_model.h"
-#include "content/public/browser/network_service_instance.h"
 #include "net/base/network_interfaces.h"
 
 namespace brave_sync {
@@ -92,7 +91,6 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
         sync_prefs_.get())),
     timer_(std::make_unique<base::RepeatingTimer>()),
     unsynced_send_interval_(base::TimeDelta::FromMinutes(10)) {
-  content::GetNetworkConnectionTracker()->AddNetworkConnectionObserver(this);
 
   // Moniter syncs prefs required in GetSettingsAndDevices
   profile_pref_change_registrar_.Init(profile->GetPrefs());
@@ -128,21 +126,10 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
 }
 
 BraveSyncServiceImpl::~BraveSyncServiceImpl() {
-  content::GetNetworkConnectionTracker()->RemoveNetworkConnectionObserver(this);
 }
 
 BraveSyncClient* BraveSyncServiceImpl::GetSyncClient() {
   return sync_client_.get();
-}
-
-void BraveSyncServiceImpl::OnConnectionChanged(
-    network::mojom::ConnectionType type) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (type == network::mojom::ConnectionType::CONNECTION_NONE) {
-    if (initializing_) {
-      OnSyncSetupError("ERR_SYNC_NO_INTERNET");
-    }
-  }
 }
 
 bool BraveSyncServiceImpl::IsSyncConfigured() {
@@ -163,10 +150,6 @@ void BraveSyncServiceImpl::Shutdown() {
 void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
     const std::string& device_name) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (content::GetNetworkConnectionTracker()->IsOffline()) {
-    OnSyncSetupError("ERR_SYNC_NO_INTERNET");
-    return;
-  }
 
   if (sync_words.empty()) {
     OnSyncSetupError("ERR_SYNC_WRONG_WORDS");
@@ -193,10 +176,6 @@ void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
 void BraveSyncServiceImpl::OnSetupSyncNewToSync(
     const std::string& device_name) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (content::GetNetworkConnectionTracker()->IsOffline()) {
-    OnSyncSetupError("ERR_SYNC_NO_INTERNET");
-    return;
-  }
 
   if (initializing_) {
     NotifyLogMessage("currently initializing");
