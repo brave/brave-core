@@ -91,6 +91,7 @@
 <translation id="2218515861914035131">以純文字貼上</translation>
 <translation id="5329858601952122676">刪除(&amp;D)</translation>
 <translation id="1017280919048282932">新增至字典(&amp;A)</translation>
+<translation id="7658239707568436148">取消</translation>
 <translation id="4572259796527554261">啟用 Brave Software 拼字建議功能</translation>
 <translation id="3435896845095436175">啟用</translation>
 <translation id="780301667611848630">不用了，謝謝</translation>
@@ -212,6 +213,7 @@
 <translation id="5801568494490449797">偏好設定</translation>
 <translation id="7607274158153386860">要求顯示平板電腦版網站</translation>
 <translation id="4408599188496843485">說明(&amp;E)</translation>
+<translation id="8378714024927312812">由貴機構管理</translation>
 <translation id="6723661294526996303">匯入書籤和設定...</translation>
 <translation id="9203398526606335860">分析已啟用(&amp;P)</translation>
 <translation id="3819800052061700452">全螢幕(&amp;F)</translation>
@@ -224,14 +226,12 @@
 <translation id="4891089016822695758">測試版論壇</translation>
 <translation id="7199158086730159431">取得說明(&amp;E)</translation>
 <translation id="630065524203833229">結束(&amp;X)</translation>
-<translation id="8378714024927312812">由貴機構管理</translation>
 <translation id="3855676282923585394">匯入書籤和設定...</translation>
 <translation id="4821935166599369261">分析已啟用(&amp;P)</translation>
 <translation id="3827774300009121996">全螢幕(&amp;F)</translation>
 <translation id="3616741288025931835">清除瀏覽資料(&amp;C)...</translation>
 <translation id="1618268899808219593">說明中心(&amp;E)</translation>
 <translation id="7324297612904500502">測試版論壇</translation>
-<translation id="2052369079215022979">由貴機構管理</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5912378097832178659">編輯搜尋引擎(&amp;E)...</translation>
 <translation id="5702898740348134351">編輯搜尋引擎(&amp;E)...</translation>
@@ -335,7 +335,6 @@
 <translation id="8200772114523450471">繼續</translation>
 <translation id="2770465223704140727">從清單中移除</translation>
 <translation id="7702574632857388784">從清單中移除 <ph name="FILE_NAME"/></translation>
-<translation id="7658239707568436148">取消</translation>
 <translation id="7144878232160441200">重試</translation>
 <translation id="5170568018924773124">在資料夾中顯示</translation>
 <translation id="1581962803218266616">在 Finder 中顯示</translation>
@@ -448,7 +447,6 @@
 <translation id="6527303717912515753">分享</translation>
 <translation id="3249950116250264636"><ph name="APP_NAME"/> (<ph name="APP_URL"/>)</translation>
 <translation id="3810973564298564668">管理</translation>
-<translation id="7837307963048806839">•  $1</translation>
 <translation id="2344028582131185878">自動下載</translation>
 <translation id="8217399928341212914">繼續禁止自動下載多個檔案</translation>
 <translation id="2580889980133367162">永遠允許 <ph name="HOST"/> 下載多個檔案</translation>
@@ -972,8 +970,6 @@
 <translation id="316854673539778496">如要將擴充功能同步到所有裝置，請登入並開啟同步處理功能。</translation>
 <translation id="8079938625609335826">如要將擴充功能同步到所有裝置，請開啟同步處理功能。</translation>
 <translation id="4977942889532008999">確認存取權</translation>
-<translation id="496226124210045887">你選取的資料夾包含敏感檔案。你確定要將這個資料夾的讀取權限永久授予「$1」嗎？</translation>
-<translation id="4547992677060857254">你選取的資料夾包含敏感檔案。你確定要將這個資料夾的寫入權限永久授予「$1」嗎？</translation>
 <translation id="6220413761270491930">載入擴充功能時發生錯誤</translation>
 <translation id="5707185214361380026">無法載入下列來源的擴充功能：</translation>
 <translation id="7341834142292923918">需要這個網站的存取權限</translation>
@@ -1131,7 +1127,6 @@
 <translation id="224940702122312781">這個網頁會耗用許多數據流量。</translation>
 <translation id="3861241522664181545">已暫停載入頁面。</translation>
 <translation id="6921709132208495314">停止這個網頁使用數據流量</translation>
-<translation id="1683850629661177840">現在可透過精簡模式加快所有網頁的瀏覽速度 (包括 HTTPS 網頁)。</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="2724841811573117416">WebRTC 記錄</translation>
 <translation id="1969654639948595766">WebRTC 文字記錄 (<ph name="WEBRTC_TEXT_LOG_COUNT"/> 筆)</translation>
@@ -1189,7 +1184,6 @@
 <translation id="444134486829715816">展開...</translation>
 <translation id="2737363922397526254">收合...</translation>
 <translation id="6690659332373509948">無法剖析檔案：<ph name="FILE_NAME"/></translation>
-<translation id="3011284594919057757">關於 Flash</translation>
 <translation id="1962233722219655970">這個網頁使用無法在你電腦上運行的 Native Client 應用程式。</translation>
 <translation id="7540972813190816353">檢查更新時發生錯誤：<ph name="ERROR"/></translation>
 <translation id="7088434364990739311">無法啟動更新檢查 (錯誤代碼 <ph name="ERROR"/>)。</translation>
@@ -1243,6 +1237,7 @@
 <translation id="385051799172605136">返回</translation>
 <translation id="4628948037717959914">相片</translation>
 <translation id="8033827949643255796">已選取</translation>
+<translation id="2635094637295383009">Twitter</translation>
 <translation id="5376169624176189338">按一下回上一頁，按住可查看記錄</translation>
 <translation id="9103868373786083162">按下即可返回，內容選單會顯示歷史記錄</translation>
 <translation id="2961695502793809356">按一下到下一頁，按住可查看記錄</translation>
@@ -1358,8 +1353,6 @@
 <translation id="4206323443866416204">意見回饋報告</translation>
 <translation id="3681311097828166361">感謝你提供意見！你目前處於離線狀態，重新上線後系統就會傳送你的意見回饋報告。</translation>
 <translation id="8713570323158206935">傳送<ph name="BEGIN_LINK1"/>系統資訊<ph name="END_LINK1"/></translation>
-<translation id="6395423953133416962">傳送<ph name="BEGIN_LINK1"/>系統資訊<ph name="END_LINK1"/>和<ph name="BEGIN_LINK2"/>指標<ph name="END_LINK2"/></translation>
-<translation id="6270770586500173387">傳送<ph name="BEGIN_LINK1"/>系統和應用程式資訊<ph name="END_LINK1"/>，以及<ph name="BEGIN_LINK2"/>指標<ph name="END_LINK2"/>資訊</translation>
 <translation id="8329196515830093443">檔案會傳送給 Brave Software 進行偵錯</translation>
 <translation id="8227119283605456246">附加檔案</translation>
 <translation id="5367091008316207019">正在讀取檔案...</translation>
@@ -1432,39 +1425,11 @@
 <translation id="9009369504041480176">上傳中 (<ph name="PROGRESS_PERCENT"/>%)...</translation>
 <translation id="7925285046818567682">正在等候 <ph name="HOST_NAME"/>...</translation>
 <translation id="7887334752153342268">複製</translation>
-<translation id="5210365745912300556">關閉分頁</translation>
-<translation id="5453029940327926427">關閉分頁</translation>
 <translation id="68541483639528434">關閉其他分頁</translation>
 <translation id="6686490380836145850">關閉右邊的分頁</translation>
-<translation id="855081842937141170">固定分頁</translation>
-<translation id="5105855035535475848">固定分頁</translation>
-<translation id="2074527029802029717">取消分頁固定</translation>
-<translation id="1812631533912615985">取消固定分頁</translation>
-<translation id="527605719918376753">關閉分頁音訊</translation>
-<translation id="8373553483208508744">關閉多個分頁音訊</translation>
-<translation id="9203478404496196495">開啟分頁音訊</translation>
-<translation id="1438632560381091872">開啟多個分頁音訊</translation>
-<translation id="1568067597247500137">關閉網站音訊</translation>
-<translation id="1216654534877302979">關閉多個網站音訊</translation>
-<translation id="612596694132302162">開啟網站音訊</translation>
-<translation id="6778959797435875428">開啟多個網站音訊</translation>
 <translation id="4474155171896946103">將所有分頁加入書籤...</translation>
-<translation id="3551320343578183772">關閉分頁</translation>
-<translation id="7268365133021434339">關閉分頁</translation>
 <translation id="4322394346347055525">關閉其他分頁</translation>
 <translation id="1166212789817575481">關閉右側分頁</translation>
-<translation id="21133533946938348">固定分頁</translation>
-<translation id="8072988827236813198">固定分頁</translation>
-<translation id="6442697326824312960">取消標籤固定</translation>
-<translation id="1732215134274276513">取消固定分頁</translation>
-<translation id="474217410105706308">關閉分頁音訊</translation>
-<translation id="9039890312082871605">關閉多個分頁音訊</translation>
-<translation id="4632483769545853758">開啟分頁音訊</translation>
-<translation id="304826556400666995">開啟多個分頁音訊</translation>
-<translation id="2973324205039581528">關閉網站音訊</translation>
-<translation id="7579149537961810247">關閉多個網站音訊</translation>
-<translation id="1293177648337752319">開啟網站音訊</translation>
-<translation id="109758035718544977">開啟多個網站音訊</translation>
 <translation id="2336228925368920074">將所有分頁加入書籤...</translation>
 <translation id="2278562042389100163">開啟瀏覽器視窗</translation>
 <translation id="756445078718366910">開啟瀏覽器視窗</translation>
@@ -1511,14 +1476,6 @@
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">平台</translation>
 <translation id="7022562585984256452">首頁已設定完成。</translation>
-<translation id="2709516037105925701">自動填入</translation>
-<translation id="4378154925671717803">電話</translation>
-<translation id="4807098396393229769">持卡人姓名</translation>
-<translation id="2612676031748830579">卡號</translation>
-<translation id="869891660844655955">到期日</translation>
-<translation id="1149401351239820326">到期月份</translation>
-<translation id="8058655154417507695">到期年份</translation>
-<translation id="2286841657746966508">帳單地址</translation>
 <translation id="7274626204661209194">Brave Software 雲端列印</translation>
 <translation id="4973307593867026061">新增印表機</translation>
 <translation id="9052208328806230490">你已透過 <ph name="EMAIL"/> 帳戶並使用 <ph name="CLOUD_PRINT_NAME"/> 為你的印表機註冊</translation>
@@ -1664,12 +1621,8 @@
 <translation id="1231733316453485619">要開啟同步處理功能嗎？</translation>
 <translation id="9125982323641182972">在 Brave 中體驗 Brave Software 智慧功能</translation>
 <translation id="4736292055110123391">讓你在所有裝置上的書籤、密碼、歷史記錄及其他設定保持同步</translation>
-<translation id="328921709097406258">Brave Software 可能會使用你的歷史記錄，為你提供個人化的搜尋服務、廣告內容和其他各項 Brave Software 服務。</translation>
 <translation id="363863692969456324">使用進階拼字檢查功能修正拼字錯誤</translation>
-<translation id="1493787485275784624">系統會將你在文字欄位中輸入的文字傳送給 Brave Software。</translation>
 <translation id="561013949633009906">協助改善 Brave 及其安全性</translation>
-<translation id="725079085443555687">將部分系統資訊和網頁內容以匿名方式傳送給 Brave Software。</translation>
-<translation id="2895734772884435517">你隨時可以自訂這些設定。</translation>
 <translation id="3149880132460839085">Brave 同步</translation>
 <translation id="3796902758602917951">您的書籤、歷史記錄、密碼和其他設定都會在您的 Brave Software 帳戶中保持同步，讓您在所有個人裝置上使用。</translation>
 <translation id="3111958038206230539">享有個人化的 Brave Software 服務</translation>
@@ -1777,8 +1730,6 @@
 <translation id="2562743677925229011">未登入「<ph name="SHORT_PRODUCT_NAME"/>」</translation>
 <translation id="4027804175521224372">(你錯過了下列步驟 - <ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK"/>)</translation>
 <translation id="3574210789297084292">登入</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
-<translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="237828693408258535">要翻譯這個網頁嗎？</translation>
 <translation id="4613765529964435709">您要讓 Brave Software 將這個網頁的內容從<ph name="SOURCE_LANGUAGE"/>翻譯成<ph name="TARGET_LANGUAGE"/>嗎？</translation>
 <translation id="5990386583461751448">已翻譯</translation>
@@ -1841,6 +1792,7 @@
 <translation id="8214489666383623925">開啟檔案...</translation>
 <translation id="7456847797759667638">開啟位置...</translation>
 <translation id="3265459715026181080">關閉視窗</translation>
+<translation id="3551320343578183772">關閉分頁</translation>
 <translation id="4780321648949301421">另存網頁...</translation>
 <translation id="6212752530110374741">透過電子郵件傳送連結</translation>
 <translation id="457386861538956877">更多…</translation>
@@ -1889,6 +1841,8 @@
 <translation id="7831754656372780761"><ph name="TAB_TITLE"/> <ph name="EMOJI_MUTING"/></translation>
 <translation id="6315493146179903667">全部移至最上層</translation>
 <translation id="3007771295016901659">複製分頁</translation>
+<translation id="2973324205039581528">關閉網站音訊</translation>
+<translation id="21133533946938348">固定分頁</translation>
 <translation id="2007404777272201486">回報問題...</translation>
 <translation id="3118319026408854581"><ph name="PRODUCT_NAME"/>說明</translation>
 <translation id="6721972322305477112">檔案(&amp;F)</translation>
@@ -2279,8 +2233,6 @@
 <translation id="4079799245038595838">系統已傳送通知到你的手機，請依照通知上的提示確認你的身分。</translation>
 <translation id="88870264962436283">在「<ph name="APP_NAME"/>」中使用 Touch ID</translation>
 <translation id="5186185447130319458">無痕模式</translation>
-<translation id="8480139856920479206">{0,plural, =1{你已開啟 1 個無痕式視窗。}other{你已開啟 # 個無痕式視窗。}}</translation>
-<translation id="2545348954155066907">{0,plural, =1{關閉這個視窗}other{關閉所有無痕式視窗}}</translation>
 <translation id="394984172568887996">從 IE 匯入</translation>
 <translation id="1543284117603151572">從 Edge 匯入的書籤</translation>
 <translation id="5502500733115278303">從 Firefox 匯入的書籤</translation>
@@ -2344,7 +2296,6 @@
 <translation id="6455894534188563617">新增資料夾(&amp;N)</translation>
 <translation id="1015318665228971643">編輯資料夾名稱</translation>
 <translation id="5449588825071916739">將所有分頁加入書籤</translation>
-<translation id="5528368756083817449">書籤管理員</translation>
 <translation id="3828029223314399057">搜尋書籤</translation>
 <translation id="8116972784401310538">書籤管理員(&amp;B)</translation>
 <translation id="6973630695168034713">資料夾</translation>
@@ -2400,6 +2351,10 @@
 <translation id="1774833706453699074">將開啟的網頁加入書籤...</translation>
 <translation id="6949306908218145636">將開啟的網頁加入書籤...</translation>
 <translation id="4422347585044846479">編輯此網頁的書籤</translation>
+<translation id="1620510694547887537">攝影機</translation>
+<translation id="5646376287012673985">位置</translation>
+<translation id="3227137524299004712">麥克風</translation>
+<translation id="2482878487686419369">通知</translation>
 <translation id="6005695835120147974">媒體路由器</translation>
 <translation id="7787308148023287649">在其他螢幕上顯示</translation>
 <translation id="7710568461918838723">投放(&amp;C)...</translation>
@@ -2611,7 +2566,6 @@
 <translation id="2653659639078652383">提交</translation>
 <translation id="8392451568018454956"><ph name="USER_EMAIL_ADDRESS"/> 的選項選單</translation>
 <translation id="6164005077879661055">將這位受監管的使用者移除後，系統即會永久刪除所有與該使用者相關的檔案和本機資料。管理員仍可前往 <ph name="MANAGEMENT_URL"/> 查看這位受監管使用者的網頁瀏覽記錄和設定。</translation>
-<translation id="1646102270785326155">將這位使用者移除後，與這位使用者相關聯的所有檔案和本機資料都會遭到永久刪除。$1 日後仍然可以登入。</translation>
 <translation id="672213144943476270">以訪客身分瀏覽之前，請先取消鎖定您的個人資料。</translation>
 <translation id="3478685642445675458">移除任何人之前，請先取消鎖定您的個人資料。</translation>
 <translation id="4648499713050786492">新增任何人之前，請先取消鎖定您的個人資料。</translation>
@@ -2647,12 +2601,6 @@
 <translation id="6146563240635539929">影片</translation>
 <translation id="3616113530831147358">音訊</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>警告：<ph name="END_BOLD"/>這些是暫存檔案，系統可能會自動將其刪除，以釋放磁碟空間。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
-<translation id="7361039089383199231">$1 位元組</translation>
-<translation id="4871210892959306034">$1 KB</translation>
-<translation id="641105183165925463">$1 MB</translation>
-<translation id="7221155467930685510">$1 GB</translation>
-<translation id="5039512255859636053">$1 TB</translation>
-<translation id="6840313690797192085">$1 PB</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
@@ -2669,7 +2617,6 @@
 <translation id="5145331109270917438">修改日期</translation>
 <translation id="8487700953926739672">可離線使用</translation>
 <translation id="2230062665678605299">無法建立資料夾「<ph name="FOLDER_NAME"/>」。<ph name="ERROR_MESSAGE"/></translation>
-<translation id="4630590996962964935">無效的字元：「$1」</translation>
 <translation id="642282551015776456">無法使用這個名稱做為檔案名稱或資料夾名稱</translation>
 <translation id="2070909990982335904">以點號開頭的名稱僅供系統使用，請選擇其他名稱。</translation>
 <translation id="8456681095658380701">名稱無效</translation>
@@ -2680,8 +2627,6 @@
 <translation id="3749289110408117711">檔案名稱</translation>
 <translation id="3280431534455935878">準備中</translation>
 <translation id="6607272825297743757">檔案資訊</translation>
-<translation id="3429599832623003132">$1 個項目</translation>
-<translation id="532360961509278431">無法開啟「$1」：$2</translation>
 <translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>請先不要移除你的裝置！<ph name="END_BOLD"/>
    <ph name="LINE_BREAKS"/>
    你的裝置仍在運作中，如果立即移除裝置，你的資料很可能會遺失。請耐心等候作業結束，再使用「檔案」應用程式退出裝置。</translation>
@@ -2735,9 +2680,6 @@
 <translation id="5158593464696388225">無法儲存圖片。</translation>
 <translation id="2787047795752739979">覆寫原始檔案</translation>
 <translation id="8775404590947523323">你的編輯已自動儲存。<ph name="BREAKS"/>如要保留原始圖片複本，請取消勾選 [覆寫原始檔案]</translation>
-<translation id="6653525630739667879">無法儲存到 $1。系統會將所有編輯內容儲存到 $2 的「下載」資料夾。</translation>
-<translation id="3184560914950696195">無法儲存到 $1，系統會將編輯過的圖片儲存在「下載」資料夾。</translation>
-<translation id="6983991971286645866">所有編輯內容都會儲存到「$1」。</translation>
 <translation id="8153607920959057464">無法顯示這個檔案。</translation>
 <translation id="6227235786875481728">無法播放這個檔案。</translation>
 <translation id="9154418932169119429">這張圖片無法離線瀏覽。</translation>
@@ -2747,9 +2689,6 @@
 <translation id="4801956050125744859">兩個版本都保留</translation>
 <translation id="1062407476771304334">取代</translation>
 <translation id="1556189134700913550">全部套用</translation>
-<translation id="3206175707080061730">名稱為「$1」的檔案已經存在，你要取代這個檔案嗎？</translation>
-<translation id="8059178146866384858">名稱為「$1」的檔案已經存在，請選擇其他名稱。</translation>
-<translation id="5653140146600257126">名稱為「$1」的資料夾已經存在，請選擇其他名稱。</translation>
 <translation id="1497522201463361063">無法重新命名「<ph name="FILE_NAME"/>」。<ph name="ERROR_MESSAGE"/></translation>
 <translation id="5330512191124428349">取得資訊</translation>
 <translation id="8312871300878166382">貼入資料夾</translation>
@@ -2808,20 +2747,13 @@
 <translation id="4724850507808590449">已備份 <ph name="FILE_COUNT"/> 張相片</translation>
 <translation id="1351692861129622852">正在匯入 <ph name="FILE_COUNT"/> 個檔案...</translation>
 <translation id="117624967391683467">正在複製 <ph name="FILE_NAME"/>...</translation>
-<translation id="8453482423012550001">正在複製 $1 個項目...</translation>
 <translation id="7627790789328695202">糟糕！已存在名為 <ph name="FILE_NAME"/> 的檔案。請重新命名檔案並再試一次。</translation>
 <translation id="5691596662111998220">糟糕！「<ph name="FILE_NAME"/>」已不存在。</translation>
 <translation id="4336032328163998280">複製作業失敗，<ph name="ERROR_MESSAGE"/></translation>
-<translation id="1503914375822320413">複製作業失敗，發生未預期的錯誤：$1</translation>
 <translation id="6133173853026656527">正在移動 <ph name="FILE_NAME"/>...</translation>
-<translation id="3039828483675273919">正在移動 $1 個項目...</translation>
 <translation id="6007237601604674381">移動失敗，<ph name="ERROR_MESSAGE"/></translation>
-<translation id="8954952943849489823">移動失敗，發生未預期的錯誤：$1</translation>
 <translation id="3326821416087822643">正在壓縮 <ph name="FILE_NAME"/>...</translation>
-<translation id="5694501201003948907">正在壓縮 $1 個項目...</translation>
-<translation id="7464490149090366184">壓縮失敗，項目已存在：「$1」</translation>
 <translation id="9133055936679483811">壓縮失敗。<ph name="ERROR_MESSAGE"/></translation>
-<translation id="1711973684025117106">壓縮失敗：發生未預期的錯誤：$1</translation>
 <translation id="653019979737152879">正在同步處理 <ph name="FILE_NAME"/>...</translation>
 <translation id="8579285237314169903">正在同步處理 <ph name="NUMBER_OF_FILES"/> 個項目...</translation>
 <translation id="8137331602592933310">「<ph name="FILENAME"/>」是他人與你共用的項目。你不是這個檔案的擁有者，無法刪除這個檔案。</translation>
@@ -2841,8 +2773,6 @@
 <translation id="1464724975715666883">發生 1 個錯誤。</translation>
 <translation id="3495304270784461826">發生 <ph name="COUNT"/> 個錯誤。</translation>
 <translation id="6643016212128521049">清除</translation>
-<translation id="4284105660453474798">你確定要刪除「$1」嗎？</translation>
-<translation id="4580526846085481512">你確定要刪除 $1 個項目嗎？</translation>
 <translation id="7953739707111622108">這個裝置所用的檔案系統無法識別，因此系統無法開啟這個裝置。</translation>
 <translation id="3726463242007121105">這個裝置所用的檔案系統不受支援，因此系統無法開啟這個裝置。</translation>
 <translation id="3414856743105198592">將卸除式媒體格式化會清除所有資料，你要繼續嗎？</translation>
@@ -2916,7 +2846,6 @@
     <ph name="MARKUP_4"/>從下載資料夾中刪除檔案<ph name="MARKUP_5"/></translation>
 <translation id="7606199793785990727">無法連上 Brave Software 雲端硬碟。請<ph name="BEGIN_LINK"/>登出<ph name="END_LINK"/>並重新登入帳戶。</translation>
 <translation id="585883343689351092">歡迎使用 Brave Software 雲端硬碟！</translation>
-<translation id="1788440444874291920">免費取得 100 GB 的 Brave Software 雲端硬碟空間</translation>
 <translation id="6862635236584086457">所有儲存在這個資料夾的檔案都會自動在線上備份</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>隨時隨地存取檔案，甚至可離線存取。<ph name="MARKUP_2"/>
     Brave Software 雲端硬碟中的檔案永遠都是最新版本，並可透過任何裝置存取。<ph name="MARKUP_3"/>
@@ -2924,24 +2853,14 @@
     無論裝置發生任何狀況，您的檔案都安全存放於 Brave Software 雲端硬碟。<ph name="MARKUP_6"/>
     <ph name="MARKUP_7"/>檔案集中存放，<ph name="MARKUP_8"/>
     方便共用、建立檔案並與他人協同合作。<ph name="MARKUP_9"/></translation>
-<translation id="7489605380874780575">檢查資格</translation>
 <translation id="4878716980734452132">系統不支援這個檔案類型。請造訪 <ph name="BEGIN_LINK"/>Brave 線上應用程式商店<ph name="END_LINK"/>，尋找是否有可開啟這類檔案的應用程式。
     <ph name="BEGIN_LINK_HELP"/>瞭解詳情<ph name="END_LINK_HELP"/></translation>
-<translation id="3376900196170631953">這個檔案是專為使用 Windows 軟體的 PC 電腦所設計，與搭載 Brave 作業系統的裝置不相容。請前往 <ph name="BEGIN_LINK"/>Brave 線上應用程式商店<ph name="END_LINK"/>尋找適合的替代應用程式。<ph name="BEGIN_LINK_HELP"/>瞭解詳情<ph name="END_LINK_HELP"/></translation>
 <translation id="3072401511615920367">這個檔案是專為使用 Macintosh 軟體的電腦所設計，與搭載 Brave 作業系統的裝置不相容。請前往 <ph name="BEGIN_LINK"/>Brave 線上應用程式商店<ph name="END_LINK"/>尋找適合的替代應用程式。<ph name="BEGIN_LINK_HELP"/>瞭解詳情<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">請稍候片刻</translation>
 <translation id="3096967955765855393">我們不斷努力提升網路瀏覽的安全性。過去，任何網站都可以提示你在瀏覽器中新增擴充功能。在最新版本的 Brave Software Brave 中，你必須統一透過「擴充功能」頁面新增擴充功能，讓 Brave 確實瞭解你要安裝的各項擴充功能。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
-<translation id="2004663115385769400">無法使用「$1」開啟</translation>
-<translation id="639777613761517128">如要使用「$1」開啟檔案，請先將檔案複製到「Linux 檔案」資料夾。</translation>
 <translation id="5368191757080475556">與 Linux 共用資料夾</translation>
-<translation id="6803594270782834876">授權 Linux 應用程式開啟 $1 資料夾中的檔案</translation>
-<translation id="9204140378020726578">授權 Linux 應用程式開啟 Brave Software 雲端硬碟中的檔案。相關變更會同步到你的其他裝置。</translation>
 <translation id="4290535918735525311">已與 Linux 共用 1 個資料夾</translation>
-<translation id="984401732412731005">已與 Linux 共用 $1 個資料夾</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/> 檔案</translation>
-<translation id="895586998699996576">$1 圖片</translation>
-<translation id="2853916256216444076">$1 影片</translation>
-<translation id="7006844981395428048">$1 音訊</translation>
 <translation id="7799329977874311193">HTML 文件</translation>
 <translation id="2208158072373999562">Zip 封存</translation>
 <translation id="2028997212275086731">RAR 封存</translation>
@@ -2990,9 +2909,6 @@
 <translation id="6199801702437275229">正在等待空間資訊...</translation>
 <translation id="6485131920355264772">無法擷取空間資訊</translation>
 <translation id="7748626145866214022">動作列中有更多可用的選項。按下 Alt+A 即可將焦點移到動作列。</translation>
-<translation id="60628369828239652">正在開啟 <ph name="FILE_NAME"/> 檔案</translation>
-<translation id="353547388688256996">正在開啟 <ph name="NUMBER_FILES"/></translation>
-<translation id="973975081056554264"><ph name="VOLUME_NAME">$1<ex>file_name.rar</ex> 已退出。</ph></translation>
 <translation id="6710213216561001401">返回</translation>
 <translation id="1395262318152388157">播放進度控制滑桿</translation>
 <translation id="4880214202172289027">音量滑桿</translation>
@@ -3135,8 +3051,6 @@
 <translation id="6352773953037195952">最高</translation>
 <translation id="3677657024345889897">最小</translation>
 <translation id="167160931442925455">最大</translation>
-<translation id="2445007895943112260"><ph name="PERCENTAGE">$1<ex>120</ex>%</ph></translation>
-<translation id="9129010913019873477"><ph name="PERCENTAGE"/> (預設)</translation>
 <translation id="3602290021589620013">預覽</translation>
 <translation id="7037509989619051237">要預覽的文字</translation>
 <translation id="5471768120198416576">你好！這是文字轉語音的語音。</translation>
@@ -3189,9 +3103,11 @@
 <translation id="8465252176946159372">無效</translation>
 <translation id="8647834505253004544">網址無效</translation>
 <translation id="7946586320617670168">來源必須是安全來源</translation>
+<translation id="2709516037105925701">自動填入</translation>
 <translation id="7764225426217299476">新增地址</translation>
 <translation id="5595485650161345191">編輯地址</translation>
 <translation id="6207937957461833379">國家/地區</translation>
+<translation id="4378154925671717803">電話</translation>
 <translation id="9064275926664971810">啟用自動填入功能，輕鬆一按即可填妥表單</translation>
 <translation id="9095253524804455615">移除</translation>
 <translation id="451515744433878153">移除</translation>
@@ -3201,6 +3117,11 @@
 <translation id="4835914736509775287">將卡片儲存到你的 Brave Software 帳戶</translation>
 <translation id="7255002516883565667">目前你有一張卡片只能在這部裝置上使用</translation>
 <translation id="6848388270925200958">目前你有一些卡片只能在這部裝置上使用</translation>
+<translation id="4807098396393229769">持卡人姓名</translation>
+<translation id="2612676031748830579">卡號</translation>
+<translation id="869891660844655955">到期日</translation>
+<translation id="1149401351239820326">到期月份</translation>
+<translation id="8058655154417507695">到期年份</translation>
 <translation id="379082410132524484">你的卡片已過期</translation>
 <translation id="6644512095122093795">儲存密碼</translation>
 <translation id="2100273922101894616">自動登入</translation>
@@ -3530,7 +3451,6 @@
 <translation id="6921033294337262045">依序輕觸 [應用程式通知] &gt; [Brave Software Play 服務]。</translation>
 <translation id="5624710179837914896">開啟 Brave Software Play 服務。</translation>
 <translation id="2705736684557713153">捲動至畫面底部，如果看到 [即時網路共用]，請開啟這項功能；如果沒有看到，代表你已完成設定。</translation>
-<translation id="3604048165392640554">找不到行動數據連線。請開啟其他裝置的即時網路共用功能，然後再試一次。&lt;a target="_blank" href="<ph name="URL"/>"&gt;瞭解詳情&lt;/a&gt;</translation>
 <translation id="7240339475467890413">確定要連線至新的無線基地台嗎？</translation>
 <translation id="6514010653036109809">可用的裝置：</translation>
 <translation id="2075474481720804517">電量：<ph name="BATTERY_PERCENTAGE"/>%</translation>
@@ -3708,8 +3628,6 @@
 <translation id="5487521232677179737">清除資料</translation>
 <translation id="3151562827395986343">清除歷史記錄、Cookie、快取等資料</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
-<translation id="3407837288045706722">如需更多與隱私權、安全性和資料收集相關的設定，請參閱<ph name="BEGIN_LINK"/>同步處理和個人化<ph name="END_LINK"/></translation>
-<translation id="7222718784508482526">如需更多隱私權、安全性和資料收集的相關設定，請參閱<ph name="BEGIN_LINK"/>同步處理和 Brave Software 服務<ph name="END_LINK"/></translation>
 <translation id="8632933437936028548">重設設定</translation>
 <translation id="5293170712604732402">將設定還原成原始預設值</translation>
 <translation id="892706138619340876">部分設定已重設</translation>
@@ -3734,12 +3652,9 @@
 <translation id="7098447629416471489">你所儲存的其他搜尋引擎會顯示在這裡</translation>
 <translation id="1459967076783105826">由擴充功能新增的搜尋引擎</translation>
 <translation id="6678717876183468697">查詢網址</translation>
-<translation id="1545786162090505744">網址 (以 %s 取代查詢)</translation>
 <translation id="6953878494808481632">相關資訊</translation>
 <translation id="4145922204387553806">允許 Brave Software 助理根據畫面上的內容顯示相關資訊</translation>
 <translation id="472896694312062378">「Ok Brave Software」</translation>
-<translation id="6236033368436682108">只要在螢幕開啟狀態下說出「Ok Brave Software」，就能隨時存取 Brave Software 助理</translation>
-<translation id="2482878487686419369">通知</translation>
 <translation id="5355099869024327351">允許 Brave Software 助理向你顯示通知</translation>
 <translation id="133535873114485416">偏好的輸入來源</translation>
 <translation id="6233154960150021497">預設使用語音，而不使用鍵盤</translation>
@@ -3755,14 +3670,12 @@
 <translation id="1919345977826869612">廣告</translation>
 <translation id="5649053991847567735">自動下載</translation>
 <translation id="3744111561329211289">背景同步處理</translation>
-<translation id="1620510694547887537">攝影機</translation>
 <translation id="2586657967955657006">剪貼簿</translation>
 <translation id="5518219166343146486">當網站要讀取已複製到剪貼簿的文字和圖片時，必須先詢問你</translation>
 <translation id="2089795179672254991">當網站要讀取已複製到剪貼簿的文字和圖片時，必須先詢問你 (建議使用)</translation>
 <translation id="16815041330799488">禁止網站讀取已複製到剪貼簿的文字和圖片</translation>
 <translation id="3668823961463113931">處理常式</translation>
 <translation id="5689516760719285838">位置</translation>
-<translation id="3227137524299004712">麥克風</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">付款處理常式</translation>
@@ -3907,12 +3820,9 @@
 <translation id="6029292188939175871">刪除[<ph name="FINGERPRINT_NAME"/>]，按鈕</translation>
 <translation id="1927632033341042996">指紋 <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">新增帳戶</translation>
-<translation id="3422989461909154470">你可以在這裡管理你從應用程式和網站登入的所有 Brave Software 帳戶。</translation>
 <translation id="1987317783729300807">帳戶</translation>
 <translation id="8418661265246754237">Brave Software 帳戶</translation>
 <translation id="3297951628821704004">從這個裝置移除帳戶</translation>
-<translation id="1059855432287631118">註冊指紋</translation>
-<translation id="878068003854005405">歡迎開始設定，請將手指放在感應器上。</translation>
 <translation id="176193854664720708">指紋感應器位於電源按鈕上，請以任何一隻手指輕觸指紋感應器。</translation>
 <translation id="7189965711416741966">指紋新增成功。</translation>
 <translation id="9220820413868316583">請移開手指，然後再試一次。</translation>
@@ -4092,7 +4002,6 @@
 <translation id="3954469006674843813"><ph name="WIDTH"/>x<ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> 赫茲)</translation>
 <translation id="7889565820482017512">顯示大小</translation>
 <translation id="8448729345478502352">縮小或放大畫面上的項目</translation>
-<translation id="513425442047539523"><ph name="DISPLAY_ZOOM">$1<ex>120</ex>%</ph></translation>
 <translation id="2155772377859296191">螢幕解析度：<ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
 <translation id="4863769717153320198">螢幕解析度：<ph name="WIDTH"/> x <ph name="HEIGHT"/> (預設)</translation>
 <translation id="1125550662859510761">螢幕解析度：<ph name="WIDTH"/> x <ph name="HEIGHT"/> (原生)</translation>
@@ -4155,24 +4064,19 @@
 <translation id="7878562273885520351">你的密碼可能已經外洩</translation>
 <translation id="1089439967362294234">變更密碼</translation>
 <translation id="6187156085111579405">如有必要，這裡未列出的項目也會一併移除。如要進一步瞭解&lt;a href="<ph name="URL"/>"&gt;垃圾軟體防護功能&lt;/a&gt;，請參閱 Brave 隱私權白皮書。</translation>
-<translation id="928985544179707652">擴充功能：</translation>
 <translation id="7712836429117959503">不明的擴充功能 (ID：<ph name="EXTENSION_ID"/>)</translation>
-<translation id="2600115369439982409">檔案與程式：</translation>
-<translation id="1372681413396468867">{NUM_ITEMS,plural, =1{將移除 1 個項目}other{將移除 # 個項目}}</translation>
 <translation id="7187428571767585875">系統將移除或變更下列登錄檔項目：</translation>
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{還有 1 個項目}other{還有 # 個項目}}</translation>
 <translation id="2749608811030566578">Brave 移除有害的軟體時發生錯誤</translation>
 <translation id="8189483132214844139">Brave 可以找出電腦上有害的軟體並予以移除</translation>
 <translation id="2910318910161511225">請連線至網路，然後再試一次</translation>
 <translation id="1426870617281699524">請點選 [再試一次] 並接受電腦顯示的提示</translation>
-<translation id="2201358555632643970">在你的電腦上發現有害軟體。Brave 正在進行移除，並且會還原相關設定，讓你的瀏覽器恢復正常運作。</translation>
 <translation id="1484912962860902625">Brave 搜尋有害的軟體時發生錯誤</translation>
 <translation id="451407183922382411">技術提供：<ph name="COMPANY_NAME"/></translation>
 <translation id="5254368820972107711">顯示將被移除的檔案</translation>
 <translation id="296026337010986570">大功告成！有害軟體已移除。如要重新開啟擴充功能，請造訪&lt;a href="chrome://extensions"&gt;擴充功能&lt;/a&gt;。</translation>
 <translation id="284975061945174219">清理失敗</translation>
 <translation id="9014750448058570312">Brave 需要權限才能繼續執行</translation>
-<translation id="3806965327722135869">尋找並移除有害的軟體</translation>
 <translation id="4320177379694898372">沒有網際網路連線</translation>
 <translation id="850875081535031620">未發現有害軟體</translation>
 <translation id="1186771945450942097">移除有害軟體</translation>
@@ -4181,7 +4085,6 @@
 <translation id="8639047128869322042">正在檢查有害軟體...</translation>
 <translation id="2653033005692233957">搜尋失敗</translation>
 <translation id="655483977608336153">再試一次</translation>
-<translation id="6312400084708441752">提供你電腦上有害軟體、系統設定和處理程序的相關資訊</translation>
 <translation id="6555810572223193255">目前無法執行清理作業</translation>
 <translation id="7117228822971127758">請稍後再試</translation>
 <translation id="443475966875174318">更新或移除不相容的應用程式</translation>
@@ -4218,8 +4121,6 @@
 <translation id="3264582393905923483">內容</translation>
 <translation id="1607139524282324606">清除項目</translation>
 <translation id="6025215716629925253">堆疊追蹤</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;還有 1 行未顯示&gt;}other{&lt;還有 $1 行未顯示&gt;}}</translation>
-<translation id="5334899159203764908">進一步瞭解<ph name="BEGIN_LINK"/>網站存取權<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">允許這個擴充功能讀取及變更你在造訪過的網站留下的所有資料：</translation>
 <translation id="407173827865827707">點擊時</translation>
 <translation id="6455264371803474013">在特定網站上</translation>
@@ -4292,6 +4193,7 @@
 <translation id="2785008241190445880">已更換書籤</translation>
 <translation id="4320948194796820126">為電子郵件服務加上書籤</translation>
 <translation id="2950533317914339731">針對你喜愛的 Brave Software 應用程式新增書籤</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="239760341987199724">將 Brave 設為預設瀏覽器</translation>
 <translation id="96037229054033864">每次瀏覽都能盡情使用 Brave Software 搜尋和 Brave Software 智慧功能</translation>
 <translation id="296137235951584143">打造專屬的 Brave</translation>
@@ -4324,14 +4226,12 @@
 <translation id="3706463572498736864">每張工作表頁數</translation>
 <translation id="2249605167705922988">例如：1-5、8、11-13</translation>
 <translation id="5746169159649715125">另存為 PDF</translation>
-<translation id="1731589410171062430">總計：<ph name="NUMBER_OF_SHEETS"/> 張，<ph name="SHEETS_LABEL"/> (<ph name="NUMBER_OF_PAGES"/> 頁，<ph name="PAGE_OR_PAGES_LABEL"/>)</translation>
 <translation id="2580924999637585241">總計：<ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">張紙</translation>
 <translation id="8813811964357448561">張</translation>
 <translation id="8180239481735238521">頁面</translation>
 <translation id="3725367690636977613">頁數</translation>
 <translation id="7005848115657603926">頁面範圍無效，請使用 <ph name="EXAMPLE_PAGE_RANGE"/></translation>
-<translation id="2890678560483811744">參照的網頁超出範圍</translation>
 <translation id="5398572795982417028">參照的網頁超出範圍限制 (<ph name="MAXIMUM_PAGE"/>)</translation>
 <translation id="218070003709087997">使用數字指定列印份數 (1 至 999)。</translation>
 <translation id="2509495747794740764">縮放比例必須為介於 10 和 200 之間的數字。</translation>
@@ -4351,19 +4251,14 @@
 <translation id="6273677812470008672">品質</translation>
 <translation id="7288676996127329262"><ph name="HORIZONTAL_DPI"/>x<ph name="VERTICAL_DPI"/> dpi</translation>
 <translation id="1921584744613111023"><ph name="DPI"/> dpi</translation>
-<translation id="2212126039311489237">使用系統對話方塊列印</translation>
 <translation id="6991665348624301627">選取印表機</translation>
 <translation id="8800004011501252845">顯示以下地址的目的地：</translation>
 <translation id="8996526648899750015">新增帳戶...</translation>
 <translation id="5002959368039764681">透過 Brave Software 文件和其他雲端目的地進行列印。如要透過 Brave Software 雲端列印進行列印，請先<ph name="BEGIN_LINK"/>登入<ph name="END_LINK"/>。</translation>
 <translation id="2150139952286079145">搜尋目的地</translation>
 <translation id="8569682776816196752">找不到目的地</translation>
-<translation id="6807889908376551050">全部顯示...</translation>
-<translation id="7328162502911382168">(<ph name="COUNT"/>)</translation>
 <translation id="7885253890047913815">最近用過的印表機</translation>
 <translation id="4929386379796360314">列印目的地</translation>
-<translation id="5829401023154985950">管理...</translation>
-<translation id="4628314759732363424">變更...</translation>
 <translation id="3899879303189199559">離線超過一年</translation>
 <translation id="3154429428035006212">離線超過一個月</translation>
 <translation id="5265562206369321422">離線超過一週</translation>
@@ -4372,18 +4267,15 @@
 <translation id="6317318380444133405">已停止支援。</translation>
 <translation id="5759728514498647443">「<ph name="APP_NAME"/>」可以讀取您透過「<ph name="APP_NAME"/>」傳送的待列印文件。</translation>
 <translation id="2080070583977670716">顯示更多設定</translation>
-<translation id="6510568984200103950">顯示較少設定</translation>
 <translation id="3360297538363969800">列印失敗。請檢查你的印表機，然後再試一次。</translation>
 <translation id="5154108062446123722">「<ph name="PRINTING_DESTINATION"/>」進階設定</translation>
 <translation id="9056810968620647706">找不到相符項目。</translation>
-<translation id="8658595122208653918">變更印表機選項...</translation>
 <translation id="4088095054444612037">接受群組邀請</translation>
 <translation id="357886715122934472">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; 想要與你的群組 (<ph name="GROUP_NAME"/>) 共用印表機 &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt;。你接受之後，所有群組成員即可使用這台印表機進行列印工作。</translation>
 <translation id="8783093612333542422">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; 想要與你共用印表機 &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt;。</translation>
 <translation id="7210499381659830293">擴充印表機</translation>
 <translation id="7453008956351770337">選取這部印表機，即表示您同意授權下列擴充功能存取您的印表機：</translation>
 <translation id="2902127500170292085">「<ph name="EXTENSION_NAME"/>」無法與這部印表機進行通訊，請確認您已插上印表機，然後再試一次。</translation>
-<translation id="5352285283572729470">這是受管理的設定</translation>
 <translation id="4994754230098574403">設定中</translation>
 <translation id="1396139853388185343">設定印表機時發生錯誤</translation>
 <translation id="2379281330731083556">使用系統對話方塊進行列印... <ph name="SHORTCUT_KEY"/></translation>
@@ -4412,8 +4304,6 @@
 <translation id="7681095912841365527">網站可以使用藍牙</translation>
 <translation id="3085412380278336437">網站可以使用你的攝影機</translation>
 <translation id="9180380851667544951">網站可以分享你的螢幕畫面</translation>
-<translation id="7503127198245469314">請拿下頭戴式裝置，並設定封鎖或允許電腦顯示器</translation>
-<translation id="5592010267127539419"><ph name="URL_HOST"/> 想要與裝置配對</translation>
 <translation id="4992630054488400221">如要以 VR 模式使用 Brave，請安裝或更新 Daydream 鍵盤</translation>
 <translation id="983511809958454316">無法在 VR 狀態下使用這項功能</translation>
 <translation id="4008291085758151621">無法在 VR 狀態下存取網站資訊</translation>

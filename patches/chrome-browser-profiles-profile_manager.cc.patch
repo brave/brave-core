@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_manager.cc b/chrome/browser/profiles/profile_manager.cc
-index e00b581b90d3e9e265a5bfa584212e480c39ec9d..21a475f2c6d8440bfd346b761323f4ff2de340d0 100644
+index 7c6dbb5e026f1749e4582e3571c5f8c70ec1db06..c6d0dfee7b476cc2abe10d765311fbd6ac18377b 100644
 --- a/chrome/browser/profiles/profile_manager.cc
 +++ b/chrome/browser/profiles/profile_manager.cc
-@@ -1486,9 +1486,11 @@ void ProfileManager::EnsureActiveProfileExistsBeforeDeletion(
+@@ -1492,9 +1492,11 @@ void ProfileManager::EnsureActiveProfileExistsBeforeDeletion(
    const base::FilePath last_used_profile_path =
        GetLastUsedProfileDir(user_data_dir_);
    const base::FilePath guest_profile_path = GetGuestProfilePath();
@@ -14,7 +14,7 @@ index e00b581b90d3e9e265a5bfa584212e480c39ec9d..21a475f2c6d8440bfd346b761323f4ff
        last_used_profile != nullptr &&
        !last_used_profile->IsLegacySupervised()) {
      FinishDeletingProfile(profile_dir, last_used_profile_path);
-@@ -1501,6 +1503,7 @@ void ProfileManager::EnsureActiveProfileExistsBeforeDeletion(
+@@ -1507,6 +1509,7 @@ void ProfileManager::EnsureActiveProfileExistsBeforeDeletion(
      base::FilePath cur_path = profile->GetPath();
      if (cur_path != profile_dir &&
          cur_path != guest_profile_path &&
@@ -22,7 +22,7 @@ index e00b581b90d3e9e265a5bfa584212e480c39ec9d..21a475f2c6d8440bfd346b761323f4ff
          !profile->IsLegacySupervised() &&
          !IsProfileDirectoryMarkedForDeletion(cur_path)) {
        OnNewActiveProfileLoaded(profile_dir, cur_path, std::move(callback),
-@@ -1520,6 +1523,7 @@ void ProfileManager::EnsureActiveProfileExistsBeforeDeletion(
+@@ -1526,6 +1529,7 @@ void ProfileManager::EnsureActiveProfileExistsBeforeDeletion(
      // legacy-supervised.
      if (cur_path != profile_dir &&
          cur_path != guest_profile_path &&
@@ -30,7 +30,7 @@ index e00b581b90d3e9e265a5bfa584212e480c39ec9d..21a475f2c6d8440bfd346b761323f4ff
          !entry->IsLegacySupervised() &&
          !IsProfileDirectoryMarkedForDeletion(cur_path)) {
        fallback_profile_path = cur_path;
-@@ -1872,6 +1876,7 @@ void ProfileManager::ScheduleForcedEphemeralProfileForDeletion(
+@@ -1884,6 +1888,7 @@ void ProfileManager::ScheduleForcedEphemeralProfileForDeletion(
      base::FilePath entry_path = entry->GetPath();
      if (entry_path == profile_dir ||
          entry_path == GetGuestProfilePath() ||

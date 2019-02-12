@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/chrome_process_manager_delegate.cc b/chrome/browser/extensions/chrome_process_manager_delegate.cc
-index bdb3db7fe661fb25b1a9439303812afa1780c5e5..c41bb6688292f9449eeb40a0b2f182f108459261 100644
+index 35c4370c3d65e2b52f2a69779335ab2ba95db242..961a087306950521434a8fcb4d111e66bfc13207 100644
 --- a/chrome/browser/extensions/chrome_process_manager_delegate.cc
 +++ b/chrome/browser/extensions/chrome_process_manager_delegate.cc
 @@ -49,7 +49,7 @@ bool ChromeProcessManagerDelegate::AreBackgroundPagesAllowedForContext(

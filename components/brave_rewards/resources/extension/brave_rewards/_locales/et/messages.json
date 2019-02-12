@@ -8,7 +8,7 @@
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
-    "message": "Liituge Brave Awardsiga",
+    "message": "Liitu Rewards-iga",
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Saadud load",
+    "message": "Tokenivõimalused",
     "description": "Title for grant notification"
   },
   "tokenGrantClaimed": {
@@ -164,7 +164,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsTitle": {
-    "message": "Brave''i reklaamid",
+    "message": "Brave'i reklaamid",
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
@@ -172,7 +172,7 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "Oled panustanud $amount$ PVT kasutamisse",
+    "message": "Olete panustanud $amount$ BAT-i",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {

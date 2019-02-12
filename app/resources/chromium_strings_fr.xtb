@@ -91,6 +91,7 @@ Brave ne peut pas récupérer vos paramètres.</translation>
 <translation id="6970811910055250180">Mise à jour de votre appareil en cours…</translation>
 <translation id="8030318113982266900">Passage de votre appareil à la version <ph name="CHANNEL_NAME"/>…</translation>
 <translation id="7861579472672677409">L'extension <ph name="EXTENSION_NAME"/> a été ajoutée à Brave</translation>
+<translation id="8516116288943000095">Effacer également les données issues de Brave (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Masquer dans le menu Brave</translation>
 <translation id="5660079256336839395">Masquer dans le menu Brave</translation>
 <translation id="7456658570432774853">Aidez-nous à améliorer Brave en nous signalant vos paramètres actuels.</translation>
@@ -126,11 +127,12 @@ Si vous vous connectez quand même, toutes les informations Brave, comme les fa
 <translation id="1326766910007115955">Vous vous connectez avec un compte géré et donnez le contrôle de votre profil Brave à son administrateur. Vos données Brave, telles que les applications, les favoris, l'historique, les mots de passe et les autres paramètres, vont être définitivement associées à <ph name="USER_NAME"/>. Vous pouvez supprimer ces données via le tableau de bord des comptes Brave Software, mais vous ne pouvez pas les associer à un autre compte. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Vous vous connectez avec un compte géré et donnez le contrôle de votre profil Brave à son administrateur. Vos données Brave, telles que les applications, les favoris, l'historique, les mots de passe et les autres paramètres, vont être définitivement associées à <ph name="USER_NAME"/>. Vous pouvez supprimer ces données via le tableau de bord des comptes Brave Software, mais vous ne pouvez pas les associer à un autre compte. Vous pouvez éventuellement créer un nouveau profil pour maintenir vos données Brave séparées. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> utilisait Brave précédemment</translation>
-<translation id="5381681911713004932">Un logiciel malveillant a été détecté sur votre ordinateur. Brave peut le supprimer et restaurer vos paramètres pour que votre navigateur fonctionne de nouveau normalement.</translation>
+<translation id="1384923383737428730">Un logiciel malveillant a été détecté sur votre ordinateur. Brave peut le supprimer, restaurer vos paramètres et désactiver les extensions pour que votre navigateur fonctionne de nouveau normalement.</translation>
 <translation id="8919921662052966648">Impossible de synchroniser vos données dans Brave. Veuillez mettre à jour votre phrase secrète de synchronisation.</translation>
 <translation id="2262856633481902138">Impossible de synchroniser vos données dans Brave, car les informations de connexion de votre compte ne sont plus à jour.</translation>
 <translation id="5419189641394808652">Impossible de synchroniser vos données dans Brave, car la synchronisation n'est pas disponible pour votre domaine.</translation>
 <translation id="2577755334620061182">Impossible de synchroniser vos données dans Brave, car une erreur s'est produite lors de la connexion.</translation>
+<translation id="8583885258305961947">Système Brave OS</translation>
 <translation id="3968006371075376562">Impossible de synchroniser vos données dans Brave OS. Veuillez mettre à jour votre phrase secrète de synchronisation.</translation>
 <translation id="6746636977031158624">Impossible de synchroniser vos données dans Brave OS, car les informations de connexion de votre compte ne sont plus à jour.</translation>
 <translation id="2999152167963026588">Impossible de synchroniser vos données dans Brave OS, car la synchronisation n'est pas disponible pour votre domaine.</translation>
@@ -156,7 +158,7 @@ Pour empêcher <ph name="NEW_PROFILE_NAME"/> d'accéder à votre compte, assurez
 
 Pour obtenir plus d'informations, veuillez consulter votre compte de messagerie (<ph name="ACCOUNT_EMAIL"/>).</translation>
 <translation id="1820843143331379651">Les utilisateurs supervisés ne seront plus disponibles à partir de Brave 70.</translation>
-<translation id="8797005356491520797">Les données de navigation de cet utilisateur vont être supprimées de cet appareil. Pour récupérer les données, connectez-vous à Brave en tant que $2.</translation>
+<translation id="3066805437003400520">Les données de navigation de cet utilisateur vont être supprimées de cet appareil. Pour les récupérer, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave s'est amélioré</translation>
 <translation id="7192666605334070839">Il est désormais plus facile d'utiliser Brave avec votre compte Brave Software et sur des ordinateurs partagés.</translation>
 <translation id="3511996232906761537">Votre contenu Web, vos favoris et toutes vos données Brave sont conservés ici.</translation>
@@ -172,6 +174,7 @@ Pour obtenir plus d'informations, veuillez consulter votre compte de messagerie 
 <translation id="2871190378186459992">Découvrez des applications, des jeux, des extensions et des thèmes exceptionnels pour Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Règle de trafic entrant pour Brave autorisant le trafic mDNS</translation>
+<translation id="3795403186582265456">Brave peut reconnaître des images et du texte dans une image en envoyant les images aux serveurs Brave Software. Ce service vous permet de mieux comprendre le contenu d'une page.</translation>
 <translation id="7276297358157391541">Brave peut vous proposer une correction orthographique plus intelligente en envoyant ce que vous saisissez dans le navigateur aux serveurs Brave Software, ce qui vous permet d'utiliser la même technologie de correction orthographique que la recherche Brave Software.</translation>
 <translation id="1807774211756215222">Ouvrir le lien dans un nouvel ongle&amp;t Brave</translation>
 <translation id="4624945300945265642">Ouvrir le lien dans la fenêtre de navi&amp;gation privée Brave</translation>

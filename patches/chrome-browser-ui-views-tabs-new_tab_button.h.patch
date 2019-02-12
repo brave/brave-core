@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/new_tab_button.h b/chrome/browser/ui/views/tabs/new_tab_button.h
-index b843ce9dd65bf0937990f76c9031b830f7297a07..8c017d681dc7fbd1f4e084c9d9a8b0fac5ce3ed0 100644
+index 81dd6a83ac9279273b5eb02fe7c4a06cc8b94c96..00739b4d13f966f6e5b4fda5bd699c702496cf1b 100644
 --- a/chrome/browser/ui/views/tabs/new_tab_button.h
 +++ b/chrome/browser/ui/views/tabs/new_tab_button.h
 @@ -64,6 +64,7 @@ class NewTabButton : public views::ImageButton,
@@ -22,6 +22,6 @@ index b843ce9dd65bf0937990f76c9031b830f7297a07..8c017d681dc7fbd1f4e084c9d9a8b0fa
    // Returns the path for the given |origin| and |scale|.  If |extend_to_top| is
    // true, the path is extended vertically to y = 0.
 +  virtual
-   gfx::Path GetBorderPath(const gfx::Point& origin,
-                           float scale,
-                           bool extend_to_top) const;
+   SkPath GetBorderPath(const gfx::Point& origin,
+                        float scale,
+                        bool extend_to_top) const;

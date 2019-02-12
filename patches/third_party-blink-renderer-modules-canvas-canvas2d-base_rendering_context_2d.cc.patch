@@ -1,16 +1,16 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index 30075bc6b02bd57a4b2396da67400b99da1ec3f1..d6683a0331d92227861ec62173e252ad64207f79 100644
+index d9fa696c9a9dbc9745581c69644b295f34b8b364..71d6059ec7aa954456fa0550190320578b5887b3 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-@@ -9,6 +9,7 @@
- #include <memory>
+@@ -10,6 +10,7 @@
  
  #include "base/metrics/histogram_functions.h"
+ #include "base/numerics/checked_math.h"
 +#include "brave/renderer/brave_content_settings_observer_helper.h"
+ #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/renderer/core/css/cssom/css_url_image_value.h"
  #include "third_party/blink/renderer/core/css/parser/css_parser.h"
- #include "third_party/blink/renderer/core/html/canvas/text_metrics.h"
-@@ -343,7 +344,12 @@ void BaseRenderingContext2D::setShadowColor(const String& color_string) {
+@@ -345,7 +346,12 @@ void BaseRenderingContext2D::setShadowColor(const String& color_string) {
    ModifiableState().SetShadowColor(color.Rgb());
  }
  
@@ -24,7 +24,7 @@ index 30075bc6b02bd57a4b2396da67400b99da1ec3f1..d6683a0331d92227861ec62173e252ad
    return GetState().LineDash();
  }
  
-@@ -779,16 +785,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
+@@ -781,16 +787,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
    ClipInternal(dom_path->GetPath(), winding_rule_string);
  }
  
@@ -53,7 +53,7 @@ index 30075bc6b02bd57a4b2396da67400b99da1ec3f1..d6683a0331d92227861ec62173e252ad
    return IsPointInPathInternal(dom_path->GetPath(), x, y, winding_rule_string);
  }
  
-@@ -813,13 +829,23 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
+@@ -815,13 +831,23 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
                         SkFillTypeToWindRule(ParseWinding(winding_rule_string)));
  }
  
@@ -79,7 +79,7 @@ index 30075bc6b02bd57a4b2396da67400b99da1ec3f1..d6683a0331d92227861ec62173e252ad
    return IsPointInStrokeInternal(dom_path->GetPath(), x, y);
  }
  
-@@ -1572,11 +1598,16 @@ ImageData* BaseRenderingContext2D::createImageData(
+@@ -1573,11 +1599,16 @@ ImageData* BaseRenderingContext2D::createImageData(
  }
  
  ImageData* BaseRenderingContext2D::getImageData(

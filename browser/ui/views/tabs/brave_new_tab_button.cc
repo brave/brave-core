@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -28,7 +29,7 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
   return size;
 }
 
-gfx::Path BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
+SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
                                       float scale,
                                       bool extend_to_top) const {
   // Overriden to use Brave's non-circular shape
@@ -36,9 +37,10 @@ gfx::Path BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
   scaled_origin.Scale(scale);
   const float radius = GetCornerRadius() * scale;
 
-  gfx::Path path;
+  SkPath path;
   const gfx::Rect contents_bounds = GetContentsBounds();
-  const gfx::Rect path_rect(scaled_origin.x(), extend_to_top ? 0 : scaled_origin.y(),
+  const gfx::Rect path_rect(scaled_origin.x(),
+              extend_to_top ? 0 : scaled_origin.y(),
               contents_bounds.width() * scale,
               scaled_origin.y() + contents_bounds.height() * scale);
   path.addRoundRect(RectToSkRect(path_rect), radius, radius);

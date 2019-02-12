@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
+
+#include <limits>
+#include <utility>
 
 #include "base/command_line.h"
 #include "base/files/file_util.h"
@@ -60,15 +64,18 @@ class LogStreamImpl : public ads::LogStream {
   LogStreamImpl(const char* file,
                 int line,
                 const ads::LogLevel log_level) {
-    switch(log_level) {
+    switch (log_level) {
       case ads::LogLevel::LOG_INFO:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_INFO);
+        log_message_ = std::make_unique<logging::LogMessage>(
+            file, line, logging::LOG_INFO);
         break;
       case ads::LogLevel::LOG_WARNING:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_WARNING);
+        log_message_ = std::make_unique<logging::LogMessage>(
+            file, line, logging::LOG_WARNING);
         break;
       default:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_ERROR);
+        log_message_ = std::make_unique<logging::LogMessage>(
+            file, line, logging::LOG_ERROR);
     }
   }
 
@@ -84,7 +91,7 @@ class LogStreamImpl : public ads::LogStream {
 
 class AdsNotificationHandler : public NotificationHandler {
  public:
-  AdsNotificationHandler(AdsServiceImpl* ads_service) :
+  explicit AdsNotificationHandler(AdsServiceImpl* ads_service) :
       ads_service_(ads_service->AsWeakPtr()) {}
 
   ~AdsNotificationHandler() override {}
@@ -173,7 +180,7 @@ int GetUserModelResourceId(const std::string& locale) {
 
 net::URLFetcher::RequestType URLMethodToRequestType(
     ads::URLRequestMethod method) {
-  switch(method) {
+  switch (method) {
     case ads::URLRequestMethod::GET:
       return net::URLFetcher::RequestType::GET;
     case ads::URLRequestMethod::POST:
@@ -241,7 +248,7 @@ bool SaveBundleStateOnFileTaskRunner(
   return false;
 }
 
-}
+}  // namespace
 
 AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     profile_(profile),
@@ -398,14 +405,12 @@ void AdsServiceImpl::ResetTimer() {
 
 void AdsServiceImpl::CheckIdleState() {
 #if !defined(OS_ANDROID)
-  ui::CalculateIdleState(GetIdleThreshold(),
-      base::BindRepeating(&AdsServiceImpl::OnIdleState,
-          base::Unretained(this)));
+  ProcessIdleState(ui::CalculateIdleState(GetIdleThreshold()));
 #endif
 }
 
 #if !defined(OS_ANDROID)
-void AdsServiceImpl::OnIdleState(ui::IdleState idle_state) {
+void AdsServiceImpl::ProcessIdleState(ui::IdleState idle_state) {
   if (!connected() || idle_state == last_idle_state_)
     return;
 
@@ -453,8 +458,10 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
 }
 
 bool AdsServiceImpl::is_enabled() const {
-  bool ads_enabled = profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
-  bool rewards_enabled = profile_->GetPrefs()->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled);
+  bool ads_enabled = profile_->GetPrefs()->GetBoolean(
+      prefs::kBraveAdsEnabled);
+  bool rewards_enabled = profile_->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kBraveRewardsEnabled);
   return (ads_enabled && rewards_enabled);
 }
 
@@ -890,7 +897,8 @@ void AdsServiceImpl::OnURLFetchComplete(
   int response_code = source->GetResponseCode();
   std::string body;
   std::map<std::string, std::string> headers;
-  scoped_refptr<net::HttpResponseHeaders> headersList = source->GetResponseHeaders();
+  scoped_refptr<net::HttpResponseHeaders> headersList =
+      source->GetResponseHeaders();
 
   if (headersList) {
     size_t iter = 0;

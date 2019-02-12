@@ -89,8 +89,8 @@
     <message name="IDS_PRINT_PREVIEW_PRINT_TO_PDF" desc="Option shown on printer drop-down list for saving previewed document as a PDF.">
       Save as PDF
     </message>
-    <message name="IDS_PRINT_PREVIEW_SUMMARY_FORMAT_LONG" desc="Print summary, explaining to the user how many pages will be printed.">
-      Total: <ph name="NUMBER_OF_SHEETS">$1<ex>10</ex></ph> <ph name="SHEETS_LABEL">$2<ex>sheets of paper</ex></ph> (<ph name="NUMBER_OF_PAGES">$3<ex>4</ex></ph> <ph name="PAGE_OR_PAGES_LABEL">$4<ex>Pages</ex></ph>)
+    <message name="IDS_PRINT_PREVIEW_PRINT_TO_GOOGLE_DRIVE" desc="Option shown on printer drop-down list for saving previewed document to Brave Drive.">
+      Save to Brave Drive
     </message>
     <message name="IDS_PRINT_PREVIEW_SUMMARY_FORMAT_SHORT" desc="Print summary, explaining to the user how many pages will be printed.">
       Total: <ph name="NUMBER_OF_SHEETS">$1<ex>10</ex></ph> <ph name="SHEETS_LABEL">$2<ex>sheets of paper</ex></ph>
@@ -109,9 +109,6 @@
     </message>
     <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_SYNTAX_INSTRUCTION" desc="Instruction shown when the user enters an invalid page range.">
       Invalid page range, use <ph name="EXAMPLE_PAGE_RANGE">$1<ex>e.g. 1-5, 8, 11-13</ex></ph>
-    </message>
-    <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_LIMIT_INSTRUCTION" desc="Instruction shown when the user enters an excessive page range.">
-      Out of bounds page reference
     </message>
     <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_LIMIT_INSTRUCTION_WITH_VALUE" desc="Instruction shown when the user enters an excessive page number, and the maximum page.">
       Out of bounds page reference, limit is <ph name="MAXIMUM_PAGE">$1<ex>1</ex></ph>
@@ -182,9 +179,6 @@
     <message name="IDS_PRINT_PREVIEW_DPI_ITEM_LABEL" desc="Print quality option value text.">
       <ph name="DPI">$1<ex>300</ex></ph> dpi
     </message>
-    <message name="IDS_PRINT_PREVIEW_NATIVE_DIALOG" desc="Option offering the user to open the native print dialog, displayed when the PDF viewer is missing or when print preview fails.">
-      Print using system dialog
-    </message>
     <message name="IDS_PRINT_PREVIEW_DESTINATION_SEARCH_TITLE" desc="Title of the destination search UI component.">
       Select a destination
     </message>
@@ -203,12 +197,6 @@
     <message name="IDS_PRINT_PREVIEW_NO_DESTINATIONS_MESSAGE" desc="Message to show when no destinations were found.">
       No destinations found
     </message>
-    <message name="IDS_PRINT_PREVIEW_SHOW_ALL_BUTTON_TEXT" desc="Label on a button to show all print destinations.">
-      Show All...
-    </message>
-    <message name="IDS_PRINT_PREVIEW_DESTINATION_COUNT" desc="Message to show how many print destinations the user has.">
-      (<ph name="COUNT">$1<ex>154</ex></ph>)
-    </message>
     <message name="IDS_PRINT_PREVIEW_RECENT_DESTINATIONS_TITLE" desc="Title of the section in the Print Preview dialog that lists recently used printers that the user can print to. 'Destinations' is used because the list may include 'Saving as PDF' or other options that are not physical printers.">
       Recent Destinations
     </message>
@@ -216,10 +204,13 @@
       Print Destinations
     </message>
     <message name="IDS_PRINT_PREVIEW_MANAGE" desc="Text of link to manage printers.">
-      Manage...
+      Manage
     </message>
-    <message name="IDS_PRINT_PREVIEW_CHANGE_DESTINATION" desc="Label on button to change print destination." meaning="Label text">
-      Change...
+    <message name="IDS_PRINT_PREVIEW_SEE_MORE" desc="Dropdown option to view more print destinations in a dialog." meaning="Label text">
+      See more...
+    </message>
+    <message name="IDS_PRINT_PREVIEW_SEE_MORE_DESTINATIONS_LABEL" desc="Aria label for the dropdown option to view more print destinations in a dialog. Expansion of SEE_MORE above to add context for screen readers." meaning="Label text">
+      See more destinations
     </message>
     <message name="IDS_PRINT_PREVIEW_OFFLINE_FOR_YEAR" desc="Shown when printer has been offline for more than a year.">
       Offline for more than a year
@@ -245,14 +236,8 @@
     <message name="IDS_MORE_OPTIONS_LABEL" desc="Label of the toggle element to switch between showing more or less printing options in the Print Preview.">
       More settings
     </message>
-    <message name="IDS_LESS_OPTIONS_LABEL" desc="Label of the toggle element to switch between showing more or less printing options in the Print Preview.">
-      Fewer settings
-    </message>
     <message name="IDS_PRINT_PREVIEW_COULD_NOT_PRINT" desc="Error message when printing fails in the print preview">
       Printing failed. Please check your printer and try again.
-    </message>
-    <message name="IDS_PRINT_PREVIEW_REGISTER_PROMO_BUTTON_TEXT">
-      Register
     </message>
     <message name="IDS_PRINT_PREVIEW_ADVANCED_SETTINGS_SEARCH_BOX_PLACEHOLDER" desc="Text to put in a advanced settings search box when user has not entered a search query.">
       Search settings
@@ -265,12 +250,6 @@
     </message>
     <message name="IDS_PRINT_PREVIEW_ADVANCED_SETTINGS_DIALOG_CONFIRM" desc="In title case: The text for the accept button on the printer advanced settings dialog.">
       Apply
-    </message>
-    <message name="IDS_PRINT_PREVIEW_ADVANCED_OPTIONS_LABEL" desc="Printer advanced options section label.">
-      Advanced
-    </message>
-    <message name="IDS_PRINT_PREVIEW_SHOW_ADVANCED_OPTIONS" desc="The text for the button to open the printer's advanced settings dialog.">
-      Change printer options...
     </message>
     <message name="IDS_PRINT_PREVIEW_NEW_SHOW_ADVANCED_OPTIONS" desc="The text for the button to open the printer's advanced settings dialog in the new UI.">
       Advanced settings
@@ -305,8 +284,8 @@
     <message name="IDS_PRINT_PREVIEW_RESOLVE_EXTENSION_USB_ERROR_MESSAGE" desc="Message shown to the user when they attempt to select a USB pinter supported by an extension, but for which the extension does not yet have access permission. The message is shown if the user grants the extension access to the USB device (by confirming printer selection), but the extension is not able to retrieve information about the printer, and an error is reported. The message contains a placeholder for the name of the extension.">
       <ph name="EXTENSION_NAME">$1<ex>Print app</ex></ph> could not communicate with this printer. Make sure the printer is plugged in and try again.
     </message>
-    <message name="IDS_PRINT_PREVIEW_MANAGED_OPTION_TEXT" desc="Text shown when hovering over managed setting icon">
-      This setting is managed
+    <message name="IDS_PRINT_PREVIEW_MANAGED_SETTINGS_TEXT" desc="Text shown when hovering over the enterprise managed icon in the header">
+      These settings are enforced by your administrator
     </message>
     <if expr="chromeos">
       <message name="IDS_PRINT_CONFIGURING_IN_PROGRESS_TEXT" desc="Message shown to user while their printer is being setup in Brave OS.">

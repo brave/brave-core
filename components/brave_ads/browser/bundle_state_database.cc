@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -6,7 +7,9 @@
 
 #include <stdint.h>
 
+#include <map>
 #include <string>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/files/file_util.h"
@@ -42,7 +45,7 @@ bool BundleStateDatabase::Init() {
   if (!db_.Open(db_path_))
     return false;
 
-  // TODO - add error delegate
+  // TODO(brave): add error delegate
   sql::Transaction committer(&db_);
   if (!committer.Begin())
     return false;
@@ -273,7 +276,6 @@ bool BundleStateDatabase::InsertOrUpdateAdInfo(const ads::AdInfo& info) {
     return false;
 
   for (auto it = info.regions.begin(); it != info.regions.end(); ++it) {
-
     sql::Statement ad_info_statement(
         GetDB().GetCachedStatement(SQL_FROM_HERE,
             "INSERT OR REPLACE INTO ad_info "
@@ -337,19 +339,20 @@ bool BundleStateDatabase::GetAdsForCategory(const std::string& region,
     return false;
 
   sql::Statement info_sql(
-      db_.GetUniqueStatement("SELECT ai.creative_set_id, ai.advertiser, "
-                             "ai.notification_text, ai.notification_url, "
-                             "ai.start_timestamp, ai.end_timestamp, "
-                             "ai.uuid, ai.region, ai.campaign_id, ai.daily_cap, "
-                             "ai.per_day, ai.total_max FROM ad_info AS ai "
-                             "INNER JOIN ad_info_category AS aic "
-                             "ON aic.ad_info_uuid = ai.uuid "
-                             "WHERE aic.category_name = ? and "
-                             "ai.region = ? and "
-                             "ai.start_timestamp <= strftime('%Y-%m-%d %H:%M', "
-                               "datetime('now','localtime')) and "
-                             "ai.end_timestamp >= strftime('%Y-%m-%d %H:%M', "
-                               "datetime('now','localtime'));"));
+      db_.GetUniqueStatement(
+          "SELECT ai.creative_set_id, ai.advertiser, "
+          "ai.notification_text, ai.notification_url, "
+          "ai.start_timestamp, ai.end_timestamp, "
+          "ai.uuid, ai.region, ai.campaign_id, ai.daily_cap, "
+          "ai.per_day, ai.total_max FROM ad_info AS ai "
+          "INNER JOIN ad_info_category AS aic "
+          "ON aic.ad_info_uuid = ai.uuid "
+          "WHERE aic.category_name = ? and "
+          "ai.region = ? and "
+          "ai.start_timestamp <= strftime('%Y-%m-%d %H:%M', "
+          "datetime('now','localtime')) and "
+          "ai.end_timestamp >= strftime('%Y-%m-%d %H:%M', "
+          "datetime('now','localtime'));"));
   info_sql.BindString(0, category);
   info_sql.BindString(1, region);
 
@@ -391,11 +394,7 @@ void BundleStateDatabase::Vacuum() {
 void BundleStateDatabase::OnMemoryPressure(
     base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool trim_aggressively =
-      memory_pressure_level ==
-      base::MemoryPressureListener::MEMORY_PRESSURE_LEVEL_CRITICAL;
-  db_.TrimMemory(trim_aggressively);
+  db_.TrimMemory();
 }
 
 std::string BundleStateDatabase::GetDiagnosticInfo(int extended_error,
@@ -476,4 +475,4 @@ sql::InitStatus BundleStateDatabase::EnsureCurrentVersion() {
   return sql::INIT_OK;
 }
 
-}  // namespace history
+}  // namespace brave_ads

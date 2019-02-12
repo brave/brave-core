@@ -90,6 +90,7 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="6970811910055250180">Ažuriranje uređaja...</translation>
 <translation id="8030318113982266900">Ažuriranje vašeg uređaja na kanal <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7861579472672677409">Proširenje <ph name="EXTENSION_NAME"/> dodano je u Brave</translation>
+<translation id="8516116288943000095">Izbriši i podatke s Bravea (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Sakrij u izborniku Bravea</translation>
 <translation id="5660079256336839395">Sakrij u izborniku Bravea</translation>
 <translation id="7456658570432774853">Doprinesite poboljšanju Bravea prijavljivanjem trenutačnih postavki</translation>
@@ -125,11 +126,12 @@ Ako se ipak prijavite, podaci sustava Brave kao što su oznake, povijest i ostal
 <translation id="1326766910007115955">Prijavljujete se upravljanim računom i dajete administratoru kontrolu nad svojim profilom u sustavu Brave. Vaši podaci u sustavu Brave, primjerice, aplikacije, oznake, povijest, zaporke i ostale postavke, trajno će se povezati s korisnikom <ph name="USER_NAME"/>. Moći ćete izbrisati te podatke putem Nadzorne ploče Brave Software računa, ali ih nećete moći povezati s nekim drugim računom. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Prijavljujete se upravljanim računom i dajete administratoru kontrolu nad svojim profilom u sustavu Brave. Vaši podaci u sustavu Brave, primjerice, aplikacije, oznake, povijest, zaporke i ostale postavke, trajno će se povezati s korisnikom <ph name="USER_NAME"/>. Moći ćete izbrisati te podatke putem Nadzorne ploče Brave Software računa, ali ih nećete moći povezati s nekim drugim računom. Ako želite, možete izraditi novi profil kako biste zadržali postojeće podatke u sustavu Brave zasebno. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656">E-adresa <ph name="USER_EMAIL_ADDRESS"/> prethodno je upotrebljavala Brave</translation>
-<translation id="5381681911713004932">Na vašem računalu ima štetnog softvera. Brave ga može ukloniti i vratiti vaše postavke kako bi vaš preglednik ponovno funkcionirao normalno.</translation>
+<translation id="1384923383737428730">Na računalu imate štetni softver. Brave ga može ukloniti, vratiti vaše postavke i onemogućiti proširenja kako bi vaš preglednik ponovo funkcionirao normalno.</translation>
 <translation id="8919921662052966648">Brave nije mogao sinkronizirati vaše podatke. Ažurirajte svoju zaporku za sinkronizaciju.</translation>
 <translation id="2262856633481902138">Brave nije mogao sinkronizirati podatke vašeg računa jer su pojedinosti prijave na račun zastarjele.</translation>
 <translation id="5419189641394808652">Brave nije mogao sinkronizirati vaše podatke jer sinkronizacija nije dostupna za vašu domenu.</translation>
 <translation id="2577755334620061182">Brave nije mogao sinkronizirati vaše podatke zbog pogreške prilikom prijave.</translation>
+<translation id="8583885258305961947">OS Brave</translation>
 <translation id="3968006371075376562">OS Brave nije mogao sinkronizirati vaše podatke. Ažurirajte svoju zaporku za sinkronizaciju.</translation>
 <translation id="6746636977031158624">OS Brave nije mogao sinkronizirati podatke vašeg računa jer su pojedinosti prijave na račun zastarjele.</translation>
 <translation id="2999152167963026588">OS Brave nije mogao sinkronizirati vaše podatke jer sinkronizacija nije dostupna za vašu domenu.</translation>
@@ -155,7 +157,7 @@ Ako ne želite da <ph name="NEW_PROFILE_NAME"/> pristupa vašem računu, zaklju�
 
 Daljnje upute poslali smo vam na e-adresu <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="1820843143331379651">Profili nadziranih korisnika više neće biti dostupni od Bravea 70.</translation>
-<translation id="8797005356491520797">Podaci o pregledavanju za tu osobu izbrisat će se s ovog uređaja. Da biste vratili te podatke, prijavite se na Brave kao $2.</translation>
+<translation id="3066805437003400520">Podaci o pregledavanju za tu osobu izbrisat će se s ovog uređaja. Da biste vratili te podatke, prijavite se na Brave kao <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave je upravo postao bolji</translation>
 <translation id="7192666605334070839">Upotreba Bravea s vašim Brave Software računom te na dijeljenim računalima sada je još jednostavnija.</translation>
 <translation id="3511996232906761537">Ovdje se nalaze vaš web, oznake i ostali sadržaji u Braveu.</translation>
@@ -171,6 +173,7 @@ Daljnje upute poslali smo vam na e-adresu <ph name="ACCOUNT_EMAIL"/>.</translati
 <translation id="2871190378186459992">Otkrijte sjajne aplikacije, igre, proširenja i teme za Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Ulazno pravilo kako bi Brave dopustio mDNS promet.</translation>
+<translation id="3795403186582265456">Brave može prepoznati slike i tekst na slikama tako što slike s web-stranica šalje Brave Softwareovim poslužiteljima, što vam omogućuje da bolje razumijete sadržaj web-stranica.</translation>
 <translation id="7276297358157391541">Brave može pružati bolju provjeru pravopisa slanjem onoga što upišete u preglednik Brave Softwareovim poslužiteljima, što vam omogućuje upotrebu iste tehnologije provjere pravopisa koju upotrebljava Brave Software pretraživanje.</translation>
 <translation id="1807774211756215222">Otvori vezu na novoj &amp;kartici Bravea</translation>
 <translation id="4624945300945265642">Otvori vezu u ano&amp;nimnom prozoru Bravea</translation>

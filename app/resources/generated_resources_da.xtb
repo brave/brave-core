@@ -91,6 +91,7 @@
 <translation id="2218515861914035131">Indsæt som almindelig tekst</translation>
 <translation id="5329858601952122676">&amp;Slet</translation>
 <translation id="1017280919048282932">&amp;Tilføj til ordbog</translation>
+<translation id="7658239707568436148">Afbryd</translation>
 <translation id="4572259796527554261">Bed Brave Software om forslag</translation>
 <translation id="3435896845095436175">Aktivér</translation>
 <translation id="780301667611848630">Nej tak</translation>
@@ -212,6 +213,7 @@
 <translation id="5801568494490449797">Præferencer</translation>
 <translation id="7607274158153386860">Anmod om tabletwebsite</translation>
 <translation id="4408599188496843485">H&amp;jælp</translation>
+<translation id="8378714024927312812">Administreret af din organisation</translation>
 <translation id="6723661294526996303">Importer bogmærker og indstillinger</translation>
 <translation id="9203398526606335860">&amp;Profilering aktiveret</translation>
 <translation id="3819800052061700452">&amp;Fuld skærm</translation>
@@ -224,14 +226,12 @@
 <translation id="4891089016822695758">Betaforum</translation>
 <translation id="7199158086730159431">Få H&amp;jælp</translation>
 <translation id="630065524203833229">Af&amp;slut</translation>
-<translation id="8378714024927312812">Administreret af din organisation</translation>
 <translation id="3855676282923585394">Importer bogmærker og indstillinger...</translation>
 <translation id="4821935166599369261">&amp;Profilering aktiveret</translation>
 <translation id="3827774300009121996">&amp;Fuld skærm</translation>
 <translation id="3616741288025931835">&amp;Slet browserdata...</translation>
 <translation id="1618268899808219593">Hjælp</translation>
 <translation id="7324297612904500502">Betaforum</translation>
-<translation id="2052369079215022979">Administreret af din organisation</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5912378097832178659">&amp;Rediger søgemaskiner...</translation>
 <translation id="5702898740348134351">&amp;Rediger søgemaskiner...</translation>
@@ -335,7 +335,6 @@
 <translation id="8200772114523450471">Genoptag</translation>
 <translation id="2770465223704140727">Fjern fra listen</translation>
 <translation id="7702574632857388784">Fjern <ph name="FILE_NAME"/> fra listen</translation>
-<translation id="7658239707568436148">Afbryd</translation>
 <translation id="7144878232160441200">Prøv igen</translation>
 <translation id="5170568018924773124">Vis i mappe</translation>
 <translation id="1581962803218266616">Vis i Finder</translation>
@@ -448,7 +447,6 @@
 <translation id="6527303717912515753">Del</translation>
 <translation id="3249950116250264636"><ph name="APP_NAME"/> (<ph name="APP_URL"/>)</translation>
 <translation id="3810973564298564668">Valgmuligheder</translation>
-<translation id="7837307963048806839">•  $1</translation>
 <translation id="2344028582131185878">Automatiske downloads</translation>
 <translation id="8217399928341212914">Fortsæt med at blokere automatiske downloads af flere filer</translation>
 <translation id="2580889980133367162">Tillad altid, at <ph name="HOST"/> downloader flere forskellige filer</translation>
@@ -953,8 +951,6 @@
 <translation id="316854673539778496">Log ind, og aktivér synkronisering for at få alle dine udvidelser på alle dine enheder.</translation>
 <translation id="8079938625609335826">Aktivér synkronisering for at få alle dine udvidelser på alle dine enheder.</translation>
 <translation id="4977942889532008999">Bekræft adgang</translation>
-<translation id="496226124210045887">Den mappe, du har valgt, indeholder følsomme filer. Vil du give "$1" permanent læseadgang til denne mappe?</translation>
-<translation id="4547992677060857254">Den mappe, du har valgt, indeholder følsomme filer. Vil du give "$1" permanent skriveadgang til denne mappe?</translation>
 <translation id="6220413761270491930">Der opstod en fejl ved indlæsning af udvidelsen</translation>
 <translation id="5707185214361380026">Det var ikke muligt at indlæse udvidelsen fra:</translation>
 <translation id="7341834142292923918">Udvidelsen anmoder om adgang til dette website</translation>
@@ -1112,7 +1108,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="224940702122312781">Denne side bruger mange data.</translation>
 <translation id="3861241522664181545">Siden er sat på pause.</translation>
 <translation id="6921709132208495314">Stop med at bruge data på denne side</translation>
-<translation id="1683850629661177840">Lite-tilstand gør nu browsing hurtigere på alle sider, herunder HTTPS.</translation>
 <translation id="8428213095426709021">Indstillinger</translation>
 <translation id="2724841811573117416">WebRTC-logfiler</translation>
 <translation id="1969654639948595766">WebRTC-tekstlogfiler (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
@@ -1170,7 +1165,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="444134486829715816">Udvid...</translation>
 <translation id="2737363922397526254">Skjul...</translation>
 <translation id="6690659332373509948">Filen kan ikke parses: <ph name="FILE_NAME"/></translation>
-<translation id="3011284594919057757">Om Flash</translation>
 <translation id="1962233722219655970">Denne side bruger en Native Client-app, der ikke virker på din computer.</translation>
 <translation id="7540972813190816353">Der opstod en fejl ved søgning efter opdateringer: <ph name="ERROR"/></translation>
 <translation id="7088434364990739311">Der kunne ikke søges efter opdateringer (fejlkode <ph name="ERROR"/>).</translation>
@@ -1224,6 +1218,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="385051799172605136">Tilbage</translation>
 <translation id="4628948037717959914">Billede</translation>
 <translation id="8033827949643255796">valgt</translation>
+<translation id="2635094637295383009">Twitter</translation>
 <translation id="5376169624176189338">Klik for at gå tilbage. Hold knappen inde for at se historikken.</translation>
 <translation id="9103868373786083162">Tryk for at gå tilbage til genvejsmenuen for at se historik</translation>
 <translation id="2961695502793809356">Klik for at gå frem. Hold knappen inde for at se historikken.</translation>
@@ -1339,8 +1334,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="4206323443866416204">Feedbackrapport</translation>
 <translation id="3681311097828166361">Tak for din feedback. Du er offline nu, og din rapport sendes senere.</translation>
 <translation id="8713570323158206935">Send <ph name="BEGIN_LINK1"/>systemoplysninger<ph name="END_LINK1"/></translation>
-<translation id="6395423953133416962">Send <ph name="BEGIN_LINK1"/>systemoplysninger<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>metrics<ph name="END_LINK2"/></translation>
-<translation id="6270770586500173387">Send <ph name="BEGIN_LINK1"/>system- og appoplysninger<ph name="END_LINK1"/> samt <ph name="BEGIN_LINK2"/>metrics<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Filen sendes til Brave Software til fejlretning</translation>
 <translation id="8227119283605456246">Vedhæft fil</translation>
 <translation id="5367091008316207019">Læser fil...</translation>
@@ -1413,39 +1406,11 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="9009369504041480176">Uploader (<ph name="PROGRESS_PERCENT"/> %)...</translation>
 <translation id="7925285046818567682">Venter på <ph name="HOST_NAME"/>...</translation>
 <translation id="7887334752153342268">Dupliker</translation>
-<translation id="5210365745912300556">Luk fanen</translation>
-<translation id="5453029940327926427">Luk faner</translation>
 <translation id="68541483639528434">Luk alle andre faner</translation>
 <translation id="6686490380836145850">Luk fanerne til højre</translation>
-<translation id="855081842937141170">Fastgør fane</translation>
-<translation id="5105855035535475848">Fastgør faner</translation>
-<translation id="2074527029802029717">Frigør fane</translation>
-<translation id="1812631533912615985">Frigiv faner</translation>
-<translation id="527605719918376753">Slå fanens lyd fra</translation>
-<translation id="8373553483208508744">Slå fanernes lyd fra</translation>
-<translation id="9203478404496196495">Slå fanens lyd til</translation>
-<translation id="1438632560381091872">Slå fanernes lyd til</translation>
-<translation id="1568067597247500137">Slå lyden fra på et website</translation>
-<translation id="1216654534877302979">Slå lyden fra på websites</translation>
-<translation id="612596694132302162">Slå lyden til på et website</translation>
-<translation id="6778959797435875428">Slå lyden til på websites</translation>
 <translation id="4474155171896946103">Tilføj alle faner som bogmærker...</translation>
-<translation id="3551320343578183772">Luk fanen</translation>
-<translation id="7268365133021434339">Luk faner</translation>
 <translation id="4322394346347055525">Luk alle andre faner</translation>
 <translation id="1166212789817575481">Luk fanerne til højre</translation>
-<translation id="21133533946938348">Fastgør fane</translation>
-<translation id="8072988827236813198">Fastgør faner</translation>
-<translation id="6442697326824312960">Frigør fane</translation>
-<translation id="1732215134274276513">Frigiv faner</translation>
-<translation id="474217410105706308">Slå fanens lyd fra</translation>
-<translation id="9039890312082871605">Slå fanernes lyd fra</translation>
-<translation id="4632483769545853758">Slå fanens lyd til</translation>
-<translation id="304826556400666995">Slå fanernes lyd til</translation>
-<translation id="2973324205039581528">Slå lyden fra på et website</translation>
-<translation id="7579149537961810247">Slå lyden fra på websites</translation>
-<translation id="1293177648337752319">Slå lyden til på et website</translation>
-<translation id="109758035718544977">Slå lyden til på websites</translation>
 <translation id="2336228925368920074">Tilføj alle faner som bogmærker...</translation>
 <translation id="2278562042389100163">Åbn browservindue</translation>
 <translation id="756445078718366910">Åbn browservindue</translation>
@@ -1493,14 +1458,6 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">Platform</translation>
 <translation id="7022562585984256452">Din startside er blevet konfigureret.</translation>
-<translation id="2709516037105925701">AutoFyld</translation>
-<translation id="4378154925671717803">Telefon</translation>
-<translation id="4807098396393229769">Navn på kort</translation>
-<translation id="2612676031748830579">Kortnummer</translation>
-<translation id="869891660844655955">Udløbsdato</translation>
-<translation id="1149401351239820326">Udløbsmåned</translation>
-<translation id="8058655154417507695">Udløbsår</translation>
-<translation id="2286841657746966508">Faktureringsadresse</translation>
 <translation id="7274626204661209194">Brave Software Cloudprinter</translation>
 <translation id="4973307593867026061">Tilføj printere</translation>
 <translation id="9052208328806230490">Du har registreret dine printere med <ph name="CLOUD_PRINT_NAME"/> via kontoen <ph name="EMAIL"/></translation>
@@ -1645,12 +1602,8 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="1231733316453485619">Vil du aktivere synkronisering?</translation>
 <translation id="9125982323641182972">Få Brave Softwares smarte funktioner i Brave</translation>
 <translation id="4736292055110123391">Synkroniser dine bogmærker, dine adgangskoder, din historik og meget mere på alle dine enheder</translation>
-<translation id="328921709097406258">Brave Software kan bruge din historik til at tilpasse Søgning, annoncer og andre Brave Software-tjenester.</translation>
 <translation id="363863692969456324">Ret stavefejl med forbedret stavekontrol</translation>
-<translation id="1493787485275784624">Den tekst, du angiver i tekstfelter, sendes til Brave Software.</translation>
 <translation id="561013949633009906">Hjælp med at forbedre Brave og dets sikkerhed</translation>
-<translation id="725079085443555687">Sender systemoplysninger og sideindhold anonymt til Brave Software.</translation>
-<translation id="2895734772884435517">Du kan til enhver tid tilpasse disse indstillinger.</translation>
 <translation id="3149880132460839085">Brave-synkronisering</translation>
 <translation id="3796902758602917951">Dine bogmærker, din historik, dine adgangskoder og andre indstillinger synkroniseres med din Brave Software-konto, så du kan bruge dem på alle dine enheder</translation>
 <translation id="3111958038206230539">Tilpas Brave Software-tjenester</translation>
@@ -1760,8 +1713,6 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="2562743677925229011">Ikke logget ind på <ph name="SHORT_PRODUCT_NAME"/></translation>
 <translation id="4027804175521224372">(Du går glip af noget – <ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK"/>)</translation>
 <translation id="3574210789297084292">log ind</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
-<translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="237828693408258535">Vil du oversætte denne side?</translation>
 <translation id="4613765529964435709">Skal Brave Software oversætte denne side fra <ph name="SOURCE_LANGUAGE"/> til <ph name="TARGET_LANGUAGE"/>?</translation>
 <translation id="5990386583461751448">Oversat</translation>
@@ -1824,6 +1775,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="8214489666383623925">Åbn fil...</translation>
 <translation id="7456847797759667638">Åbn placering...</translation>
 <translation id="3265459715026181080">Luk vindue</translation>
+<translation id="3551320343578183772">Luk fanen</translation>
 <translation id="4780321648949301421">Gem side som...</translation>
 <translation id="6212752530110374741">Send link via mail</translation>
 <translation id="457386861538956877">Flere...</translation>
@@ -1872,6 +1824,8 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="7831754656372780761"><ph name="TAB_TITLE"/> <ph name="EMOJI_MUTING"/></translation>
 <translation id="6315493146179903667">Læg alle forrest</translation>
 <translation id="3007771295016901659">Dupliker fane</translation>
+<translation id="2973324205039581528">Slå lyden fra på et website</translation>
+<translation id="21133533946938348">Fastgør fane</translation>
 <translation id="2007404777272201486">Rapportér et problem...</translation>
 <translation id="3118319026408854581"><ph name="PRODUCT_NAME"/> Hjælp</translation>
 <translation id="6721972322305477112">&amp;Fil</translation>
@@ -2262,8 +2216,6 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="4079799245038595838">Der blev sendt en notifikation til din telefon. Følg anvisningerne for at bekræfte, at det er dig.</translation>
 <translation id="88870264962436283">Brug Touch ID med <ph name="APP_NAME"/></translation>
 <translation id="5186185447130319458">Inkognito</translation>
-<translation id="8480139856920479206">{0,plural, =1{Du har ét inkognitovindue.}one{Du har # inkognitovindue.}other{Du har # inkognitovinduer.}}</translation>
-<translation id="2545348954155066907">{0,plural, =1{Luk dette vindue}one{Luk dette inkognitovindue}other{Luk alle inkognitovinduer}}</translation>
 <translation id="394984172568887996">Importeret fra IE</translation>
 <translation id="1543284117603151572">Importeret fra Edge</translation>
 <translation id="5502500733115278303">Importeret fra Firefox</translation>
@@ -2327,7 +2279,6 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6455894534188563617">&amp;Ny mappe</translation>
 <translation id="1015318665228971643">Rediger mappenavnet</translation>
 <translation id="5449588825071916739">Tilføj alle faner som bogmærker</translation>
-<translation id="5528368756083817449">Bogmærkeadministrator</translation>
 <translation id="3828029223314399057">Søg i bogmærker</translation>
 <translation id="8116972784401310538">&amp;Bogmærkeadministrator</translation>
 <translation id="6973630695168034713">Mapper</translation>
@@ -2383,6 +2334,10 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="1774833706453699074">Tilføj åbne sider som bogmærker...</translation>
 <translation id="6949306908218145636">Tilføjer åbne sider som bogmærke...</translation>
 <translation id="4422347585044846479">Rediger bogmærke for denne side</translation>
+<translation id="1620510694547887537">Kamera</translation>
+<translation id="5646376287012673985">Placering</translation>
+<translation id="3227137524299004712">Mikrofon</translation>
+<translation id="2482878487686419369">Underretninger</translation>
 <translation id="6005695835120147974">Medierouter</translation>
 <translation id="7787308148023287649">Vis på en anden skærm</translation>
 <translation id="7710568461918838723">&amp;Cast...</translation>
@@ -2595,7 +2550,6 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="8392451568018454956">Menuen Indstillinger for <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="6164005077879661055">Alle filer og lokale data, der er knyttet til den administrerede bruger, 
 slettes permanent, når den administrerede bruger fjernes. Besøgte websites og indstillinger for denne administrerede bruger er muligvis stadig synlige for administratoren på <ph name="MANAGEMENT_URL"/>.</translation>
-<translation id="1646102270785326155">Alle filer og lokale data, der er knyttet til denne bruger, slettes permanent, når denne bruger fjernes. $1 kan stadig logge ind senere.</translation>
 <translation id="672213144943476270">Lås din profil op, før du kan bruge internettet som gæst.</translation>
 <translation id="3478685642445675458">Lås din profil op, før du kan fjerne en person.</translation>
 <translation id="4648499713050786492">Lås din profil op, før du kan tilføje en person.</translation>
@@ -2631,12 +2585,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="6146563240635539929">Videoer</translation>
 <translation id="3616113530831147358">Lyd</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Advarsel!<ph name="END_BOLD"/> Disse filer er midlertidige og kan slettes automatisk for at frigøre diskplads. <ph name="BEGIN_LINK"/>Få flere oplysninger<ph name="END_LINK"/></translation>
-<translation id="7361039089383199231">$1 bytes</translation>
-<translation id="4871210892959306034">$1 KB</translation>
-<translation id="641105183165925463">$1 MB</translation>
-<translation id="7221155467930685510">$1 GB</translation>
-<translation id="5039512255859636053">$1 TB</translation>
-<translation id="6840313690797192085">$1 PB</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
@@ -2653,7 +2601,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="5145331109270917438">Dato for ændring</translation>
 <translation id="8487700953926739672">Tilgængelig offline</translation>
 <translation id="2230062665678605299">Mappen "<ph name="FOLDER_NAME"/>" kunne ikke oprettes. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4630590996962964935">Ugyldigt tegn: $1</translation>
 <translation id="642282551015776456">Dette navn kan ikke bruges som fil- eller mappenavn</translation>
 <translation id="2070909990982335904">Navne, der begynder med punktum, må kun bruges af systemet. Vælg et andet navn.</translation>
 <translation id="8456681095658380701">Ugyldigt navn</translation>
@@ -2664,8 +2611,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="3749289110408117711">Filnavn</translation>
 <translation id="3280431534455935878">Forbereder</translation>
 <translation id="6607272825297743757">Filoplysninger</translation>
-<translation id="3429599832623003132">$1 elementer</translation>
-<translation id="532360961509278431">"$1" kunne ikke åbnes: $2</translation>
 <translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>Fjern ikke enheden endnu!<ph name="END_BOLD"/>
    <ph name="LINE_BREAKS"/>
    Hvis du fjerner din enhed, mens den er i brug, kan det medføre datatab. Vent, indtil handlingen er gennemført, og fjern derefter enheden ved hjælp af appen Filer.</translation>
@@ -2719,9 +2664,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="5158593464696388225">Billedet kunne ikke gemmes.</translation>
 <translation id="2787047795752739979">Overskriv originalen</translation>
 <translation id="8775404590947523323">Din ændringer gemmes automatisk.<ph name="BREAKS"/>Hvis du gemmer en kopi af det oprindelige billede, skal du fjerne markeringen for "Overskriv originalen"</translation>
-<translation id="6653525630739667879">Der kunne ikke gemmes på $1. Alle redigerede billeder gemmes som $2 i mappen Downloads.</translation>
-<translation id="3184560914950696195">Der kunne ikke gemmes til $1. Redigerede billeder vil blive gemt i mappen Downloads.</translation>
-<translation id="6983991971286645866">Alle ændringer gemmes i $1.</translation>
 <translation id="8153607920959057464">Denne fil kunne ikke vises.</translation>
 <translation id="6227235786875481728">Denne fil kunne ikke afspilles.</translation>
 <translation id="9154418932169119429">Dette billede er ikke tilgængeligt offline.</translation>
@@ -2731,9 +2673,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="4801956050125744859">Behold begge</translation>
 <translation id="1062407476771304334">Erstat</translation>
 <translation id="1556189134700913550">Anvend på alle</translation>
-<translation id="3206175707080061730">Der findes allerede en fil med navnet "$1". Vil du erstatte den?</translation>
-<translation id="8059178146866384858">Filen "$1" findes allerede. Vælg et andet navn.</translation>
-<translation id="5653140146600257126">Der findes allerede en mappe med navnet "$1". Vælg et andet navn.</translation>
 <translation id="1497522201463361063">"<ph name="FILE_NAME"/>" kunne ikke omdøbes. <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5330512191124428349">Hent oplysninger</translation>
 <translation id="8312871300878166382">Indsæt i mappe</translation>
@@ -2792,20 +2731,13 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="4724850507808590449"><ph name="FILE_COUNT"/> billeder blev sikkerhedskopieret</translation>
 <translation id="1351692861129622852">Importerer <ph name="FILE_COUNT"/> filer...</translation>
 <translation id="117624967391683467">Kopierer <ph name="FILE_NAME"/>...</translation>
-<translation id="8453482423012550001">Kopierer $1 elementer...</translation>
 <translation id="7627790789328695202"><ph name="FILE_NAME"/> findes allerede. Giv filen et nyt navn, og prøv igen.</translation>
 <translation id="5691596662111998220"><ph name="FILE_NAME"/> eksisterer ikke længere.</translation>
 <translation id="4336032328163998280">Kopieringen mislykkedes. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1503914375822320413">Kopiering mislykkedes. Uventet fejl: $1</translation>
 <translation id="6133173853026656527">Flytter <ph name="FILE_NAME"/>...</translation>
-<translation id="3039828483675273919">Flytter $1 elementer...</translation>
 <translation id="6007237601604674381">Flytningen mislykkedes. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="8954952943849489823">Flytningen mislykkedes. Uventet fejl: $1</translation>
 <translation id="3326821416087822643">Komprimerer <ph name="FILE_NAME"/>...</translation>
-<translation id="5694501201003948907">Komprimerer $1 elementer...</translation>
-<translation id="7464490149090366184">Komprimering mislykkedes, elementet findes: "$1"</translation>
 <translation id="9133055936679483811">Komprimering mislykkedes. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1711973684025117106">Komprimering mislykkedes. Der opstod en uventet fejl: $1</translation>
 <translation id="653019979737152879">Synkroniserer <ph name="FILE_NAME"/>...</translation>
 <translation id="8579285237314169903"><ph name="NUMBER_OF_FILES"/> elementer synkroniseres...</translation>
 <translation id="8137331602592933310">"<ph name="FILENAME"/>" er blevet delt med dig. Du kan ikke slette filen, fordi du ikke ejer den.</translation>
@@ -2825,8 +2757,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="1464724975715666883">1 fejl.</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> fejl.</translation>
 <translation id="6643016212128521049">Ryd</translation>
-<translation id="4284105660453474798">Er du sikker på, at du vil slette "$1"?</translation>
-<translation id="4580526846085481512">Er du sikker på, at du vil slette $1 elementer?</translation>
 <translation id="7953739707111622108">Denne enhed kan ikke åbnes, fordi dens filsystem ikke blev genkendt.</translation>
 <translation id="3726463242007121105">Denne enhed kan ikke åbnes, fordi dens filsystem ikke understøttes.</translation>
 <translation id="3414856743105198592">Formatering af de flytbare medier kommer til at slette alle data. Vil du fortsætte?</translation>
@@ -2900,7 +2830,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
     <ph name="MARKUP_4"/>slet filer fra mappen Downloads<ph name="MARKUP_5"/></translation>
 <translation id="7606199793785990727">Der kunne ikke oprettes forbindelse til Brave Software Drev. <ph name="BEGIN_LINK"/>Log ud <ph name="END_LINK"/>, og log ind igen.</translation>
 <translation id="585883343689351092">Velkommen til Brave Software Drev!</translation>
-<translation id="1788440444874291920">Få 100 GB gratis med Brave Software Drev</translation>
 <translation id="6862635236584086457">Alle de filer, der er gemt i denne mappe, sikkerhedskopieres automatisk online</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Få adgang til filer overalt, også offline.<ph name="MARKUP_2"/>
         Filer i Brave Software Drev er opdaterede og tilgængelige på alle enheder.<ph name="MARKUP_3"/>
@@ -2908,24 +2837,14 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
         Uanset hvad der sker på din enhed, er dine filer gemt sikkert i Brave Software Drev.<ph name="MARKUP_6"/>
         <ph name="MARKUP_7"/>Del, opret og samarbejd<ph name="MARKUP_8"/>
         om filer med andre på ét sted.<ph name="MARKUP_9"/></translation>
-<translation id="7489605380874780575">Kontrollér berettigelse</translation>
 <translation id="4878716980734452132">Denne filtype understøttes ikke. Gå til <ph name="BEGIN_LINK"/>Brave Webshop<ph name="END_LINK"/> for at finde en app, der kan åbne denne filtype.
     <ph name="BEGIN_LINK_HELP"/>Få flere oplysninger<ph name="END_LINK_HELP"/></translation>
-<translation id="3376900196170631953">Denne fil er designet til en pc, som bruger Windows-software. Den er ikke kompatibel med din enhed, som kører Brave OS. Find en tilsvarende app i <ph name="BEGIN_LINK"/>Brave Webshop<ph name="END_LINK"/> i stedet.<ph name="BEGIN_LINK_HELP"/>Få flere oplysninger<ph name="END_LINK_HELP"/></translation>
 <translation id="3072401511615920367">Denne fil er designet til en computer, der bruger Macintosh-software. Den er ikke kompatibel med din enhed, som kører Brave OS. Find en tilsvarende app i <ph name="BEGIN_LINK"/>Brave Webshop<ph name="END_LINK"/> i stedet.<ph name="BEGIN_LINK_HELP"/>Få flere oplysninger<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">Vent et øjeblik</translation>
 <translation id="3096967955765855393">Vi leder hele tiden efter nye metoder til at gøre din browsing mere sikker. Før kunne ethvert website anmode dig om at tilføje en udvidelse i din browser. I de nyeste versioner af Brave Software Brave skal du udtrykkeligt give Brave besked om, at du vil installere udvidelser, ved at tilføje dem via siden Udvidelser. <ph name="BEGIN_LINK"/>Få flere oplysninger<ph name="END_LINK"/></translation>
-<translation id="2004663115385769400">Der kunne ikke åbnes med $1</translation>
-<translation id="639777613761517128">Hvis du vil åbne filer med $1, skal du først kopiere dem til mappen med Linux-filer.</translation>
 <translation id="5368191757080475556">Del mappe med Linux</translation>
-<translation id="6803594270782834876">Tillad, at Linux-apps kan åbne filer i mappen $1</translation>
-<translation id="9204140378020726578">Tillad, at Linux-apps kan åbne filer i Brave Software Drev. Ændringer synkroniseres med dine andre enheder.</translation>
 <translation id="4290535918735525311">1 mappe er delt med Linux</translation>
-<translation id="984401732412731005">$1 mapper deles med Linux</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/>-fil</translation>
-<translation id="895586998699996576">$1 billede</translation>
-<translation id="2853916256216444076">$1 video</translation>
-<translation id="7006844981395428048">$1 lyd</translation>
 <translation id="7799329977874311193">HTML-dokument</translation>
 <translation id="2208158072373999562">Zip-arkiv</translation>
 <translation id="2028997212275086731">RAR-arkiv</translation>
@@ -2974,8 +2893,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="6199801702437275229">Venter på oplysninger om ledig plads...</translation>
 <translation id="6485131920355264772">Pladsoplysningerne kunne ikke hentes</translation>
 <translation id="7748626145866214022">Der er flere tilgængelige muligheder på handlingslinjen. Tryk på Alt+A for at fokusere på handlingslinjen.</translation>
-<translation id="60628369828239652">Åbner filen <ph name="FILE_NAME"/></translation>
-<translation id="353547388688256996">Åbner <ph name="NUMBER_FILES"/></translation>
 <translation id="6710213216561001401">Forrige</translation>
 <translation id="1395262318152388157">Søgeskyder</translation>
 <translation id="4880214202172289027">Skydeknap til lydstyrke</translation>
@@ -3118,7 +3035,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="6352773953037195952">Højeste</translation>
 <translation id="3677657024345889897">Laveste</translation>
 <translation id="167160931442925455">Højest</translation>
-<translation id="9129010913019873477"><ph name="PERCENTAGE"/> (standard)</translation>
 <translation id="3602290021589620013">Forhåndsvisning</translation>
 <translation id="7037509989619051237">Tekst til eksempel på oplæsning</translation>
 <translation id="5471768120198416576">Hej! Jeg er din stemme til oplæsning.</translation>
@@ -3171,9 +3087,11 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="8465252176946159372">Ikke gyldig</translation>
 <translation id="8647834505253004544">Ikke en gyldig webadresse</translation>
 <translation id="7946586320617670168">Oprindelsen skal være sikker</translation>
+<translation id="2709516037105925701">AutoFyld</translation>
 <translation id="7764225426217299476">Tilføj adresse</translation>
 <translation id="5595485650161345191">Rediger adresse</translation>
 <translation id="6207937957461833379">Land/Region</translation>
+<translation id="4378154925671717803">Telefon</translation>
 <translation id="9064275926664971810">Aktivér AutoFyld for at udfylde formularer med et enkelt klik</translation>
 <translation id="9095253524804455615">Fjern</translation>
 <translation id="451515744433878153">Fjern</translation>
@@ -3183,6 +3101,11 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="4835914736509775287">Gem kort på din Brave Software-konto</translation>
 <translation id="7255002516883565667">Lige nu har du ét kort, som kun kan bruges på denne enhed</translation>
 <translation id="6848388270925200958">Lige nu har du kort, som kun kan bruges på denne enhed.</translation>
+<translation id="4807098396393229769">Navn på kort</translation>
+<translation id="2612676031748830579">Kortnummer</translation>
+<translation id="869891660844655955">Udløbsdato</translation>
+<translation id="1149401351239820326">Udløbsmåned</translation>
+<translation id="8058655154417507695">Udløbsår</translation>
 <translation id="379082410132524484">Dit kort er udløbet</translation>
 <translation id="6644512095122093795">Få tilbudt at gemme adgangskoder</translation>
 <translation id="2100273922101894616">Automatisk login</translation>
@@ -3512,7 +3435,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="6921033294337262045">Tryk på Appunderretninger &gt; Brave Software Play-tjenester.</translation>
 <translation id="5624710179837914896">Aktivér Brave Software Play-tjenester.</translation>
 <translation id="2705736684557713153">Rul til bunden af skærmen, og aktivér Øjeblikkelig netdeling, hvis det vises. Hvis det ikke vises, er alt som det skal være.</translation>
-<translation id="3604048165392640554">Der blev ikke fundet nogen mobilforbindelse. Aktivér Øjeblikkelig netdeling på dine andre enheder, og prøv igen. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Få flere oplysninger&lt;/a&gt;</translation>
 <translation id="7240339475467890413">Vil du oprette forbindelse til et nyt hotspot?</translation>
 <translation id="6514010653036109809">Tilgængelig enhed:</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/> % batteri</translation>
@@ -3690,8 +3612,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="5487521232677179737">Ryd data</translation>
 <translation id="3151562827395986343">Ryd historik, cookies, cache m.m.</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> – <ph name="COUNT"/></translation>
-<translation id="3407837288045706722">Du kan finde flere indstillinger vedrørende privatliv, sikkerhed og dataindsamling under <ph name="BEGIN_LINK"/>Synkronisering og tilpasning<ph name="END_LINK"/></translation>
-<translation id="7222718784508482526">Du kan finde flere indstillinger vedrørende privatliv, sikkerhed og dataindsamling ved at gå til <ph name="BEGIN_LINK"/>Synkronisering og Brave Software-tjenester<ph name="END_LINK"/></translation>
 <translation id="8632933437936028548">Nulstil indstillinger</translation>
 <translation id="5293170712604732402">Gendan indstillinger til deres oprindelige standardkonfiguration</translation>
 <translation id="892706138619340876">Nogle indstillinger blev nulstillet</translation>
@@ -3716,12 +3636,9 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="7098447629416471489">Andre gemte søgemaskiner vises her</translation>
 <translation id="1459967076783105826">Søgemaskiner, der er tilføjet af udvidelser</translation>
 <translation id="6678717876183468697">Webadresse for søgeforespørgsler</translation>
-<translation id="1545786162090505744">URL med %s i stedet for forespørgsel</translation>
 <translation id="6953878494808481632">Relaterede oplysninger</translation>
 <translation id="4145922204387553806">Tillad, at assistenten viser dig relaterede oplysninger til det, der vises på din skærm</translation>
 <translation id="472896694312062378">Ok Brave Software</translation>
-<translation id="6236033368436682108">Få adgang til Brave Software-assistenten, hver gang du siger "Ok Brave Software", når skærmen er tændt</translation>
-<translation id="2482878487686419369">Underretninger</translation>
 <translation id="5355099869024327351">Tillad, at Brave Software Assistent viser dig underretninger</translation>
 <translation id="133535873114485416">Foretrukket input</translation>
 <translation id="6233154960150021497">Brug stemmen som standard i stedet for tastaturet</translation>
@@ -3737,14 +3654,12 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="1919345977826869612">Reklamer</translation>
 <translation id="5649053991847567735">Automatiske downloads</translation>
 <translation id="3744111561329211289">Synkronisering i baggrunden</translation>
-<translation id="1620510694547887537">Kamera</translation>
 <translation id="2586657967955657006">Udklipsholder</translation>
 <translation id="5518219166343146486">Spørg om tilladelse, når et website vil se tekst og billeder, der er kopieret til udklipsholderen</translation>
 <translation id="2089795179672254991">Spørg om tilladelse, når et website vil se tekst og billeder, der er kopieret til udklipsholderen (anbefales)</translation>
 <translation id="16815041330799488">Tillad ikke, at websites kan se tekst og billeder, der er kopieret til udklipsholderen</translation>
 <translation id="3668823961463113931">Håndtering</translation>
 <translation id="5689516760719285838">Placering</translation>
-<translation id="3227137524299004712">Mikrofon</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Betalingshandlere</translation>
@@ -3889,12 +3804,9 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="6029292188939175871">slet [<ph name="FINGERPRINT_NAME"/>], knap</translation>
 <translation id="1927632033341042996">Finger <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">Tilføj konto</translation>
-<translation id="3422989461909154470">Alle dine Brave Software-konti, der er logget ind i apps og på websites, kan administreres her.</translation>
 <translation id="1987317783729300807">Konti</translation>
 <translation id="8418661265246754237">Brave Software Konti</translation>
 <translation id="3297951628821704004">Fjern kontoen fra denne enhed</translation>
-<translation id="1059855432287631118">Registrering af fingeraftryk</translation>
-<translation id="878068003854005405">Lad os komme i gang. Placer fingeren på sensoren.</translation>
 <translation id="176193854664720708">Fingeraftrykslæseren sidder i afbryderknappen. Tryk let på den med en finger.</translation>
 <translation id="7189965711416741966">Fingeraftrykket er tilføjet.</translation>
 <translation id="9220820413868316583">Løft fingeren, og prøv igen.</translation>
@@ -4135,24 +4047,19 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="7878562273885520351">Din adgangskode kan være kompromitteret</translation>
 <translation id="1089439967362294234">Skift adgangskode</translation>
 <translation id="6187156085111579405">Elementer, der ikke er angivet her, fjernes også om nødvendigt. Få flere oplysninger om &lt;a href="<ph name="URL"/>"&gt;beskyttelse mod uønsket software&lt;/a&gt; i hvidbogen om beskyttelse af personlige oplysninger i Brave.</translation>
-<translation id="928985544179707652">Udvidelser:</translation>
 <translation id="7712836429117959503">Ukendt udvidelse med id'et <ph name="EXTENSION_ID"/></translation>
-<translation id="2600115369439982409">Filer og programmer</translation>
-<translation id="1372681413396468867">{NUM_ITEMS,plural, =1{1 element fjernes}one{# element fjernes}other{# elementer fjernes}}</translation>
 <translation id="7187428571767585875">Registreringsposter, der skal fjernes eller ændres:</translation>
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{1 anden}one{# anden}other{# andre}}</translation>
 <translation id="2749608811030566578">Der opstod en fejl i Brave ved fjernelsen af skadelig software</translation>
 <translation id="8189483132214844139">Brave kan finde og fjerne skadelig software på din computer</translation>
 <translation id="2910318910161511225">Opret forbindelse til et netværk, og prøv igen</translation>
 <translation id="1426870617281699524">Klik på Prøv igen, og acceptér meddelelsen på din computer</translation>
-<translation id="2201358555632643970">Der er skadelig software på din computer. Brave sletter den og gendanner dine indstillinger, så din browser fungerer normalt igen.</translation>
 <translation id="1484912962860902625">Der opstod en fejl i Brave ved søgningen efter skadelig software</translation>
 <translation id="451407183922382411">Leveret af <ph name="COMPANY_NAME"/></translation>
 <translation id="5254368820972107711">Vis de filer, der skal slettes</translation>
 <translation id="296026337010986570">Den skadelige software er nu fjernet. Du kan aktivere udvidelser igen ved at gå til &lt;a href="chrome://extensions"&gt;Udvidelser&lt;/a&gt;.</translation>
 <translation id="284975061945174219">Indholdet blev ikke ryddet</translation>
 <translation id="9014750448058570312">Brave skal have tilladelse til at fortsætte</translation>
-<translation id="3806965327722135869">Find og fjern skadelig software</translation>
 <translation id="4320177379694898372">Ingen internetforbindelse</translation>
 <translation id="850875081535031620">Der blev ikke fundet skadelig software</translation>
 <translation id="1186771945450942097">Fjern skadelig software</translation>
@@ -4161,7 +4068,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="8639047128869322042">Søger efter skadelig software...</translation>
 <translation id="2653033005692233957">Søgningen mislykkedes</translation>
 <translation id="655483977608336153">Prøv igen</translation>
-<translation id="6312400084708441752">Indeholder oplysninger om skadelig software, systemindstillinger og processer på din computer</translation>
 <translation id="6555810572223193255">Det er i øjeblikket ikke muligt at rydde indhold</translation>
 <translation id="7117228822971127758">Prøv igen senere</translation>
 <translation id="443475966875174318">Opdater eller fjern ikke-kompatible apps</translation>
@@ -4198,8 +4104,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="3264582393905923483">Kontekst</translation>
 <translation id="1607139524282324606">Ryd indtastning</translation>
 <translation id="6025215716629925253">Stakspor</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 linje vises ikke&gt;}one{&lt;$1 linje vises ikke&gt;}other{&lt;$1 linjer vises ikke&gt;}}</translation>
-<translation id="5334899159203764908">Få flere oplysninger om <ph name="BEGIN_LINK"/>websiteadgang<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Tillad, at denne udvidelse læser og ændrer alle dine data på websites, du besøger:</translation>
 <translation id="407173827865827707">Ved klik</translation>
 <translation id="6455264371803474013">På specifikke websites</translation>
@@ -4272,6 +4176,7 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="2785008241190445880">Bogmærket er udskiftet</translation>
 <translation id="4320948194796820126">Føj et bogmærke til din mail</translation>
 <translation id="2950533317914339731">Føj bogmærker til dine foretrukne Brave Software-apps</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="239760341987199724">Angiv Brave som din standardbrowser</translation>
 <translation id="96037229054033864">Få adgang til Brave Software Søgning og Brave Software-intelligens, hver gang du browser</translation>
 <translation id="296137235951584143">Gør Brave til din egen</translation>
@@ -4304,14 +4209,12 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="3706463572498736864">Sider pr. ark</translation>
 <translation id="2249605167705922988">f.eks. 1-5, 8, 11-13</translation>
 <translation id="5746169159649715125">Gem som PDF</translation>
-<translation id="1731589410171062430">I alt: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/> (<ph name="NUMBER_OF_PAGES"/> <ph name="PAGE_OR_PAGES_LABEL"/>)</translation>
 <translation id="2580924999637585241">I alt: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">ark papir</translation>
 <translation id="8813811964357448561">papirark</translation>
 <translation id="8180239481735238521">side</translation>
 <translation id="3725367690636977613">sider</translation>
 <translation id="7005848115657603926">Ugyldigt sideinterval, brug <ph name="EXAMPLE_PAGE_RANGE"/></translation>
-<translation id="2890678560483811744">Sidereferencen er ugyldig</translation>
 <translation id="5398572795982417028">Sidereferencen er ugyldig. Grænsen er <ph name="MAXIMUM_PAGE"/></translation>
 <translation id="218070003709087997">Brug et tal til at angive, hvor mange kopier der skal udskrives (1 til 999).</translation>
 <translation id="2509495747794740764">Skaleringsværdien skal være et tal mellem 10 og 200.</translation>
@@ -4331,19 +4234,14 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="6273677812470008672">Kvalitet</translation>
 <translation id="7288676996127329262"><ph name="HORIZONTAL_DPI"/>x<ph name="VERTICAL_DPI"/> dpi</translation>
 <translation id="1921584744613111023"><ph name="DPI"/> dpi</translation>
-<translation id="2212126039311489237">Udskriv via systemdialogboksen</translation>
 <translation id="6991665348624301627">Vælg en destination</translation>
 <translation id="8800004011501252845">Viser destinationer for</translation>
 <translation id="8996526648899750015">Tilføj konto...</translation>
 <translation id="5002959368039764681">Udskriv til Brave Software Docs og andre cloud-destinationer. <ph name="BEGIN_LINK"/>Log ind<ph name="END_LINK"/> for at udskrive til Brave Software Cloudprinter.</translation>
 <translation id="2150139952286079145">Søg efter destinationer</translation>
 <translation id="8569682776816196752">Der blev ikke fundet nogen destinationer</translation>
-<translation id="6807889908376551050">Vis alle...</translation>
-<translation id="7328162502911382168">(<ph name="COUNT"/>)</translation>
 <translation id="7885253890047913815">Seneste destinationer</translation>
 <translation id="4929386379796360314">Udskriftsdestinationer</translation>
-<translation id="5829401023154985950">Administrer...</translation>
-<translation id="4628314759732363424">Skift...</translation>
 <translation id="3899879303189199559">Offline i mere end et år</translation>
 <translation id="3154429428035006212">Offline i mere end en måned</translation>
 <translation id="5265562206369321422">Offline i mere end en uge</translation>
@@ -4352,18 +4250,15 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="6317318380444133405">Understøttes ikke længere.</translation>
 <translation id="5759728514498647443">De dokumenter, du sender til udskrift via <ph name="APP_NAME"/>, kan læses af <ph name="APP_NAME"/>.</translation>
 <translation id="2080070583977670716">Flere indstillinger</translation>
-<translation id="6510568984200103950">Færre indstillinger</translation>
 <translation id="3360297538363969800">Udskrivning mislykkedes. Kontrollér din printer, og prøv igen.</translation>
 <translation id="5154108062446123722">Avancerede indstillinger for <ph name="PRINTING_DESTINATION"/></translation>
 <translation id="9056810968620647706">Der blev ikke fundet resultater.</translation>
-<translation id="8658595122208653918">Skift printerindstillinger...</translation>
 <translation id="4088095054444612037">Acceptér for gruppe</translation>
 <translation id="357886715122934472">&lt;Strong&gt;<ph name="SENDER"/>&lt;/ Strong&gt; vil gerne dele printeren &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/ Strong&gt; med en gruppe, som du ejer: &lt;strong&gt;<ph name="GROUP_NAME"/>&lt;/ Strong&gt;. Hvis du accepterer, kan alle gruppens medlemmer udskrive til printeren.</translation>
 <translation id="8783093612333542422">&lt;Strong&gt;<ph name="SENDER"/>&lt;/ Strong&gt; vil dele en printer &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/ Strong&gt; med dig.</translation>
 <translation id="7210499381659830293">Udvidelsesprintere</translation>
 <translation id="7453008956351770337">Ved at vælge denne printer giver du følgende udvidelser adgang til din printer:</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> kunne ikke kommunikere med denne printer. Sørg for, at printeren er tilsluttet, og prøv igen.</translation>
-<translation id="5352285283572729470">Denne indstilling er administreret</translation>
 <translation id="4994754230098574403">Konfigurerer</translation>
 <translation id="1396139853388185343">Der opstod en fejl under konfigurationen af printeren</translation>
 <translation id="2379281330731083556">Dialogboks til Udskriv via system... <ph name="SHORTCUT_KEY"/></translation>
@@ -4392,8 +4287,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="7681095912841365527">Websitet kan anvende Bluetooth</translation>
 <translation id="3085412380278336437">Websitet kan anvende dit kamera</translation>
 <translation id="9180380851667544951">Websitet kan dele din skærm</translation>
-<translation id="7503127198245469314">Fjern headsettet for at blokere eller tillade indhold på computerskærmen</translation>
-<translation id="5592010267127539419"><ph name="URL_HOST"/> vil gerne oprette forbindelse til enheder</translation>
 <translation id="4992630054488400221">Installer eller opdater Daydream-tastatur for at bruge Brave i VR</translation>
 <translation id="983511809958454316">Denne funktion understøttes ikke i VR</translation>
 <translation id="4008291085758151621">Websiteoplysninger er ikke tilgængelige i VR</translation>

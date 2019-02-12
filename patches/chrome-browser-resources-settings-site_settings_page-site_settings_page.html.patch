@@ -1,46 +1,43 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
-index b2894017d199903bb468124871b0a4d1223f923f..a16e9d69f33bdccf5bbca482d3fd6fd3beff315b 100644
+index f8e7aa9b775fd551df717903a15bb6b1b596f910..2692c961d66222928f568b4fa863d5f6734d8f57 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
-@@ -148,6 +148,25 @@
-             aria-describedby="notificationsSecondary"></button>
-       </paper-icon-button-light>
-     </div>
-+    <div id="autoplay" class="settings-box two-line"
-+        category$="[[ContentSettingsTypes.AUTOPLAY]]"
-+        data-route="SITE_SETTINGS_AUTOPLAY" on-click="onTapNavigate_"
-+        actionable>
-+      <iron-icon icon="cr:extension"></iron-icon>
-+      <div class="middle">
-+        $i18n{siteSettingsAutoplay}
-+        <div class="secondary" id="notificationsSecondary">
-+          [[defaultSettingLabel_(
-+              default_.autoplay,
-+              '$i18nPolymer{siteSettingsAutoplayAsk}',
-+              '$i18nPolymer{siteSettingsBlocked}')]]
-+        </div>
-+      </div>
-+      <paper-icon-button-light class="subpage-arrow">
-+        <button aria-label="$i18n{siteSettingsNotifications}"
-+            aria-describedby="notificationsSecondary"></button>
-+      </paper-icon-button-light>
-+    </div>
-     <div id="javascript" class="settings-box two-line"
-         category$="[[ContentSettingsTypes.JAVASCRIPT]]"
-         data-route="SITE_SETTINGS_JAVASCRIPT" on-click="onTapNavigate_"
-@@ -221,6 +240,7 @@
-             aria-describedby="popupsSecondary"></button>
-       </paper-icon-button-light>
-     </div>
+@@ -126,7 +126,19 @@
+             '$i18nPolymer{siteSettingsAskBeforeSending}',
+             '$i18nPolymer{siteSettingsBlocked}')]]">
+     </cr-link-row>
+-
++    <cr-link-row
++        class="hr two-line"
++        data-route="SITE_SETTINGS_AUTOPLAY"
++        icon-class="subpage-arrow"
++        id="autoplay"
++        label="$i18n{siteSettingsAutoplay}"
++        on-click="onTapNavigate_"
++        start-icon="cr:extension"
++        sub-label="[[defaultSettingLabel_(
++            default_.notifications,
++            '$i18nPolymer{siteSettingsAutoplayAsk}',
++            '$i18nPolymer{siteSettingsBlocked}')]]">
++    </cr-link-row>
+     <cr-link-row
+         class="hr two-line"
+         data-route="SITE_SETTINGS_JAVASCRIPT"
+@@ -182,7 +194,7 @@
+             '$i18nPolymer{siteSettingsAllowed}',
+             '$i18nPolymer{siteSettingsBlocked}')]]">
+     </cr-link-row>
+-
 +<!--
      <template is="dom-if" if="[[enableSafeBrowsingSubresourceFilter_]]">
-       <div id="ads" class="settings-box two-line"
-           category$="[[ContentSettingsTypes.ADS]]"
-@@ -261,6 +281,7 @@
-             aria-describedby="backgroundSyncSecondary"></button>
-       </paper-icon-button-light>
-     </div>
+       <cr-link-row
+           class="hr two-line"
+@@ -212,7 +224,7 @@
+             '$i18nPolymer{siteSettingsAllowRecentlyClosedSites}',
+             '$i18nPolymer{siteSettingsBackgroundSyncBlocked}')]]">
+     </cr-link-row>
+-
 +-->
      <template is="dom-if" if="[[enableSoundContentSetting_]]">
-       <div id="sound" class="settings-box two-line"
-           category$="[[ContentSettingsTypes.SOUND]]"
+       <cr-link-row
+           class="hr two-line"

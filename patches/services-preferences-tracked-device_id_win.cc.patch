@@ -1,5 +1,5 @@
 diff --git a/services/preferences/tracked/device_id_win.cc b/services/preferences/tracked/device_id_win.cc
-index 9dbd110674a99f4fa513e0f62608539a671fde7c..26d8e68ce74634e51af0d6ef6b802b962328e9c6 100644
+index ff7fbb620de3f2da7dd2e5525dc36f3b59c01ce6..8791808613bfc5f1ff28e3558cad45e7fe2220e7 100644
 --- a/services/preferences/tracked/device_id_win.cc
 +++ b/services/preferences/tracked/device_id_win.cc
 @@ -15,6 +15,7 @@
@@ -9,4 +9,4 @@ index 9dbd110674a99f4fa513e0f62608539a671fde7c..26d8e68ce74634e51af0d6ef6b802b96
 +  if (IsMachineIdDisabled()) { return MachineIdStatus::NOT_IMPLEMENTED; }
  
    wchar_t computer_name[MAX_COMPUTERNAME_LENGTH + 1] = {};
-   DWORD computer_name_size = arraysize(computer_name);
+   DWORD computer_name_size = base::size(computer_name);

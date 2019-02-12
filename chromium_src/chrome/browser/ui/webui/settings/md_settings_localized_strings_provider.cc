@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.h"
+#include "base/stl_util.h"
+
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 }  // namespace settings
@@ -21,7 +23,7 @@ void BraveAddImportDataStrings(content::WebUIDataSource* html_source) {
     {"importWindows", IDS_SETTINGS_IMPORT_WINDOWS_CHECKBOX},
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
-                          arraysize(localized_strings));
+                          base::size(localized_strings));
 }
 
 const char kWebRTCLearnMoreURL[] =
@@ -101,7 +103,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL}
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
-                          arraysize(localized_strings));
+                          base::size(localized_strings));
   html_source->AddString("webRTCLearnMoreURL",
       base::ASCIIToUTF16(kWebRTCLearnMoreURL));
 }

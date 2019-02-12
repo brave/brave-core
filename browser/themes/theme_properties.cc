@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -15,12 +16,14 @@ const SkColor kLightToolbarIcon = SkColorSetRGB(0x42, 0x42, 0x42);
 
 base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
   switch (id) {
-    // Applies when the window is active, tabs and also tab bar everywhere except active tab
+    // Applies when the window is active, tabs and also tab bar everywhere
+    // except active tab
     case ThemeProperties::COLOR_FRAME:
     case ThemeProperties::COLOR_BACKGROUND_TAB:
     case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
       return kLightFrame;
-    // Window when the window is innactive, tabs and also tab bar everywhere except active tab
+    // Window when the window is innactive, tabs and also tab bar everywhere
+    // except active tab
     case ThemeProperties::COLOR_FRAME_INACTIVE:
     case ThemeProperties::COLOR_BACKGROUND_TAB_INACTIVE:
       return color_utils::HSLShift(kLightFrame, { -1, -1, 0.6 });
@@ -38,7 +41,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kLightToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
-      return color_utils::AlphaBlend(kLightToolbarIcon, kLightToolbar, 77);
+      return color_utils::AlphaBlend(kLightToolbarIcon, kLightToolbar, 0.3f);
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kLightColorForTest;
     default:
@@ -52,11 +55,13 @@ const SkColor kDarkToolbarIcon = SkColorSetRGB(0xed, 0xed, 0xed);
 
 base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
   switch (id) {
-    // Applies when the window is active, tabs and also tab bar everywhere except active tab
+    // Applies when the window is active, tabs and also tab bar everywhere
+    // except active tab
     case ThemeProperties::COLOR_FRAME:
     case ThemeProperties::COLOR_BACKGROUND_TAB:
       return kDarkFrame;
-    // Window when the window is innactive, tabs and also tab bar everywhere except active tab
+    // Window when the window is innactive, tabs and also tab bar everywhere
+    // except active tab
     case ThemeProperties::COLOR_FRAME_INACTIVE:
     case ThemeProperties::COLOR_BACKGROUND_TAB_INACTIVE:
       return color_utils::HSLShift(kDarkFrame, { -1, -1, 0.6 });
@@ -77,7 +82,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kDarkToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
-      return color_utils::AlphaBlend(kDarkToolbarIcon, kDarkToolbar, 0x4d);
+      return color_utils::AlphaBlend(kDarkToolbarIcon, kDarkToolbar, 0.3f);
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kDarkColorForTest;
     default:
@@ -90,13 +95,15 @@ const SkColor kPrivateToolbar = SkColorSetRGB(0x3d, 0x28, 0x41);
 
 base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
   switch (id) {
-    // Applies when the window is active, tabs and also tab bar everywhere except active tab
+    // Applies when the window is active, tabs and also tab bar everywhere
+    // except active tab
     case ThemeProperties::COLOR_FRAME:
     case ThemeProperties::COLOR_FRAME_INCOGNITO:
     case ThemeProperties::COLOR_BACKGROUND_TAB:
     case ThemeProperties::COLOR_BACKGROUND_TAB_INCOGNITO:
       return kPrivateFrame;
-    // Window when the window is innactive, tabs and also tab bar everywhere except active tab
+    // Window when the window is innactive, tabs and also tab bar everywhere
+    // except active tab
     case ThemeProperties::COLOR_FRAME_INACTIVE:
     case ThemeProperties::COLOR_FRAME_INCOGNITO_INACTIVE:
     case ThemeProperties::COLOR_BACKGROUND_TAB_INCOGNITO_INACTIVE:
@@ -116,7 +123,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kDarkToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
-      return color_utils::AlphaBlend(kDarkToolbarIcon, kPrivateToolbar, 0x4d);
+      return color_utils::AlphaBlend(kDarkToolbarIcon, kPrivateToolbar, 0.3f);
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kPrivateColorForTest;
     // The rest is covered by a dark-appropriate value
@@ -128,7 +135,8 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
 }  // namespace
 
 // Returns a |nullopt| if the UI color is not handled by Brave.
-base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito, BraveThemeType theme) {
+base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito,
+    BraveThemeType theme) {
   // Consistent (and stable) values across all themes
   switch (id) {
     case ThemeProperties::COLOR_TAB_THROBBER_SPINNING:

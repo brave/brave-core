@@ -91,6 +91,7 @@
 <translation id="2218515861914035131">Enganxa com a text sense format</translation>
 <translation id="5329858601952122676">&amp;Suprimeix</translation>
 <translation id="1017280919048282932">&amp;Afegeix al diccionari</translation>
+<translation id="7658239707568436148">Cancel·la</translation>
 <translation id="4572259796527554261">Demana suggeriments a Brave Software</translation>
 <translation id="3435896845095436175">Activa</translation>
 <translation id="780301667611848630">No, gràcies</translation>
@@ -212,6 +213,7 @@
 <translation id="5801568494490449797">Preferències</translation>
 <translation id="7607274158153386860">Sol·licita el lloc per a la tauleta</translation>
 <translation id="4408599188496843485">A&amp;juda</translation>
+<translation id="8378714024927312812">Gestionat per la teva organització</translation>
 <translation id="6723661294526996303">Importa les adreces d'interès i la configuració...</translation>
 <translation id="9203398526606335860">Creació de &amp;perfils activada</translation>
 <translation id="3819800052061700452">&amp;Pantalla completa</translation>
@@ -224,14 +226,12 @@
 <translation id="4891089016822695758">Fòrum per a la versió beta</translation>
 <translation id="7199158086730159431">Obtén a&amp;juda</translation>
 <translation id="630065524203833229">S&amp;urt</translation>
-<translation id="8378714024927312812">Gestionat per la teva organització</translation>
 <translation id="3855676282923585394">Importa les adreces d'interès i la configuració...</translation>
 <translation id="4821935166599369261">Creació de &amp;perfils activada</translation>
 <translation id="3827774300009121996">&amp;Pantalla completa</translation>
 <translation id="3616741288025931835">&amp;Elimina les dades de navegació...</translation>
 <translation id="1618268899808219593">Centre d'ajuda</translation>
 <translation id="7324297612904500502">Fòrum per a la versió beta</translation>
-<translation id="2052369079215022979">Gestionat per la teva organització</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5912378097832178659">&amp;Edita els motors de cerca...</translation>
 <translation id="5702898740348134351">&amp;Edita els motors de cerca...</translation>
@@ -335,7 +335,6 @@
 <translation id="8200772114523450471">Reprèn</translation>
 <translation id="2770465223704140727">Suprimeix de la llista</translation>
 <translation id="7702574632857388784">Suprimeix <ph name="FILE_NAME"/> de la llista</translation>
-<translation id="7658239707568436148">Cancel·la</translation>
 <translation id="7144878232160441200">Torna-ho a provar</translation>
 <translation id="5170568018924773124">Mostra a la carpeta</translation>
 <translation id="1581962803218266616">Mostra a Finder</translation>
@@ -448,7 +447,6 @@
 <translation id="6527303717912515753">Comparteix</translation>
 <translation id="3249950116250264636"><ph name="APP_NAME"/> (<ph name="APP_URL"/>)</translation>
 <translation id="3810973564298564668">Gestiona</translation>
-<translation id="7837307963048806839">• $1</translation>
 <translation id="2344028582131185878">Baixades automàtiques</translation>
 <translation id="8217399928341212914">Continua bloquejant les baixades automàtiques de diversos fitxers</translation>
 <translation id="2580889980133367162">Permet sempre que <ph name="HOST"/> baixi diversos fitxers</translation>
@@ -955,8 +953,6 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="316854673539778496">Per accedir a totes les teves extensions des de tots els dispositius, inicia la sessió i activa la sincronització.</translation>
 <translation id="8079938625609335826">Per accedir a totes les teves extensions des de tots els dispositius, activa la sincronització.</translation>
 <translation id="4977942889532008999">Confirmació de l'accés</translation>
-<translation id="496226124210045887">La carpeta que heu seleccionat conté fitxers confidencials. Confirmes que vols concedir a "$1" accés de lectura permanent en aquesta carpeta?</translation>
-<translation id="4547992677060857254">La carpeta que heu seleccionat conté fitxers confidencials. Confirmes que vols concedir a "$1" accés d'escriptura permanent en aquesta carpeta?</translation>
 <translation id="6220413761270491930">Error en carregar l'extensió</translation>
 <translation id="5707185214361380026">No s'ha pogut carregar l'extensió de:</translation>
 <translation id="7341834142292923918">Vol accedir a aquest lloc web</translation>
@@ -1114,7 +1110,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="224940702122312781">Aquesta pàgina farà servir moltes dades.</translation>
 <translation id="3861241522664181545">La pàgina s'ha posat en pausa.</translation>
 <translation id="6921709132208495314">Deixa d'utilitzar dades en aquesta pàgina</translation>
-<translation id="1683850629661177840">Ara el mode bàsic agilitza la navegació en totes les pàgines, també si estan en format HTTPS.</translation>
 <translation id="8428213095426709021">Configuració</translation>
 <translation id="2724841811573117416">Registres de WebRTC</translation>
 <translation id="1969654639948595766">Registres de text de WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
@@ -1172,7 +1167,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="444134486829715816">Amplia...</translation>
 <translation id="2737363922397526254">Redueix...</translation>
 <translation id="6690659332373509948">No es pot analitzar el fitxer: <ph name="FILE_NAME"/></translation>
-<translation id="3011284594919057757">Quant a Flash</translation>
 <translation id="1962233722219655970">Aquesta pàgina fa servir una aplicació de Native Client que no funciona al vostre ordinador.</translation>
 <translation id="7540972813190816353">S'ha produït un error durant la cerca d'actualitzacions: <ph name="ERROR"/></translation>
 <translation id="7088434364990739311">La comprovació d'actualització no s'ha pogut iniciar (codi d'error <ph name="ERROR"/>).</translation>
@@ -1226,6 +1220,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="385051799172605136">Enrere</translation>
 <translation id="4628948037717959914">Foto</translation>
 <translation id="8033827949643255796">seleccionats</translation>
+<translation id="2635094637295383009">Twitter</translation>
 <translation id="5376169624176189338">Feu clic per tornar enrere o manteniu premut per veure l'historial</translation>
 <translation id="9103868373786083162">Premeu per anar cap enrere, menú contextual per veure l'historial</translation>
 <translation id="2961695502793809356">Feu clic per anar endavant o manteniu premut per veure l'historial</translation>
@@ -1341,8 +1336,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4206323443866416204">Informe de suggeriments</translation>
 <translation id="3681311097828166361">Gràcies pels teus suggeriments. Ara mateix no tens connexió, de manera que el teu informe s'enviarà més tard.</translation>
 <translation id="8713570323158206935">Envia <ph name="BEGIN_LINK1"/>informació del sistema<ph name="END_LINK1"/></translation>
-<translation id="6395423953133416962">Envia les <ph name="BEGIN_LINK2"/>mètriques<ph name="END_LINK2"/> i la <ph name="BEGIN_LINK1"/>informació del sistema<ph name="END_LINK1"/></translation>
-<translation id="6270770586500173387">Envia <ph name="BEGIN_LINK1"/>informació del sistema i de l'aplicació<ph name="END_LINK1"/>, així com <ph name="BEGIN_LINK2"/>mètriques<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">El fitxer s'enviarà a Brave Software per depurar-lo</translation>
 <translation id="8227119283605456246">Adjunta un fitxer</translation>
 <translation id="5367091008316207019">S'està llegint el fitxer...</translation>
@@ -1415,39 +1408,11 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="9009369504041480176">S'està carregant (<ph name="PROGRESS_PERCENT"/>%)...</translation>
 <translation id="7925285046818567682">Esperant <ph name="HOST_NAME"/>...</translation>
 <translation id="7887334752153342268">Duplica</translation>
-<translation id="5210365745912300556">Tanca la pestanya</translation>
-<translation id="5453029940327926427">Tanca les pestanyes</translation>
 <translation id="68541483639528434">Tanca les altres pestanyes</translation>
 <translation id="6686490380836145850">Tanca les pestanyes de la dreta</translation>
-<translation id="855081842937141170">Fixa la pestanya</translation>
-<translation id="5105855035535475848">Fixa les pestanyes</translation>
-<translation id="2074527029802029717">No fixis la pestanya</translation>
-<translation id="1812631533912615985">No fixis les pestanyes</translation>
-<translation id="527605719918376753">Silencia la pestanya</translation>
-<translation id="8373553483208508744">Silencia les pestanyes</translation>
-<translation id="9203478404496196495">Activa el so de la pestanya</translation>
-<translation id="1438632560381091872">Deixa de silenciar les pestanyes</translation>
-<translation id="1568067597247500137">Silencia el lloc web</translation>
-<translation id="1216654534877302979">Silencia els llocs web</translation>
-<translation id="612596694132302162">Deixa de silenciar el lloc web</translation>
-<translation id="6778959797435875428">Deixa de silenciar els llocs web</translation>
 <translation id="4474155171896946103">Afegeix totes les pestanyes a les adreces d'interès...</translation>
-<translation id="3551320343578183772">Tanca la pestanya</translation>
-<translation id="7268365133021434339">Tanca les pestanyes</translation>
 <translation id="4322394346347055525">Tanca les altres pestanyes</translation>
 <translation id="1166212789817575481">Tanca les pestanyes de la dreta</translation>
-<translation id="21133533946938348">Fixa la pestanya</translation>
-<translation id="8072988827236813198">Fixa les pestanyes</translation>
-<translation id="6442697326824312960">No fixis la pestanya</translation>
-<translation id="1732215134274276513">No fixis les pestanyes</translation>
-<translation id="474217410105706308">Silenciar la pestanya</translation>
-<translation id="9039890312082871605">Silenciar les pestanyes</translation>
-<translation id="4632483769545853758">Activar el so de la pestanya</translation>
-<translation id="304826556400666995">Deixa de silenciar les pestanyes</translation>
-<translation id="2973324205039581528">Silencia el lloc web</translation>
-<translation id="7579149537961810247">Silencia els llocs web</translation>
-<translation id="1293177648337752319">Deixa de silenciar el lloc web</translation>
-<translation id="109758035718544977">Deixa de silenciar els llocs web</translation>
 <translation id="2336228925368920074">Afegeix totes les pestanyes a les adreces d'interès...</translation>
 <translation id="2278562042389100163">Obre una finestra del navegador</translation>
 <translation id="756445078718366910">Obre una finestra del navegador</translation>
@@ -1494,14 +1459,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">Plataforma</translation>
 <translation id="7022562585984256452">S'ha definit la pàgina d'inici.</translation>
-<translation id="2709516037105925701">Emplenament autom.</translation>
-<translation id="4378154925671717803">Telèfon</translation>
-<translation id="4807098396393229769">Titular de la targeta</translation>
-<translation id="2612676031748830579">Número de targeta</translation>
-<translation id="869891660844655955">Data de caducitat</translation>
-<translation id="1149401351239820326">Mes de caducitat</translation>
-<translation id="8058655154417507695">Any de caducitat</translation>
-<translation id="2286841657746966508">Adreça de facturació</translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Afegeix impressores</translation>
 <translation id="9052208328806230490">Heu registrat les vostres impressores amb <ph name="CLOUD_PRINT_NAME"/> utilitzant el compte <ph name="EMAIL"/></translation>
@@ -1646,12 +1603,8 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1231733316453485619">Vols activar la sincronització?</translation>
 <translation id="9125982323641182972">Eines intel·ligents a Brave</translation>
 <translation id="4736292055110123391">Sincronitza les adreces d'interès, les contrasenyes, l'historial i altres elements en tots els dispositius</translation>
-<translation id="328921709097406258">És possible que Brave Software utilitzi el teu historial per personalitzar la Cerca, els anuncis i altres serveis de Brave Software.</translation>
 <translation id="363863692969456324">Corregeix els errors d'ortografia amb el corrector ortogràfic millorat</translation>
-<translation id="1493787485275784624">Allò que escriguis als camps de text s'enviarà a Brave Software.</translation>
 <translation id="561013949633009906">Ajuda a millorar Brave i la seva seguretat</translation>
-<translation id="725079085443555687">Envia a Brave Software algunes dades del sistema i contingut de les pàgines de manera anònima.</translation>
-<translation id="2895734772884435517">Pots personalitzar aquestes opcions de configuració en qualsevol moment.</translation>
 <translation id="3149880132460839085">Sincronització de Brave</translation>
 <translation id="3796902758602917951">Les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració se sincronitzaran amb el teu compte de Brave Software, perquè els puguis utilitzar en tots els dispositius</translation>
 <translation id="3111958038206230539">Personalitzeu els serveis de Brave Software</translation>
@@ -1759,8 +1712,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="2562743677925229011">No heu iniciat la sessió a <ph name="SHORT_PRODUCT_NAME"/></translation>
 <translation id="4027804175521224372">(Us esteu perdent: <ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK"/>)</translation>
 <translation id="3574210789297084292">inicia la sessió</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
-<translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="237828693408258535">Vols traduir aquesta pàgina?</translation>
 <translation id="4613765529964435709">Voleu que Brave Software tradueixi a <ph name="TARGET_LANGUAGE"/> aquesta pàgina escrita en <ph name="SOURCE_LANGUAGE"/>?</translation>
 <translation id="5990386583461751448">Traduïda</translation>
@@ -1823,6 +1774,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8214489666383623925">Obre un fitxer...</translation>
 <translation id="7456847797759667638">Obre la ubicació...</translation>
 <translation id="3265459715026181080">Tanca la finestra</translation>
+<translation id="3551320343578183772">Tanca la pestanya</translation>
 <translation id="4780321648949301421">Anomena i desa la pàgina...</translation>
 <translation id="6212752530110374741">Envia l'enllaç per correu electrònic</translation>
 <translation id="457386861538956877">Més...</translation>
@@ -1871,6 +1823,8 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7831754656372780761"><ph name="TAB_TITLE"/> <ph name="EMOJI_MUTING"/></translation>
 <translation id="6315493146179903667">Porta-ho tot al davant</translation>
 <translation id="3007771295016901659">Pestanya duplicada</translation>
+<translation id="2973324205039581528">Silencia el lloc web</translation>
+<translation id="21133533946938348">Fixa la pestanya</translation>
 <translation id="2007404777272201486">Informa d'un problema...</translation>
 <translation id="3118319026408854581">Ajuda de <ph name="PRODUCT_NAME"/></translation>
 <translation id="6721972322305477112">&amp;Fitxer</translation>
@@ -2260,8 +2214,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4079799245038595838">S'ha enviat una notificació al teu telèfon. Segueix les indicacions per confirmar la teva identitat.</translation>
 <translation id="88870264962436283">Utilitza Touch ID amb <ph name="APP_NAME"/></translation>
 <translation id="5186185447130319458">Incògnit</translation>
-<translation id="8480139856920479206">{0,plural, =1{Tens 1 finestra d'incògnit}other{Tens # finestres d'incògnit.}}</translation>
-<translation id="2545348954155066907">{0,plural, =1{Tanca aquesta finestra}other{Tanca totes les finestres d'incògnit}}</translation>
 <translation id="394984172568887996">Importat d'IE</translation>
 <translation id="1543284117603151572">Importades d'Edge</translation>
 <translation id="5502500733115278303">Importat de Firefox</translation>
@@ -2325,7 +2277,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6455894534188563617">Carpeta &amp;nova</translation>
 <translation id="1015318665228971643">Edita el nom de la carpeta</translation>
 <translation id="5449588825071916739">Afegeix totes les pestanyes a les adreces d'interès</translation>
-<translation id="5528368756083817449">Gestor d'adreces d'interès</translation>
 <translation id="3828029223314399057">Cerca adreces d'interès</translation>
 <translation id="8116972784401310538">&amp;Gestor d'adreces d'interès</translation>
 <translation id="6973630695168034713">Carpetes</translation>
@@ -2381,6 +2332,10 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1774833706453699074">Afegeix les pàgines obertes a les adreces d'interès...</translation>
 <translation id="6949306908218145636">Afegeix les pàgines obertes a les adreces d'interès...</translation>
 <translation id="4422347585044846479">Editeu l'adreça d'interès d'aquesta pàgina</translation>
+<translation id="1620510694547887537">Càmera</translation>
+<translation id="5646376287012673985">Ubicació</translation>
+<translation id="3227137524299004712">Micròfon</translation>
+<translation id="2482878487686419369">Notificacions</translation>
 <translation id="6005695835120147974">Encaminador multimèdia</translation>
 <translation id="7787308148023287649">Mostra en una altra pantalla</translation>
 <translation id="7710568461918838723">&amp;Emet…</translation>
@@ -2592,7 +2547,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="2653659639078652383">Envia</translation>
 <translation id="8392451568018454956">Menú d'opcions per a <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="6164005077879661055">Tots els fitxers i les dades locals associats amb l'usuari supervisat se suprimiran permanentment quan aquest usuari supervisat se suprimeixi. És possible que el gestor encara pugui veure els llocs web visitats i la configuració d'aquest usuari supervisat a la pàgina <ph name="MANAGEMENT_URL"/>.</translation>
-<translation id="1646102270785326155">Tots els fitxers i totes les dades locals associats amb aquest usuari se suprimiran definitivament quan aquest usuari se suprimeixi. De totes maneres, després $1 encara podrà iniciar la sessió.</translation>
 <translation id="672213144943476270">Desbloquegeu el perfil per poder navegar com a convidat.</translation>
 <translation id="3478685642445675458">Desbloquegeu el vostre perfil per poder suprimir una persona.</translation>
 <translation id="4648499713050786492">Desbloquegeu el vostre perfil per poder afegir una persona.</translation>
@@ -2628,12 +2582,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6146563240635539929">Vídeos</translation>
 <translation id="3616113530831147358">Àudio</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Compte:<ph name="END_BOLD"/>  Aquests fitxers són temporals i és possible que se suprimeixin automàticament per alliberar espai de disc.  <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
-<translation id="7361039089383199231">$1 bytes</translation>
-<translation id="4871210892959306034">$1 KB</translation>
-<translation id="641105183165925463">$1 MB</translation>
-<translation id="7221155467930685510">$1 GB</translation>
-<translation id="5039512255859636053">$1 TB</translation>
-<translation id="6840313690797192085">$1 PB</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Maj</translation>
@@ -2650,7 +2598,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="5145331109270917438">Data de modificació</translation>
 <translation id="8487700953926739672">Disponible sense connexió</translation>
 <translation id="2230062665678605299">No es pot crear la carpeta "<ph name="FOLDER_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4630590996962964935">Caràcter no vàlid: $1</translation>
 <translation id="642282551015776456">Aquest nom no es pot utilitzar com a nom de fitxer o de carpeta</translation>
 <translation id="2070909990982335904">Els noms que comencen amb punt estan reservats per al sistema. Trieu un altre nom.</translation>
 <translation id="8456681095658380701">El nom no és vàlid</translation>
@@ -2661,8 +2608,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3749289110408117711">Nom del fitxer</translation>
 <translation id="3280431534455935878">S'està preparant</translation>
 <translation id="6607272825297743757">Informació del fitxer</translation>
-<translation id="3429599832623003132">$1 elements</translation>
-<translation id="532360961509278431">No es pot obrir "$1": $2</translation>
 <translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>No retireu el dispositiu encara.<ph name="END_BOLD"/>
        <ph name="LINE_BREAKS"/>
        Si retireu el dispositiu mentre encara s'està utilitzant, es poden perdre dades. Espereu fins que hagi acabat l'operació i, a continuació, expulseu el dispositiu amb l'aplicació Fitxers.</translation>
@@ -2716,9 +2661,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="5158593464696388225">No s'ha pogut desar la imatge.</translation>
 <translation id="2787047795752739979">Sobreescriu l'original</translation>
 <translation id="8775404590947523323">Els canvis es desen automàticament.<ph name="BREAKS"/>Per conservar una còpia de la imatge original, desmarqueu "Sobreescriu l'original"</translation>
-<translation id="6653525630739667879">No es pot desar a $1. Tots els canvis es desaran a 2, a la carpeta Baixades.</translation>
-<translation id="3184560914950696195">No es pot desar a $1. Les imatges modificades es desaran a la carpeta Baixades.</translation>
-<translation id="6983991971286645866">Tots els canvis es desaran a $1.</translation>
 <translation id="8153607920959057464">No s'ha pogut mostrar aquest fitxer.</translation>
 <translation id="6227235786875481728">No s'ha pogut reproduir aquest fitxer.</translation>
 <translation id="9154418932169119429">Aquesta imatge no està disponible sense connexió.</translation>
@@ -2728,9 +2670,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4801956050125744859">Mantén-les totes dues</translation>
 <translation id="1062407476771304334">Substitueix</translation>
 <translation id="1556189134700913550">Aplica-ho a tot</translation>
-<translation id="3206175707080061730">El nom de fitxer "$1" ja existeix. El voleu substituir?</translation>
-<translation id="8059178146866384858">Ja existeix un fitxer anomenat "$1". Trieu un nom diferent.</translation>
-<translation id="5653140146600257126">Ja existeix una carpeta anomenada "$1". Trieu un nom diferent.</translation>
 <translation id="1497522201463361063">No es pot canviar el nom a "<ph name="FILE_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5330512191124428349">Mostra la informació</translation>
 <translation id="8312871300878166382">Enganxa a la carpeta</translation>
@@ -2789,20 +2728,13 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4724850507808590449">S'ha creat una còpia de seguretat de <ph name="FILE_COUNT"/> fotos</translation>
 <translation id="1351692861129622852">S'estan important <ph name="FILE_COUNT"/> fitxers...</translation>
 <translation id="117624967391683467">S'està copiant <ph name="FILE_NAME"/>...</translation>
-<translation id="8453482423012550001">S'estan copiant $1 elements...</translation>
 <translation id="7627790789328695202"><ph name="FILE_NAME"/> ja existeix. Canvieu-ne el nom i torneu-ho a provar.</translation>
 <translation id="5691596662111998220"><ph name="FILE_NAME"/> ja no existeix.</translation>
 <translation id="4336032328163998280">L'operació de còpia ha fallat. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1503914375822320413">L'operació de còpia ha fallat; s'ha produït un error inesperat: $1</translation>
 <translation id="6133173853026656527">S'està traslladant <ph name="FILE_NAME"/>...</translation>
-<translation id="3039828483675273919">S'estan traslladant $1 elements...</translation>
 <translation id="6007237601604674381">El trasllat ha fallat. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="8954952943849489823">El trasllat ha fallat, s'ha produït un error inesperat: $1</translation>
 <translation id="3326821416087822643">S'està comprimint <ph name="FILE_NAME"/>...</translation>
-<translation id="5694501201003948907">S'estan comprimint $1 elements...</translation>
-<translation id="7464490149090366184">S'ha produït un error en la compressió; l'element existeix: "$1"</translation>
 <translation id="9133055936679483811">S'ha produït un error en la compressió. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1711973684025117106">S'ha produït un error en la compressió; error inesperat: $1</translation>
 <translation id="653019979737152879">S'està sincronitzant <ph name="FILE_NAME"/>...</translation>
 <translation id="8579285237314169903">S'estan sincronitzant <ph name="NUMBER_OF_FILES"/> elements...</translation>
 <translation id="8137331602592933310">El fitxer "<ph name="FILENAME"/>" s'ha compartit amb l'usuari. No el podeu suprimir perquè no és vostre.</translation>
@@ -2822,8 +2754,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1464724975715666883">1 error.</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> errors.</translation>
 <translation id="6643016212128521049">Esborra</translation>
-<translation id="4284105660453474798">Confirmes que vols suprimir  "$1"?</translation>
-<translation id="4580526846085481512">Confirmes que vols suprimir  $1 elements?</translation>
 <translation id="7953739707111622108">Aquest dispositiu no es pot obrir perquè el seu sistema de fitxers no s'ha reconegut.</translation>
 <translation id="3726463242007121105">Aquest dispositiu no es pot obrir perquè el seu sistema de fitxers no és compatible.</translation>
 <translation id="3414856743105198592">Si formateu els suports extraïbles esborrareu totes les dades. Voleu continuar?</translation>
@@ -2897,7 +2827,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
     <ph name="MARKUP_4"/>Suprimiu fitxers de la carpeta Baixades<ph name="MARKUP_5"/>.</translation>
 <translation id="7606199793785990727">No s'ha pogut accedir a Brave Software Drive. <ph name="BEGIN_LINK"/>Tanqueu la sessió<ph name="END_LINK"/> i torneu-la a iniciar.</translation>
 <translation id="585883343689351092">Us donem la benvinguda a Brave Software Drive.</translation>
-<translation id="1788440444874291920">Obteniu 100 GB gratis amb Brave Software Drive</translation>
 <translation id="6862635236584086457">Es fa una còpia de seguretat en línia automàticament de tots els fitxers desats en aquesta carpeta</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Accediu a fitxers des de qualsevol lloc, fins i tot sense connexió.<ph name="MARKUP_2"/>
     Els fitxers que són a Brave Software Drive estan actualitzats i disponibles des de qualsevol dispositiu.<ph name="MARKUP_3"/>
@@ -2905,24 +2834,14 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
     Passi el que passi amb el vostre dispositiu, els fitxers s'emmagatzemen amb tota seguretat a Brave Software Drive.<ph name="MARKUP_6"/>
     <ph name="MARKUP_7"/>Compartiu, creeu fitxers i col·laboreu-hi<ph name="MARKUP_8"/>
     amb altres persones; tot en un sol lloc.<ph name="MARKUP_9"/></translation>
-<translation id="7489605380874780575">Comprova l'aptitud</translation>
 <translation id="4878716980734452132">Aquest tipus de fitxer no és compatible. Visiteu <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> per trobar una aplicació que pugui obrir aquest tipus de fitxer.
         <ph name="BEGIN_LINK_HELP"/>Més informació<ph name="END_LINK_HELP"/></translation>
-<translation id="3376900196170631953">Aquest fitxer està dissenyat per a un ordinador que faci servir programari de Windows. No és compatible amb el vostre dispositiu, que funciona amb Brave OS. Cerqueu una aplicació adequada equivalent a <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>. <ph name="BEGIN_LINK_HELP"/>Més informació<ph name="END_LINK_HELP"/></translation>
 <translation id="3072401511615920367">Aquest fitxer està dissenyat per a un ordinador que faci servir programari de Macintosh. No és compatible amb el vostre dispositiu, que funciona amb Brave OS. Podeu cercar una aplicació adequada equivalent a <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>. <ph name="BEGIN_LINK_HELP"/>Més informació<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">Espereu un moment.</translation>
 <translation id="3096967955765855393">Mai no deixem de cercar maneres de millorar la seguretat de la navegació. Anteriorment, des de qualsevol lloc web se us podia demanar que afegíssiu una extensió al navegador. A les versions més recents de Brave Software Brave, heu d'afegir aquestes extensions mitjançant la pàgina Extensions per fer saber explícitament a Brave que voleu instal·lar-les. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
-<translation id="2004663115385769400">No es pot obrir amb $1</translation>
-<translation id="639777613761517128">Per obrir fitxers amb $1, primer copia'ls a la carpeta de fitxers de Linux.</translation>
 <translation id="5368191757080475556">Comparteix la carpeta amb Linux</translation>
-<translation id="6803594270782834876">Dona permís a les aplicacions de Linux per obrir els fitxers de la carpeta $1</translation>
-<translation id="9204140378020726578">Dona permís a les aplicacions de Linux per obrir els fitxers de Brave Software Drive. Els canvis se sincronitzaran amb la resta de dispositius.</translation>
 <translation id="4290535918735525311">S'ha compartit 1 carpeta amb Linux</translation>
-<translation id="984401732412731005">S'han compartit $1 carpetes amb Linux</translation>
 <translation id="4572815280350369984">Fitxer <ph name="FILE_TYPE"/></translation>
-<translation id="895586998699996576">Imatge en $1</translation>
-<translation id="2853916256216444076">Vídeo en $1</translation>
-<translation id="7006844981395428048">Àudio en $1</translation>
 <translation id="7799329977874311193">Document HTML</translation>
 <translation id="2208158072373999562">Fitxer zip</translation>
 <translation id="2028997212275086731">Arxiu RAR</translation>
@@ -2971,8 +2890,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6199801702437275229">S'està esperant per rebre informació sobre l'espai...</translation>
 <translation id="6485131920355264772">No s'ha pogut recuperar informació sobre l'espai</translation>
 <translation id="7748626145866214022">Hi ha més opcions disponibles a la barra d'accions. Prem Alt+A per posar el focus a la barra d'accions.</translation>
-<translation id="60628369828239652">S'està obrint el fitxer <ph name="FILE_NAME"/></translation>
-<translation id="353547388688256996">S'estan obrint <ph name="NUMBER_FILES"/> fitxers</translation>
 <translation id="6710213216561001401">Anterior</translation>
 <translation id="1395262318152388157">Control lliscant de reproducció</translation>
 <translation id="4880214202172289027">Control lliscant de volum</translation>
@@ -3115,8 +3032,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6352773953037195952">El més alt</translation>
 <translation id="3677657024345889897">Volum mínim</translation>
 <translation id="167160931442925455">Volum màxim</translation>
-<translation id="2445007895943112260"><ph name="PERCENTAGE">$1<ex>120</ex>%</ph></translation>
-<translation id="9129010913019873477"><ph name="PERCENTAGE"/> (valor predeterminat)</translation>
 <translation id="3602290021589620013">Previsualitza</translation>
 <translation id="7037509989619051237">Text de prova</translation>
 <translation id="5471768120198416576">Hola! Soc la veu de la teva síntesi de veu.</translation>
@@ -3169,9 +3084,11 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8465252176946159372">No és vàlid</translation>
 <translation id="8647834505253004544">No és una adreça web vàlida</translation>
 <translation id="7946586320617670168">L'origen ha de ser segur</translation>
+<translation id="2709516037105925701">Emplenament autom.</translation>
 <translation id="7764225426217299476">Afegeix una adreça</translation>
 <translation id="5595485650161345191">Edita l'adreça</translation>
 <translation id="6207937957461833379">País/Regió</translation>
+<translation id="4378154925671717803">Telèfon</translation>
 <translation id="9064275926664971810">Activa Emplenament automàtic per emplenar els formularis amb un sol clic</translation>
 <translation id="9095253524804455615">Suprimeix</translation>
 <translation id="451515744433878153">Suprimeix</translation>
@@ -3181,6 +3098,11 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4835914736509775287">Desa targetes al Compte de Brave Software</translation>
 <translation id="7255002516883565667">En aquest moment tens una targeta que només es pot utilitzar en aquest dispositiu</translation>
 <translation id="6848388270925200958">En aquest moment tens targetes que només es poden fer servir en aquest dispositiu</translation>
+<translation id="4807098396393229769">Titular de la targeta</translation>
+<translation id="2612676031748830579">Número de targeta</translation>
+<translation id="869891660844655955">Data de caducitat</translation>
+<translation id="1149401351239820326">Mes de caducitat</translation>
+<translation id="8058655154417507695">Any de caducitat</translation>
 <translation id="379082410132524484">La targeta ha caducat</translation>
 <translation id="6644512095122093795">Pregunta'm si vull desar les contrasenyes</translation>
 <translation id="2100273922101894616">Inici de sessió automàtic</translation>
@@ -3510,7 +3432,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6921033294337262045">Toca Notificacions d'aplicacions &gt; Serveis de Brave Software Play.</translation>
 <translation id="5624710179837914896">Activa els serveis de Brave Software Play.</translation>
 <translation id="2705736684557713153">Desplaça't fins a la part inferior de la pantalla i activa l'opció Compartició de xarxa instantània, si es mostra. Si no, vol dir que ho tens tot a punt.</translation>
-<translation id="3604048165392640554">No s'ha trobat cap connexió mòbil. Activa Compartició de xarxa instantània als altres dispositius i torna-ho a provar. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Més informació&lt;/a&gt;</translation>
 <translation id="7240339475467890413">Vols connectar-te al punt d'accés Wi-Fi nou?</translation>
 <translation id="6514010653036109809">Dispositiu disponible:</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/>% de bateria</translation>
@@ -3688,8 +3609,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="5487521232677179737">Esborra les dades</translation>
 <translation id="3151562827395986343">Esborra l'historial, les galetes, la memòria cau i altres dades</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> (<ph name="COUNT"/>)</translation>
-<translation id="3407837288045706722">Per trobar més opcions relacionades amb la privadesa, la seguretat i la recollida de dades, consulta <ph name="BEGIN_LINK"/>Sincronització i personalització<ph name="END_LINK"/></translation>
-<translation id="7222718784508482526">Per trobar més opcions relacionades amb la privadesa, la seguretat i la recollida de dades, consulta <ph name="BEGIN_LINK"/>Sincronització i serveis de Brave Software<ph name="END_LINK"/></translation>
 <translation id="8632933437936028548">Restableix la configuració</translation>
 <translation id="5293170712604732402">Restableix la configuració als valors predeterminats originals</translation>
 <translation id="892706138619340876">S'han restablert algunes opcions de configuració</translation>
@@ -3714,12 +3633,9 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7098447629416471489">Els altres motors de cerca desats es mostraran aquí</translation>
 <translation id="1459967076783105826">Les extensions han afegit motors de cerca</translation>
 <translation id="6678717876183468697">URL de la consulta</translation>
-<translation id="1545786162090505744">URL amb %s en el lloc de la consulta</translation>
 <translation id="6953878494808481632">Informació relacionada</translation>
 <translation id="4145922204387553806">Permet que l'Assistent et mostri informació relacionada amb el que hi ha a la pantalla</translation>
 <translation id="472896694312062378">Ok Brave Software</translation>
-<translation id="6236033368436682108">Accedeix a l'Assistent sempre que diguis "Ok Brave Software" quan la pantalla estigui activada</translation>
-<translation id="2482878487686419369">Notificacions</translation>
 <translation id="5355099869024327351">Permet que l'Assistent et mostri notificacions</translation>
 <translation id="133535873114485416">Mètode d'introducció preferit</translation>
 <translation id="6233154960150021497">Utilitza la veu en comptes del teclat de manera predeterminada</translation>
@@ -3735,14 +3651,12 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1919345977826869612">Anuncis</translation>
 <translation id="5649053991847567735">Baixades automàtiques</translation>
 <translation id="3744111561329211289">Sincronització en segon pla</translation>
-<translation id="1620510694547887537">Càmera</translation>
 <translation id="2586657967955657006">Porta-retalls</translation>
 <translation id="5518219166343146486">Pregunta'm quan un lloc web vulgui veure el text i les imatges copiats al porta-retalls</translation>
 <translation id="2089795179672254991">Pregunta'm quan un lloc web vulgui veure el text i les imatges copiats al porta-retalls (opció recomanada)</translation>
 <translation id="16815041330799488">No permetis que els llocs web vegin el text i les imatges copiats al porta-retalls</translation>
 <translation id="3668823961463113931">Gestors</translation>
 <translation id="5689516760719285838">Ubicació</translation>
-<translation id="3227137524299004712">Micròfon</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Gestors de pagament</translation>
@@ -3887,12 +3801,9 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6029292188939175871">suprimeix [<ph name="FINGERPRINT_NAME"/>], botó</translation>
 <translation id="1927632033341042996">Dit <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">Afegeix un compte</translation>
-<translation id="3422989461909154470">Tots els comptes de Brave Software amb la sessió iniciada en aplicacions i llocs web es poden gestionar aquí.</translation>
 <translation id="1987317783729300807">Comptes</translation>
 <translation id="8418661265246754237">Comptes de Brave Software</translation>
 <translation id="3297951628821704004">Suprimeix el compte d'aquest dispositiu</translation>
-<translation id="1059855432287631118">S'està registrant l'empremta digital</translation>
-<translation id="878068003854005405">Comencem. Col·loca el dit al sensor.</translation>
 <translation id="176193854664720708">El sensor d'empremtes digitals és al botó d'engegada. Toca'l lleugerament amb un dit.</translation>
 <translation id="7189965711416741966">L'empremta digital s'ha afegit.</translation>
 <translation id="9220820413868316583">Aixeca el dit i torna-ho a provar.</translation>
@@ -4072,7 +3983,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3954469006674843813"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> hertzs)</translation>
 <translation id="7889565820482017512">Mida de visualització</translation>
 <translation id="8448729345478502352">Amplia o redueix els elements de la pantalla</translation>
-<translation id="513425442047539523"><ph name="DISPLAY_ZOOM">$1<ex>120</ex>%</ph></translation>
 <translation id="2155772377859296191">Resolució: <ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
 <translation id="4863769717153320198">Resolució: <ph name="WIDTH"/> x <ph name="HEIGHT"/> (predeterminada)</translation>
 <translation id="1125550662859510761">Resolució: <ph name="WIDTH"/> x <ph name="HEIGHT"/> (nativa)</translation>
@@ -4134,24 +4044,19 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7878562273885520351">La teva contrasenya pot estar en perill</translation>
 <translation id="1089439967362294234">Canvia la contrasenya</translation>
 <translation id="6187156085111579405">Si cal, també se suprimiran elements no inclosos en aquesta llista. Obtén més informació sobre la &lt;a href="<ph name="URL"/>"&gt;protecció contra programari no desitjat&lt;/a&gt; a l'informe de privadesa de Brave.</translation>
-<translation id="928985544179707652">Extensions:</translation>
 <translation id="7712836429117959503">Extensió desconeguda amb l'identificador <ph name="EXTENSION_ID"/></translation>
-<translation id="2600115369439982409">Fitxers i programes:</translation>
-<translation id="1372681413396468867">{NUM_ITEMS,plural, =1{1 element que cal suprimir}other{# elements que cal suprimir}}</translation>
 <translation id="7187428571767585875">Entrades del registre que se suprimiran o canviaran:</translation>
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{1 més}other{# més}}</translation>
 <translation id="2749608811030566578">S'ha produït un error mentre Brave suprimia programari maliciós</translation>
 <translation id="8189483132214844139">Brave pot cercar programari nociu a l'ordinador i suprimir-lo</translation>
 <translation id="2910318910161511225">Connecta't a una xarxa i torna-ho a provar</translation>
 <translation id="1426870617281699524">Fes clic a Torna-ho a provar i accepta la sol·licitud que veuràs a l'ordinador</translation>
-<translation id="2201358555632643970">Hi ha programari nociu a l'ordinador. Brave l'està suprimint i restaurarà la configuració perquè el navegador torni a funcionar amb normalitat.</translation>
 <translation id="1484912962860902625">S'ha produït un error mentre Brave cercava programari nociu</translation>
 <translation id="451407183922382411">Amb tecnologia de: <ph name="COMPANY_NAME"/></translation>
 <translation id="5254368820972107711">Mostra els fitxers que cal suprimir</translation>
 <translation id="296026337010986570">Fet! S'ha suprimit el programari nociu. Per tornar a activar les extensions, ves a &lt;a href="chrome://extensions"&gt;Extensions&lt;/a&gt;.</translation>
 <translation id="284975061945174219">Error de neteja</translation>
 <translation id="9014750448058570312">Brave necessita permís per continuar</translation>
-<translation id="3806965327722135869">Cerca i suprimeix programari nociu</translation>
 <translation id="4320177379694898372">No hi ha connexió a Internet</translation>
 <translation id="850875081535031620">No s'ha trobat programari maliciós</translation>
 <translation id="1186771945450942097">Suprimeix el programari nociu</translation>
@@ -4160,7 +4065,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8639047128869322042">S'està cercant programari nociu...</translation>
 <translation id="2653033005692233957">Error de cerca</translation>
 <translation id="655483977608336153">Torna-ho a provar</translation>
-<translation id="6312400084708441752">Inclou informació sobre programari nociu, sobre la configuració del sistema i sobre processos de l'ordinador</translation>
 <translation id="6555810572223193255">Actualment no es pot dur a terme la neteja</translation>
 <translation id="7117228822971127758">Torna-ho a provar més tard</translation>
 <translation id="443475966875174318">Actualitza o suprimeix les aplicacions incompatibles</translation>
@@ -4197,8 +4101,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3264582393905923483">Context</translation>
 <translation id="1607139524282324606">Esborra l'entrada</translation>
 <translation id="6025215716629925253">Traça de la pila</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;Hi ha 1 línia que no es mostra&gt;}other{&lt;Hi ha $1 línies que no es mostren&gt;}}</translation>
-<translation id="5334899159203764908">Més informació sobre l'<ph name="BEGIN_LINK"/>accés als llocs web<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Permet que aquesta extensió llegeixi i modifiqui totes les dades dels llocs web que visitis.</translation>
 <translation id="407173827865827707">En fer clic</translation>
 <translation id="6455264371803474013">En llocs web específics</translation>
@@ -4271,6 +4173,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="2785008241190445880">L'adreça d'interès s'ha substituït</translation>
 <translation id="4320948194796820126">Afegeix un marcador al teu correu electrònic</translation>
 <translation id="2950533317914339731">Afegeix adreces d'interès a les teves aplicacions de Brave Software preferides</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="239760341987199724">Defineix Brave com a navegador predeterminat</translation>
 <translation id="96037229054033864">Gaudeix de la Cerca i de les eines intel·ligents de Brave Software sempre que naveguis</translation>
 <translation id="296137235951584143">Personalitza Brave</translation>
@@ -4303,14 +4206,12 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3706463572498736864">Pàgines per full</translation>
 <translation id="2249605167705922988">p. ex. 1-5, 8, 11-13</translation>
 <translation id="5746169159649715125">Desa com a PDF</translation>
-<translation id="1731589410171062430">Total: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/> (<ph name="NUMBER_OF_PAGES"/> <ph name="PAGE_OR_PAGES_LABEL"/>)</translation>
 <translation id="2580924999637585241">Total: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">fulls de paper</translation>
 <translation id="8813811964357448561">full de paper</translation>
 <translation id="8180239481735238521">pàgina</translation>
 <translation id="3725367690636977613">pàgines</translation>
 <translation id="7005848115657603926">L'interval de pàgines no és vàlid; utilitzeu <ph name="EXAMPLE_PAGE_RANGE"/></translation>
-<translation id="2890678560483811744">La pàgina indicada no respecta el límit</translation>
 <translation id="5398572795982417028">La pàgina indicada no respecta el límit de <ph name="MAXIMUM_PAGE"/></translation>
 <translation id="218070003709087997">Utilitza un número per indicar quantes còpies vols imprimir (entre 1 i 999).</translation>
 <translation id="2509495747794740764">El valor de l'escala ha d'oscil·lar entre 10 i 200.</translation>
@@ -4330,19 +4231,14 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6273677812470008672">Qualitat</translation>
 <translation id="7288676996127329262"><ph name="HORIZONTAL_DPI"/> x <ph name="VERTICAL_DPI"/> ppp</translation>
 <translation id="1921584744613111023"><ph name="DPI"/> ppp</translation>
-<translation id="2212126039311489237">Imprimeix des del quadre de diàleg del sistema</translation>
 <translation id="6991665348624301627">Selecció d'una destinació</translation>
 <translation id="8800004011501252845">S'estan mostrant les destinacions per a</translation>
 <translation id="8996526648899750015">Afegeix un compte...</translation>
 <translation id="5002959368039764681">Imprimeix a Brave Software Docs i a altres destinacions al núvol. <ph name="BEGIN_LINK"/>Inicia la sessió<ph name="END_LINK"/> per imprimir a Brave Software Cloud Print.</translation>
 <translation id="2150139952286079145">Cerca destinacions</translation>
 <translation id="8569682776816196752">No s'ha trobat cap destinació</translation>
-<translation id="6807889908376551050">Mostra-ho tot...</translation>
-<translation id="7328162502911382168">(<ph name="COUNT"/>)</translation>
 <translation id="7885253890047913815">Destinacions recents</translation>
 <translation id="4929386379796360314">Destinacions d'impressió</translation>
-<translation id="5829401023154985950">Gestiona...</translation>
-<translation id="4628314759732363424">Canvia...</translation>
 <translation id="3899879303189199559">Fora de línia des de fa més d'un any</translation>
 <translation id="3154429428035006212">Fora de línia des de fa més d'un mes</translation>
 <translation id="5265562206369321422">Fora de línia des de fa més d'una setmana</translation>
@@ -4351,18 +4247,15 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6317318380444133405">Ja no és compatible.</translation>
 <translation id="5759728514498647443"><ph name="APP_NAME"/> pot llegir els documents que envieu a la impressora mitjançant <ph name="APP_NAME"/>.</translation>
 <translation id="2080070583977670716">Més opcions de configuració</translation>
-<translation id="6510568984200103950">Menys opcions de configuració</translation>
 <translation id="3360297538363969800">Hi ha hagut un error en imprimir. Comproveu la impressora i torneu-ho a provar.</translation>
 <translation id="5154108062446123722">Configuració avançada de <ph name="PRINTING_DESTINATION"/></translation>
 <translation id="9056810968620647706">No s'ha trobat cap coincidència.</translation>
-<translation id="8658595122208653918">Canvia les opcions de la impressora...</translation>
 <translation id="4088095054444612037">Accepta per al grup</translation>
 <translation id="357886715122934472">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; vol compartir una impressora &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt; amb un dels vostres grups: &lt;strong&gt;<ph name="GROUP_NAME"/>&lt;/strong&gt;. Si accepteu, tots els membres del grup la podran fer servir.</translation>
 <translation id="8783093612333542422">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; vol compartir una impressora &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt; amb l'usuari.</translation>
 <translation id="7210499381659830293">Impressores d'extensions</translation>
 <translation id="7453008956351770337">En seleccionar aquesta impressora, doneu permís a l'extensió següent per accedir a la vostra impressora:</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> no ha pogut comunicar-se amb aquesta impressora. Comproveu que la impressora estigui connectada i torneu-ho a provar.</translation>
-<translation id="5352285283572729470">Aquesta opció està gestionada</translation>
 <translation id="4994754230098574403">S'està configurant</translation>
 <translation id="1396139853388185343">S'ha produït un error en configurar la impressora</translation>
 <translation id="2379281330731083556">Imprimeix des de la finestra de diàleg del sistema… <ph name="SHORTCUT_KEY"/></translation>
@@ -4391,8 +4284,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7681095912841365527">El lloc web pot utilitzar el Bluetooth</translation>
 <translation id="3085412380278336437">El lloc web pot utilitzar la càmera</translation>
 <translation id="9180380851667544951">El lloc web pot compartir la pantalla</translation>
-<translation id="7503127198245469314">Treu-te els auriculars per bloquejar o permetre l'acció a la pantalla de l'escriptori</translation>
-<translation id="5592010267127539419"><ph name="URL_HOST"/> vol vincular-se als dispositius</translation>
 <translation id="4992630054488400221">Instal·la o actualitza el Teclat Daydream per utilitzar Brave en RV</translation>
 <translation id="983511809958454316">Aquesta funció no s'admet en el mode RV</translation>
 <translation id="4008291085758151621">La informació del lloc web no està disponible en el mode RV</translation>

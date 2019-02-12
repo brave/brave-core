@@ -1,9 +1,16 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "components/country_codes/country_codes.h"
+
+// Pull in definitions for Brave prepopulated engines. It's ugly but these need
+// to be built as part of the search_engines static library.
+#include "../../../components/search_engines/brave_prepopulated_engines.cc"  // NOLINT
+#include "../../../components/search_engines/brave_prepopulated_engines.h"
 
 #define GetDataVersion GetDataVersion_ChromiumImpl
 #if defined(OS_ANDROID)
@@ -12,7 +19,7 @@
 #define GetPrepopulatedDefaultSearch GetPrepopulatedDefaultSearch_Unused
 #define GetPrepopulatedEngine GetPrepopulatedEngine_Unused
 #define GetPrepopulatedEngines GetPrepopulatedEngines_Unused
-#include "../../../../components/search_engines/template_url_prepopulate_data.cc"
+#include "../../../../components/search_engines/template_url_prepopulate_data.cc"  // NOLINT
 #undef GetDataVersion
 #if defined(OS_ANDROID)
 #undef GetLocalPrepopulatedEngines
@@ -20,11 +27,6 @@
 #undef GetPrepopulatedDefaultSearch
 #undef GetPrepopulatedEngine
 #undef GetPrepopulatedEngines
-
-// Pull in definitions for Brave prepopulated engines. It's ugly but these need
-// to be built as part of the search_engines static library.
-#include "../../../components/search_engines/brave_prepopulated_engines.cc"
-#include "../../../components/search_engines/brave_prepopulated_engines.h"
 
 namespace TemplateURLPrepopulateData {
 
@@ -69,8 +71,10 @@ const BravePrepopulatedEngineID kDefaultEngineID =
 // regular default engine.
 const std::map<int, BravePrepopulatedEngineID>
     default_engine_by_country_id_map = {
-        {country_codes::CountryCharsToCountryID('D', 'E'), PREPOPULATED_ENGINE_ID_QWANT},
-        {country_codes::CountryCharsToCountryID('F', 'R'), PREPOPULATED_ENGINE_ID_QWANT}
+        {country_codes::CountryCharsToCountryID('D', 'E'),
+          PREPOPULATED_ENGINE_ID_QWANT},
+        {country_codes::CountryCharsToCountryID('F', 'R'),
+          PREPOPULATED_ENGINE_ID_QWANT}
 };
 
 // Default order in which engines will appear in the UI.
@@ -214,9 +218,6 @@ const PrepopulatedEngine* GetLocalizedYahooEngineForCountryID(int country_id) {
     UNHANDLED_COUNTRY(W, F)  // Wallis and Futuna
     UNHANDLED_COUNTRY(Y, T)  // Mayotte
     return &yahoo_fr;
-    UNHANDLED_COUNTRY(G, R)  // Greece and countries that default to it
-    UNHANDLED_COUNTRY(C, Y)  // Cyprus
-    return &yahoo_gr;
     UNHANDLED_COUNTRY(H, K)  // Hong Kong
     return &yahoo_hk;
     UNHANDLED_COUNTRY(I, D)  // Indonesia
@@ -225,23 +226,6 @@ const PrepopulatedEngine* GetLocalizedYahooEngineForCountryID(int country_id) {
     return &yahoo_in;
     UNHANDLED_COUNTRY(J, P)  // Japan
     return &yahoo_jp;
-    UNHANDLED_COUNTRY(A, E)  // United Arab Emirates
-    UNHANDLED_COUNTRY(B, H)  // Bahrain
-    UNHANDLED_COUNTRY(D, Z)  // Algeria
-    UNHANDLED_COUNTRY(E, G)  // Egypt
-    UNHANDLED_COUNTRY(I, Q)  // Iraq
-    UNHANDLED_COUNTRY(J, O)  // Jordan
-    UNHANDLED_COUNTRY(K, W)  // Kuwait
-    UNHANDLED_COUNTRY(L, B)  // Lebanon
-    UNHANDLED_COUNTRY(L, Y)  // Libya
-    UNHANDLED_COUNTRY(M, A)  // Morocco
-    UNHANDLED_COUNTRY(O, M)  // Oman
-    UNHANDLED_COUNTRY(Q, A)  // Qatar
-    UNHANDLED_COUNTRY(S, A)  // Saudi Arabia
-    UNHANDLED_COUNTRY(S, Y)  // Syria
-    UNHANDLED_COUNTRY(T, N)  // Tunisia
-    UNHANDLED_COUNTRY(Y, E)  // Yemen
-    return &yahoo_maktoob;
     UNHANDLED_COUNTRY(M, X)  // Mexico
     return &yahoo_mx;
     UNHANDLED_COUNTRY(M, Y)  // Malaysia
@@ -259,8 +243,6 @@ const PrepopulatedEngine* GetLocalizedYahooEngineForCountryID(int country_id) {
     return &yahoo_pe;
     UNHANDLED_COUNTRY(P, H)  // Philippines
     return &yahoo_ph;
-    UNHANDLED_COUNTRY(R, O)  // Romania
-    return &yahoo_ro;
     UNHANDLED_COUNTRY(S, E)  // Sweden
     return &yahoo_se;
     UNHANDLED_COUNTRY(S, G)  // Singapore
@@ -381,7 +363,8 @@ std::vector<const PrepopulatedEngine*> GetEnginesFromEngineIDs(
   return engines;
 }
 
-void UpdateTemplateURLDataKeyword(std::unique_ptr<TemplateURLData>& t_urld) {
+void UpdateTemplateURLDataKeyword(
+    const std::unique_ptr<TemplateURLData>& t_urld) {
   DCHECK(t_urld.get());
   switch (t_urld->prepopulate_id) {
     case PREPOPULATED_ENGINE_ID_GOOGLE:
@@ -415,16 +398,16 @@ GetBravePrepopulatedEnginesForCountryID(
   // Check for exceptions from the default list of engines
   if (country_codes::CountryCharsToCountryID('C', 'A') == country_id) {
     brave_engines = brave_engines_CA;
-    num_brave_engines = arraysize(brave_engines_CA);
+    num_brave_engines = base::size(brave_engines_CA);
   } else if (country_codes::CountryCharsToCountryID('D', 'E') == country_id) {
     brave_engines = brave_engines_DE;
-    num_brave_engines = arraysize(brave_engines_DE);
+    num_brave_engines = base::size(brave_engines_DE);
   } else if (country_codes::CountryCharsToCountryID('F', 'R') == country_id) {
     brave_engines = brave_engines_FR;
-    num_brave_engines = arraysize(brave_engines_FR);
+    num_brave_engines = base::size(brave_engines_FR);
   } else {
     brave_engines = brave_engines_default;
-    num_brave_engines = arraysize(brave_engines_default);
+    num_brave_engines = base::size(brave_engines_default);
   }
   DCHECK(brave_engines);
   DCHECK(num_brave_engines);
@@ -483,8 +466,9 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
   if (!t_urls.empty())
     return t_urls;
 
-  return GetBravePrepopulatedEnginesForCountryID(country_codes::GetCountryIDFromPrefs(prefs),
-                                                 default_search_provider_index);
+  return GetBravePrepopulatedEnginesForCountryID(
+      country_codes::GetCountryIDFromPrefs(prefs),
+      default_search_provider_index);
 }
 
 // Redefines function with the same name in Chromium. Modifies the function to

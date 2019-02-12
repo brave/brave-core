@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/settings_import_data_handler.cc b/chrome/browser/ui/webui/settings/settings_import_data_handler.cc
-index 32deebd14fb3383010af01381af9b34442d19b6e..823ce59a8e13a49965cb5d7026fa9d7f426de740 100644
+index f546887fdfcd5907b99ed0d04822ecb28de5b69e..ae65da03e1d667e398eb29be9e4cee0cc4ee205c 100644
 --- a/chrome/browser/ui/webui/settings/settings_import_data_handler.cc
 +++ b/chrome/browser/ui/webui/settings/settings_import_data_handler.cc
 @@ -18,6 +18,8 @@

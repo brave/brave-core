@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -6,21 +7,20 @@
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_APP_H_
 
 #include <memory>
+#include <string>
 
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/binding_set.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
 #include "services/service_manager/public/cpp/service.h"
-#include "services/service_manager/public/cpp/service_context.h"
-#include "services/service_manager/public/cpp/service_context_ref.h"
+#include "services/service_manager/public/cpp/service_binding.h"
+#include "services/service_manager/public/cpp/service_keepalive.h"
 
 namespace bat_ads {
 
 class BatAdsApp : public service_manager::Service {
  public:
-  static std::unique_ptr<service_manager::Service> CreateService();
-
-  BatAdsApp();
+  explicit BatAdsApp(service_manager::mojom::ServiceRequest request);
   ~BatAdsApp() override;
 
  private:
@@ -30,7 +30,8 @@ class BatAdsApp : public service_manager::Service {
                        const std::string& interface_name,
                        mojo::ScopedMessagePipeHandle interface_pipe) override;
 
-  std::unique_ptr<service_manager::ServiceContextRefFactory> ref_factory_;
+  service_manager::ServiceBinding service_binding_;
+  service_manager::ServiceKeepalive service_keepalive_;
   service_manager::BinderRegistry registry_;
   mojo::BindingSet<mojom::BatAdsService> bindings_;
 

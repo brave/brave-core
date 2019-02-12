@@ -1,25 +1,34 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 
-// Rewrite original function name (see header file)
-#define GetOmniboxColor GetOmniboxColor_ChromiumImpl
-#define OmniboxTint OmniboxTint_Chromium
-#include "../../../chrome/browser/ui/omnibox/omnibox_theme.cc"
-#undef GetOmniboxColor
-#undef OmniboxTint
+#include "ui/gfx/color_palette.h"
+#include "ui/gfx/color_utils.h"
+#include "ui/native_theme/native_theme.h"
+
+// Overriden version
+SkColor GetOmniboxColor(OmniboxPart part,
+                        OmniboxTint tint,
+                        OmniboxPartState state);
+
+#include "../../../chrome/browser/ui/omnibox/omnibox_theme.cc"  // NOLINT
 
 namespace {
 
-OmniboxTint_Chromium BraveTintToChromiumTint(OmniboxTint brave_tint) {
+OmniboxTint BraveTintToChromiumTint(OmniboxTint brave_tint) {
   switch (brave_tint) {
     case OmniboxTint::PRIVATE:
     case OmniboxTint::DARK:
-      return OmniboxTint_Chromium::DARK;
+      return OmniboxTint::DARK;
     case OmniboxTint::LIGHT:
-      return OmniboxTint_Chromium::LIGHT;
+      return OmniboxTint::LIGHT;
     case OmniboxTint::NATIVE:
-      return OmniboxTint_Chromium::NATIVE;
+      return OmniboxTint::NATIVE;
     default:
-      return OmniboxTint_Chromium::LIGHT;
+      return OmniboxTint::LIGHT;
   }
 }
 
@@ -39,7 +48,7 @@ constexpr SkColor DarkPrivateLight(OmniboxTint tint,
 
 const SkColor kPrivateLocationBarBackground = SkColorSetRGB(0x1b, 0x0e, 0x2c);
 
-}
+}  // namespace
 
 // Overriden version
 SkColor GetOmniboxColor(OmniboxPart part,
@@ -64,7 +73,7 @@ SkColor GetOmniboxColor(OmniboxPart part,
                                   hovered ? 0.54 : 0.52 })
                           : (hovered ? color_utils::AlphaBlend(SK_ColorWHITE,
                                               SkColorSetRGB(0xf3, 0xf3, 0xf3),
-                                              178)
+                                              0.7f)
                                       : SK_ColorWHITE));
     }
     case OmniboxPart::LOCATION_BAR_TEXT_DEFAULT:
@@ -73,7 +82,7 @@ SkColor GetOmniboxColor(OmniboxPart part,
                           : SkColorSetRGB(0x42, 0x42, 0x42);
     }
     case OmniboxPart::RESULTS_BACKGROUND:
-      return color_utils::BlendTowardOppositeLuma(
+      return color_utils::BlendTowardMaxContrast(
           DarkPrivateLight(tint,
             high_contrast ? gfx::kGoogleGrey900 : gfx::kGoogleGrey800,
             color_utils::HSLShift(kPrivateLocationBarBackground, {
@@ -82,12 +91,12 @@ SkColor GetOmniboxColor(OmniboxPart part,
                                     high_contrast ? 0.45
                                                   : 0.56 }),
             SK_ColorWHITE),
-          gfx::ToRoundedInt(GetOmniboxStateAlpha(state) * 0xff));
+          gfx::ToRoundedInt(GetOmniboxStateOpacity(state) * 0xff));
     default:
         break;
   }
 
   // All other values, call original function
-  OmniboxTint_Chromium translate_value = BraveTintToChromiumTint(tint);
+  OmniboxTint translate_value = BraveTintToChromiumTint(tint);
   return GetOmniboxColor_ChromiumImpl(part, translate_value, state);
 }

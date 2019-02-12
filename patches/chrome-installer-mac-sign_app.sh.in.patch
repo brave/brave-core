@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/sign_app.sh.in b/chrome/installer/mac/sign_app.sh.in
-index 89b0028a1fb782c72021c4ce7f5db54d6dcc9b22..934363520f8212cddaab525e31c7bbf4a023dd73 100644
+index 23ad384119a57c3ff1d09d9f32a35d5325623233..6c9299ed008f201be1d8c5e9a7a27fb3df961cf7 100644
 --- a/chrome/installer/mac/sign_app.sh.in
 +++ b/chrome/installer/mac/sign_app.sh.in
-@@ -70,10 +70,10 @@ fi
+@@ -79,10 +79,10 @@ fi
  
  requirement="\
  designated => \
@@ -17,7 +17,7 @@ index 89b0028a1fb782c72021c4ce7f5db54d6dcc9b22..934363520f8212cddaab525e31c7bbf4
  ${requirement_suffix} \
  "
  
-@@ -81,7 +81,6 @@ codesign_cmd=(
+@@ -90,7 +90,6 @@ codesign_cmd=(
    codesign --sign "${codesign_id}" --keychain "${codesign_keychain}"
    "${browser_app}"
    --options "${enforcement_flags_app}"
