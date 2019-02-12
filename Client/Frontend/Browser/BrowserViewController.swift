@@ -1562,9 +1562,13 @@ extension BrowserViewController: URLBarDelegate {
     }
 
     func urlBar(_ urlBar: URLBarView, didSubmitText text: String) {
+        processAddressBar(text: text, visitType: nil)
+    }
+
+    func processAddressBar(text: String, visitType: VisitType?) {
         if let fixupURL = URIFixup.getURL(text) {
             // The user entered a URL, so use it.
-            finishEditingAndSubmit(fixupURL, visitType: VisitType.typed)
+            finishEditingAndSubmit(fixupURL, visitType: visitType ?? .typed)
             return
         }
 
@@ -1585,7 +1589,7 @@ extension BrowserViewController: URLBarDelegate {
                 urlString.replaceSubrange(range, with: escapedQuery)
 
                 if let url = URL(string: urlString) {
-                    self.finishEditingAndSubmit(url, visitType: VisitType.typed)
+                    self.finishEditingAndSubmit(url, visitType: visitType ?? .typed)
                     return
                 }
             }
@@ -2892,8 +2896,8 @@ extension BrowserViewController: HomeMenuControllerDelegate {
 
 extension BrowserViewController: TopSitesDelegate {
     
-    func didSelectUrl(url: URL) {
-        finishEditingAndSubmit(url, visitType: .bookmark)
+    func didSelect(input: String) {
+        processAddressBar(text: input, visitType: .bookmark)
     }
     
     func didTapDuckDuckGoCallout() {
