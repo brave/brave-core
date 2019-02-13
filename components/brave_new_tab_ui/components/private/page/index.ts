@@ -12,7 +12,7 @@ export const Page = styled<PageProps, 'div'>('div')`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   background: linear-gradient(${p => p.isPrivate ? '#381980' : '#5F0C8A'}, #0C041E);
-  min-height: 100%;
+  min-height: 100vh;
   height: initial;
 `
 
