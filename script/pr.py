@@ -348,10 +348,11 @@ def create_branch(channel, top_level_base, remote_base, local_branch):
                 # branch exists; reset it
                 print('(' + channel + ') branch "' + channel_branch +
                       '" exists; resetting to origin/' + remote_base)
+                execute(['git', 'checkout', channel_branch])
                 execute(['git', 'reset', '--hard', 'origin/' + remote_base])
             else:
                 # create the branch
-                print('(' + channel + ') creating "' + channel_branch + '" from ' + channel)
+                print('(' + channel + ') creating "' + channel_branch + '" from ' + remote_base)
                 execute(['git', 'checkout', remote_base])
                 execute(['git', 'checkout', '-b', channel_branch])
 
