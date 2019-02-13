@@ -27,8 +27,8 @@
 // Checks that new profiles are migrated at creation.
 TEST(AccountConsistencyDisabledTest, NewProfile) {
   content::TestBrowserThreadBundle test_thread_bundle;
-  // kSignInProcessIsolation used to be needed here but it has since been turned on
-  // to 100% of the user base and is no longer needed.
+  // kSignInProcessIsolation used to be needed here but it has since been
+  // turned on to 100% of the user base and is no longer needed.
   // See 36417aa39a5e8484b23f1ec927bfda23465f4f21
   TestingProfile::Builder profile_builder;
   {
@@ -47,7 +47,8 @@ TEST(AccountConsistencyDisabledTest, NewProfile) {
   }
   std::unique_ptr<TestingProfile> profile = profile_builder.Build();
   ASSERT_TRUE(profile->IsNewProfile());
-  EXPECT_FALSE(AccountConsistencyModeManager::IsDiceEnabledForProfile(profile.get()));
+  EXPECT_FALSE(AccountConsistencyModeManager::IsDiceEnabledForProfile(
+        profile.get()));
 }
 
 TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {
@@ -58,7 +59,7 @@ TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {
     TestingProfile profile;
     EXPECT_FALSE(
         AccountConsistencyModeManager::IsDiceEnabledForProfile(&profile));
-    EXPECT_EQ(signin::AccountConsistencyMethod::kDiceFixAuthErrors,
+    EXPECT_EQ(signin::AccountConsistencyMethod::kDisabled,
               AccountConsistencyModeManager::GetMethodForProfile(&profile));
 
     // Incognito profile.
@@ -68,7 +69,7 @@ TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {
     EXPECT_FALSE(
         AccountConsistencyModeManager::GetForProfile(incognito_profile));
     EXPECT_EQ(
-        signin::AccountConsistencyMethod::kDiceFixAuthErrors,
+        signin::AccountConsistencyMethod::kDisabled,
         AccountConsistencyModeManager::GetMethodForProfile(incognito_profile));
   }
 
@@ -81,7 +82,7 @@ TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {
     EXPECT_FALSE(
         AccountConsistencyModeManager::IsDiceEnabledForProfile(profile.get()));
     EXPECT_EQ(
-        signin::AccountConsistencyMethod::kDiceFixAuthErrors,
+        signin::AccountConsistencyMethod::kDisabled,
         AccountConsistencyModeManager::GetMethodForProfile(profile.get()));
   }
 
@@ -94,7 +95,7 @@ TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {
     EXPECT_FALSE(
         AccountConsistencyModeManager::IsDiceEnabledForProfile(profile.get()));
     EXPECT_EQ(
-        signin::AccountConsistencyMethod::kDiceFixAuthErrors,
+        signin::AccountConsistencyMethod::kDisabled,
         AccountConsistencyModeManager::GetMethodForProfile(profile.get()));
   }
 }

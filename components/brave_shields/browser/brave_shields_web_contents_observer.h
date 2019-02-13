@@ -1,9 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_SHIELDS_WEB_CONTENTS_OBSERVER_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_SHIELDS_WEB_CONTENTS_OBSERVER_H_
+
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
 
 #include "base/macros.h"
 #include "base/synchronization/lock.h"
@@ -22,7 +28,7 @@ namespace brave_shields {
 class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
     public content::WebContentsUserData<BraveShieldsWebContentsObserver> {
  public:
-  BraveShieldsWebContentsObserver(content::WebContents*);
+  explicit BraveShieldsWebContentsObserver(content::WebContents*);
   ~BraveShieldsWebContentsObserver() override;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
@@ -93,9 +99,10 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   // continually tries to load the same blocked URLs.
   std::set<std::string> blocked_url_paths_;
 
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
   DISALLOW_COPY_AND_ASSIGN(BraveShieldsWebContentsObserver);
 };
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_SHIELDS_WEB_CONTENTS_OBSERVER_H_

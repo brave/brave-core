@@ -36,6 +36,21 @@
   <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_APPS_DESCRIPTION" desc="Description of what this section in the onboarding workflow does.">
     Add bookmarks to your favorite Brave Apps
   </message>
+  <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_APPS_MAPS" desc="Label for a button that creates a bookmark to maps.google.com, this should be the name of the brand.">
+    Maps
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_APPS_NEWS" desc="Label for a button that creates a bookmark to news.google.com, this should be the name of the brand.">
+    News
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_APPS_TRANSLATE" desc="Label for a button that creates a bookmark to translate.google.com, this should be the name of the brand.">
+    Translate
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_APPS_WEB_STORE" desc="Label for a button that creates a bookmark to chrome.google.com/webstore, this should be the name of the brand.">
+    Web Store
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_APPS_YOUTUBE" desc="Label for a button that creates a bookmark to youtube.com, this should be the name of the brand.">
+    YouTube
+  </message>
 
   <!-- NUX set default module -->
   <message name="IDS_ONBOARDING_WELCOME_NUX_SET_AS_DEFAULT_HEADER" desc="Header for the page that prompts user to set Brave as their default browser.">

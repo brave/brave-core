@@ -69,6 +69,7 @@ source_set("browser_process") {
     "//brave/components/brave_sync",
     "//brave/components/brave_webtorrent/browser",
     "//brave/components/content_settings/core/browser",
+    "//brave/components/services:brave_content_manifest_overlays",
     "//chrome/common",
     "//components/component_updater",
     "//components/prefs",

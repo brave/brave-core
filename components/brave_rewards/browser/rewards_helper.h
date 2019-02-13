@@ -1,9 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_HELPER_
-#define BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_HELPER_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_HELPER_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_HELPER_H_
 
 #include <string>
 
@@ -24,7 +25,7 @@ class RewardsHelper : public content::WebContentsObserver,
                        public BrowserListObserver,
                        public content::WebContentsUserData<RewardsHelper> {
  public:
-  RewardsHelper(content::WebContents*);
+  explicit RewardsHelper(content::WebContents*);
   ~RewardsHelper() override;
 
  private:
@@ -56,9 +57,10 @@ class RewardsHelper : public content::WebContentsObserver,
   SessionID tab_id_;
   RewardsService* rewards_service_;  // NOT OWNED
 
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
   DISALLOW_COPY_AND_ASSIGN(RewardsHelper);
 };
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_HELPER_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_HELPER_H_

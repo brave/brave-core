@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/md_extensions/item_list.html b/chrome/browser/resources/md_extensions/item_list.html
-index 90244de120cf8fda71002f535810619b1e8aeb3e..2179e088994761f87353a3b278f985c43c5fd3a5 100644
+index 71766b65bc271a903e60f9c4838eb119406fb3e3..fa6dc6977f4d4f0c9493409226392678cc7e53b7 100644
 --- a/chrome/browser/resources/md_extensions/item_list.html
 +++ b/chrome/browser/resources/md_extensions/item_list.html
-@@ -106,6 +106,13 @@
+@@ -122,6 +122,13 @@
              </template>
            </div>
          </div>

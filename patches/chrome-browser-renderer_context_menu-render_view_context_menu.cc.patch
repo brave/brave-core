@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-index 6482e62e2b0bf45c5c433b2187d292cc82b41cf8..457ef501803850ad53a9fefebe691ef8a3035235 100644
+index a603683a3f88ba8c1e0a933297aa94ecaaaf4bbc..da539f251c05c571c4ee60203ac5fc7e0b9e8072 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-@@ -1053,6 +1053,7 @@ void RenderViewContextMenu::AppendLinkItems() {
+@@ -1087,6 +1087,7 @@ void RenderViewContextMenu::AppendLinkItems() {
                 : IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD);
  
      AppendOpenInBookmarkAppLinkItems();

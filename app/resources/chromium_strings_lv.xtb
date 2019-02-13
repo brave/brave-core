@@ -88,6 +88,7 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="6970811910055250180">Notiek ierīces atjaunināšana...</translation>
 <translation id="8030318113982266900">Notiek ierīces atjaunināšana uz kanālu <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7861579472672677409">Paplašinājums <ph name="EXTENSION_NAME"/> ir pievienots pārlūkam Brave</translation>
+<translation id="8516116288943000095">Notīrīt arī datus no Brave (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Paslēpt Brave izvēlnē</translation>
 <translation id="5660079256336839395">Paslēpšana Brave izvēlnē</translation>
 <translation id="7456658570432774853">Palīdziet uzlabot pārlūku Brave, ziņojot par pašreizējiem iestatījumiem.</translation>
@@ -123,11 +124,12 @@ Ja pierakstīsieties tik un tā, Brave informācija, piemēram, grāmatzīmes, v
 <translation id="1326766910007115955">Jūs pierakstāties ar pārvaldītu kontu, kura administrators var kontrolēt jūsu profilu. Jūsu Brave dati, piemēram, lietotnes, grāmatzīmes, vēsture, paroles un citi iestatījumi, tiks neatgriezeniski saistīti ar lietotāju <ph name="USER_NAME"/>. Varēsiet dzēst šos datus, izmantojot Brave Software kontu informācijas paneli, taču nevarēsiet šos datus saistīt ar citu kontu. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Jūs pierakstāties ar pārvaldītu kontu, kura administrators var kontrolēt jūsu profilu. Jūsu Brave dati, piemēram, lietotnes, grāmatzīmes, vēsture, paroles un citi iestatījumi, tiks neatgriezeniski saistīti ar lietotāju <ph name="USER_NAME"/>. Varēsiet dzēst šos datus, izmantojot Brave Software kontu informācijas paneli, taču nevarēsiet šos datus saistīt ar citu kontu. Ja vēlaties, varat izveidot jaunu profilu, lai atsevišķi glabātu Brave datus. <ph name="LEARN_MORE"/></translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> iepriekš izmantoja Brave</translation>
-<translation id="5381681911713004932">Jūsu datorā ir kaitīga programmatūra. Brave var to noņemt un atjaunot jūsu iestatījumus, lai pārlūks atkal darbotos, kā paredzēts.</translation>
+<translation id="1384923383737428730">Jūsu datorā ir kaitīga programmatūra. Pārlūkprogramma Brave var to noņemt, atjaunot jūsu iestatījumus un atspējot paplašinājumus, lai atkal pareizi darbotos.</translation>
 <translation id="8919921662052966648">Brave nevarēja sinhronizēt jūsu datus. Lūdzu, atjauniniet savu sinhronizācijas ieejas frāzi.</translation>
 <translation id="2262856633481902138">Brave nevarēja sinhronizēt jūsu datus, jo jūsu konta pierakstīšanās informācija ir novecojusi.</translation>
 <translation id="5419189641394808652">Brave nevarēja sinhronizēt jūsu datus, jo jūsu domēnam nav pieejama sinhronizācija.</translation>
 <translation id="2577755334620061182">Brave nevarēja sinhronizēt jūsu datus pierakstīšanās kļūdas dēļ.</translation>
+<translation id="8583885258305961947">Brave OS sistēma</translation>
 <translation id="3968006371075376562">Brave OS nevarēja sinhronizēt jūsu datus. Lūdzu, atjauniniet savu sinhronizācijas ieejas frāzi.</translation>
 <translation id="6746636977031158624">Brave OS nevarēja sinhronizēt jūsu datus, jo jūsu konta pierakstīšanās informācija ir novecojusi.</translation>
 <translation id="2999152167963026588">Brave OS nevarēja sinhronizēt jūsu datus, jo jūsu domēnā nav pieejama sinhronizācija.</translation>
@@ -153,7 +155,7 @@ Lai <ph name="NEW_PROFILE_NAME"/> nevarētu piekļūt jūsu kontam, noteikti blo
 
 Papildu norādījumus skatiet e-pasta ziņojumā šeit: <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="1820843143331379651">Pārlūkā Brave 70 un jaunākās versijās vairs nebūs pieejami uzraudzīto lietotāju profili.</translation>
-<translation id="8797005356491520797">Šīs personas pārlūkošanas dati šajā ierīcē tiks dzēsti. Lai atgūtu datus, pierakstieties projektā Brave kā $2.</translation>
+<translation id="3066805437003400520">Šī lietotāja pārlūkošanas dati tiks dzēsti no šīs ierīces. Lai atkoptu datus, pierakstieties pārlūkprogrammā Brave kā lietotājs <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Pārlūkā Brave ir veikti uzlabojumi</translation>
 <translation id="7192666605334070839">Tagad pārlūkā Brave ir vieglāk izmantot Brave Software kontu, kā arī ir atvieglota lietošana datoros, ko izmanto vairākas personas.</translation>
 <translation id="3511996232906761537">Šeit atrodas jūsu tīmekļa saturs, grāmatzīmes un cits Brave saturs.</translation>
@@ -169,6 +171,7 @@ Papildu norādījumus skatiet e-pasta ziņojumā šeit: <ph name="ACCOUNT_EMAIL"
 <translation id="2871190378186459992">Atklājiet lieliskas lietotnes, spēles, paplašinājumus un motīvus, ko varat izmantot pārlūkā Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS ienākošie savienojumi)</translation>
 <translation id="1912973375560256099">Ienākošo savienojumu kārtula pārlūkam Brave, lai atļautu mDNS datplūsmu.</translation>
+<translation id="3795403186582265456">Brave var atpazīt attēlus un tekstu attēlā, nosūtot lapu attēlus Brave Software serveriem. Tas ļauj jums labāk saprast lapas saturu.</translation>
 <translation id="7276297358157391541">Brave var efektīvāk labot pareizrakstības kļūdas, nosūtot pārlūkā rakstīto uz Brave Software serveriem un tādējādi ļaujot izmantot to pašu pareizrakstības pārbaudes tehnoloģiju, kas tiek izmantota pakalpojumā Brave Software meklēšana.</translation>
 <translation id="1807774211756215222">Atvērt saiti jaunā Brave &amp;cilnē</translation>
 <translation id="4624945300945265642">Atvērt saiti inko&amp;gnito režīma logā</translation>

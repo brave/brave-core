@@ -1,5 +1,5 @@
 diff --git a/components/vector_icons/aggregate_vector_icons.py b/components/vector_icons/aggregate_vector_icons.py
-index cc7f0c6de1df7c34a92066efee01d19e5dbf473f..609ec93a9b7e0c88d3a1b426229426343a99c3b1 100644
+index 7239690c454de446ee1e9196baf07949cb73f411..80cad0b9165588416af777213b65e5ec97b2d7dd 100644
 --- a/components/vector_icons/aggregate_vector_icons.py
 +++ b/components/vector_icons/aggregate_vector_icons.py
 @@ -102,7 +102,7 @@ def ExtractIconReps(icon_file_name):

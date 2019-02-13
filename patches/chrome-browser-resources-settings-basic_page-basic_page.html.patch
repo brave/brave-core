@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/basic_page/basic_page.html b/chrome/browser/resources/settings/basic_page/basic_page.html
-index a99337c3d25ac4681807a57874fa7bb20713c1a3..927e63519b7cdcfda770723ee100498acb8c5e6c 100644
+index 65d9633a7c0e4b0b44dd8a0ae2bb7598b3ee1b06..c6a6980abc74d80c8d3b8fa9104c6494f113f1e4 100644
 --- a/chrome/browser/resources/settings/basic_page/basic_page.html
 +++ b/chrome/browser/resources/settings/basic_page/basic_page.html
 @@ -27,6 +27,9 @@

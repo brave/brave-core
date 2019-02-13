@@ -91,6 +91,7 @@
 <translation id="2218515861914035131">సాధారణ వచనం లాగా అతికించండి</translation>
 <translation id="5329858601952122676">&amp;తొలగించు</translation>
 <translation id="1017280919048282932">నిఘంటువులో &amp;జోడించు</translation>
+<translation id="7658239707568436148">రద్దు చెయ్యి</translation>
 <translation id="4572259796527554261">సూచనల కోసం Brave Softwareను అడగండి</translation>
 <translation id="3435896845095436175">ప్రారంభించండి</translation>
 <translation id="780301667611848630">వద్దు , ధన్యవాదాలు</translation>
@@ -212,6 +213,7 @@
 <translation id="5801568494490449797">ప్రాధాన్యతలు</translation>
 <translation id="7607274158153386860">టాబ్లెట్ సైట్‌ను అభ్యర్థించు</translation>
 <translation id="4408599188496843485">స&amp;హాయం</translation>
+<translation id="8378714024927312812">మీ సంస్థ ద్వారా నిర్వహించబడుతున్నవి</translation>
 <translation id="6723661294526996303">బుక్‌మార్క్‌లను మరియు సెట్టింగులను దిగుమతి చెయ్యి...</translation>
 <translation id="9203398526606335860">&amp;ప్రొఫైలింగ్ అనుమతించబడింది</translation>
 <translation id="3819800052061700452">&amp;పూర్తి స్క్రీన్</translation>
@@ -224,14 +226,12 @@
 <translation id="4891089016822695758">బీటా ఫోరమ్</translation>
 <translation id="7199158086730159431">సహా&amp;యం పొందండి</translation>
 <translation id="630065524203833229">ని&amp;ష్క్రమించు</translation>
-<translation id="8378714024927312812">మీ సంస్థ ద్వారా నిర్వహించబడుతున్నవి</translation>
 <translation id="3855676282923585394">బుక్‌మార్క్‌లు మరియు సెట్టింగ్‌లను దిగుమతి చెయ్యి...</translation>
 <translation id="4821935166599369261">&amp;ప్రొఫైలింగ్ అనుమతించబడింది</translation>
 <translation id="3827774300009121996">&amp;పూర్తి స్క్రీన్</translation>
 <translation id="3616741288025931835">బ్రౌజింగ్ డేటాను &amp;క్లియర్ చెయ్యి...</translation>
 <translation id="1618268899808219593">స&amp;హాయ కేంద్రం</translation>
 <translation id="7324297612904500502">బీటా ఫోరమ్</translation>
-<translation id="2052369079215022979">మీ సంస్థ ద్వారా నిర్వహించబడుతున్నవి</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5912378097832178659">శోధన ఇంజిన్‌లను &amp;సవరించు...</translation>
 <translation id="5702898740348134351">శోధన ఇంజిన్లను &amp;సవరించు...</translation>
@@ -335,7 +335,6 @@
 <translation id="8200772114523450471">మళ్ళీ ప్రారంభించు</translation>
 <translation id="2770465223704140727">జాబితాను నుండి తొలగించు</translation>
 <translation id="7702574632857388784">జాబితా నుంచి <ph name="FILE_NAME"/>ని తొలగించు</translation>
-<translation id="7658239707568436148">రద్దు చెయ్యి</translation>
 <translation id="7144878232160441200">మళ్లీ ప్రయత్నించండి</translation>
 <translation id="5170568018924773124">ఫోల్డర్‌లో చూపించు</translation>
 <translation id="1581962803218266616">శోధినిలో చూపించు</translation>
@@ -448,7 +447,6 @@
 <translation id="6527303717912515753">భాగస్వామ్యం చేయి</translation>
 <translation id="3249950116250264636"><ph name="APP_NAME"/> (<ph name="APP_URL"/>)</translation>
 <translation id="3810973564298564668">నిర్వహించు</translation>
-<translation id="7837307963048806839">•  $1</translation>
 <translation id="2344028582131185878">స్వయంచాలక డౌన్‌లోడ్‌లు</translation>
 <translation id="8217399928341212914">బహుళ ఫైల్‌ల యొక్క స్వయంచాలక డౌన్‌లోడ్‌లను బ్లాక్ చేయడాన్ని కొనసాగించు</translation>
 <translation id="2580889980133367162">బహుళ ఫైల్‌లను డౌన్‌లోడ్ చేయడానికి <ph name="HOST"/>ని ఎల్లప్పుడూ అనుమతించు</translation>
@@ -953,8 +951,6 @@
 <translation id="316854673539778496">మీ అన్ని పరికరాలలో మీ అన్ని ఎక్స్‌టెన్షన్‌లను పొందాలంటే, సైన్ ఇన్ చేసి, సమకాలీకరణను ఆన్ చేయండి.</translation>
 <translation id="8079938625609335826">మీ పరికరాలన్నింటిలో మీ అన్ని ఎక్స్‌టెన్షన్‌లను పొందడానికి, సమకాలీకరణను ఆన్ చేయండి.</translation>
 <translation id="4977942889532008999">ప్రాప్యతను నిర్ధారించండి</translation>
-<translation id="496226124210045887">మీరు ఎంచుకున్న ఫోల్డర్‌లో ముఖ్యమైన ఫైల్‌లు ఉన్నాయి. మీరు ఖచ్చితంగా ఈ ఫోల్డర్ కోసం "$1"కు శాశ్వతంగా చదవగల ప్రాప్యతను మంజూరు చేయాలనుకుంటున్నారా?</translation>
-<translation id="4547992677060857254">మీరు ఎంచుకున్న ఫోల్డర్‌లో ముఖ్యమైన ఫైల్‌లు ఉన్నాయి. మీరు ఖచ్చితంగా ఈ ఫోల్డర్ కోసం "$1"కు శాశ్వతంగా వ్రాయగల ప్రాప్యతను మంజూరు చేయాలనుకుంటున్నారా?</translation>
 <translation id="6220413761270491930">పొడిగింపును లోడ్ చేయడంలో లోపం</translation>
 <translation id="5707185214361380026">దీని నుండి పొడిగింపుని లోడ్ చేయడంలో విఫలమైంది:</translation>
 <translation id="7341834142292923918">ఈ సైట్‌కు యాక్సెస్ కోరుతోంది</translation>
@@ -1109,7 +1105,6 @@
 <translation id="224940702122312781">ఈ పేజీ చాలా డేటాను ఉపయోగిస్తుంది.</translation>
 <translation id="3861241522664181545">పేజీ పాజ్ చేయబడింది.</translation>
 <translation id="6921709132208495314">ఈ పేజీలో డేటాను ఉపయోగించడం ఆపివేయండి</translation>
-<translation id="1683850629661177840">లైట్ మోడ్ ఇప్పుడు HTTPSతో సహా అన్ని పేజీలలో బ్రౌజింగ్‌ని మరింత వేగవంతం చేస్తుంది.</translation>
 <translation id="8428213095426709021">సెట్టింగ్‌లు</translation>
 <translation id="2724841811573117416">WebRTC లాగ్‌లు</translation>
 <translation id="1969654639948595766">WebRTC వచన లాగ్ లు( <ph name="WEBRTC_TEXT_LOG_COUNT"/> )</translation>
@@ -1167,7 +1162,6 @@
 <translation id="444134486829715816">విస్తరించు...</translation>
 <translation id="2737363922397526254">కుదించు...</translation>
 <translation id="6690659332373509948">ఈ ఫైల్‌ను అన్వయించడం సాధ్యపడలేదు: <ph name="FILE_NAME"/></translation>
-<translation id="3011284594919057757">Flash గురించి</translation>
 <translation id="1962233722219655970">ఈ పేజీ మీ కంప్యూటర్‌లో పని చేయని స్థానిక క్లయింట్ యాప్‌ని ఉపయోగిస్తుంది.</translation>
 <translation id="7540972813190816353">నవీకరణల కోసం తనిఖీ చేస్తున్నప్పుడు లోపం సంభవించింది: <ph name="ERROR"/></translation>
 <translation id="7088434364990739311">అప్‌డేట్ తనిఖీ ప్రారంభం విఫలమైంది (ఎర్ర‌ర్‌ కోడ్ <ph name="ERROR"/>).</translation>
@@ -1336,8 +1330,6 @@
 <translation id="4206323443866416204">అభిప్రాయ నివేదిక</translation>
 <translation id="3681311097828166361">మీ అభిప్రాయం తెలియజేసినందుకు ధన్యవాదాలు. మీరు ప్రస్తుతం ఆఫ్‌లైన్‌లో ఉన్నారు, మీ నివేదిక తర్వాత పంపబడుతుంది.</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>సిస్టమ్ సమాచారాన్ని<ph name="END_LINK1"/> పంపు</translation>
-<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>సిస్టమ్ సమాచారం<ph name="END_LINK1"/> మరియు <ph name="BEGIN_LINK2"/>గణాంకాలు<ph name="END_LINK2"/> పంపు</translation>
-<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>సిస్టమ్ మరియు అనువర్తన సమాచారాన్ని<ph name="END_LINK1"/> మరియు <ph name="BEGIN_LINK2"/>గణాంకాలను<ph name="END_LINK2"/> పంపు</translation>
 <translation id="8329196515830093443">పైల్ డీబగ్గింగ్ కోసం Brave Softwareకి పంపబడుతుంది</translation>
 <translation id="8227119283605456246">ఫైల్‌ను జోడించు</translation>
 <translation id="5367091008316207019">ఫైల్‌ను చదువుతోంది..</translation>
@@ -1410,39 +1402,11 @@
 <translation id="9009369504041480176">అప్‌లోడ్ అవుతోంది (<ph name="PROGRESS_PERCENT"/>%)...</translation>
 <translation id="7925285046818567682"><ph name="HOST_NAME"/> కోసం వేచి ఉంది ...</translation>
 <translation id="7887334752153342268">నకిలీ</translation>
-<translation id="5210365745912300556">ట్యాబ్‌ను మూసివేయి</translation>
-<translation id="5453029940327926427">టాబ్లను మూసివెయ్యి</translation>
 <translation id="68541483639528434">ఇతర ట్యాబ్‌లను మూసివేయి</translation>
 <translation id="6686490380836145850">కుడివైపు ట్యాబ్‌లను మూసివేయి</translation>
-<translation id="855081842937141170">టాబ్‌ను పిన్ చేయి</translation>
-<translation id="5105855035535475848">పిన్ టాబ్‌లు</translation>
-<translation id="2074527029802029717">టాబ్‌కు పిన్ తీసివేయి</translation>
-<translation id="1812631533912615985">టాబ్‌లను అన్‌పిన్ చెయ్యండి</translation>
-<translation id="527605719918376753">ట్యాబ్‌ను మ్యూట్ చేయి</translation>
-<translation id="8373553483208508744">ట్యాబ్‌లను మ్యూట్ చేయి</translation>
-<translation id="9203478404496196495">ట్యాబ్‌ను అన్‌మ్యూట్ చేయి</translation>
-<translation id="1438632560381091872">ట్యాబ్‌లను అన్‌మ్యూట్ చేయి</translation>
-<translation id="1568067597247500137">సైట్‌ని మ్యూట్ చేయండి</translation>
-<translation id="1216654534877302979">సైట్‌లను మ్యూట్ చేయండి</translation>
-<translation id="612596694132302162">సైట్‌ని అన్‌మ్యూట్ చేయండి</translation>
-<translation id="6778959797435875428">సైట్‌లను అన్‌మ్యూట్ చేయండి</translation>
 <translation id="4474155171896946103">అన్ని టాబ్‌లను బుక్‌మార్క్ చెయ్యి...</translation>
-<translation id="3551320343578183772">ట్యాబ్‌ను మూసివేయి</translation>
-<translation id="7268365133021434339">టాబ్‌లను మూసివెయ్యి</translation>
 <translation id="4322394346347055525">ఇతర టాబ్‌లను మూసివేయి</translation>
 <translation id="1166212789817575481">కుడివైపు టాబ్‌లను మూసివెయ్యి</translation>
-<translation id="21133533946938348">టాబ్‌ను పిన్ చెయ్యి</translation>
-<translation id="8072988827236813198">పిన్ టాబ్‌లు</translation>
-<translation id="6442697326824312960">టాబ్‌కు పిన్ తీసివేయి</translation>
-<translation id="1732215134274276513">టాబ్‌లను అన్‌పిన్ చెయ్యండి</translation>
-<translation id="474217410105706308">ట్యాబ్‌ని మ్యూట్ చేయండి</translation>
-<translation id="9039890312082871605">ట్యాబ్‌లను మ్యూట్ చేయండి</translation>
-<translation id="4632483769545853758">ట్యాబ్‌ని అన్‌మ్యూట్ చేయండి</translation>
-<translation id="304826556400666995">ట్యాబ్‌లను అన్‌మ్యూట్ చేయండి</translation>
-<translation id="2973324205039581528">సైట్‌ని మ్యూట్ చేయండి</translation>
-<translation id="7579149537961810247">సైట్‌లను మ్యూట్ చేయండి</translation>
-<translation id="1293177648337752319">సైట్‌ని అన్‌మ్యూట్ చేయండి</translation>
-<translation id="109758035718544977">సైట్‌లను అన్‌మ్యూట్ చేయండి</translation>
 <translation id="2336228925368920074">అన్ని టాబ్‌లను బుక్‌మార్క్ చెయ్యి...</translation>
 <translation id="2278562042389100163">బ్రౌజర్ విండోను తెరువు</translation>
 <translation id="756445078718366910">బ్రౌజర్ విండోను తెరువు</translation>
@@ -1490,14 +1454,6 @@
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">ప్లాట్‌ఫారమ్</translation>
 <translation id="7022562585984256452">మీ హోమ్ పేజీ సెట్ చేయబడింది.</translation>
-<translation id="2709516037105925701">స్వయంపూర్తి</translation>
-<translation id="4378154925671717803">ఫోన్</translation>
-<translation id="4807098396393229769">కార్డ్‌పై పేరు</translation>
-<translation id="2612676031748830579">కార్డ్ సంఖ్య</translation>
-<translation id="869891660844655955">గడువు తేదీ</translation>
-<translation id="1149401351239820326">గడువు ముగింపు నెల</translation>
-<translation id="8058655154417507695">గడువు ముగింపు సంవత్సరం</translation>
-<translation id="2286841657746966508">బిల్లింగ్ చిరునామా</translation>
 <translation id="7274626204661209194">Brave Software క్లౌడ్ ప్రింట్</translation>
 <translation id="4973307593867026061">ప్రింటర్‌లను జోడించు</translation>
 <translation id="9052208328806230490">మీరు <ph name="EMAIL"/> ఖాతాను ఉపయోగించి <ph name="CLOUD_PRINT_NAME"/>తో మీ ప్రింట‌ర్‌ల‌ను నమోదు చేశారు</translation>
@@ -1642,12 +1598,8 @@
 <translation id="1231733316453485619">సమకాలీకరణను ఆన్ చేయాలా?</translation>
 <translation id="9125982323641182972">Braveలో Brave Software స్మార్ట్‌లను పొందండి</translation>
 <translation id="4736292055110123391">మీ బుక్‌మార్క్‌లు, పాస్‌వర్డ్‌‌లు, చరిత్ర మరియు మరిన్నింటిని మీ అన్ని పరికరాల్లోనూ సింక్ చేయండి</translation>
-<translation id="328921709097406258">శోధన, ప్రకటనలు మరియు ఇతర Brave Software సేవలను వ్యక్తిగతీకరించడానికి Brave Software మీ చరిత్రను ఉపయోగించవచ్చు</translation>
 <translation id="363863692969456324">మెరుగుపరచబడిన స్పెల్‌చెక్‌తో స్పెల్లింగ్ ఎర్రర్‌లను సరిదిద్దిండి</translation>
-<translation id="1493787485275784624">మీరు వచన ఫీల్డ్‌లలో టైప్ చేసే వచనం Brave Softwareకు పంపబడుతుంది.</translation>
 <translation id="561013949633009906">Brave మరియు దాని భద్రతను మెరుగుపరచడంలో సహాయపడండి</translation>
-<translation id="725079085443555687">కొంత సిస్టమ్ సమాచారం మరియు పేజీ కంటెంట్‌ను Brave Softwareకి వివరాలను వెల్లడించకుండా పంపుతుంది</translation>
-<translation id="2895734772884435517">మీరు ఈ సెట్టింగ్‌లను ఎప్పుడైనా అనుకూలీకరించవచ్చు.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">మీ బుక్‌మార్క్‌లు, చరిత్ర, పాస్‌వర్డ్‌లు మరియు ఇతర సెట్టింగ్‌లు మీ Brave Software ఖాతాకు సమకాలీకరించబడతాయి, కాబట్టి మీరు వీటిని మీ అన్ని పరికరాల్లో ఉపయోగించవచ్చు</translation>
 <translation id="3111958038206230539">Brave Software సేవలను వ్యక్తిగతీకరించండి</translation>
@@ -1757,8 +1709,6 @@
 <translation id="2562743677925229011"><ph name="SHORT_PRODUCT_NAME"/>కు సైన్ ఇన్ చేయలేదు</translation>
 <translation id="4027804175521224372">(మీరు దీన్ని చేయలేదు—<ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK"/>)</translation>
 <translation id="3574210789297084292">సైన్ ఇన్ అవ్వండి</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
-<translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="237828693408258535">ఈ పేజీని అనువదించాలా?</translation>
 <translation id="4613765529964435709">ఈ పేజీని Brave Software <ph name="SOURCE_LANGUAGE"/> నుండి <ph name="TARGET_LANGUAGE"/>కి అనువదించాలని మీరు కోరుకుంటున్నారా?</translation>
 <translation id="5990386583461751448">అనువదించబడింది</translation>
@@ -1821,6 +1771,7 @@
 <translation id="8214489666383623925">ఫైల్‌ను తెరువు...</translation>
 <translation id="7456847797759667638">స్థానాన్ని తెరువు...</translation>
 <translation id="3265459715026181080">విండో మూసివెయ్యి</translation>
+<translation id="3551320343578183772">ట్యాబ్‌ను మూసివేయి</translation>
 <translation id="4780321648949301421">ఇలా పేజీని సేవ్ చేయి...</translation>
 <translation id="6212752530110374741">ఇమెయిల్ లింక్</translation>
 <translation id="457386861538956877">మరిన్ని...</translation>
@@ -1869,6 +1820,8 @@
 <translation id="7831754656372780761"><ph name="TAB_TITLE"/> <ph name="EMOJI_MUTING"/></translation>
 <translation id="6315493146179903667">అన్నీ ముందుకు తీసుకెళ్లు</translation>
 <translation id="3007771295016901659">ట్యాబ్ యొక్క నకిలీని రూపొందించు</translation>
+<translation id="2973324205039581528">సైట్‌ని మ్యూట్ చేయండి</translation>
+<translation id="21133533946938348">టాబ్‌ను పిన్ చెయ్యి</translation>
 <translation id="2007404777272201486">ఒక సమస్యను నివేదించండి...</translation>
 <translation id="3118319026408854581"><ph name="PRODUCT_NAME"/> సహాయం</translation>
 <translation id="6721972322305477112">&amp;ఫైల్</translation>
@@ -2258,8 +2211,6 @@
 <translation id="4079799245038595838">మీ ఫోన్‌కు ఒక నోటిఫికేషన్ పంపబడింది. ఇది మీరే అని ధృవీకరించడం కోసం ప్రాంప్ట్‌లను అనుసరించండి.</translation>
 <translation id="88870264962436283"><ph name="APP_NAME"/>లో టచ్ IDని ఉపయోగించండి</translation>
 <translation id="5186185447130319458">అజ్ఞాత</translation>
-<translation id="8480139856920479206">{0,plural, =1{మీ వద్ద ఒక అజ్ఞాత విండో ఉంది.}other{మీ వద్ద # అజ్ఞాత విండోలు ఉన్నాయి.}}</translation>
-<translation id="2545348954155066907">{0,plural, =1{ఈ విండోని మూసివేయండి}other{అన్ని అజ్ఞాత విండోలను మూసివేయండి}}</translation>
 <translation id="394984172568887996">IE నుండి దిగుమతి చెయ్యబడింది</translation>
 <translation id="1543284117603151572">Edge నుండి దిగుమతి చేసినవి</translation>
 <translation id="5502500733115278303">Firefox నుండి దిగుమతి చెయ్యబడింది</translation>
@@ -2323,7 +2274,6 @@
 <translation id="6455894534188563617">&amp;కొత్త ఫోల్డర్</translation>
 <translation id="1015318665228971643">ఫోల్డర్ పేరును సవరించండి</translation>
 <translation id="5449588825071916739">అన్ని ట్యాబ్‌లను బుక్‌మార్క్ చేయి</translation>
-<translation id="5528368756083817449">బుక్‌మార్క్ నిర్వాహికి</translation>
 <translation id="3828029223314399057">బుక్‌మార్క్‌లను శోధించు</translation>
 <translation id="8116972784401310538">&amp;బుక్‌మార్క్ నిర్వాహకుడు</translation>
 <translation id="6973630695168034713">ఫోల్డర్‌లు</translation>
@@ -2379,6 +2329,10 @@
 <translation id="1774833706453699074">తెరిచి ఉన్న పేజీలను బుక్‌మార్క్ చేయి...</translation>
 <translation id="6949306908218145636">తెరిచిన పేజీలను బుక్‌మార్క్ చేయి...</translation>
 <translation id="4422347585044846479">ఈ పేజీకి బుక్‌మార్క్‌ను సవరించు</translation>
+<translation id="1620510694547887537">కెమెరా</translation>
+<translation id="5646376287012673985">స్థానం</translation>
+<translation id="3227137524299004712">మైక్రోఫోన్</translation>
+<translation id="2482878487686419369">ప్రకటనలు</translation>
 <translation id="6005695835120147974">మీడియా రూటర్</translation>
 <translation id="7787308148023287649">మరొక స్క్రీన్‌లో ప్రదర్శించు</translation>
 <translation id="7710568461918838723">&amp;ప్రసారం...</translation>
@@ -2591,7 +2545,6 @@
 <translation id="2653659639078652383">సమర్పించు</translation>
 <translation id="8392451568018454956"><ph name="USER_EMAIL_ADDRESS"/> కోసం ఎంపికల మెను</translation>
 <translation id="6164005077879661055">ఈ పర్యవేక్షించబడే వినియోగదారు తీసివేయబడినప్పుడు పర్యవేక్షించబడే వినియోగదారుతో అనుబంధించబడిన అన్ని ఫైల్‌లు మరియు స్థానిక డేటా శాశ్వతంగా తొలగించబడతాయి. ఈ పర్యవేక్షించబడే వినియోగదారు సందర్శించిన వెబ్‌సైట్‌లు మరియు వీరి సెట్టింగ్‌లు ఇప్పటికీ <ph name="MANAGEMENT_URL"/>లో నిర్వాహకునికి కనిపించవచ్చు.</translation>
-<translation id="1646102270785326155">ఈ వినియోగదారును తీసివేస్తే, వీరికి చెందిన అన్ని ఫైల్‌లు మరియు స్థానిక డేటా శాశ్వతంగా తొలగించబడతాయి. అయినప్పటికీ, $1 తర్వాత సైన్ ఇన్ చేయగలరు.</translation>
 <translation id="672213144943476270">దయచేసి అతిథి లాగా బ్రౌజ్ చేయబోయే ముందు మీ ప్రొఫైల్‌ను అన్‌లాక్ చేయండి.</translation>
 <translation id="3478685642445675458">దయచేసి వ్యక్తిని తీసివేయబోయే ముందు మీ ప్రొఫైల్‌ను అన్‌లాక్ చేయండి.</translation>
 <translation id="4648499713050786492">దయచేసి వ్యక్తిని జోడించే ముందు మీ ప్రొఫైల్‌ను అన్‌లాక్ చేయండి.</translation>
@@ -2627,12 +2580,6 @@
 <translation id="6146563240635539929">వీడియోలు</translation>
 <translation id="3616113530831147358">ఆడియో</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>హెచ్చరిక:<ph name="END_BOLD"/> ఈ ఫైల్‌లు తాత్కాలికమైనవి, డిస్క్ స్పేస్‌ను పెంచడం కోసం స్వయంచాలకంగా తొలగించబడవచ్చు. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
-<translation id="7361039089383199231">$1 బైట్‌లు</translation>
-<translation id="4871210892959306034">$1 KB</translation>
-<translation id="641105183165925463">$1 MB</translation>
-<translation id="7221155467930685510">$1 GB</translation>
-<translation id="5039512255859636053">$1 TB</translation>
-<translation id="6840313690797192085">$1 PB</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
@@ -2649,7 +2596,6 @@
 <translation id="5145331109270917438">సవరించబడిన తేదీ</translation>
 <translation id="8487700953926739672">ఆఫ్‌లైన్‌లో అందుబాటు</translation>
 <translation id="2230062665678605299">"<ph name="FOLDER_NAME"/>" ఫోల్డర్‌ను సృష్టించడం సాధ్యపడలేదు. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4630590996962964935">చెల్లని అక్షరం: $1</translation>
 <translation id="642282551015776456">ఈ పేరును ఫైల్ యొక్క ఫోల్డర్ పేరుగా ఉపయోగించలేము.</translation>
 <translation id="2070909990982335904">డాట్‌తో ప్రారంభమయ్యే పేర్లు సిస్టమ్ కోసం ప్రత్యేకించబడినవి. దయచేసి మరొక పేరును ఎంచుకోండి.</translation>
 <translation id="8456681095658380701">చెల్లని పేరు</translation>
@@ -2660,8 +2606,6 @@
 <translation id="3749289110408117711">ఫైల్ పేరు</translation>
 <translation id="3280431534455935878">సిద్ధం చేస్తోంది</translation>
 <translation id="6607272825297743757">ఫైల్ సమాచారం</translation>
-<translation id="3429599832623003132">$1 అంశాలు</translation>
-<translation id="532360961509278431">"$1"ని తెరవడం సాధ్యం కాలేదు: $2</translation>
 <translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>మీ పరికరాన్ని వెంటనే తీసివేయవద్దు!<ph name="END_BOLD"/>
        <ph name="LINE_BREAKS"/>
        మీ పరికరం ఉపయోగంలో ఉన్నప్పుడు తీసివేస్తే డేటా నష్టం కలగవచ్చు.  దయచేసి చర్య పూర్తయ్యే వరకు వేచి ఉండి ఆపై ఫైల్‌ల అనువర్తనాన్ని ఉపయోగించి పరికరాన్ని తీసివేయండి.</translation>
@@ -2715,9 +2659,6 @@
 <translation id="5158593464696388225">చిత్రాన్ని సేవ్ చేయడం విఫలమైంది.</translation>
 <translation id="2787047795752739979">అసలును భర్తీ చేయి</translation>
 <translation id="8775404590947523323">మీ సవరణలు ఆటోమేటిక్‌గా సేవ్ చేయబడతాయి.<ph name="BREAKS"/>అసలు చిత్రం యొక్క నకలును ఉంచడానికి, "అసలును భర్తీ చేయి" ఎంపికను తీసివేయండి</translation>
-<translation id="6653525630739667879">$1కి సేవ్ చేయలేరు. అన్ని సవరణలు డౌన్‌లోడ్‌లు ఫోల్డర్‌లో $2కి సేవ్ చేయబడతాయి.</translation>
-<translation id="3184560914950696195">$1కు సేవ్ చేయడం సాధ్యపడదు. సవరించిన చిత్రాలు డౌన్‌లోడ్‌ల ఫోల్డర్‌లో సేవ్ చేయబడతాయి.</translation>
-<translation id="6983991971286645866">అన్ని సవరణలు $1కి సేవ్ చేయబడతాయి.</translation>
 <translation id="8153607920959057464">ఈ ఫైల్‌ని ప్రదర్శించడం సాధ్యం కాలేదు.</translation>
 <translation id="6227235786875481728">ఈ ఫైల్‌ని ప్లే చేయడం సాధ్యం కాలేదు.</translation>
 <translation id="9154418932169119429">ఈ చిత్రం ఆఫ్‌లైన్‌లో అందుబాటులో లేదు.</translation>
@@ -2727,9 +2668,6 @@
 <translation id="4801956050125744859">రెండింటినీ ఉంచు</translation>
 <translation id="1062407476771304334">భర్తీ చేయి</translation>
 <translation id="1556189134700913550">అన్నింటికీ వర్తింపజేయి</translation>
-<translation id="3206175707080061730">"$1" పేరుగల ఫైల్ ఇప్పటికే ఉంది. మీరు దాన్ని భర్తీ చేయాలనుకొంటున్నారా?</translation>
-<translation id="8059178146866384858">"$1" పేరు గల ఫైల్ ఇప్పటికే ఉంది. దయచేసి వేరొక పేరును ఎంచుకోండి.</translation>
-<translation id="5653140146600257126">"$1" పేరుతో ఫోల్డర్ ఇప్పటికే ఉంది. దయచేసి వేరొక పేరుని ఎంచుకోండి.</translation>
 <translation id="1497522201463361063">"<ph name="FILE_NAME"/>" పేరు మార్చడం సాధ్యపడలేదు. <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5330512191124428349">సమాచారం పొందండి</translation>
 <translation id="8312871300878166382">ఫోల్డర్‌లోకి అతికించు</translation>
@@ -2788,20 +2726,13 @@
 <translation id="4724850507808590449"><ph name="FILE_COUNT"/> ఫోటోలు బ్యాకప్ చేయబడ్డాయి</translation>
 <translation id="1351692861129622852"><ph name="FILE_COUNT"/> ఫైల్‌లను దిగుమతి చేస్తోంది...</translation>
 <translation id="117624967391683467"><ph name="FILE_NAME"/>ను కాపీ చేస్తోంది...</translation>
-<translation id="8453482423012550001">$1 అంశాలను కాపీ చేస్తోంది...</translation>
 <translation id="7627790789328695202">అయ్యో, <ph name="FILE_NAME"/> ఇప్పటికే ఉంది. దీని పేరు మార్చి, మళ్లీ ప్రయత్నించండి.</translation>
 <translation id="5691596662111998220">అయ్యో, <ph name="FILE_NAME"/> ఉనికిలో లేదు.</translation>
 <translation id="4336032328163998280">కాపీ ఆపరేషన్ విఫలమైంది. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1503914375822320413">కాపీ ఆపరేషన్ విఫలమైంది, ఊహించని లోపం: $1</translation>
 <translation id="6133173853026656527"><ph name="FILE_NAME"/>ని తరలిస్తోంది...</translation>
-<translation id="3039828483675273919">$1 అంశాలను తరలిస్తోంది...</translation>
 <translation id="6007237601604674381">తరలింపు విఫలమైంది. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="8954952943849489823">తరలింపు విఫలమైంది, ఊహించని లోపం: $1</translation>
 <translation id="3326821416087822643"><ph name="FILE_NAME"/>ను జిప్ చేస్తోంది...</translation>
-<translation id="5694501201003948907">$1 అంశాలను జిప్ చేస్తోంది...</translation>
-<translation id="7464490149090366184">జిప్ చేయడంలో విఫలమైంది, ఈ అంశం ఉనికిలో ఉంది: "$1"</translation>
 <translation id="9133055936679483811">జిప్ చేయడంలో విఫలమైంది. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1711973684025117106">జిప్ చేయడంలో విఫలమైంది, ఊహించని లోపం: $1</translation>
 <translation id="653019979737152879"><ph name="FILE_NAME"/>ని సమకాలీకరిస్తోంది...</translation>
 <translation id="8579285237314169903"><ph name="NUMBER_OF_FILES"/> అంశాలను సమకాలీకరిస్తోంది...</translation>
 <translation id="8137331602592933310">"<ph name="FILENAME"/>" మీతో భాగస్వామ్యం చేయబడింది. మీకు ఇది స్వంతం కానందున మీరు దీన్ని తొలగించలేరు.</translation>
@@ -2821,8 +2752,6 @@
 <translation id="1464724975715666883">1 లోపం.</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> లోపాలు.</translation>
 <translation id="6643016212128521049">క్లియర్ చేయి</translation>
-<translation id="4284105660453474798">మీరు "$1"ను ఖచ్చితంగా తొలగించాలనుకుంటున్నారా?</translation>
-<translation id="4580526846085481512">మీరు $1 ఐటమ్‌లను ఖచ్చితంగా తొలగించాలనుకుంటున్నారా?</translation>
 <translation id="7953739707111622108">పరికరం తెరవడం సాధ్యం కాదు ఎందుకంటే దాని ఫైల్‌సిస్టమ్ గుర్తించబడలేదు.</translation>
 <translation id="3726463242007121105">పరికరం తెరవడం సాధ్యం కాదు ఎందుకంటే దాని ఫైల్‌సిస్టమ్‌కు మద్దతు లేదు.</translation>
 <translation id="3414856743105198592">తొలగించగల మీడియాను ఫార్మాట్ చేయడం వలన మొత్తం డేటా తుడిచి వేయబడుతుంది. మీరు కొనసాగించాలనుకుంటున్నారా?</translation>
@@ -2896,7 +2825,6 @@
     <ph name="MARKUP_4"/>మీ డౌన్‌లోడ్‌ల ఫోల్డర్ నుండి ఫైల్‌లను తొలగించండి<ph name="MARKUP_5"/></translation>
 <translation id="7606199793785990727">Brave Software డిస్క్‌ను చేరుకోవడం సాధ్యపడలేదు. దయచేసి <ph name="BEGIN_LINK"/>లాగ్ అవుట్<ph name="END_LINK"/> చేసి, తిరిగి లాగిన్ చేయండి.</translation>
 <translation id="585883343689351092">Brave Software డిస్క్‌కు స్వాగతం!</translation>
-<translation id="1788440444874291920">Brave Software డిస్క్‌తో 100 GB ఉచితంగా పొందండి</translation>
 <translation id="6862635236584086457">ఈ ఫోల్డర్‌లో సేవ్ చేసిన అన్ని ఫైల్‌లు ఆన్‌లైన్‌లో ఆటోమేటిక్‌గా బ్యాకప్ చేయబడతాయి</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>ఫైల్‌లను ఎక్కడి నుండైనా ప్రాప్యత చేయండి, ఆఫ్‌లైన్‌లో ఉన్నప్పటికీ ప్రాప్యత చేయగలరు.<ph name="MARKUP_2"/>
     Brave Software డిస్క్‌లోని ఫైల్‌లు నవీకృతంగా ఉంటాయి మరియు ఏ పరికరం నుండి అయినా అందుబాటులో ఉంటాయి.<ph name="MARKUP_3"/>
@@ -2904,24 +2832,14 @@
     మీ పరికరానికి ఏ విధమైన ఆపద సంభవించినా ఫర్వాలేదు, మీ ఫైల్‌లు Brave Software డిస్క్‌లో సురక్షితంగా నిల్వ చేయబడి ఉంటాయి.<ph name="MARKUP_6"/>
     అన్ని ఫైల్‌లు ఒకే చోట ఉంటాయి, కనుక <ph name="MARKUP_7"/>భాగస్వామ్యం చేయండి, సృష్టించండి
     మరియు వాటిపై ఇతరులతో కలిసి పని చేయండి<ph name="MARKUP_8"/>.<ph name="MARKUP_9"/></translation>
-<translation id="7489605380874780575">అర్హతను తనిఖీ చేయి</translation>
 <translation id="4878716980734452132">ఈ ఫైల్ రకానికి మద్దతు లేదు. దయచేసి ఈ రకమైన ఫైల్‌ను తెరవగల అనువర్తనాన్ని కనుగొనడానికి <ph name="BEGIN_LINK"/>Brave వెబ్ స్టోర్<ph name="END_LINK"/>ను సందర్శించండి.
         <ph name="BEGIN_LINK_HELP"/>మరింత తెలుసుకోండి<ph name="END_LINK_HELP"/></translation>
-<translation id="3376900196170631953">ఈ ఫైల్ Windows సాఫ్ట్‌వేర్ ఉపయోగించే PC కోసం రూపొందించబడింది. ఇది Brave OSను అమలు చేసే మీ పరికరానికి అనుకూలమైనది కాదు. దయచేసి తగిన ప్రత్యామ్నాయ యాప్ కోసం <ph name="BEGIN_LINK"/>Brave వెబ్ స్టోర్<ph name="END_LINK"/>లో వెతకండి.<ph name="BEGIN_LINK_HELP"/>మరింత తెలుసుకోండి<ph name="END_LINK_HELP"/></translation>
 <translation id="3072401511615920367">ఈ ఫైల్ Macintosh సాఫ్ట్‌వేర్‌ను ఉపయోగించే కంప్యూటర్ కోసం రూపొందించబడింది. ఇది Brave OSను అమలు చేసే మీ పరికరానికి అనుకూలమైనది కాదు. దయచేసి తగిన ప్రత్యామ్నాయ యాప్‌ కోసం <ph name="BEGIN_LINK"/>Brave వెబ్ స్టోర్<ph name="END_LINK"/>లో వెతకండి.<ph name="BEGIN_LINK_HELP"/>మరింత తెలుసుకోండి<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">ఒక క్షణం వేచి ఉండండి</translation>
 <translation id="3096967955765855393">మేము మీ బ్రౌజింగ్‌ను సురక్షితం చేసే మార్గాల కోసం నిరంతరం వెతుకుతున్నాము. గతంలో, ఏ వెబ్‌సైట్ అయినా మీ బ్రౌజర్‌కు ఎక్స్‌టెన్షన్‌ని జోడించడానికి మిమ్మల్ని ప్రాంప్ట్ చేయవచ్చు. Brave Software Brave తాజా వెర్షన్‌లలో, మీరు తప్పనిసరిగా ఎక్స్‌టెన్షన్‌ల పేజీలో వాటిని జోడించడం ద్వారా ఈ ఎక్స్‌టెన్షన్‌లను ఇన్‌స్టాల్ చేయాలనుకుంటున్నట్లు Braveకి ప్రత్యేకించి తెలియజేయాలి. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
-<translation id="2004663115385769400">$1తో తెరవడం సాధ్యపడదు</translation>
-<translation id="639777613761517128">$1తో ఫైల్‌లను తెరవడానికి, ముందుగా Linux ఫైల్‌ల ఫోల్డర్‌లకు కాపీ చేయాలి.</translation>
 <translation id="5368191757080475556">Linuxతో ఫోల్డర్‌ను షేర్ చేయండి</translation>
-<translation id="6803594270782834876">$1 ఫోల్డర్‌లోని ఫైల్‌లను తెరవడం కోసం Linux యాప్‌లకు అనుమతి ఇవ్వండి</translation>
-<translation id="9204140378020726578">మీ Brave Software డిస్క్ ఫోల్డర్‌లోని ఫైల్‌లను తెరవడం కోసం Linux యాప్‌లకు అనుమతి ఇవ్వండి. మార్పులు మీ ఇతర పరికరాలకు సమకాలీకరించబడతాయి.</translation>
 <translation id="4290535918735525311">Linuxతో 1 ఫోల్డర్ షేర్ చేయబడింది</translation>
-<translation id="984401732412731005">$1 ఫోల్డర్‌లు Linuxతో షేర్ చేయబడ్డాయి</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/> ఫైల్</translation>
-<translation id="895586998699996576">$1 చిత్రం</translation>
-<translation id="2853916256216444076">$1 వీడియో</translation>
-<translation id="7006844981395428048">$1 ఆడియో</translation>
 <translation id="7799329977874311193">HTML పత్రం</translation>
 <translation id="2208158072373999562">జిప్ ఆర్కైవ్</translation>
 <translation id="2028997212275086731">RAR ఆర్కైవ్</translation>
@@ -2970,8 +2888,6 @@
 <translation id="6199801702437275229">ఖాళీ సమాచారం కోసం వేచి ఉంది...</translation>
 <translation id="6485131920355264772">ఖాళీ సమాచారాన్ని తిరిగి పొందడం విఫలమైంది</translation>
 <translation id="7748626145866214022">చర్య బార్‌లో మరిన్ని ఎంపికలు అందుబాటులో ఉంటాయి. చర్య బార్‌పై దృష్టి పెట్టడం కోసం Alt + A నొక్కండి.</translation>
-<translation id="60628369828239652"><ph name="FILE_NAME"/> ఫైల్‌ని తెరుస్తోంది</translation>
-<translation id="353547388688256996"><ph name="NUMBER_FILES"/>ని తెరుస్తోంది</translation>
 <translation id="6710213216561001401">మునుపటి</translation>
 <translation id="1395262318152388157">సీక్ స్లయిడర్</translation>
 <translation id="4880214202172289027">వాల్యూమ్ స్లయిడర్</translation>
@@ -3114,7 +3030,6 @@
 <translation id="6352773953037195952">అత్యధికం</translation>
 <translation id="3677657024345889897">అత్యంత నిశబ్దం</translation>
 <translation id="167160931442925455">అత్యంత బిగ్గరగా</translation>
-<translation id="9129010913019873477"><ph name="PERCENTAGE"/> (డిఫాల్ట్)</translation>
 <translation id="3602290021589620013">పరిదృశ్యం</translation>
 <translation id="7037509989619051237">వచనం యొక్క ప్రివ్యూ</translation>
 <translation id="5471768120198416576">హలో! నేను మీ వచనం నుండి ప్రసంగం వాయిస్‌ని.</translation>
@@ -3167,9 +3082,11 @@
 <translation id="8465252176946159372">చెల్లదు</translation>
 <translation id="8647834505253004544">వెబ్ చిరునామా చెల్లదు</translation>
 <translation id="7946586320617670168">మూలం తప్పనిసరిగా సురక్షితంగా ఉండాలి</translation>
+<translation id="2709516037105925701">స్వయంపూర్తి</translation>
 <translation id="7764225426217299476">చిరునామాను జోడించు</translation>
 <translation id="5595485650161345191">చిరునామాను సవరించు</translation>
 <translation id="6207937957461833379">దేశం/ప్రాంతం</translation>
+<translation id="4378154925671717803">ఫోన్</translation>
 <translation id="9064275926664971810">ఫారమ్‌లను ఒకే క్లిక్‌లో నింపడానికి స్వీయపూరణను ప్రారంభిస్తుంది</translation>
 <translation id="9095253524804455615">తీసివేయి</translation>
 <translation id="451515744433878153">తీసివేయి</translation>
@@ -3179,6 +3096,11 @@
 <translation id="4835914736509775287">కార్డ్‌లను మీ Brave Software ఖాతాలో సేవ్ చేయండి</translation>
 <translation id="7255002516883565667">ప్రస్తుతం, కేవలం ఈ పరికరంలో మాత్రమే ఉపయోగించగల ఒక కార్డ్ మీ వద్ద ఉంది</translation>
 <translation id="6848388270925200958">ఇప్పుడు, కేవలం ఈ పరికరంలో మాత్రమే ఉపయోగించగల కొన్ని కార్డ్‌లు మీ వద్ద ఉన్నాయి</translation>
+<translation id="4807098396393229769">కార్డ్‌పై పేరు</translation>
+<translation id="2612676031748830579">కార్డ్ సంఖ్య</translation>
+<translation id="869891660844655955">గడువు తేదీ</translation>
+<translation id="1149401351239820326">గడువు ముగింపు నెల</translation>
+<translation id="8058655154417507695">గడువు ముగింపు సంవత్సరం</translation>
 <translation id="379082410132524484">మీ కార్డ్ గడువు ముగిసింది</translation>
 <translation id="6644512095122093795">పాస్‌వర్డ్‌లను సేవ్ చెయ్యడానికి ప్రతిపాదన</translation>
 <translation id="2100273922101894616">స్వీయ సైన్-ఇన్</translation>
@@ -3508,7 +3430,6 @@
 <translation id="6921033294337262045">యాప్ నోటిఫికేషన్‌లు &gt; Brave Software Play సేవలను నొక్కండి.</translation>
 <translation id="5624710179837914896">Brave Software Play సేవలను ఆన్ చేయండి.</translation>
 <translation id="2705736684557713153">ఇది కనిపించినట్లయితే, స్క్రీన్ దిగువకు స్క్రోల్ చేసి, తక్షణ టెథెరింగ్‌ని ఆన్ చేయండి. ఇది కనిపించకుంటే, మీరు మొత్తం సెట్ చేసినట్లే.</translation>
-<translation id="3604048165392640554">మొబైల్ కనెక్షన్ ఏదీ కనుగొనబడలేదు. మీ ఇతర పరికరాలలో తక్షణ టెథెరింగ్‌ను ఆన్ చేసి మళ్లీ ప్రయత్నించండి. &lt;a target="_blank" href="<ph name="URL"/>"&gt;మరింత తెలుసుకోండి&lt;/a&gt;</translation>
 <translation id="7240339475467890413">కొత్త హాట్‌స్పాట్‌కి కనెక్ట్ చేయాలా?</translation>
 <translation id="6514010653036109809">అందుబాటులో ఉన్న పరికరం:</translation>
 <translation id="2075474481720804517">బ్యాటరీ <ph name="BATTERY_PERCENTAGE"/>% ఉంది</translation>
@@ -3686,8 +3607,6 @@
 <translation id="5487521232677179737">డేటాని తీసివేయి</translation>
 <translation id="3151562827395986343">చరిత్ర, కుక్కీలు, కాష్ మొదలైనవాటిని తీసివేస్తుంది</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
-<translation id="3407837288045706722">గోప్యత, భద్రత మరియు డేటా సేకరణకు సంబంధించిన మరిన్ని సెట్టింగ్‌ల కోసం, <ph name="BEGIN_LINK"/>సమకాలీకరణ మరియు వ్యక్తిగతీకరణ<ph name="END_LINK"/> చూడండి</translation>
-<translation id="7222718784508482526">గోప్యత, భద్రత మరియు డేటా సేకరణకు సంబంధించిన మరిన్ని సెట్టింగ్‌ల కోసం, <ph name="BEGIN_LINK"/>సమకాలీకరణ మరియు Brave Software సేవలను<ph name="END_LINK"/> చూడండి</translation>
 <translation id="8632933437936028548">సెట్టింగ్‌లను రీసెట్ చేయండి</translation>
 <translation id="5293170712604732402">సెట్టింగ్‌లను వాటి అసలు డిఫాల్ట్ విలువలకు పునరుద్ధరించండి</translation>
 <translation id="892706138619340876">కొన్ని సెట్టింగ్‌లు రీసెట్ చేయబడ్డాయి</translation>
@@ -3712,12 +3631,9 @@
 <translation id="7098447629416471489">సేవ్ చేసిన ఇతర శోధన ఇంజిన్‌లు ఇక్కడ కనిపిస్తాయి</translation>
 <translation id="1459967076783105826">పొడిగింపుల ద్వారా జోడించబడిన శోధన ఇంజిన్‌లు</translation>
 <translation id="6678717876183468697">ప్రశ్న URL</translation>
-<translation id="1545786162090505744">ప్రశ్న యొక్క ప్రదేశంలో %sతో URL</translation>
 <translation id="6953878494808481632">సంబంధిత సమాచారం</translation>
 <translation id="4145922204387553806">మీ స్క్రీన్‌పై ఉన్నవాటికి సంబంధించిన సమాచారాన్ని మీకు చూపడానికి అసిస్టెంట్‌ని అనుమతిస్తుంది</translation>
 <translation id="472896694312062378">Ok Brave Software</translation>
-<translation id="6236033368436682108">మీ స్క్రీన్ ఆన్‌లో ఉన్నప్పుడు మీరు ఎప్పుడైనా "Ok Brave Software" అని చెప్పి మీ అసిస్టెంట్‌ను యాక్సెస్ చేయండి</translation>
-<translation id="2482878487686419369">ప్రకటనలు</translation>
 <translation id="5355099869024327351">మీకు నోటిఫికేషన్‌లను చూపించడానికి అసిస్టెంట్‌ను అనుమతించండి</translation>
 <translation id="133535873114485416">ప్రాధాన్య ఇన్‌పుట్</translation>
 <translation id="6233154960150021497">కీబోర్డ్ బదులుగా వాయిస్‌ను డిఫాల్ట్‌గా ఉపయోగించండి</translation>
@@ -3733,14 +3649,12 @@
 <translation id="1919345977826869612">ప్రకటనలు</translation>
 <translation id="5649053991847567735">స్వయంచాలక డౌన్‌లోడ్‌లు</translation>
 <translation id="3744111561329211289">నేపథ్య సమకాలీకరణ</translation>
-<translation id="1620510694547887537">కెమెరా</translation>
 <translation id="2586657967955657006">క్లిప్‌బోర్డ్</translation>
 <translation id="5518219166343146486">క్లిప్‌బోర్డ్‌కు కాపీ చేసిన వచనం మరియు చిత్రాలను సైట్ చూడాలన్నప్పుడు అనుమతి అడగాలి</translation>
 <translation id="2089795179672254991">క్లిప్‌బోర్డ్‌కు కాపీ చేసిన వచనం మరియు చిత్రాలను సైట్ చూడాలన్నప్పుడు అనుమతి అడగాలి (సిఫార్సు చేయడమైనది)</translation>
 <translation id="16815041330799488">క్లిప్‌బోర్డ్‌కు కాపీ చేసిన వచనం మరియు చిత్రాలను చూడటానికి సైట్‌లను అనుమతించవద్దు</translation>
 <translation id="3668823961463113931">హ్యాండ్లర్‌లు</translation>
 <translation id="5689516760719285838">స్థానం</translation>
-<translation id="3227137524299004712">మైక్రోఫోన్</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">ఫ్లాష్</translation>
 <translation id="6951153907720526401">చెల్లింపు హ్యాండ్లర్‌లు</translation>
@@ -3885,12 +3799,9 @@
 <translation id="6029292188939175871">తొలగించు [<ph name="FINGERPRINT_NAME"/>], బటన్</translation>
 <translation id="1927632033341042996">వేలు <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">ఖాతాను జోడించండి</translation>
-<translation id="3422989461909154470">యాప్‌లు మరియు వెబ్‌సైట్‌లలో మీరు సైన్ ఇన్ చేసిన Brave Software ఖాతాలు అన్నీ ఇక్కడ నిర్వహించవచ్చు.</translation>
 <translation id="1987317783729300807">ఖాతాలు</translation>
 <translation id="8418661265246754237">Brave Software ఖాతాలు</translation>
 <translation id="3297951628821704004">ఈ పరికరం నుండి ఖాతాను తీసివేయండి</translation>
-<translation id="1059855432287631118">వేలిముద్రను నమోదు చేస్తోంది</translation>
-<translation id="878068003854005405">ప్రారంభించండి. మీ వేలిని సెన్సార్‌పై ఉంచండి.</translation>
 <translation id="176193854664720708">వేలిముద్ర సెన్సార్ పవర్ బటన్‌లో ఉంది. ఏదైనా వేలితో మెల్లిగా దానిని తాకండి.</translation>
 <translation id="7189965711416741966">వేలిముద్ర జోడించబడింది.</translation>
 <translation id="9220820413868316583">వేలిని తీసివేసి, మళ్లీ పెట్టండి.</translation>
@@ -4131,24 +4042,19 @@
 <translation id="7878562273885520351">మీ పాస్‌వర్డ్ ఎవరికైనా తెలిసిపోయి ఉండవచ్చు</translation>
 <translation id="1089439967362294234">పాస్‌వర్డ్‌ని మార్చు</translation>
 <translation id="6187156085111579405">అవసరమైతే ఇక్కడ జాబితా చేయబడని అంశాలను కూడా తీసివేయవచ్చు. Brave గోప్యత విధాన పత్రంలో &lt;a href="<ph name="URL"/>"&gt;అవాంఛిత సాఫ్ట్‌వేర్ రక్షణ&lt;/a&gt; గురించి మరింత తెలుసుకోండి.</translation>
-<translation id="928985544179707652">ఎక్స్‌టెన్షన్‌లు:</translation>
 <translation id="7712836429117959503">ID <ph name="EXTENSION_ID"/>ని కలిగి ఉన్న తెలియని ఎక్స్‌టెన్షన్</translation>
-<translation id="2600115369439982409">ఫైల్‌లు మరియు ప్రోగ్రామ్‌లు:</translation>
-<translation id="1372681413396468867">{NUM_ITEMS,plural, =1{1 అంశం తీసివేయబడాలి}other{# అంశాలు తీసివేయబడాలి}}</translation>
 <translation id="7187428571767585875">తీసివేయాల్సిన లేదా మార్చాల్సిన రిజిస్ట్రీ నమోదులు:</translation>
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{మరో 1}other{మరో #}}</translation>
 <translation id="2749608811030566578">Brave హానికరమైన సాఫ్ట్‌వేర్‌ని తీసివేస్తున్నప్పుడు ఎర్రర్ సంభవించింది</translation>
 <translation id="8189483132214844139">Brave మీ కంప్యూటర్‌లో హానికరమైన సాఫ్ట్‌వేర్‌ని కనుగొని, తీసివేయగలదు</translation>
 <translation id="2910318910161511225">నెట్‌వర్క్‌కి కనెక్ట్ చేసి మళ్లీ ప్రయత్నించండి</translation>
 <translation id="1426870617281699524">మళ్లీ ప్రయత్నించును క్లిక్ చేసి, మీ కంప్యూటర్‌లో ప్రాంప్ట్‌ను ఆమోదించండి</translation>
-<translation id="2201358555632643970">మీ కంప్యూటర్‌లో హానికరమైన సాఫ్ట్‌వేర్ ఉంది. Brave దానిని తీసివేస్తోంది మరియు మీ బ్రౌజర్ మళ్లీ సాధారణంగా పని చేసేలా చేయడం కోసం మీ సెట్టింగ్‌లను పునరుద్ధరిస్తుంది.</translation>
 <translation id="1484912962860902625">Brave హానికరమైన సాఫ్ట్‌వేర్ కోసం వెతుకుతున్నప్పుడు ఎర్రర్ సంభవించింది</translation>
 <translation id="451407183922382411"><ph name="COMPANY_NAME"/> అందిస్తోంది</translation>
 <translation id="5254368820972107711">తీసివేయాల్సిన ఫైల్‌లను చూపు</translation>
 <translation id="296026337010986570">పూర్తయింది! హానికరమైన సాఫ్ట్‌వేర్ తీసివేయబడింది. ఎక్స్‌టెన్షన్‌లను తిరిగి ఆన్ చేయడానికి, &lt;a href="chrome://extensions"&gt;ఎక్స్‌టెన్షన్‌లు&lt;/a&gt; సందర్శించండి.</translation>
 <translation id="284975061945174219">క్లీన్అప్ విఫలమైంది</translation>
 <translation id="9014750448058570312">కొనసాగడానికి Braveకి అనుమతి అవసరం</translation>
-<translation id="3806965327722135869">హానికరమైన సాఫ్ట్‌వేర్‌ని కనుగొని తీసివేయండి</translation>
 <translation id="4320177379694898372">ఇంటర్నెట్ కనెక్షన్ లేదు</translation>
 <translation id="850875081535031620">హానికరమైన సాఫ్ట్‌వేర్ కనుగొనబడలేదు</translation>
 <translation id="1186771945450942097">హానికరమైన సాఫ్ట్‌వేర్‌ని తీసివేయండి</translation>
@@ -4157,7 +4063,6 @@
 <translation id="8639047128869322042">హానికరమైన సాఫ్ట్‌వేర్‌ కోసం తనిఖీ చేస్తోంది...</translation>
 <translation id="2653033005692233957">శోధన విఫలమైంది</translation>
 <translation id="655483977608336153">మళ్లీ ప్రయత్నించు</translation>
-<translation id="6312400084708441752">మీ కంప్యూటర్‌లో ఉన్న హానికరమైన సాఫ్ట్‌వేర్, సిస్టమ్ సెట్టింగ్‌లు మరియు ప్రక్రియల గురించిన సమాచారం ఉంటుంది</translation>
 <translation id="6555810572223193255">క్లీనప్ ప్రస్తుతం అందుబాటులో లేదు</translation>
 <translation id="7117228822971127758">దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి</translation>
 <translation id="443475966875174318">అనుకూలంగా లేని అప్లికేషన్‌లను అప్‌డేట్ చేయండి లేదా తీసివేయండి</translation>
@@ -4194,8 +4099,6 @@
 <translation id="3264582393905923483">సందర్భం</translation>
 <translation id="1607139524282324606">నమోదును తీసివేయండి</translation>
 <translation id="6025215716629925253">స్టాక్ ఆచూకీ</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 పంక్తి చూపబడలేదు&gt;}other{&lt;$1 పంక్తులు చూపబడలేదు&gt;}}</translation>
-<translation id="5334899159203764908"><ph name="BEGIN_LINK"/>సైట్ యాక్సెస్<ph name="END_LINK"/> గురించి మరింత తెలుసుకోండి</translation>
 <translation id="8389492867173948260">మీరు సందర్శించే వెబ్‌సైట్‌లలో ఉన్న మీ డేటా మొత్తాన్ని చదవడం లేదా మార్చడం కోసం ఈ ఎక్స్‌టెన్షన్‌ను అనుమతించండి:</translation>
 <translation id="407173827865827707">క్లిక్ చేసినప్పుడు</translation>
 <translation id="6455264371803474013">కొన్ని నిర్దిష్ట సైట్‌లలో మాత్రమే</translation>
@@ -4300,14 +4203,12 @@
 <translation id="3706463572498736864">ఒక షీట్‌కు పేజీల సంఖ్య</translation>
 <translation id="2249605167705922988">ఉదా. 1-5, 8, 11-13</translation>
 <translation id="5746169159649715125">PDF వలె సేవ్ చేయి</translation>
-<translation id="1731589410171062430">మొత్తం: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/> (<ph name="NUMBER_OF_PAGES"/> <ph name="PAGE_OR_PAGES_LABEL"/>)</translation>
 <translation id="2580924999637585241">మొత్తం: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">పేపర్ షీట్‌లు</translation>
 <translation id="8813811964357448561">పేపర్ షీట్</translation>
 <translation id="8180239481735238521">పేజీ</translation>
 <translation id="3725367690636977613">పేజీలు</translation>
 <translation id="7005848115657603926">చెల్లుబాటు కాని పేజీ పరిధి, <ph name="EXAMPLE_PAGE_RANGE"/>ను ఉపయోగించు</translation>
-<translation id="2890678560483811744">పేజీ సూచన పరిమితిని దాటిపోయారు</translation>
 <translation id="5398572795982417028">పేజీ సూచన పరిమితిని దాటిపోయారు, పరిమితి <ph name="MAXIMUM_PAGE"/></translation>
 <translation id="218070003709087997">ఎన్ని కాపీలను ముద్రించాలో (1 నుండి 999) సంఖ్యతో సూచించండి.</translation>
 <translation id="2509495747794740764">స్కేల్ ప్రమాణం తప్పనిసరిగా 10 మరియు 200 మధ్య ఉండే సంఖ్య అయ్యి ఉండాలి.</translation>
@@ -4327,19 +4228,14 @@
 <translation id="6273677812470008672">నాణ్యత</translation>
 <translation id="7288676996127329262"><ph name="HORIZONTAL_DPI"/>x<ph name="VERTICAL_DPI"/> dpi</translation>
 <translation id="1921584744613111023"><ph name="DPI"/> dpi</translation>
-<translation id="2212126039311489237">సిస్టమ్ డైలాగ్‌ని ఉపయోగించి ముద్రించు</translation>
 <translation id="6991665348624301627">గమ్యస్థానాన్ని ఎంచుకోండి</translation>
 <translation id="8800004011501252845">దీని కోసం గమ్యస్థానాలను చూపుతోంది</translation>
 <translation id="8996526648899750015">ఖాతాను జోడించండి...</translation>
 <translation id="5002959368039764681">Brave Software డాక్స్‌కు, ఇతర క్లౌడ్ గమ్యస్థానాలకు ముద్రించండి. Brave Software క్లౌడ్ ప్రింట్‌కు ముద్రించడానికి <ph name="BEGIN_LINK"/>సైన్ ఇన్ చేయండి<ph name="END_LINK"/>.</translation>
 <translation id="2150139952286079145">శోధించాల్సిన గమ్యస్థానాలు</translation>
 <translation id="8569682776816196752">గమ్యస్థానాలు కనుగొనబడలేదు</translation>
-<translation id="6807889908376551050">అన్నీ చూపు...</translation>
-<translation id="7328162502911382168">(<ph name="COUNT"/>)</translation>
 <translation id="7885253890047913815">ఇటీవలి గమ్యస్థానాలు</translation>
 <translation id="4929386379796360314">ముద్రణ గమ్యస్థానాలు</translation>
-<translation id="5829401023154985950">నిర్వహించండి...</translation>
-<translation id="4628314759732363424">మార్చు...</translation>
 <translation id="3899879303189199559">సంవత్సరానికి పైగా ఆఫ్‌లైన్‌లో ఉంది</translation>
 <translation id="3154429428035006212">నెలకు పైగా ఆఫ్‌లైన్‌లో ఉంది</translation>
 <translation id="5265562206369321422">వారానికి పైగా ఆఫ్‌లైన్‌లో ఉంది</translation>
@@ -4348,18 +4244,15 @@
 <translation id="6317318380444133405">ఇప్పుడు మద్దతు లేదు.</translation>
 <translation id="5759728514498647443">మీరు <ph name="APP_NAME"/> ద్వారా ముద్రించడానికి పంపే పత్రాలు <ph name="APP_NAME"/> ద్వారా చదవబడతాయి.</translation>
 <translation id="2080070583977670716">మరిన్ని సెట్టింగ్‌లు</translation>
-<translation id="6510568984200103950">కొన్ని సెట్టింగ్‌లు</translation>
 <translation id="3360297538363969800">ముద్రణ విఫలమైంది. దయచేసి మీ ప్రింటర్‌ను తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.</translation>
 <translation id="5154108062446123722"><ph name="PRINTING_DESTINATION"/> కోసం అధునాతన సెట్టింగ్‌లు</translation>
 <translation id="9056810968620647706">పోలికలు ఏవీ దొరకలేదు.</translation>
-<translation id="8658595122208653918">ప్రింటర్ ఎంపికలను మార్చు...</translation>
 <translation id="4088095054444612037">సమూహానికి ఆమోదించు</translation>
 <translation id="357886715122934472">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; మీరు యజమానిగా ఉన్న సమూహంతో &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt; ప్రింటర్‌ను భాగస్వామ్యం చేయాలనుకుంటున్నారు: &lt;strong&gt;<ph name="GROUP_NAME"/>&lt;/strong&gt;. మీరు ఆమోదిస్తే, సమూహ సభ్యులందరూ ప్రింటర్‌కు ముద్రించగలరు.</translation>
 <translation id="8783093612333542422">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; మీతో &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt; ప్రింటర్‌ని భాగస్వామ్యం చేయాలనుకుంటున్నారు.</translation>
 <translation id="7210499381659830293">ఎక్స్‌టెన్షన్ ప్రింటర్‌లు</translation>
 <translation id="7453008956351770337">ఈ ప్రింటర్‌ను ఎంచుకోవడం ద్వారా, మీరు మీ ప్రింటర్‌ని ప్రాప్యత చేయడానికి క్రింది పొడిగింపుకు అనుమతి ఇస్తున్నారు:</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> ఈ ప్రింటర్‌తో కమ్యూనికేట్ చేయలేకపోయింది. ప్రింటర్ ప్లగిన్ చేయబడిందని నిర్ధారించుకొని, ఆపై మళ్లీ ప్రయత్నించండి.</translation>
-<translation id="5352285283572729470">ఈ సెట్టింగ్ నిర్వహించబడుతుంది</translation>
 <translation id="4994754230098574403">సెటప్ చేస్తోంది</translation>
 <translation id="1396139853388185343">ప్రింటర్‌ని సెటప్ చేస్తున్నప్పుడు ఎర్రర్ ఏర్పడింది</translation>
 <translation id="2379281330731083556">సిస్టమ్ డైలాగ్‌ ఉపయోగించి ముద్రించు ...<ph name="SHORTCUT_KEY"/></translation>
@@ -4388,8 +4281,6 @@
 <translation id="7681095912841365527">సైట్ బ్లూటూత్‌ని ఉపయోగించవచ్చు</translation>
 <translation id="3085412380278336437">సైట్ మీ కెమెరాని ఉపయోగించవచ్చు</translation>
 <translation id="9180380851667544951">సైట్ మీ స్క్రీన్‌ని షేర్ చేయవచ్చు</translation>
-<translation id="7503127198245469314">డెస్క్‌టాప్ డిస్‌ప్లేలో బ్లాక్ చేయడం లేదా అనుమతించడం కోసం హెడ్‌సెట్‌ని తీసివేయండి</translation>
-<translation id="5592010267127539419"><ph name="URL_HOST"/> పరికరాలకు జత చేయాలనుకుంటోంది</translation>
 <translation id="4992630054488400221">VRలో Braveని ఉపయోగించడానికి Daydream కీబోర్డ్‌ని ఇన్‌స్టాల్ చేయండి లేదా అప్‌డేట్ చేయండి</translation>
 <translation id="983511809958454316">VRలో ఈ ఫీచర్‌కు మద్దతు లేదు</translation>
 <translation id="4008291085758151621">VRలో సైట్ సమాచారం అందుబాటులో లేదు</translation>

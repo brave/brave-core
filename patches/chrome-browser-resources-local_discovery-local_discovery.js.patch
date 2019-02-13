@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/local_discovery/local_discovery.js b/chrome/browser/resources/local_discovery/local_discovery.js
-index 43e511d0a132cd533225bf5ccebd1668eb7ad5de..a863e8d342bfdcf8aeeeaf725ccbc2625659630f 100644
+index 780d9abd46e3f3a3d808fd268d6f33af7205909b..5c6bb04e40fd8c2e4d01e5b6738281c93f8608f9 100644
 --- a/chrome/browser/resources/local_discovery/local_discovery.js
 +++ b/chrome/browser/resources/local_discovery/local_discovery.js
-@@ -583,6 +583,7 @@ cr.define('local_discovery', function() {
+@@ -584,6 +584,7 @@ cr.define('local_discovery', function() {
      $('cloud-devices-retry-link')
          .addEventListener('click', retryLoadCloudDevices);
  
@@ -10,7 +10,7 @@ index 43e511d0a132cd533225bf5ccebd1668eb7ad5de..a863e8d342bfdcf8aeeeaf725ccbc262
      $('cloud-devices-login-link')
          .addEventListener('click', cloudDevicesLoginButtonClicked);
  
-@@ -591,6 +592,7 @@ cr.define('local_discovery', function() {
+@@ -592,6 +593,7 @@ cr.define('local_discovery', function() {
  
      $('register-overlay-login-button')
          .addEventListener('click', registerOverlayLoginButtonClicked);

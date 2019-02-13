@@ -1,11 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#define IsComponentExtensionWhitelisted IsComponentExtensionWhitelisted_ChromiumImpl
-#include "../../../../../../chrome/browser/extensions/component_extensions_whitelist/whitelist.cc"
+#define IsComponentExtensionWhitelisted IsComponentExtensionWhitelisted_ChromiumImpl  // NOLINT
+#include "../../../../../../chrome/browser/extensions/component_extensions_whitelist/whitelist.cc"  // NOLINT
 #undef IsComponentExtensionWhitelisted
 
+#include "base/stl_util.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
@@ -23,7 +25,7 @@ namespace extensions {
       brave_webtorrent_extension_id
     };
 
-    for (size_t i = 0; i < arraysize(kAllowed); ++i) {
+    for (size_t i = 0; i < base::size(kAllowed); ++i) {
       if (extension_id == kAllowed[i])
         return true;
     }

@@ -8,6 +8,9 @@
   <message name="IDS_EXTENSIONS_ALLOW_ON_ALL_URLS" desc="The checkbox for allowing an extension to run scripts on all websites without explicit permission.">
     Allow on all websites
   </message>
+  <message name="IDS_EXTENSIONS_ALLOW_ON_FOLLOWING_SITES" desc="The label for the option to allow the extension to automatically access all sites listed below.">
+    Automatically allow access on the following sites
+  </message>
   <message name="IDS_EXTENSIONS_VIEW_ACTIVITY_LOG" desc="The label of the button to click to view recent extension activity.">
     View activity log
   </message>
@@ -77,6 +80,9 @@
   <message name="IDS_MD_EXTENSIONS_ERROR_CONTEXT_UNKNOWN" desc="The text displayed to the user if an error's context url is unknown.">
     Unknown
   </message>
+  <message name="IDS_MD_EXTENSIONS_CLEAR_ACTIVITIES" desc="The label for the button that clears the activity log for the current extension.">
+    Clear activities
+  </message>
   <message name="IDS_MD_EXTENSIONS_ERROR_CLEAR_ALL" desc="The label for the button that clears all the errors.">
     Clear all
   </message>
@@ -89,14 +95,14 @@
   <message name="IDS_MD_EXTENSIONS_ERROR_LINES_NOT_SHOWN" desc="The label displayed to the users indicating that some lines of code are truncated.">
     {LINE_COUNT, plural,
       =1 {&lt;1 line not shown&gt;}
-      other {&lt;$1 lines not shown&gt;}}
+      other {&lt;<ph name="NUMBER_OF_LINES">$1<ex>4</ex></ph> lines not shown&gt;}}
+  </message>
+  <message name="IDS_MD_EXTENSIONS_HOST_PERMISSIONS_DESCRIPTION" desc="The explanatory text for adjusting which websites an extension is allowed to run on.">
+    This extension can read and change your data on sites. You can control which sites the extension can access.
   </message>
   <!-- TODO(devlin): Unify this with IDS_SETTINGS_EDIT. -->
   <message name="IDS_MD_EXTENSIONS_HOST_PERMISSIONS_EDIT" desc="The label of the button used to edit an extension's access to a given website.">
     Edit
-  </message>
-  <message name="IDS_MD_EXTENSIONS_HOST_PERMISSIONS_LEARN_MORE" desc="The caption containing the link at which the user can learn more about extension host access">
-    Learn more about <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>site access<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_MD_EXTENSIONS_ITEM_ERRORS" desc="The label of the button to bring the user to the page showing an extension's errors.">
     Errors
@@ -124,6 +130,9 @@
   </message>
   <message name="IDS_MD_EXTENSIONS_ACTIVITY_LOG_PAGE_HEADING" desc="The heading of the page displaying an extension's activity log.">
     Activity Log
+  </message>
+  <message name="IDS_MD_EXTENSIONS_ACTIVITY_LOG_SEARCH_LABEL" desc="The placeholder label to display in the search bar for the activity log page.">
+    Search by API call/URL
   </message>
   <message name="IDS_MD_EXTENSIONS_ITEM_ID" desc="The text for the label next to the extension id.">
     &lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID">$1<ex>cfhdojbkjhnklbpkdaibdccddilifddb</ex></ph>
@@ -193,6 +202,15 @@
   </message>
   <message name="IDS_MD_EXTENSIONS_ITEM_REMOVE_EXTENSION" desc="The label on the button to remove an extension.">
     Remove extension
+  </message>
+  <message name="IDS_MD_EXTENSIONS_ITEM_SITE_ACCESS" desc="The label above the list of the websites that the extension can access.">
+    Site access
+  </message>
+  <message name="IDS_MD_EXTENSIONS_ITEM_SITE_ACCESS_ADD_HOST" desc="The label of the option to add a new site that the extension should be allowed to access.">
+    Add a new page
+  </message>
+  <message name="IDS_MD_EXTENSIONS_ITEM_SITE_ACCESS_EMPTY" desc="The text to indicate that an extension does not have any site access.">
+    This extension has no additional site access.
   </message>
   <message name="IDS_MD_EXTENSIONS_ITEM_SOURCE" desc="The label above an extension's source, which indicates where the extension came from (webstore, third-party, local disk, etc).">
     Source

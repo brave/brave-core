@@ -1,19 +1,19 @@
 diff --git a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
-index e7f43a5a2d27dc0eaf35ff6773063e252cbcfa20..1568d6fa3e8f14d2e7a3cb4e33950efdb07e5129 100644
+index a9a9f03ca4d2a177939e4d1e6b3ba3dfa9d39619..e232ef648fe9be4a5c8d9918f643ca97239b35d1 100644
 --- a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
 @@ -58,10 +58,10 @@
  
      void clip(optional CanvasFillRule winding);
      void clip(Path2D path, optional CanvasFillRule winding);
--    boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
--    boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
--    boolean isPointInStroke(unrestricted double x, unrestricted double y);
--    boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
-+    [CallWith=ScriptState] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
-+    [CallWith=ScriptState] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
-+    [CallWith=ScriptState] boolean isPointInStroke(unrestricted double x, unrestricted double y);
-+    [CallWith=ScriptState] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
+-    [HighEntropy, Measure] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+-    [HighEntropy, Measure] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+-    [HighEntropy, Measure] boolean isPointInStroke(unrestricted double x, unrestricted double y);
+-    [HighEntropy, Measure] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState, HighEntropy, Measure] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState, HighEntropy, Measure] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState, HighEntropy, Measure] boolean isPointInStroke(unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState, HighEntropy, Measure] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
  
      // drawing images
      [CallWith=ScriptState, RaisesException] void drawImage(CanvasImageSource image, unrestricted double x, unrestricted double y);

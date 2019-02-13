@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h"
+
+#include <string>
 
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
@@ -185,8 +188,9 @@ void BraveMockRenderViewContextMenu::RemoveMenuItem(int command_id) {
           it = items_.erase(it);
       }
       break;
-    } else
+    } else {
       ++it;
+    }
   }
 }
 
@@ -196,6 +200,10 @@ void BraveMockRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
   // Call the static method of RenderViewContextMenu which should our override
   // that doesn't add the item.
   RenderViewContextMenu::AddSpellCheckServiceItem(nullptr, is_checked);
+}
+
+void BraveMockRenderViewContextMenu::AddAccessibilityLabelsServiceItem(
+    bool is_checked) {
 }
 
 content::RenderViewHost* BraveMockRenderViewContextMenu::GetRenderViewHost()

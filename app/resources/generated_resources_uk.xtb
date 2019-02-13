@@ -91,6 +91,7 @@
 <translation id="2218515861914035131">Вставити як звичайний текст</translation>
 <translation id="5329858601952122676">&amp;Видалити</translation>
 <translation id="1017280919048282932">&amp;Додати до словника</translation>
+<translation id="7658239707568436148">Скасувати</translation>
 <translation id="4572259796527554261">Запитувати Brave Software пропозиції</translation>
 <translation id="3435896845095436175">Увімкнути</translation>
 <translation id="780301667611848630">Ні, дякую</translation>
@@ -212,6 +213,7 @@
 <translation id="5801568494490449797">Преференції</translation>
 <translation id="7607274158153386860">Запитувати сайт планшетного ПК</translation>
 <translation id="4408599188496843485">Д&amp;овідка</translation>
+<translation id="8378714024927312812">Профілем керує ваша організація</translation>
 <translation id="6723661294526996303">Імпорт закладок і налаштувань...</translation>
 <translation id="9203398526606335860">&amp;Профілювання ввімкнено</translation>
 <translation id="3819800052061700452">&amp;На весь екран</translation>
@@ -224,14 +226,12 @@
 <translation id="4891089016822695758">Форум бета-версії</translation>
 <translation id="7199158086730159431">Довідка</translation>
 <translation id="630065524203833229">В&amp;ийти</translation>
-<translation id="8378714024927312812">Профілем керує ваша організація</translation>
 <translation id="3855676282923585394">Імпорт закладок і налаштувань...</translation>
 <translation id="4821935166599369261">&amp;Профілювання ввімкнено</translation>
 <translation id="3827774300009121996">&amp;На весь екран</translation>
 <translation id="3616741288025931835">&amp;Очистити дані веб-перегляду...</translation>
 <translation id="1618268899808219593">Довідковий центр</translation>
 <translation id="7324297612904500502">Форум бета-версії</translation>
-<translation id="2052369079215022979">Профілем керує ваша організація</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5912378097832178659">&amp;Змінити пошукові системи...</translation>
 <translation id="5702898740348134351">&amp;Змінити пошукові системи...</translation>
@@ -335,7 +335,6 @@
 <translation id="8200772114523450471">Поновити</translation>
 <translation id="2770465223704140727">Видалити зі списку</translation>
 <translation id="7702574632857388784">Видалити файл "<ph name="FILE_NAME"/>" зі списку</translation>
-<translation id="7658239707568436148">Скасувати</translation>
 <translation id="7144878232160441200">Повторити спробу</translation>
 <translation id="5170568018924773124">Показати в папці</translation>
 <translation id="1581962803218266616">Показати в програмі Finder</translation>
@@ -448,7 +447,6 @@
 <translation id="6527303717912515753">Надіслати</translation>
 <translation id="3249950116250264636"><ph name="APP_NAME"/> (<ph name="APP_URL"/>)</translation>
 <translation id="3810973564298564668">Змінити</translation>
-<translation id="7837307963048806839">•  $1</translation>
 <translation id="2344028582131185878">Автоматичні завантаження</translation>
 <translation id="8217399928341212914">Надалі блокувати автоматичне завантаження декількох файлів</translation>
 <translation id="2580889980133367162">Завжди дозволяти <ph name="HOST"/> завантажувати декілька файлів</translation>
@@ -954,8 +952,6 @@
 <translation id="316854673539778496">Щоб мати доступ до розширень на всіх своїх пристроях, увійдіть в обліковий запис і ввімкніть синхронізацію.</translation>
 <translation id="8079938625609335826">Щоб мати доступ до розширень на всіх своїх пристроях, увімкніть синхронізацію.</translation>
 <translation id="4977942889532008999">Підтвердити доступ</translation>
-<translation id="496226124210045887">У вибраній папці містяться файли з приватною інформацією. Справді надати програмі "$1" постійний доступ для читання з цієї папки?</translation>
-<translation id="4547992677060857254">У вибраній папці містяться файли з приватною інформацією. Справді надати програмі "$1" постійний доступ для писання в цю папку?</translation>
 <translation id="6220413761270491930">Не вдалося завантажити розширення</translation>
 <translation id="5707185214361380026">Не вдалося завантажити розширення з:</translation>
 <translation id="7341834142292923918">Запитує дозвіл запускатися на цьому сайті</translation>
@@ -1113,7 +1109,6 @@
 <translation id="224940702122312781">Ця сторінка використовуватиме багато даних</translation>
 <translation id="3861241522664181545">Сторінку призупинено.</translation>
 <translation id="6921709132208495314">Припинити використання даних на цій сторінці</translation>
-<translation id="1683850629661177840">Завдяки спрощеному режиму тепер можна швидше переглядати всі сторінки, зокрема HTTPS.</translation>
 <translation id="8428213095426709021">Налаштування</translation>
 <translation id="2724841811573117416">Журнали WebRTC</translation>
 <translation id="1969654639948595766">Текстові журнали WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
@@ -1171,7 +1166,6 @@
 <translation id="444134486829715816">Розгорнути...</translation>
 <translation id="2737363922397526254">Згорнути...</translation>
 <translation id="6690659332373509948">Неможливо проаналізувати файл: <ph name="FILE_NAME"/></translation>
-<translation id="3011284594919057757">Про Flash</translation>
 <translation id="1962233722219655970">На цій сторінці використовується програма Native Client, яка не працює на вашому комп’ютері.</translation>
 <translation id="7540972813190816353">Під час перевірки наявності оновлень сталася помилка: <ph name="ERROR"/></translation>
 <translation id="7088434364990739311">Не вдалося запустити перевірку наявності оновлень (код помилки: <ph name="ERROR"/>).</translation>
@@ -1225,6 +1219,7 @@
 <translation id="385051799172605136">Назад</translation>
 <translation id="4628948037717959914">Фотографія</translation>
 <translation id="8033827949643255796">виділено</translation>
+<translation id="2635094637295383009">Twitter</translation>
 <translation id="5376169624176189338">Натисніть, щоб повернутися назад; утримуйте, щоб переглянути історію</translation>
 <translation id="9103868373786083162">Натисніть, щоб повернутись, або відкрийте контекстне меню, щоб переглянути історію</translation>
 <translation id="2961695502793809356">Натисніть, щоб перейти далі; утримуйте, щоб переглянути історію</translation>
@@ -1340,8 +1335,6 @@
 <translation id="4206323443866416204">Надсилання відгуку</translation>
 <translation id="3681311097828166361">Дякуємо за відгук. Звіт буде надіслано пізніше, оскільки зараз ви офлайн.</translation>
 <translation id="8713570323158206935">Надсилати <ph name="BEGIN_LINK1"/>інформацію про систему<ph name="END_LINK1"/></translation>
-<translation id="6395423953133416962">Надсилати <ph name="BEGIN_LINK1"/>інформацію про систему<ph name="END_LINK1"/> та <ph name="BEGIN_LINK2"/>показники<ph name="END_LINK2"/></translation>
-<translation id="6270770586500173387">Надсилати <ph name="BEGIN_LINK1"/>інформацію про систему й додатки<ph name="END_LINK1"/>, а також <ph name="BEGIN_LINK2"/>показники<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Файл буде надіслано в Brave Software для налагодження</translation>
 <translation id="8227119283605456246">Вкласти файл</translation>
 <translation id="5367091008316207019">Читання файлу...</translation>
@@ -1414,39 +1407,11 @@
 <translation id="9009369504041480176">Завантаження (<ph name="PROGRESS_PERCENT"/>%)...</translation>
 <translation id="7925285046818567682"><ph name="HOST_NAME"/>...</translation>
 <translation id="7887334752153342268">Створити копію</translation>
-<translation id="5210365745912300556">Закрити вкладку</translation>
-<translation id="5453029940327926427">Закрити вкладки</translation>
 <translation id="68541483639528434">Закрити інші вкладки</translation>
 <translation id="6686490380836145850">Закрити вкладки праворуч</translation>
-<translation id="855081842937141170">Закріпити вкладку</translation>
-<translation id="5105855035535475848">Закріпити вкладки</translation>
-<translation id="2074527029802029717">Відмінити закріплення вкладки</translation>
-<translation id="1812631533912615985">Відкріпити вкладки</translation>
-<translation id="527605719918376753">Вимкнути звук на вкладці</translation>
-<translation id="8373553483208508744">Вимкнути звук на вкладках</translation>
-<translation id="9203478404496196495">Увімкнути звук на вкладці</translation>
-<translation id="1438632560381091872">Увімкнути звук на вкладках</translation>
-<translation id="1568067597247500137">Вимкнути звук на сайті</translation>
-<translation id="1216654534877302979">Вимкнути звук на сайтах</translation>
-<translation id="612596694132302162">Увімкнути звук на сайті</translation>
-<translation id="6778959797435875428">Увімкнути звук на сайтах</translation>
 <translation id="4474155171896946103">Позначити закладками всі вкладки...</translation>
-<translation id="3551320343578183772">Закрити вкладку</translation>
-<translation id="7268365133021434339">Закрити вкладки</translation>
 <translation id="4322394346347055525">Закрити інші вкладки</translation>
 <translation id="1166212789817575481">Закрити вкладки праворуч</translation>
-<translation id="21133533946938348">Закріпити вкладку</translation>
-<translation id="8072988827236813198">Закріпити вкладки</translation>
-<translation id="6442697326824312960">Відмінити закріплення вкладки</translation>
-<translation id="1732215134274276513">Відкріпити вкладки</translation>
-<translation id="474217410105706308">Вимкнути звук на вкладці</translation>
-<translation id="9039890312082871605">Вимкнути звук на вкладках</translation>
-<translation id="4632483769545853758">Увімкнути звук на вкладці</translation>
-<translation id="304826556400666995">Увімкнути звук на вкладках</translation>
-<translation id="2973324205039581528">Вимкнути звук на сайті</translation>
-<translation id="7579149537961810247">Вимкнути звук на сайтах</translation>
-<translation id="1293177648337752319">Увімкнути звук на сайті</translation>
-<translation id="109758035718544977">Увімкнути звук на сайтах</translation>
 <translation id="2336228925368920074">Позначити закладками всі вкладки...</translation>
 <translation id="2278562042389100163">Відкрити вікно переглядача</translation>
 <translation id="756445078718366910">Відкрити вікно веб-переглядача</translation>
@@ -1494,14 +1459,6 @@
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">Платформа</translation>
 <translation id="7022562585984256452">Вашу домашню сторінку налаштовано.</translation>
-<translation id="2709516037105925701">Автозаповнення</translation>
-<translation id="4378154925671717803">Телефон</translation>
-<translation id="4807098396393229769">Ім'я на картці</translation>
-<translation id="2612676031748830579">Номер картки</translation>
-<translation id="869891660844655955">Діє до</translation>
-<translation id="1149401351239820326">Місяць закінчення терміну дії</translation>
-<translation id="8058655154417507695">Рік закінчення терміну дії</translation>
-<translation id="2286841657746966508">Розрахункова адреса</translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Додати принтери</translation>
 <translation id="9052208328806230490">Ви зареєстрували свої принтери в <ph name="CLOUD_PRINT_NAME"/>, використавши обліковий запис <ph name="EMAIL"/></translation>
@@ -1646,12 +1603,8 @@
 <translation id="1231733316453485619">Увімкнути синхронізацію?</translation>
 <translation id="9125982323641182972">Розумні функції в Brave</translation>
 <translation id="4736292055110123391">Синхронізуйте закладки, паролі, історію й інші дані на всіх своїх пристроях</translation>
-<translation id="328921709097406258">Ваша історія може допомогти нам персоналізувати Пошук, оголошення й інші сервіси Brave Software.</translation>
 <translation id="363863692969456324">Виправляйте помилки правопису за допомогою покращеної функції перевірки орфографії</translation>
-<translation id="1493787485275784624">Введений текст буде надіслано в Brave Software.</translation>
 <translation id="561013949633009906">Допоможіть покращити веб-переглядач Brave і його функції безпеки</translation>
-<translation id="725079085443555687">Деякі системні дані та вміст сторінок анонімно надсилаються в Brave Software.</translation>
-<translation id="2895734772884435517">Ці налаштування можна будь-коли змінити.</translation>
 <translation id="3149880132460839085">Синхронізація Brave</translation>
 <translation id="3796902758602917951">Ваші закладки, історія, паролі й інші налаштування синхронізуватимуться з обліковим записом Brave Software, щоб ви могли користуватися ними на всіх своїх пристроях</translation>
 <translation id="3111958038206230539">Персоналізувати служби Brave Software</translation>
@@ -1761,8 +1714,6 @@
 <translation id="2562743677925229011">Ви не ввійшли в <ph name="SHORT_PRODUCT_NAME"/></translation>
 <translation id="4027804175521224372">(Ви не ввійшли – <ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK"/>)</translation>
 <translation id="3574210789297084292">увійти</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
-<translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="237828693408258535">Перекласти цю сторінку?</translation>
 <translation id="4613765529964435709">Перекласти цю сторінку (<ph name="SOURCE_LANGUAGE"/>) такою мовою: <ph name="TARGET_LANGUAGE"/>?</translation>
 <translation id="5990386583461751448">Перекладено</translation>
@@ -1825,6 +1776,7 @@
 <translation id="8214489666383623925">Відкрити файл...</translation>
 <translation id="7456847797759667638">Відкрити розташування...</translation>
 <translation id="3265459715026181080">Закрити вікно</translation>
+<translation id="3551320343578183772">Закрити вкладку</translation>
 <translation id="4780321648949301421">Зберегти сторінку як...</translation>
 <translation id="6212752530110374741">Надіслати посилання електронною поштою</translation>
 <translation id="457386861538956877">Інші...</translation>
@@ -1873,6 +1825,8 @@
 <translation id="7831754656372780761"><ph name="TAB_TITLE"/> <ph name="EMOJI_MUTING"/></translation>
 <translation id="6315493146179903667">Перемістити все на передній план</translation>
 <translation id="3007771295016901659">Ідентична вкладка</translation>
+<translation id="2973324205039581528">Вимкнути звук на сайті</translation>
+<translation id="21133533946938348">Закріпити вкладку</translation>
 <translation id="2007404777272201486">Повідомити про проблему...</translation>
 <translation id="3118319026408854581">Довідка <ph name="PRODUCT_NAME"/></translation>
 <translation id="6721972322305477112">&amp;Файл</translation>
@@ -2262,8 +2216,6 @@
 <translation id="4079799245038595838">Сповіщення надіслано на телефон. Щоб підтвердити свою особу, дотримуйтеся вказівок.</translation>
 <translation id="88870264962436283">Використовуйте Touch ID з додатком <ph name="APP_NAME"/></translation>
 <translation id="5186185447130319458">Анонімний перегляд</translation>
-<translation id="8480139856920479206">{0,plural, =1{У вас одне вікно в режимі анонімного перегляду.}one{У вас # вікно в режимі анонімного перегляду.}few{У вас # вікна в режимі анонімного перегляду.}many{У вас # вікон у режимі анонімного перегляду.}other{У вас # вікна в режимі анонімного перегляду.}}</translation>
-<translation id="2545348954155066907">{0,plural, =1{Закрити це вікно}one{Закрити всі вікна в режимі анонімного перегляду}few{Закрити всі вікна в режимі анонімного перегляду}many{Закрити всі вікна в режимі анонімного перегляду}other{Закрити всі вікна в режимі анонімного перегляду}}</translation>
 <translation id="394984172568887996">Імпортовано із IE</translation>
 <translation id="1543284117603151572">Імпортовано з Edge</translation>
 <translation id="5502500733115278303">Імпортовано із Firefox</translation>
@@ -2327,7 +2279,6 @@
 <translation id="6455894534188563617">&amp;Нова папка</translation>
 <translation id="1015318665228971643">Редагувати назву папки</translation>
 <translation id="5449588825071916739">Зробити закладки для всіх вкладок</translation>
-<translation id="5528368756083817449">Диспетчер закладок</translation>
 <translation id="3828029223314399057">Пошук закладок</translation>
 <translation id="8116972784401310538">&amp;Диспетчер закладок</translation>
 <translation id="6973630695168034713">Папки</translation>
@@ -2383,6 +2334,10 @@
 <translation id="1774833706453699074">Створити закладки для відкритих сторінок…</translation>
 <translation id="6949306908218145636">Створити закладки для відкритих сторінок…</translation>
 <translation id="4422347585044846479">Редагувати закладку для цієї сторінки</translation>
+<translation id="1620510694547887537">Камера</translation>
+<translation id="5646376287012673985">Місцезнаходження</translation>
+<translation id="3227137524299004712">Мікрофон</translation>
+<translation id="2482878487686419369">Сповіщення</translation>
 <translation id="6005695835120147974">Маршрутизатор медіавмісту</translation>
 <translation id="7787308148023287649">Показати на іншому екрані</translation>
 <translation id="7710568461918838723">&amp;Транслювати…</translation>
@@ -2594,7 +2549,6 @@
 <translation id="2653659639078652383">Надіслати</translation>
 <translation id="8392451568018454956">Меню параметрів для <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="6164005077879661055">Усі файли та локальні дані, пов’язані з контрольованим користувачем, буде назавжди видалено, якщо вилучити цього контрольованого користувача. Менеджер усе одно може бачити веб-сайти, які відвідував цей контрольований користувач, і його налаштування на сторінці <ph name="MANAGEMENT_URL"/>.</translation>
-<translation id="1646102270785326155">Якщо вилучити цього користувача, усі пов’язані з ним файли та локальні дані буде назавжди видалено. $1 усе одно зможе ввійти в обліковий запис.</translation>
 <translation id="672213144943476270">Перш ніж переглядати сторінки в гостьовому режимі, розблокуйте профіль.</translation>
 <translation id="3478685642445675458">Перш ніж видалити особу, розблокуйте свій профіль.</translation>
 <translation id="4648499713050786492">Перш ніж додати особу, розблокуйте свій профіль.</translation>
@@ -2630,12 +2584,6 @@
 <translation id="6146563240635539929">Відео</translation>
 <translation id="3616113530831147358">Звук</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Увага:<ph name="END_BOLD"/> ці файли тимчасові, і можуть автоматично видалятися, щоб звільнити місце на диску. <ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/></translation>
-<translation id="7361039089383199231">$1 б</translation>
-<translation id="4871210892959306034">$1 КБ</translation>
-<translation id="641105183165925463">$1 МБ</translation>
-<translation id="7221155467930685510">$1 ГБ</translation>
-<translation id="5039512255859636053">$1 ТБ</translation>
-<translation id="6840313690797192085">$1 Пб</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
@@ -2652,7 +2600,6 @@
 <translation id="5145331109270917438">Дата змінення</translation>
 <translation id="8487700953926739672">Доступ у режимі офлайн</translation>
 <translation id="2230062665678605299">Не вдається створити папку "<ph name="FOLDER_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4630590996962964935">Недійсний символ: $1</translation>
 <translation id="642282551015776456">Не може використовуватися як ім’я файлу чи назва папки</translation>
 <translation id="2070909990982335904">Імена, які починаються з крапки, зарезервовані для системи. Виберіть інше ім’я.</translation>
 <translation id="8456681095658380701">Недійсне ім’я</translation>
@@ -2663,8 +2610,6 @@
 <translation id="3749289110408117711">Ім’я файлу</translation>
 <translation id="3280431534455935878">Підготовка</translation>
 <translation id="6607272825297743757">Інформація про файл</translation>
-<translation id="3429599832623003132">$1 елем.</translation>
-<translation id="532360961509278431">Неможливо відкрити "$1": $2</translation>
 <translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>Не видаляйте пристрій зараз!<ph name="END_BOLD"/>
    <ph name="LINE_BREAKS"/>
    Видалення пристрою під час його використання може спричинити втрату даних. Зачекайте, доки операція завершиться, а потім відключіть пристрій за допомогою програми "Файли".</translation>
@@ -2718,9 +2663,6 @@
 <translation id="5158593464696388225">Не вдалося зберегти зображення.</translation>
 <translation id="2787047795752739979">Замінити оригінал</translation>
 <translation id="8775404590947523323">Ваші зміни зберігаються автоматично.<ph name="BREAKS"/>Щоб зберегти копію оригінального зображення, зніміть прапорець поруч з опцією "Замінити оригінал"</translation>
-<translation id="6653525630739667879">Не вдалося зберегти файл $1. Усі зміни буде збережено у файлі $2 у папці "Завантаження".</translation>
-<translation id="3184560914950696195">Неможливо зберегти в $1. Редаговані зображення буде збережено в папці "Завантаження".</translation>
-<translation id="6983991971286645866">Усі зміни буде збережено у файлі "$1".</translation>
 <translation id="8153607920959057464">Неможливо відобразити цей файл.</translation>
 <translation id="6227235786875481728">Неможливо відтворити цей файл.</translation>
 <translation id="9154418932169119429">Це зображення не доступне в режимі офлайн.</translation>
@@ -2730,9 +2672,6 @@
 <translation id="4801956050125744859">Залишити обидві версії</translation>
 <translation id="1062407476771304334">Замінити</translation>
 <translation id="1556189134700913550">Застосувати до всіх</translation>
-<translation id="3206175707080061730">Файл із назвою "$1" уже існує. Замінити його?</translation>
-<translation id="8059178146866384858">Файл з іменем "$1" уже існує. Виберіть інше ім’я.</translation>
-<translation id="5653140146600257126">Папка з назвою "$1" уже існує. Виберіть іншу назву.</translation>
 <translation id="1497522201463361063">Не вдається перейменувати "<ph name="FILE_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5330512191124428349">Отримати інформацію</translation>
 <translation id="8312871300878166382">Вставити в папку</translation>
@@ -2791,20 +2730,13 @@
 <translation id="4724850507808590449">Імпортовано <ph name="FILE_COUNT"/> фото</translation>
 <translation id="1351692861129622852">Імпортування файлів (<ph name="FILE_COUNT"/>)…</translation>
 <translation id="117624967391683467">Копіювання файлу <ph name="FILE_NAME"/>…</translation>
-<translation id="8453482423012550001">Копіювання елементів ($1)…</translation>
 <translation id="7627790789328695202">Файл "<ph name="FILE_NAME"/>" вже існує. Перейменуйте його та повторіть спробу.</translation>
 <translation id="5691596662111998220">На жаль, файл "<ph name="FILE_NAME"/>" більше не існує.</translation>
 <translation id="4336032328163998280">Помилка операції копіювання. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1503914375822320413">Помилка операції копіювання. Неочікувана помилка: $1</translation>
 <translation id="6133173853026656527">Переміщення файлу <ph name="FILE_NAME"/>…</translation>
-<translation id="3039828483675273919">Переміщення елементів ($1)…</translation>
 <translation id="6007237601604674381">Помилка переміщення. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="8954952943849489823">Помилка переміщення. Неочікувана помилка: $1</translation>
 <translation id="3326821416087822643">Архівування файлу <ph name="FILE_NAME"/>…</translation>
-<translation id="5694501201003948907">Архівування елементів ($1)…</translation>
-<translation id="7464490149090366184">Помилка архівування, елемент існує: "$1"</translation>
 <translation id="9133055936679483811">Помилка архівування. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1711973684025117106">Неочікувана помилка архівування: $1</translation>
 <translation id="653019979737152879">Синхронізація файлу <ph name="FILE_NAME"/>…</translation>
 <translation id="8579285237314169903">Синхронізація стількох елементів: <ph name="NUMBER_OF_FILES"/>…</translation>
 <translation id="8137331602592933310">Вам надали доступ до файлу "<ph name="FILENAME"/>". Ви не можете його видалити, оскільки він вам не належить.</translation>
@@ -2824,8 +2756,6 @@
 <translation id="1464724975715666883">1 помилка.</translation>
 <translation id="3495304270784461826">Помилок: <ph name="COUNT"/>.</translation>
 <translation id="6643016212128521049">Очистити</translation>
-<translation id="4284105660453474798">Дійсно видалити "$1"?</translation>
-<translation id="4580526846085481512">Дійсно видалити елементи $1?</translation>
 <translation id="7953739707111622108">Не вдається відкрити пристрій, оскільки його файлову систему не розпізнано.</translation>
 <translation id="3726463242007121105">Не вдається відкрити пристрій, оскільки його файлова система не підтримується.</translation>
 <translation id="3414856743105198592">Форматування знімного носія призведе до стирання всіх даних. Продовжити?</translation>
@@ -2899,7 +2829,6 @@
     <ph name="MARKUP_4"/>видаліть файли з папки "Завантаження"<ph name="MARKUP_5"/></translation>
 <translation id="7606199793785990727">Диск Brave Software недоступний. <ph name="BEGIN_LINK"/>Вийдіть<ph name="END_LINK"/> і ввійдіть знову.</translation>
 <translation id="585883343689351092">Вітаємо на Диску Brave Software!</translation>
-<translation id="1788440444874291920">Отримайте безкоштовно 100 ГБ на Диску Brave Software</translation>
 <translation id="6862635236584086457">Для всіх файлів, збережених у цій папці, автоматично зберігаються резервні копії онлайн</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Отримуйте доступ до файлів будь-де, навіть без з’єднання з Інтернетом.<ph name="MARKUP_2"/>
     Файли на Brave Software Диску постійно оновлюються й доступні з будь-якого пристрою.<ph name="MARKUP_3"/>
@@ -2907,24 +2836,14 @@
     Незалежно від того, що станеться з вашим пристроєм, файли надійно зберігаються на Brave Software Диску.<ph name="MARKUP_6"/>
     <ph name="MARKUP_7"/>Надсилайте та створюйте файли, а також працюйте<ph name="MARKUP_8"/>
     над ними разом з іншими – усе в одному місці.<ph name="MARKUP_9"/></translation>
-<translation id="7489605380874780575">Перевірити придатність</translation>
 <translation id="4878716980734452132">Цей тип файлу не підтримується. Відвідайте <ph name="BEGIN_LINK"/>Веб-магазин Brave<ph name="END_LINK"/>, щоб знайти додаток, який може відкрити файл цього типу.
     <ph name="BEGIN_LINK_HELP"/>Докладніше<ph name="END_LINK_HELP"/></translation>
-<translation id="3376900196170631953">Цей файл створено для ПК, на яких використовується програмне забезпечення Windows. Він несумісний із вашим пристроєм, оскільки на ньому встановлено ОС Brave. Знайдіть відповідний додаток у <ph name="BEGIN_LINK"/>Веб-магазині Brave<ph name="END_LINK"/>.<ph name="BEGIN_LINK_HELP"/>Докладніше<ph name="END_LINK_HELP"/></translation>
 <translation id="3072401511615920367">Цей файл створено для комп’ютерів, на яких використовується програмне забезпечення Macintosh. Він несумісний із вашим пристроєм, оскільки на ньому встановлено ОС Brave. Знайдіть відповідний додаток у <ph name="BEGIN_LINK"/>Веб-магазині Brave<ph name="END_LINK"/>.<ph name="BEGIN_LINK_HELP"/>Докладніше<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">Зачекайте</translation>
 <translation id="3096967955765855393">Ми постійно шукаємо способи зробити перегляд веб-сторінок безпечнішим. Раніше будь-який веб-сайт міг пропонувати вам додати розширення у веб-переглядач. В останніх версіях Brave Software Brave ви маєте чітко вказати, що хочете встановити ці розширення, додавши їх на сторінці "Розширення". <ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/></translation>
-<translation id="2004663115385769400">Не вдається відкрити за допомогою додатка $1</translation>
-<translation id="639777613761517128">Щоб відкривати файли за допомогою додатка $1, спершу скопіюйте їх у папку "Файли Linux".</translation>
 <translation id="5368191757080475556">Надати Linux доступ до папки</translation>
-<translation id="6803594270782834876">Надайте додаткам Linux дозвіл відкривати файли в папці "$1"</translation>
-<translation id="9204140378020726578">Надайте додаткам Linux дозвіл відкривати файли на Brave Software Диску. Зміни буде синхронізовано на інших ваших пристроях.</translation>
 <translation id="4290535918735525311">Linux має доступ до 1 папки</translation>
-<translation id="984401732412731005">Linux має доступ до стількох папок: $1</translation>
 <translation id="4572815280350369984">Файл <ph name="FILE_TYPE"/></translation>
-<translation id="895586998699996576">Зображення у форматі $1</translation>
-<translation id="2853916256216444076">Відео у форматі $1</translation>
-<translation id="7006844981395428048">Звук у форматі $1</translation>
 <translation id="7799329977874311193">Документ HTML</translation>
 <translation id="2208158072373999562">Архів Zip</translation>
 <translation id="2028997212275086731">Архів у форматі RAR</translation>
@@ -2973,8 +2892,6 @@
 <translation id="6199801702437275229">Очікування даних про вільне місце...</translation>
 <translation id="6485131920355264772">Не вдалось отримати дані про вільне місце</translation>
 <translation id="7748626145866214022">На панелі дій доступно більше параметрів. Натисніть Alt + A, щоб відкрити її.</translation>
-<translation id="60628369828239652">Відкривається файл <ph name="FILE_NAME"/></translation>
-<translation id="353547388688256996">Відкривається додаток <ph name="NUMBER_FILES"/></translation>
 <translation id="6710213216561001401">Попереднє</translation>
 <translation id="1395262318152388157">Повзунок пошуку</translation>
 <translation id="4880214202172289027">Регулятор гучності</translation>
@@ -3117,7 +3034,6 @@
 <translation id="6352773953037195952">Найвищий</translation>
 <translation id="3677657024345889897">Найтихіше</translation>
 <translation id="167160931442925455">Найголосніше</translation>
-<translation id="9129010913019873477"><ph name="PERCENTAGE"/> (за умовчанням)</translation>
 <translation id="3602290021589620013">Попередній перегляд</translation>
 <translation id="7037509989619051237">Текст для попереднього прослуховування</translation>
 <translation id="5471768120198416576">Вітаю! Я – голос для синтезу мовлення.</translation>
@@ -3170,9 +3086,11 @@
 <translation id="8465252176946159372">Недійсний</translation>
 <translation id="8647834505253004544">Недійсна веб-адреса</translation>
 <translation id="7946586320617670168">Походження має бути безпечним</translation>
+<translation id="2709516037105925701">Автозаповнення</translation>
 <translation id="7764225426217299476">Додати адресу</translation>
 <translation id="5595485650161345191">Редагувати адресу</translation>
 <translation id="6207937957461833379">Країна або регіон</translation>
+<translation id="4378154925671717803">Телефон</translation>
 <translation id="9064275926664971810">Увімкнути "Автозаповнення", щоб заповнювати форми одним кліком</translation>
 <translation id="9095253524804455615">Видалити</translation>
 <translation id="451515744433878153">Видалити</translation>
@@ -3182,6 +3100,11 @@
 <translation id="4835914736509775287">Збережіть картки в обліковому записі Brave Software</translation>
 <translation id="7255002516883565667">Зараз у вас є одна картка, яку можна використовувати лише на цьому пристрої</translation>
 <translation id="6848388270925200958">Зараз у вас є кілька карток, які можна використовувати лише на цьому пристрої</translation>
+<translation id="4807098396393229769">Ім'я на картці</translation>
+<translation id="2612676031748830579">Номер картки</translation>
+<translation id="869891660844655955">Діє до</translation>
+<translation id="1149401351239820326">Місяць закінчення терміну дії</translation>
+<translation id="8058655154417507695">Рік закінчення терміну дії</translation>
 <translation id="379082410132524484">Ваша картка недійсна</translation>
 <translation id="6644512095122093795">Пропонувати зберігати паролі</translation>
 <translation id="2100273922101894616">Автоматичний вхід</translation>
@@ -3511,7 +3434,6 @@
 <translation id="6921033294337262045">Торкніться меню "Сповіщення додатків" &gt; "Сервіси Brave Software Play".</translation>
 <translation id="5624710179837914896">Увімкніть сервіси Brave Software Play.</translation>
 <translation id="2705736684557713153">Прокрутіть сторінку вниз і ввімкніть миттєву точку доступу (якщо ця опція відображається). Якщо ні, усе готово.</translation>
-<translation id="3604048165392640554">Мобільне з’єднання не знайдено. Увімкніть миттєвий режим модема на інших пристроях і повторіть спробу. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Докладніше&lt;/a&gt;</translation>
 <translation id="7240339475467890413">Під’єднатися до нової точки доступу?</translation>
 <translation id="6514010653036109809">Доступний пристрій:</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/>% заряду акумулятора</translation>
@@ -3689,8 +3611,6 @@
 <translation id="5487521232677179737">Видалити дані</translation>
 <translation id="3151562827395986343">Видалити історію, файли cookie, кеш тощо</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> (<ph name="COUNT"/>)</translation>
-<translation id="3407837288045706722">Інші налаштування конфіденційності, безпеки та збору данних доступні в розділі <ph name="BEGIN_LINK"/>Синхронізація та персоналізація<ph name="END_LINK"/></translation>
-<translation id="7222718784508482526">Інші налаштування конфіденційності, безпеки та збору даних доступні в розділі <ph name="BEGIN_LINK"/>Синхронізація та сервіси Brave Software<ph name="END_LINK"/></translation>
 <translation id="8632933437936028548">Скинути налаштування</translation>
 <translation id="5293170712604732402">Відновити початкові налаштування за умовчанням</translation>
 <translation id="892706138619340876">Скинуто деякі налаштування</translation>
@@ -3715,12 +3635,9 @@
 <translation id="7098447629416471489">Тут відображатимуться інші збережені пошукові системи</translation>
 <translation id="1459967076783105826">Пошукові системи, додані розширеннями</translation>
 <translation id="6678717876183468697">URL-адреса пошукового запиту</translation>
-<translation id="1545786162090505744">URL-адреса з %s замість запита</translation>
 <translation id="6953878494808481632">Пов’язана інформація</translation>
 <translation id="4145922204387553806">Дозвольте Асистенту показувати інформацію на основі вмісту на екрані</translation>
 <translation id="472896694312062378">Ok Brave Software</translation>
-<translation id="6236033368436682108">Відкривайте Асистент командою "Ok Brave Software", коли екран увімкнено</translation>
-<translation id="2482878487686419369">Сповіщення</translation>
 <translation id="5355099869024327351">Дозволити Асистенту показувати сповіщення</translation>
 <translation id="133535873114485416">Вибраний спосіб введення</translation>
 <translation id="6233154960150021497">За умовчанням використовувати голосові команди замість клавіатури</translation>
@@ -3736,14 +3653,12 @@
 <translation id="1919345977826869612">Реклама</translation>
 <translation id="5649053991847567735">Автоматичні завантаження</translation>
 <translation id="3744111561329211289">Фонова синхронізація</translation>
-<translation id="1620510694547887537">Камера</translation>
 <translation id="2586657967955657006">Буфер обміну</translation>
 <translation id="5518219166343146486">Запитувати, коли сайт хоче переглядати тексти й зображення в буфері обміну</translation>
 <translation id="2089795179672254991">Запитувати, коли сайт хоче переглядати тексти й зображення в буфері обміну (рекомендується)</translation>
 <translation id="16815041330799488">Не дозволяти сайтам переглядати тексти й зображення в буфері обміну</translation>
 <translation id="3668823961463113931">Обробники</translation>
 <translation id="5689516760719285838">Місцезнаходження</translation>
-<translation id="3227137524299004712">Мікрофон</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Обробники платежів</translation>
@@ -3888,12 +3803,9 @@
 <translation id="6029292188939175871">видалити [<ph name="FINGERPRINT_NAME"/>], кнопка</translation>
 <translation id="1927632033341042996">Палець <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">Додати обліковий запис</translation>
-<translation id="3422989461909154470">Усіма обліковими записами Brave Software, у які ви ввійшли в додатках або на веб-сайтах, можна керувати тут.</translation>
 <translation id="1987317783729300807">Облікові записи</translation>
 <translation id="8418661265246754237">Облікові записи Brave Software</translation>
 <translation id="3297951628821704004">Видалити обліковий запис із цього пристрою</translation>
-<translation id="1059855432287631118">Реєстрація відбитка</translation>
-<translation id="878068003854005405">Розпочнімо. Покладіть палець на датчик.</translation>
 <translation id="176193854664720708">Сканер відбитків пальців знаходиться на кнопці живлення. Легко торкніться його будь-яким пальцем.</translation>
 <translation id="7189965711416741966">Відбиток додано.</translation>
 <translation id="9220820413868316583">Підніміть палець, а потім повторіть спробу.</translation>
@@ -4134,24 +4046,19 @@
 <translation id="7878562273885520351">Ваш пароль можуть зламати</translation>
 <translation id="1089439967362294234">Змінити пароль</translation>
 <translation id="6187156085111579405">Якщо потрібно, можна також видалити елементи, не перелічені тут. Докладніше про &lt;a href="<ph name="URL"/>"&gt;захист від небажаних програм&lt;/a&gt; читайте в інформаційному документі про конфіденційність Brave.</translation>
-<translation id="928985544179707652">Розширення:</translation>
 <translation id="7712836429117959503">Невідоме розширення з ідентифікатором <ph name="EXTENSION_ID"/></translation>
-<translation id="2600115369439982409">Файли та програми:</translation>
-<translation id="1372681413396468867">{NUM_ITEMS,plural, =1{1 елемент буде видалено}one{# елемент буде видалено}few{# елементи буде видалено}many{# елементів буде видалено}other{# елемента буде видалено}}</translation>
 <translation id="7187428571767585875">Записи в реєстрі, які буде видалено або змінено:</translation>
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{Ще 1}one{Ще #}few{Ще #}many{Ще #}other{Ще #}}</translation>
 <translation id="2749608811030566578">Коли Brave видаляв шкідливі програми, сталася помилка</translation>
 <translation id="8189483132214844139">Brave може знайти на вашому комп’ютері шкідливе програмне забезпечення й видалити його</translation>
 <translation id="2910318910161511225">Під’єднайтеся до мережі й повторіть спробу</translation>
 <translation id="1426870617281699524">Натисніть "Повторити спробу", а потім – опцію "Так" у вікні запиту на своєму комп’ютері</translation>
-<translation id="2201358555632643970">На вашому комп’ютері виявлено зловмисне програмне забезпечення. Brave видалить його та відновить налаштування для роботи веб-переглядача у звичайному режимі.</translation>
 <translation id="1484912962860902625">Під час пошуку шкідливих програм у Brave сталася помилка</translation>
 <translation id="451407183922382411">Технологія <ph name="COMPANY_NAME"/></translation>
 <translation id="5254368820972107711">Показати файли, які будуть вилучені</translation>
 <translation id="296026337010986570">Готово! Шкідливе програмне забезпечення видалено. Щоб знову ввімкнути розширення, перейдіть на сторінку &lt;a href="chrome://extensions"&gt;Розширення&lt;/a&gt;.</translation>
 <translation id="284975061945174219">Не вдалось очистити</translation>
 <translation id="9014750448058570312">Brave потрібен дозвіл, щоб продовжити</translation>
-<translation id="3806965327722135869">Знайти та видалити шкідливі програми</translation>
 <translation id="4320177379694898372">Немає з’єднання з Інтернетом</translation>
 <translation id="850875081535031620">Шкідливих програм не виявлено</translation>
 <translation id="1186771945450942097">Вилучити зловмисне програмне забезпечення</translation>
@@ -4160,7 +4067,6 @@
 <translation id="8639047128869322042">Пошук шкідливих програм…</translation>
 <translation id="2653033005692233957">Помилка пошуку</translation>
 <translation id="655483977608336153">Повторити</translation>
-<translation id="6312400084708441752">Включає інформацію про шкідливі програми, налаштування системи та процеси на комп’ютері</translation>
 <translation id="6555810572223193255">Функція "Очищення" зараз недоступна</translation>
 <translation id="7117228822971127758">Повторіть спробу пізніше</translation>
 <translation id="443475966875174318">Оновити або видалити несумісні додатки</translation>
@@ -4197,8 +4103,6 @@
 <translation id="3264582393905923483">Контекст</translation>
 <translation id="1607139524282324606">Очистити введені дані</translation>
 <translation id="6025215716629925253">Запис стека</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;Не показано 1 рядок&gt;}one{&lt;Не показано $1 рядок&gt;}few{&lt;Не показано $1 рядки&gt;}many{&lt;Не показано $1 рядків&gt;}other{&lt;Не показано $1 рядка&gt;}}</translation>
-<translation id="5334899159203764908">Докладніше про <ph name="BEGIN_LINK"/>доступ до сайтів<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Дозвольте цьому розширенню переглядати й змінювати всі ваші дані на веб-сайтах, які ви відвідуєте.</translation>
 <translation id="407173827865827707">Після натискання</translation>
 <translation id="6455264371803474013">На певних сайтах</translation>
@@ -4271,6 +4175,7 @@
 <translation id="2785008241190445880">Закладку замінено</translation>
 <translation id="4320948194796820126">Додайте закладку в електронну пошту</translation>
 <translation id="2950533317914339731">Додавайте закладки до улюблених додатків Brave Software</translation>
+<translation id="995782501881226248">YouTube</translation>
 <translation id="239760341987199724">Зробити Brave веб-переглядачем за умовчанням</translation>
 <translation id="96037229054033864">Отримуйте результати пошуку й розумні функції від Brave Software під час перегляду сторінок</translation>
 <translation id="296137235951584143">Ваш персональний Brave</translation>
@@ -4303,14 +4208,12 @@
 <translation id="3706463572498736864">Сторінки на аркуші</translation>
 <translation id="2249605167705922988">напр., 1–5, 8, 11–13</translation>
 <translation id="5746169159649715125">Зберегти у форматі PDF</translation>
-<translation id="1731589410171062430">Усього: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/> ( <ph name="NUMBER_OF_PAGES"/> <ph name="PAGE_OR_PAGES_LABEL"/> )</translation>
 <translation id="2580924999637585241">Усього: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">аркуші паперу</translation>
 <translation id="8813811964357448561">аркуш паперу</translation>
 <translation id="8180239481735238521">сторінка</translation>
 <translation id="3725367690636977613">сторінки</translation>
 <translation id="7005848115657603926">Недійсний діапазон сторінок, використовуйте <ph name="EXAMPLE_PAGE_RANGE"/></translation>
-<translation id="2890678560483811744">Сторінка поза діапазоном</translation>
 <translation id="5398572795982417028">Сторінка поза діапазоном, максимальна кількість сторінок: <ph name="MAXIMUM_PAGE"/></translation>
 <translation id="218070003709087997">Використовуйте число, щоб указати кількість копій для друку (від 1 до 999).</translation>
 <translation id="2509495747794740764">Розмір масштабування має бути числом від 10 до 200.</translation>
@@ -4330,19 +4233,14 @@
 <translation id="6273677812470008672">Якість</translation>
 <translation id="7288676996127329262">Роздільна здатність: <ph name="HORIZONTAL_DPI"/>x<ph name="VERTICAL_DPI"/></translation>
 <translation id="1921584744613111023">Роздільна здатність: <ph name="DPI"/></translation>
-<translation id="2212126039311489237">Друк із діалогового вікна системи</translation>
 <translation id="6991665348624301627">Вибрати місце призначення</translation>
 <translation id="8800004011501252845">Показано місця призначення для</translation>
 <translation id="8996526648899750015">Додати обліковий запис…</translation>
 <translation id="5002959368039764681">Друкувати в Документи Brave Software та інші веб-доступні місця призначення. <ph name="BEGIN_LINK"/>Увійти<ph name="END_LINK"/>, щоб друкувати в службу Brave Software Cloud Print.</translation>
 <translation id="2150139952286079145">Пошук місць призначення</translation>
 <translation id="8569682776816196752">Не знайдено жодного місця призначення</translation>
-<translation id="6807889908376551050">Показати всі...</translation>
-<translation id="7328162502911382168">(<ph name="COUNT"/>)</translation>
 <translation id="7885253890047913815">Останні місця призначення</translation>
 <translation id="4929386379796360314">Місця друку</translation>
-<translation id="5829401023154985950">Керувати...</translation>
-<translation id="4628314759732363424">Змінити…</translation>
 <translation id="3899879303189199559">Офлайн понад рік</translation>
 <translation id="3154429428035006212">Офлайн понад місяць</translation>
 <translation id="5265562206369321422">Офлайн понад тиждень</translation>
@@ -4351,18 +4249,15 @@
 <translation id="6317318380444133405">Більше не підтримується.</translation>
 <translation id="5759728514498647443">Документи, які ви друкуєте через додаток <ph name="APP_NAME"/>, може переглядати додаток <ph name="APP_NAME"/>.</translation>
 <translation id="2080070583977670716">Більше налаштувань</translation>
-<translation id="6510568984200103950">Менше налаштувань</translation>
 <translation id="3360297538363969800">Помилка друку. Перевірте принтер і повторіть спробу.</translation>
 <translation id="5154108062446123722"><ph name="PRINTING_DESTINATION"/>: розширені налаштування</translation>
 <translation id="9056810968620647706">Збігів не знайдено.</translation>
-<translation id="8658595122208653918">Змінити параметри принтера…</translation>
 <translation id="4088095054444612037">Прийняти для групи</translation>
 <translation id="357886715122934472">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; хоче надати групі &lt;strong&gt;<ph name="GROUP_NAME"/>&lt;/strong&gt;, якою ви керуєте, доступ до принтера &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt;. Якщо ви приймете це запрошення, усі учасники групи зможуть користуватися цим принтером.</translation>
 <translation id="8783093612333542422">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; хоче надати вам доступ до принтера &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt;.</translation>
 <translation id="7210499381659830293">Принтери розширення</translation>
 <translation id="7453008956351770337">Вибираючи цей принтер, ви надаєте доступ до свого принтера такому розширенню:</translation>
 <translation id="2902127500170292085">Розширення <ph name="EXTENSION_NAME"/> не може зв’язатися з цим принтером. Перевірте, чи принтер підключено, і повторіть спробу.</translation>
-<translation id="5352285283572729470">Цим налаштуванням керує адміністратор</translation>
 <translation id="4994754230098574403">Налаштування</translation>
 <translation id="1396139853388185343">Не вдалося налаштувати принтер</translation>
 <translation id="2379281330731083556">Друкувати за допомогою діалогового вікна системи... <ph name="SHORTCUT_KEY"/></translation>
@@ -4391,8 +4286,6 @@
 <translation id="7681095912841365527">Сайт може використовувати Bluetooth</translation>
 <translation id="3085412380278336437">Сайт може використовувати камеру</translation>
 <translation id="9180380851667544951">Сайт може показувати ваш екран</translation>
-<translation id="7503127198245469314">Вилучіть гарнітуру, щоб заблокувати або дозволити певні дії на екрані комп’ютера</translation>
-<translation id="5592010267127539419"><ph name="URL_HOST"/> хоче створити пару з пристроями</translation>
 <translation id="4992630054488400221">Установіть чи оновіть клавіатуру Daydream, щоб використовувати Brave у VR</translation>
 <translation id="983511809958454316">Ця функція не підтримується у VR-режимі</translation>
 <translation id="4008291085758151621">Інформація про сайт недоступна у VR-режимі</translation>

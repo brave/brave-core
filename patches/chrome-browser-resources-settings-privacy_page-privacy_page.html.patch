@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index fda182d92233601979c6bd99e96b5239c09f9a4b..89fec1b2afe45b7a846c8e015a501eb203781cf5 100644
+index f58c307b46222efb8acbf2f9bf11af5cf14fd211..639e0e94773bdf68d5b52cb7f8c85e8034b471e4 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-@@ -92,6 +92,7 @@
-           </div>
-         </template>
+@@ -101,6 +101,7 @@
+            hidden="[[!unifiedConsentEnabled_]]">
+         </cr-link-row>
  <if expr="not chromeos">
 +<!--
          <settings-toggle-button id="signinAllowedToggle"
              pref="{{prefs.signin.allowed_on_next_startup}}"
              label="$i18n{signinAllowedTitle}"
-@@ -99,6 +100,7 @@
+@@ -108,6 +109,7 @@
              on-settings-boolean-control-change="onSigninAllowedChange_"
              no-set-pref>
          </settings-toggle-button>
@@ -18,23 +18,23 @@ index fda182d92233601979c6bd99e96b5239c09f9a4b..89fec1b2afe45b7a846c8e015a501eb2
  </if><!-- not chromeos -->
          <template is="dom-if" if="[[!unifiedConsentEnabled_]]">
            <settings-personalization-options prefs="{{prefs}}"
-@@ -220,6 +222,7 @@
+@@ -234,6 +236,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
 +<if expr="_google_chrome">
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
-         <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}">
-           <category-default-setting
-@@ -234,6 +237,7 @@
+         <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}"
+             search-label="$i18n{siteSettingsAllSitesSearch}"
+@@ -251,6 +254,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
 +</if>
        <template is="dom-if" route-path="/content/camera" no-search>
-         <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}">
-           <media-picker label="$i18n{siteSettingsCameraLabel}" type="camera">
-@@ -256,11 +260,13 @@
+         <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}"
+             search-label="$i18n{siteSettingsAllSitesSearch}"
+@@ -278,11 +282,13 @@
                toggle-on-label="$i18n{siteSettingsCookiesAllowedRecommended}"
                sub-option-label="$i18n{deleteDataPostSession}">
            </category-default-setting>
@@ -48,10 +48,10 @@ index fda182d92233601979c6bd99e96b5239c09f9a4b..89fec1b2afe45b7a846c8e015a501eb2
            <div id="site-data-trigger" class="settings-box" actionable
                on-click="onSiteDataTap_">
               <div class="start" id="cookiesLink">
-@@ -330,11 +336,13 @@
-       </template>
-       <template is="dom-if" route-path="/content/javascript" no-search>
-         <settings-subpage page-title="$i18n{siteSettingsCategoryJavascript}">
+@@ -361,11 +367,13 @@
+         <settings-subpage page-title="$i18n{siteSettingsCategoryJavascript}"
+             search-label="$i18n{siteSettingsAllSitesSearch}"
+             search-term="{{searchFilter_}}">
 +<if expr="_google_chrome">
            <category-default-setting
                toggle-off-label="$i18n{siteSettingsBlocked}"
@@ -61,8 +61,8 @@ index fda182d92233601979c6bd99e96b5239c09f9a4b..89fec1b2afe45b7a846c8e015a501eb2
 +</if>
            <category-setting-exceptions
                category="{{ContentSettingsTypes.JAVASCRIPT}}"
-               block-header="$i18n{siteSettingsBlock}">
-@@ -409,6 +417,19 @@
+               block-header="$i18n{siteSettingsBlock}"
+@@ -453,6 +461,19 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -80,5 +80,5 @@ index fda182d92233601979c6bd99e96b5239c09f9a4b..89fec1b2afe45b7a846c8e015a501eb2
 +        </settings-subpage>
 +      </template>
        <template is="dom-if" route-path="/content/flash" no-search>
-         <settings-subpage page-title="$i18n{siteSettingsFlash}">
-           <a class="settings-box first" tabindex="-1"
+         <settings-subpage page-title="$i18n{siteSettingsFlash}"
+             search-label="$i18n{siteSettingsAllSitesSearch}"

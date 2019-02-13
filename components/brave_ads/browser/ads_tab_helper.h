@@ -1,10 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_ADS_ADS_TAB_HELPER_H_
-#define BRAVE_BROWSER_BRAVE_ADS_ADS_TAB_HELPER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_TAB_HELPER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_TAB_HELPER_H_
 
+#include <memory>
 #include <string>
 
 #include "base/macros.h"
@@ -81,9 +83,10 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_;
 
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
   DISALLOW_COPY_AND_ASSIGN(AdsTabHelper);
 };
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_BROWSER_BRAVE_ADS_ADS_TAB_HELPER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_TAB_HELPER_H_

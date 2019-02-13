@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index d2ae5365fa439f06603226e096b3a19d7778ccc4..d615044b0a7b54af64ddacab2fd93b46adda14ef 100644
+index dedc927ddca94c5589f79253adc332cdac8f4a9c..4e2cc8b32e17eb639219167097001985c5541b31 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
-@@ -25,6 +25,7 @@
+@@ -24,6 +24,7 @@
  #include "base/task/post_task.h"
  #include "base/task/task_traits.h"
  #include "base/threading/thread_task_runner_handle.h"
@@ -10,7 +10,7 @@ index d2ae5365fa439f06603226e096b3a19d7778ccc4..d615044b0a7b54af64ddacab2fd93b46
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/chrome_notification_types.h"
-@@ -660,6 +661,9 @@ bool ProfileIOData::IsHandledProtocol(const std::string& scheme) {
+@@ -642,6 +643,9 @@ bool ProfileIOData::IsHandledProtocol(const std::string& scheme) {
      extensions::kExtensionScheme,
  #endif
      content::kChromeUIScheme,
@@ -20,7 +20,7 @@ index d2ae5365fa439f06603226e096b3a19d7778ccc4..d615044b0a7b54af64ddacab2fd93b46
      url::kDataScheme,
  #if defined(OS_CHROMEOS)
      content::kExternalFileScheme,
-@@ -969,7 +973,7 @@ void ProfileIOData::Init(
+@@ -932,7 +936,7 @@ void ProfileIOData::Init(
          std::make_unique<network::URLRequestContextBuilderMojo>();
  
      std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(

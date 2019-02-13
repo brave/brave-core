@@ -91,6 +91,7 @@
 <translation id="2218515861914035131">Colar como texto simples</translation>
 <translation id="5329858601952122676">E&amp;liminar</translation>
 <translation id="1017280919048282932">&amp;Adicionar ao dicionário</translation>
+<translation id="7658239707568436148">Cancelar</translation>
 <translation id="4572259796527554261">Pedir sugestões ao Brave Software</translation>
 <translation id="3435896845095436175">Ativar</translation>
 <translation id="780301667611848630">Não, obrigado</translation>
@@ -212,6 +213,7 @@
 <translation id="5801568494490449797">Preferências</translation>
 <translation id="7607274158153386860">Solicitar Website para tablets</translation>
 <translation id="4408599188496843485">A&amp;juda</translation>
+<translation id="8378714024927312812">Gerido pela sua entidade</translation>
 <translation id="6723661294526996303">Importar marcadores e definições...</translation>
 <translation id="9203398526606335860">Criação de &amp;perfis ativada</translation>
 <translation id="3819800052061700452">&amp;Ecrã inteiro</translation>
@@ -224,14 +226,12 @@
 <translation id="4891089016822695758">Fórum da versão beta</translation>
 <translation id="7199158086730159431">Obter a&amp;juda</translation>
 <translation id="630065524203833229">&amp;Sair</translation>
-<translation id="8378714024927312812">Gerido pela sua entidade</translation>
 <translation id="3855676282923585394">Importar marcadores e definições...</translation>
 <translation id="4821935166599369261">Criação de &amp;perfis ativada</translation>
 <translation id="3827774300009121996">&amp;Ecrã inteiro</translation>
 <translation id="3616741288025931835">&amp;Limpar Dados de Navegação...</translation>
 <translation id="1618268899808219593">C&amp;entro de Ajuda</translation>
 <translation id="7324297612904500502">Fórum da versão beta</translation>
-<translation id="2052369079215022979">Gerido pela sua entidade</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5912378097832178659">&amp;Editar motores de pesquisa...</translation>
 <translation id="5702898740348134351">&amp;Editar motores de pesquisa...</translation>
@@ -335,7 +335,6 @@
 <translation id="8200772114523450471">Continuar</translation>
 <translation id="2770465223704140727">Remover da lista</translation>
 <translation id="7702574632857388784">Remover <ph name="FILE_NAME"/> da lista</translation>
-<translation id="7658239707568436148">Cancelar</translation>
 <translation id="7144878232160441200">Repetir</translation>
 <translation id="5170568018924773124">Mostrar numa pasta</translation>
 <translation id="1581962803218266616">Mostrar no Finder</translation>
@@ -448,7 +447,6 @@
 <translation id="6527303717912515753">Partilhar</translation>
 <translation id="3249950116250264636"><ph name="APP_NAME"/> (<ph name="APP_URL"/>)</translation>
 <translation id="3810973564298564668">Gerir</translation>
-<translation id="7837307963048806839">•  $1</translation>
 <translation id="2344028582131185878">Transferências automáticas</translation>
 <translation id="8217399928341212914">Continuar a bloquear transferências automáticas de vários ficheiros</translation>
 <translation id="2580889980133367162">Permitir sempre que o <ph name="HOST"/> transfira vários ficheiros</translation>
@@ -955,8 +953,6 @@ Certifique-se de que não revela informações confidenciais.</translation>
 <translation id="316854673539778496">Para obter todas as suas extensões em todos os dispositivos, inicie sessão e ative a sincronização.</translation>
 <translation id="8079938625609335826">Para obter todas as suas extensões em todos os dispositivos, ative a sincronização.</translation>
 <translation id="4977942889532008999">Confirmar acesso</translation>
-<translation id="496226124210045887">A pasta que selecionou contém ficheiros sensíveis. Tem a certeza de que pretende conceder a "$1" o acesso permanente de leitura a esta pasta?</translation>
-<translation id="4547992677060857254">A pasta que selecionou contém ficheiros sensíveis. Tem a certeza de que pretende conceder a "$1" o acesso permanente de escrita a esta pasta?</translation>
 <translation id="6220413761270491930">Erro ao carregar a extensão</translation>
 <translation id="5707185214361380026">Falha ao carregar a extensão de:</translation>
 <translation id="7341834142292923918">Pretende o acesso a este site</translation>
@@ -1114,7 +1110,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="224940702122312781">Esta página utiliza uma grande quantidade de dados.</translation>
 <translation id="3861241522664181545">Página em pausa.</translation>
 <translation id="6921709132208495314">Parar de utilizar dados nesta página</translation>
-<translation id="1683850629661177840">Agora, o modo lite torna a navegação mais rápida em todas as páginas, incluindo HTTPS.</translation>
 <translation id="8428213095426709021">Definições</translation>
 <translation id="2724841811573117416">Registos de WebRTC</translation>
 <translation id="1969654639948595766">Registos de texto WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
@@ -1172,7 +1167,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="444134486829715816">Expandir...</translation>
 <translation id="2737363922397526254">Reduzir...</translation>
 <translation id="6690659332373509948">Impossível analisar o ficheiro: <ph name="FILE_NAME"/></translation>
-<translation id="3011284594919057757">Acerca do Flash</translation>
 <translation id="1962233722219655970">Esta página utiliza uma aplicação Native Client que não funciona no computador.</translation>
 <translation id="7540972813190816353">Ocorreu um erro durante a verificação de atualizações: <ph name="ERROR"/></translation>
 <translation id="7088434364990739311">Falha ao iniciar a verificação de atualizações (código de erro <ph name="ERROR"/>).</translation>
@@ -1226,6 +1220,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="385051799172605136">Anterior</translation>
 <translation id="4628948037717959914">Fotografia</translation>
 <translation id="8033827949643255796">selecionado</translation>
+<translation id="2635094637295383009">Twitter</translation>
 <translation id="5376169624176189338">Clique para retroceder, mantenha premido para ver o histórico</translation>
 <translation id="9103868373786083162">Premir para voltar, menu de contexto para ver o histórico</translation>
 <translation id="2961695502793809356">Clique para avançar, mantenha premido para ver o histórico</translation>
@@ -1342,8 +1337,6 @@ Pretende pará-lo?</translation>
 <translation id="4206323443866416204">Relatório de comentários</translation>
 <translation id="3681311097828166361">Obrigado pelos seus comentários. Neste modo, está offline, pelo que o seu relatório será enviado mais tarde.</translation>
 <translation id="8713570323158206935">Enviar <ph name="BEGIN_LINK1"/>informações do sistema<ph name="END_LINK1"/></translation>
-<translation id="6395423953133416962">Enviar <ph name="BEGIN_LINK1"/>informações do sistema<ph name="END_LINK1"/> e <ph name="BEGIN_LINK2"/>métricas<ph name="END_LINK2"/></translation>
-<translation id="6270770586500173387">Enviar <ph name="BEGIN_LINK1"/>informações do sistema e da aplicação<ph name="END_LINK1"/>, bem como <ph name="BEGIN_LINK2"/>métricas<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">O ficheiro será enviado para a Brave Software para depuração</translation>
 <translation id="8227119283605456246">Anexar ficheiro</translation>
 <translation id="5367091008316207019">A ler ficheiro...</translation>
@@ -1416,39 +1409,11 @@ Pretende pará-lo?</translation>
 <translation id="9009369504041480176">A carregar (<ph name="PROGRESS_PERCENT"/>%)...</translation>
 <translation id="7925285046818567682">A aguardar por <ph name="HOST_NAME"/>...</translation>
 <translation id="7887334752153342268">Duplicar</translation>
-<translation id="5210365745912300556">Fechar separador</translation>
-<translation id="5453029940327926427">Fechar separadores</translation>
 <translation id="68541483639528434">Fechar os outros separadores</translation>
 <translation id="6686490380836145850">Fechar separadores à direita</translation>
-<translation id="855081842937141170">Fixar separador</translation>
-<translation id="5105855035535475848">Fixar separadores</translation>
-<translation id="2074527029802029717">Desbloquear o separador</translation>
-<translation id="1812631533912615985">Soltar separadores</translation>
-<translation id="527605719918376753">Desativar som do separador</translation>
-<translation id="8373553483208508744">Desativar som dos separadores</translation>
-<translation id="9203478404496196495">Reativar som do separador</translation>
-<translation id="1438632560381091872">Reativar som dos separadores</translation>
-<translation id="1568067597247500137">Desativar som do site</translation>
-<translation id="1216654534877302979">Desativar som dos sites</translation>
-<translation id="612596694132302162">Reativar som do site</translation>
-<translation id="6778959797435875428">Reativar som dos sites</translation>
 <translation id="4474155171896946103">Adicionar todos os separadores aos marcadores...</translation>
-<translation id="3551320343578183772">Fechar Separador</translation>
-<translation id="7268365133021434339">Fechar separadores</translation>
 <translation id="4322394346347055525">Fechar os Outros Separadores</translation>
 <translation id="1166212789817575481">Fechar Separadores à Direita</translation>
-<translation id="21133533946938348">Fixar Separador</translation>
-<translation id="8072988827236813198">Fixar Separadores</translation>
-<translation id="6442697326824312960">Remover separador</translation>
-<translation id="1732215134274276513">Soltar separdores</translation>
-<translation id="474217410105706308">Desativar Som do Separador</translation>
-<translation id="9039890312082871605">Desativar Som dos Separadores</translation>
-<translation id="4632483769545853758">Reativar o Som do Separador</translation>
-<translation id="304826556400666995">Reativar Som dos Separadores</translation>
-<translation id="2973324205039581528">Desativar som do site</translation>
-<translation id="7579149537961810247">Desativar som dos sites</translation>
-<translation id="1293177648337752319">Reativar som do site</translation>
-<translation id="109758035718544977">Reativar som dos sites</translation>
 <translation id="2336228925368920074">Adicionar todos os separadores aos marcadores...</translation>
 <translation id="2278562042389100163">Abrir janela do browser</translation>
 <translation id="756445078718366910">Abrir janela do navegador</translation>
@@ -1496,14 +1461,6 @@ Pretende pará-lo?</translation>
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">Plataforma</translation>
 <translation id="7022562585984256452">A sua página inicial foi definida.</translation>
-<translation id="2709516037105925701">Preenchimento automático</translation>
-<translation id="4378154925671717803">Telemóvel</translation>
-<translation id="4807098396393229769">Nome no cartão</translation>
-<translation id="2612676031748830579">Número do cartão</translation>
-<translation id="869891660844655955">Data de expiração</translation>
-<translation id="1149401351239820326">Mês de expiração</translation>
-<translation id="8058655154417507695">Ano de expiração</translation>
-<translation id="2286841657746966508">Endereço de facturação</translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Adicionar impressoras</translation>
 <translation id="9052208328806230490">Registou as suas impressoras com <ph name="CLOUD_PRINT_NAME"/> utilizando a conta <ph name="EMAIL"/></translation>
@@ -1648,12 +1605,8 @@ Pretende pará-lo?</translation>
 <translation id="1231733316453485619">Pretende ativar a sincronização?</translation>
 <translation id="9125982323641182972">Inteligên. Brave Software no Brave</translation>
 <translation id="4736292055110123391">Sincronizar os seus marcadores, palavras-passe, histórico e muito mais em todos os seus dispositivos</translation>
-<translation id="328921709097406258">A Brave Software pode utilizar o seu histórico para personalizar a Pesquisa, os anúncios e outros serviços Brave Software.</translation>
 <translation id="363863692969456324">Corrigir erros ortográficos com a verificação ortográfica melhorada</translation>
-<translation id="1493787485275784624">O texto que introduzir nos campos de texto será enviado para a Brave Software.</translation>
 <translation id="561013949633009906">Ajudar a melhorar o Brave e a respetiva segurança</translation>
-<translation id="725079085443555687">Envia algumas informações do sistema e conteúdo da página para a Brave Software anonimamente.</translation>
-<translation id="2895734772884435517">Pode personalizar estas definições em qualquer altura.</translation>
 <translation id="3149880132460839085">Sincronização do Brave</translation>
 <translation id="3796902758602917951">Os marcadores, o histórico, as palavras-passe e outras definições são sincronizados com a sua Conta Brave Software para que os possa utilizar em todos os dispositivos</translation>
 <translation id="3111958038206230539">Personalizar os serviços Brave Software</translation>
@@ -1761,8 +1714,6 @@ Pretende pará-lo?</translation>
 <translation id="2562743677925229011">Não tem sessão iniciada no <ph name="SHORT_PRODUCT_NAME"/></translation>
 <translation id="4027804175521224372">(Está a perder - <ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK"/>)</translation>
 <translation id="3574210789297084292">iniciar sessão</translation>
-<translation id="308330327687243295">https://mail.google.com/mail/?extsrc=mailto&amp;url=%s</translation>
-<translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="237828693408258535">Pretende traduzir esta página?</translation>
 <translation id="4613765529964435709">Pretende que o Brave Software traduza esta página de <ph name="SOURCE_LANGUAGE"/> para <ph name="TARGET_LANGUAGE"/>?</translation>
 <translation id="5990386583461751448">Tradução</translation>
@@ -1825,6 +1776,7 @@ Pretende pará-lo?</translation>
 <translation id="8214489666383623925">Abrir ficheiro...</translation>
 <translation id="7456847797759667638">Abrir localização...</translation>
 <translation id="3265459715026181080">Fechar janela</translation>
+<translation id="3551320343578183772">Fechar Separador</translation>
 <translation id="4780321648949301421">Guardar página como...</translation>
 <translation id="6212752530110374741">Enviar link por email</translation>
 <translation id="457386861538956877">Mais...</translation>
@@ -1873,6 +1825,8 @@ Pretende pará-lo?</translation>
 <translation id="7831754656372780761"><ph name="TAB_TITLE"/> <ph name="EMOJI_MUTING"/></translation>
 <translation id="6315493146179903667">Trazer tudo para a frente</translation>
 <translation id="3007771295016901659">Duplicar o separador</translation>
+<translation id="2973324205039581528">Desativar som do site</translation>
+<translation id="21133533946938348">Fixar Separador</translation>
 <translation id="2007404777272201486">Comunicar um problema...</translation>
 <translation id="3118319026408854581">Ajuda do <ph name="PRODUCT_NAME"/></translation>
 <translation id="6721972322305477112">&amp;Ficheiro</translation>
@@ -2262,8 +2216,6 @@ Pretende pará-lo?</translation>
 <translation id="4079799245038595838">Foi enviada uma notificação para o seu telemóvel. Siga as instruções para confirmar a sua identidade.</translation>
 <translation id="88870264962436283">Utilizar o Touch ID com a aplicação <ph name="APP_NAME"/></translation>
 <translation id="5186185447130319458">Navegação anónima</translation>
-<translation id="8480139856920479206">{0,plural, =1{Tem uma janela de navegação anónima.}other{Tem # janelas de navegação anónima.}}</translation>
-<translation id="2545348954155066907">{0,plural, =1{Fechar esta janela}other{Fechar todas as janelas de navegação anónima}}</translation>
 <translation id="394984172568887996">Importado do IE</translation>
 <translation id="1543284117603151572">Importado do Edge</translation>
 <translation id="5502500733115278303">Importado do Firefox</translation>
@@ -2327,7 +2279,6 @@ Pretende pará-lo?</translation>
 <translation id="6455894534188563617">&amp;Nova pasta</translation>
 <translation id="1015318665228971643">Editar nome da pasta</translation>
 <translation id="5449588825071916739">Adicionar Todos os Separadores aos Marcadores</translation>
-<translation id="5528368756083817449">Gestor de marcadores</translation>
 <translation id="3828029223314399057">Pesquisar marcadores</translation>
 <translation id="8116972784401310538">&amp;Gestor de marcadores</translation>
 <translation id="6973630695168034713">Pastas</translation>
@@ -2383,6 +2334,10 @@ Pretende pará-lo?</translation>
 <translation id="1774833706453699074">Adicionar as páginas abertas aos marcadores...</translation>
 <translation id="6949306908218145636">Adicionar Páginas Abertas aos Marcadores...</translation>
 <translation id="4422347585044846479">Editar marcador para esta página</translation>
+<translation id="1620510694547887537">Câmara</translation>
+<translation id="5646376287012673985">Local</translation>
+<translation id="3227137524299004712">Microfone</translation>
+<translation id="2482878487686419369">Notificações</translation>
 <translation id="6005695835120147974">Media Router</translation>
 <translation id="7787308148023287649">Apresentar noutro ecrã</translation>
 <translation id="7710568461918838723">&amp;Transmitir…</translation>
@@ -2594,7 +2549,6 @@ Pretende pará-lo?</translation>
 <translation id="2653659639078652383">Submeter</translation>
 <translation id="8392451568018454956">Menu de opções para <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="6164005077879661055">Todos os ficheiros e dados locais associados ao utilizador supervisionado serão definitivamente eliminados depois de este utilizador supervisionado ser removido. Os Sites visitados e as definições deste utilizador supervisionado poderão continuar visíveis para o gestor em <ph name="MANAGEMENT_URL"/>.</translation>
-<translation id="1646102270785326155">Todos os ficheiros e dados locais associados a este utilizador são permanentemente eliminados depois da sua remoção. $2 pode ainda iniciar sessão mais tarde.</translation>
 <translation id="672213144943476270">Desbloqueie o seu perfil antes de navegar como convidado</translation>
 <translation id="3478685642445675458">Desbloqueie o seu perfil antes de remover uma pessoa.</translation>
 <translation id="4648499713050786492">Desbloqueie o seu perfil antes de adicionar uma pessoa.</translation>
@@ -2630,12 +2584,6 @@ Pretende pará-lo?</translation>
 <translation id="6146563240635539929">Vídeos</translation>
 <translation id="3616113530831147358">Áudio</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Atenção:<ph name="END_BOLD"/> Estes arquivos são temporários e podem ser automaticamente eliminados para libertar espaço em disco. <ph name="BEGIN_LINK"/>Saiba Mais<ph name="END_LINK"/></translation>
-<translation id="7361039089383199231">$1 bytes</translation>
-<translation id="4871210892959306034">$1 KB</translation>
-<translation id="641105183165925463">$1 MB</translation>
-<translation id="7221155467930685510">$1 GB</translation>
-<translation id="5039512255859636053">$1 TB</translation>
-<translation id="6840313690797192085">$1 PB</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
@@ -2652,7 +2600,6 @@ Pretende pará-lo?</translation>
 <translation id="5145331109270917438">Data de modificação</translation>
 <translation id="8487700953926739672">Disponível offline</translation>
 <translation id="2230062665678605299">Não é possível criar a pasta "<ph name="FOLDER_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4630590996962964935">Caráter inválido: $1</translation>
 <translation id="642282551015776456">Este nome não pode ser utilizado como um nome de ficheiro ou de pasta</translation>
 <translation id="2070909990982335904">Os nomes que começam por ponto estão reservados para o sistema. Escolha outro nome.</translation>
 <translation id="8456681095658380701">Nome inválido</translation>
@@ -2663,8 +2610,6 @@ Pretende pará-lo?</translation>
 <translation id="3749289110408117711">Nome do ficheiro</translation>
 <translation id="3280431534455935878">A preparar</translation>
 <translation id="6607272825297743757">Informações do ficheiro</translation>
-<translation id="3429599832623003132">$1 itens</translation>
-<translation id="532360961509278431">Não é possível abrir "$1": $2</translation>
 <translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>Não remova já o dispositivo!<ph name="END_BOLD"/>
    <ph name="LINE_BREAKS"/>
    Remover o dispositivo enquanto está a ser utilizado pode provocar perda de dados. Aguarde pela conclusão da operação e, em seguida, ejete o dispositivo através da aplicação Ficheiros.</translation>
@@ -2718,9 +2663,6 @@ Pretende pará-lo?</translation>
 <translation id="5158593464696388225">Não foi possível guardar a imagem.</translation>
 <translation id="2787047795752739979">Substituir original</translation>
 <translation id="8775404590947523323">As suas edições são guardadas automaticamente.<ph name="BREAKS"/>Para manter uma cópia da imagem original, desmarque a opção "Substituir original"</translation>
-<translation id="6653525630739667879">Não é possível guardar em $1. Todas as edições serão guardadas em $2 na pasta Transferências.</translation>
-<translation id="3184560914950696195">Não é possível guardar em $1. As imagens editadas serão guardadas na pasta Transferências.</translation>
-<translation id="6983991971286645866">Todas as alterações são guardadas em $1.</translation>
 <translation id="8153607920959057464">Não foi possível apresentar este ficheiro.</translation>
 <translation id="6227235786875481728">Não foi possível reproduzir este ficheiro.</translation>
 <translation id="9154418932169119429">Esta imagem não está disponível offline.</translation>
@@ -2730,9 +2672,6 @@ Pretende pará-lo?</translation>
 <translation id="4801956050125744859">Manter ambas</translation>
 <translation id="1062407476771304334">Substituir</translation>
 <translation id="1556189134700913550">Aplicar a todas</translation>
-<translation id="3206175707080061730">Já existe um ficheiro "$1". Pretende substituí-lo?</translation>
-<translation id="8059178146866384858">O ficheiro "$1" já existe. Escolha um nome diferente.</translation>
-<translation id="5653140146600257126">A pasta com o nome "$1" já existe. Escolha um nome diferente.</translation>
 <translation id="1497522201463361063">Não é possível mudar o nome de "<ph name="FILE_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5330512191124428349">Obter informações</translation>
 <translation id="8312871300878166382">Colar numa pasta</translation>
@@ -2791,20 +2730,13 @@ Pretende pará-lo?</translation>
 <translation id="4724850507808590449">Foi feita uma cópia de segurança de <ph name="FILE_COUNT"/> fotos</translation>
 <translation id="1351692861129622852">A importar <ph name="FILE_COUNT"/> ficheiros...</translation>
 <translation id="117624967391683467">A copiar <ph name="FILE_NAME"/>...</translation>
-<translation id="8453482423012550001">A copiar $1 itens...</translation>
 <translation id="7627790789328695202">Ups, <ph name="FILE_NAME"/> já existe. Dê um nome novo e tente novamente.</translation>
 <translation id="5691596662111998220">Ups, <ph name="FILE_NAME"/> já não existe.</translation>
 <translation id="4336032328163998280">Falha na operação de cópia. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1503914375822320413">Falha na operação de cópia, erro inesperado: $1</translation>
 <translation id="6133173853026656527">A mover <ph name="FILE_NAME"/>...</translation>
-<translation id="3039828483675273919">A mover $1 itens...</translation>
 <translation id="6007237601604674381">Falha ao mover. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="8954952943849489823">Falha ao mover, erro inesperado: $1</translation>
 <translation id="3326821416087822643">A criar zip de <ph name="FILE_NAME"/>...</translation>
-<translation id="5694501201003948907">A criar zip de $1 itens...</translation>
-<translation id="7464490149090366184">Falha na criação de zip; o item existe: "$1"</translation>
 <translation id="9133055936679483811">Falha na criação de zip. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1711973684025117106">Falha na criação de zip; erro inesperado: $1</translation>
 <translation id="653019979737152879">A sincronizar <ph name="FILE_NAME"/>…</translation>
 <translation id="8579285237314169903">A sincronizar <ph name="NUMBER_OF_FILES"/> itens...</translation>
 <translation id="8137331602592933310">"<ph name="FILENAME"/>" foi partilhado consigo. Não o pode eliminar porque não lhe pertence.</translation>
@@ -2824,8 +2756,6 @@ Pretende pará-lo?</translation>
 <translation id="1464724975715666883">1 erro.</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> erros.</translation>
 <translation id="6643016212128521049">Limpar</translation>
-<translation id="4284105660453474798">Tem a certeza de que pretende eliminar "$1"?</translation>
-<translation id="4580526846085481512">Tem a certeza de que pretende eliminar $1 itens?</translation>
 <translation id="7953739707111622108">Não é possível abrir este aparelho porque o sistema de ficheiros não foi reconhecido.</translation>
 <translation id="3726463242007121105">Não é possível abrir este aparelho porque o sistema de ficheiros não é suportado.</translation>
 <translation id="3414856743105198592">A formatação do suporte de dados amovível apagará todos os dados. Pretende continuar?</translation>
@@ -2899,7 +2829,6 @@ Pretende pará-lo?</translation>
     <ph name="MARKUP_4"/>elimine ficheiros da pasta Transferências<ph name="MARKUP_5"/></translation>
 <translation id="7606199793785990727">Não foi possível aceder ao Brave Software Drive. <ph name="BEGIN_LINK"/>Termine a sessão<ph name="END_LINK"/> e inicie a sessão novamente.</translation>
 <translation id="585883343689351092">Bem-vindo ao Brave Software Drive!</translation>
-<translation id="1788440444874291920">Obtenha 100 GB gratuitos com o Brave Software Drive</translation>
 <translation id="6862635236584086457">Será efetuada automaticamente uma cópia de segurança online de todos os ficheiros guardados nesta pasta</translation>
 <translation id="7220787572447472056"><ph name="MARKUP_1"/>Aceda a ficheiros a partir de qualquer local, mesmo offline.<ph name="MARKUP_2"/>
     Os ficheiros no Brave Software Drive estão atualizados e disponíveis a partir de qualquer dispositivo.<ph name="MARKUP_3"/>
@@ -2907,24 +2836,14 @@ Pretende pará-lo?</translation>
     Independentemente do que acontecer ao seu dispositivo, os seus ficheiros estão armazenados em segurança no Brave Software Drive.<ph name="MARKUP_6"/>
     <ph name="MARKUP_7"/>Partilhe, crie e colabore<ph name="MARKUP_8"/>
     em ficheiros com outras pessoas, tudo num único local.<ph name="MARKUP_9"/></translation>
-<translation id="7489605380874780575">Verificar elegibilidade</translation>
 <translation id="4878716980734452132">Este tipo de ficheiro não é suportado. Visite a <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> para encontrar uma aplicação que consiga abrir este tipo de ficheiro.
     <ph name="BEGIN_LINK_HELP"/>Saiba mais<ph name="END_LINK_HELP"/></translation>
-<translation id="3376900196170631953">Este ficheiro foi concebido para um PC que utiliza software Windows. Por isso, não é compatível com o seu dispositivo, que utiliza o Brave OS. Procure na <ph name="BEGIN_LINK"/>Web Store do Brave<ph name="END_LINK"/> uma aplicação de substituição adequada.<ph name="BEGIN_LINK_HELP"/>Saiba mais<ph name="END_LINK_HELP"/></translation>
 <translation id="3072401511615920367">Este ficheiro foi concebido para um computador com software Macintosh. Por isso, não é compatível com o seu dispositivo, que utiliza o Brave OS. Procure na <ph name="BEGIN_LINK"/>Web Store do Brave<ph name="END_LINK"/> uma aplicação de substituição adequada.<ph name="BEGIN_LINK_HELP"/>Saiba mais<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">Aguarde um momento</translation>
 <translation id="3096967955765855393">Estamos constantemente a procurar formas de tornar a navegação mais segura. Anteriormente, qualquer Website poderia pedir-lhe para adicionar uma extensão ao navegador. Nas versões mais recentes do Brave Software Brave, tem de definir explicitamente no Brave que pretende instalar estas extensões adicionando-as através da página Extensões. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
-<translation id="2004663115385769400">Não é possível abrir com o $1</translation>
-<translation id="639777613761517128">Para abrir ficheiros com o $1, copie primeiro para a pasta Ficheiros Linux.</translation>
 <translation id="5368191757080475556">Partilhar pasta com o Linux</translation>
-<translation id="6803594270782834876">Conceda autorização às aplicações Linux para abrir ficheiros na pasta $1.</translation>
-<translation id="9204140378020726578">Conceda autorização às aplicações Linux para abrir ficheiros no Brave Software Drive. As alterações serão sincronizadas com os seus outros dispositivos.</translation>
 <translation id="4290535918735525311">1 pasta partilhada com o Linux.</translation>
-<translation id="984401732412731005">$1 pastas partilhadas com o Linux</translation>
 <translation id="4572815280350369984">Ficheiro <ph name="FILE_TYPE"/></translation>
-<translation id="895586998699996576">Imagem $1</translation>
-<translation id="2853916256216444076">Vídeo $1</translation>
-<translation id="7006844981395428048">Áudio $1</translation>
 <translation id="7799329977874311193">Documento HTML</translation>
 <translation id="2208158072373999562">Ficheiro zip</translation>
 <translation id="2028997212275086731">Arquivo RAR</translation>
@@ -2973,8 +2892,6 @@ Pretende pará-lo?</translation>
 <translation id="6199801702437275229">A aguardar informações de espaço...</translation>
 <translation id="6485131920355264772">Falha ao obter informações de espaço</translation>
 <translation id="7748626145866214022">Há mais opções disponíveis na barra de ação. Prima Alt + A para focar a barra de ação.</translation>
-<translation id="60628369828239652">A abrir o ficheiro <ph name="FILE_NAME"/>…</translation>
-<translation id="353547388688256996">A abrir <ph name="NUMBER_FILES"/>...</translation>
 <translation id="6710213216561001401">Anterior</translation>
 <translation id="1395262318152388157">Controlo de deslize da procura</translation>
 <translation id="4880214202172289027">Controlo de deslize do volume</translation>
@@ -3117,7 +3034,6 @@ Pretende pará-lo?</translation>
 <translation id="6352773953037195952">A mais alta</translation>
 <translation id="3677657024345889897">O mais baixo</translation>
 <translation id="167160931442925455">O mais alto</translation>
-<translation id="9129010913019873477"><ph name="PERCENTAGE"/> (predefinição)</translation>
 <translation id="3602290021589620013">Pré-visualizar</translation>
 <translation id="7037509989619051237">Texto para pré-visualização</translation>
 <translation id="5471768120198416576">Olá! Sou a sua voz para a síntese de voz.</translation>
@@ -3170,9 +3086,11 @@ Pretende pará-lo?</translation>
 <translation id="8465252176946159372">Não é válido</translation>
 <translation id="8647834505253004544">Não é um endereço Web válido</translation>
 <translation id="7946586320617670168">A origem tem de ser segura.</translation>
+<translation id="2709516037105925701">Preenchimento automático</translation>
 <translation id="7764225426217299476">Adicionar endereço</translation>
 <translation id="5595485650161345191">Editar morada</translation>
 <translation id="6207937957461833379">País/Região</translation>
+<translation id="4378154925671717803">Telemóvel</translation>
 <translation id="9064275926664971810">Ativar a funcionalidade de Preenchimento Automático para preencher formulários Web com um único clique</translation>
 <translation id="9095253524804455615">Remover</translation>
 <translation id="451515744433878153">Remover</translation>
@@ -3182,6 +3100,11 @@ Pretende pará-lo?</translation>
 <translation id="4835914736509775287">Guardar cartões na sua Conta Brave Software</translation>
 <translation id="7255002516883565667">De momento, tem um cartão que apenas pode ser utilizado neste dispositivo.</translation>
 <translation id="6848388270925200958">De momento, tem alguns cartões que apenas podem ser utilizados neste dispositivo.</translation>
+<translation id="4807098396393229769">Nome no cartão</translation>
+<translation id="2612676031748830579">Número do cartão</translation>
+<translation id="869891660844655955">Data de expiração</translation>
+<translation id="1149401351239820326">Mês de expiração</translation>
+<translation id="8058655154417507695">Ano de expiração</translation>
 <translation id="379082410132524484">O seu cartão de crédito expirou</translation>
 <translation id="6644512095122093795">Propor guardar palavras-passe</translation>
 <translation id="2100273922101894616">Início de sessão automático</translation>
@@ -3511,7 +3434,6 @@ Pretende pará-lo?</translation>
 <translation id="6921033294337262045">Toque em Notificações da aplicação &gt; Serviços do Brave Software Play.</translation>
 <translation id="5624710179837914896">Ative os Serviços do Brave Software Play.</translation>
 <translation id="2705736684557713153">Desloque-se até à parte inferior do ecrã e ative a Ligação via telemóvel instantânea, se for apresentada. Caso contrário, está pronto para começar.</translation>
-<translation id="3604048165392640554">Nenhuma ligação móvel encontrada. Ative a ligação via telemóvel instantânea nos seus outros dispositivos e tente novamente. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saiba mais&lt;/a&gt;</translation>
 <translation id="7240339475467890413">Pretende ligar à nova zona Wi-Fi?</translation>
 <translation id="6514010653036109809">Dispositivo disponível:</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/>% de bateria</translation>
@@ -3689,8 +3611,6 @@ Pretende pará-lo?</translation>
 <translation id="5487521232677179737">Limpar dados</translation>
 <translation id="3151562827395986343">Limpar o histórico, os cookies, a cache e muito mais</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> – <ph name="COUNT"/></translation>
-<translation id="3407837288045706722">Para obter mais definições relacionadas com privacidade, segurança e recolha de dados, consulte <ph name="BEGIN_LINK"/>Sincronização e personalização<ph name="END_LINK"/>.</translation>
-<translation id="7222718784508482526">Para obter mais definições relacionadas com privacidade, segurança e recolha de dados, consulte <ph name="BEGIN_LINK"/>Sincronização e serviços Brave Software<ph name="END_LINK"/>.</translation>
 <translation id="8632933437936028548">Repor definições</translation>
 <translation id="5293170712604732402">Repor as predefinições originais das definições</translation>
 <translation id="892706138619340876">Algumas definições foram repostas</translation>
@@ -3715,12 +3635,9 @@ Pretende pará-lo?</translation>
 <translation id="7098447629416471489">Os outros motores de pesquisa guardados aparecem aqui</translation>
 <translation id="1459967076783105826">Motores de pesquisa adicionados por extensões</translation>
 <translation id="6678717876183468697">URL de consulta</translation>
-<translation id="1545786162090505744">URL com %s em vez da consulta</translation>
 <translation id="6953878494808481632">Informações relacionadas</translation>
 <translation id="4145922204387553806">Permitir que o Assistente mostre informações relacionadas com o que está a ser apresentado no ecrã</translation>
 <translation id="472896694312062378">Ok Brave Software</translation>
-<translation id="6236033368436682108">Aceda ao Assistente sempre que disser "Ok Brave Software" quando o ecrã estiver ligado.</translation>
-<translation id="2482878487686419369">Notificações</translation>
 <translation id="5355099869024327351">Permita que o Assistente lhe mostre notificações.</translation>
 <translation id="133535873114485416">Introdução preferida</translation>
 <translation id="6233154960150021497">Predefinir para utilizar a voz em vez do teclado</translation>
@@ -3736,14 +3653,12 @@ Pretende pará-lo?</translation>
 <translation id="1919345977826869612">Anúncios</translation>
 <translation id="5649053991847567735">Transferências automáticas</translation>
 <translation id="3744111561329211289">Sincronização em segundo plano</translation>
-<translation id="1620510694547887537">Câmara</translation>
 <translation id="2586657967955657006">Área de transferência</translation>
 <translation id="5518219166343146486">Perguntar quando um site pretender ver o texto e as imagens copiados para a área de transferência</translation>
 <translation id="2089795179672254991">Perguntar quando um site pretender ver o texto e as imagens copiados para a área de transferência (recomendado)</translation>
 <translation id="16815041330799488">Não permitir que os sites vejam o texto e as imagens copiados para a área de transferência</translation>
 <translation id="3668823961463113931">Processadores</translation>
 <translation id="5689516760719285838">Local</translation>
-<translation id="3227137524299004712">Microfone</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Controladores de pagamentos</translation>
@@ -3888,12 +3803,9 @@ Pretende pará-lo?</translation>
 <translation id="6029292188939175871">eliminar [<ph name="FINGERPRINT_NAME"/>], botão</translation>
 <translation id="1927632033341042996">Dedo <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">Adicionar conta</translation>
-<translation id="3422989461909154470">É possível gerir todas as suas Contas Brave Software com sessão iniciada em aplicações e Websites aqui.</translation>
 <translation id="1987317783729300807">Contas</translation>
 <translation id="8418661265246754237">Contas Brave Software</translation>
 <translation id="3297951628821704004">Remover conta deste dispositivo</translation>
-<translation id="1059855432287631118">Registar a impressão digital</translation>
-<translation id="878068003854005405">Vamos começar. Coloque o dedo no sensor.</translation>
 <translation id="176193854664720708">O sensor de impressões digitais está no botão ligar/desligar. Toque levemente no mesmo com qualquer dedo.</translation>
 <translation id="7189965711416741966">Impressão digital adicionada.</translation>
 <translation id="9220820413868316583">Levante e tente novamente.</translation>
@@ -4134,24 +4046,19 @@ Pretende pará-lo?</translation>
 <translation id="7878562273885520351">A palavra-passe pode estar comprometida</translation>
 <translation id="1089439967362294234">Alterar palavra-passe</translation>
 <translation id="6187156085111579405">Também serão removidos itens não indicados aqui, se necessário. Saiba mais acerca da &lt;a href="<ph name="URL"/>"&gt;proteção contra software indesejado&lt;/a&gt; no documento técnico da Privacidade do Brave.</translation>
-<translation id="928985544179707652">Extensões.</translation>
 <translation id="7712836429117959503">Extensão desconhecida com o ID <ph name="EXTENSION_ID"/>.</translation>
-<translation id="2600115369439982409">Ficheiros e programas:</translation>
-<translation id="1372681413396468867">{NUM_ITEMS,plural, =1{1 item a remover}other{# itens a remover}}</translation>
 <translation id="7187428571767585875">Entradas de registo a remover ou a alterar:</translation>
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{Mais 1}other{Mais #}}</translation>
 <translation id="2749608811030566578">Ocorreu um erro enquanto o Brave removia software prejudicial.</translation>
 <translation id="8189483132214844139">O Brave pode encontrar software prejudicial no seu computador e removê-lo.</translation>
 <translation id="2910318910161511225">Estabeleça ligação a uma rede e tente novamente.</translation>
 <translation id="1426870617281699524">Clique em Tentar novamente e aceite o pedido no computador.</translation>
-<translation id="2201358555632643970">Existe software prejudicial no seu computador. O Brave está a removê-lo e vai restaurar as suas definições para que o navegador volte a funcionar normalmente.</translation>
 <translation id="1484912962860902625">Ocorreu um erro enquanto o Brave procurava software prejudicial.</translation>
 <translation id="451407183922382411">Com tecnologia da <ph name="COMPANY_NAME"/></translation>
 <translation id="5254368820972107711">Mostrar ficheiros a remover</translation>
 <translation id="296026337010986570">Concluído! Software prejudicial removido. Para voltar a ativar as extensões, aceda a &lt;a href="chrome://extensions"&gt;Extensões&lt;/a&gt;.</translation>
 <translation id="284975061945174219">Falha ao limpar.</translation>
 <translation id="9014750448058570312">O Brave necessita de autorização para continuar</translation>
-<translation id="3806965327722135869">Localize e remova software prejudicial.</translation>
 <translation id="4320177379694898372">Sem ligação à Internet</translation>
 <translation id="850875081535031620">Não foi encontrado software prejudicial.</translation>
 <translation id="1186771945450942097">Remover software prejudicial</translation>
@@ -4160,7 +4067,6 @@ Pretende pará-lo?</translation>
 <translation id="8639047128869322042">A procurar software prejudicial...</translation>
 <translation id="2653033005692233957">Falha ao pesquisar</translation>
 <translation id="655483977608336153">Tentar novamente</translation>
-<translation id="6312400084708441752">São incluídas informações acerca do software prejudicial, das definições do sistema e dos processos no seu computador.</translation>
 <translation id="6555810572223193255">A limpeza está atualmente indisponível.</translation>
 <translation id="7117228822971127758">Tente novamente mais tarde.</translation>
 <translation id="443475966875174318">Atualizar ou remover aplicações incompatíveis</translation>
@@ -4197,8 +4103,6 @@ Pretende pará-lo?</translation>
 <translation id="3264582393905923483">Contexto</translation>
 <translation id="1607139524282324606">Limpar entrada</translation>
 <translation id="6025215716629925253">Rastreio de pilha</translation>
-<translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 linha não apresentada&gt;}other{&lt;$1 linhas não apresentadas&gt;}}</translation>
-<translation id="5334899159203764908">Saiba mais acerca do <ph name="BEGIN_LINK"/>acesso a sites<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Permitir que esta extensão leia e altere todos os dados nos Websites que visita:</translation>
 <translation id="407173827865827707">Ao clicar</translation>
 <translation id="6455264371803474013">Em sites específicos</translation>
@@ -4271,6 +4175,7 @@ Pretende pará-lo?</translation>
 <translation id="2785008241190445880">Marcador substituído</translation>
 <translation id="4320948194796820126">Adicione um marcador ao email.</translation>
 <translation id="2950533317914339731">Adicione marcadores às suas aplicações Brave Software favoritas.</translation>
+<translation id="995782501881226248">Youtube</translation>
 <translation id="239760341987199724">Definir o Brave como o seu navegador predefinido</translation>
 <translation id="96037229054033864">Obtenha a Pesquisa Brave Software e a inteligência da Brave Software sempre que navegar</translation>
 <translation id="296137235951584143">Personalize o Brave Software Brave</translation>
@@ -4303,14 +4208,12 @@ Pretende pará-lo?</translation>
 <translation id="3706463572498736864">Páginas por folha</translation>
 <translation id="2249605167705922988">por exemplo 1-5, 8, 11-13</translation>
 <translation id="5746169159649715125">Guardar como PDF</translation>
-<translation id="1731589410171062430">Total: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/> ( <ph name="NUMBER_OF_PAGES"/> <ph name="PAGE_OR_PAGES_LABEL"/> )</translation>
 <translation id="2580924999637585241">Total: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">folhas de papel</translation>
 <translation id="8813811964357448561">folha de papel</translation>
 <translation id="8180239481735238521">página</translation>
 <translation id="3725367690636977613">páginas</translation>
 <translation id="7005848115657603926">Intervalo de páginas inválido, utilize <ph name="EXAMPLE_PAGE_RANGE"/></translation>
-<translation id="2890678560483811744">Referência da página fora dos limites</translation>
 <translation id="5398572795982417028">A referência da página está fora dos limites; o limite é <ph name="MAXIMUM_PAGE"/></translation>
 <translation id="218070003709087997">Utilize um número para indicar as cópias a imprimir (1 a 999).</translation>
 <translation id="2509495747794740764">O valor de dimensionamento tem de ser um número entre 10 e 200.</translation>
@@ -4330,19 +4233,14 @@ Pretende pará-lo?</translation>
 <translation id="6273677812470008672">Qualidade</translation>
 <translation id="7288676996127329262"><ph name="HORIZONTAL_DPI"/>x<ph name="VERTICAL_DPI"/> ppp</translation>
 <translation id="1921584744613111023"><ph name="DPI"/> ppp</translation>
-<translation id="2212126039311489237">Imprimir ao utilizar a caixa de diálogo do sistema</translation>
 <translation id="6991665348624301627">Selecione um destino</translation>
 <translation id="8800004011501252845">A mostrar destinos para</translation>
 <translation id="8996526648899750015">Adicionar conta...</translation>
 <translation id="5002959368039764681">Imprima para o Brave Software Docs e outros destinos na nuvem. <ph name="BEGIN_LINK"/>Inicie sessão<ph name="END_LINK"/> para imprimir para o Brave Software Cloud Print.</translation>
 <translation id="2150139952286079145">Pesquisar destinos</translation>
 <translation id="8569682776816196752">Não foram encontrados destinos</translation>
-<translation id="6807889908376551050">Mostrar todos...</translation>
-<translation id="7328162502911382168">(<ph name="COUNT"/>)</translation>
 <translation id="7885253890047913815">Destinos recentes</translation>
 <translation id="4929386379796360314">Destinos de impressão</translation>
-<translation id="5829401023154985950">Gerir...</translation>
-<translation id="4628314759732363424">Alterar...</translation>
 <translation id="3899879303189199559">Offline durante mais de um ano</translation>
 <translation id="3154429428035006212">Offline durante mais de um mês</translation>
 <translation id="5265562206369321422">Offline durante mais de uma semana</translation>
@@ -4351,18 +4249,15 @@ Pretende pará-lo?</translation>
 <translation id="6317318380444133405">Já não é suportada.</translation>
 <translation id="5759728514498647443">Os documentos enviados para impressão através de <ph name="APP_NAME"/> podem ser lidos por <ph name="APP_NAME"/>.</translation>
 <translation id="2080070583977670716">Mais definições</translation>
-<translation id="6510568984200103950">Menos definições</translation>
 <translation id="3360297538363969800">Falha ao imprimir. Verifique a impressora e tente novamente.</translation>
 <translation id="5154108062446123722">Definições avançadas de <ph name="PRINTING_DESTINATION"/></translation>
 <translation id="9056810968620647706">Não foram encontradas correspondências.</translation>
-<translation id="8658595122208653918">Alterar opções da impressora…</translation>
 <translation id="4088095054444612037">Aceitar para o grupo</translation>
 <translation id="357886715122934472">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; pretende partilhar uma impressora &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt; com um grupo de que é proprietário: &lt;strong&gt;<ph name="GROUP_NAME"/>&lt;/strong&gt;. Se aceitar, todos os membros do grupo poderão utilizar a impressora.</translation>
 <translation id="8783093612333542422">&lt;strong&gt;<ph name="SENDER"/>&lt;/strong&gt; pretende partilhar uma impressora &lt;strong&gt;<ph name="PRINTER_NAME"/>&lt;/strong&gt; consigo.</translation>
 <translation id="7210499381659830293">Impressoras por extensão</translation>
 <translation id="7453008956351770337">Ao selecionar esta impressora, está a conceder à seguinte extensão a autorização para aceder à sua impressora:</translation>
 <translation id="2902127500170292085">A extensão <ph name="EXTENSION_NAME"/> não conseguiu comunicar com esta impressora. Certifique-se de que a impressora está ligada à corrente e tente novamente.</translation>
-<translation id="5352285283572729470">Esta definição é gerida</translation>
 <translation id="4994754230098574403">A configurar…</translation>
 <translation id="1396139853388185343">Erro ao configurar a impressora</translation>
 <translation id="2379281330731083556">Imprimir utilizando a caixa de diálogo do sistema... <ph name="SHORTCUT_KEY"/></translation>
@@ -4391,8 +4286,6 @@ Pretende pará-lo?</translation>
 <translation id="7681095912841365527">O site pode utilizar o Bluetooth.</translation>
 <translation id="3085412380278336437">O site pode utilizar a câmara.</translation>
 <translation id="9180380851667544951">O site pode partilhar o ecrã.</translation>
-<translation id="7503127198245469314">Remova o capacete de realidade virtual para efetuar ações de bloqueio ou autorização no ecrã do computador.</translation>
-<translation id="5592010267127539419"><ph name="URL_HOST"/> pretende sincronizar com dispositivos.</translation>
 <translation id="4992630054488400221">Instale ou atualize o Teclado Daydream para utilizar o Brave em RV.</translation>
 <translation id="983511809958454316">Esta funcionalidade não é compatível com RV</translation>
 <translation id="4008291085758151621">As informações do site não estão disponíveis na RV</translation>

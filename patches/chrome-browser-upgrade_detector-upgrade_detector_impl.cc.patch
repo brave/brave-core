@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
-index 67bbade3651c8718d3936352e5fa201371b74c0c..04b8c2ce2c2690a116b68b8e321b310ec157815a 100644
+index 2d9ea1856da7c742298d2ef31d816957fc124c3b..8d0f21d964e67098c3fc2fe7ddab7d2ceafdbaab 100644
 --- a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
 +++ b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
-@@ -42,6 +42,9 @@
+@@ -45,6 +45,9 @@
  #include "chrome/installer/util/install_util.h"
  #elif defined(OS_MACOSX)
  #include "chrome/browser/mac/keystone_glue.h"
@@ -12,7 +12,7 @@ index 67bbade3651c8718d3936352e5fa201371b74c0c..04b8c2ce2c2690a116b68b8e321b310e
  #endif
  
  namespace {
-@@ -120,7 +123,11 @@ base::Version GetCurrentlyInstalledVersionImpl(base::Version* critical_update) {
+@@ -123,7 +126,11 @@ base::Version GetCurrentlyInstalledVersionImpl(base::Version* critical_update) {
      *critical_update = InstallUtil::GetCriticalUpdateVersion();
  #elif defined(OS_MACOSX)
    installed_version = base::Version(
@@ -24,7 +24,7 @@ index 67bbade3651c8718d3936352e5fa201371b74c0c..04b8c2ce2c2690a116b68b8e321b310e
  #elif defined(OS_POSIX)
    // POSIX but not Mac OS X: Linux, etc.
    base::CommandLine command_line(*base::CommandLine::ForCurrentProcess());
-@@ -215,7 +222,7 @@ UpgradeDetectorImpl::UpgradeDetectorImpl(const base::TickClock* tick_clock)
+@@ -219,7 +226,7 @@ UpgradeDetectorImpl::UpgradeDetectorImpl(const base::Clock* clock,
  #if defined(OS_WIN)
  // Only enable upgrade notifications for Google Chrome builds. Chromium does not
  // use an auto-updater.
@@ -33,7 +33,7 @@ index 67bbade3651c8718d3936352e5fa201371b74c0c..04b8c2ce2c2690a116b68b8e321b310e
    // There might be a policy/enterprise environment preventing updates, so
    // validate updatability and then call StartTimerForUpgradeCheck
    // appropriately. Skip this step if a past attempt has been made to enable
-@@ -235,7 +242,11 @@ UpgradeDetectorImpl::UpgradeDetectorImpl(const base::TickClock* tick_clock)
+@@ -239,7 +246,11 @@ UpgradeDetectorImpl::UpgradeDetectorImpl(const base::Clock* clock,
  #else   // defined(OS_WIN)
  #if defined(OS_MACOSX)
    // Only enable upgrade notifications if the updater (Keystone) is present.
@@ -46,7 +46,7 @@ index 67bbade3651c8718d3936352e5fa201371b74c0c..04b8c2ce2c2690a116b68b8e321b310e
      is_auto_update_enabled_ = false;
      return;
    }
-@@ -551,7 +562,7 @@ void UpgradeDetectorImpl::OnRelaunchNotificationPeriodPrefChanged() {
+@@ -555,7 +566,7 @@ void UpgradeDetectorImpl::OnRelaunchNotificationPeriodPrefChanged() {
      NotifyOnUpgrade();
  }
  

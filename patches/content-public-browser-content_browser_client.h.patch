@@ -1,12 +1,11 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index ff83421f2bb8268ccc32d95ed9d2b4e7715c8d7b..cb23ffa115d155490ad1ddaccb4b008781761830 100644
+index eaa7d8b25141f8f2d461f0b37054c772c8df6297..81b4540f090d25c11fbb05f5bba4b42635ffe3d5 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -1430,6 +1430,13 @@ class CONTENT_EXPORT ContentBrowserClient {
-       content::PreviewsState initial_state,
-       content::NavigationHandle* navigation_handle,
-       const net::HttpResponseHeaders* response_headers);
-+
+@@ -1473,6 +1473,12 @@ class CONTENT_EXPORT ContentBrowserClient {
+   // blacklist policies are applied there.
+   virtual bool IsRendererDebugURLBlacklisted(const GURL& url,
+                                              BrowserContext* context);
 +  // Brave-speicific: allows the embedder to modify the referrer string
 +  // according to user preferences.
 +  virtual void MaybeHideReferrer(BrowserContext* browser_context,

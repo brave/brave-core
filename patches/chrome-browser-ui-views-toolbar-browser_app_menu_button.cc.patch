@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
-index 6ac91c47bb652b87af08f743fc5588b95310586c..8b788d4969c5b821ce7d527ce3fcf77651be7813 100644
+index 946ad53334e5611ca4633b7ac7ee60595b6cbca7..6284e8c4a3dddc29b828024383007d0f0c303aef 100644
 --- a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
 +++ b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
-@@ -9,6 +9,7 @@
+@@ -11,6 +11,7 @@
  #include "base/single_thread_task_runner.h"
  #include "base/threading/thread_task_runner_handle.h"
  #include "base/time/time.h"
@@ -10,7 +10,7 @@ index 6ac91c47bb652b87af08f743fc5588b95310586c..8b788d4969c5b821ce7d527ce3fcf776
  #include "cc/paint/paint_flags.h"
  #include "chrome/app/vector_icons/vector_icons.h"
  #include "chrome/browser/themes/theme_properties.h"
-@@ -92,7 +93,7 @@ void BrowserAppMenuButton::ShowMenu(bool for_drop) {
+@@ -122,7 +123,7 @@ void BrowserAppMenuButton::ShowMenu(bool for_drop) {
    Browser* browser = toolbar_view_->browser();
  
    InitMenu(

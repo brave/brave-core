@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/local_discovery/local_discovery.html b/chrome/browser/resources/local_discovery/local_discovery.html
-index 0c864f529401c30d1cf2f144f6d5f4de7e575e56..d57dc88bed93ed9ded00698c59f62336561556c9 100644
+index 9dc7d52545093a8a24d70393f9780f9591e4b834..72e97c6bbcd6870ddf6580d72c08b85321c4d297 100644
 --- a/chrome/browser/resources/local_discovery/local_discovery.html
 +++ b/chrome/browser/resources/local_discovery/local_discovery.html
 @@ -29,6 +29,7 @@

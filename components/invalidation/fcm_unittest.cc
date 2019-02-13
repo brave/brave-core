@@ -1,3 +1,8 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "components/invalidation/impl/fcm_network_handler.h"
 
 #include <memory>
@@ -128,7 +133,7 @@ class MockGCMDriver : public gcm::GCMDriver {
 
 class MockInstanceIDDriver : public InstanceIDDriver {
  public:
-  MockInstanceIDDriver() : InstanceIDDriver(/*gcm_driver=*/nullptr){};
+  MockInstanceIDDriver() : InstanceIDDriver(/*gcm_driver=*/nullptr) {}
   ~MockInstanceIDDriver() override = default;
 
   MOCK_METHOD1(GetInstanceID, InstanceID*(const std::string& app_id));
@@ -205,7 +210,9 @@ class FCMNetworkHandlerTest : public testing::Test {
 
   std::unique_ptr<FCMNetworkHandler> MakeHandler() {
     return std::make_unique<FCMNetworkHandler>(mock_gcm_driver_.get(),
-                                               mock_instance_id_driver_.get());
+                                               mock_instance_id_driver_.get(),
+                                               "fake_sender_id",
+                                               kInvalidationsAppId);
   }
 
   StrictMock<MockInstanceID>* mock_instance_id() {

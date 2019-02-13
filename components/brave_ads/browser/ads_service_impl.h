@@ -1,9 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_ADS_SERVICE_IMPL_
-#define BRAVE_COMPONENTS_BRAVE_ADS_ADS_SERVICE_IMPL_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
 
 #include <map>
 #include <memory>
@@ -79,7 +80,7 @@ class AdsServiceImpl : public AdsService,
   void ResetTimer();
   void CheckIdleState();
 #if !defined(OS_ANDROID)
-  void OnIdleState(ui::IdleState idle_state);
+  void ProcessIdleState(ui::IdleState idle_state);
 #endif
   int GetIdleThreshold();
   void OnShow(Profile* profile, const std::string& notification_id);
@@ -205,4 +206,4 @@ class AdsServiceImpl : public AdsService,
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_ADS_SERVICE_IMPL_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_

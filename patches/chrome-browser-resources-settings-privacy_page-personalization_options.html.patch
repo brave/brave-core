@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index eba047b480b21858df64ffd85152d90f887ea61e..fa82581593cad039084e2e7c8e1a1dcf715e6813 100644
+index 9df16c8681b9bae5f932dee2ba2d549975e4768d..0a4eea83c2359a7ef5562ed9f8a4aeeb52e0cee4 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-@@ -8,6 +8,9 @@
+@@ -9,6 +9,9 @@
  <link rel="import" href="../route.html">
  <link rel="import" href="../settings_shared_css.html">
  <link rel="import" href="privacy_page_browser_proxy.html">
@@ -12,9 +12,9 @@ index eba047b480b21858df64ffd85152d90f887ea61e..fa82581593cad039084e2e7c8e1a1dcf
  
  <dom-module id="settings-personalization-options">
    <template>
-@@ -33,19 +36,26 @@
-         sub-label="$i18n{networkPredictionEnabledDesc}"
-         numeric-unchecked-value="[[networkPredictionEnum_.NEVER]]">
+@@ -28,19 +31,26 @@
+         label="$i18n{searchSuggestPref}"
+         sub-label="$i18n{searchSuggestPrefDesc}">
      </settings-toggle-button>
 +    <if expr="_google_chrome">
      <settings-toggle-button pref="{{prefs.alternate_error_pages.enabled}}"
@@ -39,7 +39,7 @@ index eba047b480b21858df64ffd85152d90f887ea61e..fa82581593cad039084e2e7c8e1a1dcf
  <if expr="_google_chrome">
  <if expr="chromeos">
      <settings-toggle-button pref="{{prefs.cros.metrics.reportingEnabled}}"
-@@ -53,6 +63,8 @@
+@@ -48,6 +58,8 @@
          sub-label="$i18n{enableLoggingDesc}">
      </settings-toggle-button>
  </if><!-- chromeos -->
@@ -48,7 +48,7 @@ index eba047b480b21858df64ffd85152d90f887ea61e..fa82581593cad039084e2e7c8e1a1dcf
  <if expr="not chromeos">
      <settings-toggle-button id="metricsReportingControl"
          pref="[[metricsReportingPref_]]" label="$i18n{enableLogging}"
-@@ -66,7 +78,7 @@
+@@ -61,7 +73,7 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->

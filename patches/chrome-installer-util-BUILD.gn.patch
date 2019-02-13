@@ -1,13 +1,13 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index 44c9a8bcb541d6a60382d7f4f02378d9b0517767..87d224258df0e9132379f98ee44f3f482d5d5f53 100644
+index 6c6c3f5c8a018a63780a6ed03810f469a65a505e..fe6bc0fa65eb554bc7eb7b628746aa4b3b46fe2e 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
-@@ -224,9 +224,24 @@ action("generate_strings") {
-     "$target_gen_dir/installer_util_strings.rc",
-   ]
+@@ -229,7 +229,20 @@ generate_embedded_i18n("generate_strings") {
  
+   output_file_name_base = "installer_util_strings"
+ 
+-  branding = branding_path_component
 +  brand = "$branding_path_component"
-+
 +  if (brave_chromium_build) {
 +    # When brave_strings.grd is modified, outputs should be re-generated.
 +    # This is workaround. Need to change the way of using |brave_strings.grd|
@@ -20,11 +20,7 @@ index 44c9a8bcb541d6a60382d7f4f02378d9b0517767..87d224258df0e9132379f98ee44f3f48
 +      brand = brand + "-development"
 +    }
 +  }
-+
-   args = [
-     "-b",
--    "$branding_path_component",
-+    brand,
-     "-i",
-     rebase_path(grdfile, root_build_dir) + ":resources",
-     "-n",
++  branding = brand
+ }
+ 
+ # Compile the generated .rc file.
