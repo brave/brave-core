@@ -31,7 +31,7 @@ export default class TorrentViewerFooter extends React.PureComponent<
       />
     ) : (
       <div className='privacyNotice'>
-        Privacy Warning: When you click "Start Torrent" Brave will beging
+        Privacy Warning: When you click "Start Torrent" Brave will begin
         downloading pieces of the torrent file from other users and uploading to
         them in turn. This action will share that you're downloading this file.
         Others may be able to see what you're downloading and/or determine your
