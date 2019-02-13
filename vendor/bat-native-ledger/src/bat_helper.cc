@@ -607,7 +607,7 @@ static bool ignore_ = false;
     allow_videos_ = state.allow_videos_;
     monthly_balances_ = state.monthly_balances_;
     recurring_donation_ = state.recurring_donation_;
-    migrate_score = state.migrate_score;
+    migrate_score_2 = state.migrate_score_2;
   }
 
   PUBLISHER_STATE_ST::~PUBLISHER_STATE_ST() {}
@@ -670,10 +670,10 @@ static bool ignore_ = false;
         }
       }
 
-      if (d.HasMember("migrate_score") && d["migrate_score"].IsBool()) {
-        migrate_score = d["migrate_score"].GetBool();
+      if (d.HasMember("migrate_score_2") && d["migrate_score_2"].IsBool()) {
+        migrate_score_2 = d["migrate_score_2"].GetBool();
       } else {
-        migrate_score = true;
+        migrate_score_2 = true;
       }
     }
 
@@ -722,8 +722,8 @@ static bool ignore_ = false;
 
     writer.EndArray();
 
-    writer.String("migrate_score");
-    writer.Bool(data.migrate_score);
+    writer.String("migrate_score_2");
+    writer.Bool(data.migrate_score_2);
 
     writer.EndObject();
   }
