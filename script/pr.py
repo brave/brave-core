@@ -160,8 +160,6 @@ def parse_args():
     parser.add_argument('--title',
                         help='title to use (instead of inferring one from the first commit)',
                         default=None)
-    parser.add_argument('-f', '--force', action='store_true',
-                        help='use the script forcefully; ignore warnings')
 
     return parser.parse_args()
 
@@ -193,11 +191,13 @@ def main():
     if result != 0:
         return result
 
+    # get all channel branches (starting at master)
+    brave_browser_version = get_remote_version('master')
+    remote_branches = get_remote_channel_branches(brave_browser_version)
+    top_level_base = 'master'
+
     # if starting point is NOT nightly, remove options which aren't desired
     # also, find the branch which should be used for diffs (for cherry-picking)
-    local_version = get_raw_version()
-    remote_branches = get_remote_channel_branches(local_version)
-    top_level_base = 'master'
     if not is_nightly(args.start_from):
         top_level_base = remote_branches[args.start_from]
         try:
@@ -219,6 +219,8 @@ def main():
             local_branch = 'pr' + str(pr_number) + '_' + head['ref']
             head_sha = head['sha']
             top_level_base = response['base']['ref']
+            top_level_sha = response['base']['sha']
+            merged_at = str(response['merged_at']).strip()
 
         except Exception as e:
             print('[ERROR] API returned an error when looking up pull request "' + str(pr_number) + '"\n' + str(e))
@@ -232,6 +234,12 @@ def main():
             branch_index = remote_branches.index(top_level_base)
             config.channels_to_process = config.channel_names[branch_index:]
 
+        # if PR was already merged, use the SHA it was PRed against
+        if len(merged_at) > 0:
+            print('pr was already merged at ' + merged_at + '; using "' + top_level_sha +
+                  '" instead of "' + top_level_base + '"')
+            top_level_base = top_level_sha
+
         # create local branch which matches the contents of the PR
         with scoped_cwd(BRAVE_CORE_ROOT):
             # check if branch exists already
@@ -241,38 +249,25 @@ def main():
                 branch_sha = ''
             if len(branch_sha) > 0:
                 # branch exists; reset it
-                print('branch "' + local_branch + '" exists; resetting to origin/' + head['ref'] + ' (' + head_sha + ')')
+                print('branch "' + local_branch + '" exists; resetting to origin/' + head['ref'] +
+                      ' (' + head_sha + ')')
                 execute(['git', 'checkout', local_branch])
                 execute(['git', 'reset', '--hard', head_sha])
             else:
                 # create the branch
                 print('creating branch "' + local_branch + '" using origin/' + head['ref'] + ' (' + head_sha + ')')
                 execute(['git', 'checkout', '-b', local_branch, head_sha])
-            # now that branch exists, switch back to previous local branch
-            execute(['git', 'checkout', '-'])
-
-    # get local version + latest version on remote (master)
-    # if they don't match, rebase is needed
-    remote_version = get_remote_version(top_level_base)
-    if local_version != remote_version:
-        if not args.force:
-            print('[ERROR] Your branch is out of sync (local=' + local_version +
-                  ', remote=' + remote_version + '); please rebase (ex: "git rebase origin/' +
-                  top_level_base + '"). NOTE: You can bypass this check by using -f')
-            return 1
-        print('[WARNING] Your branch is out of sync (local=' + local_version +
-              ', remote=' + remote_version + '); continuing since -f was provided')
 
     # If title isn't set already, generate one from first commit
     local_branch = get_local_branch_name(BRAVE_CORE_ROOT)
-    if not config.title:
+    if not config.title and not args.uplift_using_pr:
         config.title = get_title_from_first_commit(BRAVE_CORE_ROOT, top_level_base)
 
     # Create a branch for each channel
     print('\nCreating branches...')
     fancy_print('NOTE: Commits are being detected by diffing "' + local_branch + '" against "' + top_level_base + '"')
-    remote_branches = get_remote_channel_branches(local_version)
     local_branches = {}
+    branch = ''
     try:
         for channel in config.channels_to_process:
             branch = create_branch(channel, top_level_base, remote_branches[channel], local_branch)
@@ -304,6 +299,25 @@ def main():
     return 0
 
 
+def is_sha(ref):
+    global config
+    repo = GitHub(config.github_token).repos(BRAVE_CORE_REPO)
+    try:
+        repo.git.commits(str(ref)).get()
+    except Exception as e:
+        response = str(e)
+        try:
+            # Unsure of original intention, but github.py (on purpose) throws
+            # an exception if the response body contains `message`.
+            # This catch has the response (in JSON) in exception
+            json_response = json.loads(response)
+            if json_response['sha'] == ref:
+                return True
+        except Exception as e2:
+            return False
+        return False
+
+
 def create_branch(channel, top_level_base, remote_base, local_branch):
     global config
 
@@ -312,10 +326,17 @@ def create_branch(channel, top_level_base, remote_base, local_branch):
 
     channel_branch = remote_base + '_' + local_branch
 
+    if is_sha(top_level_base):
+        compare_from = top_level_base
+    else:
+        compare_from = 'origin/' + top_level_base
+
     with scoped_cwd(BRAVE_CORE_ROOT):
         # get SHA for all commits (in order)
-        sha_list = execute(['git', 'log', 'origin/' + top_level_base + '..HEAD', '--pretty=format:%h', '--reverse'])
+        sha_list = execute(['git', 'log', compare_from + '..HEAD', '--pretty=format:%h', '--reverse'])
         sha_list = sha_list.split('\n')
+        if len(sha_list) == 0:
+            raise Exception('No changes detected!')
         try:
             # check if branch exists already
             try:
@@ -369,7 +390,7 @@ def submit_pr(channel, top_level_base, remote_base, local_branch):
             return 0
 
         print('(' + channel + ') creating pull request')
-        pr_title = config.title
+        pr_title = config.title or ''
         pr_dst = remote_base
         if is_nightly(channel):
             pr_dst = 'master'
