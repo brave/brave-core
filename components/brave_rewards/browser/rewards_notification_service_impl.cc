@@ -297,9 +297,13 @@ void RewardsNotificationServiceImpl::OnGetAllNotifications(
   TriggerOnGetAllNotifications(rewards_notifications_list);
 }
 
+bool RewardsNotificationServiceImpl::IsUGPGrant(const std::string& grant_type) {
+  return (grant_type == "ugp");
+}
+
 std::string RewardsNotificationServiceImpl::GetGrantIdPrefix(
     const std::string& grant_type) {
-  std::string prefix = grant_type == "ugp"
+  std::string prefix = IsUGPGrant(grant_type)
       ? "rewards_notification_grant_"
       : "rewards_notification_grant_ads_";
   return prefix;
@@ -312,7 +316,7 @@ if (error_code == ledger::Result::LEDGER_OK) {
     std::string grant_type = properties.type;
     std::string prefix = GetGrantIdPrefix(grant_type);
     RewardsNotificationService::RewardsNotificationType notification_type
-        = grant_type == "ugp"
+        = IsUGPGrant(grant_type)
         ? RewardsNotificationService::REWARDS_NOTIFICATION_GRANT
         : RewardsNotificationService::REWARDS_NOTIFICATION_GRANT_ADS;
 
@@ -333,7 +337,7 @@ void RewardsNotificationServiceImpl::OnGrantFinish(
 
   DeleteNotification(prefix + grant.promotionId);
   // We keep it for back compatibility
-  if (grant_type == "ugp") {
+  if (IsUGPGrant(grant_type)) {
     DeleteNotification("rewards_notification_grant");
   }
 }

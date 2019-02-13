@@ -42,6 +42,7 @@ class RewardsNotificationServiceImpl
   void StoreRewardsNotifications() override;
 
  private:
+  bool IsUGPGrant(const std::string& grant_type);
   std::string GetGrantIdPrefix(const std::string& grant_type);
 
   // RewardsServiceObserver impl
