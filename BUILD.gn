@@ -84,4 +84,6 @@ if (is_mac) {
       rebase_path("challenge_bypass_ristretto_ffi:challenge_bypass_ristretto", dep_base),
     ]
   }
+} else {
+  group("challenge_bypass_libs") {}
 }
