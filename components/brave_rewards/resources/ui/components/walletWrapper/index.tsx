@@ -32,6 +32,7 @@ import {
   StyledMessageText,
   StyledDateText,
   StyledNotificationContent,
+  StyledButtonWrapper,
   StyledButton,
   StyledNotificationMessage,
   StyledPipe
@@ -260,7 +261,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     }
 
     return (
-      <Button
+      <StyledButton
         size={'small'}
         type={'accent'}
         level={'primary'}
@@ -285,9 +286,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         <StyledNotificationContent>
           {this.getNotificationIcon(notification)}
           {this.getNotificationMessage(notification)}
-          <StyledButton type={notification.type}>
+          <StyledButtonWrapper type={notification.type}>
             {this.getNotificationButton(notification.type, onClose)}
-          </StyledButton>
+          </StyledButtonWrapper>
         </StyledNotificationContent>
       </>
     )
