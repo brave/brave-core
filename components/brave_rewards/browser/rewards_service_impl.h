@@ -245,7 +245,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublishersListSaved(ledger::LedgerCallbackHandler* handler,
                              bool success);
   void OnTimer(uint32_t timer_id);
-  void TriggerOnContentSiteUpdated();
   void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
                              const std::string& data);
 
