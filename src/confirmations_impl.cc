@@ -284,6 +284,11 @@ void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
   BLOG(INFO) << "  Payment id: " << wallet_info_.payment_id;
   BLOG(INFO) << "  Public key: " << wallet_info_.public_key;
 
+  if (info->payment_id.empty() || info->public_key.empty()) {
+    BLOG(ERROR) << "  Invalid wallet info";
+    return;
+  }
+
   is_wallet_initialized_ = true;
 
   CheckReady();
