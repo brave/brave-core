@@ -5,6 +5,8 @@
 #include <stddef.h>
 
 #include <memory>
+#include <string>
+#include <unordered_set>
 #include <utility>
 
 #include "base/command_line.h"
@@ -39,10 +41,11 @@ std::string GetHostFromTemplateURLData(const TemplateURLData& data) {
 using namespace TemplateURLPrepopulateData;  // NOLINT
 
 const PrepopulatedEngine* const kBraveAddedEngines[] = {
-    &amazon, &ecosia, &github, &mdnwebdocs, &searx,
-    &semanticscholar, &stackoverflow, &startpage, &twitter,
-    &wikipedia, &wolframalpha, &yandex, &youtube,
+    &startpage,
 };
+
+const std::unordered_set<std::wstring> kOverriddenEnginesNames = {L"DuckDuckGo",
+                                                                  L"Qwant"};
 
 std::vector<const PrepopulatedEngine*> GetAllPrepopulatedEngines() {
   std::vector<const PrepopulatedEngine*> engines =
@@ -78,11 +81,22 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueKeywords) {
   }
 }
 
+// Verifies that engines we override are used and not the original engines.
+TEST_F(BraveTemplateURLPrepopulateDataTest, OverriddenEngines) {
+  using PrepopulatedEngine = TemplateURLPrepopulateData::PrepopulatedEngine;
+  const std::vector<const PrepopulatedEngine*> all_engines =
+      ::GetAllPrepopulatedEngines();
+  for (const PrepopulatedEngine* engine : all_engines) {
+    if (kOverriddenEnginesNames.count(engine->name) > 0)
+      ASSERT_GE(static_cast<unsigned int>(engine->id),
+                TemplateURLPrepopulateData::BRAVE_PREPOPULATED_ENGINES_START);
+  }
+}
+
 // Verifies that the set of prepopulate data for each locale
 // doesn't contain entries with duplicate ids.
 TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
   const int kCountryIds[] = {
-    'C' << 8 | 'A',
     'D' << 8 | 'E',
     'F' << 8 | 'R',
     'U' << 8 | 'S',

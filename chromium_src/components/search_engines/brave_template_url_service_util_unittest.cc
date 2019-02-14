@@ -1,6 +1,7 @@
-// Copyright 2014 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <stddef.h>
 
@@ -47,30 +48,24 @@ class BraveTemplateURLServiceUtilTest : public testing::Test {
 TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   std::vector<TemplateURLData> local_turls;
   // Create a sets of TURLs in order different from prepopulated TURLs.
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(508, ":x", 1));
-  local_turls.push_back(
-      *CreatePrepopulateTemplateURLData(502, ":e", 2));
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(15, ":ya", 3));
-  local_turls.push_back(
-      *CreatePrepopulateTemplateURLData(511, ":sp", 4));
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(505, ":i", 5));
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(3, ":b", 6));
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(507, ":q", 7));
-  local_turls.push_back(
-      *CreatePrepopulateTemplateURLData(501, ":d", 8));
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(1, ":g", 9));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(511, ":sp", 1));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(15, ":ya", 2));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(3, ":b", 3));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(507, ":q", 4));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(501, ":d", 5));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(1, ":g", 6));
   std::unique_ptr<TemplateURL> default_turl =
       std::make_unique<TemplateURL>(local_turls.back());
 
   // Add TURLs with PrepopulateID that doesn't exist in prepopulated TURLs.
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(0, "random1", 10));
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(1004, "random2", 11));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(0, "random1", 7));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(1004, "random2", 8));
 
   // Prepare call arguments
   WDKeywordsResult kwResult;
   kwResult.builtin_keyword_version =
       TemplateURLPrepopulateData::GetDataVersion(&prefs_);
-  kwResult.default_search_provider_id = 9;
+  kwResult.default_search_provider_id = 2;
   kwResult.keywords = local_turls;
   WDResult<WDKeywordsResult> result(KEYWORDS_RESULT, kwResult);
 
@@ -88,13 +83,10 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   EXPECT_EQ(template_urls[1]->keyword(), base::ASCIIToUTF16(":d"));
   EXPECT_EQ(template_urls[2]->keyword(), base::ASCIIToUTF16(":q"));
   EXPECT_EQ(template_urls[3]->keyword(), base::ASCIIToUTF16(":b"));
-  EXPECT_EQ(template_urls[4]->keyword(), base::ASCIIToUTF16(":e"));
-  EXPECT_EQ(template_urls[5]->keyword(), base::ASCIIToUTF16(":i"));
-  EXPECT_EQ(template_urls[6]->keyword(), base::ASCIIToUTF16(":x"));
-  EXPECT_EQ(template_urls[7]->keyword(), base::ASCIIToUTF16(":sp"));
-  EXPECT_EQ(template_urls[8]->keyword(), base::ASCIIToUTF16(":ya"));
-  EXPECT_EQ(template_urls[9]->keyword(), base::ASCIIToUTF16("random1"));
-  EXPECT_EQ(template_urls[10]->keyword(), base::ASCIIToUTF16("random2"));
+  EXPECT_EQ(template_urls[4]->keyword(), base::ASCIIToUTF16(":sp"));
+  EXPECT_EQ(template_urls[5]->keyword(), base::ASCIIToUTF16(":ya"));
+  EXPECT_EQ(template_urls[6]->keyword(), base::ASCIIToUTF16("random1"));
+  EXPECT_EQ(template_urls[7]->keyword(), base::ASCIIToUTF16("random2"));
 
   // Reset
   template_urls.clear();
@@ -114,11 +106,8 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   EXPECT_EQ(template_urls[1]->keyword(), base::ASCIIToUTF16(":g"));
   EXPECT_EQ(template_urls[2]->keyword(), base::ASCIIToUTF16(":d"));
   EXPECT_EQ(template_urls[3]->keyword(), base::ASCIIToUTF16(":b"));
-  EXPECT_EQ(template_urls[4]->keyword(), base::ASCIIToUTF16(":e"));
-  EXPECT_EQ(template_urls[5]->keyword(), base::ASCIIToUTF16(":i"));
-  EXPECT_EQ(template_urls[6]->keyword(), base::ASCIIToUTF16(":x"));
-  EXPECT_EQ(template_urls[7]->keyword(), base::ASCIIToUTF16(":sp"));
-  EXPECT_EQ(template_urls[8]->keyword(), base::ASCIIToUTF16(":ya"));
-  EXPECT_EQ(template_urls[9]->keyword(), base::ASCIIToUTF16("random1"));
-  EXPECT_EQ(template_urls[10]->keyword(), base::ASCIIToUTF16("random2"));
+  EXPECT_EQ(template_urls[4]->keyword(), base::ASCIIToUTF16(":sp"));
+  EXPECT_EQ(template_urls[5]->keyword(), base::ASCIIToUTF16(":ya"));
+  EXPECT_EQ(template_urls[6]->keyword(), base::ASCIIToUTF16("random1"));
+  EXPECT_EQ(template_urls[7]->keyword(), base::ASCIIToUTF16("random2"));
 }
