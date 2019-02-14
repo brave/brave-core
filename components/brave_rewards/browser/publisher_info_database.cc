@@ -242,12 +242,21 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
     return false;
   }
 
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
   sql::Statement publisher_info_statement(
       GetDB().GetCachedStatement(SQL_FROM_HERE,
                                  "INSERT OR REPLACE INTO publisher_info "
                                  "(publisher_id, verified, excluded, "
                                  "name, url, provider, favIcon) "
-                                 "VALUES (?, ?, ?, ?, ?, ?, ?)"));
+                                 "VALUES (?, ?, ?, ?, ?, ?, "
+                                 "(SELECT IFNULL( "
+                                 "(SELECT favicon FROM publisher_info "
+                                 "WHERE publisher_id = ?), \"\"))"
+                                 ")"));
 
   publisher_info_statement.BindString(0, info.id);
   publisher_info_statement.BindBool(1, info.verified);
@@ -255,9 +264,28 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   publisher_info_statement.BindString(3, info.name);
   publisher_info_statement.BindString(4, info.url);
   publisher_info_statement.BindString(5, info.provider);
-  publisher_info_statement.BindString(6, info.favicon_url);
+  publisher_info_statement.BindString(6, info.id);
 
-  return publisher_info_statement.Run();
+  publisher_info_statement.Run();
+
+  std::string favicon = info.favicon_url;
+  if (!favicon.empty()) {
+    sql::Statement favicon_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+                                 "UPDATE publisher_info SET favIcon = ? "
+                                 "WHERE publisher_id = ?"));
+
+    if (favicon == ledger::clear_favicon) {
+      favicon.clear();
+    }
+
+    favicon_statement.BindString(0, favicon);
+    favicon_statement.BindString(1, info.id);
+
+    favicon_statement.Run();
+  }
+
+  return transaction.Commit();
 }
 
 std::unique_ptr<ledger::PublisherInfo>
