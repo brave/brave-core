@@ -169,6 +169,23 @@
       <message name="IDS_NOT_INSTALLED_WIDEVINE_TITLE" desc="Bubble info header text when Widevine is not installed. 'Widevine' is the name of a plugin and should not be translated.">
         Widevine is not installed
       </message>
+      <if expr="is_linux">
+        <message name="IDS_WIDEVINE_INSTALL" desc="Button to download widevine. 'Widevine' is the name of a plugin and should not be translated.">
+          Install Widevine
+        </message>
+        <message name="IDS_WIDEVINE_RESTART_BROWSER" desc="Button to restart browser to enable widevine. 'Widevine' is the name of a plugin and should not be translated.">
+          Restart browser to enable Widevine
+        </message>
+        <message name="IDS_NOT_ENABLED_WIDEVINE_TITLE" desc="Bubble info header text when Widevine is not enabled. 'Widevine' is the name of a plugin and should not be translated.">
+          Widevine is not enabled
+        </message>
+        <message name="IDS_WIDEVINE_NOT_ENABLED_EXPLANATORY_TEXT" desc="Explanatory animated text that appears (and then disappears) in the address line when Widevine is blocked">
+          Widevine is not enabled
+        </message>
+        <message name="IDS_WIDEVINE_NOT_ENABLED_MESSAGE" desc="Tooltip on the icon when Wideivne is not enabled. 'Widevine' is the name of a plugin and should not be translated.">
+          Widevine is not enabled
+        </message>
+      </if>
       <message name="IDS_WIDEVINE_INSTALL_MESSAGE" desc="Bubble info text when Widevine is not installed. 'Widevine' is the name of a plugin and should not be translated.">
         Google Widevine is a piece of Digital Rights Management (DRM) code that we at Brave Software do not own and cannot inspect. The Google Widevine code is loaded from Google servers, not from our servers. It is loaded only when you enable this option. We discourage the use of DRM, but we respect user choice and acknowledge that some Brave users would like to use services that require it.
 

@@ -17,6 +17,7 @@ const char kFirstCheckMade[] = "brave.stats.first_check_made";
 const char kWeekOfInstallation[] = "brave.stats.week_of_installation";
 const char kAdBlockCurrentRegion[] = "brave.ad_block.current_region";
 const char kWidevineOptedIn[] = "brave.widevine_opted_in";
+const char kWidevineInstalledVersion[] = "brave.widevine_installed_version";
 const char kUseAlternativeSearchEngineProvider[] =
     "brave.use_alternate_private_search_engine";
 const char kAlternativeSearchEngineProviderInTor[] =

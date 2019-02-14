@@ -89,7 +89,7 @@ source_set("ui") {
     "webui/settings/brave_default_extensions_handler.h",
   ]
 
-  if (enable_widevine_cdm_component) {
+  if (enable_widevine_cdm_component || bundle_widevine_cdm) {
     sources += [
       "content_settings/brave_widevine_blocked_image_model.cc",
       "content_settings/brave_widevine_blocked_image_model.h",

@@ -1,0 +1,26 @@
+import("//third_party/widevine/cdm/widevine.gni")
+
+assert(bundle_widevine_cdm)
+
+source_set("widevine") {
+  sources = [
+    "brave_widevine_bundle_manager.cc",
+    "brave_widevine_bundle_manager.h",
+    "brave_widevine_bundle_unzipper.cc",
+    "brave_widevine_bundle_unzipper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/prefs",
+    "//components/pref_registry",
+    "//components/services/unzip/public/cpp",
+    "//content/public/browser",
+    "//content/public/common",
+    "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
+    "//third_party/widevine/cdm:buildflags",
+    "//third_party/widevine/cdm:headers",
+    "//url",
+  ]
+}

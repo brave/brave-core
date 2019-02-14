@@ -19,6 +19,11 @@
 #include "components/signin/core/browser/signin_pref_names.h"
 #include "components/spellcheck/browser/pref_names.h"
 #include "components/sync/base/pref_names.h"
+#include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+#include "brave/browser/widevine/brave_widevine_bundle_manager.h"
+#endif
 
 namespace brave {
 
@@ -35,6 +40,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   tor::TorProfileService::RegisterProfilePrefs(registry);
 
   registry->RegisterBooleanPref(kWidevineOptedIn, false);
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+  BraveWidevineBundleManager::RegisterProfilePrefs(registry);
+#endif
 
   // Default Brave shields
   registry->RegisterBooleanPref(kHTTPSEVerywhereControlType, true);
