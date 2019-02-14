@@ -21,7 +21,7 @@ deps = {
   "vendor/bat-native-ads": "https://github.com/brave-intl/bat-native-ads.git@15ce0fc5f16ec2e384d66c18714e45a5f60826cb",
   "vendor/bat-native-usermodel": "https://github.com/brave-intl/bat-native-usermodel.git@c3b6111aa862c5c452c84be8a225d5f1df32b284",
   "vendor/challenge_bypass_ristretto_ffi": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi.git@86212b2b1520f65dfe5ac8dab1af93c85de47e6f",
-  "vendor/bat-native-confirmations": "https://github.com/brave-intl/bat-native-confirmations.git@94a7b33dd0235451be45d189169caf89106e72f8",
+  "vendor/bat-native-confirmations": "https://github.com/brave-intl/bat-native-confirmations.git@5790f84efb5965da39b204f697fc924f7b73c389",
 }
 
 hooks = [
