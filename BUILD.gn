@@ -84,6 +84,32 @@ group("unpacked_resources") {
   }
 }
 
+if (is_mac && !is_component_build) {
+  # TODO(bridiver) - make this into a group that calls a template
+  # for install_name_tool in challenge_bypass_ristretto_ffi
+  action("fix_brave_unit_test_load_paths") {
+    testonly = true
+    script = "//build/gn_run_binary.py"
+    inputs = [
+      script,
+      "/usr/bin/install_name_tool",
+      "$root_build_dir/brave_unit_tests"
+    ]
+    outputs = [ "$root_build_dir/alwaysrun" ]
+    args = [
+      "/usr/bin/install_name_tool",
+      "-change",
+      "@loader_path/../../Libraries/libchallenge_bypass_ristretto.dylib",
+      "@executable_path/gen/challenge_bypass_ristretto/out/x86_64-apple-darwin/release/libchallenge_bypass_ristretto.dylib",
+      rebase_path("$root_build_dir/brave_unit_tests", root_build_dir),
+    ]
+
+    deps = [ "test:brave_unit_tests" ]
+  }
+} else {
+  group("fix_brave_unit_test_load_paths") {}
+}
+
 group("brave_tests") {
   testonly = true
 
