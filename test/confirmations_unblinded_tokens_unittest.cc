@@ -61,16 +61,16 @@ class ConfirmationsUnblindedTokensTest : public ::testing::Test {
   // Objects declared here can be used by all tests in the test case
   std::vector<UnblindedToken> GetUnblindedTokens(const int count) {
     std::vector<std::string> tokens_base64 = {
-      "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc",
-      "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6",
-      "MNrshKuw6zUTsmlZ+w4WzlJknjV/m/ZYyWUhwSmzyW8Dm/VGpMrifyw5txpNu+SQyNcAR+EJ468ADS5qfNfH7yS0kP9z1OJwMNfLiCTHOCiwd7PJkdv14T/vGS5AT1B5",
-      "MRAbYbmnmjM5bqlbHsX9iuy1Jwc9GCGEA4idBt+PNaQONgbZaPbxHb2pOjw1H6sbgJ2eeIwtobrRRmy+diurWoa0cJ8IG9oy3YtOj8bgc7hy/x5Ixu0kxylNxTKb5b9Z",
-      "aMTJ5HnQot4p6lU5LuXMdYPt3q3Eg1pz5pB2q1c8ys6qVVHd1PyrtEVY+qGJrET3ay2E12Qft0UhNzVUkrgnZ4Kh3mmpcm9wbYnmsid2GK3dBzuHC0ggnYoir1Oo+A8D",
-      "lv6mXcIzMFmBbK37U3SFRxgMiRcM4pGLfrdgp0TCevTJ+XbDlHGNIXxYU8CT8ztGwoJSxYjtBh/MGSpjaklJG37ttqDaMzMT0VhKgEvTHuY7qmyi55WtWVENispKe35M",
-      "f3v9XvsBKp7fdXwQSQHNpHN0MPDzGJ1obhc37pLLyv65/JbdMbsXSQ1dGP0+nD/ETvAFzWzro9s/8HQo0MPLBiKkzvAwnaWyM+TAXG5xwL70iICkNApiv57kUfzvnudp",
-      "uSczWJh99T9QKlsDGoRSBpjoMFf4nQj/A5AW72m9o6akR4BkzQ1M1ATIyZde5O4Q2iSV+KRjGPUheU7QmTQxDS6l79e8a+ro2uXZKbxjY+XAM7PO+iFOOAZuR4IUoJpF",
-      "2W8uYe1n6lFMiQFuD9wHLjr2qYhDB6AM3oXyetnsuR9fOxo8BXu28IzQbkCueWSyBEZ54Xf4AzPyPY2cB73Gh8LuyY4vChgP+E9LwI3yqWyD+RR4O6hCo2e7yKm9dTAm",
-      "tl+V73HJRK2g4TWlqRGxjXeMvhmOvrnLFMfEbUJuiMiByZOUuK4hffoXB5VmbiGLYvJr3shcFpmxMZSuLK3Q97QbP27wmoU+Lk8Jy+MGR+9OTn4MpyvSOfVvDhLypSMG"
+      "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc",  // NOLINT
+      "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6",  // NOLINT
+      "MNrshKuw6zUTsmlZ+w4WzlJknjV/m/ZYyWUhwSmzyW8Dm/VGpMrifyw5txpNu+SQyNcAR+EJ468ADS5qfNfH7yS0kP9z1OJwMNfLiCTHOCiwd7PJkdv14T/vGS5AT1B5",  // NOLINT
+      "MRAbYbmnmjM5bqlbHsX9iuy1Jwc9GCGEA4idBt+PNaQONgbZaPbxHb2pOjw1H6sbgJ2eeIwtobrRRmy+diurWoa0cJ8IG9oy3YtOj8bgc7hy/x5Ixu0kxylNxTKb5b9Z",  // NOLINT
+      "aMTJ5HnQot4p6lU5LuXMdYPt3q3Eg1pz5pB2q1c8ys6qVVHd1PyrtEVY+qGJrET3ay2E12Qft0UhNzVUkrgnZ4Kh3mmpcm9wbYnmsid2GK3dBzuHC0ggnYoir1Oo+A8D",  // NOLINT
+      "lv6mXcIzMFmBbK37U3SFRxgMiRcM4pGLfrdgp0TCevTJ+XbDlHGNIXxYU8CT8ztGwoJSxYjtBh/MGSpjaklJG37ttqDaMzMT0VhKgEvTHuY7qmyi55WtWVENispKe35M",  // NOLINT
+      "f3v9XvsBKp7fdXwQSQHNpHN0MPDzGJ1obhc37pLLyv65/JbdMbsXSQ1dGP0+nD/ETvAFzWzro9s/8HQo0MPLBiKkzvAwnaWyM+TAXG5xwL70iICkNApiv57kUfzvnudp",  // NOLINT
+      "uSczWJh99T9QKlsDGoRSBpjoMFf4nQj/A5AW72m9o6akR4BkzQ1M1ATIyZde5O4Q2iSV+KRjGPUheU7QmTQxDS6l79e8a+ro2uXZKbxjY+XAM7PO+iFOOAZuR4IUoJpF",  // NOLINT
+      "2W8uYe1n6lFMiQFuD9wHLjr2qYhDB6AM3oXyetnsuR9fOxo8BXu28IzQbkCueWSyBEZ54Xf4AzPyPY2cB73Gh8LuyY4vChgP+E9LwI3yqWyD+RR4O6hCo2e7yKm9dTAm",  // NOLINT
+      "tl+V73HJRK2g4TWlqRGxjXeMvhmOvrnLFMfEbUJuiMiByZOUuK4hffoXB5VmbiGLYvJr3shcFpmxMZSuLK3Q97QbP27wmoU+Lk8Jy+MGR+9OTn4MpyvSOfVvDhLypSMG"   // NOLINT
     };
 
     int modulo = tokens_base64.size();
@@ -125,7 +125,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, GetToken) {
   auto token_base64 = token.encode_base64();
 
   // Assert
-  std::string expected_token_base64 = "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc";
+  std::string expected_token_base64 = "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc";  // NOLINT
   EXPECT_EQ(expected_token_base64, token_base64);
 }
 
@@ -139,14 +139,14 @@ TEST_F(ConfirmationsUnblindedTokensTest, GetAllTokens_Exist) {
 
   // Assert
   std::vector<std::string> expected_tokens_base64 = {
-    "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc",
-    "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6",
-    "MNrshKuw6zUTsmlZ+w4WzlJknjV/m/ZYyWUhwSmzyW8Dm/VGpMrifyw5txpNu+SQyNcAR+EJ468ADS5qfNfH7yS0kP9z1OJwMNfLiCTHOCiwd7PJkdv14T/vGS5AT1B5",
-    "MRAbYbmnmjM5bqlbHsX9iuy1Jwc9GCGEA4idBt+PNaQONgbZaPbxHb2pOjw1H6sbgJ2eeIwtobrRRmy+diurWoa0cJ8IG9oy3YtOj8bgc7hy/x5Ixu0kxylNxTKb5b9Z",
-    "aMTJ5HnQot4p6lU5LuXMdYPt3q3Eg1pz5pB2q1c8ys6qVVHd1PyrtEVY+qGJrET3ay2E12Qft0UhNzVUkrgnZ4Kh3mmpcm9wbYnmsid2GK3dBzuHC0ggnYoir1Oo+A8D",
-    "lv6mXcIzMFmBbK37U3SFRxgMiRcM4pGLfrdgp0TCevTJ+XbDlHGNIXxYU8CT8ztGwoJSxYjtBh/MGSpjaklJG37ttqDaMzMT0VhKgEvTHuY7qmyi55WtWVENispKe35M",
-    "f3v9XvsBKp7fdXwQSQHNpHN0MPDzGJ1obhc37pLLyv65/JbdMbsXSQ1dGP0+nD/ETvAFzWzro9s/8HQo0MPLBiKkzvAwnaWyM+TAXG5xwL70iICkNApiv57kUfzvnudp",
-    "uSczWJh99T9QKlsDGoRSBpjoMFf4nQj/A5AW72m9o6akR4BkzQ1M1ATIyZde5O4Q2iSV+KRjGPUheU7QmTQxDS6l79e8a+ro2uXZKbxjY+XAM7PO+iFOOAZuR4IUoJpF"
+    "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc",  // NOLINT
+    "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6",  // NOLINT
+    "MNrshKuw6zUTsmlZ+w4WzlJknjV/m/ZYyWUhwSmzyW8Dm/VGpMrifyw5txpNu+SQyNcAR+EJ468ADS5qfNfH7yS0kP9z1OJwMNfLiCTHOCiwd7PJkdv14T/vGS5AT1B5",  // NOLINT
+    "MRAbYbmnmjM5bqlbHsX9iuy1Jwc9GCGEA4idBt+PNaQONgbZaPbxHb2pOjw1H6sbgJ2eeIwtobrRRmy+diurWoa0cJ8IG9oy3YtOj8bgc7hy/x5Ixu0kxylNxTKb5b9Z",  // NOLINT
+    "aMTJ5HnQot4p6lU5LuXMdYPt3q3Eg1pz5pB2q1c8ys6qVVHd1PyrtEVY+qGJrET3ay2E12Qft0UhNzVUkrgnZ4Kh3mmpcm9wbYnmsid2GK3dBzuHC0ggnYoir1Oo+A8D",  // NOLINT
+    "lv6mXcIzMFmBbK37U3SFRxgMiRcM4pGLfrdgp0TCevTJ+XbDlHGNIXxYU8CT8ztGwoJSxYjtBh/MGSpjaklJG37ttqDaMzMT0VhKgEvTHuY7qmyi55WtWVENispKe35M",  // NOLINT
+    "f3v9XvsBKp7fdXwQSQHNpHN0MPDzGJ1obhc37pLLyv65/JbdMbsXSQ1dGP0+nD/ETvAFzWzro9s/8HQo0MPLBiKkzvAwnaWyM+TAXG5xwL70iICkNApiv57kUfzvnudp",  // NOLINT
+    "uSczWJh99T9QKlsDGoRSBpjoMFf4nQj/A5AW72m9o6akR4BkzQ1M1ATIyZde5O4Q2iSV+KRjGPUheU7QmTQxDS6l79e8a+ro2uXZKbxjY+XAM7PO+iFOOAZuR4IUoJpF"   // NOLINT
   };
 
   unsigned int index = 0;
@@ -293,11 +293,11 @@ TEST_F(ConfirmationsUnblindedTokensTest, SetTokensFromList) {
 
   // Assert
   std::vector<std::string> expected_tokens_base64 = {
-    "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc",
-    "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6",
-    "MNrshKuw6zUTsmlZ+w4WzlJknjV/m/ZYyWUhwSmzyW8Dm/VGpMrifyw5txpNu+SQyNcAR+EJ468ADS5qfNfH7yS0kP9z1OJwMNfLiCTHOCiwd7PJkdv14T/vGS5AT1B5",
-    "MRAbYbmnmjM5bqlbHsX9iuy1Jwc9GCGEA4idBt+PNaQONgbZaPbxHb2pOjw1H6sbgJ2eeIwtobrRRmy+diurWoa0cJ8IG9oy3YtOj8bgc7hy/x5Ixu0kxylNxTKb5b9Z",
-    "aMTJ5HnQot4p6lU5LuXMdYPt3q3Eg1pz5pB2q1c8ys6qVVHd1PyrtEVY+qGJrET3ay2E12Qft0UhNzVUkrgnZ4Kh3mmpcm9wbYnmsid2GK3dBzuHC0ggnYoir1Oo+A8D"
+    "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc",  // NOLINT
+    "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6",  // NOLINT
+    "MNrshKuw6zUTsmlZ+w4WzlJknjV/m/ZYyWUhwSmzyW8Dm/VGpMrifyw5txpNu+SQyNcAR+EJ468ADS5qfNfH7yS0kP9z1OJwMNfLiCTHOCiwd7PJkdv14T/vGS5AT1B5",  // NOLINT
+    "MRAbYbmnmjM5bqlbHsX9iuy1Jwc9GCGEA4idBt+PNaQONgbZaPbxHb2pOjw1H6sbgJ2eeIwtobrRRmy+diurWoa0cJ8IG9oy3YtOj8bgc7hy/x5Ixu0kxylNxTKb5b9Z",  // NOLINT
+    "aMTJ5HnQot4p6lU5LuXMdYPt3q3Eg1pz5pB2q1c8ys6qVVHd1PyrtEVY+qGJrET3ay2E12Qft0UhNzVUkrgnZ4Kh3mmpcm9wbYnmsid2GK3dBzuHC0ggnYoir1Oo+A8D"   // NOLINT
   };
 
   auto tokens = unblinded_tokens_->GetAllTokens();
@@ -413,7 +413,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveToken_Count) {
   EXPECT_CALL(*mock_confirmations_client_, SaveState)
       .Times(1);
 
-  std::string token_base64 = "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6";
+  std::string token_base64 = "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6";  // NOLINT
   auto token = UnblindedToken::decode_base64(token_base64);
   unblinded_tokens_->RemoveToken(token);
 
@@ -431,7 +431,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveToken_Removed) {
   EXPECT_CALL(*mock_confirmations_client_, SaveState)
       .Times(1);
 
-  std::string token_base64 = "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6";
+  std::string token_base64 = "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6";  // NOLINT
   auto token = UnblindedToken::decode_base64(token_base64);
   unblinded_tokens_->RemoveToken(token);
 
@@ -448,7 +448,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveToken_UnknownToken) {
   EXPECT_CALL(*mock_confirmations_client_, SaveState)
       .Times(0);
 
-  std::string token_base64 = "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF";
+  std::string token_base64 = "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF";  // NOLINT
   auto token = UnblindedToken::decode_base64(token_base64);
   unblinded_tokens_->RemoveToken(token);
 
@@ -466,7 +466,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveToken_SameTokenTwice) {
   EXPECT_CALL(*mock_confirmations_client_, SaveState)
       .Times(1);
 
-  std::string token_base64 = "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6";
+  std::string token_base64 = "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6";  // NOLINT
   auto token = UnblindedToken::decode_base64(token_base64);
 
   unblinded_tokens_->RemoveToken(token);
@@ -515,7 +515,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, TokenExists) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  std::string token_base64 = "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6";
+  std::string token_base64 = "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6";  // NOLINT
   auto token = UnblindedToken::decode_base64(token_base64);
   auto exists = unblinded_tokens_->TokenExists(token);
 
@@ -529,7 +529,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, TokenExists_UnknownToken) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  std::string token_base64 = "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF";
+  std::string token_base64 = "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF";  // NOLINT
   auto token = UnblindedToken::decode_base64(token_base64);
   auto exists = unblinded_tokens_->TokenExists(token);
 

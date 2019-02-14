@@ -60,7 +60,7 @@ TEST_F(ConfirmationsFetchPaymentTokenRequestTest, BuildUrl) {
   auto url = request_->BuildUrl(confirmation_id);
 
   // Assert
-  std::string expected_url = "https://ads-serve.bravesoftware.com/v1/confirmation/c7f8c42d-6768-4dd7-8dc6-612cbba3ec21/paymentToken";
+  std::string expected_url = "https://ads-serve.bravesoftware.com/v1/confirmation/c7f8c42d-6768-4dd7-8dc6-612cbba3ec21/paymentToken";  // NOLINT
   EXPECT_EQ(expected_url, url);
 }
 

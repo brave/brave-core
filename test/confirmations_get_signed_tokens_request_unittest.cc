@@ -57,7 +57,7 @@ TEST_F(ConfirmationsGetSignedTokensRequestTest, BuildUrl) {
   // Arrange
   WalletInfo wallet_info;
   wallet_info.payment_id = "e7fcf220-d3f4-4111-a0b2-6157d0347567";
-  wallet_info.public_key = "3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf";
+  wallet_info.public_key = "3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf";  // NOLINT
 
   std::string nonce = "8561a644-6f42-49be-a2f4-4bc69dc87a27";
 
@@ -65,7 +65,7 @@ TEST_F(ConfirmationsGetSignedTokensRequestTest, BuildUrl) {
   auto url = request_->BuildUrl(wallet_info, nonce);
 
   // Assert
-  std::string expected_url = "https://ads-serve.bravesoftware.com/v1/confirmation/token/e7fcf220-d3f4-4111-a0b2-6157d0347567?nonce=8561a644-6f42-49be-a2f4-4bc69dc87a27";
+  std::string expected_url = "https://ads-serve.bravesoftware.com/v1/confirmation/token/e7fcf220-d3f4-4111-a0b2-6157d0347567?nonce=8561a644-6f42-49be-a2f4-4bc69dc87a27";  // NOLINT
   EXPECT_EQ(expected_url, url);
 }
 

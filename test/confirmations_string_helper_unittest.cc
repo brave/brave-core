@@ -50,7 +50,7 @@ class ConfirmationsStringHelperTest : public ::testing::Test {
 
 TEST_F(ConfirmationsStringHelperTest, DecodeHex) {
   // Arrange
-  std::string hexadecimal = "3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf";
+  std::string hexadecimal = "3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf";  // NOLINT
 
   std::vector<uint8_t> valid_bytes = {
       0x3f, 0xc8, 0xff, 0x3b, 0x12, 0x1e, 0x7b, 0x78, 0x75, 0x75, 0x0d, 0x26,
