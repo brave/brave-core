@@ -222,7 +222,7 @@ void BatPublishers::saveVisitInternal(
         publisher_info->favicon_url = fav_icon;
     }
   } else {
-    publisher_info->favicon_url = std::string();
+    publisher_info->favicon_url = ledger::clear_favicon;
   }
 
   publisher_info->name = visit_data.name;
