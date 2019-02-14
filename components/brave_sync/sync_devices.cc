@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2016 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_sync/sync_devices.h"
+
+#include <utility>
 
 #include "base/json/json_writer.h"
 #include "base/json/json_reader.h"
@@ -89,7 +92,7 @@ void SyncDevices::FromJson(const std::string& str_json) {
     return;
   }
 
-  //JSON ==> Value
+  // JSON ==> Value
   int error_code_out = 0;
   std::string error_msg_out;
   int error_line_out = 0;
@@ -110,7 +113,7 @@ void SyncDevices::FromJson(const std::string& str_json) {
   devices_.clear();
   const base::Value* pv_arr = records_v->FindKey("devices");
   CHECK(pv_arr->is_list());
-  for (const base::Value &val : pv_arr->GetList() ) {
+  for (const base::Value &val : pv_arr->GetList()) {
     std::string name = val.FindKey("name")->GetString();
     std::string object_id = val.FindKey("object_id")->GetString();
     std::string device_id = val.FindKey("device_id")->GetString();
@@ -126,10 +129,8 @@ void SyncDevices::FromJson(const std::string& str_json) {
       name,
       object_id,
       device_id,
-      last_active
-    ));
+      last_active) );
   }
-
 }
 
 void SyncDevices::Merge(const SyncDevice& device,
@@ -173,7 +174,7 @@ void SyncDevices::Merge(const SyncDevice& device,
 }
 
 SyncDevice* SyncDevices::GetByObjectId(const std::string &object_id) {
-  for (auto & device: devices_) {
+  for (auto& device : devices_) {
     if (device.object_id_ == object_id) {
       return &device;
     }
@@ -183,7 +184,7 @@ SyncDevice* SyncDevices::GetByObjectId(const std::string &object_id) {
 }
 
 const SyncDevice* SyncDevices::GetByDeviceId(const std::string &device_id) {
-  for (const auto & device: devices_) {
+  for (const auto& device : devices_) {
     if (device.device_id_ == device_id) {
       return &device;
     }
@@ -208,4 +209,4 @@ void SyncDevices::DeleteByObjectId(const std::string &object_id) {
   }
 }
 
-} // namespace brave_sync
+}  // namespace brave_sync
