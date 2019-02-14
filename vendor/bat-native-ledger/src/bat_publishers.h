@@ -15,6 +15,7 @@
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat_helper.h"
+#include "base/gtest_prod_util.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -177,9 +178,9 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void OnRestorePublishersInternal(bool success);
 
-  void calcScoreConsts(const uint64_t& duration);
+  void calcScoreConsts(const uint64_t& min_duration_seconds);
 
-  double concaveScore(const uint64_t& duration);
+  double concaveScore(const uint64_t& duration_seconds);
 
   void saveState();
 
@@ -220,6 +221,11 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   double b_;
 
   double b2_;
+
+  // For testing purposes
+  friend class BatPublishersTest;
+  FRIEND_TEST_ALL_PREFIXES(BatPublishersTest, calcScoreConsts);
+  FRIEND_TEST_ALL_PREFIXES(BatPublishersTest, concaveScore);
 };
 
 }  // namespace braveledger_bat_publishers
