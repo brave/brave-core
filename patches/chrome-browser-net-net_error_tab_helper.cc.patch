@@ -1,0 +1,36 @@
+diff --git a/chrome/browser/net/net_error_tab_helper.cc b/chrome/browser/net/net_error_tab_helper.cc
+index 0d094df161accd5740306543fc938ab6e58da296..eede25d41103e85be7c9067ecd09667a6c0e97b3 100644
+--- a/chrome/browser/net/net_error_tab_helper.cc
++++ b/chrome/browser/net/net_error_tab_helper.cc
+@@ -89,7 +89,8 @@ void NetErrorTabHelper::RenderFrameCreated(
+ 
+   chrome::mojom::NetworkDiagnosticsClientAssociatedPtr client;
+   render_frame_host->GetRemoteAssociatedInterfaces()->GetInterface(&client);
+-  client->SetCanShowNetworkDiagnosticsDialog(CanShowNetworkDiagnosticsDialog());
++  client->SetCanShowNetworkDiagnosticsDialog(
++      CanShowNetworkDiagnosticsDialog(web_contents()));
+ }
+ 
+ void NetErrorTabHelper::DidStartNavigation(
+@@ -259,6 +260,9 @@ void NetErrorTabHelper::InitializePref(WebContents* contents) {
+ }
+ 
+ bool NetErrorTabHelper::ProbesAllowed() const {
++#if defined(BRAVE_CHROMIUM_BUILD)
++  return false;
++#endif
+   if (testing_state_ != TESTING_DEFAULT)
+     return testing_state_ == TESTING_FORCE_ENABLED;
+ 
+@@ -293,6 +297,11 @@ void NetErrorTabHelper::RunNetworkDiagnostics(const GURL& url) {
+ 
+ void NetErrorTabHelper::RunNetworkDiagnosticsHelper(
+     const std::string& sanitized_url) {
++  // The button shouldn't even be shown in this case, but still best to be safe,
++  // since the renderer isn't trusted.
++  if (!CanShowNetworkDiagnosticsDialog(web_contents()))
++    return;
++
+   if (network_diagnostics_bindings_.GetCurrentTargetFrame()
+           != web_contents()->GetMainFrame()) {
+     return;
