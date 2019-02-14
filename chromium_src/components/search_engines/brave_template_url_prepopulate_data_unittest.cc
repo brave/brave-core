@@ -2,16 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "components/search_engines/template_url_prepopulate_data.h"
-
 #include <stddef.h>
 
 #include <memory>
+#include <string>
+#include <unordered_set>
 #include <utility>
 
 #include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/macros.h"
+#include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -21,6 +22,7 @@
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data_util.h"
+#include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/testing_search_terms_data.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -36,13 +38,14 @@ std::string GetHostFromTemplateURLData(const TemplateURLData& data) {
   return TemplateURL(data).url_ref().GetHost(SearchTermsData());
 }
 
-using namespace TemplateURLPrepopulateData;
+using namespace TemplateURLPrepopulateData;  // NOLINT
+
 const PrepopulatedEngine* const kBraveAddedEngines[] = {
-    &amazon,          &duckduckgo,    &ecosia,
-    &github,          &mdnwebdocs,    &qwant,     &searx,
-    &semanticscholar, &stackoverflow, &startpage, &twitter,
-    &wikipedia,       &wolframalpha,  &yandex,    &youtube,
+    &startpage,
 };
+
+const std::unordered_set<std::wstring> kOverriddenEnginesNames = {L"DuckDuckGo",
+                                                                  L"Qwant"};
 
 std::vector<const PrepopulatedEngine*> GetAllPrepopulatedEngines() {
   std::vector<const PrepopulatedEngine*> engines =
@@ -78,18 +81,29 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueKeywords) {
   }
 }
 
+// Verifies that engines we override are used and not the original engines.
+TEST_F(BraveTemplateURLPrepopulateDataTest, OverriddenEngines) {
+  using PrepopulatedEngine = TemplateURLPrepopulateData::PrepopulatedEngine;
+  const std::vector<const PrepopulatedEngine*> all_engines =
+      ::GetAllPrepopulatedEngines();
+  for (const PrepopulatedEngine* engine : all_engines) {
+    if (kOverriddenEnginesNames.count(engine->name) > 0)
+      ASSERT_GE(static_cast<unsigned int>(engine->id),
+                TemplateURLPrepopulateData::BRAVE_PREPOPULATED_ENGINES_START);
+  }
+}
+
 // Verifies that the set of prepopulate data for each locale
 // doesn't contain entries with duplicate ids.
 TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
   const int kCountryIds[] = {
-    'C' << 8 | 'A',
     'D' << 8 | 'E',
     'F' << 8 | 'R',
     'U' << 8 | 'S',
     -1
   };
 
-  for (size_t i = 0; i < arraysize(kCountryIds); ++i) {
+  for (size_t i = 0; i < base::size(kCountryIds); ++i) {
     prefs_.SetInteger(kCountryIDAtInstall, kCountryIds[i]);
     std::vector<std::unique_ptr<TemplateURLData>> urls =
         GetPrepopulatedEngines(&prefs_, nullptr);
