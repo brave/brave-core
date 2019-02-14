@@ -7,6 +7,8 @@ class CustomHeaderData: NSObject {
     let domainList: [String]
     let headerField: String
     let headerValue: String
+    static let bravePartnerKey = "X-Brave-Partner"
+    private static let securedBravePartnerKey = "__Secure-\(CustomHeaderData.bravePartnerKey)"
 
     init(domainList: [String], headerKey: String, headerValue: String) {
         self.domainList = domainList
@@ -29,7 +31,7 @@ class CustomHeaderData: NSObject {
     func cookies() -> [HTTPCookie] {
         let domains = domainList.compactMap { URL(string: $0)?.absoluteString }
         return domains.compactMap {
-            HTTPCookie(properties: [
+            let cookie = HTTPCookie(properties: [
                 // Must include `.` prefix to be included in subdomains
                 .domain: ".\($0)",
                 .path: "/",
@@ -38,6 +40,11 @@ class CustomHeaderData: NSObject {
                 .secure: "TRUE",
                 .expires: NSDate(timeIntervalSinceNow: 7.days)
                 ])
+            if cookie?.name == CustomHeaderData.securedBravePartnerKey {
+                return cookie
+            }
+            assertionFailure("Invalid partner cookie name: \(cookie?.name ?? "Cookie is nil")")
+            return nil
         }
     }
 
@@ -45,7 +52,7 @@ class CustomHeaderData: NSObject {
         var customHeaders: [CustomHeaderData] = []
 
         for (_, object) in json {
-            guard let header = object["headers"].first else { continue }
+            guard let header: (String, JSON) = object["headers"].first, header.0 == CustomHeaderData.bravePartnerKey else { continue }
 
             var domains = [String]()
 
