@@ -3,6 +3,13 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//testing/test.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
+group("fix_brave_test_install_name") {
+  testonly = true
+  deps = [
+    "//brave/vendor/challenge_bypass_ristretto_ffi:test_install_name"
+  ]
+}
+
 static_library("brave_test_support_unit") {
   testonly = true
   sources = [
