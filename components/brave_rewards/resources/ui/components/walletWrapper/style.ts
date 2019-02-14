@@ -13,8 +13,6 @@ interface StyledProps {
   compact?: boolean,
   background?: string,
   isMobile?: boolean,
-  type?: string,
-  onClick?: Function | undefined,
   notification?: Notification | undefined
 }
 
@@ -283,7 +281,6 @@ export const StyledTypeText = styled<StyledProps, 'span'>('span')`
   font-weight: 500;
   margin-right: 5px;
   display: inline-block;
-  cursor: ${p => p.onClick ? 'pointer' : 'default'};
 `
 
 export const StyledMessageText = styled<StyledProps, 'span'>('span')`

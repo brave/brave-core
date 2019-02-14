@@ -246,8 +246,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
   }
 
   getNotificationButton = (type: NotificationType, onClose: any) => {
-    let buttonText = 'OK'
-    let buttonAction = onClose
+    let buttonText
+    let buttonAction
 
     switch (type) {
       case 'grant':
@@ -257,6 +257,10 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       case 'backupWallet':
         buttonText = getLocale('backupNow')
         buttonAction = this.onNotificationClick
+        break
+      default:
+        buttonText = getLocale('ok').toUpperCase()
+        buttonAction = onClose
         break
     }
 
@@ -286,7 +290,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         <StyledNotificationContent>
           {this.getNotificationIcon(notification)}
           {this.getNotificationMessage(notification)}
-          <StyledButtonWrapper type={notification.type}>
+          <StyledButtonWrapper>
             {this.getNotificationButton(notification.type, onClose)}
           </StyledButtonWrapper>
         </StyledNotificationContent>
