@@ -518,6 +518,14 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
         DCHECK(!bookmark_record.order.empty());
         int64_t index = GetIndex(new_parent_node, bookmark_record);
         bookmark_model_->Move(node, new_parent_node, index);
+      } else if (!bookmark_record.order.empty()) {
+        std::string order;
+        node->GetMetaInfo("order", &order);
+        DCHECK(!order.empty());
+        if (bookmark_record.order != order) {
+          int64_t index = GetIndex(node->parent(), bookmark_record);
+          bookmark_model_->Move(node, node->parent(), index);
+        }
       }
       UpdateNode(bookmark_model_, node, sync_record.get());
     } else if (node &&
