@@ -101,6 +101,9 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   base::FilePath db_file;
   CreateTempDatabase(&temp_dir, &db_file);
 
+
+  const std::string fav_icon = "1";
+
   ledger::PublisherInfo info;
   info.id = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   info.verified = false;
@@ -108,7 +111,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   info.name = "name";
   info.url = "https://brave.com";
   info.provider = "";
-  info.favicon_url = "";
+  info.favicon_url = "0";
 
   bool success = publisher_info_database_->InsertOrUpdatePublisherInfo(info);
   EXPECT_TRUE(success);
@@ -137,7 +140,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   info.name = "updated";
   info.url = "https://clifton.com";
   info.provider = "";
-  info.favicon_url = "1";
+  info.favicon_url = fav_icon;
 
   success = publisher_info_database_->InsertOrUpdatePublisherInfo(info);
   EXPECT_TRUE(success);
@@ -159,6 +162,36 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   EXPECT_EQ(info_sql_1.ColumnString(6), info.provider);
 
   /**
+   * If favicon is empty, don't update record
+   */
+  info.name = "updated2";
+  info.favicon_url = "";
+
+  success = publisher_info_database_->InsertOrUpdatePublisherInfo(info);
+  EXPECT_TRUE(success);
+
+  query = "SELECT favicon, name FROM publisher_info WHERE publisher_id=?";
+  sql::Statement info_sql_2(GetDB().GetUniqueStatement(query.c_str()));
+  info_sql_2.BindString(0, info.id);
+  EXPECT_TRUE(info_sql_2.Step());
+  EXPECT_EQ(info_sql_2.ColumnString(0), fav_icon);
+  EXPECT_EQ(info_sql_2.ColumnString(1), info.name);
+
+  /**
+   * If favicon is marked as clear, clear it
+   */
+  info.favicon_url = ledger::clear_favicon;
+
+  success = publisher_info_database_->InsertOrUpdatePublisherInfo(info);
+  EXPECT_TRUE(success);
+
+  query = "SELECT favicon FROM publisher_info WHERE publisher_id=?";
+  sql::Statement info_sql_3(GetDB().GetUniqueStatement(query.c_str()));
+  info_sql_3.BindString(0, info.id);
+  EXPECT_TRUE(info_sql_3.Step());
+  EXPECT_EQ(info_sql_3.ColumnString(0), "");
+
+  /**
    * Publisher key is missing
    */
   info.id = "";
@@ -167,11 +200,11 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   EXPECT_FALSE(success);
 
   query = "SELECT * FROM publisher_info WHERE publisher_id=?";
-  sql::Statement info_sql_2(GetDB().GetUniqueStatement(query.c_str()));
+  sql::Statement info_sql_4(GetDB().GetUniqueStatement(query.c_str()));
 
-  info_sql_2.BindString(0, info.id);
+  info_sql_4.BindString(0, info.id);
 
-  EXPECT_FALSE(info_sql_2.Step());
+  EXPECT_FALSE(info_sql_4.Step());
 }
 
 TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
