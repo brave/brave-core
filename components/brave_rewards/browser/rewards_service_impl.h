@@ -433,7 +433,6 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
 
   uint32_t next_timer_id_;
-  uint32_t next_confirmations_timer_id_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);
 };
