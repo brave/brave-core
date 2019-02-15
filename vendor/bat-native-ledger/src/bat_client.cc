@@ -525,7 +525,7 @@ void BatClient::setGrantCallback(
 
   ledger_->LogResponse(__func__, success, response, headers);
 
-  if (!success) {
+  if (!error.empty()) {
     if (statusCode == 403) {
       ledger_->OnGrantFinish(ledger::Result::CAPTCHA_FAILED, grant);
     } else if (statusCode == 404 || statusCode == 410) {
