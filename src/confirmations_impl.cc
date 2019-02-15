@@ -278,10 +278,15 @@ void ConfirmationsImpl::OnStateReset(const Result result) {
 }
 
 void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
-  wallet_info_ = WalletInfo(*info);
+  if (info->payment_id.empty() || info->public_key.empty()) {
+    return
+  }
+
   BLOG(INFO) << "SetWalletInfo:";
   BLOG(INFO) << "  Payment id: " << wallet_info_.payment_id;
   BLOG(INFO) << "  Public key: " << wallet_info_.public_key;
+
+  wallet_info_ = WalletInfo(*info);
 
   CheckReady();
 }
