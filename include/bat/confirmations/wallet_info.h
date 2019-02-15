@@ -16,6 +16,8 @@ struct CONFIRMATIONS_EXPORT WalletInfo {
   WalletInfo(const WalletInfo& info);
   ~WalletInfo();
 
+  bool IsValid();
+
   std::string payment_id;
   std::string public_key;
 };

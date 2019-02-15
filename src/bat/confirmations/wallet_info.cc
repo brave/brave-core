@@ -16,4 +16,8 @@ WalletInfo::WalletInfo(const WalletInfo& info) :
 
 WalletInfo::~WalletInfo() = default;
 
+bool WalletInfo::IsValid() {
+  return !payment_id.empty() && !public_key.empty();
+}
+
 }  // namespace confirmations

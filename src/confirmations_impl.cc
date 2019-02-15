@@ -16,8 +16,6 @@ namespace confirmations {
 ConfirmationsImpl::ConfirmationsImpl(
     ConfirmationsClient* confirmations_client) :
     is_initialized_(false),
-    is_wallet_initialized_(false),
-    is_catalog_issuers_initialized_(false),
     unblinded_tokens_(std::make_unique<UnblindedTokens>(this)),
     unblinded_payment_tokens_(std::make_unique<UnblindedTokens>(this)),
     retry_getting_signed_tokens_timer_id_(0),
@@ -46,7 +44,7 @@ void ConfirmationsImpl::CheckReady() {
     return;
   }
 
-  if (!is_wallet_initialized_ || !is_catalog_issuers_initialized_) {
+  if (!wallet_info_.IsValid() || catalog_issuers_.empty()) {
     return;
   }
 
@@ -153,6 +151,7 @@ bool ConfirmationsImpl::FromJSON(const std::string& json) {
   base::ListValue unblinded_payment_token_values(
       unblinded_payment_tokens_value->GetList());
 
+  // Update state
   public_key_ = public_key;
   catalog_issuers_ = catalog_issuers;
   unblinded_tokens_->SetTokensFromList(unblinded_token_values);
@@ -284,13 +283,6 @@ void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
   BLOG(INFO) << "  Payment id: " << wallet_info_.payment_id;
   BLOG(INFO) << "  Public key: " << wallet_info_.public_key;
 
-  if (info->payment_id.empty() || info->public_key.empty()) {
-    BLOG(ERROR) << "  Invalid wallet info";
-    return;
-  }
-
-  is_wallet_initialized_ = true;
-
   CheckReady();
 }
 
@@ -312,8 +304,6 @@ void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
   }
 
   SaveState();
-
-  is_catalog_issuers_initialized_ = true;
 
   CheckReady();
 }

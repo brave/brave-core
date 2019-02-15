@@ -62,13 +62,10 @@ class ConfirmationsImpl : public Confirmations {
   void CheckReady();
 
   // Wallet
-  bool is_wallet_initialized_;
-
   WalletInfo wallet_info_;
   std::string public_key_;
 
   // Catalog issuers
-  bool is_catalog_issuers_initialized_;
   std::map<std::string, std::string> catalog_issuers_;
 
   // Unblinded tokens
