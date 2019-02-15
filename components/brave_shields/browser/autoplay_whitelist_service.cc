@@ -21,9 +21,6 @@
 #include "brave/vendor/autoplay-whitelist/autoplay_whitelist_parser.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
-#define DAT_FILE "AutoplayWhitelist.dat"
-#define DAT_FILE_VERSION "1"
-
 namespace brave_shields {
 
 AutoplayWhitelistService::AutoplayWhitelistService()
@@ -64,7 +61,7 @@ void AutoplayWhitelistService::OnComponentReady(
     const std::string& manifest) {
 
   base::FilePath dat_file_path =
-      install_dir.AppendASCII(DAT_FILE_VERSION).AppendASCII(DAT_FILE);
+      install_dir.AppendASCII(AUTOPLAY_DAT_FILE_VERSION).AppendASCII(AUTOPLAY_DAT_FILE);
 
   GetTaskRunner()->PostTaskAndReply(
       FROM_HERE,
