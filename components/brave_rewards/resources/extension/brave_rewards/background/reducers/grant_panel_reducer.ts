@@ -82,8 +82,16 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
           let captcha = `data:image/jpeg;base64,${props.image}`
 
           const grants = state.grants.map((item: RewardsExtension.GrantInfo) => {
+            let promotionId
             let newGrant = item
-            let promotionId = state.currentGrant && state.currentGrant.promotionId
+
+            if (!state ||
+                !state.currentGrant ||
+                !state.currentGrant.promotionId) {
+              return newGrant
+            }
+
+            promotionId = state.currentGrant.promotionId
 
             if (promotionId === item.promotionId) {
               newGrant = Object.assign({
