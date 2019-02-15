@@ -77,31 +77,27 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
     case types.ON_GRANT_CAPTCHA:
       {
         if (state.currentGrant && state.grants) {
-          let currentGrant
-          let grant = state.currentGrant
           const props = action.payload.captcha
-          grant.captcha = `data:image/jpeg;base64,${props.image}`
-          grant.hint = props.hint
+          let hint = props.hint
+          let captcha = `data:image/jpeg;base64,${props.image}`
 
           const grants = state.grants.map((item: RewardsExtension.GrantInfo) => {
             let newGrant = item
+            let promotionId = state.currentGrant && state.currentGrant.promotionId
 
-            if (grant.promotionId === item.promotionId) {
-              currentGrant = newGrant = Object.assign({
-                captcha: grant.captcha,
-                hint: props.hint
+            if (promotionId === item.promotionId) {
+              newGrant = Object.assign({
+                captcha: captcha,
+                hint: hint
               }, item)
             }
 
             return newGrant
           })
 
-          if (grants && currentGrant) {
-            state = {
-              ...state,
-              grants,
-              currentGrant
-            }
+          state = {
+            ...state,
+            grants
           }
         }
         break
@@ -125,7 +121,7 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
 
           const grants = state.grants.map((item: RewardsExtension.GrantInfo) => {
             if (currentGrant.promotionId === item.promotionId) {
-              currentGrant = {
+              return {
                 promotionId: currentGrant.promotionId,
                 probi: '',
                 expiryTime: 0,
@@ -134,6 +130,8 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
             }
             return item
           })
+
+          currentGrant = undefined
 
           state = {
             ...state,
@@ -146,7 +144,6 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
     case types.ON_GRANT_DELETE:
       {
         if (state.currentGrant && state.grants) {
-          let grants
           let grantIndex = -1
           let currentGrant: any = state.currentGrant
 
@@ -157,13 +154,12 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
           })
 
           if (grantIndex > -1) {
-            grants = state.grants.splice(grantIndex, 1)
+            state.grants.splice(grantIndex, 1)
             currentGrant = undefined
           }
 
           state = {
             ...state,
-            grants,
             currentGrant
           }
         }
