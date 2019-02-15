@@ -6,13 +6,14 @@
 #include "brave/app/brave_main_delegate.h"
 
 #include <memory>
-#include <sstream>
+#include <unordered_set>
 
 #include "base/base_switches.h"
 #include "base/lazy_instance.h"
 #include "base/path_service.h"
 #include "base/time/time.h"
 #include "build/build_config.h"
+#include "brave/app/brave_command_line_helper.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/resource_bundle_helper.h"
@@ -118,8 +119,7 @@ void BraveMainDelegate::PreSandboxStartup() {
 }
 
 bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
-  base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
+  BraveCommandLineHelper command_line(base::CommandLine::ForCurrentProcess());
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
   command_line.AppendSwitch(switches::kEnableDomDistiller);
 #endif
@@ -127,22 +127,24 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitch(switches::kDisableChromeGoogleURLTrackingClient);
   command_line.AppendSwitch(switches::kNoPings);
 
-  std::stringstream enabled_features;
-  enabled_features << features::kDesktopPWAWindowing.name
-    << "," << password_manager::features::kFillOnAccountSelect.name
-    << "," << extensions_features::kNewExtensionUpdaterService.name;
+  // Enabled features.
+  const std::unordered_set<const char*> enabled_features = {
+      extensions_features::kNewExtensionUpdaterService.name,
+      features::kDesktopPWAWindowing.name,
+      password_manager::features::kFillOnAccountSelect.name,
+  };
 
-  std::stringstream disabled_features;
-  disabled_features << features::kSharedArrayBuffer.name
-    << "," << features::kDefaultEnableOopRasterization.name
-    << "," << autofill::features::kAutofillSaveCardSignInAfterLocalSave.name
-    << "," << features::kAudioServiceOutOfProcess.name
-    << "," << autofill::features::kAutofillServerCommunication.name
-    << "," << unified_consent::kUnifiedConsent.name;
+  // Disabled features.
+  const std::unordered_set<const char*> disabled_features = {
+      autofill::features::kAutofillSaveCardSignInAfterLocalSave.name,
+      autofill::features::kAutofillServerCommunication.name,
+      features::kAudioServiceOutOfProcess.name,
+      features::kDefaultEnableOopRasterization.name,
+      features::kSharedArrayBuffer.name,
+      unified_consent::kUnifiedConsent.name,
+  };
 
-  command_line.AppendSwitchASCII(switches::kEnableFeatures,
-      enabled_features.str());
-  command_line.AppendSwitchASCII(switches::kDisableFeatures,
-      disabled_features.str());
+  command_line.AppendFeatures(enabled_features, disabled_features);
+
   return ChromeMainDelegate::BasicStartupComplete(exit_code);
 }

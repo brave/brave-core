@@ -29,6 +29,7 @@ static_library("brave_test_support_unit") {
 
 test("brave_unit_tests") {
   sources = [
+    "//brave/app/brave_command_line_helper_unittest.cc",
     "//brave/browser/autocomplete/brave_autocomplete_provider_client_unittest.cc",
     "//brave/browser/autoplay/autoplay_permission_context_unittest.cc",
     "//brave/browser/brave_resources_util_unittest.cc",
