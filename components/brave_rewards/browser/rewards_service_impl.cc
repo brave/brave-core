@@ -829,9 +829,12 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
     if (!Connected())
       return;
 
+    int report_type = grant.type == "ads"
+      ? ledger::ReportType::ADS
+      : ledger::ReportType::GRANT;
     bat_ledger_->SetBalanceReportItem(GetPublisherMonth(now),
                                       GetPublisherYear(now),
-                                      ledger::ReportType::GRANT,
+                                      report_type,
                                       grant.probi);
   }
 
