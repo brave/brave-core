@@ -23,8 +23,9 @@ class MockTorProfileServiceImpl : public TorProfileService {
   const TorConfig& GetTorConfig() override;
   int64_t GetTorPid() override;
 
-  void SetProxy(net::ProxyResolutionService*, const GURL& request_url,
-                bool new_circuit) override;
+  int SetProxy(net::ProxyResolutionService*,
+               const GURL& request_url,
+               bool new_circuit) override;
 
  private:
   Profile* profile_;  // NOT OWNED

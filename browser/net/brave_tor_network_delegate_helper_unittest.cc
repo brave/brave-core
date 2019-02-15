@@ -226,8 +226,5 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfileBlockIfHosed) {
     brave::OnBeforeURLRequest_TorWork(callback,
                                       before_url_context);
   EXPECT_TRUE(before_url_context->new_url_spec.empty());
-  // TODO(riastradh): This is broken -- the sense should be reversed,
-  // with a marker to indicate expected failure.  But googletest
-  // apparently has no native way to express expected failures.
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_NE(ret, net::OK);
 }
