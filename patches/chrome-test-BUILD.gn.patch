@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 101b6f34dce755dd02b0c5bb6d73cc0caf45cb09..ad49462e01182b6d87d3d2a1c812c517f503f1ae 100644
+index 7644572ee8fb6ea573d0bb3b2d759e79f7835ade..f00e592caceeb2b13f13d79f924282849d3f80b7 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -455,6 +455,8 @@ test("browser_tests") {
