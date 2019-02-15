@@ -40,8 +40,9 @@ class TorProfileService : public KeyedService {
   virtual const TorConfig& GetTorConfig() = 0;
   virtual int64_t GetTorPid() = 0;
 
-  virtual void SetProxy(net::ProxyResolutionService*, const GURL& request_url,
-                        bool new_circuit) = 0;
+  virtual int SetProxy(net::ProxyResolutionService*,
+                       const GURL& request_url,
+                       bool new_circuit) = 0;
 
   void AddObserver(TorLauncherServiceObserver* observer);
   void RemoveObserver(TorLauncherServiceObserver* observer);
