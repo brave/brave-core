@@ -1,9 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_ADS_SERVICE_
-#define BRAVE_COMPONENTS_BRAVE_ADS_ADS_SERVICE_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
+
+#include <string>
 
 #include "base/macros.h"
 #include "build/build_config.h"
@@ -31,7 +34,8 @@ class AdsService : public KeyedService {
   virtual void TabClosed(SessionID tab_id) = 0;
   virtual void OnMediaStart(SessionID tab_id) = 0;
   virtual void OnMediaStop(SessionID tab_id) = 0;
-  virtual void ClassifyPage(const std::string& url, const std::string& page) = 0;
+  virtual void ClassifyPage(const std::string& url,
+                            const std::string& page) = 0;
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 
  private:
@@ -40,4 +44,4 @@ class AdsService : public KeyedService {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_ADS_SERVICE_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_

@@ -579,7 +579,8 @@ uint64_t AdsServiceImpl::GetAdsPerDay() const {
   return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerDay);
 }
 
-void AdsServiceImpl::ShowNotification(std::unique_ptr<ads::NotificationInfo> info) {
+void AdsServiceImpl::ShowNotification(
+    std::unique_ptr<ads::NotificationInfo> info) {
   std::string notification_id;
   auto notification =
       CreateAdNotification(*info, &notification_id);

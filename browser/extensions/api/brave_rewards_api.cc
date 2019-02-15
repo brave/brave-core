@@ -1,16 +1,18 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/api/brave_rewards_api.h"
 
+#include <memory>
 #include <string>
 
 #include "base/bind.h"
 #include "brave/browser/brave_rewards/donations_dialog.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_servicefactory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "content/public/browser/web_contents.h"
@@ -31,9 +33,9 @@ BraveRewardsCreateWalletFunction::~BraveRewardsCreateWalletFunction() {
 
 ExtensionFunction::ResponseAction BraveRewardsCreateWalletFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service_) {
-    rewards_service_->CreateWallet();
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service) {
+    rewards_service->CreateWallet();
   }
   return RespondNow(NoArguments());
 }
@@ -80,14 +82,13 @@ BraveRewardsIncludeInAutoContributionFunction::
 
 ExtensionFunction::ResponseAction
   BraveRewardsIncludeInAutoContributionFunction::Run() {
-
   std::unique_ptr<brave_rewards::IncludeInAutoContribution::Params> params(
     brave_rewards::IncludeInAutoContribution::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ =
+  RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service_) {
-    rewards_service_->SetContributionAutoInclude(
+  if (rewards_service) {
+    rewards_service->SetContributionAutoInclude(
       params->publisher_key, params->excluded, params->window_id);
   }
   return RespondNow(NoArguments());
@@ -97,9 +98,9 @@ ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
   std::unique_ptr<brave_rewards::GetPublisherData::Params> params(
       brave_rewards::GetPublisherData::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service_) {
-    rewards_service_->GetPublisherActivityFromUrl(params->window_id,
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service) {
+    rewards_service->GetPublisherActivityFromUrl(params->window_id,
                                                   params->url,
                                                   params->favicon_url,
                                                   params->publisher_blob);
@@ -107,14 +108,16 @@ ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsGetWalletPropertiesFunction::~BraveRewardsGetWalletPropertiesFunction() {
+BraveRewardsGetWalletPropertiesFunction::
+~BraveRewardsGetWalletPropertiesFunction() {
 }
 
-ExtensionFunction::ResponseAction BraveRewardsGetWalletPropertiesFunction::Run() {
+ExtensionFunction::ResponseAction
+BraveRewardsGetWalletPropertiesFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service_) {
-    rewards_service_->FetchWalletProperties();
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service) {
+    rewards_service->FetchWalletProperties();
   }
   return RespondNow(NoArguments());
 }
@@ -124,9 +127,9 @@ BraveRewardsGetCurrentReportFunction::~BraveRewardsGetCurrentReportFunction() {
 
 ExtensionFunction::ResponseAction BraveRewardsGetCurrentReportFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service_) {
-    rewards_service_->GetCurrentBalanceReport();
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service) {
+    rewards_service->GetCurrentBalanceReport();
   }
   return RespondNow(NoArguments());
 }
@@ -136,10 +139,10 @@ BraveRewardsGetGrantsFunction::~BraveRewardsGetGrantsFunction() {
 
 ExtensionFunction::ResponseAction BraveRewardsGetGrantsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ =
+  RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service_) {
-    rewards_service_->FetchGrants(std::string(), std::string());
+  if (rewards_service) {
+    rewards_service->FetchGrants(std::string(), std::string());
   }
   return RespondNow(NoArguments());
 }
@@ -149,25 +152,26 @@ BraveRewardsGetGrantCaptchaFunction::~BraveRewardsGetGrantCaptchaFunction() {
 
 ExtensionFunction::ResponseAction BraveRewardsGetGrantCaptchaFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ =
+  RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service_) {
-    rewards_service_->GetGrantCaptcha();
+  if (rewards_service) {
+    rewards_service->GetGrantCaptcha();
   }
   return RespondNow(NoArguments());
 }
 
-BraveRewardsSolveGrantCaptchaFunction::~BraveRewardsSolveGrantCaptchaFunction() {
+BraveRewardsSolveGrantCaptchaFunction::
+~BraveRewardsSolveGrantCaptchaFunction() {
 }
 
 ExtensionFunction::ResponseAction BraveRewardsSolveGrantCaptchaFunction::Run() {
   std::unique_ptr<brave_rewards::SolveGrantCaptcha::Params> params(
       brave_rewards::SolveGrantCaptcha::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ =
+  RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service_) {
-    rewards_service_->SolveGrantCaptcha(params->solution, params->promotion_id);
+  if (rewards_service) {
+    rewards_service->SolveGrantCaptcha(params->solution, params->promotion_id);
   }
   return RespondNow(NoArguments());
 }
@@ -179,15 +183,15 @@ BraveRewardsGetPendingContributionsTotalFunction::
 ExtensionFunction::ResponseAction
 BraveRewardsGetPendingContributionsTotalFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ =
+  RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
 
-  if (!rewards_service_) {
+  if (!rewards_service) {
     return RespondNow(OneArgument(
           std::make_unique<base::Value>(0.0)));
   }
 
-  rewards_service_->GetPendingContributionsTotal(base::Bind(
+  rewards_service->GetPendingContributionsTotal(base::Bind(
         &BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal,
         this));
   return RespondLater();
@@ -205,14 +209,14 @@ BraveRewardsGetRewardsMainEnabledFunction::
 ExtensionFunction::ResponseAction
 BraveRewardsGetRewardsMainEnabledFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ =
+  RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
 
-  if (!rewards_service_) {
+  if (!rewards_service) {
     return RespondNow(Error("Rewards service is not initialized"));
   }
 
-  rewards_service_->GetRewardsMainEnabled(base::Bind(
+  rewards_service->GetRewardsMainEnabled(base::Bind(
         &BraveRewardsGetRewardsMainEnabledFunction::OnGetRewardsMainEnabled,
         this));
   return RespondLater();
@@ -246,14 +250,14 @@ BraveRewardsGetACEnabledFunction::
 ExtensionFunction::ResponseAction
 BraveRewardsGetACEnabledFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service_ =
+  RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
 
-  if (!rewards_service_) {
+  if (!rewards_service) {
     return RespondNow(Error("Rewards service is not initialized"));
   }
 
-  rewards_service_->GetAutoContribute(base::Bind(
+  rewards_service->GetAutoContribute(base::Bind(
         &BraveRewardsGetACEnabledFunction::OnGetACEnabled,
         this));
   return RespondLater();

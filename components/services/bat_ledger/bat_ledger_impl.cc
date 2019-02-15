@@ -1,8 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/services/bat_ledger/bat_ledger_impl.h"
+
+#include <map>
+#include <string>
+#include <utility>
 
 #include "base/containers/flat_map.h"
 #include "brave/components/services/bat_ledger/bat_ledger_client_mojo_proxy.h"
@@ -12,7 +17,7 @@ using namespace std::placeholders;
 
 namespace bat_ledger {
 
-namespace { // TODO, move into a util class
+namespace {  // TODO, move into a util class
 
 ledger::PUBLISHER_EXCLUDE ToLedgerPublisherExclude(int32_t exclude) {
   return (ledger::PUBLISHER_EXCLUDE)exclude;
@@ -30,7 +35,7 @@ ledger::REWARDS_CATEGORY ToLedgerPublisherCategory(int32_t category) {
   return (ledger::REWARDS_CATEGORY)category;
 }
 
-} // anonymous namespace
+}  // namespace
 
 BatLedgerImpl::BatLedgerImpl(
     mojom::BatLedgerClientAssociatedPtrInfo client_info)
@@ -189,8 +194,9 @@ void BatLedgerImpl::RecoverWallet(const std::string& passPhrase) {
   ledger_->RecoverWallet(passPhrase);
 }
 
-void BatLedgerImpl::SolveGrantCaptcha(const std::string& solution, const std::string& promotionId) {
-  ledger_->SolveGrantCaptcha(solution, promotionId);
+void BatLedgerImpl::SolveGrantCaptcha(const std::string& solution,
+                                      const std::string& promotion_id) {
+  ledger_->SolveGrantCaptcha(solution, promotion_id);
 }
 
 void BatLedgerImpl::GetAddresses(GetAddressesCallback callback) {
@@ -305,7 +311,8 @@ void BatLedgerImpl::GetContributionAmount(
 }
 
 void BatLedgerImpl::DoDirectDonation(const std::string& publisher_info,
-    int32_t amount, const std::string& currency) {
+                                     int32_t amount,
+                                     const std::string& currency) {
   ledger::PublisherInfo info;
   if (info.loadFromJson(publisher_info))
     ledger_->DoDirectDonation(info, amount, currency);
@@ -316,7 +323,8 @@ void BatLedgerImpl::RemoveRecurring(const std::string& publisher_key) {
 }
 
 void BatLedgerImpl::SetPublisherPanelExclude(const std::string& publisher_key,
-    int32_t exclude, uint64_t window_id) {
+                                             int32_t exclude,
+                                             uint64_t window_id) {
   ledger_->SetPublisherPanelExclude(publisher_key,
       ToLedgerPublisherExclude(exclude), window_id);
 }
@@ -361,4 +369,4 @@ void BatLedgerImpl::AdSustained(const std::string& info) {
   ledger_->AdSustained(info);
 }
 
-} // namespace bat_ledger
+}  // namespace bat_ledger

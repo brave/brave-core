@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -6,6 +7,9 @@
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_PROXY_H_
 
 #include <map>
+#include <memory>
+#include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger_client.h"
@@ -27,8 +31,10 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void OnWalletInitialized(ledger::Result result) override;
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
-  void OnGrant(ledger::Result result, const ledger::Grant& grant) override;
-  void OnGrantCaptcha(const std::string& image, const std::string& hint) override;
+  void OnGrant(ledger::Result result,
+               const ledger::Grant& grant) override;
+  void OnGrantCaptcha(const std::string& image,
+                      const std::string& hint) override;
   void OnRecoverWallet(ledger::Result result,
                       double balance,
                       const std::vector<ledger::Grant>& grants) override;
@@ -77,7 +83,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                             const uint32_t date,
                             const std::string& publisher_key,
                             const ledger::REWARDS_CATEGORY category) override;
-  void GetRecurringDonations(ledger::PublisherInfoListCallback callback) override;
+  void GetRecurringDonations(
+      ledger::PublisherInfoListCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(const char* file,
                                          int line,
                                          ledger::LogLevel level) const override;
@@ -87,10 +94,12 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void LoadMediaPublisherInfo(
       const std::string& media_key,
       ledger::PublisherInfoCallback callback) override;
-  void SaveMediaPublisherInfo(const std::string& media_key, const std::string& publisher_id) override;
+  void SaveMediaPublisherInfo(const std::string& media_key,
+                              const std::string& publisher_id) override;
 
   void FetchWalletProperties() override;
-  void FetchGrants(const std::string& lang, const std::string& paymentId) override;
+  void FetchGrants(const std::string& lang,
+                   const std::string& payment_id) override;
   void GetGrantCaptcha() override;
 
   std::string URIEncode(const std::string& value) override;
@@ -151,6 +160,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   DISALLOW_COPY_AND_ASSIGN(BatLedgerClientMojoProxy);
 };
 
-} // namespace bat_ledger
+}  // namespace bat_ledger
 
-#endif // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_PROXY_H_
+#endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_PROXY_H_

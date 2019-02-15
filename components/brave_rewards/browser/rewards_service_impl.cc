@@ -1344,7 +1344,8 @@ void RewardsServiceImpl::TriggerOnRecoverWallet(ledger::Result result,
     observer.OnRecoverWallet(this, result, balance, newGrants);
 }
 
-void RewardsServiceImpl::SolveGrantCaptcha(const std::string& solution, const std::string& promotionId) const {
+void RewardsServiceImpl::SolveGrantCaptcha(const std::string& solution,
+                                         const std::string& promotionId) const {
   if (!Connected()) {
     return;
   }

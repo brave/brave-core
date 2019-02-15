@@ -1,12 +1,18 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
 
+#include <utility>
+#include <memory>
+#include <string>
+#include <vector>
+#include <map>
+
 #include "base/base64.h"
 #include "base/memory/weak_ptr.h"
-
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
@@ -19,7 +25,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/browser/web_contents.h"
@@ -298,7 +303,8 @@ void RewardsDOMHandler::GetAllBalanceReports() {
           weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::HandleCreateWalletRequested(const base::ListValue* args) {
+void RewardsDOMHandler::HandleCreateWalletRequested(
+    const base::ListValue* args) {
   if (!rewards_service_)
     return;
 
@@ -386,14 +392,15 @@ void RewardsDOMHandler::OnGetAutoContributeProps(
     }
 
     values.SetDictionary("ui", std::move(ui_values));
-    //  TODO this needs to be moved out of this flow, because
-    //  now we set this values every minute
+    // TODO this needs to be moved out of this flow, because
+    // now we set this values every minute
     web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards.initAutoContributeSettings", values);
 
     result.SetDictionary("wallet", std::move(walletInfo));
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletProperties", result);
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.walletProperties", result);
   }
 }
 
@@ -443,7 +450,8 @@ void RewardsDOMHandler::OnGrantCaptcha(
     captcha.SetString("image", std::move(encoded_string));
     captcha.SetString("hint", hint);
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantCaptcha", captcha);
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.grantCaptcha", captcha);
   }
 }
 
@@ -496,7 +504,8 @@ void RewardsDOMHandler::OnRecoverWallet(
     }
     recover.SetList("grants", std::move(newGrants));
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.recoverWalletData", recover);
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.recoverWalletData", recover);
   }
 }
 
@@ -700,7 +709,8 @@ void RewardsDOMHandler::OnContentSiteList(
       publishers->Append(std::move(publisher));
     }
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.contributeList", *publishers);
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.contributeList", *publishers);
   }
 }
 
@@ -747,9 +757,10 @@ void RewardsDOMHandler::OnReconcileComplete(
   GetReconcileStamp(nullptr);
 }
 
-void RewardsDOMHandler::OnRecurringDonationUpdated(brave_rewards::RewardsService* rewards_service,
-                                                   const brave_rewards::ContentSiteList list) {
-   if (web_ui()->CanCallJavascript()) {
+void RewardsDOMHandler::OnRecurringDonationUpdated(
+    brave_rewards::RewardsService* rewards_service,
+    const brave_rewards::ContentSiteList list) {
+  if (web_ui()->CanCallJavascript()) {
     auto publishers = std::make_unique<base::ListValue>();
     for (auto const& item : list) {
       auto publisher = std::make_unique<base::DictionaryValue>();
@@ -766,13 +777,15 @@ void RewardsDOMHandler::OnRecurringDonationUpdated(brave_rewards::RewardsService
       publishers->Append(std::move(publisher));
     }
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.recurringDonationUpdate", *publishers);
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.recurringDonationUpdate", *publishers);
   }
 }
 
-void RewardsDOMHandler::OnCurrentTips(brave_rewards::RewardsService* rewards_service,
-                                                   const brave_rewards::ContentSiteList list) {
-   if (web_ui()->CanCallJavascript()) {
+void RewardsDOMHandler::OnCurrentTips(
+    brave_rewards::RewardsService* rewards_service,
+    const brave_rewards::ContentSiteList list) {
+  if (web_ui()->CanCallJavascript()) {
     auto publishers = std::make_unique<base::ListValue>();
     for (auto const& item : list) {
       auto publisher = std::make_unique<base::DictionaryValue>();
@@ -801,7 +814,8 @@ void RewardsDOMHandler::RemoveRecurring(const base::ListValue *args) {
   }
 }
 
-void RewardsDOMHandler::UpdateRecurringDonationsList(const base::ListValue *args) {
+void RewardsDOMHandler::UpdateRecurringDonationsList(
+    const base::ListValue *args) {
   if (rewards_service_) {
     rewards_service_->UpdateRecurringDonationsList();
   }
@@ -822,7 +836,8 @@ void RewardsDOMHandler::GetContributionList(const base::ListValue *args) {
 void RewardsDOMHandler::CheckImported(const base::ListValue *args) {
   if (web_ui()->CanCallJavascript() && rewards_service_) {
     bool imported = rewards_service_->CheckImported();
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.imported", base::Value(imported));
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.imported", base::Value(imported));
   }
 }
 
@@ -935,7 +950,6 @@ void RewardsDOMHandler::GetAddressesForPaymentId(
 
 BraveRewardsUI::BraveRewardsUI(content::WebUI* web_ui, const std::string& name)
     : BasicUI(web_ui, name,
-
 #if !defined(OS_ANDROID)
     kBraveRewardsGenerated, kBraveRewardsGeneratedSize,
 #else
@@ -948,5 +962,4 @@ BraveRewardsUI::BraveRewardsUI(content::WebUI* web_ui, const std::string& name)
   handler->Init();
 }
 
-BraveRewardsUI::~BraveRewardsUI() {
-}
+BraveRewardsUI::~BraveRewardsUI() {}

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -21,13 +22,13 @@ class BraveRewardsCreateWalletFunction : public UIThreadExtensionFunction {
 };
 
 class BraveRewardsDonateToSiteFunction : public UIThreadExtensionFunction {
-  public:
-    DECLARE_EXTENSION_FUNCTION("braveRewards.donateToSite", UNKNOWN)
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.donateToSite", UNKNOWN)
 
-  protected:
-    ~BraveRewardsDonateToSiteFunction() override;
+ protected:
+  ~BraveRewardsDonateToSiteFunction() override;
 
-    ResponseAction Run() override;
+  ResponseAction Run() override;
 };
 
 class BraveRewardsGetPublisherDataFunction : public UIThreadExtensionFunction {
@@ -40,7 +41,8 @@ class BraveRewardsGetPublisherDataFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetWalletPropertiesFunction : public UIThreadExtensionFunction {
+class BraveRewardsGetWalletPropertiesFunction
+    : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getWalletProperties", UNKNOWN)
 
@@ -101,9 +103,11 @@ class BraveRewardsSolveGrantCaptchaFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetPendingContributionsTotalFunction : public UIThreadExtensionFunction {
+class BraveRewardsGetPendingContributionsTotalFunction
+    : public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getPendingContributionsTotal", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION(
+      "braveRewards.getPendingContributionsTotal", UNKNOWN)
 
  protected:
   ~BraveRewardsGetPendingContributionsTotalFunction() override;
@@ -114,7 +118,8 @@ class BraveRewardsGetPendingContributionsTotalFunction : public UIThreadExtensio
   void OnGetPendingTotal(double amount);
 };
 
-class BraveRewardsGetRewardsMainEnabledFunction : public UIThreadExtensionFunction {
+class BraveRewardsGetRewardsMainEnabledFunction
+    : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getRewardsMainEnabled", UNKNOWN)
 

@@ -1,12 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATION_SERVICE_IMPL_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATION_SERVICE_IMPL_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATION_SERVICE_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATION_SERVICE_IMPL_H_
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
@@ -24,7 +26,7 @@ class RewardsNotificationServiceImpl
       public RewardsServiceObserver,
       public base::SupportsWeakPtr<RewardsNotificationServiceImpl> {
  public:
-  RewardsNotificationServiceImpl(Profile* profile);
+  explicit RewardsNotificationServiceImpl(Profile* profile);
   ~RewardsNotificationServiceImpl() override;
 
   void AddNotification(RewardsNotificationType type,
@@ -91,4 +93,4 @@ class RewardsNotificationServiceImpl
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATION_SERVICE_IMPL_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATION_SERVICE_IMPL_H_

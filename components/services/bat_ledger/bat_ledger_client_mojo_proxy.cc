@@ -1,10 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/services/bat_ledger/bat_ledger_client_mojo_proxy.h"
 
+#include <memory>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "base/logging.h"
 #include "mojo/public/cpp/bindings/map.h"
@@ -34,18 +38,22 @@ class LogStreamImpl : public ledger::LogStream {
   LogStreamImpl(const char* file,
                 int line,
                 const ledger::LogLevel log_level) {
-    switch(log_level) {
+    switch (log_level) {
       case ledger::LogLevel::LOG_INFO:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_INFO);
+        log_message_ = std::make_unique<logging::LogMessage>(
+            file, line, logging::LOG_INFO);
         break;
       case ledger::LogLevel::LOG_WARNING:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_WARNING);
+        log_message_ = std::make_unique<logging::LogMessage>(
+            file, line, logging::LOG_WARNING);
         break;
       case ledger::LogLevel::LOG_ERROR:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_ERROR);
+        log_message_ = std::make_unique<logging::LogMessage>(
+            file, line, logging::LOG_ERROR);
         break;
       default:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_VERBOSE);
+        log_message_ = std::make_unique<logging::LogMessage>(
+            file, line, logging::LOG_VERBOSE);
         break;
     }
   }
@@ -82,7 +90,7 @@ void OnResetState(const ledger::OnSaveCallback& callback,
   callback(ToLedgerResult(result));
 }
 
-} // anonymous namespace
+}  // namespace
 
 BatLedgerClientMojoProxy::BatLedgerClientMojoProxy(
     mojom::BatLedgerClientAssociatedPtrInfo client_info) {
@@ -198,8 +206,10 @@ void BatLedgerClientMojoProxy::OnGrantFinish(ledger::Result result,
   bat_ledger_client_->OnGrantFinish(ToMojomResult(result), grant.ToJson());
 }
 
-void BatLedgerClientMojoProxy::OnLoadLedgerState(ledger::LedgerCallbackHandler* handler,
-    int32_t result, const std::string& data) {
+void BatLedgerClientMojoProxy::OnLoadLedgerState(
+    ledger::LedgerCallbackHandler* handler,
+    int32_t result,
+    const std::string& data) {
   handler->OnLedgerStateLoaded(ToLedgerResult(result), data);
 }
 
@@ -408,7 +418,7 @@ void BatLedgerClientMojoProxy::SetTimer(uint64_t time_offset,
     return;
   }
 
-  bat_ledger_client_->SetTimer(time_offset, &timer_id); // sync
+  bat_ledger_client_->SetTimer(time_offset, &timer_id);  // sync
 }
 
 void BatLedgerClientMojoProxy::KillTimer(const uint32_t timer_id) {
@@ -416,7 +426,7 @@ void BatLedgerClientMojoProxy::KillTimer(const uint32_t timer_id) {
     return;
   }
 
-  bat_ledger_client_->KillTimer(timer_id); // sync
+  bat_ledger_client_->KillTimer(timer_id);  // sync
 }
 
 void BatLedgerClientMojoProxy::OnExcludedSitesChanged(
@@ -735,4 +745,4 @@ bool BatLedgerClientMojoProxy::Connected() const {
   return bat_ledger_client_.is_bound();
 }
 
-} // namespace bat_ledger
+}  // namespace bat_ledger

@@ -1,11 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_SERVICE_
-#define BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_SERVICE_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_
 
+#include <map>
 #include <memory>
+#include <string>
 
 #include "base/macros.h"
 #include "base/observer_list.h"
@@ -80,9 +83,11 @@ class RewardsService : public KeyedService {
       bool allow_non_verified,
       uint32_t min_visits,
       const GetContentSiteListCallback& callback) = 0;
-  virtual void FetchGrants(const std::string& lang, const std::string& paymentId) = 0;
+  virtual void FetchGrants(const std::string& lang,
+                           const std::string& paymentId) = 0;
   virtual void GetGrantCaptcha() = 0;
-  virtual void SolveGrantCaptcha(const std::string& solution, const std::string& promotionId) const = 0;
+  virtual void SolveGrantCaptcha(const std::string& solution,
+                                 const std::string& promotionId) const = 0;
   virtual void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) = 0;
   virtual void GetNumExcludedSites(
@@ -181,4 +186,4 @@ class RewardsService : public KeyedService {
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_SERVICE_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_

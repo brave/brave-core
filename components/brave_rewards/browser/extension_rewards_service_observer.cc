@@ -1,10 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/base64.h"
 #include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
 
+#include <utility>
+#include <string>
+
+#include "base/base64.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -24,8 +28,7 @@ ExtensionRewardsServiceObserver::~ExtensionRewardsServiceObserver() {
 void ExtensionRewardsServiceObserver::OnWalletInitialized(
     RewardsService* rewards_service,
     int result) {
-  extensions::EventRouter* event_router =
-      extensions::EventRouter::Get(profile_);
+  auto* event_router = extensions::EventRouter::Get(profile_);
 
   ledger::Result new_result = static_cast<ledger::Result>(result);
 
@@ -54,7 +57,7 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
     RewardsService* rewards_service,
     int error_code,
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
-  extensions::EventRouter* event_router =
+  auto* event_router =
       extensions::EventRouter::Get(profile_);
   if (event_router && wallet_properties) {
     extensions::api::brave_rewards::OnWalletProperties::Properties properties;
@@ -92,8 +95,7 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
 void ExtensionRewardsServiceObserver::OnGetCurrentBalanceReport(
     RewardsService* rewards_service,
     const BalanceReport& balance_report) {
-  extensions::EventRouter* event_router =
-      extensions::EventRouter::Get(profile_);
+  auto* event_router = extensions::EventRouter::Get(profile_);
   if (event_router) {
     extensions::api::brave_rewards::OnCurrentReport::Properties properties;
 
@@ -123,8 +125,7 @@ void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
     int error_code,
     std::unique_ptr<ledger::PublisherInfo> info,
     uint64_t windowId) {
-  extensions::EventRouter* event_router =
-      extensions::EventRouter::Get(profile_);
+  auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
   }
@@ -160,7 +161,7 @@ void ExtensionRewardsServiceObserver::OnGrant(
     RewardsService* rewards_service,
     unsigned int result,
     brave_rewards::Grant grant) {
-  extensions::EventRouter* event_router = extensions::EventRouter::Get(profile_);
+  auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
   }
@@ -184,7 +185,7 @@ void ExtensionRewardsServiceObserver::OnGrantCaptcha(
     RewardsService* rewards_service,
     std::string image,
     std::string hint) {
-  extensions::EventRouter* event_router = extensions::EventRouter::Get(profile_);
+  auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
   }
@@ -209,7 +210,7 @@ void ExtensionRewardsServiceObserver::OnGrantFinish(
     RewardsService* rewards_service,
     unsigned int result,
     brave_rewards::Grant grant) {
-  extensions::EventRouter* event_router = extensions::EventRouter::Get(profile_);
+  auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
   }
@@ -232,14 +233,14 @@ void ExtensionRewardsServiceObserver::OnGrantFinish(
 void ExtensionRewardsServiceObserver::OnRewardsMainEnabled(
     RewardsService* rewards_service,
     bool rewards_main_enabled) {
-  extensions::EventRouter* event_router = extensions::EventRouter::Get(profile_);
+  auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
   }
 
   std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnEnabledMain::Create(rewards_main_enabled)
-          .release());
+      extensions::api::brave_rewards::OnEnabledMain::Create(
+          rewards_main_enabled).release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnEnabledMain::kEventName,
@@ -250,7 +251,7 @@ void ExtensionRewardsServiceObserver::OnRewardsMainEnabled(
 void ExtensionRewardsServiceObserver::OnPendingContributionSaved(
     RewardsService* rewards_service,
     int result) {
-  extensions::EventRouter* event_router = extensions::EventRouter::Get(profile_);
+  auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
   }

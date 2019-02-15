@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -11,7 +12,7 @@ using namespace std::placeholders;
 
 namespace bat_ledger {
 
-namespace { // TODO, move into a util class
+namespace {  // TODO, move into a util class
 
 int32_t ToMojomResult(ledger::Result result) {
   return (int32_t)result;
@@ -35,7 +36,7 @@ ledger::URL_METHOD ToLedgerURLMethod(int32_t method) {
   return (ledger::URL_METHOD)method;
 }
 
-} // anonymous namespace
+}  // namespace
 
 LedgerClientMojoProxy::LedgerClientMojoProxy(
     ledger::LedgerClient* ledger_client)
@@ -316,7 +317,8 @@ void LedgerClientMojoProxy::LoadMediaPublisherInfo(
   auto* holder = new CallbackHolder<LoadMediaPublisherInfoCallback>(
       AsWeakPtr(), std::move(callback));
   ledger_client_->LoadMediaPublisherInfo(media_key,
-      std::bind(LedgerClientMojoProxy::OnLoadMediaPublisherInfo, holder, _1, _2));
+      std::bind(LedgerClientMojoProxy::OnLoadMediaPublisherInfo,
+                holder, _1, _2));
 }
 
 void LedgerClientMojoProxy::SetTimer(uint64_t time_offset,
@@ -595,7 +597,6 @@ void LedgerClientMojoProxy::GetActivityInfoList(uint32_t start,
                 holder,
                 _1,
                 _2));
-
 }
 
 void LedgerClientMojoProxy::SaveNormalizedPublisherList(
@@ -676,4 +677,4 @@ void LedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
   ledger_client_->SetConfirmationsIsReady(is_ready);
 }
 
-} // namespace bat_ledger
+}  // namespace bat_ledger

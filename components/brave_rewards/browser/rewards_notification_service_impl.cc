@@ -1,10 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <algorithm>
-
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
+
+#include <algorithm>
+#include <limits>
+#include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -27,12 +30,10 @@
 namespace brave_rewards {
 
 RewardsNotificationServiceImpl::RewardsNotificationServiceImpl(Profile* profile)
-    : profile_(profile)
-{
+    : profile_(profile) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  extension_rewards_notification_service_observer_ = 
-          std::make_unique<ExtensionRewardsNotificationServiceObserver>(
-              profile);
+  extension_rewards_notification_service_observer_ =
+      std::make_unique<ExtensionRewardsNotificationServiceObserver>(profile);
   AddObserver(extension_rewards_notification_service_observer_.get());
 #endif
   ReadRewardsNotificationsJSON();
@@ -72,12 +73,14 @@ void RewardsNotificationServiceImpl::AddNotification(
   }
 }
 
-void RewardsNotificationServiceImpl::DeleteNotification(RewardsNotificationID id) {
+void RewardsNotificationServiceImpl::DeleteNotification(
+    RewardsNotificationID id) {
   DCHECK(!id.empty());
   RewardsNotification rewards_notification;
   if (rewards_notifications_.find(id) == rewards_notifications_.end()) {
     rewards_notification.id_ = id;
-    rewards_notification.type_ = RewardsNotificationType::REWARDS_NOTIFICATION_INVALID;
+    rewards_notification.type_ =
+        RewardsNotificationType::REWARDS_NOTIFICATION_INVALID;
 
     // clean up, so that we don't have long standing notifications
     if (rewards_notifications_.size() == 1) {
@@ -127,7 +130,8 @@ RewardsNotificationServiceImpl::GenerateRewardsNotificationTimestamp() const {
 }
 
 void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
-  std::string json = profile_->GetPrefs()->GetString(prefs::kRewardsNotifications);
+  std::string json =
+      profile_->GetPrefs()->GetString(prefs::kRewardsNotifications);
   if (json.empty())
     return;
   std::unique_ptr<base::DictionaryValue> dictionary =
@@ -158,7 +162,6 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
       rewards_notifications_displayed_.push_back(it.GetString());
     }
   }
-
 }
 
 void RewardsNotificationServiceImpl::ReadRewardsNotifications(
@@ -203,9 +206,9 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications(
     }
 
     RewardsNotification notification(notification_id,
-                                     static_cast<RewardsNotificationType>(notification_type),
-                                     notification_timestamp,
-                                     notification_args);
+        static_cast<RewardsNotificationType>(notification_type),
+        notification_timestamp,
+        notification_args);
     rewards_notifications_[notification.id_] = notification;
   }
 }

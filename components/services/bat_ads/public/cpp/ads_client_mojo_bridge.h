@@ -1,11 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_ADS_PUBLIC_CPP_ADS_CLIENT_MOJO_BRIDGE_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_PUBLIC_CPP_ADS_CLIENT_MOJO_BRIDGE_H_
 
+#include <map>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
@@ -18,7 +21,7 @@ namespace bat_ads {
 class AdsClientMojoBridge : public mojom::BatAdsClient,
                          public base::SupportsWeakPtr<AdsClientMojoBridge> {
  public:
-  AdsClientMojoBridge(ads::AdsClient* ads_client);
+  explicit AdsClientMojoBridge(ads::AdsClient* ads_client);
   ~AdsClientMojoBridge() override;
 
   // Overridden from BatAdsClient:

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -6,6 +7,10 @@
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_PROXY_H_
 
 #include <map>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger_client.h"
@@ -16,7 +21,7 @@ namespace bat_ledger {
 class LedgerClientMojoProxy : public mojom::BatLedgerClient,
                           public base::SupportsWeakPtr<LedgerClientMojoProxy> {
  public:
-  LedgerClientMojoProxy(ledger::LedgerClient* ledger_client);
+  explicit LedgerClientMojoProxy(ledger::LedgerClient* ledger_client);
   ~LedgerClientMojoProxy() override;
 
   // bat_ledger::mojom::BatLedgerClient
@@ -224,6 +229,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   DISALLOW_COPY_AND_ASSIGN(LedgerClientMojoProxy);
 };
 
-} // namespace bat_ledger
+}  // namespace bat_ledger
 
 #endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_PROXY_H_
