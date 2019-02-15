@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2016 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_sync/sync_devices.h"
+
+#include <utility>
 
 #include "base/json/json_writer.h"
 #include "base/json/json_reader.h"
@@ -89,7 +92,7 @@ void SyncDevices::FromJson(const std::string& str_json) {
     return;
   }
 
-  //JSON ==> Value
+  // JSON ==> Value
   int error_code_out = 0;
   std::string error_msg_out;
   int error_line_out = 0;
@@ -110,7 +113,7 @@ void SyncDevices::FromJson(const std::string& str_json) {
   devices_.clear();
   const base::Value* pv_arr = records_v->FindKey("devices");
   CHECK(pv_arr->is_list());
-  for (const base::Value &val : pv_arr->GetList() ) {
+  for (const base::Value &val : pv_arr->GetList()) {
     std::string name = val.FindKey("name")->GetString();
     std::string object_id = val.FindKey("object_id")->GetString();
     std::string device_id = val.FindKey("device_id")->GetString();
@@ -126,20 +129,13 @@ void SyncDevices::FromJson(const std::string& str_json) {
       name,
       object_id,
       device_id,
-      last_active
-    ));
+      last_active) );
   }
-
 }
 
 void SyncDevices::Merge(const SyncDevice& device,
                         int action,
                         bool* actually_merged) {
-  /*
-  const int kActionCreate = 0;
-  const int kActionUpdate = 1;
-  const int kActionDelete = 2;
-  */
   *actually_merged = false;
   auto existing_it = std::find_if(std::begin(devices_),
                                   std::end(devices_),
@@ -147,13 +143,8 @@ void SyncDevices::Merge(const SyncDevice& device,
         return cur_dev.object_id_ == device.object_id_;
       });
 
-  if (existing_it == std::end(devices_)) {
-    // TODO(bridiver) - should this be an error or a DCHECK?
-  }
-
   switch (action) {
     case jslib_const::kActionCreate: {
-      //DCHECK(existing_device == nullptr);
       if (existing_it == std::end(devices_)) {
         devices_.push_back(device);
         *actually_merged = true;
@@ -163,20 +154,19 @@ void SyncDevices::Merge(const SyncDevice& device,
       break;
     }
     case jslib_const::kActionUpdate: {
-      //DCHECK(existing_device != nullptr);
       DCHECK(existing_it != std::end(devices_));
-      //*existing_device = device;
       *existing_it = device;
       *actually_merged = true;
       break;
     }
     case jslib_const::kActionDelete: {
-      //DCHECK(existing_device != nullptr);
-      DCHECK(existing_it != std::end(devices_));
-      //DeleteByObjectId(device.object_id_);
+      // Sync js lib does not merge several DELETE records into one,
+      // at this point existing_it can be equal to std::end(devices_)
       if (existing_it != std::end(devices_)) {
         devices_.erase(existing_it);
         *actually_merged = true;
+      } else {
+        // ignoring delete, already deleted
       }
       break;
     }
@@ -184,24 +174,22 @@ void SyncDevices::Merge(const SyncDevice& device,
 }
 
 SyncDevice* SyncDevices::GetByObjectId(const std::string &object_id) {
-  for (auto & device: devices_) {
+  for (auto& device : devices_) {
     if (device.object_id_ == object_id) {
       return &device;
     }
   }
 
-  //DCHECK(false) << "Not expected to find no device";
   return nullptr;
 }
 
 const SyncDevice* SyncDevices::GetByDeviceId(const std::string &device_id) {
-  for (const auto & device: devices_) {
+  for (const auto& device : devices_) {
     if (device.device_id_ == device_id) {
       return &device;
     }
   }
 
-  //DCHECK(false) << "Not expected to find no device";
   return nullptr;
 }
 
@@ -221,4 +209,4 @@ void SyncDevices::DeleteByObjectId(const std::string &object_id) {
   }
 }
 
-} // namespace brave_sync
+}  // namespace brave_sync

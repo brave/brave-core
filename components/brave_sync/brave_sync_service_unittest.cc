@@ -466,6 +466,13 @@ TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
   auto resolved_record = SyncRecord::Clone(*records.at(2));
   resolved_record->action = SyncRecord::Action::A_DELETE;
   resolved_records.push_back(std::move(resolved_record));
+
+  // Emulate we have twice the same delete device record to ensure we
+  // don't have failed DCHECK in debug build
+  auto resolved_record2 = SyncRecord::Clone(*records.at(2));
+  resolved_record2->action = SyncRecord::Action::A_DELETE;
+  resolved_records.push_back(std::move(resolved_record2));
+
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(resolved_records);
 
