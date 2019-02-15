@@ -35,8 +35,9 @@ class TorProfileServiceImpl : public TorProfileService,
   const TorConfig& GetTorConfig() override;
   int64_t GetTorPid() override;
 
-  void SetProxy(net::ProxyResolutionService*, const GURL& request_url,
-                bool new_circuit) override;
+  int SetProxy(net::ProxyResolutionService*,
+               const GURL& request_url,
+               bool new_circuit) override;
 
   void KillTor();
 
