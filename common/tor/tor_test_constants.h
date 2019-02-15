@@ -12,6 +12,7 @@ namespace tor {
 extern const char kTestTorProxy[];
 extern const char kTestTorPacString[];
 extern const base::FilePath::CharType kTestTorPath[];
+extern const base::FilePath::CharType kTestBrokenTorPath[];
 
 }  // namespace tor
 

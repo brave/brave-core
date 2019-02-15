@@ -11,6 +11,7 @@
 #include "brave/browser/profiles/tor_unittest_profile_manager.h"
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/browser/tor/mock_tor_profile_service_factory.h"
+#include "brave/common/tor/tor_common.h"
 #include "brave/common/tor/tor_test_constants.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
@@ -182,4 +183,51 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfileBlockFile) {
                                       before_url_context);
   EXPECT_TRUE(before_url_context->new_url_spec.empty());
   EXPECT_EQ(ret, net::ERR_DISALLOWED_URL_SCHEME);
+}
+
+TEST_F(BraveTorNetworkDelegateHelperTest, TorProfileBlockIfHosed) {
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
+
+  Profile* profile = profile_manager->GetProfile(tor_path);
+  ASSERT_TRUE(profile);
+
+  net::TestDelegate test_delegate;
+  GURL url("https://check.torproject.org/");
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(url, net::IDLE, &test_delegate,
+                             TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo>
+      before_url_context(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
+  brave::ResponseCallback callback;
+
+  std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
+    std::make_unique<BraveNavigationUIData>();
+  BraveNavigationUIData* navigation_ui_data_ptr = navigation_ui_data.get();
+  content::ResourceRequestInfo::AllocateForTesting(
+    request.get(), content::RESOURCE_TYPE_MAIN_FRAME, resource_context(),
+    kRenderProcessId, /*render_view_id=*/-1, kRenderFrameId,
+    /*is_main_frame=*/true, /*allow_download=*/false, /*is_async=*/true,
+    content::PREVIEWS_OFF, std::move(navigation_ui_data));
+
+  MockTorProfileServiceFactory::SetTorNavigationUIData(profile,
+                                                       navigation_ui_data_ptr);
+
+  // `Relaunch' tor with broken config.
+  {
+    auto* tor_profile_service = navigation_ui_data_ptr->GetTorProfileService();
+    base::FilePath path(tor::kTestBrokenTorPath);
+    std::string proxy(tor::kTestTorProxy);
+    tor_profile_service->ReLaunchTor(tor::TorConfig(path, proxy));
+  }
+
+  int ret =
+    brave::OnBeforeURLRequest_TorWork(callback,
+                                      before_url_context);
+  EXPECT_TRUE(before_url_context->new_url_spec.empty());
+  // TODO(riastradh): This is broken -- the sense should be reversed,
+  // with a marker to indicate expected failure.  But googletest
+  // apparently has no native way to express expected failures.
+  EXPECT_EQ(ret, net::OK);
 }

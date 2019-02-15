@@ -11,6 +11,6 @@ namespace tor {
 const char kTestTorProxy[] = "socks5://127.0.0.1:9999";
 const char kTestTorPacString[] = "SOCKS5 127.0.0.1:9999";
 const base::FilePath::CharType kTestTorPath[] = FPL(".");
-
+const base::FilePath::CharType kTestBrokenTorPath[] = FPL("");
 
 }  // namespace tor
