@@ -63,6 +63,12 @@ Polymer({
 
     closeMenuPromo: String,
 
+    noSearch: {
+      type: Boolean,
+      // boolean props on html attributes must default to false
+      value: false
+    },
+
     /** @private */
     showingSearch_: {
       type: Boolean,
@@ -77,6 +83,7 @@ Polymer({
   /** @return {!CrToolbarSearchFieldElement} */
   getSearchField: function() {
     // make sure conditional has run
+    this.$.searchIf.render()
     return this.$$('#search');
   },
 

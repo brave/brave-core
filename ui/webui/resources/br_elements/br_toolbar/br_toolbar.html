@@ -160,12 +160,14 @@
           </a>
         </li>
       </ul>
-      <br-toolbar-search-field id="search"
-        narrow="[[narrow]]"
-        label="[[searchPrompt]]" clear-label="[[clearLabel]]"
-        spinner-active="[[spinnerActive]]"
-        showing-search="{{showingSearch_}}"
-      ></br-toolbar-search-field>
+      <template id="searchIf" is="dom-if" if="[[!noSearch]]">
+        <br-toolbar-search-field id="search"
+          narrow="[[narrow]]"
+          label="[[searchPrompt]]" clear-label="[[clearLabel]]"
+          spinner-active="[[spinnerActive]]"
+          showing-search="{{showingSearch_}}"
+        ></br-toolbar-search-field>
+      </template>
       <div class="toolbar-extra">
         <slot></slot>
       </div>
