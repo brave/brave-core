@@ -15,6 +15,7 @@
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
+#include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
@@ -105,6 +106,15 @@ BraveBrowserProcessImpl::ad_block_regional_service() {
   if (!ad_block_regional_service_)
     ad_block_regional_service_ = brave_shields::AdBlockRegionalServiceFactory();
   return ad_block_regional_service_.get();
+}
+
+brave_shields::AutoplayWhitelistService*
+BraveBrowserProcessImpl::autoplay_whitelist_service() {
+  if (!autoplay_whitelist_service_) {
+    autoplay_whitelist_service_ =
+        brave_shields::AutoplayWhitelistServiceFactory();
+  }
+  return autoplay_whitelist_service_.get();
 }
 
 brave_shields::TrackingProtectionService*
