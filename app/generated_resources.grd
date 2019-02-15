@@ -6478,26 +6478,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SYNC_CONFIRMATION_DICE_TITLE" desc="Title of the sync confirmation dialog in the tab modal signin flow when Dice is enabled">
         Turn on sync?
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_UNITY_TITLE" desc="Title of the sync confirmation dialog in the tab modal signin flow when Unity is enabled">
-        Get Brave smarts in Brave
-      </message>
       <message name="IDS_SYNC_CONFIRMATION_UNITY_SYNC_INFO_TITLE" desc="Title in the information about sync on the sync confirmation dialog when Unity is enabled">
         Sync your bookmarks, passwords, history, and more on all your devices
       </message>
       <message name="IDS_SYNC_CONFIRMATION_UNITY_SYNC_INFO_DESC" desc="Description in the information about sync on the sync confirmation dialog when Unity is enabled">
         Brave may use your history to personalize Search, ads, and other Brave services
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_UNITY_SPELLCHECK_INFO_TITLE" desc="Title in the information about spellcheck on the sync confirmation dialog when Unity is enabled">
-        Fix spelling errors with enhanced spell check
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_UNITY_SPELLCHECK_INFO_DESC" desc="Description in the information about spellcheck on the sync confirmation dialog when Unity is enabled">
-        The text you type in text fields will be sent to Brave
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_UNITY_IMPROVE_CHROME_INFO_TITLE" desc="Title in the information about improving Brave on the sync confirmation dialog when Unity is enabled">
-        Help improve Brave and its security
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_UNITY_IMPROVE_CHROME_INFO_DESC" desc="Description in the information about improving Brave on the sync confirmation dialog when Unity is enabled">
-        Sends some system information and page content to Brave anonymously
       </message>
       <message name="IDS_SYNC_CONFIRMATION_UNITY_SETTINGS_INFO" desc="Information about customizing Sync settings in the sync confirmation dialog when Unity is enabled">
         You can customize these settings anytime
