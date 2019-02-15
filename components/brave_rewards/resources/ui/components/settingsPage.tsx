@@ -104,13 +104,15 @@ class SettingsPage extends React.Component<Props, {}> {
 
     return (
       <>
-        {grants.map((grant?: Rewards.Grant) => {
+        {grants.map((grant?: Rewards.Grant, index?: number) => {
           if (!grant || !grant.promotionId) {
             return null
           }
 
           return (
-            <Grant grant={grant} />
+            <div key={`grant-${index}`}>
+              <Grant grant={grant} />
+            </div>
           )
         })}
       </>

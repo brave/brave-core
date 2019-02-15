@@ -6,7 +6,6 @@
 import reducers from '../../../../brave_rewards/resources/ui/reducers/index'
 import { types } from '../../../../brave_rewards/resources/ui/constants/rewards_types'
 import { defaultState } from '../../../../brave_rewards/resources/ui/storage'
-import { rewardsInitialState } from '../../../testData'
 
 describe('Grant Reducer', () => {
 
@@ -105,7 +104,7 @@ describe('Grant Reducer', () => {
         promotionId: 'test-promotion-id-2',
         expiryTime: 0,
         probi: '',
-        type: 'ads'        
+        type: 'ads'
       }
       const expectedState: Rewards.State = {
         ...initialState,
@@ -523,6 +522,6 @@ describe('Grant Reducer', () => {
       expect(assertion).toEqual({
         rewardsData: expectedState
       })
-    }) 
+    })
   })
 })
