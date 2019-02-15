@@ -12,7 +12,7 @@
 #include "brave/browser/brave_rewards/donations_dialog.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_servicefactory.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "content/public/browser/web_contents.h"

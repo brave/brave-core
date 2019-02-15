@@ -177,10 +177,6 @@ class RewardsServiceImpl : public RewardsService,
   void SetShortRetries(bool short_retries);
   void GetShortRetries(const GetShortRetriesCallback& callback);
 
-  void OnWalletProperties(ledger::Result result,
-                          std::unique_ptr<ledger::WalletInfo> info) override;
-  void OnDonate(const std::string& publisher_key, int amount, bool recurring,
-      std::unique_ptr<brave_rewards::ContentSite> site) override;
   void GetAutoContributeProps(
       const GetAutoContributePropsCallback& callback) override;
   void GetPendingContributionsTotal(
@@ -189,25 +185,6 @@ class RewardsServiceImpl : public RewardsService,
       const GetRewardsMainEnabledCallback& callback) const override;
 
   void GetAddressesForPaymentId(const GetAddressesCallback& callback) override;
-
-  void SetCatalogIssuers(const std::string& json) override;
-  void AdSustained(const std::string& json) override;
-  void SetConfirmationsIsReady(const bool is_ready) override;
-
-  void SaveState(const std::string& name,
-                 const std::string& value,
-                 ledger::OnSaveCallback callback) override;
-  void LoadState(const std::string& name,
-                 ledger::OnLoadCallback callback) override;
-  void ResetState(const std::string& name,
-                  ledger::OnResetCallback callback) override;
-  void KillTimer(uint32_t timer_id) override;
-
-  void OnSavedState(ledger::OnSaveCallback callback, bool success);
-  void OnLoadedState(ledger::OnLoadCallback callback,
-                                  const std::string& value);
-  void OnResetState(ledger::OnResetCallback callback,
-                                 bool success);
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -255,6 +232,11 @@ class RewardsServiceImpl : public RewardsService,
   void OnTimer(uint32_t timer_id);
   void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
                              const std::string& data);
+  void OnSavedState(ledger::OnSaveCallback callback, bool success);
+  void OnLoadedState(ledger::OnLoadCallback callback,
+                                  const std::string& value);
+  void OnResetState(ledger::OnResetCallback callback,
+                                 bool success);
   void OnDonate_PublisherInfoSaved(ledger::Result result,
                                    std::unique_ptr<ledger::PublisherInfo> info);
   void OnDonate(const std::string& publisher_key,
@@ -280,6 +262,12 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::BalanceReportInfo& report);
   void MaybeShowBackupNotification(uint64_t boot_stamp);
   void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
+  void OnPublisherListNormalizedSaved(
+      std::unique_ptr<ledger::PublisherInfoList> list);
+  void OnWalletProperties(ledger::Result result,
+                          std::unique_ptr<ledger::WalletInfo> info) override;
+  void OnDonate(const std::string& publisher_key, int amount, bool recurring,
+      std::unique_ptr<brave_rewards::ContentSite> site) override;
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -334,6 +322,9 @@ class RewardsServiceImpl : public RewardsService,
   void SetContributionAmount(double amount) const override;
   void SetUserChangedContribution() const override;
   void SetAutoContribute(bool enabled) const override;
+  void SetCatalogIssuers(const std::string& json) override;
+  void AdSustained(const std::string& json) override;
+  void SetConfirmationsIsReady(const bool is_ready) override;
 
   void OnExcludedSitesChanged(const std::string& publisher_id) override;
   void OnPanelPublisherInfo(ledger::Result result,
@@ -367,6 +358,14 @@ class RewardsServiceImpl : public RewardsService,
                      const char* file,
                      int line,
                      int log_level) const override;
+  void SaveState(const std::string& name,
+                 const std::string& value,
+                 ledger::OnSaveCallback callback) override;
+  void LoadState(const std::string& name,
+                 ledger::OnLoadCallback callback) override;
+  void ResetState(const std::string& name,
+                  ledger::OnResetCallback callback) override;
+  void KillTimer(uint32_t timer_id) override;
 
   void OnRestorePublishers(ledger::OnRestoreCallback callback) override;
   void OnPanelPublisherInfoLoaded(
@@ -383,9 +382,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void SaveNormalizedPublisherList(
       const ledger::PublisherInfoListStruct& list) override;
-
-  void OnPublisherListNormalizedSaved(
-    std::unique_ptr<ledger::PublisherInfoList> list);
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;
