@@ -97,8 +97,6 @@ class AdsBox extends React.Component<Props, State> {
       adsUIEnabled = adsData.adsUIEnabled
     }
 
-    const toggle = !(!enabledMain || !adsUIEnabled)
-
     return (
       <Box
         title={getLocale('adsTitle')}
