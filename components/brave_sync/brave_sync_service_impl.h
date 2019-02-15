@@ -1,18 +1,20 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2016 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_IMPL_H_
-#define BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_IMPL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_IMPL_H_
 
 #include <map>
+#include <memory>
+#include <string>
 
 #include "base/macros.h"
 #include "base/scoped_observer.h"
 #include "base/time/time.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
-#include "services/network/public/cpp/network_connection_tracker.h"
 #include "components/prefs/pref_change_registrar.h"
 
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkAdded);
@@ -57,10 +59,9 @@ using SendDeviceSyncRecordCallback = base::OnceCallback<void(const int,
 
 class BraveSyncServiceImpl
     : public BraveSyncService,
-      public SyncMessageHandler,
-      public network::NetworkConnectionTracker::NetworkConnectionObserver {
+      public SyncMessageHandler {
  public:
-  BraveSyncServiceImpl(Profile *profile);
+  explicit BraveSyncServiceImpl(Profile *profile);
   ~BraveSyncServiceImpl() override;
 
   // KeyedService overrides
@@ -86,9 +87,6 @@ class BraveSyncServiceImpl
   bool IsSyncInitialized();
 
   BraveSyncClient* GetSyncClient() override;
-
-  // network::NetworkConnectionTracker::NetworkConnectionObserver:
-  void OnConnectionChanged(network::mojom::ConnectionType type) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkAdded);
@@ -165,7 +163,7 @@ class BraveSyncServiceImpl
   void GetExistingHistoryObjects(
     const RecordsList &records,
     const base::Time &last_record_time_stamp,
-    const bool is_truncated );
+    const bool is_truncated);
 
   void NotifyLogMessage(const std::string& message);
   void NotifySyncSetupError(const std::string& error);
@@ -193,7 +191,7 @@ class BraveSyncServiceImpl
 
   std::unique_ptr<brave_sync::Settings> settings_;
 
-  Profile *profile_;
+  Profile* profile_;
   std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
 
   std::unique_ptr<BookmarkChangeProcessor> bookmark_change_processor_;
@@ -212,6 +210,6 @@ class BraveSyncServiceImpl
   DISALLOW_COPY_AND_ASSIGN(BraveSyncServiceImpl);
 };
 
-} // namespace brave_sync
+}  // namespace brave_sync
 
-#endif //BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_IMPL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_IMPL_H_
