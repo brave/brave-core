@@ -4,6 +4,8 @@
 
 #include "brave/browser/autoplay/autoplay_permission_context.h"
 
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/permissions/permission_request_id.h"
 #include "chrome/common/chrome_features.h"
@@ -17,6 +19,17 @@ AutoplayPermissionContext::AutoplayPermissionContext(Profile* profile)
           blink::mojom::FeaturePolicyFeature::kAutoplay) {}
 
 AutoplayPermissionContext::~AutoplayPermissionContext() = default;
+
+ContentSetting AutoplayPermissionContext::GetPermissionStatusInternal(
+    content::RenderFrameHost* render_frame_host,
+    const GURL& requesting_origin,
+    const GURL& embedding_origin) const {
+    if (g_brave_browser_process->autoplay_whitelist_service()
+        ->ShouldAllowAutoplay(requesting_origin))
+      return CONTENT_SETTING_ALLOW;
+    return PermissionContextBase::GetPermissionStatusInternal(
+        render_frame_host, requesting_origin, embedding_origin);
+}
 
 void AutoplayPermissionContext::UpdateTabContext(
     const PermissionRequestID& id,

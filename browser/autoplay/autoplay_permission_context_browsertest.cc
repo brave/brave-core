@@ -3,25 +3,50 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
+#include "base/strings/stringprintf.h"
+#include "base/task/post_task.h"
+#include "base/test/thread_test_helper.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_paths.h"
+#include "brave/common/pref_names.h"
+#include "brave/components/brave_shields/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/extensions/extension_browsertest.h"
+#include "chrome/browser/net/url_request_mock_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/permission_bubble/mock_permission_prompt_factory.h"
 #include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/test/browser_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/prefs/pref_service.h"
 #include "net/dns/mock_host_resolver.h"
 
 const char kVideoPlaying[] = "Video playing";
 const char kVideoPlayingDetect[] =
   "window.domAutomationController.send(document.getElementById('status')."
   "textContent);";
+
+using extensions::ExtensionBrowserTest;
+
+const std::string kLocalDataFilesComponentTestId(
+    "eclbkhjphkhalklhipiicaldjbnhdfkc");
+
+const std::string kLocalDataFilesComponentTestBase64PublicKey =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsleoSxQ3DN+6xym2P1uX"
+    "mN6ArIWd9Oru5CSjS0SRE5upM2EnAl/C20TP8JdIlPi/3tk/SN6Y92K3xIhAby5F"
+    "0rbPDSTXEWGy72tv2qb/WySGwDdvYQu9/J5sEDneVcMrSHcC0VWgcZR0eof4BfOy"
+    "fKMEnHX98tyA3z+vW5ndHspR/Xvo78B3+6HX6tyVm/pNlCNOm8W8feyfDfPpK2Lx"
+    "qRLB7PumyhR625txxolkGC6aC8rrxtT3oymdMfDYhB4BZBrzqdriyvu1NdygoEiF"
+    "WhIYw/5zv1NyIsfUiG8wIs5+OwS419z7dlMKsg1FuB2aQcDyjoXx1habFfHQfQwL"
+    "qwIDAQAB";
 
 class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
   public:
@@ -137,6 +162,95 @@ class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
     ContentSettingsPattern top_level_page_pattern_;
     std::unique_ptr<ChromeContentClient> content_client_;
     std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
+};
+
+class AutoplayWhitelistServiceTest : public ExtensionBrowserTest {
+public:
+  AutoplayWhitelistServiceTest() {}
+
+  void SetUp() override {
+    InitEmbeddedTestServer();
+    ExtensionBrowserTest::SetUp();
+  }
+
+  void SetUpOnMainThread() override {
+    ExtensionBrowserTest::SetUpOnMainThread();
+    base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::IO},
+        base::BindOnce(&chrome_browser_net::SetUrlRequestMocksEnabled, true));
+    host_resolver()->AddRule("*", "127.0.0.1");
+    whitelist_autoplay_url_ =
+        embedded_test_server()->GetURL("example.com", "/autoplay_by_attr.html");
+  }
+
+  void PreRunTestOnMainThread() override {
+    ExtensionBrowserTest::PreRunTestOnMainThread();
+    WaitForAutoplayWhitelistServiceThread();
+    ASSERT_TRUE(g_brave_browser_process->local_data_files_service()->IsInitialized());
+  }
+
+  void InitEmbeddedTestServer() {
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    test_data_dir = test_data_dir.AppendASCII("autoplay");
+    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    ASSERT_TRUE(embedded_test_server()->Start());
+  }
+
+  void InitService() {
+    brave_shields::LocalDataFilesService::
+        SetComponentIdAndBase64PublicKeyForTest(
+            kLocalDataFilesComponentTestId,
+            kLocalDataFilesComponentTestBase64PublicKey);
+  }
+
+  void GetTestDataDir(base::FilePath* test_data_dir) {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    base::PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
+  }
+
+  bool InstallAutoplayWhitelistExtension() {
+    base::FilePath test_data_dir;
+    GetTestDataDir(&test_data_dir);
+    const extensions::Extension* mock_extension =
+        InstallExtension(test_data_dir.AppendASCII("autoplay-whitelist-data"), 1);
+    if (!mock_extension)
+      return false;
+
+    g_brave_browser_process->autoplay_whitelist_service()->OnComponentReady(
+        mock_extension->id(), mock_extension->path(), "");
+    WaitForAutoplayWhitelistServiceThread();
+
+    return true;
+  }
+
+  void WaitForAutoplayWhitelistServiceThread() {
+    scoped_refptr<base::ThreadTestHelper> io_helper(
+        new base::ThreadTestHelper(
+            g_brave_browser_process->autoplay_whitelist_service()->GetTaskRunner()));
+    ASSERT_TRUE(io_helper->Run());
+  }
+
+  content::WebContents* contents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  bool NavigateToURLUntilLoadStop(const GURL& url) {
+    ui_test_utils::NavigateToURL(browser(), url);
+    return WaitForLoadStop(contents());
+  }
+
+  void WaitForPlaying() {
+    std::string msg_from_renderer;
+    ASSERT_TRUE(ExecuteScriptAndExtractString(contents(), "notifyWhenPlaying();",
+                                              &msg_from_renderer));
+    ASSERT_EQ("PLAYING", msg_from_renderer);
+  }
+
+  const GURL& whitelist_autoplay_url() { return whitelist_autoplay_url_; }
+
+private:
+  GURL whitelist_autoplay_url_;
 };
 
 // Autoplay blocks by default, no bubble is shown
@@ -492,6 +606,26 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, FileAutoplay) {
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
               PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+  EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
+      kVideoPlayingDetect, &result));
+  EXPECT_EQ(result, kVideoPlaying);
+}
+
+// Default allow autoplay on URLs in whitelist
+IN_PROC_BROWSER_TEST_F(AutoplayWhitelistServiceTest, Allow) {
+  ASSERT_TRUE(InstallAutoplayWhitelistExtension());
+  std::string result;
+  PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
+      contents());
+  auto popup_prompt_factory =
+      std::make_unique<MockPermissionPromptFactory>(manager);
+
+  NavigateToURLUntilLoadStop(whitelist_autoplay_url());
+  EXPECT_FALSE(popup_prompt_factory->is_visible());
+  EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
+              PermissionRequestType::PERMISSION_AUTOPLAY));
+  EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+  WaitForPlaying();
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
       kVideoPlayingDetect, &result));
   EXPECT_EQ(result, kVideoPlaying);

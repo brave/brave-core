@@ -243,52 +243,36 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
     }
   }
 
-  // in the absence of an explicit block rule, whitelist the following sites
-  std::string kWhitelistPatterns[] = {
-      "[*.]example.com",
-      "[*.]youtube.com",
-      "[*.]khanacademy.org",
-      "[*.]twitch.tv",
-      "[*.]vimeo.com",
-      "[*.]udemy.com",
-      "[*.]duolingo.com",
-      "[*.]giphy.com",
-      "[*.]imgur.com",
-      "[*.]netflix.com",
-      "[*.]hulu.com",
-      "[*.]primevideo.com",
-      "[*.]dailymotion.com",
-      "[*.]tv.com",
-      "[*.]viewster.com",
-      "[*.]metacafe.com",
-      "[*.]d.tube",
-      "[*.]spotify.com",
-      "[*.]lynda.com",
-      "[*.]soundcloud.com",
-      "[*.]pandora.com",
-      "[*.]periscope.tv",
-      "[*.]pscp.tv",
-      "[*.]hangouts.google.com",
-      "[*.]meet.google.com",
-      "[*.]rainway.com",
-      "[*.]rainway.io",
-      "[*.]cheddar.com",
-  };
-  for (const auto& pattern : kWhitelistPatterns) {
-    if (ContentSettingsPattern::FromString(pattern).Matches(primary_url))
-      return true;
-  }
-
   blink::mojom::blink::PermissionServicePtr permission_service;
 
   render_frame()->GetRemoteInterfaces()
     ->GetInterface(mojo::MakeRequest(&permission_service));
 
   if (permission_service.get()) {
-    auto descriptor = blink::mojom::blink::PermissionDescriptor::New();
-    descriptor->name = blink::mojom::blink::PermissionName::AUTOPLAY;
-    permission_service->RequestPermission(std::move(descriptor), true,
-                                          base::DoNothing());
+    // Check (synchronously) whether we already have permission to autoplay.
+    // This may call the autoplay whitelist service in the UI thread, which
+    // we need to wait for.
+    auto has_permission_descriptor =
+        blink::mojom::blink::PermissionDescriptor::New();
+    has_permission_descriptor->name =
+        blink::mojom::blink::PermissionName::AUTOPLAY;
+    blink::mojom::blink::PermissionStatus status;
+    if (permission_service->HasPermission(
+            std::move(has_permission_descriptor), &status)) {
+      allow = status == blink::mojom::blink::PermissionStatus::GRANTED;
+      if (!allow) {
+        // Request permission (asynchronously) but exit this function without
+        // allowing autoplay. Depending on settings and previous user choices,
+        // this may display visible permissions UI, or an "autoplay blocked"
+        // message, or nothing. In any case, we can't wait for it now.
+        auto request_permission_descriptor =
+            blink::mojom::blink::PermissionDescriptor::New();
+        request_permission_descriptor->name =
+            blink::mojom::blink::PermissionName::AUTOPLAY;
+        permission_service->RequestPermission(
+            std::move(request_permission_descriptor), true, base::DoNothing());
+      }
+    }
   }
 
   return allow;

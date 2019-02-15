@@ -8,6 +8,8 @@ source_set("brave_shields") {
     "ad_block_service.h",
     "adblock_interceptor.cc",
     "adblock_interceptor.h",
+    "autoplay_whitelist_service.cc",
+    "autoplay_whitelist_service.h",
     "base_brave_shields_service.cc",
     "base_brave_shields_service.h",
     "base_local_data_files_observer.cc",
@@ -33,6 +35,7 @@ source_set("brave_shields") {
     "//brave/content:common",
     "//brave/vendor/ad-block/brave:ad-block",
     "//brave/vendor/tracking-protection/brave:tracking-protection",
+    "//brave/vendor/autoplay-whitelist/brave:autoplay-whitelist",
     "//chrome/common",
     "//third_party/leveldatabase",
   ]
