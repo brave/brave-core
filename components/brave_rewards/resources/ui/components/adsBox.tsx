@@ -104,7 +104,7 @@ class AdsBox extends React.Component<Props, State> {
         title={getLocale('adsTitle')}
         type={'ads'}
         description={getLocale('adsDesc')}
-        toggle={toggle}
+        toggle={false}
         checked={adsEnabled}
         settingsChild={this.adsSettings(adsEnabled && enabledMain)}
         testId={'braveAdsSettings'}

@@ -447,9 +447,11 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
 }
 
 bool AdsServiceImpl::is_enabled() const {
-  bool ads_enabled = profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
-  bool rewards_enabled = profile_->GetPrefs()->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled);
-  return (ads_enabled && rewards_enabled);
+  // (Ads disabled on 0.60.x, this fix ensures backwards compliance)
+  // bool ads_enabled = profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
+  // bool rewards_enabled = profile_->GetPrefs()->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled);
+  // return (ads_enabled && rewards_enabled);
+  return false;
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {
