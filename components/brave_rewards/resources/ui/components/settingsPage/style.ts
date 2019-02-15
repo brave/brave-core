@@ -11,11 +11,6 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   font-family: "Poppins", sans-serif
 `
 
-export const StyleHeader = styled<{}, 'div'>('div')`
-  background-image: linear-gradient(267deg, #bf14a2, #f73a1c);
-  height: 62px;
-`
-
 export const StyledContent = styled<{}, 'div'>('div')`
  max-width: 1000px;
  margin: 0 auto;

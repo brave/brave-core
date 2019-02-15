@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper, StyleHeader, StyledContent } from './style'
+import { StyledWrapper, StyledContent } from './style'
 
 export interface Props {
   id?: string
@@ -16,7 +16,6 @@ export default class SettingsPage extends React.PureComponent<Props, {}> {
 
     return (
       <StyledWrapper id={id}>
-        <StyleHeader />
         <StyledContent>
           {children}
         </StyledContent>

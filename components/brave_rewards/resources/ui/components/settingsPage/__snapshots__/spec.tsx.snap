@@ -9,11 +9,6 @@ exports[`SettingsPage tests basic tests matches the snapshot 1`] = `
 }
 
 .c1 {
-  background-image: linear-gradient(267deg,#bf14a2,#f73a1c);
-  height: 62px;
-}
-
-.c2 {
   max-width: 1000px;
   margin: 0 auto;
   padding: 40px 0;
@@ -25,9 +20,6 @@ exports[`SettingsPage tests basic tests matches the snapshot 1`] = `
 >
   <div
     className="c1"
-  />
-  <div
-    className="c2"
   />
 </div>
 `;
