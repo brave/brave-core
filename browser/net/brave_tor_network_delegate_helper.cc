@@ -40,17 +40,18 @@ int OnBeforeURLRequest_TorWork(
     return net::OK;
   }
 
-  if (!(ctx->request_url.SchemeIsHTTPOrHTTPS() ||
-        ctx->request_url.SchemeIs(content::kChromeUIScheme) ||
-        ctx->request_url.SchemeIs(extensions::kExtensionScheme) ||
-        ctx->request_url.SchemeIs(content::kChromeDevToolsScheme))) {
+  auto& request_url = ctx->request_url;
+  if (request_url.SchemeIsHTTPOrHTTPS()) {
+    auto* proxy_service = ctx->request->context()->proxy_resolution_service();
+    return tor_profile_service->SetProxy(proxy_service, request_url, false);
+  } else if (request_url.SchemeIs(content::kChromeUIScheme) ||
+             request_url.SchemeIs(extensions::kExtensionScheme) ||
+             request_url.SchemeIs(content::kChromeDevToolsScheme)) {
+    // No proxy for internal schemes.
+    return net::OK;
+  } else {
     return net::ERR_DISALLOWED_URL_SCHEME;
   }
-
-  auto* proxy_service = ctx->request->context()->proxy_resolution_service();
-  tor_profile_service->SetProxy(proxy_service, ctx->request_url, false);
-
-  return net::OK;
 }
 
 }  // namespace brave

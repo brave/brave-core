@@ -41,15 +41,21 @@ const TorConfig& MockTorProfileServiceImpl::GetTorConfig() {
 
 int64_t MockTorProfileServiceImpl::GetTorPid() { return -1; }
 
-void MockTorProfileServiceImpl::SetProxy(
+int MockTorProfileServiceImpl::SetProxy(
     net::ProxyResolutionService* service, const GURL& request_url,
     bool new_circuit) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   GURL url = SiteInstance::GetSiteForURL(profile_, request_url);
-  if (url.host().empty() || config_.empty())
-    return;
+  if (config_.empty()) {
+    // No tor config => we absolutely cannot talk to the network.
+    // This might mean that there was a problem trying to initialize
+    // Tor.
+    LOG(ERROR) << "Tor not configured -- blocking connection";
+    return net::ERR_SOCKS_CONNECTION_FAILED;
+  }
   TorProxyConfigService::TorSetProxy(service, config_.proxy_string(),
                                      url.host(), nullptr, new_circuit);
+  return net::OK;
 }
 
 }  // namespace tor

@@ -92,17 +92,24 @@ int64_t TorProfileServiceImpl::GetTorPid() {
   return tor_launcher_factory_->GetTorPid();
 }
 
-void TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
-                                     const GURL& request_url,bool new_circuit) {
+int TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
+                                    const GURL& request_url,
+                                    bool new_circuit) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   const TorConfig tor_config = tor_launcher_factory_->GetTorConfig();
   GURL url = SiteInstance::GetSiteForURL(profile_, request_url);
-  if (url.host().empty() || tor_config.empty())
-    return;
+  if (tor_config.empty()) {
+    // No tor config => we absolutely cannot talk to the network.
+    // This might mean that there was a problem trying to initialize
+    // Tor.
+    LOG(ERROR) << "Tor not configured -- blocking connection";
+    return net::ERR_SOCKS_CONNECTION_FAILED;
+  }
   base::PostTaskWithTraits(FROM_HERE, {BrowserThread::IO},
       base::Bind(&TorProxyConfigService::TorSetProxy,
       service, tor_config.proxy_string(),
       url.host(), &tor_proxy_map_, new_circuit));
+  return net::OK;
 }
 
 void TorProfileServiceImpl::KillTor() {
