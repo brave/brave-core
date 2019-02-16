@@ -2,13 +2,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/ledger.h"
-#include "brave/vendor/bat-native-ledger/src/bat_get_media.h"
+#include "bat/ledger/ledger.h"
+#include "bat_get_media.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-TEST(BatGetMediaTest, GetYoutubeMediaIdFromUrl) {
-  //BatGetMedia media = new BatGetMedia(nullptr);
+// npm run test -- brave_unit_tests --filter=BatGetMediaTest.*
 
+namespace braveledger_bat_get_media {
+
+class BatGetMediaTest : public testing::Test {
+};
+
+TEST(BatGetMediaTest, GetYoutubeMediaIdFromUrl) {
   // missing video id
   ledger::VisitData data;
   data.url = "https://www.youtube.com/watch";
@@ -50,3 +55,128 @@ TEST(BatGetMediaTest, GetYoutubeMediaIdFromUrl) {
 
   ASSERT_EQ(media, "44444444");
 }
+
+TEST(BatGetMediaTest, GetYoutubePublisherKeyFromUrl) {
+  // path is empty
+  std::string path = "";
+
+  std::string key = braveledger_bat_get_media::BatGetMedia::
+      getYoutubePublisherKeyFromUrl(path);
+
+  ASSERT_EQ(key, "");
+
+  // path is just slash
+  path = "/";
+
+  key = braveledger_bat_get_media::BatGetMedia::
+      getYoutubePublisherKeyFromUrl(path);
+
+  ASSERT_EQ(key, "");
+
+  // wrong path
+  path = "/test";
+
+  key = braveledger_bat_get_media::BatGetMedia::
+      getYoutubePublisherKeyFromUrl(path);
+
+  ASSERT_EQ(key, "");
+
+  // single element in the url
+  path = "https://www.youtube.com/channel/"
+             "UCRkcacarvLbUfygxUAAAAAA";
+
+  key = braveledger_bat_get_media::BatGetMedia::
+      getYoutubePublisherKeyFromUrl(path);
+
+  ASSERT_EQ(key, "UCRkcacarvLbUfygxUAAAAAA");
+
+  // multiple elements in the url
+  path = "https://www.youtube.com/channel/"
+             "UCRkcacarvLbUfygxUAAAAAA?view_as=subscriber";
+
+  key = braveledger_bat_get_media::BatGetMedia::
+      getYoutubePublisherKeyFromUrl(path);
+
+  ASSERT_EQ(key, "UCRkcacarvLbUfygxUAAAAAA");
+
+  // multiple paths in the url
+  path = "https://www.youtube.com/channel/"
+             "UCRkcacarvLbUfygxUAAAAAA/playlist";
+
+  key = braveledger_bat_get_media::BatGetMedia::
+      getYoutubePublisherKeyFromUrl(path);
+
+  ASSERT_EQ(key, "UCRkcacarvLbUfygxUAAAAAA");
+
+  // multiple paths in the url
+  path = "https://www.youtube.com/channel/"
+             "UCRkcacarvLbUfygxUAAAAAA/playlist?view_as=subscriber";
+
+  key = braveledger_bat_get_media::BatGetMedia::
+      getYoutubePublisherKeyFromUrl(path);
+
+  ASSERT_EQ(key, "UCRkcacarvLbUfygxUAAAAAA");
+}
+
+TEST(BatGetMediaTest, GetYoutubeUserFromUrl) {
+  // path is empty
+  std::string path = "/";
+
+  std::string user = braveledger_bat_get_media::BatGetMedia::
+      getYoutubeUserFromUrl(path);
+
+  ASSERT_EQ(user, "");
+
+  // path is just slash
+  path = "/";
+
+  user = braveledger_bat_get_media::BatGetMedia::
+      getYoutubeUserFromUrl(path);
+
+  ASSERT_EQ(user, "");
+
+  // wrong url
+  path = "https://www.youtube.com/test";
+
+  user =
+      braveledger_bat_get_media::BatGetMedia::getYoutubeUserFromUrl(path);
+
+  ASSERT_EQ(user, "");
+
+  // single element in the url
+  path = "https://www.youtube.com/user/brave";
+
+  user =
+      braveledger_bat_get_media::BatGetMedia::getYoutubeUserFromUrl(path);
+
+  ASSERT_EQ(user, "brave");
+
+  // multiple elements in the url
+  path = "https://www.youtube.com/user/"
+             "brave?view_as=subscriber";
+
+  user =
+      braveledger_bat_get_media::BatGetMedia::getYoutubeUserFromUrl(path);
+
+  ASSERT_EQ(user, "brave");
+
+  // multiple paths in the url
+  path = "https://www.youtube.com/user/"
+             "brave/playlist";
+
+  user =
+      braveledger_bat_get_media::BatGetMedia::getYoutubeUserFromUrl(path);
+
+  ASSERT_EQ(user, "brave");
+
+  // multiple paths + elements in the url
+  path = "https://www.youtube.com/user/"
+             "brave/playlist?view_as=subscriber";
+
+  user =
+      braveledger_bat_get_media::BatGetMedia::getYoutubeUserFromUrl(path);
+
+  ASSERT_EQ(user, "brave");
+}
+
+}  // braveledger_bat_get_media
