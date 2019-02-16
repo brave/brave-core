@@ -5,10 +5,10 @@
 #include <string>
 
 #include "confirmations_client_mock.h"
-#include "brave/vendor/bat-native-confirmations/src/confirmations_impl.h"
-#include "brave/vendor/bat-native-confirmations/src/create_confirmation_request.h"
-#include "brave/vendor/bat-native-confirmations/src/security_helper.h"
-#include "brave/vendor/bat-native-confirmations/include/bat/confirmations/wallet_info.h"
+#include "confirmations_impl.h"
+#include "create_confirmation_request.h"
+#include "security_helper.h"
+#include "include/bat/confirmations/wallet_info.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 

@@ -7,9 +7,9 @@
 #include <memory>
 
 #include "confirmations_client_mock.h"
-#include "brave/vendor/bat-native-confirmations/src/confirmations_impl.h"
-#include "brave/vendor/bat-native-confirmations/src/security_helper.h"
-#include "brave/vendor/bat-native-confirmations/src/unblinded_tokens.h"
+#include "confirmations_impl.h"
+#include "security_helper.h"
+#include "unblinded_tokens.h"
 
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"

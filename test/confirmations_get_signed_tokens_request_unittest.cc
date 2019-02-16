@@ -5,9 +5,9 @@
 #include <string>
 
 #include "confirmations_client_mock.h"
-#include "brave/vendor/bat-native-confirmations/src/confirmations_impl.h"
-#include "brave/vendor/bat-native-confirmations/src/get_signed_tokens_request.h"
-#include "brave/vendor/bat-native-confirmations/include/bat/confirmations/wallet_info.h"
+#include "confirmations_impl.h"
+#include "get_signed_tokens_request.h"
+#include "include/bat/confirmations/wallet_info.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 

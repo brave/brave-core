@@ -5,8 +5,8 @@
 #include <string>
 
 #include "confirmations_client_mock.h"
-#include "brave/vendor/bat-native-confirmations/src/confirmations_impl.h"
-#include "brave/vendor/bat-native-confirmations/src/fetch_payment_token_request.h"
+#include "confirmations_impl.h"
+#include "fetch_payment_token_request.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 
