@@ -255,10 +255,9 @@ TEST_F(ConfirmationsUnblindedTokensTest, SetTokens_Count) {
       .Times(1);
 
   auto unblinded_tokens = GetUnblindedTokens(4);
-  unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  auto tokens = unblinded_tokens_->GetAllTokens();
+  unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Assert
   auto count = unblinded_tokens_->Count();
@@ -271,10 +270,9 @@ TEST_F(ConfirmationsUnblindedTokensTest, SetTokens_NoTokens) {
       .Times(1);
 
   auto unblinded_tokens = GetUnblindedTokens(0);
-  unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  auto tokens = unblinded_tokens_->GetAllTokens();
+  unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Assert
   auto count = unblinded_tokens_->Count();
