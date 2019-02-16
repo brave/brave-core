@@ -125,7 +125,7 @@ void BraveProfileWriter::BackupWallet() {
   const base::FilePath profile_default_directory = profile_->GetPath();
   std::ostringstream backup_filename;
   backup_filename << "ledger_import_backup_"
-                  << base::NumberToString(static_cast<unsigned long long>(
+                  << base::NumberToString(static_cast<uint64_t>(
                          base::Time::Now().ToJsTime()));
 
   LOG(INFO) << "Making backup of current \"ledger_state\" as "
