@@ -14,10 +14,6 @@
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/notification_info.h"
 #include "bat/confirmations/issuers_info.h"
-#include "refill_tokens.h"
-#include "redeem_token.h"
-#include "payout_tokens.h"
-#include "unblinded_tokens.h"
 
 #include "base/values.h"
 

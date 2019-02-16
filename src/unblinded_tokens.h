@@ -8,8 +8,6 @@
 #include <string>
 #include <vector>
 
-#include "confirmations_impl.h"
-
 #include "base/values.h"
 
 #include "wrapper.hpp"

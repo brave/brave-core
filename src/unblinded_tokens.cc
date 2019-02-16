@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "unblinded_tokens.h"
+#include "confirmations_impl.h"
 
 #include "base/logging.h"
 

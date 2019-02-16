@@ -5,6 +5,8 @@
 #include "payout_tokens.h"
 #include "static_values.h"
 #include "logging.h"
+#include "confirmations_impl.h"
+#include "unblinded_tokens.h"
 #include "redeem_payment_tokens_request.h"
 
 #include "base/rand_util.h"

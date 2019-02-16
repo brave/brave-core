@@ -9,7 +9,6 @@
 #include <vector>
 #include <map>
 
-#include "confirmations_impl.h"
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/wallet_info.h"
 

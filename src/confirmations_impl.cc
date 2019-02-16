@@ -5,6 +5,10 @@
 #include "confirmations_impl.h"
 #include "logging.h"
 #include "static_values.h"
+#include "refill_tokens.h"
+#include "redeem_token.h"
+#include "payout_tokens.h"
+#include "unblinded_tokens.h"
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"

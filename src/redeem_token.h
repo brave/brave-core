@@ -8,7 +8,6 @@
 #include <string>
 #include <vector>
 
-#include "confirmations_impl.h"
 #include "bat/confirmations/confirmations_client.h"
 
 #include "wrapper.hpp"

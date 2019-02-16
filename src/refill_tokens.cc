@@ -9,6 +9,8 @@
 #include "logging.h"
 #include "ads_serve_helper.h"
 #include "security_helper.h"
+#include "confirmations_impl.h"
+#include "unblinded_tokens.h"
 #include "request_signed_tokens_request.h"
 #include "get_signed_tokens_request.h"
 

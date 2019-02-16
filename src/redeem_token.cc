@@ -8,6 +8,8 @@
 #include "logging.h"
 #include "ads_serve_helper.h"
 #include "security_helper.h"
+#include "confirmations_impl.h"
+#include "unblinded_tokens.h"
 #include "create_confirmation_request.h"
 #include "fetch_payment_token_request.h"
 
