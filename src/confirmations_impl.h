@@ -17,7 +17,6 @@
 #include "refill_tokens.h"
 #include "redeem_token.h"
 #include "payout_tokens.h"
-#include "unblinded_tokens.h"
 
 #include "base/values.h"
 
