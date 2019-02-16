@@ -38,7 +38,7 @@ class BraveProfileWriter : public ProfileWriter,
 
   // brave_rewards::RewardsServiceObserver:
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
-                           int error_code) override;
+                           int result) override;
   void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
                        unsigned int result,
                        double balance,
