@@ -3,10 +3,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "confirmations_client_mock.h"
-#include "confirmations_impl.h"
-#include "redeem_payment_tokens_request.h"
-#include "unblinded_tokens.h"
-#include "include/bat/confirmations/wallet_info.h"
+#include "bat-native-confirmations/src/confirmations_impl.h"
+#include "bat-native-confirmations/src/redeem_payment_tokens_request.h"
+#include "bat-native-confirmations/src/unblinded_tokens.h"
+#include "bat-native-confirmations/include/bat/confirmations/wallet_info.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 

@@ -7,8 +7,8 @@
 #include <map>
 
 #include "confirmations_client_mock.h"
-#include "confirmations_impl.h"
-#include "security_helper.h"
+#include "bat-native-confirmations/src/confirmations_impl.h"
+#include "bat-native-confirmations/src/security_helper.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 
