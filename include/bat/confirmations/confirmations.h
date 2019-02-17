@@ -26,7 +26,7 @@ class CONFIRMATIONS_EXPORT Confirmations {
   virtual ~Confirmations() = default;
 
   static Confirmations* CreateInstance(
-    ConfirmationsClient* confirmations_client);
+      ConfirmationsClient* confirmations_client);
 
   // Should be called to set wallet information for payments
   virtual void SetWalletInfo(std::unique_ptr<WalletInfo> info) = 0;
