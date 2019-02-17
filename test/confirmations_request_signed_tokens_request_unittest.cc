@@ -2,6 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string>
+#include <vector>
+#include <memory>
+
 #include "confirmations_client_mock.h"
 #include "bat-native-confirmations/src/confirmations_impl.h"
 #include "bat-native-confirmations/src/request_signed_tokens_request.h"
@@ -16,24 +20,21 @@ namespace confirmations {
 
 class ConfirmationsRequestSignedTokensRequestTest : public ::testing::Test {
  protected:
-  MockConfirmationsClient* mock_confirmations_client_;
-  ConfirmationsImpl* confirmations_;
+  std::unique_ptr<MockConfirmationsClient> mock_confirmations_client_;
+  std::unique_ptr<ConfirmationsImpl> confirmations_;
 
-  RequestSignedTokensRequest* request_;
+  std::unique_ptr<RequestSignedTokensRequest> request_;
 
   ConfirmationsRequestSignedTokensRequestTest() :
-      mock_confirmations_client_(new MockConfirmationsClient()),
-      confirmations_(new ConfirmationsImpl(mock_confirmations_client_)),
-      request_(new RequestSignedTokensRequest()) {
+      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
+      confirmations_(std::make_unique<ConfirmationsImpl>(
+          mock_confirmations_client_.get())),
+      request_(std::make_unique<RequestSignedTokensRequest>()) {
     // You can do set-up work for each test here
   }
 
   ~ConfirmationsRequestSignedTokensRequestTest() override {
     // You can do clean-up work that doesn't throw exceptions here
-    delete request_;
-
-    delete confirmations_;
-    delete mock_confirmations_client_;
   }
 
   // If the constructor and destructor are not enough for setting up and

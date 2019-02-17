@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "confirmations_client_mock.h"
 #include "bat-native-confirmations/src/confirmations_impl.h"
@@ -17,19 +18,18 @@ namespace confirmations {
 
 class ConfirmationsStringHelperTest : public ::testing::Test {
  protected:
-  MockConfirmationsClient* mock_confirmations_client_;
-  ConfirmationsImpl* confirmations_;
+  std::unique_ptr<MockConfirmationsClient> mock_confirmations_client_;
+  std::unique_ptr<ConfirmationsImpl> confirmations_;
 
   ConfirmationsStringHelperTest() :
-      mock_confirmations_client_(new MockConfirmationsClient()),
-      confirmations_(new ConfirmationsImpl(mock_confirmations_client_)) {
+      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
+      confirmations_(std::make_unique<ConfirmationsImpl>(
+          mock_confirmations_client_.get())) {
     // You can do set-up work for each test here
   }
 
   ~ConfirmationsStringHelperTest() override {
     // You can do clean-up work that doesn't throw exceptions here
-    delete confirmations_;
-    delete mock_confirmations_client_;
   }
 
   // If the constructor and destructor are not enough for setting up and

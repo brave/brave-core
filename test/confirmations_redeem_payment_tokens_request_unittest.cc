@@ -2,6 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string>
+#include <string>
+#include <memory>
+
 #include "confirmations_client_mock.h"
 #include "bat-native-confirmations/src/confirmations_impl.h"
 #include "bat-native-confirmations/src/redeem_payment_tokens_request.h"
@@ -16,29 +20,25 @@ namespace confirmations {
 
 class ConfirmationsRedeemPaymentTokensRequestTest : public ::testing::Test {
  protected:
-  MockConfirmationsClient* mock_confirmations_client_;
-  ConfirmationsImpl* confirmations_;
+  std::unique_ptr<MockConfirmationsClient> mock_confirmations_client_;
+  std::unique_ptr<ConfirmationsImpl> confirmations_;
 
-  UnblindedTokens* unblinded_tokens_;
+  std::unique_ptr<UnblindedTokens> unblinded_tokens_;
 
-  RedeemPaymentTokensRequest* request_;
+  std::unique_ptr<RedeemPaymentTokensRequest> request_;
 
   ConfirmationsRedeemPaymentTokensRequestTest() :
-      mock_confirmations_client_(new MockConfirmationsClient()),
-      confirmations_(new ConfirmationsImpl(mock_confirmations_client_)),
-      unblinded_tokens_(new UnblindedTokens(confirmations_)),
-      request_(new RedeemPaymentTokensRequest()) {
+      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
+      confirmations_(std::make_unique<ConfirmationsImpl>(
+          mock_confirmations_client_.get())),
+      unblinded_tokens_(std::make_unique<UnblindedTokens>(
+          confirmations_.get())),
+      request_(std::make_unique<RedeemPaymentTokensRequest>()) {
     // You can do set-up work for each test here
   }
 
   ~ConfirmationsRedeemPaymentTokensRequestTest() override {
     // You can do clean-up work that doesn't throw exceptions here
-    delete request_;
-
-    delete unblinded_tokens_;
-
-    delete confirmations_;
-    delete mock_confirmations_client_;
   }
 
   // If the constructor and destructor are not enough for setting up and

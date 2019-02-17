@@ -25,24 +25,22 @@ namespace confirmations {
 
 class ConfirmationsUnblindedTokensTest : public ::testing::Test {
  protected:
-  MockConfirmationsClient* mock_confirmations_client_;
-  ConfirmationsImpl* confirmations_;
+  std::unique_ptr<MockConfirmationsClient> mock_confirmations_client_;
+  std::unique_ptr<ConfirmationsImpl> confirmations_;
 
-  UnblindedTokens* unblinded_tokens_;
+  std::unique_ptr<UnblindedTokens> unblinded_tokens_;
 
   ConfirmationsUnblindedTokensTest() :
-      mock_confirmations_client_(new MockConfirmationsClient()),
-      confirmations_(new ConfirmationsImpl(mock_confirmations_client_)),
-      unblinded_tokens_(new UnblindedTokens(confirmations_)) {
+      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
+      confirmations_(std::make_unique<ConfirmationsImpl>(
+          mock_confirmations_client_.get())),
+      unblinded_tokens_(std::make_unique<UnblindedTokens>(
+          confirmations_.get())) {
     // You can do set-up work for each test here
   }
 
   ~ConfirmationsUnblindedTokensTest() override {
     // You can do clean-up work that doesn't throw exceptions here
-    delete unblinded_tokens_;
-
-    delete confirmations_;
-    delete mock_confirmations_client_;
   }
 
   // If the constructor and destructor are not enough for setting up and

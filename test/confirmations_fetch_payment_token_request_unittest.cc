@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <string>
+#include <memory>
 
 #include "confirmations_client_mock.h"
 #include "bat-native-confirmations/src/confirmations_impl.h"
@@ -16,24 +17,21 @@ namespace confirmations {
 
 class ConfirmationsFetchPaymentTokenRequestTest : public ::testing::Test {
  protected:
-  MockConfirmationsClient* mock_confirmations_client_;
-  ConfirmationsImpl* confirmations_;
+  std::unique_ptr<MockConfirmationsClient> mock_confirmations_client_;
+  std::unique_ptr<ConfirmationsImpl> confirmations_;
 
-  FetchPaymentTokenRequest* request_;
+  std::unique_ptr<FetchPaymentTokenRequest> request_;
 
   ConfirmationsFetchPaymentTokenRequestTest() :
-      mock_confirmations_client_(new MockConfirmationsClient()),
-      confirmations_(new ConfirmationsImpl(mock_confirmations_client_)),
-      request_(new FetchPaymentTokenRequest()) {
+      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
+      confirmations_(std::make_unique<ConfirmationsImpl>(
+          mock_confirmations_client_.get())),
+      request_(std::make_unique<FetchPaymentTokenRequest>()) {
     // You can do set-up work for each test here
   }
 
   ~ConfirmationsFetchPaymentTokenRequestTest() override {
     // You can do clean-up work that doesn't throw exceptions here
-    delete request_;
-
-    delete confirmations_;
-    delete mock_confirmations_client_;
   }
 
   // If the constructor and destructor are not enough for setting up and
