@@ -1,10 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_IMPORTER_BRAVE_PROFILE_WRITER_H_
 #define BRAVE_BROWSER_IMPORTER_BRAVE_PROFILE_WRITER_H_
 
+#include <memory>
+#include <string>
 #include <vector>
 
 #include "base/macros.h"
@@ -38,7 +41,7 @@ class BraveProfileWriter : public ProfileWriter,
 
   // brave_rewards::RewardsServiceObserver:
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
-                           int error_code) override;
+                           int result) override;
   void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
                        unsigned int result,
                        double balance,
