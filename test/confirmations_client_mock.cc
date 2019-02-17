@@ -10,41 +10,12 @@ MockLogStreamImpl::MockLogStreamImpl(
     const char* file,
     const int line,
     const ledger::LogLevel log_level) {
-  std::string level;
-
-  switch (log_level) {
-    case ledger::LogLevel::LOG_ERROR: {
-      level = "ERROR";
-      break;
-    }
-    case ledger::LogLevel::LOG_WARNING: {
-      level = "WARNING";
-      break;
-    }
-    case ledger::LogLevel::LOG_INFO: {
-      level = "INFO";
-      break;
-    }
-    case ledger::LogLevel::LOG_DEBUG: {
-      level = "DEBUG";
-      break;
-    }
-    case ledger::LogLevel::LOG_REQUEST: {
-      level = "REQUEST";
-      break;
-    }
-    case ledger::LogLevel::LOG_RESPONSE: {
-      level = "RESPONSE";
-      break;
-    }
-  }
-
-  log_message_ = level + ": in " + std::string(file) + " on line "
-      + std::to_string(line) + ": ";
+  (void)file;
+  (void)line;
+  (void)log_level;
 }
 
 std::ostream& MockLogStreamImpl::stream() {
-  std::cout << std::endl << log_message_;
   return std::cout;
 }
 
@@ -52,12 +23,12 @@ MockVerboseLogStreamImpl::MockVerboseLogStreamImpl(
     const char* file,
     int line,
     int vlog_level) {
-  log_message_ = "VLOG: in " + std::string(file) + " on line "
-      + std::to_string(line) + ": ";
+  (void)file;
+  (void)line;
+  (void)vlog_level;
 }
 
 std::ostream& MockVerboseLogStreamImpl::stream() {
-  std::cout << std::endl << log_message_;
   return std::cout;
 }
 

@@ -26,8 +26,6 @@ class MockLogStreamImpl : public ledger::LogStream {
   std::ostream& stream() override;
 
  private:
-  std::string log_message_;
-
   // Not copyable, not assignable
   MockLogStreamImpl(const MockLogStreamImpl&) = delete;
   MockLogStreamImpl& operator=(const MockLogStreamImpl&) = delete;
@@ -42,8 +40,6 @@ class MockVerboseLogStreamImpl : public ledger::LogStream {
   std::ostream& stream() override;
 
  private:
-  std::string log_message_;
-
   // Not copyable, not assignable
   MockVerboseLogStreamImpl(const MockVerboseLogStreamImpl&) = delete;
   MockVerboseLogStreamImpl& operator=(const MockVerboseLogStreamImpl&) = delete;
