@@ -106,13 +106,13 @@ void BraveProfileWriter::SetBridge(BraveInProcessImporterBridge* bridge) {
   bridge_ptr_ = bridge;
 }
 
-void BraveProfileWriter::OnWalletInitialized(brave_rewards::RewardsService*
-  rewards_service, int error_code) {
-  if (error_code) {
+void BraveProfileWriter::OnWalletInitialized(
+    brave_rewards::RewardsService* rewards_service, int result) {
+  if (result != 0 && result != 12) {  // 12: ledger::Result::WALLET_CREATED
     // Cancel the import if wallet creation failed
     std::ostringstream msg;
     msg << "An error occurred while trying to create a "
-      << "wallet to restore into (error_code=" << error_code << ")";
+      << "wallet to restore into (result=" << result << ")";
     CancelWalletImport(msg.str());
     return;
   }
@@ -125,7 +125,7 @@ void BraveProfileWriter::BackupWallet() {
   const base::FilePath profile_default_directory = profile_->GetPath();
   std::ostringstream backup_filename;
   backup_filename << "ledger_import_backup_"
-                  << base::NumberToString(static_cast<unsigned long long>(
+                  << base::NumberToString(static_cast<uint64_t>(
                          base::Time::Now().ToJsTime()));
 
   LOG(INFO) << "Making backup of current \"ledger_state\" as "
