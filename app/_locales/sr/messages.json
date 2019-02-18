@@ -3,121 +3,164 @@
     "message": "Brejv oznaka datoteke",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Oglasi i pratioci su blokirani",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
-  },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS nadograđivanje",
-    "description": "Label for shields stats, HTTPS upgrades count"
-  },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Blokirane skripte",
-    "description": "Label for shields stats, Scripts Blocked count"
-  },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Metode otisaka prstiju blokirane",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
-  },
-
-  "shieldsHeaderShieldsToggle": {
+  "shields": {
     "message": "Štitovi",
-    "description": "Label for top shields switch in shields header"
+    "description": "The Shields feature name"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Dole",
-    "description": "Label for top shields switch in shields header turned off position"
+  "up": {
+    "message": "gore",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Gore",
-    "description": "Label for top shields switch in shields header turned on position"
+  "down": {
+    "message": "dole",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Podešavanja štita veb lokacije za",
-    "description": "Label for shields header near current site name"
+  "totalBlocked": {
+    "message": "Ukupno blokirano",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Napredne kontrole",
-    "description": "Label for advanced controls group"
+  "forThisSite": {
+    "message": "za ovu veb lokaciju",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Kontrola oglasa",
-    "description": "Label for Advertisement Control dropdown box options "
+  "enabledMessage": {
+    "message": "Ako se stranica pojavi slomljena, pokušajte sa isljučenim štitovima",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Blokiraj oglase",
-    "description": "Ad Control dropdown box, option block ads"
+  "disabledMessage": {
+    "message": "Vi pregledate ovu lokaciju bez ikakve zaštite privatnosti i sigurnosti.",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Dozvolite oglase i praćenje",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "blockAds": {
+    "message": "Oglasi i pratioci su blokirani",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Kontrola kolačića",
-    "description": "Label Cookie Control dropdown options"
+  "blockPopups": {
+    "message": "Iskačući prozori su blokirani",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Blokirajte kolačiće trećih strana",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockImages": {
+    "message": "Blokirane slike",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Dozvoli sve kolačiće",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "block3partyCookies": {
+    "message": "Kolačići treće strane su blokirani",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Blokirajte sve kolačiće",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "allowAllCookies": {
+    "message": "Svi kolačići su omogućeni",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Zaštita otiskom prsta",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "blockAllCookies": {
+    "message": "Kolačići su blokirani",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Blokirajte popisivanje od treće strane",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "blockSomeScripts": {
+    "message": "Neke skripte su blokirane",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Dozvoli sva beleženja posebnih obeležja",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "allowAllScripts": {
+    "message": "Sve skripte dozvoljene",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Blokirati sva popisivanja",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockAllScriptsOrigins": {
+    "message": "Blokirane skripte",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS svuda",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "block3partyFingerprinting": {
+    "message": "Prepoznavanje uređaja treće strane je blokirano",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Blokirajte skripte",
-    "description": "Shields controls, switch for Block Scripts"
+  "allowAllFingerprinting": {
+    "message": "Dozvoljeno je prepoznavanje svih uređaja",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Blokiraj phishing/malver",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "blockAllFingerprinting": {
+    "message": "Prepoznavanje uređaja je blokirano",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-
-  "noScriptSwitches": {
-    "message": "Preklopnici za isključivanje blokiranja skripti",
-    "description": "Instructions for per-origin noScript switches"
+  "blockPishing": {
+    "message": "Phishing/malver pokušaji su blokirani",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-  "noScriptApplyOnce": {
-    "message": "Primenite",
-    "description": "Label for applying per-origin noScript settings"
+  "connectionsEncrypted": {
+    "message": "Veze su šifrovane",
+    "description": "Message indicating the number of connections encrypted"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Uredi podrazumevana podešavanja štita...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "editDefaults": {
+    "message": "Podrazumevana vrednost globalnog štita",
+    "description": "Message linking shields to the global shield settings"
   },
-  "shieldsFooterReload":{
-    "message": "Ponovno učitavanje...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "cookiesOnThisSite": {
+    "message": "Kolačići na ovoj lokaciji",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Pokušaji prepoznavanja uređaja",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Skripte na ovoj veb lokaciji",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Blokirane skripte",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Dozvoljene skripte",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Dozvoli sve",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Dozvoli",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Dozvoljeno",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Blokiraj sve",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Blokiraj",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Blokiran",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Primeni",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Primeni jednom",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Primeni do ponovnog pokretanja",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Uvek primeni",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Opozovi radnju",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Otkaži",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Idi nazad",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

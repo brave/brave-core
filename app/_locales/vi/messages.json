@@ -3,121 +3,164 @@
     "message": "Phần mở rộng Brave",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Đã chặn Quảng cáo và Chương trình theo dõi",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  "shields": {
+    "message": "Lá chắn",
+    "description": "The Shields feature name"
   },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS Upgrades",
-    "description": "Label for shields stats, HTTPS upgrades count"
+  "up": {
+    "message": "lên",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Đã chặn Tập lệnh",
-    "description": "Label for shields stats, Scripts Blocked count"
+  "down": {
+    "message": "không hoạt động",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Phương thức Vân tay đã bị Chặn",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+  "totalBlocked": {
+    "message": "Đã chặn tổng cộng",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsHeaderShieldsToggle": {
-    "message": "Lớp bảo vệ",
-    "description": "Label for top shields switch in shields header"
+  "forThisSite": {
+    "message": "cho trang này",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Xuống",
-    "description": "Label for top shields switch in shields header turned off position"
+  "enabledMessage": {
+    "message": "Nếu trang web hiển thị lỗi, hãy thử tắt lá chắn",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Trên",
-    "description": "Label for top shields switch in shields header turned on position"
+  "disabledMessage": {
+    "message": "Bạn đang duyệt trang này mà không có bất kỳ sự bảo vệ quyền riêng tư và bảo mật nào.",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Tuỳ chọn lá chắn trang cho",
-    "description": "Label for shields header near current site name"
+  "blockAds": {
+    "message": "Số quảng cáo và trình theo dõi đã bị chặn",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Kiểm soát cao cấp",
-    "description": "Label for advanced controls group"
+  "blockPopups": {
+    "message": "Đã chặn cửa sổ bật",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Kiểm soát Quảng cáo",
-    "description": "Label for Advertisement Control dropdown box options "
+  "blockImages": {
+    "message": "Số hình ảnh đã bị chặn",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Chặn Quảng cáo",
-    "description": "Ad Control dropdown box, option block ads"
+  "block3partyCookies": {
+    "message": "Đã chặn cookie của bên thứ 3",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Cho phép Quảng cáo và Theo dõi",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "allowAllCookies": {
+    "message": "Đã cho phép toàn bộ cookie",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Kiểm soát Cookie",
-    "description": "Label Cookie Control dropdown options"
+  "blockAllCookies": {
+    "message": "Đã chặn cookie",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Chặn Cookie Bên thứ ba",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockSomeScripts": {
+    "message": "Đã chặn một số script",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Cho phép Mọi Cookie",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "allowAllScripts": {
+    "message": "Đã cho phép tất cả các script",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Chặn Mọi Cookie",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "blockAllScriptsOrigins": {
+    "message": "Đã chặn kịch bản",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Bảo vệ bằng dấu vân tay",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "block3partyFingerprinting": {
+    "message": "Đã chặn nhận dạng thiết bị của bên thứ 3",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Chặn dấu vân tay bên thứ 3",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "allowAllFingerprinting": {
+    "message": "Đã cho phép tất cả nhận dạng thiết bị",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Cho phép Mọi Dấu vân tay",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "blockAllFingerprinting": {
+    "message": "Đã chặn nhận dạng thiết bị",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Chặn tất cả dấu vân tay",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockPishing": {
+    "message": "Đã chặn các nỗ lực lừa đảo/phần mềm độc hại ",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS Everywhere",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "connectionsEncrypted": {
+    "message": "Số kết nối được mã hóa",
+    "description": "Message indicating the number of connections encrypted"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Chặn Kịch bản",
-    "description": "Shields controls, switch for Block Scripts"
+  "editDefaults": {
+    "message": "Thiết lập bảo vệ toàn cục mặc định",
+    "description": "Message linking shields to the global shield settings"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Chặn Tấn công giả mạo/Mã độc",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "cookiesOnThisSite": {
+    "message": "Cookie trên trang này",
+    "description": "Message for the cookie resources blocked panel"
   },
-
-  "noScriptSwitches": {
-    "message": "Bật tắt nút chuyển đổi để vô hiệu hóa việc chặn kịch bản",
-    "description": "Instructions for per-origin noScript switches"
+  "deviceRecognitionAttempts": {
+    "message": "Các nỗ lực nhận dạng thiết bị",
+    "description": "Message for the device recognition attempts blocked panel"
   },
-  "noScriptApplyOnce": {
+  "scriptsOnThisSite": {
+    "message": "Các script trên trang web này",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Các script đã bị chặn",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Script được cho phép",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Cho phép toàn bộ",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Cho phép",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Đã cho phép",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Chặn tất cả",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Chặn",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Đã chặn",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
     "message": "Áp dụng",
-    "description": "Label for applying per-origin noScript settings"
+    "description": "Message for the button inside dynamic list of resources blocked"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Chỉnh sửa cài đặt tấm chắn bảo vệ mặc định...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "applyOnce": {
+    "message": "Áp dụng một lần",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
   },
-  "shieldsFooterReload":{
-    "message": "Tải lại...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "applyUntilRestart": {
+    "message": "Áp dụng cho đến khi khởi động lại",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Luôn áp dụng",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Hoàn tác",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Hủy",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Quay lại",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

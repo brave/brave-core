@@ -3,121 +3,164 @@
     "message": "L'Extensió Brave",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Anuncis i seguidors bloquejats",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
-  },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "Actualitzacions de HTTPS",
-    "description": "Label for shields stats, HTTPS upgrades count"
-  },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Scripts bloquejats",
-    "description": "Label for shields stats, Scripts Blocked count"
-  },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Mètodes d'empremta digital bloquejats",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
-  },
-
-  "shieldsHeaderShieldsToggle": {
+  "shields": {
     "message": "Escuts",
-    "description": "Label for top shields switch in shields header"
+    "description": "The Shields feature name"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Abaix",
-    "description": "Label for top shields switch in shields header turned off position"
+  "up": {
+    "message": "amunt",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "A dalt",
-    "description": "Label for top shields switch in shields header turned on position"
+  "down": {
+    "message": "avall",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Configuració de l 'escut del lloc per a",
-    "description": "Label for shields header near current site name"
+  "totalBlocked": {
+    "message": "Total bloquejat",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Controls avançats",
-    "description": "Label for advanced controls group"
+  "forThisSite": {
+    "message": "per aquest lloc",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Control d'anuncis",
-    "description": "Label for Advertisement Control dropdown box options "
+  "enabledMessage": {
+    "message": "Si un lloc sembla trencat, prova a baixar els escuts",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Bloquejar anuncis",
-    "description": "Ad Control dropdown box, option block ads"
+  "disabledMessage": {
+    "message": "Estàs navegant en aquest lloc sense cap protecció de privadesa i seguretat.",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Permet anuncis i seguiment",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "blockAds": {
+    "message": "S'han bloquejat els anuncis i els seguidors",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Control de galetes",
-    "description": "Label Cookie Control dropdown options"
+  "blockPopups": {
+    "message": "S'han bloquejat les finestres emergents",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Bloqueja les galetes de 3rs ",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockImages": {
+    "message": "S'han bloquejat les imatges",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Permet totes les galetes",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "block3partyCookies": {
+    "message": "S'han bloquejat les galetes de 3rs",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Bloqueja totes les galetes",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "allowAllCookies": {
+    "message": "Totes les galetes permeses",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Protecció d'empremtes dactilars",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "blockAllCookies": {
+    "message": "Galetes bloquejades",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Bloqueja emprentes dactilars de 3rs",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "blockSomeScripts": {
+    "message": "S'han bloquejat algunes seqüències d'ordres",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Permet totes les empremtes dactilars",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "allowAllScripts": {
+    "message": "Totes les seqüències d'ordres estan admeses",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Bloqueja totes les empremtes dactilars",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockAllScriptsOrigins": {
+    "message": "Totes les seqüències d'ordres estan bloquejades",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS per tot",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "block3partyFingerprinting": {
+    "message": "S'ha bloquejat el reconeixement de dispositius de tercers",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Bloqueja els scripts",
-    "description": "Shields controls, switch for Block Scripts"
+  "allowAllFingerprinting": {
+    "message": "Es permet el reconeixement de dispositius",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Bloqueja Phishing / Malware",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "blockAllFingerprinting": {
+    "message": "S'ha bloquejat el reconeixement de dispositius",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-
-  "noScriptSwitches": {
-    "message": "Canvia els commutadors per desactivar el bloqueig de seqüències d'ordres",
-    "description": "Instructions for per-origin noScript switches"
+  "blockPishing": {
+    "message": "S'ha bloquejat l'intent de phishing o malware",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-  "noScriptApplyOnce": {
+  "connectionsEncrypted": {
+    "message": "Connexions encriptades",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Paràmetres per defecte de l'escut global",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Galetes en aquest lloc",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Intents de reconeixement de dispositiu",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Hi ha seqüències d'ordres en aquest lloc",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Seqüències d'ordres bloquejades",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Seqüències d'ordres permeses",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Permet tot",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Permet",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Permès",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Bloqueja-ho tot",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Bloqueja",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Bloquejat",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
     "message": "Aplica",
-    "description": "Label for applying per-origin noScript settings"
+    "description": "Message for the button inside dynamic list of resources blocked"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Edita la configuració predeterminada de l'escut...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "applyOnce": {
+    "message": "Aplica una vegada",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
   },
-  "shieldsFooterReload":{
-    "message": "Recarregar...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "applyUntilRestart": {
+    "message": "Aplica fins a tornar a arrancar",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Aplica sempre",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Desfés",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Cancel·la",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Vés enrere",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

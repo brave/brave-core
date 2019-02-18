@@ -3,121 +3,164 @@
     "message": "De Brave-extensie",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Advertenties en trackers geblokkeerd",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  "shields": {
+    "message": "Schilden",
+    "description": "The Shields feature name"
   },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS Upgrades",
-    "description": "Label for shields stats, HTTPS upgrades count"
+  "up": {
+    "message": "Actief",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Scripts geblokkeerd",
-    "description": "Label for shields stats, Scripts Blocked count"
+  "down": {
+    "message": "niet actief",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Vingerafdrukmethoden geblokkeerd",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+  "totalBlocked": {
+    "message": "Totaal geblokkeerd",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsHeaderShieldsToggle": {
-    "message": "Shield",
-    "description": "Label for top shields switch in shields header"
+  "forThisSite": {
+    "message": "voor deze site.",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Beneden",
-    "description": "Label for top shields switch in shields header turned off position"
+  "enabledMessage": {
+    "message": "Als een site beschadigd lijkt te zijn, probeer schilden te deactiveren.",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Omhoog",
-    "description": "Label for top shields switch in shields header turned on position"
+  "disabledMessage": {
+    "message": "U surft op deze site zonder enige privacybescherming en beveiliging.",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Site shield-instellingen voor",
-    "description": "Label for shields header near current site name"
+  "blockAds": {
+    "message": "Advertenties en trackers worden geblokkeerd.",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Geavanceerde instellingen",
-    "description": "Label for advanced controls group"
+  "blockPopups": {
+    "message": "Pop-ups worden geblokkeerd.",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Beheer advertenties",
-    "description": "Label for Advertisement Control dropdown box options "
+  "blockImages": {
+    "message": "Afbeeldingen worden geblokkeerd.",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Blokkeer advertenties",
-    "description": "Ad Control dropdown box, option block ads"
+  "block3partyCookies": {
+    "message": "Cookies van derden zijn geblokkeerd.",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Sta advertenties en tracking toe",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "allowAllCookies": {
+    "message": "Alle cookies zijn toegestaan.",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Cookie-beheer",
-    "description": "Label Cookie Control dropdown options"
+  "blockAllCookies": {
+    "message": "Cookies zijn geblokkeerd.",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Blokkeer Cookies van Derden",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockSomeScripts": {
+    "message": "Sommige scripts zworden geblokkeerd.",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Sta Alle Cookies Toe",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "allowAllScripts": {
+    "message": "Alle toegestane scripts",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Blokkeer Alle Cookies",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "blockAllScriptsOrigins": {
+    "message": "Scripts zijn geblokkeerd.",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Vingerafdrukbescherming",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "block3partyFingerprinting": {
+    "message": "Apparaatherkenning door derden is geblokkeerd.",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Blokkeer vingerafdrukverzoeken van derde partijen.",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "allowAllFingerprinting": {
+    "message": "Alle apparaatherkenning zijn toegestaan.",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Sta alle vingerafdrukverzoeken toe",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "blockAllFingerprinting": {
+    "message": "Apparaatherkenning wordt geblokkeerd.",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Blokkeer alle digitale fingerprinting",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockPishing": {
+    "message": "Phishing/malware-pogingen worden geblokkeerd",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "Overal HTTPS",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "connectionsEncrypted": {
+    "message": "Versleutelde Verbindingen",
+    "description": "Message indicating the number of connections encrypted"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Blokkeer scripts",
-    "description": "Shields controls, switch for Block Scripts"
+  "editDefaults": {
+    "message": "Wereldwijde standaardinstellingen van het schild",
+    "description": "Message linking shields to the global shield settings"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Blokkeer phising/malware",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "cookiesOnThisSite": {
+    "message": "Cookies op deze site",
+    "description": "Message for the cookie resources blocked panel"
   },
-
-  "noScriptSwitches": {
-    "message": "Zet aan of uit om het blokkeren van script uit te schakelen",
-    "description": "Instructions for per-origin noScript switches"
+  "deviceRecognitionAttempts": {
+    "message": "Pogingen voor apparaatherkenning",
+    "description": "Message for the device recognition attempts blocked panel"
   },
-  "noScriptApplyOnce": {
-    "message": "Pas toe",
-    "description": "Label for applying per-origin noScript settings"
+  "scriptsOnThisSite": {
+    "message": "Scripts op deze site",
+    "description": "Message for the script resources blocked panel"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Pas standaard shield-instellingen aan...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "blockedScripts": {
+    "message": "Geblokkeerde scripts",
+    "description": "Message for the script resources blocked"
   },
-  "shieldsFooterReload":{
-    "message": "Herladen...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "allowedScripts": {
+    "message": "Toegestane scripts",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Alles toestaan",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Toestaan",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Toegestaan",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Alles blokkeren",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Blokkeren",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Geblokkeerd",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Toepassen",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Eenmaal toepassen",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Toepassen tot herstarten",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Altijd van toepassing",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Ongedaan maken",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Annuleren",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Ga terug",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

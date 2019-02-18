@@ -3,121 +3,164 @@
     "message": "Brave -laajennus",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Mainokset ja jäljittäjät estetty",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  "shields": {
+    "message": "Shields",
+    "description": "The Shields feature name"
   },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS -päivitykset",
-    "description": "Label for shields stats, HTTPS upgrades count"
+  "up": {
+    "message": "ylös",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Komentosarjat estetty",
-    "description": "Label for shields stats, Scripts Blocked count"
+  "down": {
+    "message": "alas",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Tunnistemenetelmät estetty",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+  "totalBlocked": {
+    "message": "Estettyjä yhteensä",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsHeaderShieldsToggle": {
-    "message": "Suojaukset",
-    "description": "Label for top shields switch in shields header"
+  "forThisSite": {
+    "message": "tälle sivustolle",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Alas",
-    "description": "Label for top shields switch in shields header turned off position"
+  "enabledMessage": {
+    "message": "Jos sivusto ei näytä toimivan oikein, kokeile ottaa suojat pois käytöstä",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Ylös",
-    "description": "Label for top shields switch in shields header turned on position"
+  "disabledMessage": {
+    "message": "Selaat tätä sivua ilman yksityisyys- ja turvallisuussuojausta",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Sivuston suoja-asetukset koskien",
-    "description": "Label for shields header near current site name"
+  "blockAds": {
+    "message": "Mainokset ja seuraajat estetty",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Tarkemmat asetukset",
-    "description": "Label for advanced controls group"
+  "blockPopups": {
+    "message": "Ponnahdusikkunat estetty",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Mainostenhallinta",
-    "description": "Label for Advertisement Control dropdown box options "
+  "blockImages": {
+    "message": "Estettyjä kuvia",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Estä mainokset",
-    "description": "Ad Control dropdown box, option block ads"
+  "block3partyCookies": {
+    "message": "Kolmannen osapuolen evästeet estetty",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Salli mainokset ja jäljitys",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "allowAllCookies": {
+    "message": "Kaikki evästeet sallittu",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Evästeiden hallinta",
-    "description": "Label Cookie Control dropdown options"
+  "blockAllCookies": {
+    "message": "Evästeet estetty",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Estä kolmannen osapuolen evästeet",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockSomeScripts": {
+    "message": "Joitakin komentosarjoja estetty",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Salli kaikki evästeet",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "allowAllScripts": {
+    "message": "Kaikki skriptit sallittu",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Estä kaikki evästeet",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "blockAllScriptsOrigins": {
+    "message": "Skriptit estetty.",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Tunnistesuojaus",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "block3partyFingerprinting": {
+    "message": "Ulkopuolisen laitteen tunnistus estetty",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Estä kolmannen osapuolen tunnisteet",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "allowAllFingerprinting": {
+    "message": "Kaikkien laitteiden tunnistus sallittu",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Salli kaikki sormenjälkien käyttö",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "blockAllFingerprinting": {
+    "message": "Laitteen tunnistus estetty",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Estä kaikki tunnisteet",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockPishing": {
+    "message": "Phishing/haittaohjelmayritys estetty",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS Everywhere",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "connectionsEncrypted": {
+    "message": "Salatut yhteydet",
+    "description": "Message indicating the number of connections encrypted"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Estä komentosarjat",
-    "description": "Shields controls, switch for Block Scripts"
+  "editDefaults": {
+    "message": "Yleiset shield-oletukset",
+    "description": "Message linking shields to the global shield settings"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Estä kalastelu/haittaohjelmat",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "cookiesOnThisSite": {
+    "message": "Tämän sivuston evästeet",
+    "description": "Message for the cookie resources blocked panel"
   },
-
-  "noScriptSwitches": {
-    "message": "Vaihda ottaaksesi komentosarjojen eston pois käytöstä",
-    "description": "Instructions for per-origin noScript switches"
+  "deviceRecognitionAttempts": {
+    "message": "Laitteen tunnistuksen yrityksiä",
+    "description": "Message for the device recognition attempts blocked panel"
   },
-  "noScriptApplyOnce": {
+  "scriptsOnThisSite": {
+    "message": "Tämän sivuston skriptit",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Estetyt skriptit",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Sallitut skriptit",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Salli kaikki",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Salli",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Sallittu",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Estä kaikki",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Estä",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Estetty",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
     "message": "Käytä",
-    "description": "Label for applying per-origin noScript settings"
+    "description": "Message for the button inside dynamic list of resources blocked"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Muokkaa oletussuoja-asetuksia...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "applyOnce": {
+    "message": "Käytä kerran",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
   },
-  "shieldsFooterReload":{
-    "message": "Lataa uudelleen...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "applyUntilRestart": {
+    "message": "Käytä uudelleenkäynnistykseen saakka",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Käytä aina",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Pura",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Peruuta",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Palaa",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

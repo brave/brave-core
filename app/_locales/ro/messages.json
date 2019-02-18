@@ -3,121 +3,164 @@
     "message": "Extensia Brave",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Reclame și trackere blocate",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
-  },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "Actualizări HTTPS",
-    "description": "Label for shields stats, HTTPS upgrades count"
-  },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Scripturi blocate",
-    "description": "Label for shields stats, Scripts Blocked count"
-  },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Metode de amprentare blocate",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
-  },
-
-  "shieldsHeaderShieldsToggle": {
+  "shields": {
     "message": "Scuturi",
-    "description": "Label for top shields switch in shields header"
+    "description": "The Shields feature name"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Jos",
-    "description": "Label for top shields switch in shields header turned off position"
+  "up": {
+    "message": "sus",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Sus",
-    "description": "Label for top shields switch in shields header turned on position"
+  "down": {
+    "message": "jos",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Setări scut site pentru",
-    "description": "Label for shields header near current site name"
+  "totalBlocked": {
+    "message": "Total blocate",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Controale avansate",
-    "description": "Label for advanced controls group"
+  "forThisSite": {
+    "message": "pentru acest site",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Control reclame",
-    "description": "Label for Advertisement Control dropdown box options "
+  "enabledMessage": {
+    "message": "Dacă un site pare că nu funcționează, încercați să dezactivați scuturile",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Blochează reclame",
-    "description": "Ad Control dropdown box, option block ads"
+  "disabledMessage": {
+    "message": "Navigați pe acest site fără nicio protecție de confidențialitate și securitate.",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Permite reclame și urmărire",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "blockAds": {
+    "message": "Reclame și urmăritori blocați",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Control cookie",
-    "description": "Label Cookie Control dropdown options"
+  "blockPopups": {
+    "message": "Pop-up-uri blocate",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Blochează cookie-uri de la terți",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockImages": {
+    "message": "Imagini blocate",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Permite toate fișierele cookie",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "block3partyCookies": {
+    "message": "Module cookie de la părți terțe blocate",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Blochează toate cookie-urile",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "allowAllCookies": {
+    "message": "Toate cookie-urile permise",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Protecție amprentare",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "blockAllCookies": {
+    "message": "Cookie-uri blocate",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Blochează amprentarea de către terți",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "blockSomeScripts": {
+    "message": "Unele scripturi sunt blocate",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Permite toate amprentările",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "allowAllScripts": {
+    "message": "Toate scripturile permise",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Blochează toate amprentările",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockAllScriptsOrigins": {
+    "message": "Scripturi blocate",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS peste tot",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "block3partyFingerprinting": {
+    "message": "Recunoașterea terților de către dispozitiv a fost blocată",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Blocare script",
-    "description": "Shields controls, switch for Block Scripts"
+  "allowAllFingerprinting": {
+    "message": "Recunoașterea tuturor dispozitivelor este permisă",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Blocare phishing/malware",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "blockAllFingerprinting": {
+    "message": "Recunoașterea dispozitivului a fost blocată",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-
-  "noScriptSwitches": {
-    "message": "Comutați întrerupătoarele pentru a dezactiva blocarea scriptului",
-    "description": "Instructions for per-origin noScript switches"
+  "blockPishing": {
+    "message": "Încercări de phishing/malware blocate",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-  "noScriptApplyOnce": {
-    "message": "Aplică",
-    "description": "Label for applying per-origin noScript settings"
+  "connectionsEncrypted": {
+    "message": "Conexiuni criptate",
+    "description": "Message indicating the number of connections encrypted"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Editare setări implicite scut...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "editDefaults": {
+    "message": "Valori implicite pentru scuturile globale",
+    "description": "Message linking shields to the global shield settings"
   },
-  "shieldsFooterReload":{
-    "message": "Reîncarcă...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "cookiesOnThisSite": {
+    "message": "Cookie-uri pe acest site",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Încercări recunoaștere dispozitiv",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Scripturi pe acest site",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Scripturi blocate",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Scripturi Permise",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Permite tot",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Permite",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Permis",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Blocare toate",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Blochează",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Blocat",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Aplicare",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Se aplică o dată",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Aplicare până la restart",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Se aplică întotdeauna",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Anulare acțiune",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Anulează",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Înapoi",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

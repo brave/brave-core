@@ -1,123 +1,166 @@
 {
   "appName": {
-    "message": "The Brave Extension",
+    "message": "Brave এক্সটেনশন",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Ads and Trackers Blocked",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  "shields": {
+    "message": "শিল্ড",
+    "description": "The Shields feature name"
   },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS Upgrades",
-    "description": "Label for shields stats, HTTPS upgrades count"
+  "up": {
+    "message": "উপরে",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Scripts Blocked",
-    "description": "Label for shields stats, Scripts Blocked count"
+  "down": {
+    "message": "নীচে",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Fingerprinting Methods Blocked",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+  "totalBlocked": {
+    "message": "মোট যতগুলি ব্লক করা হয়েছে",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsHeaderShieldsToggle": {
-    "message": "Shields",
-    "description": "Label for top shields switch in shields header"
+  "forThisSite": {
+    "message": "এই সাইটটির জন্য",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Down",
-    "description": "Label for top shields switch in shields header turned off position"
+  "enabledMessage": {
+    "message": "যদি কোনো সাইট অসম্পূর্ণ থাকে, তবে নীচে শিল্ডগুলি ব্যবহার করে দেখুন",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Up",
-    "description": "Label for top shields switch in shields header turned on position"
+  "disabledMessage": {
+    "message": "আপনি কোনো গোপনীয়তা এবং নিরাপত্তার সুরক্ষা ছাড়াই এই সাইটটি ব্রাউজ করছেন।",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Site shield settings for",
-    "description": "Label for shields header near current site name"
+  "blockAds": {
+    "message": "যতগুলি বিজ্ঞাপন এবং ট্র্যাক ব্লক করা হয়েছে",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Advanced Controls",
-    "description": "Label for advanced controls group"
+  "blockPopups": {
+    "message": "যতগুলি পপ-আপ ব্লক করা হয়েছে",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Ad Control",
-    "description": "Label for Advertisement Control dropdown box options "
+  "blockImages": {
+    "message": "যতগুলি চিত্র ব্লক করা হয়েছে",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Block Ads",
-    "description": "Ad Control dropdown box, option block ads"
+  "block3partyCookies": {
+    "message": "3য়-পক্ষ কুকিগুলি ব্লক করা হয়েছে",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Allow Ads and Tracking",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "allowAllCookies": {
+    "message": "সমস্ত কুকি অনুমোদন করা হয়েছে",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Cookie Control",
-    "description": "Label Cookie Control dropdown options"
+  "blockAllCookies": {
+    "message": "কুকিগুলি ব্লক করা হয়েছে",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Block 3rd Party Cookies",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockSomeScripts": {
+    "message": "কিছু স্ক্রিপ্ট ব্লক করা হয়েছে",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Allow All Cookies",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "allowAllScripts": {
+    "message": "সমস্ত স্ক্রিপ্ট অনুমোদন করা হয়েছে",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Block All Cookies",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "blockAllScriptsOrigins": {
+    "message": "স্ক্রিপ্টগুলি ব্লক করা হয়েছে",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Fingerprinting Protection",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "block3partyFingerprinting": {
+    "message": "3য়-পক্ষ ডিভাইস শনাক্তকরণ ব্লক করা হয়েছে",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Block 3rd Party Fingerprinting",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "allowAllFingerprinting": {
+    "message": "সমস্ত ডিভাইস শনাক্তকরণ অনুমোদন করা হয়েছে",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Allow All Fingerprinting",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "blockAllFingerprinting": {
+    "message": "ডিভাইস শনাক্রকরণ ব্লক করা হয়েছে",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Block All Fingerprinting",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockPishing": {
+    "message": "ফিশিং/ম্যালওয়ার প্রচেষ্টাগুলি ব্লক করা হয়েছে",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS Everywhere",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "connectionsEncrypted": {
+    "message": "যে সংযোগগুলো এনক্রিপ্ট করা হয়েছে",
+    "description": "Message indicating the number of connections encrypted"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Block Scripts",
-    "description": "Shields controls, switch for Block Scripts"
+  "editDefaults": {
+    "message": "গ্লোবাল শিল্ড ডিফল্টগুলি",
+    "description": "Message linking shields to the global shield settings"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Block Phishing/Malware",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "cookiesOnThisSite": {
+    "message": "এই সাইটটিতে থাকা কুকিগুলি",
+    "description": "Message for the cookie resources blocked panel"
   },
-
-  "noScriptSwitches": {
-    "message": "Toggle switches to disable script blocking",
-    "description": "Instructions for per-origin noScript switches"
+  "deviceRecognitionAttempts": {
+    "message": "ডিভাইস শনাক্তকরণ প্রচেষ্টাগুলি",
+    "description": "Message for the device recognition attempts blocked panel"
   },
-  "noScriptApplyOnce": {
-    "message": "Apply",
-    "description": "Label for applying per-origin noScript settings"
+  "scriptsOnThisSite": {
+    "message": "এই সাইটটিতে থাকা স্ক্রিপ্টগুলি",
+    "description": "Message for the script resources blocked panel"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Edit default shield settings...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "blockedScripts": {
+    "message": "ব্লক করা স্ক্রিপ্টগুলি",
+    "description": "Message for the script resources blocked"
   },
-  "shieldsFooterReload":{
-    "message": "Reload...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "allowedScripts": {
+    "message": "অনুমোদিত স্ক্রিপ্টগুলি",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "সমস্ত অনুমোদন করুন",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "অনুমতি দিন",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "অনুমোদন করা হয়েছে",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "সমস্ত ব্লক করুন",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "ব্লক করুন",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "ব্লক করা হয়েছে",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "প্রয়োগ করুন",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "একবার প্রয়োগ করুন",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "পুনরায় শুরু না হওয়া পর্যন্ত প্রয়োগ করুন",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "সর্বদা প্রয়োগ করুন",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "পূর্বাবস্থায় ফেরান",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "বাতিল করুন",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "ফিরে যান",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

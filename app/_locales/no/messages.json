@@ -3,121 +3,164 @@
     "message": "Brave-utvidelsen",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Annonser og sporing blokkert",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
-  },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS-oppgraderinger",
-    "description": "Label for shields stats, HTTPS upgrades count"
-  },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Blokkerte skript",
-    "description": "Label for shields stats, Scripts Blocked count"
-  },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Fingeravtrykkmetoder blokkert",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
-  },
-
-  "shieldsHeaderShieldsToggle": {
+  "shields": {
     "message": "Skjold",
-    "description": "Label for top shields switch in shields header"
+    "description": "The Shields feature name"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Ned",
-    "description": "Label for top shields switch in shields header turned off position"
+  "up": {
+    "message": "Oppe",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Opp",
-    "description": "Label for top shields switch in shields header turned on position"
+  "down": {
+    "message": "nede",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Innstillinger til nettside-shield til",
-    "description": "Label for shields header near current site name"
+  "totalBlocked": {
+    "message": "Blokkert totalt",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Avanserte kontroller",
-    "description": "Label for advanced controls group"
+  "forThisSite": {
+    "message": "for denne siden",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Annonsekontroll",
-    "description": "Label for Advertisement Control dropdown box options "
+  "enabledMessage": {
+    "message": "Hvis en side ikke virker, prøv å deaktivere skjold.",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Blokker annonser",
-    "description": "Ad Control dropdown box, option block ads"
+  "disabledMessage": {
+    "message": "Du besøker denne siden uten personvern og sikkerhetsinnstillinger",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Tillat annonser og sporing",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "blockAds": {
+    "message": "Annonser og sporere blokkert",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "kontroll av informasjonskapsler",
-    "description": "Label Cookie Control dropdown options"
+  "blockPopups": {
+    "message": "Forgrunnsvinduer blokkert",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Blokker tredjeparts informasjonskapsler",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockImages": {
+    "message": "Bilder er blokkerte",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Tillat alle informasjonskapsler",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "block3partyCookies": {
+    "message": "Tredjeparts-informasjonskapsler er blokkert",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Blokker alle informasjonskapsler",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "allowAllCookies": {
+    "message": "Alle informasjonskapsler er tillatt",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Fingeravtrykkbeskyttelse",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "blockAllCookies": {
+    "message": "Informasjonskapler er blokkert",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Blokker tredjeparts fingeravtrykk",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "blockSomeScripts": {
+    "message": "Noen skript blokkert",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Tillat all fingeravtrykking",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "allowAllScripts": {
+    "message": "Alle skript er tillatt",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Blokker all fingeravtrykking",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockAllScriptsOrigins": {
+    "message": "Skript blokkert",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS over alt",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "block3partyFingerprinting": {
+    "message": "Tredjeparts gjenkjenning av enheter er blokkert",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Blokker skript",
-    "description": "Shields controls, switch for Block Scripts"
+  "allowAllFingerprinting": {
+    "message": "Alle gjenkjenningsmetoder for enheten tillatt",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Blokker Phishing/Malware",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "blockAllFingerprinting": {
+    "message": "Enhets-gjenkjenning er blokkert",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-
-  "noScriptSwitches": {
-    "message": "Bytt bryter for å deaktivere script-blokkering",
-    "description": "Instructions for per-origin noScript switches"
+  "blockPishing": {
+    "message": "Nettsnoking/ondsinnet programvare-forsøk blokkert",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-  "noScriptApplyOnce": {
-    "message": "Legg til",
-    "description": "Label for applying per-origin noScript settings"
+  "connectionsEncrypted": {
+    "message": "Tilkoblinger er kodet",
+    "description": "Message indicating the number of connections encrypted"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Rediger standardinnstillinger for skjold...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "editDefaults": {
+    "message": "Vanlige innstillinger for \"globalt skjold\"",
+    "description": "Message linking shields to the global shield settings"
   },
-  "shieldsFooterReload":{
-    "message": "Last inn på nytt...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "cookiesOnThisSite": {
+    "message": "Informasjonskapsler på dette nettstedet",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Forsøk på enhetsgjenkjenning ",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Skript på denne siden",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Blokkerte skript",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Godkjente skript",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Tillat alle",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Tillat",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Tillatt",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Blokker alle",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Blokker",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Blokkert",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Bruk",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Bruk én gang",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Gjelder til omstart",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Bruk alltid",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Gjør om",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Kanseller",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Gå tilbake",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

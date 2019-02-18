@@ -3,121 +3,164 @@
     "message": "Разширението Brave",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
+  "shields": {
+    "message": "Защити",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "нагоре",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "надолу",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "Общо блокирани",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "за този сайт",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Ако даден сайт изглежда прекъснат, опитайте щитовете по-долу",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Сърфирате този сайт без никаква защита на личните данни и на сигурността.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
     "message": "Рекламите и тракерите са блокирани",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS надстройки",
-    "description": "Label for shields stats, HTTPS upgrades count"
+  "blockPopups": {
+    "message": "Блокирани изскачащи прозорци",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Скриптовете са блокирани",
-    "description": "Label for shields stats, Scripts Blocked count"
+  "blockImages": {
+    "message": "Блокирани изображения",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Методът за пръстови отпечатъци е блокиран",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+  "block3partyCookies": {
+    "message": "Бисквитките на 3-та страна са блокирани",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-
-  "shieldsHeaderShieldsToggle": {
-    "message": "Щитове",
-    "description": "Label for top shields switch in shields header"
+  "allowAllCookies": {
+    "message": "Всички „бисквитки“ са разрешени",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Надолу",
-    "description": "Label for top shields switch in shields header turned off position"
+  "blockAllCookies": {
+    "message": "Блокирани бисквитки",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Нагоре",
-    "description": "Label for top shields switch in shields header turned on position"
+  "blockSomeScripts": {
+    "message": "Някои скриптове бяха блокирани",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsHeaderForSite": {
-    "message": "Настройки на щита на сайта за",
-    "description": "Label for shields header near current site name"
+  "allowAllScripts": {
+    "message": "Всички скриптове са разрешени",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Допълнително управление",
-    "description": "Label for advanced controls group"
+  "blockAllScriptsOrigins": {
+    "message": "Блокирани скриптове",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Управление на рекламите",
-    "description": "Label for Advertisement Control dropdown box options "
+  "block3partyFingerprinting": {
+    "message": "Устройство на 3-та страна за разпознаване е блокирано",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Блокиране на рекламите",
-    "description": "Ad Control dropdown box, option block ads"
+  "allowAllFingerprinting": {
+    "message": "Позволено е разпознаване на всички устройства",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Разрешаване на рекламите и проследяването",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "blockAllFingerprinting": {
+    "message": "Разпознаването на устройството е блокирано",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Управление на бисквитки",
-    "description": "Label Cookie Control dropdown options"
+  "blockPishing": {
+    "message": "Блокирани опити за фишинг/малуеър",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Блокиране бисквитките на трети страни",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "connectionsEncrypted": {
+    "message": "Връзките са шифровани",
+    "description": "Message indicating the number of connections encrypted"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Разреши всички бисквитки ",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "editDefaults": {
+    "message": "Настройки по подразбиране на глобалния щит",
+    "description": "Message linking shields to the global shield settings"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Блокиране на всички бисквитки",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "cookiesOnThisSite": {
+    "message": "Бисквитките на този сайт",
+    "description": "Message for the cookie resources blocked panel"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Защита на пръстови отпечатъци",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "deviceRecognitionAttempts": {
+    "message": "Опити за разпознаване на устройството",
+    "description": "Message for the device recognition attempts blocked panel"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Блокиране на отпечатъци от трети страни",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "scriptsOnThisSite": {
+    "message": "Скриптове на този сайт",
+    "description": "Message for the script resources blocked panel"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Разрешаване на всички пръстови отпечатъци",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "blockedScripts": {
+    "message": "Блокирани скриптове",
+    "description": "Message for the script resources blocked"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Блокиране на всички пръстови отпечатъци",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "allowedScripts": {
+    "message": "Разрешени скриптове",
+    "description": "Message for the script resources allowed"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS навсякъде",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "allowAll": {
+    "message": "Разреши всички",
+    "description": "Message for the resources blocked *allow all* option"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Блокиране на скриптове",
-    "description": "Shields controls, switch for Block Scripts"
+  "allow": {
+    "message": "Позволи",
+    "description": "Message for the resources blocked *allow* option"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Блокиране на фишинг/малуеър",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "allowed": {
+    "message": "Разрешено",
+    "description": "Message for the resources blocked *allowed* option"
   },
-
-  "noScriptSwitches": {
-    "message": "Задействайте превключвателите, за да деактивирате блокирането на скриптовете",
-    "description": "Instructions for per-origin noScript switches"
+  "blockAll": {
+    "message": "Блокиране на всички",
+    "description": "Message for the resources blocked *block all* option"
   },
-  "noScriptApplyOnce": {
-    "message": "Приложи",
-    "description": "Label for applying per-origin noScript settings"
+  "block": {
+    "message": "Блокиране",
+    "description": "Message for the resources blocked *block* option"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Редактиране на настройките на щита по подразбиране...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "blocked": {
+    "message": "Блокиран",
+    "description": "Message for the resources blocked *blocked* option"
   },
-  "shieldsFooterReload":{
-    "message": "Презареждане...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "apply": {
+    "message": "Прилагане",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Приложи веднъж",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Приложи до рестартиране",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Прилагайте винаги",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Отмяна",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Отказ",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Назад",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

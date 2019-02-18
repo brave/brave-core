@@ -3,121 +3,164 @@
     "message": "Rozšíranie Brave",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Reklamy a trackery zakázané",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  "shields": {
+    "message": "Ochrana",
+    "description": "The Shields feature name"
   },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS aktualizácie",
-    "description": "Label for shields stats, HTTPS upgrades count"
+  "up": {
+    "message": "hore",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Skripty blokované",
-    "description": "Label for shields stats, Scripts Blocked count"
+  "down": {
+    "message": "dole",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Metódy odtlačkov prstov sú blokované",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+  "totalBlocked": {
+    "message": "Zablokovaný celok",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsHeaderShieldsToggle": {
-    "message": "Štíty",
-    "description": "Label for top shields switch in shields header"
+  "forThisSite": {
+    "message": "pre túto stránku",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "dolu",
-    "description": "Label for top shields switch in shields header turned off position"
+  "enabledMessage": {
+    "message": "Ak sa stránka zdá byť poškodená, skúste deaktivovať ochranu",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Hore",
-    "description": "Label for top shields switch in shields header turned on position"
+  "disabledMessage": {
+    "message": "Túto stránku si prehliadate bez akéhokoľvek zabezpečenia ochrany súkromia.  ",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Nastavenia ochrany stránky pre",
-    "description": "Label for shields header near current site name"
+  "blockAds": {
+    "message": "Reklamy a stopovače blokované",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Pokročilé ovládacie prvky",
-    "description": "Label for advanced controls group"
+  "blockPopups": {
+    "message": "Zablokované okná pop-up",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Kontrola reklám",
-    "description": "Label for Advertisement Control dropdown box options "
+  "blockImages": {
+    "message": "Obrázky blokované",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Blokovať reklamy",
-    "description": "Ad Control dropdown box, option block ads"
+  "block3partyCookies": {
+    "message": "Blokované súbory cookies pochádzajúce od tretej strany",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Povoliť reklamy a sledovanie",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "allowAllCookies": {
+    "message": "Všetky cookies povolené",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Kontrola súborov cookies",
-    "description": "Label Cookie Control dropdown options"
+  "blockAllCookies": {
+    "message": "Súbory cookies blokované",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Blokovať súbory cookies tretích strán",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockSomeScripts": {
+    "message": "Niektoré skripty sú zablokované",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Povoliť všetky súbory cookies.",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "allowAllScripts": {
+    "message": "Všetky skrypty povolené",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Blokovať všetky súbory cookies",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "blockAllScriptsOrigins": {
+    "message": "Zablokované skripty",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Ochrana pred fingerprinting",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "block3partyFingerprinting": {
+    "message": "Rozpoznávanie zariadenia tretej strany zablokované",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Blokovať fingerprinting tretích strán",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "allowAllFingerprinting": {
+    "message": "Rozpoznanie každého zariadenia povolené",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Povoliť všetky odtlačky prstov.",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "blockAllFingerprinting": {
+    "message": "Rozpoznávanie zariadenia blokované",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Zablokovať všetky odtlačky prstov",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockPishing": {
+    "message": "Phishing/malware pokusy blokované",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS všade",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "connectionsEncrypted": {
+    "message": "Šifrované pripojenia",
+    "description": "Message indicating the number of connections encrypted"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Blokovať skripty",
-    "description": "Shields controls, switch for Block Scripts"
+  "editDefaults": {
+    "message": "Predvolené nastavenia globálneho štítu",
+    "description": "Message linking shields to the global shield settings"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Blokovať Phishing/Malware",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "cookiesOnThisSite": {
+    "message": "Na tejto stránke používame cookies",
+    "description": "Message for the cookie resources blocked panel"
   },
-
-  "noScriptSwitches": {
-    "message": "Prepínač určený na deaktiváciu blokovania skriptov ",
-    "description": "Instructions for per-origin noScript switches"
+  "deviceRecognitionAttempts": {
+    "message": "Pokusy o rozpoznanie zariadenia",
+    "description": "Message for the device recognition attempts blocked panel"
   },
-  "noScriptApplyOnce": {
+  "scriptsOnThisSite": {
+    "message": "Skripty na tejto stránke",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Blokované skripty",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Povolené skrypty",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Povoliť všetky",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Povoliť",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Povolené",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Zablokovať všetko",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Blokovať",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Blokovaný",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
     "message": "Použiť",
-    "description": "Label for applying per-origin noScript settings"
+    "description": "Message for the button inside dynamic list of resources blocked"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Zmeniť predvolené nastavenia štítu",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "applyOnce": {
+    "message": "Použiť raz",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
   },
-  "shieldsFooterReload":{
-    "message": "Znovu načítať...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "applyUntilRestart": {
+    "message": "Použiť až do reštartu",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Vždy aplikovať",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Otvoriť",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Zrušiť",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Vrátiť sa späť",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

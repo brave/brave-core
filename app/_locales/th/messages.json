@@ -3,121 +3,164 @@
     "message": "ส่วนขยาย Brave ",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "บล็อกโฆษณาและตัวติดตาม",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  "shields": {
+    "message": "ปกป้อง",
+    "description": "The Shields feature name"
   },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "การอัพเกรด HTTPS ",
-    "description": "Label for shields stats, HTTPS upgrades count"
+  "up": {
+    "message": "ขึ้น",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsStatsScriptsBlocked": {
-    "message": "บล็อกสคริปต์",
-    "description": "Label for shields stats, Scripts Blocked count"
+  "down": {
+    "message": "ด้านล่าง",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsFingerPrintingBlocked": {
-    "message": "บล็อกวิธีพิมพ์ลายนิ้วมือ",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+  "totalBlocked": {
+    "message": "บล็อคทั้งหมด",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsHeaderShieldsToggle": {
-    "message": "Shields",
-    "description": "Label for top shields switch in shields header"
+  "forThisSite": {
+    "message": "สำหรับเว็บไซต์นี้",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "ล่าง",
-    "description": "Label for top shields switch in shields header turned off position"
+  "enabledMessage": {
+    "message": "หากไซต์ใดมีปัญหาให้ลองลดการปกป้องลง",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "บน",
-    "description": "Label for top shields switch in shields header turned on position"
+  "disabledMessage": {
+    "message": "คุณกำลังเรียกดูไซต์นี้โดยปราศจากการปกป้องความเป็นส่วนตัวและการรักษาความปลอดภัย",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "การตั้งค่าป้องกันไซต์สำหรับ",
-    "description": "Label for shields header near current site name"
+  "blockAds": {
+    "message": "บล็อกโฆษณาและการตามรอยแล้ว",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "การควบคุมระดับสูง",
-    "description": "Label for advanced controls group"
+  "blockPopups": {
+    "message": "บล็อกป๊อปอัปแล้ว",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "ควบคุมโฆษณา",
-    "description": "Label for Advertisement Control dropdown box options "
+  "blockImages": {
+    "message": "บล็อกภาพแล้ว",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "บล็อกโฆษณา",
-    "description": "Ad Control dropdown box, option block ads"
+  "block3partyCookies": {
+    "message": "บล็อกคุ้กกี้ของบุคคลที่สามแล้ว",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "อนุญาตโฆษณาและการติดตาม",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "allowAllCookies": {
+    "message": "อนุญาตคุ้กกี้ทั้งหมด",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "ควบคุมคุกกี้",
-    "description": "Label Cookie Control dropdown options"
+  "blockAllCookies": {
+    "message": "คุ้กกี้ได้รับการบล็อกแล้ว",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "บล็อกคุกกี้จากบุคคลที่ 3",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockSomeScripts": {
+    "message": "บล็อกบางสคริปต์แล้ว",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "อนุญาตคุกกี้ทั้งหมด",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "allowAllScripts": {
+    "message": "สคริปต์ทั้งหมดได้รับอนุญาตแล้ว",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "บล็อกคุกกี้ทั้งหมด",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "blockAllScriptsOrigins": {
+    "message": "บล็อกสคริปต์แล้ว",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "การป้องกันการพิมพ์ลายนิ้วมือ",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "block3partyFingerprinting": {
+    "message": "บล็อกการรับรองอุปกรณ์ของบุคคลที่สามแล้ว",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "บล็อกการพิมพ์ลายนิ้วมือจากบุคคลที่ 3",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "allowAllFingerprinting": {
+    "message": "อนุญาตให้มีการรับรองทุกอุปกรณ์",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "อนุญาตการพิมพ์ลายนิ้วมือทั้งหมด",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "blockAllFingerprinting": {
+    "message": "การรู้จำอุปกรณ์ถูกบล็อค",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "บล็อกการพิมพ์ลายนิ้วมือทั้งหมด",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockPishing": {
+    "message": "บล็อก ฟิชชิ่ง/มัลแวร์ เรียบร้อยแล้ว",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS ทุกที่",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "connectionsEncrypted": {
+    "message": "การเชื่อมต่อได้รับการเข้ารหัส",
+    "description": "Message indicating the number of connections encrypted"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "สคริปต์บล็อก",
-    "description": "Shields controls, switch for Block Scripts"
+  "editDefaults": {
+    "message": "ค่าเริ่มต้นของการปกป้องแบบทั่วไป",
+    "description": "Message linking shields to the global shield settings"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "บล็อกฟิชชิ่ง/มัลแวร์",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "cookiesOnThisSite": {
+    "message": "คุ้กกี้บนไซต์นี้",
+    "description": "Message for the cookie resources blocked panel"
   },
-
-  "noScriptSwitches": {
-    "message": "เปิดสวิทซ์เพื่อปิดการบล็อกสคริปต์",
-    "description": "Instructions for per-origin noScript switches"
+  "deviceRecognitionAttempts": {
+    "message": "ความพยายามในการรู้จำอุปกรณ์",
+    "description": "Message for the device recognition attempts blocked panel"
   },
-  "noScriptApplyOnce": {
-    "message": "ใช้",
-    "description": "Label for applying per-origin noScript settings"
+  "scriptsOnThisSite": {
+    "message": "สคริปต์บนไซต์นี้",
+    "description": "Message for the script resources blocked panel"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "แก้ไขการตั้งค่าเริ่มต้นชิลด์",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "blockedScripts": {
+    "message": "บล็อคสคริปต์ถูกบล็อค",
+    "description": "Message for the script resources blocked"
   },
-  "shieldsFooterReload":{
-    "message": "โหลดซ้ำ...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "allowedScripts": {
+    "message": "อนุญาตสคริปต์",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "อนุญาตทั้งหมด",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "อนุญาต",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "ได้รับอนุญาต",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "บล็อกทั้งหมด",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "บล็อก",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "บล็อกแล้ว",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "ใช้งาน",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "ใช้ครั้งเดียว",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "ทำงานจนกว่าจะรีสตาร์ท",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "ใช้เสมอ",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "แก้",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "ยกเลิก",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "ย้อนกลับ",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

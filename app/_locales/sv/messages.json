@@ -3,121 +3,164 @@
     "message": "Brave-utvidgningen",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Annonser och spårare har blockerats",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
-  },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS uppgraderingar",
-    "description": "Label for shields stats, HTTPS upgrades count"
-  },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Script blockerade",
-    "description": "Label for shields stats, Scripts Blocked count"
-  },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Fingeravtrycksmetoder blockerade",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
-  },
-
-  "shieldsHeaderShieldsToggle": {
+  "shields": {
     "message": "Sköldar",
-    "description": "Label for top shields switch in shields header"
+    "description": "The Shields feature name"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Ned",
-    "description": "Label for top shields switch in shields header turned off position"
+  "up": {
+    "message": "upp",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Upp",
-    "description": "Label for top shields switch in shields header turned on position"
+  "down": {
+    "message": "ned",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Skyddsinställningar för sajten",
-    "description": "Label for shields header near current site name"
+  "totalBlocked": {
+    "message": "Totalt blockerade",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Avancerade inställningar",
-    "description": "Label for advanced controls group"
+  "forThisSite": {
+    "message": "för den här webbplatsen",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Annonskontroll",
-    "description": "Label for Advertisement Control dropdown box options "
+  "enabledMessage": {
+    "message": "Om en webbplats inte verkar fungera, prova att avaktivera sköldarna",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Blockera annonser",
-    "description": "Ad Control dropdown box, option block ads"
+  "disabledMessage": {
+    "message": "Du surfar på denna webbplats utan något integritets- och säkerhetsskydd.",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Tillåt annonser och spårning",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "blockAds": {
+    "message": "Annonser och spårare blockerade",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Kakinställningar",
-    "description": "Label Cookie Control dropdown options"
+  "blockPopups": {
+    "message": "Pop-upfönster blockerade",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Blockera tredjepartscookies",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockImages": {
+    "message": "Bilder blockerade",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Tillåt alla cookies",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "block3partyCookies": {
+    "message": "Tredjepart-cookies blockerade",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Blockera alla cookies",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "allowAllCookies": {
+    "message": "Alla cookies tillåtna",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Fingeravtrycksskydd",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "blockAllCookies": {
+    "message": "Cookies blockerade",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Blockera signaturinsamling av tredjepart",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "blockSomeScripts": {
+    "message": "Vissa skript blockerade",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Tillåt alla fingeravtryck",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "allowAllScripts": {
+    "message": "Alla skript tillåtna",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Blockera all signaturinsamling",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockAllScriptsOrigins": {
+    "message": "Skript blockerade",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS överallt",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "block3partyFingerprinting": {
+    "message": "Igenkänning av tredjepartsenheter blockerad",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Blockera script",
-    "description": "Shields controls, switch for Block Scripts"
+  "allowAllFingerprinting": {
+    "message": "All enhetsigenkänning tillåten",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Blockera nätfiske/skadlig programvara",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "blockAllFingerprinting": {
+    "message": "Enhetsigenkänning blockerad",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-
-  "noScriptSwitches": {
-    "message": "Växla knapparna för att stänga av skriptblockering",
-    "description": "Instructions for per-origin noScript switches"
+  "blockPishing": {
+    "message": "Phishing-/malware-försök blockerade",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-  "noScriptApplyOnce": {
+  "connectionsEncrypted": {
+    "message": "Anslutningar krypterade",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Globala sköldinställningar",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Cookies på webbplatsen",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Försök till enhetsigenkänning",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Skript på den här webbplatse",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Blockerade skript",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Tillåtna skript",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Tillåt alla",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Tillåt",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Tillåten",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Blockera alla",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Blockera",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Blockerad",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
     "message": "Tillämpa",
-    "description": "Label for applying per-origin noScript settings"
+    "description": "Message for the button inside dynamic list of resources blocked"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Redigera sköldens standardinställningar...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "applyOnce": {
+    "message": "Tillämpa en gång",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
   },
-  "shieldsFooterReload":{
-    "message": "Ladda om...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "applyUntilRestart": {
+    "message": "Tillämpa till omstart",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Tillämpa alltid",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Ångra",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Avbryt",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Tillbaka",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }
