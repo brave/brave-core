@@ -17,7 +17,8 @@
 
 // npm run test -- brave_unit_tests --filter=RewardsServiceTest.*
 
-using namespace brave_rewards;
+namespace brave_rewards {
+
 using ::testing::_;
 
 class MockRewardsServiceObserver : public RewardsServiceObserver {
@@ -93,9 +94,12 @@ class RewardsServiceTest : public testing::Test {
 };
 
 TEST_F(RewardsServiceTest, OnWalletProperties) {
-  // We always need to call observer as we report errors back even when we have null pointer
+  // We always need to call observer as we report errors back even when we have
+  // null pointer
   EXPECT_CALL(*observer(), OnWalletProperties(_, 1, _)).Times(1);
   rewards_service()->OnWalletProperties(ledger::Result::LEDGER_ERROR, nullptr);
 }
 
 // add test for strange entries
+
+}  // namespace brave_rewards

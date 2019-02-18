@@ -190,6 +190,9 @@ class RewardsServiceImpl : public RewardsService,
   void SetLedgerEnvForTesting();
 
  private:
+  friend class RewardsServiceTest;
+  FRIEND_TEST_ALL_PREFIXES(RewardsServiceTest, OnWalletProperties);
+
   const extensions::OneShotEvent& ready() const { return ready_; }
   void OnLedgerStateSaved(ledger::LedgerCallbackHandler* handler,
                           bool success);
