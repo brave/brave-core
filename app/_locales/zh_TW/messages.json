@@ -1,123 +1,166 @@
 {
   "appName": {
-    "message": "Brave Extension 擴充元件",
+    "message": "Brave 擴充功能",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "廣告及追蹤已被封鎖",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  "shields": {
+    "message": "屏蔽",
+    "description": "The Shields feature name"
   },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS 升級",
-    "description": "Label for shields stats, HTTPS upgrades count"
+  "up": {
+    "message": "開啟",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsStatsScriptsBlocked": {
-    "message": "封鎖 Scripts",
-    "description": "Label for shields stats, Scripts Blocked count"
+  "down": {
+    "message": "關閉",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsFingerPrintingBlocked": {
-    "message": "已阻擋指紋識別方法",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+  "totalBlocked": {
+    "message": "完全封鎖",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsHeaderShieldsToggle": {
-    "message": "保護",
-    "description": "Label for top shields switch in shields header"
+  "forThisSite": {
+    "message": "為此網站",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "下",
-    "description": "Label for top shields switch in shields header turned off position"
+  "enabledMessage": {
+    "message": "如果某個網站出現故障，請嘗試關閉屏蔽",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "上",
-    "description": "Label for top shields switch in shields header turned on position"
+  "disabledMessage": {
+    "message": "您正在瀏覽此網站，而無任何隱私和安全保護。",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "      的網站保護設定",
-    "description": "Label for shields header near current site name"
+  "blockAds": {
+    "message": "廣告和跟踪廣告被封鎖。",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "進階控管",
-    "description": "Label for advanced controls group"
+  "blockPopups": {
+    "message": "封鎖彈出視窗",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "廣告控制",
-    "description": "Label for Advertisement Control dropdown box options "
+  "blockImages": {
+    "message": "圖片被封鎖",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "阻擋廣告",
-    "description": "Ad Control dropdown box, option block ads"
+  "block3partyCookies": {
+    "message": "第三方 Cookie 被封鎖",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "允許廣告及追蹤",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "allowAllCookies": {
+    "message": "允許所有 cookies.",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Cookie 控制",
-    "description": "Label Cookie Control dropdown options"
+  "blockAllCookies": {
+    "message": "被封鎖的 cookies",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "阻擋第三方 Cookie",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockSomeScripts": {
+    "message": "某些 Scripts 被封鎖",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "允許所有 Cookie",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "allowAllScripts": {
+    "message": "允許所有 scripts",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "封鎖所有Cookies",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "blockAllScriptsOrigins": {
+    "message": "Script 被封鎖",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "指紋保護",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "block3partyFingerprinting": {
+    "message": "封鎖第三方裝置識別",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "封鎖第三方取得指紋",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "allowAllFingerprinting": {
+    "message": "允許所有裝置識別",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "允許所有指紋識別",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "blockAllFingerprinting": {
+    "message": "封鎖裝置識別",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "阻擋所有指紋辨識",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockPishing": {
+    "message": "被封鎖的網絡釣魚或惡意軟件入侵",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS Everywhere",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "connectionsEncrypted": {
+    "message": "連接已加密",
+    "description": "Message indicating the number of connections encrypted"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "阻擋 Script 程式語言",
-    "description": "Shields controls, switch for Block Scripts"
+  "editDefaults": {
+    "message": "全局屏蔽初始值",
+    "description": "Message linking shields to the global shield settings"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "阻擋網路釣魚/惡意程式",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "cookiesOnThisSite": {
+    "message": "此網站的 cookie",
+    "description": "Message for the cookie resources blocked panel"
   },
-
-  "noScriptSwitches": {
-    "message": "切換按鍵以停用 script 封鎖",
-    "description": "Instructions for per-origin noScript switches"
+  "deviceRecognitionAttempts": {
+    "message": "嘗試識別裝置",
+    "description": "Message for the device recognition attempts blocked panel"
   },
-  "noScriptApplyOnce": {
+  "scriptsOnThisSite": {
+    "message": "此網站的 scripts",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "封鎖 scripts",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "允許 scripts",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "全部允許",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "允許",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "允許的",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "全部封鎖",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "封鎖",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "封鎖",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
     "message": "套用",
-    "description": "Label for applying per-origin noScript settings"
+    "description": "Message for the button inside dynamic list of resources blocked"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "編輯預設的 shield 設定",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "applyOnce": {
+    "message": "允許一次",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
   },
-  "shieldsFooterReload":{
-    "message": "重新下載",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "applyUntilRestart": {
+    "message": "套用直到下次",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "永遠套用",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "復原",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "取消",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "回到",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

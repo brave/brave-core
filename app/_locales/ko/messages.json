@@ -1,123 +1,166 @@
 {
   "appName": {
-    "message": "The Brave Extension",
+    "message": "Brave 확장 프로그램",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "광고 및 추적기 차단됨",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  "shields": {
+    "message": "보호",
+    "description": "The Shields feature name"
   },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS 업그레이드",
-    "description": "Label for shields stats, HTTPS upgrades count"
+  "up": {
+    "message": "위로",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsStatsScriptsBlocked": {
-    "message": "차단된 스크립트",
-    "description": "Label for shields stats, Scripts Blocked count"
-  },
-  "shieldsFingerPrintingBlocked": {
-    "message": "지문 방식 차단됨",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
-  },
-
-  "shieldsHeaderShieldsToggle": {
-    "message": "쉴드 ",
-    "description": "Label for top shields switch in shields header"
-  },
-  "shieldsHeaderToggleLeftPosition": {
+  "down": {
     "message": "아래",
-    "description": "Label for top shields switch in shields header turned off position"
+    "description": "Message for when shields is disabled"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "위로 ",
-    "description": "Label for top shields switch in shields header turned on position"
+  "totalBlocked": {
+    "message": "총계 차단됨",
+    "description": "Message showing the amount of all blocked resources"
   },
-  "shieldsHeaderForSite": {
-    "message": "사이트 실드 설정:",
-    "description": "Label for shields header near current site name"
+  "forThisSite": {
+    "message": "이 사이트를 위한",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "고급 조정",
-    "description": "Label for advanced controls group"
+  "enabledMessage": {
+    "message": "사이트가 깨져 보이면, 실드를 내려 보세요",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "광고 통제",
-    "description": "Label for Advertisement Control dropdown box options "
+  "disabledMessage": {
+    "message": "현재 이 사이트를 아무런 개인정보 보호 수단이나 보안 수단 없이 보고 계십니다.",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "광고 차단하기",
-    "description": "Ad Control dropdown box, option block ads"
+  "blockAds": {
+    "message": "광고 및 트래커 차단됨",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "광고 및 추적 허용하기 ",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "blockPopups": {
+    "message": "팝업 차단됨",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "쿠키 제어",
-    "description": "Label Cookie Control dropdown options"
+  "blockImages": {
+    "message": "이미지 차단됨",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "써드파티 쿠키 차단",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "block3partyCookies": {
+    "message": "제삼자 쿠키 차단됨",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "모든 쿠키 허용하기 ",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "allowAllCookies": {
+    "message": "모든 쿠키 차단됨",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "모든 쿠키 차단",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "blockAllCookies": {
+    "message": "쿠키 차단됨",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "지문 보호",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "blockSomeScripts": {
+    "message": "일부 스크립트 차단됨",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "제3자 지문 수집 차단",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "allowAllScripts": {
+    "message": "모든 스크립트 허용됨",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "모든 지문 정보 허용하기",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "blockAllScriptsOrigins": {
+    "message": "스크립트 차단됨",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "모든 지문 정보 차단하기 ",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "block3partyFingerprinting": {
+    "message": "제삼자 기기 인식 차단됨",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS Everywhere",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "allowAllFingerprinting": {
+    "message": "모든 장치 인식 허용됨",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "스크립트 차단하기 ",
-    "description": "Shields controls, switch for Block Scripts"
+  "blockAllFingerprinting": {
+    "message": "기기 인식 차단됨",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "피싱/멀웨어 차단",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "blockPishing": {
+    "message": "피싱/맬웨어 공격시도 차단됨",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-
-  "noScriptSwitches": {
-    "message": "스크립트 차단을 해제하려면 스위치를 토글하세요 ",
-    "description": "Instructions for per-origin noScript switches"
+  "connectionsEncrypted": {
+    "message": "연결이 암호화됨",
+    "description": "Message indicating the number of connections encrypted"
   },
-  "noScriptApplyOnce": {
-    "message": "적용",
-    "description": "Label for applying per-origin noScript settings"
+  "editDefaults": {
+    "message": "글로벌 실드 기본 설정",
+    "description": "Message linking shields to the global shield settings"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "쉴드 기본값 설정 수정...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "cookiesOnThisSite": {
+    "message": "이 사이트의 쿠키",
+    "description": "Message for the cookie resources blocked panel"
   },
-  "shieldsFooterReload":{
-    "message": "다시 로드하기...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "deviceRecognitionAttempts": {
+    "message": "기기 인식 시도",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "이 사이트상에 있는 스크립트",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "차단된 스크립트",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "허용된 스크립트",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "모두 허용하기",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "허용하기",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "허용됨",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "모두 차단하기",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "차단하기",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "차단됨",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "적용하기",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "한번 적용",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "재시작 시까지 적용하기",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "항상 적용하기",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "원상태로 돌리기",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "취소하기",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "되돌아가기",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

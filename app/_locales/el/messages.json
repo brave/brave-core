@@ -3,121 +3,164 @@
     "message": "Η Επέκταση Brave",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Διαφημίσεις κι Ανιχνευτές έχουν Αποκλειστεί",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
-  },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "Αναβαθμίσεις HTTPS",
-    "description": "Label for shields stats, HTTPS upgrades count"
-  },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Αποκλεισμένα Scripts",
-    "description": "Label for shields stats, Scripts Blocked count"
-  },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Αποκλεισμός Μεθόδων Αποτυπωμάτων",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
-  },
-
-  "shieldsHeaderShieldsToggle": {
+  "shields": {
     "message": "Ασπίδες",
-    "description": "Label for top shields switch in shields header"
+    "description": "The Shields feature name"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Κάτω",
-    "description": "Label for top shields switch in shields header turned off position"
+  "up": {
+    "message": "πάνω",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Επάνω",
-    "description": "Label for top shields switch in shields header turned on position"
+  "down": {
+    "message": "κάτω",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Ρυθμίσεις ασπίδας ιστοσελίδας για",
-    "description": "Label for shields header near current site name"
+  "totalBlocked": {
+    "message": "Σύνολο σε φραγή",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Προχωρημένες Ρυθμίσεις",
-    "description": "Label for advanced controls group"
+  "forThisSite": {
+    "message": "γι' αυτόν το ιστότοπο",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Έλεγχος Διαφημίσεων",
-    "description": "Label for Advertisement Control dropdown box options "
+  "enabledMessage": {
+    "message": "Αν μια ιστοσελίδα δείχνει να μην δουλεύει, δοκιμάστε να κατεβάσετε τις ασπίδες",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Αποκλεισμός Διαφημίσεων",
-    "description": "Ad Control dropdown box, option block ads"
+  "disabledMessage": {
+    "message": "Περιηγήσε σε αυτή την ιστοσελίδα χωρίς καμία προστασία ασφαλείας ή απορρήτου.",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Να επιτρέπονται οι Διαφημίσεις και η Ιχνηλάτηση",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "blockAds": {
+    "message": "Διαφημίσεις και trackers σε φραγή",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Έλεγχος Cookies",
-    "description": "Label Cookie Control dropdown options"
+  "blockPopups": {
+    "message": "Αναδυόμενα σε φραγή",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Αποκλεισμός cookies τρίτων",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockImages": {
+    "message": "Εικόνες σε φραγή",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Να Επιτρέπονται Όλα τα Cookies",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "block3partyCookies": {
+    "message": "Φραγή cookies τρίτων",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Αποκλεισμός όλων των cookies",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "allowAllCookies": {
+    "message": "Αποδοχή όλων των cookies",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Προστασία Δακτυλικών Αποτυπωμάτων",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "blockAllCookies": {
+    "message": "Τα cookies έχουν αποκλειστεί",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Αποκλεισμός αποτυπώματος τρίτου",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "blockSomeScripts": {
+    "message": "Φραγή μερικών scripts",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Επιτρέψτε όλα τα δακτυλικά αποτυπώματα ",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "allowAllScripts": {
+    "message": "Αποδοχή όλων των scripts",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Αποκλεισμός Όλων των Αποτυπωμάτων",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockAllScriptsOrigins": {
+    "message": "Scripts σε φραγή",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS Παντού",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "block3partyFingerprinting": {
+    "message": "Φραγή στην αναγνώριση συσκευών τρίτων",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Αποκλεισμός Δέσμης ενεργειών",
-    "description": "Shields controls, switch for Block Scripts"
+  "allowAllFingerprinting": {
+    "message": "Επιτρέπεται αναγνώριση όλων των συσκευών",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Αποκλεισμός Ηλεκτρονικού ψαρέματος/Κακόβουλου λογισμικού",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "blockAllFingerprinting": {
+    "message": "Φραγή αναγνώρισης συσκευών",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-
-  "noScriptSwitches": {
-    "message": "Εναλλαγή διακοπτών για να απενεργοποιήσετε τον αποκλεισμό της δέσμης ενεργειών",
-    "description": "Instructions for per-origin noScript switches"
+  "blockPishing": {
+    "message": "Απόπειρες phishing/κακόβουλου λογισμικού σε φραγή",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-  "noScriptApplyOnce": {
+  "connectionsEncrypted": {
+    "message": "Κρυπτογραφημένες συνδέσεις",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Καθολικές προεπιλογές ασπίδας",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Cookies σε αυτή την ιστοσελίδα",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Προσπάθειες αναγνώρισης συσκευής",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Scripts σε αυτή την ιστοσελίδα",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Scripts σε φραγή",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Επιτρεπόμενα scripts",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Αποδοχή όλων",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Αποδοχή",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Επιτρεπόμενα",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Φραγή όλων",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Φραγή",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Σε φραγή",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
     "message": "Εφαρμογή",
-    "description": "Label for applying per-origin noScript settings"
+    "description": "Message for the button inside dynamic list of resources blocked"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Επεξεργασία προεπιλεγμένων ρυθμίσεων ασπίδας...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "applyOnce": {
+    "message": "Εφαρμόστε μία φορά",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
   },
-  "shieldsFooterReload":{
-    "message": "Επαναφόρτωση...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "applyUntilRestart": {
+    "message": "Εφαρμόστε μέχρι την επανεκκίνηση",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Εφαρμογή πάντα",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Αναίρεση",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Ακύρωση",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Πίσω",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

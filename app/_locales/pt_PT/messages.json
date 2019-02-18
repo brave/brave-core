@@ -3,121 +3,164 @@
     "message": "A Extensão Brave",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Anúncios e Monitorizadores Bloqueados",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  "shields": {
+    "message": "Proteções",
+    "description": "The Shields feature name"
   },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "Upgrades HTTPS",
-    "description": "Label for shields stats, HTTPS upgrades count"
+  "up": {
+    "message": "cima",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Scripts Bloqueados",
-    "description": "Label for shields stats, Scripts Blocked count"
+  "down": {
+    "message": "baixo",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Métodos de Impressão Digital Bloqueados",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+  "totalBlocked": {
+    "message": "Total bloqueados",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsHeaderShieldsToggle": {
-    "message": "Escudos",
-    "description": "Label for top shields switch in shields header"
+  "forThisSite": {
+    "message": "para este site",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Baixo",
-    "description": "Label for top shields switch in shields header turned off position"
+  "enabledMessage": {
+    "message": "Se um site não abrir, tente desativar a proteção",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Cima",
-    "description": "Label for top shields switch in shields header turned on position"
+  "disabledMessage": {
+    "message": "Está a navegar neste site sem qualquer proteção de privacidade e segurança",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Configurações de escudo do site para",
-    "description": "Label for shields header near current site name"
+  "blockAds": {
+    "message": "Anúncios e localizadores bloqueados",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Controlos Avançados",
-    "description": "Label for advanced controls group"
+  "blockPopups": {
+    "message": "Pop-ups bloqueados",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Controlo de anúncios",
-    "description": "Label for Advertisement Control dropdown box options "
+  "blockImages": {
+    "message": "Imagens bloqueadas",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Bloquear Anúncios",
-    "description": "Ad Control dropdown box, option block ads"
+  "block3partyCookies": {
+    "message": "Cookies de terceiros bloqueados",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Permitir Anúncios e Monitorização",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "allowAllCookies": {
+    "message": "Todos os cookies permitidos",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Controlo de Cookies",
-    "description": "Label Cookie Control dropdown options"
+  "blockAllCookies": {
+    "message": "Cookies bloqueados",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Bloquear Cookies de Terceiros",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockSomeScripts": {
+    "message": "Alguns scripts bloqueados",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Permitir Todas as Cookies",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "allowAllScripts": {
+    "message": "Todos os scripts permitidos",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Bloquear Todas as Cookies",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "blockAllScriptsOrigins": {
+    "message": "Scripts bloqueados",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Proteção de Impressão Digital",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "block3partyFingerprinting": {
+    "message": "Reconhecimento de dispositivos de terceiros bloqueado",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Bloquear Impressão Digital de Terceiros",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "allowAllFingerprinting": {
+    "message": "Todos os reconhecimentos de dispositivos permitidos",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Permitir Todas as Impressões Digitais",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "blockAllFingerprinting": {
+    "message": "Reconhecimento de dispositivos bloqueado",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Bloquear todas as impressões digitais",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockPishing": {
+    "message": "Tentativas de phishing/malware bloqueadas",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS em todo o lado",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "connectionsEncrypted": {
+    "message": "Ligações encriptadas",
+    "description": "Message indicating the number of connections encrypted"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Bloquear Scripts",
-    "description": "Shields controls, switch for Block Scripts"
+  "editDefaults": {
+    "message": "Proteção global predefinida",
+    "description": "Message linking shields to the global shield settings"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Bloquear Phishing /Malware",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "cookiesOnThisSite": {
+    "message": "Cookies neste site",
+    "description": "Message for the cookie resources blocked panel"
   },
-
-  "noScriptSwitches": {
-    "message": "Interruptores seletores para desativar o bloqueio de scripts",
-    "description": "Instructions for per-origin noScript switches"
+  "deviceRecognitionAttempts": {
+    "message": "Tentativas de reconhecimento de dispositivos",
+    "description": "Message for the device recognition attempts blocked panel"
   },
-  "noScriptApplyOnce": {
+  "scriptsOnThisSite": {
+    "message": "Scripts neste site",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Scripts bloqueados",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Scripts permitidos",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Permitir todos",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Permitir",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Permitidos",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Bloquear todos",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Bloquear",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Bloqueados",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
     "message": "Aplicar",
-    "description": "Label for applying per-origin noScript settings"
+    "description": "Message for the button inside dynamic list of resources blocked"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Editar configurações de escudo pré-definidas...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "applyOnce": {
+    "message": "Aplicar uma vez",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
   },
-  "shieldsFooterReload":{
-    "message": "Recarregar...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "applyUntilRestart": {
+    "message": "Aplicar até reiniciar",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Aplicar sempre",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Anular",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Cancelar",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Voltar",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

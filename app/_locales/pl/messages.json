@@ -1,123 +1,166 @@
 {
   "appName": {
-    "message": "Rozszerzenie przeglądarki Brave",
+    "message": "Rozszerzenie Brave",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Zablokowane reklamy i program do monitorowania",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  "shields": {
+    "message": "Tarcze",
+    "description": "The Shields feature name"
   },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "Uaktualnienia HTTPS",
-    "description": "Label for shields stats, HTTPS upgrades count"
+  "up": {
+    "message": "włączone",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsStatsScriptsBlocked": {
+  "down": {
+    "message": "wyłączone",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "Wszystkich zablokowanych",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "dla tej strony",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Jeśli strona nie działa, spróbuj wyłączyć tarcze",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Przeglądasz stronę bez żadnych zabezpieczeń prywatności lub oprogramowania.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "Zablokowane reklamy i skrypty śledzące",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "Wyskajujące okienka zostały zablokowane",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "Grafiki zostały zablokowane",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "Pliki cookie stron trzecich zablokowane",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "Wszystkie pliki cookies dozwolone",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "Pliki cookies zablokowane",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Niektóre skrypty są zablokowane",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Wszystkie skrypty dozwolone",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Skrypty zablokowane",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "Rozpoznawanie urządzeń przez strony trzecie zablokowane",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "Rozpoznawanie urządzeń dozwolone",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Rozpoznawanie urządzeń zablokowane",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Próby phishingu / złośliwego oprogramowania zostały zablokowane",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Połączenia szyfrowane",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Domyślne ustawienia tarcz",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Pliki cookies na tej stronie",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Próby rozpoznania urządzenia",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Skrypty na tej stronie",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
     "message": "Zablokowane skrypty",
-    "description": "Label for shields stats, Scripts Blocked count"
+    "description": "Message for the script resources blocked"
   },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Zablokowano metody związane z odciskami palców",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+  "allowedScripts": {
+    "message": "Skrypty dozwolone",
+    "description": "Message for the script resources allowed"
   },
-
-  "shieldsHeaderShieldsToggle": {
-    "message": "Osłony",
-    "description": "Label for top shields switch in shields header"
+  "allowAll": {
+    "message": "Zezwalaj na wszystkie",
+    "description": "Message for the resources blocked *allow all* option"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Na dole",
-    "description": "Label for top shields switch in shields header turned off position"
+  "allow": {
+    "message": "Zezwalaj",
+    "description": "Message for the resources blocked *allow* option"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "W górę",
-    "description": "Label for top shields switch in shields header turned on position"
+  "allowed": {
+    "message": "Dozwolone",
+    "description": "Message for the resources blocked *allowed* option"
   },
-  "shieldsHeaderForSite": {
-    "message": "Ustawienia ochrony strony dla",
-    "description": "Label for shields header near current site name"
+  "blockAll": {
+    "message": "Zablokuj wszystkie",
+    "description": "Message for the resources blocked *block all* option"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Zaawansowane elementy kontrolne",
-    "description": "Label for advanced controls group"
+  "block": {
+    "message": "Zablokuj",
+    "description": "Message for the resources blocked *block* option"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Kontrola reklam",
-    "description": "Label for Advertisement Control dropdown box options "
+  "blocked": {
+    "message": "Zablokowane",
+    "description": "Message for the resources blocked *blocked* option"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Blokuj reklamy",
-    "description": "Ad Control dropdown box, option block ads"
-  },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Zezwól na reklamy i śledzenie",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
-  },
-
-  "shieldsControlsCookieControl": {
-    "message": "Kontrola plików cookies",
-    "description": "Label Cookie Control dropdown options"
-  },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Blokuj pliki typu cookie od stron trzecich",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
-  },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Zezwól na wszystkie pliki typu cookie",
-    "description": "Cookie control dropdown option Allow All Cookies"
-  },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Blokuj wszystkie pliki typu cookie",
-    "description": "Cookie control dropdown option Block All Cookies"
-  },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Fingerprinting Protection",
-    "description": "Label Fingerprinting Protection dropdown options"
-  },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Blokuj fingerprinting innych firm",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
-  },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Zezwól na fingerprinting",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
-  },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Blokuj wszystkie odciski palców",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
-  },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS Everywhere",
-    "description": "Shields controls, switch for HTTPS Everywhere"
-  },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Blokuj skrypty",
-    "description": "Shields controls, switch for Block Scripts"
-  },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Blokuj phishing / złośliwe oprogramowanie",
-    "description": "Shields controls, switch for Block Phishing/Malware"
-  },
-
-  "noScriptSwitches": {
-    "message": "Przełączaj przełączniki, aby wyłączyć blokowanie skryptów",
-    "description": "Instructions for per-origin noScript switches"
-  },
-  "noScriptApplyOnce": {
+  "apply": {
     "message": "Zastosuj",
-    "description": "Label for applying per-origin noScript settings"
+    "description": "Message for the button inside dynamic list of resources blocked"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Edytuj domyślne ustawienia osłony...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "applyOnce": {
+    "message": "Zastosuj raz",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
   },
-  "shieldsFooterReload":{
-    "message": "Przeładuj...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "applyUntilRestart": {
+    "message": "Stosuj do restartu",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Zawsze stosuj",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Cofnij",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Anuluj",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Wróć",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

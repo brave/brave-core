@@ -3,121 +3,164 @@
     "message": "Brave Eklentisi",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Reklamlar ve İz Sürücüler Engellendi",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
-  },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS Yükseltmeleri",
-    "description": "Label for shields stats, HTTPS upgrades count"
-  },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Scriptler Engellendi",
-    "description": "Label for shields stats, Scripts Blocked count"
-  },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Parmak İzi Kontrolü Yöntemleri Engellendi",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
-  },
-
-  "shieldsHeaderShieldsToggle": {
+  "shields": {
     "message": "Kalkanlar",
-    "description": "Label for top shields switch in shields header"
+    "description": "The Shields feature name"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Aşağı",
-    "description": "Label for top shields switch in shields header turned off position"
+  "up": {
+    "message": "yukarı",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Yukarı",
-    "description": "Label for top shields switch in shields header turned on position"
+  "down": {
+    "message": "aşağı",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "...için site kalkan ayarları",
-    "description": "Label for shields header near current site name"
+  "totalBlocked": {
+    "message": "Toplam tutar engellendi",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Gelişmiş Kontroller",
-    "description": "Label for advanced controls group"
+  "forThisSite": {
+    "message": "bu site için",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Reklam Kontrolü",
-    "description": "Label for Advertisement Control dropdown box options "
+  "enabledMessage": {
+    "message": "Site çökmüş gözüküyorsa korumaları kapatmayı deneyin",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Reklamları Engelle",
-    "description": "Ad Control dropdown box, option block ads"
+  "disabledMessage": {
+    "message": "Bu siteyi hiçbir gizlilik ve güvenlik önlemi olmadan görüntülüyorsunuz.",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Reklamlara ve Takibe İzin Ver",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "blockAds": {
+    "message": "Reklamlar ve iz sürücüler engellendi",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Çerez Kontrolü",
-    "description": "Label Cookie Control dropdown options"
+  "blockPopups": {
+    "message": "Açılır pencereler engellendi",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "3. Taraf Çerezlerini Engelle",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockImages": {
+    "message": "Görüntüler engellendi",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Tüm Çerezlere İzin Ver",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "block3partyCookies": {
+    "message": "3. parti çerezler engellendi.",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Tüm çerezleri engelle",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "allowAllCookies": {
+    "message": "Tüm çerezlere izin verildi",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Parmak İzi Kontrolü Koruması",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "blockAllCookies": {
+    "message": "Çerezler engellendi",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "3. Parti Parmak İzini Engelle",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "blockSomeScripts": {
+    "message": "Bazı betikler engellendi",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Tüm Parmak İzlerine İzin Ver",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "allowAllScripts": {
+    "message": "Tüm komutlara izin verildi",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Tüm Parmak İzli Kontrollerini Engelle",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockAllScriptsOrigins": {
+    "message": "Komutlar engellendi",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS Her Yerde",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "block3partyFingerprinting": {
+    "message": "3. parti cihaz tanıma engellendi",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Komut Dizilerini Engelle",
-    "description": "Shields controls, switch for Block Scripts"
+  "allowAllFingerprinting": {
+    "message": "Tüm cihaz tanımalara izin verildi",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Phishing/Malware Engelle",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "blockAllFingerprinting": {
+    "message": "Cihaz tanıma engellendi",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-
-  "noScriptSwitches": {
-    "message": "Komut dizilerini engellemeyi devre dışı bırakmak için geçiş düğmeleri",
-    "description": "Instructions for per-origin noScript switches"
+  "blockPishing": {
+    "message": "Kimlik avı/kötü amaçlı yazılım girişimi engellendi",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-  "noScriptApplyOnce": {
+  "connectionsEncrypted": {
+    "message": "Bağlantılar şifrelendi",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Küresel Kalkan ayarları",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Bu sitedeki çerezler",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Cihaz tanıma girişimleri",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Bu sitedeki komutlar",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Engellenen komutlar",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "İzin verilen komutlar",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Hepsine izin ver",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "İzin Ver",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "İzin verildi",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Tümünü engelle",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Engel",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Engellendi",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
     "message": "Uygula",
-    "description": "Label for applying per-origin noScript settings"
+    "description": "Message for the button inside dynamic list of resources blocked"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Varsayılan kalkan ayarlarını düzenle",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "applyOnce": {
+    "message": "Bir kez uygula",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
   },
-  "shieldsFooterReload":{
-    "message": "Yeniden yükle...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "applyUntilRestart": {
+    "message": "Yeniden başlatılana kadar uygula",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Her zaman uygula",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Geri al",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "İptal",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Geri dön",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

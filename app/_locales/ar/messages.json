@@ -3,121 +3,164 @@
     "message": "امتداد Brave",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "تمَّ حجب الإعلانات والتعقب",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  "shields": {
+    "message": "طرق الحماية",
+    "description": "The Shields feature name"
   },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "ترقيات HTTPS",
-    "description": "Label for shields stats, HTTPS upgrades count"
-  },
-  "shieldsStatsScriptsBlocked": {
-    "message": "البرامج النصية المحظورة",
-    "description": "Label for shields stats, Scripts Blocked count"
-  },
-  "shieldsFingerPrintingBlocked": {
-    "message": "تم حظر طرق البصمات",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
-  },
-
-  "shieldsHeaderShieldsToggle": {
-    "message": "الدروع",
-    "description": "Label for top shields switch in shields header"
-  },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "الأسفل",
-    "description": "Label for top shields switch in shields header turned off position"
-  },
-  "shieldsHeaderToggleRightPosition": {
+  "up": {
     "message": "أعلى",
-    "description": "Label for top shields switch in shields header turned on position"
+    "description": "Message for when shields is enabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "إعدادات درع الموقع لـ",
-    "description": "Label for shields header near current site name"
+  "down": {
+    "message": "أسفل",
+    "description": "Message for when shields is disabled"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "الضوابط المتقدمة",
-    "description": "Label for advanced controls group"
+  "totalBlocked": {
+    "message": "تم حجب الكل",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "التحكم في الإعلان",
-    "description": "Label for Advertisement Control dropdown box options "
+  "forThisSite": {
+    "message": "لهذا الموقع",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "حجب الإعلانات",
-    "description": "Ad Control dropdown box, option block ads"
+  "enabledMessage": {
+    "message": "إذا تم كسر حجب الموقع، جرب طرق الحماية أدناه",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "اسمح بالإعلانات والتتبع",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "disabledMessage": {
+    "message": "أنت تتصفح هذا الموقع بدون أي خصوصية وحماية بيانات.",
+    "description": "Message telling the user that shields are disabled"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "التحكم في ملفات تعريف الارتباط",
-    "description": "Label Cookie Control dropdown options"
+  "blockAds": {
+    "message": "تم حجب الإعلانات والمتتبعين",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "حظر ملفات تعريف ارتباط الخاصة بالجهات الخارجية",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockPopups": {
+    "message": "تم حجب النوافذ المنبثقة",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "السماح لكل ملفات تعريف الارتباط",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "blockImages": {
+    "message": "تم حجب الصور",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "حظر جميع ملفات تعريف الارتباط",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "block3partyCookies": {
+    "message": "تم حجب ملفات تعريف الارتباط لطرف ثالث",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "حماية البصمات",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "allowAllCookies": {
+    "message": "تم السماح بجميع ملفات تعريف الارتباط",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "حجب بصمة الطرف الثالث",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "blockAllCookies": {
+    "message": "تم حجب ملفات تعريف الارتباط",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "السماح لجميع البصمات",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "blockSomeScripts": {
+    "message": "بعض النصوص محجوبة",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "حظر جميع البصمات",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "allowAllScripts": {
+    "message": "تم السماح بجميع النصوص",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS في كل مكان",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "blockAllScriptsOrigins": {
+    "message": "تم حجب النصوص",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "حظر البرامج النصية",
-    "description": "Shields controls, switch for Block Scripts"
+  "block3partyFingerprinting": {
+    "message": "تم حجب التعرف على الجهاز من قبل طرف ثالث",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "حظر التصيّد الاحتيالي/البرامج الخبيثة",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "allowAllFingerprinting": {
+    "message": "تم السماح بالتعرف الكامل على الجهاز",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-
-  "noScriptSwitches": {
-    "message": "قم بتبديل المفاتيح لتعطيل حظر النص البرمجي",
-    "description": "Instructions for per-origin noScript switches"
+  "blockAllFingerprinting": {
+    "message": "تم حجب التعرف على الجهاز",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-  "noScriptApplyOnce": {
-    "message": "تطبيق",
-    "description": "Label for applying per-origin noScript settings"
+  "blockPishing": {
+    "message": "تم حجب محاولة التصيد/برنامج ضار",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "تعديل الإعداداتِ الافتراضيةِ للدرع ...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "connectionsEncrypted": {
+    "message": "تم تشفير الاتصالات",
+    "description": "Message indicating the number of connections encrypted"
   },
-  "shieldsFooterReload":{
-    "message": "إعادة تحميل...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "editDefaults": {
+    "message": "القيم الافتراضية للحماية العالمية",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "ملفات تعريف الارتباط في هذا الموقع",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "محاولات التعرف على الجهاز",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "النصوص في هذا الموقع",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "نصوص محجوبة",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "النصوص المسموح بها",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "السماح للكل",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "السماح",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "مسموح",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "حجب الكل",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "حجب",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "محجوب",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "التطبيق",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "التطبيق مرة واحدة",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "التطبيق حتى إعادة بدء التشغيل",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "التطبيق دائماً",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "تراجع",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "إلغاء",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "رجوع",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }

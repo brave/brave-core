@@ -1,123 +1,166 @@
 {
   "appName": {
-    "message": "The Brave Extension",
+    "message": "Nyongeza ya Brave",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Ads and Trackers Blocked",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  "shields": {
+    "message": "Ngao",
+    "description": "The Shields feature name"
   },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS Upgrades",
-    "description": "Label for shields stats, HTTPS upgrades count"
+  "up": {
+    "message": "juu",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Scripts Blocked",
-    "description": "Label for shields stats, Scripts Blocked count"
+  "down": {
+    "message": "chini",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Fingerprinting Methods Blocked",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+  "totalBlocked": {
+    "message": "Jumla ya Yaliyozuiwa",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsHeaderShieldsToggle": {
-    "message": "Shields",
-    "description": "Label for top shields switch in shields header"
+  "forThisSite": {
+    "message": "kwa tovuti hii",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Down",
-    "description": "Label for top shields switch in shields header turned off position"
+  "enabledMessage": {
+    "message": "Ikiwa tovuti inaonekana imevunjika, jaribu ngao hapa chini",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Up",
-    "description": "Label for top shields switch in shields header turned on position"
+  "disabledMessage": {
+    "message": "Unaperuzi tovuti hii bila faraga na ulinzi usalama wowote.",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Site shield settings for",
-    "description": "Label for shields header near current site name"
+  "blockAds": {
+    "message": "Matangazo na vifuatiliaji vimezuiwa",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Advanced Controls",
-    "description": "Label for advanced controls group"
+  "blockPopups": {
+    "message": "Madirisha ibukizi yamezuiwa",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Ad Control",
-    "description": "Label for Advertisement Control dropdown box options "
+  "blockImages": {
+    "message": "Picha zimezuiwa",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Block Ads",
-    "description": "Ad Control dropdown box, option block ads"
+  "block3partyCookies": {
+    "message": "Vidakuzi vya tovuti nyingine vimezuiwa",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Allow Ads and Tracking",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "allowAllCookies": {
+    "message": "Vidakuzi vyote vimeruhusiwa",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Cookie Control",
-    "description": "Label Cookie Control dropdown options"
+  "blockAllCookies": {
+    "message": "Vidakuzi vimezuiwa",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Block 3rd Party Cookies",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockSomeScripts": {
+    "message": "Baadhi ya Maandishi Yameziwa",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Allow All Cookies",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "allowAllScripts": {
+    "message": "Maandishi yote yameruhusiwa",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Block All Cookies",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "blockAllScriptsOrigins": {
+    "message": "Maandishi yamezuiwa",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Fingerprinting Protection",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "block3partyFingerprinting": {
+    "message": "Utambuzi wa kifaa kingine umezuiwa",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Block 3rd Party Fingerprinting",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "allowAllFingerprinting": {
+    "message": "Utambuzi wa vifaa vyote umeruhusiwa",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Allow All Fingerprinting",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "blockAllFingerprinting": {
+    "message": "Utambuzi wa kifaa umezuiwa",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Block All Fingerprinting",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockPishing": {
+    "message": "Mashambulizi ya mtaliga yamezuiwa",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS Everywhere",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "connectionsEncrypted": {
+    "message": "Miunganiko imesimbwa",
+    "description": "Message indicating the number of connections encrypted"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Block Scripts",
-    "description": "Shields controls, switch for Block Scripts"
+  "editDefaults": {
+    "message": "Machaguo msingi ya ngao",
+    "description": "Message linking shields to the global shield settings"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Block Phishing/Malware",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "cookiesOnThisSite": {
+    "message": "Vidakuzi kwenye tovuti hii",
+    "description": "Message for the cookie resources blocked panel"
   },
-
-  "noScriptSwitches": {
-    "message": "Toggle switches to disable script blocking",
-    "description": "Instructions for per-origin noScript switches"
+  "deviceRecognitionAttempts": {
+    "message": "Majaribio ya kutambua kifaa",
+    "description": "Message for the device recognition attempts blocked panel"
   },
-  "noScriptApplyOnce": {
-    "message": "Apply",
-    "description": "Label for applying per-origin noScript settings"
+  "scriptsOnThisSite": {
+    "message": "Maandishi kwenye tovuti hii",
+    "description": "Message for the script resources blocked panel"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Edit default shield settings...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "blockedScripts": {
+    "message": "Maandishi yaliyozuiwa",
+    "description": "Message for the script resources blocked"
   },
-  "shieldsFooterReload":{
-    "message": "Reload...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "allowedScripts": {
+    "message": "Maandishi yaliyoruhusiwa",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Ruhusu yote",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Ruhusu",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Vilivyoruhusiwa",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Zuia vyote",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Zuia",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Vimezuiwa",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Tumia",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Tumia mara moja",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Tumia hadi utakapowasha tena",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Tumia siku zote",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Tendua",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Ghairi",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Rudi nyuma",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }
