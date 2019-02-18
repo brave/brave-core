@@ -11,6 +11,7 @@
 
 #include "bat/ledger/ledger.h"
 #include "bat_helper.h"
+#include "base/gtest_prod_util.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -45,8 +46,6 @@ class BatGetMedia {
       const ledger::VisitData& visit_data,
       const std::string& providerType,
       const std::string& publisher_blob);
-
-  static std::string getYoutubeMediaIdFromUrl(const ledger::VisitData& visit_data);
 
  private:
   std::string getMediaURL(const std::string& mediaId, const std::string& providerName);
@@ -206,14 +205,6 @@ class BatGetMedia {
 
   std::string getYoutubeMediaKeyFromUrl(const std::string& provider_type, const std::string& media_id);
 
-  std::string getYoutubePublisherKeyFromUrl(const ledger::VisitData& visit_data);
-
-  std::string getYoutubeUserFromUrl(const ledger::VisitData& visit_data);
-
-  std::string extractData(const std::string& data,
-                          const std::string& matchAfter,
-                          const std::string& matchUntil) const;
-
   std::string getPublisherUrl(const std::string& publisher_key, const std::string& providerName);
 
   void fetchPublisherDataFromDB(
@@ -225,11 +216,28 @@ class BatGetMedia {
 
   void fetchDataFromUrl(const std::string& url, FetchDataFromUrlCallback callback);
 
+  static std::string getYoutubeMediaIdFromUrl(
+      const ledger::VisitData& visit_data);
+
+  static std::string getYoutubePublisherKeyFromUrl(const std::string& path);
+
+  static std::string getYoutubeUserFromUrl(const std::string& path);
+
+  static std::string extractData(const std::string& data,
+                                 const std::string& matchAfter,
+                                 const std::string& matchUntil);
+
   std::string getNameFromChannel(const std::string& data);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 
   std::map<std::string, ledger::TwitchEventInfo> twitchEvents;
+
+    // For testing purposes
+  friend class BatGetMediaTest;
+  FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, GetYoutubeMediaIdFromUrl);
+  FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, GetYoutubePublisherKeyFromUrl);
+  FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, GetYoutubeUserFromUrl);
 };
 
 }  // namespace braveledger_bat_get_media
