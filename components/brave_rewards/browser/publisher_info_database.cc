@@ -24,7 +24,7 @@ namespace brave_rewards {
 
 namespace {
 
-const int kCurrentVersionNumber = 4;
+const int kCurrentVersionNumber = 5;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -1079,6 +1079,33 @@ bool PublisherInfoDatabase::MigrateV3toV4() {
   return false;
 }
 
+bool PublisherInfoDatabase::MigrateV4toV5() {
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  sql::Statement info_sql(db_.GetUniqueStatement(
+      "SELECT publisher_id, month, year, reconcile_stamp "
+      "FROM activity_info "
+      "WHERE visits = 0"));
+
+  while (info_sql.Step()) {
+    sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "UPDATE activity_info SET visits = 1 "
+      "WHERE publisher_id = ? AND month = ? AND "
+      "year = ? AND reconcile_stamp = ?"));
+
+    statement.BindString(0, info_sql.ColumnString(0));
+    statement.BindInt(1, info_sql.ColumnInt(1));
+    statement.BindInt(2, info_sql.ColumnInt(2));
+    statement.BindInt64(3, info_sql.ColumnInt64(3));
+    statement.Run();
+  }
+
+  return transaction.Commit();
+}
+
 sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -1109,6 +1136,13 @@ sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {
   if (old_version < 4 && cur_version < 5) {
     if (!MigrateV3toV4()) {
       LOG(ERROR) << "DB: Error with MigrateV3toV4";
+    }
+  }
+
+  // to version 5
+  if (old_version < 5 && cur_version < 6) {
+    if (!MigrateV4toV5()) {
+      LOG(ERROR) << "DB: Error with MigrateV4toV5";
     }
   }
 
