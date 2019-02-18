@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "Braveの拡張機能",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "シールド",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "有効",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "無効",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "ブロック数の合計",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "このサイトに対して",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "ウェブサイトがダウンしているように見える場合は、シールドを落としてみてください",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "あなたはプライバシーとセキュリティの保護なしでこのサイトを閲覧しています。",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "広告およびトラッカーはブロックされました",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "ポップアップをブロック",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "画像はブロックされました",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "サードパーティーのcookieをブロック",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "すべてのcookieを許可",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "Cookiesをブロック",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "一部のスクリプトをブロック",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "すべてのスクリプトを許可",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "スクリプトをブロック",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "サードパーティー製デバイス認識をブロック",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "すべてのデバイス認識を許可",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "デバイス認識をブロック",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "フィッシング/マルウェアのブロック数",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "暗号化接続数",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "グローバルシールドのデフォルト",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "このサイトのcookie",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "デバイス認証試行",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "このサイトのスクリプト",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "ブロックされたスクリプト",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "スクリプトを許可する",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "すべて許可する",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "許可",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "許可",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "すべてブロックする",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "ブロック",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "ブロック",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "適用",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "一回だけ適用する",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "再起動時まで適用する",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "常に適用する",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "取り消す",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "キャンセル",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "戻る",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "Ang Brave na Extension",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "Mga Shield",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "up",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "down",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "Kabuuang na-block",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "para sa site na ito",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Kung mukhang sira ang isang site, subukan ang shields down",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Bina-browse mo ang site na ito nang walang anumang proteksyon sa privacy at seguridad.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "Mga ad at tracker na na-block",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "Mga pop-up na na-block",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "Mga imaheng na-block",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "3rd-party cookies na na-block",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "Pinapayagan ang lahat ng cookies",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "Naka-block ang cookies",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Naka-block ang ilang script",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Pinapayagan ang lahat ng script",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Naka-block ang mga script",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "Naka-block ang 3rd-party na pagkilala ng device",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "Pinapayagan ang lahat ng pagkilala ng device",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Naka-block ang pagkilala ng device",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Mga pagtangka ng phishing/malware na na-block",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Mga naka-encrypt na koneksyon",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Mga global na default ng shield",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Cookies sa site na ito",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Mga pagtangkang kilalanin ang device",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Mga script sa site na ito",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Mga script na na-block",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Mga pinapayagang script",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Payagan lahat",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Payagan",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Pinapayagan",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "I-block lahat",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "I-block",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Naka-block",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Ilapat",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Ilapat nang isang beses",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Ilapat hanggang mag-restart",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Palaging ilapat",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "I-undo",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Kanselahin",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Bumalik",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

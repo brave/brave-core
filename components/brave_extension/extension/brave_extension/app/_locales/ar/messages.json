@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "امتداد Brave",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "طرق الحماية",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "أعلى",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "أسفل",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "تم حجب الكل",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "لهذا الموقع",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "إذا تم كسر حجب الموقع، جرب طرق الحماية أدناه",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "أنت تتصفح هذا الموقع بدون أي خصوصية وحماية بيانات.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "تم حجب الإعلانات والمتتبعين",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "تم حجب النوافذ المنبثقة",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "تم حجب الصور",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "تم حجب ملفات تعريف الارتباط لطرف ثالث",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "تم السماح بجميع ملفات تعريف الارتباط",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "تم حجب ملفات تعريف الارتباط",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "بعض النصوص محجوبة",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "تم السماح بجميع النصوص",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "تم حجب النصوص",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "تم حجب التعرف على الجهاز من قبل طرف ثالث",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "تم السماح بالتعرف الكامل على الجهاز",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "تم حجب التعرف على الجهاز",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "تم حجب محاولة التصيد/برنامج ضار",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "تم تشفير الاتصالات",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "القيم الافتراضية للحماية العالمية",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "ملفات تعريف الارتباط في هذا الموقع",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "محاولات التعرف على الجهاز",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "النصوص في هذا الموقع",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "نصوص محجوبة",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "النصوص المسموح بها",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "السماح للكل",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "السماح",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "مسموح",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "حجب الكل",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "حجب",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "محجوب",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "التطبيق",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "التطبيق مرة واحدة",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "التطبيق حتى إعادة بدء التشغيل",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "التطبيق دائماً",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "تراجع",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "إلغاء",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "رجوع",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

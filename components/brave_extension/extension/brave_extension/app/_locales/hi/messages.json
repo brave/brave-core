@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "Brave एक्सटेंशन ",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "सुरक्षा कवच ",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "ऊपर ",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "नीचे ",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "कुल बाधित ",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "इस साइट के लिए ",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "यदि किसी साईट में समस्या नज़र आती है, तो नीचे सुरक्षा कवच का इस्तेमाल करें.",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "आप किसी भी गोपनीयता और सुरक्षा उपायों के बिना इस वेबसाइट को ब्राउज़ कर रहे हैं.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "विज्ञापन एवं ट्रैकर बाधित हैं",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "पॉप-अप्स बाधित हैं ",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "चित्र ब्लॉक कर दिया गया।",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "3rd- पार्टी कूकीज़ बाधित हैं.",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "सभी कुकीज़ स्वीकार की गईं",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "कूकीज़ बाधित हैं.",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "कुछ स्क्रिप्ट्स बाधित कर दिए गए हैं.",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "सभी स्क्रिप्ट की अनुमति है",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "स्क्रिप्ट्स बाधित हैं ",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "3rd- पार्टी डिवाइस की पहचान बाधित हैं ",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "सभी डिवाइस को पहचानने की अनुमति है",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "डिवाइस की पहचान बाधित हैं ",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "फ़िशिंग / मैलवेयर प्रयास अवरुद्ध",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "कनेक्शन एन्क्रिप्टेड है ",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "ग्लोबल शील्ड अनुपस्थित ",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "इस साइट में कूकीज़",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "डिवाइस के पहचान का प्रयास",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "इस साइट में उपलब्ध स्क्रिप्ट्स",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "बाधित स्क्रिप्ट्स ",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "जारी किए गए स्क्रिप्ट्स ",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "सभी को अनुमति दें",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "अनुमति दें ",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "अनुमति दी गई",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "सबको ब्लॉक करें",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "ब्लॉक करें",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "बाधित है ",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "लागू करें ",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "एक बार लागू करें.",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "पुनः आरम्भ होने तक अप्लाई करें",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "हमेशा लागू करें ",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "अनकिया करें ",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "रद्द करें ",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "वापस जाएँ",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}
