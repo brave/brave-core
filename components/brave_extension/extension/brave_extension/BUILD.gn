@@ -81,9 +81,6 @@ action("brave-extension") {
     "app/types/other/noScriptInfo.ts",
     "app/types/state/mainState.ts",
     "app/types/state/shieldsPannelState.ts",
-    "app/views/background.pug",
-    "app/views/braveShieldsPanel.pug",
-    "app/views/inject.pug",
   ]
   script = "py-scripts/build-brave-extension.py"
 
