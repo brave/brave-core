@@ -1,16 +1,20 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include <openssl/base64.h>
+#include <openssl/digest.h>
+#include <openssl/hkdf.h>
+#include <openssl/sha.h>
+
+#include <algorithm>
 
 #include "security_helper.h"
 
 #include "base/base64.h"
 
 #include "tweetnacl.h"
-#include <openssl/base64.h>
-#include <openssl/digest.h>
-#include <openssl/hkdf.h>
-#include <openssl/sha.h>
 
 namespace helper {
 

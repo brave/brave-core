@@ -1,6 +1,9 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include <utility>
 
 #include "confirmations_impl.h"
 #include "logging.h"
@@ -13,7 +16,8 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 
-using namespace std::placeholders;
+using std::placeholders::_1;
+using std::placeholders::_2;
 
 namespace confirmations {
 
@@ -373,7 +377,7 @@ void ConfirmationsImpl::StartPayingOutRedeemedTokens(
   StopPayingOutRedeemedTokens();
 
   confirmations_client_->SetTimer(start_timer_in,
-      payout_redeemed_tokens_timer_id_);
+      &payout_redeemed_tokens_timer_id_);
   if (payout_redeemed_tokens_timer_id_ == 0) {
     BLOG(ERROR)
         << "Failed to start paying out redeemed tokens due to an invalid timer";
@@ -412,7 +416,7 @@ void ConfirmationsImpl::StartRetryingToGetRefillSignedTokens(
   StopRetryingToGetRefillSignedTokens();
 
   confirmations_client_->SetTimer(start_timer_in,
-      retry_getting_signed_tokens_timer_id_);
+      &retry_getting_signed_tokens_timer_id_);
   if (retry_getting_signed_tokens_timer_id_ == 0) {
     BLOG(ERROR)
         << "Failed to start getting signed tokens due to an invalid timer";

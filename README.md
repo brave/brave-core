@@ -46,7 +46,7 @@ void SetConfirmationsIsReady(
 ```
 uint32_t SetTimer(
     uint64_t time_offset,
-    uint32_t& timer_id)
+    uint32_t* timer_id)
 ```
 
 `KillTimer` should destroy the timer associated with the specified timer identifier

@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BAT_CONFIRMATIONS_CONFIRMATIONS_CLIENT_MOCK_H_
 #define BAT_CONFIRMATIONS_CONFIRMATIONS_CLIENT_MOCK_H_
@@ -8,6 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 #include <memory>
 
 #include "testing/gmock/include/gmock/gmock.h"
@@ -178,7 +180,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD2(SetTimer, void(
       uint64_t time_offset,
-      uint32_t& timer_id));
+      uint32_t* timer_id));
 
   MOCK_METHOD1(KillTimer, void(
       const uint32_t timer_id));
