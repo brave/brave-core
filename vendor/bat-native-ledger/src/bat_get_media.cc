@@ -536,7 +536,7 @@ void BatGetMedia::processYoutubeChannelPath(uint64_t windowId,
   const ledger::VisitData& visit_data,
   const std::string& providerType) {
   std::string publisher_key = "youtube#channel:";
-  std::string key = getYoutubePublisherKeyFromUrl(visit_data);
+  std::string key = getYoutubePublisherKeyFromUrl(visit_data.path);
   if (!key.empty()) {
     publisher_key += key;
     fetchPublisherDataFromDB(windowId,
@@ -582,7 +582,7 @@ void BatGetMedia::processYoutubeUserPath(uint64_t windowId,
   const ledger::VisitData& visit_data,
   const std::string& providerType) {
 
-  std::string user = getYoutubeUserFromUrl(visit_data);
+  std::string user = getYoutubeUserFromUrl(visit_data.path);
 
   if (user.empty()) {
     onMediaActivityError(visit_data, providerType, windowId);
@@ -699,7 +699,7 @@ void BatGetMedia::onGetChannelHeadlineVideo(uint64_t windowId,
   if (visit_data.path.find("/channel/") != std::string::npos) {
     std::string title = getNameFromChannel(response);
     std::string favicon = parseFavIconUrl(response);
-    std::string channelId = getYoutubePublisherKeyFromUrl(visit_data);
+    std::string channelId = getYoutubePublisherKeyFromUrl(visit_data.path);
 
     savePublisherInfo(0,
                   "",
@@ -928,21 +928,54 @@ std::string BatGetMedia::getYoutubeMediaKeyFromUrl(
   return std::string();
 }
 
-std::string BatGetMedia::getYoutubePublisherKeyFromUrl(const ledger::VisitData& visit_data) {
-  return extractData(visit_data.path + "/", "/channel/", "/");
+// static
+std::string BatGetMedia::getYoutubePublisherKeyFromUrl(const std::string& path) {
+  if (path.empty()) {
+    return std::string();
+  }
+
+  const std::string id = extractData(path + "/", "/channel/", "/");
+
+  if (id.empty()) {
+    return std::string();
+  }
+
+  std::vector<std::string> params = braveledger_bat_helper::split(id, '?');
+
+  return params[0];
 }
 
-std::string BatGetMedia::getYoutubeUserFromUrl(const ledger::VisitData& visit_data) {
-  return extractData(visit_data.path + "/", "/user/", "/");
+// static
+std::string BatGetMedia::getYoutubeUserFromUrl(const std::string& path) {
+  if (path.empty()) {
+    return std::string();
+  }
+
+  const std::string id = extractData(path + "/", "/user/", "/");
+
+  if (id.empty()) {
+    return std::string();
+  }
+
+  std::vector<std::string> params = braveledger_bat_helper::split(id, '?');
+
+  return params[0];
 }
 
+// static
 std::string BatGetMedia::extractData(const std::string& data,
-  const std::string& matchAfter, const std::string& matchUntil) const {
+  const std::string& matchAfter, const std::string& matchUntil) {
   std::string match;
-  size_t matchAfterSize = matchAfter.size();
+  size_t match_after_size = matchAfter.size();
+  size_t data_size = data.size();
+
+  if (data_size < match_after_size) {
+    return match;
+  }
+
   size_t startPos = data.find(matchAfter);
   if (startPos != std::string::npos) {
-    startPos += matchAfterSize;
+    startPos += match_after_size;
     size_t endPos = data.find(matchUntil, startPos);
     if (endPos != startPos) {
       if (endPos != std::string::npos && endPos > startPos) {
@@ -954,6 +987,7 @@ std::string BatGetMedia::extractData(const std::string& data,
       }
     }
   }
+
   return match;
 }
 
