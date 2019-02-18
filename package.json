@@ -251,7 +251,9 @@
     "transformIgnorePatterns": [
       "<rootDir>/node_modules/(?!(brave-ui)/)"
     ],
-    "setupTestFrameworkScriptFile": "<rootDir>/components/test/testSetup.ts",
+    "setupFilesAfterEnv": [
+      "<rootDir>/components/test/testSetup.ts"
+    ],
     "setupFiles": [
       "<rootDir>/components/test/testPolyfills.ts"
     ],
@@ -282,7 +284,7 @@
     "file-loader": "^1.1.6",
     "font-awesome": "^4.7.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^23.4.1",
+    "jest": "^24.1.0",
     "less": "^3.7.1",
     "less-loader": "^4.0.5",
     "mz": "^2.7.0",
