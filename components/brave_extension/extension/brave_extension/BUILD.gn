@@ -1,3 +1,5 @@
+import("//build/config/locales.gni")
+
 action("brave-extension") {
   # Need this to fire re-pack if changed, nevertheless extension is repacked on each 2nd build
   inputs = [
@@ -117,39 +119,45 @@ action("brave-extension") {
     "$build_dir/img/shields-on@3x.png",
     "$build_dir/_locales/en_US/messages.json",
   ]
-
-  # For macOS deps is bounded in //chrome:chrome_framework
-  # For Windows installer copying is done in \\chrome\tools\build\win\create_installer_archive.py
-  # Deps below is used for Linux and debugging environment output dir on Windows
-  if (!is_mac) {
-    deps = [":copy-extension-localization"]
-  }
 }
 
 if (is_mac) {
-  bundle_data("brave_extension_framework_bundle_data") {
-    sources = [ "$root_out_dir/resources/brave_extension" ]
-    outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
-
-    public_deps = [ ":copy-extension-localization" ]
+  group("brave_extension_framework_bundle_data") {
+    deps = []
+    foreach(locale, locales) {
+      deps += [":brave_extension_framework_bundle_data_${locale}"]
+    }
   }
-}
 
-action("copy-extension-localization") {
-  script = "py-scripts/copy-brave-extension-localization.py"
-
-  # changes of something from the list below makes script re-run
-  sources = [
-    "//brave/vendor/brave-extension/app/_locales/en_US/messages.json",
-  ]
-
-  resources_target_dir = "$root_build_dir/resources"
-
-  args = [
-    rebase_path("$resources_target_dir"),
-  ]
-
-  outputs = [
-    "$resources_target_dir/brave_extension",
-  ]
+  foreach(locale, locales) {
+    bundle_data("brave_extension_framework_bundle_data_${locale}") {
+      locale = string_replace(locale, "-", "_")
+      locale = string_replace(locale, "nb", "no")
+      sources = [
+        "//brave/components/brave_extension/extension/brave-extension/app/_locales/$locale/messages.json"
+      ]
+      outputs = [
+        "{{bundle_resources_dir}}/brave_extension/_locales/$locale/{{source_file_part}}"
+      ]
+    }
+  }
+} else {
+  group("locales") {
+    deps = []
+    foreach(locale, locales) {
+      deps += [":locales_${locale}"]
+    }
+  }
+  foreach(locale, locales) {
+    copy("locales_${locale}") {
+      locale = string_replace(locale, "-", "_")
+      locale = string_replace(locale, "nb", "no")
+      sources = [
+        "//brave/components/brave_extension/extension/brave-extension/_locales/${locale}/messages.json",
+      ]
+      outputs = [
+        "$root_out_dir/resources/brave_extension/_locales/${locale}/{{source_file_part}}",
+      ]
+    }
+  }
 }
