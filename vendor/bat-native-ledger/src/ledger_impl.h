@@ -400,7 +400,7 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::PublisherInfoList& list,
       uint32_t /* next_record */);
 
-  void SetTimer(uint64_t time_offset, uint32_t& timer_id) const;
+  void SetTimer(uint64_t time_offset, uint32_t* timer_id) const;
 
   bool AddReconcileStep(const std::string& viewing_id,
                         braveledger_bat_helper::ContributionRetry step,

@@ -824,7 +824,7 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
   }
 
   // start timer
-  SetTimer(start_timer_in, last_pub_load_timer_id_);
+  SetTimer(start_timer_in, &last_pub_load_timer_id_);
 }
 
 void LedgerImpl::RefreshGrant(bool retryAfterError) {
@@ -854,7 +854,7 @@ void LedgerImpl::RefreshGrant(bool retryAfterError) {
       start_timer_in = 0ull;
     }
   }
-  SetTimer(start_timer_in, last_grant_check_timer_id_);
+  SetTimer(start_timer_in, &last_grant_check_timer_id_);
 }
 
 uint64_t LedgerImpl::retryRequestSetup(uint64_t min_time, uint64_t max_time) {
@@ -1204,7 +1204,7 @@ void LedgerImpl::NormalizeContributeWinners(
   bat_publishers_->NormalizeContributeWinners(newList, list, record);
 }
 
-void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t& timer_id) const {
+void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t* timer_id) const {
   ledger_client_->SetTimer(time_offset, timer_id);
 }
 

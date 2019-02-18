@@ -324,7 +324,7 @@ void LedgerClientMojoProxy::LoadMediaPublisherInfo(
 void LedgerClientMojoProxy::SetTimer(uint64_t time_offset,
     SetTimerCallback callback) {
   uint32_t timer_id;
-  ledger_client_->SetTimer(time_offset, timer_id);
+  ledger_client_->SetTimer(time_offset, &timer_id);
   std::move(callback).Run(timer_id);
 }
 

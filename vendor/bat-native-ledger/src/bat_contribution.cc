@@ -1453,7 +1453,7 @@ void BatContribution::SetTimer(uint32_t& timer_id, uint64_t start_timer_in) {
   BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
     "Starts in " << start_timer_in;
 
-  ledger_->SetTimer(start_timer_in, timer_id);
+  ledger_->SetTimer(start_timer_in, &timer_id);
 }
 
 void BatContribution::OnReconcileCompleteSuccess(

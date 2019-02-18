@@ -1655,13 +1655,13 @@ void RewardsServiceImpl::OnPublishersListSaved(
 }
 
 void RewardsServiceImpl::SetTimer(uint64_t time_offset,
-                                  uint32_t& timer_id) {
+                                  uint32_t* timer_id) {
   if (next_timer_id_ == std::numeric_limits<uint32_t>::max())
     next_timer_id_ = 1;
   else
     ++next_timer_id_;
 
-  timer_id = next_timer_id_;
+  *timer_id = next_timer_id_;
 
   timers_[next_timer_id_] = std::make_unique<base::OneShotTimer>();
   timers_[next_timer_id_]->Start(FROM_HERE,

@@ -309,7 +309,7 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PublisherInfoListCallback callback) override;
   void SavePublishersList(const std::string& publishers_list,
                           ledger::LedgerCallbackHandler* handler) override;
-  void SetTimer(uint64_t time_offset, uint32_t& timer_id) override;
+  void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
   void LoadPublisherList(ledger::LedgerCallbackHandler* handler) override;
   void LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
