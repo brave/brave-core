@@ -10,8 +10,10 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/path_service.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/common/brave_paths.h"
 #include "sql/database.h"
 #include "sql/statement.h"
 #include "third_party/sqlite/sqlite3.h"
@@ -42,6 +44,33 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
 
     publisher_info_database_ =
         std::make_unique<PublisherInfoDatabase>(*db_file);
+    ASSERT_NE(publisher_info_database_, nullptr);
+  }
+
+  void CreateMigrationDatabase(base::ScopedTempDir* temp_dir,
+                               base::FilePath* db_file,
+                               const std::string& version) {
+    const std::string file_name = "publisher_info_db_v" + version;
+    ASSERT_TRUE(temp_dir->CreateUniqueTempDir());
+    *db_file = temp_dir->GetPath().AppendASCII(file_name);
+
+    // Get test data migration file
+    base::FilePath path;
+    ASSERT_TRUE(base::PathService::Get(brave::DIR_TEST_DATA, &path));
+    path = path.AppendASCII("rewards-data");
+    ASSERT_TRUE(base::PathExists(path));
+    path = path.AppendASCII("migration");
+    ASSERT_TRUE(base::PathExists(path));
+    path = path.AppendASCII(file_name);
+    ASSERT_TRUE(base::PathExists(path));
+
+    // Move it to temp dir
+    bool result = base::CopyFile(path, *db_file);
+    ASSERT_TRUE(result);
+    ASSERT_TRUE(base::PathExists(*db_file));
+
+    publisher_info_database_ =
+    std::make_unique<PublisherInfoDatabase>(*db_file);
     ASSERT_NE(publisher_info_database_, nullptr);
   }
 
@@ -746,6 +775,25 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
 
   EXPECT_EQ(list_4.at(0).id, "publisher_5");
   EXPECT_EQ(list_4.at(1).id, "publisher_6");
+}
+
+TEST_F(PublisherInfoDatabaseTest, Migrationv4tov5) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, "4");
+
+  ledger::PublisherInfoList list;
+  ledger::ActivityInfoFilter filter;
+  filter.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter, &list));
+  EXPECT_EQ(static_cast<int>(list.size()), 3);
+
+  EXPECT_EQ(list.at(0).id, "brave.com");
+  EXPECT_EQ(list.at(0).visits, 1u);
+  EXPECT_EQ(list.at(1).id, "slo-tech.com");
+  EXPECT_EQ(list.at(1).visits, 1u);
+  EXPECT_EQ(list.at(2).id, "basicattentiontoken.org");
+  EXPECT_EQ(list.at(2).visits, 3u);
 }
 
 }  // namespace brave_rewards
