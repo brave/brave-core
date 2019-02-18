@@ -31,21 +31,23 @@ export class App extends React.Component<Props, {}> {
       this.onClose()
     }, 3000)
 
+    let verified = false
     let domain = ''
+    let logo = ''
     if (publisher) {
       if (publisher.provider && publisher.name) {
         domain = publisher.name
       } else {
         domain = publisher.publisherKey
       }
+
+      verified = publisher.verified
+      logo = publisher.logo
     }
 
-    const verified = publisher.verified
-    let logo = publisher.logo
-
     const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
-    if (internalFavicon.test(publisher.logo)) {
-      logo = `chrome://favicon/size/160@2x/${publisher.logo}`
+    if (internalFavicon.test(logo)) {
+      logo = `chrome://favicon/size/160@2x/${logo}`
     }
 
     if (!verified) {
