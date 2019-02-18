@@ -67,7 +67,6 @@
     "jest": "^24.1.0",
     "minimist": "^1.2.0",
     "postcss-loader": "^2.0.8",
-    "pug-cli": "^1.0.0-alpha6",
     "react-addons-test-utils": "^15.6.2",
     "rimraf": "^2.6.2",
     "shelljs": "^0.8.1",
