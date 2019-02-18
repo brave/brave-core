@@ -24,10 +24,7 @@ void BraveSyncService::RemoveObserver(BraveSyncServiceObserver* observer) {
 bool BraveSyncService::is_enabled() {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  if (command_line.HasSwitch(switches::kDisableBraveSync))
-    return false;
-  else
-    return true;
+  return !command_line.HasSwitch(switches::kDisableBraveSync);
 }
 
 }  // namespace brave_sync

@@ -60,7 +60,7 @@ class SyncUIDOMHandler : public WebUIMessageHandler,
     std::unique_ptr<brave_sync::Settings> settings,
     std::unique_ptr<brave_sync::SyncDevices> devices);
 
-  brave_sync::BraveSyncService *sync_service_;  // NOT OWNED
+  brave_sync::BraveSyncService *sync_service_ = nullptr;  // NOT OWNED
 
   base::WeakPtrFactory<SyncUIDOMHandler> weak_ptr_factory_;
 
@@ -119,11 +119,12 @@ void SyncUIDOMHandler::RegisterMessages() {
 void SyncUIDOMHandler::Init() {
   Profile* profile = Profile::FromWebUI(web_ui());
   sync_service_ = brave_sync::BraveSyncServiceFactory::GetForProfile(profile);
-  DCHECK(sync_service_);
-  sync_service_->AddObserver(this);
+  if (sync_service_)
+    sync_service_->AddObserver(this);
 }
 
 void SyncUIDOMHandler::SetupSyncHaveCode(const base::ListValue* args) {
+  DCHECK(sync_service_);
   std::string sync_words, device_name;
   if (!args->GetString(0, &sync_words) || !args->GetString(1, &device_name))
     // TODO(bridiver) - does this need to report an error?
@@ -133,6 +134,7 @@ void SyncUIDOMHandler::SetupSyncHaveCode(const base::ListValue* args) {
 }
 
 void SyncUIDOMHandler::SetupSyncNewToSync(const base::ListValue* args) {
+  DCHECK(sync_service_);
   std::string sync_words, device_name;
   if (!args->GetString(0, &device_name))
     // TODO(bridiver) - does this need to report an error?
@@ -142,20 +144,24 @@ void SyncUIDOMHandler::SetupSyncNewToSync(const base::ListValue* args) {
 }
 
 void SyncUIDOMHandler::PageLoaded(const base::ListValue* args) {
+  DCHECK(sync_service_);
   LoadSyncSettingsView();
 }
 
 void SyncUIDOMHandler::NeedSyncWords(const base::ListValue* args) {
+  DCHECK(sync_service_);
   sync_service_->GetSyncWords();
 }
 
 void SyncUIDOMHandler::NeedSyncQRcode(const base::ListValue* args) {
+  DCHECK(sync_service_);
   std::string seed = sync_service_->GetSeed();
   web_ui()->CallJavascriptFunctionUnsafe(
       "sync_ui_exports.haveSeedForQrCode", base::Value(seed));
 }
 
 void SyncUIDOMHandler::SyncBookmarks(const base::ListValue* args) {
+  DCHECK(sync_service_);
   bool new_value;
   if (!args->GetBoolean(0, &new_value))
     // TODO(bridiver) - does this need to report an error?
@@ -165,6 +171,7 @@ void SyncUIDOMHandler::SyncBookmarks(const base::ListValue* args) {
 }
 
 void SyncUIDOMHandler::SyncBrowsingHistory(const base::ListValue* args) {
+  DCHECK(sync_service_);
   bool new_value;
   if (!args->GetBoolean(0, &new_value))
     // TODO(bridiver) - does this need to report an error?
@@ -174,6 +181,7 @@ void SyncUIDOMHandler::SyncBrowsingHistory(const base::ListValue* args) {
 }
 
 void SyncUIDOMHandler::SyncSavedSiteSettings(const base::ListValue* args) {
+  DCHECK(sync_service_);
   bool new_value;
   if (!args->GetBoolean(0, &new_value))
     // TODO(bridiver) - does this need to report an error?
@@ -183,6 +191,7 @@ void SyncUIDOMHandler::SyncSavedSiteSettings(const base::ListValue* args) {
 }
 
 void SyncUIDOMHandler::DeleteDevice(const base::ListValue* args) {
+  DCHECK(sync_service_);
   int i_device_id = -1;
   if (!args->GetInteger(0, &i_device_id) || i_device_id == -1) {
     DCHECK(false) << "[Brave Sync] could not get device id";
@@ -193,6 +202,7 @@ void SyncUIDOMHandler::DeleteDevice(const base::ListValue* args) {
 }
 
 void SyncUIDOMHandler::ResetSync(const base::ListValue* args) {
+  DCHECK(sync_service_);
   sync_service_->OnResetSync();
 }
 
@@ -240,7 +250,8 @@ SyncUI::SyncUI(content::WebUI* web_ui, const std::string& name)
     : BasicUI(web_ui, name,
               kBraveSyncGenerated,
               kBraveSyncGeneratedSize,
-              IDR_BRAVE_SYNC_HTML) {
+              Profile::FromWebUI(web_ui)->IsOffTheRecord() ?
+                  IDR_BRAVE_SYNC_DISABLED_HTML : IDR_BRAVE_SYNC_HTML) {
   auto handler_owner = std::make_unique<SyncUIDOMHandler>();
   SyncUIDOMHandler* handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));

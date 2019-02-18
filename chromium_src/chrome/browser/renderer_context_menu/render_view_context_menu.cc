@@ -56,7 +56,9 @@ void BraveRenderViewContextMenu::AppendBraveLinkItems() {
 bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
-      return params_.link_url.is_valid() && !browser_context_->IsTorProfile();
+      return params_.link_url.is_valid() &&
+             IsURLAllowedInIncognito(params_.link_url, browser_context_) &&
+             !browser_context_->IsTorProfile();
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
