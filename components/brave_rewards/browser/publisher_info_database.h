@@ -121,6 +121,8 @@ class PublisherInfoDatabase {
 
   bool MigrateV3toV4();
 
+  bool MigrateV4toV5();
+
   sql::InitStatus EnsureCurrentVersion();
 
   sql::Database db_;
