@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/version_info.h"
 #include "brave/components/brave_rewards/browser/publisher_info_database.h"
 
 #include <stdint.h>
@@ -1085,7 +1086,7 @@ void PublisherInfoDatabase::Vacuum() {
 void PublisherInfoDatabase::OnMemoryPressure(
     base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  db_.TrimMemory();
+  TRIM_PUBLISHERS_DB_MEMORY
 }
 
 std::string PublisherInfoDatabase::GetDiagnosticInfo(int extended_error,
