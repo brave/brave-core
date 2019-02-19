@@ -15,7 +15,7 @@
 
 namespace ledger {
 
-const char _clear_favicon[] = "clear";
+static const char* _clear_favicon = "clear";
 
 LEDGER_EXPORT enum REWARDS_CATEGORY {
   AUTO_CONTRIBUTE = 1 << 1,  // 2
