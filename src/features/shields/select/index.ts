@@ -26,7 +26,7 @@ export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
   width: 100%;
   appearance: none;
   min-height: 36px;
-  color: #343546;
+  color: ${palette.grey700};
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;
