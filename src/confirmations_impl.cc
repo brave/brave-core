@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <time>
 #include <utility>
 
 #include "confirmations_impl.h"
@@ -15,6 +16,8 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+
+#include "third_party/re2/src/re2/re2.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -76,6 +79,12 @@ std::string ConfirmationsImpl::ToJSON() const {
       GetCatalogIssuersAsDictionary(public_key_, catalog_issuers_);
   dictionary.SetKey("catalog_issuers", base::Value(std::move(catalog_issuers)));
 
+  // Transaction history
+  auto transaction_history =
+      GetTransactionHistoryAsDictionary(transaction_history_);
+  dictionary.SetKey("transaction_history", base::Value(
+      std::move(transaction_history)));
+
   // Unblinded tokens
   auto unblinded_tokens = unblinded_tokens_->GetTokensAsList();
   dictionary.SetKey("unblinded_tokens", base::Value(
@@ -114,6 +123,28 @@ base::Value ConfirmationsImpl::GetCatalogIssuersAsDictionary(
   return dictionary;
 }
 
+base::Value ConfirmationsImpl::GetTransactionHistoryAsDictionary(
+    const std::vector<TransactionInfo>& transaction_history) const {
+  base::Value dictionary(base::Value::Type::DICTIONARY);
+
+  base::Value list(base::Value::Type::LIST);
+  for (const auto& transaction : transaction_history) {
+    base::Value transaction_dictionary(base::Value::Type::DICTIONARY);
+
+    transaction_dictionary.SetKey("timestamp_in_seconds",
+        base::Value(std::to_string(transaction.timestamp_in_seconds)));
+
+    transaction_dictionary.SetKey("estimated_redemption_value",
+        base::Value(transaction.estimated_redemption_value));
+
+    list.GetList().push_back(std::move(transaction_dictionary));
+  }
+
+  dictionary.SetKey("transactions", base::Value(std::move(list)));
+
+  return dictionary;
+}
+
 bool ConfirmationsImpl::FromJSON(const std::string& json) {
   std::unique_ptr<base::DictionaryValue> dictionary =
       base::DictionaryValue::From(base::JSONReader::Read(json));
@@ -140,6 +171,26 @@ bool ConfirmationsImpl::FromJSON(const std::string& json) {
       &catalog_issuers)) {
     return false;
   }
+
+  // Transaction history
+  auto* transaction_history_value = dictionary->FindKey("transaction_history");
+  if (!transaction_history_value) {
+    return false;
+  }
+
+  base::DictionaryValue* transaction_history_dictionary;
+  if (!transaction_history_value->GetAsDictionary(
+        &transaction_history_dictionary)) {
+    return false;
+  }
+
+  std::vector<TransactionInfo> transaction_history;
+  if (!GetTransactionHistoryFromDictionary(transaction_history_dictionary,
+      &transaction_history)) {
+    return false;
+  }
+
+  transaction_history_ = transaction_history;
 
   // Unblinded tokens
   auto* unblinded_tokens_value = dictionary->FindKey("unblinded_tokens");
@@ -212,6 +263,52 @@ bool ConfirmationsImpl::GetCatalogIssuersFromDictionary(
     auto name = name_value->GetString();
 
     issuers->insert({public_key, name});
+  }
+
+  return true;
+}
+
+bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
+    base::DictionaryValue* dictionary,
+    std::vector<TransactionInfo>* transaction_history) {
+  DCHECK(dictionary);
+  DCHECK(transaction_history);
+
+  // Transaction
+  auto* transactions_value = dictionary->FindKey("transactions");
+  if (!transactions_value) {
+    return false;
+  }
+
+  transaction_history->clear();
+  base::ListValue transactions_list_value(transactions_value->GetList());
+  for (auto& transaction_value : transactions_list_value) {
+    base::DictionaryValue* transaction_dictionary;
+    if (!transaction_value.GetAsDictionary(&transaction_dictionary)) {
+      return false;
+    }
+
+    TransactionInfo info;
+
+    // Timestamp
+    auto* timestamp_in_seconds_value =
+        transaction_dictionary->FindKey("timestamp_in_seconds");
+    if (!timestamp_in_seconds_value) {
+      return false;
+    }
+    info.timestamp_in_seconds =
+        std::stoull(timestamp_in_seconds_value->GetString());
+
+    // Estimated redemption value
+    auto* estimated_redemption_value_value =
+        transaction_dictionary->FindKey("estimated_redemption_value");
+    if (!estimated_redemption_value_value) {
+      return false;
+    }
+    info.estimated_redemption_value =
+        estimated_redemption_value_value->GetDouble();
+
+    transaction_history->push_back(info);
   }
 
   return true;
@@ -334,6 +431,56 @@ bool ConfirmationsImpl::IsValidPublicKeyForCatalogIssuers(
   }
 
   return true;
+}
+
+void ConfirmationsImpl::GetTransactionHistory(
+    const uint64_t from_timestamp_in_seconds,
+    const uint64_t to_timestamp_in_seconds,
+    OnGetTransactionHistoryCallback callback) {
+  std::vector<TransactionInfo> transactions(transaction_history_.size());
+
+  auto it = std::copy_if(transaction_history_.begin(),
+      transaction_history_.end(), transactions.begin(),
+      [=](TransactionInfo& info) {
+        return info.timestamp_in_seconds >= from_timestamp_in_seconds &&
+            info.timestamp_in_seconds <= to_timestamp_in_seconds;
+      });
+
+  transactions.resize(std::distance(transactions.begin(), it));
+
+  auto transactions_info = std::make_unique<TransactionsInfo>();
+  transactions_info->transactions = transactions;
+
+  callback(std::move(transactions_info));
+}
+
+double ConfirmationsImpl::GetEstimatedRedemptionValue(
+    const std::string& public_key) const {
+  double estimated_redemption_value = 0.0;
+
+  auto it = catalog_issuers_.find(public_key);
+  if (it != catalog_issuers_.end()) {
+    auto name = it->second;
+    if (!re2::RE2::Replace(&name, "BAT", "")) {
+      BLOG(ERROR) << "Could not estimate redemption value due to catalog"
+      << " issuer name missing BAT";
+    }
+
+    estimated_redemption_value = stod(name);
+  }
+
+  return estimated_redemption_value;
+}
+
+void ConfirmationsImpl::AppendEstimatedRedemptionValueToTransactionHistory(
+    double estimated_redemption_value) {
+  TransactionInfo info;
+  info.timestamp_in_seconds = static_cast<uint64_t>(std::time(nullptr));
+  info.estimated_redemption_value = estimated_redemption_value;
+
+  transaction_history_.push_back(info);
+
+  SaveState();
 }
 
 void ConfirmationsImpl::AdSustained(std::unique_ptr<NotificationInfo> info) {

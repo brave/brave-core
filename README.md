@@ -22,6 +22,14 @@ void SetCatalogIssuers(
     std::unique_ptr<IssuersInfo> info)
 ```
 
+`GetTransactionHistory` should be called to get transaction history
+```
+void GetTransactionHistory(
+    const uint64_t from_timestamp_in_seconds,
+    const uint64_t to_timestamp_in_seconds,
+    OnGetTransactionHistoryCallback callback)
+```
+
 `AdSustained` should be called by Ads to be rewarded for viewing an Ad
 ```
 void AdSustained(
@@ -36,7 +44,7 @@ void OnTimer(
 
 ### Client
 
-`SetConfirmationsIsReady` should notify Brave Ads if Confirmations is ready
+`SetConfirmationsIsReady` should notify Ads if Confirmations is ready
 ```
 void SetConfirmationsIsReady(
     const bool is_ready)

@@ -353,9 +353,16 @@ void RedeemToken::OnFetchPaymentToken(
   // Add tokens
   unblinded_payment_tokens_->AddTokens(unblinded_payment_tokens);
 
+  double estimated_redemption_value =
+      confirmations_->GetEstimatedRedemptionValue(public_key_base64);
+
   BLOG(INFO) << "Added " << unblinded_payment_tokens.size()
-      << " unblinded payment tokens, you now have "
+      << " unblinded payment token with an estimated redemption value of "
+      << estimated_redemption_value << " BAT, you now have "
       << unblinded_payment_tokens_->Count() << " unblinded payment tokens";
+
+  confirmations_->AppendEstimatedRedemptionValueToTransactionHistory(
+      estimated_redemption_value);
 
   OnRedeem(SUCCESS, unblinded_token);
 }

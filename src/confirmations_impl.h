@@ -37,6 +37,15 @@ class ConfirmationsImpl : public Confirmations {
   void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) override;
   std::map<std::string, std::string> GetCatalogIssuers() const;
   bool IsValidPublicKeyForCatalogIssuers(const std::string& public_key) const;
+  double GetEstimatedRedemptionValue(const std::string& public_key) const;
+
+  // Transaction history
+  void GetTransactionHistory(
+      const uint64_t from_timestamp_in_seconds,
+      const uint64_t to_timestamp_in_seconds,
+      OnGetTransactionHistoryCallback callback) override;
+  void AppendEstimatedRedemptionValueToTransactionHistory(
+      double estimated_redemption_value);
 
   // Scheduled events
   bool OnTimer(const uint32_t timer_id) override;
@@ -64,6 +73,9 @@ class ConfirmationsImpl : public Confirmations {
 
   // Catalog issuers
   std::map<std::string, std::string> catalog_issuers_;
+
+  // Transaction history
+  std::vector<TransactionInfo> transaction_history_;
 
   // Unblinded tokens
   std::unique_ptr<UnblindedTokens> unblinded_tokens_;
@@ -101,12 +113,19 @@ class ConfirmationsImpl : public Confirmations {
       const std::string& public_key,
       const std::map<std::string, std::string>& issuers) const;
 
+  base::Value GetTransactionHistoryAsDictionary(
+      const std::vector<TransactionInfo>& transaction_history) const;
+
   bool FromJSON(const std::string& json);
 
   bool GetCatalogIssuersFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* public_key,
       std::map<std::string, std::string>* issuers) const;
+
+  bool GetTransactionHistoryFromDictionary(
+      base::DictionaryValue* dictionary,
+      std::vector<TransactionInfo>* transaction_history);
 
   // Confirmations::Client
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
