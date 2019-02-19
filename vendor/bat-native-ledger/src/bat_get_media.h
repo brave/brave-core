@@ -197,7 +197,8 @@ class BatGetMedia {
   void processYoutubeCustomPath(
       uint64_t windowId,
       const ledger::VisitData& visit_data,
-      const std::string& providerType);
+      const std::string& providerType,
+      const std::string& publisher_key);
 
   void onGetChannelHeadlineVideo(
       uint64_t windowId,
