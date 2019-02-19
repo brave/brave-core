@@ -96,4 +96,4 @@ TEST_F(BatPublishersTest, concaveScore) {
   EXPECT_NEAR(publishers->concaveScore(500000), 74.7025, 0.001f);
 }
 
-}
+}  // namespace braveledger_bat_publishers

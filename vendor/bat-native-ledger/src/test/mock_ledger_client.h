@@ -49,6 +49,6 @@ class MockLedgerClient : public ledger::LedgerClient {
   std::string publisher_state_;
 };
 
-}  // namespace history
+}  // namespace bat_ledger
 
 #endif  //BAT_LEDGER_MOCK_LEDGER_CLIENT_

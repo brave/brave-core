@@ -8,6 +8,7 @@
 #include <string>
 
 namespace braveledger_bat_bignum {
+
 void prepareBigNum(bn_t& big_num, const std::string& probi) {
   bn_null(big_num);
   bn_new(big_num);

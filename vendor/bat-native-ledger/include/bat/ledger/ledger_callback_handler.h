@@ -50,6 +50,7 @@ class LEDGER_EXPORT LedgerCallbackHandler {
   virtual void OnPublisherStateLoaded(Result result,
                                       const std::string& data) {};
   virtual void OnPublisherStateSaved(Result result) {};
+
   virtual void OnPublishersListSaved(Result result) {};
 
   virtual void OnPublisherListLoaded(Result result,

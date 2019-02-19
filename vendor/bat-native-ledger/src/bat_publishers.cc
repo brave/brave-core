@@ -54,7 +54,8 @@ void BatPublishers::calcScoreConsts(const uint64_t& min_duration_seconds) {
   b2_ = b_ * b_;
 }
 
-// courtesy of @dimitry-xyz: https://github.com/brave/ledger/issues/2#issuecomment-221752002
+// courtesy of @dimitry-xyz:
+// https://github.com/brave/ledger/issues/2#issuecomment-221752002
 double BatPublishers::concaveScore(const uint64_t& duration_seconds) {
   uint64_t duration_big = duration_seconds * 100;
   return (-b_ + std::sqrt(b2_ + (a4_ * duration_big))) / a2_;
@@ -74,7 +75,8 @@ bool ignoreMinTime(const std::string& publisher_id) {
   return !getProviderName(publisher_id).empty();
 }
 
-void BatPublishers::AddRecurringPayment(const std::string& publisher_id, const double& value) {
+void BatPublishers::AddRecurringPayment(const std::string& publisher_id,
+                                        const double& value) {
   state_->recurring_donation_[publisher_id] = value;
   saveState();
 }
@@ -179,7 +181,8 @@ std::string BatPublishers::GetBalanceReportName(
   return std::to_string(year) + "_" + std::to_string(month);
 }
 
-void BatPublishers::setNumExcludedSitesInternal(ledger::PUBLISHER_EXCLUDE exclude) {
+void BatPublishers::setNumExcludedSitesInternal(
+    ledger::PUBLISHER_EXCLUDE exclude) {
   unsigned int previousNum = getNumExcludedSites();
   setNumExcludedSites((exclude == ledger::PUBLISHER_EXCLUDE::EXCLUDED)
                       ? ++previousNum
@@ -194,7 +197,8 @@ void BatPublishers::saveVisitInternal(
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info) {
   DCHECK(result != ledger::Result::TOO_MANY_RESULTS);
-  if (result != ledger::Result::LEDGER_OK && result != ledger::Result::NOT_FOUND) {
+  if (result != ledger::Result::LEDGER_OK &&
+      result != ledger::Result::NOT_FOUND) {
     // TODO error handling
     return;
   }
@@ -333,7 +337,8 @@ void BatPublishers::OnPublisherInfoSaved(
   SynopsisNormalizer();
 }
 
-void BatPublishers::setExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude) {
+void BatPublishers::setExclude(const std::string& publisher_id,
+                               const ledger::PUBLISHER_EXCLUDE& exclude) {
     ledger_->GetPublisherInfo(publisher_id,
         std::bind(&BatPublishers::onSetExcludeInternal,
                   this,
@@ -343,7 +348,8 @@ void BatPublishers::setExclude(const std::string& publisher_id, const ledger::PU
 }
 
 void BatPublishers::setPanelExclude(const std::string& publisher_id,
-  const ledger::PUBLISHER_EXCLUDE& exclude, uint64_t windowId) {
+                                    const ledger::PUBLISHER_EXCLUDE& exclude,
+                                    uint64_t windowId) {
     ledger_->GetPublisherInfo(publisher_id,
         std::bind(&BatPublishers::onSetPanelExcludeInternal,
                   this,
@@ -383,10 +389,11 @@ void BatPublishers::onSetExcludeInternal(
   OnExcludedSitesChanged(publisherKey);
 }
 
-void BatPublishers::onSetPanelExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
-  uint64_t windowId,
-  ledger::Result result,
-  std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+void BatPublishers::onSetPanelExcludeInternal(
+    ledger::PUBLISHER_EXCLUDE exclude,
+    uint64_t windowId,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> publisher_info) {
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
     return;
@@ -432,7 +439,8 @@ void BatPublishers::OnRestorePublishersInternal(bool success) {
   }
 }
 
-void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In seconds
+// In seconds
+void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) {
   state_->min_publisher_duration_ = duration;
   calcScoreConsts(duration);
   SynopsisNormalizer();
@@ -594,8 +602,9 @@ void BatPublishers::SynopsisNormalizer() {
       ledger_->GetReconcileStamp(),
       ledger_->GetPublisherAllowNonVerified(),
       ledger_->GetPublisherMinVisits());
-  // TODO SZ: We pull the whole list currently, I don't think it consumes lots of RAM, but could.
-  // We need to limit it and iterate.
+  //  TODO SZ: We pull the whole list currently,
+  //  I don't think it consumes lots of RAM, but could.
+  //  We need to limit it and iterate.
   ledger_->GetActivityInfoList(
       0,
       0,
@@ -627,7 +636,8 @@ bool BatPublishers::isVerified(const std::string& publisher_id) {
   return values.verified;
 }
 
-bool BatPublishers::isExcluded(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& excluded) {
+bool BatPublishers::isExcluded(const std::string& publisher_id,
+                               const ledger::PUBLISHER_EXCLUDE& excluded) {
   // If exclude is set to 1, we should avoid further computation and return true
   if (excluded == ledger::PUBLISHER_EXCLUDE::EXCLUDED) {
     return true;
@@ -674,7 +684,8 @@ void BatPublishers::setBalanceReport(ledger::ACTIVITY_MONTH month,
   total = braveledger_bat_bignum::sum(total, report_balance.earning_from_ads_);
   total = braveledger_bat_bignum::sum(total, report_balance.deposits_);
   total = braveledger_bat_bignum::sub(total, report_balance.auto_contribute_);
-  total = braveledger_bat_bignum::sub(total, report_balance.recurring_donation_);
+  total = braveledger_bat_bignum::sub(total,
+                                      report_balance.recurring_donation_);
   total = braveledger_bat_bignum::sub(total, report_balance.one_time_donation_);
 
   report_balance.total_ = total;
@@ -686,8 +697,7 @@ bool BatPublishers::getBalanceReport(ledger::ACTIVITY_MONTH month,
                                      int year,
                                      ledger::BalanceReportInfo* report_info) {
   std::string name = GetBalanceReportName(month, year);
-  std::map<std::string, braveledger_bat_helper::REPORT_BALANCE_ST>::const_iterator iter =
-    state_->monthly_balances_.find(name);
+  auto iter = state_->monthly_balances_.find(name);
   if (!report_info) {
     return false;
   }
@@ -714,7 +724,8 @@ bool BatPublishers::getBalanceReport(ledger::ACTIVITY_MONTH month,
   return true;
 }
 
-std::map<std::string, ledger::BalanceReportInfo> BatPublishers::getAllBalanceReports() {
+std::map<std::string, ledger::BalanceReportInfo>
+BatPublishers::getAllBalanceReports() {
   std::map<std::string, ledger::BalanceReportInfo> newReports;
   for (auto const& report : state_->monthly_balances_) {
     ledger::BalanceReportInfo newReport;
@@ -758,7 +769,8 @@ void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
   }
 }
 
-std::vector<ledger::ContributionInfo> BatPublishers::GetRecurringDonationList() {
+std::vector<ledger::ContributionInfo>
+BatPublishers::GetRecurringDonationList() {
   std::vector<ledger::ContributionInfo> res;
 
   for (const auto & e : state_->recurring_donation_) {
@@ -777,7 +789,9 @@ void BatPublishers::RefreshPublishersList(const std::string& json) {
 }
 
 void BatPublishers::OnPublishersListSaved(ledger::Result result) {
-  uint64_t ts = (ledger::Result::LEDGER_OK == result) ? std::time(nullptr) : 0ull;
+  uint64_t ts = (ledger::Result::LEDGER_OK == result)
+                ? std::time(nullptr)
+                : 0ull;
   setPublishersLastRefreshTimestamp(ts);
 }
 
@@ -786,7 +800,8 @@ bool BatPublishers::loadPublisherList(const std::string& data) {
   bool success = braveledger_bat_helper::getJSONServerList(data, list);
 
   if (success) {
-    server_list_ = std::map<std::string, braveledger_bat_helper::SERVER_LIST>(list);
+    server_list_ =
+        std::map<std::string, braveledger_bat_helper::SERVER_LIST>(list);
   }
 
   return success;
@@ -843,10 +858,11 @@ void BatPublishers::getPublisherActivityFromUrl(
                   new_data));
 }
 
-void BatPublishers::OnPanelPublisherInfo(ledger::Result result,
-                                        std::unique_ptr<ledger::PublisherInfo> info,
-                                        uint64_t windowId,
-                                        const ledger::VisitData& visit_data) {
+void BatPublishers::OnPanelPublisherInfo(
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info,
+    uint64_t windowId,
+    const ledger::VisitData& visit_data) {
   if (result == ledger::Result::LEDGER_OK) {
     ledger_->OnPanelPublisherInfo(result, std::move(info), windowId);
   }
@@ -874,16 +890,20 @@ void BatPublishers::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
 
   switch (type) {
     case ledger::ReportType::GRANT:
-      report_info.grants_ = braveledger_bat_bignum::sum(report_info.grants_, probi);
+      report_info.grants_ =
+          braveledger_bat_bignum::sum(report_info.grants_, probi);
       break;
     case ledger::ReportType::AUTO_CONTRIBUTION:
-      report_info.auto_contribute_ = braveledger_bat_bignum::sum(report_info.auto_contribute_, probi);
+      report_info.auto_contribute_ =
+          braveledger_bat_bignum::sum(report_info.auto_contribute_, probi);
       break;
     case ledger::ReportType::DONATION:
-      report_info.one_time_donation_ = braveledger_bat_bignum::sum(report_info.one_time_donation_, probi);
+      report_info.one_time_donation_ =
+          braveledger_bat_bignum::sum(report_info.one_time_donation_, probi);
       break;
     case ledger::ReportType::DONATION_RECURRING:
-      report_info.recurring_donation_ = braveledger_bat_bignum::sum(report_info.recurring_donation_, probi);
+      report_info.recurring_donation_ =
+          braveledger_bat_bignum::sum(report_info.recurring_donation_, probi);
       break;
     default:
       break;
@@ -892,8 +912,9 @@ void BatPublishers::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
   setBalanceReport(month, year, report_info);
 }
 
-void BatPublishers::getPublisherBanner(const std::string& publisher_id,
-                                       ledger::PublisherBannerCallback callback) {
+void BatPublishers::getPublisherBanner(
+    const std::string& publisher_id,
+    ledger::PublisherBannerCallback callback) {
   ledger::PublisherBanner banner;
   banner.publisher_key = publisher_id;
 
@@ -911,27 +932,33 @@ void BatPublishers::getPublisherBanner(const std::string& publisher_id,
       // WebUI must not make external network requests, so map
       // external resopurces to chrome://rewards-image and handle them
       // via our custom data source
-      if (!values.banner.background_.empty())
-        banner.background = "chrome://rewards-image/" + values.banner.background_;
-      if (!values.banner.logo_.empty())
+      if (!values.banner.background_.empty()) {
+        banner.background = "chrome://rewards-image/"
+            + values.banner.background_;
+      }
+
+      if (!values.banner.logo_.empty()) {
         banner.logo = "chrome://rewards-image/" + values.banner.logo_;
+      }
     }
   }
 
-  ledger::PublisherInfoCallback callbackGetPublisher = std::bind(&BatPublishers::onPublisherBanner,
-                                      this,
-                                      callback,
-                                      banner,
-                                      _1,
-                                      _2);
+  ledger::PublisherInfoCallback callbackGetPublisher =
+      std::bind(&BatPublishers::onPublisherBanner,
+                this,
+                callback,
+                banner,
+                _1,
+                _2);
 
   ledger_->GetPublisherInfo(publisher_id, callbackGetPublisher);
 }
 
-void BatPublishers::onPublisherBanner(ledger::PublisherBannerCallback callback,
-                                      ledger::PublisherBanner banner,
-                                      ledger::Result result,
-                                      std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+void BatPublishers::onPublisherBanner(
+    ledger::PublisherBannerCallback callback,
+    ledger::PublisherBanner banner,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> publisher_info) {
 
   auto new_banner = std::make_unique<ledger::PublisherBanner>(banner);
 

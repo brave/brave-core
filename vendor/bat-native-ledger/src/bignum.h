@@ -14,10 +14,15 @@ extern "C"{
 
 namespace braveledger_bat_bignum {
   void prepareBigNum(bn_t& result, const std::string& number);
+
   std::string bigNumToString(bn_t& number);
+
   std::string sum(const std::string& a_string, const std::string& b_string);
+
   std::string sub(const std::string& a_string, const std::string& b_string);
+
   std::string mul(const std::string& a_string, const std::string& b_string);
+
 }  // namespace braveledger_bat_bignum
 
 #endif  // BRAVELEDGER_BAT_BIGNUM_H_

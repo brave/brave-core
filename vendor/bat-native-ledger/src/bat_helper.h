@@ -18,16 +18,16 @@ namespace braveledger_bat_helper {
 
   enum ContributionRetry {
     STEP_NO = 0,
-    STEP_RECONCILE = 1, // Phase 1
-    STEP_CURRENT = 2, // Phase 1
-    STEP_PAYLOAD = 3, // Phase 1
-    STEP_REGISTER = 4, // Phase 1
-    STEP_VIEWING = 5, // Phase 1
-    STEP_WINNERS = 6, // Phase 1
-    STEP_PREPARE = 7, // Phase 2
-    STEP_PROOF = 8, // Phase 2
-    STEP_VOTE = 9, // Phase 2
-    STEP_FINAL = 10 // Phase 2
+    STEP_RECONCILE = 1,  // Phase 1
+    STEP_CURRENT = 2,  // Phase 1
+    STEP_PAYLOAD = 3,  // Phase 1
+    STEP_REGISTER = 4,  // Phase 1
+    STEP_VIEWING = 5,  // Phase 1
+    STEP_WINNERS = 6,  // Phase 1
+    STEP_PREPARE = 7,  // Phase 2
+    STEP_PROOF = 8,  // Phase 2
+    STEP_VOTE = 9,  // Phase 2
+    STEP_FINAL = 10  // Phase 2
   };
 
   struct REQUEST_CREDENTIALS_ST {
@@ -215,14 +215,16 @@ namespace braveledger_bat_helper {
     PUBLISHER_STATE_ST(const PUBLISHER_STATE_ST&);
     ~PUBLISHER_STATE_ST();
 
-    //load from json string
+    // load from json string
     bool loadFromJson(const std::string &json);
 
-    uint64_t min_publisher_duration_ = braveledger_ledger::_default_min_publisher_duration;  // In seconds
+    uint64_t min_publisher_duration_ =
+        braveledger_ledger::_default_min_publisher_duration;  // In seconds
     unsigned int min_visits_ = 1u;
     unsigned int num_excluded_sites_ = 0;
     bool allow_non_verified_ = true;
-    uint64_t pubs_load_timestamp_ = 0ull; //last publishers list load timestamp (seconds)
+    // last publishers list load timestamp (seconds)
+    uint64_t pubs_load_timestamp_ = 0ull;
     bool allow_videos_ = true;
     std::map<std::string, REPORT_BALANCE_ST> monthly_balances_;
     std::map<std::string, double> recurring_donation_;
@@ -361,7 +363,8 @@ namespace braveledger_bat_helper {
     bool rewards_enabled_ = false;
   };
 
-  // The struct is serialized/deserialized from/into JSON as part of MEDIA_PUBLISHER_INFO
+  // The struct is serialized/deserialized from/into JSON
+  // as part of MEDIA_PUBLISHER_INFO
   struct TWITCH_EVENT_INFO {
     TWITCH_EVENT_INFO();
     TWITCH_EVENT_INFO(const TWITCH_EVENT_INFO&);
@@ -377,7 +380,7 @@ namespace braveledger_bat_helper {
     MEDIA_PUBLISHER_INFO(const MEDIA_PUBLISHER_INFO&);
     ~MEDIA_PUBLISHER_INFO();
 
-    //load from json string
+    // load from json string
     bool loadFromJson(const std::string & json);
 
     std::string publisherName_;
@@ -427,9 +430,13 @@ namespace braveledger_bat_helper {
   using SaveVisitSignature = void(const std::string&, uint64_t);
   using SaveVisitCallback = std::function<SaveVisitSignature>;
 
-  bool getJSONValue(const std::string& fieldName, const std::string& json, std::string & value);
+  bool getJSONValue(const std::string& fieldName,
+                    const std::string& json,
+                    std::string & value);
 
-  bool getJSONList(const std::string& fieldName, const std::string& json, std::vector<std::string> & value);
+  bool getJSONList(const std::string& fieldName,
+                   const std::string& json,
+                   std::vector<std::string>& value);
 
   bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
     std::string& fee_currency, double& fee_amount, unsigned int& days);
@@ -440,17 +447,27 @@ namespace braveledger_bat_helper {
 
   bool getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction);
 
-  bool getJSONRates(const std::string& json, std::map<std::string, double>& rates);
+  bool getJSONRates(const std::string& json,
+                    std::map<std::string, double>& rates);
 
-  bool getJSONTwitchProperties(const std::string& json, std::vector<std::map<std::string, std::string>>& parts);
+  bool getJSONTwitchProperties(
+      const std::string& json,
+      std::vector<std::map<std::string, std::string>>& parts);
 
-  bool getJSONBatchSurveyors(const std::string& json, std::vector<std::string>& surveyors);
+  bool getJSONBatchSurveyors(const std::string& json,
+                             std::vector<std::string>& surveyors);
 
-  bool getJSONRecoverWallet(const std::string& json, double& balance, std::string& probi, std::vector<GRANT>& grants);
+  bool getJSONRecoverWallet(const std::string& json,
+                            double& balance,
+                            std::string& probi,
+                            std::vector<GRANT>& grants);
 
-  bool getJSONResponse(const std::string& json, unsigned int& statusCode, std::string& error);
+  bool getJSONResponse(const std::string& json,
+                       unsigned int& statusCode,
+                       std::string& error);
 
-  bool getJSONServerList(const std::string& json, std::map<std::string, SERVER_LIST>& list);
+  bool getJSONServerList(const std::string& json,
+                         std::map<std::string, SERVER_LIST>& list);
 
   bool getJSONAddresses(const std::string& json,
                         std::map<std::string, std::string>& addresses);
@@ -459,15 +476,21 @@ namespace braveledger_bat_helper {
 
   std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed);
 
-  bool getPublicKeyFromSeed(const std::vector<uint8_t>& seed, std::vector<uint8_t>& publicKey, std::vector<uint8_t>& secretKey);
+  bool getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
+                            std::vector<uint8_t>& publicKey,
+                            std::vector<uint8_t>& secretKey);
 
   std::string uint8ToHex(const std::vector<uint8_t>& in);
 
-  std::string stringify(std::string* keys, std::string* values, const unsigned int& size);
+  std::string stringify(std::string* keys,
+                        std::string* values,
+                        const unsigned int& size);
 
-  std::string stringifyRequestCredentialsSt(const REQUEST_CREDENTIALS_ST& request_credentials);
+  std::string stringifyRequestCredentialsSt(
+      const REQUEST_CREDENTIALS_ST& request_credentials);
 
-  std::string stringifyReconcilePayloadSt(const RECONCILE_PAYLOAD_ST& reconcile_payload);
+  std::string stringifyReconcilePayloadSt(
+      const RECONCILE_PAYLOAD_ST& reconcile_payload);
 
   std::string stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx);
 
@@ -480,30 +503,45 @@ namespace braveledger_bat_helper {
   bool getFromBase64(const std::string& in, std::vector<uint8_t> & out);
 
   // Sign using ed25519 algorithm
-  std::string sign(std::string* keys, std::string* values, const unsigned int& size,
-      const std::string& keyId, const std::vector<uint8_t>& secretKey);
+  std::string sign(std::string* keys,
+                   std::string* values,
+                   const unsigned int& size,
+                   const std::string& keyId,
+                   const std::vector<uint8_t>& secretKey);
 
   uint64_t currentTime();
 
-  void getUrlQueryParts(const std::string& query, std::map<std::string, std::string>& parts);
+  void getUrlQueryParts(const std::string& query,
+                        std::map<std::string, std::string>& parts);
 
-  void getTwitchParts(const std::string& query, std::vector<std::map<std::string, std::string>>& parts);
+  void getTwitchParts(
+      const std::string& query,
+      std::vector<std::map<std::string, std::string>>& parts);
 
-  std::string getMediaId(const std::map<std::string, std::string>& data, const std::string& type);
+  std::string getMediaId(const std::map<std::string, std::string>& data,
+                         const std::string& type);
 
   std::string getMediaKey(const std::string& mediaId, const std::string& type);
 
-  uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& media_key, const std::string& type);
+  uint64_t getMediaDuration(const std::map<std::string, std::string>& data,
+                            const std::string& media_key,
+                            const std::string& type);
 
-  std::string buildURL(const std::string& path, const std::string& prefix = "", const SERVER_TYPES& server = SERVER_TYPES::LEDGER);
+  std::string buildURL(const std::string& path,
+                       const std::string& prefix = "",
+                       const SERVER_TYPES& server = SERVER_TYPES::LEDGER);
 
   std::vector<std::string> split(const std::string& s, char delim);
 
   bool ignore_for_testing();
+
   void set_ignore_for_testing(bool ignore);
-  uint8_t niceware_mnemonic_to_bytes(const std::string& w,
-    std::vector<uint8_t>& bytes_out, size_t *written,
-    std::vector<std::string> wordDictionary);
+
+  uint8_t niceware_mnemonic_to_bytes(
+      const std::string& w,
+      std::vector<uint8_t>& bytes_out, size_t *written,
+      std::vector<std::string> wordDictionary);
+
   uint64_t getRandomValue(uint8_t min, uint8_t max);
 }  // namespace braveledger_bat_helper
 

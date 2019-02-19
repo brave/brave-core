@@ -6,6 +6,8 @@
 #ifndef BAT_LEDGER_MEDIA_PUBLISHER_INFO_HANDLER_
 #define BAT_LEDGER_MEDIA_PUBLISHER_INFO_HANDLER_
 
+#include <string>
+
 #include "bat/ledger/export.h"
 #include "bat/ledger/publisher_info.h"
 
