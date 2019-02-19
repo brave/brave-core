@@ -678,7 +678,7 @@ void RewardsServiceImpl::OnPostData(SessionID tab_id,
   url::RawCanonOutputW<1024> canonOutput;
   url::DecodeURLEscapeSequences(post_data.c_str(),
                                 post_data.length(),
-                                url::DecodeURLMode::kUTF8OrIsomorphic,
+                                URL_DECODE_URL_MODE
                                 &canonOutput);
   output = base::UTF16ToUTF8(base::StringPiece16(canonOutput.data(),
                                                  canonOutput.length()));

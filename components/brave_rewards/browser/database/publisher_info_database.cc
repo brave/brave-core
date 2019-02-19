@@ -1154,7 +1154,7 @@ void PublisherInfoDatabase::Vacuum() {
 void PublisherInfoDatabase::OnMemoryPressure(
     base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  db_.TrimMemory();
+  TRIM_PUBLISHERS_DB_MEMORY
 }
 
 std::string PublisherInfoDatabase::GetDiagnosticInfo(int extended_error,
