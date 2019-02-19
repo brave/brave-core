@@ -13,7 +13,7 @@ export interface Props {
   id?: string
   readOnly?: boolean
   autoFocus?: boolean
-  size?: 'large' | 'small'
+  size: 'large' | 'small'
   colorType?: 'dark' | 'light' | 'default'
 }
 
@@ -60,8 +60,7 @@ export class Toggle extends React.PureComponent<Props, ToggleState> {
     const { checked } = this.state
 
     return (
-      <StyledWrapper checked={checked} data-test-id={testId} size={size}>
-        <StyleToggle size={size}>
+        <StyledWrapper checked={checked} data-test-id={testId} size={size}>
           <StyledCheckbox
             type='checkbox'
             id={id}
@@ -71,10 +70,11 @@ export class Toggle extends React.PureComponent<Props, ToggleState> {
             onChange={this.handleChange}
             autoFocus={autoFocus}
           />
-          <StyledSlider htmlFor={id} checked={checked} size={size} disabled={disabled} />
-          <StyledBullet htmlFor={id} checked={checked} size={size} disabled={disabled} colorType={colorType} />
-        </StyleToggle>
-      </StyledWrapper>
+          <StyleToggle size={size}>
+            <StyledSlider htmlFor={id} checked={checked} size={size} disabled={disabled} />
+            <StyledBullet htmlFor={id} checked={checked} size={size} disabled={disabled} colorType={colorType} />
+          </StyleToggle>
+        </StyledWrapper>
     )
   }
 }
