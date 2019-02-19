@@ -195,7 +195,7 @@
                 "type": "string",
                 "description": "balance defined in probi"
               },
-              "recurring": {
+              "donation": {
                 "type": "string",
                 "description": "balance defined in probi"
               },
