@@ -8,7 +8,7 @@
 "BookmarksFolderTitleToolbar" = "Bilah Alat Markah";
 
 /* The name of the folder that contains unsorted desktop bookmarks. This should match bookmarks.folder.unfiled.label on Android. */
-"BookmarksFolderTitleUnsorted" = "Markah yang Tidak Diurut";
+"BookmarksFolderTitleUnsorted" = "Markah Belum Diurutkan";
 
 /* The default name for bookmark folders without titles. */
 "SQLLiteBookmarkDefaultFolderTitle" = "Tanpa Judul";

@@ -17,7 +17,12 @@
 "AdsAndTrackers" = "광고 및 개인정보 트래커";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "차단 된 광고 및 트래커";
+"AdsAndTrackersrBlocked" = "차단된 광고 및  
+트래커 수";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "차단된 
+광고 수";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "항상 보내기";
@@ -118,6 +123,18 @@
 /* cookie settings option */
 "BlockAllCookies" = "모든 쿠키 차단";
 
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "모두 차단";
+
+/* Information displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertInfo" = "모든 쿠키를 차단하면 일부 웹사이트가 올바르게 작동하지 않을 수 있습니다.";
+
+/* Title of alert displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertTitle" = "모든 쿠키를 차단하시겠습니까?";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "환경 설정을 설정하는 데 실패했습니다. 다시 시도하십시오.";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "차단 모니터";
 
@@ -147,6 +164,12 @@
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave Shield 기본값";
+
+/* Brave sync page title */
+"BraveSync" = "Brave 동기화(베타)";
+
+/* Sync settings welcome */
+"BraveSyncWelcome" = "시작하려면 동기화하려는 모든 기기에 Brave가 설치되어 있어야 합니다. 모든 기기를 연결하려면 모든 기기를 안전하게 연결하는 데 사용할 동기화 체인을 시작하십시오.";
 
 /* Browser Lock feature callout enable action. */
 "BrowserLockCalloutEnable" = "허용";
@@ -193,6 +216,12 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "모든 %i 탭 닫기";
 
+/* Code words input help */
+"CodeWordInputHelp" = "제공된 동기화 체인 코드 단어를 입력하십시오.";
+
+/* Code words section title */
+"CodeWords" = "코드 단어";
+
 /* No comment provided by engineer. */
 "Confirm" = "확인";
 
@@ -202,6 +231,12 @@
 /* Settings item for clearing cookies */
 "Cookies" = "쿠키";
 
+/* Copied action complete title */
+"Copied" = "복사되었습니다.";
+
+/* Copied codewords title */
+"CopiedToClipboard" = "클립보드에 복사되었습니다.";
+
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "앱 정보를 클립보드에 복사합니다.";
 
@@ -210,6 +245,9 @@
 
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "링크 복사";
+
+/* Copy codewords title */
+"CopyToClipboard" = "클립보드에 복사";
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "현재 사용 중인 검색 엔진";
@@ -229,6 +267,12 @@
 /* No comment provided by engineer. */
 "Delete" = "삭제";
 
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "모든 폴더와 폴더 내에 있는 북마크가 삭제됩니다. 계속하시겠습니까?";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "폴더를 삭제하시겠습니까?";
+
 /* Prompt option for cancelling out of deletion */
 "DeleteLoginAlertCancelActionTitle" = "취소";
 
@@ -243,6 +287,9 @@
 
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "삭제";
+
+/* Sync device settings page title. */
+"Devices" = "체인에 있는 기기";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "기기 %1$@(%2$@)";
@@ -264,6 +311,12 @@
 
 /* Button to edit a favorite */
 "EditFavorite" = "즐겨찾기 편집";
+
+/* Sync enter code words */
+"EnterCodeWords" = "코드 단어 입력";
+
+/* Enter sync code words below */
+"EnterCodeWordsBelow" = "아래에 코드 단어 입력";
 
 /* Description for new folder popup */
 "EnterFolderName" = "폴더 이름 입력";
@@ -295,6 +348,10 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesVisitOnceButton" = "사이트 방문";
 
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "절감한 
+시간";
+
 /* Share action title */
 "FindInPage" = "페이지에서 찾기";
 
@@ -317,11 +374,18 @@
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "디지털 지문 보호";
 
+/* Grand camera access */
+"GrantCameraAccess" = "카메라 활성화";
+
 /* No comment provided by engineer. */
 "Home" = "홈";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* Shields Https Stat */
+"HTTPSrUpgrades" = "HTTPS 
+업그레이드";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS 업그레이드";
@@ -334,6 +398,10 @@
 
 /* History tableview section header */
 "LastWeek" = "지난주";
+
+/* DuckDuckGo promotion label. */
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "DuckDuckGo의 
+비공개 검색에 대해 알아보기";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "최종 수정 %@";
@@ -383,14 +451,23 @@
 /* Title for new folder popup */
 "NewFolder" = "새 폴더";
 
+/* New sync code button title */
+"NewSyncCode" = "새로운 동기화 체인 시작";
+
 /* New Tab title */
 "NewTab" = "새 탭";
+
+/* Sync Alert */
+"NotEnoughWordsDescription" = "모든 단어를 입력한 후 다시 시도하십시오.";
+
+/* Sync Alert */
+"NotEnoughWordsTitle" = "단어가 충분하지 않음";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "모두 열기(%i)";
 
-/* Context menu item for opening a link in a new tab */
-"OpenInBackgroundTab" = "새 탭에서 링크 열기";
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "새 탭에서 이미지 열기";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "새 비공개 탭에서 열기";
@@ -400,6 +477,9 @@
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "설정 열기";
+
+/* Sync pair device settings section title */
+"Pair" = "페어링";
 
 /* Error message displayed to user when their confirming passcode doesn't match the first code. */
 "PasscodeConfirmMisMatchErrorText" = "암호가 일치하지 않습니다. 다시 시도하십시오.";
@@ -434,14 +514,23 @@
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "비공개 브라우징으로만 열기";
 
-/* Private tab details */
-"PrivateTabBody" = "비공개 탭은 Brave에 저장되지 않지만 이를 통해 온라인에서 익명으로 활동할 수 있는 것은 아닙니다. 비공개 탭에서 방문한 사이트는 방문 기록에 표시되지 않으며, 탭을 닫으면 항상 해당 쿠키가 사라집니다. 즉, Brave에는 해당 사이트에 대한 어떤 흔적도 남지 않게 됩니다. 비공개 탭에서 방문했더라도 귀하의 이동통신 사업자(또는 귀하가 접속하고 있는 WiFi 네트워크나 VPN의 소유자)는 귀하가 어느 사이트를 방문했는지 볼 수 있으며, 해당 사이트에서는 귀하의 공용 IP 주소를 확인할 수 있습니다.";
+/* Private tab detail text */
+"PrivateTabDetails" = "비공개 탭을 사용할 경우 귀하의 기기에서 수행된 Brave 작업만이 변경되며, 다른 사용자의 동작은 변경되지 않습니다.
+
+사이트를 방문하면 사이트에서 항상 귀하의 IP 주소를 학습합니다. 즉, 사이트에서 귀하의 위치(주로 도시)를 대략적으로 추측할 수 있습니다. 경우에 따라서는 위치가 훨씬 구체적으로 추측되기도 합니다. 또한 귀하가 사이트에서 수행한 모든 작업(검색어 등)이 해당 사이트에 기록됩니다. 귀하가 사이트에 로그인하면 해당 사이트에서 귀하가 해당 계정의 소유자임을 인식합니다. 비공개 탭을 닫으면 Brave에서 로그인 상태를 유지하는 쿠키를 지우기 때문에 로그아웃 상태가 됩니다.
+
+인터넷 연결을 위해 귀하가 이용하는 ISP에서는 귀하의 네트워크 활동을 모두 확인할 수 있습니다. 대부분의 경우 이러한 ISP는 이동통신 사업자입니다. WiFi 네트워크에 연결한 경우 ISP는 해당 네트워크의 소유자이며, VPN을 사용하는 경우에는 해당 VPN의 운영자입니다. 귀하가 이용하는 ISP에서는 귀하가 사이트를 방문하면 귀하가 방문한 사이트를 알 수 있습니다. 해당 사이트에서 HTTPS를 사용하는 경우 ISP에서는 귀하가 해당 사이트에서 수행하는 작업을 기록에 따라 추측만 할 수 있습니다. 그러나 사이트에서 HTTP만을 사용한다면 ISP에서 귀하가 사용한 검색어, 귀하가 읽은 페이지와 따라 간 링크 등 모든 것을 알 수 있습니다.
+
+고용주가 귀하의 기기를 관리하는 경우 고용주는 귀하가 해당 기기로 무엇을 하는지 추적할 수도 있습니다. 비공개 탭을 사용한다고 해도 귀하가 방문한 사이트를 고용주가 알지 못하도록 차단하지는 못할 것입니다. 귀하의 기기에 액세스할 수 있는 권한을 가진 다른 사람도 귀하의 활동을 모니터링하는 소프트웨어를 설치할 수 있으며, 이것 또한 비공개 탭으로는 차단하지 못합니다.";
 
 /* Private tab information link */
 "PrivateTabLink" = "비공개 탭에 대해 자세히 알아보십시오.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "비공개 탭";
+
+/* QR Code section title */
+"QRCode" = "QR 코드";
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "빠른 검색 엔진";
@@ -500,6 +589,9 @@
 /* Sepia theme setting in Reading View settings */
 "ReaderModeThemeButtonTitleSepia" = "Sepia";
 
+/* Action button for removing sync device. */
+"RemoveDevice" = "제거";
+
 /* Button to remove a favorite */
 "RemoveFavorite" = "즐겨찾기 제거";
 
@@ -526,6 +618,12 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "로그인 정보 저장";
+
+/* Scan sync code title */
+"Scan" = "스캔";
+
+/* Scan sync code button title */
+"ScanSyncCode" = "동기화 코드가 있습니다.";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "차단된 스크립트";
@@ -608,6 +706,9 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "북마크 표시";
 
+/* Show code words instead */
+"ShowCodeWords" = "대신 코드 단어 표시";
+
 /* Button to show the history list */
 "ShowHistory" = "방문 기록 표시";
 
@@ -628,6 +729,114 @@
 
 /* Support section title */
 "Support" = "지원";
+
+/* Sync settings section title */
+"Sync" = "동기화(베타)";
+
+/* Add another device cell button. */
+"SyncAddAnotherDevice" = "다른 기기 추가";
+
+/* Add a Computer title */
+"SyncAddComputerTitle" = "컴퓨터 추가";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "체인 QR 코드 스캔";
+
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "두 번째 모바일 기기에서 설정 패널의 Brave 동기화로 이동한 후 \"동기화 코드 스캔\" 버튼을 탭하십시오. 카메라를 사용하여 아래에 있는 QR 코드를 스캔하십시오.";
+
+/* Add device to sync with code words */
+"SyncAddDeviceWords" = "동기화 코드 입력";
+
+/* Sync add device description */
+"SyncAddMobileWordsDescription" = "기기에서 설정 패널의 Brave 동기화로 이동한 후 \"%@\" 버튼을 탭하십시오. 아래에 표시된 동기화 체인 코드 단어를 입력하십시오.";
+
+/* Add Tablet or phone title */
+"SyncAddTabletOrPhoneTitle" = "태블릿 또는 전화 추가";
+
+/* Choose device type for sync */
+"SyncChooseDevice" = "기기 유형 선택";
+
+/* Header for device choosing screen. */
+"SyncChooseDeviceHeader" = "동기화할 기기 유형을 선택하십시오.";
+
+/* Computer device button title */
+"SyncComputerDevice" = "컴퓨터";
+
+/* Sync you browser settings across devices. */
+"SyncDevices" = "기기 및 설정";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "Brave 동기화 에이전트가 현재 오프라인 상태이거나 연결되지 않고 있습니다. 나중에 다시 시도하십시오.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Brave 동기화 통신 오류";
+
+/* No internet connection alert body. */
+"SyncNoConnectionBody" = "인터넷 연결을 확인한 후 다시 시도하십시오.";
+
+/* No internet connection alert title. */
+"SyncNoConnectionTitle" = "동기화할 수 없음";
+
+/* Message for removing the current device from Sync */
+"SyncRemoveCurrentDeviceMessage" = "로컬 기기 데이터는 모든 기기에서 그대로 유지됩니다. 이 동기화 체인의 다른 기기는 동기화된 상태로 유지됩니다.";
+
+/* Title for removing the current device from Sync */
+"SyncRemoveCurrentDeviceTitle" = "동기화 체인에서 %@을(를) 제거하시겠습니까?";
+
+/* Remove device button for action sheet. */
+"SyncRemoveDeviceAction" = "기기 제거";
+
+/* Default name for a device */
+"SyncRemoveDeviceDefaultName" = "기기";
+
+/* Message for removing last device from Sync */
+"SyncRemoveLastDeviceMessage" = "현재 동기화된 데이터는 유지되지만, Brave의 동기화 캐시에 있는 데이터는 모두 삭제됩니다. 기기 데이터를 다시 동기화하려면 새 동기화 체인을 시작해야 합니다.";
+
+/* Button name for removing last device from Sync */
+"SyncRemoveLastDeviceRemoveButtonName" = "동기화 체인 삭제";
+
+/* Title for removing last device from Sync */
+"SyncRemoveLastDeviceTitle" = "동기화 체인에서 %@을(를) 제거하는 중입니다.";
+
+/* Message for removing other device from Sync */
+"SyncRemoveOtherDeviceMessage" = "동기화 체인에서 기기를 제거해도 이전에 동기화된 데이터는 기기에서 지워지지 않습니다.";
+
+/* Title for removing other device from Sync */
+"SyncRemoveOtherDeviceTitle" = "동기화 체인에서 %@을(를) 제거하시겠습니까?";
+
+/* Sync remove device. */
+"SyncRemoveThisDevice" = "이 기기 제거";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestion" = "이 기기를 제거하시겠습니까?";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestionDesc" = "이 기기가 동기화 그룹에서 연결이 해제되며, 해당 기기에서 더 이상 동기화 데이터를 수신하거나 전송하지 않습니다. 기존의 모든 데이터는 기기에 남아 있습니다.";
+
+/* Header title for Sync settings */
+"SyncSettingsHeader" = "아래의 기기 목록에는 동기화 체인의 모든 기기가 포함되어 있습니다. 각 기기는 다른 기기에서 관리할 수 있습니다.";
+
+/* Switch back to camera button */
+"SyncSwitchBackToCameraButton" = "내 카메라 사용";
+
+/* Tablet or phone button title */
+"SyncTabletOrMobileDevice" = "태블릿 또는 전화";
+
+/* This device cell */
+"SyncThisDevice" = "이 기기";
+
+/* Sync to existing device */
+"SyncToDevice" = "기기에 동기화";
+
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "동기화된 기존 기기를 사용하여 Brave 설정을 열고 “기기 및 설정”으로 이동한 다음 ‘+’를 탭하여 새 기기를 추가하고 동기화 코드를 표시하십시오.";
+
+/* Description on popup when setting up a sync group fails */
+"SyncUnableCreateGroup" = "새 동기화 그룹을 만들 수 없습니다.";
+
+/* No comment provided by engineer. */
+"SyncUnsuccessful" = "실패";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "닫기";
@@ -707,6 +916,16 @@
 /* History tableview section header */
 "Today" = "오늘";
 
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "차단된 
+트래커 수";
+
+/* Sync Alert */
+"UnableToConnectDescription" = "동기화 그룹에 연결할 수 없습니다. 입력한 단어를 확인한 후 다시 시도하십시오.";
+
+/* Sync Alert */
+"UnableToConnectTitle" = "연결할 수 없음";
+
 /* Bookmark URL */
 "URL" = "URL";
 
@@ -721,6 +940,12 @@
 
 /* Accessibility label for the main web content view */
 "WebContentAccessibilityLabel" = "웹 콘텐츠";
+
+/* Word count title */
+"WordCount" = "단어 수: %i";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "예, 삭제합니다.";
 
 /* History tableview section header */
 "Yesterday" = "어제";
