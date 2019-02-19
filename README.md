@@ -310,6 +310,12 @@ Use staging Ads Serve as defined by `STAGING_SERVER` in `static_values.h`. Defau
 --brave-ads-staging
 ```
 
+Change locale. Default is locale of operating system. Where `{locale}`, i.e. `en_US`
+
+```
+--brave-ads-locale={locale}
+```
+
 Collect initial activity after 25 seconds instead of 1 hour as defined by `kDebugOneHourInSeconds` in `static_values.h`
 
 ```
@@ -333,22 +339,21 @@ i.e. to launch using Staging Server and logging for INFO, WARNING and ERROR on m
 ```
 cd /Applications
 
-cd Brave\ Browser\ Beta.app/
+cd Brave\ Browser\ Dev.app/
 
 cd Contents
 
-./Brave\ Browser\ Beta --brave-ads-staging --enable-logging=stderr --log-level=2
+./Brave\ Browser\ Dev --brave-ads-staging --enable-logging=stderr --log-level=2
 ```
 
 ## Unit Tests
 ```
-npm run test -- brave_unit_tests --filter=AdsTest.*
+npm run test -- brave_unit_tests --filter=Ads*
 ```
 
 ## Initial Limitations
 
 - Catalog is downloaded twice upon startup
-- Geo targeted Ads are shown in all regions
 - Coming soon for Linux
 - `EventLog`'s are persisted in the Console Log, whereas in Muon they were persisted in a JSON file
 - Implement DemoAPI logs
