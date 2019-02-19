@@ -9,6 +9,7 @@ import palette from '../../../theme/palette'
 export const StyledCheckbox = styled<Props, 'input'>('input')`
   -webkit-appearance: none;
   position: absolute;
+  z-index: 99999999;
   width: 100%;
   height: 100%;
   outline-offset: ${(p) => p.size === 'large' ? '6px' : '1px'};

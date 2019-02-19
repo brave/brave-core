@@ -36,8 +36,8 @@ export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
   /* avoid text overflow w/ carat */
   -webkit-padding-start: 10px;
   -webkit-padding-end: 32px;
-  outline-color: ${palette.orange400};
   outline-width: 2px;
+  outline-color: ${palette.orange400};
   cursor: pointer;
 
   > option {
