@@ -1,10 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <utility>
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
@@ -24,7 +26,10 @@
 #include "bat/ads/url_components.h"
 #include "static_values.h"
 
-using namespace std::placeholders;
+using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
+using std::placeholders::_4;
 
 namespace ads {
 
@@ -137,7 +142,7 @@ void AdsImpl::LoadUserModel() {
   auto locale = client_->GetLocale();
   auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
   ads_client_->LoadUserModelForLocale(locale, callback);
-}                  
+}
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
   if (result != SUCCESS) {

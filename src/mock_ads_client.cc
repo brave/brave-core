@@ -1,12 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include <uriparser/Uri.h>
 
 #include <iostream>
 #include <fstream>
 #include <limits>
-
-#include <uriparser/Uri.h>
 
 #include "mock_ads_client.h"
 #include "bat/ads/bundle_state.h"
@@ -17,7 +18,8 @@
 #include "time_helper.h"
 #include "static_values.h"
 
-using namespace std::placeholders;
+using std::placeholders::_1;
+using std::placeholders::_2;
 
 class MockLogStreamImpl : public ads::LogStream {
  public:
