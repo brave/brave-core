@@ -7,6 +7,7 @@ import Shared
 import Data
 import Deferred
 import BraveShared
+import WebKit
 
 // A base protocol for something that can be cleared.
 protocol Clearable {
@@ -35,46 +36,6 @@ struct ClearableErrorType: MaybeErrorType {
     }
 }
 
-// Delete all the contents of a the folder, and verify using validateClearedWithNameContains that critical files are removed (any remaining file must not contain the specified substring(s))
-// Alert the user if these files still exist after clearing.
-// validateClearedWithNameContains can be nil, in which case the check is skipped or pass [] as a special case to verify that
-// the directory is empty.
-private func deleteLibraryFolderContents(_ folder: String, validateClearedExceptFor: [String]?) throws {
-    let manager = FileManager.default
-    let library = manager.urls(for: FileManager.SearchPathDirectory.libraryDirectory, in: .userDomainMask)[0]
-    let dir = library.appendingPathComponent(folder)
-    let contents = try manager.contentsOfDirectory(atPath: dir.path)
-    for content in contents {
-        do {
-            try manager.removeItem(at: dir.appendingPathComponent(content))
-        } catch where ((error as NSError).userInfo[NSUnderlyingErrorKey] as? NSError)?.code == Int(EPERM) {
-            // "Not permitted". We ignore this.
-            // Snapshots directory is an example of a Cache dir that is not permitted on device (but is permitted on simulator)
-        }
-    }
-    
-    #if DEBUG
-    guard let allowedFileNames = validateClearedExceptFor else { return }
-    contents = try manager.contentsOfDirectoryAtPath(dir.path, withFilenamePrefix: "")
-    for content in contents {
-        for name in allowedFileNames {
-            if !content.contains(name) {
-                let alert = UIAlertController(title: "Error clearing data", message: "Item not cleared: \(content)", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true)
-            }
-        }
-    }
-    #endif
-}
-
-private func deleteLibraryFolder(_ folder: String) throws {
-    let manager = FileManager.default
-    let library = manager.urls(for: FileManager.SearchPathDirectory.libraryDirectory, in: .userDomainMask)[0]
-    let dir = library.appendingPathComponent(folder)
-    try manager.removeItem(at: dir)
-}
-
 // Remove all cookies stored by the site. This includes localStorage, sessionStorage, and WebSQL/IndexedDB.
 class CookiesClearable: Clearable {
     
@@ -84,26 +45,19 @@ class CookiesClearable: Clearable {
     
     func clear() -> Success {
         UserDefaults.standard.synchronize()
-        
         let result = Deferred<Maybe<()>>()
         // need event loop to run to autorelease UIWebViews fully
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             // Now we wipe the system cookie store (for our app).
-            let storage = HTTPCookieStorage.shared
-            if let cookies = storage.cookies {
-                for cookie in cookies {
-                    storage.deleteCookie(cookie)
-                }
+            let localStorageClearables: Set<String> = [WKWebsiteDataTypeCookies,
+                                                       WKWebsiteDataTypeSessionStorage,
+                                                       WKWebsiteDataTypeLocalStorage,
+                                                       WKWebsiteDataTypeWebSQLDatabases,
+                                                       WKWebsiteDataTypeIndexedDBDatabases]
+            WKWebsiteDataStore.default().removeData(ofTypes: localStorageClearables, modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
+                UserDefaults.standard.synchronize()
+                result.fill(Maybe<()>(success: ()))
             }
-            UserDefaults.standard.synchronize()
-            
-            // And just to be safe, we also wipe the Cookies directory.
-            do {
-                try deleteLibraryFolderContents("Cookies", validateClearedExceptFor: [])
-            } catch {
-                return result.fill(Maybe<()>(failure: ClearableErrorType(err: error)))
-            }
-            return result.fill(Maybe<()>(success: ()))
         }
         return result
     }
@@ -121,29 +75,15 @@ class CacheClearable: Clearable {
         let result = Deferred<Maybe<()>>()
         // need event loop to run to autorelease UIWebViews fully
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            URLCache.shared.memoryCapacity = 0
-            URLCache.shared.diskCapacity = 0
-            // Remove the basic cache.
-            URLCache.shared.removeAllCachedResponses()
-            
-            var err: Error?
-            for item in ["Caches", "Cookies", "WebKit"] {
-                do {
-                    try deleteLibraryFolderContents(item, validateClearedExceptFor: ["Snapshots"])
-                } catch {
-                    err = error
-                }
+            let localStorageClearables: Set<String> = [WKWebsiteDataTypeDiskCache,
+                                                       WKWebsiteDataTypeServiceWorkerRegistrations,
+                                                       WKWebsiteDataTypeOfflineWebApplicationCache,
+                                                       WKWebsiteDataTypeMemoryCache,
+                                                       WKWebsiteDataTypeFetchCache]
+            WKWebsiteDataStore.default().removeData(ofTypes: localStorageClearables, modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
+                ImageCache.shared.clear()
+                result.fill(Maybe<()>(success: ()))
             }
-            if let err = err {
-                return result.fill(Maybe<()>(failure: ClearableErrorType(err: err)))
-            }
-            
-            // Clear image cache
-            ImageCache.shared.clear()
-            
-            // Leave the cache off in the error cases above
-            URLCache.shared.setupBraveDefaults()
-            result.fill(Maybe<()>(success: ()))
         }
         
         return result

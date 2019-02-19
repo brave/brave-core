@@ -13,16 +13,31 @@ public extension FileManager {
         case webSiteData = "/WebKit/WebsiteData"
     }
     typealias FolderLockObj = (folder: Folder, lock: Bool)
-    public func setFolderAccess(_ lockObjects: [FolderLockObj]) -> Bool {
+    
+    //Lock a folder using FolderLockObj provided.
+    @discardableResult public func setFolderAccess(_ lockObjects: [FolderLockObj]) -> Bool {
         let baseDir = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)[0]
         for lockObj in lockObjects {
             do {
-                try self.setAttributes([.posixPermissions: (lockObj.lock ? NSNumber(value: 0 as Int16) : NSNumber(value: 0o755 as Int16))], ofItemAtPath: baseDir + lockObj.folder.rawValue)
-            } catch let e {
-                log.error("Failed to \(lockObj.lock ? "Lock" : "Unlock") item at path \(lockObj.folder.rawValue) with error: \n\(e)")
+                try self.setAttributes([.posixPermissions: (lockObj.lock ? 0 : 0o755)], ofItemAtPath: baseDir + lockObj.folder.rawValue)
+            } catch {
+                log.error("Failed to \(lockObj.lock ? "Lock" : "Unlock") item at path \(lockObj.folder.rawValue) with error: \n\(error)")
                 return false
             }
         }
         return true
+    }
+    
+    // Check the locked status of a folder. Returns true for locked.
+    public func checkLockedStatus(folder: Folder) -> Bool {
+        let baseDir = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)[0]
+        do {
+            if let lockValue = try self.attributesOfItem(atPath: baseDir + folder.rawValue)[.posixPermissions] as? NSNumber {
+                return lockValue == 0o755
+            }
+        } catch {
+            log.error("Failed to check lock status on item at path \(folder.rawValue) with error: \n\(error)")
+        }
+        return false
     }
 }

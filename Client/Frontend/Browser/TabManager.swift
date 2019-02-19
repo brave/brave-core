@@ -164,7 +164,7 @@ class TabManager: NSObject {
         return configuration
     }
     
-    private func resetConfiguration() {
+    func resetConfiguration() {
         configuration = TabManager.getNewConfiguration()
     }
     
