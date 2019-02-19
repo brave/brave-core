@@ -35,6 +35,8 @@ class BraveLocationBarView : public LocationBarView {
   OmniboxTint GetTint() override;
   BraveActionsContainer* brave_actions_ = nullptr;
 
+  void ReplaceLocationIconView();
+
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);
 };
 

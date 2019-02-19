@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/views/page_info/page_info_bubble_view.cc b/chrome/browser/ui/views/page_info/page_info_bubble_view.cc
+index ebe5987d5b4239e09a9b255b0d73ec9f7ad74fe9..933b15b53b86376e63a425701ae8cb8571d8b692 100644
+--- a/chrome/browser/ui/views/page_info/page_info_bubble_view.cc
++++ b/chrome/browser/ui/views/page_info/page_info_bubble_view.cc
+@@ -386,6 +386,9 @@ InternalPageInfoBubbleView::InternalPageInfoBubbleView(
+   } else if (url.SchemeIs(url::kFileScheme)) {
+     text = IDS_PAGE_INFO_FILE_PAGE;
+   } else if (!url.SchemeIs(content::kChromeUIScheme) &&
++#if defined(BRAVE_CHROMIUM_BUILD)
++             !url.SchemeIs(content::kBraveUIScheme) &&
++#endif
+              !url.SchemeIs(content::kChromeDevToolsScheme)) {
+     NOTREACHED();
+   }
+@@ -430,6 +433,9 @@ views::BubbleDialogDelegateView* PageInfoBubbleView::CreatePageInfoBubble(
+   gfx::NativeView parent_view = platform_util::GetViewForWindow(parent_window);
+ 
+   if (url.SchemeIs(content::kChromeUIScheme) ||
++#if defined(BRAVE_CHROMIUM_BUILD)
++      url.SchemeIs(content::kBraveUIScheme) ||
++#endif
+       url.SchemeIs(content::kChromeDevToolsScheme) ||
+       url.SchemeIs(extensions::kExtensionScheme) ||
+       url.SchemeIs(content::kViewSourceScheme) ||

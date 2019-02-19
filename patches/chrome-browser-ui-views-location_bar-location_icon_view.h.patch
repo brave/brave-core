@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/views/location_bar/location_icon_view.h b/chrome/browser/ui/views/location_bar/location_icon_view.h
+index c5a8d05e0598f7e067f32d905f2bb060eca9e51f..af34e908d1c36e93e6b648ddfbee76811f872f92 100644
+--- a/chrome/browser/ui/views/location_bar/location_icon_view.h
++++ b/chrome/browser/ui/views/location_bar/location_icon_view.h
+@@ -92,13 +92,13 @@ class LocationIconView : public IconLabelBubbleView {
+   // - For extension URLs, returns the extension name.
+   // - For chrome:// URLs, returns the short product name (e.g. Chrome).
+   // - For file:// URLs, returns the text "File".
+-  base::string16 GetText() const;
++  virtual base::string16 GetText() const;
+ 
+   // Determines whether or not text should be shown (e.g Insecure/Secure).
+   // Returns true if any of the following is true:
+   // - the current page is explicitly secure or insecure.
+   // - the current page URL is a chrome-extension:// URL.
+-  bool ShouldShowText() const;
++  virtual bool ShouldShowText() const;
+ 
+   const views::InkDrop* get_ink_drop_for_testing();
+ 
+@@ -108,6 +108,7 @@ class LocationIconView : public IconLabelBubbleView {
+   double WidthMultiplier() const override;
+ 
+  private:
++   friend class BraveLocationIconView;
+   // The security level when the location icon was last updated. Used to decide
+   // whether to animate security level transitions.
+   security_state::SecurityLevel last_update_security_level_ =

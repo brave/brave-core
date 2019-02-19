@@ -5,10 +5,12 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 
 #include "brave/browser/themes/brave_theme_service.h"
+#include "brave/browser/ui/views/location_bar/brave_location_icon_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
+#include "chrome/browser/ui/views/chrome_typography.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/location_bar/star_view.h"
 #include "components/version_info/channel.h"
@@ -19,12 +21,25 @@ void BraveLocationBarView::Init() {
   tint_ = GetTint();
   // base method calls Update and Layout
   LocationBarView::Init();
+  ReplaceLocationIconView();
+
   // brave action buttons
   brave_actions_ = new BraveActionsContainer(browser_, profile());
   brave_actions_->Init();
   AddChildView(brave_actions_);
   // Call Update again to cause a Layout
   Update(nullptr);
+}
+
+void BraveLocationBarView::ReplaceLocationIconView() {
+  DCHECK(location_icon_view_);
+
+  delete location_icon_view_;
+  const gfx::FontList& font_list = views::style::GetFont(
+      CONTEXT_OMNIBOX_PRIMARY, views::style::STYLE_PRIMARY);
+  location_icon_view_ = new BraveLocationIconView(font_list, this);
+  location_icon_view_->set_drag_controller(this);
+  AddChildView(location_icon_view_);
 }
 
 void BraveLocationBarView::Layout() {
