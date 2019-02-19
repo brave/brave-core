@@ -265,6 +265,7 @@
     }
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.25",
     "@types/chrome": "0.0.69",
     "@types/enzyme": "^3.1.12",
     "@types/enzyme-adapter-react-16": "^1.0.2",
@@ -274,7 +275,9 @@
     "@types/react-dnd": "^2.0.36",
     "@types/react-dom": "^16.0.7",
     "@types/react-redux": "6.0.4",
-    "awesome-typescript-loader": "^5.2.0",
+    "@types/redux-logger": "^3.0.7",
+    "acorn": "^6.1.0",
+    "awesome-typescript-loader": "^5.2.1",
     "brave-ui": "github:brave/brave-ui#0ef65019be62562e701090de4c09b68afc1963f9",
     "css-loader": "^0.28.9",
     "csstype": "^2.5.5",
@@ -301,7 +304,7 @@
     "tslint-config-standard": "^7.0.0",
     "tslint-react": "^3.2.0",
     "typesafe-actions": "^2.0.4",
-    "typescript": "^3.0.1",
+    "typescript": "^3.3.3",
     "url-loader": "^0.6.2",
     "webpack": "^4.16.0",
     "webpack-cli": "^3.0.8"
@@ -318,8 +321,11 @@
     "prettier-bytes": "^1.0.4",
     "qr-image": "^3.2.0",
     "react-chrome-redux": "^1.5.1",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
     "throttleit": "^1.0.0",
     "torrent-discovery": "github:brave/torrent-discovery#b565f40278c1cb910722ceb027a739d9173d587a",
+    "unique-selector": "^0.4.1",
     "webtorrent": "github:brave/webtorrent#7742597c9cee74100dcd1f241e1a55aff93adf5c"
   }
 }
