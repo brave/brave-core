@@ -12,7 +12,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   box-sizing: border-box;
   background: none;
   border: none;
-  outline: none;
+  outline-color: transparent;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
