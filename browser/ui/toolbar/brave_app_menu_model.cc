@@ -27,10 +27,20 @@ void BraveAppMenuModel::Build() {
 }
 
 void BraveAppMenuModel::InsertBraveMenuItems() {
-  InsertItemWithStringIdAt(
-      GetIndexOfCommandId(IDC_SHOW_DOWNLOADS),
-      IDC_SHOW_BRAVE_REWARDS,
-      IDS_SHOW_BRAVE_REWARDS);
+  // Sync & Rewards pages are redirected to normal window when it is loaded in
+  // private window. So, only hide them in guest(tor) window.
+  if (!browser_->profile()->IsGuestSession()) {
+    InsertItemWithStringIdAt(
+        GetIndexOfCommandId(IDC_SHOW_DOWNLOADS),
+        IDC_SHOW_BRAVE_REWARDS,
+        IDS_SHOW_BRAVE_REWARDS);
+    if (brave_sync::BraveSyncService::is_enabled()) {
+      InsertItemWithStringIdAt(
+          GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
+          IDC_SHOW_BRAVE_SYNC,
+          IDS_SHOW_BRAVE_SYNC);
+    }
+  }
   InsertItemWithStringIdAt(
       GetIndexOfCommandId(IDC_SHOW_DOWNLOADS),
       IDC_SHOW_BRAVE_ADBLOCK,
@@ -40,16 +50,10 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
         GetIndexOfCommandId(IDC_NEW_WINDOW),
         IDC_NEW_TOR_IDENTITY,
         IDS_NEW_TOR_IDENTITY);
-   } else {
+  } else {
     InsertItemWithStringIdAt(
         GetIndexOfCommandId(IDC_NEW_INCOGNITO_WINDOW) + 1,
         IDC_NEW_OFFTHERECORD_WINDOW_TOR,
         IDS_NEW_OFFTHERECORD_WINDOW_TOR);
   }
-  if (brave_sync::BraveSyncService::is_enabled() &&
-      !browser_->profile()->IsOffTheRecord())
-    InsertItemWithStringIdAt(
-        GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
-        IDC_SHOW_BRAVE_SYNC,
-        IDS_SHOW_BRAVE_SYNC);
 }

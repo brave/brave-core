@@ -75,14 +75,18 @@ bool BraveBrowserCommandController::UpdateCommandEnabled(int id, bool state) {
 }
 
 void BraveBrowserCommandController::InitBraveCommandState() {
+  // Sync & Rewards pages doesn't work on tor(guest) session.
+  // They also doesn't work on private window but they are redirected
+  // to normal window in this case.
+  if (!browser_->profile()->IsGuestSession()) {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  UpdateCommandForBraveRewards();
+    UpdateCommandForBraveRewards();
 #endif
+    if (brave_sync::BraveSyncService::is_enabled())
+      UpdateCommandForBraveSync();
+  }
   UpdateCommandForBraveAdblock();
   UpdateCommandForTor();
-  if (brave_sync::BraveSyncService::is_enabled() &&
-      !browser_->profile()->IsOffTheRecord())
-    UpdateCommandForBraveSync();
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
