@@ -9,6 +9,7 @@
 
 #include "base/stl_util.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/components/brave_extension/grit/brave_extension.h"
 #include "components/grit/brave_components_resources.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_sync/grit/brave_sync_resources.h"
@@ -36,7 +37,7 @@ namespace extensions {
   bool IsComponentExtensionWhitelisted(int manifest_resource_id) {
     switch (manifest_resource_id) {
       // Please keep the list in alphabetical order.
-      case IDR_BRAVE_EXTENSON:
+      case IDR_BRAVE_EXTENSION:
       case IDR_BRAVE_REWARDS:
       case IDR_BRAVE_SYNC_EXTENSION:
       case IDR_BRAVE_WEBTORRENT:

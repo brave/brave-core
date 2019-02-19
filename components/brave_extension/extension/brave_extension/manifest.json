@@ -9,12 +9,12 @@
     "default_popup": "braveShieldsPanel.html"
   },
   "icons": {
-    "16": "img/icon-16.png",
-    "32": "img/icon-32.png",
-    "48": "img/icon-48.png",
-    "64": "img/icon-64.png",
-    "128": "img/icon-128.png",
-    "256": "img/icon-256.png"
+    "16": "assets/img/icon-16.png",
+    "32": "assets/img/icon-32.png",
+    "48": "assets/img/icon-48.png",
+    "64": "assets/img/icon-64.png",
+    "128": "assets/img/icon-128.png",
+    "256": "assets/img/icon-256.png"
   },
   "web_accessible_resources": [
   ],
@@ -41,7 +41,7 @@
         "https://www.yahoo.com/*"
       ],
       "css": [
-        "removeEmptyElements.css"
+        "assets/removeEmptyElements.css"
       ]
     }, {
       "run_at": "document_start",
@@ -50,21 +50,21 @@
         "https://coinmarketcap.com/*"
       ],
       "css": [
-        "siteHack-coinmarketcap.com.css"
+        "assets/siteHack-coinmarketcap.com.css"
       ]
     }, {
       "run_at": "document_start",
       "all_frames": true,
       "matches": ["https://www.marketwatch.com/*"],
       "css": [
-        "siteHack-marketwatch.com.css"
+        "assets/siteHack-marketwatch.com.css"
       ]
     }, {
       "run_at": "document_start",
       "all_frames": true,
       "matches": ["https://www.glennbeck.com/*"],
       "js": [
-        "siteHack-glennbeck.com.js"
+        "assets/siteHack-glennbeck.com.js"
       ]
     }
   ],
