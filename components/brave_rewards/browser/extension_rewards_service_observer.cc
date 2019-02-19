@@ -105,7 +105,7 @@ void ExtensionRewardsServiceObserver::OnGetCurrentBalanceReport(
     properties.tips = balance_report.one_time_donation;
     properties.opening = balance_report.opening_balance;
     properties.total = balance_report.total;
-    properties.recurring = balance_report.recurring_donation;
+    properties.donation = balance_report.recurring_donation;
 
     std::unique_ptr<base::ListValue> args(
         extensions::api::brave_rewards::OnCurrentReport::Create(properties)
