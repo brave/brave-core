@@ -22,6 +22,7 @@ export const getMessage = (message: string, substitutions?: string[]): string =>
 
 export const getUIMessages = (): Record<string, string> => {
   const strings = [
+    'backupNow',
     'backupWalletNotification',
     'backupWalletTitle',
     'braveAdsTitle',
