@@ -172,11 +172,29 @@ class ClearPrivateDataTableViewController: UITableViewController {
              }
              }
              } else {*/
+            
+            // Reset Webkit configuration to remove data from memory
+            if clear.contains(where: { $0 is CookiesClearable || $0 is CacheClearable }) {
+                self.tabManager.resetConfiguration()
+                // Unlock the folders to allow clearing of data.
+                if Preferences.Privacy.blockAllCookies.value {
+                    FileManager.default.setFolderAccess([
+                        (.cookie, false),
+                        (.webSiteData, false)
+                        ])
+                }
+            }
             ClearPrivateDataTableViewController.clearPrivateData(clear).uponQueue(DispatchQueue.main) { _ in
                 // TODO: add API to avoid add/remove
+                //Lock the local storage back if mismatch.
+                if Preferences.Privacy.blockAllCookies.value, !FileManager.default.checkLockedStatus(folder: .cookie) {
+                    FileManager.default.setFolderAccess([
+                        (.cookie, true),
+                        (.webSiteData, true)
+                        ])
+                }
                 self.tabManager.removeTab(self.tabManager.addTab())
             }
-            //      }
         })
     }
     
