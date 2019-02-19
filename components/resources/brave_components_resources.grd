@@ -14,9 +14,6 @@
       <!-- TODO: Define only where needed, via webpack generated output, or use common chrome://resources DataSource -->
       <include name="IDR_BRAVE_COMMON_TOOLBAR_IMG" file="../img/toolbar/menu_btn.svg" type="BINDATA" />
 
-      <!-- Browser resources -->
-      <include name="IDR_BRAVE_EXTENSON" file="${root_gen_dir}/brave_extension/manifest.json" type="BINDATA" use_base_dir="false"/>
-
       <!-- WebUI adblock resources -->
       <!-- TODO: move to brave_adblock_ui component -->
       <include name="IDR_BRAVE_ADBLOCK_HTML" file="../brave_adblock_ui/brave_adblock.html" type="BINDATA" />

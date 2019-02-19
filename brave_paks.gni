@@ -63,7 +63,7 @@ template("brave_extra_paks") {
       "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_resources.pak",
       "$root_gen_dir/brave/components/brave_webtorrent/brave_webtorrent_resources.pak",
       "$root_gen_dir/brave/components/brave_sync/brave_sync_resources.pak",
-      "$target_gen_dir/browser/resources/brave_extension.pak",
+      "$root_gen_dir/brave/components/brave_extension/brave_extension_resources.pak",
     ]
 
     deps = [
@@ -75,10 +75,10 @@ template("brave_extra_paks") {
       "//brave/components/brave_webtorrent:resources",
       "//brave/components/resources",
       "//brave/components/resources:strings",
-      "//brave/browser/resources:brave_extension_grit",
       "//brave/browser/resources:brave_settings_resources",
       "//brave/common/extensions/api",
       "//brave/components/brave_sync:resources",
+      "//brave/components/brave_extension:resources",
     ]
 
     if (defined(invoker.deps)) {
