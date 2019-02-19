@@ -180,4 +180,4 @@ TEST(BatGetMediaTest, GetYoutubeUserFromUrl) {
   ASSERT_EQ(user, "brave");
 }
 
-}  // braveledger_bat_get_media
+}  // namespace braveledger_bat_get_media

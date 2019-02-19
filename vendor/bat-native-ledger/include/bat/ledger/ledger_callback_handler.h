@@ -43,18 +43,17 @@ class LEDGER_EXPORT LedgerCallbackHandler {
  public:
   virtual ~LedgerCallbackHandler() = default;
 
-  virtual void OnLedgerStateLoaded(Result result,
-                                   const std::string& data) {};
-  virtual void OnLedgerStateSaved(Result result) {};
+  virtual void OnLedgerStateLoaded(Result result, const std::string& data) {}
 
-  virtual void OnPublisherStateLoaded(Result result,
-                                      const std::string& data) {};
-  virtual void OnPublisherStateSaved(Result result) {};
+  virtual void OnLedgerStateSaved(Result result) {}
 
-  virtual void OnPublishersListSaved(Result result) {};
+  virtual void OnPublisherStateLoaded(Result result, const std::string& data) {}
 
-  virtual void OnPublisherListLoaded(Result result,
-                                      const std::string& data) {};
+  virtual void OnPublisherStateSaved(Result result) {}
+
+  virtual void OnPublishersListSaved(Result result) {}
+
+  virtual void OnPublisherListLoaded(Result result, const std::string& data) {}
 };
 
 }  // namespace ledger

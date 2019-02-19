@@ -6,6 +6,8 @@
 #ifndef BAT_LEDGER_AUTO_CONTRIBUTE_PROPS_
 #define BAT_LEDGER_AUTO_CONTRIBUTE_PROPS_
 
+#include <string>
+
 namespace ledger {
 
 LEDGER_EXPORT struct AutoContributeProps {

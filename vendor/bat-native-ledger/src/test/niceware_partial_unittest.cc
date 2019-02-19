@@ -19,7 +19,7 @@ TEST(NicewarePartialUnitTest, InvalidNumberOfWords) {
     " undefiled parched kielbasa decapitate ninetales";
   std::vector<uint8_t> nSeed;
   size_t written = 0;
-   //get wordlist
+  // get wordlist
   std::vector<std::string> data = braveledger_bat_helper::split(
     ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
     IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string(), DICTIONARY_DELIMITER);

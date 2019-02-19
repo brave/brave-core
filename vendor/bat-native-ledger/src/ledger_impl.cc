@@ -128,7 +128,7 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
 }
 
 void LedgerImpl::OnForeground(uint32_t tab_id, const uint64_t& current_time) {
-  // TODO media resources could have been played in the background
+  // TODO(anyone) media resources could have been played in the background
   if (last_shown_tab_id_ != tab_id) {
     return;
   }
@@ -136,16 +136,16 @@ void LedgerImpl::OnForeground(uint32_t tab_id, const uint64_t& current_time) {
 }
 
 void LedgerImpl::OnBackground(uint32_t tab_id, const uint64_t& current_time) {
-  // TODO media resources could stay and be active in the background
+  // TODO(anyone) media resources could stay and be active in the background
   OnHide(tab_id, current_time);
 }
 
 void LedgerImpl::OnMediaStart(uint32_t tab_id, const uint64_t& current_time) {
-  // TODO
+  // TODO(anyone)
 }
 
 void LedgerImpl::OnMediaStop(uint32_t tab_id, const uint64_t& current_time) {
-  // TODO
+  // TODO(anyone)
 }
 
 void LedgerImpl::OnXHRLoad(
@@ -424,7 +424,7 @@ void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
   bat_state_->SetRewardsMainEnabled(enabled);
 }
 
-void LedgerImpl::SetPublisherMinVisitTime(uint64_t duration) { // In seconds
+void LedgerImpl::SetPublisherMinVisitTime(uint64_t duration) {  // In seconds
   bat_publishers_->setPublisherMinVisitTime(duration);
 }
 
@@ -681,7 +681,7 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
       "Failed direct donation due to missing publisher id";
 
-    // TODO add error flow
+    // TODO(anyone) add error flow
     return;
   }
 
@@ -721,7 +721,7 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
     std::vector<std::string> headers;
     headers.push_back("Accept-Encoding: gzip");
 
-    //download the list
+    // download the list
     std::string url = braveledger_bat_helper::buildURL(
         GET_PUBLISHERS_LIST_V1,
         "",
@@ -754,7 +754,7 @@ void LedgerImpl::LoadPublishersListCallback(
   } else {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
       "Can't fetch publisher list";
-    //error: retry downloading again
+    // error: retry downloading again
     RefreshPublishersList(true);
   }
 }
@@ -763,7 +763,7 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
   uint64_t start_timer_in{ 0ull };
 
   if (last_pub_load_timer_id_ != 0) {
-    //timer in progress
+    // timer in progress
     return;
   }
 
@@ -772,16 +772,15 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
 
     BLOG(this, ledger::LogLevel::LOG_WARNING) <<
       "Failed to refresh publishesr list, will try again in " << start_timer_in;
-  }
-  else {
+  } else {
     uint64_t now = std::time(nullptr);
     uint64_t lastLoadTimestamp =
         bat_publishers_->getLastPublishersListLoadTimestamp();
 
-    //check if lastLoadTimestamp doesn't exist or have erroneous value.
-    //(start_timer_in == 0) is expected to call callback function immediately.
+    // check if lastLoadTimestamp doesn't exist or have erroneous value.
+    // (start_timer_in == 0) is expected to call callback function immediately.
 
-    //time since last successful download
+    // time since last successful download
     uint64_t  time_since_last_download =
         (lastLoadTimestamp == 0ull || lastLoadTimestamp > now)
         ? 0ull
@@ -794,13 +793,12 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
     } else if (time_since_last_download > 0 &&
                time_since_last_download < interval) {
       start_timer_in = interval - time_since_last_download;
-    }
-    else {
+    } else {
       start_timer_in = 0ull;
     }
   }
 
-  //start timer
+  // start timer
   SetTimer(start_timer_in, last_pub_load_timer_id_);
 }
 
@@ -933,7 +931,7 @@ void LedgerImpl::OnRemovedRecurring(ledger::Result result) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
       "Failed to remove recurring";
 
-    // TODO add error callback
+    // TODO(anyone) add error callback
     return;
   }
 }
@@ -959,10 +957,9 @@ ledger::ActivityInfoFilter LedgerImpl::CreateActivityFilter(
 
 
 std::unique_ptr<ledger::LogStream> LedgerImpl::Log(
-  const char* file,
-  int line,
-  const ledger::LogLevel log_level) const {
-
+    const char* file,
+    int line,
+    const ledger::LogLevel log_level) const {
   // TODO(Terry Mancey): bat-native-ledger architecture does not expose the
   // client however the ledger impl is exposed so for now we will proxy logging
   // via from the ledger impl to the client

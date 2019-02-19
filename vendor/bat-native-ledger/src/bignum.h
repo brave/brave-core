@@ -8,7 +8,7 @@
 
 #include <string>
 
-extern "C"{
+extern "C" {
 #include "relic.h"
 }
 

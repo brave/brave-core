@@ -800,4 +800,4 @@ bool PublisherInfoListStruct::loadFromJson(const std::string& json) {
   return !error;
 }
 
-} // ledger
+}  // namespace ledger

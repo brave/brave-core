@@ -6,6 +6,9 @@
 #ifndef BAT_LEDGER_MOCK_LEDGER_CLIENT_
 #define BAT_LEDGER_MOCK_LEDGER_CLIENT_
 
+#include <vector>
+#include <string>
+
 #include "bat/ledger/ledger_client.h"
 
 namespace ledger {
@@ -51,4 +54,4 @@ class MockLedgerClient : public ledger::LedgerClient {
 
 }  // namespace bat_ledger
 
-#endif  //BAT_LEDGER_MOCK_LEDGER_CLIENT_
+#endif  // BAT_LEDGER_MOCK_LEDGER_CLIENT_

@@ -71,7 +71,7 @@
 // 13. SetTimer - we set timer until the whole batch is processed
 
 namespace bat_ledger {
-  class LedgerImpl;
+class LedgerImpl;
 }
 
 namespace braveledger_bat_contribution {

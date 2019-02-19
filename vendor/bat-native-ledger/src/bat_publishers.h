@@ -30,7 +30,6 @@ namespace braveledger_bat_publishers {
 
 class BatPublishers : public ledger::LedgerCallbackHandler {
  public:
-
   BatPublishers(bat_ledger::LedgerImpl* ledger);
 
   ~BatPublishers() override;
@@ -45,7 +44,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void AddRecurringPayment(const std::string& publisher_id,
                            const double& value);
 
-  void setPublisherMinVisitTime(const uint64_t& duration); // In seconds
+  void setPublisherMinVisitTime(const uint64_t& duration);  // In seconds
 
   void setPublisherMinVisits(const unsigned int& visits);
 
@@ -76,7 +75,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   std::map<std::string, ledger::BalanceReportInfo> getAllBalanceReports();
 
-  uint64_t getPublisherMinVisitTime() const; // In milliseconds
+  uint64_t getPublisherMinVisitTime() const;  // In milliseconds
 
   unsigned int getPublisherMinVisits() const;
 
@@ -151,7 +150,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   bool isVerified(const std::string& publisher_id);
 
  private:
-
   void onPublisherActivitySave(uint64_t windowId,
                                const ledger::VisitData& visit_data,
                                ledger::Result result,

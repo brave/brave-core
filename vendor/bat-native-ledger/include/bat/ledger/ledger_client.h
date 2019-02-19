@@ -121,7 +121,7 @@ class LEDGER_EXPORT LedgerClient {
                                     ActivityInfoFilter filter,
                                     PublisherInfoListCallback callback) = 0;
 
-  // TODO this can be removed
+  // TODO(anyone) this can be removed
   virtual void FetchGrant(const std::string& lang,
                           const std::string& paymentId) = 0;
 

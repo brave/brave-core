@@ -17,7 +17,7 @@ void prepareBigNum(bn_t& big_num, const std::string& probi) {
 
 std::string bigNumToString(bn_t& number) {
   int result_length = bn_size_str(number, 10);
-  const int MAX_BN_BUFF = 256; //global
+  const int MAX_BN_BUFF = 256;  // global
   char result_char[MAX_BN_BUFF];
   bn_write_str(result_char, result_length, number, 10);
   std::string result_string(result_char);

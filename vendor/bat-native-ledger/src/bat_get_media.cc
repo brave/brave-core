@@ -10,7 +10,6 @@
 #include <cmath>
 #include <vector>
 
-#include "bat_get_media.h"
 #include "bat_helper.h"
 #include "ledger_impl.h"
 #include "rapidjson_bat_helper.h"
@@ -42,12 +41,10 @@ std::string BatGetMedia::GetLinkType(const std::string& url,
     (
       (first_party_url.find("https://www.twitch.tv/") == 0 ||
         first_party_url.find("https://m.twitch.tv/") == 0) ||
-      (referrer.find("https://player.twitch.tv/") == 0)
-    ) &&
+      (referrer.find("https://player.twitch.tv/") == 0)) &&
     (
       url.find(".ttvnw.net/v1/segment/") != std::string::npos ||
-      url.find("https://ttvnw.net/v1/segment/") != std::string::npos
-    )
+      url.find("https://ttvnw.net/v1/segment/") != std::string::npos)
   ) {
     type = TWITCH_MEDIA_TYPE;
   }
@@ -113,7 +110,7 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId,
       result != ledger::Result::NOT_FOUND) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
       << "Failed to get publisher info";
-    // TODO error handling
+    // TODO(anyone) error handling
     return;
   }
 
@@ -232,17 +229,17 @@ std::string BatGetMedia::getTwitchStatus(
   if (
     (
       newEventInfo.event_ == "video_pause" &&
-      oldEventInfo.event_ != "video_pause"
-    ) ||  // User clicked pause (we need to exclude seeking while paused)
+      oldEventInfo.event_ != "video_pause") ||
+      // User clicked pause (we need to exclude seeking while paused)
     (
       newEventInfo.event_ == "video_pause" &&
       oldEventInfo.event_ == "video_pause" &&
-      oldEventInfo.status_ == "playing"
-    ) ||  // User clicked pause as soon as he clicked play
+      oldEventInfo.status_ == "playing") ||
+      // User clicked pause as soon as he clicked play
     (
       newEventInfo.event_ == "player_click_vod_seek" &&
-      oldEventInfo.status_ == "paused"
-    )  // Seeking a video while it is paused
+      oldEventInfo.status_ == "paused")
+      // Seeking a video while it is paused
   ) {
     status = "paused";
   }
@@ -270,7 +267,7 @@ uint64_t BatGetMedia::getTwitchDuration(
     return TWITCH_MINIMUM_SECONDS;
   }
 
-  // TODO: check if converted properly
+  // TODO(anyone) check if converted properly
   double time = 0;
   std::stringstream tempTime(newEventInfo.time_);
   double currentTime = 0;
@@ -292,10 +289,8 @@ uint64_t BatGetMedia::getTwitchDuration(
         (
           (
             oldEventInfo.event_ != "video_pause" &&
-            oldEventInfo.event_ != "player_click_vod_seek"
-          ) ||
-          oldEventInfo.status_ == "playing"
-        )
+            oldEventInfo.event_ != "player_click_vod_seek") ||
+          oldEventInfo.status_ == "playing")
       )  // User paused video
     ) {
     time = currentTime - oldTime;
@@ -330,7 +325,7 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(
   ledger_->LogResponse(__func__, success, response, headers);
 
   if (!success) {
-    // TODO add error handler
+    // TODO(anyone) add error handler
     return;
   }
 
@@ -442,7 +437,6 @@ void BatGetMedia::savePublisherInfo(const uint64_t& duration,
   ledger::VisitData updated_visit_data(visit_data);
 
   if (favIconURL.length() > 0) {
-
     updated_visit_data.favicon_url = favIconURL;
   }
 
@@ -513,7 +507,6 @@ void BatGetMedia::onMediaActivityError(const ledger::VisitData& visit_data,
       BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
         << "Media activity error for " << providerType << " (name: "
         << name << ", url: " << visit_data.url << ")";
-
   }
 }
 
@@ -828,15 +821,14 @@ std::string BatGetMedia::getTwitchMediaKeyFromUrl(
 }
 
 void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
-  std::unique_ptr<ledger::PublisherInfo> info,
-  uint64_t windowId,
-  const ledger::VisitData& visit_data,
-  const std::string& providerType,
-  const std::string& media_key,
-  const std::string& media_id,
-  const std::string& publisher_blob) {
-
-  if (result != ledger::Result::LEDGER_OK  &&
+    std::unique_ptr<ledger::PublisherInfo> info,
+    uint64_t windowId,
+    const ledger::VisitData& visit_data,
+    const std::string& providerType,
+    const std::string& media_key,
+    const std::string& media_id,
+    const std::string& publisher_blob) {
+  if (result != ledger::Result::LEDGER_OK &&
     result != ledger::Result::NOT_FOUND) {
     onMediaActivityError(visit_data, providerType, windowId);
     return;

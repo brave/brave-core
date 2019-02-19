@@ -270,7 +270,6 @@ void BatContribution::StartReconcile(
   double balance = ledger_->GetBalance();
 
   if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
-
     if (list.size() == 0 || budget > balance || budget == 0) {
       if (list.size() == 0 || budget == 0) {
         BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<

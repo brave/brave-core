@@ -2,12 +2,12 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 #include "bat_helper.h"
 
 #include <iomanip>
 #include <random>
 #include <regex>
+#include <algorithm>
 
 #include <openssl/base64.h>
 #include <openssl/digest.h>
@@ -65,10 +65,10 @@ bool WALLET_INFO_ST::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
-    error = !( d.HasMember("paymentId") && d["paymentId"].IsString() &&
+    error = !(d.HasMember("paymentId") && d["paymentId"].IsString() &&
       d.HasMember("addressBAT") && d["addressBAT"].IsString() &&
       d.HasMember("addressBTC") && d["addressBTC"].IsString() &&
       d.HasMember("addressCARD_ID") && d["addressCARD_ID"].IsString() &&
@@ -78,7 +78,7 @@ bool WALLET_INFO_ST::loadFromJson(const std::string & json) {
   }
 
   if (false == error) {
-    //convert keyInfoSeed and check error
+    // convert keyInfoSeed and check error
     std::string sKeyInfoSeed = d["keyInfoSeed"].GetString();
     error = !getFromBase64(sKeyInfoSeed, keyInfoSeed_);
   }
@@ -140,7 +140,7 @@ bool TRANSACTION_BALLOT_ST::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("publisher") && d["publisher"].IsString() &&
@@ -197,7 +197,7 @@ bool TRANSACTION_ST::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("viewingId") && d["viewingId"].IsString() &&
@@ -241,7 +241,7 @@ bool TRANSACTION_ST::loadFromJson(const std::string & json) {
     masterUserToken_ = d["masterUserToken"].GetString();
     votes_ = d["votes"].GetUint();
 
-    for ( auto & i : d["rates"].GetObject()) {
+    for (auto & i : d["rates"].GetObject()) {
       contribution_rates_.insert(
           std::make_pair(i.name.GetString(), i.value.GetDouble()));
     }
@@ -353,7 +353,7 @@ bool BALLOT_ST::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("viewingId") &&  d["viewingId"].IsString() &&
@@ -611,7 +611,7 @@ PUBLISHER_STATE_ST::PUBLISHER_STATE_ST():
   min_visits_(1),
   num_excluded_sites_(0),
   allow_non_verified_(true),
-  pubs_load_timestamp_ (0ull),
+  pubs_load_timestamp_(0ull),
   allow_videos_(true) {}
 
 PUBLISHER_STATE_ST::PUBLISHER_STATE_ST(const PUBLISHER_STATE_ST& state) {
@@ -632,7 +632,7 @@ bool PUBLISHER_STATE_ST::loadFromJson(const std::string& json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("min_pubslisher_duration") &&
@@ -767,7 +767,7 @@ bool PUBLISHER_ST::loadFromJson(const std::string& json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("id") && d["id"].IsString() &&
@@ -852,7 +852,7 @@ bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(
@@ -860,8 +860,7 @@ bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
       d.HasMember("balance") && d["balance"].IsString() &&
       d.HasMember("probi") && d["probi"].IsString() &&
       d.HasMember("rates") && d["rates"].IsObject() &&
-      d.HasMember("parameters") && d["parameters"].IsObject()
-    );
+      d.HasMember("parameters") && d["parameters"].IsObject());
   }
 
   if (false == error) {
@@ -983,16 +982,14 @@ bool GRANT::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (error == true) {
     return !error;
   }
 
   // First grant get
-  error = !(
-      d.HasMember("promotionId") && d["promotionId"].IsString()
-  );
+  error = !(d.HasMember("promotionId") && d["promotionId"].IsString());
 
   if (error == false) {
     promotionId = d["promotionId"].GetString();
@@ -1003,8 +1000,7 @@ bool GRANT::loadFromJson(const std::string & json) {
   error = !(
       d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
       d.HasMember("expiryTime") && d["expiryTime"].IsNumber() &&
-      d.HasMember("probi") && d["probi"].IsString()
-  );
+      d.HasMember("probi") && d["probi"].IsString());
 
   if (error == false) {
     altcurrency = d["altcurrency"].GetString();
@@ -1047,7 +1043,7 @@ bool SURVEYOR_ST::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("signature") && d["signature"].IsString() &&
@@ -1104,7 +1100,7 @@ bool RECONCILE_DIRECTION::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("amount") && d["amount"].IsInt() &&
@@ -1169,7 +1165,7 @@ bool CURRENT_RECONCILE::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("viewingId") && d["viewingId"].IsString() &&
@@ -1373,7 +1369,7 @@ bool CLIENT_STATE_ST::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser error or wrong types
+  // has parser error or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("walletInfo") && d["walletInfo"].IsObject() &&
@@ -1395,8 +1391,7 @@ bool CLIENT_STATE_ST::loadFromJson(const std::string & json) {
       d.HasMember("rulesetV2") && d["rulesetV2"].IsString() &&
       d.HasMember("batch") && d["batch"].IsArray() &&
       d.HasMember("auto_contribute") && d["auto_contribute"].IsBool() &&
-      d.HasMember("rewards_enabled") && d["rewards_enabled"].IsBool()
-    );
+      d.HasMember("rewards_enabled") && d["rewards_enabled"].IsBool());
   }
 
   if (false == error) {
@@ -1610,7 +1605,7 @@ bool MEDIA_PUBLISHER_INFO::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("publisherName") && d["publisherName"].IsString() &&
@@ -1698,12 +1693,11 @@ void split(std::vector<std::string>& tmp, std::string query, char delimiter) {
 bool getJSONValue(const std::string& fieldName,
                   const std::string& json,
                   std::string & value) {
-
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
-  bool error = d.HasParseError() || ( false == d.HasMember(fieldName.c_str()) );
+  // has parser errors or wrong types
+  bool error = d.HasParseError() || (false == d.HasMember(fieldName.c_str()));
   if (false == error) {
     value = d[fieldName.c_str()].GetString();
   }
@@ -1716,7 +1710,7 @@ bool getJSONList(const std::string& fieldName,
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError() ||
       (false == (d.HasMember(fieldName.c_str()) &&
        d[fieldName.c_str()].IsArray()));
@@ -1734,7 +1728,7 @@ bool getJSONTwitchProperties(
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     for (auto & i : d.GetArray()) {
@@ -1768,8 +1762,7 @@ bool getJSONTwitchProperties(
         }
       }
       parts.push_back(eventmap);
-    } //for (auto & i : d.GetArray())
-
+    }
   }
   return !error;
 }
@@ -1779,7 +1772,7 @@ bool getJSONBatchSurveyors(const std::string& json,
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     for (auto & i : d.GetArray()) {
@@ -1790,6 +1783,7 @@ bool getJSONBatchSurveyors(const std::string& json,
       surveyors.push_back(surveyor);
     }
   }
+
   return !error;
 }
 
@@ -1798,7 +1792,7 @@ bool getJSONRates(const std::string& json,
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("rates") && d["rates"].IsObject() &&
@@ -1824,11 +1818,10 @@ bool getJSONRates(const std::string& json,
 }
 
 bool getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction) {
-
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("paymentStamp") && d["paymentStamp"].IsUint64() &&
@@ -1837,7 +1830,7 @@ bool getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction) {
   }
 
   if (false == error) {
-    unsigned long long stamp = d["paymentStamp"].GetUint64();
+    uint64_t stamp = d["paymentStamp"].GetUint64();
     transaction.submissionStamp_ = std::to_string(stamp);
     transaction.contribution_probi_ = d["probi"].GetString();
     transaction.contribution_altcurrency_ = d["altcurrency"].GetString();
@@ -1846,10 +1839,10 @@ bool getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction) {
 }
 
 bool getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx) {
- rapidjson::Document d;
+  rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !d.HasMember("unsignedTx") || !(d["unsignedTx"].IsObject());
@@ -1871,7 +1864,7 @@ bool getJSONPublisherVerified(const std::string& json, bool& verified) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("properties") && d["properties"].IsObject());
@@ -1888,7 +1881,7 @@ bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(
@@ -1911,7 +1904,7 @@ bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
       days = d["payload"]["adFree"]["days"].GetUint();
       const auto & fee = d["payload"]["adFree"]["fee"].GetObject();
       auto itr = fee.MemberBegin();
-      if (itr != fee.MemberEnd() ) {
+      if (itr != fee.MemberEnd()) {
         fee_currency = itr->name.GetString();
         fee_amount = itr->value.GetDouble();
       }
@@ -1924,7 +1917,7 @@ bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
       days = d["parameters"]["adFree"]["days"].GetUint();
       const auto & fee = d["parameters"]["adFree"]["fee"].GetObject();
       auto itr = fee.MemberBegin();
-      if (itr != fee.MemberEnd() ) {
+      if (itr != fee.MemberEnd()) {
         fee_currency = itr->name.GetString();
         fee_amount = itr->value.GetDouble();
       }
@@ -1940,7 +1933,7 @@ bool getJSONRecoverWallet(const std::string& json,
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("balance") && d["balance"].IsString() &&
@@ -1982,7 +1975,7 @@ bool getJSONResponse(const std::string& json,
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool hasError = d.HasParseError();
   if (hasError == false) {
     hasError = !(d.HasMember("statusCode") && d["statusCode"].IsNumber() &&
@@ -2000,7 +1993,7 @@ bool getJSONGrant(const std::string& json, uint64_t& expiryTime) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool hasError = d.HasParseError();
   if (hasError == false) {
     hasError = !(d.HasMember("expiryTime") && d["expiryTime"].IsNumber());
@@ -2058,7 +2051,7 @@ bool getJSONServerList(const std::string& json,
         }
 
         if (i[3].HasMember("socialLinks") && i[3]["socialLinks"].IsObject()) {
-          for ( auto & k : i[3]["socialLinks"].GetObject()) {
+          for (auto & k : i[3]["socialLinks"].GetObject()) {
             banner.social_.insert(
                 std::make_pair(k.name.GetString(), k.value.GetString()));
           }
@@ -2079,7 +2072,7 @@ bool getJSONAddresses(const std::string& json,
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("addresses") && d["addresses"].IsObject());
@@ -2102,8 +2095,6 @@ bool getJSONAddresses(const std::string& json,
 }
 
 std::vector<uint8_t> generateSeed() {
-  //std::ostringstream seedStr;
-
   std::vector<uint8_t> vSeed(SEED_LENGTH);
   std::random_device r;
   std::seed_seq seed{r(), r(), r(), r(), r(), r(), r(), r()};
@@ -2223,16 +2214,16 @@ std::string stringifyRequestCredentialsSt(
     const REQUEST_CREDENTIALS_ST& request_credentials) {
   rapidjson::StringBuffer buffer;
   JsonWriter writer(buffer);
-  writer.StartObject(); //root
+  writer.StartObject();  // root
 
   writer.String("requestType");
   writer.String(request_credentials.requestType_.c_str());
 
   writer.String("request");
-  writer.StartObject(); //request
+  writer.StartObject();  // request
 
   writer.String("headers");
-  writer.StartObject(); //headers
+  writer.StartObject();  // headers
 
   writer.String("digest");
   writer.String(request_credentials.request_headers_digest_.c_str());
@@ -2240,10 +2231,10 @@ std::string stringifyRequestCredentialsSt(
   writer.String("signature");
   writer.String(request_credentials.request_headers_signature_.c_str());
 
-  writer.EndObject(); //headers
+  writer.EndObject();  // headers
 
   writer.String("body");
-  writer.StartObject(); //body
+  writer.StartObject();  // body
 
   writer.String("currency");
   writer.String(request_credentials.request_body_currency_.c_str());
@@ -2254,16 +2245,16 @@ std::string stringifyRequestCredentialsSt(
   writer.String("publicKey");
   writer.String(request_credentials.request_body_publicKey_.c_str());
 
-  writer.EndObject(); //body
+  writer.EndObject();  // body
 
   writer.String("octets");
   writer.String(request_credentials.request_body_octets_.c_str());
 
-  writer.EndObject(); //request
+  writer.EndObject();  // request
 
   writer.String("proof");
   writer.String(request_credentials.proof_.c_str());
-  writer.EndObject(); //root
+  writer.EndObject();  // root
   return buffer.GetString();
 }
 
@@ -2271,16 +2262,16 @@ std::string stringifyReconcilePayloadSt(
     const RECONCILE_PAYLOAD_ST& reconcile_payload) {
   rapidjson::StringBuffer buffer;
   JsonWriter writer(buffer);
-  writer.StartObject(); //root
+  writer.StartObject();  // root
 
   writer.String("requestType");
   writer.String(reconcile_payload.requestType_.c_str());
 
   writer.String("signedTx");
-  writer.StartObject(); //signedTx
+  writer.StartObject();  // signedTx
 
   writer.String("headers");
-  writer.StartObject(); //headers
+  writer.StartObject();  // headers
 
   writer.String("digest");
   writer.String(reconcile_payload.request_signedtx_headers_digest_.c_str());
@@ -2288,14 +2279,14 @@ std::string stringifyReconcilePayloadSt(
   writer.String("signature");
   writer.String(reconcile_payload.request_signedtx_headers_signature_.c_str());
 
-  writer.EndObject(); //headers
+  writer.EndObject();  // headers
 
   writer.String("body");
-  writer.StartObject(); //body
+  writer.StartObject();  // body
 
 
   writer.String("denomination");
-  writer.StartObject(); //denomination
+  writer.StartObject();  // denomination
 
   writer.String("amount");
   writer.String(reconcile_payload.request_signedtx_body_.amount_.c_str());
@@ -2303,17 +2294,17 @@ std::string stringifyReconcilePayloadSt(
   writer.String("currency");
   writer.String(reconcile_payload.request_signedtx_body_.currency_.c_str());
 
-  writer.EndObject(); //denomination
+  writer.EndObject();  // denomination
 
   writer.String("destination");
   writer.String(reconcile_payload.request_signedtx_body_.destination_.c_str());
 
-  writer.EndObject(); //body
+  writer.EndObject();  // body
 
   writer.String("octets");
   writer.String(reconcile_payload.request_signedtx_octets_.c_str());
 
-  writer.EndObject(); //signedTx
+  writer.EndObject();  // signedTx
 
   writer.String("surveyorId");
   writer.String(reconcile_payload.request_surveyorId_.c_str());
@@ -2321,7 +2312,7 @@ std::string stringifyReconcilePayloadSt(
   writer.String("viewingId");
   writer.String(reconcile_payload.request_viewingId_.c_str());
 
-  writer.EndObject(); //root
+  writer.EndObject();  // root
   return buffer.GetString();
 }
 
@@ -2390,11 +2381,11 @@ std::string sign(std::string* keys,
   }
   std::vector<uint8_t> signedMsg(crypto_sign_BYTES + message.length());
 
-  unsigned long long signedMsgSize = 0;
+  uint64_t signedMsgSize = 0;
   crypto_sign(&signedMsg.front(),
               &signedMsgSize,
               (const unsigned char*)message.c_str(),
-              (unsigned long long)message.length(),
+              (uint64_t)message.length(),
               &secretKey.front());
 
   std::vector<uint8_t> signature(crypto_sign_BYTES);

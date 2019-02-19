@@ -75,7 +75,7 @@ class BatState {
 
   double GetBalance() const;
 
-  const std::string& GetPaymentId () const;
+  const std::string& GetPaymentId() const;
 
   void SetPaymentId(const std::string& payment_id);
 

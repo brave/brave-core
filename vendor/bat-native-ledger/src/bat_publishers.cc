@@ -62,7 +62,7 @@ double BatPublishers::concaveScore(const uint64_t& duration_seconds) {
 }
 
 std::string getProviderName(const std::string& publisher_id) {
-  // TODO - this is for the media stuff
+  // TODO(anyone) this is for the media stuff
   if (publisher_id.find(YOUTUBE_MEDIA_TYPE) != std::string::npos) {
     return YOUTUBE_MEDIA_TYPE;
   } else if (publisher_id.find(TWITCH_MEDIA_TYPE) != std::string::npos) {
@@ -199,7 +199,7 @@ void BatPublishers::saveVisitInternal(
   DCHECK(result != ledger::Result::TOO_MANY_RESULTS);
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
-    // TODO error handling
+    // TODO(anyone) error handling
     return;
   }
   bool verified = isVerified(publisher_id);
@@ -520,7 +520,7 @@ void BatPublishers::synopsisNormalizerInternal(
     ledger::PublisherInfoList* newList,
     const ledger::PublisherInfoList& oldList,
     uint32_t /* next_record */) {
-  // TODO SZ: We can pass non const value here to avoid copying
+  // TODO(SZ): We can pass non const value here to avoid copying
   ledger::PublisherInfoList list = oldList;
   if (list.size() == 0) {
     return;
@@ -602,9 +602,9 @@ void BatPublishers::SynopsisNormalizer() {
       ledger_->GetReconcileStamp(),
       ledger_->GetPublisherAllowNonVerified(),
       ledger_->GetPublisherMinVisits());
-  //  TODO SZ: We pull the whole list currently,
-  //  I don't think it consumes lots of RAM, but could.
-  //  We need to limit it and iterate.
+  // TODO(SZ): We pull the whole list currently,
+  // I don't think it consumes lots of RAM, but could.
+  // We need to limit it and iterate.
   ledger_->GetActivityInfoList(
       0,
       0,
@@ -764,7 +764,7 @@ void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Could not save publisher state";
-    // TODO - error handling
+    // TODO(anyone) error handling
     return;
   }
 }
@@ -978,4 +978,4 @@ void BatPublishers::onPublisherBanner(
   callback(std::move(new_banner));
 }
 
-}  // namespace braveledger_bat_publisher
+}  // namespace braveledger_bat_publishers

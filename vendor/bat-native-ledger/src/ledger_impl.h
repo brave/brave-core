@@ -10,6 +10,7 @@
 #include <map>
 #include <string>
 #include <fstream>
+#include <vector>
 
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
@@ -126,7 +127,7 @@ class LedgerImpl : public ledger::Ledger,
 
   bool GetRewardsMainEnabled() const override;
 
-  uint64_t GetPublisherMinVisitTime() const override; // In milliseconds
+  uint64_t GetPublisherMinVisitTime() const override;  // In milliseconds
 
   unsigned int GetPublisherMinVisits() const override;
 
@@ -487,13 +488,12 @@ class LedgerImpl : public ledger::Ledger,
   bool initialized_;
   bool initializing_;
 
-  //ledger::VisitData current_visit_data_;
   std::map<uint32_t, ledger::VisitData> current_pages_;
   uint64_t last_tab_active_time_;
   uint32_t last_shown_tab_id_;
   uint32_t last_pub_load_timer_id_;
   uint32_t last_grant_check_timer_id_;
- };
+};
 
 }  // namespace bat_ledger
 

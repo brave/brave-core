@@ -238,7 +238,7 @@ void BatClient::getWalletProperties() {
                    std::string(),
                    ledger::URL_METHOD::GET,
                    callback);
- }
+}
 
 void BatClient::walletPropertiesCallback(
     bool success,
@@ -358,7 +358,6 @@ void BatClient::continueRecover(int result,
         (std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex, PREFIX_V2),
     std::vector<std::string>(), "", "",
     ledger::URL_METHOD::GET, callback);
-
 }
 
 void BatClient::recoverWalletPublicKeyCallback(
@@ -569,7 +568,7 @@ void BatClient::getGrantCaptchaCallback(
 
   auto it = headers.find("captcha-hint");
   if (!success || it == headers.end()) {
-    // TODO NZ Add error handler
+    // TODO(nejczdovc) Add error handler
     return;
   }
 
