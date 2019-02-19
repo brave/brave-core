@@ -36,11 +36,10 @@ hooks = [
     'action': ['python', 'src/brave/script/apply-patches.py'],
   },
   {
-    # Run npm install for brave-extension
-    'name': 'init',
+    'name': 'brave_extension',
     'condition': 'not checkout_android',
     'pattern': '.',
-    'action': ['python', 'src/brave/script/init-brave-extension.py'],
+    'action': ['python', 'src/brave/script/build-simple-js-bundle.py', '--repo_dir_path', 'src/brave/components/brave_extension/extension/brave_extension'],
   },
   {
     # Download rust deps if necessary

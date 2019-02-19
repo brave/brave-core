@@ -15,7 +15,7 @@ if (!is_android) {
     ]
     deps = [
       ":strings",
-      "//brave/vendor/brave-extension",
+      "//brave/components/brave_extension/extension/brave_extension",
     ]
 
     if (brave_rewards_enabled) {
