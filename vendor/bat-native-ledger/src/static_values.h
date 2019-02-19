@@ -1,6 +1,8 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #ifndef BRAVELEDGER_STATIC_VALUES_H_
 #define BRAVELEDGER_STATIC_VALUES_H_
 
@@ -15,7 +17,6 @@
 #define PUBLISHER_PRODUCTION_SERVER         "https://publishers.basicattentiontoken.org"
 #define PUBLISHER_DISTRO_STAGING_SERVER     "https://publishers-staging-distro.basicattentiontoken.org"
 #define PUBLISHER_DISTRO_PRODUCTION_SERVER  "https://publishers-distro.basicattentiontoken.org"
-
 
 #define PREFIX_V2                       "/v2"
 #define REGISTER_PERSONA                "/registrar/persona"
