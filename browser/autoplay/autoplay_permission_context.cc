@@ -24,11 +24,12 @@ ContentSetting AutoplayPermissionContext::GetPermissionStatusInternal(
     content::RenderFrameHost* render_frame_host,
     const GURL& requesting_origin,
     const GURL& embedding_origin) const {
-    if (g_brave_browser_process->autoplay_whitelist_service()
-        ->ShouldAllowAutoplay(requesting_origin))
-      return CONTENT_SETTING_ALLOW;
-    return PermissionContextBase::GetPermissionStatusInternal(
-        render_frame_host, requesting_origin, embedding_origin);
+  if (g_brave_browser_process &&
+      g_brave_browser_process->autoplay_whitelist_service()
+      ->ShouldAllowAutoplay(requesting_origin))
+    return CONTENT_SETTING_ALLOW;
+  return PermissionContextBase::GetPermissionStatusInternal(
+    render_frame_host, requesting_origin, embedding_origin);
 }
 
 void AutoplayPermissionContext::UpdateTabContext(
