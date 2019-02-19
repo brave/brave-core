@@ -3,8 +3,8 @@
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as deepFreeze from 'deep-freeze-node'
-import { Tab } from '../app/types/state/shieldsPannelState'
-import { BlockDetails } from '../app/types/actions/shieldsPanelActions'
+import { Tab } from '../types/state/shieldsPannelState'
+import { BlockDetails } from '../types/actions/shieldsPanelActions'
 
 interface CustomTab extends Tab {
   url: string

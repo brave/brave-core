@@ -7,7 +7,7 @@ import * as path from 'path'
 import * as webdriver from 'selenium-webdriver'
 import * as assert from 'assert'
 import { delay, startChromeDriver, buildWebDriver } from '../func'
-const manifest = require('../../app/manifest.prod.json')
+const manifest = require('../../manifest.json')
 
 const extensionName = manifest.name
 

@@ -4,15 +4,13 @@
 
 import { isHttpOrHttps } from '../../helpers/urlUtils'
 
-// TODO: use `import` for these assets once the webpack build
-// for brave extension allows dynamic file serving like other brave-core
-// components
-const shieldsOnIcon18Url = 'img/shields-on.png'
-const shieldsOnIcon36Url = 'img/shields-on@2x.png'
-const shieldsOnIcon54Url = 'img/shields-on@3x.png'
-const shieldsOffIcon18Url = 'img/shields-off.png'
-const shieldsOffIcon36Url = 'img/shields-off@2x.png'
-const shieldsOffIcon54Url = 'img/shields-off@3x.png'
+// TODO: use `import` for these assets
+const shieldsOnIcon18Url = 'assets/img/shields-on.png'
+const shieldsOnIcon36Url = 'assets/img/shields-on@2x.png'
+const shieldsOnIcon54Url = 'assets/img/shields-on@3x.png'
+const shieldsOffIcon18Url = 'assets/img/shields-off.png'
+const shieldsOffIcon36Url = 'assets/img/shields-off@2x.png'
+const shieldsOffIcon54Url = 'assets/img/shields-off@3x.png'
 
 export const shieldsOnIcon = {
   18: shieldsOnIcon18Url,

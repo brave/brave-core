@@ -1,87 +1,87 @@
 import("//brave/components/common/typescript.gni")
 import("//build/config/locales.gni")
 
-transpile_web_ui("brave-extension") {
+transpile_web_ui("brave_extension") {
   # Need this to fire re-pack if changed, nevertheless extension is repacked on each 2nd build
   inputs = [
-    "app/actions/cosmeticFilterActions.ts",
-    "app/actions/runtimeActions.ts",
-    "app/actions/shieldsPanelActions.ts",
-    "app/actions/tabActions.ts",
-    "app/actions/webNavigationActions.ts",
-    "app/actions/windowActions.ts",
-    "app/assets/img/shields-off.png",
-    "app/assets/img/shields-off@2x.png",
-    "app/assets/img/shields-off@3x.png",
-    "app/assets/img/shields-on.png",
-    "app/assets/img/shields-on@2x.png",
-    "app/assets/img/shields-on@3x.png",
-    "app/background.ts",
-    "app/background/actions/cosmeticFilterActions.ts",
-    "app/background/actions/runtimeActions.ts",
-    "app/background/actions/shieldsPanelActions.ts",
-    "app/background/actions/tabActions.ts",
-    "app/background/actions/webNavigationActions.ts",
-    "app/background/actions/windowActions.ts",
-    "app/background/api/browserActionAPI.ts",
-    "app/background/api/cosmeticFilterAPI.ts",
-    "app/background/api/localeAPI.ts",
-    "app/background/api/shieldsAPI.ts",
-    "app/background/api/tabsAPI.ts",
-    "app/background/events.ts",
-    "app/background/events/cosmeticFilterEvents.ts",
-    "app/background/events/runtimeEvents.ts",
-    "app/background/events/shieldsEvents.ts",
-    "app/background/events/tabsEvents.ts",
-    "app/background/events/windowsEvents.ts",
-    "app/background/reducers.ts",
-    "app/background/reducers/cosmeticFilterReducer.ts",
-    "app/background/reducers/runtimeReducer.ts",
-    "app/background/reducers/shieldsPanelReducer.ts",
-    "app/background/store.ts",
-    "app/braveShieldsPanel.tsx",
-    "app/components/braveShields/braveShields.tsx",
-    "app/components/braveShields/footer.tsx",
-    "app/components/braveShields/header.tsx",
-    "app/components/braveShields/interfaceControls.tsx",
-    "app/components/braveShields/privacyControls.tsx",
-    "app/components/braveShields/blockedResources/blockedResources.tsx",
-    "app/components/braveShields/blockedResources/scriptsList.tsx",
-    "app/components/braveShields/blockedResources/staticList.tsx",
-    "app/constants/cosmeticFilterTypes.ts",
-    "app/constants/resourceIdentifiers.ts",
-    "app/constants/runtimeActionTypes.ts",
-    "app/constants/shieldsPanelTypes.ts",
-    "app/constants/tabTypes.ts",
-    "app/constants/webNavigationTypes.ts",
-    "app/constants/windowTypes.ts",
-    "app/containers/braveShields.tsx",
-    "app/content.ts",
-    "app/helpers/arrayUtils.ts",
-    "app/helpers/urlUtils.ts",
-    "app/helpers/shieldsUtils.ts",
-    "app/state/shieldsPanelState.ts",
-    "app/types/actions/cosmeticFilterActions.ts",
-    "app/types/actions/index.ts",
-    "app/types/actions/runtimeActions.ts",
-    "app/types/actions/shieldsPanelActions.ts",
-    "app/types/actions/tabActions.ts",
-    "app/types/actions/webNavigationActions.ts",
-    "app/types/actions/windowActions.ts",
-    "app/types/adblock/adblockTypes.ts",
-    "app/types/constants/cosmeticFilterTypes.ts",
-    "app/types/constants/resourceIdentifiers.ts",
-    "app/types/constants/shieldsPanelTypes.ts",
-    "app/types/constants/tabTypes.ts",
-    "app/types/constants/webNavigationTypes.ts",
-    "app/types/constants/windowTypes.ts",
-    "app/types/global/chrome.d.ts",
-    "app/types/global/react-chrome-redux.d.ts",
-    "app/types/global/tests.d.ts",
-    "app/types/other/blockTypes.ts",
-    "app/types/other/noScriptInfo.ts",
-    "app/types/state/mainState.ts",
-    "app/types/state/shieldsPannelState.ts",
+    "actions/cosmeticFilterActions.ts",
+    "actions/runtimeActions.ts",
+    "actions/shieldsPanelActions.ts",
+    "actions/tabActions.ts",
+    "actions/webNavigationActions.ts",
+    "actions/windowActions.ts",
+    "assets/img/shields-off.png",
+    "assets/img/shields-off@2x.png",
+    "assets/img/shields-off@3x.png",
+    "assets/img/shields-on.png",
+    "assets/img/shields-on@2x.png",
+    "assets/img/shields-on@3x.png",
+    "background.ts",
+    "background/actions/cosmeticFilterActions.ts",
+    "background/actions/runtimeActions.ts",
+    "background/actions/shieldsPanelActions.ts",
+    "background/actions/tabActions.ts",
+    "background/actions/webNavigationActions.ts",
+    "background/actions/windowActions.ts",
+    "background/api/browserActionAPI.ts",
+    "background/api/cosmeticFilterAPI.ts",
+    "background/api/localeAPI.ts",
+    "background/api/shieldsAPI.ts",
+    "background/api/tabsAPI.ts",
+    "background/events.ts",
+    "background/events/cosmeticFilterEvents.ts",
+    "background/events/runtimeEvents.ts",
+    "background/events/shieldsEvents.ts",
+    "background/events/tabsEvents.ts",
+    "background/events/windowsEvents.ts",
+    "background/reducers.ts",
+    "background/reducers/cosmeticFilterReducer.ts",
+    "background/reducers/runtimeReducer.ts",
+    "background/reducers/shieldsPanelReducer.ts",
+    "background/store.ts",
+    "braveShieldsPanel.tsx",
+    "components/braveShields/braveShields.tsx",
+    "components/braveShields/footer.tsx",
+    "components/braveShields/header.tsx",
+    "components/braveShields/interfaceControls.tsx",
+    "components/braveShields/privacyControls.tsx",
+    "components/braveShields/blockedResources/blockedResources.tsx",
+    "components/braveShields/blockedResources/scriptsList.tsx",
+    "components/braveShields/blockedResources/staticList.tsx",
+    "constants/cosmeticFilterTypes.ts",
+    "constants/resourceIdentifiers.ts",
+    "constants/runtimeActionTypes.ts",
+    "constants/shieldsPanelTypes.ts",
+    "constants/tabTypes.ts",
+    "constants/webNavigationTypes.ts",
+    "constants/windowTypes.ts",
+    "containers/braveShields.tsx",
+    "content.ts",
+    "helpers/arrayUtils.ts",
+    "helpers/urlUtils.ts",
+    "helpers/shieldsUtils.ts",
+    "state/shieldsPanelState.ts",
+    "types/actions/cosmeticFilterActions.ts",
+    "types/actions/index.ts",
+    "types/actions/runtimeActions.ts",
+    "types/actions/shieldsPanelActions.ts",
+    "types/actions/tabActions.ts",
+    "types/actions/webNavigationActions.ts",
+    "types/actions/windowActions.ts",
+    "types/adblock/adblockTypes.ts",
+    "types/constants/cosmeticFilterTypes.ts",
+    "types/constants/resourceIdentifiers.ts",
+    "types/constants/shieldsPanelTypes.ts",
+    "types/constants/tabTypes.ts",
+    "types/constants/webNavigationTypes.ts",
+    "types/constants/windowTypes.ts",
+    "types/global/chrome.d.ts",
+    "types/global/react-chrome-redux.d.ts",
+    "types/global/tests.d.ts",
+    "types/other/blockTypes.ts",
+    "types/other/noScriptInfo.ts",
+    "types/state/mainState.ts",
+    "types/state/shieldsPannelState.ts",
   ]
 
   # what is the output bundle called and what is the entry point file
@@ -93,6 +93,12 @@ transpile_web_ui("brave-extension") {
 
   # what is the directory / pack name
   resource_name = "brave_extension"
+
+  # Must match the relative path from the static GRD to the manifest.json
+  # plus any other relative path we want these files to live in the extension
+  extra_relative_path = "/brave_extension/out"
+
+  public_asset_path = "/out/"
 }
 
 if (is_mac) {
@@ -108,7 +114,7 @@ if (is_mac) {
       locale = string_replace(locale, "-", "_")
       locale = string_replace(locale, "nb", "no")
       sources = [
-        "//brave/components/brave_extension/extension/brave-extension/app/_locales/$locale/messages.json"
+        "//brave/components/brave_extension/extension/brave_extension/_locales/$locale/messages.json"
       ]
       outputs = [
         "{{bundle_resources_dir}}/brave_extension/_locales/$locale/{{source_file_part}}"
@@ -127,7 +133,7 @@ if (is_mac) {
       locale = string_replace(locale, "-", "_")
       locale = string_replace(locale, "nb", "no")
       sources = [
-        "//brave/components/brave_extension/extension/brave-extension/_locales/${locale}/messages.json",
+        "//brave/components/brave_extension/extension/brave_extension/_locales/${locale}/messages.json",
       ]
       outputs = [
         "$root_out_dir/resources/brave_extension/_locales/${locale}/{{source_file_part}}",

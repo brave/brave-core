@@ -13,7 +13,7 @@
         "moduleResolution": "node",
         "typeRoots" : [
             "./node_modules/@types",
-            "./app/types/global"
+            "./types/global"
         ],
         // optional
         "forceConsistentCasingInFileNames": true,
@@ -23,6 +23,6 @@
         "noUnusedLocals": true
     },
     "include": [
-       "./app/**/*"
+       "./**/*"
     ]
 }
