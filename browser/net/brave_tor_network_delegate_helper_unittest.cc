@@ -1,8 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/net/brave_tor_network_delegate_helper.h"
+
+#include <memory>
+#include <string>
+#include <utility>
 
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
@@ -59,6 +64,7 @@ class BraveTorNetworkDelegateHelperTest: public testing::Test {
   content::MockResourceContext* resource_context() {
     return resource_context_.get();
   }
+
  protected:
   // The path to temporary directory used to contain the test operations.
   base::ScopedTempDir temp_dir_;
@@ -79,7 +85,8 @@ TEST_F(BraveTorNetworkDelegateHelperTest, NotTorProfile) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              before_url_context);
   brave::ResponseCallback callback;
 
   std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
@@ -118,7 +125,8 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfile) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              before_url_context);
   brave::ResponseCallback callback;
 
   std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
@@ -164,7 +172,8 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfileBlockFile) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              before_url_context);
   brave::ResponseCallback callback;
 
   std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
@@ -199,7 +208,8 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfileBlockIfHosed) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              before_url_context);
   brave::ResponseCallback callback;
 
   std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
