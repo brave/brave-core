@@ -1,10 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/net/brave_network_delegate_base.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/task/post_task.h"
 #include "brave/common/pref_names.h"
@@ -19,9 +21,11 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
 
 using content::BrowserThread;
+using net::HttpResponseHeaders;
 using net::URLRequest;
 
 namespace {
@@ -39,6 +43,57 @@ content::WebContents* GetWebContentsFromProcessAndFrameId(int render_process_id,
 }
 
 }  // namespace
+
+base::flat_set<base::StringPiece>* TrackableSecurityHeaders() {
+  static base::NoDestructor<base::flat_set<base::StringPiece>>
+      kTrackableSecurityHeaders(base::flat_set<base::StringPiece>{
+          "Strict-Transport-Security", "Expect-CT", "Public-Key-Pins",
+          "Public-Key-Pins-Report-Only"});
+  return kTrackableSecurityHeaders.get();
+}
+
+void RemoveTrackableSecurityHeadersForThirdParty(
+    URLRequest* request,
+    const net::HttpResponseHeaders* original_response_headers,
+    scoped_refptr<net::HttpResponseHeaders>* override_response_headers) {
+  if (!request || !request->top_frame_origin().has_value() ||
+      (!original_response_headers && !override_response_headers->get())) {
+    return;
+  }
+
+  auto top_frame_origin = request->top_frame_origin().value();
+  auto request_url = request->url();
+
+  if (net::registry_controlled_domains::SameDomainOrHost(
+          request_url, top_frame_origin,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    return;
+  }
+
+  bool allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
+      request, top_frame_origin.GetURL(), request_url,
+      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kBraveShields);
+
+  if (!allow_brave_shields) {
+    return;
+  }
+
+  bool allow_fingerprinting = brave_shields::IsAllowContentSettingFromIO(
+      request, top_frame_origin.GetURL(), request_url,
+      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting);
+
+  if (allow_fingerprinting) {
+    return;
+  }
+
+  if (!override_response_headers->get()) {
+    *override_response_headers =
+        new net::HttpResponseHeaders(original_response_headers->raw_headers());
+  }
+  for (auto header : *TrackableSecurityHeaders()) {
+    (*override_response_headers)->RemoveHeader(header.as_string());
+  }
+}
 
 BraveNetworkDelegateBase::BraveNetworkDelegateBase(
     extensions::EventRouterForwarder* event_router)
@@ -68,12 +123,11 @@ void BraveNetworkDelegateBase::InitPrefChangeRegistrarOnUI() {
 void BraveNetworkDelegateBase::OnReferralHeadersChanged() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (const base::ListValue* referral_headers =
-      g_browser_process->local_state()->GetList(kReferralHeaders)) {
+          g_browser_process->local_state()->GetList(kReferralHeaders)) {
     base::PostTaskWithTraits(
         FROM_HERE, {BrowserThread::IO},
         base::Bind(&BraveNetworkDelegateBase::SetReferralHeaders,
-                   base::Unretained(this),
-                   referral_headers->DeepCopy()));
+                   base::Unretained(this), referral_headers->DeepCopy()));
   }
 }
 
@@ -124,6 +178,9 @@ int BraveNetworkDelegateBase::OnHeadersReceived(
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
     GURL* allowed_unsafe_redirect_url) {
+  RemoveTrackableSecurityHeadersForThirdParty(
+      request, original_response_headers, override_response_headers);
+
   if (headers_received_callbacks_.empty() || !request) {
     return ChromeNetworkDelegate::OnHeadersReceived(
         request, std::move(callback), original_response_headers,

@@ -1,10 +1,18 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_NET_BRAVE_NETWORK_DELEGATE_BASE_H_
 #define BRAVE_BROWSER_NET_BRAVE_NETWORK_DELEGATE_BASE_H_
 
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "base/containers/flat_set.h"
+#include "base/strings/string_piece.h"
 #include "brave/browser/net/url_context.h"
 #include "chrome/browser/net/chrome_network_delegate.h"
 #include "content/public/browser/browser_thread.h"
@@ -20,6 +28,13 @@ namespace net {
 class URLRequest;
 }
 
+base::flat_set<base::StringPiece>* TrackableSecurityHeaders();
+
+void RemoveTrackableSecurityHeadersForThirdParty(
+    net::URLRequest* request,
+    const net::HttpResponseHeaders* original_response_headers,
+    scoped_refptr<net::HttpResponseHeaders>* override_response_headers);
+
 // BraveNetworkDelegateBase is the central point from within the Brave code to
 // add hooks into the network stack.
 class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
@@ -28,7 +43,8 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
   using ResponseListener = base::Callback<void(const base::DictionaryValue&,
                                                const ResponseCallback&)>;
 
-  BraveNetworkDelegateBase(extensions::EventRouterForwarder* event_router);
+  explicit BraveNetworkDelegateBase(
+      extensions::EventRouterForwarder* event_router);
   ~BraveNetworkDelegateBase() override;
 
   bool IsRequestIdentifierValid(uint64_t request_identifier);
