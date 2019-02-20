@@ -290,11 +290,11 @@ void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
     return;
   }
 
+  wallet_info_ = WalletInfo(*info);
+
   BLOG(INFO) << "SetWalletInfo:";
   BLOG(INFO) << "  Payment id: " << wallet_info_.payment_id;
   BLOG(INFO) << "  Public key: " << wallet_info_.public_key;
-
-  wallet_info_ = WalletInfo(*info);
 
   CheckReady();
 }
