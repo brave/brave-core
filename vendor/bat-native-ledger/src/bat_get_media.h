@@ -274,6 +274,7 @@ class BatGetMedia {
   FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, GetYoutubePublisherKeyFromUrl);
   FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, GetYoutubeUserFromUrl);
   FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, getRealEnteredYTPath);
+  FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, GetNameFromChannel);
 };
 
 }  // namespace braveledger_bat_get_media

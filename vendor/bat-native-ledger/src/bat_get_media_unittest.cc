@@ -262,4 +262,73 @@ TEST(BatGetMediaTest, getRealEnteredYTPath) {
   delete bat_get_media_;
 }
 
+TEST(BatGetMediaTest, GetNameFromChannel) {
+  braveledger_bat_get_media::BatGetMedia* bat_get_media_ =
+      new braveledger_bat_get_media::BatGetMedia(nullptr);
+  const std::string json_envelope_open(
+      "channelMetadataRenderer\":{\"title\":\"");
+  const std::string json_envelope_close("\"}");
+
+  // empty string
+  std::string resolve =
+      bat_get_media_->getNameFromChannel(std::string());
+  ASSERT_EQ(resolve, std::string());
+
+  // quote
+  resolve =
+      bat_get_media_->getNameFromChannel("\"");
+  ASSERT_EQ(resolve, std::string());
+
+  // double quote
+  resolve =
+      bat_get_media_->getNameFromChannel("\"\"");
+  ASSERT_EQ(resolve, std::string());
+
+  // invalid json
+  std::string subject(
+      json_envelope_open + "invalid\"json\"}" + json_envelope_close);
+  resolve =
+      bat_get_media_->getNameFromChannel(subject);
+  ASSERT_EQ(resolve, "invalid");
+
+  // ampersand (&)
+  subject = json_envelope_open + "A\\u0026B" + json_envelope_close;
+  resolve =
+      bat_get_media_->getNameFromChannel(subject);
+  ASSERT_EQ(resolve, "A&B");
+
+  // quotation mark (")
+  subject = json_envelope_open + "A\\u0022B" + json_envelope_close;
+  resolve =
+      bat_get_media_->getNameFromChannel(subject);
+  ASSERT_EQ(resolve, "A\"B");
+
+  // pound (#)
+  subject = json_envelope_open + "A\\u0023B" + json_envelope_close;
+  resolve =
+      bat_get_media_->getNameFromChannel(subject);
+  ASSERT_EQ(resolve, "A#B");
+
+  // dollar ($)
+  subject = json_envelope_open + "A\\u0024B" + json_envelope_close;
+  resolve =
+      bat_get_media_->getNameFromChannel(subject);
+  ASSERT_EQ(resolve, "A$B");
+
+  // percent (%)
+  subject = json_envelope_open + "A\\u0025B" + json_envelope_close;
+  resolve =
+      bat_get_media_->getNameFromChannel(subject);
+  ASSERT_EQ(resolve, "A%B");
+
+  // single quote (')
+  subject = json_envelope_open + "A\\u0027B" + json_envelope_close;
+  resolve =
+      bat_get_media_->getNameFromChannel(subject);
+  ASSERT_EQ(resolve, "A'B");
+
+  // cleanup
+  delete bat_get_media_;
+}
+
 }  // braveledger_bat_get_media
