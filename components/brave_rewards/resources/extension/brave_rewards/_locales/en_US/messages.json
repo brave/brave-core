@@ -332,5 +332,13 @@
   "walletFailedButton": {
     "message": "Try again",
     "description": "Button for re-try after wallet creation failed"
+  },
+  "addFunds": {
+    "message": "Add funds",
+    "description": "Button for adding funds"
+  },
+  "rewardsSettings": {
+    "message": "Rewards Settings",
+    "description": "Button for opening settings page"
   }
 }

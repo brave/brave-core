@@ -356,12 +356,12 @@ export class Panel extends React.Component<Props, State> {
         converted={utils.formatConverted(converted)}
         actions={[
           {
-            name: 'Add funds',
+            name: getMessage('addFunds'),
             action: this.openRewardsAddFundsPage,
             icon: <WalletAddIcon />
           },
           {
-            name: 'Rewards Settings',
+            name:  getMessage('rewardsSettings'),
             action: this.openRewardsPage,
             icon: <BatColorIcon />
           }
