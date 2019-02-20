@@ -3,14 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AUTOPLAY_WHITELIST_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AUTOPLAY_WHITELIST_SERVICE_H_
+#ifndef OMPONENTS_BRAVE_SHIELDS_BROWSER_AUTOPLAY_WHITELIST_SERVICE_H_
+#define OMPONENTS_BRAVE_SHIELDS_BROWSER_AUTOPLAY_WHITELIST_SERVICE_H_
 
 #include <stdint.h>
 
 #include <map>
 #include <memory>
-#include <mutex>
 #include <string>
 #include <vector>
 
@@ -61,4 +60,4 @@ std::unique_ptr<AutoplayWhitelistService> AutoplayWhitelistServiceFactory();
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AUTOPLAY_WHITELIST_SERVICE_H_
+#endif  // OMPONENTS_BRAVE_SHIELDS_BROWSER_AUTOPLAY_WHITELIST_SERVICE_H_

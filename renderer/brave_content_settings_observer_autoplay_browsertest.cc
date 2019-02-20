@@ -28,8 +28,8 @@ const char kVideoPlayingDetect[] =
   "textContent);";
 
 class BraveContentSettingsObserverAutoplayTest : public InProcessBrowserTest {
-  public:
-    void SetUpOnMainThread() override {
+ public:
+  void SetUpOnMainThread() override {
       InProcessBrowserTest::SetUpOnMainThread();
 
       content_client_.reset(new ChromeContentClient);
@@ -47,8 +47,10 @@ class BraveContentSettingsObserverAutoplayTest : public InProcessBrowserTest {
 
       ASSERT_TRUE(embedded_test_server()->Start());
 
-      g_brave_browser_process->autoplay_whitelist_service()->autoplay_whitelist_client_->addHost("example.com");
-      whitelisted_url_ = embedded_test_server()->GetURL("example.com", "/autoplay/autoplay_by_attr.html");
+      g_brave_browser_process->autoplay_whitelist_service()->
+        autoplay_whitelist_client_->addHost("example.com");
+      whitelisted_url_ = embedded_test_server()->GetURL(
+        "example.com", "/autoplay/autoplay_by_attr.html");
 
       user_blocklist_pattern_ =
           ContentSettingsPattern::FromString("http://example.com/*");
@@ -89,12 +91,13 @@ class BraveContentSettingsObserverAutoplayTest : public InProcessBrowserTest {
 
     void WaitForPlaying() {
       std::string msg_from_renderer;
-      ASSERT_TRUE(ExecuteScriptAndExtractString(contents(), "notifyWhenPlaying();",
-                                                &msg_from_renderer));
+      ASSERT_TRUE(ExecuteScriptAndExtractString(
+                    contents(), "notifyWhenPlaying();",
+                    &msg_from_renderer));
       ASSERT_EQ("PLAYING", msg_from_renderer);
     }
 
-  private:
+ private:
     GURL whitelisted_url_;
     ContentSettingsPattern user_blocklist_pattern_;
     std::unique_ptr<ChromeContentClient> content_client_;
@@ -102,7 +105,8 @@ class BraveContentSettingsObserverAutoplayTest : public InProcessBrowserTest {
 };
 
 // Allow autoplay on whitelisted URL by default
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverAutoplayTest, AllowAutoplay) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverAutoplayTest,
+                       AllowAutoplay) {
   std::string result;
   PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
       contents());
@@ -124,7 +128,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverAutoplayTest, AllowAutoplay) 
 
 // Block autoplay, even on whitelisted URL, if user has a blocklist pattern that
 // matches the whitelisted URL
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverAutoplayTest, BlockAutoplay) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverAutoplayTest,
+                       BlockAutoplay) {
   std::string result;
   BlockAutoplay();
   PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
