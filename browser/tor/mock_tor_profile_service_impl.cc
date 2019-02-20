@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/tor/mock_tor_profile_service_impl.h"
+
+#include <string>
 
 #include "brave/browser/tor/tor_proxy_config_service.h"
 #include "brave/common/tor/tor_test_constants.h"
@@ -27,7 +30,9 @@ MockTorProfileServiceImpl::~MockTorProfileServiceImpl() {}
 
 void MockTorProfileServiceImpl::LaunchTor(const TorConfig& config) {}
 
-void MockTorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {}
+void MockTorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
+  config_ = config;
+}
 
 
 void MockTorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
@@ -39,15 +44,21 @@ const TorConfig& MockTorProfileServiceImpl::GetTorConfig() {
 
 int64_t MockTorProfileServiceImpl::GetTorPid() { return -1; }
 
-void MockTorProfileServiceImpl::SetProxy(
+int MockTorProfileServiceImpl::SetProxy(
     net::ProxyResolutionService* service, const GURL& request_url,
     bool new_circuit) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   GURL url = SiteInstance::GetSiteForURL(profile_, request_url);
-  if (url.host().empty() || config_.empty())
-    return;
+  if (config_.empty()) {
+    // No tor config => we absolutely cannot talk to the network.
+    // This might mean that there was a problem trying to initialize
+    // Tor.
+    LOG(ERROR) << "Tor not configured -- blocking connection";
+    return net::ERR_SOCKS_CONNECTION_FAILED;
+  }
   TorProxyConfigService::TorSetProxy(service, config_.proxy_string(),
                                      url.host(), nullptr, new_circuit);
+  return net::OK;
 }
 
 }  // namespace tor
