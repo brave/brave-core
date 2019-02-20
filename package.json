@@ -275,7 +275,7 @@
     "@types/react-dom": "^16.0.7",
     "@types/react-redux": "6.0.4",
     "awesome-typescript-loader": "^5.2.0",
-    "brave-ui": "github:brave/brave-ui#326b7cc358213796971a14e31a9bf0a5d31a847e",
+    "brave-ui": "github:brave/brave-ui#49b9f932e147341f78bed23bedd45cf0eccffc00",
     "css-loader": "^0.28.9",
     "csstype": "^2.5.5",
     "emptykit.css": "^1.0.1",
