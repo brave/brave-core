@@ -1,0 +1,34 @@
+{
+  "preset": "ts-jest",
+  "moduleFileExtensions": [
+    "js",
+    "tsx",
+    "ts",
+    "json"
+  ],
+  "transform": {
+    ".(jsx|js|ts|tsx)": "ts-jest"
+  },
+  "resetMocks": true,
+  "resetModules": true,
+  "collectCoverage": false,
+  "testMatch": [
+    "<rootDir>/app/actions/*.ts",
+    "<rootDir>/app/background/api/*.ts",
+    "<rootDir>/app/components/**/*.tsx",
+    "<rootDir>/app/helpers/*.tsx",
+    "<rootDir>/app/background/reducersTest.ts",
+    "<rootDir>/app/background/storeTest.ts",
+    "<rootDir>/app/background/reducers/*.ts",
+    "<rootDir>/app/state/*.ts",
+    "<rootDir>/app/background/events/*.ts"
+  ],
+  "transformIgnorePatterns": [
+    "<rootDir>/node_modules"
+  ],
+  "setupTestFrameworkScriptFile": "./setupApp.ts",
+  "moduleNameMapper": {
+    "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/fileMock.ts",
+    "\\.(css|less)$": "identity-obj-proxy"
+  }
+}

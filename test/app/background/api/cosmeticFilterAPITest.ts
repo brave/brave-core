@@ -1,226 +1,238 @@
 
-import 'mocha'
-import * as sinon from 'sinon'
-import * as assert from 'assert'
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import * as sinon from 'sinon'
 import * as cosmeticFilterAPI from '../../../../app/background/api/cosmeticFilterAPI'
 
 describe('cosmeticFilterTestSuite', () => {
-  describe('addSiteCosmeticFilter', function () {
+  describe('addSiteCosmeticFilter', () => {
     const url = 'https://www.brave.com'
     const filter = '#cssFilter'
+    let getStorageStub: any
+    let setStorageStub: any
+    beforeAll(() => {
+      getStorageStub = sinon.stub(chrome.storage.local, 'get')
+      setStorageStub = sinon.stub(chrome.storage.local, 'set')
+    })
+    afterAll(() => {
+      getStorageStub.restore()
+      setStorageStub.restore()
+    })
+    beforeEach(() => {
+      getStorageStub.resetHistory()
+      setStorageStub.resetHistory()
+    })
 
-    before(function () {
-      this.getStorageStub = sinon.stub(chrome.storage.local, 'get')
-      this.setStorageStub = sinon.stub(chrome.storage.local, 'set')
-    })
-    after(function () {
-      this.getStorageStub.restore()
-      this.setStorageStub.restore()
-    })
-    beforeEach(function () {
-      this.getStorageStub.resetHistory()
-      this.setStorageStub.resetHistory()
-    })
-
-    it('passes only 1 arg to chrome.storage.local.set', function () {
-      this.getStorageStub.yields({
+    it('passes only 1 arg to chrome.storage.local.set', () => {
+      getStorageStub.yields({
         'list': {
           'hostname': ['samplefilter']
         }
       })
       cosmeticFilterAPI.addSiteCosmeticFilter(url, filter)
-      assert.equal(this.setStorageStub.getCall(0).args.length, 1)
+      expect(setStorageStub.getCall(0).args.length).toBe(1)
     })
-    it('passes the correct arguments to chrome.storage.local.set when storage is empty', function () {
-      this.getStorageStub.yields({})
+    it('passes the correct arguments to chrome.storage.local.set when storage is empty', () => {
+      getStorageStub.yields({})
       cosmeticFilterAPI.addSiteCosmeticFilter(url, filter)
-      assert.deepEqual(this.setStorageStub.getCall(0).args[0], {
+      expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {
           'https://www.brave.com': ['#cssFilter']
         }
       })
     })
-    it('passes the correct arguments to chrome.storage.local.set when storage is undefined', function () {
-      this.getStorageStub.yields(undefined)
+    it('passes the correct arguments to chrome.storage.local.set when storage is undefined', () => {
+      getStorageStub.yields(undefined)
       cosmeticFilterAPI.addSiteCosmeticFilter(url, filter)
-      assert.deepEqual(this.setStorageStub.getCall(0).args[0], {
+      expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {
           'https://www.brave.com': ['#cssFilter']
         }
       })
     })
-    it('can add more than 1 filter', function () {
-      this.getStorageStub.yields({
+    it('can add more than 1 filter', () => {
+      getStorageStub.yields({
         'cosmeticFilterList': {
           'hostname': ['samplefilter']
         }
       })
       cosmeticFilterAPI.addSiteCosmeticFilter('hostname', 'samplefilter2')
-      assert.deepEqual(this.setStorageStub.getCall(0).args[0], {
+      expect(setStorageStub.getCall(0).args[0]).toEqual({
         'cosmeticFilterList': {
           'hostname': ['samplefilter', 'samplefilter2']
         }
       })
     })
   })
-  describe('removeSiteFilter', function () {
+  describe('removeSiteFilter', () => {
     const url = 'https://www.brave.com'
     const filter = '#cssFilter'
+    let getStorageStub: any
+    let setStorageStub: any
 
-    before(function () {
-      this.getStorageStub = sinon.stub(chrome.storage.local, 'get')
-      this.setStorageStub = sinon.stub(chrome.storage.local, 'set')
+    beforeAll(() => {
+      getStorageStub = sinon.stub(chrome.storage.local, 'get')
+      setStorageStub = sinon.stub(chrome.storage.local, 'set')
     })
-    after(function () {
-      this.getStorageStub.restore()
-      this.setStorageStub.restore()
+    afterAll(() => {
+      getStorageStub.restore()
+      setStorageStub.restore()
     })
-    beforeEach(function () {
-      this.getStorageStub.resetHistory()
-      this.setStorageStub.resetHistory()
+    beforeEach(() => {
+      getStorageStub.resetHistory()
+      setStorageStub.resetHistory()
     })
-    it('passes only 1 arg to chrome.storage.local.set', function () {
-      this.getStorageStub.yields({
+
+    it('passes only 1 arg to chrome.storage.local.set', () => {
+      getStorageStub.yields({
         'cosmeticFilterList': {
           url: filter
         }
       })
       cosmeticFilterAPI.removeSiteFilter(url)
-      assert.equal(this.setStorageStub.getCall(0).args.length, 1)
+      expect(setStorageStub.getCall(0).args.length).toBe(1)
     })
-    it('removes the correct filter', function () {
-      this.getStorageStub.yields({
+    it('removes the correct filter', () => {
+      getStorageStub.yields({
         cosmeticFilterList: {
           'https://www.brave.com': ['#cssFilter'],
           'https://notbrave.com': ['notACSSFilter']
         }
       })
       cosmeticFilterAPI.removeSiteFilter(url)
-      assert.deepEqual(this.setStorageStub.getCall(0).args[0], {
+      expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {
           'https://notbrave.com': ['notACSSFilter']
         }
       })
     })
-    it('handles empty storage', function () {
-      this.getStorageStub.yields({})
+    it('handles empty storage', () => {
+      getStorageStub.yields({})
       cosmeticFilterAPI.removeSiteFilter(url)
-      assert.deepEqual(this.setStorageStub.getCall(0).args[0], {
+      expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {}
       })
     })
-    it('handles undefined storage', function () {
-      this.getStorageStub.yields(undefined)
+    it('handles undefined storage', () => {
+      getStorageStub.yields(undefined)
       cosmeticFilterAPI.removeSiteFilter(url)
-      assert.deepEqual(this.setStorageStub.getCall(0).args[0], {
+      expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {}
       })
     })
-    it('handles url not in storage', function () {
-      this.getStorageStub.yields({
+    it('handles url not in storage', () => {
+      getStorageStub.yields({
         cosmeticFilterList: {
           url: filter
         }
       })
       cosmeticFilterAPI.removeSiteFilter('urlNotInStorage')
-      assert.deepEqual(this.setStorageStub.getCall(0).args[0], {
+      expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {
           url: filter
         }
       })
     })
   })
-  describe('removeAllFilters', function () {
-    before(function () {
-      this.getStorageStub = sinon.stub(chrome.storage.local, 'get')
-      this.setStorageStub = sinon.stub(chrome.storage.local, 'set')
-    })
-    after(function () {
-      this.getStorageStub.restore()
-      this.setStorageStub.restore()
-    })
-    beforeEach(function () {
-      this.getStorageStub.resetHistory()
-      this.setStorageStub.resetHistory()
+  describe('removeAllFilters', () => {
+    let getStorageStub: any
+    let setStorageStub: any
+    beforeAll(() => {
+      getStorageStub = sinon.stub(chrome.storage.local, 'get')
+      setStorageStub = sinon.stub(chrome.storage.local, 'set')
     })
 
-    it('sets empty list object', function () {
-      this.getStorageStub.yields({
+    afterAll(() => {
+      getStorageStub.restore()
+      setStorageStub.restore()
+    })
+    beforeEach(() => {
+      getStorageStub.resetHistory()
+      setStorageStub.resetHistory()
+    })
+
+    it('sets empty list object', () => {
+      getStorageStub.yields({
         cosmeticFilterList: {
           'hostname': 'isNotEmpty'
         }
       })
       cosmeticFilterAPI.removeAllFilters()
-      assert.deepEqual(this.setStorageStub.getCall(0).args[0], {
+      expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {}
       })
     })
   })
-  describe('applySiteFilters', function () {
+  describe('applySiteFilters', () => {
     const filter = '#cssFilter'
     const filter2 = '#cssFilter2'
 
-    before(function () {
-      this.getStorageStub = sinon.stub(chrome.storage.local, 'get')
-      this.setStorageStub = sinon.stub(chrome.storage.local, 'set')
-      this.insertCSSStub = sinon.stub(chrome.tabs, 'insertCSS')
+    let getStorageStub: any
+    let setStorageStub: any
+    let insertCSSStub: any
+
+    beforeAll(() => {
+      getStorageStub = sinon.stub(chrome.storage.local, 'get')
+      setStorageStub = sinon.stub(chrome.storage.local, 'set')
+      insertCSSStub = sinon.stub(chrome.tabs, 'insertCSS')
     })
-    after(function () {
-      this.getStorageStub.restore()
-      this.setStorageStub.restore()
-      this.insertCSSStub.restore()
+    afterAll(() => {
+      getStorageStub.restore()
+      setStorageStub.restore()
+      insertCSSStub.restore()
     })
-    beforeEach(function () {
-      this.getStorageStub.resetHistory()
-      this.setStorageStub.resetHistory()
-      this.insertCSSStub.resetHistory()
+    beforeEach(() => {
+      getStorageStub.resetHistory()
+      setStorageStub.resetHistory()
+      insertCSSStub.resetHistory()
     })
-    it('applies the correct filter', function () {
-      this.getStorageStub.yields({
+    it('applies the correct filter', () => {
+      getStorageStub.yields({
         cosmeticFilterList: {
           'brave.com': [filter]
         }
       })
       cosmeticFilterAPI.applySiteFilters('brave.com')
-      assert.deepEqual(this.insertCSSStub.getCall(0).args[0], {
-        code: `${filter} {display: none;}`,
+      expect(insertCSSStub.getCall(0).args[0]).toEqual({
+        code: `${ filter } {display: none;}`,
         runAt: 'document_start'
       })
     })
-    it('applies multiple filters correctly', function () {
-      this.getStorageStub.yields({
+    it('applies multiple filters correctly', () => {
+      getStorageStub.yields({
         cosmeticFilterList: {
           'brave.com': [filter, filter2]
         }
       })
       cosmeticFilterAPI.applySiteFilters('brave.com')
-      assert.deepEqual(this.insertCSSStub.getCall(0).args[0], {
-        code: `${filter} {display: none;}`,
+      expect(insertCSSStub.getCall(0).args[0]).toEqual({
+        code: `${ filter } {display: none;}`,
         runAt: 'document_start'
       })
-      assert.deepEqual(this.insertCSSStub.getCall(1).args[0], {
-        code: `${filter2} {display: none;}`,
+      expect(insertCSSStub.getCall(1).args[0]).toEqual({
+        code: `${ filter2 } {display: none;}`,
         runAt: 'document_start'
       })
 
     })
     // chrome.local.storage.get() always returns an empty object if nothing exists
-    it('doesn\'t apply filters if storage for host is implicitly undefined', function () {
-      this.getStorageStub.yields({
+    it('doesn\'t apply filters if storage for host is implicitly undefined', () => {
+      getStorageStub.yields({
         cosmeticFilterList: {}
       })
       cosmeticFilterAPI.applySiteFilters('brave.com')
-      assert.equal(this.insertCSSStub.called, false)
+      expect(insertCSSStub.called).toBe(false)
     })
-    it('doesn\'t apply filters if storage is explicitly undefined', function () {
-      this.getStorageStub.yields({
+    it('doesn\'t apply filters if storage is explicitly undefined', () => {
+      getStorageStub.yields({
         cosmeticFilterList: {
           'brave.com': undefined
         }
       })
       cosmeticFilterAPI.applySiteFilters('brave.com')
-      assert.equal(this.insertCSSStub.called, false)
+      expect(insertCSSStub.called).toBe(false)
     })
   })
 })

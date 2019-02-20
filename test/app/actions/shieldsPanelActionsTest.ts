@@ -1,10 +1,7 @@
-/* global describe, it */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import 'mocha'
-import * as assert from 'assert'
 import * as types from '../../../app/constants/shieldsPanelTypes'
 import * as actions from '../../../app/actions/shieldsPanelActions'
 import { ShieldDetails, BlockDetails } from '../../../app/types/actions/shieldsPanelActions'
@@ -27,7 +24,7 @@ describe('shieldsPanelActions', () => {
       fingerprinting: 'allow',
       cookies: 'allow'
     }
-    assert.deepEqual(actions.shieldsPanelDataUpdated(details), {
+    expect(actions.shieldsPanelDataUpdated(details)).toEqual({
       type: types.SHIELDS_PANEL_DATA_UPDATED,
       details
     })
@@ -35,7 +32,7 @@ describe('shieldsPanelActions', () => {
 
   it('shieldsToggled', () => {
     const setting: BlockOptions = 'allow'
-    assert.deepEqual(actions.shieldsToggled(setting), {
+    expect(actions.shieldsToggled(setting)).toEqual({
       type: types.SHIELDS_TOGGLED,
       setting
     })
@@ -43,7 +40,7 @@ describe('shieldsPanelActions', () => {
 
   it('httpsEverywhereToggled action', () => {
     const setting: BlockOptions = 'allow'
-    assert.deepEqual(actions.httpsEverywhereToggled(setting), {
+    expect(actions.httpsEverywhereToggled(setting)).toEqual({
       type: types.HTTPS_EVERYWHERE_TOGGLED,
       setting
     })
@@ -51,7 +48,7 @@ describe('shieldsPanelActions', () => {
 
   it('javascriptToggled action', () => {
     const setting: BlockOptions = 'allow'
-    assert.deepEqual(actions.blockJavaScript(setting), {
+    expect(actions.blockJavaScript(setting)).toEqual({
       type: types.JAVASCRIPT_TOGGLED,
       setting
     })
@@ -63,7 +60,7 @@ describe('shieldsPanelActions', () => {
       tabId: 2,
       subresource: 'https://www.brave.com/test'
     }
-    assert.deepEqual(actions.resourceBlocked(details), {
+    expect(actions.resourceBlocked(details)).toEqual({
       type: types.RESOURCE_BLOCKED,
       details
     })
@@ -71,7 +68,7 @@ describe('shieldsPanelActions', () => {
 
   it('blockAdsTrackers action', () => {
     const setting: BlockOptions = 'allow'
-    assert.deepEqual(actions.blockAdsTrackers(setting), {
+    expect(actions.blockAdsTrackers(setting)).toEqual({
       type: types.BLOCK_ADS_TRACKERS,
       setting
     })
@@ -79,7 +76,7 @@ describe('shieldsPanelActions', () => {
 
   it('controlsToggled action', () => {
     const setting: boolean = true
-    assert.deepEqual(actions.controlsToggled(setting), {
+    expect(actions.controlsToggled(setting)).toEqual({
       type: types.CONTROLS_TOGGLED,
       setting
     })
@@ -87,7 +84,7 @@ describe('shieldsPanelActions', () => {
 
   it('blockFingerprinting action', () => {
     const setting: BlockFPOptions = 'block_third_party'
-    assert.deepEqual(actions.blockFingerprinting(setting), {
+    expect(actions.blockFingerprinting(setting)).toEqual({
       type: types.BLOCK_FINGERPRINTING,
       setting
     })
@@ -95,7 +92,7 @@ describe('shieldsPanelActions', () => {
 
   it('blockCookies action', () => {
     const setting: BlockCookiesOptions = 'block_third_party'
-    assert.deepEqual(actions.blockCookies(setting), {
+    expect(actions.blockCookies(setting)).toEqual({
       type: types.BLOCK_COOKIES,
       setting
     })
@@ -103,7 +100,7 @@ describe('shieldsPanelActions', () => {
 
   it('allowScriptOriginsOnce action', () => {
     const origins = ['https://a.com', 'https://b.com']
-    assert.deepEqual(actions.allowScriptOriginsOnce(origins), {
+    expect(actions.allowScriptOriginsOnce(origins)).toEqual({
       type: types.ALLOW_SCRIPT_ORIGINS_ONCE,
       origins
     })
@@ -111,7 +108,7 @@ describe('shieldsPanelActions', () => {
 
   it('changeNoScriptSettings action', () => {
     const origin = 'https://a.com'
-    assert.deepEqual(actions.changeNoScriptSettings(origin), {
+    expect(actions.changeNoScriptSettings(origin)).toEqual({
       type: types.CHANGE_NO_SCRIPT_SETTINGS,
       origin
     })

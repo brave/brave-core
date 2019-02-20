@@ -66,84 +66,82 @@ export class ChromeEvent {
   }
 }
 
-export const getMockChrome = () => {
-  return {
-    runtime: {
-      onMessage: new ChromeEvent(),
-      onConnect: new ChromeEvent(),
-      onStartup: new ChromeEvent()
+export const getMockChrome = {
+  runtime: {
+    onMessage: new ChromeEvent(),
+    onConnect: new ChromeEvent(),
+    onStartup: new ChromeEvent()
+  },
+  browserAction: {
+    setBadgeBackgroundColor: function (properties: object) {},
+    setBadgeText: function (textProperties: object) {},
+    setIcon: function (iconProperties: object) {},
+    enable: function (tabId?: number) {},
+    disable: function (tabId?: number) {}
+  },
+  tabs: {
+    queryAsync: function () {
+      return Promise.resolve([activeTabData])
     },
-    browserAction: {
-      setBadgeBackgroundColor: function (properties: object) {},
-      setBadgeText: function (textProperties: object) {},
-      setIcon: function (iconProperties: object) {},
-      enable: function (tabId?: number) {},
-      disable: function (tabId?: number) {}
+    getAsync: function (tabId: number) {
+      return Promise.resolve(tabs[tabId])
     },
-    tabs: {
-      queryAsync: function () {
-        return Promise.resolve([activeTabData])
-      },
-      getAsync: function (tabId: number) {
-        return Promise.resolve(tabs[tabId])
-      },
-      create: function (createProperties: object, cb: () => void) {
-        setImmediate(cb)
-      },
-      reload: function (tabId: number, reloadProperties: object, cb: () => void) {
-        setImmediate(cb)
-      },
-      insertCSS: function (details: any) {},
-      onActivated: new ChromeEvent(),
-      onCreated: new ChromeEvent(),
-      onUpdated: new ChromeEvent()
+    create: function (createProperties: object, cb: () => void) {
+      setImmediate(cb)
     },
-    windows: {
-      onFocusChanged: new ChromeEvent(),
-      onCreated: new ChromeEvent(),
-      onRemoved: new ChromeEvent(),
-      getAllAsync: function () {
-        return new Promise(() => [])
-      }
+    reload: function (tabId: number, reloadProperties: object, cb: () => void) {
+      setImmediate(cb)
     },
-    braveShields: {
-      onBlocked: new ChromeEvent(),
-      allowScriptsOnce: function (origins: Array<string>, tabId: number, cb: () => void) {
-        setImmediate(cb)
-      },
-      plugins: {
-        setAsync: function () {
-          return Promise.resolve()
-        },
-        getAsync: function () {
-          return Promise.resolve({
-            setting: 'block'
-          })
-        }
-      },
-      javascript: {
-        setAsync: function () {
-          return Promise.resolve()
-        },
-        getAsync: function () {
-          return Promise.resolve({
-            setting: 'block'
-          })
-        }
-      }
-    },
-    i18n: {
-      getMessage: function (message: string) {}
-    },
-    storage: {
-      local: {
-        get: function (url: string) {},
-        set: function (url: string, cssfilter: string) {}
-      }
-    },
-    extension: {
-      inIncognitoContext: new ChromeEvent()
+    insertCSS: function (details: jest.SpyInstance) {},
+    onActivated: new ChromeEvent(),
+    onCreated: new ChromeEvent(),
+    onUpdated: new ChromeEvent()
+  },
+  windows: {
+    onFocusChanged: new ChromeEvent(),
+    onCreated: new ChromeEvent(),
+    onRemoved: new ChromeEvent(),
+    getAllAsync: function () {
+      return new Promise(() => [])
     }
+  },
+  braveShields: {
+    onBlocked: new ChromeEvent(),
+    allowScriptsOnce: function (origins: Array<string>, tabId: number, cb: () => void) {
+      setImmediate(cb)
+    },
+    plugins: {
+      setAsync: function () {
+        return Promise.resolve()
+      },
+      getAsync: function () {
+        return Promise.resolve({
+          setting: 'block'
+        })
+      }
+    },
+    javascript: {
+      setAsync: function () {
+        return Promise.resolve()
+      },
+      getAsync: function () {
+        return Promise.resolve({
+          setting: 'block'
+        })
+      }
+    }
+  },
+  i18n: {
+    getMessage: function (message: string) {}
+  },
+  storage: {
+    local: {
+      get: function (url: string) {},
+      set: function (url: string, cssfilter: string) {}
+    }
+  },
+  extension: {
+    inIncognitoContext: new ChromeEvent()
   }
 }
 

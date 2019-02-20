@@ -3,15 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import 'mocha'
-import * as assert from 'assert'
 import * as types from '../../../app/constants/windowTypes'
 import * as actions from '../../../app/actions/windowActions'
 
 describe('windowActions', () => {
   it('windowFocusChanged', () => {
     const windowId = 1
-    assert.deepEqual(actions.windowFocusChanged(windowId), {
+    expect(actions.windowFocusChanged(windowId)).toEqual({
       type: types.WINDOW_FOCUS_CHANGED,
       windowId
     })
@@ -26,7 +24,7 @@ describe('windowActions', () => {
       incognito: false,
       type: 'normal'
     }
-    assert.deepEqual(actions.windowCreated(win), {
+    expect(actions.windowCreated(win)).toEqual({
       type: types.WINDOW_CREATED,
       window: win
     })
@@ -34,7 +32,7 @@ describe('windowActions', () => {
 
   it('windowRemoved', () => {
     const windowId = 1
-    assert.deepEqual(actions.windowRemoved(windowId), {
+    expect(actions.windowRemoved(windowId)).toEqual({
       type: types.WINDOW_REMOVED,
       windowId
     })
