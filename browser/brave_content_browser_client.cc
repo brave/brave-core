@@ -89,7 +89,6 @@ bool HandleURLOverrideRewrite(GURL* url,
   return false;
 }
 
-
 bool HandleURLReverseOverrideRewrite(GURL* url,
                              content::BrowserContext* browser_context) {
   if (url->host() == chrome::kChromeUIWelcomeHost ||
@@ -142,8 +141,6 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   handler->AddHandlerPair(&HandleURLRewrite,
                           &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
-  handler->AddHandlerPair(&HandleURLOverrideRewrite,
-                          &HandleURLReverseOverrideRewrite);
 }
 
 bool BraveContentBrowserClient::AllowAccessCookie(
