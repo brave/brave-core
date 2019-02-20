@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -48,7 +49,8 @@ void AutoplayWhitelistService::OnDATFileDataReady() {
     return;
   }
   autoplay_whitelist_client_.reset(new AutoplayWhitelistParser());
-  if (!autoplay_whitelist_client_->deserialize((char*)&buffer_.front())) {
+  if (!autoplay_whitelist_client_->deserialize(
+        reinterpret_cast<char*>(&buffer_.front()))) {
     autoplay_whitelist_client_.reset();
     LOG(ERROR) << "Failed to deserialize autoplay whitelist data";
     return;
@@ -60,8 +62,8 @@ void AutoplayWhitelistService::OnComponentReady(
     const base::FilePath& install_dir,
     const std::string& manifest) {
 
-  base::FilePath dat_file_path =
-      install_dir.AppendASCII(AUTOPLAY_DAT_FILE_VERSION).AppendASCII(AUTOPLAY_DAT_FILE);
+  base::FilePath dat_file_path = install_dir.AppendASCII(
+    AUTOPLAY_DAT_FILE_VERSION).AppendASCII(AUTOPLAY_DAT_FILE);
 
   GetTaskRunner()->PostTaskAndReply(
       FROM_HERE,
@@ -70,7 +72,8 @@ void AutoplayWhitelistService::OnComponentReady(
                  weak_factory_.GetWeakPtr()));
 }
 
-scoped_refptr<base::SequencedTaskRunner> AutoplayWhitelistService::GetTaskRunner() {
+scoped_refptr<base::SequencedTaskRunner>
+  AutoplayWhitelistService::GetTaskRunner() {
   // We share the same task runner as ad-block code
   return g_brave_browser_process->ad_block_service()->GetTaskRunner();
 }
@@ -80,8 +83,10 @@ scoped_refptr<base::SequencedTaskRunner> AutoplayWhitelistService::GetTaskRunner
 // The autoplay whitelist factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
 std::unique_ptr<AutoplayWhitelistService> AutoplayWhitelistServiceFactory() {
-  std::unique_ptr<AutoplayWhitelistService> service = std::make_unique<AutoplayWhitelistService>();
-  g_brave_browser_process->local_data_files_service()->AddObserver(service.get());
+  std::unique_ptr<AutoplayWhitelistService> service =
+    std::make_unique<AutoplayWhitelistService>();
+  g_brave_browser_process->local_data_files_service()->AddObserver(
+    service.get());
   return service;
 }
 

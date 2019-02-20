@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -24,11 +25,12 @@ ContentSetting AutoplayPermissionContext::GetPermissionStatusInternal(
     content::RenderFrameHost* render_frame_host,
     const GURL& requesting_origin,
     const GURL& embedding_origin) const {
-    if (g_brave_browser_process->autoplay_whitelist_service()
-        ->ShouldAllowAutoplay(requesting_origin))
-      return CONTENT_SETTING_ALLOW;
-    return PermissionContextBase::GetPermissionStatusInternal(
-        render_frame_host, requesting_origin, embedding_origin);
+  if (g_brave_browser_process &&
+      g_brave_browser_process->autoplay_whitelist_service()
+      ->ShouldAllowAutoplay(requesting_origin))
+    return CONTENT_SETTING_ALLOW;
+  return PermissionContextBase::GetPermissionStatusInternal(
+    render_frame_host, requesting_origin, embedding_origin);
 }
 
 void AutoplayPermissionContext::UpdateTabContext(
