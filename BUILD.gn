@@ -173,6 +173,32 @@ if (!is_mac) {
       "$brave_dist_dir/locales/{{source_file_part}}",
     ]
   }
+
+  group("brave_extension_locale_dist_resources") {
+    deps = [
+      "//brave/components/brave_rewards/resources/extension:locales",
+    ]
+
+    public_deps = []
+    foreach(locale, locales) {
+      # public_deps is used intentionaly because ":create_dist_zip" needs the all dependency
+      # of all locale files.
+      public_deps += [":brave_rewards_locales_${locale}"]
+    }
+  }
+
+  foreach(locale, locales) {
+    copy("brave_rewards_locales_${locale}") {
+      deps = [ "//brave/components/brave_rewards/resources/extension:locales_$locale" ]
+
+      locale = string_replace(locale, "-", "_")
+      locale = string_replace(locale, "nb", "no")
+      sources = [ "$root_out_dir/resources/brave_rewards/_locales/$locale/messages.json" ]
+      outputs = [
+        "$brave_dist_dir/resources/brave_rewards/_locales/$locale/{{source_file_part}}",
+      ]
+    }
+  }
 }
 
 if (target_cpu == "x86") {
@@ -341,6 +367,9 @@ action("create_dist_zips") {
   if (!is_mac) {
     inputs += get_target_outputs(":brave_dist_resources")
     inputs += get_target_outputs(":brave_locale_dist_resources")
+    foreach(locale, locales) {
+      inputs += get_target_outputs(":brave_rewards_locales_${locale}")
+    }
   }
 
   if (is_win) {
@@ -379,6 +408,7 @@ action("create_dist_zips") {
     deps += [
       ":brave_dist_resources",
       ":brave_locale_dist_resources",
+      ":brave_extension_locale_dist_resources",
     ]
   }
 
