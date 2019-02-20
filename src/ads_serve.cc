@@ -9,7 +9,8 @@
 #include "static_values.h"
 #include "bundle.h"
 #include "logging.h"
-#include "math_helper.h"
+
+#include "base/rand_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -117,7 +118,7 @@ void AdsServe::UpdateNextCatalogCheck() {
   auto ping = bundle_->GetCatalogPing();
 
   // Add randomized delay so that the Ad server can't correlate users by timing
-  auto rand_delay = helper::Math::Random(ping / 10);
+  auto rand_delay = base::RandInt(0, ping / 10);
   next_catalog_check_ = ping + rand_delay;
 
   ads_->StartCollectingActivity(next_catalog_check_);

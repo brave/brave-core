@@ -13,7 +13,6 @@
 #include "bat/ads/bundle_state.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/issuers_info.h"
-#include "math_helper.h"
 #include "string_helper.h"
 #include "time_helper.h"
 #include "static_values.h"

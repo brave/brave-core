@@ -18,13 +18,14 @@
 #include "bat/ads/notification_info.h"
 #include "logging.h"
 #include "search_providers.h"
-#include "math_helper.h"
 #include "string_helper.h"
 #include "locale_helper.h"
 #include "time_helper.h"
 #include "uri_helper.h"
 #include "bat/ads/url_components.h"
 #include "static_values.h"
+
+#include "base/rand_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -552,7 +553,7 @@ void AdsImpl::OnLoadSampleBundle(
     return;
   }
 
-  auto category_rand = helper::Math::Random(categories_count - 1);
+  auto category_rand = base::RandInt(0, categories_count - 1);
   std::advance(categories, static_cast<int64_t>(category_rand));
 
   auto category = categories->first;
@@ -569,7 +570,7 @@ void AdsImpl::OnLoadSampleBundle(
     return;
   }
 
-  auto ad_rand = helper::Math::Random(ads_count - 1);
+  auto ad_rand = base::RandInt(0, ads_count - 1);
   auto ad = ads.at(ad_rand);
 
   ShowAd(ad, category);
@@ -717,7 +718,7 @@ void AdsImpl::OnGetAds(
     return;
   }
 
-  auto rand = helper::Math::Random(ads_unseen.size() - 1);
+  auto rand = base::RandInt(0, ads_unseen.size() - 1);
   auto ad = ads_unseen.at(rand);
   ShowAd(ad, category);
 }
