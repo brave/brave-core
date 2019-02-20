@@ -24,8 +24,8 @@ export const MainToggleText = styled<{}, 'p'>('p')`
   color: ${palette.grey600};
   font-size: 12px;
   font-family: ${p => p.theme.fontFamily.body};
-  line-height: 18px;
   margin: 0;
+  line-height: 1.2;
 `
 
 interface ToggleStateTextProps {
@@ -63,6 +63,7 @@ export const TotalBlockedStatsNumber = styled<{}, 'h2'>('h2')`
   text-transform: uppercase;
   color: ${palette.grey500};
   font-weight: normal;
+  text-align: right;
   margin: 0;
 `
 

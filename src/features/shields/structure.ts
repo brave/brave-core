@@ -54,8 +54,9 @@ export const MainToggle = styled<MainToggleProps, 'section'>('section')`
     display: flex;
     justify-content: flex-end;
     width: fit-content;
-    height: fit-content;
+    height: 100%;
     margin-left: 54px;
+    align-items: center;
   }
 `
 
@@ -75,11 +76,10 @@ export const SiteOverview = styled<SiteOverviewProps, 'div'>('div')`
 export const TotalBlockedStats = styled<{}, 'section'>('section')`
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 80px 140px;
   align-items: center;
   margin: 0px auto 5px;
   gap: 24px;
-  max-width: 70%;
 `
 
 export const SiteInfo = styled<{}, 'div'>('div')`
@@ -98,7 +98,6 @@ export const BlockedInfoRow = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr auto;
-  grid-gap: 6px;
   align-items: center;
   border-bottom: 1px solid rgba(160, 161, 178, 0.15);
   color: ${palette.grey600};
@@ -143,7 +142,7 @@ export const BlockedInfoRowData = styled<{}, 'div'>('div')`
 
   &:focus {
     outline-width: 2px;
-    outline-offset: -2px;
+    outline-offset: -3px;
     outline-color: ${palette.orange400};
   }
 
@@ -231,7 +230,7 @@ export const BlockedListSummary = styled<BlockedListSummaryProps, 'summary'>('su
 export const BlockedListStatic = styled<{}, 'ul'>('ul')`
   box-sizing: border-box;
   list-style-type: none;
-  height: 305px;
+  height: 301px;
   overflow: auto;
   padding: 0;
   margin: 0 24px;

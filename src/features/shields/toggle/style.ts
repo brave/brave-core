@@ -14,7 +14,7 @@ export const StyledCheckbox = styled<{}, 'input'>('input')`
   height: 100%;
   top: 0;
   left: 0;
-  outline-offset: -2px;
+  outline-offset: -3px;
   outline-color: ${palette.orange400};
   outline-width: 2px;
 `
