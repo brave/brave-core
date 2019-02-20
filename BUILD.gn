@@ -162,12 +162,7 @@ if (!is_mac) {
 
     sources = []
     foreach(locale, locales) {
-      # print (locale)
-      if (is_mac) {
-        sources += [ "$root_gen_dir/repack/locales/$locale.pak" ]
-      } else {
-        sources += [ "$root_out_dir/locales/$locale.pak" ]
-      }
+      sources += [ "$root_out_dir/locales/$locale.pak" ]
     }
     outputs = [
       "$brave_dist_dir/locales/{{source_file_part}}",
