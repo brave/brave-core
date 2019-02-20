@@ -206,7 +206,7 @@ class LedgerImpl : public ledger::Ledger,
       const std::vector<braveledger_bat_helper::GRANT>& grants);
 
   void LoadPublishersListCallback(
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
@@ -303,7 +303,7 @@ class LedgerImpl : public ledger::Ledger,
       bool min_visits);
 
   void LogResponse(const std::string& func_name,
-                   bool result,
+                   int response_status_code,
                    const std::string& response,
                    const std::map<std::string,
                    std::string>& headers);

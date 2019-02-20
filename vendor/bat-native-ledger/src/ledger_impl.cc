@@ -771,10 +771,10 @@ void LedgerImpl::GetRecurringDonations(
 }
 
 void LedgerImpl::LoadPublishersListCallback(
-    bool result,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  if (result && !response.empty()) {
+  if (response_status_code == 200 && !response.empty()) {
     bat_publishers_->RefreshPublishersList(response);
   } else {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
@@ -993,10 +993,10 @@ std::unique_ptr<ledger::LogStream> LedgerImpl::Log(
 
 void LedgerImpl::LogResponse(
     const std::string& func_name,
-    bool result,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  std::string stat = result ? "Success" : "Failure";
+  std::string stat = response_status_code == 200 ? "Success" : "Failure";
 
   std::string formatted_headers = "";
   for (auto header = headers.begin(); header != headers.end(); ++header) {

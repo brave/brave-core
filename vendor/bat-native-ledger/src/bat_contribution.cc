@@ -388,14 +388,14 @@ void BatContribution::Reconcile(const std::string& viewing_id) {
 
 void BatContribution::ReconcileCallback(
     const std::string& viewing_id,
-    bool result,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(__func__, result, response, headers);
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   auto reconcile = ledger_->GetReconcileById(viewing_id);
 
-  if (!result || reconcile.viewingId_.empty()) {
+  if (response_status_code != 200 || reconcile.viewingId_.empty()) {
     AddRetry(braveledger_bat_helper::ContributionRetry::STEP_RECONCILE,
              viewing_id);
     return;
@@ -457,12 +457,12 @@ void BatContribution::CurrentReconcile(const std::string& viewing_id) {
 
 void BatContribution::CurrentReconcileCallback(
     const std::string& viewing_id,
-    bool result,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(__func__, result, response, headers);
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (!result) {
+  if (response_status_code != 200) {
     AddRetry(braveledger_bat_helper::ContributionRetry::STEP_CURRENT,
              viewing_id);
     return;
@@ -581,12 +581,12 @@ void BatContribution::ReconcilePayload(const std::string& viewing_id) {
 
 void BatContribution::ReconcilePayloadCallback(
     const std::string& viewing_id,
-    bool result,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(__func__, result, response, headers);
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (!result) {
+  if (response_status_code != 200) {
     AddRetry(braveledger_bat_helper::ContributionRetry::STEP_PAYLOAD,
              viewing_id);
     return;
@@ -638,12 +638,12 @@ void BatContribution::RegisterViewing(const std::string& viewing_id) {
 
 void BatContribution::RegisterViewingCallback(
     const std::string& viewing_id,
-    bool result,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(__func__, result, response, headers);
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (!result) {
+  if (response_status_code != 200) {
     AddRetry(braveledger_bat_helper::ContributionRetry::STEP_REGISTER,
              viewing_id);
     return;
@@ -717,12 +717,12 @@ void BatContribution::ViewingCredentials(const std::string& viewing_id) {
 
 void BatContribution::ViewingCredentialsCallback(
     const std::string& viewing_id,
-    bool result,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(__func__, result, response, headers);
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (!result) {
+  if (response_status_code != 200) {
     AddRetry(braveledger_bat_helper::ContributionRetry::STEP_VIEWING,
              viewing_id);
     return;
@@ -1076,12 +1076,12 @@ void BatContribution::PrepareBatch(
 }
 
 void BatContribution::PrepareBatchCallback(
-    bool result,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(__func__, result, response, headers);
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (!result) {
+  if (response_status_code != 200) {
     AddRetry(braveledger_bat_helper::ContributionRetry::STEP_PREPARE, "");
     return;
   }
@@ -1342,12 +1342,12 @@ void BatContribution::VoteBatch() {
 
 void BatContribution::VoteBatchCallback(
     const std::string& publisher,
-    bool result,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(__func__, result, response, headers);
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (!result) {
+  if (response_status_code != 200) {
     AddRetry(braveledger_bat_helper::ContributionRetry::STEP_VOTE, "");
     return;
   }

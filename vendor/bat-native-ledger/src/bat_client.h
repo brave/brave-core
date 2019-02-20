@@ -30,19 +30,19 @@ class BatClient {
   void registerPersona();
 
   void requestCredentialsCallback(
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
   void registerPersonaCallback(
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
   std::string getWalletPassphrase() const;
 
   void walletPropertiesCallback(
-      bool success,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
@@ -52,6 +52,7 @@ class BatClient {
   
   void setGrant(const std::string& captchaResponse,
                 const std::string& promotionId);
+
   void getGrantCaptcha();
 
   void getWalletProperties();
@@ -68,27 +69,27 @@ class BatClient {
 
  private:
   void getGrantCaptchaCallback(
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
   void getGrantsCallback(
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
   void setGrantCallback(
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
   void recoverWalletPublicKeyCallback(
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
   void recoverWalletCallback(
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
       const std::string& paymentId);
@@ -98,10 +99,10 @@ class BatClient {
                               std::string& preFlight);
 
   void GetAddressesForPaymentIdCallback(
-    bool success,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
-    ledger::WalletAddressesCallback callback);
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers,
+      ledger::WalletAddressesCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };

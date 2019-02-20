@@ -25,28 +25,28 @@ class DB;
 namespace braveledger_bat_get_media {
 
 using FetchDataFromUrlCallback = std::function<void(
-    bool result,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers)>;
 
 class BatGetMedia {
  public:
+  BatGetMedia(bat_ledger::LedgerImpl* ledger);
+
+  ~BatGetMedia();
+
   static std::string GetLinkType(const std::string& url,
                                  const std::string& first_party_url,
                                  const std::string& referrer);
-
-  BatGetMedia(bat_ledger::LedgerImpl* ledger);
-  ~BatGetMedia();
 
   void processMedia(const std::map<std::string, std::string>& parts,
                     const std::string& type,
                     const ledger::VisitData& visit_data);
 
-  void getMediaActivityFromUrl(
-      uint64_t windowId,
-      const ledger::VisitData& visit_data,
-      const std::string& providerType,
-      const std::string& publisher_blob);
+  void getMediaActivityFromUrl(uint64_t windowId,
+                               const ledger::VisitData& visit_data,
+                               const std::string& providerType,
+                               const std::string& publisher_blob);
 
  private:
   std::string getMediaURL(const std::string& mediaId,
@@ -59,7 +59,7 @@ class BatGetMedia {
       const std::string& mediaURL,
       const ledger::VisitData& visit_data,
       const uint64_t window_id,
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
@@ -72,7 +72,7 @@ class BatGetMedia {
       const std::string& publisherName,
       const ledger::VisitData& visit_data,
       const uint64_t window_id,
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
@@ -123,12 +123,12 @@ class BatGetMedia {
       const ledger::VisitData& visit_data,
       const std::string& providerType,
       const std::string& media_key,
-      bool success,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
   void onGetMediaActivityFromUrl(
-      bool success,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
       const std::string& providerType,
@@ -198,7 +198,7 @@ class BatGetMedia {
       uint64_t windowId,
       const ledger::VisitData& visit_data,
       const std::string& providerType,
-      bool success,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
