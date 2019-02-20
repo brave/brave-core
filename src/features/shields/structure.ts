@@ -231,10 +231,10 @@ export const BlockedListSummary = styled<BlockedListSummaryProps, 'summary'>('su
 export const BlockedListStatic = styled<{}, 'ul'>('ul')`
   box-sizing: border-box;
   list-style-type: none;
-  height: 294px;
+  height: 305px;
   overflow: auto;
   padding: 0;
-  margin: 6px 24px;
+  margin: 0 24px;
 `
 
 export const BlockedListDynamic = styled(BlockedListStatic)`
