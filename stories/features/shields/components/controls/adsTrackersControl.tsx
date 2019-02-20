@@ -77,6 +77,7 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
       <>
         <BlockedInfoRow>
           <BlockedInfoRowData
+            disabled={adsTrackersBlocked === 0}
             tabIndex={this.tabIndex}
             onClick={this.onOpen3rdPartyTrackersBlocked}
             onKeyDown={this.onOpen3rdPartyTrackersBlockedViaKeyboard}

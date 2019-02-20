@@ -77,6 +77,7 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
       <>
         <BlockedInfoRow>
           <BlockedInfoRowData
+            disabled={scriptsBlocked === 0}
             tabIndex={this.tabIndex}
             onClick={this.onOpenScriptsBlockedOpen}
             onKeyDown={this.onOpenScriptsBlockedOpenViaKeyboard}

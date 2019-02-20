@@ -129,12 +129,18 @@ export const BlockedInfoRowForSelect = styled(BlockedInfoRow)`
   padding-right: 24px;
 `
 
-export const BlockedInfoRowData = styled<{}, 'div'>('div')`
+interface BlockedInfoRowDataProps {
+  disabled: boolean
+}
+
+export const BlockedInfoRowData = styled<BlockedInfoRowDataProps, 'div'>('div')`
   display: grid;
   grid-template-columns: auto 36px 1fr;
   padding: 6px 0 5px 20px;
   grid-gap: 2px;
   align-items: center;
+  pointer-events: ${p => p.disabled && 'none'};
+  opacity: ${p => p.disabled && '0.4'};
 
   &:active {
     outline: none;

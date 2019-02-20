@@ -79,6 +79,7 @@ export default class HTTPSUpgradesControl extends React.PureComponent<Props, Sta
       <>
         <BlockedInfoRow>
           <BlockedInfoRowData
+            disabled={httpsUpgrades === 0}
             tabIndex={this.tabIndex}
             onClick={this.onOpenConnectionsUpgradedToHTTPS}
             onKeyDown={this.onOpenConnectionsUpgradedToHTTPSViaKeyboard}

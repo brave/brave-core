@@ -70,6 +70,7 @@ export default class DeviceRecognitionControl extends React.PureComponent<Props,
       <>
         <BlockedInfoRowForSelect>
           <BlockedInfoRowDataForSelect
+            disabled={fingerprintingBlocked === 0}
             tabIndex={this.tabIndex}
             onClick={this.onOpenDeviceRecognitionOpen}
             onKeyDown={this.onOpenDeviceRecognitionOpenViaKeyboard}
