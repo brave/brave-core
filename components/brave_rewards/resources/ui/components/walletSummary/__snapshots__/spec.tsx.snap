@@ -170,6 +170,14 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   fill: currentColor;
 }
 
+@media (max-width:385px) {
+  .c6 {
+    -webkit-flex-basis: 55%;
+    -ms-flex-preferred-size: 55%;
+    flex-basis: 55%;
+  }
+}
+
 <div
   className="c0"
   id="empty"

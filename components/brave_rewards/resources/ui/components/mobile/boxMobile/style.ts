@@ -75,7 +75,7 @@ export const StyledTitle = styled<StyleProps, 'div'>('div')`
   letter-spacing: normal;
   display: inline-block;
   vertical-align: ${p => p.contentShown ? 'top' : 'middle'};
-  margin-left: ${p => p.contentShown ? 10 : 10}px;
+  margin-left: ${p => p.detailView ? 10 : 0}px;
   color: ${p => {
     if (p.enabled === false) return '#838391'
     return p.type && colors[p.type] || '#4b4c5c'

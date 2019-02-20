@@ -243,7 +243,7 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
   }
 
   getDetailContent = (show?: boolean) => {
-    const { children } = this.props
+    const { children, settingsChild } = this.props
 
     if (!show) {
       return null
@@ -259,7 +259,11 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
             </StyledDescription>
           </StyledDetailInfo>
           <StyledChildContent>
-            <List title={this.getSettingsListTitle()} />
+            {
+              settingsChild
+              ? <List title={this.getSettingsListTitle()} />
+              : null
+            }
             {children}
           </StyledChildContent>
         </StyledDetailContent>

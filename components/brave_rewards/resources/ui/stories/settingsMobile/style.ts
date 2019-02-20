@@ -8,12 +8,6 @@ export const StyledListContent = styled<{}, 'div'>('div')`
   padding: 0 25px;
 `
 
-export const StyledSupport = styled<{}, 'div'>('div')`
-  background: ${p => p.theme.color.subtleBackground};
-  margin-top: -9px;
-  padding-top: 10px;
-`
-
 export const StyledSitesNum = styled<{}, 'div'>('div')`
   height: 50px;
   padding: 20px 25px;
@@ -49,22 +43,10 @@ export const StyledText = styled<{}, 'p'>('p')`
 
 export const StyledTotalContent = styled<{}, 'div'>('div')`
   position: relative;
-  top: 8px;
   padding-right: 25px;
 
   @media (max-width: 366px) {
     top: 11px;
-  }
-`
-
-export const StyledSupportSites = styled<{}, 'div'>('div')`
-  position: relative;
-  top: 9px;
-  font-size: 16px;
-  padding: 0 0 10px 25px;
-
-  @media (max-width: 411px) {
-    font-size: 14px;
   }
 `
 

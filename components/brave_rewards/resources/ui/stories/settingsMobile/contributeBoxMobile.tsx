@@ -14,9 +14,7 @@ import {
 import {
   StyledListContent,
   StyledSitesNum,
-  StyledSupport,
   StyledTotalContent,
-  StyledSupportSites,
   StyledSitesLink
 } from './style'
 import { Column, Grid, Select, ControlWrapper, Checkbox } from '../../../../src/components'
@@ -245,13 +243,11 @@ class ContributeBoxMobile extends React.Component<Props, State> {
             <NextContribution>July 25th</NextContribution>
           </StyledListContent>
         </List>
-        <StyledSupport>
-          <List title={<StyledSupportSites>{locale.contributionSitesNum}</StyledSupportSites>}>
-            <StyledTotalContent>
-              Total &nbsp;<Tokens value={'55'} hideText={true}/>
-            </StyledTotalContent>
-          </List>
-        </StyledSupport>
+        <List title={<StyledListContent>{locale.contributionSitesNum}</StyledListContent>}>
+          <StyledTotalContent>
+            Total &nbsp;<Tokens value={'55'} hideText={true}/>
+          </StyledTotalContent>
+        </List>
         <StyledListContent>
           <TableContribute
             header={[

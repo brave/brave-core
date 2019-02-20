@@ -31,4 +31,8 @@ export const StyledContentWrapper = styled<{}, 'div'>('div')`
   flex-shrink: 1;
   flex-basis: 40%;
   text-align: right;
+
+  @media (max-width: 385px) {
+    flex-basis: 55%;
+  }
 `

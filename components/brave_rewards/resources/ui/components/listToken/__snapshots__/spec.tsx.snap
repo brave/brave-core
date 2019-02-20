@@ -84,6 +84,14 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
   margin-left: 4px;
 }
 
+@media (max-width:385px) {
+  .c2 {
+    -webkit-flex-basis: 55%;
+    -ms-flex-preferred-size: 55%;
+    flex-basis: 55%;
+  }
+}
+
 <div
   className="c0"
   id="list"
