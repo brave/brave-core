@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef ROWSER_AUTOPLAY_AUTOPLAY_PERMISSION_CONTEXT_H_
-#define ROWSER_AUTOPLAY_AUTOPLAY_PERMISSION_CONTEXT_H_
+#ifndef BRAVE_BROWSER_AUTOPLAY_AUTOPLAY_PERMISSION_CONTEXT_H_
+#define BRAVE_BROWSER_AUTOPLAY_AUTOPLAY_PERMISSION_CONTEXT_H_
 
 #include "base/macros.h"
 #include "chrome/browser/permissions/permission_context_base.h"
@@ -34,4 +34,4 @@ class AutoplayPermissionContext : public PermissionContextBase {
   DISALLOW_COPY_AND_ASSIGN(AutoplayPermissionContext);
 };
 
-#endif  // ROWSER_AUTOPLAY_AUTOPLAY_PERMISSION_CONTEXT_H_
+#endif  // BRAVE_BROWSER_AUTOPLAY_AUTOPLAY_PERMISSION_CONTEXT_H_
