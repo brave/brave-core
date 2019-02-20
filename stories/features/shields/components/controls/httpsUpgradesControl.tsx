@@ -85,7 +85,7 @@ export default class HTTPSUpgradesControl extends React.PureComponent<Props, Sta
           >
             <ArrowDownIcon />
             <BlockedInfoRowStats>{httpsUpgrades > 99 ? '99+' : httpsUpgrades}</BlockedInfoRowStats>
-            <BlockedInfoRowText>{getLocale('connectionsUpgradedHTTPS')}</BlockedInfoRowText>
+            <BlockedInfoRowText>{getLocale('connectionsUpgradedHTTPSCapital')}</BlockedInfoRowText>
           </BlockedInfoRowData>
           <Toggle
             size='small'
@@ -100,7 +100,7 @@ export default class HTTPSUpgradesControl extends React.PureComponent<Props, Sta
               favicon={favicon}
               hostname={hostname}
               stats={httpsUpgrades}
-              name={getLocale('connectionsUpgradedHTTPS')}
+              name={getLocale('connectionsUpgradedHTTPSCapital')}
               list={data.blockedFakeResources}
               onClose={this.onOpenConnectionsUpgradedToHTTPS}
             />

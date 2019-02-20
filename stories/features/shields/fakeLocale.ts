@@ -18,7 +18,8 @@ const locale: { [key: string]: string } = {
   connectionUpgraded: 'connection upgraded',
   // Controls
   thirdPartyTrackersBlocked: '3rd-party trackers blocked',
-  connectionsUpgradedHTTPS: 'Connections upgraded to HTTPS',
+  connectionsUpgradedHTTPSCapital: 'Connections upgraded to HTTPS',
+  connectionUpgradedHTTPSCapital: 'Connection upgraded to HTTPS',
   scriptsBlocked: 'Scripts blocked',
   thirdPartyCookiesBlocked: '3rd-party cookies blocked',
   allCookiesBlocked: 'Cookies blocked',

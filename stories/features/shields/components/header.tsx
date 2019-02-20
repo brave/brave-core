@@ -54,17 +54,17 @@ export default class Header extends React.PureComponent<Props, {}> {
     const blockedItems = adsTrackersBlocked + scriptsBlocked + fingerprintingBlocked
 
     if (blockedItems === 0 && httpsUpgrades === 0) {
-      return getLocale('itemsBlocked')
+      return `${getLocale('itemsBlocked')} ${getLocale('and')} ${getLocale('connectionsUpgraded')}`
     } else if (blockedItems === 1 && httpsUpgrades === 0) {
       return getLocale('itemBlocked')
     } else if (blockedItems === 0 && httpsUpgrades === 1) {
-      return getLocale('connectionUpgraded')
+      return getLocale('connectionUpgradedHTTPSCapital')
     } else if (blockedItems > 1 && httpsUpgrades === 0) {
       return getLocale('itemsBlocked')
     } else if (blockedItems === 0 && httpsUpgrades > 1) {
-      return getLocale('connectionsUpgraded')
+      return getLocale('connectionsUpgradedHTTPSCapital')
     } else {
-      return ` ${getLocale('itemsBlocked')} ${getLocale('and')} ${getLocale('connectionsUpgraded')}`
+      return `${getLocale('itemsBlocked')} ${getLocale('and')} ${getLocale('connectionsUpgraded')}`
     }
   }
 
