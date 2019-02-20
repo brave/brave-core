@@ -85,10 +85,9 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
             let promotionId = state.currentGrant && state.currentGrant.promotionId
 
             if (promotionId === item.promotionId) {
-              newGrant = Object.assign({
-                captcha: captcha,
-                hint: hint
-              }, item)
+              newGrant = item
+              newGrant.captcha = captcha
+              newGrant.hint = hint
             }
 
             return newGrant

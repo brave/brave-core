@@ -539,8 +539,7 @@ bool Grant::loadFromJson(const std::string& json) {
     error = !(d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
         d.HasMember("probi") && d["probi"].IsString() &&
         d.HasMember("promotionId") && d["promotionId"].IsString() &&
-        d.HasMember("expiryTime") && d["expiryTime"].IsUint64()) &&
-        d.HasMember("type") && d["type"].IsString();
+        d.HasMember("expiryTime") && d["expiryTime"].IsUint64());
   }
 
   if (false == error) {
@@ -548,7 +547,14 @@ bool Grant::loadFromJson(const std::string& json) {
     probi = d["probi"].GetString();
     promotionId = d["promotionId"].GetString();
     expiryTime = d["expiryTime"].GetUint64();
-    type = d["type"].GetString();
+
+    // Check for type attribute, old grants which
+    // do not have the type attribute should default to ugp
+    if (d.HasMember("type") && d["type"].IsString()) {
+      type = d["type"].GetString();
+    } else {
+      type = "ugp";
+    }
   }
 
   return !error;

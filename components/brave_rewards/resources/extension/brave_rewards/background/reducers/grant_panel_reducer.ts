@@ -94,10 +94,9 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
             promotionId = state.currentGrant.promotionId
 
             if (promotionId === item.promotionId) {
-              newGrant = Object.assign({
-                captcha: captcha,
-                hint: hint
-              }, item)
+              newGrant = item
+              newGrant.captcha = captcha
+              newGrant.hint = hint
             }
 
             return newGrant
