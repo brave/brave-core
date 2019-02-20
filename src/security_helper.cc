@@ -45,10 +45,10 @@ std::string Security::Sign(
   std::vector<uint8_t> signed_message(crypto_sign_BYTES +
       concatenated_message.length());
 
-  uint64_t signed_message_size = 0;
+  unsigned long long signed_message_size = 0;
   crypto_sign(&signed_message.front(), &signed_message_size,
-      (const unsigned char*)concatenated_message.c_str(),
-      (uint64_t)concatenated_message.length(), &public_key.front());
+      reinterpret_cast<const unsigned char*>(concatenated_message.c_str()),
+      concatenated_message.length(), &public_key.front());
 
   std::vector<uint8_t> signature(crypto_sign_BYTES);
   std::copy(signed_message.begin(), signed_message.begin() +

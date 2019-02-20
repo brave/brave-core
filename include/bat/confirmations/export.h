@@ -9,7 +9,6 @@
 #if defined(COMPONENT_BUILD)
 #if defined(WIN32)
 #define CONFIRMATIONS_EXPORT __declspec(dllexport)
-#define CONFIRMATIONS_EXPORT __declspec(dllimport)
 #else  // defined(WIN32)
 #define CONFIRMATIONS_EXPORT __attribute__((visibility("default")))
 #endif
