@@ -116,7 +116,7 @@ export const BlockedListItemHeaderStats = styled<{}, 'span'>('span')`
   text-align: center;
   font-size: 14px;
   color: ${palette.grey800};
-  font-weight: 500;
+  font-weight: 600;
 `
 
 /**

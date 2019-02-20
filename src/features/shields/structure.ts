@@ -46,7 +46,7 @@ export const MainToggle = styled<MainToggleProps, 'section'>('section')`
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 3fr 1fr;
-  padding: 16px 24px 10px;
+  padding: 16px 24px 16px;
   align-items: ${p => p.status === 'enabled' ? null : 'center'};
   border-bottom: 1px solid rgba(160, 161, 178, 0.15);
 
@@ -79,7 +79,7 @@ export const TotalBlockedStats = styled<{}, 'section'>('section')`
   grid-template-columns: 80px 140px;
   align-items: center;
   margin: 0px auto 5px;
-  gap: 24px;
+  grid-gap: 10px;
 `
 
 export const SiteInfo = styled<{}, 'div'>('div')`
