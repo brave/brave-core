@@ -132,6 +132,8 @@ class AdsImpl : public Ads {
   bool IsCatalogOlderThanOneDay();
   void NotificationAllowedCheck(const bool serve);
 
+  void BundleUpdated();
+
   uint32_t sustained_ad_interaction_timer_id_;
   void StartSustainingAdInteraction(const uint64_t start_timer_in);
   void SustainAdInteractionIfNeeded();

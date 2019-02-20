@@ -95,8 +95,6 @@ void AdsServe::OnCatalogDownloaded(
     RetryDownloadingCatalog();
     return;
   }
-
-  UpdateNextCatalogCheck();
 }
 
 uint64_t AdsServe::CatalogLastUpdated() const {

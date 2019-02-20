@@ -29,6 +29,7 @@ class AdsServe {
 
   void DownloadCatalog();
   uint64_t CatalogLastUpdated() const;
+  void UpdateNextCatalogCheck();
 
   void Reset();
 
@@ -37,7 +38,6 @@ class AdsServe {
   void BuildUrl();
 
   uint64_t next_catalog_check_;
-  void UpdateNextCatalogCheck();
 
   void OnCatalogDownloaded(
       const std::string& url,

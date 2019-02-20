@@ -46,7 +46,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     sustained_ad_interaction_timer_id_(0),
     next_easter_egg_(0),
     client_(std::make_unique<Client>(this, ads_client)),
-    bundle_(std::make_unique<Bundle>(ads_client)),
+    bundle_(std::make_unique<Bundle>(this, ads_client)),
     ads_serve_(std::make_unique<AdsServe>(this, ads_client, bundle_.get())),
     user_model_(nullptr),
     is_initialized_(false),
@@ -968,6 +968,10 @@ bool AdsImpl::IsCatalogOlderThanOneDay() {
   }
 
   return false;
+}
+
+void AdsImpl::BundleUpdated() {
+  ads_serve_->UpdateNextCatalogCheck();
 }
 
 void AdsImpl::NotificationAllowedCheck(const bool serve) {

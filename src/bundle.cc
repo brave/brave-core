@@ -20,11 +20,12 @@ using std::placeholders::_1;
 
 namespace ads {
 
-Bundle::Bundle(AdsClient* ads_client) :
+Bundle::Bundle(AdsImpl* ads, AdsClient* ads_client) :
     catalog_id_(""),
     catalog_version_(0),
     catalog_ping_(0),
     catalog_last_updated_timestamp_(0),
+    ads_(ads),
     ads_client_(ads_client) {
 }
 
@@ -200,6 +201,8 @@ void Bundle::OnStateSaved(
   catalog_version_ = catalog_version;
   catalog_ping_ = catalog_ping;
   catalog_last_updated_timestamp_ = catalog_last_updated_timestamp;
+
+  ads_->BundleUpdated();
 
   LOG(INFO) << "Successfully saved bundle state";
 }
