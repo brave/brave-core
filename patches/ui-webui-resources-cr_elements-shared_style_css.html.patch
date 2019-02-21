@@ -1,0 +1,13 @@
+diff --git a/ui/webui/resources/cr_elements/shared_style_css.html b/ui/webui/resources/cr_elements/shared_style_css.html
+index f0a0b5de7bce59873aaec5104dea0e453eb1190f..03387b8458a27ad972fb6b0e7af489850c2aad5f 100644
+--- a/ui/webui/resources/cr_elements/shared_style_css.html
++++ b/ui/webui/resources/cr_elements/shared_style_css.html
+@@ -8,7 +8,7 @@
+   settings_shared_css.html. -->
+ <dom-module id="cr-shared-style">
+   <template>
+-    <style include="cr-hidden-style cr-icons">
++    <style include="cr-hidden-style br-shared-style cr-icons">
+       [actionable] {
+         @apply --cr-actionable;
+       }

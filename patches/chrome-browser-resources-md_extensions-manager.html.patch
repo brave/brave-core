@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/md_extensions/manager.html b/chrome/browser/resources/md_extensions/manager.html
+index 797b13e7c074615d6234178ca4902fc3f49c0252..1acc47c1ae849e2d904b7eda6b6a4a48b858c9b7 100644
+--- a/chrome/browser/resources/md_extensions/manager.html
++++ b/chrome/browser/resources/md_extensions/manager.html
+@@ -2,7 +2,6 @@
+ 
+ <link rel="import" href="chrome://resources/cr_elements/cr_drawer/cr_drawer.html">
+ <link rel="import" href="chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.html">
+-<link rel="import" href="chrome://resources/cr_elements/cr_toolbar/cr_toolbar.html">
+ <link rel="import" href="chrome://resources/cr_elements/cr_view_manager/cr_view_manager.html">
+ <link rel="import" href="chrome://resources/cr_elements/hidden_style_css.html">
+ <link rel="import" href="chrome://resources/cr_elements/shared_vars_css.html">

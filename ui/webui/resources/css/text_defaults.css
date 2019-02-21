@@ -1,0 +1,28 @@
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * you can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+/* This is a replacement for:
+ * chromium/ui/webui/resources/css/text_defaults.css
+ * An alternative approach would be to patch that file
+ * to import this file, which could mark as !important
+ * anything to take precedence.
+ */
+
+@import url(chrome://brave-resources/fonts/muli.css);
+@import url(chrome://brave-resources/fonts/poppins.css);
+
+html {
+  direction: $i18n{textDirection};
+}
+
+body {
+  font-family: Muli, $i18nRaw{fontFamily};
+  font-size: 81.25%;
+}
+
+h1, h2, h3, h4, h5, h6, button {
+  font-family: Poppins, $i18nRaw{fontFamily};
+}
