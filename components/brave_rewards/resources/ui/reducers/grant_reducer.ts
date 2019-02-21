@@ -29,21 +29,20 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
     case types.GET_GRANT_CAPTCHA:
       chrome.send('brave_rewards.getGrantCaptcha', [])
       break
-    case types.ON_GRANT_CAPTCHA:
-      {
-        if (state.grant) {
-          let grant = state.grant
-          const props = action.payload.captcha
-          grant.captcha = `data:image/jpeg;base64,${props.image}`
-          grant.hint = props.hint
-          state = {
-            ...state,
-            grant
-          }
+    case types.ON_GRANT_CAPTCHA: {
+      if (state.grant) {
+        let grant = state.grant
+        const props = action.payload.captcha
+        grant.captcha = `data:image/jpeg;base64,${props.image}`
+        grant.hint = props.hint
+        state = {
+          ...state,
+          grant
         }
-
-        break
       }
+
+      break
+    }
     case types.SOLVE_GRANT_CAPTCHA:
       if (action.payload.x && action.payload.y) {
         chrome.send('brave_rewards.solveGrantCaptcha', [JSON.stringify({
@@ -52,104 +51,101 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
         })])
       }
       break
-    case types.ON_GRANT_RESET:
-      {
+    case types.ON_GRANT_RESET: {
+      if (state.grant) {
+        const grant: Rewards.Grant = {
+          promotionId: state.grant.promotionId,
+          probi: '',
+          expiryTime: 0
+        }
+
+        state = {
+          ...state,
+          grant
+        }
+      }
+
+      break
+    }
+    case types.ON_GRANT_DELETE: {
+      if (state.grant) {
+        delete state.grant
+
+        state = {
+          ...state
+        }
+      }
+
+      break
+    }
+    case types.ON_GRANT_FINISH: {
+      state = { ...state }
+      const properties: Rewards.Grant = action.payload.properties
+      // TODO NZ check why enum can't be used inside Rewards namespace
+      if (properties.status === 0) {
         if (state.grant) {
-          const grant: Rewards.Grant = {
-            promotionId: state.grant.promotionId,
-            probi: '',
-            expiryTime: 0
+          let grant = state.grant
+          let ui = state.ui
+          grant.expiryTime = properties.expiryTime * 1000
+          grant.probi = properties.probi
+          grant.status = null
+          ui.emptyWallet = false
+
+          state = {
+            ...state,
+            grant,
+            ui
           }
+          chrome.send('brave_rewards.getWalletProperties', [])
+        }
+      } else if (properties.status === 6) {
+        state = { ...state }
+        if (state.grant) {
+          let grant = state.grant
+          grant.status = 'wrongPosition'
 
           state = {
             ...state,
             grant
           }
         }
-
-        break
-      }
-    case types.ON_GRANT_DELETE:
-      {
+        chrome.send('brave_rewards.getGrantCaptcha', [])
+      } else if (properties.status === 13) {
+        state = { ...state }
         if (state.grant) {
-          delete state.grant
+          let grant = state.grant
+          grant.status = 'grantGone'
 
           state = {
-            ...state
+            ...state,
+            grant
           }
         }
-
-        break
-      }
-    case types.ON_GRANT_FINISH:
-      {
+      } else if (properties.status === 18) {
         state = { ...state }
-        const properties: Rewards.Grant = action.payload.properties
-        // TODO NZ check why enum can't be used inside Rewards namespace
-        if (properties.status === 0) {
-          if (state.grant) {
-            let grant = state.grant
-            let ui = state.ui
-            grant.expiryTime = properties.expiryTime * 1000
-            grant.probi = properties.probi
-            grant.status = null
-            ui.emptyWallet = false
+        if (state.grant) {
+          let grant = state.grant
+          grant.status = 'grantAlreadyClaimed'
 
-            state = {
-              ...state,
-              grant,
-              ui
-            }
-            chrome.send('brave_rewards.getWalletProperties', [])
-          }
-        } else if (properties.status === 6) {
-          state = { ...state }
-          if (state.grant) {
-            let grant = state.grant
-            grant.status = 'wrongPosition'
-
-            state = {
-              ...state,
-              grant
-            }
-          }
-          chrome.send('brave_rewards.getGrantCaptcha', [])
-        } else if (properties.status === 13) {
-          state = { ...state }
-          if (state.grant) {
-            let grant = state.grant
-            grant.status = 'grantGone'
-
-            state = {
-              ...state,
-              grant
-            }
-          }
-        } else if (properties.status === 18) {
-          state = { ...state }
-          if (state.grant) {
-            let grant = state.grant
-            grant.status = 'grantAlreadyClaimed'
-
-            state = {
-              ...state,
-              grant
-            }
-          }
-        } else {
-          state = { ...state }
-          if (state.grant) {
-            let grant = state.grant
-            grant.status = 'generalError'
-
-            state = {
-              ...state,
-              grant
-            }
+          state = {
+            ...state,
+            grant
           }
         }
-        break
+      } else {
+        state = { ...state }
+        if (state.grant) {
+          let grant = state.grant
+          grant.status = 'generalError'
+
+          state = {
+            ...state,
+            grant
+          }
+        }
       }
+      break
+    }
   }
 
   return state

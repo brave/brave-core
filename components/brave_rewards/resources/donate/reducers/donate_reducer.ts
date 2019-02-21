@@ -28,45 +28,42 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
     case types.ON_CLOSE_DIALOG:
       chrome.send('dialogClose')
       break
-    case types.ON_PUBLISHER_BANNER:
-      {
-        state = { ...state }
-        if (!state.publishers) {
-          state.publishers = {}
-        }
-        const publisher: RewardsDonate.Publisher = payload.data
-        state.publishers[publisher.publisherKey] = publisher
-        break
+    case types.ON_PUBLISHER_BANNER: {
+      state = { ...state }
+      if (!state.publishers) {
+        state.publishers = {}
       }
+      const publisher: RewardsDonate.Publisher = payload.data
+      state.publishers[publisher.publisherKey] = publisher
+      break
+    }
     case types.GET_WALLET_PROPERTIES:
       chrome.send('brave_rewards_donate.getWalletProperties')
       break
-    case types.ON_WALLET_PROPERTIES:
-      {
+    case types.ON_WALLET_PROPERTIES: {
+      state = { ...state }
+      if (payload.properties.status !== 1) {
+        state.walletInfo = payload.properties.wallet
+      }
+      break
+    }
+    case types.ON_DONATE: {
+      if (payload.publisherKey && payload.amount > 0) {
+        let amount = parseInt(payload.amount, 10)
+        chrome.send('brave_rewards_donate.onDonate', [
+          payload.publisherKey,
+          amount,
+          payload.recurring
+        ])
         state = { ...state }
-        if (payload.properties.status !== 1) {
-          state.walletInfo = payload.properties.wallet
-        }
-        break
+        state.finished = true
+        state.currentTipAmount = amount.toFixed(1)
+        state.currentTipRecurring = payload.recurring
+      } else {
+        // TODO return error
       }
-    case types.ON_DONATE:
-      {
-        if (payload.publisherKey && payload.amount > 0) {
-          let amount = parseInt(payload.amount, 10)
-          chrome.send('brave_rewards_donate.onDonate', [
-            payload.publisherKey,
-            amount,
-            payload.recurring
-          ])
-          state = { ...state }
-          state.finished = true
-          state.currentTipAmount = amount.toFixed(1)
-          state.currentTipRecurring = payload.recurring
-        } else {
-          // TODO return error
-        }
-        break
-      }
+      break
+    }
     case types.GET_RECURRING_DONATIONS:
       chrome.send('brave_rewards_donate.getRecurringDonations')
       break

@@ -9,37 +9,36 @@ import { types } from '../constants/rewards_types'
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
-    case types.INIT_AUTOCONTRIBUTE_SETTINGS:
-      {
-        state = { ...state }
-        let properties = action.payload.properties
-        let ui = state.ui
+    case types.INIT_AUTOCONTRIBUTE_SETTINGS: {
+      state = { ...state }
+      let properties = action.payload.properties
+      let ui = state.ui
 
-        if (!properties || Object.keys(properties).length === 0) {
-          break
-        }
-
-        const isEmpty = !ui || ui.emptyWallet
-
-        Object.keys(properties).map((property: string) => {
-          if (properties[property] !== undefined && properties[property] !== 'ui') {
-            state[property] = properties[property]
-          } else if (properties[property] === 'ui') {
-            ui = Object.assign(ui, properties[property])
-          }
-        })
-
-        if (!isEmpty) {
-          ui.emptyWallet = false
-        }
-
-        state = {
-          ...state,
-          ui
-        }
-
+      if (!properties || Object.keys(properties).length === 0) {
         break
       }
+
+      const isEmpty = !ui || ui.emptyWallet
+
+      Object.keys(properties).map((property: string) => {
+        if (properties[property] !== undefined && properties[property] !== 'ui') {
+          state[property] = properties[property]
+        } else if (properties[property] === 'ui') {
+          ui = Object.assign(ui, properties[property])
+        }
+      })
+
+      if (!isEmpty) {
+        ui.emptyWallet = false
+      }
+
+      state = {
+        ...state,
+        ui
+      }
+
+      break
+    }
     case types.ON_SETTING_SAVE:
       state = { ...state }
       const key = action.payload.key
@@ -49,106 +48,94 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         chrome.send('brave_rewards.saveSetting', [key, value.toString()])
       }
       break
-    case types.ON_MODAL_BACKUP_CLOSE:
-      {
-        state = { ...state }
-        let ui = state.ui
-        ui.walletRecoverySuccess = null
-        ui.modalBackup = false
-        state = {
-          ...state,
-          ui
-        }
+    case types.ON_MODAL_BACKUP_CLOSE: {
+      state = { ...state }
+      let ui = state.ui
+      ui.walletRecoverySuccess = null
+      ui.modalBackup = false
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_MODAL_BACKUP_OPEN: {
+      let ui = state.ui
+      ui.modalBackup = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_CLEAR_ALERT: {
+      let ui = state.ui
+      if (!ui[action.payload.property]) {
         break
       }
-    case types.ON_MODAL_BACKUP_OPEN:
-      {
-        let ui = state.ui
-        ui.modalBackup = true
-        state = {
-          ...state,
-          ui
-        }
-        break
-      }
-    case types.ON_CLEAR_ALERT:
-      {
-        let ui = state.ui
-        if (!ui[action.payload.property]) {
-          break
-        }
 
-        ui[action.payload.property] = null
-        state = {
-          ...state,
-          ui
-        }
+      ui[action.payload.property] = null
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_RECONCILE_STAMP: {
+      state = { ...state }
+      state.reconcileStamp = parseInt(action.payload.stamp, 10)
+      break
+    }
+    case types.GET_DONATION_TABLE: {
+      chrome.send('brave_rewards.updateRecurringDonationsList')
+      chrome.send('brave_rewards.updateTipsList')
+      break
+    }
+    case types.GET_CONTRIBUTE_LIST: {
+      chrome.send('brave_rewards.getContributionList')
+      break
+    }
+    case types.CHECK_IMPORTED: {
+      chrome.send('brave_rewards.checkImported')
+      break
+    }
+    case types.ON_IMPORTED_CHECK: {
+      let ui = state.ui
+      ui.walletImported = action.payload.imported
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.GET_ADS_DATA: {
+      chrome.send('brave_rewards.getAdsData')
+      break
+    }
+    case types.ON_ADS_DATA: {
+      if (!action.payload.adsData) {
         break
       }
-    case types.ON_RECONCILE_STAMP:
-      {
-        state = { ...state }
-        state.reconcileStamp = parseInt(action.payload.stamp, 10)
-        break
-      }
-    case types.GET_DONATION_TABLE:
-      {
-        chrome.send('brave_rewards.updateRecurringDonationsList')
-        chrome.send('brave_rewards.updateTipsList')
-        break
-      }
-    case types.GET_CONTRIBUTE_LIST:
-      {
-        chrome.send('brave_rewards.getContributionList')
-        break
-      }
-    case types.CHECK_IMPORTED:
-      {
-        chrome.send('brave_rewards.checkImported')
-        break
-      }
-    case types.ON_IMPORTED_CHECK:
-      {
-        let ui = state.ui
-        ui.walletImported = action.payload.imported
-        state = {
-          ...state,
-          ui
-        }
-        break
-      }
-    case types.GET_ADS_DATA:
-      {
-        chrome.send('brave_rewards.getAdsData')
-        break
-      }
-    case types.ON_ADS_DATA:
-      {
-        if (!action.payload.adsData) {
-          break
-        }
 
-        state = { ...state }
-        state.adsData = action.payload.adsData
-        break
+      state = { ...state }
+      state.adsData = action.payload.adsData
+      break
+    }
+    case types.ON_ADS_SETTING_SAVE: {
+      state = { ...state }
+      const key = action.payload.key
+      const value = action.payload.value
+      if (key) {
+        state[key] = value
+        chrome.send('brave_rewards.saveAdsSetting', [key, value.toString()])
       }
-    case types.ON_ADS_SETTING_SAVE:
-      {
-        state = { ...state }
-        const key = action.payload.key
-        const value = action.payload.value
-        if (key) {
-          state[key] = value
-          chrome.send('brave_rewards.saveAdsSetting', [key, value.toString()])
-        }
-        break
-      }
-    case types.ON_REWARDS_ENABLED:
-      {
-        state = { ...state }
-        state.enabledMain = action.payload.enabled
-        break
-      }
+      break
+    }
+    case types.ON_REWARDS_ENABLED: {
+      state = { ...state }
+      state.enabledMain = action.payload.enabled
+      break
+    }
   }
 
   return state
