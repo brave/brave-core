@@ -1,8 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2016 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_sync/client/bookmark_change_processor.h"
+
+#include <string>
+#include <tuple>
+#include <memory>
+#include <utility>
+#include <vector>
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/bookmark_order_util.h"
@@ -26,7 +33,7 @@ namespace {
 
 class ScopedPauseObserver {
  public:
-  ScopedPauseObserver(brave_sync::BookmarkChangeProcessor* processor) :
+  explicit ScopedPauseObserver(brave_sync::BookmarkChangeProcessor* processor) :
       processor_(processor) {
     DCHECK_NE(processor_, nullptr);
     processor_->Stop();
@@ -44,7 +51,8 @@ const char kPendingBookmarksTitle[] = "Pending Bookmarks";
 
 std::unique_ptr<brave_sync::BraveBookmarkPermanentNode>
     MakePermanentNode(const std::string& title, int64_t* next_node_id) {
-  auto node = std::make_unique<brave_sync::BraveBookmarkPermanentNode>(*next_node_id);
+  using brave_sync::BraveBookmarkPermanentNode;
+  auto node = std::make_unique<BraveBookmarkPermanentNode>(*next_node_id);
   (*next_node_id)++;
   node->set_type(bookmarks::BookmarkNode::FOLDER);
   node->set_visible(false);
@@ -95,7 +103,7 @@ void GetOrder(const bookmarks::BookmarkNode* parent,
               std::string* prev_order,
               std::string* next_order,
               std::string* parent_order) {
-  DCHECK(index >= 0);
+  DCHECK_GE(index, 0);
   auto* prev_node = index == 0 ?
     nullptr :
     parent->GetChild(index - 1);
@@ -115,7 +123,7 @@ void GetOrder(const bookmarks::BookmarkNode* parent,
 void GetPrevObjectId(const bookmarks::BookmarkNode* parent,
                      int index,
                      std::string* prev_object_id) {
-  DCHECK(index >= 0);
+  DCHECK_GE(index, 0);
   auto* prev_node = index == 0 ?
     nullptr :
     parent->GetChild(index - 1);
@@ -171,7 +179,7 @@ void UpdateNode(bookmarks::BookmarkModel* model,
     // SetDateFolderModified
   } else {
     model->SetURL(node, GURL(bookmark.site.location));
-    // TODO, AB: apply these:
+    // TODO(alexeyb): apply these:
     // sync_bookmark.site.customTitle
     // sync_bookmark.site.lastAccessedTime
     // sync_bookmark.site.favicon
@@ -269,7 +277,8 @@ void BookmarkChangeProcessor::BookmarkModelLoaded(BookmarkModel* model,
   VLOG(1) << __func__;
 }
 
-void BookmarkChangeProcessor::BookmarkModelBeingDeleted(bookmarks::BookmarkModel* model) {
+void BookmarkChangeProcessor::BookmarkModelBeingDeleted(
+    bookmarks::BookmarkModel* model) {
   NOTREACHED();
   bookmark_model_ = nullptr;
 }
@@ -358,7 +367,6 @@ void BookmarkChangeProcessor::BookmarkAllUserNodesRemoved(
 
 void BookmarkChangeProcessor::BookmarkNodeChanged(BookmarkModel* model,
                                                   const BookmarkNode* node) {
-  ScopedPauseObserver pause(this);
   // clearing the sync_timestamp will put the record back in the `Unsynced` list
   model->DeleteNodeMetaInfo(node, "sync_timestamp");
   // also clear the last send time because this is a new change
@@ -371,7 +379,14 @@ void BookmarkChangeProcessor::BookmarkNodeChanged(BookmarkModel* model,
 
 void BookmarkChangeProcessor::BookmarkMetaInfoChanged(
     BookmarkModel* model, const BookmarkNode* node) {
-  BookmarkNodeChanged(model, node);
+  // Ignore metadata changes.
+  // These are:
+  // Brave managed: "object_id", "order", "sync_timestamp",
+  //      "last_send_time", "last_updated_time"
+  // Chromium managed: kBookmarkLastVisitDateOnMobileKey,
+  //      kBookmarkLastVisitDateOnDesktopKey, kBookmarkDismissedFromNTP,
+  //      submitted by private JS API
+  // Not interested in any of these.
 }
 
 void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
@@ -379,16 +394,19 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
       const BookmarkNode* new_parent, int new_index) {
   auto* node = new_parent->GetChild(new_index);
   model->DeleteNodeMetaInfo(node, "order");
+  BookmarkNodeChanged(model, node);
   // TODO(darkdh): handle old_parent == new_parent to avoid duplicate order
   // clearing. Also https://github.com/brave/sync/issues/231 blocks update to
   // another devices
   for (int i = old_index; i < old_parent->child_count(); ++i) {
     auto* shifted_node = old_parent->GetChild(i);
     model->DeleteNodeMetaInfo(shifted_node, "order");
+    BookmarkNodeChanged(model, shifted_node);
   }
   for (int i = new_index; i < new_parent->child_count(); ++i) {
     auto* shifted_node = new_parent->GetChild(i);
     model->DeleteNodeMetaInfo(shifted_node, "order");
+    BookmarkNodeChanged(model, shifted_node);
   }
 }
 
@@ -411,7 +429,6 @@ void BookmarkChangeProcessor::Reset(bool clear_meta_info) {
   bookmark_model_->BeginExtensiveChanges();
 
   if (clear_meta_info) {
-    ScopedPauseObserver pause(this);
     while (iterator.has_next()) {
       const bookmarks::BookmarkNode* node = iterator.Next();
       bookmark_model_->DeleteNodeMetaInfo(node, "object_id");
@@ -477,7 +494,8 @@ void ValidateFolderOrders(const bookmarks::BookmarkNode* folder_node) {
     if (!compare_result) {
       DLOG(ERROR) << "ValidateFolderOrders failed";
       DLOG(ERROR) << "folder_node=" << folder_node->GetTitle();
-      DLOG(ERROR) << "folder_node->child_count()=" << folder_node->child_count();
+      DLOG(ERROR) << "folder_node->child_count()=" <<
+                                                  folder_node->child_count();
       DLOG(ERROR) << "i=" << i;
       DLOG(ERROR) << "left_order=" << left_order;
       DLOG(ERROR) << "right_order=" << right_order;
@@ -569,7 +587,8 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
           profile_->GetPrefs()->SetBoolean(bookmarks::prefs::kShowBookmarkBar,
                                           true);
       }
-      UpdateNode(bookmark_model_, node, sync_record.get(), GetPendingNodeRoot());
+      UpdateNode(bookmark_model_, node, sync_record.get(),
+          GetPendingNodeRoot());
 
 #ifndef NDEBUG
       if (parent_node) {
@@ -647,10 +666,9 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
   bookmark->site.location = node->url().spec();
   bookmark->site.title = base::UTF16ToUTF8(node->GetTitledUrlNodeTitle());
   bookmark->site.customTitle = base::UTF16ToUTF8(node->GetTitle());
-  //bookmark->site.lastAccessedTime - ignored
+  // bookmark->site.lastAccessedTime - ignored
   bookmark->site.creationTime = node->date_added();
   bookmark->site.favicon = node->icon_url() ? node->icon_url()->spec() : "";
-  //bookmark->isFolder = node->is_folder();
   // Url may have type OTHER_NODE if it is in Deleted Bookmarks
   bookmark->isFolder = (node->type() != bookmarks::BookmarkNode::URL &&
                            node->type() != bookmarks::BookmarkNode::OTHER_NODE);
@@ -701,7 +719,6 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
   }
 
   if (record->objectId.empty()) {
-    ScopedPauseObserver pause(this);
     record->objectId = tools::GenerateObjectId();
     record->action = jslib::SyncRecord::Action::A_CREATE;
     bookmark_model_->SetNodeMetaInfo(node, "object_id", record->objectId);
@@ -814,11 +831,9 @@ void BookmarkChangeProcessor::SendUnsynced(
           unsynced_send_interval)
         continue;
 
-      {
-        ScopedPauseObserver pause(this);
-        bookmark_model_->SetNodeMetaInfo(node,
-            "last_send_time", std::to_string(base::Time::Now().ToJsTime()));
-      }
+      bookmark_model_->SetNodeMetaInfo(node,
+          "last_send_time", std::to_string(base::Time::Now().ToJsTime()));
+
       auto record = BookmarkNodeToSyncBookmark(node);
       if (record)
         records.push_back(std::move(record));
