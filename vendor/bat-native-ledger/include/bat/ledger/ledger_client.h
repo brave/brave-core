@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -11,6 +12,7 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <map>
 
 #include "bat/ledger/balance_report_info.h"
 #include "bat/ledger/export.h"
@@ -44,8 +46,8 @@ class LEDGER_EXPORT LogStream {
   virtual std::ostream& stream() = 0;
 };
 
-using PublisherInfoCallback = std::function<void(Result,
-    std::unique_ptr<PublisherInfo>)>;
+using PublisherInfoCallback =
+    std::function<void(Result, std::unique_ptr<PublisherInfo>)>;
 // TODO(nejczdovc) we should be providing result back as well
 using PublisherInfoListCallback =
     std::function<void(const PublisherInfoList&, uint32_t /* next_record */)>;
@@ -64,74 +66,105 @@ class LEDGER_EXPORT LedgerClient {
 
   // called when the wallet creation has completed
   virtual std::string GenerateGUID() const = 0;
+
   virtual void OnWalletInitialized(Result result) = 0;
+
   virtual void FetchWalletProperties() = 0;
+
   virtual void OnWalletProperties(Result result,
                                   std::unique_ptr<ledger::WalletInfo>) = 0;
+
   virtual void OnReconcileComplete(Result result,
                                    const std::string& viewing_id,
                                    ledger::REWARDS_CATEGORY category,
                                    const std::string& probi) = 0;
 
   virtual void LoadLedgerState(LedgerCallbackHandler* handler) = 0;
+
   virtual void SaveLedgerState(const std::string& ledger_state,
                                LedgerCallbackHandler* handler) = 0;
 
   virtual void LoadPublisherState(LedgerCallbackHandler* handler) = 0;
+
   virtual void SavePublisherState(const std::string& publisher_state,
                                   LedgerCallbackHandler* handler) = 0;
 
   virtual void SavePublishersList(const std::string& publisher_state,
-    LedgerCallbackHandler* handler) = 0;
-  virtual void LoadPublisherList(LedgerCallbackHandler* handler) = 0;
+                                  LedgerCallbackHandler* handler) = 0;
 
+  virtual void LoadPublisherList(LedgerCallbackHandler* handler) = 0;
 
   virtual void LoadNicewareList(ledger::GetNicewareListCallback callback) = 0;
 
   virtual void SavePublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
                                 PublisherInfoCallback callback) = 0;
+
   virtual void SaveActivityInfo(std::unique_ptr<PublisherInfo> publisher_info,
                                 PublisherInfoCallback callback) = 0;
+
   virtual void LoadPublisherInfo(const std::string& publisher_key,
                                  PublisherInfoCallback callback) = 0;
+
   virtual void LoadActivityInfo(ActivityInfoFilter filter,
                                 PublisherInfoCallback callback) = 0;
+
   virtual void LoadPanelPublisherInfo(ActivityInfoFilter filter,
                                       PublisherInfoCallback callback) = 0;
+
   virtual void LoadMediaPublisherInfo(const std::string& media_key,
                                 PublisherInfoCallback callback) = 0;
+
   virtual void SaveMediaPublisherInfo(const std::string& media_key,
                                 const std::string& publisher_id) = 0;
+
   virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
                                     ActivityInfoFilter filter,
                                     PublisherInfoListCallback callback) = 0;
 
-  // TODO this can be removed
-  virtual void FetchGrant(const std::string& lang, const std::string& paymentId) = 0;
+  // TODO(anyone) this can be removed
+  virtual void FetchGrant(const std::string& lang,
+                          const std::string& paymentId) = 0;
+
   virtual void OnGrant(ledger::Result result, const ledger::Grant& grant) = 0;
+
   virtual void GetGrantCaptcha() = 0;
-  virtual void OnGrantCaptcha(const std::string& image, const std::string& hint) = 0;
-  virtual void OnRecoverWallet(Result result, double balance, const std::vector<ledger::Grant>& grants) = 0;
-  virtual void OnGrantFinish(ledger::Result result, const ledger::Grant& grant) = 0;
+
+  virtual void OnGrantCaptcha(const std::string& image,
+                              const std::string& hint) = 0;
+
+  virtual void OnRecoverWallet(Result result,
+                               double balance,
+                               const std::vector<ledger::Grant>& grants) = 0;
+
+  virtual void OnGrantFinish(ledger::Result result,
+                             const ledger::Grant& grant) = 0;
+
   virtual void OnPanelPublisherInfo(Result result,
                                    std::unique_ptr<ledger::PublisherInfo>,
                                    uint64_t windowId) = 0;
+
   virtual void OnExcludedSitesChanged(const std::string& publisher_id) = 0;
+
   virtual void FetchFavIcon(const std::string& url,
                             const std::string& favicon_key,
                             FetchIconCallback callback) = 0;
-  virtual void SaveContributionInfo(const std::string& probi,
-                                    const int month,
-                                    const int year,
-                                    const uint32_t date,
-                                    const std::string& publisher_key,
-                                    const ledger::REWARDS_CATEGORY category) = 0;
-  virtual void GetRecurringDonations(ledger::PublisherInfoListCallback callback) = 0;
+
+  virtual void SaveContributionInfo(
+      const std::string& probi,
+      const int month,
+      const int year,
+      const uint32_t date,
+      const std::string& publisher_key,
+      const ledger::REWARDS_CATEGORY category) = 0;
+
+  virtual void GetRecurringDonations(
+      ledger::PublisherInfoListCallback callback) = 0;
+
   virtual void OnRemoveRecurring(const std::string& publisher_key,
                                  ledger::RecurringRemoveCallback callback) = 0;
 
-  //uint64_t time_offset (input): timer offset in seconds.
-  //uint32_t timer_id (output) : 0 in case of failure
+  // uint64_t time_offset (input): timer offset in seconds.
+  // uint32_t timer_id (output) : 0 in case of failure
   virtual void SetTimer(uint64_t time_offset, uint32_t & timer_id) = 0;
 
   virtual std::string URIEncode(const std::string& value) = 0;
@@ -143,6 +176,7 @@ class LEDGER_EXPORT LedgerClient {
       const std::string& contentType,
       const ledger::URL_METHOD& method,
       ledger::LoadURLCallback callback) = 0;
+
   virtual void SetContributionAutoInclude(const std::string& publisher_key,
                                           bool excluded,
                                           uint64_t windowId) = 0;

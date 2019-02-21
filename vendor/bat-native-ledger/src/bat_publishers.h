@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -29,7 +30,6 @@ namespace braveledger_bat_publishers {
 
 class BatPublishers : public ledger::LedgerCallbackHandler {
  public:
-
   BatPublishers(bat_ledger::LedgerImpl* ledger);
 
   ~BatPublishers() override;
@@ -41,9 +41,10 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                  const uint64_t& duration,
                  uint64_t window_id);
 
-  void AddRecurringPayment(const std::string& publisher_id, const double& value);
+  void AddRecurringPayment(const std::string& publisher_id,
+                           const double& value);
 
-  void setPublisherMinVisitTime(const uint64_t& duration); // In seconds
+  void setPublisherMinVisitTime(const uint64_t& duration);  // In seconds
 
   void setPublisherMinVisits(const unsigned int& visits);
 
@@ -51,33 +52,47 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void setNumExcludedSites(const unsigned int& amount);
 
-  void setExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude);
+  void setExclude(const std::string& publisher_id,
+                  const ledger::PUBLISHER_EXCLUDE& exclude);
+
   void setPanelExclude(const std::string& publisher_id,
-    const ledger::PUBLISHER_EXCLUDE& exclude, uint64_t windowId);
+                       const ledger::PUBLISHER_EXCLUDE& exclude,
+                       uint64_t windowId);
 
   void RestorePublishers();
 
   void setPublisherAllowNonVerified(const bool& allow);
+
   void setPublisherAllowVideos(const bool& allow);
+
   void setBalanceReport(ledger::ACTIVITY_MONTH month,
                         int year,
                         const ledger::BalanceReportInfo& report_info);
+
   bool getBalanceReport(ledger::ACTIVITY_MONTH month,
                         int year,
                         ledger::BalanceReportInfo* report_info);
+
   std::map<std::string, ledger::BalanceReportInfo> getAllBalanceReports();
 
-  uint64_t getPublisherMinVisitTime() const; // In milliseconds
+  uint64_t getPublisherMinVisitTime() const;  // In milliseconds
+
   unsigned int getPublisherMinVisits() const;
+
   bool getPublisherAllowNonVerified() const;
+
   uint64_t getLastPublishersListLoadTimestamp() const;
+
   unsigned int getNumExcludedSites() const;
+
   bool getPublisherAllowVideos() const;
 
   void OnPublisherInfoSaved(
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo>);
+
   std::string GetBalanceReportName(ledger::ACTIVITY_MONTH month, int year);
+
   std::vector<ledger::ContributionInfo> GetRecurringDonationList();
 
   void RefreshPublishersList(const std::string & pubs_list);
@@ -90,13 +105,14 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       uint64_t windowId,
       const ledger::VisitData& visit_data,
       const std::string& publisher_blob);
+
   void getPublisherBanner(const std::string& publisher_id,
                           ledger::PublisherBannerCallback callback);
 
   void setBalanceReportItem(ledger::ACTIVITY_MONTH month,
-                               int year,
-                               ledger::ReportType type,
-                               const std::string& probi);
+                            int year,
+                            ledger::ReportType type,
+                            const std::string& probi);
 
   ledger::ActivityInfoFilter CreateActivityFilter(
       const std::string& publisher_id,
@@ -126,6 +142,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       bool min_visits);
 
   void clearAllBalanceReports();
+
   void NormalizeContributeWinners(ledger::PublisherInfoList* newList,
                                   const ledger::PublisherInfoList& list,
                                   uint32_t /* next_record */);
@@ -133,7 +150,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   bool isVerified(const std::string& publisher_id);
 
  private:
-
   void onPublisherActivitySave(uint64_t windowId,
                                const ledger::VisitData& visit_data,
                                ledger::Result result,
@@ -142,7 +158,9 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   // LedgerCallbackHandler impl
   void OnPublisherStateSaved(ledger::Result result) override;
 
-  bool isExcluded(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& excluded);
+  bool isExcluded(const std::string& publisher_id,
+                  const ledger::PUBLISHER_EXCLUDE& excluded);
+
   void saveVisitInternal(
       std::string publisher_id,
       ledger::VisitData visit_data,
@@ -167,6 +185,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
     ledger::PUBLISHER_EXCLUDE exclude,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info);
+
   void onSetPanelExcludeInternal(
     ledger::PUBLISHER_EXCLUDE exclude,
     uint64_t windowId,
@@ -185,6 +204,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void SynopsisNormalizerCallback(const ledger::PublisherInfoList& list,
                                   uint32_t /* next_record */);
+
   void synopsisNormalizerInternal(ledger::PublisherInfoList* newList,
                                   const ledger::PublisherInfoList& list,
                                   uint32_t /* next_record */);
@@ -193,12 +213,14 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void SetMigrateScore(bool value);
 
-  bool isPublisherVisible(const braveledger_bat_helper::PUBLISHER_ST& publisher_st);
+  bool isPublisherVisible(
+      const braveledger_bat_helper::PUBLISHER_ST& publisher_st);
 
-  void OnPanelPublisherInfo(ledger::Result result,
-                           std::unique_ptr<ledger::PublisherInfo> publisher_info,
-                           uint64_t windowId,
-                           const ledger::VisitData& visit_data);
+  void OnPanelPublisherInfo(
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> publisher_info,
+      uint64_t windowId,
+      const ledger::VisitData& visit_data);
 
   void OnExcludedSitesChanged(const std::string& publisher_id);
 

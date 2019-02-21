@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/vendor/bat-native-ledger/src/bat_helper.h"
@@ -18,7 +19,7 @@ TEST(NicewarePartialUnitTest, InvalidNumberOfWords) {
     " undefiled parched kielbasa decapitate ninetales";
   std::vector<uint8_t> nSeed;
   size_t written = 0;
-   //get wordlist
+  // get wordlist
   std::vector<std::string> data = braveledger_bat_helper::split(
     ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
     IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string(), DICTIONARY_DELIMITER);
