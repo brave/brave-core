@@ -26,9 +26,7 @@
   "transformIgnorePatterns": [
     "<rootDir>/node_modules"
   ],
-  "setupFilesAfterEnv": [
-    "./setupApp.ts"
-  ],
+  "setupTestFrameworkScriptFile": "./setupApp.ts",
   "moduleNameMapper": {
     "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/fileMock.ts",
     "\\.(css|less)$": "identity-obj-proxy"
