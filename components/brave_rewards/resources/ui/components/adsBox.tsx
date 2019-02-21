@@ -37,8 +37,7 @@ class AdsBox extends React.Component<Props, State> {
       <DisabledContent
         type={'ads'}
       >
-        • {getLocale('adsDisabledTextOne')} <br />
-        • {getLocale('adsDisabledTextTwo')}
+        <h3>{getLocale('adsDisabledText')}</h3>
       </DisabledContent>
     )
   }
