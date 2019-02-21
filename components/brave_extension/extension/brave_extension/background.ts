@@ -35,5 +35,6 @@ promisifyAll(chrome.braveShields, [
   'plugins'
 ])
 
+require('./background/api')
 require('./background/events')
 require('./background/store')

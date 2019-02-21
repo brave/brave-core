@@ -10,7 +10,7 @@ import * as EnzymeAdapter from 'enzyme-adapter-react-16'
 // since we are not testing action creators ATM it seemed ok to have it mocked
 // to unblock other work depending on this test refactor.
 // TODO: @cezaraugusto investigate
-jest.mock('../brave_extension/extension/brave_extension/background/actions/shieldsPanelActions.ts')
+jest.mock('../brave_extension/extension/brave_extension/background/actions/shieldsPanelActions')
 
 // Setup enzyme's react adapter
 Enzyme.configure({ adapter: new EnzymeAdapter() })
