@@ -1364,6 +1364,7 @@ void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result,
   properties.altcurrency = grant.altcurrency;
   properties.probi = grant.probi;
   properties.expiryTime = grant.expiryTime;
+  properties.type = grant.type;
 
   for (auto& observer : observers_)
     observer.OnGrantFinish(this, result, properties);
