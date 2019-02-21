@@ -243,7 +243,6 @@
       "!<rootDir>/components/**/store.ts",
       "!<rootDir>/components/test/*"
     ],
-    "testEnvironment": "node",
     "testURL": "http://localhost/",
     "testMatch": [
       "<rootDir>/components/test/**/**/?(*_)(test).{ts,tsx}"
@@ -280,6 +279,7 @@
     "brave-ui": "github:brave/brave-ui#9d1f75c7cc4e413c53f7f313ac519887ce3eba1b",
     "css-loader": "^0.28.9",
     "csstype": "^2.5.5",
+    "deep-freeze-node": "^1.1.3",
     "emptykit.css": "^1.0.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
@@ -296,6 +296,7 @@
     "react-dom": "^16.3.0",
     "react-redux": "^5.0.6",
     "redux": "^4.0.0",
+    "sinon": "^7.2.4",
     "style-loader": "^0.19.1",
     "styled-components": "^3.4.2",
     "ts-jest": "^23.10.5",
