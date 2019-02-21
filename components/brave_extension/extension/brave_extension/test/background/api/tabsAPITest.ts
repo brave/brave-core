@@ -28,7 +28,6 @@ describe('tabs API', () => {
     })
   })
   describe('reloadTab', () => {
-    
     let spy: jest.SpyInstance
     beforeEach(() => {
       spy = jest.spyOn(chrome.tabs, 'reload')
