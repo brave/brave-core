@@ -11,7 +11,8 @@
     :root {
       --interactive-color: var(--cr-link-color) !important;
       --disabled-color: rgb(241, 243, 244);
-      --cr-link-color: #ff4530 !important;
+      --cr-link-color: rgb(255, 69, 48) !important;
+      --flat-focus-shadow-color: rgba(255, 69, 48, .4) !important;
     }
   </style>
 </custom-style>
@@ -24,6 +25,10 @@
 <dom-module id="br-shared-style">
   <template>
     <style>
+      :focus {
+        outline-color: var(--flat-focus-shadow-color);
+        outline-width: 3px;
+      }
       cr-checkbox {
         --cr-checkbox-checked-box-color: var(--cr-link-color) !important;
         --cr-checkbox-ripple-checked-color: var(--cr-link-color) !important;

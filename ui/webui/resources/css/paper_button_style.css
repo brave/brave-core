@@ -36,4 +36,6 @@ paper-button {
 
   border-radius: 20px !important;
   border-color: currentColor !important;
+
+  --flat-focus-shadow-color: rgba(255, 69, 48, .4)  !important;
 }
