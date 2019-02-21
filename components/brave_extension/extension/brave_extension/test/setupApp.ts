@@ -7,6 +7,7 @@ import { getMockChrome } from './testData'
 import { configure } from 'enzyme'
 import * as Adapter from 'enzyme-adapter-react-16'
 
+
 (global as any).chrome = getMockChrome
 
 // not mocking this file make some tests to fail due to non clear reason.

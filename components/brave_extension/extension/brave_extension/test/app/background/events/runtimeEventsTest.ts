@@ -71,7 +71,6 @@ describe('runtimeEvents events', () => {
         expect(windowCreatedSpy.mock.calls[1][0]).toBe(inputWindows[1])
         cb()
       })
-      .catch((error: Error) => console.error(error.toString()))
     })
     it('calls tabActions.tabCreated for each tab in each window', (cb) => {
       expect.assertions(6)
@@ -84,7 +83,6 @@ describe('runtimeEvents events', () => {
         expect(tabCreatedSpy.mock.calls[2][0]).toBe(inputWindows[1].tabs[0])
         cb()
       })
-      .catch((error: Error) => console.error(error.toString()))
     })
   })
 })

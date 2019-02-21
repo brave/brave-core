@@ -36,7 +36,7 @@ const fakeProps: Props = {
   },
   shieldsToggled: (setting: BlockOptions) => {
     return { type: actionTypes.SHIELDS_TOGGLED, setting }
-  }
+  },
 }
 
 describe('ShieldsHeader component', () => {
