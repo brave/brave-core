@@ -15,6 +15,6 @@ import * as Adapter from 'enzyme-adapter-react-16'
 // since we are not testing action creators ATM it seemed ok to have it mocked
 // to unblock other work depending on this test refactor.
 // TODO: @cezaraugusto investigate
-jest.mock('../app/background/actions/shieldsPanelActions.ts')
+jest.mock('../background/actions/shieldsPanelActions.ts')
 
 configure({ adapter: new Adapter() })
