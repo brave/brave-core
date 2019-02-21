@@ -1117,14 +1117,15 @@ bool GRANT_RESPONSE::loadFromJson(const std::string & json) {
 
   // On successful grant
   error = !(
-      d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
-      d.HasMember("expiryTime") && d["expiryTime"].IsNumber() &&
-      d.HasMember("probi") && d["probi"].IsString());
+      d.HasMember("protocolVersion") && d["protocolVersion"].IsNumber() &&
+      d.HasMember("minimumReconcileTimestamp") &&
+      d["minimumReconcileTimestamp"].IsNumber() &&
+      d.HasMember("type") && d["type"].IsString());
 
   if (error == false) {
-    altcurrency = d["altcurrency"].GetString();
-    expiryTime = d["expiryTime"].GetUint64();
-    probi = d["probi"].GetString();
+    minimumReconcileTimestamp = d["minimumReconcileTimestamp"].GetUint64();
+    protocolVersion = d["protocolVersion"].GetUint64();
+    type = d["type"].GetString();
   }
 
   return !error;
