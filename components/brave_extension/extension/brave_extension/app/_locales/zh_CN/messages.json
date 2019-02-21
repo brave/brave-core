@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": " Brave 扩展名",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "屏蔽",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "向上",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "向下",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "已全部拦截",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "对于此网站",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "如果某个网站出现故障，请尝试屏蔽",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "您正浏览的网站不具备任何隐私和安全保护。",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "广告和追踪器已拦截",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "已拦截弹出式窗口",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "已拦截图片",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "第3方Cookies已拦截",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "已允许所有Cookies",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "已拦截 Cookies",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "一些脚本已拦截",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "允许所有脚本",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "已拦截脚本",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "第3方设备识别已拦截",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "已允许所有设备识别",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "设备识别已拦截",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "网络钓鱼/恶意软件尝试已拦截",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "连接已加密",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "全局默认屏蔽",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "此网站上的Cookies",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "设备识别尝试",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "此网站上的脚本",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "已拦截脚本",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "允许脚本",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "允许所有",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "允许",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "已允许",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "拦截所有",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "拦截",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "已拦截",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "应用",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "应用一次",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "应用直到重启",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "始终应用",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "撤消",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "取消",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "返回",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "התוסף ל-Brave",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "הגנות",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "למעלה",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "למטה",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "סך הכל חסומים",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "באתר זה",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "אם אתר לא נראה תקין, נסו להסיר הגנות",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "אתם גולשים באתר זה ללא שום הגנות אבטחה ופרטיות.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "פרסומות ותוכנות מעקב חסומות",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "חלונות קופצים חסומים",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "תמונות חסומות",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "קבצי עוגיות של צד שלישי חסומים",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "אפשר את כל קבצי העוגיות",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "קבצי עוגיות חסומים",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "כמה סקריפטים חסומים",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "כל הפקודות מותרות",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "סרקיפטים נחסמו.",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "חסימת אימות של מכשיר של צד שלישי",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "זיהוי כל ההתקנים פעיל",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "זיהוי התקן חסום",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "נסיונות פישינג ותוכנות זדוניות שנחסמו",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "חיבור מוצפן",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "ברירות מחדל של הגנות גלובליות",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "קבצי עוגיות באתר זה",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "נסיונות זיהוי התקן",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "פקודות באתר זה",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "פקודות חסומות",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "פקודות מותרות",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "מתן הרשאה לכול",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "אפשר",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "מותר",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "חסום הכל",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "חסום",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "חסום",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "יישם",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "יישם פעם אחת",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "יישם עד לאתחול",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "יישם תמיד",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "בטל",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "ביטול",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "חזור",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

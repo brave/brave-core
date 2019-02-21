@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "Brave -laajennus",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "Shields",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "ylös",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "alas",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "Estettyjä yhteensä",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "tälle sivustolle",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Jos sivusto ei näytä toimivan oikein, kokeile ottaa suojat pois käytöstä",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Selaat tätä sivua ilman yksityisyys- ja turvallisuussuojausta",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "Mainokset ja seuraajat estetty",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "Ponnahdusikkunat estetty",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "Estettyjä kuvia",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "Kolmannen osapuolen evästeet estetty",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "Kaikki evästeet sallittu",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "Evästeet estetty",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Joitakin komentosarjoja estetty",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Kaikki skriptit sallittu",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Skriptit estetty.",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "Ulkopuolisen laitteen tunnistus estetty",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "Kaikkien laitteiden tunnistus sallittu",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Laitteen tunnistus estetty",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Phishing/haittaohjelmayritys estetty",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Salatut yhteydet",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Yleiset shield-oletukset",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Tämän sivuston evästeet",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Laitteen tunnistuksen yrityksiä",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Tämän sivuston skriptit",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Estetyt skriptit",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Sallitut skriptit",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Salli kaikki",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Salli",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Sallittu",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Estä kaikki",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Estä",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Estetty",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Käytä",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Käytä kerran",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Käytä uudelleenkäynnistykseen saakka",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Käytä aina",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Pura",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Peruuta",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Palaa",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

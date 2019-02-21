@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "افزونه Brave",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "سپر ایمنی",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "بالا",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "پایین",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "مجموع منابع مسدود",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "برای این سایت",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "اگر سایتی خراب به نظر می‌رسد، سپر ایمنی را غیرفعال کنید",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "بدون هیچ محافظ حریم خصوصی و امنیتی این سایت را مرور می‌کنید.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "آگهی‌ها و ردیاب‌ها مسدود شدند",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "پنجره‌های بازشو مسدود شد",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "تصاویر مسدود",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "کوکی‌های شخص ثالث مسدود شد",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "همه کوکی‌ها مجاز هستند",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "کوکی‌ها مسدود شدند",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "بعضی از اسکریپت‌ها مسدود شدند",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "همه اسکریپت‌های مجاز",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "اسکریپت‌ها مسدود شدند",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "تشخیص دستگاه شخص ثالث مسدود شد",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "همه دستگاه‌های شناخته‌شده مجاز هستند",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "تشخیص دستگاه مسدود شد",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "تلاش‌های فیشینگ/بدافزار مسدود شد",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "اتصال‌های رمزگذاری‌شده",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "پیش‌فرض‌های سپرهای ایمنی سراسری",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "کوکی‌های این سایت",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "تلاش‌های تشخیص دستگاه",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "اسکریپت‌های این سایت",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "اسکریپت‌های مسدود",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "اسکریپت‌های مجاز",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "مجاز کردن همه",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "مجاز",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "مجاز",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "مسدود کردن همه",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "مسدود کردن",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "مسدود است",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "اعمال",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "یک‌بار اعمال شود",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "اعمال تا زمان راه‌اندازی مجدد",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "همیشه اعمال شود",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "واگرد",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "لغو",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "برگشت",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

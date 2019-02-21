@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "Ekstensi Brave",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "Perisai",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "naik",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "turun",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "Total diblokir",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "untuk situs ini",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Jika situs tampak rusak, coba turunkan perisai",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Anda menjelajahi situs ini tanpa perlindungan privasi dan keamanan.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "Iklan dan pelacak diblokir",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "Pop-up diblokir",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "Gambar diblokir",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "Kuki pihak ke-3 diblokir",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "Semua kuki diizinkan",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "Kuki diblokir",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Beberapa skrip diblokir",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Semua skrip diizinkan",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Skrip diblokir",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "Pengenalan peranti pihak ke-3 diblokir",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "Semua pengenalan peranti diizinkan",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Pengenalan peranti diblokir",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Percobaan phishing/malware diblokir",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Sambungan dienkripsi",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Perisai global baku",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Kuki untuk situs ini",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Percobaan pengenalan peranti",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Skrip pada situs ini",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Skrip diblokir",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Skrip yang diizinkan",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Izinkan semua",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Izinkan",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Diizinkan",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Blokir semua",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Blokir",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Diblokir",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Terapkan",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Terapkan sekali",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Terapkan sampai mulai ulang",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Selalu terapkan",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Urungkan",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Batal",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Kembali",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}
