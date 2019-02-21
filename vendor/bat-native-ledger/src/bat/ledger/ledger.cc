@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -15,7 +16,7 @@ namespace ledger {
 
 bool is_production = true;
 bool is_testing = false;
-int reconcile_time = 0; // minutes
+int reconcile_time = 0;  // minutes
 bool short_retries = false;
 
 VisitData::VisitData():
@@ -438,9 +439,9 @@ ledger::Ledger* Ledger::CreateInstance(LedgerClient* client) {
   return new bat_ledger::LedgerImpl(client);
 }
 
-WalletInfo::WalletInfo () : balance_(0), fee_amount_(0), parameters_days_(0) {}
-WalletInfo::~WalletInfo () {}
-WalletInfo::WalletInfo (const ledger::WalletInfo &info) {
+WalletInfo::WalletInfo() : balance_(0), fee_amount_(0), parameters_days_(0) {}
+WalletInfo::~WalletInfo() {}
+WalletInfo::WalletInfo(const ledger::WalletInfo &info) {
   altcurrency_ = info.altcurrency_;
   probi_ = info.probi_;
   balance_ = info.balance_;
@@ -511,9 +512,9 @@ bool WalletInfo::loadFromJson(const std::string& json) {
   return !error;
 }
 
-Grant::Grant () {}
-Grant::~Grant () {}
-Grant::Grant (const ledger::Grant &properties) {
+Grant::Grant() {}
+Grant::~Grant() {}
+Grant::Grant(const ledger::Grant &properties) {
   promotionId = properties.promotionId;
   expiryTime = properties.expiryTime;
   probi = properties.probi;
@@ -667,13 +668,20 @@ bool AutoContributeProps::loadFromJson(const std::string& json) {
   return !error;
 }
 
-bool Ledger::IsMediaLink(const std::string& url, const std::string& first_party_url, const std::string& referrer) {
-  return braveledger_bat_get_media::BatGetMedia::GetLinkType(url, first_party_url, referrer) == TWITCH_MEDIA_TYPE;
+bool Ledger::IsMediaLink(const std::string& url,
+                         const std::string& first_party_url,
+                         const std::string& referrer) {
+  const std::string type = braveledger_bat_get_media::BatGetMedia::GetLinkType(
+      url,
+      first_party_url,
+      referrer);
+
+  return type == TWITCH_MEDIA_TYPE;
 }
 
-PendingContribution::PendingContribution () {}
-PendingContribution::~PendingContribution () {}
-PendingContribution::PendingContribution (
+PendingContribution::PendingContribution() {}
+PendingContribution::~PendingContribution() {}
+PendingContribution::PendingContribution(
     const ledger::PendingContribution &properties) {
   publisher_key = properties.publisher_key;
   amount = properties.amount;
@@ -714,9 +722,9 @@ bool PendingContribution::loadFromJson(const std::string& json) {
   return !error;
 }
 
-PendingContributionList::PendingContributionList () {}
-PendingContributionList::~PendingContributionList () {}
-PendingContributionList::PendingContributionList (
+PendingContributionList::PendingContributionList() {}
+PendingContributionList::~PendingContributionList() {}
+PendingContributionList::PendingContributionList(
     const ledger::PendingContributionList &properties) {
   list_ = properties.list_;
 }
@@ -753,9 +761,9 @@ bool PendingContributionList::loadFromJson(const std::string& json) {
   return !error;
 }
 
-PublisherInfoListStruct::PublisherInfoListStruct () {}
-PublisherInfoListStruct::~PublisherInfoListStruct () {}
-PublisherInfoListStruct::PublisherInfoListStruct (
+PublisherInfoListStruct::PublisherInfoListStruct() {}
+PublisherInfoListStruct::~PublisherInfoListStruct() {}
+PublisherInfoListStruct::PublisherInfoListStruct(
     const ledger::PublisherInfoListStruct &properties) {
   list = properties.list;
 }
@@ -792,4 +800,4 @@ bool PublisherInfoListStruct::loadFromJson(const std::string& json) {
   return !error;
 }
 
-} // ledger
+}  // namespace ledger
