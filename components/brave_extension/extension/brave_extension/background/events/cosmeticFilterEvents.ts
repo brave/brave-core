@@ -34,25 +34,22 @@ chrome.contextMenus.create({
 // contextMenu listener - when triggered, grab latest selector
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
   switch (info.menuItemId) {
-    case 'addBlockElement':
-      {
-        rule.selector = window.prompt('CSS selector to block: ', `${rule.selector}`) || ''
-        chrome.tabs.insertCSS({
-          code: `${rule.selector} {display: none;}`
-        })
-        cosmeticFilterActions.siteCosmeticFilterAdded(rule.host, rule.selector)
-        break
-      }
-    case 'resetSiteFilterSettings':
-      {
-        cosmeticFilterActions.siteCosmeticFilterRemoved(rule.host)
-        break
-      }
-    case 'resetAllFilterSettings':
-      {
-        cosmeticFilterActions.allCosmeticFiltersRemoved()
-        break
-      }
+    case 'addBlockElement': {
+      rule.selector = window.prompt('CSS selector to block: ', `${rule.selector}`) || ''
+      chrome.tabs.insertCSS({
+        code: `${rule.selector} {display: none;}`
+      })
+      cosmeticFilterActions.siteCosmeticFilterAdded(rule.host, rule.selector)
+      break
+    }
+    case 'resetSiteFilterSettings': {
+      cosmeticFilterActions.siteCosmeticFilterRemoved(rule.host)
+      break
+    }
+    case 'resetAllFilterSettings': {
+      cosmeticFilterActions.allCosmeticFiltersRemoved()
+      break
+    }
     default: {
       console.warn('[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}')
     }

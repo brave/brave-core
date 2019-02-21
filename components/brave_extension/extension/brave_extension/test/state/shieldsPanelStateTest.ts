@@ -834,7 +834,7 @@ describe('shieldsPanelState test', () => {
             1: 2,
             2: 3
           }
-      })
+        })
     })
     it('reset noScriptInfo for a specific tab with navigating away', () => {
       this.tabId = 2
@@ -900,7 +900,7 @@ describe('shieldsPanelState test', () => {
             1: 2,
             2: 3
           }
-      })
+        })
     })
   })
 })
