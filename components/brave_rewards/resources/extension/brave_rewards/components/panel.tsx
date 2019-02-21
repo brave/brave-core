@@ -271,38 +271,37 @@ export class Panel extends React.Component<Props, State> {
     let text = ''
     let isAlert = ''
     switch (notification.type) {
-      case RewardsNotificationType.REWARDS_NOTIFICATION_AUTO_CONTRIBUTE:
-        {
-          if (!notification.args ||
-            !Array.isArray(notification.args) ||
-            notification.args.length < 3) {
-            break
-          }
-
-          const result = notification.args[1]
-
-          // Results
-          // 0 - success
-          // 1 - general error
-          // 15 - not enough funds
-          // 16 - error while tipping
-
-          if (result === '0') {
-            const fixed = utils.convertProbiToFixed(notification.args[3])
-            text = getMessage('contributeNotificationSuccess', [fixed])
-          } else if (result === '15') {
-            text = getMessage('contributeNotificationNotEnoughFunds')
-            isAlert = 'warning'
-          } else if (result === '16') {
-            text = getMessage('contributeNotificationTipError')
-            isAlert = 'error'
-          } else {
-            text = getMessage('contributeNotificationError')
-            isAlert = 'error'
-          }
-          type = 'contribute'
+      case RewardsNotificationType.REWARDS_NOTIFICATION_AUTO_CONTRIBUTE: {
+        if (!notification.args ||
+          !Array.isArray(notification.args) ||
+          notification.args.length < 3) {
           break
         }
+
+        const result = notification.args[1]
+
+        // Results
+        // 0 - success
+        // 1 - general error
+        // 15 - not enough funds
+        // 16 - error while tipping
+
+        if (result === '0') {
+          const fixed = utils.convertProbiToFixed(notification.args[3])
+          text = getMessage('contributeNotificationSuccess', [fixed])
+        } else if (result === '15') {
+          text = getMessage('contributeNotificationNotEnoughFunds')
+          isAlert = 'warning'
+        } else if (result === '16') {
+          text = getMessage('contributeNotificationTipError')
+          isAlert = 'error'
+        } else {
+          text = getMessage('contributeNotificationError')
+          isAlert = 'error'
+        }
+        type = 'contribute'
+        break
+      }
       case RewardsNotificationType.REWARDS_NOTIFICATION_GRANT:
         type = 'grant'
         text = getMessage('grantNotification')

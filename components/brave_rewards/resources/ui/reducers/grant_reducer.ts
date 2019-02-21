@@ -73,151 +73,145 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
       state.currentGrant = currentGrant
       chrome.send('brave_rewards.getGrantCaptcha', [])
       break
-    case types.ON_GRANT_CAPTCHA:
-      {
-        if (state.currentGrant && state.grants) {
-          const props = action.payload.captcha
-          let hint = props.hint
-          let captcha = `data:image/jpeg;base64,${props.image}`
+    case types.ON_GRANT_CAPTCHA: {
+      if (state.currentGrant && state.grants) {
+        const props = action.payload.captcha
+        let hint = props.hint
+        let captcha = `data:image/jpeg;base64,${props.image}`
 
-          const grants = state.grants.map((item: Rewards.Grant) => {
-            let newGrant = item
-            let promotionId = state.currentGrant && state.currentGrant.promotionId
+        const grants = state.grants.map((item: Rewards.Grant) => {
+          let newGrant = item
+          let promotionId = state.currentGrant && state.currentGrant.promotionId
 
-            if (promotionId === item.promotionId) {
-              newGrant = item
-              newGrant.captcha = captcha
-              newGrant.hint = hint
-            }
-
-            return newGrant
-          })
-
-          state = {
-            ...state,
-            grants
+          if (promotionId === item.promotionId) {
+            newGrant = item
+            newGrant.captcha = captcha
+            newGrant.hint = hint
           }
-        }
-        break
-      }
-    case types.SOLVE_GRANT_CAPTCHA:
-      {
-        const promotionId = state.currentGrant && state.currentGrant.promotionId
 
-        if (promotionId && action.payload.x && action.payload.y) {
-          chrome.send('brave_rewards.solveGrantCaptcha', [JSON.stringify({
-            x: action.payload.x,
-            y: action.payload.y
-          }), promotionId])
-        }
-        break
-      }
-    case types.ON_GRANT_RESET:
-      {
-        if (state.currentGrant && state.grants) {
-          let currentGrant: any = state.currentGrant
+          return newGrant
+        })
 
-          const grants = state.grants.map((item: Rewards.Grant) => {
-            if (currentGrant.promotionId === item.promotionId) {
-              return {
-                promotionId: currentGrant.promotionId,
-                probi: '',
-                expiryTime: 0,
-                type: currentGrant.type
-              }
+        state = {
+          ...state,
+          grants
+        }
+      }
+      break
+    }
+    case types.SOLVE_GRANT_CAPTCHA: {
+      const promotionId = state.currentGrant && state.currentGrant.promotionId
+
+      if (promotionId && action.payload.x && action.payload.y) {
+        chrome.send('brave_rewards.solveGrantCaptcha', [JSON.stringify({
+          x: action.payload.x,
+          y: action.payload.y
+        }), promotionId])
+      }
+      break
+    }
+    case types.ON_GRANT_RESET: {
+      if (state.currentGrant && state.grants) {
+        let currentGrant: any = state.currentGrant
+
+        const grants = state.grants.map((item: Rewards.Grant) => {
+          if (currentGrant.promotionId === item.promotionId) {
+            return {
+              promotionId: currentGrant.promotionId,
+              probi: '',
+              expiryTime: 0,
+              type: currentGrant.type
             }
-            return item
-          })
+          }
+          return item
+        })
 
+        currentGrant = undefined
+
+        state = {
+          ...state,
+          grants,
+          currentGrant
+        }
+      }
+      break
+    }
+    case types.ON_GRANT_DELETE: {
+      if (state.currentGrant && state.grants) {
+        let grantIndex = -1
+        let currentGrant: any = state.currentGrant
+
+        state.grants.map((item: Rewards.Grant, i: number) => {
+          if (currentGrant.promotionId === item.promotionId) {
+            grantIndex = i
+          }
+        })
+
+        if (grantIndex > -1) {
+          state.grants.splice(grantIndex, 1)
           currentGrant = undefined
+        }
+
+        state = {
+          ...state,
+          currentGrant
+        }
+      }
+      break
+    }
+    case types.ON_GRANT_FINISH: {
+      state = { ...state }
+      let newGrant: any = {}
+      const properties: Rewards.Grant = action.payload.properties
+
+      if (!state.grants || !state.currentGrant) {
+        break
+      }
+
+      newGrant.promotionId = state.currentGrant.promotionId
+
+      switch (properties.status) {
+        case 0:
+          let ui = state.ui
+          newGrant.expiryTime = properties.expiryTime * 1000
+          newGrant.probi = properties.probi
+          newGrant.status = null
+          ui.emptyWallet = false
 
           state = {
             ...state,
-            grants,
-            currentGrant
-          }
-        }
-        break
-      }
-    case types.ON_GRANT_DELETE:
-      {
-        if (state.currentGrant && state.grants) {
-          let grantIndex = -1
-          let currentGrant: any = state.currentGrant
-
-          state.grants.map((item: Rewards.Grant, i: number) => {
-            if (currentGrant.promotionId === item.promotionId) {
-              grantIndex = i
-            }
-          })
-
-          if (grantIndex > -1) {
-            state.grants.splice(grantIndex, 1)
-            currentGrant = undefined
+            ui
           }
 
-          state = {
-            ...state,
-            currentGrant
-          }
-        }
-        break
-      }
-    case types.ON_GRANT_FINISH:
-      {
-        state = { ...state }
-        let newGrant: any = {}
-        const properties: Rewards.Grant = action.payload.properties
-
-        if (!state.grants || !state.currentGrant) {
+          chrome.send('brave_rewards.getWalletProperties', [])
           break
-        }
-
-        newGrant.promotionId = state.currentGrant.promotionId
-
-        switch (properties.status) {
-          case 0:
-            let ui = state.ui
-            newGrant.expiryTime = properties.expiryTime * 1000
-            newGrant.probi = properties.probi
-            newGrant.status = null
-            ui.emptyWallet = false
-
-            state = {
-              ...state,
-              ui
-            }
-
-            chrome.send('brave_rewards.getWalletProperties', [])
-            break
-          case 6:
-            newGrant.status = 'wrongPosition'
-            chrome.send('brave_rewards.getGrantCaptcha', [])
-            break
-          case 13:
-            newGrant.status = 'grantGone'
-            break
-          case 18:
-            newGrant.status = 'grantAlreadyClaimed'
-            break
-          default:
-            newGrant.status = 'generalError'
-            break
-        }
-
-        if (state.grants) {
-          const grants = updateGrant(newGrant, state.grants)
-
-          state = {
-            ...state,
-            grants
-          }
-        }
-
-        break
+        case 6:
+          newGrant.status = 'wrongPosition'
+          chrome.send('brave_rewards.getGrantCaptcha', [])
+          break
+        case 13:
+          newGrant.status = 'grantGone'
+          break
+        case 18:
+          newGrant.status = 'grantAlreadyClaimed'
+          break
+        default:
+          newGrant.status = 'generalError'
+          break
       }
-  }
 
+      if (state.grants) {
+        const grants = updateGrant(newGrant, state.grants)
+
+        state = {
+          ...state,
+          grants
+        }
+      }
+
+      break
+    }
+  }
   return state
 }
 
