@@ -741,6 +741,13 @@ void BatLedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
   bat_ledger_client_->SetConfirmationsIsReady(is_ready);
 }
 
+void BatLedgerClientMojoProxy::ConfirmationsTransactionHistoryDidChange() {
+  if (!Connected())
+    return;
+
+  bat_ledger_client_->ConfirmationsTransactionHistoryDidChange();
+}
+
 bool BatLedgerClientMojoProxy::Connected() const {
   return bat_ledger_client_.is_bound();
 }

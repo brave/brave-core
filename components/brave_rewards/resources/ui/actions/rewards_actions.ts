@@ -174,3 +174,10 @@ export const onAddressesForPaymentId = (addresses: Record<Rewards.AddressesType,
   action(types.ON_ADDRESSES_FOR_PAYMENT_ID, {
     addresses
   })
+
+export const onAdsNotificationsData = (adsNotificationsData: {adsTotalPages: number, adsEstimatedEarnings: number}) =>
+  action(types.ON_ADS_NOTIFICATIONS_DATA, {
+    adsNotificationsData
+  })
+
+export const getAdsNotifications = () => action(types.GET_ADS_NOTIFICATIONS)

@@ -104,6 +104,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetPendingContributionsTotal(double amount);
   void OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) override;
   void GetAddressesForPaymentId(const base::ListValue* args);
+  void GetAdsNotificationsHistory(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -134,6 +135,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                                   brave_rewards::ContentSiteList) override;
   void OnCurrentTips(brave_rewards::RewardsService* rewards_service,
                                   brave_rewards::ContentSiteList) override;
+  void OnAdsNotificationsData(brave_rewards::RewardsService* rewards_service,
+                              int total_viewed,
+                              double estimated_earnings) override;
 
   void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
@@ -256,6 +260,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getAddressesForPaymentId",
                                     base::BindRepeating(&RewardsDOMHandler::GetAddressesForPaymentId,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getAdsNotifications",
+                                    base::BindRepeating(&RewardsDOMHandler::GetAdsNotificationsHistory,
                                                         base::Unretained(this)));
 }
 
@@ -943,6 +950,26 @@ void RewardsDOMHandler::GetAddressesForPaymentId(
           &RewardsDOMHandler::OnGetAddresses,
           weak_factory_.GetWeakPtr(),
           "addressesForPaymentId"));
+  }
+}
+
+void RewardsDOMHandler::GetAdsNotificationsHistory(
+    const base::ListValue* args) {
+  rewards_service_->GetAdsNotificationsHistory();
+}
+
+void RewardsDOMHandler::OnAdsNotificationsData(
+    brave_rewards::RewardsService* rewards_service,
+    int total_viewed,
+    double estimated_earnings) {
+  if (web_ui()->CanCallJavascript()) {
+    base::DictionaryValue adsNotificationsData;
+
+    adsNotificationsData.SetInteger("adsTotalPages", total_viewed);
+    adsNotificationsData.SetDouble("adsEstimatedEarnings", estimated_earnings);
+
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.adsNotificationsData", adsNotificationsData);
   }
 }
 

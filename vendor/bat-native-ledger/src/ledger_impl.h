@@ -420,6 +420,10 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetCatalogIssuers(const std::string& info) override;
   void AdSustained(const std::string& info) override;
+  void GetAdsNotificationsHistory(
+      const uint64_t from_timestamp_seconds,
+      const uint64_t to_timestamp_seconds,
+      ledger::AdsNotificationsHistoryCallback callback) override;
 
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,

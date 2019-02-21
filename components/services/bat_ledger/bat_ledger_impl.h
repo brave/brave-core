@@ -162,6 +162,14 @@ class BatLedgerImpl : public mojom::BatLedger,
     std::unique_ptr<ledger::Ledger> ledger_;
 
     DISALLOW_COPY_AND_ASSIGN(BatLedgerImpl);
+  void GetAdsNotificationsHistory(
+      const uint64_t from_timestamp_seconds,
+      const uint64_t to_timestamp_seconds,
+      GetAdsNotificationsHistoryCallback callback) override;
+
+  static void OnGetAdsNotificationsHistory(
+      CallbackHolder<GetAdsNotificationsHistoryCallback>* holder,
+      std::unique_ptr<ledger::TransactionsInfo> history);
 };
 
 }  // namespace bat_ledger

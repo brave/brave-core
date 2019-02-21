@@ -153,5 +153,7 @@ declare namespace Rewards {
     adsEnabled: boolean
     adsPerHour: number
     adsUIEnabled: boolean
+    adsNotificationsReceived: number
+    adsEstimatedEarnings: number
   }
 }

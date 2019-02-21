@@ -73,6 +73,8 @@ source_set("headers") {
     "include/bat/ledger/pending_contribution.h",
     "include/bat/ledger/publisher_info.h",
     "include/bat/ledger/wallet_info.h",
+    "include/bat/ledger/transaction_info.h",
+    "include/bat/ledger/transactions_info.h",
   ]
 }
 
@@ -83,6 +85,8 @@ source_set("ledger") {
 
   sources = [
     "src/bat/ledger/ledger.cc",
+    "src/bat/ledger/transaction_info.cc",
+    "src/bat/ledger/transactions_info.cc",
     "src/bat_client.cc",
     "src/bat_client.h",
     "src/bat_contribution.cc",
@@ -102,6 +106,7 @@ source_set("ledger") {
   ]
 
   deps = [
+    "//base",
     "//third_party/boringssl",
     rebase_path("bat-native-ads", dep_base),
     rebase_path("bat-native-confirmations", dep_base),

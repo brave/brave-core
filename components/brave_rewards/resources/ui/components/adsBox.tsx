@@ -9,11 +9,15 @@ import { connect } from 'react-redux'
 // Components
 import {
   Box,
-  DisabledContent
+  DisabledContent,
+  List,
+  NextContribution,
+  Tokens
 } from 'brave-ui/features/rewards'
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 
 // Utils
+import * as utils from '../utils'
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 
@@ -88,13 +92,24 @@ class AdsBox extends React.Component<Props, State> {
   }
 
   render () {
+    // Default values from storage.ts
     let adsEnabled = false
     let adsUIEnabled = false
-    const { adsData, enabledMain, firstLoad } = this.props.rewardsData
+    let notificationsReceived = 0
+    let estimatedEarnings = 0
+
+    const {
+      adsData,
+      enabledMain,
+      firstLoad,
+      walletInfo
+    } = this.props.rewardsData
 
     if (adsData) {
       adsEnabled = adsData.adsEnabled
       adsUIEnabled = adsData.adsUIEnabled
+      notificationsReceived = adsData.adsNotificationsReceived
+      estimatedEarnings = adsData.adsEstimatedEarnings
     }
 
     const toggle = !(!enabledMain || !adsUIEnabled)
@@ -113,7 +128,25 @@ class AdsBox extends React.Component<Props, State> {
         onToggle={this.onAdsSettingChange.bind(this, 'adsEnabled', '')}
         settingsOpened={this.state.settings}
         onSettingsClick={this.onSettingsToggle}
-      />
+      >
+        <List title={getLocale('adsCurrentEarnings')}>
+          <Tokens
+            value={estimatedEarnings.toString()}
+            converted={utils.convertBalance(estimatedEarnings.toString(), walletInfo.rates)}
+          />
+        </List>
+        <List title={getLocale('adsPaymentDate')}>
+          <NextContribution>
+            {'Monthly, 5th'}
+          </NextContribution>
+        </List>
+        <List title={getLocale('adsNotificationsReceived')}>
+          <Tokens
+            value={notificationsReceived.toString()}
+            hideText={true}
+          />
+        </List>
+      </Box>
     )
   }
 }

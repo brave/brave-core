@@ -2,8 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_
-#define BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_OBSERVER_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_OBSERVER_H_
+
+#include <string>
+#include <vector>
 
 #include "base/observer_list_types.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
@@ -61,6 +64,13 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnPublisherListNormalized(
       RewardsService* rewards_service,
       brave_rewards::ContentSiteList list) {};
+  virtual void OnAdsNotificationsData(brave_rewards::RewardsService* rewards_service,
+                              int total_viewed,
+                              double estimated_earnings) {};
+  virtual void OnAdsNotificationsData(
+      brave_rewards::RewardsService* rewards_service,
+      int total_viewed,
+      double estimated_earnings) {}
   // DO NOT ADD ANY MORE METHODS HERE UNLESS IT IS A BROADCAST NOTIFICATION
   // RewardsServiceObserver should not be used to return responses to the caller.
   // Method calls on RewardsService should use callbacks to return responses.
@@ -71,4 +81,4 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_OBSERVER_H_

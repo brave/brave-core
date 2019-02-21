@@ -171,6 +171,7 @@ class RewardsService : public KeyedService {
 
   virtual void GetAddressesForPaymentId(
       const GetAddressesCallback& callback) = 0;
+  virtual void GetAdsNotificationsHistory() = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
