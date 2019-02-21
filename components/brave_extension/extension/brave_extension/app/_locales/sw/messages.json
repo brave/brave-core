@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "Nyongeza ya Brave",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "Ngao",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "juu",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "chini",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "Jumla ya Yaliyozuiwa",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "kwa tovuti hii",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Ikiwa tovuti inaonekana imevunjika, jaribu ngao hapa chini",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Unaperuzi tovuti hii bila faraga na ulinzi usalama wowote.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "Matangazo na vifuatiliaji vimezuiwa",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "Madirisha ibukizi yamezuiwa",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "Picha zimezuiwa",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "Vidakuzi vya tovuti nyingine vimezuiwa",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "Vidakuzi vyote vimeruhusiwa",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "Vidakuzi vimezuiwa",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Baadhi ya Maandishi Yameziwa",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Maandishi yote yameruhusiwa",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Maandishi yamezuiwa",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "Utambuzi wa kifaa kingine umezuiwa",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "Utambuzi wa vifaa vyote umeruhusiwa",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Utambuzi wa kifaa umezuiwa",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Mashambulizi ya mtaliga yamezuiwa",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Miunganiko imesimbwa",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Machaguo msingi ya ngao",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Vidakuzi kwenye tovuti hii",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Majaribio ya kutambua kifaa",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Maandishi kwenye tovuti hii",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Maandishi yaliyozuiwa",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Maandishi yaliyoruhusiwa",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Ruhusu yote",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Ruhusu",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Vilivyoruhusiwa",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Zuia vyote",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Zuia",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Vimezuiwa",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Tumia",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Tumia mara moja",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Tumia hadi utakapowasha tena",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Tumia siku zote",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Tendua",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Ghairi",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Rudi nyuma",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

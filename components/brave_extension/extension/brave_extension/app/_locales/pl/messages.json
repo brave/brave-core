@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "Rozszerzenie Brave",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "Tarcze",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "włączone",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "wyłączone",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "Wszystkich zablokowanych",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "dla tej strony",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Jeśli strona nie działa, spróbuj wyłączyć tarcze",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Przeglądasz stronę bez żadnych zabezpieczeń prywatności lub oprogramowania.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "Zablokowane reklamy i skrypty śledzące",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "Wyskajujące okienka zostały zablokowane",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "Grafiki zostały zablokowane",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "Pliki cookie stron trzecich zablokowane",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "Wszystkie pliki cookies dozwolone",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "Pliki cookies zablokowane",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Niektóre skrypty są zablokowane",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Wszystkie skrypty dozwolone",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Skrypty zablokowane",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "Rozpoznawanie urządzeń przez strony trzecie zablokowane",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "Rozpoznawanie urządzeń dozwolone",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Rozpoznawanie urządzeń zablokowane",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Próby phishingu / złośliwego oprogramowania zostały zablokowane",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Połączenia szyfrowane",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Domyślne ustawienia tarcz",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Pliki cookies na tej stronie",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Próby rozpoznania urządzenia",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Skrypty na tej stronie",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Zablokowane skrypty",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Skrypty dozwolone",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Zezwalaj na wszystkie",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Zezwalaj",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Dozwolone",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Zablokuj wszystkie",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Zablokuj",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Zablokowane",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Zastosuj",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Zastosuj raz",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Stosuj do restartu",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Zawsze stosuj",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Cofnij",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Anuluj",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Wróć",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

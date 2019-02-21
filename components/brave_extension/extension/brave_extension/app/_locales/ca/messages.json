@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "L'Extensió Brave",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "Escuts",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "amunt",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "avall",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "Total bloquejat",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "per aquest lloc",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Si un lloc sembla trencat, prova a baixar els escuts",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Estàs navegant en aquest lloc sense cap protecció de privadesa i seguretat.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "S'han bloquejat els anuncis i els seguidors",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "S'han bloquejat les finestres emergents",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "S'han bloquejat les imatges",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "S'han bloquejat les galetes de 3rs",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "Totes les galetes permeses",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "Galetes bloquejades",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "S'han bloquejat algunes seqüències d'ordres",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Totes les seqüències d'ordres estan admeses",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Totes les seqüències d'ordres estan bloquejades",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "S'ha bloquejat el reconeixement de dispositius de tercers",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "Es permet el reconeixement de dispositius",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "S'ha bloquejat el reconeixement de dispositius",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "S'ha bloquejat l'intent de phishing o malware",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Connexions encriptades",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Paràmetres per defecte de l'escut global",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Galetes en aquest lloc",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Intents de reconeixement de dispositiu",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Hi ha seqüències d'ordres en aquest lloc",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Seqüències d'ordres bloquejades",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Seqüències d'ordres permeses",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Permet tot",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Permet",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Permès",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Bloqueja-ho tot",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Bloqueja",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Bloquejat",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Aplica",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Aplica una vegada",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Aplica fins a tornar a arrancar",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Aplica sempre",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Desfés",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Cancel·la",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Vés enrere",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

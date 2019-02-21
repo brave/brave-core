@@ -1,0 +1,9 @@
+{
+  "editor.formatOnPaste": true,
+  "editor.tabSize": 2,
+  "prettier.semi": false,
+  "javascript.preferences.quoteStyle": "auto",
+  "typescript.preferences.quoteStyle": "auto",
+  "prettier.singleQuote": true,
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": true
+}

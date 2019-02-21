@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "Brave এক্সটেনশন",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "শিল্ড",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "উপরে",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "নীচে",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "মোট যতগুলি ব্লক করা হয়েছে",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "এই সাইটটির জন্য",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "যদি কোনো সাইট অসম্পূর্ণ থাকে, তবে নীচে শিল্ডগুলি ব্যবহার করে দেখুন",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "আপনি কোনো গোপনীয়তা এবং নিরাপত্তার সুরক্ষা ছাড়াই এই সাইটটি ব্রাউজ করছেন।",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "যতগুলি বিজ্ঞাপন এবং ট্র্যাক ব্লক করা হয়েছে",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "যতগুলি পপ-আপ ব্লক করা হয়েছে",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "যতগুলি চিত্র ব্লক করা হয়েছে",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "3য়-পক্ষ কুকিগুলি ব্লক করা হয়েছে",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "সমস্ত কুকি অনুমোদন করা হয়েছে",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "কুকিগুলি ব্লক করা হয়েছে",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "কিছু স্ক্রিপ্ট ব্লক করা হয়েছে",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "সমস্ত স্ক্রিপ্ট অনুমোদন করা হয়েছে",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "স্ক্রিপ্টগুলি ব্লক করা হয়েছে",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "3য়-পক্ষ ডিভাইস শনাক্তকরণ ব্লক করা হয়েছে",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "সমস্ত ডিভাইস শনাক্তকরণ অনুমোদন করা হয়েছে",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "ডিভাইস শনাক্রকরণ ব্লক করা হয়েছে",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "ফিশিং/ম্যালওয়ার প্রচেষ্টাগুলি ব্লক করা হয়েছে",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "যে সংযোগগুলো এনক্রিপ্ট করা হয়েছে",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "গ্লোবাল শিল্ড ডিফল্টগুলি",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "এই সাইটটিতে থাকা কুকিগুলি",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "ডিভাইস শনাক্তকরণ প্রচেষ্টাগুলি",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "এই সাইটটিতে থাকা স্ক্রিপ্টগুলি",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "ব্লক করা স্ক্রিপ্টগুলি",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "অনুমোদিত স্ক্রিপ্টগুলি",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "সমস্ত অনুমোদন করুন",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "অনুমতি দিন",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "অনুমোদন করা হয়েছে",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "সমস্ত ব্লক করুন",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "ব্লক করুন",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "ব্লক করা হয়েছে",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "প্রয়োগ করুন",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "একবার প্রয়োগ করুন",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "পুনরায় শুরু না হওয়া পর্যন্ত প্রয়োগ করুন",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "সর্বদা প্রয়োগ করুন",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "পূর্বাবস্থায় ফেরান",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "বাতিল করুন",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "ফিরে যান",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

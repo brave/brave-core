@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "Расширение Brave",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "Защита",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "Активирован",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "Дезактивирована",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "Всего заблокировано",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "для этого сайта",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Если сайт кажется неисправным, попробуйте выключить защиту",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Вы посещаете этот сайт с отключенной защитой конфиденциальности и безопасности.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "Рекламных сообщений и трекеров заблокировано",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "Всплывающие окна заблокированы",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "Изображения заблокированы",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "Файла cookies сторонних разработчиков заблокированы",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "Файлы cookies разрешены",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "Файлы cookies заблокированы",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Некоторые скрипты заблокированы",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Разрешить все скрипты",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Скрипты заблокированы",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "Распознавание сторонних устройств заблокировано",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "Распознавание устройства разрешено",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Распознавание устройства заблокировано",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Заблокировано попыток фишинга/вредоносных программ",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Зашифрованных подключений",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Глобальная защита по умолчанию",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Файлов cookies на этом сайте",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Попыток распознавания устройства",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Скриптов на этом сайте",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Заблокированные скрипты",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Скриптов разрешено",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Разрешить все",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Разрешить",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Разрешено",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Заблокировать все",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Блокировать",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Заблокировано",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Применить",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Применить один раз",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Применить до перезагрузки",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Применять всегда",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Отменить",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Отмена",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Назад",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}
