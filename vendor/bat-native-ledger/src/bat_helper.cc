@@ -2381,11 +2381,11 @@ std::string sign(std::string* keys,
   }
   std::vector<uint8_t> signedMsg(crypto_sign_BYTES + message.length());
 
-  uint64_t signedMsgSize = 0;
+  unsigned long long signedMsgSize = 0;
   crypto_sign(&signedMsg.front(),
               &signedMsgSize,
-              (const unsigned char*)message.c_str(),
-              (uint64_t)message.length(),
+              reinterpret_cast<const unsigned char*>(message.c_str()),
+              (unsigned long long)message.length(),
               &secretKey.front());
 
   std::vector<uint8_t> signature(crypto_sign_BYTES);
