@@ -1,9 +1,10 @@
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_REWARDS_ADD_FUNDS_POPUP_H_
-#define BRAVE_BROWSER_REWARDS_ADD_FUNDS_POPUP_H_
+#ifndef BRAVE_BROWSER_BRAVE_REWARDS_ADD_FUNDS_POPUP_H_
+#define BRAVE_BROWSER_BRAVE_REWARDS_ADD_FUNDS_POPUP_H_
 
 #include <map>
 #include <string>
@@ -39,12 +40,12 @@ class AddFundsPopup : public views::WidgetObserver {
 
   // Show existing or open a new popup.
   void ShowPopup(content::WebContents* initiator,
-    RewardsService* rewards_service);
+                 RewardsService* rewards_service);
 
   // RewardsService callback.
   void OnGetAddresses(const std::map<std::string, std::string>& addresses);
 
-private:
+ private:
   FRIEND_TEST_ALL_PREFIXES(::BraveAddFundsPopupTest, TestAddFundsPopupClosed);
   FRIEND_TEST_ALL_PREFIXES(::BraveAddFundsPopupTest, TestAddFundsPopupDeleted);
   // Popup management.
@@ -55,7 +56,7 @@ private:
 
   // Addreses handling.
   std::string GetAddressesAsJSON(
-    const std::map<std::string, std::string>& addresses);
+      const std::map<std::string, std::string>& addresses);
   std::string ToQueryString(const std::string& data);
 
   // Override Brave Shields to set needed content permissions.
@@ -81,6 +82,6 @@ private:
   DISALLOW_COPY_AND_ASSIGN(AddFundsPopup);
 };
 
-} // namespace brav_rewards
+}  // namespace brave_rewards
 
-#endif  // BRAVE_BROWSER_REWARDS_ADD_FUNDS_POPUP_H_
+#endif  // BRAVE_BROWSER_BRAVE_REWARDS_ADD_FUNDS_POPUP_H_

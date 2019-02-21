@@ -1,8 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_rewards/add_funds_popup.h"
+
+#include <array>
+#include <map>
+#include <string>
 
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
@@ -30,10 +35,6 @@
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
-
-#include <array>
-#include <map>
-#include <string>
 
 using ::testing::_;
 using ::testing::Mock;
@@ -158,7 +159,7 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(GetAutoContribute,
                void(const GetAutoContributeCallback& callback));
   MOCK_CONST_METHOD1(SetAutoContribute, void(bool enabled));
-  MOCK_METHOD2(SetTimer, void(uint64_t time_offset, uint32_t& timer_id));
+  MOCK_METHOD2(SetTimer, void(uint64_t time_offset, uint32_t& timer_id));  // NOLINT
   MOCK_METHOD1(GetAllBalanceReports,
                void(const GetAllBalanceReportsCallback& callback));
   MOCK_METHOD0(GetCurrentBalanceReport, void());
@@ -397,7 +398,7 @@ IN_PROC_BROWSER_TEST_F(BraveAddFundsPopupTest, TestAddFundsPopupClosed) {
 
   int index = popup_browser->tab_strip_model()->GetIndexOfWebContents(
       popup->add_funds_popup_);
-  DCHECK(index != -1);
+  DCHECK_NE(index, -1);
   TabStrip* tab_strip =
       BrowserView::GetBrowserViewForBrowser(popup_browser)->tabstrip();
   DCHECK(tab_strip);

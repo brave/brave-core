@@ -1,6 +1,7 @@
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_rewards/add_funds_popup.h"
 
@@ -56,7 +57,7 @@ const std::map<std::string, std::string> kCurrencyToNetworkMap {
 
 class PopupContentSettingsBase {
  public:
-  PopupContentSettingsBase(Profile* profile);
+  explicit PopupContentSettingsBase(Profile* profile);
   virtual ~PopupContentSettingsBase();
 
  private:
@@ -231,12 +232,13 @@ void PopupContentSettingsBase::ResetShieldsCookies(
 
 void PopupContentSettingsBase::ResetShieldsScripts(
     HostContentSettingsMap* map) {
-  SetContentSetting(map, kAddFundsUrl, GURL(),
-                    CONTENT_SETTINGS_TYPE_JAVASCRIPT, js_brave_, std::string());
+  SetContentSetting(map, kAddFundsUrl, GURL(), CONTENT_SETTINGS_TYPE_JAVASCRIPT,
+                    js_brave_, std::string());
   SetContentSetting(map, kUpholdUrl, GURL(), CONTENT_SETTINGS_TYPE_JAVASCRIPT,
                     js_uphold_, std::string(), true);
-  SetContentSetting(map, kNetverifyUrl, GURL(), CONTENT_SETTINGS_TYPE_JAVASCRIPT,
-                    js_netverify_, std::string(), true);
+  SetContentSetting(map, kNetverifyUrl, GURL(),
+                    CONTENT_SETTINGS_TYPE_JAVASCRIPT, js_netverify_,
+                    std::string(), true);
   SetContentSetting(map, kTypekitUrl, GURL(), CONTENT_SETTINGS_TYPE_JAVASCRIPT,
                     js_typekit_, std::string());
 }
@@ -338,8 +340,10 @@ namespace brave_rewards {
 // Pass-through to PopupContentSettingsBase which is in an anonymous namespace.
 class AddFundsPopupContentSettings : public PopupContentSettingsBase {
  public:
-  AddFundsPopupContentSettings(Profile* profile)
+  explicit AddFundsPopupContentSettings(Profile* profile)
       : PopupContentSettingsBase(profile) {}
+
+ private:
   DISALLOW_COPY_AND_ASSIGN(AddFundsPopupContentSettings);
 };
 
