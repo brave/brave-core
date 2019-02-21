@@ -21,6 +21,8 @@ describe('ShieldsFooter component', () => {
     const url = 'chrome://settings/shields'
     beforeAll(() => {
       tabsAPI.createTab({ url })
+        .catch((error: Error) => console.error(error.toString())
+
       spy = jest.spyOn(chrome.tabs, 'create')
     })
 
@@ -29,7 +31,7 @@ describe('ShieldsFooter component', () => {
     })
 
     it('calls chrome.tab.create', () => {
-      const value = { preventDefault: () => {} }
+      const value = { preventDefault: () => { return } }
       const wrapper = shallow(baseComponent())
       wrapper.find('#braveShieldsFooter').simulate('click', value)
       expect(spy).toBeCalled()

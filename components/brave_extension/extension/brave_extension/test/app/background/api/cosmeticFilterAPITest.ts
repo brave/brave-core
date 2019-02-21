@@ -32,11 +32,15 @@ describe('cosmeticFilterTestSuite', () => {
         }
       })
       cosmeticFilterAPI.addSiteCosmeticFilter(url, filter)
+        .catch((error: Error) => console.error(error.toString()))
+
       expect(setStorageStub.getCall(0).args.length).toBe(1)
     })
     it('passes the correct arguments to chrome.storage.local.set when storage is empty', () => {
       getStorageStub.yields({})
       cosmeticFilterAPI.addSiteCosmeticFilter(url, filter)
+        .catch((error: Error) => console.error(error.toString()))
+
       expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {
           'https://www.brave.com': ['#cssFilter']
@@ -46,6 +50,8 @@ describe('cosmeticFilterTestSuite', () => {
     it('passes the correct arguments to chrome.storage.local.set when storage is undefined', () => {
       getStorageStub.yields(undefined)
       cosmeticFilterAPI.addSiteCosmeticFilter(url, filter)
+        .catch((error: Error) => console.error(error.toString()))
+
       expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {
           'https://www.brave.com': ['#cssFilter']
@@ -59,6 +65,8 @@ describe('cosmeticFilterTestSuite', () => {
         }
       })
       cosmeticFilterAPI.addSiteCosmeticFilter('hostname', 'samplefilter2')
+        .catch((error: Error) => console.error(error.toString()))
+
       expect(setStorageStub.getCall(0).args[0]).toEqual({
         'cosmeticFilterList': {
           'hostname': ['samplefilter', 'samplefilter2']

@@ -141,7 +141,7 @@ describe('Shields API', () => {
     it('resolves the promise with an array', (cb) => {
       expect.assertions(1)
       shieldsAPI.getTabData(tabId)
-      .then((tab: chrome.tabs.Tab) => {
+        .then((tab: chrome.tabs.Tab) => {
           expect(tab).toEqual(activeTabData)
           cb()
         })
@@ -325,13 +325,15 @@ describe('Shields API', () => {
   describe('setAllowFingerprinting', () => {
     let spy: jest.SpyInstance
     beforeEach(() => {
-      spy = jest.spyOn (chrome.braveShields.plugins, 'setAsync')
+      spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')
     })
     afterEach(() => {
       spy.mockRestore()
     })
     it('calls chrome.braveShields.plugins with the correct args', () => {
       shieldsAPI.setAllowFingerprinting('https://www.brave.com', 'block')
+        .catch((error: Error) => console.error(error.toString()))
+
       const arg0 = spy.mock.calls[0][0]
       expect.assertions(2)
       expect(arg0).toEqual({
@@ -351,13 +353,15 @@ describe('Shields API', () => {
     })
     it('passes only 1 arg to chrome.braveShields.plugins', () => {
       shieldsAPI.setAllowFingerprinting('https://www.brave.com', 'block')
+        .catch((error: Error) => console.error(error.toString()))
+
       expect.assertions(2)
       expect(spy.mock.calls[0].length).toBe(1)
       expect(spy.mock.calls[1].length).toBe(1)
     })
     it('resolves the returned promise', (cb) => {
       shieldsAPI.setAllowFingerprinting('https://www.brave.com', 'block')
-        .then(function() {
+        .then(function () {
           cb()
         })
         .catch((e: Error) => {
@@ -369,13 +373,15 @@ describe('Shields API', () => {
   describe('setAllowCookies', () => {
     let spy: jest.SpyInstance
     beforeEach(() => {
-      spy = jest.spyOn (chrome.braveShields.plugins, 'setAsync')
+      spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')
     })
     afterEach(() => {
       spy.mockRestore()
     })
     it('calls chrome.braveShields.plugins with the correct args', () => {
       shieldsAPI.setAllowCookies('https://www.brave.com', 'block')
+        .catch((error: Error) => console.error(error.toString()))
+
       const arg0 = spy.mock.calls[0][0]
       expect.assertions(3)
       expect(arg0).toEqual({
@@ -402,6 +408,8 @@ describe('Shields API', () => {
     })
     it('passes only 1 arg to chrome.braveShields.plugins', () => {
       shieldsAPI.setAllowCookies('https://www.brave.com', 'block')
+        .catch((error: Error) => console.error(error.toString()))
+
       expect.assertions(2)
       expect(spy.mock.calls[0].length).toBe(1)
       expect(spy.mock.calls[1].length).toBe(1)
@@ -436,6 +444,8 @@ describe('Shields API', () => {
     })
     it('calls chrome.braveShields.allowScriptsOnce with the correct args', () => {
       shieldsAPI.setAllowScriptOriginsOnce(['https://a.com/', 'https://b.com/'], 2)
+        .catch((error: Error) => console.error(error.toString()))
+
       const arg0 = spy.mock.calls[0][0]
       expect.assertions(2)
       expect(arg0).toEqual(['https://a.com/', 'https://b.com/'])
@@ -444,12 +454,14 @@ describe('Shields API', () => {
     })
     it('passes 3 args to chrome.braveShields.allowScriptsOnce', () => {
       shieldsAPI.setAllowScriptOriginsOnce(['https://a.com/', 'https://b.com/'], 2)
+        .catch((error: Error) => console.error(error.toString()))
+
       expect.assertions(1)
       expect(spy.mock.calls[0].length).toBe(3) // include callback
     })
     it('resolves the returned promise', (cb) => {
       shieldsAPI.setAllowScriptOriginsOnce(['https://a.com/', 'https://b.com/'], 2)
-      .then(() => {
+        .then(() => {
           cb()
         })
         .catch((e: Error) => {
