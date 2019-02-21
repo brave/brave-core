@@ -1,10 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVELEDGER_RAPIDJSON_BAT_HELPER_H_
 #define BRAVELEDGER_RAPIDJSON_BAT_HELPER_H_
 
+#include <string>
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
 #include "rapidjson/stringbuffer.h"
@@ -22,7 +24,7 @@ struct ActivityInfoFilter;
 struct VisitData;
 struct WalletInfo;
 
-}
+}  // namespace ledger
 
 namespace braveledger_bat_helper {
 
@@ -76,7 +78,7 @@ void saveToJsonString(const T& t, std::string& json) {
   json = buffer.GetString();
 }
 
-//return: parsing status:  true = succeded, false = failed
+// return: parsing status:  true = succeded, false = failed
 template <typename T>
 bool loadFromJson(T& t, const std::string& json) {
   bool succeded = t.loadFromJson(json);

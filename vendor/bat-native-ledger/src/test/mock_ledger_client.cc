@@ -1,9 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "mock_ledger_client.h"
+#include <vector>
+#include <string>
 
+#include "mock_ledger_client.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -33,11 +36,10 @@ void MockLedgerClient::OnWalletInitialized(ledger::Result result) {
 }
 
 void MockLedgerClient::OnReconcileComplete(ledger::Result result,
-                                              const std::string& viewing_id) {
+                                           const std::string& viewing_id) {
 }
 
-void MockLedgerClient::LoadLedgerState(
-    ledger::LedgerCallbackHandler* handler) {
+void MockLedgerClient::LoadLedgerState(ledger::LedgerCallbackHandler* handler) {
   handler->OnLedgerStateLoaded(ledger::Result::OK, ledger_state_);
 }
 
@@ -47,24 +49,25 @@ void MockLedgerClient::LoadPublisherState(
 }
 
 void MockLedgerClient::SaveLedgerState(const std::string& ledger_state,
-                                      ledger::LedgerCallbackHandler* handler) {
+                                       ledger::LedgerCallbackHandler* handler) {
   ledger_state_ = ledger_state;
   handler->OnLedgerStateSaved(ledger::Result::OK);
 }
 
-void MockLedgerClient::SavePublisherState(const std::string& publisher_state,
-                                      ledger::LedgerCallbackHandler* handler) {
+void MockLedgerClient::SavePublisherState(
+    const std::string& publisher_state,
+    ledger::LedgerCallbackHandler* handler) {
   publisher_state_ = publisher_state;
   handler->OnPublisherStateSaved(ledger::Result::OK);
 }
 
 void MockLedgerClient::LoadURL(const std::string& url,
-                 const std::vector<std::string>& headers,
-                 const std::string& content,
-                 const std::string& contentType,
-                 const ledger::URL_METHOD& method,
-                 ledger::LoadURLCallback callback) {
+                               const std::vector<std::string>& headers,
+                               const std::string& content,
+                               const std::string& contentType,
+                               const ledger::URL_METHOD& method,
+                               ledger::LoadURLCallback callback) {
   callback(true, "{}", {});
 }
 
-}  // namespace payments
+}  // namespace bat_ledger
