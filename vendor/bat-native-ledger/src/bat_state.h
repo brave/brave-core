@@ -79,9 +79,9 @@ class BatState {
 
   void SetPaymentId(const std::string& payment_id);
 
-  const braveledger_bat_helper::GRANT& GetGrant() const;
+  const braveledger_bat_helper::Grants& GetGrants() const;
 
-  void SetGrant(braveledger_bat_helper::GRANT grant);
+  void SetGrants(braveledger_bat_helper::Grants grants);
 
   const std::string& GetPersonaId() const;
 

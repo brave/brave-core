@@ -23,6 +23,10 @@
 #include "bat/ledger/grant.h"
 #include "bat/ledger/pending_contribution.h"
 
+namespace confirmations {
+class LogStream;
+}
+
 namespace ledger {
 
 LEDGER_EXPORT enum LogLevel {
@@ -56,9 +60,12 @@ using GetNicewareListCallback =
 using RecurringDonationCallback = std::function<void(const PublisherInfoList&)>;
 using RecurringRemoveCallback = std::function<void(Result)>;
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
-using LoadURLCallback = std::function<void(bool, const std::string&,
+using LoadURLCallback = std::function<void(const int, const std::string&,
     const std::map<std::string, std::string>& headers)>;
 using OnRestoreCallback = std::function<void(bool)>;
+using OnSaveCallback = std::function<void(const ledger::Result)>;
+using OnLoadCallback = std::function<void(const ledger::Result, const std::string&)>;
+using OnResetCallback = std::function<void(const ledger::Result)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -122,9 +129,8 @@ class LEDGER_EXPORT LedgerClient {
                                     PublisherInfoListCallback callback) = 0;
 
   // TODO(anyone) this can be removed
-  virtual void FetchGrant(const std::string& lang,
-                          const std::string& paymentId) = 0;
-
+  virtual void FetchGrants(const std::string& lang,
+                           const std::string& paymentId) = 0;
   virtual void OnGrant(ledger::Result result, const ledger::Grant& grant) = 0;
 
   virtual void GetGrantCaptcha() = 0;
@@ -165,7 +171,8 @@ class LEDGER_EXPORT LedgerClient {
 
   // uint64_t time_offset (input): timer offset in seconds.
   // uint32_t timer_id (output) : 0 in case of failure
-  virtual void SetTimer(uint64_t time_offset, uint32_t & timer_id) = 0;
+  virtual void SetTimer(uint64_t time_offset, uint32_t* timer_id) = 0;
+  virtual void KillTimer(const uint32_t timer_id) = 0;
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
@@ -174,7 +181,7 @@ class LEDGER_EXPORT LedgerClient {
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,
-      const ledger::URL_METHOD& method,
+      const ledger::URL_METHOD method,
       ledger::LoadURLCallback callback) = 0;
 
   virtual void SetContributionAutoInclude(const std::string& publisher_key,
@@ -199,6 +206,15 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void SaveNormalizedPublisherList(
     const ledger::PublisherInfoListStruct& normalized_list) = 0;
+
+  virtual void SaveState(const std::string& name,
+                         const std::string& value,
+                         ledger::OnSaveCallback callback) = 0;
+  virtual void LoadState(const std::string& name,
+                         ledger::OnLoadCallback callback) = 0;
+  virtual void ResetState(const std::string& name,
+                          ledger::OnResetCallback callback) = 0;
+  virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 };
 
 }  // namespace ledger

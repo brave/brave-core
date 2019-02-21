@@ -319,13 +319,13 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(
     const std::string& mediaURL,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
-    bool success,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(__func__, success, response, headers);
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (!success) {
-    // TODO(anyone) add error handler
+  if (response_status_code != 200) {
+    // TODO add error handler
     return;
   }
 
@@ -377,10 +377,10 @@ void BatGetMedia::getPublisherInfoCallback(
     const std::string& publisherName,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
-    bool success,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  if (success &&  providerName == YOUTUBE_MEDIA_TYPE) {
+  if (response_status_code == 200 && providerName == YOUTUBE_MEDIA_TYPE) {
     std::string favIconURL = parseFavIconUrl(response);
     std::string channelId = parseChannelId(response);
 
@@ -698,7 +698,8 @@ void BatGetMedia::onGetChannelIdFromUserPage(
     const ledger::VisitData& visit_data,
     const std::string& providerType,
     const std::string& media_key,
-    bool success, const std::string& response,
+    int response_status_code,
+    const std::string& response,
     const std::map<std::string, std::string>& headers) {
   std::string channelId = parseChannelId(response);
   if (!channelId.empty()) {
@@ -720,14 +721,13 @@ void BatGetMedia::onGetChannelIdFromUserPage(
   }
 }
 
-void BatGetMedia::onGetChannelHeadlineVideo(
-    uint64_t windowId,
+void BatGetMedia::onGetChannelHeadlineVideo(uint64_t windowId,
     const ledger::VisitData& visit_data,
     const std::string& providerType,
-    bool success,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  if (!success) {
+  if (response_status_code != 200) {
     onMediaActivityError(visit_data, providerType, windowId);
     return;
   }

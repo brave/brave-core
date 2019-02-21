@@ -27,6 +27,8 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/browser_process.h"
@@ -250,21 +252,23 @@ bool SaveBundleStateOnFileTaskRunner(
 
 }  // namespace
 
-AdsServiceImpl::AdsServiceImpl(Profile* profile) :
-    profile_(profile),
-    file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
+AdsServiceImpl::AdsServiceImpl(Profile* profile)
+    : profile_(profile),
+      file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-    base_path_(profile_->GetPath().AppendASCII("ads_service")),
-    next_timer_id_(0),
-    bundle_state_backend_(
-        new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
-    display_service_(NotificationDisplayService::GetForProfile(profile_)),
+      base_path_(profile_->GetPath().AppendASCII("ads_service")),
+      next_timer_id_(0),
+      bundle_state_backend_(
+          new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
+      display_service_(NotificationDisplayService::GetForProfile(profile_)),
+      rewards_service_(
+          brave_rewards::RewardsServiceFactory::GetForProfile(profile_)),
 #if !defined(OS_ANDROID)
-    last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
-    is_foreground_(!!chrome::FindBrowserWithActiveWindow()),
+      last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
+      is_foreground_(!!chrome::FindBrowserWithActiveWindow()),
 #endif
-    bat_ads_client_binding_(new bat_ads::AdsClientMojoBridge(this)) {
+      bat_ads_client_binding_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(!profile_->IsOffTheRecord());
 
   file_task_runner_->PostTask(FROM_HERE,
@@ -500,6 +504,13 @@ void AdsServiceImpl::TabClosed(SessionID tab_id) {
   bat_ads_->TabClosed(tab_id.id());
 }
 
+void AdsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
+  if (!connected())
+    return;
+
+  bat_ads_->SetConfirmationsIsReady(is_ready);
+}
+
 void AdsServiceImpl::ClassifyPage(const std::string& url,
                                   const std::string& page) {
   if (!connected())
@@ -589,6 +600,14 @@ void AdsServiceImpl::ShowNotification(
       base::BindOnce(
           &AdsServiceImpl::NotificationTimedOut, AsWeakPtr(),
               timer_id, notification_id));
+}
+
+void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
+  rewards_service_->SetCatalogIssuers(info->ToJson());
+}
+
+void AdsServiceImpl::AdSustained(std::unique_ptr<ads::NotificationInfo> info) {
+  rewards_service_->AdSustained(info->ToJson());
 }
 
 void AdsServiceImpl::NotificationTimedOut(uint32_t timer_id,

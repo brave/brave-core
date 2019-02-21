@@ -20,7 +20,7 @@ chrome.braveRewards.onCurrentReport.addListener((properties: RewardsExtension.Re
   rewardsPanelActions.onCurrentReport(properties)
 })
 
-chrome.braveRewards.onGrant.addListener((properties: RewardsExtension.GrantInfo) => {
+chrome.braveRewards.onGrant.addListener((properties: RewardsExtension.GrantResponse) => {
   rewardsPanelActions.onGrant(properties)
 })
 

@@ -26,6 +26,7 @@ def parse_args():
     parser.add_argument('--target', required=True)
     parser.add_argument('--is_debug', required=True)
     parser.add_argument('--mac_deployment_target')
+    parser.add_argument('--rust_flags')
 
     args = parser.parse_args()
 
@@ -63,6 +64,24 @@ def build(args):
     # Set environment variables for Challenge Bypass Ristretto FFI
     if is_debug == "false":
         env['NDEBUG'] = "1"
+
+    if args.rust_flags is not None:
+        env['RUSTFLAGS'] = args.rust_flags
+
+    # clean first because we want gn to decide when to rebuild and
+    # cargo doesn't rebuild when env changes
+    cargo_args = []
+    cargo_args.append("cargo" if sys.platform != "win32" else rustup_bin_exe)
+    cargo_args.append("clean")
+    cargo_args.append("--manifest-path=" + manifest_path)
+    cargo_args.append("--target-dir=" + build_path)
+    cargo_args.append("--target=" + target)
+
+    try:
+        subprocess.check_call(cargo_args, env=env)
+    except subprocess.CalledProcessError as e:
+        print e.output
+        raise e
 
     # Build targets
     cargo_args = []

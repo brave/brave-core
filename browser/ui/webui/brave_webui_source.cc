@@ -1,4 +1,4 @@
-/* Copyright 2016 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -313,6 +313,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "done", IDS_BRAVE_UI_DONE },
         { "downloadPDF", IDS_BRAVE_UI_DOWNLOAD_PDF },
         { "earningsAds", IDS_BRAVE_UI_EARNINGS_ADS },
+        { "earningsClaimDefault", IDS_BRAVE_UI_EARNINGS_CLAIM_DEFAULT },
         { "enableTips", IDS_BRAVE_UI_ENABLE_TIPS },
         { "excludeSite", IDS_BRAVE_UI_EXCLUDE_SITE },
         { "excludedSitesText", IDS_BRAVE_UI_EXCLUDED_SITES },

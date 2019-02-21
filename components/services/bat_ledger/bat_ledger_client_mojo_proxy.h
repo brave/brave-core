@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -6,6 +7,9 @@
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_PROXY_H_
 
 #include <map>
+#include <memory>
+#include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger_client.h"
@@ -27,8 +31,10 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void OnWalletInitialized(ledger::Result result) override;
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
-  void OnGrant(ledger::Result result, const ledger::Grant& grant) override;
-  void OnGrantCaptcha(const std::string& image, const std::string& hint) override;
+  void OnGrant(ledger::Result result,
+               const ledger::Grant& grant) override;
+  void OnGrantCaptcha(const std::string& image,
+                      const std::string& hint) override;
   void OnRecoverWallet(ledger::Result result,
                       double balance,
                       const std::vector<ledger::Grant>& grants) override;
@@ -53,14 +59,15 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                               ledger::PublisherInfoCallback callback) override;
   void SavePublishersList(const std::string& publishers_list,
                           ledger::LedgerCallbackHandler* handler) override;
-  void SetTimer(uint64_t time_offset, uint32_t& timer_id) override;
+  void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
+  void KillTimer(const uint32_t timer_id) override;
   void LoadPublisherList(ledger::LedgerCallbackHandler* handler) override;
 
   void LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,
-      const ledger::URL_METHOD& method,
+      const ledger::URL_METHOD method,
       ledger::LoadURLCallback callback) override;
 
   void OnExcludedSitesChanged(const std::string& publisher_id) override;
@@ -76,7 +83,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                             const uint32_t date,
                             const std::string& publisher_key,
                             const ledger::REWARDS_CATEGORY category) override;
-  void GetRecurringDonations(ledger::PublisherInfoListCallback callback) override;
+  void GetRecurringDonations(
+      ledger::PublisherInfoListCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(const char* file,
                                          int line,
                                          ledger::LogLevel level) const override;
@@ -86,10 +94,12 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void LoadMediaPublisherInfo(
       const std::string& media_key,
       ledger::PublisherInfoCallback callback) override;
-  void SaveMediaPublisherInfo(const std::string& media_key, const std::string& publisher_id) override;
+  void SaveMediaPublisherInfo(const std::string& media_key,
+                              const std::string& publisher_id) override;
 
   void FetchWalletProperties() override;
-  void FetchGrant(const std::string& lang, const std::string& paymentId) override;
+  void FetchGrants(const std::string& lang,
+                   const std::string& payment_id) override;
   void GetGrantCaptcha() override;
 
   std::string URIEncode(const std::string& value) override;
@@ -116,6 +126,15 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void SaveNormalizedPublisherList(
     const ledger::PublisherInfoListStruct& normalized_list) override;
 
+  void SaveState(const std::string& name,
+                 const std::string& value,
+                 ledger::OnSaveCallback callback) override;
+  void LoadState(const std::string& name,
+                 ledger::OnLoadCallback callback) override;
+  void ResetState(const std::string& name,
+                  ledger::OnResetCallback callback) override;
+  void SetConfirmationsIsReady(const bool is_ready) override;
+
  private:
   bool Connected() const;
 
@@ -141,6 +160,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   DISALLOW_COPY_AND_ASSIGN(BatLedgerClientMojoProxy);
 };
 
-} // namespace bat_ledger
+}  // namespace bat_ledger
 
-#endif // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_PROXY_H_
+#endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_PROXY_H_

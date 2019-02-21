@@ -1,11 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_IMPL_H_
 
+#include <map>
 #include <memory>
+#include <string>
+#include <utility>
 
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger.h"
@@ -68,13 +72,13 @@ class BatLedgerImpl : public mojom::BatLedger,
         int32_t category, const std::string& probi, int32_t month,
         int32_t year, uint32_t data) override;
 
-    void FetchGrant(
+    void FetchGrants(
         const std::string& lang, const std::string& payment_id) override;
     void GetGrantCaptcha() override;
     void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
     void GetNumExcludedSites(GetNumExcludedSitesCallback callback) override;
     void RecoverWallet(const std::string& passPhrase) override;
-    void SolveGrantCaptcha(const std::string& solution) override;
+    void SolveGrantCaptcha(const std::string& solution, const std::string& promotionId) override;
 
     void GetAddresses(GetAddressesCallback callback) override;
     void GetBATAddress(GetBATAddressCallback callback) override;
@@ -125,6 +129,10 @@ class BatLedgerImpl : public mojom::BatLedger,
         GetAddressesForPaymentIdCallback callback) override;
 
   private:
+    void SetCatalogIssuers(const std::string& info) override;
+    void AdSustained(const std::string& info) override;
+
+   private:
     // workaround to pass base::OnceCallback into std::bind
     template <typename Callback>
       class CallbackHolder {
@@ -156,6 +164,6 @@ class BatLedgerImpl : public mojom::BatLedger,
     DISALLOW_COPY_AND_ASSIGN(BatLedgerImpl);
 };
 
-} // namespace bat_ledger
+}  // namespace bat_ledger
 
-#endif // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_IMPL_H_
+#endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_IMPL_H_

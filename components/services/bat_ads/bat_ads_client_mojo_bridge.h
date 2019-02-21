@@ -1,10 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_CLIENT_MOJO_BRIDGE_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_CLIENT_MOJO_BRIDGE_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -28,8 +30,9 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   void GetClientInfo(ads::ClientInfo* info) const override;
   const std::vector<std::string> GetLocales() const override;
   const std::string GenerateUUID() const override;
-  void ShowNotification(
-      std::unique_ptr<ads::NotificationInfo> info) override;
+  void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;
+  void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
+  void AdSustained(std::unique_ptr<ads::NotificationInfo> info) override;
   uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(uint32_t timer_id) override;
   void URLRequest(const std::string& url,

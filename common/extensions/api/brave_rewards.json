@@ -317,7 +317,7 @@
         ]
       },
       {
-        "name": "getGrant",
+        "name": "getGrants",
         "type": "function",
         "description": "Retrieves grant when panel is mounted",
         "parameters": []
@@ -335,6 +335,10 @@
         "parameters": [
           {
             "name": "solution",
+            "type": "string"
+          },
+          {
+            "name": "promotionId",
             "type": "string"
           }
         ]

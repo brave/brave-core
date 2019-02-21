@@ -1,8 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
+
+#include <map>
+#include <memory>
+#include <utility>
 
 #include "base/containers/flat_map.h"
 #include "base/logging.h"
@@ -36,15 +41,18 @@ class LogStreamImpl : public ads::LogStream {
   LogStreamImpl(const char* file,
                 int line,
                 const ads::LogLevel log_level) {
-    switch(log_level) {
+    switch (log_level) {
       case ads::LogLevel::LOG_INFO:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_INFO);
+        log_message_ = std::make_unique<logging::LogMessage>(
+            file, line, logging::LOG_INFO);
         break;
       case ads::LogLevel::LOG_WARNING:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_WARNING);
+        log_message_ = std::make_unique<logging::LogMessage>(
+            file, line, logging::LOG_WARNING);
         break;
       default:
-        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_ERROR);
+        log_message_ = std::make_unique<logging::LogMessage>(
+            file, line, logging::LOG_ERROR);
     }
   }
 
@@ -58,10 +66,10 @@ class LogStreamImpl : public ads::LogStream {
   DISALLOW_COPY_AND_ASSIGN(LogStreamImpl);
 };
 
-}
+}  // namespace
 
 BatAdsClientMojoBridge::BatAdsClientMojoBridge(
-    mojom::BatAdsClientAssociatedPtrInfo client_info){
+    mojom::BatAdsClientAssociatedPtrInfo client_info) {
   bat_ads_client_.Bind(std::move(client_info));
 }
 
@@ -145,6 +153,22 @@ void BatAdsClientMojoBridge::ShowNotification(
     return;
 
   bat_ads_client_->ShowNotification(info->ToJson());
+}
+
+void BatAdsClientMojoBridge::SetCatalogIssuers(
+    std::unique_ptr<ads::IssuersInfo> info) {
+  if (!connected())
+    return;
+
+  bat_ads_client_->SetCatalogIssuers(info->ToJson());
+}
+
+void BatAdsClientMojoBridge::AdSustained(
+    std::unique_ptr<ads::NotificationInfo> info) {
+  if (!connected())
+    return;
+
+  bat_ads_client_->AdSustained(info->ToJson());
 }
 
 uint32_t BatAdsClientMojoBridge::SetTimer(const uint64_t time_offset) {
@@ -274,7 +298,7 @@ void OnGetAds(const ads::OnGetAdsCallback& callback,
 
   for (const auto it : ad_info_json_list) {
     ads::AdInfo ad_info;
-    if (ad_info.FromJson(it)) {
+    if (ad_info.FromJson(it) == ads::Result::SUCCESS) {
       ad_info_list.push_back(ad_info);
     } else {
       callback(

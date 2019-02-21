@@ -112,7 +112,21 @@ export class Panel extends React.Component<Props, State> {
   }
 
   onFetchCaptcha = () => {
-    this.actions.getGrantCaptcha()
+    let notification: any = this.getNotification()
+
+    if (!notification || (notification && notification.alert)) {
+      return
+    }
+
+    notification = notification && notification.notification
+
+    if (notification && notification.id) {
+      const split = notification.id.split('_')
+      const promoId = split[split.length - 1]
+      if (promoId) {
+        this.actions.getGrantCaptcha(promoId)
+      }
+    }
   }
 
   onBackupWallet = (id: string) => {
@@ -293,6 +307,10 @@ export class Panel extends React.Component<Props, State> {
         type = 'grant'
         text = getMessage('grantNotification')
         break
+      case RewardsNotificationType.REWARDS_NOTIFICATION_GRANT_ADS:
+        type = 'grant'
+        text = getMessage('earningsClaimDefault')
+        break
       case RewardsNotificationType.REWARDS_NOTIFICATION_BACKUP_WALLET:
         type = 'backupWallet'
         text = getMessage('backupWalletNotification')
@@ -328,7 +346,7 @@ export class Panel extends React.Component<Props, State> {
   }
 
   render () {
-    const { grant, pendingContributionTotal, enabledAC } = this.props.rewardsPanelData
+    const { pendingContributionTotal, enabledAC } = this.props.rewardsPanelData
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const converted = utils.convertBalance(balance.toString(), rates)
@@ -336,6 +354,7 @@ export class Panel extends React.Component<Props, State> {
     const notificationId = this.getNotificationProp('id', notification)
     const notificationType = this.getNotificationProp('type', notification)
     const notificationClick = this.getNotificationClickEvent(notificationType, notificationId)
+    const { currentGrant } = this.props.rewardsPanelData
 
     const pendingTotal = parseFloat(
       (pendingContributionTotal || 0).toFixed(1))
@@ -369,7 +388,7 @@ export class Panel extends React.Component<Props, State> {
         showCopy={false}
         showSecActions={false}
         connectedWallet={false}
-        grant={grant}
+        grant={currentGrant}
         onGrantHide={this.onGrantHide}
         onNotificationClick={notificationClick}
         onSolution={this.onSolution}

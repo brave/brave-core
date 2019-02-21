@@ -1,11 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_SERVICE_
-#define BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_SERVICE_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_
 
+#include <map>
 #include <memory>
+#include <string>
 
 #include "base/macros.h"
 #include "base/observer_list.h"
@@ -20,6 +23,11 @@
 
 class PrefRegistrySimple;
 class Profile;
+
+namespace ads {
+struct IssuersInfo;
+struct NotificationInfo;
+}
 
 namespace ledger {
 struct PublisherInfo;
@@ -75,9 +83,11 @@ class RewardsService : public KeyedService {
       bool allow_non_verified,
       uint32_t min_visits,
       const GetContentSiteListCallback& callback) = 0;
-  virtual void FetchGrant(const std::string& lang, const std::string& paymentId) = 0;
+  virtual void FetchGrants(const std::string& lang,
+                           const std::string& paymentId) = 0;
   virtual void GetGrantCaptcha() = 0;
-  virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
+  virtual void SolveGrantCaptcha(const std::string& solution,
+                                 const std::string& promotionId) const = 0;
   virtual void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) = 0;
   virtual void GetNumExcludedSites(
@@ -124,7 +134,7 @@ class RewardsService : public KeyedService {
   virtual void GetAutoContribute(
       const GetAutoContributeCallback& callback) = 0;
   virtual void SetAutoContribute(bool enabled) const = 0;
-  virtual void SetTimer(uint64_t time_offset, uint32_t& timer_id) = 0;
+  virtual void SetTimer(uint64_t time_offset, uint32_t* timer_id) = 0;
   virtual void GetAllBalanceReports(
       const GetAllBalanceReportsCallback& callback) = 0;
   virtual void GetCurrentBalanceReport() = 0;
@@ -155,6 +165,9 @@ class RewardsService : public KeyedService {
     const GetPendingContributionsTotalCallback& callback) = 0;
   virtual void GetRewardsMainEnabled(
     const GetRewardsMainEnabledCallback& callback) const = 0;
+  // TODO remove this hack when ads is moved to the same process as ledger
+  virtual void SetCatalogIssuers(const std::string& json) = 0;
+  virtual void AdSustained(const std::string& json) = 0;
 
   virtual void GetAddressesForPaymentId(
       const GetAddressesCallback& callback) = 0;
@@ -173,4 +186,4 @@ class RewardsService : public KeyedService {
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_SERVICE_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_H_

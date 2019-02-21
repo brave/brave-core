@@ -36,6 +36,10 @@ namespace base {
 class SequencedTaskRunner;
 }  // namespace base
 
+namespace brave_rewards {
+class RewardsService;
+}  // namespace brave_rewards
+
 namespace brave_ads {
 
 class AdsNotificationHandler;
@@ -66,6 +70,7 @@ class AdsServiceImpl : public AdsService,
   void OnMediaStart(SessionID tab_id) override;
   void OnMediaStop(SessionID tab_id) override;
   void ClassifyPage(const std::string& url, const std::string& page) override;
+  void SetConfirmationsIsReady(const bool is_ready) override;
 
   void Shutdown() override;
 
@@ -103,8 +108,9 @@ class AdsServiceImpl : public AdsService,
   void GetClientInfo(ads::ClientInfo* info) const override;
   const std::vector<std::string> GetLocales() const override;
   const std::string GenerateUUID() const override;
-  void ShowNotification(
-      std::unique_ptr<ads::NotificationInfo> info) override;
+  void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;
+  void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
+  void AdSustained(std::unique_ptr<ads::NotificationInfo> info) override;
   uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(uint32_t timer_id) override;
   void URLRequest(const std::string& url,
@@ -185,6 +191,7 @@ class AdsServiceImpl : public AdsService,
   uint32_t next_timer_id_;
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
   NotificationDisplayService* display_service_;  // NOT OWNED
+  brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 #if !defined(OS_ANDROID)
   ui::IdleState last_idle_state_;
   bool is_foreground_;

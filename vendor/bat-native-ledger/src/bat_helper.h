@@ -171,6 +171,21 @@ struct GRANT {
   std::string probi;
   uint64_t expiryTime;
   std::string promotionId;
+  std::string type;
+  };
+
+struct GRANT_RESPONSE {
+  GRANT_RESPONSE();
+  GRANT_RESPONSE(const GRANT_RESPONSE& properties);
+  ~GRANT_RESPONSE();
+
+  //load from json string
+  bool loadFromJson(const std::string & json);
+
+  std::string promotionId;
+  uint64_t minimumReconcileTimestamp;
+  uint64_t protocolVersion;
+  std::string type;
 };
 
 struct WALLET_PROPERTIES_ST {
@@ -324,6 +339,7 @@ struct CURRENT_RECONCILE {
   std::string proof_;
 };
 
+typedef std::vector<GRANT> Grants;
 typedef std::vector<TRANSACTION_ST> Transactions;
 typedef std::vector<BALLOT_ST> Ballots;
 typedef std::vector<BATCH_VOTES_ST> BatchVotes;
@@ -357,10 +373,20 @@ struct CLIENT_STATE_ST {
   std::string ruleset_;
   std::string rulesetV2_;
   BatchVotes batch_;
-  GRANT grant_;
+  Grants grants_;
   CurrentReconciles current_reconciles_;
   bool auto_contribute_ = false;
   bool rewards_enabled_ = false;
+};
+
+struct GRANTS_PROPERTIES_ST {
+  GRANTS_PROPERTIES_ST();
+  ~GRANTS_PROPERTIES_ST();
+  GRANTS_PROPERTIES_ST(const GRANTS_PROPERTIES_ST& properties);
+
+  //  load from json string
+  bool loadFromJson(const std::string & json);
+  std::vector<GRANT_RESPONSE> grants_;
 };
 
 // The struct is serialized/deserialized from/into JSON

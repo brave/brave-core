@@ -12,6 +12,7 @@
 #include <fstream>
 #include <vector>
 
+#include "bat/confirmations/confirmations_client.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
@@ -36,6 +37,10 @@ class BatState;
 
 namespace braveledger_bat_contribution {
 class BatContribution;
+}
+
+namespace confirmations {
+class Confirmations;
 }
 
 namespace bat_ledger {
@@ -159,6 +164,9 @@ class LedgerImpl : public ledger::Ledger,
 
   void LoadNicewareList(ledger::GetNicewareListCallback callback);
 
+  void SetConfirmationsWalletInfo(
+      const braveledger_bat_helper::WALLET_INFO_ST& wallet_info);
+
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler);
 
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler);
@@ -172,9 +180,9 @@ class LedgerImpl : public ledger::Ledger,
 
   void FetchWalletProperties() const override;
 
-  void FetchGrant(const std::string& lang,
-                  const std::string& paymentId) const override;
-
+  void FetchGrants(const std::string& lang,
+                   const std::string& paymentId) const override;
+  
   void OnGrant(ledger::Result result,
                const braveledger_bat_helper::GRANT& grant);
 
@@ -182,7 +190,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnGrantCaptcha(const std::string& image, const std::string& hint);
 
-  void SolveGrantCaptcha(const std::string& solution) const override;
+  void SolveGrantCaptcha(const std::string& solution,
+                         const std::string& promotionId) const override;
 
   void OnGrantFinish(ledger::Result result,
                      const braveledger_bat_helper::GRANT& grant);
@@ -197,7 +206,7 @@ class LedgerImpl : public ledger::Ledger,
       const std::vector<braveledger_bat_helper::GRANT>& grants);
 
   void LoadPublishersListCallback(
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
@@ -207,7 +216,7 @@ class LedgerImpl : public ledger::Ledger,
                const std::vector<std::string>& headers,
                const std::string& content,
                const std::string& contentType,
-               const ledger::URL_METHOD& method,
+               const ledger::URL_METHOD method,
                ledger::LoadURLCallback callback);
 
   void OnReconcileComplete(ledger::Result result,
@@ -293,13 +302,8 @@ class LedgerImpl : public ledger::Ledger,
       bool non_verified,
       bool min_visits);
 
-  std::unique_ptr<ledger::LogStream> Log(
-      const char* file,
-      int line,
-      const ledger::LogLevel log_level) const;
-
   void LogResponse(const std::string& func_name,
-                   bool result,
+                   int response_status_code,
                    const std::string& response,
                    const std::map<std::string,
                    std::string>& headers);
@@ -316,11 +320,10 @@ class LedgerImpl : public ledger::Ledger,
   const std::string& GetPaymentId() const;
 
   void SetPaymentId(const std::string& payment_id);
-
-  const braveledger_bat_helper::GRANT& GetGrant() const;
-
-  void SetGrant(braveledger_bat_helper::GRANT grant);
-
+  
+  const braveledger_bat_helper::Grants& GetGrants() const;
+  
+  void SetGrants(braveledger_bat_helper::Grants grants);
   const std::string& GetPersonaId() const;
 
   void SetPersonaId(const std::string& persona_id);
@@ -340,6 +343,9 @@ class LedgerImpl : public ledger::Ledger,
   const braveledger_bat_helper::WALLET_INFO_ST& GetWalletInfo() const;
 
   void SetWalletInfo(const braveledger_bat_helper::WALLET_INFO_ST& info);
+
+  const confirmations::WalletInfo GetConfirmationsWalletInfo(
+      const braveledger_bat_helper::WALLET_INFO_ST& info) const;
 
   const braveledger_bat_helper::WALLET_PROPERTIES_ST&
   GetWalletProperties() const;
@@ -394,7 +400,7 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::PublisherInfoList& list,
       uint32_t /* next_record */);
 
-  void SetTimer(uint64_t time_offset, uint32_t& timer_id) const;
+  void SetTimer(uint64_t time_offset, uint32_t* timer_id) const;
 
   bool AddReconcileStep(const std::string& viewing_id,
                         braveledger_bat_helper::ContributionRetry step,
@@ -413,6 +419,14 @@ class LedgerImpl : public ledger::Ledger,
   GetAddressesForPaymentId(ledger::WalletAddressesCallback callback) override;
 
   void SetAddresses(std::map<std::string, std::string> addresses);
+
+  void SetCatalogIssuers(const std::string& info) override;
+  void AdSustained(const std::string& info) override;
+
+  std::unique_ptr<ledger::LogStream> Log(
+      const char* file,
+      const int line,
+      const ledger::LogLevel log_level) const;
 
  private:
   void AddRecurringPayment(const std::string& publisher_id,
@@ -484,6 +498,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
   std::unique_ptr<braveledger_bat_contribution::BatContribution>
   bat_contribution_;
+  std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
 
   bool initialized_;
   bool initializing_;

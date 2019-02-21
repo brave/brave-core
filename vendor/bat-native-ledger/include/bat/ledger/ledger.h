@@ -217,10 +217,11 @@ class LEDGER_EXPORT Ledger {
 
   virtual void FetchWalletProperties() const = 0;
 
-  virtual void FetchGrant(const std::string& lang,
-                          const std::string& paymentId) const = 0;
+  virtual void FetchGrants(const std::string& lang,
+                           const std::string& paymentId) const = 0;
 
-  virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
+  virtual void SolveGrantCaptcha(const std::string& solution,
+                                 const std::string& promotionId) const = 0;
 
   virtual void GetGrantCaptcha() const = 0;
 
@@ -289,6 +290,10 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetAddressesForPaymentId(
       ledger::WalletAddressesCallback callback) = 0;
+
+  virtual void SetCatalogIssuers(const std::string& info) = 0;
+
+  virtual void AdSustained(const std::string& info) = 0;
 };
 
 }  // namespace ledger

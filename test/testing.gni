@@ -1,0 +1,48 @@
+import("//testing/test.gni")
+
+if (is_mac) {
+  template("fix_testing_install_name_impl") {
+    action(target_name) {
+      forward_variables_from(invoker, "*")
+      testonly = true
+      script = "//build/gn_run_binary.py"
+      inputs = [
+        script,
+        "/usr/bin/install_name_tool",
+        executable_path,
+      ]
+
+      args = [
+        "/usr/bin/install_name_tool",
+        "-change",
+        current_path,
+        new_path,
+        rebase_path(executable_path, root_build_dir),
+      ]
+    }
+  }
+
+  template("fix_testing_install_name") {
+    group(target_name) {
+      testonly = true
+      deps = [
+        ":" + target_name + "_unit_tests",
+        ":" + target_name + "_browser_tests",
+      ]
+    }
+    fix_testing_install_name_impl(target_name + "_unit_tests") {
+      forward_variables_from(invoker, "*")
+      executable_path = "$root_build_dir/brave_unit_tests"
+      # input is the same as the output so just fake it
+      outputs = [ "$root_build_dir/alwaysrununittests/$target_name" ]
+      deps = [ "//brave/test:brave_unit_tests" ]
+    }
+    fix_testing_install_name_impl(target_name + "_browser_tests") {
+      forward_variables_from(invoker, "*")
+      executable_path = "$root_build_dir/brave_browser_tests"
+      # input is the same as the output so just fake it
+      outputs = [ "$root_build_dir/alwaysrunbrowsertests/$target_name" ]
+      deps = [ "//brave/test:brave_browser_tests" ]
+    }
+  }
+}

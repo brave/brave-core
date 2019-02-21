@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -6,6 +7,10 @@
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_PROXY_H_
 
 #include <map>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger_client.h"
@@ -16,7 +21,7 @@ namespace bat_ledger {
 class LedgerClientMojoProxy : public mojom::BatLedgerClient,
                           public base::SupportsWeakPtr<LedgerClientMojoProxy> {
  public:
-  LedgerClientMojoProxy(ledger::LedgerClient* ledger_client);
+  explicit LedgerClientMojoProxy(ledger::LedgerClient* ledger_client);
   ~LedgerClientMojoProxy() override;
 
   // bat_ledger::mojom::BatLedgerClient
@@ -60,6 +65,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       OnRemoveRecurringCallback callback) override;
 
   void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
+  void KillTimer(const uint32_t timer_id) override;
   void OnPanelPublisherInfo(int32_t result, const std::string& info,
       uint64_t window_id) override;
   void OnExcludedSitesChanged(const std::string& publisher_id) override;
@@ -69,7 +75,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void SaveMediaPublisherInfo(const std::string& media_key,
       const std::string& publisher_id) override;
   void FetchWalletProperties() override;
-  void FetchGrant(const std::string& lang,
+  void FetchGrants(const std::string& lang,
       const std::string& payment_id) override;
   void GetGrantCaptcha() override;
 
@@ -104,6 +110,15 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void SaveNormalizedPublisherList(
     const std::string& normalized_list) override;
+  void SaveState(const std::string& name,
+                              const std::string& value,
+                              SaveStateCallback callback) override;
+  void LoadState(const std::string& name,
+                              LoadStateCallback callback) override;
+  void ResetState(
+      const std::string& name,
+      ResetStateCallback callback) override;
+  void SetConfirmationsIsReady(const bool is_ready) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
@@ -174,7 +189,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   static void OnLoadURL(
       CallbackHolder<LoadURLCallback>* holder,
-      bool success, const std::string& response,
+      int32_t response_code, const std::string& response,
       const std::map<std::string, std::string>& headers);
 
   static void OnLoadActivityInfo(
@@ -196,11 +211,24 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const ledger::PublisherInfoList& publisher_info_list,
       uint32_t next_record);
 
+  static void OnSaveState(
+      CallbackHolder<SaveStateCallback>* holder,
+      ledger::Result result);
+
+  static void OnLoadState(
+      CallbackHolder<LoadStateCallback>* holder,
+      ledger::Result result,
+      const std::string& value);
+
+  static void OnResetState(
+      CallbackHolder<ResetStateCallback>* holder,
+      ledger::Result result);
+
   ledger::LedgerClient* ledger_client_;
 
   DISALLOW_COPY_AND_ASSIGN(LedgerClientMojoProxy);
 };
 
-} // namespace bat_ledger
+}  // namespace bat_ledger
 
 #endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_PROXY_H_

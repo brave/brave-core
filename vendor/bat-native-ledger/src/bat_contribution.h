@@ -171,7 +171,7 @@ class BatContribution {
   void Reconcile(const std::string &viewing_id);
 
   void ReconcileCallback(const std::string& viewing_id,
-                         bool result,
+                         int response_status_code,
                          const std::string& response,
                          const std::map<std::string, std::string>& headers);
 
@@ -179,7 +179,7 @@ class BatContribution {
 
   void CurrentReconcileCallback(
       const std::string& viewing_id,
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
@@ -187,7 +187,7 @@ class BatContribution {
 
   void ReconcilePayloadCallback(
       const std::string& viewing_id,
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
@@ -195,7 +195,7 @@ class BatContribution {
 
   void RegisterViewingCallback(
       const std::string& viewing_id,
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
@@ -203,7 +203,7 @@ class BatContribution {
 
   void ViewingCredentialsCallback(
       const std::string& viewing_id,
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
@@ -237,7 +237,7 @@ class BatContribution {
       const braveledger_bat_helper::TRANSACTION_ST& transaction);
 
   void PrepareBatchCallback(
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
@@ -252,7 +252,7 @@ class BatContribution {
 
   void VoteBatchCallback(
       const std::string& publisher,
-      bool result,
+      int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 

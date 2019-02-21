@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -11,7 +12,7 @@ using namespace std::placeholders;
 
 namespace bat_ledger {
 
-namespace { // TODO, move into a util class
+namespace {  // TODO, move into a util class
 
 int32_t ToMojomResult(ledger::Result result) {
   return (int32_t)result;
@@ -35,7 +36,7 @@ ledger::URL_METHOD ToLedgerURLMethod(int32_t method) {
   return (ledger::URL_METHOD)method;
 }
 
-} // anonymous namespace
+}  // namespace
 
 LedgerClientMojoProxy::LedgerClientMojoProxy(
     ledger::LedgerClient* ledger_client)
@@ -316,14 +317,19 @@ void LedgerClientMojoProxy::LoadMediaPublisherInfo(
   auto* holder = new CallbackHolder<LoadMediaPublisherInfoCallback>(
       AsWeakPtr(), std::move(callback));
   ledger_client_->LoadMediaPublisherInfo(media_key,
-      std::bind(LedgerClientMojoProxy::OnLoadMediaPublisherInfo, holder, _1, _2));
+      std::bind(LedgerClientMojoProxy::OnLoadMediaPublisherInfo,
+                holder, _1, _2));
 }
 
 void LedgerClientMojoProxy::SetTimer(uint64_t time_offset,
     SetTimerCallback callback) {
   uint32_t timer_id;
-  ledger_client_->SetTimer(time_offset, timer_id);
+  ledger_client_->SetTimer(time_offset, &timer_id);
   std::move(callback).Run(timer_id);
+}
+
+void LedgerClientMojoProxy::KillTimer(const uint32_t timer_id) {
+  ledger_client_->KillTimer(timer_id);
 }
 
 void LedgerClientMojoProxy::OnExcludedSitesChanged(
@@ -437,9 +443,9 @@ void LedgerClientMojoProxy::FetchWalletProperties() {
   ledger_client_->FetchWalletProperties();
 }
 
-void LedgerClientMojoProxy::FetchGrant(const std::string& lang,
+void LedgerClientMojoProxy::FetchGrants(const std::string& lang,
     const std::string& payment_id) {
-  ledger_client_->FetchGrant(lang, payment_id);
+  ledger_client_->FetchGrants(lang, payment_id);
 }
 
 void LedgerClientMojoProxy::GetGrantCaptcha() {
@@ -460,11 +466,11 @@ void LedgerClientMojoProxy::SetContributionAutoInclude(
 // static
 void LedgerClientMojoProxy::OnLoadURL(
     CallbackHolder<LoadURLCallback>* holder,
-    bool success, const std::string& response,
+    int32_t response_code, const std::string& response,
     const std::map<std::string, std::string>& headers) {
   if (holder->is_valid())
-    std::move(holder->get()).Run(
-        success, response, mojo::MapToFlatMap(headers));
+    std::move(holder->get())
+        .Run(response_code, response, mojo::MapToFlatMap(headers));
   delete holder;
 }
 
@@ -591,7 +597,6 @@ void LedgerClientMojoProxy::GetActivityInfoList(uint32_t start,
                 holder,
                 _1,
                 _2));
-
 }
 
 void LedgerClientMojoProxy::SaveNormalizedPublisherList(
@@ -603,4 +608,73 @@ void LedgerClientMojoProxy::SaveNormalizedPublisherList(
   ledger_client_->SaveNormalizedPublisherList(list);
 }
 
-} // namespace bat_ledger
+// static
+void LedgerClientMojoProxy::OnSaveState(
+    CallbackHolder<SaveStateCallback>* holder,
+    const ledger::Result result) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::SaveState(
+    const std::string& name,
+    const std::string& value,
+    SaveStateCallback callback) {
+  // deleted in OnSaveState
+  auto* holder = new CallbackHolder<SaveStateCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_client_->SaveState(
+      name, value,
+      std::bind(LedgerClientMojoProxy::OnSaveState, holder, _1));
+}
+
+// static
+void LedgerClientMojoProxy::OnLoadState(
+    CallbackHolder<LoadStateCallback>* holder,
+    const ledger::Result result,
+    const std::string& value) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, value);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::LoadState(
+    const std::string& name,
+    LoadStateCallback callback) {
+  // deleted in OnSaveState
+  auto* holder = new CallbackHolder<LoadStateCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_client_->LoadState(
+      name, std::bind(LedgerClientMojoProxy::OnLoadState, holder,
+                      _1, _2));
+}
+
+// static
+void LedgerClientMojoProxy::OnResetState(
+    CallbackHolder<ResetStateCallback>* holder,
+    const ledger::Result result) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::ResetState(
+    const std::string& name,
+    ResetStateCallback callback) {
+  // deleted in OnResetState
+  auto* holder = new CallbackHolder<ResetStateCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_client_->ResetState(
+      name,
+      std::bind(LedgerClientMojoProxy::OnResetState, holder, _1));
+}
+
+void LedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
+  ledger_client_->SetConfirmationsIsReady(is_ready);
+}
+
+}  // namespace bat_ledger

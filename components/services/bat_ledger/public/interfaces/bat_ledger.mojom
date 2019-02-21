@@ -52,12 +52,12 @@ interface BatLedger {
   OnReconcileCompleteSuccess(string viewing_id, int32 category, string probi,
       int32 month, int32 year, uint32 data);
 
-  FetchGrant(string lang, string payment_id);
+  FetchGrants(string lang, string payment_id);
   GetGrantCaptcha();
   GetWalletPassphrase() => (string wallet_passphrase);
   GetNumExcludedSites() => (uint32 num_excluded_sites);
   RecoverWallet(string passPhrase);
-  SolveGrantCaptcha(string solution);
+  SolveGrantCaptcha(string solution, string promotionId);
 
   GetAddresses() => (map<string, string> addresses);
   GetBATAddress() => (string address);
@@ -97,6 +97,9 @@ interface BatLedger {
   HasSufficientBalanceToReconcile() => (bool sufficient);
 
   GetAddressesForPaymentId() => (map<string, string> addresses);
+
+  SetCatalogIssuers(string info);
+  AdSustained(string info);
 };
 
 interface BatLedgerClient {
@@ -136,17 +139,18 @@ interface BatLedgerClient {
   OnRemoveRecurring(string publisher_key) => (int32 result);
 
   LoadURL(string url, array<string> headers, string content,
-      string content_type, int32 method) => (bool success, string response,
+      string content_type, int32 method) => (int32 status_code, string response,
         map<string, string> headers);
 
   [Sync]
   SetTimer(uint64 time_offset) => (uint32 timer_id);
+  KillTimer(uint32 timer_id);
   OnExcludedSitesChanged(string publisher_id);
   SaveContributionInfo(string probi, int32 month, int32 year, uint32 date,
       string publisher_key, int32 category);
   SaveMediaPublisherInfo(string media_key, string publisher_id);
   FetchWalletProperties();
-  FetchGrant(string lang, string payment_id);
+  FetchGrants(string lang, string payment_id);
   GetGrantCaptcha();
 
   [Sync]
@@ -168,4 +172,9 @@ interface BatLedgerClient {
       array<string> publisher_info_list, uint32 next_record);
 
   SaveNormalizedPublisherList(string list);
+
+  SaveState(string name, string value) => (int32 result);
+  LoadState(string name) => (int32 result, string value);
+  ResetState(string name) => (int32 result);
+  SetConfirmationsIsReady(bool is_ready);
 };

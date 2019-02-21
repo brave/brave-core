@@ -4,12 +4,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <ctime>
+#include <iostream>
 #include <random>
 #include <sstream>
 #include <vector>
 
 #include "ledger_impl.h"
 
+#include "bat/ads/issuers_info.h"
+#include "bat/ads/notification_info.h"
+#include "bat/confirmations/confirmations.h"
 #include "bat_client.h"
 #include "bat_contribution.h"
 #include "bat_get_media.h"
@@ -193,7 +197,7 @@ void LedgerImpl::LoadLedgerState(ledger::LedgerCallbackHandler* handler) {
 }
 
 void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
-                                        const std::string& data) {
+                                     const std::string& data) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_state_->LoadState(data)) {
       BLOG(this, ledger::LogLevel::LOG_ERROR) <<
@@ -203,6 +207,9 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
 
       OnWalletInitialized(ledger::Result::INVALID_LEDGER_STATE);
     } else {
+      auto wallet_info = bat_state_->GetWalletInfo();
+      SetConfirmationsWalletInfo(wallet_info);
+
       LoadPublisherState(this);
       bat_contribution_->OnStartUp();
     }
@@ -216,6 +223,18 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
 
     OnWalletInitialized(result);
   }
+}
+
+void LedgerImpl::SetConfirmationsWalletInfo(
+    const braveledger_bat_helper::WALLET_INFO_ST& wallet_info) {
+  if (!bat_confirmations_) {
+    bat_confirmations_.reset(
+        confirmations::Confirmations::CreateInstance(ledger_client_));
+  }
+
+  auto confirmations_wallet_info = GetConfirmationsWalletInfo(wallet_info);
+  bat_confirmations_->SetWalletInfo(
+      std::make_unique<confirmations::WalletInfo>(confirmations_wallet_info));
 }
 
 void LedgerImpl::LoadPublisherState(ledger::LedgerCallbackHandler* handler) {
@@ -303,7 +322,7 @@ void LedgerImpl::LoadURL(const std::string& url,
                          const std::vector<std::string>& headers,
                          const std::string& content,
                          const std::string& contentType,
-                         const ledger::URL_METHOD& method,
+                         const ledger::URL_METHOD method,
                          ledger::LoadURLCallback callback) {
   ledger_client_->LoadURL(url,
                           headers,
@@ -572,17 +591,19 @@ void LedgerImpl::FetchWalletProperties() const {
   bat_client_->getWalletProperties();
 }
 
-void LedgerImpl::FetchGrant(const std::string& lang,
-                            const std::string& payment_id) const {
-  bat_client_->getGrant(lang, payment_id);
+void LedgerImpl::FetchGrants(const std::string& lang,
+                             const std::string& payment_id) const {
+  bat_client_->getGrants(lang, payment_id);
 }
 
 void LedgerImpl::OnGrant(ledger::Result result,
                          const braveledger_bat_helper::GRANT& properties) {
   ledger::Grant grant;
 
+  grant.type = properties.type;
   grant.promotionId = properties.promotionId;
   last_grant_check_timer_id_ = 0;
+
   RefreshGrant(result != ledger::Result::LEDGER_OK &&
     result != ledger::Result::GRANT_NOT_FOUND);
   ledger_client_->OnGrant(result, grant);
@@ -634,8 +655,8 @@ void LedgerImpl::OnRecoverWallet(
                                   ledgerGrants);
 }
 
-void LedgerImpl::SolveGrantCaptcha(const std::string& solution) const {
-  bat_client_->setGrant(solution, "");
+void LedgerImpl::SolveGrantCaptcha(const std::string& solution, const std::string& promotionId) const {
+  bat_client_->setGrant(solution, promotionId);
 }
 
 void LedgerImpl::OnGrantFinish(ledger::Result result,
@@ -646,6 +667,7 @@ void LedgerImpl::OnGrantFinish(ledger::Result result,
   newGrant.probi = grant.probi;
   newGrant.expiryTime = grant.expiryTime;
   newGrant.promotionId = grant.promotionId;
+  newGrant.type = grant.type;
 
   ledger_client_->OnGrantFinish(result, newGrant);
 }
@@ -715,6 +737,9 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
+  if (bat_confirmations_->OnTimer(timer_id))
+    return;
+
   if (timer_id == last_pub_load_timer_id_) {
     last_pub_load_timer_id_ = 0;
 
@@ -734,7 +759,7 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
     LoadURL(url, headers, "", "", ledger::URL_METHOD::GET, callback);
   } else if (timer_id == last_grant_check_timer_id_) {
     last_grant_check_timer_id_ = 0;
-    FetchGrant(std::string(), std::string());
+    FetchGrants(std::string(), std::string());
   }
 
   bat_contribution_->OnTimer(timer_id);
@@ -746,10 +771,10 @@ void LedgerImpl::GetRecurringDonations(
 }
 
 void LedgerImpl::LoadPublishersListCallback(
-    bool result,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  if (result && !response.empty()) {
+  if (response_status_code == 200 && !response.empty()) {
     bat_publishers_->RefreshPublishersList(response);
   } else {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
@@ -799,7 +824,7 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
   }
 
   // start timer
-  SetTimer(start_timer_in, last_pub_load_timer_id_);
+  SetTimer(start_timer_in, &last_pub_load_timer_id_);
 }
 
 void LedgerImpl::RefreshGrant(bool retryAfterError) {
@@ -829,7 +854,7 @@ void LedgerImpl::RefreshGrant(bool retryAfterError) {
       start_timer_in = 0ull;
     }
   }
-  SetTimer(start_timer_in, last_grant_check_timer_id_);
+  SetTimer(start_timer_in, &last_grant_check_timer_id_);
 }
 
 uint64_t LedgerImpl::retryRequestSetup(uint64_t min_time, uint64_t max_time) {
@@ -968,10 +993,10 @@ std::unique_ptr<ledger::LogStream> LedgerImpl::Log(
 
 void LedgerImpl::LogResponse(
     const std::string& func_name,
-    bool result,
+    int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  std::string stat = result ? "Success" : "Failure";
+  std::string stat = response_status_code == 200 ? "Success" : "Failure";
 
   std::string formatted_headers = "";
   for (auto header = headers.begin(); header != headers.end(); ++header) {
@@ -1013,12 +1038,12 @@ void LedgerImpl::SetPaymentId(const std::string& payment_id) {
   bat_state_->SetPaymentId(payment_id);
 }
 
-const braveledger_bat_helper::GRANT& LedgerImpl::GetGrant() const {
-  return bat_state_->GetGrant();
+const braveledger_bat_helper::Grants& LedgerImpl::GetGrants() const {
+  return bat_state_->GetGrants();
 }
 
-void LedgerImpl::SetGrant(braveledger_bat_helper::GRANT grant) {
-  bat_state_->SetGrant(grant);
+void LedgerImpl::SetGrants(braveledger_bat_helper::Grants grants) {
+  bat_state_->SetGrants(grants);
 }
 
 const std::string& LedgerImpl::GetPersonaId() const {
@@ -1061,6 +1086,24 @@ LedgerImpl::GetWalletInfo() const {
 void LedgerImpl::SetWalletInfo(
     const braveledger_bat_helper::WALLET_INFO_ST& info) {
   bat_state_->SetWalletInfo(info);
+
+  SetConfirmationsWalletInfo(info);
+}
+
+const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
+    const braveledger_bat_helper::WALLET_INFO_ST& info) const {
+  confirmations::WalletInfo wallet_info;
+
+  wallet_info.payment_id = info.paymentId_;
+
+  auto seed = braveledger_bat_helper::getHKDF(info.keyInfoSeed_);
+  std::vector<uint8_t> publicKey = {};
+  std::vector<uint8_t> secretKey = {};
+  braveledger_bat_helper::getPublicKeyFromSeed(seed, publicKey, secretKey);
+
+  wallet_info.public_key = braveledger_bat_helper::uint8ToHex(secretKey);
+
+  return wallet_info;
 }
 
 const braveledger_bat_helper::WALLET_PROPERTIES_ST&
@@ -1161,7 +1204,7 @@ void LedgerImpl::NormalizeContributeWinners(
   bat_publishers_->NormalizeContributeWinners(newList, list, record);
 }
 
-void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t& timer_id) const {
+void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t* timer_id) const {
   ledger_client_->SetTimer(time_offset, timer_id);
 }
 
@@ -1204,6 +1247,39 @@ void LedgerImpl::GetAddressesForPaymentId(
 
 void LedgerImpl::SetAddresses(std::map<std::string, std::string> addresses) {
   bat_state_->SetAddress(addresses);
+}
+
+void LedgerImpl::SetCatalogIssuers(const std::string& info) {
+  ads::IssuersInfo issuers_info_ads;
+  if (issuers_info_ads.FromJson(info) != ads::Result::SUCCESS)
+    return;
+
+  auto issuers_info = std::make_unique<confirmations::IssuersInfo>();
+  issuers_info->public_key = issuers_info_ads.public_key;
+  for (ads::IssuerInfo issuer_info_ad : issuers_info_ads.issuers) {
+    confirmations::IssuerInfo issuer_info;
+    issuer_info.name = issuer_info_ad.name;
+    issuer_info.public_key = issuer_info_ad.public_key;
+    issuers_info->issuers.push_back(issuer_info);
+  }
+
+  bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
+}
+
+void LedgerImpl::AdSustained(const std::string& info) {
+  ads::NotificationInfo notification_info_ads;
+  if (notification_info_ads.FromJson(info) != ads::Result::SUCCESS)
+    return;
+
+  auto notification_info = std::make_unique<confirmations::NotificationInfo>();
+  notification_info->creative_set_id = notification_info_ads.creative_set_id;
+  notification_info->category = notification_info_ads.category;
+  notification_info->advertiser = notification_info_ads.advertiser;
+  notification_info->text = notification_info_ads.text;
+  notification_info->url = notification_info_ads.url;
+  notification_info->uuid = notification_info_ads.uuid;
+
+  bat_confirmations_->AdSustained(std::move(notification_info));
 }
 
 }  // namespace bat_ledger
