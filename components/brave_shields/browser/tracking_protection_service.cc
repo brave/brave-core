@@ -30,6 +30,7 @@ TrackingProtectionService::TrackingProtectionService()
   : tracking_protection_client_(new CTPParser()),
     // See comment in tracking_protection_service.h for white_list_
     white_list_({
+      "graph.facebook.com",
       "connect.facebook.net",
       "connect.facebook.com",
       "staticxx.facebook.com",
