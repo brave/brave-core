@@ -11,6 +11,7 @@
   - [ ] Windows
   - [ ] macOS
   - [ ] Linux
+- [ ] Verified that all lint errors/warnings are resolved (`npm run lint`)
 - [ ] Ran `git rebase master` (if needed).
 - [ ] Ran `git rebase -i` to squash commits (if needed).
 - [ ] Tagged reviewers and labelled the pull request as needed.
