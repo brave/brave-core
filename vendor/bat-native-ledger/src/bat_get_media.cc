@@ -495,8 +495,6 @@ void BatGetMedia::onMediaActivityError(const ledger::VisitData& visit_data,
 
   if (!url.empty()) {
     ledger::VisitData new_data;
-    new_data.local_month = visit_data.local_month;
-    new_data.local_year = visit_data.local_year;
     new_data.domain = url;
     new_data.url = "https://" + url;
     new_data.path = "/";

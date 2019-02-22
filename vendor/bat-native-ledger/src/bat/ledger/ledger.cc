@@ -26,8 +26,6 @@ VisitData::VisitData(const std::string& _tld,
             const std::string& _domain,
             const std::string& _path,
             uint32_t _tab_id,
-            ACTIVITY_MONTH _local_month,
-            int _local_year,
             const std::string& _name,
             const std::string& _url,
             const std::string& _provider,
@@ -36,8 +34,6 @@ VisitData::VisitData(const std::string& _tld,
     domain(_domain),
     path(_path),
     tab_id(_tab_id),
-    local_month(_local_month),
-    local_year(_local_year),
     name(_name),
     url(_url),
     provider(_provider),
@@ -48,8 +44,6 @@ VisitData::VisitData(const VisitData& data) :
     domain(data.domain),
     path(data.path),
     tab_id(data.tab_id),
-    local_month(data.local_month),
-    local_year(data.local_year),
     name(data.name),
     url(data.url),
     provider(data.provider),
@@ -74,8 +68,6 @@ bool VisitData::loadFromJson(const std::string& json) {
         d.HasMember("domain") && d["domain"].IsString() &&
         d.HasMember("path") && d["path"].IsString() &&
         d.HasMember("tab_id") && d["tab_id"].IsUint() &&
-        d.HasMember("local_month") && d["local_month"].IsInt() &&
-        d.HasMember("local_year") && d["local_year"].IsInt() &&
         d.HasMember("name") && d["name"].IsString() &&
         d.HasMember("url") && d["url"].IsString() &&
         d.HasMember("provider") && d["provider"].IsString() &&
@@ -87,8 +79,6 @@ bool VisitData::loadFromJson(const std::string& json) {
     domain = d["domain"].GetString();
     path = d["path"].GetString();
     tab_id = d["tab_id"].GetUint();
-    local_month = (ACTIVITY_MONTH)d["local_month"].GetInt();
-    local_year = d["local_year"].GetInt();
     name = d["name"].GetString();
     url = d["url"].GetString();
     provider = d["provider"].GetString();

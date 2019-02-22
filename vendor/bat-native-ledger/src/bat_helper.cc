@@ -2724,12 +2724,6 @@ void saveToJson(JsonWriter& writer, const ledger::VisitData& visitData) {
   writer.String("tab_id");
   writer.Uint(visitData.tab_id);
 
-  writer.String("local_month");
-  writer.Int(visitData.local_month);
-
-  writer.String("local_year");
-  writer.Int(visitData.local_year);
-
   writer.String("name");
   writer.String(visitData.name.c_str());
 

@@ -819,8 +819,6 @@ void BatPublishers::getPublisherActivityFromUrl(
   ledger::VisitData new_data;
   new_data.domain = visit_data.domain;
   new_data.path = visit_data.path;
-  new_data.local_month = visit_data.local_month;
-  new_data.local_year = visit_data.local_year;
   new_data.name = visit_data.name;
   new_data.url = visit_data.url;
   new_data.favicon_url = "";
