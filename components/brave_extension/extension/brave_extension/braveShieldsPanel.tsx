@@ -11,8 +11,8 @@ import { ThemeProvider } from 'brave-ui/theme'
 import { Provider } from 'react-redux'
 import { Store } from 'react-chrome-redux'
 import BraveShields from './containers/braveShields'
-require('./assets/fonts/muli.css')
-require('./assets/fonts/poppins.css')
+require('../../../fonts/muli.css')
+require('../../../fonts/poppins.css')
 
 chrome.storage.local.get('state', (obj) => {
   const store: any = new Store({
