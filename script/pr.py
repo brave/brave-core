@@ -361,6 +361,16 @@ def create_branch(channel, top_level_base, remote_base, local_branch):
                 output = execute(['git', 'cherry-pick', sha]).split('\n')
                 print('- picked ' + sha + ' (' + output[0] + ')')
 
+            # squash all commits into one
+            # NOTE: master is not squashed. This only runs for uplifts.
+            execute(['git', 'reset', '--soft', remote_base])
+            squash_message = 'Squash of commits from branch ' + str(local_branch)
+            if int(config.master_pr_number) > 0:
+                squash_message = 'Uplift of #' + str(config.master_pr_number) + ' (squashed)'
+            execute(['git', 'commit', '-m', squash_message])
+            squash_hash = execute(['git', 'log', '--pretty="%h"', '-n1'])
+            print('- squashed all commits into ' + squash_hash)
+
         finally:
             # switch back to original branch
             execute(['git', 'checkout', local_branch])

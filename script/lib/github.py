@@ -277,4 +277,5 @@ def push_branches_to_remote(path, branches_to_push, dryrun=False):
             for branch_to_push in branches_to_push:
                 print('- pushing ' + branch_to_push + '...')
                 # TODO: if they already exist, force push?? or error??
+                # NOTE: this fails if clone was done via https
                 execute(['git', 'push', '-u', 'origin', branch_to_push])
