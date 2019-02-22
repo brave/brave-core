@@ -541,7 +541,7 @@ void BatGetMedia::processYoutubeMediaPanel(uint64_t windowId,
 }
 
 bool BatGetMedia::isPredefinedYTPath(const std::string& path) const {
-  std::vector<const std::string> yt_paths({
+  std::vector<std::string> yt_paths({
       "/feed",
       "/channel",
       "/user",
