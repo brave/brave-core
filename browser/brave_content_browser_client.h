@@ -73,6 +73,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   void MaybeHideReferrer(content::BrowserContext* browser_context,
                          const GURL& request_url,
                          const GURL& document_url,
+                         bool is_main_frame,
                          content::Referrer* referrer) override;
 
   GURL GetEffectiveURL(content::BrowserContext* browser_context,
