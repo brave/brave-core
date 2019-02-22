@@ -55,27 +55,26 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       }
 
       break
-    case types.ON_EXCLUDE_PUBLISHER:
-      {
-        const publisherKey: string = action.payload.publisherKey
-        if (!publisherKey) {
-          break
-        }
-
-        if (!state.excluded) {
-          state.excluded = []
-        }
-
-        if (!state.excluded.includes(publisherKey)) {
-          chrome.send('brave_rewards.excludePublisher', [publisherKey])
-          state.excluded.push(publisherKey)
-          state = {
-            ...state,
-            excluded: state.excluded
-          }
-        }
+    case types.ON_EXCLUDE_PUBLISHER: {
+      const publisherKey: string = action.payload.publisherKey
+      if (!publisherKey) {
         break
       }
+
+      if (!state.excluded) {
+        state.excluded = []
+      }
+
+      if (!state.excluded.includes(publisherKey)) {
+        chrome.send('brave_rewards.excludePublisher', [publisherKey])
+        state.excluded.push(publisherKey)
+        state = {
+          ...state,
+          excluded: state.excluded
+        }
+      }
+      break
+    }
     case types.ON_RESTORE_PUBLISHERS:
       state = { ...state }
       state.excluded = []

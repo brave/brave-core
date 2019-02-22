@@ -2,28 +2,6 @@ import("//chrome/browser/resources/optimize_webui.gni")
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
 
-grit("brave_extension_grit") {
-  source = "brave_extension.grd"
-
-  grit_flags = [
-    "-E",
-    "root_gen_dir=" + rebase_path(root_gen_dir, "."),
-  ]
-
-  outputs = [
-    "grit/brave_extension.h",
-    "grit/brave_extension_resources_map.cc",
-    "grit/brave_extension_resources_map.h",
-    "brave_extension.pak",
-  ]
-
-  deps = [
-    "//brave/vendor/brave-extension",
-  ]
-
-  resource_ids = "resource_ids"
-}
-
 grit("brave_settings_resources") {
   source = "settings/settings_resources.grd"
 

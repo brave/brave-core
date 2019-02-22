@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/brave_component_loader.h"
+
+#include <string>
 
 #include "base/command_line.h"
 #include "brave/browser/brave_browser_process_impl.h"
@@ -11,6 +14,7 @@
 #include "brave/common/brave_switches.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
@@ -21,7 +25,7 @@
 
 namespace extensions {
 
-//static
+// static
 bool BraveComponentLoader::IsPdfjsDisabled() {
   const base::CommandLine& command_line =
     *base::CommandLine::ForCurrentProcess();
@@ -94,7 +98,7 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     base::FilePath brave_extension_path(FILE_PATH_LITERAL(""));
     brave_extension_path =
         brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
-    Add(IDR_BRAVE_EXTENSON, brave_extension_path);
+    Add(IDR_BRAVE_EXTENSION, brave_extension_path);
   }
 
   if (!profile_prefs_->GetBoolean(prefs::kPluginsAlwaysOpenPdfExternally) &&
