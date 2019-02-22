@@ -963,16 +963,12 @@ void LedgerImpl::OnRemovedRecurring(ledger::Result result) {
 
 ledger::ActivityInfoFilter LedgerImpl::CreateActivityFilter(
     const std::string& publisher_id,
-    ledger::ACTIVITY_MONTH month,
-    int year,
     ledger::EXCLUDE_FILTER excluded,
     bool min_duration,
     const uint64_t& currentReconcileStamp,
     bool non_verified,
     bool min_visits) {
   return bat_publishers_->CreateActivityFilter(publisher_id,
-                                               month,
-                                               year,
                                                excluded,
                                                min_duration,
                                                currentReconcileStamp,

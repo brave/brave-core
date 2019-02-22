@@ -188,7 +188,7 @@ void PublisherInfoDatabase::GetTips(ledger::PublisherInfoList* list,
   while (info_sql.Step()) {
     std::string id(info_sql.ColumnString(0));
 
-    ledger::PublisherInfo publisher(id, ledger::ACTIVITY_MONTH::ANY, -1);
+    ledger::PublisherInfo publisher(id);
 
     publisher.name = info_sql.ColumnString(1);
     publisher.url = info_sql.ColumnString(2);
@@ -601,8 +601,7 @@ bool PublisherInfoDatabase::GetActivityList(
   while (info_sql.Step()) {
     std::string id(info_sql.ColumnString(0));
 
-    // TODO(nejczdovc) remove month and year
-    ledger::PublisherInfo info(id, ledger::ACTIVITY_MONTH::ANY, -1);
+    ledger::PublisherInfo info(id);
     info.duration = info_sql.ColumnInt64(1);
     info.score = info_sql.ColumnDouble(2);
     info.percent = info_sql.ColumnInt64(3);
@@ -792,8 +791,7 @@ void PublisherInfoDatabase::GetRecurringDonations(
   while (info_sql.Step()) {
     std::string id(info_sql.ColumnString(0));
 
-    ledger::PublisherInfo publisher(id, ledger::ACTIVITY_MONTH::ANY, -1);
-
+    ledger::PublisherInfo publisher(id);
     publisher.name = info_sql.ColumnString(1);
     publisher.url = info_sql.ColumnString(2);
     publisher.favicon_url = info_sql.ColumnString(3);

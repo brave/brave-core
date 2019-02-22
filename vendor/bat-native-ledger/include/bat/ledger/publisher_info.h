@@ -65,8 +65,6 @@ LEDGER_EXPORT struct ActivityInfoFilter {
   bool loadFromJson(const std::string& json);
 
   std::string id;
-  ACTIVITY_MONTH month;
-  int year;
   EXCLUDE_FILTER excluded;
   uint32_t percent;
   std::vector<std::pair<std::string, bool>> order_by;
@@ -112,9 +110,7 @@ LEDGER_EXPORT struct PublisherBanner {
 
 LEDGER_EXPORT struct PublisherInfo {
   PublisherInfo();
-  PublisherInfo(const std::string& publisher_id,
-                ACTIVITY_MONTH month,
-                int year);
+  PublisherInfo(const std::string& publisher_id);
   PublisherInfo(const PublisherInfo& info);
   ~PublisherInfo();
 
@@ -132,8 +128,6 @@ LEDGER_EXPORT struct PublisherInfo {
   double weight;
   PUBLISHER_EXCLUDE excluded;
   REWARDS_CATEGORY category;
-  ACTIVITY_MONTH month;
-  int year;
   uint64_t reconcile_stamp;
   bool verified;
   std::string name;

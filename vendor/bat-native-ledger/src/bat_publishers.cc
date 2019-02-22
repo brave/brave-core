@@ -90,8 +90,6 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
   }
 
   auto filter = CreateActivityFilter(publisher_id,
-      ledger::ACTIVITY_MONTH::ANY,
-      -1,
       ledger::EXCLUDE_FILTER::FILTER_ALL,
       false,
       ledger_->GetReconcileStamp(),
@@ -110,12 +108,8 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
 }
 
 ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
-    const std::string &publisher_id,
-    ledger::ACTIVITY_MONTH month,
-    int year) {
+    const std::string &publisher_id) {
   return CreateActivityFilter(publisher_id,
-                              month,
-                              year,
                               ledger::EXCLUDE_FILTER::FILTER_ALL,
                               true,
                               0,
@@ -125,12 +119,8 @@ ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
 
 ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
     const std::string& publisher_id,
-    ledger::ACTIVITY_MONTH month,
-    int year,
     ledger::EXCLUDE_FILTER excluded) {
   return CreateActivityFilter(publisher_id,
-                              month,
-                              year,
                               excluded,
                               true,
                               0,
@@ -140,12 +130,8 @@ ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
 
 ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
     const std::string &publisher_id,
-    ledger::ACTIVITY_MONTH month,
-    int year,
     bool min_duration) {
   return CreateActivityFilter(publisher_id,
-                              month,
-                              year,
                               ledger::EXCLUDE_FILTER::FILTER_ALL,
                               min_duration,
                               0,
@@ -155,8 +141,6 @@ ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
 
 ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
     const std::string& publisher_id,
-    ledger::ACTIVITY_MONTH month,
-    int year,
     ledger::EXCLUDE_FILTER excluded,
     bool min_duration,
     const uint64_t& currentReconcileStamp,
@@ -164,8 +148,6 @@ ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
     bool min_visits) {
   ledger::ActivityInfoFilter filter;
   filter.id = publisher_id;
-  filter.month = month;
-  filter.year = year;
   filter.excluded = excluded;
   filter.min_duration = min_duration ? getPublisherMinVisitTime() : 0;
   filter.reconcile_stamp = currentReconcileStamp;
@@ -207,9 +189,7 @@ void BatPublishers::saveVisitInternal(
   bool new_visit = false;
   if (!publisher_info.get()) {
     new_visit = true;
-    publisher_info.reset(new ledger::PublisherInfo(publisher_id,
-                                                   visit_data.local_month,
-                                                   visit_data.local_year));
+    publisher_info.reset(new ledger::PublisherInfo(publisher_id));
   }
 
   std::string fav_icon = visit_data.favicon_url;
@@ -595,8 +575,6 @@ void BatPublishers::synopsisNormalizerInternal(
 
 void BatPublishers::SynopsisNormalizer() {
   auto filter = CreateActivityFilter("",
-      ledger::ACTIVITY_MONTH::ANY,
-      -1,
       ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       ledger_->GetReconcileStamp(),
@@ -832,8 +810,6 @@ void BatPublishers::getPublisherActivityFromUrl(
   }
 
   auto filter = CreateActivityFilter(visit_data.domain,
-        ledger::ACTIVITY_MONTH::ANY,
-        -1,
         ledger::EXCLUDE_FILTER::FILTER_ALL,
         false,
         ledger_->GetReconcileStamp(),

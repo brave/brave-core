@@ -475,8 +475,6 @@ void RewardsServiceImpl::GetContentSiteList(
     uint32_t min_visits,
     const GetContentSiteListCallback& callback) {
   ledger::ActivityInfoFilter filter;
-  filter.month = ledger::ACTIVITY_MONTH::ANY;
-  filter.year = -1;
   filter.min_duration = min_visit_time;
   filter.order_by.push_back(std::pair<std::string, bool>("ai.percent", false));
   filter.reconcile_stamp = reconcile_stamp;
@@ -1998,10 +1996,7 @@ void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount,
   if (!Connected())
     return;
 
-  ledger::PublisherInfo publisher(
-    publisher_key,
-    ledger::ACTIVITY_MONTH::ANY,
-    -1);
+  ledger::PublisherInfo publisher(publisher_key);
 
   bat_ledger_->DoDirectDonation(publisher.ToJson(), amount, "BAT");
 }
@@ -2398,8 +2393,6 @@ void RewardsServiceImpl::OnDonate(
 
   ledger::PublisherInfo info;
   info.id = publisher_key;
-  info.month = ledger::ACTIVITY_MONTH::ANY;
-  info.year = -1;
   info.verified = site->verified;
   info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info.name = site->name;
