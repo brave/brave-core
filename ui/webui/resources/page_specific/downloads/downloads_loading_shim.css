@@ -1,0 +1,6 @@
+@import url(chrome://brave-resources/css/md_colors.css);
+
+html.loading {
+  border-image: var(--md-toolbar-color);
+  border-image-slice: 2;
+}

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/md_extensions/toolbar.html b/chrome/browser/resources/md_extensions/toolbar.html
+index 9d444873afb4f45c383e1ac2b8bdae47f3fb5f54..0756bc6ab8cc6ca90701abaaa474126e63441bfc 100644
+--- a/chrome/browser/resources/md_extensions/toolbar.html
++++ b/chrome/browser/resources/md_extensions/toolbar.html
+@@ -2,7 +2,7 @@
+ 
+ <link rel="import" href="chrome://resources/cr_elements/cr_toast/cr_toast.html">
+ <link rel="import" href="chrome://resources/cr_elements/cr_toggle/cr_toggle.html">
+-<link rel="import" href="chrome://resources/cr_elements/cr_toolbar/cr_toolbar.html">
++<link rel="import" href="chrome://brave-resources/br_elements/br_toolbar/br_toolbar.html">
+ <link rel="import" href="chrome://resources/cr_elements/hidden_style_css.html">
+ <link rel="import" href="chrome://resources/cr_elements/paper_button_style_css.html">
+ <link rel="import" href="chrome://resources/cr_elements/policy/cr_tooltip_icon.html">

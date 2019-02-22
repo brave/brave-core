@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/settings/settings_ui/settings_ui.html b/chrome/browser/resources/settings/settings_ui/settings_ui.html
+index cf4382d32cc0170c8fd72565e31026eed014abe0..c6973d9c77d29b3f95bbc99705f2518c6df19f72 100644
+--- a/chrome/browser/resources/settings/settings_ui/settings_ui.html
++++ b/chrome/browser/resources/settings/settings_ui/settings_ui.html
+@@ -2,7 +2,7 @@
+ 
+ <link rel="import" href="chrome://resources/cr_elements/cr_container_shadow_behavior.html">
+ <link rel="import" href="chrome://resources/cr_elements/cr_drawer/cr_drawer.html">
+-<link rel="import" href="chrome://resources/cr_elements/cr_toolbar/cr_toolbar.html">
++<link rel="import" href="chrome://brave-resources/br_elements/br_toolbar/br_toolbar.html">
+ <link rel="import" href="chrome://resources/cr_elements/icons.html">
+ <link rel="import" href="chrome://resources/html/find_shortcut_behavior.html">
+ <link rel="import" href="chrome://resources/html/util.html">
