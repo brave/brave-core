@@ -54,26 +54,6 @@ LEDGER_EXPORT struct VisitData {
   std::string favicon_url;
 };
 
-LEDGER_EXPORT struct PaymentData {
-  PaymentData();
-  PaymentData(const std::string& _publisher_id,
-           const double& _value,
-           const int64_t& _timestamp,
-           REWARDS_CATEGORY _category,
-           ACTIVITY_MONTH _local_month,
-           int _local_year);
-  PaymentData(const PaymentData& data);
-  ~PaymentData();
-
-  std::string publisher_id;
-  double value;
-  int64_t timestamp;
-  REWARDS_CATEGORY category;
-  ACTIVITY_MONTH local_month;
-  int local_year;
-};
-
-
 using PublisherBannerCallback =
     std::function<void(std::unique_ptr<ledger::PublisherBanner> banner)>;
 using WalletAddressesCallback =
