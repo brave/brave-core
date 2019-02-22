@@ -15,9 +15,7 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
-#include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/common/url_constants.h"
-#include "content/public/browser/url_data_source.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -90,8 +88,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 
 WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
       content::BrowserContext* browser_context, const GURL& url) const {
-  content::URLDataSource::Add(browser_context,
-            std::make_unique<brave_content::BraveSharedResourcesDataSource>());
   WebUIFactoryFunction function = GetWebUIFactoryFunction(NULL, url);
   if (function) {
     return reinterpret_cast<WebUI::TypeID>(function);
