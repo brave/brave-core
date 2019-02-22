@@ -344,7 +344,23 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != 200) {
-    // TODO(anyone): add error handler
+    // TODO add error handler
+    if (providerName == YOUTUBE_MEDIA_TYPE) {
+      if (response_status_code == 401) { // embedding disabled, need to scrape
+        fetchDataFromUrl(visit_data.url,
+            std::bind(&BatGetMedia::onFetchDataFromNonEmbeddable,
+                      this,
+                      window_id,
+                      visit_data,
+                      providerName,
+                      duration,
+                      media_key,
+                      mediaURL,
+                      _1,
+                      _2,
+                      _3));
+      }
+    }
     return;
   }
 
@@ -829,6 +845,40 @@ void BatGetMedia::onGetChannelIdFromUserPage(
   }
 }
 
+void BatGetMedia::onFetchDataFromNonEmbeddable(
+    uint64_t windowId,
+    const ledger::VisitData& visit_data,
+    const std::string& providerType,
+    const uint64_t& duration,
+    const std::string& media_key,
+    const std::string& mediaURL,
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers) {
+  if (response_status_code != 200) {
+    onMediaActivityError(visit_data, providerType, windowId);
+    return;
+  }
+
+  if (providerType == YOUTUBE_MEDIA_TYPE) {
+    std::string publisher_name = parsePublisherName(response);
+    std::string channel_id = parseChannelId(response);
+    std::string publisher_url =
+        getPublisherUrl(channel_id, providerType);
+    std::string favicon_url = parseFavIconUrl(response);
+    savePublisherInfo(duration,
+                      media_key,
+                      providerType,
+                      publisher_url,
+                      publisher_name,
+                      visit_data,
+                      windowId,
+                      favicon_url,
+                      channel_id);
+    return;
+  }
+}
+
 void BatGetMedia::onGetChannelHeadlineVideo(uint64_t windowId,
     const ledger::VisitData& visit_data,
     const std::string& providerType,
@@ -1080,7 +1130,15 @@ std::string BatGetMedia::getFaviconUrl(
 }
 
 std::string BatGetMedia::parseFavIconUrl(const std::string& data) {
-  return extractData(data, "\"avatar\":{\"thumbnails\":[{\"url\":\"", "\"");
+  std::string favicon_url = extractData(
+      data, "\"avatar\":{\"thumbnails\":[{\"url\":\"", "\"");
+
+  if (favicon_url.empty()) {
+    favicon_url = extractData(
+      data, "\"width\":88,\"height\":88},{\"url\":\"", "\"");
+  }
+
+  return favicon_url;
 }
 
 std::string BatGetMedia::parseChannelId(const std::string& data) {
@@ -1096,7 +1154,26 @@ std::string BatGetMedia::parseChannelId(const std::string& data) {
         "\">");
   }
 
+  if (id.empty()) {
+    id = extractData(
+      data,
+      "browseEndpoint\":{\"browseId\":\"",
+      "\"");
+  }
+
   return id;
+}
+
+std::string BatGetMedia::parsePublisherName(const std::string& data) {
+  std::string publisher_name;
+  std::string publisher_json_name = extractData(data, "\"author\":\"", "\"");
+  std::string publisher_json = "{\"brave_publisher\":\"" +
+      publisher_json_name + "\"}";
+  // scraped data could come in with JSON code points added.
+  // Make to JSON object above so we can decode.
+  braveledger_bat_helper::getJSONValue(
+      "brave_publisher", publisher_json, &publisher_name);
+  return publisher_name;
 }
 
 // static
