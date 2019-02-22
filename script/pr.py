@@ -361,6 +361,12 @@ def create_branch(channel, top_level_base, remote_base, local_branch):
                 output = execute(['git', 'cherry-pick', sha]).split('\n')
                 print('- picked ' + sha + ' (' + output[0] + ')')
 
+            execute(['git', 'reset', '--soft', remote_base])
+            squash_message = 'Squash of branch ' + top_level_base
+            if config.master_pr_number:
+                squash_message = 'Uplift of #' + config.master_pr_number + ' (squashed)'
+            execute(['git', 'commit', '-m', squash_message])
+
         finally:
             # switch back to original branch
             execute(['git', 'checkout', local_branch])
