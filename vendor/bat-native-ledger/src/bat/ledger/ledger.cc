@@ -98,33 +98,6 @@ bool VisitData::loadFromJson(const std::string& json) {
   return !error;
 }
 
-PaymentData::PaymentData():
-  value(0),
-  timestamp(0),
-  category(REWARDS_CATEGORY::TIPPING) {}
-
-PaymentData::PaymentData(const std::string& _publisher_id,
-         const double& _value,
-         const int64_t& _timestamp,
-         REWARDS_CATEGORY _category,
-         ACTIVITY_MONTH _local_month,
-         int _local_year):
-  publisher_id(_publisher_id),
-  value(_value),
-  timestamp(_timestamp),
-  category(_category),
-  local_month(_local_month),
-  local_year(_local_year) {}
-
-PaymentData::PaymentData(const PaymentData& data):
-  publisher_id(data.publisher_id),
-  value(data.value),
-  timestamp(data.timestamp),
-  category(data.category),
-  local_month(data.local_month),
-  local_year(data.local_year) {}
-
-PaymentData::~PaymentData() {}
 
 ActivityInfoFilter::ActivityInfoFilter() :
     month(ACTIVITY_MONTH::ANY),
