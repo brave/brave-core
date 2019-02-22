@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "Brejv oznaka datoteke",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "Štitovi",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "gore",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "dole",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "Ukupno blokirano",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "za ovu veb lokaciju",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Ako se stranica pojavi slomljena, pokušajte sa isljučenim štitovima",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Vi pregledate ovu lokaciju bez ikakve zaštite privatnosti i sigurnosti.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "Oglasi i pratioci su blokirani",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "Iskačući prozori su blokirani",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "Blokirane slike",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "Kolačići treće strane su blokirani",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "Svi kolačići su omogućeni",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "Kolačići su blokirani",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Neke skripte su blokirane",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Sve skripte dozvoljene",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Blokirane skripte",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "Prepoznavanje uređaja treće strane je blokirano",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "Dozvoljeno je prepoznavanje svih uređaja",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Prepoznavanje uređaja je blokirano",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Phishing/malver pokušaji su blokirani",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Veze su šifrovane",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Podrazumevana vrednost globalnog štita",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Kolačići na ovoj lokaciji",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Pokušaji prepoznavanja uređaja",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Skripte na ovoj veb lokaciji",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Blokirane skripte",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Dozvoljene skripte",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Dozvoli sve",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Dozvoli",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Dozvoljeno",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Blokiraj sve",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Blokiraj",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Blokiran",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Primeni",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Primeni jednom",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Primeni do ponovnog pokretanja",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Uvek primeni",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Opozovi radnju",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Otkaži",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Idi nazad",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

@@ -122,6 +122,8 @@ source_set("ui") {
     "//brave/app/vector_icons:vector_icons",
     "//brave/common",
     "//brave/components/brave_adblock_ui:generated_resources",
+    "//brave/components/brave_extension:static_resources",
+    "//brave/components/brave_extension:generated_resources",
     "//brave/components/brave_new_tab_ui:generated_resources",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/resources:donate_generated_resources",

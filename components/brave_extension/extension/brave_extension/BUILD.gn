@@ -1,0 +1,141 @@
+import("//brave/components/common/typescript.gni")
+import("//build/config/locales.gni")
+
+transpile_web_ui("brave_extension") {
+  # Need this to fire re-pack if changed, nevertheless extension is repacked on each 2nd build
+  inputs = [
+    "actions/cosmeticFilterActions.ts",
+    "actions/runtimeActions.ts",
+    "actions/shieldsPanelActions.ts",
+    "actions/tabActions.ts",
+    "actions/webNavigationActions.ts",
+    "actions/windowActions.ts",
+    "assets/img/shields-off.png",
+    "assets/img/shields-off@2x.png",
+    "assets/img/shields-off@3x.png",
+    "assets/img/shields-on.png",
+    "assets/img/shields-on@2x.png",
+    "assets/img/shields-on@3x.png",
+    "background.ts",
+    "background/actions/cosmeticFilterActions.ts",
+    "background/actions/runtimeActions.ts",
+    "background/actions/shieldsPanelActions.ts",
+    "background/actions/tabActions.ts",
+    "background/actions/webNavigationActions.ts",
+    "background/actions/windowActions.ts",
+    "background/api/browserActionAPI.ts",
+    "background/api/cosmeticFilterAPI.ts",
+    "background/api/localeAPI.ts",
+    "background/api/shieldsAPI.ts",
+    "background/api/tabsAPI.ts",
+    "background/events.ts",
+    "background/events/cosmeticFilterEvents.ts",
+    "background/events/runtimeEvents.ts",
+    "background/events/shieldsEvents.ts",
+    "background/events/tabsEvents.ts",
+    "background/events/windowsEvents.ts",
+    "background/reducers.ts",
+    "background/reducers/cosmeticFilterReducer.ts",
+    "background/reducers/runtimeReducer.ts",
+    "background/reducers/shieldsPanelReducer.ts",
+    "background/store.ts",
+    "braveShieldsPanel.tsx",
+    "components/braveShields/braveShields.tsx",
+    "components/braveShields/footer.tsx",
+    "components/braveShields/header.tsx",
+    "components/braveShields/interfaceControls.tsx",
+    "components/braveShields/privacyControls.tsx",
+    "components/braveShields/blockedResources/blockedResources.tsx",
+    "components/braveShields/blockedResources/scriptsList.tsx",
+    "components/braveShields/blockedResources/staticList.tsx",
+    "constants/cosmeticFilterTypes.ts",
+    "constants/resourceIdentifiers.ts",
+    "constants/runtimeActionTypes.ts",
+    "constants/shieldsPanelTypes.ts",
+    "constants/tabTypes.ts",
+    "constants/webNavigationTypes.ts",
+    "constants/windowTypes.ts",
+    "containers/braveShields.tsx",
+    "content.ts",
+    "helpers/arrayUtils.ts",
+    "helpers/urlUtils.ts",
+    "helpers/shieldsUtils.ts",
+    "state/shieldsPanelState.ts",
+    "types/actions/cosmeticFilterActions.ts",
+    "types/actions/index.ts",
+    "types/actions/runtimeActions.ts",
+    "types/actions/shieldsPanelActions.ts",
+    "types/actions/tabActions.ts",
+    "types/actions/webNavigationActions.ts",
+    "types/actions/windowActions.ts",
+    "types/adblock/adblockTypes.ts",
+    "types/constants/cosmeticFilterTypes.ts",
+    "types/constants/resourceIdentifiers.ts",
+    "types/constants/shieldsPanelTypes.ts",
+    "types/constants/tabTypes.ts",
+    "types/constants/webNavigationTypes.ts",
+    "types/constants/windowTypes.ts",
+    "types/other/blockTypes.ts",
+    "types/other/noScriptInfo.ts",
+    "types/state/mainState.ts",
+    "types/state/shieldsPannelState.ts",
+  ]
+
+  # what is the output bundle called and what is the entry point file
+  entry_points = [
+    ["brave_extension", rebase_path("braveShieldsPanel.tsx")],
+    ["brave_extension_background", rebase_path("background.ts")],
+    ["content", rebase_path("content.ts")],
+  ]
+
+  # what is the directory / pack name
+  resource_name = "brave_extension"
+
+
+  # Must match the relative path from the static GRD to the manifest.json
+  # plus any other relative path we want these files to live in the extension
+  extra_relative_path = "/brave_extension/out"
+
+  public_asset_path = "/out/"
+}
+
+if (is_mac) {
+  group("brave_extension_framework_bundle_data") {
+    deps = []
+    foreach(locale, locales) {
+      deps += [":brave_extension_framework_bundle_data_${locale}"]
+    }
+  }
+
+  foreach(locale, locales) {
+    bundle_data("brave_extension_framework_bundle_data_${locale}") {
+      locale = string_replace(locale, "-", "_")
+      locale = string_replace(locale, "nb", "no")
+      sources = [
+        "//brave/components/brave_extension/extension/brave_extension/_locales/$locale/messages.json"
+      ]
+      outputs = [
+        "{{bundle_resources_dir}}/brave_extension/_locales/$locale/{{source_file_part}}"
+      ]
+    }
+  }
+} else {
+  group("locales") {
+    deps = []
+    foreach(locale, locales) {
+      deps += [":locales_${locale}"]
+    }
+  }
+  foreach(locale, locales) {
+    copy("locales_${locale}") {
+      locale = string_replace(locale, "-", "_")
+      locale = string_replace(locale, "nb", "no")
+      sources = [
+        "//brave/components/brave_extension/extension/brave_extension/_locales/${locale}/messages.json",
+      ]
+      outputs = [
+        "$root_out_dir/resources/brave_extension/_locales/${locale}/{{source_file_part}}",
+      ]
+    }
+  }
+}

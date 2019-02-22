@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "ส่วนขยาย Brave ",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "ปกป้อง",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "ขึ้น",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "ด้านล่าง",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "บล็อคทั้งหมด",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "สำหรับเว็บไซต์นี้",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "หากไซต์ใดมีปัญหาให้ลองลดการปกป้องลง",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "คุณกำลังเรียกดูไซต์นี้โดยปราศจากการปกป้องความเป็นส่วนตัวและการรักษาความปลอดภัย",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "บล็อกโฆษณาและการตามรอยแล้ว",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "บล็อกป๊อปอัปแล้ว",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "บล็อกภาพแล้ว",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "บล็อกคุ้กกี้ของบุคคลที่สามแล้ว",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "อนุญาตคุ้กกี้ทั้งหมด",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "คุ้กกี้ได้รับการบล็อกแล้ว",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "บล็อกบางสคริปต์แล้ว",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "สคริปต์ทั้งหมดได้รับอนุญาตแล้ว",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "บล็อกสคริปต์แล้ว",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "บล็อกการรับรองอุปกรณ์ของบุคคลที่สามแล้ว",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "อนุญาตให้มีการรับรองทุกอุปกรณ์",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "การรู้จำอุปกรณ์ถูกบล็อค",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "บล็อก ฟิชชิ่ง/มัลแวร์ เรียบร้อยแล้ว",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "การเชื่อมต่อได้รับการเข้ารหัส",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "ค่าเริ่มต้นของการปกป้องแบบทั่วไป",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "คุ้กกี้บนไซต์นี้",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "ความพยายามในการรู้จำอุปกรณ์",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "สคริปต์บนไซต์นี้",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "บล็อคสคริปต์ถูกบล็อค",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "อนุญาตสคริปต์",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "อนุญาตทั้งหมด",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "อนุญาต",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "ได้รับอนุญาต",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "บล็อกทั้งหมด",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "บล็อก",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "บล็อกแล้ว",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "ใช้งาน",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "ใช้ครั้งเดียว",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "ทำงานจนกว่าจะรีสตาร์ท",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "ใช้เสมอ",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "แก้",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "ยกเลิก",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "ย้อนกลับ",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

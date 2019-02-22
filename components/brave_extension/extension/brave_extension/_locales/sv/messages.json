@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "Brave-utvidgningen",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "Sköldar",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "upp",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "ned",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "Totalt blockerade",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "för den här webbplatsen",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Om en webbplats inte verkar fungera, prova att avaktivera sköldarna",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Du surfar på denna webbplats utan något integritets- och säkerhetsskydd.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "Annonser och spårare blockerade",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "Pop-upfönster blockerade",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "Bilder blockerade",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "Tredjepart-cookies blockerade",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "Alla cookies tillåtna",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "Cookies blockerade",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Vissa skript blockerade",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Alla skript tillåtna",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Skript blockerade",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "Igenkänning av tredjepartsenheter blockerad",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "All enhetsigenkänning tillåten",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Enhetsigenkänning blockerad",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Phishing-/malware-försök blockerade",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Anslutningar krypterade",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Globala sköldinställningar",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Cookies på webbplatsen",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Försök till enhetsigenkänning",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Skript på den här webbplatse",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Blockerade skript",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Tillåtna skript",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Tillåt alla",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Tillåt",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Tillåten",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Blockera alla",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Blockera",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Blockerad",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Tillämpa",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Tillämpa en gång",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Tillämpa till omstart",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Tillämpa alltid",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Ångra",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Avbryt",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Tillbaka",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}

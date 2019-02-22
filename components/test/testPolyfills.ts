@@ -2,14 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { JSDOM } from 'jsdom'
 import { getMockChrome } from './testData'
 
-(global as any).window = {} as any
-
-(window as any).localStorage = {
-  getItem: jest.fn(),
-  setItem: jest.fn()
-} as any
+;(global as any).window = new JSDOM().window
+;(global as any).document = window.document
+;(global as any).navigator = window.navigator
 
 window.location = {
   search: '?testTorrentId'

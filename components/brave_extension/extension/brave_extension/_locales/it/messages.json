@@ -1,0 +1,166 @@
+{
+  "appName": {
+    "message": "L'Estensione Brave",
+    "description": "The name of the the extension."
+  },
+  "shields": {
+    "message": "Protezioni",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "su",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "giù",
+    "description": "Message for when shields is disabled"
+  },
+  "totalBlocked": {
+    "message": "Totale bloccate",
+    "description": "Message showing the amount of all blocked resources"
+  },
+  "forThisSite": {
+    "message": "per questo sito",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Se un sito sembra non funzionante, prova con le protezioni abbassate.",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Stai navigando su questo sito senza alcuna protezione della privacy e di sicurezza.",
+    "description": "Message telling the user that shields are disabled"
+  },
+  "blockAds": {
+    "message": "Annunci pubblicitari e tracker bloccati",
+    "description": "Message indicating the number of ads and trackers blocked"
+  },
+  "blockPopups": {
+    "message": "Pop-up bloccati",
+    "description": "Message indicating the number of pop-ups blocked"
+  },
+  "blockImages": {
+    "message": "Immagini bloccate",
+    "description": "Message indicating the number of images blocked"
+  },
+  "block3partyCookies": {
+    "message": "Cookie  di terze parti bloccati",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  },
+  "allowAllCookies": {
+    "message": "Tutti i cookie permessi",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  },
+  "blockAllCookies": {
+    "message": "Cookie bloccati",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Alcuni script bloccati",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Tutti gli script permessi",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Script bloccati",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
+    "message": "Sistema di riconoscimento del dispositivo di terze parti bloccato",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+  },
+  "allowAllFingerprinting": {
+    "message": "Tutti i sistemi di riconoscimento del dispositivo permessi",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Sistema di riconoscimento del dispositivo bloccato",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Tentativi di phishing/malware bloccati",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Connessioni crittografate",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Valori di default della protezione globale",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Cookie su questo sito",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Tentativi sistema di riconoscimento del dispositivo",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Script su questo sito",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Script bloccati",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Script permessi",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Permetti tutto",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Permetti",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Permesso",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Blocca tutto",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Blocca",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Bloccato",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Applica",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Applica solo una volta",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Applica fino al riavvio",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Applica sempre",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Annulla operazione",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Annulla",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Torna indietro",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  }
+}
