@@ -274,6 +274,7 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     content::BrowserContext* browser_context,
     const GURL& request_url,
     const GURL& document_url,
+    bool is_main_frame,
     content::Referrer* referrer) {
   DCHECK(referrer);
   if (document_url.SchemeIs(kChromeExtensionScheme)) {
@@ -295,12 +296,19 @@ void BraveContentBrowserClient::MaybeHideReferrer(
           GURL(),
           CONTENT_SETTINGS_TYPE_PLUGINS,
           brave_shields::kBraveShields);
+
+  // Top-level navigations get empty referrers (brave/brave-browser#3422).
+  GURL replacement_referrer_url;
+  if (!is_main_frame) {
+    // But iframe navigations get spoofed instead (brave/brave-browser#3988).
+    replacement_referrer_url = request_url.GetOrigin();
+  }
   brave_shields::ShouldSetReferrer(allow_referrers,
                                    shields_up,
                                    referrer->url,
                                    document_url,
                                    request_url,
-                                   request_url.GetOrigin(),
+                                   replacement_referrer_url,
                                    referrer->policy,
                                    referrer);
 }
