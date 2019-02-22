@@ -165,7 +165,7 @@ class Grant extends React.Component<Props, State> {
       <>
         {
           this.state.grantShow && type
-            ? <GrantClaim type={type as Type} onClaim={this.onGrantShow.bind(this, promoId)}/>
+            ? <GrantClaim type={type as Type} onClaim={this.onGrantShow.bind(this, promoId)} testId={'claimGrant'}/>
             : null
         }
         {
@@ -176,11 +176,12 @@ class Grant extends React.Component<Props, State> {
         {
           grant.expiryTime
             ? <GrantWrapper
+              data-test-id={'grantWrapper'}
               onClose={this.onFinish}
               title={'It’s your lucky day!'}
               text={'Your token grant is on its way.'}
             >
-              <GrantComplete onClose={this.onFinish} amount={tokens} date={date} />
+              <GrantComplete onClose={this.onFinish} amount={tokens} date={date} testId={'newTokenGrant'} />
             </GrantWrapper>
             : null
         }

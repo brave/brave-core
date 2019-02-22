@@ -255,6 +255,7 @@ class ContributeBox extends React.Component<Props, State> {
             getLocale('site'),
             getLocale('rewardsContributeAttention')
           ]}
+          testId={'autoContribute'}
           rows={topRows}
           allSites={allSites}
           numSites={numRows}

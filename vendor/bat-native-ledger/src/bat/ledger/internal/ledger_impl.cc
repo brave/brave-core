@@ -1368,9 +1368,9 @@ bool LedgerImpl::AddReconcileStep(
     ledger::ContributionRetry step,
     int level) {
   BLOG(this, ledger::LogLevel::LOG_DEBUG)
-    << "Contribution step"
+    << "Contribution step "
     << std::to_string(step)
-    << "for"
+    << " for "
     << viewing_id;
   return bat_state_->AddReconcileStep(viewing_id, step, level);
 }

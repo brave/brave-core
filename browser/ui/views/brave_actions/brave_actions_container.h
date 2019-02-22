@@ -19,6 +19,7 @@
 #include "ui/views/view.h"
 
 class BraveActionsContainerTest;
+class BraveRewardsBrowserTest;
 
 namespace extensions {
 class ExtensionActionManager;
@@ -87,6 +88,7 @@ class BraveActionsContainer : public views::View,
 
  private:
   friend class ::BraveActionsContainerTest;
+  friend class ::BraveRewardsBrowserTest;
   // Special positions in the container designators
   enum ActionPosition : int {
     ACTION_ANY_POSITION = -1,

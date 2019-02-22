@@ -50,7 +50,7 @@
 #define SURVEYOR_ID                     "surveyorId"
 #define SURVEYOR_IDS                    "surveyorIds"
 
-#define CURRENCY                        "BAT"
+#define LEDGER_CURRENCY                 "BAT"
 
 #define SIGNATURE_ALGORITHM             "ed25519"
 
@@ -95,6 +95,7 @@ static const uint8_t g_hkdfSalt[] = {
 static const double _d = 1.0 / (30.0 * 1000.0);
 
 static const uint64_t _default_min_publisher_duration = 8;  // In seconds
+static const uint64_t _default_min_publisher_duration_test = 1;  // In seconds
 
 static const uint64_t _milliseconds_day = 24 * 60 * 60 * 1000;
 

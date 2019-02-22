@@ -368,7 +368,9 @@ void BatPublishers::setPublisherAllowVideos(const bool& allow) {
 }
 
 uint64_t BatPublishers::getPublisherMinVisitTime() const {
-  return state_->min_publisher_duration_;
+  return ledger::is_testing
+             ? braveledger_ledger::_default_min_publisher_duration_test
+             : state_->min_publisher_duration_;
 }
 
 unsigned int BatPublishers::getPublisherMinVisits() const {
