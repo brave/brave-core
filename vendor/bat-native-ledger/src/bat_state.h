@@ -6,6 +6,7 @@
 #ifndef BRAVELEDGER_BAT_CLIENT_STATE_H_
 #define BRAVELEDGER_BAT_CLIENT_STATE_H_
 
+#include "bat/ledger/ledger.h"
 #include "bat_helper.h"
 
 #include <memory>

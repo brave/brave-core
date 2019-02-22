@@ -11,6 +11,7 @@
 #include <map>
 #include <functional>
 
+#include "bat/ledger/ledger.h"
 #include "static_values.h"
 
 namespace braveledger_bat_helper {
