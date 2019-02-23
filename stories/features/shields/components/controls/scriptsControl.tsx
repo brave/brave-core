@@ -21,6 +21,9 @@ import DynamicList from '../list/dynamic'
 import { getLocale } from '../../fakeLocale'
 import data from '../../fakeData'
 
+// Helpers
+import { getTabIndexValueBasedOnProps } from '../../helpers'
+
 interface Props {
   favicon: string
   hostname: string
@@ -44,8 +47,8 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
   }
 
   get tabIndex () {
-    const { isBlockedListOpen } = this.props
-    return isBlockedListOpen ? -1 : 0
+    const { isBlockedListOpen, scriptsBlocked } = this.props
+    return getTabIndexValueBasedOnProps(isBlockedListOpen, scriptsBlocked)
   }
 
   onOpenScriptsBlockedOpen = (event: React.MouseEvent<HTMLDivElement>) => {

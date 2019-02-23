@@ -21,6 +21,9 @@ import StaticList from '../list/static'
 import { getLocale } from '../../fakeLocale'
 import data from '../../fakeData'
 
+// Helpers
+import { getTabIndexValueBasedOnProps } from '../../helpers'
+
 interface Props {
   favicon: string
   hostname: string
@@ -44,8 +47,8 @@ export default class HTTPSUpgradesControl extends React.PureComponent<Props, Sta
   }
 
   get tabIndex () {
-    const { isBlockedListOpen } = this.props
-    return isBlockedListOpen ? -1 : 0
+    const { isBlockedListOpen, httpsUpgrades } = this.props
+    return getTabIndexValueBasedOnProps(isBlockedListOpen, httpsUpgrades)
   }
 
   // HTTPS

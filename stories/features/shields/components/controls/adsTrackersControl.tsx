@@ -21,6 +21,9 @@ import StaticList from '../list/static'
 import { getLocale } from '../../fakeLocale'
 import data from '../../fakeData'
 
+// Helpers
+import { getTabIndexValueBasedOnProps } from '../../helpers'
+
 interface Props {
   favicon: string
   hostname: string
@@ -44,8 +47,8 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
   }
 
   get tabIndex () {
-    const { isBlockedListOpen } = this.props
-    return isBlockedListOpen ? -1 : 0
+    const { isBlockedListOpen, adsTrackersBlocked } = this.props
+    return getTabIndexValueBasedOnProps(isBlockedListOpen, adsTrackersBlocked)
   }
 
   onOpen3rdPartyTrackersBlocked = (event: React.MouseEvent<HTMLDivElement>) => {
