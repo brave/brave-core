@@ -216,6 +216,7 @@ class RewardsServiceImpl : public RewardsService,
                               const std::vector<ledger::Grant>& grants);
   void TriggerOnGrantFinish(ledger::Result result, const ledger::Grant& grant);
   void TriggerOnRewardsMainEnabled(bool rewards_main_enabled);
+  void TriggerOnRewardsInitialized(int error_code);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             std::unique_ptr<ledger::PublisherInfo> info,
                             bool success);

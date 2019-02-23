@@ -28,6 +28,9 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnWalletInitialized(
       RewardsService* rewards_service,
       int error_code) {}
+  virtual void OnRewardsInitialized(
+      RewardsService* rewards_service,
+      int error_code) {}
   virtual void OnWalletProperties(
       RewardsService* rewards_service,
       int error_code,

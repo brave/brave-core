@@ -274,6 +274,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_VIEWING" desc="Retry step viewing">Viewing</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_VOTE" desc="Retry step vote">Vote</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_WINNERS" desc="Retry step winners">Winners</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_NOT_ENABLED" desc="Rewards not enabled">Brave Rewards is not enabled. Enable it by visiting</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_VALID" desc="Valid indicator">Valid</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_VIEWING_ID" desc="Viewing ID">Viewing ID:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Wallet payment ID">Wallet Payment ID:</message>

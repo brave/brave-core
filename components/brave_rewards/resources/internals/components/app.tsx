@@ -10,6 +10,9 @@ import { CurrentReconcile } from './currentReconcile'
 import { KeyInfoSeed } from './keyInfoSeed'
 import { WalletPaymentId } from './walletPaymentId'
 
+// Utils
+import { getLocale } from '../../../../common/locale'
+
 interface Props {
   rewardsInternalsData: RewardsInternals.State
 }
@@ -17,18 +20,25 @@ interface Props {
 export class RewardsInternalsPage extends React.Component<Props, {}> {
   render () {
     const { rewardsInternalsData } = this.props
-    return (
-      <div id='rewardsInternalsPage'>
-        <KeyInfoSeed isKeyInfoSeedValid={rewardsInternalsData.isKeyInfoSeedValid || ''} />
-        <WalletPaymentId walletPaymentId={rewardsInternalsData.walletPaymentId || ''} />
-        <hr/>
-        {rewardsInternalsData.currentReconciles.map((item, index) => (
-          <div>
-            <span i18n-content='currentReconcile'/> {index + 1}
-            <CurrentReconcile currentReconcile={item || ''} />
-          </div>
-        ))}
-      </div>)
+    if (rewardsInternalsData.isRewardsEnabled) {
+      return (
+        <div id='rewardsInternalsPage'>
+          <KeyInfoSeed isKeyInfoSeedValid={rewardsInternalsData.isKeyInfoSeedValid || ''} />
+          <WalletPaymentId walletPaymentId={rewardsInternalsData.walletPaymentId || ''} />
+          <hr/>
+          {rewardsInternalsData.currentReconciles.map((item, index) => (
+            <div>
+              <span i18n-content='currentReconcile'/> {index + 1}
+              <CurrentReconcile currentReconcile={item || ''} />
+            </div>
+          ))}
+        </div>)
+    } else {
+      return (
+        <div id='rewardsInternalsPage'>
+          {getLocale('rewardsNotEnabled')} <a href='chrome://rewards' target='_blank'>chrome://rewards</a>
+        </div>)
+    }
   }
 }
 

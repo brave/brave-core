@@ -7,6 +7,7 @@ import { debounce } from '../../../common/debounce'
 const keyName = 'rewards-internals-data'
 
 const defaultState: RewardsInternals.State = {
+  isRewardsEnabled: false,
   isKeyInfoSeedValid: '',
   walletPaymentId: '',
   currentReconciles: []
@@ -15,6 +16,11 @@ const defaultState: RewardsInternals.State = {
 export const getLoadTimeData = (state: RewardsInternals.State): RewardsInternals.State => {
   state = { ...state }
   state = defaultState
+
+  // Expected to be Booleans
+  ;['isRewardsEnabled'].forEach((item) => {
+    state[item] = chrome.getVariableValue(item) === 'true'
+  })
 
   // Expected to be Strings
   ;['isKeyInfoSeedValid','walletPaymentId'].forEach((item) => {
