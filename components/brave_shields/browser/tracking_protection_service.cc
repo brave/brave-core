@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -76,7 +77,8 @@ void TrackingProtectionService::OnDATFileDataReady() {
     return;
   }
   tracking_protection_client_.reset(new CTPParser());
-  if (!tracking_protection_client_->deserialize((char*)&buffer_.front())) {
+  if (!tracking_protection_client_->deserialize(
+        reinterpret_cast<char*>(&buffer_.front()))) {
     tracking_protection_client_.reset();
     LOG(ERROR) << "Failed to deserialize tracking protection data";
     return;
@@ -153,7 +155,8 @@ TrackingProtectionService::GetThirdPartyHosts(const std::string& base_host) {
   return hosts;
 }
 
-scoped_refptr<base::SequencedTaskRunner> TrackingProtectionService::GetTaskRunner() {
+scoped_refptr<base::SequencedTaskRunner>
+TrackingProtectionService::GetTaskRunner() {
   // We share the same task runner for all ad-block and TP code
   return g_brave_browser_process->ad_block_service()->GetTaskRunner();
 }
@@ -163,8 +166,10 @@ scoped_refptr<base::SequencedTaskRunner> TrackingProtectionService::GetTaskRunne
 // The tracking protection factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
 std::unique_ptr<TrackingProtectionService> TrackingProtectionServiceFactory() {
-  std::unique_ptr<TrackingProtectionService> service = std::make_unique<TrackingProtectionService>();
-  g_brave_browser_process->local_data_files_service()->AddObserver(service.get());
+  std::unique_ptr<TrackingProtectionService> service =
+    std::make_unique<TrackingProtectionService>();
+  g_brave_browser_process->local_data_files_service()->AddObserver(
+      service.get());
   return service;
 }
 

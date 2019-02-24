@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -23,12 +24,17 @@ using extensions::ExtensionBrowserTest;
 
 const char kAdBlockTestPage[] = "/blocking.html";
 
-const std::string kAdBlockEasyListFranceUUID(
-    "9852EFC4-99E4-4F2D-A915-9C3196C7A1DE");
+const char kAdBlockEasyListFranceUUID[] =
+    "9852EFC4-99E4-4F2D-A915-9C3196C7A1DE";
 
-const std::string kDefaultAdBlockComponentTestId(
-    "naccapggpomhlhoifnlebfoocegenbol");
-const std::string kDefaultAdBlockComponentTestBase64PublicKey =
+const char kDefaultAdBlockComponentTestId[] =
+    "naccapggpomhlhoifnlebfoocegenbol";
+const char kRegionalAdBlockComponentTestId[] =
+    "dlpmaigjliompnelofkljgcmlenklieh";
+const char kTrackingProtectionComponentTestId[] =
+    "eclbkhjphkhalklhipiicaldjbnhdfkc";
+
+const char kDefaultAdBlockComponentTestBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtV7Vr69kkvSvu2lhcMDh"
     "j4Jm3FKU1zpUkALaum5719/cccVvGpMKKFyy4WYXsmAfcIONmGO4ThK/q6jkgC5v"
     "8HrkjPOf7HHebKEnsJJucz/Z1t6dq0CE+UA2IWfbGfFM4nJ8AKIv2gqiw2d4ydAs"
@@ -36,10 +42,7 @@ const std::string kDefaultAdBlockComponentTestBase64PublicKey =
     "Qdk+dZ9r8NRQnpjChQzwhMAkxyrdjT1N7NcfTufiYQTOyiFvxPAC9D7vAzkpGgxU"
     "Ikylk7cYRxqkRGS/AayvfipJ/HOkoBd0yKu1MRk4YcKGd/EahDAhUtd9t4+v33Qv"
     "uwIDAQAB";
-
-const std::string kRegionalAdBlockComponentTestId(
-    "dlpmaigjliompnelofkljgcmlenklieh");
-const std::string kRegionalAdBlockComponentTestBase64PublicKey =
+const char kRegionalAdBlockComponentTestBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoKYkdDM8vWZXBbDJXTP6"
     "1m9yLuH9iL/TvqAqu1zOd91VJu4bpcCMZjfGPC1g+O+pZrCaFVv5NJeZxGqT6DUB"
     "RZUdXPkGGUC1ebS4LLJbggNQb152LFk8maR0/ItvMOW8eTcV8VFKHk4UrVhPTggf"
@@ -47,11 +50,7 @@ const std::string kRegionalAdBlockComponentTestBase64PublicKey =
     "G8XBq/Y8FbBt+u+7skWQy3lVyRwFjeFu6cXVF4tcc06PNx5yLsbHQtSv8R+h1bWw"
     "ieMF3JB9CZPr+qDKIap+RZUfsraV47QebRi/JA17nbDMlXOmK7mILfFU7Jhjx04F"
     "LwIDAQAB";
-
-const std::string kTrackingProtectionComponentTestId(
-    "eclbkhjphkhalklhipiicaldjbnhdfkc");
-
-const std::string kTrackingProtectionComponentTestBase64PublicKey =
+const char kTrackingProtectionComponentTestBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsleoSxQ3DN+6xym2P1uX"
     "mN6ArIWd9Oru5CSjS0SRE5upM2EnAl/C20TP8JdIlPi/3tk/SN6Y92K3xIhAby5F"
     "0rbPDSTXEWGy72tv2qb/WySGwDdvYQu9/J5sEDneVcMrSHcC0VWgcZR0eof4BfOy"
@@ -166,12 +165,14 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
     base::FilePath test_data_dir;
     GetTestDataDir(&test_data_dir);
     const extensions::Extension* tracking_protection_extension =
-        InstallExtension(test_data_dir.AppendASCII("tracking-protection-data"), 1);
+        InstallExtension(
+            test_data_dir.AppendASCII("tracking-protection-data"), 1);
     if (!tracking_protection_extension)
       return false;
 
     g_brave_browser_process->tracking_protection_service()->OnComponentReady(
-        tracking_protection_extension->id(), tracking_protection_extension->path(), "");
+        tracking_protection_extension->id(),
+        tracking_protection_extension->path(), "");
     WaitForTrackingProtectionServiceThread();
 
     return true;
@@ -199,7 +200,8 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
   void WaitForTrackingProtectionServiceThread() {
     scoped_refptr<base::ThreadTestHelper> io_helper(
         new base::ThreadTestHelper(
-            g_brave_browser_process->tracking_protection_service()->GetTaskRunner()));
+            g_brave_browser_process->tracking_protection_service()
+               ->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
 };
@@ -497,19 +499,23 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
       kDefaultAdBlockComponentTestBase64PublicKey);
   InitTrackingProtectionService();
   ASSERT_TRUE(InstallTrackingProtectionExtension());
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked), 0ULL);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
+      0ULL);
   GURL url = embedded_test_server()->GetURL("google.com", kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
   GURL test_url = embedded_test_server()->GetURL("365dm.com", "/logo.png");
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          base::StringPrintf("setExpectations(0, 1, 0, 0);"
-                                                             "addImage('%s')",
+                                          base::StringPrintf(
+                                              "setExpectations(0, 1, 0, 0);"
+                                              "addImage('%s')",
                                           test_url.spec().c_str()),
                                           &as_expected));
   EXPECT_TRUE(as_expected);
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked), 1ULL);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
+      1ULL);
 }
 
 // Load a page that references a tracker from an untrusted domain, but
@@ -519,17 +525,21 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   InitTrackingProtectionService();
   AddRulesToAdBlock("||365dm.com\n@@logo.png");
   ASSERT_TRUE(InstallTrackingProtectionExtension());
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked), 0ULL);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
+      0ULL);
   GURL url = embedded_test_server()->GetURL("google.com", kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
   GURL test_url = embedded_test_server()->GetURL("365dm.com", "/logo.png");
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          base::StringPrintf("setExpectations(1, 0, 0, 0);"
-                                                             "addImage('%s')",
+                                          base::StringPrintf(
+                                              "setExpectations(1, 0, 0, 0);"
+                                              "addImage('%s')",
                                           test_url.spec().c_str()),
                                           &as_expected));
   EXPECT_TRUE(as_expected);
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked), 0ULL);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
+      0ULL);
 }

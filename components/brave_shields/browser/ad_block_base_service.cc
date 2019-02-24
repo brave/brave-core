@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -25,7 +26,7 @@ namespace {
 
 FilterOption ResourceTypeToFilterOption(content::ResourceType resource_type) {
   FilterOption filter_option = FONoFilterOption;
-  switch(resource_type) {
+  switch (resource_type) {
     // top level page
     case content::RESOURCE_TYPE_MAIN_FRAME:
       filter_option = FODocument;
@@ -121,7 +122,8 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
         &matching_exception_filter)) {
     // We'd only possibly match an exception filter if we're returning true.
     *did_match_exception = false;
-    // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: " << tab_host
+    // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: "
+    //  << tab_host
     //  << ", resource type: " << resource_type
     //  << ", url.spec(): " << url.spec();
     return false;
@@ -148,7 +150,8 @@ void AdBlockBaseService::OnDATFileDataReady() {
     return;
   }
   ad_block_client_.reset(new AdBlockClient());
-  if (!ad_block_client_->deserialize((char*)&buffer_.front())) {
+  if (!ad_block_client_->deserialize(
+      reinterpret_cast<char*>(&buffer_.front()))) {
     ad_block_client_.reset();
     LOG(ERROR) << "Failed to deserialize ad block data";
     return;
