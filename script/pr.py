@@ -362,9 +362,9 @@ def create_branch(channel, top_level_base, remote_base, local_branch):
                 print('- picked ' + sha + ' (' + output[0] + ')')
 
             execute(['git', 'reset', '--soft', remote_base])
-            squash_message = 'Squash of commits from branch ' + top_level_base
+            squash_message = 'Squash of commits from branch ' + str(top_level_base)
             if config.master_pr_number:
-                squash_message = 'Uplift of #' + config.master_pr_number + ' (squashed)'
+                squash_message = 'Uplift of #' + str(config.master_pr_number) + ' (squashed)'
             execute(['git', 'commit', '-m', squash_message])
 
         finally:
