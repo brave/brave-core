@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/profiles/brave_profile_manager.h"
+
+#include <memory>
+#include <string>
 
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_browser_process_impl.h"
@@ -14,6 +18,7 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
+#include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
@@ -22,6 +27,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/signin/core/browser/signin_pref_names.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/common/webrtc_ip_handling_policy.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -100,6 +106,8 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   brave_sync::BraveSyncServiceFactory::GetForProfile(profile);
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  content::URLDataSource::Add(profile,
+      std::make_unique<brave_content::BraveSharedResourcesDataSource>());
 }
 
 void BraveProfileManager::LaunchTorProcess(Profile* profile) {
