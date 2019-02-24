@@ -366,6 +366,8 @@ def create_branch(channel, top_level_base, remote_base, local_branch):
             if config.master_pr_number:
                 squash_message = 'Uplift of #' + str(config.master_pr_number) + ' (squashed)'
             execute(['git', 'commit', '-m', squash_message])
+            squash_hash = execute(['git', 'log', '--pretty="%h"', '-n1'])
+            print('- squashed all commits (' + str(squash_hash) + ')')
 
         finally:
             # switch back to original branch
