@@ -71,6 +71,8 @@ void AdsServe::OnCatalogDownloaded(
     // 'Catalog current', { method, server, path }
 
     LOG(INFO) << "Catalog is already up to dates";
+
+    UpdateNextCatalogCheck();
   } else {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog download failed', { error, method, server, path }
@@ -147,6 +149,8 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
   if (!catalog.HasChanged(bundle_->GetCatalogId())) {
     LOG(WARNING) << "Catalog id " << catalog.GetId() <<
         " matches current catalog id " << bundle_->GetCatalogId();
+
+    UpdateNextCatalogCheck();
 
     return true;
   }
