@@ -28,19 +28,6 @@ namespace brave_shields {
 
 TrackingProtectionService::TrackingProtectionService()
   : tracking_protection_client_(new CTPParser()),
-    // See comment in tracking_protection_service.h for white_list_
-    white_list_({
-      "connect.facebook.net",
-      "connect.facebook.com",
-      "staticxx.facebook.com",
-      "www.facebook.com",
-      "scontent.xx.fbcdn.net",
-      "pbs.twimg.com",
-      "scontent-sjc2-1.xx.fbcdn.net",
-      "platform.twitter.com",
-      "syndication.twitter.com",
-      "cdn.syndication.twimg.com"
-    }),
     weak_factory_(this) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
@@ -79,11 +66,6 @@ bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
         host.length()) {
       return true;
     }
-  }
-
-  if (std::find(white_list_.begin(), white_list_.end(), host) !=
-      white_list_.end()) {
-    return true;
   }
   return false;
 }

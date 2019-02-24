@@ -51,8 +51,6 @@ class TrackingProtectionService : public BaseLocalDataFilesObserver {
   brave_shields::DATFileDataBuffer buffer_;
 
   std::unique_ptr<CTPParser> tracking_protection_client_;
-  // TODO: Temporary hack which matches both browser-laptop and Android code
-  std::vector<std::string> white_list_;
   std::vector<std::string> third_party_base_hosts_;
   std::map<std::string, std::vector<std::string>> third_party_hosts_cache_;
   std::mutex third_party_hosts_mutex_;
