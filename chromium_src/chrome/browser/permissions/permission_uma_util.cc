@@ -12,6 +12,8 @@ void BraveRecordPermissionAction (ContentSettingsType permission,
 std::string GetPermissionRequestString(PermissionRequestType type) {
   if (type == PermissionRequestType::PERMISSION_AUTOPLAY)
     return "Autoplay";
+  if (type == PermissionRequestType::PERMISSION_WIDEVINE)
+    return "Widevine";
   return GetPermissionRequestString_ChromiumImpl(type);
 }
 

@@ -13,6 +13,10 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_handle.h"
 
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+#include "brave/browser/widevine/widevine_utils.h"
+#endif
+
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
     : WebContentsObserver(contents), bindings_(contents, this) {}
 
@@ -42,6 +46,15 @@ void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
 
   Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
   browser->window()->UpdateToolbar(web_contents());
+
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+  // Show permission request bubble because showing blocked image alone in
+  // omnibox is not obvious to the user and easy to miss.
+  if (ShouldShowWidevineOptIn() && !is_widevine_permission_requested_) {
+    RequestWidevinePermission(web_contents());
+    is_widevine_permission_requested_ = true;
+  }
+#endif
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveDrmTabHelper)
