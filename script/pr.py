@@ -279,7 +279,7 @@ def main():
         return 1
 
     print('\nPushing local branches to remote...')
-    push_branches_to_remote(BRAVE_CORE_ROOT, config.branches_to_push, dryrun=config.is_dryrun)
+    push_branches_to_remote(BRAVE_CORE_ROOT, config.branches_to_push, dryrun=config.is_dryrun, token=config.github_token)
 
     try:
         print('\nCreating the pull requests...')
