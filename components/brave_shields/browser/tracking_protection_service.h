@@ -35,7 +35,8 @@ class TrackingProtectionService : public BaseLocalDataFilesObserver {
 
   bool ShouldStartRequest(const GURL& spec,
                           content::ResourceType resource_type,
-                          const std::string& tab_host);
+                          const std::string& tab_host,
+                          bool* matching_exception_filter);
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
 
   // implementation of BaseLocalDataFilesObserver

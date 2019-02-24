@@ -31,7 +31,8 @@ class BaseBraveShieldsService : public BraveComponentExtension {
   bool IsInitialized() const;
   virtual bool ShouldStartRequest(const GURL& url,
       content::ResourceType resource_type,
-      const std::string& tab_host);
+      const std::string& tab_host,
+      bool* did_match_exception);
   virtual scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
 
  protected:

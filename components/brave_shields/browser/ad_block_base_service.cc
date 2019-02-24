@@ -110,17 +110,25 @@ void AdBlockBaseService::Cleanup() {
 }
 
 bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
-    content::ResourceType resource_type,
-    const std::string& tab_host) {
+    content::ResourceType resource_type, const std::string& tab_host,
+    bool* did_match_exception) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   FilterOption current_option = ResourceTypeToFilterOption(resource_type);
+
+  Filter* matching_exception_filter = nullptr;
   if (ad_block_client_->matches(url.spec().c_str(),
-        current_option,
-        tab_host.c_str())) {
+        current_option, tab_host.c_str(), nullptr,
+        &matching_exception_filter)) {
+    // We'd only possibly match an exception filter if we're returning true.
+    *did_match_exception = false;
     // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: " << tab_host
     //  << ", resource type: " << resource_type
     //  << ", url.spec(): " << url.spec();
     return false;
+  }
+
+  if (did_match_exception) {
+    *did_match_exception = !!matching_exception_filter;
   }
 
   return true;
