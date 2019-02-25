@@ -75,7 +75,7 @@ std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
   auto token_base64 = token.encode_base64();
   payload.SetKey("blindedPaymentToken", base::Value(token_base64));
 
-  payload.SetKey("type", base::Value("landed"));
+  payload.SetKey("type", base::Value("view"));
 
   std::string json;
   base::JSONWriter::Write(payload, &json);

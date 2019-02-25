@@ -91,7 +91,7 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest, BuildBody) {
   auto body = request_->BuildBody(payload);
 
   // Assert
-  std::string expected_body = R"({"blindedPaymentToken":"FvnSTMJ6dSeinPIdc3P2XQlv84Y1wcljzWmkfinVXHs=","creativeInstanceId":"465e08ad-03be-42ee-902a-dc88688aa2cb","payload":{},"type":"landed"})";  // NOLINT
+  std::string expected_body = R"({"blindedPaymentToken":"FvnSTMJ6dSeinPIdc3P2XQlv84Y1wcljzWmkfinVXHs=","creativeInstanceId":"465e08ad-03be-42ee-902a-dc88688aa2cb","payload":{},"type":"view"})";  // NOLINT
   EXPECT_EQ(expected_body, body);
 }
 
@@ -140,7 +140,7 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest,
       blinded_token);
 
   // Assert
-  std::string expected_payload = R"({"blindedPaymentToken":"FvnSTMJ6dSeinPIdc3P2XQlv84Y1wcljzWmkfinVXHs=","creativeInstanceId":"465e08ad-03be-42ee-902a-dc88688aa2cb","payload":{},"type":"landed"})";  // NOLINT
+  std::string expected_payload = R"({"blindedPaymentToken":"FvnSTMJ6dSeinPIdc3P2XQlv84Y1wcljzWmkfinVXHs=","creativeInstanceId":"465e08ad-03be-42ee-902a-dc88688aa2cb","payload":{},"type":"view"})";  // NOLINT
   EXPECT_EQ(expected_payload, payload);
 }
 
