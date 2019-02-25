@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/content_settings/brave_widevine_blocked_image_model.h"
+
+#include <memory>
 
 #include "brave/browser/brave_drm_tab_helper.h"
 #include "brave/browser/ui/content_settings/brave_widevine_content_setting_bubble_model.h"
@@ -19,7 +22,8 @@ BraveWidevineBlockedImageModel::BraveWidevineBlockedImageModel(
     ContentSettingsType content_type)
     : ContentSettingSimpleImageModel(image_type, content_type) {}
 
-bool BraveWidevineBlockedImageModel::UpdateAndGetVisibility(WebContents* web_contents) {
+bool BraveWidevineBlockedImageModel::UpdateAndGetVisibility(
+    WebContents* web_contents) {
   if (!web_contents)
     return false;
 
@@ -42,6 +46,6 @@ std::unique_ptr<ContentSettingBubbleModel>
 BraveWidevineBlockedImageModel::CreateBubbleModelImpl(
     ContentSettingBubbleModel::Delegate* delegate,
     WebContents* web_contents) {
-  return std::make_unique<BraveWidevineContentSettingPluginBubbleModel>(delegate,
-      web_contents);
+  return std::make_unique<BraveWidevineContentSettingPluginBubbleModel>(
+      delegate, web_contents);
 }

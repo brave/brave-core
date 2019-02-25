@@ -44,6 +44,6 @@ void AddWidevineExplanatoryMessageTextIfNeeded(
   container->AddChildView(text);
 }
 
-}
+}  // namespace
 
-#include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc"
+#include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc"  // NOLINT

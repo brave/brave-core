@@ -96,7 +96,7 @@ int GetWidevineTitleTextResourceId() {
   message_id = manager->GetWidevineContentSettingsBubbleTitleText();
 #endif
 
-  DCHECK(message_id != -1);
+  DCHECK_NE(message_id, -1);
   return message_id;
 }
 
@@ -111,7 +111,7 @@ int GetWidevineLinkTextForContentSettingsBubbleResourceId() {
   message_id = manager->GetWidevineContentSettingsBubbleLinkText();
 #endif
 
-  DCHECK(message_id != -1);
+  DCHECK_NE(message_id, -1);
   return message_id;
 }
 
@@ -126,7 +126,7 @@ int GetWidevineBlockedImageMessageResourceId() {
   message_id = manager->GetWidevineBlockedImageMessage();
 #endif
 
-  DCHECK(message_id != -1);
+  DCHECK_NE(message_id, -1);
   return message_id;
 }
 
@@ -141,7 +141,7 @@ int GetWidevineBlockedImageTooltipResourceId() {
   tooltip_id = manager->GetWidevineBlockedImageTooltip();
 #endif
 
-  DCHECK(tooltip_id != -1);
+  DCHECK_NE(tooltip_id, -1);
   return tooltip_id;
 }
 
@@ -157,7 +157,7 @@ int GetWidevinePermissionRequestTextFrangmentResourceId() {
   message_id = manager->GetWidevineContentSettingsBubbleTitleText();
 #endif
 
-  DCHECK(message_id != -1);
+  DCHECK_NE(message_id, -1);
   return message_id;
 }
 
