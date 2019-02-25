@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -10,7 +11,8 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <mutex>
+// TODO(brave): <mutex> is an unapproved C++11 header
+#include <mutex>  // NOLINT
 
 #include "base/files/file_path.h"
 #include "base/sequenced_task_runner.h"
@@ -31,7 +33,8 @@ class BaseBraveShieldsService : public BraveComponentExtension {
   bool IsInitialized() const;
   virtual bool ShouldStartRequest(const GURL& url,
       content::ResourceType resource_type,
-      const std::string& tab_host);
+      const std::string& tab_host,
+      bool* did_match_exception);
   virtual scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
 
  protected:
