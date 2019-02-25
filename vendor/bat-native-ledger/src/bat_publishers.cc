@@ -108,38 +108,6 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
 }
 
 ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
-    const std::string &publisher_id) {
-  return CreateActivityFilter(publisher_id,
-                              ledger::EXCLUDE_FILTER::FILTER_ALL,
-                              true,
-                              0,
-                              true,
-                              false);
-}
-
-ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
-    const std::string& publisher_id,
-    ledger::EXCLUDE_FILTER excluded) {
-  return CreateActivityFilter(publisher_id,
-                              excluded,
-                              true,
-                              0,
-                              true,
-                              false);
-}
-
-ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
-    const std::string &publisher_id,
-    bool min_duration) {
-  return CreateActivityFilter(publisher_id,
-                              ledger::EXCLUDE_FILTER::FILTER_ALL,
-                              min_duration,
-                              0,
-                              true,
-                              false);
-}
-
-ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
     const std::string& publisher_id,
     ledger::EXCLUDE_FILTER excluded,
     bool min_duration,

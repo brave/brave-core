@@ -119,7 +119,6 @@ class PublisherInfoDatabase {
 
   sql::MetaTable& GetMetaTable();
 
-
   bool MigrateV1toV2();
 
   bool MigrateV2toV3();

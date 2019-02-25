@@ -115,17 +115,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                             const std::string& probi);
 
   ledger::ActivityInfoFilter CreateActivityFilter(
-      const std::string& publisher_id);
-
-  ledger::ActivityInfoFilter CreateActivityFilter(
-      const std::string& publisher_id,
-      ledger::EXCLUDE_FILTER excluded);
-
-  ledger::ActivityInfoFilter CreateActivityFilter(
-      const std::string& publisher_id,
-      bool min_duration);
-
-  ledger::ActivityInfoFilter CreateActivityFilter(
       const std::string& publisher_id,
       ledger::EXCLUDE_FILTER excluded,
       bool min_duration,
