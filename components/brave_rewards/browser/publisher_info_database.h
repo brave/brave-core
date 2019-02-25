@@ -78,7 +78,9 @@ class PublisherInfoDatabase {
 
 
   // Returns the current version of the publisher info database
-  static int GetCurrentVersion();
+  int GetCurrentVersion();
+
+  void SetTestingCurrentVersion(int value);
 
   // Vacuums the database. This will cause sqlite to defragment and collect
   // unused space in the file. It can be VERY SLOW.
@@ -89,6 +91,8 @@ class PublisherInfoDatabase {
   sql::Database& GetDB();
 
   bool Init();
+
+  int GetTableVersionNumber();
 
  private:
 
@@ -123,12 +127,17 @@ class PublisherInfoDatabase {
 
   bool MigrateV4toV5();
 
+  bool MigrateV5toV6();
+
+  bool Migrate(int version);
+
   sql::InitStatus EnsureCurrentVersion();
 
   sql::Database db_;
   sql::MetaTable meta_table_;
   const base::FilePath db_path_;
   bool initialized_;
+  int testing_current_version_;
 
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
 

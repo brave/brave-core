@@ -495,8 +495,6 @@ void BatGetMedia::onMediaActivityError(const ledger::VisitData& visit_data,
 
   if (!url.empty()) {
     ledger::VisitData new_data;
-    new_data.local_month = visit_data.local_month;
-    new_data.local_year = visit_data.local_year;
     new_data.domain = url;
     new_data.url = "https://" + url;
     new_data.path = "/";
@@ -687,19 +685,17 @@ void BatGetMedia::fetchPublisherDataFromDB(
     const std::string& publisher_key,
     const std::string& publisher_blob,
     const bool is_custom_path) {
-    auto filter = ledger_->CreateActivityFilter(
-      publisher_key,
-      ledger::ACTIVITY_MONTH::ANY,
-      -1,
-      ledger::EXCLUDE_FILTER::FILTER_ALL,
-      false,
-      ledger_->GetReconcileStamp(),
-      true,
-      false);
-    ledger_->GetPanelPublisherInfo(filter,
-      std::bind(&BatGetMedia::onFetchPublisherFromDBResponse,
-      this, _1, _2, windowId, visit_data, providerType,
-      publisher_key, publisher_blob, is_custom_path));
+  auto filter = ledger_->CreateActivityFilter(
+    publisher_key,
+    ledger::EXCLUDE_FILTER::FILTER_ALL,
+    false,
+    ledger_->GetReconcileStamp(),
+    true,
+    false);
+  ledger_->GetPanelPublisherInfo(filter,
+    std::bind(&BatGetMedia::onFetchPublisherFromDBResponse,
+    this, _1, _2, windowId, visit_data, providerType,
+    publisher_key, publisher_blob, is_custom_path));
 }
 
 void BatGetMedia::onFetchPublisherFromDBResponse(

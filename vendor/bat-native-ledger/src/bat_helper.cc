@@ -2724,12 +2724,6 @@ void saveToJson(JsonWriter& writer, const ledger::VisitData& visitData) {
   writer.String("tab_id");
   writer.Uint(visitData.tab_id);
 
-  writer.String("local_month");
-  writer.Int(visitData.local_month);
-
-  writer.String("local_year");
-  writer.Int(visitData.local_year);
-
   writer.String("name");
   writer.String(visitData.name.c_str());
 
@@ -2826,12 +2820,6 @@ void saveToJson(JsonWriter & writer, const ledger::PublisherInfo& info) {
   writer.String("category");
   writer.Int(info.category);
 
-  writer.String("month");
-  writer.Int(info.month);
-
-  writer.String("year");
-  writer.Int(info.year);
-
   writer.String("reconcile_stamp");
   writer.Uint64(info.reconcile_stamp);
 
@@ -2927,12 +2915,6 @@ void saveToJson(JsonWriter & writer,
 
   writer.String("id");
   writer.String(info.id.c_str());
-
-  writer.String("month");
-  writer.Int(info.month);
-
-  writer.String("year");
-  writer.Int(info.year);
 
   writer.String("excluded");
   writer.Int(info.excluded);

@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <streambuf>
+#include <string>
 
 #include "brave/components/brave_rewards/browser/publisher_info_database.h"
 
@@ -49,8 +50,10 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
 
   void CreateMigrationDatabase(base::ScopedTempDir* temp_dir,
                                base::FilePath* db_file,
-                               const std::string& version) {
-    const std::string file_name = "publisher_info_db_v" + version;
+                               int start_version,
+                               int end_version) {
+    const std::string file_name = "publisher_info_db_v" +
+        std::to_string(start_version);
     ASSERT_TRUE(temp_dir->CreateUniqueTempDir());
     *db_file = temp_dir->GetPath().AppendASCII(file_name);
 
@@ -71,6 +74,8 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
 
     publisher_info_database_ =
     std::make_unique<PublisherInfoDatabase>(*db_file);
+
+    publisher_info_database_->SetTestingCurrentVersion(end_version);
     ASSERT_NE(publisher_info_database_, nullptr);
   }
 
@@ -256,8 +261,6 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
   info.score = 1.1;
   info.percent = 100;
   info.weight = 1.5;
-  info.month = ledger::ACTIVITY_MONTH::JANUARY;
-  info.year = 1970;
   info.reconcile_stamp = 0;
   info.visits = 1;
 
@@ -277,8 +280,6 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
   EXPECT_EQ(info_sql.ColumnDouble(3), info.score);
   EXPECT_EQ(info_sql.ColumnInt64(4), info.percent);
   EXPECT_EQ(info_sql.ColumnDouble(5), info.weight);
-  EXPECT_EQ(info_sql.ColumnInt(6), info.month);
-  EXPECT_EQ(info_sql.ColumnInt(7), info.year);
   EXPECT_EQ(static_cast<uint64_t>(info_sql.ColumnInt64(8)),
             info.reconcile_stamp);
 
@@ -300,7 +301,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
 
   /**
    * Make sure that second insert is update and not insert,
-   * month, year and stamp is unique key
+   * publisher_id and stamp is unique key
    */
   info.verified = true;
   info.excluded = ledger::PUBLISHER_EXCLUDE::ALL;
@@ -330,11 +331,8 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
   EXPECT_EQ(info_sql_1.ColumnDouble(3), info.score);
   EXPECT_EQ(info_sql_1.ColumnInt64(4), info.percent);
   EXPECT_EQ(info_sql_1.ColumnDouble(5), info.weight);
-  EXPECT_EQ(info_sql_1.ColumnInt(6), info.month);
-  EXPECT_EQ(info_sql_1.ColumnInt(7), info.year);
   EXPECT_EQ(static_cast<uint64_t>(info_sql_1.ColumnInt64(8)),
             info.reconcile_stamp);
-
 }
 
 TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateMediaPublisherInfo) {
@@ -498,43 +496,22 @@ TEST_F(PublisherInfoDatabaseTest, GetPanelPublisher) {
   EXPECT_EQ(publisher_info_database_->GetPanelPublisher(filter_2), nullptr);
 
   /**
-   * Ignore month and year filter
-   */
-  ledger::PublisherInfo info_1;
-  info_1.id = "brave.com";
-  info_1.url = "https://brave.com";
-  info_1.percent = 11;
-  info_1.month = ledger::ACTIVITY_MONTH::JANUARY;
-  info_1.year = 2019;
-  info_1.reconcile_stamp = 10;
-
-  bool success = publisher_info_database_->InsertOrUpdateActivityInfo(info_1);
-  EXPECT_TRUE(success);
-
-  ledger::ActivityInfoFilter filter_3;
-  filter_3.id = "brave.com";
-  filter_3.month = ledger::ACTIVITY_MONTH::ANY;
-  filter_3.year = -1;
-  filter_3.reconcile_stamp = 10;
-  std::unique_ptr<ledger::PublisherInfo> result =
-      publisher_info_database_->GetPanelPublisher(filter_3);
-  EXPECT_TRUE(result);
-  EXPECT_EQ(result->id, "brave.com");
-
-  /**
    * Still get data if reconcile stamp is not found
    */
+  ledger::PublisherInfo info_1;
   info_1.id = "page.com";
   info_1.url = "https://page.com";
+  info_1.percent = 11;
   info_1.reconcile_stamp = 9;
 
-  success = publisher_info_database_->InsertOrUpdateActivityInfo(info_1);
+  bool success = publisher_info_database_->InsertOrUpdateActivityInfo(info_1);
   EXPECT_TRUE(success);
 
   ledger::ActivityInfoFilter filter_4;
   filter_4.id = "page.com";
   filter_4.reconcile_stamp = 10;
-  result = publisher_info_database_->GetPanelPublisher(filter_4);
+  std::unique_ptr<ledger::PublisherInfo> result =
+      publisher_info_database_->GetPanelPublisher(filter_4);
   EXPECT_TRUE(result);
   EXPECT_EQ(result->id, "page.com");
   EXPECT_EQ(result->percent, 0u);
@@ -552,16 +529,12 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfos) {
   info_1.id = "brave.com";
   info_1.url = "https://brave.com";
   info_1.percent = 11;
-  info_1.month = ledger::ACTIVITY_MONTH::JANUARY;
-  info_1.year = 2019;
   info_1.reconcile_stamp = 10;
 
   ledger::PublisherInfo info_2;
   info_2.id = "clifton.io";
   info_2.url = "https://clifton.io";
   info_2.percent = 11;
-  info_2.month = ledger::ACTIVITY_MONTH::JANUARY;
-  info_2.year = 2019;
   info_2.reconcile_stamp = 10;
 
   ledger::PublisherInfoList list;
@@ -587,8 +560,6 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfos) {
   info_3.id = "";
   info_3.url = "https://page.io";
   info_3.percent = 11;
-  info_3.month = ledger::ACTIVITY_MONTH::JANUARY;
-  info_3.year = 2019;
   info_3.reconcile_stamp = 10;
 
   list.push_back(info_3);
@@ -664,8 +635,6 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   info.duration = 0;
   info.verified = false;
   info.visits = 0;
-  info.month = ledger::ACTIVITY_MONTH::JANUARY;
-  info.year = 1970;
   info.reconcile_stamp = 1;
   EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
 
@@ -780,7 +749,7 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
 TEST_F(PublisherInfoDatabaseTest, Migrationv4tov5) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;
-  CreateMigrationDatabase(&temp_dir, &db_file, "4");
+  CreateMigrationDatabase(&temp_dir, &db_file, 4, 5);
 
   ledger::PublisherInfoList list;
   ledger::ActivityInfoFilter filter;
@@ -794,6 +763,66 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv4tov5) {
   EXPECT_EQ(list.at(1).visits, 1u);
   EXPECT_EQ(list.at(2).id, "basicattentiontoken.org");
   EXPECT_EQ(list.at(2).visits, 3u);
+  EXPECT_EQ(publisher_info_database_->GetTableVersionNumber(), 5);
+}
+
+TEST_F(PublisherInfoDatabaseTest, Migrationv5tov6) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 5, 6);
+
+  ledger::PublisherInfoList list;
+  ledger::ActivityInfoFilter filter;
+  filter.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter, &list));
+  EXPECT_EQ(static_cast<int>(list.size()), 3);
+
+  EXPECT_EQ(list.at(0).id, "basicattentiontoken.org");
+  EXPECT_EQ(list.at(0).duration, 31u);
+  EXPECT_EQ(list.at(0).visits, 1u);
+  EXPECT_NEAR(list.at(0).score, 1.1358598545838, 0.001f);
+  EXPECT_EQ(list.at(0).percent, 26u);
+  EXPECT_NEAR(list.at(0).weight, 25.919327084376, 0.001f);
+  EXPECT_EQ(list.at(0).reconcile_stamp, 1553423066u);
+  EXPECT_EQ(list.at(1).id, "brave.com");
+  EXPECT_EQ(list.at(1).duration, 20u);
+  EXPECT_EQ(list.at(1).visits, 2u);
+  EXPECT_EQ(list.at(2).id, "slo-tech.com");
+  EXPECT_EQ(list.at(2).duration, 44u);
+  EXPECT_EQ(list.at(2).visits, 2u);
+  EXPECT_NEAR(list.at(2).score, 2.1717139356, 0.001f);
+  EXPECT_EQ(list.at(2).percent, 24u);
+  EXPECT_NEAR(list.at(2).weight, 24.254880708636, 0.001f);
+  EXPECT_EQ(list.at(2).reconcile_stamp, 1553423066u);
+
+  EXPECT_EQ(publisher_info_database_->GetTableVersionNumber(), 6);
+}
+
+TEST_F(PublisherInfoDatabaseTest, Migrationv4tov6) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 4, 6);
+
+  ledger::PublisherInfoList list;
+  ledger::ActivityInfoFilter filter;
+  filter.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter, &list));
+  EXPECT_EQ(static_cast<int>(list.size()), 3);
+
+  EXPECT_EQ(list.at(0).id, "basicattentiontoken.org");
+  EXPECT_EQ(list.at(0).duration, 15u);
+  EXPECT_EQ(list.at(0).visits, 3u);
+  EXPECT_EQ(list.at(0).reconcile_stamp, 1552214829u);
+  EXPECT_EQ(list.at(1).id, "brave.com");
+  EXPECT_EQ(list.at(1).duration, 10u);
+  EXPECT_EQ(list.at(1).visits, 1u);
+  EXPECT_EQ(list.at(1).reconcile_stamp, 1552214829u);
+  EXPECT_EQ(list.at(2).id, "slo-tech.com");
+  EXPECT_EQ(list.at(2).duration, 12u);
+  EXPECT_EQ(list.at(2).visits, 1u);
+  EXPECT_EQ(list.at(2).reconcile_stamp, 1552214829u);
+
+  EXPECT_EQ(publisher_info_database_->GetTableVersionNumber(), 6);
 }
 
 }  // namespace brave_rewards

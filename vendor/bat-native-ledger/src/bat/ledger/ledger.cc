@@ -26,8 +26,6 @@ VisitData::VisitData(const std::string& _tld,
             const std::string& _domain,
             const std::string& _path,
             uint32_t _tab_id,
-            ACTIVITY_MONTH _local_month,
-            int _local_year,
             const std::string& _name,
             const std::string& _url,
             const std::string& _provider,
@@ -36,8 +34,6 @@ VisitData::VisitData(const std::string& _tld,
     domain(_domain),
     path(_path),
     tab_id(_tab_id),
-    local_month(_local_month),
-    local_year(_local_year),
     name(_name),
     url(_url),
     provider(_provider),
@@ -48,8 +44,6 @@ VisitData::VisitData(const VisitData& data) :
     domain(data.domain),
     path(data.path),
     tab_id(data.tab_id),
-    local_month(data.local_month),
-    local_year(data.local_year),
     name(data.name),
     url(data.url),
     provider(data.provider),
@@ -74,8 +68,6 @@ bool VisitData::loadFromJson(const std::string& json) {
         d.HasMember("domain") && d["domain"].IsString() &&
         d.HasMember("path") && d["path"].IsString() &&
         d.HasMember("tab_id") && d["tab_id"].IsUint() &&
-        d.HasMember("local_month") && d["local_month"].IsInt() &&
-        d.HasMember("local_year") && d["local_year"].IsInt() &&
         d.HasMember("name") && d["name"].IsString() &&
         d.HasMember("url") && d["url"].IsString() &&
         d.HasMember("provider") && d["provider"].IsString() &&
@@ -87,8 +79,6 @@ bool VisitData::loadFromJson(const std::string& json) {
     domain = d["domain"].GetString();
     path = d["path"].GetString();
     tab_id = d["tab_id"].GetUint();
-    local_month = (ACTIVITY_MONTH)d["local_month"].GetInt();
-    local_year = d["local_year"].GetInt();
     name = d["name"].GetString();
     url = d["url"].GetString();
     provider = d["provider"].GetString();
@@ -100,8 +90,6 @@ bool VisitData::loadFromJson(const std::string& json) {
 
 
 ActivityInfoFilter::ActivityInfoFilter() :
-    month(ACTIVITY_MONTH::ANY),
-    year(-1),
     excluded(EXCLUDE_FILTER::FILTER_DEFAULT),
     percent(0),
     min_duration(0),
@@ -111,8 +99,6 @@ ActivityInfoFilter::ActivityInfoFilter() :
 
 ActivityInfoFilter::ActivityInfoFilter(const ActivityInfoFilter& filter) :
     id(filter.id),
-    month(filter.month),
-    year(filter.year),
     excluded(filter.excluded),
     percent(filter.percent),
     order_by(filter.order_by),
@@ -137,8 +123,6 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
   bool error = d.HasParseError();
   if (false == error) {
     error = !(d.HasMember("id") && d["id"].IsString() &&
-        d.HasMember("month") && d["month"].IsInt() &&
-        d.HasMember("year") && d["year"].IsInt() &&
         d.HasMember("excluded") && d["excluded"].IsInt() &&
         d.HasMember("percent") && d["percent"].IsUint() &&
         d.HasMember("order_by") && d["order_by"].IsObject() &&
@@ -149,8 +133,6 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
 
   if (false == error) {
     id = d["id"].GetString();
-    month = (ACTIVITY_MONTH)d["month"].GetInt();
-    year = d["year"].GetInt();
     excluded = (EXCLUDE_FILTER)d["excluded"].GetInt();
     percent = d["percent"].GetUint();
     min_duration = d["min_duration"].GetUint64();
@@ -246,8 +228,6 @@ PublisherInfo::PublisherInfo() :
     weight(.0),
     excluded(PUBLISHER_EXCLUDE::DEFAULT),
     category(REWARDS_CATEGORY::AUTO_CONTRIBUTE),
-    month(ACTIVITY_MONTH::ANY),
-    year(-1),
     reconcile_stamp(0),
     verified(false),
     name(""),
@@ -255,9 +235,7 @@ PublisherInfo::PublisherInfo() :
     provider(""),
     favicon_url("") {}
 
-PublisherInfo::PublisherInfo(const std::string& publisher_id,
-                             ACTIVITY_MONTH _month,
-                             int _year) :
+PublisherInfo::PublisherInfo(const std::string& publisher_id) :
     id(publisher_id),
     duration(0u),
     score(.0),
@@ -266,8 +244,6 @@ PublisherInfo::PublisherInfo(const std::string& publisher_id,
     weight(.0),
     excluded(PUBLISHER_EXCLUDE::DEFAULT),
     category(REWARDS_CATEGORY::AUTO_CONTRIBUTE),
-    month(_month),
-    year(_year),
     reconcile_stamp(0),
     verified(false),
     name(""),
@@ -284,8 +260,6 @@ PublisherInfo::PublisherInfo(const PublisherInfo& info) :
     weight(info.weight),
     excluded(info.excluded),
     category(info.category),
-    month(info.month),
-    year(info.year),
     reconcile_stamp(info.reconcile_stamp),
     verified(info.verified),
     name(info.name),
@@ -301,7 +275,7 @@ bool PublisherInfo::operator<(const PublisherInfo& rhs) const {
 }
 
 bool PublisherInfo::is_valid() const {
-  return !id.empty() && year > 0 && month != ACTIVITY_MONTH::ANY;
+  return !id.empty();
 }
 
 const std::string PublisherInfo::ToJson() const {
@@ -325,8 +299,6 @@ bool PublisherInfo::loadFromJson(const std::string& json) {
         d.HasMember("weight") && d["weight"].IsDouble() &&
         d.HasMember("excluded") && d["excluded"].IsInt() &&
         d.HasMember("category") && d["category"].IsInt() &&
-        d.HasMember("month") && d["month"].IsInt() &&
-        d.HasMember("year") && d["year"].IsInt() &&
         d.HasMember("reconcile_stamp") && d["reconcile_stamp"].IsUint64() &&
         d.HasMember("verified") && d["verified"].IsBool() &&
         d.HasMember("name") && d["name"].IsString() &&
@@ -345,8 +317,6 @@ bool PublisherInfo::loadFromJson(const std::string& json) {
     weight = d["weight"].GetDouble();
     excluded = (PUBLISHER_EXCLUDE)d["excluded"].GetInt();
     category = (REWARDS_CATEGORY)d["category"].GetInt();
-    month = (ACTIVITY_MONTH)d["month"].GetInt();
-    year = d["year"].GetInt();
     reconcile_stamp = d["reconcile_stamp"].GetUint64();
     verified = d["verified"].GetBool();
     name = d["name"].GetString();
@@ -368,7 +338,7 @@ bool PublisherInfo::loadFromJson(const std::string& json) {
   return !error;
 }
 
-const PublisherInfo invalid("", ACTIVITY_MONTH::ANY, -1);
+const PublisherInfo invalid("");
 
 const std::string ContributionInfo::ToJson() const {
   std::string json;
