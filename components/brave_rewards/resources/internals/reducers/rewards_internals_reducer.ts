@@ -4,6 +4,9 @@
 
 import { Reducer } from 'redux'
 
+// Constants
+import { types } from '../constants/rewards_internals_types'
+
 // Utils
 import * as storage from '../storage'
 
@@ -14,6 +17,9 @@ const rewardsInternalsReducer: Reducer<RewardsInternals.State | undefined> = (st
 
   const startingState = state
   switch (action.type) {
+    case types.REWARDS_INTERNALS_STATE_UPDATED:
+      state = storage.getLoadTimeData(state)
+      break
     default:
       break
   }

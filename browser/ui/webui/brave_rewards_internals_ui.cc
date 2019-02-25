@@ -11,6 +11,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_view_host.h"
+#include "content/public/browser/web_ui.h"
 
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_internals_generated_map.h"
@@ -53,38 +54,50 @@ BraveRewardsInternalsUI::~BraveRewardsInternalsUI() {
   rewards_service_->RemoveObserver(this);
 }
 
+void BraveRewardsInternalsUI::CustomizeWebUIProperties(
+    content::RenderViewHost* render_view_host) {
+  DCHECK(IsSafeToSetWebUIProperties());
+
+  if (render_view_host) {
+    render_view_host->SetWebUIProperty("isRewardsEnabled",
+                                       BooleanToString(IsRewardsEnabled()));
+    if (internals_info_) {
+      render_view_host->SetWebUIProperty("walletPaymentId",
+                                         internals_info_->payment_id);
+      render_view_host->SetWebUIProperty(
+          "isKeyInfoSeedValid",
+          BooleanToString(internals_info_->is_key_info_seed_valid));
+
+      base::ListValue current_reconciles;
+      for (const auto& item : internals_info_->current_reconciles) {
+        auto current_reconcile_info = std::make_unique<base::DictionaryValue>();
+        current_reconcile_info->SetString("viewingId", item.second.viewing_id_);
+        current_reconcile_info->SetString("amount", item.second.amount_);
+        current_reconcile_info->SetInteger("retryStep",
+                                           item.second.retry_step_);
+        current_reconcile_info->SetInteger("retryLevel",
+                                           item.second.retry_level_);
+        current_reconciles.Append(std::move(current_reconcile_info));
+      }
+
+      std::string json;
+      base::JSONWriter::Write(current_reconciles, &json);
+      render_view_host->SetWebUIProperty("currentReconciles", json);
+    }
+  }
+}
+
+bool BraveRewardsInternalsUI::IsRewardsEnabled() const {
+  DCHECK(profile_);
+  return profile_->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kBraveRewardsEnabled);
+}
+
 void BraveRewardsInternalsUI::UpdateWebUIProperties() {
   if (IsSafeToSetWebUIProperties()) {
-    content::RenderViewHost* render_view_host = GetRenderViewHost();
-    if (render_view_host) {
-      render_view_host->SetWebUIProperty("isRewardsEnabled",
-                                         BooleanToString(IsRewardsEnabled()));
-      if (internals_info_) {
-        render_view_host->SetWebUIProperty("walletPaymentId",
-                                           internals_info_->payment_id);
-        render_view_host->SetWebUIProperty(
-            "isKeyInfoSeedValid",
-            BooleanToString(internals_info_->is_key_info_seed_valid));
-
-        base::ListValue current_reconciles;
-        for (const auto& item : internals_info_->current_reconciles) {
-          auto current_reconcile_info =
-              std::make_unique<base::DictionaryValue>();
-          current_reconcile_info->SetString("viewingId",
-                                            item.second.viewing_id_);
-          current_reconcile_info->SetString("amount", item.second.amount_);
-          current_reconcile_info->SetInteger("retryStep",
-                                             item.second.retry_step_);
-          current_reconcile_info->SetInteger("retryLevel",
-                                             item.second.retry_level_);
-          current_reconciles.Append(std::move(current_reconcile_info));
-        }
-
-        std::string json;
-        base::JSONWriter::Write(current_reconciles, &json);
-        render_view_host->SetWebUIProperty("currentReconciles", json);
-      }
-    }
+    CustomizeWebUIProperties(GetRenderViewHost());
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards_internals.stateUpdated");
   }
 }
 
@@ -97,10 +110,10 @@ void BraveRewardsInternalsUI::OnRewardsInitialized(
                  base::Unretained(this)));
 }
 
-bool BraveRewardsInternalsUI::IsRewardsEnabled() const {
-  DCHECK(profile_);
-  return profile_->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kBraveRewardsEnabled);
+void BraveRewardsInternalsUI::OnRewardsMainEnabled(
+    brave_rewards::RewardsService* rewards_service,
+    bool rewards_main_enabled) {
+  UpdateWebUIProperties();
 }
 
 void BraveRewardsInternalsUI::OnGetRewardsInternalsInfo(

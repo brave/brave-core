@@ -5,12 +5,14 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 // Components
 import App from './components/app'
 
 // Utils
 import store from './store'
+import * as rewardsInternalsActions from './actions/rewards_internals_actions'
 
 window.cr.define('brave_rewards_internals', function () {
   'use strict'
@@ -24,8 +26,15 @@ window.cr.define('brave_rewards_internals', function () {
     window.i18nTemplate.process(window.document, window.loadTimeData)
   }
 
+  function stateUpdated () {
+    const actions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
+    actions.stateUpdated()
+    window.i18nTemplate.process(window.document, window.loadTimeData)
+  }
+
   return {
-    initialize
+    initialize,
+    stateUpdated
   }
 })
 

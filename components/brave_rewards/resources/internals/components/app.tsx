@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
@@ -12,21 +13,27 @@ import { WalletPaymentId } from './walletPaymentId'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import * as rewardsInternalsActions from '../actions/rewards_internals_actions'
 
 interface Props {
+  actions: any
   rewardsInternalsData: RewardsInternals.State
 }
 
 export class RewardsInternalsPage extends React.Component<Props, {}> {
+  get actions () {
+    return this.props.actions
+  }
+
   render () {
     const { rewardsInternalsData } = this.props
-    if (rewardsInternalsData.isRewardsEnabled) {
+    if (rewardsInternalsData.info.isRewardsEnabled) {
       return (
         <div id='rewardsInternalsPage'>
-          <KeyInfoSeed isKeyInfoSeedValid={rewardsInternalsData.isKeyInfoSeedValid || ''} />
-          <WalletPaymentId walletPaymentId={rewardsInternalsData.walletPaymentId || ''} />
+          <KeyInfoSeed isKeyInfoSeedValid={rewardsInternalsData.info.isKeyInfoSeedValid || ''} />
+          <WalletPaymentId walletPaymentId={rewardsInternalsData.info.walletPaymentId || ''} />
           <hr/>
-          {rewardsInternalsData.currentReconciles.map((item, index) => (
+          {rewardsInternalsData.info.currentReconciles.map((item, index) => (
             <div>
               <span i18n-content='currentReconcile'/> {index + 1}
               <CurrentReconcile currentReconcile={item || ''} />
@@ -46,6 +53,11 @@ export const mapStateToProps = (state: RewardsInternals.ApplicationState) => ({
   rewardsInternalsData: state.rewardsInternalsData
 })
 
+export const mapDispatchToProps = (dispatch: Dispatch) => ({
+  actions: bindActionCreators(rewardsInternalsActions, dispatch)
+})
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(RewardsInternalsPage)

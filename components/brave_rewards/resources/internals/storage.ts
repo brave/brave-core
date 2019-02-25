@@ -7,29 +7,29 @@ import { debounce } from '../../../common/debounce'
 const keyName = 'rewards-internals-data'
 
 const defaultState: RewardsInternals.State = {
-  isRewardsEnabled: false,
-  isKeyInfoSeedValid: '',
-  walletPaymentId: '',
-  currentReconciles: []
+  info: {
+    isRewardsEnabled: false,
+    isKeyInfoSeedValid: '',
+    walletPaymentId: '',
+    currentReconciles: []
+  }
 }
 
 export const getLoadTimeData = (state: RewardsInternals.State): RewardsInternals.State => {
   state = { ...state }
-  state = defaultState
+  state.info = defaultState.info
 
   // Expected to be Booleans
   ;['isRewardsEnabled'].forEach((item) => {
-    state[item] = chrome.getVariableValue(item) === 'true'
+    state.info[item] = chrome.getVariableValue(item) === 'true'
   })
-
   // Expected to be Strings
   ;['isKeyInfoSeedValid','walletPaymentId'].forEach((item) => {
-    state[item] = chrome.getVariableValue(item)
+    state.info[item] = chrome.getVariableValue(item)
   })
-
   // Expected to be Objects
   ;['currentReconciles'].forEach((item) => {
-    state[item] = JSON.parse(chrome.getVariableValue(item))
+    state.info[item] = JSON.parse(chrome.getVariableValue(item))
   })
 
   return state
