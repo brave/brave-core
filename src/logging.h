@@ -8,22 +8,10 @@
 
 #include "bat/confirmations/confirmations_client.h"
 
-#define CONFIRMATIONS_LOG_INFO \
-  confirmations_client_->Log( \
-    __FILE__, __LINE__, ::ledger::LogLevel::LOG_INFO)
+#define BLOG(severity) \
+  confirmations_client_->Log(__FILE__, __LINE__, severity)->stream()
 
-#define CONFIRMATIONS_LOG_WARNING \
-  confirmations_client_->Log( \
-    __FILE__, __LINE__, ::ledger::LogLevel::LOG_WARNING)
-
-#define CONFIRMATIONS_LOG_ERROR \
-  confirmations_client_->Log( \
-    __FILE__, __LINE__, ::ledger::LogLevel::LOG_ERROR)
-
-#define BLOG(severity) CONFIRMATIONS_LOG_ ## severity->stream()
-
-#if defined(ERROR)
-#define LOG_0 CONFIRMATIONS_LOG_ERROR
-#endif
+#define BVLOG(severity) \
+  confirmations_client_->VerboseLog(__FILE__, __LINE__, severity)->stream()
 
 #endif  // BAT_CONFIRMATIONS_LOGGING_H_
