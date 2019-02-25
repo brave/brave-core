@@ -170,7 +170,7 @@
         Widevine is not installed
       </message>
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_EXPLANATORY_TEXT" desc="Explanatory text used in permission request bubble. 'Widevine' is the name of a plugin and should not be translated.">
-        Google Widevine is a piece of Digital Rights Management (DRM) code that Brave does not own, cannot inspect, and cannot guarantee is safe to use. By allowing thie extension, you are agreeing to the Google Widevine Terms of Use.
+        Google Widevine is a piece of Digital Rights Management (DRM) code that Brave does not own, cannot inspect, and cannot guarantee is safe to use. By allowing this extension, you are agreeing to the Google Widevine Terms of Use.
       </message>
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install Widevine

@@ -15,6 +15,8 @@
 
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 #include "brave/browser/widevine/widevine_utils.h"
+#include "content/browser/frame_host/frame_tree_node.h"
+#include "content/browser/frame_host/render_frame_host_impl.h"
 #endif
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
@@ -56,5 +58,15 @@ void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
   }
 #endif
 }
+
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+void BraveDrmTabHelper::RenderFrameCreated(
+    content::RenderFrameHost* render_frame_host) {
+  auto* frame = static_cast<content::RenderFrameHostImpl*>(render_frame_host);
+  if (frame->frame_tree_node()->IsMainFrame()) {
+    is_widevine_permission_requested_ = false;
+  }
+}
+#endif
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveDrmTabHelper)

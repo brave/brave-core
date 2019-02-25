@@ -26,6 +26,9 @@ class BraveDrmTabHelper final
   // content::WebContentsObserver
   void DidStartNavigation(
       content::NavigationHandle* navigation_handle) override;
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+  void RenderFrameCreated(content::RenderFrameHost* render_frame_host) override;
+#endif
 
   // blink::mojom::BraveDRM
   void OnWidevineKeySystemAccessRequest() override;
@@ -34,9 +37,11 @@ class BraveDrmTabHelper final
 
  private:
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  // Request widevine permission only once during the lifetime of web_contents
-  // because permission bubble is hidden only by explicit user gesture.
-  // User can install widevine later by using blocked image in omnibox.
+  // Request widevine permission only once during the lifetime of site instance.
+  // If not, a user who dismissed already this permission can see many times.
+  // Without this permission bubble, user can install widevine later by using
+  // blocked image in omnibox. So, this flag is cleared whenever RenderFrameHost
+  // for main frame is created.
   bool is_widevine_permission_requested_ = false;
 #endif
   content::WebContentsFrameBindingSet<blink::mojom::BraveDRM> bindings_;

@@ -9,11 +9,13 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/test_utils.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/widget/widget.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 #include <string>
@@ -64,12 +66,20 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);
 
-  // Check permission bubble is visible only once during the
-  // lifetime webcontents.
+  // Check permission isn't requested again for same site.
   observer.bubble_added_ = false;
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(observer.bubble_added_);
+
+  // Check permission is requested again when main frame of webcontents is
+  // changed.
+  ui_test_utils::NavigateToURL(browser(), GURL("brave://sync/"));
+  EXPECT_FALSE(observer.bubble_added_);
+  drm_tab_helper->OnWidevineKeySystemAccessRequest();
+  content::RunAllTasksUntilIdle();
+  EXPECT_TRUE(observer.bubble_added_);
+
   permission_request_manager->RemoveObserver(&observer);
 }
 
