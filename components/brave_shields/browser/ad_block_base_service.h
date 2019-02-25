@@ -19,6 +19,7 @@
 #include "content/public/common/resource_type.h"
 
 class AdBlockClient;
+class AdBlockServiceTest;
 
 namespace brave_shields {
 
@@ -33,10 +34,12 @@ class AdBlockBaseService : public BaseBraveShieldsService {
     const std::string& tab_host, bool* matching_exception_filter) override;
 
  protected:
+  friend class ::AdBlockServiceTest;
   bool Init() override;
   void Cleanup() override;
 
   void GetDATFileData(const base::FilePath& dat_file_path);
+  AdBlockClient* GetAdBlockClientForTest();
 
   std::unique_ptr<AdBlockClient> ad_block_client_;
   DATFileDataBuffer buffer_;

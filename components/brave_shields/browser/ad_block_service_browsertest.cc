@@ -9,6 +9,9 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/browser/tracking_protection_service.h"
+#include "brave/vendor/ad-block/ad_block_client.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -45,6 +48,18 @@ const std::string kRegionalAdBlockComponentTestBase64PublicKey =
     "ieMF3JB9CZPr+qDKIap+RZUfsraV47QebRi/JA17nbDMlXOmK7mILfFU7Jhjx04F"
     "LwIDAQAB";
 
+const std::string kTrackingProtectionComponentTestId(
+    "eclbkhjphkhalklhipiicaldjbnhdfkc");
+
+const std::string kTrackingProtectionComponentTestBase64PublicKey =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsleoSxQ3DN+6xym2P1uX"
+    "mN6ArIWd9Oru5CSjS0SRE5upM2EnAl/C20TP8JdIlPi/3tk/SN6Y92K3xIhAby5F"
+    "0rbPDSTXEWGy72tv2qb/WySGwDdvYQu9/J5sEDneVcMrSHcC0VWgcZR0eof4BfOy"
+    "fKMEnHX98tyA3z+vW5ndHspR/Xvo78B3+6HX6tyVm/pNlCNOm8W8feyfDfPpK2Lx"
+    "qRLB7PumyhR625txxolkGC6aC8rrxtT3oymdMfDYhB4BZBrzqdriyvu1NdygoEiF"
+    "WhIYw/5zv1NyIsfUiG8wIs5+OwS419z7dlMKsg1FuB2aQcDyjoXx1habFfHQfQwL"
+    "qwIDAQAB";
+
 class AdBlockServiceTest : public ExtensionBrowserTest {
  public:
   AdBlockServiceTest() {}
@@ -63,6 +78,12 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
     ExtensionBrowserTest::PreRunTestOnMainThread();
     WaitForDefaultAdBlockServiceThread();
     ASSERT_TRUE(g_brave_browser_process->ad_block_service()->IsInitialized());
+  }
+
+  void AddRulesToAdBlock(const char* rules) {
+    g_brave_browser_process->ad_block_service()
+        ->GetAdBlockClientForTest()
+        ->parse(rules);
   }
 
   void InitEmbeddedTestServer() {
@@ -84,6 +105,13 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
       const std::string& component_base64_public_key) {
     brave_shields::AdBlockService::SetComponentIdAndBase64PublicKeyForTest(
         component_id, component_base64_public_key);
+  }
+
+  void InitTrackingProtectionService() {
+    brave_shields::LocalDataFilesService::
+        SetComponentIdAndBase64PublicKeyForTest(
+            kTrackingProtectionComponentTestId,
+            kTrackingProtectionComponentTestBase64PublicKey);
   }
 
   void SetRegionalComponentIdAndBase64PublicKeyForTest(
@@ -134,6 +162,21 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
     return true;
   }
 
+  bool InstallTrackingProtectionExtension() {
+    base::FilePath test_data_dir;
+    GetTestDataDir(&test_data_dir);
+    const extensions::Extension* tracking_protection_extension =
+        InstallExtension(test_data_dir.AppendASCII("tracking-protection-data"), 1);
+    if (!tracking_protection_extension)
+      return false;
+
+    g_brave_browser_process->tracking_protection_service()->OnComponentReady(
+        tracking_protection_extension->id(), tracking_protection_extension->path(), "");
+    WaitForTrackingProtectionServiceThread();
+
+    return true;
+  }
+
   bool StartAdBlockRegionalService() {
     g_brave_browser_process->ad_block_regional_service()->Start();
     if (!g_brave_browser_process->ad_block_regional_service()->IsInitialized())
@@ -150,6 +193,13 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
   void WaitForRegionalAdBlockServiceThread() {
     scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
         g_brave_browser_process->ad_block_regional_service()->GetTaskRunner()));
+    ASSERT_TRUE(io_helper->Run());
+  }
+
+  void WaitForTrackingProtectionServiceThread() {
+    scoped_refptr<base::ThreadTestHelper> io_helper(
+        new base::ThreadTestHelper(
+            g_brave_browser_process->tracking_protection_service()->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
 };
@@ -404,4 +454,82 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
                             "document.head.appendChild(s);"));
   content::RunAllTasksUntilIdle();
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+}
+
+// Load a page with an ad image which is matched on the regional blocker,
+// but make sure it is saved by the default ad_block_client's exception.
+// This test is the same as AdsGetBlockedByRegionalBlocker except for at
+// the start it adds an exception rule to the non regional adblocker.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+    ExceptionAdsAreAllowedAcrossClients) {
+  AddRulesToAdBlock("*ad_fr*\n@@*ad_fr.png*");
+  g_browser_process->SetApplicationLocale("fr");
+  ASSERT_EQ(g_browser_process->GetApplicationLocale(), "fr");
+
+  ASSERT_TRUE(StartAdBlockRegionalService());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  SetRegionalComponentIdAndBase64PublicKeyForTest(
+      kRegionalAdBlockComponentTestId,
+      kRegionalAdBlockComponentTestBase64PublicKey);
+  ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          "setExpectations(1, 0, 0, 0);"
+                                          "addImage('ad_fr.png')",
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
+
+// Load a page that references a tracker from an untrusted domain, but
+// has no specific exception rule in ad-block.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+    TrackerReferencedFromUntrustedDomain) {
+  SetDefaultComponentIdAndBase64PublicKeyForTest(
+      kDefaultAdBlockComponentTestId,
+      kDefaultAdBlockComponentTestBase64PublicKey);
+  InitTrackingProtectionService();
+  ASSERT_TRUE(InstallTrackingProtectionExtension());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked), 0ULL);
+  GURL url = embedded_test_server()->GetURL("google.com", kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  GURL test_url = embedded_test_server()->GetURL("365dm.com", "/logo.png");
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          base::StringPrintf("setExpectations(0, 1, 0, 0);"
+                                                             "addImage('%s')",
+                                          test_url.spec().c_str()),
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked), 1ULL);
+}
+
+// Load a page that references a tracker from an untrusted domain, but
+// has a specific exception rule in ad-block.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+    TrackerReferencedFromUntrustedDomainWithException) {
+  InitTrackingProtectionService();
+  AddRulesToAdBlock("||365dm.com\n@@logo.png");
+  ASSERT_TRUE(InstallTrackingProtectionExtension());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked), 0ULL);
+  GURL url = embedded_test_server()->GetURL("google.com", kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  GURL test_url = embedded_test_server()->GetURL("365dm.com", "/logo.png");
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          base::StringPrintf("setExpectations(1, 0, 0, 0);"
+                                                             "addImage('%s')",
+                                          test_url.spec().c_str()),
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked), 0ULL);
 }

@@ -20,6 +20,7 @@
 
 class AutoplayWhitelistServiceTest;
 class TrackingProtectionServiceTest;
+class AdBlockServiceTest;
 
 namespace brave_shields {
 
@@ -55,6 +56,7 @@ class LocalDataFilesService : public BraveComponentExtension {
  private:
   friend class ::AutoplayWhitelistServiceTest;
   friend class ::TrackingProtectionServiceTest;
+  friend class ::AdBlockServiceTest;
   static std::string g_local_data_files_component_id_;
   static std::string g_local_data_files_component_base64_public_key_;
   static void SetComponentIdAndBase64PublicKeyForTest(

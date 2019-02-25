@@ -14,7 +14,6 @@
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 #include "content/public/common/resource_type.h"
 
-class AdBlockClient;
 class AdBlockServiceTest;
 
 namespace brave_shields {

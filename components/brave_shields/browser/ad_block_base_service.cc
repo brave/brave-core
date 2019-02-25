@@ -159,6 +159,10 @@ bool AdBlockBaseService::Init() {
   return true;
 }
 
+AdBlockClient* AdBlockBaseService::GetAdBlockClientForTest() {
+  return ad_block_client_.get();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 }  // namespace brave_shields
