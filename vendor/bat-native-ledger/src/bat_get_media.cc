@@ -1132,7 +1132,16 @@ std::string BatGetMedia::extractData(const std::string& data,
 }
 
 std::string BatGetMedia::getNameFromChannel(const std::string& data) {
-  return extractData(data, "channelMetadataRenderer\":{\"title\":\"", "\"");
+  std::string publisher_name;
+  const std::string publisher_json_name =
+      extractData(data, "channelMetadataRenderer\":{\"title\":\"", "\"");
+  const std::string publisher_json = "{\"brave_publisher\":\"" +
+      publisher_json_name + "\"}";
+  // scraped data could come in with JSON code points added.
+  // Make to JSON object above so we can decode.
+  braveledger_bat_helper::getJSONValue(
+      "brave_publisher", publisher_json, publisher_name);
+  return publisher_name;
 }
 
 std::string BatGetMedia::parseChannelIdFromCustomPathPage(
