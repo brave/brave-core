@@ -316,9 +316,16 @@ test("brave_browser_tests") {
 
   deps = []
 
+  # TODO(simonhong): Enable this test also for bundling.
   if (enable_widevine_cdm_component) {
     sources += [
       "//brave/browser/ui/content_settings/brave_widevine_blocked_image_model_browsertest.cc",
+    ]
+  }
+
+  if (bundle_widevine_cdm || enable_widevine_cdm_component) {
+    sources += [
+      "//brave/browser/widevine/widevine_permission_request_browsertest.cc",
     ]
   }
 

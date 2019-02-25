@@ -54,10 +54,12 @@ void WidevinePermissionRequest::RequestFinished() {
   delete this;
 }
 
-PermissionRequestType WidevinePermissionRequest::GetPermissionRequestType() const {
+PermissionRequestType
+WidevinePermissionRequest::GetPermissionRequestType() const {
   return PermissionRequestType::PERMISSION_WIDEVINE;
 }
 
 base::string16 WidevinePermissionRequest::GetExplanatoryMessageText() const {
-  return l10n_util::GetStringUTF16(IDS_WIDEVINE_PERMISSION_REQUEST_EXPLANATORY_TEXT);;
+  return l10n_util::GetStringUTF16(
+      IDS_WIDEVINE_PERMISSION_REQUEST_EXPLANATORY_TEXT);
 }

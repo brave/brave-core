@@ -68,12 +68,12 @@ void OnWidevineInstallDone(const std::string& error) {
     chrome::FindLastActive()->window()->UpdateToolbar(nullptr);
 
     auto* web_contents = GetActiveWebContents();
-    // There is no way to hide existing permission bubble w/o user gesture except
-    // reloading. To handle this, reloading again.
+    // There is no way to hide existing permission bubble w/o user gesture
+    // except reloading. To handle this, reloading again.
     // This can happen when user installs Widevine via content settings bubble
     // while permission bubble is visible.
-    // In this case, next request permission for request isn't added because user
-    // already recognized well about content settings bubble.
+    // In this case, next request permission for request isn't added because
+    // user already recognized well about content settings bubble.
     if (IsPermissionBubbleForInstallIsVisible(web_contents)) {
       ChromeSubresourceFilterClient::FromWebContents(web_contents)
           ->OnReloadRequested();
@@ -186,7 +186,11 @@ void InstallBundleOrRestartBrowser() {
   auto* manager = g_brave_browser_process->brave_widevine_bundle_manager();
   if (manager->needs_restart()) {
     manager->WillRestart();
-    chrome::AttemptRelaunch();
+    if (!manager->is_test()) {
+      // Prevent relaunch during the browser test.
+      // This will cause abnormal termination.
+      chrome::AttemptRelaunch();
+    }
     return;
   }
 
