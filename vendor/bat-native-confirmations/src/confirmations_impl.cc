@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <time>
 #include <utility>
 
 #include "confirmations_impl.h"
@@ -16,6 +15,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/time/time.h"
 
 #include "third_party/re2/src/re2/re2.h"
 
@@ -474,8 +474,11 @@ double ConfirmationsImpl::GetEstimatedRedemptionValue(
 
 void ConfirmationsImpl::AppendEstimatedRedemptionValueToTransactionHistory(
     double estimated_redemption_value) {
+  auto now = base::Time::Now();
+  auto now_in_seconds = (now - base::Time()).InSeconds();
+
   TransactionInfo info;
-  info.timestamp_in_seconds = static_cast<uint64_t>(std::time(nullptr));
+  info.timestamp_in_seconds = now_in_seconds;
   info.estimated_redemption_value = estimated_redemption_value;
 
   transaction_history_.push_back(info);
