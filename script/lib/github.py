@@ -269,7 +269,7 @@ def get_title_from_first_commit(path, branch_to_compare):
         return title_list[0]
 
 
-def push_branches_to_remote(path, token, branches_to_push, dryrun=False):
+def push_branches_to_remote(path, branches_to_push, dryrun=False, token=None):
     if dryrun:
         print('[INFO] would push the following local branches to remote: ' + str(branches_to_push))
     else:
@@ -278,12 +278,10 @@ def push_branches_to_remote(path, token, branches_to_push, dryrun=False):
                 print('- pushing ' + branch_to_push + '...')
                 # TODO: if they already exist, force push?? or error??
                 response = execute(['git', 'remote', 'get-url', '--push', 'origin']).strip()
-                if response.startswith('https://')
-                    # TODO: get username associated with token
-                    username = ''
-                    password = ''
-                    remote = response.replace('https://', 'https://' + username + ':' + password + '@')
-                    # git -C brave-browser push -u https://${USERNAME}:${PASSWORD}@github.com/$ORG/brave-browser.git $NEW_DEV_CHANNEL_BRANCH
+                if response.startswith('https://'):
+                    if len(str(token)) == 0:
+                        raise Exception('GitHub token cannot be null or empty!')
+                    remote = response.replace('https://', 'https://' + token + ':x-oauth-basic@')
                     execute(['git', 'push', '-u', remote, branch_to_push])
                 else:
                     execute(['git', 'push', '-u', 'origin', branch_to_push])
