@@ -50,7 +50,7 @@ class LedgerImpl : public ledger::Ledger,
  public:
   typedef std::map<uint32_t, ledger::VisitData>::const_iterator visit_data_iter;
 
-  LedgerImpl(ledger::LedgerClient* client);
+  explicit LedgerImpl(ledger::LedgerClient* client);
   ~LedgerImpl() override;
 
   // Not copyable, not assignable

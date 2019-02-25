@@ -165,7 +165,8 @@ class RewardsService : public KeyedService {
     const GetPendingContributionsTotalCallback& callback) = 0;
   virtual void GetRewardsMainEnabled(
     const GetRewardsMainEnabledCallback& callback) const = 0;
-  // TODO remove this hack when ads is moved to the same process as ledger
+  // TODO(Terry Mancey): remove this hack when ads is moved to the same process
+  // as ledger
   virtual void SetCatalogIssuers(const std::string& json) = 0;
   virtual void AdSustained(const std::string& json) = 0;
 

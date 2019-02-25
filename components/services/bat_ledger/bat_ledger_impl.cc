@@ -13,11 +13,11 @@
 #include "brave/components/services/bat_ledger/bat_ledger_client_mojo_proxy.h"
 #include "mojo/public/cpp/bindings/map.h"
 
-using namespace std::placeholders;
+using std::placeholders::_1;
 
 namespace bat_ledger {
 
-namespace {  // TODO, move into a util class
+namespace {  // TODO(Nejc Zdovc): Move into a util class
 
 ledger::PUBLISHER_EXCLUDE ToLedgerPublisherExclude(int32_t exclude) {
   return (ledger::PUBLISHER_EXCLUDE)exclude;
