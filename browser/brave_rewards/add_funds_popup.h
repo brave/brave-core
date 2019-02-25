@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_REWARDS_ADD_FUNDS_POPUP_H_
 
 #include <map>
+#include <memory>
 #include <string>
 
 #include "components/content_settings/core/common/content_settings.h"

@@ -5,7 +5,9 @@
 
 #include "brave/browser/brave_rewards/add_funds_popup.h"
 
+#include <memory>
 #include <string>
+#include <utility>
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"

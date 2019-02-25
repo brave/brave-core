@@ -6,7 +6,9 @@
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
 
 #include <map>
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/base64.h"
@@ -455,8 +457,8 @@ void RewardsDOMHandler::OnGetAutoContributeProps(
     }
 
     values.SetDictionary("ui", std::move(ui_values));
-    //  TODO this needs to be moved out of this flow, because
-    //  now we set this values every minute
+    // TODO(mkarolin) this needs to be moved out of this flow, because
+    // now we set this values every minute
     web_ui()->CallJavascriptFunctionUnsafe(
         "brave_rewards.initAutoContributeSettings", values);
 
