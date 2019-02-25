@@ -26,7 +26,7 @@ from lib.github import (GitHub, get_authenticated_user_login, parse_user_logins,
                         get_title_from_first_commit, push_branches_to_remote)
 
 
-# TODOs for this version
+# TODOs
 #####
 # - parse out issue (so it can be included in body). ex: git log --pretty=format:%b
 # - discover associated issues
@@ -42,7 +42,7 @@ class PrConfig:
     branches_to_push = []
     master_pr_number = -1
     github_token = None
-    parsed_reviewers = []
+    team_reviewers = ['uplift-approvers']
     parsed_owners = []
     milestones = None
     title = None
@@ -68,7 +68,6 @@ class PrConfig:
                     print('[ERROR] no valid GitHub token was found either in npmrc or ' +
                           'via environment variables (BRAVE_GITHUB_TOKEN)')
                     return 1
-            self.parsed_reviewers = parse_user_logins(self.github_token, args.reviewers, verbose=self.is_verbose)
             # if `--owners` is not provided, fall back to user owning token
             self.parsed_owners = parse_user_logins(self.github_token, args.owners, verbose=self.is_verbose)
             if len(self.parsed_owners) == 0:
@@ -135,21 +134,18 @@ def validate_channel(channel):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='create PRs for all branches given branch against master')
-    parser.add_argument('--reviewers',
-                        help='comma separated list of GitHub logins to mark as reviewers',
-                        default=None)
     parser.add_argument('--owners',
                         help='comma seperated list of GitHub logins to mark as assignee',
                         default=None)
     parser.add_argument('--uplift-to',
                         help='starting at nightly (master), how far back to uplift the changes',
-                        default='nightly')
+                        default='dev')
     parser.add_argument('--uplift-using-pr',
                         help='link to already existing pull request (number) to use as a reference for uplifting',
-                        default=None)
+                        required=True)
     parser.add_argument('--start-from',
                         help='instead of starting from nightly (default), start from beta/dev/release',
-                        default='nightly')
+                        default='dev')
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='prints the output of the GitHub API calls')
     parser.add_argument('-n', '--dry-run', action='store_true',
@@ -210,9 +206,9 @@ def main():
     # optionally (instead of having a local branch), allow uplifting a specific PR
     # this pulls down the pr locally (in a special branch)
     if args.uplift_using_pr:
-        pr_number = int(args.uplift_using_pr)
-        repo = GitHub(config.github_token).repos(BRAVE_CORE_REPO)
         try:
+            pr_number = int(args.uplift_using_pr)
+            repo = GitHub(config.github_token).repos(BRAVE_CORE_REPO)
             # get enough details from PR to check out locally
             response = repo.pulls(pr_number).get()
             head = response['head']
@@ -223,7 +219,8 @@ def main():
             merged_at = str(response['merged_at']).strip()
 
         except Exception as e:
-            print('[ERROR] API returned an error when looking up pull request "' + str(pr_number) + '"\n' + str(e))
+            print('[ERROR] Error parsing or error returned from API when looking up pull request "' +
+                  str(args.uplift_using_pr) + '":\n' + str(e))
             return 1
 
         # set starting point AHEAD of the PR provided
@@ -235,10 +232,15 @@ def main():
             config.channels_to_process = config.channel_names[branch_index:]
 
         # if PR was already merged, use the SHA it was PRed against
-        if len(merged_at) > 0:
+        if merged_at != 'None' and len(merged_at) > 0:
             print('pr was already merged at ' + merged_at + '; using "' + top_level_sha +
                   '" instead of "' + top_level_base + '"')
             top_level_base = top_level_sha
+        else:
+            # don't allow uplift of PRs which are not merged
+            print('[ERROR] Pull request ' + str(pr_number) + ' has not been merged yet. ' +
+                  'Only merged requests can be uplifted.')
+            return 1
 
         # create local branch which matches the contents of the PR
         with scoped_cwd(BRAVE_CORE_ROOT):
@@ -279,7 +281,8 @@ def main():
         return 1
 
     print('\nPushing local branches to remote...')
-    push_branches_to_remote(BRAVE_CORE_ROOT, config.branches_to_push, dryrun=config.is_dryrun, token=config.github_token)
+    push_branches_to_remote(BRAVE_CORE_ROOT, config.branches_to_push,
+                            dryrun=config.is_dryrun, token=config.github_token)
 
     try:
         print('\nCreating the pull requests...')
@@ -364,12 +367,12 @@ def create_branch(channel, top_level_base, remote_base, local_branch):
             # squash all commits into one
             # NOTE: master is not squashed. This only runs for uplifts.
             execute(['git', 'reset', '--soft', remote_base])
-            squash_message = 'Squash of commits from branch ' + str(local_branch)
+            squash_message = 'Squash of commits from branch "' + str(local_branch) + '" to ' + channel
             if int(config.master_pr_number) > 0:
-                squash_message = 'Uplift of #' + str(config.master_pr_number) + ' (squashed)'
+                squash_message = 'Uplift of #' + str(config.master_pr_number) + ' (squashed) to ' + channel
             execute(['git', 'commit', '-m', squash_message])
             squash_hash = execute(['git', 'log', '--pretty="%h"', '-n1'])
-            print('- squashed all commits into ' + squash_hash)
+            print('- squashed all commits into ' + squash_hash + ' with message: "' + squash_message + '"')
 
         finally:
             # switch back to original branch
@@ -422,7 +425,8 @@ def submit_pr(channel, top_level_base, remote_base, local_branch):
             config.master_pr_number = number
 
         # assign milestone / reviewer(s) / owner(s)
-        add_reviewers_to_pull_request(config.github_token, BRAVE_CORE_REPO, number, config.parsed_reviewers,
+        add_reviewers_to_pull_request(config.github_token, BRAVE_CORE_REPO, number,
+                                      team_reviewers=config.team_reviewers,
                                       verbose=config.is_verbose, dryrun=config.is_dryrun)
         set_issue_details(config.github_token, BRAVE_CORE_REPO, number, milestone_number,
                           config.parsed_owners, config.labels,

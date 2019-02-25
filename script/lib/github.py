@@ -165,13 +165,16 @@ def get_file_contents(token, repo_name, filename, branch=None):
     return file['content']
 
 
-def add_reviewers_to_pull_request(token, repo_name, pr_number, reviewers=[], verbose=False, dryrun=False):
+def add_reviewers_to_pull_request(token, repo_name, pr_number, reviewers=[], team_reviewers=[],
+                                  verbose=False, dryrun=False):
     # add reviewers to pull request
     # for more info see: https://developer.github.com/v3/pulls/review_requests/
     repo = GitHub(token).repos(repo_name)
     patch_data = {}
     if len(reviewers) > 0:
         patch_data['reviewers'] = reviewers
+    if len(team_reviewers) > 0:
+        patch_data['team_reviewers'] = team_reviewers
     if dryrun:
         print('[INFO] would call `repo.pulls(' + str(pr_number) +
               ').requested_reviewers.post(' + str(patch_data) + ')`')
