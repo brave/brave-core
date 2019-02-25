@@ -279,7 +279,7 @@ def main():
         return 1
 
     print('\nPushing local branches to remote...')
-    push_branches_to_remote(BRAVE_CORE_ROOT, config.branches_to_push, dryrun=config.is_dryrun)
+    push_branches_to_remote(BRAVE_CORE_ROOT, config.branches_to_push, dryrun=config.is_dryrun, token=config.github_token)
 
     try:
         print('\nCreating the pull requests...')
@@ -360,6 +360,16 @@ def create_branch(channel, top_level_base, remote_base, local_branch):
             for sha in sha_list:
                 output = execute(['git', 'cherry-pick', sha]).split('\n')
                 print('- picked ' + sha + ' (' + output[0] + ')')
+
+            # squash all commits into one
+            # NOTE: master is not squashed. This only runs for uplifts.
+            execute(['git', 'reset', '--soft', remote_base])
+            squash_message = 'Squash of commits from branch ' + str(top_level_base)
+            if config.master_pr_number:
+                squash_message = 'Uplift of #' + str(config.master_pr_number) + ' (squashed)'
+            execute(['git', 'commit', '-m', squash_message])
+            squash_hash = execute(['git', 'log', '--pretty="%h"', '-n1'])
+            print('- squashed all commits into ' + squash_hash)
 
         finally:
             # switch back to original branch
