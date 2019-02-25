@@ -37,7 +37,7 @@ class ClientTests: XCTestCase {
             }
         }
 
-        waitForExpectations(timeout: 5, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
 
     func testDesktopUserAgent() {
