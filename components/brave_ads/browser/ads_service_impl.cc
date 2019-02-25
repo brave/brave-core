@@ -836,11 +836,6 @@ void AdsServiceImpl::OpenSettings(Profile* profile,
 }
 
 void AdsServiceImpl::GetClientInfo(ads::ClientInfo* client_info) const {
-  // TODO(bridiver) - these eventually get used in a catalog request
-  // and seem like potential privacy issues
-  // client_info->application_version = "";
-  // client_info->platform_version = "";
-  // client_info.application_version = chrome::kChromeVersion;
 #if defined(OS_MACOSX)
   client_info->platform = ads::ClientInfoPlatformType::MACOS;
 #elif defined(OS_WIN)
