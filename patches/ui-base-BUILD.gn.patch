@@ -1,0 +1,12 @@
+diff --git a/ui/base/BUILD.gn b/ui/base/BUILD.gn
+index 195435b5cc3a6aefc5464f9a5bd8919884783bcb..25349fd0787e0fd9c913fab16d3c646bf856f1f9 100644
+--- a/ui/base/BUILD.gn
++++ b/ui/base/BUILD.gn
+@@ -395,6 +395,7 @@ jumbo_component("base") {
+     "//base:base_static",
+     "//base:i18n",
+     "//base/third_party/dynamic_annotations",
++    "//brave/ui/webui/resources",
+     "//net",
+     "//third_party/icu",
+     "//third_party/zlib:zlib",
