@@ -10,14 +10,10 @@
 namespace ads {
 
 ClientInfo::ClientInfo() :
-    application_version(""),
-    platform(ClientInfoPlatformType::UNKNOWN),
-    platform_version("") {}
+    platform(ClientInfoPlatformType::UNKNOWN) {}
 
 ClientInfo::ClientInfo(const ClientInfo& info) :
-    application_version(info.application_version),
-    platform(info.platform),
-    platform_version(info.platform_version) {}
+    platform(info.platform) {}
 
 ClientInfo::~ClientInfo() = default;
 
@@ -41,17 +37,9 @@ Result ClientInfo::FromJson(
     return FAILED;
   }
 
-  if (document.HasMember("application_version")) {
-    application_version = document["application_version"].GetString();
-  }
-
   if (document.HasMember("platform")) {
     platform = static_cast<ClientInfoPlatformType>
-      (document["platform"].GetInt());
-  }
-
-  if (document.HasMember("platform_version")) {
-    platform_version = document["platform_version"].GetString();
+        (document["platform"].GetInt());
   }
 
   return SUCCESS;
@@ -60,56 +48,10 @@ Result ClientInfo::FromJson(
 void SaveToJson(JsonWriter* writer, const ClientInfo& info) {
   writer->StartObject();
 
-  writer->String("application_version");
-  writer->String(info.application_version.c_str());
-
   writer->String("platform");
   writer->Int(info.platform);
 
-  writer->String("platform_version");
-  writer->String(info.platform_version.c_str());
-
   writer->EndObject();
-}
-
-const std::string ClientInfo::GetPlatformName() const {
-  std::string platform_name = "";
-
-  switch (platform) {
-    case UNKNOWN: {
-      break;
-    }
-    case WIN7: {
-      platform_name = "Win7";
-      break;
-    }
-    case WIN8: {
-      platform_name = "Win8";
-      break;
-    }
-    case WIN10: {
-      platform_name = "Win10";
-      break;
-    }
-    case MACOS: {
-      platform_name = "macOS";
-      break;
-    }
-    case IOS: {
-      platform_name = "iOS";
-      break;
-    }
-    case ANDROID_OS: {
-      platform_name = "Android";
-      break;
-    }
-    case LINUX: {
-      platform_name = "Linux";
-      break;
-    }
-  }
-
-  return platform_name;
 }
 
 }  // namespace ads

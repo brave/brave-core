@@ -24,12 +24,7 @@ struct ADS_EXPORT ClientInfo {
       const std::string& json,
       std::string* error_description = nullptr);
 
-  const std::string GetPlatformName() const;
-
-  std::string application_version;
-
   ClientInfoPlatformType platform;
-  std::string platform_version;
 };
 
 }  // namespace ads
