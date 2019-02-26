@@ -57,6 +57,9 @@ declare namespace chrome.braveRewards {
     addListener: (callback: () => void) => void
   }
   const getACEnabled: (callback: (enabled: boolean) => void) => {}
+  const onPublisherListNormalized: {
+    addListener: (callback: (properties: RewardsExtension.PublisherNormalized[]) => void) => void
+  }
 }
 
 declare namespace chrome.rewardsNotifications {

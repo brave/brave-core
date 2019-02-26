@@ -7,6 +7,7 @@
 
 #include <utility>
 #include <string>
+#include <vector>
 
 #include "base/base64.h"
 #include "brave/common/extensions/api/brave_rewards.h"
@@ -262,6 +263,41 @@ void ExtensionRewardsServiceObserver::OnPendingContributionSaved(
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnPendingContributionSaved::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
+void ExtensionRewardsServiceObserver::OnPublisherListNormalized(
+    RewardsService* rewards_service,
+    brave_rewards::ContentSiteList list) {
+  auto* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
+  std::vector<extensions::api::brave_rewards::OnPublisherListNormalized::
+        PublishersType> publishers;
+
+  for (size_t i = 0; i < list.size(); i ++) {
+    publishers.push_back(
+        extensions::api::brave_rewards::OnPublisherListNormalized::
+        PublishersType());
+
+    auto& publisher = publishers[publishers.size() -1];
+
+    publisher.publisher_key = list[i].id;
+    publisher.percentage = list[i].percentage;
+    publisher.verified = list[i].verified;
+  }
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::
+      OnPublisherListNormalized::Create(publishers)
+          .release());
+
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnPublisherListNormalized::kEventName,
       std::move(args)));
   event_router->BroadcastEvent(std::move(event));
 }

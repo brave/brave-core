@@ -238,6 +238,34 @@
         "type": "function",
         "description": "Fired when wallet creation failed",
         "parameters": []
+      },
+      {
+        "name": "onPublisherListNormalized",
+        "type": "function",
+        "description": "Fired when publisher list was updated and normalized",
+        "parameters": [
+          {
+            "name": "publishers",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "publisher_key": {
+                  "type": "string",
+                  "description": "publisher key, unique identifier"
+                },
+                "percentage": {
+                  "type": "integer",
+                  "description": "publisher attention score"
+                },
+                "verified": {
+                  "type": "boolean",
+                  "description": "is publisher verified"
+                }
+              }
+            }
+          }
+        ]
       }
     ],
     "functions": [

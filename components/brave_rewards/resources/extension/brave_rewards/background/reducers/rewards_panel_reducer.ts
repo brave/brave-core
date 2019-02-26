@@ -238,6 +238,33 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       state.enabledAC = payload.enabled
       break
     }
+    case types.ON_PUBLISHER_LIST_NORMALIZED: {
+      const list = payload.properties
+      let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
+
+      if (!list || list.length === 0) {
+        break
+      }
+
+      for (const key in publishers) {
+        let publisher = publishers[key]
+        const updated = list.find((newPublisher: RewardsExtension.PublisherNormalized) =>
+          newPublisher.publisher_key === publisher.publisher_key)
+
+        if (updated) {
+          publisher.verified = updated.verified
+          publisher.percentage = updated.percentage
+        } else {
+          publisher.percentage = 0
+        }
+      }
+
+      state = {
+        ...state,
+        publishers
+      }
+      break
+    }
   }
   return state
 }

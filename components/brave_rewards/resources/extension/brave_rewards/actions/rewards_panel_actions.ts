@@ -101,3 +101,8 @@ export const onEnabledMain = (enabledMain: boolean) => action(types.ON_ENABLED_M
 export const onEnabledAC = (enabled: boolean) => action(types.ON_ENABLED_AC, {
   enabled
 })
+
+export const onPublisherListNormalized = (properties: RewardsExtension.PublisherNormalized[]) =>
+  action(types.ON_PUBLISHER_LIST_NORMALIZED, {
+    properties
+  })
