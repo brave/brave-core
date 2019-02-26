@@ -55,7 +55,7 @@ using PublisherBannerCallback =
     std::function<void(std::unique_ptr<ledger::PublisherBanner> banner)>;
 using WalletAddressesCallback =
     std::function<void(std::map<std::string, std::string> addresses)>;
-using AdsNotificationsHistoryCallback = std::function<void(
+using ConfirmationsHistoryCallback = std::function<void(
     std::unique_ptr<ledger::TransactionsInfo> info)>;
 
 class LEDGER_EXPORT Ledger {
@@ -273,10 +273,10 @@ class LEDGER_EXPORT Ledger {
   virtual void SetCatalogIssuers(const std::string& info) = 0;
 
   virtual void AdSustained(const std::string& info) = 0;
-  virtual void GetAdsNotificationsHistory(
+  virtual void GetConfirmationsHistory(
       const uint64_t from_timestamp_seconds,
       const uint64_t to_timestamp_seconds,
-      ledger::AdsNotificationsHistoryCallback callback) = 0;
+      ledger::ConfirmationsHistoryCallback callback) = 0;
 };
 
 }  // namespace ledger

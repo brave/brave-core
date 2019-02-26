@@ -329,8 +329,8 @@ class RewardsServiceImpl : public RewardsService,
   void SetCatalogIssuers(const std::string& json) override;
   void AdSustained(const std::string& json) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
-  void GetAdsNotificationsHistory(
-      brave_rewards::AdsNotificationsHistoryCallback callback) override;
+  void GetConfirmationsHistory(
+      brave_rewards::ConfirmationsHistoryCallback callback) override;
   void ConfirmationsTransactionHistoryDidChange() override;
 
   void OnExcludedSitesChanged(const std::string& publisher_id) override;
@@ -403,8 +403,8 @@ class RewardsServiceImpl : public RewardsService,
 
   // Mojo Proxy methods
   void OnPublisherBannerMojoProxy(const std::string& banner);
-  void OnGetAdsNotificationsHistoryMojoProxy(
-      brave_rewards::AdsNotificationsHistoryCallback callback,
+  void OnGetConfirmationsHistory(
+      brave_rewards::ConfirmationsHistoryCallback callback,
       const std::string& transactions);
   void OnGetAllBalanceReports(
       const GetAllBalanceReportsCallback& callback,

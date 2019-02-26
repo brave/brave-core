@@ -138,12 +138,12 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.enabledMain = action.payload.enabled
       break
     }
-    case types.GET_ADS_NOTIFICATIONS_HISTORY:
+    case types.GET_CONFIRMATIONS_HISTORY:
     case types.ON_CONFIRMATIONS_HISTORY_CHANGED: {
-      chrome.send('brave_rewards.getAdsNotificationsHistory', [])
+      chrome.send('brave_rewards.getConfirmationsHistory', [])
       break
     }
-    case types.ON_ADS_NOTIFICATIONS_HISTORY: {
+    case types.ON_CONFIRMATIONS_HISTORY: {
       if (!action.payload.data) {
         break
       }

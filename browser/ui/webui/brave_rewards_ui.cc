@@ -105,9 +105,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnContentSiteUpdated(
       brave_rewards::RewardsService* rewards_service) override;
   void GetAddressesForPaymentId(const base::ListValue* args);
-  void GetAdsNotificationsHistory(const base::ListValue* args);
+  void GetConfirmationsHistory(const base::ListValue* args);
 
-  void OnAdsNotificationsHistory(int total_viewed, double estimated_earnings);
+  void OnConfirmationsHistory(int total_viewed, double estimated_earnings);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -269,8 +269,8 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.getAddressesForPaymentId",
       base::BindRepeating(&RewardsDOMHandler::GetAddressesForPaymentId,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.getAdsNotificationsHistory",
-      base::BindRepeating(&RewardsDOMHandler::GetAdsNotificationsHistory,
+  web_ui()->RegisterMessageCallback("brave_rewards.getConfirmationsHistory",
+      base::BindRepeating(&RewardsDOMHandler::GetConfirmationsHistory,
       base::Unretained(this)));
 }
 
@@ -962,24 +962,24 @@ void RewardsDOMHandler::GetAddressesForPaymentId(
   }
 }
 
-void RewardsDOMHandler::GetAdsNotificationsHistory(
+void RewardsDOMHandler::GetConfirmationsHistory(
     const base::ListValue* args) {
-  rewards_service_->GetAdsNotificationsHistory(base::Bind(
-          &RewardsDOMHandler::OnAdsNotificationsHistory,
+  rewards_service_->GetConfirmationsHistory(base::Bind(
+          &RewardsDOMHandler::OnConfirmationsHistory,
           weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnAdsNotificationsHistory(
+void RewardsDOMHandler::OnConfirmationsHistory(
     int total_viewed,
     double estimated_earnings) {
   if (web_ui()->CanCallJavascript()) {
-    base::DictionaryValue adsNotificationsData;
+    base::DictionaryValue history;
 
-    adsNotificationsData.SetInteger("adsTotalPages", total_viewed);
-    adsNotificationsData.SetDouble("adsEstimatedEarnings", estimated_earnings);
+    history.SetInteger("adsTotalPages", total_viewed);
+    history.SetDouble("adsEstimatedEarnings", estimated_earnings);
 
     web_ui()->CallJavascriptFunctionUnsafe(
-        "brave_rewards.adsNotificationsHistory", adsNotificationsData);
+        "brave_rewards.confirmationsHistory", history);
   }
 }
 

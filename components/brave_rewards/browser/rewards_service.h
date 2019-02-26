@@ -67,7 +67,7 @@ using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
 using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
 using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
-using AdsNotificationsHistoryCallback = base::Callback<void(int, double)>;
+using ConfirmationsHistoryCallback = base::Callback<void(int, double)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -173,8 +173,8 @@ class RewardsService : public KeyedService {
 
   virtual void GetAddressesForPaymentId(
       const GetAddressesCallback& callback) = 0;
-  virtual void GetAdsNotificationsHistory(
-      brave_rewards::AdsNotificationsHistoryCallback callback) = 0;
+  virtual void GetConfirmationsHistory(
+      brave_rewards::ConfirmationsHistoryCallback callback) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

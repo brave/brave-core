@@ -100,7 +100,7 @@ interface BatLedger {
 
   SetCatalogIssuers(string info);
   AdSustained(string info);
-  GetAdsNotificationsHistory(uint64 from_timestamp_seconds,
+  GetConfirmationsHistory(uint64 from_timestamp_seconds,
       uint64 to_timestamp_seconds) => (string transactions);
 };
 

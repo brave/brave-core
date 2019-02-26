@@ -370,8 +370,8 @@ void BatLedgerImpl::AdSustained(const std::string& info) {
 }
 
 // static
-void BatLedgerImpl::OnGetAdsNotificationsHistory(
-    CallbackHolder<GetAdsNotificationsHistoryCallback>* holder,
+void BatLedgerImpl::OnGetConfirmationsHistory(
+    CallbackHolder<GetConfirmationsHistoryCallback>* holder,
     std::unique_ptr<ledger::TransactionsInfo> history) {
   std::string json_transactions = history.get() ? history->ToJson() : "";
   if (holder->is_valid())
@@ -379,16 +379,16 @@ void BatLedgerImpl::OnGetAdsNotificationsHistory(
   delete holder;
 }
 
-void BatLedgerImpl::GetAdsNotificationsHistory(
+void BatLedgerImpl::GetConfirmationsHistory(
     const uint64_t from_timestamp_seconds,
     const uint64_t to_timestamp_seconds,
-    GetAdsNotificationsHistoryCallback callback) {
-  auto* holder = new CallbackHolder<GetAdsNotificationsHistoryCallback>(
+    GetConfirmationsHistoryCallback callback) {
+  auto* holder = new CallbackHolder<GetConfirmationsHistoryCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger_->GetAdsNotificationsHistory(from_timestamp_seconds,
+  ledger_->GetConfirmationsHistory(from_timestamp_seconds,
       to_timestamp_seconds, std::bind(
-      BatLedgerImpl::OnGetAdsNotificationsHistory, holder, _1));
+      BatLedgerImpl::OnGetConfirmationsHistory, holder, _1));
 }
 
 }  // namespace bat_ledger

@@ -1468,24 +1468,24 @@ void RewardsServiceImpl::ConfirmationsTransactionHistoryDidChange() {
     observer.OnConfirmationsHistoryChanged(this);
 }
 
-void RewardsServiceImpl::GetAdsNotificationsHistory(
-    brave_rewards::AdsNotificationsHistoryCallback callback) {
+void RewardsServiceImpl::GetConfirmationsHistory(
+    brave_rewards::ConfirmationsHistoryCallback callback) {
   if (!Connected()) {
     return;
   }
 
   auto earnings_range = GetEarningsRange();
 
-  bat_ledger_->GetAdsNotificationsHistory(
+  bat_ledger_->GetConfirmationsHistory(
       earnings_range.first,
       earnings_range.second,
-      base::BindOnce(&RewardsServiceImpl::OnGetAdsNotificationsHistoryMojoProxy,
+      base::BindOnce(&RewardsServiceImpl::OnGetConfirmationsHistory,
                      AsWeakPtr(),
                      std::move(callback)));
 }
 
-void RewardsServiceImpl::OnGetAdsNotificationsHistoryMojoProxy(
-    brave_rewards::AdsNotificationsHistoryCallback callback,
+void RewardsServiceImpl::OnGetConfirmationsHistory(
+    brave_rewards::ConfirmationsHistoryCallback callback,
     const std::string& transactions) {
   std::unique_ptr<ledger::TransactionsInfo> info;
   if (!transactions.empty()) {
@@ -1494,7 +1494,7 @@ void RewardsServiceImpl::OnGetAdsNotificationsHistoryMojoProxy(
   }
 
   if (!info) {
-    return;
+    callback.Run(0, 0.0);
   }
 
   int total_viewed = info->transactions.size();
