@@ -12,7 +12,7 @@ namespace confirmations {
 #define BAT_ADS_PRODUCTION_SERVER "https://ads-serve.brave.com"
 
 static const int kMinimumUnblindedTokens = 20;
-static const int kMaximumUnblindedTokens = 100;
+static const int kMaximumUnblindedTokens = 50;
 
 static const uint64_t kOneMinuteInSeconds = 60;
 static const uint64_t kOneHourInSeconds = 60 * kOneMinuteInSeconds;
