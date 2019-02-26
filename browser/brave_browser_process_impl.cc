@@ -16,6 +16,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
+#include "brave/components/brave_shields/browser/extension_whitelist_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
@@ -116,9 +117,18 @@ brave_shields::AutoplayWhitelistService*
 BraveBrowserProcessImpl::autoplay_whitelist_service() {
   if (!autoplay_whitelist_service_) {
     autoplay_whitelist_service_ =
-        brave_shields::AutoplayWhitelistServiceFactory();
+      brave_shields::AutoplayWhitelistServiceFactory();
   }
   return autoplay_whitelist_service_.get();
+}
+
+brave_shields::ExtensionWhitelistService*
+BraveBrowserProcessImpl::extension_whitelist_service() {
+  if (!extension_whitelist_service_) {
+    extension_whitelist_service_ =
+      brave_shields::ExtensionWhitelistServiceFactory();
+  }
+  return extension_whitelist_service_.get();
 }
 
 brave_shields::TrackingProtectionService*

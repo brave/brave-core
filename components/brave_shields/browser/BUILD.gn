@@ -22,6 +22,8 @@ source_set("brave_shields") {
     "brave_resource_dispatcher_host_delegate.h",
     "dat_file_util.cc",
     "dat_file_util.h",
+    "extension_whitelist_service.cc",
+    "extension_whitelist_service.h",
     "https_everywhere_recently_used_cache.h",
     "https_everywhere_service.cc",
     "https_everywhere_service.h",
@@ -36,6 +38,7 @@ source_set("brave_shields") {
     "//brave/vendor/ad-block/brave:ad-block",
     "//brave/vendor/tracking-protection/brave:tracking-protection",
     "//brave/vendor/autoplay-whitelist/brave:autoplay-whitelist",
+    "//brave/vendor/extension-whitelist/brave:extension-whitelist",
     "//chrome/common",
     "//third_party/leveldatabase",
   ]
