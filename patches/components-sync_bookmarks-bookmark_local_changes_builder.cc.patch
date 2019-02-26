@@ -1,0 +1,12 @@
+diff --git a/components/sync_bookmarks/bookmark_local_changes_builder.cc b/components/sync_bookmarks/bookmark_local_changes_builder.cc
+index 92bda90302a1b3a153226056a3eb0aed0c02e725..1d1e531f67dfe247209b6e6d66b1adcbc70ecff3 100644
+--- a/components/sync_bookmarks/bookmark_local_changes_builder.cc
++++ b/components/sync_bookmarks/bookmark_local_changes_builder.cc
+@@ -73,6 +73,7 @@ BookmarkLocalChangesBuilder::BuildCommitRequests(size_t max_entries) const {
+       // EntityData should contain empty specifics to indicate deletion.
+       data.specifics = CreateSpecificsFromBookmarkNode(
+           node, bookmark_model_, /*force_favicon_load=*/true);
++      AddBraveMetaInfo(node, bookmark_tracker_, bookmark_model_);
+     }
+     request.entity = data.PassToPtr();
+     request.sequence_number = metadata->sequence_number();

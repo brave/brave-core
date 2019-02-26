@@ -1,0 +1,84 @@
+diff --git a/components/browser_sync/profile_sync_service.cc b/components/browser_sync/profile_sync_service.cc
+index a0355393caba17c8343ec2a771eeb29d731d27e4..08a9666b1ac5fcd6c6ab737b2874afc331e02a69 100644
+--- a/components/browser_sync/profile_sync_service.cc
++++ b/components/browser_sync/profile_sync_service.cc
+@@ -198,6 +198,8 @@ ProfileSyncService::ProfileSyncService(InitParams init_params)
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+   DCHECK(sync_client_);
+ 
++  BraveSyncSetup();
++
+   // If Sync is disabled via command line flag, then ProfileSyncService
+   // shouldn't be instantiated.
+   DCHECK(IsSyncAllowedByFlag());
+@@ -539,7 +541,10 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
+                                ->GetLocalDeviceInfoProvider()
+                                ->GetSyncUserAgent();
+   params.http_factory_getter = MakeHttpPostProviderFactoryGetter();
+-  params.credentials = auth_manager_->GetCredentials();
++  if (IsBraveSyncEnabled()) 
++    params.credentials = GetDummyCredentials();
++  else
++    params.credentials = auth_manager_->GetCredentials();
+   DCHECK(!params.credentials.account_id.empty() || IsLocalSyncEnabled());
+   if (!base::FeatureList::IsEnabled(switches::kSyncE2ELatencyMeasurement)) {
+     invalidation::InvalidationService* invalidator =
+@@ -571,13 +576,14 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
+   params.short_poll_interval = sync_prefs_.GetShortPollInterval();
+   if (params.short_poll_interval.is_zero()) {
+     params.short_poll_interval =
+-        base::TimeDelta::FromSeconds(syncer::kDefaultShortPollIntervalSeconds);
++        base::TimeDelta::FromSeconds(syncer::kBraveDefaultShortPollIntervalSeconds);
+   }
+   params.long_poll_interval = sync_prefs_.GetLongPollInterval();
+   if (params.long_poll_interval.is_zero()) {
+     params.long_poll_interval =
+-        base::TimeDelta::FromSeconds(syncer::kDefaultLongPollIntervalSeconds);
++        base::TimeDelta::FromSeconds(syncer::kBraveDefaultLongPollIntervalSeconds);
+   }
++  BraveEngineParamsInit(&params);
+ 
+   engine_->Initialize(std::move(params));
+ 
+@@ -721,6 +727,7 @@ int ProfileSyncService::GetDisableReasons() const {
+   DCHECK(IsSyncAllowedByFlag());
+ 
+   int result = DISABLE_REASON_NONE;
++  if (IsBraveSyncEnabled()) return result;
+   if (!user_settings_->IsSyncAllowedByPlatform()) {
+     result = result | DISABLE_REASON_PLATFORM_OVERRIDE;
+   }
+@@ -1465,7 +1472,7 @@ void ProfileSyncService::ConfigureDataTypeManager(
+   // Note: When local Sync is enabled, then we want full-sync mode (not just
+   // transport), even though Sync-the-feature is not considered enabled.
+   bool use_transport_only_mode =
+-      !IsSyncFeatureEnabled() && !IsLocalSyncEnabled();
++      !IsSyncFeatureEnabled() && !IsLocalSyncEnabled() && !IsBraveSyncEnabled();
+ 
+   syncer::ModelTypeSet types = GetPreferredDataTypes();
+   // In transport-only mode, only a subset of data types is supported.
+@@ -1860,6 +1867,7 @@ void ProfileSyncService::GetAllNodes(
+ 
+   syncer::ModelTypeSet all_types = GetActiveDataTypes();
+   all_types.PutAll(syncer::ControlTypes());
++
+   scoped_refptr<GetAllNodesRequestHelper> helper =
+       new GetAllNodesRequestHelper(all_types, callback);
+ 
+@@ -1891,12 +1899,14 @@ void ProfileSyncService::GetAllNodes(
+ 
+ AccountInfo ProfileSyncService::GetAuthenticatedAccountInfo() const {
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+-  return auth_manager_->GetActiveAccountInfo().account_info;
++  return GetDummyAccountInfo();
++  // return auth_manager_->GetActiveAccountInfo().account_info;
+ }
+ 
+ bool ProfileSyncService::IsAuthenticatedAccountPrimary() const {
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+-  return auth_manager_->GetActiveAccountInfo().is_primary;
++  return true;
++  // return auth_manager_->GetActiveAccountInfo().is_primary;
+ }
+ 
+ void ProfileSyncService::SetInvalidationsForSessionsEnabled(bool enabled) {

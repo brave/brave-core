@@ -1,0 +1,32 @@
+diff --git a/components/sync/driver/glue/sync_backend_host_core.cc b/components/sync/driver/glue/sync_backend_host_core.cc
+index 2bbe1dadae8202bb35eaac9fa069d6ab12b08ce6..c5fc10b4bffdd1030a0659ad0a3f250b62713682 100644
+--- a/components/sync/driver/glue/sync_backend_host_core.cc
++++ b/components/sync/driver/glue/sync_backend_host_core.cc
+@@ -354,6 +354,7 @@ void SyncBackendHostCore::DoInitialize(SyncEngine::InitParams params) {
+   args.saved_nigori_state = std::move(params.saved_nigori_state);
+   args.short_poll_interval = params.short_poll_interval;
+   args.long_poll_interval = params.long_poll_interval;
++  BraveInit(&args);
+   sync_manager_->Init(&args);
+   base::trace_event::MemoryDumpManager::GetInstance()->RegisterDumpProvider(
+       this, "SyncDirectory", base::ThreadTaskRunnerHandle::Get());
+@@ -413,12 +414,13 @@ void SyncBackendHostCore::DoInitialProcessControlTypes() {
+     return;
+   }
+ 
+-  if (!sync_manager_->InitialSyncEndedTypes().HasAll(ControlTypes())) {
+-    LOG(ERROR) << "Failed to download control types";
+-    host_.Call(FROM_HERE,
+-               &SyncBackendHostImpl::HandleInitializationFailureOnFrontendLoop);
+-    return;
+-  }
++  // TODO(darkdh): move device record into control type
++  // if (!sync_manager_->InitialSyncEndedTypes().HasAll(ControlTypes())) {
++  //   LOG(ERROR) << "Failed to download control types";
++  //   host_.Call(FROM_HERE,
++  //              &SyncBackendHostImpl::HandleInitializationFailureOnFrontendLoop);
++  //   return;
++  // }
+ 
+   DCHECK_EQ(user_share->directory->cache_guid(), sync_manager_->cache_guid());
+   host_.Call(FROM_HERE,

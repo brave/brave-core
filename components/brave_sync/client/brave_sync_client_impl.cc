@@ -34,18 +34,15 @@ void BraveSyncClientImpl::set_for_testing(BraveSyncClient* sync_client) {
 }
 
 // static
-BraveSyncClient* BraveSyncClient::Create(
-    SyncMessageHandler* handler,
-    Profile* profile) {
+BraveSyncClient* BraveSyncClient::Create(Profile* profile) {
   if (brave_sync_client_for_testing_)
     return brave_sync_client_for_testing_;
 
-  return new BraveSyncClientImpl(handler, profile);
+  return new BraveSyncClientImpl(profile);
 }
 
-BraveSyncClientImpl::BraveSyncClientImpl(SyncMessageHandler* handler,
-                                         Profile* profile) :
-    handler_(handler),
+BraveSyncClientImpl::BraveSyncClientImpl(Profile* profile) :
+    handler_(nullptr),
     profile_(profile),
     sync_prefs_(new brave_sync::prefs::Prefs(profile->GetPrefs())),
     extension_loaded_(false),
@@ -61,6 +58,12 @@ BraveSyncClientImpl::~BraveSyncClientImpl() {}
 
 SyncMessageHandler* BraveSyncClientImpl::sync_message_handler() {
   return handler_;
+}
+
+void BraveSyncClientImpl::set_sync_message_handler(
+    SyncMessageHandler* handler) {
+  DCHECK(handler);
+  handler_ = handler;
 }
 
 void BraveSyncClientImpl::SendGotInitData(const Uint8Array& seed,
@@ -151,8 +154,10 @@ void BraveSyncClientImpl::OnSyncEnabledChanged() {
 void BraveSyncClientImpl::OnExtensionReady(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension) {
-  if (extension->id() == brave_sync_extension_id)
+  if (extension->id() == brave_sync_extension_id) {
+    DCHECK(handler_);
     handler_->BackgroundSyncStarted(true);
+  }
 }
 
 void BraveSyncClientImpl::OnExtensionLoaded(
@@ -170,6 +175,7 @@ void BraveSyncClientImpl::OnExtensionUnloaded(
     extensions::UnloadedExtensionReason reason) {
   if (extension->id() == brave_sync_extension_id) {
     extension_loaded_ = false;
+    DCHECK(handler_);
     handler_->BackgroundSyncStopped(true);
   }
 }

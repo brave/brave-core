@@ -1,0 +1,40 @@
+diff --git a/components/sync_bookmarks/bookmark_change_processor.cc b/components/sync_bookmarks/bookmark_change_processor.cc
+index 32cbf98c9aef52a321a2ca67e403c570090ffa5c..ac3e9d0a4975deb6c531f2c990763dde9b00c81a 100644
+--- a/components/sync_bookmarks/bookmark_change_processor.cc
++++ b/components/sync_bookmarks/bookmark_change_processor.cc
+@@ -89,6 +89,7 @@ void BookmarkChangeProcessor::UpdateSyncNodeProperties(
+     bookmark_specifics.set_url(src->url().spec());
+   }
+   bookmark_specifics.set_creation_time_us(src->date_added().ToInternalValue());
++  AddBraveMetaInfo(src, model);
+   dst->SetBookmarkSpecifics(bookmark_specifics);
+   SetSyncNodeFavicon(src, model, dst);
+   SetSyncNodeMetaInfo(src, dst);
+@@ -248,6 +249,7 @@ void BookmarkChangeProcessor::CreateOrUpdateSyncNode(const BookmarkNode* node) {
+     // Acquire a scoped write lock via a transaction.
+     syncer::WriteTransaction trans(FROM_HERE, share_handle(), &new_version);
+     sync_id = model_associator_->GetSyncIdFromChromeId(node->id());
++    bookmark_model_->RemoveObserver(this);
+     if (sync_id != syncer::kInvalidId) {
+       UpdateSyncNode(
+           node, bookmark_model_, &trans, model_associator_, error_handler());
+@@ -261,6 +263,7 @@ void BookmarkChangeProcessor::CreateOrUpdateSyncNode(const BookmarkNode* node) {
+                                model_associator_,
+                                error_handler());
+     }
++    bookmark_model_->AddObserver(this);
+   }
+ 
+   if (syncer::kInvalidId != sync_id) {
+@@ -420,6 +423,11 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
+       return;
+     }
+ 
++    bookmark_model_->RemoveObserver(this);
++    AddBraveMetaInfo(child, model);
++    SetSyncNodeMetaInfo(child, &sync_node);
++    bookmark_model_->AddObserver(this);
++
+     if (!PlaceSyncNode(MOVE, new_parent, new_index, &trans, &sync_node,
+                        model_associator_)) {
+       syncer::SyncError error(FROM_HERE,

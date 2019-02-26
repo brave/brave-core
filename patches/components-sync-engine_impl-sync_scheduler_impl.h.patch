@@ -1,0 +1,34 @@
+diff --git a/components/sync/engine_impl/sync_scheduler_impl.h b/components/sync/engine_impl/sync_scheduler_impl.h
+index c2233fd5f7de560e47970eaa2d710d26c0b74e27..dc2272937e4e553b435051fcb7fb754d065c623f 100644
+--- a/components/sync/engine_impl/sync_scheduler_impl.h
++++ b/components/sync/engine_impl/sync_scheduler_impl.h
+@@ -81,6 +81,11 @@ class SyncSchedulerImpl : public SyncScheduler {
+       const SyncProtocolError& sync_protocol_error) override;
+   void OnReceivedGuRetryDelay(const base::TimeDelta& delay) override;
+   void OnReceivedMigrationRequest(ModelTypeSet types) override;
++  void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) override;
++  void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
++                       base::WaitableEvent* wevent) override;
++  void SetNudgeAndPollDelegate(brave_sync::NudgeSyncCycleDelegate,
++                               brave_sync::PollSyncCycleDelegate) override;
+ 
+   bool IsGlobalThrottle() const;
+   bool IsGlobalBackoff() const;
+@@ -183,6 +188,7 @@ class SyncSchedulerImpl : public SyncScheduler {
+   // current thread. In the future it will request access token here.
+   void TrySyncCycleJob();
+   void TrySyncCycleJobImpl();
++  void TryBraveSyncCycleJob();
+ 
+   // Transitions out of the THROTTLED WaitInterval then calls TryCanaryJob().
+   // This function is for global throttling.
+@@ -294,6 +300,9 @@ class SyncSchedulerImpl : public SyncScheduler {
+   // Used to prevent changing nudge delays by the server in integration tests.
+   bool force_short_nudge_delay_for_test_ = false;
+ 
++  brave_sync::NudgeSyncCycleDelegate nudge_sync_cycle_delegate_function_;
++  brave_sync::PollSyncCycleDelegate poll_sync_cycle_delegate_function_;
++
+   SEQUENCE_CHECKER(sequence_checker_);
+ 
+   base::WeakPtrFactory<SyncSchedulerImpl> weak_ptr_factory_;

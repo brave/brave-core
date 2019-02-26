@@ -1,0 +1,122 @@
+diff --git a/components/browser_sync/profile_sync_service.h b/components/browser_sync/profile_sync_service.h
+index 74818b55931cf9896bf781b598a27d04962714cf..1da0f20a01cb58d09bcf78a6532a03d3e3f63167 100644
+--- a/components/browser_sync/profile_sync_service.h
++++ b/components/browser_sync/profile_sync_service.h
+@@ -138,7 +138,9 @@ class ProfileSyncService : public syncer::SyncService,
+                            public syncer::SyncPrefObserver,
+                            public syncer::DataTypeManagerObserver,
+                            public syncer::UnrecoverableErrorHandler,
+-                           public identity::IdentityManager::Observer {
++                           public identity::IdentityManager::Observer,
++                           public brave_sync::BraveSyncService,
++                           public brave_sync::SyncMessageHandler {
+  public:
+   // If AUTO_START, sync will set IsFirstSetupComplete() automatically and sync
+   // will begin syncing without the user needing to confirm sync settings.
+@@ -368,6 +370,43 @@ class ProfileSyncService : public syncer::SyncService,
+ 
+   syncer::SyncClient* GetSyncClientForTest();
+ 
++  //TODO(darkdh): subclass ProfileSyncService
++  brave_sync::BraveSyncClient* GetBraveSyncClient() override;
++  // BraveSyncService messages from UI
++  void OnSetupSyncHaveCode(const std::string& sync_words,
++    const std::string& device_name) override;
++  void OnSetupSyncNewToSync(const std::string& device_name) override;
++  void OnDeleteDevice(const std::string& device_id) override;
++  void OnResetSync() override;
++  void GetSettingsAndDevices(
++      const GetSettingsAndDevicesCallback& callback) override;
++  void GetSyncWords() override;
++  std::string GetSeed() override;
++  void OnSetSyncEnabled(const bool sync_this_device) override;
++  void OnSetSyncBookmarks(const bool sync_bookmarks) override;
++  void OnSetSyncBrowsingHistory(const bool sync_browsing_history) override;
++  void OnSetSyncSavedSiteSettings(const bool sync_saved_site_settings) override;
++
++  // SyncMessageHandler overrides
++  void BackgroundSyncStarted(bool startup) override;
++  void BackgroundSyncStopped(bool shutdown) override;
++  void OnSyncDebug(const std::string& message) override;
++  void OnSyncSetupError(const std::string& error) override;
++  void OnGetInitData(const std::string& sync_version) override;
++  void OnSaveInitData(const brave_sync::Uint8Array& seed,
++                      const brave_sync::Uint8Array& device_id) override;
++  void OnSyncReady() override;
++  void OnGetExistingObjects(const std::string& category_name,
++    std::unique_ptr<brave_sync::RecordsList> records,
++    const base::Time &last_record_time_stamp,
++    const bool is_truncated) override;
++  void OnResolvedSyncRecords(const std::string& category_name,
++    std::unique_ptr<brave_sync::RecordsList> records) override;
++  void OnDeletedSyncUser() override;
++  void OnDeleteSyncSiteSettings() override;
++  void OnSaveBookmarksBaseOrder(const std::string& order) override;
++  void OnSyncWordsPrepared(const std::string& words) override;
++
+  private:
+   // Passed as an argument to StopImpl to control whether or not the sync
+   // engine should clear its data directory when it shuts down. See StopImpl
+@@ -377,6 +416,28 @@ class ProfileSyncService : public syncer::SyncService,
+     CLEAR_DATA,
+   };
+ 
++  bool IsBraveSyncEnabled() const;
++  void BraveSyncSetup();
++  void BraveEngineParamsInit(syncer::SyncEngine::InitParams*);
++  void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list);
++  void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
++                       base::WaitableEvent* wevent);
++  void FetchSyncRecords(const bool bookmarks, const bool history,
++                        const bool preferences, int max_records);
++  void SendCreateDevice();
++  void SendDeviceSyncRecord(
++      const int action,
++      const std::string& device_name,
++      const std::string& device_id,
++      const std::string& object_id);
++  void OnResolvedPreferences(const brave_sync::RecordsList& records);
++  void OnBraveSyncPrefsChanged(const std::string& pref);
++  void NotifySyncSetupError(const std::string& error);
++  void NotifySyncStateChanged();
++  void NotifyHaveSyncWords(const std::string& sync_words);
++
++  void ResetSyncInternal();
++
+   // Shorthand for user_settings_.IsFirstSetupComplete().
+   bool IsFirstSetupComplete() const;
+ 
+@@ -506,6 +567,8 @@ class ProfileSyncService : public syncer::SyncService,
+   // The class that handles getting, setting, and persisting sync preferences.
+   syncer::SyncPrefs sync_prefs_;
+ 
++  std::unique_ptr<brave_sync::prefs::Prefs> brave_sync_prefs_;
++
+   // Encapsulates user signin - used to set/get the user's authenticated
+   // email address and sign-out upon error.
+   identity::IdentityManager* const identity_manager_;
+@@ -638,6 +701,24 @@ class ProfileSyncService : public syncer::SyncService,
+   // sync is stopped after a callback from |user_settings_|).
+   bool is_stopping_and_clearing_;
+ 
++  // True when is in active sync chain
++  bool brave_sync_configured_ = false;
++
++  // True if we have received SyncReady from JS lib
++  bool brave_sync_initialized_ = false;
++
++  // Prevent two sequential calls OnSetupSyncHaveCode or OnSetupSyncNewToSync
++  // while being initializing
++  bool brave_sync_initializing_ = false;
++
++  std::string brave_sync_words_;
++
++  brave_sync::GetRecordsCallback get_record_cb_;
++  base::WaitableEvent* wevent_;
++
++  // Registrar used to monitor the brave_profile prefs.
++  PrefChangeRegistrar brave_pref_change_registrar_;
++
+   // This weak factory invalidates its issued pointers when Sync is disabled.
+   base::WeakPtrFactory<ProfileSyncService> sync_enabled_weak_factory_;
+ 

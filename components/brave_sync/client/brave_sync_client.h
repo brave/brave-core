@@ -58,12 +58,12 @@ class SyncMessageHandler {
 
 class BraveSyncClient {
  public:
-  static BraveSyncClient* Create(SyncMessageHandler* handler,
-                                 Profile* profile);
+  static BraveSyncClient* Create(Profile* profile);
   virtual ~BraveSyncClient() = default;
 
   // BraveSync to Browser messages
   virtual SyncMessageHandler* sync_message_handler() = 0;
+  virtual void set_sync_message_handler(SyncMessageHandler*) = 0;
 
   virtual void SendGotInitData(const Uint8Array& seed,
                                const Uint8Array& device_id,

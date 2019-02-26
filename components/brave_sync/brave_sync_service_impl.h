@@ -15,6 +15,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
+#include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkAdded);
@@ -59,6 +60,7 @@ using SendDeviceSyncRecordCallback = base::OnceCallback<void(const int,
 
 class BraveSyncServiceImpl
     : public BraveSyncService,
+      public KeyedService,
       public SyncMessageHandler {
  public:
   explicit BraveSyncServiceImpl(Profile *profile);
@@ -86,7 +88,7 @@ class BraveSyncServiceImpl
   bool IsSyncConfigured();
   bool IsSyncInitialized();
 
-  BraveSyncClient* GetSyncClient() override;
+  BraveSyncClient* GetBraveSyncClient() override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkAdded);

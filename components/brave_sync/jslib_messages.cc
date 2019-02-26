@@ -26,6 +26,19 @@ std::unique_ptr<Site> Site::Clone(const Site& site) {
   return std::make_unique<Site>(site);
 }
 
+MetaInfo::MetaInfo() = default;
+
+MetaInfo::MetaInfo(const MetaInfo& metaInfo) {
+  key = metaInfo.key;
+  value = metaInfo.value;
+}
+
+MetaInfo::~MetaInfo() = default;
+
+std::unique_ptr<MetaInfo> MetaInfo::Clone(const MetaInfo& metaInfo) {
+  return std::make_unique<MetaInfo>(metaInfo);
+}
+
 Bookmark::Bookmark() : isFolder(false), hideInToolbar(false) {}
 
 Bookmark::Bookmark(const Bookmark& bookmark) {
@@ -35,6 +48,7 @@ Bookmark::Bookmark(const Bookmark& bookmark) {
   fields = bookmark.fields;
   hideInToolbar = bookmark.hideInToolbar;
   order = bookmark.order;
+  metaInfo = bookmark.metaInfo;
 }
 
 Bookmark::~Bookmark() = default;
@@ -139,6 +153,11 @@ const SiteSetting& SyncRecord::GetSiteSetting() const {
 const Device& SyncRecord::GetDevice() const {
   DCHECK(has_device());
   return *device_.get();
+}
+
+Bookmark* SyncRecord::mutable_bookmark() {
+  DCHECK(has_bookmark());
+  return bookmark_.get();
 }
 
 void SyncRecord::SetBookmark(std::unique_ptr<Bookmark> bookmark) {

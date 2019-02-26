@@ -47,6 +47,15 @@
         }
       },
       {
+        "id": "MetaInfo",
+        "type": "object",
+        "description": "Represents metaInfo entity",
+        "properties": {
+          "key" : {"type" : "string", "description" : "key of meta info"},
+          "value" : {"type" : "string", "description" : "value of meta info"}
+        }
+      },
+      {
         "id": "Bookmark",
         "type": "object",
         "description": "Represents bookmark entity",
@@ -62,7 +71,8 @@
           "order" : {"type": "string", "optional": true},
           "prevOrder" : {"type": "string", "optional": true},
           "nextOrder" : {"type": "string", "optional": true},
-          "parentOrder" : {"type": "string", "optional": true}
+          "parentOrder" : {"type": "string", "optional": true},
+          "metaInfo" : { "type": "array", "items": {"$ref" : "MetaInfo" }, "optional": true }
         }
       },
       {
