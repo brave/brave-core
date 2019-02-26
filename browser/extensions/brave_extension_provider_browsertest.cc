@@ -11,6 +11,8 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
+#include "brave/components/brave_shields/browser/extension_whitelist_service.h"
+#include "brave/vendor/extension-whitelist/extension_whitelist_parser.h"
 #include "chrome/browser/extensions/crx_installer.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/net/url_request_mock_util.h"
@@ -18,7 +20,20 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 
-using BraveExtensionProviderTest = extensions::ExtensionFunctionalTest;
+class BraveExtensionProviderTest : public extensions::ExtensionFunctionalTest {
+ public:
+  void SetUpOnMainThread() override {
+    extensions::ExtensionFunctionalTest::SetUpOnMainThread();
+    // set up extension blacklist with extensions that should be blocked
+    g_brave_browser_process->extension_whitelist_service()
+      ->extension_whitelist_client_
+      ->addToBlacklist("mlklomjnahgiddgfdgjhibinlfibfffc");
+    // set up extension whitelist with extensions that should be allowed
+    g_brave_browser_process->extension_whitelist_service()
+      ->extension_whitelist_client_
+      ->addToWhitelist("naccapggpomhlhoifnlebfoocegenbol");
+  }
+};
 
 namespace extensions {
 

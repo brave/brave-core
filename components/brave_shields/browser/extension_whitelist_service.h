@@ -23,6 +23,8 @@
 #include "url/gurl.h"
 
 class ExtensionWhitelistParser;
+class BraveExtensionProviderTest;
+class BravePDFDownloadTest;
 
 namespace brave_shields {
 
@@ -42,6 +44,9 @@ class ExtensionWhitelistService : public BaseLocalDataFilesObserver {
                         const std::string& manifest) override;
 
  private:
+  friend class ::BraveExtensionProviderTest;
+  friend class ::BravePDFDownloadTest;
+
   void OnDATFileDataReady();
 
   brave_shields::DATFileDataBuffer buffer_;
