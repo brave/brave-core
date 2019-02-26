@@ -430,12 +430,13 @@ void BatLedgerClientMojoProxy::KillTimer(const uint32_t timer_id) {
 }
 
 void BatLedgerClientMojoProxy::OnExcludedSitesChanged(
-    const std::string& publisher_id) {
+    const std::string& publisher_id,
+    ledger::PUBLISHER_EXCLUDE exclude) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_client_->OnExcludedSitesChanged(publisher_id);
+  bat_ledger_client_->OnExcludedSitesChanged(publisher_id, exclude);
 }
 
 void BatLedgerClientMojoProxy::OnPanelPublisherInfo(ledger::Result result,

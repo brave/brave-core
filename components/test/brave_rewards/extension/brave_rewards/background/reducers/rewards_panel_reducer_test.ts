@@ -196,7 +196,8 @@ describe('rewards panel reducer', () => {
             tabUrl: 'https://brave.com',
             publisher_key: 'brave.com',
             percentage: 30,
-            verified: false
+            verified: false,
+            excluded: true
           },
           id_2: {
             tabUrl: 'https://brave4.com',
@@ -213,7 +214,8 @@ describe('rewards panel reducer', () => {
             tabUrl: 'https://brave.com',
             publisher_key: 'brave.com',
             percentage: 50,
-            verified: true
+            verified: true,
+            excluded: false
           },
           id_2: {
             tabUrl: 'https://brave4.com',
@@ -228,6 +230,83 @@ describe('rewards panel reducer', () => {
         type: types.ON_PUBLISHER_LIST_NORMALIZED,
         payload: {
           properties: list
+        }
+      })
+
+      expect(state.rewardsPanelData).toEqual(expectedState)
+    })
+  })
+
+  describe('ON_EXCLUDED_SITES_CHANGED', () => {
+    it('properties is undefined', () => {
+      let state = reducers({ rewardsPanelData: defaultState }, {
+        type: types.ON_EXCLUDED_SITES_CHANGED,
+        payload: {
+          properties: undefined
+        }
+      })
+
+      expect(state.rewardsPanelData).toEqual(defaultState)
+    })
+
+    it('publisher key is undefined', () => {
+      let state = reducers({ rewardsPanelData: defaultState }, {
+        type: types.ON_EXCLUDED_SITES_CHANGED,
+        payload: {
+          properties: {
+            publisher_key: ''
+          }
+        }
+      })
+
+      expect(state.rewardsPanelData).toEqual(defaultState)
+    })
+
+    it('publisher is update accordingly', () => {
+      let state = {
+        ...defaultState,
+        publishers: {
+          id_1: {
+            tabUrl: 'https://brave.com',
+            publisher_key: 'brave.com',
+            percentage: 30,
+            verified: false,
+            excluded: true
+          },
+          id_2: {
+            tabUrl: 'https://brave4.com',
+            publisher_key: 'brave4.com',
+            percentage: 40,
+            verified: true
+          }
+        }
+      }
+      const expectedState: Rewards.State = {
+        ...defaultState,
+        publishers: {
+          id_1: {
+            tabUrl: 'https://brave.com',
+            publisher_key: 'brave.com',
+            percentage: 30,
+            verified: false,
+            excluded: false
+          },
+          id_2: {
+            tabUrl: 'https://brave4.com',
+            publisher_key: 'brave4.com',
+            percentage: 40,
+            verified: true
+          }
+        }
+      }
+
+      state = reducers({ rewardsPanelData: state }, {
+        type: types.ON_EXCLUDED_SITES_CHANGED,
+        payload: {
+          properties: {
+            publisher_key: 'brave.com',
+            excluded: false
+          }
         }
       })
 

@@ -155,8 +155,9 @@ class MockConfirmationsClient : public ConfirmationsClient {
       std::unique_ptr<ledger::PublisherInfo>,
       uint64_t windowId));
 
-  MOCK_METHOD1(OnExcludedSitesChanged, void(
-      const std::string& publisher_id));
+  MOCK_METHOD2(OnExcludedSitesChanged, void(
+      const std::string& publisher_id,
+      ledger::PUBLISHER_EXCLUDE exclude));
 
   MOCK_METHOD3(FetchFavIcon, void(
       const std::string& url,

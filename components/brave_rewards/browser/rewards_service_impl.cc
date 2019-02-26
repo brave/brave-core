@@ -1871,9 +1871,12 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
 }
 
 void RewardsServiceImpl::OnExcludedSitesChanged(
-    const std::string& publisher_id) {
+    const std::string& publisher_id,
+    ledger::PUBLISHER_EXCLUDE exclude) {
+
+  bool excluded = exclude == ledger::PUBLISHER_EXCLUDE::EXCLUDED;
   for (auto& observer : observers_)
-    observer.OnExcludedSitesChanged(this, publisher_id);
+    observer.OnExcludedSitesChanged(this, publisher_id, excluded);
 }
 
 void RewardsServiceImpl::OnPanelPublisherInfo(

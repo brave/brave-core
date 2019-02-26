@@ -332,7 +332,8 @@ class RewardsServiceImpl : public RewardsService,
       brave_rewards::ConfirmationsHistoryCallback callback) override;
   void ConfirmationsTransactionHistoryDidChange() override;
 
-  void OnExcludedSitesChanged(const std::string& publisher_id) override;
+  void OnExcludedSitesChanged(const std::string& publisher_id,
+                              ledger::PUBLISHER_EXCLUDE exclude) override;
   void OnPanelPublisherInfo(ledger::Result result,
                           std::unique_ptr<ledger::PublisherInfo> info,
                           uint64_t window_id) override;

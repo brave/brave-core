@@ -903,8 +903,9 @@ void LedgerImpl::OnPanelPublisherInfo(
   ledger_client_->OnPanelPublisherInfo(result, std::move(info), windowId);
 }
 
-void LedgerImpl::OnExcludedSitesChanged(const std::string& publisher_id) {
-  ledger_client_->OnExcludedSitesChanged(publisher_id);
+void LedgerImpl::OnExcludedSitesChanged(const std::string& publisher_id,
+                                        ledger::PUBLISHER_EXCLUDE exclude) {
+  ledger_client_->OnExcludedSitesChanged(publisher_id, exclude);
 }
 
 void LedgerImpl::SetBalanceReportItem(ledger::ACTIVITY_MONTH month,

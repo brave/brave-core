@@ -317,7 +317,7 @@ void BatPublishers::onSetExcludeInternal(
 
   ledger_->SetPublisherInfo(std::move(publisher_info));
 
-  OnExcludedSitesChanged(publisherKey);
+  OnExcludedSitesChanged(publisherKey, exclude);
 }
 
 void BatPublishers::RestorePublishers() {
@@ -330,7 +330,7 @@ void BatPublishers::RestorePublishers() {
 void BatPublishers::OnRestorePublishersInternal(bool success) {
   if (success) {
     setNumExcludedSites(0);
-    OnExcludedSitesChanged("");
+    OnExcludedSitesChanged("", ledger::PUBLISHER_EXCLUDE::ALL);
     SynopsisNormalizer();
   } else {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
@@ -770,8 +770,9 @@ void BatPublishers::OnPanelPublisherInfo(
   }
 }
 
-void BatPublishers::OnExcludedSitesChanged(const std::string& publisher_id) {
-  ledger_->OnExcludedSitesChanged(publisher_id);
+void BatPublishers::OnExcludedSitesChanged(const std::string& publisher_id,
+                                           ledger::PUBLISHER_EXCLUDE exclude) {
+  ledger_->OnExcludedSitesChanged(publisher_id, exclude);
 }
 
 void BatPublishers::setBalanceReportItem(ledger::ACTIVITY_MONTH month,

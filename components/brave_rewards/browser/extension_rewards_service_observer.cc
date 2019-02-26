@@ -302,4 +302,27 @@ void ExtensionRewardsServiceObserver::OnPublisherListNormalized(
   event_router->BroadcastEvent(std::move(event));
 }
 
+void ExtensionRewardsServiceObserver::OnExcludedSitesChanged(
+    RewardsService* rewards_service,
+    std::string publisher_key,
+    bool excluded) {
+  auto* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
+  extensions::api::brave_rewards::OnExcludedSitesChanged::Properties result;
+  result.publisher_key = publisher_key;
+  result.excluded = excluded;
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::OnExcludedSitesChanged::Create(result)
+          .release());
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnExcludedSitesChanged::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
 }  // namespace brave_rewards

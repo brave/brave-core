@@ -333,8 +333,11 @@ void LedgerClientMojoProxy::KillTimer(const uint32_t timer_id) {
 }
 
 void LedgerClientMojoProxy::OnExcludedSitesChanged(
-    const std::string& publisher_id) {
-  ledger_client_->OnExcludedSitesChanged(publisher_id);
+    const std::string& publisher_id,
+    int exclude) {
+  ledger_client_->OnExcludedSitesChanged(
+      publisher_id,
+      static_cast<ledger::PUBLISHER_EXCLUDE>(exclude));
 }
 
 void LedgerClientMojoProxy::OnPanelPublisherInfo(int32_t result,

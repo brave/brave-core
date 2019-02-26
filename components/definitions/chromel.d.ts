@@ -60,6 +60,9 @@ declare namespace chrome.braveRewards {
   const onPublisherListNormalized: {
     addListener: (callback: (properties: RewardsExtension.PublisherNormalized[]) => void) => void
   }
+  const onExcludedSitesChanged: {
+    addListener: (callback: (properties: RewardsExtension.ExcludedSitesChanged) => void) => void
+  }
 }
 
 declare namespace chrome.rewardsNotifications {

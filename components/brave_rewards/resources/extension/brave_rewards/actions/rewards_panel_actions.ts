@@ -105,3 +105,8 @@ export const onPublisherListNormalized = (properties: RewardsExtension.Publisher
   action(types.ON_PUBLISHER_LIST_NORMALIZED, {
     properties
   })
+
+export const onExcludedSitesChanged = (properties: RewardsExtension.ExcludedSitesChanged) =>
+  action(types.ON_EXCLUDED_SITES_CHANGED, {
+    properties
+  })

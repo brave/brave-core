@@ -59,3 +59,7 @@ chrome.braveRewards.onWalletFailed.addListener(() => {
 chrome.braveRewards.onPublisherListNormalized.addListener((properties: RewardsExtension.PublisherNormalized[]) => {
   rewardsPanelActions.onPublisherListNormalized(properties)
 })
+
+chrome.braveRewards.onExcludedSitesChanged.addListener((properties: RewardsExtension.ExcludedSitesChanged) => {
+  rewardsPanelActions.onExcludedSitesChanged(properties)
+})

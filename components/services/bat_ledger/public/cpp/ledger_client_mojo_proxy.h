@@ -68,7 +68,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void KillTimer(const uint32_t timer_id) override;
   void OnPanelPublisherInfo(int32_t result, const std::string& info,
       uint64_t window_id) override;
-  void OnExcludedSitesChanged(const std::string& publisher_id) override;
+  void OnExcludedSitesChanged(const std::string& publisher_id,
+                              int exclude) override;
   void SaveContributionInfo(const std::string& probi, int32_t month,
       int32_t year, uint32_t date, const std::string& publisher_key,
       int32_t category) override;

@@ -145,7 +145,7 @@ interface BatLedgerClient {
   [Sync]
   SetTimer(uint64 time_offset) => (uint32 timer_id);
   KillTimer(uint32 timer_id);
-  OnExcludedSitesChanged(string publisher_id);
+  OnExcludedSitesChanged(string publisher_id, int32 exclude);
   SaveContributionInfo(string probi, int32 month, int32 year, uint32 date,
       string publisher_key, int32 category);
   SaveMediaPublisherInfo(string media_key, string publisher_id);
