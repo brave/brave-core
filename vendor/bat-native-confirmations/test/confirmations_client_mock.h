@@ -235,6 +235,8 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD1(SetConfirmationsIsReady, void(
       const bool is_ready));
+
+  MOCK_METHOD0(ConfirmationsTransactionHistoryDidChange, void());
 };
 
 }  // namespace confirmations
