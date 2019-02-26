@@ -80,7 +80,7 @@ SyncRecordPtr PrepareResolvedDevice(
 }  // namespace
 
 BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
-    sync_client_(BraveSyncClient::Create(this, profile)),
+    sync_client_(BraveSyncClient::Create(profile)),
     sync_initialized_(false),
     sync_words_(std::string()),
     profile_(profile),
@@ -90,6 +90,7 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
         sync_client_.get(),
         sync_prefs_.get())),
     timer_(std::make_unique<base::RepeatingTimer>()) {
+  sync_client_->set_sync_message_handler(this);
   // Moniter syncs prefs required in GetSettingsAndDevices
   profile_pref_change_registrar_.Init(profile->GetPrefs());
   profile_pref_change_registrar_.Add(
@@ -126,7 +127,7 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
 BraveSyncServiceImpl::~BraveSyncServiceImpl() {
 }
 
-BraveSyncClient* BraveSyncServiceImpl::GetSyncClient() {
+BraveSyncClient* BraveSyncServiceImpl::GetBraveSyncClient() {
   return sync_client_.get();
 }
 

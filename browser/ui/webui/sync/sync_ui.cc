@@ -7,7 +7,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
-#include "brave/components/brave_sync/brave_sync_service_factory.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #include "brave/components/brave_sync/grit/brave_sync_generated_map.h"
@@ -15,6 +14,8 @@
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sync/profile_sync_service_factory.h"
+#include "components/browser_sync/profile_sync_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
@@ -60,7 +61,7 @@ class SyncUIDOMHandler : public WebUIMessageHandler,
     std::unique_ptr<brave_sync::Settings> settings,
     std::unique_ptr<brave_sync::SyncDevices> devices);
 
-  brave_sync::BraveSyncService *sync_service_ = nullptr;  // NOT OWNED
+  brave_sync::BraveSyncService* sync_service_ = nullptr;  // NOT OWNED
 
   base::WeakPtrFactory<SyncUIDOMHandler> weak_ptr_factory_;
 
@@ -118,7 +119,9 @@ void SyncUIDOMHandler::RegisterMessages() {
 
 void SyncUIDOMHandler::Init() {
   Profile* profile = Profile::FromWebUI(web_ui());
-  sync_service_ = brave_sync::BraveSyncServiceFactory::GetForProfile(profile);
+  sync_service_ =
+    static_cast<brave_sync::BraveSyncService*>(
+      ProfileSyncServiceFactory::GetForProfile(profile));
   if (sync_service_)
     sync_service_->AddObserver(this);
 }

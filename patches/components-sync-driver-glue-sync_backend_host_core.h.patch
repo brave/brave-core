@@ -1,0 +1,24 @@
+diff --git a/components/sync/driver/glue/sync_backend_host_core.h b/components/sync/driver/glue/sync_backend_host_core.h
+index dced9de5a2081185acb22c900e69e90080e54cdf..0f4b0822bb819c0b505eab58d7ea503e39490d4d 100644
+--- a/components/sync/driver/glue/sync_backend_host_core.h
++++ b/components/sync/driver/glue/sync_backend_host_core.h
+@@ -176,11 +176,19 @@ class SyncBackendHostCore
+ 
+   bool HasUnsyncedItemsForTest() const;
+ 
++  void DoDispatchGetRecordsCallback(GetRecordsCallback cb,
++                                    std::unique_ptr<RecordsList> records);
++
+  private:
+   friend class base::RefCountedThreadSafe<SyncBackendHostCore>;
+ 
+   ~SyncBackendHostCore() override;
+ 
++  void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list);
++  void OnPollSyncCycle(GetRecordsCallback cb,
++                       base::WaitableEvent* wevent);
++  void BraveInit(SyncManager::InitArgs* args);
++
+   // Invoked when initialization of syncapi is complete and we can start
+   // our timer.
+   // This must be called from the thread on which SaveChanges is intended to

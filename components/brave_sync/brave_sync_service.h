@@ -9,7 +9,6 @@
 #include "base/macros.h"
 #include "base/observer_list.h"
 #include "components/bookmarks/browser/bookmark_storage.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "extensions/buildflags/buildflags.h"
 
 class Profile;
@@ -25,10 +24,10 @@ bookmarks::BookmarkPermanentNodeList
 LoadExtraNodes(bookmarks::LoadExtraCallback callback, int64_t* next_node_id);
 bool IsSyncManagedNode(const bookmarks::BookmarkPermanentNode* node);
 
-class BraveSyncService : public KeyedService {
+class BraveSyncService {
  public:
   BraveSyncService();
-  ~BraveSyncService() override;
+  virtual ~BraveSyncService();
 
   typedef base::Callback<void(std::unique_ptr<brave_sync::Settings>,
                               std::unique_ptr<brave_sync::SyncDevices>)>
@@ -58,7 +57,7 @@ class BraveSyncService : public KeyedService {
   static bool is_enabled();
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  virtual BraveSyncClient* GetSyncClient() = 0;
+  virtual BraveSyncClient* GetBraveSyncClient() = 0;
 #endif
 
 

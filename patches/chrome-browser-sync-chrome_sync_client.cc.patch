@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/sync/chrome_sync_client.cc b/chrome/browser/sync/chrome_sync_client.cc
+index 8c36199a7b7514d1ac5e710a938287a167da91a5..50e07746517364f85c93ee6feae38eea16de7892 100644
+--- a/chrome/browser/sync/chrome_sync_client.cc
++++ b/chrome/browser/sync/chrome_sync_client.cc
+@@ -159,7 +159,8 @@ syncer::ModelTypeSet GetDisabledTypesFromCommandLine() {
+ 
+ }  // namespace
+ 
+-ChromeSyncClient::ChromeSyncClient(Profile* profile) : profile_(profile) {}
++ChromeSyncClient::ChromeSyncClient(Profile* profile) : profile_(profile),
++    brave_sync_client_(brave_sync::BraveSyncClient::Create(profile)) {}
+ 
+ ChromeSyncClient::~ChromeSyncClient() {
+ }

@@ -1,0 +1,14 @@
+diff --git a/components/sync/engine_impl/sync_scheduler.h b/components/sync/engine_impl/sync_scheduler.h
+index 8fdb1ab1603eca3a9a4851edfa9ccd9006a65f92..5edfe9b45c498a84684d2602ad717f344792cc1a 100644
+--- a/components/sync/engine_impl/sync_scheduler.h
++++ b/components/sync/engine_impl/sync_scheduler.h
+@@ -143,6 +143,9 @@ class SyncScheduler : public SyncCycle::Delegate {
+   // Called when the network layer detects a connection status change.
+   virtual void OnConnectionStatusChange(
+       network::mojom::ConnectionType type) = 0;
++
++  virtual void SetNudgeAndPollDelegate(brave_sync::NudgeSyncCycleDelegate,
++                                       brave_sync::PollSyncCycleDelegate) {}
+ };
+ 
+ }  // namespace syncer

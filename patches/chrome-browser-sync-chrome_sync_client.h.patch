@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/sync/chrome_sync_client.h b/chrome/browser/sync/chrome_sync_client.h
+index ae728503c195e1c9cf6da57ce08641632d8ae3ae..5ddf2944e4393f270cb53bc926f36f49c303bcbf 100644
+--- a/chrome/browser/sync/chrome_sync_client.h
++++ b/chrome/browser/sync/chrome_sync_client.h
+@@ -62,6 +62,7 @@ class ChromeSyncClient : public syncer::SyncClient {
+   scoped_refptr<syncer::ModelSafeWorker> CreateModelWorkerForGroup(
+       syncer::ModelSafeGroup group) override;
+   syncer::SyncApiComponentFactory* GetSyncApiComponentFactory() override;
++  brave_sync::BraveSyncClient* GetBraveSyncClient() override;
+ 
+   // Helpers for overriding getters in tests.
+   void SetSyncApiComponentFactoryForTesting(
+@@ -85,6 +86,8 @@ class ChromeSyncClient : public syncer::SyncClient {
+   // Generates and monitors the ExtensionsActivity object used by sync.
+   ExtensionsActivityMonitor extensions_activity_monitor_;
+ 
++  std::unique_ptr<brave_sync::BraveSyncClient> brave_sync_client_;
++
+   DISALLOW_COPY_AND_ASSIGN(ChromeSyncClient);
+ };
+ 

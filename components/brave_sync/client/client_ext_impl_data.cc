@@ -65,6 +65,20 @@ std::unique_ptr<brave_sync::jslib::SiteSetting> FromExtSiteSetting(
   return site_setting;
 }
 
+std::unique_ptr<std::vector<brave_sync::jslib::MetaInfo>> FromExtMetaInfo(
+  const std::vector<extensions::api::brave_sync::MetaInfo>& ext_meta_info) {
+  auto meta_info = std::make_unique<std::vector<brave_sync::jslib::MetaInfo>>();
+
+  for (auto& ext_meta : ext_meta_info) {
+    brave_sync::jslib::MetaInfo meta;
+    meta.key = ext_meta.key;
+    meta.value = ext_meta.value;
+    meta_info->push_back(meta);
+  }
+
+  return meta_info;
+}
+
 std::unique_ptr<jslib::Bookmark> FromExtBookmark(
     const extensions::api::brave_sync::Bookmark &ext_bookmark) {
   auto bookmark = std::make_unique<jslib::Bookmark>();
@@ -85,6 +99,9 @@ std::unique_ptr<jslib::Bookmark> FromExtBookmark(
   if (ext_bookmark.order) {
     bookmark->order = *ext_bookmark.order;
   }
+  if (ext_bookmark.meta_info) {
+    bookmark->metaInfo = std::move(*FromExtMetaInfo(*ext_bookmark.meta_info));
+  }
 
   return bookmark;
 }
@@ -101,6 +118,21 @@ std::unique_ptr<extensions::api::brave_sync::Site> FromLibSite(
   ext_site->favicon = lib_site.favicon;
 
   return ext_site;
+}
+
+std::unique_ptr<std::vector<extensions::api::brave_sync::MetaInfo>>
+FromLibMetaInfo(const std::vector<jslib::MetaInfo>& lib_metaInfo) {
+  auto ext_meta_info =
+    std::make_unique<std::vector<extensions::api::brave_sync::MetaInfo>>();
+
+  for (auto& metaInfo : lib_metaInfo) {
+    auto meta_info = std::make_unique<extensions::api::brave_sync::MetaInfo>();
+    meta_info->key = metaInfo.key;
+    meta_info->value = metaInfo.value;
+    ext_meta_info->push_back(std::move(*meta_info));
+  }
+
+  return ext_meta_info;
 }
 
 std::unique_ptr<extensions::api::brave_sync::Bookmark> FromLibBookmark(
@@ -140,6 +172,10 @@ std::unique_ptr<extensions::api::brave_sync::Bookmark> FromLibBookmark(
   ext_bookmark->next_order.reset(new std::string(lib_bookmark.nextOrder));
 
   ext_bookmark->parent_order.reset(new std::string(lib_bookmark.parentOrder));
+
+  if (!lib_bookmark.metaInfo.empty()) {
+    ext_bookmark->meta_info = FromLibMetaInfo(lib_bookmark.metaInfo);
+  }
 
   return ext_bookmark;
 }
