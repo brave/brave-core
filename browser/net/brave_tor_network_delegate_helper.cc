@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/net/brave_tor_network_delegate_helper.h"
+
+#include <memory>
 
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/browser/tor/tor_profile_service.h"
@@ -40,17 +43,18 @@ int OnBeforeURLRequest_TorWork(
     return net::OK;
   }
 
-  if (!(ctx->request_url.SchemeIsHTTPOrHTTPS() ||
-        ctx->request_url.SchemeIs(content::kChromeUIScheme) ||
-        ctx->request_url.SchemeIs(extensions::kExtensionScheme) ||
-        ctx->request_url.SchemeIs(content::kChromeDevToolsScheme))) {
+  auto& request_url = ctx->request_url;
+  if (request_url.SchemeIsHTTPOrHTTPS()) {
+    auto* proxy_service = ctx->request->context()->proxy_resolution_service();
+    return tor_profile_service->SetProxy(proxy_service, request_url, false);
+  } else if (request_url.SchemeIs(content::kChromeUIScheme) ||
+             request_url.SchemeIs(extensions::kExtensionScheme) ||
+             request_url.SchemeIs(content::kChromeDevToolsScheme)) {
+    // No proxy for internal schemes.
+    return net::OK;
+  } else {
     return net::ERR_DISALLOWED_URL_SCHEME;
   }
-
-  auto* proxy_service = ctx->request->context()->proxy_resolution_service();
-  tor_profile_service->SetProxy(proxy_service, ctx->request_url, false);
-
-  return net::OK;
 }
 
 }  // namespace brave
