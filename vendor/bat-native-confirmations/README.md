@@ -50,6 +50,11 @@ void SetConfirmationsIsReady(
     const bool is_ready)
 ```
 
+`ConfirmationsTransactionHistoryDidChange` should notify Ledger if transaction if the transaction history has changed
+```
+void ConfirmationsTransactionHistoryDidChange()
+```
+
 `SetTimer` should create a timer to trigger after the time offset specified in seconds. If the timer was created successfully a unique identifier should be returned, otherwise returns `0`
 ```
 uint32_t SetTimer(
@@ -102,6 +107,14 @@ std::unique_ptr<LogStream> Log(
     const char* file,
     const int line,
     const LogLevel log_level) const
+```
+
+`VerboseLog` should log verbose diagnostic information to the console
+```
+std::unique_ptr<LogStream> Log(
+    const char* file,
+    const int line,
+    const int log_level) const
 ```
 
 ## Command-line Switches
