@@ -50,8 +50,8 @@ class DefaultSearchPrefs {
      Returns an array of the visibile engines. It overrides any of the returned engines from the regionOverrides list
      Each langauge in the locales list has a default list of engines and then a region override list.
      */
-    open func visibleDefaultEngines(for possibileLocales: [String], and region: String) -> [String] {
-        let engineList = possibileLocales.compactMap({ locales[$0].dictionary }).compactMap({ (localDict) -> [JSON]? in
+    open func visibleDefaultEngines(locales: [String], region: String, selected: [String] = []) -> [String] {
+        let engineList = locales.compactMap({ self.locales[$0].dictionary }).compactMap({ (localDict) -> [JSON]? in
             return localDict[region]?["visibleDefaultEngines"].array ?? localDict["default"]?["visibleDefaultEngines"].array
         }).last?.compactMap({ $0.string })
 
@@ -59,13 +59,35 @@ class DefaultSearchPrefs {
         var usersEngineList = engineList ?? defaultSearchList
 
         // Append "all locales" search engines to the users engine list
-        usersEngineList = usersEngineList + allLocalesSearchList
+        usersEngineList += allLocalesSearchList
+        
+        // Append preferences
+        usersEngineList += engineNames(fromShortNames: selected)
 
         // Overrides for specfic regions.
         if let overrides = regionOverrides[region].dictionary {
             usersEngineList = usersEngineList.map({ overrides[$0]?.string ?? $0 })
         }
-        return usersEngineList
+        
+        return usersEngineList.unique { $0 == $1 }
+    }
+    
+    private func engineNames(fromShortNames shortNames: [String]) -> [String] {
+        guard let path = Bundle.main.path(forResource: "ShortNameToFileMapping", ofType: "json") else {
+            assertionFailure("Search list not found. Check bundle")
+            return []
+        }
+        
+        do {
+            let filePath = URL(fileURLWithPath: path)
+            let jsonData = try Data(contentsOf: filePath)
+            let mappings = try JSONDecoder().decode([String: String].self, from: jsonData)
+            return shortNames.compactMap { mappings[$0] }
+        } catch {
+            // Fail silently, nothing needed for recovery here really
+        }
+        
+        return []
     }
 
     /*
