@@ -60,6 +60,5 @@ WidevinePermissionRequest::GetPermissionRequestType() const {
 }
 
 base::string16 WidevinePermissionRequest::GetExplanatoryMessageText() const {
-  return l10n_util::GetStringUTF16(
-      IDS_WIDEVINE_PERMISSION_REQUEST_EXPLANATORY_TEXT);
+  return l10n_util::GetStringUTF16(IDS_WIDEVINE_INSTALL_MESSAGE);
 }

@@ -8,15 +8,12 @@
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_window.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_handle.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 #include "brave/browser/widevine/widevine_utils.h"
-#include "content/browser/frame_host/frame_tree_node.h"
-#include "content/browser/frame_host/render_frame_host_impl.h"
 #endif
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
@@ -46,27 +43,10 @@ void BraveDrmTabHelper::DidStartNavigation(
 void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
   is_widevine_requested_ = true;
 
-  Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
-  browser->window()->UpdateToolbar(web_contents());
-
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  // Show permission request bubble because showing blocked image alone in
-  // omnibox is not obvious to the user and easy to miss.
-  if (ShouldShowWidevineOptIn() && !is_widevine_permission_requested_) {
+  if (ShouldShowWidevineOptIn())
     RequestWidevinePermission(web_contents());
-    is_widevine_permission_requested_ = true;
-  }
 #endif
 }
-
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-void BraveDrmTabHelper::RenderFrameCreated(
-    content::RenderFrameHost* render_frame_host) {
-  auto* frame = static_cast<content::RenderFrameHostImpl*>(render_frame_host);
-  if (frame->frame_tree_node()->IsMainFrame()) {
-    is_widevine_permission_requested_ = false;
-  }
-}
-#endif
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveDrmTabHelper)

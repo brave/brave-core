@@ -32,14 +32,6 @@
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 namespace {
-// Returns true when Widevine install is trigerred by content settings bubble
-// while permission bubble is visible.
-bool IsPermissionBubbleForInstallIsVisible(
-    content::WebContents* web_contents) {
-  return !!PermissionRequestManager::FromWebContents(web_contents)->
-      GetBubbleWindow();
-}
-
 content::WebContents* GetActiveWebContents() {
   if (Browser* browser = chrome::FindLastActive())
     return browser->tab_strip_model()->GetActiveWebContents();
@@ -64,86 +56,12 @@ void OnWidevineInstallDone(const std::string& error) {
   }
 
   DVLOG(1) << __func__ << ": Widevine install success";
-  if (IsActiveTabRequestedWidevine()) {
-    chrome::FindLastActive()->window()->UpdateToolbar(nullptr);
-
-    auto* web_contents = GetActiveWebContents();
-    // There is no way to hide existing permission bubble w/o user gesture
-    // except reloading. To handle this, reloading again.
-    // This can happen when user installs Widevine via content settings bubble
-    // while permission bubble is visible.
-    // In this case, next request permission for request isn't added because
-    // user already recognized well about content settings bubble.
-    if (IsPermissionBubbleForInstallIsVisible(web_contents)) {
-      ChromeSubresourceFilterClient::FromWebContents(web_contents)
-          ->OnReloadRequested();
-    } else {
-      RequestWidevinePermission(web_contents);
-    }
-  }
+  // Request Widevine permission bubble for restart browser.
+  if (IsActiveTabRequestedWidevine())
+    RequestWidevinePermission(GetActiveWebContents());
 }
 }  // namespace
 #endif
-
-int GetWidevineTitleTextResourceId() {
-  int message_id = -1;
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
-  message_id = IDS_NOT_INSTALLED_WIDEVINE_TITLE;
-#endif
-
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  auto* manager = g_brave_browser_process->brave_widevine_bundle_manager();
-  message_id = manager->GetWidevineContentSettingsBubbleTitleText();
-#endif
-
-  DCHECK_NE(message_id, -1);
-  return message_id;
-}
-
-int GetWidevineLinkTextForContentSettingsBubbleResourceId() {
-  int message_id = -1;
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
-  message_id = IDS_INSTALL_AND_RUN_WIDEVINE;
-#endif
-
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  auto* manager = g_brave_browser_process->brave_widevine_bundle_manager();
-  message_id = manager->GetWidevineContentSettingsBubbleLinkText();
-#endif
-
-  DCHECK_NE(message_id, -1);
-  return message_id;
-}
-
-int GetWidevineBlockedImageMessageResourceId() {
-  int message_id = -1;
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
-  message_id = IDS_WIDEVINE_NOT_INSTALLED_MESSAGE;
-#endif
-
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  auto* manager = g_brave_browser_process->brave_widevine_bundle_manager();
-  message_id = manager->GetWidevineBlockedImageMessage();
-#endif
-
-  DCHECK_NE(message_id, -1);
-  return message_id;
-}
-
-int GetWidevineBlockedImageTooltipResourceId() {
-  int tooltip_id = -1;
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
-  tooltip_id = IDS_WIDEVINE_NOT_INSTALLED_EXPLANATORY_TEXT;
-#endif
-
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  auto* manager = g_brave_browser_process->brave_widevine_bundle_manager();
-  tooltip_id = manager->GetWidevineBlockedImageTooltip();
-#endif
-
-  DCHECK_NE(tooltip_id, -1);
-  return tooltip_id;
-}
 
 int GetWidevinePermissionRequestTextFrangmentResourceId() {
   int message_id = -1;
@@ -154,7 +72,7 @@ int GetWidevinePermissionRequestTextFrangmentResourceId() {
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   auto* manager = g_brave_browser_process->brave_widevine_bundle_manager();
-  message_id = manager->GetWidevineContentSettingsBubbleTitleText();
+  message_id = manager->GetWidevinePermissionRequestTextFragment();
 #endif
 
   DCHECK_NE(message_id, -1);

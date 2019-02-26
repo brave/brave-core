@@ -303,29 +303,11 @@ void BraveWidevineBundleManager::DoDelayedBackgroundUpdate() {
 }
 
 int
-BraveWidevineBundleManager::GetWidevineContentSettingsBubbleTitleText() const {
+BraveWidevineBundleManager::GetWidevinePermissionRequestTextFragment() const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  return needs_restart() ? IDS_NOT_ENABLED_WIDEVINE_TITLE
-                         : IDS_NOT_INSTALLED_WIDEVINE_TITLE;
-}
-
-int
-BraveWidevineBundleManager::GetWidevineContentSettingsBubbleLinkText() const {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  return needs_restart() ? IDS_WIDEVINE_RESTART_BROWSER : IDS_WIDEVINE_INSTALL;
-}
-
-int BraveWidevineBundleManager::GetWidevineBlockedImageMessage() const {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  return needs_restart() ? IDS_WIDEVINE_NOT_ENABLED_MESSAGE
-                         : IDS_WIDEVINE_NOT_INSTALLED_MESSAGE;
-}
-
-
-int BraveWidevineBundleManager::GetWidevineBlockedImageTooltip() const {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  return needs_restart() ? IDS_WIDEVINE_NOT_ENABLED_EXPLANATORY_TEXT
-                         : IDS_WIDEVINE_NOT_INSTALLED_EXPLANATORY_TEXT;
+  return needs_restart() ?
+      IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER :
+      IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL;
 }
 
 void BraveWidevineBundleManager::WillRestart() const {

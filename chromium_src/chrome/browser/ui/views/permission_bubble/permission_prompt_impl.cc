@@ -40,7 +40,7 @@ void AddWidevineExplanatoryMessageTextIfNeeded(
   text->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   text->SizeToFit(preferred_message_width);
   text->SetBorder(views::CreateEmptyBorder(gfx::Insets(0, 2)));
-  text->SetMaxLines(5);
+  text->SetMaxLines(15);
   container->AddChildView(text);
 }
 

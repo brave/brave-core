@@ -12,10 +12,6 @@ namespace content {
 class WebContents;
 }
 
-int GetWidevineTitleTextResourceId();
-int GetWidevineLinkTextForContentSettingsBubbleResourceId();
-int GetWidevineBlockedImageMessageResourceId();
-int GetWidevineBlockedImageTooltipResourceId();
 int GetWidevinePermissionRequestTextFrangmentResourceId();
 void RequestWidevinePermission(content::WebContents* web_contents);
 
