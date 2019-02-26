@@ -96,7 +96,7 @@ class AdsBox extends React.Component<Props, State> {
     let adsEnabled = false
     let adsUIEnabled = false
     let notificationsReceived = 0
-    let estimatedEarnings = 0
+    let estimatedEarnings = '0'
 
     const {
       adsData,
@@ -109,7 +109,7 @@ class AdsBox extends React.Component<Props, State> {
       adsEnabled = adsData.adsEnabled
       adsUIEnabled = adsData.adsUIEnabled
       notificationsReceived = adsData.adsNotificationsReceived
-      estimatedEarnings = adsData.adsEstimatedEarnings
+      estimatedEarnings = adsData.adsEstimatedEarnings.toFixed(2)
     }
 
     const toggle = !(!enabledMain || !adsUIEnabled)
@@ -131,8 +131,8 @@ class AdsBox extends React.Component<Props, State> {
       >
         <List title={getLocale('adsCurrentEarnings')}>
           <Tokens
-            value={estimatedEarnings.toString()}
-            converted={utils.convertBalance(estimatedEarnings.toString(), walletInfo.rates)}
+            value={estimatedEarnings}
+            converted={utils.convertBalance(estimatedEarnings, walletInfo.rates)}
           />
         </List>
         <List title={getLocale('adsPaymentDate')}>

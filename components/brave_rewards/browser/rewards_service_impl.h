@@ -272,9 +272,6 @@ class RewardsServiceImpl : public RewardsService,
                           std::unique_ptr<ledger::WalletInfo> info) override;
   void OnDonate(const std::string& publisher_key, int amount, bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
-  void TriggerOnAdsNotificationsData(
-      int total_viewed,
-      double estimated_earnings);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -332,7 +329,8 @@ class RewardsServiceImpl : public RewardsService,
   void SetCatalogIssuers(const std::string& json) override;
   void AdSustained(const std::string& json) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
-  void GetAdsNotificationsHistory() override;
+  void GetAdsNotificationsHistory(
+      brave_rewards::AdsNotificationsHistoryCallback callback) override;
   void ConfirmationsTransactionHistoryDidChange() override;
 
   void OnExcludedSitesChanged(const std::string& publisher_id) override;
@@ -406,7 +404,8 @@ class RewardsServiceImpl : public RewardsService,
   // Mojo Proxy methods
   void OnPublisherBannerMojoProxy(const std::string& banner);
   void OnGetAdsNotificationsHistoryMojoProxy(
-    const std::string& transactions);
+      brave_rewards::AdsNotificationsHistoryCallback callback,
+      const std::string& transactions);
   void OnGetAllBalanceReports(
       const GetAllBalanceReportsCallback& callback,
       const base::flat_map<std::string, std::string>& json_reports);
@@ -415,8 +414,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetAddresses(
       const GetAddressesCallback& callback,
       const base::flat_map<std::string, std::string>& addresses);
-  void OnGetAdsNotificationsHistory(
-      std::unique_ptr<ledger::TransactionsInfo> transactions_info);
   void OnGetAutoContributeProps(
       const GetAutoContributePropsCallback& callback,
       const std::string& json_props);

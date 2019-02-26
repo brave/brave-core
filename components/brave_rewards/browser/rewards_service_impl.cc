@@ -1455,7 +1455,6 @@ void RewardsServiceImpl::AdSustained(const std::string& json) {
   }
 
   bat_ledger_->AdSustained(json);
-  GetAdsNotificationsHistory();
 }
 
 void RewardsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
@@ -1464,53 +1463,49 @@ void RewardsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
     ads_service->SetConfirmationsIsReady(is_ready);
 }
 
-void RewardsServiceImpl::GetAdsNotificationsHistory() {
+void RewardsServiceImpl::ConfirmationsTransactionHistoryDidChange() {
+    for (auto& observer : observers_)
+    observer.OnConfirmationsHistoryChanged(this);
+}
+
+void RewardsServiceImpl::GetAdsNotificationsHistory(
+    brave_rewards::AdsNotificationsHistoryCallback callback) {
   if (!Connected()) {
     return;
   }
 
   auto earnings_range = GetEarningsRange();
 
-  bat_ledger_->GetAdsNotificationsHistory(earnings_range.first,
-      earnings_range.second, base::BindOnce(
-      &RewardsServiceImpl::OnGetAdsNotificationsHistoryMojoProxy, AsWeakPtr()));
-}
-
-void RewardsServiceImpl::ConfirmationsTransactionHistoryDidChange() {
+  bat_ledger_->GetAdsNotificationsHistory(
+      earnings_range.first,
+      earnings_range.second,
+      base::BindOnce(&RewardsServiceImpl::OnGetAdsNotificationsHistoryMojoProxy,
+                     AsWeakPtr(),
+                     std::move(callback)));
 }
 
 void RewardsServiceImpl::OnGetAdsNotificationsHistoryMojoProxy(
+    brave_rewards::AdsNotificationsHistoryCallback callback,
     const std::string& transactions) {
   std::unique_ptr<ledger::TransactionsInfo> info;
   if (!transactions.empty()) {
     info.reset(new ledger::TransactionsInfo());
     info->FromJson(transactions);
   }
-  OnGetAdsNotificationsHistory(std::move(info));
-}
 
-void RewardsServiceImpl::OnGetAdsNotificationsHistory(
-    std::unique_ptr<ledger::TransactionsInfo> transactions_info) {
-  if (!transactions_info) {
+  if (!info) {
     return;
   }
 
-  int total_viewed = transactions_info->transactions.size();
+  int total_viewed = info->transactions.size();
+  double estimated_earnings = 0.0;
   if (total_viewed > 0) {
-    double estimated_earnings = 0.0;
-
-    for (const auto& transaction : transactions_info->transactions) {
+    for (const auto& transaction : info->transactions) {
       estimated_earnings += transaction.estimated_redemption_value;
     }
-
-    TriggerOnAdsNotificationsData(total_viewed, estimated_earnings);
   }
-}
 
-void RewardsServiceImpl::TriggerOnAdsNotificationsData(int total_viewed,
-    double estimated_earnings) {
-  for (auto& observer : observers_)
-    observer.OnAdsNotificationsData(this, total_viewed, estimated_earnings);
+  callback.Run(total_viewed, estimated_earnings);
 }
 
 void RewardsServiceImpl::SaveState(const std::string& name,

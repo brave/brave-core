@@ -138,17 +138,18 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.enabledMain = action.payload.enabled
       break
     }
-    case types.GET_ADS_NOTIFICATIONS: {
-      chrome.send('brave_rewards.getAdsNotifications', [])
+    case types.GET_ADS_NOTIFICATIONS_HISTORY:
+    case types.ON_CONFIRMATIONS_HISTORY_CHANGED: {
+      chrome.send('brave_rewards.getAdsNotificationsHistory', [])
       break
     }
-    case types.ON_ADS_NOTIFICATIONS_DATA: {
-      if (!action.payload.adsNotificationsData) {
+    case types.ON_ADS_NOTIFICATIONS_HISTORY: {
+      if (!action.payload.data) {
         break
       }
 
       state = { ...state }
-      const data = action.payload.adsNotificationsData
+      const data = action.payload.data
       state.adsData.adsNotificationsReceived = data.adsTotalPages
       state.adsData.adsEstimatedEarnings = data.adsEstimatedEarnings
       break

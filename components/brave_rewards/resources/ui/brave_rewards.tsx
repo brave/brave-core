@@ -147,8 +147,12 @@ window.cr.define('brave_rewards', function () {
     getActions().onAddressesForPaymentId(addresses)
   }
 
-  function adsNotificationsData (totalPages: number, estimatedEarnings: number) {
-    getActions().onAdsNotificationsData(totalPages, estimatedEarnings)
+  function adsNotificationsHistory (totalPages: number, estimatedEarnings: number) {
+    getActions().onAdsNotificationsHistory(totalPages, estimatedEarnings)
+  }
+
+  function confirmationsHistoryChanged () {
+    getActions().onConfirmationsHistoryChanged()
   }
 
   return {
@@ -177,7 +181,8 @@ window.cr.define('brave_rewards', function () {
     onPendingContributionSaved,
     rewardsEnabled,
     addressesForPaymentId,
-    adsNotificationsData
+    adsNotificationsHistory,
+    confirmationsHistoryChanged
   }
 })
 
