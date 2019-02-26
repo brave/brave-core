@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/macros.h"
+#include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 
@@ -30,6 +31,9 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
                           int error_code,
                           std::unique_ptr<brave_rewards::WalletProperties>
                               wallet_properties) override;
+  void OnPublisherListNormalized(
+      RewardsService* rewards_service,
+      brave_rewards::ContentSiteList list) override;
 
   // RewardsServicePrivateObserver implementation
   void OnGetCurrentBalanceReport(RewardsService* rewards_service,

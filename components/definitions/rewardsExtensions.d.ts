@@ -114,4 +114,10 @@ declare namespace RewardsExtension {
     timestamp: number
     args: string[]
   }
+
+  interface PublisherNormalized {
+    publisher_key: string
+    percentage: number
+    verified: boolean
+  }
 }

@@ -55,3 +55,7 @@ chrome.braveRewards.onPendingContributionSaved.addListener((result: number) => {
 chrome.braveRewards.onWalletFailed.addListener(() => {
   rewardsPanelActions.onWalletCreateFailed()
 })
+
+chrome.braveRewards.onPublisherListNormalized.addListener((properties: RewardsExtension.PublisherNormalized[]) => {
+  rewardsPanelActions.onPublisherListNormalized(properties)
+})
