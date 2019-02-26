@@ -804,13 +804,13 @@ void RewardsServiceImpl::OnGetRewardsInternalsInfo(
   rewards_internals_info->payment_id = info.payment_id;
   rewards_internals_info->is_key_info_seed_valid = info.is_key_info_seed_valid;
   for (const auto& item : info.current_reconciles) {
-    CurrentReconcileInfo current_reconcile_info;
-    current_reconcile_info.viewing_id_ = item.second.viewingId_;
-    current_reconcile_info.amount_ = item.second.amount_;
-    current_reconcile_info.retry_step_ =
+    ReconcileInfo reconcile_info;
+    reconcile_info.viewing_id_ = item.second.viewingId_;
+    reconcile_info.amount_ = item.second.amount_;
+    reconcile_info.retry_step_ =
         static_cast<ContributionRetry>(item.second.retry_step_);
-    current_reconcile_info.retry_level_ = item.second.retry_level_;
-    rewards_internals_info->current_reconciles[item.first] = current_reconcile_info;
+    reconcile_info.retry_level_ = item.second.retry_level_;
+    rewards_internals_info->current_reconciles[item.first] = reconcile_info;
   }
 
   callback.Run(std::move(rewards_internals_info));
@@ -904,11 +904,9 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
   if (!Connected())
     return;
 
-  ledger::Result error_code = data.empty() ? ledger::Result::NO_LEDGER_STATE
-                                           : ledger::Result::LEDGER_OK;
-  handler->OnLedgerStateLoaded(error_code, data);
-
-  TriggerOnRewardsInitialized(error_code);
+  handler->OnLedgerStateLoaded(data.empty() ? ledger::Result::NO_LEDGER_STATE
+                                            : ledger::Result::LEDGER_OK,
+                               data);
 
   bat_ledger_->GetRewardsMainEnabled(
       base::BindOnce(&RewardsServiceImpl::StartNotificationTimers,
@@ -1720,11 +1718,6 @@ void RewardsServiceImpl::TriggerOnRewardsMainEnabled(
     bool rewards_main_enabled) {
   for (auto& observer : observers_)
     observer.OnRewardsMainEnabled(this, rewards_main_enabled);
-}
-
-void RewardsServiceImpl::TriggerOnRewardsInitialized(int error_code) {
-  for (auto& observer : observers_)
-    observer.OnRewardsInitialized(this, error_code);
 }
 
 void RewardsServiceImpl::SavePublishersList(const std::string& publishers_list,

@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_CURRENT_RECONCILE_INFO_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_CURRENT_RECONCILE_INFO_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_RECONCILE_INFO_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_RECONCILE_INFO_
 
 #include <map>
 #include <string>
@@ -24,10 +24,10 @@ enum ContributionRetry {
   STEP_FINAL = 10      // Phase 2
 };
 
-struct CurrentReconcileInfo {
-  CurrentReconcileInfo();
-  ~CurrentReconcileInfo();
-  CurrentReconcileInfo(const CurrentReconcileInfo& info);
+struct ReconcileInfo {
+  ReconcileInfo();
+  ~ReconcileInfo();
+  ReconcileInfo(const ReconcileInfo& info);
 
   std::string viewing_id_;
   std::string amount_;
@@ -37,4 +37,4 @@ struct CurrentReconcileInfo {
 
 }  // namespace brave_rewards
 
-#endif //BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_CURRENT_RECONCILE_INFO_
+#endif //BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_RECONCILE_INFO_

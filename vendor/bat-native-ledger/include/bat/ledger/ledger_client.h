@@ -15,13 +15,13 @@
 #include <map>
 
 #include "bat/ledger/balance_report_info.h"
-#include "bat/ledger/current_reconcile_info.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/grant.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/media_publisher_info.h"
 #include "bat/ledger/pending_contribution.h"
 #include "bat/ledger/publisher_info.h"
+#include "bat/ledger/reconcile_info.h"
 #include "bat/ledger/wallet_info.h"
 
 namespace confirmations {

@@ -620,23 +620,23 @@ bool AutoContributeProps::loadFromJson(const std::string& json) {
   return !error;
 }
 
-CurrentReconcileInfo::CurrentReconcileInfo()
+ReconcileInfo::ReconcileInfo()
     : retry_step_(ContributionRetry::STEP_NO), retry_level_(0) {}
-CurrentReconcileInfo::~CurrentReconcileInfo() {}
-CurrentReconcileInfo::CurrentReconcileInfo(const ledger::CurrentReconcileInfo& info) {
+ReconcileInfo::~ReconcileInfo() {}
+ReconcileInfo::ReconcileInfo(const ledger::ReconcileInfo& info) {
   viewingId_ = info.viewingId_;
   amount_ = info.amount_;
   retry_step_ = info.retry_step_;
   retry_level_ = info.retry_level_;
 }
 
-const std::string CurrentReconcileInfo::ToJson() const {
+const std::string ReconcileInfo::ToJson() const {
   std::string json;
   braveledger_bat_helper::saveToJsonString(*this, json);
   return json;
 }
 
-bool CurrentReconcileInfo::loadFromJson(const std::string& json) {
+bool ReconcileInfo::loadFromJson(const std::string& json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
@@ -700,10 +700,10 @@ bool RewardsInternalsInfo::loadFromJson(const std::string& json) {
       rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
       i.Accept(writer);
 
-      CurrentReconcileInfo current_reconcile_info;
-      current_reconcile_info.loadFromJson(sb.GetString());
-      current_reconciles.insert(std::make_pair(
-          current_reconcile_info.viewingId_, current_reconcile_info));
+      ReconcileInfo reconcile_info;
+      reconcile_info.loadFromJson(sb.GetString());
+      current_reconciles.insert(
+          std::make_pair(reconcile_info.viewingId_, reconcile_info));
     }
   }
 

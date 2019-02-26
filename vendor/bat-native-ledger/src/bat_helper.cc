@@ -3067,23 +3067,23 @@ void saveToJson(JsonWriter* writer,
   writer->EndObject();
 }
 
-  void saveToJson(JsonWriter& writer, const ledger::CurrentReconcileInfo& data) {
-    writer.StartObject();
+void saveToJson(JsonWriter& writer, const ledger::ReconcileInfo& data) {
+  writer.StartObject();
 
-    writer.String("viewingId");
-    writer.String(data.viewingId_.c_str());
+  writer.String("viewingId");
+  writer.String(data.viewingId_.c_str());
 
-    writer.String("amount");
-    writer.String(data.amount_.c_str());
+  writer.String("amount");
+  writer.String(data.amount_.c_str());
 
-    writer.String("retry_step");
-    writer.Int(data.retry_step_);
+  writer.String("retry_step");
+  writer.Int(data.retry_step_);
 
-    writer.String("retry_level");
-    writer.Int(data.retry_level_);
+  writer.String("retry_level");
+  writer.Int(data.retry_level_);
 
-    writer.EndObject();
-  }
+  writer.EndObject();
+}
 
   void saveToJson(JsonWriter& writer,
                   const ledger::RewardsInternalsInfo& info) {

@@ -1147,13 +1147,13 @@ void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo& info) {
   const braveledger_bat_helper::CurrentReconciles current_reconciles =
       GetCurrentReconciles();
   for (const auto& reconcile : current_reconciles) {
-    ledger::CurrentReconcileInfo current_reconcile_info;
-    current_reconcile_info.viewingId_ = reconcile.second.viewingId_;
-    current_reconcile_info.amount_ = reconcile.second.amount_;
-    current_reconcile_info.retry_step_ = reconcile.second.retry_step_;
-    current_reconcile_info.retry_level_ = reconcile.second.retry_level_;
+    ledger::ReconcileInfo reconcile_info;
+    reconcile_info.viewingId_ = reconcile.second.viewingId_;
+    reconcile_info.amount_ = reconcile.second.amount_;
+    reconcile_info.retry_step_ = reconcile.second.retry_step_;
+    reconcile_info.retry_level_ = reconcile.second.retry_level_;
     info.current_reconciles.insert(
-        std::make_pair(reconcile.second.viewingId_, current_reconcile_info));
+        std::make_pair(reconcile.second.viewingId_, reconcile_info));
   }
 }
 

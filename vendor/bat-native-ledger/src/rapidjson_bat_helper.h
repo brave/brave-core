@@ -17,7 +17,7 @@ namespace ledger {
 struct AutoContributeProps;
 struct BalanceReportInfo;
 struct ContributionInfo;
-struct CurrentReconcileInfo;
+struct ReconcileInfo;
 struct Grant;
 struct PublisherBanner;
 struct PublisherInfo;

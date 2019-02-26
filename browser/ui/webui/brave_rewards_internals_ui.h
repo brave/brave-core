@@ -24,10 +24,10 @@ class BraveRewardsInternalsUI : public BasicUI,
   void UpdateWebUIProperties() override;
 
   // RewardsServiceObserver overrides:
-  void OnRewardsInitialized(brave_rewards::RewardsService* rewards_service,
-                            int error_code) override;
   void OnRewardsMainEnabled(brave_rewards::RewardsService* rewards_service,
                             bool rewards_main_enabled) override;
+  void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
+                            int error_code) override;
 
   void OnGetRewardsInternalsInfo(
       std::unique_ptr<brave_rewards::RewardsInternalsInfo> info);

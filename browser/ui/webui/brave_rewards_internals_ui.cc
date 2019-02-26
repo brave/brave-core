@@ -101,19 +101,19 @@ void BraveRewardsInternalsUI::UpdateWebUIProperties() {
   }
 }
 
-void BraveRewardsInternalsUI::OnRewardsInitialized(
+void BraveRewardsInternalsUI::OnRewardsMainEnabled(
+    brave_rewards::RewardsService* rewards_service,
+    bool rewards_main_enabled) {
+  UpdateWebUIProperties();
+}
+
+void BraveRewardsInternalsUI::OnWalletInitialized(
     brave_rewards::RewardsService* rewards_service,
     int error_code) {
   DCHECK(rewards_service_);
   rewards_service_->GetRewardsInternalsInfo(
       base::Bind(&BraveRewardsInternalsUI::OnGetRewardsInternalsInfo,
                  base::Unretained(this)));
-}
-
-void BraveRewardsInternalsUI::OnRewardsMainEnabled(
-    brave_rewards::RewardsService* rewards_service,
-    bool rewards_main_enabled) {
-  UpdateWebUIProperties();
 }
 
 void BraveRewardsInternalsUI::OnGetRewardsInternalsInfo(

@@ -2,8 +2,8 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this
 * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_CURRENT_RECONCILE_INFO_
-#define BAT_LEDGER_CURRENT_RECONCILE_INFO_
+#ifndef BAT_LEDGER_RECONCILE_INFO_
+#define BAT_LEDGER_RECONCILE_INFO_
 
 #include <map>
 #include <string>
@@ -26,10 +26,10 @@ LEDGER_EXPORT enum ContributionRetry {
   STEP_FINAL = 10      // Phase 2
 };
 
-LEDGER_EXPORT struct CurrentReconcileInfo {
-  CurrentReconcileInfo();
-  ~CurrentReconcileInfo();
-  CurrentReconcileInfo(const CurrentReconcileInfo& info);
+LEDGER_EXPORT struct ReconcileInfo {
+  ReconcileInfo();
+  ~ReconcileInfo();
+  ReconcileInfo(const ReconcileInfo& info);
 
   const std::string ToJson() const;
   bool loadFromJson(const std::string& json);
@@ -42,4 +42,4 @@ LEDGER_EXPORT struct CurrentReconcileInfo {
 
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_CURRENT_RECONCILE_INFO_
+#endif  // BAT_LEDGER_RECONCILE_INFO_

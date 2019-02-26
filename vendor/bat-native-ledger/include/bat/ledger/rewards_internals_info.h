@@ -7,7 +7,7 @@
 
 namespace ledger {
 
-struct CurrentReconcileInfo;
+struct ReconcileInfo;
 
 LEDGER_EXPORT struct RewardsInternalsInfo {
   RewardsInternalsInfo();
@@ -20,7 +20,7 @@ LEDGER_EXPORT struct RewardsInternalsInfo {
   std::string payment_id;
   bool is_key_info_seed_valid;
 
-  std::map<std::string, CurrentReconcileInfo> current_reconciles;
+  std::map<std::string, ReconcileInfo> current_reconciles;
 };
 
 }  // namespace ledger
