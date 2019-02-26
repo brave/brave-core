@@ -567,13 +567,13 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "retryStepPayload", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_PAYLOAD },
         { "retryStepPrepare", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_PREPARE },
         { "retryStepProof", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_PROOF },
-        { "retryStepReconcile", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_RECONCILE },
-        { "retryStepRegister", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_REGISTER },
+        { "retryStepReconcile", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_RECONCILE },              // NOLINT
+        { "retryStepRegister", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_REGISTER },                // NOLINT
         { "retryStepUnknown", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_UNKNOWN },
         { "retryStepViewing", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_VIEWING },
         { "retryStepVote", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_VOTE },
         { "retryStepWinners", IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_WINNERS },
-        { "rewardsNotEnabled", IDS_BRAVE_REWARDS_INTERNALS_REWARDS_NOT_ENABLED },
+        { "rewardsNotEnabled", IDS_BRAVE_REWARDS_INTERNALS_REWARDS_NOT_ENABLED },                // NOLINT
         { "valid", IDS_BRAVE_REWARDS_INTERNALS_VALID },
         { "viewingId", IDS_BRAVE_REWARDS_INTERNALS_VIEWING_ID },
         { "walletPaymentId", IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID },

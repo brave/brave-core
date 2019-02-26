@@ -273,7 +273,7 @@ class LEDGER_EXPORT Ledger {
       const uint64_t from_timestamp_seconds,
       const uint64_t to_timestamp_seconds,
       ledger::ConfirmationsHistoryCallback callback) = 0;
-  virtual void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo& info) = 0;
+  virtual void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) = 0;
 };
 
 }  // namespace ledger

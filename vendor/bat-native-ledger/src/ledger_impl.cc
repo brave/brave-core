@@ -7,6 +7,7 @@
 #include <iostream>
 #include <random>
 #include <sstream>
+#include <utility>
 #include <vector>
 #include <utility>
 
@@ -1125,22 +1126,22 @@ const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
   return wallet_info;
 }
 
-void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo& info) {
+void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) {
   // Retrieve the payment id.
-  info.payment_id = bat_state_->GetPaymentId();
+  info->payment_id = bat_state_->GetPaymentId();
 
   // Retrieve the key info seed and validate it.
   const braveledger_bat_helper::WALLET_INFO_ST wallet_info =
       bat_state_->GetWalletInfo();
-  if (wallet_info.keyInfoSeed_.size() != SEED_LENGTH)
-    info.is_key_info_seed_valid = false;
-  else {
+  if (wallet_info.keyInfoSeed_.size() != SEED_LENGTH) {
+    info->is_key_info_seed_valid = false;
+  } else {
     std::vector<uint8_t> secret_key =
         braveledger_bat_helper::getHKDF(wallet_info.keyInfoSeed_);
     std::vector<uint8_t> public_key;
     std::vector<uint8_t> new_secret_key;
-    info.is_key_info_seed_valid = braveledger_bat_helper::getPublicKeyFromSeed(
-        secret_key, public_key, new_secret_key);
+    info->is_key_info_seed_valid = braveledger_bat_helper::getPublicKeyFromSeed(
+        secret_key, &public_key, &new_secret_key);
   }
 
   // Retrieve the current reconciles.
@@ -1152,7 +1153,7 @@ void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo& info) {
     reconcile_info.amount_ = reconcile.second.amount_;
     reconcile_info.retry_step_ = reconcile.second.retry_step_;
     reconcile_info.retry_level_ = reconcile.second.retry_level_;
-    info.current_reconciles.insert(
+    info->current_reconciles.insert(
         std::make_pair(reconcile.second.viewingId_, reconcile_info));
   }
 }

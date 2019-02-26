@@ -388,7 +388,7 @@ void BatLedgerImpl::GetConfirmationsHistory(
 void BatLedgerImpl::GetRewardsInternalsInfo(
     GetRewardsInternalsInfoCallback callback) {
   ledger::RewardsInternalsInfo info;
-  ledger_->GetRewardsInternalsInfo(info);
+  ledger_->GetRewardsInternalsInfo(&info);
   std::move(callback).Run(info.ToJson());
 }
 

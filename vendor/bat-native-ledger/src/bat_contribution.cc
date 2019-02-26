@@ -1555,8 +1555,7 @@ uint64_t BatContribution::GetRetryTimer(
     ledger::ContributionRetry step,
     const std::string& viewing_id,
     braveledger_bat_helper::CURRENT_RECONCILE* reconcile) {
-
-  braveledger_bat_helper::ContributionRetry old_step = reconcile->retry_step_;
+  ledger::ContributionRetry old_step = reconcile->retry_step_;
 
   int phase = GetRetryPhase(step);
   if (phase > GetRetryPhase(old_step)) {

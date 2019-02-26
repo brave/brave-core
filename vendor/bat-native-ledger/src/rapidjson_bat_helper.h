@@ -66,6 +66,7 @@ void saveToJson(JsonWriter* writer, const ledger::Grant&);
 void saveToJson(JsonWriter* writer, const ledger::PublisherBanner&);
 void saveToJson(JsonWriter* writer, const ledger::PublisherInfo&);
 void saveToJson(JsonWriter* writer, const ledger::ActivityInfoFilter&);
+void saveToJson(JsonWriter* writer, const ledger::ReconcileInfo&);
 void saveToJson(JsonWriter* writer, const ledger::RewardsInternalsInfo&);
 void saveToJson(JsonWriter* writer, const ledger::VisitData&);
 void saveToJson(JsonWriter* writer, const ledger::WalletInfo&);

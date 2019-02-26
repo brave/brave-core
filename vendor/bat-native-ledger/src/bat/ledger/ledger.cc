@@ -632,7 +632,7 @@ ReconcileInfo::ReconcileInfo(const ledger::ReconcileInfo& info) {
 
 const std::string ReconcileInfo::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -657,7 +657,7 @@ bool ReconcileInfo::loadFromJson(const std::string& json) {
     retry_step_ = static_cast<ContributionRetry>(d["retry_step"].GetInt());
     retry_level_ = d["retry_level"].GetInt();
   }
-  
+
   return !error;
 }
 
@@ -672,7 +672,7 @@ RewardsInternalsInfo::~RewardsInternalsInfo() {}
 
 const std::string RewardsInternalsInfo::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
