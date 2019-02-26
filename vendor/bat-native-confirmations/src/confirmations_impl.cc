@@ -483,6 +483,8 @@ void ConfirmationsImpl::AppendEstimatedRedemptionValueToTransactionHistory(
 
   transaction_history_.push_back(info);
 
+  confirmations_client_->ConfirmationsTransactionHistoryDidChange();
+
   SaveState();
 }
 
