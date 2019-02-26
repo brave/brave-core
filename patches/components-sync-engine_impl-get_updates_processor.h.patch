@@ -1,0 +1,22 @@
+diff --git a/components/sync/engine_impl/get_updates_processor.h b/components/sync/engine_impl/get_updates_processor.h
+index c5560ec8113670c57f80245199031732f5795f23..29491b1919e38c21efe2194910070f55c3fcb276 100644
+--- a/components/sync/engine_impl/get_updates_processor.h
++++ b/components/sync/engine_impl/get_updates_processor.h
+@@ -45,6 +45,8 @@ class GetUpdatesProcessor {
+   // server, or an appropriate error value in case of failure.
+   SyncerError DownloadUpdates(ModelTypeSet* request_types, SyncCycle* cycle);
+ 
++  void AddBraveRecords(std::unique_ptr<RecordsList> records);
++
+   // Applies any downloaded and processed updates.
+   void ApplyUpdates(const ModelTypeSet& gu_types,
+                     StatusController* status_controller);
+@@ -96,6 +98,8 @@ class GetUpdatesProcessor {
+ 
+   const GetUpdatesDelegate& delegate_;
+ 
++  std::unique_ptr<RecordsList> brave_records_;
++
+   DISALLOW_COPY_AND_ASSIGN(GetUpdatesProcessor);
+ };
+ 

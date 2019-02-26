@@ -1,0 +1,13 @@
+diff --git a/components/sync/engine_impl/sync_manager_impl.h b/components/sync/engine_impl/sync_manager_impl.h
+index 4a6f7f40110d0f38bf40a994c0c5eb90535d9af5..3f6de6795abd0020b0e5d5518d7a506d50ed4e3b 100644
+--- a/components/sync/engine_impl/sync_manager_impl.h
++++ b/components/sync/engine_impl/sync_manager_impl.h
+@@ -205,6 +205,8 @@ class SyncManagerImpl
+ 
+   using NotificationInfoMap = std::map<ModelType, NotificationInfo>;
+ 
++  void BraveInit(InitArgs* args);
++
+   // Determine if the parents or predecessors differ between the old and new
+   // versions of an entry.  Note that a node's index may change without its
+   // UNIQUE_POSITION changing if its sibling nodes were changed.  To handle such

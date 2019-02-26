@@ -37,6 +37,17 @@ public:
   std::string favicon;
 };
 
+class MetaInfo {
+public:
+  MetaInfo();
+  MetaInfo(const MetaInfo& metaInfo);
+  ~MetaInfo();
+  static std::unique_ptr<MetaInfo> Clone(const MetaInfo& metaInfo);
+
+  std::string key;
+  std::string value;
+};
+
 class Bookmark {
 public:
   Bookmark();
@@ -54,6 +65,7 @@ public:
   std::string prevOrder;
   std::string nextOrder;
   std::string parentOrder;
+  std::vector<MetaInfo> metaInfo;
 };
 
 class SiteSetting {
@@ -131,6 +143,7 @@ public:
   const Site& GetHistorySite() const;
   const SiteSetting& GetSiteSetting() const;
   const Device& GetDevice() const;
+  Bookmark* mutable_bookmark();
 
   void SetBookmark(std::unique_ptr<Bookmark> bookmark);
   void SetHistorySite(std::unique_ptr<Site> history_site);

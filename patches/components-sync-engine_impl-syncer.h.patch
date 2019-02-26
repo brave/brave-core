@@ -1,0 +1,36 @@
+diff --git a/components/sync/engine_impl/syncer.h b/components/sync/engine_impl/syncer.h
+index fd1203f8963834e69ce80be254527deecf57fdfd..efbb10a68436bd342a34560555b5a654597fe79a 100644
+--- a/components/sync/engine_impl/syncer.h
++++ b/components/sync/engine_impl/syncer.h
+@@ -32,7 +32,7 @@ class SyncCycle;
+ // A Syncer instance expects to run on a dedicated thread.  Calls to SyncShare()
+ // may take an unbounded amount of time because it may block on network I/O, on
+ // lock contention, or on tasks posted to other threads.
+-class Syncer {
++class Syncer : public base::SupportsWeakPtr<Syncer> {
+  public:
+   explicit Syncer(CancelationSignal* cancelation_signal);
+   virtual ~Syncer();
+@@ -74,10 +74,13 @@ class Syncer {
+   // otherwise.
+   virtual bool PostClearServerData(SyncCycle* cycle);
+ 
++  void DownloadBraveRecords(SyncCycle* cycle);
++
+  private:
+   bool DownloadAndApplyUpdates(ModelTypeSet* request_types,
+                                SyncCycle* cycle,
+                                const GetUpdatesDelegate& delegate);
++  void OnGetRecords(std::unique_ptr<brave_sync::RecordsList> records);
+ 
+   // This function will commit batches of unsynced items to the server until the
+   // number of unsynced and ready to commit items reaches zero or an error is
+@@ -99,6 +102,8 @@ class Syncer {
+   // Whether the syncer is in the middle of a sync attempt.
+   bool is_syncing_;
+ 
++  std::unique_ptr<brave_sync::RecordsList> brave_records_;
++
+   DISALLOW_COPY_AND_ASSIGN(Syncer);
+ };
+ 

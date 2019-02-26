@@ -10,6 +10,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
@@ -40,6 +41,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kHideBraveRewardsButton, false);
 
   tor::TorProfileService::RegisterProfilePrefs(registry);
+
+  //TODO(darkdh): merge into upstream SyncPrefs
+  brave_sync::prefs::Prefs::RegisterProfilePrefs(registry);
 
   registry->RegisterBooleanPref(kWidevineOptedIn, false);
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
