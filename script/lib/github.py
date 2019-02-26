@@ -165,13 +165,16 @@ def get_file_contents(token, repo_name, filename, branch=None):
     return file['content']
 
 
-def add_reviewers_to_pull_request(token, repo_name, pr_number, reviewers=[], verbose=False, dryrun=False):
+def add_reviewers_to_pull_request(token, repo_name, pr_number, reviewers=[], team_reviewers=[],
+                                  verbose=False, dryrun=False):
     # add reviewers to pull request
     # for more info see: https://developer.github.com/v3/pulls/review_requests/
     repo = GitHub(token).repos(repo_name)
     patch_data = {}
     if len(reviewers) > 0:
         patch_data['reviewers'] = reviewers
+    if len(team_reviewers) > 0:
+        patch_data['team_reviewers'] = team_reviewers
     if dryrun:
         print('[INFO] would call `repo.pulls(' + str(pr_number) +
               ').requested_reviewers.post(' + str(patch_data) + ')`')
@@ -269,7 +272,7 @@ def get_title_from_first_commit(path, branch_to_compare):
         return title_list[0]
 
 
-def push_branches_to_remote(path, branches_to_push, dryrun=False):
+def push_branches_to_remote(path, branches_to_push, dryrun=False, token=None):
     if dryrun:
         print('[INFO] would push the following local branches to remote: ' + str(branches_to_push))
     else:
@@ -277,4 +280,11 @@ def push_branches_to_remote(path, branches_to_push, dryrun=False):
             for branch_to_push in branches_to_push:
                 print('- pushing ' + branch_to_push + '...')
                 # TODO: if they already exist, force push?? or error??
-                execute(['git', 'push', '-u', 'origin', branch_to_push])
+                response = execute(['git', 'remote', 'get-url', '--push', 'origin']).strip()
+                if response.startswith('https://'):
+                    if len(str(token)) == 0:
+                        raise Exception('GitHub token cannot be null or empty!')
+                    remote = response.replace('https://', 'https://' + token + ':x-oauth-basic@')
+                    execute(['git', 'push', '-u', remote, branch_to_push])
+                else:
+                    execute(['git', 'push', '-u', 'origin', branch_to_push])
