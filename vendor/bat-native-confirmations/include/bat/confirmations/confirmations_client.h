@@ -17,9 +17,6 @@ using URLRequestMethod = ::ledger::URL_METHOD;
 using Result = ::ledger::Result;
 const auto SUCCESS = ::ledger::Result::LEDGER_OK;
 const auto FAILED = ::ledger::Result::LEDGER_ERROR;
-const auto INFO = ::ledger::LogLevel::LOG_INFO;
-const auto WARNING = ::ledger::LogLevel::LOG_WARNING;
-const auto ERROR = ::ledger::LogLevel::LOG_ERROR;
 
 using OnSaveCallback = ::ledger::OnSaveCallback;
 using OnLoadCallback = ::ledger::OnLoadCallback;
