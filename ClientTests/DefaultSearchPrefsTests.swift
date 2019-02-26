@@ -31,7 +31,7 @@ class DefaultSearchPrefsTests: XCTestCase {
         // run tests
         testLocales.forEach { locale in
             XCTAssertEqual(searchPrefs.searchDefault(for: locale.lang, and: locale.region), locale.resultDefault)
-            XCTAssertEqual(searchPrefs.visibleDefaultEngines(for: locale.lang, and: locale.region), locale.resultList)
+            XCTAssertEqual(searchPrefs.visibleDefaultEngines(locales: locale.lang, region: locale.region), locale.resultList)
         }
     }
 }

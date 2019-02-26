@@ -233,7 +233,7 @@ class SearchEngines {
 
     /// Get all bundled (not custom) search engines, with the default search engine first,
     /// but the others in no particular order.
-    class func getUnorderedBundledEnginesFor(locale: Locale) -> [OpenSearchEngine] {
+    class func getUnorderedBundledEnginesFor(locale: Locale, selected: [String] = []) -> [OpenSearchEngine] {
         let languageIdentifier = locale.identifier
         let region = locale.regionCode ?? "US"
         let parser = OpenSearchParser(pluginMode: true)
@@ -248,7 +248,7 @@ class SearchEngines {
             return []
         }
         let possibilities = possibilitiesForLanguageIdentifier(languageIdentifier)
-        let engineNames = defaultSearchPrefs.visibleDefaultEngines(for: possibilities, and: region)
+        let engineNames = defaultSearchPrefs.visibleDefaultEngines(locales: possibilities, region: region, selected: selected)
         let defaultEngineName = defaultSearchPrefs.searchDefault(for: possibilities, and: region)
         assert(engineNames.count > 0, "No search engines")
 
@@ -261,7 +261,8 @@ class SearchEngines {
     /// Get all known search engines, possibly as ordered by the user.
     fileprivate func getOrderedEngines() -> [OpenSearchEngine] {
         let locale = Locale(identifier: Locale.preferredLanguages.first ?? Locale.current.identifier)
-        let unorderedEngines = customEngines + SearchEngines.getUnorderedBundledEnginesFor(locale: locale)
+        let selectedSearchEngines = [Preferences.Search.defaultEngineName, Preferences.Search.defaultPrivateEngineName].compactMap { $0.value }
+        let unorderedEngines = customEngines + SearchEngines.getUnorderedBundledEnginesFor(locale: locale, selected: selectedSearchEngines)
 
         // might not work to change the default.
         guard let orderedEngineNames = Preferences.Search.orderedEngines.value else {
