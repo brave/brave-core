@@ -34,12 +34,12 @@ ExtensionWhitelistService::~ExtensionWhitelistService() {
   extension_whitelist_client_.reset();
 }
 
-bool ExtensionWhitelistService::IsWhitelisted(const std::string& extension_id) {
+bool ExtensionWhitelistService::IsWhitelisted(const std::string& extension_id) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return extension_whitelist_client_->isWhitelisted(extension_id.c_str());
 }
 
-bool ExtensionWhitelistService::IsBlacklisted(const std::string& extension_id) {
+bool ExtensionWhitelistService::IsBlacklisted(const std::string& extension_id) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return extension_whitelist_client_->isBlacklisted(extension_id.c_str());
 }

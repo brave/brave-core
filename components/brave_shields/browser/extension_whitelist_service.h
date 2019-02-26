@@ -34,8 +34,8 @@ class ExtensionWhitelistService : public BaseLocalDataFilesObserver {
   ExtensionWhitelistService();
   ~ExtensionWhitelistService() override;
 
-  bool IsWhitelisted(const std::string& extension_id);
-  bool IsBlacklisted(const std::string& extension_id);
+  bool IsWhitelisted(const std::string& extension_id) const;
+  bool IsBlacklisted(const std::string& extension_id) const;
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
 
   // implementation of BaseLocalDataFilesObserver
