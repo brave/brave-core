@@ -1,14 +1,13 @@
 diff --git a/chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc b/chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc
-index 23ea17203870c61413397913f24d32ec92f4a30d..a336b9690fc690b62bbb1360da78729caa8d1ffb 100644
+index 23ea17203870c61413397913f24d32ec92f4a30d..00847ba5c0a4d0ecf254be3565a2fb2b0f344c84 100644
 --- a/chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc
 +++ b/chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc
-@@ -145,6 +145,11 @@ PermissionsBubbleDialogDelegateView::PermissionsBubbleDialogDelegateView(
+@@ -145,6 +145,10 @@ PermissionsBubbleDialogDelegateView::PermissionsBubbleDialogDelegateView(
      AddChildView(label_container);
    }
  
 +#if defined(BRAVE_CHROMIUM_BUILD)
-+  AddWidevineExplanatoryMessageTextIfNeeded(
-+      this, GetPreferredSize().width(), requests);
++ AddWidevineExplanatoryMessageTextIfNeeded(this, requests);
 +#endif
 +
    chrome::RecordDialogCreation(chrome::DialogIdentifier::PERMISSIONS);

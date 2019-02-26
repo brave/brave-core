@@ -7,9 +7,11 @@
 
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "chrome/browser/permissions/permission_request.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "chrome/browser/ui/views/chrome_typography.h"
 #include "ui/gfx/text_constants.h"
-#include "ui/views/border.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/window/dialog_delegate.h"
 
 namespace {
 
@@ -26,22 +28,25 @@ bool HasWidevinePermissionRequest(
 }
 
 void AddWidevineExplanatoryMessageTextIfNeeded(
-    views::View* container,
-    int preferred_message_width,
+    views::DialogDelegateView* dialog_delegate,
     const std::vector<PermissionRequest*>& requests) {
   if (!HasWidevinePermissionRequest(requests))
     return;
 
-  auto* widevine_request =
-      static_cast<WidevinePermissionRequest*>(requests[0]);
+  auto* widevine_request = static_cast<WidevinePermissionRequest*>(requests[0]);
   views::Label* text =
-      new views::Label(widevine_request->GetExplanatoryMessageText());
+      new views::Label(widevine_request->GetExplanatoryMessageText(),
+                       views::style::CONTEXT_LABEL,
+                       STYLE_SECONDARY);
   text->SetMultiLine(true);
   text->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-  text->SizeToFit(preferred_message_width);
-  text->SetBorder(views::CreateEmptyBorder(gfx::Insets(0, 2)));
-  text->SetMaxLines(15);
-  container->AddChildView(text);
+
+  ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
+  const int preferred_dialog_width = provider->GetSnappedDialogWidth(
+      dialog_delegate->GetPreferredSize().width());
+  // Resize width. Then, it's height deduced.
+  text->SizeToFit(preferred_dialog_width - dialog_delegate->margins().width());
+  dialog_delegate->AddChildView(text);
 }
 
 }  // namespace
