@@ -18,7 +18,7 @@ const initialState = {}
 const getMiddleware = () => {
   const args: Middleware[] = [thunk]
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'shields_development') {
     args.push(logger)
   }
 
