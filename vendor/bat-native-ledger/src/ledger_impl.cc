@@ -391,13 +391,6 @@ void LedgerImpl::SetPublisherExclude(
   bat_publishers_->setExclude(publisher_id, exclude);
 }
 
-void LedgerImpl::SetPublisherPanelExclude(
-    const std::string& publisher_id,
-    const ledger::PUBLISHER_EXCLUDE& exclude,
-    uint64_t windowId) {
-  bat_publishers_->setPanelExclude(publisher_id, exclude, windowId);
-}
-
 void LedgerImpl::RestorePublishers() {
   bat_publishers_->RestorePublishers();
 }

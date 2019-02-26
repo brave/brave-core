@@ -295,18 +295,6 @@ void BatPublishers::setExclude(const std::string& publisher_id,
                   _2));
 }
 
-void BatPublishers::setPanelExclude(const std::string& publisher_id,
-                                    const ledger::PUBLISHER_EXCLUDE& exclude,
-                                    uint64_t windowId) {
-    ledger_->GetPublisherInfo(publisher_id,
-        std::bind(&BatPublishers::onSetPanelExcludeInternal,
-                  this,
-                  exclude,
-                  windowId,
-                  _1,
-                  _2));
-}
-
 void BatPublishers::onSetExcludeInternal(
     ledger::PUBLISHER_EXCLUDE exclude,
     ledger::Result result,
@@ -316,52 +304,15 @@ void BatPublishers::onSetExcludeInternal(
     return;
   }
 
-  if (!publisher_info) {
+  if (!publisher_info || publisher_info->excluded == exclude) {
     // handle error
     return;
   }
 
-  if (publisher_info->excluded == ledger::PUBLISHER_EXCLUDE::DEFAULT ||
-      publisher_info->excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED) {
-    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
-  } else {
-    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::INCLUDED;
-  }
+  publisher_info->excluded = exclude;
 
   setNumExcludedSitesInternal(exclude);
 
-  std::string publisherKey = publisher_info->id;
-
-  ledger_->SetPublisherInfo(std::move(publisher_info));
-
-  OnExcludedSitesChanged(publisherKey);
-}
-
-void BatPublishers::onSetPanelExcludeInternal(
-    ledger::PUBLISHER_EXCLUDE exclude,
-    uint64_t windowId,
-    ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info) {
-  if (result != ledger::Result::LEDGER_OK &&
-      result != ledger::Result::NOT_FOUND) {
-    return;
-  }
-
-  if (!publisher_info) {
-    // handle error
-    return;
-  }
-
-  if (publisher_info->excluded == ledger::PUBLISHER_EXCLUDE::DEFAULT ||
-      publisher_info->excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED) {
-    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
-  } else {
-    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::INCLUDED;
-  }
-
-  setNumExcludedSitesInternal(exclude);
-
-  ledger::VisitData visit_data;
   std::string publisherKey = publisher_info->id;
 
   ledger_->SetPublisherInfo(std::move(publisher_info));

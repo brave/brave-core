@@ -82,9 +82,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void URIEncode(const std::string& value,
       URIEncodeCallback callback) override;
 
-  void SetContributionAutoInclude(const std::string& publisher_key,
-      bool excluded, uint64_t window_id) override;
-
   void LoadURL(const std::string& url,
     const std::vector<std::string>& headers,
     const std::string& content,

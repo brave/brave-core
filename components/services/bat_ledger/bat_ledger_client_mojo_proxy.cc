@@ -577,15 +577,6 @@ std::string BatLedgerClientMojoProxy::URIEncode(const std::string& value) {
   return encoded_value;
 }
 
-void BatLedgerClientMojoProxy::SetContributionAutoInclude(
-  const std::string& publisher_key, bool excluded, uint64_t windowId) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->SetContributionAutoInclude(
-      publisher_key, excluded, windowId);
-}
-
 void BatLedgerClientMojoProxy::SavePendingContribution(
       const ledger::PendingContributionList& list) {
   if (!Connected())

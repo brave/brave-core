@@ -457,12 +457,6 @@ void LedgerClientMojoProxy::URIEncode(const std::string& value,
   std::move(callback).Run(ledger_client_->URIEncode(value));
 }
 
-void LedgerClientMojoProxy::SetContributionAutoInclude(
-    const std::string& publisher_key, bool excluded, uint64_t window_id) {
-  ledger_client_->SetContributionAutoInclude(
-      publisher_key, excluded, window_id);
-}
-
 // static
 void LedgerClientMojoProxy::OnLoadURL(
     CallbackHolder<LoadURLCallback>* holder,

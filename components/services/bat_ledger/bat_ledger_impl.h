@@ -118,8 +118,6 @@ class BatLedgerImpl : public mojom::BatLedger,
       const std::string& currency) override;
 
   void RemoveRecurring(const std::string& publisher_key) override;
-  void SetPublisherPanelExclude(const std::string& publisher_key,
-      int32_t exclude, uint64_t window_id) override;
   void GetBootStamp(GetBootStampCallback callback) override;
   void GetRewardsMainEnabled(
       GetRewardsMainEnabledCallback callback) override;

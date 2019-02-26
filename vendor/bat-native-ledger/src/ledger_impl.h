@@ -234,11 +234,6 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& publisher_id,
       const ledger::PUBLISHER_EXCLUDE& exclude) override;
 
-  void SetPublisherPanelExclude(
-      const std::string& publisher_id,
-      const ledger::PUBLISHER_EXCLUDE& exclude,
-      uint64_t windowId) override;
-
   void RestorePublishers() override;
 
   void OnRestorePublishers(ledger::OnRestoreCallback callback);

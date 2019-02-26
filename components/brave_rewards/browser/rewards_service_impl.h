@@ -163,8 +163,7 @@ class RewardsServiceImpl : public RewardsService,
   void UpdateTipsList() override;
   void SetContributionAutoInclude(
       const std::string& publisher_key,
-      bool excluded,
-      uint64_t window_id) override;
+      bool excluded) override;
   RewardsNotificationService* GetNotificationService() const override;
   bool CheckImported() override;
   void SetBackupCompleted() override;

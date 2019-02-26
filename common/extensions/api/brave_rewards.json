@@ -337,10 +337,6 @@
           {
             "name": "excluded",
             "type": "boolean"
-          },
-          {
-            "name": "window_id",
-            "type": "integer"
           }
         ]
       },

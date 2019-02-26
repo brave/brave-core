@@ -184,10 +184,6 @@ class LEDGER_EXPORT LedgerClient {
       const ledger::URL_METHOD method,
       ledger::LoadURLCallback callback) = 0;
 
-  virtual void SetContributionAutoInclude(const std::string& publisher_key,
-                                          bool excluded,
-                                          uint64_t windowId) = 0;
-
   virtual void SavePendingContribution(
       const ledger::PendingContributionList& list) = 0;
 

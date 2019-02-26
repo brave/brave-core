@@ -226,11 +226,6 @@ class LEDGER_EXPORT Ledger {
       const std::string& publisher_id,
       const ledger::PUBLISHER_EXCLUDE& exclude) = 0;
 
-  virtual void SetPublisherPanelExclude(
-      const std::string& publisher_id,
-      const ledger::PUBLISHER_EXCLUDE& exclude,
-      uint64_t windowId) = 0;
-
   virtual void RestorePublishers() = 0;
 
   virtual bool IsWalletCreated() const = 0;

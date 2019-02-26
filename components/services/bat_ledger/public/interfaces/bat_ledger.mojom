@@ -89,8 +89,6 @@ interface BatLedger {
   DoDirectDonation(string publisher_info, int32 amount, string currency);
 
   RemoveRecurring(string publisher_key);
-  SetPublisherPanelExclude(string publisher_key, int32 exclude,
-      uint64 window_id);
   GetBootStamp() => (uint64 boot_stamp);
   GetRewardsMainEnabled() => (bool main_enabled);
 
@@ -157,9 +155,6 @@ interface BatLedgerClient {
 
   [Sync]
   URIEncode(string value) => (string encoded_value);
-
-  SetContributionAutoInclude(string publisher_key, bool excluded,
-      uint64 window_id);
 
   SavePendingContribution(string list);
 
