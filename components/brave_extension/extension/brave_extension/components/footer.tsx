@@ -9,7 +9,7 @@ import { MainFooterLinkFlex, LinkIcon } from 'brave-ui/features/shields'
 
 // Utils
 import * as tabsAPI from '../../background/api/tabsAPI'
-import { getMessage } from '../../background/api/localeAPI'
+import { getLocale } from '../../background/api/localeAPI'
 
 export default class ShieldsFooter extends React.PureComponent<{}, {}> {
   openSettings = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -20,7 +20,7 @@ export default class ShieldsFooter extends React.PureComponent<{}, {}> {
   render () {
     return (
       <MainFooterLinkFlex id='braveShieldsFooter' href='#' onClick={this.openSettings}>
-        <span>{getMessage('editDefaults')}</span>
+        <span>{getLocale('editDefaults')}</span>
         <LinkIcon />
       </MainFooterLinkFlex>
     )

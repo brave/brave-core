@@ -11,7 +11,7 @@ import { ResourcesListText, ResourcesListScroll, ResourcesFooterFlex } from 'bra
 import { Button } from 'brave-ui/components'
 
 // Utils
-import { getMessage } from '../../../background/api/localeAPI'
+import { getLocale } from '../../../background/api/localeAPI'
 
 interface Props {
   list: Array<string>
@@ -27,7 +27,7 @@ export default class StaticList extends React.PureComponent<Props, {}> {
           {list.map((item: string, index: number) => <ResourcesListText title={item} key={index}>{item}</ResourcesListText>)}
         </ResourcesListScroll>
         <ResourcesFooterFlex>
-          <Button level='primary' type='accent' text={getMessage('goBack')} onClick={onClickDismiss} />
+          <Button level='primary' type='accent' text={getLocale('goBack')} onClick={onClickDismiss} />
         </ResourcesFooterFlex>
       </>
     )

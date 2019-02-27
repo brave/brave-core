@@ -26,7 +26,7 @@ import { BlockOptions } from '../../types/other/blockTypes'
 
 // Utils
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
-import { getMessage } from '../../background/api/localeAPI'
+import { getLocale } from '../../background/api/localeAPI'
 import { isHttpOrHttps } from '../../helpers/urlUtils'
 import { getFavicon, getTotalResourcesBlocked } from '../../helpers/shieldsUtils'
 
@@ -49,7 +49,7 @@ export default class ShieldsHeader extends React.PureComponent<Props, {}> {
     return (
       <MainSiteInfoGrid>
         <Highlight enabled={true} size='large'>{getTotalResourcesBlocked(this.props.tabData)}</Highlight>
-        <Label size='medium'>{getMessage('totalBlocked')}</Label>
+        <Label size='medium'>{getLocale('totalBlocked')}</Label>
       </MainSiteInfoGrid>
     )
   }
@@ -60,7 +60,7 @@ export default class ShieldsHeader extends React.PureComponent<Props, {}> {
         <ShieldIconFlex>
           <ShieldIcon />
         </ShieldIconFlex>
-        <Description enabled={false}>{getMessage('disabledMessage')}</Description>
+        <Description enabled={false}>{getLocale('disabledMessage')}</Description>
       </DisabledTextGrid>
     )
   }
@@ -73,13 +73,13 @@ export default class ShieldsHeader extends React.PureComponent<Props, {}> {
       <Header id='braveShieldsHeader' enabled={enabled}>
         <MainToggleFlex enabled={enabled}>
           <Label size='medium'>
-            {getMessage('shields')} <Highlight enabled={enabled}> {enabled ? getMessage('up') : getMessage('down')}
+            {getLocale('shields')} <Highlight enabled={enabled}> {enabled ? getLocale('up') : getLocale('down')}
             </Highlight>
-            <UnHighlight> {getMessage('forThisSite')}</UnHighlight>
+            <UnHighlight> {getLocale('forThisSite')}</UnHighlight>
           </Label>
           <Toggle id='mainToggle' checked={enabled} onChange={this.onToggleShields} size='large' />
         </MainToggleFlex>
-        {enabled ? <Description enabled={true}>{getMessage('enabledMessage')}</Description> : null}
+        {enabled ? <Description enabled={true}>{getLocale('enabledMessage')}</Description> : null}
         <SiteInfoCard>
           <MainSiteInfoGrid>
             <img src={getFavicon(url)} />

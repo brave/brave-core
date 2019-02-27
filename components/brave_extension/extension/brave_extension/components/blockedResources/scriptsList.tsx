@@ -31,7 +31,7 @@ import { BlockJSOptions } from '../../../types/other/blockTypes'
 import { NoScriptInfo } from '../../../types/other/noScriptInfo'
 
 // Utils
-import { getMessage } from '../../../background/api/localeAPI'
+import { getLocale } from '../../../background/api/localeAPI'
 
 interface Props {
   origin: string
@@ -103,13 +103,13 @@ export default class StaticList extends React.PureComponent<Props, State> {
         <ResourcesListGrid hightlighted={true} key={key}>
           {
             list[origin].willBlock
-              ? <ResourcesListBlockedLink>{getMessage('blocked')}</ResourcesListBlockedLink>
-              : <Link id={origin} onClick={this.onClickToggleBlockOrAllowScript}>{getMessage('allow')}</Link>
+              ? <ResourcesListBlockedLink>{getLocale('blocked')}</ResourcesListBlockedLink>
+              : <Link id={origin} onClick={this.onClickToggleBlockOrAllowScript}>{getLocale('allow')}</Link>
           }
           <ResourcesListItem title={origin}>{origin}</ResourcesListItem>
           {
             list[origin].willBlock
-              ? <Link id={origin} onClick={this.onClickToggleBlockOrAllowScript}>{getMessage('undo')}</Link>
+              ? <Link id={origin} onClick={this.onClickToggleBlockOrAllowScript}>{getLocale('undo')}</Link>
               : null
           }
         </ResourcesListGrid>
@@ -126,13 +126,13 @@ export default class StaticList extends React.PureComponent<Props, State> {
         <ResourcesListGrid hightlighted={list[origin].willBlock} key={key}>
           {
             list[origin].willBlock
-              ? <ResourcesListAllowedLink>{getMessage('allowed')}</ResourcesListAllowedLink>
-              : <Link id={origin} onClick={this.onClickToggleBlockOrAllowScript}>{getMessage('block')}</Link>
+              ? <ResourcesListAllowedLink>{getLocale('allowed')}</ResourcesListAllowedLink>
+              : <Link id={origin} onClick={this.onClickToggleBlockOrAllowScript}>{getLocale('block')}</Link>
           }
           <ResourcesListItem title={origin}>{origin}</ResourcesListItem>
           {
             list[origin].willBlock
-              ? <Link id={origin} onClick={this.onClickToggleBlockOrAllowScript}>{getMessage('undo')}</Link>
+              ? <Link id={origin} onClick={this.onClickToggleBlockOrAllowScript}>{getLocale('undo')}</Link>
             : null
           }
         </ResourcesListGrid>
@@ -151,9 +151,9 @@ export default class StaticList extends React.PureComponent<Props, State> {
           <ResourcesSubTitleGrid>
             <BlockedScriptsIcon />
             <ResourcesSubTitle accent='blocked'>
-              {getMessage('blockedScripts')} ({this.blockedListSize})
+              {getLocale('blockedScripts')} ({this.blockedListSize})
             </ResourcesSubTitle>
-            <Link onClick={this.onClickAllowAll}>{getMessage('allowAll')}</Link>
+            <Link onClick={this.onClickAllowAll}>{getLocale('allowAll')}</Link>
           </ResourcesSubTitleGrid>
           {this.renderEnabledList(noScriptInfo)}
 
@@ -161,22 +161,22 @@ export default class StaticList extends React.PureComponent<Props, State> {
           <ResourcesSubTitleGrid>
             <AllowedScriptsIcon />
             <ResourcesSubTitle accent='allowed'>
-              {getMessage('allowedScripts')} ({this.allowedListSize})
+              {getLocale('allowedScripts')} ({this.allowedListSize})
             </ResourcesSubTitle>
-            <Link onClick={this.onClickBlockAll}>{getMessage('blockAll')}</Link>
+            <Link onClick={this.onClickBlockAll}>{getLocale('blockAll')}</Link>
           </ResourcesSubTitleGrid>
           {this.renderDisabledList(noScriptInfo)}
 
         </ResourcesListScroll>
         <ResourcesFooterGrid>
           <ResourcesFooterGridColumnLeft>
-            <Link onClick={onClickDismiss}>{getMessage('cancel')}</Link>
+            <Link onClick={onClickDismiss}>{getLocale('cancel')}</Link>
           </ResourcesFooterGridColumnLeft>
           <ResourcesFooterGridColumnRight>
             <Button
               level='primary'
               type='accent'
-              text={getMessage('applyOnce')}
+              text={getLocale('applyOnce')}
               onClick={this.onClickApplyScriptsOnce}
             />
           </ResourcesFooterGridColumnRight>
