@@ -5,9 +5,10 @@
 
 #include "bat_publishers.h"
 
-#include <ctime>
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include <ctime>
+#include <utility>
 
 #include "bat_helper.h"
 #include "bignum.h"
@@ -28,7 +29,8 @@
    TLD = 'co.jp'
 */
 
-using namespace std::placeholders;
+using std::placeholders::_1;
+using std::placeholders::_2;
 
 namespace braveledger_bat_publishers {
 
@@ -788,7 +790,8 @@ void BatPublishers::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
           braveledger_bat_bignum::sum(report_info.grants_, probi);
       break;
     case ledger::ReportType::ADS:
-      report_info.earning_from_ads_ = braveledger_bat_bignum::sum(report_info.earning_from_ads_, probi);
+      report_info.earning_from_ads_ =
+          braveledger_bat_bignum::sum(report_info.earning_from_ads_, probi);
       break;
     case ledger::ReportType::AUTO_CONTRIBUTION:
       report_info.auto_contribute_ =

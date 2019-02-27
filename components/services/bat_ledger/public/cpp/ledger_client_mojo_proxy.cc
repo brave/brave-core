@@ -8,11 +8,13 @@
 #include "base/logging.h"
 #include "mojo/public/cpp/bindings/map.h"
 
-using namespace std::placeholders;
+using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
 
 namespace bat_ledger {
 
-namespace {  // TODO, move into a util class
+namespace {  // TODO(anyone): move into a util class
 
 int32_t ToMojomResult(ledger::Result result) {
   return (int32_t)result;

@@ -30,7 +30,7 @@ namespace braveledger_bat_publishers {
 
 class BatPublishers : public ledger::LedgerCallbackHandler {
  public:
-  BatPublishers(bat_ledger::LedgerImpl* ledger);
+  explicit BatPublishers(bat_ledger::LedgerImpl* ledger);
 
   ~BatPublishers() override;
 

@@ -64,7 +64,8 @@ using LoadURLCallback = std::function<void(const int, const std::string&,
     const std::map<std::string, std::string>& headers)>;
 using OnRestoreCallback = std::function<void(bool)>;
 using OnSaveCallback = std::function<void(const ledger::Result)>;
-using OnLoadCallback = std::function<void(const ledger::Result, const std::string&)>;
+using OnLoadCallback = std::function<void(const ledger::Result,
+                                          const std::string&)>;
 using OnResetCallback = std::function<void(const ledger::Result)>;
 
 class LEDGER_EXPORT LedgerClient {
