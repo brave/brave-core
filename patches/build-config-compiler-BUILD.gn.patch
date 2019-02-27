@@ -1,8 +1,8 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 68dc6a001a493fddbcc0db54ce2a3b1ad72a8b2e..2a74909a28aab85bbbf165ad372eadf9840c11a7 100644
+index 402dac4da02843795d8ad8c7015dc012a14d64d9..6c86261dd16a1b6dfcebb79208b4db6664a3c830 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -2119,7 +2119,7 @@ config("default_optimization") {
+@@ -2133,7 +2133,7 @@ config("default_optimization") {
      # The NaCl IRT is a special case and always wants its own config.
      # It gets optimized the same way regardless of the type of build.
      configs = [ "//build/config/nacl:irt_optimize" ]

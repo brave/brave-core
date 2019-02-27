@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html
-index 0a19b70ad2dde91cc593e96d597bb7e5b8798b44..915ecd32a8a7e26092353dec067a90ae3cbc5d7c 100644
+index 89be0f3f981ab1b101dd16411bb9346b07443638..5de451a0ac6c8342221d4fb9fc44ffc7c78e2d26 100644
 --- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html
 +++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html
 @@ -17,6 +17,7 @@

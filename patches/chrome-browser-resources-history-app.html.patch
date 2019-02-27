@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/md_history/app.html b/chrome/browser/resources/md_history/app.html
+diff --git a/chrome/browser/resources/history/app.html b/chrome/browser/resources/history/app.html
 index 8579929ca2c3b7bd280ceb2953d0bcfbe111cf99..dd15a6f9f991c687a1c7bc2022cd849482cdf095 100644
---- a/chrome/browser/resources/md_history/app.html
-+++ b/chrome/browser/resources/md_history/app.html
+--- a/chrome/browser/resources/history/app.html
++++ b/chrome/browser/resources/history/app.html
 @@ -96,6 +96,7 @@
              query-result="[[queryResult_]]"
              path="history">

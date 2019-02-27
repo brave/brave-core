@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/languages_page/languages_page.html b/chrome/browser/resources/settings/languages_page/languages_page.html
-index 803dccb2a8a68f83f082605bccc1ab3753f3de53..887ced9241a112e242749411a37ccc10383fcc77 100644
+index de0b4b2be5c4e09faf125c2b0cc57dbc20524659..ea8daf1cf18e8eac00afaca1ae81c06cebc64466 100644
 --- a/chrome/browser/resources/settings/languages_page/languages_page.html
 +++ b/chrome/browser/resources/settings/languages_page/languages_page.html
-@@ -179,10 +179,12 @@
+@@ -183,10 +183,12 @@
                </a>
              </div>
            </div>

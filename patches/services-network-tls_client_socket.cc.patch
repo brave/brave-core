@@ -1,8 +1,8 @@
 diff --git a/services/network/tls_client_socket.cc b/services/network/tls_client_socket.cc
-index 0243345e93d49824d9fe2128769bfe37d4906fe4..6673b6f5386a99ecc7f7797b083df03bf486b6dd 100644
+index 44c8e1753d5234a5bad4fb9751c13ad3ffc67630..25ebda7ba62f82861a4a888823db172858c62f86 100644
 --- a/services/network/tls_client_socket.cc
 +++ b/services/network/tls_client_socket.cc
-@@ -23,7 +23,14 @@ TLSClientSocket::TLSClientSocket(
+@@ -24,7 +24,14 @@ TLSClientSocket::TLSClientSocket(
      const net::NetworkTrafficAnnotationTag& traffic_annotation)
      : observer_(std::move(observer)), traffic_annotation_(traffic_annotation) {}
  

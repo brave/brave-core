@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/build/scripts/core/css/properties/templates/style_builder_functions.tmpl b/third_party/blink/renderer/build/scripts/core/css/properties/templates/style_builder_functions.tmpl
-index 5ff29d8618a2261fcf92c9a04471d21ecef5b8af..17c2fb60f35793c30899505b7185d790dc026023 100644
+index 039ec51f6dbeeae9e2b150f88bd25181a3d10d80..fd8d07a62deece79fadf2a598d4b5bf08a7c7e36 100644
 --- a/third_party/blink/renderer/build/scripts/core/css/properties/templates/style_builder_functions.tmpl
 +++ b/third_party/blink/renderer/build/scripts/core/css/properties/templates/style_builder_functions.tmpl
 @@ -18,7 +18,7 @@ void {{prefix ~ '::' if prefix}}ApplyValue(StyleResolverState& state, const CSSV

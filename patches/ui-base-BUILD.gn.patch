@@ -1,8 +1,8 @@
 diff --git a/ui/base/BUILD.gn b/ui/base/BUILD.gn
-index 195435b5cc3a6aefc5464f9a5bd8919884783bcb..25349fd0787e0fd9c913fab16d3c646bf856f1f9 100644
+index 33dc65282171ceb084544ef81ac8dd390c3147b7..59c963e88ea49051c43e12b0b3a94ce1131e8dd7 100644
 --- a/ui/base/BUILD.gn
 +++ b/ui/base/BUILD.gn
-@@ -395,6 +395,7 @@ jumbo_component("base") {
+@@ -401,6 +401,7 @@ jumbo_component("base") {
      "//base:base_static",
      "//base:i18n",
      "//base/third_party/dynamic_annotations",
