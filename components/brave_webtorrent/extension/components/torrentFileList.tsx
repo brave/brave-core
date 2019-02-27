@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { Table } from 'brave-ui/components'
-import { Cell, Row } from 'brave-ui/components/dataTables/table/index'
+import { Cell, Row } from 'brave-ui/components/table'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
 // Constants

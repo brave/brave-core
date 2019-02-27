@@ -6,8 +6,8 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 
-import Theme from 'brave-ui/theme/brave-default'
-import { ThemeProvider } from 'brave-ui/theme'
+import Theme from 'brave-ui/components/style/theme/default'
+import { ThemeProvider } from 'brave-ui/components/style/theme'
 
 // Components
 import App from './components/app'
