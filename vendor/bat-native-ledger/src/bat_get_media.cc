@@ -924,6 +924,27 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
     }
   } else {
     if (providerType == TWITCH_MEDIA_TYPE) {
+      if (info->verified && info->favicon_url.empty()) {
+        std::string publisher_name;
+        std::string publisher_favicon_url;
+        updateTwitchPublisherData(publisher_name,
+                                  publisher_favicon_url,
+                                  publisher_blob);
+
+        if (!publisher_favicon_url.empty()) {
+          savePublisherInfo(0,
+                            media_key,
+                            providerType,
+                            visit_data.url,
+                            publisher_name,
+                            visit_data,
+                            windowId,
+                            publisher_favicon_url,
+                            media_id);
+          return;
+        }
+      }
+
       ledger_->OnPanelPublisherInfo(result, std::move(info), windowId);
     } else if (providerType == YOUTUBE_MEDIA_TYPE) {
       fetchPublisherDataFromDB(windowId,
