@@ -12,12 +12,17 @@
 #include <fstream>
 #include <vector>
 
+#include "base/memory/scoped_refptr.h"
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
 #include "bat_helper.h"
 #include "logging.h"
+
+namespace base {
+class SequencedTaskRunner;
+}
 
 namespace braveledger_bat_client {
 class BatClient;
@@ -430,6 +435,8 @@ class LedgerImpl : public ledger::Ledger,
       const int line,
       const ledger::LogLevel log_level) const;
 
+  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
+
  private:
   void AddRecurringPayment(const std::string& publisher_id,
                            const double& value) override;
@@ -501,6 +508,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_contribution::BatContribution>
   bat_contribution_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
   bool initialized_;
   bool initializing_;

@@ -11,6 +11,8 @@
 #include <utility>
 
 #include "anon/anon.h"
+#include "base/task/post_task.h"
+#include "base/task_runner_util.h"
 #include "bat_contribution.h"
 #include "ledger_impl.h"
 #include "rapidjson_bat_helper.h"
@@ -1154,10 +1156,18 @@ void BatContribution::Proof() {
     }
   }
 
-  ProofBatch(batch_proof);
+  base::PostTaskAndReplyWithResult(
+      ledger_->GetTaskRunner().get(),
+      FROM_HERE,
+      base::BindOnce(&BatContribution::ProofBatch,
+        base::Unretained(this),
+        batch_proof),
+      base::BindOnce(&BatContribution::ProofBatchCallback,
+        base::Unretained(this),
+        batch_proof));
 }
 
-void BatContribution::ProofBatch(
+std::vector<std::string> BatContribution::ProofBatch(
     const braveledger_bat_helper::BathProofs& batch_proof) {
   std::vector<std::string> proofs;
 
@@ -1210,6 +1220,12 @@ void BatContribution::ProofBatch(
     proofs.push_back(annon_proof);
   }
 
+  return proofs;
+}
+
+void BatContribution::ProofBatchCallback(
+    const braveledger_bat_helper::BathProofs& batch_proof,
+    const std::vector<std::string>& proofs) {
   braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
 
   for (size_t i = 0; i < batch_proof.size(); i++) {

@@ -12,6 +12,7 @@
 
 #include "ledger_impl.h"
 
+#include "base/task/post_task.h"
 #include "bat/ads/issuers_info.h"
 #include "bat/ads/notification_info.h"
 #include "bat/confirmations/confirmations.h"
@@ -45,6 +46,9 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_get_media_(new BatGetMedia(this)),
     bat_state_(new BatState(this)),
     bat_contribution_(new BatContribution(this)),
+    task_runner_(base::CreateSequencedTaskRunnerWithTraits({
+          base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+          base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
     initialized_(false),
     initializing_(false),
     last_tab_active_time_(0),
@@ -1292,6 +1296,10 @@ void LedgerImpl::GetConfirmationsHistory(
     ledger::ConfirmationsHistoryCallback callback) {
   bat_confirmations_->GetTransactionHistory(from_timestamp_seconds,
       to_timestamp_seconds, callback);
+}
+
+scoped_refptr<base::SequencedTaskRunner> LedgerImpl::GetTaskRunner() {
+  return task_runner_;
 }
 
 }  // namespace bat_ledger
