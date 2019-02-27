@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_impl.cc b/chrome/browser/profiles/profile_impl.cc
-index 31ad077cb202ad358b0e4d9514d212f28a8f8fb2..1971d685cbcc2d111be9834826f99df80729234f 100644
+index d64a9b0f10f90957f4242c5893fb423d3935c58f..74e68201d7897d4ff50973263a108792389cba39 100644
 --- a/chrome/browser/profiles/profile_impl.cc
 +++ b/chrome/browser/profiles/profile_impl.cc
 @@ -34,6 +34,7 @@
@@ -10,7 +10,7 @@ index 31ad077cb202ad358b0e4d9514d212f28a8f8fb2..1971d685cbcc2d111be9834826f99df8
  #include "build/build_config.h"
  #include "chrome/browser/background/background_contents_service_factory.h"
  #include "chrome/browser/background_fetch/background_fetch_delegate_factory.h"
-@@ -581,6 +582,9 @@ ProfileImpl::ProfileImpl(
+@@ -556,6 +557,9 @@ ProfileImpl::ProfileImpl(
    BrowserContextDependencyManager::GetInstance()
        ->RegisterProfilePrefsForServices(this, pref_registry_.get());
  

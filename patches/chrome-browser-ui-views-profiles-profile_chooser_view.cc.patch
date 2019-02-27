@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.cc b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-index bf28289c6edd427baf753673aa0a411ff7ef0cde..2e9eb7c50e77f47128eea99a429bf9403df501bc 100644
+index 74995a8db82d57b68543ee2fea4cee5ccd402383..94d520b37531fabf0d9623ec3c8273996ad07adb 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-@@ -316,7 +316,7 @@ void ProfileChooserView::ShowBubble(
+@@ -319,7 +319,7 @@ void ProfileChooserView::ShowBubble(
      return;
  
    profile_bubble_ =
@@ -11,7 +11,7 @@ index bf28289c6edd427baf753673aa0a411ff7ef0cde..2e9eb7c50e77f47128eea99a429bf940
                               manage_accounts_params.service_type, access_point);
    if (anchor_button) {
      anchor_button->AnimateInkDrop(views::InkDropState::ACTIVATED, nullptr);
-@@ -1322,9 +1322,12 @@ views::View* ProfileChooserView::CreateOptionsView(bool display_lock,
+@@ -1387,9 +1387,12 @@ views::View* ProfileChooserView::CreateOptionsView(bool display_lock,
        layout->AddView(guest_profile_button_);
      }
    }

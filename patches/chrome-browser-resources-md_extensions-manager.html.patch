@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/md_extensions/manager.html b/chrome/browser/resources/md_extensions/manager.html
-index 797b13e7c074615d6234178ca4902fc3f49c0252..1acc47c1ae849e2d904b7eda6b6a4a48b858c9b7 100644
+index e02b021eca6ac2834ba52881dc74f69909696f01..e2386954905c7d55ef25c1abaf50e02a293a62a0 100644
 --- a/chrome/browser/resources/md_extensions/manager.html
 +++ b/chrome/browser/resources/md_extensions/manager.html
 @@ -2,7 +2,6 @@

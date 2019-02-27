@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/public/BUILD.gn b/third_party/blink/public/BUILD.gn
-index e8fd60eedb843cc467a0290415f7db8577a16522..286f6965d156fddc4344c8811f0ce5bb39e7df47 100644
+index 94d12a312c0ab57930aea13fa4f58888c04b9ff8..8299adf244934bada1484b45c624f457635e7fb5 100644
 --- a/third_party/blink/public/BUILD.gn
 +++ b/third_party/blink/public/BUILD.gn
-@@ -635,6 +635,7 @@ mojom("mojo_bindings") {
+@@ -643,6 +643,7 @@ mojom("mojo_bindings") {
    visibility_blink =
        [ "//third_party/blink/renderer/platform:blink_platform_public_deps" ]
    sources = [
 +    "../../../brave/third_party/blink/public/platform/brave_drm.mojom",
-     "platform/autoplay.mojom",
-     "platform/media_download_in_product_help.mojom",
      "platform/mime_registry.mojom",
+     "platform/modules/app_banner/app_banner.mojom",
+     "platform/modules/background_sync/background_sync.mojom",

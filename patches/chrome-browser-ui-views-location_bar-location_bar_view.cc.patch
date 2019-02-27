@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 0e651a2a3d3e4137b6876270eaa58bf765ac4ef2..50de860910923090ae701c87df2da51408b4c992 100644
+index 4b593dc4b1701d7c18c81ca920984d467d4f15ee..6a720dc6ad491a6e65fac27d3872613487ba1806 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -408,7 +408,7 @@ gfx::Size LocationBarView::CalculatePreferredSize() const {
-   return min_size;
+@@ -403,7 +403,7 @@ gfx::Size LocationBarView::CalculatePreferredSize() const {
+   return GetMinimumSize();
  }
  
 -void LocationBarView::Layout() {
@@ -11,7 +11,7 @@ index 0e651a2a3d3e4137b6876270eaa58bf765ac4ef2..50de860910923090ae701c87df2da514
    if (!IsInitialized())
      return;
  
-@@ -502,6 +502,11 @@ void LocationBarView::Layout() {
+@@ -496,6 +496,11 @@ void LocationBarView::Layout() {
      }
    };
  

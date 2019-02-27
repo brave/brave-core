@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index b3e3adaaffc5f36e986bf8174570228d8160379c..cb6e90fd14afc0bc306c538c00d87195844bccfe 100644
+index 778ae58db7e43c774981b8fa92fcd006e4a59690..c7f548e432cf2d3acbfcf34d4596b8a75b5f160d 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-@@ -36,6 +36,7 @@ class AvatarToolbarButton : public ToolbarButton,
+@@ -34,6 +34,7 @@ class AvatarToolbarButton : public ToolbarButton,
    void UpdateText();
  
   private:
 +  friend class BraveAvatarToolbarButton;
+   FRIEND_TEST_ALL_PREFIXES(AvatarToolbarButtonTest,
+                            HighlightMeetsMinimumContrast);
    enum class SyncState { kNormal, kPaused, kError };
- 
-   // ToolbarButton:
-@@ -77,6 +78,7 @@ class AvatarToolbarButton : public ToolbarButton,
+@@ -75,6 +76,7 @@ class AvatarToolbarButton : public ToolbarButton,
    bool IsIncognitoCounterActive() const;
    bool ShouldShowGenericIcon() const;
    base::string16 GetAvatarTooltipText() const;

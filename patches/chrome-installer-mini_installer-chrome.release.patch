@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/chrome.release b/chrome/installer/mini_installer/chrome.release
-index bdf0219561c2e52fbe2e16407ac0fa9ae2e3ef30..cda55a0113704a0fd6bf719b1b785a0b66077392 100644
+index a29cd7d03526e3c621754837f9a21282b79a64e9..5bfd7bae3d33b6db62380c18a243b3c0c9b7c0de 100644
 --- a/chrome/installer/mini_installer/chrome.release
 +++ b/chrome/installer/mini_installer/chrome.release
 @@ -6,7 +6,7 @@
@@ -11,16 +11,16 @@ index bdf0219561c2e52fbe2e16407ac0fa9ae2e3ef30..cda55a0113704a0fd6bf719b1b785a0b
  chrome_proxy.exe: %(ChromeDir)s\
  #
  # Chrome version dir assembly manifest.
-@@ -19,6 +19,8 @@ chrome_proxy.exe: %(ChromeDir)s\
- # Chrome version dir entries, sorted alphabetically.
+@@ -20,6 +20,8 @@ chrome_proxy.exe: %(ChromeDir)s\
  #
+ api-ms-win-*.dll: %(VersionDir)s\
  chrome.dll: %(VersionDir)s\
 +brave_resources.pak: %(VersionDir)s\
 +brave_100_percent.pak: %(VersionDir)s\
  chrome_100_percent.pak: %(VersionDir)s\
  chrome_child.dll: %(VersionDir)s\
  chrome_elf.dll: %(VersionDir)s\
-@@ -75,6 +77,7 @@ MEIPreload\preloaded_data.pb: %(VersionDir)s\MEIPreload\
+@@ -77,6 +79,7 @@ MEIPreload\preloaded_data.pb: %(VersionDir)s\MEIPreload\
  
  [HIDPI]
  chrome_200_percent.pak: %(VersionDir)s\
