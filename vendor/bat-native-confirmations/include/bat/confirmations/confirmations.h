@@ -28,7 +28,7 @@ using TransactionInfo = ::ledger::TransactionInfo;
 using TransactionsInfo = ::ledger::TransactionsInfo;
 
 using OnGetTransactionHistoryCallback =
-    ::ledger::AdsNotificationsHistoryCallback;
+    ::ledger::ConfirmationsHistoryCallback;
 
 class CONFIRMATIONS_EXPORT Confirmations {
  public:
