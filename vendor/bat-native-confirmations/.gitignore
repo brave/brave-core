@@ -1,0 +1,9 @@
+deps/challenge-bypass-ristretto-ffi
+build/*
+.vscode/*
+.gn
+.DS_Store
+/target
+**/*.rs.bk
+Cargo.lock
+.gdb_history

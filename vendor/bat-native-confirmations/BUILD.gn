@@ -1,0 +1,112 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/vendor/challenge_bypass_ristretto_ffi/config.gni")
+
+if (is_android) {
+  import("//build/config/android/rules.gni")
+}
+if (is_android || defined(is_docker)) {
+  dep_base = rebase_path("./", "//")
+} else {
+  dep_base = rebase_path("../..", "//")
+}
+
+config("external_config") {
+  visibility = [
+    ":*",
+  ]
+  include_dirs = [ "include" ]
+}
+
+config("internal_config") {
+  visibility = [
+    ":*",
+    "//brave/test:*",
+  ]
+  include_dirs = [ "src" ]
+}
+
+source_set("bat-native-confirmations") {
+  public_configs = [ ":external_config" ]
+  configs += [ ":internal_config" ]
+
+  visibility = [
+    ":*",
+    rebase_path("bat-native-ledger", dep_base) + ":*",
+    "//brave/test:*",
+  ]
+
+  sources = [
+    "include/bat/confirmations/confirmations_client.h",
+    "include/bat/confirmations/export.h",
+    "include/bat/confirmations/notification_info.h",
+    "src/bat/confirmations/notification_info.cc",
+    "src/bat/confirmations/issuer_info.cc",
+    "include/bat/confirmations/issuer_info.h",
+    "src/bat/confirmations/issuers_info.cc",
+    "include/bat/confirmations/issuers_info.h",
+    "src/bat/confirmations/wallet_info.cc",
+    "include/bat/confirmations/wallet_info.h",
+    "src/confirmations.cc",
+    "include/bat/confirmations/confirmations.h",
+    "src/refill_tokens.cc",
+    "src/refill_tokens.h",
+    "src/request_signed_tokens_request.cc",
+    "src/request_signed_tokens_request.h",
+    "src/get_signed_tokens_request.cc",
+    "src/get_signed_tokens_request.h",
+    "src/logging.h",
+    "src/redeem_token.cc",
+    "src/redeem_token.h",
+    "src/create_confirmation_request.cc",
+    "src/create_confirmation_request.h",
+    "src/fetch_payment_token_request.cc",
+    "src/fetch_payment_token_request.h",
+    "src/payout_tokens.cc",
+    "src/payout_tokens.h",
+    "src/redeem_payment_tokens_request.cc",
+    "src/redeem_payment_tokens_request.h",
+    "src/unblinded_tokens.cc",
+    "src/unblinded_tokens.h",
+    "src/ads_serve_helper.cc",
+    "src/ads_serve_helper.h",
+    "src/string_helper.cc",
+    "src/string_helper.h",
+    "src/security_helper.cc",
+    "src/security_helper.h",
+    "src/confirmations_impl.cc",
+    "src/confirmations_impl.h",
+  ]
+
+  public_deps = [
+    ":challenge_bypass_libs",
+  ]
+
+  deps = [
+    "//base",
+    "//third_party/boringssl",
+    "//third_party/re2",
+    rebase_path("bat-native-ledger:headers", dep_base),
+    rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
+    rebase_path("challenge_bypass_ristretto_ffi", dep_base),
+  ]
+}
+
+if (is_mac) {
+  bundle_data("challenge_bypass_libs") {
+    sources = [
+      challenge_bypass_lib_path,
+    ]
+    outputs = [
+      "{{bundle_contents_dir}}/Libraries/{{source_file_part}}",
+    ]
+    public_deps = [
+      rebase_path("challenge_bypass_ristretto_ffi:challenge_bypass_ristretto", dep_base),
+    ]
+  }
+} else {
+  group("challenge_bypass_libs") {}
+}

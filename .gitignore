@@ -9,6 +9,7 @@
 /out/
 /vendor/*
 !/vendor/bat-native-ledger
+!/vendor/bat-native-confirmations
 !/vendor/CPPLINT.cfg
 node_modules/
 *.xcodeproj
