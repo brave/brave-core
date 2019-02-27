@@ -108,8 +108,8 @@ class AdsBox extends React.Component<Props, State> {
     if (adsData) {
       adsEnabled = adsData.adsEnabled
       adsUIEnabled = adsData.adsUIEnabled
-      notificationsReceived = adsData.adsNotificationsReceived
-      estimatedEarnings = adsData.adsEstimatedEarnings.toFixed(2)
+      notificationsReceived = adsData.adsNotificationsReceived || 0
+      estimatedEarnings = (adsData.adsEstimatedEarnings || 0).toFixed(2)
     }
 
     const toggle = !(!enabledMain || !adsUIEnabled)
