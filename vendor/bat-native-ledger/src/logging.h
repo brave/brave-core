@@ -12,11 +12,6 @@
 #define BVLOG(client, severity) \
   client->LogVerbose(__FILE__, __LINE__, severity)->stream()
 
-#endif  // BAT_REWARDS_LOGGING_H_
+#include "base/logging.h"
 
-#if defined(NDEBUG)
-#define DCHECK(x) (void)(x)
-#else
-#include "assert.h"
-#define DCHECK(x) assert(x)
-#endif
+#endif  // BAT_REWARDS_LOGGING_H_

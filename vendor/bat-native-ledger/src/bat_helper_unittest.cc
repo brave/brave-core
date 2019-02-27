@@ -35,3 +35,59 @@ TEST(BatHelperTest, isProbiValid) {
       "100000000000000000010000000000000000001000000000000000000");
   ASSERT_EQ(result, false);
 }
+
+TEST(BatHelperTest, HasSameDomainAndPath) {
+  std::string url("https://k8923479-sub.cdn.ttvwn.net/v1/segment/");
+  std::string url_portion("ttvwn.net");
+  std::string path("/v1/segment");
+  // regular url
+  bool result = braveledger_bat_helper::HasSameDomainAndPath(
+      url, url_portion, path);
+  ASSERT_EQ(result, true);
+
+  // empty url with portion
+  url = std::string();
+  result = braveledger_bat_helper::HasSameDomainAndPath(
+      url, url_portion, path);
+  ASSERT_EQ(result, false);
+
+  // url with empty portion and path
+  url = "https://k8923479-sub.cdn.ttvwn.net/v1/segment/";
+  url_portion = std::string();
+  result = braveledger_bat_helper::HasSameDomainAndPath(
+      url, url_portion, std::string());
+  ASSERT_EQ(result, false);
+
+  // all empty
+  url = url_portion = path = std::string();
+  result = braveledger_bat_helper::HasSameDomainAndPath(
+      url, url_portion, path);
+  ASSERT_EQ(result, false);
+
+  // portion not all part of host
+  url = "https://k8923479-sub.cdn.ttvwn.net/v1/segment/";
+  url_portion = "cdn.ttvwn.net";
+  path = "/v1/seg";
+  result = braveledger_bat_helper::HasSameDomainAndPath(
+      url, url_portion, path);
+  ASSERT_EQ(result, true);
+
+  // domain is malicious
+  url = "https://www.baddomain.com/k8923479-sub.cdn.ttvwn.net/v1/segment/";
+  result = braveledger_bat_helper::HasSameDomainAndPath(
+      url, url_portion, path);
+  ASSERT_EQ(result, false);
+
+  // portion without leading . matched to malicious
+  url_portion = "cdn.ttvwn.net/v1/seg";
+  result = braveledger_bat_helper::HasSameDomainAndPath(
+      url, url_portion, path);
+  ASSERT_EQ(result, false);
+
+  // domain is malicious
+  url =
+      "https://www.baddomain.com/query?=k8923479-sub.cdn.ttvwn.net/v1/segment/";
+  result = braveledger_bat_helper::HasSameDomainAndPath(
+      url, url_portion, path);
+  ASSERT_EQ(result, false);
+}

@@ -108,6 +108,7 @@ source_set("ledger") {
   deps = [
     "//base",
     "//third_party/boringssl",
+    "//url",
     rebase_path("bat-native-ads", dep_base),
     rebase_path("bat-native-confirmations", dep_base),
     rebase_path("bat-native-anonize:anonize2", dep_base),
