@@ -677,4 +677,8 @@ void LedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
   ledger_client_->SetConfirmationsIsReady(is_ready);
 }
 
+void LedgerClientMojoProxy::ConfirmationsTransactionHistoryDidChange() {
+  ledger_client_->ConfirmationsTransactionHistoryDidChange();
+}
+
 }  // namespace bat_ledger

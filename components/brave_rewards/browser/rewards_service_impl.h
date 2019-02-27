@@ -185,6 +185,7 @@ class RewardsServiceImpl : public RewardsService,
       const GetRewardsMainEnabledCallback& callback) const override;
 
   void GetAddressesForPaymentId(const GetAddressesCallback& callback) override;
+  std::pair<uint64_t, uint64_t> GetEarningsRange();
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -328,6 +329,9 @@ class RewardsServiceImpl : public RewardsService,
   void SetCatalogIssuers(const std::string& json) override;
   void AdSustained(const std::string& json) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
+  void GetConfirmationsHistory(
+      brave_rewards::ConfirmationsHistoryCallback callback) override;
+  void ConfirmationsTransactionHistoryDidChange() override;
 
   void OnExcludedSitesChanged(const std::string& publisher_id) override;
   void OnPanelPublisherInfo(ledger::Result result,
@@ -399,6 +403,9 @@ class RewardsServiceImpl : public RewardsService,
 
   // Mojo Proxy methods
   void OnPublisherBannerMojoProxy(const std::string& banner);
+  void OnGetConfirmationsHistory(
+      brave_rewards::ConfirmationsHistoryCallback callback,
+      const std::string& transactions);
   void OnGetAllBalanceReports(
       const GetAllBalanceReportsCallback& callback,
       const base::flat_map<std::string, std::string>& json_reports);

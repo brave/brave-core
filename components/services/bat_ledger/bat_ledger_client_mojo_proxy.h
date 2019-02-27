@@ -133,7 +133,10 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                  ledger::OnLoadCallback callback) override;
   void ResetState(const std::string& name,
                   ledger::OnResetCallback callback) override;
+
   void SetConfirmationsIsReady(const bool is_ready) override;
+
+  void ConfirmationsTransactionHistoryDidChange() override;
 
  private:
   bool Connected() const;

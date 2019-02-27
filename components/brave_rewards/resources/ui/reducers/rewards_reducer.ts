@@ -118,7 +118,9 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
 
       state = { ...state }
-      state.adsData = action.payload.adsData
+      state.adsData.adsEnabled = action.payload.adsData.adsEnabled
+      state.adsData.adsPerHour = action.payload.adsData.adsPerHour
+      state.adsData.adsUIEnabled = action.payload.adsData.adsUIEnabled
       break
     }
     case types.ON_ADS_SETTING_SAVE: {
@@ -134,6 +136,22 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_REWARDS_ENABLED: {
       state = { ...state }
       state.enabledMain = action.payload.enabled
+      break
+    }
+    case types.GET_CONFIRMATIONS_HISTORY:
+    case types.ON_CONFIRMATIONS_HISTORY_CHANGED: {
+      chrome.send('brave_rewards.getConfirmationsHistory', [])
+      break
+    }
+    case types.ON_CONFIRMATIONS_HISTORY: {
+      if (!action.payload.data) {
+        break
+      }
+
+      state = { ...state }
+      const data = action.payload.data
+      state.adsData.adsNotificationsReceived = data.adsTotalPages
+      state.adsData.adsEstimatedEarnings = data.adsEstimatedEarnings
       break
     }
   }

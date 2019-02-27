@@ -147,6 +147,14 @@ window.cr.define('brave_rewards', function () {
     getActions().onAddressesForPaymentId(addresses)
   }
 
+  function confirmationsHistory (totalPages: number, estimatedEarnings: number) {
+    getActions().onConfirmationsHistory(totalPages, estimatedEarnings)
+  }
+
+  function confirmationsHistoryChanged () {
+    getActions().onConfirmationsHistoryChanged()
+  }
+
   return {
     initialize,
     walletCreated,
@@ -172,7 +180,9 @@ window.cr.define('brave_rewards', function () {
     pendingContributionTotal,
     onPendingContributionSaved,
     rewardsEnabled,
-    addressesForPaymentId
+    addressesForPaymentId,
+    confirmationsHistory,
+    confirmationsHistoryChanged
   }
 })
 

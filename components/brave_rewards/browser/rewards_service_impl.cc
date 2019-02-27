@@ -18,6 +18,7 @@
 #include "base/files/important_file_writer.h"
 #include "base/guid.h"
 #include "base/i18n/time_formatting.h"
+#include "base/time/time.h"
 #include "base/logging.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
@@ -31,6 +32,7 @@
 #include "bat/ledger/media_publisher_info.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
+#include "bat/ledger/transactions_info.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/common/pref_names.h"
@@ -1425,6 +1427,28 @@ void RewardsServiceImpl::SetCatalogIssuers(const std::string& json) {
   bat_ledger_->SetCatalogIssuers(json);
 }
 
+std::pair<uint64_t, uint64_t> RewardsServiceImpl::GetEarningsRange() {
+  auto one_day_in_seconds = base::Time::kMicrosecondsPerDay /
+      base::Time::kMicrosecondsPerSecond;
+
+  auto now = base::Time::Now();
+  base::Time::Exploded exploded;
+  now.LocalExplode(&exploded);
+
+  uint64_t offset_in_seconds;
+  if (exploded.day_of_month > 5) {
+    offset_in_seconds = (exploded.day_of_month - 5) * one_day_in_seconds;
+  } else {
+    offset_in_seconds = exploded.day_of_month * one_day_in_seconds;
+  }
+
+  auto now_in_seconds = (now - base::Time()).InSeconds();
+  uint64_t from_timestamp = now_in_seconds - offset_in_seconds;
+  uint64_t to_timestamp = now_in_seconds;
+
+  return std::make_pair(from_timestamp, to_timestamp);
+}
+
 void RewardsServiceImpl::AdSustained(const std::string& json) {
   if (!Connected()) {
     return;
@@ -1437,6 +1461,51 @@ void RewardsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
   if (ads_service)
     ads_service->SetConfirmationsIsReady(is_ready);
+}
+
+void RewardsServiceImpl::ConfirmationsTransactionHistoryDidChange() {
+    for (auto& observer : observers_)
+    observer.OnConfirmationsHistoryChanged(this);
+}
+
+void RewardsServiceImpl::GetConfirmationsHistory(
+    brave_rewards::ConfirmationsHistoryCallback callback) {
+  if (!Connected()) {
+    return;
+  }
+
+  auto earnings_range = GetEarningsRange();
+
+  bat_ledger_->GetConfirmationsHistory(
+      earnings_range.first,
+      earnings_range.second,
+      base::BindOnce(&RewardsServiceImpl::OnGetConfirmationsHistory,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetConfirmationsHistory(
+    brave_rewards::ConfirmationsHistoryCallback callback,
+    const std::string& transactions) {
+  std::unique_ptr<ledger::TransactionsInfo> info;
+  if (!transactions.empty()) {
+    info.reset(new ledger::TransactionsInfo());
+    info->FromJson(transactions);
+  }
+
+  if (!info) {
+    callback.Run(0, 0.0);
+  }
+
+  int total_viewed = info->transactions.size();
+  double estimated_earnings = 0.0;
+  if (total_viewed > 0) {
+    for (const auto& transaction : info->transactions) {
+      estimated_earnings += transaction.estimated_redemption_value;
+    }
+  }
+
+  callback.Run(total_viewed, estimated_earnings);
 }
 
 void RewardsServiceImpl::SaveState(const std::string& name,

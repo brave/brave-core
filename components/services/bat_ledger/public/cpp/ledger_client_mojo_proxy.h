@@ -120,6 +120,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       ResetStateCallback callback) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
 
+  void ConfirmationsTransactionHistoryDidChange() override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*

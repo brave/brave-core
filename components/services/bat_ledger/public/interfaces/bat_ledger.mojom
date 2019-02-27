@@ -100,6 +100,8 @@ interface BatLedger {
 
   SetCatalogIssuers(string info);
   AdSustained(string info);
+  GetConfirmationsHistory(uint64 from_timestamp_seconds,
+      uint64 to_timestamp_seconds) => (string transactions);
 };
 
 interface BatLedgerClient {
@@ -177,4 +179,5 @@ interface BatLedgerClient {
   LoadState(string name) => (int32 result, string value);
   ResetState(string name) => (int32 result);
   SetConfirmationsIsReady(bool is_ready);
+  ConfirmationsTransactionHistoryDidChange();
 };

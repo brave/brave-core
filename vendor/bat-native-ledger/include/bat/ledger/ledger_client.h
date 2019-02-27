@@ -215,6 +215,8 @@ class LEDGER_EXPORT LedgerClient {
   virtual void ResetState(const std::string& name,
                           ledger::OnResetCallback callback) = 0;
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
+
+  virtual void ConfirmationsTransactionHistoryDidChange() = 0;
 };
 
 }  // namespace ledger

@@ -67,6 +67,7 @@ using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
 using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
 using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
+using ConfirmationsHistoryCallback = base::Callback<void(int, double)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -165,12 +166,15 @@ class RewardsService : public KeyedService {
     const GetPendingContributionsTotalCallback& callback) = 0;
   virtual void GetRewardsMainEnabled(
     const GetRewardsMainEnabledCallback& callback) const = 0;
-  // TODO remove this hack when ads is moved to the same process as ledger
+  // TODO(Terry Mancey): remove this hack when ads is moved to the same process
+  // as ledger
   virtual void SetCatalogIssuers(const std::string& json) = 0;
   virtual void AdSustained(const std::string& json) = 0;
 
   virtual void GetAddressesForPaymentId(
       const GetAddressesCallback& callback) = 0;
+  virtual void GetConfirmationsHistory(
+      brave_rewards::ConfirmationsHistoryCallback callback) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

@@ -46,8 +46,8 @@ namespace {
 
 // The handler for Javascript messages for Brave about: pages
 class RewardsDOMHandler : public WebUIMessageHandler,
-                          public brave_rewards::RewardsNotificationServiceObserver,
-                          public brave_rewards::RewardsServiceObserver {
+    public brave_rewards::RewardsNotificationServiceObserver,
+    public brave_rewards::RewardsServiceObserver {
  public:
   RewardsDOMHandler();
   ~RewardsDOMHandler() override;
@@ -102,15 +102,21 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnIsWalletCreated(bool created);
   void GetPendingContributionsTotal(const base::ListValue* args);
   void OnGetPendingContributionsTotal(double amount);
-  void OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) override;
+  void OnContentSiteUpdated(
+      brave_rewards::RewardsService* rewards_service) override;
   void GetAddressesForPaymentId(const base::ListValue* args);
+  void GetConfirmationsHistory(const base::ListValue* args);
+
+  void OnConfirmationsHistory(int total_viewed, double estimated_earnings);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
                        int result) override;
-  void OnWalletProperties(brave_rewards::RewardsService* rewards_service,
+  void OnWalletProperties(
+      brave_rewards::RewardsService* rewards_service,
       int error_code,
-      std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) override;
+      std::unique_ptr<brave_rewards::WalletProperties>
+      wallet_properties) override;
   void OnGrant(brave_rewards::RewardsService* rewards_service,
                    unsigned int error_code,
                    brave_rewards::Grant result) override;
@@ -130,8 +136,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                            const std::string& viewing_id,
                            const std::string& category,
                            const std::string& probi) override;
-  void OnRecurringDonationUpdated(brave_rewards::RewardsService* rewards_service,
-                                  brave_rewards::ContentSiteList) override;
+  void OnRecurringDonationUpdated(
+      brave_rewards::RewardsService* rewards_service,
+      brave_rewards::ContentSiteList) override;
   void OnCurrentTips(brave_rewards::RewardsService* rewards_service,
                                   brave_rewards::ContentSiteList) override;
 
@@ -146,6 +153,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnPublisherListNormalized(
       brave_rewards::RewardsService* rewards_service,
       brave_rewards::ContentSiteList list) override;
+
+  void OnConfirmationsHistoryChanged(
+      brave_rewards::RewardsService* rewards_service) override;
 
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
@@ -184,79 +194,84 @@ RewardsDOMHandler::~RewardsDOMHandler() {
 void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.createWalletRequested",
       base::BindRepeating(&RewardsDOMHandler::HandleCreateWalletRequested,
-                          base::Unretained(this)));
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getWalletProperties",
       base::BindRepeating(&RewardsDOMHandler::GetWalletProperties,
-                          base::Unretained(this)));
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getGrants",
-                                    base::BindRepeating(&RewardsDOMHandler::GetGrants,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::GetGrants,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getGrantCaptcha",
-                                    base::BindRepeating(&RewardsDOMHandler::GetGrantCaptcha,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::GetGrantCaptcha,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getWalletPassphrase",
-                                    base::BindRepeating(&RewardsDOMHandler::GetWalletPassphrase,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::GetWalletPassphrase,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.recoverWallet",
-                                    base::BindRepeating(&RewardsDOMHandler::RecoverWallet,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::RecoverWallet,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.solveGrantCaptcha",
-                                    base::BindRepeating(&RewardsDOMHandler::SolveGrantCaptcha,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::SolveGrantCaptcha,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getReconcileStamp",
-                                    base::BindRepeating(&RewardsDOMHandler::GetReconcileStamp,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::GetReconcileStamp,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getAddresses",
-                                    base::BindRepeating(&RewardsDOMHandler::GetAddresses,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::GetAddresses,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.saveSetting",
-                                    base::BindRepeating(&RewardsDOMHandler::SaveSetting,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::SaveSetting,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getBalanceReports",
-                                    base::BindRepeating(&RewardsDOMHandler::GetBalanceReports,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::GetBalanceReports,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.excludePublisher",
-                                    base::BindRepeating(&RewardsDOMHandler::ExcludePublisher,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::ExcludePublisher,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.restorePublishers",
-                                    base::BindRepeating(&RewardsDOMHandler::RestorePublishers,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::RestorePublishers,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.checkWalletExistence",
-                                    base::BindRepeating(&RewardsDOMHandler::WalletExists,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::WalletExists,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getContributionAmount",
-                                    base::BindRepeating(&RewardsDOMHandler::GetContributionAmount,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::GetContributionAmount,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.removeRecurring",
-                                    base::BindRepeating(&RewardsDOMHandler::RemoveRecurring,
-                                                        base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.updateRecurringDonationsList",
-                                    base::BindRepeating(&RewardsDOMHandler::UpdateRecurringDonationsList,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::RemoveRecurring,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.updateRecurringDonationsList",
+      base::BindRepeating(&RewardsDOMHandler::UpdateRecurringDonationsList,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.updateTipsList",
-                                    base::BindRepeating(&RewardsDOMHandler::UpdateTipsList,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::UpdateTipsList,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getContributionList",
-                                    base::BindRepeating(&RewardsDOMHandler::GetContributionList,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::GetContributionList,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.checkImported",
-                                    base::BindRepeating(&RewardsDOMHandler::CheckImported,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::CheckImported,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getAdsData",
-                                    base::BindRepeating(&RewardsDOMHandler::GetAdsData,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::GetAdsData,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.saveAdsSetting",
-                                    base::BindRepeating(&RewardsDOMHandler::SaveAdsSetting,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::SaveAdsSetting,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.setBackupCompleted",
-                                    base::BindRepeating(&RewardsDOMHandler::SetBackupCompleted,
-                                                        base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.getPendingContributionsTotal",
-                                    base::BindRepeating(&RewardsDOMHandler::GetPendingContributionsTotal,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::SetBackupCompleted,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.getPendingContributionsTotal",
+      base::BindRepeating(&RewardsDOMHandler::GetPendingContributionsTotal,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getAddressesForPaymentId",
-                                    base::BindRepeating(&RewardsDOMHandler::GetAddressesForPaymentId,
-                                                        base::Unretained(this)));
+      base::BindRepeating(&RewardsDOMHandler::GetAddressesForPaymentId,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getConfirmationsHistory",
+      base::BindRepeating(&RewardsDOMHandler::GetConfirmationsHistory,
+      base::Unretained(this)));
 }
 
 void RewardsDOMHandler::Init() {
@@ -392,8 +407,8 @@ void RewardsDOMHandler::OnGetAutoContributeProps(
     }
 
     values.SetDictionary("ui", std::move(ui_values));
-    // TODO this needs to be moved out of this flow, because
-    // now we set this values every minute
+    // TODO(Nejc Zdovc): this needs to be moved out of this flow, because now we
+    // set this values every minute
     web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards.initAutoContributeSettings", values);
 
@@ -802,7 +817,8 @@ void RewardsDOMHandler::OnCurrentTips(
       publishers->Append(std::move(publisher));
     }
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.currentTips", *publishers);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.currentTips",
+        *publishers);
   }
 }
 
@@ -943,6 +959,35 @@ void RewardsDOMHandler::GetAddressesForPaymentId(
           &RewardsDOMHandler::OnGetAddresses,
           weak_factory_.GetWeakPtr(),
           "addressesForPaymentId"));
+  }
+}
+
+void RewardsDOMHandler::GetConfirmationsHistory(
+    const base::ListValue* args) {
+  rewards_service_->GetConfirmationsHistory(base::Bind(
+          &RewardsDOMHandler::OnConfirmationsHistory,
+          weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnConfirmationsHistory(
+    int total_viewed,
+    double estimated_earnings) {
+  if (web_ui()->CanCallJavascript()) {
+    base::DictionaryValue history;
+
+    history.SetInteger("adsTotalPages", total_viewed);
+    history.SetDouble("adsEstimatedEarnings", estimated_earnings);
+
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.confirmationsHistory", history);
+  }
+}
+
+void RewardsDOMHandler::OnConfirmationsHistoryChanged(
+    brave_rewards::RewardsService* rewards_service) {
+  if (web_ui()->CanCallJavascript()) {
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.confirmationsHistoryChanged");
   }
 }
 

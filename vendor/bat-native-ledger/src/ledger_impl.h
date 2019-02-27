@@ -50,7 +50,7 @@ class LedgerImpl : public ledger::Ledger,
  public:
   typedef std::map<uint32_t, ledger::VisitData>::const_iterator visit_data_iter;
 
-  LedgerImpl(ledger::LedgerClient* client);
+  explicit LedgerImpl(ledger::LedgerClient* client);
   ~LedgerImpl() override;
 
   // Not copyable, not assignable
@@ -420,6 +420,10 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetCatalogIssuers(const std::string& info) override;
   void AdSustained(const std::string& info) override;
+  void GetConfirmationsHistory(
+      const uint64_t from_timestamp_seconds,
+      const uint64_t to_timestamp_seconds,
+      ledger::ConfirmationsHistoryCallback callback) override;
 
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,

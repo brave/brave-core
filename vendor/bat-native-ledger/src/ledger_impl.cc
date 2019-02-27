@@ -8,6 +8,7 @@
 #include <random>
 #include <sstream>
 #include <vector>
+#include <utility>
 
 #include "ledger_impl.h"
 
@@ -30,7 +31,10 @@ using namespace braveledger_bat_get_media;
 using namespace braveledger_bat_get_media;
 using namespace braveledger_bat_state;
 using namespace braveledger_bat_contribution;
-using namespace std::placeholders;
+using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
+using std::placeholders::_4;
 
 namespace bat_ledger {
 
@@ -657,7 +661,9 @@ void LedgerImpl::OnRecoverWallet(
                                   ledgerGrants);
 }
 
-void LedgerImpl::SolveGrantCaptcha(const std::string& solution, const std::string& promotionId) const {
+void LedgerImpl::SolveGrantCaptcha(
+    const std::string& solution,
+    const std::string& promotionId) const {
   bat_client_->setGrant(solution, promotionId);
 }
 
@@ -1278,6 +1284,14 @@ void LedgerImpl::AdSustained(const std::string& info) {
   notification_info->uuid = notification_info_ads.uuid;
 
   bat_confirmations_->AdSustained(std::move(notification_info));
+}
+
+void LedgerImpl::GetConfirmationsHistory(
+    const uint64_t from_timestamp_seconds,
+    const uint64_t to_timestamp_seconds,
+    ledger::ConfirmationsHistoryCallback callback) {
+  bat_confirmations_->GetTransactionHistory(from_timestamp_seconds,
+      to_timestamp_seconds, callback);
 }
 
 }  // namespace bat_ledger
