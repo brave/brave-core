@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/settings_menu/settings_menu.html b/chrome/browser/resources/settings/settings_menu/settings_menu.html
-index aa08477a715923df6da1a2376404221b5976ae9c..4a2ca7b8f2c1f938fe4584fbd6a52c491f05c9d5 100644
+index ee4fa7a5f50aec46d3ea3533701422a452bb1186..bd9804b97602560d51ead2c6f095468b7a3675ed 100644
 --- a/chrome/browser/resources/settings/settings_menu/settings_menu.html
 +++ b/chrome/browser/resources/settings/settings_menu/settings_menu.html
-@@ -152,6 +152,10 @@
+@@ -153,6 +153,10 @@
          $i18n{defaultBrowser}
        </a>
  </if>
@@ -13,7 +13,7 @@ index aa08477a715923df6da1a2376404221b5976ae9c..4a2ca7b8f2c1f938fe4584fbd6a52c49
        <a id="onStartup" href="/onStartup"
          hidden="[[!pageVisibility.onStartup]]">
          <iron-icon icon="settings:power-settings-new"></iron-icon>
-@@ -189,10 +193,12 @@
+@@ -190,10 +194,12 @@
              <iron-icon icon="cr:print"></iron-icon>
              $i18n{printingPageTitle}
            </a>

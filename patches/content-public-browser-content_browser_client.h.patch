@@ -1,11 +1,12 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index b40ca1e3be824f4e2f782d36a89fef1a33148779..ba446ed3d2da710495e2d5d63e26b5c0cabeb152 100644
+index 7fc0a70f4e79544a9cc8dfcc1fa5f670261c4e56..b997d64175dfe1f17ab4edcac79af9fcff2d97f2 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -1479,6 +1479,12 @@ class CONTENT_EXPORT ContentBrowserClient {
-   // blacklist policies are applied there.
-   virtual bool IsRendererDebugURLBlacklisted(const GURL& url,
-                                              BrowserContext* context);
+@@ -1511,6 +1511,13 @@ class CONTENT_EXPORT ContentBrowserClient {
+   // Returns the default accessibility mode for the given browser context.
+   virtual ui::AXMode GetAXModeForBrowserContext(
+       BrowserContext* browser_context);
++
 +  // Brave-speicific: allows the embedder to modify the referrer string
 +  // according to user preferences.
 +  virtual void MaybeHideReferrer(BrowserContext* browser_context,

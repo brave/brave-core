@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/resources/md_extensions/item_list.html b/chrome/browser/resources/md_extensions/item_list.html
-index 71766b65bc271a903e60f9c4838eb119406fb3e3..c0635f2ef405e56b3f1ef1ce9910ec9bdf106bad 100644
+index 3e1234472547b8ea6538fcca732bfafce518fce8..c8bfc1e4d618275fb3812af7389b300ce08ecc27 100644
 --- a/chrome/browser/resources/md_extensions/item_list.html
 +++ b/chrome/browser/resources/md_extensions/item_list.html
 @@ -7,6 +7,7 @@
- <link rel="import" href="chrome://resources/html/i18n_behavior.html">
  <link rel="import" href="chrome://resources/polymer/v1_0/iron-a11y-announcer/iron-a11y-announcer.html">
  <link rel="import" href="item.html">
+ <link rel="import" href="shared_style.html">
 +<link rel="import" href="brave_item_list_more_items.html">
  
  <dom-module id="extensions-item-list">
    <template>
-@@ -122,6 +123,7 @@
+@@ -126,6 +127,7 @@
              </template>
            </div>
          </div>

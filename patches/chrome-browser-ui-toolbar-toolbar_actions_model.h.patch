@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/toolbar/toolbar_actions_model.h b/chrome/browser/ui/toolbar/toolbar_actions_model.h
-index c49624c284a00f27643e10d2928d8e25b86e468f..32cfd84f958102ae0287c0009b80f5edf58a171b 100644
+index 2913475eba35deba0a2099f475ca90d3d6a93bbb..59f82413d9a6f93ad5d918bc51a079cac58ec4fa 100644
 --- a/chrome/browser/ui/toolbar/toolbar_actions_model.h
 +++ b/chrome/browser/ui/toolbar/toolbar_actions_model.h
-@@ -27,6 +27,7 @@ class PrefService;
+@@ -26,6 +26,7 @@ class PrefService;
  class Profile;
  class ToolbarActionsBar;
  class ToolbarActionViewController;
@@ -10,16 +10,16 @@ index c49624c284a00f27643e10d2928d8e25b86e468f..32cfd84f958102ae0287c0009b80f5ed
  
  namespace extensions {
  class ExtensionActionManager;
-@@ -47,6 +48,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
-                             public KeyedService,
-                             public ComponentActionDelegate {
+@@ -45,6 +46,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
+                             public extensions::ExtensionRegistryObserver,
+                             public KeyedService {
   public:
 +  friend class BraveToolbarActionsModel;
+   using ActionId = std::string;
+ 
    // The different options for highlighting.
-   enum HighlightType {
-     HIGHLIGHT_NONE,
-@@ -258,7 +260,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
-   size_t FindNewPositionFromLastKnownGood(const ToolbarItem& action);
+@@ -223,7 +225,7 @@ class ToolbarActionsModel : public extensions::ExtensionActionAPI::Observer,
+   size_t FindNewPositionFromLastKnownGood(const ActionId& action_id);
  
    // Returns true if the given |extension| should be added to the toolbar.
 -  bool ShouldAddExtension(const extensions::Extension* extension);

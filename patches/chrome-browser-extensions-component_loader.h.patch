@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/component_loader.h b/chrome/browser/extensions/component_loader.h
-index 8a78a56e2425adf937754bd0b202549744597bd0..52a2735a5bf944e8f39e61ba8294d70ee3034a7f 100644
+index 332f7ecf276df16378316deb54f0c5ca555671fc..2ad74927ac36ccbd0d99d7aea86a7177b25a44a3 100644
 --- a/chrome/browser/extensions/component_loader.h
 +++ b/chrome/browser/extensions/component_loader.h
-@@ -83,7 +83,7 @@ class ComponentLoader {
+@@ -84,7 +84,7 @@ class ComponentLoader {
    // the loader will skip loading component extensions that weren't supposed to
    // be loaded unless we are in signed user session (ChromeOS). For all other
    // platforms this |skip_session_components| is expected to be unset.
@@ -11,7 +11,7 @@ index 8a78a56e2425adf937754bd0b202549744597bd0..52a2735a5bf944e8f39e61ba8294d70e
  
    // Similar to above but adds the default component extensions for kiosk mode.
    void AddDefaultComponentExtensionsForKioskMode(bool skip_session_components);
-@@ -118,6 +118,7 @@ class ComponentLoader {
+@@ -119,6 +119,7 @@ class ComponentLoader {
    }
  
   private:
@@ -19,11 +19,11 @@ index 8a78a56e2425adf937754bd0b202549744597bd0..52a2735a5bf944e8f39e61ba8294d70e
    FRIEND_TEST_ALL_PREFIXES(ComponentLoaderTest, ParseManifest);
  
    // Information about a registered component extension.
-@@ -166,6 +167,7 @@ class ComponentLoader {
-   void AddAudioPlayerExtension();
-   void AddGalleryExtension();
-   void AddZipArchiverExtension();
+@@ -164,6 +165,7 @@ class ComponentLoader {
+   void AddDefaultComponentExtensionsWithBackgroundPagesForKioskMode();
+ 
+ #if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 +  virtual
    void AddHangoutServicesExtension();
-   void AddImageLoaderExtension();
-   void AddNetworkSpeechSynthesisExtension();
+ #endif  // BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
+ 

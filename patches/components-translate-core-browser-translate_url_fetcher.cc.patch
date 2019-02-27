@@ -1,8 +1,8 @@
 diff --git a/components/translate/core/browser/translate_url_fetcher.cc b/components/translate/core/browser/translate_url_fetcher.cc
-index 254e0ab249a9717893d8fcff40ff660913f387f2..778c465df7fbf003decb294d19d7091e00808151 100644
+index 3aeaa209ce7c822d8f0a238f32bcc8c67c865fb8..23804b49e385fcbc0e391b149c11ef500b79223c 100644
 --- a/components/translate/core/browser/translate_url_fetcher.cc
 +++ b/components/translate/core/browser/translate_url_fetcher.cc
-@@ -31,6 +31,7 @@ TranslateURLFetcher::~TranslateURLFetcher() {}
+@@ -32,6 +32,7 @@ TranslateURLFetcher::~TranslateURLFetcher() {}
  bool TranslateURLFetcher::Request(const GURL& url,
                                    TranslateURLFetcher::Callback callback,
                                    bool is_incognito) {

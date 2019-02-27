@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/public/platform/web_content_settings_client.h b/third_party/blink/public/platform/web_content_settings_client.h
-index 3fff8c7196dd1574213d3e2e5ad34b6f5cc21b56..2db5cd36839037d905b671bb6244072ae87b5da1 100644
+index d7da22cde33c3e16b4c5f3e6d724d500981ca03e..a56b70f190b0c146ec1180d643b935fb1afa2045 100644
 --- a/third_party/blink/public/platform/web_content_settings_client.h
 +++ b/third_party/blink/public/platform/web_content_settings_client.h
-@@ -60,6 +60,11 @@ class WebContentSettingsClient {
+@@ -57,6 +57,11 @@ class WebContentSettingsClient {
      return enabled_per_settings;
    }
  

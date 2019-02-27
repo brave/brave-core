@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/md_extensions/toolbar.html b/chrome/browser/resources/md_extensions/toolbar.html
-index 9d444873afb4f45c383e1ac2b8bdae47f3fb5f54..0756bc6ab8cc6ca90701abaaa474126e63441bfc 100644
+index 5e3eec9f88061e4670e54386066bd151bda1f651..63f154ef46ead9b8b9a05393d18aa9adbd7d8ecd 100644
 --- a/chrome/browser/resources/md_extensions/toolbar.html
 +++ b/chrome/browser/resources/md_extensions/toolbar.html
 @@ -2,7 +2,7 @@

@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
-index 8e6d992b5c98f5c1dbc76869a6aab6b54b6bfc9c..158388f1cd46a1caa34639350a367d4419994128 100644
+index 1edbe265cee06a27aef16f6aebcf776109937e15..57b5b90f74ef1e6d02b243d47f4af6513da3d44f 100644
 --- a/components/content_settings/core/browser/BUILD.gn
 +++ b/components/content_settings/core/browser/BUILD.gn
 @@ -51,6 +51,7 @@ jumbo_static_library("browser") {
