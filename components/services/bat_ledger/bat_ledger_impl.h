@@ -75,7 +75,7 @@ class BatLedgerImpl : public mojom::BatLedger,
       const std::string& lang, const std::string& payment_id) override;
   void GetGrantCaptcha() override;
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
-  void GetNumExcludedSites(GetNumExcludedSitesCallback callback) override;
+  void GetExcludedPublishersNumber(GetExcludedPublishersNumberCallback callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
   void SolveGrantCaptcha(
       const std::string& solution,
@@ -165,6 +165,10 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnGetConfirmationsHistory(
       CallbackHolder<GetConfirmationsHistoryCallback>* holder,
       std::unique_ptr<ledger::TransactionsInfo> history);
+
+  static void OnGetExcludedPublishersNumber(
+      CallbackHolder<GetExcludedPublishersNumberCallback>* holder,
+      uint32_t number);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

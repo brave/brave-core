@@ -272,11 +272,6 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
 
       const publisherKey: string = payload.properties.publisher_key
-
-      if (!publisherKey) {
-        break
-      }
-
       const excluded: boolean = payload.properties.excluded
 
       let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
@@ -286,6 +281,8 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
 
         if (publisher.publisher_key === publisherKey) {
           publisher.excluded = !!excluded
+        } else if (publisherKey === '-1') {
+          publisher.excluded = false
         }
       }
 

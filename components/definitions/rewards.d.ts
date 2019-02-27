@@ -41,10 +41,9 @@ declare namespace Rewards {
     enabledAds: boolean
     enabledContribute: boolean
     enabledMain: boolean
-    excluded: string[]
     firstLoad: boolean | null
     grants?: Grant[]
-    numExcludedSites: number
+    excludedPublishersNumber: number
     pendingContributionTotal: number
     reconcileStamp: number
     recoveryKey: string

@@ -16,68 +16,32 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       } else {
         state.contributeLoad = true
       }
-      // Ensure that state.excluded is respected at all times
-      if (!state.excluded) {
-        state.excluded = []
-      }
-      state.autoContributeList = action.payload.list.filter((item: Rewards.Publisher) => {
-        return !state.excluded.includes(item.id)
-      })
+
+      state.autoContributeList = action.payload.list
       break
-    case types.ON_NUM_EXCLUDED_SITES:
+    case types.ON_EXCLUDED_PUBLISHERS_NUMBER: {
       state = { ...state }
+      let num = parseInt(action.payload.num, 10)
 
-      if (action.payload.excludedSitesInfo != null) {
-        const previousNum = state.numExcludedSites
-        const newNum = action.payload.excludedSitesInfo.num
-        const publisherKey = action.payload.excludedSitesInfo.publisherKey
-
-        state.numExcludedSites = parseInt(newNum, 10)
-
-        if (publisherKey.length > 0) {
-          if (previousNum < newNum) {
-            // On a new excluded publisher, add to excluded state
-            if (!state.excluded.includes(publisherKey)) {
-              state.excluded.push(publisherKey)
-            }
-          } else {
-            // Remove the publisher from excluded if it has been re-included
-            if (state.excluded.includes(publisherKey)) {
-              state.excluded = state.excluded.filter((key: string) => key !== publisherKey)
-            }
-          }
-        }
-
-        state = {
-          ...state,
-          excluded: state.excluded
-        }
+      if (isNaN(num)) {
+        num = 0
       }
 
+      state.excludedPublishersNumber = num
+
       break
+    }
     case types.ON_EXCLUDE_PUBLISHER: {
       const publisherKey: string = action.payload.publisherKey
       if (!publisherKey) {
         break
       }
 
-      if (!state.excluded) {
-        state.excluded = []
-      }
-
-      if (!state.excluded.includes(publisherKey)) {
-        chrome.send('brave_rewards.excludePublisher', [publisherKey])
-        state.excluded.push(publisherKey)
-        state = {
-          ...state,
-          excluded: state.excluded
-        }
-      }
+      chrome.send('brave_rewards.excludePublisher', [publisherKey])
       break
     }
     case types.ON_RESTORE_PUBLISHERS:
       state = { ...state }
-      state.excluded = []
       chrome.send('brave_rewards.restorePublishers', [])
       break
     case types.ON_RECURRING_DONATION_UPDATE:
@@ -103,6 +67,9 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
         state.tipsLoad = true
       }
       state.tipsList = action.payload.list
+      break
+    case types.GET_EXCLUDED_PUBLISHERS_NUMBER:
+      chrome.send('brave_rewards.getExcludedPublishersNumber')
       break
   }
 

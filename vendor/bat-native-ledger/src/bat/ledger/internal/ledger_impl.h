@@ -141,7 +141,8 @@ class LedgerImpl : public ledger::Ledger,
 
   unsigned int GetPublisherMinVisits() const override;
 
-  unsigned int GetNumExcludedSites() const override;
+  void GetExcludedPublishersNumber(
+      ledger::GetExcludedPublishersNumberDBCallback callback) const override;
 
   bool GetPublisherAllowNonVerified() const override;
 
