@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
-index 3004f0613aa62202ecea3023f161728556d7da18..aab9c8fae0ef89c9f56c3805428a87c8643f2ac4 100644
+index a3a87b5258280d17726e22f166bd6cc0583a2890..c06d54e4ba11296194ef6fdd376d6e4a17a9d6b7 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
-@@ -51,7 +51,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
+@@ -50,7 +50,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
    double miterLimit() const;
    void setMiterLimit(double);
  
@@ -11,7 +11,7 @@ index 3004f0613aa62202ecea3023f161728556d7da18..aab9c8fae0ef89c9f56c3805428a87c8
    void setLineDash(const Vector<double>&);
  
    double lineDashOffset() const;
-@@ -109,15 +109,17 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
+@@ -108,15 +108,17 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
    void clip(const String& winding = "nonzero");
    void clip(Path2D*, const String& winding = "nonzero");
  
@@ -33,7 +33,7 @@ index 3004f0613aa62202ecea3023f161728556d7da18..aab9c8fae0ef89c9f56c3805428a87c8
  
    void clearRect(double x, double y, double width, double height);
    void fillRect(double x, double y, double width, double height);
-@@ -194,7 +196,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
+@@ -193,7 +195,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
                               ImageDataColorSettings*,
                               ExceptionState&) const;
  

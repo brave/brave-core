@@ -1,5 +1,5 @@
 diff --git a/content/public/browser/browser_context.h b/content/public/browser/browser_context.h
-index 6e1403e84d1d695a95b173b9c2c69242aad31bd7..f991bf53010a39a0b9df2b905cf7de6afa78c675 100644
+index 0a6913f2ca560e318f4aebe40189144bcef1bf4f..b4bbbeb04506e17402e3447d11f3879d575029cf 100644
 --- a/content/public/browser/browser_context.h
 +++ b/content/public/browser/browser_context.h
 @@ -249,6 +249,9 @@ class CONTENT_EXPORT BrowserContext : public base::SupportsUserData {

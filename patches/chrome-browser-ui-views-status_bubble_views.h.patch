@@ -1,14 +1,14 @@
 diff --git a/chrome/browser/ui/views/status_bubble_views.h b/chrome/browser/ui/views/status_bubble_views.h
-index b2ad6e5d19f119f58df8deb7fa8a840a04681628..036d48dbdccc20eb300ba43bff0413e1ac281f99 100644
+index a5df98a86df4e88d2a41b62ea67b2c92b4ac3f4a..80dec519ce50499d6e9cd24dab69f73129afdd32 100644
 --- a/chrome/browser/ui/views/status_bubble_views.h
 +++ b/chrome/browser/ui/views/status_bubble_views.h
-@@ -70,6 +70,9 @@ class StatusBubbleViews : public StatusBubble {
+@@ -69,6 +69,9 @@ class StatusBubbleViews : public StatusBubble {
+   void MouseMovedAt(const gfx::Point& location, bool left_content);
  
   private:
-   friend class StatusBubbleViewsTest;
 +#if defined(BRAVE_CHROMIUM_BUILD)
 +  FRIEND_TEST_ALL_PREFIXES(BraveStatusBubbleViewsTest, SetURLTest);
 +#endif
- 
    class StatusView;
    class StatusViewAnimation;
+   class StatusViewExpander;

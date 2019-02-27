@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_elements/paper_button_style_css.html b/ui/webui/resources/cr_elements/paper_button_style_css.html
-index 608cf8a16cb6e08ea02eb1f6266d40249d8cc057..975e411898a036656ab94ad0e219b66d7b32d4b2 100644
+index e1a766518155b7b76f4e7c10d6f8ceb93355a095..f2b6ce3d164703ed872da7959785526adce24fd5 100644
 --- a/ui/webui/resources/cr_elements/paper_button_style_css.html
 +++ b/ui/webui/resources/cr_elements/paper_button_style_css.html
 @@ -5,6 +5,7 @@

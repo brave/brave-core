@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/md_history/shared_style.html b/chrome/browser/resources/md_history/shared_style.html
+diff --git a/chrome/browser/resources/history/shared_style.html b/chrome/browser/resources/history/shared_style.html
 index daccd428a92fc4859d86cd5938a04c0cabc79e7c..46222390d03bf3c59a272065fb92637f91bc5457 100644
---- a/chrome/browser/resources/md_history/shared_style.html
-+++ b/chrome/browser/resources/md_history/shared_style.html
+--- a/chrome/browser/resources/history/shared_style.html
++++ b/chrome/browser/resources/history/shared_style.html
 @@ -4,7 +4,7 @@
  
  <dom-module id="shared-style">

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index a2a8aa39600ef0fd9fa9aa62f9697ff85115c32f..3b782f5a73d3a4af92e0f99e758ad61f20fa83ab 100644
+index 579b436c92906c427c2512f1708aa0890128c91f..402f74eba1abcf7e555a718575c9c66d431709f4 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
-@@ -138,7 +138,7 @@ const char Profile::kProfileKey[] = "__PROFILE__";
+@@ -139,7 +139,7 @@ const char Profile::kProfileKey[] = "__PROFILE__";
  void Profile::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterBooleanPref(
        prefs::kSearchSuggestEnabled,
@@ -11,7 +11,7 @@ index a2a8aa39600ef0fd9fa9aa62f9697ff85115c32f..3b782f5a73d3a4af92e0f99e758ad61f
        user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
  #if defined(OS_ANDROID)
    registry->RegisterStringPref(
-@@ -235,7 +235,7 @@ bool Profile::IsGuestSession() const {
+@@ -236,7 +236,7 @@ bool Profile::IsGuestSession() const {
            chromeos::switches::kGuestSession);
    return is_guest_session;
  #else
