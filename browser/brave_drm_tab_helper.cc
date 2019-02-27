@@ -10,7 +10,6 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_handle.h"
-#include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 #include "brave/browser/widevine/widevine_utils.h"
@@ -38,14 +37,19 @@ void BraveDrmTabHelper::DidStartNavigation(
     return;
   }
   is_widevine_requested_ = false;
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+  is_permission_requested_ = false;
+#endif
 }
 
 void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
   is_widevine_requested_ = true;
 
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  if (ShouldShowWidevineOptIn())
+  if (ShouldShowWidevineOptIn() && !is_permission_requested_) {
+    is_permission_requested_ = true;
     RequestWidevinePermission(web_contents());
+  }
 #endif
 }
 

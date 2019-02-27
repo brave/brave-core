@@ -87,8 +87,16 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);
 
-  // Check permission is requested again for same site.
+  // Check permission is not requested again for same site.
   observer.bubble_added_ = false;
+  drm_tab_helper->OnWidevineKeySystemAccessRequest();
+  content::RunAllTasksUntilIdle();
+  EXPECT_FALSE(observer.bubble_added_);
+
+  // Check permission is requested again after new navigation.
+  observer.bubble_added_ = false;
+  EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
+                                     GURL("brave://version/")));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);
