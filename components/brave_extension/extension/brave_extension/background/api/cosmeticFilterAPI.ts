@@ -21,7 +21,9 @@ export const removeSiteFilter = (origin: string) => {
 export const applySiteFilters = (hostname: string) => {
   chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
     if (!storeData.cosmeticFilterList) {
-      console.info('applySiteFilters: no cosmetic filter store yet')
+      if (process.env.NODE_ENV === 'shields_development') {
+        console.info('applySiteFilters: no cosmetic filter store yet')
+      }
       return
     }
     if (storeData.cosmeticFilterList[hostname] !== undefined) {
