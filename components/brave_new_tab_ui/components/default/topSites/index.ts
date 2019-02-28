@@ -97,5 +97,6 @@ export const Tile = styled<TileProps, 'div'>('div')`
 
 export const TileFavicon = styled<{}, 'img'>('img')`
   display: block;
-  height: 40px;
+  height: 72px;
+  padding: 16px;
 `
