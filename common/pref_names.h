@@ -22,6 +22,7 @@ extern const char kWidevineInstalledVersion[];
 extern const char kUseAlternativeSearchEngineProvider[];
 extern const char kAlternativeSearchEngineProviderInTor[];
 extern const char kBraveThemeType[];
+extern const char kUseOverriddenBraveThemeType[];
 extern const char kLocationBarIsWide[];
 extern const char kReferralPromoCode[];
 extern const char kReferralDownloadID[];

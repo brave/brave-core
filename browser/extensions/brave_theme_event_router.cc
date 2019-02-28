@@ -10,7 +10,20 @@
 #include "extensions/browser/event_router.h"
 #include "extensions/browser/extension_event_histogram_value.h"
 
-using BTS = BraveThemeService;
+namespace {
+std::string GetStringFromBraveThemeType(
+    BraveThemeType type) {
+  switch (type) {
+    case BraveThemeType::BRAVE_THEME_TYPE_LIGHT:
+      return "Light";
+    case BraveThemeType::BRAVE_THEME_TYPE_DARK:
+      return "Dark";
+    default:
+      NOTREACHED();
+      return "Default";
+  }
+}
+}  // namespace
 
 namespace extensions {
 
@@ -27,8 +40,8 @@ class BraveThemeEventRouterImpl : public BraveThemeEventRouter {
 
 void BraveThemeEventRouterImpl::OnBraveThemeTypeChanged(Profile* profile) {
   EventRouter* event_router = EventRouter::Get(profile);
-  const std::string theme_type = BTS::GetStringFromBraveThemeType(
-      BTS::GetActiveBraveThemeType(profile));
+  const std::string theme_type = GetStringFromBraveThemeType(
+      BraveThemeService::GetActiveBraveThemeType(profile));
 
   auto event = std::make_unique<extensions::Event>(
       extensions::events::BRAVE_ON_BRAVE_THEME_TYPE_CHANGED,

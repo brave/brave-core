@@ -6,57 +6,19 @@
 
 #include <string>
 
+#include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/common/extensions/api/brave_theme.h"
-#include "brave/common/pref_names.h"
-#include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_service.h"
-
-using BTS = BraveThemeService;
-
-namespace {
-void SetBraveThemeTypePref(Profile* profile,
-                           BraveThemeType type) {
-  profile->GetPrefs()->SetInteger(kBraveThemeType, type);
-}
-
-BraveThemeType GetBraveThemeTypeFromString(
-    base::StringPiece theme) {
-  if (theme == "Default")
-    return BraveThemeType::BRAVE_THEME_TYPE_DEFAULT;
-
-  if (theme == "Light")
-    return BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
-
-  if (theme == "Dark")
-    return BraveThemeType::BRAVE_THEME_TYPE_DARK;
-
-  NOTREACHED();
-  return BraveThemeType::BRAVE_THEME_TYPE_DEFAULT;
-}
-
-}  // namespace
 
 namespace extensions {
 namespace api {
 
-ExtensionFunction::ResponseAction BraveThemeSetBraveThemeTypeFunction::Run() {
-  std::unique_ptr<brave_theme::SetBraveThemeType::Params> params(
-      brave_theme::SetBraveThemeType::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  SetBraveThemeTypePref(profile, GetBraveThemeTypeFromString(params->type));
-
-  return RespondNow(NoArguments());
-}
-
-ExtensionFunction::ResponseAction BraveThemeGetBraveThemeTypeFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  const std::string theme_type = BTS::GetStringFromBraveThemeType(
-      BTS::GetActiveBraveThemeType(profile));
-  return RespondNow(OneArgument(std::make_unique<base::Value>(theme_type)));
+ExtensionFunction::ResponseAction BraveThemeGetBraveThemeListFunction::Run() {
+  std::string json_string;
+  base::JSONWriter::Write(BraveThemeService::GetBraveThemeList(),
+                          &json_string);
+  return RespondNow(OneArgument(std::make_unique<base::Value>(json_string)));
 }
 
 }  // namespace api

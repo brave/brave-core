@@ -20,17 +20,22 @@ class PrefRegistrySyncable;
 }
 
 enum BraveThemeType {
-  BRAVE_THEME_TYPE_DEFAULT,  // Choose theme by channel
-  BRAVE_THEME_TYPE_DARK,     // Use dark theme regardless of channel
-  BRAVE_THEME_TYPE_LIGHT,    // Use light theme regardless of channel
+  // DEFAULT acs two wasy depends on system theme mode.
+  // If system theme mode is disableld, we override it with channel based
+  // policy. See GetThemeTypeBasedOnChannel(). In this case, user can see
+  // two options in theme settings(dark and light).
+  // Otherwise, it act like system theme mode. In this case, user can see
+  // three options in theme settings(os theme, dark and light).
+  BRAVE_THEME_TYPE_DEFAULT,
+  BRAVE_THEME_TYPE_DARK,
+  BRAVE_THEME_TYPE_LIGHT,
 };
 
 class BraveThemeService : public ThemeService {
  public:
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
-  static BraveThemeType GetUserPreferredBraveThemeType(Profile* profile);
-  static std::string GetStringFromBraveThemeType(BraveThemeType type);
   static BraveThemeType GetActiveBraveThemeType(Profile* profile);
+  static base::Value GetBraveThemeList();
 
   BraveThemeService();
   ~BraveThemeService() override;
@@ -43,12 +48,23 @@ class BraveThemeService : public ThemeService {
   SkColor GetDefaultColor(int id, bool incognito) const override;
 
  private:
+  friend class BraveThemeServiceTestWithoutSystemTheme;
   FRIEND_TEST_ALL_PREFIXES(BraveThemeAPIBrowserTest, BraveThemeEventRouterTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, GetBraveThemeListTest);
+
   // Own |mock_router|.
   void SetBraveThemeEventRouterForTesting(
       extensions::BraveThemeEventRouter* mock_router);
 
   void OnPreferenceChanged(const std::string& pref_name);
+
+  void RecoverPrefStates(Profile* profile);
+  void OverrideDefaultThemeIfNeeded(Profile* profile);
+
+  static bool SystemThemeModeEnabled();
+
+  static bool is_test_;
+  static bool use_system_theme_mode_in_test_;
 
   IntegerPrefMember brave_theme_type_pref_;
 

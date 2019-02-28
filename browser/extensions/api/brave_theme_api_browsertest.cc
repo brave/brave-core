@@ -18,9 +18,6 @@
 #include "extensions/common/extension_builder.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-using extensions::api::BraveThemeGetBraveThemeTypeFunction;
-using extensions::api::BraveThemeSetBraveThemeTypeFunction;
-using extension_function_test_utils::RunFunctionAndReturnSingleResult;
 using BTS = BraveThemeService;
 
 class BraveThemeAPIBrowserTest : public InProcessBrowserTest {
@@ -51,48 +48,6 @@ void SetBraveThemeType(Profile* profile, BraveThemeType type) {
   profile->GetPrefs()->SetInteger(kBraveThemeType, type);
 }
 }  // namespace
-
-IN_PROC_BROWSER_TEST_F(BraveThemeAPIBrowserTest,
-                       BraveThemeGetBraveThemeTypeTest) {
-  Profile* profile = browser()->profile();
-
-  // Check default type is set initially.
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_DEFAULT,
-            BTS::GetUserPreferredBraveThemeType(profile));
-
-  // Change to Light type and check it from api.
-  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_LIGHT,
-            BTS::GetUserPreferredBraveThemeType(profile));
-  scoped_refptr<BraveThemeGetBraveThemeTypeFunction> get_function(
-      new BraveThemeGetBraveThemeTypeFunction());
-  get_function->set_extension(extension().get());
-  std::unique_ptr<base::Value> value;
-  value.reset(RunFunctionAndReturnSingleResult(get_function.get(),
-                                               std::string("[]"),
-                                               browser()));
-  EXPECT_EQ(value->GetString(), "Light");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveThemeAPIBrowserTest,
-                       BraveThemeSetBraveThemeTypeTest) {
-  Profile* profile = browser()->profile();
-
-  // Check default type is set initially.
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_DEFAULT,
-            BTS::GetUserPreferredBraveThemeType(profile));
-
-  // Change theme type to Light via api and check it.
-  scoped_refptr<BraveThemeSetBraveThemeTypeFunction> set_function(
-      new BraveThemeSetBraveThemeTypeFunction());
-  set_function->set_extension(extension().get());
-  RunFunctionAndReturnSingleResult(set_function.get(),
-                                   std::string("[\"Light\"]"),
-                                   browser());
-
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_LIGHT,
-            BTS::GetUserPreferredBraveThemeType(profile));
-}
 
 IN_PROC_BROWSER_TEST_F(BraveThemeAPIBrowserTest,
                        BraveThemeEventRouterTest) {

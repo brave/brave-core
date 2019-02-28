@@ -9,6 +9,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -25,6 +26,10 @@ void SetBraveThemeType(Profile* profile, BraveThemeType type) {
   profile->GetPrefs()->SetInteger(kBraveThemeType, type);
 }
 
+bool IsDefaultThemeOverridden(Profile* profile) {
+  return profile->GetPrefs()->GetBoolean(kUseOverriddenBraveThemeType);
+}
+
 class TestNativeThemeObserver : public ui::NativeThemeObserver {
  public:
   TestNativeThemeObserver() {}
@@ -35,7 +40,16 @@ class TestNativeThemeObserver : public ui::NativeThemeObserver {
 
 }  // namespace
 
-IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, BraveThemeChangeTest) {
+class BraveThemeServiceTestWithoutSystemTheme : public InProcessBrowserTest {
+ public:
+  BraveThemeServiceTestWithoutSystemTheme() {
+    BraveThemeService::is_test_ = true;
+    BraveThemeService::use_system_theme_mode_in_test_ = false;
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(BraveThemeServiceTestWithoutSystemTheme,
+                       BraveThemeChangeTest) {
   Profile* profile = browser()->profile();
   Profile* profile_private = profile->GetOffTheRecordProfile();
 
@@ -45,28 +59,27 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, BraveThemeChangeTest) {
   auto test_theme_property = BraveThemeProperties::COLOR_FOR_TEST;
 
   // Check default type is set initially.
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_DEFAULT, BTS::GetUserPreferredBraveThemeType(profile));
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_DEFAULT, BTS::GetUserPreferredBraveThemeType(profile_private));
+  EXPECT_TRUE(IsDefaultThemeOverridden(profile));
+  EXPECT_TRUE(IsDefaultThemeOverridden(profile_private));
 
   // Test light theme
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_LIGHT, BTS::GetUserPreferredBraveThemeType(profile));
+  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_LIGHT, BTS::GetActiveBraveThemeType(profile));
   EXPECT_EQ(BraveThemeProperties::kLightColorForTest, tp.GetColor(test_theme_property));
 
   // Test light theme private
   SetBraveThemeType(profile_private, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_LIGHT, BTS::GetUserPreferredBraveThemeType(profile_private));
+  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_LIGHT, BTS::GetActiveBraveThemeType(profile_private));
   EXPECT_EQ(BraveThemeProperties::kPrivateColorForTest, tp_private.GetColor(test_theme_property));
-
 
   // Test dark theme
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_DARK, BTS::GetUserPreferredBraveThemeType(profile));
+  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_DARK, BTS::GetActiveBraveThemeType(profile));
   EXPECT_EQ(BraveThemeProperties::kDarkColorForTest, tp.GetColor(test_theme_property));
 
   // Test dark theme private
   SetBraveThemeType(profile_private, BraveThemeType::BRAVE_THEME_TYPE_DARK);
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_DARK, BTS::GetUserPreferredBraveThemeType(profile_private));
+  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_DARK, BTS::GetActiveBraveThemeType(profile_private));
   EXPECT_EQ(BraveThemeProperties::kPrivateColorForTest, tp_private.GetColor(test_theme_property));
 }
 

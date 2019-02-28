@@ -23,6 +23,7 @@ const char kUseAlternativeSearchEngineProvider[] =
 const char kAlternativeSearchEngineProviderInTor[] =
     "brave.alternate_private_search_engine_in_tor";
 const char kBraveThemeType[] = "brave.theme.type";
+const char kUseOverriddenBraveThemeType[] = "brave.theme.use_overridden_brave_theme_type";
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
 const char kReferralPromoCode[] = "brave.referral.promo_code";
 const char kReferralDownloadID[] = "brave.referral.download_id";

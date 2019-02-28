@@ -10,22 +10,12 @@
 namespace extensions {
 namespace api {
 
-class BraveThemeSetBraveThemeTypeFunction : public UIThreadExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveTheme.setBraveThemeType", UNKNOWN)
-
- protected:
-  ~BraveThemeSetBraveThemeTypeFunction() override {}
-
-  ResponseAction Run() override;
-};
-
-class BraveThemeGetBraveThemeTypeFunction : public UIThreadExtensionFunction {
+class BraveThemeGetBraveThemeListFunction : public UIThreadExtensionFunction {
   public:
-    DECLARE_EXTENSION_FUNCTION("braveTheme.getBraveThemeType", UNKNOWN)
+    DECLARE_EXTENSION_FUNCTION("braveTheme.getBraveThemeList", UNKNOWN)
 
   protected:
-    ~BraveThemeGetBraveThemeTypeFunction() override {}
+    ~BraveThemeGetBraveThemeListFunction() override {}
 
     ResponseAction Run() override;
 };
