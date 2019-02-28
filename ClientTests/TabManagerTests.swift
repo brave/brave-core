@@ -122,9 +122,11 @@ class TabManagerTests: XCTestCase {
         
         let profile = TabManagerMockProfile()
         manager = TabManager(prefs: profile.prefs, imageStore: nil)
+        PrivateBrowsingManager.shared.isPrivateBrowsing = false
     }
     
     override func tearDown() {
+        PrivateBrowsingManager.shared.isPrivateBrowsing = false
         super.tearDown()
     }
     

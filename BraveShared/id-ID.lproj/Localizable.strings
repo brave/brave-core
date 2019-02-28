@@ -2,7 +2,7 @@
 "No" = "Tidak";
 
 /* Prompt shown before enabling provider search queries */
-"Turn on search suggestions?" = "Nyalakan saran pencarian?";
+"Turn on search suggestions?" = "Aktifkan saran pencarian?";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ya";

@@ -20,6 +20,10 @@
 "AdsAndTrackersrBlocked" = "ブロックされている
 広告とトラッカー";
 
+/* Shields Ads Stat */
+"AdsrBlocked" = "ブロック済みの
+広告";
+
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "常に送信";
 
@@ -119,6 +123,18 @@
 /* cookie settings option */
 "BlockAllCookies" = "すべての Cookie をブロック";
 
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "すべてブロック";
+
+/* Information displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertInfo" = "すべてのCookieをブロックすると、ウェブサイトが正しく動作しなくなる場合があります。";
+
+/* Title of alert displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertTitle" = "すべてのCookieをブロックしますか？";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "設定に失敗しました。もう一度やり直してください。";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "ブロックモニター";
 
@@ -148,6 +164,12 @@
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave 保護機能の既定設定";
+
+/* Brave sync page title */
+"BraveSync" = "Brave 同期 (ベータ)";
+
+/* Sync settings welcome */
+"BraveSyncWelcome" = "はじめに、同期するすべてのデバイスにBraveをインストールする必要があります。そして、同期チェーンを開始してすべてのデバイスを安全につなげます。";
 
 /* Browser Lock feature callout enable action. */
 "BrowserLockCalloutEnable" = "有効にする";
@@ -194,6 +216,12 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "%i 個のタブをすべて閉じる";
 
+/* Code words input help */
+"CodeWordInputHelp" = "入手した同期チェーンのコードワードを入力します。";
+
+/* Code words section title */
+"CodeWords" = "コードワード";
+
 /* No comment provided by engineer. */
 "Confirm" = "確認";
 
@@ -203,6 +231,12 @@
 /* Settings item for clearing cookies */
 "Cookies" = "Cookie";
 
+/* Copied action complete title */
+"Copied" = "コピーしました！";
+
+/* Copied codewords title */
+"CopiedToClipboard" = "クリップボードにコピーしました！";
+
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "アプリ情報をクリップボードにコピーします。";
 
@@ -211,6 +245,9 @@
 
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "リンクをコピー";
+
+/* Copy codewords title */
+"CopyToClipboard" = "クリップボードにコピーしました";
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "現在使用中の検索エンジン";
@@ -230,6 +267,12 @@
 /* No comment provided by engineer. */
 "Delete" = "削除";
 
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "すべてのフォルダーとブックマークが削除されます。続行してよろしいですか？";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "フォルダーを削除しますか？";
+
 /* Prompt option for cancelling out of deletion */
 "DeleteLoginAlertCancelActionTitle" = "キャンセル";
 
@@ -244,6 +287,9 @@
 
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "削除";
+
+/* Sync device settings page title. */
+"Devices" = "接続済みデバイス";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "デバイス %1$@ (%2$@)";
@@ -265,6 +311,12 @@
 
 /* Button to edit a favorite */
 "EditFavorite" = "お気に入りを編集";
+
+/* Sync enter code words */
+"EnterCodeWords" = "コードワードを入力";
+
+/* Enter sync code words below */
+"EnterCodeWordsBelow" = "以下にコードワードを入力";
 
 /* Description for new folder popup */
 "EnterFolderName" = "フォルダ名を入力";
@@ -296,6 +348,10 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesVisitOnceButton" = "それでもサイトを訪問";
 
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "保存済みの
+推定時間";
+
 /* Share action title */
 "FindInPage" = "ページ内で見つける";
 
@@ -318,11 +374,18 @@
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "フィンガープリント対策";
 
+/* Grand camera access */
+"GrantCameraAccess" = "カメラを有効にする";
+
 /* No comment provided by engineer. */
 "Home" = "ホーム";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "どこでも HTTPS";
+
+/* Shields Https Stat */
+"HTTPSrUpgrades" = "HTTPS
+アップグレード";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS アップグレード";
@@ -335,6 +398,10 @@
 
 /* History tableview section header */
 "LastWeek" = "先週";
+
+/* DuckDuckGo promotion label. */
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "DuckDuckGoによる
+プライベート検索について";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "最終変更 %@";
@@ -384,14 +451,23 @@
 /* Title for new folder popup */
 "NewFolder" = "新しいフォルダ";
 
+/* New sync code button title */
+"NewSyncCode" = "新しい同期チェーンを開始";
+
 /* New Tab title */
 "NewTab" = "新しいタブ";
+
+/* Sync Alert */
+"NotEnoughWordsDescription" = "すべてのワードを入力して、もう一度やり直してください。";
+
+/* Sync Alert */
+"NotEnoughWordsTitle" = "ワードが足りません";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "すべて開く (%i)";
 
-/* Context menu item for opening a link in a new tab */
-"OpenInBackgroundTab" = "リンクを新しいタブで開く";
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "画像を新しいタブで開く";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "新しいプライベートタブで開く";
@@ -401,6 +477,9 @@
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "設定を開く";
+
+/* Sync pair device settings section title */
+"Pair" = "ペア";
 
 /* Error message displayed to user when their confirming passcode doesn't match the first code. */
 "PasscodeConfirmMisMatchErrorText" = "パスコードが一致しませんでした。やり直してください。";
@@ -435,14 +514,23 @@
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "プライベートブラウジングのみ";
 
-/* Private tab details */
-"PrivateTabBody" = "プライベートタブを使うと Brave への保存は行われませんが、オンライン上で匿名になるわけではありません。プライベートタブを使って訪問したサイトは履歴には表示されず、サイトを閉じれば Cookie は必ず削除されます。つまりサイトの形跡が Brave に残ることはありません。一方で、プライベートタブを使っても、ご利用の携帯電話会社 (または接続している WiFi ネットワークや VPN の所有者) はあなたが訪問したサイトを確認できるほか、訪問先のサイトもあなたのパブリック IP アドレスを知ることができます。";
+/* Private tab detail text */
+"PrivateTabDetails" = "プライベートタブを使うと、Braveのデバイス上での動作は変わりますが、その他の行動は変わりません。
+              
+              あなたのIPアドレスは訪問先のサイトにより追跡され、あなたがいるおよその位置 (都市など) が推測されます。この位置情報は、さらに具体的になる場合もあります。また、サイトはあなたが具体的に伝達したあらゆる内容 (検索語句など) を知ることができます。サイトにログインした場合、サイトにはあなたがそのアカウントの所有者であることが伝わります。プライベートタブを閉じると、Braveはログイン状態を維持するCookieを破棄するため、あなたはログアウトします。
+              
+              あなたをインターネットに接続する者 (ISP) は、あなたのネットワークアクティビティをすべて見ることができます。多くの場合、これはご利用の携帯電話会社になります。WiFiネットワークに接続している場合は、そのネットワークの所有者になります。VPNを使用している場合は、そのVPNの管理者になります。ISPは、あなたがどのサイトを訪問したかを知ることができます。サイトがHTTPSを使っている場合、あなたがそのサイトで何をしたかについてISPにより推測される内容には限度がありますが、HTTPのみが使用されている場合は、ISPによりあらゆること (検索語句、読んだページ、ジャンプしたリンク) がサイトに伝わります。
+              
+              雇用主がデバイスを管理している場合、雇用主もあなたがそのデバイスで行った行動を追跡できる可能性があります。プライベートタブを使ったとしても、訪問先のサイトを隠すことは不可能です。また、そのデバイスにアクセスできる他の人があなたのアクティビティをモニタリングするソフトウェアをインストールしている可能性もあります。その場合、プライベートタブを使ってもモニタリングを回避することはできません。";
 
 /* Private tab information link */
 "PrivateTabLink" = "プライベートタブについて。";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "プライベートタブ";
+
+/* QR Code section title */
+"QRCode" = "QRコード";
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "クイック検索エンジン";
@@ -501,6 +589,9 @@
 /* Sepia theme setting in Reading View settings */
 "ReaderModeThemeButtonTitleSepia" = "セピア";
 
+/* Action button for removing sync device. */
+"RemoveDevice" = "削除";
+
 /* Button to remove a favorite */
 "RemoveFavorite" = "お気に入りを削除";
 
@@ -527,6 +618,12 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "ログイン情報を保存";
+
+/* Scan sync code title */
+"Scan" = "スキャン";
+
+/* Scan sync code button title */
+"ScanSyncCode" = "同期コードがあります";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "ブロック済みのスクリプト";
@@ -609,6 +706,9 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "ブックマークを表示";
 
+/* Show code words instead */
+"ShowCodeWords" = "コードワードを表示する";
+
 /* Button to show the history list */
 "ShowHistory" = "履歴を表示";
 
@@ -629,6 +729,114 @@
 
 /* Support section title */
 "Support" = "サポート";
+
+/* Sync settings section title */
+"Sync" = "同期 (ベータ)";
+
+/* Add another device cell button. */
+"SyncAddAnotherDevice" = "別のデバイスを追加";
+
+/* Add a Computer title */
+"SyncAddComputerTitle" = "コンピュータを追加";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "チェーンのQRコードをスキャン";
+
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "2つ目のモバイルデバイスで、「設定」パネルにある「Brave同期」へ移動し、「同期コードをスキャン」ボタンをタップします。カメラを使用して下のQRコードをスキャンしてください。";
+
+/* Add device to sync with code words */
+"SyncAddDeviceWords" = "同期コードを入力";
+
+/* Sync add device description */
+"SyncAddMobileWordsDescription" = "デバイスの「設定」パネルで「Brave 同期」へ移動し、「%@」ボタンをタップします。下記の同期チェーンのコードワードを入力します。";
+
+/* Add Tablet or phone title */
+"SyncAddTabletOrPhoneTitle" = "タブレットまたは電話を追加";
+
+/* Choose device type for sync */
+"SyncChooseDevice" = "デバイスの種類を選択";
+
+/* Header for device choosing screen. */
+"SyncChooseDeviceHeader" = "同期するデバイスの種類を選択してください。";
+
+/* Computer device button title */
+"SyncComputerDevice" = "コンピュータ";
+
+/* Sync you browser settings across devices. */
+"SyncDevices" = "デバイスと設定";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "Brave同期エージェントは現在オフラインかアクセスできません。後でもう一度お試しください。";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Brave同期通信エラー";
+
+/* No internet connection alert body. */
+"SyncNoConnectionBody" = "インターネット接続をチェックしてもう一度やり直してください。";
+
+/* No internet connection alert title. */
+"SyncNoConnectionTitle" = "同期に接続できません";
+
+/* Message for removing the current device from Sync */
+"SyncRemoveCurrentDeviceMessage" = "ローカルのデバイスデータは、すべてのデバイスでそのまま残ります。この同期チェーンに含まれるその他のデバイスは、引き続き同期されます。";
+
+/* Title for removing the current device from Sync */
+"SyncRemoveCurrentDeviceTitle" = "%@を同期チェーンから削除しますか？";
+
+/* Remove device button for action sheet. */
+"SyncRemoveDeviceAction" = "デバイスを削除";
+
+/* Default name for a device */
+"SyncRemoveDeviceDefaultName" = "デバイス";
+
+/* Message for removing last device from Sync */
+"SyncRemoveLastDeviceMessage" = "現在同期中のデータは維持されますが、Braveの同期キャッシュにあるすべてのデータは削除されます。デバイスのデータをもう一度同期するには、新しい同期チェーンを開始する必要があります。";
+
+/* Button name for removing last device from Sync */
+"SyncRemoveLastDeviceRemoveButtonName" = "同期チェーンを削除";
+
+/* Title for removing last device from Sync */
+"SyncRemoveLastDeviceTitle" = "%@を削除すると同期チェーンが削除されます。";
+
+/* Message for removing other device from Sync */
+"SyncRemoveOtherDeviceMessage" = "同期チェーンからデバイスを削除しても、そのデバイスから以前に同期したデータは消去されません。";
+
+/* Title for removing other device from Sync */
+"SyncRemoveOtherDeviceTitle" = "%@を同期チェーンから削除しますか？";
+
+/* Sync remove device. */
+"SyncRemoveThisDevice" = "このデバイスを削除";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestion" = "このデバイスを削除しますか？";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestionDesc" = "このデバイスは同期グループから切断され、同期データを受信または送信しなくなります。既存のデータはすべてデバイスに維持されます。";
+
+/* Header title for Sync settings */
+"SyncSettingsHeader" = "以下のデバイスリストは、同期チェーンに含まれる全てのデバイスを表示しています。各デバイスは、他のどのデバイスからでも管理できます。";
+
+/* Switch back to camera button */
+"SyncSwitchBackToCameraButton" = "自分のカメラを使用する...";
+
+/* Tablet or phone button title */
+"SyncTabletOrMobileDevice" = "タブレットまたは電話";
+
+/* This device cell */
+"SyncThisDevice" = "このデバイス";
+
+/* Sync to existing device */
+"SyncToDevice" = "デバイスに同期";
+
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "既存の同期済みデバイスを使って「Brave設定」を開き、「デバイスと設定」を選択します。「+」をタップして新しいデバイスを追加し、同期コードを表示します。";
+
+/* Description on popup when setting up a sync group fails */
+"SyncUnableCreateGroup" = "新しい同期グループを作成できません。";
+
+/* No comment provided by engineer. */
+"SyncUnsuccessful" = "失敗";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "閉じる";
@@ -708,6 +916,16 @@
 /* History tableview section header */
 "Today" = "今日";
 
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "ブロック済みの
+トラッカー";
+
+/* Sync Alert */
+"UnableToConnectDescription" = "同期グループに参加できませんでした。入力したワードをチェックして、もう一度やり直してください。";
+
+/* Sync Alert */
+"UnableToConnectTitle" = "接続できません";
+
 /* Bookmark URL */
 "URL" = "URL";
 
@@ -722,6 +940,12 @@
 
 /* Accessibility label for the main web content view */
 "WebContentAccessibilityLabel" = "ウェブコンテンツ";
+
+/* Word count title */
+"WordCount" = "ワード数: %i";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "はい、削除します";
 
 /* History tableview section header */
 "Yesterday" = "昨日";

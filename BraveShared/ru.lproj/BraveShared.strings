@@ -20,6 +20,11 @@
 "AdsAndTrackersrBlocked" = "Реклам и трекеров
 блокировано";
 
+/* Shields Ads Stat */
+"AdsrBlocked" = "Заблоки-
+рованная
+реклама";
+
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Отправлять всегда";
 
@@ -119,6 +124,18 @@
 /* cookie settings option */
 "BlockAllCookies" = "Блокировать все файлы cookie";
 
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "Блокировать все";
+
+/* Information displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertInfo" = "Блокировка всех файлов cookie может нарушить работу некоторых сайтов.";
+
+/* Title of alert displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertTitle" = "Заблокировать все файлы cookie?";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "Не удалось применить параметр. Повторите попытку.";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = " Статистика блокировок";
 
@@ -148,6 +165,12 @@
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Настройки Brave Shield по умолчанию";
+
+/* Brave sync page title */
+"BraveSync" = "Синхронизация Brave (бета-версия)";
+
+/* Sync settings welcome */
+"BraveSyncWelcome" = "Установите Brave на всех устройствах, которые хотите синхронизировать. Чтобы безопасно связать их между собой, создайте цепочку синхронизации.";
 
 /* Browser Lock feature callout enable action. */
 "BrowserLockCalloutEnable" = "Включить";
@@ -194,6 +217,12 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Закрыть все вкладки (%i)";
 
+/* Code words input help */
+"CodeWordInputHelp" = "Введите кодовые слова для создания цепочки синхронизации.";
+
+/* Code words section title */
+"CodeWords" = "Кодовые слова";
+
 /* No comment provided by engineer. */
 "Confirm" = "Подтвердить";
 
@@ -203,6 +232,12 @@
 /* Settings item for clearing cookies */
 "Cookies" = "Cookie";
 
+/* Copied action complete title */
+"Copied" = "Скопировано";
+
+/* Copied codewords title */
+"CopiedToClipboard" = "Скопировано в буфер обмена";
+
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Скопировать сведения о приложении";
 
@@ -211,6 +246,9 @@
 
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Скопировать ссылку";
+
+/* Copy codewords title */
+"CopyToClipboard" = "Скопировать в буфер обмена";
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Используемые поисковые системы";
@@ -230,6 +268,12 @@
 /* No comment provided by engineer. */
 "Delete" = "Удалить";
 
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "Будет удалено все содержимое этой папки. Продолжить?";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "Удалить папку?";
+
 /* Prompt option for cancelling out of deletion */
 "DeleteLoginAlertCancelActionTitle" = "Отмена";
 
@@ -244,6 +288,9 @@
 
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Удалить";
+
+/* Sync device settings page title. */
+"Devices" = "Устройства в цепочке";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Устройство %1$@ (%2$@)";
@@ -265,6 +312,12 @@
 
 /* Button to edit a favorite */
 "EditFavorite" = "Изменить избранное";
+
+/* Sync enter code words */
+"EnterCodeWords" = "Введите кодовые слова";
+
+/* Enter sync code words below */
+"EnterCodeWordsBelow" = "Введите кодовые слова ниже";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Введите название папки";
@@ -296,6 +349,10 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesVisitOnceButton" = "Все равно перейти на сайт";
 
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Сэкономлен-
+ное время";
+
 /* Share action title */
 "FindInPage" = "Найти на странице";
 
@@ -318,11 +375,18 @@
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Защита от идентификации";
 
+/* Grand camera access */
+"GrantCameraAccess" = "Включить камеру";
+
 /* No comment provided by engineer. */
 "Home" = "Домашняя страница";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* Shields Https Stat */
+"HTTPSrUpgrades" = "Смена HTTP
+на HTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Смена HTTP на HTTPS";
@@ -335,6 +399,10 @@
 
 /* History tableview section header */
 "LastWeek" = "За неделю";
+
+/* DuckDuckGo promotion label. */
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "Подробнее о приватном
+поиске с DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Последнее изменение: %@";
@@ -384,14 +452,23 @@
 /* Title for new folder popup */
 "NewFolder" = "Новая папка";
 
+/* New sync code button title */
+"NewSyncCode" = "Запустить новую цепочку синхронизации";
+
 /* New Tab title */
 "NewTab" = "Новая вкладка";
+
+/* Sync Alert */
+"NotEnoughWordsDescription" = "Введите все слова и повторите попытку.";
+
+/* Sync Alert */
+"NotEnoughWordsTitle" = "Вы ввели не все слова";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Открыть все (%i)";
 
-/* Context menu item for opening a link in a new tab */
-"OpenInBackgroundTab" = "Открыть ссылку в новой вкладке";
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "Открыть изображение в новой вкладке";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Открыть в новой приватной вкладке";
@@ -401,6 +478,9 @@
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Открыть настройки";
+
+/* Sync pair device settings section title */
+"Pair" = "Связать устройства";
 
 /* Error message displayed to user when their confirming passcode doesn't match the first code. */
 "PasscodeConfirmMisMatchErrorText" = "Коды доступа не совпадают. Повторите попытку.";
@@ -435,14 +515,23 @@
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Только приватный просмотр";
 
-/* Private tab details */
-"PrivateTabBody" = "Приватный просмотр не дает вам полной анонимности в Сети. В Brave не останется никаких следов — история просмотров в приватных вкладках не сохранится, а файлы cookie будут удалены, когда вы выйдете из этого режима. Однако ваши действия может увидеть мобильный оператор, владелец сети Wi-Fi или провайдер VPN, а внешний IP-адрес будет доступен посещенным сайтам, даже если вы использовали приватный просмотр.";
+/* Private tab detail text */
+"PrivateTabDetails" = "Используя приватные вкладки, вы влияете только на то, какую информацию Brave сохраняет на вашем устройстве.
+
+Сайты получают ваш IP-адрес автоматически, как только вы заходите на них. При этом они могут определить ваше примерное местоположение — как правило, на уровне города. Иногда эти данные могут быть точнее. Кроме того, сайты сохраняют всю вводимую вами информацию, например поисковые запросы. Если вы войдете в систему, им будет известно, что вы являетесь владельцем этой учетной записи. При закрытии приватных вкладок вы автоматически выйдете из аккаунта, так как Brave удалит файлы cookie, необходимые для того, чтобы оставаться в системе.
+
+Ваши действия в сети может отслеживать интернет-провайдер. Как правило, это оператор мобильной связи либо владелец сети Wi-Fi или VPN, в зависимости от того, кто предоставляет вам доступ к интернету. Ваш интернет-провайдер видит, какие сайты вы посещаете. Если используется протокол HTTPS, интернет-провайдер сможет лишь догадываться о том, что вы делали на сайте. Если же сайт использует только протокол HTTP, интернет-провайдер сможет узнать всё: какие поисковые запросы вы вводили, какие страницы посещали, по каким ссылкам переходили и т. д.
+
+Использование приватных вкладок вряд ли помешает работодателю узнать, на какие сайты вы заходили, если он управляет вашим устройством. Кроме того, другие люди, у которых есть доступ к вашему устройству, могут установить программу, отслеживающую ваши действия, — приватные вкладки не помогут и в этом случае.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Подробнее о приватных вкладках…";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Приватная вкладка";
+
+/* QR Code section title */
+"QRCode" = "QR-код";
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Быстрый поиск";
@@ -501,6 +590,9 @@
 /* Sepia theme setting in Reading View settings */
 "ReaderModeThemeButtonTitleSepia" = "Сепия";
 
+/* Action button for removing sync device. */
+"RemoveDevice" = "Удалить";
+
 /* Button to remove a favorite */
 "RemoveFavorite" = "Удалить из избранного";
 
@@ -527,6 +619,12 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Сохранять учетные данные";
+
+/* Scan sync code title */
+"Scan" = "Сканировать";
+
+/* Scan sync code button title */
+"ScanSyncCode" = "У меня есть код синхронизации";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Скрипты";
@@ -609,6 +707,9 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Показать закладки";
 
+/* Show code words instead */
+"ShowCodeWords" = "Показать кодовые слова";
+
 /* Button to show the history list */
 "ShowHistory" = "Показать историю";
 
@@ -629,6 +730,114 @@
 
 /* Support section title */
 "Support" = "Поддержка";
+
+/* Sync settings section title */
+"Sync" = "Синхронизация (бета-версия)";
+
+/* Add another device cell button. */
+"SyncAddAnotherDevice" = "Добавить другое устройство";
+
+/* Add a Computer title */
+"SyncAddComputerTitle" = "Добавьте компьютер";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "Сканируйте QR-код цепочки";
+
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "Откройте Brave на втором мобильном устройстве, перейдите в раздел «Синхронизация Brave» в настройках и нажмите кнопку «Сканировать код синхронизации». Отсканируйте QR-код (см. ниже), используя камеру.";
+
+/* Add device to sync with code words */
+"SyncAddDeviceWords" = "Введите код синхронизации";
+
+/* Sync add device description */
+"SyncAddMobileWordsDescription" = "Откройте Brave на устройстве, перейдите в раздел «Синхронизация Brave» в настройках и нажмите кнопку «%@». Введите кодовые слова для цепочки синхронизации (см. ниже).";
+
+/* Add Tablet or phone title */
+"SyncAddTabletOrPhoneTitle" = "Добавьте планшет или телефон";
+
+/* Choose device type for sync */
+"SyncChooseDevice" = "Выберите тип устройства";
+
+/* Header for device choosing screen. */
+"SyncChooseDeviceHeader" = "Выберите тип устройства, на котором нужно настроить синхронизацию.";
+
+/* Computer device button title */
+"SyncComputerDevice" = "Компьютер";
+
+/* Sync you browser settings across devices. */
+"SyncDevices" = "Устройства и настройки";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "Сервер синхронизации Brave не подключен к сети или недоступен. Повторите попытку позже.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Ошибка связи";
+
+/* No internet connection alert body. */
+"SyncNoConnectionBody" = "Проверьте подключение к интернету и повторите попытку.";
+
+/* No internet connection alert title. */
+"SyncNoConnectionTitle" = "Не удалось подключиться";
+
+/* Message for removing the current device from Sync */
+"SyncRemoveCurrentDeviceMessage" = "Все локальные данные останутся на устройствах. Удаление не повлияет на другие устройства в цепочке.";
+
+/* Title for removing the current device from Sync */
+"SyncRemoveCurrentDeviceTitle" = "Удалить устройство «%@» из цепочки синхронизации?";
+
+/* Remove device button for action sheet. */
+"SyncRemoveDeviceAction" = "Удалить устройство";
+
+/* Default name for a device */
+"SyncRemoveDeviceDefaultName" = "Устройство";
+
+/* Message for removing last device from Sync */
+"SyncRemoveLastDeviceMessage" = "Данные, которые уже были синхронизированы, останутся на устройстве. Информация в кеше синхронизации Brave будет удалена. Чтобы снова синхронизировать сведения на устройстве, вам потребуется создать новую цепочку синхронизации.";
+
+/* Button name for removing last device from Sync */
+"SyncRemoveLastDeviceRemoveButtonName" = "Удалить цепочку";
+
+/* Title for removing last device from Sync */
+"SyncRemoveLastDeviceTitle" = "Цепочка синхронизации будет удалена вместе с устройством «%@».";
+
+/* Message for removing other device from Sync */
+"SyncRemoveOtherDeviceMessage" = "Синхронизированные данные останутся на устройстве, даже если вы удалите его из цепочки.";
+
+/* Title for removing other device from Sync */
+"SyncRemoveOtherDeviceTitle" = "Удалить устройство «%@» из цепочки синхронизации?";
+
+/* Sync remove device. */
+"SyncRemoveThisDevice" = "Удалить это устройство";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestion" = "Удалить это устройство?";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestionDesc" = "Это устройство будет отключено от группы синхронизации. Обмен данными на нем прекратится. Все существующие сведения останутся на устройстве.";
+
+/* Header title for Sync settings */
+"SyncSettingsHeader" = "Ниже перечислены все устройства из цепочки синхронизации. Каждым из этих устройств можно управлять с другого устройства.";
+
+/* Switch back to camera button */
+"SyncSwitchBackToCameraButton" = "Использовать камеру";
+
+/* Tablet or phone button title */
+"SyncTabletOrMobileDevice" = "Планшет или телефон";
+
+/* This device cell */
+"SyncThisDevice" = "Это устройство";
+
+/* Sync to existing device */
+"SyncToDevice" = "Синхронизация с устройством";
+
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "Откройте настройки Brave на синхронизированном устройстве, перейдите в раздел «Устройства и настройки» и нажмите на значок «+», чтобы добавить устройство и посмотреть код синхронизации.";
+
+/* Description on popup when setting up a sync group fails */
+"SyncUnableCreateGroup" = "Не удалось создать группу синхронизации.";
+
+/* No comment provided by engineer. */
+"SyncUnsuccessful" = "Произошла ошибка";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Закрыть";
@@ -708,6 +917,17 @@
 /* History tableview section header */
 "Today" = "Сегодня";
 
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "Заблоки-
+рованные
+трекеры";
+
+/* Sync Alert */
+"UnableToConnectDescription" = "Не удалось добавить устройство в группу синхронизации. Проверьте введенные слова и повторите попытку.";
+
+/* Sync Alert */
+"UnableToConnectTitle" = "Не удалось подключиться";
+
 /* Bookmark URL */
 "URL" = "URL";
 
@@ -722,6 +942,12 @@
 
 /* Accessibility label for the main web content view */
 "WebContentAccessibilityLabel" = "Контент веб-страницы";
+
+/* Word count title */
+"WordCount" = "Количество слов: %i";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "Да, удалить";
 
 /* History tableview section header */
 "Yesterday" = "Вчера";
