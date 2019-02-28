@@ -425,7 +425,7 @@ struct BATCH_PROOF {
   BALLOT_ST ballot_;
 };
 
-typedef std::vector<braveledger_bat_helper::BATCH_PROOF> BathProofs;
+typedef std::vector<braveledger_bat_helper::BATCH_PROOF> BatchProofs;
 
 enum class SERVER_TYPES {
   LEDGER,

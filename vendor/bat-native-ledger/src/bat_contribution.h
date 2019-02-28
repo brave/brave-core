@@ -245,9 +245,9 @@ class BatContribution {
   void Proof();
 
   std::vector<std::string> ProofBatch(
-      const braveledger_bat_helper::BathProofs& batch_proof);
+      const braveledger_bat_helper::BatchProofs& batch_proofs);
   void ProofBatchCallback(
-      const braveledger_bat_helper::BathProofs& batch_proof,
+      const braveledger_bat_helper::BatchProofs& batch_proofs,
       const std::vector<std::string>& proofs);
 
   void PrepareVoteBatch();
