@@ -76,6 +76,7 @@ source_set("ledger") {
   ]
 
   deps = [
+    "//base",
     "//third_party/boringssl",
     rebase_path("bat-native-anonize:anonize2", dep_base),
     rebase_path("bip39wally-core-native:bip39wally-core", dep_base),
