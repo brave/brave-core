@@ -11,6 +11,8 @@
 #include <utility>
 
 #include "anon/anon.h"
+#include "base/task/post_task.h"
+#include "base/task_runner_util.h"
 #include "bat_contribution.h"
 #include "ledger_impl.h"
 #include "rapidjson_bat_helper.h"
@@ -1130,7 +1132,7 @@ void BatContribution::PrepareBatchCallback(
 }
 
 void BatContribution::Proof() {
-  braveledger_bat_helper::BathProofs batch_proof;
+  braveledger_bat_helper::BatchProofs batch_proofs;
 
   braveledger_bat_helper::Transactions transactions =
     ledger_->GetTransactions();
@@ -1148,29 +1150,37 @@ void BatContribution::Proof() {
           braveledger_bat_helper::BATCH_PROOF batch_proof_el;
           batch_proof_el.transaction_ = transactions[k];
           batch_proof_el.ballot_ = ballots[i];
-          batch_proof.push_back(batch_proof_el);
+          batch_proofs.push_back(batch_proof_el);
         }
       }
     }
   }
 
-  ProofBatch(batch_proof);
+  base::PostTaskAndReplyWithResult(
+      ledger_->GetTaskRunner().get(),
+      FROM_HERE,
+      base::BindOnce(&BatContribution::ProofBatch,
+        base::Unretained(this),
+        batch_proofs),
+      base::BindOnce(&BatContribution::ProofBatchCallback,
+        base::Unretained(this),
+        batch_proofs));
 }
 
-void BatContribution::ProofBatch(
-    const braveledger_bat_helper::BathProofs& batch_proof) {
+std::vector<std::string> BatContribution::ProofBatch(
+    const braveledger_bat_helper::BatchProofs& batch_proofs) {
   std::vector<std::string> proofs;
 
-  for (size_t i = 0; i < batch_proof.size(); i++) {
+  for (size_t i = 0; i < batch_proofs.size(); i++) {
     braveledger_bat_helper::SURVEYOR_ST surveyor;
     bool success = braveledger_bat_helper::loadFromJson(
         surveyor,
-        batch_proof[i].ballot_.prepareBallot_);
+        batch_proofs[i].ballot_.prepareBallot_);
 
     if (!success) {
       BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
         "Failed to load surveyor state: " <<
-        batch_proof[i].ballot_.prepareBallot_;
+        batch_proofs[i].ballot_.prepareBallot_;
       continue;
     }
 
@@ -1190,13 +1200,13 @@ void BatContribution::ProofBatch(
     }
 
     std::string msg_key[1] = {"publisher"};
-    std::string msg_value[1] = {batch_proof[i].ballot_.publisher_};
+    std::string msg_value[1] = {batch_proofs[i].ballot_.publisher_};
     std::string msg = braveledger_bat_helper::stringify(msg_key, msg_value, 1);
 
     const char* proof = submitMessage(
         msg.c_str(),
-        batch_proof[i].transaction_.masterUserToken_.c_str(),
-        batch_proof[i].transaction_.registrarVK_.c_str(),
+        batch_proofs[i].transaction_.masterUserToken_.c_str(),
+        batch_proofs[i].transaction_.registrarVK_.c_str(),
         signature_to_send.c_str(),
         surveyor.surveyorId_.c_str(),
         surveyor.surveyVK_.c_str());
@@ -1210,11 +1220,17 @@ void BatContribution::ProofBatch(
     proofs.push_back(annon_proof);
   }
 
+  return proofs;
+}
+
+void BatContribution::ProofBatchCallback(
+    const braveledger_bat_helper::BatchProofs& batch_proofs,
+    const std::vector<std::string>& proofs) {
   braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
 
-  for (size_t i = 0; i < batch_proof.size(); i++) {
+  for (size_t i = 0; i < batch_proofs.size(); i++) {
     for (size_t j = 0; j < ballots.size(); j++) {
-      if (ballots[j].surveyorId_ == batch_proof[i].ballot_.surveyorId_) {
+      if (ballots[j].surveyorId_ == batch_proofs[i].ballot_.surveyorId_) {
         ballots[j].proofBallot_ = proofs[i];
       }
     }
@@ -1222,7 +1238,7 @@ void BatContribution::ProofBatch(
 
   ledger_->SetBallots(ballots);
 
-  if (batch_proof.size() != proofs.size()) {
+  if (batch_proofs.size() != proofs.size()) {
     AddRetry(braveledger_bat_helper::ContributionRetry::STEP_PROOF, "");
     return;
   }
