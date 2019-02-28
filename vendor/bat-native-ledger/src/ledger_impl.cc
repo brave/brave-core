@@ -10,6 +10,7 @@
 
 #include "ledger_impl.h"
 
+#include "base/task/post_task.h"
 #include "bat_client.h"
 #include "bat_contribution.h"
 #include "bat_get_media.h"
@@ -37,6 +38,9 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_get_media_(new BatGetMedia(this)),
     bat_state_(new BatState(this)),
     bat_contribution_(new BatContribution(this)),
+    task_runner_(base::CreateSequencedTaskRunnerWithTraits({
+          base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+          base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
     initialized_(false),
     initializing_(false),
     last_tab_active_time_(0),
@@ -1204,6 +1208,10 @@ void LedgerImpl::GetAddressesForPaymentId(
 
 void LedgerImpl::SetAddresses(std::map<std::string, std::string> addresses) {
   bat_state_->SetAddress(addresses);
+}
+
+scoped_refptr<base::SequencedTaskRunner> LedgerImpl::GetTaskRunner() {
+  return task_runner_;
 }
 
 }  // namespace bat_ledger
