@@ -327,8 +327,11 @@ void LedgerClientMojoProxy::SetTimer(uint64_t time_offset,
 }
 
 void LedgerClientMojoProxy::OnExcludedSitesChanged(
-    const std::string& publisher_id) {
-  ledger_client_->OnExcludedSitesChanged(publisher_id);
+    const std::string& publisher_id,
+    int exclude) {
+  ledger_client_->OnExcludedSitesChanged(
+      publisher_id,
+      static_cast<ledger::PUBLISHER_EXCLUDE>(exclude));
 }
 
 void LedgerClientMojoProxy::OnPanelPublisherInfo(int32_t result,
@@ -449,12 +452,6 @@ void LedgerClientMojoProxy::GetGrantCaptcha() {
 void LedgerClientMojoProxy::URIEncode(const std::string& value,
     URIEncodeCallback callback) {
   std::move(callback).Run(ledger_client_->URIEncode(value));
-}
-
-void LedgerClientMojoProxy::SetContributionAutoInclude(
-    const std::string& publisher_key, bool excluded, uint64_t window_id) {
-  ledger_client_->SetContributionAutoInclude(
-      publisher_key, excluded, window_id);
 }
 
 // static
