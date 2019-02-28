@@ -18,6 +18,7 @@
 #include "rapidjson_bat_helper.h"
 #include "static_values.h"
 #include "tweetnacl.h"
+#include "url/gurl.h"
 
 namespace braveledger_bat_helper {
 
@@ -2616,6 +2617,17 @@ uint64_t getMediaDuration(const std::map<std::string, std::string>& data,
   }
 
   return duration;
+}
+
+bool HasSameDomainAndPath(
+    const std::string& url_to_validate,
+    const std::string& domain_to_match,
+    const std::string& path_to_match) {
+  GURL gurl(url_to_validate);
+  return gurl.is_valid() && !domain_to_match.empty() &&
+      gurl.DomainIs(domain_to_match) &&
+      gurl.has_path() && !path_to_match.empty() &&
+      gurl.path().substr(0, path_to_match.size()) == path_to_match;
 }
 
 std::string buildURL(const std::string& path,

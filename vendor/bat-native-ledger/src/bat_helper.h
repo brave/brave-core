@@ -570,6 +570,11 @@ uint8_t niceware_mnemonic_to_bytes(
 
 uint64_t getRandomValue(uint8_t min, uint8_t max);
 
+bool HasSameDomainAndPath(
+    const std::string& url,
+    const std::string& to_match,
+    const std::string& path);
+
 }  // namespace braveledger_bat_helper
 
 #endif  // BRAVELEDGER_BAT_HELPER_H_
