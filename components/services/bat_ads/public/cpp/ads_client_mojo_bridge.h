@@ -50,11 +50,6 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   bool LoadJsonSchema(const std::string& name, std::string* out_json) override;
   void LoadJsonSchema(const std::string& name,
                       LoadJsonSchemaCallback callback) override;
-  bool GetUrlComponents(const std::string& url,
-                        bool* result,
-                        std::string* out_components_json) override;
-  void GetUrlComponents(const std::string& url,
-                        GetUrlComponentsCallback callback) override;
   bool GetClientInfo(const std::string& client_info,
                      std::string* out_client_info) override;
   void GetClientInfo(const std::string& client_info,

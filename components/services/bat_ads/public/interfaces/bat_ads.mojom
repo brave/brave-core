@@ -36,8 +36,6 @@ interface BatAdsClient {
   [Sync]
   GetLocales() => (array<string> locales);
   [Sync]
-  GetUrlComponents(string url) => (bool result, string components_json);
-  [Sync]
   GetClientInfo(string client_info) => (string client_info);
   [Sync]
   IsForeground() => (bool foreground);

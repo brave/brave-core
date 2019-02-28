@@ -340,20 +340,6 @@ void BatAdsClientMojoBridge::LoadSampleBundle(
       base::BindOnce(&OnLoadSampleBundle, std::move(callback)));
 }
 
-bool BatAdsClientMojoBridge::GetUrlComponents(
-    const std::string& url,
-    ads::UrlComponents* components) const {
-  if (!connected())
-    return false;
-
-  bool out_result;
-  std::string out_components_json;
-  bat_ads_client_->GetUrlComponents(url, &out_result, &out_components_json);
-  components->FromJson(out_components_json);
-
-  return out_result;
-}
-
 void BatAdsClientMojoBridge::EventLog(const std::string& json) {
   if (!connected())
     return;

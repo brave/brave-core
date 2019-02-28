@@ -6,6 +6,7 @@
 #ifndef BAT_CONFIRMATIONS_CONFIRMATIONS_H_
 #define BAT_CONFIRMATIONS_CONFIRMATIONS_H_
 
+#include <stdint.h>
 #include <vector>
 #include <memory>
 

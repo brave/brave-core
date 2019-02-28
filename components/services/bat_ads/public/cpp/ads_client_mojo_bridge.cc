@@ -158,24 +158,6 @@ void AdsClientMojoBridge::KillTimer(uint32_t timer_id) {
   ads_client_->KillTimer(timer_id);
 }
 
-bool AdsClientMojoBridge::GetUrlComponents(const std::string& url,
-                                        bool* result,
-                                        std::string* out_components_json) {
-  ads::UrlComponents components;
-  *result = ads_client_->GetUrlComponents(url, &components);
-  *out_components_json = components.ToJson();
-
-  return true;
-}
-
-void AdsClientMojoBridge::GetUrlComponents(const std::string& url,
-                                        GetUrlComponentsCallback callback) {
-  ads::UrlComponents components;
-  bool result = ads_client_->GetUrlComponents(url, &components);
-
-  std::move(callback).Run(result, components.ToJson());
-}
-
 bool AdsClientMojoBridge::GetClientInfo(const std::string& client_info,
                                      std::string* out_client_info) {
   ads::ClientInfo info;
