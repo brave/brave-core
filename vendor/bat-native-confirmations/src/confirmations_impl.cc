@@ -315,6 +315,10 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
 }
 
 void ConfirmationsImpl::SaveState() {
+  if (!is_initialized_) {
+    return;
+  }
+
   BLOG(INFO) << "Saving confirmations state";
 
   std::string json = ToJSON();
