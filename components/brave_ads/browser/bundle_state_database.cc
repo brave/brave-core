@@ -365,10 +365,10 @@ bool BundleStateDatabase::GetAdsForCategory(const std::string& region,
     info.start_timestamp = info_sql.ColumnString(4);
     info.end_timestamp = info_sql.ColumnString(5);
     info.uuid = info_sql.ColumnString(6);
-    info.campaign_id = info_sql.ColumnString(7);
-    info.daily_cap = info_sql.ColumnInt(8);
-    info.per_day = info_sql.ColumnInt(9);
-    info.total_max = info_sql.ColumnInt(10);
+    info.campaign_id = info_sql.ColumnString(8);
+    info.daily_cap = info_sql.ColumnInt(9);
+    info.per_day = info_sql.ColumnInt(10);
+    info.total_max = info_sql.ColumnInt(11);
     ads.emplace_back(info);
   }
 
