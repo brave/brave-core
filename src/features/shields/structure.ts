@@ -236,7 +236,7 @@ export const BlockedListSummary = styled<BlockedListSummaryProps, 'summary'>('su
 export const BlockedListStatic = styled<{}, 'ul'>('ul')`
   box-sizing: border-box;
   list-style-type: none;
-  height: 301px;
+  height: 307px;
   overflow: auto;
   padding: 0;
   margin: 0 24px;
@@ -244,8 +244,6 @@ export const BlockedListStatic = styled<{}, 'ul'>('ul')`
 
 export const BlockedListDynamic = styled(BlockedListStatic)`
   margin: 0;
-  padding: 0;
-  height: 306px;
 `
 
 export const BlockedListItemHeader = styled<{}, 'li'>('li')`
