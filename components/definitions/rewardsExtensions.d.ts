@@ -120,4 +120,9 @@ declare namespace RewardsExtension {
     percentage: number
     verified: boolean
   }
+
+  interface ExcludedSitesChanged {
+    publisher_key: string
+    excluded: boolean
+  }
 }

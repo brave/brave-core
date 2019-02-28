@@ -57,10 +57,9 @@ export const deleteNotification = (id: string) => action(types.DELETE_NOTIFICATI
   id
 })
 
-export const includeInAutoContribution = (publisherKey: string, excluded: boolean, windowId: number) => action(types.INCLUDE_IN_AUTO_CONTRIBUTION, {
+export const includeInAutoContribution = (publisherKey: string, excluded: boolean) => action(types.INCLUDE_IN_AUTO_CONTRIBUTION, {
   publisherKey,
-  excluded,
-  windowId
+  excluded
 })
 
 export const getGrants = () => action(types.GET_GRANTS)
@@ -104,5 +103,10 @@ export const onEnabledAC = (enabled: boolean) => action(types.ON_ENABLED_AC, {
 
 export const onPublisherListNormalized = (properties: RewardsExtension.PublisherNormalized[]) =>
   action(types.ON_PUBLISHER_LIST_NORMALIZED, {
+    properties
+  })
+
+export const onExcludedSitesChanged = (properties: RewardsExtension.ExcludedSitesChanged) =>
+  action(types.ON_EXCLUDED_SITES_CHANGED, {
     properties
   })

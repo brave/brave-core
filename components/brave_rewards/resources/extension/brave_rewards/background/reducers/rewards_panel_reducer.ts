@@ -214,9 +214,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
     case types.INCLUDE_IN_AUTO_CONTRIBUTION: {
       let publisherKey = payload.publisherKey
       let excluded = payload.excluded
-      let windowId = payload.windowId
-      chrome.braveRewards.includeInAutoContribution(publisherKey, excluded,
-        windowId)
+      chrome.braveRewards.includeInAutoContribution(publisherKey, excluded)
       break
     }
     case types.ON_PENDING_CONTRIBUTIONS_TOTAL: {
@@ -254,8 +252,38 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         if (updated) {
           publisher.verified = updated.verified
           publisher.percentage = updated.percentage
+          publisher.excluded = false
         } else {
           publisher.percentage = 0
+        }
+      }
+
+      state = {
+        ...state,
+        publishers
+      }
+      break
+    }
+    case types.ON_EXCLUDED_SITES_CHANGED: {
+      if (!payload.properties) {
+        break
+      }
+
+      const publisherKey: string = payload.properties.publisher_key
+
+      if (!publisherKey) {
+        break
+      }
+
+      const excluded: boolean = payload.properties.excluded
+
+      let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
+
+      for (const key in publishers) {
+        let publisher = publishers[key]
+
+        if (publisher.publisher_key === publisherKey) {
+          publisher.excluded = !!excluded
         }
       }
 

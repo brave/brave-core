@@ -322,12 +322,6 @@ void BatLedgerImpl::RemoveRecurring(const std::string& publisher_key) {
   ledger_->RemoveRecurring(publisher_key);
 }
 
-void BatLedgerImpl::SetPublisherPanelExclude(const std::string& publisher_key,
-                                             int32_t exclude,
-                                             uint64_t window_id) {
-  ledger_->SetPublisherPanelExclude(publisher_key,
-      ToLedgerPublisherExclude(exclude), window_id);
-}
 
 void BatLedgerImpl::GetBootStamp(GetBootStampCallback callback) {
   std::move(callback).Run(ledger_->GetBootStamp());

@@ -10,6 +10,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "bat/ledger/ledger.h"
@@ -163,8 +164,7 @@ class RewardsServiceImpl : public RewardsService,
   void UpdateTipsList() override;
   void SetContributionAutoInclude(
       const std::string& publisher_key,
-      bool excluded,
-      uint64_t window_id) override;
+      bool excluded) override;
   RewardsNotificationService* GetNotificationService() const override;
   bool CheckImported() override;
   void SetBackupCompleted() override;
@@ -333,7 +333,8 @@ class RewardsServiceImpl : public RewardsService,
       brave_rewards::ConfirmationsHistoryCallback callback) override;
   void ConfirmationsTransactionHistoryDidChange() override;
 
-  void OnExcludedSitesChanged(const std::string& publisher_id) override;
+  void OnExcludedSitesChanged(const std::string& publisher_id,
+                              ledger::PUBLISHER_EXCLUDE exclude) override;
   void OnPanelPublisherInfo(ledger::Result result,
                           std::unique_ptr<ledger::PublisherInfo> info,
                           uint64_t window_id) override;

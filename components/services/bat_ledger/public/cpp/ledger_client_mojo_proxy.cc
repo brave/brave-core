@@ -8,11 +8,13 @@
 #include "base/logging.h"
 #include "mojo/public/cpp/bindings/map.h"
 
-using namespace std::placeholders;
+using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
 
 namespace bat_ledger {
 
-namespace {  // TODO, move into a util class
+namespace {  // TODO(anyone): move into a util class
 
 int32_t ToMojomResult(ledger::Result result) {
   return (int32_t)result;
@@ -333,8 +335,11 @@ void LedgerClientMojoProxy::KillTimer(const uint32_t timer_id) {
 }
 
 void LedgerClientMojoProxy::OnExcludedSitesChanged(
-    const std::string& publisher_id) {
-  ledger_client_->OnExcludedSitesChanged(publisher_id);
+    const std::string& publisher_id,
+    int exclude) {
+  ledger_client_->OnExcludedSitesChanged(
+      publisher_id,
+      static_cast<ledger::PUBLISHER_EXCLUDE>(exclude));
 }
 
 void LedgerClientMojoProxy::OnPanelPublisherInfo(int32_t result,
@@ -455,12 +460,6 @@ void LedgerClientMojoProxy::GetGrantCaptcha() {
 void LedgerClientMojoProxy::URIEncode(const std::string& value,
     URIEncodeCallback callback) {
   std::move(callback).Run(ledger_client_->URIEncode(value));
-}
-
-void LedgerClientMojoProxy::SetContributionAutoInclude(
-    const std::string& publisher_key, bool excluded, uint64_t window_id) {
-  ledger_client_->SetContributionAutoInclude(
-      publisher_key, excluded, window_id);
 }
 
 // static

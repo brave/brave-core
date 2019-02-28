@@ -5,9 +5,10 @@
 
 #include "bat_publishers.h"
 
-#include <ctime>
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include <ctime>
+#include <utility>
 
 #include "bat_helper.h"
 #include "bignum.h"
@@ -28,7 +29,8 @@
    TLD = 'co.jp'
 */
 
-using namespace std::placeholders;
+using std::placeholders::_1;
+using std::placeholders::_2;
 
 namespace braveledger_bat_publishers {
 
@@ -295,18 +297,6 @@ void BatPublishers::setExclude(const std::string& publisher_id,
                   _2));
 }
 
-void BatPublishers::setPanelExclude(const std::string& publisher_id,
-                                    const ledger::PUBLISHER_EXCLUDE& exclude,
-                                    uint64_t windowId) {
-    ledger_->GetPublisherInfo(publisher_id,
-        std::bind(&BatPublishers::onSetPanelExcludeInternal,
-                  this,
-                  exclude,
-                  windowId,
-                  _1,
-                  _2));
-}
-
 void BatPublishers::onSetExcludeInternal(
     ledger::PUBLISHER_EXCLUDE exclude,
     ledger::Result result,
@@ -316,17 +306,12 @@ void BatPublishers::onSetExcludeInternal(
     return;
   }
 
-  if (!publisher_info) {
+  if (!publisher_info || publisher_info->excluded == exclude) {
     // handle error
     return;
   }
 
-  if (publisher_info->excluded == ledger::PUBLISHER_EXCLUDE::DEFAULT ||
-      publisher_info->excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED) {
-    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
-  } else {
-    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::INCLUDED;
-  }
+  publisher_info->excluded = exclude;
 
   setNumExcludedSitesInternal(exclude);
 
@@ -334,39 +319,7 @@ void BatPublishers::onSetExcludeInternal(
 
   ledger_->SetPublisherInfo(std::move(publisher_info));
 
-  OnExcludedSitesChanged(publisherKey);
-}
-
-void BatPublishers::onSetPanelExcludeInternal(
-    ledger::PUBLISHER_EXCLUDE exclude,
-    uint64_t windowId,
-    ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info) {
-  if (result != ledger::Result::LEDGER_OK &&
-      result != ledger::Result::NOT_FOUND) {
-    return;
-  }
-
-  if (!publisher_info) {
-    // handle error
-    return;
-  }
-
-  if (publisher_info->excluded == ledger::PUBLISHER_EXCLUDE::DEFAULT ||
-      publisher_info->excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED) {
-    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
-  } else {
-    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::INCLUDED;
-  }
-
-  setNumExcludedSitesInternal(exclude);
-
-  ledger::VisitData visit_data;
-  std::string publisherKey = publisher_info->id;
-
-  ledger_->SetPublisherInfo(std::move(publisher_info));
-
-  OnExcludedSitesChanged(publisherKey);
+  OnExcludedSitesChanged(publisherKey, exclude);
 }
 
 void BatPublishers::RestorePublishers() {
@@ -379,7 +332,7 @@ void BatPublishers::RestorePublishers() {
 void BatPublishers::OnRestorePublishersInternal(bool success) {
   if (success) {
     setNumExcludedSites(0);
-    OnExcludedSitesChanged("");
+    OnExcludedSitesChanged("", ledger::PUBLISHER_EXCLUDE::ALL);
     SynopsisNormalizer();
   } else {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
@@ -819,8 +772,9 @@ void BatPublishers::OnPanelPublisherInfo(
   }
 }
 
-void BatPublishers::OnExcludedSitesChanged(const std::string& publisher_id) {
-  ledger_->OnExcludedSitesChanged(publisher_id);
+void BatPublishers::OnExcludedSitesChanged(const std::string& publisher_id,
+                                           ledger::PUBLISHER_EXCLUDE exclude) {
+  ledger_->OnExcludedSitesChanged(publisher_id, exclude);
 }
 
 void BatPublishers::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
@@ -836,7 +790,8 @@ void BatPublishers::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
           braveledger_bat_bignum::sum(report_info.grants_, probi);
       break;
     case ledger::ReportType::ADS:
-      report_info.earning_from_ads_ = braveledger_bat_bignum::sum(report_info.earning_from_ads_, probi);
+      report_info.earning_from_ads_ =
+          braveledger_bat_bignum::sum(report_info.earning_from_ads_, probi);
       break;
     case ledger::ReportType::AUTO_CONTRIBUTION:
       report_info.auto_contribute_ =

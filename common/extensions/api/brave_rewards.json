@@ -266,6 +266,27 @@
             }
           }
         ]
+      },
+      {
+        "name": "onExcludedSitesChanged",
+        "type": "function",
+        "description": "Fired when grant process is finished",
+        "parameters": [
+          {
+            "name": "properties",
+            "type": "object",
+            "properties": {
+              "publisher_key": {
+                "type": "string",
+                "description": "publisher key, unique identifier"
+              },
+              "excluded": {
+                "type": "boolean",
+                "description": "indicate if publisher is excluded or not"
+              }
+            }
+          }
+        ]
       }
     ],
     "functions": [
@@ -337,10 +358,6 @@
           {
             "name": "excluded",
             "type": "boolean"
-          },
-          {
-            "name": "window_id",
-            "type": "integer"
           }
         ]
       },

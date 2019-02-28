@@ -156,7 +156,7 @@ class RewardsService : public KeyedService {
   virtual void UpdateRecurringDonationsList() = 0;
   virtual void UpdateTipsList() = 0;
   virtual void SetContributionAutoInclude(
-    const std::string& publisher_key, bool excluded, uint64_t windowId) = 0;
+    const std::string& publisher_key, bool excluded) = 0;
   virtual RewardsNotificationService* GetNotificationService() const = 0;
   virtual bool CheckImported() = 0;
   virtual void SetBackupCompleted() = 0;

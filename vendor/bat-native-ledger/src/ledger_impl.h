@@ -182,7 +182,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void FetchGrants(const std::string& lang,
                    const std::string& paymentId) const override;
-  
+
   void OnGrant(ledger::Result result,
                const braveledger_bat_helper::GRANT& grant);
 
@@ -234,11 +234,6 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& publisher_id,
       const ledger::PUBLISHER_EXCLUDE& exclude) override;
 
-  void SetPublisherPanelExclude(
-      const std::string& publisher_id,
-      const ledger::PUBLISHER_EXCLUDE& exclude,
-      uint64_t windowId) override;
-
   void RestorePublishers() override;
 
   void OnRestorePublishers(ledger::OnRestoreCallback callback);
@@ -260,7 +255,8 @@ class LedgerImpl : public ledger::Ledger,
                            std::unique_ptr<ledger::PublisherInfo> info,
                            uint64_t windowId);
 
-  void OnExcludedSitesChanged(const std::string& publisher_id);
+  void OnExcludedSitesChanged(const std::string& publisher_id,
+                              ledger::PUBLISHER_EXCLUDE exclude);
 
   void SetBalanceReportItem(ledger::ACTIVITY_MONTH month,
                             int year,
@@ -318,9 +314,9 @@ class LedgerImpl : public ledger::Ledger,
   const std::string& GetPaymentId() const;
 
   void SetPaymentId(const std::string& payment_id);
-  
+
   const braveledger_bat_helper::Grants& GetGrants() const;
-  
+
   void SetGrants(braveledger_bat_helper::Grants grants);
   const std::string& GetPersonaId() const;
 

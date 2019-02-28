@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_OBSERVER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_OBSERVER_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -52,7 +53,8 @@ class RewardsServiceObserver : public base::CheckedObserver {
       RewardsService* rewards_service) {}
   virtual void OnExcludedSitesChanged(
       RewardsService* rewards_service,
-      std::string publisher_id) {}
+      std::string publisher_id,
+      bool excluded) {}
   virtual void OnReconcileComplete(
       RewardsService* rewards_service,
       unsigned int result,
