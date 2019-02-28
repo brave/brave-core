@@ -20,7 +20,7 @@ import {
 import { Tile, TileActionsContainer, TileAction, TileFavicon } from 'brave-ui/features/newTab/default'
 
 // Icons
-import { PinIcon, BookmarkOIcon, BookmarkIcon, CloseStrokeIcon } from 'brave-ui/components/icons'
+import { PinIcon, PinOIcon, BookmarkOIcon, BookmarkIcon, CloseStrokeIcon } from 'brave-ui/components/icons'
 
 const Types = {
   BLOCK: 'block'
@@ -123,8 +123,8 @@ class Block extends React.Component<Props, {}> {
       style,
       favicon
     } = this.props
-    const starIcon = isBookmarked ? <BookmarkOIcon /> : <BookmarkIcon />
-    const pinIcon = <PinIcon />
+    const starIcon = isBookmarked ? <BookmarkIcon /> : <BookmarkOIcon />
+    const pinIcon = isPinned ? <PinIcon /> : <PinOIcon />
 
     return connectDragSource(
       connectDropTarget(
