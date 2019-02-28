@@ -1,18 +1,20 @@
 diff --git a/chrome/browser/resources/md_extensions/item_list.html b/chrome/browser/resources/md_extensions/item_list.html
-index 71766b65bc271a903e60f9c4838eb119406fb3e3..fa6dc6977f4d4f0c9493409226392678cc7e53b7 100644
+index 71766b65bc271a903e60f9c4838eb119406fb3e3..c0635f2ef405e56b3f1ef1ce9910ec9bdf106bad 100644
 --- a/chrome/browser/resources/md_extensions/item_list.html
 +++ b/chrome/browser/resources/md_extensions/item_list.html
-@@ -122,6 +122,13 @@
+@@ -7,6 +7,7 @@
+ <link rel="import" href="chrome://resources/html/i18n_behavior.html">
+ <link rel="import" href="chrome://resources/polymer/v1_0/iron-a11y-announcer/iron-a11y-announcer.html">
+ <link rel="import" href="item.html">
++<link rel="import" href="brave_item_list_more_items.html">
+ 
+ <dom-module id="extensions-item-list">
+   <template>
+@@ -122,6 +123,7 @@
              </template>
            </div>
          </div>
-+        <div id="more-items" class="empty-list-message" style="margin-top: 32px;"
-+            hidden$="[[shouldShowEmptyItemsMessage_(
-+                apps.length, extensions.length)]]">
-+          <span>
-+            $i18nRaw{noExtensionsOrApps}
-+          </span>
-+        </div>
++        <extensions-brave-item-list-more-items apps="{{apps}}" extensions="{{extensions}}" />
        </div>
      </div>
    </template>

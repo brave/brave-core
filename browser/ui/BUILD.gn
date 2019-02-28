@@ -133,6 +133,7 @@ source_set("ui") {
     "//brave/components/brave_welcome_ui:generated_resources",
     "//brave/browser/devtools",
     "//brave/browser/tor",
+    "//brave/browser/resources:brave_extensions_resources",
     "//brave/browser/resources:brave_settings_resources",
     "//chrome/app:command_ids",
     "//chrome/common",

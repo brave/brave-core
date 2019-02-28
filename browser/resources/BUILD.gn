@@ -40,10 +40,27 @@ grit("brave_settings_resources") {
   resource_ids = "resource_ids"
 }
 
+grit("brave_extensions_resources") {
+  source = "md_extensions/extensions_resources.grd"
+
+  source_is_generated = optimize_webui
+
+  outputs = [
+    "grit/brave_extensions_resources.h",
+    "grit/brave_extensions_resources_map.cc",
+    "grit/brave_extensions_resources_map.h",
+    "brave_extensions_resources.pak",
+  ]
+
+  output_dir = "$root_gen_dir/brave/browser/resources"
+  resource_ids = "resource_ids"
+}
+
 if (optimize_webui) {
   group("unpak") {
     deps = [
       ":unpak_settings_resources",
+      ":unpak_extensions_resources",
     ]
   }
 
@@ -63,6 +80,32 @@ if (optimize_webui) {
 
     deps = [
       ":brave_settings_resources",
+    ]
+
+    args = [
+      "--out_folder",
+      rebase_path(out_folder, root_build_dir),
+      "--pak_file",
+      rebase_path("$target_gen_dir/${pak_file}", root_build_dir),
+    ]
+  }
+
+  action("unpak_extensions_resources") {
+    script = "//chrome/browser/resources/unpack_pak.py"
+
+    pak_file = "brave_extensions_resources.pak"
+    out_folder = "$root_gen_dir/chrome/browser/resources/md_extensions/extensions_resources.unpak"
+
+    inputs = [
+      "$target_gen_dir/brave_extensions_resources.pak",
+    ]
+
+    outputs = [
+      "${out_folder}/brave_unpack.stamp",
+    ]
+
+    deps = [
+      ":brave_extensions_resources",
     ]
 
     args = [

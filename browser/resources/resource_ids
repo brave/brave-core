@@ -72,4 +72,8 @@
   "brave/vendor/bat-native-ads/resources/bat_ads_resources.grd": {
     "includes": [40000]
   },
+  "brave/browser/resources/md_extensions/extensions_resources.grd": {
+    "structures": [41000],
+    "includes": [41500],
+  },
 }
