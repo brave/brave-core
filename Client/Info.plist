@@ -38,7 +38,6 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>brave</string>
-				<string>$(MOZ_INTERNAL_URL_SCHEME)</string>
 			</array>
 		</dict>
 	</array>
