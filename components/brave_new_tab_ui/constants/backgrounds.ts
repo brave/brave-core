@@ -66,8 +66,8 @@ export const images: NewTab.Image[] = [
   {
     'name': '11',
     'source': 'ntp-11.webp',
-    'author': 'Will Christiansen',
-    'link': 'http://www.noutgons.nl/'
+    'author': 'Nout Gons',
+    'link': 'https://www.instagram.com/ntgns/'
   },
   {
     'name': '12',
