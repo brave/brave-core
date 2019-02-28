@@ -32,7 +32,7 @@ export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
   line-height: 18px;
   font-family: ${p => p.theme.fontFamily.heading};
   border: 1px solid #E9E9F4;
-  background: url(${caratUrl}) 98% / 10% no-repeat transparent;
+  background: url(${caratUrl}) 97% / 16px no-repeat transparent;
   /* avoid text overflow w/ carat */
   -webkit-padding-start: 10px;
   -webkit-padding-end: 32px;

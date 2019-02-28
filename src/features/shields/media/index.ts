@@ -4,10 +4,9 @@
 
 import styled from '../../../theme'
 import { StyledComponentClass } from 'styled-components'
-import ArrowDown from './arrowDown'
+import { CaratDownIcon, ShieldAlertIcon } from '../../../components/icons'
 
 import { ComponentType } from 'react'
-import { ShieldAlertIcon } from '../../../components/icons'
 import palette from '../../../theme/palette'
 
 // rotated variants
@@ -28,7 +27,11 @@ export const ShieldIcon = styled(ShieldAlertIcon as ComponentType)`
   color: ${palette.grey300};
 `
 
-export const ArrowDownIcon = styled(ArrowDown as ComponentType)`
+export const ArrowDownIcon = styled(CaratDownIcon as ComponentType)`
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+
   &:focus {
     outline-width: 2px;
     outline-offset: -6px;
@@ -39,4 +42,5 @@ export const ArrowDownIcon = styled(ArrowDown as ComponentType)`
     outline: none;
   }
 `
-export const ArrowUpIcon = RotatedIconComponent(ArrowDown, 180)
+
+export const ArrowUpIcon = RotatedIconComponent(ArrowDownIcon, 90)
