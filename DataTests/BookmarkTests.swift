@@ -487,6 +487,19 @@ class BookmarkTests: CoreDataTestCase {
     
     // MARK: - Helpers
     
+    func testSyncOrderValidation() {
+        // Valid values
+        ["0.0.1", "12.23.345.454", "1.2.3.4.5.6.7"].forEach {
+            XCTAssertTrue(Bookmark.isSyncOrderValid($0))
+        }
+        
+        // Invalid values
+        [".1.2.3", "1.2.3.", "undefined", "null" , "1,2.3", "-1.0.2", "1.a.3",
+         "1", "12", "1.2", "1.2..3, 1.2.43a.42"].forEach {
+            XCTAssertFalse(Bookmark.isSyncOrderValid($0), "False positive for : \($0)")
+        }
+    }
+    
     /// Wrapper around `Bookmark.create()` with context save wait expectation and fetching object from view context.
     @discardableResult 
     private func createAndWait(url: URL?, title: String?, customTitle: String? = nil, 

@@ -104,7 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         let profile = getProfile(application)
         let profilePrefix = profile.prefs.getBranchPrefix()
-        Preferences.migratePreferences(keyPrefix: profilePrefix)
+        Migration.launchMigrations(keyPrefix: profilePrefix)
 
         if !DebugSettingsBundleOptions.disableLocalWebServer {
             // Set up a web server that serves us static content. Do this early so that it is ready when the UI is presented.
