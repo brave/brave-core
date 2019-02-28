@@ -70,22 +70,6 @@ void RemoveTrackableSecurityHeadersForThirdParty(
     return;
   }
 
-  bool allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
-      request, top_frame_origin.GetURL(), request_url,
-      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kBraveShields);
-
-  if (!allow_brave_shields) {
-    return;
-  }
-
-  bool allow_fingerprinting = brave_shields::IsAllowContentSettingFromIO(
-      request, top_frame_origin.GetURL(), request_url,
-      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting);
-
-  if (allow_fingerprinting) {
-    return;
-  }
-
   if (!override_response_headers->get()) {
     *override_response_headers =
         new net::HttpResponseHeaders(original_response_headers->raw_headers());

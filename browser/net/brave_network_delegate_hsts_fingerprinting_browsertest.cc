@@ -71,20 +71,6 @@ class BraveNetworkDelegateBaseBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  void AllowFingerprinting() {
-    content_settings()->SetContentSettingCustomScope(
-        first_party_pattern_, ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
-        CONTENT_SETTING_ALLOW);
-  }
-
-  void BlockFingerprinting() {
-    content_settings()->SetContentSettingCustomScope(
-        first_party_pattern_, ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
-        CONTENT_SETTING_BLOCK);
-  }
-
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }
@@ -105,8 +91,6 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBaseBrowserTest, FirstPartySTS) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBaseBrowserTest, ThirdPartySTS) {
-  BlockFingerprinting();
-
   const GURL third_party =
       embedded_test_server()->GetURL("c.com", "/iframe_hsts.html");
   const GURL first_party =
@@ -116,19 +100,4 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBaseBrowserTest, ThirdPartySTS) {
   ui_test_utils::NavigateToURL(browser(), first_party);
 
   EXPECT_FALSE(redirect_observer.has_sts_header(third_party));
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBaseBrowserTest,
-                       ThirdPartySTS_AllowFingerprinting) {
-  AllowFingerprinting();
-
-  const GURL third_party =
-      embedded_test_server()->GetURL("c.com", "/iframe_hsts.html");
-  const GURL first_party =
-      embedded_test_server()->GetURL("a.com", "/hsts.html");
-
-  RedirectObserver redirect_observer(active_contents());
-  ui_test_utils::NavigateToURL(browser(), first_party);
-
-  EXPECT_TRUE(redirect_observer.has_sts_header(third_party));
 }
