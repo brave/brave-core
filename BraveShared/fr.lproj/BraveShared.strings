@@ -20,6 +20,10 @@
 "AdsAndTrackersrBlocked" = "Publicités et trackers 
 Bloqués";
 
+/* Shields Ads Stat */
+"AdsrBlocked" = "Publicités 
+bloquées";
+
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Toujours envoyer";
 
@@ -119,6 +123,18 @@ Bloqués";
 /* cookie settings option */
 "BlockAllCookies" = "Bloquer tous les cookies";
 
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "Bloquer tout";
+
+/* Information displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertInfo" = "Bloquer tous les cookies empêchera le bon fonctionnement de certains sites Web.";
+
+/* Title of alert displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertTitle" = "Bloquer tous les cookies ?";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "Échec de la configuration de la préférence, réessayez.";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Écran des blocages";
 
@@ -148,6 +164,12 @@ Bloqués";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Réglages par défaut de Brave Shield";
+
+/* Brave sync page title */
+"BraveSync" = "Synchronisation Brave (bêta)";
+
+/* Sync settings welcome */
+"BraveSyncWelcome" = "Pour pouvoir commencer, vous devez avoir installé Brave sur tous les appareils que vous souhaitez synchroniser. Pour les associer, lancez une chaîne de synchronisation que vous utiliserez pour associer tous vos appareils en toute sécurité.";
 
 /* Browser Lock feature callout enable action. */
 "BrowserLockCalloutEnable" = "Activer";
@@ -194,6 +216,12 @@ Bloqués";
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Fermer les %i onglets";
 
+/* Code words input help */
+"CodeWordInputHelp" = "Saisissez les mots codés fournis pour la chaîne de synchronisation.";
+
+/* Code words section title */
+"CodeWords" = "Mots codés";
+
 /* No comment provided by engineer. */
 "Confirm" = "Confirmer";
 
@@ -203,6 +231,12 @@ Bloqués";
 /* Settings item for clearing cookies */
 "Cookies" = "Cookies";
 
+/* Copied action complete title */
+"Copied" = "Copié";
+
+/* Copied codewords title */
+"CopiedToClipboard" = "Copié dans le presse-papiers";
+
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Copiez les informations de l'application dans le presse-papiers.";
 
@@ -211,6 +245,9 @@ Bloqués";
 
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Copier le lien";
+
+/* Copy codewords title */
+"CopyToClipboard" = "Copier dans le presse-papiers";
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Moteurs de recherches actuellement utilisés";
@@ -230,6 +267,12 @@ Bloqués";
 /* No comment provided by engineer. */
 "Delete" = "Supprimer";
 
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "Tous les dossiers et les favoris qu'ils contiennent seront supprimés. Voulez-vous vraiment continuer ?";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "Supprimer le dossier ?";
+
 /* Prompt option for cancelling out of deletion */
 "DeleteLoginAlertCancelActionTitle" = "Annuler";
 
@@ -244,6 +287,9 @@ Bloqués";
 
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Supprimer";
+
+/* Sync device settings page title. */
+"Devices" = "Appareils de la chaîne";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Appareil %1$@ (%2$@)";
@@ -265,6 +311,12 @@ Bloqués";
 
 /* Button to edit a favorite */
 "EditFavorite" = "Modifier les favoris";
+
+/* Sync enter code words */
+"EnterCodeWords" = "Saisissez les mots codés";
+
+/* Enter sync code words below */
+"EnterCodeWordsBelow" = "Saisissez les mots codés ci-dessous";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Saisir le nom du dossier";
@@ -296,6 +348,10 @@ Bloqués";
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesVisitOnceButton" = "Consulter le site quand même";
 
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Temps gagné 
+est.";
+
 /* Share action title */
 "FindInPage" = "Rechercher dans la page";
 
@@ -318,11 +374,18 @@ empreintes digitales";
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Protection contre les empreintes digitales";
 
+/* Grand camera access */
+"GrantCameraAccess" = "Activer l'appareil photo";
+
 /* No comment provided by engineer. */
 "Home" = "Accueil";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* Shields Https Stat */
+"HTTPSrUpgrades" = "Mises à niveau 
+HTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Mises à jour HTTPS";
@@ -335,6 +398,10 @@ empreintes digitales";
 
 /* History tableview section header */
 "LastWeek" = "La semaine dernière";
+
+/* DuckDuckGo promotion label. */
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "En savoir plus sur la recherche privée 
+avec DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Dernière modification le %@";
@@ -384,14 +451,23 @@ empreintes digitales";
 /* Title for new folder popup */
 "NewFolder" = "Nouveau dossier";
 
+/* New sync code button title */
+"NewSyncCode" = "Lancer une nouvelle chaîne de synchronisation";
+
 /* New Tab title */
 "NewTab" = "Nouvel onglet";
+
+/* Sync Alert */
+"NotEnoughWordsDescription" = "Saisissez tous les mots et réessayez.";
+
+/* Sync Alert */
+"NotEnoughWordsTitle" = "Nombre de mots insuffisant";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Tout ouvrir (%i)";
 
-/* Context menu item for opening a link in a new tab */
-"OpenInBackgroundTab" = "Ouvrir le lien dans un nouvel onglet";
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "Ouvrir l'image dans un nouvel onglet";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Ouvrir dans un nouvel onglet privé";
@@ -401,6 +477,9 @@ empreintes digitales";
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Accédez au menu Réglages";
+
+/* Sync pair device settings section title */
+"Pair" = "Associer";
 
 /* Error message displayed to user when their confirming passcode doesn't match the first code. */
 "PasscodeConfirmMisMatchErrorText" = "Les codes d'accès ne correspondent pas. Réessayez.";
@@ -435,14 +514,23 @@ empreintes digitales";
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Navigation privée uniquement";
 
-/* Private tab details */
-"PrivateTabBody" = "Les onglets privés ne sont pas enregistrés dans Brave, mais ils ne vous rendent pas anonymes sur Internet. Les sites que vous consultez dans un onglet privé ne s'affichent pas dans votre historique et leurs cookies sont toujours supprimés lorsque vous les fermez (ils ne sont pas conservés dans Brave). Votre opérateur mobile (ou le propriétaire du réseau Wi-Fi ou lorsque vous vous connectez à un VPN) peut voir les sites que vous consultez, et ces sites obtiennent votre adresse IP publique, même dans des onglets privés.";
+/* Private tab detail text */
+"PrivateTabDetails" = "L'utilisation des onglets privés change seulement les opérations que Brave peut effectuer sur votre appareil, mais pas le comportement des autres.
+
+Les sites obtiennent toujours votre adresse IP lorsque vous les consultez. Grâce à elle, ils peuvent souvent deviner votre position approximative (généralement votre ville). Parfois, cette localisation peut être déterminée de manière beaucoup plus précise. Les sites reçoivent toutes les informations que vous leur communiquez, comme les termes de recherche. Si vous vous connectez à un site, il saura que vous êtes le propriétaire de ce compte. Cependant, vous serez toujours déconnecté lorsque vous fermerez les onglets privés, car Brave supprime le cookie qui permet de vous garder connecté.
+
+Quel que soit votre fournisseur d'accès Internet, il peut voir toutes vos activités sur le réseau. Il s'agit souvent de votre opérateur mobile. Si vous êtes connecté à un réseau Wi-Fi, il s'agit du propriétaire du réseau, et si vous utilisez un VPN, il s'agit du fournisseur de ce VPN. Votre fournisseur d'accès Internet peut voir les sites que vous consultez lorsque vous les consultez. Si ces sites utilisent le protocole HTTPS, votre fournisseur n'aura aucune information concrète concernant vos activités sur ce site. Cependant, si un site utilise seulement le protocole HTTP, alors votre fournisseur d'accès Internet peut tout voir : vos termes de recherche, les pages que vous avez lues et les liens sur lesquels vous avez cliqué.
+
+Si un employeur gère votre appareil, il peut également suivre l'utilisation que vous en faites. L'utilisation des onglets privés ne l'empêchera certainement pas de savoir quels sites vous consultez. De plus, une personne ayant accès à votre appareil a pu installer un logiciel qui surveille votre activité, et les onglets privés ne vous protégeront pas contre cela non plus.";
 
 /* Private tab information link */
 "PrivateTabLink" = "En savoir plus sur les onglets privés.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Onglet privé";
+
+/* QR Code section title */
+"QRCode" = "Code QR";
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Moteurs de recherches rapides";
@@ -501,6 +589,9 @@ empreintes digitales";
 /* Sepia theme setting in Reading View settings */
 "ReaderModeThemeButtonTitleSepia" = "Sépia";
 
+/* Action button for removing sync device. */
+"RemoveDevice" = "Supprimer";
+
 /* Button to remove a favorite */
 "RemoveFavorite" = "Supprimer le favori";
 
@@ -527,6 +618,12 @@ empreintes digitales";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Enregistrer les identifiants";
+
+/* Scan sync code title */
+"Scan" = "Scanner";
+
+/* Scan sync code button title */
+"ScanSyncCode" = "J'ai un code de synchronisation";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Scripts bloqués";
@@ -609,6 +706,9 @@ empreintes digitales";
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Afficher les signets";
 
+/* Show code words instead */
+"ShowCodeWords" = "Afficher plutôt les mots codés";
+
 /* Button to show the history list */
 "ShowHistory" = "Afficher l'historique";
 
@@ -629,6 +729,114 @@ empreintes digitales";
 
 /* Support section title */
 "Support" = "Assistance";
+
+/* Sync settings section title */
+"Sync" = "Synchronisation (bêta)";
+
+/* Add another device cell button. */
+"SyncAddAnotherDevice" = "Ajouter un autre appareil";
+
+/* Add a Computer title */
+"SyncAddComputerTitle" = "Ajouter un ordinateur";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "Scanner le code QR de la chaîne";
+
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "Sur votre deuxième appareil mobile, accédez à la synchronisation Brave dans le volet des paramètres et appuyez sur le bouton « Scanner le code de synchronisation ». Utilisez votre appareil photo pour scanner le code QR ci-dessous.";
+
+/* Add device to sync with code words */
+"SyncAddDeviceWords" = "Saisir le code de synchronisation";
+
+/* Sync add device description */
+"SyncAddMobileWordsDescription" = "Sur votre appareil, accédez à la synchronisation Brave dans le volet des paramètres et appuyez sur le bouton « %@ ». Saisissez les mots codés de la chaîne de synchronisation affichés ci-dessous.";
+
+/* Add Tablet or phone title */
+"SyncAddTabletOrPhoneTitle" = "Ajouter une tablette ou un téléphone";
+
+/* Choose device type for sync */
+"SyncChooseDevice" = "Choisir le type d'appareil";
+
+/* Header for device choosing screen. */
+"SyncChooseDeviceHeader" = "Choisissez le type d'appareil avec lequel vous souhaitez effectuer la synchronisation.";
+
+/* Computer device button title */
+"SyncComputerDevice" = "Ordinateur";
+
+/* Sync you browser settings across devices. */
+"SyncDevices" = "Appareils et paramètres";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "L'agent de synchronisation Brave est actuellement hors ligne et injoignable. Réessayez ultérieurement.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Erreur de communication avec la synchronisation Brave";
+
+/* No internet connection alert body. */
+"SyncNoConnectionBody" = "Vérifiez votre connexion Internet et réessayez.";
+
+/* No internet connection alert title. */
+"SyncNoConnectionTitle" = "Échec de la connexion à la synchronisation";
+
+/* Message for removing the current device from Sync */
+"SyncRemoveCurrentDeviceMessage" = "Les données locales des appareils resteront intactes sur tous les appareils. Les autres appareils de cette chaîne de synchronisation continueront d'être synchronisés.";
+
+/* Title for removing the current device from Sync */
+"SyncRemoveCurrentDeviceTitle" = "Supprimer %@ de la chaîne de synchronisation ?";
+
+/* Remove device button for action sheet. */
+"SyncRemoveDeviceAction" = "Supprimer l'appareil";
+
+/* Default name for a device */
+"SyncRemoveDeviceDefaultName" = "Appareil";
+
+/* Message for removing last device from Sync */
+"SyncRemoveLastDeviceMessage" = "Les données actuellement synchronisées seront conservées, mais toutes les données dans le cache de la synchronisation Brave seront supprimées. Vous devrez lancer une nouvelle chaîne de synchronisation pour synchroniser à nouveau les données de l'appareil.";
+
+/* Button name for removing last device from Sync */
+"SyncRemoveLastDeviceRemoveButtonName" = "Supprimer la chaîne de synchronisation";
+
+/* Title for removing last device from Sync */
+"SyncRemoveLastDeviceTitle" = "La suppression de %@ entraînera la suppression de la chaîne de synchronisation";
+
+/* Message for removing other device from Sync */
+"SyncRemoveOtherDeviceMessage" = "La suppression de l'appareil de la chaîne de synchronisation n'entraînera pas la suppression des données de l'appareil déjà synchronisées.";
+
+/* Title for removing other device from Sync */
+"SyncRemoveOtherDeviceTitle" = "Supprimer %@ de la chaîne de synchronisation ?";
+
+/* Sync remove device. */
+"SyncRemoveThisDevice" = "Supprimer cet appareil";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestion" = "Supprimer cet appareil ?";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestionDesc" = "Cet appareil sera déconnecté du groupe de synchronisation et ne pourra plus recevoir ni envoyer de données. Toutes les données existantes resteront sur l'appareil.";
+
+/* Header title for Sync settings */
+"SyncSettingsHeader" = "La liste d'appareils ci-dessous comprend tous les appareils de votre chaîne de synchronisation. Tous ces appareils peuvent être gérés depuis n'importe lequel des autres appareils.";
+
+/* Switch back to camera button */
+"SyncSwitchBackToCameraButton" = "Je souhaite utiliser mon appareil photo…";
+
+/* Tablet or phone button title */
+"SyncTabletOrMobileDevice" = "Tablette ou téléphone";
+
+/* This device cell */
+"SyncThisDevice" = "Cet appareil";
+
+/* Sync to existing device */
+"SyncToDevice" = "Synchroniser avec l'appareil";
+
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "À l'aide de l'appareil synchronisé existant, ouvrez la section Paramètres Brave, accédez à « Appareils et Paramètres » et appuyez sur « + » pour ajouter un nouvel appareil et afficher le code de synchronisation.";
+
+/* Description on popup when setting up a sync group fails */
+"SyncUnableCreateGroup" = "Impossible de créer un nouveau groupe de synchronisation.";
+
+/* No comment provided by engineer. */
+"SyncUnsuccessful" = "Échec";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Fermer";
@@ -708,6 +916,16 @@ empreintes digitales";
 /* History tableview section header */
 "Today" = "Aujourd'hui";
 
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "Traceurs 
+bloqués";
+
+/* Sync Alert */
+"UnableToConnectDescription" = "Impossible de rejoindre le groupe de synchronisation. Vérifiez les mots saisis et réessayez.";
+
+/* Sync Alert */
+"UnableToConnectTitle" = "Échec de la connexion";
+
 /* Bookmark URL */
 "URL" = "URL";
 
@@ -722,6 +940,12 @@ empreintes digitales";
 
 /* Accessibility label for the main web content view */
 "WebContentAccessibilityLabel" = "Contenu Web";
+
+/* Word count title */
+"WordCount" = "Nombre de mots : %i";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "Oui, supprimer";
 
 /* History tableview section header */
 "Yesterday" = "Hier";

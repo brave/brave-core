@@ -17,8 +17,12 @@
 "AdsAndTrackers" = "Annonser og sporingsprogrammer";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Annonser og 
-sporer blokkert";
+"AdsAndTrackersrBlocked" = "Annonser og sporingsprogrammer 
+blokkert";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "Annonser 
+blokkert";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Send alltid";
@@ -119,6 +123,18 @@ sporer blokkert";
 /* cookie settings option */
 "BlockAllCookies" = "Blokker alle informasjonskapsler";
 
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "Blokker alle";
+
+/* Information displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertInfo" = "Hvis du blokkerer alle informasjonskapsler, vil enkelte nettsteder ikke fungere riktig.";
+
+/* Title of alert displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertTitle" = "Blokkere alle informasjonskapsler?";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "Alternativet kan ikke endres. Prøv senere.";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blokkeringsoversikt";
 
@@ -148,6 +164,12 @@ sporer blokkert";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave Shield standardinnstillinger";
+
+/* Brave sync page title */
+"BraveSync" = "Brave-synkronisering (beta)";
+
+/* Sync settings welcome */
+"BraveSyncWelcome" = "Brave må være installert på alle enhetene du vil synkronisere. Start en synkkjede for å knytte alle enhetene dine sikkert sammen.";
 
 /* Browser Lock feature callout enable action. */
 "BrowserLockCalloutEnable" = "Aktiver";
@@ -194,6 +216,12 @@ sporer blokkert";
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Lukk alle %i fanene";
 
+/* Code words input help */
+"CodeWordInputHelp" = "Skriv kodeordene du har mottatt for synkkjeden.";
+
+/* Code words section title */
+"CodeWords" = "Kodeord";
+
 /* No comment provided by engineer. */
 "Confirm" = "Bekreft";
 
@@ -203,6 +231,12 @@ sporer blokkert";
 /* Settings item for clearing cookies */
 "Cookies" = "Informasjonskapsler";
 
+/* Copied action complete title */
+"Copied" = "Kopiert!";
+
+/* Copied codewords title */
+"CopiedToClipboard" = "Kopiert til utklippstavlen.";
+
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Kopier informasjon om appen til utklippstavlen.";
 
@@ -211,6 +245,9 @@ sporer blokkert";
 
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Kopier lenke";
+
+/* Copy codewords title */
+"CopyToClipboard" = "Kopier til utklippstavlen";
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Søkemotorer som for tiden er i bruk";
@@ -230,6 +267,12 @@ sporer blokkert";
 /* No comment provided by engineer. */
 "Delete" = "Slett";
 
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "Dette gjør at alle mapper og bokmerker i mappen slettes. Er du sikker på at du vil fortsette?";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "Slette mappe?";
+
 /* Prompt option for cancelling out of deletion */
 "DeleteLoginAlertCancelActionTitle" = "Avbryt";
 
@@ -244,6 +287,9 @@ sporer blokkert";
 
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Slett";
+
+/* Sync device settings page title. */
+"Devices" = "Enheter på kjeden";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Enhet %1$@ (%2$@)";
@@ -265,6 +311,12 @@ sporer blokkert";
 
 /* Button to edit a favorite */
 "EditFavorite" = "Rediger favoritt";
+
+/* Sync enter code words */
+"EnterCodeWords" = "Skriv kodeord";
+
+/* Enter sync code words below */
+"EnterCodeWordsBelow" = "Skriv kodeord under";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Tast inn navn på mappe";
@@ -296,6 +348,10 @@ sporer blokkert";
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesVisitOnceButton" = "Besøk siden allikevel";
 
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Est. tid
+spart";
+
 /* Share action title */
 "FindInPage" = "Finn på side";
 
@@ -318,11 +374,18 @@ beskyttelse";
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Fingeravtrykkbeskyttelse";
 
+/* Grand camera access */
+"GrantCameraAccess" = "Aktiver kamera";
+
 /* No comment provided by engineer. */
 "Home" = "Hjem";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Everywhere";
+
+/* Shields Https Stat */
+"HTTPSrUpgrades" = "HTTPS-
+oppgraderinger";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS-oppgraderinger";
@@ -335,6 +398,10 @@ beskyttelse";
 
 /* History tableview section header */
 "LastWeek" = "Siste uke";
+
+/* DuckDuckGo promotion label. */
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "Finn ut mer om private søk 
+med DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Sist modifisert %@";
@@ -384,14 +451,23 @@ beskyttelse";
 /* Title for new folder popup */
 "NewFolder" = "Ny mappe";
 
+/* New sync code button title */
+"NewSyncCode" = "Start en ny synkkjede";
+
 /* New Tab title */
 "NewTab" = "Ny fane";
+
+/* Sync Alert */
+"NotEnoughWordsDescription" = "Skriv alle ordene og prøv igjen";
+
+/* Sync Alert */
+"NotEnoughWordsTitle" = "Ikke nok ord";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Åpne alle (%i)";
 
-/* Context menu item for opening a link in a new tab */
-"OpenInBackgroundTab" = "Åpne lenke i ny fane";
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "Åpne bilde i ny fane";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Åpne i ny privat fane";
@@ -401,6 +477,9 @@ beskyttelse";
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Åpne innstillinger";
+
+/* Sync pair device settings section title */
+"Pair" = "Par";
 
 /* Error message displayed to user when their confirming passcode doesn't match the first code. */
 "PasscodeConfirmMisMatchErrorText" = "Passkodene stemte ikke overens. Prøv igjen.";
@@ -435,14 +514,23 @@ beskyttelse";
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Kun privat surfing";
 
-/* Private tab details */
-"PrivateTabBody" = "Private faner blir ikke lagret i Brave, men de gjør deg ikke anonym på nett. Sidene du besøker i private faner vises ikke i historikken din, og informasjonskapslene deres forsvinner alltid når du lukker dem – det vil ikke være spor etter dem i Brave. Mobilleverandøren din (eller eieren av WiFi-nettverket eller VPN du er tilkoblet) kan se hvilke sider du besøker, og disse sidene vil ha din offentlige IP-adresse, selv i private faner.";
+/* Private tab detail text */
+"PrivateTabDetails" = "Det å bruke private faner påvirker kun det Brave gjør på enheten din, det forandrer ikke andres adferd.
+
+Nettsteder får alltid vite IP-adressen din når du besøker dem. Ut ifra dette kan de ofte gjette omtrent hvor du befinner deg, men vanligvis er ikke dette mer nøyaktig enn hvilken by du er i. Noen ganger kan imidlertid posisjonen de anslår, være mer spesifikk. Nettsteder får også vite alt du spesifikt oppgir til dem, som søkeord. Hvis du logger på et nettsted, vet nettstedet at du eier den gjeldende kontoen. Du blir likevel logget ut når du lukker de private fanene, for Brave kaster informasjonskapselen som holder deg pålogget.
+
+Den som kobler deg til internett (vanligvis internettleverandøren din) kan se all aktiviteten på nettverket ditt. Ofte er internettleverandøren mobilleverandøren din. Hvis du er koblet til et WiFi-nettverk, er internettleverandøren eieren av nettverket, og hvis du bruker en VPN, er det den som drifter VPN-en. Internettleverandøren din kan se hvilke nettsteder du besøker, samtidig som du besøker dem. Hvis disse nettstedene bruker HTTPS, kan internettleverandøren gjøre mer enn en kvalifisert gjetning angående hva du foretar deg på slike nettsteder. Hvis et nettsted kun bruker HTTP, kan imidlertid internettleverandøren din se alt: søkeordene dine, hvilke sider du leser, og hvilke lenker du følger.
+
+Hvis arbeidsgiveren din administrerer enheten din, kan arbeidsgiveren også se hva du gjør med den. Det å bruke private faner vil sannsynligvis ikke hindre at de finner ut hvilke nettsteder du har besøkt. Andre som har tilgang til enheten din, kan også ha installert programvare som overvåker aktiviteten din, og private faner beskytter deg heller ikke mot dette.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Finn ut mer om private faner.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Privat fane";
+
+/* QR Code section title */
+"QRCode" = "QR-kode";
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Søkemotorer for raske søk";
@@ -501,6 +589,9 @@ beskyttelse";
 /* Sepia theme setting in Reading View settings */
 "ReaderModeThemeButtonTitleSepia" = "Sepia";
 
+/* Action button for removing sync device. */
+"RemoveDevice" = "Fjern";
+
 /* Button to remove a favorite */
 "RemoveFavorite" = "Fjern favoritt";
 
@@ -527,6 +618,12 @@ beskyttelse";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Lagre innlogginger";
+
+/* Scan sync code title */
+"Scan" = "Skann";
+
+/* Scan sync code button title */
+"ScanSyncCode" = "Jeg har en synkkode";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Skripter blokkert";
@@ -609,6 +706,9 @@ beskyttelse";
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Vis bokmerker";
 
+/* Show code words instead */
+"ShowCodeWords" = "Vis kodeord i stedet";
+
 /* Button to show the history list */
 "ShowHistory" = "Vis historikk";
 
@@ -629,6 +729,114 @@ beskyttelse";
 
 /* Support section title */
 "Support" = "Støtte";
+
+/* Sync settings section title */
+"Sync" = "Synkronisering (beta)";
+
+/* Add another device cell button. */
+"SyncAddAnotherDevice" = "Legg til en ny enhet";
+
+/* Add a Computer title */
+"SyncAddComputerTitle" = "Legg til en datamaskin";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "Skann kjedens QR-kode";
+
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "På den andre mobilenheten går du til Brave-synkronisering i Innstillinger og trykker på «Skann synkkode». Bruk kameraet til å skanne QR-koden under.";
+
+/* Add device to sync with code words */
+"SyncAddDeviceWords" = "Angi synkkoden";
+
+/* Sync add device description */
+"SyncAddMobileWordsDescription" = "På enheten går du til Brave-synkronisering i Innstillinger og trykker på «%@». Skriv inn synkkjedeordene du ser under.";
+
+/* Add Tablet or phone title */
+"SyncAddTabletOrPhoneTitle" = "Legg til et nettbrett eller en telefon";
+
+/* Choose device type for sync */
+"SyncChooseDevice" = "Velg enhetstype";
+
+/* Header for device choosing screen. */
+"SyncChooseDeviceHeader" = "Velg hva slags enhet du vil synkronisere med.";
+
+/* Computer device button title */
+"SyncComputerDevice" = "Datamaskin";
+
+/* Sync you browser settings across devices. */
+"SyncDevices" = "Enheter og innstillinger";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "Representanten for Brave-synkronisering er avlogget eller kan ikke nås. Prøv senere.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Kommunikasjonsfeil ved Brave-synkronisering";
+
+/* No internet connection alert body. */
+"SyncNoConnectionBody" = "Sjekk nettforbindelsen, og prøv igjen.";
+
+/* No internet connection alert title. */
+"SyncNoConnectionTitle" = "Kan ikke koble til synkronisering";
+
+/* Message for removing the current device from Sync */
+"SyncRemoveCurrentDeviceMessage" = "Data på den lokale enheten blir værende på alle enheter. Andre enheter i denne synkkjeden blir værende synkronisert ";
+
+/* Title for removing the current device from Sync */
+"SyncRemoveCurrentDeviceTitle" = "Vil du fjerne %@ fra synkkjeden?";
+
+/* Remove device button for action sheet. */
+"SyncRemoveDeviceAction" = "Fjern enhet";
+
+/* Default name for a device */
+"SyncRemoveDeviceDefaultName" = "Enhet";
+
+/* Message for removing last device from Sync */
+"SyncRemoveLastDeviceMessage" = "Synkroniserte data beholdes men alle data i Braves synkroniseringsmellomlager slettes. Du må starte en ny synkkjede for å synkronisere dataene på enhetene igjen.";
+
+/* Button name for removing last device from Sync */
+"SyncRemoveLastDeviceRemoveButtonName" = "Slett synkkjede";
+
+/* Title for removing last device from Sync */
+"SyncRemoveLastDeviceTitle" = "Hvis du fjerner %@, slettes synkkjeden.";
+
+/* Message for removing other device from Sync */
+"SyncRemoveOtherDeviceMessage" = "Det å fjerne enheten fra synkkjeden fjerner ikke data som opprinnelig kom fra den enheten.";
+
+/* Title for removing other device from Sync */
+"SyncRemoveOtherDeviceTitle" = "Vil du fjerne %@ fra synkkjeden?";
+
+/* Sync remove device. */
+"SyncRemoveThisDevice" = "Fjern denne enheten";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestion" = "Fjerne denne enheten?";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestionDesc" = "Denne enheten vil bli koblet fra synkroniseringsgruppen, og vil ikke lenger motta eller sende synkroniseringsdata. Alle eksisterende data vil forbli på enheten.";
+
+/* Header title for Sync settings */
+"SyncSettingsHeader" = "På oversikten under ser du alle enhetene i synkkjeden din. Alle enhetene kan administreres fra enhver av de andre enhetene.";
+
+/* Switch back to camera button */
+"SyncSwitchBackToCameraButton" = "Jeg bruker kameraet mitt …";
+
+/* Tablet or phone button title */
+"SyncTabletOrMobileDevice" = "Nettbrett eller telefon";
+
+/* This device cell */
+"SyncThisDevice" = "Denne enheten";
+
+/* Sync to existing device */
+"SyncToDevice" = "Synkroniser til enhet";
+
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "Ved å bruke en enhet som allerede er synkronisert, kan du gå til Innstillinger for Brave > fanen «Enheter og innstillinger» og trykke på «+» for å legge til en ny enhet og få fram synkkoden.";
+
+/* Description on popup when setting up a sync group fails */
+"SyncUnableCreateGroup" = "Kunne ikke opprette ny synkgruppe.";
+
+/* No comment provided by engineer. */
+"SyncUnsuccessful" = "Mislykket";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Lukk";
@@ -708,6 +916,16 @@ beskyttelse";
 /* History tableview section header */
 "Today" = "I dag";
 
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "Sporingsprogrammer 
+blokkert";
+
+/* Sync Alert */
+"UnableToConnectDescription" = "Kan ikke bli med i synkgruppen. Sjekk ordene du skrev inn, og prøv igjen.";
+
+/* Sync Alert */
+"UnableToConnectTitle" = "Kan ikke koble til";
+
 /* Bookmark URL */
 "URL" = "URL";
 
@@ -722,6 +940,12 @@ beskyttelse";
 
 /* Accessibility label for the main web content view */
 "WebContentAccessibilityLabel" = "Nettinnhold";
+
+/* Word count title */
+"WordCount" = "Antall ord: %i";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "Ja, slett";
 
 /* History tableview section header */
 "Yesterday" = "I går";

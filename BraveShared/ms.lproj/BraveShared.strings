@@ -17,8 +17,12 @@
 "AdsAndTrackers" = "Iklan dan Penjejak";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Iklan dan
-Pelacak disekat";
+"AdsAndTrackersrBlocked" = "Iklan dan Penjejak
+Disekat";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "Iklan 
+Disekat";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Sentiasa Hantar";
@@ -119,6 +123,18 @@ Pelacak disekat";
 /* cookie settings option */
 "BlockAllCookies" = "Sekat semua kuki";
 
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "Sekat Semua";
+
+/* Information displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertInfo" = "Menyekat semua Kuki akan menghalang sesetengah laman web berfungsi dengan betul.";
+
+/* Title of alert displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertTitle" = "Sekat semua Kuki?";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "Gagal menetapkan keutamaan. Sila cuba lagi.";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Pemantau Penyekatan";
 
@@ -148,6 +164,12 @@ Pelacak disekat";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Lalai Perisai Brave";
+
+/* Brave sync page title */
+"BraveSync" = "Segerak Brave (beta)";
+
+/* Sync settings welcome */
+"BraveSyncWelcome" = "Untuk bermula, anda perlu memasangkan Brave pada semua peranti yang anda ingin segerakkan. Untuk menghubungkan mereka bersama-sama, mulakan rantaian penyegerakan yang anda akan gunakan untuk menghubungkan semua peranti anda dengan selamat.";
 
 /* Browser Lock feature callout enable action. */
 "BrowserLockCalloutEnable" = "Aktifkan";
@@ -194,6 +216,12 @@ Pelacak disekat";
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Tutup Semua %i Tab";
 
+/* Code words input help */
+"CodeWordInputHelp" = "Taip perkataan kod rantaian penyegerakan anda yang dibekalkan.";
+
+/* Code words section title */
+"CodeWords" = "Perkataan Kod";
+
 /* No comment provided by engineer. */
 "Confirm" = "Sah";
 
@@ -203,6 +231,12 @@ Pelacak disekat";
 /* Settings item for clearing cookies */
 "Cookies" = "Kuki";
 
+/* Copied action complete title */
+"Copied" = "Disalin!";
+
+/* Copied codewords title */
+"CopiedToClipboard" = "Disalin kepada Papan Klip!";
+
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Salin maklumat app kepada papan klip.";
 
@@ -211,6 +245,9 @@ Pelacak disekat";
 
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Salin Pautan";
+
+/* Copy codewords title */
+"CopyToClipboard" = "Salin kepada Papan Klip";
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Enjin carian yang digunakan sekarang";
@@ -230,6 +267,12 @@ Pelacak disekat";
 /* No comment provided by engineer. */
 "Delete" = "Padam";
 
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "Ini akan memadamkan semua folder dan tanda buku di dalamnya. Adakah anda ingin teruskan?";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "Padamkan Folder?";
+
 /* Prompt option for cancelling out of deletion */
 "DeleteLoginAlertCancelActionTitle" = "Batal";
 
@@ -244,6 +287,9 @@ Pelacak disekat";
 
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Padam";
+
+/* Sync device settings page title. */
+"Devices" = "Peranti pada rantai";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Peranti %1$@ (%2$@)";
@@ -265,6 +311,12 @@ Pelacak disekat";
 
 /* Button to edit a favorite */
 "EditFavorite" = "Edit Kegemaran";
+
+/* Sync enter code words */
+"EnterCodeWords" = "Masukkan perkataan kod";
+
+/* Enter sync code words below */
+"EnterCodeWordsBelow" = "Masukkan perkataan kod di bawah";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Masukkan nama folder";
@@ -296,6 +348,10 @@ Pelacak disekat";
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesVisitOnceButton" = "Kunjungi tapak juga";
 
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Masa Jangkaan
+Disimpan";
+
 /* Share action title */
 "FindInPage" = "Cari dalam Halaman";
 
@@ -318,11 +374,18 @@ Pencapjarian";
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Perlindungan Pencapjarian";
 
+/* Grand camera access */
+"GrantCameraAccess" = "Aktifkan Kamera";
+
 /* No comment provided by engineer. */
 "Home" = "Halaman Utama";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhere" = "HTTPS Di Mana Sahaja";
+
+/* Shields Https Stat */
+"HTTPSrUpgrades" = "HTTPS 
+Naik Taraf";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Naik Taraf HTTPS";
@@ -335,6 +398,10 @@ Pencapjarian";
 
 /* History tableview section header */
 "LastWeek" = "Minggu lepas";
+
+/* DuckDuckGo promotion label. */
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "Ketahui carian peribadi
+dengan DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Terakhir diubah suai %@";
@@ -384,14 +451,23 @@ Pencapjarian";
 /* Title for new folder popup */
 "NewFolder" = "Folder Baharu";
 
+/* New sync code button title */
+"NewSyncCode" = "Mulakan Rantaian Penyegerakan baru";
+
 /* New Tab title */
 "NewTab" = "Tab Baharu";
+
+/* Sync Alert */
+"NotEnoughWordsDescription" = "Sila masukkan semua perkataan dan cuba lagi.";
+
+/* Sync Alert */
+"NotEnoughWordsTitle" = "Perkataan Tidak Cukup";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Buka Semua (%i)";
 
-/* Context menu item for opening a link in a new tab */
-"OpenInBackgroundTab" = "Buka Pautan dalam Tab Baharu";
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "Buka Imej Dalam Tab Baru";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Buka dalam Tab Peribadi Baharu";
@@ -401,6 +477,9 @@ Pencapjarian";
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Buka Tetapan";
+
+/* Sync pair device settings section title */
+"Pair" = "Pasangkan";
 
 /* Error message displayed to user when their confirming passcode doesn't match the first code. */
 "PasscodeConfirmMisMatchErrorText" = "Kod laluan tidak sepadan. Cuba lagi.";
@@ -435,14 +514,23 @@ Pencapjarian";
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Semakan Lalu Peribadi Sahaja";
 
-/* Private tab details */
-"PrivateTabBody" = "Tab Peribadi tidak disimpan dalam Brave, tetapi mereka tidak menyembunyikan identiti anda dalam talian. Laman yang anda lawati dalam tab peribadi tidak akan muncul dalam sejarah anda dan kuki mereka sentiasa lenyap apabila anda menutupnya - tidak akan ada jejak yang ditinggalkan dalam Brave. Pembawa mudah alih anda (atau pemilik rangkaian WiFi atau VPN yang anda sambungkan) boleh melihat laman web yang anda lawati dan laman tersebut akan mempelajari alamat IP awam anda, walaupun dalam Tab Peribadi.";
+/* Private tab detail text */
+"PrivateTabDetails" = "Penggunaan Tab Peribadi hanya dapat mengubah apa yang dibuat dengan Brave pada peranti anda, ia tidak mengubah tingkah laku orang lain.
+
+Laman sentiasa belajar alamat IP anda apabila anda melawat laman tersebut. Dengan ini, laman sering boleh meneka lokasi kasar anda - biasanya bandar anda. Kadang-kadang tekaan lokasi boleh menjadi lebih spesifik. Laman juga tahu semua perkara yang anda katakan kepada mereka secara khusus, seperti istilah carian. Jika anda log masuk ke laman, mereka akan mengetahui bahawa anda pemilik akaun itu. Anda masih akan dilog keluar apabila anda menutup Tab Peribadi kerana Brave akan membuang kuki yang mengekalkan log masuk anda.
+
+Sesiapa pun yang menghubungkan anda kepada Internet (ISP anda) dapat melihat semua aktiviti rangkaian anda. Biasanya, ini merupakan pembawa mudah alih anda. Jika anda disambungkan ke rangkaian WiFi, ini merupakan pemilik rangkaian itu, dan jika anda menggunakan VPN, maka sesiapa pun yang menguruskan VPN itu. ISP anda boleh melihat laman web yang anda kunjungi semasa anda melawatnya. Sekiranya laman web tersebut menggunakan HTTPS, mereka hanya dapat meneka apa yang anda lakukan di laman web tersebut. Sekiranya laman hanya menggunakan HTTP maka ISP anda dapat melihat segala-galanya: istilah carian anda, laman yang anda baca, dan pautan yang anda ikuti.
+
+Sekiranya majikan menguruskan peranti anda, mereka mungkin juga menjejaki apa yang anda lakukan dengannya. Penggunaan Tab Peribadi mungkin tidak dapat menghalang mereka daripada mengetahui laman yang telah anda lawati. Seseorang yang mempunyai akses ke peranti anda juga boleh memasangkan perisian yang memantau aktiviti anda, dan Tab Pribadi tidak akan melindungi anda daripada perbuatan tersebut.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Ketahui tentang tab peribadi.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Tab Peribadi";
+
+/* QR Code section title */
+"QRCode" = "Kod QR";
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Enjin Carian Pantas";
@@ -501,6 +589,9 @@ Pencapjarian";
 /* Sepia theme setting in Reading View settings */
 "ReaderModeThemeButtonTitleSepia" = "Sepia";
 
+/* Action button for removing sync device. */
+"RemoveDevice" = "Alih Keluar";
+
 /* Button to remove a favorite */
 "RemoveFavorite" = "Alih Keluar Kegemaran";
 
@@ -527,6 +618,12 @@ Pencapjarian";
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Simpan Log Masuk";
+
+/* Scan sync code title */
+"Scan" = "Imbas";
+
+/* Scan sync code button title */
+"ScanSyncCode" = "Saya memiliki Kod Segerak";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Skrip Disekat";
@@ -609,6 +706,9 @@ Pencapjarian";
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Tunjuk Penanda Buku";
 
+/* Show code words instead */
+"ShowCodeWords" = "Tunjukkan perkataan kod";
+
 /* Button to show the history list */
 "ShowHistory" = "Tunjuk Sejarah";
 
@@ -629,6 +729,114 @@ Pencapjarian";
 
 /* Support section title */
 "Support" = "Sokongan";
+
+/* Sync settings section title */
+"Sync" = "Segerak (beta)";
+
+/* Add another device cell button. */
+"SyncAddAnotherDevice" = "Tambah satu peranti lagi";
+
+/* Add a Computer title */
+"SyncAddComputerTitle" = "Tambah satu Komputer";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "Imbas Kod QR Rantai";
+
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "Pada peranti mudah alih kedua anda, navigasi ke Segerak Brave dalam panel Tetapan dan ketik butang \"Imbas Kod Segerak\". Gunakan kamera anda untuk mengimbas Kod QR di bawah.";
+
+/* Add device to sync with code words */
+"SyncAddDeviceWords" = "Masukkan kod segerak";
+
+/* Sync add device description */
+"SyncAddMobileWordsDescription" = "Pada peranti mudah alih anda, navigasi ke Segerak Brave dalam panel Tetapan dan ketik butang \"%@\". Gunakan perkataan kod rantaian penyegerakan di bawah.";
+
+/* Add Tablet or phone title */
+"SyncAddTabletOrPhoneTitle" = "Tambah Tablet atau Telefon";
+
+/* Choose device type for sync */
+"SyncChooseDevice" = "Pilih Jenis Peranti";
+
+/* Header for device choosing screen. */
+"SyncChooseDeviceHeader" = "Pilih jenis peranti azng anda ingin menyegerakkan.";
+
+/* Computer device button title */
+"SyncComputerDevice" = "Komputer";
+
+/* Sync you browser settings across devices. */
+"SyncDevices" = "Peranti & Tetapan";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "Agen Segerak Brave adalah di luar talian atau tidak dapat dihubungi. Sila cuba sebentar lagi.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Ralat Komunikasi Segerak Brave";
+
+/* No internet connection alert body. */
+"SyncNoConnectionBody" = "Semak sambungan internet anda dan cuba lagi.";
+
+/* No internet connection alert title. */
+"SyncNoConnectionTitle" = "Tidak dapat menyambung untuk penyegerakan";
+
+/* Message for removing the current device from Sync */
+"SyncRemoveCurrentDeviceMessage" = "Data peranti tempatan akan kekal utuh pada semua peranti. Peranti lain dalam Rantaian Penyegerakan ini akan tetap disegerakkan.";
+
+/* Title for removing the current device from Sync */
+"SyncRemoveCurrentDeviceTitle" = "Keluarkan %@ dari Rantaian Penyegerakan?";
+
+/* Remove device button for action sheet. */
+"SyncRemoveDeviceAction" = "Alih keluar peranti";
+
+/* Default name for a device */
+"SyncRemoveDeviceDefaultName" = "Peranti";
+
+/* Message for removing last device from Sync */
+"SyncRemoveLastDeviceMessage" = "Data yang disegerakkan akan disimpan tetapi semua data dalam cache Segerak Brave akan dipadamkan. Anda perlu memulakan Rantaian Penyegerakan baru untuk menyegerakkan semula data peranti.";
+
+/* Button name for removing last device from Sync */
+"SyncRemoveLastDeviceRemoveButtonName" = "Padamkan Rantaian Penyegerakan";
+
+/* Title for removing last device from Sync */
+"SyncRemoveLastDeviceTitle" = "Pengalihan keluar %@ akan memadamkan Rantaian Penyegerakan.";
+
+/* Message for removing other device from Sync */
+"SyncRemoveOtherDeviceMessage" = "Pengalihan keluar peranti dari Rantaian Penyegerakan tidak akan memadamkan data yang disegerakkan sebelum ini dari peranti.";
+
+/* Title for removing other device from Sync */
+"SyncRemoveOtherDeviceTitle" = "Keluarkan %@ dari Rantaian Penyegerakan?";
+
+/* Sync remove device. */
+"SyncRemoveThisDevice" = "Keluarkan peranti ini";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestion" = "Keluarkan peranti ini?";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestionDesc" = "Peranti ini akan diputuskan dari kumpulan penyegerakan dan tidak lagi menerima atau menghantar data penyegerakan. Semua data sedia ada akan kekal pada peranti.";
+
+/* Header title for Sync settings */
+"SyncSettingsHeader" = "Senarai peranti di bawah termasuk semua peranti dalam rantaian penyegerakan anda. Setiap peranti boleh diuruskan dari mana-mana peranti lain.";
+
+/* Switch back to camera button */
+"SyncSwitchBackToCameraButton" = "Saya akan menggunakan kamera saya...";
+
+/* Tablet or phone button title */
+"SyncTabletOrMobileDevice" = "Tablet atau Telefon";
+
+/* This device cell */
+"SyncThisDevice" = "Peranti Ini";
+
+/* Sync to existing device */
+"SyncToDevice" = "Segerakkan kepada peranti";
+
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "Dengan menggunakan peranti disegerakkan sedia ada, buka Tetapan Brave dan navigasi ke \"Peranti & Tetapan\", ketik '+' untuk menambah peranti baru dan mendedahkan kod segerak.";
+
+/* Description on popup when setting up a sync group fails */
+"SyncUnableCreateGroup" = "Tidak dapat mencipta kumpulan segerak baru.";
+
+/* No comment provided by engineer. */
+"SyncUnsuccessful" = "Tidak berjaya";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Tutup";
@@ -708,6 +916,16 @@ Pencapjarian";
 /* History tableview section header */
 "Today" = "Hari Ini";
 
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "Penjejak
+Disekat";
+
+/* Sync Alert */
+"UnableToConnectDescription" = "Tidak dapat menyertai kumpulan penyegerakan. Sila semak perkataan yang dimasukkan dan cuba lagi.";
+
+/* Sync Alert */
+"UnableToConnectTitle" = "Tidak dapat Menyambung";
+
 /* Bookmark URL */
 "URL" = "URL";
 
@@ -722,6 +940,12 @@ Pencapjarian";
 
 /* Accessibility label for the main web content view */
 "WebContentAccessibilityLabel" = "Kandungan web";
+
+/* Word count title */
+"WordCount" = "Bilangan perkataan: %i";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "Ya, Padamkan";
 
 /* History tableview section header */
 "Yesterday" = "Semalam";
