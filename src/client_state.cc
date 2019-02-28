@@ -126,8 +126,7 @@ Result ClientState::FromJson(
   }
 
   if (client.HasMember("pageScoreHistory")) {
-    for (const auto& history :
-        client["pageScoreHistory"].GetArray()) {
+    for (const auto& history : client["pageScoreHistory"].GetArray()) {
       std::vector<double> page_scores = {};
 
       for (const auto& page_score : history.GetArray()) {
@@ -140,29 +139,25 @@ Result ClientState::FromJson(
 
   if (client.HasMember("creativeSetHistory")) {
     for (const auto& history : client["creativeSetHistory"].GetObject()) {
-      std::string creative_set_id = history.name.GetString();
-      uint64_t timestamp = history.value.GetUint64();
-
-      if (creative_set_history.find(creative_set_id) ==
-          creative_set_history.end()) {
-        creative_set_history.insert({creative_set_id, {}});
+      std::deque<uint64_t> timestamps_in_seconds = {};
+      for (const auto& timestamp_in_seconds : history.value.GetArray()) {
+        timestamps_in_seconds.push_back(timestamp_in_seconds.GetUint64());
       }
 
-      creative_set_history.at(creative_set_id).push_back(timestamp);
+      std::string creative_set_id = history.name.GetString();
+      creative_set_history.insert({creative_set_id, timestamps_in_seconds});
     }
   }
 
   if (client.HasMember("campaignHistory")) {
     for (const auto& history : client["campaignHistory"].GetObject()) {
-      std::string campaign_id = history.name.GetString();
-      uint64_t timestamp = history.value.GetUint64();
-
-      if (campaign_history.find(campaign_id) ==
-          campaign_history.end()) {
-        campaign_history.insert({campaign_id, {}});
+      std::deque<uint64_t> timestamps_in_seconds = {};
+      for (const auto& timestamp_in_seconds : history.value.GetArray()) {
+        timestamps_in_seconds.push_back(timestamp_in_seconds.GetUint64());
       }
 
-      campaign_history.at(campaign_id).push_back(timestamp);
+      std::string campaign_id = history.name.GetString();
+      campaign_history.insert({campaign_id, timestamps_in_seconds});
     }
   }
 

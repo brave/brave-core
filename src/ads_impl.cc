@@ -808,6 +808,7 @@ bool AdsImpl::ShowAd(
   // notificationUrl, notificationText, advertiser, uuid, hierarchy}
 
   LOG(INFO) << "Notification shown:"
+      << std::endl << "  campaign_id: " << ad_info.campaign_id
       << std::endl << "  category: " << category
       << std::endl << "  winnerOverTime: " << GetWinnerOverTimeCategory()
       << std::endl << "  notificationUrl: " << notification_info->url

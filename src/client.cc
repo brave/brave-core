@@ -24,6 +24,10 @@ Client::Client(AdsImpl* ads, AdsClient* ads_client) :
 Client::~Client() = default;
 
 void Client::SaveState() {
+  if (!ads_->IsInitialized()) {
+    return;
+  }
+
   auto json = client_state_->ToJson();
   auto callback = std::bind(&Client::OnStateSaved, this, _1);
   ads_client_->Save(_client_name, json, callback);
