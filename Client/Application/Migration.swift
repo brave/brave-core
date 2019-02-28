@@ -10,10 +10,22 @@ import Data
 
 private let log = Logger.browserLogger
 
-extension Preferences {
+class Migration {
+    static func launchMigrations(keyPrefix: String) {
+        Preferences.migratePreferences(keyPrefix: keyPrefix)
+        
+        if !Preferences.Migration.syncOrderCompleted.value {
+            Bookmark.syncOrderMigration()
+            Preferences.Migration.syncOrderCompleted.value = true
+        }
+    }
+}
+
+fileprivate extension Preferences {
     /// Migration preferences
     final class Migration {
         static let completed = Option<Bool>(key: "migration.completed", default: false)
+        static let syncOrderCompleted = Option<Bool>(key: "migration.sync-order.completed", default: false)
     }
     
     /// Migrate the users preferences from prior versions of the app (<2.0)

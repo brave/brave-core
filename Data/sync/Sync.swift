@@ -623,7 +623,16 @@ extension Sync {
         let next = nextOrder ?? ""
         
         let getBookmarkOrderFunction = jsContext?.objectForKeyedSubscript("getBookmarkOrder")
-        return getBookmarkOrderFunction?.call(withArguments: [prev, next]).toString()
+        
+        guard let value = getBookmarkOrderFunction?.call(withArguments: [prev, next]).toString() else {
+            return nil
+        }
+        
+        if Bookmark.isSyncOrderValid(value) {
+            return value
+        }
+        
+        return nil
     }
 }
 
