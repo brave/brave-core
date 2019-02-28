@@ -39,7 +39,7 @@ declare namespace chrome.braveRewards {
   const onGrantCaptcha: {
     addListener: (callback: (properties: RewardsExtension.Captcha) => void) => void
   }
-  const includeInAutoContribution: (publisherKey: string, excluded: boolean, windowId: number) => {}
+  const includeInAutoContribution: (publisherKey: string, excluded: boolean) => {}
   const getGrant: () => {}
   const getGrantCaptcha: () => {}
   const solveGrantCaptcha: (solution: string) => {}
@@ -57,6 +57,9 @@ declare namespace chrome.braveRewards {
     addListener: (callback: () => void) => void
   }
   const getACEnabled: (callback: (enabled: boolean) => void) => {}
+  const onExcludedSitesChanged: {
+    addListener: (callback: (properties: RewardsExtension.ExcludedSitesChanged) => void) => void
+  }
 }
 
 declare namespace chrome.rewardsNotifications {

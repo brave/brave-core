@@ -370,13 +370,6 @@ void LedgerImpl::SetPublisherExclude(
   bat_publishers_->setExclude(publisher_id, exclude);
 }
 
-void LedgerImpl::SetPublisherPanelExclude(
-    const std::string& publisher_id,
-    const ledger::PUBLISHER_EXCLUDE& exclude,
-    uint64_t windowId) {
-  bat_publishers_->setPanelExclude(publisher_id, exclude, windowId);
-}
-
 void LedgerImpl::RestorePublishers() {
   bat_publishers_->RestorePublishers();
 }
@@ -881,8 +874,9 @@ void LedgerImpl::OnPanelPublisherInfo(
   ledger_client_->OnPanelPublisherInfo(result, std::move(info), windowId);
 }
 
-void LedgerImpl::OnExcludedSitesChanged(const std::string& publisher_id) {
-  ledger_client_->OnExcludedSitesChanged(publisher_id);
+void LedgerImpl::OnExcludedSitesChanged(const std::string& publisher_id,
+                                        ledger::PUBLISHER_EXCLUDE exclude) {
+  ledger_client_->OnExcludedSitesChanged(publisher_id, exclude);
 }
 
 void LedgerImpl::SetBalanceReportItem(ledger::ACTIVITY_MONTH month,
