@@ -1,0 +1,12 @@
+source_set("manifest") {
+  sources = [
+    "manifest.cc",
+    "manifest.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common/tor:tor_mojom_bindings",
+    "//services/service_manager/public/cpp",
+  ]
+}

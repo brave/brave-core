@@ -1,5 +1,3 @@
-import("//services/service_manager/public/service_manifest.gni")
-
 static_library("lib") {
   visibility = [ "//brave/utility", "//chrome/utility" ]
 
@@ -23,9 +21,4 @@ static_library("lib") {
     "//services/service_manager/public/cpp",
     "//brave/vendor/bat-native-ads",
   ]
-}
-
-service_manifest("manifest") {
-  name = "bat_ads"
-  source = "manifest.json"
 }
