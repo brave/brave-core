@@ -55,4 +55,15 @@ export const StyledClaim = styled<{}, 'button'>('button')`
   text-transform: uppercase;
   cursor: pointer;
   font-weight: 600;
+
+  &:focus {
+    outline: none;
+  }
+`
+
+export const StyledLoader = styled<{}, 'span'>('span')`
+  width: 35px;
+  height: 35px;
+  margin-top: 7px;
+  display: inline-block;
 `

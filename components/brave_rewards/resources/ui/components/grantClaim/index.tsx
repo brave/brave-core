@@ -3,9 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper, StyledIcon, StyledText, StyledClaim } from './style'
+import { StyledWrapper, StyledIcon, StyledText, StyledClaim, StyledLoader } from './style'
 import { getLocale } from '../../../helpers'
-import { GiftIcon, MegaphoneIcon } from '../../../components/icons'
+import { GiftIcon, LoaderIcon, MegaphoneIcon } from '../../../components/icons'
 
 export type Type = 'ads' | 'ugp'
 
@@ -15,6 +15,7 @@ export interface Props {
   onClaim: () => void
   type: Type
   amount?: string
+  loading?: boolean
 }
 
 export default class GrantClaim extends React.PureComponent<Props, {}> {
@@ -52,7 +53,7 @@ export default class GrantClaim extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, isMobile, onClaim, type, amount } = this.props
+    const { id, isMobile, onClaim, type, amount, loading } = this.props
 
     return (
       <StyledWrapper
@@ -65,7 +66,15 @@ export default class GrantClaim extends React.PureComponent<Props, {}> {
         <StyledText>
           {this.getGrantText(type, amount)}
         </StyledText>
-        <StyledClaim onClick={onClaim}>{getLocale('claim')}</StyledClaim>
+        <StyledClaim onClick={onClaim}>
+          {
+            loading
+            ? <StyledLoader>
+                <LoaderIcon />
+              </StyledLoader>
+            : getLocale('claim')
+          }
+        </StyledClaim>
       </StyledWrapper>
     )
   }

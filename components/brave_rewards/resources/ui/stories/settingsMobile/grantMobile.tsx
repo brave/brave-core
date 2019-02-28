@@ -17,6 +17,7 @@ type Step = '' | 'complete'
 interface State {
   grantShow: boolean
   grantStep: Step
+  loading: boolean
 }
 
 interface Props {
@@ -29,7 +30,8 @@ class GrantMobile extends React.Component<Props, State > {
     super(props)
     this.state = {
       grantShow: true,
-      grantStep: ''
+      grantStep: '',
+      loading: false
     }
   }
 
@@ -38,11 +40,18 @@ class GrantMobile extends React.Component<Props, State > {
   }
 
   onClaim = () => {
-    this.setState({ grantStep: 'complete' })
+    this.setState({ loading: true })
+    setTimeout(() => {
+      this.setState({ grantStep: 'complete' })
+    }, 2000)
   }
 
   onComplete = () => {
-    this.setState({ grantStep: '', grantShow: false })
+    this.setState({
+      grantStep: '',
+      grantShow: false,
+      loading: false
+    })
   }
 
   render () {
@@ -57,6 +66,7 @@ class GrantMobile extends React.Component<Props, State > {
             type={type}
             amount={amount}
             onClaim={this.onClaim}
+            loading={this.state.loading}
           />
           : null
         }

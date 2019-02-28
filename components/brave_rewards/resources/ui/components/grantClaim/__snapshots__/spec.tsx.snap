@@ -72,6 +72,10 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
   font-weight: 600;
 }
 
+.c3:focus {
+  outline: none;
+}
+
 <div
   className="c0"
   id="claim"
