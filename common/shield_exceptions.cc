@@ -13,15 +13,6 @@
 
 namespace brave {
 
-bool IsEmptyDataURLRedirect(const GURL& gurl) {
-  static std::vector<std::string> hosts({
-    "sp1.nypost.com",
-    "sp.nasdaq.com"
-  });
-  return std::find(hosts.begin(), hosts.end(), gurl.host()) !=
-      hosts.end();
-}
-
 bool IsUAWhitelisted(const GURL& gurl) {
   static std::vector<URLPattern> whitelist_patterns({
     URLPattern(URLPattern::SCHEME_ALL, "https://*.adobe.com/*"),
@@ -31,18 +22,6 @@ bool IsUAWhitelisted(const GURL& gurl) {
     URLPattern(URLPattern::SCHEME_ALL, "https://*.netflix.com/*")
   });
   return std::any_of(whitelist_patterns.begin(), whitelist_patterns.end(),
-      [&gurl](URLPattern pattern){
-        return pattern.MatchesURL(gurl);
-      });
-}
-
-bool IsBlockedResource(const GURL& gurl) {
-  static std::vector<URLPattern> blocked_patterns({
-    URLPattern(URLPattern::SCHEME_ALL, "https://www.lesechos.fr/xtcore.js"),
-    URLPattern(URLPattern::SCHEME_ALL, "https://*.y8.com/js/sdkloader/outstream.js"),
-    URLPattern(URLPattern::SCHEME_ALL, "https://pdfjs.robwu.nl/*")
-  });
-  return std::any_of(blocked_patterns.begin(), blocked_patterns.end(),
       [&gurl](URLPattern pattern){
         return pattern.MatchesURL(gurl);
       });

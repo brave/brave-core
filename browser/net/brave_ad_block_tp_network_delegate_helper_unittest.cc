@@ -68,30 +68,6 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
 }
 
 
-TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RedirectsToEmptyDataURLs) {
-  std::vector<GURL> urls({
-    GURL("https://sp1.nypost.com"),
-    GURL("https://sp.nasdaq.com")
-  });
-  std::for_each(urls.begin(), urls.end(),
-      [this](GURL url){
-    net::TestDelegate test_delegate;
-    std::unique_ptr<net::URLRequest> request =
-        context()->CreateRequest(url, net::IDLE, &test_delegate,
-                                 TRAFFIC_ANNOTATION_FOR_TESTS);
-    std::shared_ptr<brave::BraveRequestInfo>
-        brave_request_info(new brave::BraveRequestInfo());
-    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
-    brave::ResponseCallback callback;
-    int ret =
-      OnBeforeURLRequest_AdBlockTPPreWork(callback,
-          brave_request_info);
-    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
-    EXPECT_EQ(ret, net::OK);
-    EXPECT_STREQ(brave_request_info->new_url_spec.c_str(), kEmptyDataURI);
-  });
-}
-
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RedirectsToStubs) {
   std::vector<GURL> urls({
     GURL(kGoogleTagManagerPattern),
@@ -113,30 +89,6 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RedirectsToStubs) {
     brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
     EXPECT_EQ(ret, net::OK);
     EXPECT_TRUE(GURL(brave_request_info->new_url_spec).SchemeIs("data"));
-  });
-}
-
-TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, Blocking) {
-  std::vector<GURL> urls({
-    GURL("https://www.lesechos.fr/xtcore.js"),
-    GURL("https://bradhatesprimes.y8.com/js/sdkloader/outstream.js")
-  });
-  std::for_each(urls.begin(), urls.end(),
-      [this](GURL url){
-    net::TestDelegate test_delegate;
-    std::unique_ptr<net::URLRequest> request =
-        context()->CreateRequest(url, net::IDLE, &test_delegate,
-                                 TRAFFIC_ANNOTATION_FOR_TESTS);
-    std::shared_ptr<brave::BraveRequestInfo>
-        brave_request_info(new brave::BraveRequestInfo());
-    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
-    brave::ResponseCallback callback;
-    int ret =
-      OnBeforeURLRequest_AdBlockTPPreWork(callback,
-          brave_request_info);
-    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
-    EXPECT_STREQ(brave_request_info->new_url_spec.c_str(), kEmptyDataURI);
-    EXPECT_EQ(ret, net::OK);
   });
 }
 

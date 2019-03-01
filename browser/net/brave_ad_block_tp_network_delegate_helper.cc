@@ -142,13 +142,6 @@ int OnBeforeURLRequest_AdBlockTPPreWork(
     return net::OK;
   }
 
-  // These should probably move to our ad block lists
-  if (IsEmptyDataURLRedirect(ctx->request_url) ||
-      IsBlockedResource(ctx->request_url)) {
-    ctx->new_url_spec = kEmptyDataURI;
-    return net::OK;
-  }
-
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
   if (ctx->tab_origin.is_empty() || !ctx->allow_brave_shields ||

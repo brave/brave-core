@@ -6,9 +6,7 @@ class GURL;
 
 namespace brave {
 
-bool IsEmptyDataURLRedirect(const GURL& gurl);
 bool IsUAWhitelisted(const GURL& gurl);
-bool IsBlockedResource(const GURL& gurl);
 bool IsWhitelistedCookieExeption(const GURL& firstPartyOrigin,
                                  const GURL& subresourceUrl);
 bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
