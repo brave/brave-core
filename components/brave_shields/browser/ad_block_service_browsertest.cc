@@ -589,3 +589,52 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   EXPECT_TRUE(as_expected);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
+
+#if 0
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectsToEmptyDataURLs) {
+  AddRulesToAdBlock("||sp1.nypost.com$third-party\n||sp.nasdaq.com$third-party");
+  std::vector<GURL> urls({
+    GURL("https://sp1.nypost.com"),
+    GURL("https://sp.nasdaq.com")
+  });
+  std::for_each(urls.begin(), urls.end(),
+      [this](GURL url){
+    net::TestDelegate test_delegate;
+    std::unique_ptr<net::URLRequest> request =
+        context()->CreateRequest(url, net::IDLE, &test_delegate,
+                                 TRAFFIC_ANNOTATION_FOR_TESTS);
+    std::shared_ptr<brave::BraveRequestInfo>
+        brave_request_info(new brave::BraveRequestInfo());
+    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
+    brave::ResponseCallback callback;
+    int ret =
+      OnBeforeURLRequest_AdBlockTPPreWork(callback,
+          brave_request_info);
+    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
+    EXPECT_EQ(ret, net::OK);
+    EXPECT_STREQ(brave_request_info->new_url_spec.c_str(), kEmptyDataURI);
+  });
+}
+#endif
+
+// Load a page with a specific script, and make sure it is blocked.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockXTCore) {
+  SetDefaultComponentIdAndBase64PublicKeyForTest(
+      kDefaultAdBlockComponentTestId,
+      kDefaultAdBlockComponentTestBase64PublicKey);
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          "setExpectations(0, 1, 0, 0);"
+                                          "addImage('https://www.lesechos.fr/xtcore.js')",
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
