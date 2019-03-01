@@ -543,3 +543,49 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
       0ULL);
 }
+
+// Make sure the third-party flag is passed into the ad-block library properly
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdBlockThirdPartyWorksByETLDP1) {
+  AddRulesToAdBlock("||a.com$third-party");
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  GURL tab_url = embedded_test_server()->GetURL("test.a.com",
+      kAdBlockTestPage);
+  GURL resource_url =
+      embedded_test_server()->GetURL("test2.a.com", "/logo.png");
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          base::StringPrintf(
+                                              "setExpectations(1, 0, 0, 0);"
+                                              "addImage('%s')",
+                                          resource_url.spec().c_str()),
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
+// Make sure the third-party flag is passed into the ad-block library properly
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+    AdBlockThirdPartyWorksForThirdPartyHost) {
+  AddRulesToAdBlock("||a.com$third-party");
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  GURL tab_url = embedded_test_server()->GetURL("b.com",
+      kAdBlockTestPage);
+  GURL resource_url =
+      embedded_test_server()->GetURL("a.com", "/logo.png");
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          base::StringPrintf(
+                                              "setExpectations(0, 1, 0, 0);"
+                                              "addImage('%s')",
+                                          resource_url.spec().c_str()),
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
