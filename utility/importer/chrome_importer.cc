@@ -149,7 +149,7 @@ void ChromeImporter::ImportBookmarks() {
     source_path_.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Bookmarks")));
   base::ReadFileToString(bookmarks_path, &bookmarks_content);
-  std::unique_ptr<base::Value> bookmarks_json =
+  base::Optional<base::Value> bookmarks_json =
     base::JSONReader::Read(bookmarks_content);
   const base::DictionaryValue* bookmark_dict;
   if (!bookmarks_json || !bookmarks_json->GetAsDictionary(&bookmark_dict))

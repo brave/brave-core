@@ -183,12 +183,12 @@ void BraveReferralsService::OnReferralHeadersLoadComplete(
     return;
   }
 
-  std::unique_ptr<base::Value> root = base::JSONReader().ReadToValue(*response_body);
+  base::Optional<base::Value> root = base::JSONReader().ReadToValue(*response_body);
   if (!root || !root->is_list()) {
     LOG(ERROR) << "Failed to parse referral headers response";
     return;
   }
-  pref_service_->Set(kReferralHeaders, *root);
+  pref_service_->Set(kReferralHeaders, root.value());
 }
 
 void BraveReferralsService::OnReferralInitLoadComplete(
@@ -210,7 +210,7 @@ void BraveReferralsService::OnReferralInitLoadComplete(
     return;
   }
 
-  std::unique_ptr<base::Value> root = base::JSONReader().ReadToValue(*response_body);
+  base::Optional<base::Value> root = base::JSONReader().ReadToValue(*response_body);
   if (!root || !root->is_dict()) {
     LOG(ERROR) << "Failed to parse referral initialization response";
     return;
@@ -265,7 +265,7 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
     return;
   }
 
-  std::unique_ptr<base::Value> root = base::JSONReader().ReadToValue(*response_body);
+  base::Optional<base::Value> root = base::JSONReader().ReadToValue(*response_body);
   if (!root) {
     LOG(ERROR) << "Failed to parse referral finalization check response";
     return;

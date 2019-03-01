@@ -158,10 +158,8 @@ base::Value ConfirmationsImpl::GetTransactionHistoryAsDictionary(
 }
 
 bool ConfirmationsImpl::FromJSON(const std::string& json) {
-  std::unique_ptr<base::DictionaryValue> dictionary =
-      base::DictionaryValue::From(base::JSONReader::Read(json));
-
-  if (!dictionary) {
+  base::Optional<base::Value> dictionary = base::JSONReader::Read(json);
+  if (!dictionary || !dictionary->is_dict()) {
     BLOG(ERROR) << "Failed to parse JSON: " << json;
     return false;
   }
