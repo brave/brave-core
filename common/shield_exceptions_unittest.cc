@@ -11,6 +11,7 @@ namespace {
 
 typedef testing::Test BraveShieldsExceptionsTest;
 using brave::IsWhitelistedReferrer;
+using brave::IsWhitelistedCookieException;
 
 TEST_F(BraveShieldsExceptionsTest, IsWhitelistedReferrer) {
   // *.fbcdn.net not allowed on some other URL
@@ -53,6 +54,14 @@ TEST_F(BraveShieldsExceptionsTest, IsWhitelistedReferrer) {
       GURL("https://content.googleapis.com/cryptauth/v1/authzen/awaittx")));
   EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://accounts.google.com"),
       GURL("https://ajax.googleapis.com/ajax/libs/d3js/5.7.0/d3.min.js")));
+}
+
+TEST_F(BraveShieldsExceptionsTest, IsWhitelistedCookieException) {
+  // Cookie exceptions for Google auth domains
+  EXPECT_TRUE(IsWhitelistedCookieException(GURL("https://www.airbnb.com/"),
+      GURL("https://accounts.google.com/o/oauth2/iframe")));
+  EXPECT_FALSE(IsWhitelistedCookieException(GURL("https://www.mozilla.org/"),
+      GURL("https://www.googletagmanager.com/gtm.js")));
 }
 
 }  // namespace
