@@ -119,7 +119,6 @@ source_set("ui") {
     "//brave/components/brave_rewards/resources:donate_generated_resources",
     "//brave/components/brave_rewards/resources:static_resources",
     "//brave/components/brave_rewards/resources:ui_generated_resources",
-    "//brave/components/brave_rewards/resources:internals_generated_resources",
     "//brave/components/brave_sync",
     "//brave/components/brave_sync:static_resources",
     "//brave/components/brave_sync:generated_resources",
