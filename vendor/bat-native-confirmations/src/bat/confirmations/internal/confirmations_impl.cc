@@ -163,31 +163,35 @@ base::Value ConfirmationsImpl::GetTransactionHistoryAsDictionary(
 }
 
 bool ConfirmationsImpl::FromJSON(const std::string& json) {
-  std::unique_ptr<base::DictionaryValue> dictionary =
-      base::DictionaryValue::From(base::JSONReader::Read(json));
-
-  if (!dictionary) {
+  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  if (!value || !value->is_dict()) {
     BLOG(ERROR) << "Failed to parse JSON: " << json;
     return false;
   }
 
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    BLOG(ERROR) << "Failed to get dictionary: " << json;
+    return false;
+  }
+
   // Catalog issuers
-  if (!GetCatalogIssuersFromJSON(dictionary.get())) {
+  if (!GetCatalogIssuersFromJSON(dictionary)) {
     BLOG(WARNING) << "Failed to get catalog issuers from JSON: " << json;
   }
 
   // Transaction history
-  if (!GetTransactionHistoryFromJSON(dictionary.get())) {
+  if (!GetTransactionHistoryFromJSON(dictionary)) {
     BLOG(WARNING) << "Failed to get transaction history from JSON: " << json;
   }
 
   // Unblinded tokens
-  if (!GetUnblindedTokensFromJSON(dictionary.get())) {
+  if (!GetUnblindedTokensFromJSON(dictionary)) {
     BLOG(WARNING) << "Failed to get unblinded tokens from JSON: " << json;
   }
 
   // Unblinded payment tokens
-  if (!GetUnblindedPaymentTokensFromJSON(dictionary.get())) {
+  if (!GetUnblindedPaymentTokensFromJSON(dictionary)) {
     BLOG(WARNING) <<
         "Failed to get unblinded payment tokens from JSON: " << json;
   }
