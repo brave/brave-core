@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Type } from './index'
 import Card, { CardProps } from '../../../components/layout/card'
 import { ComponentType } from 'react'
+import palette from '../../../theme/palette'
 
 interface StyleProps {
   open?: boolean
@@ -107,13 +108,13 @@ export const StyledSettingsClose = styled<StyleProps, 'button'>('button')`
   position: absolute;
   right: 29px;
   top: 29px;
-  width: 21px;
-  height: 21px;
+  width: 20px;
+  height: 20px;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
-  color: #DFDFE8;
+  color: ${palette.grey600};
 `
 
 export const StyledSettingsTitle = styled<{}, 'div'>('div')`

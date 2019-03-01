@@ -23,7 +23,7 @@ import {
 import { Tooltip } from '../'
 import Toggle from '../../../components/formControls/toggle/index'
 import { getLocale } from '../../../helpers'
-import { CloseStrokeIcon, SettingsIcon } from '../../../components/icons'
+import { CloseCircleOIcon, SettingsIcon } from '../../../components/icons'
 
 export type Type = 'ads' | 'contribute' | 'donation'
 
@@ -119,7 +119,7 @@ export default class Box extends React.PureComponent<Props, {}> {
             </StyledContentWrapper>
             <StyledSettingsWrapper open={settingsOpened}>
               <StyledSettingsClose onClick={onSettingsClick} open={settingsOpened}>
-                <CloseStrokeIcon />
+                <CloseCircleOIcon />
               </StyledSettingsClose>
               <StyledSettingsTitle>
                 <StyledSettingsIcon>
