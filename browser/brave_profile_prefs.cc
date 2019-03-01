@@ -47,6 +47,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Default Brave shields
   registry->RegisterBooleanPref(kHTTPSEVerywhereControlType, true);
   registry->RegisterBooleanPref(kNoScriptControlType, false);
+  registry->RegisterBooleanPref(kFBLoginControlType, true);
+  registry->RegisterBooleanPref(kGoogleLoginControlType, true);
+  registry->RegisterBooleanPref(kFBEmbedControlType, true);
+  registry->RegisterBooleanPref(kTwitterEmbedControlType, true);
+  registry->RegisterBooleanPref(kLinkedInEmbedControlType, false);
 
   // WebTorrent
   registry->RegisterBooleanPref(kWebTorrentEnabled, true);
