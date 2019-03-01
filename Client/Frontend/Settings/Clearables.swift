@@ -36,8 +36,9 @@ struct ClearableErrorType: MaybeErrorType {
     }
 }
 
-// Remove all cookies stored by the site. This includes localStorage, sessionStorage, and WebSQL/IndexedDB.
-class CookiesClearable: Clearable {
+// Remove all cookies and website data stored by the site.
+// This includes localStorage, sessionStorage, and WebSQL/IndexedDB and web cache.
+class CookiesAndCacheClearable: Clearable {
     
     var label: String {
         return Strings.Cookies
@@ -48,13 +49,7 @@ class CookiesClearable: Clearable {
         let result = Deferred<Maybe<()>>()
         // need event loop to run to autorelease UIWebViews fully
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            // Now we wipe the system cookie store (for our app).
-            let localStorageClearables: Set<String> = [WKWebsiteDataTypeCookies,
-                                                       WKWebsiteDataTypeSessionStorage,
-                                                       WKWebsiteDataTypeLocalStorage,
-                                                       WKWebsiteDataTypeWebSQLDatabases,
-                                                       WKWebsiteDataTypeIndexedDBDatabases]
-            WKWebsiteDataStore.default().removeData(ofTypes: localStorageClearables, modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
+            WKWebsiteDataStore.default().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
                 UserDefaults.standard.synchronize()
                 result.fill(Maybe<()>(success: ()))
             }
