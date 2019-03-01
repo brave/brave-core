@@ -55,15 +55,15 @@ class BraveWidevineBundleManager {
   // Returns true when newly installed/updated version is ready.
   bool needs_restart() const;
 
-  int GetWidevineContentSettingsBubbleTitleText() const;
-  int GetWidevineContentSettingsBubbleLinkText() const;
-  int GetWidevineBlockedImageMessage() const;
-  int GetWidevineBlockedImageTooltip() const;
+  int GetWidevinePermissionRequestTextFragment() const;
 
   void WillRestart() const;
 
+  bool is_test() const { return is_test_; }
+
  private:
   friend class BraveWidevineBundleManagerTest;
+
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, InProgressTest);
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, UpdateTriggerTest);
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, InstallSuccessTest);
@@ -72,6 +72,8 @@ class BraveWidevineBundleManager {
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, MessageStringTest);
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest,
                            RetryInstallAfterFail);
+  FRIEND_TEST_ALL_PREFIXES(WidevinePermissionRequestBrowserTest,
+                           TriggerTwoPermissionTest);
 
   void DownloadWidevineBundle(
       const GURL& bundle_zipfile_url,

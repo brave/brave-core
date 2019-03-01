@@ -157,33 +157,15 @@
       <message name="IDS_SETTINGS_IMPORT_WINDOWS_CHECKBOX" desc="Checkbox for importing open windows and tabs">
         Open windows and tabs
       </message>
-      <message name="IDS_WIDEVINE_NOT_INSTALLED_EXPLANATORY_TEXT" desc="Explanatory animated text that appears (and then disappears) in the address line when Widevine is blocked">
-        Widevine is not installed
-      </message>
-      <message name="IDS_WIDEVINE_NOT_INSTALLED_MESSAGE" desc="Tooltip on the icon when Wideivne is not installed. 'Widevine' is the name of a plugin and should not be translated.">
-        Widevine is not installed.
-      </message>
-      <message name="IDS_INSTALL_AND_RUN_WIDEVINE" desc="Button to install and register Widevine with the component updater.  'Widevine' is the name of a plugin and should not be translated.">
-        Install and run Widevine
-      </message>
-      <message name="IDS_NOT_INSTALLED_WIDEVINE_TITLE" desc="Bubble info header text when Widevine is not installed. 'Widevine' is the name of a plugin and should not be translated.">
-        Widevine is not installed
+      <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
+          Install and run Widevine
       </message>
       <if expr="is_linux">
-        <message name="IDS_WIDEVINE_INSTALL" desc="Button to download widevine. 'Widevine' is the name of a plugin and should not be translated.">
+        <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install Widevine
         </message>
-        <message name="IDS_WIDEVINE_RESTART_BROWSER" desc="Button to restart browser to enable widevine. 'Widevine' is the name of a plugin and should not be translated.">
+        <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Restart browser to enable Widevine
-        </message>
-        <message name="IDS_NOT_ENABLED_WIDEVINE_TITLE" desc="Bubble info header text when Widevine is not enabled. 'Widevine' is the name of a plugin and should not be translated.">
-          Widevine is not enabled
-        </message>
-        <message name="IDS_WIDEVINE_NOT_ENABLED_EXPLANATORY_TEXT" desc="Explanatory animated text that appears (and then disappears) in the address line when Widevine is blocked">
-          Widevine is not enabled
-        </message>
-        <message name="IDS_WIDEVINE_NOT_ENABLED_MESSAGE" desc="Tooltip on the icon when Wideivne is not enabled. 'Widevine' is the name of a plugin and should not be translated.">
-          Widevine is not enabled
         </message>
       </if>
       <message name="IDS_WIDEVINE_INSTALL_MESSAGE" desc="Bubble info text when Widevine is not installed. 'Widevine' is the name of a plugin and should not be translated.">

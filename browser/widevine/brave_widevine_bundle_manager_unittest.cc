@@ -227,22 +227,10 @@ TEST_F(BraveWidevineBundleManagerTest, MessageStringTest) {
   PrepareTest(true);
 
   DCHECK(!manager_.needs_restart());
-  DCHECK_EQ(IDS_NOT_INSTALLED_WIDEVINE_TITLE,
-            manager_.GetWidevineContentSettingsBubbleTitleText());
-  DCHECK_EQ(IDS_WIDEVINE_INSTALL,
-            manager_.GetWidevineContentSettingsBubbleLinkText());
-  DCHECK_EQ(IDS_WIDEVINE_NOT_INSTALLED_MESSAGE,
-            manager_.GetWidevineBlockedImageMessage());
-  DCHECK_EQ(IDS_WIDEVINE_NOT_INSTALLED_EXPLANATORY_TEXT,
-            manager_.GetWidevineBlockedImageTooltip());
+  DCHECK_EQ(IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL,
+            manager_.GetWidevinePermissionRequestTextFragment());
 
   manager_.set_needs_restart(true);
-  DCHECK_EQ(IDS_NOT_ENABLED_WIDEVINE_TITLE,
-            manager_.GetWidevineContentSettingsBubbleTitleText());
-  DCHECK_EQ(IDS_WIDEVINE_RESTART_BROWSER,
-            manager_.GetWidevineContentSettingsBubbleLinkText());
-  DCHECK_EQ(IDS_WIDEVINE_NOT_ENABLED_MESSAGE,
-            manager_.GetWidevineBlockedImageMessage());
-  DCHECK_EQ(IDS_WIDEVINE_NOT_ENABLED_EXPLANATORY_TEXT,
-            manager_.GetWidevineBlockedImageTooltip());
+  DCHECK_EQ(IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER,
+            manager_.GetWidevinePermissionRequestTextFragment());
 }
