@@ -2,6 +2,7 @@
 
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
+#include "brave/common/shield_exceptions.h"
 
 bool ShouldBlockCookie(bool allow_brave_shields, bool allow_1p_cookies,
     bool allow_3p_cookies, const GURL& primary_url, const GURL& url) {
@@ -21,6 +22,11 @@ bool ShouldBlockCookie(bool allow_brave_shields, bool allow_1p_cookies,
 
   // If 3p is allowed, we have nothing extra to block
   if (allow_3p_cookies) {
+    return false;
+  }
+
+  // If it is whitelisted, we shouldn't block
+  if (brave::IsWhitelistedCookieException(primary_url, url)) {
     return false;
   }
 
