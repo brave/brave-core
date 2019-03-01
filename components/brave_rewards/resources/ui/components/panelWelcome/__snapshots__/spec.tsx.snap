@@ -13,101 +13,6 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   font-size: 24px;
 }
 
-.c0 {
-  text-align: center;
-  font-family: Poppins,sans-serif;
-  background-image: linear-gradient(140deg,#392DD1 0%,#8E2995 100%);
-}
-
-.c1 {
-  margin: 0 auto;
-  display: inline-block;
-  padding: 35px 30px 25px;
-  background: url(test-file-stub) no-repeat top;
-}
-
-.c2 {
-  width: 261px;
-  color: #FFFFFF;
-  font-size: 16px;
-  font-weight: 300;
-  -webkit-letter-spacing: 0.16px;
-  -moz-letter-spacing: 0.16px;
-  -ms-letter-spacing: 0.16px;
-  letter-spacing: 0.16px;
-  line-height: 22px;
-  margin: 0 auto;
-  opacity: 0.5;
-  font-family: Muli,sans-serif;
-}
-
-.c3 {
-  display: block;
-  margin: -10px auto 2px;
-  width: 150px;
-  height: 115px;
-  padding: 20px 0 15px;
-}
-
-.c5 {
-  color: #FFFFFF;
-  font-weight: 400;
-  line-height: 22px;
-  margin: 0;
-  display: inline-block;
-}
-
-.c9 {
-  color: #FFFFFF;
-  font-size: 16px;
-  font-weight: normal;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  line-height: 24px;
-  opacity: 0.5;
-  margin: 15px auto 23px;
-  text-align: center;
-  width: 280px;
-  font-family: Muli,sans-serif;
-}
-
-.c10 {
-  margin: 0 auto 25px;
-  display: inline-block;
-}
-
-.c14 {
-  color: #73CBFF;
-  font-size: 14px;
-  font-weight: 500;
-  -webkit-letter-spacing: -0.19px;
-  -moz-letter-spacing: -0.19px;
-  -ms-letter-spacing: -0.19px;
-  letter-spacing: -0.19px;
-  line-height: 21px;
-  display: block;
-  text-align: center;
-  cursor: pointer;
-}
-
-.c8 {
-  display: inline-block;
-  vertical-align: text-top;
-  margin-top: -13px;
-  color: #FFF;
-  font-size: 9px;
-  font-weight: 500;
-  opacity: 0.7;
-}
-
-.c4 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
 .c12 {
   --button-main-color: #A0A1B2;
   --button-main-color-hover: #7C7D8C;
@@ -181,6 +86,107 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   line-height: 1;
 }
 
+.c0 {
+  text-align: center;
+  font-family: Poppins,sans-serif;
+  background-image: linear-gradient(140deg,#392DD1 0%,#8E2995 100%);
+}
+
+.c1 {
+  margin: 0 auto;
+  display: inline-block;
+  padding: 35px 30px 25px;
+  background: url(test-file-stub) no-repeat top;
+}
+
+.c2 {
+  width: 261px;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 300;
+  -webkit-letter-spacing: 0.16px;
+  -moz-letter-spacing: 0.16px;
+  -ms-letter-spacing: 0.16px;
+  letter-spacing: 0.16px;
+  line-height: 22px;
+  margin: 0 auto;
+  opacity: 0.5;
+  font-family: Muli,sans-serif;
+}
+
+.c3 {
+  display: block;
+  margin: -10px auto 2px;
+  width: 150px;
+  height: 115px;
+  padding: 20px 0 15px;
+}
+
+.c5 {
+  color: #FFFFFF;
+  font-weight: 400;
+  line-height: 22px;
+  margin: 0;
+  display: inline-block;
+}
+
+.c9 {
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: normal;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 24px;
+  opacity: 0.5;
+  margin: 15px auto 23px;
+  text-align: center;
+  width: 280px;
+  font-family: Muli,sans-serif;
+}
+
+.c10 {
+  color: #FFF;
+  margin: 0 auto 24px;
+  outline: 0;
+}
+
+.c10:hover {
+  color: #e0e0e0;
+}
+
+.c14 {
+  color: #73CBFF;
+  font-size: 14px;
+  font-weight: 500;
+  -webkit-letter-spacing: -0.19px;
+  -moz-letter-spacing: -0.19px;
+  -ms-letter-spacing: -0.19px;
+  letter-spacing: -0.19px;
+  line-height: 21px;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  margin: 0 0 16px;
+}
+
+.c8 {
+  display: inline-block;
+  vertical-align: text-top;
+  margin-top: -13px;
+  color: #FFF;
+  font-size: 9px;
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.c4 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
 <div
   className="c0"
   id="panel-welcome"
@@ -239,23 +245,19 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
     >
       MISSING: welcomeDescOne
     </p>
-    <div
-      className="c10"
+    <button
+      className="c10 c11 c12"
+      size="call-to-action"
+      type="subtle"
     >
-      <button
-        className="c11 c12"
+      <div
+        className="c13"
         size="call-to-action"
         type="subtle"
       >
-        <div
-          className="c13"
-          size="call-to-action"
-          type="subtle"
-        >
-          MISSING: welcomeButtonTextOne
-        </div>
-      </button>
-    </div>
+        MISSING: welcomeButtonTextOne
+      </div>
+    </button>
     <div
       className="c14"
     >

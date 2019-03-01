@@ -5,6 +5,8 @@
 import styled from 'styled-components'
 import Heading from '../../../components/text/heading'
 import batOutlineUrl from './assets/batOutline.svg'
+import Button, { Props as ButtonProps } from '../../../components/buttonsIndicators/button'
+import { ComponentType } from 'react'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
   text-align: center;
@@ -60,9 +62,13 @@ export const StyledDescText = styled<{}, 'p'>('p')`
   font-family: Muli, sans-serif;
 ` as any
 
-export const StyledButtonWrapper = styled<{}, 'div'>('div')`
-  margin: 0 auto 25px;
-  display: inline-block;
+export const StyledJoinButton = styled(Button as ComponentType<ButtonProps>)`
+  color: #FFF;
+  margin: 0 auto 24px;
+  outline: 0;
+  &:hover {
+    color: #e0e0e0;
+  }
 ` as any
 
 export const StyledFooterText = styled<{}, 'div'>('div')`
@@ -74,6 +80,7 @@ export const StyledFooterText = styled<{}, 'div'>('div')`
   display: block;
   text-align: center;
   cursor: pointer;
+  margin: 0 0 16px;
 ` as any
 
 export const StyledTrademark = styled<{}, 'span'>('span')`

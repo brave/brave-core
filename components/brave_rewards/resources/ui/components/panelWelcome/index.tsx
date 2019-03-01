@@ -13,13 +13,12 @@ import {
   StyledTitle,
   StyledDescText,
   StyledFooterText,
-  StyledButtonWrapper,
   StyledTrademark,
-  StyledErrorMessage
+  StyledErrorMessage,
+  StyledJoinButton
 } from './style'
 
 import { BatColorIcon, LoaderIcon } from '../../../components/icons'
-import Button from '../../../components/buttonsIndicators/button'
 
 export type Variant = 'one' | 'two'
 
@@ -80,10 +79,9 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
           <StyledDescText>
             {getLocale(this.locale.desc)}
           </StyledDescText>
-          <StyledButtonWrapper>
             {
               this.props.creating && !this.props.error
-              ? <Button
+              ? <StyledJoinButton
                 level='secondary'
                 size='call-to-action'
                 type='subtle'
@@ -100,7 +98,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
                     <StyledErrorMessage>
                       {getLocale('walletFailedTitle')}
                     </StyledErrorMessage>
-                    <Button
+                    <StyledJoinButton
                       level='secondary'
                       size='call-to-action'
                       type='subtle'
@@ -109,7 +107,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
                       data-test-id='optInErrorAction'
                     />
                   </>
-                : <Button
+                : <StyledJoinButton
                   size='call-to-action'
                   type='subtle'
                   level='secondary'
@@ -117,7 +115,6 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
                   text={getLocale(this.locale.button)}
                 />
             }
-          </StyledButtonWrapper>
           <StyledFooterText {...props}>
             {getLocale(this.locale.footer)}
           </StyledFooterText>
