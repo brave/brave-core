@@ -19,7 +19,10 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "url/origin.h"
 
+using namespace net::registry_controlled_domains;  // NOLINT
 
 namespace {
 
@@ -114,6 +117,18 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
     const std::string& tab_host) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   FilterOption current_option = ResourceTypeToFilterOption(resource_type);
+
+  // Determine third-party here so the library doesn't need to figure it out.
+  // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
+  // a URL or origin and not a string to a host name.
+  if (SameDomainOrHost(url, url::Origin::CreateFromNormalizedTuple(
+        "https", tab_host.c_str(), 80), INCLUDE_PRIVATE_REGISTRIES)) {
+    current_option = static_cast<FilterOption>(
+        current_option | FONotThirdParty);
+  } else {
+    current_option = static_cast<FilterOption>(current_option | FOThirdParty);
+  }
+
   if (ad_block_client_->matches(url.spec().c_str(),
         current_option,
         tab_host.c_str())) {
