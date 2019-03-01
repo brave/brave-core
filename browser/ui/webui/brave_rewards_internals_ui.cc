@@ -14,6 +14,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_ui.h"
@@ -47,6 +48,14 @@ BraveRewardsInternalsUI::BraveRewardsInternalsUI(content::WebUI* web_ui,
               IDR_BRAVE_REWARDS_INTERNALS_HTML),
       profile_(Profile::FromWebUI(web_ui)),
       weak_ptr_factory_(this) {
+  Profile* profile = Profile::FromWebUI(web_ui);
+  PrefService* prefs = profile->GetPrefs();
+  pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
+  pref_change_registrar_->Init(prefs);
+  pref_change_registrar_->Add(
+      brave_rewards::prefs::kBraveRewardsEnabled,
+      base::Bind(&BraveRewardsInternalsUI::OnPreferenceChanged,
+                 weak_ptr_factory_.GetWeakPtr()));
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
   rewards_service_->AddObserver(this);
@@ -106,12 +115,6 @@ void BraveRewardsInternalsUI::UpdateWebUIProperties() {
   }
 }
 
-void BraveRewardsInternalsUI::OnRewardsMainEnabled(
-    brave_rewards::RewardsService* rewards_service,
-    bool rewards_main_enabled) {
-  UpdateWebUIProperties();
-}
-
 void BraveRewardsInternalsUI::OnWalletInitialized(
     brave_rewards::RewardsService* rewards_service,
     int error_code) {
@@ -124,5 +127,9 @@ void BraveRewardsInternalsUI::OnWalletInitialized(
 void BraveRewardsInternalsUI::OnGetRewardsInternalsInfo(
     std::unique_ptr<brave_rewards::RewardsInternalsInfo> info) {
   internals_info_ = std::move(info);
+  UpdateWebUIProperties();
+}
+
+void BraveRewardsInternalsUI::OnPreferenceChanged() {
   UpdateWebUIProperties();
 }
