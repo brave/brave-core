@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_REWARDS_INTERNALS_INFO_
-#define BAT_LEDGER_REWARDS_INTERNALS_INFO_
+#ifndef BAT_LEDGER_REWARDS_INTERNALS_INFO_H_
+#define BAT_LEDGER_REWARDS_INTERNALS_INFO_H_
 
 #include <map>
 #include <string>
@@ -29,4 +29,4 @@ LEDGER_EXPORT struct RewardsInternalsInfo {
 
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_REWARDS_INTERNALS_INFO_
+#endif  // BAT_LEDGER_REWARDS_INTERNALS_INFO_H_

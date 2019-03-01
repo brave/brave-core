@@ -45,14 +45,14 @@ BraveRewardsInternalsUI::BraveRewardsInternalsUI(content::WebUI* web_ui,
               kBraveRewardsInternalsSettingsGeneratedSize,
 #endif
               IDR_BRAVE_REWARDS_INTERNALS_HTML),
-      profile_(Profile::FromWebUI(web_ui)) {
+      profile_(Profile::FromWebUI(web_ui)),
+      weak_ptr_factory_(this) {
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
   rewards_service_->AddObserver(this);
-
   rewards_service_->GetRewardsInternalsInfo(
       base::Bind(&BraveRewardsInternalsUI::OnGetRewardsInternalsInfo,
-                 base::Unretained(this)));
+                 weak_ptr_factory_.GetWeakPtr()));
 }
 
 BraveRewardsInternalsUI::~BraveRewardsInternalsUI() {
@@ -86,8 +86,8 @@ void BraveRewardsInternalsUI::CustomizeWebUIProperties(
       }
 
       std::string json;
-      base::JSONWriter::Write(current_reconciles, &json);
-      render_view_host->SetWebUIProperty("currentReconciles", json);
+      if (base::JSONWriter::Write(current_reconciles, &json))
+        render_view_host->SetWebUIProperty("currentReconciles", json);
     }
   }
 }
@@ -118,7 +118,7 @@ void BraveRewardsInternalsUI::OnWalletInitialized(
   DCHECK(rewards_service_);
   rewards_service_->GetRewardsInternalsInfo(
       base::Bind(&BraveRewardsInternalsUI::OnGetRewardsInternalsInfo,
-                 base::Unretained(this)));
+                 weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveRewardsInternalsUI::OnGetRewardsInternalsInfo(

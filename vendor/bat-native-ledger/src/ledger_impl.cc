@@ -9,7 +9,6 @@
 #include <sstream>
 #include <utility>
 #include <vector>
-#include <utility>
 
 #include "ledger_impl.h"
 

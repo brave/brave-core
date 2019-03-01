@@ -800,7 +800,7 @@ void RewardsServiceImpl::OnGetRewardsInternalsInfo(
   info.loadFromJson(json_info);
 
   auto rewards_internals_info =
-    std::make_unique<brave_rewards::RewardsInternalsInfo>();
+      std::make_unique<brave_rewards::RewardsInternalsInfo>();
   rewards_internals_info->payment_id = info.payment_id;
   rewards_internals_info->is_key_info_seed_valid = info.is_key_info_seed_valid;
   for (const auto& item : info.current_reconciles) {
