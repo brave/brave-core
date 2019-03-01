@@ -27,8 +27,8 @@ void BraveAddImportDataStrings(content::WebUIDataSource* html_source) {
 }
 
 const char kWebRTCLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/"
-    "360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
+  "https://support.brave.com/hc/en-us/articles/"
+  "360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -93,6 +93,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       IDS_SETTINGS_BRAVE_SYNC_TITLE},
     {"braveSyncLabel",
       IDS_SETTINGS_BRAVE_SYNC_LINK_LABEL},
+    {"onExitPageTitle",
+      IDS_SETTINGS_BRAVE_ON_EXIT},
     {"braveDefaultExtensions",
       IDS_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_TITLE},
     {"webTorrentEnabledDesc",

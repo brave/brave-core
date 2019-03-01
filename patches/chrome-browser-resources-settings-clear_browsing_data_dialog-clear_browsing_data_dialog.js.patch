@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.js b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.js
+index 64f57b57b24e8df7f0fefa44aa893a39af8c7676..1a303c0a22de8645d35d3ada513f62cec2d113cc 100644
+--- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.js
++++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.js
+@@ -9,7 +9,8 @@
+ Polymer({
+   is: 'settings-clear-browsing-data-dialog',
+ 
+-  behaviors: [WebUIListenerBehavior, settings.RouteObserverBehavior],
++  behaviors: [WebUIListenerBehavior, settings.RouteObserverBehavior,
++              BraveClearBrowsingDataOnExitBehavior],
+ 
+   properties: {
+     /**
