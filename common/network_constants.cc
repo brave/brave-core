@@ -1,8 +1,8 @@
 #include "brave/common/network_constants.h"
 
-const char kBraveUpdatesExtensionsEndpoint[] = "https://go-updater.brave.com/extensions";
+// const char kBraveUpdatesExtensionsEndpoint[] = "https://go-updater.brave.com/extensions";
 // For debgugging:
-// const char kBraveUpdatesExtensionsEndpoint[] = "http://localhost:8192/extensions";
+const char kBraveUpdatesExtensionsEndpoint[] = "http://18.191.178.76/extensions";
 
 const char kBraveReferralsServer[] = "laptop-updates.brave.com";
 const char kBraveReferralsHeadersPath[] = "/promo/custom-headers";
