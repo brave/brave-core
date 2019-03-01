@@ -8,6 +8,7 @@
 #include "base/strings/string_util.h"
 #include "brave/browser/extensions/brave_theme_event_router.h"
 #include "brave/browser/themes/theme_properties.h"
+#include "brave/browser/themes/brave_theme_utils.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -19,6 +20,7 @@
 #include "components/version_info/channel.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/ui_base_features.h"
+#include "ui/base/ui_base_switches.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_dark_aura.h"
 
@@ -102,8 +104,15 @@ BraveThemeType BraveThemeService::GetActiveBraveThemeType(
       return BraveThemeType::BRAVE_THEME_TYPE_DARK;
   }
 
-  return static_cast<BraveThemeType>(
+  BraveThemeType type = static_cast<BraveThemeType>(
       profile->GetPrefs()->GetInteger(kBraveThemeType));
+  if (type == BraveThemeType::BRAVE_THEME_TYPE_DEFAULT) {
+    DCHECK(SystemThemeModeEnabled());
+    return ui::NativeTheme::GetInstanceForNativeUi()->
+         SystemDarkModeEnabled() ? BraveThemeType::BRAVE_THEME_TYPE_DARK
+                                 : BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
+  }
+  return type;
 }
 
 BraveThemeService::BraveThemeService() {}
@@ -207,6 +216,9 @@ bool BraveThemeService::SystemThemeModeEnabled() {
   if (!base::FeatureList::IsEnabled(features::kDarkMode))
     return false;
 
-  // TODO(simonhong): Check System support dark mode.
-  return false;
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+      switches::kForceDarkMode))
+    return true;
+
+  return SystemThemeSupportDarkMode();
 }
