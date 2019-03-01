@@ -219,7 +219,7 @@ class BrowserUtils {
         case History = "Browsing History"
         case Cache = "Cache"
         case OfflineData = "Offline Website Data"
-        case Cookies = "Cookies"
+        case Cookies = "Cookies and Site Data"
         case TrackingProtection = "Tracking Protection"
     }
     internal static let AllClearables = Set([Clearable.History, Clearable.Cache, Clearable.OfflineData, Clearable.Cookies, Clearable.TrackingProtection])
