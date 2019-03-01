@@ -63,8 +63,13 @@ export const StyledButtonWrapper = styled<StyleProps, 'button'>('button')`
   font-size: 14px;
   border-radius: 28px;
   background: inherit;
+  border: none;
   cursor: ${p => p.disabled ? 'default' : 'pointer'};
   ${p => getTypeStyle(p.type, p.disabled)}
+
+  &:focus {
+    outline: 0;
+  }
 `
 
 export const StyledButtonText = styled<{}, 'span'>('span')`

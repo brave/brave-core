@@ -16,6 +16,8 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  max-width: 415px;
+  margin: 0 auto;
 }
 
 .c1 {

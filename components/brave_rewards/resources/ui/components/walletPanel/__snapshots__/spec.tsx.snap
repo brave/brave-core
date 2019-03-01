@@ -105,12 +105,17 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   font-size: 14px;
   border-radius: 28px;
   background: inherit;
+  border: none;
   cursor: pointer;
   height: 40px;
   color: #4C54D2;
   border-radius: 20px;
   font-size: 12px;
   border: 1px solid #A1A8F2;
+}
+
+.c10:focus {
+  outline: 0;
 }
 
 .c11 {

@@ -106,6 +106,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   display: flex;
   margin-top: -8px;
   padding: 0px;
+  z-index: 1;
 }
 
 <div

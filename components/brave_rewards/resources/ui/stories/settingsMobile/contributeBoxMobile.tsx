@@ -234,6 +234,7 @@ class ContributeBoxMobile extends React.Component<Props, State> {
               <div data-value='10'><Tokens value={'10.0'} converted={'4.00'}/></div>
               <div data-value='20'><Tokens value={'20.0'} converted={'6.00'}/></div>
               <div data-value='40'><Tokens value={'40.0'} converted={'12.00'}/></div>
+              <div data-value='40'><Tokens value={'60.0'} converted={'12.00'}/></div>
               <div data-value='100'><Tokens value={'100.0'} converted={'40.00'}/></div>
             </Select>
           </StyledListContent>

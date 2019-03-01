@@ -156,6 +156,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   font-size: 14px;
   border-radius: 28px;
   background: inherit;
+  border: none;
   cursor: pointer;
   height: 56px;
   border-radius: 28px;
@@ -170,6 +171,10 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   background: rgba(0,0,0,0.05);
 }
 
+.c17:focus {
+  outline: 0;
+}
+
 .c44 {
   width: 100%;
   display: -webkit-box;
@@ -180,6 +185,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   font-size: 14px;
   border-radius: 28px;
   background: inherit;
+  border: none;
   cursor: pointer;
   height: 56px;
   -webkit-letter-spacing: .6px;
@@ -187,6 +193,10 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: .6px;
   letter-spacing: .6px;
   background: #FB542B;
+}
+
+.c44:focus {
+  outline: 0;
 }
 
 .c18 {

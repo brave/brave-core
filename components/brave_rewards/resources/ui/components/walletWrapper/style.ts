@@ -42,6 +42,8 @@ export const StyledWrapper = styled<StyledProps, 'div'>('div')`
   border-radius: ${p => p.compact ? '0' : '6px'};
   display: flex;
   flex-direction: column;
+  max-width: 415px;
+  margin: 0 auto;
 `
 
 export const StyledHeader = styled<{}, 'div'>('div')`

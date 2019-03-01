@@ -209,6 +209,7 @@ export const StyledToggleHeader = styled<StyleProps, 'div'>('div')`
   ${p => getFixedStyling(p.detailView)}
   margin-top: ${p => p.detailView ? 0 : -8}px;
   padding: ${p => p.detailView ? '20px 20px 15px 13px' : '0px'};
+  z-index: 1;
 `
 
 export const StyledBackArrow = styled<{}, 'span'>('span')`

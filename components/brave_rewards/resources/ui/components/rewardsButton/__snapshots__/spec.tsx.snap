@@ -11,7 +11,12 @@ exports[`TipButton tests basic tests matches the snapshot 1`] = `
   font-size: 14px;
   border-radius: 28px;
   background: inherit;
+  border: none;
   cursor: pointer;
+}
+
+.c0:focus {
+  outline: 0;
 }
 
 .c1 {
