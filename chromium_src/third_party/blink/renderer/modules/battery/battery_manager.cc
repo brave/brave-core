@@ -17,12 +17,13 @@ namespace blink {
   BatteryManager::~BatteryManager() = default;
 
   BatteryManager::BatteryManager(ExecutionContext* context)
-  : PausableObject(context), PlatformEventController(To<Document>(context)) {}
+      : ContextLifecycleStateObserver(context),
+        PlatformEventController(To<Document>(context)) {}
 
   BatteryManager* BatteryManager::Create(ExecutionContext* context) {
     BatteryManager* battery_manager =
     MakeGarbageCollected<BatteryManager>(context);
-    battery_manager->PauseIfNeeded();
+    battery_manager->UpdateStateIfNeeded();
     return battery_manager;
   }
 
@@ -55,18 +56,15 @@ namespace blink {
     visitor->Trace(battery_property_);
     PlatformEventController::Trace(visitor);
     EventTargetWithInlineData::Trace(visitor);
-    PausableObject::Trace(visitor);
+    ContextLifecycleStateObserver::Trace(visitor);
   }
 
   bool BatteryManager::HasPendingActivity() const {
     return false;
   }
 
-  void BatteryManager::ContextPaused(PauseState) {
-    return;
-  }
-
-  void BatteryManager::ContextUnpaused() {
+  void BatteryManager::ContextLifecycleStateChanged(
+      mojom::FrameLifecycleState) {
     return;
   }
 
