@@ -76,7 +76,7 @@ export class RewardsPanel extends React.Component<Props, State> {
               publisherBlob = result[0]
               clearInterval(interval)
               const rewardsPanelActions = require('../background/actions/rewardsPanelActions').default
-              rewardsPanelActions.onTabRetrieved(tab, publisherBlob, false)
+              rewardsPanelActions.onTabRetrieved(tab, publisherBlob)
             } else {
               chrome.storage.local.get(['rewards_panel_open'], function (result) {
                 if (result['rewards_panel_open'] === 'false') {
@@ -90,7 +90,7 @@ export class RewardsPanel extends React.Component<Props, State> {
                 clearInterval(interval)
 
                 const rewardsPanelActions = require('../background/actions/rewardsPanelActions').default
-                rewardsPanelActions.onTabRetrieved(tab, publisherBlob, false)
+                rewardsPanelActions.onTabRetrieved(tab, publisherBlob)
               }
             }
           })
@@ -107,7 +107,7 @@ export class RewardsPanel extends React.Component<Props, State> {
             }
           })
         } else {
-          this.props.actions.onTabRetrieved(tab, publisherBlob, false)
+          this.props.actions.onTabRetrieved(tab, publisherBlob)
         }
       }
       let tab = tabs[0]
@@ -116,10 +116,10 @@ export class RewardsPanel extends React.Component<Props, State> {
         if (url && url.host.endsWith('.twitch.tv')) {
           pollData(tab, tab.id, url)
         } else {
-          this.props.actions.onTabRetrieved(tab, '', false)
+          this.props.actions.onTabRetrieved(tab, '')
         }
       } else {
-        this.props.actions.onTabRetrieved(tab, '', false)
+        this.props.actions.onTabRetrieved(tab, '')
       }
     })
   }
