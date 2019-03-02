@@ -221,7 +221,8 @@ class RewardsServiceImpl : public RewardsService,
                             std::unique_ptr<ledger::PublisherInfo> info,
                             bool success);
   void OnActivityInfoLoaded(ledger::PublisherInfoCallback callback,
-                             const ledger::PublisherInfoList list);
+                            const std::string& publisher_key,
+                            const ledger::PublisherInfoList list);
   void OnMediaPublisherInfoSaved(bool success);
   void OnPublisherInfoLoaded(ledger::PublisherInfoCallback callback,
                              std::unique_ptr<ledger::PublisherInfo> info);

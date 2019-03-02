@@ -1039,19 +1039,23 @@ void RewardsServiceImpl::LoadActivityInfo(
           0, 2, filter, publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnActivityInfoLoaded,
                      AsWeakPtr(),
-                     callback));
+                     callback,
+                     filter.id));
 }
 
 void RewardsServiceImpl::OnActivityInfoLoaded(
     ledger::PublisherInfoCallback callback,
+    const std::string& publisher_key,
     const ledger::PublisherInfoList list) {
   if (!Connected()) {
     return;
   }
 
+  // activity info not found
   if (list.size() == 0) {
-    callback(ledger::Result::NOT_FOUND,
-        std::unique_ptr<ledger::PublisherInfo>());
+    // we need to try to get at least publisher info in this case
+    // this way we preserve publisher info
+    LoadPublisherInfo(publisher_key, callback);
     return;
   } else if (list.size() > 1) {
     callback(ledger::Result::TOO_MANY_RESULTS,
