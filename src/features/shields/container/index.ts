@@ -4,7 +4,7 @@
 
 import { ComponentType } from 'react'
 import styled from '../../../theme'
-import palette from '../../../theme/palette'
+import palette from '../../../theme/colors'
 
 // Extendable components
 // ..............................

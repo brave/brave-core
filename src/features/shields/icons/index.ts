@@ -14,7 +14,7 @@ import {
   CloseCircleOIcon,
   CheckCircleIcon
 } from '../../../components/icons'
-import palette from '../../../theme/palette'
+import palette from '../../../theme/colors'
 
 export const LinkIcon = styled(OpenNewIcon as ComponentType)`
   width: 24px;
