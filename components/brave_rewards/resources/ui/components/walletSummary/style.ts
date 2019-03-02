@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import palette from '../../../theme/palette'
+import palette from '../../../theme/colors'
 
 interface StyleProps {
   compact?: boolean
