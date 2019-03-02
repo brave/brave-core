@@ -2,7 +2,7 @@
 
 exports[`SettingsPageMobile tests basic tests matches the snapshot 1`] = `
 .c0 {
-  background: #F1F1F9;
+  background: #e6e8f5;
   min-height: 100vh;
   width: 100%;
   padding-top: 35px;

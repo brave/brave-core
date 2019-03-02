@@ -14,9 +14,9 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
 }
 
 .c12 {
-  --button-main-color: #A0A1B2;
-  --button-main-color-hover: #7C7D8C;
-  --button-main-color-active: #585968;
+  --button-main-color: #c2c4cf;
+  --button-main-color-hover: #AEB1C2;
+  --button-main-color-active: #84889c;
   --button-state-color: var(--button-main-color);
   --icon-size: 18px;
   --icon-spacing: 6px;

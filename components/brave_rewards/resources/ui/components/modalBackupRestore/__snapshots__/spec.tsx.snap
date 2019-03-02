@@ -2,9 +2,9 @@
 
 exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
 .c26 {
-  --button-main-color: #FB542B;
-  --button-main-color-hover: #F43405;
-  --button-main-color-active: #FDBBAA;
+  --button-main-color: #ff7654;
+  --button-main-color-hover: #FB542B;
+  --button-main-color-active: #ffb8a6;
   --button-state-color: var(--button-main-color);
   --icon-size: 16px;
   --icon-spacing: 6px;
@@ -260,7 +260,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   top: -17px;
   width: 50%;
   height: 37px;
-  background: #FFF;
+  background: #FFFFFF;
   border-radius: 21.5px 21.5px 21.5px 21.5px;
   position: relative;
   -webkit-transition: all .4s ease;
@@ -299,7 +299,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  color: #585968;
+  color: #84889c;
   font-weight: normal;
 }
 

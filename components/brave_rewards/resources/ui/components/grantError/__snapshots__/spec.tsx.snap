@@ -2,9 +2,9 @@
 
 exports[`Grant error tests basic tests matches the snapshot 1`] = `
 .c4 {
-  --button-main-color: #FB542B;
-  --button-main-color-hover: #F43405;
-  --button-main-color-active: #FDBBAA;
+  --button-main-color: #ff7654;
+  --button-main-color-hover: #FB542B;
+  --button-main-color-active: #ffb8a6;
   --button-state-color: var(--button-main-color);
   --icon-size: 18px;
   --icon-spacing: 6px;

@@ -135,7 +135,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   background: none;
   padding: 0;
   cursor: pointer;
-  color: #585968;
+  color: #84889c;
 }
 
 .c14 {
