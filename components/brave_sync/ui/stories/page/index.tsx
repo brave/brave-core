@@ -8,9 +8,6 @@ import * as React from 'react'
 import DisabledContent from '../disabledContent'
 import EnabledContent from '../enabledContent'
 
-// Utils
-import 'emptykit.css'
-
 // Fonts
 import '../../../assets/fonts/muli.css'
 import '../../../assets/fonts/poppins.css'
