@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/status_bubble_views.h b/chrome/browser/ui/views/status_bubble_views.h
+index b2ad6e5d19f119f58df8deb7fa8a840a04681628..036d48dbdccc20eb300ba43bff0413e1ac281f99 100644
+--- a/chrome/browser/ui/views/status_bubble_views.h
++++ b/chrome/browser/ui/views/status_bubble_views.h
+@@ -70,6 +70,9 @@ class StatusBubbleViews : public StatusBubble {
+ 
+  private:
+   friend class StatusBubbleViewsTest;
++#if defined(BRAVE_CHROMIUM_BUILD)
++  FRIEND_TEST_ALL_PREFIXES(BraveStatusBubbleViewsTest, SetURLTest);
++#endif
+ 
+   class StatusView;
+   class StatusViewAnimation;
