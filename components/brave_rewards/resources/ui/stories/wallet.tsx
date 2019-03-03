@@ -5,8 +5,7 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs, object, select, text, boolean, number } from '@storybook/addon-knobs'
-// @ts-ignore
-import centered from '@storybook/addon-centered/dist'
+import centered from '@storybook/addon-centered'
 
 // Components
 import { WalletSummary, WalletEmpty, WalletOff, WalletPanel, WalletSummarySlider, WalletWrapper } from '../../../src/features/rewards'

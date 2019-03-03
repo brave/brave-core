@@ -5,8 +5,7 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs, boolean, object, number } from '@storybook/addon-knobs'
-// @ts-ignore
-import centered from '@storybook/addon-centered/dist'
+import centered from '@storybook/addon-centered'
 
 // Components
 import TableContribute, { DetailRow as ContributeDetailRow } from '../../../src/features/rewards/tableContribute'

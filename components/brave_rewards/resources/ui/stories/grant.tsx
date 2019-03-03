@@ -5,8 +5,7 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs, text, select } from '@storybook/addon-knobs'
-// @ts-ignore
-import centered from '@storybook/addon-centered/dist'
+import centered from '@storybook/addon-centered'
 // Components
 import GrantClaim from '../../../src/features/rewards/grantClaim'
 import GrantError from '../../../src/features/rewards/grantError'

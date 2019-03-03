@@ -6,8 +6,7 @@ import * as React from 'react'
 import { withState } from '@dump247/storybook-state'
 import { storiesOf } from '@storybook/react'
 import { withKnobs, boolean, select, text, object, number } from '@storybook/addon-knobs'
-// @ts-ignore
-import centered from '@storybook/addon-centered/dist'
+import centered from '@storybook/addon-centered'
 // Components
 import {
   Box,
