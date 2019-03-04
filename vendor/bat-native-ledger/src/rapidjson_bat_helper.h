@@ -44,47 +44,46 @@ struct GRANTS_PROPERTIES_ST;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
-void saveToJson(JsonWriter & writer, const BALLOT_ST&);
-void saveToJson(JsonWriter & writer, const MEDIA_PUBLISHER_INFO&);
-void saveToJson(JsonWriter & writer, const PUBLISHER_ST&);
-void saveToJson(JsonWriter & writer, const PUBLISHER_STATE_ST&);
-void saveToJson(JsonWriter & writer, const SURVEYOR_ST&);
-void saveToJson(JsonWriter & writer, const RECONCILE_DIRECTION&);
-void saveToJson(JsonWriter & writer, const CURRENT_RECONCILE&);
-void saveToJson(JsonWriter & writer, const CLIENT_STATE_ST&);
-void saveToJson(JsonWriter & writer, const TRANSACTION_BALLOT_ST&);
-void saveToJson(JsonWriter & writer, const TRANSACTION_ST&);
-void saveToJson(JsonWriter & writer, const TWITCH_EVENT_INFO&);
-void saveToJson(JsonWriter & writer, const WALLET_INFO_ST&);
-void saveToJson(JsonWriter & writer, const GRANTS_PROPERTIES_ST&);
-void saveToJson(JsonWriter & writer, const ledger::AutoContributeProps&);
-void saveToJson(JsonWriter & writer, const ledger::BalanceReportInfo&);
-void saveToJson(JsonWriter & writer, const ledger::ContributionInfo&);
-void saveToJson(JsonWriter & writer, const ledger::Grant&);
-void saveToJson(JsonWriter & writer, const ledger::PublisherBanner&);
-void saveToJson(JsonWriter & writer, const ledger::PublisherInfo&);
-void saveToJson(JsonWriter & writer, const ledger::ActivityInfoFilter&);
-void saveToJson(JsonWriter & writer, const ledger::VisitData&);
-void saveToJson(JsonWriter & writer, const ledger::WalletInfo&);
-void saveToJson(JsonWriter & writer, const ledger::PendingContribution&);
-void saveToJson(JsonWriter & writer, const ledger::PendingContributionList&);
-void saveToJson(JsonWriter & writer, const ledger::PublisherInfoListStruct&);
-void saveToJson(JsonWriter & writer, const WALLET_PROPERTIES_ST&);
-void saveToJson(JsonWriter & writer, const GRANT&);
+void saveToJson(JsonWriter* writer, const BALLOT_ST&);
+void saveToJson(JsonWriter* writer, const MEDIA_PUBLISHER_INFO&);
+void saveToJson(JsonWriter* writer, const PUBLISHER_ST&);
+void saveToJson(JsonWriter* writer, const PUBLISHER_STATE_ST&);
+void saveToJson(JsonWriter* writer, const SURVEYOR_ST&);
+void saveToJson(JsonWriter* writer, const RECONCILE_DIRECTION&);
+void saveToJson(JsonWriter* writer, const CURRENT_RECONCILE&);
+void saveToJson(JsonWriter* writer, const CLIENT_STATE_ST&);
+void saveToJson(JsonWriter* writer, const TRANSACTION_BALLOT_ST&);
+void saveToJson(JsonWriter* writer, const TRANSACTION_ST&);
+void saveToJson(JsonWriter* writer, const TWITCH_EVENT_INFO&);
+void saveToJson(JsonWriter* writer, const WALLET_INFO_ST&);
+void saveToJson(JsonWriter* writer, const GRANTS_PROPERTIES_ST&);
+void saveToJson(JsonWriter* writer, const ledger::AutoContributeProps&);
+void saveToJson(JsonWriter* writer, const ledger::BalanceReportInfo&);
+void saveToJson(JsonWriter* writer, const ledger::ContributionInfo&);
+void saveToJson(JsonWriter* writer, const ledger::Grant&);
+void saveToJson(JsonWriter* writer, const ledger::PublisherBanner&);
+void saveToJson(JsonWriter* writer, const ledger::PublisherInfo&);
+void saveToJson(JsonWriter* writer, const ledger::ActivityInfoFilter&);
+void saveToJson(JsonWriter* writer, const ledger::VisitData&);
+void saveToJson(JsonWriter* writer, const ledger::WalletInfo&);
+void saveToJson(JsonWriter* writer, const ledger::PendingContribution&);
+void saveToJson(JsonWriter* writer, const ledger::PendingContributionList&);
+void saveToJson(JsonWriter* writer, const ledger::PublisherInfoListStruct&);
+void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST&);
+void saveToJson(JsonWriter* writer, const GRANT&);
 
 template <typename T>
-void saveToJsonString(const T& t, std::string& json) {
+void saveToJsonString(const T& t, std::string* json) {
   rapidjson::StringBuffer buffer;
   JsonWriter writer(buffer);
-  saveToJson(writer, t);
-  json = buffer.GetString();
+  saveToJson(&writer, t);
+  *json = buffer.GetString();
 }
 
-// return: parsing status:  true = succeded, false = failed
+// return: parsing status: true = succeed, false = failed
 template <typename T>
-bool loadFromJson(T& t, const std::string& json) {
-  bool succeded = t.loadFromJson(json);
-  return succeded;
+bool loadFromJson(T* t, const std::string& json) {
+  return t->loadFromJson(json);
 }
 
 }  // namespace braveledger_bat_helper

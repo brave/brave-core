@@ -20,7 +20,7 @@ BatState::~BatState() {
 
 bool BatState::LoadState(const std::string& data) {
   braveledger_bat_helper::CLIENT_STATE_ST state;
-  if (!braveledger_bat_helper::loadFromJson(state, data.c_str())) {
+  if (!braveledger_bat_helper::loadFromJson(&state, data.c_str())) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Failed to load client state: " << data;
     return false;
@@ -51,7 +51,7 @@ bool BatState::LoadState(const std::string& data) {
 
 void BatState::SaveState() {
   std::string data;
-  braveledger_bat_helper::saveToJsonString(*state_, data);
+  braveledger_bat_helper::saveToJsonString(*state_, &data);
   ledger_->SaveLedgerState(data);
 }
 
@@ -265,24 +265,24 @@ BatState::GetWalletProperties() const {
 }
 
 void BatState::SetWalletProperties(
-    braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
+    braveledger_bat_helper::WALLET_PROPERTIES_ST* properties) {
   double amount = GetContributionAmount();
-  double new_amount = properties.fee_amount_;
+  double new_amount = properties->fee_amount_;
   bool amount_changed = GetUserChangedContribution();
   if (amount_changed) {
-    auto hasAmount = std::find(properties.parameters_choices_.begin(),
-                               properties.parameters_choices_.end(),
+    auto hasAmount = std::find(properties->parameters_choices_.begin(),
+                               properties->parameters_choices_.end(),
                                amount);
 
-    if (hasAmount == properties.parameters_choices_.end()) {
+    if (hasAmount == properties->parameters_choices_.end()) {
       // amount is missing in the list
-      properties.parameters_choices_.push_back(amount);
-      std::sort(properties.parameters_choices_.begin(),
-                properties.parameters_choices_.end());
+      properties->parameters_choices_.push_back(amount);
+      std::sort(properties->parameters_choices_.begin(),
+                properties->parameters_choices_.end());
     }
   }
 
-  state_->walletProperties_ = properties;
+  state_->walletProperties_ = *properties;
 
   if (!amount_changed && amount != new_amount) {
     SetContributionAmount(new_amount);

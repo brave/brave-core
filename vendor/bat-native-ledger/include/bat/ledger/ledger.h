@@ -213,7 +213,7 @@ class LEDGER_EXPORT Ledger {
   virtual std::map<std::string, ledger::BalanceReportInfo>
   GetAllBalanceReports() const = 0;
 
-  virtual void GetAutoContributeProps(ledger::AutoContributeProps& props) = 0;
+  virtual void GetAutoContributeProps(ledger::AutoContributeProps* props) = 0;
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
 

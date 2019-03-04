@@ -53,7 +53,7 @@ VisitData::~VisitData() {}
 
 const std::string VisitData::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -111,7 +111,7 @@ ActivityInfoFilter::~ActivityInfoFilter() {}
 
 const std::string ActivityInfoFilter::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -172,7 +172,7 @@ PublisherBanner::~PublisherBanner() {}
 
 const std::string PublisherBanner::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -280,7 +280,7 @@ bool PublisherInfo::is_valid() const {
 
 const std::string PublisherInfo::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -342,7 +342,7 @@ const PublisherInfo invalid("");
 
 const std::string ContributionInfo::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -398,7 +398,7 @@ WalletInfo::WalletInfo(const ledger::WalletInfo &info) {
 
 const std::string WalletInfo::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -467,7 +467,7 @@ Grant::Grant(const ledger::Grant &properties) {
 
 const std::string Grant::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -529,7 +529,7 @@ BalanceReportInfo::~BalanceReportInfo() {}
 
 const std::string BalanceReportInfo::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -583,7 +583,7 @@ AutoContributeProps::~AutoContributeProps() { }
 
 const std::string AutoContributeProps::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -644,7 +644,7 @@ PendingContribution::PendingContribution(
 
 const std::string PendingContribution::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -683,7 +683,7 @@ PendingContributionList::PendingContributionList(
 
 const std::string PendingContributionList::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -722,7 +722,7 @@ PublisherInfoListStruct::PublisherInfoListStruct(
 
 const std::string PublisherInfoListStruct::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 

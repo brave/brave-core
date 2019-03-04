@@ -333,11 +333,11 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(
 
   if (providerName == YOUTUBE_MEDIA_TYPE) {
     std::string publisherURL;
-    braveledger_bat_helper::getJSONValue("author_url", response, publisherURL);
+    braveledger_bat_helper::getJSONValue("author_url", response, &publisherURL);
     std::string publisherName;
     braveledger_bat_helper::getJSONValue("author_name",
                                          response,
-                                         publisherName);
+                                         &publisherName);
 
     auto callback = std::bind(&BatGetMedia::getPublisherInfoCallback, this,
         duration, media_key, providerName, mediaURL, publisherURL,
@@ -351,9 +351,9 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(
     std::string fav_icon;
     braveledger_bat_helper::getJSONValue("author_thumbnail_url",
                                          response,
-                                         fav_icon);
+                                         &fav_icon);
     std::string author_name;
-    braveledger_bat_helper::getJSONValue("author_name", response, author_name);
+    braveledger_bat_helper::getJSONValue("author_name", response, &author_name);
 
     std::string twitchMediaID = visit_data.name;
     std::string id = providerName + "#author:" + twitchMediaID;
@@ -929,8 +929,8 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
       if (info->verified && info->favicon_url.empty()) {
         std::string publisher_name;
         std::string publisher_favicon_url;
-        updateTwitchPublisherData(publisher_name,
-                                  publisher_favicon_url,
+        updateTwitchPublisherData(&publisher_name,
+                                  &publisher_favicon_url,
                                   publisher_blob);
 
         if (!publisher_favicon_url.empty()) {
@@ -977,8 +977,8 @@ void BatGetMedia::onGetTwitchPublisherInfo(
     if (providerType == TWITCH_MEDIA_TYPE) {
       std::string publisher_name;
       std::string publisher_favicon_url;
-      updateTwitchPublisherData(publisher_name,
-                                publisher_favicon_url,
+      updateTwitchPublisherData(&publisher_name,
+                                &publisher_favicon_url,
                                 publisher_blob);
       savePublisherInfo(0,
                         media_key,
@@ -1000,11 +1000,11 @@ void BatGetMedia::onGetTwitchPublisherInfo(
 }
 
 void BatGetMedia::updateTwitchPublisherData(
-    std::string& publisher_name,
-    std::string& publisher_favicon_url,
+    std::string* publisher_name,
+    std::string* publisher_favicon_url,
     const std::string& publisher_blob) {
-  publisher_name = getUserFacingHandle(publisher_blob);
-  publisher_favicon_url = getFaviconUrl(publisher_blob, publisher_name);
+  *publisher_name = getUserFacingHandle(publisher_blob);
+  *publisher_favicon_url = getFaviconUrl(publisher_blob, *publisher_name);
 }
 
 std::string BatGetMedia::getUserFacingHandle(
@@ -1159,7 +1159,7 @@ std::string BatGetMedia::getNameFromChannel(const std::string& data) {
   // scraped data could come in with JSON code points added.
   // Make to JSON object above so we can decode.
   braveledger_bat_helper::getJSONValue(
-      "brave_publisher", publisher_json, publisher_name);
+      "brave_publisher", publisher_json, &publisher_name);
   return publisher_name;
 }
 

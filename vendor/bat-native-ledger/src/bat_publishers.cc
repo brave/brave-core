@@ -348,7 +348,7 @@ void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) {
   saveState();
 }
 
-void BatPublishers::setPublisherMinVisits(const unsigned int& visits) {
+void BatPublishers::setPublisherMinVisits(const unsigned int visits) {
   state_->min_visits_ = visits;
   SynopsisNormalizer();
   saveState();
@@ -359,7 +359,7 @@ void BatPublishers::setPublishersLastRefreshTimestamp(uint64_t ts) {
   saveState();
 }
 
-void BatPublishers::setNumExcludedSites(const unsigned int& amount) {
+void BatPublishers::setNumExcludedSites(const unsigned int amount) {
   state_->num_excluded_sites_ = amount;
   saveState();
 }
@@ -645,13 +645,13 @@ BatPublishers::getAllBalanceReports() {
 
 void BatPublishers::saveState() {
   std::string data;
-  braveledger_bat_helper::saveToJsonString(*state_, data);
+  braveledger_bat_helper::saveToJsonString(*state_, &data);
   ledger_->SavePublisherState(data, this);
 }
 
 bool BatPublishers::loadState(const std::string& data) {
   braveledger_bat_helper::PUBLISHER_STATE_ST state;
-  if (!braveledger_bat_helper::loadFromJson(state, data.c_str()))
+  if (!braveledger_bat_helper::loadFromJson(&state, data.c_str()))
     return false;
 
   state_.reset(new braveledger_bat_helper::PUBLISHER_STATE_ST(state));
@@ -696,7 +696,7 @@ void BatPublishers::OnPublishersListSaved(ledger::Result result) {
 
 bool BatPublishers::loadPublisherList(const std::string& data) {
   std::map<std::string, braveledger_bat_helper::SERVER_LIST> list;
-  bool success = braveledger_bat_helper::getJSONServerList(data, list);
+  bool success = braveledger_bat_helper::getJSONServerList(data, &list);
 
   if (success) {
     server_list_ =

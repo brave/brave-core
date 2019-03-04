@@ -193,7 +193,7 @@ void LedgerImpl::OnPostData(
 
   std::vector<std::map<std::string, std::string>> twitchParts;
   if (TWITCH_MEDIA_TYPE == type) {
-    braveledger_bat_helper::getTwitchParts(post_data, twitchParts);
+    braveledger_bat_helper::getTwitchParts(post_data, &twitchParts);
     for (size_t i = 0; i < twitchParts.size(); i++) {
       bat_get_media_->processMedia(twitchParts[i], type, visit_data);
     }
@@ -478,13 +478,13 @@ void LedgerImpl::SetAutoContribute(bool enabled) {
   bat_state_->SetAutoContribute(enabled);
 }
 
-void LedgerImpl::GetAutoContributeProps(ledger::AutoContributeProps& props) {
-  props.enabled_contribute = GetAutoContribute();
-  props.contribution_min_time = GetPublisherMinVisitTime();
-  props.contribution_min_visits = GetPublisherMinVisits();
-  props.contribution_non_verified = GetPublisherAllowNonVerified();
-  props.contribution_videos = GetPublisherAllowVideos();
-  props.reconcile_stamp = GetReconcileStamp();
+void LedgerImpl::GetAutoContributeProps(ledger::AutoContributeProps* props) {
+  props->enabled_contribute = GetAutoContribute();
+  props->contribution_min_time = GetPublisherMinVisitTime();
+  props->contribution_min_visits = GetPublisherMinVisits();
+  props->contribution_non_verified = GetPublisherAllowNonVerified();
+  props->contribution_videos = GetPublisherAllowVideos();
+  props->reconcile_stamp = GetReconcileStamp();
 }
 
 bool LedgerImpl::GetRewardsMainEnabled() const {
@@ -1101,7 +1101,7 @@ const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
   auto seed = braveledger_bat_helper::getHKDF(info.keyInfoSeed_);
   std::vector<uint8_t> publicKey = {};
   std::vector<uint8_t> secretKey = {};
-  braveledger_bat_helper::getPublicKeyFromSeed(seed, publicKey, secretKey);
+  braveledger_bat_helper::getPublicKeyFromSeed(seed, &publicKey, &secretKey);
 
   wallet_info.public_key = braveledger_bat_helper::uint8ToHex(secretKey);
 
@@ -1114,7 +1114,7 @@ LedgerImpl::GetWalletProperties() const {
 }
 
 void LedgerImpl::SetWalletProperties(
-    braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
+    braveledger_bat_helper::WALLET_PROPERTIES_ST* properties) {
   bat_state_->SetWalletProperties(properties);
 }
 

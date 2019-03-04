@@ -171,8 +171,8 @@ class BatGetMedia {
       const std::string& publisher_blob);
 
   void updateTwitchPublisherData(
-      std::string& publisher_name,
-      std::string& publisher_favicon_url,
+      std::string* publisher_name,
+      std::string* publisher_favicon_url,
       const std::string& publisher_blob);
 
   void processYoutubeWatchPath(uint64_t windowId,
