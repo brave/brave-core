@@ -92,6 +92,28 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RedirectsToStubs) {
   });
 }
 
+TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, Blocking) {
+  std::vector<GURL> urls({
+      GURL("https://pdfjs.robwu.nl/ping"),
+    });
+  std::for_each(urls.begin(), urls.end(), [this](GURL url){
+    net::TestDelegate test_delegate;
+    std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(url, net::IDLE, &test_delegate,
+                               TRAFFIC_ANNOTATION_FOR_TESTS);
+    std::shared_ptr<brave::BraveRequestInfo>
+      brave_request_info(new brave::BraveRequestInfo());
+    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
+    brave::ResponseCallback callback;
+    int ret =
+      OnBeforeURLRequest_AdBlockTPPreWork(callback,
+                                          brave_request_info);
+    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
+    EXPECT_STREQ(brave_request_info->new_url_spec.c_str(), kEmptyDataURI);
+    EXPECT_EQ(ret, net::OK);
+  });
+}
+
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, GetPolyfill) {
   GURL tab_origin("https://test.com");
   GURL tag_manager_url(kGoogleTagManagerPattern);

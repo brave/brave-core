@@ -142,6 +142,15 @@ int OnBeforeURLRequest_AdBlockTPPreWork(
     return net::OK;
   }
 
+  // Most blocked resources have been moved to our ad block lists.
+  // This is only for special cases like the PDFjs ping which can
+  // occur before the ad block lists are fully loaded.
+  if (IsBlockedResource(ctx->request_url)) {
+    ctx->new_url_spec = kEmptyDataURI;
+
+    return net::OK;
+  }
+
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
   if (ctx->tab_origin.is_empty() || !ctx->allow_brave_shields ||

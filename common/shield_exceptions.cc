@@ -27,6 +27,17 @@ bool IsUAWhitelisted(const GURL& gurl) {
       });
 }
 
+bool IsBlockedResource(const GURL& gurl) {
+  static std::vector<URLPattern> blocked_patterns({
+      URLPattern(URLPattern::SCHEME_ALL, "https://pdfjs.robwu.nl/*")
+  });
+  return std::any_of(blocked_patterns.begin(), blocked_patterns.end(),
+                     [&gurl](URLPattern pattern){
+                       return pattern.MatchesURL(gurl);
+                     }
+    );
+}
+
 bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
     const GURL& subresourceUrl) {
   // Note that there's already an exception for TLD+1, so don't add those here.
