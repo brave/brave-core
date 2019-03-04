@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -59,11 +60,16 @@ void BaseBraveShieldsService::Stop() {
 
 bool BaseBraveShieldsService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
-    const std::string& tab_host) {
+    const std::string& tab_host,
+    bool* did_match_exception) {
+  if (did_match_exception) {
+    *did_match_exception = false;
+  }
   return true;
 }
 
-scoped_refptr<base::SequencedTaskRunner> BaseBraveShieldsService::GetTaskRunner() {
+scoped_refptr<base::SequencedTaskRunner>
+BaseBraveShieldsService::GetTaskRunner() {
   return task_runner_;
 }
 

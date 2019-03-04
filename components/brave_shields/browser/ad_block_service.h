@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -14,15 +15,13 @@
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 #include "content/public/common/resource_type.h"
 
-class AdBlockClient;
 class AdBlockServiceTest;
 
 namespace brave_shields {
 
-const std::string kAdBlockComponentName("Brave Ad Block Updater");
-const std::string kAdBlockComponentId("cffkpbalmllkdoenhmdmpbkajipdjfam");
-
-const std::string kAdBlockComponentBase64PublicKey =
+const char kAdBlockComponentName[] = "Brave Ad Block Updater";
+const char kAdBlockComponentId[] = "cffkpbalmllkdoenhmdmpbkajipdjfam";
+const char kAdBlockComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs0qzJmHSgIiw7IGFCxij"
     "1NnB5hJ5ZQ1LKW9htL4EBOaMJvmqaDs/wfq0nw/goBHWsqqkMBynRTu2Hxxirvdb"
     "cugn1Goys5QKPgAvKwDHJp9jlnADWm5xQvPQ4GE1mK1/I3ka9cEOCzPW6GI+wGLi"
@@ -34,8 +33,8 @@ const std::string kAdBlockComponentBase64PublicKey =
 // The brave shields service in charge of ad-block checking and init.
 class AdBlockService : public AdBlockBaseService {
  public:
-   AdBlockService();
-   ~AdBlockService() override;
+  AdBlockService();
+  ~AdBlockService() override;
 
  protected:
   bool Init() override;
