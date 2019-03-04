@@ -130,7 +130,7 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
     return;
   }
   visit_data_iter iter = current_pages_.find(tab_id);
-  if (iter == current_pages_.end() || 0 == last_tab_active_time_) {
+  if (iter == current_pages_.end() || last_tab_active_time_ == 0) {
     return;
   }
   DCHECK(last_tab_active_time_);

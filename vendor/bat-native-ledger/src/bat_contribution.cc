@@ -64,7 +64,7 @@ std::string BatContribution::GetAnonizeProof(
     const std::string& id,
     std::string* pre_flight) {
   const char* cred = makeCred(id.c_str());
-  if (nullptr != cred) {
+  if (cred != nullptr) {
     *pre_flight = std::string(cred);
     free((void*)cred);
   } else {
@@ -73,7 +73,7 @@ std::string BatContribution::GetAnonizeProof(
   const char* proof_temp = registerUserMessage(pre_flight->c_str(),
                                               registrar_VK.c_str());
   std::string proof;
-  if (nullptr != proof_temp) {
+  if (proof_temp != nullptr) {
     proof = proof_temp;
     free((void*)proof_temp);
   } else {
@@ -746,7 +746,7 @@ void BatContribution::ViewingCredentialsCallback(
       reconcile.preFlight_.c_str(),
       reconcile.registrarVK_.c_str());
 
-  if (nullptr != master_user_token) {
+  if (master_user_token != nullptr) {
     reconcile.masterUserToken_ = master_user_token;
     free((void*)master_user_token);
   }
@@ -1212,7 +1212,7 @@ std::vector<std::string> BatContribution::ProofBatch(
         surveyor.surveyVK_.c_str());
 
     std::string annon_proof;
-    if (nullptr != proof) {
+    if (proof != nullptr) {
       annon_proof = proof;
       free((void*)proof);
     }

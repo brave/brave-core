@@ -463,7 +463,7 @@ void BatPublishers::synopsisNormalizerInternal(
     size_t valueToChange = 0;
     double currentRoundOff = 0.0;
     for (size_t i = 0; i < percents.size(); i++) {
-      if (0 == i) {
+      if (i == 0) {
         currentRoundOff = roundoffs[i];
         continue;
       }
@@ -472,7 +472,7 @@ void BatPublishers::synopsisNormalizerInternal(
         valueToChange = i;
       }
     }
-    if (0 != percents.size()) {
+    if (percents.size() != 0) {
       if (totalPercents > 100) {
         percents[valueToChange] -= 1;
         totalPercents -= 1;

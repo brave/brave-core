@@ -140,7 +140,7 @@ std::string BatClient::getAnonizeProof(const std::string& registrarVK,
                                        const std::string& id,
                                        std::string* preFlight) {
   const char* cred = makeCred(id.c_str());
-  if (nullptr != cred) {
+  if (cred != nullptr) {
     *preFlight = cred;
     free((void*)cred);
   } else {
@@ -149,7 +149,7 @@ std::string BatClient::getAnonizeProof(const std::string& registrarVK,
   const char* proofTemp = registerUserMessage(preFlight->c_str(),
                                               registrarVK.c_str());
   std::string proof;
-  if (nullptr != proofTemp) {
+  if (proofTemp != nullptr) {
     proof = proofTemp;
     free((void*)proofTemp);
   } else {
@@ -183,7 +183,7 @@ void BatClient::registerPersonaCallback(
       ledger_->GetPreFlight().c_str(),
       ledger_->GetRegistrarVK().c_str());
 
-  if (nullptr != masterUserToken) {
+  if (masterUserToken != nullptr) {
     ledger_->SetMasterUserToken(masterUserToken);
     free((void*)masterUserToken);
   } else if (!braveledger_bat_helper::ignore_for_testing()) {
@@ -268,7 +268,7 @@ std::string BatClient::getWalletPassphrase() const {
   braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
   DCHECK(wallet_info.keyInfoSeed_.size());
   std::string passPhrase;
-  if (0 == wallet_info.keyInfoSeed_.size()) {
+  if (wallet_info.keyInfoSeed_.size() == 0) {
     return passPhrase;
   }
     char* words = nullptr;
@@ -276,7 +276,7 @@ std::string BatClient::getWalletPassphrase() const {
                                          &wallet_info.keyInfoSeed_.front(),
                                          wallet_info.keyInfoSeed_.size(),
                                          &words);
-  if (0 != result) {
+  if (result != 0) {
     DCHECK(false);
 
     return passPhrase;
@@ -331,7 +331,7 @@ void BatClient::OnNicewareListLoaded(const std::string& pass_phrase,
 void BatClient::continueRecover(int result,
                                 size_t *written,
                                 const std::vector<uint8_t>& newSeed) {
-  if (0 != result || 0 == *written) {
+  if (result != 0 || *written == 0) {
     BLOG(ledger_, ledger::LogLevel::LOG_INFO)
       << "Result: "
       << result

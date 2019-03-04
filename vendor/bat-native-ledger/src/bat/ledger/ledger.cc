@@ -63,7 +63,7 @@ bool VisitData::loadFromJson(const std::string& json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("tld") && d["tld"].IsString() &&
         d.HasMember("domain") && d["domain"].IsString() &&
         d.HasMember("path") && d["path"].IsString() &&
@@ -74,7 +74,7 @@ bool VisitData::loadFromJson(const std::string& json) {
         d.HasMember("favicon_url") && d["favicon_url"].IsString());
   }
 
-  if (false == error) {
+  if (!error) {
     tld = d["tld"].GetString();
     domain = d["domain"].GetString();
     path = d["path"].GetString();
@@ -121,7 +121,7 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("id") && d["id"].IsString() &&
         d.HasMember("excluded") && d["excluded"].IsInt() &&
         d.HasMember("percent") && d["percent"].IsUint() &&
@@ -131,7 +131,7 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
         d.HasMember("non_verified") && d["non_verified"].IsBool());
   }
 
-  if (false == error) {
+  if (!error) {
     id = d["id"].GetString();
     excluded = (EXCLUDE_FILTER)d["excluded"].GetInt();
     percent = d["percent"].GetUint();
@@ -182,7 +182,7 @@ bool PublisherBanner::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("publisher_key") && d["publisher_key"].IsString() &&
         d.HasMember("title") && d["title"].IsString() &&
         d.HasMember("name") && d["name"].IsString() &&
@@ -194,7 +194,7 @@ bool PublisherBanner::loadFromJson(const std::string& json) {
         d.HasMember("verified") && d["verified"].IsBool());
   }
 
-  if (false == error) {
+  if (!error) {
     publisher_key = d["publisher_key"].GetString();
     title = d["title"].GetString();
     name = d["name"].GetString();
@@ -290,7 +290,7 @@ bool PublisherInfo::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("id") && d["id"].IsString() &&
         d.HasMember("duration") && d["duration"].IsUint64() &&
         d.HasMember("score") && d["score"].IsDouble() &&
@@ -308,7 +308,7 @@ bool PublisherInfo::loadFromJson(const std::string& json) {
         d.HasMember("contributions") && d["contributions"].IsArray());
   }
 
-  if (false == error) {
+  if (!error) {
     id = d["id"].GetString();
     duration = d["duration"].GetUint64();
     score = d["score"].GetDouble();
@@ -352,13 +352,13 @@ bool ContributionInfo::loadFromJson(const std::string& json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("publisher") && d["publisher"].IsString() &&
         d.HasMember("value") && d["value"].IsDouble() &&
         d.HasMember("date") && d["date"].IsUint64());
   }
 
-  if (false == error) {
+  if (!error) {
     publisher = d["publisher"].GetString();
     value = d["value"].GetDouble();
     date = d["date"].GetUint64();
@@ -408,7 +408,7 @@ bool WalletInfo::loadFromJson(const std::string& json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("altcurrency_") && d["altcurrency_"].IsString() &&
         d.HasMember("probi_") && d["probi_"].IsString() &&
         d.HasMember("balance_") && d["balance_"].IsDouble() &&
@@ -421,7 +421,7 @@ bool WalletInfo::loadFromJson(const std::string& json) {
         d.HasMember("grants_") && d["grants_"].IsArray());
   }
 
-  if (false == error) {
+  if (!error) {
     altcurrency_ = d["altcurrency_"].GetString();
     probi_ = d["probi_"].GetString();
     balance_ = d["balance_"].GetDouble();
@@ -478,14 +478,14 @@ bool Grant::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
         d.HasMember("probi") && d["probi"].IsString() &&
         d.HasMember("promotionId") && d["promotionId"].IsString() &&
         d.HasMember("expiryTime") && d["expiryTime"].IsUint64());
   }
 
-  if (false == error) {
+  if (!error) {
     altcurrency = d["altcurrency"].GetString();
     probi = d["probi"].GetString();
     promotionId = d["promotionId"].GetString();
@@ -540,7 +540,7 @@ bool BalanceReportInfo::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(
         d.HasMember("opening_balance_") && d["opening_balance_"].IsString() &&
         d.HasMember("closing_balance_") && d["closing_balance_"].IsString() &&
@@ -556,7 +556,7 @@ bool BalanceReportInfo::loadFromJson(const std::string& json) {
         d.HasMember("total_") && d["total_"].IsString());
   }
 
-  if (false == error) {
+  if (!error) {
     opening_balance_ = d["opening_balance_"].GetString();
     closing_balance_ = d["closing_balance_"].GetString();
     deposits_ = d["deposits_"].GetString();
@@ -594,7 +594,7 @@ bool AutoContributeProps::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("enabled_contribute") &&
         d["enabled_contribute"].IsBool() &&
         d.HasMember("contribution_min_time") &&
@@ -608,7 +608,7 @@ bool AutoContributeProps::loadFromJson(const std::string& json) {
         d.HasMember("reconcile_stamp") && d["reconcile_stamp"].IsUint64());
   }
 
-  if (false == error) {
+  if (!error) {
     enabled_contribute = d["enabled_contribute"].GetBool();
     contribution_min_time = d["contribution_min_time"].GetUint64();
     contribution_min_visits = d["contribution_min_visits"].GetInt();
@@ -655,7 +655,7 @@ bool PendingContribution::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("publisher_key") && d["publisher_key"].IsString() &&
         d.HasMember("amount") && d["amount"].IsDouble() &&
         d.HasMember("added_date") && d["added_date"].IsUint64() &&
@@ -663,7 +663,7 @@ bool PendingContribution::loadFromJson(const std::string& json) {
         d.HasMember("category") && d["category"].IsInt());
   }
 
-  if (false == error) {
+  if (!error) {
     publisher_key = d["publisher_key"].GetString();
     amount = d["amount"].GetDouble();
     added_date = d["added_date"].GetUint64();
@@ -694,11 +694,11 @@ bool PendingContributionList::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("list") && d["list"].IsArray());
   }
 
-  if (false == error) {
+  if (!error) {
     for (const auto& g : d["list"].GetArray()) {
       rapidjson::StringBuffer sb;
       rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
@@ -733,11 +733,11 @@ bool PublisherInfoListStruct::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("list") && d["list"].IsArray());
   }
 
-  if (false == error) {
+  if (!error) {
     for (const auto& g : d["list"].GetArray()) {
       rapidjson::StringBuffer sb;
       rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
