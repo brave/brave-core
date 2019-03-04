@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -32,19 +33,6 @@ std::string TrackingProtectionService::g_tracking_protection_component_base64_pu
 
 TrackingProtectionService::TrackingProtectionService()
   : tracking_protection_client_(new CTPParser()),
-    // See comment in tracking_protection_service.h for white_list_
-    white_list_({
-      "connect.facebook.net",
-      "connect.facebook.com",
-      "staticxx.facebook.com",
-      "www.facebook.com",
-      "scontent.xx.fbcdn.net",
-      "pbs.twimg.com",
-      "scontent-sjc2-1.xx.fbcdn.net",
-      "platform.twitter.com",
-      "syndication.twitter.com",
-      "cdn.syndication.twimg.com"
-    }),
     weak_factory_(this) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
@@ -59,7 +47,13 @@ void TrackingProtectionService::Cleanup() {
 
 bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
-    const std::string &tab_host) {
+    const std::string &tab_host,
+    bool* matching_exception_filter) {
+  // There are no exceptions in the TP service, but exceptions are
+  // combined with brave/ad-block.
+  if (matching_exception_filter) {
+    *matching_exception_filter = false;
+  }
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::string host = url.host();
   if (!tracking_protection_client_->matchesTracker(
@@ -82,11 +76,6 @@ bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
       return true;
     }
   }
-
-  if (std::find(white_list_.begin(), white_list_.end(), host) !=
-      white_list_.end()) {
-    return true;
-  }
   return false;
 }
 
@@ -103,7 +92,8 @@ void TrackingProtectionService::OnDATFileDataReady() {
     return;
   }
   tracking_protection_client_.reset(new CTPParser());
-  if (!tracking_protection_client_->deserialize((char*)&buffer_.front())) {
+  if (!tracking_protection_client_->deserialize(
+        reinterpret_cast<char*>(&buffer_.front()))) {
     tracking_protection_client_.reset();
     LOG(ERROR) << "Failed to deserialize tracking protection data";
   }

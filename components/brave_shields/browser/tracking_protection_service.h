@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -9,7 +10,8 @@
 
 #include <map>
 #include <memory>
-#include <mutex>
+// TODO(brave): <mutex> is an unapproved C++11 header
+#include <mutex>  // NOLINT
 #include <string>
 #include <vector>
 
@@ -22,6 +24,7 @@
 
 class CTPParser;
 class TrackingProtectionServiceTest;
+class AdBlockServiceTest;
 
 namespace brave_shields {
 
@@ -45,7 +48,8 @@ class TrackingProtectionService : public BaseBraveShieldsService {
 
   bool ShouldStartRequest(const GURL& spec,
     content::ResourceType resource_type,
-    const std::string& tab_host) override;
+    const std::string& tab_host,
+    bool* matching_exception_filter) override;
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override;
 
  protected:
@@ -57,6 +61,7 @@ class TrackingProtectionService : public BaseBraveShieldsService {
 
  private:
   friend class ::TrackingProtectionServiceTest;
+  friend class ::AdBlockServiceTest;
   static std::string g_tracking_protection_component_id_;
   static std::string g_tracking_protection_component_base64_public_key_;
   static void SetComponentIdAndBase64PublicKeyForTest(
@@ -69,8 +74,6 @@ class TrackingProtectionService : public BaseBraveShieldsService {
   brave_shields::DATFileDataBuffer buffer_;
 
   std::unique_ptr<CTPParser> tracking_protection_client_;
-  // TODO: Temporary hack which matches both browser-laptop and Android code
-  std::vector<std::string> white_list_;
   std::vector<std::string> third_party_base_hosts_;
   std::map<std::string, std::vector<std::string>> third_party_hosts_cache_;
   std::mutex third_party_hosts_mutex_;
