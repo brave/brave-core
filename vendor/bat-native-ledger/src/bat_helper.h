@@ -165,21 +165,23 @@ struct GRANT {
   GRANT();
   GRANT(const GRANT& properties);
   ~GRANT();
+
   // load from json string
   bool loadFromJson(const std::string & json);
+
   std::string altcurrency;
   std::string probi;
   uint64_t expiryTime;
   std::string promotionId;
   std::string type;
-  };
+};
 
 struct GRANT_RESPONSE {
   GRANT_RESPONSE();
   GRANT_RESPONSE(const GRANT_RESPONSE& properties);
   ~GRANT_RESPONSE();
 
-  //load from json string
+  // load from json string
   bool loadFromJson(const std::string & json);
 
   std::string promotionId;

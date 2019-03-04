@@ -49,7 +49,7 @@ class BatClient {
   void recoverWallet(const std::string& passPhrase);
 
   void getGrants(const std::string& lang, const std::string& forPaymentId);
-  
+
   void setGrant(const std::string& captchaResponse,
                 const std::string& promotionId);
 

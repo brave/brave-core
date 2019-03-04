@@ -31,7 +31,7 @@ using FetchDataFromUrlCallback = std::function<void(
 
 class BatGetMedia {
  public:
-  BatGetMedia(bat_ledger::LedgerImpl* ledger);
+  explicit BatGetMedia(bat_ledger::LedgerImpl* ledger);
 
   ~BatGetMedia();
 

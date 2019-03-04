@@ -17,7 +17,9 @@
 #include "wally_bip39.h"
 #include "anon/anon.h"
 
-using namespace std::placeholders;
+using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
 
 namespace braveledger_bat_client {
 
@@ -246,16 +248,16 @@ void BatClient::walletPropertiesCallback(
   braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
   ledger_->LogResponse(__func__, response_status_code, response, headers);
   if (response_status_code != 200) {
-   ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
-   return;
+    ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
+    return;
   }
 
   bool ok = braveledger_bat_helper::loadFromJson(&properties, response);
   if (!ok) {
-   BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-     "Failed to load wallet properties state";
-   ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
-   return;
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+      "Failed to load wallet properties state";
+    ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
+    return;
   }
 
   ledger_->SetWalletProperties(&properties);
@@ -581,7 +583,7 @@ void BatClient::getGrantCaptchaCallback(
 
   auto it = headers.find("captcha-hint");
   if (response_status_code != 200 || it == headers.end()) {
-    // TODO NZ Add error handler
+    // TODO(nejczdovc): Add error handler
     return;
   }
 

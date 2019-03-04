@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 
 #define LEDGER_STAGING_SERVER               \
 "https://ledger-staging.mercury.basicattentiontoken.org"
@@ -103,10 +104,7 @@ static const uint64_t _milliseconds_minute = 60 * 1000;
 
 static const uint64_t _milliseconds_second = 1000;
 
-static const unsigned int _twitch_events_array_size = 8;
-// Important: set twitch_events_array_size as a
-// correct array size when you modify items in _twitch_events
-static const std::string _twitch_events[] = {
+static const std::vector<std::string> _twitch_events = {
     "buffer-empty",
     "buffer-refill",
     "video_end",

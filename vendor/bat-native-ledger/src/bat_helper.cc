@@ -6,7 +6,6 @@
 
 #include <iomanip>
 #include <random>
-#include <regex>
 #include <algorithm>
 #include <openssl/base64.h>
 #include <openssl/digest.h>
@@ -17,6 +16,7 @@
 #include "logging.h"
 #include "rapidjson_bat_helper.h"
 #include "static_values.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "tweetnacl.h"
 #include "url/gurl.h"
 
@@ -29,7 +29,7 @@ bool isProbiValid(const std::string& probi) {
   }
 
   // checks if probi only contains numbers
-  return std::regex_match(probi, std::regex("^-?[0-9]*$"));
+  return re2::RE2::FullMatch(probi, "^-?[0-9]*$");
 }
 
 REQUEST_CREDENTIALS_ST::REQUEST_CREDENTIALS_ST() {}
@@ -965,7 +965,8 @@ void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST& data) {
 /////////////////////////////////////////////////////////////////////////////
 GRANTS_PROPERTIES_ST::GRANTS_PROPERTIES_ST() {}
 
-GRANTS_PROPERTIES_ST::GRANTS_PROPERTIES_ST(const GRANTS_PROPERTIES_ST& properties) {
+GRANTS_PROPERTIES_ST::GRANTS_PROPERTIES_ST(
+    const GRANTS_PROPERTIES_ST& properties) {
   grants_ = properties.grants_;
 }
 
@@ -990,7 +991,8 @@ bool GRANTS_PROPERTIES_ST::loadFromJson(const std::string & json) {
       }
 
       if (obj.HasMember("minimumReconcileTimestamp")) {
-        grant.minimumReconcileTimestamp = obj["minimumReconcileTimestamp"].GetUint64();
+        grant.minimumReconcileTimestamp =
+            obj["minimumReconcileTimestamp"].GetUint64();
       }
 
       if (obj.HasMember("protocolVersion")) {
@@ -1053,7 +1055,7 @@ bool GRANT::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
   if (error == true) {
     return !error;
@@ -1061,8 +1063,7 @@ bool GRANT::loadFromJson(const std::string & json) {
 
   // First grant get
   error = !(
-      d.HasMember("promotionId") && d["promotionId"].IsString()
-  );
+      d.HasMember("promotionId") && d["promotionId"].IsString());
 
   if (error == false) {
     promotionId = d["promotionId"].GetString();
@@ -1074,8 +1075,7 @@ bool GRANT::loadFromJson(const std::string & json) {
       d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
       d.HasMember("expiryTime") && d["expiryTime"].IsNumber() &&
       d.HasMember("probi") && d["probi"].IsString() &&
-      d.HasMember("type") && d["type"].IsString()
-  );
+      d.HasMember("type") && d["type"].IsString());
 
   if (error == false) {
     altcurrency = d["altcurrency"].GetString();
@@ -1087,9 +1087,9 @@ bool GRANT::loadFromJson(const std::string & json) {
   return !error;
 }
 
-GRANT_RESPONSE::GRANT_RESPONSE () {}
+GRANT_RESPONSE::GRANT_RESPONSE() {}
 
-GRANT_RESPONSE::~GRANT_RESPONSE () {}
+GRANT_RESPONSE::~GRANT_RESPONSE() {}
 
 GRANT_RESPONSE::GRANT_RESPONSE(const GRANT_RESPONSE &properties) {
   promotionId = properties.promotionId;
@@ -2251,7 +2251,7 @@ std::string uint8ToHex(const std::vector<uint8_t>& in) {
   std::ostringstream res;
   for (size_t i = 0; i < in.size(); i++) {
     res << std::setfill('0') << std::setw(sizeof(uint8_t) * 2)
-       << std::hex << (int)in[i];
+       << std::hex << static_cast<int>(in[i]);
   }
   return res.str();
 }
@@ -2429,8 +2429,8 @@ std::string getBase64(const std::vector<uint8_t>& in) {
   }
   std::vector<uint8_t> out(size);
   int numEncBytes = EVP_EncodeBlock(&out.front(), &in.front(), in.size());
-  DCHECK(numEncBytes != 0);
-  res = (char*)&out.front();
+  DCHECK_NE(numEncBytes, 0);
+  res = reinterpret_cast<char*>(&out.front());
   return res;
 }
 
@@ -2450,7 +2450,7 @@ bool getFromBase64(const std::string& in, std::vector<uint8_t>* out) {
                                        size,
                                        (const uint8_t*)in.c_str(),
                                        in.length());
-    DCHECK(numDecBytes != 0);
+    DCHECK_NE(numDecBytes, 0);
 
     if (0 == numDecBytes) {
       succeded = false;
@@ -2479,11 +2479,11 @@ std::string sign(std::string* keys,
   }
   std::vector<uint8_t> signedMsg(crypto_sign_BYTES + message.length());
 
-  unsigned long long signedMsgSize = 0;
+  unsigned long long signedMsgSize = 0;  // NOLINT
   crypto_sign(&signedMsg.front(),
               &signedMsgSize,
               reinterpret_cast<const unsigned char*>(message.c_str()),
-              (unsigned long long)message.length(),
+              (unsigned long long)message.length(),  // NOLINT
               &secretKey.front());
 
   std::vector<uint8_t> signature(crypto_sign_BYTES);
@@ -2509,8 +2509,9 @@ void getTwitchParts(
     bool succeded = braveledger_bat_helper::getFromBase64(varValue, &decoded);
     if (succeded) {
       decoded.push_back((uint8_t)'\0');
-      braveledger_bat_helper::getJSONTwitchProperties((char*)&decoded.front(),
-                                                      parts);
+      braveledger_bat_helper::getJSONTwitchProperties(
+          reinterpret_cast<char*>(&decoded.front()),
+          parts);
     }
   }
 }
@@ -2527,7 +2528,7 @@ std::string getMediaId(const std::map<std::string, std::string>& data,
     std::map<std::string, std::string>::const_iterator iter =
         data.find("event");
     if (iter != data.end() && data.find("properties") != data.end()) {
-      unsigned int size = braveledger_ledger::_twitch_events_array_size;
+      unsigned int size = braveledger_ledger::_twitch_events.size();
       for (size_t i = 0; i < size; i++) {
         if (iter->second == braveledger_ledger::_twitch_events[i]) {
           iter = data.find("channel");

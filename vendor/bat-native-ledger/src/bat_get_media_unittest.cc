@@ -331,4 +331,4 @@ TEST(BatGetMediaTest, GetNameFromChannel) {
   delete bat_get_media_;
 }
 
-}  // braveledger_bat_get_media
+}  // namespace braveledger_bat_get_media

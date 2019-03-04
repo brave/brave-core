@@ -15,7 +15,9 @@
 #include "rapidjson_bat_helper.h"
 #include "static_values.h"
 
-using namespace std::placeholders;
+using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
 
 namespace braveledger_bat_get_media {
 
@@ -327,7 +329,7 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != 200) {
-    // TODO add error handler
+    // TODO(anyone): add error handler
     return;
   }
 
