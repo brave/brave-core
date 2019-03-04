@@ -9,15 +9,14 @@
 #include <string>
 #include <utility>
 
-#include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_message_handler.h"
 
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_generated_map.h"
@@ -29,9 +28,100 @@
 #endif
 
 namespace {
-std::string BooleanToString(bool value) {
-  return value ? "true" : "false";
+
+class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
+ public:
+  RewardsInternalsDOMHandler();
+  ~RewardsInternalsDOMHandler() override;
+
+  void Init();
+
+  // WebUIMessageHandler implementation.
+  void RegisterMessages() override;
+
+ private:
+  bool IsRewardsEnabled() const;
+  void HandleGetRewardsInternalsInfo(const base::ListValue* args);
+  void OnGetRewardsInternalsInfo(
+      std::unique_ptr<brave_rewards::RewardsInternalsInfo> info);
+  void OnPreferenceChanged();
+
+  brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
+  Profile* profile_;
+  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
+  base::WeakPtrFactory<RewardsInternalsDOMHandler> weak_ptr_factory_;
+
+  DISALLOW_COPY_AND_ASSIGN(RewardsInternalsDOMHandler);
+};
+
+RewardsInternalsDOMHandler::RewardsInternalsDOMHandler()
+    : rewards_service_(nullptr), profile_(nullptr), weak_ptr_factory_(this) {}
+
+RewardsInternalsDOMHandler::~RewardsInternalsDOMHandler() {}
+
+void RewardsInternalsDOMHandler::RegisterMessages() {
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.getRewardsInternalsInfo",
+      base::Bind(&RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo,
+                 base::Unretained(this)));
 }
+
+void RewardsInternalsDOMHandler::Init() {
+  profile_ = Profile::FromWebUI(web_ui());
+  rewards_service_ =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
+  PrefService* prefs = profile_->GetPrefs();
+  pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
+  pref_change_registrar_->Init(prefs);
+  pref_change_registrar_->Add(
+      brave_rewards::prefs::kBraveRewardsEnabled,
+      base::BindRepeating(&RewardsInternalsDOMHandler::OnPreferenceChanged,
+                          base::Unretained(this)));
+}
+
+bool RewardsInternalsDOMHandler::IsRewardsEnabled() const {
+  DCHECK(profile_);
+  return profile_->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kBraveRewardsEnabled);
+}
+
+void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(
+    const base::ListValue* args) {
+  rewards_service_->GetRewardsInternalsInfo(
+      base::Bind(&RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo,
+                 weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::OnPreferenceChanged() {
+  rewards_service_->GetRewardsInternalsInfo(
+      base::Bind(&RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo,
+                 weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
+    std::unique_ptr<brave_rewards::RewardsInternalsInfo> info) {
+  if (!web_ui()->CanCallJavascript())
+    return;
+  base::DictionaryValue info_dict;
+  info_dict.SetBoolean("isRewardsEnabled", IsRewardsEnabled());
+  if (info) {
+    info_dict.SetString("walletPaymentId", info->payment_id);
+    info_dict.SetBoolean("isKeyInfoSeedValid", info->is_key_info_seed_valid);
+    auto current_reconciles = std::make_unique<base::ListValue>();
+    for (const auto& item : info->current_reconciles) {
+      auto reconcile_info = std::make_unique<base::DictionaryValue>();
+      reconcile_info->SetString("viewingId", item.second.viewing_id_);
+      reconcile_info->SetString("amount", item.second.amount_);
+      reconcile_info->SetInteger("retryStep", item.second.retry_step_);
+      reconcile_info->SetInteger("retryLevel", item.second.retry_level_);
+      current_reconciles->Append(std::move(reconcile_info));
+    }
+    info_dict.SetList("currentReconciles", std::move(current_reconciles));
+  }
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_internals.onGetRewardsInternalsInfo", info_dict);
+}
+
 }  // namespace
 
 BraveRewardsInternalsUI::BraveRewardsInternalsUI(content::WebUI* web_ui,
@@ -45,91 +135,12 @@ BraveRewardsInternalsUI::BraveRewardsInternalsUI(content::WebUI* web_ui,
               kBraveRewardsSettingsGenerated,
               kBraveRewardsSettingsGeneratedSize,
 #endif
-              IDR_BRAVE_REWARDS_INTERNALS_HTML),
-      profile_(Profile::FromWebUI(web_ui)),
-      weak_ptr_factory_(this) {
-  Profile* profile = Profile::FromWebUI(web_ui);
-  PrefService* prefs = profile->GetPrefs();
-  pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
-  pref_change_registrar_->Init(prefs);
-  pref_change_registrar_->Add(
-      brave_rewards::prefs::kBraveRewardsEnabled,
-      base::Bind(&BraveRewardsInternalsUI::OnPreferenceChanged,
-                 weak_ptr_factory_.GetWeakPtr()));
-  rewards_service_ =
-      brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
-  rewards_service_->AddObserver(this);
-  rewards_service_->GetRewardsInternalsInfo(
-      base::Bind(&BraveRewardsInternalsUI::OnGetRewardsInternalsInfo,
-                 weak_ptr_factory_.GetWeakPtr()));
+              IDR_BRAVE_REWARDS_INTERNALS_HTML) {
+  auto handler_owner = std::make_unique<RewardsInternalsDOMHandler>();
+  RewardsInternalsDOMHandler* handler = handler_owner.get();
+  web_ui->AddMessageHandler(std::move(handler_owner));
+  handler->Init();
 }
 
 BraveRewardsInternalsUI::~BraveRewardsInternalsUI() {
-  rewards_service_->RemoveObserver(this);
-}
-
-void BraveRewardsInternalsUI::CustomizeWebUIProperties(
-    content::RenderViewHost* render_view_host) {
-  DCHECK(IsSafeToSetWebUIProperties());
-
-  if (render_view_host) {
-    render_view_host->SetWebUIProperty("isRewardsEnabled",
-                                       BooleanToString(IsRewardsEnabled()));
-    if (internals_info_) {
-      render_view_host->SetWebUIProperty("walletPaymentId",
-                                         internals_info_->payment_id);
-      render_view_host->SetWebUIProperty(
-          "isKeyInfoSeedValid",
-          BooleanToString(internals_info_->is_key_info_seed_valid));
-
-      base::ListValue current_reconciles;
-      for (const auto& item : internals_info_->current_reconciles) {
-        auto current_reconcile_info = std::make_unique<base::DictionaryValue>();
-        current_reconcile_info->SetString("viewingId", item.second.viewing_id_);
-        current_reconcile_info->SetString("amount", item.second.amount_);
-        current_reconcile_info->SetInteger("retryStep",
-                                           item.second.retry_step_);
-        current_reconcile_info->SetInteger("retryLevel",
-                                           item.second.retry_level_);
-        current_reconciles.Append(std::move(current_reconcile_info));
-      }
-
-      std::string json;
-      if (base::JSONWriter::Write(current_reconciles, &json))
-        render_view_host->SetWebUIProperty("currentReconciles", json);
-    }
-  }
-}
-
-bool BraveRewardsInternalsUI::IsRewardsEnabled() const {
-  DCHECK(profile_);
-  return profile_->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kBraveRewardsEnabled);
-}
-
-void BraveRewardsInternalsUI::UpdateWebUIProperties() {
-  if (IsSafeToSetWebUIProperties()) {
-    CustomizeWebUIProperties(GetRenderViewHost());
-    web_ui()->CallJavascriptFunctionUnsafe(
-        "brave_rewards_internals.stateUpdated");
-  }
-}
-
-void BraveRewardsInternalsUI::OnWalletInitialized(
-    brave_rewards::RewardsService* rewards_service,
-    int error_code) {
-  DCHECK(rewards_service_);
-  rewards_service_->GetRewardsInternalsInfo(
-      base::Bind(&BraveRewardsInternalsUI::OnGetRewardsInternalsInfo,
-                 weak_ptr_factory_.GetWeakPtr()));
-}
-
-void BraveRewardsInternalsUI::OnGetRewardsInternalsInfo(
-    std::unique_ptr<brave_rewards::RewardsInternalsInfo> info) {
-  internals_info_ = std::move(info);
-  UpdateWebUIProperties();
-}
-
-void BraveRewardsInternalsUI::OnPreferenceChanged() {
-  UpdateWebUIProperties();
 }

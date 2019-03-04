@@ -17,8 +17,12 @@ const rewardsInternalsReducer: Reducer<RewardsInternals.State | undefined> = (st
 
   const startingState = state
   switch (action.type) {
-    case types.REWARDS_INTERNALS_STATE_UPDATED:
-      state = storage.getLoadTimeData(state)
+    case types.GET_REWARDS_INTERNALS_INFO:
+      chrome.send('brave_rewards_internals.getRewardsInternalsInfo')
+      break
+    case types.ON_GET_REWARDS_INTERNALS_INFO:
+      state = { ...state }
+      state.info = action.payload.info
       break
     default:
       break

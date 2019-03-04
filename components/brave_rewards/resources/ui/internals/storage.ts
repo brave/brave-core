@@ -9,35 +9,13 @@ const keyName = 'rewards-internals-data'
 const defaultState: RewardsInternals.State = {
   info: {
     isRewardsEnabled: false,
-    isKeyInfoSeedValid: '',
+    isKeyInfoSeedValid: false,
     walletPaymentId: '',
     currentReconciles: []
   }
 }
 
-export const getLoadTimeData = (state: RewardsInternals.State): RewardsInternals.State => {
-  state = { ...state }
-  state.info = defaultState.info
-
-  // Expected to be Booleans
-  ;['isRewardsEnabled'].forEach((item) => {
-    state.info[item] = chrome.getVariableValue(item) === 'true'
-  })
-  // Expected to be Strings
-  ;['isKeyInfoSeedValid','walletPaymentId'].forEach((item) => {
-    state.info[item] = chrome.getVariableValue(item)
-  })
-  // Expected to be Objects
-  ;['currentReconciles'].forEach((item) => {
-    state.info[item] = JSON.parse(chrome.getVariableValue(item))
-  })
-
-  return state
-}
-
-export const cleanData = (state: RewardsInternals.State): RewardsInternals.State => {
-  return getLoadTimeData(state)
-}
+const cleanData = (state: RewardsInternals.State) => state
 
 export const load = (): RewardsInternals.State => {
   const data = window.localStorage.getItem(keyName)

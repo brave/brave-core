@@ -3,5 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export const enum types {
-  REWARDS_INTERNALS_STATE_UPDATED = '@@rewards_internals/REWARDS_INTERNALS_STATE_UPDATED'
+  GET_REWARDS_INTERNALS_INFO = '@@rewards_internals/GET_REWARDS_INTERNALS_INFO',
+  ON_GET_REWARDS_INTERNALS_INFO = '@@rewards_internals/ON_GET_REWARDS_INTERNALS_INFO'
 }

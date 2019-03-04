@@ -8,7 +8,7 @@ import * as React from 'react'
 import { getLocale } from '../../../../../common/locale'
 
 interface Props {
-  isKeyInfoSeedValid: string
+  isKeyInfoSeedValid: boolean
 }
 
 const getKeyInfoSeedValidString = (isValid: boolean) => {
@@ -21,6 +21,6 @@ const getKeyInfoSeedValidString = (isValid: boolean) => {
 
 export const KeyInfoSeed = (props: Props) => (
   <div>
-    <span i18n-content='keyInfoSeed'/> {getKeyInfoSeedValidString(props.isKeyInfoSeedValid === 'true')}
+    <span i18n-content='keyInfoSeed'/> {getKeyInfoSeedValidString(props.isKeyInfoSeedValid)}
   </div>
 )

@@ -9,43 +9,19 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/webui/basic_ui.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-
-class PrefChangeRegistrar;
 
 namespace brave_rewards {
 struct RewardsInternalsInfo;
-class RewardsService;
 }  // namespace brave_rewards
 
-class BraveRewardsInternalsUI : public BasicUI,
-                                public brave_rewards::RewardsServiceObserver {
+class BraveRewardsInternalsUI : public BasicUI {
  public:
   BraveRewardsInternalsUI(content::WebUI* web_ui, const std::string& host);
   ~BraveRewardsInternalsUI() override;
 
  private:
-  // BasicUI overrides:
-  void UpdateWebUIProperties() override;
-
-  // RewardsServiceObserver overrides:
-  void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
-                            int error_code) override;
-
-  void OnGetRewardsInternalsInfo(
-      std::unique_ptr<brave_rewards::RewardsInternalsInfo> info);
-  void OnPreferenceChanged();
-
-  void CustomizeWebUIProperties(content::RenderViewHost* render_view_host);
-  bool IsRewardsEnabled() const;
-
-  Profile* profile_;
-  brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
-  std::unique_ptr<brave_rewards::RewardsInternalsInfo> internals_info_;
-  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
-  base::WeakPtrFactory<BraveRewardsInternalsUI> weak_ptr_factory_;
-
   DISALLOW_COPY_AND_ASSIGN(BraveRewardsInternalsUI);
 };
 

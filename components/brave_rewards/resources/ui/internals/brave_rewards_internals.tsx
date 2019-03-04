@@ -17,7 +17,19 @@ import * as rewardsInternalsActions from './actions/rewards_internals_actions'
 window.cr.define('brave_rewards_internals', function () {
   'use strict'
 
+  function getRewardsInternalsInfo() {
+    const actions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
+    actions.getRewardsInternalsInfo()
+  }
+
+  function onGetRewardsInternalsInfo (info: RewardsInternals.State) {
+    const actions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
+    actions.onGetRewardsInternalsInfo(info)
+    window.i18nTemplate.process(window.document, window.loadTimeData)
+  }
+
   function initialize () {
+    getRewardsInternalsInfo()
     render(
       <Provider store={store}>
         <App />
@@ -26,15 +38,10 @@ window.cr.define('brave_rewards_internals', function () {
     window.i18nTemplate.process(window.document, window.loadTimeData)
   }
 
-  function stateUpdated () {
-    const actions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
-    actions.stateUpdated()
-    window.i18nTemplate.process(window.document, window.loadTimeData)
-  }
-
   return {
+    getRewardsInternalsInfo,
     initialize,
-    stateUpdated
+    onGetRewardsInternalsInfo
   }
 })
 

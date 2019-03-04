@@ -261,6 +261,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CURRENT_RECONCILE" desc="Current reconcile">Current Reconcile</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_INVALID" desc="Invalid indicator">Invalid</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_KEY_INFO_SEED" desc="Key info seed">Key Info Seed:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REFRESH_BUTTON" desc="Refresh button">Refresh</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_LEVEL" desc="Retry level">Retry Level:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP" desc="Retry step">Retry Step:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_STEP_CURRENT" desc="Retry step current">Current</message>

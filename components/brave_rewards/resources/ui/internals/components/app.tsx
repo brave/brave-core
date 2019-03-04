@@ -25,20 +25,27 @@ export class RewardsInternalsPage extends React.Component<Props, {}> {
     return this.props.actions
   }
 
+  onRefresh = () => {
+    chrome.send('brave_rewards_internals.getRewardsInternalsInfo')
+  }
+
   render () {
     const { rewardsInternalsData } = this.props
     if (rewardsInternalsData.info.isRewardsEnabled) {
       return (
         <div id='rewardsInternalsPage'>
-          <KeyInfoSeed isKeyInfoSeedValid={rewardsInternalsData.info.isKeyInfoSeedValid || ''} />
+          <KeyInfoSeed isKeyInfoSeedValid={rewardsInternalsData.info.isKeyInfoSeedValid || false} />
           <WalletPaymentId walletPaymentId={rewardsInternalsData.info.walletPaymentId || ''} />
-          <hr/>
           {rewardsInternalsData.info.currentReconciles.map((item, index) => (
-            <div>
-              <span i18n-content='currentReconcile'/> {index + 1}
-              <CurrentReconcile currentReconcile={item || ''} />
-            </div>
+            <span>
+              <hr/>
+              <div>
+                <span i18n-content='currentReconcile'/> {index + 1}
+                <CurrentReconcile currentReconcile={item || ''} />
+              </div>
+            </span>
           ))}
+          <button type='button' style={{ marginTop: '10px' }} onClick={this.onRefresh}>{getLocale('refreshButton')}</button>
         </div>)
     } else {
       return (
