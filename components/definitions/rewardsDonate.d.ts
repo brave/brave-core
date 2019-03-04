@@ -7,6 +7,7 @@ declare namespace RewardsDonate {
     currentTipAmount?: string
     currentTipRecurring?: boolean
     recurringDonations?: RecurringDonation[]
+    reconcileStamp: number
   }
 
   interface ApplicationState {

@@ -33,6 +33,7 @@ class Banner extends React.Component<Props, State> {
   componentDidMount () {
     this.actions.getWalletProperties()
     this.actions.getRecurringDonations()
+    this.actions.getReconcileStamp()
   }
 
   get actions () {
