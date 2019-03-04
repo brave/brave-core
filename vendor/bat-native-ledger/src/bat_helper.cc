@@ -4,19 +4,19 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 #include "bat_helper.h"
 
-#include <iomanip>
-#include <random>
-#include <regex>
-#include <algorithm>
 #include <openssl/base64.h>
 #include <openssl/digest.h>
 #include <openssl/hkdf.h>
 #include <openssl/sha.h>
+#include <iomanip>
+#include <random>
+#include <algorithm>
 
 #include "bat/ledger/ledger.h"
 #include "logging.h"
 #include "rapidjson_bat_helper.h"
 #include "static_values.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "tweetnacl.h"
 #include "url/gurl.h"
 
@@ -29,7 +29,7 @@ bool isProbiValid(const std::string& probi) {
   }
 
   // checks if probi only contains numbers
-  return std::regex_match(probi, std::regex("^-?[0-9]*$"));
+  return re2::RE2::FullMatch(probi, "^-?[0-9]*$");
 }
 
 REQUEST_CREDENTIALS_ST::REQUEST_CREDENTIALS_ST() {}
@@ -63,7 +63,7 @@ bool WALLET_INFO_ST::loadFromJson(const std::string & json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("paymentId") && d["paymentId"].IsString() &&
       d.HasMember("addressBAT") && d["addressBAT"].IsString() &&
       d.HasMember("addressBTC") && d["addressBTC"].IsString() &&
@@ -73,13 +73,13 @@ bool WALLET_INFO_ST::loadFromJson(const std::string & json) {
       d.HasMember("keyInfoSeed") && d["keyInfoSeed"].IsString() );
   }
 
-  if (false == error) {
+  if (!error) {
     // convert keyInfoSeed and check error
     std::string sKeyInfoSeed = d["keyInfoSeed"].GetString();
-    error = !getFromBase64(sKeyInfoSeed, keyInfoSeed_);
+    error = !getFromBase64(sKeyInfoSeed, &keyInfoSeed_);
   }
 
-  if (false == error) {
+  if (!error) {
     paymentId_ = d["paymentId"].GetString();
     addressBAT_ = d["addressBAT"].GetString();
     addressBTC_ = d["addressBTC"].GetString();
@@ -90,35 +90,35 @@ bool WALLET_INFO_ST::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const WALLET_INFO_ST& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const WALLET_INFO_ST& data) {
+  writer->StartObject();
 
-  writer.String("paymentId");
-  writer.String(data.paymentId_.c_str());
+  writer->String("paymentId");
+  writer->String(data.paymentId_.c_str());
 
-  writer.String("addressBAT");
-  writer.String(data.addressBAT_.c_str());
+  writer->String("addressBAT");
+  writer->String(data.addressBAT_.c_str());
 
-  writer.String("addressBTC");
-  writer.String(data.addressBTC_.c_str());
+  writer->String("addressBTC");
+  writer->String(data.addressBTC_.c_str());
 
-  writer.String("addressCARD_ID");
-  writer.String(data.addressCARD_ID_.c_str());
+  writer->String("addressCARD_ID");
+  writer->String(data.addressCARD_ID_.c_str());
 
-  writer.String("addressETH");
-  writer.String(data.addressETH_.c_str());
+  writer->String("addressETH");
+  writer->String(data.addressETH_.c_str());
 
-  writer.String("addressLTC");
-  writer.String(data.addressLTC_.c_str());
+  writer->String("addressLTC");
+  writer->String(data.addressLTC_.c_str());
 
-  writer.String("keyInfoSeed");
+  writer->String("keyInfoSeed");
   if (data.keyInfoSeed_.size() == 0) {
-    writer.String("");
+    writer->String("");
   } else {
-    writer.String(getBase64(data.keyInfoSeed_).c_str());
+    writer->String(getBase64(data.keyInfoSeed_).c_str());
   }
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -138,12 +138,12 @@ bool TRANSACTION_BALLOT_ST::loadFromJson(const std::string & json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("publisher") && d["publisher"].IsString() &&
       d.HasMember("offset") && d["offset"].IsUint() );
   }
 
-  if (false == error) {
+  if (!error) {
     publisher_ = d["publisher"].GetString();
     offset_ = d["offset"].GetUint();
   }
@@ -151,16 +151,16 @@ bool TRANSACTION_BALLOT_ST::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const TRANSACTION_BALLOT_ST& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const TRANSACTION_BALLOT_ST& data) {
+  writer->StartObject();
 
-  writer.String("publisher");
-  writer.String(data.publisher_.c_str());
+  writer->String("publisher");
+  writer->String(data.publisher_.c_str());
 
-  writer.String("offset");
-  writer.Uint(data.offset_);
+  writer->String("offset");
+  writer->Uint(data.offset_);
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -195,7 +195,7 @@ bool TRANSACTION_ST::loadFromJson(const std::string & json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("viewingId") && d["viewingId"].IsString() &&
       d.HasMember("surveyorId") && d["surveyorId"].IsString() &&
       d.HasMember("contribution_fiat_amount") &&
@@ -222,7 +222,7 @@ bool TRANSACTION_ST::loadFromJson(const std::string & json) {
       d.HasMember("ballots") && d["ballots"].IsArray());
   }
 
-  if (false == error) {
+  if (!error) {
     viewingId_ = d["viewingId"].GetString();
     surveyorId_ = d["surveyorId"].GetString();
     contribution_fiat_amount_ = d["contribution_fiat_amount"].GetString();
@@ -261,71 +261,71 @@ bool TRANSACTION_ST::loadFromJson(const std::string & json) {
 }
 
 
-void saveToJson(JsonWriter & writer, const TRANSACTION_ST& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const TRANSACTION_ST& data) {
+  writer->StartObject();
 
-  writer.String("viewingId");
-  writer.String(data.viewingId_.c_str());
+  writer->String("viewingId");
+  writer->String(data.viewingId_.c_str());
 
-  writer.String("surveyorId");
-  writer.String(data.surveyorId_.c_str());
+  writer->String("surveyorId");
+  writer->String(data.surveyorId_.c_str());
 
-  writer.String("contribution_fiat_amount");
-  writer.String(data.contribution_fiat_amount_.c_str());
+  writer->String("contribution_fiat_amount");
+  writer->String(data.contribution_fiat_amount_.c_str());
 
-  writer.String("contribution_fiat_currency");
-  writer.String(data.contribution_fiat_currency_.c_str());
+  writer->String("contribution_fiat_currency");
+  writer->String(data.contribution_fiat_currency_.c_str());
 
-  writer.String("rates");
-  writer.StartObject();
+  writer->String("rates");
+  writer->StartObject();
   for (auto & p : data.contribution_rates_) {
-    writer.String(p.first.c_str());
-    writer.Double(p.second);
+    writer->String(p.first.c_str());
+    writer->Double(p.second);
   }
-  writer.EndObject();
+  writer->EndObject();
 
-  writer.String("contribution_altcurrency");
-  writer.String(data.contribution_altcurrency_.c_str());
+  writer->String("contribution_altcurrency");
+  writer->String(data.contribution_altcurrency_.c_str());
 
-  writer.String("contribution_probi");
-  writer.String(data.contribution_probi_.c_str());
+  writer->String("contribution_probi");
+  writer->String(data.contribution_probi_.c_str());
 
-  writer.String("contribution_fee");
-  writer.String(data.contribution_fee_.c_str());
+  writer->String("contribution_fee");
+  writer->String(data.contribution_fee_.c_str());
 
-  writer.String("submissionStamp");
-  writer.String(data.submissionStamp_.c_str());
+  writer->String("submissionStamp");
+  writer->String(data.submissionStamp_.c_str());
 
-  writer.String("submissionId");
-  writer.String(data.submissionId_.c_str());
+  writer->String("submissionId");
+  writer->String(data.submissionId_.c_str());
 
-  writer.String("anonizeViewingId");
-  writer.String(data.anonizeViewingId_.c_str());
+  writer->String("anonizeViewingId");
+  writer->String(data.anonizeViewingId_.c_str());
 
-  writer.String("registrarVK");
-  writer.String(data.registrarVK_.c_str());
+  writer->String("registrarVK");
+  writer->String(data.registrarVK_.c_str());
 
-  writer.String("masterUserToken");
-  writer.String(data.masterUserToken_.c_str());
+  writer->String("masterUserToken");
+  writer->String(data.masterUserToken_.c_str());
 
-  writer.String("surveyorIds");
-  writer.StartArray();
+  writer->String("surveyorIds");
+  writer->StartArray();
   for (auto & i : data.surveyorIds_) {
-    writer.String(i.c_str());
+    writer->String(i.c_str());
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("votes");
-  writer.Uint(data.votes_);
+  writer->String("votes");
+  writer->Uint(data.votes_);
 
-  writer.String("ballots");
-  writer.StartArray();
+  writer->String("ballots");
+  writer->StartArray();
   for (auto & i : data.ballots_) {
     saveToJson(writer, i);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -351,7 +351,7 @@ bool BALLOT_ST::loadFromJson(const std::string & json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("viewingId") &&  d["viewingId"].IsString() &&
       d.HasMember("surveyorId") && d["surveyorId"].IsString() &&
       d.HasMember("publisher") && d["publisher"].IsString() &&
@@ -360,7 +360,7 @@ bool BALLOT_ST::loadFromJson(const std::string & json) {
       d.HasMember("delayStamp") && d["delayStamp"].IsUint64() );
   }
 
-  if (false == error) {
+  if (!error) {
     viewingId_ = d["viewingId"].GetString();
     surveyorId_ = d["surveyorId"].GetString();
     publisher_ = d["publisher"].GetString();
@@ -372,28 +372,28 @@ bool BALLOT_ST::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const BALLOT_ST& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const BALLOT_ST& data) {
+  writer->StartObject();
 
-  writer.String("viewingId");
-  writer.String(data.viewingId_.c_str());
+  writer->String("viewingId");
+  writer->String(data.viewingId_.c_str());
 
-  writer.String("surveyorId");
-  writer.String(data.surveyorId_.c_str());
+  writer->String("surveyorId");
+  writer->String(data.surveyorId_.c_str());
 
-  writer.String("publisher");
-  writer.String(data.publisher_.c_str());
+  writer->String("publisher");
+  writer->String(data.publisher_.c_str());
 
-  writer.String("offset");
-  writer.Uint(data.offset_);
+  writer->String("offset");
+  writer->Uint(data.offset_);
 
-  writer.String("prepareBallot");
-  writer.String(data.prepareBallot_.c_str());
+  writer->String("prepareBallot");
+  writer->String(data.prepareBallot_.c_str());
 
-  writer.String("delayStamp");
-  writer.Uint64(data.delayStamp_);
+  writer->String("delayStamp");
+  writer->Uint64(data.delayStamp_);
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -412,12 +412,12 @@ bool BATCH_VOTES_INFO_ST::loadFromJson(const std::string & json) {
 
   // Has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("surveyorId") && d["surveyorId"].IsString() &&
       d.HasMember("proof") && d["proof"].IsString());
   }
 
-  if (false == error) {
+  if (!error) {
     surveyorId_ = d["surveyorId"].GetString();
     proof_ = d["proof"].GetString();
   }
@@ -425,16 +425,16 @@ bool BATCH_VOTES_INFO_ST::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const BATCH_VOTES_INFO_ST& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const BATCH_VOTES_INFO_ST& data) {
+  writer->StartObject();
 
-  writer.String("surveyorId");
-  writer.String(data.surveyorId_.c_str());
+  writer->String("surveyorId");
+  writer->String(data.surveyorId_.c_str());
 
-  writer.String("proof");
-  writer.String(data.proof_.c_str());
+  writer->String("proof");
+  writer->String(data.proof_.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -453,12 +453,12 @@ bool BATCH_VOTES_ST::loadFromJson(const std::string & json) {
 
   // Has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("publisher") &&  d["publisher"].IsString() &&
       d.HasMember("batchVotesInfo") && d["batchVotesInfo"].IsArray());
   }
 
-  if (false == error) {
+  if (!error) {
     publisher_ = d["publisher"].GetString();
     for (const auto & i : d["batchVotesInfo"].GetArray()) {
       rapidjson::StringBuffer sb;
@@ -474,20 +474,20 @@ bool BATCH_VOTES_ST::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const BATCH_VOTES_ST& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const BATCH_VOTES_ST& data) {
+  writer->StartObject();
 
-  writer.String("publisher");
-  writer.String(data.publisher_.c_str());
+  writer->String("publisher");
+  writer->String(data.publisher_.c_str());
 
-  writer.String("batchVotesInfo");
-  writer.StartArray();
+  writer->String("batchVotesInfo");
+  writer->StartArray();
   for (auto & b : data.batchVotesInfo_) {
     saveToJson(writer, b);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -521,7 +521,7 @@ bool REPORT_BALANCE_ST::loadFromJson(const std::string& json) {
   d.Parse(json.c_str());
 
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("opening_balance") &&
         d["opening_balance"].IsString() &&
         isProbiValid(d["opening_balance"].GetString()) &&
@@ -544,7 +544,7 @@ bool REPORT_BALANCE_ST::loadFromJson(const std::string& json) {
         isProbiValid(d["total"].GetString()));
   }
 
-  if (false == error) {
+  if (!error) {
     opening_balance_ = d["opening_balance"].GetString();
     closing_balance_ = d["closing_balance"].GetString();
     deposits_ = d["deposits"].GetString();
@@ -559,46 +559,46 @@ bool REPORT_BALANCE_ST::loadFromJson(const std::string& json) {
   return !error;
 }
 
-void saveToJson(JsonWriter& writer, const REPORT_BALANCE_ST& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const REPORT_BALANCE_ST& data) {
+  writer->StartObject();
 
-  writer.String("opening_balance");
+  writer->String("opening_balance");
 
-  writer.String(data.opening_balance_.c_str());
+  writer->String(data.opening_balance_.c_str());
 
-  writer.String("closing_balance");
+  writer->String("closing_balance");
 
-  writer.String(data.closing_balance_.c_str());
+  writer->String(data.closing_balance_.c_str());
 
-  writer.String("deposits");
+  writer->String("deposits");
 
-  writer.String(data.deposits_.c_str());
+  writer->String(data.deposits_.c_str());
 
-  writer.String("grants");
+  writer->String("grants");
 
-  writer.String(data.grants_.c_str());
+  writer->String(data.grants_.c_str());
 
-  writer.String("earning_from_ads");
+  writer->String("earning_from_ads");
 
-  writer.String(data.earning_from_ads_.c_str());
+  writer->String(data.earning_from_ads_.c_str());
 
-  writer.String("auto_contribute");
+  writer->String("auto_contribute");
 
-  writer.String(data.auto_contribute_.c_str());
+  writer->String(data.auto_contribute_.c_str());
 
-  writer.String("recurring_donation");
+  writer->String("recurring_donation");
 
-  writer.String(data.recurring_donation_.c_str());
+  writer->String(data.recurring_donation_.c_str());
 
-  writer.String("one_time_donation");
+  writer->String("one_time_donation");
 
-  writer.String(data.one_time_donation_.c_str());
+  writer->String(data.one_time_donation_.c_str());
 
-  writer.String("total");
+  writer->String("total");
 
-  writer.String(data.total_.c_str());
+  writer->String(data.total_.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -630,7 +630,7 @@ bool PUBLISHER_STATE_ST::loadFromJson(const std::string& json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("min_pubslisher_duration") &&
         d["min_pubslisher_duration"].IsUint() &&
         d.HasMember("min_visits") && d["min_visits"].IsUint() &&
@@ -643,7 +643,7 @@ bool PUBLISHER_STATE_ST::loadFromJson(const std::string& json) {
         d.HasMember("recurring_donation") && d["recurring_donation"].IsArray());
   }
 
-  if (false == error) {
+  if (!error) {
     min_publisher_duration_ = d["min_pubslisher_duration"].GetUint();
     min_visits_ = d["min_visits"].GetUint();
     num_excluded_sites_ = d["num_excluded_sites"].GetUint();
@@ -695,52 +695,52 @@ bool PUBLISHER_STATE_ST::loadFromJson(const std::string& json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const PUBLISHER_STATE_ST& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const PUBLISHER_STATE_ST& data) {
+  writer->StartObject();
 
-  writer.String("min_pubslisher_duration");
-  writer.Uint(data.min_publisher_duration_);
+  writer->String("min_pubslisher_duration");
+  writer->Uint(data.min_publisher_duration_);
 
-  writer.String("min_visits");
-  writer.Uint(data.min_visits_);
+  writer->String("min_visits");
+  writer->Uint(data.min_visits_);
 
-  writer.String("num_excluded_sites");
-  writer.Uint(data.num_excluded_sites_);
+  writer->String("num_excluded_sites");
+  writer->Uint(data.num_excluded_sites_);
 
-  writer.String("allow_non_verified");
-  writer.Bool(data.allow_non_verified_);
+  writer->String("allow_non_verified");
+  writer->Bool(data.allow_non_verified_);
 
-  writer.String("pubs_load_timestamp");
-  writer.Uint64(data.pubs_load_timestamp_);
+  writer->String("pubs_load_timestamp");
+  writer->Uint64(data.pubs_load_timestamp_);
 
-  writer.String("allow_videos");
-  writer.Bool(data.allow_videos_);
+  writer->String("allow_videos");
+  writer->Bool(data.allow_videos_);
 
-  writer.String("monthly_balances");
-  writer.StartArray();
+  writer->String("monthly_balances");
+  writer->StartArray();
   for (auto & p : data.monthly_balances_) {
-    writer.StartObject();
-    writer.String(p.first.c_str());
+    writer->StartObject();
+    writer->String(p.first.c_str());
     saveToJson(writer, p.second);
-    writer.EndObject();
+    writer->EndObject();
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("recurring_donation");
-  writer.StartArray();
+  writer->String("recurring_donation");
+  writer->StartArray();
   for (auto & p : data.recurring_donation_) {
-    writer.StartObject();
-    writer.String(p.first.c_str());
-    writer.Double(p.second);
-    writer.EndObject();
+    writer->StartObject();
+    writer->String(p.first.c_str());
+    writer->Double(p.second);
+    writer->EndObject();
   }
 
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("migrate_score_2");
-  writer.Bool(data.migrate_score_2);
+  writer->String("migrate_score_2");
+  writer->Bool(data.migrate_score_2);
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -765,7 +765,7 @@ bool PUBLISHER_ST::loadFromJson(const std::string& json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("id") && d["id"].IsString() &&
       d.HasMember("duration") && d["duration"].IsUint64() &&
       d.HasMember("score") && d["score"].IsDouble() &&
@@ -774,7 +774,7 @@ bool PUBLISHER_ST::loadFromJson(const std::string& json) {
       d.HasMember("weight") && d["weight"].IsDouble());
   }
 
-  if (false == error) {
+  if (!error) {
     id_ = d["id"].GetString();
     duration_ = d["duration"].GetUint64();
     score_ = d["score"].GetDouble();
@@ -792,31 +792,31 @@ bool PUBLISHER_ST::loadFromJson(const std::string& json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const PUBLISHER_ST& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const PUBLISHER_ST& data) {
+  writer->StartObject();
 
-  writer.String("id");
-  writer.String(data.id_.c_str());
+  writer->String("id");
+  writer->String(data.id_.c_str());
 
-  writer.String("duration");
-  writer.Uint64(data.duration_);
+  writer->String("duration");
+  writer->Uint64(data.duration_);
 
-  writer.String("score");
-  writer.Double(data.score_);
+  writer->String("score");
+  writer->Double(data.score_);
 
-  writer.String("visits");
-  writer.Uint(data.visits_);
+  writer->String("visits");
+  writer->Uint(data.visits_);
 
-  writer.String("percent");
-  writer.Uint(data.percent_);
+  writer->String("percent");
+  writer->Uint(data.percent_);
 
-  writer.String("weight");
-  writer.Double(data.weight_);
+  writer->String("weight");
+  writer->Double(data.weight_);
 
-  writer.String("verified");
-  writer.Bool(data.verified_);
+  writer->String("verified");
+  writer->Bool(data.verified_);
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -850,7 +850,7 @@ bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(
       d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
       d.HasMember("balance") && d["balance"].IsString() &&
@@ -859,7 +859,7 @@ bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
       d.HasMember("parameters") && d["parameters"].IsObject());
   }
 
-  if (false == error) {
+  if (!error) {
     altcurrency_ = d["altcurrency"].GetString();
     balance_ = std::stod(d["balance"].GetString());
     probi_ = d["probi"].GetString();
@@ -912,60 +912,61 @@ bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const WALLET_PROPERTIES_ST& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST& data) {
+  writer->StartObject();
 
-  writer.String("altcurrency");
-  writer.String(data.altcurrency_.c_str());
+  writer->String("altcurrency");
+  writer->String(data.altcurrency_.c_str());
 
-  writer.String("probi_");
-  writer.String(data.probi_.c_str());
+  writer->String("probi_");
+  writer->String(data.probi_.c_str());
 
-  writer.String("balance");
-  writer.Double(data.balance_);
+  writer->String("balance");
+  writer->Double(data.balance_);
 
-  writer.String("fee_amount");
-  writer.Double(data.fee_amount_);
+  writer->String("fee_amount");
+  writer->Double(data.fee_amount_);
 
-  writer.String("rates");
-  writer.StartObject();
+  writer->String("rates");
+  writer->StartObject();
   for (auto & p : data.rates_) {
-    writer.String(p.first.c_str());
-    writer.Double(p.second);
+    writer->String(p.first.c_str());
+    writer->Double(p.second);
   }
-  writer.EndObject();
+  writer->EndObject();
 
-  writer.String("parameters_choices");
-  writer.StartArray();
+  writer->String("parameters_choices");
+  writer->StartArray();
   for (auto & choice : data.parameters_choices_) {
-    writer.Double(choice);
+    writer->Double(choice);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("parameters_range");
-  writer.StartArray();
+  writer->String("parameters_range");
+  writer->StartArray();
   for (auto & choice : data.parameters_range_) {
-    writer.Double(choice);
+    writer->Double(choice);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("parameters_days");
-  writer.Int(data.parameters_days_);
+  writer->String("parameters_days");
+  writer->Int(data.parameters_days_);
 
-  writer.String("grants");
-  writer.StartArray();
+  writer->String("grants");
+  writer->StartArray();
   for (auto & grant : data.grants_) {
     saveToJson(writer, grant);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
 GRANTS_PROPERTIES_ST::GRANTS_PROPERTIES_ST() {}
 
-GRANTS_PROPERTIES_ST::GRANTS_PROPERTIES_ST(const GRANTS_PROPERTIES_ST& properties) {
+GRANTS_PROPERTIES_ST::GRANTS_PROPERTIES_ST(
+    const GRANTS_PROPERTIES_ST& properties) {
   grants_ = properties.grants_;
 }
 
@@ -976,11 +977,11 @@ bool GRANTS_PROPERTIES_ST::loadFromJson(const std::string & json) {
   d.Parse(json.c_str());
 
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("grants") && d["grants"].IsArray());
   }
 
-  if (false == error) {
+  if (!error) {
     for (auto &i : d["grants"].GetArray()) {
       GRANT_RESPONSE grant;
       auto obj = i.GetObject();
@@ -990,7 +991,8 @@ bool GRANTS_PROPERTIES_ST::loadFromJson(const std::string & json) {
       }
 
       if (obj.HasMember("minimumReconcileTimestamp")) {
-        grant.minimumReconcileTimestamp = obj["minimumReconcileTimestamp"].GetUint64();
+        grant.minimumReconcileTimestamp =
+            obj["minimumReconcileTimestamp"].GetUint64();
       }
 
       if (obj.HasMember("protocolVersion")) {
@@ -1009,31 +1011,31 @@ bool GRANTS_PROPERTIES_ST::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const GRANTS_PROPERTIES_ST& properties) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const GRANTS_PROPERTIES_ST& properties) {
+  writer->StartObject();
 
-  writer.String("grants");
-  writer.StartArray();
+  writer->String("grants");
+  writer->StartArray();
   for (const auto& grant : properties.grants_) {
-    writer.StartObject();
+    writer->StartObject();
 
-    writer.String("promotionId");
-    writer.String(grant.promotionId.c_str());
+    writer->String("promotionId");
+    writer->String(grant.promotionId.c_str());
 
-    writer.String("minimumReconcileTimestamp");
-    writer.Uint64(grant.minimumReconcileTimestamp);
+    writer->String("minimumReconcileTimestamp");
+    writer->Uint64(grant.minimumReconcileTimestamp);
 
-    writer.String("protocolVersion");
-    writer.Uint64(grant.protocolVersion);
+    writer->String("protocolVersion");
+    writer->Uint64(grant.protocolVersion);
 
-    writer.String("type");
-    writer.String(grant.type.c_str());
+    writer->String("type");
+    writer->String(grant.type.c_str());
 
-    writer.EndObject();
+    writer->EndObject();
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1053,18 +1055,17 @@ bool GRANT::loadFromJson(const std::string & json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  //has parser errors or wrong types
+  // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (error == true) {
+  if (error) {
     return !error;
   }
 
   // First grant get
   error = !(
-      d.HasMember("promotionId") && d["promotionId"].IsString()
-  );
+      d.HasMember("promotionId") && d["promotionId"].IsString());
 
-  if (error == false) {
+  if (!error) {
     promotionId = d["promotionId"].GetString();
     return !error;
   }
@@ -1074,10 +1075,9 @@ bool GRANT::loadFromJson(const std::string & json) {
       d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
       d.HasMember("expiryTime") && d["expiryTime"].IsNumber() &&
       d.HasMember("probi") && d["probi"].IsString() &&
-      d.HasMember("type") && d["type"].IsString()
-  );
+      d.HasMember("type") && d["type"].IsString());
 
-  if (error == false) {
+  if (!error) {
     altcurrency = d["altcurrency"].GetString();
     expiryTime = d["expiryTime"].GetUint64();
     probi = d["probi"].GetString();
@@ -1087,9 +1087,9 @@ bool GRANT::loadFromJson(const std::string & json) {
   return !error;
 }
 
-GRANT_RESPONSE::GRANT_RESPONSE () {}
+GRANT_RESPONSE::GRANT_RESPONSE() {}
 
-GRANT_RESPONSE::~GRANT_RESPONSE () {}
+GRANT_RESPONSE::~GRANT_RESPONSE() {}
 
 GRANT_RESPONSE::GRANT_RESPONSE(const GRANT_RESPONSE &properties) {
   promotionId = properties.promotionId;
@@ -1104,14 +1104,14 @@ bool GRANT_RESPONSE::loadFromJson(const std::string & json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (error == true) {
+  if (error) {
     return !error;
   }
 
   // First grant get
   error = !(d.HasMember("promotionId") && d["promotionId"].IsString());
 
-  if (error == false) {
+  if (!error) {
     promotionId = d["promotionId"].GetString();
     return !error;
   }
@@ -1123,7 +1123,7 @@ bool GRANT_RESPONSE::loadFromJson(const std::string & json) {
       d["minimumReconcileTimestamp"].IsNumber() &&
       d.HasMember("type") && d["type"].IsString());
 
-  if (error == false) {
+  if (!error) {
     minimumReconcileTimestamp = d["minimumReconcileTimestamp"].GetUint64();
     protocolVersion = d["protocolVersion"].GetUint64();
     type = d["type"].GetString();
@@ -1132,22 +1132,22 @@ bool GRANT_RESPONSE::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const GRANT& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const GRANT& data) {
+  writer->StartObject();
 
-  writer.String("altcurrency");
-  writer.String(data.altcurrency.c_str());
+  writer->String("altcurrency");
+  writer->String(data.altcurrency.c_str());
 
-  writer.String("probi");
-  writer.String(data.probi.c_str());
+  writer->String("probi");
+  writer->String(data.probi.c_str());
 
-  writer.String("expiryTime");
-  writer.Uint64(data.expiryTime);
+  writer->String("expiryTime");
+  writer->Uint64(data.expiryTime);
 
-  writer.String("promotionId");
-  writer.String(data.promotionId.c_str());
+  writer->String("promotionId");
+  writer->String(data.promotionId.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1166,14 +1166,14 @@ bool SURVEYOR_ST::loadFromJson(const std::string & json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("signature") && d["signature"].IsString() &&
       d.HasMember("surveyorId") && d["surveyorId"].IsString() &&
       d.HasMember("surveyVK") && d["surveyVK"].IsString() &&
       d.HasMember("registrarVK") && d["registrarVK"].IsString());
   }
 
-  if (false == error) {
+  if (!error) {
     signature_ = d["signature"].GetString();
     surveyorId_ = d["surveyorId"].GetString();
     surveyVK_ = d["surveyVK"].GetString();
@@ -1186,25 +1186,25 @@ bool SURVEYOR_ST::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const SURVEYOR_ST& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const SURVEYOR_ST& data) {
+  writer->StartObject();
 
-  writer.String("signature");
-  writer.String(data.signature_.c_str());
+  writer->String("signature");
+  writer->String(data.signature_.c_str());
 
-  writer.String("surveyorId");
-  writer.String(data.surveyorId_.c_str());
+  writer->String("surveyorId");
+  writer->String(data.surveyorId_.c_str());
 
-  writer.String("surveyVK");
-  writer.String(data.surveyVK_.c_str());
+  writer->String("surveyVK");
+  writer->String(data.surveyVK_.c_str());
 
-  writer.String("registrarVK");
-  writer.String(data.registrarVK_.c_str());
+  writer->String("registrarVK");
+  writer->String(data.registrarVK_.c_str());
 
-  writer.String("surveySK");
-  writer.String(data.surveySK_.c_str());
+  writer->String("surveySK");
+  writer->String(data.surveySK_.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1223,13 +1223,13 @@ bool RECONCILE_DIRECTION::loadFromJson(const std::string & json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("amount") && d["amount"].IsInt() &&
       d.HasMember("publisher_key") && d["publisher_key"].IsString() &&
       d.HasMember("currency") && d["currency"].IsString());
   }
 
-  if (false == error) {
+  if (!error) {
     amount_ = d["amount"].GetInt();
     publisher_key_ = d["publisher_key"].GetString();
     currency_ = d["currency"].GetString();
@@ -1238,19 +1238,19 @@ bool RECONCILE_DIRECTION::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const RECONCILE_DIRECTION& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const RECONCILE_DIRECTION& data) {
+  writer->StartObject();
 
-  writer.String("amount");
-  writer.Int(data.amount_);
+  writer->String("amount");
+  writer->Int(data.amount_);
 
-  writer.String("publisher_key");
-  writer.String(data.publisher_key_.c_str());
+  writer->String("publisher_key");
+  writer->String(data.publisher_key_.c_str());
 
-  writer.String("currency");
-  writer.String(data.currency_.c_str());
+  writer->String("currency");
+  writer->String(data.currency_.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1288,13 +1288,13 @@ bool CURRENT_RECONCILE::loadFromJson(const std::string & json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("viewingId") && d["viewingId"].IsString() &&
       d.HasMember("fee") && d["fee"].IsDouble() &&
       d.HasMember("category") && d["category"].IsInt());
   }
 
-  if (false == error) {
+  if (!error) {
     viewingId_ = d["viewingId"].GetString();
     anonizeViewingId_ = d["anonizeViewingId"].GetString();
     registrarVK_ = d["registrarVK"].GetString();
@@ -1371,80 +1371,80 @@ bool CURRENT_RECONCILE::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const CURRENT_RECONCILE& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const CURRENT_RECONCILE& data) {
+  writer->StartObject();
 
-  writer.String("viewingId");
-  writer.String(data.viewingId_.c_str());
+  writer->String("viewingId");
+  writer->String(data.viewingId_.c_str());
 
-  writer.String("anonizeViewingId");
-  writer.String(data.anonizeViewingId_.c_str());
+  writer->String("anonizeViewingId");
+  writer->String(data.anonizeViewingId_.c_str());
 
-  writer.String("registrarVK");
-  writer.String(data.registrarVK_.c_str());
+  writer->String("registrarVK");
+  writer->String(data.registrarVK_.c_str());
 
-  writer.String("preFlight");
-  writer.String(data.preFlight_.c_str());
+  writer->String("preFlight");
+  writer->String(data.preFlight_.c_str());
 
-  writer.String("masterUserToken");
-  writer.String(data.masterUserToken_.c_str());
+  writer->String("masterUserToken");
+  writer->String(data.masterUserToken_.c_str());
 
-  writer.String("surveyorInfo");
-  writer.StartObject();
-    writer.String("surveyorId");
-    writer.String(data.surveyorInfo_.surveyorId_.c_str());
-  writer.EndObject();
+  writer->String("surveyorInfo");
+  writer->StartObject();
+    writer->String("surveyorId");
+    writer->String(data.surveyorInfo_.surveyorId_.c_str());
+  writer->EndObject();
 
-  writer.String("timestamp");
-  writer.Uint64(data.timestamp_);
+  writer->String("timestamp");
+  writer->Uint64(data.timestamp_);
 
-  writer.String("amount");
-  writer.String(data.amount_.c_str());
+  writer->String("amount");
+  writer->String(data.amount_.c_str());
 
-  writer.String("currency");
-  writer.String(data.currency_.c_str());
+  writer->String("currency");
+  writer->String(data.currency_.c_str());
 
-  writer.String("fee");
-  writer.Double(data.fee_);
+  writer->String("fee");
+  writer->Double(data.fee_);
 
-  writer.String("category");
-  writer.Int(data.category_);
+  writer->String("category");
+  writer->Int(data.category_);
 
-  writer.String("rates");
-  writer.StartObject();
+  writer->String("rates");
+  writer->StartObject();
   for (auto & p : data.rates_) {
-    writer.String(p.first.c_str());
-    writer.Double(p.second);
+    writer->String(p.first.c_str());
+    writer->Double(p.second);
   }
-  writer.EndObject();
+  writer->EndObject();
 
-  writer.String("directions");
-  writer.StartArray();
+  writer->String("directions");
+  writer->StartArray();
   for (auto & i : data.directions_) {
     saveToJson(writer, i);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("list");
-  writer.StartArray();
+  writer->String("list");
+  writer->StartArray();
   for (auto & i : data.list_) {
     saveToJson(writer, i);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("retry_step");
-  writer.Int(data.retry_step_);
+  writer->String("retry_step");
+  writer->Int(data.retry_step_);
 
-  writer.String("retry_level");
-  writer.Int(data.retry_level_);
+  writer->String("retry_level");
+  writer->Int(data.retry_level_);
 
-  writer.String("destination");
-  writer.String(data.destination_.c_str());
+  writer->String("destination");
+  writer->String(data.destination_.c_str());
 
-  writer.String("proof");
-  writer.String(data.proof_.c_str());
+  writer->String("proof");
+  writer->String(data.proof_.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1492,7 +1492,7 @@ bool CLIENT_STATE_ST::loadFromJson(const std::string & json) {
 
   // has parser error or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("walletInfo") && d["walletInfo"].IsObject() &&
       d.HasMember("bootStamp") && d["bootStamp"].IsUint64() &&
       d.HasMember("reconcileStamp") && d["reconcileStamp"].IsUint64() &&
@@ -1515,7 +1515,7 @@ bool CLIENT_STATE_ST::loadFromJson(const std::string & json) {
       d.HasMember("rewards_enabled") && d["rewards_enabled"].IsBool());
   }
 
-  if (false == error) {
+  if (!error) {
     {
       auto & i = d["walletInfo"];
       rapidjson::StringBuffer sb;
@@ -1605,96 +1605,96 @@ bool CLIENT_STATE_ST::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const CLIENT_STATE_ST& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const CLIENT_STATE_ST& data) {
+  writer->StartObject();
 
-  writer.String("walletInfo");
+  writer->String("walletInfo");
   saveToJson(writer, data.walletInfo_);
 
-  writer.String("bootStamp");
-  writer.Uint64(data.bootStamp_);
+  writer->String("bootStamp");
+  writer->Uint64(data.bootStamp_);
 
-  writer.String("reconcileStamp");
-  writer.Uint64(data.reconcileStamp_);
+  writer->String("reconcileStamp");
+  writer->Uint64(data.reconcileStamp_);
 
-  writer.String("last_grant_fetch_stamp");
-  writer.Uint64(data.last_grant_fetch_stamp_);
+  writer->String("last_grant_fetch_stamp");
+  writer->Uint64(data.last_grant_fetch_stamp_);
 
-  writer.String("personaId");
-  writer.String(data.personaId_.c_str());
+  writer->String("personaId");
+  writer->String(data.personaId_.c_str());
 
-  writer.String("userId");
-  writer.String(data.userId_.c_str());
+  writer->String("userId");
+  writer->String(data.userId_.c_str());
 
-  writer.String("registrarVK");
-  writer.String(data.registrarVK_.c_str());
+  writer->String("registrarVK");
+  writer->String(data.registrarVK_.c_str());
 
-  writer.String("masterUserToken");
-  writer.String(data.masterUserToken_.c_str());
+  writer->String("masterUserToken");
+  writer->String(data.masterUserToken_.c_str());
 
-  writer.String("preFlight");
-  writer.String(data.preFlight_.c_str());
+  writer->String("preFlight");
+  writer->String(data.preFlight_.c_str());
 
-  writer.String("fee_currency");
-  writer.String(data.fee_currency_.c_str());
+  writer->String("fee_currency");
+  writer->String(data.fee_currency_.c_str());
 
-  writer.String("settings");
-  writer.String(data.settings_.c_str());
+  writer->String("settings");
+  writer->String(data.settings_.c_str());
 
-  writer.String("fee_amount");
-  writer.Double(data.fee_amount_);
+  writer->String("fee_amount");
+  writer->Double(data.fee_amount_);
 
-  writer.String("user_changed_fee");
-  writer.Bool(data.user_changed_fee_);
+  writer->String("user_changed_fee");
+  writer->Bool(data.user_changed_fee_);
 
-  writer.String("days");
-  writer.Uint(data.days_);
+  writer->String("days");
+  writer->Uint(data.days_);
 
-  writer.String("rewards_enabled");
-  writer.Bool(data.rewards_enabled_);
+  writer->String("rewards_enabled");
+  writer->Bool(data.rewards_enabled_);
 
-  writer.String("auto_contribute");
-  writer.Bool(data.auto_contribute_);
+  writer->String("auto_contribute");
+  writer->Bool(data.auto_contribute_);
 
-  writer.String("transactions");
-  writer.StartArray();
+  writer->String("transactions");
+  writer->StartArray();
   for (auto & t : data.transactions_) {
     saveToJson(writer, t);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("ballots");
-  writer.StartArray();
+  writer->String("ballots");
+  writer->StartArray();
   for (auto & b : data.ballots_) {
     saveToJson(writer, b);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("ruleset");
-  writer.String(data.ruleset_.c_str());
+  writer->String("ruleset");
+  writer->String(data.ruleset_.c_str());
 
-  writer.String("rulesetV2");
-  writer.String(data.rulesetV2_.c_str());
+  writer->String("rulesetV2");
+  writer->String(data.rulesetV2_.c_str());
 
-  writer.String("batch");
-  writer.StartArray();
+  writer->String("batch");
+  writer->StartArray();
   for (auto & b : data.batch_) {
     saveToJson(writer, b);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("current_reconciles");
-  writer.StartObject();
+  writer->String("current_reconciles");
+  writer->StartObject();
   for (auto & t : data.current_reconciles_) {
-    writer.Key(t.first.c_str());
+    writer->Key(t.first.c_str());
     saveToJson(writer, t.second);
   }
-  writer.EndObject();
+  writer->EndObject();
 
-  writer.String("walletProperties");
+  writer->String("walletProperties");
   saveToJson(writer, data.walletProperties_);
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1728,7 +1728,7 @@ bool MEDIA_PUBLISHER_INFO::loadFromJson(const std::string & json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("publisherName") && d["publisherName"].IsString() &&
       d.HasMember("publisherURL") && d["publisherURL"].IsString() &&
       d.HasMember("favIconURL") && d["favIconURL"].IsString() &&
@@ -1739,7 +1739,7 @@ bool MEDIA_PUBLISHER_INFO::loadFromJson(const std::string & json) {
       d.HasMember("twitch_status") && d["twitch_status"].IsString());
   }
 
-  if (false == error) {
+  if (!error) {
     publisherName_ = d["publisherName"].GetString();
     publisherURL_ = d["publisherURL"].GetString();
     favIconURL_ = d["favIconURL"].GetString();
@@ -1752,34 +1752,34 @@ bool MEDIA_PUBLISHER_INFO::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter & writer, const MEDIA_PUBLISHER_INFO& data) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const MEDIA_PUBLISHER_INFO& data) {
+  writer->StartObject();
 
-  writer.String("publisherName");
-  writer.String(data.publisherName_.c_str());
+  writer->String("publisherName");
+  writer->String(data.publisherName_.c_str());
 
-  writer.String("publisherURL");
-  writer.String(data.publisherURL_.c_str());
+  writer->String("publisherURL");
+  writer->String(data.publisherURL_.c_str());
 
-  writer.String("favIconURL");
-  writer.String(data.favIconURL_.c_str());
+  writer->String("favIconURL");
+  writer->String(data.favIconURL_.c_str());
 
-  writer.String("channelName");
-  writer.String(data.channelName_.c_str());
+  writer->String("channelName");
+  writer->String(data.channelName_.c_str());
 
-  writer.String("publisherId");
-  writer.String(data.publisher_id_.c_str());
+  writer->String("publisherId");
+  writer->String(data.publisher_id_.c_str());
 
-  writer.String("twitch_event");
-  writer.String(data.twitchEventInfo_.event_.c_str());
+  writer->String("twitch_event");
+  writer->String(data.twitchEventInfo_.event_.c_str());
 
-  writer.String("twitch_time");
-  writer.String(data.twitchEventInfo_.time_.c_str());
+  writer->String("twitch_time");
+  writer->String(data.twitchEventInfo_.time_.c_str());
 
-  writer.String("twitch_status");
-  writer.String(data.twitchEventInfo_.status_.c_str());
+  writer->String("twitch_status");
+  writer->String(data.twitchEventInfo_.status_.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1801,33 +1801,24 @@ SERVER_LIST_BANNER::SERVER_LIST_BANNER(const SERVER_LIST_BANNER& banner):
 SERVER_LIST_BANNER::~SERVER_LIST_BANNER() {}
 
 /////////////////////////////////////////////////////////////////////////////
-void split(std::vector<std::string>& tmp, std::string query, char delimiter) {
-  std::stringstream ss(query);
-  std::string item;
-  while (std::getline(ss, item, delimiter)) {
-    if (query[0] != '\n') {
-      tmp.push_back(item);
-    }
-  }
-}
 
 bool getJSONValue(const std::string& fieldName,
                   const std::string& json,
-                  std::string & value) {
+                  std::string* value) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
   // has parser errors or wrong types
   bool error = d.HasParseError() || (false == d.HasMember(fieldName.c_str()));
-  if (false == error) {
-    value = d[fieldName.c_str()].GetString();
+  if (!error) {
+    *value = d[fieldName.c_str()].GetString();
   }
   return !error;
 }
 
 bool getJSONList(const std::string& fieldName,
                  const std::string& json,
-                 std::vector<std::string> & value) {
+                 std::vector<std::string>* value) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
@@ -1835,9 +1826,9 @@ bool getJSONList(const std::string& fieldName,
   bool error = d.HasParseError() ||
       (false == (d.HasMember(fieldName.c_str()) &&
        d[fieldName.c_str()].IsArray()));
-  if (false == error) {
+  if (!error) {
     for (auto & i : d[fieldName.c_str()].GetArray()) {
-      value.push_back(i.GetString());
+      value->push_back(i.GetString());
     }
   }
   return !error;
@@ -1845,13 +1836,13 @@ bool getJSONList(const std::string& fieldName,
 
 bool getJSONTwitchProperties(
     const std::string& json,
-    std::vector<std::map<std::string, std::string>>& parts) {
+    std::vector<std::map<std::string, std::string>>* parts) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     for (auto & i : d.GetArray()) {
       const char * event_field = "event";
       std::map<std::string, std::string> eventmap;
@@ -1882,26 +1873,26 @@ bool getJSONTwitchProperties(
           eventmap[time_field] = std::to_string(d);
         }
       }
-      parts.push_back(eventmap);
+      parts->push_back(eventmap);
     }
   }
   return !error;
 }
 
 bool getJSONBatchSurveyors(const std::string& json,
-                           std::vector<std::string>& surveyors) {
+                           std::vector<std::string>* surveyors) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     for (auto & i : d.GetArray()) {
       rapidjson::StringBuffer sb;
       rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
       i.Accept(writer);
       std::string surveyor = sb.GetString();
-      surveyors.push_back(surveyor);
+      surveyors->push_back(surveyor);
     }
   }
 
@@ -1909,13 +1900,13 @@ bool getJSONBatchSurveyors(const std::string& json,
 }
 
 bool getJSONRates(const std::string& json,
-                  std::map<std::string, double>& rates) {
+                  std::map<std::string, double>* rates) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("rates") && d["rates"].IsObject() &&
       d["rates"].HasMember("ETH") &&
       d["rates"].HasMember("LTC") &&
@@ -1924,7 +1915,7 @@ bool getJSONRates(const std::string& json,
       d["rates"].HasMember("EUR"));
   }
 
-  if (false == error) {
+  if (!error) {
     for (auto & i : d["rates"].GetObject()) {
       double value = 0.0;
       if (i.value.IsDouble()) {
@@ -1932,79 +1923,64 @@ bool getJSONRates(const std::string& json,
       } else if (i.value.IsString()) {
         value = std::stod(i.value.GetString());
       }
-      rates.insert(std::make_pair(i.name.GetString(), value));
+      rates->insert(std::make_pair(i.name.GetString(), value));
     }
   }
   return !error;
 }
 
-bool getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction) {
+bool getJSONTransaction(const std::string& json, TRANSACTION_ST* transaction) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("paymentStamp") && d["paymentStamp"].IsUint64() &&
       d.HasMember("probi") && d["probi"].IsString() &&
       d.HasMember("altcurrency") && d["altcurrency"].IsString() );
   }
 
-  if (false == error) {
+  if (!error) {
     uint64_t stamp = d["paymentStamp"].GetUint64();
-    transaction.submissionStamp_ = std::to_string(stamp);
-    transaction.contribution_probi_ = d["probi"].GetString();
-    transaction.contribution_altcurrency_ = d["altcurrency"].GetString();
+    transaction->submissionStamp_ = std::to_string(stamp);
+    transaction->contribution_probi_ = d["probi"].GetString();
+    transaction->contribution_altcurrency_ = d["altcurrency"].GetString();
   }
   return !error;
 }
 
-bool getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx) {
+bool getJSONUnsignedTx(const std::string& json, UNSIGNED_TX* unsignedTx) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !d.HasMember("unsignedTx") || !(d["unsignedTx"].IsObject());
   }
 
-  if (false == error) {
-    unsignedTx.amount_ =
+  if (!error) {
+    unsignedTx->amount_ =
         d["unsignedTx"]["denomination"]["amount"].GetString();
-    unsignedTx.currency_ =
+    unsignedTx->currency_ =
         d["unsignedTx"]["denomination"]["currency"].GetString();
-    unsignedTx.destination_ = d["unsignedTx"]["destination"].GetString();
+    unsignedTx->destination_ = d["unsignedTx"]["destination"].GetString();
   }
   return !error;
 }
 
-bool getJSONPublisherVerified(const std::string& json, bool& verified) {
-  verified = false;
-
+bool getJSONWalletInfo(const std::string& json,
+                       WALLET_INFO_ST* walletInfo,
+                       std::string* fee_currency,
+                       double* fee_amount,
+                       unsigned int* days) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
-    error = !(d.HasMember("properties") && d["properties"].IsObject());
-  }
-
-  if (false == error) {
-    verified = d["properties"]["verified"].GetBool();
-  }
-  return !error;
-}
-
-bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
-      std::string& fee_currency, double& fee_amount, unsigned int& days) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(
         ((d.HasMember("parameters") && d["parameters"].IsObject()) &&
          (d.HasMember("addresses") && d["addresses"].IsObject())) ||
@@ -2012,35 +1988,35 @@ bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
          (d.HasMember("wallet") && d["wallet"].IsObject())));
   }
 
-  if (false == error) {
+  if (!error) {
     if (d.HasMember("payload") && d["payload"].IsObject()) {
-      walletInfo.paymentId_ = d["wallet"]["paymentId"].GetString();
-      walletInfo.addressBAT_ = d["wallet"]["addresses"]["BAT"].GetString();
-      walletInfo.addressBTC_ = d["wallet"]["addresses"]["BTC"].GetString();
-      walletInfo.addressCARD_ID_ =
+      walletInfo->paymentId_ = d["wallet"]["paymentId"].GetString();
+      walletInfo->addressBAT_ = d["wallet"]["addresses"]["BAT"].GetString();
+      walletInfo->addressBTC_ = d["wallet"]["addresses"]["BTC"].GetString();
+      walletInfo->addressCARD_ID_ =
           d["wallet"]["addresses"]["CARD_ID"].GetString();
-      walletInfo.addressETH_ = d["wallet"]["addresses"]["ETH"].GetString();
-      walletInfo.addressLTC_ = d["wallet"]["addresses"]["LTC"].GetString();
+      walletInfo->addressETH_ = d["wallet"]["addresses"]["ETH"].GetString();
+      walletInfo->addressLTC_ = d["wallet"]["addresses"]["LTC"].GetString();
 
-      days = d["payload"]["adFree"]["days"].GetUint();
+      *days = d["payload"]["adFree"]["days"].GetUint();
       const auto & fee = d["payload"]["adFree"]["fee"].GetObject();
       auto itr = fee.MemberBegin();
       if (itr != fee.MemberEnd()) {
-        fee_currency = itr->name.GetString();
-        fee_amount = itr->value.GetDouble();
+        *fee_currency = itr->name.GetString();
+        *fee_amount = itr->value.GetDouble();
       }
     } else if (d.HasMember("parameters") && d["parameters"].IsObject()) {
-      walletInfo.addressBAT_ = d["addresses"]["BAT"].GetString();
-      walletInfo.addressBTC_ = d["addresses"]["BTC"].GetString();
-      walletInfo.addressCARD_ID_ = d["addresses"]["CARD_ID"].GetString();
-      walletInfo.addressETH_ = d["addresses"]["ETH"].GetString();
-      walletInfo.addressLTC_ = d["addresses"]["LTC"].GetString();
-      days = d["parameters"]["adFree"]["days"].GetUint();
+      walletInfo->addressBAT_ = d["addresses"]["BAT"].GetString();
+      walletInfo->addressBTC_ = d["addresses"]["BTC"].GetString();
+      walletInfo->addressCARD_ID_ = d["addresses"]["CARD_ID"].GetString();
+      walletInfo->addressETH_ = d["addresses"]["ETH"].GetString();
+      walletInfo->addressLTC_ = d["addresses"]["LTC"].GetString();
+      *days = d["parameters"]["adFree"]["days"].GetUint();
       const auto & fee = d["parameters"]["adFree"]["fee"].GetObject();
       auto itr = fee.MemberBegin();
       if (itr != fee.MemberEnd()) {
-        fee_currency = itr->name.GetString();
-        fee_amount = itr->value.GetDouble();
+        *fee_currency = itr->name.GetString();
+        *fee_amount = itr->value.GetDouble();
       }
     }
   }
@@ -2048,22 +2024,22 @@ bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
 }
 
 bool getJSONRecoverWallet(const std::string& json,
-                          double& balance,
-                          std::string& probi,
-                          std::vector<GRANT>& grants) {
+                          double* balance,
+                          std::string* probi,
+                          std::vector<GRANT>* grants) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("balance") && d["balance"].IsString() &&
               d.HasMember("probi") && d["probi"].IsString() );
   }
 
-  if (false == error) {
-    balance = std::stod(d["balance"].GetString());
-    probi = d["probi"].GetString();
+  if (!error) {
+    *balance = std::stod(d["balance"].GetString());
+    *probi = d["probi"].GetString();
 
     if (d.HasMember("grants") && d["grants"].IsArray()) {
       for (auto &i : d["grants"].GetArray()) {
@@ -2081,64 +2057,64 @@ bool getJSONRecoverWallet(const std::string& json,
           grant.expiryTime = obj["expiryTime"].GetUint64();
         }
 
-        grants.push_back(grant);
+        grants->push_back(grant);
       }
     } else {
-      grants.clear();
+      grants->clear();
     }
   }
   return !error;
 }
 
 bool getJSONResponse(const std::string& json,
-                     unsigned int& statusCode,
-                     std::string& error) {
+                     unsigned int* statusCode,
+                     std::string* error) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
   // has parser errors or wrong types
   bool hasError = d.HasParseError();
-  if (hasError == false) {
+  if (!hasError) {
     hasError = !(d.HasMember("statusCode") && d["statusCode"].IsNumber() &&
               d.HasMember("error") && d["error"].IsString());
   }
 
-  if (hasError == false) {
-    statusCode = d["statusCode"].GetUint();
-    error = d["error"].GetString();
+  if (!hasError) {
+    *statusCode = d["statusCode"].GetUint();
+    *error = d["error"].GetString();
   }
   return !hasError;
 }
 
-bool getJSONGrant(const std::string& json, uint64_t& expiryTime) {
+bool getJSONGrant(const std::string& json, uint64_t* expiryTime) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
   // has parser errors or wrong types
   bool hasError = d.HasParseError();
-  if (hasError == false) {
+  if (!hasError) {
     hasError = !(d.HasMember("expiryTime") && d["expiryTime"].IsNumber());
   }
 
-  if (hasError == false) {
-    expiryTime = d["expiryTime"].GetUint();
+  if (!hasError) {
+    *expiryTime = d["expiryTime"].GetUint();
   }
   return !hasError;
 }
 
 bool getJSONServerList(const std::string& json,
-                       std::map<std::string, SERVER_LIST>& list) {
+                       std::map<std::string, SERVER_LIST>* list) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
   bool hasError = d.HasParseError();
-  if (hasError == false) {
+  if (!hasError) {
     hasError = !d.IsArray();
   }
 
-  list = {};
+  *list = {};
 
-  if (hasError == false) {
+  if (!hasError) {
     for (auto &i : d.GetArray()) {
       SERVER_LIST item;
       item.verified = i[1].GetBool();
@@ -2181,7 +2157,7 @@ bool getJSONServerList(const std::string& json,
 
       item.banner = banner;
 
-      list.emplace(i[0].GetString(), item);
+      list->emplace(i[0].GetString(), item);
     }
   }
 
@@ -2189,26 +2165,26 @@ bool getJSONServerList(const std::string& json,
 }
 
 bool getJSONAddresses(const std::string& json,
-                      std::map<std::string, std::string>& addresses) {
+                      std::map<std::string, std::string>* addresses) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("addresses") && d["addresses"].IsObject());
   }
 
-  if (false == error) {
-    addresses.insert(
+  if (!error) {
+    addresses->insert(
         std::make_pair("BAT", d["addresses"]["BAT"].GetString()));
-    addresses.insert(
+    addresses->insert(
         std::make_pair("BTC", d["addresses"]["BTC"].GetString()));
-    addresses.insert(
+    addresses->insert(
         std::make_pair("CARD_ID", d["addresses"]["CARD_ID"].GetString()));
-    addresses.insert(
+    addresses->insert(
         std::make_pair("ETH", d["addresses"]["ETH"].GetString()));
-    addresses.insert(
+    addresses->insert(
         std::make_pair("LTC", d["addresses"]["LTC"].GetString()));
   }
 
@@ -2251,19 +2227,20 @@ std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed) {
 }
 
 bool getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
-      std::vector<uint8_t>& publicKey, std::vector<uint8_t>& secretKey) {
+                          std::vector<uint8_t>* publicKey,
+                          std::vector<uint8_t>* secretKey) {
   DCHECK(!seed.empty());
   if (seed.empty()) {
     return false;
   }
-  publicKey.resize(crypto_sign_PUBLICKEYBYTES);
-  secretKey = seed;
-  secretKey.resize(crypto_sign_SECRETKEYBYTES);
+  publicKey->resize(crypto_sign_PUBLICKEYBYTES);
+  *secretKey = seed;
+  secretKey->resize(crypto_sign_SECRETKEYBYTES);
 
-  crypto_sign_keypair(&publicKey.front(), &secretKey.front(), 1);
+  crypto_sign_keypair(&publicKey->front(), &secretKey->front(), 1);
 
-  DCHECK(!publicKey.empty() && !secretKey.empty());
-  if (publicKey.empty() && secretKey.empty()) {
+  DCHECK(!publicKey->empty() && !secretKey->empty());
+  if (publicKey->empty() && secretKey->empty()) {
     return false;
   }
 
@@ -2274,7 +2251,7 @@ std::string uint8ToHex(const std::vector<uint8_t>& in) {
   std::ostringstream res;
   for (size_t i = 0; i < in.size(); i++) {
     res << std::setfill('0') << std::setw(sizeof(uint8_t) * 2)
-       << std::hex << (int)in[i];
+       << std::hex << static_cast<int>(in[i]);
   }
   return res.str();
 }
@@ -2286,7 +2263,7 @@ std::string stringifyBatch(std::vector<BATCH_VOTES_INFO_ST> payload) {
 
   writer.StartArray();
   for (auto & d : payload) {
-    saveToJson(writer, d);
+    saveToJson(&writer, d);
   }
   writer.EndArray();
 
@@ -2295,7 +2272,7 @@ std::string stringifyBatch(std::vector<BATCH_VOTES_INFO_ST> payload) {
 
 std::string stringify(std::string* keys,
                       std::string* values,
-                      const unsigned int& size) {
+                      const unsigned int size) {
   rapidjson::StringBuffer buffer;
   JsonWriter writer(buffer);
   writer.StartObject();
@@ -2452,12 +2429,12 @@ std::string getBase64(const std::vector<uint8_t>& in) {
   }
   std::vector<uint8_t> out(size);
   int numEncBytes = EVP_EncodeBlock(&out.front(), &in.front(), in.size());
-  DCHECK(numEncBytes != 0);
-  res = (char*)&out.front();
+  DCHECK_NE(numEncBytes, 0);
+  res = reinterpret_cast<char*>(&out.front());
   return res;
 }
 
-bool getFromBase64(const std::string& in, std::vector<uint8_t> & out) {
+bool getFromBase64(const std::string& in, std::vector<uint8_t>* out) {
   bool succeded = true;
   size_t size = 0;
   if (!EVP_DecodedLength(&size, in.length())) {
@@ -2466,20 +2443,20 @@ bool getFromBase64(const std::string& in, std::vector<uint8_t> & out) {
   }
 
   if (succeded) {
-    out.resize(size);
+    out->resize(size);
     size_t final_size = 0;
-    int numDecBytes = EVP_DecodeBase64(&out.front(),
+    int numDecBytes = EVP_DecodeBase64(&out->front(),
                                        &final_size,
                                        size,
                                        (const uint8_t*)in.c_str(),
                                        in.length());
-    DCHECK(numDecBytes != 0);
+    DCHECK_NE(numDecBytes, 0);
 
-    if (0 == numDecBytes) {
+    if (numDecBytes == 0) {
       succeded = false;
-      out.clear();
+      out->clear();
     } else if (final_size != size) {
-      out.resize(final_size);
+      out->resize(final_size);
     }
   }
   return succeded;
@@ -2487,13 +2464,13 @@ bool getFromBase64(const std::string& in, std::vector<uint8_t> & out) {
 
 std::string sign(std::string* keys,
                  std::string* values,
-                 const unsigned int& size,
+                 const unsigned int size,
                  const std::string& keyId,
                  const std::vector<uint8_t>& secretKey) {
   std::string headers;
   std::string message;
   for (unsigned int i = 0; i < size; i++) {
-    if (0 != i) {
+    if (i != 0) {
       headers += " ";
       message += "\n";
     }
@@ -2502,11 +2479,11 @@ std::string sign(std::string* keys,
   }
   std::vector<uint8_t> signedMsg(crypto_sign_BYTES + message.length());
 
-  unsigned long long signedMsgSize = 0;
+  unsigned long long signedMsgSize = 0;  // NOLINT
   crypto_sign(&signedMsg.front(),
               &signedMsgSize,
               reinterpret_cast<const unsigned char*>(message.c_str()),
-              (unsigned long long)message.length(),
+              (unsigned long long)message.length(),  // NOLINT
               &secretKey.front());
 
   std::vector<uint8_t> signature(crypto_sign_BYTES);
@@ -2524,16 +2501,17 @@ uint64_t currentTime() {
 
 void getTwitchParts(
     const std::string& query,
-    std::vector<std::map<std::string, std::string>>& parts) {
+    std::vector<std::map<std::string, std::string>>* parts) {
   size_t pos = query.find("data=");
   if (std::string::npos != pos && query.length() > 5) {
     std::string varValue = query.substr(5);
     std::vector<uint8_t> decoded;
-    bool succeded = braveledger_bat_helper::getFromBase64(varValue, decoded);
+    bool succeded = braveledger_bat_helper::getFromBase64(varValue, &decoded);
     if (succeded) {
       decoded.push_back((uint8_t)'\0');
-      braveledger_bat_helper::getJSONTwitchProperties((char*)&decoded.front(),
-                                                      parts);
+      braveledger_bat_helper::getJSONTwitchProperties(
+          reinterpret_cast<char*>(&decoded.front()),
+          parts);
     }
   }
 }
@@ -2550,7 +2528,7 @@ std::string getMediaId(const std::map<std::string, std::string>& data,
     std::map<std::string, std::string>::const_iterator iter =
         data.find("event");
     if (iter != data.end() && data.find("properties") != data.end()) {
-      unsigned int size = braveledger_ledger::_twitch_events_array_size;
+      unsigned int size = braveledger_ledger::_twitch_events.size();
       for (size_t i = 0; i < size; i++) {
         if (iter->second == braveledger_ledger::_twitch_events[i]) {
           iter = data.find("channel");
@@ -2588,10 +2566,12 @@ uint64_t getMediaDuration(const std::map<std::string, std::string>& data,
     std::map<std::string, std::string>::const_iterator iterSt = data.find("st");
     std::map<std::string, std::string>::const_iterator iterEt = data.find("et");
     if (iterSt != data.end() && iterEt != data.end()) {
-      std::vector<std::string> startTime;
-      std::vector<std::string> endTime;
-      split(startTime, iterSt->second, ',');
-      split(endTime, iterEt->second, ',');
+      std::vector<std::string> startTime = braveledger_bat_helper::split(
+          iterSt->second,
+          ',');
+      std::vector<std::string> endTime = braveledger_bat_helper::split(
+          iterEt->second,
+          ',');
       if (startTime.size() != endTime.size()) {
         return 0;
       }
@@ -2673,7 +2653,9 @@ std::vector<std::string> split(const std::string& s, char delim) {
   std::string item;
   std::vector<std::string> result;
   while (getline(ss, item, delim)) {
-    result.push_back(item);
+    if (s[0] != '\n') {
+      result.push_back(item);
+    }
   }
 
   return result;
@@ -2688,11 +2670,14 @@ std::string toLowerCase(std::string word) {
   return word;
 }
 
-uint8_t niceware_mnemonic_to_bytes(const std::string& w,
-  std::vector<uint8_t>& bytes_out, size_t *written,
-  std::vector<std::string> wordDictionary) {
-  std::vector<std::string> wordList = split(toLowerCase(w),
-    WALLET_PASSPHRASE_DELIM);
+uint8_t niceware_mnemonic_to_bytes(
+    const std::string& w,
+    std::vector<uint8_t>* bytes_out,
+    size_t *written,
+    std::vector<std::string> wordDictionary) {
+  std::vector<std::string> wordList = braveledger_bat_helper::split(
+      toLowerCase(w),
+      WALLET_PASSPHRASE_DELIM);
   std::vector<uint8_t> buffer(wordList.size() * 2);
 
   for (uint8_t ix = 0; ix < wordList.size(); ix++) {
@@ -2707,7 +2692,7 @@ uint8_t niceware_mnemonic_to_bytes(const std::string& w,
       return INVALID_LEGACY_WALLET;
     }
   }
-  bytes_out = buffer;
+  *bytes_out = buffer;
   *written = NICEWARE_BYTES_WRITTEN;
   return 0;
 }
@@ -2721,365 +2706,365 @@ uint64_t getRandomValue(uint8_t min, uint8_t max) {
   return dist(eng);
 }
 
-void saveToJson(JsonWriter& writer, const ledger::VisitData& visitData) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const ledger::VisitData& visitData) {
+  writer->StartObject();
 
-  writer.String("tld");
-  writer.String(visitData.tld.c_str());
+  writer->String("tld");
+  writer->String(visitData.tld.c_str());
 
-  writer.String("domain");
-  writer.String(visitData.domain.c_str());
+  writer->String("domain");
+  writer->String(visitData.domain.c_str());
 
-  writer.String("path");
-  writer.String(visitData.path.c_str());
+  writer->String("path");
+  writer->String(visitData.path.c_str());
 
-  writer.String("tab_id");
-  writer.Uint(visitData.tab_id);
+  writer->String("tab_id");
+  writer->Uint(visitData.tab_id);
 
-  writer.String("name");
-  writer.String(visitData.name.c_str());
+  writer->String("name");
+  writer->String(visitData.name.c_str());
 
-  writer.String("url");
-  writer.String(visitData.url.c_str());
+  writer->String("url");
+  writer->String(visitData.url.c_str());
 
-  writer.String("provider");
-  writer.String(visitData.provider.c_str());
+  writer->String("provider");
+  writer->String(visitData.provider.c_str());
 
-  writer.String("favicon_url");
-  writer.String(visitData.favicon_url.c_str());
+  writer->String("favicon_url");
+  writer->String(visitData.favicon_url.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
-void saveToJson(JsonWriter& writer, const ledger::BalanceReportInfo& info) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const ledger::BalanceReportInfo& info) {
+  writer->StartObject();
 
-  writer.String("opening_balance_");
-  writer.String(info.opening_balance_.c_str());
+  writer->String("opening_balance_");
+  writer->String(info.opening_balance_.c_str());
 
-  writer.String("closing_balance_");
-  writer.String(info.closing_balance_.c_str());
+  writer->String("closing_balance_");
+  writer->String(info.closing_balance_.c_str());
 
-  writer.String("deposits_");
-  writer.String(info.deposits_.c_str());
+  writer->String("deposits_");
+  writer->String(info.deposits_.c_str());
 
-  writer.String("grants_");
-  writer.String(info.grants_.c_str());
+  writer->String("grants_");
+  writer->String(info.grants_.c_str());
 
-  writer.String("earning_from_ads_");
-  writer.String(info.earning_from_ads_.c_str());
+  writer->String("earning_from_ads_");
+  writer->String(info.earning_from_ads_.c_str());
 
-  writer.String("auto_contribute_");
-  writer.String(info.auto_contribute_.c_str());
+  writer->String("auto_contribute_");
+  writer->String(info.auto_contribute_.c_str());
 
-  writer.String("recurring_donation_");
-  writer.String(info.recurring_donation_.c_str());
+  writer->String("recurring_donation_");
+  writer->String(info.recurring_donation_.c_str());
 
-  writer.String("one_time_donation_");
-  writer.String(info.one_time_donation_.c_str());
+  writer->String("one_time_donation_");
+  writer->String(info.one_time_donation_.c_str());
 
-  writer.String("total_");
-  writer.String(info.total_.c_str());
+  writer->String("total_");
+  writer->String(info.total_.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
-void saveToJson(JsonWriter& writer, const ledger::Grant& grant) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const ledger::Grant& grant) {
+  writer->StartObject();
 
-  writer.String("altcurrency");
-  writer.String(grant.altcurrency.c_str());
+  writer->String("altcurrency");
+  writer->String(grant.altcurrency.c_str());
 
-  writer.String("probi");
-  writer.String(grant.probi.c_str());
+  writer->String("probi");
+  writer->String(grant.probi.c_str());
 
-  writer.String("promotionId");
-  writer.String(grant.promotionId.c_str());
+  writer->String("promotionId");
+  writer->String(grant.promotionId.c_str());
 
-  writer.String("expiryTime");
-  writer.Uint64(grant.expiryTime);
+  writer->String("expiryTime");
+  writer->Uint64(grant.expiryTime);
 
-  writer.String("type");
-  writer.String(grant.type.c_str());
+  writer->String("type");
+  writer->String(grant.type.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
-void saveToJson(JsonWriter & writer, const ledger::PublisherInfo& info) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const ledger::PublisherInfo& info) {
+  writer->StartObject();
 
-  writer.String("id");
-  writer.String(info.id.c_str());
+  writer->String("id");
+  writer->String(info.id.c_str());
 
-  writer.String("duration");
-  writer.Uint64(info.duration);
+  writer->String("duration");
+  writer->Uint64(info.duration);
 
-  writer.String("score");
-  writer.Double(info.score);
+  writer->String("score");
+  writer->Double(info.score);
 
-  writer.String("visits");
-  writer.Uint(info.visits);
+  writer->String("visits");
+  writer->Uint(info.visits);
 
-  writer.String("percent");
-  writer.Uint(info.percent);
+  writer->String("percent");
+  writer->Uint(info.percent);
 
-  writer.String("weight");
-  writer.Double(info.weight);
+  writer->String("weight");
+  writer->Double(info.weight);
 
-  writer.String("excluded");
-  writer.Int(info.excluded);
+  writer->String("excluded");
+  writer->Int(info.excluded);
 
-  writer.String("category");
-  writer.Int(info.category);
+  writer->String("category");
+  writer->Int(info.category);
 
-  writer.String("reconcile_stamp");
-  writer.Uint64(info.reconcile_stamp);
+  writer->String("reconcile_stamp");
+  writer->Uint64(info.reconcile_stamp);
 
-  writer.String("verified");
-  writer.Bool(info.verified);
+  writer->String("verified");
+  writer->Bool(info.verified);
 
-  writer.String("name");
-  writer.String(info.name.c_str());
+  writer->String("name");
+  writer->String(info.name.c_str());
 
-  writer.String("url");
-  writer.String(info.url.c_str());
+  writer->String("url");
+  writer->String(info.url.c_str());
 
-  writer.String("provider");
-  writer.String(info.provider.c_str());
+  writer->String("provider");
+  writer->String(info.provider.c_str());
 
-  writer.String("favicon_url");
-  writer.String(info.favicon_url.c_str());
+  writer->String("favicon_url");
+  writer->String(info.favicon_url.c_str());
 
-  writer.String("contributions");
-  writer.StartArray();
+  writer->String("contributions");
+  writer->StartArray();
   for (auto & contribution : info.contributions) {
     saveToJson(writer, contribution);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
-void saveToJson(JsonWriter & writer, const ledger::ContributionInfo& info) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const ledger::ContributionInfo& info) {
+  writer->StartObject();
 
-  writer.String("publisher");
-  writer.String(info.publisher.c_str());
+  writer->String("publisher");
+  writer->String(info.publisher.c_str());
 
-  writer.String("value");
-  writer.Double(info.value);
+  writer->String("value");
+  writer->Double(info.value);
 
-  writer.String("date");
-  writer.Uint64(info.date);
+  writer->String("date");
+  writer->Uint64(info.date);
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
-void saveToJson(JsonWriter & writer,
+void saveToJson(JsonWriter* writer,
     const ledger::PublisherBanner& banner) {
-  writer.StartObject();
+  writer->StartObject();
 
-  writer.String("publisher_key");
-  writer.String(banner.publisher_key.c_str());
+  writer->String("publisher_key");
+  writer->String(banner.publisher_key.c_str());
 
-  writer.String("title");
-  writer.String(banner.title.c_str());
+  writer->String("title");
+  writer->String(banner.title.c_str());
 
-  writer.String("name");
-  writer.String(banner.name.c_str());
+  writer->String("name");
+  writer->String(banner.name.c_str());
 
-  writer.String("description");
-  writer.String(banner.description.c_str());
+  writer->String("description");
+  writer->String(banner.description.c_str());
 
-  writer.String("background");
-  writer.String(banner.background.c_str());
+  writer->String("background");
+  writer->String(banner.background.c_str());
 
-  writer.String("logo");
-  writer.String(banner.logo.c_str());
+  writer->String("logo");
+  writer->String(banner.logo.c_str());
 
-  writer.String("amounts");
-  writer.StartArray();
+  writer->String("amounts");
+  writer->StartArray();
   for (auto & amount : banner.amounts) {
-    writer.Int(amount);
+    writer->Int(amount);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("social");
-  writer.StartObject();
+  writer->String("social");
+  writer->StartObject();
   for (auto & i : banner.social) {
-    writer.String(i.first.c_str());
-    writer.String(i.second.c_str());
+    writer->String(i.first.c_str());
+    writer->String(i.second.c_str());
   }
-  writer.EndObject();
+  writer->EndObject();
 
-  writer.String("verified");
-  writer.Bool(banner.verified);
+  writer->String("verified");
+  writer->Bool(banner.verified);
 
-  writer.String("provider");
-  writer.String(banner.provider.c_str());
+  writer->String("provider");
+  writer->String(banner.provider.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
-void saveToJson(JsonWriter & writer,
+void saveToJson(JsonWriter* writer,
     const ledger::ActivityInfoFilter& info) {
-  writer.StartObject();
+  writer->StartObject();
 
-  writer.String("id");
-  writer.String(info.id.c_str());
+  writer->String("id");
+  writer->String(info.id.c_str());
 
-  writer.String("excluded");
-  writer.Int(info.excluded);
+  writer->String("excluded");
+  writer->Int(info.excluded);
 
-  writer.String("percent");
-  writer.Uint(info.percent);
+  writer->String("percent");
+  writer->Uint(info.percent);
 
-  writer.String("min_duration");
-  writer.Uint64(info.min_duration);
+  writer->String("min_duration");
+  writer->Uint64(info.min_duration);
 
-  writer.String("reconcile_stamp");
-  writer.Uint64(info.reconcile_stamp);
+  writer->String("reconcile_stamp");
+  writer->Uint64(info.reconcile_stamp);
 
-  writer.String("order_by");
-  writer.StartObject();
+  writer->String("order_by");
+  writer->StartObject();
   for (auto & i : info.order_by) {
-    writer.String(i.first.c_str());
-    writer.Bool(i.second);
+    writer->String(i.first.c_str());
+    writer->Bool(i.second);
   }
-  writer.EndObject();
+  writer->EndObject();
 
-  writer.String("non_verified");
-  writer.Bool(info.non_verified);
+  writer->String("non_verified");
+  writer->Bool(info.non_verified);
 
-  writer.String("min_visits");
-  writer.Uint(info.min_visits);
+  writer->String("min_visits");
+  writer->Uint(info.min_visits);
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
-void saveToJson(JsonWriter & writer, const ledger::WalletInfo& info) {
-  writer.StartObject();
+void saveToJson(JsonWriter* writer, const ledger::WalletInfo& info) {
+  writer->StartObject();
 
-  writer.String("altcurrency_");
-  writer.String(info.altcurrency_.c_str());
+  writer->String("altcurrency_");
+  writer->String(info.altcurrency_.c_str());
 
-  writer.String("probi_");
-  writer.String(info.probi_.c_str());
+  writer->String("probi_");
+  writer->String(info.probi_.c_str());
 
-  writer.String("balance_");
-  writer.Double(info.balance_);
+  writer->String("balance_");
+  writer->Double(info.balance_);
 
-  writer.String("fee_amount_");
-  writer.Double(info.fee_amount_);
+  writer->String("fee_amount_");
+  writer->Double(info.fee_amount_);
 
-  writer.String("rates_");
-  writer.StartObject();
+  writer->String("rates_");
+  writer->StartObject();
   for (const auto& rate : info.rates_) {
-    writer.String(rate.first.c_str());
-    writer.Double(rate.second);
+    writer->String(rate.first.c_str());
+    writer->Double(rate.second);
   }
-  writer.EndObject();
+  writer->EndObject();
 
-  writer.String("parameters_choices_");
-  writer.StartArray();
+  writer->String("parameters_choices_");
+  writer->StartArray();
   for (const auto& choice : info.parameters_choices_) {
-    writer.Double(choice);
+    writer->Double(choice);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("parameters_range_");
-  writer.StartArray();
+  writer->String("parameters_range_");
+  writer->StartArray();
   for (const auto& range : info.parameters_range_) {
-    writer.Double(range);
+    writer->Double(range);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("parameters_days_");
-  writer.Uint(info.parameters_days_);
+  writer->String("parameters_days_");
+  writer->Uint(info.parameters_days_);
 
-  writer.String("grants_");
-  writer.StartArray();
+  writer->String("grants_");
+  writer->StartArray();
   for (const auto& grant : info.grants_) {
     saveToJson(writer, grant);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
-void saveToJson(JsonWriter & writer,
+void saveToJson(JsonWriter* writer,
     const ledger::AutoContributeProps& props) {
-  writer.StartObject();
+  writer->StartObject();
 
-  writer.String("enabled_contribute");
-  writer.Bool(props.enabled_contribute);
+  writer->String("enabled_contribute");
+  writer->Bool(props.enabled_contribute);
 
-  writer.String("contribution_min_time");
-  writer.Uint64(props.contribution_min_time);
+  writer->String("contribution_min_time");
+  writer->Uint64(props.contribution_min_time);
 
-  writer.String("contribution_min_visits");
-  writer.Int(props.contribution_min_visits);
+  writer->String("contribution_min_visits");
+  writer->Int(props.contribution_min_visits);
 
-  writer.String("contribution_non_verified");
-  writer.Bool(props.contribution_non_verified);
+  writer->String("contribution_non_verified");
+  writer->Bool(props.contribution_non_verified);
 
-  writer.String("contribution_videos");
-  writer.Bool(props.contribution_videos);
+  writer->String("contribution_videos");
+  writer->Bool(props.contribution_videos);
 
-  writer.String("reconcile_stamp");
-  writer.Uint64(props.reconcile_stamp);
+  writer->String("reconcile_stamp");
+  writer->Uint64(props.reconcile_stamp);
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
-void saveToJson(JsonWriter& writer,
+void saveToJson(JsonWriter* writer,
                 const ledger::PendingContribution& contribution) {
-  writer.StartObject();
+  writer->StartObject();
 
-  writer.String("publisher_key");
-  writer.String(contribution.publisher_key.c_str());
+  writer->String("publisher_key");
+  writer->String(contribution.publisher_key.c_str());
 
-  writer.String("amount");
-  writer.Double(contribution.amount);
+  writer->String("amount");
+  writer->Double(contribution.amount);
 
-  writer.String("added_date");
-  writer.Uint64(contribution.added_date);
+  writer->String("added_date");
+  writer->Uint64(contribution.added_date);
 
-  writer.String("viewing_id");
-  writer.String(contribution.viewing_id.c_str());
+  writer->String("viewing_id");
+  writer->String(contribution.viewing_id.c_str());
 
-  writer.String("category");
-  writer.Int(contribution.category);
+  writer->String("category");
+  writer->Int(contribution.category);
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
-void saveToJson(JsonWriter& writer,
+void saveToJson(JsonWriter* writer,
                 const ledger::PendingContributionList& contributions) {
-  writer.StartObject();
+  writer->StartObject();
 
-  writer.String("list");
-  writer.StartArray();
+  writer->String("list");
+  writer->StartArray();
   for (const auto& contribution : contributions.list_) {
     saveToJson(writer, contribution);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
-void saveToJson(JsonWriter& writer,
+void saveToJson(JsonWriter* writer,
                 const ledger::PublisherInfoListStruct& publishers) {
-  writer.StartObject();
+  writer->StartObject();
 
-  writer.String("list");
-  writer.StartArray();
+  writer->String("list");
+  writer->StartArray();
   for (const auto& publisher : publishers.list) {
     saveToJson(writer, publisher);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 }  // namespace braveledger_bat_helper

@@ -158,7 +158,7 @@ class LedgerImpl : public ledger::Ledger,
   std::map<std::string, ledger::BalanceReportInfo>
   GetAllBalanceReports() const override;
 
-  void GetAutoContributeProps(ledger::AutoContributeProps& props) override;
+  void GetAutoContributeProps(ledger::AutoContributeProps* props) override;
 
   void SaveLedgerState(const std::string& data);
 
@@ -350,7 +350,7 @@ class LedgerImpl : public ledger::Ledger,
   GetWalletProperties() const;
 
   void SetWalletProperties(
-      braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
+      braveledger_bat_helper::WALLET_PROPERTIES_ST* properties);
 
   unsigned int GetDays() const;
 

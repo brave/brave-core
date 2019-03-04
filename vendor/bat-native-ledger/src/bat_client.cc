@@ -17,7 +17,9 @@
 #include "wally_bip39.h"
 #include "anon/anon.h"
 
-using namespace std::placeholders;
+using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
 
 namespace braveledger_bat_client {
 
@@ -30,8 +32,11 @@ BatClient::~BatClient() {
 }
 
 void BatClient::registerPersona() {
-  auto callback = std::bind(&BatClient::requestCredentialsCallback, this,
-      _1, _2, _3);
+  auto callback = std::bind(&BatClient::requestCredentialsCallback,
+                            this,
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(
       braveledger_bat_helper::buildURL(REGISTER_PERSONA, PREFIX_V2),
       std::vector<std::string>(), "", "",
@@ -66,14 +71,14 @@ void BatClient::requestCredentialsCallback(
   std::string registrar_vk = ledger_->GetRegistrarVK();
   if (!braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME,
                                             response,
-                                            registrar_vk)) {
+                                            &registrar_vk)) {
     ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
   DCHECK(!registrar_vk.empty());
   ledger_->SetRegistrarVK(registrar_vk);
   std::string pre_flight;
-  std::string proof = getAnonizeProof(registrar_vk, user_id, pre_flight);
+  std::string proof = getAnonizeProof(registrar_vk, user_id, &pre_flight);
   ledger_->SetPreFlight(pre_flight);
 
   if (proof.empty()) {
@@ -91,8 +96,8 @@ void BatClient::requestCredentialsCallback(
   std::vector<uint8_t> publicKey;
   std::vector<uint8_t> newSecretKey;
   braveledger_bat_helper::getPublicKeyFromSeed(secretKey,
-                                               publicKey,
-                                               newSecretKey);
+                                               &publicKey,
+                                               &newSecretKey);
   std::string label = ledger_->GenerateGUID();
   std::string publicKeyHex = braveledger_bat_helper::uint8ToHex(publicKey);
   std::string keys[3] = {"currency", "label", "publicKey"};
@@ -126,8 +131,11 @@ void BatClient::requestCredentialsCallback(
   // We should use simple callbacks on iOS
   const std::string url = braveledger_bat_helper::buildURL(
       (std::string)REGISTER_PERSONA + "/" + ledger_->GetUserId(), PREFIX_V2);
-  auto callback = std::bind(&BatClient::registerPersonaCallback, this,
-      _1, _2, _3);
+  auto callback = std::bind(&BatClient::registerPersonaCallback,
+                            this,
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(
     url,
     registerHeaders, payloadStringify, "application/json; charset=utf-8",
@@ -136,18 +144,18 @@ void BatClient::requestCredentialsCallback(
 
 std::string BatClient::getAnonizeProof(const std::string& registrarVK,
                                        const std::string& id,
-                                       std::string& preFlight) {
+                                       std::string* preFlight) {
   const char* cred = makeCred(id.c_str());
-  if (nullptr != cred) {
-    preFlight = cred;
+  if (cred != nullptr) {
+    *preFlight = cred;
     free((void*)cred);
   } else {
     return "";
   }
-  const char* proofTemp = registerUserMessage(preFlight.c_str(),
+  const char* proofTemp = registerUserMessage(preFlight->c_str(),
                                               registrarVK.c_str());
   std::string proof;
-  if (nullptr != proofTemp) {
+  if (proofTemp != nullptr) {
     proof = proofTemp;
     free((void*)proofTemp);
   } else {
@@ -171,7 +179,7 @@ void BatClient::registerPersonaCallback(
   std::string verification;
   if (!braveledger_bat_helper::getJSONValue(VERIFICATION_FIELDNAME,
                                             response,
-                                            verification)) {
+                                            &verification)) {
     ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
@@ -181,7 +189,7 @@ void BatClient::registerPersonaCallback(
       ledger_->GetPreFlight().c_str(),
       ledger_->GetRegistrarVK().c_str());
 
-  if (nullptr != masterUserToken) {
+  if (masterUserToken != nullptr) {
     ledger_->SetMasterUserToken(masterUserToken);
     free((void*)masterUserToken);
   } else if (!braveledger_bat_helper::ignore_for_testing()) {
@@ -195,10 +203,10 @@ void BatClient::registerPersonaCallback(
   double fee_amount = .0;
   std::string currency;
   if (!braveledger_bat_helper::getJSONWalletInfo(response,
-                                                 wallet_info,
-                                                 currency,
-                                                 fee_amount,
-                                                 days)) {
+                                                 &wallet_info,
+                                                 &currency,
+                                                 &fee_amount,
+                                                 &days)) {
     ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
@@ -229,8 +237,11 @@ void BatClient::getWalletProperties() {
       path,
       PREFIX_V2,
       braveledger_bat_helper::SERVER_TYPES::BALANCE);
-  auto callback = std::bind(&BatClient::walletPropertiesCallback, this,
-      _1, _2, _3);
+  auto callback = std::bind(&BatClient::walletPropertiesCallback,
+                            this,
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(url,
                    std::vector<std::string>(),
                    std::string(),
@@ -246,19 +257,19 @@ void BatClient::walletPropertiesCallback(
   braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
   ledger_->LogResponse(__func__, response_status_code, response, headers);
   if (response_status_code != 200) {
-   ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
-   return;
+    ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
+    return;
   }
 
-  bool ok = braveledger_bat_helper::loadFromJson(properties, response);
+  bool ok = braveledger_bat_helper::loadFromJson(&properties, response);
   if (!ok) {
-   BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-     "Failed to load wallet properties state";
-   ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
-   return;
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+      "Failed to load wallet properties state";
+    ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
+    return;
   }
 
-  ledger_->SetWalletProperties(properties);
+  ledger_->SetWalletProperties(&properties);
   ledger_->OnWalletProperties(ledger::Result::LEDGER_OK, properties);
 }
 
@@ -266,7 +277,7 @@ std::string BatClient::getWalletPassphrase() const {
   braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
   DCHECK(wallet_info.keyInfoSeed_.size());
   std::string passPhrase;
-  if (0 == wallet_info.keyInfoSeed_.size()) {
+  if (wallet_info.keyInfoSeed_.size() == 0) {
     return passPhrase;
   }
     char* words = nullptr;
@@ -274,7 +285,7 @@ std::string BatClient::getWalletPassphrase() const {
                                          &wallet_info.keyInfoSeed_.front(),
                                          wallet_info.keyInfoSeed_.size(),
                                          &words);
-  if (0 != result) {
+  if (result != 0) {
     DCHECK(false);
 
     return passPhrase;
@@ -287,7 +298,6 @@ std::string BatClient::getWalletPassphrase() const {
 
 void BatClient::recoverWallet(const std::string& pass_phrase) {
   size_t written = 0;
-  std::vector<unsigned char> newSeed;
   if (braveledger_bat_helper::split(pass_phrase,
     WALLET_PASSPHRASE_DELIM).size() == 16) {
     // use niceware for legacy wallet passphrases
@@ -313,8 +323,10 @@ void BatClient::OnNicewareListLoaded(const std::string& pass_phrase,
     seed.resize(32);
     size_t written = 0;
     uint8_t nwResult = braveledger_bat_helper::niceware_mnemonic_to_bytes(
-      pass_phrase, seed, &written, braveledger_bat_helper::split(
-      data, DICTIONARY_DELIMITER));
+      pass_phrase,
+      &seed,
+      &written,
+      braveledger_bat_helper::split(data, DICTIONARY_DELIMITER));
     continueRecover(nwResult, &written, seed);
   } else {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
@@ -327,8 +339,8 @@ void BatClient::OnNicewareListLoaded(const std::string& pass_phrase,
 
 void BatClient::continueRecover(int result,
                                 size_t *written,
-                                std::vector<uint8_t>& newSeed) {
-  if (0 != result || 0 == *written) {
+                                const std::vector<uint8_t>& newSeed) {
+  if (result != 0 || *written == 0) {
     BLOG(ledger_, ledger::LogLevel::LOG_INFO)
       << "Result: "
       << result
@@ -348,12 +360,15 @@ void BatClient::continueRecover(int result,
   std::vector<uint8_t> publicKey;
   std::vector<uint8_t> newSecretKey;
   braveledger_bat_helper::getPublicKeyFromSeed(secretKey,
-                                               publicKey,
-                                               newSecretKey);
+                                               &publicKey,
+                                               &newSecretKey);
   std::string publicKeyHex = braveledger_bat_helper::uint8ToHex(publicKey);
 
-  auto callback = std::bind(&BatClient::recoverWalletPublicKeyCallback, this,
-      _1, _2, _3);
+  auto callback = std::bind(&BatClient::recoverWalletPublicKeyCallback,
+                            this,
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex, PREFIX_V2),
     std::vector<std::string>(), "", "",
@@ -372,10 +387,14 @@ void BatClient::recoverWalletPublicKeyCallback(
     return;
   }
   std::string recoveryId;
-  braveledger_bat_helper::getJSONValue("paymentId", response, recoveryId);
+  braveledger_bat_helper::getJSONValue("paymentId", response, &recoveryId);
 
-  auto callback = std::bind(&BatClient::recoverWalletCallback, this,
-        _1, _2, _3, recoveryId);
+  auto callback = std::bind(&BatClient::recoverWalletCallback,
+                            this,
+                            _1,
+                            _2,
+                            _3,
+                            recoveryId);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)WALLET_PROPERTIES + recoveryId, PREFIX_V2),
       std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, callback);
@@ -400,21 +419,21 @@ ledger_->LogResponse(__func__, response_status_code, response, headers);
   double fee_amount = .0;
   std::string currency;
   braveledger_bat_helper::getJSONWalletInfo(response,
-                                            wallet_info,
-                                            currency,
-                                            fee_amount,
-                                            days);
+                                            &wallet_info,
+                                            &currency,
+                                            &fee_amount,
+                                            &days);
   braveledger_bat_helper::getJSONRecoverWallet(response,
-                                               properties.balance_,
-                                               properties.probi_,
-                                               properties.grants_);
+                                               &properties.balance_,
+                                               &properties.probi_,
+                                               &properties.grants_);
   ledger_->SetWalletInfo(wallet_info);
   ledger_->SetCurrency(currency);
   if (!ledger_->GetUserChangedContribution()) {
     ledger_->SetContributionAmount(fee_amount);
   }
   ledger_->SetDays(days);
-  ledger_->SetWalletProperties(properties);
+  ledger_->SetWalletProperties(&properties);
   ledger_->SetPaymentId(recoveryId);
   ledger_->OnRecoverWallet(ledger::Result::LEDGER_OK,
                            properties.balance_,
@@ -459,8 +478,9 @@ void BatClient::getGrantsCallback(
 
   unsigned int statusCode;
   std::string error;
-  bool hasResponseError = braveledger_bat_helper::getJSONResponse(
-    response, statusCode, error);
+  bool hasResponseError = braveledger_bat_helper::getJSONResponse(response,
+                                                                  &statusCode,
+                                                                  &error);
   if (hasResponseError && statusCode == 404) {
     ledger_->SetLastGrantLoadTimestamp(time(0));
     ledger_->OnGrant(ledger::Result::GRANT_NOT_FOUND, properties);
@@ -472,7 +492,7 @@ void BatClient::getGrantsCallback(
     return;
   }
 
-  bool ok = braveledger_bat_helper::loadFromJson(grants_properties, response);
+  bool ok = braveledger_bat_helper::loadFromJson(&grants_properties, response);
 
   if (!ok) {
      BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
@@ -521,7 +541,7 @@ void BatClient::setGrantCallback(
   std::string error;
   unsigned int statusCode;
   braveledger_bat_helper::GRANT grant;
-  braveledger_bat_helper::getJSONResponse(response, statusCode, error);
+  braveledger_bat_helper::getJSONResponse(response, &statusCode, &error);
 
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
@@ -538,7 +558,7 @@ void BatClient::setGrantCallback(
     return;
   }
 
-  bool ok = braveledger_bat_helper::loadFromJson(grant, response);
+  bool ok = braveledger_bat_helper::loadFromJson(&grant, response);
   if (!ok) {
     ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, grant);
     return;
@@ -563,8 +583,11 @@ void BatClient::setGrantCallback(
 void BatClient::getGrantCaptcha() {
   std::vector<std::string> headers;
   headers.push_back("brave-product:brave-core");
-  auto callback = std::bind(&BatClient::getGrantCaptchaCallback, this,
-      _1, _2, _3);
+  auto callback = std::bind(&BatClient::getGrantCaptchaCallback,
+                            this,
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)GET_PROMOTION_CAPTCHA + ledger_->GetPaymentId(),
         PREFIX_V4),
@@ -579,7 +602,7 @@ void BatClient::getGrantCaptchaCallback(
 
   auto it = headers.find("captcha-hint");
   if (response_status_code != 200 || it == headers.end()) {
-    // TODO NZ Add error handler
+    // TODO(nejczdovc): Add error handler
     return;
   }
 
@@ -614,7 +637,7 @@ void BatClient::GetAddressesForPaymentIdCallback(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   std::map<std::string, std::string> addresses;
-  bool ok = braveledger_bat_helper::getJSONAddresses(response, addresses);
+  bool ok = braveledger_bat_helper::getJSONAddresses(response, &addresses);
 
   if (!ok) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<

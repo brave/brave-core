@@ -107,7 +107,7 @@ class BatState {
   GetWalletProperties() const;
 
   void SetWalletProperties(
-      braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
+      braveledger_bat_helper::WALLET_PROPERTIES_ST* properties);
 
   unsigned int GetDays() const;
 
