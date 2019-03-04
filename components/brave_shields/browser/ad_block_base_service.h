@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -19,6 +20,7 @@
 #include "content/public/common/resource_type.h"
 
 class AdBlockClient;
+class AdBlockServiceTest;
 
 namespace brave_shields {
 
@@ -29,15 +31,16 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   AdBlockBaseService();
   ~AdBlockBaseService() override;
 
-  bool ShouldStartRequest(const GURL &url,
-    content::ResourceType resource_type,
-    const std::string& tab_host) override;
+  bool ShouldStartRequest(const GURL &url, content::ResourceType resource_type,
+    const std::string& tab_host, bool* matching_exception_filter) override;
 
  protected:
+  friend class ::AdBlockServiceTest;
   bool Init() override;
   void Cleanup() override;
 
   void GetDATFileData(const base::FilePath& dat_file_path);
+  AdBlockClient* GetAdBlockClientForTest();
 
   std::unique_ptr<AdBlockClient> ad_block_client_;
   DATFileDataBuffer buffer_;

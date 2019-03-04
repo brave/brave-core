@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -19,15 +20,15 @@
 #include "content/public/common/resource_type.h"
 
 class TrackingProtectionServiceTest;
+class AdBlockServiceTest;
 
 namespace brave_shields {
 
 class BaseLocalDataFilesObserver;
 
-const std::string kLocalDataFilesComponentName("Brave Local Data Updater");
-const std::string kLocalDataFilesComponentId("afalakplffnnnlkncjhbmahjfjhmlkal");
-
-const std::string kLocalDataFilesComponentBase64PublicKey =
+const char kLocalDataFilesComponentName[] = "Brave Local Data Updater";
+const char kLocalDataFilesComponentId[] = "afalakplffnnnlkncjhbmahjfjhmlkal";
+const char kLocalDataFilesComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4TIQXRCftLpGmQZxmm6"
     "AU8pqGKLoDyi537HGQyRKcK7j/CSXCf3vwJr7xkV72p7bayutuzyNZ3740QxBPie"
     "sfBOp8bBb8d2VgTHP3b+SuNmK/rsSRsMRhT05x8AAr/7ab6U3rW0Gsalm2653xnn"
@@ -53,6 +54,7 @@ class LocalDataFilesService : public BraveComponentExtension {
 
  private:
   friend class ::TrackingProtectionServiceTest;
+  friend class ::AdBlockServiceTest;
   static std::string g_local_data_files_component_id_;
   static std::string g_local_data_files_component_base64_public_key_;
   static void SetComponentIdAndBase64PublicKeyForTest(
