@@ -13,18 +13,18 @@ public extension UIImageView {
         if let url = url, icon == nil {
             let domain = Domain.getOrCreateForUrl(url, context: DataController.viewContext)
             if let favicon = domain.favicon {
-                setIcon(favicon.url, forURL: url, completed: completionBlock, scaledDefaultIconSize: scaledDefaultIconSize)
+                setIconURL(favicon.url, forURL: url, completed: completionBlock, scaledDefaultIconSize: scaledDefaultIconSize)
                 return
             }
         }
-        setIcon(icon?.url, forURL: url, completed: completionBlock, scaledDefaultIconSize: scaledDefaultIconSize)
+        setIconURL(icon?.url, forURL: url, completed: completionBlock, scaledDefaultIconSize: scaledDefaultIconSize)
     }
     
-    public func setIcon(_ icon: FaviconMO?, forURL url: URL?, scaledDefaultIconSize: CGSize? = nil, completed completionBlock: ((UIColor, URL?) -> Void)? = nil) {
-        setIcon(icon?.url, forURL: url, completed: completionBlock, scaledDefaultIconSize: scaledDefaultIconSize)
+    public func setIconMO(_ icon: FaviconMO?, forURL url: URL?, scaledDefaultIconSize: CGSize? = nil, completed completionBlock: ((UIColor, URL?) -> Void)? = nil) {
+        setIconURL(icon?.url, forURL: url, completed: completionBlock, scaledDefaultIconSize: scaledDefaultIconSize)
     }
     
-    private func setIcon(_ iconURL: String?, forURL url: URL?, completed completionBlock: ((UIColor, URL?) -> Void)?, scaledDefaultIconSize: CGSize? = nil) {
+    private func setIconURL(_ iconURL: String?, forURL url: URL?, completed completionBlock: ((UIColor, URL?) -> Void)?, scaledDefaultIconSize: CGSize? = nil) {
         if let url = url, let defaultIcon = FaviconFetcher.getDefaultIconForURL(url: url), iconURL == nil {
             if let scaleToSize = scaledDefaultIconSize {
                 self.image = UIImage(contentsOfFile: defaultIcon.url)?.createScaled(scaleToSize)

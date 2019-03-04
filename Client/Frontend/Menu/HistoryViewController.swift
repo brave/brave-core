@@ -122,7 +122,7 @@ class HistoryViewController: SiteTableViewController {
     cell.imageView?.layer.cornerRadius = 6
     cell.imageView?.layer.masksToBounds = true
     
-    cell.imageView?.setIcon(site.domain?.favicon, forURL: URL(string: site.url ?? ""))
+    cell.imageView?.setIconMO(site.domain?.favicon, forURL: URL(string: site.url ?? ""))
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
