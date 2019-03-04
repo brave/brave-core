@@ -1,5 +1,5 @@
 diff --git a/net/socket/socks_connect_job.cc b/net/socket/socks_connect_job.cc
-index 8db05f1103e410fd7f0d3121ab5682b9a819d259..51a7d91138c4e872f6112f5a4391dea7acf72560 100644
+index 8db05f1103e410fd7f0d3121ab5682b9a819d259..a9ceea1ee83644c270f3bf970544f62c6fbed027 100644
 --- a/net/socket/socks_connect_job.cc
 +++ b/net/socket/socks_connect_job.cc
 @@ -151,9 +151,11 @@ int SOCKSConnectJob::DoSOCKSConnect() {
@@ -13,7 +13,7 @@ index 8db05f1103e410fd7f0d3121ab5682b9a819d259..51a7d91138c4e872f6112f5a4391dea7
 +        transport_connect_job_->PassSocket(),
 +        socks_params_->destination(),
 +        socks_params_->traffic_annotation(),
-+        socks_params_->transport_params()->destination().host_port_pair()));
++        socks_params_->transport_params()->destination()));
    } else {
      socket_.reset(new SOCKSClientSocket(
          transport_connect_job_->PassSocket(), socks_params_->destination(),
