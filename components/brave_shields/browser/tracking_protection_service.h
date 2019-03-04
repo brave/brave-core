@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -9,7 +10,8 @@
 
 #include <map>
 #include <memory>
-#include <mutex>
+// TODO(brave): <mutex> is an unapproved C++11 header
+#include <mutex>  // NOLINT
 #include <string>
 #include <vector>
 
@@ -35,7 +37,8 @@ class TrackingProtectionService : public BaseLocalDataFilesObserver {
 
   bool ShouldStartRequest(const GURL& spec,
                           content::ResourceType resource_type,
-                          const std::string& tab_host);
+                          const std::string& tab_host,
+                          bool* matching_exception_filter);
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
 
   // implementation of BaseLocalDataFilesObserver
@@ -50,8 +53,6 @@ class TrackingProtectionService : public BaseLocalDataFilesObserver {
   brave_shields::DATFileDataBuffer buffer_;
 
   std::unique_ptr<CTPParser> tracking_protection_client_;
-  // TODO: Temporary hack which matches both browser-laptop and Android code
-  std::vector<std::string> white_list_;
   std::vector<std::string> third_party_base_hosts_;
   std::map<std::string, std::vector<std::string>> third_party_hosts_cache_;
   std::mutex third_party_hosts_mutex_;
