@@ -4,13 +4,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 #include "bat_helper.h"
 
-#include <iomanip>
-#include <random>
-#include <algorithm>
 #include <openssl/base64.h>
 #include <openssl/digest.h>
 #include <openssl/hkdf.h>
 #include <openssl/sha.h>
+#include <iomanip>
+#include <random>
+#include <algorithm>
 
 #include "bat/ledger/ledger.h"
 #include "logging.h"
@@ -2112,7 +2112,7 @@ bool getJSONServerList(const std::string& json,
     hasError = !d.IsArray();
   }
 
-  list = {};
+  *list = {};
 
   if (!hasError) {
     for (auto &i : d.GetArray()) {

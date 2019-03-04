@@ -17,6 +17,10 @@
 #include "ledger_impl.h"
 #include "rapidjson_bat_helper.h"
 
+using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
+
 namespace braveledger_bat_contribution {
 
 static bool winners_votes_compare(
@@ -215,8 +219,8 @@ void BatContribution::OnTimerReconcile() {
       std::bind(&BatContribution::ReconcilePublisherList,
                 this,
                 ledger::REWARDS_CATEGORY::RECURRING_DONATION,
-                std::placeholders::_1,
-                std::placeholders::_2));
+                _1,
+                _2));
 }
 
 bool BatContribution::ShouldStartAutoContribute() {
@@ -248,8 +252,8 @@ void BatContribution::StartAutoContribute() {
       std::bind(&BatContribution::ReconcilePublisherList,
                 this,
                 ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE,
-                std::placeholders::_1,
-                std::placeholders::_2));
+                _1,
+                _2));
 }
 
 void BatContribution::StartReconcile(
@@ -375,9 +379,9 @@ void BatContribution::Reconcile(const std::string& viewing_id) {
   auto callback = std::bind(&BatContribution::ReconcileCallback,
                             this,
                             viewing_id,
-                            std::placeholders::_1,
-                            std::placeholders::_2,
-                            std::placeholders::_3);
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(url,
       std::vector<std::string>(),
       "",
@@ -443,9 +447,9 @@ void BatContribution::CurrentReconcile(const std::string& viewing_id) {
   auto callback = std::bind(&BatContribution::CurrentReconcileCallback,
                             this,
                             viewing_id,
-                            std::placeholders::_1,
-                            std::placeholders::_2,
-                            std::placeholders::_3);
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(
       braveledger_bat_helper::buildURL(path, PREFIX_V2),
       std::vector<std::string>(),
@@ -567,9 +571,9 @@ void BatContribution::ReconcilePayload(const std::string& viewing_id) {
   auto callback = std::bind(&BatContribution::ReconcilePayloadCallback,
                             this,
                             viewing_id,
-                            std::placeholders::_1,
-                            std::placeholders::_2,
-                            std::placeholders::_3);
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(
       braveledger_bat_helper::buildURL(path, PREFIX_V2),
       wallet_header,
@@ -623,9 +627,9 @@ void BatContribution::RegisterViewing(const std::string& viewing_id) {
   auto callback = std::bind(&BatContribution::RegisterViewingCallback,
                             this,
                             viewing_id,
-                            std::placeholders::_1,
-                            std::placeholders::_2,
-                            std::placeholders::_3);
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(
       braveledger_bat_helper::buildURL(
         (std::string)REGISTER_VIEWING, PREFIX_V2),
@@ -704,9 +708,9 @@ void BatContribution::ViewingCredentials(const std::string& viewing_id) {
   auto callback = std::bind(&BatContribution::ViewingCredentialsCallback,
                             this,
                             viewing_id,
-                            std::placeholders::_1,
-                            std::placeholders::_2,
-                            std::placeholders::_3);
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(url,
       std::vector<std::string>(),
       proof_stringified,
@@ -1064,9 +1068,9 @@ void BatContribution::PrepareBatch(
 
   auto callback = std::bind(&BatContribution::PrepareBatchCallback,
                             this,
-                            std::placeholders::_1,
-                            std::placeholders::_2,
-                            std::placeholders::_3);
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(url,
       std::vector<std::string>(),
       "",
@@ -1343,9 +1347,9 @@ void BatContribution::VoteBatch() {
   auto callback = std::bind(&BatContribution::VoteBatchCallback,
                             this,
                             batch_votes.publisher_,
-                            std::placeholders::_1,
-                            std::placeholders::_2,
-                            std::placeholders::_3);
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(url,
       std::vector<std::string>(),
       payload,

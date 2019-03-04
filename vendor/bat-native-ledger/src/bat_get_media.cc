@@ -122,9 +122,17 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId,
     std::string mediaURL = getMediaURL(mediaId, providerName);
     if (providerName == YOUTUBE_MEDIA_TYPE) {
       auto callback = std::bind(
-          &BatGetMedia::getPublisherFromMediaPropsCallback, this,
-          duration, media_key, providerName, mediaURL, visit_data, window_id,
-          _1, _2, _3);
+          &BatGetMedia::getPublisherFromMediaPropsCallback,
+          this,
+          duration,
+          media_key,
+          providerName,
+          mediaURL,
+          visit_data,
+          window_id,
+          _1,
+          _2,
+          _3);
       ledger_->LoadURL(
           (std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" +
           ledger_->URIEncode(mediaURL),
@@ -174,9 +182,17 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId,
         updated_visit_data.url = mediaUrl + "/videos";
 
         auto callback = std::bind(
-            &BatGetMedia::getPublisherFromMediaPropsCallback, this,
-            realDuration, media_key, providerName, mediaUrl,
-            updated_visit_data, window_id, _1, _2, _3);
+            &BatGetMedia::getPublisherFromMediaPropsCallback,
+            this,
+            realDuration,
+            media_key,
+            providerName,
+            mediaUrl,
+            updated_visit_data,
+            window_id,
+            _1,
+            _2,
+            _3);
         ledger_->LoadURL(
             (std::string)TWITCH_PROVIDER_URL + "?json&url=" +
             ledger_->URIEncode(oembed_url),
@@ -341,9 +357,19 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(
                                          response,
                                          &publisherName);
 
-    auto callback = std::bind(&BatGetMedia::getPublisherInfoCallback, this,
-        duration, media_key, providerName, mediaURL, publisherURL,
-        publisherName, visit_data, window_id, _1, _2, _3);
+    auto callback = std::bind(&BatGetMedia::getPublisherInfoCallback,
+                              this,
+                              duration,
+                              media_key,
+                              providerName,
+                              mediaURL,
+                              publisherURL,
+                              publisherName,
+                              visit_data,
+                              window_id,
+                              _1,
+                              _2,
+                              _3);
     ledger_->LoadURL(publisherURL,
         std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, callback);
     return;
@@ -595,8 +621,15 @@ void BatGetMedia::processYoutubeWatchPath(uint64_t windowId,
   if (!media_key.empty() || !media_id.empty()) {
     ledger_->GetMediaPublisherInfo(media_key,
       std::bind(&BatGetMedia::onMediaPublisherActivity,
-      this, _1, _2, windowId, visit_data,
-      providerType, media_key, media_id, std::string()));
+                this,
+                _1,
+                _2,
+                windowId,
+                visit_data,
+                providerType,
+                media_key,
+                media_id,
+                std::string()));
   } else {
     onMediaActivityError(visit_data, providerType, windowId);
   }
@@ -677,8 +710,13 @@ void BatGetMedia::processYoutubeUserPath(
     std::string media_key = providerType + "_user_" + user;
     ledger_->GetMediaPublisherInfo(media_key,
       std::bind(&BatGetMedia::onMediaUserActivity,
-      this, _1, _2, windowId, visit_data,
-      providerType, media_key));
+                this,
+                _1,
+                _2,
+                windowId,
+                visit_data,
+                providerType,
+                media_key));
   }
 }
 
@@ -698,8 +736,15 @@ void BatGetMedia::fetchPublisherDataFromDB(
     false);
   ledger_->GetPanelPublisherInfo(filter,
     std::bind(&BatGetMedia::onFetchPublisherFromDBResponse,
-    this, _1, _2, windowId, visit_data, providerType,
-    publisher_key, publisher_blob, is_custom_path));
+              this,
+              _1,
+              _2,
+              windowId,
+              visit_data,
+              providerType,
+              publisher_key,
+              publisher_blob,
+              is_custom_path));
 }
 
 void BatGetMedia::onFetchPublisherFromDBResponse(
@@ -715,14 +760,14 @@ void BatGetMedia::onFetchPublisherFromDBResponse(
     providerType == YOUTUBE_MEDIA_TYPE)) {
     fetchDataFromUrl(visit_data.url,
         std::bind(&BatGetMedia::onGetChannelHeadlineVideo,
-            this,
-            windowId,
-            visit_data,
-            providerType,
-            _1,
-            _2,
-            _3,
-            is_custom_path));
+                  this,
+                  windowId,
+                  visit_data,
+                  providerType,
+                  _1,
+                  _2,
+                  _3,
+                  is_custom_path));
   } else {
     if (providerType == TWITCH_MEDIA_TYPE) {
       if (info->name != visit_data.name) {
@@ -911,9 +956,16 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
     if (providerType == TWITCH_MEDIA_TYPE) {
       // first see if we have the publisher a different way (VOD vs. live stream
       ledger_->GetPublisherInfo("twitch#author:" + media_id,
-        std::bind(&BatGetMedia::onGetTwitchPublisherInfo, this, _1, _2,
-          windowId, visit_data, providerType, media_key, media_id,
-          publisher_blob));
+        std::bind(&BatGetMedia::onGetTwitchPublisherInfo,
+                  this,
+                  _1,
+                  _2,
+                  windowId,
+                  visit_data,
+                  providerType,
+                  media_key,
+                  media_id,
+                  publisher_blob));
     } else if (providerType == YOUTUBE_MEDIA_TYPE) {
       ledger::TwitchEventInfo twitchEventInfo;
       getPublisherInfoDataCallback(media_id,

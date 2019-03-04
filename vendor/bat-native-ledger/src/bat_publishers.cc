@@ -177,7 +177,7 @@ void BatPublishers::saveVisitInternal(
         publisher_info->favicon_url = fav_icon;
     }
   } else {
-    publisher_info->favicon_url = ledger::clear_favicon;
+    publisher_info->favicon_url = ledger::_clear_favicon;
   }
 
   publisher_info->name = visit_data.name;
@@ -247,7 +247,11 @@ void BatPublishers::onFetchFavIcon(const std::string& publisher_key,
 
   ledger_->GetPublisherInfo(publisher_key,
       std::bind(&BatPublishers::onFetchFavIconDBResponse,
-      this, _1, _2, favicon_url, window_id));
+                this,
+                _1,
+                _2,
+                favicon_url,
+                window_id));
 }
 
 void BatPublishers::onFetchFavIconDBResponse(
@@ -699,8 +703,7 @@ bool BatPublishers::loadPublisherList(const std::string& data) {
   bool success = braveledger_bat_helper::getJSONServerList(data, &list);
 
   if (success) {
-    server_list_ =
-        std::map<std::string, braveledger_bat_helper::SERVER_LIST>(list);
+    server_list_ = list;
   }
 
   return success;

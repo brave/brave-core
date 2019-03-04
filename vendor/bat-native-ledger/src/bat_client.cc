@@ -32,8 +32,11 @@ BatClient::~BatClient() {
 }
 
 void BatClient::registerPersona() {
-  auto callback = std::bind(&BatClient::requestCredentialsCallback, this,
-      _1, _2, _3);
+  auto callback = std::bind(&BatClient::requestCredentialsCallback,
+                            this,
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(
       braveledger_bat_helper::buildURL(REGISTER_PERSONA, PREFIX_V2),
       std::vector<std::string>(), "", "",
@@ -128,8 +131,11 @@ void BatClient::requestCredentialsCallback(
   // We should use simple callbacks on iOS
   const std::string url = braveledger_bat_helper::buildURL(
       (std::string)REGISTER_PERSONA + "/" + ledger_->GetUserId(), PREFIX_V2);
-  auto callback = std::bind(&BatClient::registerPersonaCallback, this,
-      _1, _2, _3);
+  auto callback = std::bind(&BatClient::registerPersonaCallback,
+                            this,
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(
     url,
     registerHeaders, payloadStringify, "application/json; charset=utf-8",
@@ -231,8 +237,11 @@ void BatClient::getWalletProperties() {
       path,
       PREFIX_V2,
       braveledger_bat_helper::SERVER_TYPES::BALANCE);
-  auto callback = std::bind(&BatClient::walletPropertiesCallback, this,
-      _1, _2, _3);
+  auto callback = std::bind(&BatClient::walletPropertiesCallback,
+                            this,
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(url,
                    std::vector<std::string>(),
                    std::string(),
@@ -355,8 +364,11 @@ void BatClient::continueRecover(int result,
                                                &newSecretKey);
   std::string publicKeyHex = braveledger_bat_helper::uint8ToHex(publicKey);
 
-  auto callback = std::bind(&BatClient::recoverWalletPublicKeyCallback, this,
-      _1, _2, _3);
+  auto callback = std::bind(&BatClient::recoverWalletPublicKeyCallback,
+                            this,
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex, PREFIX_V2),
     std::vector<std::string>(), "", "",
@@ -377,8 +389,12 @@ void BatClient::recoverWalletPublicKeyCallback(
   std::string recoveryId;
   braveledger_bat_helper::getJSONValue("paymentId", response, &recoveryId);
 
-  auto callback = std::bind(&BatClient::recoverWalletCallback, this,
-        _1, _2, _3, recoveryId);
+  auto callback = std::bind(&BatClient::recoverWalletCallback,
+                            this,
+                            _1,
+                            _2,
+                            _3,
+                            recoveryId);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)WALLET_PROPERTIES + recoveryId, PREFIX_V2),
       std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, callback);
@@ -567,8 +583,11 @@ void BatClient::setGrantCallback(
 void BatClient::getGrantCaptcha() {
   std::vector<std::string> headers;
   headers.push_back("brave-product:brave-core");
-  auto callback = std::bind(&BatClient::getGrantCaptchaCallback, this,
-      _1, _2, _3);
+  auto callback = std::bind(&BatClient::getGrantCaptchaCallback,
+                            this,
+                            _1,
+                            _2,
+                            _3);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)GET_PROMOTION_CAPTCHA + ledger_->GetPaymentId(),
         PREFIX_V4),
