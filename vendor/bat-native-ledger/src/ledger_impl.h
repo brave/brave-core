@@ -505,6 +505,7 @@ class LedgerImpl : public ledger::Ledger,
   bat_contribution_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  bool initialized_task_scheduler_;
 
   bool initialized_;
   bool initializing_;
