@@ -106,6 +106,43 @@ def get_release_asset(version):
     print('- binary not found')
     return None
 
+def install(download_dir, path):
+    is_mac_os = True
+    if is_mac_os:
+        print('- installing binary from DMG')
+        print('-> mounting "' + path + '"')
+        result = execute(['hdiutil', 'attach', path])
+
+        # parse out the mounted volume
+        volume = None
+        result_lines = result.splitlines()
+        for x in result_lines:
+            x = x.strip()
+            index = x.find('/Volumes/Brave')
+            if index > -1:
+                volume = x[index:]
+                break
+
+        if volume is None:
+            raise Exception('[ERROR] did not find "/Volumes/Brave" sub-string in mount list!\nFull response from "hdiutil":\n' + result)
+
+        print('-> mounted as "' + volume + '"')
+
+        # in case volumes are already mounted, remove trailing " 1" or " 2" (etc)
+        binary_name = volume.replace("/Volumes/", "")
+        binary_name = re.sub("^\d+\s|\s\d+\s|\s\d+$", "", binary_name) + '.app'
+        volume_path = os.path.join(volume, binary_name)
+
+        # copy binary to a temp folder
+        print('-> copying "' +  volume_path + '" to "' + download_dir + '"')
+        result = execute(['cp', '-rp', volume_path, download_dir])
+        print('-> copy complete')
+
+        print('-> unmounting "' + volume + '"')
+        result = execute(['hdiutil', 'detach', volume])
+
+        return os.path.join(download_dir, binary_name)
+
 
 def test_version(attempt, tag):
     global tag_names
@@ -124,14 +161,10 @@ def test_version(attempt, tag):
     print('- downloading to ' + download_path)
     download(tag, asset['browser_download_url'], download_path)
 
+    install_path = install(download_dir, download_path)
 
-    print('- installing')
-
-
-    print('- running')
-    # execute('')
-    # wait for process to return
-
+    print('- running binary')
+    execute(['open', '-a', install_path])
 
     answer = raw_input('Did this version work?: y/n\n')
     return answer == 'y'
