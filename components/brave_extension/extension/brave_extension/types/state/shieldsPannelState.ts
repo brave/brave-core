@@ -90,5 +90,5 @@ export interface ResetNoScriptInfo {
 }
 
 export interface ChangeAllNoScriptSettings {
-  (state: State, tabId: number, newOrigin: string, shouldBlock: boolean): State
+  (state: State, tabId: number, shouldBlock: boolean): State
 }
