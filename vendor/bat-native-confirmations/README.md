@@ -4,10 +4,10 @@
 
 ### Native
 
-`CreateInstance` should be called to initialize Confirmations
+Initialize Confirmations by calling Initialize() as follows:
+
 ```
-static Confirmations* CreateInstance(
-        ConfirmationsClient* confirmations_client)
+Initialize()
 ```
 
 `SetWalletInfo` should be called by Ledger to set the wallet info
