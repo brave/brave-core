@@ -11,8 +11,8 @@ namespace net {
 
 class NET_EXPORT_PRIVATE SOCKS5ClientSocketAuth : public SOCKS5ClientSocket {
  public:
-  SOCKS5ClientSocketAuth(std::unique_ptr<ClientSocketHandle> transport_socket,
-                         const HostResolver::RequestInfo& req_info,
+  SOCKS5ClientSocketAuth(std::unique_ptr<StreamSocket> transport_socket,
+                         const HostPortPair& destination,
                          const NetworkTrafficAnnotationTag& traffic_annotation,
                          const HostPortPair& proxy_host_port);
   ~SOCKS5ClientSocketAuth() override;
@@ -22,7 +22,7 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocketAuth : public SOCKS5ClientSocket {
   const std::string& password();
   uint8_t auth_method() override;
   int Authenticate(int rv,
-                   ClientSocketHandle& transport, NetLogWithSource& net_log,
+                   NetLogWithSource& net_log,
                    CompletionCallback& callback) override;
   const HostPortPair proxy_host_port_;
   enum {
