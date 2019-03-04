@@ -36,6 +36,15 @@ class AdsBox extends React.Component<Props, State> {
     }
   }
 
+  componentDidUpdate (prevProps: Props) {
+    if (
+      prevProps.rewardsData.enabledMain &&
+      !this.props.rewardsData.enabledMain
+    ) {
+      this.setState({ settings: false })
+    }
+  }
+
   adsDisabled = () => {
     return (
       <DisabledContent
