@@ -9,13 +9,13 @@
 
 namespace braveledger_bat_bignum {
 
-void prepareBigNum(bn_t& big_num, const std::string& probi) {
+void prepareBigNum(bn_t& big_num, const std::string& probi) {  // NOLINT
   bn_null(big_num);
   bn_new(big_num);
   bn_read_str(big_num, probi.c_str(), probi.length(), 10);
 }
 
-std::string bigNumToString(bn_t& number) {
+std::string bigNumToString(bn_t& number) {  // NOLINT
   int result_length = bn_size_str(number, 10);
   const int MAX_BN_BUFF = 256;  // global
   char result_char[MAX_BN_BUFF];

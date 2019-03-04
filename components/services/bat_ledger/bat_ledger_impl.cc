@@ -58,7 +58,7 @@ void BatLedgerImpl::FetchWalletProperties() {
 void BatLedgerImpl::GetAutoContributeProps(
     GetAutoContributePropsCallback callback) {
   ledger::AutoContributeProps props;
-  ledger_->GetAutoContributeProps(props);
+  ledger_->GetAutoContributeProps(&props);
   std::move(callback).Run(props.ToJson());
 }
 

@@ -6,8 +6,9 @@
 #ifndef BRAVELEDGER_BAT_CONTRIBUTION_H_
 #define BRAVELEDGER_BAT_CONTRIBUTION_H_
 
-#include <string>
 #include <map>
+#include <string>
+#include <vector>
 
 #include "bat/ledger/ledger.h"
 #include "bat_helper.h"
@@ -136,21 +137,21 @@ class BatContribution {
  private:
   std::string GetAnonizeProof(const std::string& registrar_VK,
                               const std::string& id,
-                              std::string& pre_flight);
+                              std::string* pre_flight);
 
   // AUTO CONTRIBUTE: from the list gets only verified publishers and
   // save unverified to the db
   ledger::PublisherInfoList GetVerifiedListAuto(
       const std::string& viewing_id,
       const ledger::PublisherInfoList& all,
-      double& budget);
+      double* budget);
 
   // RECURRING DONTAIONS: from the list gets only verified publishers and
   // save unverified to the db
   ledger::PublisherInfoList GetVerifiedListRecurring(
       const std::string& viewing_id,
       const ledger::PublisherInfoList& all,
-      double& budget);
+      double* budget);
 
   // Entry point for contribution where we have publisher info list
   void ReconcilePublisherList(ledger::REWARDS_CATEGORY category,
@@ -217,11 +218,11 @@ class BatContribution {
 
   void GetReconcileWinners(const std::string& viewing_id);
 
-  void GetContributeWinners(const unsigned int& ballots,
+  void GetContributeWinners(const unsigned int ballots,
                             const std::string& viewing_id,
                             const braveledger_bat_helper::PublisherList& list);
 
-  void GetDonationWinners(const unsigned int& ballots,
+  void GetDonationWinners(const unsigned int ballots,
                           const std::string& viewing_id,
                           const braveledger_bat_helper::PublisherList& list);
 
@@ -260,7 +261,7 @@ class BatContribution {
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
-  void SetTimer(uint32_t& timer_id, uint64_t start_timer_in = 0);
+  void SetTimer(uint32_t* timer_id, uint64_t start_timer_in = 0);
 
   void AddRetry(
     braveledger_bat_helper::ContributionRetry step,
@@ -269,7 +270,7 @@ class BatContribution {
 
   uint64_t GetRetryTimer(braveledger_bat_helper::ContributionRetry step,
                          const std::string& viewing_id,
-                         braveledger_bat_helper::CURRENT_RECONCILE& reconcile);
+                         braveledger_bat_helper::CURRENT_RECONCILE* reconcile);
 
   int GetRetryPhase(braveledger_bat_helper::ContributionRetry step);
 

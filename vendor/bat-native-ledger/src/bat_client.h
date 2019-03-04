@@ -58,8 +58,8 @@ class BatClient {
   void getWalletProperties();
 
   void continueRecover(int result,
-                       size_t *written,
-                       std::vector<uint8_t>& newSeed);
+                       size_t* written,
+                       const std::vector<uint8_t>& newSeed);
 
   void OnNicewareListLoaded(const std::string& pass_phrase,
                             ledger::Result result,
@@ -96,7 +96,7 @@ class BatClient {
 
   std::string getAnonizeProof(const std::string& registrarVK,
                               const std::string& id,
-                              std::string& preFlight);
+                              std::string* preFlight);
 
   void GetAddressesForPaymentIdCallback(
     bool success,
