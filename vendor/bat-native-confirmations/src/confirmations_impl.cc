@@ -37,10 +37,8 @@ ConfirmationsImpl::ConfirmationsImpl(
     payout_redeemed_tokens_timer_id_(0),
     payout_tokens_(std::make_unique<PayoutTokens>(this, confirmations_client,
         unblinded_payment_tokens_.get())),
+    state_has_loaded_(false),
     confirmations_client_(confirmations_client) {
-  BLOG(INFO) << "Initializing Confirmations";
-
-  LoadState();
 }
 
 ConfirmationsImpl::~ConfirmationsImpl() {
@@ -50,12 +48,26 @@ ConfirmationsImpl::~ConfirmationsImpl() {
   StopPayingOutRedeemedTokens();
 }
 
+void ConfirmationsImpl::Initialize() {
+  BLOG(INFO) << "Initializing Confirmations";
+
+  if (is_initialized_) {
+    BLOG(INFO) << "Already initialized";
+
+    return;
+  }
+
+  LoadState();
+}
+
 void ConfirmationsImpl::CheckReady() {
   if (is_initialized_) {
     return;
   }
 
-  if (!wallet_info_.IsValid() || catalog_issuers_.empty()) {
+  if (!state_has_loaded_ ||
+      !wallet_info_.IsValid() ||
+      catalog_issuers_.empty()) {
     return;
   }
 
@@ -315,11 +327,9 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
 }
 
 void ConfirmationsImpl::SaveState() {
-  if (!is_initialized_) {
-    return;
-  }
-
   BLOG(INFO) << "Saving confirmations state";
+
+  DCHECK(state_has_loaded_);
 
   std::string json = ToJSON();
   auto callback = std::bind(&ConfirmationsImpl::OnStateSaved, this, _1);
@@ -347,6 +357,8 @@ void ConfirmationsImpl::LoadState() {
 void ConfirmationsImpl::OnStateLoaded(
     const Result result,
     const std::string& json) {
+  state_has_loaded_ = true;
+
   auto confirmations_json = json;
 
   if (result != SUCCESS) {
@@ -416,8 +428,6 @@ void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
   for (const auto& issuer : info->issuers) {
     catalog_issuers_.insert({issuer.public_key, issuer.name});
   }
-
-  SaveState();
 
   CheckReady();
 }

@@ -42,6 +42,7 @@ class ConfirmationsGetSignedTokensRequestTest : public ::testing::Test {
   void SetUp() override {
     // Code here will be called immediately after the constructor (right before
     // each test)
+    confirmations_->Initialize();
   }
 
   void TearDown() override {

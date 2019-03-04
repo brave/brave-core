@@ -240,6 +240,7 @@ void LedgerImpl::SetConfirmationsWalletInfo(
 
     bat_confirmations_.reset(
         confirmations::Confirmations::CreateInstance(ledger_client_));
+    bat_confirmations_->Initialize();
   }
 
   auto confirmations_wallet_info = GetConfirmationsWalletInfo(wallet_info);

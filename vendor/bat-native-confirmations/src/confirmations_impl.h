@@ -30,6 +30,8 @@ class ConfirmationsImpl : public Confirmations {
   explicit ConfirmationsImpl(ConfirmationsClient* confirmations_client);
   ~ConfirmationsImpl() override;
 
+  void Initialize() override;
+
   // Wallet
   void SetWalletInfo(std::unique_ptr<WalletInfo> info) override;
 
@@ -102,8 +104,11 @@ class ConfirmationsImpl : public Confirmations {
 
   // State
   void OnStateSaved(const Result result);
+
+  bool state_has_loaded_;
   void LoadState();
   void OnStateLoaded(const Result result, const std::string& json);
+
   void ResetState();
   void OnStateReset(const Result result);
 

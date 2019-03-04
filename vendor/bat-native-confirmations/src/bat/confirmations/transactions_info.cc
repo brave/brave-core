@@ -57,7 +57,7 @@ bool TransactionsInfo::FromJson(
   std::vector<TransactionInfo> new_transactions;
 
   base::ListValue transactions_list_value(transactions_value->GetList());
-  for (auto& transaction_value : transactions_list_value) {
+  for (const auto& transaction_value : transactions_list_value) {
     base::DictionaryValue* transaction_dictionary;
     if (!transaction_value.GetAsDictionary(&transaction_dictionary)) {
       return false;

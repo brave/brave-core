@@ -5,6 +5,9 @@
 
 #include <string>
 #include <memory>
+#include <vector>
+#include <fstream>
+#include <sstream>
 
 #include "confirmations_client_mock.h"
 #include "bat-native-confirmations/src/confirmations_impl.h"
@@ -12,9 +15,14 @@
 #include "bat-native-confirmations/src/unblinded_tokens.h"
 #include "bat-native-confirmations/include/bat/confirmations/wallet_info.h"
 
+#include "base/files/file_path.h"
+
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=Confirmations*
+
+using ::testing::_;
+using ::testing::Invoke;
 
 namespace confirmations {
 
@@ -47,6 +55,33 @@ class ConfirmationsRedeemPaymentTokensRequestTest : public ::testing::Test {
   void SetUp() override {
     // Code here will be called immediately after the constructor (right before
     // each test)
+    EXPECT_CALL(*mock_confirmations_client_, LoadState(_, _))
+        .WillRepeatedly(
+            Invoke([this](
+                const std::string& name,
+                OnLoadCallback callback) {
+              auto path = GetTestDataPath();
+              path = path.AppendASCII(name);
+
+              std::string value;
+              if (!Load(path, &value)) {
+                callback(FAILED, value);
+                return;
+              }
+
+              callback(SUCCESS, value);
+            }));
+
+    ON_CALL(*mock_confirmations_client_, SaveState(_, _, _))
+        .WillByDefault(
+            Invoke([](
+                const std::string& name,
+                const std::string& value,
+                OnSaveCallback callback) {
+              callback(SUCCESS);
+            }));
+
+    confirmations_->Initialize();
   }
 
   void TearDown() override {
@@ -55,6 +90,28 @@ class ConfirmationsRedeemPaymentTokensRequestTest : public ::testing::Test {
   }
 
   // Objects declared here can be used by all tests in the test case
+  base::FilePath GetTestDataPath() {
+    return base::FilePath(FILE_PATH_LITERAL(
+        "brave/vendor/bat-native-confirmations/test/data"));
+  }
+
+  bool Load(const base::FilePath path, std::string* value) {
+    if (!value) {
+      return false;
+    }
+
+    std::ifstream ifs{path.value()};
+    if (ifs.fail()) {
+      *value = "";
+      return false;
+    }
+
+    std::stringstream stream;
+    stream << ifs.rdbuf();
+    *value = stream.str();
+    return true;
+  }
+
   std::vector<UnblindedToken> GetUnblindedTokens(const int count) {
     std::vector<std::string> unblinded_tokens_base64 = {
       "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc",  // NOLINT
