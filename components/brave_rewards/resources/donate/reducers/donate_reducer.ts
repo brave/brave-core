@@ -18,7 +18,8 @@ export const defaultState: RewardsDonate.State = {
     balance: 0,
     choices: [],
     probi: '0'
-  }
+  },
+  reconcileStamp: 0
 }
 
 const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.State = defaultState, action) => {
@@ -26,6 +27,8 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
 
   switch (action.type) {
     case types.ON_CLOSE_DIALOG:
+      state = { ...state }
+      state.currentTipRecurring = false
       chrome.send('dialogClose')
       break
     case types.ON_PUBLISHER_BANNER: {
@@ -75,6 +78,15 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
         state.recurringDonations = recurringDonations
       }
       break
+    case types.GET_RECONCILE_STAMP: {
+      chrome.send('brave_rewards_donate.getReconcileStamp')
+      break
+    }
+    case types.ON_RECONCILE_STAMP: {
+      state = { ...state }
+      state.reconcileStamp = action.payload.stamp
+      break
+    }
   }
 
   return state

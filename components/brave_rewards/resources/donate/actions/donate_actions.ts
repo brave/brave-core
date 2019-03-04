@@ -31,3 +31,9 @@ export const getRecurringDonations = () => action(types.GET_RECURRING_DONATIONS)
 export const onRecurringDonations = (recurringDonations: RewardsDonate.RecurringDonation[]) => action(types.ON_RECURRING_DONATIONS, {
   recurringDonations
 })
+
+export const getReconcileStamp = () => action(types.GET_RECONCILE_STAMP)
+
+export const onReconcileStamp = (stamp: number) => action(types.ON_RECONCILE_STAMP, {
+  stamp
+})

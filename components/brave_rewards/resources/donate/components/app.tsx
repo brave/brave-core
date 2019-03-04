@@ -30,28 +30,20 @@ export class App extends React.Component<Props, {}> {
   generateDonationOverlay = (publisher: RewardsDonate.Publisher) => {
     let domain = ''
     let monthlyDate
-    let recurringDonation
     const {
       currentTipAmount,
       currentTipRecurring,
-      recurringDonations
+      reconcileStamp
     } = this.props.rewardsDonateData
 
     const publisherKey = publisher && publisher.publisherKey
 
-    if (!publisherKey ||
-        (currentTipRecurring && !recurringDonations)) {
+    if (!publisherKey) {
       return null
     }
 
-    if (recurringDonations) {
-      recurringDonation = recurringDonations.find((donation: RewardsDonate.RecurringDonation) => {
-        return donation.publisherKey === publisherKey
-      })
-    }
-
-    if (recurringDonation && recurringDonation.monthlyDate) {
-      monthlyDate = new Date(recurringDonation.monthlyDate * 1000).toLocaleDateString()
+    if (currentTipRecurring && reconcileStamp) {
+      monthlyDate = new Date(reconcileStamp * 1000).toLocaleDateString()
     }
 
     if (publisher.provider && publisher.name) {
