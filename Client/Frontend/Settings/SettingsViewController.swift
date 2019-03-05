@@ -320,6 +320,15 @@ class SettingsViewController: TableViewController {
                         self.dismiss(animated: true)
                     },
                     cellClass: MultilineButtonCell.self),
+                Row(text: Strings.Rate_Brave,
+                    selection: { [unowned self] in
+                        // Rate Brave
+                        guard let writeReviewURL = URL(string: "https://geo.itunes.apple.com/app/id1052879175?action=write-review")
+                            else { return }
+                        UIApplication.shared.open(writeReviewURL)
+                        self.dismiss(animated: true)
+                    },
+                    cellClass: MultilineValue1Cell.self),
                 Row(text: Strings.Privacy_Policy,
                     selection: { [unowned self] in
                         // Show privacy policy
