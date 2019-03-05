@@ -13,6 +13,7 @@
 #include "ledger_impl.h"
 
 #include "base/task/post_task.h"
+#include "base/task/task_scheduler/task_scheduler.h"
 #include "bat/ads/issuers_info.h"
 #include "bat/ads/notification_info.h"
 #include "bat/confirmations/confirmations.h"
@@ -46,18 +47,33 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_get_media_(new BatGetMedia(this)),
     bat_state_(new BatState(this)),
     bat_contribution_(new BatContribution(this)),
-    task_runner_(base::CreateSequencedTaskRunnerWithTraits({
-          base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-          base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+    initialized_task_scheduler_(false),
     initialized_(false),
     initializing_(false),
     last_tab_active_time_(0),
     last_shown_tab_id_(-1),
     last_pub_load_timer_id_(0u),
     last_grant_check_timer_id_(0u) {
+
+  // Ensure TaskScheduler is initialized before creating the task runner for
+  // ios.
+  if (!base::TaskScheduler::GetInstance()) {
+    base::TaskScheduler::CreateAndStartWithDefaultParams("bat_ledger");
+
+    DCHECK(base::TaskScheduler::GetInstance());
+    initialized_task_scheduler_ = true;
+  }
+
+  task_runner_ = base::CreateSequencedTaskRunnerWithTraits({
+      base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+      base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
 }
 
 LedgerImpl::~LedgerImpl() {
+  if (initialized_task_scheduler_) {
+    DCHECK(base::TaskScheduler::GetInstance());
+    base::TaskScheduler::GetInstance()->Shutdown();
+  }
 }
 
 void LedgerImpl::Initialize() {
