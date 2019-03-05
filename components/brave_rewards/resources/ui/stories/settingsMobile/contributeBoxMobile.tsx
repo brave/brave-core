@@ -17,8 +17,8 @@ import {
   StyledTotalContent,
   StyledSitesLink
 } from './style'
-import { Column, Grid, Select, ControlWrapper, Checkbox } from '../../../../src/components'
-import { BoxMobile } from '../../../../src/features/rewards/mobile'
+import { Column, Grid, ControlWrapper, Checkbox } from '../../../../src/components'
+import { BoxMobile, SelectMobile } from '../../../../src/features/rewards/mobile'
 import { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/tableContribute'
 
 // Utils
@@ -61,6 +61,10 @@ class ContributeBoxMobile extends React.Component<Props, State> {
     })
   }
 
+  onSelectSettingChange = (key: string, value: string) => {
+    console.log(`${key} is now ${value}`)
+  }
+
   doNothing = () => {
     console.log('nothing')
   }
@@ -71,26 +75,74 @@ class ContributeBoxMobile extends React.Component<Props, State> {
         <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
             <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
               <ControlWrapper text={locale.contributionMonthly}>
-                <Select title={locale.contributionMonthly}>
-                  <div data-value='10'><Tokens value={'10.0'} converted={'4.00'}/></div>
-                  <div data-value='20'><Tokens value={'20.0'} converted={'6.00'}/></div>
-                  <div data-value='40'><Tokens value={'40.0'} converted={'12.00'}/></div>
-                  <div data-value='100'><Tokens value={'100.0'} converted={'40.00'}/></div>
-                </Select>
+                <SelectMobile
+                  onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
+                  amountOptions={[
+                    {
+                      value: '10.0',
+                      dataValue: '10',
+                      converted: '4.00'
+                    },
+                    {
+                      value: '20.0',
+                      dataValue: '20',
+                      converted: '6.00'
+                    },
+                    {
+                      value: '40.0',
+                      dataValue: '40',
+                      converted: '12.00'
+                    },
+                    {
+                      value: '60.0',
+                      dataValue: '60',
+                      converted: '17.00'
+                    },
+                    {
+                      value: '100.0',
+                      dataValue: '100',
+                      converted: '30.00'
+                    }
+                  ]}
+                />
               </ControlWrapper>
               <ControlWrapper text={locale.contributionMinTime}>
-                <Select title={locale.contributionMinTime}>
-                  <div data-value='5'>{locale.contributionTime5}</div>
-                  <div data-value='8'>{locale.contributionTime8}</div>
-                  <div data-value='60'>{locale.contributionTime60}</div>
-                </Select>
+                <SelectMobile
+                  onChange={this.onSelectSettingChange.bind(this, 'contributionMinTime')}
+                  options={[
+                    {
+                      value: '5',
+                      text: locale.contributionTime5
+                    },
+                    {
+                      value: '8',
+                      text: locale.contributionTime8
+                    },
+                    {
+                      value: '60',
+                      text: locale.contributionTime60
+                    }
+                  ]}
+                />
               </ControlWrapper>
               <ControlWrapper text={locale.contributionMinVisits}>
-                <Select title={locale.contributionMinVisits}>
-                  <div data-value='5'>{locale.contributionVisit1}</div>
-                  <div data-value='8'>{locale.contributionVisit5}</div>
-                  <div data-value='60'>{locale.contributionVisit10}</div>
-                </Select>
+                <SelectMobile
+                  onChange={this.onSelectSettingChange.bind(this, 'contributionMinVisits')}
+                  options={[
+                    {
+                      value: '1',
+                      text: locale.contributionVisit1
+                    },
+                    {
+                      value: '5',
+                      text: locale.contributionVisit5
+                    },
+                    {
+                      value: '10',
+                      text: locale.contributionVisit10
+                    }
+                  ]}
+                />
               </ControlWrapper>
               <ControlWrapper text={locale.contributionAllowed}>
                 <Checkbox
@@ -227,16 +279,37 @@ class ContributeBoxMobile extends React.Component<Props, State> {
       >
         <List title={<StyledListContent>{locale.contributionMonthly}</StyledListContent>}>
           <StyledListContent>
-            <Select
+            <SelectMobile
               floating={true}
-              title={locale.contributionMonthly}
-            >
-              <div data-value='10'><Tokens value={'10.0'} converted={'4.00'}/></div>
-              <div data-value='20'><Tokens value={'20.0'} converted={'6.00'}/></div>
-              <div data-value='40'><Tokens value={'40.0'} converted={'12.00'}/></div>
-              <div data-value='40'><Tokens value={'60.0'} converted={'12.00'}/></div>
-              <div data-value='100'><Tokens value={'100.0'} converted={'40.00'}/></div>
-            </Select>
+              onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
+              amountOptions={[
+                {
+                  value: '10.0',
+                  dataValue: '10',
+                  converted: '4.00'
+                },
+                {
+                  value: '20.0',
+                  dataValue: '20',
+                  converted: '6.00'
+                },
+                {
+                  value: '40.0',
+                  dataValue: '40',
+                  converted: '12.00'
+                },
+                {
+                  value: '60.0',
+                  dataValue: '60',
+                  converted: '17.00'
+                },
+                {
+                  value: '100.0',
+                  dataValue: '100',
+                  converted: '30.00'
+                }
+              ]}
+            />
           </StyledListContent>
         </List>
         <List title={<StyledListContent>{locale.contributionNextDate}</StyledListContent>}>

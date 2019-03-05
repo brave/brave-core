@@ -4,12 +4,14 @@
 
 import BoxMobile from './boxMobile'
 import MainToggleMobile from './mainToggleMobile'
+import SelectMobile from './selectMobile'
 import SettingsPageMobile from './settingsPageMobile'
 import WalletInfoHeader from './walletInfoHeader'
 
 export {
   BoxMobile,
   MainToggleMobile,
+  SelectMobile,
   SettingsPageMobile,
   WalletInfoHeader
 }
