@@ -24,6 +24,7 @@ from lib.util import download, execute, tempdir
 
 tag_names = []
 releases = {}
+is_mac_os = True
 
 
 def parse_args():
@@ -47,18 +48,35 @@ def get_releases(repo):
 
     releases = {}
     tag_names = []
+    page = 1
+    done = False
+    draft_count = 0
 
-    # get all the releases and index them
-    response = repo.releases.get()
-    for release in response:
-        # skip releases in draft status
-        if release['draft']:
-            continue
-        tag_name = str(release['tag_name'].strip().replace('v', ''))
-        tag_names.append(tag_name)
-        releases[tag_name] = release
+    print('fetching releases from GitHub...')
 
-    print('fetched all releases from GitHub (' + str(len(tag_names)) + ' versions found)')
+    while not done:
+        # for more info, see: https://developer.github.com/v3/guides/traversing-with-pagination/
+        get_data = {
+            'page': page,
+            'per_page': 100
+        }
+        # get all the releases and index them
+        response = repo.releases.get(params=get_data)
+        if len(response) == 0:
+            done = True
+            break
+
+        for release in response:
+            # skip releases in draft status
+            if release['draft']:
+                draft_count = draft_count + 1
+                continue
+            tag_name = str(release['tag_name'].strip().replace('v', ''))
+            tag_names.append(tag_name)
+            releases[tag_name] = release
+        page = page + 1
+
+    print('fetch complete; ' + str(len(tag_names)) + ' versions found (excluding ' + str(draft_count) + ' drafts)')
 
 
 def filter_releases(args):
@@ -66,7 +84,7 @@ def filter_releases(args):
 
     filtered_tag_names = []
 
-    print('filtering out versions which are not relevant')
+    print('filtering out versions which are not relevant...')
 
     # find all unique MINOR versions
     for tag in tag_names:
@@ -78,36 +96,45 @@ def filter_releases(args):
         minor_version = str(version[1])
         branch_version = major_version + '.' + minor_version + '.x'
 
+        # remove entries which don't match optional branch (if present)
         if args.branch is not None and branch_version != args.branch:
             print(' - skipping "' + tag + '" (' + branch_version + ' != ' + args.branch + ')')
             continue
 
-        # TODO: skip if there's no DMG/installer available (or platform specific binary)
-        #if not get_release_download_url(releases, tag):
+        # remove entries which don't have installer binary
+        if not get_release_asset(tag, False):
+            print(' - skipping "' + tag + '" (installer not found)')
+            continue
 
         filtered_tag_names.append(tag)
 
+    print('filtering complete (' + str(len(tag_names) - len(filtered_tag_names)) + ' versions removed)')
     tag_names = filtered_tag_names
 
 
-def get_release_asset(version):
+def get_release_asset(version, verbose=True):
     global releases
+    global is_mac_os
 
     release_id = releases[version]['id']
-    print('getting installer for  "' + version + '" (release id ' + str(release_id) + ')')
+    if verbose:
+        print('getting installer for  "' + version + '" (release id ' + str(release_id) + ')...')
 
     # find correct asset for platform
-    is_mac_os = True
     for asset in releases[version]['assets']:
         if str(asset['name']).endswith('.dmg') and is_mac_os:
-            print('- binary found: ' + asset['browser_download_url'])
+            if verbose:
+                print('- binary found: ' + asset['browser_download_url'])
             return asset
 
-    print('- binary not found')
+    if verbose:
+        print('- binary not found')
     return None
 
+
 def install(download_dir, path):
-    is_mac_os = True
+    global is_mac_os
+
     if is_mac_os:
         print('- installing binary from DMG')
         print('-> mounting "' + path + '"')
@@ -130,7 +157,7 @@ def install(download_dir, path):
 
         # in case volumes are already mounted, remove trailing " 1" or " 2" (etc)
         binary_name = volume.replace("/Volumes/", "")
-        binary_name = re.sub("^\d+\s|\s\d+\s|\s\d+$", "", binary_name) + '.app'
+        binary_name = re.sub("^\\d+\\s|\\s\\d+\\s|\\s\\d+$", "", binary_name) + '.app'
         volume_path = os.path.join(volume, binary_name)
 
         # copy binary to a temp folder
@@ -182,7 +209,7 @@ def get_github_token():
 def find_first_broken_version(args):
     global tag_names
 
-    print('bisecting: ' + str(len(tag_names)) + ' versions to test')
+    print('bisecting: total of ' + str(len(tag_names)) + ' versions in search set')
 
     left_index = 0
     right_index = len(tag_names) - 1
