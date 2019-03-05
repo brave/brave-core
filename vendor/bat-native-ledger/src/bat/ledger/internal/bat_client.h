@@ -108,7 +108,7 @@ class BatClient {
       const std::map<std::string, std::string>& headers,
       const std::string& paymentId);
 
-  void getGrantViaSafetynetCheckCallback(bool result, const std::string& response,
+  void getGrantViaSafetynetCheckCallback(int response_status_code, const std::string& response,
       const std::map<std::string, std::string>& headers);
 
   std::string getAnonizeProof(const std::string& registrarVK,

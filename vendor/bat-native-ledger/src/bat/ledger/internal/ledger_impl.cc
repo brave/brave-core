@@ -14,7 +14,9 @@
 #include "base/task/task_scheduler/task_scheduler.h"
 #include "bat/ads/issuers_info.h"
 #include "bat/ads/notification_info.h"
+#if !defined(OS_ANDROID)
 #include "bat/confirmations/confirmations.h"
+#endif
 #include "bat/ledger/internal/bat_client.h"
 #include "bat/ledger/internal/bat_contribution.h"
 #include "bat/ledger/internal/bat_get_media.h"
@@ -236,7 +238,9 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
       OnWalletInitialized(ledger::Result::INVALID_LEDGER_STATE);
     } else {
       auto wallet_info = bat_state_->GetWalletInfo();
+#if !defined(OS_ANDROID)
       SetConfirmationsWalletInfo(wallet_info);
+#endif
 
       LoadPublisherState(this);
       bat_contribution_->OnStartUp();
@@ -253,6 +257,7 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
   }
 }
 
+#if !defined(OS_ANDROID)
 void LedgerImpl::SetConfirmationsWalletInfo(
     const braveledger_bat_helper::WALLET_INFO_ST& wallet_info) {
   if (!bat_confirmations_) {
@@ -268,6 +273,7 @@ void LedgerImpl::SetConfirmationsWalletInfo(
   bat_confirmations_->SetWalletInfo(
       std::make_unique<confirmations::WalletInfo>(confirmations_wallet_info));
 }
+#endif
 
 void LedgerImpl::LoadPublisherState(ledger::LedgerCallbackHandler* handler) {
   ledger_client_->LoadPublisherState(handler);
@@ -846,8 +852,10 @@ void LedgerImpl::DownloadPublisherList(
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
+#if !defined(OS_ANDROID)
   if (bat_confirmations_->OnTimer(timer_id))
     return;
+#endif
 
   if (timer_id == last_pub_load_timer_id_) {
     last_pub_load_timer_id_ = 0;
@@ -858,7 +866,7 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 
   } else if (timer_id == last_grant_check_timer_id_) {
     last_grant_check_timer_id_ = 0;
-    FetchGrants(std::string(), std::string());
+    FetchGrants(std::string(), std::string(), std::string());
   }
 
   bat_contribution_->OnTimer(timer_id);
@@ -1205,9 +1213,12 @@ void LedgerImpl::SetWalletInfo(
     const braveledger_bat_helper::WALLET_INFO_ST& info) {
   bat_state_->SetWalletInfo(info);
 
+#if !defined(OS_ANDROID)
   SetConfirmationsWalletInfo(info);
+#endif
 }
 
+#if !defined(OS_ANDROID)
 const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
     const braveledger_bat_helper::WALLET_INFO_ST& info) const {
   confirmations::WalletInfo wallet_info;
@@ -1227,6 +1238,7 @@ const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
 
   return wallet_info;
 }
+#endif
 
 void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) {
   // Retrieve the payment id.
@@ -1417,6 +1429,7 @@ void LedgerImpl::SetAddresses(std::map<std::string, std::string> addresses) {
 }
 
 void LedgerImpl::SetCatalogIssuers(const std::string& info) {
+#if !defined(OS_ANDROID)
   ads::IssuersInfo issuers_info_ads;
   if (issuers_info_ads.FromJson(info) != ads::Result::SUCCESS)
     return;
@@ -1431,9 +1444,11 @@ void LedgerImpl::SetCatalogIssuers(const std::string& info) {
   }
 
   bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
+#endif
 }
 
 void LedgerImpl::ConfirmAd(const std::string& info) {
+#if !defined(OS_ANDROID)
   ads::NotificationInfo notification_info_ads;
   if (notification_info_ads.FromJson(info) != ads::Result::SUCCESS)
     return;
@@ -1474,11 +1489,14 @@ void LedgerImpl::ConfirmAd(const std::string& info) {
   }
 
   bat_confirmations_->ConfirmAd(std::move(notification_info));
+#endif
 }
 
 void LedgerImpl::GetTransactionHistoryForThisCycle(
     ledger::GetTransactionHistoryForThisCycleCallback callback) {
+#if !defined(OS_ANDROID)
   bat_confirmations_->GetTransactionHistoryForThisCycle(callback);
+#endif
 }
 
 void LedgerImpl::RefreshPublisher(

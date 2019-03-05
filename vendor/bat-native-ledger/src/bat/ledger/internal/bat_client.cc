@@ -392,10 +392,10 @@ void BatClient::continueRecover(int result,
 
 
   braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
-  wallet_info.keyInfoSeed_ = new_seed;
+  wallet_info.keyInfoSeed_ = newSeed;
   ledger_->SetWalletInfo(wallet_info);
 
-  std::vector<uint8_t> secretKey = braveledger_bat_helper::getHKDF(new_seed);
+  std::vector<uint8_t> secretKey = braveledger_bat_helper::getHKDF(newSeed);
   std::vector<uint8_t> publicKey;
   std::vector<uint8_t> newSecretKey;
   braveledger_bat_helper::getPublicKeyFromSeed(secretKey,
@@ -570,14 +570,27 @@ void BatClient::getGrantsCallback(
 void BatClient::setGrant(const std::string& captchaResponse,
                          const std::string& promotionId,
                          const std::string& safetynet_token) {
-  if (promotionId.empty()) {
+  std::string promotionToSet = promotionId;
+  if (promotionId.empty() && safetynet_token.empty()) {
     braveledger_bat_helper::GRANT properties;
     ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, properties);
     return;
   }
 
+  if (promotionId.empty() && !safetynet_token.empty()) {
+    braveledger_bat_helper::Grants state_grants = ledger_->GetGrants();
+
+    for (auto state_grant : state_grants) {
+      if ("ugp" == state_grant.type) {
+        promotionToSet = state_grant.promotionId;
+        break;
+      }
+    }
+    
+  }
+
   std::string keys[2] = {"promotionId", "captchaResponse"};
-  std::string values[2] = {promotionId, captchaResponse};
+  std::string values[2] = {promotionToSet, captchaResponse};
   std::string payload = braveledger_bat_helper::stringify(keys, values, safetynet_token.empty() ? 2 : 1);
 
   std::vector<std::string> headers;
@@ -741,15 +754,15 @@ void BatClient::getGrantViaSafetynetCheck() {
                                    _1,
                                    _2,
                                    _3));
-  }
+}
 
-void BatClient::getGrantViaSafetynetCheckCallback(bool success,
+void BatClient::getGrantViaSafetynetCheckCallback(int response_status_code,
                                                   const std::string& response,
                                                   const std::map<std::string,
                                                   std::string>& headers) {
-  ledger_->LogResponse(__func__, success, response, headers);
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (!success) {
+  if (response_status_code != 200) {
     // Attestation failed
     braveledger_bat_helper::GRANT grant;
     ledger_->OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED,
