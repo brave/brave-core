@@ -50,7 +50,7 @@ class LedgerImpl : public ledger::Ledger,
  public:
   typedef std::map<uint32_t, ledger::VisitData>::const_iterator visit_data_iter;
 
-  LedgerImpl(ledger::LedgerClient* client);
+  explicit LedgerImpl(ledger::LedgerClient* client);
   ~LedgerImpl() override;
 
   // Not copyable, not assignable
@@ -153,7 +153,7 @@ class LedgerImpl : public ledger::Ledger,
   std::map<std::string, ledger::BalanceReportInfo>
   GetAllBalanceReports() const override;
 
-  void GetAutoContributeProps(ledger::AutoContributeProps& props) override;
+  void GetAutoContributeProps(ledger::AutoContributeProps* props) override;
 
   void SaveLedgerState(const std::string& data);
 
@@ -350,7 +350,7 @@ class LedgerImpl : public ledger::Ledger,
   GetWalletProperties() const;
 
   void SetWalletProperties(
-      braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
+      braveledger_bat_helper::WALLET_PROPERTIES_ST* properties);
 
   unsigned int GetDays() const;
 
@@ -399,7 +399,7 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::PublisherInfoList& list,
       uint32_t /* next_record */);
 
-  void SetTimer(uint64_t time_offset, uint32_t& timer_id) const;
+  void SetTimer(uint64_t time_offset, uint32_t* timer_id) const;
 
   bool AddReconcileStep(const std::string& viewing_id,
                         braveledger_bat_helper::ContributionRetry step,

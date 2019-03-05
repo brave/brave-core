@@ -35,7 +35,7 @@ class BatGetMedia {
                                  const std::string& first_party_url,
                                  const std::string& referrer);
 
-  BatGetMedia(bat_ledger::LedgerImpl* ledger);
+  explicit BatGetMedia(bat_ledger::LedgerImpl* ledger);
   ~BatGetMedia();
 
   void processMedia(const std::map<std::string, std::string>& parts,
@@ -171,8 +171,8 @@ class BatGetMedia {
       const std::string& publisher_blob);
 
   void updateTwitchPublisherData(
-      std::string& publisher_name,
-      std::string& publisher_favicon_url,
+      std::string* publisher_name,
+      std::string* publisher_favicon_url,
       const std::string& publisher_blob);
 
   void processYoutubeWatchPath(uint64_t windowId,

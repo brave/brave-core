@@ -165,8 +165,10 @@ struct GRANT {
   GRANT();
   GRANT(const GRANT& properties);
   ~GRANT();
+
   // load from json string
   bool loadFromJson(const std::string & json);
+
   std::string altcurrency;
   std::string probi;
   uint64_t expiryTime;
@@ -432,59 +434,60 @@ using SaveVisitCallback = std::function<SaveVisitSignature>;
 
 bool getJSONValue(const std::string& fieldName,
                   const std::string& json,
-                  std::string & value);
+                  std::string* value);
 
 bool getJSONList(const std::string& fieldName,
                  const std::string& json,
-                 std::vector<std::string>& value);
+                 std::vector<std::string>* value);
 
-bool getJSONWalletInfo(const std::string& json, WALLET_INFO_ST& walletInfo,
-  std::string& fee_currency, double& fee_amount, unsigned int& days);
+bool getJSONWalletInfo(const std::string& json,
+                       WALLET_INFO_ST* walletInfo,
+                       std::string* fee_currency,
+                       double* fee_amount,
+                       unsigned int* days);
 
-bool getJSONPublisherVerified(const std::string& json, bool& verified);
+bool getJSONUnsignedTx(const std::string& json, UNSIGNED_TX* unsignedTx);
 
-bool getJSONUnsignedTx(const std::string& json, UNSIGNED_TX& unsignedTx);
-
-bool getJSONTransaction(const std::string& json, TRANSACTION_ST& transaction);
+bool getJSONTransaction(const std::string& json, TRANSACTION_ST* transaction);
 
 bool getJSONRates(const std::string& json,
-                  std::map<std::string, double>& rates);
+                  std::map<std::string, double>* rates);
 
 bool getJSONTwitchProperties(
     const std::string& json,
-    std::vector<std::map<std::string, std::string>>& parts);
+    std::vector<std::map<std::string, std::string>>* parts);
 
 bool getJSONBatchSurveyors(const std::string& json,
-                           std::vector<std::string>& surveyors);
+                           std::vector<std::string>* surveyors);
 
 bool getJSONRecoverWallet(const std::string& json,
-                          double& balance,
-                          std::string& probi,
-                          std::vector<GRANT>& grants);
+                          double* balance,
+                          std::string* probi,
+                          std::vector<GRANT>* grants);
 
 bool getJSONResponse(const std::string& json,
-                     unsigned int& statusCode,
-                     std::string& error);
+                     unsigned int* statusCode,
+                     std::string* error);
 
 bool getJSONServerList(const std::string& json,
-                       std::map<std::string, SERVER_LIST>& list);
+                       std::map<std::string, SERVER_LIST>* list);
 
 bool getJSONAddresses(const std::string& json,
-                      std::map<std::string, std::string>& addresses);
+                      std::map<std::string, std::string>* addresses);
 
 std::vector<uint8_t> generateSeed();
 
 std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed);
 
 bool getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
-                          std::vector<uint8_t>& publicKey,
-                          std::vector<uint8_t>& secretKey);
+                          std::vector<uint8_t>* publicKey,
+                          std::vector<uint8_t>* secretKey);
 
 std::string uint8ToHex(const std::vector<uint8_t>& in);
 
 std::string stringify(std::string* keys,
                       std::string* values,
-                      const unsigned int& size);
+                      const unsigned int size);
 
 std::string stringifyRequestCredentialsSt(
     const REQUEST_CREDENTIALS_ST& request_credentials);
@@ -500,23 +503,20 @@ std::vector<uint8_t> getSHA256(const std::string& in);
 
 std::string getBase64(const std::vector<uint8_t>& in);
 
-bool getFromBase64(const std::string& in, std::vector<uint8_t> & out);
+bool getFromBase64(const std::string& in, std::vector<uint8_t>* out);
 
 // Sign using ed25519 algorithm
 std::string sign(std::string* keys,
                  std::string* values,
-                 const unsigned int& size,
+                 const unsigned int size,
                  const std::string& keyId,
                  const std::vector<uint8_t>& secretKey);
 
 uint64_t currentTime();
 
-void getUrlQueryParts(const std::string& query,
-                      std::map<std::string, std::string>& parts);
-
 void getTwitchParts(
     const std::string& query,
-    std::vector<std::map<std::string, std::string>>& parts);
+    std::vector<std::map<std::string, std::string>>* parts);
 
 std::string getMediaId(const std::map<std::string, std::string>& data,
                        const std::string& type);
@@ -539,7 +539,8 @@ void set_ignore_for_testing(bool ignore);
 
 uint8_t niceware_mnemonic_to_bytes(
     const std::string& w,
-    std::vector<uint8_t>& bytes_out, size_t *written,
+    std::vector<uint8_t>* bytes_out,
+    size_t *written,
     std::vector<std::string> wordDictionary);
 
 uint64_t getRandomValue(uint8_t min, uint8_t max);

@@ -8,6 +8,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/resource/resource_bundle.h"
 
+// npm run test -- brave_unit_tests --filter=NicewarePartialUnitTest.*
+
 std::string getHexBytes(std::vector<uint8_t> seed) {
   return braveledger_bat_helper::uint8ToHex(seed);
 }
@@ -24,7 +26,7 @@ TEST(NicewarePartialUnitTest, InvalidNumberOfWords) {
     ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
     IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string(), DICTIONARY_DELIMITER);
   int result = braveledger_bat_helper::niceware_mnemonic_to_bytes
-    (passPhrase, nSeed, &written, data);
+    (passPhrase, &nSeed, &written, data);
 
   ASSERT_TRUE(result != 0 && written == 0);
 }
@@ -41,7 +43,7 @@ TEST(NicewarePartialUnitTest, InvalidWordInList) {
     ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
     IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string(), DICTIONARY_DELIMITER);
   int result = braveledger_bat_helper::niceware_mnemonic_to_bytes
-    (passPhrase, nSeed, &written, data);
+    (passPhrase, &nSeed, &written, data);
 
   ASSERT_TRUE(result != 0 && written == 0);
 }
@@ -56,7 +58,7 @@ TEST(NicewarePartialUnitTest, ValidWordListPassOne) {
     ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
     IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string(), DICTIONARY_DELIMITER);
   int result = braveledger_bat_helper::niceware_mnemonic_to_bytes
-    (passPhrase, nSeed, &written, data);
+    (passPhrase, &nSeed, &written, data);
 
   ASSERT_TRUE(result == 0 && getHexBytes(nSeed) ==
     "c874bcc95057603c3ce024babe889753258a74aaec759bcb7641330ee251f549");
@@ -72,7 +74,7 @@ TEST(NicewarePartialUnitTest, ValidWordListPassTwo) {
     ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
     IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string(), DICTIONARY_DELIMITER);
   int result = braveledger_bat_helper::niceware_mnemonic_to_bytes
-    (passPhrase, nSeed, &written, data);
+    (passPhrase, &nSeed, &written, data);
 
   ASSERT_TRUE(result == 0 && getHexBytes(nSeed) ==
     "f14ebdc3ae2965ee1728ad2910aefdeafa4e10be1b2f1a822644753e9ab7c62b");
@@ -89,7 +91,7 @@ TEST(NicewarePartialUnitTest, ValidWordListPassThree) {
     ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
     IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string(), DICTIONARY_DELIMITER);
   int result = braveledger_bat_helper::niceware_mnemonic_to_bytes
-    (passPhrase, nSeed, &written, data);
+    (passPhrase, &nSeed, &written, data);
 
   ASSERT_TRUE(result == 0 && getHexBytes(nSeed) ==
     "62c62f615234d9f4f4319f4f9a82b12d82d50e5b188791b4b786bcd203f19de7");
@@ -103,7 +105,7 @@ TEST(NicewarePartialUnitTest, ValidWordListPassFour) {
     ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
     IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string(), DICTIONARY_DELIMITER);
   int result = braveledger_bat_helper::niceware_mnemonic_to_bytes
-    (passPhrase, nSeed, &written, data);
+    (passPhrase, &nSeed, &written, data);
 
   ASSERT_TRUE(result == 0 && getHexBytes(nSeed) == "0000");
 }
@@ -116,7 +118,7 @@ TEST(NicewarePartialUnitTest, ValidWordListPassFive) {
     ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
     IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string(), DICTIONARY_DELIMITER);
   int result = braveledger_bat_helper::niceware_mnemonic_to_bytes
-    (passPhrase, nSeed, &written, data);
+    (passPhrase, &nSeed, &written, data);
 
   ASSERT_TRUE(result == 0 && getHexBytes(nSeed) == "ffff");
 }
@@ -130,7 +132,7 @@ TEST(NicewarePartialUnitTest, ValidWordListPassSix) {
     ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
     IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string(), DICTIONARY_DELIMITER);
   int result = braveledger_bat_helper::niceware_mnemonic_to_bytes
-    (passPhrase, nSeed, &written, data);
+    (passPhrase, &nSeed, &written, data);
 
   ASSERT_TRUE(result == 0 && getHexBytes(nSeed) ==
     "000011d40c8c5af72e53fe3c36a9ffff");

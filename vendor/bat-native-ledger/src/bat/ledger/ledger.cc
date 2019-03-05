@@ -59,7 +59,7 @@ VisitData::~VisitData() {}
 
 const std::string VisitData::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -69,7 +69,7 @@ bool VisitData::loadFromJson(const std::string& json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("tld") && d["tld"].IsString() &&
         d.HasMember("domain") && d["domain"].IsString() &&
         d.HasMember("path") && d["path"].IsString() &&
@@ -82,7 +82,7 @@ bool VisitData::loadFromJson(const std::string& json) {
         d.HasMember("favicon_url") && d["favicon_url"].IsString());
   }
 
-  if (false == error) {
+  if (!error) {
     tld = d["tld"].GetString();
     domain = d["domain"].GetString();
     path = d["path"].GetString();
@@ -152,7 +152,7 @@ ActivityInfoFilter::~ActivityInfoFilter() {}
 
 const std::string ActivityInfoFilter::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -162,7 +162,7 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("id") && d["id"].IsString() &&
         d.HasMember("month") && d["month"].IsInt() &&
         d.HasMember("year") && d["year"].IsInt() &&
@@ -174,7 +174,7 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
         d.HasMember("non_verified") && d["non_verified"].IsBool());
   }
 
-  if (false == error) {
+  if (!error) {
     id = d["id"].GetString();
     month = (ACTIVITY_MONTH)d["month"].GetInt();
     year = d["year"].GetInt();
@@ -217,7 +217,7 @@ PublisherBanner::~PublisherBanner() {}
 
 const std::string PublisherBanner::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -227,7 +227,7 @@ bool PublisherBanner::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("publisher_key") && d["publisher_key"].IsString() &&
         d.HasMember("title") && d["title"].IsString() &&
         d.HasMember("name") && d["name"].IsString() &&
@@ -239,7 +239,7 @@ bool PublisherBanner::loadFromJson(const std::string& json) {
         d.HasMember("verified") && d["verified"].IsBool());
   }
 
-  if (false == error) {
+  if (!error) {
     publisher_key = d["publisher_key"].GetString();
     title = d["title"].GetString();
     name = d["name"].GetString();
@@ -333,7 +333,7 @@ bool PublisherInfo::is_valid() const {
 
 const std::string PublisherInfo::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -343,7 +343,7 @@ bool PublisherInfo::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("id") && d["id"].IsString() &&
         d.HasMember("duration") && d["duration"].IsUint64() &&
         d.HasMember("score") && d["score"].IsDouble() &&
@@ -363,7 +363,7 @@ bool PublisherInfo::loadFromJson(const std::string& json) {
         d.HasMember("contributions") && d["contributions"].IsArray());
   }
 
-  if (false == error) {
+  if (!error) {
     id = d["id"].GetString();
     duration = d["duration"].GetUint64();
     score = d["score"].GetDouble();
@@ -399,7 +399,7 @@ const PublisherInfo invalid("", ACTIVITY_MONTH::ANY, -1);
 
 const std::string ContributionInfo::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -409,13 +409,13 @@ bool ContributionInfo::loadFromJson(const std::string& json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("publisher") && d["publisher"].IsString() &&
         d.HasMember("value") && d["value"].IsDouble() &&
         d.HasMember("date") && d["date"].IsUint64());
   }
 
-  if (false == error) {
+  if (!error) {
     publisher = d["publisher"].GetString();
     value = d["value"].GetDouble();
     date = d["date"].GetUint64();
@@ -455,7 +455,7 @@ WalletInfo::WalletInfo(const ledger::WalletInfo &info) {
 
 const std::string WalletInfo::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -465,7 +465,7 @@ bool WalletInfo::loadFromJson(const std::string& json) {
 
   // has parser errors or wrong types
   bool error = d.HasParseError();
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("altcurrency_") && d["altcurrency_"].IsString() &&
         d.HasMember("probi_") && d["probi_"].IsString() &&
         d.HasMember("balance_") && d["balance_"].IsDouble() &&
@@ -478,7 +478,7 @@ bool WalletInfo::loadFromJson(const std::string& json) {
         d.HasMember("grants_") && d["grants_"].IsArray());
   }
 
-  if (false == error) {
+  if (!error) {
     altcurrency_ = d["altcurrency_"].GetString();
     probi_ = d["probi_"].GetString();
     balance_ = d["balance_"].GetDouble();
@@ -523,7 +523,7 @@ Grant::Grant(const ledger::Grant &properties) {
 
 const std::string Grant::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -534,14 +534,14 @@ bool Grant::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
         d.HasMember("probi") && d["probi"].IsString() &&
         d.HasMember("promotionId") && d["promotionId"].IsString() &&
         d.HasMember("expiryTime") && d["expiryTime"].IsUint64());
   }
 
-  if (false == error) {
+  if (!error) {
     altcurrency = d["altcurrency"].GetString();
     probi = d["probi"].GetString();
     promotionId = d["promotionId"].GetString();
@@ -577,7 +577,7 @@ BalanceReportInfo::~BalanceReportInfo() {}
 
 const std::string BalanceReportInfo::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -588,7 +588,7 @@ bool BalanceReportInfo::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(
         d.HasMember("opening_balance_") && d["opening_balance_"].IsString() &&
         d.HasMember("closing_balance_") && d["closing_balance_"].IsString() &&
@@ -604,7 +604,7 @@ bool BalanceReportInfo::loadFromJson(const std::string& json) {
         d.HasMember("total_") && d["total_"].IsString());
   }
 
-  if (false == error) {
+  if (!error) {
     opening_balance_ = d["opening_balance_"].GetString();
     closing_balance_ = d["closing_balance_"].GetString();
     deposits_ = d["deposits_"].GetString();
@@ -631,7 +631,7 @@ AutoContributeProps::~AutoContributeProps() { }
 
 const std::string AutoContributeProps::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -642,7 +642,7 @@ bool AutoContributeProps::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("enabled_contribute") &&
         d["enabled_contribute"].IsBool() &&
         d.HasMember("contribution_min_time") &&
@@ -656,7 +656,7 @@ bool AutoContributeProps::loadFromJson(const std::string& json) {
         d.HasMember("reconcile_stamp") && d["reconcile_stamp"].IsUint64());
   }
 
-  if (false == error) {
+  if (!error) {
     enabled_contribute = d["enabled_contribute"].GetBool();
     contribution_min_time = d["contribution_min_time"].GetUint64();
     contribution_min_visits = d["contribution_min_visits"].GetInt();
@@ -692,7 +692,7 @@ PendingContribution::PendingContribution(
 
 const std::string PendingContribution::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -703,7 +703,7 @@ bool PendingContribution::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("publisher_key") && d["publisher_key"].IsString() &&
         d.HasMember("amount") && d["amount"].IsDouble() &&
         d.HasMember("added_date") && d["added_date"].IsUint64() &&
@@ -711,7 +711,7 @@ bool PendingContribution::loadFromJson(const std::string& json) {
         d.HasMember("category") && d["category"].IsInt());
   }
 
-  if (false == error) {
+  if (!error) {
     publisher_key = d["publisher_key"].GetString();
     amount = d["amount"].GetDouble();
     added_date = d["added_date"].GetUint64();
@@ -731,7 +731,7 @@ PendingContributionList::PendingContributionList(
 
 const std::string PendingContributionList::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -742,11 +742,11 @@ bool PendingContributionList::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("list") && d["list"].IsArray());
   }
 
-  if (false == error) {
+  if (!error) {
     for (const auto& g : d["list"].GetArray()) {
       rapidjson::StringBuffer sb;
       rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
@@ -770,7 +770,7 @@ PublisherInfoListStruct::PublisherInfoListStruct(
 
 const std::string PublisherInfoListStruct::ToJson() const {
   std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, json);
+  braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
@@ -781,11 +781,11 @@ bool PublisherInfoListStruct::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
 
-  if (false == error) {
+  if (!error) {
     error = !(d.HasMember("list") && d["list"].IsArray());
   }
 
-  if (false == error) {
+  if (!error) {
     for (const auto& g : d["list"].GetArray()) {
       rapidjson::StringBuffer sb;
       rapidjson::Writer<rapidjson::StringBuffer> writer(sb);

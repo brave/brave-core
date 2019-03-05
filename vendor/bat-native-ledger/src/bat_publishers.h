@@ -30,7 +30,7 @@ namespace braveledger_bat_publishers {
 
 class BatPublishers : public ledger::LedgerCallbackHandler {
  public:
-  BatPublishers(bat_ledger::LedgerImpl* ledger);
+  explicit BatPublishers(bat_ledger::LedgerImpl* ledger);
 
   ~BatPublishers() override;
 
@@ -46,11 +46,11 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void setPublisherMinVisitTime(const uint64_t& duration);  // In seconds
 
-  void setPublisherMinVisits(const unsigned int& visits);
+  void setPublisherMinVisits(const unsigned int visits);
 
   void setPublishersLastRefreshTimestamp(uint64_t ts);
 
-  void setNumExcludedSites(const unsigned int& amount);
+  void setNumExcludedSites(const unsigned int amount);
 
   void setExclude(const std::string& publisher_id,
                   const ledger::PUBLISHER_EXCLUDE& exclude);
