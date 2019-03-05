@@ -120,7 +120,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                        unsigned int result,
                        brave_rewards::Grant grant) override;
   void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service,
-                              std::string publisher_id) override;
+                              std::string publisher_id,
+                              bool excluded) override;
   void OnReconcileComplete(brave_rewards::RewardsService* rewards_service,
                            unsigned int result,
                            const std::string& viewing_id,
@@ -595,7 +596,8 @@ void RewardsDOMHandler::OnGetNumExcludedSites(const std::string& publisher_id,
 
 void RewardsDOMHandler::OnExcludedSitesChanged(
     brave_rewards::RewardsService* rewards_service,
-    std::string publisher_id) {
+    std::string publisher_id,
+    bool excluded) {
   if (rewards_service_)
     rewards_service_->GetNumExcludedSites(base::Bind(
           &RewardsDOMHandler::OnGetNumExcludedSites,

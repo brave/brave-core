@@ -143,7 +143,8 @@ class LEDGER_EXPORT LedgerClient {
                                    std::unique_ptr<ledger::PublisherInfo>,
                                    uint64_t windowId) = 0;
 
-  virtual void OnExcludedSitesChanged(const std::string& publisher_id) = 0;
+  virtual void OnExcludedSitesChanged(const std::string& publisher_id,
+                                      ledger::PUBLISHER_EXCLUDE exclude) = 0;
 
   virtual void FetchFavIcon(const std::string& url,
                             const std::string& favicon_key,
@@ -176,10 +177,6 @@ class LEDGER_EXPORT LedgerClient {
       const std::string& contentType,
       const ledger::URL_METHOD& method,
       ledger::LoadURLCallback callback) = 0;
-
-  virtual void SetContributionAutoInclude(const std::string& publisher_key,
-                                          bool excluded,
-                                          uint64_t windowId) = 0;
 
   virtual void SavePendingContribution(
       const ledger::PendingContributionList& list) = 0;

@@ -396,12 +396,13 @@ void BatLedgerClientMojoProxy::SetTimer(uint64_t time_offset,
 }
 
 void BatLedgerClientMojoProxy::OnExcludedSitesChanged(
-    const std::string& publisher_id) {
+    const std::string& publisher_id,
+    ledger::PUBLISHER_EXCLUDE exclude) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_client_->OnExcludedSitesChanged(publisher_id);
+  bat_ledger_client_->OnExcludedSitesChanged(publisher_id, exclude);
 }
 
 void BatLedgerClientMojoProxy::OnPanelPublisherInfo(ledger::Result result,
@@ -541,15 +542,6 @@ std::string BatLedgerClientMojoProxy::URIEncode(const std::string& value) {
   std::string encoded_value;
   bat_ledger_client_->URIEncode(value, &encoded_value);
   return encoded_value;
-}
-
-void BatLedgerClientMojoProxy::SetContributionAutoInclude(
-  const std::string& publisher_key, bool excluded, uint64_t windowId) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->SetContributionAutoInclude(
-      publisher_key, excluded, windowId);
 }
 
 void BatLedgerClientMojoProxy::SavePendingContribution(

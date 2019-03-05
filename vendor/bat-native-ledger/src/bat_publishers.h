@@ -186,12 +186,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
-  void onSetPanelExcludeInternal(
-    ledger::PUBLISHER_EXCLUDE exclude,
-    uint64_t windowId,
-    ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info);
-
   void OnRestorePublishersInternal(bool success);
 
   void calcScoreConsts(const uint64_t& min_duration_seconds);
@@ -222,7 +216,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       uint64_t windowId,
       const ledger::VisitData& visit_data);
 
-  void OnExcludedSitesChanged(const std::string& publisher_id);
+  void OnExcludedSitesChanged(const std::string& publisher_id,
+                              ledger::PUBLISHER_EXCLUDE exclude);
 
   void onPublisherBanner(ledger::PublisherBannerCallback callback,
                          ledger::PublisherBanner banner,

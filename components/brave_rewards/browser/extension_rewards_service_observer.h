@@ -1,11 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_EXTENSION_REWARDS_SERVICE_OBSERVER_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_EXTENSION_REWARDS_SERVICE_OBSERVER_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_EXTENSION_REWARDS_SERVICE_OBSERVER_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_EXTENSION_REWARDS_SERVICE_OBSERVER_H_
 
 #include <memory>
+#include <string>
 
 #include "base/macros.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -20,7 +22,7 @@ class RewardsService;
 class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
                                         public RewardsServicePrivateObserver {
  public:
-  ExtensionRewardsServiceObserver(Profile* profile);
+  explicit ExtensionRewardsServiceObserver(Profile* profile);
   ~ExtensionRewardsServiceObserver() override;
 
   // RewardsServiceObserver implementation
@@ -30,6 +32,10 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
                           int error_code,
                           std::unique_ptr<brave_rewards::WalletProperties>
                               wallet_properties) override;
+
+  void OnExcludedSitesChanged(RewardsService* rewards_service,
+                              std::string publisher_key,
+                              bool excluded) override;
 
   // RewardsServicePrivateObserver implementation
   void OnGetCurrentBalanceReport(RewardsService* rewards_service,
@@ -62,4 +68,4 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_EXTENSION_REWARDS_SERVICE_OBSERVER_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_EXTENSION_REWARDS_SERVICE_OBSERVER_H_

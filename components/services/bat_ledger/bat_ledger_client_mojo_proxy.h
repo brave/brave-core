@@ -63,7 +63,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const ledger::URL_METHOD& method,
       ledger::LoadURLCallback callback) override;
 
-  void OnExcludedSitesChanged(const std::string& publisher_id) override;
+  void OnExcludedSitesChanged(const std::string& publisher_id,
+                              ledger::PUBLISHER_EXCLUDE exclude) override;
   void OnPanelPublisherInfo(ledger::Result result,
                            std::unique_ptr<ledger::PublisherInfo> info,
                            uint64_t windowId) override;
@@ -93,9 +94,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void GetGrantCaptcha() override;
 
   std::string URIEncode(const std::string& value) override;
-
-  void SetContributionAutoInclude(const std::string& publisher_key,
-      bool excluded, uint64_t windowId) override;
 
   void SavePendingContribution(
       const ledger::PendingContributionList& list) override;

@@ -230,11 +230,6 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& publisher_id,
       const ledger::PUBLISHER_EXCLUDE& exclude) override;
 
-  void SetPublisherPanelExclude(
-      const std::string& publisher_id,
-      const ledger::PUBLISHER_EXCLUDE& exclude,
-      uint64_t windowId) override;
-
   void RestorePublishers() override;
 
   void OnRestorePublishers(ledger::OnRestoreCallback callback);
@@ -256,7 +251,8 @@ class LedgerImpl : public ledger::Ledger,
                            std::unique_ptr<ledger::PublisherInfo> info,
                            uint64_t windowId);
 
-  void OnExcludedSitesChanged(const std::string& publisher_id);
+  void OnExcludedSitesChanged(const std::string& publisher_id,
+                              ledger::PUBLISHER_EXCLUDE exclude);
 
   void SetBalanceReportItem(ledger::ACTIVITY_MONTH month,
                             int year,
