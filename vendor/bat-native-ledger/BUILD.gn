@@ -168,13 +168,16 @@ source_set("ledger") {
     "//third_party/re2",
     "//url",
     rebase_path("bat-native-ads", dep_base),
-    rebase_path("bat-native-confirmations", dep_base),
     rebase_path("bat-native-anonize:anonize2", dep_base),
     rebase_path("bip39wally-core-native:bip39wally-core", dep_base),
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
     rebase_path("bat-native-rapidjson", dep_base),
     rebase_path("brave_base", dep_base),
   ]
+
+  if (brave_ads_enabled) {
+    rebase_path("bat-native-confirmations", dep_base)
+  }
 
   public_deps = [
     ":headers",
