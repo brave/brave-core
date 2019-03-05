@@ -1381,7 +1381,6 @@ void RewardsServiceImpl::FetchGrants(const std::string& lang,
   if (!Connected()) {
     return;
   }
-#if !defined(OS_ANDROID)
   bat_ledger_->FetchGrants(lang, payment_id, "");
 #else
   safetynet_check::ClientAttestationCallback attest_callback =
@@ -1397,7 +1396,7 @@ void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang,
     const std::string& payment_id,
     bool result, const std::string& result_string) {
   if (result) {
-    ledger_->FetchGrants(lang, payment_id, result_string);
+    bat_ledger_->FetchGrants(lang, payment_id, result_string);
   } else {
     LOG(ERROR) << "FetchGrantAttestationResult error: " << result_string;
     ledger::Grant grant;
