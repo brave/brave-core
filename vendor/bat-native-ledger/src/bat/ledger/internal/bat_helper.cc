@@ -2,7 +2,6 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-#include "bat_helper.h"
 
 #include <openssl/base64.h>
 #include <openssl/digest.h>
@@ -12,12 +11,13 @@
 #include <random>
 #include <algorithm>
 
+#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/ledger.h"
-#include "logging.h"
-#include "rapidjson_bat_helper.h"
-#include "static_values.h"
 #include "third_party/re2/src/re2/re2.h"
-#include "tweetnacl.h"
+#include "tweetnacl.h"  // NOLINT
 #include "url/gurl.h"
 
 namespace braveledger_bat_helper {

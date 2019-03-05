@@ -7,6 +7,7 @@
 #define BRAVELEDGER_RAPIDJSON_BAT_HELPER_H_
 
 #include <string>
+
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
 #include "rapidjson/stringbuffer.h"
@@ -25,6 +26,9 @@ struct ActivityInfoFilter;
 struct RewardsInternalsInfo;
 struct VisitData;
 struct WalletInfo;
+struct PendingContribution;
+struct PendingContributionList;
+struct PublisherInfoListStruct;
 
 }  // namespace ledger
 
@@ -43,6 +47,8 @@ struct TRANSACTION_ST;
 struct TWITCH_EVENT_INFO;
 struct WALLET_INFO_ST;
 struct GRANTS_PROPERTIES_ST;
+struct WALLET_PROPERTIES_ST;
+struct GRANT;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 

@@ -10,29 +10,27 @@
 #include <utility>
 #include <vector>
 
-#include "ledger_impl.h"
-
 #include "base/task/post_task.h"
 #include "base/task/task_scheduler/task_scheduler.h"
 #include "bat/ads/issuers_info.h"
 #include "bat/ads/notification_info.h"
 #include "bat/confirmations/confirmations.h"
-#include "bat_client.h"
-#include "bat_contribution.h"
-#include "bat_get_media.h"
-#include "bat_helper.h"
-#include "bat_publishers.h"
-#include "static_values.h"
-#include "bat_state.h"
+#include "bat/ledger/internal/bat_client.h"
+#include "bat/ledger/internal/bat_contribution.h"
+#include "bat/ledger/internal/bat_get_media.h"
+#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/bat_publishers.h"
+#include "bat/ledger/internal/bat_state.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/static_values.h"
 
-#include "rapidjson_bat_helper.h"
-
-using namespace braveledger_bat_client;
-using namespace braveledger_bat_publishers;
-using namespace braveledger_bat_get_media;
-using namespace braveledger_bat_get_media;
-using namespace braveledger_bat_state;
-using namespace braveledger_bat_contribution;
+using namespace braveledger_bat_client; //  NOLINT
+using namespace braveledger_bat_publishers; //  NOLINT
+using namespace braveledger_bat_get_media; //  NOLINT
+using namespace braveledger_bat_get_media; //  NOLINT
+using namespace braveledger_bat_state; //  NOLINT
+using namespace braveledger_bat_contribution; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -54,7 +52,6 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     last_shown_tab_id_(-1),
     last_pub_load_timer_id_(0u),
     last_grant_check_timer_id_(0u) {
-
   // Ensure TaskScheduler is initialized before creating the task runner for
   // ios.
   if (!base::TaskScheduler::GetInstance()) {

@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
-#include "brave/vendor/bat-native-ledger/src/bat_helper.h"
+#include "bat/ledger/internal/bat_helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/resource/resource_bundle.h"
 

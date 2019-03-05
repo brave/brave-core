@@ -3,18 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat_client.h"
-
 #include <algorithm>
 #include <sstream>
 #include <map>
 
-#include "ledger_impl.h"
-#include "bat_helper.h"
-#include "rapidjson_bat_helper.h"
-#include "static_values.h"
+#include "bat/ledger/internal/bat_client.h"
+#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/static_values.h"
 
-#include "wally_bip39.h"
+#include "wally_bip39.h"  // NOLINT
 #include "anon/anon.h"
 
 using std::placeholders::_1;
@@ -148,7 +147,9 @@ std::string BatClient::getAnonizeProof(const std::string& registrarVK,
   const char* cred = makeCred(id.c_str());
   if (cred != nullptr) {
     *preFlight = cred;
-    free((void*)cred);
+    // should fix in
+    // https://github.com/brave-intl/bat-native-anonize/issues/11
+    free((void*)cred); // NOLINT
   } else {
     return "";
   }
@@ -157,7 +158,9 @@ std::string BatClient::getAnonizeProof(const std::string& registrarVK,
   std::string proof;
   if (proofTemp != nullptr) {
     proof = proofTemp;
-    free((void*)proofTemp);
+    // should fix in
+    // https://github.com/brave-intl/bat-native-anonize/issues/11
+    free((void*)proofTemp); // NOLINT
   } else {
     return "";
   }
@@ -191,7 +194,9 @@ void BatClient::registerPersonaCallback(
 
   if (masterUserToken != nullptr) {
     ledger_->SetMasterUserToken(masterUserToken);
-    free((void*)masterUserToken);
+    // should fix in
+    // https://github.com/brave-intl/bat-native-anonize/issues/11
+    free((void*)masterUserToken); // NOLINT
   } else if (!braveledger_bat_helper::ignore_for_testing()) {
     ledger_->OnWalletInitialized(
         ledger::Result::REGISTRATION_VERIFICATION_FAILED);

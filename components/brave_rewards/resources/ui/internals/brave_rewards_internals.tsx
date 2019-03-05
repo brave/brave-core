@@ -17,12 +17,12 @@ import * as rewardsInternalsActions from './actions/rewards_internals_actions'
 window.cr.define('brave_rewards_internals', function () {
   'use strict'
 
-  function getRewardsEnabled() {
+  function getRewardsEnabled () {
     const actions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
     actions.getRewardsEnabled()
   }
 
-  function getRewardsInternalsInfo() {
+  function getRewardsInternalsInfo () {
     const actions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
     actions.getRewardsInternalsInfo()
   }

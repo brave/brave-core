@@ -3,17 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat_get_media.h"
-
 #include <algorithm>
 #include <sstream>
 #include <cmath>
 #include <vector>
 
-#include "bat_helper.h"
-#include "ledger_impl.h"
-#include "rapidjson_bat_helper.h"
-#include "static_values.h"
+#include "bat/ledger/internal/bat_get_media.h"
+#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/static_values.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;

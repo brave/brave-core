@@ -14,11 +14,11 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "bat/confirmations/confirmations_client.h"
+#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/logging.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
-#include "bat_helper.h"
-#include "logging.h"
 
 namespace base {
 class SequencedTaskRunner;

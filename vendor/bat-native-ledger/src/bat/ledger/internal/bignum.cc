@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bignum.h"
-
 #include <string>
+
+#include "bat/ledger/internal/bignum.h"
 
 namespace braveledger_bat_bignum {
 
