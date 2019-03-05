@@ -48,6 +48,21 @@ pipeline {
                         git push ${BB_REPO}
                     fi
 
+                    echo "Rebasing brave-browser branch against master..."
+                    cd brave-browser
+                    git checkout ${BRANCH_TO_BUILD}
+                    set +e
+                    git rebase origin/master
+                    if [ \$? -ne 0 ]; then
+                        echo "Rebase failed (conflicts); will need to be manually rebased to get new changes"
+                        git rebase --abort
+                    else
+                        echo "rebased ${BRANCH_TO_BUILD} against master"
+                        git push ${BB_REPO}
+                    fi
+                    set -e
+                    cd ..
+
                     echo "Sleeping 5m so new branch is discovered or associated PR created in brave-browser..."
                     sleep 300
                 """
