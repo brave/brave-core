@@ -53,7 +53,20 @@ extension Deletable where Self: NSManagedObject {
                     }
                 } else {
                     let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
-                    try context.execute(deleteRequest)
+                    // Makes NSBatchDeleteResult to return deleted object IDs.
+                    deleteRequest.resultType = .resultTypeObjectIDs
+
+                    // Batch delete writes directly to the persistent store.
+                    // Therefore contexts and in-memory objects must be updated manually.
+                    let result = try context.execute(deleteRequest) as? NSBatchDeleteResult
+                    guard let objectIDArray = result?.result as? [NSManagedObjectID] else { return }
+                    let changes = [NSDeletedObjectsKey: objectIDArray]
+
+                    // Merging changes to view context is important because fetch results controllers
+                    // listen for changes in this context.
+                    // Worker context is also updated in case of performing further operations with it.
+                    let contextsToUpdate = [DataController.viewContext, context]
+                    NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: contextsToUpdate)
                 }
             } catch {
                 log.error("Delete all error: \(error)")
