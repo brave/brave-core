@@ -42,7 +42,7 @@ class PrConfig:
     branches_to_push = []
     master_pr_number = -1
     github_token = None
-    team_reviewers = ['uplift-approvers']
+    reviewers = ['bbondy', 'bsclifton', 'kjozwiak', 'rebron', 'srirambv']
     parsed_owners = []
     milestones = None
     title = None
@@ -426,7 +426,7 @@ def submit_pr(channel, top_level_base, remote_base, local_branch):
 
         # assign milestone / reviewer(s) / owner(s)
         add_reviewers_to_pull_request(config.github_token, BRAVE_CORE_REPO, number,
-                                      team_reviewers=config.team_reviewers,
+                                      reviewers=config.reviewers,
                                       verbose=config.is_verbose, dryrun=config.is_dryrun)
         set_issue_details(config.github_token, BRAVE_CORE_REPO, number, milestone_number,
                           config.parsed_owners, config.labels,
