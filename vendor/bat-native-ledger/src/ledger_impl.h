@@ -402,7 +402,7 @@ class LedgerImpl : public ledger::Ledger,
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) const;
 
   bool AddReconcileStep(const std::string& viewing_id,
-                        braveledger_bat_helper::ContributionRetry step,
+                        ledger::ContributionRetry step,
                         int level = -1);
 
   const braveledger_bat_helper::CurrentReconciles& GetCurrentReconciles() const;
@@ -432,6 +432,7 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::LogLevel log_level) const;
 
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
+  void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) override;
 
  private:
   void AddRecurringPayment(const std::string& publisher_id,

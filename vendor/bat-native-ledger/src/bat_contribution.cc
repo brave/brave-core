@@ -52,8 +52,7 @@ void BatContribution::OnStartUp() {
   for (const auto& value : currentReconciles) {
     braveledger_bat_helper::CURRENT_RECONCILE reconcile = value.second;
 
-    if (reconcile.retry_step_ ==
-        braveledger_bat_helper::ContributionRetry::STEP_FINAL) {
+    if (reconcile.retry_step_ == ledger::ContributionRetry::STEP_FINAL) {
       ledger_->RemoveReconcileById(reconcile.viewingId_);
     } else {
       DoRetry(reconcile.viewingId_);
@@ -370,9 +369,8 @@ void BatContribution::StartReconcile(
 }
 
 void BatContribution::Reconcile(const std::string& viewing_id) {
-  ledger_->AddReconcileStep(
-      viewing_id,
-      braveledger_bat_helper::ContributionRetry::STEP_RECONCILE);
+  ledger_->AddReconcileStep(viewing_id,
+                            ledger::ContributionRetry::STEP_RECONCILE);
   std::string url = braveledger_bat_helper::buildURL(
       (std::string)RECONCILE_CONTRIBUTION + ledger_->GetUserId(), PREFIX_V2);
 
@@ -400,7 +398,7 @@ void BatContribution::ReconcileCallback(
   auto reconcile = ledger_->GetReconcileById(viewing_id);
 
   if (response_status_code != 200 || reconcile.viewingId_.empty()) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_RECONCILE,
+    AddRetry(ledger::ContributionRetry::STEP_RECONCILE,
              viewing_id);
     return;
   }
@@ -410,8 +408,7 @@ void BatContribution::ReconcileCallback(
       response,
       &reconcile.surveyorInfo_.surveyorId_);
   if (!success) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_RECONCILE,
-             viewing_id);
+    AddRetry(ledger::ContributionRetry::STEP_RECONCILE, viewing_id);
     return;
   }
 
@@ -427,9 +424,8 @@ void BatContribution::ReconcileCallback(
 }
 
 void BatContribution::CurrentReconcile(const std::string& viewing_id) {
-  ledger_->AddReconcileStep(
-      viewing_id,
-      braveledger_bat_helper::ContributionRetry::STEP_CURRENT);
+  ledger_->AddReconcileStep(viewing_id,
+                            ledger::ContributionRetry::STEP_CURRENT);
   std::ostringstream amount;
   auto reconcile = ledger_->GetReconcileById(viewing_id);
 
@@ -467,7 +463,7 @@ void BatContribution::CurrentReconcileCallback(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != 200) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_CURRENT,
+    AddRetry(ledger::ContributionRetry::STEP_CURRENT,
              viewing_id);
     return;
   }
@@ -477,16 +473,14 @@ void BatContribution::CurrentReconcileCallback(
   bool success = braveledger_bat_helper::getJSONRates(response,
                                                       &reconcile.rates_);
   if (!success) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_CURRENT,
-             viewing_id);
+    AddRetry(ledger::ContributionRetry::STEP_CURRENT, viewing_id);
     return;
   }
 
   braveledger_bat_helper::UNSIGNED_TX unsigned_tx;
   success = braveledger_bat_helper::getJSONUnsignedTx(response, &unsigned_tx);
   if (!success) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_CURRENT,
-             viewing_id);
+    AddRetry(ledger::ContributionRetry::STEP_CURRENT, viewing_id);
     return;
   }
 
@@ -494,8 +488,7 @@ void BatContribution::CurrentReconcileCallback(
       unsigned_tx.currency_.empty() &&
       unsigned_tx.destination_.empty()) {
     // We don't have any unsigned transactions
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_CURRENT,
-             viewing_id);
+    AddRetry(ledger::ContributionRetry::STEP_CURRENT, viewing_id);
     return;
   }
 
@@ -515,9 +508,8 @@ void BatContribution::CurrentReconcileCallback(
 }
 
 void BatContribution::ReconcilePayload(const std::string& viewing_id) {
-  ledger_->AddReconcileStep(
-      viewing_id,
-      braveledger_bat_helper::ContributionRetry::STEP_PAYLOAD);
+  ledger_->AddReconcileStep(viewing_id,
+                            ledger::ContributionRetry::STEP_PAYLOAD);
   auto reconcile = ledger_->GetReconcileById(viewing_id);
   braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
 
@@ -591,7 +583,7 @@ void BatContribution::ReconcilePayloadCallback(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != 200) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_PAYLOAD,
+    AddRetry(ledger::ContributionRetry::STEP_PAYLOAD,
              viewing_id);
     return;
   }
@@ -602,8 +594,7 @@ void BatContribution::ReconcilePayloadCallback(
   bool success = braveledger_bat_helper::getJSONTransaction(response,
                                                             &transaction);
   if (!success) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_PAYLOAD,
-             viewing_id);
+    AddRetry(ledger::ContributionRetry::STEP_PAYLOAD, viewing_id);
     return;
   }
 
@@ -621,9 +612,8 @@ void BatContribution::ReconcilePayloadCallback(
 }
 
 void BatContribution::RegisterViewing(const std::string& viewing_id) {
-  ledger_->AddReconcileStep(
-      viewing_id,
-      braveledger_bat_helper::ContributionRetry::STEP_REGISTER);
+  ledger_->AddReconcileStep(viewing_id,
+                            ledger::ContributionRetry::STEP_REGISTER);
   auto callback = std::bind(&BatContribution::RegisterViewingCallback,
                             this,
                             viewing_id,
@@ -648,7 +638,7 @@ void BatContribution::RegisterViewingCallback(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != 200) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_REGISTER,
+    AddRetry(ledger::ContributionRetry::STEP_REGISTER,
              viewing_id);
     return;
   }
@@ -660,8 +650,7 @@ void BatContribution::RegisterViewingCallback(
                                                       &reconcile.registrarVK_);
   DCHECK(!reconcile.registrarVK_.empty());
   if (!success || reconcile.registrarVK_.empty()) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_REGISTER,
-             viewing_id);
+    AddRetry(ledger::ContributionRetry::STEP_REGISTER, viewing_id);
     return;
   }
 
@@ -688,9 +677,8 @@ void BatContribution::RegisterViewingCallback(
 }
 
 void BatContribution::ViewingCredentials(const std::string& viewing_id) {
-  ledger_->AddReconcileStep(
-      viewing_id,
-      braveledger_bat_helper::ContributionRetry::STEP_VIEWING);
+  ledger_->AddReconcileStep(viewing_id,
+                            ledger::ContributionRetry::STEP_VIEWING);
   auto reconcile = ledger_->GetReconcileById(viewing_id);
 
   std::string keys[1] = {"proof"};
@@ -727,7 +715,7 @@ void BatContribution::ViewingCredentialsCallback(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != 200) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_VIEWING,
+    AddRetry(ledger::ContributionRetry::STEP_VIEWING,
              viewing_id);
     return;
   }
@@ -739,8 +727,7 @@ void BatContribution::ViewingCredentialsCallback(
                                                       response,
                                                       &verification);
   if (!success) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_VIEWING,
-             viewing_id);
+    AddRetry(ledger::ContributionRetry::STEP_VIEWING, viewing_id);
     return;
   }
 
@@ -768,8 +755,7 @@ void BatContribution::ViewingCredentialsCallback(
                                                 response,
                                                 &surveyors);
   if (!success) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_VIEWING,
-             viewing_id);
+    AddRetry(ledger::ContributionRetry::STEP_VIEWING, viewing_id);
     return;
   }
 
@@ -818,9 +804,8 @@ void BatContribution::OnReconcileComplete(ledger::Result result,
     return;
   }
 
-  ledger_->AddReconcileStep(
-      viewing_id,
-      braveledger_bat_helper::ContributionRetry::STEP_WINNERS);
+  ledger_->AddReconcileStep(viewing_id,
+                            ledger::ContributionRetry::STEP_WINNERS);
   GetReconcileWinners(viewing_id);
 }
 
@@ -972,9 +957,7 @@ void BatContribution::VotePublishers(
     VotePublisher(publishers[i], viewing_id);
   }
 
-  ledger_->AddReconcileStep(
-      viewing_id,
-      braveledger_bat_helper::ContributionRetry::STEP_FINAL);
+  ledger_->AddReconcileStep(viewing_id, ledger::ContributionRetry::STEP_FINAL);
 
   PrepareBallots();
 }
@@ -1086,7 +1069,7 @@ void BatContribution::PrepareBatchCallback(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != 200) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_PREPARE, "");
+    AddRetry(ledger::ContributionRetry::STEP_PREPARE, "");
     return;
   }
 
@@ -1094,7 +1077,7 @@ void BatContribution::PrepareBatchCallback(
   bool success = braveledger_bat_helper::getJSONBatchSurveyors(response,
                                                                &surveyors);
   if (!success) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_PREPARE, "");
+    AddRetry(ledger::ContributionRetry::STEP_PREPARE, "");
     return;
   }
 
@@ -1243,7 +1226,7 @@ void BatContribution::ProofBatchCallback(
   ledger_->SetBallots(ballots);
 
   if (batch_proofs.size() != proofs.size()) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_PROOF, "");
+    AddRetry(ledger::ContributionRetry::STEP_PROOF, "");
     return;
   }
 
@@ -1366,7 +1349,7 @@ void BatContribution::VoteBatchCallback(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != 200) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_VOTE, "");
+    AddRetry(ledger::ContributionRetry::STEP_VOTE, "");
     return;
   }
 
@@ -1374,7 +1357,7 @@ void BatContribution::VoteBatchCallback(
   bool success = braveledger_bat_helper::getJSONBatchSurveyors(response,
                                                                &surveyors);
   if (!success) {
-    AddRetry(braveledger_bat_helper::ContributionRetry::STEP_VOTE, "");
+    AddRetry(ledger::ContributionRetry::STEP_VOTE, "");
     return;
   }
 
@@ -1532,10 +1515,9 @@ void BatContribution::OnReconcileCompleteSuccess(
 }
 
 void BatContribution::AddRetry(
-    braveledger_bat_helper::ContributionRetry step,
+    ledger::ContributionRetry step,
     const std::string& viewing_id,
     braveledger_bat_helper::CURRENT_RECONCILE reconcile) {
-
   BLOG(ledger_, ledger::LogLevel::LOG_WARNING)
       << "Re-trying contribution for step"
       << std::to_string(step)
@@ -1570,11 +1552,10 @@ void BatContribution::AddRetry(
 }
 
 uint64_t BatContribution::GetRetryTimer(
-    braveledger_bat_helper::ContributionRetry step,
+    ledger::ContributionRetry step,
     const std::string& viewing_id,
     braveledger_bat_helper::CURRENT_RECONCILE* reconcile) {
-
-  braveledger_bat_helper::ContributionRetry old_step = reconcile->retry_step_;
+  ledger::ContributionRetry old_step = reconcile->retry_step_;
 
   int phase = GetRetryPhase(step);
   if (phase > GetRetryPhase(old_step)) {
@@ -1619,28 +1600,27 @@ uint64_t BatContribution::GetRetryTimer(
   return 0;
 }
 
-int BatContribution::GetRetryPhase(
-    braveledger_bat_helper::ContributionRetry step) {
+int BatContribution::GetRetryPhase(ledger::ContributionRetry step) {
   int phase = 0;
 
   switch (step) {
-    case braveledger_bat_helper::ContributionRetry::STEP_RECONCILE:
-    case braveledger_bat_helper::ContributionRetry::STEP_CURRENT:
-    case braveledger_bat_helper::ContributionRetry::STEP_PAYLOAD:
-    case braveledger_bat_helper::ContributionRetry::STEP_REGISTER:
-    case braveledger_bat_helper::ContributionRetry::STEP_VIEWING: {
+    case ledger::ContributionRetry::STEP_RECONCILE:
+    case ledger::ContributionRetry::STEP_CURRENT:
+    case ledger::ContributionRetry::STEP_PAYLOAD:
+    case ledger::ContributionRetry::STEP_REGISTER:
+    case ledger::ContributionRetry::STEP_VIEWING: {
       phase = 1;
       break;
     }
-    case braveledger_bat_helper::ContributionRetry::STEP_PREPARE:
-    case braveledger_bat_helper::ContributionRetry::STEP_VOTE:
-    case braveledger_bat_helper::ContributionRetry::STEP_PROOF:
-    case braveledger_bat_helper::ContributionRetry::STEP_WINNERS:
-    case braveledger_bat_helper::ContributionRetry::STEP_FINAL: {
+    case ledger::ContributionRetry::STEP_PREPARE:
+    case ledger::ContributionRetry::STEP_VOTE:
+    case ledger::ContributionRetry::STEP_PROOF:
+    case ledger::ContributionRetry::STEP_WINNERS:
+    case ledger::ContributionRetry::STEP_FINAL: {
       phase = 2;
       break;
     }
-    case braveledger_bat_helper::ContributionRetry::STEP_NO:
+    case ledger::ContributionRetry::STEP_NO:
       break;
   }
 
@@ -1651,44 +1631,44 @@ void BatContribution::DoRetry(const std::string& viewing_id) {
   auto reconcile = ledger_->GetReconcileById(viewing_id);
 
   switch (reconcile.retry_step_) {
-    case braveledger_bat_helper::ContributionRetry::STEP_RECONCILE: {
+    case ledger::ContributionRetry::STEP_RECONCILE: {
       Reconcile(viewing_id);
       break;
     }
-    case braveledger_bat_helper::ContributionRetry::STEP_CURRENT: {
+    case ledger::ContributionRetry::STEP_CURRENT: {
       CurrentReconcile(viewing_id);
       break;
     }
-    case braveledger_bat_helper::ContributionRetry::STEP_PAYLOAD: {
+    case ledger::ContributionRetry::STEP_PAYLOAD: {
       ReconcilePayload(viewing_id);
       break;
     }
-    case braveledger_bat_helper::ContributionRetry::STEP_REGISTER: {
+    case ledger::ContributionRetry::STEP_REGISTER: {
       RegisterViewing(viewing_id);
       break;
     }
-    case braveledger_bat_helper::ContributionRetry::STEP_VIEWING: {
+    case ledger::ContributionRetry::STEP_VIEWING: {
       ViewingCredentials(viewing_id);
       break;
     }
-    case braveledger_bat_helper::ContributionRetry::STEP_PREPARE: {
+    case ledger::ContributionRetry::STEP_PREPARE: {
       PrepareBallots();
       break;
     }
-    case braveledger_bat_helper::ContributionRetry::STEP_PROOF: {
+    case ledger::ContributionRetry::STEP_PROOF: {
       Proof();
       break;
     }
-    case braveledger_bat_helper::ContributionRetry::STEP_VOTE: {
+    case ledger::ContributionRetry::STEP_VOTE: {
       VoteBatch();
       break;
     }
-    case braveledger_bat_helper::ContributionRetry::STEP_WINNERS: {
+    case ledger::ContributionRetry::STEP_WINNERS: {
       GetReconcileWinners(viewing_id);
       break;
     }
-    case braveledger_bat_helper::ContributionRetry::STEP_FINAL:
-    case braveledger_bat_helper::ContributionRetry::STEP_NO:
+    case ledger::ContributionRetry::STEP_FINAL:
+    case ledger::ContributionRetry::STEP_NO:
       break;
   }
 }

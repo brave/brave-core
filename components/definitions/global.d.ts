@@ -45,6 +45,9 @@ declare global {
     brave_rewards_donate: {
       initialize: () => void
     }
+    brave_rewards_internals: {
+      initialize: () => void
+    }
     sync_ui_exports: {
       initialize: () => void
     }

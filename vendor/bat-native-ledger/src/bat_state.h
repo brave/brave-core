@@ -6,11 +6,12 @@
 #ifndef BRAVELEDGER_BAT_CLIENT_STATE_H_
 #define BRAVELEDGER_BAT_CLIENT_STATE_H_
 
-#include "bat_helper.h"
-
 #include <memory>
 #include <string>
 #include <map>
+
+#include "bat/ledger/ledger.h"
+#include "bat_helper.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -139,7 +140,7 @@ class BatState {
   void SetMasterUserToken(const std::string& token);
 
   bool AddReconcileStep(const std::string& viewing_id,
-                        braveledger_bat_helper::ContributionRetry step,
+                        ledger::ContributionRetry step,
                         int level);
 
   const braveledger_bat_helper::CurrentReconciles& GetCurrentReconciles() const;

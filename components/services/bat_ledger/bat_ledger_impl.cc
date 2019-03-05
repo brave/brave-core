@@ -385,4 +385,11 @@ void BatLedgerImpl::GetConfirmationsHistory(
       BatLedgerImpl::OnGetConfirmationsHistory, holder, _1));
 }
 
+void BatLedgerImpl::GetRewardsInternalsInfo(
+    GetRewardsInternalsInfoCallback callback) {
+  ledger::RewardsInternalsInfo info;
+  ledger_->GetRewardsInternalsInfo(&info);
+  std::move(callback).Run(info.ToJson());
+}
+
 }  // namespace bat_ledger

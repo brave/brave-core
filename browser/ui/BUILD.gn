@@ -149,6 +149,8 @@ source_set("ui") {
     sources += [
       "webui/brave_rewards_source.cc",
       "webui/brave_rewards_source.h",
+      "webui/brave_rewards_internals_ui.cc",
+      "webui/brave_rewards_internals_ui.h",
       "webui/brave_rewards_ui.cc",
       "webui/brave_rewards_ui.h",
     ]

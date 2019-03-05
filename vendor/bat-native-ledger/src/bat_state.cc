@@ -6,6 +6,10 @@
 #include <algorithm>
 
 #include "bat_state.h"
+
+#include <algorithm>
+#include <utility>
+
 #include "ledger_impl.h"
 #include "rapidjson_bat_helper.h"
 
@@ -357,7 +361,7 @@ void BatState::SetMasterUserToken(const std::string &token) {
 }
 
 bool BatState::AddReconcileStep(const std::string& viewing_id,
-                                braveledger_bat_helper::ContributionRetry step,
+                                ledger::ContributionRetry step,
                                 int level) {
   braveledger_bat_helper::CURRENT_RECONCILE reconcile =
       GetReconcileById(viewing_id);

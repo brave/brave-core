@@ -7,8 +7,8 @@
 #include <iostream>
 #include <random>
 #include <sstream>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "ledger_impl.h"
 
@@ -1125,6 +1125,38 @@ const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
   return wallet_info;
 }
 
+void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) {
+  // Retrieve the payment id.
+  info->payment_id = bat_state_->GetPaymentId();
+
+  // Retrieve the key info seed and validate it.
+  const braveledger_bat_helper::WALLET_INFO_ST wallet_info =
+      bat_state_->GetWalletInfo();
+  if (wallet_info.keyInfoSeed_.size() != SEED_LENGTH) {
+    info->is_key_info_seed_valid = false;
+  } else {
+    std::vector<uint8_t> secret_key =
+        braveledger_bat_helper::getHKDF(wallet_info.keyInfoSeed_);
+    std::vector<uint8_t> public_key;
+    std::vector<uint8_t> new_secret_key;
+    info->is_key_info_seed_valid = braveledger_bat_helper::getPublicKeyFromSeed(
+        secret_key, &public_key, &new_secret_key);
+  }
+
+  // Retrieve the current reconciles.
+  const braveledger_bat_helper::CurrentReconciles current_reconciles =
+      GetCurrentReconciles();
+  for (const auto& reconcile : current_reconciles) {
+    ledger::ReconcileInfo reconcile_info;
+    reconcile_info.viewingId_ = reconcile.second.viewingId_;
+    reconcile_info.amount_ = reconcile.second.amount_;
+    reconcile_info.retry_step_ = reconcile.second.retry_step_;
+    reconcile_info.retry_level_ = reconcile.second.retry_level_;
+    info->current_reconciles.insert(
+        std::make_pair(reconcile.second.viewingId_, reconcile_info));
+  }
+}
+
 const braveledger_bat_helper::WALLET_PROPERTIES_ST&
 LedgerImpl::GetWalletProperties() const {
   return bat_state_->GetWalletProperties();
@@ -1229,7 +1261,7 @@ void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t* timer_id) const {
 
 bool LedgerImpl::AddReconcileStep(
     const std::string& viewing_id,
-    braveledger_bat_helper::ContributionRetry step,
+    ledger::ContributionRetry step,
     int level) {
   BLOG(this, ledger::LogLevel::LOG_DEBUG)
     << "Contribution step"

@@ -793,6 +793,29 @@ void RewardsServiceImpl::OnGetAutoContributeProps(
   callback.Run(std::move(auto_contri_props));
 }
 
+void RewardsServiceImpl::OnGetRewardsInternalsInfo(
+    GetRewardsInternalsInfoCallback callback,
+    const std::string& json_info) {
+  ledger::RewardsInternalsInfo info;
+  info.loadFromJson(json_info);
+
+  auto rewards_internals_info =
+      std::make_unique<brave_rewards::RewardsInternalsInfo>();
+  rewards_internals_info->payment_id = info.payment_id;
+  rewards_internals_info->is_key_info_seed_valid = info.is_key_info_seed_valid;
+  for (const auto& item : info.current_reconciles) {
+    ReconcileInfo reconcile_info;
+    reconcile_info.viewing_id_ = item.second.viewingId_;
+    reconcile_info.amount_ = item.second.amount_;
+    reconcile_info.retry_step_ =
+        static_cast<ContributionRetry>(item.second.retry_step_);
+    reconcile_info.retry_level_ = item.second.retry_level_;
+    rewards_internals_info->current_reconciles[item.first] = reconcile_info;
+  }
+
+  std::move(callback).Run(std::move(rewards_internals_info));
+}
+
 void RewardsServiceImpl::GetAutoContributeProps(
     const GetAutoContributePropsCallback& callback) {
   if (!Connected())
@@ -884,6 +907,7 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
   handler->OnLedgerStateLoaded(data.empty() ? ledger::Result::NO_LEDGER_STATE
                                             : ledger::Result::LEDGER_OK,
                                data);
+
   bat_ledger_->GetRewardsMainEnabled(
       base::BindOnce(&RewardsServiceImpl::StartNotificationTimers,
         AsWeakPtr()));
@@ -2453,6 +2477,13 @@ bool RewardsServiceImpl::CheckImported() {
 
 void RewardsServiceImpl::SetBackupCompleted() {
   profile_->GetPrefs()->SetBoolean(prefs::kRewardsBackupSucceeded, true);
+}
+
+void RewardsServiceImpl::GetRewardsInternalsInfo(
+    GetRewardsInternalsInfoCallback callback) {
+  bat_ledger_->GetRewardsInternalsInfo(
+      base::BindOnce(&RewardsServiceImpl::OnGetRewardsInternalsInfo,
+                     AsWeakPtr(), std::move(callback)));
 }
 
 void RewardsServiceImpl::OnDonate(

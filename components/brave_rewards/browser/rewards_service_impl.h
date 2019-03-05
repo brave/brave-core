@@ -168,6 +168,8 @@ class RewardsServiceImpl : public RewardsService,
   RewardsNotificationService* GetNotificationService() const override;
   bool CheckImported() override;
   void SetBackupCompleted() override;
+  void GetRewardsInternalsInfo(
+      GetRewardsInternalsInfoCallback callback) override;
 
   void HandleFlags(const std::string& options);
   void SetProduction(bool production);
@@ -419,6 +421,8 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetAutoContributeProps(
       const GetAutoContributePropsCallback& callback,
       const std::string& json_props);
+  void OnGetRewardsInternalsInfo(GetRewardsInternalsInfoCallback callback,
+                                 const std::string& json_props);
   void SetRewardsMainEnabledPref(bool enabled);
   void SetRewardsMainEnabledMigratedPref(bool enabled);
 

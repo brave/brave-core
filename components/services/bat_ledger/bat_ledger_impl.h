@@ -130,6 +130,8 @@ class BatLedgerImpl : public mojom::BatLedger,
       const uint64_t from_timestamp_seconds,
       const uint64_t to_timestamp_seconds,
       GetConfirmationsHistoryCallback callback) override;
+  void GetRewardsInternalsInfo(
+      GetRewardsInternalsInfoCallback callback) override;
 
  private:
   void SetCatalogIssuers(const std::string& info) override;

@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
+#include "brave/components/brave_rewards/browser/rewards_internals_info.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -68,6 +69,8 @@ using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
 using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
 using ConfirmationsHistoryCallback = base::Callback<void(int, double)>;
+using GetRewardsInternalsInfoCallback = base::OnceCallback<void(
+    std::unique_ptr<brave_rewards::RewardsInternalsInfo>)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -170,6 +173,8 @@ class RewardsService : public KeyedService {
   // as ledger
   virtual void SetCatalogIssuers(const std::string& json) = 0;
   virtual void AdSustained(const std::string& json) = 0;
+  virtual void GetRewardsInternalsInfo(
+      GetRewardsInternalsInfoCallback callback) = 0;
 
   virtual void GetAddressesForPaymentId(
       const GetAddressesCallback& callback) = 0;
