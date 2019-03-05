@@ -46,7 +46,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     private func updateToggleStatus() {
         var domain: Domain?
         if let url = url {
-            domain = Domain.getOrCreateForUrl(url, context: DataController.viewContext)
+            domain = Domain.getOrCreate(forUrl: url)
         }
         
         shieldControlMapping.forEach { shield, view, option in
@@ -65,8 +65,10 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
             // Domain specific overrides after defaults have already been setup
             
             if let domain = domain {
+                let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
                 // site-specific shield has been overridden, update
-                view.toggleSwitch.isOn = domain.isShieldExpected(shield)
+                view.toggleSwitch.isOn = domain.isShieldExpected(shield,
+                                                                 isPrivateBrowsing: isPrivateBrowsing)
                 if shield == .AllOff {
                     // Reverse, as logic is inverted
                     view.toggleSwitch.isOn.toggle()
@@ -91,7 +93,8 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
         // respect the global preference rather than the overridden value. (Prevents toggling domain state from
         // affecting future changes to the global pref)
         let isOn = allOff ? !on : on
-        Domain.setBraveShield(forUrl: url, shield: shield, isOn: isOn)
+        Domain.setBraveShield(forUrl: url, shield: shield, isOn: isOn,
+                              isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
     }
     
     private func updateGlobalShieldState(_ on: Bool, animated: Bool = false) {
