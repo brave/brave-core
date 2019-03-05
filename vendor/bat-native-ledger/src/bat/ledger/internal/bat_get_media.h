@@ -8,7 +8,6 @@
 
 #include <string>
 #include <map>
-#include <mutex>
 
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/internal/bat_helper.h"

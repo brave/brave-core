@@ -69,7 +69,9 @@ std::string BatContribution::GetAnonizeProof(
   const char* cred = makeCred(id.c_str());
   if (cred != nullptr) {
     *pre_flight = std::string(cred);
-    free((void*)cred);
+      // should fix in
+      // https://github.com/brave-intl/bat-native-anonize/issues/11
+      free((void*)cred); // NOLINT
   } else {
     return "";
   }
@@ -78,7 +80,9 @@ std::string BatContribution::GetAnonizeProof(
   std::string proof;
   if (proof_temp != nullptr) {
     proof = proof_temp;
-    free((void*)proof_temp);
+    // should fix in
+    // https://github.com/brave-intl/bat-native-anonize/issues/11
+    free((void*)proof_temp); // NOLINT
   } else {
     return "";
   }
@@ -739,7 +743,9 @@ void BatContribution::ViewingCredentialsCallback(
 
   if (master_user_token != nullptr) {
     reconcile.masterUserToken_ = master_user_token;
-    free((void*)master_user_token);
+    // should fix in
+    // https://github.com/brave-intl/bat-native-anonize/issues/11
+    free((void*)master_user_token); // NOLINT
   }
 
   success = ledger_->UpdateReconcile(reconcile);
@@ -1201,7 +1207,9 @@ std::vector<std::string> BatContribution::ProofBatch(
     std::string annon_proof;
     if (proof != nullptr) {
       annon_proof = proof;
-      free((void*)proof);
+      // should fix in
+      // https://github.com/brave-intl/bat-native-anonize/issues/11
+      free((void*)proof); // NOLINT
     }
 
     proofs.push_back(annon_proof);

@@ -25,12 +25,12 @@
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
 
-using namespace braveledger_bat_client;
-using namespace braveledger_bat_publishers;
-using namespace braveledger_bat_get_media;
-using namespace braveledger_bat_get_media;
-using namespace braveledger_bat_state;
-using namespace braveledger_bat_contribution;
+using namespace braveledger_bat_client; //  NOLINT
+using namespace braveledger_bat_publishers; //  NOLINT
+using namespace braveledger_bat_get_media; //  NOLINT
+using namespace braveledger_bat_get_media; //  NOLINT
+using namespace braveledger_bat_state; //  NOLINT
+using namespace braveledger_bat_contribution; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -52,7 +52,6 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     last_shown_tab_id_(-1),
     last_pub_load_timer_id_(0u),
     last_grant_check_timer_id_(0u) {
-
   // Ensure TaskScheduler is initialized before creating the task runner for
   // ios.
   if (!base::TaskScheduler::GetInstance()) {

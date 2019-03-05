@@ -147,7 +147,9 @@ std::string BatClient::getAnonizeProof(const std::string& registrarVK,
   const char* cred = makeCred(id.c_str());
   if (cred != nullptr) {
     *preFlight = cred;
-    free((void*)cred);
+    // should fix in
+    // https://github.com/brave-intl/bat-native-anonize/issues/11
+    free((void*)cred); // NOLINT
   } else {
     return "";
   }
@@ -156,7 +158,9 @@ std::string BatClient::getAnonizeProof(const std::string& registrarVK,
   std::string proof;
   if (proofTemp != nullptr) {
     proof = proofTemp;
-    free((void*)proofTemp);
+    // should fix in
+    // https://github.com/brave-intl/bat-native-anonize/issues/11
+    free((void*)proofTemp); // NOLINT
   } else {
     return "";
   }
@@ -190,7 +194,9 @@ void BatClient::registerPersonaCallback(
 
   if (masterUserToken != nullptr) {
     ledger_->SetMasterUserToken(masterUserToken);
-    free((void*)masterUserToken);
+    // should fix in
+    // https://github.com/brave-intl/bat-native-anonize/issues/11
+    free((void*)masterUserToken); // NOLINT
   } else if (!braveledger_bat_helper::ignore_for_testing()) {
     ledger_->OnWalletInitialized(
         ledger::Result::REGISTRATION_VERIFICATION_FAILED);

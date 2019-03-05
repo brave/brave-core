@@ -8,7 +8,6 @@
 
 #include <string>
 #include <vector>
-#include <mutex>
 #include <map>
 
 #include "bat/ledger/internal/bat_helper.h"

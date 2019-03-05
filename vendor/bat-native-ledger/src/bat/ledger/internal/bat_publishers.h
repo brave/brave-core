@@ -9,7 +9,6 @@
 #include <string>
 #include <map>
 #include <memory>
-#include <mutex>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
