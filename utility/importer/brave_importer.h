@@ -39,7 +39,7 @@ class BraveImporter : public ChromeImporter {
   void ImportRequiredItems();
   void ImportSettings();
 
-  std::unique_ptr<base::Value> ParseBraveStateFile(
+  base::Optional<base::Value> ParseBraveStateFile(
     const std::string& filename);
 
   void ParseBookmarks(std::vector<ImportedBookmarkEntry>* bookmarks);

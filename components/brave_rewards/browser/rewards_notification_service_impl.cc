@@ -144,7 +144,7 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
       return;
     }
 
-    ReadRewardsNotifications(list.value().GetList());
+    ReadRewardsNotifications(list->GetList());
     return;
   }
 
