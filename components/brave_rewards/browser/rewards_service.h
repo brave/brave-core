@@ -69,8 +69,8 @@ using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
 using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
 using ConfirmationsHistoryCallback = base::Callback<void(int, double)>;
-using GetRewardsInternalsInfoCallback =
-    base::Callback<void(std::unique_ptr<brave_rewards::RewardsInternalsInfo>)>;
+using GetRewardsInternalsInfoCallback = base::OnceCallback<void(
+    std::unique_ptr<brave_rewards::RewardsInternalsInfo>)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -174,7 +174,7 @@ class RewardsService : public KeyedService {
   virtual void SetCatalogIssuers(const std::string& json) = 0;
   virtual void AdSustained(const std::string& json) = 0;
   virtual void GetRewardsInternalsInfo(
-      const GetRewardsInternalsInfoCallback& callback) = 0;
+      GetRewardsInternalsInfoCallback callback) = 0;
 
   virtual void GetAddressesForPaymentId(
       const GetAddressesCallback& callback) = 0;

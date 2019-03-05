@@ -794,7 +794,7 @@ void RewardsServiceImpl::OnGetAutoContributeProps(
 }
 
 void RewardsServiceImpl::OnGetRewardsInternalsInfo(
-    const GetRewardsInternalsInfoCallback& callback,
+    GetRewardsInternalsInfoCallback callback,
     const std::string& json_info) {
   ledger::RewardsInternalsInfo info;
   info.loadFromJson(json_info);
@@ -813,7 +813,7 @@ void RewardsServiceImpl::OnGetRewardsInternalsInfo(
     rewards_internals_info->current_reconciles[item.first] = reconcile_info;
   }
 
-  callback.Run(std::move(rewards_internals_info));
+  std::move(callback).Run(std::move(rewards_internals_info));
 }
 
 void RewardsServiceImpl::GetAutoContributeProps(
@@ -2480,9 +2480,10 @@ void RewardsServiceImpl::SetBackupCompleted() {
 }
 
 void RewardsServiceImpl::GetRewardsInternalsInfo(
-    const GetRewardsInternalsInfoCallback& callback) {
-  bat_ledger_->GetRewardsInternalsInfo(base::BindOnce(
-      &RewardsServiceImpl::OnGetRewardsInternalsInfo, AsWeakPtr(), callback));
+    GetRewardsInternalsInfoCallback callback) {
+  bat_ledger_->GetRewardsInternalsInfo(
+      base::BindOnce(&RewardsServiceImpl::OnGetRewardsInternalsInfo,
+                     AsWeakPtr(), std::move(callback)));
 }
 
 void RewardsServiceImpl::OnDonate(

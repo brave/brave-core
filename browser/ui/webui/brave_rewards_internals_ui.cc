@@ -103,8 +103,8 @@ void RewardsInternalsDOMHandler::HandleGetRewardsEnabled(
 void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(
     const base::ListValue* args) {
   rewards_service_->GetRewardsInternalsInfo(
-      base::Bind(&RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo,
-                 weak_ptr_factory_.GetWeakPtr()));
+      base::BindOnce(&RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void RewardsInternalsDOMHandler::OnPreferenceChanged() {
