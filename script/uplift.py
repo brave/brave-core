@@ -217,6 +217,7 @@ def main():
             top_level_base = response['base']['ref']
             top_level_sha = response['base']['sha']
             merged_at = str(response['merged_at']).strip()
+            config.title = str(response['title']).strip()
 
         except Exception as e:
             print('[ERROR] Error parsing or error returned from API when looking up pull request "' +
