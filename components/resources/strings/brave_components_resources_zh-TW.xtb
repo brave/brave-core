@@ -126,6 +126,7 @@
 <translation id="570208820610947248">我們偵測到您的錢包發生問題。您必須先復原備份錢包，系統才可以處理交易。</translation>
 <translation id="7797604753681168055">立即復原！</translation>
 <translation id="1184075897575325927">抱歉，看來這筆經費已經被領了。</translation>
+<translation id="282693359045252357">下個每月小費日期</translation>
 <translation id="5094577350232361255">關於</translation>
 <translation id="4918086044614829423">接受</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software 。 Brave 是 Brave Software 的註冊商標。網站名稱可能是網站所有者的商標或註冊商標。</translation>
@@ -180,6 +181,7 @@
 <translation id="7277134233385925078">設定每月小費</translation>
 <translation id="8003573781961874199">以 PDF 格式下載</translation>
 <translation id="298067735430872465">自廣告而來的收益</translation>
+<translation id="3521361150443442734">您的廣告收入已經可用。</translation>
 <translation id="8764029012618014430">啟用小費功能</translation>
 <translation id="3412655388715513818">排除此網站</translation>
 <translation id="418343137736963579">您排除自動捐助的網站總數：</translation>
@@ -364,8 +366,6 @@
 <translation id="1736420071277903564">電腦</translation>
 <translation id="1258250624898033822">無效的同步代碼。</translation>
 <translation id="3259723213051400722">請再試一次。</translation>
-<translation id="3779810277399252432">無網際網路連線。</translation>
-<translation id="4380604249778320975">請在連線時再試一次。</translation>
 <translation id="5257281382608458806">裝置名稱為必填項目。</translation>
 <translation id="8349682220522608879">請新增一組同步代碼。</translation>
 <translation id="1468095392829989299">無法連上同步伺服器</translation>
