@@ -3,18 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat_publishers.h"
-
 #include <algorithm>
 #include <cmath>
 #include <ctime>
 #include <utility>
 
-#include "bat_helper.h"
-#include "bignum.h"
-#include "ledger_impl.h"
-#include "rapidjson_bat_helper.h"
-#include "static_values.h"
+#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/bat_publishers.h"
+#include "bat/ledger/internal/bignum.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/static_values.h"
 
 /* foo.bar.example.com
    QLD = 'bar'

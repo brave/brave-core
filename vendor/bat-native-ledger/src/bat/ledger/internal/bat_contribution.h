@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "bat/ledger/ledger.h"
-#include "bat_helper.h"
+#include "bat/ledger/internal/bat_helper.h"
 
 // Contribution has two big phases. PHASE 1 is starting the contribution,
 // getting surveyors and transferring BAT from the wallet.

@@ -16,6 +16,10 @@ config("external_config") {
 }
 
 config("internal_config") {
+  visibility = [
+    ":*",
+    "//brave/test:*",
+  ]
   include_dirs = [ "src" ]
 }
 
@@ -57,22 +61,22 @@ source_set("ledger") {
     "include/bat/ledger/ledger_callback_handler.h",
     "include/bat/ledger/ledger_client.h",
     "src/bat/ledger/ledger.cc",
-    "src/bat_client.cc",
-    "src/bat_client.h",
-    "src/bat_contribution.cc",
-    "src/bat_contribution.h",
-    "src/bat_get_media.cc",
-    "src/bat_get_media.h",
-    "src/bat_helper.cc",
-    "src/bat_helper.h",
-    "src/bat_publishers.cc",
-    "src/bat_publishers.h",
-    "src/bat_state.cc",
-    "src/bat_state.h",
-    "src/bignum.cc",
-    "src/bignum.h",
-    "src/ledger_impl.cc",
-    "src/ledger_impl.h",
+    "src/bat/ledger/internal/bat_client.cc",
+    "src/bat/ledger/internal/bat_client.h",
+    "src/bat/ledger/internal/bat_contribution.cc",
+    "src/bat/ledger/internal/bat_contribution.h",
+    "src/bat/ledger/internal/bat_get_media.cc",
+    "src/bat/ledger/internal/bat_get_media.h",
+    "src/bat/ledger/internal/bat_helper.cc",
+    "src/bat/ledger/internal/bat_helper.h",
+    "src/bat/ledger/internal/bat_publishers.cc",
+    "src/bat/ledger/internal/bat_publishers.h",
+    "src/bat/ledger/internal/bat_state.cc",
+    "src/bat/ledger/internal/bat_state.h",
+    "src/bat/ledger/internal/bignum.cc",
+    "src/bat/ledger/internal/bignum.h",
+    "src/bat/ledger/internal/ledger_impl.cc",
+    "src/bat/ledger/internal/ledger_impl.h",
   ]
 
   deps = [

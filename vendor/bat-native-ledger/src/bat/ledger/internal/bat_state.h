@@ -6,11 +6,11 @@
 #ifndef BRAVELEDGER_BAT_CLIENT_STATE_H_
 #define BRAVELEDGER_BAT_CLIENT_STATE_H_
 
-#include "bat_helper.h"
-
+#include <map>
 #include <memory>
 #include <string>
-#include <map>
+
+#include "bat/ledger/internal/bat_helper.h"
 
 namespace bat_ledger {
 class LedgerImpl;

@@ -13,9 +13,9 @@
 #include "anon/anon.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
-#include "bat_contribution.h"
-#include "ledger_impl.h"
-#include "rapidjson_bat_helper.h"
+#include "bat/ledger/internal/bat_contribution.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -70,7 +70,9 @@ std::string BatContribution::GetAnonizeProof(
   const char* cred = makeCred(id.c_str());
   if (cred != nullptr) {
     *pre_flight = std::string(cred);
-    free((void*)cred);
+      // should fix in
+      // https://github.com/brave-intl/bat-native-anonize/issues/11
+      free((void*)cred); // NOLINT
   } else {
     return "";
   }
@@ -79,7 +81,9 @@ std::string BatContribution::GetAnonizeProof(
   std::string proof;
   if (proof_temp != nullptr) {
     proof = proof_temp;
-    free((void*)proof_temp);
+    // should fix in
+    // https://github.com/brave-intl/bat-native-anonize/issues/11
+    free((void*)proof_temp); // NOLINT
   } else {
     return "";
   }
@@ -754,7 +758,9 @@ void BatContribution::ViewingCredentialsCallback(
 
   if (master_user_token != nullptr) {
     reconcile.masterUserToken_ = master_user_token;
-    free((void*)master_user_token);
+    // should fix in
+    // https://github.com/brave-intl/bat-native-anonize/issues/11
+    free((void*)master_user_token); // NOLINT
   }
 
   success = ledger_->UpdateReconcile(reconcile);
@@ -1220,7 +1226,9 @@ std::vector<std::string> BatContribution::ProofBatch(
     std::string annon_proof;
     if (proof != nullptr) {
       annon_proof = proof;
-      free((void*)proof);
+      // should fix in
+      // https://github.com/brave-intl/bat-native-anonize/issues/11
+      free((void*)proof); // NOLINT
     }
 
     proofs.push_back(annon_proof);

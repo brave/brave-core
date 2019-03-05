@@ -1,4 +1,5 @@
 import("//services/service_manager/public/service_manifest.gni")
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 
 static_library("lib") {
   visibility = [ "//brave/utility" ]
@@ -23,6 +24,10 @@ static_library("lib") {
     "//brave/vendor/bat-native-ledger",
     "//services/service_manager/public/cpp",
   ]
+
+  if (brave_rewards_enabled) {
+    configs += [ "//brave/vendor/bat-native-ledger:internal_config" ]
+  }
 }
 
 service_manifest("manifest") {

@@ -11,7 +11,7 @@
 #include <map>
 #include <functional>
 
-#include "static_values.h"
+#include "bat/ledger/internal/static_values.h"
 
 namespace braveledger_bat_helper {
 bool isProbiValid(const std::string& number);

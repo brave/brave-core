@@ -6,7 +6,7 @@
 
 #include "bat/ledger/ledger.h"
 #include "brave/components/services/bat_ledger/bat_ledger_impl.h"
-#include "brave/vendor/bat-native-ledger/src/bat_helper.h"
+#include "bat/ledger/internal/bat_helper.h"
 #include "mojo/public/cpp/bindings/strong_associated_binding.h"
 
 namespace {

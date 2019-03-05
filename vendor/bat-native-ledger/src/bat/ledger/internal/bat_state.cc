@@ -5,9 +5,9 @@
 
 #include <algorithm>
 
-#include "bat_state.h"
-#include "ledger_impl.h"
-#include "rapidjson_bat_helper.h"
+#include "bat/ledger/internal/bat_state.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
 
 namespace braveledger_bat_state {
 

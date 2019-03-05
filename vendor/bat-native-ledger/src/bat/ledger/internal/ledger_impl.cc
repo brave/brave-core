@@ -8,26 +8,26 @@
 #include <sstream>
 #include <vector>
 
-#include "ledger_impl.h"
-
 #include "base/task/post_task.h"
-#include "bat_client.h"
-#include "bat_contribution.h"
-#include "bat_get_media.h"
-#include "bat_helper.h"
-#include "bat_publishers.h"
-#include "static_values.h"
-#include "bat_state.h"
+#include "bat/ledger/internal/bat_client.h"
+#include "bat/ledger/internal/bat_contribution.h"
+#include "bat/ledger/internal/bat_get_media.h"
+#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/bat_publishers.h"
+#include "bat/ledger/internal/bat_state.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/static_values.h"
 
-#include "rapidjson_bat_helper.h"
-
-using namespace braveledger_bat_client;
-using namespace braveledger_bat_publishers;
-using namespace braveledger_bat_get_media;
-using namespace braveledger_bat_get_media;
-using namespace braveledger_bat_state;
-using namespace braveledger_bat_contribution;
-using namespace std::placeholders;
+using namespace braveledger_bat_client; //  NOLINT
+using namespace braveledger_bat_publishers; //  NOLINT
+using namespace braveledger_bat_get_media; //  NOLINT
+using namespace braveledger_bat_get_media; //  NOLINT
+using namespace braveledger_bat_state; //  NOLINT
+using namespace braveledger_bat_contribution; //  NOLINT
+using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
+using std::placeholders::_4;
 
 namespace bat_ledger {
 

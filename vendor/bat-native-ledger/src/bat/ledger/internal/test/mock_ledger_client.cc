@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-#include "mock_ledger_client.h"
+#include "bat/ledger/internal/test/mock_ledger_client.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
