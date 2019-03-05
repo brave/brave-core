@@ -39,7 +39,7 @@
 #include "sql/statement.h"
 #include "url/gurl.h"
 
-#include "brave/vendor/bat-native-ledger/src/static_values.h"
+#include "bat/ledger/internal/static_values.h"
 
 #if defined(OS_LINUX)
 #include "components/os_crypt/key_storage_config_linux.h"

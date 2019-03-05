@@ -11,10 +11,10 @@
 #include <mutex>
 #include <map>
 
+#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/publisher_info.h"
-#include "bat_helper.h"
 
 namespace bat_ledger {
 class LedgerImpl;

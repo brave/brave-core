@@ -4,14 +4,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
-
-#include "bat_state.h"
-
-#include <algorithm>
 #include <utility>
 
-#include "ledger_impl.h"
-#include "rapidjson_bat_helper.h"
+#include "bat/ledger/internal/bat_state.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
 
 namespace braveledger_bat_state {
 

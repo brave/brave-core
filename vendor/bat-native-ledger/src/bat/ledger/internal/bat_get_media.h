@@ -10,9 +10,9 @@
 #include <map>
 #include <mutex>
 
-#include "bat/ledger/ledger.h"
-#include "bat_helper.h"
 #include "base/gtest_prod_util.h"
+#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
 class LedgerImpl;

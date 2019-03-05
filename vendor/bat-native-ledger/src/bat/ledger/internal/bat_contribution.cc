@@ -13,9 +13,9 @@
 #include "anon/anon.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
-#include "bat_contribution.h"
-#include "ledger_impl.h"
-#include "rapidjson_bat_helper.h"
+#include "bat/ledger/internal/bat_contribution.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;

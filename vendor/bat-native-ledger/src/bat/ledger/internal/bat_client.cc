@@ -3,18 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat_client.h"
-
 #include <algorithm>
 #include <sstream>
 #include <map>
 
-#include "ledger_impl.h"
-#include "bat_helper.h"
-#include "rapidjson_bat_helper.h"
-#include "static_values.h"
+#include "bat/ledger/internal/bat_client.h"
+#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/static_values.h"
 
-#include "wally_bip39.h"
+#include "wally_bip39.h"  // NOLINT
 #include "anon/anon.h"
 
 using std::placeholders::_1;

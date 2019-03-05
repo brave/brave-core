@@ -1,4 +1,5 @@
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
 
@@ -28,6 +29,10 @@ source_set("utility") {
 
   if (brave_ads_enabled) {
     deps += [ "//brave/components/services/bat_ads:lib" ]
+  }
+
+  if (brave_rewards_enabled) {
+    configs += [ "//brave/vendor/bat-native-ledger:internal_config" ]
   }
 
   if (use_glib) {

@@ -12,11 +12,11 @@
 #include <mutex>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
+#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/publisher_info.h"
-#include "bat_helper.h"
-#include "base/gtest_prod_util.h"
 
 namespace bat_ledger {
 class LedgerImpl;

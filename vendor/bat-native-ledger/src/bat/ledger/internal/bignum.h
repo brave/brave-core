@@ -9,7 +9,7 @@
 #include <string>
 
 extern "C" {
-#include "relic.h"
+#include "relic.h"  // NOLINT
 }
 
 namespace braveledger_bat_bignum {

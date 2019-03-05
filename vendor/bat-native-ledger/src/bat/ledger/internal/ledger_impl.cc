@@ -10,22 +10,20 @@
 #include <utility>
 #include <vector>
 
-#include "ledger_impl.h"
-
 #include "base/task/post_task.h"
 #include "base/task/task_scheduler/task_scheduler.h"
 #include "bat/ads/issuers_info.h"
 #include "bat/ads/notification_info.h"
 #include "bat/confirmations/confirmations.h"
-#include "bat_client.h"
-#include "bat_contribution.h"
-#include "bat_get_media.h"
-#include "bat_helper.h"
-#include "bat_publishers.h"
-#include "static_values.h"
-#include "bat_state.h"
-
-#include "rapidjson_bat_helper.h"
+#include "bat/ledger/internal/bat_client.h"
+#include "bat/ledger/internal/bat_contribution.h"
+#include "bat/ledger/internal/bat_get_media.h"
+#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/bat_publishers.h"
+#include "bat/ledger/internal/bat_state.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/static_values.h"
 
 using namespace braveledger_bat_client;
 using namespace braveledger_bat_publishers;
