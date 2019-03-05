@@ -41,6 +41,7 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
 
  private:
   bool IsRewardsEnabled() const;
+  void HandleGetRewardsEnabled(const base::ListValue* args);
   void HandleGetRewardsInternalsInfo(const base::ListValue* args);
   void OnGetRewardsInternalsInfo(
       std::unique_ptr<brave_rewards::RewardsInternalsInfo> info);
@@ -61,9 +62,14 @@ RewardsInternalsDOMHandler::~RewardsInternalsDOMHandler() {}
 
 void RewardsInternalsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.getRewardsEnabled",
+      base::BindRepeating(&RewardsInternalsDOMHandler::HandleGetRewardsEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getRewardsInternalsInfo",
-      base::Bind(&RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo,
-                 base::Unretained(this)));
+      base::BindRepeating(
+          &RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo,
+          base::Unretained(this)));
 }
 
 void RewardsInternalsDOMHandler::Init() {
@@ -85,6 +91,15 @@ bool RewardsInternalsDOMHandler::IsRewardsEnabled() const {
       brave_rewards::prefs::kBraveRewardsEnabled);
 }
 
+void RewardsInternalsDOMHandler::HandleGetRewardsEnabled(
+    const base::ListValue* args) {
+  if (!web_ui()->CanCallJavascript())
+    return;
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_internals.onGetRewardsEnabled",
+      base::Value(IsRewardsEnabled()));
+}
+
 void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(
     const base::ListValue* args) {
   rewards_service_->GetRewardsInternalsInfo(
@@ -93,9 +108,11 @@ void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(
 }
 
 void RewardsInternalsDOMHandler::OnPreferenceChanged() {
-  rewards_service_->GetRewardsInternalsInfo(
-      base::Bind(&RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo,
-                 weak_ptr_factory_.GetWeakPtr()));
+  if (!web_ui()->CanCallJavascript())
+    return;
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_internals.onGetRewardsEnabled",
+      base::Value(IsRewardsEnabled()));
 }
 
 void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
@@ -103,7 +120,6 @@ void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
   if (!web_ui()->CanCallJavascript())
     return;
   base::DictionaryValue info_dict;
-  info_dict.SetBoolean("isRewardsEnabled", IsRewardsEnabled());
   if (info) {
     info_dict.SetString("walletPaymentId", info->payment_id);
     info_dict.SetBoolean("isKeyInfoSeedValid", info->is_key_info_seed_valid);

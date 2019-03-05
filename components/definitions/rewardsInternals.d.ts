@@ -4,8 +4,8 @@ declare namespace RewardsInternals {
   }
 
   export interface State {
+    isRewardsEnabled: boolean,
     info: {
-      isRewardsEnabled: boolean,
       isKeyInfoSeedValid: boolean,
       walletPaymentId: string,
       currentReconciles: CurrentReconcile[]

@@ -31,7 +31,7 @@ export class RewardsInternalsPage extends React.Component<Props, {}> {
 
   render () {
     const { rewardsInternalsData } = this.props
-    if (rewardsInternalsData.info.isRewardsEnabled) {
+    if (rewardsInternalsData.isRewardsEnabled) {
       return (
         <div id='rewardsInternalsPage'>
           <KeyInfoSeed isKeyInfoSeedValid={rewardsInternalsData.info.isKeyInfoSeedValid || false} />

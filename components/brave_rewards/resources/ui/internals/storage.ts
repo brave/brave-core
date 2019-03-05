@@ -7,8 +7,8 @@ import { debounce } from '../../../../common/debounce'
 const keyName = 'rewards-internals-data'
 
 const defaultState: RewardsInternals.State = {
+  isRewardsEnabled: false,
   info: {
-    isRewardsEnabled: false,
     isKeyInfoSeedValid: false,
     walletPaymentId: '',
     currentReconciles: []
