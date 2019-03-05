@@ -511,13 +511,13 @@ class TabManagerTests: XCTestCase {
     }
     
     func testQueryAddedTabs() {
-        DataController.shared = DataController()
-        
         let delegate = MockTabManagerDelegate()
         manager.addDelegate(delegate)
+        DataController.shared = InMemoryDataController()
         
         delegate.expect([willAdd, didAdd])
         let tab = manager.addTab()
+        wait(1)
         delegate.verify("Not all delegate methods were called")
         
         let storedTabs = TabMO.getAll()
@@ -526,10 +526,10 @@ class TabManagerTests: XCTestCase {
     }
     
     func testQueryAddedPrivateTabs() {
-        DataController.shared = DataController()
         
         let delegate = MockTabManagerDelegate()
         manager.addDelegate(delegate)
+        DataController.shared = InMemoryDataController()
         
         delegate.expect([willAdd, didAdd])
         manager.addTab(isPrivate: true)
@@ -541,14 +541,15 @@ class TabManagerTests: XCTestCase {
     }
     
     func testQueryAddedMixedTabs() {
-        DataController.shared = DataController()
-        
         let delegate = MockTabManagerDelegate()
         manager.addDelegate(delegate)
+        DataController.shared = InMemoryDataController()
         
         delegate.expect([willAdd, didAdd, willAdd, didAdd])
         manager.addTab(isPrivate: true)
+
         let tab = manager.addTab()
+        wait(1)
         delegate.verify("Not all delegate methods were called")
         
         let storedTabs = TabMO.getAll()

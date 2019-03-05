@@ -12,63 +12,59 @@ private let log = Logger.browserLogger
 // TODO: Creatable, Updateable. Those are not needed at the moment.
 typealias CRUD = Readable & Deletable
 
-public protocol Deletable where Self: NSManagedObject {
-    func delete(context: NSManagedObjectContext)
-    static func deleteAll(predicate: NSPredicate?, context: NSManagedObjectContext,
-                          includesPropertyValues: Bool, save: Bool)
+protocol Deletable where Self: NSManagedObject {
+    func delete(context: WriteContext)
+    static func deleteAll(predicate: NSPredicate?, context: WriteContext, includesPropertyValues: Bool)
 }
 
-public protocol Readable where Self: NSManagedObject {
-    static func count(predicate: NSPredicate?) -> Int?
-    static func first(where predicate: NSPredicate?, context: NSManagedObjectContext) -> Self?
+protocol Readable where Self: NSManagedObject {
+    static func count(predicate: NSPredicate?, context: NSManagedObjectContext) -> Int?
+    static func first(where predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, context: NSManagedObjectContext) -> Self?
     static func all(where predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, fetchLimit: Int, 
                     context: NSManagedObjectContext) -> [Self]?
 }
 
 // MARK: - Implementations
-public extension Deletable where Self: NSManagedObject {
-    func delete(context: NSManagedObjectContext = DataController.newBackgroundContext()) {
+extension Deletable where Self: NSManagedObject {
+    func delete(context: WriteContext = .new) {
         
-        do {
-            let objectOnContext = try context.existingObject(with: self.objectID)
+        DataController.perform(context: context) { context in
+            let objectOnContext = context.object(with: self.objectID)
             context.delete(objectOnContext)
-        
-            DataController.save(context: context)
-        } catch {
-            log.warning("Could not find object: \(self) on a background context.")
         }
     }
     
     static func deleteAll(predicate: NSPredicate? = nil,
-                          context: NSManagedObjectContext = DataController.newBackgroundContext(),
-                          includesPropertyValues: Bool = true, save: Bool = true) {
-        guard let request = getFetchRequest() as? NSFetchRequest<NSFetchRequestResult> else { return }
-        request.predicate = predicate
-        request.includesPropertyValues = includesPropertyValues
+                          context: WriteContext = .new,
+                          includesPropertyValues: Bool = true) {
         
-        do {
-            // NSBatchDeleteRequest can't be used for in-memory store we use in tests.
-            // Have to delete objects one by one.
-            if AppConstants.IsRunningTest {
-                let results = try context.fetch(request) as? [NSManagedObject]
-                results?.forEach {
-                    context.delete($0)
+        DataController.perform(context: context) { context in
+            guard let request = getFetchRequest() as? NSFetchRequest<NSFetchRequestResult> else { return }
+            request.predicate = predicate
+            request.includesPropertyValues = includesPropertyValues
+            
+            do {
+                // NSBatchDeleteRequest can't be used for in-memory store we use in tests.
+                // Have to delete objects one by one.
+                if AppConstants.IsRunningTest {
+                    let results = try context.fetch(request) as? [NSManagedObject]
+                    results?.forEach {
+                        context.delete($0)
+                    }
+                } else {
+                    let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
+                    try context.execute(deleteRequest)
                 }
-            } else {
-                let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
-                try context.execute(deleteRequest)
+            } catch {
+                log.error("Delete all error: \(error)")
             }
-        } catch {
-            log.error("Delete all error: \(error)")
         }
-        
-        if save { DataController.save(context: context) }
     }
 }
 
-public extension Readable where Self: NSManagedObject { 
-    static func count(predicate: NSPredicate? = nil) -> Int? {
-        let context = DataController.viewContext
+extension Readable where Self: NSManagedObject { 
+    static func count(predicate: NSPredicate? = nil,
+                      context: NSManagedObjectContext = DataController.viewContext) -> Int? {
         let request = getFetchRequest()
         
         request.predicate = predicate
@@ -82,12 +78,15 @@ public extension Readable where Self: NSManagedObject {
         return nil
     }
     
-    static func first(where predicate: NSPredicate?, context: NSManagedObjectContext = DataController.viewContext) -> Self? {
-        return all(where: predicate, fetchLimit: 1, context: context)?.first
+    static func first(where predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil,
+                      context: NSManagedObjectContext = DataController.viewContext) -> Self? {
+        return all(where: predicate, sortDescriptors: sortDescriptors, fetchLimit: 1, context: context)?.first
     }
     
-    static func all(where predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, 
-                    fetchLimit: Int = 0, context: NSManagedObjectContext = DataController.viewContext) -> [Self]? {
+    static func all(where predicate: NSPredicate? = nil,
+                    sortDescriptors: [NSSortDescriptor]? = nil,
+                    fetchLimit: Int = 0,
+                    context: NSManagedObjectContext = DataController.viewContext) -> [Self]? {
         let request = getFetchRequest()
         
         request.predicate = predicate

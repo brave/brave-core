@@ -15,22 +15,12 @@ extension Bookmark {
     /// Base order is needed to distinguish between bookmarks on different devices and platforms.
     static var baseOrder: String { return Preferences.Sync.baseSyncOrder.value }
     
-    public class func isSyncOrderValid(_ value: String) -> Bool {
-        /// syncOrder must come in format x.x.x where x are numbers
-        /// and it has 3 or more number components
-        guard let regex = try? NSRegularExpression(pattern: "^(\\d+\\.){2,}\\d+$") else { return false }
-        let range = NSRange(value.startIndex..., in: value)
-        return regex.firstMatch(in: value, options: [], range: range) != nil
-    }
-    
     /// syncOrder for Brave < 1.8 has to be set in order to support the new ordering mechanism.
     /// Pre 1.8 bookmarks didn't have syncOrder set which makes it hard to calculate syncOrder for new
     // bookmarks, especially the ones inside of folders(nested Bookmarks syncOrder should be based on
     // its parentFolder order which we don't have in pre 1.8)
     public class func syncOrderMigration() {
-        let context = DataController.newBackgroundContext()
-        
-        context.perform {
+        DataController.perform { context in
             let allBookmarks = getAllBookmarks(context: context)
             let bookmarksWithInvalidSyncOrder = allBookmarks.filter { $0.syncOrder == nil }
             
@@ -44,9 +34,15 @@ extension Bookmark {
             if allFavorites.count == favoritesWithInvalidSyncOrder.count {
                 updateBookmarksWithNewSyncOrder(updateFavorites: true, context: context)
             }
-            
-            DataController.save(context: context)
         }
+    }
+    
+    class func isSyncOrderValid(_ value: String) -> Bool {
+        /// syncOrder must come in format x.x.x where x are numbers
+        /// and it has 3 or more number components
+        guard let regex = try? NSRegularExpression(pattern: "^(\\d+\\.){2,}\\d+$") else { return false }
+        let range = NSRange(value.startIndex..., in: value)
+        return regex.firstMatch(in: value, options: [], range: range) != nil
     }
     
     /// Sets order for all bookmarks. Needed after user joins sync group for the first time,
@@ -54,8 +50,8 @@ extension Bookmark {
     /// Returns an array of bookmarks with updated `syncOrder`.
     @discardableResult
     class func updateBookmarksWithNewSyncOrder(parentFolder: Bookmark? = nil,
-                                                      updateFavorites: Bool = false,
-                                                      context: NSManagedObjectContext) -> [Bookmark]? {
+                                               updateFavorites: Bool = false,
+                                               context: NSManagedObjectContext) -> [Bookmark]? {
         
         var bookmarksToSend = [Bookmark]()
         
@@ -139,17 +135,17 @@ extension Bookmark {
     }
     
     class func removeSyncOrders() {
-        let context = DataController.newBackgroundContext()
-        let allBookmarks = getAllBookmarks(context: context)
-        
-        allBookmarks.forEach { bookmark in
-            bookmark.syncOrder = nil
-            // TODO: Clear syncUUIDs
-            //            bookmark.syncUUID = nil
+        DataController.perform { context in
+            let allBookmarks = getAllBookmarks(context: context)
+            
+            allBookmarks.forEach { bookmark in
+                bookmark.syncOrder = nil
+                // TODO: Clear syncUUIDs
+                //            bookmark.syncUUID = nil
+            }
+            
+            Preferences.Sync.baseSyncOrder.reset()
         }
-        
-        DataController.save(context: context)
-        Preferences.Sync.baseSyncOrder.reset()
     }
     
     /// We use a special String-based ordering algorithm for Bookmarks, which can't be sorted

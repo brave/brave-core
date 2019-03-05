@@ -310,7 +310,7 @@ class Tab: NSObject {
         guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
             if let title = url?.absoluteString {
                 return title
-            } else if let tab = TabMO.get(fromId: id, context: DataController.viewContext) {
+            } else if let tab = TabMO.get(fromId: id) {
                 return tab.title ?? tab.url ?? ""
             }
             return ""

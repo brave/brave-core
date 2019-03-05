@@ -11,7 +11,7 @@ public extension UIImageView {
 
     public func setIcon(_ icon: Favicon?, forURL url: URL?, scaledDefaultIconSize: CGSize? = nil, completed completionBlock: ((UIColor, URL?) -> Void)? = nil) {
         if let url = url, icon == nil {
-            let domain = Domain.getOrCreateForUrl(url, context: DataController.viewContext)
+            let domain = Domain.getOrCreate(forUrl: url)
             if let favicon = domain.favicon {
                 setIconURL(favicon.url, forURL: url, completed: completionBlock, scaledDefaultIconSize: scaledDefaultIconSize)
                 return

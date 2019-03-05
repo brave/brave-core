@@ -22,6 +22,7 @@ class SearchEnginesTests: XCTestCase {
         Preferences.Search.disabledEngines.reset()
         Preferences.Search.orderedEngines.reset()
         Preferences.Search.showSuggestions.reset()
+        PrivateBrowsingManager.shared.isPrivateBrowsing = false
     }
 
     func testIncludesExpectedEngines() {

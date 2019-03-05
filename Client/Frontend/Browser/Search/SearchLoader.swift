@@ -65,7 +65,7 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
                 self.inProgress = nil
             }
 
-            let deferred = getSitesByFrecency(query)
+            let deferred = FrecencyQuery.sitesByFrecency(containing: query)
             inProgress = deferred as? Cancellable
 
             deferred.uponQueue(.main) { result in
@@ -91,23 +91,6 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
                 }
             }
         }
-    }
-    
-    // TODO: This is not a proper frecency query, it just gets sites from the past week. See issue #289
-    fileprivate func getSitesByFrecency(_ containing: String? = nil) -> Deferred<[Site]> {
-        let result = Deferred<[Site]>()
-        
-        let context = DataController.newBackgroundContext()
-        context.perform {
-            
-            let history: [WebsitePresentable] = History.frecencyQuery(context, containing: containing)
-            let bookmarks: [WebsitePresentable] = Bookmark.frecencyQuery(context: context, containing: containing)
-            
-            // History must come before bookmarks, since later items replace existing ones, and want bookmarks to replace history entries
-            let uniqueSites = Set<Site>((history + bookmarks).map { Site(url: $0.url ?? "", title: $0.title ?? "", bookmarked: $0 is Bookmark) })
-            result.fill(Array(uniqueSites))
-        }
-        return result
     }
 
     fileprivate func completionForURL(_ url: String) -> String? {

@@ -90,10 +90,14 @@ class FavoriteTests: CoreDataTestCase {
     }
     
     func testDeleteAllFavorites() {
-        let bookmarks = makeFavorites(5)
+        makeFavorites(5)
         
-        // Delete them all
-        bookmarks.forEach { DataController.viewContext.delete($0) }
+        let favsPredicate = NSPredicate(format: "isFavorite == true")
+        
+        backgroundSaveAndWaitForExpectation {
+            Bookmark.deleteAll(predicate: favsPredicate)
+        }
+        
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
     }
     
@@ -203,7 +207,7 @@ class FavoriteTests: CoreDataTestCase {
     @discardableResult
     private func createAndWait(url: URL?, title: String, customTitle: String? = nil) -> Bookmark {
         backgroundSaveAndWaitForExpectation {
-            Bookmark.add(url: url, title: title, customTitle: customTitle, isFavorite: true)
+            Bookmark.addInternal(url: url, title: title, customTitle: customTitle, isFavorite: true)
         }
         let bookmark = try! DataController.viewContext.fetch(fetchRequest).first!
         XCTAssertTrue(bookmark.isFavorite)

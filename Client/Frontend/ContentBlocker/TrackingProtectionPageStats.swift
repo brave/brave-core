@@ -64,7 +64,12 @@ class TPStatsBlocklistChecker {
         }
         
         DispatchQueue.global().async {
-            let enabledLists = BlocklistName.blocklists(forDomain: domain).on
+            var enabledLists = Set<BlocklistName>()
+            
+            domain.managedObjectContext?.performAndWait {
+                enabledLists = BlocklistName.blocklists(forDomain: domain).on
+            }
+            
             if let resourceType = resourceType {
                 switch resourceType {
                 case .script:
