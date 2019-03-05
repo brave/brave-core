@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -38,7 +39,9 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
   MOCK_METHOD3(OnGrantFinish,
       void(RewardsService*, unsigned int, brave_rewards::Grant));
   MOCK_METHOD1(OnContentSiteUpdated, void(RewardsService*));
-  MOCK_METHOD2(OnExcludedSitesChanged, void(RewardsService*, std::string));
+  MOCK_METHOD3(OnExcludedSitesChanged, void(RewardsService*,
+                                            std::string,
+                                            bool));
   MOCK_METHOD5(OnReconcileComplete, void(RewardsService*,
                                          unsigned int,
                                          const std::string&,

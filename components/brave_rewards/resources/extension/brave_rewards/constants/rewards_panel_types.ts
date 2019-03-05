@@ -27,7 +27,8 @@ export const enum types {
   ON_GRANT_FINISH = '@@rewards_panel/ON_GRANT_FINISH',
   ON_PENDING_CONTRIBUTIONS_TOTAL = '@@rewards_panel/ON_PENDING_CONTRIBUTIONS_TOTAL',
   ON_ENABLED_MAIN = '@@rewards_panel/ON_ENABLED_MAIN',
-  ON_ENABLED_AC = '@@rewards_panel/ON_ENABLED_AC'
+  ON_ENABLED_AC = '@@rewards_panel/ON_ENABLED_AC',
+  ON_EXCLUDED_SITES_CHANGED = '@@rewards_panel/ON_EXCLUDED_SITES_CHANGED'
 }
 
 // Note: This declaration must match the RewardsNotificationType enum in

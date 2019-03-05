@@ -62,7 +62,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
   void OnPanelPublisherInfo(int32_t result, const std::string& info,
       uint64_t window_id) override;
-  void OnExcludedSitesChanged(const std::string& publisher_id) override;
+  void OnExcludedSitesChanged(const std::string& publisher_id,
+                              int exclude) override;
   void SaveContributionInfo(const std::string& probi, int32_t month,
       int32_t year, uint32_t date, const std::string& publisher_key,
       int32_t category) override;
@@ -75,9 +76,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void URIEncode(const std::string& value,
       URIEncodeCallback callback) override;
-
-  void SetContributionAutoInclude(const std::string& publisher_key,
-      bool excluded, uint64_t window_id) override;
 
   void LoadURL(const std::string& url,
     const std::vector<std::string>& headers,

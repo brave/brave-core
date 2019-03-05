@@ -671,7 +671,7 @@ void RewardsServiceImpl::ExcludePublisher(
     return;
 
   bat_ledger_->SetPublisherExclude(publisherKey,
-      ledger::PUBLISHER_EXCLUDE::EXCLUDED);
+                                   ledger::PUBLISHER_EXCLUDE::EXCLUDED);
 }
 
 void RewardsServiceImpl::RestorePublishers() {
@@ -1669,9 +1669,12 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
 }
 
 void RewardsServiceImpl::OnExcludedSitesChanged(
-    const std::string& publisher_id) {
+    const std::string& publisher_id,
+    ledger::PUBLISHER_EXCLUDE exclude) {
+
+  bool excluded = exclude == ledger::PUBLISHER_EXCLUDE::EXCLUDED;
   for (auto& observer : observers_)
-    observer.OnExcludedSitesChanged(this, publisher_id);
+    observer.OnExcludedSitesChanged(this, publisher_id, excluded);
 }
 
 void RewardsServiceImpl::OnPanelPublisherInfo(
@@ -2078,13 +2081,17 @@ void RewardsServiceImpl::TriggerOnGetCurrentBalanceReport(
 }
 
 void RewardsServiceImpl::SetContributionAutoInclude(
-    const std::string& publisher_key, bool excluded, uint64_t windowId) {
+    const std::string& publisher_key,
+    bool excluded) {
   if (!Connected())
     return;
 
-  bat_ledger_->SetPublisherPanelExclude(publisher_key, excluded ?
-    ledger::PUBLISHER_EXCLUDE::EXCLUDED : ledger::PUBLISHER_EXCLUDE::INCLUDED,
-    windowId);
+  ledger::PUBLISHER_EXCLUDE exclude =
+      excluded
+      ? ledger::PUBLISHER_EXCLUDE::EXCLUDED
+      : ledger::PUBLISHER_EXCLUDE::INCLUDED;
+
+  bat_ledger_->SetPublisherExclude(publisher_key, exclude);
 }
 
 RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {

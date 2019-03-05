@@ -106,4 +106,9 @@ declare namespace RewardsExtension {
     timestamp: number
     args: string[]
   }
+
+  interface ExcludedSitesChanged {
+    publisher_key: string
+    excluded: boolean
+  }
 }

@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/wallet_info.h"
@@ -156,7 +157,8 @@ class RewardsServiceImpl : public RewardsService,
   void UpdateRecurringDonationsList() override;
   void UpdateTipsList() override;
   void SetContributionAutoInclude(
-    const std::string& publisher_key, bool excluded, uint64_t windowId) override;
+      const std::string& publisher_key,
+      bool excluded) override;
   RewardsNotificationService* GetNotificationService() const override;
   bool CheckImported() override;
   void SetBackupCompleted() override;
@@ -301,7 +303,8 @@ class RewardsServiceImpl : public RewardsService,
   void SetContributionAmount(double amount) const override;
   void SetUserChangedContribution() const override;
   void SetAutoContribute(bool enabled) const override;
-  void OnExcludedSitesChanged(const std::string& publisher_id) override;
+  void OnExcludedSitesChanged(const std::string& publisher_id,
+                              ledger::PUBLISHER_EXCLUDE exclude) override;
   void OnPanelPublisherInfo(ledger::Result result,
                           std::unique_ptr<ledger::PublisherInfo> info,
                           uint64_t windowId) override;

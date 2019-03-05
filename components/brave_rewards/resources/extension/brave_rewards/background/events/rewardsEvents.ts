@@ -55,3 +55,7 @@ chrome.braveRewards.onPendingContributionSaved.addListener((result: number) => {
 chrome.braveRewards.onWalletFailed.addListener(() => {
   rewardsPanelActions.onWalletCreateFailed()
 })
+
+chrome.braveRewards.onExcludedSitesChanged.addListener((properties: RewardsExtension.ExcludedSitesChanged) => {
+  rewardsPanelActions.onExcludedSitesChanged(properties)
+})
