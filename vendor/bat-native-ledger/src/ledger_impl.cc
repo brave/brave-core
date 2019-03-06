@@ -59,15 +59,12 @@ void LedgerImpl::Initialize() {
 }
 
 bool LedgerImpl::CreateWallet() {
-  if (initializing_)
-    return false;
-
-  initializing_ = true;
-  if (initialized_) {
-    OnWalletInitialized(ledger::Result::LEDGER_ERROR);
+  if (initializing_) {
     return false;
   }
-  bat_client_->registerPersona();
+
+  initializing_ = true;
+  bat_client_->CreateWalletIfNecessary();
   return true;
 }
 

@@ -67,6 +67,8 @@ class BatClient {
 
   void GetAddressesForPaymentId(ledger::WalletAddressesCallback callback);
 
+  void CreateWalletIfNecessary();
+
  private:
   void getGrantCaptchaCallback(
       bool result,
