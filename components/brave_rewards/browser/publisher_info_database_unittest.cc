@@ -214,7 +214,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   /**
    * If favicon is marked as clear, clear it
    */
-  info.favicon_url = ledger::_clear_favicon;
+  info.favicon_url = ledger::kClearFavicon;
 
   success = publisher_info_database_->InsertOrUpdatePublisherInfo(info);
   EXPECT_TRUE(success);

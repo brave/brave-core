@@ -17,10 +17,11 @@ export const onTabId = (tabId: number | undefined) => action(types.ON_TAB_ID, {
   tabId
 })
 
-export const onTabRetrieved = (tab: chrome.tabs.Tab, publisherBlob: string) => action(types.ON_TAB_RETRIEVED, {
-  tab,
-  publisherBlob
-})
+export const onTabRetrieved = (tab: chrome.tabs.Tab, publisherBlob: string = 'ignore') =>
+  action(types.ON_TAB_RETRIEVED, {
+    tab,
+    publisherBlob
+  })
 
 export const onPublisherData = (windowId: number, publisher: RewardsExtension.Publisher) => action(types.ON_PUBLISHER_DATA, {
   windowId,

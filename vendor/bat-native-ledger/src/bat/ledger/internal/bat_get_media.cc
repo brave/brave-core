@@ -926,6 +926,10 @@ void BatGetMedia::processTwitchMediaPanel(
     const ledger::VisitData& visit_data,
     const std::string& providerType,
     const std::string& publisher_blob) {
+  if (publisher_blob == ledger::kIgnorePublisherBlob) {
+    return;
+  }
+
   if (!publisher_blob.empty()) {
     std::string media_id = getTwitchMediaIdFromUrl(visit_data, publisher_blob);
     std::transform(media_id.begin(),
@@ -966,10 +970,6 @@ std::string BatGetMedia::getTwitchMediaIdFromUrl(
     extractData(visit_data.url, "twitch.tv/", "/");
   if (visit_data.url.find("twitch.tv/videos/") != std::string::npos) {
     mediaId = extractData(publisher_blob,
-      "<a class=\"tw-interactive channel-header__user tw-align-items-center "
-      "tw-flex tw-flex-nowrap tw-flex-shrink-0 tw-link "
-      "tw-link--hover-underline-none tw-pd-r-2 tw-pd-y-05\" "
-      "data-target=\"channel-header__channel-link\" "
       "data-a-target=\"user-channel-header-item\" href=\"/", "\"");
   }
   return mediaId;

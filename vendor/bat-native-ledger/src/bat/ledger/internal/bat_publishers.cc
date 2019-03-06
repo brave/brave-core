@@ -168,7 +168,7 @@ void BatPublishers::saveVisitInternal(
         publisher_info->favicon_url = fav_icon;
     }
   } else {
-    publisher_info->favicon_url = ledger::_clear_favicon;
+    publisher_info->favicon_url = ledger::kClearFavicon;
   }
 
   publisher_info->name = visit_data.name;
