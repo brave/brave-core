@@ -3,6 +3,7 @@
 import UIKit
 import Shared
 import BraveShared
+import Data
 
 struct SyncUX {
     static let backgroundColor = UIColor(rgb: 0xF8F8F8)
@@ -21,6 +22,11 @@ class SyncViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = SyncUX.backgroundColor
+        NotificationCenter.default.addObserver(self, selector: #selector(didLeaveSyncGroup), name: Sync.Notifications.didLeaveSyncGroup, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func showNoConnectionAlert() {
@@ -42,5 +48,11 @@ class SyncViewController: UIViewController {
         }
         
         code()
+    }
+    
+    @objc func didLeaveSyncGroup() {
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationController?.popToRootViewController(animated: true)
+        }
     }
 }
