@@ -80,15 +80,12 @@ void LedgerImpl::Initialize() {
 }
 
 bool LedgerImpl::CreateWallet() {
-  if (initializing_)
-    return false;
-
-  initializing_ = true;
-  if (initialized_) {
-    OnWalletInitialized(ledger::Result::LEDGER_ERROR);
+  if (initializing_) {
     return false;
   }
-  bat_client_->registerPersona();
+
+  initializing_ = true;
+  bat_client_->CreateWalletIfNecessary();
   return true;
 }
 
@@ -1111,6 +1108,10 @@ const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
   confirmations::WalletInfo wallet_info;
 
   wallet_info.payment_id = info.paymentId_;
+
+  if (info.keyInfoSeed_.empty()) {
+    return wallet_info;
+  }
 
   auto seed = braveledger_bat_helper::getHKDF(info.keyInfoSeed_);
   std::vector<uint8_t> publicKey = {};
