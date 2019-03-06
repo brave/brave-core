@@ -4,8 +4,11 @@
 
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 
+#include "base/bind.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/common/brave_cookie_blocking.h"
+#include "brave/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "extensions/buildflags/buildflags.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
@@ -18,8 +21,16 @@ BraveCookieSettings::BraveCookieSettings(
     HostContentSettingsMap* host_content_settings_map,
     PrefService* prefs,
     const char* extension_scheme)
-    : CookieSettings(host_content_settings_map, prefs, extension_scheme)
-{ }
+    : CookieSettings(host_content_settings_map, prefs, extension_scheme),
+      allow_google_auth_(
+          prefs->GetBoolean(kGoogleLoginControlType))
+{
+  pref_change_registrar_.Init(prefs);
+  pref_change_registrar_.Add(
+      kGoogleLoginControlType,
+      base::Bind(&BraveCookieSettings::OnAllowGoogleAuthChanged,
+                 base::Unretained(this)));
+}
 
 BraveCookieSettings::~BraveCookieSettings() { }
 
@@ -81,9 +92,8 @@ void BraveCookieSettings::GetCookieSetting(const GURL& url,
   bool allow_1p_cookies = brave_1p_setting == CONTENT_SETTING_ALLOW ||
     brave_1p_setting == CONTENT_SETTING_DEFAULT;
   bool allow_3p_cookies = brave_3p_setting == CONTENT_SETTING_ALLOW;
-
   if (ShouldBlockCookie(allow_brave_shields, allow_1p_cookies,
-      allow_3p_cookies, first_party_url, url)) {
+      allow_3p_cookies, first_party_url, url, allow_google_auth_)) {
     *cookie_setting = CONTENT_SETTING_BLOCK;
   }
 }
@@ -100,5 +110,13 @@ bool BraveCookieSettings::IsCookieAccessAllowed(const GURL& url,
   return setting == CONTENT_SETTING_ALLOW ||
          setting == CONTENT_SETTING_SESSION_ONLY;
 }
+
+void BraveCookieSettings::OnAllowGoogleAuthChanged() {
+  DCHECK(thread_checker_.CalledOnValidThread());
+  base::AutoLock auto_lock(lock_);
+  allow_google_auth_ = pref_change_registrar_.prefs()->GetBoolean(
+      kGoogleLoginControlType);
+}
+
 
 }  // namespace content_settings

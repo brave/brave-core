@@ -5,7 +5,8 @@
 #include "brave/common/shield_exceptions.h"
 
 bool ShouldBlockCookie(bool allow_brave_shields, bool allow_1p_cookies,
-    bool allow_3p_cookies, const GURL& primary_url, const GURL& url) {
+    bool allow_3p_cookies, const GURL& primary_url, const GURL& url,
+    bool allow_google_auth) {
 
   if (primary_url.SchemeIs("chrome-extension")) {
     return false;
@@ -26,7 +27,8 @@ bool ShouldBlockCookie(bool allow_brave_shields, bool allow_1p_cookies,
   }
 
   // If it is whitelisted, we shouldn't block
-  if (brave::IsWhitelistedCookieException(primary_url, url)) {
+  if (brave::IsWhitelistedCookieException(primary_url, url,
+        allow_google_auth)) {
     return false;
   }
 

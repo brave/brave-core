@@ -31,6 +31,10 @@ class BraveCookieSettings : public CookieSettings {
                              const GURL& tab_url) const;
  protected:
   ~BraveCookieSettings() override;
+  void OnAllowGoogleAuthChanged();
+
+  bool allow_google_auth_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveCookieSettings);
 };
 

@@ -104,15 +104,16 @@ bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
 }
 
 bool IsWhitelistedCookieException(const GURL& firstPartyOrigin,
-    const GURL& subresourceUrl) {
+    const GURL& subresourceUrl, bool allow_google_auth) {
   // Note that there's already an exception for TLD+1, so don't add those here.
   // Check with the security team before adding exceptions.
 
   // 1st-party-INdependent whitelist
-  std::vector<URLPattern> fpi_whitelist_patterns = {
-    URLPattern(URLPattern::SCHEME_ALL,
-        "https://accounts.google.com/o/oauth2/*")
-  };
+  std::vector<URLPattern> fpi_whitelist_patterns = {};
+  if (allow_google_auth) {
+    fpi_whitelist_patterns.push_back(URLPattern(URLPattern::SCHEME_ALL,
+        "https://accounts.google.com/o/oauth2/*"));
+  }
   bool any_match = std::any_of(fpi_whitelist_patterns.begin(),
       fpi_whitelist_patterns.end(),
       [&subresourceUrl](const URLPattern& pattern) {
