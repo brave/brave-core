@@ -7,6 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
+import { CustomFilters } from './customFilters'
 import { RegionalAdBlockEnabled } from './regionalAdBlockEnabled'
 import { NumBlockedStat } from './numBlockedStat'
 
@@ -24,13 +25,17 @@ export class AdblockPage extends React.Component<Props, {}> {
   }
 
   render () {
-    const { adblockData } = this.props
+    const { actions, adblockData } = this.props
     return (
       <div id='adblockPage'>
         <NumBlockedStat adsBlockedStat={adblockData.stats.adsBlockedStat || 0} />
         <RegionalAdBlockEnabled
           regionalAdBlockEnabled={adblockData.stats.regionalAdBlockEnabled}
           regionalAdBlockTitle={adblockData.stats.regionalAdBlockTitle || ''}
+        />
+        <CustomFilters
+          actions={actions}
+          rules={adblockData.settings.customFilters || ''}
         />
       </div>)
   }
