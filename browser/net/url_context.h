@@ -58,6 +58,7 @@ struct BraveRequestInfo {
   bool allow_http_upgradable_resource = false;
   bool allow_1p_cookies = true;
   bool allow_3p_cookies = false;
+  bool allow_google_auth = true;
   int render_process_id = 0;
   int render_frame_id = 0;
   int frame_tree_node_id = 0;

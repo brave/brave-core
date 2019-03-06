@@ -29,6 +29,9 @@ class BraveCookieSettings : public CookieSettings {
   bool IsCookieAccessAllowed(const GURL& url,
                              const GURL& first_party_url,
                              const GURL& tab_url) const;
+  bool GetAllowGoogleAuth() const {
+    return allow_google_auth_;
+  }
  protected:
   ~BraveCookieSettings() override;
   void OnAllowGoogleAuthChanged();

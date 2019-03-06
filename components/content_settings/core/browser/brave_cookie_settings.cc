@@ -118,5 +118,4 @@ void BraveCookieSettings::OnAllowGoogleAuthChanged() {
       kGoogleLoginControlType);
 }
 
-
 }  // namespace content_settings

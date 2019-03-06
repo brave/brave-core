@@ -67,10 +67,10 @@ bool AdBlockRegionalService::UnregisterComponentByLocale(const std::string& loca
   if (it == region_lists.end())
     return false;
   return Unregister(it->component_id);
-
 }
 
 bool AdBlockRegionalService::Init() {
+  AdBlockBaseService::Init();
   auto it =
       FindFilterListByLocale(g_brave_browser_process->GetApplicationLocale());
   if (it == region_lists.end())

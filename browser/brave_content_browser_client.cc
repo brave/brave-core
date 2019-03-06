@@ -17,7 +17,6 @@
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/brave_cookie_blocking.h"
-#include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/common/tor/tor_launcher.mojom.h"
 #include "brave/common/tor/switches.h"
@@ -35,10 +34,8 @@
 #include "chrome/browser/extensions/chrome_content_browser_client_extensions_part.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/url_constants.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
-#include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "content/browser/frame_host/render_frame_host_impl.h"
 #include "content/public/browser/browser_context.h"
@@ -123,7 +120,8 @@ bool HandleURLRewrite(GURL* url,
 
 BraveContentBrowserClient::BraveContentBrowserClient(
     ChromeFeatureListCreator* chrome_feature_list_creator)
-    : ChromeContentBrowserClient(chrome_feature_list_creator) {}
+    : ChromeContentBrowserClient(chrome_feature_list_creator) {
+}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
 
@@ -169,10 +167,9 @@ bool BraveContentBrowserClient::AllowAccessCookie(
       brave_shields::kCookies);
   content_settings::BraveCookieSettings* cookie_settings =
       (content_settings::BraveCookieSettings*)io_data->GetCookieSettings();
-  PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
-  bool allow_google_auth = prefs->GetBoolean(kGoogleLoginControlType);
   bool allow = !ShouldBlockCookie(allow_brave_shields, allow_1p_cookies,
-                   allow_3p_cookies, first_party, url, allow_google_auth) &&
+                   allow_3p_cookies, first_party, url,
+                   cookie_settings->GetAllowGoogleAuth()) &&
       cookie_settings->IsCookieAccessAllowed(url, first_party, tab_origin);
   return allow;
 }

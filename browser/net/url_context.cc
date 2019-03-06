@@ -7,10 +7,13 @@
 
 #include <string>
 
+#include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "components/prefs/testing_pref_service.h"
 #include "content/public/browser/resource_request_info.h"
 
 namespace brave {

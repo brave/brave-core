@@ -37,6 +37,7 @@ AdBlockService::~AdBlockService() {
 }
 
 bool AdBlockService::Init() {
+  AdBlockBaseService::Init();
   Register(kAdBlockComponentName, g_ad_block_component_id_,
            g_ad_block_component_base64_public_key_);
   return true;

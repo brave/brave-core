@@ -16,6 +16,10 @@ const char kFingerprinting[] = "fingerprinting";
 const char kBraveShields[] = "braveShields";
 const char kReferrers[] = "referrers";
 const char kCookies[] = "cookies";
+const char kFacebookLogin[] = "fb-login";
+const char kFacebookEmbeds[] = "fb-embeds";
+const char kTwitterEmbeds[] = "twitter-embeds";
+const char kLinkedInEmbeds[] = "linked-in-embeds";
 
 }  // brave_shields
 
