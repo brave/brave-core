@@ -1,5 +1,5 @@
 diff --git a/content/browser/child_process_security_policy_impl.cc b/content/browser/child_process_security_policy_impl.cc
-index 0e69ac487caa63c88ef1de1fcebd6f540931a6a0..273770436663d2558afc60d3d5217a9b80cbd15b 100644
+index 79b62092482102a41fe03f7a33b172ba85c97891..ab958521d94777b1c4704fd39ee09349d839fa36 100644
 --- a/content/browser/child_process_security_policy_impl.cc
 +++ b/content/browser/child_process_security_policy_impl.cc
 @@ -773,6 +773,9 @@ void ChildProcessSecurityPolicyImpl::GrantWebUIBindings(int child_id,

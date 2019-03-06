@@ -6,6 +6,7 @@
 #include "bat_client.h"
 
 #include <algorithm>
+#include <ctime>
 #include <sstream>
 #include <map>
 

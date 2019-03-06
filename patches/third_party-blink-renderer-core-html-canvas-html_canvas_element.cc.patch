@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-index c9a271fdd85bb5ab7f99161a7dbf860e1da7a896..ee69fcdc5e38be1e4610a06b0f6bb666f18382d5 100644
+index 2ef7a11feae1e6fd1cb3158004d172117351ee0c..7d5f42858437d54707227ac1cdac4f6745fcea0c 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 @@ -36,6 +36,7 @@
