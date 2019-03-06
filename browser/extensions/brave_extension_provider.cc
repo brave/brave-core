@@ -53,6 +53,8 @@ bool BraveExtensionProvider::IsVetted(const Extension* extension) {
     brave_sync_extension_id,
     brave_webtorrent_extension_id,
     pdfjs_extension_id,
+    // Web Store
+    "ahfgeienlihckogmohjhadlkjgocpleb",
     // Brave Automation Extension
     "aapnijgdinlhnhlmodcfapnahmbfebeb",
     // Test ID: Brave Default Ad Block Updater
