@@ -25,8 +25,6 @@ private let log = Logger.braveSyncLogger
  }
  */
 
-public let NotificationSyncReady = "NotificationSyncReady"
-
 // TODO: Make capitals - pluralize - call 'categories' not 'type'
 public enum SyncRecordType: String {
     case bookmark = "BOOKMARKS"
@@ -71,6 +69,11 @@ enum SyncActions: Int {
 }
 
 public class Sync: JSInjector {
+    
+    public struct Notifications {
+        public static let syncReady = Notification.Name(rawValue: "NotificationSyncReady")
+        public static let didLeaveSyncGroup = Notification.Name(rawValue: "NotificationLeftSyncGroup")
+    }
     
     public static let SeedByteLength = 32
     /// Number of records that is considered a fetch limit as opposed to full data set
@@ -179,6 +182,9 @@ public class Sync: JSInjector {
         fetchTimer = nil
         
         KeychainWrapper.standard.removeObject(forKey: Preferences.Sync.seedName.key)
+        // If a user stays on any of Sync screens while another device removes this device
+        // we have to dismiss the Sync view controller.
+        NotificationCenter.default.post(name: Sync.Notifications.didLeaveSyncGroup, object: nil)
     }
     
     func addFetchedHandler(_ handler: @escaping () -> Void) {
@@ -293,7 +299,7 @@ public class Sync: JSInjector {
                 DataController.save(context: Device.currentDevice()?.managedObjectContext)
             }
             
-            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationSyncReady), object: nil)
+            NotificationCenter.default.post(name: Sync.Notifications.syncReady, object: nil)
             
             func startFetching() {
                 // Assigning the fetch timer must run on main thread.
