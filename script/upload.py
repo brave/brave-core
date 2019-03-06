@@ -133,10 +133,10 @@ def get_brave_packages(dir, channel, version):
                         pkgs.append(file_desired)
                     elif file == 'Brave Browser.pkg':
                         filecopy(file_path, file_desired_pkg)
+                        pkgs.append(file_desired_pkg)
+                    elif file == file_desired and file_desired not in pkgs:
                         pkgs.append(file_desired)
-                    elif file == file_desired:
-                        pkgs.append(file_desired)
-                    elif file == file_desired_pkg:
+                    elif file == file_desired_pkg and file_desired_pkg not in pkgs:
                         pkgs.append(file_desired_pkg)
                 else:
                     file_desired = ('Brave-Browser-' +
