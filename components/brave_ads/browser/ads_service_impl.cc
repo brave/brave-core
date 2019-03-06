@@ -839,7 +839,7 @@ void AdsServiceImpl::GetClientInfo(ads::ClientInfo* client_info) const {
 #if defined(OS_MACOSX)
   client_info->platform = ads::ClientInfoPlatformType::MACOS;
 #elif defined(OS_WIN)
-  client_info->platform = ads::ClientInfoPlatformType::WIN10;
+  client_info->platform = ads::ClientInfoPlatformType::WINDOWS;
 #elif defined(OS_LINUX)
   client_info->platform = ads::ClientInfoPlatformType::LINUX;
 #elif defined(OS_ANDROID)
@@ -945,36 +945,6 @@ void AdsServiceImpl::OnForeground() {
   if (connected()) {
     bat_ads_->OnForeground();
   }
-}
-
-bool AdsServiceImpl::GetUrlComponents(
-      const std::string& url,
-      ads::UrlComponents* components) const {
-  GURL gurl(url);
-
-  if (!gurl.is_valid())
-    return false;
-
-  components->url = gurl.spec();
-  if (gurl.has_scheme())
-    components->scheme = gurl.scheme();
-
-  if (gurl.has_username())
-    components->user = gurl.username();
-
-  if (gurl.has_host())
-    components->hostname = gurl.host();
-
-  if (gurl.has_port())
-    components->port = gurl.port();
-
-  if (gurl.has_query())
-    components->query = gurl.query();
-
-  if (gurl.has_ref())
-    components->fragment = gurl.ref();
-
-  return true;
 }
 
 void AdsServiceImpl::EventLog(const std::string& json) {
