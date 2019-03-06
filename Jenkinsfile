@@ -1,7 +1,7 @@
 pipeline {
     options {
         disableConcurrentBuilds()
-        timeout(time: 4, unit: "HOURS")
+        timeout(time: 1, unit: "DAYS")
         timestamps()
     }
     agent {
@@ -23,19 +23,19 @@ pipeline {
         stage("config") {
             steps {
                 sh """
+                    if [ -d brave-browser ]; then
+                        rm -rf brave-browser
+                    fi
+
+                    echo "Cloning brave-browser..."
+                    git clone -b ${TARGET_BRANCH} ${BB_REPO} || git clone ${BB_REPO}
+                    cd brave-browser
+
+                    git config user.name brave-builds
+                    git config user.email devops@brave.com
+                    git config push.default simple
+
                     if [ "`curl -s -w %{http_code} -o /dev/null ${BB_REPO}/tree/${BRANCH_TO_BUILD}`" = "404" ]; then
-                        if [ -d brave-browser ]; then
-                            rm -rf brave-browser
-                        fi
-
-                        echo "Cloning brave-browser..."
-                        git clone -b ${TARGET_BRANCH} ${BB_REPO} || git clone ${BB_REPO}
-                        cd brave-browser
-
-                        git config user.name brave-builds
-                        git config user.email devops@brave.com
-                        git config push.default simple
-
                         echo "Creating ${BRANCH_TO_BUILD} branch in brave-browser..."
                         git checkout -f -b ${BRANCH_TO_BUILD}
 
@@ -46,22 +46,22 @@ pipeline {
                         echo "Pushing changes..."
                         git commit -a -m "pin brave-core to branch ${BRANCH_TO_BUILD}"
                         git push ${BB_REPO}
-                    fi
-
-                    echo "Rebasing brave-browser branch against master..."
-                    cd brave-browser
-                    git checkout ${BRANCH_TO_BUILD}
-                    set +e
-                    git rebase origin/master
-                    if [ \$? -ne 0 ]; then
-                        echo "Rebase failed (conflicts); will need to be manually rebased to get new changes"
-                        git rebase --abort
                     else
-                        echo "rebased ${BRANCH_TO_BUILD} against master"
-                        git push ${BB_REPO}
+                        echo "Rebasing brave-browser branch against ${TARGET_BRANCH}..."
+                        git checkout ${BRANCH_TO_BUILD}
+
+                        set +e
+                        git fetch -p
+                        git rebase origin/${TARGET_BRANCH}
+                        if [ \$? -ne 0 ]; then
+                            echo "Failed to rebase (conflicts), will need to be manually rebased!"
+                            git rebase --abort
+                        else
+                            echo "Rebased ${BRANCH_TO_BUILD} against ${TARGET_BRANCH}"
+                            git push ${BB_REPO}
+                        fi
+                        set -e
                     fi
-                    set -e
-                    cd ..
 
                     echo "Sleeping 5m so new branch is discovered or associated PR created in brave-browser..."
                     sleep 300
@@ -71,20 +71,11 @@ pipeline {
         stage("build") {
             steps {
                 script {
-                    def response = httpRequest(url: "https://api.github.com/repos/brave/brave-browser/pulls?head=brave:${BRANCH_TO_BUILD}")
-                    def prDetails = readJSON(text: response.content)[0]
-                    def prNumber = prDetails ? prDetails.number : ""
-                    def refToBuild = prNumber ? "PR-" + prNumber : "${BRANCH_TO_BUILD}"
-                    def buildResult = build(job: "brave-browser-build-pr/" + refToBuild, propagate: false).result
-
-                    echo "Browser build ${buildResult} at ${JENKINS_URL}/job/brave-browser-build-pr/" + refToBuild
-
-                    if (buildResult == "ABORTED") {
-                        currentBuild.result = "FAILURE"
-                    }
-                    else {
-                        currentBuild.result = buildResult
-                    }
+                    response = httpRequest(url: "https://api.github.com/repos/brave/brave-browser/pulls?head=brave:${BRANCH_TO_BUILD}", quiet: true)
+                    prDetails = readJSON(text: response.content)[0]
+                    prNumber = prDetails ? prDetails.number : ""
+                    refToBuild = prNumber ? "PR-" + prNumber : URLEncoder.encode("${BRANCH_TO_BUILD}", "UTF-8")
+                    currentBuild.result = build(job: "brave-browser-build-pr/" + refToBuild, propagate: false).result
                 }
             }
         }
