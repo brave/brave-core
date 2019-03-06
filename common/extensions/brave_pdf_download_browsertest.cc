@@ -7,8 +7,6 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
 #include "brave/common/extensions/extension_constants.h"
-#include "brave/components/brave_shields/browser/extension_whitelist_service.h"
-#include "brave/vendor/extension-whitelist/extension_whitelist_parser.h"
 #include "chrome/browser/plugins/plugin_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -134,22 +132,6 @@ class BravePDFDownloadTest : public extensions::ExtensionFunctionalTest {
 public:
   BravePDFDownloadTest() = default;
   ~BravePDFDownloadTest() override = default;
-  void SetUpOnMainThread() override {
-    extensions::ExtensionFunctionalTest::SetUpOnMainThread();
-    // set up extension blacklist for testing
-    g_brave_browser_process->extension_whitelist_service()
-      ->extension_whitelist_client_
-      ->addToBlacklist("mhjfbmdgcfjbbpaeojofohoefgiehjai");
-    ExtensionRegistry* registry =
-      ExtensionRegistry::Get(browser()->profile());
-    const extensions::Extension* test_extension =
-      registry->GetExtensionById(
-        "mhjfbmdgcfjbbpaeojofohoefgiehjai",
-        ExtensionRegistry::EVERYTHING);
-    if (test_extension) {
-      registry->AddDisabled(test_extension);
-    }
-  }
 
 protected:
   bool ShouldEnableInstallVerification() override {

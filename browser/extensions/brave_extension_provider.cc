@@ -18,6 +18,21 @@
 namespace {
 
 bool IsBlacklisted(const extensions::Extension* extension) {
+  // This is a hardcoded list of extensions to block.
+  // Don't add new extensions to this list. Add them to
+  // the files managed by the extension whitelist service.
+  static std::vector<std::string> blacklisted_extensions({
+    // Used for tests, corresponds to
+    // brave/test/data/should-be-blocked-extension.
+    "mlklomjnahgiddgfdgjhibinlfibfffc",
+    // Chromium PDF Viewer.
+    "mhjfbmdgcfjbbpaeojofohoefgiehjai"
+  });
+
+  if (std::find(blacklisted_extensions.begin(), blacklisted_extensions.end(),
+      extension->id()) != blacklisted_extensions.end())
+    return true;
+
   return g_brave_browser_process->extension_whitelist_service()->IsBlacklisted(
     extension->id());
 }
@@ -27,6 +42,37 @@ bool IsBlacklisted(const extensions::Extension* extension) {
 namespace extensions {
 
 bool BraveExtensionProvider::IsVetted(const Extension* extension) {
+  // This is a hardcoded list of vetted extensions, mostly
+  // the built-in ones that ship with Brave or are used for
+  // unit tests.
+  // Don't add new extensions to this list. Add them to
+  // the files managed by the extension whitelist service.
+  static std::vector<std::string> vetted_extensions({
+    brave_extension_id,
+    brave_rewards_extension_id,
+    brave_sync_extension_id,
+    brave_webtorrent_extension_id,
+    pdfjs_extension_id,
+    // Brave Automation Extension
+    "aapnijgdinlhnhlmodcfapnahmbfebeb",
+    // Test ID: Brave Default Ad Block Updater
+    "naccapggpomhlhoifnlebfoocegenbol",
+    // Test ID: Brave Regional Ad Block Updater
+    // (9852EFC4-99E4-4F2D-A915-9C3196C7A1DE)
+    "dlpmaigjliompnelofkljgcmlenklieh",
+    // Test ID: Brave Tracking Protection Updater
+    "eclbkhjphkhalklhipiicaldjbnhdfkc",
+    // Test ID: PDFJS
+    "kpbdcmcgkedhpbcpfndimofjnefgjidd",
+    // Test ID: Brave HTTPS Everywhere Updater
+    "bhlmpjhncoojbkemjkeppfahkglffilp",
+    // Test ID: Brave Tor Client Updater
+    "ngicbhhaldfdgmjhilmnleppfpmkgbbk",
+  });
+  if (std::find(vetted_extensions.begin(), vetted_extensions.end(),
+                extension->id()) != vetted_extensions.end())
+    return true;
+
   return g_brave_browser_process->extension_whitelist_service()->IsWhitelisted(
     extension->id());
 }

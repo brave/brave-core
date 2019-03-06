@@ -117,7 +117,7 @@ brave_shields::AutoplayWhitelistService*
 BraveBrowserProcessImpl::autoplay_whitelist_service() {
   if (!autoplay_whitelist_service_) {
     autoplay_whitelist_service_ =
-      brave_shields::AutoplayWhitelistServiceFactory();
+        brave_shields::AutoplayWhitelistServiceFactory();
   }
   return autoplay_whitelist_service_.get();
 }
@@ -126,7 +126,7 @@ brave_shields::ExtensionWhitelistService*
 BraveBrowserProcessImpl::extension_whitelist_service() {
   if (!extension_whitelist_service_) {
     extension_whitelist_service_ =
-      brave_shields::ExtensionWhitelistServiceFactory();
+        brave_shields::ExtensionWhitelistServiceFactory();
   }
   return extension_whitelist_service_.get();
 }
