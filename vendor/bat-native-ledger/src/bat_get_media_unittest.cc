@@ -180,4 +180,86 @@ TEST(BatGetMediaTest, GetYoutubeUserFromUrl) {
   ASSERT_EQ(user, "brave");
 }
 
-}  // namespace braveledger_bat_get_media
+TEST(BatGetMediaTest, getRealEnteredYTPath) {
+  braveledger_bat_get_media::BatGetMedia* bat_get_media_ =
+      new braveledger_bat_get_media::BatGetMedia(nullptr);
+  std::string path = "/gaming";
+  std::string realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "/gaming");
+
+  path = "/watch?v=000000000000000";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "/watch");
+
+  path = "/playlist?list=0000000000000";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "/playlist");
+
+  path = "/bravesoftware";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "/bravesoftware");
+
+  path = "/bravesoftware/videos";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "/bravesoftware");
+
+  path = "bravesoftware/videos";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "bravesoftware");
+
+  path = "/bravesoftware/playlists";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "/bravesoftware");
+
+  path = "/bravesoftware/community";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "/bravesoftware");
+
+  path = "/bravesoftware/channels";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "/bravesoftware");
+
+  path = "/bravesoftware/about";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "/bravesoftware");
+
+  path = "/gaminggiant";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "/gaminggiant");
+
+  path = "/feed/trending";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "/feed");
+
+  path = "/subscription_manager?disable_polymer=1";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "/subscription_manager");
+
+  path = "";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "");
+
+  path = "/";
+  realPath =
+      bat_get_media_->getRealEnteredYTPath(path);
+  ASSERT_EQ(realPath, "/");
+
+  // cleanup
+  delete bat_get_media_;
+}
+
+}  // braveledger_bat_get_media
