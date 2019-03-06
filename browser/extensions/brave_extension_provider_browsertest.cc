@@ -22,6 +22,7 @@ class BraveExtensionProviderTest : public extensions::ExtensionFunctionalTest {
  public:
   void SetUpOnMainThread() override {
     extensions::ExtensionFunctionalTest::SetUpOnMainThread();
+  }
 };
 
 namespace extensions {
