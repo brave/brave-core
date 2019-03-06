@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index eaa7d8b25141f8f2d461f0b37054c772c8df6297..81b4540f090d25c11fbb05f5bba4b42635ffe3d5 100644
+index b40ca1e3be824f4e2f782d36a89fef1a33148779..ba446ed3d2da710495e2d5d63e26b5c0cabeb152 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -1473,6 +1473,12 @@ class CONTENT_EXPORT ContentBrowserClient {
+@@ -1479,6 +1479,12 @@ class CONTENT_EXPORT ContentBrowserClient {
    // blacklist policies are applied there.
    virtual bool IsRendererDebugURLBlacklisted(const GURL& url,
                                               BrowserContext* context);
