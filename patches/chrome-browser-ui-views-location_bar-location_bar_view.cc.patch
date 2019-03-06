@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 0e651a2a3d3e4137b6876270eaa58bf765ac4ef2..50de860910923090ae701c87df2da51408b4c992 100644
+index 5967b9ec10143f36e8cb5a9df71d911e76a6a400..89f33ce8988247a4ebea5b2f0581c2136072a979 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
 @@ -408,7 +408,7 @@ gfx::Size LocationBarView::CalculatePreferredSize() const {
