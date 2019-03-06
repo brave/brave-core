@@ -1,0 +1,15 @@
+import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
+
+grit("resources") {
+  source = "bat_ads_resources.grd"
+
+  outputs = [
+    "grit/bat_ads_resources.h",
+    "bat_ads_resources.pak",
+  ]
+
+  resource_ids = "//brave/browser/resources/resource_ids"
+
+  output_dir = "$root_gen_dir/bat/ads/resources"
+}
