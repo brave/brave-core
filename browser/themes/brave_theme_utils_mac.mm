@@ -13,3 +13,17 @@ bool SystemThemeSupportDarkMode() {
     return true;
   return false;
 }
+
+void SetSystemTheme(BraveThemeType type) {
+  if (type == BRAVE_THEME_TYPE_DEFAULT) {
+    [NSApp setAppearance:nil];
+    return;
+  }
+
+  if (@available(macOS 10.14, *)) {
+    NSAppearanceName new_appearance_name =
+        type == BRAVE_THEME_TYPE_DARK ? NSAppearanceNameDarkAqua
+                                      : NSAppearanceNameAqua;
+    [NSApp setAppearance:[NSAppearance appearanceNamed:new_appearance_name]];
+  }
+}

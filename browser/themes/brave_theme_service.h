@@ -20,11 +20,11 @@ class PrefRegistrySyncable;
 }
 
 enum BraveThemeType {
-  // DEFAULT acs two wasy depends on system theme mode.
-  // If system theme mode is disableld, we override it with channel based
+  // DEFAULT type acts as two ways depends on system theme mode.
+  // If system theme mode is disabled, we override it with channel based
   // policy. See GetThemeTypeBasedOnChannel(). In this case, user can see
   // two options in theme settings(dark and light).
-  // Otherwise, it act like system theme mode. In this case, user can see
+  // Otherwise, it acts like system theme mode. In this case, user can see
   // three options in theme settings(os theme, dark and light).
   BRAVE_THEME_TYPE_DEFAULT,
   BRAVE_THEME_TYPE_DARK,
@@ -51,6 +51,7 @@ class BraveThemeService : public ThemeService {
   friend class BraveThemeServiceTestWithoutSystemTheme;
   FRIEND_TEST_ALL_PREFIXES(BraveThemeAPIBrowserTest, BraveThemeEventRouterTest);
   FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, GetBraveThemeListTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, SystemThemeChangeTest);
 
   // Own |mock_router|.
   void SetBraveThemeEventRouterForTesting(

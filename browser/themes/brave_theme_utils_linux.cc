@@ -9,3 +9,6 @@ bool SystemThemeSupportDarkMode() {
   // Linux doesn't support dark mode yet.
   return false;
 }
+
+void SetSystemTheme(BraveThemeType type) {
+}

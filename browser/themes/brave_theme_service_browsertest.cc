@@ -109,3 +109,33 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NativeThemeObserverTest) {
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
 }
+
+#if defined(OS_MACOSX)
+IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
+  // TODO(simonhong): Delete this when we gets dark mode enabled branch on
+  // MacOS.
+  if (!BraveThemeService::SystemThemeModeEnabled())
+    return;
+
+  const bool initial_mode =
+      ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled();
+  Profile* profile = browser()->profile();
+
+  // Change to light.
+  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
+  EXPECT_FALSE(
+      ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+
+  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
+  EXPECT_TRUE(
+      ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+
+  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
+  EXPECT_FALSE(
+      ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+
+  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DEFAULT);
+  EXPECT_EQ(initial_mode,
+            ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+}
+#endif
