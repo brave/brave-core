@@ -142,10 +142,12 @@ int OnBeforeURLRequest_AdBlockTPPreWork(
     return net::OK;
   }
 
-  // These should probably move to our ad block lists
-  if (IsEmptyDataURLRedirect(ctx->request_url) ||
-      IsBlockedResource(ctx->request_url)) {
+  // Most blocked resources have been moved to our ad block lists.
+  // This is only for special cases like the PDFjs ping which can
+  // occur before the ad block lists are fully loaded.
+  if (IsBlockedResource(ctx->request_url)) {
     ctx->new_url_spec = kEmptyDataURI;
+
     return net::OK;
   }
 

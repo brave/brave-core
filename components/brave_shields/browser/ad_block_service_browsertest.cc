@@ -589,3 +589,25 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   EXPECT_TRUE(as_expected);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
+
+// Load an image from a specific subdomain, and make sure it is blocked.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockNYP) {
+  AddRulesToAdBlock("||sp1.nypost.com$third-party");
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  GURL tab_url = embedded_test_server()->GetURL("b.com",
+                                                kAdBlockTestPage);
+  GURL resource_url =
+    embedded_test_server()->GetURL("sp1.nypost.com", "/logo.png");
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+  content::WebContents* contents =
+    browser()->tab_strip_model()->GetActiveWebContents();
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          base::StringPrintf(
+                                            "setExpectations(0, 1, 0, 0);"
+                                            "addImage('%s')",
+                                            resource_url.spec().c_str()),
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
