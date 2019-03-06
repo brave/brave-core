@@ -3,36 +3,38 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_BUNDLE_STATE_H_
-#define BAT_ADS_BUNDLE_STATE_H_
+#ifndef BAT_ADS_INTERNAL_CATALOG_STATE_H_
+#define BAT_ADS_INTERNAL_CATALOG_STATE_H_
 
 #include <stdint.h>
 #include <string>
 #include <vector>
 #include <map>
 
-#include "bat/ads/ad_info.h"
+#include "bat/ads/issuers_info.h"
+
+#include "bat/ads/internal/campaign_info.h"
+#include "bat/ads/internal/json_helper.h"
 
 namespace ads {
 
-struct BundleState {
-  BundleState();
-  explicit BundleState(const BundleState& state);
-  ~BundleState();
+struct CatalogState {
+  CatalogState();
+  explicit CatalogState(const CatalogState& state);
+  ~CatalogState();
 
-  const std::string ToJson() const;
   Result FromJson(
       const std::string& json,
       const std::string& json_schema,
       std::string* error_description = nullptr);
 
   std::string catalog_id;
-  uint64_t catalog_version;
-  uint64_t catalog_ping;
-  uint64_t catalog_last_updated_timestamp_in_seconds;
-  std::map<std::string, std::vector<AdInfo>> categories;
+  uint64_t version;
+  uint64_t ping;
+  std::vector<CampaignInfo> campaigns;
+  IssuersInfo issuers;
 };
 
 }  // namespace ads
 
-#endif  // BAT_ADS_BUNDLE_STATE_H_
+#endif  // BAT_ADS_INTERNAL_CATALOG_STATE_H_

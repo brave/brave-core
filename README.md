@@ -20,20 +20,14 @@ bundle-schema.json
 
 `catalog-schema.json` and `bundle-schema.json` are JSON Schemas which specify the JSON-based format to define the structure of the JSON data for validation, documentation, and interaction control. It provides the contract for the JSON data and how that data can be modified.
 
-## Build
-
-    mkdir -p build && cd build
-    cmake ..
-    make
-
 ## API
 
 ### Native
 
-Initialize Ads by calling Initialize() when Ads are enabled or disabled on the Client as follows:
+Initialize Ads by calling `Initialize` when Ads are enabled or disabled on the Client as follows:
 
 ```
-Initialize()
+void Initialize()
 ```
 
 `OnForeground` should be called when the browser enters the foreground
@@ -88,7 +82,12 @@ void TabClosed(
 void RemoveAllHistory()
 ```
 
-`SetConfirmationsIsReady` should be called to inform ads if confirmations is ready
+`IsSupportedRegion` should be called to determine if Ads are supported for this operating system's region
+```
+bool IsSupportedRegion()
+```
+
+`SetConfirmationsIsReady` should be called to inform Ads if Confirmations is ready
 ```
 void SetConfirmationsIsReady(
     const bool is_ready)
@@ -148,7 +147,7 @@ std::string GetAdsLocale() const
 uint64_t GetAdsPerHour() const
 ```
 
-`GetAdsPerDay` should return the maximum number of Ads that can be shown per day
+`GetAdsPerDay` should return the number of Ads that can be shown per day
 ```
 uint64_t GetAdsPerDay() const
 ```
@@ -276,13 +275,6 @@ void GetAds(
     OnGetAdsCallback callback)
 ```
 
-`GetUrlComponents` should get the components of the specified URL
-```
-bool GetUrlComponents(
-    const std::string& url,
-    UrlComponents* components)
-```
-
 `EventLog` should log an event to persistent storage
 ```
 void EventLog(const std::string& json)
@@ -350,19 +342,3 @@ cd Contents
 ```
 npm run test -- brave_unit_tests --filter=Ads*
 ```
-
-## Initial Limitations
-
-- Catalog is downloaded twice upon startup
-- Coming soon for Linux
-- `EventLog`'s are persisted in the Console Log, whereas in Muon they were persisted in a JSON file
-- Implement DemoAPI logs
-- Additional unit test coverage
-- Migrate Mocks and Tests to Brave Core
-- Remove CMake and migrate to Brave Core
-
-All of these will be fixed _very soon!_
-
-## Unscheduled Future Features
-
-- `IsNotificationsAvailable` always returns `true` from Brave Core irrespective if they are enabled or disabled on the operating system

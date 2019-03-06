@@ -2,20 +2,25 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+if (is_android) {
+  import("//build/config/android/rules.gni")
+}
+
+dep_base = rebase_path("../..", "//")
+
 config("external_config") {
+  visibility = [
+    ":*",
+  ]
   include_dirs = [ "include" ]
-  # TODO(bridiver) - fix include dirs here and in deps to move things out of the top level
-  include_dirs += [ "../" ]
 }
 
 config("internal_config") {
+  visibility = [
+    ":*",
+    "//brave/test:*",
+  ]
   include_dirs = [ "src" ]
-
-  if (is_win) {
-    cflags_cc = [
-      "/wd4101",  # unreferenced local variable
-    ]
-  }
 }
 
 group("bat-native-ads") {
@@ -49,72 +54,16 @@ source_set("ads") {
   public_configs = [ ":external_config" ]
   configs += [ ":internal_config" ]
 
+  visibility = [
+    ":*",
+    # add this only when ledger and confirmations are in the same process
+    # rebase_path("bat-native-ledger", dep_base),
+    # rebase_path("bat-native-ads", dep_base),
+  ]
+
   output_name = "bat_native_ads"
 
   sources = [
-    "src/ads_impl.cc",
-    "src/ads_impl.h",
-    "src/ads_serve.cc",
-    "src/ads_serve.h",
-    "src/ads.cc",
-    "src/ads.h",
-    "src/bundle_state.cc",
-    "src/bundle.cc",
-    "src/bundle.h",
-    "src/campaign_info.cc",
-    "src/campaign_info.h",
-    "src/catalog_creative_info.cc",
-    "src/catalog_creative_info.h",
-    "src/catalog_creative_set_info.cc",
-    "src/catalog_creative_set_info.h",
-    "src/catalog_geo_target_info.cc",
-    "src/catalog_geo_target_info.h",
-    "src/catalog_payload_info.cc",
-    "src/catalog_payload_info.h",
-    "src/catalog_segment_info.cc",
-    "src/catalog_segment_info.h",
-    "src/catalog_state.cc",
-    "src/catalog_state.h",
-    "src/catalog_type_info.cc",
-    "src/catalog_type_info.h",
-    "src/catalog.cc",
-    "src/catalog.h",
-    "src/client_state.cc",
-    "src/client_state.h",
-    "src/client.cc",
-    "src/client.h",
-    "src/error_helper.cc",
-    "src/error_helper.h",
-    "src/event_type_blur_info.cc",
-    "src/event_type_blur_info.h",
-    "src/event_type_destroy_info.cc",
-    "src/event_type_destroy_info.h",
-    "src/event_type_focus_info.cc",
-    "src/event_type_focus_info.h",
-    "src/event_type_load_info.cc",
-    "src/event_type_load_info.h",
-    "src/json_helper.cc",
-    "src/json_helper.h",
-    "src/locale_helper.cc",
-    "src/locale_helper.h",
-    "src/logging.h",
-    "src/search_provider_info.cc",
-    "src/search_provider_info.h",
-    "src/search_providers.cc",
-    "src/search_providers.h",
-    "src/static_values.h",
-    "src/string_helper.cc",
-    "src/string_helper.h",
-    "src/time_helper.cc",
-    "src/time_helper.h",
-    "src/uri_helper.cc",
-    "src/uri_helper.h",
-    "src/bat/ads/ad_info.cc",
-    "src/bat/ads/client_info.cc",
-    "src/bat/ads/issuer_info.cc",
-    "src/bat/ads/issuers_info.cc",
-    "src/bat/ads/notification_info.cc",
-    "src/bat/ads/url_components.cc",
     "include/bat/ads/ad_info.h",
     "include/bat/ads/ads_client.h",
     "include/bat/ads/ads.h",
@@ -127,12 +76,71 @@ source_set("ads") {
     "include/bat/ads/notification_info.h",
     "include/bat/ads/notification_result_type.h",
     "include/bat/ads/result.h",
-    "include/bat/ads/url_components.h",
+    "src/bat/ads/ad_info.cc",
+    "src/bat/ads/ads.cc",
+    "src/bat/ads/bundle_state.cc",
+    "src/bat/ads/client_info.cc",
+    "src/bat/ads/issuer_info.cc",
+    "src/bat/ads/issuers_info.cc",
+    "src/bat/ads/notification_info.cc",
+    "src/bat/ads/internal/ads_impl.cc",
+    "src/bat/ads/internal/ads_impl.h",
+    "src/bat/ads/internal/ads_serve.cc",
+    "src/bat/ads/internal/ads_serve.h",
+    "src/bat/ads/internal/bundle.cc",
+    "src/bat/ads/internal/bundle.h",
+    "src/bat/ads/internal/campaign_info.cc",
+    "src/bat/ads/internal/campaign_info.h",
+    "src/bat/ads/internal/catalog_creative_info.cc",
+    "src/bat/ads/internal/catalog_creative_info.h",
+    "src/bat/ads/internal/catalog_creative_set_info.cc",
+    "src/bat/ads/internal/catalog_creative_set_info.h",
+    "src/bat/ads/internal/catalog_geo_target_info.cc",
+    "src/bat/ads/internal/catalog_geo_target_info.h",
+    "src/bat/ads/internal/catalog_payload_info.cc",
+    "src/bat/ads/internal/catalog_payload_info.h",
+    "src/bat/ads/internal/catalog_segment_info.cc",
+    "src/bat/ads/internal/catalog_segment_info.h",
+    "src/bat/ads/internal/catalog_state.cc",
+    "src/bat/ads/internal/catalog_state.h",
+    "src/bat/ads/internal/catalog_type_info.cc",
+    "src/bat/ads/internal/catalog_type_info.h",
+    "src/bat/ads/internal/catalog.cc",
+    "src/bat/ads/internal/catalog.h",
+    "src/bat/ads/internal/client_state.cc",
+    "src/bat/ads/internal/client_state.h",
+    "src/bat/ads/internal/client.cc",
+    "src/bat/ads/internal/client.h",
+    "src/bat/ads/internal/error_helper.cc",
+    "src/bat/ads/internal/error_helper.h",
+    "src/bat/ads/internal/event_type_blur_info.cc",
+    "src/bat/ads/internal/event_type_blur_info.h",
+    "src/bat/ads/internal/event_type_destroy_info.cc",
+    "src/bat/ads/internal/event_type_destroy_info.h",
+    "src/bat/ads/internal/event_type_focus_info.cc",
+    "src/bat/ads/internal/event_type_focus_info.h",
+    "src/bat/ads/internal/event_type_load_info.cc",
+    "src/bat/ads/internal/event_type_load_info.h",
+    "src/bat/ads/internal/json_helper.cc",
+    "src/bat/ads/internal/json_helper.h",
+    "src/bat/ads/internal/locale_helper.cc",
+    "src/bat/ads/internal/locale_helper.h",
+    "src/bat/ads/internal/logging.h",
+    "src/bat/ads/internal/search_provider_info.cc",
+    "src/bat/ads/internal/search_provider_info.h",
+    "src/bat/ads/internal/search_providers.cc",
+    "src/bat/ads/internal/search_providers.h",
+    "src/bat/ads/internal/static_values.h",
+    "src/bat/ads/internal/time_helper.cc",
+    "src/bat/ads/internal/time_helper.h",
+    "src/bat/ads/internal/uri_helper.cc",
+    "src/bat/ads/internal/uri_helper.h",
   ]
-
+    
   deps = [
     "//base",
-    "//brave/vendor/bat-native-usermodel",
-    "//brave/vendor/bat-native-rapidjson",
+    "//url",
+    rebase_path("bat-native-usermodel", dep_base),
+    rebase_path("bat-native-rapidjson", dep_base),
   ]
 }

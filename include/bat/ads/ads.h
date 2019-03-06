@@ -38,7 +38,7 @@ class ADS_EXPORT Ads {
 
   static Ads* CreateInstance(AdsClient* ads_client);
 
-  // Should be called when Brave Ads is enabled or disabled on the Client
+  // Should be called when Ads are enabled or disabled on the Client
   virtual void Initialize() = 0;
 
   // Should be called when the browser enters the foreground
@@ -76,10 +76,11 @@ class ADS_EXPORT Ads {
   // Should be called to remove all cached history
   virtual void RemoveAllHistory() = 0;
 
-  // Should be called to determine if the operating system's region is supported
+  // Shhould be called to determine if Ads are supported for this operating
+  // system's region
   virtual bool IsSupportedRegion() = 0;
 
-  // Should be called to inform ads if confirmations is ready
+  // Should be called to inform Ads if Confirmations is ready
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 
   // Should be called when the user changes the operating system's locale, i.e.

@@ -6,6 +6,7 @@
 #ifndef BAT_ADS_ADS_CLIENT_H_
 #define BAT_ADS_ADS_CLIENT_H_
 
+#include <stdint.h>
 #include <string>
 #include <vector>
 #include <map>
@@ -20,7 +21,6 @@
 #include "bat/ads/client_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/notification_info.h"
-#include "bat/ads/url_components.h"
 #include "bat/ads/result.h"
 
 namespace ads {
@@ -161,11 +161,6 @@ class ADS_EXPORT AdsClient {
       const std::string& region,
       const std::string& category,
       OnGetAdsCallback callback) = 0;
-
-  // Should get the components of the specified URL
-  virtual bool GetUrlComponents(
-      const std::string& url,
-      UrlComponents* components) const = 0;
 
   // Should log an event to persistent storage however as events may be queued
   // they need an event name and timestamp adding as follows, replacing ... with

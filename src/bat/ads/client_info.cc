@@ -5,7 +5,7 @@
 
 #include "bat/ads/client_info.h"
 
-#include "json_helper.h"
+#include "bat/ads/internal/json_helper.h"
 
 namespace ads {
 
