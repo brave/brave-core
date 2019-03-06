@@ -5,5 +5,5 @@
 export const getTabData = (tabId: number) =>
   chrome.tabs.get(tabId, (tab: chrome.tabs.Tab) => {
     const rewardsPanelActions = require('../actions/rewardsPanelActions').default
-    rewardsPanelActions.onTabRetrieved(tab, '')
+    rewardsPanelActions.onTabRetrieved(tab)
   })

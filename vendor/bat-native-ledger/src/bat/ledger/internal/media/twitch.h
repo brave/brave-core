@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/ledger.h"
@@ -41,7 +42,7 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
                                  const std::string& referrer);
 
  private:
-  static std::string GetMediaIdFromParts(
+  static std::pair<std::string, std::string> GetMediaIdFromParts(
       const std::map<std::string, std::string>& parts);
 
   static std::string GetMediaURL(const std::string& mediaId);
@@ -77,6 +78,7 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
     const ledger::TwitchEventInfo& twitch_info,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
+    const std::string& user_id,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
@@ -90,6 +92,7 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
     const std::string& media_url,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
+    const std::string& user_id,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers);
@@ -119,7 +122,8 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
                          const ledger::VisitData& visit_data,
                          const uint64_t window_id,
                          const std::string& fav_icon,
-                         const std::string& channel_id);
+                         const std::string& channel_id,
+                         const std::string& publisher_key = "");
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, ledger::TwitchEventInfo> twitch_events;
