@@ -86,6 +86,7 @@ def get_app_info(appinfo, args):
     to perform the upload
     """
 
+    changelog_url = "https://github.com/brave/brave-browser/blob/master/CHANGELOG.md"
     chrome_major = get_chrome_version().split('.')[0]
     chrome_minor = get_chrome_version().split('.')[1]
 
@@ -103,8 +104,9 @@ def get_app_info(appinfo, args):
         appinfo['short_version'] = chrome_major + '.' + get_upload_version()
         appinfo['version'] = appinfo['short_version'].split('.')[2] + \
             '.' + appinfo['short_version'].split('.')[3]
-    appinfo['release_notes'] = 'Brave Browser Channel: {}; Version: {}; Uploaded by omaha-upload.py script.'\
-        .format(release_channel(), appinfo['version'])
+    appinfo['release_notes'] = 'Brave Browser version: {}\n\n<a href="{}">Brave Changelog</a>'\
+        .format(appinfo['version'] if appinfo['platform'] in 'win32' else appinfo['short_version'],
+                changelog_url)
 
     return appinfo
 
