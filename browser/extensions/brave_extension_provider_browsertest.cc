@@ -18,7 +18,11 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 
-using BraveExtensionProviderTest = extensions::ExtensionFunctionalTest;
+class BraveExtensionProviderTest : public extensions::ExtensionFunctionalTest {
+ public:
+  void SetUpOnMainThread() override {
+    extensions::ExtensionFunctionalTest::SetUpOnMainThread();
+};
 
 namespace extensions {
 

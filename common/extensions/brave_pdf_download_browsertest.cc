@@ -4,6 +4,7 @@
 
 #include "base/run_loop.h"
 #include "base/task/post_task.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/plugins/plugin_utils.h"

@@ -9,7 +9,9 @@
 #include <vector>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/components/brave_shields/browser/extension_whitelist_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -17,16 +19,22 @@ namespace {
 
 bool IsBlacklisted(const extensions::Extension* extension) {
   // This is a hardcoded list of extensions to block.
-  // Typically instead you can just use the brave/go-updater to list
-  // a blacklisted extension that you want to block for existing clients.
+  // Don't add new extensions to this list. Add them to
+  // the files managed by the extension whitelist service.
   static std::vector<std::string> blacklisted_extensions({
-    // Used for tests, corresponds to brave/test/data/should-be-blocked-extension.
+    // Used for tests, corresponds to
+    // brave/test/data/should-be-blocked-extension.
     "mlklomjnahgiddgfdgjhibinlfibfffc",
     // Chromium PDF Viewer.
     "mhjfbmdgcfjbbpaeojofohoefgiehjai"
   });
-  return std::find(blacklisted_extensions.begin(), blacklisted_extensions.end(),
-      extension->id()) != blacklisted_extensions.end();
+
+  if (std::find(blacklisted_extensions.begin(), blacklisted_extensions.end(),
+      extension->id()) != blacklisted_extensions.end())
+    return true;
+
+  return g_brave_browser_process->extension_whitelist_service()->IsBlacklisted(
+    extension->id());
 }
 
 }  // namespace
@@ -34,61 +42,25 @@ bool IsBlacklisted(const extensions::Extension* extension) {
 namespace extensions {
 
 bool BraveExtensionProvider::IsVetted(const Extension* extension) {
+  // This is a hardcoded list of vetted extensions, mostly
+  // the built-in ones that ship with Brave or are used for
+  // unit tests.
+  // Don't add new extensions to this list. Add them to
+  // the files managed by the extension whitelist service.
   static std::vector<std::string> vetted_extensions({
     brave_extension_id,
     brave_rewards_extension_id,
     brave_sync_extension_id,
     brave_webtorrent_extension_id,
     pdfjs_extension_id,
-    // 1Password
-    "aomjjhallfgjeglblehebfpbcfeobpgk",
-    // BetterTTV
-    "ajopnjidmegmdimjlfnijceegpefgped",
-    // Cloud Print
-    "mfehgcgbbipciphmccgaenjidiccnmng",
-    // CryptoTokenExtension
-    "kmendfapggjehodndflmmgagdbamhnfd",
-    // Bitwarden
-    "nngceckbapebfimnlniiiahkandclblb",
-    // Brave Ad Block Updater
-    "cffkpbalmllkdoenhmdmpbkajipdjfam",
-    // Brave Tracking Protection Updater
-    "afalakplffnnnlkncjhbmahjfjhmlkal",
-    // Brave HTTPS Everywhere Updater
-    "oofiananboodjbbmdelgdommihjbkfag",
-    // Brave Tor Client Updater (Windows)
-    "cpoalefficncklhjfpglfiplenlpccdb",
-    // Brave Tor Client Updater (Mac)
-    "cldoidikboihgcjfkhdeidbpclkineef",
-    // Brave Tor Client Updater (Linux)
-    "biahpgbdmdkfgndcmfiipgcebobojjkp",
-    // Dashlane
-    "fdjamakpfbbddfjaooikfcpapjohcfmg",
-    // Enpass
-    "kmcfomidfpdkfieipokbalgegidffkal",
-    // Grammarly for Chrome
-    "kbfnbcaeplbcioakkpcpgfkobkghlhen",
-    // Honey
-    "bmnlcjabgnpnenekpadlanbbkooimhnj",
-    // LastPass
-    "hdokiejnpimakedhajhdlcegeplioahd",
-    // MetaMask
-    "nkbihfbeogaeaoehlefnkodbefgpgknn",
-    // Pinterest
-    "gpdjojdkbbmdfjfahjcgigfpmkopogic",
-    // Pocket
-    "niloccemoadcdkdjlinkgdfekeahmflj",
-    // Vimium
-    "dbepggeogbaibhgnhhndojpepiihcmeb",
-    // Reddit Enhancement Suite
-    "kbmfpngjjgdllneeigpgjifpgocmfgmb",
     // Web Store
     "ahfgeienlihckogmohjhadlkjgocpleb",
     // Brave Automation Extension
     "aapnijgdinlhnhlmodcfapnahmbfebeb",
     // Test ID: Brave Default Ad Block Updater
     "naccapggpomhlhoifnlebfoocegenbol",
-    // Test ID: Brave Regional Ad Block Updater (9852EFC4-99E4-4F2D-A915-9C3196C7A1DE)
+    // Test ID: Brave Regional Ad Block Updater
+    // (9852EFC4-99E4-4F2D-A915-9C3196C7A1DE)
     "dlpmaigjliompnelofkljgcmlenklieh",
     // Test ID: Brave Tracking Protection Updater
     "eclbkhjphkhalklhipiicaldjbnhdfkc",
@@ -99,8 +71,12 @@ bool BraveExtensionProvider::IsVetted(const Extension* extension) {
     // Test ID: Brave Tor Client Updater
     "ngicbhhaldfdgmjhilmnleppfpmkgbbk",
   });
-  return std::find(vetted_extensions.begin(), vetted_extensions.end(),
-      extension->id()) != vetted_extensions.end();
+  if (std::find(vetted_extensions.begin(), vetted_extensions.end(),
+                extension->id()) != vetted_extensions.end())
+    return true;
+
+  return g_brave_browser_process->extension_whitelist_service()->IsWhitelisted(
+    extension->id());
 }
 
 BraveExtensionProvider::BraveExtensionProvider() {
