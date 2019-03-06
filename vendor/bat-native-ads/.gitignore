@@ -1,0 +1,5 @@
+build/*
+.vscode/*
+.gn
+.DS_Store
+desktop.ini
