@@ -59,8 +59,8 @@ describe('rewards panel reducer', () => {
         state.rewardsPanelData.publishers = {
           id_1: {
             tabUrl: 'https://clifton.io',
-            name: 'Clifton',
-            publisher_key: 'clifton.io'
+            publisher_key: 'clifton.io',
+            name: 'Clifton'
           }
         }
 
@@ -72,8 +72,63 @@ describe('rewards panel reducer', () => {
           publishers: {
             id_1: {
               tabUrl: 'https://clifton.io',
-              name: 'Clifton',
-              publisher_key: 'clifton.io'
+              publisher_key: 'clifton.io',
+              name: 'Clifton'
+            }
+          }
+        }
+
+        state = reducers(state, {
+          type: types.ON_TAB_RETRIEVED,
+          payload
+        })
+
+        expect(state.rewardsPanelData).toEqual(expectedState2)
+      })
+
+      it('url is the same, but publisher was not saved correctly', () => {
+        const initState: Rewards.State = { ...defaultState, walletCreated: true }
+        const payload = {
+          tab: {
+            url: 'https://clifton.io',
+            incognito: false,
+            active: true,
+            windowId: 1
+          }
+        }
+
+        // first visit
+        const expectedState1: Rewards.State = {
+          ...defaultState,
+          walletCreated: true,
+          publishers: {
+            id_1: {
+              tabUrl: 'https://clifton.io'
+            }
+          }
+        }
+
+        let state = reducers({ rewardsPanelData: initState }, {
+          type: types.ON_TAB_RETRIEVED,
+          payload
+        })
+
+        expect(state.rewardsPanelData).toEqual(expectedState1)
+
+        // imitates ON_PUBLISHER_DATA
+        state.rewardsPanelData.publishers = {
+          id_1: {
+            tabUrl: 'https://clifton.io'
+          }
+        }
+
+        // second visit
+        const expectedState2: Rewards.State = {
+          ...defaultState,
+          walletCreated: true,
+          publishers: {
+            id_1: {
+              tabUrl: 'https://clifton.io'
             }
           }
         }
@@ -122,9 +177,9 @@ describe('rewards panel reducer', () => {
         // imitates ON_PUBLISHER_DATA
         state.rewardsPanelData.publishers = {
           id_1: {
-            tabUrl: 'https://clifton.io',
-            name: 'Clifton',
-            publisher_key: 'clifton.io'
+            tabUrl: 'clifton.io',
+            publisher_key: 'clifton.io',
+            name: 'Clifton'
           }
         }
 

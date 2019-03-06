@@ -122,7 +122,8 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
                          const ledger::VisitData& visit_data,
                          const uint64_t window_id,
                          const std::string& fav_icon,
-                         const std::string& channel_id);
+                         const std::string& channel_id,
+                         const std::string& publisher_key = "");
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, ledger::TwitchEventInfo> twitch_events;
