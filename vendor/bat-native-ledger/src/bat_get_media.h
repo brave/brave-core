@@ -194,13 +194,20 @@ class BatGetMedia {
                               const ledger::VisitData& visit_data,
                               const std::string& providerType);
 
+  void processYoutubeCustomPath(
+      uint64_t windowId,
+      const ledger::VisitData& visit_data,
+      const std::string& providerType,
+      const std::string& publisher_key);
+
   void onGetChannelHeadlineVideo(
       uint64_t windowId,
       const ledger::VisitData& visit_data,
       const std::string& providerType,
       bool success,
       const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const std::map<std::string, std::string>& headers,
+      const bool is_custom_path);
 
   void onFetchPublisherFromDBResponse(
       ledger::Result result,
@@ -209,7 +216,8 @@ class BatGetMedia {
       const ledger::VisitData& visit_data,
       const std::string& providerType,
       const std::string& publisher_key,
-      const std::string& publisher_blob);
+      const std::string& publisher_blob,
+      const bool is_custom_path);
 
   void processYoutubeAsPublisherType(const std::string& data,
                                      uint64_t windowId,
@@ -231,7 +239,8 @@ class BatGetMedia {
       const ledger::VisitData& visit_data,
       const std::string& providerType,
       const std::string& publisher_key,
-      const std::string& publisher_blob);
+      const std::string& publisher_blob,
+      const bool is_custom_path);
 
   void fetchDataFromUrl(const std::string& url,
                         FetchDataFromUrlCallback callback);
@@ -249,6 +258,12 @@ class BatGetMedia {
 
   std::string getNameFromChannel(const std::string& data);
 
+  bool isPredefinedYTPath(const std::string& path) const;
+
+  std::string parseChannelIdFromCustomPathPage(
+      const std::string& data);
+  std::string getRealEnteredYTPath(const std::string& path) const;
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 
   std::map<std::string, ledger::TwitchEventInfo> twitchEvents;
@@ -258,6 +273,7 @@ class BatGetMedia {
   FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, GetYoutubeMediaIdFromUrl);
   FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, GetYoutubePublisherKeyFromUrl);
   FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, GetYoutubeUserFromUrl);
+  FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, getRealEnteredYTPath);
 };
 
 }  // namespace braveledger_bat_get_media
