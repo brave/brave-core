@@ -106,6 +106,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       brave_rewards::RewardsService* rewards_service) override;
   void GetAddressesForPaymentId(const base::ListValue* args);
   void GetConfirmationsHistory(const base::ListValue* args);
+  void GetRewardsMainEnabled(const base::ListValue* args);
+  void OnGetRewardsMainEnabled(bool enabled);
 
   void OnConfirmationsHistory(int total_viewed, double estimated_earnings);
 
@@ -272,6 +274,9 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getConfirmationsHistory",
       base::BindRepeating(&RewardsDOMHandler::GetConfirmationsHistory,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getRewardsMainEnabled",
+      base::BindRepeating(&RewardsDOMHandler::GetRewardsMainEnabled,
       base::Unretained(this)));
 }
 
@@ -990,6 +995,21 @@ void RewardsDOMHandler::OnConfirmationsHistoryChanged(
   if (web_ui()->CanCallJavascript()) {
     web_ui()->CallJavascriptFunctionUnsafe(
         "brave_rewards.confirmationsHistoryChanged");
+  }
+}
+
+void RewardsDOMHandler::GetRewardsMainEnabled(
+    const base::ListValue* args) {
+  rewards_service_->GetRewardsMainEnabled(base::Bind(
+          &RewardsDOMHandler::OnGetRewardsMainEnabled,
+          weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnGetRewardsMainEnabled(
+    bool enabled) {
+  if (web_ui()->CanCallJavascript()) {
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.rewardsEnabled",
+        base::Value(enabled));
   }
 }
 
