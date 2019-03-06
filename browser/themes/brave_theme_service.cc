@@ -167,11 +167,11 @@ void BraveThemeService::OnPreferenceChanged(const std::string& pref_name) {
   profile()->GetPrefs()->SetBoolean(kUseOverriddenBraveThemeType, false);
 
   // Notify dark (cross-platform) and light (platform-specific) variants
+  // When theme is changed from light to dark, we notify to light theme observer
+  // because NativeThemeObserver observes light native theme.
   GetActiveBraveThemeType(profile()) == BraveThemeType::BRAVE_THEME_TYPE_LIGHT
       ? ui::NativeThemeDarkAura::instance()->NotifyObservers()
       : ui::NativeTheme::GetInstanceForNativeUi()->NotifyObservers();
-
-  NotifyThemeChanged();
 
   if (!brave_theme_event_router_)
     brave_theme_event_router_ = extensions::BraveThemeEventRouter::Create();
