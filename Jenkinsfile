@@ -1,7 +1,7 @@
 pipeline {
     options {
         disableConcurrentBuilds()
-        timeout(time: 4, unit: "HOURS")
+        timeout(time: 1, unit: "DAYS")
         timestamps()
     }
     agent {
@@ -71,20 +71,11 @@ pipeline {
         stage("build") {
             steps {
                 script {
-                    def response = httpRequest(url: "https://api.github.com/repos/brave/brave-browser/pulls?head=brave:${BRANCH_TO_BUILD}")
-                    def prDetails = readJSON(text: response.content)[0]
-                    def prNumber = prDetails ? prDetails.number : ""
-                    def refToBuild = prNumber ? "PR-" + prNumber : "${BRANCH_TO_BUILD}"
-                    def buildResult = build(job: "brave-browser-build-pr/" + refToBuild, propagate: false).result
-
-                    echo "Browser build ${buildResult} at ${JENKINS_URL}/job/brave-browser-build-pr/" + refToBuild
-
-                    if (buildResult == "ABORTED") {
-                        currentBuild.result = "FAILURE"
-                    }
-                    else {
-                        currentBuild.result = buildResult
-                    }
+                    response = httpRequest(url: "https://api.github.com/repos/brave/brave-browser/pulls?head=brave:${BRANCH_TO_BUILD}", quiet: true)
+                    prDetails = readJSON(text: response.content)[0]
+                    prNumber = prDetails ? prDetails.number : ""
+                    refToBuild = prNumber ? "PR-" + prNumber : URLEncoder.encode("${BRANCH_TO_BUILD}", "UTF-8")
+                    currentBuild.result = build(job: "brave-browser-build-pr/" + refToBuild, propagate: false).result
                 }
             }
         }
