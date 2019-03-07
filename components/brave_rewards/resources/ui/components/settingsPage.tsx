@@ -40,6 +40,7 @@ class SettingsPage extends React.Component<Props, {}> {
     this.actions.getReconcileStamp()
     this.actions.getConfirmationsHistory()
     this.actions.getExcludedPublishersNumber()
+    this.actions.getAdsData()
   }
 
   componentDidMount () {
@@ -59,7 +60,6 @@ class SettingsPage extends React.Component<Props, {}> {
 
     if (this.props.rewardsData.firstLoad === false) {
       this.refreshActions()
-      this.actions.getAdsData()
     }
     this.actions.checkImported()
     this.actions.getGrants()
