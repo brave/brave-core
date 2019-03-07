@@ -11,9 +11,9 @@ class TorLauncherServiceObserver : public base::CheckedObserver {
  public:
   ~TorLauncherServiceObserver() override {}
 
-  virtual void OnTorLauncherCrashed() {};
-  virtual void OnTorCrashed(int64_t pid) {};
-  virtual void OnTorLaunched(bool result, int64_t pid) {};
+  virtual void OnTorLauncherCrashed() {}
+  virtual void OnTorCrashed(int64_t pid) {}
+  virtual void OnTorLaunched(bool result, int64_t pid) {}
 };
 
 }  // namespace tor

@@ -189,7 +189,7 @@ void BraveSyncClientImpl::OnExtensionSystemReady() {
   if (sync_prefs_->GetSyncEnabled()) {
     LoadOrUnloadExtension(true);
   }
-};
+}
 
 void BraveSyncClientImpl::ClearOrderMap() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);

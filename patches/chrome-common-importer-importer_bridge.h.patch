@@ -7,22 +7,22 @@ index b4250c91d1b83ea920b3de9cd6b1a7929b30ffc5..a1b4d74fd1cb2d0b2125b2f4c3bc4dfb
        const std::vector<ImporterAutofillFormDataEntry>& entries) = 0;
  
 +  virtual void SetCookies(
-+      const std::vector<net::CanonicalCookie>& cookies) {};
++      const std::vector<net::CanonicalCookie>& cookies) {}
 +
 +  virtual void UpdateStats(
-+      const BraveStats& stats) {};
++      const BraveStats& stats) {}
 +
 +  virtual void UpdateLedger(
-+      const BraveLedger& ledger) {};
++      const BraveLedger& ledger) {}
 +
 +  virtual void UpdateReferral(
-+      const BraveReferral& referral) {};
++      const BraveReferral& referral) {}
 +
 +  virtual void UpdateWindows(
-+      const ImportedWindowState& windowState) {};
++      const ImportedWindowState& windowState) {}
 +
 +  virtual void UpdateSettings(
-+      const SessionStoreSettings& settings) {};
++      const SessionStoreSettings& settings) {}
 +
    // Notifies the coordinator that the import operation has begun.
    virtual void NotifyStarted() = 0;
