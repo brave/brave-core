@@ -5,9 +5,11 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 // @ts-ignore
-import { withKnobs, boolean } from '@storybook/addon-knobs'
+import { withKnobs, boolean, number } from '@storybook/addon-knobs'
 import { withState } from '@dump247/storybook-state'
 const favicon = require('../../assets/img/fake_favicon.png')
+
+import 'emptykit.css'
 
 // Components
 import Shields from './index'
@@ -20,23 +22,14 @@ storiesOf('Feature Components/Shields', module)
     }
     return (
       <Shields
-        fakeOnChange={fakeOnChange}
-        enabled={boolean('Enabled?', store.state.enabled)}
-        sitename={'buzzfeed.com'}
         favicon={favicon}
-      />
-    )
-  }))
-  .add('Disabled', withState({ enabled: false }, (store) => {
-    const fakeOnChange = () => {
-      store.set({ enabled: !store.state.enabled })
-    }
-    return (
-      <Shields
-        fakeOnChange={fakeOnChange}
+        hostname={'buzzfeed.com'}
         enabled={boolean('Enabled?', store.state.enabled)}
-        sitename={'buzzfeed.com'}
-        favicon={favicon}
+        adsTrackersBlocked={number('3rd-party trackers blocked', 80) || 0}
+        httpsUpgrades={number('Connections upgraded to HTTPS', 0) || 0}
+        scriptsBlocked={number('Scripts blocked', 11) || 0}
+        fingerprintingBlocked={number('3rd-party device recognition blocked', 0) || 0}
+        fakeOnChange={fakeOnChange}
       />
     )
   }))

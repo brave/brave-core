@@ -8,29 +8,82 @@ import * as React from 'react'
 import { ShieldsPanel } from '../../../src/features/shields'
 
 // Components group
-import BraveShieldsHeader from './components/header'
-import BraveShieldsInterfaceControls from './components/interfaceControls'
-import BraveShieldsPrivacyControls from './components/privacyControls'
-// import BraveShieldsSecurityControls from './components/securityControls'
-import BraveShieldsFooter from './components/footer'
+import Header from './components/header'
+import InterfaceControls from './components/interfaceControls'
+import PrivacyControls from './components/privacyControls'
+import Footer from './components/footer'
 
-interface BraveShieldsProps {
+interface Props {
   enabled: boolean
-  sitename: string
+  hostname: string
   favicon: string
+  adsTrackersBlocked: number
+  httpsUpgrades: number
+  scriptsBlocked: number
+  fingerprintingBlocked: number
   fakeOnChange: () => void
 }
 
-export default class Shields extends React.PureComponent<BraveShieldsProps, {}> {
+interface State {
+  isBlockedListOpen: boolean
+}
+
+export default class Shields extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = { isBlockedListOpen: false }
+  }
+  setBlockedListOpen = () => {
+    this.setState({ isBlockedListOpen: !this.state.isBlockedListOpen })
+  }
   render () {
-    const { fakeOnChange, enabled, sitename, favicon } = this.props
+    const {
+      enabled,
+      favicon,
+      hostname,
+      adsTrackersBlocked,
+      httpsUpgrades,
+      scriptsBlocked,
+      fingerprintingBlocked,
+      fakeOnChange
+    } = this.props
+    const { isBlockedListOpen } = this.state
     return (
-      <ShieldsPanel enabled={enabled} style={{ width: '330px' }}>
-        <BraveShieldsHeader enabled={enabled} fakeOnChange={fakeOnChange} sitename={sitename} favicon={favicon} />
-        <BraveShieldsInterfaceControls enabled={enabled} sitename={sitename} favicon={favicon} />
-        <BraveShieldsPrivacyControls enabled={enabled} sitename={sitename} favicon={favicon} />
-        {/* <BraveShieldsSecurityControls enabled={enabled} sitename={sitename} favicon={favicon} /> */}
-        <BraveShieldsFooter />
+      <ShieldsPanel style={{ width: '370px' }}>
+        <Header
+          enabled={enabled}
+          favicon={favicon}
+          hostname={hostname}
+          isBlockedListOpen={isBlockedListOpen}
+          adsTrackersBlocked={adsTrackersBlocked}
+          httpsUpgrades={httpsUpgrades}
+          scriptsBlocked={scriptsBlocked}
+          fingerprintingBlocked={fingerprintingBlocked}
+          fakeOnChange={fakeOnChange}
+        />
+        {
+          enabled ? (
+            <>
+              <InterfaceControls
+                favicon={favicon}
+                hostname={hostname}
+                setBlockedListOpen={this.setBlockedListOpen}
+                isBlockedListOpen={isBlockedListOpen}
+                adsTrackersBlocked={adsTrackersBlocked}
+                httpsUpgrades={httpsUpgrades}
+              />
+              <PrivacyControls
+                favicon={favicon}
+                hostname={hostname}
+                setBlockedListOpen={this.setBlockedListOpen}
+                isBlockedListOpen={isBlockedListOpen}
+                scriptsBlocked={scriptsBlocked}
+                fingerprintingBlocked={fingerprintingBlocked}
+              />
+            </>
+          ) : null
+        }
+        <Footer isBlockedListOpen={isBlockedListOpen} />
       </ShieldsPanel>
     )
   }
