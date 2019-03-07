@@ -1,0 +1,64 @@
+diff --git a/third_party/blink/renderer/core/loader/frame_loader.cc b/third_party/blink/renderer/core/loader/frame_loader.cc
+index 72affbe4e722bfec3112073cd79731d85a542a08..35606752867c0677d8b47bac7947277a7d32bccb 100644
+--- a/third_party/blink/renderer/core/loader/frame_loader.cc
++++ b/third_party/blink/renderer/core/loader/frame_loader.cc
+@@ -112,6 +112,13 @@
+ #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ 
++// #include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #include "third_party/blink/renderer/core/dom/document.h"
++// #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++// #include "brave/third_party/blink/brave_page_graph/page_graph.h"
++// #endif
++
+ namespace blink {
+ 
+ using namespace html_names;
+@@ -944,6 +951,23 @@ void FrameLoader::StartNavigation(const FrameLoadRequest& passed_request,
+     LocalFrame::ConsumeTransientUserActivation(frame_);
+   }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  // First see if there is a parent
++  // {
++  //   Frame* parent_frame = frame_->Tree().Parent();
++  //   if (parent_frame != nullptr &&
++  //       parent_frame->IsLocalFrame() &&
++  //       parent_frame->GetDocument()->GetPageGraph() != nullptr) {
++  //     LocalFrame* local_parent_frame = static_cast<LocalFrame*>(parent_frame);
++  //     const DOMNodeId node_id = frame_->GetPageGraphNodeIdInParentDocument();
++  //     current_request_id_ = local_parent_frame->GetDocument()->GetPageGraph()->GetNewRequestId();
++  //     local_parent_frame->GetDocument()->GetPageGraph()->RegisterRequestStartFromElm(
++  //       node_id, current_request_id_, ::brave_page_graph::kRequestTypeDocument
++  //     );
++  //   }
++  // }
++// #endif
++
+   Client()->BeginNavigation(
+       resource_request, origin_document, nullptr /* document_loader */,
+       navigation_type, policy, has_transient_activation, frame_load_type,
+@@ -1075,6 +1099,21 @@ mojom::CommitResult FrameLoader::CommitSameDocumentNavigation(
+       frame_load_type = WebFrameLoadType::kReplaceCurrentItem;
+   }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  // {
++  //   Frame* parent_frame = frame_->Tree().Parent();
++  //   if (parent_frame != nullptr &&
++  //       parent_frame->IsLocalFrame() &&
++  //       parent_frame->GetDocument()->GetPageGraph() != nullptr) {
++  //     LocalFrame* local_parent_frame = static_cast<LocalFrame*>(parent_frame);
++  //     local_parent_frame->GetDocument()->GetPageGraph()->RegisterRequestComplete(
++  //       current_request_id_,
++  //       ::brave_page_graph::kRequestTypeDocument
++  //     );
++  //   }
++  // }
++// #endif
++
+   // Perform the same-document navigation.
+   LoadInSameDocument(url, state_object, frame_load_type, history_item,
+                      client_redirect_policy, origin_document,

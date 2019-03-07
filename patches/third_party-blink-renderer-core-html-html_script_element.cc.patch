@@ -1,0 +1,26 @@
+diff --git a/third_party/blink/renderer/core/html/html_script_element.cc b/third_party/blink/renderer/core/html/html_script_element.cc
+index bab8769dc88693b05095316a24545ce65c97565f..8f4ac82ac336f5315372e46dc27dc667698be654 100644
+--- a/third_party/blink/renderer/core/html/html_script_element.cc
++++ b/third_party/blink/renderer/core/html/html_script_element.cc
+@@ -41,6 +41,8 @@
+ #include "third_party/blink/renderer/core/trustedtypes/trusted_types_util.h"
+ #include "third_party/blink/renderer/platform/bindings/exception_state.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ using namespace html_names;
+@@ -49,7 +51,11 @@ inline HTMLScriptElement::HTMLScriptElement(Document& document,
+                                             const CreateElementFlags flags)
+     : HTMLElement(kScriptTag, document),
+       loader_(InitializeScriptLoader(flags.IsCreatedByParser(),
+-                                     flags.WasAlreadyStarted())) {}
++                                     flags.WasAlreadyStarted())) {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  loader_->SetHTMLScriptElement(this);
++#endif
++}
+ 
+ HTMLScriptElement* HTMLScriptElement::Create(Document& document,
+                                              const CreateElementFlags flags) {

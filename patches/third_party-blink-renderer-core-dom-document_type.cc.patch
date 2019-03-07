@@ -1,0 +1,35 @@
+diff --git a/third_party/blink/renderer/core/dom/document_type.cc b/third_party/blink/renderer/core/dom/document_type.cc
+index e28838c63990ff1f1be26c7ae9c8faa63d939806..57836f791d99a918e7c58422bceaef4872e324fe 100644
+--- a/third_party/blink/renderer/core/dom/document_type.cc
++++ b/third_party/blink/renderer/core/dom/document_type.cc
+@@ -25,6 +25,12 @@
+ #include "third_party/blink/renderer/core/dom/document.h"
+ #include "third_party/blink/renderer/core/dom/named_node_map.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ DocumentType::DocumentType(Document* document,
+@@ -34,7 +40,16 @@ DocumentType::DocumentType(Document* document,
+     : Node(document, kCreateOther),
+       name_(name),
+       public_id_(public_id),
+-      system_id_(system_id) {}
++      system_id_(system_id) {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    if (GetDocument().GetPageGraph() != nullptr) {
++      GetDocument().GetPageGraph()->RegisterHTMLElementNodeCreated(
++        DOMNodeIds::IdForNode(this), name);
++    }
++  }
++#endif
++}
+ 
+ String DocumentType::nodeName() const {
+   return name();
