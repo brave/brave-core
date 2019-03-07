@@ -1257,6 +1257,10 @@ void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) {
   }
 }
 
+void LedgerImpl::StartAutoContribute() {
+  bat_contribution_->StartAutoContribute();
+}
+
 const braveledger_bat_helper::WALLET_PROPERTIES_ST&
 LedgerImpl::GetWalletProperties() const {
   return bat_state_->GetWalletProperties();

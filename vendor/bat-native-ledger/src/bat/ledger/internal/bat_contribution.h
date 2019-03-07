@@ -146,6 +146,9 @@ class BatContribution {
                                   int year,
                                   uint32_t date);
 
+  // Triggers contribution process for auto contribute table
+  void StartAutoContribute();
+
  private:
   std::string GetAnonizeProof(const std::string& registrar_VK,
                               const std::string& id,

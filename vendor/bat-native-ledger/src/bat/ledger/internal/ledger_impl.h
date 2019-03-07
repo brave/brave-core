@@ -439,6 +439,7 @@ class LedgerImpl : public ledger::Ledger,
 
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
   void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) override;
+  void StartAutoContribute() override;
 
   void RefreshPublisher(
       const std::string& publisher_key,
