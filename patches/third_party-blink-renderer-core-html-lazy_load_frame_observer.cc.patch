@@ -1,0 +1,20 @@
+diff --git a/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc b/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc
+index 5039504e8deefa41d5880a398722a72eeb118d4d..75bf942e1aa42653777fcd3564ef3ec14cbda1de 100644
+--- a/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc
++++ b/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc
+@@ -177,6 +177,15 @@ void LazyLoadFrameObserver::LoadImmediately() {
+   // DisconnectContentFrame() if the content frame changes.
+   DCHECK(element_->ContentFrame());
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  // if (element_->GetDocument().GetPageGraph() != nullptr) {
++  //   element_->GetDocument().GetPageGraph()->RegisterRequestStartFromElm(
++  //     DOMNodeIds::IdForNode(element_),
++  //     scoped_request_info->resource_request.Url().GetString().Utf8().data(),
++  //     brave_page_graph::kRequestTypeDocument);
++  // }
++// #endif
++
+   // Note that calling FrameLoader::StartNavigation() causes the
+   // |lazy_load_intersection_observer_| to be disconnected.
+   To<LocalFrame>(element_->ContentFrame())

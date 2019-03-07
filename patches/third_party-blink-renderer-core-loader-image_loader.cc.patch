@@ -1,0 +1,83 @@
+diff --git a/third_party/blink/renderer/core/loader/image_loader.cc b/third_party/blink/renderer/core/loader/image_loader.cc
+index 6e5ce0bb7eba8aa3c32d11df3123e2ed375569cd..54282adae5540ce57695b7c6f8760eae93c3d17e 100644
+--- a/third_party/blink/renderer/core/loader/image_loader.cc
++++ b/third_party/blink/renderer/core/loader/image_loader.cc
+@@ -65,6 +65,13 @@
+ #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
+ #include "third_party/blink/renderer/platform/weborigin/security_policy.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ namespace {
+@@ -565,7 +572,20 @@ void ImageLoader::DoUpdateFromElement(
+       }
+     }
+ 
+-    new_image_content = ImageResourceContent::Fetch(params, document.Fetcher());
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  new_image_content = ImageResourceContent::Fetch(params, document.Fetcher(), &inspector_id_);
++  {
++    ::brave_page_graph::PageGraph* page_graph = element_->GetDocument().GetPageGraph();
++    if (page_graph != nullptr) {
++      auto node_id = DOMNodeIds::IdForNode(element_);
++      page_graph->RegisterRequestStartFromElm(
++        node_id, inspector_id_, url,
++        ::brave_page_graph::RequestType::kRequestTypeImage);
++    }
++  }
++#else
++  new_image_content = ImageResourceContent::Fetch(params, document.Fetcher());
++#endif
+ 
+     // If this load is starting while navigating away, treat it as an auditing
+     // keepalive request, and don't report its results back to the element.
+@@ -823,6 +843,20 @@ void ImageLoader::ImageNotifyFinished(ImageResourceContent* resource) {
+     return;
+   }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ::brave_page_graph::PageGraph* page_graph = element_->GetDocument().GetPageGraph();
++    if (page_graph != nullptr) {
++      if (resource->ErrorOccurred()) {
++        page_graph->RegisterRequestError(inspector_id_);
++      } else {
++        page_graph->RegisterRequestComplete(inspector_id_,
++          ResourceType::kImage);
++      }
++    }
++  }
++#endif
++
+   if (resource->ErrorOccurred()) {
+     pending_load_event_.Cancel();
+ 
+@@ -899,8 +933,9 @@ void ImageLoader::DispatchPendingLoadEvent(
+   if (!image_content_)
+     return;
+   CHECK(image_complete_);
+-  if (GetElement()->GetDocument().GetFrame())
++  if (GetElement()->GetDocument().GetFrame()) {
+     DispatchLoadEvent();
++  }
+ 
+   // Checks Document's load event synchronously here for performance.
+   // This is safe because DispatchPendingLoadEvent() is called asynchronously.
+@@ -909,8 +944,9 @@ void ImageLoader::DispatchPendingLoadEvent(
+ 
+ void ImageLoader::DispatchPendingErrorEvent(
+     std::unique_ptr<IncrementLoadEventDelayCount> count) {
+-  if (GetElement()->GetDocument().GetFrame())
++  if (GetElement()->GetDocument().GetFrame()) {
+     GetElement()->DispatchEvent(*Event::Create(event_type_names::kError));
++  }
+ 
+   // Checks Document's load event synchronously here for performance.
+   // This is safe because DispatchPendingErrorEvent() is called asynchronously.
