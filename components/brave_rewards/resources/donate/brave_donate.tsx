@@ -71,11 +71,16 @@ window.cr.define('brave_rewards_donate', function () {
     getActions().onRecurringDonations(list)
   }
 
+  function reconcileStamp (stamp: number) {
+    getActions().onReconcileStamp(stamp)
+  }
+
   return {
     initialize,
     publisherBanner,
     walletProperties,
-    recurringDonations
+    recurringDonations,
+    reconcileStamp
   }
 })
 
