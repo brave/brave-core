@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -53,8 +54,10 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTestWithoutSystemTheme,
   Profile* profile = browser()->profile();
   Profile* profile_private = profile->GetOffTheRecordProfile();
 
-  const ui::ThemeProvider& tp = ThemeService::GetThemeProviderForProfile(profile);
-  const ui::ThemeProvider& tp_private = ThemeService::GetThemeProviderForProfile(profile_private);
+  const ui::ThemeProvider& tp =
+      ThemeService::GetThemeProviderForProfile(profile);
+  const ui::ThemeProvider& tp_private =
+      ThemeService::GetThemeProviderForProfile(profile_private);
 
   auto test_theme_property = BraveThemeProperties::COLOR_FOR_TEST;
 
@@ -64,23 +67,31 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTestWithoutSystemTheme,
 
   // Test light theme
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_LIGHT, BTS::GetActiveBraveThemeType(profile));
-  EXPECT_EQ(BraveThemeProperties::kLightColorForTest, tp.GetColor(test_theme_property));
+  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_LIGHT,
+            BTS::GetActiveBraveThemeType(profile));
+  EXPECT_EQ(BraveThemeProperties::kLightColorForTest,
+            tp.GetColor(test_theme_property));
 
   // Test light theme private
   SetBraveThemeType(profile_private, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_LIGHT, BTS::GetActiveBraveThemeType(profile_private));
-  EXPECT_EQ(BraveThemeProperties::kPrivateColorForTest, tp_private.GetColor(test_theme_property));
+  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_LIGHT,
+            BTS::GetActiveBraveThemeType(profile_private));
+  EXPECT_EQ(BraveThemeProperties::kPrivateColorForTest,
+            tp_private.GetColor(test_theme_property));
 
   // Test dark theme
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_DARK, BTS::GetActiveBraveThemeType(profile));
-  EXPECT_EQ(BraveThemeProperties::kDarkColorForTest, tp.GetColor(test_theme_property));
+  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_DARK,
+            BTS::GetActiveBraveThemeType(profile));
+  EXPECT_EQ(BraveThemeProperties::kDarkColorForTest,
+            tp.GetColor(test_theme_property));
 
   // Test dark theme private
   SetBraveThemeType(profile_private, BraveThemeType::BRAVE_THEME_TYPE_DARK);
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_DARK, BTS::GetActiveBraveThemeType(profile_private));
-  EXPECT_EQ(BraveThemeProperties::kPrivateColorForTest, tp_private.GetColor(test_theme_property));
+  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_DARK,
+            BTS::GetActiveBraveThemeType(profile_private));
+  EXPECT_EQ(BraveThemeProperties::kPrivateColorForTest,
+            tp_private.GetColor(test_theme_property));
 }
 
 // Test whether appropriate native theme observer is called when brave theme is

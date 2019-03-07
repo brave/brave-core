@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/themes/brave_theme_service.h"
+
+#include <utility>
 
 #include "base/command_line.h"
 #include "base/strings/string_util.h"
@@ -186,8 +189,8 @@ void BraveThemeService::OnPreferenceChanged(const std::string& pref_name) {
 #endif
   if (notify_theme_observer_here) {
     // Notify dark (cross-platform) and light (platform-specific) variants
-    // When theme is changed from light to dark, we notify to light theme observer
-    // because NativeThemeObserver observes light native theme.
+    // When theme is changed from light to dark, we notify to light theme
+    // observer because NativeThemeObserver observes light native theme.
     GetActiveBraveThemeType(profile()) == BraveThemeType::BRAVE_THEME_TYPE_LIGHT
         ? ui::NativeThemeDarkAura::instance()->NotifyObservers()
         : ui::NativeTheme::GetInstanceForNativeUi()->NotifyObservers();

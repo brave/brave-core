@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -21,18 +22,18 @@
 using BTS = BraveThemeService;
 
 class BraveThemeAPIBrowserTest : public InProcessBrowserTest {
-  public:
-    void SetUpOnMainThread() override {
-      InProcessBrowserTest::SetUpOnMainThread();
-      extension_ = extensions::ExtensionBuilder("Test").Build();
-    }
+ public:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    extension_ = extensions::ExtensionBuilder("Test").Build();
+  }
 
-    scoped_refptr<const extensions::Extension> extension() {
-      return extension_;
-    }
+  scoped_refptr<const extensions::Extension> extension() {
+    return extension_;
+  }
 
-  private:
-    scoped_refptr<const extensions::Extension> extension_;
+ private:
+  scoped_refptr<const extensions::Extension> extension_;
 };
 
 namespace {

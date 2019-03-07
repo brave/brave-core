@@ -7,9 +7,9 @@
 
 void NotifyProperThemeObserver();
 
-#include "../../../../ui/native_theme/native_theme_win.cc"
+#include "../../../../ui/native_theme/native_theme_win.cc"  // NOLINT
 
-// TODO(simonhong): Move this function to .ui namespace to share with
+// TODO(simonhong): Move this function to ui namespace to share with
 // native_theme_mac.mm.
 void NotifyProperThemeObserver() {
   // When theme is changed from light to dark, we notify to light theme observer

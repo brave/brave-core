@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/brave_theme_event_router.h"
+
+#include <utility>
+#include <string>
 
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/common/extensions/api/brave_theme.h"
