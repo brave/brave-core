@@ -189,7 +189,7 @@ class ContributeBox extends React.Component<Props, State> {
       contributionMonthly,
       enabledContribute,
       reconcileStamp,
-      numExcludedSites,
+      excludedPublishersNumber,
       autoContributeList
     } = this.props.rewardsData
     const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(walletInfo.choices, walletInfo.rates)
@@ -218,7 +218,7 @@ class ContributeBox extends React.Component<Props, State> {
           ? <ModalContribute
             rows={contributeRows}
             onRestore={this.onRestore}
-            numExcludedSites={numExcludedSites}
+            numExcludedSites={excludedPublishersNumber}
             onClose={this.onModalContributeToggle}
           />
           : null
@@ -258,7 +258,7 @@ class ContributeBox extends React.Component<Props, State> {
           rows={topRows}
           allSites={allSites}
           numSites={numRows}
-          numExcludedSites={numExcludedSites}
+          numExcludedSites={excludedPublishersNumber}
           onRestore={this.onRestore}
           onShowAll={this.onModalContributeToggle}
           headerColor={true}

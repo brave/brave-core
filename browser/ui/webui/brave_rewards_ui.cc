@@ -91,7 +91,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetContributionAmount(double amount);
   void OnGetAddresses(const std::string func_name,
                       const std::map<std::string, std::string>& addresses);
-  void OnGetNumExcludedSites(const std::string& publisher_id, uint32_t num);
+  void OnGetExcludedPublishersNumber(uint32_t num);
   void OnGetAutoContributeProps(
       int error_code,
       std::unique_ptr<brave_rewards::WalletProperties> wallet_properties,
@@ -108,6 +108,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetConfirmationsHistory(const base::ListValue* args);
   void GetRewardsMainEnabled(const base::ListValue* args);
   void OnGetRewardsMainEnabled(bool enabled);
+
+  void GetExcludedPublishersNumber(const base::ListValue* args);
 
   void OnConfirmationsHistory(int total_viewed, double estimated_earnings);
 
@@ -277,6 +279,9 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getRewardsMainEnabled",
       base::BindRepeating(&RewardsDOMHandler::GetRewardsMainEnabled,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getExcludedPublishersNumber",
+      base::BindRepeating(&RewardsDOMHandler::GetExcludedPublishersNumber,
       base::Unretained(this)));
 }
 
@@ -613,27 +618,20 @@ void RewardsDOMHandler::OnContentSiteUpdated(
         weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetNumExcludedSites(const std::string& publisher_id,
-    uint32_t num) {
+void RewardsDOMHandler::OnGetExcludedPublishersNumber(uint32_t num) {
   if (web_ui()->CanCallJavascript()) {
-    base::DictionaryValue excludedSitesInfo;
-    excludedSitesInfo.SetString("num", std::to_string(num));
-    excludedSitesInfo.SetString("publisherKey", publisher_id);
-
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.numExcludedSites",
-        excludedSitesInfo);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.excludedNumber",
+        base::Value(std::to_string(num)));
   }
 }
-
 void RewardsDOMHandler::OnExcludedSitesChanged(
     brave_rewards::RewardsService* rewards_service,
     std::string publisher_id,
     bool excluded) {
   if (rewards_service_)
-    rewards_service_->GetNumExcludedSites(base::Bind(
-          &RewardsDOMHandler::OnGetNumExcludedSites,
-          weak_factory_.GetWeakPtr(),
-          publisher_id));
+    rewards_service_->GetExcludedPublishersNumber(
+        base::Bind(&RewardsDOMHandler::OnGetExcludedPublishersNumber,
+                   weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnNotificationAdded(
@@ -1010,6 +1008,15 @@ void RewardsDOMHandler::OnGetRewardsMainEnabled(
   if (web_ui()->CanCallJavascript()) {
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.rewardsEnabled",
         base::Value(enabled));
+  }
+}
+
+void RewardsDOMHandler::GetExcludedPublishersNumber(
+    const base::ListValue* args) {
+  if (rewards_service_) {
+    rewards_service_->GetExcludedPublishersNumber(
+        base::Bind(&RewardsDOMHandler::OnGetExcludedPublishersNumber,
+                   weak_factory_.GetWeakPtr()));
   }
 }
 

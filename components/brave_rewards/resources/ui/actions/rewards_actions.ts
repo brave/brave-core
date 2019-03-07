@@ -109,8 +109,8 @@ export const onWalletExists = (exists: boolean) => action(types.ON_WALLET_EXISTS
 
 export const restorePublishers = () => action(types.ON_RESTORE_PUBLISHERS)
 
-export const onNumExcludedSites = (excludedSitesInfo: {num: string, publisherKey: string}) => action(types.ON_NUM_EXCLUDED_SITES, {
-  excludedSitesInfo
+export const onExcludedNumber = (num: number) => action(types.ON_EXCLUDED_PUBLISHERS_NUMBER, {
+  num
 })
 
 export const onContributionAmount = (amount: number) => action(types.ON_CONTRIBUTION_AMOUNT, {
@@ -183,3 +183,5 @@ export const onConfirmationsHistory = (data: {adsTotalPages: number, adsEstimate
 export const getConfirmationsHistory = () => action(types.GET_CONFIRMATIONS_HISTORY)
 
 export const onConfirmationsHistoryChanged = () => action(types.ON_CONFIRMATIONS_HISTORY_CHANGED)
+
+export const getExcludedPublishersNumber = () => action(types.GET_EXCLUDED_PUBLISHERS_NUMBER)

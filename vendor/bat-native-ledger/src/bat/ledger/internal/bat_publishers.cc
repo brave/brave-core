@@ -132,14 +132,6 @@ std::string BatPublishers::GetBalanceReportName(
   return std::to_string(year) + "_" + std::to_string(month);
 }
 
-void BatPublishers::setNumExcludedSitesInternal(
-    ledger::PUBLISHER_EXCLUDE exclude) {
-  unsigned int previousNum = getNumExcludedSites();
-  setNumExcludedSites((exclude == ledger::PUBLISHER_EXCLUDE::EXCLUDED)
-                      ? ++previousNum
-                      : --previousNum);
-}
-
 void BatPublishers::saveVisitInternal(
     std::string publisher_id,
     ledger::VisitData visit_data,
@@ -316,8 +308,6 @@ void BatPublishers::onSetExcludeInternal(
 
   publisher_info->excluded = exclude;
 
-  setNumExcludedSitesInternal(exclude);
-
   std::string publisherKey = publisher_info->id;
 
   ledger_->SetPublisherInfo(std::move(publisher_info));
@@ -334,8 +324,7 @@ void BatPublishers::RestorePublishers() {
 
 void BatPublishers::OnRestorePublishersInternal(bool success) {
   if (success) {
-    setNumExcludedSites(0);
-    OnExcludedSitesChanged("", ledger::PUBLISHER_EXCLUDE::ALL);
+    OnExcludedSitesChanged("-1", ledger::PUBLISHER_EXCLUDE::ALL);
     SynopsisNormalizer();
   } else {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
@@ -359,11 +348,6 @@ void BatPublishers::setPublisherMinVisits(const unsigned int visits) {
 
 void BatPublishers::setPublishersLastRefreshTimestamp(uint64_t ts) {
   state_->pubs_load_timestamp_ = ts;
-  saveState();
-}
-
-void BatPublishers::setNumExcludedSites(const unsigned int amount) {
-  state_->num_excluded_sites_ = amount;
   saveState();
 }
 
@@ -393,10 +377,6 @@ bool BatPublishers::getPublisherAllowNonVerified() const {
 
 uint64_t BatPublishers::getLastPublishersListLoadTimestamp() const {
   return state_->pubs_load_timestamp_;
-}
-
-unsigned int BatPublishers::getNumExcludedSites() const {
-  return state_->num_excluded_sites_;
 }
 
 bool BatPublishers::getPublisherAllowVideos() const {

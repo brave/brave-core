@@ -225,7 +225,6 @@ struct PUBLISHER_STATE_ST {
   uint64_t min_publisher_duration_ =
       braveledger_ledger::_default_min_publisher_duration;  // In seconds
   unsigned int min_visits_ = 1u;
-  unsigned int num_excluded_sites_ = 0;
   bool allow_non_verified_ = true;
   // last publishers list load timestamp (seconds)
   uint64_t pubs_load_timestamp_ = 0ull;

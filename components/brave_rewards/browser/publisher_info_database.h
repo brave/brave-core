@@ -52,6 +52,8 @@ class PublisherInfoDatabase {
 
   bool RestorePublishers();
 
+  int GetExcludedPublishersCount();
+
   bool InsertOrUpdateActivityInfo(const ledger::PublisherInfo& info);
 
   bool InsertOrUpdateActivityInfos(const ledger::PublisherInfoList& list);

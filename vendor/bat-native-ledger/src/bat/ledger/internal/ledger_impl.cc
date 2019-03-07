@@ -510,8 +510,9 @@ unsigned int LedgerImpl::GetPublisherMinVisits() const {
   return bat_publishers_->getPublisherMinVisits();
 }
 
-unsigned int LedgerImpl::GetNumExcludedSites() const {
-  return bat_publishers_->getNumExcludedSites();
+void LedgerImpl::GetExcludedPublishersNumber(
+    ledger::GetExcludedPublishersNumberDBCallback callback) const {
+  ledger_client_->GetExcludedPublishersNumberDB(callback);
 }
 
 bool LedgerImpl::GetPublisherAllowNonVerified() const {

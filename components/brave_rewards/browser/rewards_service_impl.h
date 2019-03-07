@@ -91,8 +91,8 @@ class RewardsServiceImpl : public RewardsService,
                          const std::string& promotionId) const override;
   void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) override;
-  void GetNumExcludedSites(
-      const GetNumExcludedSitesCallback& callback) override;
+  void GetExcludedPublishersNumber(
+      const GetExcludedPublishersNumberCallback& callback) override;
   void RecoverWallet(const std::string passPhrase) const override;
   void GetContentSiteList(
       uint32_t start,
@@ -393,6 +393,12 @@ class RewardsServiceImpl : public RewardsService,
 
   void SaveNormalizedPublisherList(
       const ledger::PublisherInfoListStruct& list) override;
+
+  void GetExcludedPublishersNumberDB(
+      ledger::GetExcludedPublishersNumberDBCallback callback) override;
+
+  void OnGetExcludedPublishersNumberDB(ledger::GetExcludedPublishersNumberDBCallback callback,
+                             int number);
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;

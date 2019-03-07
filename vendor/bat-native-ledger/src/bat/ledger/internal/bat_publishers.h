@@ -49,8 +49,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void setPublishersLastRefreshTimestamp(uint64_t ts);
 
-  void setNumExcludedSites(const unsigned int amount);
-
   void setExclude(const std::string& publisher_id,
                   const ledger::PUBLISHER_EXCLUDE& exclude);
 
@@ -81,8 +79,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   bool getPublisherAllowNonVerified() const;
 
   uint64_t getLastPublishersListLoadTimestamp() const;
-
-  unsigned int getNumExcludedSites() const;
 
   bool getPublisherAllowVideos() const;
 
@@ -158,8 +154,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                                 std::unique_ptr<ledger::PublisherInfo> info,
                                 const std::string& favicon_url,
                                 uint64_t window_id);
-
-  void setNumExcludedSitesInternal(ledger::PUBLISHER_EXCLUDE exclude);
 
   void onSetExcludeInternal(
     ledger::PUBLISHER_EXCLUDE exclude,

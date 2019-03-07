@@ -389,6 +389,29 @@ bool PublisherInfoDatabase::RestorePublishers() {
   return restore_q.Run();
 }
 
+int PublisherInfoDatabase::GetExcludedPublishersCount() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return 0;
+  }
+
+  sql::Statement query(db_.GetUniqueStatement(
+      "SELECT COUNT(*) FROM publisher_info WHERE excluded=?"));
+
+  query.BindInt(0, static_cast<int>(
+      ledger::PUBLISHER_EXCLUDE::EXCLUDED));
+
+  if (query.Step()) {
+    return query.ColumnInt(0);
+  }
+
+  return 0;
+}
+
 /**
  *
  * ACTIVITY INFO

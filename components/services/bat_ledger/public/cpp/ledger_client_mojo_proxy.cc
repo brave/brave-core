@@ -680,4 +680,23 @@ void LedgerClientMojoProxy::ConfirmationsTransactionHistoryDidChange() {
   ledger_client_->ConfirmationsTransactionHistoryDidChange();
 }
 
+// static
+void LedgerClientMojoProxy::OnGetExcludedPublishersNumberDB(
+    CallbackHolder<GetExcludedPublishersNumberDBCallback>* holder,
+    uint32_t number) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(number);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetExcludedPublishersNumberDB(
+    GetExcludedPublishersNumberDBCallback callback) {
+  // deleted in OnGetRecurringDonations
+  auto* holder = new CallbackHolder<GetExcludedPublishersNumberDBCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->GetExcludedPublishersNumberDB(
+      std::bind(LedgerClientMojoProxy::OnGetExcludedPublishersNumberDB,
+        holder, _1));
+}
+
 }  // namespace bat_ledger

@@ -605,7 +605,6 @@ void saveToJson(JsonWriter* writer, const REPORT_BALANCE_ST& data) {
 PUBLISHER_STATE_ST::PUBLISHER_STATE_ST():
   min_publisher_duration_(braveledger_ledger::_default_min_publisher_duration),
   min_visits_(1),
-  num_excluded_sites_(0),
   allow_non_verified_(true),
   pubs_load_timestamp_(0ull),
   allow_videos_(true) {}
@@ -613,7 +612,6 @@ PUBLISHER_STATE_ST::PUBLISHER_STATE_ST():
 PUBLISHER_STATE_ST::PUBLISHER_STATE_ST(const PUBLISHER_STATE_ST& state) {
   min_publisher_duration_ = state.min_publisher_duration_;
   min_visits_ = state.min_visits_;
-  num_excluded_sites_ = state.num_excluded_sites_;
   allow_non_verified_ = state.allow_non_verified_;
   pubs_load_timestamp_ = state.pubs_load_timestamp_;
   allow_videos_ = state.allow_videos_;
@@ -646,7 +644,6 @@ bool PUBLISHER_STATE_ST::loadFromJson(const std::string& json) {
   if (!error) {
     min_publisher_duration_ = d["min_pubslisher_duration"].GetUint();
     min_visits_ = d["min_visits"].GetUint();
-    num_excluded_sites_ = d["num_excluded_sites"].GetUint();
     allow_non_verified_ = d["allow_non_verified"].GetBool();
     pubs_load_timestamp_ = d["pubs_load_timestamp"].GetUint64();
     allow_videos_ = d["allow_videos"].GetBool();
@@ -703,9 +700,6 @@ void saveToJson(JsonWriter* writer, const PUBLISHER_STATE_ST& data) {
 
   writer->String("min_visits");
   writer->Uint(data.min_visits_);
-
-  writer->String("num_excluded_sites");
-  writer->Uint(data.num_excluded_sites_);
 
   writer->String("allow_non_verified");
   writer->Bool(data.allow_non_verified_);

@@ -136,6 +136,9 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void ConfirmationsTransactionHistoryDidChange() override;
 
+  void GetExcludedPublishersNumberDB(
+      ledger::GetExcludedPublishersNumberDBCallback callback) override;
+
  private:
   bool Connected() const;
 

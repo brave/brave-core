@@ -1338,13 +1338,13 @@ void RewardsServiceImpl::GetWalletPassphrase(
   bat_ledger_->GetWalletPassphrase(callback);
 }
 
-void RewardsServiceImpl::GetNumExcludedSites(
-    const GetNumExcludedSitesCallback& callback) {
+void RewardsServiceImpl::GetExcludedPublishersNumber(
+    const GetExcludedPublishersNumberCallback& callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->GetNumExcludedSites(callback);
+  bat_ledger_->GetExcludedPublishersNumber(callback);
 }
 
 void RewardsServiceImpl::RecoverWallet(const std::string passPhrase) const {
@@ -2694,6 +2694,37 @@ void RewardsServiceImpl::GetAddressesForPaymentId(
 
   bat_ledger_->GetAddressesForPaymentId(
       base::BindOnce(&RewardsServiceImpl::OnGetAddresses,
+                     AsWeakPtr(),
+                     callback));
+}
+
+int GetExcludedPublishersNumberOnFileTaskRunner(PublisherInfoDatabase* backend) {
+  if (!backend) {
+    return 0;
+  }
+
+  return backend->GetExcludedPublishersCount();
+}
+
+void RewardsServiceImpl::OnGetExcludedPublishersNumberDB(
+    ledger::GetExcludedPublishersNumberDBCallback callback,
+    int number) {
+  if (!Connected()) {
+    callback(0);
+    return;
+  }
+
+  callback(number);
+}
+
+void RewardsServiceImpl::GetExcludedPublishersNumberDB(
+      ledger::GetExcludedPublishersNumberDBCallback callback) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
+      base::BindOnce(&GetExcludedPublishersNumberOnFileTaskRunner,
+                     publisher_info_backend_.get()),
+      base::BindOnce(&RewardsServiceImpl::OnGetExcludedPublishersNumberDB,
                      AsWeakPtr(),
                      callback));
 }
