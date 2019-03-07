@@ -214,7 +214,7 @@
   <message name="IDS_MEDIA_ROUTER_DESTINATION_MISSING" desc="Link to display when no Cast destinations are found which, on click, opens a page to the Bravecast help center explaining possible reasons why none are detected.">
     No Cast destinations found. Need help?
   </message>
-  <message name="IDS_MEDIA_ROUTER_SINK_AVAILABLE" desc="Text shown as the status of a Cast destination that the user can Cast to.">
+  <message name="IDS_MEDIA_ROUTER_SINK_AVAILABLE" desc="Text shown as the status of a Cast destination that the user can Cast to." meaning="Device status shown in Cast dialog">
     Available
   </message>
   <message name="IDS_MEDIA_ROUTER_SINK_CONNECTING" desc="Text shown as the status of a Cast destination that we are starting a Cast session on.">
