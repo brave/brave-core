@@ -38,6 +38,10 @@ def parse_args():
     parser.add_argument('--branch',
                         help='optional branch where the problem is occurring',
                         default=None)
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='extra logging')
+
+    # TODO: add args for being able to download/install a profile
 
     return parser.parse_args()
 
@@ -177,7 +181,7 @@ def test_version(attempt, tag):
     # get the OS specific installer
     asset = None
     while len(tag_names) > 0 and not asset:
-        print('attempt ' + str(attempt) + '] getting installer for  "' + tag + '" (release id ' + str(releases[tag]['id']) + ')')
+        print('\nattempt ' + str(attempt) + '] getting installer for  "' + tag + '" (release id ' + str(releases[tag]['id']) + ')')
         asset = get_release_asset(tag)
         if not asset:
             return False
@@ -217,6 +221,26 @@ def find_first_broken_version(args):
     if left_index >= right_index:
         raise Exception('[ERROR] Not enough versions to perform search')
 
+    if args.good:
+        try:
+            left_index = tag_names.index(args.good)
+            print('- starting at ' + tag_names[left_index])
+        except Exception as e:
+            print('`good` value "' + args.good + '" not found. ' + str(e))
+            args.good = None
+
+    if args.bad:
+        try:
+            right_index = tag_names.index(args.bad)
+            print('- ending at ' + tag_names[right_index])
+        except Exception as e:
+            print('`bad` value "' + args.bad + '" not found. ' + str(e))
+            args.bad = None
+
+
+    if args.good or args.bad:
+        print('- search set narrowed down to ' + str(right_index - left_index) + ' versions using provided good/bad version(s)')
+
     attempt_number = 1
 
     # left should be working
@@ -235,22 +259,18 @@ def find_first_broken_version(args):
         if result == True:
             raise Exception('[ERROR] Version "' + right_tag + '" is expected to fail but doesn\'t')
 
-    print('L=' + str(left_index) + ', R=' + str(right_index))
-
     # perform search
-    # TODO: This stops too early. Fix that.
-    first_result = None
     while left_index < right_index:
         test_index = int(math.floor((left_index + right_index) / 2))
         test_tag = tag_names[test_index]
-        print('L=' + str(left_index) + ', R=' + str(right_index) + ', M=' + str(test_index))
-        result = test_version(attempt_number, test_tag)
 
-        if first_result is None:
-            first_result = result
-        else:
-            if result != first_result:
-                return test_tag
+        gap = right_index - left_index
+        if gap <= 1:
+            return test_tag
+
+        if args.verbose:
+            print('\n[DEBUG] L=' + str(left_index) + ', R=' + str(right_index) + ', M=' + str(test_index) + ', gap=' + str(gap))
+        result = test_version(attempt_number, test_tag)
 
         if result:
             left_index = test_index + 1
@@ -259,7 +279,7 @@ def find_first_broken_version(args):
 
         attempt_number = attempt_number + 1
 
-    raise Exception('[ERROR] Search performed; no problems found')
+    return tag_names[left_index], attempt_number
 
 
 def main():
@@ -274,8 +294,8 @@ def main():
     tag_names.sort(key=lambda s: map(int, s.split('.')))
 
     filter_releases(args)
-    first_broken_version = find_first_broken_version(args)
-    print('DONE: issue first appeared in "' + first_broken_version + '"')
+    first_broken_version, attempts = find_first_broken_version(args)
+    print('DONE: issue first appeared in "' + str(first_broken_version) + '" (found in ' + str(attempts) + ' attempts)')
 
 if __name__ == '__main__':
     import sys
