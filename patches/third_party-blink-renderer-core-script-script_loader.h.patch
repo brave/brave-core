@@ -1,0 +1,47 @@
+diff --git a/third_party/blink/renderer/core/script/script_loader.h b/third_party/blink/renderer/core/script/script_loader.h
+index ae9e7b85a7a30d71b025cd0061fdb5f91c47542b..1b362d0f51f2ebf4b81561d7fea27eca67e9811c 100644
+--- a/third_party/blink/renderer/core/script/script_loader.h
++++ b/third_party/blink/renderer/core/script/script_loader.h
+@@ -38,6 +38,8 @@
+ #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ class Resource;
+@@ -46,6 +48,10 @@ class ScriptElementBase;
+ class Script;
+ class ScriptResource;
+ class Modulator;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++class HTMLScriptElement;
++#endif
++
+ 
+ class CORE_EXPORT ScriptLoader final : public GarbageCollected<ScriptLoader>,
+                                        public PendingScriptClient,
+@@ -114,6 +121,11 @@ class CORE_EXPORT ScriptLoader final
+   // crbug.com/721914 is fixed.
+   PendingScript* GetPendingScriptIfControlledByScriptRunnerForCrossDocMove();
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void SetHTMLScriptElement(HTMLScriptElement* const elm);
++  HTMLScriptElement* GetHTMLScriptElement() const;
++#endif
++
+  private:
+   bool IgnoresLoadRequest() const;
+   bool IsScriptForEventSupported() const;
+@@ -194,6 +209,10 @@ class CORE_EXPORT ScriptLoader final
+   // and thus to keep it on MemoryCache, even after script execution, as long
+   // as ScriptLoader is alive. crbug.com/778799
+   Member<Resource> resource_keep_alive_;
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  Member<HTMLScriptElement> script_elm_;
++#endif
+ };
+ 
+ }  // namespace blink
