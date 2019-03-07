@@ -38,6 +38,6 @@
 <translation id="7999989146447764333">Zgłaszanie awarii nie jest dostępne w Brave.</translation>
 <translation id="7932149101545999102">Stworzenie Brave było możliwe dzięki projektowi open source <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> i innym <ph name="BEGIN_LINK_OSS"/>programom o otwartym kodzie źródłowym<ph name="END_LINK_OSS"/>.</translation>
 <translation id="1953231710324290369">Przeglądasz bezpieczną stronę Brave</translation>
-<translation id="2305018990464327944">Brave zweryfikował, że wydawcą certyfikatu dla tej witryny jest <ph name="ISSUER"/>.</translation>
+<translation id="2305018990464327944">Brave zweryfikował, że wydawcą certyfikatu dla tej strony jest <ph name="ISSUER"/>.</translation>
 <translation id="88187049159266777">Brave nie został poprawnie zamknięty.</translation>
 </translationbundle>

@@ -79,6 +79,7 @@
 <translation id="2232753742630178222">每小時 3 則廣告</translation>
 <translation id="905529390827000221">每小時 4 則廣告</translation>
 <translation id="7694167481321619202">每小時 5 則廣告</translation>
+<translation id="8845154268466251503">BAT</translation>
 <translation id="4684554059837592728">每月支付</translation>
 <translation id="2846354907189538">下一個捐獻日期</translation>
 <translation id="8759716059844800317">支援的網站</translation>
@@ -126,13 +127,16 @@
 <translation id="570208820610947248">我們偵測到您的錢包發生問題。您必須先復原備份錢包，系統才可以處理交易。</translation>
 <translation id="7797604753681168055">立即復原！</translation>
 <translation id="1184075897575325927">抱歉，看來這筆經費已經被領了。</translation>
+<translation id="282693359045252357">下個每月小費日期</translation>
+<translation id="7180611975245234373">重新整理</translation>
+<translation id="839736845446313156">註冊</translation>
+<translation id="583281660410589416">不明</translation>
 <translation id="5094577350232361255">關於</translation>
 <translation id="4918086044614829423">接受</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software 。 Brave 是 Brave Software 的註冊商標。網站名稱可能是網站所有者的商標或註冊商標。</translation>
 <translation id="9026369588205476247">為了保護您的隱私，此 Brave Rewards 聲明不會保存、收錄或記錄在除了您的裝置（這部電腦）以外的任一位置。若您的裝置遺失了這份資料，則無法自 Brave 取回資料。</translation>
 <translation id="1036277985068412734">增加資金</translation>
 <translation id="5441565662498481293">您正在自動傳送小費給：</translation>
-<translation id="8845154268466251503">BAT</translation>
 <translation id="4496990471549986619">常見問題</translation>
 <translation id="1688876543043079268">提醒：Brave 錢包是單向的，BAT 只會流向出版者的網站。更多關於 Brave Rewards 的資訊，請見</translation>
 <translation id="2790014973538267577">顯示 QR Code</translation>
@@ -180,6 +184,7 @@
 <translation id="7277134233385925078">設定每月小費</translation>
 <translation id="8003573781961874199">以 PDF 格式下載</translation>
 <translation id="298067735430872465">自廣告而來的收益</translation>
+<translation id="3521361150443442734">您的廣告收入已經可用。</translation>
 <translation id="8764029012618014430">啟用小費功能</translation>
 <translation id="3412655388715513818">排除此網站</translation>
 <translation id="418343137736963579">您排除自動捐助的網站總數：</translation>
@@ -364,8 +369,6 @@
 <translation id="1736420071277903564">電腦</translation>
 <translation id="1258250624898033822">無效的同步代碼。</translation>
 <translation id="3259723213051400722">請再試一次。</translation>
-<translation id="3779810277399252432">無網際網路連線。</translation>
-<translation id="4380604249778320975">請在連線時再試一次。</translation>
 <translation id="5257281382608458806">裝置名稱為必填項目。</translation>
 <translation id="8349682220522608879">請新增一組同步代碼。</translation>
 <translation id="1468095392829989299">無法連上同步伺服器</translation>
