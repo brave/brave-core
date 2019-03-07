@@ -422,7 +422,8 @@ void BraveNetworkDelegateBase::OnPreferenceChanged(
   UpdateAdBlockFromPref(pref_name);
 }
 
-void BraveNetworkDelegateBase::UpdateAdBlockFromPref(const std::string& pref_name) {
+void BraveNetworkDelegateBase::UpdateAdBlockFromPref(
+    const std::string& pref_name) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   PrefService* user_prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
   allow_google_auth_ = user_prefs->GetBoolean(kGoogleLoginControlType);

@@ -1,11 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_NET_URL_CONTEXT_
-#define BRAVE_BROWSER_NET_URL_CONTEXT_
+#ifndef BRAVE_BROWSER_NET_URL_CONTEXT_H_
+#define BRAVE_BROWSER_NET_URL_CONTEXT_H_
 
 
+#include <memory>
 #include <string>
 
 #include "chrome/browser/net/chrome_network_delegate.h"
@@ -100,7 +102,7 @@ struct BraveRequestInfo {
   DISALLOW_COPY_AND_ASSIGN(BraveRequestInfo);
 };
 
-//ResponseListener
+// ResponseListener
 using OnBeforeURLRequestCallback =
     base::Callback<int(const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
@@ -124,4 +126,4 @@ using OnCanSetCookiesCallback =
 }  // namespace brave
 
 
-#endif  // BRAVE_BROWSER_NET_URL_CONTEXT_
+#endif  // BRAVE_BROWSER_NET_URL_CONTEXT_H_

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -15,7 +16,7 @@
 
 namespace content_settings {
 
-using namespace net::registry_controlled_domains;
+using namespace net::registry_controlled_domains;  // NOLINT
 
 BraveCookieSettings::BraveCookieSettings(
     HostContentSettingsMap* host_content_settings_map,
@@ -23,8 +24,7 @@ BraveCookieSettings::BraveCookieSettings(
     const char* extension_scheme)
     : CookieSettings(host_content_settings_map, prefs, extension_scheme),
       allow_google_auth_(
-          prefs->GetBoolean(kGoogleLoginControlType))
-{
+          prefs->GetBoolean(kGoogleLoginControlType)) {
   pref_change_registrar_.Init(prefs);
   pref_change_registrar_.Add(
       kGoogleLoginControlType,
@@ -79,9 +79,10 @@ void BraveCookieSettings::GetCookieSetting(const GURL& url,
       host_content_settings_map_->GetContentSetting(
           primary_url, GURL(),
           CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kBraveShields);
-  ContentSetting brave_1p_setting = host_content_settings_map_->GetContentSetting(
-      primary_url, GURL("https://firstParty/"),
-      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
+  ContentSetting brave_1p_setting =
+      host_content_settings_map_->GetContentSetting(primary_url,
+          GURL("https://firstParty/"), CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kCookies);
   ContentSetting brave_3p_setting =
       host_content_settings_map_->GetContentSetting(
           primary_url, GURL(),

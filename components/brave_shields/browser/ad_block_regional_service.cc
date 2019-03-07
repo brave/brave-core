@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -28,7 +29,8 @@
 
 namespace {
 
-std::vector<FilterList>::const_iterator FindFilterListByLocale(const std::string& locale) {
+std::vector<FilterList>::const_iterator
+FindFilterListByLocale(const std::string& locale) {
   std::string adjusted_locale;
   std::string::size_type loc = locale.find("-");
   if (loc == std::string::npos) {
@@ -38,21 +40,22 @@ std::vector<FilterList>::const_iterator FindFilterListByLocale(const std::string
   }
   adjusted_locale = base::ToLowerASCII(adjusted_locale);
   return std::find_if(region_lists.begin(), region_lists.end(),
-                      [&adjusted_locale](const FilterList& filter_list) {
-                        return std::find_if(filter_list.langs.begin(),
-                                            filter_list.langs.end(),
-                                            [adjusted_locale](const std::string& lang) {
-                                              return lang == adjusted_locale;
-                                            }) != filter_list.langs.end();
-                      });
+      [&adjusted_locale](const FilterList& filter_list) {
+        return std::find_if(filter_list.langs.begin(),
+                            filter_list.langs.end(),
+                            [adjusted_locale](const std::string& lang) {
+                              return lang == adjusted_locale;
+                            }) != filter_list.langs.end();
+      });
 }
 
 }  // namespace
 
 namespace brave_shields {
 
-std::string AdBlockRegionalService::g_ad_block_regional_component_id_;
-std::string AdBlockRegionalService::g_ad_block_regional_component_base64_public_key_;
+std::string AdBlockRegionalService::g_ad_block_regional_component_id_;  // NOLINT
+std::string
+    AdBlockRegionalService::g_ad_block_regional_component_base64_public_key_;  // NOLINT
 std::string AdBlockRegionalService::g_ad_block_regional_dat_file_version_(
     base::NumberToString(DATA_FILE_VERSION));
 
@@ -62,7 +65,8 @@ AdBlockRegionalService::AdBlockRegionalService() {
 AdBlockRegionalService::~AdBlockRegionalService() {
 }
 
-bool AdBlockRegionalService::UnregisterComponentByLocale(const std::string& locale) {
+bool AdBlockRegionalService::UnregisterComponentByLocale(
+    const std::string& locale) {
   auto it = FindFilterListByLocale(locale);
   if (it == region_lists.end())
     return false;
@@ -122,7 +126,8 @@ void AdBlockRegionalService::SetComponentIdAndBase64PublicKeyForTest(
     const std::string& component_id,
     const std::string& component_base64_public_key) {
   g_ad_block_regional_component_id_ = component_id;
-  g_ad_block_regional_component_base64_public_key_ = component_base64_public_key;
+  g_ad_block_regional_component_base64_public_key_ =
+      component_base64_public_key;
 }
 
 // static
@@ -131,7 +136,8 @@ void AdBlockRegionalService::SetDATFileVersionForTest(
   g_ad_block_regional_dat_file_version_ = dat_file_version;
 }
 
-scoped_refptr<base::SequencedTaskRunner> AdBlockRegionalService::GetTaskRunner() {
+scoped_refptr<base::SequencedTaskRunner>
+AdBlockRegionalService::GetTaskRunner() {
   // We share the same task runner for all ad-block and TP code
   return g_brave_browser_process->ad_block_service()->GetTaskRunner();
 }

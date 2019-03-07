@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -34,8 +35,7 @@ bool IsBlockedResource(const GURL& gurl) {
   return std::any_of(blocked_patterns.begin(), blocked_patterns.end(),
                      [&gurl](URLPattern pattern){
                        return pattern.MatchesURL(gurl);
-                     }
-    );
+                     });
 }
 
 bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
@@ -46,7 +46,8 @@ bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
   // https://github.com/brave/browser-laptop/issues/5861
   // The below patterns are done to only allow the specific request
   // pattern, of reddit -> redditmedia -> embedly -> imgur.
-  static auto redditPtrn = URLPattern(URLPattern::SCHEME_HTTPS, "https://www.reddit.com/*");
+  static auto redditPtrn = URLPattern(URLPattern::SCHEME_HTTPS,
+      "https://www.reddit.com/*");
   static std::vector<URLPattern> reddit_embed_patterns({
     redditPtrn,
     URLPattern(URLPattern::SCHEME_HTTPS, "https://www.redditmedia.com/*"),
@@ -74,7 +75,8 @@ bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
     },
     {
       GURL("https://accounts.google.com/"), {
-        URLPattern(URLPattern::SCHEME_HTTPS, "https://content.googleapis.com/*"),
+        URLPattern(URLPattern::SCHEME_HTTPS,
+            "https://content.googleapis.com/*"),
       }
     },
   };
@@ -137,4 +139,4 @@ bool IsWhitelistedCookieException(const GURL& firstPartyOrigin,
       });
 }
 
-}
+}  // namespace brave
