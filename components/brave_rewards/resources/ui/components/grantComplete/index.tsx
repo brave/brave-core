@@ -16,6 +16,7 @@ import Button from '../../../components/buttonsIndicators/button'
 
 export interface Props {
   id?: string
+  testId?: string
   onClose: () => void
   amount: string
   date: string,
@@ -24,10 +25,10 @@ export interface Props {
 
 export default class GrantComplete extends React.PureComponent<Props, {}> {
   render () {
-    const { id, onClose, amount, date, isMobile } = this.props
+    const { id, testId, onClose, amount, date, isMobile } = this.props
 
     return (
-      <StyledWrapper id={id}>
+      <StyledWrapper id={id} data-test-id={testId}>
         <StyledBox>
           <StyledTitle>{getLocale('newTokenGrant')}</StyledTitle>
           <StyledValue>{amount} BAT</StyledValue>

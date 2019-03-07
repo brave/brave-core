@@ -12,6 +12,7 @@ import giftIconUrl from './assets/gift.svg'
 
 export interface Props {
   id?: string
+  testId?: string
   isPanel?: boolean
   onClose: () => void
   title: string
@@ -23,11 +24,12 @@ export interface Props {
 
 export default class GrantWrapper extends React.PureComponent<Props, {}> {
   render () {
-    const { id, isPanel, fullScreen, hint, onClose, title, text, children } = this.props
+    const { id, testId, isPanel, fullScreen, hint, onClose, title, text, children } = this.props
 
     return (
       <StyledWrapper
         id={id}
+        data-test-id={testId}
         isPanel={isPanel}
         fullScreen={fullScreen}
       >

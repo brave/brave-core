@@ -39,6 +39,7 @@ export interface Props {
   showRowAmount?: boolean
   showRemove?: boolean
   id?: string
+  testId?: string
   children?: React.ReactNode
   headerColor?: boolean
   rows?: DetailRow[]
@@ -173,11 +174,11 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, header, children, rows, allSites, onShowAll, onRestore, numExcludedSites } = this.props
+    const { id, testId, header, children, rows, allSites, onShowAll, onRestore, numExcludedSites } = this.props
     const numSites = this.props.numSites || 0
 
     return (
-      <div id={id}>
+      <div id={id} data-test-id={testId}>
         <Table
           header={this.getHeader(header)}
           children={children}

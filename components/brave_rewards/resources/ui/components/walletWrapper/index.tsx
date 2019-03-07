@@ -453,7 +453,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                       : null
                   }
                   <StyledBalance>
-                    <StyledBalanceTokens>
+                    <StyledBalanceTokens data-test-id='balance'>
                       {balance} <StyledBalanceCurrency>BAT</StyledBalanceCurrency>
                     </StyledBalanceTokens>
                     {

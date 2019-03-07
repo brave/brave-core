@@ -11,6 +11,7 @@ export type Type = 'ads' | 'ugp'
 
 export interface Props {
   id?: string
+  testId?: string
   isMobile?: boolean
   onClaim: () => void
   type: Type
@@ -53,7 +54,7 @@ export default class GrantClaim extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, isMobile, onClaim, type, amount, loading } = this.props
+    const { id, testId, isMobile, onClaim, type, amount, loading } = this.props
 
     return (
       <StyledWrapper
@@ -66,7 +67,7 @@ export default class GrantClaim extends React.PureComponent<Props, {}> {
         <StyledText>
           {this.getGrantText(type, amount)}
         </StyledText>
-        <StyledClaim onClick={onClaim}>
+        <StyledClaim onClick={onClaim} data-test-id={testId}>
           {
             loading
             ? <StyledLoader>

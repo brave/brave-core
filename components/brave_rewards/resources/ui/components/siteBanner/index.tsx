@@ -292,6 +292,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                   !recurringDonation
                     ? <StyledCheckbox isMobile={isMobile}>
                       <Checkbox
+                        testId={'monthlyCheckbox'}
                         value={{ make: this.state.monthly }}
                         onChange={this.onMonthlyChange}
                         type={'dark'}
