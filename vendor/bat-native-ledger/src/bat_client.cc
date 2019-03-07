@@ -70,7 +70,7 @@ void BatClient::requestCredentialsCallback(
 
   ledger_->SetUserId(user_id);
 
-  std::string registrar_vk = ledger_->GetRegistrarVK();
+  std::string registrar_vk;
   if (!braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME,
                                             response,
                                             &registrar_vk)) {
@@ -88,7 +88,7 @@ void BatClient::requestCredentialsCallback(
     return;
   }
 
-  braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
+  braveledger_bat_helper::WALLET_INFO_ST wallet_info;
   std::vector<uint8_t> key_info_seed = braveledger_bat_helper::generateSeed();
 
   wallet_info.keyInfoSeed_ = key_info_seed;
@@ -639,6 +639,22 @@ void BatClient::GetAddressesForPaymentIdCallback(
   ledger_->SetAddresses(addresses);
 }
 
+void BatClient::CreateWalletIfNecessary() {
+  const auto payment_id = ledger_->GetPaymentId();
+  const auto stamp = ledger_->GetBootStamp();
+  const auto persona_id = ledger_->GetPersonaId();
 
+  if (!payment_id.empty() && stamp != 0 && !persona_id.empty()) {
+    ledger_->OnWalletInitialized(ledger::Result::WALLET_CREATED);
+    return;
+  }
+
+  BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+     "Wallet creation didn't finish or corrupted. " <<
+     "We need to clear persona Id and start again";
+  ledger_->SetPersonaId("");
+
+  registerPersona();
+}
 
 }  // namespace braveledger_bat_client
