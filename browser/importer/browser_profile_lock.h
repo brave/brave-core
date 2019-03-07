@@ -7,7 +7,7 @@
 
 class BrowserProfileLock {
  public:
-  virtual ~BrowserProfileLock() {};
+  virtual ~BrowserProfileLock() {}
 
   // Locks and releases the profile.
   virtual void Lock() = 0;
