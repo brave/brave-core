@@ -1,0 +1,52 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/script_controller.cc b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
+index 63d3684c66dd2ca6112637f846421f840e67ee2f..ed2935644496d6b167f5714b5d36c99254060e0f 100644
+--- a/third_party/blink/renderer/bindings/core/v8/script_controller.cc
++++ b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
+@@ -71,6 +71,13 @@
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ #include "third_party/blink/renderer/platform/wtf/time.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ void ScriptController::Trace(blink::Visitor* visitor) {
+@@ -130,9 +137,33 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
+              .ToLocal(&script))
+       return result;
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
++        ->GetPageGraph();
++      if (page_graph != nullptr) {
++        LOG(INFO) << source.Source().ToString().Utf8().data();
++        page_graph->RegisterScriptCompilation(
++          source, script->GetUnboundScript()->GetId(),
++          ::brave_page_graph::ScriptType::kScriptTypeUnknown);
++        page_graph->RegisterScriptExecStart(script->GetUnboundScript()->GetId());
++      }
++    }
++#endif
++
+     v8::MaybeLocal<v8::Value> maybe_result;
+     maybe_result = V8ScriptRunner::RunCompiledScript(GetIsolate(), script,
+                                                      GetFrame()->GetDocument());
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    {
++      ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
++        ->GetPageGraph();
++      if (page_graph != nullptr) {
++        page_graph->RegisterScriptExecStop(script->GetUnboundScript()->GetId());
++      }
++    }
++#endif
++
+     probe::ProduceCompilationCache(frame_, source, script);
+     V8CodeCache::ProduceCache(GetIsolate(), script, source,
+                               produce_cache_options);

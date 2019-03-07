@@ -1,0 +1,35 @@
+diff --git a/third_party/blink/renderer/core/dom/shadow_root.cc b/third_party/blink/renderer/core/dom/shadow_root.cc
+index edec50e12ef40630ec554589aeec6db0bb057e7a..1e6a53f5d792bc7b60385b9dbf7d92f35f3745f2 100644
+--- a/third_party/blink/renderer/core/dom/shadow_root.cc
++++ b/third_party/blink/renderer/core/dom/shadow_root.cc
+@@ -48,6 +48,12 @@
+ #include "third_party/blink/renderer/core/trustedtypes/trusted_types_util.h"
+ #include "third_party/blink/renderer/platform/bindings/exception_state.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ void ShadowRoot::Distribute() {
+@@ -76,6 +82,17 @@ ShadowRoot::ShadowRoot(Document& document, ShadowRootType type)
+       unused_(0) {
+   if (IsV0())
+     shadow_root_v0_ = MakeGarbageCollected<ShadowRootV0>(*this);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    if (document == nullptr) {
++      return;
++    }
++    if (document.GetPageGraph() != nullptr) {
++      document.GetPageGraph()->RegisterHTMLElementNodeCreated(
++        DOMNodeIds::IdForNode(this), nodeName());
++    }
++  }
++#endif
+ }
+ 
+ ShadowRoot::~ShadowRoot() = default;

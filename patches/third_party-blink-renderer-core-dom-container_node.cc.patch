@@ -1,0 +1,83 @@
+diff --git a/third_party/blink/renderer/core/dom/container_node.cc b/third_party/blink/renderer/core/dom/container_node.cc
+index 31cefbe41edbc71b71ae20b8b808dd728c638e3f..222c6826b1648a3225b3aacdfcf823b57d13cd62 100644
+--- a/third_party/blink/renderer/core/dom/container_node.cc
++++ b/third_party/blink/renderer/core/dom/container_node.cc
+@@ -61,6 +61,13 @@
+ #include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
+ #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/document.h"
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ static void DispatchChildInsertionEvents(Node&);
+@@ -925,7 +932,44 @@ void ContainerNode::NotifyNodeInsertedInternal(
+   EventDispatchForbiddenScope assert_no_event_dispatch;
+   ScriptForbiddenScope forbid_script;
+ 
++  const DOMNodeId root_id = DOMNodeIds::IdForNode(&root);
++  LOG(INFO) << "*PageGraph* Root) id: " << root_id << ", name: " << root.nodeName() << ", type: " << root.getNodeType();
++
+   for (Node& node : NodeTraversal::InclusiveDescendantsOf(root)) {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    const DOMNodeId node_id = DOMNodeIds::IdForNode(&node);
++    Node* const parent = node.parentNode();
++    const DOMNodeId parent_node_id = (parent && parent->IsElementNode()) 
++      ? DOMNodeIds::IdForNode(parent)
++      : 0;
++    Node* const sibling = node.previousSibling();
++    const DOMNodeId sibling_node_id = (sibling)
++      ? DOMNodeIds::IdForNode(sibling)
++      : 0;
++ 
++    const NodeType node_type = node.getNodeType();
++    if (GetDocument().GetPageGraph() != nullptr &&
++        (node_type == kElementNode ||
++         node_type == kTextNode ||
++         node_type == kCommentNode ||
++         node_type == kDocumentTypeNode ||
++         node_type == kDocumentFragmentNode)) {
++      LOG(INFO) << "*PageGraph* Node) id: " << node_id << ", name: " << node.nodeName() << ", type: " << node.getNodeType();
++      if (parent_node_id) {
++        LOG(INFO) << "*PageGraph* Parent) id: " << parent_node_id << ", name: " << parent->nodeName() << ", type: " << parent->getNodeType();
++      }
++      if (sibling_node_id) {
++        LOG(INFO) << "*PageGraph* Sibling) id: " << sibling_node_id << ", name: " << sibling->nodeName() << ", type: " << sibling->getNodeType();
++      }
++      if (node_type == kElementNode || node_type == kDocumentFragmentNode || node_type == kDocumentTypeNode) {
++        GetDocument().GetPageGraph()->RegisterHTMLElementNodeInserted(
++          node_id, parent_node_id, sibling_node_id);
++      } else {
++        GetDocument().GetPageGraph()->RegisterHTMLTextNodeInserted(
++          node_id, parent_node_id, sibling_node_id);
++      }
++    }
++#endif
+     // As an optimization we don't notify leaf nodes when when inserting
+     // into detached subtrees that are not in a shadow tree.
+     if (!isConnected() && !IsInShadowTree() && !node.IsContainerNode())
+@@ -947,6 +991,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
+     // As an optimization we skip notifying Text nodes and other leaf nodes
+     // of removal when they're not in the Document tree and not in a shadow root
+     // since the virtual call to removedFrom is not needed.
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    if (GetDocument().GetPageGraph() != nullptr) {
++      const NodeType node_type = node.getNodeType();
++      if (node_type == kElementNode || node_type == kDocumentFragmentNode) {
++        GetDocument().GetPageGraph()->RegisterHTMLElementNodeRemoved(
++          DOMNodeIds::IdForNode(&node));
++      } else {
++        GetDocument().GetPageGraph()->RegisterHTMLTextNodeRemoved(
++          DOMNodeIds::IdForNode(&node));
++      }
++    }
++#endif
++
+     if (!node.IsContainerNode() && !node.IsInTreeScope())
+       continue;
+     node.RemovedFrom(*this);

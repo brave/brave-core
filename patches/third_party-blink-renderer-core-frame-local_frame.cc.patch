@@ -1,0 +1,42 @@
+diff --git a/third_party/blink/renderer/core/frame/local_frame.cc b/third_party/blink/renderer/core/frame/local_frame.cc
+index a7b483e821fe73f4d725ae21b3182778024c5bed..ecb0294e62d87b926e7b7be8067432d3bf035478 100644
+--- a/third_party/blink/renderer/core/frame/local_frame.cc
++++ b/third_party/blink/renderer/core/frame/local_frame.cc
+@@ -121,6 +121,12 @@
+ #include "third_party/blink/renderer/platform/scheduler/public/frame_scheduler.h"
+ #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#endif
++
+ namespace blink {
+ 
+ namespace {
+@@ -1841,4 +1847,24 @@ void LocalFrame::MaybeLogAdClickNavigation() {
+     UseCounter::Count(GetDocument(), WebFeature::kAdClickNavigation);
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void LocalFrame::SetPageGraphChildFrameId(
++    const ::brave_page_graph::ChildFrameId child_frame_id) {
++  page_graph_child_frame_id_ = child_frame_id;
++}
++
++::brave_page_graph::ChildFrameId LocalFrame::GetPageGraphChildFrameId() const {
++  return page_graph_child_frame_id_;
++}
++
++void LocalFrame::SetPageGraphNodeIdInParentDocument(const DOMNodeId node_id) {
++  dom_node_id_in_parent_document_ = node_id;
++}
++
++DOMNodeId LocalFrame::GetPageGraphNodeIdInParentDocument() const {
++  return dom_node_id_in_parent_document_;
++}
++#endif
++
++
+ }  // namespace blink

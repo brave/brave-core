@@ -1,0 +1,39 @@
+diff --git a/third_party/blink/renderer/core/dom/document.h b/third_party/blink/renderer/core/dom/document.h
+index 9cbc69b499d67f686fd31bd667e0fbbbd0cce66d..751cdc0cded6f9c775c69747128614340ab0b9cc 100644
+--- a/third_party/blink/renderer/core/dom/document.h
++++ b/third_party/blink/renderer/core/dom/document.h
+@@ -75,6 +75,12 @@
+ #include "third_party/blink/renderer/platform/wtf/casting.h"
+ #include "third_party/blink/renderer/platform/wtf/hash_set.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#endif
++
+ namespace base {
+ class SingleThreadTaskRunner;
+ }
+@@ -1536,6 +1542,10 @@ class CORE_EXPORT Document : public ContainerNode,
+       AXID ax_id,
+       WebComputedAXTree* tree);
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  brave_page_graph::PageGraph* GetPageGraph();
++#endif
++
+  protected:
+   void DidUpdateSecurityOrigin() final;
+ 
+@@ -1548,6 +1558,10 @@ class CORE_EXPORT Document : public ContainerNode,
+     return parser_sync_policy_;
+   }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  brave_page_graph::PageGraph* page_graph_;  
++#endif
++
+  private:
+   friend class IgnoreDestructiveWriteCountIncrementer;
+   friend class ThrowOnDynamicMarkupInsertionCountIncrementer;

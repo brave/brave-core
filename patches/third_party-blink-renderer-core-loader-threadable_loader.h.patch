@@ -1,0 +1,50 @@
+diff --git a/third_party/blink/renderer/core/loader/threadable_loader.h b/third_party/blink/renderer/core/loader/threadable_loader.h
+index d52f55547792d43ceab18df9b0a0021989fb5226..6beeb6f5216a753709ac5673f944161db5962b86 100644
+--- a/third_party/blink/renderer/core/loader/threadable_loader.h
++++ b/third_party/blink/renderer/core/loader/threadable_loader.h
+@@ -50,11 +50,16 @@
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ #include "third_party/blink/renderer/platform/wtf/time.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ class ExecutionContext;
+ class Document;
+ class KURL;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++class RawResource;
++#endif
+ class ResourceRequest;
+ class SecurityOrigin;
+ class ThreadableLoaderClient;
+@@ -133,6 +138,9 @@ class CORE_EXPORT ThreadableLoader final
+   void SetDefersLoading(bool);
+ 
+   void Trace(blink::Visitor* visitor) override;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  RawResource* GetRawResource() const;
++#endif
+ 
+  private:
+   class AssignOnScopeExit;
+@@ -182,6 +190,7 @@ class CORE_EXPORT ThreadableLoader final
+   // Issues a CORS preflight.
+   void LoadPreflightRequest(const ResourceRequest&,
+                             const ResourceLoaderOptions&);
++
+   // Loads actual_request_.
+   void LoadActualRequest();
+   // Clears actual_request_ and reports access control check failure to
+@@ -274,6 +283,10 @@ class CORE_EXPORT ThreadableLoader final
+ 
+   RawResourceClientStateChecker checker_;
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  Member<RawResource> raw_resource_ = nullptr;
++#endif
++
+   DISALLOW_COPY_AND_ASSIGN(ThreadableLoader);
+ };
+ 
