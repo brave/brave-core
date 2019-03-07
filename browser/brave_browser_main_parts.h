@@ -14,11 +14,7 @@ class BraveBrowserMainParts : public ChromeBrowserMainParts {
   using ChromeBrowserMainParts::ChromeBrowserMainParts;
   ~BraveBrowserMainParts() override = default;
 
-  // ChromeBrowserMainParts overrides:
-  // Marking this method final so that if any of the OS specific subclasses
-  // (e.g. ChromeBrowserMainPartsWin) decides to override this method in the
-  // future we would get a compilation error.
-  void PreShutdown() final;
+  void PreShutdown() override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserMainParts);
