@@ -13,9 +13,9 @@
 <translation id="4983925687993168579">統計數據</translation>
 <translation id="6165477144235978006">Brave Payments</translation>
 <translation id="3489524616427966890">開啟視窗和分頁</translation>
-<translation id="9173846700806833701">尚未安裝 Widevine</translation>
-<translation id="2433569048491784801">尚未安裝 Widevine。</translation>
 <translation id="3699882589215410581">安裝並執行 Widevine</translation>
+<translation id="8053096063396012732">安裝 Widevine</translation>
+<translation id="4840334696217618631">重新啟動瀏覽器以啟用 Widevine</translation>
 <translation id="8410111618231938546">Google Widevine 為數位版權管理 (DRM) 碼的一部分，非 Brave Software 所有，且我們無法偵測。Google Widevine 碼是從 Google 伺服器而非我們的伺服器下載。它僅在您同意該選項時裝載。我們不鼓勵使用 DRM，但我們尊重使用者的選擇，並了解部分 Brave 使用者想使用要求安裝 DRM 的服務。
 
 安裝該擴充功能即表示您同意 Google Widevine 使用條款。您同意 Brave 不為您使用 Google Widevine 而產生的任何相關損害或損失負責。</translation>
@@ -31,6 +31,8 @@
 <translation id="7543906827780734027">Brave還沒有評論過這個延伸──它可能是惡意的。 仍加"<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" ？</translation>
 <translation id="2044383478723007273">Brave 顏色</translation>
 <translation id="5341901626640816374">使用寬網址列</translation>
+<translation id="6123134130710658846">隱藏 Brave Rewards 按鈕</translation>
+<translation id="7635711399568194460">當 Brave Rewards 未啟用時，在網址列隱藏 Brave Rewards 按鈕</translation>
 <translation id="7965178729203412357">新 Tor 身分</translation>
 <translation id="8784924142044142231">退出 Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -45,11 +47,16 @@
 <translation id="2515126961943087659">BAT 廣告服務</translation>
 <translation id="7924918279836988121">Bat 分類帳服務</translation>
 <translation id="7372129767729198111">預設 Brave 防護</translation>
+<translation id="6752287096897220686">社群媒體按鈕與登入</translation>
 <translation id="8029018702721078742">廣告控制</translation>
 <translation id="3544462288910360084">Cookie 控制</translation>
 <translation id="8919235146866304148">指紋辨識保護</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">阻擋指令稿</translation>
+<translation id="7498695072878479744">允許在第三方網頁上的 Google 登入按鈕</translation>
+<translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
+<translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
+<translation id="1160990956439588593">允許 Linkedin 嵌入</translation>
 <translation id="6067014455220527258">阻擋廣告</translation>
 <translation id="6985711843506827936">允許廣告及追蹤</translation>
 <translation id="6132506775968708399">阻擋第三方 cookies</translation>
@@ -65,10 +72,16 @@
 <translation id="5825943197137337319">僅限預設公用介面</translation>
 <translation id="1689062823386843231">停用非代理 UDP</translation>
 <translation id="6645631466045614531">透過___存取同步</translation>
+<translation id="1807246157184219062">亮</translation>
+<translation id="2414886740292270097">暗</translation>
+<translation id="1360441190790440400">與 Linux 相同</translation>
+<translation id="1336940801687497203">與 Windows 相同</translation>
+<translation id="5515614985852176310">與 MacOS 相同</translation>
 <translation id="6786747875388722282">擴充功能</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在瀏覽器顯示種子檔案。支援種子檔案和磁力連結。</translation>
 <translation id="6554397389149987360">使用 Hangouts 元件來啟用畫面分享和其它瀏覽器功能。</translation>
 <translation id="6916590542764765824">管理擴充功能</translation>
 <translation id="4928988318462976765">網路擴充功能商店</translation>
 <translation id="9181207987584064303">在「網路擴充功能商店」檢視</translation>
+<translation id="4846154056248462491">離開</translation>
 </translationbundle>

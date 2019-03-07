@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Wir haben einen Fehler bei Ihrer Geldbörse festgestellt. Sie müssen Ihre Sicherungsgeldbörse wiederherstellen, bevor Transaktionen weiter verarbeitet werden können.</translation>
 <translation id="7797604753681168055">Jetzt wiederherstellen!</translation>
 <translation id="1184075897575325927">Leider scheint es, dass diese Zuwendung bereits beansprucht wurde.</translation>
+<translation id="7180611975245234373">Aktualisieren</translation>
+<translation id="839736845446313156">Registrieren</translation>
+<translation id="583281660410589416">Unbekannt</translation>
 <translation id="5094577350232361255">über</translation>
 <translation id="4918086044614829423">Annehmen</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave ist ein eingetragenes Warenzeichen von Brave Software. Seitennamen können Marken oder eingetragene Warenzeichen des Seiteninhabers sein.</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Computer</translation>
 <translation id="1258250624898033822">Ungültiger Sync-Code.</translation>
 <translation id="3259723213051400722">Bitte versuchen Sie es erneut.</translation>
-<translation id="3779810277399252432">Keine Internetverbindung.</translation>
-<translation id="4380604249778320975">Bitte versuchen Sie es erneut, wenn eine Verbindung besteht.</translation>
 <translation id="5257281382608458806">Gerätename ist erforderlich.</translation>
 <translation id="8349682220522608879">Bitte fügen Sie einen Sync-Code hinzu.</translation>
 <translation id="1468095392829989299">Keine Verbindung zu den Sync-Servern</translation>

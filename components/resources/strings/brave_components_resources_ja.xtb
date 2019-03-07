@@ -126,6 +126,9 @@
 <translation id="570208820610947248">ウォレットの問題が検出されました。取引を処理する前にバックアップウォレットを復元する必要があります。</translation>
 <translation id="7797604753681168055">今すぐ復元してください！</translation>
 <translation id="1184075897575325927">申し訳ありません、この助成金はすでに取得されているようです。</translation>
+<translation id="7180611975245234373">更新</translation>
+<translation id="839736845446313156">登録</translation>
+<translation id="583281660410589416">不明</translation>
 <translation id="5094577350232361255">について</translation>
 <translation id="4918086044614829423">承諾</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software。BraveはBrave Softwareの登録商標です。サイトの名称はこのサイト所有者の商標、または登録商標です。</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">コンピューター</translation>
 <translation id="1258250624898033822">同期コードが無効です。</translation>
 <translation id="3259723213051400722">もう一度お試しください。</translation>
-<translation id="3779810277399252432">インターネットに接続されていません。</translation>
-<translation id="4380604249778320975">インターネットに接続してからもう一度お試しください。</translation>
 <translation id="5257281382608458806">デバイス名は必須です。</translation>
 <translation id="8349682220522608879">同期コードを追加してください。</translation>
 <translation id="1468095392829989299">Sync サーバーに接続できませんでした。</translation>

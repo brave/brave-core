@@ -15,10 +15,6 @@
     "message": "ಕೆಳಗೆ",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "ಒಟ್ಟು ನಿರ್ಬಂಧಿಸಿರುವುದು",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "ಈ ಸೈಟ್‌ಗಾಗಿ",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "ನೀವು ಯಾವುದೇ ಗೌಪ್ಯತೆ ಮತ್ತು ಸುರಕ್ಷತೆ ಸಂರಕ್ಷಣೆಗಳಿಲ್ಲದೆಯೇ ನೀವು ಈ ಸೈಟ್‌ಗೆ ಭೇಟಿ ನೀಡಿರುತ್ತಿರುವಿರಿ.",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "Items blocked",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "ಪಾಪ್-ಅಪ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "Item blocked",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "ಚಿತ್ರಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿರುವುದು",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "and",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "3ನೇ-ವ್ಯಕ್ತಿಯ ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "connections upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "ಎಲ್ಲಾ ಕುಕೀಗಳನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "connection upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "3rd-party trackers blocked",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "ಕೆಲವು ಲಿಪಿಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "Connections upgraded to HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "ಎಲ್ಲಾ ಲಿಪಿಗಳನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "Connection upgraded to HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "ಲಿಪಿಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "3ನೇ-ವ್ಯಕ್ತಿಯ ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "ಎಲ್ಲಾ ಕುಕೀಗಳನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "3ನೇ-ವ್ಯಕ್ತಿಯ ಸಾಧನ ಗುರುತಿಸುವಿಕೆ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "ಎಲ್ಲಾ ಸಾಧನ ಗುರುತಿಸುವಿಕೆಯನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "ಸಾಧನ ಗುರುತಿಸುವಿಕೆ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "ಫಿಶಿಂಗ್/ಮಾಲ್ವೇರ್ ಪ್ರಯತ್ನಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "ಸಂಪರ್ಕಗಳು ಎನ್‌ಕ್ರಿಪ್ಟ್ ಆಗಿವೆ",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "ಗ್ಲೋಬಲ್ ಶೀಲ್ಡ್ ಡೀಫಾಲ್ಟ್‌ಗಳು",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "ಸೈಟ್‌ನಲ್ಲಿರುವ ಕುಕೀಗಳು",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "ಎಲ್ಲಾ ಸಾಧನ ಗುರುತಿಸುವಿಕೆಯನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "ಸಾಧನ ಗುರುತಿಸುವಿಕೆ ಪ್ರಯತ್ನಗಳು",
@@ -111,49 +103,21 @@
     "message": "ಅನುಮತಿಸಿದ ಲಿಪಿಗಳು",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "ಎಲ್ಲಾ ಅನುಮತಿಸಿ",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "ಅನುಮತಿಸಿ",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "ಅನುಮತಿಸಲಾಗಿದೆ",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "ಎಲ್ಲಾ ನಿರ್ಬಂಧಿಸಿ",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "ಎಲ್ಲಾ ಅನುಮತಿಸಿ",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "ನಿರ್ಬಂಧಿಸಿ",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "ಅನ್ವಯಿಸಿ",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "ಒಮ್ಮೆ ಅನ್ವಯಿಸಿ",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "ಮರುಪ್ರಾರಂಭಗೊಳ್ಳುವವರೆಗೆ ಅನ್ವಯಿಸಿ",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "ಯಾವಾಗಲೂ ಅನ್ವಯಿಸಿ",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "ರದ್ದುಮಾಡು",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "ಅನುಮತಿಸಿ",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "ರದ್ದುಗೊಳಿಸಿ",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "ಹಿಂತಿರುಗಿ",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "ಒಮ್ಮೆ ಅನ್ವಯಿಸಿ",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Change global shield defaults",
+    "description": "Message for the button action linking to the settings page"
   }
 }

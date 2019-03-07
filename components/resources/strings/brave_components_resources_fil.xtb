@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Natukoy naming may problema sa iyong wallet. Dapat mong i-recover ang iyong backup na wallet bago maproseso ang anumang transaksyon.</translation>
 <translation id="7797604753681168055">I-recover ngayon!</translation>
 <translation id="1184075897575325927">Paumanhin, mukhang na-claim na ang grant na ito.</translation>
+<translation id="7180611975245234373">I-refresh</translation>
+<translation id="839736845446313156">Magparehistro</translation>
+<translation id="583281660410589416">Hindi Alam</translation>
 <translation id="5094577350232361255">tungkol sa</translation>
 <translation id="4918086044614829423">Tanggapin</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Ang Brave ay isang rehistradong trademark ng Brave Software. Ang mga pangalan ng site ay maaaring mga trademark o mga rehistradong trademark ng may-ari ng site.</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Computer</translation>
 <translation id="1258250624898033822">Di-wastong code ng pag-sync.</translation>
 <translation id="3259723213051400722">Pakisubukang muli.</translation>
-<translation id="3779810277399252432">Walang koneksyon sa internet.</translation>
-<translation id="4380604249778320975">Pakisubukang muli kapag available ang iyong koneksyon.</translation>
 <translation id="5257281382608458806">Kinakailangan ang pangalan ng device.</translation>
 <translation id="8349682220522608879">Magdagdag ng code ng pag-sync.</translation>
 <translation id="1468095392829989299">Hindi makakonekta sa mga server ng Pag-sync</translation>

@@ -15,10 +15,6 @@
     "message": "নীচে",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "মোট যতগুলি ব্লক করা হয়েছে",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "এই সাইটটির জন্য",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "আপনি কোনো গোপনীয়তা এবং নিরাপত্তার সুরক্ষা ছাড়াই এই সাইটটি ব্রাউজ করছেন।",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "যতগুলি বিজ্ঞাপন এবং ট্র্যাক ব্লক করা হয়েছে",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "Items blocked",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "যতগুলি পপ-আপ ব্লক করা হয়েছে",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "Item blocked",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "যতগুলি চিত্র ব্লক করা হয়েছে",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "and",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "3য়-পক্ষ কুকিগুলি ব্লক করা হয়েছে",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "connections upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "সমস্ত কুকি অনুমোদন করা হয়েছে",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "connection upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "কুকিগুলি ব্লক করা হয়েছে",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "3rd-party trackers blocked",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "কিছু স্ক্রিপ্ট ব্লক করা হয়েছে",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "Connections upgraded to HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "সমস্ত স্ক্রিপ্ট অনুমোদন করা হয়েছে",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "Connection upgraded to HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "স্ক্রিপ্টগুলি ব্লক করা হয়েছে",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "3য়-পক্ষ কুকিগুলি ব্লক করা হয়েছে",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "কুকিগুলি ব্লক করা হয়েছে",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "সমস্ত কুকি অনুমোদন করা হয়েছে",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "3য়-পক্ষ ডিভাইস শনাক্তকরণ ব্লক করা হয়েছে",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "সমস্ত ডিভাইস শনাক্তকরণ অনুমোদন করা হয়েছে",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "ডিভাইস শনাক্রকরণ ব্লক করা হয়েছে",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "ফিশিং/ম্যালওয়ার প্রচেষ্টাগুলি ব্লক করা হয়েছে",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "যে সংযোগগুলো এনক্রিপ্ট করা হয়েছে",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "গ্লোবাল শিল্ড ডিফল্টগুলি",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "এই সাইটটিতে থাকা কুকিগুলি",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "সমস্ত ডিভাইস শনাক্তকরণ অনুমোদন করা হয়েছে",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "ডিভাইস শনাক্তকরণ প্রচেষ্টাগুলি",
@@ -111,49 +103,21 @@
     "message": "অনুমোদিত স্ক্রিপ্টগুলি",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "সমস্ত অনুমোদন করুন",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "অনুমতি দিন",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "অনুমোদন করা হয়েছে",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "সমস্ত ব্লক করুন",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "সমস্ত অনুমোদন করুন",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "ব্লক করুন",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "ব্লক করা হয়েছে",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "প্রয়োগ করুন",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "একবার প্রয়োগ করুন",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "পুনরায় শুরু না হওয়া পর্যন্ত প্রয়োগ করুন",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "সর্বদা প্রয়োগ করুন",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "পূর্বাবস্থায় ফেরান",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "অনুমতি দিন",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "বাতিল করুন",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "ফিরে যান",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "একবার প্রয়োগ করুন",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Change global shield defaults",
+    "description": "Message for the button action linking to the settings page"
   }
 }

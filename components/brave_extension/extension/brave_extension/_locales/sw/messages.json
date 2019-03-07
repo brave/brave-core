@@ -15,10 +15,6 @@
     "message": "chini",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "Jumla ya Yaliyozuiwa",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "kwa tovuti hii",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "Unaperuzi tovuti hii bila faraga na ulinzi usalama wowote.",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "Matangazo na vifuatiliaji vimezuiwa",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "Items blocked",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "Madirisha ibukizi yamezuiwa",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "Item blocked",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "Picha zimezuiwa",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "and",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "Vidakuzi vya tovuti nyingine vimezuiwa",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "connections upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "Vidakuzi vyote vimeruhusiwa",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "connection upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "Vidakuzi vimezuiwa",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "3rd-party trackers blocked",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "Baadhi ya Maandishi Yameziwa",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "Connections upgraded to HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "Maandishi yote yameruhusiwa",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "Connection upgraded to HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "Maandishi yamezuiwa",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "Vidakuzi vya tovuti nyingine vimezuiwa",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Vidakuzi vimezuiwa",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Vidakuzi vyote vimeruhusiwa",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "Utambuzi wa kifaa kingine umezuiwa",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "Utambuzi wa vifaa vyote umeruhusiwa",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "Utambuzi wa kifaa umezuiwa",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "Mashambulizi ya mtaliga yamezuiwa",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "Miunganiko imesimbwa",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "Machaguo msingi ya ngao",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "Vidakuzi kwenye tovuti hii",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "Utambuzi wa vifaa vyote umeruhusiwa",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "Majaribio ya kutambua kifaa",
@@ -111,49 +103,21 @@
     "message": "Maandishi yaliyoruhusiwa",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "Ruhusu yote",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "Ruhusu",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "Vilivyoruhusiwa",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "Zuia vyote",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Ruhusu yote",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "Zuia",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "Vimezuiwa",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "Tumia",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "Tumia mara moja",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "Tumia hadi utakapowasha tena",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "Tumia siku zote",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "Tendua",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "Ruhusu",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "Ghairi",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "Rudi nyuma",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Tumia mara moja",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Change global shield defaults",
+    "description": "Message for the button action linking to the settings page"
   }
 }

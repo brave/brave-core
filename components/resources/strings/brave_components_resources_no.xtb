@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Vi har oppdaget en feil med lommeboken din. Du må gjenopprette sikkerhetskopien av lommeboken din før det kan foretas en transaksjon.</translation>
 <translation id="7797604753681168055">Gjenopprett nå!</translation>
 <translation id="1184075897575325927">Beklager, men det ser ut til at dette stipendet allerede er gjort krav på.</translation>
+<translation id="7180611975245234373">Last inn på nytt</translation>
+<translation id="839736845446313156">Registrer</translation>
+<translation id="583281660410589416">Ukjent</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Aksepter</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave er et registrert varemerke for Brave Software. Nettstednavn kan være varemerker eller registrerte varemerker for nettstedseieren.</translation>
@@ -360,8 +363,6 @@ dag i hver måned.</translation>
 <translation id="1736420071277903564">Datamaskin</translation>
 <translation id="1258250624898033822">Ugyldig synkroniseringskode.</translation>
 <translation id="3259723213051400722">Prøv på nytt.</translation>
-<translation id="3779810277399252432">Ingen Internett-tilkobling.</translation>
-<translation id="4380604249778320975">Prøv på nytt senere når tilkoblingen din er tilgjengelig.</translation>
 <translation id="5257281382608458806">Krever enhetsnavn.</translation>
 <translation id="8349682220522608879">Legg til en synkroniseringskode</translation>
 <translation id="1468095392829989299">Fikk ikke kontakt med Sync-servere.</translation>
