@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
-    "message": "Wydaliśmy sporą łatkę dla naszego Brave Payments.",
+    "message": "Wydaliśmy sporą aktualizację dla nagród Brave.",
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
@@ -185,6 +185,10 @@
     "message": "Czeka na Ciebie darowizna.",
     "description": "Description for new grant notification"
   },
+  "backupNow": {
+    "message": "Utwórz kopię zapasową teraz",
+    "description": "Notification button text when we ask user to backup wallet"
+  },
   "backupWalletTitle": {
     "message": "Uzupełnij portfel",
     "description": "Notification title when we ask user to backup wallet"
@@ -194,7 +198,7 @@
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "Twoje konto płatności Brave oczekuje na depozyt.",
+    "message": "Twoje konto nagród Brave oczekuje na depozyt.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -214,7 +218,7 @@
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "Wystąpil problem przy przetwarzaniu twojego napiwku, spróbuj ponownie.",
+    "message": "Nie można wysłać napiwka. Spróbuj ponownie później.",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -328,5 +332,17 @@
   "walletFailedButton": {
     "message": "Spróbuj ponownie",
     "description": "Button for re-try after wallet creation failed"
+  },
+  "addFunds": {
+    "message": "Dodaj środki",
+    "description": "Button for adding funds"
+  },
+  "rewardsSettings": {
+    "message": "Ustawienia nagród",
+    "description": "Button for opening settings page"
+  },
+  "earningsClaimDefault": {
+    "message": "Twoje zarobki z reklam są dostępne.",
+    "description": "Panel notification text for Ads grant"
   }
 }

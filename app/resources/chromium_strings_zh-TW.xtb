@@ -185,7 +185,6 @@ Brave 無法復原你的設定。</translation>
 <translation id="7272074097076644710">Brave Beta 允許 mDNS 流量的連入規則。</translation>
 <translation id="4991512282053949769">Brave Nightly 允許 mDNS 流量的連入規則。</translation>
 <translation id="3856641371299712128">Brave Dev 允許 mDNS 流量的連入規則。</translation>
-<translation id="3795403186582265456">Brave 可將網頁圖片傳送到 Brave Software 伺服器，運用相關技術辨識圖片和圖片所含文字，讓你更瞭解網頁內容。</translation>
 <translation id="7276297358157391541">Brave 可將您在瀏覽器中輸入的字詞傳送給 Brave Software 伺服器，並透過 Brave Software 搜尋所使用的拼字檢查技術，為您提供更精確的拼字檢查功能。</translation>
 <translation id="1807774211756215222">在新的 Brave 分頁中開啟連結(&amp;T)</translation>
 <translation id="4624945300945265642">在 Brave 無痕式視窗中開啟連結(&amp;G)</translation>
@@ -202,7 +201,6 @@ Brave 無法復原你的設定。</translation>
 <translation id="5173820533850252773">Brave 版本過舊</translation>
 <translation id="6389268239133412586">無法更新 Brave</translation>
 <translation id="7963515534397191222">Brave 無法更新至最新版本，因此你並未取得最新功能和安全性問題修正。</translation>
-<translation id="3472158705945346956">管理員必須先將你移除，再重新加入 Brave 中。</translation>
 <translation id="1705567146636171298">更新 Brave</translation>
 <translation id="3598551856834560515">如要開始同步處理，請更新 Brave</translation>
 <translation id="4050175100176540509">最新版本包含重要的安全性改善與新功能。</translation>
@@ -281,9 +279,9 @@ Brave 無法復原你的設定。</translation>
 <translation id="8372880274820509128">為了提升安全性，Brave 會將您的資料加密保護。</translation>
 <translation id="7445061995866044926">要登出 Brave 嗎？</translation>
 <translation id="7453070689008684791">Brave 將存取你的雲端硬碟，並在網址列提供建議</translation>
-<translation id="7713466009760073734">Brave 作業系統的介面文字已設為這種語言</translation>
+<translation id="9221712274065451529">這是 Brave 作業系統 UI 的顯示語言</translation>
 <translation id="3518788198614984730">將 Brave 作業系統的介面文字設為這種語言</translation>
-<translation id="8258976055610040706">Brave 的介面文字已設為這種語言</translation>
+<translation id="5757460455745382269">這是 Brave UI 的顯示語言</translation>
 <translation id="2335583906071111058">將 Brave 的介面文字設為這種語言</translation>
 <translation id="8926637909431618259">在 Brave 關閉時繼續執行背景應用程式</translation>
 <translation id="6056473803837713617">只要回報<ph name="BEGIN_LINK"/>目前的設定<ph name="END_LINK"/>，就能助我們一臂之力，讓 Brave 更臻完美</translation>
