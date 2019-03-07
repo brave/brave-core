@@ -84,6 +84,9 @@ class PublisherInfoDatabase {
 
   void SetTestingCurrentVersion(int value);
 
+  bool DeleteActivityInfo(const std::string& publisher_key,
+                          uint64_t reconcile_stamp);
+
   // Vacuums the database. This will cause sqlite to defragment and collect
   // unused space in the file. It can be VERY SLOW.
   void Vacuum();
