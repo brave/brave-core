@@ -48,9 +48,6 @@ content::WebContents* GetWebContentsFromProcessAndFrameId(int render_process_id,
 
 std::string GetTagFromPrefName(const std::string& pref_name) {
   std::string tag;
-  if (pref_name == kFBLoginControlType) {
-    return brave_shields::kFacebookLogin;
-  }
   if (pref_name == kFBEmbedControlType) {
     return brave_shields::kFacebookEmbeds;
   }
