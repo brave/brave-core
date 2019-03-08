@@ -1,28 +1,39 @@
-// /* This Source Code Form is subject to the terms of the Mozilla Public
-// * License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// import * as React from 'react'
+import * as React from 'react'
 
-// // Feature-specific components
-// import { MainFooterLinkFlex, LinkIcon } from 'brave-ui/features/shields'
+// Feature-specific components
+import { MainFooter, Link } from 'brave-ui/features/shields'
 
-// // Utils
-// import * as tabsAPI from '../background/api/tabsAPI'
-// import { getLocale } from '../background/api/localeAPI'
+// API
+import * as tabsAPI from '../background/api/tabsAPI'
 
-// export default class ShieldsFooter extends React.PureComponent<{}, {}> {
-//   openSettings = (event: React.MouseEvent<HTMLAnchorElement>) => {
-//     event.preventDefault()
-//     tabsAPI.createTab({ url: 'chrome://settings/shields' })
-//       .catch((err) => console.log(err))
-//   }
-//   render () {
-//     return (
-//       <MainFooterLinkFlex id='braveShieldsFooter' href='#' onClick={this.openSettings}>
-//         <span>{getLocale('editDefaults')}</span>
-//         <LinkIcon />
-//       </MainFooterLinkFlex>
-//     )
-//   }
-// }
+// Locale
+import { getLocale } from '../background/api/localeAPI'
+
+interface Props {
+  isBlockedListOpen: boolean
+}
+
+export default class Footer extends React.PureComponent<Props, {}> {
+  openSettings = () => {
+    tabsAPI.createTab({ url: 'chrome://settings/shields' })
+      .catch((err) => console.log('[Unable to open a new tab from Shields]', err))
+  }
+  render () {
+    const { isBlockedListOpen } = this.props
+    return (
+      <MainFooter>
+        <Link
+          id='braveShieldsFooter'
+          onClick={this.openSettings}
+          disabled={isBlockedListOpen}
+        >
+          {getLocale('changeDefaults')}
+        </Link>
+      </MainFooter>
+    )
+  }
+}

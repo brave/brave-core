@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import ShieldsFooter from '../../../../brave_extension/extension/brave_extension/components/braveShields/footer'
+import ShieldsFooter from '../../../../brave_extension/extension/brave_extension/components/footer'
 import * as tabsAPI from '../../../../brave_extension/extension/brave_extension/background/api/tabsAPI'
 import { shallow } from 'enzyme'
 

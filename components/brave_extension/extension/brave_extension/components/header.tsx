@@ -1,93 +1,123 @@
-// // /* This Source Code Form is subject to the terms of the Mozilla Public
-// //  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// //  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// import * as React from 'react'
+import * as React from 'react'
 
-// // Feature-specific components
-// import {
-//   Header,
-//   MainToggleFlex,
-//   Description,
-//   SiteInfoCard,
-//   DisabledTextGrid,
-//   Label,
-//   Highlight,
-//   UnHighlight,
-//   Toggle,
-//   ShieldIcon,
-//   MainSiteInfoGrid,
-//   ShieldIconFlex
-// } from 'brave-ui/features/shields'
+// Feature-specific components
+import {
+  ShieldsHeader,
+  MainToggle,
+  TotalBlockedStats,
+  SiteOverview,
+  SiteInfo,
+  MainToggleHeading,
+  MainToggleText,
+  ToggleStateText,
+  Favicon,
+  SiteInfoText,
+  TotalBlockedStatsNumber,
+  TotalBlockedStatsText,
+  DisabledContentView,
+  ShieldIcon,
+  DisabledContentText,
+  Toggle
+} from 'brave-ui/features/shields'
 
-// // Types
-// import { Tab } from '../types/state/shieldsPannelState'
-// import { BlockOptions } from '../types/other/blockTypes'
+// Locale
+import { getLocale } from '../background/api/localeAPI'
+import {
+  blockedResourcesSize,
+  getTotalBlockedSizeStrings,
+  getToggleStateViaEventTarget
+} from '../helpers/shieldsUtils'
 
-// // Utils
-// import * as shieldActions from '../types/actions/shieldsPanelActions'
-// import { getLocale } from '../background/api/localeAPI'
-// import { isHttpOrHttps } from '../helpers/urlUtils'
-// import { getFavicon, getTotalResourcesBlocked } from '../helpers/shieldsUtils'
+// Types
+import { BlockOptions } from '../types/other/blockTypes'
+import { ShieldsToggled } from '../types/actions/shieldsPanelActions'
 
-// export interface Props {
-//   tabData: Tab
-//   shieldsToggled: shieldActions.ShieldsToggled
-// }
+interface CommonProps {
+  enabled: boolean
+  favicon: string
+  origin: string
+  hostname: string
+  isBlockedListOpen: boolean
+  shieldsToggled: ShieldsToggled
+}
 
-// export default class ShieldsHeader extends React.PureComponent<Props, {}> {
-//   onToggleShields = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     const { origin } = this.props.tabData
-//     if (!isHttpOrHttps(origin)) {
-//       return
-//     }
-//     const shieldsOption: BlockOptions = event.target.checked ? 'allow' : 'block'
-//     this.props.shieldsToggled(shieldsOption)
-//   }
+interface BlockedItemsProps {
+  adsBlocked: number
+  trackersBlocked: number
+  httpsUpgrades: number
+  scriptsBlocked: number
+  fingerprintingBlocked: number
+}
 
-//   renderEnabledContent = () => {
-//     return (
-//       <MainSiteInfoGrid>
-//         <Highlight enabled={true} size='large'>{getTotalResourcesBlocked(this.props.tabData)}</Highlight>
-//         <Label size='medium'>{getLocale('totalBlocked')}</Label>
-//       </MainSiteInfoGrid>
-//     )
-//   }
+type Props = CommonProps & BlockedItemsProps
 
-//   renderDisabledContent = () => {
-//     return (
-//       <DisabledTextGrid>
-//         <ShieldIconFlex>
-//           <ShieldIcon />
-//         </ShieldIconFlex>
-//         <Description enabled={false}>{getLocale('disabledMessage')}</Description>
-//       </DisabledTextGrid>
-//     )
-//   }
+export default class Header extends React.PureComponent<Props, {}> {
+  get blockedItemsSize (): number {
+    const { adsBlocked, trackersBlocked, scriptsBlocked, fingerprintingBlocked } = this.props
+    return adsBlocked + trackersBlocked + scriptsBlocked + fingerprintingBlocked
+  }
 
-//   render () {
-//     const { braveShields, hostname, url } = this.props.tabData
-//     const enabled = braveShields !== 'block'
+  get totalBlockedSize (): string {
+    const { httpsUpgrades } = this.props
+    const total = this.blockedItemsSize + httpsUpgrades
+    return blockedResourcesSize(total)
+  }
 
-//     return (
-//       <Header id='braveShieldsHeader' enabled={enabled}>
-//         <MainToggleFlex enabled={enabled}>
-//           <Label size='medium'>
-//             {getLocale('shields')} <Highlight enabled={enabled}> {enabled ? getLocale('up') : getLocale('down')}
-//             </Highlight>
-//             <UnHighlight> {getLocale('forThisSite')}</UnHighlight>
-//           </Label>
-//           <Toggle id='mainToggle' checked={enabled} onChange={this.onToggleShields} size='large' />
-//         </MainToggleFlex>
-//         {enabled ? <Description enabled={true}>{getLocale('enabledMessage')}</Description> : null}
-//         <SiteInfoCard>
-//           <MainSiteInfoGrid>
-//             <img src={getFavicon(url)} />
-//             <Label id='hostname' size='large'>{hostname}</Label>
-//           </MainSiteInfoGrid>
-//           {enabled ? this.renderEnabledContent() : this.renderDisabledContent()}
-//         </SiteInfoCard>
-//       </Header>
-//     )
-//   }
-// }
+  get totalBlockedStrings (): string {
+    const { httpsUpgrades } = this.props
+    return getTotalBlockedSizeStrings(this.blockedItemsSize, httpsUpgrades)
+  }
+
+  onToggleShields = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const shieldsOption: BlockOptions = getToggleStateViaEventTarget(event)
+    this.props.shieldsToggled(shieldsOption)
+  }
+
+  render () {
+    const { enabled, favicon, hostname, isBlockedListOpen } = this.props
+    return (
+      <ShieldsHeader status={enabled ? 'enabled' : 'disabled'}>
+        <MainToggle status={enabled ? 'enabled' : 'disabled'}>
+          <div>
+            <MainToggleHeading>
+              {getLocale('shields')}
+              <ToggleStateText status={enabled ? 'enabled' : 'disabled'}>
+                {enabled ? ` ${getLocale('up')} ` : ` ${getLocale('down')} `}
+              </ToggleStateText>
+              {getLocale('forThisSite')}
+            </MainToggleHeading>
+            {enabled ? <MainToggleText>{getLocale('enabledMessage')}</MainToggleText> : null}
+          </div>
+          <Toggle size='large' checked={enabled} onChange={this.onToggleShields} disabled={isBlockedListOpen} />
+        </MainToggle>
+        <SiteOverview status={enabled ? 'enabled' : 'disabled'}>
+          <SiteInfo>
+            <Favicon src={favicon} />
+            <SiteInfoText>{hostname}</SiteInfoText>
+          </SiteInfo>
+          {
+            enabled
+            ? (
+              <TotalBlockedStats>
+                <TotalBlockedStatsNumber>{this.totalBlockedSize}</TotalBlockedStatsNumber>
+                <TotalBlockedStatsText>
+                  {this.totalBlockedStrings}
+                </TotalBlockedStatsText>
+              </TotalBlockedStats>
+            )
+            : (
+              <DisabledContentView>
+                <div><ShieldIcon /></div>
+                <DisabledContentText>{getLocale('disabledMessage')}</DisabledContentText>
+              </DisabledContentView>
+            )
+          }
+        </SiteOverview>
+      </ShieldsHeader>
+    )
+  }
+}

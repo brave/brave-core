@@ -19,10 +19,6 @@ export const getTotalResourcesBlocked = (tabData: Partial<Tab>) => {
   )
 }
 
-export const totalAdsTrackersBlocked = (adsBlocked: number, trackersBlocked: number) => {
-  return adsBlocked + trackersBlocked
-}
-
 export const getFavicon = (url: string) => {
   return `chrome://favicon/size/16@1x/${ url }`
 }
