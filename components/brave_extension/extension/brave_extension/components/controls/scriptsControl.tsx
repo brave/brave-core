@@ -57,7 +57,7 @@ interface JavaScriptProps {
   allowScriptOriginsOnce: AllowScriptOriginsOnce
 }
 
-type Props = CommonProps & JavaScriptProps
+export type Props = CommonProps & JavaScriptProps
 
 interface State {
   scriptsBlockedOpen: boolean
@@ -127,7 +127,7 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
     const { scriptsBlockedOpen } = this.state
     return (
       <>
-        <BlockedInfoRow>
+        <BlockedInfoRow id='scriptsControl'>
           <BlockedInfoRowData
             disabled={this.maybeDisableResourcesRow}
             tabIndex={this.tabIndex}
@@ -135,10 +135,11 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
             onKeyDown={this.onOpenScriptsBlockedViaKeyboard}
           >
             <ArrowDownIcon />
-            <BlockedInfoRowStats>{this.javascriptBlockedDisplay}</BlockedInfoRowStats>
+            <BlockedInfoRowStats id='blockScriptsStat'>{this.javascriptBlockedDisplay}</BlockedInfoRowStats>
             <BlockedInfoRowText>{getLocale('scriptsBlocked')}</BlockedInfoRowText>
           </BlockedInfoRowData>
           <Toggle
+            id='blockScripts'
             size='small'
             disabled={isBlockedListOpen}
             checked={this.shouldBlockJavaScript}
