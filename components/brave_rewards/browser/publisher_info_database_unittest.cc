@@ -864,4 +864,55 @@ TEST_F(PublisherInfoDatabaseTest, GetExcludedPublishersCount) {
   EXPECT_EQ(publisher_info_database_->GetExcludedPublishersCount(), 2);
 }
 
+TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  ledger::PublisherInfo info;
+  info.id = "publisher_1";
+  info.verified = true;
+  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.name = "publisher1";
+  info.url = "https://publisher1.com";
+  info.duration = 10;
+  info.score = 1.1;
+  info.percent = 33;
+  info.weight = 1.5;
+  info.reconcile_stamp = 1;
+  info.visits = 1;
+
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  info.reconcile_stamp = 2;
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  info.id = "publisher_2";
+  info.name = "publisher2";
+  info.url = "https://publisher2.com";
+  EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+
+  // publisher key is missing
+  EXPECT_FALSE(publisher_info_database_->DeleteActivityInfo("", 2));
+
+  // reconcile stamp is missing
+  EXPECT_FALSE(publisher_info_database_->DeleteActivityInfo("publisher_1", 0));
+
+  // publisher doesn't exist
+  EXPECT_TRUE(publisher_info_database_->DeleteActivityInfo("publisher_3", 2));
+
+  // publisher is deleted
+  EXPECT_TRUE(publisher_info_database_->DeleteActivityInfo("publisher_1", 2));
+  ledger::PublisherInfoList list;
+  ledger::ActivityInfoFilter filter;
+  filter.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter, &list));
+  EXPECT_EQ(static_cast<int>(list.size()), 2);
+
+  EXPECT_EQ(list.at(0).id, "publisher_1");
+  EXPECT_EQ(list.at(0).reconcile_stamp, 1u);
+  EXPECT_EQ(list.at(1).id, "publisher_2");
+
+}
+
 }  // namespace brave_rewards

@@ -1903,8 +1903,14 @@ void RewardsServiceImpl::OnExcludedSitesChanged(
     ledger::PUBLISHER_EXCLUDE exclude) {
 
   bool excluded = exclude == ledger::PUBLISHER_EXCLUDE::EXCLUDED;
-  for (auto& observer : observers_)
+
+  if (excluded) {
+    DeleteActivityInfo(publisher_id);
+  }
+
+  for (auto& observer : observers_) {
     observer.OnExcludedSitesChanged(this, publisher_id, excluded);
+  }
 }
 
 void RewardsServiceImpl::OnPanelPublisherInfo(
@@ -2727,6 +2733,48 @@ void RewardsServiceImpl::GetExcludedPublishersNumberDB(
       base::BindOnce(&RewardsServiceImpl::OnGetExcludedPublishersNumberDB,
                      AsWeakPtr(),
                      callback));
+}
+
+bool DeleteActivityInfoOnFileTaskRunner(PublisherInfoDatabase* backend,
+                                        const std::string& publisher_key,
+                                        uint64_t reconcile_stamp) {
+  if (backend &&
+      backend->DeleteActivityInfo(publisher_key, reconcile_stamp)) {
+    return true;
+  }
+
+  return false;
+}
+
+void RewardsServiceImpl::DeleteActivityInfo(const std::string& publisher_key) {
+  GetReconcileStamp(
+      base::Bind(&RewardsServiceImpl::OnDeleteActivityInfoStamp,
+                 AsWeakPtr(),
+                 publisher_key));
+}
+
+void RewardsServiceImpl::OnDeleteActivityInfoStamp(
+    const std::string& publisher_key,
+    uint64_t reconcile_stamp) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
+      base::Bind(&DeleteActivityInfoOnFileTaskRunner,
+                 publisher_info_backend_.get(),
+                 publisher_key,
+                 reconcile_stamp),
+      base::Bind(&RewardsServiceImpl::OnDeleteActivityInfo,
+                 AsWeakPtr(),
+                 publisher_key));
+}
+
+void RewardsServiceImpl::OnDeleteActivityInfo(
+    const std::string& publisher_key,
+    bool result) {
+  if (!result) {
+    LOG(ERROR) << "Problem deleting activity info for "
+               << publisher_key;
+  }
 }
 
 }  // namespace brave_rewards

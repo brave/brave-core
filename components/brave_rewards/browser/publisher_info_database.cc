@@ -645,6 +645,29 @@ bool PublisherInfoDatabase::GetActivityList(
   return true;
 }
 
+bool PublisherInfoDatabase::DeleteActivityInfo(
+    const std::string& publisher_key,
+    uint64_t reconcile_stamp) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized || publisher_key.empty() || reconcile_stamp == 0) {
+    return false;
+  }
+
+  sql::Statement statement(GetDB().GetCachedStatement(
+      SQL_FROM_HERE,
+      "DELETE FROM activity_info WHERE "
+      "publisher_id = ? AND reconcile_stamp = ?"));
+
+  statement.BindString(0, publisher_key);
+  statement.BindInt64(1, reconcile_stamp);
+
+  return statement.Run();
+}
+
 /**
  *
  * MEDIA PUBLISHER INFO

@@ -276,6 +276,14 @@ class RewardsServiceImpl : public RewardsService,
   void OnDonate(const std::string& publisher_key, int amount, bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
 
+  void DeleteActivityInfo(const std::string& publisher_key);
+
+  void OnDeleteActivityInfoStamp(const std::string& publisher_key,
+                                 uint64_t reconcile_stamp);
+
+  void OnDeleteActivityInfo(const std::string& publisher_key,
+                            bool result);
+
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
   void OnWalletInitialized(ledger::Result result) override;
