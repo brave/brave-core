@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import Deferred
 
 private let log = Logger.browserLogger
 
@@ -39,5 +40,45 @@ public extension FileManager {
             log.error("Failed to check lock status on item at path \(folder.rawValue) with error: \n\(error)")
         }
         return false
+    }
+    
+    func writeToDiskInFolder(_ data: Data, fileName: String, folderName: String) -> Bool {
+        
+        guard let folderUrl = getOrCreateFolder(name: folderName) else { return false }
+        
+        do {
+            let fileUrl = folderUrl.appendingPathComponent(fileName)
+            try data.write(to: fileUrl, options: [.atomic])
+        } catch {
+            log.error("Failed to write data, error: \(error)")
+            return false
+        }
+
+        return true
+    }
+    
+    /// Creates a folder at documents directory and returns its URL.
+    /// If folder already exists, returns its URL as well.
+    func getOrCreateFolder(name: String, excludeFromBackups: Bool = true) -> URL? {
+        guard let documentsDir = urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
+        
+        var folderDir = documentsDir.appendingPathComponent(name)
+        
+        if fileExists(atPath: folderDir.path) { return folderDir }
+        
+        do {
+            try createDirectory(at: folderDir, withIntermediateDirectories: true, attributes: nil)
+            
+            if excludeFromBackups {
+                var resourceValues = URLResourceValues()
+                resourceValues.isExcludedFromBackup = true
+                try folderDir.setResourceValues(resourceValues)
+            }
+            
+            return folderDir
+        } catch {
+            log.error("Failed to create folder, error: \(error)")
+            return nil
+        }
     }
 }

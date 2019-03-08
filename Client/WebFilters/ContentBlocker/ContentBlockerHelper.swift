@@ -46,8 +46,8 @@ class ContentBlockerHelper {
     static let ruleStore: WKContentRuleListStore = WKContentRuleListStore.default()
     weak var tab: Tab?
     
-    static func compileLists() -> Deferred<()> {
-        return BlocklistName.compileAll(ruleStore: ruleStore)
+    static func compileBundledLists() -> Deferred<()> {
+        return BlocklistName.compileBundledRules(ruleStore: ruleStore)
     }
 
     var isUserEnabled: Bool? {
