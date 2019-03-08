@@ -316,8 +316,7 @@ extension FavoritesViewController: FavoriteCellDelegate {
                                                                  keyboardType2: .URL) { callbackTitle, callbackUrl in
                                                                     if let cTitle = callbackTitle, !cTitle.isEmpty, let cUrl = callbackUrl, !cUrl.isEmpty {
                                                                         if URL(string: cUrl) != nil {
-                                                                            fav.update(customTitle: cTitle,
-                                                                                       url: cUrl, save: true)
+                                                                            fav.update(customTitle: cTitle, url: cUrl)
                                                                         }
                                                                     }
                                                                     self.dataSource.isEditing = false
