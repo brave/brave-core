@@ -47,7 +47,7 @@ interface HTTPSUpgradesProps {
   httpsEverywhereToggled: HttpsEverywhereToggled
 }
 
-type Props = CommonProps & HTTPSUpgradesProps
+export type Props = CommonProps & HTTPSUpgradesProps
 
 interface State {
   connectionsUpgradedOpen: boolean
@@ -107,7 +107,7 @@ export default class HTTPSUpgradesControl extends React.PureComponent<Props, Sta
     const { connectionsUpgradedOpen } = this.state
     return (
       <>
-        <BlockedInfoRow>
+        <BlockedInfoRow id='httpsUpgradesControl'>
           <BlockedInfoRowData
             disabled={this.maybeDisableResourcesRow}
             tabIndex={this.tabIndex}
@@ -115,10 +115,11 @@ export default class HTTPSUpgradesControl extends React.PureComponent<Props, Sta
             onKeyDown={this.onOpenConnectionsUpgradedToHTTPSViaKeyboard}
           >
             <ArrowDownIcon />
-            <BlockedInfoRowStats>{this.httpsRedirectedDisplay}</BlockedInfoRowStats>
+            <BlockedInfoRowStats id='connectionsEncryptedStat'>{this.httpsRedirectedDisplay}</BlockedInfoRowStats>
             <BlockedInfoRowText>{getLocale('connectionsUpgradedHTTPS')}</BlockedInfoRowText>
           </BlockedInfoRowData>
           <Toggle
+            id='connectionsEncrypted'
             size='small'
             disabled={isBlockedListOpen}
             checked={this.shouldBlockConnectionsUpgradedToHTTPS}
