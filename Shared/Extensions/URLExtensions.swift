@@ -103,8 +103,10 @@ extension URL {
 // The list of permanent URI schemes has been taken from http://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml 
 private let permanentURISchemes = ["aaa", "aaas", "about", "acap", "acct", "cap", "cid", "coap", "coaps", "crid", "data", "dav", "dict", "dns", "example", "file", "ftp", "geo", "go", "gopher", "h323", "http", "https", "iax", "icap", "im", "imap", "info", "ipp", "ipps", "iris", "iris.beep", "iris.lwz", "iris.xpc", "iris.xpcs", "jabber", "ldap", "mailto", "mid", "msrp", "msrps", "mtqp", "mupdate", "news", "nfs", "ni", "nih", "nntp", "opaquelocktoken", "pkcs11", "pop", "pres", "reload", "rtsp", "rtsps", "rtspu", "service", "session", "shttp", "sieve", "sip", "sips", "sms", "snmp", "soap.beep", "soap.beeps", "stun", "stuns", "tag", "tel", "telnet", "tftp", "thismessage", "tip", "tn3270", "turn", "turns", "tv", "urn", "vemmi", "vnc", "ws", "wss", "xcon", "xcon-userid", "xmlrpc.beep", "xmlrpc.beeps", "xmpp", "z39.50r", "z39.50s"]
 
-extension URL {
+private let ignoredSchemes = ["data"]
+private let supportedSchemes = permanentURISchemes.filter { !ignoredSchemes.contains($0) }
 
+extension URL {
     public func withQueryParams(_ params: [URLQueryItem]) -> URL {
         var components = URLComponents(url: self, resolvingAgainstBaseURL: false)!
         var items = (components.queryItems ?? [])
@@ -310,7 +312,7 @@ extension URL {
      */
     public var schemeIsValid: Bool {
         guard let scheme = scheme else { return false }
-        return permanentURISchemes.contains(scheme.lowercased())
+        return supportedSchemes.contains(scheme.lowercased())
     }
 
     public func havingRemovedAuthorisationComponents() -> URL {

@@ -297,7 +297,8 @@ class NSURLExtensionsTests: XCTestCase {
         let badurls = [
             "blah://google.com",
             "hax://localhost:6571/sessionrestore.html",
-            "leet://codes.com"
+            "leet://codes.com",
+            "data:text/html;base64,SGVsbG8gV29ybGQhCg=="
         ]
 
         goodurls.forEach { XCTAssertTrue(URL(string:$0)!.schemeIsValid, $0) }
