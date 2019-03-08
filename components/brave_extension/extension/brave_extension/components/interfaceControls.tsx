@@ -36,7 +36,7 @@ interface HTTPSUpgradesProps {
   httpsEverywhereToggled: HttpsEverywhereToggled
 }
 
-type Props = CommonProps & AdsTrackersProps & HTTPSUpgradesProps
+export type Props = CommonProps & AdsTrackersProps & HTTPSUpgradesProps
 
 export default class InterfaceControls extends React.PureComponent<Props, {}> {
   get commonProps (): CommonProps {

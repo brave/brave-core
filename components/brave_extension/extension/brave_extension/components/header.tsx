@@ -53,7 +53,7 @@ interface BlockedItemsProps {
   fingerprintingBlocked: number
 }
 
-type Props = CommonProps & BlockedItemsProps
+export type Props = CommonProps & BlockedItemsProps
 
 export default class Header extends React.PureComponent<Props, {}> {
   get blockedItemsSize (): number {

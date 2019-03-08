@@ -50,7 +50,7 @@ interface FingerprintingProps {
   blockFingerprinting: BlockFingerprinting
 }
 
-type Props = CommonProps & JavaScriptProps & CookiesProps & FingerprintingProps
+export type Props = CommonProps & JavaScriptProps & CookiesProps & FingerprintingProps
 
 export default class PrivacyControls extends React.PureComponent<Props, {}> {
   get commonProps (): CommonProps {
