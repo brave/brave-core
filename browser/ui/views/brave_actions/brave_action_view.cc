@@ -16,7 +16,7 @@
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/controls/button/menu_button.h"
 #include "ui/views/view.h"
-#include "ui/views/view_properties.h"
+#include "ui/views/view_class_properties.h"
 
 void BraveActionView::OnBoundsChanged(const gfx::Rect& previous_bounds) {
   // Set the highlight path for the toolbar button,
