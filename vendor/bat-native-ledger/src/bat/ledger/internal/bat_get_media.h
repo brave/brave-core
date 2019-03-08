@@ -261,7 +261,21 @@ class BatGetMedia {
 
   std::string parseChannelIdFromCustomPathPage(
       const std::string& data);
+
   std::string getRealEnteredYTPath(const std::string& path) const;
+
+  void onFetchDataFromNonEmbeddable(
+    uint64_t windowId,
+    const ledger::VisitData& visit_data,
+    const std::string& providerType,
+    const uint64_t& duration,
+    const std::string& media_key,
+    const std::string& mediaURL,
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers);
+
+  static std::string parsePublisherName(const std::string& data);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 
@@ -274,6 +288,7 @@ class BatGetMedia {
   FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, GetYoutubeUserFromUrl);
   FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, getRealEnteredYTPath);
   FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, GetNameFromChannel);
+  FRIEND_TEST_ALL_PREFIXES(BatGetMediaTest, ParsePublisherName);
 };
 
 }  // namespace braveledger_bat_get_media
