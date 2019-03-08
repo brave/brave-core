@@ -533,9 +533,55 @@ void BatGetMedia::processYoutubeMediaPanel(uint64_t windowId,
     processYoutubeChannelPath(windowId, visit_data, providerType);
   } else if (visit_data.path.find("/user/") != std::string::npos) {
     processYoutubeUserPath(windowId, visit_data, providerType);
+  } else if (!isPredefinedYTPath(visit_data.path)) {
+    processYoutubeCustomPath(windowId, visit_data, providerType, std::string());
   } else {
     onMediaActivityError(visit_data, providerType, windowId);
   }
+}
+
+bool BatGetMedia::isPredefinedYTPath(const std::string& path) const {
+  std::vector<std::string> yt_paths({
+      "/feed",
+      "/channel",
+      "/user",
+      "/watch",
+      "/account",
+      "/gaming",
+      "/playlist",
+      "/premium",
+      "/reporthistory",
+      "/pair",
+      "/account_notifications",
+      "/account_playback",
+      "/account_privacy",
+      "/account_sharing",
+      "/account_billing",
+      "/account_advanced",
+      "/subscription_manager",
+      "/oops"
+    });
+
+  // make sure we are ignoring actual YT paths and not
+  // a custom path that might start with a YT path
+  std::string yt_path = getRealEnteredYTPath(path);
+  for (std::string str_path : yt_paths) {
+    if (yt_path == str_path) {
+      return true;
+    }
+  }
+  return false;
+}
+
+std::string BatGetMedia::getRealEnteredYTPath(const std::string& path) const {
+  std::string yt_path = path.substr(0, path.find("/", 1));
+  if (yt_path.empty() || yt_path == path) {
+    yt_path = path.substr(0, path.find("?", 1));
+    if (yt_path.empty() || yt_path == path) {
+      yt_path = path.substr(0);
+    }
+  }
+  return yt_path;
 }
 
 void BatGetMedia::processYoutubeWatchPath(uint64_t windowId,
@@ -554,6 +600,20 @@ void BatGetMedia::processYoutubeWatchPath(uint64_t windowId,
   }
 }
 
+void BatGetMedia::processYoutubeCustomPath(
+    uint64_t windowId,
+    const ledger::VisitData& visit_data,
+    const std::string& providerType,
+    const std::string& publisher_key) {
+  fetchPublisherDataFromDB(
+      windowId,
+      visit_data,
+      providerType,
+      publisher_key,
+      std::string(),
+      true);
+}
+
 void BatGetMedia::processYoutubeChannelPath(uint64_t windowId,
   const ledger::VisitData& visit_data,
   const std::string& providerType) {
@@ -565,7 +625,8 @@ void BatGetMedia::processYoutubeChannelPath(uint64_t windowId,
                              visit_data,
                              providerType,
                              publisher_key,
-                             std::string());
+                             std::string(),
+                             false);
   } else {
     onMediaActivityError(visit_data, providerType, windowId);
   }
@@ -598,7 +659,7 @@ void BatGetMedia::onMediaUserActivity(
 
   } else {
     fetchPublisherDataFromDB(windowId, visit_data,
-      providerType, info->id, std::string());
+      providerType, info->id, std::string(), false);
   }
 }
 
@@ -624,7 +685,8 @@ void BatGetMedia::fetchPublisherDataFromDB(
     const ledger::VisitData& visit_data,
     const std::string& providerType,
     const std::string& publisher_key,
-    const std::string& publisher_blob) {
+    const std::string& publisher_blob,
+    const bool is_custom_path) {
   auto filter = ledger_->CreateActivityFilter(
     publisher_key,
     ledger::ACTIVITY_MONTH::ANY,
@@ -636,8 +698,15 @@ void BatGetMedia::fetchPublisherDataFromDB(
     false);
   ledger_->GetPanelPublisherInfo(filter,
     std::bind(&BatGetMedia::onFetchPublisherFromDBResponse,
-    this, _1, _2, windowId, visit_data, providerType,
-    publisher_key, publisher_blob));
+              this,
+              _1,
+              _2,
+              windowId,
+              visit_data,
+              providerType,
+              publisher_key,
+              publisher_blob,
+              is_custom_path));
 }
 
 void BatGetMedia::onFetchPublisherFromDBResponse(
@@ -647,18 +716,20 @@ void BatGetMedia::onFetchPublisherFromDBResponse(
     const ledger::VisitData& visit_data,
     const std::string& providerType,
     const std::string& publisher_key,
-    const std::string& publisher_blob) {
+    const std::string& publisher_blob,
+    const bool is_custom_path) {
   if (!info || (result == ledger::Result::NOT_FOUND &&
     providerType == YOUTUBE_MEDIA_TYPE)) {
     fetchDataFromUrl(visit_data.url,
-                     std::bind(&BatGetMedia::onGetChannelHeadlineVideo,
-                               this,
-                               windowId,
-                               visit_data,
-                               providerType,
-                               _1,
-                               _2,
-                               _3));
+        std::bind(&BatGetMedia::onGetChannelHeadlineVideo,
+            this,
+            windowId,
+            visit_data,
+            providerType,
+            _1,
+            _2,
+            _3,
+            is_custom_path));
   } else {
     if (providerType == TWITCH_MEDIA_TYPE) {
       if (info->name != visit_data.name) {
@@ -726,7 +797,8 @@ void BatGetMedia::onGetChannelHeadlineVideo(
     const std::string& providerType,
     bool success,
     const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const std::map<std::string, std::string>& headers,
+    const bool is_custom_path) {
   if (!success) {
     onMediaActivityError(visit_data, providerType, windowId);
     return;
@@ -738,7 +810,7 @@ void BatGetMedia::onGetChannelHeadlineVideo(
     std::string channelId = getYoutubePublisherKeyFromUrl(visit_data.path);
 
     savePublisherInfo(0,
-                      "",
+                      std::string(),
                       providerType,
                       visit_data.url,
                       title,
@@ -747,6 +819,14 @@ void BatGetMedia::onGetChannelHeadlineVideo(
                       favicon,
                       channelId);
 
+  } else if (is_custom_path) {
+    std::string title = getNameFromChannel(response);
+    std::string favicon = parseFavIconUrl(response);
+    std::string channelId = parseChannelIdFromCustomPathPage(response);
+    ledger::VisitData new_visit_data(visit_data);
+    new_visit_data.path = "/channel/" + channelId;
+    processYoutubeCustomPath(windowId, new_visit_data, providerType,
+        "youtube#channel:" + channelId);
   } else {
     onMediaActivityError(visit_data, providerType, windowId);
   }
@@ -861,7 +941,8 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
                                visit_data,
                                providerType,
                                info->id,
-                               publisher_blob);
+                               publisher_blob,
+                               false);
     }
   }
 }
@@ -1059,6 +1140,11 @@ std::string BatGetMedia::extractData(const std::string& data,
 
 std::string BatGetMedia::getNameFromChannel(const std::string& data) {
   return extractData(data, "channelMetadataRenderer\":{\"title\":\"", "\"");
+}
+
+std::string BatGetMedia::parseChannelIdFromCustomPathPage(
+    const std::string& data) {
+  return extractData(data, "{\"key\":\"browse_id\",\"value\":\"", "\"");
 }
 
 }  // namespace braveledger_bat_get_media
