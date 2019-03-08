@@ -43,6 +43,8 @@ class SearchTests: XCTestCase {
         checkInvalidURL("创业咖啡")
         checkInvalidURL("创业咖啡 中国")
         checkInvalidURL("创业咖啡. 中国")
+        checkInvalidURL("data:text/html;base64,SGVsbG8gV29ybGQhCg==")
+        checkInvalidURL("data://https://www.example.com,fake example.com")
     }
 
     func testURIFixupPunyCode() {

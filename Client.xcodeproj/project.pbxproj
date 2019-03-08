@@ -538,6 +538,7 @@
 		A83E5B1E1C1DAAAA0026D912 /* UIPasteboardExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83E5AB61C1D993D0026D912 /* UIPasteboardExtensions.swift */; };
 		A9072B801D07B34100459960 /* NoImageModeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9072B7F1D07B34100459960 /* NoImageModeHelper.swift */; };
 		A93067E81D0FE18E00C49C6E /* NightModeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93067E71D0FE18E00C49C6E /* NightModeHelper.swift */; };
+		AB1B097A21F2F00400E0DD51 /* FavoritesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1B097921F2F00400E0DD51 /* FavoritesViewControllerTests.swift */; };
 		C400467C1CF4E43E00B08303 /* BackForwardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C400467B1CF4E43E00B08303 /* BackForwardListViewController.swift */; };
 		C40046FA1CF8E0B200B08303 /* BackForwardListAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40046F91CF8E0B200B08303 /* BackForwardListAnimator.swift */; };
 		C4E3984C1D21F2FD004E89BA /* TabTrayButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E3984B1D21F2FD004E89BA /* TabTrayButtonExtensions.swift */; };
@@ -1830,6 +1831,7 @@
 		A83E5B1C1C1DA8D80026D912 /* UIPasteboardExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIPasteboardExtensionsTests.swift; sourceTree = "<group>"; };
 		A9072B7F1D07B34100459960 /* NoImageModeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoImageModeHelper.swift; sourceTree = "<group>"; };
 		A93067E71D0FE18E00C49C6E /* NightModeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightModeHelper.swift; sourceTree = "<group>"; };
+		AB1B097921F2F00400E0DD51 /* FavoritesViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewControllerTests.swift; sourceTree = "<group>"; };
 		C400467B1CF4E43E00B08303 /* BackForwardListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackForwardListViewController.swift; sourceTree = "<group>"; };
 		C40046F91CF8E0B200B08303 /* BackForwardListAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackForwardListAnimator.swift; sourceTree = "<group>"; };
 		C4E3984B1D21F2FD004E89BA /* TabTrayButtonExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabTrayButtonExtensions.swift; path = ../Browser/TabTrayButtonExtensions.swift; sourceTree = "<group>"; };
@@ -3953,6 +3955,7 @@
 				E696FE501C47F86E00EC007C /* AuthenticatorTests.swift */,
 				F84B21D91A090F8100AAB793 /* ClientTests.swift */,
 				D3D488581ABB54CD00A93597 /* FileAccessorTests.swift */,
+				AB1B097921F2F00400E0DD51 /* FavoritesViewControllerTests.swift */,
 				281B2BE91ADF4D90002917DC /* MockProfile.swift */,
 				E683F0A51E92E0820035D990 /* MockableHistory.swift */,
 				2FDB10921A9FBEC5006CF312 /* PrefsTests.swift */,
@@ -5723,6 +5726,7 @@
 				3BFCBF201E04B1C50070C042 /* UIImageViewExtensionsTests.swift in Sources */,
 				E683F0A61E92E0820035D990 /* MockableHistory.swift in Sources */,
 				A83E5B1E1C1DAAAA0026D912 /* UIPasteboardExtensions.swift in Sources */,
+				AB1B097A21F2F00400E0DD51 /* FavoritesViewControllerTests.swift in Sources */,
 				2795274A21A890EB00921AA1 /* FingerprintingProtectionTests.swift in Sources */,
 				0BF42D4F1A7CD09600889E28 /* TestFavicons.swift in Sources */,
 				0A4214E921A6EBCF006B8E39 /* SafeBrowsingTests.swift in Sources */,
@@ -8152,7 +8156,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
-				MOZ_INTERNAL_URL_SCHEME = "firefox-internal";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -8548,7 +8551,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
-				MOZ_INTERNAL_URL_SCHEME = fennec;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -8950,7 +8952,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
-				MOZ_INTERNAL_URL_SCHEME = "firefox-beta";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -9173,7 +9174,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
-				MOZ_INTERNAL_URL_SCHEME = fennec;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (

@@ -75,11 +75,6 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
         cell.accessibilityLabel = cell.textLabel.text
 
         cell.toggleEditButton(isEditing)
-
-        guard let urlString = fav.url, let url = URL(string: urlString) else {
-            log.error("configureCell url is nil")
-            return UICollectionViewCell()
-        }
         
         return cell
     }

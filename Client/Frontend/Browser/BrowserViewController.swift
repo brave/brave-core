@@ -1361,7 +1361,8 @@ extension BrowserViewController: QRCodeViewControllerDelegate {
 
 extension BrowserViewController: SettingsDelegate {
     func settingsOpenURLInNewTab(_ url: URL) {
-        self.openURLInNewTab(url, isPrivileged: false)
+        let forcedPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
+        self.openURLInNewTab(url, isPrivate: forcedPrivate, isPrivileged: false)
     }
     
     func settingsOpenURLs(_ urls: [URL]) {
@@ -1562,9 +1563,13 @@ extension BrowserViewController: URLBarDelegate {
     }
 
     func urlBar(_ urlBar: URLBarView, didSubmitText text: String) {
+        processAddressBar(text: text, visitType: nil)
+    }
+
+    func processAddressBar(text: String, visitType: VisitType?) {
         if let fixupURL = URIFixup.getURL(text) {
             // The user entered a URL, so use it.
-            finishEditingAndSubmit(fixupURL, visitType: VisitType.typed)
+            finishEditingAndSubmit(fixupURL, visitType: visitType ?? .typed)
             return
         }
 
@@ -1585,7 +1590,7 @@ extension BrowserViewController: URLBarDelegate {
                 urlString.replaceSubrange(range, with: escapedQuery)
 
                 if let url = URL(string: urlString) {
-                    self.finishEditingAndSubmit(url, visitType: VisitType.typed)
+                    self.finishEditingAndSubmit(url, visitType: visitType ?? .typed)
                     return
                 }
             }
@@ -2096,7 +2101,7 @@ extension BrowserViewController: TabManagerDelegate {
 }
 
 /// List of schemes that are allowed to be opened in new tabs.
-private let schemesAllowedToBeOpenedAsPopups = ["http", "https", "javascript", "data", "about"]
+private let schemesAllowedToBeOpenedAsPopups = ["http", "https", "javascript", "about"]
 
 extension BrowserViewController: WKUIDelegate {
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
@@ -2892,8 +2897,8 @@ extension BrowserViewController: HomeMenuControllerDelegate {
 
 extension BrowserViewController: TopSitesDelegate {
     
-    func didSelectUrl(url: URL) {
-        finishEditingAndSubmit(url, visitType: .bookmark)
+    func didSelect(input: String) {
+        processAddressBar(text: input, visitType: .bookmark)
     }
     
     func didTapDuckDuckGoCallout() {
