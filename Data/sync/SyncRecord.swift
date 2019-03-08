@@ -55,7 +55,7 @@ public class SyncRecord: SyncRecordProtocol {
     }
     
     // Would be nice to make this type specific to class
-    required public init(record: Syncable?, deviceId: [Int]?, action: Int?) {
+    required init(record: Syncable?, deviceId: [Int]?, action: Int?) {
         
         self.objectId = record?.syncUUID
         self.deviceId = deviceId

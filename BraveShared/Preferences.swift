@@ -55,6 +55,27 @@ extension Preferences {
         public static let adblock = Option<String?>(key: "blockfile.adblock", default: nil)
         public static let httpse = Option<String?>(key: "blockfile.httpse", default: nil)
     }
+    
+    public final class Shields {
+        public static let allShields = [blockAdsAndTracking, httpsEverywhere, blockPhishingAndMalware, blockScripts, fingerprintingProtection, blockImages]
+        
+        /// Shields will block ads and tracking if enabled
+        public static let blockAdsAndTracking = Option<Bool>(key: "shields.block-ads-and-tracking", default: true)
+        /// Websites will be upgraded to HTTPS if a loaded page attempts to use HTTP
+        public static let httpsEverywhere = Option<Bool>(key: "shields.https-everywhere", default: true)
+        /// Shields will block websites related to potential phishing and malware
+        public static let blockPhishingAndMalware = Option<Bool>(key: "shields.block-phishing-and-malware", default: true)
+        /// Disables JavaScript execution in the browser
+        public static let blockScripts = Option<Bool>(key: "shields.block-scripts", default: false)
+        /// Enforces fingerprinting protection on the users session
+        public static let fingerprintingProtection = Option<Bool>(key: "shields.fingerprinting-protection", default: false)
+        /// Disables image loading in the browser
+        public static let blockImages = Option<Bool>(key: "shields.block-images", default: false)
+        ///
+        public static let useRegionAdBlock = Option<Bool>(key: "shields.regional-adblock", default: false)
+        /// Version of downloaded data file for adblock stats.
+        public static let adblockStatsDataVersion = Option<Int?>(key: "stats.adblock-data-version", default: nil)
+    }
 }
 
 extension Preferences {

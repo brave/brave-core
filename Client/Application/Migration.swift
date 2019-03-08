@@ -10,10 +10,22 @@ import Data
 
 private let log = Logger.browserLogger
 
-extension Preferences {
+class Migration {
+    static func launchMigrations(keyPrefix: String) {
+        Preferences.migratePreferences(keyPrefix: keyPrefix)
+        
+        if !Preferences.Migration.syncOrderCompleted.value {
+            Bookmark.syncOrderMigration()
+            Preferences.Migration.syncOrderCompleted.value = true
+        }
+    }
+}
+
+fileprivate extension Preferences {
     /// Migration preferences
     final class Migration {
         static let completed = Option<Bool>(key: "migration.completed", default: false)
+        static let syncOrderCompleted = Option<Bool>(key: "migration.sync-order.completed", default: false)
     }
     
     /// Migrate the users preferences from prior versions of the app (<2.0)
@@ -105,44 +117,11 @@ extension Preferences {
         //  - The app was terminated (bug)
         // However due to a bug, some private tabs remain in the container. Since 1.7 removes `isPrivate` from TabMO,
         // we must dismiss any records that are private tabs during migration from Model7
-        TabMO.deleteAll(predicate: NSPredicate(format: "isPrivate == true"), save: true)
+        TabMO.deleteAllPrivateTabs()
         
-        // Migrate the shield overrides
-        migrateShieldOverrides()
-        
-        Bookmark.migrateOrder(forFavorites: true)
-        Bookmark.migrateOrder(forFavorites: false)
+        Domain.migrateShieldOverrides()
+        Bookmark.migrateBookmarkOrders()
         
         Preferences.Migration.completed.value = true
-    }
-    
-    private class func migrateShieldOverrides() {
-        // 1.6 had an unfortunate bug that caused shield overrides to create new Domain objects using `http` regardless
-        // which would lead to a duplicated Domain object using http that held custom shield overides settings for that
-        // domain
-        //
-        // Therefore we need to migrate any `http` Domains shield overrides to its sibiling `https` domain if it exists
-        let allHttpPredicate = NSPredicate(format: "url BEGINSWITH[cd] 'http://'")
-        let backgroundContext = DataController.newBackgroundContext()
-        
-        guard let httpDomains = Domain.all(where: allHttpPredicate, context: backgroundContext) else {
-            return
-        }
-        
-        for domain in httpDomains {
-            guard let urlString = domain.url, var urlComponents = URLComponents(string: urlString) else { continue }
-            urlComponents.scheme = "https"
-            guard let httpsUrl = urlComponents.url?.absoluteString else { continue }
-            if let httpsDomain = Domain.first(where: NSPredicate(format: "url == %@", httpsUrl), context: backgroundContext) {
-                httpsDomain.shield_allOff = domain.shield_allOff
-                httpsDomain.shield_adblockAndTp = domain.shield_adblockAndTp
-                httpsDomain.shield_noScript = domain.shield_noScript
-                httpsDomain.shield_fpProtection = domain.shield_fpProtection
-                httpsDomain.shield_safeBrowsing = domain.shield_safeBrowsing
-                httpsDomain.shield_httpse = domain.shield_httpse
-                // Could call `domain.delete()` here (or add to batch to delete)
-            }
-        }
-        DataController.save(context: backgroundContext)
     }
 }

@@ -52,7 +52,8 @@ class BlocklistName: Hashable, CustomStringConvertible, ContentBlocker {
         
         var onList = Set<BlocklistName>()
         
-        if domain.isShieldExpected(.AdblockAndTp) {
+        let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+        if domain.isShieldExpected(.AdblockAndTp, isPrivateBrowsing: isPrivateBrowsing) {
             onList.formUnion([.ad, .tracker])
         }
         
@@ -60,7 +61,7 @@ class BlocklistName: Hashable, CustomStringConvertible, ContentBlocker {
         
         // TODO #159: Setup image shield
         
-        if domain.isShieldExpected(.HTTPSE) {
+        if domain.isShieldExpected(.HTTPSE, isPrivateBrowsing: isPrivateBrowsing) {
             onList.formUnion([.https])
         }
         

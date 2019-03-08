@@ -8,49 +8,65 @@ import CoreData
 
 class CoreDataTestCase: XCTestCase {
     
-    // Always call super.setUp() in your subclasses to reset the database.
     override func setUp() {
-        // Reset the database.
-        DataController.shared = DataController()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(contextSaved), 
-                                               name: NSNotification.Name.NSManagedObjectContextDidSave, 
-                                               object: nil)
         super.setUp()
+        
+        // HACK: For some reason switching to in-memory database at launch causes problems with tests,
+        // because some operations are still pending in the app like creating a Domain for localhost
+        // attempting to restore tabs and some shields work.
+        // The workaround is to detect if sqlite database is still used(which means it's first launch of the test suite)
+        // wait a few seconds for it to finish its initialization, then switch the database to in-memory and run
+        // all the tests.
+        //
+        // In the future we should make Data tests more independent of the app state.
+        
+        let storeType = DataController.viewContext.persistentStoreCoordinator!.persistentStores.first!.type
+        if storeType == NSSQLiteStoreType {
+            let waitTimeForAppInitialization: TimeInterval = 5
+            
+            let expectation = self.expectation(description: "App initialization wait")
+            DispatchQueue.main.asyncAfter(deadline: .now() + waitTimeForAppInitialization, execute: { expectation.fulfill() })
+            waitForExpectations(timeout: waitTimeForAppInitialization + 1, handler: nil)
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(contextSaved),
+                                               name: NSNotification.Name.NSManagedObjectContextDidSave,
+                                               object: nil)
+        
+        DataController.shared = InMemoryDataController()
     }
     
     override func tearDown() {
         NotificationCenter.default.removeObserver(self)
         DataController.viewContext.reset()
-        contextSaveCompletionsArray.removeAll()
         Device.sharedCurrentDevice = nil
+        contextSaveCompletion = nil
         super.tearDown()
     }
     
     // MARK: - Handling background context reads/writes
 
-    var contextSaveCompletionsArray: [() -> Void] = []
+    var contextSaveCompletion: (() -> Void)?
     
     @objc func contextSaved() {
-        contextSaveCompletionsArray.forEach { $0() }
-        
-        // Clear array after all completions are triggered.
-        contextSaveCompletionsArray.removeAll()
+        contextSaveCompletion?()
     }
     
     /// Waits for core data context save notification. Use this for single background context saves if you want to wait
     /// for view context to update itself. Unfortunately there is no notification after changes are merged into context.
-    func backgroundSaveAndWaitForExpectation(code: () -> Void) {
-        // We do not care about expectation name as long as it is unique.
-        let uuid = UUID().uuidString
-        let saveExpectation = expectation(description: uuid)
+    func backgroundSaveAndWaitForExpectation(name: String? = nil, code: () -> Void) {
+        var saveExpectation: XCTestExpectation? = expectation(description: name ?? UUID().uuidString)
         
-        contextSaveCompletionsArray.append {
-            saveExpectation.fulfill()
+        contextSaveCompletion = {
+            saveExpectation?.fulfill()
+            // Removing reference to save expectation in case it's going to be called twice.
+            saveExpectation = nil
         }
         
         code()
         
-        wait(for: [saveExpectation], timeout: 2)
+        if let saveExpectation = saveExpectation {
+            wait(for: [saveExpectation], timeout: 5)
+        }
     }
 }

@@ -185,22 +185,21 @@ class TabMOTests: CoreDataTestCase {
     }
     
     func testGetFromId() {
-        let context = DataController.viewContext
         let wrongId = "999"
         let object = createAndWait()
         
-        XCTAssertNotNil(TabMO.get(fromId: object.syncUUID!, context: context))
-        XCTAssertNil(TabMO.get(fromId: wrongId, context: context))
+        XCTAssertNotNil(TabMO.get(fromId: object.syncUUID!))
+        XCTAssertNil(TabMO.get(fromId: wrongId))
     }
     
     @discardableResult private func createAndWait() -> TabMO {
         let uuid = UUID().uuidString
-        
+
         backgroundSaveAndWaitForExpectation {
             _ = TabMO.create(uuidString: uuid)
         }
         
-        return TabMO.get(fromId: uuid, context: DataController.viewContext)!
+        return TabMO.get(fromId: uuid)!
     }
 }
 

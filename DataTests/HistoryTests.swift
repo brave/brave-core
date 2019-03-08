@@ -68,10 +68,10 @@ class HistoryTests: CoreDataTestCase {
         
         _ = createAndWait(title: title, url: url)
         
-        let context = DataController.newBackgroundContext()
-        
-        XCTAssertNil(History.getExisting(wrongUrl, context: context))
-        XCTAssertNotNil(History.getExisting(url, context: context))
+        DataController.perform { context in
+            XCTAssertNil(History.getExisting(wrongUrl, context: context))
+            XCTAssertNotNil(History.getExisting(url, context: context))
+        }
     }
     
     func testRemove() {
@@ -113,18 +113,10 @@ class HistoryTests: CoreDataTestCase {
         createAndWait(url: URL(string: "https://example.com/page3")!)
         createAndWait(url: URL(string: "https://brave.com")!)
         
-        let found = History.frecencyQuery(DataController.viewContext, containing: "example")
+        let found = History.byFrecency(query: "example")
         XCTAssertEqual(found.count, 3)
         
-        // Changing dates of two bookmarks to be something older than 1 week.
-        found.first?.visitedOn = Date(timeIntervalSince1970: 1)
-        found.last?.visitedOn = Date(timeIntervalSince1970: 1)
-        DataController.save(context: DataController.viewContext)
-        
-        let found2 = History.frecencyQuery(DataController.viewContext, containing: "example")
-        XCTAssertEqual(found2.count, 1)
-        
-        let notFound = History.frecencyQuery(DataController.viewContext, containing: "notfound")
+        let notFound = History.byFrecency(query: "notfound")
         XCTAssertEqual(notFound.count, 0)
     }
 
