@@ -9,34 +9,17 @@ import * as actionTypes from '../../../../brave_extension/extension/brave_extens
 import { shallow } from 'enzyme'
 
 const fakeProps: Props = {
-  tabData: {
-    hostname: 'brave.com',
-    origin: 'https://brave.com',
-    url: 'https://brave.com',
-    braveShields: 'allow',
-    adsBlocked: 0,
-    ads: 'block',
-    adsBlockedResources: [],
-    httpsRedirected: 0,
-    httpUpgradableResources: 'block',
-    httpsRedirectedResources: [],
-    id: 0,
-    javascript: 'block',
-    javascriptBlocked: 0,
-    javascriptBlockedResources: [],
-    trackers: 'block',
-    trackersBlocked: 0,
-    trackersBlockedResources: [],
-    fingerprinting: 'block',
-    fingerprintingBlocked: 0,
-    fingerprintingBlockedResources: [],
-    cookies: 'block',
-    noScriptInfo: {},
-    controlsOpen: false
-  },
-  shieldsToggled: (setting: BlockOptions) => {
-    return { type: actionTypes.SHIELDS_TOGGLED, setting }
-  }
+  enabled: false,
+  favicon: '',
+  origin: 'https://brave.com',
+  hostname: 'brave.com',
+  isBlockedListOpen: true,
+  shieldsToggled: (setting: BlockOptions) => ({ type: actionTypes.SHIELDS_TOGGLED, setting }),
+  adsBlocked: 0,
+  trackersBlocked: 0,
+  httpsUpgrades: 0,
+  scriptsBlocked: 0,
+  fingerprintingBlocked: 0
 }
 
 describe('ShieldsHeader component', () => {
@@ -61,7 +44,7 @@ describe('ShieldsHeader component', () => {
   })
 
   it('can toggle shields off', () => {
-    const newProps = Object.assign(fakeProps, { tabData: { braveShields: 'block' } })
+    const newProps = Object.assign(fakeProps, { enabled: false })
     const wrapper = shallow(baseComponent(newProps))
     const assertion = wrapper.find('#mainToggle').prop('checked')
     expect(assertion).toBe(false)
@@ -69,21 +52,19 @@ describe('ShieldsHeader component', () => {
 
   it('can toggle shields on', () => {
     // start with shields off
-    const newProps1 = Object.assign(fakeProps, { tabData: { braveShields: 'block' } })
+    const newProps1 = Object.assign(fakeProps, { enabled: false })
     const wrapper = shallow(baseComponent(newProps1))
     const assertion1 = wrapper.find('#mainToggle').prop('checked')
     expect(assertion1).toBe(false)
     // then turn it on
-    const newProps2 = Object.assign(fakeProps, { tabData: { braveShields: 'allow' } })
+    const newProps2 = Object.assign(fakeProps, { enabled: true })
     const wrapper2 = shallow(baseComponent(newProps2))
     const assertion2 = wrapper2.find('#mainToggle').prop('checked')
     expect(assertion2).toBe(true)
   })
 
   it('displays the hostname', () => {
-    const newProps = Object.assign(fakeProps, {
-      tabData: { hostname: 'https://brian-bondy-canada-do-te-karate.com' }
-    })
+    const newProps = Object.assign(fakeProps, { hostname: 'https://brian-bondy-canada-do-te-karate.com' })
     const wrapper = shallow(baseComponent(newProps))
     const assertion = wrapper.find('#hostname').props().children
     expect(assertion).toBe('https://brian-bondy-canada-do-te-karate.com')

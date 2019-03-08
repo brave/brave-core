@@ -80,7 +80,7 @@ export default class Header extends React.PureComponent<Props, {}> {
   render () {
     const { enabled, favicon, hostname, isBlockedListOpen } = this.props
     return (
-      <ShieldsHeader status={enabled ? 'enabled' : 'disabled'}>
+      <ShieldsHeader id='braveShieldsHeader' status={enabled ? 'enabled' : 'disabled'}>
         <MainToggle status={enabled ? 'enabled' : 'disabled'}>
           <div>
             <MainToggleHeading>
@@ -92,12 +92,12 @@ export default class Header extends React.PureComponent<Props, {}> {
             </MainToggleHeading>
             {enabled ? <MainToggleText>{getLocale('enabledMessage')}</MainToggleText> : null}
           </div>
-          <Toggle size='large' checked={enabled} onChange={this.onToggleShields} disabled={isBlockedListOpen} />
+          <Toggle id='mainToggle' size='large' checked={enabled} onChange={this.onToggleShields} disabled={isBlockedListOpen} />
         </MainToggle>
         <SiteOverview status={enabled ? 'enabled' : 'disabled'}>
           <SiteInfo>
             <Favicon src={favicon} />
-            <SiteInfoText>{hostname}</SiteInfoText>
+            <SiteInfoText id='hostname'>{hostname}</SiteInfoText>
           </SiteInfo>
           {
             enabled
