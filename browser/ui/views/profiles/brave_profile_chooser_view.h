@@ -12,10 +12,13 @@ class BraveProfileChooserView : public ProfileChooserView {
    friend class ProfileChooserView;
 
    BraveProfileChooserView(views::Button* anchor_button,
+                           const gfx::Rect& anchor_rect,
+                           gfx::NativeView parent_window,
                            Browser* browser,
                            profiles::BubbleViewMode view_mode,
                            signin::GAIAServiceType service_type,
-                           signin_metrics::AccessPoint access_point);
+                           signin_metrics::AccessPoint access_point,
+                           bool is_source_keyboard);
    ~BraveProfileChooserView() override;
 
   // views::ButtonListener:

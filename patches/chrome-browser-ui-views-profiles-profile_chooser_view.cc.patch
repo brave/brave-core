@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.cc b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-index ba3341ccef86efbbb379f9b5951936c438cf3f95..9b7e1d08d96fc4119c05830ab890f76682c14edb 100644
+index ba3341ccef86efbbb379f9b5951936c438cf3f95..c3875e70fe1c7df0efd68047168939a80e25d58d 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 @@ -301,7 +301,7 @@ void ProfileChooserView::ShowBubble(
@@ -19,7 +19,7 @@ index ba3341ccef86efbbb379f9b5951936c438cf3f95..9b7e1d08d96fc4119c05830ab890f766
  
    base::string16 text = l10n_util::GetStringUTF16(
        is_guest ? IDS_PROFILES_EXIT_GUEST : IDS_PROFILES_MANAGE_USERS_BUTTON);
-+  if (browser_->profile()->IsTorProfile())
++  if (browser()->profile()->IsTorProfile())
 +    text = l10n_util::GetStringUTF16(IDS_PROFILES_EXIT_TOR);
    const gfx::VectorIcon& settings_icon =
        is_guest ? kCloseAllIcon : kSettingsIcon;
