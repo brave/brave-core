@@ -82,7 +82,7 @@ bool IsAllowContentSettingFromIO(const net::URLRequest* request,
     const std::string& resource_identifier) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
-  const content::ResourceRequestInfo* resource_info =
+  content::ResourceRequestInfo* resource_info =
       content::ResourceRequestInfo::ForRequest(request);
   if (!resource_info) {
     return GetDefaultFromResourceIdentifier(resource_identifier, primary_url,
