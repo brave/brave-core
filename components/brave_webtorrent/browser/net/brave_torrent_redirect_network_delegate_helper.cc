@@ -68,7 +68,7 @@ bool IsWebtorrentInitiated(net::URLRequest* request) {
 }
 
 bool IsTorProfile(net::URLRequest* request) {
-  const content::ResourceRequestInfo* resource_info =
+  content::ResourceRequestInfo* resource_info =
     content::ResourceRequestInfo::ForRequest(request);
   if (!resource_info) {
     return false;
@@ -85,7 +85,7 @@ bool IsTorProfile(net::URLRequest* request) {
 }
 
 bool IsWebTorrentDisabled(net::URLRequest* request) {
-  const content::ResourceRequestInfo* resource_info =
+  content::ResourceRequestInfo* resource_info =
     content::ResourceRequestInfo::ForRequest(request);
   if (!resource_info || !resource_info->GetContext()) {
     return false;
