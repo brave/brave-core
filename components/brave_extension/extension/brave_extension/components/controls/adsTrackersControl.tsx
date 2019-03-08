@@ -52,7 +52,7 @@ interface AdsTrackersProps {
   blockAdsTrackers: BlockAdsTrackers
 }
 
-type Props = CommonProps & AdsTrackersProps
+export type Props = CommonProps & AdsTrackersProps
 
 interface State {
   trackersBlockedOpen: boolean
@@ -120,7 +120,7 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
     const { trackersBlockedOpen } = this.state
     return (
       <>
-        <BlockedInfoRow>
+        <BlockedInfoRow id='adsTrackersControl'>
           <BlockedInfoRowData
             disabled={this.maybeDisableResourcesRow}
             tabIndex={this.tabIndex}
@@ -128,10 +128,11 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
             onKeyDown={this.onOpen3rdPartyTrackersBlockedViaKeyboard}
           >
             <ArrowDownIcon />
-            <BlockedInfoRowStats>{this.totalAdsTrackersBlockedDisplay}</BlockedInfoRowStats>
+            <BlockedInfoRowStats id='blockAdsStat'>{this.totalAdsTrackersBlockedDisplay}</BlockedInfoRowStats>
             <BlockedInfoRowText>{getLocale('thirdPartyTrackersBlocked')}</BlockedInfoRowText>
           </BlockedInfoRowData>
           <Toggle
+            id='blockAds'
             size='small'
             disabled={isBlockedListOpen}
             checked={this.maybeBlock3rdPartyTrackersBlocked}
