@@ -108,8 +108,9 @@ export const BlockedInfoRow = styled<{}, 'div'>('div')`
   }
 
   ${Toggle} {
-    display: flex;
     position: relative;
+    z-index: 1;
+    display: flex;
     width: fit-content;
     padding: 0 24px;
     height: fit-content;
