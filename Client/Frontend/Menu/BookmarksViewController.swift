@@ -49,8 +49,7 @@ class BookmarkEditingViewController: FormViewController {
     self.bookmarksPanel = bookmarksPanel
     self.bookmarkIndexPath = indexPath
     
-    // get top-level folders
-    folders = Bookmark.getFolders(bookmark: nil, context: DataController.viewContext)
+    folders = Bookmark.getTopLevelFolders()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -263,7 +262,7 @@ class BookmarksViewController: SiteTableViewController {
   }
   
   func addFolder(titled title: String) {
-    Bookmark.add(url: nil, title: nil, customTitle: title, parentFolder: currentFolder, isFolder: true)
+    Bookmark.addFolder(title: title, parentFolder: currentFolder)
     tableView.setContentOffset(CGPoint.zero, animated: true)
   }
   
@@ -342,7 +341,7 @@ class BookmarksViewController: SiteTableViewController {
         cell.imageView?.layer.borderColor = BraveUX.faviconBorderColor.cgColor
         cell.imageView?.layer.borderWidth = BraveUX.faviconBorderWidth
         // favicon object associated through domain relationship - set from cache or download
-        cell.imageView?.setIcon(item.domain?.favicon, forURL: URL(string: item.url ?? ""))
+        cell.imageView?.setIconMO(item.domain?.favicon, forURL: URL(string: item.url ?? ""))
       }
     }
     
@@ -566,10 +565,12 @@ extension BookmarksViewController: NSFetchedResultsControllerDelegate {
   func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
     switch type {
     case .update:
-      guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) else {
-        return
-      }
-      configureCell(cell, atIndexPath: indexPath)
+        let update = { (path: IndexPath?) in
+            if let path = path, let cell = self.tableView.cellForRow(at: path) {
+                self.configureCell(cell, atIndexPath: path)
+            }
+        }
+        [indexPath, newIndexPath].forEach(update)
     case .insert:
       guard let path = newIndexPath else {
         return
@@ -621,7 +622,7 @@ extension BookmarksViewController {
   }
   
   private func actionsForFolder(_ folder: Bookmark) -> [UIAlertAction] {
-    let children = Bookmark.getChildren(forFolderUUID: folder.syncUUID, includeFolders: false) ?? []
+    let children = Bookmark.getChildren(forFolder: folder, includeFolders: false) ?? []
     
     let urls: [URL] = children.compactMap { b in
       guard let url = b.url else { return nil }

@@ -47,75 +47,118 @@ public final class TabMO: NSManagedObject, CRUD {
     @NSManaged public var color: String?
     @NSManaged public var screenshotUUID: String?
     
-    public var imageUrl: URL? {
-        if let objectId = self.syncUUID, let url = URL(string: "https://imagecache.mo/\(objectId).png") {
-            return url
-        }
-        return nil
-    }
-    
     public override func prepareForDeletion() {
         super.prepareForDeletion()
-
+        
         // BRAVE TODO: check, if we still need it for restoring website screenshots.
         // Remove cached image
-//        if let url = imageUrl, !PrivateBrowsing.singleton.isOn {
-//            ImageCache.shared.remove(url, type: .portrait)
-//        }
-    }
-
-    // Currently required, because not `syncable`
-    static func entity(_ context: NSManagedObjectContext) -> NSEntityDescription {
-        return NSEntityDescription.entity(forEntityName: "TabMO", in: context)!
+        //        if let url = imageUrl, !PrivateBrowsing.singleton.isOn {
+        //            ImageCache.shared.remove(url, type: .portrait)
+        //        }
     }
     
-    /// Creates new tab. If you want to add urls to existing tabs use `update()` method. 
-    public class func create(uuidString: String = UUID().uuidString) -> TabMO {
-        let context = DataController.newBackgroundContext()
-        let tab = TabMO(entity: TabMO.entity(context), insertInto: context)
-        // TODO: replace with logic to create sync uuid then buble up new uuid to browser.
-        tab.syncUUID = uuidString
-        tab.title = Strings.New_Tab
-        DataController.save(context: context)
-        return tab
-    }
-
-    // Updates existing tab with new data. Usually called when user navigates to a new website for in his existing tab.
-    @discardableResult public class func update(tabData: SavedTab) -> TabMO? {
-        let context = DataController.newBackgroundContext()
-        guard let tab = get(fromId: tabData.id, context: context) else { return nil }
+    // MARK: - Public interface
+    
+    // MARK: Create
+    
+    /// Creates new tab and returns its syncUUID. If you want to add urls to existing tabs use `update()` method.
+    public class func create(uuidString: String = UUID().uuidString) -> String {
         
-        if let screenshot = tabData.screenshot {
-            tab.screenshot = UIImageJPEGRepresentation(screenshot, 1)
-        }
-        tab.url = tabData.url
-        tab.order = tabData.order
-        tab.title = tabData.title
-        tab.urlHistorySnapshot = tabData.history as NSArray
-        tab.urlHistoryCurrentIndex = tabData.historyIndex
-        tab.isSelected = tabData.isSelected
+        DataController.perform(task: { context in
+            let tab = TabMO(entity: entity(context), insertInto: context)
+            // TODO: replace with logic to create sync uuid then buble up new uuid to browser.
+            tab.syncUUID = uuidString
+            tab.title = Strings.New_Tab
+        })
         
-        DataController.save(context: context)
-        
-        return tab
+        return uuidString
     }
     
-    public class func saveScreenshotUUID(_ uuid: UUID?, tabId: String?) {
-        let context = DataController.newBackgroundContext()
-        let tabMO = TabMO.get(fromId: tabId, context: context)
-        tabMO?.screenshotUUID = uuid?.uuidString
-        DataController.save(context: context)
-    }
-
+    // MARK: Read
+    
     public class func getAll() -> [TabMO] {
         let sortDescriptors = [NSSortDescriptor(key: #keyPath(TabMO.order), ascending: true)]
         return all(sortDescriptors: sortDescriptors) ?? []
     }
     
-    public class func get(fromId id: String?, context: NSManagedObjectContext) -> TabMO? {
+    public class func get(fromId id: String?) -> TabMO? {
+        return getInternal(fromId: id)
+    }
+    
+    // MARK: Update
+    
+    // Updates existing tab with new data.
+    // Usually called when user navigates to a new website for in his existing tab.
+    public class func update(tabData: SavedTab) {
+        DataController.perform { context in
+            guard let tabToUpdate = getInternal(fromId: tabData.id, context: context) else { return }
+            
+            if let screenshot = tabData.screenshot {
+                tabToUpdate.screenshot = UIImageJPEGRepresentation(screenshot, 1)
+            }
+            tabToUpdate.url = tabData.url
+            tabToUpdate.order = tabData.order
+            tabToUpdate.title = tabData.title
+            tabToUpdate.urlHistorySnapshot = tabData.history as NSArray
+            tabToUpdate.urlHistoryCurrentIndex = tabData.historyIndex
+            tabToUpdate.isSelected = tabData.isSelected
+        }
+    }
+    
+    public class func saveScreenshotUUID(_ uuid: UUID?, tabId: String?) {
+        DataController.perform { context in
+            let tabMO = getInternal(fromId: tabId, context: context)
+            tabMO?.screenshotUUID = uuid?.uuidString
+        }
+    }
+    
+    public class func saveTabOrder(tabIds: [String]) {
+        DataController.perform { context in
+            for (i, tabId) in tabIds.enumerated() {
+                guard let managedObject = getInternal(fromId: tabId, context: context) else {
+                    log.error("Error: Tab missing managed object")
+                    continue
+                }
+                managedObject.order = Int16(i)
+            }
+        }
+    }
+    
+    // MARK: Delete
+    
+    public func delete() {
+        delete(context: .new)
+    }
+    
+    public class func deleteAll() {
+        deleteAll(context: .new)
+    }
+    
+    public class func deleteAllPrivateTabs() {
+        deleteAll(predicate: NSPredicate(format: "isPrivate == true"), context: .new)
+    }
+
+    }
+
+// MARK: - Internal implementations
+extension TabMO {
+    // Currently required, because not `syncable`
+    private static func entity(_ context: NSManagedObjectContext) -> NSEntityDescription {
+        return NSEntityDescription.entity(forEntityName: "TabMO", in: context)!
+    }
+    
+    private class func getInternal(fromId id: String?,
+                                   context: NSManagedObjectContext = DataController.viewContext) -> TabMO? {
         guard let id = id else { return nil }
         let predicate = NSPredicate(format: "\(#keyPath(TabMO.syncUUID)) == %@", id)
         
         return first(where: predicate, context: context)
+    }
+
+    var imageUrl: URL? {
+        if let objectId = self.syncUUID, let url = URL(string: "https://imagecache.mo/\(objectId).png") {
+            return url
+        }
+        return nil
     }
 }

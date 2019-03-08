@@ -15,19 +15,19 @@ struct FavoritesHelper {
 
     // MARK: - Favorites initialization
     static func addDefaultFavorites() {
-        Bookmark.add(from: PreloadedFavorites.getList())
+        Bookmark.addFavorites(from: PreloadedFavorites.getList())
     }
 
     static func convertToBookmarks(_ sites: [Site]) {
         sites.forEach { site in
             if let url = try? site.url.asURL() {
-                Bookmark.add(url: url, title: url.normalizedHost ?? site.url, isFavorite: true)
+                Bookmark.addFavorite(url: url, title: url.normalizedHost ?? site.url)
             }
         }
     }
 
     static func add(url: URL, title: String?, color: UIColor?) {
-        Bookmark.add(url: url, title: title, isFavorite: true)
+        Bookmark.addFavorite(url: url, title: title)
     }
 
     static func isAlreadyAdded(_ url: URL) -> Bool {

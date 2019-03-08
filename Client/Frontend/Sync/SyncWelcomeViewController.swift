@@ -198,9 +198,9 @@ class SyncWelcomeViewController: SyncViewController {
     }
 
     private func addSyncReadyNotificationObserver(completion: @escaping () -> Void) {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: NotificationSyncReady),
+        NotificationCenter.default.addObserver(forName: Sync.Notifications.syncReady,
                                                object: nil,
-                                               queue: OperationQueue.main,
+                                               queue: .main,
                                                using: { notification in
                                                 completion()
                                                 // This is a one-time notification, removing it immediately.

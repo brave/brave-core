@@ -5,8 +5,8 @@
 import Foundation
 import XCTest
 @testable import Client
+@testable import Data
 import BraveShared
-import Data
 import WebKit
 
 class FingerprintProtectionTest: XCTestCase {
@@ -22,7 +22,7 @@ class FingerprintProtectionTest: XCTestCase {
         let url = URL(string: "https://panopticlick.eff.org/results")!
         
         // Enable fingerprinting protection for the domain
-        let domain = Domain.getOrCreateForUrl(url, context: DataController.viewContext)
+        let domain = Domain.getOrCreate(forUrl: url)
         domain.shield_fpProtection = true as NSNumber
         DataController.save(context: DataController.viewContext)
         

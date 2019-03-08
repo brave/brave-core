@@ -50,30 +50,34 @@ class DeviceTests: CoreDataTestCase {
     // MARK: Syncable
     
     func testAddWithSave() {
-        let context = DataController.newBackgroundContext()
         backgroundSaveAndWaitForExpectation {
-            Device.createResolvedRecord(rootObject: nil, save: true, context: context)
+            DataController.perform { context in
+                Device.createResolvedRecord(rootObject: nil, save: true, context: .existing(context))
+            }
         }
         
         XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
     }
     
     func testUniqueSyncUUID() {
-        let context = DataController.newBackgroundContext()
-        
         XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 0)
         backgroundSaveAndWaitForExpectation {
-            Device.createResolvedRecord(rootObject: nil, save: true, context: context)
+            DataController.perform { context in
+                Device.createResolvedRecord(rootObject: nil, save: true, context: .existing(context))
+            }
         }
-        XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
         
+        // get the device on main thread
         let device = try! DataController.viewContext.fetch(fetchRequest).first
         
+        XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
         let root = SyncDevice()
         root.objectId = device?.syncUUID
         
         backgroundSaveAndWaitForExpectation {
-            Device.createResolvedRecord(rootObject: root, save: true, context: context)
+            DataController.perform { context in
+                Device.createResolvedRecord(rootObject: root, save: true, context: .existing(context))
+            }
         }
         
         XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)

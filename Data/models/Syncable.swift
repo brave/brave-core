@@ -5,7 +5,9 @@ import Shared
 import CoreData
 import SwiftyJSON
 
-public protocol Syncable: class /* where Self: NSManagedObject */ {
+private let log = Logger.braveSyncLogger
+
+protocol Syncable: class /* where Self: NSManagedObject */ {
     // Used to enforce CD conformity
     /* @NSManaged */ var syncDisplayUUID: String? { get set }
     /* @NSManaged */ var created: Date? { get set }
@@ -19,13 +21,13 @@ public protocol Syncable: class /* where Self: NSManagedObject */ {
     
     // The most important difference between these methods and regular CRUD operations is that
     // resolved records from sync should be never sent back to the sync server.
-    static func createResolvedRecord(rootObject root: SyncRecord?, save: Bool, context: NSManagedObjectContext)
-    func updateResolvedRecord(_ record: SyncRecord?)
-    func deleteResolvedRecord(save: Bool, context: NSManagedObjectContext?)
+    static func createResolvedRecord(rootObject root: SyncRecord?, save: Bool, context: WriteContext)
+    func updateResolvedRecord(_ record: SyncRecord?, context: WriteContext)
+    func deleteResolvedRecord(save: Bool, context: NSManagedObjectContext)
 }
 
 extension Syncable {
-    public static func entity(context: NSManagedObjectContext) -> NSEntityDescription {
+    static func entity(context: NSManagedObjectContext) -> NSEntityDescription {
         // Swift 4 version
         // let className = String(describing: type(of: self))
         let className = String(describing: self)
@@ -56,8 +58,7 @@ extension Syncable {
             do {
                 result = try context.fetch(fetchRequest) as? [NSManagedObject]
             } catch {
-                let fetchError = error as NSError
-                print(fetchError)
+                log.error(error)
             }
         }
         
@@ -69,7 +70,7 @@ extension Syncable {
 extension Syncable {
     
     // Is conveted to better store in CD
-    public var syncUUID: [Int]? {
+    var syncUUID: [Int]? {
         get { return SyncHelpers.syncUUID(fromString: syncDisplayUUID) }
         set(value) { syncDisplayUUID = SyncHelpers.syncDisplay(fromUUID: value) }
     }
@@ -88,8 +89,7 @@ extension Syncable {
         do {
             return try context.fetch(fetchRequest) as? [T]
         } catch {
-            let fetchError = error as NSError
-            print(fetchError)
+            log.error(error)
         }
         
         return nil
