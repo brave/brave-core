@@ -44,7 +44,7 @@ interface HTTPSUpgradesProps {
   blockFingerprinting: BlockFingerprinting
 }
 
-type Props = CommonProps & HTTPSUpgradesProps
+export type Props = CommonProps & HTTPSUpgradesProps
 
 interface State {
   deviceRecognitionOpen: boolean
@@ -107,7 +107,7 @@ export default class DeviceRecognitionControl extends React.PureComponent<Props,
     const { deviceRecognitionOpen } = this.state
     return (
       <>
-        <BlockedInfoRowForSelect>
+        <BlockedInfoRowForSelect id='deviceRecognitionControl'>
           <BlockedInfoRowDataForSelect
             disabled={this.maybeDisableResourcesRow}
             tabIndex={this.tabIndex}
@@ -115,7 +115,7 @@ export default class DeviceRecognitionControl extends React.PureComponent<Props,
             onKeyDown={this.onOpenDeviceRecognitionViaKeyboard}
           >
             <ArrowDownIcon />
-            <BlockedInfoRowStats>{this.totalDeviceRecognitonAttemptsDisplay}</BlockedInfoRowStats>
+            <BlockedInfoRowStats id='blockFingerprintingStat'>{this.totalDeviceRecognitonAttemptsDisplay}</BlockedInfoRowStats>
           </BlockedInfoRowDataForSelect>
           <SelectBox
             id='blockFingerprinting'
