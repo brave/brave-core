@@ -141,10 +141,10 @@ void OpenDonationDialog(WebContents* initiator,
   gfx::Size min_size(width, kDialogMinHeight);
   gfx::Size max_size(width, kDialogMaxHeight);
   // TODO: adjust min and max when host size changes (e.g. window resize)
-  ShowConstrainedWebDialogWithAutoResize(initiator->GetBrowserContext(),
-                            new DonationDialogDelegate(initiator,
-                                                        publisher_key),
-                            initiator, min_size, max_size);
+  ShowConstrainedWebDialogWithAutoResize(
+      initiator->GetBrowserContext(),
+      std::make_unique<DonationDialogDelegate>(initiator, publisher_key),
+      initiator, min_size, max_size);
 
 }
 
