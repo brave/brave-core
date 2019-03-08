@@ -1,23 +1,28 @@
 #!/usr/bin/env python
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
 import argparse
 import logging
 import os
 import re
 import sys
+import requests
 
 from argparse import RawTextHelpFormatter
 from lib.config import get_brave_version, get_raw_version, get_env_var
-from lib.helpers import *
 from lib.connect import post, get, post_with_file
+from lib.github import GitHub
+from lib.helpers import *
 from lib.util import get_host_arch, omaha_channel
 from lib.omaha import get_app_info, get_base64_authorization, get_channel_id, get_upload_version, get_event_id, \
     get_channel_ids_from_omaha_server, sign_update_sparkle
 
-# FIXME TODO:
+# TODO:
 # 1. write tests
+# 2. create other apps
 
 # API DOCUMENTATION
 # created id jenkins-upload account(PW IN 1password) on the `updates-panel-dev` omaha server
@@ -33,7 +38,82 @@ from lib.omaha import get_app_info, get_base64_authorization, get_channel_id, ge
 # Example of using API to communicate with Sparkle:
 # https://gist.github.com/yurtaev/294a5fbd78016e5d7456
 
-# TO-DO: Other apps need to be created
+
+def download_from_github(args, logging):
+    file_list = []
+
+    # BRAVE_REPO defined in helpers.py
+    repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
+
+    if args.tag:
+        tag_name = args.tag
+    else:
+        tag_name = get_brave_version()
+
+    release = None
+    releases = get_releases_by_tag(repo, tag_name, include_drafts=True)
+    if releases:
+        if len(releases) > 1:
+            exit("Error: More than 1 release exists with the tag: \'{}\'".format(tag_name))
+        release = releases[0]
+
+    for asset in release['assets']:
+        if re.match(r'.*\.dmg$', asset['name']) \
+                or re.match(r'brave_installer.*\.exe$', asset['name']):
+            filename = asset['name']
+            asset_url = asset['url']
+            if args.debug:
+                logging.debug("GitHub asset_url: {}".format(
+                    asset_url + '/' + filename))
+
+            # Instantiate new requests session, versus reusing the repo session above.
+            # Headers was likely being reused in that session, and not allowing us
+            # to set the Accept header to the below.
+            headers = {'Accept': 'application/octet-stream'}
+
+            asset_auth_url = asset_url + '?access_token=' + \
+                os.environ.get('BRAVE_GITHUB_TOKEN')
+
+            if args.debug:
+                # disable urllib3 logging for this session to avoid showing
+                # access_token in logs
+                logging.getLogger("urllib3").setLevel(logging.WARNING)
+
+            r = requests.get(asset_auth_url, headers=headers, stream=True)
+
+            if args.debug:
+                logging.getLogger("urllib3").setLevel(logging.DEBUG)
+
+            with open(filename, 'wb') as f:
+                for chunk in r.iter_content(chunk_size=1024):
+                    if chunk:
+                        f.write(chunk)
+
+            logging.debug(
+                "Requests Response status_code: {}".format(r.status_code))
+            if r.status_code == 200:
+                file_list.append('./' + filename)
+            else:
+                logging.debug(
+                    "Requests Response status_code != 200: {}".format(r.status_code))
+
+    if len(file_list) < 3:
+        logging.error(
+            "Cannot get all 3 install files from Github! (\'*.dmg\', \'brave_installer-x64.exe\',"
+            " \'brave-installer-ia32.exe\')")
+        remove_github_downloaded_files(file_list, logging)
+        exit(1)
+
+    return file_list
+
+
+def remove_github_downloaded_files(file_list, logging):
+    for source_file in file_list:
+        try:
+            os.remove(source_file)
+            logging.debug("Removed file: {}".format(source_file))
+        except OSError:
+            raise
 
 
 def post_action(host, version, action, headers, args):
@@ -42,13 +122,17 @@ def post_action(host, version, action, headers, args):
         "version": version,
         "event": get_event_id(action)
     }
-    if release_channel() not in 'release':
+
+    if release_channel() in ['nightly']:
+        params['arguments'] = "--chrome-sxs"
+    elif release_channel() not in ['release']:
         params['arguments'] = "--chrome-" + release_channel()
 
     if args.debug:
         logging.debug("params: ")
         for item in params:
             logging.debug('{}: {}'.format(item, params[item]))
+
     response = post(url, params, headers)
 
     if response.status_code != 201:
@@ -57,8 +141,34 @@ def post_action(host, version, action, headers, args):
         exit(1)
 
 
-def main():
+def parse_args():
+    desc = "Upload Windows/Mac install files to Omaha server" \
+           "\n\nRequires the following ENVIRONMENT VARIABLES be set:" \
+           "\n\nCHANNEL: The Brave channel, i.e. \'nightly\', \'dev\', \'beta\', \'release\'" \
+           "\nOMAHA_HOST: The FQDN hostname of the Omaha server to upload to. (without \'https:\\\\' prefix)" \
+           "\nOMAHA_USER: The UserID to use to login to the Omaha server." \
+           "\nOMAHA_PASS: The Password to login to the Omaha server." \
+           "\nDSA_PRIVATE_PEM: The Private DSA pem file used to sign the Mac DMG file." \
+           "\nBRAVE_GITHUB_TOKEN: Github token to download from a draft release if not published yet. " \
+           "(ONLY REQUIRED IF --github)" \
+           "\nnpm_config_brave_version: Chromium version (only if not in brave-core directory with brave-browser" \
+           " in the parent dir)"
+    parser = argparse.ArgumentParser(
+        description=desc, formatter_class=RawTextHelpFormatter)
+    parser.add_argument('-d', '--debug', action='store_true',
+                        help='Print debug statements')
+    parser.add_argument('-f', '--file', help='Windows or Mac install file to upload to'
+                        ' omaha/sparkle (cannot be combined with --github)')
+    parser.add_argument('-g', '--github', action='store_true', help='Download Win and Mac install files'
+                        ' from Github before uploading to Omaha (cannot be combined with --file)')
+    parser.add_argument('-p', '--preview', action='store_true', help='Preview channels for testing'
+                        ' omaha/sparkle uploads by QA before production release')
+    parser.add_argument(
+        '-t', '--tag', help='Version tag to download from Github')
+    return parser.parse_args()
 
+
+def main():
     args = parse_args()
 
     if args.debug:
@@ -69,13 +179,9 @@ def main():
         exit("Error: --file and --github are mutually exclusive, only one allowed")
 
     if not os.environ.get('OMAHA_PASS') or not os.environ.get('OMAHA_USER'):
-        message = ('Error: Please set the $OMAHA_USER, $OMAHA_PASS and $OMAHA_HOST'
-                   'environment variables')
+        message = (
+            'Error: Please set the $OMAHA_USER, $OMAHA_PASS and $OMAHA_HOST environment variables')
         exit(message)
-
-    omahaid = os.environ.get('OMAHA_USER')
-    omahapw = os.environ.get('OMAHA_PASS')
-    omahahost = os.environ.get('OMAHA_HOST')
 
     if args.github:
         file_list = download_from_github(args, logging)
@@ -99,8 +205,9 @@ def main():
             app_info['arch'] = 'x64'
 
         app_info = get_app_info(app_info, args)
-        app_info['omahahost'] = omahahost
-        app_info['auth'] = get_base64_authorization(omahaid, omahapw)
+        app_info['omahahost'] = os.environ.get('OMAHA_HOST')
+        app_info['auth'] = get_base64_authorization(
+            os.environ.get('OMAHA_USER'), os.environ.get('OMAHA_PASS'))
         app_info['headers'] = headers = {
             'Authorization': 'Basic %s' % app_info['auth']
         }
@@ -129,8 +236,8 @@ def main():
             logging.debug("omaha_channel: {}".format(omaha_channel(app_info['platform'], app_info['arch'],
                                                                    app_info['preview'])))
             logging.debug("omaha_channel_id: {}".format(get_channel_id(omaha_channel(app_info['platform'],
-                                                        app_info['arch'], app_info['preview']),
-                                                        app_info['omahahost'], app_info['headers'], logging)))
+                                                                                     app_info['arch'], app_info['preview']),
+                                                                       app_info['omahahost'], app_info['headers'], logging)))
             logging.debug("URL: {}".format(app_info['version_post_url']))
             logging.debug("file_list: {}".format(file_list))
 
@@ -143,6 +250,7 @@ def main():
                 'version': app_info['version'],
                 'release_notes': app_info['release_notes']
             }
+
             if app_info['platform'] in 'win32':
                 params['is_enabled'] = app_info['is_enabled']
                 params['platform'] = app_info['platform_id']
@@ -158,18 +266,23 @@ def main():
                 logging.error("ERROR: Version not created! response.status_code : {}".format(
                     response.status_code))
                 logging.error("response.text : {}".format(response.text))
+
                 if response.status_code == 400 and 'version must make a unique set' in response.text:
                     logging.error("ERROR: This version({}), channel({}), appguid({}) set has already been "
                                   "uploaded to the Omaha server!".format(params['version'], app_info['channel'],
                                                                          params['app']))
+
                 remove_github_downloaded_files(file_list, logging)
+
                 exit(1)
 
         if app_info['platform'] in 'win32':
             # When uploading windows builds, add actions to version just created
             rjson = response.json()
+
             if args.debug:
                 logging.debug("response['id']: {}".format(rjson['id']))
+
             post_action(app_info['omahahost'], rjson['id'],
                         'install', headers, args)
             post_action(app_info['omahahost'],
@@ -178,106 +291,6 @@ def main():
     # if downloading from github, remove files after upload
     if args.github:
         remove_github_downloaded_files(file_list, logging)
-
-
-def download_from_github(args, logging):
-    import requests
-
-    from lib.github import GitHub
-
-    file_list = []
-
-    # BRAVE_REPO defined in helpers.py
-    repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
-    if args.tag:
-        tag_name = args.tag
-    else:
-        tag_name = get_brave_version()
-    release = None
-    releases = get_releases_by_tag(repo, tag_name, include_drafts=True)
-    if releases:
-        if len(releases) > 1:
-            exit("Error: More than 1 release exists with the tag: \'{}\'".format(tag_name))
-        release = releases[0]
-    for asset in release['assets']:
-        if re.match(r'.*\.dmg$', asset['name']) \
-                or re.match(r'brave_installer.*\.exe$', asset['name']):
-            filename = asset['name']
-            asset_id = asset['id']
-            asset_url = asset['url']
-            if args.debug:
-                logging.debug("GitHub asset_url: {}".format(
-                    asset_url + '/' + filename))
-
-            # Instantiate new requests session, versus reusing the repo session above.
-            # Headers was likely being reused in that session, and not allowing us
-            # to set the Accept header to the below.
-            headers = {'Accept': 'application/octet-stream'}
-            asset_auth_url = asset_url + '?access_token=' + \
-                os.environ.get('BRAVE_GITHUB_TOKEN')
-            if args.debug:
-                # disable urllib3 logging for this session to avoid showing
-                # access_token in logs
-                logging.getLogger("urllib3").setLevel(logging.WARNING)
-            r = requests.get(asset_auth_url, headers=headers, stream=True)
-            if args.debug:
-                logging.getLogger("urllib3").setLevel(logging.DEBUG)
-            with open(filename, 'wb') as f:
-                for chunk in r.iter_content(chunk_size=1024):
-                    if chunk:
-                        f.write(chunk)
-
-            logging.debug(
-                "Requests Response status_code: {}".format(r.status_code))
-            if r.status_code == 200:
-                file_list.append('./' + filename)
-            else:
-                logging.debug(
-                    "Requests Response status_code != 200: {}".format(r.status_code))
-
-    if len(file_list) < 3:
-        logging.error(
-            "Cannot get all 3 install files from Github! (\'*.dmg\', \'brave_installer-x64.exe\',"
-            " \'brave-installer-ia32.exe\')")
-        remove_github_downloaded_files(file_list, logging)
-        exit(1)
-    return file_list
-
-
-def remove_github_downloaded_files(file_list, logging):
-    for source_file in file_list:
-        try:
-            os.remove(source_file)
-            logging.debug("Removed file: {}".format(source_file))
-        except OSError:
-            raise
-
-
-def parse_args():
-    desc = "Upload Windows/Mac install files to Omaha server" \
-           "\n\nRequires the following ENVIRONMENT VARIABLES be set:" \
-           "\n\nCHANNEL: The Brave channel, i.e. \'release\', \'beta\', \'dev\'" \
-           "\nOMAHA_HOST: The FQDN hostname of the Omaha server to upload to. (without \'https:\\\\' prefix)" \
-           "\nOMAHA_USER: The UserID to use to login to the Omaha server." \
-           "\nOMAHA_PASS: The Password to login to the Omaha server." \
-           "\nDSA_PRIVATE_PEM: The Private DSA pem file used to sign the Mac DMG file." \
-           "\nBRAVE_GITHUB_TOKEN: Github token to download from a draft release if not published yet. " \
-           "(ONLY REQUIRED IF --github)" \
-           "\nnpm_config_brave_version: Chromium version (only if not in brave-core directory with brave-browser" \
-           " in the parent dir)"
-    parser = argparse.ArgumentParser(
-        description=desc, formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-d', '--debug', action='store_true',
-                        help='Print debug statements')
-    parser.add_argument('-f', '--file', help='Windows or Mac install file to upload to'
-                        ' omaha/sparkle (cannot be combined with --github)')
-    parser.add_argument('-g', '--github', action='store_true', help='Download Win and Mac install files'
-                        ' from Github before uploading to Omaha (cannot be combined with --file)')
-    parser.add_argument('-p', '--preview', action='store_true', help='Preview channels for testing'
-                        ' omaha/sparkle uploads by QA before production release')
-    parser.add_argument(
-        '-t', '--tag', help='Version tag to download from Github')
-    return parser.parse_args()
 
 
 if __name__ == '__main__':

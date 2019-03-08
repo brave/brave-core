@@ -12,6 +12,7 @@ set -exu
 # 12/29/2018    Release       0x4FE13824E3FFC656    E85FFA8E2E90B40B33ED39274FE13824E3FFC656
 # 12/29/2018    Beta          0x0B31DBA06A8A26F9    9228DBCE20DDE5EC46488DE90B31DBA06A8A26F9
 # 12/29/2018    Dev           0x0B31DBA06A8A26F9    9228DBCE20DDE5EC46488DE90B31DBA06A8A26F9
+# 12/29/2018    Nightly       0x0B31DBA06A8A26F9    9228DBCE20DDE5EC46488DE90B31DBA06A8A26F9
 
 ### The first argument is the S3 bucket, the second is the GPG key fingerprint
 OPTION=${1:-brave-browser-apt-staging-nightly}
@@ -48,11 +49,6 @@ cat <<EOF > $HOME/.aptly.conf
   "ppaDistributorID": "ubuntu",
   "ppaCodename": "",
   "S3PublishEndpoints": {
-    "brave-browser-apt-staging-release": {
-      "region": "us-west-2",
-      "bucket": "brave-browser-apt-staging-release",
-      "acl": "public-read"
-    },
     "brave-browser-apt-staging-nightly": {
       "region": "us-west-2",
       "bucket": "brave-browser-apt-staging-nightly",
@@ -68,14 +64,24 @@ cat <<EOF > $HOME/.aptly.conf
       "bucket": "brave-browser-apt-staging-beta",
       "acl": "public-read"
     },
-    "brave-browser-apt-staging-beta-test": {
+    "brave-browser-apt-staging-release": {
       "region": "us-west-2",
-      "bucket": "brave-browser-apt-staging-beta-test",
+      "bucket": "brave-browser-apt-staging-release",
+      "acl": "public-read"
+    },
+    "brave-browser-apt-staging-nightly-test": {
+      "region": "us-west-2",
+      "bucket": "brave-browser-apt-staging-nightly-test",
       "acl": "public-read"
     },
     "brave-browser-apt-staging-dev-test": {
       "region": "us-west-2",
       "bucket": "brave-browser-apt-staging-dev-test",
+      "acl": "public-read"
+    },
+    "brave-browser-apt-staging-beta-test": {
+      "region": "us-west-2",
+      "bucket": "brave-browser-apt-staging-beta-test",
       "acl": "public-read"
     },
     "brave-browser-apt-staging-release-test": {

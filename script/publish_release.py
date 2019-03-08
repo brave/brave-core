@@ -74,7 +74,7 @@ def publish_release(repo, release_id, tag, prerelease, logging):
 def parse_args():
     desc = "Publish GitHub draft release" \
         "\n\nRequires the following ENVIRONMENT VARIABLES be set:" \
-        "\n\nCHANNEL: The Brave channel, i.e. \'release\', \'beta\', \'dev\'"
+        "\n\nCHANNEL: The Brave channel, i.e. \'nightly\', \'dev\', \'beta\', \'release\'"
 
     parser = argparse.ArgumentParser(
         description=desc, formatter_class=RawTextHelpFormatter)

@@ -36,14 +36,13 @@ class TestGetDraft(unittest.TestCase):
 
 
 class TestGetBravePackages(unittest.TestCase):
-
     get_pkgs_dir = os.path.join(os.path.dirname(
         os.path.realpath(__file__)), 'test_get_pkgs')
     _is_setup = False
 
     def setUp(self):
         if not self._is_setup:
-            for chan in ['Release', 'Dev', 'Beta']:
+            for chan in ['Nightly', 'Dev', 'Beta', 'Release']:
                 if chan not in 'Release':
                     for mode in ['Stub', 'Standalone']:
                         name = 'BraveBrowser{}{}Setup_70_0_56_8.exe'.format(
@@ -71,6 +70,12 @@ class TestGetBravePackages(unittest.TestCase):
                             f.write(name32)
         self.__class__._is_setup = True
 
+    def test_only_returns_nightly_darwin_package(self):
+        upload.PLATFORM = 'darwin'
+        pkgs = list(upload.get_brave_packages(os.path.join(
+            self.get_pkgs_dir, upload.PLATFORM), 'nightly', '0.50.8'))
+        self.assertEquals(pkgs, ['Brave-Browser-Nightly.dmg'])
+
     def test_only_returns_dev_darwin_package(self):
         upload.PLATFORM = 'darwin'
         pkgs = list(upload.get_brave_packages(os.path.join(
@@ -89,8 +94,16 @@ class TestGetBravePackages(unittest.TestCase):
         pkgs = list(upload.get_brave_packages(
             os.path.join(self.get_pkgs_dir, upload.PLATFORM),
             'release', '0.50.8'))
-        self.assertEquals(pkgs, ['Brave-Browser.dmg',
-                                 'Brave-Browser.pkg'])
+        self.assertEquals(pkgs, ['Brave-Browser.dmg', 'Brave-Browser.pkg'])
+
+    def test_only_returns_nightly_linux_packages(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           upload.PLATFORM),
+                                              'nightly', '0.50.8'))
+        self.assertEquals(sorted(pkgs),
+                          sorted(['brave-browser-nightly-0.50.8-1.x86_64.rpm',
+                                  'brave-browser-nightly_0.50.8_amd64.deb']))
 
     def test_only_returns_dev_linux_packages(self):
         upload.PLATFORM = 'linux'
@@ -101,6 +114,15 @@ class TestGetBravePackages(unittest.TestCase):
                           sorted(['brave-browser-dev-0.50.8-1.x86_64.rpm',
                                   'brave-browser-dev_0.50.8_amd64.deb']))
 
+    def test_only_returns_beta_linux_packages(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           upload.PLATFORM),
+                                              'beta', '0.50.8'))
+        self.assertEquals(sorted(pkgs),
+                          sorted(['brave-browser-beta-0.50.8-1.x86_64.rpm',
+                                  'brave-browser-beta_0.50.8_amd64.deb']))
+
     def test_only_returns_release_linux_packages(self):
         upload.PLATFORM = 'linux'
         pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
@@ -110,21 +132,37 @@ class TestGetBravePackages(unittest.TestCase):
                           sorted(['brave-browser-0.50.8-1.x86_64.rpm',
                                   'brave-browser_0.50.8_amd64.deb']))
 
+    def test_only_returns_nightly_win_x64_package(self):
+        upload.PLATFORM = 'win32'
+        os.environ['TARGET_ARCH'] = 'x64'
+        pkgs = list(upload.get_brave_packages(os.path.join(
+            self.get_pkgs_dir, upload.PLATFORM), 'nightly', '0.56.8'))
+        self.assertEquals(
+            pkgs, ['BraveBrowserNightlySetup.exe', 'BraveBrowserStandaloneNightlySetup.exe'])
+
+    def test_only_returns_nightly_win_ia32_package(self):
+        upload.PLATFORM = 'win32'
+        os.environ['TARGET_ARCH'] = 'ia32'
+        pkgs = list(upload.get_brave_packages(
+            os.path.join(self.get_pkgs_dir, upload.PLATFORM), 'nightly', '0.56.8'))
+        self.assertEquals(
+            pkgs, ['BraveBrowserNightlySetup32.exe', 'BraveBrowserStandaloneNightlySetup32.exe'])
+
     def test_only_returns_dev_win_x64_package(self):
         upload.PLATFORM = 'win32'
         os.environ['TARGET_ARCH'] = 'x64'
         pkgs = list(upload.get_brave_packages(os.path.join(
             self.get_pkgs_dir, upload.PLATFORM), 'dev', '0.56.8'))
-        self.assertEquals(pkgs, ['BraveBrowserStandaloneDevSetup.exe',
-                                 'BraveBrowserDevSetup.exe'])
+        self.assertEquals(
+            pkgs, ['BraveBrowserDevSetup.exe', 'BraveBrowserStandaloneDevSetup.exe'])
 
     def test_only_returns_dev_win_ia32_package(self):
         upload.PLATFORM = 'win32'
         os.environ['TARGET_ARCH'] = 'ia32'
         pkgs = list(upload.get_brave_packages(
             os.path.join(self.get_pkgs_dir, upload.PLATFORM), 'dev', '0.56.8'))
-        self.assertEquals(pkgs, ['BraveBrowserStandaloneDevSetup32.exe',
-                                 'BraveBrowserDevSetup32.exe'])
+        self.assertEquals(
+            pkgs, ['BraveBrowserDevSetup32.exe', 'BraveBrowserStandaloneDevSetup32.exe'])
 
     def test_only_returns_beta_win_x64_package(self):
         upload.PLATFORM = 'win32'
@@ -132,8 +170,8 @@ class TestGetBravePackages(unittest.TestCase):
         pkgs = list(upload.get_brave_packages(
             os.path.join(self.get_pkgs_dir, upload.PLATFORM),
             'beta', '0.56.8'))
-        self.assertEquals(pkgs, ['BraveBrowserStandaloneBetaSetup.exe',
-                                 'BraveBrowserBetaSetup.exe'])
+        self.assertEquals(
+            pkgs, ['BraveBrowserBetaSetup.exe', 'BraveBrowserStandaloneBetaSetup.exe'])
 
     def test_only_returns_beta_win_ia32_package(self):
         upload.PLATFORM = 'win32'
@@ -141,8 +179,8 @@ class TestGetBravePackages(unittest.TestCase):
         pkgs = list(upload.get_brave_packages(
             os.path.join(self.get_pkgs_dir, upload.PLATFORM),
             'beta', '0.56.8'))
-        self.assertEquals(pkgs, ['BraveBrowserStandaloneBetaSetup32.exe',
-                                 'BraveBrowserBetaSetup32.exe'])
+        self.assertEquals(
+            pkgs, ['BraveBrowserBetaSetup32.exe', 'BraveBrowserStandaloneBetaSetup32.exe'])
 
     def test_only_returns_release_win_x64_package(self):
         upload.PLATFORM = 'win32'
@@ -208,13 +246,17 @@ class TestUploadBrave(unittest.TestCase):
         upload.delete_file.assert_not_called()
 
     def test_force_delete_before_upload_when_force_true(self):
-        upload.upload_brave(self.repo, self.release, self.file_path, None, True)
-        upload.delete_file.assert_called_with(self.repo, self.release, self.release.assets._assets[0].name)
+        upload.upload_brave(self.repo, self.release,
+                            self.file_path, None, True)
+        upload.delete_file.assert_called_with(
+            self.repo, self.release, self.release.assets._assets[0].name)
 
     def test_force_delete_before_upload_when_force_true_with_filename_override(self):
         fake_filename = 'fake-name-here'
-        upload.upload_brave(self.repo, self.release, self.file_path, fake_filename, True)
-        upload.delete_file.assert_called_with(self.repo, self.release, fake_filename)
+        upload.upload_brave(self.repo, self.release,
+                            self.file_path, fake_filename, True)
+        upload.delete_file.assert_called_with(
+            self.repo, self.release, fake_filename)
 
     def test_calls_upload(self):
         upload.upload_brave(self.repo, self.release, self.file_path)
@@ -227,7 +269,8 @@ class TestUploadBrave(unittest.TestCase):
 
     def test_calls_upload_with_filename_override(self):
         fake_filename = 'fake-name-here'
-        upload.upload_brave(self.repo, self.release, self.file_path, fake_filename)
+        upload.upload_brave(self.repo, self.release,
+                            self.file_path, fake_filename)
         upload.upload_io_to_github.assert_called()
 
         args, kwargs = upload.upload_io_to_github.call_args
@@ -239,7 +282,8 @@ class TestUploadBrave(unittest.TestCase):
 
     def test_calls_uploads_checksum(self):
         upload.upload_brave(self.repo, self.release, self.file_path)
-        upload.upload_sha256_checksum.assert_called_with(self.release.tag_name, self.file_path)
+        upload.upload_sha256_checksum.assert_called_with(
+            self.release.tag_name, self.file_path)
 
     # TODO: test `armv7l` code path
 

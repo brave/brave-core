@@ -72,7 +72,7 @@ def main():
             logging.info("Signing RPM: {}".format(item))
 
             # Currently only the release channel requires the expect script
-            # rpm-resign.exp. Dev and beta do not, although they will eventually
+            # rpm-resign.exp. Nightly, dev and beta do not, although they will eventually
             # when we use the same signing key for all channels.
             if channel in ['release']:
                 rpm_resign_cmd = os.path.join(repo_dir, "rpm-resign.exp")
@@ -235,7 +235,7 @@ def parse_args():
 
     parser = argparse.ArgumentParser(
         description=desc, formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-c', '--channel', help='The Brave channel, i.e. \'release\', \'beta\', \'dev\'', required=True)
+    parser.add_argument('-c', '--channel', help='The Brave channel, i.e. \'nightly\', \'dev\', \'beta\', \'release\', required=True)
     parser.add_argument('-d', '--debug', action='store_true', help='Print debug output')
     parser.add_argument('-g', '--github_token', help='GitHub token to use for downloading releases', required=True)
     parser.add_argument('-k', '--gpg_full_key_id', help='GPG full key id to use for signing '

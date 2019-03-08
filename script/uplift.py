@@ -144,7 +144,7 @@ def parse_args():
                         help='link to already existing pull request (number) to use as a reference for uplifting',
                         required=True)
     parser.add_argument('--start-from',
-                        help='instead of starting from nightly (default), start from beta/dev/release',
+                        help='instead of starting from nightly (default), start from dev/beta/release',
                         default='dev')
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='prints the output of the GitHub API calls')
