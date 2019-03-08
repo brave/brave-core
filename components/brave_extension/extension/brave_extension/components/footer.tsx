@@ -13,7 +13,7 @@ import * as tabsAPI from '../background/api/tabsAPI'
 // Locale
 import { getLocale } from '../background/api/localeAPI'
 
-interface Props {
+export interface Props {
   isBlockedListOpen: boolean
 }
 
