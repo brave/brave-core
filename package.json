@@ -236,7 +236,8 @@
     "resetModules": true,
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "<rootDir>/components/**/**/*.{ts, tsx}",
+      "<rootDir>/components/**/**/*.ts",
+      "<rootDir>/components/**/**/*.tsx",
       "!<rootDir>/components/definitions/*",
       "!<rootDir>/components/**/constants/*",
       "!<rootDir>/components/**/reducers/index.ts",
