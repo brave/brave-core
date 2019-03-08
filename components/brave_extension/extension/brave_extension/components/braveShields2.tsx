@@ -4,6 +4,9 @@
 
 import * as React from 'react'
 
+// CSS normalizer
+import 'emptykit.css'
+
 // Feature-specific components
 import { ShieldsPanel } from 'brave-ui/features/shields'
 
