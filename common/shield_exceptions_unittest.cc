@@ -60,9 +60,11 @@ TEST_F(BraveShieldsExceptionsTest, IsWhitelistedReferrer) {
 TEST_F(BraveShieldsExceptionsTest, IsWhitelistedCookieException) {
   // Cookie exceptions for Google auth domains
   EXPECT_TRUE(IsWhitelistedCookieException(GURL("https://www.airbnb.com/"),
-      GURL("https://accounts.google.com/o/oauth2/iframe")));
+      GURL("https://accounts.google.com/o/oauth2/iframe"), true));
   EXPECT_FALSE(IsWhitelistedCookieException(GURL("https://www.mozilla.org/"),
-      GURL("https://www.googletagmanager.com/gtm.js")));
+      GURL("https://www.googletagmanager.com/gtm.js"), true));
+  EXPECT_FALSE(IsWhitelistedCookieException(GURL("https://www.airbnb.com/"),
+      GURL("https://accounts.google.com/o/oauth2/iframe"), false));
 }
 
 }  // namespace

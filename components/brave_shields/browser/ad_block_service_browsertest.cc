@@ -615,7 +615,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockNYP) {
 
 // Preferences for social buttons work
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBLockTagTest) {
-  AddRulesToAdBlock(base::StringPrintf("||example.com/$tag=%s",
+  AddRulesToAdBlock(base::StringPrintf("||example.com^$tag=%s",
                     brave_shields::kFacebookEmbeds).c_str());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("b.com",
@@ -641,7 +641,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBLockTagTest) {
 
 // Preferences for social buttons work
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
-  AddRulesToAdBlock("||example.com/$tag=sup");
+  AddRulesToAdBlock("||example.com^$tag=sup");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("b.com",
                                                 kAdBlockTestPage);
