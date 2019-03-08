@@ -295,7 +295,7 @@ class SettingsViewController: TableViewController {
     }()
     
     private lazy var shieldsSection: Section = {
-        return Section(
+        var shields = Section(
             header: .title(Strings.Brave_Shield_Defaults),
             rows: [
                 BoolRow(title: Strings.Block_Ads_and_Tracking, option: Preferences.Shields.blockAdsAndTracking),
@@ -305,8 +305,10 @@ class SettingsViewController: TableViewController {
                 BoolRow(title: Strings.Fingerprinting_Protection, option: Preferences.Shields.fingerprintingProtection),
             ]
         )
-        // TODO: Add regional adblock
-        // shields.rows.append(BasicBoolRow(title: Strings.Use_regional_adblock, option: Preferences.Shields.useRegionAdBlock))
+        if let locale = Locale.current.languageCode, let _ = ContentBlockerRegion.with(localeCode: locale) {
+            shields.rows.append(BoolRow(title: Strings.Use_regional_adblock, option: Preferences.Shields.useRegionAdBlock))
+        }
+        return shields
     }()
     
     private lazy var supportSection: Section = {
@@ -380,7 +382,7 @@ class SettingsViewController: TableViewController {
                 Row(text: "Region: \(Locale.current.regionCode ?? "--")"),
                 Row(text: "Recompile Content Blockers", selection: { [weak self] in
                     BlocklistName.allLists.forEach { $0.fileVersionPref?.value = nil }
-                    ContentBlockerHelper.compileLists().upon {
+                    ContentBlockerHelper.compileBundledLists().upon { _ in
                         let alert = UIAlertController(title: nil, message: "Recompiled Blockers", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: .default))
                         self?.present(alert, animated: true)

@@ -71,8 +71,9 @@ extension Preferences {
         public static let fingerprintingProtection = Option<Bool>(key: "shields.fingerprinting-protection", default: false)
         /// Disables image loading in the browser
         public static let blockImages = Option<Bool>(key: "shields.block-images", default: false)
-        ///
-        public static let useRegionAdBlock = Option<Bool>(key: "shields.regional-adblock", default: false)
+        /// In addition to global adblocking rules, adds custom country based rules.
+        /// This setting is enabled by default for all locales.
+        public static let useRegionAdBlock = Option<Bool>(key: "shields.regional-adblock", default: true)
         /// Version of downloaded data file for adblock stats.
         public static let adblockStatsDataVersion = Option<Int?>(key: "stats.adblock-data-version", default: nil)
     }

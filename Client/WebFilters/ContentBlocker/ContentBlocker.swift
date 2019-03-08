@@ -10,7 +10,7 @@ import BraveShared
 
 private let log = Logger.browserLogger
 
-protocol ContentBlocker: class {
+protocol ContentBlocker: class, Hashable {
     // Make constant `let
     var filename: String { get }
     var rule: WKContentRuleList? { get set }
@@ -75,5 +75,13 @@ extension ContentBlocker {
                 completion(source)
             }
         }
+    }
+    
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.filename == rhs.filename
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(filename)
     }
 }
