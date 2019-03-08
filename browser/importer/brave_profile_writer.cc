@@ -73,7 +73,7 @@ void BraveProfileWriter::AddCookies(
   for (auto& cookie : cookies) {
     cookie_manager->SetCanonicalCookie(
         cookie,
-        true,  // secure_source
+        "https",  // secure_source
         true,  // modify_http_only
         // Fire and forget
         network::mojom::CookieManager::SetCanonicalCookieCallback());
