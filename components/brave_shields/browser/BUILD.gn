@@ -32,7 +32,7 @@ source_set("brave_shields") {
   ]
 
   deps = [
-    "//brave/content:common",
+    "//brave/common",
     "//brave/vendor/ad-block/brave:ad-block",
     "//brave/vendor/tracking-protection/brave:tracking-protection",
     "//brave/vendor/autoplay-whitelist/brave:autoplay-whitelist",

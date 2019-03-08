@@ -5,8 +5,8 @@
 #include "brave/renderer/brave_content_settings_observer.h"
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/common/frame_messages.h"
 #include "brave/common/render_messages.h"
-#include "brave/content/common/frame_messages.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/renderer/render_frame.h"

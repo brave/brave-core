@@ -1,17 +1,13 @@
-#ifndef BRAVE_CONTENT_BROWSER_WEBUI_BRAVE_SHARED_RESOURCES_DATA_SOURCE_H_
-#define BRAVE_CONTENT_BROWSER_WEBUI_BRAVE_SHARED_RESOURCES_DATA_SOURCE_H_
+#ifndef BRAVE_BROWSER_WEBUI_BRAVE_SHARED_RESOURCES_DATA_SOURCE_H_
+#define BRAVE_BROWSER_WEBUI_BRAVE_SHARED_RESOURCES_DATA_SOURCE_H_
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
 #include "base/single_thread_task_runner.h"
 #include "content/public/browser/url_data_source.h"
 
-namespace brave_content {
-
-using namespace content;
-
 // A DataSource for chrome://brave-resources/ URLs.
-class BraveSharedResourcesDataSource : public URLDataSource {
+class BraveSharedResourcesDataSource : public content::URLDataSource {
  public:
   BraveSharedResourcesDataSource();
   ~BraveSharedResourcesDataSource() override;
@@ -20,8 +16,8 @@ class BraveSharedResourcesDataSource : public URLDataSource {
   std::string GetSource() const override;
   void StartDataRequest(
       const std::string& path,
-      const ResourceRequestInfo::WebContentsGetter& wc_getter,
-      const URLDataSource::GotDataCallback& callback) override;
+      const content::ResourceRequestInfo::WebContentsGetter& wc_getter,
+      const content::URLDataSource::GotDataCallback& callback) override;
   bool AllowCaching() const override;
   std::string GetMimeType(const std::string& path) const override;
   bool ShouldServeMimeTypeAsContentTypeHeader() const override;
@@ -35,6 +31,4 @@ class BraveSharedResourcesDataSource : public URLDataSource {
   DISALLOW_COPY_AND_ASSIGN(BraveSharedResourcesDataSource);
 };
 
-}  // namespace brave_content
-
-#endif
+#endif  // BRAVE_BROWSER_WEBUI_BRAVE_SHARED_RESOURCES_DATA_SOURCE_H_

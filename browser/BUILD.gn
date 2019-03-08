@@ -2,6 +2,21 @@ import("//brave/build/config.gni")
 import("//build/config/features.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
+source_set("content_browser") {
+  sources = [
+    "renderer_host/brave_plugin_registry_impl.cc",
+    "renderer_host/brave_plugin_registry_impl.h",
+  ]
+
+
+  deps = [
+    "//base",
+    "//content/public/common",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public/mojom:mojom_platform",
+  ]
+}
+
 source_set("browser_process") {
   sources = [
     "autocomplete/brave_autocomplete_provider_client.cc",
@@ -119,6 +134,8 @@ source_set("browser") {
   sources = [
     "brave_content_browser_client.cc",
     "brave_content_browser_client.h",
+    "webui/brave_shared_resources_data_source.cc",
+    "webui/brave_shared_resources_data_source.h",
   ]
 
   deps = [
@@ -130,6 +147,7 @@ source_set("browser") {
     "//brave/components/brave_shields/browser:brave_shields",
     "//brave/components/brave_webtorrent/browser",
     "//brave/components/resources",
+    "//brave/ui/webui/resources",
     "//chrome/browser",
     "//content/public/browser",
     "//content/public/common",

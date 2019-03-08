@@ -2,18 +2,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CONTENT_BROWSER_RENDERER_HOST_PLUGIN_REGISTRY_IMPL_H_
-#define BRAVE_CONTENT_BROWSER_RENDERER_HOST_PLUGIN_REGISTRY_IMPL_H_
+#ifndef BRAVE_BROWSER_RENDERER_HOST_PLUGIN_REGISTRY_IMPL_H_
+#define BRAVE_BROWSER_RENDERER_HOST_PLUGIN_REGISTRY_IMPL_H_
 
 #include "content/browser/renderer_host/plugin_registry_impl.h"
 
 namespace content {
-
 class ResourceContext;
+}
 
-class BravePluginRegistryImpl : public PluginRegistryImpl {
+class BravePluginRegistryImpl : public content::PluginRegistryImpl {
  public:
-  BravePluginRegistryImpl(ResourceContext* resource_context);
+  BravePluginRegistryImpl(content::ResourceContext* resource_context);
   ~BravePluginRegistryImpl() override;
 
   void GetPlugins(bool refresh,
@@ -24,6 +24,4 @@ class BravePluginRegistryImpl : public PluginRegistryImpl {
     std::vector<blink::mojom::PluginInfoPtr> plugins);
 };
 
-}  // namespace content
-
-#endif  // BRAVE_CONTENT_BROWSER_RENDERER_HOST_PLUGIN_REGISTRY_IMPL_H_
+#endif  // BRAVE_BROWSER_RENDERER_HOST_PLUGIN_REGISTRY_IMPL_H_

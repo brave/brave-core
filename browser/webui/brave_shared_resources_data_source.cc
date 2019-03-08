@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "brave/content/browser/webui/brave_shared_resources_data_source.h"
+#include "brave/browser/webui/brave_shared_resources_data_source.h"
 
 #include <stddef.h>
 
@@ -27,10 +27,6 @@
 #if defined(OS_WIN)
 #include "base/strings/utf_string_conversions.h"
 #endif
-
-namespace brave_content {
-
-using namespace content;
 
 namespace {
 
@@ -111,8 +107,8 @@ std::string BraveSharedResourcesDataSource::GetSource() const {
 
 void BraveSharedResourcesDataSource::StartDataRequest(
     const std::string& path,
-    const ResourceRequestInfo::WebContentsGetter& wc_getter,
-    const URLDataSource::GotDataCallback& callback) {
+    const content::ResourceRequestInfo::WebContentsGetter& wc_getter,
+    const content::URLDataSource::GotDataCallback& callback) {
   int idr = GetIdrForPath(path);
   DCHECK_NE(-1, idr) << " path: " << path;
   scoped_refptr<base::RefCountedMemory> bytes;
@@ -190,7 +186,7 @@ BraveSharedResourcesDataSource::GetAccessControlAllowOriginForOrigin(
   // According to CORS spec, Access-Control-Allow-Origin header doesn't support
   // wildcards, so we need to set its value explicitly by passing the |origin|
   // back.
-  std::string allowed_origin_prefix = kChromeUIScheme;
+  std::string allowed_origin_prefix = content::kChromeUIScheme;
   allowed_origin_prefix += "://";
   if (!base::StartsWith(origin, allowed_origin_prefix,
                         base::CompareCase::SENSITIVE)) {
@@ -204,5 +200,3 @@ bool BraveSharedResourcesDataSource::IsGzipped(const std::string& path) const {
   DCHECK(it != GetResourcesMap().end()) << "missing shared resource: " << path;
   return it != GetResourcesMap().end() ? it->second.gzipped : false;
 }
-
-}  // namespace content

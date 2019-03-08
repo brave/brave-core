@@ -20,6 +20,8 @@ source_set("common") {
     "brave_content_client.h",
     "brave_switches.cc",
     "brave_switches.h",
+    "content_message_generator.cc",
+    "content_message_generator.h",
     "importer/brave_referral.cc",
     "importer/brave_referral.h",
     "importer/imported_browser_window.cc",
@@ -68,6 +70,7 @@ source_set("common") {
     ":brave_cookie_blocking",
     "//brave/chromium_src:common",
     "//content/public/common",
+    "//ipc",
   ]
 
   if (is_mac) {

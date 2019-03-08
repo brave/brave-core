@@ -13,12 +13,12 @@
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/browser/webui/brave_shared_resources_data_source.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
-#include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
@@ -107,7 +107,7 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
   content::URLDataSource::Add(profile,
-      std::make_unique<brave_content::BraveSharedResourcesDataSource>());
+      std::make_unique<BraveSharedResourcesDataSource>());
 }
 
 void BraveProfileManager::LaunchTorProcess(Profile* profile) {
