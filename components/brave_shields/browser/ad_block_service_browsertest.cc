@@ -12,6 +12,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/ui/browser.h"
@@ -610,4 +611,55 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockNYP) {
                                           &as_expected));
   EXPECT_TRUE(as_expected);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+// Preferences for social buttons work
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBLockTagTest) {
+  AddRulesToAdBlock(base::StringPrintf("||example.com/$tag=%s",
+                    brave_shields::kFacebookEmbeds).c_str());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  GURL tab_url = embedded_test_server()->GetURL("b.com",
+                                                kAdBlockTestPage);
+  g_brave_browser_process->ad_block_service()->EnableTag(
+      brave_shields::kFacebookEmbeds, true);
+  WaitForDefaultAdBlockServiceThread();
+  GURL resource_url =
+    embedded_test_server()->GetURL("example.com", "/logo.png");
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+  content::WebContents* contents =
+    browser()->tab_strip_model()->GetActiveWebContents();
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          base::StringPrintf(
+                                            "setExpectations(0, 1, 0, 0);"
+                                            "addImage('%s')",
+                                            resource_url.spec().c_str()),
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+// Preferences for social buttons work
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
+  AddRulesToAdBlock("||example.com/$tag=sup");
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  GURL tab_url = embedded_test_server()->GetURL("b.com",
+                                                kAdBlockTestPage);
+  g_brave_browser_process->ad_block_service()->EnableTag(
+      brave_shields::kFacebookEmbeds, true);
+  WaitForDefaultAdBlockServiceThread();
+  GURL resource_url =
+    embedded_test_server()->GetURL("example.com", "/logo.png");
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+  content::WebContents* contents =
+    browser()->tab_strip_model()->GetActiveWebContents();
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          base::StringPrintf(
+                                            "setExpectations(1, 0, 0, 0);"
+                                            "addImage('%s')",
+                                            resource_url.spec().c_str()),
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
