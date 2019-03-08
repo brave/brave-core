@@ -22,13 +22,15 @@ export const applySiteFilters = (hostname: string) => {
   chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
     if (!storeData.cosmeticFilterList) {
       if (process.env.NODE_ENV === 'shields_development') {
-        console.info('applySiteFilters: no cosmetic filter store yet')
+        console.log('applySiteFilters: no cosmetic filter store yet')
       }
       return
     }
     if (storeData.cosmeticFilterList[hostname] !== undefined) {
       storeData.cosmeticFilterList[hostname].map((rule: string) => {
-        console.log('applying rule', rule)
+        if (process.env.NODE_ENV === 'shields_development') {
+          console.log('applying rule', rule)
+        }
         chrome.tabs.insertCSS({
           code: `${rule} {display: none;}`,
           runAt: 'document_start'
