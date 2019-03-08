@@ -130,10 +130,6 @@ void BraveNetworkDelegateBase::InitPrefChangeRegistrarOnUI() {
       base::Bind(&BraveNetworkDelegateBase::OnPreferenceChanged,
                  base::Unretained(this), kGoogleLoginControlType));
   user_pref_change_registrar_->Add(
-      kFBLoginControlType,
-      base::Bind(&BraveNetworkDelegateBase::OnPreferenceChanged,
-                 base::Unretained(this), kFBLoginControlType));
-  user_pref_change_registrar_->Add(
       kFBEmbedControlType,
       base::Bind(&BraveNetworkDelegateBase::OnPreferenceChanged,
                  base::Unretained(this), kFBEmbedControlType));

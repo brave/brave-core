@@ -30,8 +30,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kNoScriptControlType));
   EXPECT_TRUE(
-      browser()->profile()->GetPrefs()->GetBoolean(kFBLoginControlType));
-  EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kGoogleLoginControlType));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kFBEmbedControlType));
