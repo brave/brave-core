@@ -14,7 +14,7 @@ import { getLocale } from '../../background/api/localeAPI'
 import { BlockCookies } from '../../types/actions/shieldsPanelActions'
 import { BlockCookiesOptions } from '../../types/other/blockTypes'
 
-interface Props {
+export interface Props {
   isBlockedListOpen: boolean
   cookies: BlockCookiesOptions
   blockCookies: BlockCookies
@@ -29,7 +29,7 @@ export default class CookiesControl extends React.PureComponent<Props, {}> {
     const { isBlockedListOpen, cookies } = this.props
     return (
       <>
-        <BlockedInfoRowSingle>
+        <BlockedInfoRowSingle id='cookiesControl'>
           <SelectBox
             id='blockCookies'
             disabled={isBlockedListOpen}
