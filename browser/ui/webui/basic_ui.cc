@@ -17,11 +17,14 @@
 #else
 #include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
 #endif
-content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
-                                                  const std::string& name,
-                                                  const GritResourceMap* resource_map,
-                                                  size_t resource_map_size,
-                                                  int html_resource_id) {
+#include "ui/resources/grit/webui_resources_map.h"
+
+content::WebUIDataSource* CreateBasicUIHTMLSource(
+    Profile* profile,
+    const std::string& name,
+    const GzippedGritResourceMap* resource_map,
+    size_t resource_map_size,
+    int html_resource_id) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(name);
   source->SetJsonPath("strings.js");
@@ -59,10 +62,10 @@ class BasicUI::BasicUIWebContentsObserver
 };
 
 BasicUI::BasicUI(content::WebUI* web_ui,
-    const std::string& name,
-    const GritResourceMap* resource_map,
-    size_t resource_map_size,
-    int html_resource_id)
+                 const std::string& name,
+                 const GzippedGritResourceMap* resource_map,
+                 size_t resource_map_size,
+                 int html_resource_id)
     : WebUIController(web_ui) {
   observer_.reset(
       new BasicUIWebContentsObserver(this, web_ui->GetWebContents()));
