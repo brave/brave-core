@@ -19,7 +19,7 @@ index 591fb243215f40c243d0ff61255daed7c55bbfa3..8ade4a04e2b5666e6e6c2504b43a9f06
  
    base::string16 text = l10n_util::GetStringUTF16(
        is_guest ? IDS_PROFILES_EXIT_GUEST : IDS_PROFILES_MANAGE_USERS_BUTTON);
-+  if (browser_->profile()->IsTorProfile())
++  if (browser()->profile()->IsTorProfile())
 +    text = l10n_util::GetStringUTF16(IDS_PROFILES_EXIT_TOR);
    const gfx::VectorIcon& settings_icon =
        is_guest ? kCloseAllIcon : kSettingsIcon;
