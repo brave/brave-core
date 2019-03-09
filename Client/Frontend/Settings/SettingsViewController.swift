@@ -380,14 +380,10 @@ class SettingsViewController: TableViewController {
         return Section(
             rows: [
                 Row(text: "Region: \(Locale.current.regionCode ?? "--")"),
-                Row(text: "Recompile Content Blockers", selection: { [weak self] in
-                    BlocklistName.allLists.forEach { $0.fileVersionPref?.value = nil }
-                    ContentBlockerHelper.compileBundledLists().upon { _ in
-                        let alert = UIAlertController(title: nil, message: "Recompiled Blockers", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: .default))
-                        self?.present(alert, animated: true)
-                    }
-                }, cellClass: MultilineButtonCell.self),
+                Row(text: "Adblock Debug", selection: { [weak self] in
+                    let vc = AdblockDebugMenuTableViewController(style: .grouped)
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: "View URP Logs", selection: {
                     self.navigationController?.pushViewController(UrpLogsViewController(), animated: true)
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
