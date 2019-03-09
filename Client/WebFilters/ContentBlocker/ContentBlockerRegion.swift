@@ -22,7 +22,6 @@ class ContentBlockerRegion: BlocklistName {
     }
 }
 
-// MARK: - Regions mapping
 extension ContentBlockerRegion {
 
     /// Get a `ContentBlockerRegion` for a given locale if one exists for that region
@@ -32,12 +31,10 @@ extension ContentBlockerRegion {
             return nil
         }
         
-        guard let regionFileName = ResourceLocale(rawValue: code)?.resourceName else { return nil }
-        
         // This handles two cases, regional content blocker is nil,
         // or locale has changed and the content blocker needs to be reassigned
         if regionalContentBlocker?.localeCode != code {
-            regionalContentBlocker = ContentBlockerRegion(localeCode: code, filename: regionFileName)
+            regionalContentBlocker = ContentBlockerRegion(localeCode: code, filename: code)
         }
         
         return regionalContentBlocker
