@@ -12,6 +12,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 #include "../../../../../../chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc"  // NOLINT
 
 #include "brave/browser/ui/webui/brave_md_settings_ui.h"
+#include "brave/grit/brave_generated_resources.h"
 
 namespace settings {
 
@@ -41,6 +42,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ASK},
     {"siteSettingsAutoplayAskRecommended",
       IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ASK_RECOMMENDED},
+    {"braveGetStartedTitle",
+      IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
     {"appearanceSettingsBraveTheme",
       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES},
     {"appearanceSettingsLocationBarIsWide",

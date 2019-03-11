@@ -266,6 +266,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_UTILITY_PROCESS_LEDGER_NAME" desc="The utility process running ledger">
         Bat Ledger Service
       </message>
+      <message name="IDS_SETTINGS_BRAVE_GET_STARTED_TITLE" desc="The title for the Get Started section in settings">
+        Get Started
+      </message>
       <!-- Brave Shields Defaults -->
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE" desc="The title for Brave shields defaults in settings">
         Brave shields defaults

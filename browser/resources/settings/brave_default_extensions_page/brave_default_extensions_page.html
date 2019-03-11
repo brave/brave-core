@@ -9,10 +9,10 @@
 
 <dom-module id="settings-brave-default-extensions-page">
   <template>
-  <settings-section page-title="$i18n{braveDefaultExtensions}" section="braveDefaultExtensions">
     <style include="settings-shared iron-flex">
     </style>
     <settings-toggle-button id="webTorrentEnabled"
+        class="first"
         pref="{{prefs.brave.webtorrent_enabled}}"
         label="WebTorrent"
         sub-label="$i18n{webTorrentEnabledDesc}"
@@ -31,11 +31,10 @@
         on-settings-boolean-control-change="onIPFSCompanionEnabledChange_">
     </settings-toggle-button>
     <div class="settings-row continuation" id="manageExtensionsRow">
-      <cr-link-row class="first" icon-class="icon-external"
+      <cr-link-row icon-class="icon-external"
         label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">
       </cr-link-row>
     </div>
-  </settings-section>
   </template>
   <script src="brave_default_extensions_page.js"></script>
 </dom-module>
