@@ -43,9 +43,20 @@ int OnBeforeURLRequest_TorWork(
     return net::OK;
   }
 
+  // Get the URL request context to adjust its authentication
+  // preferences and proxy service.
+  auto* url_request_context = ctx->request->context();
+
+  // Set the authentication preferences to our default-anonymous ones
+  // to avoid accidentally identifying ourselves if the user hasn't
+  // asked to do so.
+  auto* auth_factory = url_request_context->http_auth_handler_factory();
+  tor_profile_service->SetHttpAuthPreferences(auth_factory);
+
+  // Set the proxy if necessary, or fail if the proxy is not ready yet.
   auto& request_url = ctx->request_url;
   if (request_url.SchemeIsHTTPOrHTTPS()) {
-    auto* proxy_service = ctx->request->context()->proxy_resolution_service();
+    auto* proxy_service = url_request_context->proxy_resolution_service();
     return tor_profile_service->SetProxy(proxy_service, request_url, false);
   } else if (request_url.SchemeIs(content::kChromeUIScheme) ||
              request_url.SchemeIs(extensions::kExtensionScheme) ||

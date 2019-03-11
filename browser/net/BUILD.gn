@@ -7,6 +7,8 @@ import("//build/config/features.gni")
 source_set("net") {
   configs += [ "//brave/build/geolocation" ]
   sources = [
+    "anon_http_auth_preferences.cc",
+    "anon_http_auth_preferences.h",
     "brave_ad_block_tp_network_delegate_helper.cc",
     "brave_ad_block_tp_network_delegate_helper.h",
     "brave_common_static_redirect_network_delegate_helper.cc",

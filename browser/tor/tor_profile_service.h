@@ -15,6 +15,7 @@
 #include "url/gurl.h"
 
 namespace net {
+class HttpAuthHandlerFactory;
 class ProxyResolutionService;
 }
 
@@ -42,6 +43,8 @@ class TorProfileService : public KeyedService {
                                 const base::Closure&) = 0;
   virtual const TorConfig& GetTorConfig() = 0;
   virtual int64_t GetTorPid() = 0;
+
+  virtual void SetHttpAuthPreferences(net::HttpAuthHandlerFactory*) = 0;
 
   virtual int SetProxy(net::ProxyResolutionService*,
                        const GURL& request_url,

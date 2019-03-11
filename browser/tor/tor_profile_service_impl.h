@@ -11,6 +11,7 @@
 #include <string>
 
 #include "base/memory/scoped_refptr.h"
+#include "brave/browser/net/anon_http_auth_preferences.h"
 #include "brave/browser/tor/tor_launcher_factory.h"
 #include "brave/browser/tor/tor_proxy_config_service.h"
 
@@ -38,6 +39,8 @@ class TorProfileServiceImpl : public TorProfileService,
   const TorConfig& GetTorConfig() override;
   int64_t GetTorPid() override;
 
+  void SetHttpAuthPreferences(net::HttpAuthHandlerFactory*) override;
+
   int SetProxy(net::ProxyResolutionService*,
                const GURL& request_url,
                bool new_circuit) override;
@@ -56,6 +59,8 @@ class TorProfileServiceImpl : public TorProfileService,
   Profile* profile_;  // NOT OWNED
   TorLauncherFactory* tor_launcher_factory_;  // Singleton
   TorProxyConfigService::TorProxyMap tor_proxy_map_;
+  net::AnonHttpAuthPreferences http_auth_prefs_;
+
   DISALLOW_COPY_AND_ASSIGN(TorProfileServiceImpl);
 };
 

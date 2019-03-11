@@ -15,6 +15,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
+#include "net/http/http_auth_handler_factory.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
 #include "net/url_request/url_request_context.h"
 #include "net/url_request/url_request_context_getter.h"
@@ -90,6 +91,11 @@ const TorConfig& TorProfileServiceImpl::GetTorConfig() {
 
 int64_t TorProfileServiceImpl::GetTorPid() {
   return tor_launcher_factory_->GetTorPid();
+}
+
+void TorProfileServiceImpl::SetHttpAuthPreferences(
+    net::HttpAuthHandlerFactory* auth_factory) {
+  auth_factory->set_http_auth_preferences(&http_auth_prefs_);
 }
 
 int TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
