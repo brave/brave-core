@@ -349,10 +349,10 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, NoRedirectTorProfile) {
   BraveNavigationUIData* navigation_ui_data_ptr = navigation_ui_data.get();
 
   content::ResourceRequestInfo::AllocateForTesting(
-    request.get(), content::RESOURCE_TYPE_MAIN_FRAME, resource_context(),
-    kRenderProcessId, /*render_view_id=*/-1, kRenderFrameId,
-    /*is_main_frame=*/true, /*allow_download=*/false, /*is_async=*/true,
-    content::PREVIEWS_OFF, std::move(navigation_ui_data));
+      request.get(), content::RESOURCE_TYPE_MAIN_FRAME, resource_context(),
+      kRenderProcessId, /*render_view_id=*/-1, kRenderFrameId,
+      /*is_main_frame=*/true, content::ResourceInterceptPolicy::kAllowNone,
+      /*is_async=*/true, content::PREVIEWS_OFF, std::move(navigation_ui_data));
 
   MockTorProfileServiceFactory::SetTorNavigationUIData(profile,
                                                    navigation_ui_data_ptr);
