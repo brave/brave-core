@@ -10,11 +10,11 @@
 #include <vector>
 
 #include "bat/confirmations/confirmations_client.h"
+#include "bat/confirmations/internal/token_info.h"
 
-#include "wrapper.hpp"
+#include "wrapper.hpp"  // NOLINT
 
 using challenge_bypass_ristretto::BlindedToken;
-using challenge_bypass_ristretto::UnblindedToken;
 
 namespace confirmations {
 
@@ -42,7 +42,7 @@ class CreateConfirmationRequest {
       const BlindedToken& token) const;
 
   std::string CreateCredential(
-      const UnblindedToken& token,
+      const TokenInfo& token_info,
       const std::string& payload) const;
 };
 

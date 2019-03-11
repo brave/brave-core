@@ -9,11 +9,9 @@
 #include <string>
 #include <vector>
 
+#include "bat/confirmations/internal/token_info.h"
+
 #include "base/values.h"
-
-#include "wrapper.hpp"
-
-using challenge_bypass_ristretto::UnblindedToken;
 
 namespace confirmations {
 
@@ -24,26 +22,26 @@ class UnblindedTokens {
   explicit UnblindedTokens(ConfirmationsImpl* confirmations);
   ~UnblindedTokens();
 
-  UnblindedToken GetToken() const;
-  std::vector<UnblindedToken> GetAllTokens() const;
+  TokenInfo GetToken() const;
+  std::vector<TokenInfo> GetAllTokens() const;
   base::Value GetTokensAsList();
 
-  void SetTokens(const std::vector<UnblindedToken>& tokens);
-  void SetTokensFromList(const base::Value& list);
+  void SetTokens(const std::vector<TokenInfo>& tokens);
+  bool SetTokensFromList(const base::Value& list);
 
-  void AddTokens(const std::vector<UnblindedToken>& tokens);
+  void AddTokens(const std::vector<TokenInfo>& tokens);
 
-  bool RemoveToken(const UnblindedToken& token);
+  bool RemoveToken(const TokenInfo& unblinded_token);
   void RemoveAllTokens();
 
-  bool TokenExists(const UnblindedToken& token);
+  bool TokenExists(const TokenInfo& unblinded_token);
 
   int Count() const;
 
   bool IsEmpty() const;
 
  private:
-  std::vector<UnblindedToken> unblinded_tokens_;
+  std::vector<TokenInfo> tokens_;
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
 };

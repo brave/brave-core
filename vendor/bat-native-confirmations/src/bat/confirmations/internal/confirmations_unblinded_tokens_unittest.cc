@@ -108,42 +108,46 @@ class ConfirmationsUnblindedTokensTest : public ::testing::Test {
     return true;
   }
 
-  std::vector<UnblindedToken> GetUnblindedTokens(const int count) {
+  std::vector<TokenInfo> GetUnblindedTokens(const int count) {
     std::vector<std::string> tokens_base64 = {
-      "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc",  // NOLINT
-      "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6",  // NOLINT
-      "MNrshKuw6zUTsmlZ+w4WzlJknjV/m/ZYyWUhwSmzyW8Dm/VGpMrifyw5txpNu+SQyNcAR+EJ468ADS5qfNfH7yS0kP9z1OJwMNfLiCTHOCiwd7PJkdv14T/vGS5AT1B5",  // NOLINT
-      "MRAbYbmnmjM5bqlbHsX9iuy1Jwc9GCGEA4idBt+PNaQONgbZaPbxHb2pOjw1H6sbgJ2eeIwtobrRRmy+diurWoa0cJ8IG9oy3YtOj8bgc7hy/x5Ixu0kxylNxTKb5b9Z",  // NOLINT
-      "aMTJ5HnQot4p6lU5LuXMdYPt3q3Eg1pz5pB2q1c8ys6qVVHd1PyrtEVY+qGJrET3ay2E12Qft0UhNzVUkrgnZ4Kh3mmpcm9wbYnmsid2GK3dBzuHC0ggnYoir1Oo+A8D",  // NOLINT
-      "lv6mXcIzMFmBbK37U3SFRxgMiRcM4pGLfrdgp0TCevTJ+XbDlHGNIXxYU8CT8ztGwoJSxYjtBh/MGSpjaklJG37ttqDaMzMT0VhKgEvTHuY7qmyi55WtWVENispKe35M",  // NOLINT
-      "f3v9XvsBKp7fdXwQSQHNpHN0MPDzGJ1obhc37pLLyv65/JbdMbsXSQ1dGP0+nD/ETvAFzWzro9s/8HQo0MPLBiKkzvAwnaWyM+TAXG5xwL70iICkNApiv57kUfzvnudp",  // NOLINT
-      "uSczWJh99T9QKlsDGoRSBpjoMFf4nQj/A5AW72m9o6akR4BkzQ1M1ATIyZde5O4Q2iSV+KRjGPUheU7QmTQxDS6l79e8a+ro2uXZKbxjY+XAM7PO+iFOOAZuR4IUoJpF",  // NOLINT
-      "2W8uYe1n6lFMiQFuD9wHLjr2qYhDB6AM3oXyetnsuR9fOxo8BXu28IzQbkCueWSyBEZ54Xf4AzPyPY2cB73Gh8LuyY4vChgP+E9LwI3yqWyD+RR4O6hCo2e7yKm9dTAm",  // NOLINT
-      "tl+V73HJRK2g4TWlqRGxjXeMvhmOvrnLFMfEbUJuiMiByZOUuK4hffoXB5VmbiGLYvJr3shcFpmxMZSuLK3Q97QbP27wmoU+Lk8Jy+MGR+9OTn4MpyvSOfVvDhLypSMG"   // NOLINT
+      "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY",  // NOLINT
+      "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K",  // NOLINT
+      "bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa",  // NOLINT
+      "OlDIXpWRR1/B+1pjPbLyc5sx0V+d7QzQb4NDGUI6F676jy8tL++u57SF4DQhvdEpBrKID+j27RLrbjsecXSjR5oieuH4Bx5mHqTb/rAPI6RpaAXtfXYrCYbf7EPwHTMU",  // NOLINT
+      "Y579V5BUcCzAFj6qNX7YnIr+DvH0mugb/nnY5UINdjxziyDJlejJwi0kPaRGmqbVT3+B51lpErt8e66z0jTbAxBfhtXKARFKtGH8WccB6NfCa85XHBmlcuv1+zcFPDJi",  // NOLINT
+      "+MPQfSo6UcaZNWtfmbd5je9UIr+FVrCWHl6I5C1ZFD7y7bjP/yz7flTjV+l5mKulbCvsRna7++MhbBz6iC0FvVZGYXLeLn2HSAM7cDgqyW6SEuPzlDeZT6kkTNI7JcQm",  // NOLINT
+      "CRXUzo7S0X//u0RGsO534vCoIbrsXgbzLfWw8CLML0CkgMltEGxM6XwBTICl4dqqfhIcLhD0f1WFod7JpuEkj5pW/rg7nl48EX6nmekgd3D2Hz8JgJnSarzP/8+3l+MW",  // NOLINT
+      "hQ+6+jh5DUUBFhhGn7bPLDjqrUIKNi/T8QDt1x01bcW9PLADg6aS73dzrVBsHav44+4q1QhFE/93u0KHVtZ1RPKMqkt8MIiC6RG575102nGRTJDA2kSOgUM75hjDsI8z",  // NOLINT
+      "6tKJHOtQqpNzFjLGT0gvXlCF0GGKrqQlK82e2tc7gJvQkorg60Y21jEAg8JHbU8D3mBK/riZCILoi1cPCiBDAdhWJNVm003mZ0ShjmbESnKhL/NxRv/0/PB3GQ5iydoc",  // NOLINT
+      "ujGlRHnz+UF0h8i6gYDnfeZDUj7qZZz6o29ZJFa3XN2g+yVXgRTws1yv6RAtLCr39OQso6FAT12o8GAvHVEzmRqyzm2XU9gMK5WrNtT/fhr8gQ9RvupdznGKOqmVbuIc"   // NOLINT
     };
 
     int modulo = tokens_base64.size();
 
-    std::vector<UnblindedToken> tokens;
+    std::vector<TokenInfo> unblinded_tokens;
     for (int i = 0; i < count; i++) {
+      TokenInfo token_info;
       auto token_base64 = tokens_base64.at(i % modulo);
-      auto token = UnblindedToken::decode_base64(token_base64);
+      token_info.unblinded_token = UnblindedToken::decode_base64(token_base64);
+      token_info.public_key = "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=";
 
-      tokens.push_back(token);
+      unblinded_tokens.push_back(token_info);
     }
 
-    return tokens;
+    return unblinded_tokens;
   }
 
-  std::vector<UnblindedToken> GetRandomUnblindedTokens(const int count) {
-    std::vector<UnblindedToken> unblinded_tokens;
+  std::vector<TokenInfo> GetRandomUnblindedTokens(const int count) {
+    std::vector<TokenInfo> unblinded_tokens;
 
     auto tokens = helper::Security::GenerateTokens(count);
     for (const auto& token : tokens) {
+      TokenInfo token_info;
       auto token_base64 = token.encode_base64();
-      auto unblinded_token = UnblindedToken::decode_base64(token_base64);
+      token_info.unblinded_token = UnblindedToken::decode_base64(token_base64);
+      token_info.public_key = "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=";
 
-      unblinded_tokens.push_back(unblinded_token);
+      unblinded_tokens.push_back(token_info);
     }
 
     return unblinded_tokens;
@@ -152,12 +156,12 @@ class ConfirmationsUnblindedTokensTest : public ::testing::Test {
   base::ListValue GetUnblindedTokensAsList(const int count) {
     base::Value list(base::Value::Type::LIST);
 
-    auto tokens = GetUnblindedTokens(count);
-    for (const auto& token : tokens) {
-      auto token_base64 = token.encode_base64();
-      auto token_value = base::Value(token_base64);
-      list.GetList().push_back(std::move(token_value));
-    }
+    // auto tokens = GetUnblindedTokens(count);
+    // for (const auto& token : tokens) {
+    //   auto token_base64 = token.encode_base64();
+    //   auto token_value = base::Value(token_base64);
+    //   list.GetList().push_back(std::move(token_value));
+    // }
 
     base::ListValue list_values(list.GetList());
     return list_values;
@@ -170,12 +174,16 @@ TEST_F(ConfirmationsUnblindedTokensTest, GetToken) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  auto token = unblinded_tokens_->GetToken();
-  auto token_base64 = token.encode_base64();
+  auto token_info = unblinded_tokens_->GetToken();
+  auto token_base64 = token_info.unblinded_token.encode_base64();
+  auto public_key = token_info.public_key;
 
   // Assert
-  std::string expected_token_base64 = "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc";  // NOLINT
+  std::string expected_token_base64 = "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY";  // NOLINT
   EXPECT_EQ(expected_token_base64, token_base64);
+
+  std::string expected_public_key = "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=";  // NOLINT
+  EXPECT_EQ(expected_public_key, public_key);
 }
 
 TEST_F(ConfirmationsUnblindedTokensTest, GetAllTokens_Exist) {
@@ -187,22 +195,29 @@ TEST_F(ConfirmationsUnblindedTokensTest, GetAllTokens_Exist) {
   auto tokens = unblinded_tokens_->GetAllTokens();
 
   // Assert
-  std::vector<std::string> expected_tokens_base64 = {
-    "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc",  // NOLINT
-    "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6",  // NOLINT
-    "MNrshKuw6zUTsmlZ+w4WzlJknjV/m/ZYyWUhwSmzyW8Dm/VGpMrifyw5txpNu+SQyNcAR+EJ468ADS5qfNfH7yS0kP9z1OJwMNfLiCTHOCiwd7PJkdv14T/vGS5AT1B5",  // NOLINT
-    "MRAbYbmnmjM5bqlbHsX9iuy1Jwc9GCGEA4idBt+PNaQONgbZaPbxHb2pOjw1H6sbgJ2eeIwtobrRRmy+diurWoa0cJ8IG9oy3YtOj8bgc7hy/x5Ixu0kxylNxTKb5b9Z",  // NOLINT
-    "aMTJ5HnQot4p6lU5LuXMdYPt3q3Eg1pz5pB2q1c8ys6qVVHd1PyrtEVY+qGJrET3ay2E12Qft0UhNzVUkrgnZ4Kh3mmpcm9wbYnmsid2GK3dBzuHC0ggnYoir1Oo+A8D",  // NOLINT
-    "lv6mXcIzMFmBbK37U3SFRxgMiRcM4pGLfrdgp0TCevTJ+XbDlHGNIXxYU8CT8ztGwoJSxYjtBh/MGSpjaklJG37ttqDaMzMT0VhKgEvTHuY7qmyi55WtWVENispKe35M",  // NOLINT
-    "f3v9XvsBKp7fdXwQSQHNpHN0MPDzGJ1obhc37pLLyv65/JbdMbsXSQ1dGP0+nD/ETvAFzWzro9s/8HQo0MPLBiKkzvAwnaWyM+TAXG5xwL70iICkNApiv57kUfzvnudp",  // NOLINT
-    "uSczWJh99T9QKlsDGoRSBpjoMFf4nQj/A5AW72m9o6akR4BkzQ1M1ATIyZde5O4Q2iSV+KRjGPUheU7QmTQxDS6l79e8a+ro2uXZKbxjY+XAM7PO+iFOOAZuR4IUoJpF"   // NOLINT
+  std::vector<std::string> expected_unblinded_tokens_base64 = {
+    "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY",  // NOLINT
+    "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K",  // NOLINT
+    "bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa",  // NOLINT
+    "OlDIXpWRR1/B+1pjPbLyc5sx0V+d7QzQb4NDGUI6F676jy8tL++u57SF4DQhvdEpBrKID+j27RLrbjsecXSjR5oieuH4Bx5mHqTb/rAPI6RpaAXtfXYrCYbf7EPwHTMU",  // NOLINT
+    "Y579V5BUcCzAFj6qNX7YnIr+DvH0mugb/nnY5UINdjxziyDJlejJwi0kPaRGmqbVT3+B51lpErt8e66z0jTbAxBfhtXKARFKtGH8WccB6NfCa85XHBmlcuv1+zcFPDJi",  // NOLINT
+    "+MPQfSo6UcaZNWtfmbd5je9UIr+FVrCWHl6I5C1ZFD7y7bjP/yz7flTjV+l5mKulbCvsRna7++MhbBz6iC0FvVZGYXLeLn2HSAM7cDgqyW6SEuPzlDeZT6kkTNI7JcQm",  // NOLINT
+    "CRXUzo7S0X//u0RGsO534vCoIbrsXgbzLfWw8CLML0CkgMltEGxM6XwBTICl4dqqfhIcLhD0f1WFod7JpuEkj5pW/rg7nl48EX6nmekgd3D2Hz8JgJnSarzP/8+3l+MW",  // NOLINT
+    "hQ+6+jh5DUUBFhhGn7bPLDjqrUIKNi/T8QDt1x01bcW9PLADg6aS73dzrVBsHav44+4q1QhFE/93u0KHVtZ1RPKMqkt8MIiC6RG575102nGRTJDA2kSOgUM75hjDsI8z"   // NOLINT
   };
 
+  std::string expected_public_key = "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=";  // NOLINT
+
   unsigned int index = 0;
-  for (const auto& token : tokens) {
-    auto expected_token_base64 = expected_tokens_base64.at(index);
-    auto expected_token = UnblindedToken::decode_base64(expected_token_base64);
-    if (token != expected_token) {
+  for (const auto& token_info : tokens) {
+    auto expected_unblinded_token_base64 =
+        expected_unblinded_tokens_base64.at(index);
+
+    auto expected_unblinded_token =
+        UnblindedToken::decode_base64(expected_unblinded_token_base64);
+
+    if (token_info.unblinded_token != expected_unblinded_token ||
+        token_info.public_key != expected_public_key) {
       FAIL();
     }
 
@@ -235,11 +250,33 @@ TEST_F(ConfirmationsUnblindedTokensTest, GetTokensAsList_Exist) {
 
   // Assert
   base::ListValue list_values(list.GetList());
-  for (const auto& value : list_values) {
-    auto token_base64 = value.GetString();
-    auto token = UnblindedToken::decode_base64(token_base64);
+  for (auto& value : list_values) {
+    base::DictionaryValue* dictionary;
+    if (!value.GetAsDictionary(&dictionary)) {
+      FAIL();
+    }
 
-    if (!unblinded_tokens_->TokenExists(token)) {
+    // Unblinded token
+    auto* unblinded_token_value = dictionary->FindKey("unblinded_token");
+    if (!unblinded_token_value) {
+      FAIL();
+    }
+    auto unblinded_token_base64 = unblinded_token_value->GetString();
+    auto unblinded_token =
+        UnblindedToken::decode_base64(unblinded_token_base64);
+
+    // Public key
+    auto* public_key_value = dictionary->FindKey("public_key");
+    if (!public_key_value) {
+      FAIL();
+    }
+    auto public_key = public_key_value->GetString();
+
+    TokenInfo token_info;
+    token_info.unblinded_token = unblinded_token;
+    token_info.public_key = public_key;
+
+    if (!unblinded_tokens_->TokenExists(token_info)) {
       FAIL();
     }
   }
@@ -286,9 +323,9 @@ TEST_F(ConfirmationsUnblindedTokensTest, SetTokens_Exist) {
   // Assert
   unsigned int index = 0;
   auto tokens = unblinded_tokens_->GetAllTokens();
-  for (const auto& token : tokens) {
-    auto unblinded_token = unblinded_tokens.at(index);
-    if (token != unblinded_token) {
+  for (const auto& token_info : tokens) {
+    auto expected_token_info = unblinded_tokens.at(index);
+    if (token_info.unblinded_token != expected_token_info.unblinded_token) {
       FAIL();
     }
 
@@ -339,21 +376,25 @@ TEST_F(ConfirmationsUnblindedTokensTest, SetTokensFromList) {
   unblinded_tokens_->SetTokensFromList(list);
 
   // Assert
-  std::vector<std::string> expected_tokens_base64 = {
-    "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc",  // NOLINT
-    "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6",  // NOLINT
-    "MNrshKuw6zUTsmlZ+w4WzlJknjV/m/ZYyWUhwSmzyW8Dm/VGpMrifyw5txpNu+SQyNcAR+EJ468ADS5qfNfH7yS0kP9z1OJwMNfLiCTHOCiwd7PJkdv14T/vGS5AT1B5",  // NOLINT
-    "MRAbYbmnmjM5bqlbHsX9iuy1Jwc9GCGEA4idBt+PNaQONgbZaPbxHb2pOjw1H6sbgJ2eeIwtobrRRmy+diurWoa0cJ8IG9oy3YtOj8bgc7hy/x5Ixu0kxylNxTKb5b9Z",  // NOLINT
-    "aMTJ5HnQot4p6lU5LuXMdYPt3q3Eg1pz5pB2q1c8ys6qVVHd1PyrtEVY+qGJrET3ay2E12Qft0UhNzVUkrgnZ4Kh3mmpcm9wbYnmsid2GK3dBzuHC0ggnYoir1Oo+A8D"   // NOLINT
+  std::vector<std::string> expected_unblinded_tokens_base64 = {
+    "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY",  // NOLINT
+    "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K",  // NOLINT
+    "bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa",  // NOLINT
+    "OlDIXpWRR1/B+1pjPbLyc5sx0V+d7QzQb4NDGUI6F676jy8tL++u57SF4DQhvdEpBrKID+j27RLrbjsecXSjR5oieuH4Bx5mHqTb/rAPI6RpaAXtfXYrCYbf7EPwHTMU",  // NOLINT
+    "Y579V5BUcCzAFj6qNX7YnIr+DvH0mugb/nnY5UINdjxziyDJlejJwi0kPaRGmqbVT3+B51lpErt8e66z0jTbAxBfhtXKARFKtGH8WccB6NfCa85XHBmlcuv1+zcFPDJi"   // NOLINT
   };
 
   auto tokens = unblinded_tokens_->GetAllTokens();
 
   unsigned int index = 0;
-  for (const auto& token : tokens) {
-    auto expected_token_base64 = expected_tokens_base64.at(index);
-    auto expected_token = UnblindedToken::decode_base64(expected_token_base64);
-    if (token != expected_token) {
+  for (const auto& token_info : tokens) {
+    auto expected_unblinded_token_base64 =
+        expected_unblinded_tokens_base64.at(index);
+
+    auto expected_unblinded_token =
+        UnblindedToken::decode_base64(expected_unblinded_token_base64);
+
+    if (token_info.unblinded_token != expected_unblinded_token) {
       FAIL();
     }
 
@@ -460,9 +501,13 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveToken_Count) {
   EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
       .Times(1);
 
-  std::string token_base64 = "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6";  // NOLINT
-  auto token = UnblindedToken::decode_base64(token_base64);
-  unblinded_tokens_->RemoveToken(token);
+  std::string token_base64 = "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";  // NOLINT
+
+  TokenInfo token_info;
+  token_info.unblinded_token = UnblindedToken::decode_base64(token_base64);
+  token_info.public_key = "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=";
+
+  unblinded_tokens_->RemoveToken(token_info);
 
   // Assert
   auto count = unblinded_tokens_->Count();
@@ -478,12 +523,16 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveToken_Removed) {
   EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
       .Times(1);
 
-  std::string token_base64 = "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6";  // NOLINT
-  auto token = UnblindedToken::decode_base64(token_base64);
-  unblinded_tokens_->RemoveToken(token);
+  std::string token_base64 = "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";  // NOLINT
+
+  TokenInfo token_info;
+  token_info.unblinded_token = UnblindedToken::decode_base64(token_base64);
+  token_info.public_key = "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=";
+
+  unblinded_tokens_->RemoveToken(token_info);
 
   // Assert
-  EXPECT_FALSE(unblinded_tokens_->TokenExists(token));
+  EXPECT_FALSE(unblinded_tokens_->TokenExists(token_info));
 }
 
 TEST_F(ConfirmationsUnblindedTokensTest, RemoveToken_UnknownToken) {
@@ -496,8 +545,12 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveToken_UnknownToken) {
       .Times(0);
 
   std::string token_base64 = "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF";  // NOLINT
-  auto token = UnblindedToken::decode_base64(token_base64);
-  unblinded_tokens_->RemoveToken(token);
+
+  TokenInfo token_info;
+  token_info.unblinded_token = UnblindedToken::decode_base64(token_base64);
+  token_info.public_key = "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEAD";
+
+  unblinded_tokens_->RemoveToken(token_info);
 
   // Assert
   auto count = unblinded_tokens_->Count();
@@ -513,11 +566,14 @@ TEST_F(ConfirmationsUnblindedTokensTest, RemoveToken_SameTokenTwice) {
   EXPECT_CALL(*mock_confirmations_client_, SaveState(_, _, _))
       .Times(1);
 
-  std::string token_base64 = "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6";  // NOLINT
-  auto token = UnblindedToken::decode_base64(token_base64);
+  std::string token_base64 = "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";  // NOLINT
 
-  unblinded_tokens_->RemoveToken(token);
-  unblinded_tokens_->RemoveToken(token);
+  TokenInfo token_info;
+  token_info.unblinded_token = UnblindedToken::decode_base64(token_base64);
+  token_info.public_key = "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=";
+
+  unblinded_tokens_->RemoveToken(token_info);
+  unblinded_tokens_->RemoveToken(token_info);
 
   // Assert
   auto count = unblinded_tokens_->Count();
@@ -562,9 +618,13 @@ TEST_F(ConfirmationsUnblindedTokensTest, TokenExists) {
   unblinded_tokens_->SetTokens(unblinded_tokens);
 
   // Act
-  std::string token_base64 = "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6";  // NOLINT
-  auto token = UnblindedToken::decode_base64(token_base64);
-  auto exists = unblinded_tokens_->TokenExists(token);
+  std::string token_base64 = "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K";  // NOLINT
+
+  TokenInfo token_info;
+  token_info.unblinded_token = UnblindedToken::decode_base64(token_base64);
+  token_info.public_key = "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=";
+
+  auto exists = unblinded_tokens_->TokenExists(token_info);
 
   // Assert
   EXPECT_TRUE(exists);
@@ -577,8 +637,12 @@ TEST_F(ConfirmationsUnblindedTokensTest, TokenExists_UnknownToken) {
 
   // Act
   std::string token_base64 = "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF";  // NOLINT
-  auto token = UnblindedToken::decode_base64(token_base64);
-  auto exists = unblinded_tokens_->TokenExists(token);
+
+  TokenInfo token_info;
+  token_info.unblinded_token = UnblindedToken::decode_base64(token_base64);
+  token_info.public_key = "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEAD";
+
+  auto exists = unblinded_tokens_->TokenExists(token_info);
 
   // Assert
   EXPECT_FALSE(exists);
