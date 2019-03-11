@@ -144,6 +144,7 @@ class AdsImpl : public Ads {
   void StopSustainingAdInteraction();
   bool IsSustainingAdInteraction() const;
   bool IsStillViewingAd() const;
+  void ConfirmAd(const NotificationInfo& info, const ConfirmationType type);
 
   void OnTimer(const uint32_t timer_id) override;
 
@@ -153,7 +154,7 @@ class AdsImpl : public Ads {
   void GenerateAdReportingNotificationResultEvent(
       const NotificationInfo& info,
       const NotificationResultInfoResultType type) override;
-  void GenerateAdReportingSustainEvent(const NotificationInfo& info);
+  void GenerateAdReportingConfirmationEvent(const NotificationInfo& info);
   void GenerateAdReportingLoadEvent(const LoadInfo& info);
   void GenerateAdReportingBackgroundEvent();
   void GenerateAdReportingForegroundEvent();

@@ -10,6 +10,7 @@
 
 #include "bat/ads/ads_client.h"
 #include "bat/ads/notification_info.h"
+#include "bat/ads/confirmation_type.h"
 
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/logging.h"
@@ -1048,15 +1049,7 @@ void AdsImpl::SustainAdInteractionIfNeeded() {
 
   BLOG(INFO) << "Sustained ad interaction";
 
-  SustainAdInteraction();
-}
-
-void AdsImpl::SustainAdInteraction() {
-  GenerateAdReportingSustainEvent(last_shown_notification_info_);
-
-  auto notification_info =
-      std::make_unique<NotificationInfo>(last_shown_notification_info_);
-  ads_client_->AdSustained(std::move(notification_info));
+  ConfirmAd(last_shown_notification_info_, ConfirmationType::LANDED);
 }
 
 void AdsImpl::StopSustainingAdInteraction() {
@@ -1092,6 +1085,18 @@ bool AdsImpl::IsStillViewingAd() const {
   }
 
   return true;
+}
+
+void AdsImpl::ConfirmAd(
+    const NotificationInfo& info,
+    const ConfirmationType type) {
+  auto notification_info = std::make_unique<NotificationInfo>(info);
+
+  notification_info->type = type;
+
+  GenerateAdReportingConfirmationEvent(*notification_info);
+
+  ads_client_->ConfirmAd(std::move(notification_info));
 }
 
 void AdsImpl::OnTimer(const uint32_t timer_id) {
@@ -1134,7 +1139,7 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
   writer.String("notify");
 
   writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("notificationType");
@@ -1163,10 +1168,10 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
 
   writer.EndObject();
 
-  SustainAdInteraction();
-
   auto* json = buffer.GetString();
   ads_client_->EventLog(json);
+
+  ConfirmAd(info, ConfirmationType::VIEW);
 }
 
 void AdsImpl::GenerateAdReportingNotificationResultEvent(
@@ -1190,24 +1195,25 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
   writer.String("notify");
 
   writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("notificationType");
   switch (type) {
-    case CLICKED: {
+    case NotificationResultInfoResultType::CLICKED: {
       writer.String("clicked");
       client_->UpdateAdsUUIDSeen(info.uuid, 1);
+      StartSustainingAdInteraction(kSustainAdInteractionAfterSeconds);
       break;
     }
 
-    case DISMISSED: {
+    case NotificationResultInfoResultType::DISMISSED: {
       writer.String("dismissed");
       client_->UpdateAdsUUIDSeen(info.uuid, 1);
       break;
     }
 
-    case TIMEOUT: {
+    case NotificationResultInfoResultType::TIMEOUT: {
       writer.String("timeout");
       break;
     }
@@ -1238,9 +1244,25 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
   auto* json = buffer.GetString();
   ads_client_->EventLog(json);
+
+  switch (type) {
+    case NotificationResultInfoResultType::CLICKED: {
+      ConfirmAd(info, ConfirmationType::CLICK);
+      break;
+    }
+
+    case NotificationResultInfoResultType::DISMISSED: {
+      ConfirmAd(info, ConfirmationType::DISMISS);
+      break;
+    }
+
+    case NotificationResultInfoResultType::TIMEOUT: {
+      break;
+    }
+  }
 }
 
-void AdsImpl::GenerateAdReportingSustainEvent(
+void AdsImpl::GenerateAdReportingConfirmationEvent(
     const NotificationInfo& info) {
   rapidjson::StringBuffer buffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
@@ -1251,17 +1273,45 @@ void AdsImpl::GenerateAdReportingSustainEvent(
   writer.StartObject();
 
   writer.String("type");
-  writer.String("sustain");
+  writer.String("confirmation");
 
   writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("notificationId");
   writer.String(info.uuid.c_str());
 
+  std::string type;
+  switch (info.type) {
+    case ConfirmationType::UNKNOWN: {
+      DCHECK(false) << "Invalid confirmation type";
+      break;
+    }
+
+    case ConfirmationType::CLICK: {
+      type = kConfirmationTypeClick;
+      break;
+    }
+
+    case ConfirmationType::DISMISS: {
+      type = kConfirmationTypeDismiss;
+      break;
+    }
+
+    case ConfirmationType::VIEW: {
+      type = kConfirmationTypeView;
+      break;
+    }
+
+    case ConfirmationType::LANDED: {
+      type = kConfirmationTypeLanded;
+      break;
+    }
+  }
+
   writer.String("notificationType");
-  writer.String("viewed");
+  writer.String(type.c_str());
 
   writer.EndObject();
 
@@ -1290,7 +1340,7 @@ void AdsImpl::GenerateAdReportingLoadEvent(
   writer.String("load");
 
   writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -1349,7 +1399,7 @@ void AdsImpl::GenerateAdReportingBackgroundEvent() {
   writer.String("background");
 
   writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.EndObject();
@@ -1373,7 +1423,7 @@ void AdsImpl::GenerateAdReportingForegroundEvent() {
   writer.String("foreground");
 
   writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.EndObject();
@@ -1398,7 +1448,7 @@ void AdsImpl::GenerateAdReportingBlurEvent(
   writer.String("blur");
 
   writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -1426,7 +1476,7 @@ void AdsImpl::GenerateAdReportingDestroyEvent(
   writer.String("destroy");
 
   writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -1454,7 +1504,7 @@ void AdsImpl::GenerateAdReportingFocusEvent(
   writer.String("focus");
 
   writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -1481,7 +1531,7 @@ void AdsImpl::GenerateAdReportingRestartEvent() {
   writer.String("restart");
 
   writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.EndObject();
@@ -1505,7 +1555,7 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   writer.String("settings");
 
   writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("settings");

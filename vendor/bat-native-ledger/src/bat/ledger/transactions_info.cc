@@ -31,6 +31,9 @@ const std::string TransactionsInfo::ToJson() const {
     transaction_dictionary.SetKey("estimated_redemption_value",
         base::Value(transaction.estimated_redemption_value));
 
+    transaction_dictionary.SetKey("confirmation_type",
+        base::Value(transaction.confirmation_type));
+
     list.GetList().push_back(std::move(transaction_dictionary));
   }
 
@@ -81,6 +84,14 @@ bool TransactionsInfo::FromJson(
     }
     info.estimated_redemption_value =
         estimated_redemption_value_value->GetDouble();
+
+    // Confirmation type
+    auto* confirmation_type_value =
+        transaction_dictionary->FindKey("confirmation_type");
+    if (!confirmation_type_value) {
+      return false;
+    }
+    info.confirmation_type = confirmation_type_value->GetString();
 
     new_transactions.push_back(info);
   }

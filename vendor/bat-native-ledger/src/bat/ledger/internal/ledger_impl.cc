@@ -1316,7 +1316,7 @@ void LedgerImpl::SetCatalogIssuers(const std::string& info) {
   bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
 }
 
-void LedgerImpl::AdSustained(const std::string& info) {
+void LedgerImpl::ConfirmAd(const std::string& info) {
   ads::NotificationInfo notification_info_ads;
   if (notification_info_ads.FromJson(info) != ads::Result::SUCCESS)
     return;
@@ -1328,8 +1328,34 @@ void LedgerImpl::AdSustained(const std::string& info) {
   notification_info->text = notification_info_ads.text;
   notification_info->url = notification_info_ads.url;
   notification_info->uuid = notification_info_ads.uuid;
+  switch (notification_info_ads.type) {
+    case ads::ConfirmationType::UNKNOWN: {
+      notification_info->type = confirmations::ConfirmationType::UNKNOWN;
+      break;
+    }
 
-  bat_confirmations_->AdSustained(std::move(notification_info));
+    case ads::ConfirmationType::CLICK: {
+      notification_info->type = confirmations::ConfirmationType::CLICK;
+      break;
+    }
+
+    case ads::ConfirmationType::DISMISS: {
+      notification_info->type = confirmations::ConfirmationType::DISMISS;
+      break;
+    }
+
+    case ads::ConfirmationType::VIEW: {
+      notification_info->type = confirmations::ConfirmationType::VIEW;
+      break;
+    }
+
+    case ads::ConfirmationType::LANDED: {
+      notification_info->type = confirmations::ConfirmationType::LANDED;
+      break;
+    }
+  }
+
+  bat_confirmations_->ConfirmAd(std::move(notification_info));
 }
 
 void LedgerImpl::GetConfirmationsHistory(

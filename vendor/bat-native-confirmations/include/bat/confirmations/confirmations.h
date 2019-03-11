@@ -55,7 +55,7 @@ class CONFIRMATIONS_EXPORT Confirmations {
       OnGetTransactionHistoryCallback callback) = 0;
 
   // Should be called when an ad is sustained in Ads
-  virtual void AdSustained(std::unique_ptr<NotificationInfo> info) = 0;
+  virtual void ConfirmAd(std::unique_ptr<NotificationInfo> info) = 0;
 
   // Should be called when a timer is triggered
   virtual bool OnTimer(const uint32_t timer_id) = 0;

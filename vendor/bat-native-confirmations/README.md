@@ -30,9 +30,9 @@ void GetTransactionHistory(
     OnGetTransactionHistoryCallback callback)
 ```
 
-`AdSustained` should be called by Ads to be rewarded for viewing an Ad
+`ConfirmAd` should be called by Ads when clicking, viewing, dismissing or landing an Ad
 ```
-void AdSustained(
+void ConfirmAd(
     std::unique_ptr<NotificationInfo> info)
 ```
 
