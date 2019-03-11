@@ -266,7 +266,7 @@ def find_first_broken_version(args):
 
         gap = right_index - left_index
         if gap <= 1:
-            return test_tag
+            return test_tag, attempt_number
 
         if args.verbose:
             print('\n[DEBUG] L=' + str(left_index) + ', R=' + str(right_index) + ', M=' + str(test_index) + ', gap=' + str(gap))
@@ -296,6 +296,17 @@ def main():
     filter_releases(args)
     first_broken_version, attempts = find_first_broken_version(args)
     print('DONE: issue first appeared in "' + str(first_broken_version) + '" (found in ' + str(attempts) + ' attempts)')
+
+    broken_index = tag_names.index(first_broken_version)
+    if broken_index > 0:
+        previous_release = tag_names[broken_index - 1]
+        versions = 'v' + previous_release + '..v' + first_broken_version
+        if args.verbose:
+            print('[INFO] finding commits using "git log --pretty=oneline ' + versions + '"')
+        commits = execute(['git', 'log', '--pretty=oneline', versions]).strip()
+        commit_lines = commits.split('\n')
+        print('Commits specific to tag "v' + first_broken_version + '" (' + str(len(commit_lines)) + ' commit(s)):')
+        print(commits)
 
 if __name__ == '__main__':
     import sys
