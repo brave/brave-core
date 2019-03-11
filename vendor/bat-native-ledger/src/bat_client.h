@@ -78,6 +78,7 @@ class BatClient {
       const std::map<std::string, std::string>& headers);
 
   void getGrantsCallback(
+      std::string safetynet_token,
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
@@ -86,7 +87,7 @@ class BatClient {
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      bool is_satetynet_check);
+      bool is_safetynet_check);
 
   void recoverWalletPublicKeyCallback(
       int response_status_code,
