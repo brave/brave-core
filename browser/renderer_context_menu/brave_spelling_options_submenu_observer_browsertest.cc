@@ -12,8 +12,8 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/language/core/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/spellcheck/browser/pref_names.h"
 #include "content/public/common/context_menu_params.h"
@@ -65,7 +65,7 @@ class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
                 const std::vector<std::string>& dictionaries) {
     menu()->GetPrefs()->SetBoolean(spellcheck::prefs::kSpellCheckEnable,
                                    enable_spellcheck);
-    menu()->GetPrefs()->SetString(prefs::kAcceptLanguages, accept_languages);
+    menu()->GetPrefs()->SetString(language::prefs::kAcceptLanguages, accept_languages);
     base::ListValue dictionaries_value;
     dictionaries_value.AppendStrings(dictionaries);
     menu()->GetPrefs()->Set(spellcheck::prefs::kSpellCheckDictionaries,
