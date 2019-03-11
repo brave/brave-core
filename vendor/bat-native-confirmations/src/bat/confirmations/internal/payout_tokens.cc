@@ -68,7 +68,7 @@ void PayoutTokens::RedeemPaymentTokens() {
 
   auto method = request.GetMethod();
 
-  auto body = request.BuildBody(tokens, payload, wallet_info_);
+  auto body = request.BuildBody(tokens, payload);
   BLOG(INFO) << "  Body: " << body;
 
   auto headers = request.BuildHeaders();
