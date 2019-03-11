@@ -12,6 +12,7 @@
     <structures>
       <structure name="IDR_SETTINGS_BRAVE_SETTINGS_OVERRIDES_HTML" file="brave_settings_overrides.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_BRAVE_SETTINGS_OVERRIDES_JS" file="brave_settings_overrides.js" type="chrome_html" />
+      <structure name="IDR_SETTINGS_BRAVE_ICONS_HTML" file="brave_icons.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_HTML" file="default_brave_shields_page/default_brave_shields_browser_proxy.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_JS" file="default_brave_shields_page/default_brave_shields_browser_proxy.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_PAGE_JS" file="default_brave_shields_page/default_brave_shields_page.js" type="chrome_html" preprocess="true" />
