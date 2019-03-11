@@ -513,13 +513,14 @@ void BatClient::getGrants(const std::string& lang,
   if (!safetynet_token.empty()) {
     headers.push_back("safetynet-token:" + safetynet_token);
   }
-  auto callback = std::bind(&BatClient::getGrantsCallback, this, _1, _2, _3);
+  auto callback = std::bind(&BatClient::getGrantsCallback, this, safetynet_token, _1, _2, _3);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)GET_SET_PROMOTION + arguments, safetynet_token.empty() ? PREFIX_V4 : PREFIX_V3),
       headers, "", "", ledger::URL_METHOD::GET, callback);
 }
 
 void BatClient::getGrantsCallback(
+    std::string safetynet_token,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
@@ -546,6 +547,16 @@ void BatClient::getGrantsCallback(
   }
 
   bool ok = braveledger_bat_helper::loadFromJson(&grants_properties, response);
+
+  if (!ok && !safetynet_token.empty()) {
+    ok = braveledger_bat_helper::loadFromJson(properties, response);
+    if (ok) {
+      braveledger_bat_helper::GRANT_RESPONSE grantResponse;
+      grantResponse.promotionId = properties.promotionId;
+      grantResponse.type = "ugp";
+      grants_properties.grants_.push_back(grantResponse);
+    }
+  } 
 
   if (!ok) {
      BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
@@ -610,7 +621,7 @@ void BatClient::setGrantCallback(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
-    bool is_satetynet_check) {
+    bool is_safetynet_check) {
   std::string error;
   unsigned int statusCode;
   braveledger_bat_helper::GRANT grant;
@@ -620,7 +631,7 @@ void BatClient::setGrantCallback(
 
   if (!error.empty()) {
     if (statusCode == 403) {
-      ledger_->OnGrantFinish(is_satetynet_check ? ledger::Result::SAFETYNET_ATTESTATION_FAILED : ledger::Result::CAPTCHA_FAILED, grant);
+      ledger_->OnGrantFinish(is_safetynet_check ? ledger::Result::SAFETYNET_ATTESTATION_FAILED : ledger::Result::CAPTCHA_FAILED, grant);
     } else if (statusCode == 404 || statusCode == 410) {
       ledger_->OnGrantFinish(ledger::Result::GRANT_NOT_FOUND, grant);
     } else if (statusCode == 409) {
@@ -631,7 +642,12 @@ void BatClient::setGrantCallback(
     return;
   }
 
-  bool ok = braveledger_bat_helper::loadFromJson(&grant, response);
+  bool ok = false;
+  if (is_safetynet_check) {
+    ok = grant.loadFromJsonSafetyNet(response);
+  } else {
+    ok = braveledger_bat_helper::loadFromJson(&grant, response);
+  }
   if (!ok) {
     ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, grant);
     return;
