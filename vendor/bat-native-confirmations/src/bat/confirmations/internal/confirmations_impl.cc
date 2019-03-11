@@ -510,27 +510,27 @@ void ConfirmationsImpl::AppendTransactionToTransactionHistory(
   info.estimated_redemption_value = estimated_redemption_value;
 
   switch (confirmation_type) {
-    case ConfirmationType::UNKNOWN: {
+    case CONFIRMATION_TYPE_UNKNOWN: {
       DCHECK(false) << "Invalid confirmation type";
       break;
     }
 
-    case ConfirmationType::CLICK: {
+    case CONFIRMATION_TYPE_CLICK: {
       info.confirmation_type = kConfirmationTypeClick;
       break;
     }
 
-    case ConfirmationType::DISMISS: {
+    case CONFIRMATION_TYPE_DISMISS: {
       info.confirmation_type = kConfirmationTypeDismiss;
       break;
     }
 
-    case ConfirmationType::VIEW: {
+    case CONFIRMATION_TYPE_VIEW: {
       info.confirmation_type = kConfirmationTypeView;
       break;
     }
 
-    case ConfirmationType::LANDED: {
+    case CONFIRMATION_TYPE_LANDED: {
       info.confirmation_type = kConfirmationTypeLanded;
       break;
     }
@@ -552,27 +552,27 @@ void ConfirmationsImpl::ConfirmAd(std::unique_ptr<NotificationInfo> info) {
   BLOG(INFO) << "  advertiser: " << info->advertiser;
   BLOG(INFO) << "  uuid: " << info->uuid;
   switch (info->type) {
-    case ConfirmationType::UNKNOWN: {
+    case CONFIRMATION_TYPE_UNKNOWN: {
       DCHECK(false) << "Invalid confirmation type";
       break;
     }
 
-    case ConfirmationType::CLICK: {
+    case CONFIRMATION_TYPE_CLICK: {
       BLOG(INFO) << "  confirmationType: click";
       break;
     }
 
-    case ConfirmationType::DISMISS: {
+    case CONFIRMATION_TYPE_DISMISS: {
       BLOG(INFO) << "  confirmationType: dismiss";
       break;
     }
 
-    case ConfirmationType::VIEW: {
+    case CONFIRMATION_TYPE_VIEW: {
       BLOG(INFO) << "  confirmationType: view";
       break;
     }
 
-    case ConfirmationType::LANDED: {
+    case CONFIRMATION_TYPE_LANDED: {
       BLOG(INFO) << "  confirmationType: landed";
       break;
     }

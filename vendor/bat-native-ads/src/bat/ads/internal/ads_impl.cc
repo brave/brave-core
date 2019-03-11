@@ -1049,7 +1049,7 @@ void AdsImpl::SustainAdInteractionIfNeeded() {
 
   BLOG(INFO) << "Sustained ad interaction";
 
-  ConfirmAd(last_shown_notification_info_, ConfirmationType::LANDED);
+  ConfirmAd(last_shown_notification_info_, CONFIRMATION_TYPE_LANDED);
 }
 
 void AdsImpl::StopSustainingAdInteraction() {
@@ -1171,7 +1171,7 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
   auto* json = buffer.GetString();
   ads_client_->EventLog(json);
 
-  ConfirmAd(info, ConfirmationType::VIEW);
+  ConfirmAd(info, CONFIRMATION_TYPE_VIEW);
 }
 
 void AdsImpl::GenerateAdReportingNotificationResultEvent(
@@ -1247,12 +1247,12 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
   switch (type) {
     case NotificationResultInfoResultType::CLICKED: {
-      ConfirmAd(info, ConfirmationType::CLICK);
+      ConfirmAd(info, CONFIRMATION_TYPE_CLICK);
       break;
     }
 
     case NotificationResultInfoResultType::DISMISSED: {
-      ConfirmAd(info, ConfirmationType::DISMISS);
+      ConfirmAd(info, CONFIRMATION_TYPE_DISMISS);
       break;
     }
 
@@ -1284,27 +1284,27 @@ void AdsImpl::GenerateAdReportingConfirmationEvent(
 
   std::string type;
   switch (info.type) {
-    case ConfirmationType::UNKNOWN: {
+    case CONFIRMATION_TYPE_UNKNOWN: {
       DCHECK(false) << "Invalid confirmation type";
       break;
     }
 
-    case ConfirmationType::CLICK: {
+    case CONFIRMATION_TYPE_CLICK: {
       type = kConfirmationTypeClick;
       break;
     }
 
-    case ConfirmationType::DISMISS: {
+    case CONFIRMATION_TYPE_DISMISS: {
       type = kConfirmationTypeDismiss;
       break;
     }
 
-    case ConfirmationType::VIEW: {
+    case CONFIRMATION_TYPE_VIEW: {
       type = kConfirmationTypeView;
       break;
     }
 
-    case ConfirmationType::LANDED: {
+    case CONFIRMATION_TYPE_LANDED: {
       type = kConfirmationTypeLanded;
       break;
     }
