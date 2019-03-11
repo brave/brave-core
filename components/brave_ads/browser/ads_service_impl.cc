@@ -606,8 +606,8 @@ void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
   rewards_service_->SetCatalogIssuers(info->ToJson());
 }
 
-void AdsServiceImpl::AdSustained(std::unique_ptr<ads::NotificationInfo> info) {
-  rewards_service_->AdSustained(info->ToJson());
+void AdsServiceImpl::ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) {
+  rewards_service_->ConfirmAd(info->ToJson());
 }
 
 void AdsServiceImpl::NotificationTimedOut(uint32_t timer_id,

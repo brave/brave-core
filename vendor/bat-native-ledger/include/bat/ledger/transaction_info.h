@@ -20,6 +20,7 @@ LEDGER_EXPORT struct TransactionInfo {
 
   uint64_t timestamp_in_seconds;
   double estimated_redemption_value;
+  std::string confirmation_type;
 };
 
 }  // namespace ledger

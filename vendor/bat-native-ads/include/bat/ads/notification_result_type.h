@@ -10,7 +10,7 @@
 
 namespace ads {
 
-enum ADS_EXPORT NotificationResultInfoResultType {
+enum class ADS_EXPORT NotificationResultInfoResultType {
   CLICKED,
   DISMISSED,
   TIMEOUT

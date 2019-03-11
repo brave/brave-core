@@ -11,6 +11,7 @@
 
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/internal/token_info.h"
+#include "bat/confirmations/confirmation_type.h"
 
 #include "wrapper.hpp"  // NOLINT
 
@@ -39,7 +40,8 @@ class CreateConfirmationRequest {
 
   std::string CreateConfirmationRequestDTO(
       const std::string& creative_instance_id,
-      const BlindedToken& token) const;
+      const BlindedToken& token,
+      const ConfirmationType confirmation_type) const;
 
   std::string CreateCredential(
       const TokenInfo& token_info,

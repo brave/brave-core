@@ -206,9 +206,9 @@ void ShowNotification(std::unique_ptr<NotificationInfo> info)
   void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info)
 ```
 
-`AdSustained` should be called to inform Confirmations that an ad was sustained
+`ConfirmAd` should be called to inform Confirmations that an Ad was clicked, viewed, dismissed or landed
 ```
-void AdSustained(std::unique_ptr<NotificationInfo> info)
+void ConfirmAd(std::unique_ptr<NotificationInfo> info)
 ```
 
 `SetTimer` should create a timer to trigger after the time offset specified in seconds. If the timer was created successfully a unique identifier should be returned, otherwise returns `0`

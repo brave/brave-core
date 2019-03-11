@@ -13,7 +13,8 @@ NotificationInfo::NotificationInfo() :
     advertiser(""),
     text(""),
     url(""),
-    uuid("") {}
+    uuid(""),
+    type(ConfirmationType::UNKNOWN) {}
 
 NotificationInfo::NotificationInfo(const NotificationInfo& info) :
     creative_set_id(info.creative_set_id),
@@ -21,7 +22,8 @@ NotificationInfo::NotificationInfo(const NotificationInfo& info) :
     advertiser(info.advertiser),
     text(info.text),
     url(info.url),
-    uuid(info.uuid) {}
+    uuid(info.uuid),
+    type(info.type) {}
 
 NotificationInfo::~NotificationInfo() = default;
 
