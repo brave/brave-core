@@ -911,7 +911,8 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 
   } else if (timer_id == last_grant_check_timer_id_) {
     last_grant_check_timer_id_ = 0;
-    FetchGrants(std::string(), std::string(), std::string());
+    //FetchGrants(std::string(), std::string(), std::string());
+    ledger_client_->FetchGrants(std::string(), std::string());
   }
 
   bat_contribution_->OnTimer(timer_id);
