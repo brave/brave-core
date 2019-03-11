@@ -70,19 +70,19 @@ TEST_F(BraveReferralsNetworkDelegateHelperTest, ReplaceHeadersForMatchingDomain)
   std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
       url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
 
-  std::unique_ptr<base::Value> referral_headers =
+  base::Optional<base::Value> referral_headers =
       base::JSONReader().ReadToValue(kTestReferralHeaders);
   ASSERT_TRUE(referral_headers);
   ASSERT_TRUE(referral_headers->is_list());
 
-  base::ListValue referral_headers_list =
-      base::ListValue(referral_headers->GetList());
+  base::ListValue* referral_headers_list = nullptr;
+  referral_headers->GetAsList(&referral_headers_list);
 
   net::HttpRequestHeaders headers;
   brave::ResponseCallback callback;
   std::shared_ptr<brave::BraveRequestInfo> brave_request_info(
       new brave::BraveRequestInfo());
-  brave_request_info->referral_headers_list = &referral_headers_list;
+  brave_request_info->referral_headers_list = referral_headers_list;
   int ret = brave::OnBeforeStartTransaction_ReferralsWork(
       request.get(), &headers, callback, brave_request_info);
 
@@ -103,19 +103,19 @@ TEST_F(BraveReferralsNetworkDelegateHelperTest, NoReplaceHeadersForNonMatchingDo
   std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
       url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
 
-  std::unique_ptr<base::Value> referral_headers =
+  base::Optional<base::Value> referral_headers =
       base::JSONReader().ReadToValue(kTestReferralHeaders);
   ASSERT_TRUE(referral_headers);
   ASSERT_TRUE(referral_headers->is_list());
 
-  base::ListValue referral_headers_list =
-      base::ListValue(referral_headers->GetList());
+  base::ListValue* referral_headers_list = nullptr;
+  referral_headers->GetAsList(&referral_headers_list);
 
   net::HttpRequestHeaders headers;
   brave::ResponseCallback callback;
   std::shared_ptr<brave::BraveRequestInfo> brave_request_info(
       new brave::BraveRequestInfo());
-  brave_request_info->referral_headers_list = &referral_headers_list;
+  brave_request_info->referral_headers_list = referral_headers_list;
   int ret = brave::OnBeforeStartTransaction_ReferralsWork(
       request.get(), &headers, callback, brave_request_info);
 
