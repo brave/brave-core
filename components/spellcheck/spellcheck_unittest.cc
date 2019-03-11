@@ -86,4 +86,4 @@ TEST_F(SpellcheckTest, DictionaryFilenames) {
       EXPECT_EQ(spellcheck::GetVersionedFileName(
                     lang_file.language, base::FilePath()), dict_dir);
   }
-};
+}

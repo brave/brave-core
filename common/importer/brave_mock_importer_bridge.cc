@@ -4,6 +4,6 @@
 
 #include "brave/common/importer/brave_mock_importer_bridge.h"
 
-BraveMockImporterBridge::BraveMockImporterBridge() {};
+BraveMockImporterBridge::BraveMockImporterBridge() {}
 
-BraveMockImporterBridge::~BraveMockImporterBridge() {};
+BraveMockImporterBridge::~BraveMockImporterBridge() {}
