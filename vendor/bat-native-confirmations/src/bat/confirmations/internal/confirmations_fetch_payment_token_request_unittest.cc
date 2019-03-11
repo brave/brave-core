@@ -54,13 +54,13 @@ class ConfirmationsFetchPaymentTokenRequestTest : public ::testing::Test {
 
 TEST_F(ConfirmationsFetchPaymentTokenRequestTest, BuildUrl) {
   // Arrange
-  std::string confirmation_id = "c7f8c42d-6768-4dd7-8dc6-612cbba3ec21";
+  std::string confirmation_id = "546fe7b0-5047-4f28-a11c-81f14edcf0f6";
 
   // Act
   auto url = request_->BuildUrl(confirmation_id);
 
   // Assert
-  std::string expected_url = "https://ads-serve.bravesoftware.com/v1/confirmation/c7f8c42d-6768-4dd7-8dc6-612cbba3ec21/paymentToken";  // NOLINT
+  std::string expected_url = "https://ads-serve.bravesoftware.com/v1/confirmation/546fe7b0-5047-4f28-a11c-81f14edcf0f6/paymentToken";  // NOLINT
   EXPECT_EQ(expected_url, url);
 }
 

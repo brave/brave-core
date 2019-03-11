@@ -291,7 +291,16 @@ void RefillTokens::OnGetSignedTokens(
   }
 
   // Add tokens
-  unblinded_tokens_->AddTokens(unblinded_tokens);
+  std::vector<TokenInfo> tokens;
+  for (const auto& unblinded_token : unblinded_tokens) {
+    TokenInfo token_info;
+    token_info.unblinded_token = unblinded_token;
+    token_info.public_key = public_key_;
+
+    tokens.push_back(token_info);
+  }
+
+  unblinded_tokens_->AddTokens(tokens);
 
   BLOG(INFO) << "Added " << unblinded_tokens.size()
       << " unblinded tokens, you now have " << unblinded_tokens_->Count()

@@ -84,7 +84,7 @@ std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
 }
 
 std::string CreateConfirmationRequest::CreateCredential(
-    const UnblindedToken& token,
+    const TokenInfo& token_info,
     const std::string& payload) const {
   DCHECK(!payload.empty());
 
@@ -92,12 +92,12 @@ std::string CreateConfirmationRequest::CreateCredential(
 
   dictionary.SetKey("payload", base::Value(payload));
 
-  auto verification_key = token.derive_verification_key();
+  auto verification_key = token_info.unblinded_token.derive_verification_key();
   auto signed_verification_key = verification_key.sign(payload);
   auto signed_verification_key_base64 = signed_verification_key.encode_base64();
   dictionary.SetKey("signature", base::Value(signed_verification_key_base64));
 
-  auto preimage = token.preimage();
+  auto preimage = token_info.unblinded_token.preimage();
   auto preimage_base64 = preimage.encode_base64();
   dictionary.SetKey("t", base::Value(preimage_base64));
 

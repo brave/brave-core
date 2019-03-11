@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "bat/confirmations/internal/redeem_payment_tokens_request.h"
+#include "bat/confirmations/internal/token_info.h"
 #include "bat/confirmations/internal/ads_serve_helper.h"
 
 #include "base/logging.h"
@@ -34,15 +35,13 @@ URLRequestMethod RedeemPaymentTokensRequest::GetMethod() const {
 }
 
 std::string RedeemPaymentTokensRequest::BuildBody(
-    const std::vector<UnblindedToken>& tokens,
-    const std::string& payload,
-    const WalletInfo& wallet_info) const {
+    const std::vector<TokenInfo>& tokens,
+    const std::string& payload) const {
   DCHECK(!payload.empty());
 
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
-  auto payment_request_dto = CreatePaymentRequestDTO(tokens, payload,
-      wallet_info);
+  auto payment_request_dto = CreatePaymentRequestDTO(tokens, payload);
 
   dictionary.SetKey("paymentCredentials", std::move(payment_request_dto));
 
@@ -87,21 +86,19 @@ std::string RedeemPaymentTokensRequest::GetContentType() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 base::Value RedeemPaymentTokensRequest::CreatePaymentRequestDTO(
-    const std::vector<UnblindedToken>& tokens,
-    const std::string& payload,
-    const WalletInfo& wallet_info) const {
+    const std::vector<TokenInfo>& tokens,
+    const std::string& payload) const {
   DCHECK_NE(tokens.size(), 0UL);
-  DCHECK(!wallet_info.public_key.empty());
 
   base::Value payment_credentials(base::Value::Type::LIST);
 
-  for (const auto& token : tokens) {
+  for (const auto& token_info : tokens) {
     base::Value payment_credential(base::Value::Type::DICTIONARY);
 
-    auto credential = CreateCredential(token, payload);
+    auto credential = CreateCredential(token_info, payload);
     payment_credential.SetKey("credential", base::Value(std::move(credential)));
 
-    payment_credential.SetKey("publicKey", base::Value(wallet_info.public_key));
+    payment_credential.SetKey("publicKey", base::Value(token_info.public_key));
 
     payment_credentials.GetList().push_back(std::move(payment_credential));
   }
@@ -110,18 +107,18 @@ base::Value RedeemPaymentTokensRequest::CreatePaymentRequestDTO(
 }
 
 base::Value RedeemPaymentTokensRequest::CreateCredential(
-    const UnblindedToken& token,
+    const TokenInfo& token_info,
     const std::string& payload) const {
   DCHECK(!payload.empty());
 
   base::Value credential(base::Value::Type::DICTIONARY);
 
-  auto verification_key = token.derive_verification_key();
+  auto verification_key = token_info.unblinded_token.derive_verification_key();
   auto signed_verification_key = verification_key.sign(payload);
   auto signed_verification_key_base64 = signed_verification_key.encode_base64();
   credential.SetKey("signature", base::Value(signed_verification_key_base64));
 
-  auto preimage = token.preimage();
+  auto preimage = token_info.unblinded_token.preimage();
   auto preimage_base64 = preimage.encode_base64();
   credential.SetKey("t", base::Value(preimage_base64));
 

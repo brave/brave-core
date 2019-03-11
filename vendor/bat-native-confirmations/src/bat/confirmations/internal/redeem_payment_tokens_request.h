@@ -11,12 +11,9 @@
 
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/wallet_info.h"
+#include "bat/confirmations/internal/token_info.h"
 
 #include "base/values.h"
-
-#include "wrapper.hpp"
-
-using challenge_bypass_ristretto::UnblindedToken;
 
 namespace confirmations {
 
@@ -30,9 +27,8 @@ class RedeemPaymentTokensRequest {
   URLRequestMethod GetMethod() const;
 
   std::string BuildBody(
-    const std::vector<UnblindedToken>& tokens,
-    const std::string& payload,
-    const WalletInfo& wallet_info) const;
+    const std::vector<TokenInfo>& tokens,
+    const std::string& payload) const;
 
   std::string CreatePayload(const WalletInfo& wallet_info) const;
 
@@ -43,12 +39,11 @@ class RedeemPaymentTokensRequest {
 
  private:
   base::Value CreatePaymentRequestDTO(
-      const std::vector<UnblindedToken>& tokens,
-      const std::string& payload,
-      const WalletInfo& wallet_info) const;
+      const std::vector<TokenInfo>& tokens,
+      const std::string& payload) const;
 
   base::Value CreateCredential(
-      const UnblindedToken& token,
+      const TokenInfo& token_info,
       const std::string& payload) const;
 };
 
