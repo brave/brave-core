@@ -270,7 +270,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetCatalogIssuers(const std::string& info) = 0;
 
-  virtual void AdSustained(const std::string& info) = 0;
+  virtual void ConfirmAd(const std::string& info) = 0;
   virtual void GetConfirmationsHistory(
       const uint64_t from_timestamp_seconds,
       const uint64_t to_timestamp_seconds,

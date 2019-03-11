@@ -172,7 +172,7 @@ class RewardsService : public KeyedService {
   // TODO(Terry Mancey): remove this hack when ads is moved to the same process
   // as ledger
   virtual void SetCatalogIssuers(const std::string& json) = 0;
-  virtual void AdSustained(const std::string& json) = 0;
+  virtual void ConfirmAd(const std::string& json) = 0;
   virtual void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) = 0;
 

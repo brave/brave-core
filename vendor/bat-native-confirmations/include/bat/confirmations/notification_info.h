@@ -9,6 +9,7 @@
 #include <string>
 
 #include "bat/confirmations/export.h"
+#include "bat/confirmations/confirmation_type.h"
 
 namespace confirmations {
 
@@ -23,6 +24,7 @@ struct CONFIRMATIONS_EXPORT NotificationInfo {
   std::string text;
   std::string url;
   std::string uuid;
+  ConfirmationType type;
 };
 
 }  // namespace confirmations

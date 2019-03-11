@@ -78,7 +78,7 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest, GetMethod) {
   EXPECT_EQ(URLRequestMethod::POST, method);
 }
 
-TEST_F(ConfirmationsCreateConfirmationRequestTest, BuildBody) {
+TEST_F(ConfirmationsCreateConfirmationRequestTest, BuildBody_Viewed) {
   // Arrange
   std::string creative_instance_id = "546fe7b0-5047-4f28-a11c-81f14edcf0f6";
 
@@ -87,7 +87,7 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest, BuildBody) {
   auto blinded_token = BlindedToken::decode_base64(blinded_token_base64);
 
   auto payload = request_->CreateConfirmationRequestDTO(creative_instance_id,
-      blinded_token);
+      blinded_token, ConfirmationType::VIEW);
 
   // Act
   auto body = request_->BuildBody(payload);
@@ -128,8 +128,9 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest, GetContentType) {
   EXPECT_EQ(content_type, "application/json");
 }
 
-TEST_F(ConfirmationsCreateConfirmationRequestTest,
-    CreateConfirmationRequestDTO) {
+TEST_F(
+    ConfirmationsCreateConfirmationRequestTest,
+    CreateConfirmationRequestDTO_Viewed) {
   // Arrange
   std::string creative_instance_id = "546fe7b0-5047-4f28-a11c-81f14edcf0f6";
 
@@ -139,14 +140,14 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest,
 
   // Act
   auto payload = request_->CreateConfirmationRequestDTO(creative_instance_id,
-      blinded_token);
+      blinded_token, ConfirmationType::VIEW);
 
   // Assert
   std::string expected_payload = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";  // NOLINT
   EXPECT_EQ(expected_payload, payload);
 }
 
-TEST_F(ConfirmationsCreateConfirmationRequestTest, CreateCredential) {
+TEST_F(ConfirmationsCreateConfirmationRequestTest, CreateCredential_Viewed) {
   // Arrange
   std::string unblinded_token_base64 = "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY";  // NOLINT
 
@@ -162,7 +163,7 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest, CreateCredential) {
   auto blinded_token = BlindedToken::decode_base64(blinded_token_base64);
 
   auto payload = request_->CreateConfirmationRequestDTO(creative_instance_id,
-      blinded_token);
+      blinded_token, ConfirmationType::VIEW);
 
   // Act
   auto credential = request_->CreateCredential(token_info, payload);

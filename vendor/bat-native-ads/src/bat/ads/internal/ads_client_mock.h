@@ -74,7 +74,7 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD1(SetCatalogIssuers, void(
       std::unique_ptr<IssuersInfo> info));
 
-  MOCK_METHOD1(AdSustained, void(
+  MOCK_METHOD1(ConfirmAd, void(
       std::unique_ptr<NotificationInfo> info));
 
   MOCK_METHOD1(SetTimer, uint32_t(
