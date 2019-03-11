@@ -172,6 +172,7 @@ test("brave_unit_tests") {
     "//components/signin/core/browser",
     "//components/sync_preferences",
     "//content/public/common",
+    "//third_party/cacheinvalidation",
   ]
 
   if (brave_rewards_enabled) {
