@@ -68,6 +68,7 @@ class AdsImpl : public Ads {
 
   int32_t last_shown_tab_id_;
   std::string last_shown_tab_url_;
+  std::string previous_tab_url_;
   void TabUpdated(
       const int32_t tab_id,
       const std::string& url,
@@ -164,7 +165,10 @@ class AdsImpl : public Ads {
   void GenerateAdReportingRestartEvent();
   void GenerateAdReportingSettingsEvent();
 
-  bool IsUrlFromLastShownNotification(const std::string& url);
+  bool IsNotificationFromSampleCatalog(const NotificationInfo& info) const;
+
+  bool IsSupportedUrl(const std::string& url) const;
+  bool UrlHostsMatch(const std::string& url_1, const std::string& url_2) const;
 
   std::unique_ptr<Client> client_;
   std::unique_ptr<Bundle> bundle_;

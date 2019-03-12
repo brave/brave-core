@@ -6,10 +6,6 @@
 #ifndef BAT_CONFIRMATIONS_CONFIRMATION_TYPE_H_
 #define BAT_CONFIRMATIONS_CONFIRMATION_TYPE_H_
 
-#include <string>
-
-#include "bat/confirmations/export.h"
-
 namespace confirmations {
 
 static char kConfirmationTypeClick[] = "click";
