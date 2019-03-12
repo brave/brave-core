@@ -57,8 +57,9 @@ pipeline {
                             echo "Failed to rebase (conflicts), will need to be manually rebased!"
                             git rebase --abort
                         else
+                            # unfortunately, no other option than to force push
                             echo "Rebased ${BRANCH_TO_BUILD} against ${TARGET_BRANCH}"
-                            git push ${BB_REPO}
+                            git push --force ${BB_REPO}
                         fi
                         set -e
                     fi
