@@ -13,6 +13,11 @@ namespace brave {
 
 std::string GetDateAsYMD(const base::Time& time);
 
+
+std::string GetChannelName();
+
+std::string GetPlatformIdentifier();
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_BRAVE_STATS_UPDATER_UTIL_H_

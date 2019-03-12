@@ -1,0 +1,25 @@
+source_set("p3a") {
+  sources = [
+    "brave_p3a_log_store.cc",
+    "brave_p3a_log_store.h",
+    "brave_p3a_service.cc",
+    "brave_p3a_service.h",
+    "brave_p3a_scheduler.cc",
+    "brave_p3a_scheduler.h",
+    "brave_p3a_switches.h",
+    "brave_p3a_uploader.cc",
+    "brave_p3a_uploader.h",
+  ]
+
+  deps = [
+    "//brave/components/brave_prochlo",
+    "//components/metrics",
+    "//components/prefs",
+    "//content/public/browser",
+    "//content/public/common",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//url",
+  ]
+}
+

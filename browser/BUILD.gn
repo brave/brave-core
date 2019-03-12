@@ -8,6 +8,7 @@ import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
+import("//third_party/protobuf/proto_library.gni")
 
 source_set("browser_process") {
   visibility = [
@@ -106,6 +107,8 @@ source_set("browser_process") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_drm",
+    "//brave/components/brave_prochlo",
+    "//brave/components/brave_prochlo:prochlo_proto",
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_shields/browser",
@@ -115,6 +118,7 @@ source_set("browser_process") {
     "//brave/components/content_settings/core/browser",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ntp_tiles",
+    "//brave/components/p3a",
     "//brave/components/resources",
     "//brave/components/services:brave_content_manifest_overlays",
     "//chrome/common",

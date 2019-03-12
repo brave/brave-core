@@ -37,40 +37,15 @@ const int kUpdateServerPeriodicPingFrequency = 5 * 60;
 
 namespace {
 
-std::string GetChannelName() {
-  std::string channel = chrome::GetChannelName();
-  if (channel.empty())
-    channel = "release";
-  return channel;
-}
-
-std::string GetPlatformIdentifier() {
-#if defined(OS_WIN)
-  if (base::SysInfo::OperatingSystemArchitecture() == "x86")
-    return "winia32-bc";
-  else
-    return "winx64-bc";
-#elif defined(OS_MACOSX)
-  return "osx-bc";
-#elif defined(OS_ANDROID)
-  return "android-bc";
-#elif defined(OS_LINUX)
-  return "linux-bc";
-#else
-  return std::string();
-#endif
-}
-
 GURL GetUpdateURL(const GURL& base_update_url,
                   const brave::BraveStatsUpdaterParams& stats_updater_params) {
   GURL update_url(base_update_url);
   update_url = net::AppendQueryParameter(update_url, "platform",
-                                         GetPlatformIdentifier());
+                                         brave::GetPlatformIdentifier());
   update_url =
-      net::AppendQueryParameter(update_url, "channel", GetChannelName());
-  update_url = net::AppendQueryParameter(
-      update_url, "version",
-      version_info::GetBraveVersionWithoutChromiumMajorVersion());
+      net::AppendQueryParameter(update_url, "channel", brave::GetChannelName());
+  update_url = net::AppendQueryParameter(update_url, "version",
+                    version_info::GetBraveVersionWithoutChromiumMajorVersion());
   update_url = net::AppendQueryParameter(update_url, "daily",
                                          stats_updater_params.GetDailyParam());
   update_url = net::AppendQueryParameter(update_url, "weekly",
