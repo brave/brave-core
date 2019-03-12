@@ -410,7 +410,7 @@ class TabTrayController: UIViewController, Themeable {
         if tabDataSource.tabs.isEmpty {
             openNewTab()
         } else {
-            if TabType.of(tabManager.selectedTab).isPrivate != privateMode {
+            if tabManager.selectedTab == nil || TabType.of(tabManager.selectedTab).isPrivate != privateMode {
                 tabManager.selectTab(tabDataSource.tabs.first!)
             }
             self.navigationController?.popViewController(animated: true)
