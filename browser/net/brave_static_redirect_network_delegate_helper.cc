@@ -40,28 +40,28 @@ int OnBeforeURLRequest_StaticRedirectWork(
     return net::OK;
   }
 
-  if (crxDownload_pattern.MatchesHost(ctx->request_url)) {
+  if (crxDownload_pattern.MatchesURL(ctx->request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("crxdownload.brave.com");
     ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
     return net::OK;
   }
 
-  if (crlSet_pattern1.MatchesHost(ctx->request_url)) {
+  if (crlSet_pattern1.MatchesURL(ctx->request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("crlsets.brave.com");
     ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
     return net::OK;
   }
 
-  if (crlSet_pattern2.MatchesHost(ctx->request_url)) {
+  if (crlSet_pattern2.MatchesURL(ctx->request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("crlsets.brave.com");
     ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
     return net::OK;
   }
 
-  if (crlSet_pattern3.MatchesHost(ctx->request_url)) {
+  if (crlSet_pattern3.MatchesURL(ctx->request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("crlsets.brave.com");
     ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
