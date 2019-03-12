@@ -11,12 +11,12 @@
 #include <map>
 
 #include "bat/confirmations/confirmations_client.h"
+#include "bat/confirmations/internal/token_info.h"
 
-#include "wrapper.hpp"
+#include "wrapper.hpp"  // NOLINT
 
 using challenge_bypass_ristretto::Token;
 using challenge_bypass_ristretto::BlindedToken;
-using challenge_bypass_ristretto::UnblindedToken;
 
 namespace confirmations {
 
@@ -39,7 +39,7 @@ class RedeemToken {
  private:
   void CreateConfirmation(
       const std::string& creative_instance_id,
-      const UnblindedToken& unblinded_token);
+      const TokenInfo& token_info);
   void OnCreateConfirmation(
       const std::string& url,
       const int response_status_code,
@@ -48,13 +48,13 @@ class RedeemToken {
       const std::string& confirmation_id,
       const Token& payment_token,
       const BlindedToken& blinded_payment_token,
-      const UnblindedToken& unblinded_token);
+      const TokenInfo& token_info);
 
   void FetchPaymentToken(
       const std::string& confirmation_id,
       const Token& payment_token,
       const BlindedToken& blinded_payment_token,
-      const UnblindedToken& unblinded_token);
+      const TokenInfo& token_info);
   void OnFetchPaymentToken(
       const std::string& url,
       const int response_status_code,
@@ -62,11 +62,11 @@ class RedeemToken {
       const std::map<std::string, std::string>& headers,
       const Token& payment_token,
       const BlindedToken& blinded_payment_token,
-      const UnblindedToken& unblinded_token);
+      const TokenInfo& token_info);
 
   void OnRedeem(
       const Result result,
-      const UnblindedToken& unblinded_token);
+      const TokenInfo& token_info);
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED

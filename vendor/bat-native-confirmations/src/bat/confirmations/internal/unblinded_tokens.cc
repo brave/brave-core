@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <utility>
+#include <algorithm>
 
 #include "bat/confirmations/internal/unblinded_tokens.h"
 #include "bat/confirmations/internal/confirmations_impl.h"
@@ -18,67 +19,109 @@ UnblindedTokens::UnblindedTokens(ConfirmationsImpl* confirmations) :
 
 UnblindedTokens::~UnblindedTokens() = default;
 
-UnblindedToken UnblindedTokens::GetToken() const {
+TokenInfo UnblindedTokens::GetToken() const {
   DCHECK_NE(Count(), 0);
-  return unblinded_tokens_.front();
+  return tokens_.front();
 }
 
-std::vector<UnblindedToken> UnblindedTokens::GetAllTokens() const {
-  return unblinded_tokens_;
+std::vector<TokenInfo> UnblindedTokens::GetAllTokens() const {
+  return tokens_;
 }
 
 base::Value UnblindedTokens::GetTokensAsList() {
   base::Value list(base::Value::Type::LIST);
+  for (const auto& token : tokens_) {
+    base::Value dictionary(base::Value::Type::DICTIONARY);
+    dictionary.SetKey("unblinded_token", base::Value(
+        token.unblinded_token.encode_base64()));
+    dictionary.SetKey("public_key", base::Value(token.public_key));
 
-  for (const auto& token : unblinded_tokens_) {
-    auto token_base64 = token.encode_base64();
-    auto token_value = base::Value(token_base64);
-    list.GetList().push_back(std::move(token_value));
+    list.GetList().push_back(std::move(dictionary));
   }
 
   return list;
 }
 
-void UnblindedTokens::SetTokens(const std::vector<UnblindedToken>& tokens) {
-  unblinded_tokens_ = tokens;
+void UnblindedTokens::SetTokens(
+    const std::vector<TokenInfo>& tokens) {
+  tokens_ = tokens;
 
   confirmations_->SaveState();
 }
 
-void UnblindedTokens::SetTokensFromList(const base::Value& list) {
+bool UnblindedTokens::SetTokensFromList(const base::Value& list) {
   base::ListValue list_values(list.GetList());
 
-  std::vector<UnblindedToken> unblinded_tokens;
-  for (const auto& value : list_values) {
-    auto token_base64 = value.GetString();
-    auto token = UnblindedToken::decode_base64(token_base64);
-    unblinded_tokens.push_back(token);
+  std::vector<TokenInfo> tokens;
+  for (auto& value : list_values) {
+    std::string unblinded_token;
+    std::string public_key;
+
+    if (value.is_string()) {
+      // Migrate legacy tokens
+      unblinded_token = value.GetString();
+      public_key = "";
+    } else {
+      base::DictionaryValue* dictionary;
+      if (!value.GetAsDictionary(&dictionary)) {
+        return false;
+      }
+
+      // Unblinded token
+      auto* unblinded_token_value = dictionary->FindKey("unblinded_token");
+      if (!unblinded_token_value) {
+        return false;
+      }
+      unblinded_token = unblinded_token_value->GetString();
+
+      // Public key
+      auto* public_key_value = dictionary->FindKey("public_key");
+      if (!public_key_value) {
+        return false;
+      }
+      public_key = public_key_value->GetString();
+    }
+
+    TokenInfo token_info;
+    token_info.unblinded_token = UnblindedToken::decode_base64(unblinded_token);
+    token_info.public_key = public_key;
+
+    tokens.push_back(token_info);
   }
 
-  SetTokens(unblinded_tokens);
+  SetTokens(tokens);
+
+  return true;
 }
 
-void UnblindedTokens::AddTokens(const std::vector<UnblindedToken>& tokens) {
-  for (const auto& token : tokens) {
-    if (TokenExists(token)) {
+void UnblindedTokens::AddTokens(
+    const std::vector<TokenInfo>& tokens) {
+  for (const auto& token_info : tokens) {
+    if (TokenExists(token_info)) {
       continue;
     }
 
-    unblinded_tokens_.push_back(token);
+    tokens_.push_back(token_info);
   }
 
   confirmations_->SaveState();
 }
 
-bool UnblindedTokens::RemoveToken(const UnblindedToken& token) {
-  auto it = std::find(unblinded_tokens_.begin(), unblinded_tokens_.end(),
-      token);
+bool UnblindedTokens::RemoveToken(const TokenInfo& token) {
+  auto unblinded_token = token.unblinded_token;
+  auto public_key = token.public_key;
 
-  if (it == unblinded_tokens_.end()) {
+  auto it = std::find_if(tokens_.begin(), tokens_.end(),
+      [=](const TokenInfo& info) {
+        return (info.unblinded_token == unblinded_token &&
+            info.public_key == public_key);
+      });
+
+  if (it == tokens_.end()) {
     return false;
   }
 
-  unblinded_tokens_.erase(it);
+  tokens_.erase(it);
 
   confirmations_->SaveState();
 
@@ -86,16 +129,22 @@ bool UnblindedTokens::RemoveToken(const UnblindedToken& token) {
 }
 
 void UnblindedTokens::RemoveAllTokens() {
-  unblinded_tokens_.clear();
+  tokens_.clear();
 
   confirmations_->SaveState();
 }
 
-bool UnblindedTokens::TokenExists(const UnblindedToken& token) {
-  auto it = std::find(unblinded_tokens_.begin(), unblinded_tokens_.end(),
-      token);
+bool UnblindedTokens::TokenExists(const TokenInfo& token) {
+  auto unblinded_token = token.unblinded_token;
+  auto public_key = token.public_key;
 
-  if (it == unblinded_tokens_.end()) {
+  auto it = std::find_if(tokens_.begin(), tokens_.end(),
+      [=](const TokenInfo& info) {
+        return (info.unblinded_token == unblinded_token &&
+            info.public_key == public_key);
+      });
+
+  if (it == tokens_.end()) {
     return false;
   }
 
@@ -103,7 +152,7 @@ bool UnblindedTokens::TokenExists(const UnblindedToken& token) {
 }
 
 int UnblindedTokens::Count() const {
-  return unblinded_tokens_.size();
+  return tokens_.size();
 }
 
 bool UnblindedTokens::IsEmpty() const {

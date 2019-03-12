@@ -113,47 +113,47 @@ class ConfirmationsRedeemPaymentTokensRequestTest : public ::testing::Test {
     return true;
   }
 
-  std::vector<UnblindedToken> GetUnblindedTokens(const int count) {
-    std::vector<std::string> unblinded_tokens_base64 = {
-      "gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCOYZS660ClZE/xfDFd930yb12+isTsk6KswtxR10Aogc",  // NOLINT
-      "nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yYBCAPsup2JFSbp5iYUaeWiCxF6w8I1MKrjPj6trywQ6",  // NOLINT
-      "MNrshKuw6zUTsmlZ+w4WzlJknjV/m/ZYyWUhwSmzyW8Dm/VGpMrifyw5txpNu+SQyNcAR+EJ468ADS5qfNfH7yS0kP9z1OJwMNfLiCTHOCiwd7PJkdv14T/vGS5AT1B5",  // NOLINT
-      "MRAbYbmnmjM5bqlbHsX9iuy1Jwc9GCGEA4idBt+PNaQONgbZaPbxHb2pOjw1H6sbgJ2eeIwtobrRRmy+diurWoa0cJ8IG9oy3YtOj8bgc7hy/x5Ixu0kxylNxTKb5b9Z",  // NOLINT
-      "aMTJ5HnQot4p6lU5LuXMdYPt3q3Eg1pz5pB2q1c8ys6qVVHd1PyrtEVY+qGJrET3ay2E12Qft0UhNzVUkrgnZ4Kh3mmpcm9wbYnmsid2GK3dBzuHC0ggnYoir1Oo+A8D",  // NOLINT
-      "lv6mXcIzMFmBbK37U3SFRxgMiRcM4pGLfrdgp0TCevTJ+XbDlHGNIXxYU8CT8ztGwoJSxYjtBh/MGSpjaklJG37ttqDaMzMT0VhKgEvTHuY7qmyi55WtWVENispKe35M",  // NOLINT
-      "f3v9XvsBKp7fdXwQSQHNpHN0MPDzGJ1obhc37pLLyv65/JbdMbsXSQ1dGP0+nD/ETvAFzWzro9s/8HQo0MPLBiKkzvAwnaWyM+TAXG5xwL70iICkNApiv57kUfzvnudp",  // NOLINT
-      "uSczWJh99T9QKlsDGoRSBpjoMFf4nQj/A5AW72m9o6akR4BkzQ1M1ATIyZde5O4Q2iSV+KRjGPUheU7QmTQxDS6l79e8a+ro2uXZKbxjY+XAM7PO+iFOOAZuR4IUoJpF",  // NOLINT
-      "2W8uYe1n6lFMiQFuD9wHLjr2qYhDB6AM3oXyetnsuR9fOxo8BXu28IzQbkCueWSyBEZ54Xf4AzPyPY2cB73Gh8LuyY4vChgP+E9LwI3yqWyD+RR4O6hCo2e7yKm9dTAm",  // NOLINT
-      "tl+V73HJRK2g4TWlqRGxjXeMvhmOvrnLFMfEbUJuiMiByZOUuK4hffoXB5VmbiGLYvJr3shcFpmxMZSuLK3Q97QbP27wmoU+Lk8Jy+MGR+9OTn4MpyvSOfVvDhLypSMG"   // NOLINT
+  std::vector<TokenInfo> GetUnblindedTokens(const int count) {
+    std::vector<std::string> tokens_base64 = {
+      "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY",  // NOLINT
+      "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K",  // NOLINT
+      "bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa",  // NOLINT
+      "OlDIXpWRR1/B+1pjPbLyc5sx0V+d7QzQb4NDGUI6F676jy8tL++u57SF4DQhvdEpBrKID+j27RLrbjsecXSjR5oieuH4Bx5mHqTb/rAPI6RpaAXtfXYrCYbf7EPwHTMU",  // NOLINT
+      "Y579V5BUcCzAFj6qNX7YnIr+DvH0mugb/nnY5UINdjxziyDJlejJwi0kPaRGmqbVT3+B51lpErt8e66z0jTbAxBfhtXKARFKtGH8WccB6NfCa85XHBmlcuv1+zcFPDJi",  // NOLINT
+      "+MPQfSo6UcaZNWtfmbd5je9UIr+FVrCWHl6I5C1ZFD7y7bjP/yz7flTjV+l5mKulbCvsRna7++MhbBz6iC0FvVZGYXLeLn2HSAM7cDgqyW6SEuPzlDeZT6kkTNI7JcQm",  // NOLINT
+      "CRXUzo7S0X//u0RGsO534vCoIbrsXgbzLfWw8CLML0CkgMltEGxM6XwBTICl4dqqfhIcLhD0f1WFod7JpuEkj5pW/rg7nl48EX6nmekgd3D2Hz8JgJnSarzP/8+3l+MW",  // NOLINT
+      "hQ+6+jh5DUUBFhhGn7bPLDjqrUIKNi/T8QDt1x01bcW9PLADg6aS73dzrVBsHav44+4q1QhFE/93u0KHVtZ1RPKMqkt8MIiC6RG575102nGRTJDA2kSOgUM75hjDsI8z",  // NOLINT
+      "6tKJHOtQqpNzFjLGT0gvXlCF0GGKrqQlK82e2tc7gJvQkorg60Y21jEAg8JHbU8D3mBK/riZCILoi1cPCiBDAdhWJNVm003mZ0ShjmbESnKhL/NxRv/0/PB3GQ5iydoc",  // NOLINT
+      "ujGlRHnz+UF0h8i6gYDnfeZDUj7qZZz6o29ZJFa3XN2g+yVXgRTws1yv6RAtLCr39OQso6FAT12o8GAvHVEzmRqyzm2XU9gMK5WrNtT/fhr8gQ9RvupdznGKOqmVbuIc"   // NOLINT
     };
 
-    int modulo = unblinded_tokens_base64.size();
+    int modulo = tokens_base64.size();
 
-    std::vector<UnblindedToken> unblinded_tokens;
+    std::vector<TokenInfo> tokens;
     for (int i = 0; i < count; i++) {
-      auto unblinded_token_base64 = unblinded_tokens_base64.at(i % modulo);
+      TokenInfo token_info;
+      auto token_base64 = tokens_base64.at(i % modulo);
+      token_info.unblinded_token = UnblindedToken::decode_base64(token_base64);
+      token_info.public_key = "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=";
 
-      auto unblinded_token =
-          UnblindedToken::decode_base64(unblinded_token_base64);
-
-      unblinded_tokens.push_back(unblinded_token);
+      tokens.push_back(token_info);
     }
 
-    return unblinded_tokens;
+    return tokens;
   }
 };
 
 TEST_F(ConfirmationsRedeemPaymentTokensRequestTest, BuildUrl) {
   // Arrange
   WalletInfo wallet_info;
-  wallet_info.payment_id = "e7fcf220-d3f4-4111-a0b2-6157d0347567";
-  wallet_info.public_key = "3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf";  // NOLINT
+  wallet_info.payment_id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
+  wallet_info.public_key = "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
 
   // Act
   auto url = request_->BuildUrl(wallet_info);
 
   // Assert
-  std::string expected_url = "https://ads-serve.bravesoftware.com/v1/confirmation/payment/e7fcf220-d3f4-4111-a0b2-6157d0347567";  // NOLINT
+  std::string expected_url = "https://ads-serve.bravesoftware.com/v1/confirmation/payment/d4ed0af0-bfa9-464b-abd7-67b29d891b8b";  // NOLINT
   EXPECT_EQ(expected_url, url);
 }
 
@@ -170,8 +170,8 @@ TEST_F(ConfirmationsRedeemPaymentTokensRequestTest, GetMethod) {
 TEST_F(ConfirmationsRedeemPaymentTokensRequestTest, BuildBody) {
   // Arrange
   WalletInfo wallet_info;
-  wallet_info.payment_id = "e7fcf220-d3f4-4111-a0b2-6157d0347567";
-  wallet_info.public_key = "3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf";  // NOLINT
+  wallet_info.payment_id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
+  wallet_info.public_key = "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
 
   auto unblinded_tokens = GetUnblindedTokens(7);
   unblinded_tokens_->SetTokens(unblinded_tokens);
@@ -181,25 +181,25 @@ TEST_F(ConfirmationsRedeemPaymentTokensRequestTest, BuildBody) {
   auto payload = request_->CreatePayload(wallet_info);
 
   // Act
-  auto body = request_->BuildBody(tokens, payload, wallet_info);
+  auto body = request_->BuildBody(tokens, payload);
 
   // Assert
-  std::string expected_body = R"({"payload":"{\"paymentId\":\"e7fcf220-d3f4-4111-a0b2-6157d0347567\"}","paymentCredentials":[{"credential":{"signature":"Vdt2I2razGwIiVaHsFomAZjJAJETqVwcFFd0iT+hsGiQu0HB/0ZRwgHcAkhJuVt0j7Dl5VfTwmy7BfA3arwmjA==","t":"gXMEnFFPTfgVA3MB11zNRP1ixWjkdw/qsW1RnuQlfkF+ugGxFLafpypS7OJ7mB1zTP775LXrO9vM48fAFNihCA=="},"publicKey":"3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf"},{"credential":{"signature":"cMsDGegcXs2YgFzQTMkgi6KHhnLiehiY6cNi/8TWD5h+9JAecWYwGKCLz8DXbN7DIe5tNL8DjRu0tL9PCz92ZQ==","t":"nEHl6RxMncjw0NKaRxrdpa5iZ7bD+nvBm4yifAYrFgEPJ9DluocwsSS2JUy1nkkcPwWQC3wx5ekhL3Ca9xi7yQ=="},"publicKey":"3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf"},{"credential":{"signature":"Iy6MUNwZ4pIGNIuOKyPJC2Pc+GfJQEgp0ImkB8ZBuIM4+opdxGBlMmY+oTz68/ovoZHi2Vcl3LEHL68dxPLLyQ==","t":"MNrshKuw6zUTsmlZ+w4WzlJknjV/m/ZYyWUhwSmzyW8Dm/VGpMrifyw5txpNu+SQyNcAR+EJ468ADS5qfNfH7w=="},"publicKey":"3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf"},{"credential":{"signature":"oAzrUB6X14gDn/WGT2CGkhfCr2YtHSV5Yh/qQw6TkD3ESq8rIPnJLAZBCu82AzpCHpQD03KvApWq/ZidevAh8w==","t":"MRAbYbmnmjM5bqlbHsX9iuy1Jwc9GCGEA4idBt+PNaQONgbZaPbxHb2pOjw1H6sbgJ2eeIwtobrRRmy+diurWg=="},"publicKey":"3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf"},{"credential":{"signature":"OWc9CLfJSwRIDGjbNZkd5frik39/meIjEJCmcHlDWsc6IOn2qr4iI1XI8SAAfhT9ncUWGThrGZyUC1PSGl4tGw==","t":"aMTJ5HnQot4p6lU5LuXMdYPt3q3Eg1pz5pB2q1c8ys6qVVHd1PyrtEVY+qGJrET3ay2E12Qft0UhNzVUkrgnZw=="},"publicKey":"3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf"},{"credential":{"signature":"VgybmDGXgO9Z90KZ4zHf/cH0fFZrpJbIKMDVdK5sE726b6yVVvcQ6KhOhupwMOe8n71C3geNJb2Adf5CBpwClw==","t":"lv6mXcIzMFmBbK37U3SFRxgMiRcM4pGLfrdgp0TCevTJ+XbDlHGNIXxYU8CT8ztGwoJSxYjtBh/MGSpjaklJGw=="},"publicKey":"3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf"},{"credential":{"signature":"ioKIMHG1JQnrbMA3PIvM2q8kzdi6KTKxFdyQB/LATqfD2mzihGG8lsic1CeyD2dhJg8ZqLuwfHwgyT51vD4NFA==","t":"f3v9XvsBKp7fdXwQSQHNpHN0MPDzGJ1obhc37pLLyv65/JbdMbsXSQ1dGP0+nD/ETvAFzWzro9s/8HQo0MPLBg=="},"publicKey":"3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf"}]})";  // NOLINT
+  std::string expected_body = R"({"payload":"{\"paymentId\":\"d4ed0af0-bfa9-464b-abd7-67b29d891b8b\"}","paymentCredentials":[{"credential":{"signature":"wQXvy7chZlrrVCe/RYIiL/siGUFYF0tCxx7M0xIOPvThR4TCBwmH9IDWQKyqQy9g2wUw5jcKszqBHEhPyidrlA==","t":"PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgCw=="},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk="},{"credential":{"signature":"AemGBdoUXbp25pGZJuWv6yiImtfXC4AtboJMGR1Z6nQm178ier7hLJDVCJ11HWEO1UdlAYFRrJqyuD5uUBxgug==","t":"hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfQ=="},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk="},{"credential":{"signature":"krVZeadk/ElvsaYiUE4Ma/hkicRDjvS8O7QVkrWl0n2zsGYyAa/hodVb1aDn8tT3CMOV/l1JZdTVSXHrSHBHGg==","t":"bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2AkTiWkUKbi78xCyKsqsXnA=="},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk="},{"credential":{"signature":"1HwlWbhUewzvEWfGlOhmEo8x4FR3w82iRan+ZyBl1h3laOiXTVHXe5EraDiUd3G6bZlLJ+x9snDXPcd4wI5tpA==","t":"OlDIXpWRR1/B+1pjPbLyc5sx0V+d7QzQb4NDGUI6F676jy8tL++u57SF4DQhvdEpBrKID+j27RLrbjsecXSjRw=="},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk="},{"credential":{"signature":"c9wbOwh7xT3Fx89HKh6D4isUU8ki9vTq+1MR81bRyPWCv0lDHYchd7Kk9EFtz3qNip4nZpSDUDDqV5Gu3ac2DA==","t":"Y579V5BUcCzAFj6qNX7YnIr+DvH0mugb/nnY5UINdjxziyDJlejJwi0kPaRGmqbVT3+B51lpErt8e66z0jTbAw=="},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk="},{"credential":{"signature":"PW8G57q6/hoj0GzBoiRPilmPyWSYrFfOpJJ9I0tLsNfNF+DNOASnBoRpUy6nGJLX1vWcJnUQGGVr9hfwBNTGfg==","t":"+MPQfSo6UcaZNWtfmbd5je9UIr+FVrCWHl6I5C1ZFD7y7bjP/yz7flTjV+l5mKulbCvsRna7++MhbBz6iC0FvQ=="},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk="},{"credential":{"signature":"Rn9mRKy6B0Sysx6+y3scWE+ZE6EWVA/pYTp1XqOLFZH3IVVh+WnIVP/FNA7GuexDmVaq8/an8+9Gv7puKpQPWA==","t":"CRXUzo7S0X//u0RGsO534vCoIbrsXgbzLfWw8CLML0CkgMltEGxM6XwBTICl4dqqfhIcLhD0f1WFod7JpuEkjw=="},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk="}]})";  // NOLINT
   EXPECT_EQ(expected_body, body);
 }
 
 TEST_F(ConfirmationsRedeemPaymentTokensRequestTest, CreatePayload) {
   // Arrange
   WalletInfo wallet_info;
-  wallet_info.payment_id = "e7fcf220-d3f4-4111-a0b2-6157d0347567";
-  wallet_info.public_key = "3fc8ff3b121e7b7875750d26eaba6f06a3b06d96cf6b2fb898323917e7be9d16e255a4a6f7eb8647428f727c0d4e1958bd8e69a984eee38514d1e483aab27edf";  // NOLINT
+  wallet_info.payment_id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
+  wallet_info.public_key = "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
 
   // Act
   auto payload = request_->CreatePayload(wallet_info);
 
   // Assert
   std::string expected_payload =
-      R"({"paymentId":"e7fcf220-d3f4-4111-a0b2-6157d0347567"})";
+      R"({"paymentId":"d4ed0af0-bfa9-464b-abd7-67b29d891b8b"})";
   EXPECT_EQ(expected_payload, payload);
 }
 
