@@ -24,8 +24,10 @@ static const uint64_t kMaximumEntriesInAdsShownHistory = 99;
 
 static const uint64_t kDebugOneHourInSeconds = 25;
 
-static char kEasterEggUrl[] = "iab.com";
+static char kEasterEggUrl[] = "https://iab.com";
 static const uint64_t kNextEasterEggStartsInSeconds = 30;
+
+static char kShoppingStateUrl[] = "https://amazon.com";
 
 static const uint64_t kSustainAdInteractionAfterSeconds = 10;
 

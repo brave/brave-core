@@ -13,21 +13,21 @@ SearchProviders::SearchProviders() = default;
 SearchProviders::~SearchProviders() = default;
 
 bool SearchProviders::IsSearchEngine(const std::string& url) {
-  auto gurl = GURL(url);
-
-  if (!gurl.has_host()) {
+  auto visited_url = GURL(url);
+  if (!visited_url.has_host()) {
     return false;
   }
 
   auto is_a_search = false;
 
   for (const auto& search_provider : _search_providers) {
-    if (search_provider.hostname.empty()) {
+    auto search_provider_hostname = GURL(search_provider.hostname);
+    if (!search_provider_hostname.is_valid()) {
       continue;
     }
 
     if (search_provider.is_always_classed_as_a_search &&
-        gurl.DomainIs(search_provider.hostname)) {
+        visited_url.DomainIs(search_provider_hostname.host_piece())) {
       is_a_search = true;
       break;
     }

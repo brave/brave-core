@@ -44,6 +44,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     media_playing_({}),
     last_shown_tab_id_(0),
     last_shown_tab_url_(""),
+    previous_tab_url_(""),
     page_score_cache_({}),
     last_shown_notification_info_(NotificationInfo()),
     collect_activity_timer_id_(0),
@@ -271,6 +272,7 @@ void AdsImpl::TabUpdated(
         << " and url: " << url;
 
     last_shown_tab_id_ = tab_id;
+    previous_tab_url_ = last_shown_tab_url_;
     last_shown_tab_url_ = url;
 
     TestShoppingData(url);
@@ -373,22 +375,21 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
     return;
   }
 
-  if (IsUrlFromLastShownNotification(url)) {
+  if (UrlHostsMatch(url, last_shown_notification_info_.url)) {
     BLOG(INFO) << "Site visited " << url
         << ", URL is from last shown notification";
 
     return;
   }
 
-  auto gurl = GURL(url);
-  if (!gurl.SchemeIsHTTPOrHTTPS()) {
-    BLOG(INFO) << "Site visited " << url << ", invalid URL scheme";
+  if (!IsSupportedUrl(url)) {
+    BLOG(INFO) << "Site visited " << url << ", unsupported URL";
 
     return;
   }
 
   if (TestSearchState(url)) {
-    BLOG(INFO) << "Site visited " << url << ", testing search state";
+    BLOG(INFO) << "Site visited " << url << ", URL is a search engine";
 
     return;
   }
@@ -418,7 +419,7 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
   BLOG(INFO) << "Site visited " << url << ", immediateWinner is "
       << winning_category << " and winnerOverTime is "
       << winner_over_time_category << ", previous tab url "
-      << last_shown_tab_url_;
+      << previous_tab_url_;
 
   if (last_shown_tab_url_ == url) {
     LoadInfo load_info;
@@ -427,6 +428,8 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
     load_info.tab_classification = winning_category;
     GenerateAdReportingLoadEvent(load_info);
   }
+
+  CheckEasterEgg(url);
 }
 
 std::string AdsImpl::GetWinnerOverTimeCategory() {
@@ -481,8 +484,7 @@ void AdsImpl::TestShoppingData(const std::string& url) {
     return;
   }
 
-  auto gurl = GURL(url);
-  if (gurl.DomainIs("amazon.com")) {
+  if (UrlHostsMatch(url, kShoppingStateUrl)) {
     client_->FlagShoppingState(url, 1.0);
   } else {
     client_->UnflagShoppingState();
@@ -582,8 +584,7 @@ void AdsImpl::CheckEasterEgg(const std::string& url) {
 
   auto now_in_seconds = helper::Time::NowInSeconds();
 
-  auto gurl = GURL(url);
-  if (gurl.DomainIs(kEasterEggUrl) &&
+  if (UrlHostsMatch(url, kEasterEggUrl) &&
       next_easter_egg_timestamp_in_seconds_ < now_in_seconds) {
     BLOG(INFO) << "Collect easter egg";
 
@@ -591,6 +592,7 @@ void AdsImpl::CheckEasterEgg(const std::string& url) {
 
     next_easter_egg_timestamp_in_seconds_ =
         now_in_seconds + kNextEasterEggStartsInSeconds;
+
     BLOG(INFO) << "Next easter egg available in "
         << next_easter_egg_timestamp_in_seconds_ << " seconds";
   }
@@ -1072,15 +1074,11 @@ bool AdsImpl::IsSustainingAdInteraction() const {
 }
 
 bool AdsImpl::IsStillViewingAd() const {
-  auto last_shown_notification_info_url =
-      GURL(last_shown_notification_info_.url);
-
-  if (last_shown_notification_info_url.DomainIs(last_shown_tab_url_)) {
-    auto last_shown_tab_url = GURL(last_shown_tab_url_);
-
+  if (!UrlHostsMatch(last_shown_tab_url_, last_shown_notification_info_.url)) {
     BLOG(INFO) << "IsStillViewingAd last_shown_notification_info_url: "
-        << last_shown_notification_info_url.host()
-        << " does not match last_shown_tab_url:" << last_shown_tab_url.host();
+        << last_shown_notification_info_.url
+        << " does not match last_shown_tab_url: " << last_shown_tab_url_;
+
     return false;
   }
 
@@ -1090,6 +1088,12 @@ bool AdsImpl::IsStillViewingAd() const {
 void AdsImpl::ConfirmAd(
     const NotificationInfo& info,
     const ConfirmationType type) {
+  if (IsNotificationFromSampleCatalog(info)) {
+    BLOG(INFO) << "Confirmation not made: Sample Ad";
+
+    return;
+  }
+
   auto notification_info = std::make_unique<NotificationInfo>(info);
 
   notification_info->type = type;
@@ -1155,7 +1159,7 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
   writer.EndArray();
 
   writer.String("notificationCatalog");
-  if (info.creative_set_id.empty()) {
+  if (IsNotificationFromSampleCatalog(info)) {
     writer.String("sample-catalog");
   } else {
     writer.String(info.creative_set_id.c_str());
@@ -1204,17 +1208,20 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
       writer.String("clicked");
       client_->UpdateAdsUUIDSeen(info.uuid, 1);
       StartSustainingAdInteraction(kSustainAdInteractionAfterSeconds);
+
       break;
     }
 
     case NotificationResultInfoResultType::DISMISSED: {
       writer.String("dismissed");
       client_->UpdateAdsUUIDSeen(info.uuid, 1);
+
       break;
     }
 
     case NotificationResultInfoResultType::TIMEOUT: {
       writer.String("timeout");
+
       break;
     }
   }
@@ -1229,7 +1236,7 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
   writer.EndArray();
 
   writer.String("notificationCatalog");
-  if (info.creative_set_id.empty()) {
+  if (IsNotificationFromSampleCatalog(info)) {
     writer.String("sample-catalog");
   } else {
     writer.String(info.creative_set_id.c_str());
@@ -1323,8 +1330,7 @@ void AdsImpl::GenerateAdReportingConfirmationEvent(
 
 void AdsImpl::GenerateAdReportingLoadEvent(
     const LoadInfo& info) {
-  auto gurl = GURL(info.tab_url);
-  if (!gurl.SchemeIsHTTPOrHTTPS()) {
+  if (!IsSupportedUrl(info.tab_url)) {
     return;
   }
 
@@ -1382,8 +1388,6 @@ void AdsImpl::GenerateAdReportingLoadEvent(
 
   auto* json = buffer.GetString();
   ads_client_->EventLog(json);
-
-  CheckEasterEgg(info.tab_url);
 }
 
 void AdsImpl::GenerateAdReportingBackgroundEvent() {
@@ -1597,12 +1601,21 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   ads_client_->EventLog(json);
 }
 
-bool AdsImpl::IsUrlFromLastShownNotification(const std::string& url) {
-  if (url != last_shown_notification_info_.url) {
-    return false;
-  }
+bool AdsImpl::IsNotificationFromSampleCatalog(
+    const NotificationInfo& info) const {
+  return info.creative_set_id.empty();
+}
 
-  return true;
+bool AdsImpl::IsSupportedUrl(const std::string& url) const {
+  DCHECK(!url.empty()) << "Invalid URL";
+
+  return GURL(url).SchemeIsHTTPOrHTTPS();
+}
+
+bool AdsImpl::UrlHostsMatch(
+    const std::string& url_1,
+    const std::string& url_2) const {
+  return GURL(url_1).DomainIs(GURL(url_2).host_piece());
 }
 
 }  // namespace ads
