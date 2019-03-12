@@ -81,8 +81,7 @@ BravePatching.RegisterPolymerTemplateModifications({
     const syncEl = createMenuElement(loadTimeData.getString('braveSync'), '/braveSync', 'brave_settings:sync')
     extensionEl.insertAdjacentElement('afterend', syncEl)
     // Add Shields item
-    // TODO(petemill): translate
-    const shieldsEl = createMenuElement('Shields', '/shields',  'brave_settings:shields-success-o')
+    const shieldsEl = createMenuElement(loadTimeData.getString('braveShieldsTitle'), '/shields',  'brave_settings:shields')
     syncEl.insertAdjacentElement('afterend', shieldsEl)
     // Swap search and appearance
     const searchEl = getMenuElement(templateContent, '/search')
@@ -114,7 +113,7 @@ BravePatching.RegisterPolymerTemplateModifications({
       console.error('[Brave Settings Overrides] Routes: could not find BASIC page')
     }
     r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted')
-    r.SHIELDS = r.BASIC.createSection('/shields', 'braveShields')
+    r.SHIELDS = r.BASIC.createSection('/shields', 'shields')
     r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
     r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
@@ -158,10 +157,10 @@ BravePatching.RegisterPolymerTemplateModifications({
             <settings-brave-sync-page prefs="{{prefs}}"></settings-brave-sync-page>
           </settings-section>
         </template>
-        <template is="dom-if" if="[[showPage_(pageVisibility.braveShieldsDefaults)]]"
+        <template is="dom-if" if="[[showPage_(pageVisibility.shields)]]"
         restamp>
-          <settings-section page-title="${loadTimeData.getString('braveShieldsDefaults')}"
-              section="braveShields">
+          <settings-section page-title="${loadTimeData.getString('braveShieldsTitle')}"
+              section="shields">
             <settings-default-brave-shields-page  prefs="{{prefs}}"></settings-default-brave-shields-page>
           </settings-section>
         </template>
