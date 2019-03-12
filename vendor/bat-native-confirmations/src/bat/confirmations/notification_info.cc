@@ -14,7 +14,7 @@ NotificationInfo::NotificationInfo() :
     text(""),
     url(""),
     uuid(""),
-    type(CONFIRMATION_TYPE_UNKNOWN) {}
+    type(ConfirmationType::UNKNOWN) {}
 
 NotificationInfo::NotificationInfo(const NotificationInfo& info) :
     creative_set_id(info.creative_set_id),

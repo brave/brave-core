@@ -19,7 +19,7 @@ NotificationInfo::NotificationInfo() :
     text(""),
     url(""),
     uuid(""),
-    type(CONFIRMATION_TYPE_UNKNOWN) {}
+    type(ConfirmationType::UNKNOWN) {}
 
 NotificationInfo::NotificationInfo(const NotificationInfo& info) :
     creative_set_id(info.creative_set_id),
@@ -79,15 +79,15 @@ Result NotificationInfo::FromJson(
   if (document.HasMember("confirmation_type")) {
     std::string confirmation_type = document["confirmation_type"].GetString();
     if (confirmation_type == kConfirmationTypeClick) {
-      type = CONFIRMATION_TYPE_CLICK;
+      type = ConfirmationType::CLICK;
     } else if (confirmation_type == kConfirmationTypeDismiss) {
-      type = CONFIRMATION_TYPE_DISMISS;
+      type = ConfirmationType::DISMISS;
     } else if (confirmation_type == kConfirmationTypeView) {
-      type = CONFIRMATION_TYPE_VIEW;
+      type = ConfirmationType::VIEW;
     } else if (confirmation_type == kConfirmationTypeLanded) {
-      type = CONFIRMATION_TYPE_LANDED;
+      type = ConfirmationType::LANDED;
     } else {
-      type = CONFIRMATION_TYPE_UNKNOWN;
+      type = ConfirmationType::UNKNOWN;
     }
   }
 
@@ -117,27 +117,27 @@ void SaveToJson(JsonWriter* writer, const NotificationInfo& info) {
 
   writer->String("confirmation_type");
   switch (info.type) {
-    case CONFIRMATION_TYPE_UNKNOWN: {
+    case ConfirmationType::UNKNOWN: {
       writer->String("");
       break;
     }
 
-    case CONFIRMATION_TYPE_CLICK: {
+    case ConfirmationType::CLICK: {
       writer->String(kConfirmationTypeClick);
       break;
     }
 
-    case CONFIRMATION_TYPE_DISMISS: {
+    case ConfirmationType::DISMISS: {
       writer->String(kConfirmationTypeDismiss);
       break;
     }
 
-    case CONFIRMATION_TYPE_VIEW: {
+    case ConfirmationType::VIEW: {
       writer->String(kConfirmationTypeView);
       break;
     }
 
-    case CONFIRMATION_TYPE_LANDED: {
+    case ConfirmationType::LANDED: {
       writer->String(kConfirmationTypeLanded);
       break;
     }

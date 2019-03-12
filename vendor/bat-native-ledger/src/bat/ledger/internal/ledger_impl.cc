@@ -1329,28 +1329,28 @@ void LedgerImpl::ConfirmAd(const std::string& info) {
   notification_info->url = notification_info_ads.url;
   notification_info->uuid = notification_info_ads.uuid;
   switch (notification_info_ads.type) {
-    case ads::CONFIRMATION_TYPE_UNKNOWN: {
-      notification_info->type = confirmations::CONFIRMATION_TYPE_UNKNOWN;
+    case ads::ConfirmationType::UNKNOWN: {
+      notification_info->type = confirmations::ConfirmationType::UNKNOWN;
       break;
     }
 
-    case ads::CONFIRMATION_TYPE_CLICK: {
-      notification_info->type = confirmations::CONFIRMATION_TYPE_CLICK;
+    case ads::ConfirmationType::CLICK: {
+      notification_info->type = confirmations::ConfirmationType::CLICK;
       break;
     }
 
-    case ads::CONFIRMATION_TYPE_DISMISS: {
-      notification_info->type = confirmations::CONFIRMATION_TYPE_DISMISS;
+    case ads::ConfirmationType::DISMISS: {
+      notification_info->type = confirmations::ConfirmationType::DISMISS;
       break;
     }
 
-    case ads::CONFIRMATION_TYPE_VIEW: {
-      notification_info->type = confirmations::CONFIRMATION_TYPE_VIEW;
+    case ads::ConfirmationType::VIEW: {
+      notification_info->type = confirmations::ConfirmationType::VIEW;
       break;
     }
 
-    case ads::CONFIRMATION_TYPE_LANDED: {
-      notification_info->type = confirmations::CONFIRMATION_TYPE_LANDED;
+    case ads::ConfirmationType::LANDED: {
+      notification_info->type = confirmations::ConfirmationType::LANDED;
       break;
     }
   }

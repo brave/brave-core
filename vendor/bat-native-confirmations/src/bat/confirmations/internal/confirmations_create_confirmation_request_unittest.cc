@@ -87,7 +87,7 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest, BuildBody_Viewed) {
   auto blinded_token = BlindedToken::decode_base64(blinded_token_base64);
 
   auto payload = request_->CreateConfirmationRequestDTO(creative_instance_id,
-      blinded_token, CONFIRMATION_TYPE_VIEW);
+      blinded_token, ConfirmationType::VIEW);
 
   // Act
   auto body = request_->BuildBody(payload);
@@ -140,7 +140,7 @@ TEST_F(
 
   // Act
   auto payload = request_->CreateConfirmationRequestDTO(creative_instance_id,
-      blinded_token, CONFIRMATION_TYPE_VIEW);
+      blinded_token, ConfirmationType::VIEW);
 
   // Assert
   std::string expected_payload = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";  // NOLINT
@@ -163,7 +163,7 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest, CreateCredential_Viewed) {
   auto blinded_token = BlindedToken::decode_base64(blinded_token_base64);
 
   auto payload = request_->CreateConfirmationRequestDTO(creative_instance_id,
-      blinded_token, CONFIRMATION_TYPE_VIEW);
+      blinded_token, ConfirmationType::VIEW);
 
   // Act
   auto credential = request_->CreateCredential(token_info, payload);

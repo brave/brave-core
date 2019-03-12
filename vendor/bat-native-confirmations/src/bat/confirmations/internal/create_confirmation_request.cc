@@ -80,27 +80,27 @@ std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
 
   std::string type;
   switch (confirmation_type) {
-    case CONFIRMATION_TYPE_UNKNOWN: {
+    case ConfirmationType::UNKNOWN: {
       DCHECK(false) << "Invalid confirmation type";
       break;
     }
 
-    case CONFIRMATION_TYPE_CLICK: {
+    case ConfirmationType::CLICK: {
       type = kConfirmationTypeClick;
       break;
     }
 
-    case CONFIRMATION_TYPE_DISMISS: {
+    case ConfirmationType::DISMISS: {
       type = kConfirmationTypeDismiss;
       break;
     }
 
-    case CONFIRMATION_TYPE_VIEW: {
+    case ConfirmationType::VIEW: {
       type = kConfirmationTypeView;
       break;
     }
 
-    case CONFIRMATION_TYPE_LANDED: {
+    case ConfirmationType::LANDED: {
       type = kConfirmationTypeLanded;
       break;
     }
