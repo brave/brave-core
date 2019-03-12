@@ -26,10 +26,9 @@ class BraveToolbarView : public ToolbarView {
                           bool already_bookmarked,
                           bookmarks::BookmarkBubbleObserver* observer) override;
  private:
-  int SetLocationBarBounds(const int available_width,
-                           const int location_bar_min_width,
-                           const int next_element_x,
-                           const int element_padding);
+  void ResetLocationBarBounds();
+  void ResetBookmarkButtonBounds();
+
   BookmarkButton* bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.
   BooleanPrefMember edit_bookmarks_enabled_;
