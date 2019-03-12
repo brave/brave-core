@@ -41,7 +41,7 @@ declare namespace chrome.braveRewards {
   }
   const includeInAutoContribution: (publisherKey: string, excluded: boolean) => {}
   const getGrants: () => {}
-  const getGrantCaptcha: () => {}
+  const getGrantCaptcha: (promotionId: string, type: string) => {}
   const solveGrantCaptcha: (solution: string, promotionId: string) => {}
   const getPendingContributionsTotal: (callback: (amount: number) => void) => {}
   const getNonVerifiedSettings: (callback: (nonVerified: boolean) => void) => {}

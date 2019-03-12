@@ -178,8 +178,10 @@ void BatLedgerImpl::FetchGrants(const std::string& lang,
   ledger_->FetchGrants(lang, payment_id);
 }
 
-void BatLedgerImpl::GetGrantCaptcha() {
-  ledger_->GetGrantCaptcha();
+void BatLedgerImpl::GetGrantCaptcha(
+    const std::string& promotion_id,
+    const std::string& promotion_type) {
+  ledger_->GetGrantCaptcha(promotion_id, promotion_type);
 }
 
 void BatLedgerImpl::GetWalletPassphrase(GetWalletPassphraseCallback callback) {

@@ -89,7 +89,9 @@ class RewardsService : public KeyedService {
       const GetContentSiteListCallback& callback) = 0;
   virtual void FetchGrants(const std::string& lang,
                            const std::string& paymentId) = 0;
-  virtual void GetGrantCaptcha() = 0;
+  virtual void GetGrantCaptcha(
+      const std::string& promotion_id,
+      const std::string& promotion_type) = 0;
   virtual void SolveGrantCaptcha(const std::string& solution,
                                  const std::string& promotionId) const = 0;
   virtual void GetWalletPassphrase(
