@@ -1,0 +1,259 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DisabledPanel tests basic tests matches the snapshot 1`] = `
+.c0 {
+  text-align: center;
+  font-family: Poppins,sans-serif;
+  margin-top: 7px;
+  padding-bottom: 20px;
+  background: linear-gradient(-180deg,rgba(255,255,255,1) 0%,rgba(233,235,255,1) 99%);
+}
+
+.c1 {
+  display: block;
+  margin: -10px auto 0px;
+  width: 150px;
+  height: 115px;
+  padding: 20px 0 15px;
+}
+
+.c3 {
+  color: #4B4C5C;
+  font-size: 28px;
+  font-weight: normal;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 22px;
+  display: block;
+}
+
+.c4 {
+  color: #4C54D2;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  -webkit-letter-spacing: -0.23px;
+  -moz-letter-spacing: -0.23px;
+  -ms-letter-spacing: -0.23px;
+  letter-spacing: -0.23px;
+  line-height: 22px;
+  display: block;
+  margin: 10px 0px 5px;
+}
+
+.c5 {
+  display: block;
+  color: #4B4C5C;
+  font-size: 16px;
+  font-weight: normal;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 24px;
+  width: 285px;
+  margin: 0 auto;
+  font-family: Muli,sans-serif;
+}
+
+.c10 {
+  top: 2px;
+  position: relative;
+  font-weight: 600;
+}
+
+.c6 {
+  width: 269px;
+  margin: 18px auto 15px;
+}
+
+.c13 {
+  color: #4A4A4A;
+  font-size: 14px;
+  font-weight: normal;
+  text-align: center;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 18px;
+  width: 290px;
+  margin: 0 auto;
+  display: block;
+  font-family: Muli,sans-serif;
+}
+
+.c14 {
+  cursor: pointer;
+  color: #73CBFF;
+  font-weight: 500;
+}
+
+.c12 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c11 {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.c2 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c7 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: white;
+  font-size: 14px;
+  border-radius: 28px;
+  background: inherit;
+  border: none;
+  cursor: pointer;
+  height: 40px;
+  color: #4C54D2;
+  border-radius: 20px;
+  font-size: 12px;
+  border: 1px solid #A1A8F2;
+}
+
+.c7:focus {
+  outline: 0;
+}
+
+.c8 {
+  font-family: Poppins,sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 0.39px;
+  -moz-letter-spacing: 0.39px;
+  -ms-letter-spacing: 0.39px;
+  letter-spacing: 0.39px;
+  margin: -3px auto 0px;
+}
+
+.c9 {
+  display: inline-block;
+  line-height: 0;
+  height: 18px;
+  width: 18px;
+  vertical-align: bottom;
+  margin: 0 -4px 0 6px;
+}
+
+<div
+  className="c0"
+>
+  <span
+    className="c1"
+  >
+    <svg
+      aria-hidden="true"
+      className="c2"
+      focusable="false"
+      viewBox="0 0 32 32"
+    >
+      <path
+        d="M9.61 23.25h12.78L16 12 9.61 23.25z"
+        fill="#fff"
+        fillRule="evenodd"
+      />
+      <path
+        d="M3 26.8l7.67-4.52L16 13V4a.45.45 0 0 0-.38.28l-6.27 11-6.26 11a.48.48 0 0 0 0 .48"
+        fill="#ff4724"
+        fillRule="evenodd"
+      />
+      <path
+        d="M16 4v9l5.29 9.31L29 26.8a.48.48 0 0 0-.05-.48l-6.26-11-6.27-11A.45.45 0 0 0 16 4"
+        fill="#9e1f63"
+        fillRule="evenodd"
+      />
+      <path
+        d="M29 26.8l-7.67-4.52H10.71L3 26.8a.47.47 0 0 0 .43.2h25.1a.47.47 0 0 0 .43-.2"
+        fill="#662d91"
+        fillRule="evenodd"
+      />
+    </svg>
+  </span>
+  <span
+    className="c3"
+  >
+    MISSING: welcomeBack
+  </span>
+  <span
+    className="c4"
+  >
+    MISSING: braveRewardsSubTitle
+  </span>
+  <span
+    className="c5"
+  >
+    MISSING: disabledPanelTextTwo
+  </span>
+  <div
+    className="c6"
+  >
+    <button
+      className="c7"
+      data-test-id="optInAction"
+      type="tip"
+    >
+      <span
+        className="c8"
+        icon={true}
+      >
+        MISSING: enableRewards
+        <div
+          className="c9"
+        >
+          <span
+            className="c10"
+          >
+            <svg
+              aria-hidden="true"
+              className="c11 c12"
+              focusable="false"
+              viewBox="0 0 32 32"
+            >
+              <path
+                d="M28 15H6.28l4.85-5.25a1 1 0 0 0-.05-1.42 1 1 0 0 0-1.41.06l-6.4 6.93a.7.7 0 0 0-.1.16.75.75 0 0 0-.09.15 1 1 0 0 0 0 .74.75.75 0 0 0 .09.15.7.7 0 0 0 .1.16l6.4 6.93a1 1 0 0 0 1.41.06 1 1 0 0 0 .05-1.42L6.28 17H28a1 1 0 0 0 0-2z"
+              />
+            </svg>
+          </span>
+        </div>
+      </span>
+    </button>
+  </div>
+  <span
+    className="c13"
+  >
+    MISSING: serviceText
+     
+    <a
+      className="c14"
+    >
+      MISSING: termsOfService
+    </a>
+     
+    MISSING: and
+     
+    <a
+      className="c14"
+    >
+      MISSING: privacyPolicy
+    </a>
+    .
+  </span>
+</div>
+`;

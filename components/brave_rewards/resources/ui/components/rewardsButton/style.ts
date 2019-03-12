@@ -8,6 +8,7 @@ import styled, { css } from 'styled-components'
 
 interface StyleProps {
   type?: Type
+  icon?: boolean
   disabled?: boolean
 }
 
@@ -72,12 +73,12 @@ export const StyledButtonWrapper = styled<StyleProps, 'button'>('button')`
   }
 `
 
-export const StyledButtonText = styled<{}, 'span'>('span')`
+export const StyledButtonText = styled<StyleProps, 'span'>('span')`
   font-family: Poppins, sans-serif;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.39px;
-  margin: 0 auto;
+  margin: ${p => p.icon ? '-3px auto 0px' : '0 auto'};
 `
 
 export const StyledIcon = styled<{}, 'div'>('div')`

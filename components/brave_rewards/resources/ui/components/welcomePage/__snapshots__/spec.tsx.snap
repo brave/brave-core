@@ -509,6 +509,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
             >
               <span
                 className="c18"
+                icon={false}
               >
                 MISSING: braveRewardsOptInText
               </span>
@@ -734,6 +735,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               >
                 <span
                   className="c18"
+                  icon={false}
                 >
                   MISSING: readyToTakePartOptInText
                 </span>

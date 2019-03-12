@@ -10,7 +10,17 @@ import { withKnobs, boolean, text, object, select } from '@storybook/addon-knobs
 // Components
 import Settings from './settings/settings'
 import SettingsMobile from './settingsMobile/settingsMobile'
-import { DisabledPanel, SiteBanner, Tip, PanelWelcome, WalletPanel, WalletSummary, WalletSummarySlider, WalletWrapper } from '../../../src/features/rewards'
+import {
+  DisabledPanel,
+  WalletPanelDisabled,
+  SiteBanner,
+  Tip,
+  PanelWelcome,
+  WalletPanel,
+  WalletSummary,
+  WalletSummarySlider,
+  WalletWrapper
+} from '../../../src/features/rewards'
 import { BatColorIcon, WalletAddIcon } from '../../../src/components/icons'
 import WelcomePage from '../../../src/features/rewards/welcomePage'
 import { Notification } from '../../../src/features/rewards/walletWrapper'
@@ -197,16 +207,56 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       console.log('open up private tab info')
     }
 
-    const onNonPrivateLink = () => {
-      console.log('open up rewards settings')
+    const doNothing = () => {
+      console.log('nothing')
     }
 
     return (
       <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '40px', left: '40px', width: '330px', borderRadius: '8px', overflow: 'hidden' }}>
-          <DisabledPanel onLinkOpen={onNonPrivateLink} />
+        <div style={{ position: 'absolute', top: '40px', left: '40px', borderRadius: '8px', overflow: 'hidden' }}>
+          <WalletWrapper
+            compact={true}
+            contentPadding={false}
+            gradientTop={'249,251,252'}
+            balance={text('Tokens', '30.0')}
+            converted={text('Converted', '15.50 USD')}
+            actions={[
+              {
+                name: 'Add funds',
+                action: doNothing,
+                icon: <WalletAddIcon />
+              },
+              {
+                name: 'Settings',
+                action: doNothing,
+                icon: <BatColorIcon />
+              }
+            ]}
+            showSecActions={false}
+            connectedWallet={boolean('Connected wallet', true)}
+            grants={object('Grants', [
+              {
+                tokens: '8.0',
+                expireDate: '7/15/2018'
+              },
+              {
+                tokens: '10.0',
+                expireDate: '9/10/2018'
+              },
+              {
+                tokens: '10.0',
+                expireDate: '10/10/2018'
+              }
+            ])}
+          >
+            <WalletPanelDisabled
+              onTOSClick={doNothing}
+              onPrivacyClick={doNothing}
+              onEnable={doNothing}
+            />
+          </WalletWrapper>
         </div>
-        <div style={{ position: 'absolute', top: '40px', left: '460px', width: '330px', borderRadius: '8px', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '40px', left: '500px', width: '330px', borderRadius: '8px', overflow: 'hidden' }}>
           <DisabledPanel isPrivate={true} onLinkOpen={onPrivateLink} />
         </div>
       </div>
