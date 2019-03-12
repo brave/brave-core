@@ -52,7 +52,7 @@
 		0A4BEFD1221E115B0005551A /* NetworkSessionMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4BEFCE221E115A0005551A /* NetworkSessionMock.swift */; };
 		0A4BEFD2221E115B0005551A /* NetworkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4BEFCF221E115A0005551A /* NetworkSession.swift */; };
 		0A4BEFD3221E115B0005551A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4BEFD0221E115B0005551A /* NetworkManager.swift */; };
-		0A4BEFD6221E13830005551A /* ContentBlockerCompilationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4BEFD5221E13830005551A /* ContentBlockerCompilationTests.swift */; };
+		0A4BEFD6221E13830005551A /* ContentBlockerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4BEFD5221E13830005551A /* ContentBlockerTests.swift */; };
 		0A4BEFD8221EE78E0005551A /* CachedNetworkResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4BEFD7221EE78E0005551A /* CachedNetworkResource.swift */; };
 		0A4BEFDA221EF3360005551A /* NetworkResourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4BEFD9221EF3360005551A /* NetworkResourceType.swift */; };
 		0A4BEFDE221F03C80005551A /* NetworkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4BEFDD221F03C80005551A /* NetworkManagerTests.swift */; };
@@ -68,10 +68,10 @@
 		0AADC4D520D2A6A200FDE368 /* PreloadedFavorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4D120D2A6A200FDE368 /* PreloadedFavorites.swift */; };
 		0AADC4D720D2B03900FDE368 /* BraveShieldStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4D620D2B03900FDE368 /* BraveShieldStatsView.swift */; };
 		0ABA874320E68CF500D2694F /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C027441B2A348C001B1E88 /* SessionData.swift */; };
-		0AEFB8532226D7C5007AF600 /* AdblockResourcesMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEFB8522226D7C5007AF600 /* AdblockResourcesMappings.swift */; };
-		0AEFB88722299E6A007AF600 /* AdblockerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEFB88622299E6A007AF600 /* AdblockerType.swift */; };
 		0AD5E9C42200591F00D0D91B /* BraveShield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD5E9C32200591F00D0D91B /* BraveShield.swift */; };
 		0AEFB84922244135007AF600 /* AdblockDebugMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEFB84822244135007AF600 /* AdblockDebugMenuTableViewController.swift */; };
+		0AEFB8532226D7C5007AF600 /* AdblockResourcesMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEFB8522226D7C5007AF600 /* AdblockResourcesMappings.swift */; };
+		0AEFB88722299E6A007AF600 /* AdblockerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEFB88622299E6A007AF600 /* AdblockerType.swift */; };
 		0AF3B4ED213D8E3300695962 /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF3B4E5213D8E3200695962 /* CoreDataTestCase.swift */; };
 		0AF3B4EE213D8E3300695962 /* HistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF3B4E6213D8E3200695962 /* HistoryTests.swift */; };
 		0AF3B4EF213D8E3300695962 /* DomainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF3B4E7213D8E3200695962 /* DomainTests.swift */; };
@@ -1153,7 +1153,7 @@
 		0A4BEFCE221E115A0005551A /* NetworkSessionMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkSessionMock.swift; sourceTree = "<group>"; };
 		0A4BEFCF221E115A0005551A /* NetworkSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkSession.swift; sourceTree = "<group>"; };
 		0A4BEFD0221E115B0005551A /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		0A4BEFD5221E13830005551A /* ContentBlockerCompilationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlockerCompilationTests.swift; sourceTree = "<group>"; };
+		0A4BEFD5221E13830005551A /* ContentBlockerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlockerTests.swift; sourceTree = "<group>"; };
 		0A4BEFD7221EE78E0005551A /* CachedNetworkResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedNetworkResource.swift; sourceTree = "<group>"; };
 		0A4BEFD9221EF3360005551A /* NetworkResourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkResourceType.swift; sourceTree = "<group>"; };
 		0A4BEFDD221F03C80005551A /* NetworkManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerTests.swift; sourceTree = "<group>"; };
@@ -1170,10 +1170,10 @@
 		0AADC4D020D2A6A200FDE368 /* FavoritesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesDataSource.swift; sourceTree = "<group>"; };
 		0AADC4D120D2A6A200FDE368 /* PreloadedFavorites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreloadedFavorites.swift; sourceTree = "<group>"; };
 		0AADC4D620D2B03900FDE368 /* BraveShieldStatsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveShieldStatsView.swift; sourceTree = "<group>"; };
-		0AEFB8522226D7C5007AF600 /* AdblockResourcesMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdblockResourcesMappings.swift; sourceTree = "<group>"; };
-		0AEFB88622299E6A007AF600 /* AdblockerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdblockerType.swift; sourceTree = "<group>"; };
 		0AD5E9C32200591F00D0D91B /* BraveShield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveShield.swift; sourceTree = "<group>"; };
 		0AEFB84822244135007AF600 /* AdblockDebugMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdblockDebugMenuTableViewController.swift; sourceTree = "<group>"; };
+		0AEFB8522226D7C5007AF600 /* AdblockResourcesMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdblockResourcesMappings.swift; sourceTree = "<group>"; };
+		0AEFB88622299E6A007AF600 /* AdblockerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdblockerType.swift; sourceTree = "<group>"; };
 		0AF3B4E5213D8E3200695962 /* CoreDataTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
 		0AF3B4E6213D8E3200695962 /* HistoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTests.swift; sourceTree = "<group>"; };
 		0AF3B4E7213D8E3200695962 /* DomainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainTests.swift; sourceTree = "<group>"; };
@@ -3995,7 +3995,7 @@
 		F84B21D61A090F8100AAB793 /* ClientTests */ = {
 			isa = PBXGroup;
 			children = (
-				0A4BEFD5221E13830005551A /* ContentBlockerCompilationTests.swift */,
+				0A4BEFD5221E13830005551A /* ContentBlockerTests.swift */,
 				E696FE501C47F86E00EC007C /* AuthenticatorTests.swift */,
 				F84B21D91A090F8100AAB793 /* ClientTests.swift */,
 				D3D488581ABB54CD00A93597 /* FileAccessorTests.swift */,
@@ -5790,7 +5790,7 @@
 				2F13E79B1AC0C02700D75081 /* StringExtensionsTests.swift in Sources */,
 				2FDB10931A9FBEC5006CF312 /* PrefsTests.swift in Sources */,
 				D8EFFA261FF702A8001D3A09 /* NavigationRouterTests.swift in Sources */,
-				0A4BEFD6221E13830005551A /* ContentBlockerCompilationTests.swift in Sources */,
+				0A4BEFD6221E13830005551A /* ContentBlockerTests.swift in Sources */,
 				A83E5B1D1C1DA8D80026D912 /* UIPasteboardExtensionsTests.swift in Sources */,
 				D82ED2641FEB3C420059570B /* DefaultSearchPrefsTests.swift in Sources */,
 				E696FE511C47F86E00EC007C /* AuthenticatorTests.swift in Sources */,
