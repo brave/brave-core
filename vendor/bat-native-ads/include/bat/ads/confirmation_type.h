@@ -6,10 +6,6 @@
 #ifndef BAT_ADS_CONFIRMATION_TYPE_H_
 #define BAT_ADS_CONFIRMATION_TYPE_H_
 
-#include <string>
-
-#include "bat/ads/export.h"
-
 namespace ads {
 
 static char kConfirmationTypeClick[] = "click";
@@ -17,7 +13,7 @@ static char kConfirmationTypeDismiss[] = "dismiss";
 static char kConfirmationTypeView[] = "view";
 static char kConfirmationTypeLanded[] = "landed";
 
-enum class ADS_EXPORT ConfirmationType {
+enum class ConfirmationType {
   UNKNOWN,
   CLICK,
   DISMISS,

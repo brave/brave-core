@@ -6,11 +6,9 @@
 #ifndef BAT_ADS_CLIENT_INFO_PLATFORM_TYPE_H_
 #define BAT_ADS_CLIENT_INFO_PLATFORM_TYPE_H_
 
-#include "bat/ads/export.h"
-
 namespace ads {
 
-enum ADS_EXPORT ClientInfoPlatformType {
+enum ClientInfoPlatformType {
   UNKNOWN,
   WINDOWS,
   MACOS,

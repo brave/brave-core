@@ -17,7 +17,7 @@ static char kConfirmationTypeDismiss[] = "dismiss";
 static char kConfirmationTypeView[] = "view";
 static char kConfirmationTypeLanded[] = "landed";
 
-enum class CONFIRMATIONS_EXPORT ConfirmationType {
+enum class ConfirmationType {
   UNKNOWN,
   CLICK,
   DISMISS,
