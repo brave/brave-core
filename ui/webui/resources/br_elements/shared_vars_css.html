@@ -33,6 +33,11 @@
 <dom-module id="br-shared-style">
   <template>
     <style>
+      :host {
+        --cr-radio-button-checked-color: var(--cr-link-color) !important;
+          --cr-radio-button-checked-ripple-color:
+            rgba(var(--cr-link-color-rgb), .2) !important;
+      }
       :focus {
         outline-color: var(--flat-focus-shadow-color);
         outline-width: 3px;
