@@ -197,7 +197,6 @@ class BookmarkTests: CoreDataTestCase {
     }
     
     func testGetAllBookmarks() {
-        let context = DataController.viewContext
         let bookmarksCount = 3
         insertBookmarks(amount: bookmarksCount)
         // Adding a favorite(non-bookmark type of bookmark)
@@ -230,15 +229,16 @@ class BookmarkTests: CoreDataTestCase {
         
         let newObject = try! DataController.viewContext.fetch(fetchRequest).first!
         
-        XCTAssertNotEqual(newObject.displayTitle, customTitle)
+        XCTAssertNotEqual(newObject.title, customTitle)
+        XCTAssertNotEqual(newObject.customTitle, customTitle)
         XCTAssertNotEqual(newObject.url, url)
         
-        XCTAssertEqual(newObject.displayTitle, newCustomTitle)
+        XCTAssertEqual(newObject.title, newCustomTitle)
+        XCTAssertEqual(newObject.customTitle, newCustomTitle)
         XCTAssertEqual(newObject.url, newUrl)
     }
     
     func testUpdateBookmarkNoChanges() {
-        let context = DataController.viewContext
         let customTitle = "Brave"
         let url = "http://brave.com"
                 
@@ -256,7 +256,6 @@ class BookmarkTests: CoreDataTestCase {
     }
     
     func testUpdateBookmarkBadUrl() {
-        let context = DataController.viewContext
         let customTitle = "Brave"
         let url = "http://brave.com"
         let badUrl = "   " // Empty spaces cause URL(string:) to return nil
