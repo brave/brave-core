@@ -6,11 +6,9 @@
 #ifndef BAT_ADS_RESULT_H_
 #define BAT_ADS_RESULT_H_
 
-#include "bat/ads/export.h"
-
 namespace ads {
 
-enum ADS_EXPORT Result {
+enum Result {
   SUCCESS,
   FAILED
 };

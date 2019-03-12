@@ -6,11 +6,9 @@
 #ifndef BAT_ADS_NOTIFICATION_RESULT_TYPE_H_
 #define BAT_ADS_NOTIFICATION_RESULT_TYPE_H_
 
-#include "bat/ads/export.h"
-
 namespace ads {
 
-enum class ADS_EXPORT NotificationResultInfoResultType {
+enum class NotificationResultInfoResultType {
   CLICKED,
   DISMISSED,
   TIMEOUT
