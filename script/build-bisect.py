@@ -41,7 +41,13 @@ def parse_args():
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='extra logging')
 
-    # TODO: add args for being able to download/install a profile
+    parser.add_argument('--fresh-profile', action='store_true',
+                        help='if true, move the existing profile directory out of the way. \
+                              can\'t be combined with `--use-profile`.')
+
+    parser.add_argument('--use-profile',
+                        help='url of a zipped profile to unzip/use for each install',
+                        default=None)
 
     return parser.parse_args()
 
@@ -155,7 +161,8 @@ def install(download_dir, path):
                 break
 
         if volume is None:
-            raise Exception('[ERROR] did not find "/Volumes/Brave" sub-string in mount list!\nFull response from "hdiutil":\n' + result)
+            raise Exception('[ERROR] did not find "/Volumes/Brave" sub-string in mount list!\n \
+                             Full response from "hdiutil":\n' + result)
 
         print('-> mounted as "' + volume + '"')
 
@@ -165,7 +172,7 @@ def install(download_dir, path):
         volume_path = os.path.join(volume, binary_name)
 
         # copy binary to a temp folder
-        print('-> copying "' +  volume_path + '" to "' + download_dir + '"')
+        print('-> copying "' + volume_path + '" to "' + download_dir + '"')
         result = execute(['cp', '-rp', volume_path, download_dir])
         print('-> copy complete')
 
@@ -175,29 +182,50 @@ def install(download_dir, path):
         return os.path.join(download_dir, binary_name)
 
 
-def test_version(attempt, tag):
+def setup_profile_directory(args):
+    global is_mac_os
+
+    if is_mac_os:
+        print('- processing changes for profile directory')
+        if args.fresh_profile:
+            print('-> clearing existing profile')
+        elif args.use_profile:
+            print('-> downloading profile: "' + args.use_profile + '"')
+
+
+def test_version(args, attempt, tag):
     global tag_names
 
     # get the OS specific installer
     asset = None
     while len(tag_names) > 0 and not asset:
-        print('\nattempt ' + str(attempt) + '] getting installer for  "' + tag + '" (release id ' + str(releases[tag]['id']) + ')')
+        print('\nattempt ' + str(attempt) + '] getting installer for  "' + tag +
+              '" (release id ' + str(releases[tag]['id']) + ')')
         asset = get_release_asset(tag)
         if not asset:
             return False
 
-
     download_dir = tempdir('build-bisect_')
     download_path = os.path.join(download_dir, asset['name'])
     print('- downloading to ' + download_path)
-    download(tag, asset['browser_download_url'], download_path)
+    # download(tag, asset['browser_download_url'], download_path)
 
-    install_path = install(download_dir, download_path)
+    # install_path = install(download_dir, download_path)
+
+    setup_profile_directory(args)
 
     print('- running binary')
-    execute(['open', '-a', install_path])
+    # execute(['open', '-a', install_path])
 
-    answer = raw_input('Did this version work?: y/n\n')
+    first = True
+    while True:
+        if not first:
+            print('please type either `y` for yes or `n` for no!')
+        answer = raw_input('Did this version work?: y/n\n')
+        first = False
+        if answer == 'y' or answer == 'n':
+            break
+
     return answer == 'y'
 
 
@@ -208,6 +236,48 @@ def get_github_token():
         if result == 'undefined':
             raise Exception('`BRAVE_GITHUB_TOKEN` value not found!')
         return result
+
+
+def get_good_index(version):
+    global tag_names
+
+    try:
+        index = tag_names.index(version)
+        print('- starting at ' + tag_names[index])
+    except Exception as e:
+        print('- `good` value "' + version + '" not found. ' + str(e))
+        versions = version.split('.')
+        if len(versions) != 3:
+            return 0
+
+        versions.pop()
+        results = [i for i in tag_names if i.startswith('.'.join(versions) + '.')]
+        if len(results) == 0:
+            return 0
+
+        print('-> using "' + results[0] + '" for the `good` value')
+        return tag_names.index(results[0])
+
+
+def get_bad_index(version):
+    global tag_names
+
+    try:
+        index = tag_names.index(version)
+        print('- ending at ' + tag_names[index])
+    except Exception as e:
+        print('- `bad` value "' + version + '" not found. ' + str(e))
+        versions = version.split('.')
+        if len(versions) != 3:
+            return 0
+
+        versions.pop()
+        results = [i for i in tag_names if i.startswith('.'.join(versions) + '.')]
+        if len(results) == 0:
+            return 0
+
+        print('-> using "' + results[-1] + '" for the `bad` value')
+        return tag_names.index(results[-1])
 
 
 def find_first_broken_version(args):
@@ -222,41 +292,35 @@ def find_first_broken_version(args):
         raise Exception('[ERROR] Not enough versions to perform search')
 
     if args.good:
-        try:
-            left_index = tag_names.index(args.good)
-            print('- starting at ' + tag_names[left_index])
-        except Exception as e:
-            print('`good` value "' + args.good + '" not found. ' + str(e))
+        left_index = get_good_index(args.good)
+        if left_index == 0:
             args.good = None
 
     if args.bad:
-        try:
-            right_index = tag_names.index(args.bad)
-            print('- ending at ' + tag_names[right_index])
-        except Exception as e:
-            print('`bad` value "' + args.bad + '" not found. ' + str(e))
+        right_index = get_bad_index(args.bad)
+        if right_index == len(tag_names) - 1:
             args.bad = None
 
-
     if args.good or args.bad:
-        print('- search set narrowed down to ' + str(right_index - left_index) + ' versions using provided good/bad version(s)')
+        print('- search set narrowed down to ' + str(right_index - left_index) +
+              ' versions using provided good/bad version(s)')
 
     attempt_number = 1
 
     # left should be working
     if not args.good:
         left_tag = tag_names[left_index]
-        result = test_version(attempt_number, left_tag)
+        result = test_version(args, attempt_number, left_tag)
         attempt_number = attempt_number + 1
-        if result == False:
+        if result is False:
             raise Exception('[ERROR] Version "' + left_tag + '" is expected to work but doesn\'t')
 
     # right should be NOT working
     if not args.bad:
         right_tag = tag_names[right_index]
-        result = test_version(attempt_number, right_tag)
+        result = test_version(args, attempt_number, right_tag)
         attempt_number = attempt_number + 1
-        if result == True:
+        if result is True:
             raise Exception('[ERROR] Version "' + right_tag + '" is expected to fail but doesn\'t')
 
     # perform search
@@ -269,8 +333,9 @@ def find_first_broken_version(args):
             return test_tag, attempt_number
 
         if args.verbose:
-            print('\n[DEBUG] L=' + str(left_index) + ', R=' + str(right_index) + ', M=' + str(test_index) + ', gap=' + str(gap))
-        result = test_version(attempt_number, test_tag)
+            print('\n[DEBUG] L=' + str(left_index) + ', R=' + str(right_index) +
+                  ', M=' + str(test_index) + ', gap=' + str(gap))
+        result = test_version(args, attempt_number, test_tag)
 
         if result:
             left_index = test_index + 1
@@ -286,6 +351,9 @@ def main():
     global tag_names
 
     args = parse_args()
+    if args.fresh_profile and args.use_profile:
+        print('[ERROR] you can\'t use both `--fresh-profile` AND `--use-profile` at the same time.')
+        return 1
 
     github_token = get_github_token()
     repo = GitHub(github_token).repos(BRAVE_REPO)
@@ -297,16 +365,20 @@ def main():
     first_broken_version, attempts = find_first_broken_version(args)
     print('DONE: issue first appeared in "' + str(first_broken_version) + '" (found in ' + str(attempts) + ' attempts)')
 
-    broken_index = tag_names.index(first_broken_version)
-    if broken_index > 0:
-        previous_release = tag_names[broken_index - 1]
-        versions = 'v' + previous_release + '..v' + first_broken_version
-        if args.verbose:
-            print('[INFO] finding commits using "git log --pretty=oneline ' + versions + '"')
-        commits = execute(['git', 'log', '--pretty=oneline', versions]).strip()
-        commit_lines = commits.split('\n')
-        print('Commits specific to tag "v' + first_broken_version + '" (' + str(len(commit_lines)) + ' commit(s)):')
-        print(commits)
+    try:
+        broken_index = tag_names.index(first_broken_version)
+        if broken_index > 0:
+            previous_release = tag_names[broken_index - 1]
+            versions = 'v' + previous_release + '..v' + first_broken_version
+            if args.verbose:
+                print('[INFO] finding commits using "git log --pretty=oneline ' + versions + '"')
+            commits = execute(['git', 'log', '--pretty=oneline', versions]).strip()
+            commit_lines = commits.split('\n')
+            print('Commits specific to tag "v' + first_broken_version + '" (' + str(len(commit_lines)) + ' commit(s)):')
+            print(commits)
+    except Exception as e:
+        print('[ERROR] ' + str(e))
+
 
 if __name__ == '__main__':
     import sys
