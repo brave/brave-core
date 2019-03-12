@@ -86,6 +86,17 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
         ->parse(rules);
   }
 
+  void AssertTagExists(const std::string& tag, bool expected_exists) const {
+    bool exists1 = g_brave_browser_process->ad_block_service()
+        ->GetAdBlockClientForTest()
+        ->tagExists(tag);
+    bool exists2 = g_brave_browser_process->ad_block_regional_service()
+        ->GetAdBlockClientForTest()
+        ->tagExists(tag);
+    ASSERT_EQ(exists1, exists2);
+    ASSERT_EQ(exists1, expected_exists);
+  }
+
   void InitEmbeddedTestServer() {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
@@ -184,6 +195,11 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
     if (!g_brave_browser_process->ad_block_regional_service()->IsInitialized())
       return false;
     return true;
+  }
+
+  void WaitForAllAdBlockServiceThreads() {
+    WaitForDefaultAdBlockServiceThread();
+    WaitForRegionalAdBlockServiceThread();
   }
 
   void WaitForDefaultAdBlockServiceThread() {
@@ -613,7 +629,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockNYP) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
-// Preferences for social buttons work
+// Tags for social buttons work
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBLockTagTest) {
   AddRulesToAdBlock(base::StringPrintf("||example.com^$tag=%s",
                     brave_shields::kFacebookEmbeds).c_str());
@@ -639,7 +655,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBLockTagTest) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
-// Preferences for social buttons work
+// Lack of tags for social buttons work
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
   AddRulesToAdBlock("||example.com^$tag=sup");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
@@ -662,4 +678,52 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
                                           &as_expected));
   EXPECT_TRUE(as_expected);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
+// Setting prefs sets the right tags
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TagPrefsControlTags) {
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  // Default tags exist on startup
+  AssertTagExists(brave_shields::kFacebookEmbeds, true);
+  AssertTagExists(brave_shields::kTwitterEmbeds, true);
+  AssertTagExists(brave_shields::kLinkedInEmbeds, false);
+
+  // Toggling prefs once is reflected in the adblock client.
+  prefs->SetBoolean(kLinkedInEmbedControlType, true);
+  WaitForAllAdBlockServiceThreads();
+  AssertTagExists(brave_shields::kFacebookEmbeds, true);
+  AssertTagExists(brave_shields::kTwitterEmbeds, true);
+  AssertTagExists(brave_shields::kLinkedInEmbeds, true);
+
+  prefs->SetBoolean(kFBEmbedControlType, false);
+  WaitForAllAdBlockServiceThreads();
+  AssertTagExists(brave_shields::kFacebookEmbeds, false);
+  AssertTagExists(brave_shields::kTwitterEmbeds, true);
+  AssertTagExists(brave_shields::kLinkedInEmbeds, true);
+
+  prefs->SetBoolean(kTwitterEmbedControlType, false);
+  WaitForAllAdBlockServiceThreads();
+  AssertTagExists(brave_shields::kFacebookEmbeds, false);
+  AssertTagExists(brave_shields::kTwitterEmbeds, false);
+  AssertTagExists(brave_shields::kLinkedInEmbeds, true);
+
+  // Toggling prefs back is reflected in the adblock client.
+  prefs->SetBoolean(kLinkedInEmbedControlType, false);
+  WaitForAllAdBlockServiceThreads();
+  AssertTagExists(brave_shields::kFacebookEmbeds, false);
+  AssertTagExists(brave_shields::kTwitterEmbeds, false);
+  AssertTagExists(brave_shields::kLinkedInEmbeds, false);
+
+  prefs->SetBoolean(kFBEmbedControlType, true);
+  WaitForAllAdBlockServiceThreads();
+  AssertTagExists(brave_shields::kFacebookEmbeds, true);
+  AssertTagExists(brave_shields::kTwitterEmbeds, false);
+  AssertTagExists(brave_shields::kLinkedInEmbeds, false);
+
+  prefs->SetBoolean(kTwitterEmbedControlType, true);
+  WaitForAllAdBlockServiceThreads();
+  AssertTagExists(brave_shields::kFacebookEmbeds, true);
+  AssertTagExists(brave_shields::kTwitterEmbeds, true);
+  AssertTagExists(brave_shields::kLinkedInEmbeds, false);
 }
