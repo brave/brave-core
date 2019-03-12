@@ -314,7 +314,8 @@ extension Bookmark {
             }
             
             if let ct = customTitle, !ct.isEmpty {
-                bookmarkToUpdate.customTitle = customTitle
+                bookmarkToUpdate.customTitle = ct
+                bookmarkToUpdate.title = ct
             }
             
             if let u = url, !u.isEmpty {
