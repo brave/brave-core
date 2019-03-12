@@ -269,9 +269,15 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_GET_STARTED_TITLE" desc="The title for the Get Started section in settings">
         Get Started
       </message>
-      <!-- Brave Shields Defaults -->
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE" desc="The title for Brave shields defaults in settings">
-        Brave shields defaults
+      <!-- Brave Shields  -->
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_TITLE" desc="The title for Brave shields section in settings">
+        Shields
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE" desc="The title for Brave shields Defaults sub-section in settings">
+        Defaults
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION" desc="The description for Brave shields Defaults sub-section in settings">
+        Your current per-site settings will be retained.
       </message>
       <message name="IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE" desc="The title for social blocking defaults in settings">
         Social Buttons and Logins

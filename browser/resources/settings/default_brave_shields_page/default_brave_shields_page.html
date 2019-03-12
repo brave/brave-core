@@ -9,8 +9,24 @@
 <dom-module id="settings-default-brave-shields-page">
   <template>
     <style include="settings-shared md-select iron-flex">
+      .label.shields-primary-title
+      {
+        font-weight: 700;
+        padding-top: .1em;
+        font-size: 1.05em;
+      }
+      .label.shields-secondary-title
+      {
+        font-style: italic;
+      }
     </style>
     <div class="settings-box first">
+      <div class="flex">
+        <div class="label shields-primary-title">$i18n{braveShieldsDefaultsSectionTitle}</div>
+        <div class="label secondary shields-secondary-title">$i18n{braveShieldsDefaultsSectionDescription}</div>
+      </div>
+    </div>
+    <div class="settings-box continuation">
       <div class="start">$i18n{adControlLabel}</div>
       <select id="adControlType" class="md-select"
           on-change="onAdControlChange_">
