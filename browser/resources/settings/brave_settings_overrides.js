@@ -202,6 +202,14 @@ BravePatching.RegisterPolymerTemplateModifications({
         boxEl.classList.remove('first')
       }
     }
+  },
+  'settings-people-page': (templateContent) => {
+    // Import item needs to know it's the first in the section
+    const importItem = templateContent.querySelector('.settings-box[on-click="onImportDataTap_"]')
+    if (!importItem) {
+      console.error('[Brave Settings Overrides] Could not find import item in people_page')
+    }
+    importItem.classList.add('first')
   }
 })
 
