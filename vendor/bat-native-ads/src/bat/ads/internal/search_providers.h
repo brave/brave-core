@@ -16,111 +16,107 @@ namespace ads {
 static const std::vector<SearchProviderInfo> _search_providers = {
   SearchProviderInfo(
       "Amazon",
-      "amazon.com",
-      "https://www.amazon.com/exec/obidos/external-search/"
-      "?field-keywords={searchTerms}&mode=blended",
+      "https://amazon.com",
+      "https://www.amazon.com/exec/obidos/external-search/?field-keywords={searchTerms}&mode=blended",  // NOLINT
       false),
   SearchProviderInfo(
       "Bing",
-      "bing.com",
+      "https://bing.com",
       "https://www.bing.com/search?q={searchTerms}",
       true),
   SearchProviderInfo(
       "DuckDuckGo",
-      "duckduckgo.com",
+      "https://duckduckgo.com",
       "https://duckduckgo.com/?q={searchTerms}&t=brave",
       true),
   SearchProviderInfo(
       "Fireball",
-      "fireball.com",
+      "https://fireball.com",
       "https://fireball.com/?q={searchTerms}",
       true),
   SearchProviderInfo(
       "GitHub",
-      "github.com/search",
+      "https://github.com",
       "https://github.com/search?q={searchTerms}",
       false),
   SearchProviderInfo(
       "Google",
-      "google.com",
+      "https://google.com",
       "https://www.google.com/search?q={searchTerms}",
       true),
   SearchProviderInfo(
       "Stack Overflow",
-      "stackoverflow.com/search",
+      "https://stackoverflow.com",
       "https://stackoverflow.com/search?q={searchTerms}",
       false),
   SearchProviderInfo(
       "MDN Web Docs",
-      "developer.mozilla.org/search",
+      "https://developer.mozilla.org",
       "https://developer.mozilla.org/search?q={searchTerms}",
       false),
   SearchProviderInfo(
       "Twitter",
-      "twitter.com",
+      "https://twitter.com",
       "https://twitter.com/search?q={searchTerms}&source=desktop-search",
       false),
   SearchProviderInfo(
       "Wikipedia",
-      "en.wikipedia.org",
+      "https://en.wikipedia.org",
       "https://en.wikipedia.org/wiki/Special:Search?search={searchTerms}",
       false),
   SearchProviderInfo(
       "Yahoo",
-      "search.yahoo.com",
+      "https://search.yahoo.com",
       "https://search.yahoo.com/search?p={searchTerms}&fr=opensearch",
       true),
   SearchProviderInfo(
       "YouTube",
-      "youtube.com",
-      "https://www.youtube.com/results?search_type=search_videos&search_"
-      "query={searchTerms}&search_sort=relevance&search_category=0&page=",
+      "https://youtube.com",
+      "https://www.youtube.com/results?search_type=search_videos&search_query={searchTerms}&search_sort=relevance&search_category=0&page=",  // NOLINT
       false),
   SearchProviderInfo(
       "StartPage",
-      "startpage.com",
-      "https://www.startpage.com/do/dsearch?"
-      "query={searchTerms}&cat=web&pl=opensearch",
+      "https://startpage.com",
+      "https://www.startpage.com/do/dsearch?query={searchTerms}&cat=web&pl=opensearch",  // NOLINT
       true),
   SearchProviderInfo(
       "Infogalactic",
-      "infogalactic.com",
-      "https://infogalactic.com/w/index.php?title="
-      "Special:Search&search={searchTerms}",
+      "https://infogalactic.com",
+      "https://infogalactic.com/w/index.php?title=Special:Search&search={searchTerms}",  // NOLINT
       false),
   SearchProviderInfo(
       "Wolfram Alpha",
-      "wolframalpha.com",
+      "https://wolframalpha.com",
       "https://www.wolframalpha.com/input/?i={searchTerms}",
       false),
   SearchProviderInfo(
       "Semantic Scholar",
-      "semanticscholar.org",
+      "https://semanticscholar.org",
       "https://www.semanticscholar.org/search?q={searchTerms}",
       true),
   SearchProviderInfo(
       "Qwant",
-      "qwant.com",
+      "https://qwant.com",
       "https://www.qwant.com/?q={searchTerms}&client=brave",
       true),
   SearchProviderInfo(
       "Yandex",
-      "yandex.com",
+      "https://yandex.com",
       "https://yandex.com/search/?text={searchTerms}&clid=2274777",
       true),
   SearchProviderInfo(
       "Ecosia",
-      "ecosia.org",
+      "https://ecosia.org",
       "https://www.ecosia.org/search?q={searchTerms}",
       true),
   SearchProviderInfo(
       "searx",
-      "searx.me",
+      "https://searx.me",
       "https://searx.me/?q={searchTerms}&categories=general",
       true),
   SearchProviderInfo(
       "findx",
-      "findx.com",
+      "https://findx.com",
       "https://www.findx.com/search?q={searchTerms}&type=web",
       true)
 };
