@@ -7,7 +7,7 @@ import Deferred
 import WebKit
 @testable import Client
 
-class ContentBlockerCompilationTests: XCTestCase {
+class ContentBlockerTests: XCTestCase {
     
     var store: WKContentRuleListStore!
     var contentBlocker: BlocklistName!
@@ -71,6 +71,21 @@ class ContentBlockerCompilationTests: XCTestCase {
     
     func testCompilationEmptyData() {
         compile(jsonString: nil, expectSuccess: false)
+    }
+    
+    func testGettingRegionalContentBlocker() {
+        XCTAssertNil(ContentBlockerRegion.with(localeCode: nil))
+        
+        XCTAssertNil(ContentBlockerRegion.with(localeCode: "en"),
+                     "Regional content blocker should be disabled for english locale")
+        
+        let validLocale = "pl"
+        let valid = ContentBlockerRegion.with(localeCode: validLocale)
+        XCTAssertEqual(valid?.filename, validLocale)
+        
+        let invalidLocale = "xx"
+        XCTAssertNil(ContentBlockerRegion.with(localeCode: invalidLocale))
+        
     }
     
     private func compile(jsonString json: String?, expectSuccess: Bool) {

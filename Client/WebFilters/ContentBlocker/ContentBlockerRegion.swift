@@ -30,6 +30,9 @@ extension ContentBlockerRegion {
             log.error("No locale string was provided")
             return nil
         }
+
+        // Check if regional resource exists for a given locale.
+        if ResourceLocale(rawValue: code) == nil { return nil }
         
         // This handles two cases, regional content blocker is nil,
         // or locale has changed and the content blocker needs to be reassigned
