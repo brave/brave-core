@@ -21,18 +21,16 @@ namespace {
 // TODO(iefremov): Key versioning?
 
 constexpr char kShufflerKey[] = R"(
-    -----BEGIN PUBLIC KEY-----
-    MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE7Fc+gIP5a4FpDuLZo2ji0YhjjUUp
-    WSvIKMPsag/F7BlwA/xpWvHhhx1o7aJynTTAz0cHC5Wn69k0R1xtaEePDg==
-    -----END PUBLIC KEY-----
-                                )";
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEeQ8KZnYLy5Rw7hZbVjIq4SS8RNgE
+/IByF9wOYVRdKTE8ONOZG/ewmgyNbt1GckZEygeKIPxlOWMdasUxCb3D9w==
+-----END PUBLIC KEY-----)";
 
 constexpr char kAnalyzerKey[] = R"(
-    -----BEGIN PUBLIC KEY-----
-    MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE0qhwNdeKExW2lpVasi0fSP3WC3Cf
-    6DzgWGDyHhszJYh3mdRA1u8Fbg/QW6dXaq74mqp5mj/562wdrPK5pN2mgw==
-    -----END PUBLIC KEY-----
-                                )";
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE0hqO10irC/NDiwBr6ZmKkVbfVYDc
+D7YOM2+8Ta6sc325MzwXaQLNzz+NjQcO3lUgA/lKqJ4EdjRXqM576IVmAQ==
+-----END PUBLIC KEY-----)";
 
 bool MakeProchlomation(uint64_t metric,
                        const uint8_t* data,
@@ -111,13 +109,19 @@ void GenerateProchloMessage(uint64_t metric_hash,
   uint8_t crowd_id[kCrowdIdLength] = {0};
 
   // first byte contains the 4 booleans
-  char daily = 1;
-  char weekly = 0;
-  char monthly = 2;
-  char first = 0;
+  const char daily = 1;
+  const char weekly = 0;
+  const char monthly = 2;
+  const char first = 0;
   data[0] = daily | weekly | monthly | first;
   uint8_t* ptr = data;
   ptr++;
+
+  // Encode metric ID. Store only two bytes for now.
+  // TODO(iefremov): I consider this as a temporary solution, though it should
+  // be enough for the test period.
+  *ptr++ = metric_hash & 0xFF;
+  *ptr++ = (metric_hash >> 8) & 0xFF;
 
   const std::string metastring = "," + meta.platform + "," + meta.version +
                                  "," + meta.channel + "," + meta.woi + ",";

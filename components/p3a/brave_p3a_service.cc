@@ -79,8 +79,7 @@ base::TimeDelta TimeDeltaTillMonday(base::Time time) {
 }  // namespace
 
 BraveP3AService::BraveP3AService(PrefService* local_state)
-    : local_state_(local_state) {
-}
+    : local_state_(local_state) {}
 
 BraveP3AService::~BraveP3AService() = default;
 
@@ -111,6 +110,14 @@ void BraveP3AService::Init() {
   upload_server_url_ = GURL(kDefaultUploadServerUrl);
   MaybeOverrideSettingsFromCommandLine();
 
+  VLOG(2) << "BraveP3AService::Init() Done!";
+  VLOG(2) << "BraveP3AService parameters are:"
+          << " upload_enabled_ = " << upload_enabled_
+          << ", upload_interval_ = " << upload_interval_
+          << ", max_random_delay_seconds_ = " << max_random_delay_seconds_
+          << ", upload_server_url_ = " << upload_server_url_.spec()
+          << ", rotation_interval_ = " << rotation_interval_;
+
   InitPyxisMeta();
 
   // Init log store.
@@ -121,6 +128,7 @@ void BraveP3AService::Init() {
   for (const auto& entry : histogram_values_) {
     log_store_->UpdateValue(entry.first.as_string(), entry.second);
   }
+  histogram_values_ = {};
   // Do rotation if needed.
   const base::Time last_rotation =
       local_state_->GetTime(kLastRotationTimeStampPref);
@@ -209,20 +217,28 @@ void BraveP3AService::InitPyxisMeta() {
   pyxis_meta_.version =
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
   pyxis_meta_.woi = local_state_->GetString(kWeekOfInstallation);
+
+  VLOG(2) << "Pyxis meta: " << pyxis_meta_.platform << " "
+          << pyxis_meta_.channel << " " << pyxis_meta_.version << " "
+          << pyxis_meta_.woi;
 }
 
 void BraveP3AService::StartScheduledUpload() {
-  log_store_->DiscardStagedLog();
+  VLOG(2) << "BraveP3AService::StartScheduledUpload at " << base::Time::Now();
   if (!log_store_->has_unsent_logs()) {
     // We continue to schedule next uploads since new histogram values can
     // come up at any moment. Maybe it's worth to add a method with more
     // appropriate name for this situation.
     upload_scheduler_->UploadFinished(true);
     // Nothing to stage.
+    VLOG(2) << "StartScheduledUpload - Nothing to stage.";
     return;
   }
-  log_store_->StageNextLog();
-  std::string log = log_store_->staged_log();
+  if (!log_store_->has_staged_log()) {
+    log_store_->StageNextLog();
+  }
+  const std::string log = log_store_->staged_log();
+  VLOG(2) << "StartScheduledUpload - Uploading " << log.size() << " bytes";
   uploader_->UploadLog(log, "", "", {});
 }
 
@@ -239,6 +255,7 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
   std::unique_ptr<base::HistogramSamples> samples =
       base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
 
+  // Note that we store only buckets, not actual values.
   size_t bucket = 0u;
   const bool ok = samples->Iterator()->GetBucketIndex(&bucket);
 
@@ -248,6 +265,8 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
     return;
   }
 
+  VLOG(2) << "BraveP3AService::OnHistogramChanged: histogram_name = "
+          << histogram_name << " Sample = " << sample << " bucket = " << bucket;
   if (!initialized_) {
     histogram_values_[histogram_name] = bucket;
   } else {
@@ -264,10 +283,16 @@ void BraveP3AService::OnLogUploadComplete(int response_code,
           switches::kP3AIgnoreServerErrors)) {
     ok = true;
   }
+  VLOG(2) << "BraveP3AService::UploadFinished ok = " << ok
+          << " HTTP response = " << response_code;
+  if (ok) {
+    log_store_->DiscardStagedLog();
+  }
   upload_scheduler_->UploadFinished(ok);
 }
 
 void BraveP3AService::DoRotation() {
+  VLOG(2) << "BraveP3AService doing rotation at " << base::Time::Now();
   log_store_->ResetUploadStamps();
   UpdateRotationTimer();
 
@@ -280,5 +305,8 @@ void BraveP3AService::UpdateRotationTimer() {
                                       : rotation_interval_;
   rotation_timer_.Start(FROM_HERE, next_rotation, this,
                         &BraveP3AService::DoRotation);
+
+  VLOG(2) << "BraveP3AService new rotation timer will fire at "
+          << base::Time::Now() + next_rotation << " after " << next_rotation;
 }
 }  // namespace brave

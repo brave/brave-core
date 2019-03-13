@@ -112,8 +112,8 @@ void BraveP3ALogStore::StageNextLog() {
   DCHECK(!log_.find(staged_entry_key_)->second.sent);
 
   uint64_t staged_entry_value = log_[staged_entry_key_].value;
-
   staged_log_ = serializer_->Serialize(staged_entry_key_, staged_entry_value);
+  VLOG(2) << "BraveP3ALogStore::StageNextLog: staged " << staged_entry_key_;
 }
 
 void BraveP3ALogStore::DiscardStagedLog() {

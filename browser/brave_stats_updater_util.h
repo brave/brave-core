@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/time/time.h"
+#include "base/system/sys_info.h"
 
 namespace brave {
 

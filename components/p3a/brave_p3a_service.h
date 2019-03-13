@@ -8,7 +8,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
-#include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_base.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_prochlo/brave_prochlo_message.h"
@@ -37,7 +36,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   // updates. Can't call it in constructor because of refcounted peculiarities.
   void InitCallbacks();
 
-  // Need a living browser process to complete the initialization.
+  // Needs a living browser process to complete the initialization.
   void Init();
 
   // BraveP3ALogStore::LogSerializer
@@ -54,6 +53,8 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
 
   void StartScheduledUpload();
 
+  // Invoked by callbacks registered by our service. Since these callbacks
+  // can fire on any thread, this method reposts everything to UI thread.
   void OnHistogramChanged(base::StringPiece histogram_name,
                           base::HistogramBase::Sample sample);
 
@@ -92,7 +93,6 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   // Once fired we restart the overall uploading process.
   base::OneShotTimer rotation_timer_;
 
-  // base::WeakPtrFactory<BraveP3AService> weak_factory_;
   DISALLOW_COPY_AND_ASSIGN(BraveP3AService);
 };
 
