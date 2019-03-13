@@ -41,8 +41,8 @@ def parse_args():
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='extra logging')
 
-    parser.add_argument('--fresh-profile', action='store_true',
-                        help='if true, move the existing profile directory out of the way. \
+    parser.add_argument('--real-profile', action='store_true',
+                        help='if true, use your real profile (instead of a fresh one). \
                               can\'t be combined with `--use-profile`.')
 
     parser.add_argument('--use-profile',
@@ -187,10 +187,21 @@ def setup_profile_directory(args):
 
     if is_mac_os:
         print('- processing changes for profile directory')
-        if args.fresh_profile:
-            print('-> clearing existing profile')
-        elif args.use_profile:
+        if args.real_profile:
+            if args.verbose:
+                print('[INFO] using real profile (`--real-profile` passed in)')
+            return None
+
+        profile_dir = tempdir('build-bisect-profile_')
+
+        if args.use_profile:
             print('-> downloading profile: "' + args.use_profile + '"')
+            # TODO: download here
+
+        if args.verbose:
+            print('[INFO] using profile directory: "' + profile_dir + "'")
+
+        return profile_dir
 
 
 def test_version(args, attempt, tag):
@@ -208,14 +219,18 @@ def test_version(args, attempt, tag):
     download_dir = tempdir('build-bisect_')
     download_path = os.path.join(download_dir, asset['name'])
     print('- downloading to ' + download_path)
-    # download(tag, asset['browser_download_url'], download_path)
+    download(tag, asset['browser_download_url'], download_path)
 
-    # install_path = install(download_dir, download_path)
+    install_path = install(download_dir, download_path)
 
-    setup_profile_directory(args)
+    profile_dir = setup_profile_directory(args)
+    run_cmd = ['open', '-a', install_path]
+    run_params = []
+    if profile_dir:
+        run_params = ['--args', '--user-data-dir=' + profile_dir]
 
     print('- running binary')
-    # execute(['open', '-a', install_path])
+    execute(run_cmd + run_params)
 
     first = True
     while True:
@@ -238,46 +253,24 @@ def get_github_token():
         return result
 
 
-def get_good_index(version):
+def get_nearest_index(version, index_to_get, default):
     global tag_names
 
     try:
-        index = tag_names.index(version)
-        print('- starting at ' + tag_names[index])
+        return tag_names.index(version)
     except Exception as e:
-        print('- `good` value "' + version + '" not found. ' + str(e))
+        print('- value "' + version + '" not found. ' + str(e))
         versions = version.split('.')
         if len(versions) != 3:
-            return 0
+            return default
 
         versions.pop()
         results = [i for i in tag_names if i.startswith('.'.join(versions) + '.')]
         if len(results) == 0:
-            return 0
+            return default
 
-        print('-> using "' + results[0] + '" for the `good` value')
-        return tag_names.index(results[0])
-
-
-def get_bad_index(version):
-    global tag_names
-
-    try:
-        index = tag_names.index(version)
-        print('- ending at ' + tag_names[index])
-    except Exception as e:
-        print('- `bad` value "' + version + '" not found. ' + str(e))
-        versions = version.split('.')
-        if len(versions) != 3:
-            return 0
-
-        versions.pop()
-        results = [i for i in tag_names if i.startswith('.'.join(versions) + '.')]
-        if len(results) == 0:
-            return 0
-
-        print('-> using "' + results[-1] + '" for the `bad` value')
-        return tag_names.index(results[-1])
+        print('-> using "' + results[index_to_get])
+        return tag_names.index(results[index_to_get])
 
 
 def find_first_broken_version(args):
@@ -292,14 +285,18 @@ def find_first_broken_version(args):
         raise Exception('[ERROR] Not enough versions to perform search')
 
     if args.good:
-        left_index = get_good_index(args.good)
+        left_index = get_nearest_index(args.good, 0, left_index)
         if left_index == 0:
             args.good = None
+        else:
+            print('- starting at ' + tag_names[left_index])
 
     if args.bad:
-        right_index = get_bad_index(args.bad)
+        right_index = get_nearest_index(args.bad, -1, right_index)
         if right_index == len(tag_names) - 1:
             args.bad = None
+        else:
+            print('- ending at ' + tag_names[right_index])
 
     if args.good or args.bad:
         print('- search set narrowed down to ' + str(right_index - left_index) +
@@ -351,7 +348,7 @@ def main():
     global tag_names
 
     args = parse_args()
-    if args.fresh_profile and args.use_profile:
+    if args.real_profile and args.use_profile:
         print('[ERROR] you can\'t use both `--fresh-profile` AND `--use-profile` at the same time.')
         return 1
 
