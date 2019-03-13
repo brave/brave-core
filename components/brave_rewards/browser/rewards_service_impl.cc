@@ -1529,8 +1529,7 @@ void RewardsServiceImpl::OnGetConfirmationsHistory(
   int total_viewed = 0;
 
   for (const auto& transaction : info->transactions) {
-    // "view" is defined in confirmations::kConfirmationTypeView
-    if (transaction.confirmation_type != "view") {
+    if (transaction.estimated_redemption_value == 0.0) {
       continue;
     }
 
