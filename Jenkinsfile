@@ -46,22 +46,6 @@ pipeline {
                         echo "Pushing changes..."
                         git commit --all --message "pin brave-core to branch ${BRANCH_TO_BUILD}"
                         git push ${BB_REPO}
-                    else
-                        echo "Rebasing brave-browser branch against ${TARGET_BRANCH}..."
-                        git checkout ${BRANCH_TO_BUILD}
-
-                        set +e
-                        git fetch --prune
-                        git rebase origin/${TARGET_BRANCH}
-                        if [ \$? -ne 0 ]; then
-                            echo "Failed to rebase (conflicts), will need to be manually rebased!"
-                            git rebase --abort
-                        else
-                            # unfortunately, no other option than to force push
-                            echo "Rebased ${BRANCH_TO_BUILD} against ${TARGET_BRANCH}"
-                            git push --force ${BB_REPO}
-                        fi
-                        set -e
                     fi
 
                     echo "Sleeping 5m so new branch is discovered or associated PR created in brave-browser..."
