@@ -33,3 +33,7 @@ export const StyledContent = styled<{}, 'div'>('div')`
     color: #686978;
   }
 `
+
+export const StyledCenter = styled<{}, 'div'>('div')`
+  text-align: center;
+` as any

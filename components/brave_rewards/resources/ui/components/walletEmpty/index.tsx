@@ -3,25 +3,36 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper, StyledTitle, StyledContent } from './style'
+import { StyledWrapper, StyledTitle, StyledContent, StyledCenter } from './style'
 import { getLocale } from '../../../helpers'
 import coins from './assets/coins'
 
 interface Props {
   id?: string
+  hideAddFundsText?: boolean
 }
 
 export default class WalletEmpty extends React.PureComponent<Props, {}> {
   render () {
+    const { id, hideAddFundsText } = this.props
+
     return (
-      <StyledWrapper id={this.props.id}>
+      <StyledWrapper id={id}>
         {coins}
         <StyledTitle>{getLocale('rewardsPanelEmptyText1')}</StyledTitle>
         <StyledContent>
-          <b>{getLocale('rewardsPanelEmptyText2')}</b><br/>
-          • {getLocale('rewardsPanelEmptyText3')}<br/>
-          • {getLocale('rewardsPanelEmptyText4')}<br/>
-          • {getLocale('rewardsPanelEmptyText5')}
+          {
+            hideAddFundsText
+            ? <StyledCenter>
+                {getLocale('rewardsPanelEmptyText5')}
+              </StyledCenter>
+            : <>
+                <b>{getLocale('rewardsPanelEmptyText2')}</b><br/>
+                • {getLocale('rewardsPanelEmptyText3')}<br/>
+                • {getLocale('rewardsPanelEmptyText4')}<br/>
+                • {getLocale('rewardsPanelEmptyText5')}
+              </>
+          }
         </StyledContent>
       </StyledWrapper>
     )

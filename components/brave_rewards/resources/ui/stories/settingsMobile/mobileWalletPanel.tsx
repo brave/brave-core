@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { boolean, object } from '@storybook/addon-knobs'
 
-import { WalletSummary, WalletWrapper } from '../../../../src/features/rewards'
+import { WalletEmpty, WalletWrapper } from '../../../../src/features/rewards'
 import { StyledWalletClose, StyledWalletOverlay, StyledWalletWrapper } from './style'
 import { CloseStrokeIcon, WalletAddIcon } from '../../../../src/components/icons'
 import ModalAddFunds, { Address } from '../../../../src/features/rewards/modalAddFunds'
@@ -110,17 +110,7 @@ class MobileWalletPanel extends React.Component<Props, State> {
               ])}
               connectedWallet={boolean('Connected wallet', false)}
             >
-              <WalletSummary
-                report={{
-                  grant: { tokens: '10.0', converted: '0.25' },
-                  ads: { tokens: '10.0', converted: '0.25' },
-                  deposit: { tokens: '10.0', converted: '0.25' },
-                  contribute: { tokens: '10.0', converted: '0.25' },
-                  donation: { tokens: '2.0', converted: '0.25' },
-                  tips: { tokens: '19.0', converted: '5.25' }
-                }}
-                onActivity={doNothing}
-              />
+              <WalletEmpty hideAddFundsText={true} />
             </WalletWrapper>
           </StyledWalletWrapper>
           {
