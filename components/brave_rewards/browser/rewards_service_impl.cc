@@ -1477,12 +1477,12 @@ std::pair<uint64_t, uint64_t> RewardsServiceImpl::GetEarningsRange() {
   return std::make_pair(from_timestamp, to_timestamp);
 }
 
-void RewardsServiceImpl::AdSustained(const std::string& json) {
+void RewardsServiceImpl::ConfirmAd(const std::string& json) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->AdSustained(json);
+  bat_ledger_->ConfirmAd(json);
 }
 
 void RewardsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
@@ -1525,12 +1525,17 @@ void RewardsServiceImpl::OnGetConfirmationsHistory(
     callback.Run(0, 0.0);
   }
 
-  int total_viewed = info->transactions.size();
   double estimated_earnings = 0.0;
-  if (total_viewed > 0) {
-    for (const auto& transaction : info->transactions) {
-      estimated_earnings += transaction.estimated_redemption_value;
+  int total_viewed = 0;
+
+  for (const auto& transaction : info->transactions) {
+    // "view" is defined in confirmations::kConfirmationTypeView
+    if (transaction.confirmation_type != "view") {
+      continue;
     }
+
+    estimated_earnings += transaction.estimated_redemption_value;
+    total_viewed++;
   }
 
   callback.Run(total_viewed, estimated_earnings);

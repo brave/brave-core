@@ -9,6 +9,7 @@
 #include <string>
 
 #include "bat/ads/export.h"
+#include "bat/ads/confirmation_type.h"
 #include "bat/ads/result.h"
 
 namespace ads {
@@ -29,6 +30,7 @@ struct ADS_EXPORT NotificationInfo {
   std::string text;
   std::string url;
   std::string uuid;
+  ConfirmationType type;
 };
 
 }  // namespace ads

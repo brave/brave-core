@@ -14,7 +14,7 @@
 
 #include "base/base64.h"
 
-#include "tweetnacl.h"
+#include "tweetnacl.h"  // NOLINT
 
 namespace helper {
 

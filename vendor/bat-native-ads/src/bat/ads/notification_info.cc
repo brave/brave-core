@@ -4,8 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/notification_info.h"
+#include "bat/ads/confirmation_type.h"
 
 #include "bat/ads/internal/json_helper.h"
+
+#include "base/logging.h"
 
 namespace ads {
 
@@ -15,7 +18,8 @@ NotificationInfo::NotificationInfo() :
     advertiser(""),
     text(""),
     url(""),
-    uuid("") {}
+    uuid(""),
+    type(ConfirmationType::UNKNOWN) {}
 
 NotificationInfo::NotificationInfo(const NotificationInfo& info) :
     creative_set_id(info.creative_set_id),
@@ -23,7 +27,8 @@ NotificationInfo::NotificationInfo(const NotificationInfo& info) :
     advertiser(info.advertiser),
     text(info.text),
     url(info.url),
-    uuid(info.uuid) {}
+    uuid(info.uuid),
+    type(info.type) {}
 
 NotificationInfo::~NotificationInfo() = default;
 
@@ -71,6 +76,21 @@ Result NotificationInfo::FromJson(
     uuid = document["uuid"].GetString();
   }
 
+  if (document.HasMember("confirmation_type")) {
+    std::string confirmation_type = document["confirmation_type"].GetString();
+    if (confirmation_type == kConfirmationTypeClick) {
+      type = ConfirmationType::CLICK;
+    } else if (confirmation_type == kConfirmationTypeDismiss) {
+      type = ConfirmationType::DISMISS;
+    } else if (confirmation_type == kConfirmationTypeView) {
+      type = ConfirmationType::VIEW;
+    } else if (confirmation_type == kConfirmationTypeLanded) {
+      type = ConfirmationType::LANDED;
+    } else {
+      type = ConfirmationType::UNKNOWN;
+    }
+  }
+
   return SUCCESS;
 }
 
@@ -94,6 +114,34 @@ void SaveToJson(JsonWriter* writer, const NotificationInfo& info) {
 
   writer->String("uuid");
   writer->String(info.uuid.c_str());
+
+  writer->String("confirmation_type");
+  switch (info.type) {
+    case ConfirmationType::UNKNOWN: {
+      writer->String("");
+      break;
+    }
+
+    case ConfirmationType::CLICK: {
+      writer->String(kConfirmationTypeClick);
+      break;
+    }
+
+    case ConfirmationType::DISMISS: {
+      writer->String(kConfirmationTypeDismiss);
+      break;
+    }
+
+    case ConfirmationType::VIEW: {
+      writer->String(kConfirmationTypeView);
+      break;
+    }
+
+    case ConfirmationType::LANDED: {
+      writer->String(kConfirmationTypeLanded);
+      break;
+    }
+  }
 
   writer->EndObject();
 }

@@ -47,8 +47,9 @@ class ConfirmationsImpl : public Confirmations {
       const uint64_t from_timestamp_in_seconds,
       const uint64_t to_timestamp_in_seconds,
       OnGetTransactionHistoryCallback callback) override;
-  void AppendEstimatedRedemptionValueToTransactionHistory(
-      double estimated_redemption_value);
+  void AppendTransactionToTransactionHistory(
+      const double estimated_redemption_value,
+      const ConfirmationType confirmation_type);
 
   // Scheduled events
   bool OnTimer(const uint32_t timer_id) override;
@@ -58,7 +59,7 @@ class ConfirmationsImpl : public Confirmations {
   void StartRetryingToGetRefillSignedTokens(const uint64_t start_timer_in);
 
   // Redeem unblinded tokens
-  void AdSustained(std::unique_ptr<NotificationInfo> info) override;
+  void ConfirmAd(std::unique_ptr<NotificationInfo> info) override;
 
   // Payout redeemed tokens
   void StartPayingOutRedeemedTokens(const uint64_t start_timer_in);

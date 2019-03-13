@@ -163,12 +163,12 @@ void BatAdsClientMojoBridge::SetCatalogIssuers(
   bat_ads_client_->SetCatalogIssuers(info->ToJson());
 }
 
-void BatAdsClientMojoBridge::AdSustained(
+void BatAdsClientMojoBridge::ConfirmAd(
     std::unique_ptr<ads::NotificationInfo> info) {
   if (!connected())
     return;
 
-  bat_ads_client_->AdSustained(info->ToJson());
+  bat_ads_client_->ConfirmAd(info->ToJson());
 }
 
 uint32_t BatAdsClientMojoBridge::SetTimer(const uint64_t time_offset) {

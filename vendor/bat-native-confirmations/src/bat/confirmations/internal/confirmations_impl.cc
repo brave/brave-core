@@ -5,6 +5,8 @@
 
 #include <utility>
 
+#include "bat/confirmations/confirmation_type.h"
+
 #include "bat/confirmations/internal/confirmations_impl.h"
 #include "bat/confirmations/internal/logging.h"
 #include "bat/confirmations/internal/static_values.h"
@@ -148,6 +150,9 @@ base::Value ConfirmationsImpl::GetTransactionHistoryAsDictionary(
 
     transaction_dictionary.SetKey("estimated_redemption_value",
         base::Value(transaction.estimated_redemption_value));
+
+    transaction_dictionary.SetKey("confirmation_type",
+        base::Value(transaction.confirmation_type));
 
     list.GetList().push_back(std::move(transaction_dictionary));
   }
@@ -320,6 +325,14 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
     info.estimated_redemption_value =
         estimated_redemption_value_value->GetDouble();
 
+    // Confirmation type
+    auto* confirmation_type_value =
+        transaction_dictionary->FindKey("confirmation_type");
+    if (!confirmation_type_value) {
+      return false;
+    }
+    info.confirmation_type = confirmation_type_value->GetString();
+
     transaction_history->push_back(info);
   }
 
@@ -486,14 +499,42 @@ double ConfirmationsImpl::GetEstimatedRedemptionValue(
   return estimated_redemption_value;
 }
 
-void ConfirmationsImpl::AppendEstimatedRedemptionValueToTransactionHistory(
-    double estimated_redemption_value) {
+void ConfirmationsImpl::AppendTransactionToTransactionHistory(
+    const double estimated_redemption_value,
+    const ConfirmationType confirmation_type) {
   auto now = base::Time::Now();
   auto now_in_seconds = (now - base::Time()).InSeconds();
 
   TransactionInfo info;
   info.timestamp_in_seconds = now_in_seconds;
   info.estimated_redemption_value = estimated_redemption_value;
+
+  switch (confirmation_type) {
+    case ConfirmationType::UNKNOWN: {
+      DCHECK(false) << "Invalid confirmation type";
+      break;
+    }
+
+    case ConfirmationType::CLICK: {
+      info.confirmation_type = kConfirmationTypeClick;
+      break;
+    }
+
+    case ConfirmationType::DISMISS: {
+      info.confirmation_type = kConfirmationTypeDismiss;
+      break;
+    }
+
+    case ConfirmationType::VIEW: {
+      info.confirmation_type = kConfirmationTypeView;
+      break;
+    }
+
+    case ConfirmationType::LANDED: {
+      info.confirmation_type = kConfirmationTypeLanded;
+      break;
+    }
+  }
 
   transaction_history_.push_back(info);
 
@@ -502,16 +543,42 @@ void ConfirmationsImpl::AppendEstimatedRedemptionValueToTransactionHistory(
   SaveState();
 }
 
-void ConfirmationsImpl::AdSustained(std::unique_ptr<NotificationInfo> info) {
-  BLOG(INFO) << "AdSustained:";
+void ConfirmationsImpl::ConfirmAd(std::unique_ptr<NotificationInfo> info) {
+  BLOG(INFO) << "ConfirmAd:";
   BLOG(INFO) << "  creativeSetId: " << info->creative_set_id;
   BLOG(INFO) << "  category: " << info->category;
   BLOG(INFO) << "  notificationUrl: " << info->url;
   BLOG(INFO) << "  notificationText: " << info->text;
   BLOG(INFO) << "  advertiser: " << info->advertiser;
   BLOG(INFO) << "  uuid: " << info->uuid;
+  switch (info->type) {
+    case ConfirmationType::UNKNOWN: {
+      DCHECK(false) << "Invalid confirmation type";
+      break;
+    }
 
-  redeem_token_->Redeem(info->uuid);
+    case ConfirmationType::CLICK: {
+      BLOG(INFO) << "  confirmationType: click";
+      break;
+    }
+
+    case ConfirmationType::DISMISS: {
+      BLOG(INFO) << "  confirmationType: dismiss";
+      break;
+    }
+
+    case ConfirmationType::VIEW: {
+      BLOG(INFO) << "  confirmationType: view";
+      break;
+    }
+
+    case ConfirmationType::LANDED: {
+      BLOG(INFO) << "  confirmationType: landed";
+      break;
+    }
+  }
+
+  redeem_token_->Redeem(info->uuid, info->type);
 }
 
 bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {

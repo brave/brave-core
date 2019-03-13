@@ -314,10 +314,10 @@ void AdsClientMojoBridge::SetCatalogIssuers(
   }
 }
 
-void AdsClientMojoBridge::AdSustained(const std::string& notification_info) {
+void AdsClientMojoBridge::ConfirmAd(const std::string& notification_info) {
   auto info = std::make_unique<ads::NotificationInfo>();
   if (info->FromJson(notification_info) == ads::Result::SUCCESS)
-    ads_client_->AdSustained(std::move(info));
+    ads_client_->ConfirmAd(std::move(info));
 }
 
 // static

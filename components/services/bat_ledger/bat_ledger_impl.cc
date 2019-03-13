@@ -372,8 +372,8 @@ void BatLedgerImpl::SetCatalogIssuers(const std::string& info) {
   ledger_->SetCatalogIssuers(info);
 }
 
-void BatLedgerImpl::AdSustained(const std::string& info) {
-  ledger_->AdSustained(info);
+void BatLedgerImpl::ConfirmAd(const std::string& info) {
+  ledger_->ConfirmAd(info);
 }
 
 // static

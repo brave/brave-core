@@ -421,7 +421,7 @@ class LedgerImpl : public ledger::Ledger,
   void SetAddresses(std::map<std::string, std::string> addresses);
 
   void SetCatalogIssuers(const std::string& info) override;
-  void AdSustained(const std::string& info) override;
+  void ConfirmAd(const std::string& info) override;
   void GetConfirmationsHistory(
       const uint64_t from_timestamp_seconds,
       const uint64_t to_timestamp_seconds,

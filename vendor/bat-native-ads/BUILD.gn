@@ -59,6 +59,7 @@ source_set("ads") {
     # add this only when ledger and confirmations are in the same process
     # rebase_path("bat-native-ledger", dep_base),
     # rebase_path("bat-native-ads", dep_base),
+    "//brave/test:*",
   ]
 
   output_name = "bat_native_ads"
@@ -70,6 +71,7 @@ source_set("ads") {
     "include/bat/ads/bundle_state.h",
     "include/bat/ads/client_info_platform_type.h",
     "include/bat/ads/client_info.h",
+    "include/bat/ads/confirmation_type.h",
     "include/bat/ads/export.h",
     "include/bat/ads/issuer_info.h",
     "include/bat/ads/issuers_info.h",

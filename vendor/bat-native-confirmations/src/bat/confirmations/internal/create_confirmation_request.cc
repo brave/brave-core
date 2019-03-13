@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/confirmations/confirmation_type.h"
+
 #include "bat/confirmations/internal/create_confirmation_request.h"
 #include "bat/confirmations/internal/ads_serve_helper.h"
 #include "bat/confirmations/internal/security_helper.h"
@@ -63,7 +65,8 @@ std::string CreateConfirmationRequest::GetContentType() const {
 
 std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
     const std::string& creative_instance_id,
-    const BlindedToken& token) const {
+    const BlindedToken& token,
+    const ConfirmationType confirmation_type) const {
   DCHECK(!creative_instance_id.empty());
 
   base::Value payload(base::Value::Type::DICTIONARY);
@@ -75,7 +78,35 @@ std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
   auto token_base64 = token.encode_base64();
   payload.SetKey("blindedPaymentToken", base::Value(token_base64));
 
-  payload.SetKey("type", base::Value("view"));
+  std::string type;
+  switch (confirmation_type) {
+    case ConfirmationType::UNKNOWN: {
+      DCHECK(false) << "Invalid confirmation type";
+      break;
+    }
+
+    case ConfirmationType::CLICK: {
+      type = kConfirmationTypeClick;
+      break;
+    }
+
+    case ConfirmationType::DISMISS: {
+      type = kConfirmationTypeDismiss;
+      break;
+    }
+
+    case ConfirmationType::VIEW: {
+      type = kConfirmationTypeView;
+      break;
+    }
+
+    case ConfirmationType::LANDED: {
+      type = kConfirmationTypeLanded;
+      break;
+    }
+  }
+
+  payload.SetKey("type", base::Value(type));
 
   std::string json;
   base::JSONWriter::Write(payload, &json);
