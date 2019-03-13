@@ -78,7 +78,7 @@ void BraveProfileChooserView::ResetView() {
   tor_profile_button_ = nullptr;
 }
 
-views::View* BraveProfileChooserView::CreateDiceSyncErrorView(
+views::View* BraveProfileChooserView::BraveCreateDiceSyncErrorView(
     const AvatarMenu::Item& avatar_item,
     sync_ui_util::AvatarSyncErrorType error,
     int button_string_id) {
