@@ -154,6 +154,14 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.adsData.adsEstimatedEarnings = data.adsEstimatedEarnings
       break
     }
+    case types.GET_ADS_IS_SUPPORTED_REGION: {
+      chrome.send('brave_rewards.getAdsIsSupportedRegion', [])
+      break
+    }
+    case types.ON_ADS_IS_SUPPORTED_REGION: {
+      state.adsData.adsIsSupported = action.payload.supported
+      break
+    }
   }
 
   return state
