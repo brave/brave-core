@@ -13,6 +13,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/shield_exceptions.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -96,18 +97,23 @@ void OnBeforeURLRequestAdBlockTPOnTaskRunner(
   bool did_match_exception = false;
   std::string tab_host = ctx->tab_origin.host();
   if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-           ctx->request_url, ctx->resource_type, tab_host,
-           &did_match_exception)) {
+          ctx->request_url, ctx->resource_type, tab_host,
+          &did_match_exception)) {
     ctx->blocked_by = kAdBlocked;
   } else if (!did_match_exception &&
-      !g_brave_browser_process->ad_block_regional_service()
-            ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
-                                 tab_host, &did_match_exception)) {
+             !g_brave_browser_process->ad_block_regional_service()
+                  ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
+                                       tab_host, &did_match_exception)) {
     ctx->blocked_by = kAdBlocked;
   } else if (!did_match_exception &&
-      !g_brave_browser_process->tracking_protection_service()
-          ->ShouldStartRequest(ctx->request_url, ctx->resource_type, tab_host,
-                               &did_match_exception)) {
+             !g_brave_browser_process->ad_block_custom_filters_service()
+                  ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
+                                       tab_host, &did_match_exception)) {
+    ctx->blocked_by = kAdBlocked;
+  } else if (!did_match_exception &&
+             !g_brave_browser_process->tracking_protection_service()
+                  ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
+                                       tab_host, &did_match_exception)) {
     ctx->blocked_by = kTrackerBlocked;
   }
 }
