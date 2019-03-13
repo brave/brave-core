@@ -126,20 +126,20 @@ void BraveNetworkDelegateBase::InitPrefChangeRegistrarOnUI() {
   user_pref_change_registrar_->Init(user_prefs);
   user_pref_change_registrar_->Add(
       kGoogleLoginControlType,
-      base::Bind(&BraveNetworkDelegateBase::OnPreferenceChanged,
-                 base::Unretained(this), kGoogleLoginControlType));
+      base::BindRepeating(&BraveNetworkDelegateBase::OnPreferenceChanged,
+                          base::Unretained(this), kGoogleLoginControlType));
   user_pref_change_registrar_->Add(
       kFBEmbedControlType,
-      base::Bind(&BraveNetworkDelegateBase::OnPreferenceChanged,
-                 base::Unretained(this), kFBEmbedControlType));
+      base::BindRepeating(&BraveNetworkDelegateBase::OnPreferenceChanged,
+                          base::Unretained(this), kFBEmbedControlType));
   user_pref_change_registrar_->Add(
       kTwitterEmbedControlType,
-      base::Bind(&BraveNetworkDelegateBase::OnPreferenceChanged,
-                 base::Unretained(this), kTwitterEmbedControlType));
+      base::BindRepeating(&BraveNetworkDelegateBase::OnPreferenceChanged,
+                          base::Unretained(this), kTwitterEmbedControlType));
   user_pref_change_registrar_->Add(
       kLinkedInEmbedControlType,
-      base::Bind(&BraveNetworkDelegateBase::OnPreferenceChanged,
-                 base::Unretained(this), kLinkedInEmbedControlType));
+      base::BindRepeating(&BraveNetworkDelegateBase::OnPreferenceChanged,
+                          base::Unretained(this), kLinkedInEmbedControlType));
   UpdateAdBlockFromPref(kFBEmbedControlType);
   UpdateAdBlockFromPref(kTwitterEmbedControlType);
   UpdateAdBlockFromPref(kLinkedInEmbedControlType);

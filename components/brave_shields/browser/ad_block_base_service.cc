@@ -156,8 +156,9 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
 
 void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
   GetTaskRunner()->PostTask(
-      FROM_HERE, base::Bind(&AdBlockBaseService::EnableTagOnFileTaskRunner,
-      base::Unretained(this), tag, enabled));
+      FROM_HERE,
+      base::BindOnce(&AdBlockBaseService::EnableTagOnFileTaskRunner,
+                     base::Unretained(this), tag, enabled));
 }
 
 void AdBlockBaseService::EnableTagOnFileTaskRunner(

@@ -28,8 +28,8 @@ BraveCookieSettings::BraveCookieSettings(
   pref_change_registrar_.Init(prefs);
   pref_change_registrar_.Add(
       kGoogleLoginControlType,
-      base::Bind(&BraveCookieSettings::OnAllowGoogleAuthChanged,
-                 base::Unretained(this)));
+      base::BindRepeating(&BraveCookieSettings::OnAllowGoogleAuthChanged,
+                          base::Unretained(this)));
 }
 
 BraveCookieSettings::~BraveCookieSettings() { }
