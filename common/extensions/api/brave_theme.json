@@ -25,36 +25,19 @@
     ],
     "functions": [
       {
-        "name": "setBraveThemeType",
+        "name": "getBraveThemeList",
         "type": "function",
-        "description": "Set brave theme",
-        "parameters": [
-          {
-            "name": "type",
-            "type": "string"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "optional": true,
-            "parameters": []
-          }
-        ]
-      },
-      {
-        "name": "getBraveThemeType",
-        "type": "function",
-        "description": "Get brave theme",
+        "description": "Get available brave theme list",
         "parameters": [
           {
             "name": "callback",
             "type": "function",
-            "description": "Function called when current theme type is fetched",
+            "description": "Function called when brave theme list is fetched",
             "parameters": [
               {
-                "name": "type",
+                "name": "types",
                 "type": "string",
-                "description": "current theme type(ex, Dark or Light)"
+                "description": "json stringified avalable theme list"
               }
             ]
           }
