@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux'
 import * as newTabActions from './actions/new_tab_actions'
 import { debounce } from '../common/debounce'
 import store from './store'
+import { isHttpOrHttps } from './helpers/newTabUtils'
 
 let actions: any
 
@@ -57,7 +58,8 @@ export const getGridSites = (state: NewTab.State, checkBookmarkInfo?: boolean) =
   let gridSites = state.topSites.slice()
     .filter((site) =>
       !state.ignoredTopSites.find((ignoredSite) => ignoredSite.url === site.url) &&
-      !state.pinnedTopSites.find((pinnedSite) => pinnedSite.url === site.url)
+      !state.pinnedTopSites.find((pinnedSite) => pinnedSite.url === site.url) &&
+      !isHttpOrHttps(site.url)
     )
 
   // Then add in pinned sites at the specified index, these need to be added in the same
