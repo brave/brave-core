@@ -25,13 +25,13 @@
 
 namespace ads {
 
-enum ADS_EXPORT LogLevel {
+enum LogLevel {
   LOG_ERROR = 1,
   LOG_WARNING,
   LOG_INFO
 };
 
-enum ADS_EXPORT URLRequestMethod {
+enum URLRequestMethod {
   GET = 0,
   PUT = 1,
   POST = 2
