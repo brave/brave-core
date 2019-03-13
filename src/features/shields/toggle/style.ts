@@ -4,7 +4,7 @@
 
 import styled, { css } from '../../../theme'
 import { Props } from './index'
-import palette from '../../../theme/palette'
+import palette from '../../../theme/colors'
 
 export const StyledCheckbox = styled<{}, 'input'>('input')`
   -webkit-appearance: none;

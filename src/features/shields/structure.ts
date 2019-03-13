@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from '../../theme'
-import palette from '../../theme/palette'
+import palette from '../../theme/colors'
 import Background from './media/background.svg'
 import { BlockedInfoRowStats, BlockedInfoRowText } from './display'
 import { StyledWrapper as Toggle } from '../shields/toggle/style'
