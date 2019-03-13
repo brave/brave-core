@@ -305,7 +305,7 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
     }
     case shieldsPanelTypes.CHANGE_ALL_NO_SCRIPT_SETTINGS: {
       const tabId: number = shieldsPanelState.getActiveTabId(state)
-      state = shieldsPanelState.changeAllNoScriptSettings(state, tabId, action.origin, action.shouldBlock)
+      state = shieldsPanelState.changeAllNoScriptSettings(state, tabId, action.shouldBlock)
       break
     }
   }
