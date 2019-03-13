@@ -9,15 +9,7 @@ Polymer({
   is: 'settings-brave-appearance-theme',
 
   properties: {
-    braveThemeTypes_: {
-      readOnly: true,
-      type: Array,
-      value: [
-        'Light',
-        'Dark',
-      ],
-    },
-    braveThemeType_: String,
+    braveThemeList_: [],
   },
 
   /** @private {?settings.BraveAppearanceBrowserProxy} */
@@ -30,23 +22,9 @@ Polymer({
 
   /** @override */
   ready: function() {
-    this.browserProxy_.getBraveThemeType().then(theme => {
-      this.braveThemeType_ = theme;
+    this.browserProxy_.getBraveThemeList().then(list => {
+      this.braveThemeList_ = JSON.parse(list);
     });
-  },
-
-  /**
-   * @param {string} theme1
-   * @param {string} theme2
-   * @return {boolean}
-   * @private
-   */
-  braveThemeTypeEqual_: function(theme1, theme2) {
-    return theme1 === theme2;
-  },
-
-  onBraveThemeTypeChange_: function() {
-    this.browserProxy_.setBraveThemeType(this.$.braveThemeType.value);
   },
 });
 
