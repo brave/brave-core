@@ -344,5 +344,37 @@
   "earningsClaimDefault": {
     "message": "Your Ads earnings are available.",
     "description": "Panel notification text for Ads grant"
+  },
+  "and": {
+    "message": "and",
+    "description": "The word 'and'"
+  },
+  "braveRewardsSubTitle": {
+    "message": "Get Rewarded for Browsing!",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "disabledPanelTextTwo": {
+    "message": "Earn by viewing privacy-respecting ads, and pay it forward to support content creators you love.",
+    "description": "Text block for wallet disabled panel"
+  },
+  "enableRewards": {
+    "message": "Enable Brave Rewards",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "privacyPolicy": {
+    "message": "Privacy Policy",
+    "description": "Privacy Policy"
+  },
+  "serviceText": {
+    "message": "By clicking 'Enable Brave Rewards', you indicate that you have read and agree to the",
+    "description": "Terms of service main text"
+  },
+  "termsOfService": {
+    "message": "Terms of Service",
+    "description": "Terms of Service"
+  },
+  "welcomeBack": {
+    "message": "Welcome Back!",
+    "description": "Title message for wallet disabled panel"
   }
 }

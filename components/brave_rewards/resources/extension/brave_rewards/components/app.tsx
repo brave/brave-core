@@ -5,12 +5,19 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import { DisabledPanel, PanelWelcome } from 'brave-ui/features/rewards'
+import {
+  PanelWelcome,
+  WalletPanelDisabled,
+  WalletWrapper
+} from 'brave-ui/features/rewards'
+import { BatColorIcon, WalletAddIcon } from 'brave-ui/components/icons'
 
 // Components
 import Panel from './panel'
 
 // Utils
+import * as utils from '../utils'
+import { getMessage } from '../background/api/locale_api'
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
 
 interface Props extends RewardsExtension.ComponentProps {
@@ -139,9 +146,27 @@ export class RewardsPanel extends React.Component<Props, State> {
     }
   }
 
+  openPrivacyPolicy () {
+    chrome.tabs.create({
+      url: 'https://brave.com/privacy#rewards'
+    })
+  }
+
   openRewards () {
     chrome.tabs.create({
       url: 'chrome://rewards'
+    })
+  }
+
+  openRewardsAddFunds () {
+    chrome.tabs.create({
+      url: 'chrome://rewards/#add-funds'
+    })
+  }
+
+  openTOS () {
+    chrome.tabs.create({
+      url: 'https://brave.com/terms-of-use'
     })
   }
 
@@ -158,8 +183,12 @@ export class RewardsPanel extends React.Component<Props, State> {
       enabledMain,
       walletCreateFailed,
       walletCreated,
-      walletCreating
+      walletCreating,
+      walletProperties
     } = this.props.rewardsPanelData
+
+    const { balance, grants, rates } = walletProperties
+    const converted = utils.convertBalance(balance.toString(), rates)
 
     if (!walletCreated) {
       return (
@@ -179,9 +208,38 @@ export class RewardsPanel extends React.Component<Props, State> {
         {
           enabledMain
           ? <Panel windowId={this.state.windowId} />
-          : <div style={{ width: '330px' }}>
-              <DisabledPanel onLinkOpen={this.openRewards} />
-            </div>
+          : <>
+              <WalletWrapper
+                compact={true}
+                contentPadding={false}
+                gradientTop={'249,251,252'}
+                balance={balance.toFixed(1)}
+                showSecActions={false}
+                connectedWallet={false}
+                showCopy={false}
+                grants={utils.getGrants(grants)}
+                converted={utils.formatConverted(converted)}
+                convertProbiToFixed={utils.convertProbiToFixed}
+                actions={[
+                  {
+                    name: getMessage('addFunds'),
+                    action: this.openRewardsAddFunds,
+                    icon: <WalletAddIcon />
+                  },
+                  {
+                    name:  getMessage('rewardsSettings'),
+                    action: this.openRewards,
+                    icon: <BatColorIcon />
+                  }
+                ]}
+              >
+                <WalletPanelDisabled
+                  onTOSClick={this.openTOS}
+                  onEnable={this.openRewards}
+                  onPrivacyClick={this.openPrivacyPolicy}
+                />
+              </WalletWrapper>
+            </>
         }
       </>
     )
