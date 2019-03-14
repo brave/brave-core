@@ -1,4 +1,6 @@
 language: node_js
+# lock node.js to the active LTS
+# see https://nodejs.org/en/about/releases/ for info
 node_js:
   - "node"
 
