@@ -1,13 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/brave_md_settings_ui.h"
 
+#include <string>
 #include "base/command_line.h"
 #include "brave/browser/extensions/brave_component_loader.h"
-#include "brave/browser/resources/grit/brave_settings_resources.h"
-#include "brave/browser/resources/grit/brave_settings_resources_map.h"
+#include "brave/browser/resources/settings/grit/brave_settings_resources.h"
+#include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
@@ -23,7 +25,8 @@
 BraveMdSettingsUI::BraveMdSettingsUI(content::WebUI* web_ui,
                                      const std::string& host)
     : MdSettingsUI(web_ui) {
-  web_ui->AddMessageHandler(std::make_unique<settings::MetricsReportingHandler>());
+  web_ui->AddMessageHandler(
+    std::make_unique<settings::MetricsReportingHandler>());
   web_ui->AddMessageHandler(std::make_unique<BravePrivacyHandler>());
   web_ui->AddMessageHandler(std::make_unique<DefaultBraveShieldsHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveDefaultExtensionsHandler>());

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/md_extensions/BUILD.gn b/chrome/browser/resources/md_extensions/BUILD.gn
+index 7dacff281fc4029e7c3527b1e041b505aae51c7a..f50c8fe387d179fba372e225b3051da0ed88ce33 100644
+--- a/chrome/browser/resources/md_extensions/BUILD.gn
++++ b/chrome/browser/resources/md_extensions/BUILD.gn
+@@ -21,6 +21,7 @@ optimize_webui("build") {
+ 
+   deps = [
+     ":unpak",
++    "//brave/browser/resources/md_extensions:unpak",
+   ]
+ }
+ 
