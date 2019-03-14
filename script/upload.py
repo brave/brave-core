@@ -104,8 +104,6 @@ def main():
     #     # Upload PDBs to Windows symbol server.
     #     run_python_script('upload-windows-pdb.py')
 
-    versions = parse_version(args.version)
-    version = '.'.join(versions[:3])
     print('[INFO] Finished upload')
 
 
@@ -216,6 +214,16 @@ def get_brave_packages(dir, channel, version):
                         file_desired_stub = 'BraveBrowserDevSetup.exe'
                         file_desired_stub_silent = 'BraveBrowserSilentDevSetup.exe'
                         file_desired_stub_untagged = 'BraveBrowserUntaggedDevSetup.exe'
+                    elif channel_capitalized == 'Nightly':
+                        file_desired_standalone = (
+                            'BraveBrowserStandaloneNightlySetup.exe')
+                        file_desired_standalone_silent = (
+                            'BraveBrowserStandaloneSilentNightlySetup.exe')
+                        file_desired_standalone_untagged = (
+                            'BraveBrowserStandaloneUntaggedNightlySetup.exe')
+                        file_desired_stub = 'BraveBrowserNightlySetup.exe'
+                        file_desired_stub_silent = 'BraveBrowserSilentNightlySetup.exe'
+                        file_desired_stub_untagged = 'BraveBrowserUntaggedNightlySetup.exe'
                     if re.match(r'BraveBrowser' + channel_capitalized +
                                 r'Setup_.*\.exe', file):
                         filecopy(file_path, file_desired_stub)
@@ -298,6 +306,16 @@ def get_brave_packages(dir, channel, version):
                         file_desired_stub = 'BraveBrowserDevSetup32.exe'
                         file_desired_stub_silent = 'BraveBrowserSilentDevSetup32.exe'
                         file_desired_stub_untagged = 'BraveBrowserUntaggedDevSetup32.exe'
+                    elif channel_capitalized == 'Nightly':
+                        file_desired_standalone = (
+                            'BraveBrowserStandaloneNightlySetup32.exe')
+                        file_desired_standalone_silent = (
+                            'BraveBrowserStandaloneSilentNightlySetup32.exe')
+                        file_desired_standalone_untagged = (
+                            'BraveBrowserStandaloneUntaggedNightlySetup32.exe')
+                        file_desired_stub = 'BraveBrowserNightlySetup32.exe'
+                        file_desired_stub_silent = 'BraveBrowserSilentNightlySetup32.exe'
+                        file_desired_stub_untagged = 'BraveBrowserUntaggedNightlySetup32.exe'
                     if re.match(r'BraveBrowser' + channel_capitalized +
                                 r'Setup32_.*\.exe', file):
                         filecopy(file_path, file_desired_stub)
@@ -403,6 +421,8 @@ def create_release_draft(repo, tag):
     name = '{0} {1}'.format(release_name(), tag)
     # TODO: Parse release notes from CHANGELOG.md
 
+    nightly_winstallers = (
+        '`BraveBrowserNightlySetup.exe` and `BraveBrowserNightlySetup32.exe`')
     dev_winstallers = (
         '`BraveBrowserDevSetup.exe` and `BraveBrowserDevSetup32.exe`')
     beta_winstallers = (
@@ -410,7 +430,7 @@ def create_release_draft(repo, tag):
     release_winstallers = (
         '`BraveBrowserSetup.exe` and `BraveBrowserSetup32.exe`')
 
-    dev_beta_warning = '''*This is not the released version of Brave.
+    nightly_dev_beta_warning = '''*This is not the released version of Brave.
 **Be careful** - things are unstable and might even be broken.*
 
 These builds are an unpolished and unfinished early preview for the new
@@ -421,12 +441,15 @@ These builds showcase the newest advances that we're bringing to your browser,
 but this is still a prototype, not a reliable daily driver. Try it out only if
 you're looking for a little extra spice and adventure in your browsing.'''
 
-    if release_channel() in 'dev':
+    if release_channel() in 'nightly':
+        winstallers = nightly_winstallers
+        warning = nightly_dev_beta_warning
+    elif release_channel() in 'dev':
         winstallers = dev_winstallers
-        warning = dev_beta_warning
+        warning = nightly_dev_beta_warning
     elif release_channel() in 'beta':
         winstallers = beta_winstallers
-        warning = dev_beta_warning
+        warning = nightly_dev_beta_warning
     else:
         winstallers = release_winstallers
         warning = ""

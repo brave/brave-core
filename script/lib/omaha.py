@@ -70,14 +70,16 @@ def get_base64_authorization(omahaid, omahapw):
     return base64.b64encode(concatstr.encode())
 
 
-# To-Do: Add functions to create apps
+# TODO: add functions to create apps
 def get_appguid(channel, platform):
-    if channel in ['dev'] or platform in ['darwin'] and channel in ['beta', 'dev', 'release']:
+    if channel in ['dev'] or (platform in ['darwin'] and channel in ['nightly', 'dev', 'beta', 'release']):
         return '{CB2150F2-595F-4633-891A-E39720CE0531}'
     elif channel in ['beta']:
         return '{103BD053-949B-43A8-9120-2E424887DE11}'
     elif channel in ['release']:
         return '{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}'
+    elif channel in ['nightly']:
+        return '{C6CB981E-DB30-4876-8639-109F8933582C}'
 
 
 def get_app_info(appinfo, args):

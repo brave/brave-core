@@ -31,3 +31,4 @@ CMakeLists.txt
 cmake-build-debug/
 coverage/
 /build/rustup/
+venv/

@@ -26,7 +26,7 @@ class TestOmahaLib(unittest.TestCase):
         os.environ['PLATFORM'] = 'win32'
         mock_get_platform.return_value = PLATFORM
         # print("DEBUG: PLATFORM: {}".format(PLATFORM))
-        for CHANNEL in ['beta', 'dev', 'release']:
+        for CHANNEL in ['nightly', 'dev', 'beta', 'release']:
             os.environ['CHANNEL'] = CHANNEL
             # print("DEBUG: CHANNEL: {}".format(CHANNEL))
             for TARGET_ARCH in ['x64', 'ia32']:
@@ -37,9 +37,9 @@ class TestOmahaLib(unittest.TestCase):
                     mock_get_host_arch.return_value = TARGET_ARCH
                 # print("DEBUG: TARGET_ARCH: {}".format(TARGET_ARCH))
                 # print("DEBUG: omaha_channel(): {}".format(omaha_channel()))
-                if release_channel() in ['beta']:
+                if release_channel() in ['nightly', 'beta']:
                     chan = release_channel()[0:2]
-                elif release_channel() in ['release', 'dev']:
+                elif release_channel() in ['dev', 'release']:
                     chan = release_channel()[0:3]
                 self.assertEquals('{}-{}'.format(mock_get_host_arch.return_value, chan),
                                   omaha_channel(PLATFORM, TARGET_ARCH, False))
