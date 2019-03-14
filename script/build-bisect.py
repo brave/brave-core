@@ -40,14 +40,14 @@ def parse_args():
                         default=None)
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='extra logging')
-
     parser.add_argument('--real-profile', action='store_true',
                         help='if true, use your real profile (instead of a fresh one). \
                               can\'t be combined with `--use-profile`.')
-
     parser.add_argument('--use-profile',
                         help='url of a zipped profile to unzip/use for each install',
                         default=None)
+    parser.add_argument('--demo-mode', action='store_true',
+                        help='if true, don\'t actually perform download/install')
 
     return parser.parse_args()
 
@@ -188,8 +188,7 @@ def setup_profile_directory(args):
     if is_mac_os:
         print('- processing changes for profile directory')
         if args.real_profile:
-            if args.verbose:
-                print('[INFO] using real profile (`--real-profile` passed in)')
+            print('-> using real profile (`--real-profile` passed in)')
             return None
 
         profile_dir = tempdir('build-bisect-profile_')
@@ -198,8 +197,7 @@ def setup_profile_directory(args):
             print('-> downloading profile: "' + args.use_profile + '"')
             # TODO: download here
 
-        if args.verbose:
-            print('[INFO] using profile directory: "' + profile_dir + "'")
+        print('-> using profile directory: "' + profile_dir + "'")
 
         return profile_dir
 
@@ -216,21 +214,22 @@ def test_version(args, attempt, tag):
         if not asset:
             return False
 
-    download_dir = tempdir('build-bisect_')
-    download_path = os.path.join(download_dir, asset['name'])
-    print('- downloading to ' + download_path)
-    download(tag, asset['browser_download_url'], download_path)
+    if not args.demo_mode:
+        download_dir = tempdir('build-bisect_')
+        download_path = os.path.join(download_dir, asset['name'])
+        print('- downloading to ' + download_path)
+        download(tag, asset['browser_download_url'], download_path)
 
-    install_path = install(download_dir, download_path)
+        install_path = install(download_dir, download_path)
 
-    profile_dir = setup_profile_directory(args)
-    run_cmd = ['open', '-a', install_path]
-    run_params = []
-    if profile_dir:
-        run_params = ['--args', '--user-data-dir=' + profile_dir]
+        profile_dir = setup_profile_directory(args)
+        run_cmd = ['open', '-a', install_path]
+        run_params = []
+        if profile_dir:
+            run_params = ['--args', '--user-data-dir=' + profile_dir]
 
-    print('- running binary')
-    execute(run_cmd + run_params)
+        print('- running binary')
+        execute(run_cmd + run_params)
 
     first = True
     while True:
@@ -321,27 +320,38 @@ def find_first_broken_version(args):
             raise Exception('[ERROR] Version "' + right_tag + '" is expected to fail but doesn\'t')
 
     # perform search
-    while left_index < right_index:
+    works_from = left_index
+    fails_at = right_index
+    while (fails_at - works_from) > 1:
         test_index = int(math.floor((left_index + right_index) / 2))
         test_tag = tag_names[test_index]
 
-        gap = right_index - left_index
-        if gap <= 1:
-            return test_tag, attempt_number
-
         if args.verbose:
-            print('\n[DEBUG] L=' + str(left_index) + ', R=' + str(right_index) +
-                  ', M=' + str(test_index) + ', gap=' + str(gap))
+            print('\n[DEBUG]' +
+                  '\nworks_from=' + tag_names[works_from] + ' (' + str(works_from) + ')' +
+                  '\nfails_at=' + tag_names[fails_at] + ' (' + str(fails_at) + ')' +
+                  '\nleft_index=' + tag_names[left_index] + ' (' + str(left_index) + ')' +
+                  '\nright_index=' + tag_names[right_index] + ' (' + str(right_index) + ')' +
+                  '\ntest_index=' + tag_names[test_index] + ' (' + str(test_index) + ')' +
+                  '\ngap=' + str(fails_at - works_from))
+
         result = test_version(args, attempt_number, test_tag)
 
+        if left_index == right_index:
+            if result:
+                return tag_names[fails_at], attempt_number
+            return test_tag, attempt_number
+
         if result:
+            works_from = max(test_index, works_from)
             left_index = test_index + 1
         else:
+            fails_at = min(test_index, fails_at)
             right_index = test_index - 1
 
         attempt_number = attempt_number + 1
 
-    return tag_names[left_index], attempt_number
+    return tag_names[test_index], attempt_number
 
 
 def main():
