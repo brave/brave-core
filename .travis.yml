@@ -1,6 +1,8 @@
 language: node_js
+# lock node.js to the active LTS
+# see https://nodejs.org/en/about/releases/ for info
 node_js:
-  - "11.10.1"
+  - "10.15.3"
 
 dist: trusty
 sudo: required
