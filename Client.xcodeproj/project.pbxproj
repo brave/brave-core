@@ -2499,6 +2499,18 @@
 			path = favorites;
 			sourceTree = "<group>";
 		};
+		0AD4FED9223A8AF800E00C05 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5DE7687120B3417A00FF5533 /* SharedExtensions.swift */,
+				5DE768AD20B443E500FF5533 /* JSONSerializationExtensions.swift */,
+				5DE768AF20B4601600FF5533 /* UIColorExtensions.swift */,
+				A1510DA020E409E9008BF1F4 /* URLCacheExtensions.swift */,
+				0A4214F621AC0AFF006B8E39 /* TimeExtensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		0AD5E9BB2200590C00D0D91B /* Shields */ = {
 			isa = PBXGroup;
 			children = (
@@ -3236,16 +3248,12 @@
 		5DE7688520B3456D00FF5533 /* BraveShared */ = {
 			isa = PBXGroup;
 			children = (
+				0AD4FED9223A8AF800E00C05 /* Extensions */,
 				0AD5E9BB2200590C00D0D91B /* Shields */,
 				5D6DDEDF214003A6001FF0AE /* Analytics */,
 				5D6DDEF62141B6A0001FF0AE /* Preferences.swift */,
 				5DE7687C20B342E600FF5533 /* BraveStrings.swift */,
-				5DE7687120B3417A00FF5533 /* SharedExtensions.swift */,
 				5DE768A820B3461200FF5533 /* BraveUX.swift */,
-				5DE768AD20B443E500FF5533 /* JSONSerializationExtensions.swift */,
-				5DE768AF20B4601600FF5533 /* UIColorExtensions.swift */,
-				A1510DA020E409E9008BF1F4 /* URLCacheExtensions.swift */,
-				0A4214F621AC0AFF006B8E39 /* TimeExtensions.swift */,
 				5DE7688620B3456D00FF5533 /* BraveShared.h */,
 				5DE7688720B3456D00FF5533 /* Info.plist */,
 				59B6913721B695A400E9388E /* BraveShared.strings */,
