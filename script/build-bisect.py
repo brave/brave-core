@@ -19,7 +19,7 @@ from io import StringIO
 from lib.config import get_env_var
 from lib.github import GitHub
 from lib.helpers import *
-from lib.util import download, execute, tempdir
+from lib.util import download, execute, tempdir, extract_zip
 
 
 tag_names = []
@@ -195,9 +195,20 @@ def setup_profile_directory(args):
 
         if args.use_profile:
             print('-> downloading profile: "' + args.use_profile + '"')
-            # TODO: download here
+            try:
+                filename = os.path.basename(args.use_profile)
+                query_string_index = filename.find('?')
+                if query_string_index > -1:
+                    filename = filename[0:query_string_index]
+                download_path = os.path.join(profile_dir, filename)
+                download('profile', args.use_profile, download_path)
+                if filename.endswith('.zip'):
+                    print('-> unzipping to ' + profile_dir)
+                    extract_zip(download_path, profile_dir)
+            except Exception as e:
+                print('whoops- ' + str(e))
 
-        print('-> using profile directory: "' + profile_dir + "'")
+        print('-> using profile directory: "' + profile_dir + '"')
 
         return profile_dir
 
