@@ -46,6 +46,7 @@ constexpr int kDefaultMaxRandomDelaySeconds = 5 * 60;  // 5 minutes.
 // updating on the fly.
 constexpr const char* kCollectedHistograms[] = {
     "Brave.P3A.SentAnswersCount",
+    "Brave.Sync.Status",
     "DefaultBrowser.State",
     "Extensions.LoadAll",
     "Profile.NumberOfProfiles",
