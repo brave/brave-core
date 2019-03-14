@@ -7,6 +7,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#include "base/mac/sdk_forward_declarations.h"
+
 bool SystemThemeSupportDarkMode() {
   // Dark mode is supported since Mojave.
   if (@available(macOS 10.14, *))
