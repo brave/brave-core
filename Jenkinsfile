@@ -37,7 +37,7 @@ pipeline {
 
                     if [ "`curl -s -w %{http_code} -o /dev/null ${BB_REPO}/tree/${BRANCH_TO_BUILD}`" = "404" ]; then
                         echo "Creating ${BRANCH_TO_BUILD} branch in brave-browser..."
-                        git checkout --force --branch ${BRANCH_TO_BUILD}
+                        git checkout -b ${BRANCH_TO_BUILD}
 
                         echo "Pinning brave-core to branch ${BRANCH_TO_BUILD}..."
                         jq "del(.config.projects[\\"brave-core\\"].branch) | .config.projects[\\"brave-core\\"].branch=\\"${BRANCH_TO_BUILD}\\"" package.json > package.json.new
