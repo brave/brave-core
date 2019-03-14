@@ -236,8 +236,9 @@ def main():
             logging.debug("omaha_channel: {}".format(omaha_channel(app_info['platform'], app_info['arch'],
                                                                    app_info['preview'])))
             logging.debug("omaha_channel_id: {}".format(get_channel_id(omaha_channel(app_info['platform'],
-                                                                                     app_info['arch'], app_info['preview']),
-                                                                       app_info['omahahost'], app_info['headers'], logging)))
+                                                                       app_info['arch'], app_info['preview']),
+                                                                       app_info['omahahost'], app_info['headers'],
+                                                                       logging)))
             logging.debug("URL: {}".format(app_info['version_post_url']))
             logging.debug("file_list: {}".format(file_list))
 
