@@ -27,7 +27,7 @@ class UnblindedTokens {
   base::Value GetTokensAsList();
 
   void SetTokens(const std::vector<TokenInfo>& tokens);
-  bool SetTokensFromList(const base::Value& list);
+  void SetTokensFromList(const base::Value& list);
 
   void AddTokens(const std::vector<TokenInfo>& tokens);
 
