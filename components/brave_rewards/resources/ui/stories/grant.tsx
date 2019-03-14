@@ -6,6 +6,7 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs, text, select } from '@storybook/addon-knobs'
 import centered from '@storybook/addon-centered'
+
 // Components
 import GrantClaim from '../../../src/features/rewards/grantClaim'
 import GrantError from '../../../src/features/rewards/grantError'
@@ -22,57 +23,57 @@ const dummyClick = () => {
 storiesOf('Feature Components/Rewards/Grant', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
-    .add('Grant claim',() => {
-      return (
-        <GrantClaim
-          type={select('Type', { ugp: 'ugp', ads: 'ads' }, 'ugp')}
-          onClaim={dummyClick}
+  .add('Grant claim', () => {
+    return (
+      <GrantClaim
+        type={select<any>('Type', { ugp: 'ugp', ads: 'ads' }, 'ugp')}
+        onClaim={dummyClick}
+      />
+    )
+  })
+  .add('Grant wrapper', () => {
+    return (
+      <div style={{ width: '373px', height: '715px', position: 'relative' }}>
+        <GrantWrapper
+          onClose={dummyClick}
+          title={text('Title', 'Good news!')}
+          text={text('Text', 'Free 30 BAT have been awarded to you so you can support more publishers.')}
+        >
+          Content here
+        </GrantWrapper>
+      </div>
+    )
+  })
+  .add('Grant captcha', () => {
+    return (
+      <div style={{ width: '373px', height: '715px', position: 'relative' }}>
+        <GrantCaptcha
+          onSolution={dummyClick}
+          dropBgImage={captchaDrop}
+          hint={'blue'}
         />
-      )
-    })
-    .add('Grant wrapper',() => {
-      return (
-        <div style={{ width: '373px', height: '715px', position: 'relative' }}>
-          <GrantWrapper
-            onClose={dummyClick}
-            title={text('Title', 'Good news!')}
-            text={text('Text', 'Free 30 BAT have been awarded to you so you can support more publishers.')}
-          >
-           Content here
-          </GrantWrapper>
-        </div>
-      )
-    })
-    .add('Grant captcha',() => {
-      return (
-        <div style={{ width: '373px', height: '715px', position: 'relative' }}>
-          <GrantCaptcha
-            onSolution={dummyClick}
-            dropBgImage={captchaDrop}
-            hint={'blue'}
-          />
-        </div>
-      )
-    })
-    .add('Grant complete',() => {
-      return (
-        <div style={{ width: '373px', height: '715px', position: 'relative' }}>
-          <GrantComplete
-            onClose={dummyClick}
-            amount={'30.0'}
-            date={'8/15/2018'}
-          />
-        </div>
-      )
-    })
-    .add('Grant Error',() => {
-      return (
-        <div style={{ width: '373px', height: '250px', position: 'relative', background: '#fff' }}>
-          <GrantError
-            onButtonClick={dummyClick}
-            buttonText={'ok'}
-            text={'The period for claiming this grant has ended'}
-          />
-        </div>
-      )
-    })
+      </div>
+    )
+  })
+  .add('Grant complete', () => {
+    return (
+      <div style={{ width: '373px', height: '715px', position: 'relative' }}>
+        <GrantComplete
+          onClose={dummyClick}
+          amount={'30.0'}
+          date={'8/15/2018'}
+        />
+      </div>
+    )
+  })
+  .add('Grant Error', () => {
+    return (
+      <div style={{ width: '373px', height: '250px', position: 'relative', background: '#fff' }}>
+        <GrantError
+          onButtonClick={dummyClick}
+          buttonText={'ok'}
+          text={'The period for claiming this grant has ended'}
+        />
+      </div>
+    )
+  })

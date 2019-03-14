@@ -95,40 +95,40 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
         <button onClick={showBanner}>Show banner</button>
         {
           store.state.showBanner
-          ? <div style={{ position: 'fixed', top: 0, left: 0, height: '100vh', width: '100%', backgroundColor: 'rgba(12,13,33,0.85)' }}>
-            <SiteBanner
-              domain={text('Domain', 'duckduckgo.com')}
-              name={text('Name', 'duckduckgo.com')}
-              title={text('Title', '')}
-              recurringDonation={boolean('Current recurring donation', true)}
-              balance={text('Balance ', '5.0')}
-              bgImage={boolean('Show bg image', false) ? siteBgImage : null}
-              logo={boolean('Show logo', false) ? siteBgLogo : null}
-              donationAmounts={object('Donations', store.state.donationAmounts)}
-              logoBgColor={text('Logo bg color', '')}
-              onDonate={onDonate}
-              onAmountSelection={onAmountSelection}
-              currentAmount={store.state.currentAmount}
-              onClose={onClose}
-              provider={select('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch' }, 'youtube')}
-              social={[
-                {
-                  type: 'twitter',
-                  url: 'https://twitter.com/DuckDuckGo'
-                },
-                {
-                  type: 'youtube',
-                  url: 'https://www.youtube.com/channel/UCm_TyecHNHucwF_p4XpeFkQ'
-                },
-                {
-                  type: 'twitch',
-                  url: 'https://www.twitch.tv/duckduckgo'
-                }
-              ]}
-              showUnVerifiedNotice={boolean('Show unverified notice', false)}
-            />
-          </div>
-          : null
+            ? <div style={{ position: 'fixed', top: 0, left: 0, height: '100vh', width: '100%', backgroundColor: 'rgba(12,13,33,0.85)' }}>
+              <SiteBanner
+                domain={text('Domain', 'duckduckgo.com')}
+                name={text('Name', 'duckduckgo.com')}
+                title={text('Title', '')}
+                recurringDonation={boolean('Current recurring donation', true)}
+                balance={text('Balance ', '5.0')}
+                bgImage={boolean('Show bg image', false) ? siteBgImage : null}
+                logo={boolean('Show logo', false) ? siteBgLogo : null}
+                donationAmounts={object('Donations', store.state.donationAmounts)}
+                logoBgColor={text('Logo bg color', '')}
+                onDonate={onDonate}
+                onAmountSelection={onAmountSelection}
+                currentAmount={store.state.currentAmount}
+                onClose={onClose}
+                provider={select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch' }, 'youtube')}
+                social={[
+                  {
+                    type: 'twitter',
+                    url: 'https://twitter.com/DuckDuckGo'
+                  },
+                  {
+                    type: 'youtube',
+                    url: 'https://www.youtube.com/channel/UCm_TyecHNHucwF_p4XpeFkQ'
+                  },
+                  {
+                    type: 'twitch',
+                    url: 'https://www.twitch.tv/duckduckgo'
+                  }
+                ]}
+                showUnVerifiedNotice={boolean('Show unverified notice', false)}
+              />
+            </div>
+            : null
         }
       </div>
     )
@@ -443,38 +443,38 @@ storiesOf('Feature Components/Rewards/Concepts/Mobile', module)
         <button onClick={showBanner}>Show banner</button>
         {
           store.state.showBanner
-          ? <div style={{ position: 'fixed', top: 0, left: 0, height: '100vh', width: '100%', backgroundColor: 'rgba(12,13,33,0.85)' }}>
-            <SiteBanner
-              isMobile={true}
-              domain={text('Domain', 'duckduckgo.com')}
-              title={text('Title', '')}
-              recurringDonation={false}
-              balance={text('Balance ', '5.0')}
-              bgImage={boolean('Show bg image', false) ? siteBgImage : null}
-              logo={boolean('Show logo', false) ? siteBgLogo : null}
-              donationAmounts={object('Donations', store.state.donationAmounts)}
-              logoBgColor={text('Logo bg color', '')}
-              onDonate={onDonate}
-              onAmountSelection={onAmountSelection}
-              currentAmount={store.state.currentAmount}
-              onClose={onClose}
-              social={[
-                {
-                  type: 'twitter',
-                  url: 'https://twitter.com/DuckDuckGo'
-                },
-                {
-                  type: 'youtube',
-                  url: 'https://www.youtube.com/channel/UCm_TyecHNHucwF_p4XpeFkQ'
-                },
-                {
-                  type: 'twitch',
-                  url: 'https://www.twitch.tv/duckduckgo'
-                }
-              ]}
-            />
-          </div>
-          : null
+            ? <div style={{ position: 'fixed', top: 0, left: 0, height: '100vh', width: '100%', backgroundColor: 'rgba(12,13,33,0.85)' }}>
+              <SiteBanner
+                isMobile={true}
+                domain={text('Domain', 'duckduckgo.com')}
+                title={text('Title', '')}
+                recurringDonation={false}
+                balance={text('Balance ', '5.0')}
+                bgImage={boolean('Show bg image', false) ? siteBgImage : null}
+                logo={boolean('Show logo', false) ? siteBgLogo : null}
+                donationAmounts={object('Donations', store.state.donationAmounts)}
+                logoBgColor={text('Logo bg color', '')}
+                onDonate={onDonate}
+                onAmountSelection={onAmountSelection}
+                currentAmount={store.state.currentAmount}
+                onClose={onClose}
+                social={[
+                  {
+                    type: 'twitter',
+                    url: 'https://twitter.com/DuckDuckGo'
+                  },
+                  {
+                    type: 'youtube',
+                    url: 'https://www.youtube.com/channel/UCm_TyecHNHucwF_p4XpeFkQ'
+                  },
+                  {
+                    type: 'twitch',
+                    url: 'https://www.twitch.tv/duckduckgo'
+                  }
+                ]}
+              />
+            </div>
+            : null
         }
       </div>
     )

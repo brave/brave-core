@@ -22,7 +22,7 @@ const doNothing = () => {
 storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
-  .add('Wrapper',() => {
+  .add('Wrapper', () => {
     const alert: AlertWallet = {
       node: 'Some text',
       type: 'success',
@@ -68,14 +68,14 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
         ] : []}
         alert={showAlert ? alert : undefined}
       >
-       Some content
+        Some content
       </WalletWrapper>
     )
   })
   .add('Empty', () => {
     return (
       <div style={{ width: '373px', background: '#f9fbfc', padding: '0 25px' }}>
-        <WalletEmpty/>
+        <WalletEmpty />
       </div>
     )
   })
@@ -103,7 +103,7 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
       <div style={{ width: '373px', background: '#f9fbfc' }}>
         <WalletPanel
           id={'wallet-panel'}
-          platform={select('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
+          platform={select<any>('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
           publisherImg={bartBaker}
           publisherName={'Bart Baker'}
           monthlyAmount={'10.0'}
@@ -144,7 +144,7 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
   .add('Off', () => {
     return (
       <div style={{ width: '373px', background: '#f9fbfc', padding: '0 25px' }}>
-        <WalletOff/>
+        <WalletOff />
       </div>
     )
   })

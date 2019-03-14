@@ -62,7 +62,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
           title={text('Title', 'Brave ads')}
           toggle={boolean('Show toggle', store.state.toggle)}
           checked={boolean('Toggle checked', store.state.checked)}
-          type={select('Type', { contribute: 'contribute', donation: 'donation', ads: 'ads' }, 'contribute')}
+          type={select<any>('Type', { contribute: 'contribute', donation: 'donation', ads: 'ads' }, 'contribute')}
           description={
             text('Description', `Earn tokens by seeing ads on Brave. Ads are matched from machine learning and the data temporarily present in your browser without tracking your information or sending it outside.`)
           }
@@ -79,7 +79,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
   .add('Disabled content', () => {
     return (
       <DisabledContent
-        type={select('Type', { contribute: 'contribute', donation: 'donation', ads: 'ads' }, 'donation')}
+        type={select<any>('Type', { contribute: 'contribute', donation: 'donation', ads: 'ads' }, 'donation')}
       >
         • Donate on the spot as you find gems. <br />
         • <b>Enable Tips </b> on Twitter, YouTube, and more, to give tips to posts you ‘Like’.
@@ -89,7 +89,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
   .add('Alert', () => {
     return (
       <Alert
-        type={select('Type', { error: 'error', success: 'success', warning: 'warning' }, 'success')}
+        type={select<any>('Type', { error: 'error', success: 'success', warning: 'warning' }, 'success')}
         bg={boolean('Background color', false)}
         colored={boolean('Text color', false)}
       >
@@ -122,7 +122,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
     return (
       <div style={{ background: '#696fdc' }}>
         <Donate
-          donateType={select('Type', { big: 'big', small: 'small' }, 'small')}
+          donateType={select<any>('Type', { big: 'big', small: 'small' }, 'small')}
           balance={number('Balance ', 5)}
           donationAmounts={object('Donations', store.state.donationAmounts)}
           onDonate={onDonate}
@@ -153,8 +153,8 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
           value={text('Value', '10.0')}
           converted={text('Converted', '0.25')}
           isNegative={boolean('Is negative', false)}
-          color={select('Color', { contribute: 'contribute', donation: 'donation', earnings: 'earnings', notPaid: 'notPaid', default: 'default' }, 'default')}
-          size={select('Size', { normal: 'normal', small: 'small' }, 'small')}
+          color={select<any>('Color', { contribute: 'contribute', donation: 'donation', earnings: 'earnings', notPaid: 'notPaid', default: 'default' }, 'default')}
+          size={select<any>('Size', { normal: 'normal', small: 'small' }, 'small')}
         />
       </div>
     )
@@ -166,8 +166,8 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
         converted={text('Converted value', '4.00')}
         currency={text('Currency', 'USD')}
         isNegative={boolean('Is negative', false)}
-        color={select('Color', { contribute: 'contribute', donation: 'donation', earnings: 'earnings', notPaid: 'notPaid', default: 'default' }, 'default')}
-        size={select('Size', { normal: 'normal', small: 'small' }, 'small')}
+        color={select<any>('Color', { contribute: 'contribute', donation: 'donation', earnings: 'earnings', notPaid: 'notPaid', default: 'default' }, 'default')}
+        size={select<any>('Size', { normal: 'normal', small: 'small' }, 'small')}
       />
     )
   })
@@ -175,10 +175,10 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
     return (
       <div style={{ width: '400px' }}>
         <Profile
-          type={select('Type', { big: 'big', small: 'small' }, 'big')}
+          type={select<any>('Type', { big: 'big', small: 'small' }, 'big')}
           title={'Bart Baker'}
           verified={boolean('Verified', false)}
-          provider={select('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
+          provider={select<any>('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
           src={bart}
         />
       </div>
@@ -195,7 +195,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
           amount={text('Amount', '5.0')}
           converted={text('Converted', '1.50')}
           selected={boolean('Selected', store.state.selected)}
-          type={select('Type', { big: 'Big', small: 'Small' }, 'big')}
+          type={select<any>('Type', { big: 'Big', small: 'Small' }, 'big')}
           onSelect={onSelect}
         />
       </div>
@@ -215,7 +215,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
         <PanelWelcome
           optInAction={dummyClick}
           optInErrorAction={dummyClick}
-          variant={select('Variant', { one: 'One', two: 'Two' }, 'one')}
+          variant={select<any>('Variant', { one: 'One', two: 'Two' }, 'one')}
           moreLink={dummyClick}
         />
       </div>
@@ -230,7 +230,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
         id={'toggle-tips'}
         onToggleTips={onToggle}
         tipsEnabled={boolean('Selected', store.state.tipsEnabled)}
-        provider={select('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
+        provider={select<any>('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
       />
     )
   }))
@@ -295,7 +295,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
               send={boolean('Is send page?', true)}
               domain={'duckduckgo.com'}
               amount={'5.0'}
-              monthlyDate={select('Recurring', { yes: 'October 31st, 2018', no: '' }, 'October 31st, 2018')}
+              monthlyDate={select<any>('Recurring', { yes: 'October 31st, 2018', no: '' }, 'October 31st, 2018')}
               logo={boolean('Show logo', false) ? siteBgLogo : null}
             />
             : null
@@ -333,7 +333,7 @@ storiesOf('Feature Components/Rewards/Other/Mobile', module)
           title={text('Title', 'Brave Auto-Contribute')}
           toggle={boolean('Show toggle', store.state.toggle)}
           checked={boolean('Toggle checked', store.state.checked)}
-          type={select('Type', { contribute: 'contribute', donation: 'donation', ads: 'ads' }, 'contribute')}
+          type={select<any>('Type', { contribute: 'contribute', donation: 'donation', ads: 'ads' }, 'contribute')}
           description={
             text('Description', `A simple way to support content creators. Set monthly allowance and browse normally. Your favorite sites (content sites only) receive your contributions automatically. You can exclude sites from funding right from the list below.`)
           }
