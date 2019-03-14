@@ -1,7 +1,9 @@
 #!/usr/bin/env python
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
 import argparse
 import datetime
 import logging
@@ -27,7 +29,8 @@ def main():
     gpg_full_key_id = args.gpg_full_key_id
     if channel in ['release']:
         if not args.gpg_passphrase:
-            logging.error("Error: --gpg_passphrase required for channel {}".format(channel))
+            logging.error(
+                "Error: --gpg_passphrase required for channel {}".format(channel))
             exit(1)
         else:
             gpg_passphrase = args.gpg_passphrase
@@ -44,8 +47,10 @@ def main():
         logging.debug('s3_test_buckets: {}'.format(s3_test_buckets))
 
     # verify we have the the GPG key we're expecting in the public keyring
-    list_keys_cmd = "/usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(gpg_full_key_id)
-    logging.info("Verifying the GPG key \'{}\' is in our public keyring...".format(gpg_full_key_id))
+    list_keys_cmd = "/usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(
+        gpg_full_key_id)
+    logging.info("Verifying the GPG key \'{}\' is in our public keyring...".format(
+        gpg_full_key_id))
     logging.debug("Running command: {}".format(list_keys_cmd))
     try:
         output = subprocess.check_output(list_keys_cmd, shell=True)
@@ -59,10 +64,12 @@ def main():
         os.chdir(dist_dir)
         logging.debug('Changed directory to \"{}\"'.format(dist_dir))
     except OSError as ose:
-        message = ('Error: could not change directory to {}: {}'.format(dist_dir, ose))
+        message = (
+            'Error: could not change directory to {}: {}'.format(dist_dir, ose))
         exit(message)
 
-    logging.info("Downloading RPM/DEB packages to directory: {}".format(dist_dir))
+    logging.info(
+        "Downloading RPM/DEB packages to directory: {}".format(dist_dir))
 
     file_list = download_linux_pkgs_from_github(args, logging)
 
@@ -76,10 +83,13 @@ def main():
             # when we use the same signing key for all channels.
             if channel in ['release']:
                 rpm_resign_cmd = os.path.join(repo_dir, "rpm-resign.exp")
-                cmd = "{} {} {} {}".format(rpm_resign_cmd, gpg_full_key_id, item, gpg_passphrase)
-                log_cmd = "{} {} {} {}".format(rpm_resign_cmd, gpg_full_key_id, item, 'NOTAREALPASSWORD')
+                cmd = "{} {} {} {}".format(
+                    rpm_resign_cmd, gpg_full_key_id, item, gpg_passphrase)
+                log_cmd = "{} {} {} {}".format(
+                    rpm_resign_cmd, gpg_full_key_id, item, 'NOTAREALPASSWORD')
             else:
-                cmd = "rpmsign --resign --key-id={} {}".format(gpg_full_key_id, item)
+                cmd = "rpmsign --resign --key-id={} {}".format(
+                    gpg_full_key_id, item)
                 log_cmd = cmd
             logging.info("Running command: \"{}\"".format(log_cmd))
 
@@ -94,7 +104,8 @@ def main():
         os.chdir(repo_dir)
         logging.debug('Changed directory to \"{}\"'.format(repo_dir))
     except OSError as ose:
-        message = ('Error: could not change directory to {}: {}'.format(repo_dir, ose))
+        message = (
+            'Error: could not change directory to {}: {}'.format(repo_dir, ose))
         exit(message)
 
     # Now upload to aptly and rpm repos
@@ -114,7 +125,8 @@ def main():
             upload_cmd = '{} {} {}'.format(upload_script, bucket + channel + '-' +
                                            TESTCHANNEL, gpg_full_key_id)
         else:
-            upload_cmd = '{} {} {}'.format(upload_script, bucket + channel, gpg_full_key_id)
+            upload_cmd = '{} {} {}'.format(
+                upload_script, bucket + channel, gpg_full_key_id)
         logging.info("Running command: \"{}\"".format(upload_cmd))
         try:
             subprocess.check_output(upload_cmd, shell=True)
@@ -128,7 +140,8 @@ def main():
         os.chdir(saved_path)
         logging.debug('Changed directory to \"{}\"'.format(saved_path))
     except OSError as ose:
-        message = ('Error: could not change directory to {}: {}'.format(saved_path, ose))
+        message = (
+            'Error: could not change directory to {}: {}'.format(saved_path, ose))
         exit(message)
 
 
@@ -146,10 +159,12 @@ def download_linux_pkgs_from_github(args, logging):
             exit("Error: More than 1 release exists with the tag: \'{}\'".format(tag_name))
         release = releases[0]
     if release['assets'] is None:
-        logging.error('Error: Could not find GitHub release with tag {}. Exiting...'.format(tag_name))
+        logging.error(
+            'Error: Could not find GitHub release with tag {}. Exiting...'.format(tag_name))
         exit(1)
     else:
-        logging.info("Searching for RPM/DEB packages in GitHub release: {}".format(release['url']))
+        logging.info(
+            "Searching for RPM/DEB packages in GitHub release: {}".format(release['url']))
     for asset in release['assets']:
         if re.match(r'.*\.rpm$', asset['name']) \
                 or re.match(r'.*\.deb$', asset['name']):
@@ -168,7 +183,8 @@ def download_linux_pkgs_from_github(args, logging):
             # Instantiate new requests session, versus reusing the repo session above.
             # Headers was likely being reused in that session, and not allowing us
             # to set the Accept header to the below.
-            perform_github_download(asset_url, args, logging, filename, file_list)
+            perform_github_download(
+                asset_url, args, logging, filename, file_list)
 
     if len(file_list) < 2:
         logging.error(
@@ -195,10 +211,12 @@ def perform_github_download(asset_url, args, logging, filename, file_list):
     try:
         r = requests.get(asset_auth_url, headers=headers, stream=True)
     except requests.exceptions.ConnectionError as e:
-        logging.error("Error: Received requests.exceptions.ConnectionError, Exiting...")
+        logging.error(
+            "Error: Received requests.exceptions.ConnectionError, Exiting...")
         exit(1)
     except Exception as e:
-        logging.error("Error: Received exception {},  Exiting...".format(type(e)))
+        logging.error(
+            "Error: Received exception {},  Exiting...".format(type(e)))
         exit(1)
     if args.debug:
         logging.getLogger("urllib3").setLevel(logging.DEBUG)
@@ -210,7 +228,8 @@ def perform_github_download(asset_url, args, logging, filename, file_list):
     logging.debug(
         "Requests Response status_code: {}".format(r.status_code))
     if r.status_code == 200:
-        logging.info("Download successful: Response Status Code {}".format(r.status_code))
+        logging.info(
+            "Download successful: Response Status Code {}".format(r.status_code))
         file_list.append('./' + filename)
     else:
         logging.debug(
@@ -227,7 +246,8 @@ def rename_file_if_exists(filename, logging):
         try:
             os.rename(filename, filename + '.' + datestring)
         except Exception as e:
-            logging.error("Error: could not rename file {}: {}".format(filename, e))
+            logging.error(
+                "Error: could not rename file {}: {}".format(filename, e))
 
 
 def parse_args():
@@ -235,15 +255,19 @@ def parse_args():
 
     parser = argparse.ArgumentParser(
         description=desc, formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-c', '--channel', help='The Brave channel, i.e. \'nightly\', \'dev\', \'beta\', \'release\', required=True)
-    parser.add_argument('-d', '--debug', action='store_true', help='Print debug output')
-    parser.add_argument('-g', '--github_token', help='GitHub token to use for downloading releases', required=True)
+    parser.add_argument('-c', '--channel', help='The Brave channel, i.e. \'nightly\', \'dev\', \'beta\', \'release\',
+                        required=True)
+    parser.add_argument('-d', '--debug', action='store_true',
+                        help='Print debug output')
+    parser.add_argument('-g', '--github_token',
+                        help='GitHub token to use for downloading releases', required=True)
     parser.add_argument('-k', '--gpg_full_key_id', help='GPG full key id to use for signing '
                         'packages', required=True)
     parser.add_argument(
         '-t', '--tag', help='The branch (actually tag) to download packages from GitHub. (i.e. v0.58.18)',
         required=True)
-    parser.add_argument('-p', '--gpg_passphrase', help='GPG passphrase to unlock signing keychain')
+    parser.add_argument('-p', '--gpg_passphrase',
+                        help='GPG passphrase to unlock signing keychain')
     parser.add_argument('-r', '--repo_dir', help='Directory on upload server to download RPM/DEB files into',
                         required=True)
     parser.add_argument('-s', '--s3_test_buckets', help='Upload to test S3 buckets (same names but with'
