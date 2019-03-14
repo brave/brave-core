@@ -83,6 +83,7 @@ source_set("ads") {
     "src/bat/ads/bundle_state.cc",
     "src/bat/ads/client_info.cc",
     "src/bat/ads/issuer_info.cc",
+    "src/bat/ads/confirmation_type.cc",
     "src/bat/ads/issuers_info.cc",
     "src/bat/ads/notification_info.cc",
     "src/bat/ads/internal/ads_impl.cc",
