@@ -148,19 +148,6 @@ export class Panel extends React.Component<Props, State> {
     this.actions.solveGrantCaptcha(x, y)
   }
 
-  getGrants = (grants?: RewardsExtension.Grant[]) => {
-    if (!grants) {
-      return []
-    }
-
-    return grants.map((grant: RewardsExtension.Grant) => {
-      return {
-        tokens: utils.convertProbiToFixed(grant.probi),
-        expireDate: new Date(grant.expiryTime * 1000).toLocaleDateString()
-      }
-    })
-  }
-
   getWalletSummary = () => {
     const { walletProperties, report } = this.props.rewardsPanelData
     const { rates } = walletProperties
@@ -393,7 +380,7 @@ export class Panel extends React.Component<Props, State> {
         onSolution={this.onSolution}
         onFinish={this.onFinish}
         convertProbiToFixed={utils.convertProbiToFixed}
-        grants={this.getGrants(grants)}
+        grants={utils.getGrants(grants)}
         {...notification}
       >
         <WalletSummarySlider

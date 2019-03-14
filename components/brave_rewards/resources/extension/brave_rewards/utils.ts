@@ -32,3 +32,16 @@ export const convertProbiToFixed = (probi: string, places: number = 1) => {
 
   return result
 }
+
+export const getGrants = (grants?: RewardsExtension.Grant[]) => {
+  if (!grants) {
+    return []
+  }
+
+  return grants.map((grant: RewardsExtension.Grant) => {
+    return {
+      tokens: convertProbiToFixed(grant.probi),
+      expireDate: new Date(grant.expiryTime * 1000).toLocaleDateString()
+    }
+  })
+}
