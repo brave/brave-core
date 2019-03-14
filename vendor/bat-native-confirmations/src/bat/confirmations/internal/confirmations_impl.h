@@ -125,14 +125,24 @@ class ConfirmationsImpl : public Confirmations {
 
   bool FromJSON(const std::string& json);
 
+  bool GetCatalogIssuersFromJSON(
+      base::DictionaryValue* dictionary);
   bool GetCatalogIssuersFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* public_key,
       std::map<std::string, std::string>* issuers) const;
 
+  bool GetTransactionHistoryFromJSON(
+      base::DictionaryValue* dictionary);
   bool GetTransactionHistoryFromDictionary(
       base::DictionaryValue* dictionary,
       std::vector<TransactionInfo>* transaction_history);
+
+  bool GetUnblindedTokensFromJSON(
+      base::DictionaryValue* dictionary);
+
+  bool GetUnblindedPaymentTokensFromJSON(
+      base::DictionaryValue* dictionary);
 
   // Confirmations::Client
   ConfirmationsClient* confirmations_client_;  // NOT OWNED

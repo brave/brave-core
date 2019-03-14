@@ -172,6 +172,31 @@ bool ConfirmationsImpl::FromJSON(const std::string& json) {
   }
 
   // Catalog issuers
+  if (!GetCatalogIssuersFromJSON(dictionary.get())) {
+    BLOG(WARNING) << "Failed to get catalog issuers from JSON: " << json;
+  }
+
+  // Transaction history
+  if (!GetTransactionHistoryFromJSON(dictionary.get())) {
+    BLOG(WARNING) << "Failed to get transaction history from JSON: " << json;
+  }
+
+  // Unblinded tokens
+  if (!GetUnblindedTokensFromJSON(dictionary.get())) {
+    BLOG(WARNING) << "Failed to get unblinded tokens from JSON: " << json;
+  }
+
+  // Unblinded payment tokens
+  if (!GetUnblindedPaymentTokensFromJSON(dictionary.get())) {
+    BLOG(WARNING) <<
+        "Failed to get unblinded payment tokens from JSON: " << json;
+  }
+
+  return true;
+}
+
+bool ConfirmationsImpl::GetCatalogIssuersFromJSON(
+    base::DictionaryValue* dictionary) {
   auto* catalog_issuers_value = dictionary->FindKey("catalog_issuers");
   if (!catalog_issuers_value) {
     return false;
@@ -184,54 +209,13 @@ bool ConfirmationsImpl::FromJSON(const std::string& json) {
 
   std::string public_key;
   std::map<std::string, std::string> catalog_issuers;
-  if (!GetCatalogIssuersFromDictionary(catalog_issuers_dictionary, &public_key,
+  if (!GetCatalogIssuersFromDictionary(dictionary, &public_key,
       &catalog_issuers)) {
     return false;
   }
 
-  // Transaction history
-  auto* transaction_history_value = dictionary->FindKey("transaction_history");
-  if (!transaction_history_value) {
-    return false;
-  }
-
-  base::DictionaryValue* transaction_history_dictionary;
-  if (!transaction_history_value->GetAsDictionary(
-        &transaction_history_dictionary)) {
-    return false;
-  }
-
-  std::vector<TransactionInfo> transaction_history;
-  if (!GetTransactionHistoryFromDictionary(transaction_history_dictionary,
-      &transaction_history)) {
-    return false;
-  }
-
-  transaction_history_ = transaction_history;
-
-  // Unblinded tokens
-  auto* unblinded_tokens_value = dictionary->FindKey("unblinded_tokens");
-  if (!unblinded_tokens_value) {
-    return false;
-  }
-
-  base::ListValue unblinded_token_values(unblinded_tokens_value->GetList());
-
-  // Unblinded payment tokens
-  auto* unblinded_payment_tokens_value =
-      dictionary->FindKey("unblinded_payment_tokens");
-  if (!unblinded_payment_tokens_value) {
-    return false;
-  }
-
-  base::ListValue unblinded_payment_token_values(
-      unblinded_payment_tokens_value->GetList());
-
-  // Update state
   public_key_ = public_key;
   catalog_issuers_ = catalog_issuers;
-  unblinded_tokens_->SetTokensFromList(unblinded_token_values);
-  unblinded_payment_tokens_->SetTokensFromList(unblinded_payment_token_values);
 
   return true;
 }
@@ -285,6 +269,30 @@ bool ConfirmationsImpl::GetCatalogIssuersFromDictionary(
   return true;
 }
 
+bool ConfirmationsImpl::GetTransactionHistoryFromJSON(
+    base::DictionaryValue* dictionary) {
+  auto* transaction_history_value = dictionary->FindKey("transaction_history");
+  if (!transaction_history_value) {
+    return false;
+  }
+
+  base::DictionaryValue* transaction_history_dictionary;
+  if (!transaction_history_value->GetAsDictionary(
+        &transaction_history_dictionary)) {
+    return false;
+  }
+
+  std::vector<TransactionInfo> transaction_history;
+  if (!GetTransactionHistoryFromDictionary(transaction_history_dictionary,
+      &transaction_history)) {
+    return false;
+  }
+
+  transaction_history_ = transaction_history;
+
+  return true;
+}
+
 bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
     base::DictionaryValue* dictionary,
     std::vector<TransactionInfo>* transaction_history) {
@@ -302,7 +310,8 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
   for (auto& transaction_value : transactions_list_value) {
     base::DictionaryValue* transaction_dictionary;
     if (!transaction_value.GetAsDictionary(&transaction_dictionary)) {
-      return false;
+      DCHECK(false) << "Transaction should be a dictionary";
+      continue;
     }
 
     TransactionInfo info;
@@ -310,31 +319,70 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
     // Timestamp
     auto* timestamp_in_seconds_value =
         transaction_dictionary->FindKey("timestamp_in_seconds");
-    if (!timestamp_in_seconds_value) {
-      return false;
+    if (timestamp_in_seconds_value) {
+      info.timestamp_in_seconds =
+          std::stoull(timestamp_in_seconds_value->GetString());
+    } else {
+      // timestamp missing, fallback to default
+      auto now = base::Time::Now();
+      info.timestamp_in_seconds =
+          static_cast<uint64_t>((now - base::Time()).InSeconds());
     }
-    info.timestamp_in_seconds =
-        std::stoull(timestamp_in_seconds_value->GetString());
 
     // Estimated redemption value
     auto* estimated_redemption_value_value =
         transaction_dictionary->FindKey("estimated_redemption_value");
-    if (!estimated_redemption_value_value) {
-      return false;
+    if (estimated_redemption_value_value) {
+      info.estimated_redemption_value =
+          estimated_redemption_value_value->GetDouble();
+    } else {
+      // estimated redemption value missing, fallback to default
+      info.estimated_redemption_value = 0.0;
     }
-    info.estimated_redemption_value =
-        estimated_redemption_value_value->GetDouble();
 
-    // Confirmation type
+    // Confirmation type (>= 0.63.8)
     auto* confirmation_type_value =
         transaction_dictionary->FindKey("confirmation_type");
-    if (!confirmation_type_value) {
-      return false;
+    if (confirmation_type_value) {
+      info.confirmation_type = confirmation_type_value->GetString();
+    } else {
+      // confirmation type missing, fallback to default
+      info.confirmation_type = kConfirmationTypeView;
     }
-    info.confirmation_type = confirmation_type_value->GetString();
 
     transaction_history->push_back(info);
   }
+
+  return true;
+}
+
+bool ConfirmationsImpl::GetUnblindedTokensFromJSON(
+    base::DictionaryValue* dictionary) {
+  auto* unblinded_tokens_value = dictionary->FindKey("unblinded_tokens");
+  if (!unblinded_tokens_value) {
+    return false;
+  }
+
+  base::ListValue unblinded_token_values(unblinded_tokens_value->GetList());
+
+  unblinded_tokens_->SetTokensFromList(unblinded_token_values);
+
+  return true;
+}
+
+bool ConfirmationsImpl::GetUnblindedPaymentTokensFromJSON(
+    base::DictionaryValue* dictionary) {
+  auto* unblinded_payment_tokens_value =
+      dictionary->FindKey("unblinded_payment_tokens");
+  if (!unblinded_payment_tokens_value) {
+    return false;
+  }
+
+  base::ListValue unblinded_payment_token_values(
+      unblinded_payment_tokens_value->GetList());
+
+  unblinded_payment_tokens_->SetTokensFromList(
+      unblinded_payment_token_values);
 
   return true;
 }

@@ -49,7 +49,7 @@ void UnblindedTokens::SetTokens(
   confirmations_->SaveState();
 }
 
-bool UnblindedTokens::SetTokensFromList(const base::Value& list) {
+void UnblindedTokens::SetTokensFromList(const base::Value& list) {
   base::ListValue list_values(list.GetList());
 
   std::vector<TokenInfo> tokens;
@@ -64,20 +64,23 @@ bool UnblindedTokens::SetTokensFromList(const base::Value& list) {
     } else {
       base::DictionaryValue* dictionary;
       if (!value.GetAsDictionary(&dictionary)) {
-        return false;
+        DCHECK(false) << "Unblinde token should be a dictionary";
+        continue;
       }
 
       // Unblinded token
       auto* unblinded_token_value = dictionary->FindKey("unblinded_token");
       if (!unblinded_token_value) {
-        return false;
+        DCHECK(false) << "Unblinded token dictionary missing unblinded_token";
+        continue;
       }
       unblinded_token = unblinded_token_value->GetString();
 
       // Public key
       auto* public_key_value = dictionary->FindKey("public_key");
       if (!public_key_value) {
-        return false;
+        DCHECK(false) << "Unblinded token dictionary missing public_key";
+        continue;
       }
       public_key = public_key_value->GetString();
     }
@@ -90,8 +93,6 @@ bool UnblindedTokens::SetTokensFromList(const base::Value& list) {
   }
 
   SetTokens(tokens);
-
-  return true;
 }
 
 void UnblindedTokens::AddTokens(
