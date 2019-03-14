@@ -153,18 +153,21 @@ class ConfirmationsUnblindedTokensTest : public ::testing::Test {
     return unblinded_tokens;
   }
 
-  base::ListValue GetUnblindedTokensAsList(const int count) {
+  base::Value GetUnblindedTokensAsList(const int count) {
     base::Value list(base::Value::Type::LIST);
 
-    // auto tokens = GetUnblindedTokens(count);
-    // for (const auto& token : tokens) {
-    //   auto token_base64 = token.encode_base64();
-    //   auto token_value = base::Value(token_base64);
-    //   list.GetList().push_back(std::move(token_value));
-    // }
+    auto tokens = GetUnblindedTokens(count);
 
-    base::ListValue list_values(list.GetList());
-    return list_values;
+    for (const auto& token : tokens) {
+      base::Value dictionary(base::Value::Type::DICTIONARY);
+      dictionary.SetKey("unblinded_token", base::Value(
+          token.unblinded_token.encode_base64()));
+      dictionary.SetKey("public_key", base::Value(token.public_key));
+
+      list.GetList().push_back(std::move(dictionary));
+    }
+
+    return list;
   }
 };
 
@@ -208,6 +211,8 @@ TEST_F(ConfirmationsUnblindedTokensTest, GetAllTokens_Exist) {
 
   std::string expected_public_key = "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=";  // NOLINT
 
+  EXPECT_EQ(tokens.size(), expected_unblinded_tokens_base64.size());
+
   unsigned int index = 0;
   for (const auto& token_info : tokens) {
     auto expected_unblinded_token_base64 =
@@ -250,6 +255,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, GetTokensAsList_Exist) {
 
   // Assert
   base::ListValue list_values(list.GetList());
+  EXPECT_EQ(list_values.GetSize(), unblinded_tokens.size());
   for (auto& value : list_values) {
     base::DictionaryValue* dictionary;
     if (!value.GetAsDictionary(&dictionary)) {
@@ -323,6 +329,7 @@ TEST_F(ConfirmationsUnblindedTokensTest, SetTokens_Exist) {
   // Assert
   unsigned int index = 0;
   auto tokens = unblinded_tokens_->GetAllTokens();
+  EXPECT_EQ(tokens.size(), unblinded_tokens.size());
   for (const auto& token_info : tokens) {
     auto expected_token_info = unblinded_tokens.at(index);
     if (token_info.unblinded_token != expected_token_info.unblinded_token) {
@@ -385,6 +392,8 @@ TEST_F(ConfirmationsUnblindedTokensTest, SetTokensFromList) {
   };
 
   auto tokens = unblinded_tokens_->GetAllTokens();
+
+  EXPECT_EQ(tokens.size(), expected_unblinded_tokens_base64.size());
 
   unsigned int index = 0;
   for (const auto& token_info : tokens) {
