@@ -42,8 +42,8 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
 }
 
 void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
-  base::ScopedBlockingCall scoped_blocking_call(
-      base::BlockingType::WILL_BLOCK);
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   base::FilePath chrome_user_data_folder = GetChromeUserDataFolder();
   base::ListValue* chrome_profiles = GetChromeSourceProfiles(chrome_user_data_folder);
   std::string brand_chrome("Chrome ");
@@ -67,8 +67,8 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
 }
 
 void DetectBraveProfiles(std::vector<importer::SourceProfile>* profiles) {
-  base::ScopedBlockingCall scoped_blocking_call(
-      base::BlockingType::WILL_BLOCK);
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
 
   base::FilePath brave_user_data_folder = GetBraveUserDataFolder();
 

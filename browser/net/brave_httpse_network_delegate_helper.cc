@@ -18,8 +18,8 @@ namespace brave {
 
 void OnBeforeURLRequest_HttpseFileWork(
     std::shared_ptr<BraveRequestInfo> ctx) {
-  base::ScopedBlockingCall scoped_blocking_call(
-      base::BlockingType::WILL_BLOCK);
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK(ctx->request_identifier != 0);
   g_brave_browser_process->https_everywhere_service()->
     GetHTTPSURL(&ctx->request_url, ctx->request_identifier, ctx->new_url_spec);
