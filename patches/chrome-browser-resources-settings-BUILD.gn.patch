@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 780c47842b8d3aa108ae41d9f8007a32162884e3..eed1a9ef0dd181c1ccb31b5f59d4d14c6ee6171c 100644
+index 780c47842b8d3aa108ae41d9f8007a32162884e3..cc62087c2b215d08fd93f45c3df82fbbd9903309 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
 @@ -35,6 +35,7 @@ if (optimize_webui) {
  
      deps = [
        ":unpak",
-+      "//brave/browser/resources:unpak",
++      "//brave/browser/resources/settings:unpak",
      ]
    }
  
