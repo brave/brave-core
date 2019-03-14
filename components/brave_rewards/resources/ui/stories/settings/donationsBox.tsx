@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Components
-import { Box, TableDonation, Tokens, List, TipsMigrationAlert } from '../../../../src/features/rewards'
+import { Box, BoxAlert, TableDonation, Tokens, List } from '../../../../src/features/rewards'
 import { DetailRow as DonationDetailRow } from '../../../../src/features/rewards/tableDonation'
 import { Column, Grid, Checkbox, ControlWrapper } from '../../../../src/components'
 
@@ -98,7 +98,7 @@ class DonationsBox extends React.Component<{}, State> {
 
   donationAlertChild = () => {
     return (
-      <TipsMigrationAlert onReview={doNothing} />
+      <BoxAlert type={'tips'} onReview={doNothing} />
     )
   }
 

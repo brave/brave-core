@@ -29,16 +29,19 @@ import { Modal } from '../../../components'
 import { AlertCircleIcon, RewardsSendTipsIcon } from '../../../components/icons'
 import Button from '../../../components/buttonsIndicators/button'
 
+export type Type = 'tips' | 'ads'
+
 export interface Props {
+  type: Type
   testId?: string
-  onReview: () => void
+  onReview?: () => void
 }
 
 interface State {
   modalShown: boolean
 }
 
-export default class TipsMigrationAlert extends React.PureComponent<Props, State> {
+export default class BoxAlert extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
@@ -108,28 +111,40 @@ export default class TipsMigrationAlert extends React.PureComponent<Props, State
   }
 
   render () {
-    const { testId } = this.props
+    const { testId, type } = this.props
 
     return (
       <StyledWrapper data-test-id={testId}>
         <StyledAlertIcon>
           <AlertCircleIcon />
         </StyledAlertIcon>
-        <StyledInfo>
-          <StyledMessage>
-            {getLocale('reviewSitesMsg')}
-          </StyledMessage>
-          <StyledMonthlyTips>
-            {getLocale('monthlyTips')}
-          </StyledMonthlyTips>
+        <StyledInfo type={type}>
+          {
+            type === 'tips'
+            ? <>
+                <StyledMessage>
+                  {getLocale('reviewSitesMsg')}
+                </StyledMessage>
+                <StyledMonthlyTips>
+                  {getLocale('monthlyTips')}
+                </StyledMonthlyTips>
+              </>
+            : <StyledMessage>
+                {getLocale('adsNotSupported')}
+              </StyledMessage>
+          }
         </StyledInfo>
-        <StyledReviewWrapper>
-          <StyledReviewList onClick={this.toggleModalDisplay}>
-            {getLocale('learnMore')}
-          </StyledReviewList>
-        </StyledReviewWrapper>
         {
-          this.state.modalShown
+          type === 'tips'
+          ? <StyledReviewWrapper>
+              <StyledReviewList onClick={this.toggleModalDisplay}>
+                {getLocale('learnMore')}
+              </StyledReviewList>
+            </StyledReviewWrapper>
+          : null
+        }
+        {
+          this.state.modalShown && type === 'tips'
           ? this.pinnedSitesModal()
           : null
         }

@@ -5,6 +5,7 @@
 import Alert from './alert'
 import Amount from './amount'
 import Box from './box'
+import BoxAlert from './boxAlert'
 import DisabledContent from './disabledContent'
 import DisabledPanel from './disabledPanel'
 import Donate from './donate'
@@ -35,7 +36,6 @@ import TableContribute from './tableContribute'
 import TableDonation from './tableDonation'
 import TableTransactions from './tableTransactions'
 import Tip from './tip'
-import TipsMigrationAlert from './tipsMigrationAlert'
 import ToggleTips from './toggleTips'
 import Tokens from './tokens'
 import Tooltip from './tooltip'
@@ -52,6 +52,7 @@ export {
   Alert,
   Amount,
   Box,
+  BoxAlert,
   DisabledContent,
   DisabledPanel,
   DonationOverlay,
@@ -82,7 +83,6 @@ export {
   TableDonation,
   TableTransactions,
   Tip,
-  TipsMigrationAlert,
   ToggleTips,
   Tokens,
   Tooltip,

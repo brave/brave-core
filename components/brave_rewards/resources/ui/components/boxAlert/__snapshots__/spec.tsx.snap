@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TipsMigrationAlert tests basic tests matches the snapshot 1`] = `
+exports[`BoxAlert tests basic tests matches the snapshot 1`] = `
 .c0 {
   width: 100%;
   display: -webkit-box;
@@ -27,9 +27,21 @@ exports[`TipsMigrationAlert tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: 0;
   letter-spacing: 0;
   line-height: 18px;
-  padding: 12px 15px 0px 11px;
   vertical-align: top;
   max-width: 387px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 5px;
 }
 
 .c4 {
@@ -37,30 +49,6 @@ exports[`TipsMigrationAlert tests basic tests matches the snapshot 1`] = `
   margin-right: 3px;
   font-weight: 400;
   font-size: inherit;
-}
-
-.c5 {
-  color: #696FDC;
-  font-weight: 400;
-  display: inline-block;
-  font-size: inherit;
-}
-
-.c6 {
-  vertical-align: top;
-  margin: 20px 0 0 7px;
-}
-
-.c7 {
-  color: #15A4FA;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  line-height: 18px;
 }
 
 .c2 {
@@ -92,22 +80,7 @@ exports[`TipsMigrationAlert tests basic tests matches the snapshot 1`] = `
     <span
       className="c4"
     >
-      MISSING: reviewSitesMsg
-    </span>
-    <span
-      className="c5"
-    >
-      MISSING: monthlyTips
-    </span>
-  </div>
-  <div
-    className="c6"
-  >
-    <span
-      className="c7"
-      onClick={[Function]}
-    >
-      MISSING: learnMore
+      MISSING: adsNotSupported
     </span>
   </div>
 </div>

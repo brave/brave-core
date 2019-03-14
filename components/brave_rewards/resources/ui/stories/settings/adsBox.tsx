@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Components
-import { DisabledContent, Box } from '../../../../src/features/rewards'
+import { DisabledContent, Box, BoxAlert } from '../../../../src/features/rewards'
 
 // Utils
 import locale from './fakeLocale'
@@ -22,6 +22,12 @@ class AdsBox extends React.Component {
     )
   }
 
+  adsAlertChild = () => {
+    return (
+      <BoxAlert type={'ads'} />
+    )
+  }
+
   render () {
     return (
       <Box
@@ -29,6 +35,7 @@ class AdsBox extends React.Component {
         type={'ads'}
         description={locale.adsDesc}
         toggle={false}
+        attachedAlert={this.adsAlertChild()}
         disabledContent={this.adsDisabled()}
       />
     )

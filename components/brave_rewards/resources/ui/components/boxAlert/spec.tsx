@@ -6,11 +6,11 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import TipsMigrationAlert from './index'
+import BoxAlert from './index'
 import { TestThemeProvider } from '../../../theme'
 
-describe('TipsMigrationAlert tests', () => {
-  const baseComponent = (props?: object) => <TestThemeProvider><TipsMigrationAlert id='tipsmigrationalert' {...props} /></TestThemeProvider>
+describe('BoxAlert tests', () => {
+  const baseComponent = (props?: object) => <TestThemeProvider><BoxAlert id='box-alert' {...props} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {
@@ -21,7 +21,7 @@ describe('TipsMigrationAlert tests', () => {
 
     it('renders the component', () => {
       const wrapper = shallow(baseComponent())
-      const assertion = wrapper.find('#tipsmigrationalert').length
+      const assertion = wrapper.find('#box-alert').length
       expect(assertion).toBe(1)
     })
   })
