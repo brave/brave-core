@@ -52,7 +52,9 @@ class BatClient {
   void setGrant(const std::string& captchaResponse,
                 const std::string& promotionId);
 
-  void getGrantCaptcha();
+  void getGrantCaptcha(
+      const std::string& promotion_id,
+      const std::string& promotion_type);
 
   void getWalletProperties();
 

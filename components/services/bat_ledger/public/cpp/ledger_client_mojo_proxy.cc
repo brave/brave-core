@@ -453,8 +453,10 @@ void LedgerClientMojoProxy::FetchGrants(const std::string& lang,
   ledger_client_->FetchGrants(lang, payment_id);
 }
 
-void LedgerClientMojoProxy::GetGrantCaptcha() {
-  ledger_client_->GetGrantCaptcha();
+void LedgerClientMojoProxy::GetGrantCaptcha(
+    const std::string& promotion_id,
+    const std::string& promotion_type) {
+  ledger_client_->GetGrantCaptcha(promotion_id, promotion_type);
 }
 
 void LedgerClientMojoProxy::URIEncode(const std::string& value,

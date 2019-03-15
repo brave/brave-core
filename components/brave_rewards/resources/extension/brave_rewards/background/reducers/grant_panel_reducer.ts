@@ -72,7 +72,9 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
       }
 
       state.currentGrant = currentGrant
-      chrome.braveRewards.getGrantCaptcha()
+      if (currentGrant.promotionId && currentGrant.type) {
+        chrome.braveRewards.getGrantCaptcha(currentGrant.promotionId, currentGrant.type)
+      }
       break
     case types.ON_GRANT_CAPTCHA: {
       if (state.currentGrant && state.grants) {
@@ -186,7 +188,9 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
           break
         case 6:
           currentGrant.status = 'wrongPosition'
-          chrome.braveRewards.getGrantCaptcha()
+          if (currentGrant.promotionId && currentGrant.type) {
+            chrome.braveRewards.getGrantCaptcha(currentGrant.promotionId, currentGrant.type)
+          }
           break
         case 13:
           currentGrant.status = 'grantGone'

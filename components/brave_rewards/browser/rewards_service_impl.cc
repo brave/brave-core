@@ -1315,12 +1315,14 @@ void RewardsServiceImpl::TriggerOnGrant(ledger::Result result,
     observer.OnGrant(this, result, properties);
 }
 
-void RewardsServiceImpl::GetGrantCaptcha() {
+void RewardsServiceImpl::GetGrantCaptcha(
+    const std::string& promotion_id,
+    const std::string& promotion_type) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->GetGrantCaptcha();
+  bat_ledger_->GetGrantCaptcha(promotion_id, promotion_type);
 }
 
 void RewardsServiceImpl::TriggerOnGrantCaptcha(const std::string& image,
