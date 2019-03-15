@@ -151,11 +151,14 @@ BraveRewardsGetGrantCaptchaFunction::~BraveRewardsGetGrantCaptchaFunction() {
 }
 
 ExtensionFunction::ResponseAction BraveRewardsGetGrantCaptchaFunction::Run() {
+  std::unique_ptr<brave_rewards::GetGrantCaptcha::Params> params(
+      brave_rewards::GetGrantCaptcha::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service) {
-    rewards_service->GetGrantCaptcha();
+    rewards_service->GetGrantCaptcha(params->promotion_id,
+                                     params->type);
   }
   return RespondNow(NoArguments());
 }

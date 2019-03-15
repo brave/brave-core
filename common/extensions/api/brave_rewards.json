@@ -371,7 +371,16 @@
         "name": "getGrantCaptcha",
         "type": "function",
         "description": "Retrieves grant captcha data",
-        "parameters": []
+        "parameters": [
+          {
+            "name": "promotionId",
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "type": "string"
+          }
+        ]
       },
       {
         "name": "solveGrantCaptcha",

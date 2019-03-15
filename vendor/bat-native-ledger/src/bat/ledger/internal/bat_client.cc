@@ -586,9 +586,13 @@ void BatClient::setGrantCallback(
   ledger_->SetGrants(updated_grants);
 }
 
-void BatClient::getGrantCaptcha() {
+void BatClient::getGrantCaptcha(
+    const std::string& promotion_id,
+    const std::string& promotion_type) {
   std::vector<std::string> headers;
   headers.push_back("brave-product:brave-core");
+  headers.push_back("promotion-id:" + promotion_id);
+  headers.push_back("promotion-type:" + promotion_type);
   auto callback = std::bind(&BatClient::getGrantCaptchaCallback,
                             this,
                             _1,

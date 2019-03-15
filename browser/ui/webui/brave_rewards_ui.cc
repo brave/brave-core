@@ -483,7 +483,11 @@ void RewardsDOMHandler::OnGrantCaptcha(
 
 void RewardsDOMHandler::GetGrantCaptcha(const base::ListValue* args) {
   if (rewards_service_) {
-    rewards_service_->GetGrantCaptcha();
+    std::string promotion_id;
+    std::string promotion_type;
+    args->GetString(0, &promotion_id);
+    args->GetString(1, &promotion_type);
+    rewards_service_->GetGrantCaptcha(promotion_id, promotion_type);
   }
 }
 

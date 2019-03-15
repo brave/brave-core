@@ -53,7 +53,7 @@ interface BatLedger {
       int32 month, int32 year, uint32 data);
 
   FetchGrants(string lang, string payment_id);
-  GetGrantCaptcha();
+  GetGrantCaptcha(string promotion_id, string promotion_type);
   GetWalletPassphrase() => (string wallet_passphrase);
   GetExcludedPublishersNumber() => (uint32 num_excluded_sites);
   RecoverWallet(string passPhrase);
@@ -152,7 +152,7 @@ interface BatLedgerClient {
   SaveMediaPublisherInfo(string media_key, string publisher_id);
   FetchWalletProperties();
   FetchGrants(string lang, string payment_id);
-  GetGrantCaptcha();
+  GetGrantCaptcha(string promotion_id, string promotion_type);
 
   [Sync]
   URIEncode(string value) => (string encoded_value);
