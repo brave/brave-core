@@ -335,6 +335,28 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_SYNC_LINK_LABEL" desc="Brave Sync link label">
         Access Sync via
       </message>
+      <!-- Brave Theme -->
+      <message name="IDS_BRAVE_THEME_TYPE_LIGHT" desc="Text for light theme type">
+        Light
+      </message>
+      <message name="IDS_BRAVE_THEME_TYPE_DARK" desc="Text for dark theme type">
+        Dark
+      </message>
+      <if expr="is_linux">
+        <message name="IDS_BRAVE_THEME_TYPE_SYSTEM" desc="Text for system theme type">
+          Same as Linux
+        </message>
+      </if>
+      <if expr="is_win">
+        <message name="IDS_BRAVE_THEME_TYPE_SYSTEM" desc="Text for system theme type">
+          Same as Windows
+        </message>
+      </if>
+      <if expr="is_macosx">
+        <message name="IDS_BRAVE_THEME_TYPE_SYSTEM" desc="Text for system theme type">
+          Same as MacOS
+        </message>
+      </if>
       <!-- Brave Default Extensions -->
       <message name="IDS_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_TITLE" desc="The title for Brave default extensions in settings">
         Extensions
