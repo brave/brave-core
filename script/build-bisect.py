@@ -47,6 +47,9 @@ def parse_args():
     parser.add_argument('--use-profile',
                         help='url of a zipped profile to unzip/use for each install',
                         default=None)
+    parser.add_argument('--channel',
+                        help='narrow down to a specific release channel. nightly/dev/beta/release',
+                        default=None)
     parser.add_argument('--demo-mode', action='store_true',
                         help='if true, don\'t actually perform download/install')
 
@@ -117,6 +120,12 @@ def filter_releases(args):
             print(' - skipping "' + tag + '" (installer not found)')
             continue
 
+        if args.channel:
+            channel = get_release_channel(tag)
+            if args.channel != channel:
+                print(' - skipping "' + tag + '" (not in channel "' + args.channel + '")')
+                continue
+
         filtered_tag_names.append(tag)
 
     print('filtering complete (' + str(len(tag_names) - len(filtered_tag_names)) + ' versions removed)')
@@ -140,6 +149,21 @@ def get_release_asset(version, verbose=True):
 
     if verbose:
         print('- binary not found')
+    return None
+
+
+def get_release_channel(version):
+    global releases
+
+    full_title = releases[version]['name']
+    if full_title.startswith('Nightly'):
+        return 'nightly'
+    if full_title.startswith('Developer'):
+        return 'dev'
+    if full_title.startswith('Beta'):
+        return 'beta'
+    if full_title.startswith('Release'):
+        return 'release'
     return None
 
 
@@ -214,6 +238,17 @@ def setup_profile_directory(args):
         return profile_dir
 
 
+def get_run_cmd(install_path, profile_dir):
+    global is_mac_os
+
+    if is_mac_os:
+        run_cmd = ['open', '-a', install_path]
+        run_params = []
+        if profile_dir:
+            run_params = ['--args', '--user-data-dir=' + profile_dir]
+        return run_cmd + run_params
+
+
 def test_version(args, attempt, tag):
     global tag_names
 
@@ -233,15 +268,11 @@ def test_version(args, attempt, tag):
         download(tag, asset['browser_download_url'], download_path)
 
         install_path = install(download_dir, download_path)
-
         profile_dir = setup_profile_directory(args)
-        run_cmd = ['open', '-a', install_path]
-        run_params = []
-        if profile_dir:
-            run_params = ['--args', '--user-data-dir=' + profile_dir]
 
         print('- running binary')
-        execute(run_cmd + run_params)
+        run_cmd = get_run_cmd(install_path, profile_dir)
+        execute(run_cmd)
 
     first = True
     while True:
