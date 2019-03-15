@@ -18,36 +18,34 @@ grit("resources") {
   resource_ids = "//brave/browser/resources/resource_ids"
 }
 
-if (optimize_webui) {
-  group("unpak") {
-    deps = [
-      ":unpak_brave_extensions_resources",
-    ]
-  }
+group("unpak") {
+  deps = [
+    ":unpak_brave_extensions_resources",
+  ]
+}
 
-  action("unpak_brave_extensions_resources") {
-    script = "//chrome/browser/resources/unpack_pak.py"
+action("unpak_brave_extensions_resources") {
+  script = "//chrome/browser/resources/unpack_pak.py"
 
-    pak_file = "brave_extensions_resources.pak"
-    out_folder = "$root_gen_dir/chrome/browser/resources/md_extensions/extensions_resources.unpak"
+  pak_file = "brave_extensions_resources.pak"
+  out_folder = "$root_gen_dir/chrome/browser/resources/md_extensions/extensions_resources.unpak"
 
-    inputs = [
-      "$target_gen_dir/brave_extensions_resources.pak",
-    ]
+  inputs = [
+    "$target_gen_dir/brave_extensions_resources.pak",
+  ]
 
-    outputs = [
-      "${out_folder}/brave_unpack.stamp",
-    ]
+  outputs = [
+    "${out_folder}/brave_unpack.stamp",
+  ]
 
-    deps = [
-      ":resources",
-    ]
+  deps = [
+    ":resources",
+  ]
 
-    args = [
-      "--out_folder",
-      rebase_path(out_folder, root_build_dir),
-      "--pak_file",
-      rebase_path("$target_gen_dir/${pak_file}", root_build_dir),
-    ]
-  }
+  args = [
+    "--out_folder",
+    rebase_path(out_folder, root_build_dir),
+    "--pak_file",
+    rebase_path("$target_gen_dir/${pak_file}", root_build_dir),
+  ]
 }
