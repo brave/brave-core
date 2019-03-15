@@ -44,6 +44,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   void GetDATFileData(const base::FilePath& dat_file_path);
   AdBlockClient* GetAdBlockClientForTest();
 
+  SEQUENCE_CHECKER(sequence_checker_);
   std::unique_ptr<AdBlockClient> ad_block_client_;
   DATFileDataBuffer buffer_;
 
@@ -51,7 +52,6 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   void OnDATFileDataReady();
   void OnPreferenceChanges(const std::string& pref_name);
 
-  SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<AdBlockBaseService> weak_factory_;
   DISALLOW_COPY_AND_ASSIGN(AdBlockBaseService);
 };

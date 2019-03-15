@@ -8,6 +8,7 @@
 #include "base/logging.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
@@ -40,10 +41,27 @@ bool AdBlockCustomFiltersService::UpdateCustomFilters(
     return false;
   local_state->SetString(kAdBlockCustomFilters, custom_filters);
 
+  GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &AdBlockCustomFiltersService::UpdateCustomFiltersOnFileTaskRunner,
+          base::Unretained(this), custom_filters));
+
+  return true;
+}
+
+void AdBlockCustomFiltersService::UpdateCustomFiltersOnFileTaskRunner(
+    const std::string& custom_filters) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ad_block_client_->clear();
-  if (custom_filters.empty())
-    return true;
-  return ad_block_client_->parse(custom_filters.c_str());
+  if (!custom_filters.empty())
+    ad_block_client_->parse(custom_filters.c_str());
+}
+
+scoped_refptr<base::SequencedTaskRunner>
+AdBlockCustomFiltersService::GetTaskRunner() {
+  // We share the same task runner for all ad-block and TP code
+  return g_brave_browser_process->ad_block_service()->GetTaskRunner();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

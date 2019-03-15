@@ -24,12 +24,14 @@ class AdBlockCustomFiltersService : public AdBlockBaseService {
 
   std::string GetCustomFilters();
   bool UpdateCustomFilters(const std::string& custom_filters);
+  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override;
 
  protected:
   bool Init() override;
 
  private:
   friend class ::AdBlockServiceTest;
+  void UpdateCustomFiltersOnFileTaskRunner(const std::string& custom_filters);
 
   DISALLOW_COPY_AND_ASSIGN(AdBlockCustomFiltersService);
 };
