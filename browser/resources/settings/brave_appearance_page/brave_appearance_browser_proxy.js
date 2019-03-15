@@ -8,11 +8,7 @@ cr.define('settings', function() {
     /**
      * @return {!Promise<string>}
      */
-    getBraveThemeType() {}
-    /**
-     * @param {string} theme name.
-     */
-    setBraveThemeType(theme) {}
+    getBraveThemeList() {}
   }
 
   /**
@@ -20,13 +16,8 @@ cr.define('settings', function() {
    */
   class BraveAppearanceBrowserProxyImpl {
     /** @override */
-    getBraveThemeType() {
-      return new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
-    }
-
-    /** @override */
-    setBraveThemeType(theme) {
-      chrome.braveTheme.setBraveThemeType(theme);
+    getBraveThemeList() {
+      return new Promise(resolve => chrome.braveTheme.getBraveThemeList(resolve))
     }
   }
 
