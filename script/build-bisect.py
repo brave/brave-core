@@ -8,6 +8,7 @@ import errno
 import hashlib
 import math
 import os
+import platform
 import requests
 import re
 import shutil
@@ -367,6 +368,13 @@ def find_first_broken_version(args):
 
 def main():
     global tag_names
+
+    supported_platforms = ['Darwin']
+
+    if platform.system() not in supported_platforms:
+        print('Error: Platform \'{}\' not supported; acceptable platform(s): {}'
+               .format(platform.system(), ", ".join(supported_platforms)))
+        exit(1)
 
     args = parse_args()
     if args.real_profile and args.use_profile:
