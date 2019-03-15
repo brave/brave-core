@@ -181,19 +181,13 @@ class SyncPairWordsViewController: SyncViewController {
             alert()
         })
         
-        SyncCrypto.shared.bytes(fromPassphrase: codes) { (result, error) in
-            if result?.count == 0 || error != nil {
-                var errorText = (error as NSError?)?.userInfo["WKJavaScriptExceptionMessage"] as? String
-                if let er = errorText, er.contains("Invalid word") {
-                    errorText = er + "\n Please recheck spelling"
-                }
-                
-                alert(message: errorText)
-                self.disableNavigationPrevention()
-                return
-            }
-            
-            self.syncHandler?(result)
+        let result = SyncCrypto().bytes(fromPassphrase: codes)
+        switch result {
+        case .success(let bytes):
+            syncHandler?(bytes)
+        case .failure(let error):
+            alert(message: "\(error)")
+            disableNavigationPrevention()
         }
     }
 }
