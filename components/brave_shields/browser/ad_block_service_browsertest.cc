@@ -8,6 +8,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/local_data_files_service.h"
@@ -230,6 +231,50 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
       kDefaultAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          "setExpectations(0, 1, 0, 0);"
+                                          "addImage('ad_banner.png')",
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+// Load a page with an image which is not an ad, and make sure it is NOT
+// blocked by custom filters.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       NotAdsDoNotGetBlockedByCustomBlocker) {
+  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+                  ->UpdateCustomFilters("*ad_banner.png"));
+
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          "setExpectations(1, 0, 0, 0);"
+                                          "addImage('logo.png')",
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
+// Load a page with an ad image, and make sure it is blocked by custom
+// filters.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByCustomBlocker) {
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+                  ->UpdateCustomFilters("*ad_banner.png"));
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);

@@ -1,9 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_
+
+#include <memory>
 
 #include "chrome/browser/browser_process_impl.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -19,6 +22,7 @@ class BraveWidevineBundleManager;
 
 namespace brave_shields {
 class AdBlockService;
+class AdBlockCustomFiltersService;
 class AdBlockRegionalService;
 class AutoplayWhitelistService;
 class ExtensionWhitelistService;
@@ -33,7 +37,8 @@ class BraveTorClientUpdater;
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
-  BraveBrowserProcessImpl(ChromeFeatureListCreator* chrome_feature_list_creator);
+  BraveBrowserProcessImpl(
+      ChromeFeatureListCreator* chrome_feature_list_creator);
   ~BraveBrowserProcessImpl() override;
 
   // BrowserProcess implementation.
@@ -42,6 +47,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   ProfileManager* profile_manager() override;
 
   brave_shields::AdBlockService* ad_block_service();
+  brave_shields::AdBlockCustomFiltersService* ad_block_custom_filters_service();
   brave_shields::AdBlockRegionalService* ad_block_regional_service();
   brave_shields::AutoplayWhitelistService* autoplay_whitelist_service();
   brave_shields::ExtensionWhitelistService* extension_whitelist_service();
@@ -57,6 +63,8 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   void CreateProfileManager();
 
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
+  std::unique_ptr<brave_shields::AdBlockCustomFiltersService>
+      ad_block_custom_filters_service_;
   std::unique_ptr<brave_shields::AdBlockRegionalService>
       ad_block_regional_service_;
   std::unique_ptr<brave_shields::AutoplayWhitelistService>

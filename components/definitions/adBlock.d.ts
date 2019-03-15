@@ -4,6 +4,9 @@ declare namespace AdBlock {
   }
 
   export interface State {
+    settings: {
+      customFilters: string
+    },
     stats: {
       adsBlockedStat?: number
       numBlocked: number

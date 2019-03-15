@@ -7,6 +7,9 @@ import { debounce } from '../common/debounce'
 const keyName = 'adblock-data'
 
 export const defaultState: AdBlock.State = {
+  settings: {
+    customFilters: ''
+  },
   stats: {
     numBlocked: 0,
     regionalAdBlockEnabled: false

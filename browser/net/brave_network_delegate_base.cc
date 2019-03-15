@@ -11,8 +11,9 @@
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -429,4 +430,6 @@ void BraveNetworkDelegateBase::UpdateAdBlockFromPref(
   bool enabled = user_prefs->GetBoolean(pref_name);
   g_brave_browser_process->ad_block_service()->EnableTag(tag, enabled);
   g_brave_browser_process->ad_block_regional_service()->EnableTag(tag, enabled);
+  g_brave_browser_process->ad_block_custom_filters_service()->EnableTag(
+      tag, enabled);
 }

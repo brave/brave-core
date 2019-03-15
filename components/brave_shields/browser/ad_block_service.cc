@@ -17,8 +17,10 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/common/pref_names.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 #include "brave/vendor/ad-block/data_file_version.h"
+#include "components/prefs/pref_registry_simple.h"
 
 #define DAT_FILE "ABPFilterParserData.dat"
 
@@ -69,10 +71,13 @@ void AdBlockService::SetDATFileVersionForTest(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// The brave shields factory. Using the Brave Shields as a singleton
-// is the job of the browser process.
+// The Adblock service factory.
 std::unique_ptr<AdBlockService> AdBlockServiceFactory() {
   return std::make_unique<AdBlockService>();
+}
+
+void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
+  registry->RegisterStringPref(kAdBlockCustomFilters, std::string());
 }
 
 }  // namespace brave_shields

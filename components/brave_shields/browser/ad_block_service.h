@@ -58,6 +58,9 @@ class AdBlockService : public AdBlockBaseService {
 // Creates the AdBlockService
 std::unique_ptr<AdBlockService> AdBlockServiceFactory();
 
+// Registers the local_state preferences used by Adblock
+void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_SERVICE_H_
