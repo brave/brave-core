@@ -23,12 +23,16 @@ pipeline {
         stage("config") {
             steps {
                 sh """
+                    #!/bin/bash
+
+                    set +x
+
                     if [ -d brave-browser ]; then
                         rm -rf brave-browser
                     fi
 
-                    echo "Cloning brave-browser..."
                     git clone --branch ${TARGET_BRANCH} ${BB_REPO} || git clone ${BB_REPO}
+
                     cd brave-browser
 
                     git config user.name brave-builds
@@ -36,16 +40,46 @@ pipeline {
                     git config push.default simple
 
                     if [ "`curl -s -w %{http_code} -o /dev/null ${BB_REPO}/tree/${BRANCH_TO_BUILD}`" = "404" ]; then
-                        echo "Creating ${BRANCH_TO_BUILD} branch in brave-browser..."
                         git checkout -b ${BRANCH_TO_BUILD}
 
                         echo "Pinning brave-core to branch ${BRANCH_TO_BUILD}..."
                         jq "del(.config.projects[\\"brave-core\\"].branch) | .config.projects[\\"brave-core\\"].branch=\\"${BRANCH_TO_BUILD}\\"" package.json > package.json.new
                         mv package.json.new package.json
 
-                        echo "Pushing changes..."
+                        echo "Committing..."
                         git commit --all --message "pin brave-core to branch ${BRANCH_TO_BUILD}"
+
+                        echo "Pushing changes..."
                         git push ${BB_REPO}
+                    else
+                        git checkout ${BRANCH_TO_BUILD}
+
+                        if [ "`cat package.json | jq -r .version`" != "`cat ../package.json | jq -r .version`" ]; then
+                            set +e
+
+                            echo "Version mismatch between brave-browser and brave-core in package.json! Attempting rebase on brave-browser..."
+
+                            echo "Fetching latest changes and pruning refs..."
+                            git fetch --prune
+
+                            echo "Rebasing ${BRANCH_TO_BUILD} branch on brave-browser against ${TARGET_BRANCH}..."
+                            git rebase origin/${TARGET_BRANCH}
+
+                            if [ \$? -ne 0 ]; then
+                                echo "Failed to rebase (conflicts), will need to be manually rebased!"
+                                git rebase --abort
+                            else
+                                echo "Rebased, force pushing to brave-browser..."
+                                git push --force ${BB_REPO}
+                            fi
+
+                            if [ "`cat package.json | jq -r .version`" != "`cat ../package.json | jq -r .version`" ]; then
+                                echo "Version mismatch between brave-browser and brave-core in package.json! Please try rebasing this branch in brave-core as well."
+                                exit 1
+                            fi
+
+                            set -e
+                        fi
                     fi
 
                     echo "Sleeping 5m so new branch is discovered or associated PR created in brave-browser..."
