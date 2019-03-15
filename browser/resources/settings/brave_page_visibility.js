@@ -25,6 +25,12 @@ cr.define('settings', function() {
     }
   };
 
+  const socialBlockingHandler = {
+    get: function(obj, prop) {
+      return true;
+    }
+  };
+
   const privacyHandler = {
     get: function(obj, prop) {
       return true;
@@ -35,6 +41,7 @@ cr.define('settings', function() {
     get: function(obj, prop) {
       if (prop === 'appearance') return new Proxy({}, appearanceHandler);
       if (prop === 'braveShieldsDefaults') return new Proxy({}, braveShieldsDefaultsHandler);
+      if (prop === 'socialBlocking') return new Proxy({}, socialBlockingHandler);
       if (prop === 'braveSync') {
         if (loadTimeData.getBoolean('isSyncDisabled'))
           return false;

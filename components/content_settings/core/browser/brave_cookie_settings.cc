@@ -1,25 +1,36 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 
+#include "base/bind.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/common/brave_cookie_blocking.h"
+#include "brave/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "extensions/buildflags/buildflags.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
 namespace content_settings {
 
-using namespace net::registry_controlled_domains;
+using namespace net::registry_controlled_domains;  // NOLINT
 
 BraveCookieSettings::BraveCookieSettings(
     HostContentSettingsMap* host_content_settings_map,
     PrefService* prefs,
     const char* extension_scheme)
-    : CookieSettings(host_content_settings_map, prefs, extension_scheme)
-{ }
+    : CookieSettings(host_content_settings_map, prefs, extension_scheme),
+      allow_google_auth_(
+          prefs->GetBoolean(kGoogleLoginControlType)) {
+  pref_change_registrar_.Init(prefs);
+  pref_change_registrar_.Add(
+      kGoogleLoginControlType,
+      base::BindRepeating(&BraveCookieSettings::OnAllowGoogleAuthChanged,
+                          base::Unretained(this)));
+}
 
 BraveCookieSettings::~BraveCookieSettings() { }
 
@@ -68,9 +79,10 @@ void BraveCookieSettings::GetCookieSetting(const GURL& url,
       host_content_settings_map_->GetContentSetting(
           primary_url, GURL(),
           CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kBraveShields);
-  ContentSetting brave_1p_setting = host_content_settings_map_->GetContentSetting(
-      primary_url, GURL("https://firstParty/"),
-      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
+  ContentSetting brave_1p_setting =
+      host_content_settings_map_->GetContentSetting(primary_url,
+          GURL("https://firstParty/"), CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kCookies);
   ContentSetting brave_3p_setting =
       host_content_settings_map_->GetContentSetting(
           primary_url, GURL(),
@@ -81,9 +93,8 @@ void BraveCookieSettings::GetCookieSetting(const GURL& url,
   bool allow_1p_cookies = brave_1p_setting == CONTENT_SETTING_ALLOW ||
     brave_1p_setting == CONTENT_SETTING_DEFAULT;
   bool allow_3p_cookies = brave_3p_setting == CONTENT_SETTING_ALLOW;
-
   if (ShouldBlockCookie(allow_brave_shields, allow_1p_cookies,
-      allow_3p_cookies, first_party_url, url)) {
+      allow_3p_cookies, first_party_url, url, allow_google_auth_)) {
     *cookie_setting = CONTENT_SETTING_BLOCK;
   }
 }
@@ -99,6 +110,13 @@ bool BraveCookieSettings::IsCookieAccessAllowed(const GURL& url,
          setting == CONTENT_SETTING_BLOCK);
   return setting == CONTENT_SETTING_ALLOW ||
          setting == CONTENT_SETTING_SESSION_ONLY;
+}
+
+void BraveCookieSettings::OnAllowGoogleAuthChanged() {
+  DCHECK(thread_checker_.CalledOnValidThread());
+  base::AutoLock auto_lock(lock_);
+  allow_google_auth_ = pref_change_registrar_.prefs()->GetBoolean(
+      kGoogleLoginControlType);
 }
 
 }  // namespace content_settings

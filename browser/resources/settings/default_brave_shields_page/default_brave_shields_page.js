@@ -104,6 +104,6 @@ Polymer({
   },
   onNoScriptControlChange_: function() {
     this.browserProxy_.setNoScriptControlType(this.$.noScriptControlType.checked);
-  },
+  }
 });
 })();

@@ -33,12 +33,14 @@ class AdBlockBaseService : public BaseBraveShieldsService {
 
   bool ShouldStartRequest(const GURL &url, content::ResourceType resource_type,
     const std::string& tab_host, bool* matching_exception_filter) override;
+  void EnableTag(const std::string& tag, bool enabled);
 
  protected:
   friend class ::AdBlockServiceTest;
   bool Init() override;
   void Cleanup() override;
 
+  void EnableTagOnFileTaskRunner(std::string tag, bool enabled);
   void GetDATFileData(const base::FilePath& dat_file_path);
   AdBlockClient* GetAdBlockClientForTest();
 
@@ -47,6 +49,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
 
  private:
   void OnDATFileDataReady();
+  void OnPreferenceChanges(const std::string& pref_name);
 
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<AdBlockBaseService> weak_factory_;
