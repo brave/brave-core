@@ -253,9 +253,8 @@ def rename_file_if_exists(filename, logging):
 def parse_args():
     desc = "Download Linux packages from GitHub, sign them, then upload to apt/rpm repositories"
 
-    parser = argparse.ArgumentParser(
-        description=desc, formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-c', '--channel', help='The Brave channel, i.e. \'nightly\', \'dev\', \'beta\', \'release\',
+    parser = argparse.ArgumentParser(description=desc, formatter_class=RawTextHelpFormatter)
+    parser.add_argument('-c', '--channel', help='The Brave channel, i.e. \'nightly\', \'dev\', \'beta\', \'release\'',
                         required=True)
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Print debug output')
