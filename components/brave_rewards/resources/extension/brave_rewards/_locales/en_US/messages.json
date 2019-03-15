@@ -376,5 +376,13 @@
   "welcomeBack": {
     "message": "Welcome Back!",
     "description": "Title message for wallet disabled panel"
+  },
+  "tipsProcessedNotification": {
+    "message": "Your monthly tips have been processed!",
+    "description": "Message for monthly tips processed notification"
+  },
+  "contributionTips": {
+    "message": "Contributions & Tips",
+    "description": "Title for monthly tips processed notification"
   }
 }

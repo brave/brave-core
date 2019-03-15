@@ -130,7 +130,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetReconcileStamp(const GetReconcileStampCallback& callback) override;
   void GetAddresses(const GetAddressesCallback& callback) override;
   void GetAutoContribute(
-      const GetAutoContributeCallback& callback) override;
+      GetAutoContributeCallback callback) override;
   void GetPublisherMinVisitTime(
       const GetPublisherMinVisitTimeCallback& callback) override;
   void GetPublisherMinVisits(
@@ -424,6 +424,9 @@ class RewardsServiceImpl : public RewardsService,
   void MaybeShowNotificationAddFunds();
   bool ShouldShowNotificationAddFunds() const;
   void ShowNotificationAddFunds(bool sufficient);
+
+  void MaybeShowNotificationTipsPaid();
+  void ShowNotificationTipsPaid(bool ac_enabled);
 
   // Mojo Proxy methods
   void OnPublisherBannerMojoProxy(const std::string& banner);
