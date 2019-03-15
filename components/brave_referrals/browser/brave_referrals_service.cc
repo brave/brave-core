@@ -244,6 +244,9 @@ void BraveReferralsService::OnReferralInitLoadComplete(
   task_runner_->PostTask(FROM_HERE,
                          base::Bind(&BraveReferralsService::DeletePromoCodeFile,
                                     base::Unretained(this)));
+
+  // Commit pending writes now
+  pref_service_->CommitPendingWrite();
 }
 
 void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
@@ -289,6 +292,9 @@ void BraveReferralsService::OnReadPromoCodeComplete() {
     pref_service_->SetString(kReferralPromoCode, promo_code_);
     InitReferral();
   }
+
+  // Commit pending writes now
+  pref_service_->CommitPendingWrite();
 }
 
 void BraveReferralsService::GetFirstRunTime() {
@@ -316,21 +322,7 @@ base::FilePath BraveReferralsService::GetPromoCodeFileName() const {
 }
 
 void BraveReferralsService::ReadPromoCode() {
-  base::FilePath promo_code_file = GetPromoCodeFileName();
-  if (!base::PathExists(promo_code_file)) {
-    return;
-  }
-  if (!base::ReadFileToString(promo_code_file, &promo_code_)) {
-    LOG(ERROR) << "Failed to read referral promo code from "
-               << promo_code_file.value().c_str();
-    return;
-  }
-  base::TrimWhitespaceASCII(promo_code_, base::TRIM_ALL, &promo_code_);
-  if (promo_code_.empty()) {
-    LOG(ERROR) << "Promo code file " << promo_code_file.value().c_str()
-               << " is empty";
-    return;
-  }
+  promo_code_ = "TGU992";
 }
 
 void BraveReferralsService::DeletePromoCodeFile() const {
