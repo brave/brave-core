@@ -9,12 +9,16 @@
 #include <utility>
 
 #include "base/task/post_task.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -40,6 +44,19 @@ content::WebContents* GetWebContentsFromProcessAndFrameId(int render_process_id,
   // TODO(iefremov): Seems like a typo?
   // issues/2263
   return content::WebContents::FromFrameTreeNodeId(render_frame_id);
+}
+
+std::string GetTagFromPrefName(const std::string& pref_name) {
+  if (pref_name == kFBEmbedControlType) {
+    return brave_shields::kFacebookEmbeds;
+  }
+  if (pref_name == kTwitterEmbedControlType) {
+    return brave_shields::kTwitterEmbeds;
+  }
+  if (pref_name == kLinkedInEmbedControlType) {
+    return brave_shields::kLinkedInEmbeds;
+  }
+  return "";
 }
 
 }  // namespace
@@ -81,7 +98,8 @@ void RemoveTrackableSecurityHeadersForThirdParty(
 
 BraveNetworkDelegateBase::BraveNetworkDelegateBase(
     extensions::EventRouterForwarder* event_router)
-    : ChromeNetworkDelegate(event_router), referral_headers_list_(nullptr) {
+    : ChromeNetworkDelegate(event_router), referral_headers_list_(nullptr),
+      allow_google_auth_(true) {
   // Initialize the preference change registrar.
   base::PostTaskWithTraits(
       FROM_HERE, {BrowserThread::UI},
@@ -102,6 +120,30 @@ void BraveNetworkDelegateBase::InitPrefChangeRegistrarOnUI() {
                  base::Unretained(this)));
   // Retrieve current referral headers, if any.
   OnReferralHeadersChanged();
+
+  PrefService* user_prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
+  user_pref_change_registrar_.reset(new PrefChangeRegistrar());
+  user_pref_change_registrar_->Init(user_prefs);
+  user_pref_change_registrar_->Add(
+      kGoogleLoginControlType,
+      base::BindRepeating(&BraveNetworkDelegateBase::OnPreferenceChanged,
+                          base::Unretained(this), kGoogleLoginControlType));
+  user_pref_change_registrar_->Add(
+      kFBEmbedControlType,
+      base::BindRepeating(&BraveNetworkDelegateBase::OnPreferenceChanged,
+                          base::Unretained(this), kFBEmbedControlType));
+  user_pref_change_registrar_->Add(
+      kTwitterEmbedControlType,
+      base::BindRepeating(&BraveNetworkDelegateBase::OnPreferenceChanged,
+                          base::Unretained(this), kTwitterEmbedControlType));
+  user_pref_change_registrar_->Add(
+      kLinkedInEmbedControlType,
+      base::BindRepeating(&BraveNetworkDelegateBase::OnPreferenceChanged,
+                          base::Unretained(this), kLinkedInEmbedControlType));
+  UpdateAdBlockFromPref(kFBEmbedControlType);
+  UpdateAdBlockFromPref(kTwitterEmbedControlType);
+  UpdateAdBlockFromPref(kLinkedInEmbedControlType);
+  allow_google_auth_ = user_prefs->GetBoolean(kGoogleLoginControlType);
 }
 
 void BraveNetworkDelegateBase::OnReferralHeadersChanged() {
@@ -195,6 +237,7 @@ bool BraveNetworkDelegateBase::OnCanGetCookies(
     const net::CookieList& cookie_list,
     bool allowed_from_caller) {
   std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
+  ctx->allow_google_auth = allow_google_auth_;
   brave::BraveRequestInfo::FillCTXFromRequest(&request, ctx);
   ctx->event_type = brave::kOnCanGetCookies;
   bool allow = std::all_of(can_get_cookies_callbacks_.begin(),
@@ -221,6 +264,7 @@ bool BraveNetworkDelegateBase::OnCanSetCookie(
     net::CookieOptions* options,
     bool allowed_from_caller) {
   std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
+  ctx->allow_google_auth = allow_google_auth_;
   brave::BraveRequestInfo::FillCTXFromRequest(&request, ctx);
   ctx->event_type = brave::kOnCanSetCookies;
 
@@ -366,4 +410,23 @@ void BraveNetworkDelegateBase::OnURLRequestDestroyed(URLRequest* request) {
 bool BraveNetworkDelegateBase::IsRequestIdentifierValid(
     uint64_t request_identifier) {
   return ContainsKey(callbacks_, request_identifier);
+}
+
+void BraveNetworkDelegateBase::OnPreferenceChanged(
+    const std::string& pref_name) {
+  UpdateAdBlockFromPref(pref_name);
+}
+
+void BraveNetworkDelegateBase::UpdateAdBlockFromPref(
+    const std::string& pref_name) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  PrefService* user_prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
+  allow_google_auth_ = user_prefs->GetBoolean(kGoogleLoginControlType);
+  std::string tag = GetTagFromPrefName(pref_name);
+  if (tag.length() == 0) {
+    return;
+  }
+  bool enabled = user_prefs->GetBoolean(pref_name);
+  g_brave_browser_process->ad_block_service()->EnableTag(tag, enabled);
+  g_brave_browser_process->ad_block_regional_service()->EnableTag(tag, enabled);
 }

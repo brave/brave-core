@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/base_paths.h"
 #include "base/bind.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
@@ -18,8 +17,13 @@
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 
@@ -150,6 +154,23 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
   return true;
 }
 
+void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
+  GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&AdBlockBaseService::EnableTagOnFileTaskRunner,
+                     base::Unretained(this), tag, enabled));
+}
+
+void AdBlockBaseService::EnableTagOnFileTaskRunner(
+    std::string tag, bool enabled) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (enabled) {
+    ad_block_client_->addTag(tag);
+  } else {
+    ad_block_client_->removeTag(tag);
+  }
+}
+
 void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {
   GetTaskRunner()->PostTaskAndReply(
       FROM_HERE,
@@ -163,10 +184,9 @@ void AdBlockBaseService::OnDATFileDataReady() {
     LOG(ERROR) << "Could not obtain ad block data";
     return;
   }
-  ad_block_client_.reset(new AdBlockClient());
   if (!ad_block_client_->deserialize(
       reinterpret_cast<char*>(&buffer_.front()))) {
-    ad_block_client_.reset();
+    ad_block_client_.reset(new AdBlockClient());
     LOG(ERROR) << "Failed to deserialize ad block data";
     return;
   }

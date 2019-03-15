@@ -10,7 +10,10 @@
 #include <string>
 
 #include "chrome/browser/chrome_content_browser_client.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
+
+class PrefChangeRegistrar;
 
 namespace content {
 class BrowserContext;
@@ -79,6 +82,12 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   bool AllowAccessCookie(const GURL& url, const GURL& first_party,
       content::ResourceContext* context, int render_process_id,
       int render_frame_id);
+  void OnAllowGoogleAuthChanged();
+
+  std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
+      pref_change_registrar_;
+  bool allow_google_auth_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveContentBrowserClient);
 };
 

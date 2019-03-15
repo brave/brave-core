@@ -11,9 +11,12 @@ source_set("browser") {
   deps = [
     "//base",
     "//brave/common:brave_cookie_blocking",
+    "//brave/common:pref_names",
+    "//brave/common:shield_exceptions",
     "//brave/common/tor:pref_names",
     "//components/content_settings/core/common",
     "//components/prefs",
+    "//extensions/common",
     "//net",
     "//url",
   ]

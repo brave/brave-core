@@ -1,16 +1,21 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
 #include "brave/browser/net/url_context.h"
 
+#include <memory>
 #include <string>
 
+#include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "components/prefs/testing_pref_service.h"
 #include "content/public/browser/resource_request_info.h"
 
 namespace brave {
@@ -51,12 +56,13 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
   ctx->allow_ads = brave_shields::IsAllowContentSettingFromIO(
       request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kAds);
-  ctx->allow_http_upgradable_resource = brave_shields::IsAllowContentSettingFromIO(
-      request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+  ctx->allow_http_upgradable_resource =
+      brave_shields::IsAllowContentSettingFromIO(request, ctx->tab_origin,
+          ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kHTTPUpgradableResources);
   ctx->allow_1p_cookies = brave_shields::IsAllowContentSettingFromIO(
-      request, ctx->tab_origin, GURL("https://firstParty/"), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kCookies);
+      request, ctx->tab_origin, GURL("https://firstParty/"),
+      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
   ctx->allow_3p_cookies = brave_shields::IsAllowContentSettingFromIO(
       request, ctx->tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kCookies);
