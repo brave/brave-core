@@ -48,14 +48,14 @@ using OnLoadCallback = std::function<void(const Result, const std::string&)>;
 
 using OnResetCallback = std::function<void(const Result)>;
 
-using OnGetAdsCallback = std::function<void(const Result,
-  const std::string&, const std::string&, const std::vector<AdInfo>&)>;
+using OnGetAdsCallback = std::function<void(const Result, const std::string&,
+    const std::vector<AdInfo>&)>;
 
 using OnLoadSampleBundleCallback = std::function<void(const Result,
-  const std::string&)>;
+    const std::string&)>;
 
 using URLRequestCallback = std::function<void(const int, const std::string&,
-  const std::map<std::string, std::string>& headers)>;
+    const std::map<std::string, std::string>& headers)>;
 
 class ADS_EXPORT AdsClient {
  public:
@@ -155,10 +155,9 @@ class ADS_EXPORT AdsClient {
   // storage
   virtual void Reset(const std::string& name, OnResetCallback callback) = 0;
 
-  // Should get ads for the specified region and category from the previously
-  // persisted bundle state
+  // Should get ads for the specified category from the previously persisted
+  // bundle state
   virtual void GetAds(
-      const std::string& region,
       const std::string& category,
       OnGetAdsCallback callback) = 0;
 

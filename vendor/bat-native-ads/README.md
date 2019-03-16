@@ -267,10 +267,9 @@ void LoadSampleBundle(OnLoadSampleBundleCallback callback)
 void Reset(const std::string& name, OnResetCallback callback)
 ```
 
-`GetAds` should get Ads for the specified region and category from the previously persisted bundle state
+`GetAds` should get Ads for the specified category from the previously persisted bundle state
 ```
 void GetAds(
-    const std::string& region,
     const std::string& category,
     OnGetAdsCallback callback)
 ```
@@ -300,12 +299,6 @@ Use staging Ads Serve as defined by `STAGING_SERVER` in `static_values.h`. Defau
 
 ```
 --brave-ads-staging
-```
-
-Change locale. Default is locale of operating system. Where `{locale}`, i.e. `en_US`
-
-```
---brave-ads-locale={locale}
 ```
 
 Collect initial activity after 25 seconds instead of 1 hour as defined by `kDebugOneHourInSeconds` in `static_values.h`
