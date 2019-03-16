@@ -133,7 +133,6 @@ class AdsServiceImpl : public AdsService,
   void Reset(const std::string& name,
              ads::OnResetCallback callback) override;
   void GetAds(
-      const std::string& region,
       const std::string& category,
       ads::OnGetAdsCallback callback) override;
   void LoadSampleBundle(ads::OnLoadSampleBundleCallback callback) override;
@@ -161,7 +160,6 @@ class AdsServiceImpl : public AdsService,
   void OnForeground() override;
 
   void OnGetAdsForCategory(const ads::OnGetAdsCallback& callback,
-                           const std::string& region,
                            const std::string& category,
                            const std::vector<ads::AdInfo>& ads);
   void OnSaveBundleState(const ads::OnSaveCallback& callback, bool success);
@@ -205,8 +203,6 @@ class AdsServiceImpl : public AdsService,
 
   NotificationInfoMap notification_ids_;
   std::map<const net::URLFetcher*, ads::URLRequestCallback> fetchers_;
-
-  std::string command_line_switch_ads_locale_;
 
   DISALLOW_COPY_AND_ASSIGN(AdsServiceImpl);
 };

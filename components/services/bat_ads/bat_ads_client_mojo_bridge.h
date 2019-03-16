@@ -53,7 +53,6 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   void Reset(const std::string& name,
              ads::OnResetCallback callback) override;
   void GetAds(
-      const std::string& region,
       const std::string& category,
       ads::OnGetAdsCallback callback) override;
   void LoadSampleBundle(ads::OnLoadSampleBundleCallback callback) override;
