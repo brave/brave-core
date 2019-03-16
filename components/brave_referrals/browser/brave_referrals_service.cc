@@ -448,7 +448,8 @@ std::string BraveReferralsService::BuildReferralFinalizationCheckPayload()
 
 void BraveReferralsService::FetchReferralHeaders() {
   net::NetworkTrafficAnnotationTag traffic_annotation =
-      net::DefineNetworkTrafficAnnotation("brave_referral_headers_fetcher", R"(
+      net::DefineNetworkTrafficAnnotation(
+        "brave_referral_headers_fetcher", R"(
         semantics {
           sender:
             "Brave Referrals Service"
