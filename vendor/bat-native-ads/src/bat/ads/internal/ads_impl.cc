@@ -34,7 +34,6 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
-using std::placeholders::_4;
 
 namespace ads {
 
@@ -670,13 +669,12 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
   auto locale = ads_client_->GetAdsLocale();
   auto region = helper::Locale::GetCountryCode(locale);
 
-  auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3, _4);
-  ads_client_->GetAds(region, category, callback);
+  auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3);
+  ads_client_->GetAds(category, callback);
 }
 
 void AdsImpl::OnGetAds(
     const Result result,
-    const std::string& region,
     const std::string& category,
     const std::vector<AdInfo>& ads) {
   if (result != SUCCESS) {
@@ -685,11 +683,11 @@ void AdsImpl::OnGetAds(
       std::string new_category = category.substr(0, pos);
 
       BLOG(INFO) << "Notification not made: No ads found in \"" << category
-          << "\" category for " << region << " region, trying again with \""
-          << new_category << "\" category";
+          << "\" category, trying again with \"" << new_category
+          << "\" category";
 
-      auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3, _4);
-      ads_client_->GetAds(region, new_category, callback);
+      auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3);
+      ads_client_->GetAds(new_category, callback);
 
       return;
     }
@@ -699,7 +697,7 @@ void AdsImpl::OnGetAds(
       // 'Notification not made', { reason: 'no ads for category', category }
 
       BLOG(INFO) << "Notification not made: No ads found in \"" << category
-          << "\" category for " << region << " region";
+          << "\" category";
 
       return;
     }

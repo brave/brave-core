@@ -15,7 +15,9 @@
 #include "base/containers/flat_map.h"
 #include "bat/ads/ads.h"
 
-using namespace std::placeholders;
+using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
 
 namespace bat_ads {
 
@@ -351,7 +353,6 @@ void AdsClientMojoBridge::SaveBundleState(const std::string& bundle_state_json,
 void AdsClientMojoBridge::OnGetAds(
     CallbackHolder<GetAdsCallback>* holder,
     ads::Result result,
-    const std::string& region,
     const std::string& category,
     const std::vector<ads::AdInfo>& ad_info) {
   if (holder->is_valid()) {
@@ -359,21 +360,20 @@ void AdsClientMojoBridge::OnGetAds(
     for (const auto it : ad_info) {
       ad_info_json.push_back(it.ToJson());
     }
-    std::move(holder->get()).Run(
-        ToMojomResult(result), region, category, ad_info_json);
+    std::move(holder->get()).Run(ToMojomResult(result), category, ad_info_json);
   }
   delete holder;
 }
 
-void AdsClientMojoBridge::GetAds(const std::string& region,
-                              const std::string& category,
-                              GetAdsCallback callback) {
+void AdsClientMojoBridge::GetAds(
+    const std::string& category,
+    GetAdsCallback callback) {
   // this gets deleted in OnSaveBundleState
   auto* holder = new CallbackHolder<GetAdsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_client_->GetAds(region, category,
-      std::bind(AdsClientMojoBridge::OnGetAds, holder, _1, _2, _3, _4));
+  ads_client_->GetAds(category, std::bind(AdsClientMojoBridge::OnGetAds,
+      holder, _1, _2, _3));
 }
 
 }  // namespace bat_ads
