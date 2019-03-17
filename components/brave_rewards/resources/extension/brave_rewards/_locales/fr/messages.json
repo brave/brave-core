@@ -185,6 +185,10 @@
     "message": "Un don de jetons vous attend.",
     "description": "Description for new grant notification"
   },
+  "backupNow": {
+    "message": "Sauvegarder maintenant",
+    "description": "Notification button text when we ask user to backup wallet"
+  },
   "backupWalletTitle": {
     "message": "Sauvegarder portefeuille \n",
     "description": "Notification title when we ask user to backup wallet"
@@ -328,5 +332,49 @@
   "walletFailedButton": {
     "message": "Réessayer",
     "description": "Button for re-try after wallet creation failed"
+  },
+  "addFunds": {
+    "message": "Ajouter des Fonds",
+    "description": "Button for adding funds"
+  },
+  "rewardsSettings": {
+    "message": "Paramètres des Récompenses",
+    "description": "Button for opening settings page"
+  },
+  "earningsClaimDefault": {
+    "message": "Vos gains publicitaires sont disponibles.",
+    "description": "Panel notification text for Ads grant"
+  },
+  "and": {
+    "message": "et",
+    "description": "The word 'and'"
+  },
+  "braveRewardsSubTitle": {
+    "message": "Soyez récompensé(e) en navigant sur le Web !",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "disabledPanelTextTwo": {
+    "message": "Gagnez en regardant des pubs qui respectent votre vie privée, et donnez pour soutenir les créateurs de contenu que vous aimez.",
+    "description": "Text block for wallet disabled panel"
+  },
+  "enableRewards": {
+    "message": "Activer les Récompenses Brave",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "privacyPolicy": {
+    "message": "Politique de Confidentialité",
+    "description": "Privacy Policy"
+  },
+  "serviceText": {
+    "message": "En cliquant sur 'Activer les Récompenses Brave', vous certifiez avoir lu et accepté les",
+    "description": "Terms of service main text"
+  },
+  "termsOfService": {
+    "message": "Conditions d'utilisation",
+    "description": "Terms of Service"
+  },
+  "welcomeBack": {
+    "message": "Bienvenue !",
+    "description": "Title message for wallet disabled panel"
   }
 }
