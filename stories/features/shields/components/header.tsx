@@ -6,73 +6,109 @@ import * as React from 'react'
 
 // Feature-specific components
 import {
-  Header,
-  MainToggleFlex,
-  Description,
-  SiteInfoCard,
-  DisabledTextGrid,
-  Label,
-  Highlight,
-  UnHighlight,
-  Toggle,
+  ShieldsHeader,
+  MainToggle,
+  TotalBlockedStats,
+  SiteOverview,
+  SiteInfo,
+  MainToggleHeading,
+  MainToggleText,
+  ToggleStateText,
+  Favicon,
+  SiteInfoText,
+  TotalBlockedStatsNumber,
+  TotalBlockedStatsText,
+  DisabledContentView,
   ShieldIcon,
-  MainSiteInfoGrid,
-  ShieldIconFlex
+  DisabledContentText,
+  Toggle
 } from '../../../../src/features/shields'
 
 // Fake data
-import locale from '../fakeLocale'
-import data from '../fakeData'
+import { getLocale } from '../fakeLocale'
 
 interface Props {
   enabled: boolean
-  sitename: string
   favicon: string
+  hostname: string
+  isBlockedListOpen: boolean
+  adsTrackersBlocked: number
+  scriptsBlocked: number
+  httpsUpgrades: number
+  fingerprintingBlocked: number
   fakeOnChange: () => void
 }
 
-export default class ShieldsHeader extends React.PureComponent<Props, {}> {
+export default class Header extends React.PureComponent<Props, {}> {
+  get totalBlocked () {
+    const { adsTrackersBlocked, httpsUpgrades, scriptsBlocked, fingerprintingBlocked } = this.props
+    const total = adsTrackersBlocked + httpsUpgrades + scriptsBlocked + fingerprintingBlocked
+    if (!total) {
+      return 0
+    }
+    return total > 99 ? '99+' : total
+  }
+
+  get totalBlockedString () {
+    const { adsTrackersBlocked, scriptsBlocked, fingerprintingBlocked, httpsUpgrades } = this.props
+    const blockedItems = adsTrackersBlocked + scriptsBlocked + fingerprintingBlocked
+
+    if (blockedItems === 0 && httpsUpgrades === 0) {
+      return `${getLocale('itemsBlocked')} ${getLocale('and')} ${getLocale('connectionsUpgraded')}`
+    } else if (blockedItems === 1 && httpsUpgrades === 0) {
+      return getLocale('itemBlocked')
+    } else if (blockedItems === 0 && httpsUpgrades === 1) {
+      return getLocale('connectionUpgradedHTTPSCapital')
+    } else if (blockedItems > 1 && httpsUpgrades === 0) {
+      return getLocale('itemsBlocked')
+    } else if (blockedItems === 0 && httpsUpgrades > 1) {
+      return getLocale('connectionsUpgradedHTTPSCapital')
+    } else {
+      return `${getLocale('itemsBlocked')} ${getLocale('and')} ${getLocale('connectionsUpgraded')}`
+    }
+  }
+
   render () {
-    const { fakeOnChange, enabled, sitename, favicon } = this.props
+    const { fakeOnChange, enabled, favicon, hostname, isBlockedListOpen } = this.props
     return (
-      <Header id='braveShieldsHeader' enabled={enabled}>
-        <MainToggleFlex enabled={enabled}>
-          <Label size='medium'>
-            {locale.shields} <Highlight enabled={enabled}> {enabled ? locale.up : locale.down}
-            </Highlight>
-            <UnHighlight> {locale.forThisSite}</UnHighlight>
-          </Label>
-          <Toggle id='mainToggle' checked={enabled} onChange={fakeOnChange} size='large' />
-        </MainToggleFlex>
-        {
-          enabled
-            ? <Description enabled={true}>{locale.enabledMessage}</Description>
-            : null
-        }
-        <SiteInfoCard>
-          <MainSiteInfoGrid>
-            <img src={favicon} />
-            <Label size='large'>{sitename}</Label>
-          </MainSiteInfoGrid>
-            {
-              enabled
-              ? (
-                <MainSiteInfoGrid>
-                  <Highlight enabled={true} size='large'>{data.totalBlocked}</Highlight>
-                  <Label size='medium'>{locale.totalBlocked}</Label>
-                </MainSiteInfoGrid>
-              )
-              : (
-                <DisabledTextGrid>
-                  <ShieldIconFlex>
-                    <ShieldIcon />
-                  </ShieldIconFlex>
-                  <Description enabled={false}>{locale.disabledMessage}</Description>
-                </DisabledTextGrid>
-              )
-            }
-        </SiteInfoCard>
-      </Header>
+      <ShieldsHeader status={enabled ? 'enabled' : 'disabled'}>
+        <MainToggle status={enabled ? 'enabled' : 'disabled'}>
+          <div>
+            <MainToggleHeading>
+              {getLocale('shields')}
+              <ToggleStateText status={enabled ? 'enabled' : 'disabled'}>
+                {enabled ? ` ${getLocale('up')} ` : ` ${getLocale('down')} `}
+              </ToggleStateText>
+              {getLocale('forThisSite')}
+            </MainToggleHeading>
+            {enabled ? <MainToggleText>{getLocale('enabledMessage')}</MainToggleText> : null}
+          </div>
+          <Toggle size='large' checked={enabled} onChange={fakeOnChange} disabled={isBlockedListOpen} />
+        </MainToggle>
+        <SiteOverview status={enabled ? 'enabled' : 'disabled'}>
+          <SiteInfo>
+            <Favicon src={favicon} />
+            <SiteInfoText>{hostname}</SiteInfoText>
+          </SiteInfo>
+          {
+            enabled
+            ? (
+              <TotalBlockedStats>
+                <TotalBlockedStatsNumber>{this.totalBlocked}</TotalBlockedStatsNumber>
+                <TotalBlockedStatsText>
+                  {this.totalBlockedString}
+                </TotalBlockedStatsText>
+              </TotalBlockedStats>
+            )
+            : (
+              <DisabledContentView>
+                <div><ShieldIcon /></div>
+                <DisabledContentText>{getLocale('disabledMessage')}</DisabledContentText>
+              </DisabledContentView>
+            )
+          }
+        </SiteOverview>
+      </ShieldsHeader>
     )
   }
 }
