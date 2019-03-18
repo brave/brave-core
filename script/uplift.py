@@ -328,7 +328,7 @@ def create_branch(channel, top_level_base, remote_base, local_branch):
     if is_nightly(channel):
         return local_branch
 
-    channel_branch = remote_base + '_' + local_branch
+    channel_branch = local_branch + '_' + remote_base
 
     if is_sha(top_level_base):
         compare_from = top_level_base
@@ -358,6 +358,7 @@ def create_branch(channel, top_level_base, remote_base, local_branch):
                 # create the branch
                 print('(' + channel + ') creating "' + channel_branch + '" from ' + remote_base)
                 execute(['git', 'checkout', remote_base])
+                execute(['git', 'pull', 'origin', remote_base])
                 execute(['git', 'checkout', '-b', channel_branch])
 
             # TODO: handle errors thrown by cherry-pick
