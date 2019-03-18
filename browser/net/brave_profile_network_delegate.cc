@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -11,11 +12,14 @@
 #include "brave/browser/net/brave_referrals_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/browser/net/brave_tor_network_delegate_helper.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
 #endif
 #include "brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "components/prefs/pref_service.h"
 
 BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
     extensions::EventRouterForwarder* event_router) :

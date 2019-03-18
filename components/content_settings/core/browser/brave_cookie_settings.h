@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -29,8 +30,16 @@ class BraveCookieSettings : public CookieSettings {
   bool IsCookieAccessAllowed(const GURL& url,
                              const GURL& first_party_url,
                              const GURL& tab_url) const;
+  bool GetAllowGoogleAuth() const {
+    return allow_google_auth_;
+  }
+
  protected:
   ~BraveCookieSettings() override;
+  void OnAllowGoogleAuthChanged();
+
+  bool allow_google_auth_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveCookieSettings);
 };
 

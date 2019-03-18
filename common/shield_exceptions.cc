@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -56,7 +57,8 @@ bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
   // https://github.com/brave/browser-laptop/issues/5861
   // The below patterns are done to only allow the specific request
   // pattern, of reddit -> redditmedia -> embedly -> imgur.
-  static auto redditPtrn = URLPattern(URLPattern::SCHEME_HTTPS, "https://www.reddit.com/*");
+  static auto redditPtrn = URLPattern(URLPattern::SCHEME_HTTPS,
+      "https://www.reddit.com/*");
   static std::vector<URLPattern> reddit_embed_patterns({
     redditPtrn,
     URLPattern(URLPattern::SCHEME_HTTPS, "https://www.redditmedia.com/*"),
@@ -84,7 +86,8 @@ bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
     },
     {
       GURL("https://accounts.google.com/"), {
-        URLPattern(URLPattern::SCHEME_HTTPS, "https://content.googleapis.com/*"),
+        URLPattern(URLPattern::SCHEME_HTTPS,
+            "https://content.googleapis.com/*"),
       }
     },
   };
@@ -113,10 +116,27 @@ bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
     });
 }
 
-bool IsWhitelistedCookieExeption(const GURL& firstPartyOrigin,
-    const GURL& subresourceUrl) {
+bool IsWhitelistedCookieException(const GURL& firstPartyOrigin,
+    const GURL& subresourceUrl, bool allow_google_auth) {
   // Note that there's already an exception for TLD+1, so don't add those here.
   // Check with the security team before adding exceptions.
+
+  // 1st-party-INdependent whitelist
+  std::vector<URLPattern> fpi_whitelist_patterns = {};
+  if (allow_google_auth) {
+    fpi_whitelist_patterns.push_back(URLPattern(URLPattern::SCHEME_ALL,
+        "https://accounts.google.com/o/oauth2/*"));
+  }
+  bool any_match = std::any_of(fpi_whitelist_patterns.begin(),
+      fpi_whitelist_patterns.end(),
+      [&subresourceUrl](const URLPattern& pattern) {
+        return pattern.MatchesURL(subresourceUrl);
+      });
+  if (any_match) {
+    return true;
+  }
+
+  // 1st-party-dependent whitelist
   static std::map<GURL, std::vector<URLPattern> > whitelist_patterns = {};
   std::map<GURL, std::vector<URLPattern> >::iterator i =
       whitelist_patterns.find(firstPartyOrigin);
@@ -130,4 +150,4 @@ bool IsWhitelistedCookieExeption(const GURL& firstPartyOrigin,
       });
 }
 
-}
+}  // namespace brave
