@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -10,8 +11,8 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
-// TODO: The following is being included purely to get the generated
-//        GritResourceMap definition. Replace with a better solution.
+// TODO(petemill): The following is being included purely to get the generated
+// GritResourceMap definition. Replace with a better solution.
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #else
@@ -88,8 +89,12 @@ content::RenderViewHost* BasicUI::GetRenderViewHost() {
 
 bool BasicUI::IsSafeToSetWebUIProperties() const {
   // Allow `web_ui()->CanCallJavascript()` to be false.
-  // Allow `web_ui()->CanCallJavascript()` to be true if `(web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI) != 0`
-  // Disallow `web_ui()->CanCallJavascript()` to be true if `(web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI) == 0`
-  DCHECK(!web_ui()->CanCallJavascript() || (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI));
-  return web_ui()->CanCallJavascript() && (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI);
+  // Allow `web_ui()->CanCallJavascript()` to be true if
+  // `(web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI) != 0`
+  // Disallow `web_ui()->CanCallJavascript()` to be true if
+  // `(web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI) == 0`
+  DCHECK(!web_ui()->CanCallJavascript() ||
+         (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI));
+  return web_ui()->CanCallJavascript() &&
+         (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI);
 }

@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/profiles/brave_profile_chooser_view.h"
+
+#include <memory>
+#include <utility>
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
@@ -50,7 +54,8 @@ void BraveProfileChooserView::ButtonPressed(views::Button* sender,
                                             const ui::Event& event) {
   if (sender == tor_profile_button_) {
     profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
-  } else if (sender == users_button_ && browser()->profile()->IsGuestSession()) {
+  } else if (sender == users_button_ &&
+             browser()->profile()->IsGuestSession()) {
     if (browser()->profile()->IsTorProfile())
       profiles::CloseTorProfileWindows();
     else
@@ -83,7 +88,7 @@ views::View* BraveProfileChooserView::BraveCreateDiceSyncErrorView(
     sync_ui_util::AvatarSyncErrorType error,
     int button_string_id) {
   ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
-  
+
   views::View* view = new views::View();
   int content_list_vert_spacing =
       provider->GetDistanceMetric(DISTANCE_CONTENT_LIST_VERTICAL_SINGLE);

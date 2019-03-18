@@ -1,8 +1,14 @@
-// Copyright 2018 The Brave Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../../net/socket/socks5_client_socket.cc"
+#include "../../../../net/socket/socks5_client_socket.cc"  // NOLINT
+
+#include <algorithm>
+#include <memory>
+#include <string>
+#include <utility>
 
 #include "net/base/io_buffer.h"
 #include "net/socket/socks5_client_socket.h"
@@ -70,7 +76,7 @@ int SOCKS5ClientSocketAuth::Authenticate(int rv,
     switch (next_state_) {
       case STATE_INIT_WRITE: {
         DCHECK_EQ(OK, rv);
-        // Initialize the buffer with 
+        // Initialize the buffer with
         //        0x01, usernamelen, username, passwordlen, password
         size_t usernamelen = username().size();
         size_t passwordlen = password().size();
