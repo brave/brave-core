@@ -1,21 +1,27 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/autoplay/autoplay_permission_context.h"
 
+#include <memory>
 #include <string>
+#include <utility>
 
 #include "base/bind.h"
 #include "base/macros.h"
+#include "brave/common/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_request_id.h"
 #include "chrome/browser/permissions/permission_request_manager.h"
+#include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/mock_render_process_host.h"
@@ -64,6 +70,17 @@ class AutoplayPermissionContextTests : public ChromeRenderViewHostTestHarness {
 
   void TearDown() override {
     ChromeRenderViewHostTestHarness::TearDown();
+  }
+
+  content::BrowserContext* CreateBrowserContext() override {
+    TestingProfile::Builder builder;
+    auto prefs =
+        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
+    RegisterUserProfilePrefs(prefs->registry());
+    prefs->registry()->
+      RegisterBooleanPref(kGoogleLoginControlType, true);
+    builder.SetPrefService(std::move(prefs));
+    return builder.Build().release();
   }
 
   DISALLOW_COPY_AND_ASSIGN(AutoplayPermissionContextTests);

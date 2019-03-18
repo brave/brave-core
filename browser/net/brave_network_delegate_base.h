@@ -89,6 +89,9 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
   void InitPrefChangeRegistrarOnUI();
   void SetReferralHeaders(base::ListValue* referral_headers);
   void OnReferralHeadersChanged();
+  void OnPreferenceChanged(const std::string& pref_name);
+  void UpdateAdBlockFromPref(const std::string& pref_name);
+
   // TODO(iefremov): actually, we don't have to keep the list here, since
   // it is global for the whole browser and could live a singletonce in the
   // rewards service. Eliminating this will also help to avoid using
@@ -98,6 +101,10 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
   std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
+  std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
+      user_pref_change_registrar_;
+
+  bool allow_google_auth_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveNetworkDelegateBase);
 };

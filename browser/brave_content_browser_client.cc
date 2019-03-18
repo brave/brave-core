@@ -120,7 +120,8 @@ bool HandleURLRewrite(GURL* url,
 
 BraveContentBrowserClient::BraveContentBrowserClient(
     ChromeFeatureListCreator* chrome_feature_list_creator)
-    : ChromeContentBrowserClient(chrome_feature_list_creator) {}
+    : ChromeContentBrowserClient(chrome_feature_list_creator) {
+}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
 
@@ -167,7 +168,8 @@ bool BraveContentBrowserClient::AllowAccessCookie(
   content_settings::BraveCookieSettings* cookie_settings =
       (content_settings::BraveCookieSettings*)io_data->GetCookieSettings();
   bool allow = !ShouldBlockCookie(allow_brave_shields, allow_1p_cookies,
-                   allow_3p_cookies, first_party, url) &&
+                   allow_3p_cookies, first_party, url,
+                   cookie_settings->GetAllowGoogleAuth()) &&
       cookie_settings->IsCookieAccessAllowed(url, first_party, tab_origin);
   return allow;
 }
