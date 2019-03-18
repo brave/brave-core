@@ -183,8 +183,8 @@ const InstallConstants kInstallModes[] = {
             0xe7 } },
         L"nightly",                                  // Forced channel name.
         ChannelStrategy::FIXED,
-        false,  // Does not support system-level installs.
-        false,  // Does not support in-product set as default browser UX.
+        true,   // Support system-level installs.
+        true,   // Support in-product set as default browser UX.
         true,   // Supports retention experiments.
         false,  // Did not support multi-install.
         icon_resources::kSxSApplicationIndex,  // App icon resource index.
