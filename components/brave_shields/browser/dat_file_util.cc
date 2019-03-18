@@ -28,4 +28,13 @@ void GetDATFileData(const base::FilePath& file_path,
   }
 }
 
+void GetDATFileAsString(const base::FilePath& file_path,
+                        std::string* contents) {
+  bool success = base::ReadFileToString(file_path, contents);
+  if (!success || contents->empty()) {
+    LOG(ERROR) << "GetDATFileAsString: cannot "
+               << "read dat file " << file_path;
+  }
+}
+
 }  // namespace brave_shields
