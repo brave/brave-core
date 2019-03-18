@@ -37,6 +37,7 @@ platform :ios do
       device: "iPhone 8",
       code_coverage: true,
       skip_testing: [
+        "DataTests",
         "ClientTests/TabManagerTests/testQueryAddedTabs",
         "ClientTests/TabManagerTests/testQueryAddedPrivateTabs",
         "ClientTests/TabManagerTests/testQueryAddedMixedTabs",
