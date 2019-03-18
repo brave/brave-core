@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/net/brave_referrals_network_delegate_helper.h"
+
+#include <memory>
+#include <string>
 
 #include "base/json/json_reader.h"
 #include "brave/browser/net/url_context.h"
@@ -64,7 +68,8 @@ class BraveReferralsNetworkDelegateHelperTest : public testing::Test {
   std::unique_ptr<net::TestURLRequestContext> context_;
 };
 
-TEST_F(BraveReferralsNetworkDelegateHelperTest, ReplaceHeadersForMatchingDomain) {
+TEST_F(BraveReferralsNetworkDelegateHelperTest,
+       ReplaceHeadersForMatchingDomain) {
   GURL url("https://www.marketwatch.com");
   net::TestDelegate test_delegate;
   std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
@@ -97,7 +102,8 @@ TEST_F(BraveReferralsNetworkDelegateHelperTest, ReplaceHeadersForMatchingDomain)
   EXPECT_EQ(ret, net::OK);
 }
 
-TEST_F(BraveReferralsNetworkDelegateHelperTest, NoReplaceHeadersForNonMatchingDomain) {
+TEST_F(BraveReferralsNetworkDelegateHelperTest,
+       NoReplaceHeadersForNonMatchingDomain) {
   GURL url("https://www.google.com");
   net::TestDelegate test_delegate;
   std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
