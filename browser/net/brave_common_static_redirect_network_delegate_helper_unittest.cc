@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
+
+#include <memory>
+#include <string>
 
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
@@ -13,19 +17,18 @@
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
-
 namespace {
 
-class BraveCommonStaticRedirectNetworkDelegateHelperTest: public testing::Test {
+const char kComponentUpdaterProxy[] = "https://componentupdater.brave.com";
+
+class BraveCommonStaticRedirectNetworkDelegateHelperTest
+    : public testing::Test {
  public:
   BraveCommonStaticRedirectNetworkDelegateHelperTest()
       : thread_bundle_(content::TestBrowserThreadBundle::IO_MAINLOOP),
-        context_(new net::TestURLRequestContext(true)) {
-  }
+        context_(new net::TestURLRequestContext(true)) {}
   ~BraveCommonStaticRedirectNetworkDelegateHelperTest() override {}
-  void SetUp() override {
-    context_->Init();
-  }
+  void SetUp() override { context_->Init(); }
   net::TestURLRequestContext* context() { return context_.get(); }
 
  private:
@@ -33,34 +36,36 @@ class BraveCommonStaticRedirectNetworkDelegateHelperTest: public testing::Test {
   std::unique_ptr<net::TestURLRequestContext> context_;
 };
 
-TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest, ModifyComponentUpdaterURL) {
+TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest,
+       ModifyComponentUpdaterURL) {
   net::TestDelegate test_delegate;
   std::string query_string("?foo=bar");
   GURL url(std::string(component_updater::kUpdaterDefaultUrl) + query_string);
-  std::unique_ptr<net::URLRequest> request =
-      context()->CreateRequest(url, net::IDLE, &test_delegate,
-                             TRAFFIC_ANNOTATION_FOR_TESTS);
-  std::shared_ptr<brave::BraveRequestInfo>
-      before_url_context(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
+  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
+      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
+      new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              before_url_context);
   brave::ResponseCallback callback;
-  GURL expected_url(std::string(kBraveUpdatesExtensionsEndpoint + query_string));
+  GURL expected_url(
+      std::string(kBraveUpdatesExtensionsEndpoint + query_string));
   int ret =
       OnBeforeURLRequest_CommonStaticRedirectWork(callback, before_url_context);
   EXPECT_EQ(GURL(before_url_context->new_url_spec), expected_url);
   EXPECT_EQ(ret, net::OK);
 }
 
-TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest, NoModifyComponentUpdaterURL) {
+TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest,
+       NoModifyComponentUpdaterURL) {
   net::TestDelegate test_delegate;
-  std::string query_string("?braveRedirect=true");
-  GURL url(std::string(component_updater::kUpdaterDefaultUrl) + query_string);
-  std::unique_ptr<net::URLRequest> request =
-      context()->CreateRequest(url, net::IDLE, &test_delegate,
-                             TRAFFIC_ANNOTATION_FOR_TESTS);
-  std::shared_ptr<brave::BraveRequestInfo>
-      before_url_context(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
+  GURL url(kComponentUpdaterProxy);
+  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
+      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
+      new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              before_url_context);
   brave::ResponseCallback callback;
   GURL expected_url;
   int ret =

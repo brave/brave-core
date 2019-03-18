@@ -1,9 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_EXTENSIONS_BROWSER_MANAGEMENT_POLICY_H_
-#define BRAVE_EXTENSIONS_BROWSER_MANAGEMENT_POLICY_H_
+#ifndef BRAVE_BROWSER_EXTENSIONS_BRAVE_EXTENSION_PROVIDER_H_
+#define BRAVE_BROWSER_EXTENSIONS_BRAVE_EXTENSION_PROVIDER_H_
+
+#include <string>
 
 #include "extensions/browser/management_policy.h"
 
@@ -19,10 +22,11 @@ class BraveExtensionProvider : public ManagementPolicy::Provider {
   bool MustRemainInstalled(const Extension* extension,
                            base::string16* error) const override;
   static bool IsVetted(const extensions::Extension* extension);
+  static bool IsVetted(const std::string id);
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveExtensionProvider);
 };
 
 }  // namespace extensions
 
-#endif
+#endif  // BRAVE_BROWSER_EXTENSIONS_BRAVE_EXTENSION_PROVIDER_H_
