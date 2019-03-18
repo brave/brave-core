@@ -22,7 +22,7 @@ class CoreDataTestCase: XCTestCase {
         
         let storeType = DataController.viewContext.persistentStoreCoordinator!.persistentStores.first!.type
         if storeType == NSSQLiteStoreType {
-            let waitTimeForAppInitialization: TimeInterval = 10
+            let waitTimeForAppInitialization: TimeInterval = 5
             
             let expectation = self.expectation(description: "App initialization wait")
             DispatchQueue.main.asyncAfter(deadline: .now() + waitTimeForAppInitialization, execute: { expectation.fulfill() })
