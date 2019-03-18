@@ -19,7 +19,6 @@ export const StyledProfileWrapper = styled<{}, 'div'>('div')`
 ` as any
 
 export const StyledContainer = styled<{}, 'div'>('div')`
-  min-height: 250px;
   padding: 25px 30px 25px 30px;
 ` as any
 
@@ -97,8 +96,6 @@ export const StyledNoticeWrapper = styled<StyleProps, 'div'>('div')`
   padding: 10px 12px;
   border-radius: 4px;
   margin: 11px 0 10px;
-  max-height: 84px;
-  overflow-y: scroll;
 `
 
 export const StyledNoticeLink = styled<StyleProps, 'a'>('a')`

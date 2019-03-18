@@ -44,11 +44,7 @@ export default class WalletSummarySlider extends React.PureComponent<
     this.togglePanels = this.togglePanels.bind(this)
   }
 
-  togglePanels (showTitle: boolean, e: any) {
-    if (!showTitle && this.state.panelOneShown) {
-      return
-    }
-
+  togglePanels (e: any) {
     this.setState({
       panelOneShown: !this.state.panelOneShown,
       panelTwoShown: !this.state.panelTwoShown
@@ -63,7 +59,7 @@ export default class WalletSummarySlider extends React.PureComponent<
     return (
       <StyledWrapper>
         {showTitle ? panel : null}
-        <StyledToggleWrapper show={showTitle} onClick={this.togglePanels.bind(this, showTitle)}>
+        <StyledToggleWrapper show={showTitle} onClick={this.togglePanels}>
           <StyledGrid>
             <StyledColumn size={'5'}>
               {showTitle ? (

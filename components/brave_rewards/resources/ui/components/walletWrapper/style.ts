@@ -82,6 +82,7 @@ export const StyledContent = styled<StyledProps, 'div'>('div')`
   position: relative;
   background: #f9fbfc;
   flex: 1;
+  height: 381px;
 `
 
 export const StyledAction = styled<{}, 'button'>('button')`
