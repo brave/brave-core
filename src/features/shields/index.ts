@@ -2,60 +2,118 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export {
-  // Header
-  ShieldsPanel,
-  ShieldsHeader,
-  MainToggle,
-  SiteOverview,
-  TotalBlockedStats,
-  SiteInfo,
-  // Controls
-  BlockedInfoRow,
-  BlockedInfoRowSingle,
-  BlockedInfoRowForSelect,
-  BlockedInfoRowData,
-  BlockedInfoRowDataForSelect,
-  // footer
-  MainFooter,
-  // Blocked list
-  BlockedListHeader,
-  BlockedListContent,
-  BlockedListSummary,
-  BlockedListStatic,
-  BlockedListDynamic,
-  BlockedListItemHeader,
-  BlockedListItem,
-  BlockedListItemWithOptions,
-  BlockedListFooter,
-  BlockedListFooterWithOptions,
-  DisabledContentView
-} from './structure'
+import { SelectBox } from './select'
+import { CloseButton, EmptyButton } from './button'
+import { Toggle } from './toggle'
+import { Option, Options } from './options'
 
-export {
-  // Header
-  MainToggleHeading,
-  MainToggleText,
-  ToggleStateText,
-  Favicon,
-  SiteInfoText,
-  TotalBlockedStatsNumber,
-  TotalBlockedStatsText,
-  // Controls
-  BlockedInfoRowStats,
-  BlockedInfoRowText,
-  // Blocked list
-  BlockedListSummaryText,
-  BlockedListItemHeaderStats,
-  BlockedListItemHeaderText,
-  LinkAction,
-  // Footer
+import {
+  DisabledTextGrid,
+  EnabledTextGrid,
+  MainFooterLinkFlex,
+  MainSiteInfoGrid,
+  MainToggleFlex,
+  ResourcesFooterFlex,
+  ResourcesFooterGrid,
+  ResourcesFooterGridColumnLeft,
+  ResourcesFooterGridColumnRight,
+  ResourcesGrid,
+  ResourcesListGrid,
+  ResourcesSiteInfoFlex,
+  ResourcesSiteInfoGrid,
+  ResourcesStatusGrid,
+  ResourcesSubTitleGrid,
+  SelectGrid,
+  StatFlex,
+  ToggleFlex,
+  ToggleGrid,
+  ShieldIconFlex
+} from './container'
+
+import {
+  Description,
+  Highlight,
+  Label,
   Link,
-  // Disabled state
-  DisabledContentText,
-  ShieldsButton
+  ResourcesListAllowedLink,
+  ResourcesListBlockedLink,
+  ResourcesListItem,
+  ResourcesListText,
+  ResourcesStatusTitle,
+  ResourcesSubTitle,
+  ResourcesSwitchLabel,
+  UnHighlight
+} from './text'
+
+import {
+  ClickableEmptySpace,
+  DismissOverlay,
+  Header,
+  ResourcesListScroll,
+  ShieldsPanel,
+  SiteInfoCard
 } from './display'
 
-export { ArrowDownIcon, ArrowUpIcon, ShieldIcon } from './media'
-export { Toggle } from './toggle'
-export { SelectBox } from './select'
+import {
+  AllowedScriptsIcon,
+  BlockedScriptsIcon,
+  CloseIcon,
+  LinkIcon,
+  ShieldIcon,
+  ShowLessIcon,
+  ShowMoreIcon
+} from './icons'
+
+export {
+  AllowedScriptsIcon,
+  BlockedScriptsIcon,
+  ClickableEmptySpace,
+  CloseButton,
+  CloseIcon,
+  Description,
+  DisabledTextGrid,
+  DismissOverlay,
+  EmptyButton,
+  EnabledTextGrid,
+  Header,
+  Highlight,
+  Label,
+  Link,
+  LinkIcon,
+  MainFooterLinkFlex,
+  MainSiteInfoGrid,
+  MainToggleFlex,
+  Option,
+  Options,
+  ResourcesFooterFlex,
+  ResourcesFooterGrid,
+  ResourcesFooterGridColumnLeft,
+  ResourcesFooterGridColumnRight,
+  ResourcesGrid,
+  ResourcesListAllowedLink,
+  ResourcesListBlockedLink,
+  ResourcesListGrid,
+  ResourcesListItem,
+  ResourcesListScroll,
+  ResourcesListText,
+  ResourcesSiteInfoFlex,
+  ResourcesSiteInfoGrid,
+  ResourcesStatusGrid,
+  ResourcesStatusTitle,
+  ResourcesSubTitle,
+  ResourcesSubTitleGrid,
+  ResourcesSwitchLabel,
+  SelectBox,
+  SelectGrid,
+  ShieldIcon,
+  ShieldIconFlex,
+  ShieldsPanel,
+  ShowLessIcon,
+  ShowMoreIcon,
+  SiteInfoCard,
+  StatFlex,
+  Toggle,
+  ToggleGrid,
+  ToggleFlex,
+  UnHighlight
+}

@@ -4,26 +4,19 @@
 
 import * as React from 'react'
 
-import { MainFooter, Link } from '../../../../src/features/shields'
+// Feature-specific components
+import { MainFooterLinkFlex, LinkIcon } from '../../../../src/features/shields'
 
 // Fake data
-import { getLocale } from '../fakeLocale'
+import locale from '../fakeLocale'
 
-interface Props {
-  isBlockedListOpen: boolean
-}
-
-export default class Footer extends React.PureComponent<Props, {}> {
+export default class ShieldsFooter extends React.PureComponent<{}, {}> {
   render () {
-    const { isBlockedListOpen } = this.props
     return (
-      <MainFooter>
-        <Link
-          disabled={isBlockedListOpen}
-        >
-          {getLocale('changeDefaults')}
-        </Link>
-      </MainFooter>
+      <MainFooterLinkFlex href='chrome://settings' rel='noreferrer noopener' target='_blank'>
+        <span>{locale.editDefaults}</span>
+        <LinkIcon />
+      </MainFooterLinkFlex>
     )
   }
 }
