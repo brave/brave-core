@@ -122,6 +122,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
     >
       <div
         className="c4"
+        data-test-id="balance"
       >
          
         <span

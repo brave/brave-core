@@ -471,7 +471,9 @@ exports[`List tests basic tests matches the snapshot 1`] = `
             <div
               className="c22"
             >
-              <div>
+              <div
+                data-test-id="monthlyCheckbox"
+              >
                 <div
                   className="c23"
                   onClick={[Function]}
