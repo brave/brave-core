@@ -10,6 +10,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 }
 
 .c1 {
+  min-height: 250px;
   padding: 25px 30px 25px 30px;
 }
 
