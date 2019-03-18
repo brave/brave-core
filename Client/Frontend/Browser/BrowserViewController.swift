@@ -2494,7 +2494,8 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             }
             
             let openInNewTabAction = UIAlertAction(title: Strings.OpenImageInNewTabActionTitle, style: .default) { _ in
-                self.tabManager.addTab(URLRequest(url: url), afterTab: self.tabManager.selectedTab)
+                let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
+                self.tabManager.addTab(URLRequest(url: url), afterTab: self.tabManager.selectedTab, isPrivate: isPrivate)
                 self.scrollController.showToolbars(animated: true)
             }
             actionSheetController.addAction(openInNewTabAction, accessibilityIdentifier: "linkContextMenu.openImageInNewTab")
