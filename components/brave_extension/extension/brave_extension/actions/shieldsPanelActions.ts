@@ -82,9 +82,10 @@ export const changeNoScriptSettings: actions.ChangeNoScriptSettings = (origin) =
   }
 }
 
-export const changeAllNoScriptSettings: actions.ChangeAllNoScriptSettings = (shouldBlock) => {
+export const changeAllNoScriptSettings: actions.ChangeAllNoScriptSettings = (origin, shouldBlock) => {
   return {
     type: types.CHANGE_ALL_NO_SCRIPT_SETTINGS,
+    origin,
     shouldBlock
   }
 }

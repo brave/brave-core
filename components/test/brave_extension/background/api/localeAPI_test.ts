@@ -15,7 +15,7 @@ describe('locale API', () => {
       spy.mockRestore()
     })
     it('calls chrome.i18n.getMessage with the message', () => {
-      localeAPI.getLocale(message)
+      localeAPI.getMessage(message)
       expect(spy).toBeCalledTimes(1)
       expect(spy.mock.calls[0][0]).toBe(message)
     })

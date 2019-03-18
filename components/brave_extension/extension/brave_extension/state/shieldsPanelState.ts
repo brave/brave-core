@@ -118,8 +118,11 @@ export const resetNoScriptInfo: shieldState.ResetNoScriptInfo = (state, tabId, n
   return { ...state, tabs }
 }
 
-export const changeAllNoScriptSettings: shieldState.ChangeAllNoScriptSettings = (state, tabId, shouldBlock) => {
+export const changeAllNoScriptSettings: shieldState.ChangeAllNoScriptSettings = (state, tabId, newOrigin, shouldBlock) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
+  if (newOrigin !== tabs[tabId].origin) { // navigate away
+    tabs[tabId].noScriptInfo = {}
+  }
   Object.keys(tabs[tabId].noScriptInfo).map(key => {
     tabs[tabId].noScriptInfo[key].willBlock = shouldBlock
   })

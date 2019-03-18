@@ -94,19 +94,19 @@ export const getMockChrome = () => {
     },
     browserAction: {
       setBadgeBackgroundColor: function (properties: object) {
-        return
+        console.log('')
       },
       setBadgeText: function (textProperties: object) {
-        return
+        console.log('')
       },
       setIcon: function (iconProperties: object) {
-        return
+        console.log('')
       },
       enable: function (tabId?: number) {
-        return
+        console.log('')
       },
       disable: function (tabId?: number) {
-        return
+        console.log('')
       }
     },
     tabs: {
@@ -123,7 +123,7 @@ export const getMockChrome = () => {
         setImmediate(cb)
       },
       insertCSS: function (details: jest.SpyInstance) {
-        return
+        console.log('')
       },
       onActivated: new ChromeEvent(),
       onCreated: new ChromeEvent(),
@@ -165,16 +165,16 @@ export const getMockChrome = () => {
     },
     i18n: {
       getMessage: function (message: string) {
-        return
+        console.log('')
       }
     },
     storage: {
       local: {
         get: function (url: string) {
-          return
+          console.log('')
         },
         set: function (url: string, cssfilter: string) {
-          return
+          console.log('')
         }
       }
     },

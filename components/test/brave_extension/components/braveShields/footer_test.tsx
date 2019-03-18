@@ -3,16 +3,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import ShieldsFooter, { Props } from '../../../../brave_extension/extension/brave_extension/components/footer'
+import ShieldsFooter from '../../../../brave_extension/extension/brave_extension/components/braveShields/footer'
 import * as tabsAPI from '../../../../brave_extension/extension/brave_extension/background/api/tabsAPI'
 import { shallow } from 'enzyme'
 
-const fakeProps: Props = {
-  isBlockedListOpen: false
-}
-
 describe('ShieldsFooter component', () => {
-  const baseComponent = () => <ShieldsFooter {...fakeProps} />
+  const baseComponent = () => <ShieldsFooter />
 
   it('renders the component', () => {
     const wrapper = shallow(baseComponent())

@@ -124,11 +124,12 @@ export interface ChangeNoScriptSettings {
 
 interface ChangeAllNoScriptSettingsReturn {
   type: types.CHANGE_ALL_NO_SCRIPT_SETTINGS,
+  origin: string,
   shouldBlock: boolean
 }
 
 export interface ChangeAllNoScriptSettings {
-  (shouldBlock: boolean): ChangeAllNoScriptSettingsReturn
+  (origin: string, shouldBlock: boolean): ChangeAllNoScriptSettingsReturn
 }
 
 export type shieldPanelActions =
