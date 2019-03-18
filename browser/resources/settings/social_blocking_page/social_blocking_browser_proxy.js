@@ -10,10 +10,10 @@ cr.define('settings', function() {
   /**
    * @implements {settings.SocialBlockingBrowserProxy}
    */
-  class DefaultBraveShieldsBrowserProxyImpl {
+  class SocialBlockingBrowserProxyImpl {
   }
 
-  cr.addSingletonGetter(DefaultBraveShieldsBrowserProxyImpl);
+  cr.addSingletonGetter(SocialBlockingBrowserProxyImpl);
 
   return {
     SocialBlockingBrowserProxy,
