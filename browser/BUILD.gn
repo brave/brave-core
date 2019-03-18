@@ -47,6 +47,8 @@ source_set("browser_process") {
     "mac/sparkle_glue.mm",
     "mac/sparkle_glue.h",
     "mac/su_updater.h",
+    "metrics/metrics_reporting_util.cc",
+    "metrics/metrics_reporting_util.h",
     "search_engines/guest_window_search_engine_provider_service.cc",
     "search_engines/guest_window_search_engine_provider_service.h",
     "search_engines/private_window_search_engine_provider_service.cc",
