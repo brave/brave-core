@@ -24,7 +24,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   box-sizing: border-box;
   background: none;
   border: none;
-  outline-color: transparent;
+  outline: none;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
