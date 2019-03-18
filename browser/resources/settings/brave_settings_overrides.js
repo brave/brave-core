@@ -173,6 +173,21 @@ BravePatching.RegisterPolymerTemplateModifications({
       console.error('[Brave Settings Overrides] Could not find extensionsLinkEl to remove')
     }
     extensionsLinkEl.remove()
+    // Add version number to 'about' link
+    const aboutEl = templateContent.querySelector('#about-menu')
+    if (!aboutEl) {
+      console.error('[Brave Settings Overrides] Could not find about-menun element')
+    }
+    const aboutTitleContent = aboutEl.innerHTML
+    aboutEl.innerHTML = `
+      <div class="brave-about-graphic">
+        <iron-icon icon="brave_settings:full-color-brave-lion"><iron-icon>
+      </div>
+      <div class="brave-about-meta">
+        <span class="brave-about-item brave-about-menu-link-text">${aboutTitleContent}</span>
+        <span class="brave-about-item brave-about-menu-version">v ${loadTimeData.getString('braveProductVersion')}</span>
+      </div>
+    `
   },
   'settings-basic-page': (templateContent) => {
     // Routes
