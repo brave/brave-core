@@ -136,7 +136,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   const std::unordered_set<const char*> enabled_features = {
       extensions_features::kNewExtensionUpdaterService.name,
       features::kDesktopPWAWindowing.name,
-      password_manager::features::kFillOnAccountSelect.name,
   };
 
   // Disabled features.
