@@ -25,6 +25,7 @@
 #include "content/public/browser/resource_request_info.h"
 #include "content/public/test/mock_resource_context.h"
 #include "content/public/test/test_utils.h"
+#include "net/http/http_auth_preferences.h"
 #include "net/log/net_log_with_source.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request_test_util.h"
@@ -165,6 +166,15 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfile) {
     rules.ParseFromString(tor::kTestTorProxy);
     rules.bypass_rules.AddRulesToSubtractImplicit();
     EXPECT_TRUE(proxy_service->config()->value().proxy_rules().Equals(rules));
+
+    // Confirm we prohibit the use of default credentials
+    // (https://github.com/brave/brave-browser/issues/3603).
+    auto* auth_factory = request->context()->http_auth_handler_factory();
+    auto* http_auth_prefs = auth_factory->http_auth_preferences();
+    auto auth_origin = request->url().GetOrigin();
+    EXPECT_FALSE(http_auth_prefs->CanUseDefaultCredentials(auth_origin));
+
+    // Confirm that OnBeforeURLRequest_TorWork succeeded.
     EXPECT_EQ(ret, net::OK);
   }
 }
