@@ -404,7 +404,7 @@ def main():
 
     if platform.system() not in supported_platforms:
         print('Error: Platform \'{}\' not supported; acceptable platform(s): {}'
-               .format(platform.system(), ", ".join(supported_platforms)))
+              .format(platform.system(), ", ".join(supported_platforms)))
         exit(1)
 
     args = parse_args()
