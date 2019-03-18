@@ -239,7 +239,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(0, 1, 0, 0);"
+                                          "setExpectations(0, 1, 0, 0, 0, 0);"
                                           "addImage('ad_banner.png')",
                                           &as_expected));
   EXPECT_TRUE(as_expected);
@@ -262,7 +262,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(1, 0, 0, 0);"
+                                          "setExpectations(1, 0, 0, 0, 0, 0);"
                                           "addImage('logo.png')",
                                           &as_expected));
   EXPECT_TRUE(as_expected);
@@ -283,7 +283,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByCustomBlocker) {
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(0, 1, 0, 0);"
+                                          "setExpectations(0, 1, 0, 0, 0, 0);"
                                           "addImage('ad_banner.png')",
                                           &as_expected));
   EXPECT_TRUE(as_expected);
@@ -307,7 +307,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(1, 0, 0, 0);"
+                                          "setExpectations(1, 0, 0, 0, 0, 0);"
                                           "addImage('logo.png')",
                                           &as_expected));
   EXPECT_TRUE(as_expected);
@@ -335,7 +335,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(0, 1, 0, 0);"
+                                          "setExpectations(0, 1, 0, 0, 0, 0);"
                                           "addImage('ad_fr.png')",
                                           &as_expected));
   EXPECT_TRUE(as_expected);
@@ -364,7 +364,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(1, 0, 0, 0);"
+                                          "setExpectations(1, 0, 0, 0, 0, 0);"
                                           "addImage('logo.png')",
                                           &as_expected));
   EXPECT_TRUE(as_expected);
@@ -398,7 +398,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(0, 1, 0, 0);"
+                                          "setExpectations(0, 1, 0, 0, 0, 0);"
                                           "addImage('v4_specific_banner.png')",
                                           &as_expected));
   EXPECT_TRUE(as_expected);
@@ -421,7 +421,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoSameAdsGetCountedAsOne) {
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(0, 0, 1, 2);"
+                                          "setExpectations(0, 0, 0, 1, 2, 0);"
                                           "xhr('adbanner.js');"
                                           "xhr('normal.js');"
                                           "xhr('adbanner.js')",
@@ -445,7 +445,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoDiffAdsGetCountedAsTwo) {
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(0, 0, 1, 2);"
+                                          "setExpectations(0, 0, 0, 1, 2, 0);"
                                           "xhr('adbanner.js?1');"
                                           "xhr('normal.js');"
                                           "xhr('adbanner.js?2')",
@@ -469,7 +469,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(0, 0, 0, 1);"
+                                          "setExpectations(0, 0, 0, 0, 1, 0);"
                                           "xhr('adbanner.js');",
                                           &as_expected));
   EXPECT_TRUE(as_expected);
@@ -480,7 +480,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
 
   as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(0, 0, 0, 1);"
+                                          "setExpectations(0, 0, 0, 0, 1, 0);"
                                           "xhr('adbanner.js');",
                                           &as_expected));
   EXPECT_TRUE(as_expected);
@@ -504,7 +504,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
 
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents->GetAllFrames()[1],
-                                          "setExpectations(0, 0, 0, 1);"
+                                          "setExpectations(0, 0, 0, 0, 1, 0);"
                                           "xhr('adbanner.js?1');",
                                           &as_expected));
   EXPECT_TRUE(as_expected);
@@ -544,7 +544,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(1, 0, 0, 0);"
+                                          "setExpectations(1, 0, 0, 0, 0, 0);"
                                           "addImage('ad_fr.png')",
                                           &as_expected));
   EXPECT_TRUE(as_expected);
@@ -570,11 +570,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   GURL test_url = embedded_test_server()->GetURL("365dm.com", "/logo.png");
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          base::StringPrintf(
-                                              "setExpectations(0, 1, 0, 0);"
-                                              "addImage('%s')",
-                                          test_url.spec().c_str()),
-                                          &as_expected));
+      base::StringPrintf(
+          "setExpectations(0, 1, 0, 0, 0, 0);"
+          "addImage('%s')",
+      test_url.spec().c_str()),
+      &as_expected));
   EXPECT_TRUE(as_expected);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
       1ULL);
@@ -596,11 +596,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   GURL test_url = embedded_test_server()->GetURL("365dm.com", "/logo.png");
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          base::StringPrintf(
-                                              "setExpectations(1, 0, 0, 0);"
-                                              "addImage('%s')",
-                                          test_url.spec().c_str()),
-                                          &as_expected));
+      base::StringPrintf(
+          "setExpectations(1, 0, 0, 0, 0, 0);"
+          "addImage('%s')",
+      test_url.spec().c_str()),
+      &as_expected));
   EXPECT_TRUE(as_expected);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
       0ULL);
@@ -620,11 +620,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdBlockThirdPartyWorksByETLDP1) {
       browser()->tab_strip_model()->GetActiveWebContents();
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          base::StringPrintf(
-                                              "setExpectations(1, 0, 0, 0);"
-                                              "addImage('%s')",
-                                          resource_url.spec().c_str()),
-                                          &as_expected));
+      base::StringPrintf(
+          "setExpectations(1, 0, 0, 0, 0, 0);"
+          "addImage('%s')",
+      resource_url.spec().c_str()),
+      &as_expected));
   EXPECT_TRUE(as_expected);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
@@ -643,11 +643,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          base::StringPrintf(
-                                              "setExpectations(0, 1, 0, 0);"
-                                              "addImage('%s')",
-                                          resource_url.spec().c_str()),
-                                          &as_expected));
+      base::StringPrintf(
+          "setExpectations(0, 1, 0, 0, 0, 0);"
+          "addImage('%s')",
+      resource_url.spec().c_str()),
+      &as_expected));
   EXPECT_TRUE(as_expected);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
@@ -666,7 +666,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockNYP) {
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
                                           base::StringPrintf(
-                                            "setExpectations(0, 1, 0, 0);"
+                                            "setExpectations(0, 1, 0, 0, 0, 0);"
                                             "addImage('%s')",
                                             resource_url.spec().c_str()),
                                           &as_expected));
@@ -692,7 +692,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBLockTagTest) {
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
                                           base::StringPrintf(
-                                            "setExpectations(0, 1, 0, 0);"
+                                            "setExpectations(0, 1, 0, 0, 0, 0);"
                                             "addImage('%s')",
                                             resource_url.spec().c_str()),
                                           &as_expected));
@@ -717,7 +717,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
                                           base::StringPrintf(
-                                            "setExpectations(1, 0, 0, 0);"
+                                            "setExpectations(1, 0, 0, 0, 0, 0);"
                                             "addImage('%s')",
                                             resource_url.spec().c_str()),
                                           &as_expected));
@@ -771,4 +771,26 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TagPrefsControlTags) {
   AssertTagExists(brave_shields::kFacebookEmbeds, true);
   AssertTagExists(brave_shields::kTwitterEmbeds, true);
   AssertTagExists(brave_shields::kLinkedInEmbeds, false);
+}
+
+// Make sure that cancelrequest actually blocks
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CancelRequestOptionTest) {
+  AddRulesToAdBlock("logo.png$explicitcancel");
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  GURL tab_url = embedded_test_server()->GetURL("b.com",
+                                                kAdBlockTestPage);
+  GURL resource_url =
+    embedded_test_server()->GetURL("example.com", "/logo.png");
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+  content::WebContents* contents =
+    browser()->tab_strip_model()->GetActiveWebContents();
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          base::StringPrintf(
+                                            "setExpectations(0, 0, 1, 0, 0, 0);"
+                                            "addImage('%s')",
+                                            resource_url.spec().c_str()),
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }

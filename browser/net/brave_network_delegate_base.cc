@@ -385,9 +385,8 @@ void BraveNetworkDelegateBase::RunNextCallback(
         RunCallbackForRequestIdentifier(ctx->request_identifier,
             net::ERR_ABORTED);
         return;
-      } else {
-        request->SetExtraRequestHeaderByName("X-Brave-Block", "", true);
       }
+      request->SetExtraRequestHeaderByName("X-Brave-Block", "", true);
     }
     rv = ChromeNetworkDelegate::OnBeforeURLRequest(
         request, std::move(wrapped_callback), ctx->new_url);

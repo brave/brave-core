@@ -2,21 +2,28 @@
 <head>
 <script>
 let expectedImgLoaded = 0
+let expectedImgLoadedBlank = 0
 let expectedImgBlocked = 0
 let expectedXHRLoaded = 0
+let expectedXHRLoadedBlank = 0
 let expectedXHRBlocked = 0
 let numXHRLoaded = 0
+let numXHRLoadedBlank = 0
 let numXHRBlocked = 0
+let numImgLoaded = 0
+let numImgLoadedBlank = 0
+let numImgBlocked = 0
 
 // Performs an XHR for the specified src
 function xhr(src) {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', src, true);
   xhr.onload = function(e) {
-    if (xhr.response.length !== 0)
+    if (xhr.response.length !== 0) {
       numXHRLoaded++
-    else
-      numXHRBlocked++
+    } else {
+      numXHRLoadedBlank++
+    }
     onLoad()
   }
   xhr.onerror = function(e) {
@@ -32,41 +39,50 @@ function addImage(src) {
   img.src = src
   img.className = 'adImage'
   img.addEventListener('load', onLoad)
+  img.addEventListener('error', () => {
+    onLoad()
+  })
+
+  img.addEventListener('load', () => {
+    if (img.complete &&
+        (img.naturalHeight !== 1 || img.naturalWidth !== 1)) {
+      numImgLoaded++
+    } else {
+      numImgLoadedBlank++
+    }
+    onLoad()
+  })
+  img.addEventListener('error', () => {
+    numImgBlocked++
+    onLoad()
+  })
   document.body.appendChild(img)
 }
 
 // Sets the expectation for the number of images and XHR loaded and blocked
-function setExpectations(numImgLoaded, numImgBlocked, numXHRLoaded, numXHRBlocked) {
+function setExpectations(numImgLoaded, numImgLoadedBlank, numImgBlocked, numXHRLoaded, numXHRLoadedBlank, numXHRBlocked) {
   expectedImgLoaded = numImgLoaded
+  expectedImgLoadedBlank = numImgLoadedBlank
   expectedImgBlocked = numImgBlocked
   expectedXHRLoaded = numXHRLoaded
+  expectedXHRLoadedBlank = numXHRLoadedBlank
   expectedXHRBlocked = numXHRBlocked
 }
 
 function onLoad() {
-  const adImages = Array.from(document.querySelectorAll('.adImage'))
-  if (adImages.length !== expectedImgLoaded + expectedImgBlocked ||
-      numXHRLoaded + numXHRBlocked !== expectedXHRLoaded + expectedXHRBlocked) {
+  if (numImgLoaded + numImgLoadedBlank + numImgBlocked !== expectedImgLoaded + expectedImgBlocked + expectedImgLoadedBlank ||
+      numXHRLoaded + numXHRLoadedBlank + numXHRBlocked !== expectedXHRLoaded + expectedXHRLoadedBlank + expectedXHRBlocked) {
     return;
   }
-
-  // Blocked image should be a 1x1 stub
-  const numImgLoaded = adImages.reduce((total, adImage) => {
-    if (adImage.complete &&
-        (adImage.naturalHeight !== 1 || adImage.naturalWidth !== 1)) {
-      return total + 1
-    }
-    return total
-  }, 0);
-
-  const numImgBlocked = adImages.length - numImgLoaded
   const result = numImgLoaded == expectedImgLoaded &&
+      expectedImgLoadedBlank == numImgLoadedBlank &&
       expectedImgBlocked == numImgBlocked &&
       numXHRLoaded === expectedXHRLoaded &&
+      numXHRLoadedBlank === expectedXHRLoadedBlank &&
       numXHRBlocked === expectedXHRBlocked
   // For debugging:
-  // console.log('sending: ' + JSON.stringify({result, expectedImgLoaded, expectedImgBlocked, numImgBlocked,
-  //    numXHRLoaded, expectedXHRLoaded, numXHRBlocked, expectedXHRBlocked}))
+  // console.log('sending: ' + JSON.stringify({result, expectedImgLoaded, expectedImgLoadedBlank, expectedImgBlocked, numImgLoadedBlank, numImgBlocked,
+  //   numXHRLoaded, expectedXHRLoaded, numXHRLoadedBlank, numXHRBlocked, expectedXHRLoadedBlank, expectedXHRBlocked}))
   window.domAutomationController.send(result)
 }
 </script>
