@@ -3,6 +3,23 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+// Local Scope
+(function() {
+// TODO: move to a module
+function throttle (callback, maxWaitTime = 30) {
+  // Call on first invocation
+  let shouldWait = false;
+  return function (...args) {
+    if (!shouldWait) {
+      callback.apply(this, args);
+      shouldWait = true;
+      setTimeout(function () {
+        shouldWait = false;
+      }, maxWaitTime);
+    }
+  }
+}
+
 // Utils
 function createMenuElement (title, href, iconName) {
   const menuEl = document.createElement('a')
@@ -37,10 +54,61 @@ if (!BravePatching) {
 //
 // Override, extend or modify existing modules
 //
+
+const BraveClearSettingsMenuHighlightBehavior = {
+  ready: function() {
+    // Clear menu selection after scrolling away.
+    // Chromium's menu is not persistant, so does not have
+    // this issue.
+    const container = this.$.container
+    if (!container) {
+      console.error('Could not find #container in settings-ui module')
+    }
+    const menu = this.$$('settings-menu')
+    if (!menu) {
+      console.error('Could not find settings-menu in settings-ui module')
+    }
+    let onScroll
+    function stopObservingScroll() {
+      if (onScroll) {
+        container.removeEventListener('scroll', onScroll)
+        onScroll = null
+      }
+    }
+    window.addEventListener('showing-section', ({ detail: section }) => {
+      // Currently showing or about to scroll to `section`.
+      // If we're getting further away from section top
+      // then section is no longer 'selected'.
+      // TODO(petemill): If this wasn't a chromium module, we'd simply add a handler
+      // for scrolling away, or have the menu change selection as we scroll.
+      stopObservingScroll()
+      function calcDistance() {
+        const sectionScrollTop = section.offsetTop
+        const currentScrollTop = container.scrollTop
+        return Math.abs(sectionScrollTop - currentScrollTop)
+      }
+      let distance = calcDistance()
+      onScroll = throttle(() => {
+        const latestDistance = calcDistance()
+        if (latestDistance > distance) {
+          menu.setSelectedUrl_('')
+          stopObservingScroll()
+        } else {
+          distance = latestDistance
+        }
+      }, 100)
+      container.addEventListener('scroll', onScroll)
+    })
+  }
+}
+
 // Polymer Component Behavior injection (like superclasses)
 BravePatching.RegisterPolymerComponentBehaviors({
   'settings-clear-browsing-data-dialog': [
     BraveClearBrowsingDataOnExitBehavior
+  ],
+  'settings-ui': [
+    BraveClearSettingsMenuHighlightBehavior
   ]
 })
 
@@ -234,3 +302,5 @@ BravePatching.OverrideIronIcons('cr', 'brave_settings', {
 Polymer({
   is: 'brave-settings-getting-started'
 })
+
+})() // execute local scope
