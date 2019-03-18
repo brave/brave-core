@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index cec5121658106e305ef617906e539bfc10811041..6b75b049ccf7eebd58e3aa7914b4d81328817210 100644
+index cec5121658106e305ef617906e539bfc10811041..fb6d3999a7245cf884fb90763e0c1d4e81b23bae 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -27,8 +27,8 @@ declare_args() {
@@ -32,6 +32,15 @@ index cec5121658106e305ef617906e539bfc10811041..6b75b049ccf7eebd58e3aa7914b4d813
    script = "//build/gn_run_binary.py"
    sources = [
      prog_name,
+@@ -220,7 +225,7 @@ branding_dir_100 =
+ copy("common_packaging_files") {
+   visibility = [ ":*" ]
+   sources = [
+-    "//chrome/app/resources/manpage.1.in",
++    "//brave/chromium_src/chrome/app/resources/manpage.1.in",
+     "common/apt.include",
+     "common/default-app-block.template",
+     "common/default-app.template",
 @@ -243,8 +248,8 @@ copy("common_packaging_files") {
      ]
    } else {
