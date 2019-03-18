@@ -794,7 +794,7 @@ bool AdsImpl::ShowAd(
   }
 
   auto notification_info = std::make_unique<NotificationInfo>();
-  notification_info->advertiser = "[Ad] " + ad_info.advertiser;
+  notification_info->advertiser = ad_info.advertiser;
   notification_info->category = category;
   notification_info->text = ad_info.notification_text;
   notification_info->url = helper::Uri::GetUri(ad_info.notification_url);
