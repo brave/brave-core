@@ -10,7 +10,7 @@ interface Props {
 }
 
 export class CustomFilters extends React.Component<Props, {}> {
-  constructor(props: Props) {
+  constructor (props: Props) {
     super(props)
   }
 
@@ -18,7 +18,7 @@ export class CustomFilters extends React.Component<Props, {}> {
     this.props.actions.updateCustomFilters(event.target.value)
   }
 
-  render() {
+  render () {
     return (
       <div>
         <div

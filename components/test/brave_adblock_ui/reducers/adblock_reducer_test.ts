@@ -11,6 +11,9 @@ describe('adblockReducer', () => {
   it('should handle initial state', () => {
     const assertion = adblockReducer(undefined, actions.statsUpdated())
     expect(assertion).toEqual({
+      settings: {
+        customFilters: ''
+      },
       stats: {
         adsBlockedStat: NaN,
         numBlocked: 0,
@@ -27,6 +30,9 @@ describe('adblockReducer', () => {
         payload: undefined
       })
       expect(assertion).toEqual({
+        settings: {
+          customFilters: ''
+        },
         stats: {
           adsBlockedStat: NaN,
           numBlocked: 0,
