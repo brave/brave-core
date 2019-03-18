@@ -7,11 +7,13 @@
 
 #include "base/values.h"
 #include "brave/browser/brave_stats_updater.h"
+#include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/common/pref_names.h"
+#include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace brave {
@@ -27,6 +29,10 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #endif
   tor::TorProfileService::RegisterLocalStatePrefs(registry);
   RegisterPrefsForMuonMigration(registry);
+
+  registry->SetDefaultPrefValue(
+      metrics::prefs::kMetricsReportingEnabled,
+      base::Value(GetDefaultPrefValueForMetricsReporting()));
 }
 
 }  // namespace brave
