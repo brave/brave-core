@@ -46,7 +46,7 @@ export default class StaticList extends React.PureComponent<Props, {}> {
       <BlockedListContent>
         <BlockedListHeader>
           <Favicon src={favicon} />
-          <SiteInfoText>{hostname}</SiteInfoText>
+          <SiteInfoText title={hostname}>{hostname}</SiteInfoText>
         </BlockedListHeader>
         <details open={true}>
           <BlockedListSummary onClick={onClose}>
