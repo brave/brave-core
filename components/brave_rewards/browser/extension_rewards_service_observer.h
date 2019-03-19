@@ -63,6 +63,10 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   void OnPendingContributionSaved(RewardsService* rewards_service,
                                   int result) override;
 
+  void OnRecurringDonationUpdated(
+      RewardsService* rewards_service,
+      brave_rewards::ContentSiteList list) override;
+
  private:
   Profile* profile_;
 

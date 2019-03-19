@@ -291,5 +291,140 @@ ExtensionFunction::ResponseAction BraveRewardsSaveSettingFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+BraveRewardsSaveRecurringDonationFunction::
+~BraveRewardsSaveRecurringDonationFunction() {
+}
+
+ExtensionFunction::ResponseAction
+  BraveRewardsSaveRecurringDonationFunction::Run() {
+
+  std::unique_ptr<brave_rewards::SaveRecurringDonation::Params> params(
+    brave_rewards::SaveRecurringDonation::Params::Create(*args_));
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service_ =
+    RewardsServiceFactory::GetForProfile(profile);
+
+  if (rewards_service_) {
+    rewards_service_->SaveRecurringDonation(
+      params->publisher_key, params->new_amount);
+  }
+
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsRemoveRecurringDonationFunction::
+~BraveRewardsRemoveRecurringDonationFunction() {
+}
+
+ExtensionFunction::ResponseAction
+  BraveRewardsRemoveRecurringDonationFunction::Run() {
+  std::unique_ptr<brave_rewards::RemoveRecurringDonation::Params> params(
+    brave_rewards::RemoveRecurringDonation::Params::Create(*args_));
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service_ =
+    RewardsServiceFactory::GetForProfile(profile);
+
+  if (rewards_service_) {
+    rewards_service_->RemoveRecurring(params->publisher_key);
+  }
+
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsGetRecurringDonationsFunction::
+~BraveRewardsGetRecurringDonationsFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetRecurringDonationsFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  rewards_service->GetRecurringDonationsList(base::Bind(
+        &BraveRewardsGetRecurringDonationsFunction::OnGetRecurringDonations,
+        this));
+  return RespondLater();
+}
+
+void BraveRewardsGetRecurringDonationsFunction::OnGetRecurringDonations(
+    std::unique_ptr<::brave_rewards::ContentSiteList> list) {
+  std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
+  auto recurringDonations = std::make_unique<base::ListValue>();
+
+  if (!list->empty()) {
+    for (auto const& item: *list) {
+      auto recurringDonation = std::make_unique<base::DictionaryValue>();
+      recurringDonation->SetString("publisherKey", item.id);
+      recurringDonation->SetInteger("amount", item.weight);
+      recurringDonations->Append(std::move(recurringDonation));
+    }
+  }
+
+  result->SetList("recurringDonations", std::move(recurringDonations));
+  Respond(OneArgument(std::move(result)));
+}
+
+BraveRewardsGetPublisherBannerFunction::
+~BraveRewardsGetPublisherBannerFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetPublisherBannerFunction::Run() {
+  std::unique_ptr<brave_rewards::GetPublisherBanner::Params> params(
+    brave_rewards::GetPublisherBanner::Params::Create(*args_));
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  rewards_service->GetPublisherBanner(
+      params->publisher_key,
+      base::BindOnce(
+        &BraveRewardsGetPublisherBannerFunction::OnPublisherBanner,
+        this));
+  return RespondLater();
+}
+
+void BraveRewardsGetPublisherBannerFunction::OnPublisherBanner(
+    std::unique_ptr<::brave_rewards::PublisherBanner> banner) {
+  std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
+
+  if (banner) {
+    result->SetString("publisherKey", banner->publisher_key);
+    result->SetString("title", banner->title);
+    result->SetString("name", banner->name);
+    result->SetString("description", banner->description);
+    result->SetString("background", banner->background);
+    result->SetString("logo", banner->logo);
+    result->SetString("provider", banner->provider);
+    result->SetBoolean("verified", banner->verified);
+
+    auto amounts = std::make_unique<base::ListValue>();
+    for (int const& value : banner->amounts) {
+      amounts->AppendInteger(value);
+    }
+    result->SetList("amounts", std::move(amounts));
+
+    auto social = std::make_unique<base::DictionaryValue>();
+    for (auto const& item : banner->social) {
+      social->SetString(item.first, item.second);
+    }
+    result->SetDictionary("social", std::move(social));
+  }
+
+  Respond(OneArgument(std::move(result)));
+}
+
 }  // namespace api
 }  // namespace extensions

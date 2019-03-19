@@ -287,6 +287,30 @@
             }
           }
         ]
+      },
+      {
+        "name": "onRecurringDonations",
+        "type": "function",
+        "description": "Fired when publisher recurring donations modified",
+        "parameters": [
+          {
+            "name": "donations",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "publisherKey": {
+                  "type": "string",
+                  "description": "publisher key, unique identifier"
+                },
+                "amount": {
+                  "type": "integer",
+                  "description": "publisher donation amount"
+                }
+              }
+            }
+          }
+        ]
       }
     ],
     "functions": [
@@ -475,6 +499,70 @@
           {
             "name": "value",
             "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "saveRecurringDonation",
+        "type": "function",
+        "description": "Updates recurring donation amount for rewards panel",
+        "parameters": [
+          {
+            "name": "publisher_key",
+            "type": "string"
+          },
+          {
+            "name": "new_amount",
+            "type": "integer"
+          }
+        ]
+      },
+      {
+        "name": "removeRecurringDonation",
+        "type": "function",
+        "description": "Removes recurring donation for rewards panel",
+        "parameters": [
+          {
+            "name": "publisher_key",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "getRecurringDonations",
+        "type": "function",
+        "description": "Gets list of sites with recurring donation data",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "donations",
+                "type": "any"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getPublisherBanner",
+        "type": "function",
+        "description": "Retrieves data for publisher banner",
+        "parameters": [
+          {
+            "name": "publisher_key",
+            "type": "string"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "banner",
+                "type": "any"
+              }
+            ]
           }
         ]
       }

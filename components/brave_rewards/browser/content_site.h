@@ -31,6 +31,7 @@ struct ContentSite {
   std::string favicon_url;
   std::string url;
   std::string provider;
+  double weight;
   uint64_t reconcile_stamp;
 };
 

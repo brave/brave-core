@@ -325,4 +325,37 @@ void ExtensionRewardsServiceObserver::OnExcludedSitesChanged(
   event_router->BroadcastEvent(std::move(event));
 }
 
+void ExtensionRewardsServiceObserver::OnRecurringDonationUpdated(
+    RewardsService* rewards_service,
+    brave_rewards::ContentSiteList list) {
+  auto* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
+  std::vector<extensions::api::brave_rewards::OnRecurringDonations::
+        DonationsType> donations;
+
+  for (size_t i = 0; i < list.size(); i++) {
+    donations.push_back(
+        extensions::api::brave_rewards::OnRecurringDonations::
+        DonationsType());
+
+    auto& donation = donations[donations.size() - 1];
+    donation.publisher_key = list[i].id;
+    donation.amount = list[i].percentage;
+  }
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::
+      OnRecurringDonations::Create(donations)
+          .release());
+
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnRecurringDonations::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
 }  // namespace brave_rewards

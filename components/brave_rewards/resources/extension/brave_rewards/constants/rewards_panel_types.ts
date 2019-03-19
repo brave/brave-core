@@ -30,7 +30,11 @@ export const enum types {
   ON_ENABLED_AC = '@@rewards_panel/ON_ENABLED_AC',
   ON_PUBLISHER_LIST_NORMALIZED = '@@rewards_panel/ON_PUBLISHER_LIST_NORMALIZED',
   ON_EXCLUDED_SITES_CHANGED = '@@rewards_panel/ON_EXCLUDED_SITES_CHANGED',
-  ON_SETTING_SAVE = '@@rewards_panel/ON_SETTING_SAVE'
+  ON_SETTING_SAVE = '@@rewards_panel/ON_SETTING_SAVE',
+  SAVE_RECURRING_DONATION = '@@rewards_panel/SAVE_RECURRING_DONATION',
+  REMOVE_RECURRING_DONATION = '@@rewards_panel/REMOVE_RECURRING_DONATION',
+  ON_RECURRING_DONATIONS = '@@rewards_panel/ON_RECURRING_DONATIONS',
+  ON_PUBLISHER_BANNER = '@@rewards_panel/ON_PUBLISHER_BANNER'
 }
 
 // Note: This declaration must match the RewardsNotificationType enum in

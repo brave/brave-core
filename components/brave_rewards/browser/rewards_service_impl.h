@@ -160,8 +160,10 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& publisher_blob) override;
   void GetContributionAmount(
       const GetContributionAmountCallback& callback) override;
-  void GetPublisherBanner(const std::string& publisher_id) override;
-  void OnPublisherBanner(std::unique_ptr<ledger::PublisherBanner> banner);
+  void GetPublisherBanner(const std::string& publisher_id,
+                          GetPublisherBannerCallback callback) override;
+  void OnPublisherBanner(GetPublisherBannerCallback callback,
+                         const std::string& banner);
   void RemoveRecurringTip(const std::string& publisher_key) override;
   void OnGetRecurringTipsUI(
       GetRecurringTipsCallback callback,
@@ -199,6 +201,9 @@ class RewardsServiceImpl : public RewardsService,
   std::pair<uint64_t, uint64_t> GetEarningsRange();
 
   void GetOneTimeTipsUI(GetOneTimeTipsCallback callback) override;
+
+  void SaveRecurringDonation(const std::string& publisher_key,
+                             const int amount) override;
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -385,6 +390,8 @@ class RewardsServiceImpl : public RewardsService,
                             const ledger::REWARDS_CATEGORY category) override;
   void GetRecurringTips(
       ledger::PublisherInfoListCallback callback) override;
+  void GetRecurringDonationsList(
+      GetRecurringDonationsListCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(
                      const char* file,
                      int line,
@@ -441,7 +448,6 @@ class RewardsServiceImpl : public RewardsService,
   void ShowNotificationTipsPaid(bool ac_enabled);
 
   // Mojo Proxy methods
-  void OnPublisherBannerMojoProxy(const std::string& banner);
   void OnGetConfirmationsHistory(
       brave_rewards::ConfirmationsHistoryCallback callback,
       const std::string& transactions);

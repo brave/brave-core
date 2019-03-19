@@ -157,6 +157,7 @@ ContentSite PublisherInfoToContentSite(
   content_site.provider = publisher_info.provider;
   content_site.favicon_url = publisher_info.favicon_url;
   content_site.id = publisher_info.id;
+  content_site.weight = publisher_info.weight;
   content_site.reconcile_stamp = publisher_info.reconcile_stamp;
   return content_site;
 }
@@ -2104,46 +2105,47 @@ void RewardsServiceImpl::OnSetOnDemandFaviconComplete(
   callback(success, favicon_url);
 }
 
-void RewardsServiceImpl::GetPublisherBanner(const std::string& publisher_id) {
+void RewardsServiceImpl::GetPublisherBanner(
+    const std::string& publisher_id,
+    GetPublisherBannerCallback callback) {
   if (!Connected())
     return;
 
   bat_ledger_->GetPublisherBanner(publisher_id,
-      base::BindOnce(&RewardsServiceImpl::OnPublisherBannerMojoProxy,
-        AsWeakPtr()));
-}
-
-void RewardsServiceImpl::OnPublisherBannerMojoProxy(
-    const std::string& banner) {
-  std::unique_ptr<ledger::PublisherBanner> publisher_banner;
-  if (!banner.empty()) {
-    publisher_banner.reset(new ledger::PublisherBanner());
-    publisher_banner->loadFromJson(banner);
-  }
-  OnPublisherBanner(std::move(publisher_banner));
+      base::BindOnce(&RewardsServiceImpl::OnPublisherBanner,
+                     AsWeakPtr(),
+                     std::move(callback)));
 }
 
 void RewardsServiceImpl::OnPublisherBanner(
-    std::unique_ptr<ledger::PublisherBanner> banner) {
-  brave_rewards::PublisherBanner new_banner;
+    GetPublisherBannerCallback callback,
+    const std::string& banner) {
+  std::unique_ptr<brave_rewards::PublisherBanner> new_banner;
+  new_banner.reset(new brave_rewards::PublisherBanner());
 
-  if (!banner) {
+  std::unique_ptr<ledger::PublisherBanner> publisher_banner;
+  publisher_banner.reset(new ledger::PublisherBanner());
+
+  if (!banner.empty()) {
+    publisher_banner->loadFromJson(banner);
+  }
+
+  if (!publisher_banner) {
     return;
   }
 
-  new_banner.publisher_key = banner->publisher_key;
-  new_banner.title = banner->title;
-  new_banner.name = banner->name;
-  new_banner.description = banner->description;
-  new_banner.background = banner->background;
-  new_banner.logo = banner->logo;
-  new_banner.amounts = banner->amounts;
-  new_banner.social = banner->social;
-  new_banner.provider = banner->provider;
-  new_banner.verified = banner->verified;
+  new_banner->publisher_key = publisher_banner->publisher_key;
+  new_banner->title = publisher_banner->title;
+  new_banner->name = publisher_banner->name;
+  new_banner->description = publisher_banner->description;
+  new_banner->background = publisher_banner->background;
+  new_banner->logo = publisher_banner->logo;
+  new_banner->amounts = publisher_banner->amounts;
+  new_banner->social = publisher_banner->social;
+  new_banner->provider = publisher_banner->provider;
+  new_banner->verified = publisher_banner->verified;
 
-  for (auto& observer : observers_)
-    observer.OnPublisherBanner(this, new_banner);
+  std::move(callback).Run(std::move(new_banner));
 }
 
 void RewardsServiceImpl::OnDonate_PublisherInfoSaved(ledger::Result result,
