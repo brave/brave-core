@@ -145,7 +145,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       autofill::features::kAutofillServerCommunication.name,
       features::kAudioServiceOutOfProcess.name,
       features::kDefaultEnableOopRasterization.name,
-      features::kSharedArrayBuffer.name,
       unified_consent::kUnifiedConsent.name,
   };
 
