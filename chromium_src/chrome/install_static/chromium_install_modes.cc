@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -157,10 +158,10 @@ const InstallConstants kInstallModes[] = {
     // A secondary install mode for Brave SxS (canary).
     {
         sizeof(kInstallModes[0]),
-        NIGHTLY_INDEX, // The mode for the side-by-side nightly channel.
-        "chrome-sxs",  // Install switch.
-        L"-Nightly",   // Install suffix.
-        L"Canary",     // Logo suffix.
+        NIGHTLY_INDEX,  // The mode for the side-by-side nightly channel.
+        "chrome-sxs",   // Install switch.
+        L"-Nightly",    // Install suffix.
+        L"Canary",      // Logo suffix.
         L"{C6CB981E-DB30-4876-8639-109F8933582C}",  // A distinct app GUID.
         L"Brave Nightly",                    // A distinct base_app_name.
         L"BraveNightly",                            // A distinct base_app_id.
@@ -183,8 +184,8 @@ const InstallConstants kInstallModes[] = {
             0xe7 } },
         L"nightly",                                  // Forced channel name.
         ChannelStrategy::FIXED,
-        false,  // Does not support system-level installs.
-        false,  // Does not support in-product set as default browser UX.
+        true,   // Support system-level installs.
+        true,   // Support in-product set as default browser UX.
         true,   // Supports retention experiments.
         false,  // Did not support multi-install.
         icon_resources::kSxSApplicationIndex,  // App icon resource index.
@@ -202,7 +203,7 @@ const InstallConstants kInstallModes[] = {
         "",               // No install switch for the primary install mode.
         L"",              // Empty install_suffix for the primary install mode.
         L"",              // No logo suffix for the primary install mode.
-        L"",              // Empty app_guid since no integraion with Brave Update.
+        L"",            // Empty app_guid since no integraion with Brave Update.
         L"Brave Development",  // A distinct base_app_name.
         L"BraveDevelopment",   // A distinct base_app_id.
         L"BraveDevHTM",                             // ProgID prefix.
