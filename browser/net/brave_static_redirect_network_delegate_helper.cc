@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "brave/common/network_constants.h"
+#include "brave/common/translate_network_constants.h"
 #include "extensions/common/url_pattern.h"
 
 namespace brave {
@@ -30,6 +31,10 @@ int OnBeforeURLRequest_StaticRedirectWork(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix4);
   static URLPattern crxDownload_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRXDownloadPrefix);
+  static URLPattern translate_pattern(URLPattern::SCHEME_HTTPS,
+      kTranslateElementJSPattern);
+  static URLPattern translate_language_pattern(URLPattern::SCHEME_HTTPS,
+      kTranslateLanguagePattern);
 
   if (geo_pattern.MatchesURL(ctx->request_url)) {
     ctx->new_url_spec = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY).spec();
@@ -74,6 +79,19 @@ int OnBeforeURLRequest_StaticRedirectWork(
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("crlsets.brave.com");
     ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    return net::OK;
+  }
+
+  if (translate_pattern.MatchesURL(ctx->request_url)) {
+    replacements.SetQueryStr(ctx->request_url.query_piece());
+    replacements.SetPathStr(ctx->request_url.path_piece());
+    ctx->new_url_spec =
+      GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
+    return net::OK;
+  }
+
+  if (translate_language_pattern.MatchesURL(ctx->request_url)) {
+    ctx->new_url_spec = GURL(kBraveTranslateLanguageEndpoint).spec();
     return net::OK;
   }
 
@@ -127,6 +145,11 @@ int OnBeforeURLRequest_StaticRedirectWork(
 
       URLPattern(URLPattern::SCHEME_HTTPS, "https://crlsets.brave.com/*"),
       URLPattern(URLPattern::SCHEME_HTTPS, "https://crxdownload.brave.com/*"),
+
+      // Brave's translation relay server
+      URLPattern(URLPattern::SCHEME_HTTP, "http://localhost:8195/*"),
+      // Brave's translate proxy server
+      URLPattern(URLPattern::SCHEME_HTTPS, "https://translate.bravesoftware.com/*"),
   });
 
   // Check to make sure the URL being requested matches at least one of the

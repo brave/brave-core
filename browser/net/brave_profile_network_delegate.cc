@@ -12,6 +12,7 @@
 #include "brave/browser/net/brave_referrals_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/browser/net/brave_tor_network_delegate_helper.h"
+#include "brave/browser/net/brave_translate_redirect_network_delegate_helper.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -47,6 +48,9 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
 #endif
 
   callback = base::Bind(brave::OnBeforeURLRequest_TorWork);
+  before_url_request_callbacks_.push_back(callback);
+
+  callback = base::Bind(brave::OnBeforeURLRequest_TranslateRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
