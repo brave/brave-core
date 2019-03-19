@@ -10,6 +10,7 @@ extern const char kTranslateLanguagePattern[];
 extern const char kTranslateGen204Pattern[];
 extern const char kTranslateElementMainCSSPattern[];
 extern const char kTranslateBrandingPNGPattern[];
+extern const char kBraveTranslateServer[];
 extern const char kBraveTranslateEndpoint[];
 extern const char kBraveTranslateLanguageEndpoint[];
 

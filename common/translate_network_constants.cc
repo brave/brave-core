@@ -9,5 +9,6 @@ const char kTranslateLanguagePattern[] = "https://translate.googleapis.com/trans
 const char kTranslateGen204Pattern[] = "https://translate.google.com/gen204*";
 const char kTranslateElementMainCSSPattern[] = "https://translate.googleapis.com/translate_static/css/translateelement.css";
 const char kTranslateBrandingPNGPattern[] = "https://www.gstatic.com/images/branding/product/*x/translate_24dp.png";
+const char kBraveTranslateServer[] = "http://localhost:8195";
 const char kBraveTranslateEndpoint[] = "http://localhost:8195/translate";
 const char kBraveTranslateLanguageEndpoint[] = "http://localhost:8195/language";
