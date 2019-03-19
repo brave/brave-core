@@ -136,7 +136,9 @@ class LEDGER_EXPORT LedgerClient {
                            const std::string& paymentId) = 0;
   virtual void OnGrant(ledger::Result result, const ledger::Grant& grant) = 0;
 
-  virtual void GetGrantCaptcha() = 0;
+  virtual void GetGrantCaptcha(
+      const std::string& promotion_id,
+      const std::string& promotion_type) = 0;
 
   virtual void OnGrantCaptcha(const std::string& image,
                               const std::string& hint) = 0;

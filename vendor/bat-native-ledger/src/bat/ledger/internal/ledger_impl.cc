@@ -624,8 +624,10 @@ void LedgerImpl::OnGrant(ledger::Result result,
   ledger_client_->OnGrant(result, grant);
 }
 
-void LedgerImpl::GetGrantCaptcha() const {
-  bat_client_->getGrantCaptcha();
+void LedgerImpl::GetGrantCaptcha(
+    const std::string& promotion_id,
+    const std::string& promotion_type) const {
+  bat_client_->getGrantCaptcha(promotion_id, promotion_type);
 }
 
 void LedgerImpl::OnGrantCaptcha(const std::string& image,
