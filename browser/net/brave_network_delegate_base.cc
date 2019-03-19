@@ -380,6 +380,11 @@ void BraveNetworkDelegateBase::RunNextCallback(
         ctx->blocked_by == brave::kTrackerBlocked) {
       // We are going to intercept this request and block it later in the
       // network stack.
+      if (ctx->cancel_request_explicitly) {
+        RunCallbackForRequestIdentifier(ctx->request_identifier,
+            net::ERR_ABORTED);
+        return;
+      }
       request->SetExtraRequestHeaderByName("X-Brave-Block", "", true);
     }
     rv = ChromeNetworkDelegate::OnBeforeURLRequest(
