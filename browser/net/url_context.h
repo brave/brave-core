@@ -73,6 +73,7 @@ struct BraveRequestInfo {
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
   const base::ListValue* referral_headers_list = nullptr;
   BlockedBy blocked_by = kNotBlocked;
+  bool cancel_request_explicitly = false;
   // Default to invalid type for resource_type, so delegate helpers
   // can properly detect that the info couldn't be obtained.
   content::ResourceType resource_type = content::RESOURCE_TYPE_LAST_TYPE;

@@ -97,17 +97,19 @@ void OnBeforeURLRequestAdBlockTPOnTaskRunner(
   std::string tab_host = ctx->tab_origin.host();
   if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
            ctx->request_url, ctx->resource_type, tab_host,
-           &did_match_exception)) {
+           &did_match_exception, &ctx->cancel_request_explicitly)) {
     ctx->blocked_by = kAdBlocked;
   } else if (!did_match_exception &&
       !g_brave_browser_process->ad_block_regional_service()
             ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
-                                 tab_host, &did_match_exception)) {
+                                 tab_host, &did_match_exception,
+                                 &ctx->cancel_request_explicitly)) {
     ctx->blocked_by = kAdBlocked;
   } else if (!did_match_exception &&
       !g_brave_browser_process->tracking_protection_service()
           ->ShouldStartRequest(ctx->request_url, ctx->resource_type, tab_host,
-                               &did_match_exception)) {
+                               &did_match_exception,
+                               &ctx->cancel_request_explicitly)) {
     ctx->blocked_by = kTrackerBlocked;
   }
 }
