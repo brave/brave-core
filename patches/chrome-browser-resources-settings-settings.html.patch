@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/settings.html b/chrome/browser/resources/settings/settings.html
-index 75e1fc2e7e4297cb332b1cc595f0f529f4cdb535..0230f35ce34fa7cd704dd33e32e6b47ed2af96bd 100644
+index 75e1fc2e7e4297cb332b1cc595f0f529f4cdb535..138c9485ce9ba1dadd28ea87d10a1f4aa7e8e1f4 100644
 --- a/chrome/browser/resources/settings/settings.html
 +++ b/chrome/browser/resources/settings/settings.html
 @@ -7,6 +7,7 @@
@@ -10,3 +10,11 @@ index 75e1fc2e7e4297cb332b1cc595f0f529f4cdb535..0230f35ce34fa7cd704dd33e32e6b47e
    <style>
      html {
        --toolbar-height: 56px;
+@@ -36,6 +37,7 @@
+   <link rel="stylesheet" href="chrome://resources/css/md_colors.css">
+   <link rel="stylesheet" href="chrome://resources/css/text_defaults_md.css">
+   <link rel="import" href="chrome://resources/html/polymer.html">
++  <link rel="import" href="brave_settings_overrides.html">
+   <link rel="import" href="settings_ui/settings_ui.html">
+   <link rel="import" href="chrome://resources/html/dark_mode.html">
+ </body>
