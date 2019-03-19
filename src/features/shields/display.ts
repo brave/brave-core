@@ -55,6 +55,10 @@ export const SiteInfoText = styled<{}, 'p'>('p')`
   line-height: 27px;
   color: ${palette.grey800};
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
 `
 
 export const TotalBlockedStatsNumber = styled<{}, 'h2'>('h2')`
