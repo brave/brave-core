@@ -269,6 +269,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_GET_STARTED_TITLE" desc="The title for the Get Started section in settings">
         Get Started
       </message>
+      <message name="IDS_SETTINGS_BRAVE_ADDITIONAL_SETTINGS" desc="The title for a group of settings which are more advanced">
+        Additional Settings
+      </message>
       <!-- Brave Shields  -->
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_TITLE" desc="The title for Brave shields section in settings">
         Shields

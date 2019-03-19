@@ -136,6 +136,12 @@ BravePatching.RegisterPolymerTemplateModifications({
     } else {
       topMenuEl.insertAdjacentElement('afterbegin', titleEl)
     }
+    // Advanced text
+    const advancedToggle = templateContent.querySelector('#advancedButton span')
+    if (!advancedToggle) {
+      console.error('[Brave Settings Overrides] Could not find advancedButton to modify text')
+    }
+    advancedToggle.innerText = loadTimeData.getString('braveAdditionalSettingsTitle')
     // Add 'Get Started' item
     const peopleEl = getMenuElement(templateContent, '/people')
     const getStartedEl = createMenuElement(loadTimeData.getString('braveGetStartedTitle'), '/getStarted', 'brave_settings:get-started')
@@ -271,6 +277,15 @@ BravePatching.RegisterPolymerTemplateModifications({
       if (!advancedSubSectionsTemplate) {
         console.error('[Brave Settings Overrides] Could not find advanced sub-sections container')
       }
+      const advancedToggleTemplate = advancedTemplate.content.querySelector('template')
+      if (!advancedToggleTemplate) {
+        console.error('[Brave Settings Overrides] Could not find advanced toggle template')
+      }
+      const advancedToggleText = advancedToggleTemplate.content.querySelector('paper-button span')
+      if (!advancedToggleText) {
+        console.error('[Brave Settings Overrides] Could not find advanced toggle text')
+      }
+      advancedToggleText.innerText = loadTimeData.getString('braveAdditionalSettingsTitle')
       // Move autofill to after privacy
       const autofillEl = getSectionElement(actualTemplate.content, 'autofill')
       const privacyEl = getSectionElement(advancedSubSectionsTemplate.content, 'privacy')
