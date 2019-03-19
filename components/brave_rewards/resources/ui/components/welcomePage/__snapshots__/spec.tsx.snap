@@ -192,7 +192,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   -moz-letter-spacing: .6px;
   -ms-letter-spacing: .6px;
   letter-spacing: .6px;
-  background: #ff7654;
+  background: #FB542B;
 }
 
 .c44:focus {

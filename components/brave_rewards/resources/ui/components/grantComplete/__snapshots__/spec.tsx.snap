@@ -42,7 +42,7 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
 }
 
 .c7 {
-  --button-main-color: #ff7654;
+  --button-main-color: #FB542B;
   --button-main-color-hover: #FB542B;
   --button-main-color-active: #ffb8a6;
   --button-state-color: var(--button-main-color);

@@ -67,7 +67,7 @@ exports[`Tab tests basic tests matches the snapshot 1`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  color: #ff7654;
+  color: #FB542B;
   font-weight: 500;
 }
 
