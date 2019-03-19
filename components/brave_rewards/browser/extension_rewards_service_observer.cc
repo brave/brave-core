@@ -15,6 +15,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/event_router.h"
 #include "bat/ledger/ledger_callback_handler.h"
+#include "brave/components/brave_rewards/browser/publisher_banner.h"
 
 namespace brave_rewards {
 
@@ -321,6 +322,32 @@ void ExtensionRewardsServiceObserver::OnExcludedSitesChanged(
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnExcludedSitesChanged::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
+void ExtensionRewardsServiceObserver::OnPublisherBanner(
+    RewardsService* rewards_service,
+    const brave_rewards::PublisherBanner banner) {
+  auto* event_router = extensions::EventRouter::Get(profile_);
+
+  if (!event_router) {
+    return;
+  }
+
+  std::vector<double> amounts;
+  for (int const& value : banner.amounts) {
+    amounts.push_back(value);
+  }
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::
+      OnPublisherDonationAmounts::Create(amounts)
+          .release());
+
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnPublisherDonationAmounts::kEventName,
       std::move(args)));
   event_router->BroadcastEvent(std::move(event));
 }

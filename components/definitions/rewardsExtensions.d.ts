@@ -13,6 +13,8 @@ declare namespace RewardsExtension {
     walletCreating: boolean
     walletCreateFailed: boolean
     walletProperties: WalletProperties
+    recurringDonations: Record<string, number>[]
+    donationAmounts: number[]
   }
 
   interface ApplicationState {
@@ -124,5 +126,9 @@ declare namespace RewardsExtension {
   interface ExcludedSitesChanged {
     publisher_key: string
     excluded: boolean
+  }
+
+  interface RecurringDonation {
+    recurringDonations: Record<string, number>[]
   }
 }

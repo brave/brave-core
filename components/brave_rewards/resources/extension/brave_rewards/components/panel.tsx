@@ -25,15 +25,20 @@ interface Props extends RewardsExtension.ComponentProps {
 interface State {
   showSummary: boolean
   publisherKey: string | null
+  newMonthlyAmount: string | null
 }
 
 export class Panel extends React.Component<Props, State> {
+  private defaultDonationAmounts: number[]
+
   constructor (props: Props) {
     super(props)
     this.state = {
       showSummary: true,
-      publisherKey: null
+      publisherKey: null,
+      newMonthlyAmount: null
     }
+    this.defaultDonationAmounts = [0, 1, 5, 10]
   }
 
   get actions () {
@@ -331,6 +336,58 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
+  onContributionAmountChange = (publisherKey: string, newAmount: string) => {
+    let newMonthlyAmount: string
+    const newValue = parseInt(newAmount, 10)
+
+    if (newValue === 0) {
+      newMonthlyAmount = '0.0'
+      this.actions.removeRecurringContribution(publisherKey)
+    } else {
+      newMonthlyAmount = newValue.toFixed(1).toString()
+      this.actions.saveRecurringDonation(publisherKey, newValue)
+    }
+
+    this.setState({
+      newMonthlyAmount: newMonthlyAmount
+    })
+  }
+
+  generateAmounts = () => {
+    const { donationAmounts } = this.props.rewardsPanelData
+    const { rates } = this.props.rewardsPanelData.walletProperties
+
+    const amounts = (!donationAmounts || donationAmounts.length === 0)
+      ? this.defaultDonationAmounts
+      : donationAmounts
+
+    return amounts.map((value: number) => {
+      return {
+        tokens: value.toFixed(1),
+        converted: utils.convertBalance(value.toString(), rates),
+        selected: false
+      }
+    })
+  }
+
+  getContribution = (publisher?: RewardsExtension.Publisher) => {
+    let defaultContribution = '0.0'
+    const { recurringDonations } = this.props.rewardsPanelData
+
+    if (!recurringDonations ||
+       (!publisher || !publisher.publisher_key)) {
+      return defaultContribution
+    }
+
+    recurringDonations.map((donation: any) => {
+      if (donation.publisherKey === publisher.publisher_key) {
+        defaultContribution = donation.amount.toFixed(1)
+      }
+    })
+
+    return defaultContribution
+  }
+
   render () {
     const { pendingContributionTotal, enabledAC } = this.props.rewardsPanelData
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
@@ -341,6 +398,8 @@ export class Panel extends React.Component<Props, State> {
     const notificationType = this.getNotificationProp('type', notification)
     const notificationClick = this.getNotificationClickEvent(notificationType, notificationId)
     const { currentGrant } = this.props.rewardsPanelData
+    const defaultContribution = this.getContribution(publisher)
+    const donationAmounts = defaultContribution !== '0.0' ? this.generateAmounts() : undefined
 
     const pendingTotal = parseFloat(
       (pendingContributionTotal || 0).toFixed(1))
@@ -394,17 +453,18 @@ export class Panel extends React.Component<Props, State> {
               platform={publisher.provider as Provider}
               publisherName={publisher.name}
               publisherImg={faviconUrl}
-              monthlyAmount={'10.0'}
+              monthlyAmount={this.state.newMonthlyAmount || defaultContribution}
               isVerified={publisher.verified}
               tipsEnabled={true}
               includeInAuto={!publisher.excluded}
               attentionScore={(publisher.percentage || 0).toString()}
               onToggleTips={this.doNothing}
               donationAction={this.showDonateToSiteDetail}
-              onAmountChange={this.doNothing}
+              onAmountChange={this.onContributionAmountChange.bind(this, publisher.publisher_key)}
               onIncludeInAuto={this.switchAutoContribute}
               showUnVerified={!publisher.verified}
               acEnabled={enabledAC}
+              donationAmounts={donationAmounts}
               moreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
             />
             : null

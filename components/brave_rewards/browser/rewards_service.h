@@ -71,6 +71,8 @@ using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
 using ConfirmationsHistoryCallback = base::Callback<void(int, double)>;
 using GetRewardsInternalsInfoCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::RewardsInternalsInfo>)>;
+using GetRecurringDonationsListCallback =
+    base::OnceCallback<void(std::unique_ptr<brave_rewards::ContentSiteList>)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -187,6 +189,11 @@ class RewardsService : public KeyedService {
   void RemoveObserver(RewardsServiceObserver* observer);
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+  virtual void SaveRecurringDonation(
+      const std::string& publisher_key, const int amount) = 0;
+  virtual void GetRecurringDonationsList(
+      GetRecurringDonationsListCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

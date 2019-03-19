@@ -191,6 +191,9 @@ class RewardsServiceImpl : public RewardsService,
   void GetAddressesForPaymentId(const GetAddressesCallback& callback) override;
   std::pair<uint64_t, uint64_t> GetEarningsRange();
 
+  void SaveRecurringDonation(const std::string& publisher_key,
+                             const int amount) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
 
@@ -255,11 +258,12 @@ class RewardsServiceImpl : public RewardsService,
   void OnContributionInfoSaved(const ledger::REWARDS_CATEGORY category,
                                bool success);
   void OnRecurringDonationSaved(bool success);
-  void SaveRecurringDonation(const std::string& publisher_key,
-                             const int amount);
   void OnRecurringDonationsData(
       const ledger::PublisherInfoListCallback callback,
       const ledger::PublisherInfoList list);
+  void OnRecurringDonationsDataList(
+      GetRecurringDonationsListCallback callback,
+      ledger::PublisherInfoList list);
   void OnRecurringDonationUpdated(const ledger::PublisherInfoList& list);
   void OnTipsUpdatedData(const ledger::PublisherInfoList list);
   void TipsUpdated();
@@ -370,6 +374,8 @@ class RewardsServiceImpl : public RewardsService,
                             const ledger::REWARDS_CATEGORY category) override;
   void GetRecurringDonations(
       ledger::PublisherInfoListCallback callback) override;
+  void GetRecurringDonationsList(
+      GetRecurringDonationsListCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(
                      const char* file,
                      int line,

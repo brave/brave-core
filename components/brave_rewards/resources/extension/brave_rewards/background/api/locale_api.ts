@@ -26,6 +26,7 @@ export const getUIMessages = (): Record<string, string> => {
     'backupNow',
     'backupWalletNotification',
     'backupWalletTitle',
+    'bat',
     'braveAdsTitle',
     'braveContributeTitle',
     'braveRewards',

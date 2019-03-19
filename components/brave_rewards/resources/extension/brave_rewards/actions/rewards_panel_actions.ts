@@ -109,3 +109,21 @@ export const onExcludedSitesChanged = (properties: RewardsExtension.ExcludedSite
   action(types.ON_EXCLUDED_SITES_CHANGED, {
     properties
   })
+
+export const saveRecurringDonation = (publisherKey: string, newAmount: number) => action(types.SAVE_RECURRING_DONATION, {
+  publisherKey,
+  newAmount
+})
+
+export const removeRecurringContribution = (publisherKey: string) => action(types.REMOVE_RECURRING_DONATION, {
+  publisherKey
+})
+
+export const onRecurringDonations = (result: RewardsExtension.RecurringDonation) => action(types.ON_RECURRING_DONATIONS, {
+  result
+})
+
+export const onPublisherDonationAmounts = (amounts: number[]) =>
+  action(types.ON_PUBLISHER_DONATION_AMOUNTS, {
+    amounts
+  })

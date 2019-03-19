@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_REWARDS_API_H_
 
 #include "extensions/browser/extension_function.h"
+#include "brave/components/brave_rewards/browser/content_site.h"
 
 namespace extensions {
 namespace api {
@@ -153,6 +154,55 @@ class BraveRewardsGetACEnabledFunction : public UIThreadExtensionFunction {
 
  private:
   void OnGetACEnabled(bool enabled);
+};
+
+class BraveRewardsSaveRecurringDonationFunction :
+  public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.saveRecurringDonation", UNKNOWN)
+
+ protected:
+  ~BraveRewardsSaveRecurringDonationFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsRemoveRecurringDonationFunction :
+  public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.removeRecurringDonation", UNKNOWN)
+
+ protected:
+  ~BraveRewardsRemoveRecurringDonationFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsGetRecurringDonationsFunction :
+  public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getRecurringDonations", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetRecurringDonationsFunction() override;
+
+  ResponseAction Run() override;
+
+  private:
+    void OnGetRecurringDonations(
+        std::unique_ptr<brave_rewards::ContentSiteList> list);
+};
+
+class BraveRewardsGetPublisherDonationAmountsFunction :
+public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION(
+      "braveRewards.getPublisherDonationAmounts", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetPublisherDonationAmountsFunction() override;
+
+  ResponseAction Run() override;
 };
 
 }  // namespace api

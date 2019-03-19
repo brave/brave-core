@@ -157,6 +157,7 @@ ContentSite PublisherInfoToContentSite(
   content_site.provider = publisher_info.provider;
   content_site.favicon_url = publisher_info.favicon_url;
   content_site.id = publisher_info.id;
+  content_site.weight = publisher_info.weight;
   content_site.reconcile_stamp = publisher_info.reconcile_stamp;
   return content_site;
 }
@@ -2206,6 +2207,32 @@ void RewardsServiceImpl::GetRecurringDonations(
       base::Bind(&RewardsServiceImpl::OnRecurringDonationsData,
                      AsWeakPtr(),
                      callback));
+}
+
+void RewardsServiceImpl::GetRecurringDonationsList(
+    GetRecurringDonationsListCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&GetRecurringDonationsOnFileTaskRunner,
+                    publisher_info_backend_.get()),
+      base::BindOnce(&RewardsServiceImpl::OnRecurringDonationsDataList,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnRecurringDonationsDataList(
+    GetRecurringDonationsListCallback callback,
+    ledger::PublisherInfoList list) {
+  if (!Connected()) {
+    return;
+  }
+
+  auto site_list =
+    std::make_unique<brave_rewards::ContentSiteList>();
+  for (auto& info : list) {
+    site_list->push_back(PublisherInfoToContentSite(info));
+  }
+
+  std::move(callback).Run(std::move(site_list));
 }
 
 void RewardsServiceImpl::UpdateRecurringDonationsList() {

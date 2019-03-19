@@ -287,6 +287,20 @@
             }
           }
         ]
+      },
+      {
+        "name": "onPublisherDonationAmounts",
+        "type": "function",
+        "description": "Fired when publisher donation info is retreived",
+        "parameters": [
+          {
+            "name": "amounts",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        ]
       }
     ],
     "functions": [
@@ -459,6 +473,60 @@
           },
           {
             "name": "value",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "saveRecurringDonation",
+        "type": "function",
+        "description": "Updates recurring donation amount for rewards panel",
+        "parameters": [
+          {
+            "name": "publisher_key",
+            "type": "string"
+          },
+          {
+            "name": "new_amount",
+            "type": "integer"
+          }
+        ]
+      },
+      {
+        "name": "removeRecurringDonation",
+        "type": "function",
+        "description": "Removes recurring donation for rewards panel",
+        "parameters": [
+          {
+            "name": "publisher_key",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "getRecurringDonations",
+        "type": "function",
+        "description": "Gets list of sites with recurring donation data",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "siteList",
+                "type": "any"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getPublisherDonationAmounts",
+        "type": "function",
+        "description": "Retreives custom donation amounts",
+        "parameters": [
+          {
+            "name": "publisher_key",
             "type": "string"
           }
         ]

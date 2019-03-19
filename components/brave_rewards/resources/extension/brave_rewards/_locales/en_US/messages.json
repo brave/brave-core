@@ -376,5 +376,9 @@
   "welcomeBack": {
     "message": "Welcome Back!",
     "description": "Title message for wallet disabled panel"
+  },
+  "bat": {
+    "message": "BAT",
+    "description": "BAT text for displaying converted donation amount."
   }
 }
