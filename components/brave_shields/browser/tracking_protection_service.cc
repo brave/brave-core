@@ -40,12 +40,14 @@ TrackingProtectionService::~TrackingProtectionService() {
 bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
     const std::string &tab_host,
-    bool* matching_exception_filter) {
+    bool* matching_exception_filter,
+    bool* cancel_request_explicitly) {
   // There are no exceptions in the TP service, but exceptions are
   // combined with brave/ad-block.
   if (matching_exception_filter) {
     *matching_exception_filter = false;
   }
+  // Intentionally don't set cancel_request_explicitly
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::string host = url.host();
   if (!tracking_protection_client_->matchesTracker(
