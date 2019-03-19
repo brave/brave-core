@@ -278,6 +278,7 @@ export const BlockedListItem = styled<{}, 'li'>('li')`
   padding: 9px 0px;
   line-height: 1;
   white-space: nowrap;
+  user-select: all;
 `
 
 export const BlockedListItemWithOptions = styled<{}, 'li'>('li')`
