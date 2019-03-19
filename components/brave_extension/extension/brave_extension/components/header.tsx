@@ -97,7 +97,7 @@ export default class Header extends React.PureComponent<Props, {}> {
         <SiteOverview status={enabled ? 'enabled' : 'disabled'}>
           <SiteInfo>
             <Favicon src={favicon} />
-            <SiteInfoText id='hostname'>{hostname}</SiteInfoText>
+            <SiteInfoText id='hostname' title={hostname}>{hostname}</SiteInfoText>
           </SiteInfo>
           {
             enabled
