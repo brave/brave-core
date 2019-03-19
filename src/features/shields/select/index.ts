@@ -20,34 +20,34 @@ export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
   box-sizing: border-box;
   position: relative;
   -webkit-font-smoothing: antialiased;
-  border-radius: 3px;
+  border-radius: 4px;
   display: block;
   padding: 6px 12px 6px 6px;
   width: 100%;
   appearance: none;
   min-height: 36px;
-  color: ${palette.grey700};
+  color: ${p => p.theme.textColor};
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;
   font-family: ${p => p.theme.fontFamily.heading};
-  border: 1px solid #E9E9F4;
+  border: 1px solid ${p => p.theme.inputBorder};
   background: url(${caratUrl}) 97% / 16px no-repeat transparent;
   /* avoid text overflow w/ carat */
   -webkit-padding-start: 10px;
   -webkit-padding-end: 32px;
   outline-width: 2px;
-  outline-color: ${palette.orange400};
+  outline-color: ${p => p.theme.color.brandBrave};
   cursor: pointer;
 
   > option {
-    color: ${palette.black};
+    color: ${palette.white};
   }
 
   ${(p: SelectBoxProps) => p.disabled
     ? css`
       user-select: none;
-      opacity: 0.25;
+      opacity: 0.6;
     ` : ''
   }
   ${(p: SelectBoxProps) => p.multiple

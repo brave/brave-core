@@ -24,7 +24,7 @@ export const ShieldIcon = styled(ShieldAlertIcon as ComponentType)`
   display: block;
   width: 36px;
   margin: auto;
-  color: ${palette.grey300};
+  color: ${palette.grey500};
 `
 
 export const ArrowDownIcon = styled(CaratDownIcon as ComponentType)`
@@ -35,7 +35,7 @@ export const ArrowDownIcon = styled(CaratDownIcon as ComponentType)`
   &:focus {
     outline-width: 2px;
     outline-offset: -6px;
-    outline-color: ${palette.orange400};
+    outline-color: ${p => p.theme.color.brandBrave};
   }
 
   &:active {
