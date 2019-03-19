@@ -1,0 +1,59 @@
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/importer/brave_importer_p3a.h"
+
+#include "base/metrics/histogram_macros.h"
+
+namespace {
+enum class ImporterSource {
+  kNone,
+  kBrave,
+  kChrome,
+  kFirefox,
+  kBookmarksHTMLFile,
+  kSafari,
+  kIE,
+  kEdge,
+  kSize
+};
+}
+
+void RecordImporterP3A(importer::ImporterType type) {
+  ImporterSource metric;
+  switch(type) {
+  case importer::TYPE_UNKNOWN:
+    metric = ImporterSource::kNone;
+    break;
+#if defined(OS_WIN)
+  case TYPE_IE:
+    metric = ImporterSource::kIE;
+    break;
+  case TYPE_EDGE:
+    metric = ImporterSource::kEdge;
+    break;
+#endif
+  case importer::TYPE_FIREFOX:
+    metric = ImporterSource::kFirefox;
+    break;
+#if defined(OS_MACOSX)
+  case TYPE_SAFARI:
+    metric = ImporterSource::kSafari;
+    break;
+#endif
+  case importer::TYPE_BOOKMARKS_FILE:
+    metric = ImporterSource::kBookmarksHTMLFile;
+    break;
+  case importer::TYPE_CHROME:
+    metric = ImporterSource::kChrome;
+    break;
+  case importer::TYPE_BRAVE:
+    metric = ImporterSource::kBrave;
+    break;
+  }
+
+  UMA_HISTOGRAM_ENUMERATION("Brave.Importer.ImporterSource", metric,
+                            ImporterSource::kSize);
+}

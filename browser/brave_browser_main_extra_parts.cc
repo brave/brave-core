@@ -6,6 +6,7 @@
 #include "brave/browser/brave_browser_main_extra_parts.h"
 
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/importer/brave_importer_p3a.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -38,4 +39,11 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
 #endif
   // TODO(iefremov): Maybe find a better place for this initialization.
   g_brave_browser_process->brave_p3a_service()->Init();
+
+  // Record that nothing is imported yet, because we want this stat to be
+  // uploaded anyways. If the user imports something, the importer will
+  // overwrite this histogram with the actual value.
+  if (first_run::IsChromeFirstRun()) {
+    RecordImporterP3A(importer::ImporterType::TYPE_UNKNOWN);
+  }
 }

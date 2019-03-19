@@ -50,8 +50,8 @@ constexpr const char* kCollectedHistograms[] = {
     "DefaultBrowser.State",
     "Extensions.LoadAll",
     "Profile.NumberOfProfiles",
-    "Startup.BrowserWindow.FirstPaint"
     "Tabs.TabCount",
+    "Brave.Importer.ImporterSource",
 };
 
 base::TimeDelta GetRandomizedUploadInterval(base::TimeDelta upload_interval,

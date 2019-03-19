@@ -7,6 +7,7 @@
 #include "brave/browser/importer/brave_profile_lock.h"
 #include "brave/browser/importer/chrome_profile_lock.h"
 #include "brave/browser/importer/brave_in_process_importer_bridge.h"
+#include "brave/browser/importer/brave_importer_p3a.h"
 
 #include "brave/browser/importer/brave_importer_lock_dialog.h"
 
@@ -61,6 +62,8 @@ void BraveExternalProcessImporterHost::LaunchImportIfReady() {
   client_ = new BraveExternalProcessImporterClient(
       weak_ptr_factory_.GetWeakPtr(), source_profile_, items_, bridge);
   client_->Start();
+
+  RecordImporterP3A(source_profile_.importer_type);
 }
 
 void BraveExternalProcessImporterHost::ShowWarningDialog() {
