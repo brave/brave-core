@@ -4,10 +4,10 @@
 
 #include "chrome/install_static/install_modes.h"
 
-#include <windows.h>
+#include <windows.h>  // NOLINT
 
-#include <cguid.h>
-#include <ctype.h>
+#include <cguid.h>  // NOLINT
+#include <ctype.h>  // NOLINT
 
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -140,20 +140,23 @@ TEST(InstallModes, GetClientStateKeyPath) {
 
 TEST(InstallModes, GetBinariesClientsKeyPath) {
   if (kUseGoogleUpdateIntegration) {
-    ASSERT_THAT(GetBinariesClientsKeyPath(),
-                StrEq(std::wstring(L"Software\\BraveSoftware\\Update\\Clients\\")
-                          .append(kBinariesAppGuid)));
+    ASSERT_THAT(
+        GetBinariesClientsKeyPath(),
+        StrEq(std::wstring(L"Software\\BraveSoftware\\Update\\Clients\\")
+                  .append(kBinariesAppGuid)));
   } else {
-    ASSERT_THAT(GetBinariesClientsKeyPath(),
-                StrEq(std::wstring(L"Software\\").append(kBinariesPathName)));
+    ASSERT_THAT(
+        GetBinariesClientsKeyPath(),
+        StrEq(std::wstring(L"Software\\").append(kBinariesPathName)));
   }
 }
 
 TEST(InstallModes, GetBinariesClientStateKeyPath) {
   if (kUseGoogleUpdateIntegration) {
-    ASSERT_THAT(GetBinariesClientStateKeyPath(),
-                StrEq(std::wstring(L"Software\\BraveSoftware\\Update\\ClientState\\")
-                          .append(kBinariesAppGuid)));
+    ASSERT_THAT(
+        GetBinariesClientStateKeyPath(),
+        StrEq(std::wstring(L"Software\\BraveSoftware\\Update\\ClientState\\")
+                  .append(kBinariesAppGuid)));
   } else {
     ASSERT_THAT(GetBinariesClientStateKeyPath(),
                 StrEq(std::wstring(L"Software\\").append(kBinariesPathName)));
@@ -164,8 +167,9 @@ TEST(InstallModes, GetClientStateMediumKeyPath) {
   constexpr wchar_t kAppGuid[] = L"test";
 
   if (kUseGoogleUpdateIntegration) {
-    ASSERT_THAT(GetClientStateMediumKeyPath(kAppGuid),
-                StrEq(L"Software\\BraveSoftware\\Update\\ClientStateMedium\\test"));
+    ASSERT_THAT(
+        GetClientStateMediumKeyPath(kAppGuid),
+        StrEq(L"Software\\BraveSoftware\\Update\\ClientStateMedium\\test"));
   } else {
     ASSERT_THAT(GetClientStateMediumKeyPath(kAppGuid),
                 StrEq(std::wstring(L"Software\\").append(kProductPathName)));
@@ -176,8 +180,8 @@ TEST(InstallModes, GetBinariesClientStateMediumKeyPath) {
   if (kUseGoogleUpdateIntegration) {
     ASSERT_THAT(
         GetBinariesClientStateMediumKeyPath(),
-        StrEq(std::wstring(L"Software\\BraveSoftware\\Update\\ClientStateMedium\\")
-                  .append(kBinariesAppGuid)));
+        StrEq(std::wstring(L"Software\\BraveSoftware\\Update\\"
+                            "ClientStateMedium\\").append(kBinariesAppGuid)));
   } else {
     ASSERT_THAT(GetBinariesClientStateMediumKeyPath(),
                 StrEq(std::wstring(L"Software\\").append(kBinariesPathName)));
