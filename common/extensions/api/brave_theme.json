@@ -42,6 +42,25 @@
             ]
           }
         ]
+      },
+      {
+        "name": "getBraveThemeType",
+        "type": "function",
+        "description": "Get current brave theme",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called when current brave theme is fetched",
+            "parameters": [
+              {
+                "name": "type",
+                "type": "string",
+                "description": "current theme type(Dark or Light)"
+              }
+            ]
+          }
+        ]
       }
     ]
   }

@@ -43,6 +43,20 @@ BraveThemeType GetThemeTypeBasedOnChannel() {
 }  // namespace
 
 // static
+std::string BraveThemeService::GetStringFromBraveThemeType(
+    BraveThemeType type) {
+  switch (type) {
+    case BraveThemeType::BRAVE_THEME_TYPE_LIGHT:
+      return "Light";
+    case BraveThemeType::BRAVE_THEME_TYPE_DARK:
+      return "Dark";
+    default:
+      NOTREACHED();
+      return "Default";
+  }
+}
+
+// static
 base::Value BraveThemeService::GetBraveThemeList() {
   base::Value list(base::Value::Type::LIST);
 

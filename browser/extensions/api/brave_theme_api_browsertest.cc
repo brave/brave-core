@@ -9,14 +9,16 @@
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/browser/extensions/extension_function_test_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_service.h"
+#include "extensions/common/extension_builder.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-using BraveThemeAPIBrowserTest = InProcessBrowserTest;
+using BraveThemeEventRouterBrowserTest = InProcessBrowserTest;
 
 namespace {
 class MockBraveThemeEventRouter : public extensions::BraveThemeEventRouter {
@@ -32,7 +34,8 @@ void SetBraveThemeType(Profile* profile, BraveThemeType type) {
 }
 }  // namespace
 
-IN_PROC_BROWSER_TEST_F(BraveThemeAPIBrowserTest, BraveThemeEventRouterTest) {
+IN_PROC_BROWSER_TEST_F(BraveThemeEventRouterBrowserTest,
+                       BraveThemeEventRouterTest) {
   Profile* profile = browser()->profile();
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
 
@@ -43,4 +46,42 @@ IN_PROC_BROWSER_TEST_F(BraveThemeAPIBrowserTest, BraveThemeEventRouterTest) {
       ThemeServiceFactory::GetForProfile(browser()->profile()));
   service->SetBraveThemeEventRouterForTesting(mock_router_);
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
+}
+
+using BTS = BraveThemeService;
+using extensions::api::BraveThemeGetBraveThemeTypeFunction;
+using extension_function_test_utils::RunFunctionAndReturnSingleResult;
+
+class BraveThemeAPIBrowserTest : public InProcessBrowserTest {
+ public:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    extension_ = extensions::ExtensionBuilder("Test").Build();
+  }
+
+  scoped_refptr<const extensions::Extension> extension() {
+    return extension_;
+  }
+
+ private:
+  scoped_refptr<const extensions::Extension> extension_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveThemeAPIBrowserTest,
+                       BraveThemeGetBraveThemeTypeTest) {
+  Profile* profile = browser()->profile();
+
+  // Change to Light type and check it from api.
+  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
+  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_LIGHT,
+            BTS::GetActiveBraveThemeType(profile));
+
+  scoped_refptr<BraveThemeGetBraveThemeTypeFunction> get_function(
+      new BraveThemeGetBraveThemeTypeFunction());
+  get_function->set_extension(extension().get());
+  std::unique_ptr<base::Value> value;
+  value.reset(RunFunctionAndReturnSingleResult(get_function.get(),
+                                               std::string("[]"),
+                                               browser()));
+  EXPECT_EQ(value->GetString(), "Light");
 }

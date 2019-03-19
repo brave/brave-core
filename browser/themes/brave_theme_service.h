@@ -37,6 +37,7 @@ class BraveThemeService : public ThemeService {
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
   static BraveThemeType GetActiveBraveThemeType(Profile* profile);
   static base::Value GetBraveThemeList();
+  static std::string GetStringFromBraveThemeType(BraveThemeType type);
 
   BraveThemeService();
   ~BraveThemeService() override;
@@ -50,7 +51,8 @@ class BraveThemeService : public ThemeService {
 
  private:
   friend class BraveThemeServiceTestWithoutSystemTheme;
-  FRIEND_TEST_ALL_PREFIXES(BraveThemeAPIBrowserTest, BraveThemeEventRouterTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveThemeEventRouterBrowserTest,
+                           BraveThemeEventRouterTest);
   FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, GetBraveThemeListTest);
   FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, SystemThemeChangeTest);
 
