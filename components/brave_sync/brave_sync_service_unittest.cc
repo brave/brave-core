@@ -644,12 +644,34 @@ TEST_F(BraveSyncServiceTest, OnSyncReadyAlreadyWithSync) {
   EXPECT_FALSE(sync_service()->IsSyncInitialized());
   profile()->GetPrefs()->SetString(
                            brave_sync::prefs::kSyncBookmarksBaseOrder, "1.1.");
-  // OnSyncPrefsChanged => OnSyncStateChanged for kSyncSiteSettingsEnabled
-  EXPECT_CALL(*observer(), OnSyncStateChanged);
+  // OnSyncPrefsChanged => OnSyncStateChanged for
+  // kSyncSiteSettingsEnabled (1)  and kSyncDeviceList (2)
+  EXPECT_CALL(*observer(), OnSyncStateChanged).Times(2);
   profile()->GetPrefs()->SetBoolean(
                             brave_sync::prefs::kSyncSiteSettingsEnabled, true);
   profile()->GetPrefs()->SetTime(
                      brave_sync::prefs::kSyncLastFetchTime, base::Time::Now());
+  const char* devices_json = R"(
+    {
+       "devices":[
+          {
+             "device_id":"0",
+             "last_active":1552993896717.0,
+             "name":"Device1",
+             "object_id":"186, 247, 230, 75, 57, 111, 76, 166, 51, 142, 217, 221, 219, 237, 229, 235"
+          },
+          {
+             "device_id":"1",
+             "last_active":1552993909257.0,
+             "name":"Device2",
+             "object_id":"36, 138, 200, 221, 191, 81, 214, 65, 134, 48, 55, 119, 162, 93, 33, 226"
+          }
+       ]
+    }
+  )";
+
+  profile()->GetPrefs()->SetString(
+                    brave_sync::prefs::kSyncDeviceList, devices_json);
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
   EXPECT_CALL(*sync_client(), SendFetchSyncDevices).Times(1);
   sync_service()->OnSyncReady();
