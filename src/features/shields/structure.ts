@@ -50,7 +50,7 @@ export const MainToggle = styled<MainToggleProps, 'section'>('section')`
   align-items: ${p => p.status === 'enabled' ? null : 'center'};
   border-bottom: 1px solid rgba(160, 161, 178, 0.15);
 
-  > *:last-child {
+  > ${Toggle} {
     display: flex;
     justify-content: flex-end;
     width: fit-content;
@@ -141,7 +141,14 @@ export const BlockedInfoRowData = styled<BlockedInfoRowDataProps, 'div'>('div')`
   grid-gap: 2px;
   align-items: center;
   pointer-events: ${p => p.disabled && 'none'};
-  opacity: ${p => p.disabled && '0.4'};
+
+  & > * {
+    opacity: ${p => p.disabled && '0.4'};
+  }
+
+  & > ${BlockedInfoRowText} {
+    opacity: 1;
+  }
 
   &:active {
     outline: none;
