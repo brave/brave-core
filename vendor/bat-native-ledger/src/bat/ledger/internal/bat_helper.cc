@@ -632,7 +632,6 @@ bool PUBLISHER_STATE_ST::loadFromJson(const std::string& json) {
     error = !(d.HasMember("min_pubslisher_duration") &&
         d["min_pubslisher_duration"].IsUint() &&
         d.HasMember("min_visits") && d["min_visits"].IsUint() &&
-        d.HasMember("num_excluded_sites") && d["num_excluded_sites"].IsUint() &&
         d.HasMember("allow_non_verified") && d["allow_non_verified"].IsBool() &&
         d.HasMember("pubs_load_timestamp") &&
         d["pubs_load_timestamp"].IsUint64() &&
