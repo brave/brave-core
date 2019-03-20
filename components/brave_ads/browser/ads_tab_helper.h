@@ -85,9 +85,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   bool run_distiller_;
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_;
-#if $CHROMIUM_CR72 != 0
   WEB_CONTENTS_USER_DATA_KEY_DECL();
-#endif
   DISALLOW_COPY_AND_ASSIGN(AdsTabHelper);
 };
 
