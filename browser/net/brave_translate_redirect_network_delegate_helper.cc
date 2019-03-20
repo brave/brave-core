@@ -1,9 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/net/brave_translate_redirect_network_delegate_helper.h"
 
+#include <memory>
+#include <string>
+#include <vector>
 #include "brave/common/translate_network_constants.h"
 #include "extensions/common/url_pattern.h"
 
@@ -65,7 +69,8 @@ int OnBeforeURLRequest_TranslateRedirectWork(
   // connection to google when using translate element library.
   if (IsTranslateResourceRequest(ctx->request_url)) {
     replacements.SetPathStr(ctx->request_url.path_piece());
-    ctx->new_url_spec = GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
+    ctx->new_url_spec =
+      GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
     return net::OK;
   }
 
@@ -79,7 +84,8 @@ int OnBeforeURLRequest_TranslateRedirectWork(
   if (IsTranslateScriptRequest(ctx->request_url)) {
     replacements.SetQueryStr(ctx->request_url.query_piece());
     replacements.SetPathStr(ctx->request_url.path_piece());
-    ctx->new_url_spec = GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
+    ctx->new_url_spec =
+      GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
     return net::OK;
   }
 

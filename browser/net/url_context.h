@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_NET_URL_CONTEXT_H_
 #define BRAVE_BROWSER_NET_URL_CONTEXT_H_
 
-
 #include <memory>
 #include <string>
 

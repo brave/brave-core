@@ -10,4 +10,4 @@
 #define IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
   IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
 
-#include "../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.cc"
+#include "../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.cc" // NOLINT

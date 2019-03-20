@@ -106,42 +106,42 @@ int OnBeforeURLRequest_StaticRedirectWork(
       // BRAVE_REFERRALS_SERVER environment variable rather than
       // hardcoding the server name here
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://laptop-updates.brave.com/*"),
+          "https://laptop-updates.brave.com/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://laptop-updates-staging.herokuapp.com/*"),
+          "https://laptop-updates-staging.herokuapp.com/*"),
       // CRX file download
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://brave-core-ext.s3.brave.com/release/*"),
+          "https://brave-core-ext.s3.brave.com/release/*"),
       // Safe Browsing and other files
       URLPattern(URLPattern::SCHEME_HTTPS, "https://static.brave.com/*"),
       // We do allow redirects to the Google update server for extensions we
       // don't support
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://update.googleapis.com/service/update2"),
+          "https://update.googleapis.com/service/update2"),
 
       // Rewards URLs
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://ledger.mercury.basicattentiontoken.org/*"),
+          "https://ledger.mercury.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://balance.mercury.basicattentiontoken.org/*"),
+          "https://balance.mercury.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://publishers.basicattentiontoken.org/*"),
+          "https://publishers.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://publishers-distro.basicattentiontoken.org/*"),
+          "https://publishers-distro.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://ledger-staging.mercury.basicattentiontoken.org/*"),
+          "https://ledger-staging.mercury.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://balance-staging.mercury.basicattentiontoken.org/*"),
+          "https://balance-staging.mercury.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://publishers-staging.basicattentiontoken.org/*"),
+          "https://publishers-staging.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://publishers-staging-distro.basicattentiontoken.org/*"),
+          "https://publishers-staging-distro.basicattentiontoken.org/*"),
 
       // Safe browsing
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://safebrowsing.brave.com/v4/*"),
+          "https://safebrowsing.brave.com/v4/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://ssl.gstatic.com/safebrowsing/*"),
+          "https://ssl.gstatic.com/safebrowsing/*"),
 
       URLPattern(URLPattern::SCHEME_HTTPS, "https://crlsets.brave.com/*"),
       URLPattern(URLPattern::SCHEME_HTTPS, "https://crxdownload.brave.com/*"),
@@ -149,7 +149,8 @@ int OnBeforeURLRequest_StaticRedirectWork(
       // Brave's translation relay server
       URLPattern(URLPattern::SCHEME_HTTP, "http://localhost:8195/*"),
       // Brave's translate proxy server
-      URLPattern(URLPattern::SCHEME_HTTPS, "https://translate.bravesoftware.com/*"),
+      URLPattern(URLPattern::SCHEME_HTTPS,
+          "https://translate.bravesoftware.com/*"),
   });
 
   // Check to make sure the URL being requested matches at least one of the
