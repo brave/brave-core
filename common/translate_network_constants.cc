@@ -17,3 +17,4 @@ const char kTranslateBrandingPNGPattern[] = "https://www.gstatic.com/images/bran
 const char kBraveTranslateServer[] = "http://localhost:8195";
 const char kBraveTranslateEndpoint[] = "http://localhost:8195/translate";
 const char kBraveTranslateLanguageEndpoint[] = "http://localhost:8195/language";
+const char kBraveTranslateServerPrefix[] = "http://localhost:8195/*";

@@ -18,5 +18,6 @@ extern const char kTranslateBrandingPNGPattern[];
 extern const char kBraveTranslateServer[];
 extern const char kBraveTranslateEndpoint[];
 extern const char kBraveTranslateLanguageEndpoint[];
+extern const char kBraveTranslateServerPrefix[];
 
 #endif  // BRAVE_COMMON_TRANSLATE_NETWORK_CONSTANTS_H_

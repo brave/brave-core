@@ -64,7 +64,7 @@ int OnBeforeURLRequest_TranslateRedirectWork(
     return net::ERR_ABORTED;
   }
 
-  // For those translate resouces which might be triggered by translate
+  // For those translate resources which might be triggered by translate
   // element library, go through brave's proxy so we won't introduce direct
   // connection to google when using translate element library.
   if (IsTranslateResourceRequest(ctx->request_url)) {

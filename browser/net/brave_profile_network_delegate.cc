@@ -50,7 +50,8 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   callback = base::Bind(brave::OnBeforeURLRequest_TorWork);
   before_url_request_callbacks_.push_back(callback);
 
-  callback = base::Bind(brave::OnBeforeURLRequest_TranslateRedirectWork);
+  callback = base::BindRepeating(
+      brave::OnBeforeURLRequest_TranslateRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 
   brave::OnBeforeStartTransactionCallback start_transaction_callback =

@@ -147,10 +147,7 @@ int OnBeforeURLRequest_StaticRedirectWork(
       URLPattern(URLPattern::SCHEME_HTTPS, "https://crxdownload.brave.com/*"),
 
       // Brave's translation relay server
-      URLPattern(URLPattern::SCHEME_HTTP, "http://localhost:8195/*"),
-      // Brave's translate proxy server
-      URLPattern(URLPattern::SCHEME_HTTPS,
-          "https://translate.bravesoftware.com/*"),
+      URLPattern(URLPattern::SCHEME_HTTP, kBraveTranslateServerPrefix),
   });
 
   // Check to make sure the URL being requested matches at least one of the
