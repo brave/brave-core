@@ -214,8 +214,6 @@ void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
 }
 #endif
 
-#if $CHROMIUM_CR72 != 0
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AdsTabHelper)
-#endif
 
 }  // namespace brave_ads
