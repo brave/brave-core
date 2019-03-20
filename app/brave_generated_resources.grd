@@ -401,7 +401,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <!-- In-page Translation -->
       <message name="IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE" desc="Title text for the translate bubble when asking to translate a page.">
-        Translate this page using Microsoft Cognitive Services? Texts in this page will be sent to Microsoft server for translation.
+        Translate this page? This will send all text on this page to Microsoft for translation.
       </message>
     </messages>
     <includes>
