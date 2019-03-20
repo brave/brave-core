@@ -18,6 +18,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "base/values.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
@@ -119,6 +120,24 @@ void AdBlockRegionalService::OnComponentReady(
 // static
 bool AdBlockRegionalService::IsSupportedLocale(const std::string& locale) {
   return (FindFilterListByLocale(locale) != region_lists.end());
+}
+
+// static
+std::unique_ptr<base::ListValue> AdBlockRegionalService::GetRegionalLists() {
+  auto list_value = std::make_unique<base::ListValue>();
+  for (const auto& region_list : region_lists) {
+    auto dict = std::make_unique<base::DictionaryValue>();
+    dict->SetString("uuid", region_list.uuid);
+    dict->SetString("url", region_list.url);
+    dict->SetString("title", region_list.title);
+    dict->SetString("support_url", region_list.support_url);
+    dict->SetString("component_id", region_list.component_id);
+    dict->SetString("base64_public_key", region_list.base64_public_key);
+    dict->SetBoolean("enabled", false);
+    list_value->Append(std::move(dict));
+  }
+
+  return list_value;
 }
 
 // static

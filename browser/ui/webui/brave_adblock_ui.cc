@@ -31,7 +31,9 @@ class AdblockDOMHandler : public content::WebUIMessageHandler {
   void RegisterMessages() override;
 
  private:
+  void HandleEnableFilterList(const base::ListValue* args);
   void HandleGetCustomFilters(const base::ListValue* args);
+  void HandleGetRegionalLists(const base::ListValue* args);
   void HandleUpdateCustomFilters(const base::ListValue* args);
 
   DISALLOW_COPY_AND_ASSIGN(AdblockDOMHandler);
@@ -43,13 +45,33 @@ AdblockDOMHandler::~AdblockDOMHandler() {}
 
 void AdblockDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
+      "brave_adblock.enableFilterList",
+      base::BindRepeating(&AdblockDOMHandler::HandleEnableFilterList,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "brave_adblock.getCustomFilters",
       base::BindRepeating(&AdblockDOMHandler::HandleGetCustomFilters,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_adblock.getRegionalLists",
+      base::BindRepeating(&AdblockDOMHandler::HandleGetRegionalLists,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_adblock.updateCustomFilters",
       base::BindRepeating(&AdblockDOMHandler::HandleUpdateCustomFilters,
                           base::Unretained(this)));
+}
+
+void AdblockDOMHandler::HandleEnableFilterList(const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 2U);
+  std::string uuid;
+  if (!args->GetString(0, &uuid))
+    return;
+  bool enabled;
+  if (!args->GetBoolean(1, &enabled))
+    return;
+  g_brave_browser_process->ad_block_regional_service_manager()
+      ->EnableFilterList(uuid, enabled);
 }
 
 void AdblockDOMHandler::HandleGetCustomFilters(const base::ListValue* args) {
@@ -61,6 +83,16 @@ void AdblockDOMHandler::HandleGetCustomFilters(const base::ListValue* args) {
     return;
   web_ui()->CallJavascriptFunctionUnsafe("brave_adblock.onGetCustomFilters",
                                          base::Value(custom_filters));
+}
+
+void AdblockDOMHandler::HandleGetRegionalLists(const base::ListValue* args) {
+  DCHECK_EQ(args->GetSize(), 0U);
+  if (!web_ui()->CanCallJavascript())
+    return;
+  std::unique_ptr<base::ListValue> regional_lists =
+      g_brave_browser_process->ad_block_regional_service()->GetRegionalLists();
+  web_ui()->CallJavascriptFunctionUnsafe("brave_adblock.onGetRegionalLists",
+                                         *regional_lists);
 }
 
 void AdblockDOMHandler::HandleUpdateCustomFilters(const base::ListValue* args) {

@@ -527,6 +527,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }, {
       std::string("adblock"), {
+        { "additionalFiltersTitle", IDS_ADBLOCK_ADDITIONAL_FILTERS_TITLE },
+        { "additionalFiltersWarning", IDS_ADBLOCK_ADDITIONAL_FILTERS_WARNING },                  // NOLINT
         { "adsBlocked", IDS_ADBLOCK_TOTAL_ADS_BLOCKED },
         { "customFiltersTitle", IDS_ADBLOCK_CUSTOM_FILTERS_TITLE },
         { "customFiltersInstructions", IDS_ADBLOCK_CUSTOM_FILTERS_INSTRUCTIONS },                // NOLINT

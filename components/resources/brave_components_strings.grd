@@ -163,6 +163,8 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON" desc="">Learn more about Tor in Brave</message>
 
       <!-- WebUI adblock resources -->
+      <message name="IDS_ADBLOCK_ADDITIONAL_FILTERS_TITLE" desc="Title for additional filters section">Additional Filters</message>
+      <message name="IDS_ADBLOCK_ADDITIONAL_FILTERS_WARNING" desc="Warning for additional filters section">Warning: Turning on too many filters will degrade performance</message>
       <message name="IDS_ADBLOCK_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Total Ads Blocked:</message>
       <message name="IDS_ADBLOCK_CUSTOM_FILTERS_TITLE" desc="Title for custom filters section">Custom Filters</message>
       <message name="IDS_ADBLOCK_CUSTOM_FILTERS_INSTRUCTIONS" desc="Instructions for custom filters section">One per line, a filter is described in Adblock Plus filter syntax</message>

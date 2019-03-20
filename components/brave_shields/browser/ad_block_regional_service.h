@@ -16,6 +16,10 @@
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 #include "content/public/common/resource_type.h"
 
+namespace base {
+class ListValue;
+}  // namespace base
+
 class AdBlockServiceTest;
 
 namespace brave_shields {
@@ -28,6 +32,7 @@ class AdBlockRegionalService : public AdBlockBaseService {
   ~AdBlockRegionalService() override;
 
   static bool IsSupportedLocale(const std::string& locale);
+  static std::unique_ptr<base::ListValue> GetRegionalLists();
   std::string GetUUID() const { return uuid_; }
   std::string GetTitle() const { return title_; }
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override;
