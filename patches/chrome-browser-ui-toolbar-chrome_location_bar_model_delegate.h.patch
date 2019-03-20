@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h b/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
+index 26d74e9c5d80d2c699df1a6ee16f4ed494d563dd..130e4bd112aac15e81e2de967da2d1c419acdae0 100644
+--- a/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
++++ b/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
+@@ -37,6 +37,7 @@ class ChromeLocationBarModelDelegate : public LocationBarModelDelegate {
+   content::NavigationEntry* GetNavigationEntry() const;
+ 
+  private:
++  friend class BraveLocationBarModelDelegate;
+   base::string16 FormattedStringWithEquivalentMeaning(
+       const GURL& url,
+       const base::string16& formatted_url) const override;

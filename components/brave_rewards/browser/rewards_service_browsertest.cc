@@ -213,7 +213,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
   // Enable Rewards
   EnableRewards();
   EXPECT_STREQ(contents()->GetLastCommittedURL().spec().c_str(),
-    rewards_url().spec().c_str());
+      // actual url is always chrome://
+      "chrome://rewards/");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleRewards) {
