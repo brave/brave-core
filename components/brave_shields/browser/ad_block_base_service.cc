@@ -22,6 +22,7 @@
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
+#include "brave/vendor/ad-block/filter.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
