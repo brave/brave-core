@@ -12,14 +12,9 @@
 #include <string>
 
 #include "services/service_manager/public/cpp/binder_registry.h"
-#if $CHROMIUM_CR72 == 0
-#include "services/service_manager/public/cpp/service_context.h"
-#include "services/service_manager/public/cpp/service_context_ref.h"
-#else
 #include "services/service_manager/public/cpp/service.h"
 #include "services/service_manager/public/cpp/service_binding.h"
 #include "services/service_manager/public/cpp/service_keepalive.h"
-#endif
 
 namespace bat_ledger {
 
@@ -27,13 +22,7 @@ class BatLedgerApp : public service_manager::Service {
  public:
   ~BatLedgerApp() override;
 
-#if $CHROMIUM_CR72 == 0
-  BatLedgerApp();
-  // Factory method for creating the service.
-  static std::unique_ptr<service_manager::Service> CreateService();
-#else
   explicit BatLedgerApp(service_manager::mojom::ServiceRequest request);
-#endif
 
   // Lifescycle events that occur after the service has started to spinup.
   void OnStart() override;
@@ -42,12 +31,8 @@ class BatLedgerApp : public service_manager::Service {
                        mojo::ScopedMessagePipeHandle interface_pipe) override;
 
  private:
-#if $CHROMIUM_CR72 == 0
-  std::unique_ptr<service_manager::ServiceContextRefFactory> ref_factory_;
-#else
   service_manager::ServiceBinding service_binding_;
   service_manager::ServiceKeepalive service_keepalive_;
-#endif
   service_manager::BinderRegistry registry_;
 
   DISALLOW_COPY_AND_ASSIGN(BatLedgerApp);
