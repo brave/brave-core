@@ -26,7 +26,7 @@ export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
   width: 100%;
   appearance: none;
   min-height: 36px;
-  color: ${p => p.theme.color.textColor};
+  color: ${p => p.theme.color.text};
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;

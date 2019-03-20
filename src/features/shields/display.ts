@@ -14,13 +14,13 @@ export const MainToggleHeading = styled<{}, 'h1'>('h1')`
   font-size: 16px;
   line-height: 20px;
   font-weight: 500;
-  color: ${p => p.theme.color.textColor};
+  color: ${p => p.theme.color.text};
   margin: 0;
 `
 
 export const MainToggleText = styled<{}, 'p'>('p')`
   box-sizing: border-box;
-  color: ${p => p.theme.color.textColor};
+  color: ${p => p.theme.color.text};
   font-size: 12px;
   font-family: ${p => p.theme.fontFamily.body};
   margin: 0;
@@ -33,7 +33,7 @@ interface ToggleStateTextProps {
 
 export const ToggleStateText = styled<ToggleStateTextProps, 'span'>('span')`
   box-sizing: border-box;
-  color: ${p => p.status === 'enabled' ? p => p.theme.color.brandBrave : p.theme.color.textColor};
+  color: ${p => p.status === 'enabled' ? p => p.theme.color.brandBrave : p.theme.color.text};
   font-size: inherit;
   text-transform: uppercase;
   font-style: normal;
@@ -52,7 +52,7 @@ export const SiteInfoText = styled<{}, 'p'>('p')`
   font-size: 22px;
   font-weight: 500;
   line-height: 27px;
-  color: ${p => p.theme.color.textColor};
+  color: ${p => p.theme.color.text};
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -64,7 +64,7 @@ export const TotalBlockedStatsNumber = styled<{}, 'h2'>('h2')`
   box-sizing: border-box;
   font-size: 38px;
   text-transform: uppercase;
-  color: ${p => p.theme.color.textColor};
+  color: ${p => p.theme.color.text};
   font-weight: normal;
   text-align: right;
   margin: 0;
@@ -75,7 +75,7 @@ export const TotalBlockedStatsText = styled<{}, 'span'>('span')`
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;
-  color: ${p => p.theme.color.textColor};
+  color: ${p => p.theme.color.text};
 `
 
 /**
@@ -83,7 +83,7 @@ export const TotalBlockedStatsText = styled<{}, 'span'>('span')`
  */
 export const BlockedInfoRowStats = styled<{}, 'span'>('span')`
   box-sizing: border-box;
-  color: ${p => p.theme.color.textColor};
+  color: ${p => p.theme.color.text};
   font-size: 14px;
   font-weight: 500;
   line-height: 1;
@@ -94,7 +94,7 @@ export const BlockedInfoRowText = styled<{}, 'span'>('span')`
   font-size: 12px;
   font-weight: 500;
   line-height: 1;
-  color: ${p => p.theme.color.textColor};
+  color: ${p => p.theme.color.text};
 `
 
 /**
@@ -105,20 +105,20 @@ export const BlockedListSummaryText = styled<{}, 'span'>('span')`
   font-size: 14px;
   font-weight: 500;
   line-height: 1;
-  color: ${p => p.theme.color.textColor};
+  color: ${p => p.theme.color.text};
 `
 
 export const BlockedListItemHeaderText = styled<{}, 'span'>('span')`
   box-sizing: border-box;
   font-weight: 500;
-  color: ${p => p.theme.color.textColor};
+  color: ${p => p.theme.color.text};
   font-size: 12px;
 `
 
 export const BlockedListItemHeaderStats = styled<{}, 'span'>('span')`
   text-align: center;
   font-size: 14px;
-  color: ${p => p.theme.color.textColor};
+  color: ${p => p.theme.color.text};
   font-weight: 500;
 `
 
@@ -170,7 +170,7 @@ export const LinkAction = styled(Link)`
 
 export const DisabledContentText = styled<{}, 'div'>('div')`
   box-sizing: border-box;
-  color: ${p => p.theme.color.textColor};
+  color: ${p => p.theme.color.text};
   font-size: 12px;
   font-weight: normal;
   line-height: 18px;

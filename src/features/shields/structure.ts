@@ -99,7 +99,7 @@ export const BlockedInfoRow = styled<{}, 'div'>('div')`
   grid-template-columns: 1fr auto;
   align-items: center;
   border-bottom: 1px solid ${p => p.theme.color.separatorLine};
-  color: ${p => p.theme.color.textColor};
+  color: ${p => p.theme.color.text};
   user-select: none;
 
   &:active {
@@ -278,7 +278,7 @@ export const BlockedListItem = styled<{}, 'li'>('li')`
   line-height: 1;
   white-space: nowrap;
   user-select: all;
-  color: ${p => p.theme.color.textColor}
+  color: ${p => p.theme.color.text}
 `
 
 export const BlockedListItemWithOptions = styled<{}, 'li'>('li')`
@@ -297,7 +297,7 @@ export const BlockedListItemWithOptions = styled<{}, 'li'>('li')`
     font-weight: 500;
     margin: 0px 10px 0px 30px;
     font-size: 12px;
-    color: ${p => p.theme.color.textColor};
+    color: ${p => p.theme.color.text};
   }
 `
 
