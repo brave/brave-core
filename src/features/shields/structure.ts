@@ -15,7 +15,7 @@ export const ShieldsPanel = styled<{}, 'div'>('div')`
   -webkit-font-smoothing: antialiased;
   font-family: ${p => p.theme.fontFamily.heading};
   position: relative;
-  background: ${p => p.theme.panelBackground};
+  background: ${p => p.theme.color.panelBackground};
   height: 100%;
   display: grid;
   grid-template-columns: 1fr;
@@ -47,7 +47,7 @@ export const MainToggle = styled<MainToggleProps, 'section'>('section')`
   grid-template-columns: 3fr 1fr;
   padding: 16px 24px 16px;
   align-items: ${p => p.status === 'enabled' ? null : 'center'};
-  border-bottom: 1px solid ${p => p.theme.separatorLine};
+  border-bottom: 1px solid ${p => p.theme.color.separatorLine};
 
   > ${Toggle} {
     display: flex;
@@ -98,8 +98,8 @@ export const BlockedInfoRow = styled<{}, 'div'>('div')`
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  border-bottom: 1px solid ${p => p.theme.separatorLine};
-  color: ${p => p.theme.textColor};
+  border-bottom: 1px solid ${p => p.theme.color.separatorLine};
+  color: ${p => p.theme.color.textColor};
   user-select: none;
 
   &:active {
@@ -197,7 +197,7 @@ export const BlockedListContent = styled<{}, 'div'>('div')`
   position: absolute;
   top: 0;
   left: 0;
-  background: ${p => p.theme.panelBackground};
+  background: ${p => p.theme.color.panelBackground};
   width: 100%;
   height: 100%;
   z-index: 2;
@@ -210,7 +210,7 @@ export const BlockedListHeader = styled<{}, 'div'>('div')`
   grid-gap: 6px;
   align-items: center;
   padding: 24px 20px 14px;
-  border-bottom: 1px solid ${p => p.theme.separatorLine};
+  border-bottom: 1px solid ${p => p.theme.color.separatorLine};
 `
 
 interface BlockedListSummaryProps {
@@ -227,7 +227,7 @@ export const BlockedListSummary = styled<BlockedListSummaryProps, 'summary'>('su
   grid-template-columns: ${p => p.stats === false ? '30px 1fr' : '28px 28px 1fr'};
   align-items: center;
   padding: 6px 24px 5px 20px;
-  border-bottom: 1px solid ${p => p.theme.separatorLine};
+  border-bottom: 1px solid ${p => p.theme.color.separatorLine};
 
   &:focus {
     outline-width: 2px;
@@ -263,9 +263,9 @@ export const BlockedListItemHeader = styled<{}, 'li'>('li')`
   padding: 11px 24px 10px 14px;
   margin-bottom: 6px;
   line-height: 1;
-  background: ${p => p.theme.panelBackground};
-  border-top: 1px solid ${p => p.theme.separatorLine};
-  border-bottom: 1px solid ${p => p.theme.separatorLine};
+  background: ${p => p.theme.color.panelBackground};
+  border-top: 1px solid ${p => p.theme.color.separatorLine};
+  border-bottom: 1px solid ${p => p.theme.color.separatorLine};
 
   &:first-of-type {
     border-top: 0;
@@ -278,7 +278,7 @@ export const BlockedListItem = styled<{}, 'li'>('li')`
   line-height: 1;
   white-space: nowrap;
   user-select: all;
-  color: ${p => p.theme.textColor}
+  color: ${p => p.theme.color.textColor}
 `
 
 export const BlockedListItemWithOptions = styled<{}, 'li'>('li')`
@@ -297,7 +297,7 @@ export const BlockedListItemWithOptions = styled<{}, 'li'>('li')`
     font-weight: 500;
     margin: 0px 10px 0px 30px;
     font-size: 12px;
-    color: ${p => p.theme.textColor};
+    color: ${p => p.theme.color.textColor};
   }
 `
 
@@ -306,7 +306,7 @@ export const BlockedListFooter = styled<{}, 'footer'>('footer')`
   padding: 12px 0px;
   display: flex;
   justify-content: center;
-  border-top: 1px solid ${p => p.theme.separatorLine};
+  border-top: 1px solid ${p => p.theme.color.separatorLine};
 `
 
 export const BlockedListFooterWithOptions = styled<{}, 'footer'>('footer')`
@@ -314,7 +314,7 @@ export const BlockedListFooterWithOptions = styled<{}, 'footer'>('footer')`
   display: flex;
   justify-content: space-between;
   padding: 12px 24px;
-  border-top: 1px solid ${p => p.theme.separatorLine};
+  border-top: 1px solid ${p => p.theme.color.separatorLine};
 `
 
 /**

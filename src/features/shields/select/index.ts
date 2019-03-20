@@ -26,12 +26,12 @@ export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
   width: 100%;
   appearance: none;
   min-height: 36px;
-  color: ${p => p.theme.textColor};
+  color: ${p => p.theme.color.textColor};
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;
   font-family: ${p => p.theme.fontFamily.heading};
-  border: 1px solid ${p => p.theme.inputBorder};
+  border: 1px solid ${p => p.theme.color.inputBorder};
   background: url(${caratUrl}) 97% / 16px no-repeat transparent;
   /* avoid text overflow w/ carat */
   -webkit-padding-start: 10px;
