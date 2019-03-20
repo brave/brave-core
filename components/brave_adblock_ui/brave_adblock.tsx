@@ -22,8 +22,14 @@ window.cr.define('brave_adblock', function () {
     actions.getCustomFilters()
   }
 
+  function getRegionalLists () {
+    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+    actions.getRegionalLists()
+  }
+
   function initialize () {
     getCustomFilters()
+    getRegionalLists()
     render(
       <Provider store={store}>
         <App />
@@ -37,6 +43,11 @@ window.cr.define('brave_adblock', function () {
     actions.onGetCustomFilters(customFilters)
   }
 
+  function onGetRegionalLists (regionalLists: AdBlock.FilterList[]) {
+    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+    actions.onGetRegionalLists(regionalLists)
+  }
+
   function statsUpdated () {
     const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
     actions.statsUpdated()
@@ -45,6 +56,7 @@ window.cr.define('brave_adblock', function () {
   return {
     initialize,
     onGetCustomFilters,
+    onGetRegionalLists,
     statsUpdated
   }
 })

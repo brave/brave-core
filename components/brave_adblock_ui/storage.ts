@@ -8,7 +8,8 @@ const keyName = 'adblock-data'
 
 export const defaultState: AdBlock.State = {
   settings: {
-    customFilters: ''
+    customFilters: '',
+    regionalLists: []
   },
   stats: {
     numBlocked: 0,

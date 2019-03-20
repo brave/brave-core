@@ -22,17 +22,35 @@ const adblockReducer: Reducer<AdBlock.State | undefined> = (state: AdBlock.State
 
   const startingState = state
   switch (action.type) {
+    case types.ADBLOCK_ENABLE_FILTER_LIST:
+      chrome.send('brave_adblock.enableFilterList', [action.payload.uuid, action.payload.enabled])
+      state = {
+        ...state,
+        settings: {
+          ...state.settings,
+          regionalLists: state.settings.regionalLists.map(resource =>
+            resource.uuid === action.payload.uuid ? { ...resource, enabled: action.payload.enabled } : resource
+          )
+        }
+      }
+      break
     case types.ADBLOCK_GET_CUSTOM_FILTERS:
       chrome.send('brave_adblock.getCustomFilters')
       break
+    case types.ADBLOCK_GET_REGIONAL_LISTS:
+      chrome.send('brave_adblock.getRegionalLists')
+      break
     case types.ADBLOCK_ON_GET_CUSTOM_FILTERS:
-      state = { ...state, settings: { customFilters: action.payload.customFilters } }
+      state = { ...state, settings: { ...state.settings, customFilters: action.payload.customFilters } }
+      break
+    case types.ADBLOCK_ON_GET_REGIONAL_LISTS:
+      state = { ...state, settings: { ...state.settings, regionalLists: action.payload.regionalLists } }
       break
     case types.ADBLOCK_STATS_UPDATED:
       state = storage.getLoadTimeData(state)
       break
     case types.ADBLOCK_UPDATE_CUSTOM_FILTERS:
-      state = { ...state, settings: { customFilters: action.payload.customFilters } }
+      state = { ...state, settings: { ...state.settings, customFilters: action.payload.customFilters } }
       updateCustomFilters(state.settings.customFilters)
       break
     default:
