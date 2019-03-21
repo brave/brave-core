@@ -157,9 +157,12 @@ BravePatching.RegisterPolymerTemplateModifications({
     // Add Shields item
     const shieldsEl = createMenuElement(loadTimeData.getString('braveShieldsTitle'), '/shields',  'brave_settings:shields')
     syncEl.insertAdjacentElement('afterend', shieldsEl)
+    // Add Embed Blocking item
+    const embedEl = createMenuElement(loadTimeData.getString('socialBlocking'), '/socialBlocking', 'brave_settings:social-permissions')
+    shieldsEl.insertAdjacentElement('afterend', embedEl)
     // Swap search and appearance
     const searchEl = getMenuElement(templateContent, '/search')
-    shieldsEl.insertAdjacentElement('afterend', searchEl)
+    embedEl.insertAdjacentElement('afterend', searchEl)
     // Remove default Browser
     const defaultBrowserEl = getMenuElement(templateContent, '/defaultBrowser')
     defaultBrowserEl.remove()
