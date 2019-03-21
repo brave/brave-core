@@ -1,8 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
-#ifndef BRAVE_COMPONENT_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
-#define BRAVE_COMPONENT_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
+#define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
 
 #include <string>
 #include <memory>
@@ -54,8 +56,8 @@ extern const char kSyncDeviceList[];
 extern const char kSyncApiVersion[];
 
 class Prefs {
-public:
-  Prefs(PrefService* pref_service);
+ public:
+  explicit Prefs(PrefService* pref_service);
 
   std::string GetSeed() const;
   void SetSeed(const std::string& seed);
@@ -92,14 +94,14 @@ public:
 
   void Clear();
 
-private:
+ private:
   // May be null.
   PrefService* pref_service_;
 
   DISALLOW_COPY_AND_ASSIGN(Prefs);
 };
 
-} // namespace prefs
-} // namespace brave_sync
+}  // namespace prefs
+}  // namespace brave_sync
 
-#endif //BRAVE_COMPONENT_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
