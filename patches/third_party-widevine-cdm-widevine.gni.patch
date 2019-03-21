@@ -1,5 +1,5 @@
 diff --git a/third_party/widevine/cdm/widevine.gni b/third_party/widevine/cdm/widevine.gni
-index 1fe47e92ffb1442159ead7b696884bc8cc4bda83..cef3cb33eb2d7f396830540b7c7086aceae47ec0 100644
+index 1fe47e92ffb1442159ead7b696884bc8cc4bda83..22b34bf0264dae166bc8deeb8400d488243ea51c 100644
 --- a/third_party/widevine/cdm/widevine.gni
 +++ b/third_party/widevine/cdm/widevine.gni
 @@ -37,6 +37,9 @@ enable_widevine_cdm_component =
@@ -12,3 +12,11 @@ index 1fe47e92ffb1442159ead7b696884bc8cc4bda83..cef3cb33eb2d7f396830540b7c7086ac
  
  enable_widevine_cdm_host_verification =
      enable_library_widevine_cdm && enable_cdm_host_verification
+@@ -62,6 +65,7 @@ template("widevine_sign_file") {
+     }
+ 
+     script = "//third_party/widevine/scripts/signature_generator.py"
++    if (brave_chromium_build) { script = "//brave/script/signature_generator.py" }
+     sources = [
+       "$file",
+     ]

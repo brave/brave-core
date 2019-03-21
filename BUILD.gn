@@ -9,6 +9,7 @@ import("//media/cdm/library_cdm/cdm_paths.gni")
 import("//brave/brave_paks.gni")
 import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 if (is_mac) {
   import("//build/config/mac/rules.gni")
@@ -46,6 +47,14 @@ group("brave") {
     "build/$target_os:brave",
     "//chrome",
   ]
+
+  if (is_win && enable_widevine_cdm_host_verification) {
+    deps += [
+      "//brave/build/win:sign_brave_exe_for_widevine",
+      "//brave/build/win:sign_chrome_dll_for_widevine",
+      "//brave/build/win:sign_chrome_child_dll_for_widevine",
+    ]
+  }
 }
 
 group("resources") {
