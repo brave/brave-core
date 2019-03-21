@@ -12,8 +12,11 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -273,6 +276,17 @@ BraveShieldsSetNoScriptControlTypeFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetNoScriptControlType(profile, control_type, url);
 
+  // Record stats.
+  PrefService* local_state = g_browser_process->local_state();
+  if (resource_identifier == ::brave_shields::kBraveShields) {
+    ::brave_shields::RecordShieldsUsageP3A(::brave_shields::kShutOffShields,
+                                           local_state);
+  } else {
+    ::brave_shields::RecordShieldsUsageP3A(
+          ::brave_shields::kChangedPerSiteShields,
+          local_state);
+  }
+
   return RespondNow(NoArguments());
 }
 
@@ -293,6 +307,12 @@ BraveShieldsGetNoScriptControlTypeFunction::Run() {
   auto result = std::make_unique<base::Value>(ControlTypeToString(type));
 
   return RespondNow(OneArgument(std::move(result)));
+}
+
+BraveShieldsOnShieldsPanelShownFunction::Run() {
+  ::brave_shields::RecordShieldsUsageP3A(::brave_shields::kClicked,
+                                         g_browser_process->local_state());
+  return RespondNow(NoArguments());
 }
 
 }  // namespace api

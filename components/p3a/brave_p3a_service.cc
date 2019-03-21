@@ -52,6 +52,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Profile.NumberOfProfiles",
     "Tabs.TabCount",
     "Brave.Importer.ImporterSource",
+    "Brave.Shields.UsageStatus",
 };
 
 base::TimeDelta GetRandomizedUploadInterval(base::TimeDelta upload_interval,

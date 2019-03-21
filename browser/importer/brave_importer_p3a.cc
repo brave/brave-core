@@ -8,6 +8,8 @@
 #include "base/metrics/histogram_macros.h"
 
 namespace {
+// Note: append-only enumeration! Never remove any existing values, as this enum
+// is used to bucket a UMA histogram, and removing values breaks that.
 enum class ImporterSource {
   kNone,
   kBrave,

@@ -29,6 +29,8 @@ source_set("browser") {
     "autoplay_whitelist_service.h",
     "base_brave_shields_service.cc",
     "base_brave_shields_service.h",
+    "brave_shields_p3a.cc",
+    "brave_shields_p3a.h",
     "brave_shields_util.cc",
     "brave_shields_util.h",
     "brave_shields_web_contents_observer_android.cc",

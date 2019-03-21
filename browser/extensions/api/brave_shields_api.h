@@ -155,6 +155,20 @@ class BraveShieldsGetNoScriptControlTypeFunction
   ResponseAction Run() override;
 };
 
+
+// Notifies the browser that the shields panel was shown to the user.
+class BraveShieldsOnShieldsPanelShownFunction
+    : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.onShieldsPanelShown", UNKNOWN)
+
+ protected:
+  ~BraveShieldsOnShieldsPanelShownFunction() override {}
+
+  // ExtensionFunction:
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 
