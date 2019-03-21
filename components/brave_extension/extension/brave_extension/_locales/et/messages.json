@@ -15,10 +15,6 @@
     "message": "alla",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "Kokku blokeeritud",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "selle saidi jaoks",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "Vaatate seda saiti ilma igasuguse privaatsuse ja turvalisuse kaitseta.",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "Reklaamid ja jälitajad on blokeeritud",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "Items blocked",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "Hüpikaknad on blokeeritud",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "Item blocked",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "Kujutised on blokeeritud",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "and",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "Kolmanda osapoole küpsisefailid on blokeeritud",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "connections upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "Kõik lubatud küpsisefailid",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "connection upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "Küpsisefailid on blokeeritud",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "3rd-party trackers blocked",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "Mõned skriptid on blokeeritud",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "Connections upgraded to HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "Kõik lubatud skriptid",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "Connection upgraded to HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "Blokeeritud skriptid",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "Kolmanda osapoole küpsisefailid on blokeeritud",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Küpsisefailid on blokeeritud",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Kõik lubatud küpsisefailid",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "Kolmanda osapoole seadme tuvastamine on blokeeritud",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "Kõigi seadmete tuvastamine on lubatud",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "Seadme tuvastamine on blokeeritud",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "Phishingu-/pahavarakatsed on blokeeritud",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "Krüptitud ühendused",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "Vaikimisi globaalne kaitse",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "Selle saidi küpsised",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "Kõigi seadmete tuvastamine on lubatud",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "Seadme tuvastamise katsed",
@@ -111,49 +103,21 @@
     "message": "Kolmanda osapoole seadme tuvastamine on blokeeritud",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "Luba kõik",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "Luba",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "Lubatud",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "Blokeeri kõik",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Luba kõik",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "Blokeeri",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "Blokeeritud",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "Rakenda",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "Rakenda üks kord",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "Rakenda kuni taaskäivitamiseni",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "Rakenda alati",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "Võta tagasi",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "Luba",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "Tühista",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "Mine tagasi",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Rakenda üks kord",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Change global shield defaults",
+    "description": "Message for the button action linking to the settings page"
   }
 }

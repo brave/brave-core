@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index d29bd5d6776c488a5d24dc40ca102946044131f9..b953ecdf34dd83ffce42347785b38c38b8be7eb8 100644
+index 124a05e2a09c40af404840140a4403fef85e40e7..21f36ab151b11b35837f1294f10c4a215ddbd073 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -453,6 +453,20 @@ enum HistogramValue {
-   STORAGE_MANAGED_ON_CHANGE = 432,
-   AUTOFILL_PRIVATE_ON_LOCAL_CREDIT_CARD_LIST_CHANGED = 433,
-   AUTOFILL_PRIVATE_ON_SERVER_CREDIT_CARD_LIST_CHANGED = 434,
+@@ -456,6 +456,20 @@ enum HistogramValue {
+   ACCESSIBILITY_PRIVATE_ON_ANNOUNCE_FOR_ACCESSIBILITY = 435,
+   MIME_HANDLER_PRIVATE_SAVE = 436,
+   RUNTIME_ON_CONNECT_NATIVE = 437,
 +
 +  BRAVE_START = 600,
 +  BRAVE_AD_BLOCKED,

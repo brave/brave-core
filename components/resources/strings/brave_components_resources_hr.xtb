@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Otkrili smo da nešto nije u redu s vašim novčanikom. Morate oporaviti sigurnosnu kopiju svojeg novčanika kako bi moglo doći do obrade bilo kakvih transakcija.</translation>
 <translation id="7797604753681168055">Oporaviti odmah!</translation>
 <translation id="1184075897575325927">Ispričavamo se, ali čini se da je ovo odobrenje već zatraženo.</translation>
+<translation id="7180611975245234373">Osvježi</translation>
+<translation id="839736845446313156">Prijava</translation>
+<translation id="583281660410589416">Nepoznato</translation>
 <translation id="5094577350232361255">opis</translation>
 <translation id="4918086044614829423">Prihvati</translation>
 <translation id="6832986780040139899">©2016 –2018 Brave Software. Brave je registrirani zaštitni znak tvrtke Brave Software. Nazivi mrežnih mjesta mogu biti zaštitni znakovi ili registrirani zaštitni znakovi vlasnika tih mjesta.</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Računalo</translation>
 <translation id="1258250624898033822">Nevaljana šifra za sinkronizaciju.</translation>
 <translation id="3259723213051400722">Molimo vas da pokušate ponovno.</translation>
-<translation id="3779810277399252432">Nema internetske veze.</translation>
-<translation id="4380604249778320975">Pokušajte ponovno kad vaša veza bude dostupna.</translation>
 <translation id="5257281382608458806">Potreban je naziv uređaja.</translation>
 <translation id="8349682220522608879">Dodajte šifru za sinkronizaciju.</translation>
 <translation id="1468095392829989299">Nije bilo moguće kontaktirati poslužitelje za sinkronizaciju</translation>

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/downloads/manager.html b/chrome/browser/resources/downloads/manager.html
-index 9c65eca6771fa852b40385a7fdc43d0999bd094b..1e1d2c2691c0f1e7c8746ac405e3d4f81dd71fcf 100644
+index fff6c6d07161dd9832b14db084cb38be3d7a953f..e1b587a6a1462b4c5b778f7776000ab9f30be202 100644
 --- a/chrome/browser/resources/downloads/manager.html
 +++ b/chrome/browser/resources/downloads/manager.html
 @@ -19,7 +19,7 @@

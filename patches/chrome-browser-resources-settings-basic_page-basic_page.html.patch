@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/basic_page/basic_page.html b/chrome/browser/resources/settings/basic_page/basic_page.html
-index 65d9633a7c0e4b0b44dd8a0ae2bb7598b3ee1b06..20f043efa1e9e72bec9e4346347769cb3661fbce 100644
+index fc4a25dbbd0b38c8e798adbde82e7648b6580ab5..2b443a776281d76b86800725a2751ead0f9679fa 100644
 --- a/chrome/browser/resources/settings/basic_page/basic_page.html
 +++ b/chrome/browser/resources/settings/basic_page/basic_page.html
-@@ -27,6 +27,10 @@
+@@ -29,6 +29,10 @@
  
  <if expr="not chromeos">
  <link rel="import" href="../default_browser_page/default_browser_page.html">
@@ -13,7 +13,7 @@ index 65d9633a7c0e4b0b44dd8a0ae2bb7598b3ee1b06..20f043efa1e9e72bec9e4346347769cb
  </if>
  
  <!-- TODO(michaelpg): Rename to something better than "basic" now that this page
-@@ -214,6 +218,27 @@
+@@ -224,6 +228,27 @@
            </settings-section>
          </template>
  </if>

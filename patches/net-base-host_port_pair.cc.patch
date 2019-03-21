@@ -1,5 +1,5 @@
 diff --git a/net/base/host_port_pair.cc b/net/base/host_port_pair.cc
-index ec8248449dbcd4156e361fcc8781ce0712f26a02..fd8af49cfa6f41c56b7218a71048dd077e072f6e 100644
+index 68c2d5a0c745bec1acb16d827d0e5214bf1f5dda..ab189df004b2d3d314235213f03d338b981c8e10 100644
 --- a/net/base/host_port_pair.cc
 +++ b/net/base/host_port_pair.cc
 @@ -50,12 +50,14 @@ HostPortPair HostPortPair::FromString(const std::string& str) {
@@ -10,7 +10,7 @@ index ec8248449dbcd4156e361fcc8781ce0712f26a02..fd8af49cfa6f41c56b7218a71048dd07
  std::string HostPortPair::ToString() const {
    std::string ret(HostForURL());
    ret += ':';
-   ret += base::UintToString(port_);
+   ret += base::NumberToString(port_);
    return ret;
  }
 +#endif

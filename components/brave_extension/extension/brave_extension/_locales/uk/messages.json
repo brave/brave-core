@@ -15,10 +15,6 @@
     "message": "вниз",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "Загалом блоковано",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "для цього сайту",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "Ви переглядаєте сайт без жодного захисту приватності або безпеки.",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "Оголошення й відстеження заблоковано",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "Items blocked",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "Спливаючі вікна блоковані",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "Item blocked",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "Зображення блоковані",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "and",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "Сторонні файли cookie заблоковано",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "connections upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "Всі кукіз дозволені",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "connection upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "Кукіз блоковані",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "3rd-party trackers blocked",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "Деякі скрипти блоковано",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "Connections upgraded to HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "Всі скрипти дозволені",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "Connection upgraded to HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "Скрипти блоковано",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "Сторонні файли cookie заблоковано",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Кукіз блоковані",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Всі кукіз дозволені",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "Розпізнавання сторонніх пристроїв заблоковано",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "Дозволено розпізнавання всіх пристроїв",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "Розпізнавання пристрою блоковане",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "Спроби фішингу/зараження блоковані",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "З'єднання зашифровані",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "Глобальні налаштування щита за замовчуванням",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "Файли cookie на цьому сайті",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "Дозволено розпізнавання всіх пристроїв",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "Спроби розпізнавання пристрою",
@@ -111,49 +103,21 @@
     "message": "Дозволені скрипти",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "Дозволити все",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "Дозволити",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "Дозволено",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "Блокувати все",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Дозволити все",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "Заблокувати",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "Блоковано",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "Застосувати",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "Застосувати один раз",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "Застосовувати до перезавантаження",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "Застосовувати завжди",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "Скасувати",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "Дозволити",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "Скасувати",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "Назад",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Застосувати один раз",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Change global shield defaults",
+    "description": "Message for the button action linking to the settings page"
   }
 }

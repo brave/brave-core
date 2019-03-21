@@ -15,10 +15,6 @@
     "message": "κάτω",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "Σύνολο σε φραγή",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "γι' αυτόν το ιστότοπο",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "Περιηγήσε σε αυτή την ιστοσελίδα χωρίς καμία προστασία ασφαλείας ή απορρήτου.",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "Διαφημίσεις και trackers σε φραγή",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "Items blocked",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "Αναδυόμενα σε φραγή",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "Item blocked",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "Εικόνες σε φραγή",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "and",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "Φραγή cookies τρίτων",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "connections upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "Αποδοχή όλων των cookies",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "connection upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "Τα cookies έχουν αποκλειστεί",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "3rd-party trackers blocked",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "Φραγή μερικών scripts",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "Connections upgraded to HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "Αποδοχή όλων των scripts",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "Connection upgraded to HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "Scripts σε φραγή",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "Φραγή cookies τρίτων",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Τα cookies έχουν αποκλειστεί",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Αποδοχή όλων των cookies",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "Φραγή στην αναγνώριση συσκευών τρίτων",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "Επιτρέπεται αναγνώριση όλων των συσκευών",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "Φραγή αναγνώρισης συσκευών",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "Απόπειρες phishing/κακόβουλου λογισμικού σε φραγή",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "Κρυπτογραφημένες συνδέσεις",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "Καθολικές προεπιλογές ασπίδας",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "Cookies σε αυτή την ιστοσελίδα",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "Επιτρέπεται αναγνώριση όλων των συσκευών",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "Προσπάθειες αναγνώρισης συσκευής",
@@ -111,49 +103,21 @@
     "message": "Επιτρεπόμενα scripts",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "Αποδοχή όλων",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "Αποδοχή",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "Επιτρεπόμενα",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "Φραγή όλων",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Αποδοχή όλων",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "Φραγή",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "Σε φραγή",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "Εφαρμογή",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "Εφαρμόστε μία φορά",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "Εφαρμόστε μέχρι την επανεκκίνηση",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "Εφαρμογή πάντα",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "Αναίρεση",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "Αποδοχή",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "Ακύρωση",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "Πίσω",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Εφαρμόστε μία φορά",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Change global shield defaults",
+    "description": "Message for the button action linking to the settings page"
   }
 }

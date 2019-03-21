@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.h b/chrome/browser/ui/views/profiles/profile_chooser_view.h
-index f0786e1ebf2411740aad5793a9331e20d6201f8d..fd30c27ff8209fd0e62d2a5ec1027d30981466fb 100644
+index 68f6117e09153a3234515286d783df9226ac9791..6537a30ddb9ef6d580eff348150dc4b884ba87cb 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.h
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.h
-@@ -71,6 +71,8 @@ class ProfileChooserView : public content::WebContentsDelegate,
-   const Browser* browser() const { return browser_; }
+@@ -62,6 +62,8 @@ class ProfileChooserView : public ProfileMenuViewBase,
+   static void Hide();
  
   private:
 +  friend class BraveProfileChooserView;
@@ -11,7 +11,7 @@ index f0786e1ebf2411740aad5793a9331e20d6201f8d..fd30c27ff8209fd0e62d2a5ec1027d30
    friend class ProfileChooserViewExtensionsTest;
  
    typedef std::vector<size_t> Indexes;
-@@ -123,7 +125,7 @@ class ProfileChooserView : public content::WebContentsDelegate,
+@@ -104,7 +106,7 @@ class ProfileChooserView : public ProfileMenuViewBase,
    // Tests set this to "false" for more consistent operation.
    static bool close_on_deactivate_for_testing_;
  
@@ -20,11 +20,3 @@ index f0786e1ebf2411740aad5793a9331e20d6201f8d..fd30c27ff8209fd0e62d2a5ec1027d30
  
    // Shows the bubble with the |view_to_display|.
    void ShowView(profiles::BubbleViewMode view_to_display,
-@@ -171,6 +173,7 @@ class ProfileChooserView : public content::WebContentsDelegate,
- 
-   // Creates a view showing the profile associated with |avatar_item| and an
-   // error button below.
-+  virtual
-   views::View* CreateDiceSyncErrorView(const AvatarMenu::Item& avatar_item,
-                                        sync_ui_util::AvatarSyncErrorType error,
-                                        int button_string_id);

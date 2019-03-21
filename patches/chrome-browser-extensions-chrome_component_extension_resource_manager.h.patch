@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/chrome_component_extension_resource_manager.h b/chrome/browser/extensions/chrome_component_extension_resource_manager.h
-index 010e5d4b770735669b0bd00f583ae87e1f1424f6..b496ff3269b39bd245f43cf8f6d8097ab8bfd4a4 100644
+index 4c92fe7dc3fc0cd0eebb7218f4bbd3c6caedffb1..83fd75796e16482420b48599cfe1a72239ad8e7b 100644
 --- a/chrome/browser/extensions/chrome_component_extension_resource_manager.h
 +++ b/chrome/browser/extensions/chrome_component_extension_resource_manager.h
-@@ -31,6 +31,7 @@ class ChromeComponentExtensionResourceManager
+@@ -32,6 +32,7 @@ class ChromeComponentExtensionResourceManager
        const std::string& extension_id) const override;
  
   private:
 +  friend class BraveComponentExtensionResourceManager;
-   void AddComponentResourceEntries(const GritResourceMap* entries, size_t size);
+   void AddComponentResourceEntries(const GzippedGritResourceMap* entries,
+                                    size_t size);
  
-   // A map from a resource path to the resource ID.  Used by

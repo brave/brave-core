@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/profiles/brave_profile_chooser_view.h"
+
+#include <memory>
+#include <utility>
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
@@ -27,12 +31,21 @@ constexpr int kIconSize = 16;
 
 BraveProfileChooserView::BraveProfileChooserView(
     views::Button* anchor_button,
+    const gfx::Rect& anchor_rect,
+    gfx::NativeView parent_window,
     Browser* browser,
     profiles::BubbleViewMode view_mode,
     signin::GAIAServiceType service_type,
-    signin_metrics::AccessPoint access_point)
-  : ProfileChooserView(anchor_button, browser, view_mode, service_type,
-                       access_point) {}
+    signin_metrics::AccessPoint access_point,
+    bool is_source_keyboard)
+    : ProfileChooserView(anchor_button,
+                         anchor_rect,
+                         parent_window,
+                         browser,
+                         view_mode,
+                         service_type,
+                         access_point,
+                         is_source_keyboard) {}
 
 BraveProfileChooserView::~BraveProfileChooserView() {}
 
@@ -41,8 +54,9 @@ void BraveProfileChooserView::ButtonPressed(views::Button* sender,
                                             const ui::Event& event) {
   if (sender == tor_profile_button_) {
     profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
-  } else if (sender == users_button_ && browser_->profile()->IsGuestSession()) {
-    if (browser_->profile()->IsTorProfile())
+  } else if (sender == users_button_ &&
+             browser()->profile()->IsGuestSession()) {
+    if (browser()->profile()->IsTorProfile())
       profiles::CloseTorProfileWindows();
     else
       profiles::CloseGuestProfileWindows();
@@ -52,7 +66,7 @@ void BraveProfileChooserView::ButtonPressed(views::Button* sender,
 }
 
 void BraveProfileChooserView::AddTorButton(views::GridLayout* layout) {
-  if (!browser_->profile()->IsTorProfile() &&
+  if (!browser()->profile()->IsTorProfile() &&
       !g_brave_browser_process->tor_client_updater()
         ->GetExecutablePath().empty()) {
     tor_profile_button_ = new HoverButton(this,
@@ -69,12 +83,12 @@ void BraveProfileChooserView::ResetView() {
   tor_profile_button_ = nullptr;
 }
 
-views::View* BraveProfileChooserView::CreateDiceSyncErrorView(
+views::View* BraveProfileChooserView::BraveCreateDiceSyncErrorView(
     const AvatarMenu::Item& avatar_item,
     sync_ui_util::AvatarSyncErrorType error,
     int button_string_id) {
   ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
-  
+
   views::View* view = new views::View();
   int content_list_vert_spacing =
       provider->GetDistanceMetric(DISTANCE_CONTENT_LIST_VERTICAL_SINGLE);
@@ -82,7 +96,7 @@ views::View* BraveProfileChooserView::CreateDiceSyncErrorView(
       views::BoxLayout::kVertical, gfx::Insets(content_list_vert_spacing, 0),
       0));
 
-  Profile* profile = browser_->profile();
+  Profile* profile = browser()->profile();
   auto current_profile_photo = std::make_unique<BadgedProfilePhoto>(
       BadgedProfilePhoto::BADGE_TYPE_NONE, avatar_item.icon);
   base::string16 profile_name = avatar_item.name;
