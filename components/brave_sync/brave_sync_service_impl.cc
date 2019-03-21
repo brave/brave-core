@@ -537,12 +537,23 @@ void BraveSyncServiceImpl::RequestSyncData() {
 
   if (tools::IsTimeEmpty(last_fetch_time)) {
     SendCreateDevice();
+  }
 
+  sync_client_->SendFetchSyncDevices();
+
+  if (sync_prefs_->GetSyncDevices()->size() <= 1) {
+    // No sense to fetch or sync bookmarks when there no at least two devices
+    // in chain
+    // Set last fetch time here because we had fetched devices at least
+    sync_prefs_->SetLastFetchTime(base::Time::Now());
+    return;
+  }
+
+  if (tools::IsTimeEmpty(last_fetch_time)) {
     bookmark_change_processor_->InitialSync();
   }
 
   FetchSyncRecords(bookmarks, history, preferences, 1000);
-  sync_client_->SendFetchSyncDevices();
 }
 
 void BraveSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
