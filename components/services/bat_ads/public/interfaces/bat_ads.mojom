@@ -77,4 +77,5 @@ interface BatAds {
   GenerateAdReportingNotificationShownEvent(string notification_info);
   GenerateAdReportingNotificationResultEvent(
       string notification_info, int32 result_type);
+  IsSupportedRegion() => (bool is_supported);
 };

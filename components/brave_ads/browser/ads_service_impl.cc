@@ -998,4 +998,12 @@ bool AdsServiceImpl::connected() {
   return bat_ads_.is_bound();
 }
 
+void AdsServiceImpl::IsSupportedRegion(
+    IsSupportedRegionCallback callback) {
+  if (!connected())
+    return;
+
+  bat_ads_->IsSupportedRegion(std::move(callback));
+}
+
 }  // namespace brave_ads
