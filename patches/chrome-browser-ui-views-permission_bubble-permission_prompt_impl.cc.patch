@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc b/chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc
-index 23ea17203870c61413397913f24d32ec92f4a30d..00847ba5c0a4d0ecf254be3565a2fb2b0f344c84 100644
+index 489db17efe96db01666c57e01f6be0c2d37be873..8564f7450243c3a3e12aa96c338d71e4c072e4b3 100644
 --- a/chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc
 +++ b/chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc
-@@ -145,6 +145,10 @@ PermissionsBubbleDialogDelegateView::PermissionsBubbleDialogDelegateView(
+@@ -148,6 +148,10 @@ PermissionsBubbleDialogDelegateView::PermissionsBubbleDialogDelegateView(
      AddChildView(label_container);
    }
  

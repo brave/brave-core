@@ -7,6 +7,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/bind.h"
+#include "base/bind_helpers.h"
+#include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/component_updater/brave_crx_update_service.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
 #include "components/component_updater/update_scheduler.h"

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
-index b8f1ecd9a8abb56fcf17e28c4147eec6a6f96fb3..db476c72acf1291cd85f99beb3e76743f95efa7d 100644
+index 8253c607d527aaf59d4f673cfc17b4ecf7ff4bad..621fb7de6824030d8cd73db1465f1ef0e956d9d9 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
 @@ -103,9 +103,13 @@ interface CanvasRenderingContext2D {
@@ -19,11 +19,11 @@ index b8f1ecd9a8abb56fcf17e28c4147eec6a6f96fb3..db476c72acf1291cd85f99beb3e76743
 @@ -126,7 +130,7 @@ interface CanvasRenderingContext2D {
      // pixel manipulation
      [RaisesException] ImageData createImageData(ImageData imagedata);
-     [RaisesException] ImageData createImageData(long sw, long sh);
--    [RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
-+    [CallWith=ScriptState, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
-     [RaisesException] void putImageData(ImageData imagedata, long dx, long dy);
-     [RaisesException] void putImageData(ImageData imagedata, long dx, long dy, long dirtyX, long dirtyY, long dirtyWidth, long dirtyHeight);
+     [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh);
+-    [RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh);
++    [CallWith=ScriptState, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh);
+     [RaisesException] void putImageData(ImageData imagedata, [EnforceRange] long dx, [EnforceRange] long dy);
+     [RaisesException] void putImageData(ImageData imagedata, [EnforceRange] long dx, [EnforceRange] long dy, [EnforceRange] long dirtyX, [EnforceRange] long dirtyY, [EnforceRange] long dirtyWidth, [EnforceRange] long dirtyHeight);
  
 @@ -149,6 +153,7 @@ interface CanvasRenderingContext2D {
  

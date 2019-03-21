@@ -1,5 +1,5 @@
 diff --git a/components/os_crypt/key_storage_kwallet_unittest.cc b/components/os_crypt/key_storage_kwallet_unittest.cc
-index 9f9b7da6d44b161934d6055828eefd7f50280a62..c75bd6a6e7ae5acf0e8d46beecaab3fd17200e7a 100644
+index 2525d210adfecca3a4ddc9f0da7d503faa347040..24ca5e613b265feac3857193192c5fc95a2f9cde 100644
 --- a/components/os_crypt/key_storage_kwallet_unittest.cc
 +++ b/components/os_crypt/key_storage_kwallet_unittest.cc
 @@ -34,8 +34,8 @@ constexpr KWalletDBus::Error CANNOT_CONTACT =

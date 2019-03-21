@@ -1,29 +1,39 @@
-import("//services/service_manager/public/service_manifest.gni")
-
 # Per-profile services.
-service_manifest("brave_content_browser_manifest_overlay") {
-  source = "brave_content_browser_manifest_overlay.json"
+source_set("brave_content_browser_overlay_manifest") {
+  sources = [
+    "brave_content_browser_overlay_manifest.cc",
+    "brave_content_browser_overlay_manifest.h",
+  ]
+
+  deps = [
+    "//base",
+    "//services/service_manager/public/cpp",
+  ]
 }
 
-service_manifest("brave_content_packaged_services_manifest_overlay") {
-  source =
-      "//brave/components/services/brave_content_packaged_services_manifest_overlay.json"
+source_set("brave_content_packaged_service_overlay_manifest") {
+  sources = [
+    "brave_content_packaged_service_overlay_manifest.cc",
+    "brave_content_packaged_service_overlay_manifest.h",
+  ]
 
-  packaged_services = [
-    "//brave/components/services/bat_ads:manifest",
-    "//brave/components/services/bat_ledger:manifest",
+  deps = [
+    "//base",
+    "//brave/components/services/bat_ads/public/cpp:manifest",
+    "//brave/components/services/bat_ledger/public/cpp:manifest",
+    "//services/service_manager/public/cpp",
   ]
 
   if (!is_android) {
-    packaged_services += [
-      "//brave/utility/tor:tor_launcher_manifest",
+    deps += [
+      "//brave/utility/tor/public/cpp:manifest",
     ]
   }
 }
 
 group("brave_content_manifest_overlays") {
   deps = [
-    ":brave_content_browser_manifest_overlay",
-    ":brave_content_packaged_services_manifest_overlay",
+    ":brave_content_browser_overlay_manifest",
+    ":brave_content_packaged_service_overlay_manifest",
   ]
 }

@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Hem detectat un problema a la teva cartera. Cal que recuperis la cartera de còpia de seguretat per poder processar transaccions.</translation>
 <translation id="7797604753681168055">Recupera ara!</translation>
 <translation id="1184075897575325927">Ens sap greu, sembla que aquesta donació ja ha estat sol·licitada.</translation>
+<translation id="7180611975245234373">Actualitza</translation>
+<translation id="839736845446313156">Registra</translation>
+<translation id="583281660410589416">Desconegut</translation>
 <translation id="5094577350232361255">quant a</translation>
 <translation id="4918086044614829423">Accepta</translation>
 <translation id="6832986780040139899">©2016–2018  Brave Software. Brave és una marca registrada de Brave Software. Els noms dels llocs poden ser marques o marques registrades del propietari del lloc.</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Ordinador</translation>
 <translation id="1258250624898033822">El codi de sincronització no és vàlid.</translation>
 <translation id="3259723213051400722">Torna-ho a provar.</translation>
-<translation id="3779810277399252432">No hi ha connexió a Internet.</translation>
-<translation id="4380604249778320975">Torna-ho a provar quan la connexió estigui disponible.</translation>
 <translation id="5257281382608458806">El nom del dispositiu és obligatori.</translation>
 <translation id="8349682220522608879">Afegeix un codi de sincronització.</translation>
 <translation id="1468095392829989299">No s'ha pogut contactar amb els servidors de sincronització</translation>

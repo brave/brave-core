@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/extensions/icon_with_badge_image_source.cc b/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
-index eb4739cce6a3456b5ceaf6067ed1061dfd84766e..df1ce2aca48b3c02b98da9202c381ba631f7cf87 100644
+index 28fb4eb6e4ace08a60319ece51245b50824b776e..290c0fb92a535b3b8d7eedad3ce685ddab15157d 100644
 --- a/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
 +++ b/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
 @@ -79,14 +79,18 @@ void IconWithBadgeImageSource::Draw(gfx::Canvas* canvas) {
@@ -10,7 +10,7 @@ index eb4739cce6a3456b5ceaf6067ed1061dfd84766e..df1ce2aca48b3c02b98da9202c381ba6
 +        rep, GetCustomGraphicSize().value_or(ExtensionAction::ActionIconSize()), canvas->image_scale()));
    }
    if (grayscale_)
-     skia = gfx::ImageSkiaOperations::CreateHSLShiftedImage(skia, {-1, 0, 0.75});
+     skia = gfx::ImageSkiaOperations::CreateHSLShiftedImage(skia, {-1, 0, 0.6});
  
    int x_offset =
 +    GetCustomGraphicXOffset().has_value() ?

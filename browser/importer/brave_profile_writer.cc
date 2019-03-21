@@ -73,7 +73,7 @@ void BraveProfileWriter::AddCookies(
   for (auto& cookie : cookies) {
     cookie_manager->SetCanonicalCookie(
         cookie,
-        true,  // secure_source
+        "https",  // secure_source
         true,  // modify_http_only
         // Fire and forget
         network::mojom::CookieManager::SetCanonicalCookieCallback());
@@ -428,7 +428,9 @@ int GetSelectedTabIndex(const ImportedBrowserWindow& window) {
 void ShowBrowser(Browser* browser, int selected_tab_index) {
   DCHECK(browser);
   DCHECK(browser->tab_strip_model()->count());
-  browser->tab_strip_model()->ActivateTabAt(selected_tab_index, true);
+  browser->tab_strip_model()->ActivateTabAt(
+      selected_tab_index,
+      TabStripModel::UserGestureDetails(TabStripModel::GestureType::kOther));
   browser->window()->Show();
   browser->tab_strip_model()->GetActiveWebContents()->SetInitialFocus();
 }

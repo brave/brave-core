@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/history/history_toolbar.html b/chrome/browser/resources/history/history_toolbar.html
+index cd86b39440a18e9876082d6cfba1bdb121a9b0ee..7a65c018de5d89a7972c20688991d7e1b09375e3 100644
+--- a/chrome/browser/resources/history/history_toolbar.html
++++ b/chrome/browser/resources/history/history_toolbar.html
+@@ -1,6 +1,6 @@
+ <link rel="import" href="chrome://resources/html/polymer.html">
+ <link rel="import" href="chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.html">
+-<link rel="import" href="chrome://resources/cr_elements/cr_toolbar/cr_toolbar.html">
++<link rel="import" href="chrome://brave-resources/br_elements/br_toolbar/br_toolbar.html">
+ <link rel="import" href="browser_service.html">
+ <link rel="import" href="shared_style.html">
+ <link rel="import" href="strings.html">

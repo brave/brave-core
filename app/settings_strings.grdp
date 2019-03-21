@@ -176,10 +176,10 @@
     Enable accessibility features
   </message>
   <message name="IDS_SETTINGS_ACCESSIBLE_IMAGE_LABELS_TITLE" desc="Description for screen reader image labels feature.">
-    Image labeling
+    Get image descriptions from Brave
   </message>
   <message name="IDS_SETTINGS_ACCESSIBLE_IMAGE_LABELS_SUBTITLE" desc="Subtitle for screen reader image labels feature.">
-    Send images to Brave servers to get labels.
+    If an image doesn’t have a useful description, Brave will provide one for you. Images are scanned by Brave.
   </message>
   <if expr="chromeos">
     <message name="IDS_SETTINGS_OPTIONS_IN_MENU_LABEL" desc="Label for checkbox which enables showing accessibility options in the system menu.">
@@ -479,6 +479,36 @@
   </if>
 
   <if expr="chromeos">
+    <!-- Kiosk Next Shell page. Note that this experience is currently a prototype and is not shown
+         to end users at this point.
+         TODO(922687): Change these strings to the final ones when our internal repo is ready.-->
+    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_TITLE" desc="The title of Kiosk Next Shell section." translateable="false">
+      Kiosk Next Shell (Dev)
+    </message>
+    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_LABEL" desc="The text associated with the contained shell section setting." translateable="false">
+      Kiosk Next Shell
+    </message>
+    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_SUBTEXT_ENABLE" desc="Text shown when displaying the enable Kiosk Next Shell button." translateable="false">
+      Enables the Kiosk Next Shell for the next sign in.
+    </message>
+    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_SUBTEXT_DISABLE" desc="Text shown when displaying the disable Kiosk Next Shell button." translateable="false">
+      Disable the Kiosk Next Shell and return to the normal Brave OS experience.
+    </message>
+    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_TURN_OFF" desc="Label for the button that disables the Kiosk Next Shell." translateable="false">
+      Turn off
+    </message>
+    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_ENABLED_DIALOG_TITLE" desc="Title for the confirmation dialog when disabling the Kiosk Next Shell." translateable="false">
+      Turn off the Kiosk Next Shell
+    </message>
+    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_DISABLED_DIALOG_TITLE" desc="Title for the confirmation dialog when enabling the Kiosk Next Shell." translateable="false">
+      Turn on the Kiosk Next Shell
+    </message>
+    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_ENABLED_DIALOG_BODY" desc="Body text for the confirmation dialog when disabling the Kiosk Next Shell." translateable="false">
+      This will turn off the Kiosk Next Shell, sign you out and return you to the normal Brave OS experience.
+    </message>
+    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_DISABLED_DIALOG_BODY" desc="Body text for the confirmation dialog when enabling the Kiosk Next Shell." translateable="false">
+      This will sign you out and turn on the Kiosk Next Shell.
+    </message>
     <!-- Crostini Page -->
     <message name="IDS_SETTINGS_CROSTINI_TITLE" desc="The title of Crostini section.">
       Linux (Beta)
@@ -487,10 +517,10 @@
       Linux
     </message>
     <message name="IDS_SETTINGS_CROSTINI_SUBTEXT" desc="Description for the section for enabling and managing Crostini.">
-      Run Linux tools, editors, and IDEs on your Bravebook. &lt;a target="_blank" href="<ph name="URL">$1<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
+      Run Linux tools, editors, and IDEs on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. &lt;a target="_blank" href="<ph name="URL">$2<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
     </message>
     <message name="IDS_SETTINGS_CROSTINI_REMOVE" desc="Label for the row to open a dialog confirming removal of Crostini.">
-      Remove Linux Apps for Bravebook
+      Remove Linux Apps for <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
     </message>
     <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS" desc="Label for managing shared folders in Crostini.">
       Manage shared files &amp; folders
@@ -510,8 +540,26 @@
     <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS_REMOVE_SHARING" desc="Tooltip to show when hovering on the remove icon for a crostini shared folder.">
       Remove sharing
     </message>
+    <message name="IDS_SETTINGS_CROSTINI_EXPORT_IMPORT_TITLE" desc="Title for crostini container export and imoprt (backup and restore) section">
+      Backup &amp; restore
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_EXPORT" desc="Tile for exporting (backing up) the crostini container.">
+      Backup
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_EXPORT_LABEL" desc="Description shown next to the button to export (backup) Crostini.">
+      Backup Linux apps and files
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_IMPORT" desc="Title for importing (restoring) the crostini container.">
+      Restore
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_IMPORT_LABEL" desc="Description shown next to the button to import (restore) Crostini.">
+      Replace your Linux apps and files with a previous backup
+    </message>
     <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_LABEL" desc="Label for managing shared USB devices.">
       USB Device preferences
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_LIST_HEADING" desc="Label for list of options to share USB devices.">
+      USB Devices
     </message>
     <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices.">
       Share a USB device with Linux by turning the toggle on. Sharing will only last until the device is detached.
@@ -736,17 +784,17 @@
   <message name="IDS_SETTINGS_EDIT_CREDIT_CARD_TITLE" desc="The title for the dialog that's shown when editing a card. This can be either credit, debit, or prepaid card..">
     Edit card
   </message>
+  <message name="IDS_SETTINGS_PAYMENTS_MANAGE_CREDIT_CARDS" desc="Shown in the payments section of settings. Descriptive text to inform the user that credit cards can be accessed online. Has a link.">
+   To add or manage Brave Pay payment methods, visit your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Brave Account<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+    <message name="IDS_SETTINGS_PAYMENTS_SAVED_TO_THIS_DEVICE_ONLY" desc="Shown in the payments section of settings. Descriptive text to inform the user that this credit card will be saved to local device only.">
+   This card will be saved to this device only
+  </message>
   <message name="IDS_SETTINGS_ADD_CREDIT_CARD_TITLE" desc="The title for the dialog that's shown when entering the information for a new card. This can be either credit, debit, or prepaid card.">
     Add card
   </message>
   <message name="IDS_SETTINGS_MIGRATABLE_CARDS_LABEL" desc="Label for the field to migrate the locally cached credit card to Brave Payments. Clicking this will upload migratable credit cards to Brave Payments.">
     Save cards in your Brave Account
-  </message>
-  <message name="IDS_SETTINGS_SINGLE_MIGRATABLE_CARD_LABEL_V2" desc="The label for the field to migrate one locally cached credit card to Brave Payments. Clicking this will show a dialog to upload migratable credit cards to Brave Payments.">
-    To use this card on all your devices, save it in your Brave Account
-  </message>
-  <message name="IDS_SETTINGS_MULTIPLE_MIGRATABLE_CARD_LABEL_V2" desc="The label for the field to migrate multiple locally cached credit cards to Brave Payments. Clicking this will show a dialog to upload migratable credit cards to Brave Payments.">
-    To use these cards on all your devices, save them in your Brave Account
   </message>
   <message name="IDS_SETTINGS_SINGLE_MIGRATABLE_CARD_INFO" desc="Display text under the save cards to Brave Pay label. This text indicates one of local cards can only be used on this device.">
     Right now, you have one card that can only be used on this device
@@ -2382,6 +2430,9 @@
   <message name="IDS_SETTINGS_LANGUAGES_OFFER_TO_ENABLE_TRANSLATE" desc="The label of the check-box that enables the prompt to translate a page.">
     Offer to translate pages that aren't in a language you read
   </message>
+  <message name="IDS_SETTINGS_LANGUAGES_TRANSLATE_TARGET" desc="The label under a language's name in a list of enabled languages indicating that pages will be translated to this language.">
+    This language is used when translating pages
+  </message>
   <if expr="chromeos">
     <message name="IDS_SETTINGS_LANGUAGES_INPUT_METHODS_LIST_TITLE" desc="Title for the current input method in the header for the collapsible list of enabled input methods (keyboard layouts and input method editors).">
       Input method
@@ -3157,11 +3208,11 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_RESET_CONFIRMATION" desc="Text for the dialog that warns about resetting all permissions for a site.">
     Reset site permissions for <ph name="SITE">$1<ex>www.example.com</ex></ph>?
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_CLEAR_STORAGE_DIALOG_TITLE" desc="Title of the dialog that warns about clearing storage used by a site (excluding cookies).">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_CLEAR_STORAGE_DIALOG_TITLE" desc="Title of the dialog that warns about clearing storage used by a site.">
     Clear site data?
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_CLEAR_STORAGE_CONFIRMATION" desc="Text for the dialog that warns about clearing storage used by a site (excluding cookies).">
-    All data stored by <ph name="SITE">$1<ex>www.example.com</ex></ph> will be deleted, except for cookies.
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_CLEAR_STORAGE_CONFIRMATION" desc="Text for the dialog that warns about clearing storage used by a site.">
+    All data stored by <ph name="SITE">$1<ex>www.example.com</ex></ph> will be deleted.
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_RESET_DIALOG_TITLE" desc="Title of the dialog that warns about resetting all permissions for a group of sites.">
     Reset site permissions?
@@ -3300,9 +3351,6 @@
         =1 {1 cookie}
         other {# cookies}}
   </message>
-  <message name="IDS_SETTINGS_COOKIES_WEB_DATABASE_DESCRIPTION_LABEL" desc="The Database Description label">
-    Description
-  </message>
   <message name="IDS_SETTINGS_COOKIES_LOCAL_STORAGE_ORIGIN_LABEL" desc="The Local Storage Origin label">
     Origin
   </message>
@@ -3410,7 +3458,7 @@
       Screen lock options
     </message>
     <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_OPTIONS_LOGIN_LOCK" desc="Text on the lock screen which is the subheader for the screen locking options.">
-      Screen lock and sign-in options
+      Lock screen from sleep mode
     </message>
     <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PASSWORD_ONLY" desc="Only the account password can be used to unlock the device.">
       Password only
@@ -3418,8 +3466,8 @@
     <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PIN_OR_PASSWORD" desc="The account password or a custom PIN can be used to unlock the device.">
       PIN or password
     </message>
-    <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NONE" desc="Text on the people page which opens up the quick unlock subpage and the title of the quick unlock subpage.">
-      None
+    <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NONE" desc="Text on the people page which notifies the user that the device will not show lock screen or prompt for auth after waking from sleep.">
+      Sign in automatically
     </message>
     <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_CHANGE_PIN_BUTTON" desc="Button that the user can click to change an existing already-active PIN.">
       Change PIN
@@ -4003,6 +4051,9 @@
     <message name="IDS_SETTINGS_KEYBOARD_KEY_BACKSPACE" desc="In Device Settings, the dropdown list item for the Backspace key.">
       Backspace
     </message>
+    <message name="IDS_SETTINGS_KEYBOARD_KEY_ASSISTANT" desc="In Device Settings, the label and dropdown list item for the Assistant key.">
+      Assistant
+    </message>
     <message name="IDS_SETTINGS_KEYBOARD_KEY_DISABLED" desc="In Device Settings, the dropdown list item for a disabled key.">
       Disabled
     </message>
@@ -4174,6 +4225,9 @@
     </message>
     <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_MENU_ITEM" desc="In Device Settings &gt; Displays, the text entry for a single item in the external display resolution drop down menu.">
       <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph> (<ph name="REFRESH_RATE">$3<ex>60</ex></ph> Hertz)
+    </message>
+    <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_INTERLACED_MENU_ITEM" desc="In Device Settings &gt; Displays, the text entry for a single item in the external display resolution drop down menu, when the display mode is interlaced (which means the display's odd and even lines are scanned alternately in two interwoven rasterized lines).">
+      <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph> (<ph name="REFRESH_RATE">$3<ex>60</ex></ph> Hertz) - interlaced
     </message>
     <message name="IDS_SETTINGS_DISPLAY_ZOOM_TITLE" desc="In Device Settings &gt; Displays, the title for the section for changing the display's zoom.">
       Display Size

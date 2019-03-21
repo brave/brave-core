@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Havaitsimme, että lompakkosi kanssa ilmeni ongelmia. Sinun täytyy palauttaa varalompakkosi ennen kuin liiketapahtumia voidaan käsitellä.</translation>
 <translation id="7797604753681168055">Palauta nyt!</translation>
 <translation id="1184075897575325927">Valitettavasti tämä lahjoitus on nähtävästi jo lunastettu.</translation>
+<translation id="7180611975245234373">Päivitä</translation>
+<translation id="839736845446313156">Rekisteröidy</translation>
+<translation id="583281660410589416">Tuntematon</translation>
 <translation id="5094577350232361255">tietoa</translation>
 <translation id="4918086044614829423">Hyväksy</translation>
 <translation id="6832986780040139899">©2016–2018 Brave-ohjelmisto. Brave on Brave Softwaren rekisteröity tuotemerkki. Sivustojen nimet saattavat olla sivustojen omistajien tuotemerkkejä tai rekisteröityjä tuotemerkkejä.</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Tietokone</translation>
 <translation id="1258250624898033822">Virheellinen synkronointiavain.</translation>
 <translation id="3259723213051400722">Yritä uudelleen.</translation>
-<translation id="3779810277399252432">Ei Internet-yhteyttä.</translation>
-<translation id="4380604249778320975">Yritä uudelleen, kun yhteys on saatavilla.</translation>
 <translation id="5257281382608458806">Laitteen nimi vaaditaan.</translation>
 <translation id="8349682220522608879">Lisää synkronointikoodi.</translation>
 <translation id="1468095392829989299">Yhteyttä synkronointipalvelimiin ei voitu muodostaa.</translation>

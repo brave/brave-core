@@ -258,24 +258,18 @@ void HTTPSEverywhereService::AddHTTPSEUrlToRedirectList(
 std::string HTTPSEverywhereService::ApplyHTTPSRule(
     const std::string& originalUrl,
     const std::string& rule) {
-  std::unique_ptr<base::Value> json_object = base::JSONReader::Read(rule);
-  if (nullptr == json_object.get()) {
+  base::Optional<base::Value> json_object = base::JSONReader::Read(rule);
+  if (base::nullopt == json_object || !json_object->is_list()) {
     return "";
   }
 
-  const base::ListValue* topValues = nullptr;
-  json_object->GetAsList(&topValues);
-  if (nullptr == topValues) {
-    return "";
-  }
-
-  for (size_t i = 0; i < topValues->GetSize(); ++i) {
-    const base::Value* childTopValue = nullptr;
-    if (!topValues->Get(i, &childTopValue)) {
+  const base::Value::ListStorage& topValues = json_object->GetList();
+  for (auto it = topValues.cbegin(); it != topValues.cend(); ++it) {
+    if (!it->is_dict()) {
       continue;
     }
     const base::DictionaryValue* childTopDictionary = nullptr;
-    childTopValue->GetAsDictionary(&childTopDictionary);
+    it->GetAsDictionary(&childTopDictionary);
     if (nullptr == childTopDictionary) {
       continue;
     }

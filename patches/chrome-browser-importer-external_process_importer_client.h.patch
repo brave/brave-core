@@ -1,19 +1,19 @@
 diff --git a/chrome/browser/importer/external_process_importer_client.h b/chrome/browser/importer/external_process_importer_client.h
-index 9451b0917536e73b42c596527112d3119b2c4cc5..353841e51b8aa347fede6f699eea5de31aef1a2b 100644
+index 9451b0917536e73b42c596527112d3119b2c4cc5..1a0df4dc87bbf81ac73745feaeb009a93eb708bb 100644
 --- a/chrome/browser/importer/external_process_importer_client.h
 +++ b/chrome/browser/importer/external_process_importer_client.h
 @@ -85,6 +85,14 @@ class ExternalProcessImporterClient
    void OnAutofillFormDataImportGroup(
        const std::vector<ImporterAutofillFormDataEntry>&
            autofill_form_data_entry_group) override;
-+  void OnCookiesImportStart(uint32_t total_cookies_count) override {};
-+  void OnCookiesImportGroup(const std::vector<net::CanonicalCookie>& cookies_group) override {};
-+  void OnStatsImportReady(const BraveStats& stats) override {};
-+  void OnLedgerImportReady(const BraveLedger& ledger) override {};
-+  void OnReferralImportReady(const BraveReferral& referral) override {};
-+  void OnWindowsImportReady(const ImportedWindowState& window_state) override {};
++  void OnCookiesImportStart(uint32_t total_cookies_count) override {}
++  void OnCookiesImportGroup(const std::vector<net::CanonicalCookie>& cookies_group) override {}
++  void OnStatsImportReady(const BraveStats& stats) override {}
++  void OnLedgerImportReady(const BraveLedger& ledger) override {}
++  void OnReferralImportReady(const BraveReferral& referral) override {}
++  void OnWindowsImportReady(const ImportedWindowState& window_state) override {}
 +  void OnSettingsImportReady(
-+      const SessionStoreSettings& settings) override {};
++      const SessionStoreSettings& settings) override {}
  
   protected:
    ~ExternalProcessImporterClient() override;

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.h b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-index 75f7e88b1440ab73c484608b208ec687583c3e22..b83cf3d2e161bce510bf5c9b2098257f2f407b51 100644
+index 8596ecd098fcd5d4014d35d89fd469474477aafb..31044aeb88adaff24fd91088ac6f9eaf0da010b2 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.h
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-@@ -111,6 +111,8 @@ class RenderViewContextMenu : public RenderViewContextMenuBase {
+@@ -107,6 +107,8 @@ class RenderViewContextMenu : public RenderViewContextMenuBase {
    // hold escape to exit exclusive access mode.
    bool IsPressAndHoldEscRequiredToExitFullscreen() const;
  

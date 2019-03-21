@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
-    "message": "我們對 Brave 支付進行了一次大升級。",
+    "message": "我們為 Brave Rewards 做了一次大更新。",
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
@@ -185,6 +185,10 @@
     "message": "您有一筆資助正在等您。",
     "description": "Description for new grant notification"
   },
+  "backupNow": {
+    "message": "現在備份",
+    "description": "Notification button text when we ask user to backup wallet"
+  },
   "backupWalletTitle": {
     "message": "備份電子錢包",
     "description": "Notification title when we ask user to backup wallet"
@@ -194,7 +198,7 @@
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "您的 Brave Payments 帳戶正在等待存款。",
+    "message": "您的 Brave Rewards 帳號正在等待存款。",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -214,7 +218,7 @@
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "處理您的打賞時出現問題，請重試。",
+    "message": "無法給您小費。請再試一次。",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -328,5 +332,49 @@
   "walletFailedButton": {
     "message": "再試一次",
     "description": "Button for re-try after wallet creation failed"
+  },
+  "addFunds": {
+    "message": "新增資金",
+    "description": "Button for adding funds"
+  },
+  "rewardsSettings": {
+    "message": "Rewards 設定",
+    "description": "Button for opening settings page"
+  },
+  "earningsClaimDefault": {
+    "message": "您的廣告收入已經可用。",
+    "description": "Panel notification text for Ads grant"
+  },
+  "and": {
+    "message": "與",
+    "description": "The word 'and'"
+  },
+  "braveRewardsSubTitle": {
+    "message": "瀏覽網站就能賺取報酬！",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "disabledPanelTextTwo": {
+    "message": "透過檢視尊重隱私的廣告賺取，並將其支付給你所愛的內容創作者以支援他們。",
+    "description": "Text block for wallet disabled panel"
+  },
+  "enableRewards": {
+    "message": "啟用 Brave Rewards",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "privacyPolicy": {
+    "message": "隱私權政策",
+    "description": "Privacy Policy"
+  },
+  "serviceText": {
+    "message": "透過點選「啟用 Brave Rewards」，您即暗示您已經閱讀並同意",
+    "description": "Terms of service main text"
+  },
+  "termsOfService": {
+    "message": "服務條款",
+    "description": "Terms of Service"
+  },
+  "welcomeBack": {
+    "message": "歡迎回來！",
+    "description": "Title message for wallet disabled panel"
   }
 }

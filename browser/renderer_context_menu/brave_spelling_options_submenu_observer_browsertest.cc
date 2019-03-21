@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -12,8 +13,8 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/language/core/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/spellcheck/browser/pref_names.h"
 #include "content/public/common/context_menu_params.h"
@@ -49,7 +50,7 @@ class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
     observer_ = std::move(observer);
     menu_->SetObserver(observer_.get());
     // Uncomment to print the menu to standard output for each test.
-    //menu_->EnablePrintMenu();
+    // menu_->EnablePrintMenu();
   }
 
   void SetUpOnMainThread() override {
@@ -65,7 +66,8 @@ class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
                 const std::vector<std::string>& dictionaries) {
     menu()->GetPrefs()->SetBoolean(spellcheck::prefs::kSpellCheckEnable,
                                    enable_spellcheck);
-    menu()->GetPrefs()->SetString(prefs::kAcceptLanguages, accept_languages);
+    menu()->GetPrefs()->SetString(language::prefs::kAcceptLanguages,
+                                  accept_languages);
     base::ListValue dictionaries_value;
     dictionaries_value.AppendStrings(dictionaries);
     menu()->GetPrefs()->Set(spellcheck::prefs::kSpellCheckDictionaries,

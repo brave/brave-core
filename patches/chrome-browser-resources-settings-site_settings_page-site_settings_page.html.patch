@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
-index f8e7aa9b775fd551df717903a15bb6b1b596f910..2692c961d66222928f568b4fa863d5f6734d8f57 100644
+index 3109d0976d3cf2631d77798e07c139a10a710e41..884741fa4e3f1c066b2cb28520b5dfb1b0a0f1f9 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
-@@ -126,7 +126,19 @@
+@@ -86,7 +86,18 @@
+             default_.notifications,
              '$i18nPolymer{siteSettingsAskBeforeSending}',
-             '$i18nPolymer{siteSettingsBlocked}')]]">
-     </cr-link-row>
+             '$i18nPolymer{siteSettingsBlocked}')]]"></cr-link-row>
 -
 +    <cr-link-row
 +        class="hr two-line"
@@ -18,26 +18,25 @@ index f8e7aa9b775fd551df717903a15bb6b1b596f910..2692c961d66222928f568b4fa863d5f6
 +        sub-label="[[defaultSettingLabel_(
 +            default_.notifications,
 +            '$i18nPolymer{siteSettingsAutoplayAsk}',
-+            '$i18nPolymer{siteSettingsBlocked}')]]">
-+    </cr-link-row>
-     <cr-link-row
-         class="hr two-line"
-         data-route="SITE_SETTINGS_JAVASCRIPT"
-@@ -182,7 +194,7 @@
++            '$i18nPolymer{siteSettingsBlocked}')]]"></cr-link-row>
+     <cr-link-row class="hr two-line" data-route="SITE_SETTINGS_JAVASCRIPT"
+         id="javascript" label="$i18n{siteSettingsJavascript}"
+         on-click="onTapNavigate_" start-icon="settings:code"
+@@ -118,7 +129,7 @@
+             default_.popups,
              '$i18nPolymer{siteSettingsAllowed}',
-             '$i18nPolymer{siteSettingsBlocked}')]]">
-     </cr-link-row>
+             '$i18nPolymer{siteSettingsBlocked}')]]"></cr-link-row>
 -
 +<!--
      <template is="dom-if" if="[[enableSafeBrowsingSubresourceFilter_]]">
-       <cr-link-row
-           class="hr two-line"
-@@ -212,7 +224,7 @@
+       <cr-link-row class="hr two-line" data-route="SITE_SETTINGS_ADS" id="ads"
+           label="$i18n{siteSettingsAds}" on-click="onTapNavigate_"
+@@ -136,7 +147,7 @@
+             default_.backgroundSync,
              '$i18nPolymer{siteSettingsAllowRecentlyClosedSites}',
-             '$i18nPolymer{siteSettingsBackgroundSyncBlocked}')]]">
-     </cr-link-row>
+             '$i18nPolymer{siteSettingsBackgroundSyncBlocked}')]]"></cr-link-row>
 -
 +-->
-     <template is="dom-if" if="[[enableSoundContentSetting_]]">
-       <cr-link-row
-           class="hr two-line"
+     <cr-link-row class="hr two-line" data-route="SITE_SETTINGS_SOUND"
+         id="sound" label="$i18n{siteSettingsSound}" on-click="onTapNavigate_"
+         start-icon="settings:volume-up"

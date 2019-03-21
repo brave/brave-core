@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Zistili sme problém s vašou peňaženkou. Pred spracovaním ľubovoľnej transakcie musíte obnoviť svoju záložnú peňaženku.</translation>
 <translation id="7797604753681168055">Obnoviť teraz!</translation>
 <translation id="1184075897575325927">Ľutujeme, zdá sa, že tento grant už bol nárokovaný.</translation>
+<translation id="7180611975245234373">Obnoviť</translation>
+<translation id="839736845446313156">Registrovať sa</translation>
+<translation id="583281660410589416">Neznámy</translation>
 <translation id="5094577350232361255">o</translation>
 <translation id="4918086044614829423">Prijať</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave je registrovaná ochranná známka Brave software. Názvy stránok môžu byť ochrannými známkami alebo registrovanými ochrannými známkami vlastníka stránky.</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Počítač</translation>
 <translation id="1258250624898033822">Neplatný synchronizačný kód.</translation>
 <translation id="3259723213051400722">Skúste to znova.</translation>
-<translation id="3779810277399252432">Žiadne internetové pripojenie.</translation>
-<translation id="4380604249778320975">Skúste to znova po obnovení pripojenia.</translation>
 <translation id="5257281382608458806">Názov zariadenia je povinný.</translation>
 <translation id="8349682220522608879">Pridajte synchronizačný kód.</translation>
 <translation id="1468095392829989299">Nepodarilo sa kontaktovať synchronizačné servery</translation>

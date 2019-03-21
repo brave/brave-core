@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style.cc b/chrome/browser/ui/views/tabs/tab_style.cc
-index d1caa9fd9463a0bd37e2ad59307c7570419b3c6e..2b8273703c903bae97ae6383426ee2524841180d 100644
+index 7aaac14f7d4293090c396b765273ec646ed907c5..218f4785fa2cf63976f6e44de102d16e3903d9a2 100644
 --- a/chrome/browser/ui/views/tabs/tab_style.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style.cc
-@@ -150,7 +150,7 @@ int GetContentsHorizontalInsetSize() {
+@@ -180,7 +180,7 @@ int GetContentsHorizontalInsetSize() {
  
  // Returns the height of the separator between tabs.
  int GetSeparatorHeight() {
@@ -11,7 +11,7 @@ index d1caa9fd9463a0bd37e2ad59307c7570419b3c6e..2b8273703c903bae97ae6383426ee252
  }
  
  void DrawHighlight(gfx::Canvas* canvas,
-@@ -273,6 +273,7 @@ SkPath GM2TabStyle::GetPath(PathType path_type,
+@@ -307,6 +307,7 @@ SkPath GM2TabStyle::GetPath(PathType path_type,
    // When the radius shrinks, it leaves a gap between the bottom corners and the
    // edge of the tab. Make sure we account for this - and for any adjustment we
    // may have made to the location of the tab!
@@ -19,7 +19,7 @@ index d1caa9fd9463a0bd37e2ad59307c7570419b3c6e..2b8273703c903bae97ae6383426ee252
    const float corner_gap = (right - tab_right) - bottom_radius;
  
    SkPath path;
-@@ -429,7 +430,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
+@@ -579,7 +580,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
    separator_bounds.leading =
        gfx::RectF(aligned_bounds.x() + corner_radius,
                   aligned_bounds.y() +
@@ -28,7 +28,7 @@ index d1caa9fd9463a0bd37e2ad59307c7570419b3c6e..2b8273703c903bae97ae6383426ee252
                   separator_size.width(), separator_size.height());
  
    separator_bounds.trailing = separator_bounds.leading;
-@@ -705,12 +706,16 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -891,12 +892,16 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  

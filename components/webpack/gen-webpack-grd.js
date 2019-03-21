@@ -20,8 +20,8 @@ function getGrdString (name = 'brave_rewards_resources', idPrefix = 'IDR_BRAVE_R
     <output filename="grit/${name}_generated.h" type="rc_header">
       <emit emit_type='prepend'></emit>
     </output>
-    <output filename="grit/${name}_generated_map.cc" type="resource_file_map_source" />
-    <output filename="grit/${name}_generated_map.h" type="resource_map_header" />
+    <output filename="grit/${name}_generated_map.cc" type="gzipped_resource_file_map_source" />
+    <output filename="grit/${name}_generated_map.h" type="gzipped_resource_map_header" />
     <output filename="${name}_generated.pak" type="data_package" />
   </outputs>
   <release seq="1">
