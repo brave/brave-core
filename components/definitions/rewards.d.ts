@@ -154,5 +154,6 @@ declare namespace Rewards {
     adsUIEnabled: boolean
     adsNotificationsReceived: number
     adsEstimatedEarnings: number
+    adsIsSupported: boolean
   }
 }

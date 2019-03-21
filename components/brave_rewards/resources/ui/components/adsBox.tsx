@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 // Components
 import {
   Box,
+  BoxAlert,
   DisabledContent,
   List,
   NextContribution,
@@ -53,6 +54,16 @@ class AdsBox extends React.Component<Props, State> {
         • {getLocale('adsDisabledTextOne')} <br />
         • {getLocale('adsDisabledTextTwo')}
       </DisabledContent>
+    )
+  }
+
+  adsNotSupportedAlert = (supported: boolean) => {
+    if (supported) {
+      return null
+    }
+
+    return (
+      <BoxAlert type={'ads'} />
     )
   }
 
@@ -106,6 +117,7 @@ class AdsBox extends React.Component<Props, State> {
     let adsUIEnabled = false
     let notificationsReceived = 0
     let estimatedEarnings = '0'
+    let adsIsSupported = false
 
     const {
       adsData,
@@ -119,10 +131,12 @@ class AdsBox extends React.Component<Props, State> {
       adsUIEnabled = adsData.adsUIEnabled
       notificationsReceived = adsData.adsNotificationsReceived || 0
       estimatedEarnings = (adsData.adsEstimatedEarnings || 0).toFixed(2)
+      adsIsSupported = adsData.adsIsSupported
     }
 
-    const toggle = !(!enabledMain || !adsUIEnabled)
-    const showDisabled = firstLoad !== false || !toggle || !adsEnabled
+    const enabled = adsEnabled && adsIsSupported
+    const toggle = !(!enabledMain || !adsUIEnabled || !adsIsSupported)
+    const showDisabled = firstLoad !== false || !toggle || !adsEnabled || !adsIsSupported
 
     return (
       <Box
@@ -130,13 +144,14 @@ class AdsBox extends React.Component<Props, State> {
         type={'ads'}
         description={getLocale('adsDesc')}
         toggle={toggle}
-        checked={adsEnabled}
-        settingsChild={this.adsSettings(adsEnabled && enabledMain)}
+        checked={enabled}
+        settingsChild={this.adsSettings(enabled && enabledMain)}
         testId={'braveAdsSettings'}
         disabledContent={showDisabled ? this.adsDisabled() : null}
         onToggle={this.onAdsSettingChange.bind(this, 'adsEnabled', '')}
         settingsOpened={this.state.settings}
         onSettingsClick={this.onSettingsToggle}
+        attachedAlert={this.adsNotSupportedAlert(adsIsSupported)}
       >
         <List title={getLocale('adsCurrentEarnings')}>
           <Tokens
