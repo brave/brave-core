@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/md_history/history.html b/chrome/browser/resources/md_history/history.html
+index 748d431d1059afe38390e4f29352b354ebc2f282..baf81dec331deb78adfc9f0500bd1d4d99c069bb 100644
+--- a/chrome/browser/resources/md_history/history.html
++++ b/chrome/browser/resources/md_history/history.html
+@@ -80,7 +80,7 @@
+   <history-app id="history-app"></history-app>
+ 
+   <div id="app-shim">
+-    <span id="loading-toolbar">$i18n{title}</span>
++    <span id="loading-toolbar"></span>
+     <span id="loading-message">$i18n{loading}</span>
+   </div>
+ 
