@@ -10,7 +10,7 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_adblock/resources/grit/brave_adblock_generated_map.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -90,7 +90,8 @@ void AdblockDOMHandler::HandleGetRegionalLists(const base::ListValue* args) {
   if (!web_ui()->CanCallJavascript())
     return;
   std::unique_ptr<base::ListValue> regional_lists =
-      g_brave_browser_process->ad_block_regional_service()->GetRegionalLists();
+      g_brave_browser_process->ad_block_regional_service_manager()
+          ->GetRegionalLists();
   web_ui()->CallJavascriptFunctionUnsafe("brave_adblock.onGetRegionalLists",
                                          *regional_lists);
 }
@@ -131,6 +132,7 @@ void BraveAdblockUI::CustomizeWebUIProperties(
   if (render_view_host) {
     render_view_host->SetWebUIProperty(
         "adsBlockedStat", std::to_string(prefs->GetUint64(kAdsBlocked)));
+#if 0
     render_view_host->SetWebUIProperty(
         "regionalAdBlockEnabled",
         std::to_string(g_brave_browser_process->ad_block_regional_service()
@@ -138,6 +140,7 @@ void BraveAdblockUI::CustomizeWebUIProperties(
     render_view_host->SetWebUIProperty(
         "regionalAdBlockTitle",
         g_brave_browser_process->ad_block_regional_service()->GetTitle());
+#endif
   }
 }
 

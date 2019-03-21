@@ -17,7 +17,7 @@
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
 #include "brave/components/brave_shields/browser/extension_whitelist_service.h"
@@ -119,11 +119,12 @@ BraveBrowserProcessImpl::ad_block_custom_filters_service() {
   return ad_block_custom_filters_service_.get();
 }
 
-brave_shields::AdBlockRegionalService*
-BraveBrowserProcessImpl::ad_block_regional_service() {
-  if (!ad_block_regional_service_)
-    ad_block_regional_service_ = brave_shields::AdBlockRegionalServiceFactory();
-  return ad_block_regional_service_.get();
+brave_shields::AdBlockRegionalServiceManager*
+BraveBrowserProcessImpl::ad_block_regional_service_manager() {
+  if (!ad_block_regional_service_manager_)
+    ad_block_regional_service_manager_ =
+        brave_shields::AdBlockRegionalServiceManagerFactory();
+  return ad_block_regional_service_manager_.get();
 }
 
 brave_shields::AutoplayWhitelistService*

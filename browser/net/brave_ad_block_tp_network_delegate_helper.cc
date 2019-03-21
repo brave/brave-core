@@ -14,7 +14,7 @@
 #include "brave/common/network_constants.h"
 #include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -101,7 +101,7 @@ void OnBeforeURLRequestAdBlockTPOnTaskRunner(
           &did_match_exception, &ctx->cancel_request_explicitly)) {
     ctx->blocked_by = kAdBlocked;
   } else if (!did_match_exception &&
-             !g_brave_browser_process->ad_block_regional_service()
+             !g_brave_browser_process->ad_block_regional_service_manager()
                   ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
                                        tab_host, &did_match_exception,
                                        &ctx->cancel_request_explicitly)) {

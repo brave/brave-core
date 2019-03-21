@@ -16,23 +16,17 @@
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 #include "content/public/common/resource_type.h"
 
-namespace base {
-class ListValue;
-}  // namespace base
-
 class AdBlockServiceTest;
 
 namespace brave_shields {
 
-// The brave shields service in charge of regional ad-block checking
-// and init.
+// The brave shields service in charge of ad-block checking and init
+// for a specific region.
 class AdBlockRegionalService : public AdBlockBaseService {
  public:
-  AdBlockRegionalService();
+  explicit AdBlockRegionalService(const std::string& uuid);
   ~AdBlockRegionalService() override;
 
-  static bool IsSupportedLocale(const std::string& locale);
-  static std::unique_ptr<base::ListValue> GetRegionalLists();
   std::string GetUUID() const { return uuid_; }
   std::string GetTitle() const { return title_; }
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override;
@@ -54,8 +48,6 @@ class AdBlockRegionalService : public AdBlockBaseService {
       const std::string& component_base64_public_key);
   static void SetDATFileVersionForTest(const std::string& dat_file_version);
 
-  bool UnregisterComponentByLocale(const std::string& locale);
-
   std::string uuid_;
   std::string title_;
 
@@ -63,7 +55,8 @@ class AdBlockRegionalService : public AdBlockBaseService {
 };
 
 // Creates the AdBlockRegionalService
-std::unique_ptr<AdBlockRegionalService> AdBlockRegionalServiceFactory();
+std::unique_ptr<AdBlockRegionalService> AdBlockRegionalServiceFactory(
+    const std::string& uuid);
 
 }  // namespace brave_shields
 

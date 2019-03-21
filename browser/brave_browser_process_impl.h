@@ -23,7 +23,7 @@ class BraveWidevineBundleManager;
 namespace brave_shields {
 class AdBlockService;
 class AdBlockCustomFiltersService;
-class AdBlockRegionalService;
+class AdBlockRegionalServiceManager;
 class AutoplayWhitelistService;
 class ExtensionWhitelistService;
 class HTTPSEverywhereService;
@@ -48,7 +48,8 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 
   brave_shields::AdBlockService* ad_block_service();
   brave_shields::AdBlockCustomFiltersService* ad_block_custom_filters_service();
-  brave_shields::AdBlockRegionalService* ad_block_regional_service();
+  brave_shields::AdBlockRegionalServiceManager*
+  ad_block_regional_service_manager();
   brave_shields::AutoplayWhitelistService* autoplay_whitelist_service();
   brave_shields::ExtensionWhitelistService* extension_whitelist_service();
   brave_shields::TrackingProtectionService* tracking_protection_service();
@@ -65,8 +66,8 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
   std::unique_ptr<brave_shields::AdBlockCustomFiltersService>
       ad_block_custom_filters_service_;
-  std::unique_ptr<brave_shields::AdBlockRegionalService>
-      ad_block_regional_service_;
+  std::unique_ptr<brave_shields::AdBlockRegionalServiceManager>
+      ad_block_regional_service_manager_;
   std::unique_ptr<brave_shields::AutoplayWhitelistService>
       autoplay_whitelist_service_;
   std::unique_ptr<brave_shields::ExtensionWhitelistService>

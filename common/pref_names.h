@@ -18,6 +18,7 @@ extern const char kFirstCheckMade[];
 extern const char kWeekOfInstallation[];
 extern const char kAdBlockCurrentRegion[];
 extern const char kAdBlockCustomFilters[];
+extern const char kAdBlockRegionalFilters[];
 extern const char kWidevineOptedIn[];
 extern const char kWidevineInstalledVersion[];
 extern const char kUseAlternativeSearchEngineProvider[];
