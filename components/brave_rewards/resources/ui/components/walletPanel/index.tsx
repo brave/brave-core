@@ -24,13 +24,14 @@ import {
   StyleToggleTips,
   StyledNoticeWrapper,
   StyledNoticeLink,
-  StyledProfileWrapper
+  StyledProfileWrapper,
+  StyledSelect
 } from './style'
 
 // Components
-import { Select, Toggle } from '../../../components'
+import { Toggle } from '../../../components'
 
-import { RewardsButton, Tokens } from '../'
+import { RewardsButton } from '../'
 import ToggleTips from '../toggleTips/index'
 import Profile, { Provider } from '../profile/index'
 
@@ -53,7 +54,7 @@ export interface Props {
   toggleTips?: boolean
   donationAction: () => void
   onToggleTips: () => void
-  onAmountChange: () => void
+  onAmountChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
   onIncludeInAuto: () => void
   onRefreshPublisher?: () => void
   refreshingPublisher?: boolean
@@ -96,25 +97,27 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
 
     return (
       <StyledSelectWrapper>
-        <Select
-          floating={true}
-          showAllContents={true}
+        <StyledSelect
           value={monthlyAmount}
           onChange={this.props.onAmountChange}
         >
           {donationAmounts.map((token: Token, index: number) => {
+            const tokenValue = token.tokens.toString()
+            const paddingLength = tokenValue.length < 5
+              ? tokenValue.length === 4 ? 3 : 4
+              : 0
+            const padding = `${String.fromCharCode(160)}`.repeat(paddingLength)
+
             return (
-              <div key={`donationAmount-${index}`} data-value={token.tokens}>
-                <Tokens
-                  size={'small'}
-                  value={token.tokens}
-                  converted={token.converted}
-                  color={'donation'}
-                />
-              </div>
+              <option
+                key={`k-${token.tokens}`}
+                value={tokenValue}
+              >
+                {padding}{token.tokens} {getLocale('bat')} ({token.converted} USD)
+              </option>
             )
           })}
-        </Select>
+        </StyledSelect>
       </StyledSelectWrapper>
     )
   }

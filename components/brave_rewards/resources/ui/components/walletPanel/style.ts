@@ -20,7 +20,7 @@ export const StyledProfileWrapper = styled<{}, 'div'>('div')`
 
 export const StyledContainer = styled<{}, 'div'>('div')`
   min-height: 250px;
-  padding: 25px 30px 25px 30px;
+  padding: 15px 30px 20px 30px;
 ` as any
 
 export const StyledAttentionScore = styled<{}, 'span'>('span')`
@@ -69,7 +69,7 @@ export const StyledToggleWrapper = styled<{}, 'div'>('div')`
 ` as any
 
 export const StyledSelectWrapper = styled<{}, 'div'>('div')`
-  width: 80px;
+  width: 87px;
   margin: 2px 0px 0px;
 ` as any
 
@@ -106,4 +106,20 @@ export const StyledNoticeLink = styled<StyleProps, 'a'>('a')`
   font-weight: bold;
   text-decoration: none;
   display: inline-block;
+`
+
+export const StyledSelect = styled<StyleProps, 'select'>('select')`
+  width: 100%;
+  background: inherit;
+  height: 34px;
+  font-size: 14px;
+  border: none;
+  text-align: right;
+  color: ${palette.blurple500};
+  font-family: Poppins, sans-serif;
+  max-height: 20px;
+
+  &:focus {
+    outline: 0;
+  }
 `

@@ -40,7 +40,9 @@ const doNothing = (id: string) => {
 const donationAmounts = [
   { tokens: '1.0', converted: '0.30', selected: false },
   { tokens: '5.0', converted: '1.50', selected: false },
-  { tokens: '10.0', converted: '3.00', selected: false }
+  { tokens: '10.0', converted: '3.00', selected: false },
+  { tokens: '50.0', converted: '15.00', selected: false },
+  { tokens: '100.0', converted: '30.00', selected: false }
 ]
 
 const defaultGrant = {
@@ -334,6 +336,10 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       store.set({ notification: undefined })
     }
 
+    const onAmountChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      console.log(`New value is: ${event.target.value}`)
+    }
+
     const convertProbiToFixed = (probi: string, places: number = 1) => {
       return '0.0'
     }
@@ -402,7 +408,8 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
                 attentionScore={'17'}
                 onToggleTips={onToggleTips}
                 donationAction={doNothing}
-                onAmountChange={doNothing}
+                onAmountChange={onAmountChange}
+                donationAmounts={donationAmounts}
                 onIncludeInAuto={onIncludeInAuto}
                 refreshingPublisher={store.state.refreshingPublisher}
                 onRefreshPublisher={onRefreshPublisher}
