@@ -12,6 +12,9 @@
 #include "extensions/common/url_pattern.h"
 #include "url/gurl.h"
 
+#include "base/json/json_reader.h"
+#include "base/values.h"
+
 namespace brave {
 
 bool IsUAWhitelisted(const GURL& gurl) {
@@ -40,69 +43,59 @@ bool IsBlockedResource(const GURL& gurl) {
 
 bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
     const GURL& subresourceUrl) {
-  // Note that there's already an exception for TLD+1, so don't add those here.
-  // Check with the security team before adding exceptions.
-
-  // https://github.com/brave/browser-laptop/issues/5861
-  // The below patterns are done to only allow the specific request
-  // pattern, of reddit -> redditmedia -> embedly -> imgur.
-  static auto redditPtrn = URLPattern(URLPattern::SCHEME_HTTPS,
-      "https://www.reddit.com/*");
-  static std::vector<URLPattern> reddit_embed_patterns({
-    redditPtrn,
-    URLPattern(URLPattern::SCHEME_HTTPS, "https://www.redditmedia.com/*"),
-    URLPattern(URLPattern::SCHEME_HTTPS, "https://cdn.embedly.com/*"),
-    URLPattern(URLPattern::SCHEME_HTTPS, "https://imgur.com/*")
-  });
-
-  if (redditPtrn.MatchesURL(firstPartyOrigin)) {
-    bool is_reddit_embed = std::any_of(
-      reddit_embed_patterns.begin(),
-      reddit_embed_patterns.end(),
-      [&subresourceUrl](URLPattern pattern){
-        return pattern.MatchesURL(subresourceUrl);
-      });
-    if (is_reddit_embed) {
-      return true;
+  std::unique_ptr<base::Value> root = base::JSONReader::Read(
+    "{"
+    "    \"whitelist\": ["
+    "        {"
+    "            \"<all_urls>\": ["
+    "                \"https://use.typekit.net/*\","
+    "                \"https://api.geetest.com/*\","
+    "                \"https://cloud.typography.com/*\""
+    "            ]"
+    "        },"
+    "        {"
+    "            \"https://www.facebook.com/\": ["
+    "                \"https://*.fbcdn.net/*\""
+    "            ]"
+    "        },"
+    "        {"
+    "            \"https://accounts.google.com/\": ["
+    "                \"https://content.googleapis.com/*\""
+    "            ]"
+    "        },"
+    "        {"
+    "            \"https://www.reddit.com/*\": ["
+    "                \"https://www.redditmedia.com/*\","
+    "                \"https://cdn.embedly.com/*\","
+    "                \"https://imgur.com/*\""
+    "            ]"
+    "        }"
+    "    ]"
+    "}"
+    );
+  base::DictionaryValue* root_dict = nullptr;
+  root->GetAsDictionary(&root_dict);
+  base::ListValue* whitelist = nullptr;
+  root_dict->GetList("whitelist", &whitelist);
+  for (base::Value& origins : whitelist->GetList()) {
+    base::DictionaryValue* origins_dict = nullptr;
+    origins.GetAsDictionary(&origins_dict);
+    for (const auto& it : origins_dict->DictItems()) {
+      auto first_party_pattern = URLPattern(
+        URLPattern::SCHEME_HTTP|URLPattern::SCHEME_HTTPS, it.first);
+      if (first_party_pattern.MatchesURL(firstPartyOrigin)) {
+        for (base::Value& subresource_value : it.second.GetList()) {
+          auto subresource_pattern = URLPattern(
+            URLPattern::SCHEME_HTTP|URLPattern::SCHEME_HTTPS,
+            subresource_value.GetString());
+          if (subresource_pattern.MatchesURL(subresourceUrl)) {
+            return true;
+          }
+        }
+      }
     }
   }
-
-  static std::map<GURL, std::vector<URLPattern> > whitelist_patterns_map = {
-    {
-      GURL("https://www.facebook.com/"), {
-        URLPattern(URLPattern::SCHEME_HTTPS, "https://*.fbcdn.net/*"),
-      }
-    },
-    {
-      GURL("https://accounts.google.com/"), {
-        URLPattern(URLPattern::SCHEME_HTTPS,
-            "https://content.googleapis.com/*"),
-      }
-    },
-  };
-  std::map<GURL, std::vector<URLPattern> >::iterator i =
-      whitelist_patterns_map.find(firstPartyOrigin);
-  if (i != whitelist_patterns_map.end()) {
-    std::vector<URLPattern> &exceptions = i->second;
-    bool any_match = std::any_of(exceptions.begin(), exceptions.end(),
-        [&subresourceUrl](const URLPattern& pattern) {
-          return pattern.MatchesURL(subresourceUrl);
-        });
-    if (any_match) {
-      return true;
-    }
-  }
-
-  // It's preferred to use specific_patterns below when possible
-  static std::vector<URLPattern> whitelist_patterns({
-    URLPattern(URLPattern::SCHEME_ALL, "https://use.typekit.net/*"),
-    URLPattern(URLPattern::SCHEME_ALL, "https://api.geetest.com/*"),
-    URLPattern(URLPattern::SCHEME_ALL, "https://cloud.typography.com/*")
-  });
-  return std::any_of(whitelist_patterns.begin(), whitelist_patterns.end(),
-    [&subresourceUrl](URLPattern pattern){
-      return pattern.MatchesURL(subresourceUrl);
-    });
+  return false;
 }
 
 bool IsWhitelistedCookieException(const GURL& firstPartyOrigin,
