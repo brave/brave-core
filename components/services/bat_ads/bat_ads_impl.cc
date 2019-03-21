@@ -113,4 +113,9 @@ void BatAdsImpl::GenerateAdReportingNotificationResultEvent(
   }
 }
 
+void BatAdsImpl::IsSupportedRegion(
+      IsSupportedRegionCallback callback) {
+  std::move(callback).Run(ads_->IsSupportedRegion());
+}
+
 }  // namespace bat_ads

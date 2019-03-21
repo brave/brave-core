@@ -10,11 +10,11 @@ import { connect } from 'react-redux'
 import {
   DisabledContent,
   Box,
+  BoxAlert,
   TableDonation,
   List,
   Tokens,
   ModalDonation,
-  TipsMigrationAlert,
   NextContribution
 } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
@@ -147,7 +147,7 @@ class DonationBox extends React.Component<Props, State> {
   importAlert = (walletImported: boolean) => {
     return (
       walletImported
-      ? <TipsMigrationAlert onReview={this.doNothing} />
+      ? <BoxAlert type={'tips'} onReview={this.doNothing} />
       : null
     )
   }
