@@ -36,6 +36,19 @@ export const getMockChrome = () => {
     },
     braveRewards: {
       getPublisherData: (id: number, url: string, favicon: string) => undefined
+    },
+    extension: {
+      inIncognitoContext: new ChromeEvent()
+    },
+    topSites: {
+      get: function () {
+        return
+      }
+    },
+    bookmarks: {
+      search: function () {
+        return
+      }
     }
   }
 }
