@@ -161,16 +161,23 @@ public class Sync: JSInjector {
     }
     
     public func leaveSyncGroup(sendToSync: Bool = true) {
+        leaveSyncGroupInternal(sendToSync: sendToSync)
+    }
+    
+    func leaveSyncGroupInternal(sendToSync: Bool, context: WriteContext = .new) {
         syncSeed = nil
         
-        // Leaving sync group can be triggered either on own device, or remotely, if another device in the sync chain
-        // will remove this device. In the second case we don't want to send deleted device sync record because it
-        // was already deleted and can cause an infinite loop.
-        if let device = Device.currentDevice(), sendToSync {
-            self.sendSyncRecords(action: .delete, records: [device])
+        DataController.perform(context: context) { context in
+            // Leaving sync group can be triggered either on own device, or remotely, if another device in the sync chain
+            // will remove this device. In the second case we don't want to send deleted device sync record because it
+            // was already deleted and can cause an infinite loop.
+            if let device = Device.currentDevice(context: context), sendToSync {
+                self.sendSyncRecords(action: .delete, records: [device], context: context)
+            }
+            
+            Device.sharedCurrentDevice = nil
+            Device.deleteAll(context: .existing(context))
         }
-        
-        Device.deleteAll()
         
         lastFetchedRecordTimestamp = 0
         Preferences.Sync.lastFetchTimestamp.reset()
@@ -385,12 +392,11 @@ extension Sync {
             return
         }
         
+        // TODO: DeviceId should be sitting on each object already, use that
+        let syncRecords = records.map { $0.asDictionary(deviceId:
+            Device.currentDevice(context: context)?.deviceId, action: action.rawValue) }
+        
         executeBlockOnReady() {
-            
-            // TODO: DeviceId should be sitting on each object already, use that
-            let syncRecords = records.map { $0.asDictionary(deviceId:
-                Device.currentDevice(context: context)?.deviceId, action: action.rawValue) }
-            
             guard let json = JSONSerialization.jsObject(withNative: syncRecords, escaped: false) else {
                 // Huge error
                 return
