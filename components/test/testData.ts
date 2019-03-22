@@ -180,6 +180,16 @@ export const getMockChrome = () => {
     },
     extension: {
       inIncognitoContext: new ChromeEvent()
+    },
+    topSites: {
+      get: function () {
+        return
+      }
+    },
+    bookmarks: {
+      search: function () {
+        return
+      }
     }
   }
 }
