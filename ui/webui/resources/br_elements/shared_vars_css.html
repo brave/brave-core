@@ -8,7 +8,7 @@
 -->
 <custom-style>
   <style is="custom-style">
-    :root {
+    html {
       --interactive-color: var(--cr-link-color) !important;
       --brave-focus-outline: auto 3px var(--flat-focus-shadow-color);
       --disabled-color: rgb(241, 243, 244);
@@ -17,10 +17,14 @@
       --flat-focus-shadow-color: rgba(255, 69, 48, .4) !important;
       --cr-selectable-focus_-_outline: var(--brave-focus-outline) !important;
       --cr-primary-text-color: #343546 !important;
-      --cr-primary-text_-_font-weight: 500 !important;
+      --cr-primary-text_-_font-weight: 600 !important;
       --cr-secondary-text_-_color: #A0A1B2 !important;
       --cr-card-elevation_-_box-shadow: 0 !important;
       --cr-card-border-radius: 4px !important;
+    }
+    html[dark] {
+      --cr-primary-text-color: #F4F4F4 !important;
+      --cr-secondary-text_-_color: #AEB1C2 !important;
     }
   </style>
 </custom-style>

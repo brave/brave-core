@@ -77,8 +77,14 @@
         padding: 30px !important;
       }
 
+
+      :host-context([dark]) {
+        --settings-nav-item-color: #F4F4F4 !important;
+        border-color: transparent !important;
+        background-color: #27282B;
+      }
+
       a[href] {
-        color: #A0A1B2 !important;
         font-weight: 400 !important;
         margin: 0 20px 20px 0 !important;
         margin-inline-start: 0 !important;
@@ -89,8 +95,8 @@
       }
 
       a[href].iron-selected {
-        color: #424242 !important;
-        font-weight: 500 !important;
+        color: var(--settings-nav-item-color) !important;
+        font-weight: 600 !important;
       }
 
       iron-icon {
@@ -98,6 +104,10 @@
         margin-inline-end: 16px !important;
         width: 24px;
         height: 24px;
+      }
+
+      :host-context([dark]) a[href].iron-selected iron-icon {
+        color: var(--settings-nav-item-color) !important;
       }
 
       a[href],
@@ -120,7 +130,7 @@
         align-items: center !important;
         font-weight: normal !important;
         font-size: larger !important;
-        color: #424242 !important;
+        color: var(--settings-nav-item-color) !important;
         margin-bottom: 20px !important;
       }
 
