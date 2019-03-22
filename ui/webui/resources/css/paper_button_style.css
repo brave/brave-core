@@ -41,6 +41,14 @@ paper-button {
   --flat-focus-shadow-color: rgba(255, 69, 48, .4)  !important;
 }
 
+[dark] paper-button,
+:host-context([dark]) paper-button {
+  /* --text-color: #AEB1C2 !important; */
+  --text-color: var(--cr-primary-text-color) !important;
+  --brave-hover-color: rgb(63, 63, 63) !important;
+  --flat-text-color-action: #242536 !important;
+}
+
 paper-button:not(.action-button):hover {
   /* background handled in chromium but not foreground */
   color: var(--hover-fg-color, var(--text-color));
