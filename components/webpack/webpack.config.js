@@ -25,12 +25,8 @@ module.exports = (env, argv) => ({
         loader: 'awesome-typescript-loader'
       },
       {
-        test: /\.less$/,
-        loader: 'style-loader!css-loader?-minimize!less-loader'
-      },
-      {
         test: /\.css$/,
-        loader: 'style-loader!css-loader?-minimize'
+        loader: ['style-loader', 'css-loader'],
       },
       // Loads font files for Font Awesome
       {
