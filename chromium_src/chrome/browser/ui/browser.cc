@@ -7,10 +7,13 @@
 #include "chrome/browser/ui/browser_content_setting_bubble_model_delegate.h"
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
+#include "brave/browser/ui/toolbar/brave_location_bar_model_delegate.h"
 
 #define BrowserContentSettingBubbleModelDelegate \
   BraveBrowserContentSettingBubbleModelDelegate
 #define BrowserCommandController BraveBrowserCommandController
+#define BrowserLocationBarModelDelegate BraveLocationBarModelDelegate
 #include "../../../../../chrome/browser/ui/browser.cc"  // NOLINT
+#undef BrowserLocationBarModelDelegate
 #undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserCommandController

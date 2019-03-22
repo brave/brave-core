@@ -30,6 +30,8 @@ source_set("ui") {
     "omnibox/brave_omnibox_client.h",
     "toolbar/brave_app_menu_model.cc",
     "toolbar/brave_app_menu_model.h",
+    "toolbar/brave_location_bar_model_delegate.cc",
+    "toolbar/brave_location_bar_model_delegate.h",
     "toolbar/brave_toolbar_actions_model.cc",
     "toolbar/brave_toolbar_actions_model.h",
     "views/brave_layout_provider.cc",

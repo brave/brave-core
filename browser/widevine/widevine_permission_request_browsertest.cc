@@ -96,7 +96,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
   // Check permission is requested again after new navigation.
   observer.bubble_added_ = false;
   EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
-                                     GURL("brave://version/")));
+                                     GURL("chrome://version/")));
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);
@@ -132,7 +132,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
                        CheckOptedInPrefStateForComponent) {
   PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
-   // Before we allow, opted in should be false
+  // Before we allow, opted in should be false
   EXPECT_FALSE(prefs->GetBoolean(kWidevineOptedIn));
 
   GetPermissionRequestManager()->set_auto_response_for_test(
@@ -186,7 +186,7 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
   ScriptTriggerWidevinePermissionRequestBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
-   void SetUpOnMainThread() override {
+  void SetUpOnMainThread() override {
     CertVerifierBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
     // Chromium allows the API under test only on HTTPS domains.
@@ -204,13 +204,13 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
     GetPermissionRequestManager()->RemoveObserver(&observer);
   }
 
-   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
     command_line->AppendSwitchASCII(
         "enable-blink-features",
         "EncryptedMediaEncryptionSchemeQuery");
   }
 
-   content::WebContents* active_contents() {
+  content::WebContents* active_contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
@@ -227,7 +227,7 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
     observer.added_count_ = 0;
   }
 
-  protected:
+ protected:
   void SetUpMockCertVerifierForHttpsServer(net::CertStatus cert_status,
                                            int net_result) {
     scoped_refptr<net::X509Certificate> cert(https_server_.GetCertificate());
