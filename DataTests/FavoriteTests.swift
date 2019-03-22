@@ -44,6 +44,7 @@ class FavoriteTests: CoreDataTestCase {
     func testEditFavoriteURL() {
         let url = "http://brave.com"
         let newUrl = "http://updated.example.com"
+        let newTitle = "newtitle"
         
         let object = createAndWait(url: URL(string: url), title: "title")
         
@@ -51,7 +52,7 @@ class FavoriteTests: CoreDataTestCase {
         XCTAssertEqual(object.url, url)
         
         backgroundSaveAndWaitForExpectation {
-            object.update(customTitle: nil, url: newUrl)
+            object.update(customTitle: newTitle, url: newUrl)
         }
         // Make sure only one record was added to DB
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
