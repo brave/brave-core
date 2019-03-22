@@ -5,6 +5,7 @@
 
 #include "base/path_service.h"
 #include "base/strings/pattern.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -59,7 +60,7 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
 
   // Check loading |url| in private window is redirected to normal
   // window.
-  void TestURLIsNotLoadedInPrivateWindow(const GURL& url) {
+  void TestURLIsNotLoadedInPrivateWindow(const std::string& url) {
     Browser* private_browser = CreateIncognitoBrowser(nullptr);
     TabStripModel* private_model = private_browser->tab_strip_model();
 
@@ -73,12 +74,16 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     browser()->tab_strip_model()->AddObserver(this);
 
     // Load url to private window.
-    NavigateParams params(private_browser, url, ui::PAGE_TRANSITION_TYPED);
+    NavigateParams params(
+        private_browser, GURL(url), ui::PAGE_TRANSITION_TYPED);
     Navigate(&params);
 
     browser()->tab_strip_model()->RemoveObserver(this);
 
-    EXPECT_EQ(url, active_contents()->GetVisibleURL());
+    EXPECT_STREQ(url.c_str(),
+                 base::UTF16ToUTF8(browser()->location_bar_model()
+                      ->GetFormattedFullURL()).c_str());
+    // EXPECT_EQ(url, active_contents()->GetVisibleURL());
     EXPECT_EQ(2, browser()->tab_strip_model()->count());
     // Private window stays as initial state.
     EXPECT_EQ("about:blank",
@@ -232,15 +237,15 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 // window.
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        SettingsPageIsNotAllowedInPrivateWindow) {
-  TestURLIsNotLoadedInPrivateWindow(GURL("brave://settings/"));
+  TestURLIsNotLoadedInPrivateWindow("brave://settings");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        SyncPageIsNotAllowedInPrivateWindow) {
-  TestURLIsNotLoadedInPrivateWindow(GURL("brave://sync/"));
+  TestURLIsNotLoadedInPrivateWindow("brave://sync");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        RewardsPageIsNotAllowedInPrivateWindow) {
-  TestURLIsNotLoadedInPrivateWindow(GURL("brave://rewards/"));
+  TestURLIsNotLoadedInPrivateWindow("brave://rewards");
 }

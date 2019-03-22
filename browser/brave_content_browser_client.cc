@@ -92,25 +92,14 @@ bool HandleURLOverrideRewrite(GURL* url,
 
 bool HandleURLReverseOverrideRewrite(GURL* url,
                              content::BrowserContext* browser_context) {
-  if (url->host() == chrome::kChromeUIWelcomeHost ||
-      url->host() == chrome::kChromeUISyncHost) {
-    GURL::Replacements replacements;
-    replacements.SetSchemeStr(kBraveUIScheme);
-    *url = url->ReplaceComponents(replacements);
+  if (HandleURLOverrideRewrite(url, browser_context))
     return true;
-  }
 
   return false;
 }
 
 bool HandleURLRewrite(GURL* url,
                       content::BrowserContext* browser_context) {
-  if (url->SchemeIs(kBraveUIScheme)) {
-    GURL::Replacements replacements;
-    replacements.SetSchemeStr(content::kChromeUIScheme);
-    *url = url->ReplaceComponents(replacements);
-  }
-
   if (HandleURLOverrideRewrite(url, browser_context))
     return true;
 
