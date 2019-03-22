@@ -83,16 +83,11 @@ extension Device {
         }
         
         if isCurrentDevice {
-            Sync.shared.leaveSyncGroup(sendToSync: false)
+            Sync.shared.leaveSyncGroupInternal(sendToSync: false, context: .existing(context))
         } else {
             context.delete(self)
             if save { DataController.save(context: context) }
         }
-    }
-    
-    class func deleteAll() {
-        sharedCurrentDevice = nil
-        Device.deleteAll(includesPropertyValues: false)
     }
 }
 

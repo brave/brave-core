@@ -470,18 +470,22 @@ extension Bookmark {
         if !isFolder { return }
         
         var allBookmarks = [Bookmark]()
-        allBookmarks.append(self)
         
         DataController.perform { context in
-            if let allNestedBookmarks = Bookmark.getRecursiveChildren(forFolderUUID: self.syncUUID, context: context) {
-                log.warning("All nested bookmarks of :\(String(describing: self.title)) folder is nil")
-                
+            guard let bookmarkOnCorrectContext = context.object(with: self.objectID) as? Bookmark else {
+                return
+            }
+            allBookmarks.append(bookmarkOnCorrectContext)
+            
+            let uuid = bookmarkOnCorrectContext.syncUUID
+            
+            if let allNestedBookmarks = Bookmark.getRecursiveChildren(forFolderUUID: uuid, context: context) {
                 allBookmarks.append(contentsOf: allNestedBookmarks)
             }
             
             Sync.shared.sendSyncRecords(action: .delete, records: allBookmarks)
             
-            self.deleteInternal(context: .existing(context))
+            bookmarkOnCorrectContext.deleteInternal(context: .existing(context))
         }
     }
 }
