@@ -121,6 +121,9 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
     // MARK: Update
     
     public func update(customTitle: String?, url: String?) {
+        // Title can't be empty, except when coming from Sync
+        let isTitleEmpty = customTitle?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true
+        if customTitle == nil || isTitleEmpty { return }
         updateInternal(customTitle: customTitle, url: url)
     }
     
@@ -313,10 +316,8 @@ extension Bookmark {
                 return
             }
             
-            if let ct = customTitle, !ct.isEmpty {
-                bookmarkToUpdate.customTitle = ct
-                bookmarkToUpdate.title = ct
-            }
+            bookmarkToUpdate.customTitle = customTitle
+            bookmarkToUpdate.title = customTitle
             
             if let u = url, !u.isEmpty {
                 bookmarkToUpdate.url = url
