@@ -20,7 +20,7 @@ TEST(MetricsUtilTest, DefaultValueTest) {
 
   env->SetVar("CHROME_VERSION_EXTRA", LINUX_CHANNEL_BETA);
   EXPECT_EQ(version_info::Channel::BETA, chrome::GetChannel());
-  EXPECT_FALSE(GetDefaultPrefValueForMetricsReporting());
+  EXPECT_TRUE(GetDefaultPrefValueForMetricsReporting());
 
   env->SetVar("CHROME_VERSION_EXTRA", LINUX_CHANNEL_DEV);
   EXPECT_EQ(version_info::Channel::DEV, chrome::GetChannel());
