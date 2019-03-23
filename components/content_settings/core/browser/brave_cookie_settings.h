@@ -8,10 +8,14 @@
 
 #include "components/content_settings/core/browser/cookie_settings.h"
 
+class HostContentSettingsMap;
+
 namespace content_settings {
 
 class BraveCookieSettings : public CookieSettings {
  public:
+  using CookieSettingsBase::IsCookieAccessAllowed;
+
   BraveCookieSettings(HostContentSettingsMap* host_content_settings_map,
                       PrefService* prefs,
                       const char* extension_scheme = kDummyExtensionScheme);
@@ -27,9 +31,19 @@ class BraveCookieSettings : public CookieSettings {
                         const GURL& tab_url,
                         content_settings::SettingSource* source,
                         ContentSetting* cookie_setting) const;
+
+  // Should be used by default to gate access to cookies and other storage APIs
   bool IsCookieAccessAllowed(const GURL& url,
                              const GURL& first_party_url,
                              const GURL& tab_url) const;
+
+  bool ShouldStoreState(HostContentSettingsMap* map,
+                             int render_process_id,
+                             int render_frame_id,
+                             const GURL& url,
+                             const GURL& first_party_url,
+                             const GURL& tab_url) const;
+
   bool GetAllowGoogleAuth() const {
     return allow_google_auth_;
   }

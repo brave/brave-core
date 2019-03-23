@@ -24,6 +24,8 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
+#include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
@@ -143,6 +145,7 @@ bool BraveContentBrowserClient::AllowAccessCookie(
       BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
           render_process_id, render_frame_id, -1).GetOrigin();
   ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
+
   bool allow_brave_shields =
       brave_shields::IsAllowContentSettingWithIOData(
           io_data, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
@@ -156,10 +159,15 @@ bool BraveContentBrowserClient::AllowAccessCookie(
       brave_shields::kCookies);
   content_settings::BraveCookieSettings* cookie_settings =
       (content_settings::BraveCookieSettings*)io_data->GetCookieSettings();
-  bool allow = !ShouldBlockCookie(allow_brave_shields, allow_1p_cookies,
-                   allow_3p_cookies, first_party, url,
-                   cookie_settings->GetAllowGoogleAuth()) &&
-      cookie_settings->IsCookieAccessAllowed(url, first_party, tab_origin);
+  bool allow = !ShouldBlockCookie(allow_brave_shields,
+                             allow_1p_cookies,
+                             allow_3p_cookies,
+                             first_party,
+                             url,
+                             cookie_settings->GetAllowGoogleAuth()) &&
+          g_brave_browser_process->tracking_protection_service()->ShouldStoreState(cookie_settings,
+              io_data->GetHostContentSettingsMap(), render_process_id,
+              render_frame_id, url, first_party, tab_origin);
   return allow;
 }
 
@@ -212,8 +220,15 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
   }
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
-      url, web_contents_getter, child_id, navigation_data, is_main_frame,
-      page_transition, has_user_gesture, method, headers);
+             url,
+             web_contents_getter,
+             child_id,
+             navigation_data,
+             is_main_frame,
+             page_transition,
+             has_user_gesture,
+             method,
+             headers);
 }
 
 void BraveContentBrowserClient::RegisterOutOfProcessServices(

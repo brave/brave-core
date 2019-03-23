@@ -55,6 +55,8 @@ bool GetDefaultFromResourceIdentifier(const std::string& resource_identifier,
   return false;
 }
 
+}  // namespace
+
 bool IsAllowContentSetting(HostContentSettingsMap* content_settings,
                            const GURL& primary_url,
                            const GURL& secondary_url,
@@ -77,8 +79,6 @@ bool IsAllowContentSetting(HostContentSettingsMap* content_settings,
   }
   return setting == CONTENT_SETTING_ALLOW;
 }
-
-}  // namespace
 
 bool IsAllowContentSettingFromIO(const net::URLRequest* request,
     const GURL& primary_url, const GURL& secondary_url,

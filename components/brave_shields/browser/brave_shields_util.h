@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -20,10 +21,17 @@ struct Referrer;
 }
 
 class GURL;
+class HostContentSettingsMap;
 class Profile;
 class ProfileIOData;
 
 namespace brave_shields {
+
+bool IsAllowContentSetting(HostContentSettingsMap* content_settings,
+                           const GURL& primary_url,
+                           const GURL& secondary_url,
+                           ContentSettingsType setting_type,
+                           const std::string& resource_identifier);
 
 bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
     const GURL& primary_url, const GURL& secondary_url,

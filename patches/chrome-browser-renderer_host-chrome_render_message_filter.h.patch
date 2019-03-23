@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/renderer_host/chrome_render_message_filter.h b/chrome/browser/renderer_host/chrome_render_message_filter.h
+index 9872dcb88abb2440e2bd0faba98e3a23db037493..0d4b29681ef52f4d916208b3c98a0d5af5490098 100644
+--- a/chrome/browser/renderer_host/chrome_render_message_filter.h
++++ b/chrome/browser/renderer_host/chrome_render_message_filter.h
+@@ -16,6 +16,7 @@
+ #include "extensions/buildflags/buildflags.h"
+ #include "ppapi/buildflags/buildflags.h"
+ 
++class BraveRenderMessageFilter;
+ class GURL;
+ class Profile;
+ 
+@@ -43,6 +44,7 @@ class ChromeRenderMessageFilter : public content::BrowserMessageFilter {
+                                 content::BrowserThread::ID* thread) override;
+ 
+  private:
++  friend class BraveRenderMessageFilter;
+   friend class content::BrowserThread;
+   friend class base::DeleteHelper<ChromeRenderMessageFilter>;
+ 

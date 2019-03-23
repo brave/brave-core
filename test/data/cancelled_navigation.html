@@ -1,0 +1,25 @@
+<script>
+document.cookie = "1=1";
+
+function IsIntialCookieAvailable() {
+  try {  
+    return document.cookie.length != 0;
+  } catch (e) {
+    return false;
+  }
+}
+
+function StartNavigation(url) {
+	window.location.href = url;
+}
+
+function TryCookiesAfterCancelledNavigation() {
+  try {
+    document.cookie = "2=2";
+    return document.cookie.length != 0;
+  } catch (e) {
+    return false;
+  }
+}
+
+</script>

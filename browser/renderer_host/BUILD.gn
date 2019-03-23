@@ -1,8 +1,21 @@
+import("//brave/components/brave_shields/browser/buildflags/buildflags.gni")
+
 source_set("renderer_host") {
+  public_deps = [
+    "//brave/components/brave_shields/browser/buildflags",
+  ]
+
   sources = [
     "brave_navigation_ui_data.cc",
     "brave_navigation_ui_data.h",
   ]
+
+  if (brave_stp_enabled) {
+    sources += [
+      "brave_render_message_filter.cc",
+      "brave_render_message_filter.h",
+    ]
+  }
 
   deps = [
     "//brave/browser/tor",

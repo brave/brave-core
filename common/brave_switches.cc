@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -18,13 +19,15 @@ const char kDisableBraveRewardsExtension[] = "disable-brave-rewards-extension";
 const char kDisableBraveUpdate[] = "disable-brave-update";
 
 // This switch disables the ChromeGoogleURLTrackerClient
-const char kDisableChromeGoogleURLTrackingClient[] = "disable-chrome-google-url-tracking-client";
+const char kDisableChromeGoogleURLTrackingClient[] =
+  "disable-chrome-google-url-tracking-client";
 
 // Allows disabling the PDFJS extension.
 const char kDisablePDFJSExtension[] = "disable-pdfjs-extension";
 
 // Allows disabling the Tor client updater extension.
-const char kDisableTorClientUpdaterExtension[] = "disable-tor-client-updater-extension";
+const char kDisableTorClientUpdaterExtension[] =
+  "disable-tor-client-updater-extension";
 
 // Allows disabling the WebTorrent extension.
 const char kDisableWebTorrentExtension[] = "disable-webtorrent-extension";
@@ -47,5 +50,9 @@ const char kDisableMachineId[] = "disable-machine-id";
 // WARNING! Use ONLY if your hard drive is encrypted or if you know
 // what you are doing.
 const char kDisableEncryptionWin[] = "disable-encryption-win";
+
+// This enables smart tracking protection
+const char kEnableSmartTrackingProtection[] =
+    "enable-smart-tracking-protection";
 
 }  // namespace switches

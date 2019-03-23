@@ -1,4 +1,10 @@
+import("//brave/components/brave_shields/browser/buildflags/buildflags.gni")
+
 source_set("brave_shields") {
+  public_deps = [
+    "buildflags",
+  ]
+
   sources = [
     "ad_block_base_service.cc",
     "ad_block_base_service.h",
@@ -40,6 +46,13 @@ source_set("brave_shields") {
     "tracking_protection_service.cc",
     "tracking_protection_service.h",
   ]
+
+  if (brave_stp_enabled) {
+    sources += [
+      "tracking_protection_helper.cc",
+      "tracking_protection_helper.h",
+    ]
+  }
 
   deps = [
     "//brave/content:common",
