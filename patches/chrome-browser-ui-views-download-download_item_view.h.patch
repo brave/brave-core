@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/download/download_item_view.h b/chrome/browser/ui/views/download/download_item_view.h
-index daa83d3d0749754b7e485d33283cb2897dcb7f56..5f0a5f409668702af06fc58c5715057188a1c8fb 100644
+index 90842a870ada7b54b6d85e48eca7a98a73f0642b..f1cd0a0ad24914d3d61cc5674d368703871fb54b 100644
 --- a/chrome/browser/ui/views/download/download_item_view.h
 +++ b/chrome/browser/ui/views/download/download_item_view.h
 @@ -132,6 +132,7 @@ class DownloadItemView : public views::InkDropHostView,
