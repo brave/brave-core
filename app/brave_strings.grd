@@ -906,10 +906,10 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
 
       <if expr="not is_android">
         <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_BUBBLE_TEXT" desc="The text of a bubble that confirms users allows integrating the accessibility labels service of Brave to Brave.">
-          If an image doesn’t have a useful description, Brave will try to provide one for you. Images are scanned by Brave. You can turn this off in settings at any time.
+          If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave. You can turn this off in settings at any time.
         </message>
         <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_BUBBLE_TEXT_ONCE" desc="The text of a bubble that confirms users allows integrating the accessibility labels service of Brave to Brave just once.">
-          If an image doesn’t have a useful description, Brave will try to provide one for you. Images are scanned by Brave.
+          If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.
         </message>
         <message name="IDS_CONTENT_CONTEXT_SPELLING_BUBBLE_TEXT" desc="The text of a bubble that confirms users allows integrating the spelling service of Brave to Brave.">
           Brave can provide smarter spell-checking by sending what you type in the browser to Brave servers, allowing you to use the same spell-checking technology used by Brave search.
