@@ -11,9 +11,9 @@
 
 bool GetDefaultPrefValueForMetricsReporting() {
   switch (chrome::GetChannel()) {
-    case version_info::Channel::STABLE:  // fall through
-    case version_info::Channel::BETA:
+    case version_info::Channel::STABLE:
       return false;
+    case version_info::Channel::BETA:    // fall through
     case version_info::Channel::DEV:     // fall through
     case version_info::Channel::CANARY:
       return true;
