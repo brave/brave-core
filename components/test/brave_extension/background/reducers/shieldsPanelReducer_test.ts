@@ -307,6 +307,7 @@ describe('braveShieldsPanelReducer', () => {
           details
         })).toEqual({
           currentWindowId: -1,
+          theme: 'Light',
           tabs: {
             [tabId]: {
               adsBlocked: 0,

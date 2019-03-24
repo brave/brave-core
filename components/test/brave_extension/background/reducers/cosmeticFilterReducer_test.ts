@@ -305,6 +305,7 @@ describe('cosmeticFilterReducer', () => {
             details
           })).toEqual({
             currentWindowId: -1,
+            theme: 'Light',
             tabs: {
               [tabId]: {
                 adsBlocked: 0,

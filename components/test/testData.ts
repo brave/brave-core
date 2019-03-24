@@ -7,6 +7,7 @@ import { defaultState as rewardsData } from '../../components/brave_rewards/reso
 import { defaultState as adblockData } from '../../components/brave_adblock_ui/storage'
 import { defaultState as syncData } from '../../components/brave_sync/ui/storage'
 import { Tab } from '../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
+import { ThemeType } from '../brave_extension/extension/brave_extension/types/other/theme'
 import { BlockDetails } from '../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
 import * as deepFreeze from 'deep-freeze-node'
 
@@ -180,6 +181,11 @@ export const getMockChrome = () => {
     },
     extension: {
       inIncognitoContext: new ChromeEvent()
+    },
+    braveTheme: {
+      getBraveThemeType: function (cb: (themeType: ThemeType) => void) {
+        cb('Light')
+      }
     }
   }
 }
@@ -188,12 +194,14 @@ export const initialState = deepFreeze({
   cosmeticFilter: {
     currentWindowId: -1,
     tabs: {},
-    windows: {}
+    windows: {},
+    theme: 'Light'
   },
   runtime: {},
   shieldsPanel: {
     currentWindowId: -1,
     tabs: {},
-    windows: {}
+    windows: {},
+    theme: 'Light'
   }
 })
