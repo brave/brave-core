@@ -89,14 +89,18 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
   }
 
   void AssertTagExists(const std::string& tag, bool expected_exists) const {
-    bool exists1 = g_brave_browser_process->ad_block_service()
-        ->GetAdBlockClientForTest()
-        ->tagExists(tag);
-    bool exists2 = g_brave_browser_process->ad_block_regional_service()
-        ->GetAdBlockClientForTest()
-        ->tagExists(tag);
-    ASSERT_EQ(exists1, exists2);
-    ASSERT_EQ(exists1, expected_exists);
+    bool exists_default = g_brave_browser_process->ad_block_service()
+                              ->GetAdBlockClientForTest()
+                              ->tagExists(tag);
+    ASSERT_EQ(exists_default, expected_exists);
+
+    for (const auto& regional_service :
+         g_brave_browser_process->ad_block_regional_service_manager()
+             ->regional_services_) {
+      bool exists_regional =
+          regional_service.second->GetAdBlockClientForTest()->tagExists(tag);
+      ASSERT_EQ(exists_regional, expected_exists);
+    }
   }
 
   void InitEmbeddedTestServer() {
@@ -168,8 +172,17 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
     if (!ad_block_extension)
       return false;
 
-    g_brave_browser_process->ad_block_regional_service()->OnComponentReady(
-        ad_block_extension->id(), ad_block_extension->path(), "");
+    g_brave_browser_process->ad_block_regional_service_manager()
+        ->EnableFilterList(uuid, true);
+    EXPECT_EQ(g_brave_browser_process->ad_block_regional_service_manager()
+                  ->regional_services_.size(),
+              1ULL);
+
+    auto regional_service =
+        g_brave_browser_process->ad_block_regional_service_manager()
+            ->regional_services_.find(uuid);
+    regional_service->second->OnComponentReady(ad_block_extension->id(),
+                                               ad_block_extension->path(), "");
     WaitForRegionalAdBlockServiceThread();
 
     return true;
@@ -192,9 +205,10 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
     return true;
   }
 
-  bool StartAdBlockRegionalService() {
-    g_brave_browser_process->ad_block_regional_service()->Start();
-    if (!g_brave_browser_process->ad_block_regional_service()->IsInitialized())
+  bool StartAdBlockRegionalServices() {
+    g_brave_browser_process->ad_block_regional_service_manager()->Start();
+    if (!g_brave_browser_process->ad_block_regional_service_manager()
+             ->IsInitialized())
       return false;
     return true;
   }
@@ -212,7 +226,8 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
 
   void WaitForRegionalAdBlockServiceThread() {
     scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
-        g_brave_browser_process->ad_block_regional_service()->GetTaskRunner()));
+        g_brave_browser_process->ad_block_regional_service_manager()
+            ->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
 
@@ -321,13 +336,13 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
   g_browser_process->SetApplicationLocale("fr");
   ASSERT_EQ(g_browser_process->GetApplicationLocale(), "fr");
 
-  ASSERT_TRUE(StartAdBlockRegionalService());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   SetRegionalComponentIdAndBase64PublicKeyForTest(
       kRegionalAdBlockComponentTestId,
       kRegionalAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
+  ASSERT_TRUE(StartAdBlockRegionalServices());
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
@@ -350,13 +365,13 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   g_browser_process->SetApplicationLocale("fr");
   ASSERT_EQ(g_browser_process->GetApplicationLocale(), "fr");
 
-  ASSERT_TRUE(StartAdBlockRegionalService());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   SetRegionalComponentIdAndBase64PublicKeyForTest(
       kRegionalAdBlockComponentTestId,
       kRegionalAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
+  ASSERT_TRUE(StartAdBlockRegionalServices());
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
@@ -531,13 +546,13 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   g_browser_process->SetApplicationLocale("fr");
   ASSERT_EQ(g_browser_process->GetApplicationLocale(), "fr");
 
-  ASSERT_TRUE(StartAdBlockRegionalService());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   SetRegionalComponentIdAndBase64PublicKeyForTest(
       kRegionalAdBlockComponentTestId,
       kRegionalAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
+  ASSERT_TRUE(StartAdBlockRegionalServices());
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
@@ -551,7 +566,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   EXPECT_TRUE(as_expected);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
-
 
 // Load a page that references a tracker from an untrusted domain, but
 // has no specific exception rule in ad-block.
