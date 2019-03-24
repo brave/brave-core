@@ -48,6 +48,7 @@ const updateShieldsIconImage = (state: State) => {
 const updateShieldsIcon = (state: State) => {
   updateShieldsIconBadgeText(state)
   updateShieldsIconImage(state)
+  shieldsPanelState.updateThemeType(state)
 }
 
 const focusedWindowChanged = (state: State, windowId: number): State => {
@@ -68,7 +69,7 @@ const updateActiveTab = (state: State, windowId: number, tabId: number): State =
   return shieldsPanelState.updateActiveTab(state, windowId, tabId)
 }
 
-export default function shieldsPanelReducer (state: State = { tabs: {}, windows: {}, currentWindowId: -1 }, action: Actions) {
+export default function shieldsPanelReducer (state: State = { tabs: {}, windows: {}, currentWindowId: -1, theme: 'Light' }, action: Actions) {
   switch (action.type) {
     case webNavigationTypes.ON_COMMITTED: {
       if (action.isMainFrame) {

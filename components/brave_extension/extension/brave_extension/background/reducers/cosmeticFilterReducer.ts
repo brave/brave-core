@@ -42,7 +42,9 @@ const updateActiveTab = (state: State, windowId: number, tabId: number): State =
 export default function cosmeticFilterReducer (state: State = {
   tabs: {},
   windows: {},
-  currentWindowId: -1 },
+  currentWindowId: -1,
+  theme: 'Light'
+},
   action: Actions) {
   switch (action.type) {
     case webNavigationTypes.ON_COMMITTED: {

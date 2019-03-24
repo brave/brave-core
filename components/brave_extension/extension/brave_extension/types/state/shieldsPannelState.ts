@@ -4,6 +4,7 @@
 
 import { BlockOptions, BlockTypes, BlockFPOptions, BlockCookiesOptions } from '../other/blockTypes'
 import { NoScriptInfo } from '../other/noScriptInfo'
+import { ThemeType } from '../other/theme'
 
 export interface Tab {
   ads: BlockOptions
@@ -43,6 +44,7 @@ export interface State {
   currentWindowId: number
   tabs: Tabs
   windows: Windows
+  theme: ThemeType
 }
 
 export interface GetActiveTabId {
@@ -91,4 +93,8 @@ export interface ResetNoScriptInfo {
 
 export interface ChangeAllNoScriptSettings {
   (state: State, tabId: number, shouldBlock: boolean): State
+}
+
+export interface UpdateThemeType {
+  (state: State): State
 }

@@ -5,8 +5,10 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-import Theme from 'brave-ui/theme/brave-default'
+import shieldsDarkTheme from 'brave-ui/theme/shields-dark'
+import shieldsLightTheme from 'brave-ui/theme/shields-light'
 import { ThemeProvider } from 'brave-ui/theme'
+import { ThemeType } from './types/other/theme'
 
 import { Provider } from 'react-redux'
 import { Store } from 'react-chrome-redux'
@@ -18,13 +20,14 @@ chrome.storage.local.get('state', (obj) => {
   const store: any = new Store({
     portName: 'BRAVE'
   })
-
   store.ready()
     .then(() => {
       const mountNode: HTMLElement | null = document.querySelector('#root')
+      const theme: ThemeType = store.state.shieldsPanel.theme
+      const getTheme = theme === 'Dark' ? shieldsDarkTheme : shieldsLightTheme
       ReactDOM.render(
         <Provider store={store}>
-          <ThemeProvider theme={Theme}>
+          <ThemeProvider theme={getTheme}>
             <BraveShields />
           </ThemeProvider>
         </Provider>,

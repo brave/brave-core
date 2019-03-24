@@ -98,6 +98,9 @@ interface BlockDetails {
   tabId: number
   subresource: string
 }
+
+type ThemeType = 'Light' | 'Dark'
+
 declare namespace chrome.tabs {
   const setAsync: any
   const getAsync: any
@@ -116,4 +119,8 @@ declare namespace chrome.braveShields {
   const allowScriptsOnce: any
   const javascript: any
   const plugins: any
+}
+
+declare namespace chrome.braveTheme {
+  const getBraveThemeType: (callback: (themeType: ThemeType) => void) => void
 }

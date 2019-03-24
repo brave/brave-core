@@ -4,10 +4,18 @@
 
 import * as shieldState from '../types/state/shieldsPannelState'
 import { unique } from '../helpers/arrayUtils'
+import { ThemeType } from '../types/other/theme'
 
 export const getActiveTabId: shieldState.GetActiveTabId = (state) => state.windows[state.currentWindowId]
 
 export const getActiveTabData: shieldState.GetActiveTabData = (state) => state.tabs[getActiveTabId(state)]
+
+export const updateThemeType: shieldState.UpdateThemeType = (state) => {
+  chrome.braveTheme.getBraveThemeType((themeType: ThemeType) => {
+    state.theme = themeType
+  })
+  return { ...state }
+}
 
 export const updateActiveTab: shieldState.UpdateActiveTab = (state, windowId, tabId) => {
   let windows: shieldState.Windows = { ...state.windows } || {}
