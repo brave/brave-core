@@ -168,9 +168,6 @@
       <message name="IDS_ADBLOCK_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Total Ads Blocked:</message>
       <message name="IDS_ADBLOCK_CUSTOM_FILTERS_TITLE" desc="Title for custom filters section">Custom Filters</message>
       <message name="IDS_ADBLOCK_CUSTOM_FILTERS_INSTRUCTIONS" desc="Instructions for custom filters section">One per line, a filter is described in Adblock Plus filter syntax</message>
-      <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED_TITLE" desc="Title for if geographic regional ad-blocking is enabled">Regional Ad Block:</message>
-      <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED" desc="Geographic regional ad-blocking is enabled">Enabled</message>
-      <message name="IDS_ADBLOCK_REGIONAL_AD_BLOCK_DISABLED" desc="Geographic regional ad-blocking is disabled">Disabled</message>
 
       <!-- WebUI welcome page resources -->
       <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_TITLE" desc="Welcome message title">Brave the new Internet</message>

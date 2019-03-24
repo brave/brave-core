@@ -17,9 +17,7 @@ describe('adblockReducer', () => {
       },
       stats: {
         adsBlockedStat: NaN,
-        numBlocked: 0,
-        regionalAdBlockEnabled: NaN,
-        regionalAdBlockTitle: undefined
+        numBlocked: 0
       }
     })
   })
@@ -37,9 +35,7 @@ describe('adblockReducer', () => {
         },
         stats: {
           adsBlockedStat: NaN,
-          numBlocked: 0,
-          regionalAdBlockEnabled: NaN,
-          regionalAdBlockTitle: undefined
+          numBlocked: 0
         }
       })
     })

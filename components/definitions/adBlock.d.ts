@@ -11,8 +11,6 @@ declare namespace AdBlock {
     stats: {
       adsBlockedStat?: number
       numBlocked: number
-      regionalAdBlockEnabled: boolean
-      regionalAdBlockTitle?: string
     }
   }
 

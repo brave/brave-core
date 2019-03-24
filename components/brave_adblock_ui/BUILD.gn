@@ -12,7 +12,6 @@ transpile_web_ui("brave_adblock_ui") {
     "components/app.tsx",
     "components/customFilters.tsx",
     "components/numBlockedStat.tsx",
-    "components/regionalAdBlockEnabled.tsx",
     "constants/adblock_types.ts",
     "reducers/adblock_reducer.ts",
   ]

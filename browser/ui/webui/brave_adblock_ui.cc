@@ -126,21 +126,11 @@ BraveAdblockUI::~BraveAdblockUI() {
 void BraveAdblockUI::CustomizeWebUIProperties(
     content::RenderViewHost* render_view_host) {
   DCHECK(IsSafeToSetWebUIProperties());
-
   Profile* profile = Profile::FromWebUI(web_ui());
   PrefService* prefs = profile->GetPrefs();
   if (render_view_host) {
     render_view_host->SetWebUIProperty(
         "adsBlockedStat", std::to_string(prefs->GetUint64(kAdsBlocked)));
-#if 0
-    render_view_host->SetWebUIProperty(
-        "regionalAdBlockEnabled",
-        std::to_string(g_brave_browser_process->ad_block_regional_service()
-                           ->IsInitialized()));
-    render_view_host->SetWebUIProperty(
-        "regionalAdBlockTitle",
-        g_brave_browser_process->ad_block_regional_service()->GetTitle());
-#endif
   }
 }
 
