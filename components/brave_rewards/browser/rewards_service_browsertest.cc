@@ -202,6 +202,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
 
   RewardsServiceImpl* rewards_service() { return rewards_service_; }
 
+  MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetProduction, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
   MOCK_METHOD1(OnGetShortRetries, void(bool));
