@@ -111,6 +111,11 @@ class SyncSettingsTableViewController: UITableViewController {
         let actionShet = UIAlertController(title: device.name, message: nil, preferredStyle: .actionSheet)
         
         let removeAction = UIAlertAction(title: Strings.SyncRemoveDeviceAction, style: .destructive) { _ in
+            if !DeviceInfo.hasConnectivity() {
+                self.present(SyncAlerts.noConnection, animated: true)
+                return
+            }
+            
             var alertType = DeviceRemovalType.otherDevice
             
             if deviceCount == 1 {
