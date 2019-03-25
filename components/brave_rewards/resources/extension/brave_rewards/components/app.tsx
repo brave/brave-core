@@ -43,8 +43,8 @@ export class RewardsPanel extends React.Component<Props, State> {
     chrome.braveRewards.getACEnabled(((enabled: boolean) => {
       this.props.actions.onEnabledAC(enabled)
     }))
-    chrome.braveRewards.getRecurringDonations((siteList: RewardsExtension.RecurringDonation) => {
-      this.props.actions.onRecurringDonations(siteList)
+    chrome.braveRewards.getRecurringDonations((donations: RewardsExtension.RecurringDonation) => {
+      this.props.actions.onRecurringDonations(donations)
     })
   }
 

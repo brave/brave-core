@@ -287,20 +287,6 @@
             }
           }
         ]
-      },
-      {
-        "name": "onPublisherDonationAmounts",
-        "type": "function",
-        "description": "Fired when publisher donation info is retreived",
-        "parameters": [
-          {
-            "name": "amounts",
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
-          }
-        ]
       }
     ],
     "functions": [
@@ -513,7 +499,7 @@
             "name": "callback",
             "parameters": [
               {
-                "name": "siteList",
+                "name": "donations",
                 "type": "any"
               }
             ]
@@ -521,13 +507,23 @@
         ]
       },
       {
-        "name": "getPublisherDonationAmounts",
+        "name": "getPublisherBanner",
         "type": "function",
-        "description": "Retreives custom donation amounts",
+        "description": "Retrieves data for publisher banner",
         "parameters": [
           {
             "name": "publisher_key",
             "type": "string"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "banner",
+                "type": "any"
+              }
+            ]
           }
         ]
       }

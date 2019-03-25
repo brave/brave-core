@@ -63,10 +63,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   void OnPendingContributionSaved(RewardsService* rewards_service,
                                   int result) override;
 
-  void OnPublisherBanner(
-      RewardsService* rewards_service,
-      const brave_rewards::PublisherBanner banner) override;
-
  private:
   Profile* profile_;
 

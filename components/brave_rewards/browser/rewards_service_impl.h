@@ -159,8 +159,10 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& publisher_blob) override;
   void GetContributionAmount(
       const GetContributionAmountCallback& callback) override;
-  void GetPublisherBanner(const std::string& publisher_id) override;
-  void OnPublisherBanner(std::unique_ptr<ledger::PublisherBanner> banner);
+  void GetPublisherBanner(const std::string& publisher_id,
+                          GetPublisherBannerCallback callback) override;
+  void OnPublisherBanner(GetPublisherBannerCallback callback,
+                         const std::string& banner);
   void RemoveRecurring(const std::string& publisher_key) override;
   void UpdateRecurringDonationsList() override;
   void UpdateTipsList() override;
@@ -428,7 +430,6 @@ class RewardsServiceImpl : public RewardsService,
   void ShowNotificationAddFunds(bool sufficient);
 
   // Mojo Proxy methods
-  void OnPublisherBannerMojoProxy(const std::string& banner);
   void OnGetConfirmationsHistory(
       brave_rewards::ConfirmationsHistoryCallback callback,
       const std::string& transactions);

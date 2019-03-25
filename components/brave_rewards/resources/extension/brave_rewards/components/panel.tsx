@@ -353,13 +353,15 @@ export class Panel extends React.Component<Props, State> {
     })
   }
 
-  generateAmounts = () => {
+  generateAmounts = (publisher?: RewardsExtension.Publisher) => {
     const { donationAmounts } = this.props.rewardsPanelData
     const { rates } = this.props.rewardsPanelData.walletProperties
 
-    const amounts = (!donationAmounts || donationAmounts.length === 0)
+    const publisherKey = publisher && publisher.publisher_key
+
+    const amounts = (!publisherKey || !donationAmounts || !donationAmounts[publisherKey])
       ? this.defaultDonationAmounts
-      : donationAmounts
+      : donationAmounts[publisherKey]
 
     return amounts.map((value: number) => {
       return {
@@ -399,7 +401,9 @@ export class Panel extends React.Component<Props, State> {
     const notificationClick = this.getNotificationClickEvent(notificationType, notificationId)
     const { currentGrant } = this.props.rewardsPanelData
     const defaultContribution = this.getContribution(publisher)
-    const donationAmounts = defaultContribution !== '0.0' ? this.generateAmounts() : undefined
+    const donationAmounts = defaultContribution !== '0.0'
+      ? this.generateAmounts(publisher)
+      : undefined
 
     const pendingTotal = parseFloat(
       (pendingContributionTotal || 0).toFixed(1))

@@ -6,8 +6,11 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_REWARDS_API_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_REWARDS_API_H_
 
+#include <memory>
+
 #include "extensions/browser/extension_function.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
+#include "brave/components/brave_rewards/browser/publisher_banner.h"
 
 namespace extensions {
 namespace api {
@@ -193,16 +196,20 @@ class BraveRewardsGetRecurringDonationsFunction :
         std::unique_ptr<brave_rewards::ContentSiteList> list);
 };
 
-class BraveRewardsGetPublisherDonationAmountsFunction :
+class BraveRewardsGetPublisherBannerFunction :
 public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION(
-      "braveRewards.getPublisherDonationAmounts", UNKNOWN)
+      "braveRewards.getPublisherBanner", UNKNOWN)
 
  protected:
-  ~BraveRewardsGetPublisherDonationAmountsFunction() override;
+  ~BraveRewardsGetPublisherBannerFunction() override;
 
   ResponseAction Run() override;
+
+ private:
+  void OnPublisherBanner(
+      std::unique_ptr<::brave_rewards::PublisherBanner> banner);
 };
 
 }  // namespace api

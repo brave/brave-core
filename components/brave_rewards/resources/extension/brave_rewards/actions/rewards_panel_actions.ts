@@ -123,7 +123,7 @@ export const onRecurringDonations = (result: RewardsExtension.RecurringDonation)
   result
 })
 
-export const onPublisherDonationAmounts = (amounts: number[]) =>
-  action(types.ON_PUBLISHER_DONATION_AMOUNTS, {
-    amounts
+export const onPublisherBanner = (banner: RewardsExtension.PublisherBanner) =>
+  action(types.ON_PUBLISHER_BANNER, {
+    banner
   })

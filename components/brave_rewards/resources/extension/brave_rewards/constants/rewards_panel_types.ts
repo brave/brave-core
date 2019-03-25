@@ -33,7 +33,7 @@ export const enum types {
   SAVE_RECURRING_DONATION = '@@rewards_panel/SAVE_RECURRING_DONATION',
   REMOVE_RECURRING_DONATION = '@@rewards_panel/REMOVE_RECURRING_DONATION',
   ON_RECURRING_DONATIONS = '@@rewards_panel/ON_RECURRING_DONATIONS',
-  ON_PUBLISHER_DONATION_AMOUNTS = '@@rewards_panel/ON_PUBLISHER_DONATION_AMOUNTS'
+  ON_PUBLISHER_BANNER = '@@rewards_panel/ON_PUBLISHER_BANNER'
 }
 
 // Note: This declaration must match the RewardsNotificationType enum in

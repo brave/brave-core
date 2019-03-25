@@ -67,9 +67,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnCurrentTips(
       RewardsService* rewards_service,
       brave_rewards::ContentSiteList) {}
-  virtual void OnPublisherBanner(
-      brave_rewards::RewardsService* rewards_service,
-      const brave_rewards::PublisherBanner banner) {}
   virtual void OnRewardsMainEnabled(
       brave_rewards::RewardsService* rewards_service,
       bool rewards_main_enabled) {}

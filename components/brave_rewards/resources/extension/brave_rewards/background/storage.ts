@@ -37,7 +37,7 @@ export const defaultState: RewardsExtension.State = {
   grants: [],
   currentGrant: undefined,
   recurringDonations: [],
-  donationAmounts: []
+  donationAmounts: {}
 }
 
 const cleanData = (state: RewardsExtension.State) => {

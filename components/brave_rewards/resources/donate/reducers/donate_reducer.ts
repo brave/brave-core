@@ -37,7 +37,9 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
         state.publishers = {}
       }
       const publisher: RewardsDonate.Publisher = payload.data
-      state.publishers[publisher.publisherKey] = publisher
+      if (publisher && publisher.publisherKey) {
+        state.publishers[publisher.publisherKey] = publisher
+      }
       break
     }
     case types.GET_WALLET_PROPERTIES:

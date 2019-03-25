@@ -351,14 +351,14 @@ void BraveRewardsGetRecurringDonationsFunction::OnGetRecurringDonations(
   Respond(OneArgument(std::move(result)));
 }
 
-BraveRewardsGetPublisherDonationAmountsFunction::
-~BraveRewardsGetPublisherDonationAmountsFunction() {
+BraveRewardsGetPublisherBannerFunction::
+~BraveRewardsGetPublisherBannerFunction() {
 }
 
 ExtensionFunction::ResponseAction
-BraveRewardsGetPublisherDonationAmountsFunction::Run() {
-  std::unique_ptr<brave_rewards::GetPublisherDonationAmounts::Params> params(
-    brave_rewards::GetPublisherDonationAmounts::Params::Create(*args_));
+BraveRewardsGetPublisherBannerFunction::Run() {
+  std::unique_ptr<brave_rewards::GetPublisherBanner::Params> params(
+    brave_rewards::GetPublisherBanner::Params::Create(*args_));
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
@@ -368,8 +368,42 @@ BraveRewardsGetPublisherDonationAmountsFunction::Run() {
     return RespondNow(Error("Rewards service is not initialized"));
   }
 
-  rewards_service->GetPublisherBanner(params->publisher_key);
-  return RespondNow(NoArguments());
+  rewards_service->GetPublisherBanner(
+      params->publisher_key,
+      base::BindOnce(
+        &BraveRewardsGetPublisherBannerFunction::OnPublisherBanner,
+        this));
+  return RespondLater();
+}
+
+void BraveRewardsGetPublisherBannerFunction::OnPublisherBanner(
+    std::unique_ptr<::brave_rewards::PublisherBanner> banner) {
+  std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
+
+  if (banner) {
+    result->SetString("publisherKey", banner->publisher_key);
+    result->SetString("title", banner->title);
+    result->SetString("name", banner->name);
+    result->SetString("description", banner->description);
+    result->SetString("background", banner->background);
+    result->SetString("logo", banner->logo);
+    result->SetString("provider", banner->provider);
+    result->SetBoolean("verified", banner->verified);
+
+    auto amounts = std::make_unique<base::ListValue>();
+    for (int const& value : banner->amounts) {
+      amounts->AppendInteger(value);
+    }
+    result->SetList("amounts", std::move(amounts));
+
+    auto social = std::make_unique<base::DictionaryValue>();
+    for (auto const& item : banner->social) {
+      social->SetString(item.first, item.second);
+    }
+    result->SetDictionary("social", std::move(social));
+  }
+
+  Respond(OneArgument(std::move(result)));
 }
 
 }  // namespace api
