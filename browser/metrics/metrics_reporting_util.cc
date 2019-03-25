@@ -18,7 +18,7 @@ bool GetDefaultPrefValueForMetricsReporting() {
     case version_info::Channel::CANARY:
       return true;
     case version_info::Channel::UNKNOWN:
-      return true;
+      return false;
     default:
       NOTREACHED();
       return false;
