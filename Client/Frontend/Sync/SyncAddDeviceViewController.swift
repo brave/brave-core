@@ -132,11 +132,7 @@ class SyncAddDeviceViewController: SyncViewController {
     }
     
     private func showInitializationError() {
-        let title = Strings.SyncInitErrorTitle
-        let message = Strings.SyncInitErrorMessage
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
-        self.present(alert, animated: true) {
+        present(SyncAlerts.initializationError, animated: true) {
             Sync.shared.leaveSyncGroup()
         }
     }

@@ -43,7 +43,7 @@ class SyncPairCameraViewController: SyncViewController {
         cameraView.scanCallback = { data in
             
             if !DeviceInfo.hasConnectivity() {
-                self.showNoConnectionAlert()
+                self.present(SyncAlerts.noConnection, animated: true)
                 return
             }
             
