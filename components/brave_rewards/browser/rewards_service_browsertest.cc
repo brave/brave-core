@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -30,7 +31,7 @@ namespace brave_test_resp {
 
 namespace brave_net {
 class BraveURLFetcher : public net::TestURLFetcher {
-  public:
+ public:
   BraveURLFetcher(bool success,
                  const GURL& url,
                  const std::string& results,
@@ -48,19 +49,19 @@ class BraveURLFetcher : public net::TestURLFetcher {
   DISALLOW_COPY_AND_ASSIGN(BraveURLFetcher);
 };
 
-void split(std::vector<std::string>& tmp, std::string query, char delimiter) {
+void split(std::vector<std::string>* tmp, std::string query, char delimiter) {
   std::stringstream ss(query);
   std::string item;
   while (std::getline(ss, item, delimiter)) {
     if (query[0] != '\n') {
-      tmp.push_back(item);
+      tmp->push_back(item);
     }
   }
 }
 
 void BraveURLFetcher::DetermineURLResponsePath(std::string url) {
   std::vector<std::string> tmp;
-  brave_net::split(tmp, url, '/');
+  brave_net::split(&tmp, url, '/');
   if (url.find(braveledger_bat_helper::buildURL(REGISTER_PERSONA, PREFIX_V2,
     braveledger_bat_helper::SERVER_TYPES::LEDGER)) == 0
     && tmp.size() == 6) {
@@ -174,7 +175,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
     // Load rewards page
     ui_test_utils::NavigateToURL(browser(), rewards_url());
     WaitForLoadStop(contents());
-    //opt in and create wallet to enable rewards
+    // opt in and create wallet to enable rewards
     ASSERT_TRUE(ExecJs(contents(),
       "document.querySelector(\"[data-test-id='optInAction']\").click();",
       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
@@ -213,7 +214,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
   // Enable Rewards
   EnableRewards();
   EXPECT_STREQ(contents()->GetLastCommittedURL().spec().c_str(),
-    rewards_url().spec().c_str());
+      // actual url is always chrome://
+      "chrome://rewards/");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleRewards) {
@@ -287,10 +289,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
     "  if (document.querySelector(\"[data-test-id2='autoContribution']\")) {"
     "    if (!toggleClicked) {"
     "      toggleClicked = true;"
-    "      document.querySelector(\"[data-test-id2='autoContribution']\").click();"
+    "      document.querySelector("
+    "          \"[data-test-id2='autoContribution']\").click();"
     "    } else {"
     "      clearInterval(interval);"
-    "      resolve(document.querySelector(\"[data-test-id2='autoContribution']\")"
+    "      resolve(document.querySelector("
+    "          \"[data-test-id2='autoContribution']\")"
     "        .getAttribute(\"data-toggled\") === 'false');"
     "    }"
     "  }"
@@ -441,8 +445,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
   GetReconcileTime();
   RunUntilIdle();
 
-  EXPECT_CALL(*this, OnGetShortRetries(true)); // on
-  EXPECT_CALL(*this, OnGetShortRetries(false)); // off
+  EXPECT_CALL(*this, OnGetShortRetries(true));  // on
+  EXPECT_CALL(*this, OnGetShortRetries(false));  // off
 
   // Short retries - on
   rewards_service()->SetShortRetries(false);
