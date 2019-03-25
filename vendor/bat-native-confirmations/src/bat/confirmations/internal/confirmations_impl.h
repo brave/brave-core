@@ -62,6 +62,8 @@ class ConfirmationsImpl : public Confirmations {
   void ConfirmAd(std::unique_ptr<NotificationInfo> info) override;
 
   // Payout redeemed tokens
+  void UpdateNextTokenRedemptionDate();
+  uint64_t CalculateTokenRedemptionTimeInSeconds();
   void StartPayingOutRedeemedTokens(const uint64_t start_timer_in);
 
   // State
@@ -103,6 +105,7 @@ class ConfirmationsImpl : public Confirmations {
   void StopPayingOutRedeemedTokens();
   bool IsPayingOutRedeemedTokens() const;
   std::unique_ptr<PayoutTokens> payout_tokens_;
+  uint64_t next_token_redemption_date_in_seconds_;
 
   // State
   void OnStateSaved(const Result result);
