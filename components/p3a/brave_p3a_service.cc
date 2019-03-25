@@ -48,11 +48,14 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.P3A.SentAnswersCount",
     "Brave.Sync.Status",
     "DefaultBrowser.State",
-    "Extensions.LoadAll",
-    "Profile.NumberOfProfiles",
-    "Tabs.TabCount",
     "Brave.Importer.ImporterSource",
     "Brave.Shields.UsageStatus",
+    "Brave.Core.LastTimeTorUsed",
+    "Brave.Core.LastTimeIncognitoUsed",
+    "Brave.Core.NumberOfExtensions",
+    "Brave.Core.BookmarksCountOnProfileLoad",
+    "Brave.Core.TabCount",
+    "Brave.Core.WindowCount",
 };
 
 base::TimeDelta GetRandomizedUploadInterval(base::TimeDelta upload_interval,

@@ -25,6 +25,7 @@
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
+#include "brave/components/p3a/p3a_core_metrics.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
@@ -84,6 +85,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   // Create P3A Service early to catch more histograms. The full initialization
   // should be started once browser process impl is ready.
   brave_p3a_service();
+  brave::SetupHistogramsBraveization();
 }
 
 brave_component_updater::BraveComponent::Delegate*

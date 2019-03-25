@@ -28,7 +28,7 @@ class BraveP3AUploader;
 class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
                         public BraveP3ALogStore::LogSerializer {
  public:
-  BraveP3AService(PrefService* local_state);
+  explicit BraveP3AService(PrefService* local_state);
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
