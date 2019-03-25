@@ -17,6 +17,10 @@ bool testing() {
   return ledger::is_testing;
 }
 
+bool debug() {
+  return ledger::is_debug;
+}
+
 }
 
 namespace bat_ledger {
@@ -44,6 +48,11 @@ void BatLedgerServiceImpl::SetProduction(bool is_production) {
   ledger::is_production = is_production;
 }
 
+void BatLedgerServiceImpl::SetDebug(bool is_debug) {
+  DCHECK(!initialized_ || debug());
+  ledger::is_debug = is_debug;
+}
+
 void BatLedgerServiceImpl::SetReconcileTime(int32_t time) {
   DCHECK(!initialized_ || testing());
   ledger::reconcile_time = time;
@@ -60,6 +69,10 @@ void BatLedgerServiceImpl::SetTesting() {
 
 void BatLedgerServiceImpl::GetProduction(GetProductionCallback callback) {
   std::move(callback).Run(ledger::is_production);
+}
+
+void BatLedgerServiceImpl::GetDebug(GetDebugCallback callback) {
+  std::move(callback).Run(ledger::is_debug);
 }
 
 void BatLedgerServiceImpl::GetReconcileTime(GetReconcileTimeCallback callback) {
