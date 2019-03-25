@@ -26,6 +26,10 @@
 #define REFERRER_DAT_FILE "ReferrerWhitelist.json"
 #define REFERRER_DAT_FILE_VERSION "1"
 
+#include "extensions/common/url_pattern.h"
+
+class ReferrerWhitelistServiceTest;
+
 namespace brave_shields {
 
 // The brave shields service in charge of referrer whitelist
@@ -44,10 +48,22 @@ class ReferrerWhitelistService : public BaseLocalDataFilesObserver {
                         const std::string& manifest) override;
 
  private:
+  friend class ::ReferrerWhitelistServiceTest;
+
   void OnDATFileDataReady();
 
-  std::string contents_;
-  std::unique_ptr<base::Value> root_;
+  typedef std::vector<URLPattern> URLPatternList;
+
+  struct ReferrerWhitelist {
+    URLPattern first_party_pattern;
+    URLPatternList subresource_pattern_list;
+    ReferrerWhitelist();
+    ReferrerWhitelist(const ReferrerWhitelist& other);
+    ~ReferrerWhitelist();
+  };
+
+  std::string file_contents_;
+  std::vector<ReferrerWhitelist> referrer_whitelist_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<ReferrerWhitelistService> weak_factory_;

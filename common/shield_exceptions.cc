@@ -12,9 +12,6 @@
 #include "extensions/common/url_pattern.h"
 #include "url/gurl.h"
 
-#include "base/json/json_reader.h"
-#include "base/values.h"
-
 namespace brave {
 
 bool IsUAWhitelisted(const GURL& gurl) {
@@ -39,63 +36,6 @@ bool IsBlockedResource(const GURL& gurl) {
                      [&gurl](URLPattern pattern){
                        return pattern.MatchesURL(gurl);
                      });
-}
-
-bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
-    const GURL& subresourceUrl) {
-  std::unique_ptr<base::Value> root = base::JSONReader::Read(
-    "{"
-    "    \"whitelist\": ["
-    "        {"
-    "            \"<all_urls>\": ["
-    "                \"https://use.typekit.net/*\","
-    "                \"https://api.geetest.com/*\","
-    "                \"https://cloud.typography.com/*\""
-    "            ]"
-    "        },"
-    "        {"
-    "            \"https://www.facebook.com/\": ["
-    "                \"https://*.fbcdn.net/*\""
-    "            ]"
-    "        },"
-    "        {"
-    "            \"https://accounts.google.com/\": ["
-    "                \"https://content.googleapis.com/*\""
-    "            ]"
-    "        },"
-    "        {"
-    "            \"https://www.reddit.com/*\": ["
-    "                \"https://www.redditmedia.com/*\","
-    "                \"https://cdn.embedly.com/*\","
-    "                \"https://imgur.com/*\""
-    "            ]"
-    "        }"
-    "    ]"
-    "}"
-    );
-  base::DictionaryValue* root_dict = nullptr;
-  root->GetAsDictionary(&root_dict);
-  base::ListValue* whitelist = nullptr;
-  root_dict->GetList("whitelist", &whitelist);
-  for (base::Value& origins : whitelist->GetList()) {
-    base::DictionaryValue* origins_dict = nullptr;
-    origins.GetAsDictionary(&origins_dict);
-    for (const auto& it : origins_dict->DictItems()) {
-      auto first_party_pattern = URLPattern(
-        URLPattern::SCHEME_HTTP|URLPattern::SCHEME_HTTPS, it.first);
-      if (first_party_pattern.MatchesURL(firstPartyOrigin)) {
-        for (base::Value& subresource_value : it.second.GetList()) {
-          auto subresource_pattern = URLPattern(
-            URLPattern::SCHEME_HTTP|URLPattern::SCHEME_HTTPS,
-            subresource_value.GetString());
-          if (subresource_pattern.MatchesURL(subresourceUrl)) {
-            return true;
-          }
-        }
-      }
-    }
-  }
-  return false;
 }
 
 bool IsWhitelistedCookieException(const GURL& firstPartyOrigin,
