@@ -6,6 +6,7 @@ import Foundation
 
 public extension Bundle {
     public static let shared: Bundle = Bundle(identifier: "com.brave.Shared")!
+    public static let data: Bundle = Bundle(identifier: "com.brave.Data")!
     public static let braveShared: Bundle = Bundle(identifier: "com.brave.BraveShared")!
     public static let storage: Bundle = Bundle(identifier: "com.brave.Storage")!
 }

@@ -98,36 +98,47 @@ class SyncAddDeviceViewController: SyncViewController {
         containerView.layer.masksToBounds = true
 
         guard let syncSeed = Sync.shared.syncSeedArray else {
-            // TODO: Pop and error
+            showInitializationError()
             return
         }
+        
+        let syncCrypto = SyncCrypto()
 
-        let qrSyncSeed = SyncCrypto.shared.joinBytes(fromCombinedBytes: syncSeed)
+        let qrSyncSeed = syncCrypto.joinBytes(fromCombinedBytes: syncSeed)
         if qrSyncSeed.isEmpty {
-            // Error
+            showInitializationError()
             return
         }
-
-        SyncCrypto.shared.passphrase(fromBytes: syncSeed) { (words, error) in
-            guard let words = words, error == nil else {
-                return
-            }
-            
-            self.qrCodeView = SyncQRCodeView(data: qrSyncSeed)
-            self.containerView.addSubview(self.qrCodeView!)
-            
-            self.qrCodeView!.snp.makeConstraints { (make) in
+        
+        let words = syncCrypto.passphrase(fromBytes: syncSeed)
+        
+        switch words {
+        case .success(let passphrase):
+            qrCodeView = SyncQRCodeView(data: qrSyncSeed)
+            containerView.addSubview(qrCodeView!)
+            qrCodeView?.snp.makeConstraints { make in
                 make.top.bottom.equalTo(0).inset(22)
                 make.centerX.equalTo(self.containerView)
                 make.size.equalTo(BarcodeSize)
             }
             
-            self.codewordsView.text = words.joined(separator: " ")
-            
-            self.SEL_changeMode()
+            self.codewordsView.text = passphrase.joined(separator: " ")
+        case .failure:
+            showInitializationError()
+            return
         }
         
         self.setupVisuals()
+    }
+    
+    private func showInitializationError() {
+        let title = Strings.SyncInitErrorTitle
+        let message = Strings.SyncInitErrorMessage
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
+        self.present(alert, animated: true) {
+            Sync.shared.leaveSyncGroup()
+        }
     }
     
     func setupVisuals() {
