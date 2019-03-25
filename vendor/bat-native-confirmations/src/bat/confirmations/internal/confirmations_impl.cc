@@ -14,9 +14,7 @@
 #include "bat/confirmations/internal/redeem_token.h"
 #include "bat/confirmations/internal/payout_tokens.h"
 #include "bat/confirmations/internal/unblinded_tokens.h"
-#include "bat/confirmations/internal/time.h"
 
-#include "base/rand_util.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
@@ -41,7 +39,6 @@ ConfirmationsImpl::ConfirmationsImpl(
     payout_redeemed_tokens_timer_id_(0),
     payout_tokens_(std::make_unique<PayoutTokens>(this, confirmations_client,
         unblinded_payment_tokens_.get())),
-    next_token_redemption_date_in_seconds_(0),
     state_has_loaded_(false),
     confirmations_client_(confirmations_client) {
 }
@@ -79,9 +76,7 @@ void ConfirmationsImpl::CheckReady() {
   is_initialized_ = true;
   BLOG(INFO) << "Successfully initialized";
 
-  auto start_timer_in = CalculateTokenRedemptionTimeInSeconds();
-  StartPayingOutRedeemedTokens(start_timer_in);
-
+  PayoutRedeemedTokens();
   RefillTokensIfNecessary();
 }
 
@@ -97,10 +92,6 @@ std::string ConfirmationsImpl::ToJSON() const {
   auto catalog_issuers =
       GetCatalogIssuersAsDictionary(public_key_, catalog_issuers_);
   dictionary.SetKey("catalog_issuers", base::Value(std::move(catalog_issuers)));
-
-  // Next token redemption date
-  dictionary.SetKey("next_token_redemption_date_in_seconds", base::Value(
-      std::to_string(next_token_redemption_date_in_seconds_)));
 
   // Transaction history
   auto transaction_history =
@@ -338,7 +329,9 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
           std::stoull(timestamp_in_seconds_value->GetString());
     } else {
       // timestamp missing, fallback to default
-      info.timestamp_in_seconds = Time::NowInSeconds();
+      auto now = base::Time::Now();
+      info.timestamp_in_seconds =
+          static_cast<uint64_t>((now - base::Time()).InSeconds());
     }
 
     // Estimated redemption value
@@ -562,8 +555,11 @@ double ConfirmationsImpl::GetEstimatedRedemptionValue(
 void ConfirmationsImpl::AppendTransactionToTransactionHistory(
     const double estimated_redemption_value,
     const ConfirmationType confirmation_type) {
+  auto now = base::Time::Now();
+  auto now_in_seconds = (now - base::Time()).InSeconds();
+
   TransactionInfo info;
-  info.timestamp_in_seconds = Time::NowInSeconds();
+  info.timestamp_in_seconds = now_in_seconds;
   info.estimated_redemption_value = estimated_redemption_value;
 
   switch (confirmation_type) {
@@ -660,49 +656,6 @@ bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
 
 void ConfirmationsImpl::RefillTokensIfNecessary() const {
   refill_tokens_->Refill(wallet_info_, public_key_);
-}
-
-uint64_t ConfirmationsImpl::CalculateTokenRedemptionTimeInSeconds() {
-  auto now_in_seconds = Time::NowInSeconds();
-
-  uint64_t start_timer_in;
-
-  if (_is_debug) {
-    if (now_in_seconds - next_token_redemption_date_in_seconds_ >=
-        kDebugNextTokenRedemptionAfterSeconds) {
-      UpdateNextTokenRedemptionDate();
-      SaveState();
-    }
-  }
-
-  if (next_token_redemption_date_in_seconds_ == 0) {
-    UpdateNextTokenRedemptionDate();
-    SaveState();
-  }
-
-  if (now_in_seconds >= next_token_redemption_date_in_seconds_) {
-    // Browser was launched after the token redemption date
-    start_timer_in = base::RandInt(0, 5 * base::Time::kSecondsPerMinute);
-  } else {
-    start_timer_in = next_token_redemption_date_in_seconds_ - now_in_seconds;
-  }
-
-  auto rand_delay = base::RandInt(0, start_timer_in / 10);
-  start_timer_in += rand_delay;
-
-  return start_timer_in;
-}
-
-void ConfirmationsImpl::UpdateNextTokenRedemptionDate() {
-  next_token_redemption_date_in_seconds_ = Time::NowInSeconds();
-
-  if (!_is_debug) {
-    next_token_redemption_date_in_seconds_ +=
-        kNextTokenRedemptionAfterSeconds;
-  } else {
-    next_token_redemption_date_in_seconds_ +=
-        kDebugNextTokenRedemptionAfterSeconds;
-  }
 }
 
 void ConfirmationsImpl::StartPayingOutRedeemedTokens(
