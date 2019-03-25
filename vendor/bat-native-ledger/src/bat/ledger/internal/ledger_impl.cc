@@ -1331,8 +1331,7 @@ void LedgerImpl::ConfirmAd(const std::string& info) {
   notification_info->text = notification_info_ads.text;
   notification_info->url = notification_info_ads.url;
   notification_info->uuid = notification_info_ads.uuid;
-
-  switch (notification_info_ads.type.value()) {
+  switch (notification_info_ads.type) {
     case ads::ConfirmationType::UNKNOWN: {
       notification_info->type = confirmations::ConfirmationType::UNKNOWN;
       break;
