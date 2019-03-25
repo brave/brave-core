@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
+#include "base/run_loop.h"
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
@@ -73,6 +74,7 @@ public:
         new base::ThreadTestHelper(
             g_brave_browser_process->referrer_whitelist_service()->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
+    base::RunLoop().RunUntilIdle();
   }
 
   bool IsWhitelistedReferrer(
