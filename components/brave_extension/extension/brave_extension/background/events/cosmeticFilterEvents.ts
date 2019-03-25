@@ -35,11 +35,17 @@ chrome.contextMenus.create({
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
   switch (info.menuItemId) {
     case 'addBlockElement': {
-      rule.selector = window.prompt('CSS selector to block: ', `${rule.selector}`) || ''
-      chrome.tabs.insertCSS({
-        code: `${rule.selector} {display: none;}`
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs: any) {
+        chrome.tabs.sendMessage(tabs[0].id, {type: 'getTargetSelector'}, function (response: any) {
+          if (response) {
+            rule.selector = window.prompt('CSS selector to block: ', `${response}`) || ''
+            chrome.tabs.insertCSS({
+              code: `${rule.selector} {display: none;}`
+            })
+            cosmeticFilterActions.siteCosmeticFilterAdded(rule.host, rule.selector)
+          }
+        })
       })
-      cosmeticFilterActions.siteCosmeticFilterAdded(rule.host, rule.selector)
       break
     }
     case 'resetSiteFilterSettings': {
@@ -58,7 +64,11 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
 
 // content script listener for right click DOM selection event
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  rule.host = msg.baseURI
-  rule.selector = msg.selector
-  sendResponse(rule)
+  const action = typeof msg === 'string' ? msg : msg.type
+  switch (action) {
+    case 'contextMenuOpened': {
+      rule.host = msg.baseURI
+    }
+    break
+  }
 })
