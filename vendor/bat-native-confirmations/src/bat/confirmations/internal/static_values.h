@@ -20,14 +20,8 @@ static const int kMaximumUnblindedTokens = 50;
 
 static const uint64_t kRetryGettingRefillSignedTokensAfterSeconds = 15;
 
-static const uint64_t kNextTokenRedemptionAfterSeconds =
-    base::Time::kMicrosecondsPerWeek / base::Time::kMicrosecondsPerSecond;
-
-static const uint64_t kDebugNextTokenRedemptionAfterSeconds =
-    25 * base::Time::kSecondsPerMinute;
-
-static const uint64_t kRetryFailedConfirmationsAfterSeconds =
-    5 * base::Time::kSecondsPerMinute;
+static const uint64_t kPayoutAfterSeconds =
+    base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
 
 }  // namespace confirmations
 

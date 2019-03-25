@@ -42,8 +42,7 @@ class PayoutTokens {
   void OnPayout(const Result result);
 
   void ScheduleNextPayout() const;
-  uint64_t next_retry_start_timer_in_;
-  void RetryNextPayout();
+  uint64_t CalculateTimerForNextPayout() const;
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED

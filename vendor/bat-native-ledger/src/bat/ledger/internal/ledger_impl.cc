@@ -247,7 +247,6 @@ void LedgerImpl::SetConfirmationsWalletInfo(
     const braveledger_bat_helper::WALLET_INFO_ST& wallet_info) {
   if (!bat_confirmations_) {
     confirmations::_is_production = ledger::is_production;
-    confirmations::_is_debug = ledger::is_debug;
 
     bat_confirmations_.reset(
         confirmations::Confirmations::CreateInstance(ledger_client_));
@@ -1331,8 +1330,7 @@ void LedgerImpl::ConfirmAd(const std::string& info) {
   notification_info->text = notification_info_ads.text;
   notification_info->url = notification_info_ads.url;
   notification_info->uuid = notification_info_ads.uuid;
-
-  switch (notification_info_ads.type.value()) {
+  switch (notification_info_ads.type) {
     case ads::ConfirmationType::UNKNOWN: {
       notification_info->type = confirmations::ConfirmationType::UNKNOWN;
       break;
