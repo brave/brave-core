@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from '../../theme'
-import Background from './media/background.svg'
 import { BlockedInfoRowStats, BlockedInfoRowText } from './display'
 import { StyledWrapper as Toggle } from '../shields/toggle/style'
 
@@ -28,9 +27,6 @@ interface ShieldsHeaderProps {
 
 export const ShieldsHeader = styled<ShieldsHeaderProps, 'header'>('header')`
   box-sizing: border-box;
-  background-image: url(${Background});
-  background-repeat: no-repeat;
-  background-position: ${p => p.status === 'enabled' ? '0 -15px' : '0 0'};
   user-select: none;
 `
 
@@ -68,7 +64,8 @@ export const SiteOverview = styled<SiteOverviewProps, 'div'>('div')`
   display: grid;
   align-items: center;
   justify-content: center;
-  padding: 24px 0 36px;
+  padding: 32px 0;
+  background: ${p => p.theme.color.panelBackgroundSecondary};
   border-bottom: 1px solid ${p => p.status === 'enabled' ? 'rgba(160, 161, 178, 0.15)' : 'transparent'};
 `
 
@@ -136,7 +133,7 @@ interface BlockedInfoRowDataProps {
 export const BlockedInfoRowData = styled<BlockedInfoRowDataProps, 'div'>('div')`
   display: grid;
   grid-template-columns: auto 36px 1fr;
-  padding: 6px 0 5px 20px;
+  padding: 8px 0 8px 20px;
   grid-gap: 2px;
   align-items: center;
   pointer-events: ${p => p.disabled && 'none'};
@@ -246,6 +243,7 @@ export const BlockedListStatic = styled<{}, 'ul'>('ul')`
   height: 307px;
   overflow: auto;
   padding: 0;
+  background: ${p => p.theme.color.panelBackgroundSecondary};
   margin: 0 24px;
 `
 
@@ -261,7 +259,6 @@ export const BlockedListItemHeader = styled<{}, 'li'>('li')`
   grid-template-columns: 36px 1fr auto;
   align-items: center;
   padding: 11px 24px 10px 14px;
-  margin-bottom: 6px;
   line-height: 1;
   background: ${p => p.theme.color.panelBackground};
   border-top: 1px solid ${p => p.theme.color.separatorLine};
@@ -286,6 +283,7 @@ export const BlockedListItemWithOptions = styled<{}, 'li'>('li')`
   display: grid;
   grid-template-columns: 1fr auto;
   padding: 9px 24px 9px 20px;
+  background: ${p => p.theme.color.panelBackgroundSecondary};
 
   > *:first-child {
     white-space: nowrap;

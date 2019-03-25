@@ -155,7 +155,6 @@ export const Link = styled<{}, 'button'>('button')`
 export const LinkAction = styled(Link)`
   box-sizing: border-box;
   color: ${p => p.theme.color.brandBrave};
-  text-decoration: underline;
   font-size: inherit;
   font-weight: 500;
 

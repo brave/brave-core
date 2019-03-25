@@ -31,6 +31,7 @@ export const ArrowDownIcon = styled(CaratDownIcon as ComponentType)`
   width: 24px;
   height: 24px;
   padding: 4px;
+  color: ${p => p.theme.color.text};
 
   &:focus {
     outline-width: 2px;
