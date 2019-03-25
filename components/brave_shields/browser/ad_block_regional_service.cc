@@ -62,17 +62,6 @@ bool AdBlockRegionalService::Init() {
   return true;
 }
 
-void AdBlockRegionalService::OnComponentRegistered(
-    const std::string& component_id) {
-  PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
-  std::string ad_block_current_region = prefs->GetString(kAdBlockCurrentRegion);
-  std::string locale = g_brave_browser_process->GetApplicationLocale();
-  if (!ad_block_current_region.empty() && ad_block_current_region != locale)
-    Unregister(component_id);
-  prefs->SetString(kAdBlockCurrentRegion, locale);
-  AdBlockBaseService::OnComponentRegistered(component_id);
-}
-
 void AdBlockRegionalService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
