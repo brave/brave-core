@@ -12,6 +12,7 @@
 
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/internal/token_info.h"
+#include "bat/confirmations/internal/confirmation_info.h"
 #include "bat/confirmations/confirmation_type.h"
 
 #include "wrapper.hpp"  // NOLINT
@@ -37,8 +38,12 @@ class RedeemToken {
   void Redeem(
       const std::string& creative_instance_id,
       const ConfirmationType confirmation_type);
+  void Redeem(
+    const ConfirmationInfo& confirmation_info);
 
  private:
+  void CreateConfirmation(
+      const ConfirmationInfo& confirmation_info);
   void CreateConfirmation(
       const std::string& creative_instance_id,
       const TokenInfo& token_info,
@@ -48,31 +53,24 @@ class RedeemToken {
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      const ConfirmationType confirmation_type,
-      const std::string& confirmation_id,
-      const Token& payment_token,
-      const BlindedToken& blinded_payment_token,
-      const TokenInfo& token_info);
+      const ConfirmationInfo& confirmation_info);
 
   void FetchPaymentToken(
-      const ConfirmationType confirmation_type,
-      const std::string& confirmation_id,
-      const Token& payment_token,
-      const BlindedToken& blinded_payment_token,
-      const TokenInfo& token_info);
+      const ConfirmationInfo& confirmation_info);
   void OnFetchPaymentToken(
       const std::string& url,
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      const ConfirmationType confirmation_type,
-      const Token& payment_token,
-      const BlindedToken& blinded_payment_token,
-      const TokenInfo& token_info);
+      const ConfirmationInfo& confirmation_info);
 
   void OnRedeem(
       const Result result,
-      const TokenInfo& token_info);
+      const ConfirmationInfo& confirmation_info,
+      const bool should_retry = true);
+
+  void ScheduleNextRetryForFailedConfirmations() const;
+  uint64_t CalculateTimerForNextRetryForFailedConfirmations() const;
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
