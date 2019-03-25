@@ -25,10 +25,9 @@ bool FixupBrowserAboutURL(GURL* url,
     *url = url->ReplaceComponents(replacements);
   }
 
-  if (url->SchemeIs(content::kChromeUIScheme) &&
-      url->host() != chrome::kChromeUINewTabHost) {
+  if (url->SchemeIs(kBraveUIScheme)) {
     GURL::Replacements replacements;
-    replacements.SetSchemeStr(kBraveUIScheme);
+    replacements.SetSchemeStr(content::kChromeUIScheme);
     *url = url->ReplaceComponents(replacements);
   }
 
