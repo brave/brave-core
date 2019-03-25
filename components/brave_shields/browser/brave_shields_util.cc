@@ -5,8 +5,10 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 
 #include "base/task/post_task.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -172,7 +174,7 @@ bool ShouldSetReferrer(bool allow_referrers, bool shields_up,
       SameDomainOrHost(target_url, original_referrer,
           INCLUDE_PRIVATE_REGISTRIES) ||
       // Whitelisted referrers shoud never set the referrer
-      brave::IsWhitelistedReferrer(tab_origin, target_url.GetOrigin())) {
+      g_brave_browser_process->referrer_whitelist_service()->IsWhitelisted(tab_origin, target_url.GetOrigin())) {
     return false;
   }
   *output_referrer = Referrer::SanitizeForRequest(target_url,

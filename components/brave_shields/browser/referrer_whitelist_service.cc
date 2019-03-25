@@ -31,21 +31,58 @@ ReferrerWhitelistService::ReferrerWhitelistService()
 ReferrerWhitelistService::~ReferrerWhitelistService() {
 }
 
-bool ReferrerWhitelistService::IsWhitelisted(const GURL& firstPartyOrigin,
-                                               const GURL& subresourceUrl) const {
+ReferrerWhitelistService::ReferrerWhitelist::ReferrerWhitelist() = default;
+ReferrerWhitelistService::ReferrerWhitelist::ReferrerWhitelist(
+  const ReferrerWhitelist& other) = default;
+ReferrerWhitelistService::ReferrerWhitelist::~ReferrerWhitelist() = default;
+
+bool ReferrerWhitelistService::IsWhitelisted(
+    const GURL& firstPartyOrigin, const GURL& subresourceUrl) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return false; // TODO
+  for (auto rw : referrer_whitelist_) {
+    if (rw.first_party_pattern.MatchesURL(firstPartyOrigin)) {
+      for (auto subresource_pattern : rw.subresource_pattern_list) {
+        if (subresource_pattern.MatchesURL(subresourceUrl)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
 }
 
 void ReferrerWhitelistService::OnDATFileDataReady() {
-  if (contents_.empty()) {
+  LOG(ERROR) << "entering ReferrerWhitelistService::OnDATFileDataReady";
+  
+  if (file_contents_.empty()) {
     LOG(ERROR) << "Could not obtain referrer whitelist data";
     return;
   }
-  root_ = base::JSONReader::Read(contents_);
-  if (!root_) {
+  std::unique_ptr<base::Value> root = base::JSONReader::Read(file_contents_);
+  file_contents_.clear();
+  if (!root) {
     LOG(ERROR) << "Failed to parse referrer whitelist data";
     return;
+  }
+  base::DictionaryValue* root_dict = nullptr;
+  root->GetAsDictionary(&root_dict);
+  base::ListValue* whitelist = nullptr;
+  root_dict->GetList("whitelist", &whitelist);
+  for (base::Value& origins : whitelist->GetList()) {
+    base::DictionaryValue* origins_dict = nullptr;
+    origins.GetAsDictionary(&origins_dict);
+    for (const auto& it : origins_dict->DictItems()) {
+      ReferrerWhitelist rw;
+      rw.first_party_pattern = URLPattern(
+        URLPattern::SCHEME_HTTP|URLPattern::SCHEME_HTTPS, it.first);
+      URLPatternList subresource_pattern_list;
+      for (base::Value& subresource_value : it.second.GetList()) {
+        rw.subresource_pattern_list.push_back(URLPattern(
+          URLPattern::SCHEME_HTTP|URLPattern::SCHEME_HTTPS,
+          subresource_value.GetString()));
+      }
+      referrer_whitelist_.push_back(rw);
+    }
   }
 }
 
@@ -54,14 +91,16 @@ void ReferrerWhitelistService::OnComponentReady(
     const base::FilePath& install_dir,
     const std::string& manifest) {
 
+  LOG(ERROR) << "entering ReferrerWhitelistService::OnComponentReady";
+  
   base::FilePath dat_file_path = install_dir.AppendASCII(
     REFERRER_DAT_FILE_VERSION).AppendASCII(REFERRER_DAT_FILE);
 
   GetTaskRunner()->PostTaskAndReply(
       FROM_HERE,
-      base::Bind(&GetDATFileAsString, dat_file_path, &contents_),
+      base::Bind(&GetDATFileAsString, dat_file_path, &file_contents_),
       base::Bind(&ReferrerWhitelistService::OnDATFileDataReady,
-                     weak_factory_.GetWeakPtr()));
+                 weak_factory_.GetWeakPtr()));
 }
 
 scoped_refptr<base::SequencedTaskRunner>
