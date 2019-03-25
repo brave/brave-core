@@ -22,7 +22,6 @@ PayoutTokens::PayoutTokens(
     ConfirmationsImpl* confirmations,
     ConfirmationsClient* confirmations_client,
     UnblindedTokens* unblinded_payment_tokens) :
-    next_retry_start_timer_in_(0),
     confirmations_(confirmations),
     confirmations_client_(confirmations_client),
     unblinded_payment_tokens_(unblinded_payment_tokens) {
@@ -116,38 +115,26 @@ void PayoutTokens::OnRedeemPaymentTokens(
 void PayoutTokens::OnPayout(const Result result) {
   if (result != SUCCESS) {
     BLOG(ERROR) << "Failed to payout tokens";
-
-    RetryNextPayout();
   } else {
     unblinded_payment_tokens_->RemoveAllTokens();
 
     BLOG(INFO) << "Successfully paid out tokens";
-
-    ScheduleNextPayout();
   }
+
+  ScheduleNextPayout();
 }
 
 void PayoutTokens::ScheduleNextPayout() const {
-  confirmations_->UpdateNextTokenRedemptionDate();
-  confirmations_->SaveState();
-
-  auto start_timer_in = confirmations_->CalculateTokenRedemptionTimeInSeconds();
+  auto start_timer_in = CalculateTimerForNextPayout();
   confirmations_->StartPayingOutRedeemedTokens(start_timer_in);
 }
 
-void PayoutTokens::RetryNextPayout() {
-  BLOG(INFO) << "Retry next payout";
+uint64_t PayoutTokens::CalculateTimerForNextPayout() const {
+  auto start_timer_in = kPayoutAfterSeconds;
+  auto rand_delay = base::RandInt(0, start_timer_in / 10);
+  start_timer_in += rand_delay;
 
-  if (next_retry_start_timer_in_ == 0) {
-    next_retry_start_timer_in_ = 2 * base::Time::kSecondsPerMinute;
-  } else {
-    next_retry_start_timer_in_ *= 2;
-  }
-
-  auto rand_delay = base::RandInt(0, next_retry_start_timer_in_ / 10);
-  next_retry_start_timer_in_ += rand_delay;
-
-  confirmations_->StartPayingOutRedeemedTokens(next_retry_start_timer_in_);
+  return start_timer_in;
 }
 
 }  // namespace confirmations

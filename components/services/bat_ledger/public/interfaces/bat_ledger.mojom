@@ -9,13 +9,11 @@ interface BatLedgerService {
   Create(associated BatLedgerClient bat_ledger_client,
          associated BatLedger& bat_ledger);
   SetProduction(bool isProduction);
-  SetDebug(bool isDebug);
   SetReconcileTime(int32 time);
   SetShortRetries(bool short_retries);
   SetTesting();
 
   GetProduction() => (bool production);
-  GetDebug() => (bool debug);
   GetReconcileTime() => (int32 time);
   GetShortRetries() => (bool short_retries);
 };
