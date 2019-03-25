@@ -270,5 +270,26 @@ void BraveRewardsGetACEnabledFunction::OnGetACEnabled(bool enabled) {
   Respond(OneArgument(std::make_unique<base::Value>(enabled)));
 }
 
+BraveRewardsSaveSettingFunction::~BraveRewardsSaveSettingFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveRewardsSaveSettingFunction::Run() {
+  std::unique_ptr<brave_rewards::SaveSetting::Params> params(
+      brave_rewards::SaveSetting::Params::Create(*args_));
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+
+  if (rewards_service) {
+    if (params->key == "enabledMain") {
+      rewards_service->SetRewardsMainEnabled(
+          std::stoi(params->value.c_str()));
+    }
+  }
+
+  return RespondNow(NoArguments());
+}
+
 }  // namespace api
 }  // namespace extensions

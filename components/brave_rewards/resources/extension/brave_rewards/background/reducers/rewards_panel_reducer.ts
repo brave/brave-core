@@ -292,6 +292,16 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
       break
     }
+    case types.ON_SETTING_SAVE: {
+      state = { ...state }
+      const key = action.payload.key
+      const value = action.payload.value
+      if (key) {
+        state[key] = value
+        chrome.braveRewards.saveSetting(key, value)
+      }
+      break
+    }
   }
   return state
 }

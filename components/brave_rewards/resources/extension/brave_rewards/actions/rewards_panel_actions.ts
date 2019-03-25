@@ -109,3 +109,8 @@ export const onExcludedSitesChanged = (properties: RewardsExtension.ExcludedSite
   action(types.ON_EXCLUDED_SITES_CHANGED, {
     properties
   })
+
+export const onSettingSave = (key: string, value: any) => action(types.ON_SETTING_SAVE, {
+  key,
+  value
+})

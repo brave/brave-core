@@ -158,6 +158,10 @@ export class RewardsPanel extends React.Component<Props, State> {
     })
   }
 
+  enableRewards = () => {
+    this.props.actions.onSettingSave('enabledMain', '1')
+  }
+
   openRewardsAddFunds () {
     chrome.tabs.create({
       url: 'chrome://rewards/#add-funds'
@@ -235,7 +239,7 @@ export class RewardsPanel extends React.Component<Props, State> {
               >
                 <WalletPanelDisabled
                   onTOSClick={this.openTOS}
-                  onEnable={this.openRewards}
+                  onEnable={this.enableRewards}
                   onPrivacyClick={this.openPrivacyPolicy}
                 />
               </WalletWrapper>

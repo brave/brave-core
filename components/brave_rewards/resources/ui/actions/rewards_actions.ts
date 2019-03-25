@@ -191,3 +191,5 @@ export const getAdsIsSupportedRegion = () => action(types.GET_ADS_IS_SUPPORTED_R
 export const onAdsIsSupportedRegion = (supported: boolean) => action(types.ON_ADS_IS_SUPPORTED_REGION, {
   supported
 })
+
+export const getRewardsMainEnabled = () => action(types.GET_REWARDS_MAIN_ENABLED)

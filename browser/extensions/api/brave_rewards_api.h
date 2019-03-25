@@ -155,6 +155,16 @@ class BraveRewardsGetACEnabledFunction : public UIThreadExtensionFunction {
   void OnGetACEnabled(bool enabled);
 };
 
+class BraveRewardsSaveSettingFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.saveSetting", UNKNOWN)
+
+ protected:
+  ~BraveRewardsSaveSettingFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 
