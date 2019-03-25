@@ -35,8 +35,8 @@ chrome.contextMenus.create({
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
   switch (info.menuItemId) {
     case 'addBlockElement': {
-      chrome.tabs.query({active: true, currentWindow: true}, function(tabs: any) {
-        chrome.tabs.sendMessage(tabs[0].id, {type: 'getTargetSelector'}, function (response: any) {
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs: any) {
+        chrome.tabs.sendMessage(tabs[0].id, { type: 'getTargetSelector' }, function (response: any) {
           if (response) {
             rule.selector = window.prompt('CSS selector to block: ', `${response}`) || ''
             chrome.tabs.insertCSS({
@@ -68,7 +68,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   switch (action) {
     case 'contextMenuOpened': {
       rule.host = msg.baseURI
+      break
     }
-    break
   }
 })
