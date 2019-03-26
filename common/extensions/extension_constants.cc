@@ -22,3 +22,6 @@ const char pdfjs_extension_public_key[] =
     "Wsz8EL2SNEIw6uH8RmXG7nZ29NJ7sk7jn17QmMsO2UJ01UT8hfOOOEQIDAQAB";
 const char pdfjs_extension_origin[] =
     "chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/";
+
+const char ipfs_companion_extension_id[] = "nibjojkomfdiaoajekhjakgkdhaomnch";
+const char ipfs_companion_beta_extension_id[] = "hjoieblefckbooibpepigmacodalfndh";

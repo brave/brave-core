@@ -19,4 +19,7 @@ extern const char pdfjs_extension_name[];
 extern const char pdfjs_extension_public_key[];
 extern const char pdfjs_extension_origin[];
 
+extern const char ipfs_companion_extension_id[];
+extern const char ipfs_companion_beta_extension_id[];
+
 #endif  // BRAVE_COMMON_EXTENSIONS_EXTENSION_CONSTANTS_H_
