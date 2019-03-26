@@ -524,6 +524,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "errorMissingCodeTitle", IDS_BRAVE_SYNC_ERROR_MISSING_SYNC_CODE_TITLE },               // NOLINT
         { "errorSyncInitFailedTitle", IDS_BRAVE_SYNC_ERROR_INIT_FAILED_TITLE },
         { "errorSyncInitFailedDescription", IDS_BRAVE_SYNC_ERROR_INIT_FAILED_DESCRIPTION },      // NOLINT
+        { "errorSyncRequiresCorrectTimeTitle", IDS_BRAVE_SYNC_REQUIRES_CORRECT_TIME_TITLE },     // NOLINT
+        { "errorSyncRequiresCorrectTimeDescription", IDS_BRAVE_SYNC_REQUIRES_CORRECT_TIME_DESCRIPTION }, // NOLINT
       }
     }, {
       std::string("adblock"), {
