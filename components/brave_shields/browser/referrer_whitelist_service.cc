@@ -52,8 +52,6 @@ bool ReferrerWhitelistService::IsWhitelisted(
 }
 
 void ReferrerWhitelistService::OnDATFileDataReady() {
-  LOG(ERROR) << "entering ReferrerWhitelistService::OnDATFileDataReady";
-  
   if (file_contents_.empty()) {
     LOG(ERROR) << "Could not obtain referrer whitelist data";
     return;
@@ -90,12 +88,8 @@ void ReferrerWhitelistService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-
-  LOG(ERROR) << "entering ReferrerWhitelistService::OnComponentReady";
-  
   base::FilePath dat_file_path = install_dir.AppendASCII(
     REFERRER_DAT_FILE_VERSION).AppendASCII(REFERRER_DAT_FILE);
-
   GetTaskRunner()->PostTaskAndReply(
       FROM_HERE,
       base::Bind(&GetDATFileAsString, dat_file_path, &file_contents_),
