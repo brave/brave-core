@@ -74,6 +74,8 @@ source_set("bat-native-confirmations") {
     "src/bat/confirmations/internal/security_helper.h",
     "src/bat/confirmations/internal/string_helper.cc",
     "src/bat/confirmations/internal/string_helper.h",
+    "src/bat/confirmations/internal/time.cc",
+    "src/bat/confirmations/internal/time.h",
     "src/bat/confirmations/internal/token_info.cc",
     "src/bat/confirmations/internal/token_info.h",
     "src/bat/confirmations/internal/unblinded_tokens.cc",

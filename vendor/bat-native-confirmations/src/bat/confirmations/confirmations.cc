@@ -10,6 +10,7 @@
 namespace confirmations {
 
 bool _is_production = false;
+bool _is_debug = false;
 
 const char _confirmations_name[] = "confirmations.json";
 
