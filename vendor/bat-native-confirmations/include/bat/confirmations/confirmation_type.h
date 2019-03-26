@@ -6,19 +6,37 @@
 #ifndef BAT_CONFIRMATIONS_CONFIRMATION_TYPE_H_
 #define BAT_CONFIRMATIONS_CONFIRMATION_TYPE_H_
 
+#include <string>
+
 namespace confirmations {
 
-static char kConfirmationTypeClick[] = "click";
-static char kConfirmationTypeDismiss[] = "dismiss";
-static char kConfirmationTypeView[] = "view";
-static char kConfirmationTypeLanded[] = "landed";
+class ConfirmationType {
+ public:
+  enum Value : int {
+    UNKNOWN,
+    CLICK,
+    DISMISS,
+    VIEW,
+    LANDED
+  };
 
-enum class ConfirmationType {
-  UNKNOWN,
-  CLICK,
-  DISMISS,
-  VIEW,
-  LANDED
+  ConfirmationType() = default;
+
+  // Allow implicit conversion of the enum value to this wrapper
+  constexpr ConfirmationType(const Value& value) : value_(value) {}  // NOLINT
+
+  explicit ConfirmationType(const std::string& value);
+
+  bool IsSupported() const;
+
+  int value() const;
+  operator std::string() const;
+
+  bool operator==(ConfirmationType type) const;
+  bool operator!=(ConfirmationType type) const;
+
+ private:
+  Value value_;
 };
 
 }  // namespace confirmations
