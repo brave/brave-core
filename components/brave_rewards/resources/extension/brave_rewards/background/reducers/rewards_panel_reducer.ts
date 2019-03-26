@@ -225,6 +225,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       break
     }
     case types.ON_ENABLED_MAIN: {
+      state = { ...state }
       if (payload.enabledMain == null) {
         break
       }
@@ -232,6 +233,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       break
     }
     case types.ON_ENABLED_AC: {
+      state = { ...state }
       if (payload.enabled == null) {
         break
       }
