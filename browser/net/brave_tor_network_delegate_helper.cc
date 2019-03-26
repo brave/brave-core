@@ -25,7 +25,7 @@ int OnBeforeURLRequest_TorWork(
     std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
-  ResourceRequestInfo* resource_info =
+  const ResourceRequestInfo* resource_info =
     ResourceRequestInfo::ForRequest(ctx->request);
   if (!resource_info) {
     return net::OK;

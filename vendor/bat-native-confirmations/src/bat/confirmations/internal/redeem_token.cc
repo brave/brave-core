@@ -152,8 +152,10 @@ void RedeemToken::OnCreateConfirmation(
   }
 
   // Parse JSON response
-  base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
-  if (!dictionary || !dictionary->is_dict()) {
+  std::unique_ptr<base::DictionaryValue> dictionary =
+      base::DictionaryValue::From(base::JSONReader::Read(response));
+
+  if (!dictionary) {
     BLOG(ERROR) << "Failed to parse response: " << response;
     OnRedeem(FAILED, token_info);
     return;
@@ -236,8 +238,10 @@ void RedeemToken::OnFetchPaymentToken(
   }
 
   // Parse JSON response
-  base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
-  if (!dictionary || !dictionary->is_dict()) {
+  std::unique_ptr<base::DictionaryValue> dictionary =
+      base::DictionaryValue::From(base::JSONReader::Read(response));
+
+  if (!dictionary) {
     BLOG(ERROR) << "Failed to parse response: " << response;
     OnRedeem(FAILED, token_info);
     return;

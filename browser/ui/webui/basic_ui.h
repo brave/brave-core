@@ -1,5 +1,4 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
+/* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -22,22 +21,19 @@ class WebUI;
 
 class Profile;
 
-struct GzippedGritResourceMap;
+struct GritResourceMap;
 
-content::WebUIDataSource* CreateBasicUIHTMLSource(
-    Profile* profile,
-    const std::string& name,
-    const GzippedGritResourceMap* resource_map,
-    size_t resouece_map_size,
-    int html_resource_id);
+content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
+                                                  const std::string& name,
+                                                  const GritResourceMap* resource_map,
+                                                  size_t resouece_map_size,
+                                                  int html_resource_id);
 
 class BasicUI : public content::WebUIController {
  public:
-  BasicUI(content::WebUI* web_ui,
-          const std::string& host,
-          const GzippedGritResourceMap* resource_map,
-          size_t resouece_map_size,
-          int html_resource_id);
+  BasicUI(content::WebUI* web_ui, const std::string& host,
+      const GritResourceMap* resource_map, size_t resouece_map_size,
+      int html_resource_id);
   ~BasicUI() override;
 
   // Called when subclass can set its webui properties.

@@ -93,10 +93,17 @@ void SyncDevices::FromJson(const std::string& str_json) {
   }
 
   // JSON ==> Value
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          str_json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+  int error_code_out = 0;
+  std::string error_msg_out;
+  int error_line_out = 0;
+  int error_column_out = 0;
+  std::unique_ptr<base::Value> records_v = base::JSONReader::ReadAndReturnError(
+    str_json,
+    base::JSONParserOptions::JSON_PARSE_RFC,
+    &error_code_out,
+    &error_msg_out,
+    &error_line_out,
+    &error_column_out);
 
   DCHECK(records_v);
   if (!records_v) {

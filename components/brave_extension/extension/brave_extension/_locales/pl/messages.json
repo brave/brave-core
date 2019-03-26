@@ -15,6 +15,10 @@
     "message": "wyłączone",
     "description": "Message for when shields is disabled"
   },
+  "totalBlocked": {
+    "message": "Wszystkich zablokowanych",
+    "description": "Message showing the amount of all blocked resources"
+  },
   "forThisSite": {
     "message": "dla tej strony",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -27,65 +31,69 @@
     "message": "Przeglądasz stronę bez żadnych zabezpieczeń prywatności lub oprogramowania.",
     "description": "Message telling the user that shields are disabled"
   },
-  "itemsBlocked": {
-    "message": "Elementy zablokowane",
-    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  "blockAds": {
+    "message": "Zablokowane reklamy i skrypty śledzące",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-  "itemBlocked": {
-    "message": "Element zablokowany",
-    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  "blockPopups": {
+    "message": "Wyskajujące okienka zostały zablokowane",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "and": {
-    "message": "i",
-    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  "blockImages": {
+    "message": "Grafiki zostały zablokowane",
+    "description": "Message indicating the number of images blocked"
   },
-  "connectionsUpgraded": {
-    "message": "połączenia zaktualizowane",
-    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
-  },
-  "connectionUpgraded": {
-    "message": "połączenie zaktualizowane",
-    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
-  },
-  "thirdPartyTrackersBlocked": {
-    "message": "zablokowane skrypty śledzące stron trzecich",
-    "description": "Message for the scripts blocked row label"
-  },
-  "connectionsUpgradedHTTPS": {
-    "message": "Aktualizacje HTTPS",
-    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
-  },
-  "connectionUpgradedHTTPS": {
-    "message": "Połączenie zaktualizowane do HTTPS",
-    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
-  },
-  "scriptsBlocked": {
-    "message": "Skrypty zablokowane",
-    "description": "Message for the scripts blocked row label"
-  },
-  "thirdPartyCookiesBlocked": {
+  "block3partyCookies": {
     "message": "Pliki cookie stron trzecich zablokowane",
-    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "allCookiesBlocked": {
-    "message": "Pliki cookies zablokowane",
-    "description": "Message for the option in the cookies select field to block all cookies"
-  },
-  "allCookiesAllowed": {
+  "allowAllCookies": {
     "message": "Wszystkie pliki cookies dozwolone",
-    "description": "Message for the option in the cookies select field to allow all cookies"
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
+  "blockAllCookies": {
+    "message": "Pliki cookies zablokowane",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Niektóre skrypty są zablokowane",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Wszystkie skrypty dozwolone",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Skrypty zablokowane",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
     "message": "Rozpoznawanie urządzeń przez strony trzecie zablokowane",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "allFingerprintingBlocked": {
-    "message": "Rozpoznawanie urządzeń zablokowane",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
-  },
-  "allFingerprintingAllowed": {
+  "allowAllFingerprinting": {
     "message": "Rozpoznawanie urządzeń dozwolone",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Rozpoznawanie urządzeń zablokowane",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Próby phishingu / złośliwego oprogramowania zostały zablokowane",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Połączenia szyfrowane",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Domyślne ustawienia tarcz",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Pliki cookies na tej stronie",
+    "description": "Message for the cookie resources blocked panel"
   },
   "deviceRecognitionAttempts": {
     "message": "Próby rozpoznania urządzenia",
@@ -103,21 +111,49 @@
     "message": "Skrypty dozwolone",
     "description": "Message for the script resources allowed"
   },
-  "blockAll": {
-    "message": "Zablokuj wszystkie",
-    "description": "Message for the resources blocked *block all* option"
-  },
   "allowAll": {
     "message": "Zezwalaj na wszystkie",
     "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Zezwalaj",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Dozwolone",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Zablokuj wszystkie",
+    "description": "Message for the resources blocked *block all* option"
   },
   "block": {
     "message": "Zablokuj",
     "description": "Message for the resources blocked *block* option"
   },
-  "allow": {
-    "message": "Zezwalaj",
-    "description": "Message for the resources blocked *allow* option"
+  "blocked": {
+    "message": "Zablokowane",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Zastosuj",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Zastosuj raz",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Stosuj do restartu",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Zawsze stosuj",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Cofnij",
+    "description": "Message for the resources blocked *undo* option"
   },
   "cancel": {
     "message": "Anuluj",
@@ -126,13 +162,5 @@
   "goBack": {
     "message": "Wróć",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
-  },
-  "applyOnce": {
-    "message": "Zastosuj raz",
-    "description": "Message for action in dynamic list of resources blocked to *apply once*"
-  },
-  "changeDefaults": {
-    "message": "Zmień domyślne ustawienie tarczy",
-    "description": "Message for the button action linking to the settings page"
   }
 }

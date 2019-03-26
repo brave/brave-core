@@ -15,6 +15,10 @@
     "message": "baixo",
     "description": "Message for when shields is disabled"
   },
+  "totalBlocked": {
+    "message": "Total bloqueados",
+    "description": "Message showing the amount of all blocked resources"
+  },
   "forThisSite": {
     "message": "para este site",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -27,65 +31,69 @@
     "message": "Está a navegar neste site sem qualquer proteção de privacidade e segurança",
     "description": "Message telling the user that shields are disabled"
   },
-  "itemsBlocked": {
-    "message": "Items blocked",
-    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  "blockAds": {
+    "message": "Anúncios e localizadores bloqueados",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-  "itemBlocked": {
-    "message": "Item blocked",
-    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  "blockPopups": {
+    "message": "Pop-ups bloqueados",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "and": {
-    "message": "and",
-    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  "blockImages": {
+    "message": "Imagens bloqueadas",
+    "description": "Message indicating the number of images blocked"
   },
-  "connectionsUpgraded": {
-    "message": "connections upgraded",
-    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
-  },
-  "connectionUpgraded": {
-    "message": "connection upgraded",
-    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
-  },
-  "thirdPartyTrackersBlocked": {
-    "message": "3rd-party trackers blocked",
-    "description": "Message for the scripts blocked row label"
-  },
-  "connectionsUpgradedHTTPS": {
-    "message": "Connections upgraded to HTTPS",
-    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
-  },
-  "connectionUpgradedHTTPS": {
-    "message": "Connection upgraded to HTTPS",
-    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
-  },
-  "scriptsBlocked": {
-    "message": "Scripts bloqueados",
-    "description": "Message for the scripts blocked row label"
-  },
-  "thirdPartyCookiesBlocked": {
+  "block3partyCookies": {
     "message": "Cookies de terceiros bloqueados",
-    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "allCookiesBlocked": {
-    "message": "Cookies bloqueados",
-    "description": "Message for the option in the cookies select field to block all cookies"
-  },
-  "allCookiesAllowed": {
+  "allowAllCookies": {
     "message": "Todos os cookies permitidos",
-    "description": "Message for the option in the cookies select field to allow all cookies"
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
+  "blockAllCookies": {
+    "message": "Cookies bloqueados",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Alguns scripts bloqueados",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Todos os scripts permitidos",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Scripts bloqueados",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
     "message": "Reconhecimento de dispositivos de terceiros bloqueado",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "allFingerprintingBlocked": {
-    "message": "Reconhecimento de dispositivos bloqueado",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
-  },
-  "allFingerprintingAllowed": {
+  "allowAllFingerprinting": {
     "message": "Todos os reconhecimentos de dispositivos permitidos",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Reconhecimento de dispositivos bloqueado",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Tentativas de phishing/malware bloqueadas",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Ligações encriptadas",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Proteção global predefinida",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Cookies neste site",
+    "description": "Message for the cookie resources blocked panel"
   },
   "deviceRecognitionAttempts": {
     "message": "Tentativas de reconhecimento de dispositivos",
@@ -103,21 +111,49 @@
     "message": "Scripts permitidos",
     "description": "Message for the script resources allowed"
   },
-  "blockAll": {
-    "message": "Bloquear todos",
-    "description": "Message for the resources blocked *block all* option"
-  },
   "allowAll": {
     "message": "Permitir todos",
     "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Permitir",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Permitidos",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Bloquear todos",
+    "description": "Message for the resources blocked *block all* option"
   },
   "block": {
     "message": "Bloquear",
     "description": "Message for the resources blocked *block* option"
   },
-  "allow": {
-    "message": "Permitir",
-    "description": "Message for the resources blocked *allow* option"
+  "blocked": {
+    "message": "Bloqueados",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Aplicar",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Aplicar uma vez",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Aplicar até reiniciar",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Aplicar sempre",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Anular",
+    "description": "Message for the resources blocked *undo* option"
   },
   "cancel": {
     "message": "Cancelar",
@@ -126,13 +162,5 @@
   "goBack": {
     "message": "Voltar",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
-  },
-  "applyOnce": {
-    "message": "Aplicar uma vez",
-    "description": "Message for action in dynamic list of resources blocked to *apply once*"
-  },
-  "changeDefaults": {
-    "message": "Change global shield defaults",
-    "description": "Message for the button action linking to the settings page"
   }
 }

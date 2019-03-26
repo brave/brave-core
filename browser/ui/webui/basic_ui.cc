@@ -1,5 +1,4 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
+/* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -11,21 +10,18 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
-// TODO(petemill): The following is being included purely to get the generated
-// GritResourceMap definition. Replace with a better solution.
+// TODO: The following is being included purely to get the generated
+//        GritResourceMap definition. Replace with a better solution.
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #else
 #include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
 #endif
-#include "ui/resources/grit/webui_resources_map.h"
-
-content::WebUIDataSource* CreateBasicUIHTMLSource(
-    Profile* profile,
-    const std::string& name,
-    const GzippedGritResourceMap* resource_map,
-    size_t resource_map_size,
-    int html_resource_id) {
+content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
+                                                  const std::string& name,
+                                                  const GritResourceMap* resource_map,
+                                                  size_t resource_map_size,
+                                                  int html_resource_id) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(name);
   source->SetJsonPath("strings.js");
@@ -63,10 +59,10 @@ class BasicUI::BasicUIWebContentsObserver
 };
 
 BasicUI::BasicUI(content::WebUI* web_ui,
-                 const std::string& name,
-                 const GzippedGritResourceMap* resource_map,
-                 size_t resource_map_size,
-                 int html_resource_id)
+    const std::string& name,
+    const GritResourceMap* resource_map,
+    size_t resource_map_size,
+    int html_resource_id)
     : WebUIController(web_ui) {
   observer_.reset(
       new BasicUIWebContentsObserver(this, web_ui->GetWebContents()));
@@ -89,12 +85,8 @@ content::RenderViewHost* BasicUI::GetRenderViewHost() {
 
 bool BasicUI::IsSafeToSetWebUIProperties() const {
   // Allow `web_ui()->CanCallJavascript()` to be false.
-  // Allow `web_ui()->CanCallJavascript()` to be true if
-  // `(web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI) != 0`
-  // Disallow `web_ui()->CanCallJavascript()` to be true if
-  // `(web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI) == 0`
-  DCHECK(!web_ui()->CanCallJavascript() ||
-         (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI));
-  return web_ui()->CanCallJavascript() &&
-         (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI);
+  // Allow `web_ui()->CanCallJavascript()` to be true if `(web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI) != 0`
+  // Disallow `web_ui()->CanCallJavascript()` to be true if `(web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI) == 0`
+  DCHECK(!web_ui()->CanCallJavascript() || (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI));
+  return web_ui()->CanCallJavascript() && (web_ui()->GetBindings() & content::BINDINGS_POLICY_WEB_UI);
 }

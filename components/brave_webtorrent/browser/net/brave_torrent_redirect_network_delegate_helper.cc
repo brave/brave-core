@@ -1,12 +1,8 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
+/* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper.h"
-
-#include <memory>
-#include <string>
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -72,7 +68,7 @@ bool IsWebtorrentInitiated(net::URLRequest* request) {
 }
 
 bool IsTorProfile(net::URLRequest* request) {
-  content::ResourceRequestInfo* resource_info =
+  const content::ResourceRequestInfo* resource_info =
     content::ResourceRequestInfo::ForRequest(request);
   if (!resource_info) {
     return false;
@@ -89,7 +85,7 @@ bool IsTorProfile(net::URLRequest* request) {
 }
 
 bool IsWebTorrentDisabled(net::URLRequest* request) {
-  content::ResourceRequestInfo* resource_info =
+  const content::ResourceRequestInfo* resource_info =
     content::ResourceRequestInfo::ForRequest(request);
   if (!resource_info || !resource_info->GetContext()) {
     return false;
@@ -110,7 +106,7 @@ bool IsWebTorrentDisabled(net::URLRequest* request) {
     infoMap->disabled_extensions().Contains(brave_webtorrent_extension_id);
 }
 
-}  // namespace
+} // namespace
 
 namespace webtorrent {
 
@@ -125,15 +121,14 @@ int OnHeadersReceived_TorrentRedirectWork(
   if (!request || !original_response_headers ||
       IsTorProfile(request) ||
       IsWebTorrentDisabled(request) ||
-      IsWebtorrentInitiated(request) ||  // download .torrent, do not redirect
+      IsWebtorrentInitiated(request) || // download .torrent, do not redirect
       !IsTorrentFile(request, original_response_headers)) {
     return net::OK;
   }
 
   *override_response_headers =
     new net::HttpResponseHeaders(original_response_headers->raw_headers());
-  (*override_response_headers)
-      ->ReplaceStatusLine("HTTP/1.1 307 Temporary Redirect");
+  (*override_response_headers)->ReplaceStatusLine("HTTP/1.1 307 Temporary Redirect");
   (*override_response_headers)->RemoveHeader("Location");
   GURL url(
       base::StrCat({extensions::kExtensionScheme, "://",
@@ -146,4 +141,4 @@ int OnHeadersReceived_TorrentRedirectWork(
   return net::OK;
 }
 
-}  // namespace webtorrent
+} // namespace webtorrent

@@ -42,13 +42,11 @@ bool BraveBrowserCommandController::IsCommandEnabled(int id) const {
 }
 
 bool BraveBrowserCommandController::ExecuteCommandWithDisposition(
-    int id,
-    WindowOpenDisposition disposition,
-    base::TimeTicks time_stamp) {
+    int id, WindowOpenDisposition disposition) {
   return IsBraveCommands(id)
-             ? ExecuteBraveCommandWithDisposition(id, disposition)
-             : BrowserCommandController::ExecuteCommandWithDisposition(
-                   id, disposition, time_stamp);
+      ? ExecuteBraveCommandWithDisposition(id, disposition)
+      : BrowserCommandController::ExecuteCommandWithDisposition(id,
+                                                                disposition);
 }
 
 void BraveBrowserCommandController::AddCommandObserver(

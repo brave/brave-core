@@ -1,13 +1,10 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/brave_rewards/donations_dialog.h"
 
-#include <memory>
 #include <string>
-#include <vector>
 
 #include "base/values.h"
 #include "base/json/json_reader.h"
@@ -85,6 +82,7 @@ GURL DonationDialogDelegate::GetDialogContentURL() const {
 void DonationDialogDelegate::GetWebUIMessageHandlers(
     std::vector<WebUIMessageHandler*>* /* handlers */) const {
   // DonationsWebUI should add its own message handlers.
+
 }
 
 void DonationDialogDelegate::GetDialogSize(gfx::Size* size) const {
@@ -105,8 +103,7 @@ void DonationDialogDelegate::GetDialogSize(gfx::Size* size) const {
   else
     target_size = outermost_web_contents->GetContainerBounds().size();
   // initial size in between min and max
-  const int max_height =
-      kDialogMinHeight + (kDialogMaxHeight - kDialogMinHeight);
+  const int max_height = kDialogMinHeight + (kDialogMaxHeight - kDialogMinHeight);
   size->SetSize(target_size.width() - kDialogMargin, max_height);
 }
 
@@ -131,7 +128,7 @@ bool DonationDialogDelegate::ShouldShowDialogTitle() const {
   return false;
 }
 
-}  // namespace
+} // namespace
 
 namespace brave_rewards {
 
@@ -143,12 +140,12 @@ void OpenDonationDialog(WebContents* initiator,
   const int width = host_size.width() - kDialogMargin;
   gfx::Size min_size(width, kDialogMinHeight);
   gfx::Size max_size(width, kDialogMaxHeight);
-  // TODO(petemill): adjust min and max when host size changes (e.g. window
-  // resize)
-  ShowConstrainedWebDialogWithAutoResize(
-      initiator->GetBrowserContext(),
-      std::make_unique<DonationDialogDelegate>(initiator, publisher_key),
-      initiator, min_size, max_size);
+  // TODO: adjust min and max when host size changes (e.g. window resize)
+  ShowConstrainedWebDialogWithAutoResize(initiator->GetBrowserContext(),
+                            new DonationDialogDelegate(initiator,
+                                                        publisher_key),
+                            initiator, min_size, max_size);
+
 }
 
-}  // namespace brave_rewards
+}

@@ -40,7 +40,7 @@ class RewardsNotificationServiceImpl
   const RewardsNotificationsMap& GetAllNotifications() const override;
 
   void ReadRewardsNotificationsJSON() override;
-  void ReadRewardsNotifications(const base::Value::ListStorage& root);
+  void ReadRewardsNotifications(std::unique_ptr<base::ListValue>);
   void StoreRewardsNotifications() override;
 
  private:
