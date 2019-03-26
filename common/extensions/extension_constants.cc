@@ -13,16 +13,6 @@ const char widevine_extension_id[] = "oimompecagnajdejgnnjijobebaeigek";
 const char brave_sync_extension_id[] = "nomlkjnggnifocmealianaaiobmebgil";
 const char crl_set_extension_id[] = "hfnkpimlhhgieaddgfemjhofmfblmnib";
 
-const char pdfjs_extension_id[] = "oemmndcbldboiebfnladdacbdfmadadm";
-const char pdfjs_extension_name[] = "PDF Viewer (PDF.js)";
-const char pdfjs_extension_public_key[] =
-    "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDb5PIb8ayK6vHvEIY1nJKRSCDE8iJ1T43qFN"
-    "+5dvCVQrmyEkgqB9ZuZNT24Lwot96HV51VoITHKRNIVKI2Nrbfn0M49t7qtaP34g/"
-    "GXJ7mAIbSzsY4+i+"
-    "Wsz8EL2SNEIw6uH8RmXG7nZ29NJ7sk7jn17QmMsO2UJ01UT8hfOOOEQIDAQAB";
-const char pdfjs_extension_origin[] =
-    "chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/";
-
 const char ipfs_companion_extension_id[] = "nibjojkomfdiaoajekhjakgkdhaomnch";
 const char ipfs_companion_extension_name[] = "IPFS Companion";
 const char ipfs_companion_extension_public_key[] =

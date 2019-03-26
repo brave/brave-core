@@ -49,8 +49,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                  kBraveSettingsResources[i].value);
   }
 
-  html_source->AddBoolean("isPdfjsDisabled",
-                          extensions::BraveComponentLoader::IsPdfjsDisabled());
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
   html_source->AddBoolean("isSyncDisabled",

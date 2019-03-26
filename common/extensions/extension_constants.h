@@ -14,11 +14,6 @@ extern const char widevine_extension_id[];
 extern const char brave_sync_extension_id[];
 extern const char crl_set_extension_id[];
 
-extern const char pdfjs_extension_id[];
-extern const char pdfjs_extension_name[];
-extern const char pdfjs_extension_public_key[];
-extern const char pdfjs_extension_origin[];
-
 extern const char ipfs_companion_extension_id[];
 extern const char ipfs_companion_extension_name[];
 extern const char ipfs_companion_extension_public_key[];

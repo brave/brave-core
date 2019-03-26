@@ -25,17 +25,6 @@
 
 namespace extensions {
 
-// static
-bool BraveComponentLoader::IsPdfjsDisabled() {
-#if defined(OS_ANDROID)
-  return true;
-#else
-  const base::CommandLine& command_line =
-    *base::CommandLine::ForCurrentProcess();
-  return command_line.HasSwitch(switches::kDisablePDFJSExtension);
-#endif
-}
-
 BraveComponentLoader::BraveComponentLoader(
     ExtensionServiceInterface* extension_service,
     PrefService* profile_prefs,
@@ -43,8 +32,7 @@ BraveComponentLoader::BraveComponentLoader(
     Profile* profile)
     : ComponentLoader(extension_service, profile_prefs, local_state, profile),
       profile_(profile),
-      profile_prefs_(profile_prefs),
-      testing_callbacks_(nullptr) {
+      profile_prefs_(profile_prefs) {
 // TODO(bridiver) - this doesn't belong here
 #if !defined(OS_ANDROID)
   ObserveOpenPdfExternallySetting();
@@ -105,12 +93,6 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     Add(IDR_BRAVE_EXTENSION, brave_extension_path);
   }
 
-  if (!profile_prefs_->GetBoolean(prefs::kPluginsAlwaysOpenPdfExternally) &&
-      !command_line.HasSwitch(switches::kDisablePDFJSExtension)) {
-    AddExtension(pdfjs_extension_id, pdfjs_extension_name,
-                 pdfjs_extension_public_key);
-  }
-
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   if (!command_line.HasSwitch(switches::kDisableBraveRewardsExtension)) {
     base::FilePath brave_rewards_path(FILE_PATH_LITERAL(""));
@@ -128,41 +110,6 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
       brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
     Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
   }
-}
-
-#if !defined(OS_ANDROID)
-void BraveComponentLoader::ObserveOpenPdfExternallySetting() {
-  // Observe the setting change only in regular profiles since the PDF settings
-  // page is not available in Guest/Tor profiles.
-  DCHECK(profile_ && profile_prefs_);
-  if (!profile_->IsGuestSession()) {
-    registrar_.Init(profile_prefs_);
-    registrar_.Add(prefs::kPluginsAlwaysOpenPdfExternally,
-      base::Bind(&BraveComponentLoader::UpdatePdfExtension,
-        base::Unretained(this)));
-  }
-}
-#endif
-
-void BraveComponentLoader::UpdatePdfExtension(const std::string& pref_name) {
-  DCHECK(pref_name == prefs::kPluginsAlwaysOpenPdfExternally);
-  DCHECK(profile_prefs_);
-  if (profile_prefs_->GetBoolean(prefs::kPluginsAlwaysOpenPdfExternally) ||
-      IsPdfjsDisabled()) {
-    if (testing_callbacks_)
-      testing_callbacks_->OnPdfExtensionAction(TestingCallbacks::WILL_REMOVE);
-    Remove(pdfjs_extension_id);
-  } else if (!Exists(pdfjs_extension_id)) {
-    if (testing_callbacks_)
-      testing_callbacks_->OnPdfExtensionAction(TestingCallbacks::WILL_ADD);
-    AddExtension(pdfjs_extension_id, pdfjs_extension_name,
-                 pdfjs_extension_public_key);
-  }
-}
-
-void BraveComponentLoader::set_testing_callbacks(
-    TestingCallbacks* testing_callbacks) {
-  testing_callbacks_ = testing_callbacks;
 }
 
 }  // namespace extensions

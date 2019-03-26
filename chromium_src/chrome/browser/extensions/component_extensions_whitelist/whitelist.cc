@@ -20,7 +20,6 @@ namespace extensions {
   bool IsComponentExtensionWhitelisted(const std::string& extension_id) {
     const char* const kAllowed[] = {
       brave_extension_id,
-      pdfjs_extension_id,
       brave_rewards_extension_id,
       brave_sync_extension_id,
       brave_webtorrent_extension_id
