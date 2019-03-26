@@ -49,11 +49,24 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
   PrefService* local_state = g_browser_process->local_state();
   if (!local_state)
     return;
-  const base::DictionaryValue* regional_filters_dict =
-      local_state->GetDictionary(kAdBlockRegionalFilters);
+
+  // Enable the default regional list, but only do this once so that
+  // user can override this setting in the future
+  bool checked_default_region =
+      local_state->GetBoolean(kAdBlockCheckedDefaultRegion);
+  if (!checked_default_region) {
+    local_state->SetBoolean(kAdBlockCheckedDefaultRegion, true);
+    auto it = brave_shields::FindAdBlockFilterListByLocale(
+        region_lists, g_brave_browser_process->GetApplicationLocale());
+    if (it == region_lists.end())
+      return;
+    EnableFilterList(it->uuid, true);
+  }
 
   // Start all regional services associated with enabled filter lists
   base::AutoLock lock(regional_services_lock_);
+  const base::DictionaryValue* regional_filters_dict =
+      local_state->GetDictionary(kAdBlockRegionalFilters);
   for (base::DictionaryValue::Iterator it(*regional_filters_dict);
        !it.IsAtEnd(); it.Advance()) {
     const std::string uuid = it.key();

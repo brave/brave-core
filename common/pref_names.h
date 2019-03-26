@@ -16,6 +16,7 @@ extern const char kLastCheckWOY[];
 extern const char kLastCheckMonth[];
 extern const char kFirstCheckMade[];
 extern const char kWeekOfInstallation[];
+extern const char kAdBlockCheckedDefaultRegion[];
 extern const char kAdBlockCustomFilters[];
 extern const char kAdBlockRegionalFilters[];
 extern const char kWidevineOptedIn[];
