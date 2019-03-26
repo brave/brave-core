@@ -1289,35 +1289,8 @@ void AdsImpl::GenerateAdReportingConfirmationEvent(
   writer.String("notificationId");
   writer.String(info.uuid.c_str());
 
-  std::string type;
-  switch (info.type) {
-    case ConfirmationType::UNKNOWN: {
-      DCHECK(false) << "Invalid confirmation type";
-      break;
-    }
-
-    case ConfirmationType::CLICK: {
-      type = kConfirmationTypeClick;
-      break;
-    }
-
-    case ConfirmationType::DISMISS: {
-      type = kConfirmationTypeDismiss;
-      break;
-    }
-
-    case ConfirmationType::VIEW: {
-      type = kConfirmationTypeView;
-      break;
-    }
-
-    case ConfirmationType::LANDED: {
-      type = kConfirmationTypeLanded;
-      break;
-    }
-  }
-
   writer.String("notificationType");
+  auto type = std::string(info.type);
   writer.String(type.c_str());
 
   writer.EndObject();
