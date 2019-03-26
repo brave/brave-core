@@ -13,18 +13,6 @@ transpile_web_ui("ui") {
     "components/pageWallet.tsx",
     "components/settingsPage.tsx",
     "constants/rewards_types.ts",
-    "internals/actions/rewards_internals_actions.ts",
-    "internals/brave_rewards_internals.html",
-    "internals/brave_rewards_internals.tsx",
-    "internals/components/app.tsx",
-    "internals/components/currentReconcile.tsx",
-    "internals/components/keyInfoSeed.tsx",
-    "internals/components/walletPaymentId.tsx",
-    "internals/constants/rewards_internals_types.ts",
-    "internals/reducers/rewards_internals_reducer.ts",
-    "internals/reducers/index.ts",
-    "internals/storage.ts",
-    "internals/store.ts",
     "reducers/index.ts",
     "reducers/grant_reducer.ts",
     "reducers/publishers_reducer.ts",
@@ -37,8 +25,7 @@ transpile_web_ui("ui") {
 
   # what is the output bundle called and what is the entry point file
   entry_points = [
-    ["brave_rewards", rebase_path("brave_rewards.tsx")],
-    ["brave_rewards_internals", rebase_path("internals/brave_rewards_internals.tsx")]
+    ["brave_rewards", rebase_path("brave_rewards.tsx")]
   ]
 
   # what is the directory / pack name

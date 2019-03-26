@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Utils
-import { getLocale } from '../../../../../common/locale'
+import { getLocale } from '../../../../common/locale'
 
 interface Props {
   currentReconcile: RewardsInternals.CurrentReconcile

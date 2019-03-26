@@ -12,7 +12,7 @@ import { KeyInfoSeed } from './keyInfoSeed'
 import { WalletPaymentId } from './walletPaymentId'
 
 // Utils
-import { getLocale } from '../../../../../common/locale'
+import { getLocale } from '../../../../common/locale'
 import * as rewardsInternalsActions from '../actions/rewards_internals_actions'
 
 interface Props {

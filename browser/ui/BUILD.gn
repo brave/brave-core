@@ -68,8 +68,6 @@ source_set("ui") {
     "webui/basic_ui.h",
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
-    "webui/brave_donate_ui.cc",
-    "webui/brave_donate_ui.h",
     "webui/brave_md_settings_ui.cc",
     "webui/brave_md_settings_ui.h",
     "webui/brave_new_tab_ui.cc",
@@ -123,6 +121,7 @@ source_set("ui") {
     "//brave/components/brave_rewards/resources:donate_generated_resources",
     "//brave/components/brave_rewards/resources:static_resources",
     "//brave/components/brave_rewards/resources:ui_generated_resources",
+    "//brave/components/brave_rewards/resources:internals_generated_resources",
     "//brave/components/brave_sync",
     "//brave/components/brave_sync:static_resources",
     "//brave/components/brave_sync:generated_resources",
@@ -157,6 +156,8 @@ source_set("ui") {
       "webui/brave_rewards_internals_ui.h",
       "webui/brave_rewards_ui.cc",
       "webui/brave_rewards_ui.h",
+      "webui/brave_donate_ui.cc",
+      "webui/brave_donate_ui.h",
     ]
     deps += [
       "//brave/components/brave_rewards/browser",
