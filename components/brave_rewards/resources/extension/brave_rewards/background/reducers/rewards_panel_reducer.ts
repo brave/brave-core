@@ -225,6 +225,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       break
     }
     case types.ON_ENABLED_MAIN: {
+      state = { ...state }
       if (payload.enabledMain == null) {
         break
       }
@@ -232,6 +233,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       break
     }
     case types.ON_ENABLED_AC: {
+      state = { ...state }
       if (payload.enabled == null) {
         break
       }
@@ -289,6 +291,16 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       state = {
         ...state,
         publishers
+      }
+      break
+    }
+    case types.ON_SETTING_SAVE: {
+      state = { ...state }
+      const key = action.payload.key
+      const value = action.payload.value
+      if (key) {
+        state[key] = value
+        chrome.braveRewards.saveSetting(key, value)
       }
       break
     }
