@@ -25,13 +25,6 @@
 
 namespace extensions {
 
-// static
-bool BraveComponentLoader::IsPdfjsDisabled() {
-  const base::CommandLine& command_line =
-    *base::CommandLine::ForCurrentProcess();
-  return command_line.HasSwitch(switches::kDisablePDFJSExtension);
-}
-
 BraveComponentLoader::BraveComponentLoader(
     ExtensionServiceInterface* extension_service,
     PrefService* profile_prefs,
@@ -39,9 +32,7 @@ BraveComponentLoader::BraveComponentLoader(
     Profile* profile)
     : ComponentLoader(extension_service, profile_prefs, local_state, profile),
       profile_(profile),
-      profile_prefs_(profile_prefs),
-      testing_callbacks_(nullptr) {
-  ObserveOpenPdfExternallySetting();
+      profile_prefs_(profile_prefs) {
 }
 
 BraveComponentLoader::~BraveComponentLoader() {
@@ -53,9 +44,6 @@ void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
   // to patch for friend access.
   demand_updater.OnDemandUpdate(g_browser_process->component_updater(),
       extension_id);
-  if (testing_callbacks_) {
-    testing_callbacks_->OnComponentRegistered(extension_id);
-  }
 }
 
 void BraveComponentLoader::OnComponentReady(std::string extension_id,
@@ -104,12 +92,6 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     Add(IDR_BRAVE_EXTENSION, brave_extension_path);
   }
 
-  if (!profile_prefs_->GetBoolean(prefs::kPluginsAlwaysOpenPdfExternally) &&
-      !command_line.HasSwitch(switches::kDisablePDFJSExtension)) {
-    AddExtension(pdfjs_extension_id, pdfjs_extension_name,
-                 pdfjs_extension_public_key);
-  }
-
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   if (!command_line.HasSwitch(switches::kDisableBraveRewardsExtension)) {
     base::FilePath brave_rewards_path(FILE_PATH_LITERAL(""));
@@ -132,39 +114,6 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     AddExtension(ipfs_companion_extension_id, ipfs_companion_extension_name,
       ipfs_companion_extension_public_key);
   }
-}
-
-void BraveComponentLoader::ObserveOpenPdfExternallySetting() {
-  // Observe the setting change only in regular profiles since the PDF settings
-  // page is not available in Guest/Tor profiles.
-  DCHECK(profile_ && profile_prefs_);
-  if (!profile_->IsGuestSession()) {
-    registrar_.Init(profile_prefs_);
-    registrar_.Add(prefs::kPluginsAlwaysOpenPdfExternally,
-      base::Bind(&BraveComponentLoader::UpdatePdfExtension,
-        base::Unretained(this)));
-  }
-}
-
-void BraveComponentLoader::UpdatePdfExtension(const std::string& pref_name) {
-  DCHECK(pref_name == prefs::kPluginsAlwaysOpenPdfExternally);
-  DCHECK(profile_prefs_);
-  if (profile_prefs_->GetBoolean(prefs::kPluginsAlwaysOpenPdfExternally) ||
-      IsPdfjsDisabled()) {
-    if (testing_callbacks_)
-      testing_callbacks_->OnPdfExtensionAction(TestingCallbacks::WILL_REMOVE);
-    Remove(pdfjs_extension_id);
-  } else if (!Exists(pdfjs_extension_id)) {
-    if (testing_callbacks_)
-      testing_callbacks_->OnPdfExtensionAction(TestingCallbacks::WILL_ADD);
-    AddExtension(pdfjs_extension_id, pdfjs_extension_name,
-                 pdfjs_extension_public_key);
-  }
-}
-
-void BraveComponentLoader::set_testing_callbacks(
-    TestingCallbacks* testing_callbacks) {
-  testing_callbacks_ = testing_callbacks;
 }
 
 }  // namespace extensions

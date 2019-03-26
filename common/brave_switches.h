@@ -17,8 +17,6 @@ extern const char kDisableBraveUpdate[];
 
 extern const char kDisableChromeGoogleURLTrackingClient[];
 
-extern const char kDisablePDFJSExtension[];
-
 extern const char kDisableTorClientUpdaterExtension[];
 
 extern const char kDisableWebTorrentExtension[];

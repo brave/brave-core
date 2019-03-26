@@ -12,8 +12,6 @@
 #include "chrome/browser/extensions/component_loader.h"
 #include "components/prefs/pref_change_registrar.h"
 
-class BraveComponentLoaderTest;
-
 namespace extensions {
 
 // For registering, loading, and unloading component extensions.
@@ -41,31 +39,13 @@ class BraveComponentLoader : public ComponentLoader {
   // hangouts is set.  If the buildflag is not set, it won't add though.
   void ForceAddHangoutServicesExtension();
 
-  static bool IsPdfjsDisabled();
-
  private:
   void AddHangoutServicesExtension() override;
-  friend class ::BraveComponentLoaderTest;
-  void ObserveOpenPdfExternallySetting();
-  // Callback for changes to the AlwaysOpenPdfExternally setting.
-  void UpdatePdfExtension(const std::string& pref_name);
 
-  struct TestingCallbacks {
-    enum PdfExtensionAction {
-      NONE,
-      WILL_ADD,
-      WILL_REMOVE,
-    };
-    virtual void OnPdfExtensionAction(PdfExtensionAction action) = 0;
-    virtual void OnComponentRegistered(std::string extension_id) = 0;
-  };
-
-  void set_testing_callbacks(TestingCallbacks* testing_callbacks);
-
+ private:
   Profile* profile_;
   PrefService* profile_prefs_;
   PrefChangeRegistrar registrar_;
-  TestingCallbacks* testing_callbacks_;
   DISALLOW_COPY_AND_ASSIGN(BraveComponentLoader);
 };
 

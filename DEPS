@@ -3,7 +3,7 @@ use_relative_paths = True
 deps = {
   "vendor/ad-block": "https://github.com/brave/ad-block.git@d5c7128599889e4e2a797b402a517c664d53fad2",
   "vendor/autoplay-whitelist": "https://github.com/brave/autoplay-whitelist.git@458053a3c95b403cbe0872f289a2aafa106ee9d8",
-  "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@463e5e4e06e0ca84927176e8c72f6076ae9b6829",
+  "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@c9c442343ff4711726e4792569bbac8ff3d980b9",
   "vendor/tracking-protection": "https://github.com/brave/tracking-protection.git@29b1f86b11a8c7438fd7d57b446a77a84946712a",
   "vendor/hashset-cpp": "https://github.com/brave/hashset-cpp.git@4b55fe39bb25bb0d8b11a43d547d75f00c6c46fb",
   "vendor/bloom-filter-cpp": "https://github.com/brave/bloom-filter-cpp.git@9be5c63b14e094156e00c8b28f205e7794f0b92c",

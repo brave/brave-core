@@ -27,8 +27,7 @@ bool IsBlacklisted(const extensions::Extension* extension) {
       {// Used for tests, corresponds to
        // brave/test/data/should-be-blocked-extension.
        "mlklomjnahgiddgfdgjhibinlfibfffc",
-       // Chromium PDF Viewer.
-       "mhjfbmdgcfjbbpaeojofohoefgiehjai"});
+     });
 
   if (std::find(blacklisted_extensions.begin(), blacklisted_extensions.end(),
                 extension->id()) != blacklisted_extensions.end())
@@ -58,7 +57,6 @@ bool BraveExtensionProvider::IsVetted(const std::string id) {
       brave_sync_extension_id,
       brave_webtorrent_extension_id,
       crl_set_extension_id,
-      pdfjs_extension_id,
       hangouts_extension_id,
       widevine_extension_id,
       brave_shields::kLocalDataFilesComponentId,
@@ -79,6 +77,8 @@ bool BraveExtensionProvider::IsVetted(const std::string id) {
       "bhlmpjhncoojbkemjkeppfahkglffilp",
       // Test ID: Brave Tor Client Updater
       "ngicbhhaldfdgmjhilmnleppfpmkgbbk",
+      // Chromium PDF Viewer.
+      "mhjfbmdgcfjbbpaeojofohoefgiehjai",
   });
   if (std::find(vetted_extensions.begin(), vetted_extensions.end(), id) !=
       vetted_extensions.end())

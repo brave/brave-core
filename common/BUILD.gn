@@ -44,8 +44,6 @@ source_set("common") {
       "extensions/brave_extensions_api_provider.h",
       "extensions/extension_constants.cc",
       "extensions/extension_constants.h",
-      "extensions/manifest_handlers/pdfjs_manifest_override.cc",
-      "extensions/manifest_handlers/pdfjs_manifest_override.h",
       "importer/brave_importer_utils.cc",
       "importer/brave_importer_utils.h",
       "importer/brave_ledger.cc",
