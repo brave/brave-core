@@ -28,6 +28,11 @@ declare_args() {
   skip_signing = false
 }
 
+brave_enable_cdm_host_verification = is_official_build &&
+                                     getenv("SIGN_WIDEVINE_CERT") != "" &&
+                                     getenv("SIGN_WIDEVINE_KEY") != "" &&
+                                     getenv("SIGN_WIDEVINE_PASSPHRASE") != ""
+
 if (base_sparkle_update_url == "") {
   base_sparkle_update_url = "https://updates.bravesoftware.com/sparkle/Brave-Browser"
 }

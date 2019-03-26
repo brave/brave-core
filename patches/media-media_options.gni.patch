@@ -1,0 +1,22 @@
+diff --git a/media/media_options.gni b/media/media_options.gni
+index fbd9f139ebad0c3b8bc7411baf5282df3050f7c0..7dab1cf2e476281571d420a2bc5d03d1c6f93b1d 100644
+--- a/media/media_options.gni
++++ b/media/media_options.gni
+@@ -9,6 +9,7 @@ import("//build/config/jumbo.gni")
+ import("//media/gpu/args.gni")
+ import("//testing/libfuzzer/fuzzer_test.gni")
+ import("//third_party/libaom/options.gni")
++if (brave_chromium_build) { import("//brave/build/config.gni") }
+ 
+ # Do not expand this list without double-checking with OWNERS, this is a list of
+ # all targets which roll up into the //media component. It controls visibility
+@@ -163,6 +164,9 @@ declare_args() {
+   # Windows and Mac.
+   enable_cdm_host_verification =
+       enable_library_cdms && (is_mac || is_win) && is_chrome_branded
++  if (brave_chromium_build) {
++    enable_cdm_host_verification = brave_enable_cdm_host_verification && enable_library_cdms && (is_mac || is_win)
++  }
+ 
+   # Enable Storage ID which is used by CDMs. This is only available with chrome
+   # branding, but may be overridden by other embedders.
