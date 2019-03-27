@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Zaznali smo težave z vašo denarnico. Pred nadaljnjo obdelavo transakcij morate obnoviti svojo varnostno kopijo denarnice.</translation>
 <translation id="7797604753681168055">Obnovite zdaj!</translation>
 <translation id="1184075897575325927">Žal je videti, da je bilo to sredstvo že uveljavljeno.</translation>
+<translation id="7180611975245234373">Osveži</translation>
+<translation id="839736845446313156">Registracija</translation>
+<translation id="583281660410589416">Neznano</translation>
 <translation id="5094577350232361255">o</translation>
 <translation id="4918086044614829423">Sprejmi</translation>
 <translation id="6832986780040139899">© Brave Software. Brave je zaščitena blagovna znamka podjetja Brave Software. Imena spletnih mest so lahko blagovne znamke ali registrirane blagovne znamke lastnika spletnega mesta.</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Računalnik</translation>
 <translation id="1258250624898033822">Neveljavna sinhronizacijska koda.</translation>
 <translation id="3259723213051400722">Poskusite znova.</translation>
-<translation id="3779810277399252432">Ni internetne povezave.</translation>
-<translation id="4380604249778320975">Poskusite znova, ko bo povezava na voljo.</translation>
 <translation id="5257281382608458806">Zahtevano je ime naprave.</translation>
 <translation id="8349682220522608879">Dodajte sinhronizacijsko kodo.</translation>
 <translation id="1468095392829989299">Ni mogoče stopiti v stik s strežniki Sync.</translation>

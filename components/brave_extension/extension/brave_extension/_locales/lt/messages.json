@@ -15,10 +15,6 @@
     "message": "žemyn",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "Iš viso užblokuota",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "šioje svetainėje",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "Šioje svetainėje naršote be jokios privatumo ir saugumo apsaugos.",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "Užblokuotos reklamos ir sekikliai",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "Items blocked",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "Iškylantieji langai užblokuoti",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "Item blocked",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "Vaizdai užblokuoti",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "and",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "Trečiųjų šalių slapukai užblokuoti ",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "connections upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "Leidžiami visi slapukai",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "connection upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "Slapukai užblokuoti",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "3rd-party trackers blocked",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "Užblokuoti kai kurie scenarijai",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "Connections upgraded to HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "Visi scenarijai leidžiami",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "Connection upgraded to HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "Užblokuoti scenarijai",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "Trečiųjų šalių slapukai užblokuoti ",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Slapukai užblokuoti",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Leidžiami visi slapukai",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "Trečiosios šalies įrenginio atpažinimas užblokuotas",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "Leidžiamas visų įrenginių atpažinimas",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "Įrenginio atpažinimas užblokuotas",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "Sukčiavimo / kenkimo bandymai užblokuoti",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "Ryšiai šifruojami",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "Visuotiniai numatytieji skydai",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "Slapukai šioje svetainėje",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "Leidžiamas visų įrenginių atpažinimas",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "Bandymai atpažinti įrenginį",
@@ -111,49 +103,21 @@
     "message": "Leidžiami scenarijai",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "Leisti visus",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "Leisti",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "Leidžiama",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "Blokuoti visus",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Leisti visus",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "Blokuoti",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "Užblokuota",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "Taikyti",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "Taikyti vieną kartą",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "Taikyti iki paleidimo iš naujo",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "Visada taikyti",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "Anuliuoti",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "Leisti",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "Atšaukti",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "Grįžti",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Taikyti vieną kartą",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Change global shield defaults",
+    "description": "Message for the button action linking to the settings page"
   }
 }

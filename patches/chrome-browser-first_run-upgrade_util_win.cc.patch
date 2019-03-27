@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/first_run/upgrade_util_win.cc b/chrome/browser/first_run/upgrade_util_win.cc
-index 9c30b37fb68669e717229d0f76d9a3722783d73e..143b7db6301d651b93ccaaddd4dce221e8f60a04 100644
+index 8d77b39b0b2e477e1cfc24498b2480525eace027..8512d33c6df3e81f3ca5d8c29f6c89472593aae3 100644
 --- a/chrome/browser/first_run/upgrade_util_win.cc
 +++ b/chrome/browser/first_run/upgrade_util_win.cc
-@@ -37,7 +37,7 @@
+@@ -38,7 +38,7 @@
  #include "components/prefs/pref_service.h"
  #include "ui/base/ui_base_switches.h"
  
@@ -11,12 +11,12 @@ index 9c30b37fb68669e717229d0f76d9a3722783d73e..143b7db6301d651b93ccaaddd4dce221
  #include "google_update/google_update_idl.h"
  #endif
  
-@@ -51,7 +51,7 @@ bool GetNewerChromeFile(base::FilePath* path) {
+@@ -52,7 +52,7 @@ bool GetNewerChromeFile(base::FilePath* path) {
  }
  
  bool InvokeGoogleUpdateForRename() {
 -#if defined(GOOGLE_CHROME_BUILD)
 +#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
    Microsoft::WRL::ComPtr<IProcessLauncher> ipl;
-   if (!FAILED(::CoCreateInstance(__uuidof(ProcessLauncherClass), nullptr,
-                                  CLSCTX_ALL, IID_PPV_ARGS(&ipl)))) {
+   HRESULT hr = ::CoCreateInstance(__uuidof(ProcessLauncherClass), nullptr,
+                                   CLSCTX_ALL, IID_PPV_ARGS(&ipl));

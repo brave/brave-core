@@ -1,12 +1,12 @@
 diff --git a/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar_selection_overlay.html b/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar_selection_overlay.html
-index 217cc5ac63906cb220f32ecaa07b060b3d4df9d4..0919c20a5169bdacbe155f3265d1930b6a1edefe 100644
+index b363c316c5207337f3c1c98b960cc61dd9c0f0ef..908902dc8b75c9e2a15057a58b6be5ad2fe5dab3 100644
 --- a/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar_selection_overlay.html
 +++ b/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar_selection_overlay.html
-@@ -8,6 +8,7 @@
- <link rel="import" href="chrome://resources/polymer/v1_0/paper-icon-button/paper-icon-button-light.html">
+@@ -7,6 +7,7 @@
+ <link rel="import" href="chrome://resources/polymer/v1_0/paper-button/paper-button.html">
  
  <dom-module id="cr-toolbar-selection-overlay">
 +  <link rel="import" type="css" href="chrome://brave-resources/br_elements/br_toolbar/br_toolbar_selection_overlay_overrides.css">
    <template>
-     <style include="cr-icons paper-button-style">
+     <style include="paper-button-style">
        :host {

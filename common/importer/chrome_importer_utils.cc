@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -26,7 +27,7 @@ base::ListValue* GetChromeSourceProfiles(
   } else {
     std::string local_state_content;
     base::ReadFileToString(local_state_path, &local_state_content);
-    std::unique_ptr<base::Value> local_state =
+    base::Optional<base::Value> local_state =
       base::JSONReader::Read(local_state_content);
     const base::DictionaryValue* local_state_dict;
     const base::DictionaryValue* profile_dict;

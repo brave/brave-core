@@ -27,8 +27,8 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
-#include "brave/components/services/brave_content_browser_manifest_overlay.h"
-#include "brave/components/services/brave_content_packaged_services_manifest_overlay.h"
+#include "brave/components/services/brave_content_browser_overlay_manifest.h"
+#include "brave/components/services/brave_content_packaged_service_overlay_manifest.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/extensions/chrome_content_browser_client_extensions_part.h"
@@ -248,10 +248,9 @@ base::Optional<service_manager::Manifest>
 BraveContentBrowserClient::GetServiceManifestOverlay(base::StringPiece name) {
   auto manifest = ChromeContentBrowserClient::GetServiceManifestOverlay(name);
   if (name == content::mojom::kBrowserServiceName) {
-    manifest->Amend(brave_content_browser_manifest_overlay::GetManifest());
+    manifest->Amend(GetBraveContentBrowserOverlayManifest());
   } else if (name == content::mojom::kPackagedServicesServiceName) {
-    manifest->Amend(
-        brave_content_packaged_services_manifest_overlay::GetManifest());
+    manifest->Amend(GetBraveContentPackagedServiceOverlayManifest());
   }
   return manifest;
 }

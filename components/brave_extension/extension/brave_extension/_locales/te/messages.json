@@ -15,10 +15,6 @@
     "message": "down",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "Total blocked",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "for this site",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "You’re browsing this site without any privacy and security protections.",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "Ads and trackers blocked",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "Items blocked",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "Pop-ups blocked",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "Item blocked",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "చిత్రాలు బ్లాక్ చేయబడ్డాయి",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "and",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "3rd-party cookies blocked",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "connections upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "All cookies allowed",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "connection upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "కుక్కీలు బ్లాక్ చేయబడ్డాయి",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "3rd-party trackers blocked",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "Some scripts blocked",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "Connections upgraded to HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "All scripts allowed",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "Connection upgraded to HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "Scripts blocked",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "3rd-party cookies blocked",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "కుక్కీలు బ్లాక్ చేయబడ్డాయి",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "All cookies allowed",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "3rd-party device recognition blocked",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "All device recognition allowed",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "Device recognition blocked",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "Phishing/malware attempts blocked",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "Connections encrypted",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "Global shield defaults",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "Cookies on this site",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "All device recognition allowed",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "Device recognition attempts",
@@ -111,49 +103,21 @@
     "message": "Allowed scripts",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "Allow all",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "అనుమతించు",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "అనుమతించబడింది",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "Block all",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Allow all",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "నిరోధించు",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "బ్లాక్ చెయ్యబడింది",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "వర్తించు",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "Apply once",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "Apply until restart",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "Always apply",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "చర్య రద్దు",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "అనుమతించు",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "రద్దు చెయ్యి",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "Go back",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Apply once",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Change global shield defaults",
+    "description": "Message for the button action linking to the settings page"
   }
 }

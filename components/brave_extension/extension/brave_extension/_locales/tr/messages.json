@@ -15,10 +15,6 @@
     "message": "aşağı",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "Toplam tutar engellendi",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "bu site için",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "Bu siteyi hiçbir gizlilik ve güvenlik önlemi olmadan görüntülüyorsunuz.",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "Reklamlar ve iz sürücüler engellendi",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "Items blocked",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "Açılır pencereler engellendi",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "Item blocked",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "Görüntüler engellendi",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "and",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "3. parti çerezler engellendi.",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "connections upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "Tüm çerezlere izin verildi",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "connection upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "Çerezler engellendi",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "3rd-party trackers blocked",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "Bazı betikler engellendi",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "Connections upgraded to HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "Tüm komutlara izin verildi",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "Connection upgraded to HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "Komutlar engellendi",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "3. parti çerezler engellendi.",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Çerezler engellendi",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Tüm çerezlere izin verildi",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "3. parti cihaz tanıma engellendi",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "Tüm cihaz tanımalara izin verildi",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "Cihaz tanıma engellendi",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "Kimlik avı/kötü amaçlı yazılım girişimi engellendi",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "Bağlantılar şifrelendi",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "Küresel Kalkan ayarları",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "Bu sitedeki çerezler",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "Tüm cihaz tanımalara izin verildi",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "Cihaz tanıma girişimleri",
@@ -111,49 +103,21 @@
     "message": "İzin verilen komutlar",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "Hepsine izin ver",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "İzin Ver",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "İzin verildi",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "Tümünü engelle",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Hepsine izin ver",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "Engel",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "Engellendi",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "Uygula",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "Bir kez uygula",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "Yeniden başlatılana kadar uygula",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "Her zaman uygula",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "Geri al",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "İzin Ver",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "İptal",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "Geri dön",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Bir kez uygula",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Change global shield defaults",
+    "description": "Message for the button action linking to the settings page"
   }
 }

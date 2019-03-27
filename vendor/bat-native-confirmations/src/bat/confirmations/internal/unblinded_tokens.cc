@@ -114,8 +114,7 @@ bool UnblindedTokens::RemoveToken(const TokenInfo& token) {
 
   auto it = std::find_if(tokens_.begin(), tokens_.end(),
       [=](const TokenInfo& info) {
-        return (info.unblinded_token == unblinded_token &&
-            info.public_key == public_key);
+        return (info.unblinded_token == unblinded_token);
       });
 
   if (it == tokens_.end()) {
@@ -141,8 +140,7 @@ bool UnblindedTokens::TokenExists(const TokenInfo& token) {
 
   auto it = std::find_if(tokens_.begin(), tokens_.end(),
       [=](const TokenInfo& info) {
-        return (info.unblinded_token == unblinded_token &&
-            info.public_key == public_key);
+        return (info.unblinded_token == unblinded_token);
       });
 
   if (it == tokens_.end()) {

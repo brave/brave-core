@@ -1,8 +1,8 @@
 diff --git a/tools/metrics/histograms/histograms.xml b/tools/metrics/histograms/histograms.xml
-index 8b76451a55ba15d13c3fb7ea38b99aa47f8dbdb9..34a82b73d8342f7a4f2d67284136679107208a4c 100644
+index fe05073935772aa6b0383f648b470a57b5c97a12..eaf3952a346f17fbe6e47d9a5ecbd6a1fcc89c9e 100644
 --- a/tools/metrics/histograms/histograms.xml
 +++ b/tools/metrics/histograms/histograms.xml
-@@ -139803,6 +139803,7 @@ uploading your change for review.
+@@ -144129,6 +144129,7 @@ uploading your change for review.
    <suffix name="ProtectedMedia" label="Protected media permission"/>
    <suffix name="PushMessaging" label="Push messaging permission"/>
    <suffix name="Quota" label="Quota permission"/>

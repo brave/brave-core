@@ -126,6 +126,9 @@
 <translation id="570208820610947248">اكتشفنا وجود خطأ في محفظتك، ولذلك يجب استرداد النسخة الاحتياطية منها قبل معالجة أي معاملات.</translation>
 <translation id="7797604753681168055">الاسترداد الآن</translation>
 <translation id="1184075897575325927">عذرًا، يبدو أن هذه الجائزة قد أخذت مسبقًا.</translation>
+<translation id="7180611975245234373">تحديث</translation>
+<translation id="839736845446313156">تسجيل</translation>
+<translation id="583281660410589416">غير معروف</translation>
 <translation id="5094577350232361255">معلومات</translation>
 <translation id="4918086044614829423">قبول</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave هي علامة تجارية مسجلة لشركة Brave Software. قد تكون أسماء المواقع علامات تجارية أو علامات تجارية مسجلة لمالك الموقع.</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">الكمبيوتر</translation>
 <translation id="1258250624898033822">رمز المزامنة غير صالح.</translation>
 <translation id="3259723213051400722">يُرجى إعادة المحاولة.</translation>
-<translation id="3779810277399252432">لا يتوفّر اتصال بالإنترنت.</translation>
-<translation id="4380604249778320975">يُرجى إعادة المحاولة عند توفّر اتصال.</translation>
 <translation id="5257281382608458806">يلزم إدخال اسم الجهاز.</translation>
 <translation id="8349682220522608879">يُرجى إضافة رمز مزامنة.</translation>
 <translation id="1468095392829989299">تعذّر الاتصال بخوادم المزامنة</translation>

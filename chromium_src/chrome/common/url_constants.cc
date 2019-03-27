@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -7,7 +8,8 @@
 namespace chrome {
 
 const char kAutomaticSettingsResetLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/360017903152-How-do-I-reset-Brave-settings-to-default-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017903152-How-do-I-reset-Brave-settings-to-default-";
 
 const char kBluetoothAdapterOffHelpURL[] =
 #if defined(OS_CHROMEOS)
@@ -85,54 +87,70 @@ const char kChromiumProjectURL[] = "https://github.com/brave/brave-browser/";
 
 const char kCloudPrintLearnMoreURL[] =
 #if defined(OS_CHROMEOS)
-    "https://support.brave.com/hc/en-us/articles/360017880792-How-do-I-print-from-Brave-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017880792-How-do-I-print-from-Brave-";
 #else
-    "https://support.brave.com/hc/en-us/articles/360017880792-How-do-I-print-from-Brave-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017880792-How-do-I-print-from-Brave-";
 #endif
 
 const char kCloudPrintCertificateErrorLearnMoreURL[] =
 #if defined(OS_CHROMEOS)
-    "https://support.brave.com/hc/en-us/articles/360017880792-How-do-I-print-from-Brave-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017880792-How-do-I-print-from-Brave-";
 #elif defined(OS_MACOSX)
-    "https://support.brave.com/hc/en-us/articles/360017880792-How-do-I-print-from-Brave-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017880792-How-do-I-print-from-Brave-";
 #elif defined(OS_WIN)
-    "https://support.brave.com/hc/en-us/articles/360017880792-How-do-I-print-from-Brave-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017880792-How-do-I-print-from-Brave-";
 #else
-    "https://support.brave.com/hc/en-us/articles/360017880792-How-do-I-print-from-Brave-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017880792-How-do-I-print-from-Brave-";
 #endif
 
 const char kContentSettingsExceptionsLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/360018205431-How-do-I-change-site-permissions-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018205431-How-do-I-change-site-permissions-";
 
 const char kCrashReasonURL[] =
 #if defined(OS_CHROMEOS)
-    "https://support.brave.com/hc/en-us/articles/360018192251-How-do-I-fix-page-crashes-and-other-page-loading-errors-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018192251-How-do-I-fix-page-crashes-and-other-page-loading-errors-";
 #else
-    "https://support.brave.com/hc/en-us/articles/360018192251-How-do-I-fix-page-crashes-and-other-page-loading-errors-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018192251-How-do-I-fix-page-crashes-and-other-page-loading-errors-";
 #endif
 
 const char kCrashReasonFeedbackDisplayedURL[] =
 #if defined(OS_CHROMEOS)
-    "https://support.brave.com/hc/en-us/articles/360018192251-How-do-I-fix-page-crashes-and-other-page-loading-errors-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018192251-How-do-I-fix-page-crashes-and-other-page-loading-errors-";
 #else
-    "https://support.brave.com/hc/en-us/articles/360018192251-How-do-I-fix-page-crashes-and-other-page-loading-errors-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018192251-How-do-I-fix-page-crashes-and-other-page-loading-errors-";
 #endif
 
 const char kDoNotTrackLearnMoreURL[] =
 #if defined(OS_CHROMEOS)
-    "https://support.brave.com/hc/en-us/articles/360017905612-How-do-I-turn-Do-Not-Track-on-or-off-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017905612-How-do-I-turn-Do-Not-Track-on-or-off-";
 #else
-    "https://support.brave.com/hc/en-us/articles/360017905612-How-do-I-turn-Do-Not-Track-on-or-off-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017905612-How-do-I-turn-Do-Not-Track-on-or-off-";
 #endif
 
 const char kDownloadInterruptedLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/360018192491-How-do-I-fix-file-download-errors-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018192491-How-do-I-fix-file-download-errors-";
 
 const char kDownloadScanningLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/360018192491-How-do-I-fix-file-download-errors-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018192491-How-do-I-fix-file-download-errors-";
 
 const char kExtensionControlledSettingLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/360018185651-How-do-I-stop-extensions-from-changing-my-settings-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018185651-How-do-I-stop-extensions-from-changing-my-settings-";
 
 const char kExtensionInvalidRequestURL[] = "chrome-extension://invalid/";
 
@@ -144,7 +162,8 @@ const char kGoogleAccountURL[] = "https://support.brave.com/";
 const char kGooglePasswordManagerURL[] = "https://support.brave.com/";
 
 const char kLearnMoreReportingURL[] =
-    "https://support.brave.com/hc/en-us/articles/360017905872-How-do-I-enable-or-disable-automatic-crash-reporting-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017905872-How-do-I-enable-or-disable-automatic-crash-reporting-";
 
 const char kLegacySupervisedUserManagementDisplayURL[] =
     "https://support.brave.com/";
@@ -160,24 +179,32 @@ const char kMyActivityUrlInClearBrowsingData[] =
 
 const char kOmniboxLearnMoreURL[] =
 #if defined(OS_CHROMEOS)
-    "https://support.brave.com/hc/en-us/articles/360017479752-How-do-I-set-my-default-search-engine-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017479752-How-do-I-set-my-default-search-engine-";
 #else
-    "https://support.brave.com/hc/en-us/articles/360017479752-How-do-I-set-my-default-search-engine-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017479752-How-do-I-set-my-default-search-engine-";
 #endif
 
 const char kPageInfoHelpCenterURL[] =
 #if defined(OS_CHROMEOS)
-    "https://support.brave.com/hc/en-us/articles/360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
 #else
-    "https://support.brave.com/hc/en-us/articles/360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
 #endif
 
 const char kPasswordManagerLearnMoreURL[] =
 #if defined(OS_CHROMEOS)
-    "https://support.brave.com/hc/en-us/articles/360018185951-How-do-I-use-the-built-in-password-manager-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018185951-How-do-I-use-the-built-in-password-manager-";
 #else
-    "https://support.brave.com/hc/en-us/articles/360018185951-How-do-I-use-the-built-in-password-manager-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018185951-How-do-I-use-the-built-in-password-manager-";
 #endif
+
+const char kPaymentMethodsURL[] = "https://support.brave.com";
 
 const char kPaymentMethodsLearnMoreURL[] =
 #if defined(OS_CHROMEOS)
@@ -188,16 +215,20 @@ const char kPaymentMethodsLearnMoreURL[] =
 
 const char kPrivacyLearnMoreURL[] =
 #if defined(OS_CHROMEOS)
-    "https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017989132-How-do-I-change-my-Privacy-Settings-";
 #else
-    "https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017989132-How-do-I-change-my-Privacy-Settings-";
 #endif
 
 const char kRemoveNonCWSExtensionURL[] =
-    "https://support.brave.com/hc/en-us/articles/360017914832-Why-am-I-seeing-the-message-extensions-disabled-by-Brave-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017914832-Why-am-I-seeing-the-message-extensions-disabled-by-Brave-";
 
 const char kResetProfileSettingsLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/360017903152-How-do-I-reset-Brave-settings-to-default-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017903152-How-do-I-reset-Brave-settings-to-default-";
 
 const char kSettingsSearchHelpURL[] =
 #if defined(OS_CHROMEOS)
@@ -226,7 +257,8 @@ const char kSyncLearnMoreURL[] =
     "https://support.brave.com/";
 
 const char kUpgradeHelpCenterBaseURL[] =
-    "https://support.brave.com/hc/en-us/articles/360017886232-How-do-I-download-and-install-Brave-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017886232-How-do-I-download-and-install-Brave-";
 
 #if defined(OS_ANDROID)
 const char kAndroidAppScheme[] = "android-app";
@@ -314,12 +346,14 @@ const char kChromeEnterpriseSignInLearnMoreURL[] =
     "https://support.brave.com/";
 
 const char kMac10_9_ObsoleteURL[] =
-    "https://support.brave.com/hc/en-us/articles/360017886232-How-do-I-download-and-install-Brave-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017886232-How-do-I-download-and-install-Brave-";
 #endif
 
 #if defined(OS_WIN)
 const char kChromeCleanerLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/360017884152-How-do-I-remove-unwanted-ads-pop-ups-malware-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017884152-How-do-I-remove-unwanted-ads-pop-ups-malware-";
 
 const char kWindowsXPVistaDeprecationURL[] =
     "https://support.brave.com/";
@@ -332,10 +366,12 @@ const char kChromeSyncLearnMoreURL[] =
 
 #if BUILDFLAG(ENABLE_PLUGINS)
 const char kBlockedPluginLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/360018163151-How-do-I-manage-Flash-audio-video-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018163151-How-do-I-manage-Flash-audio-video-";
 
 const char kOutdatedPluginLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/360018163151-How-do-I-manage-Flash-audio-video-";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360018163151-How-do-I-manage-Flash-audio-video-";
 #endif
 
 }  // namespace chrome
