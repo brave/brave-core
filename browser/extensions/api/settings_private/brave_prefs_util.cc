@@ -78,6 +78,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   // Hangouts pref
   (*s_brave_whitelist)[kHangoutsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  // IPFS Companion pref
+  (*s_brave_whitelist)[kIPFSCompanionEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   return *s_brave_whitelist;
 }
 

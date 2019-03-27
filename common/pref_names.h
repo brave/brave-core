@@ -43,5 +43,6 @@ extern const char kBravePaymentsPinnedItemCount[];
 extern const char kWebTorrentEnabled[];
 extern const char kHangoutsEnabled[];
 extern const char kHideBraveRewardsButton[];
+extern const char kIPFSCompanionEnabled[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

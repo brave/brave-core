@@ -124,6 +124,11 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
       brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
     Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
   }
+
+  if (profile_prefs_->GetBoolean(kIPFSCompanionEnabled)) {
+    AddExtension(ipfs_companion_extension_id, ipfs_companion_extension_name,
+      ipfs_companion_extension_public_key);
+  }
 }
 
 void BraveComponentLoader::ObserveOpenPdfExternallySetting() {
