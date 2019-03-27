@@ -4,7 +4,7 @@ index 91611ac4171c19a031044ae6b1459acce246d427..c0636088e332f61c9ee8e6ed07f210fa
 +++ b/net/cookies/canonical_cookie.cc
 @@ -228,9 +228,10 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
      server_time = options.server_time();
-
+ 
    DCHECK(!creation_time.is_null());
 -  Time cookie_expires = CanonicalCookie::CanonExpiration(parsed_cookie,
 -                                                         creation_time,
@@ -13,6 +13,6 @@ index 91611ac4171c19a031044ae6b1459acce246d427..c0636088e332f61c9ee8e6ed07f210fa
 +                                             creation_time,
 +                                             server_time,
 +                                             !options.exclude_httponly());
-
+ 
    CookiePrefix prefix = GetCookiePrefix(parsed_cookie.Name());
    bool is_cookie_valid = IsCookiePrefixValid(prefix, url, parsed_cookie);
