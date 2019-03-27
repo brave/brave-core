@@ -42,6 +42,9 @@
 
 // Contribution process
 
+// PHASE 0
+// 1. InitReconcile
+
 // PHASE 1 (reconcile)
 // 1. StartReconcile
 // 2. Reconcile
@@ -110,14 +113,23 @@ class BatContribution {
 
   void OnStartUp();
 
-  // Starting point for contribution
-  // We determinate which contribution we want to do and do appropriate actions
-  void StartReconcile(
+  // Initial point for contribution
+  // In this step we get balance from the server
+  void InitReconcile(
       const std::string &viewing_id,
       const ledger::REWARDS_CATEGORY category,
       const braveledger_bat_helper::PublisherList& list,
       const braveledger_bat_helper::Directions& directions = {},
       double budget = 0);
+
+  // We determinate which contribution we want to do and do appropriate actions
+  void StartReconcile(
+      const std::string &viewing_id,
+      const ledger::REWARDS_CATEGORY category,
+      const braveledger_bat_helper::PublisherList& list,
+      const braveledger_bat_helper::Directions& directions,
+      double budget,
+      double balance);
 
   // Called when timer is triggered
   void OnTimer(uint32_t timer_id);
@@ -169,6 +181,15 @@ class BatContribution {
 
   // Triggers contribution process for auto contribute table
   void StartAutoContribute();
+
+  void OnWalletPropertiesForReconcile(
+      const std::string& viewing_id,
+      const ledger::REWARDS_CATEGORY category,
+      const braveledger_bat_helper::PublisherList& list,
+      const braveledger_bat_helper::Directions& directions,
+      double budget,
+      const ledger::Result result,
+      std::unique_ptr<ledger::WalletInfo> info);
 
   void Reconcile(const std::string &viewing_id);
 

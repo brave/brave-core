@@ -740,7 +740,7 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
   auto direction_list =
       std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
   braveledger_bat_helper::PublisherList list;
-  bat_contribution_->StartReconcile(GenerateGUID(),
+  bat_contribution_->InitReconcile(GenerateGUID(),
                          ledger::REWARDS_CATEGORY::DIRECT_DONATION,
                          list,
                          direction_list);
