@@ -1,7 +1,7 @@
 use_relative_paths = True
 
 deps = {
-  "vendor/ad-block": "https://github.com/brave/ad-block.git@d5c7128599889e4e2a797b402a517c664d53fad2",
+  "vendor/ad-block": "https://github.com/brave/ad-block.git@e54c59fe288d8f08de683b8f4f320a4c7bead4eb",
   "vendor/autoplay-whitelist": "https://github.com/brave/autoplay-whitelist.git@458053a3c95b403cbe0872f289a2aafa106ee9d8",
   "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@463e5e4e06e0ca84927176e8c72f6076ae9b6829",
   "vendor/tracking-protection": "https://github.com/brave/tracking-protection.git@29b1f86b11a8c7438fd7d57b446a77a84946712a",
@@ -16,8 +16,8 @@ deps = {
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bip39wally-core-native.git@9b119931c702d55be994117eb505d56310720b1d",
   "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@b8ef1a3f85aec0a0522a9230d59b3958a2150fab",
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@1b4362968c8f22720bfb75af6f506d4ecc0f3116",
-  "components/brave_sync/extension/brave-sync": "https://github.com/brave/sync.git@6691e9594f66050ba30206d9f49f90ce1a44bb51",
-  "components/brave_sync/extension/brave-crypto": "https://github.com/brave/crypto@0cd5dda4fd7c948d6c13107cb4f9b7d293ffc7e3",
+  "components/brave_sync/extension/brave-sync": "https://github.com/brave/sync.git@76bf8f1295b46a7112756af631a8f5cd217953e6",
+  "components/brave_sync/extension/brave-crypto": "https://github.com/brave/crypto@518d17d97003d1ccb2116c498ab363e0834e184c",
   "vendor/bat-native-usermodel": "https://github.com/brave-intl/bat-native-usermodel.git@c3b6111aa862c5c452c84be8a225d5f1df32b284",
   "vendor/challenge_bypass_ristretto_ffi": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi.git@2c0e28f76e4b6f53947bf4faa5afd93614f96aca",
 }
