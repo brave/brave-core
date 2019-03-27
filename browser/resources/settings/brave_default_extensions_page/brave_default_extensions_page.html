@@ -24,6 +24,12 @@
         sub-label="$i18n{hangoutsEnabledDesc}"
         on-settings-boolean-control-change="onHangoutsEnabledChange_">
     </settings-toggle-button>
+    <settings-toggle-button id="ipfsCompanionEnabled"
+        pref="{{prefs.brave.ipfs_companion_enabled}}"
+        label="IPFS Companion"
+        sub-label="$i18n{ipfsCompanionEnabledDesc}"
+        on-settings-boolean-control-change="onIPFSCompanionEnabledChange_">
+    </settings-toggle-button>
     <div class="settings-row continuation" id="manageExtensionsRow">
       <cr-link-row class="first" icon-class="icon-external"
         label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">

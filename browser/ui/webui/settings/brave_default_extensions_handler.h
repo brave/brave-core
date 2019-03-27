@@ -22,6 +22,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
 
   void SetWebTorrentEnabled(const base::ListValue* args);
   void SetHangoutsEnabled(const base::ListValue* args);
+  void SetIPFSCompanionEnabled(const base::ListValue* args);
 
   Profile* profile_ = nullptr;
 

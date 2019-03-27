@@ -24,6 +24,7 @@ Polymer({
   ready: function() {
     this.onWebTorrentEnabledChange_ = this.onWebTorrentEnabledChange_.bind(this)
     this.onHangoutsEnabledChange_ = this.onHangoutsEnabledChange_.bind(this)
+    this.onIPFSCompanionEnabledChange_ = this.onIPFSCompanionEnabledChange_.bind(this)
     this.openExtensionsPage_ = this.openExtensionsPage_.bind(this)
   },
 
@@ -33,6 +34,10 @@ Polymer({
 
   onHangoutsEnabledChange_: function() {
     this.browserProxy_.setHangoutsEnabled(this.$.hangoutsEnabled.checked);
+  },
+
+  onIPFSCompanionEnabledChange_: function() {
+    this.browserProxy_.setIPFSCompanionEnabled(this.$.ipfsCompanionEnabled.checked);
   },
 
   openExtensionsPage_: function() {
