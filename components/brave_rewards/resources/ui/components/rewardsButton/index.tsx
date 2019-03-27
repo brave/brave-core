@@ -32,7 +32,7 @@ export default class RewardsButton extends React.PureComponent<Props, {}> {
         onClick={onClick}
         data-test-id={testId}
       >
-        <StyledButtonText icon={!!icon}>
+        <StyledButtonText hasIcon={!!icon}>
           {text}
           {
             icon

@@ -180,7 +180,6 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
       >
         <span
           className="c11"
-          icon={false}
         >
           MISSING: donateNow
         </span>

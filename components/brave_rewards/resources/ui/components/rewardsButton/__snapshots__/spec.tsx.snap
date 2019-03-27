@@ -35,7 +35,6 @@ exports[`TipButton tests basic tests matches the snapshot 1`] = `
 >
   <span
     className="c1"
-    icon={false}
   />
 </button>
 `;
