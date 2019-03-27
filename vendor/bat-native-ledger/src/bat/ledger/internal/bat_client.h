@@ -40,10 +40,11 @@ class BatClient {
 
   std::string getWalletPassphrase() const;
 
-  void walletPropertiesCallback(
+  void WalletPropertiesCallback(
       int response_status_code,
       const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const std::map<std::string, std::string>& headers,
+      ledger::OnWalletPropertiesCallback callback);
 
   void recoverWallet(const std::string& passPhrase);
 
@@ -56,7 +57,7 @@ class BatClient {
       const std::string& promotion_id,
       const std::string& promotion_type);
 
-  void getWalletProperties();
+  void GetWalletProperties(ledger::OnWalletPropertiesCallback callback);
 
   void continueRecover(int result,
                        size_t* written,
@@ -69,6 +70,9 @@ class BatClient {
   void GetAddressesForPaymentId(ledger::WalletAddressesCallback callback);
 
   void CreateWalletIfNecessary();
+
+  ledger::WalletInfo WalletPropertiesToWalletInfo(
+    const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
 
  private:
   void getGrantCaptchaCallback(

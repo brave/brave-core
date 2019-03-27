@@ -552,13 +552,6 @@ void BatLedgerClientMojoProxy::SaveMediaPublisherInfo(
   bat_ledger_client_->SaveMediaPublisherInfo(media_key, publisher_id);
 }
 
-void BatLedgerClientMojoProxy::FetchWalletProperties() {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->FetchWalletProperties();
-}
-
 void BatLedgerClientMojoProxy::FetchGrants(const std::string& lang,
     const std::string& paymentId) {
   if (!Connected())

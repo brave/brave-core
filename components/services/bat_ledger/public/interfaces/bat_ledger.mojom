@@ -23,7 +23,7 @@ interface BatLedgerService {
 interface BatLedger {
   Initialize();
   CreateWallet();
-  FetchWalletProperties();
+  FetchWalletProperties() => (int32 result, string wallet_info);
 
   GetAutoContributeProps() => (string props);
   GetPublisherMinVisitTime() => (uint64 min_visit_time);
@@ -152,7 +152,6 @@ interface BatLedgerClient {
   SaveContributionInfo(string probi, int32 month, int32 year, uint32 date,
       string publisher_key, int32 category);
   SaveMediaPublisherInfo(string media_key, string publisher_id);
-  FetchWalletProperties();
   FetchGrants(string lang, string payment_id);
   GetGrantCaptcha(string promotion_id, string promotion_type);
 

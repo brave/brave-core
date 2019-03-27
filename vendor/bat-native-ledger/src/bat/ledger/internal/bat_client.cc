@@ -226,7 +226,8 @@ void BatClient::registerPersonaCallback(
   ledger_->OnWalletInitialized(ledger::Result::WALLET_CREATED);
 }
 
-void BatClient::getWalletProperties() {
+void BatClient::GetWalletProperties(
+    ledger::OnWalletPropertiesCallback callback) {
   std::string payment_id = ledger_->GetPaymentId();
   std::string passphrase = ledger_->GetWalletPassphrase();
 
@@ -243,23 +244,50 @@ void BatClient::getWalletProperties() {
       path,
       PREFIX_V2,
       braveledger_bat_helper::SERVER_TYPES::BALANCE);
-  auto callback = std::bind(&BatClient::walletPropertiesCallback,
+  auto load_callback = std::bind(&BatClient::WalletPropertiesCallback,
                             this,
                             _1,
                             _2,
-                            _3);
+                            _3,
+                            callback);
   ledger_->LoadURL(url,
                    std::vector<std::string>(),
                    std::string(),
                    std::string(),
                    ledger::URL_METHOD::GET,
-                   callback);
+                   load_callback);
 }
 
-void BatClient::walletPropertiesCallback(
+ledger::WalletInfo BatClient::WalletPropertiesToWalletInfo(
+    const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
+  ledger::WalletInfo info;
+  info.altcurrency_ = properties.altcurrency_;
+  info.probi_ = properties.probi_;
+  info.balance_ = properties.balance_;
+  info.rates_ = properties.rates_;
+  info.parameters_choices_ = properties.parameters_choices_;
+  info.fee_amount_ = ledger_->GetContributionAmount();
+  info.parameters_range_ = properties.parameters_range_;
+  info.parameters_days_ = properties.parameters_days_;
+
+  for (size_t i = 0; i < properties.grants_.size(); i ++) {
+    ledger::Grant grant;
+
+    grant.altcurrency = properties.grants_[i].altcurrency;
+    grant.probi = properties.grants_[i].probi;
+    grant.expiryTime = properties.grants_[i].expiryTime;
+
+    info.grants_.push_back(grant);
+  }
+
+  return info;
+}
+
+void BatClient::WalletPropertiesCallback(
     int response_status_code,
     const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const std::map<std::string, std::string>& headers,
+    ledger::OnWalletPropertiesCallback callback) {
   braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
   ledger_->LogResponse(__func__, response_status_code, response, headers);
   if (response_status_code != 200) {
@@ -267,16 +295,20 @@ void BatClient::walletPropertiesCallback(
     return;
   }
 
+  std::unique_ptr<ledger::WalletInfo> info;
+
   bool ok = braveledger_bat_helper::loadFromJson(&properties, response);
+
   if (!ok) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Failed to load wallet properties state";
-    ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
+    callback(ledger::Result::LEDGER_ERROR, std::move(info));
     return;
   }
 
+  info.reset(new ledger::WalletInfo(WalletPropertiesToWalletInfo(properties)));
   ledger_->SetWalletProperties(&properties);
-  ledger_->OnWalletProperties(ledger::Result::LEDGER_OK, properties);
+  callback(ledger::Result::LEDGER_OK, std::move(info));
 }
 
 std::string BatClient::getWalletPassphrase() const {
