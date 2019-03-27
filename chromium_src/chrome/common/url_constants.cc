@@ -258,7 +258,7 @@ const char kSyncLearnMoreURL[] =
 
 const char kUpgradeHelpCenterBaseURL[] =
     "https://support.brave.com/hc/en-us/articles/"
-    "360017886232-How-do-I-download-and-install-Brave-";
+    "360025390311-How-do-I-download-and-install-Brave-";
 
 #if defined(OS_ANDROID)
 const char kAndroidAppScheme[] = "android-app";
@@ -347,7 +347,7 @@ const char kChromeEnterpriseSignInLearnMoreURL[] =
 
 const char kMac10_9_ObsoleteURL[] =
     "https://support.brave.com/hc/en-us/articles/"
-    "360017886232-How-do-I-download-and-install-Brave-";
+    "360025390311-How-do-I-download-and-install-Brave-";
 #endif
 
 #if defined(OS_WIN)
