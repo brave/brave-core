@@ -280,8 +280,11 @@ void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
       BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
         "Failed publisher state: " << data;
   }
-
-  OnWalletInitialized(result);
+  if (GetPaymentId().empty() || GetWalletPassphrase().empty()) {
+    OnWalletInitialized(ledger::Result::CORRUPTED_WALLET);
+  } else {
+    OnWalletInitialized(result);
+  }
 }
 
 void LedgerImpl::SaveLedgerState(const std::string& data) {

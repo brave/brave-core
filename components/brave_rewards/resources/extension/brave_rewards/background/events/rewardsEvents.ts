@@ -63,6 +63,10 @@ chrome.braveRewards.onWalletFailed.addListener(() => {
   rewardsPanelActions.onWalletCreateFailed()
 })
 
+chrome.braveRewards.onWalletCorrupted.addListener(() => {
+  rewardsPanelActions.onWalletCorrupted()
+})
+
 chrome.braveRewards.onPublisherListNormalized.addListener((properties: RewardsExtension.PublisherNormalized[]) => {
   rewardsPanelActions.onPublisherListNormalized(properties)
 })

@@ -7,6 +7,8 @@
 #include <ctime>
 #include <sstream>
 #include <map>
+#include <memory>
+#include <utility>
 
 #include "bat/ledger/internal/bat_client.h"
 #include "bat/ledger/internal/bat_helper.h"
@@ -313,7 +315,6 @@ void BatClient::WalletPropertiesCallback(
 
 std::string BatClient::getWalletPassphrase() const {
   braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
-  DCHECK(wallet_info.keyInfoSeed_.size());
   std::string passPhrase;
   if (wallet_info.keyInfoSeed_.size() == 0) {
     return passPhrase;
@@ -376,7 +377,7 @@ void BatClient::OnNicewareListLoaded(const std::string& pass_phrase,
 }
 
 void BatClient::continueRecover(int result,
-                                size_t *written,
+                                size_t* written,
                                 const std::vector<uint8_t>& newSeed) {
   if (result != 0 || *written == 0) {
     BLOG(ledger_, ledger::LogLevel::LOG_INFO)
@@ -480,6 +481,15 @@ ledger_->LogResponse(__func__, response_status_code, response, headers);
 
 void BatClient::getGrants(const std::string& lang,
                           const std::string& forPaymentId) {
+  // make sure wallet/client state is sane here as this is the first
+  // panel call.
+  const std::string& wallet_payment_id = ledger_->GetPaymentId();
+  const std::string& passphrase = ledger_->GetWalletPassphrase();
+  if (wallet_payment_id.empty() || passphrase.empty()) {
+    braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
+    ledger_->OnWalletProperties(ledger::Result::CORRUPTED_WALLET, properties);
+    return;
+  }
   std::string paymentId = forPaymentId;
   if (paymentId.empty()) {
     paymentId = ledger_->GetPaymentId();

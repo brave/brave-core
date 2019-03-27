@@ -258,6 +258,12 @@
         "parameters": []
       },
       {
+        "name": "onWalletCorrupted",
+        "type": "function",
+        "description": "Fired when wallet is corrupt",
+        "parameters": []
+      },
+      {
         "name": "onPublisherListNormalized",
         "type": "function",
         "description": "Fired when publisher list was updated and normalized",
