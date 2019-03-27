@@ -6,7 +6,10 @@ import re
 import requests
 import sys
 import base64
-from util import execute, scoped_cwd
+try:
+    from util import execute, scoped_cwd
+except ImportError:
+    pass
 
 REQUESTS_DIR = os.path.abspath(os.path.join(__file__, '..', '..', '..',
                                             'vendor', 'requests'))

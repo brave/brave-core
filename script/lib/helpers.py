@@ -36,6 +36,28 @@ def get_releases_by_tag(repo, tag_name, include_drafts=False):
                 r['tag_name'] == tag_name and not r['draft']]
 
 
+def get_release(repo, tag, allow_published_release_updates=False):
+    """
+    allow_published_release_updates determines whether we will
+    allow this process to update only a draft release, or will
+    we also allow a published release to be updated.
+    """
+    release = None
+    releases = get_releases_by_tag(repo, tag, include_drafts=True)
+    if releases:
+        print("[INFO] Found existing release draft")
+        if len(releases) > 1:
+            raise UserWarning("[INFO] More then one draft with the tag '{}' "
+                              "found, not sure which one to merge with."
+                              .format(tag))
+        release = releases[0]
+        if not allow_published_release_updates and not release['draft']:
+            raise UserWarning("[INFO] Release with tag '{}' is already "
+                              "published, aborting.".format(tag))
+
+    return release
+
+
 def release_channel():
     channel = os.environ['CHANNEL']
     message = ('Error: Please set the $CHANNEL '
@@ -50,14 +72,6 @@ def get_tag():
 
 def release_name():
     return '{0} Channel'.format(get_channel_display_name())
-
-
-def get_releases_by_tag(repo, tag_name, include_drafts=False):
-    if include_drafts:
-        return [r for r in repo.releases.get() if r['tag_name'] == tag_name]
-    else:
-        return [r for r in repo.releases.get() if
-                r['tag_name'] == tag_name and not r['draft']]
 
 
 def retry_func(try_func, catch, retries, catch_func=None):

@@ -22,17 +22,17 @@ class TestGetDraft(unittest.TestCase):
 
     def test_returns_existing_draft(self):
         self.repo.releases._releases = [{'tag_name': 'test', 'draft': True}]
-        self.assertEquals(upload.get_draft(self.repo,
-                                           'test')['tag_name'], 'test')
+        self.assertEquals(upload.get_release(self.repo,
+                                             'test')['tag_name'], 'test', False)
 
     def test_fails_on_existing_release(self):
         self.repo.releases._releases = [{'tag_name': 'test', 'draft': False}]
-        self.assertRaises(UserWarning, upload.get_draft, self.repo, 'test')
+        self.assertRaises(UserWarning, upload.get_release, self.repo, 'test', True)
 
     def test_returns_none_on_new_draft(self):
         self.repo.releases._releases = [{'tag_name': 'old', 'draft': False}]
-        upload.get_draft(self.repo, 'new')
-        self.assertEquals(upload.get_draft(self.repo, 'test'), None)
+        upload.get_release(self.repo, 'new', False)
+        self.assertEquals(upload.get_release(self.repo, 'test'), None)
 
 
 class TestGetBravePackages(unittest.TestCase):

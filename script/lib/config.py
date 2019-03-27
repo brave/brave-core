@@ -11,6 +11,7 @@ PLATFORM = {
     'cygwin': 'win32',
     'darwin': 'darwin',
     'linux2': 'linux',
+    'linux': 'linux',
     'win32': 'win32',
 }[sys.platform]
 
@@ -136,7 +137,7 @@ def s3_config():
 
 
 def enable_verbose_mode():
-    print 'Running in verbose mode'
+    print('Running in verbose mode')
     global verbose_mode
     verbose_mode = True
 
