@@ -15,6 +15,10 @@
     "message": "isključeni",
     "description": "Message for when shields is disabled"
   },
+  "totalBlocked": {
+    "message": "Ukupan broj blokiranja",
+    "description": "Message showing the amount of all blocked resources"
+  },
   "forThisSite": {
     "message": "na ovom mrežnom mjestu",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -27,65 +31,69 @@
     "message": "Pregledavate ovo mrežno mjesto bez sigurnosne zaštite i zaštite privatnosti.",
     "description": "Message telling the user that shields are disabled"
   },
-  "itemsBlocked": {
-    "message": "Items blocked",
-    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  "blockAds": {
+    "message": "Oglasi i elementi za praćenje su blokirani",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-  "itemBlocked": {
-    "message": "Item blocked",
-    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  "blockPopups": {
+    "message": "Skočni su prozori blokirani",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "and": {
-    "message": "and",
-    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  "blockImages": {
+    "message": "Slike su blokirane",
+    "description": "Message indicating the number of images blocked"
   },
-  "connectionsUpgraded": {
-    "message": "connections upgraded",
-    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
-  },
-  "connectionUpgraded": {
-    "message": "connection upgraded",
-    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
-  },
-  "thirdPartyTrackersBlocked": {
-    "message": "3rd-party trackers blocked",
-    "description": "Message for the scripts blocked row label"
-  },
-  "connectionsUpgradedHTTPS": {
-    "message": "Connections upgraded to HTTPS",
-    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
-  },
-  "connectionUpgradedHTTPS": {
-    "message": "Connection upgraded to HTTPS",
-    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
-  },
-  "scriptsBlocked": {
-    "message": "Skripte su blokirane",
-    "description": "Message for the scripts blocked row label"
-  },
-  "thirdPartyCookiesBlocked": {
+  "block3partyCookies": {
     "message": "Kolačići drugih strana su blokirani",
-    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "allCookiesBlocked": {
-    "message": "Kolačići su blokirani",
-    "description": "Message for the option in the cookies select field to block all cookies"
-  },
-  "allCookiesAllowed": {
+  "allowAllCookies": {
     "message": "Svi su kolačići dopušteni",
-    "description": "Message for the option in the cookies select field to allow all cookies"
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
+  "blockAllCookies": {
+    "message": "Kolačići su blokirani",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Neke su skripte blokirane",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Sve su skripte dopuštene",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Skripte su blokirane",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
     "message": "Blokirane su druge strane koje žele prepoznati uredaj",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "allFingerprintingBlocked": {
-    "message": "Blokirano je prepoznavanje uređaja",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
-  },
-  "allFingerprintingAllowed": {
+  "allowAllFingerprinting": {
     "message": "Prepoznavanja uređaja su dopuštena",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Blokirano je prepoznavanje uređaja",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Pokušaji krađe identiteta / zlonamjernog softvera su blokirani",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Veze su šifrirane",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Zadane globalne postavke štita",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Kolačići na ovom mrežnom mjestu",
+    "description": "Message for the cookie resources blocked panel"
   },
   "deviceRecognitionAttempts": {
     "message": "Pokušaji prepoznavanja uređaja",
@@ -103,21 +111,49 @@
     "message": "Dopuštene skripte",
     "description": "Message for the script resources allowed"
   },
-  "blockAll": {
-    "message": "Blokiraj sve",
-    "description": "Message for the resources blocked *block all* option"
-  },
   "allowAll": {
     "message": "Dopusti sve",
     "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Dopusti",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Dopušteno",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Blokiraj sve",
+    "description": "Message for the resources blocked *block all* option"
   },
   "block": {
     "message": "Blokiraj",
     "description": "Message for the resources blocked *block* option"
   },
-  "allow": {
-    "message": "Dopusti",
-    "description": "Message for the resources blocked *allow* option"
+  "blocked": {
+    "message": "Blokirano",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Primijeni",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Primijeni jednom",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Primijenjuj do ponovnog pokretanja",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Uvijek primijeni",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Poništi",
+    "description": "Message for the resources blocked *undo* option"
   },
   "cancel": {
     "message": "Odustani",
@@ -126,13 +162,5 @@
   "goBack": {
     "message": "Povratak",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
-  },
-  "applyOnce": {
-    "message": "Primijeni jednom",
-    "description": "Message for action in dynamic list of resources blocked to *apply once*"
-  },
-  "changeDefaults": {
-    "message": "Change global shield defaults",
-    "description": "Message for the button action linking to the settings page"
   }
 }

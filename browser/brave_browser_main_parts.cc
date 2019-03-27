@@ -8,4 +8,5 @@
 
 void BraveBrowserMainParts::PreShutdown() {
   content::BraveClearBrowsingData::ClearOnExit();
+  ChromeBrowserMainParts::PreShutdown();
 }

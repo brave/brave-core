@@ -1,9 +1,8 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
+/* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../../../chrome/browser/importer/importer_list.cc"  // NOLINT
+#include "../../../../../chrome/browser/importer/importer_list.cc"
 
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/scoped_blocking_call.h"
@@ -14,8 +13,8 @@
 
 void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
                          base::ListValue* chrome_profiles,
-                         const base::FilePath& user_data_folder,
-                         const std::string& brand) {
+                         base::FilePath& user_data_folder,
+                         std::string& brand) {
   for (const auto& value : *chrome_profiles) {
     const base::DictionaryValue* dict;
     if (!value.GetAsDictionary(&dict))
@@ -25,8 +24,7 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
     std::string name;
     dict->GetString("id", &profile);
     dict->GetString("name", &name);
-    base::FilePath path = user_data_folder;
-    if (!ChromeImporterCanImport(path.Append(
+    if (!ChromeImporterCanImport(user_data_folder.Append(
       base::FilePath::StringType(profile.begin(), profile.end())), &items))
       continue;
     importer::SourceProfile chrome;
@@ -44,35 +42,33 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
 }
 
 void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
-  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
-                                                base::BlockingType::WILL_BLOCK);
-  const base::FilePath chrome_user_data_folder = GetChromeUserDataFolder();
-  base::ListValue* chrome_profiles =
-      GetChromeSourceProfiles(chrome_user_data_folder);
-  const std::string brand_chrome("Chrome ");
-  AddChromeToProfiles(profiles, chrome_profiles, chrome_user_data_folder,
-                      brand_chrome);
+  base::ScopedBlockingCall scoped_blocking_call(
+      base::BlockingType::WILL_BLOCK);
+  base::FilePath chrome_user_data_folder = GetChromeUserDataFolder();
+  base::ListValue* chrome_profiles = GetChromeSourceProfiles(chrome_user_data_folder);
+  std::string brand_chrome("Chrome ");
+  AddChromeToProfiles(profiles, chrome_profiles, chrome_user_data_folder, brand_chrome);
 
 #if !defined(OS_LINUX)
-  const base::FilePath canary_user_data_folder = GetCanaryUserDataFolder();
+  base::FilePath canary_user_data_folder = GetCanaryUserDataFolder();
   base::ListValue* canary_profiles =
-      GetChromeSourceProfiles(canary_user_data_folder);
-  const std::string brandCanary("Chrome Canary ");
+    GetChromeSourceProfiles(canary_user_data_folder);
+  std::string brandCanary("Chrome Canary ");
   AddChromeToProfiles(profiles, canary_profiles, canary_user_data_folder,
                       brandCanary);
 #endif
 
-  const base::FilePath chromium_user_data_folder = GetChromiumUserDataFolder();
+  base::FilePath chromium_user_data_folder = GetChromiumUserDataFolder();
   base::ListValue* chromium_profiles =
-      GetChromeSourceProfiles(chromium_user_data_folder);
-  const std::string brandChromium("Chromium ");
+    GetChromeSourceProfiles(chromium_user_data_folder);
+  std::string brandChromium("Chromium ");
   AddChromeToProfiles(profiles, chromium_profiles, chromium_user_data_folder,
                       brandChromium);
 }
 
 void DetectBraveProfiles(std::vector<importer::SourceProfile>* profiles) {
-  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
-                                                base::BlockingType::WILL_BLOCK);
+  base::ScopedBlockingCall scoped_blocking_call(
+      base::BlockingType::WILL_BLOCK);
 
   base::FilePath brave_user_data_folder = GetBraveUserDataFolder();
 

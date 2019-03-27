@@ -1,11 +1,8 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
+/* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
-
-#include <memory>
 
 #include "base/task/post_task.h"
 #include "brave/common/shield_exceptions.h"
@@ -30,6 +27,7 @@ using content::BrowserThread;
 using content::Referrer;
 using content::ResourceRequestInfo;
 using net::URLRequest;
+using namespace net::registry_controlled_domains;
 
 namespace brave_shields {
 
@@ -84,7 +82,7 @@ bool IsAllowContentSettingFromIO(const net::URLRequest* request,
     const std::string& resource_identifier) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
-  content::ResourceRequestInfo* resource_info =
+  const content::ResourceRequestInfo* resource_info =
       content::ResourceRequestInfo::ForRequest(request);
   if (!resource_info) {
     return GetDefaultFromResourceIdentifier(resource_identifier, primary_url,
@@ -142,6 +140,7 @@ void GetRenderFrameInfo(const URLRequest* request,
   }
   if (!content::ResourceRequestInfo::GetRenderFrameForRequest(
           request, render_process_id, render_frame_id)) {
+
     const content::WebSocketHandshakeRequestInfo* websocket_info =
       content::WebSocketHandshakeRequestInfo::ForRequest(request);
     if (websocket_info) {
@@ -170,9 +169,8 @@ bool ShouldSetReferrer(bool allow_referrers, bool shields_up,
       !shields_up ||
       original_referrer.is_empty() ||
       // Same TLD+1 whouldn't set the referrer
-      SameDomainOrHost(
-          target_url, original_referrer,
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ||
+      SameDomainOrHost(target_url, original_referrer,
+          INCLUDE_PRIVATE_REGISTRIES) ||
       // Whitelisted referrers shoud never set the referrer
       brave::IsWhitelistedReferrer(tab_origin, target_url.GetOrigin())) {
     return false;

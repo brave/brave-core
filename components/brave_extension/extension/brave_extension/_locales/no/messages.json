@@ -15,6 +15,10 @@
     "message": "nede",
     "description": "Message for when shields is disabled"
   },
+  "totalBlocked": {
+    "message": "Blokkert totalt",
+    "description": "Message showing the amount of all blocked resources"
+  },
   "forThisSite": {
     "message": "for denne siden",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -27,65 +31,69 @@
     "message": "Du besøker denne siden uten personvern og sikkerhetsinnstillinger",
     "description": "Message telling the user that shields are disabled"
   },
-  "itemsBlocked": {
-    "message": "Items blocked",
-    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  "blockAds": {
+    "message": "Annonser og sporere blokkert",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-  "itemBlocked": {
-    "message": "Item blocked",
-    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  "blockPopups": {
+    "message": "Forgrunnsvinduer blokkert",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "and": {
-    "message": "and",
-    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  "blockImages": {
+    "message": "Bilder er blokkerte",
+    "description": "Message indicating the number of images blocked"
   },
-  "connectionsUpgraded": {
-    "message": "connections upgraded",
-    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
-  },
-  "connectionUpgraded": {
-    "message": "connection upgraded",
-    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
-  },
-  "thirdPartyTrackersBlocked": {
-    "message": "3rd-party trackers blocked",
-    "description": "Message for the scripts blocked row label"
-  },
-  "connectionsUpgradedHTTPS": {
-    "message": "Connections upgraded to HTTPS",
-    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
-  },
-  "connectionUpgradedHTTPS": {
-    "message": "Connection upgraded to HTTPS",
-    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
-  },
-  "scriptsBlocked": {
-    "message": "Skript blokkert",
-    "description": "Message for the scripts blocked row label"
-  },
-  "thirdPartyCookiesBlocked": {
+  "block3partyCookies": {
     "message": "Tredjeparts-informasjonskapsler er blokkert",
-    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "allCookiesBlocked": {
-    "message": "Informasjonskapler er blokkert",
-    "description": "Message for the option in the cookies select field to block all cookies"
-  },
-  "allCookiesAllowed": {
+  "allowAllCookies": {
     "message": "Alle informasjonskapsler er tillatt",
-    "description": "Message for the option in the cookies select field to allow all cookies"
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
+  "blockAllCookies": {
+    "message": "Informasjonskapler er blokkert",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  },
+  "blockSomeScripts": {
+    "message": "Noen skript blokkert",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  },
+  "allowAllScripts": {
+    "message": "Alle skript er tillatt",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  },
+  "blockAllScriptsOrigins": {
+    "message": "Skript blokkert",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
+  },
+  "block3partyFingerprinting": {
     "message": "Tredjeparts gjenkjenning av enheter er blokkert",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "allFingerprintingBlocked": {
-    "message": "Enhets-gjenkjenning er blokkert",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
-  },
-  "allFingerprintingAllowed": {
+  "allowAllFingerprinting": {
     "message": "Alle gjenkjenningsmetoder for enheten tillatt",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
+  },
+  "blockAllFingerprinting": {
+    "message": "Enhets-gjenkjenning er blokkert",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+  },
+  "blockPishing": {
+    "message": "Nettsnoking/ondsinnet programvare-forsøk blokkert",
+    "description": "Message indicating the number of phishing/malware blocked"
+  },
+  "connectionsEncrypted": {
+    "message": "Tilkoblinger er kodet",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Vanlige innstillinger for \"globalt skjold\"",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Informasjonskapsler på dette nettstedet",
+    "description": "Message for the cookie resources blocked panel"
   },
   "deviceRecognitionAttempts": {
     "message": "Forsøk på enhetsgjenkjenning ",
@@ -103,21 +111,49 @@
     "message": "Godkjente skript",
     "description": "Message for the script resources allowed"
   },
-  "blockAll": {
-    "message": "Blokker alle",
-    "description": "Message for the resources blocked *block all* option"
-  },
   "allowAll": {
     "message": "Tillat alle",
     "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Tillat",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Tillatt",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Blokker alle",
+    "description": "Message for the resources blocked *block all* option"
   },
   "block": {
     "message": "Blokker",
     "description": "Message for the resources blocked *block* option"
   },
-  "allow": {
-    "message": "Tillat",
-    "description": "Message for the resources blocked *allow* option"
+  "blocked": {
+    "message": "Blokkert",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
+    "message": "Bruk",
+    "description": "Message for the button inside dynamic list of resources blocked"
+  },
+  "applyOnce": {
+    "message": "Bruk én gang",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
+  },
+  "applyUntilRestart": {
+    "message": "Gjelder til omstart",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Bruk alltid",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Gjør om",
+    "description": "Message for the resources blocked *undo* option"
   },
   "cancel": {
     "message": "Kanseller",
@@ -126,13 +162,5 @@
   "goBack": {
     "message": "Gå tilbake",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
-  },
-  "applyOnce": {
-    "message": "Bruk én gang",
-    "description": "Message for action in dynamic list of resources blocked to *apply once*"
-  },
-  "changeDefaults": {
-    "message": "Change global shield defaults",
-    "description": "Message for the button action linking to the settings page"
   }
 }

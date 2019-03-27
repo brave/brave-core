@@ -1,14 +1,8 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2018 The Brave Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
-#include "../../../../net/socket/socks5_client_socket.cc"  // NOLINT
-
-#include <algorithm>
-#include <memory>
-#include <string>
-#include <utility>
+#include "../../../../net/socket/socks5_client_socket.cc"
 
 #include "net/base/io_buffer.h"
 #include "net/socket/socks5_client_socket.h"
@@ -16,7 +10,7 @@
 namespace net {
 
 int SOCKS5ClientSocket::DoAuth(int rv) {
-  rv = Authenticate(rv, net_log_, io_callback_);
+  rv = Authenticate(rv, *transport_, net_log_, io_callback_);
   next_state_ = (rv == OK ? STATE_HANDSHAKE_WRITE : STATE_AUTH);
   return rv;
 }
@@ -26,6 +20,7 @@ uint8_t SOCKS5ClientSocket::auth_method() {
 }
 
 int SOCKS5ClientSocket::Authenticate(int rv,
+                                     ClientSocketHandle& socket,
                                      NetLogWithSource& net_log,
                                      CompletionCallback& callback) {
   DCHECK_EQ(OK, rv);
@@ -33,11 +28,11 @@ int SOCKS5ClientSocket::Authenticate(int rv,
 }
 
 SOCKS5ClientSocketAuth::SOCKS5ClientSocketAuth(
-    std::unique_ptr<StreamSocket> transport_socket,
-    const HostPortPair& destination,
+    std::unique_ptr<ClientSocketHandle> transport_socket,
+    const HostResolver::RequestInfo& req_info,
     const NetworkTrafficAnnotationTag& traffic_annotation,
     const HostPortPair& proxy_host_port)
-    : SOCKS5ClientSocket(std::move(transport_socket), destination,
+    : SOCKS5ClientSocket(std::move(transport_socket), req_info,
                          traffic_annotation),
       proxy_host_port_(proxy_host_port),
       next_state_(STATE_INIT_WRITE) {
@@ -65,9 +60,9 @@ uint8_t SOCKS5ClientSocketAuth::auth_method() {
 
 static const size_t kSOCKSAuthUsernamePasswordResponseLen = 2;
 
-int SOCKS5ClientSocketAuth::Authenticate(int rv,
-                                         NetLogWithSource& net_log,
-                                         CompletionCallback& callback) {
+int SOCKS5ClientSocketAuth::Authenticate(
+    int rv, ClientSocketHandle& transport, NetLogWithSource& net_log,
+    CompletionCallback& callback) {
   if (!do_auth()) {
     DCHECK_EQ(OK, rv);
     return OK;
@@ -76,7 +71,7 @@ int SOCKS5ClientSocketAuth::Authenticate(int rv,
     switch (next_state_) {
       case STATE_INIT_WRITE: {
         DCHECK_EQ(OK, rv);
-        // Initialize the buffer with
+        // Initialize the buffer with 
         //        0x01, usernamelen, username, passwordlen, password
         size_t usernamelen = username().size();
         size_t passwordlen = password().size();
@@ -101,7 +96,7 @@ int SOCKS5ClientSocketAuth::Authenticate(int rv,
                buffer_left_);
         next_state_ = STATE_WRITE_COMPLETE;
         net_log.BeginEvent(NetLogEventType::SOCKS5_AUTH_WRITE);
-        rv = transport_socket_->Write(iobuf_.get(), buffer_left_, callback,
+        rv = transport.socket()->Write(iobuf_.get(), buffer_left_, callback,
             traffic_annotation_);
         break;
 
@@ -133,7 +128,7 @@ int SOCKS5ClientSocketAuth::Authenticate(int rv,
         iobuf_ = new IOBuffer(buffer_left_);
         next_state_ = STATE_READ_COMPLETE;
         net_log.BeginEvent(NetLogEventType::SOCKS5_AUTH_READ);
-        rv = transport_socket_->Read(iobuf_.get(), buffer_left_, callback);
+        rv = transport.socket()->Read(iobuf_.get(), buffer_left_, callback);
         break;
 
       case STATE_READ_COMPLETE:
