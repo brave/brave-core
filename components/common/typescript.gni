@@ -7,6 +7,7 @@ brave_common_web_compile_inputs = [
   rebase_path("dns.ts"),
   rebase_path("debounce.ts"),
   rebase_path("locale.ts"),
+  rebase_path("BraveCoreThemeProvider.tsx"),
   # common definitions change
   rebase_path("../definitions/adBlock.d.ts"),
   rebase_path("../definitions/chromel.d.ts"),
