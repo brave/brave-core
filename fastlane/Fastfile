@@ -73,7 +73,7 @@ platform :ios do
       configuration: "Release",
     )
 
-    add_badge(color: "green")
+    badge(dark: true)
 
     gym(
       scheme: "FirefoxBeta",
@@ -114,17 +114,6 @@ platform :ios do
   end
 
   # Private helper methods ---------------------------------------
-
-  desc "Adds the version/build tag on top of the AppIcon. Takes the following arguments: \"
-  :color              The color of the right area of the badge."
-  private_lane :add_badge do |options|
-    badge(
-      shield: "#{get_client_version_number}-#{get_build_number}-#{options[:color]}",
-      no_badge: true,
-      shield_no_resize: true,
-      shield_gravity: "south",
-    )
-  end
 
   desc "Updates the project's build number to be the next number acceptable by TestFlight. Takes the following arguments:"
   lane :set_build_number do |options|
