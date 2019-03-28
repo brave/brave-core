@@ -19,9 +19,10 @@
 #include "brave/browser/extensions/brave_component_extension.h"
 #include "content/public/common/resource_type.h"
 
-class AutoplayWhitelistServiceTest;
-class TrackingProtectionServiceTest;
 class AdBlockServiceTest;
+class AutoplayWhitelistServiceTest;
+class ReferrerWhitelistServiceTest;
+class TrackingProtectionServiceTest;
 
 namespace brave_shields {
 
@@ -54,9 +55,10 @@ class LocalDataFilesService : public BraveComponentExtension {
       const std::string& manifest) override;
 
  private:
-  friend class ::AutoplayWhitelistServiceTest;
-  friend class ::TrackingProtectionServiceTest;
   friend class ::AdBlockServiceTest;
+  friend class ::AutoplayWhitelistServiceTest;
+  friend class ::ReferrerWhitelistServiceTest;
+  friend class ::TrackingProtectionServiceTest;
   static std::string g_local_data_files_component_id_;
   static std::string g_local_data_files_component_base64_public_key_;
   static void SetComponentIdAndBase64PublicKeyForTest(
