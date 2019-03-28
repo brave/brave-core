@@ -23,7 +23,8 @@ namespace extensions {
       pdfjs_extension_id,
       brave_rewards_extension_id,
       brave_sync_extension_id,
-      brave_webtorrent_extension_id
+      brave_webtorrent_extension_id,
+      ipfs_companion_extension_id
     };
 
     for (size_t i = 0; i < base::size(kAllowed); ++i) {

@@ -1,15 +1,18 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_EXTENSIONS_BRAVE_COMPONENT_LOADER_H_
 #define BRAVE_BROWSER_EXTENSIONS_BRAVE_COMPONENT_LOADER_H_
 
+#include <string>
+
 #include "base/files/file_path.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "components/prefs/pref_change_registrar.h"
 
-class BravePDFExtensionTest;
+class BraveComponentLoaderTest;
 
 namespace extensions {
 
@@ -37,12 +40,12 @@ class BraveComponentLoader : public ComponentLoader {
   // ForceAddHangoutServicesExtension ignores whether or not a preference for
   // hangouts is set.  If the buildflag is not set, it won't add though.
   void ForceAddHangoutServicesExtension();
- 
+
   static bool IsPdfjsDisabled();
 
  private:
   void AddHangoutServicesExtension() override;
-  friend class ::BravePDFExtensionTest;
+  friend class ::BraveComponentLoaderTest;
   void ObserveOpenPdfExternallySetting();
   // Callback for changes to the AlwaysOpenPdfExternally setting.
   void UpdatePdfExtension(const std::string& pref_name);
@@ -54,6 +57,7 @@ class BraveComponentLoader : public ComponentLoader {
       WILL_REMOVE,
     };
     virtual void OnPdfExtensionAction(PdfExtensionAction action) = 0;
+    virtual void OnComponentRegistered(std::string extension_id) = 0;
   };
 
   void set_testing_callbacks(TestingCallbacks* testing_callbacks);

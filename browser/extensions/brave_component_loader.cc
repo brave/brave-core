@@ -53,6 +53,9 @@ void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
   // to patch for friend access.
   demand_updater.OnDemandUpdate(g_browser_process->component_updater(),
       extension_id);
+  if (testing_callbacks_) {
+    testing_callbacks_->OnComponentRegistered(extension_id);
+  }
 }
 
 void BraveComponentLoader::OnComponentReady(std::string extension_id,
@@ -123,6 +126,11 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     brave_webtorrent_path =
       brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
     Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
+  }
+
+  if (profile_prefs_->GetBoolean(kIPFSCompanionEnabled)) {
+    AddExtension(ipfs_companion_extension_id, ipfs_companion_extension_name,
+      ipfs_companion_extension_public_key);
   }
 }
 

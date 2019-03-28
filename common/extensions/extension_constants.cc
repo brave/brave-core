@@ -22,3 +22,13 @@ const char pdfjs_extension_public_key[] =
     "Wsz8EL2SNEIw6uH8RmXG7nZ29NJ7sk7jn17QmMsO2UJ01UT8hfOOOEQIDAQAB";
 const char pdfjs_extension_origin[] =
     "chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/";
+
+const char ipfs_companion_extension_id[] = "nibjojkomfdiaoajekhjakgkdhaomnch";
+const char ipfs_companion_extension_name[] = "IPFS Companion";
+const char ipfs_companion_extension_public_key[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi+PCLMME8x15VZQqUn+vBUJH8oqGq"
+    "NiUX6lYLBi5w3HwSGcknEyCF5LDJv7tR3yeSxD8PhohQVJd2+5WB4BJkvzVR3F6uHS7hrgZ0l"
+    "cq+xa+q4c1At35332C//ahX+ZvK3/n9v20jzJ8xdesQmfG8coFIyOZfOQ/owTno+QoPrUO9sy"
+    "XeG6nbYQnyfDip+UXe663zfBiNmwuVPo8R58zAOmpz7yAlCH+yEmj1YjQYpqbtYHwJwvN4elG"
+    "F9wthgFNxoIZiqbe0wTUZiNjC1bZPiAed3+WftK0/P6czFpIP4SzjXszVps93l+yI15OB7Voe"
+    "Fu6oQk5G0d1/38W7GotUwIDAQAB";

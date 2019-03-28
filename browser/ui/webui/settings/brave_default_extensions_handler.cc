@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -27,20 +28,25 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "setHangoutsEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetHangoutsEnabled,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setIPFSCompanionEnabled",
+      base::BindRepeating(
+        &BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled,
+        base::Unretained(this)));
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
-  bool value;
-  args->GetBoolean(0, &value);
+  bool enabled;
+  args->GetBoolean(0, &enabled);
 
   extensions::ExtensionService* service =
     extensions::ExtensionSystem::Get(profile_)->extension_service();
   extensions::ComponentLoader* loader = service->component_loader();
 
-  if (value) {
+  if (enabled) {
     if (!loader->Exists(brave_webtorrent_extension_id)) {
       base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
       brave_webtorrent_path =
@@ -58,13 +64,13 @@ void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
-  bool value;
-  args->GetBoolean(0, &value);
+  bool enabled;
+  args->GetBoolean(0, &enabled);
 
   extensions::ExtensionService* service =
     extensions::ExtensionSystem::Get(profile_)->extension_service();
 
-  if (value) {
+  if (enabled) {
     extensions::ComponentLoader* loader = service->component_loader();
     if (!loader->Exists(hangouts_extension_id)) {
       static_cast<extensions::BraveComponentLoader*>(loader)->
@@ -73,6 +79,31 @@ void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
     service->EnableExtension(hangouts_extension_id);
   } else {
     service->DisableExtension(hangouts_extension_id,
+        extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
+  }
+}
+
+void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  CHECK(profile_);
+  bool enabled;
+  args->GetBoolean(0, &enabled);
+
+  extensions::ExtensionService* service =
+    extensions::ExtensionSystem::Get(profile_)->extension_service();
+
+  if (enabled) {
+    extensions::ComponentLoader* loader = service->component_loader();
+    if (!loader->Exists(ipfs_companion_extension_id)) {
+      static_cast<extensions::BraveComponentLoader*>(loader)->
+          AddExtension(ipfs_companion_extension_id,
+                       ipfs_companion_extension_name,
+                       ipfs_companion_extension_public_key);
+    }
+    service->EnableExtension(ipfs_companion_extension_id);
+  } else {
+    service->DisableExtension(ipfs_companion_extension_id,
         extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
   }
 }
