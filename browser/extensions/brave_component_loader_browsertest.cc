@@ -5,29 +5,37 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
 #include "brave/common/brave_switches.h"
+#include "brave/common/pref_names.h"
+#include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using ::testing::_;
+using ::testing::AnyNumber;
 using extensions::BraveComponentLoader;
 
-class BravePDFExtensionTest : public extensions::ExtensionFunctionalTest,
-                              public BraveComponentLoader::TestingCallbacks {
+class BraveComponentLoaderTest : public extensions::ExtensionFunctionalTest,
+  public BraveComponentLoader::TestingCallbacks {
  public:
-  BravePDFExtensionTest() : pdf_extension_action_(TestingCallbacks::NONE) {}
-  ~BravePDFExtensionTest() override = default;
+  BraveComponentLoaderTest() : pdf_extension_action_(TestingCallbacks::NONE) {}
+  ~BraveComponentLoaderTest() override = default;
 
-protected:
+ protected:
   void SetUpOnMainThread() override {
-   extensions::ExtensionService* service =
-       extensions::ExtensionSystem::Get(profile())->extension_service();
+    extensions::ExtensionService* service =
+      extensions::ExtensionSystem::Get(profile())->extension_service();
     DCHECK(service);
-   (static_cast<BraveComponentLoader*>(service->component_loader()))
-       ->set_testing_callbacks(this);
+    BraveComponentLoader* loader =
+      static_cast<BraveComponentLoader*>(service->component_loader());
+   loader->set_testing_callbacks(this);
+   // Do this again so OnComponentRegistered callback will be called.
+   loader->AddDefaultComponentExtensions(false);
   }
 
   // BraveComponentLoader::TestingCallbacks
@@ -36,18 +44,53 @@ protected:
     pdf_extension_action_ = action;
   }
 
-  void SetDownloadPDFs(bool value) {
-    DCHECK(browser());
-    profile()->GetPrefs()->SetBoolean(prefs::kPluginsAlwaysOpenPdfExternally,
-                                      value);
-  }
+  MOCK_METHOD1(OnComponentRegistered, void(std::string));
 
   TestingCallbacks::PdfExtensionAction pdf_extension_action() {
     return pdf_extension_action_;
   }
 
-private:
+ private:
   TestingCallbacks::PdfExtensionAction pdf_extension_action_;
+};
+
+class BraveIPFSExtensionTest: public BraveComponentLoaderTest {
+ public:
+  BraveIPFSExtensionTest() {}
+  ~BraveIPFSExtensionTest() override = default;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveIPFSExtensionTest, DisabledByDefault) {
+  ASSERT_FALSE(
+      profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
+  EXPECT_CALL(*this, OnComponentRegistered(_)).Times(AnyNumber());
+  EXPECT_CALL(*this,
+      OnComponentRegistered(ipfs_companion_extension_id)).Times(0);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveIPFSExtensionTest,
+                       PRE_IPFSCompanionEnabledDoesRegisterComponent) {
+  profile()->GetPrefs()->SetBoolean(kIPFSCompanionEnabled, true);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveIPFSExtensionTest,
+                       IPFSCompanionEnabledDoesRegisterComponent) {
+  ASSERT_TRUE(
+      profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
+  EXPECT_CALL(*this, OnComponentRegistered(_)).Times(AnyNumber());
+  EXPECT_CALL(*this, OnComponentRegistered(ipfs_companion_extension_id));
+}
+
+class BravePDFExtensionTest : public BraveComponentLoaderTest {
+ public:
+  BravePDFExtensionTest() {}
+  ~BravePDFExtensionTest() override = default;
+
+  void SetDownloadPDFs(bool value) {
+    DCHECK(browser());
+    profile()->GetPrefs()->SetBoolean(prefs::kPluginsAlwaysOpenPdfExternally,
+                                      value);
+  }
 };
 
 IN_PROC_BROWSER_TEST_F(BravePDFExtensionTest, ToggleDownloadPDFs) {

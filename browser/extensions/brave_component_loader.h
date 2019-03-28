@@ -9,7 +9,7 @@
 #include "chrome/browser/extensions/component_loader.h"
 #include "components/prefs/pref_change_registrar.h"
 
-class BravePDFExtensionTest;
+class BraveComponentLoaderTest;
 
 namespace extensions {
 
@@ -42,7 +42,7 @@ class BraveComponentLoader : public ComponentLoader {
 
  private:
   void AddHangoutServicesExtension() override;
-  friend class ::BravePDFExtensionTest;
+  friend class ::BraveComponentLoaderTest;
   void ObserveOpenPdfExternallySetting();
   // Callback for changes to the AlwaysOpenPdfExternally setting.
   void UpdatePdfExtension(const std::string& pref_name);
@@ -54,6 +54,7 @@ class BraveComponentLoader : public ComponentLoader {
       WILL_REMOVE,
     };
     virtual void OnPdfExtensionAction(PdfExtensionAction action) = 0;
+    virtual void OnComponentRegistered(std::string extension_id) = 0;
   };
 
   void set_testing_callbacks(TestingCallbacks* testing_callbacks);
