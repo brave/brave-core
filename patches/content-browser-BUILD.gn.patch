@@ -1,8 +1,8 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index 9545cf4bb255c614260fc41a55cfaffe7e7d7420..72325f82e7b366de6da58663874b6192fcc6627f 100644
+index a17fee9e275e817f97e943a48e36fa9e67340c9d..7de443b32075e0c98a2f081d2b5de12492a689c5 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -2190,6 +2190,12 @@ jumbo_source_set("browser") {
+@@ -2192,6 +2192,12 @@ jumbo_source_set("browser") {
        "//ppapi/proxy:ipc",
        "//ppapi/shared_impl",
      ]

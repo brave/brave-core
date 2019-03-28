@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/settings.html b/chrome/browser/resources/settings/settings.html
-index 60fc7482f59c5376ba1b217327052a5a5eb32b92..9b761afb13c929006383b68e5154496f75784093 100644
+index c99aed2da137c1e9797c3775852701c955556202..c7be763fbac06633054143a88dd4faee1c14e90b 100644
 --- a/chrome/browser/resources/settings/settings.html
 +++ b/chrome/browser/resources/settings/settings.html
 @@ -8,6 +8,7 @@
@@ -10,7 +10,7 @@ index 60fc7482f59c5376ba1b217327052a5a5eb32b92..9b761afb13c929006383b68e5154496f
    <style>
      html {
        background: var(--md-background-color);
-@@ -25,6 +26,7 @@
+@@ -30,6 +31,7 @@
    <settings-ui></settings-ui>
    <link rel="stylesheet" href="chrome://resources/css/text_defaults_md.css">
    <link rel="import" href="chrome://resources/html/polymer.html">

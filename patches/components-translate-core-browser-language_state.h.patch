@@ -1,5 +1,5 @@
 diff --git a/components/translate/core/browser/language_state.h b/components/translate/core/browser/language_state.h
-index 3352ef41519bad7d8a6816352d644613fd74b132..b662e3fa5bed5d80eb5909388fc3250f279e2f74 100644
+index 96260d1b3fa6ed2e168891fdfe2df5323b3d2ea8..af6850b19ca66a8e698ceb69d7496ad7f4385fbc 100644
 --- a/components/translate/core/browser/language_state.h
 +++ b/components/translate/core/browser/language_state.h
 @@ -72,7 +72,7 @@ class LanguageState {

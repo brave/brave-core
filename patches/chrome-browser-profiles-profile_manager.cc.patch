@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_manager.cc b/chrome/browser/profiles/profile_manager.cc
-index d66a0216832f66ffc6d632976aa16e4559177423..d6519d16446febade3b7721949351ffeb2a07d55 100644
+index af40358b9ef20c08c61c896b1bbb0a32cf6e89de..443a9b2843528d8bc4c967bd624416759d391336 100644
 --- a/chrome/browser/profiles/profile_manager.cc
 +++ b/chrome/browser/profiles/profile_manager.cc
 @@ -1482,9 +1482,11 @@ void ProfileManager::EnsureActiveProfileExistsBeforeDeletion(
