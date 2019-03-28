@@ -219,6 +219,10 @@ void BatPublishers::saveVisitInternal(
   }
 
   if (panel_info && window_id > 0) {
+    if (panel_info->favicon_url == ledger::_clear_favicon) {
+      panel_info->favicon_url = std::string();
+    }
+
     OnPanelPublisherInfo(ledger::Result::LEDGER_OK,
                         std::move(panel_info),
                         window_id,
