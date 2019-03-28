@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled, { css } from 'styled-components'
+import palette from '../../../theme/colors'
 import { Props, Provider } from './index'
 
 const getOverflowRules = (provider?: Provider) => {
@@ -145,6 +146,24 @@ export const StyledVerifiedText = styled<{}, 'span'>('span')`
   font-weight: 400;
   letter-spacing: 0;
   margin-left: 4px;
+`
+
+export const StyledRefresh = styled<{}, 'span'>('span')`
+  color: ${palette.blue400};
+  line-height: 0;
+  height: 18px;
+  width: 18px;
+  vertical-align: bottom;
+  margin-left: auto;
+`
+
+export const StyledVerifiedCheckLink = styled<{}, 'span'>('span')`
+  font-size: 12px;
+  color: ${palette.blue400};
+  cursor: pointer;
+  text-decoration: none;
+  margin-left: auto;
+  z-index: 1;
 `
 
 export const StyledInlineVerified = styled<{}, 'span'>('span')`

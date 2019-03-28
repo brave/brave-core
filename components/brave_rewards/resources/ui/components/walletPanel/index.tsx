@@ -55,6 +55,9 @@ export interface Props {
   onToggleTips: () => void
   onAmountChange: () => void
   onIncludeInAuto: () => void
+  onRefreshPublisher?: () => void
+  refreshingPublisher?: boolean
+  publisherRefreshed?: boolean
   showUnVerified?: boolean
   moreLink?: string
   acEnabled?: boolean
@@ -75,6 +78,9 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
           showUnVerifiedHelpIcon={
             !this.props.isVerified && this.props.showUnVerified
           }
+          refreshingPublisher={this.props.refreshingPublisher}
+          onRefreshPublisher={this.props.onRefreshPublisher}
+          publisherRefreshed={this.props.publisherRefreshed}
         />
       </StyledProfileWrapper>
     )

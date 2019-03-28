@@ -137,6 +137,7 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
           onAmountChange={doNothing}
           onIncludeInAuto={doNothing}
           showUnVerified={boolean('Show unverified content', true)}
+          onRefreshPublisher={doNothing}
         />
       </div>
     )

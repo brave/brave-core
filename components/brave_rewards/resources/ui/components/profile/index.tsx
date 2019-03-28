@@ -15,10 +15,12 @@ import {
   StyledProviderWrap,
   StyledInlineVerified,
   StyledVerifiedText,
-  StyledInlineUnVerified
+  StyledInlineUnVerified,
+  StyledVerifiedCheckLink,
+  StyledRefresh
 } from './style'
 import { getLocale } from '../../../helpers'
-import { VerifiedIcon, UnVerifiedIcon } from '../../../components/icons'
+import { VerifiedIcon, UnVerifiedIcon, LoaderIcon } from '../../../components/icons'
 
 export type Provider = 'twitter' | 'youtube' | 'twitch'
 
@@ -31,6 +33,9 @@ export interface Props {
   verified?: boolean
   tableCell?: boolean
   showUnVerifiedHelpIcon?: boolean
+  refreshingPublisher?: boolean
+  publisherRefreshed?: boolean
+  onRefreshPublisher?: () => void
 }
 
 /*
@@ -66,7 +71,10 @@ export default class Profile extends React.PureComponent<Props, {}> {
       title,
       verified,
       tableCell,
-      showUnVerifiedHelpIcon
+      showUnVerifiedHelpIcon,
+      onRefreshPublisher,
+      refreshingPublisher,
+      publisherRefreshed
     } = this.props
 
     return (
@@ -109,6 +117,18 @@ export default class Profile extends React.PureComponent<Props, {}> {
               <StyledVerifiedText>
                 {getLocale('unVerifiedPublisher')}
               </StyledVerifiedText>
+              {
+                !publisherRefreshed ?
+                  refreshingPublisher ?
+                  <StyledRefresh>
+                    <LoaderIcon />
+                  </StyledRefresh>
+                  : <StyledVerifiedCheckLink onClick={onRefreshPublisher}>
+                    {getLocale('unVerifiedCheck')}
+                  </StyledVerifiedCheckLink>
+                :
+                null
+              }
             </StyledProviderWrap>
           ) : null}
         </StyledContent>
