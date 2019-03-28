@@ -2113,15 +2113,18 @@ RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {
 void RewardsServiceImpl::StartNotificationTimers(bool main_enabled) {
   if (!main_enabled) return;
 
-  // Startup timer, begins after 3-second delay.
+  // Startup timer, begins after 30-second delay.
+  PrefService* pref_service = profile_->GetPrefs();
   notification_startup_timer_ = std::make_unique<base::OneShotTimer>();
   notification_startup_timer_->Start(
-      FROM_HERE, base::TimeDelta::FromSeconds(3), this,
+      FROM_HERE,
+      pref_service->GetTimeDelta(
+        prefs::kRewardsNotificationStartupDelay),
+      this,
       &RewardsServiceImpl::OnNotificationTimerFired);
   DCHECK(notification_startup_timer_->IsRunning());
 
   // Periodic timer, runs once per day by default.
-  PrefService* pref_service = profile_->GetPrefs();
   base::TimeDelta periodic_timer_interval =
       pref_service->GetTimeDelta(prefs::kRewardsNotificationTimerInterval);
   notification_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
