@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Úgy tűnik valami baj van pénztárcájával. Mielőtt bármilyen további tranzakciót végrehajtana, szükség van pénztárcája biztonsági mentésének visszaállítására.</translation>
 <translation id="7797604753681168055">Visszaállítás most!</translation>
 <translation id="1184075897575325927">Sajnáljuk, úgy tűnik ezt az adományt már igényelték.</translation>
+<translation id="7180611975245234373">Frissítés</translation>
+<translation id="839736845446313156">Regisztrálás</translation>
+<translation id="583281660410589416">Ismeretlen</translation>
 <translation id="5094577350232361255">névjegy</translation>
 <translation id="4918086044614829423">Elfogadás</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. A Brave a Brave Software bejegyzett védjegye. Az oldalak nevei az oldal tulajdonosának védjegyei vagy bejegyzett védjegyei.</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Számítógép</translation>
 <translation id="1258250624898033822">Érvénytelen szinkronizációs kód.</translation>
 <translation id="3259723213051400722">Kérjük, próbálja újra!</translation>
-<translation id="3779810277399252432">Nincs internetkapcsolat.</translation>
-<translation id="4380604249778320975">A kapcsolat helyreállítását követően, kérjük, próbálkozzon újra.</translation>
 <translation id="5257281382608458806">Az eszköz nevének megadása kötelező.</translation>
 <translation id="8349682220522608879">Adjon hozzá szinkronizációs kódot.</translation>
 <translation id="1468095392829989299">Nem sikerült kapcsolatot teremteni a szinkronizációs szerverekkel</translation>

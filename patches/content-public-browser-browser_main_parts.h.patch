@@ -1,0 +1,14 @@
+diff --git a/content/public/browser/browser_main_parts.h b/content/public/browser/browser_main_parts.h
+index 0aaff1825cb8c8b06e34533064b8492d0ba71a72..593fcfff133f03a4d33efdabf0184b18dea21eb4 100644
+--- a/content/public/browser/browser_main_parts.h
++++ b/content/public/browser/browser_main_parts.h
+@@ -102,6 +102,9 @@ class CONTENT_EXPORT BrowserMainParts {
+   // Called as the very last part of shutdown, after threads have been
+   // stopped and destroyed.
+   virtual void PostDestroyThreads() {}
++
++  // Called when shutdown is about to begin.
++  virtual void PreShutdown() {}
+ };
+ 
+ }  // namespace content

@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Kami mendeteksi terjadinya masalah pada dompet Anda. Anda harus memulihkan dompet cadangan agar transaksi dapat diproses.</translation>
 <translation id="7797604753681168055">Pulihkan sekarang!</translation>
 <translation id="1184075897575325927">Maaf, tampaknya hibah ini sudah diklaim.</translation>
+<translation id="7180611975245234373">Segarkan</translation>
+<translation id="839736845446313156">Daftar</translation>
+<translation id="583281660410589416">Tidak dikenal</translation>
 <translation id="5094577350232361255">tentang</translation>
 <translation id="4918086044614829423">Terima</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave adalah merek dagang terdaftar dari Brave Software. Nama situs mungkin merupakan merek dagang atau merek dagang terdaftar dari pemilik situs.</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Komputer</translation>
 <translation id="1258250624898033822">Kode sinkronisasi tidak valid</translation>
 <translation id="3259723213051400722">Coba lagi.</translation>
-<translation id="3779810277399252432">Tidak ada sambungan internet.</translation>
-<translation id="4380604249778320975">Coba lagi nanti setelah sambungan tersedia.</translation>
 <translation id="5257281382608458806">Nama perangkat harus diisi.</translation>
 <translation id="8349682220522608879">Tambahkan kode sinkronisasi.</translation>
 <translation id="1468095392829989299">Tidak dapat menghubungi server Sinkronisasi</translation>

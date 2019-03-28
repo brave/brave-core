@@ -18,8 +18,14 @@
   <message name="IDS_GENERIC_USER_AVATAR_LABEL" desc="Label shown for the user that is currently active, when there are multiple user accounts.">
     Current user
   </message>
-  <message name="IDS_AVATAR_BUTTON_INCOGNITO" desc="Short label for the avatar button when the user is in private mode." meaning="This window is browsing in private mode.">
+  <message name="IDS_INCOGNITO_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu, opened in private mode.">
     Private
+  </message>
+  <message name="IDS_AVATAR_BUTTON_INCOGNITO" desc="Short label for the avatar button when the user is in private mode and the number of open private windows if there are more than one private window open. [ICU Syntax]" meaning="This window is browsing in private mode and there are more than one private windows open. The counter is not shown when there is only one private window open.">
+    {0, plural,
+      =1 {Private}
+      other {Private (#)}
+    }
   </message>
   <message name="IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP" desc="Tooltip for the inactive avatar button when the user is in private mode.">
     This is a private window
@@ -73,9 +79,6 @@
   <message name="IDS_PROFILES_ACCOUNT_REMOVAL_TITLE" desc="Title of the account removal view in the avatar menu bubble.">
     Remove account
   </message>
-  <message name="IDS_PROFILES_SETTINGS_LINK" desc="The link text to the Brave settings page in the account removal view.">
-    settings
-  </message>
   <message name="IDS_PROFILES_SYNC_COMPLETE_TITLE" desc="Title of the profile card when sync is complete.">
     Syncing to
   </message>
@@ -96,9 +99,6 @@
   </message>
    <message name="IDS_PROFILES_DICE_SYNC_PAUSED_TITLE" desc="Title of the profile user menu when sync is paused.">
     Sync is paused
-  </message>
-  <message name="IDS_PROFILES_ACCOUNT_REMOVAL_BUTTON" desc="Text of the ok button on the account removal view in the avatar menu bubble.">
-    Remove account
   </message>
   <message name="IDS_PROFILES_EXIT_GUEST" desc="Button in the avatar menu bubble view for exiting the active guest session.">
     Exit Guest
@@ -122,9 +122,6 @@
     <message name="IDS_PROFILES_DICE_USE_ANOTHER_ACCOUNT_BUTTON" desc="Button to use another account to sign in and turn on Sync.">
       Use another account
     </message>
-    <message name="IDS_PROFILES_PROFILE_ADD_ACCOUNT_BUTTON" desc="Button in the avatar menu bubble view used to add an account to a profile.">
-      Add account for <ph name="PROFILE_NAME">$1<ex>John</ex></ph>
-    </message>
     <message name="IDS_PROFILES_PROFILE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to manage accounts for a profile.">
       Your accounts
     </message>
@@ -147,9 +144,6 @@
     </message>
     <message name="IDS_PROFILES_DICE_USE_ANOTHER_ACCOUNT_BUTTON" desc="Button to use another account to sign in and turn on Sync.">
       Use Another Account
-    </message>
-    <message name="IDS_PROFILES_PROFILE_ADD_ACCOUNT_BUTTON" desc="Button in the avatar menu bubble view used to add an account to a profile.">
-      Add Account for <ph name="PROFILE_NAME">$1<ex>John</ex></ph>
     </message>
     <message name="IDS_PROFILES_PROFILE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to manage accounts for a profile.">
       Your Accounts
@@ -330,6 +324,39 @@
   </message>
   <message name="IDS_DEFAULT_AVATAR_LABEL_25" desc="The label for the sun and cloud avatar.">
     Sun and clouds
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_27" desc="The label for the cat avatar.">
+    Cat
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_28" desc="The label for the corgi avatar.">
+    Corgi
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_29" desc="The label for the dragon avatar.">
+    Dragon
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_30" desc="The label for the elephant avatar.">
+    Elephant
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_31" desc="The label for the fox avatar.">
+    Fox
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_32" desc="The label for the monkey avatar.">
+    Monkey
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_33" desc="The label for the panda avatar.">
+    Panda
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_34" desc="The label for the penguin avatar.">
+    Penguin
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_35" desc="The label for the butterfly avatar.">
+    Butterfly
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_36" desc="The label for the rabbit avatar.">
+    Rabbit
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_37" desc="The label for the unicorn avatar.">
+    Unicorn
   </message>
 
   <message name="IDS_PROFILES_LOCAL_PROFILE_STATE" desc="This is displayed underneath the profile name for profiles that are not signed in to sync.">

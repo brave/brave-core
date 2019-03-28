@@ -1,8 +1,8 @@
 diff --git a/chrome/renderer/content_settings_observer.h b/chrome/renderer/content_settings_observer.h
-index b77c34d973c8c0760894620cda8673adeb699a40..7bd97747ac267c9cd7bac43f5acb085c2e88c7e5 100644
+index ba15221356ef2a2181146510693e88b8d058c5ea..632efda10621894a2ee51055ac13744deb3aecfb 100644
 --- a/chrome/renderer/content_settings_observer.h
 +++ b/chrome/renderer/content_settings_observer.h
-@@ -111,6 +111,7 @@ class ContentSettingsObserver
+@@ -110,6 +110,7 @@ class ContentSettingsObserver
    }
  
   private:

@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Vi upptäckte ett fel med din plånbok. Du måste återställa din säkerhetskopia innan transaktioner kan genomföras.</translation>
 <translation id="7797604753681168055">Återställ nu!</translation>
 <translation id="1184075897575325927">Tyvärr verkar det som att detta medgivande redan har hämtats.</translation>
+<translation id="7180611975245234373">Uppdatera</translation>
+<translation id="839736845446313156">Registrera</translation>
+<translation id="583281660410589416">okänt</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Acceptera</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave är ett registrerat varumärke som tillhör Brave Software. Webbplatser kan vara varumärken eller registrerade varumärken som tillhör webbplatsägaren.</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Dator</translation>
 <translation id="1258250624898033822">Ogiltig Sync-kod.</translation>
 <translation id="3259723213051400722">Försök igen.</translation>
-<translation id="3779810277399252432">Ingen internetanslutning.</translation>
-<translation id="4380604249778320975">Försök igen när du har anslutning.</translation>
 <translation id="5257281382608458806">Enhetsnamn krävs.</translation>
 <translation id="8349682220522608879">Lägg till en Sync-kod.</translation>
 <translation id="1468095392829989299">Kunde inte kontakta Sync-servrarna</translation>

@@ -15,10 +15,6 @@
     "message": "नीचे ",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "कुल बाधित ",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "इस साइट के लिए ",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "आप किसी भी गोपनीयता और सुरक्षा उपायों के बिना इस वेबसाइट को ब्राउज़ कर रहे हैं.",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "विज्ञापन एवं ट्रैकर बाधित हैं",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "Items blocked",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "पॉप-अप्स बाधित हैं ",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "Item blocked",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "चित्र ब्लॉक कर दिया गया।",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "and",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "3rd- पार्टी कूकीज़ बाधित हैं.",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "connections upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "सभी कुकीज़ स्वीकार की गईं",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "connection upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "कूकीज़ बाधित हैं.",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "3rd-party trackers blocked",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "कुछ स्क्रिप्ट्स बाधित कर दिए गए हैं.",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "Connections upgraded to HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "सभी स्क्रिप्ट की अनुमति है",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "Connection upgraded to HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "स्क्रिप्ट्स बाधित हैं ",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "3rd- पार्टी कूकीज़ बाधित हैं.",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "कूकीज़ बाधित हैं.",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "सभी कुकीज़ स्वीकार की गईं",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "3rd- पार्टी डिवाइस की पहचान बाधित हैं ",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "सभी डिवाइस को पहचानने की अनुमति है",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "डिवाइस की पहचान बाधित हैं ",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "फ़िशिंग / मैलवेयर प्रयास अवरुद्ध",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "कनेक्शन एन्क्रिप्टेड है ",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "ग्लोबल शील्ड अनुपस्थित ",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "इस साइट में कूकीज़",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "सभी डिवाइस को पहचानने की अनुमति है",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "डिवाइस के पहचान का प्रयास",
@@ -111,49 +103,21 @@
     "message": "जारी किए गए स्क्रिप्ट्स ",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "सभी को अनुमति दें",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "अनुमति दें ",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "अनुमति दी गई",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "सबको ब्लॉक करें",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "सभी को अनुमति दें",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "ब्लॉक करें",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "बाधित है ",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "लागू करें ",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "एक बार लागू करें.",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "पुनः आरम्भ होने तक अप्लाई करें",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "हमेशा लागू करें ",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "अनकिया करें ",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "अनुमति दें ",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "रद्द करें ",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "वापस जाएँ",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "एक बार लागू करें.",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Change global shield defaults",
+    "description": "Message for the button action linking to the settings page"
   }
 }

@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Detectamos problemas en su billetera. Debe recuperar la copia de seguridad de su billetera para que se puedan procesar las transacciones.</translation>
 <translation id="7797604753681168055">Recuperar ahora</translation>
 <translation id="1184075897575325927">Lo sentimos, parece que esta donación ya se ha reclamado.</translation>
+<translation id="7180611975245234373">Actualizar</translation>
+<translation id="839736845446313156">Registrarse</translation>
+<translation id="583281660410589416">Desconocido</translation>
 <translation id="5094577350232361255">acerca de</translation>
 <translation id="4918086044614829423">Aceptar</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave es una marca registrada de Brave Software. Los nombres de los sitios pueden ser marcas comerciales o marcas registradas de los propietarios de los sitios.</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Computadora</translation>
 <translation id="1258250624898033822">Código de sincronización no válido.</translation>
 <translation id="3259723213051400722">Vuelva a intentarlo.</translation>
-<translation id="3779810277399252432">No hay conexión a Internet.</translation>
-<translation id="4380604249778320975">Inténtelo de nuevo cuando tenga conexión.</translation>
 <translation id="5257281382608458806">El nombre del dispositivo es obligatorio.</translation>
 <translation id="8349682220522608879">Agregue un código de sincronización.</translation>
 <translation id="1468095392829989299">Error de contacto con los servidores de sincronización</translation>

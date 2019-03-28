@@ -15,10 +15,6 @@
     "message": "關閉",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "完全封鎖",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "為此網站",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "您正在瀏覽此網站，而無任何隱私和安全保護。",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "廣告和跟踪廣告被封鎖。",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "個已阻擋的項目",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "封鎖彈出視窗",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "個已阻擋的項目",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "圖片被封鎖",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "與",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "第三方 Cookie 被封鎖",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "個已升級的連線",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "允許所有 cookies.",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "個已升級的連線",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "被封鎖的 cookies",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "個已阻擋的第三方追蹤器",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "某些 Scripts 被封鎖",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "條已升級到 HTTPS 的連線",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "允許所有 scripts",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "條已升級到 HTTPS 的連線",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "Script 被封鎖",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "第三方 Cookie 被封鎖",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "被封鎖的 cookies",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "允許所有 cookies.",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "封鎖第三方裝置識別",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "允許所有裝置識別",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "封鎖裝置識別",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "被封鎖的網絡釣魚或惡意軟件入侵",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "連接已加密",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "全局屏蔽初始值",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "此網站的 cookie",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "允許所有裝置識別",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "嘗試識別裝置",
@@ -111,49 +103,21 @@
     "message": "允許 scripts",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "全部允許",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "允許",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "允許的",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "全部封鎖",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "全部允許",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "封鎖",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "封鎖",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "套用",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "允許一次",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "套用直到下次",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "永遠套用",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "復原",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "允許",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "取消",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "回到",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "允許一次",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "變更全域防護預設值",
+    "description": "Message for the button action linking to the settings page"
   }
 }

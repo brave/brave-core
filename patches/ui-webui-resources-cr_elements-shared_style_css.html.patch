@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_elements/shared_style_css.html b/ui/webui/resources/cr_elements/shared_style_css.html
-index f0a0b5de7bce59873aaec5104dea0e453eb1190f..03387b8458a27ad972fb6b0e7af489850c2aad5f 100644
+index ad605f604e62db5ffc360bef3d05980652ed5d0c..d4c15be2516223f44b52423a333f999101b98bfd 100644
 --- a/ui/webui/resources/cr_elements/shared_style_css.html
 +++ b/ui/webui/resources/cr_elements/shared_style_css.html
 @@ -8,7 +8,7 @@
@@ -8,6 +8,6 @@ index f0a0b5de7bce59873aaec5104dea0e453eb1190f..03387b8458a27ad972fb6b0e7af48985
    <template>
 -    <style include="cr-hidden-style cr-icons">
 +    <style include="cr-hidden-style br-shared-style cr-icons">
-       [actionable] {
-         @apply --cr-actionable;
-       }
+       html,
+       :host {
+         --scrollable-border-color: var(--google-grey-refresh-300);
