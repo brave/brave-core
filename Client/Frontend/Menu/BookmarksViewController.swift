@@ -175,9 +175,15 @@ class BookmarksViewController: SiteTableViewController {
   override func reloadData() {
     
     do {
+        // Recreate the frc if it was previously removed
+        // (when user navigated into a nested folder for example)
+        if bookmarksFRC == nil {
+            bookmarksFRC = Bookmark.frc(parentFolder: currentFolder)
+            bookmarksFRC?.delegate = self
+        }
       try self.bookmarksFRC?.performFetch()
     } catch let error as NSError {
-      print(error.description)
+      log.error(error.description)
     }
     
     super.reloadData()
@@ -188,6 +194,14 @@ class BookmarksViewController: SiteTableViewController {
     
     reloadData()
   }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        // Make sure to remove fetch results controller when view disappears.
+        // Otherwise, it may result in crash if a user is in a nested folder and
+        // sync changes happen.
+        bookmarksFRC = nil
+    }
   
   func disableTableEditingMode() {
     switchTableEditingMode(true)

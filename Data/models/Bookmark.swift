@@ -507,10 +507,10 @@ extension Bookmark {
     func updateResolvedRecord(_ record: SyncRecord?, context: WriteContext = .new) {
         guard let bookmark = record as? SyncBookmark, let site = bookmark.site else { return }
         title = site.title
+        syncParentUUID = bookmark.parentFolderObjectId
         updateInternal(customTitle: site.customTitle, url: site.location,
                newSyncOrder: bookmark.syncOrder, save: false, sendToSync: false, context: context)
         lastVisited = Date(timeIntervalSince1970: (Double(site.lastAccessedTime ?? 0) / 1000.0))
-        syncParentUUID = bookmark.parentFolderObjectId
         if let recordCreated = record?.syncNativeTimestamp {
             created = recordCreated
         }
