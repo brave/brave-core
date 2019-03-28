@@ -8,6 +8,7 @@
 
 #include "../../../../net/socket/socks5_client_socket.h"
 
+#include <memory>
 #include <string>
 
 namespace net {
