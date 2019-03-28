@@ -1,0 +1,13 @@
+diff --git a/tools/clang/scripts/update.py b/tools/clang/scripts/update.py
+index 2ced82971d8131af9f74e133387be90792c21cdd..2a4da59bf47f72d5dd9829e08b498632675de550 100755
+--- a/tools/clang/scripts/update.py
++++ b/tools/clang/scripts/update.py
+@@ -27,7 +27,7 @@ import zipfile
+ # Do NOT CHANGE this if you don't know what you're doing -- see
+ # https://chromium.googlesource.com/chromium/src/+/master/docs/updating_clang.md
+ # Reverting problematic clang rolls is safe, though.
+-CLANG_REVISION = '354873'
++CLANG_REVISION = '351477'
+ 
+ use_head_revision = bool(os.environ.get('LLVM_FORCE_HEAD_REVISION', '0')
+                          in ('1', 'YES'))
