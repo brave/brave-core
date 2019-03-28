@@ -139,7 +139,7 @@ int BraveStatsUpdaterParams::GetCurrentISOWeekNumber() const {
 
   return 1 + std::round(
                  ((now_adjusted.ToJsTime() - jan4_time.ToJsTime()) / 86400000 -
-                  3 + (jan4_exploded.day_of_month + 6) % 7) /
+                  3 + (jan4_exploded.day_of_week + 6) % 7) /
                  7);
 }
 
