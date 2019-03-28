@@ -78,17 +78,7 @@ Result NotificationInfo::FromJson(
 
   if (document.HasMember("confirmation_type")) {
     std::string confirmation_type = document["confirmation_type"].GetString();
-    if (confirmation_type == kConfirmationTypeClick) {
-      type = ConfirmationType::CLICK;
-    } else if (confirmation_type == kConfirmationTypeDismiss) {
-      type = ConfirmationType::DISMISS;
-    } else if (confirmation_type == kConfirmationTypeView) {
-      type = ConfirmationType::VIEW;
-    } else if (confirmation_type == kConfirmationTypeLanded) {
-      type = ConfirmationType::LANDED;
-    } else {
-      type = ConfirmationType::UNKNOWN;
-    }
+    type = ConfirmationType(confirmation_type);
   }
 
   return SUCCESS;
@@ -116,32 +106,8 @@ void SaveToJson(JsonWriter* writer, const NotificationInfo& info) {
   writer->String(info.uuid.c_str());
 
   writer->String("confirmation_type");
-  switch (info.type) {
-    case ConfirmationType::UNKNOWN: {
-      writer->String("");
-      break;
-    }
-
-    case ConfirmationType::CLICK: {
-      writer->String(kConfirmationTypeClick);
-      break;
-    }
-
-    case ConfirmationType::DISMISS: {
-      writer->String(kConfirmationTypeDismiss);
-      break;
-    }
-
-    case ConfirmationType::VIEW: {
-      writer->String(kConfirmationTypeView);
-      break;
-    }
-
-    case ConfirmationType::LANDED: {
-      writer->String(kConfirmationTypeLanded);
-      break;
-    }
-  }
+  auto type = std::string(info.type);
+  writer->String(type.c_str());
 
   writer->EndObject();
 }
