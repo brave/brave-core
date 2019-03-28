@@ -11,6 +11,7 @@
   "permissions": [
     "storage",
     "tabs",
+    "webNavigation",
     "chrome://favicon/*",
     "https://www.twitch.tv/*"
   ],
