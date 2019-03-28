@@ -19,8 +19,6 @@ using DATFileDataBuffer = std::vector<unsigned char>;
 
 void GetDATFileData(const base::FilePath& file_path,
                     DATFileDataBuffer* buffer);
-void GetDATFileAsString(const base::FilePath& file_path,
-                        std::string* contents);
 
 }  // namespace brave_shields
 
