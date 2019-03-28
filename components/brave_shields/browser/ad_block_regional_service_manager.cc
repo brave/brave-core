@@ -131,6 +131,9 @@ bool AdBlockRegionalServiceManager::ShouldStartRequest(
             cancel_request_explicitly)) {
       return false;
     }
+    if (matching_exception_filter && *matching_exception_filter) {
+      return true;
+    }
   }
 
   return true;
