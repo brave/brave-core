@@ -45,7 +45,8 @@ std::string Security::Sign(
   std::vector<uint8_t> signed_message(crypto_sign_BYTES +
       concatenated_message.length());
 
-  unsigned long long signed_message_size = 0;
+  // Resolving the following linter error breaks the build on Windows
+  unsigned long long signed_message_size = 0;  // NOLINT
   crypto_sign(&signed_message.front(), &signed_message_size,
       reinterpret_cast<const unsigned char*>(concatenated_message.c_str()),
       concatenated_message.length(), &public_key.front());
@@ -60,7 +61,7 @@ std::string Security::Sign(
 }
 
 std::vector<Token> Security::GenerateTokens(const int count) {
-  DCHECK_NE(count, 0);
+  DCHECK_GT(count, 0);
 
   std::vector<Token> tokens;
 

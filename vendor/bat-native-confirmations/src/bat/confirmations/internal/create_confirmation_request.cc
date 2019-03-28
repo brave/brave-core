@@ -78,34 +78,7 @@ std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
   auto token_base64 = token.encode_base64();
   payload.SetKey("blindedPaymentToken", base::Value(token_base64));
 
-  std::string type;
-  switch (confirmation_type) {
-    case ConfirmationType::UNKNOWN: {
-      DCHECK(false) << "Invalid confirmation type";
-      break;
-    }
-
-    case ConfirmationType::CLICK: {
-      type = kConfirmationTypeClick;
-      break;
-    }
-
-    case ConfirmationType::DISMISS: {
-      type = kConfirmationTypeDismiss;
-      break;
-    }
-
-    case ConfirmationType::VIEW: {
-      type = kConfirmationTypeView;
-      break;
-    }
-
-    case ConfirmationType::LANDED: {
-      type = kConfirmationTypeLanded;
-      break;
-    }
-  }
-
+  auto type = std::string(confirmation_type);
   payload.SetKey("type", base::Value(type));
 
   std::string json;

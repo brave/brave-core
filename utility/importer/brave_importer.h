@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -8,6 +9,7 @@
 #include <stdint.h>
 
 #include <map>
+#include <string>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -39,7 +41,7 @@ class BraveImporter : public ChromeImporter {
   void ImportRequiredItems();
   void ImportSettings();
 
-  std::unique_ptr<base::Value> ParseBraveStateFile(
+  base::Optional<base::Value> ParseBraveStateFile(
     const std::string& filename);
 
   void ParseBookmarks(std::vector<ImportedBookmarkEntry>* bookmarks);

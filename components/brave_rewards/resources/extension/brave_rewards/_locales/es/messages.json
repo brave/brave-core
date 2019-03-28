@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
-    "message": "Le hemos dado a Brave Payments una gran actualización.",
+    "message": "Le hemos dado a Brave Rewards una gran actualización.",
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
@@ -185,6 +185,10 @@
     "message": "Tienes gratificaciones esperándote.",
     "description": "Description for new grant notification"
   },
+  "backupNow": {
+    "message": "Respaldar ahora",
+    "description": "Notification button text when we ask user to backup wallet"
+  },
   "backupWalletTitle": {
     "message": "Copia de seguridad del monedero",
     "description": "Notification title when we ask user to backup wallet"
@@ -194,7 +198,7 @@
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "Su cuenta de pagos de Brave está a la espera de un ingreso.",
+    "message": "Tu cuenta de pagos de Brave está a la espera de un ingreso.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -214,7 +218,7 @@
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "Ha ocurrido un problema al procesar su propina, por favor, vuelva a intentarlo.",
+    "message": "Incapaz de enviar tu propina. Por favor, inténtalo de nuevo más tarde.",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -328,5 +332,49 @@
   "walletFailedButton": {
     "message": "Reintentar",
     "description": "Button for re-try after wallet creation failed"
+  },
+  "addFunds": {
+    "message": "Añadir fondos",
+    "description": "Button for adding funds"
+  },
+  "rewardsSettings": {
+    "message": "Ajustes de Rewards",
+    "description": "Button for opening settings page"
+  },
+  "earningsClaimDefault": {
+    "message": "Tus ganancias de Anuncios están disponibles",
+    "description": "Panel notification text for Ads grant"
+  },
+  "and": {
+    "message": "y",
+    "description": "The word 'and'"
+  },
+  "braveRewardsSubTitle": {
+    "message": "¡Recibe recompensas por navegar!",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "disabledPanelTextTwo": {
+    "message": "Earn by viewing privacy-respecting ads, and pay it forward to support content creators you love.",
+    "description": "Text block for wallet disabled panel"
+  },
+  "enableRewards": {
+    "message": "Habilitar Brave Rewards",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "privacyPolicy": {
+    "message": "Política de privacidad",
+    "description": "Privacy Policy"
+  },
+  "serviceText": {
+    "message": "By clicking 'Enable Brave Rewards', you indicate that you have read and agree to the",
+    "description": "Terms of service main text"
+  },
+  "termsOfService": {
+    "message": "Terms of Service",
+    "description": "Terms of Service"
+  },
+  "welcomeBack": {
+    "message": "Welcome Back!",
+    "description": "Title message for wallet disabled panel"
   }
 }

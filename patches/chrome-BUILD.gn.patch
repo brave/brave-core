@@ -1,8 +1,8 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 11e4c4c9fd436fd57501e0e2c71e5fe6f66f4204..c40b0010e433e1d773583160e66472f83304fc9e 100644
+index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc487f8962 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -189,6 +189,10 @@ if (!is_android && !is_mac) {
+@@ -191,6 +191,10 @@ if (!is_android && !is_mac) {
            "common/crash_keys.cc",
            "common/crash_keys.h",
          ]
@@ -13,7 +13,7 @@ index 11e4c4c9fd436fd57501e0e2c71e5fe6f66f4204..c40b0010e433e1d773583160e66472f8
  
          deps += [
            ":chrome_dll",
-@@ -273,6 +277,7 @@ if (!is_android && !is_mac) {
+@@ -275,6 +279,7 @@ if (!is_android && !is_mac) {
            "//headless:headless_shell_lib",
            "//services/service_manager/embedder",
          ]
@@ -29,7 +29,7 @@ index 11e4c4c9fd436fd57501e0e2c71e5fe6f66f4204..c40b0010e433e1d773583160e66472f8
  
      ldflags = [
        "/DELAYLOAD:comdlg32.dll",
-@@ -523,6 +529,7 @@ if (is_win) {
+@@ -522,6 +528,7 @@ if (is_win) {
          "//headless:headless_shell_child_lib",
          "//services/service_manager/embedder",
        ]
@@ -37,7 +37,7 @@ index 11e4c4c9fd436fd57501e0e2c71e5fe6f66f4204..c40b0010e433e1d773583160e66472f8
  
        ldflags = [
          "/DELAYLOAD:d3d11.dll",
-@@ -621,6 +628,11 @@ if (is_win) {
+@@ -620,6 +627,11 @@ if (is_win) {
      ]
    }
  
@@ -49,7 +49,7 @@ index 11e4c4c9fd436fd57501e0e2c71e5fe6f66f4204..c40b0010e433e1d773583160e66472f8
    mac_app_bundle("chrome_app") {
      output_name = chrome_product_full_name
  
-@@ -653,6 +665,7 @@ if (is_win) {
+@@ -652,6 +664,7 @@ if (is_win) {
                    rebase_path("app/app.exports", root_build_dir) ]
      }
    }
@@ -57,7 +57,7 @@ index 11e4c4c9fd436fd57501e0e2c71e5fe6f66f4204..c40b0010e433e1d773583160e66472f8
  
    compiled_action("chrome_app_strings") {
      tool = "//chrome/tools/build/mac:infoplist_strings_tool"
-@@ -682,7 +695,7 @@ if (is_win) {
+@@ -681,7 +694,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -66,7 +66,7 @@ index 11e4c4c9fd436fd57501e0e2c71e5fe6f66f4204..c40b0010e433e1d773583160e66472f8
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
-@@ -1200,6 +1213,7 @@ if (is_win) {
+@@ -1199,6 +1212,7 @@ if (is_win) {
        "//services/service_manager/embedder",
        "//third_party/cld_3/src/src:cld_3",
      ]
@@ -74,7 +74,7 @@ index 11e4c4c9fd436fd57501e0e2c71e5fe6f66f4204..c40b0010e433e1d773583160e66472f8
  
      if (is_component_build) {
        libs = [ "Carbon.framework" ]
-@@ -1264,6 +1278,10 @@ if (is_win) {
+@@ -1263,6 +1277,10 @@ if (is_win) {
      if (is_chrome_branded) {
        deps += [ ":default_apps" ]
      }
@@ -85,15 +85,15 @@ index 11e4c4c9fd436fd57501e0e2c71e5fe6f66f4204..c40b0010e433e1d773583160e66472f8
  
      ldflags = [
        "-Wl,-install_name,@executable_path/../Versions/$chrome_version_full/$chrome_framework_name.framework/$chrome_framework_name",
-@@ -1423,6 +1441,7 @@ if (is_win) {
+@@ -1422,6 +1440,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
 +    "//brave:browser_dependencies",
      "//chrome/browser",
      "//chrome/common",
-     "//components/sync",
-@@ -1460,6 +1479,7 @@ group("browser_dependencies") {
+     "//components/gwp_asan/buildflags",
+@@ -1464,6 +1483,7 @@ group("browser_dependencies") {
  
  group("child_dependencies") {
    public_deps = [
@@ -101,7 +101,7 @@ index 11e4c4c9fd436fd57501e0e2c71e5fe6f66f4204..c40b0010e433e1d773583160e66472f8
      "//chrome/browser/devtools",
      "//chrome/child",
      "//chrome/common",
-@@ -1482,7 +1502,7 @@ group("child_dependencies") {
+@@ -1491,7 +1511,7 @@ group("child_dependencies") {
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
      sources = [
@@ -110,7 +110,7 @@ index 11e4c4c9fd436fd57501e0e2c71e5fe6f66f4204..c40b0010e433e1d773583160e66472f8
      ]
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
-@@ -1555,6 +1575,7 @@ group("resources") {
+@@ -1564,6 +1584,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
@@ -118,7 +118,7 @@ index 11e4c4c9fd436fd57501e0e2c71e5fe6f66f4204..c40b0010e433e1d773583160e66472f8
    ]
  }
  
-@@ -1804,6 +1825,7 @@ if (is_android) {
+@@ -1813,6 +1834,7 @@ if (is_android) {
        "//content/public/common:service_names",
        "//services/service_manager/embedder",
      ]

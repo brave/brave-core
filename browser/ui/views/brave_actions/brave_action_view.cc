@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * you can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
+
+#include <memory>
 
 #include "brave/browser/ui/brave_actions/constants.h"
 #include "chrome/browser/themes/theme_properties.h"
@@ -16,7 +19,7 @@
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/controls/button/menu_button.h"
 #include "ui/views/view.h"
-#include "ui/views/view_properties.h"
+#include "ui/views/view_class_properties.h"
 
 void BraveActionView::OnBoundsChanged(const gfx::Rect& previous_bounds) {
   // Set the highlight path for the toolbar button,

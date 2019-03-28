@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Detetámos que ocorreu um erro com a sua carteira. Tem de recuperar a cópia de segurança da carteira antes de podermos processar quaisquer transações.</translation>
 <translation id="7797604753681168055">Recuperar agora!</translation>
 <translation id="1184075897575325927">Lamentamos, mas esta doação já foi reivindicada.</translation>
+<translation id="7180611975245234373">Atualizar</translation>
+<translation id="839736845446313156">Registar-se</translation>
+<translation id="583281660410589416">Desconhecido</translation>
 <translation id="5094577350232361255">sobre</translation>
 <translation id="4918086044614829423">Aceitar</translation>
 <translation id="6832986780040139899">2018 Brave Software. Brave é uma marca registada da Brave Software. Os nomes dos sites podem ser marcas comerciais ou marcas registadas do proprietário do site.</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Computador</translation>
 <translation id="1258250624898033822">Código de sincronização inválido.</translation>
 <translation id="3259723213051400722">Tente novamente.</translation>
-<translation id="3779810277399252432">Sem ligação à internet.</translation>
-<translation id="4380604249778320975">Tente novamente quando tiver uma ligação disponível.</translation>
 <translation id="5257281382608458806">É necessário indicar o nome do dispositivo.</translation>
 <translation id="8349682220522608879">Adicione um código de sincronização.</translation>
 <translation id="1468095392829989299">Não foi possível contactar os servidores de sincronização</translation>

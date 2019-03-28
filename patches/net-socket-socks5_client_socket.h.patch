@@ -1,16 +1,8 @@
 diff --git a/net/socket/socks5_client_socket.h b/net/socket/socks5_client_socket.h
-index b6e59ae6b07823087e44ffc40fb7d2d54c6a7c3e..98ee500609b2a72970387324a09da102b7230c14 100644
+index 6fe59e050c85ca6108887a165a080d76057a5c43..8b97a7fb56bd09e1c49184b664e9c7c9a36c195a 100644
 --- a/net/socket/socks5_client_socket.h
 +++ b/net/socket/socks5_client_socket.h
-@@ -20,6 +20,7 @@
- #include "net/base/net_export.h"
- #include "net/dns/host_resolver.h"
- #include "net/log/net_log_with_source.h"
-+#include "net/socket/socks_client_socket_pool.h"
- #include "net/socket/stream_socket.h"
- #include "net/traffic_annotation/network_traffic_annotation.h"
- #include "url/gurl.h"
-@@ -79,11 +80,14 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocket : public StreamSocket {
+@@ -77,11 +77,14 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocket : public StreamSocket {
    int GetLocalAddress(IPEndPoint* address) const override;
  
   private:
@@ -25,7 +17,7 @@ index b6e59ae6b07823087e44ffc40fb7d2d54c6a7c3e..98ee500609b2a72970387324a09da102
      STATE_HANDSHAKE_WRITE,
      STATE_HANDSHAKE_WRITE_COMPLETE,
      STATE_HANDSHAKE_READ,
-@@ -118,6 +122,14 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocket : public StreamSocket {
+@@ -116,6 +119,13 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocket : public StreamSocket {
    int DoGreetReadComplete(int result);
    int DoGreetWrite();
    int DoGreetWriteComplete(int result);
@@ -34,7 +26,6 @@ index b6e59ae6b07823087e44ffc40fb7d2d54c6a7c3e..98ee500609b2a72970387324a09da102
 +  // Authentication hooks.
 +  virtual uint8_t auth_method();
 +  virtual int Authenticate(int result,
-+                           ClientSocketHandle& socket,
 +                           NetLogWithSource& net_log,
 +                           CompletionCallback& callback);
  
