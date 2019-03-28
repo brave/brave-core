@@ -31,6 +31,7 @@ namespace confirmations {
 ConfirmationsImpl::ConfirmationsImpl(
     ConfirmationsClient* confirmations_client) :
     is_initialized_(false),
+    retry_failed_confirmations_timer_id_(0),
     unblinded_tokens_(std::make_unique<UnblindedTokens>(this)),
     unblinded_payment_tokens_(std::make_unique<UnblindedTokens>(this)),
     retry_getting_signed_tokens_timer_id_(0),
@@ -50,6 +51,7 @@ ConfirmationsImpl::~ConfirmationsImpl() {
   BLOG(INFO) << "Deinitializing Confirmations";
 
   StopRetryingToGetRefillSignedTokens();
+  StopRetryingFailedConfirmations();
   StopPayingOutRedeemedTokens();
 }
 
@@ -82,6 +84,8 @@ void ConfirmationsImpl::CheckReady() {
   auto start_timer_in = CalculateTokenRedemptionTimeInSeconds();
   StartPayingOutRedeemedTokens(start_timer_in);
 
+  RetryFailedConfirmations();
+
   RefillTokensIfNecessary();
 }
 
@@ -101,6 +105,10 @@ std::string ConfirmationsImpl::ToJSON() const {
   // Next token redemption date
   dictionary.SetKey("next_token_redemption_date_in_seconds", base::Value(
       std::to_string(next_token_redemption_date_in_seconds_)));
+
+  // Confirmations
+  auto confirmations = GetConfirmationsAsDictionary(confirmations_);
+  dictionary.SetKey("confirmations", base::Value(std::move(confirmations)));
 
   // Transaction history
   auto transaction_history =
@@ -142,6 +150,52 @@ base::Value ConfirmationsImpl::GetCatalogIssuersAsDictionary(
   }
 
   dictionary.SetKey("issuers", base::Value(std::move(list)));
+
+  return dictionary;
+}
+
+base::Value ConfirmationsImpl::GetConfirmationsAsDictionary(
+    const std::vector<ConfirmationInfo>& confirmations) const {
+  base::Value dictionary(base::Value::Type::DICTIONARY);
+
+  base::Value list(base::Value::Type::LIST);
+  for (const auto& confirmation : confirmations) {
+    base::Value confirmation_dictionary(base::Value::Type::DICTIONARY);
+
+    confirmation_dictionary.SetKey("id", base::Value(confirmation.id));
+
+    confirmation_dictionary.SetKey("creative_instance_id",
+        base::Value(confirmation.creative_instance_id));
+
+    std::string type = std::string(confirmation.type);
+    confirmation_dictionary.SetKey("type", base::Value(type));
+
+    base::Value token_info_dictionary(base::Value::Type::DICTIONARY);
+    auto unblinded_token_base64 =
+        confirmation.token_info.unblinded_token.encode_base64();
+    token_info_dictionary.SetKey("unblinded_token",
+        base::Value(unblinded_token_base64));
+    auto public_key = confirmation.token_info.public_key;
+    token_info_dictionary.SetKey("public_key", base::Value(public_key));
+    confirmation_dictionary.SetKey("token_info",
+        base::Value(std::move(token_info_dictionary)));
+
+    auto payment_token_base64 = confirmation.payment_token.encode_base64();
+    confirmation_dictionary.SetKey("payment_token",
+        base::Value(payment_token_base64));
+
+    auto blinded_payment_token_base64 =
+        confirmation.blinded_payment_token.encode_base64();
+    confirmation_dictionary.SetKey("blinded_payment_token",
+        base::Value(blinded_payment_token_base64));
+
+    confirmation_dictionary.SetKey("credential",
+        base::Value(confirmation.credential));
+
+    list.GetList().push_back(std::move(confirmation_dictionary));
+  }
+
+  dictionary.SetKey("failed_confirmations", base::Value(std::move(list)));
 
   return dictionary;
 }
@@ -188,6 +242,10 @@ bool ConfirmationsImpl::FromJSON(const std::string& json) {
     BLOG(WARNING)
         << "Failed to get next token redemption date in seconds from JSON: "
         << json;
+  }
+
+  if (!GetConfirmationsFromJSON(dictionary.get())) {
+    BLOG(WARNING) << "Failed to get confirmations from JSON: " << json;
   }
 
   if (!GetTransactionHistoryFromJSON(dictionary.get())) {
@@ -294,6 +352,170 @@ bool ConfirmationsImpl::GetNextTokenRedemptionDateInSecondsFromJSON(
   return true;
 }
 
+bool ConfirmationsImpl::GetConfirmationsFromJSON(
+    base::DictionaryValue* dictionary) {
+  auto* confirmations_value = dictionary->FindKey("confirmations");
+  if (!confirmations_value) {
+    return false;
+  }
+
+  base::DictionaryValue* confirmations_dictionary;
+  if (!confirmations_value->GetAsDictionary(
+        &confirmations_dictionary)) {
+    return false;
+  }
+
+  std::vector<ConfirmationInfo> confirmations;
+  if (!GetConfirmationsFromDictionary(confirmations_dictionary,
+      &confirmations)) {
+    return false;
+  }
+
+  confirmations_ = confirmations;
+
+  return true;
+}
+
+bool ConfirmationsImpl::GetConfirmationsFromDictionary(
+    base::DictionaryValue* dictionary,
+    std::vector<ConfirmationInfo>* confirmations) {
+  DCHECK(dictionary);
+  DCHECK(confirmations);
+
+  // Confirmations
+  auto* confirmations_value = dictionary->FindKey("failed_confirmations");
+  if (!confirmations_value) {
+    DCHECK(false) << "Confirmations dictionary missing confirmations";
+    return false;
+  }
+
+  confirmations->clear();
+  base::ListValue confirmations_list_value(confirmations_value->GetList());
+  for (auto& confirmation_value : confirmations_list_value) {
+    base::DictionaryValue* confirmation_dictionary;
+    if (!confirmation_value.GetAsDictionary(&confirmation_dictionary)) {
+      DCHECK(false) << "Confirmation should be a dictionary";
+      continue;
+    }
+
+    ConfirmationInfo confirmation_info;
+
+    // Id
+    auto* id_value = confirmation_dictionary->FindKey("id");
+    if (id_value) {
+      confirmation_info.id = id_value->GetString();
+    } else {
+      // Id missing, skip confirmation
+      DCHECK(false) << "Confirmation missing id";
+      continue;
+    }
+
+    // Creative instance id
+    auto* creative_instance_id_value =
+        confirmation_dictionary->FindKey("creative_instance_id");
+    if (creative_instance_id_value) {
+      confirmation_info.creative_instance_id =
+          creative_instance_id_value->GetString();
+    } else {
+      // Creative instance id missing, skip confirmation
+      DCHECK(false) << "Confirmation missing creative_instance_id";
+      continue;
+    }
+
+    // Type
+    auto* type_value = confirmation_dictionary->FindKey("type");
+    if (type_value) {
+      ConfirmationType type(type_value->GetString());
+      if (!type.IsSupported()) {
+        // Unsupported type, skip confirmation
+        DCHECK(false) << "Unsupported confirmation type: " << std::string(type);
+        continue;
+      }
+
+      confirmation_info.type = type;
+    } else {
+      // Type missing, skip confirmation
+      DCHECK(false) << "Confirmation missing type";
+      continue;
+    }
+
+    // Token info
+    auto* token_info_value = confirmation_dictionary->FindKey("token_info");
+    if (!token_info_value) {
+      DCHECK(false) << "Confirmation missing token_info";
+      continue;
+    }
+
+    base::DictionaryValue* token_info_dictionary;
+    if (!token_info_value->GetAsDictionary(&token_info_dictionary)) {
+      DCHECK(false) << "Token info should be a dictionary";
+      continue;
+    }
+
+    auto* unblinded_token_value =
+        token_info_dictionary->FindKey("unblinded_token");
+    if (unblinded_token_value) {
+      auto unblinded_token_base64 = unblinded_token_value->GetString();
+      confirmation_info.token_info.unblinded_token =
+          UnblindedToken::decode_base64(unblinded_token_base64);
+    } else {
+      // Unblinded token missing, skip confirmation
+      DCHECK(false) << "Token info missing unblinded_token";
+      continue;
+    }
+
+    auto* public_key_value = token_info_dictionary->FindKey("public_key");
+    if (public_key_value) {
+      confirmation_info.token_info.public_key = public_key_value->GetString();
+    } else {
+      // Public key missing, skip confirmation
+      DCHECK(false) << "Token info missing public_key";
+      continue;
+    }
+
+    // Payment token
+    auto* payment_token_value =
+        confirmation_dictionary->FindKey("payment_token");
+    if (payment_token_value) {
+      auto payment_token_base64 = payment_token_value->GetString();
+      confirmation_info.payment_token =
+          Token::decode_base64(payment_token_base64);
+    } else {
+      // Payment token missing, skip confirmation
+      DCHECK(false) << "Confirmation missing payment_token";
+      continue;
+    }
+
+    // Blinded payment token
+    auto* blinded_payment_token_value =
+        confirmation_dictionary->FindKey("blinded_payment_token");
+    if (blinded_payment_token_value) {
+      auto blinded_payment_token_base64 =
+          blinded_payment_token_value->GetString();
+      confirmation_info.blinded_payment_token =
+          BlindedToken::decode_base64(blinded_payment_token_base64);
+    } else {
+      // Blinded payment token missing, skip confirmation
+      DCHECK(false) << "Confirmation missing blinded_payment_token";
+      continue;
+    }
+
+    // Credential
+    auto* credential_value = confirmation_dictionary->FindKey("credential");
+    if (credential_value) {
+      confirmation_info.credential = credential_value->GetString();
+    } else {
+      // Credential missing, skip confirmation
+      DCHECK(false) << "Confirmation missing credential";
+      continue;
+    }
+
+    confirmations->push_back(confirmation_info);
+  }
+
+  return true;
+}
+
 bool ConfirmationsImpl::GetTransactionHistoryFromJSON(
     base::DictionaryValue* dictionary) {
   auto* transaction_history_value = dictionary->FindKey("transaction_history");
@@ -371,7 +593,8 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
       info.confirmation_type = confirmation_type_value->GetString();
     } else {
       // confirmation type missing, fallback to default
-      info.confirmation_type = kConfirmationTypeView;
+      ConfirmationType type(ConfirmationType::VIEW);
+      info.confirmation_type = std::string(type);
     }
 
     transaction_history->push_back(info);
@@ -532,6 +755,35 @@ bool ConfirmationsImpl::IsValidPublicKeyForCatalogIssuers(
   return true;
 }
 
+void ConfirmationsImpl::AppendConfirmationToQueue(
+    const ConfirmationInfo& confirmation_info) {
+  confirmations_.push_back(confirmation_info);
+
+  SaveState();
+}
+
+void ConfirmationsImpl::RemoveConfirmationFromQueue(
+    const ConfirmationInfo& confirmation_info) {
+  auto id = confirmation_info.id;
+
+  auto it = std::find_if(confirmations_.begin(), confirmations_.end(),
+      [=](const ConfirmationInfo& info) {
+        return (info.id == id);
+      });
+
+  if (it == confirmations_.end()) {
+    return;
+  }
+
+  BLOG(INFO) << "Removed " << confirmation_info.creative_instance_id
+      << " creative instance id for " << std::string(confirmation_info.type)
+      << " from the confirmation queue";
+
+  confirmations_.erase(it);
+
+  SaveState();
+}
+
 void ConfirmationsImpl::GetTransactionHistory(
     const uint64_t from_timestamp_in_seconds,
     const uint64_t to_timestamp_in_seconds,
@@ -571,39 +823,13 @@ double ConfirmationsImpl::GetEstimatedRedemptionValue(
   return estimated_redemption_value;
 }
 
-void ConfirmationsImpl::AppendTransactionToTransactionHistory(
+void ConfirmationsImpl::AppendTransactionToHistory(
     const double estimated_redemption_value,
     const ConfirmationType confirmation_type) {
   TransactionInfo info;
   info.timestamp_in_seconds = Time::NowInSeconds();
   info.estimated_redemption_value = estimated_redemption_value;
-
-  switch (confirmation_type) {
-    case ConfirmationType::UNKNOWN: {
-      DCHECK(false) << "Invalid confirmation type";
-      break;
-    }
-
-    case ConfirmationType::CLICK: {
-      info.confirmation_type = kConfirmationTypeClick;
-      break;
-    }
-
-    case ConfirmationType::DISMISS: {
-      info.confirmation_type = kConfirmationTypeDismiss;
-      break;
-    }
-
-    case ConfirmationType::VIEW: {
-      info.confirmation_type = kConfirmationTypeView;
-      break;
-    }
-
-    case ConfirmationType::LANDED: {
-      info.confirmation_type = kConfirmationTypeLanded;
-      break;
-    }
-  }
+  info.confirmation_type = std::string(confirmation_type);
 
   transaction_history_.push_back(info);
 
@@ -614,38 +840,13 @@ void ConfirmationsImpl::AppendTransactionToTransactionHistory(
 
 void ConfirmationsImpl::ConfirmAd(std::unique_ptr<NotificationInfo> info) {
   BLOG(INFO) << "ConfirmAd:";
-  BLOG(INFO) << "  creativeSetId: " << info->creative_set_id;
+  BLOG(INFO) << "  creative_set_id: " << info->creative_set_id;
   BLOG(INFO) << "  category: " << info->category;
-  BLOG(INFO) << "  notificationUrl: " << info->url;
-  BLOG(INFO) << "  notificationText: " << info->text;
+  BLOG(INFO) << "  url: " << info->url;
+  BLOG(INFO) << "  text: " << info->text;
   BLOG(INFO) << "  advertiser: " << info->advertiser;
   BLOG(INFO) << "  uuid: " << info->uuid;
-  switch (info->type) {
-    case ConfirmationType::UNKNOWN: {
-      DCHECK(false) << "Invalid confirmation type";
-      break;
-    }
-
-    case ConfirmationType::CLICK: {
-      BLOG(INFO) << "  confirmationType: click";
-      break;
-    }
-
-    case ConfirmationType::DISMISS: {
-      BLOG(INFO) << "  confirmationType: dismiss";
-      break;
-    }
-
-    case ConfirmationType::VIEW: {
-      BLOG(INFO) << "  confirmationType: view";
-      break;
-    }
-
-    case ConfirmationType::LANDED: {
-      BLOG(INFO) << "  confirmationType: landed";
-      break;
-    }
-  }
+  BLOG(INFO) << "  type: " << std::string(info->type);
 
   redeem_token_->Redeem(info->uuid, info->type);
 }
@@ -661,6 +862,9 @@ bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
 
   if (timer_id == retry_getting_signed_tokens_timer_id_) {
     RetryGettingRefillSignedTokens();
+    return true;
+  } else if (timer_id == retry_failed_confirmations_timer_id_) {
+    RetryFailedConfirmations();
     return true;
   } else if (timer_id == payout_redeemed_tokens_timer_id_) {
     PayoutRedeemedTokens();
@@ -715,6 +919,57 @@ void ConfirmationsImpl::UpdateNextTokenRedemptionDate() {
     next_token_redemption_date_in_seconds_ +=
         kDebugNextTokenRedemptionAfterSeconds;
   }
+}
+
+void ConfirmationsImpl::StartRetryingFailedConfirmations(
+    const uint64_t start_timer_in) {
+  if (confirmations_.size() == 0) {
+    BLOG(INFO) << "No failed confirmations to retry";
+    return;
+  }
+
+  StopRetryingFailedConfirmations();
+
+  confirmations_client_->SetTimer(start_timer_in,
+      &retry_failed_confirmations_timer_id_);
+  if (retry_failed_confirmations_timer_id_ == 0) {
+    BLOG(ERROR) << "Failed to start retrying failed confirmations "
+        << "due to an invalid timer";
+
+    return;
+  }
+
+  BLOG(INFO) << "Start retrying failed confirmations in " << start_timer_in
+      << " seconds";
+}
+
+void ConfirmationsImpl::RetryFailedConfirmations() const {
+  if (confirmations_.size() == 0) {
+    BLOG(INFO) << "No failed confirmations to retry";
+    return;
+  }
+
+  ConfirmationInfo confirmation_info(confirmations_.front());
+  redeem_token_->Redeem(confirmation_info);
+}
+
+void ConfirmationsImpl::StopRetryingFailedConfirmations() {
+  if (!IsRetryingFailedConfirmations()) {
+    return;
+  }
+
+  BLOG(INFO) << "Stopped retrying failed confirmations";
+
+  confirmations_client_->KillTimer(retry_failed_confirmations_timer_id_);
+  retry_failed_confirmations_timer_id_ = 0;
+}
+
+bool ConfirmationsImpl::IsRetryingFailedConfirmations() const {
+  if (retry_failed_confirmations_timer_id_ == 0) {
+    return false;
+  }
+
+  return true;
 }
 
 void ConfirmationsImpl::StartPayingOutRedeemedTokens(

@@ -61,7 +61,7 @@ std::string Security::Sign(
 }
 
 std::vector<Token> Security::GenerateTokens(const int count) {
-  DCHECK_NE(count, 0);
+  DCHECK_GT(count, 0);
 
   std::vector<Token> tokens;
 

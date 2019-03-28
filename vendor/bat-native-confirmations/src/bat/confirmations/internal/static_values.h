@@ -26,6 +26,9 @@ static const uint64_t kNextTokenRedemptionAfterSeconds =
 static const uint64_t kDebugNextTokenRedemptionAfterSeconds =
     25 * base::Time::kSecondsPerMinute;
 
+static const uint64_t kRetryFailedConfirmationsAfterSeconds =
+    5 * base::Time::kSecondsPerMinute;
+
 }  // namespace confirmations
 
 #endif  // BAT_CONFIRMATIONS_INTERNAL_STATIC_VALUES_H_
