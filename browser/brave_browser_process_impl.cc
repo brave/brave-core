@@ -23,7 +23,6 @@
 #include "brave/components/brave_shields/browser/extension_whitelist_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/local_data_files_service.h"
-#include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/io_thread.h"
 #include "chrome/common/chrome_paths.h"
@@ -143,15 +142,6 @@ BraveBrowserProcessImpl::extension_whitelist_service() {
         brave_shields::ExtensionWhitelistServiceFactory();
   }
   return extension_whitelist_service_.get();
-}
-
-brave_shields::ReferrerWhitelistService*
-BraveBrowserProcessImpl::referrer_whitelist_service() {
-  if (!referrer_whitelist_service_) {
-    referrer_whitelist_service_ =
-      brave_shields::ReferrerWhitelistServiceFactory();
-  }
-  return referrer_whitelist_service_.get();
 }
 
 brave_shields::TrackingProtectionService*

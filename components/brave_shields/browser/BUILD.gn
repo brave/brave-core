@@ -31,8 +31,6 @@ source_set("brave_shields") {
     "https_everywhere_service.h",
     "local_data_files_service.cc",
     "local_data_files_service.h",
-    "referrer_whitelist_service.cc",
-    "referrer_whitelist_service.h",
     "tracking_protection_service.cc",
     "tracking_protection_service.h",
   ]
