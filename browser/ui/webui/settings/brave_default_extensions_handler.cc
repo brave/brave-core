@@ -39,14 +39,14 @@ void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
-  bool value;
-  args->GetBoolean(0, &value);
+  bool enabled;
+  args->GetBoolean(0, &enabled);
 
   extensions::ExtensionService* service =
     extensions::ExtensionSystem::Get(profile_)->extension_service();
   extensions::ComponentLoader* loader = service->component_loader();
 
-  if (value) {
+  if (enabled) {
     if (!loader->Exists(brave_webtorrent_extension_id)) {
       base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
       brave_webtorrent_path =
@@ -64,13 +64,13 @@ void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
-  bool value;
-  args->GetBoolean(0, &value);
+  bool enabled;
+  args->GetBoolean(0, &enabled);
 
   extensions::ExtensionService* service =
     extensions::ExtensionSystem::Get(profile_)->extension_service();
 
-  if (value) {
+  if (enabled) {
     extensions::ComponentLoader* loader = service->component_loader();
     if (!loader->Exists(hangouts_extension_id)) {
       static_cast<extensions::BraveComponentLoader*>(loader)->
@@ -87,13 +87,13 @@ void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
-  bool value;
-  args->GetBoolean(0, &value);
+  bool enabled;
+  args->GetBoolean(0, &enabled);
 
   extensions::ExtensionService* service =
     extensions::ExtensionSystem::Get(profile_)->extension_service();
 
-  if (value) {
+  if (enabled) {
     extensions::ComponentLoader* loader = service->component_loader();
     if (!loader->Exists(ipfs_companion_extension_id)) {
       static_cast<extensions::BraveComponentLoader*>(loader)->
