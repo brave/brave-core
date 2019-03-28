@@ -1,9 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_EXTENSIONS_BRAVE_COMPONENT_LOADER_H_
 #define BRAVE_BROWSER_EXTENSIONS_BRAVE_COMPONENT_LOADER_H_
+
+#include <string>
 
 #include "base/files/file_path.h"
 #include "chrome/browser/extensions/component_loader.h"
@@ -37,7 +40,7 @@ class BraveComponentLoader : public ComponentLoader {
   // ForceAddHangoutServicesExtension ignores whether or not a preference for
   // hangouts is set.  If the buildflag is not set, it won't add though.
   void ForceAddHangoutServicesExtension();
- 
+
   static bool IsPdfjsDisabled();
 
  private:

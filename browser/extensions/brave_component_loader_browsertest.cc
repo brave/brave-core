@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this file,
-* You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
@@ -33,9 +34,9 @@ class BraveComponentLoaderTest : public extensions::ExtensionFunctionalTest,
     DCHECK(service);
     BraveComponentLoader* loader =
       static_cast<BraveComponentLoader*>(service->component_loader());
-   loader->set_testing_callbacks(this);
-   // Do this again so OnComponentRegistered callback will be called.
-   loader->AddDefaultComponentExtensions(false);
+    loader->set_testing_callbacks(this);
+    // Do this again so OnComponentRegistered callback will be called.
+    loader->AddDefaultComponentExtensions(false);
   }
 
   // BraveComponentLoader::TestingCallbacks
@@ -104,11 +105,11 @@ IN_PROC_BROWSER_TEST_F(BravePDFExtensionTest, ToggleDownloadPDFs) {
 }
 
 class BravePDFExtensionDisabledTest : public BravePDFExtensionTest {
-public:
+ public:
   BravePDFExtensionDisabledTest() = default;
   ~BravePDFExtensionDisabledTest() override = default;
 
-protected:
+ protected:
   void SetUpCommandLine(base::CommandLine* command_line) override {
     ExtensionFunctionalTest::SetUpCommandLine(command_line);
     // Disable loading of our PDF extension.
