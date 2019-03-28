@@ -24,7 +24,7 @@ class BraveCrxUpdateService : public CrxUpdateService {
                         scoped_refptr<UpdateClient> update_client);
 
   bool RegisterComponent(const CrxComponent& component) override;
-  ~BraveCrxUpdateService() override{}
+  ~BraveCrxUpdateService() override {}
 
  private:
   bool CheckForUpdates(UpdateScheduler::OnFinishedCallback on_finished);
