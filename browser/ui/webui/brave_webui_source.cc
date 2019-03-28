@@ -586,4 +586,4 @@ void CustomizeWebUIHTMLSource(const std::string &name,
     }
   };
   AddLocalizedStringsBulk(source, localized_strings[name]);
-}
+}  // NOLINT(readability/fn_size)
