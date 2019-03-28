@@ -444,10 +444,6 @@ void LedgerClientMojoProxy::SaveMediaPublisherInfo(
   ledger_client_->SaveMediaPublisherInfo(media_key, publisher_id);
 }
 
-void LedgerClientMojoProxy::FetchWalletProperties() {
-  ledger_client_->FetchWalletProperties();
-}
-
 void LedgerClientMojoProxy::FetchGrants(const std::string& lang,
     const std::string& payment_id) {
   ledger_client_->FetchGrants(lang, payment_id);

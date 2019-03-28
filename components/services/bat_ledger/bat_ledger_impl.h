@@ -28,7 +28,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   // bat_ledger::mojom::BatLedger
   void Initialize() override;
   void CreateWallet() override;
-  void FetchWalletProperties() override;
+  void FetchWalletProperties(FetchWalletPropertiesCallback callback) override;
 
   void GetAutoContributeProps(
       GetAutoContributePropsCallback callback) override;
@@ -155,6 +155,11 @@ class BatLedgerImpl : public mojom::BatLedger,
       base::WeakPtr<BatLedgerImpl> client_;
       Callback callback_;
     };
+
+  static void OnFetchWalletProperties(
+      CallbackHolder<FetchWalletPropertiesCallback>* holder,
+      ledger::Result result,
+      std::unique_ptr<ledger::WalletInfo> wallet_info);
 
   static void OnGetPublisherBanner(
       CallbackHolder<GetPublisherBannerCallback>* holder,

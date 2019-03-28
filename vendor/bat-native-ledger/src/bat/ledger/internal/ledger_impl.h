@@ -184,7 +184,8 @@ class LedgerImpl : public ledger::Ledger,
   void OnWalletProperties(ledger::Result result,
                           const braveledger_bat_helper::WALLET_PROPERTIES_ST&);
 
-  void FetchWalletProperties() const override;
+  void FetchWalletProperties(
+      ledger::OnWalletPropertiesCallback callback) const override;
 
   void FetchGrants(const std::string& lang,
                    const std::string& paymentId) const override;

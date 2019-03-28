@@ -79,8 +79,6 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void OnWalletInitialized(Result result) = 0;
 
-  virtual void FetchWalletProperties() = 0;
-
   virtual void OnWalletProperties(Result result,
                                   std::unique_ptr<ledger::WalletInfo>) = 0;
 

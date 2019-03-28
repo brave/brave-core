@@ -212,8 +212,8 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublisherStateLoaded(ledger::LedgerCallbackHandler* handler,
                               const std::string& data);
   void TriggerOnWalletInitialized(int result);
-  void TriggerOnWalletProperties(int error_code,
-                                 std::unique_ptr<ledger::WalletInfo> result);
+  void OnFetchWalletProperties(int result,
+                               const std::string& json_wallet);
   void TriggerOnGrant(ledger::Result result, const ledger::Grant& grant);
   void TriggerOnGrantCaptcha(const std::string& image, const std::string& hint);
   void TriggerOnRecoverWallet(ledger::Result result,
