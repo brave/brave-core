@@ -14,6 +14,7 @@
 #include "mojo/public/cpp/bindings/map.h"
 
 using std::placeholders::_1;
+using std::placeholders::_2;
 
 namespace bat_ledger {
 
@@ -56,8 +57,24 @@ void BatLedgerImpl::CreateWallet() {
   ledger_->CreateWallet();
 }
 
-void BatLedgerImpl::FetchWalletProperties() {
-  ledger_->FetchWalletProperties();
+// static
+void BatLedgerImpl::OnFetchWalletProperties(
+    CallbackHolder<FetchWalletPropertiesCallback>* holder,
+    ledger::Result result,
+    std::unique_ptr<ledger::WalletInfo> wallet_info) {
+  std::string json_wallet = wallet_info.get() ? wallet_info->ToJson() : "";
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, json_wallet);
+  delete holder;
+}
+
+void BatLedgerImpl::FetchWalletProperties(
+    FetchWalletPropertiesCallback callback) {
+  // delete in OnFetchWalletProperties
+  auto* holder = new CallbackHolder<FetchWalletPropertiesCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->FetchWalletProperties(
+      std::bind(BatLedgerImpl::OnFetchWalletProperties, holder, _1, _2));
 }
 
 void BatLedgerImpl::GetAutoContributeProps(

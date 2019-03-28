@@ -771,9 +771,41 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
   TriggerOnWalletInitialized(result);
 }
 
-void RewardsServiceImpl::OnWalletProperties(ledger::Result result,
+void RewardsServiceImpl::OnWalletProperties(
+    ledger::Result result,
     std::unique_ptr<ledger::WalletInfo> wallet_info) {
-  TriggerOnWalletProperties(result, std::move(wallet_info));
+  if (wallet_info && wallet_info->balance_ > 0) {
+    profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);
+  }
+
+  std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
+  for (auto& observer : observers_) {
+    if (wallet_info) {
+      wallet_properties.reset(new brave_rewards::WalletProperties);
+      wallet_properties->probi = wallet_info->probi_;
+      wallet_properties->balance = wallet_info->balance_;
+      wallet_properties->rates = wallet_info->rates_;
+      wallet_properties->parameters_choices = wallet_info->parameters_choices_;
+      wallet_properties->parameters_range = wallet_info->parameters_range_;
+      wallet_properties->parameters_days = wallet_info->parameters_days_;
+      wallet_properties->monthly_amount = wallet_info->fee_amount_;
+
+      for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
+        brave_rewards::Grant grant;
+
+        grant.altcurrency = wallet_info->grants_[i].altcurrency;
+        grant.probi = wallet_info->grants_[i].probi;
+        grant.expiryTime = wallet_info->grants_[i].expiryTime;
+
+        wallet_properties->grants.push_back(grant);
+      }
+    }
+
+    // webui
+    observer.OnWalletProperties(this,
+                                static_cast<int>(result),
+                                std::move(wallet_properties));
+  }
 }
 
 void RewardsServiceImpl::OnGetAutoContributeProps(
@@ -1258,38 +1290,18 @@ void RewardsServiceImpl::TriggerOnWalletInitialized(int result) {
     observer.OnWalletInitialized(this, result);
 }
 
-void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
-    std::unique_ptr<ledger::WalletInfo> wallet_info) {
-  if (wallet_info && wallet_info->balance_ > 0)
-    profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);
+void RewardsServiceImpl::OnFetchWalletProperties(
+    int result,
+    const std::string& json_wallet) {
+  std::unique_ptr<ledger::WalletInfo> wallet_info;
 
-  std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
-  for (auto& observer : observers_) {
-    if (wallet_info) {
-      wallet_properties.reset(new brave_rewards::WalletProperties);
-      wallet_properties->probi = wallet_info->probi_;
-      wallet_properties->balance = wallet_info->balance_;
-      wallet_properties->rates = wallet_info->rates_;
-      wallet_properties->parameters_choices = wallet_info->parameters_choices_;
-      wallet_properties->parameters_range = wallet_info->parameters_range_;
-      wallet_properties->parameters_days = wallet_info->parameters_days_;
-      wallet_properties->monthly_amount = wallet_info->fee_amount_;
-
-      for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
-        brave_rewards::Grant grant;
-
-        grant.altcurrency = wallet_info->grants_[i].altcurrency;
-        grant.probi = wallet_info->grants_[i].probi;
-        grant.expiryTime = wallet_info->grants_[i].expiryTime;
-
-        wallet_properties->grants.push_back(grant);
-      }
-    }
-
-    // webui
-    observer.OnWalletProperties(
-            this, error_code, std::move(wallet_properties));
+  if (!json_wallet.empty()) {
+    wallet_info.reset(new ledger::WalletInfo());
+    wallet_info->loadFromJson(json_wallet);
   }
+
+  OnWalletProperties(static_cast<ledger::Result>(result),
+                     std::move(wallet_info));
 }
 
 void RewardsServiceImpl::FetchWalletProperties() {
@@ -1298,7 +1310,9 @@ void RewardsServiceImpl::FetchWalletProperties() {
       return;
     }
 
-    bat_ledger_->FetchWalletProperties();
+    bat_ledger_->FetchWalletProperties(
+        base::BindOnce(&RewardsServiceImpl::OnFetchWalletProperties,
+                       AsWeakPtr()));
   } else {
     ready().Post(FROM_HERE,
         base::Bind(&brave_rewards::RewardsService::FetchWalletProperties,
