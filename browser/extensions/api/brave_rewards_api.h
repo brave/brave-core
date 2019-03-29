@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_REWARDS_API_H_
 
 #include <memory>
+#include <string>
 
 #include "extensions/browser/extension_function.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
@@ -201,7 +202,7 @@ class BraveRewardsGetRecurringTipsFunction :
 
   ResponseAction Run() override;
 
-  private:
+ private:
     void OnGetRecurringTips(
         std::unique_ptr<brave_rewards::ContentSiteList> list);
 };
@@ -220,6 +221,19 @@ public UIThreadExtensionFunction {
  private:
   void OnPublisherBanner(
       std::unique_ptr<::brave_rewards::PublisherBanner> banner);
+};
+
+class BraveRewardsRefreshPublisherFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.refreshPublisher", UNKNOWN)
+
+ protected:
+  ~BraveRewardsRefreshPublisherFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnRefreshPublisher(bool verified, const std::string& publisher_key);
 };
 
 }  // namespace api
