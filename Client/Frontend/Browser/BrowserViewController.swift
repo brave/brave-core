@@ -886,14 +886,19 @@ class BrowserViewController: UIViewController {
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard let webView = object as? WKWebView, let kp = keyPath, let path = KVOConstants(rawValue: kp) else {
+        guard let webView = object as? WKWebView, let tab = tabManager[webView], let kp = keyPath, let path = KVOConstants(rawValue: kp) else {
             assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
             return
         }
         
+        if let helper = tab.getContentScript(name: ContextMenuHelper.name()) as? ContextMenuHelper {
+            // This is zero-cost if already installed. It needs to be checked frequently (hence every event here triggers this function), as when a new tab is created it requires multiple attempts to setup the handler correctly.
+            helper.replaceGestureHandlerIfNeeded()
+        }
+        
         switch path {
         case .estimatedProgress:
-            guard webView == tabManager.selectedTab?.webView,
+            guard tab === tabManager.selectedTab,
                 let progress = change?[.newKey] as? Float else { break }
             if !(webView.url?.isLocalUtility ?? false) {
                 urlBar.updateProgressBar(progress)
@@ -903,7 +908,7 @@ class BrowserViewController: UIViewController {
         case .loading:
             guard let loading = change?[.newKey] as? Bool else { break }
             
-            if webView == tabManager.selectedTab?.webView {
+            if tab === tabManager.selectedTab {
                 urlBar.locationView.loading = loading
                 if !(webView.url?.isLocalUtility ?? false) {
                     if loading && urlBar.currentProgress() < URLBarView.psuedoProgressValue {
@@ -931,8 +936,6 @@ class BrowserViewController: UIViewController {
                 }
             }
         case .title:
-            guard let tab = tabManager[webView] else { break }
-            
             // Ensure that the tab title *actually* changed to prevent repeated calls
             // to navigateInTab(tab:).
             guard let title = (webView.title?.count == 0 ? webView.url?.absoluteString : webView.title) else { break }
@@ -940,13 +943,15 @@ class BrowserViewController: UIViewController {
                 navigateInTab(tab: tab)
             }
         case .canGoBack:
-            guard webView == tabManager.selectedTab?.webView,
-                let canGoBack = change?[.newKey] as? Bool else { break }
+            guard tab === tabManager.selectedTab, let canGoBack = change?[.newKey] as? Bool else {
+                break
+            }
             
             navigationToolbar.updateBackStatus(canGoBack)
         case .canGoForward:
-            guard webView == tabManager.selectedTab?.webView,
-                let canGoForward = change?[.newKey] as? Bool else { break }
+            guard tab === tabManager.selectedTab, let canGoForward = change?[.newKey] as? Bool else {
+                break
+            }
             
             navigationToolbar.updateForwardStatus(canGoForward)
         case .hasOnlySecureContent:
