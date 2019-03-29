@@ -63,7 +63,7 @@ using GetPublisherMinVisitTimeCallback = base::Callback<void(uint64_t)>;
 using GetPublisherMinVisitsCallback = base::Callback<void(uint32_t)>;
 using GetPublisherAllowNonVerifiedCallback = base::Callback<void(bool)>;
 using GetPublisherAllowVideosCallback = base::Callback<void(bool)>;
-using GetAutoContributeCallback = base::Callback<void(bool)>;
+using GetAutoContributeCallback = base::OnceCallback<void(bool)>;
 using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
 using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
@@ -138,7 +138,7 @@ class RewardsService : public KeyedService {
   virtual void SetContributionAmount(double amount) const = 0;
   virtual void SetUserChangedContribution() const = 0;
   virtual void GetAutoContribute(
-      const GetAutoContributeCallback& callback) = 0;
+      GetAutoContributeCallback callback) = 0;
   virtual void SetAutoContribute(bool enabled) const = 0;
   virtual void SetTimer(uint64_t time_offset, uint32_t* timer_id) = 0;
   virtual void GetAllBalanceReports(

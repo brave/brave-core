@@ -260,7 +260,7 @@ BraveRewardsGetACEnabledFunction::Run() {
     return RespondNow(Error("Rewards service is not initialized"));
   }
 
-  rewards_service->GetAutoContribute(base::Bind(
+  rewards_service->GetAutoContribute(base::BindOnce(
         &BraveRewardsGetACEnabledFunction::OnGetACEnabled,
         this));
   return RespondLater();

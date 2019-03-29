@@ -305,6 +305,10 @@ export class Panel extends React.Component<Props, State> {
         type = 'insufficientFunds'
         text = getMessage('insufficientFundsNotification')
         break
+      case RewardsNotificationType.REWARDS_NOTIFICATION_TIPS_PROCESSED:
+        type = 'tipsProcessed'
+        text = getMessage('tipsProcessedNotification')
+        break
       default:
         type = ''
         break
