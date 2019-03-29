@@ -147,6 +147,7 @@
 <translation id="9033857511263905942">粘贴(&amp;P)</translation>
 <translation id="1815083418640426271">粘贴为纯文本</translation>
 <translation id="4022426551683927403">添加到字典中(&amp;A)</translation>
+<translation id="6849870115130610913">从 Brave Software 获取图片说明</translation>
 <translation id="372722114124766626">仅一次</translation>
 <translation id="8917490105272468696">我同意</translation>
 <translation id="7473891865547856676">不，谢谢</translation>
@@ -407,6 +408,8 @@
 <translation id="4923279099980110923">我愿意提供帮助</translation>
 <translation id="2316129865977710310">不用了，谢谢</translation>
 <translation id="9169931577761441333">将“<ph name="APP_NAME"/>”添加到主屏幕</translation>
+<translation id="6349101878882523185">安装“<ph name="APP_NAME"/>”</translation>
+<translation id="4918221908152712722">安装<ph name="APP_NAME"/>（不需要下载）</translation>
 <translation id="3789841737615482174">安装</translation>
 <translation id="5280426389926346830">创建快捷方式？</translation>
 <translation id="7525067979554623046">创建</translation>
@@ -1299,6 +1302,7 @@
 <translation id="3071624960923923138">只需点击此处，即可打开一个新标签页</translation>
 <translation id="4908811072292128752">只需打开一个新标签页，即可同时浏览两个网站</translation>
 <translation id="8966870118594285808">如果您无意中关闭了某个标签页，可将其重新打开</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> 可以重新打开意外关闭的标签页</translation>
 <translation id="2963151496262057773">以下插件没有响应：<ph name="PLUGIN_NAME"/>。是否要停止使用该插件？</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{1 个页面无响应}other{多个页面无响应}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{您可以等待该页面恢复响应，也可以退出该页面。}other{您可以等待这些页面恢复响应，也可以退出这些页面。}}</translation>
@@ -1353,12 +1357,13 @@
 <translation id="6076448957780543068">包括此屏幕截图</translation>
 <translation id="7052237160939977163">发送性能跟踪数据</translation>
 <translation id="5526928694260255286">附加<ph name="BEGIN_LINK"/>蓝牙日志<ph name="END_LINK"/>（Brave Software 内部使用）</translation>
+<translation id="3047644958362961983">这些信息有助于我们更好地了解您所遇到的 Brave Software 助理问题。这些信息会被存储至多 90 天，且仅限相关的工程团队和反馈团队访问。</translation>
 <translation id="1705635099498185261">为了更好地诊断蓝牙问题，Brave Software 用户可以在反馈报告中包含其他蓝牙日志。此选项处于选中状态时，您的报告中将包含来自当前会话的 btsnoop 和 HCI 日志，这些日志经过处理，尽可能移除了个人身份信息。只有 Listnr 的 Brave 操作系统产品组管理员可以访问这些日志。这些日志将于 90 天后被完全清除。</translation>
 <translation id="4206323443866416204">反馈报告</translation>
 <translation id="3681311097828166361">感谢您提交反馈。您目前处于离线状态，系统将在您上线后提交您的反馈报告。</translation>
 <translation id="8713570323158206935">发送<ph name="BEGIN_LINK1"/>系统信息<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">发送<ph name="BEGIN_LINK1"/>系统和应用信息<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">附上用于调试 Brave Software 助理的信息</translation>
+<translation id="6395423953133416962">发送<ph name="BEGIN_LINK1"/>系统信息<ph name="END_LINK1"/>和<ph name="BEGIN_LINK2"/>指标<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">发送<ph name="BEGIN_LINK1"/>系统和应用信息<ph name="END_LINK1"/>以及<ph name="BEGIN_LINK2"/>指标<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">文件将发送到 Brave Software 进行调试</translation>
 <translation id="8227119283605456246">附上文件</translation>
 <translation id="5367091008316207019">正在读取文件...</translation>
@@ -2574,6 +2579,7 @@
 <translation id="4694604912444486114">猴子</translation>
 <translation id="6795884519221689054">熊猫</translation>
 <translation id="1829129547161959350">企鹅</translation>
+<translation id="3021066826692793094">蝴蝶</translation>
 <translation id="3809272675881623365">兔子</translation>
 <translation id="4124935795427217608">独角兽</translation>
 <translation id="1830550083491357902">未登录</translation>
@@ -3055,6 +3061,7 @@
 <translation id="5840822070878669614">打开 Brave 网上应用店</translation>
 <translation id="6073903501322152803">添加无障碍功能</translation>
 <translation id="7988355189918024273">启用辅助功能</translation>
+<translation id="3274899353071794175">如果图片缺少有用的说明，则 Brave 会为您提供一条说明。Brave Software 会对图片进行扫描。</translation>
 <translation id="2558896001721082624">始终在系统菜单中显示无障碍选项</translation>
 <translation id="7280649757394340890">文字转语音的语音设置</translation>
 <translation id="6635956300022133031">选择和自定义文字转语音的语音</translation>
@@ -3877,6 +3884,7 @@
 <translation id="8339059274628563283"><ph name="SITE"/> 本地存储的数据</translation>
 <translation id="4090947011087001172">要重置 <ph name="SITE"/> 的网站权限吗？</translation>
 <translation id="1688867105868176567">要清除网站数据吗？</translation>
+<translation id="4665446389743427678">即将删除 <ph name="SITE"/> 存储的所有数据。</translation>
 <translation id="5300287940468717207">要重置网站权限吗？</translation>
 <translation id="2734760316755174687"><ph name="SITE_GROUP_NAME"/> 下的网站也会重置。</translation>
 <translation id="3255355328033513170">即将删除 <ph name="SITE_GROUP_NAME"/> 存储的所有数据及其名下的所有网站。包括 Cookie。您将会退出这些网站（包括打开的标签页）。</translation>
@@ -4264,7 +4272,10 @@
 <translation id="3729506734996624908">允许的网站</translation>
 <translation id="3732078975418297900">第 <ph name="ERROR_LINE"/> 行存在错误</translation>
 <translation id="9063208415146866933">第 <ph name="ERROR_LINE_START"/> 行到第 <ph name="ERROR_LINE_END"/> 行存在错误</translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/> - 活动日志</translation>
 <translation id="8287902281644548111">按 API 调用/网址搜索</translation>
+<translation id="5008936837313706385">活动名称</translation>
+<translation id="7583948862126372804">计数</translation>
 <translation id="2841013758207633010">时间</translation>
 <translation id="2002109485265116295">实时</translation>
 <translation id="2549985041256363841">开始录制</translation>

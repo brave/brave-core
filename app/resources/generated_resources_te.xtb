@@ -147,6 +147,7 @@
 <translation id="9033857511263905942">&amp;అతికించు</translation>
 <translation id="1815083418640426271">సాదా వచనం లాగా అతికించు</translation>
 <translation id="4022426551683927403">నిఘంటువుకు &amp;జోడించు</translation>
+<translation id="6849870115130610913">Brave Software నుండి చిత్ర వివరణలను పొందండి</translation>
 <translation id="372722114124766626">ఒకసారి మాత్రమే</translation>
 <translation id="8917490105272468696">సరే, నాకు సమ్మతమే</translation>
 <translation id="7473891865547856676">వద్దు, ధన్యవాదాలు</translation>
@@ -407,6 +408,8 @@
 <translation id="4923279099980110923">అవును, నేను సహాయం అందించాలనుకుంటున్నాను</translation>
 <translation id="2316129865977710310">వద్దు, ధన్యవాదాలు</translation>
 <translation id="9169931577761441333"><ph name="APP_NAME"/>ని హోమ్ స్క్రీన్‌కి జోడించండి</translation>
+<translation id="6349101878882523185"><ph name="APP_NAME"/>‌ను ఇన్‌స్టాల్ చేయండి</translation>
+<translation id="4918221908152712722"><ph name="APP_NAME"/>ను ఇన్‌స్టాల్ చేయండి (డౌన్‌లోడ్ చేయాల్సిన అవసరం లేదు)</translation>
 <translation id="3789841737615482174">వ్యవస్థాపించు</translation>
 <translation id="5280426389926346830">షార్ట్‌కట్‌ని సృష్టించాలా?</translation>
 <translation id="7525067979554623046">సృష్టించు</translation>
@@ -1295,6 +1298,7 @@
 <translation id="3071624960923923138">మీరు కొత్త ట్యాబ్‌ను తెరవడానికి ఇక్కడ క్లిక్ చేయవచ్చు</translation>
 <translation id="4908811072292128752">ఒకేసారి రెండు సైట్‌లను బ్రౌజ్ చేయడానికి కొత్త ట్యాబ్‌ను తెరవండి</translation>
 <translation id="8966870118594285808">ట్యాబ్‌ను మీరు పొరపాటున మూసివేసినట్లయితే మళ్లీ తెరవగలరు</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> ఉపయోగించి అనుకోకుండా మూసివేసిన ట్యాబ్‌లను తిరిగి తెరవవచ్చు</translation>
 <translation id="2963151496262057773">కింది ప్లగిన్ ప్రతిస్పందించడం లేదు: <ph name="PLUGIN_NAME"/>మీరు దీన్ని ఆపివేయాలనుకుంటున్నారా?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{పేజీ ప్రతిస్పందించడం లేదు}other{పేజీలు ప్రతిస్పందించడం లేదు}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{ఇది ప్రతిస్పందించే వరకు మీరు వేచి ఉండవచ్చు లేదా పేజీ నుండి మీరు నిష్క్రమించవచ్చు.}other{ఇవి ప్రతిస్పందించే వరకు మీరు వేచి ఉండవచ్చు లేదా పేజీల నుండి మీరు నిష్క్రమించవచ్చు.}}</translation>
@@ -1349,12 +1353,13 @@
 <translation id="6076448957780543068">ఈ స్క్రీన్‌షాట్‌ని చేర్చు</translation>
 <translation id="7052237160939977163">పనితీరు గుర్తింపు డేటాను పంపు</translation>
 <translation id="5526928694260255286"><ph name="BEGIN_LINK"/>బ్లూటూత్ లాగ్‌లు<ph name="END_LINK"/>ని జోడించు (Brave Software అంతర్గతం)</translation>
+<translation id="3047644958362961983">మీ అసిస్టెంట్ సమస్యను మెరుగ్గా అర్థం చేసుకోవడంలో ఈ సమాచారం మాకు సహాయపడుతుంది. ఇది గరిష్టంగా 90 రోజుల పాటు నిల్వ చేయబడుతుంది మరియు సంబంధిత ఇంజినీరింగ్ మరియు అభిప్రాయ బృందాలు మాత్రమే దీనిని యాక్సెస్ చేయగలవు.</translation>
 <translation id="1705635099498185261">బ్లూటూత్ సమస్యలని మరింత మెరుగ్గా విశ్లేషించడానికి, Brave Software ఉద్యోగులు తాము ఇచ్చే అభిప్రాయ నివేదికలతో పాటు అదనపు బ్లూటూత్ లాగ్‌లను జోడించి వివరంగా పంపవచ్చు. ఈ ఎంపిక ఎంచుకోబడితే, మీ ప్రస్తుత సెషన్ యొక్క btsnoop మరియు HCI లాగ్‌ల యొక్క PIIను వీలున్న మేరకు క్లీన్ చేసి తొలగించడం కోసం నివేదికలో చేర్చబడతాయి. Listnrలో ఉన్న Brave OS ఉత్పత్తి సమూహ మేనేజర్‌లు మాత్రమే ఈ లాగ్‌లను యాక్సెస్ చేసుకొనే వెసులుబాటును కలిగి ఉంటారు. అయితే 90 రోజుల తర్వాత ఈ లాగ్‌లు అనేవి పూర్తిగా తొలగించబడతాయి.</translation>
 <translation id="4206323443866416204">అభిప్రాయ నివేదిక</translation>
 <translation id="3681311097828166361">మీ అభిప్రాయం తెలియజేసినందుకు ధన్యవాదాలు. మీరు ప్రస్తుతం ఆఫ్‌లైన్‌లో ఉన్నారు, మీ నివేదిక తర్వాత పంపబడుతుంది.</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>సిస్టమ్ సమాచారాన్ని<ph name="END_LINK1"/> పంపు</translation>
-<translation id="8642895855701880552"><ph name="BEGIN_LINK1"/>సిస్టమ్, యాప్ సమాచారం<ph name="END_LINK1"/> పంపు</translation>
-<translation id="7292696521213967957">అసిస్టెంట్‌ని డీబగ్ చేయడానికి సమాచారం</translation>
+<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>సిస్టమ్ సమాచారం<ph name="END_LINK1"/> మరియు <ph name="BEGIN_LINK2"/>గణాంకాలు<ph name="END_LINK2"/> పంపు</translation>
+<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>సిస్టమ్ మరియు అనువర్తన సమాచారాన్ని<ph name="END_LINK1"/> మరియు <ph name="BEGIN_LINK2"/>గణాంకాలను<ph name="END_LINK2"/> పంపు</translation>
 <translation id="8329196515830093443">పైల్ డీబగ్గింగ్ కోసం Brave Softwareకి పంపబడుతుంది</translation>
 <translation id="8227119283605456246">ఫైల్‌ను జోడించు</translation>
 <translation id="5367091008316207019">ఫైల్‌ను చదువుతోంది..</translation>
@@ -2574,6 +2579,7 @@
 <translation id="4694604912444486114">కోతి</translation>
 <translation id="6795884519221689054">పాండా</translation>
 <translation id="1829129547161959350">పెంగ్విన్</translation>
+<translation id="3021066826692793094">సీతాకోకచిలుక</translation>
 <translation id="3809272675881623365">కుందేలు</translation>
 <translation id="4124935795427217608">యునికార్న్</translation>
 <translation id="1830550083491357902">సైన్ ఇన్ చేయలేదు</translation>
@@ -3060,6 +3066,7 @@
 <translation id="5840822070878669614">Brave వెబ్ స్టోర్‌ను తెరువు</translation>
 <translation id="6073903501322152803">యాక్సెస్ సౌలభ్య ఫీచర్‌లను జోడించండి</translation>
 <translation id="7988355189918024273">సులభంగా ప్రాప్యత చేసే లక్షణాలను ప్రారంభించు</translation>
+<translation id="3274899353071794175">చిత్రంలో ఉపయోగకరమైన వివరణ లేకుంటే, మీ కోసం వివరణను అందించడానికి Brave ప్రయత్నిస్తుంది. చిత్రాలు Brave Software ద్వారా స్కాన్ చేయబడతాయి.</translation>
 <translation id="2558896001721082624">సిస్టమ్ మెనూలో ఎల్లప్పుడూ యాక్సెస్ సామర్థ్యం ఎంపికలను చూపు</translation>
 <translation id="7280649757394340890">వచనం-నుండి-ప్రసంగం వాయిస్ సెట్టింగ్‌లు</translation>
 <translation id="6635956300022133031">వచనం-నుండి-ప్రసంగం వాయిస్‌లను ఎంచుకోండి మరియు అనుకూలీకరించండి</translation>
@@ -3882,6 +3889,7 @@
 <translation id="8339059274628563283"><ph name="SITE"/> స్థానికంగా నిల్వ చేసిన డేటా</translation>
 <translation id="4090947011087001172"><ph name="SITE"/> యొక్క సైట్ అనుమతులను రీసెట్ చేయాలా?</translation>
 <translation id="1688867105868176567">సైట్ డేటాని క్లియర్ చేయాలా?</translation>
+<translation id="4665446389743427678"><ph name="SITE"/> ద్వారా నిల్వ చేయబడిన మొత్తం డేటా తొలగించబడుతుంది.</translation>
 <translation id="5300287940468717207">సైట్ అనుమతులను రీసెట్ చేయాలా?</translation>
 <translation id="2734760316755174687"><ph name="SITE_GROUP_NAME"/>లోని సైట్‌లు కూడా రీసెట్ చేయబడతాయి.</translation>
 <translation id="3255355328033513170"><ph name="SITE_GROUP_NAME"/> ద్వారా నిల్వ చేయబడిన మొత్తం డేటాతో పాటు, దానికి అనుసంధానమై ఉండే సైట్‌లు అన్ని తొలగించబడతాయి. ఒక్కమాటలో చెప్పాలంటే, కుక్కీలతో సహా అన్ని తొలగించబడతాయి. అలాగే మీరు తెరిచిన ట్యాబ్‌లతో సహా, ఆయా సైట్‌ల నుండి పూర్తిగా సైన్ అవుట్ చేయబడతారు.</translation>
@@ -4269,7 +4277,10 @@
 <translation id="3729506734996624908">అనుమతించబడిన సైట్‌లు</translation>
 <translation id="3732078975418297900">పంక్తి <ph name="ERROR_LINE"/>లో ఎర్రర్ ఉంది</translation>
 <translation id="9063208415146866933">పంక్తి <ph name="ERROR_LINE_START"/> నుండి <ph name="ERROR_LINE_END"/> వరకు ఎర్రర్</translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/> - కార్యకలాపం లాగ్</translation>
 <translation id="8287902281644548111">API కాల్/URL ద్వారా శోధించండి</translation>
+<translation id="5008936837313706385">కార్యకలాపం పేరు</translation>
+<translation id="7583948862126372804">గణన</translation>
 <translation id="2841013758207633010">సమయం</translation>
 <translation id="2002109485265116295">నిజ-సమయం</translation>
 <translation id="2549985041256363841">రికార్డింగ్‌ను ప్రారంభించు</translation>
@@ -4352,6 +4363,8 @@
 <translation id="4359717112757026264">నగర చిత్రాలు</translation>
 <translation id="6691541770654083180">భూమి</translation>
 <translation id="5033266061063942743">జ్యామితీయ ఆకారాలు</translation>
+<translation id="7789963078219276159">ప్రారంభ పేజీ నేపథ్యం <ph name="CATEGORY"/>కు మార్చబడింది.</translation>
+<translation id="8771300903067484968">ప్రారంభ పేజీ నేపథ్యం అన్నది డిఫాల్ట్ నేపథ్యానికి రీసెట్ చేయబడింది.</translation>
 <translation id="239760341987199724">Braveను మీ డిఫాల్ట్ బ్రౌజర్‌గా సెట్ చేయండి</translation>
 <translation id="96037229054033864">మీరు బ్రౌజ్ చేసే ప్రతిసారి Brave Software శోధన మరియు Brave Software స్మార్ట్‌లను పొందండి</translation>
 <translation id="296137235951584143">Braveని మీకు నచ్చినట్లు తయారు చేసుకోండి</translation>

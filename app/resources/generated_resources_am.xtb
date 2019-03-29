@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">አይ፣ አመሰግናለሁ</translation>
 <translation id="9169931577761441333"><ph name="APP_NAME"/>ን ወደ መነሻ ገጽ ያክሉ</translation>
 <translation id="6349101878882523185"><ph name="APP_NAME"/>ን ይጫኑ</translation>
+<translation id="4918221908152712722"><ph name="APP_NAME"/>ን ይጫኑ (ምንም ማውረድ አያስፈልግም)</translation>
 <translation id="3789841737615482174">ጫን</translation>
 <translation id="5280426389926346830">አቋራጭ ይፈጠር?</translation>
 <translation id="7525067979554623046">ፍጠር</translation>
@@ -1304,6 +1305,7 @@ nil</translation>
 <translation id="3071624960923923138">አዲስ ትር ለመክፈት እዚህ ጠቅ ማድረግ ይችላሉ</translation>
 <translation id="4908811072292128752">በአንዴ ሁለት ጣቢያዎችን ለማሰስ አዲስ ትር ይክፈቱ</translation>
 <translation id="8966870118594285808">በድንገት ከዘጉት ትርን እንደገና ይክፈቱት</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> በስህተት የተዘጉ ትሮችን ዳግም መክፈት ይችላል</translation>
 <translation id="2963151496262057773">የሚከተለው ተሰኪ ምላሽ አይሰጥም፦ <ph name="PLUGIN_NAME"/>ሊያቆሙት ይፈልጋሉ?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{ገጽ ምላሽ አይሰጥም}one{ገጾች ምላሽ አይሰጡም}other{ገጾች ምላሽ አይሰጡም}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{ምላሽ እስኪሰጥ ድረስ መጠበቅ ወይም ከገጹ መውጣት ይችላሉ።}one{ምላሽ እስኪሰጡ ድረስ መጠበቅ ወይም ከገጾቹ መውጣት ይችላሉ።}other{ምላሽ እስኪሰጡ ድረስ መጠበቅ ወይም ከገጾቹ መውጣት ይችላሉ።}}</translation>
@@ -1358,12 +1360,13 @@ nil</translation>
 <translation id="6076448957780543068">ይህን ቅጽበታዊ ገጽ እይታን ያካትቱ</translation>
 <translation id="7052237160939977163">አፈጻጸም መከታተያ ውሂብ ይላኩ</translation>
 <translation id="5526928694260255286"><ph name="BEGIN_LINK"/>የብሉቱዝ ምዝግብ ማስታወሻ<ph name="END_LINK"/>ን ያያይዙ (Brave Software ውስጣዊ)</translation>
+<translation id="3047644958362961983">ይህ መረጃ የረዳትዎ ችግር በተሻለ ሁኔታ እንድንረዳ ያግዘናል። እስከ 90 ቀኖች ድረስ የሚከማች ሲሆን መዳረሻ አግባብ ለሆኑ የምሕንድስና እና የግብረመልስ ቡድኖች የተገደበ ነው።</translation>
 <translation id="1705635099498185261">የብሉቱዝ ችግሮችን በተሻለ ሁኔታ ለመመርመር የBrave Software ሰራተኛዎች ተጨማሪ የብሉቱዝ ምዝግብ ማስታወሻን ከግብረመልስ ሪፖርቶቻቸው ጋር ማካተት ይችላሉ። ይህ አማራጭ ምልክት ሲደረግበት ሪፖርትዎ ከአሁኑ ክፍለ-ጊዜዎ የbtsnoop እና HCI ምዝግብ ማስታወሻዎችን ያካትታል፣ የተቻለውን ያህል PII ተወግዶ። የእነዚህ ምዝግብ ማስታወሻዎች መዳረሻ በListnr ቡድን ውስጥ ላሉ የBrave OS ምርት አቀናባሪዎች የተገደበ ነው። የምዝግብ ማስታወሻዎች ከ90 ቀኖች በኋላ ሙሉ ለሙሉ ይወገዳሉ።</translation>
 <translation id="4206323443866416204">የግብረመልስ ሪፖርት</translation>
 <translation id="3681311097828166361">ለሰጡን ግብረመልስ እናመሰግናለን። አሁን ከመስመር ውጭ ነዎት፣ እና የእርስዎ ሪፖርት በኋላ ላይ ይላካል።</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>የስርዓት መረጃ<ph name="END_LINK1"/> ላክ</translation>
-<translation id="8642895855701880552"><ph name="BEGIN_LINK1"/>የሥርዓት እና የመተግበሪያ መረጃ<ph name="END_LINK1"/> ላክ</translation>
-<translation id="7292696521213967957">ረዳትን ለማረም መረጃ</translation>
+<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>የስርዓት መረጃ<ph name="END_LINK1"/> እና <ph name="BEGIN_LINK2"/>ልኬቶች<ph name="END_LINK2"/> ይላኩ</translation>
+<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>የስርዓት እና መተግበሪያ መረጃ<ph name="END_LINK1"/>፣ እና <ph name="BEGIN_LINK2"/>መለኪያዎች<ph name="END_LINK2"/>ን ላክ</translation>
 <translation id="8329196515830093443">ፋይሉ ለመታረም ወደ Brave Software ይላካል</translation>
 <translation id="8227119283605456246">ፋይል አያይዝ</translation>
 <translation id="5367091008316207019">ፋይል በማንበብ ላይ..</translation>
@@ -2580,6 +2583,7 @@ nil</translation>
 <translation id="4694604912444486114">ጦጣ</translation>
 <translation id="6795884519221689054">ፓንዳ</translation>
 <translation id="1829129547161959350">ፔንግዊን</translation>
+<translation id="3021066826692793094">ቢራቢሮ</translation>
 <translation id="3809272675881623365">ጥንቸል</translation>
 <translation id="4124935795427217608">ዩኒኮርን</translation>
 <translation id="1830550083491357902">አልተገባም</translation>
@@ -3888,6 +3892,7 @@ nil</translation>
 <translation id="8339059274628563283">በአካባቢው የተከማቸ የ<ph name="SITE"/> ውሂብ</translation>
 <translation id="4090947011087001172">ለ<ph name="SITE"/> የጣቢያ ፈቃዶች ዳግም ይቀናበሩ?</translation>
 <translation id="1688867105868176567">የጣቢያ ውሂብ ይጸዳ?</translation>
+<translation id="4665446389743427678">በ<ph name="SITE"/> የተከማቸ ሁሉም ውሂብ ይሰረዛል።</translation>
 <translation id="5300287940468717207">የጣቢያ ፈቃዶች ዳግም ይጀመሩ?</translation>
 <translation id="2734760316755174687">በ<ph name="SITE_GROUP_NAME"/> ስር ያሉ ጣቢያዎች እንዲሁም ዳግም ይጀመራሉ።</translation>
 <translation id="3255355328033513170">ሁሉም ውሂብ በ <ph name="SITE_GROUP_NAME"/> ይከማቻል እና ከሱ ሥር ያሉ ማናቸውም ጣቢያዎች ይሰረዛሉ። ይህ ኩኪዎችን ያካትታል። ክፍት ትሮችን ጨምሮ ከእነዚህ ጣቢያዎች ዘግተው እንዲወጡ ይደረጋሉ።</translation>
@@ -4361,6 +4366,8 @@ nil</translation>
 <translation id="4359717112757026264">ሲቲስኬፕ</translation>
 <translation id="6691541770654083180">ምድር</translation>
 <translation id="5033266061063942743">ጆሜትሪያዊ ቅርጾች</translation>
+<translation id="7789963078219276159">የጅምር ገጽ ጀርባው ወደ <ph name="CATEGORY"/> ተቀይሯል።</translation>
+<translation id="8771300903067484968">የጅምር ገጽ ጀርባው ወደ ነባሪው ጀርባ ዳግም ተጀምሯል።</translation>
 <translation id="239760341987199724">Brave እንደ ነባሪ አሳሽዎ አድርገው ያዋቅሩት</translation>
 <translation id="96037229054033864">ባሰሱ ቁጥር Brave Software ፍለጋን እና Brave Software ዘመናዊዎችን ያግኙ</translation>
 <translation id="296137235951584143">Braveን የራስዎ ያድርጉት</translation>

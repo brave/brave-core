@@ -147,6 +147,7 @@
 <translation id="9033857511263905942">&amp;Coller</translation>
 <translation id="1815083418640426271">Coller en tant que texte brut</translation>
 <translation id="4022426551683927403">&amp;Ajouter au dictionnaire</translation>
+<translation id="6849870115130610913">Obtenir des descriptions d'images de Brave Software</translation>
 <translation id="372722114124766626">Une seule fois</translation>
 <translation id="8917490105272468696">J'accepte</translation>
 <translation id="7473891865547856676">Non, merci</translation>
@@ -407,6 +408,8 @@
 <translation id="4923279099980110923">Je souhaite apporter mon aide</translation>
 <translation id="2316129865977710310">Non merci</translation>
 <translation id="9169931577761441333">Ajouter <ph name="APP_NAME"/> à l'écran d'accueil</translation>
+<translation id="6349101878882523185">Installer <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Installer <ph name="APP_NAME"/> (aucun téléchargement requis)</translation>
 <translation id="3789841737615482174">Installer</translation>
 <translation id="5280426389926346830">Créer un raccourci ?</translation>
 <translation id="7525067979554623046">Créer</translation>
@@ -1300,6 +1303,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3071624960923923138">Vous pouvez cliquer ici pour ouvrir un nouvel onglet</translation>
 <translation id="4908811072292128752">Ouvrez un nouvel onglet pour naviguer sur deux sites Web en même temps</translation>
 <translation id="8966870118594285808">Permet de rouvrir un onglet fermé par erreur</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> permet de rouvrir les onglets fermés involontairement</translation>
 <translation id="2963151496262057773">Le plug-in "<ph name="PLUGIN_NAME"/>" ne répond pas. Voulez-vous l'interrompre ?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Page ne répondant pas}one{Page ne répondant pas}other{Pages ne répondant pas}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Vous pouvez attendre que la page soit de nouveau accessible ou la quitter.}one{Vous pouvez attendre que la page soit de nouveau accessible ou la quitter.}other{Vous pouvez attendre que les pages soient de nouveau accessibles ou les quitter.}}</translation>
@@ -1354,12 +1358,13 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="6076448957780543068">Inclure cette capture d'écran</translation>
 <translation id="7052237160939977163">Envoyer des informations relatives au suivi des performances</translation>
 <translation id="5526928694260255286">Joindre les <ph name="BEGIN_LINK"/>journaux Bluetooth<ph name="END_LINK"/> (usage interne de Brave Software)</translation>
+<translation id="3047644958362961983">Ces informations nous aident à mieux comprendre le problème que vous rencontrez avec l'Assistant. Elles sont conservées pendant un maximum de 90 jours et ne peuvent être consultées que par nos ingénieurs et nos équipes responsables du traitement des commentaires.</translation>
 <translation id="1705635099498185261">Afin de mieux analyser les problèmes liés au Bluetooth, les Brave Softwareurs peuvent fournir des journaux Bluetooth supplémentaires en plus de leurs rapports de commentaires. Lorsque cette option est cochée, le rapport contient les journaux btsnoop et HCI de la session en cours, qui ont été vérifiés pour retirer le maximum d'informations personnelles. Seuls les responsables du groupe de produits Brave OS ont accès aux journaux dans Listnr. Ceux-ci sont définitivement supprimés au bout de 90 jours.</translation>
 <translation id="4206323443866416204">Rapport de commentaires</translation>
 <translation id="3681311097828166361">Merci de vos commentaires. Vous êtes hors connexion pour le moment, et votre rapport sera envoyé plus tard.</translation>
 <translation id="8713570323158206935">Envoyer des <ph name="BEGIN_LINK1"/>informations système<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Envoyer des <ph name="BEGIN_LINK1"/>informations sur le système et les applications<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Informations pour déboguer l'Assistant</translation>
+<translation id="6395423953133416962">Envoyer les <ph name="BEGIN_LINK1"/>informations système<ph name="END_LINK1"/> et les <ph name="BEGIN_LINK2"/>statistiques<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Envoyer des <ph name="BEGIN_LINK1"/>informations sur le système et l'application<ph name="END_LINK1"/>, ainsi que des <ph name="BEGIN_LINK2"/>statistiques<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Le fichier sera envoyé à Brave Software pour être débogué.</translation>
 <translation id="8227119283605456246">Joindre un fichier</translation>
 <translation id="5367091008316207019">Lecture du fichier en cours…</translation>
@@ -2578,6 +2583,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4694604912444486114">Singe</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pingouin</translation>
+<translation id="3021066826692793094">Papillon</translation>
 <translation id="3809272675881623365">Lapin</translation>
 <translation id="4124935795427217608">Licorne</translation>
 <translation id="1830550083491357902">Non connecté</translation>
@@ -3064,6 +3070,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="5840822070878669614">Ouvrir le Brave Web Store</translation>
 <translation id="6073903501322152803">Ajouter des fonctionnalités d'accessibilité</translation>
 <translation id="7988355189918024273">Activer les fonctionnalités d'accessibilité</translation>
+<translation id="3274899353071794175">Si une image n'est pas accompagnée d'une description utile, Brave vous en proposera une. Les images sont analysées par Brave Software.</translation>
 <translation id="2558896001721082624">Toujours afficher les options d'accessibilité dans le menu système</translation>
 <translation id="7280649757394340890">Paramètres de voix de la synthèse vocale</translation>
 <translation id="6635956300022133031">Sélectionner et personnaliser les voix de la synthèse vocale</translation>
@@ -3886,6 +3893,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="8339059274628563283">Données stockées en local pour <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Réinitialiser les autorisations de site pour <ph name="SITE"/> ?</translation>
 <translation id="1688867105868176567">Effacer les données du site ?</translation>
+<translation id="4665446389743427678">Toutes les données stockées par <ph name="SITE"/> seront supprimées.</translation>
 <translation id="5300287940468717207">Réinitialiser les autorisations des sites ?</translation>
 <translation id="2734760316755174687">Les sites appartenant à <ph name="SITE_GROUP_NAME"/> seront également réinitialisés.</translation>
 <translation id="3255355328033513170">Toutes les données stockées par <ph name="SITE_GROUP_NAME"/> et les sites lui appartenant seront supprimées, y compris les cookies. Vous allez être déconnecté de ces sites, onglets ouverts inclus.</translation>
@@ -4273,7 +4281,10 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="3729506734996624908">Sites autorisés</translation>
 <translation id="3732078975418297900">Erreur à la ligne <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Erreur de la ligne <ph name="ERROR_LINE_START"/> à la ligne <ph name="ERROR_LINE_END"/></translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/> – Journal d'activité</translation>
 <translation id="8287902281644548111">Rechercher par appel d'API/URL</translation>
+<translation id="5008936837313706385">Nom de l'activité</translation>
+<translation id="7583948862126372804">Nombre</translation>
 <translation id="2841013758207633010">Heure</translation>
 <translation id="2002109485265116295">En temps réel</translation>
 <translation id="2549985041256363841">Démarrer l'enregistrement</translation>
@@ -4356,6 +4367,8 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4359717112757026264">Paysage urbain</translation>
 <translation id="6691541770654083180">Terre</translation>
 <translation id="5033266061063942743">Formes géométriques</translation>
+<translation id="7789963078219276159">L'arrière-plan par défaut de la page d'accueil a été remplacé par <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">L'arrière-plan par défaut de la page d'accueil a été rétabli.</translation>
 <translation id="239760341987199724">Définir Brave comme navigateur par défaut</translation>
 <translation id="96037229054033864">Naviguez sur le Web en bénéficiant des fonctionnalités intelligentes de Brave Software et de la recherche Brave Software</translation>
 <translation id="296137235951584143">Personnalisez Brave</translation>

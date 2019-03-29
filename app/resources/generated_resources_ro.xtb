@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Nu, mulțumesc</translation>
 <translation id="9169931577761441333">Adaugă <ph name="APP_NAME"/> la ecranul de pornire</translation>
 <translation id="6349101878882523185">Instalează <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Instalează <ph name="APP_NAME"/> (nu necesită descărcare)</translation>
 <translation id="3789841737615482174">Instalează</translation>
 <translation id="5280426389926346830">Creezi o comandă rapidă?</translation>
 <translation id="7525067979554623046">Creați</translation>
@@ -1301,6 +1302,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="3071624960923923138">Poți să dai clic aici pentru a deschide o filă nouă</translation>
 <translation id="4908811072292128752">Deschide o filă nouă pentru a naviga pe două site-uri simultan</translation>
 <translation id="8966870118594285808">Redeschide o filă dacă ai închis-o din greșeală</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> poate să redeschidă accidental filele închise</translation>
 <translation id="2963151496262057773">Următorul plugin este inactiv: <ph name="PLUGIN_NAME"/>. Dorești să îl oprești?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Pagină inactivă}few{Pagini inactive}other{Pagini inactive}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Poți aștepta să devină activă sau poți să închizi pagina.}few{Poți aștepta să devină active sau poți să închizi paginile.}other{Poți aștepta să devină active sau poți să închizi paginile.}}</translation>
@@ -1355,12 +1357,13 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="6076448957780543068">Include această captură de ecran</translation>
 <translation id="7052237160939977163">Trimiteți datele privind urmărirea performanței</translation>
 <translation id="5526928694260255286">Atașează <ph name="BEGIN_LINK"/>Jurnalele Bluetooth<ph name="END_LINK"/> (Utilizare internă Brave Software)</translation>
+<translation id="3047644958362961983">Aceste informații ne ajută să înțelegem mai bine problema cu Asistentul. Informațiile sunt stocate timp de cel mult 90 de zile, iar accesul la ele este restricționat la echipele de ingineri și de feedback adecvate.</translation>
 <translation id="1705635099498185261">Pentru o mai bună diagnosticare a problemelor cu funcția Bluetooth, angajații Brave Software pot include jurnale Bluetooth suplimentare în rapoartele de feedback. Dacă această opțiune este selectată, raportul va include jurnalele btsnoop și HCI din sesiunea actuală curățate, pentru a elimina cât mai multe informații de identificare personală. Accesul la aceste jurnale va fi limitat la administratorii grupului de produse Brave OS din Listnr. Jurnalele vor fi șterse după 90 de zile.</translation>
 <translation id="4206323443866416204">Raport de feedback</translation>
 <translation id="3681311097828166361">Îți mulțumim pentru feedback. Acum ești offline, iar raportul va fi trimis mai târziu.</translation>
 <translation id="8713570323158206935">Trimiteți <ph name="BEGIN_LINK1"/>informații de sistem<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Trimite <ph name="BEGIN_LINK1"/>informațiile privind sistemul și aplicația<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Informații pentru a remedia erorile Asistentului</translation>
+<translation id="6395423953133416962">Trimiteți <ph name="BEGIN_LINK2"/>valori<ph name="END_LINK2"/> și <ph name="BEGIN_LINK1"/>informații de sistem<ph name="END_LINK1"/></translation>
+<translation id="6270770586500173387">Trimite <ph name="BEGIN_LINK1"/>informații despre sistem și aplicații<ph name="END_LINK1"/> și <ph name="BEGIN_LINK2"/>valori<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Fișierul va fi trimis la Brave Software pentru remedierea erorilor</translation>
 <translation id="8227119283605456246">Atașează un fișier</translation>
 <translation id="5367091008316207019">Se citește fișierul...</translation>
@@ -2579,6 +2582,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="4694604912444486114">Maimuță</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pinguin</translation>
+<translation id="3021066826692793094">Fluture</translation>
 <translation id="3809272675881623365">Iepure</translation>
 <translation id="4124935795427217608">Unicorn</translation>
 <translation id="1830550083491357902">Neconectat</translation>
@@ -3888,6 +3892,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="8339059274628563283">Date salvate local de <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Resetezi permisiunile la nivel de site pentru <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Ștergi datele site-ului?</translation>
+<translation id="4665446389743427678">Toate datele stocate de <ph name="SITE"/> vor fi șterse.</translation>
 <translation id="5300287940468717207">Resetezi permisiunile la nivel de site?</translation>
 <translation id="2734760316755174687">Site-urile din <ph name="SITE_GROUP_NAME"/> vor fi și ele resetate.</translation>
 <translation id="3255355328033513170">Toate datele stocate de <ph name="SITE_GROUP_NAME"/> și de orice alte site-uri subordonate vor fi șterse. Sunt incluse și cookie-urile. Vei fi deconectat(ă) de pe site-uri, inclusiv din filele deschise.</translation>
@@ -4361,6 +4366,8 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="4359717112757026264">Cityscape</translation>
 <translation id="6691541770654083180">Pământul</translation>
 <translation id="5033266061063942743">Forme geometrice</translation>
+<translation id="7789963078219276159">Fundalul paginii de pornire a fost modificat la <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Fundalul paginii de pornire a fost resetat la fundalul prestabilit.</translation>
 <translation id="239760341987199724">Setați Brave ca browser prestabilit</translation>
 <translation id="96037229054033864">Obține Căutare Brave Software și ingeniozitatea Brave Software de fiecare dată când navighezi.</translation>
 <translation id="296137235951584143">Personalizează Brave</translation>

@@ -1375,12 +1375,14 @@
 <translation id="6076448957780543068">包含這個螢幕擷取畫面</translation>
 <translation id="7052237160939977163">傳送效能追蹤資料</translation>
 <translation id="5526928694260255286">附加<ph name="BEGIN_LINK"/>藍牙記錄<ph name="END_LINK"/> (Brave Software 內部使用)</translation>
+<translation id="3047644958362961983">這項資訊可協助我們進一步瞭解 Brave Software 助理的問題。這項資訊會儲存在系統中最多 90 天，且只有相關的工程小組和意見回饋小組才能存取。</translation>
 <translation id="1705635099498185261">為了進一步診斷藍牙問題，Brave Software 員工可在意見回饋報告額外納入藍牙記錄。勾選這個選項後，你的報告就會納入你目前工作階段的 btsnoop 和 HCI 記錄；這些記錄會經過處理，儘可能移除個人識別資訊 (PII)。這些記錄只有 Listnr 的 Brave 作業系統產品小組主管可以存取，且會在 90 天後遭到清除。</translation>
 <translation id="4206323443866416204">意見回饋報告</translation>
 <translation id="3681311097828166361">感謝你提供意見！你目前處於離線狀態，重新上線後系統就會傳送你的意見回饋報告。</translation>
 <translation id="8713570323158206935">傳送<ph name="BEGIN_LINK1"/>系統資訊<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">傳送<ph name="BEGIN_LINK1"/>系統和應用程式資訊<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Brave Software 助理偵錯資訊</translation>
+<translation id="6395423953133416962">傳送<ph name="BEGIN_LINK1"/>系統資訊<ph name="END_LINK1"/>和<ph name="BEGIN_LINK2"/>指標<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">傳送<ph name="BEGIN_LINK1"/>系統和應用程式資訊<ph name="END_LINK1"/>，以及<ph name="BEGIN_LINK2"/>指標<ph name="END_LINK2"/>資訊</translation>
+<translation id="3894123633473837029">包含透過 Sherlog 的近期助理歷史紀錄。這可能包含您的身份、位置與除錯資訊。 <ph name="BEGIN_LINK">&lt;a href="#" id="assistant-logs-info-link"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="8329196515830093443">檔案會傳送給 Brave Software 進行偵錯</translation>
 <translation id="8227119283605456246">附加檔案</translation>
 <translation id="5367091008316207019">正在讀取檔案...</translation>
@@ -4392,6 +4394,8 @@
 <translation id="4359717112757026264">城市景觀</translation>
 <translation id="6691541770654083180">地球</translation>
 <translation id="5033266061063942743">幾何形狀</translation>
+<translation id="7789963078219276159">起始網頁背景已變更為<ph name="CATEGORY"/>。</translation>
+<translation id="8771300903067484968">起始網頁背景已重設為預設背景。</translation>
 <translation id="239760341987199724">將 Brave 設為預設瀏覽器</translation>
 <translation id="96037229054033864">每次瀏覽都能盡情使用 Brave Software 搜尋和 Brave Software 智慧功能</translation>
 <translation id="296137235951584143">打造專屬的 Brave</translation>

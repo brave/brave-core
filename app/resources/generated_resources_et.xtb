@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Ei, aitäh</translation>
 <translation id="9169931577761441333">Lisa <ph name="APP_NAME"/> avaekraanile</translation>
 <translation id="6349101878882523185">Installi <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Installige rakendus <ph name="APP_NAME"/> (allalaadimine pole vajalik)</translation>
 <translation id="3789841737615482174">Installi</translation>
 <translation id="5280426389926346830">Kas soovite luua otsetee?</translation>
 <translation id="7525067979554623046">Loo</translation>
@@ -1301,6 +1302,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="3071624960923923138">Uue vahelehe avamiseks võite klõpsata siin</translation>
 <translation id="4908811072292128752">Avage uus vaheleht, et kahte saiti korraga sirvida</translation>
 <translation id="8966870118594285808">Saate kogemata suletud vahelehe uuesti avada</translation>
+<translation id="8806680466228877631">Otseteega <ph name="SHORTCUT"/> saab uuesti avada kogemata suletud vahelehed</translation>
 <translation id="2963151496262057773">Järgmine pistikprogramm ei reageeri: <ph name="PLUGIN_NAME"/>Kas soovite selle peatada?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Leht ei reageeri}other{Lehed ei reageeri}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Võite oodata, kuni see reageerib, või lehelt lahkuda.}other{Võite oodata, kuni need reageerivad, või lehtedelt lahkuda.}}</translation>
@@ -1355,12 +1357,13 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="6076448957780543068">Lisa see ekraanipilt</translation>
 <translation id="7052237160939977163">Saada toimivuse jälgimise andmeid</translation>
 <translation id="5526928694260255286">Manusta <ph name="BEGIN_LINK"/>Bluetoothi logid<ph name="END_LINK"/> (Brave Software'ile sisemiseks kasutamiseks)</translation>
+<translation id="3047644958362961983">See teave aitab meil teie assistendiga seotud probleemi paremini mõista. See talletatakse kuni 90 päevaks ning sellele pääsevad juurde ainult asjakohased inseneri- ja tagasisidetiimid.</translation>
 <translation id="1705635099498185261">Bluetoothi probleemide paremaks diagnoosimiseks võivad Brave Software'i kasutajad tagasiside aruannetesse lisada täiendavad Bluetoothi logid. Kui see valik on märgitud, hõlmab teie aruanne teie praeguse seansi btsnoopi ja HCI logisid, millest on eemaldataud võimalikult palju isikut tuvastavat teavet. Nendele logidele pääsevad juurde ainult Brave OS-i tootegrupi haldurid teenuses Listnr. Logid kustutatakse lõplikult 90 päeva pärast.</translation>
 <translation id="4206323443866416204">Tagasisidearuanne</translation>
 <translation id="3681311097828166361">Täname teid tagasiside eest. Te pole praegu võrguga ühendatud ja aruanne saadetakse hiljem.</translation>
 <translation id="8713570323158206935">Saada <ph name="BEGIN_LINK1"/>süsteemiteave<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Saada <ph name="BEGIN_LINK1"/>süsteemi- ja rakenduseteavet<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Teave assistendi silumiseks</translation>
+<translation id="6395423953133416962">Saada <ph name="BEGIN_LINK1"/>süsteemiteave<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>mõõdikud<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Saada <ph name="BEGIN_LINK1"/>süsteemi ja rakenduste teavet<ph name="END_LINK1"/> ning <ph name="BEGIN_LINK2"/>mõõdikuid<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Fail saadetakse silumiseks Brave Software'ile</translation>
 <translation id="8227119283605456246">Manusta fail</translation>
 <translation id="5367091008316207019">Faili lugemine ...</translation>
@@ -2584,6 +2587,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="4694604912444486114">Pärdik</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pingviin</translation>
+<translation id="3021066826692793094">Liblikas</translation>
 <translation id="3809272675881623365">Küülik</translation>
 <translation id="4124935795427217608">Ükssarvik</translation>
 <translation id="1830550083491357902">Pole sisse logitud</translation>
@@ -3893,6 +3897,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="8339059274628563283">Saidi <ph name="SITE"/> kohalikult salvestatud andmed</translation>
 <translation id="4090947011087001172">Kas lähtestada saidi <ph name="SITE"/> load?</translation>
 <translation id="1688867105868176567">Kas soovite saidi andmed kustutada?</translation>
+<translation id="4665446389743427678">Kõik saidi <ph name="SITE"/> salvestatud andmed kustutatakse.</translation>
 <translation id="5300287940468717207">Kas soovite saidi load lähtestada?</translation>
 <translation id="2734760316755174687">Rühmas <ph name="SITE_GROUP_NAME"/> olevad saidid lähtestatakse samuti.</translation>
 <translation id="3255355328033513170">Kõik grupi <ph name="SITE_GROUP_NAME"/> salvestatud andmed ja selle all olevad saidid kustutatakse. See hõlmab küpsisefaile. Teid logitakse nendelt saitidelt (sh avatud vahelehtedel) välja.</translation>
@@ -4367,6 +4372,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="4359717112757026264">Linna panoraam</translation>
 <translation id="6691541770654083180">Maa</translation>
 <translation id="5033266061063942743">Geomeetrilised kujundid</translation>
+<translation id="7789963078219276159">Avalehe taustaks määrati <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Avalehe taust lähtestati vaiketaustale.</translation>
 <translation id="239760341987199724">Määra Brave vaikebrauseriks</translation>
 <translation id="96037229054033864">Brave Software'i otsing ja teadmised on sirvides alati käepärast</translation>
 <translation id="296137235951584143">Isikupärastage Brave'i</translation>

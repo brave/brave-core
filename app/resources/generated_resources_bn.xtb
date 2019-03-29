@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">না, ধন্যবাদ</translation>
 <translation id="9169931577761441333"><ph name="APP_NAME"/> অ্যাপটি হোম স্ক্রিনে যোগ করুন</translation>
 <translation id="6349101878882523185"><ph name="APP_NAME"/> ইনস্টল করুন</translation>
+<translation id="4918221908152712722"><ph name="APP_NAME"/> ইনস্টল করুন (ডাউনলোডের প্রয়োজন নেই)</translation>
 <translation id="3789841737615482174">ইনস্টল করুন</translation>
 <translation id="5280426389926346830">শর্টকাট তৈরি করবেন?</translation>
 <translation id="7525067979554623046">তৈরি করুন</translation>
@@ -1301,6 +1302,7 @@
 <translation id="3071624960923923138">নতুন ট্যাব খুলতে এখানে ক্লিক করুন</translation>
 <translation id="4908811072292128752">একইসাথে দুটি সাইট ব্রাউজ করতে নতুন ট্যাব খুলুন</translation>
 <translation id="8966870118594285808">ভুল করে কোন ট্যাব বন্ধ করে থাকলে সেটি আবার খুলুন</translation>
+<translation id="8806680466228877631">ভুলবশত বন্ধ হয়ে যাওয়া ট্যাব <ph name="SHORTCUT"/> প্রেস করলে আবার খুলে যায়</translation>
 <translation id="2963151496262057773">নিম্নোক্ত প্ল্যাগ ইনটি প্রতিক্রিয়াবিহীন: <ph name="PLUGIN_NAME"/> আপনি কি এটিকে থামাতে চান?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{পৃষ্ঠা প্রতিক্রিয়াবিহীন}one{পৃষ্ঠাগুলি প্রতিক্রিয়াবিহীন}other{পৃষ্ঠাগুলি প্রতিক্রিয়াবিহীন}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{আপনি এটি প্রতিক্রিয়াশীল হওয়ার জন্য অপেক্ষা করতে পারেন বা পৃষ্ঠা থেকে প্রস্থান করতে পারেন।}one{আপনি এটি প্রতিক্রিয়াশীল হওয়ার জন্য অপেক্ষা করতে পারেন বা পৃষ্ঠা থেকে প্রস্থান করতে পারেন।}other{আপনি এটি প্রতিক্রিয়াশীল হওয়ার জন্য অপেক্ষা করতে পারেন বা পৃষ্ঠা থেকে প্রস্থান করতে পারেন।}}</translation>
@@ -1355,12 +1357,13 @@
 <translation id="6076448957780543068">এই স্ক্রীনশটটি অন্তর্ভুক্ত করুন</translation>
 <translation id="7052237160939977163">কার্য-সম্পাদনা ট্রেস ডেটা পাঠান</translation>
 <translation id="5526928694260255286"><ph name="BEGIN_LINK"/>ব্লুটুথ লগ<ph name="END_LINK"/> যোগ করুন (Brave Software ইন্টারনাল)</translation>
+<translation id="3047644958362961983">এই তথ্য আপনার অ্যাসিস্ট্যান্ট সংক্রান্ত সমস্যাগুলি আমাদের আরও ভাল করে বুঝতে সাহায্য করে। এটি ৯০ দিন পর্যন্ত স্টোর করা থাকে এবং অ্যাক্সেস উপযুক্ত ইঞ্জিনিয়ারিং এবং মতামত টিমগুলির মধ্যে সীমাবদ্ধ থাকে।</translation>
 <translation id="1705635099498185261">ব্লুটুথ সমস্যাকে আরও ভালভাবে নির্ধারন করতে, Brave Softwarers তাদের ফিডব্যাক রিপোর্টের সাথে অতিরিক্ত ব্লুটুথ লগও অন্তর্ভুক্ত করতে পারে। এই বিকল্পটি বেছে নিলে PII যতখানি সম্ভব বাদ দিয়ে আপনার বর্তমান সেশন থেকে btsnoop এবং HCI লগ এই রিপোর্টে অন্তর্ভুক্ত করা হয়। শুধুমাত্র Listnr-এ Brave OS প্রোডাক্ট গ্রুপের ম্যানেজাররা এই লগ অ্যাক্সেস করতে পারবেন। ৯০ দিন পরে লগ স্থায়ীভাবে মুছে ফেলা হবে।</translation>
 <translation id="4206323443866416204">প্রতিক্রিয়ার প্রতিবেদন</translation>
 <translation id="3681311097828166361">আপনার প্রতিক্রিয়ার জন্য ধন্যবাদ। আপনি এখন অফলাইনে আছেন, এবং আপনার প্রতিবেদনটি পরে পাঠানো হবে।</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>সিস্টেমের তথ্য<ph name="END_LINK1"/> পাঠান</translation>
-<translation id="8642895855701880552"><ph name="BEGIN_LINK1"/>সিস্টেম এবং অ্যাপের তথ্য<ph name="END_LINK1"/> পাঠান</translation>
-<translation id="7292696521213967957">অ্যাসিস্ট্যান্ট ডিবাগ করা সংক্রান্ত তথ্য</translation>
+<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>সিস্টেমের তথ্য<ph name="END_LINK1"/> এবং <ph name="BEGIN_LINK2"/>মেট্রিক্স<ph name="END_LINK2"/> পাঠান</translation>
+<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>সিস্টেম ও অ্যাপ্লিকেশান তথ্য<ph name="END_LINK1"/>, এবং <ph name="BEGIN_LINK2"/>মেট্রিক্স<ph name="END_LINK2"/> পাঠান</translation>
 <translation id="8329196515830093443">ফাইল ডিবাগ করার জন্য Brave Software-এ পাঠানো হবে</translation>
 <translation id="8227119283605456246">ফাইল সংযুক্ত করুন</translation>
 <translation id="5367091008316207019">ফাইল পড়া হচ্ছে..</translation>
@@ -2578,6 +2581,7 @@
 <translation id="4694604912444486114">বাঁদর</translation>
 <translation id="6795884519221689054">পান্ডা</translation>
 <translation id="1829129547161959350">পেঙ্গুইন</translation>
+<translation id="3021066826692793094">প্রজাপতি</translation>
 <translation id="3809272675881623365">খরগোশ</translation>
 <translation id="4124935795427217608">ইউনিকর্ন</translation>
 <translation id="1830550083491357902">প্রবেশ করেননি</translation>
@@ -3887,6 +3891,7 @@
 <translation id="8339059274628563283"><ph name="SITE"/> স্থানীয়ভাবে ডেটা সংরক্ষণ করেছে</translation>
 <translation id="4090947011087001172"><ph name="SITE"/>-এর জন্য সাইট সম্পর্কিত অনুমতি রিসেট করবেন?</translation>
 <translation id="1688867105868176567">সাইট ডেটা খালি করতে চান?</translation>
+<translation id="4665446389743427678"><ph name="SITE"/> সাইটে স্টোর করা সমস্ত ডেটা মুছে ফেলা হবে।</translation>
 <translation id="5300287940468717207">সাইটের অনুমতি রিসেট করবেন?</translation>
 <translation id="2734760316755174687"><ph name="SITE_GROUP_NAME"/>-এর অধীনে থাকা সাইটগুলিও রিসেট করা হবে।</translation>
 <translation id="3255355328033513170"><ph name="SITE_GROUP_NAME"/>-এর দ্বারা কোনও ডেটা স্টোর হয়ে থাকলে এবং সেটির অধীনে কোনও সাইট থাকলে সেগুলি মুছে দেওয়া হবে। এতে কুকি রয়েছে। যেকোনও খোলা ট্যাব সহ এই সমস্ত সাইটগুলি থেকে আপনাকে সাইন-আউট করে দেওয়া হবে।</translation>
@@ -4360,6 +4365,8 @@
 <translation id="4359717112757026264">শহরের দৃশ্য</translation>
 <translation id="6691541770654083180">আর্থ</translation>
 <translation id="5033266061063942743">জ্যামিতিক আকৃতি</translation>
+<translation id="7789963078219276159">স্টার্ট পেজের ব্যাকগ্রাউন্ড পরিবর্তন করে <ph name="CATEGORY"/> করা হয়েছে।</translation>
+<translation id="8771300903067484968">স্টার্ট পেজের ব্যাকগ্রাউন্ড ডিফল্ট ব্যাকগ্রাউন্ডে রিসেট করা হয়েছে।</translation>
 <translation id="239760341987199724">Brave কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
 <translation id="96037229054033864">প্রত্যেকবার ব্রাউজ করার সময় Brave Software সার্চ ও Brave Software স্মার্ট পান</translation>
 <translation id="296137235951584143">Brave-কে আপনার করে নিন</translation>

@@ -342,7 +342,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Your Ads earnings are available.",
+    "message": "Os seus ganhos publicitários estão disponíveis. ",
     "description": "Panel notification text for Ads grant"
   },
   "and": {

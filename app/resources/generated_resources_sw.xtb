@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">La, asante</translation>
 <translation id="9169931577761441333">Ongeza <ph name="APP_NAME"/> kwenye Skrini ya Mwanzo</translation>
 <translation id="6349101878882523185">Sakinisha <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Sakinisha <ph name="APP_NAME"/> (huhitaji kupakua)</translation>
 <translation id="3789841737615482174">Sakinisha</translation>
 <translation id="5280426389926346830">Ungependa Kuweka Njia ya Mkato?</translation>
 <translation id="7525067979554623046">Unda</translation>
@@ -1300,6 +1301,7 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="3071624960923923138">Unaweza kubofya hapa ili ufungue kichupo kipya</translation>
 <translation id="4908811072292128752">Fungua kichupo kipya ili uvinjari tovuti mbili kwa wakati mmoja</translation>
 <translation id="8966870118594285808">Fungua tena kichupo ikiwa umekifunga kimakosa</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> inaweza kufungua upya kimakosa vichupo vilivyofungwa</translation>
 <translation id="2963151496262057773">Programu jalizi inayofuata imekwama: <ph name="PLUGIN_NAME"/>Ungependa kuisimamisha?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Ukurasa Umekwama}other{Kurasa Zimekwama}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Unaweza kusubiri ukurasa uanze kufanya kazi au uufunge.}other{Unaweza kusubiri kurasa zianze kufanya kazi au uzifunge.}}</translation>
@@ -1354,12 +1356,13 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="6076448957780543068">Jumuisha picha hii ya skrini</translation>
 <translation id="7052237160939977163">Tuma data ya ufuatiliaji wa utendaji</translation>
 <translation id="5526928694260255286">Ambatisha <ph name="BEGIN_LINK"/>Kumbukumbu za Bluetooth<ph name="END_LINK"/> (Isitoke nje ya Brave Software)</translation>
+<translation id="3047644958362961983">Maelezo haya yanatusaidia kuelewa vyema zaidi tatizo la programu ya Mratibu. Yanahifadhiwa kwa hadi siku 90 na yanaweza kufikiwa tu na timu zinazofaa za uhandisi na maoni.</translation>
 <translation id="1705635099498185261">Ili kutambua matatizo ya Bluetooth vyema zaidi, WanaBrave Software wanaweza kujumuisha kumbukumbu za ziada za Bluetooth kwenye ripoti zao za maoni. Wakati umeteua chaguo hili, ripoti yako itajumuisha kumbukumbu za btsnoop na HCI kuanzia kipindi chako cha sasa, zilizosafishwa ili kuondoa PII nyingi kadri iwezekanavyo. Wasimamizi wa kundi la bidhaa ya Brave OS katika Listnr ndio tu wataweza kufikia kumbukumbu hizi. Kumbukumbu zitaondolewa kabisa baada ya siku 90.</translation>
 <translation id="4206323443866416204">Ripoti ya Maoni</translation>
 <translation id="3681311097828166361">Asante sana kwa maoni yako. Sasa uko nje ya mtandao, na ripoti yako itatumwa baadaye.</translation>
 <translation id="8713570323158206935">Tuma <ph name="BEGIN_LINK1"/>maelezo ya mfumo<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Tuma <ph name="BEGIN_LINK1"/>maelezo ya mfumo na programu<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Maelezo ya kusaidia kutatua programu ya Mratibu</translation>
+<translation id="6395423953133416962">Tuma <ph name="BEGIN_LINK1"/>maelezo ya mfumo<ph name="END_LINK1"/> na <ph name="BEGIN_LINK2"/>hesabu<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Tuma <ph name="BEGIN_LINK1"/>maelezo ya mfumo na programu<ph name="END_LINK1"/>, na <ph name="BEGIN_LINK2"/>metriki<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Faili itatumwa kwa Brave Software kwa ajili ya utatuzi</translation>
 <translation id="8227119283605456246">Ambatisha faili</translation>
 <translation id="5367091008316207019">Inasoma faili..</translation>
@@ -2579,6 +2582,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="4694604912444486114">Tumbili</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Ngwini</translation>
+<translation id="3021066826692793094">Kipepeo</translation>
 <translation id="3809272675881623365">Sungura</translation>
 <translation id="4124935795427217608">Farasi mwenye pembe</translation>
 <translation id="1830550083491357902">Haijaingiwa</translation>
@@ -3888,6 +3892,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="8339059274628563283">Data ya <ph name="SITE"/> iliyohifadhiwa kwenye kifaa</translation>
 <translation id="4090947011087001172">Ungependa kubadilisha ruhusa za tovuti ya <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Ungependa kufuta data ya tovuti?</translation>
+<translation id="4665446389743427678">Hatua hii itafuta data yote inayohifadhiwa na <ph name="SITE"/>.</translation>
 <translation id="5300287940468717207">Ungependa kubadilisha ruhusa za tovuti?</translation>
 <translation id="2734760316755174687">Itabadilisha pia ruhusa za tovuti zilizo chini ya <ph name="SITE_GROUP_NAME"/>.</translation>
 <translation id="3255355328033513170">Itafuta data yote inayohifadhiwa na <ph name="SITE_GROUP_NAME"/> na tovuti zozote zilizomo. Hii inajumuisha vidakuzi. Utaondolewa kwenye akaunti za tovuti hizi, ikiwemo vichupo ambavyo umefungua.</translation>
@@ -4361,6 +4366,8 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="4359717112757026264">Mandhari ya jiji</translation>
 <translation id="6691541770654083180">Dunia</translation>
 <translation id="5033266061063942743">Maumbo ya Jiometriki</translation>
+<translation id="7789963078219276159">Mandhari ya ukurasa wa kwanza yamebadilishwa kuwa <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Mandhari ya ukurasa wa mwanzo yamewekwa upya kuwa mandhari chaguomsingi.</translation>
 <translation id="239760341987199724">Weka Brave kuwa kivinjari chako chaguomsingi</translation>
 <translation id="96037229054033864">Pata Huduma ya Tafuta na Brave Software na Brave Software smarts kila unapovinjari</translation>
 <translation id="296137235951584143">Weka mapendeleo kwenye Brave iwe unavyopenda</translation>

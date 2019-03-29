@@ -42,6 +42,8 @@
 <translation id="520608572871993342">Korzystanie z trybu prywatnego zmienia tylko to, jak Brave zachowuje się na Twoim urządzeniu; nie zmienia zachowań innych użytkowników.  Sieć Tor ukrywa Twój adres IP przed odwiedzanymi stronami i ukrywa odwiedzane strony przed Twoim dostawcą Internetu lub pracodawcą. Otwórz tryb prywatny z obsługą sieci Tor z menu lub klawiszem {{key}}.</translation>
 <translation id="6975708438781948564">Dowiedz się więcej na temat sieci Tor w Brave</translation>
 <translation id="1869685517625607604">Liczba zablokowanych reklam ogółem:</translation>
+<translation id="4673764878177947707">Niestandardowe filtry</translation>
+<translation id="8803682034537762884">Jeden filtr na linię, zgodny ze składnią filtru Adblock Plus</translation>
 <translation id="6200814343085745765">Blokada reklam regionalnych:</translation>
 <translation id="59174027418879706">Włączone</translation>
 <translation id="4176463684765177261">Wyłączone</translation>
@@ -89,7 +91,7 @@
 <translation id="2241248417273918295">Zarobki wypłacane są co miesiąc.</translation>
 <translation id="68906705461077250">Ustaw pożądaną częstotliwość, aby zwiększyć lub zmniejszyć zarobki.</translation>
 <translation id="1847863811689960237">Nagradzaj twórców Twoich ulubionych treści.</translation>
-<translation id="4129489167302464118">Twój miesięczny budżet na donacje, zostanie rozdysponowany automatycznie pomiędzy strony, które odwiedzasz.</translation>
+<translation id="4129489167302464118">Twój miesięczny budżet na dotacje, zostanie rozdysponowany automatycznie pomiędzy strony, które odwiedzasz.</translation>
 <translation id="4898632353264854950">Strony będą wyświetlane podczas przeglądania</translation>
 <translation id="3024485967181749006">Suma wszystkich napiwków w tym miesiącu</translation>
 <translation id="4153752809523809915">Czy wsparłeś dzisiaj swojego ulubionego twórcę?</translation>
@@ -111,7 +113,7 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Przekazuj napiwek od razu, gdy trafisz na prawdziwą perełkę.</translation>
-<translation id="6135431587052937035">Wspieraj swoje ulubione strony poprzez comiesięczne donacje</translation>
+<translation id="6135431587052937035">Wspieraj swoje ulubione strony poprzez comiesięczne napiwki</translation>
 <translation id="2788596505277705686">Odzyskano {{balance}} BAT. Zweryfikowanie i wczytanie Twojego klucza portfela powiodło się.</translation>
 <translation id="1083279119532577005">Portfel przywrócony!</translation>
 <translation id="7841456038054167122">Wpisz ponownie klucze lub wypróbuj różne klucze.</translation>
@@ -171,7 +173,7 @@
 <translation id="7530570094705720669">Tworzenie portfela</translation>
 <translation id="2105596359439030979">Twoja uwaga jest cenna. Zarabiaj, oglądając szanujące prywatność reklamy i przekazuj, to co zarobisz twórcom treści, które lubisz.</translation>
 <translation id="516395624550019162">Tak, wchodzę w to!</translation>
-<translation id="529572070778367192">Otrzymuj nagrody za przeglądanie!</translation>
+<translation id="529572070778367192">Otrzymuj nagrody za przeglądanie internetu!</translation>
 <translation id="128450776206759934">Jak to działa...</translation>
 <translation id="3825698830825612308">Zweryfikowani wydawcy Brave</translation>
 <translation id="7658239707568436148">Anuluj</translation>
@@ -344,7 +346,7 @@
 <translation id="1555452132857939218">z łańcucha synchronizacji</translation>
 <translation id="610118613261910287">Zobacz słowa kodu</translation>
 <translation id="8588535459744752615">Szukanie urządzenia</translation>
-<translation id="391177677159359824">Synchronizacja (beta)</translation>
+<translation id="6406506848690869874">Synchronizacja</translation>
 <translation id="28332161031213248">Poniższa lista urządzeń zawiera wszystkie urządzenia w Twoim łańcuchu synchronizacji. Każdym urządzeniem można zarządzać z dowolnego innego urządzenia.</translation>
 <translation id="8153617760825732120">nazwa urządzenia</translation>
 <translation id="4241512165288542484">(To urządzenie)</translation>
@@ -357,7 +359,7 @@
 <translation id="5591129654353352557">Zapisane ustawienia strony</translation>
 <translation id="7859704718976024901">Historia przeglądania</translation>
 <translation id="2339730291919608488">Opuść łańcuch synchronizacji</translation>
-<translation id="4797449295451979552">Instalacja synchronizacji (beta)</translation>
+<translation id="4332558599726753990">Konfiguracja synchronizacji</translation>
 <translation id="298546024891487702">Na początek trzeba zainstalować przeglądarkę Brave na wszystkich urządzeniach, które chcesz zsynchronizować. Aby je połączyć, rozpocznij łańcuch synchronizacji, którego użyjesz do bezpiecznego połączenia wszystkich swoich urządzeń.</translation>
 <translation id="6200528822592747640">Rozpocznij nowy łańcuch synchronizacji</translation>
 <translation id="5184726904895809379">Mam kod synchronizacji</translation>

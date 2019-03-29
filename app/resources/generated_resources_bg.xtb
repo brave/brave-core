@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Не, благодаря</translation>
 <translation id="9169931577761441333">Добавяне на <ph name="APP_NAME"/> към началния екран</translation>
 <translation id="6349101878882523185">Инсталиране на <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Инсталирайте <ph name="APP_NAME"/> (не се изисква изтегляне)</translation>
 <translation id="3789841737615482174">Инсталиране</translation>
 <translation id="5280426389926346830">Да се създаде ли пряк път?</translation>
 <translation id="7525067979554623046">Създаване</translation>
@@ -1302,6 +1303,7 @@
 <translation id="3071624960923923138">Можете да кликнете тук, за да отворите нов раздел</translation>
 <translation id="4908811072292128752">Отворете нов раздел, за да сърфирате в два сайта едновременно</translation>
 <translation id="8966870118594285808">Повторно отваряне на раздел, ако случайно сте го затворили</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> служи за повторно отваряне на случайно затворени раздели</translation>
 <translation id="2963151496262057773">Следната приставка е блокирала: <ph name="PLUGIN_NAME"/>. Искате ли да я спрете?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Блокирала страница}other{Блокирали страници}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Можете да изчакате, докато страницата започне да реагира, или да излезете от нея.}other{Можете да изчакате, докато страниците започнат да реагират, или да излезете от тях.}}</translation>
@@ -1356,12 +1358,13 @@
 <translation id="6076448957780543068">Включване на тази екранна снимка</translation>
 <translation id="7052237160939977163">Да се изпратят данните от проследяването на ефективността</translation>
 <translation id="5526928694260255286">Прикачване на <ph name="BEGIN_LINK"/>регистрационните файлове за Bluetooth<ph name="END_LINK"/> (вътрешно за Brave Software)</translation>
+<translation id="3047644958362961983">Тази информация ни помага да разберем по-добре проблема, който срещате с Асистент. Тя се съхранява до 90 дни и достъпът до нея е ограничен до съответните инженерни екипи и екипи по отзивите.</translation>
 <translation id="1705635099498185261">За по-добра диагностика на проблемите с Bluetooth служителите на Brave Software могат да включват в сигналите си с отзиви допълнителни регистрационни файлове за Bluetooth. Когато за тази опция е поставена отметка, сигналът ви ще съдържа регистрационните файлове за btsnoop и HCI от текущата ви сесия, като от тях ще бъде премахната възможно най-много информация, позволяваща лично идентифициране (PII). Достъпът до тези файлове ще бъде ограничен до мениджърите на групата за продукта Brave OS в Listnr. Файловете ще бъдат изтрити безвъзвратно след 90 дни.</translation>
 <translation id="4206323443866416204">Сигнал с отзив</translation>
 <translation id="3681311097828166361">Благодарим ви за отзива. В момента сте офлайн, така че сигналът ви ще бъде изпратен по-късно.</translation>
 <translation id="8713570323158206935">Изпращане на <ph name="BEGIN_LINK1"/>системна информация<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Изпращане на <ph name="BEGIN_LINK1"/>информация за системата и приложенията<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Информация за отстраняване на грешки в Асистент</translation>
+<translation id="6395423953133416962">Изпращане на <ph name="BEGIN_LINK1"/>системна информация<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>показатели<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Изпращане на <ph name="BEGIN_LINK1"/>информация за системата и приложенията<ph name="END_LINK1"/>, както и за <ph name="BEGIN_LINK2"/>показателите<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Файлът ще бъде изпратен до Brave Software за отстраняване на грешки</translation>
 <translation id="8227119283605456246">Прикачване на файл</translation>
 <translation id="5367091008316207019">Файлът се чете...</translation>
@@ -2580,6 +2583,7 @@
 <translation id="4694604912444486114">Маймуна</translation>
 <translation id="6795884519221689054">Панда</translation>
 <translation id="1829129547161959350">Пингвин</translation>
+<translation id="3021066826692793094">Пеперуда</translation>
 <translation id="3809272675881623365">Заек</translation>
 <translation id="4124935795427217608">Еднорог</translation>
 <translation id="1830550083491357902">Не сте в профила си</translation>
@@ -3890,6 +3894,7 @@
 <translation id="8339059274628563283">Локално съхранявани данни от <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Да се нулират ли разрешенията за сайта <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Да се изчистят ли данните за сайта?</translation>
+<translation id="4665446389743427678">Всички данни, съхранявани от <ph name="SITE"/>, ще бъдат изтрити.</translation>
 <translation id="5300287940468717207">Да се нулират ли разрешенията за сайтовете?</translation>
 <translation id="2734760316755174687">Разрешенията за сайтовете от „<ph name="SITE_GROUP_NAME"/>“ също ще бъдат нулирани.</translation>
 <translation id="3255355328033513170">Всички данни, съхранявани от домейна <ph name="SITE_GROUP_NAME"/>, и сайтовете в него ще бъдат изтрити. Това включва „бисквитките“. Ще излезете от профила си в тези сайтове, включително в отворените раздели.</translation>
@@ -4363,6 +4368,8 @@
 <translation id="4359717112757026264">Градски пейзажи</translation>
 <translation id="6691541770654083180">Земя</translation>
 <translation id="5033266061063942743">Геометрични фигури</translation>
+<translation id="7789963078219276159">Фонът на началната страница бе променен на „<ph name="CATEGORY"/>“.</translation>
+<translation id="8771300903067484968">Възстановен е стандартният фон на началната страница.</translation>
 <translation id="239760341987199724">Задаване на Brave като браузър по подразбиране</translation>
 <translation id="96037229054033864">Възползвайте се от интелигентните функции на Търсене и Brave Software всеки път, когато сърфирате</translation>
 <translation id="296137235951584143">Персонализирайте Brave според вкуса си</translation>

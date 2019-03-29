@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Ne, hvala</translation>
 <translation id="9169931577761441333">Dodajte <ph name="APP_NAME"/> na početni zaslon</translation>
 <translation id="6349101878882523185">Instalirajte aplikaciju <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Instalirajte aplikaciju <ph name="APP_NAME"/> (preuzimanje nije potrebno)</translation>
 <translation id="3789841737615482174">Instaliraj</translation>
 <translation id="5280426389926346830">Želite li izraditi prečac?</translation>
 <translation id="7525067979554623046">Stvori</translation>
@@ -1301,6 +1302,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="3071624960923923138">Ovdje možete kliknuti za otvaranje nove kartice</translation>
 <translation id="4908811072292128752">Otvorite novu karticu za istodobni pregled dvije stranice</translation>
 <translation id="8966870118594285808">Ponovo otvorite karticu ako ste je slučajno zatvorili</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> može ponovo otvoriti slučajno zatvorene kartice</translation>
 <translation id="2963151496262057773">Sljedeći dodatak ne reagira: <ph name="PLUGIN_NAME"/>. Želite li ga zaustaviti?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Stranica ne reagira}one{Stranice ne reagiraju}few{Stranice ne reagiraju}other{Stranice ne reagiraju}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Možete pričekati da počne reagirati ili je zatvoriti.}one{Možete pričekati da počnu reagirati ili ih zatvoriti.}few{Možete pričekati da počnu reagirati ili ih zatvoriti.}other{Možete pričekati da počnu reagirati ili ih zatvoriti.}}</translation>
@@ -1355,12 +1357,13 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="6076448957780543068">Uključi ovu snimku zaslona</translation>
 <translation id="7052237160939977163">Šalji podatke o praćenju izvedbe</translation>
 <translation id="5526928694260255286">Priloži <ph name="BEGIN_LINK"/>Bluetooth zapisnike<ph name="END_LINK"/> (Brave Software interno)</translation>
+<translation id="3047644958362961983">Ti nam podaci pomažu da bolje shvatimo vašu poteškoću s Asistentom. Pohranjuju se do 90 dana i pristup je ograničen na odgovarajuće timove za inženjerstvo i povratne informacije.</translation>
 <translation id="1705635099498185261">Kako bi lakše dijagnosticirali poteškoće s Bluetoothom, Brave Softwareovi zaposlenici mogu uključiti dodatne Bluetooth zapisnike u svoja izvješća s povratnim informacijama. Kada se stavi kvačica u okvir te opcije, u vaše će izvješće biti uključeni btsnoop i HCI zapisnici iz vaše trenutačne sesije, a iz njih će u najvećoj mogućoj mjeri biti uklonjeni podaci koji otkrivaju identitet. Pristup tim zapisnicima bit će ograničen na upravitelje grupe proizvoda OS-a Brave u Listnru. Zapisnici će se nepovratno ukloniti nakon 90 dana.</translation>
 <translation id="4206323443866416204">Izvješće s povratnim informacijama</translation>
 <translation id="3681311097828166361">Zahvaljujemo vam na povratnim informacijama. Trenutačno ste offline, pa će se izvješće poslati kasnije.</translation>
 <translation id="8713570323158206935">Pošalji <ph name="BEGIN_LINK1"/>informacije o sustavu<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Pošalji <ph name="BEGIN_LINK1"/>informacije o sustavu i aplikaciji<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Informacije za otklanjanje pogrešaka Asistenta</translation>
+<translation id="6395423953133416962">Šalji <ph name="BEGIN_LINK1"/>informacije o sustavu<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>mjerne podatke<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Pošalji <ph name="BEGIN_LINK1"/>podatke o sustavu i aplikacijama<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>mjerne podatke<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Datoteka će se poslati Brave Softwareu radi uklanjanja pogrešaka</translation>
 <translation id="8227119283605456246">Priloži datoteku</translation>
 <translation id="5367091008316207019">Čitanje datoteke...</translation>
@@ -2580,6 +2583,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="4694604912444486114">Majmun</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pingvin</translation>
+<translation id="3021066826692793094">Leptir</translation>
 <translation id="3809272675881623365">Zec</translation>
 <translation id="4124935795427217608">Jednorog</translation>
 <translation id="1830550083491357902">Nije prijavljen</translation>
@@ -3889,6 +3893,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8339059274628563283">Lokalno pohranjeni podaci web-lokacije <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Želite li poništiti dopuštenja web-lokacije za <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Želite li izbrisati podatke web-lokacije?</translation>
+<translation id="4665446389743427678">Izbrisat će se svi podaci koje je pohranila web-lokacija <ph name="SITE"/>.</translation>
 <translation id="5300287940468717207">Želite li poništiti dopuštenja za web-lokacije?</translation>
 <translation id="2734760316755174687">Poništit će se i web-lokacije u grupi <ph name="SITE_GROUP_NAME"/>.</translation>
 <translation id="3255355328033513170">Izbrisat će se svi podaci koje su pohranile web-lokacija <ph name="SITE_GROUP_NAME"/> i ostale web-lokacije pod njom. To uključuje kolačiće. Odjavit ćete se s tih web-lokacija, uključujući otvorene kartice.</translation>
@@ -4362,6 +4367,8 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="4359717112757026264">Gradski krajolik</translation>
 <translation id="6691541770654083180">Zemlja</translation>
 <translation id="5033266061063942743">Geometrijski likovi</translation>
+<translation id="7789963078219276159">Pozadina početne stranice promijenjena je u sliku <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Pozadina početne stranice vraćena je na zadanu pozadinu.</translation>
 <translation id="239760341987199724">Postavite Brave kao zadani preglednik</translation>
 <translation id="96037229054033864">Koristite se Brave Software pretraživanjem i pametnim Brave Softwareovim značajkama pri svakom pregledavanju</translation>
 <translation id="296137235951584143">Prilagodite Brave sebi</translation>

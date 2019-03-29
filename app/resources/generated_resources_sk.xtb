@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Nie, ďakujem</translation>
 <translation id="9169931577761441333">Pridať aplikáciu <ph name="APP_NAME"/> na plochu</translation>
 <translation id="6349101878882523185">Inštalovať aplikáciu <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Nainštalujte si <ph name="APP_NAME"/> (bez nutnosti stiahnutia)</translation>
 <translation id="3789841737615482174">Inštalovať</translation>
 <translation id="5280426389926346830">Vytvoriť odkaz?</translation>
 <translation id="7525067979554623046">Vytvoriť</translation>
@@ -1301,6 +1302,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3071624960923923138">Kliknite tu a otvorte novú kartu</translation>
 <translation id="4908811072292128752">Otvorte novú kartu a prehliadajte dva weby súčasne</translation>
 <translation id="8966870118594285808">Ak ste kartu omylom zavreli, znova ju otvorte</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> dokáže znova otvoriť omylom zatvorené karty</translation>
 <translation id="2963151496262057773">Nasledujúci doplnok prestal reagovať: <ph name="PLUGIN_NAME"/>. Chcete ho zastaviť?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Stránka nereaguje}few{Stránky nereagujú}many{Stránky nereagujú}other{Stránky nereagujú}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Môžete počkať, kým stránka začne reagovať, alebo ju môžete ukončiť.}few{Môžete počkať, kým stránky začnú reagovať, alebo ich môžete ukončiť.}many{Môžete počkať, kým stránky začnú reagovať, alebo ich môžete ukončiť.}other{Môžete počkať, kým stránky začnú reagovať, alebo ich môžete ukončiť.}}</translation>
@@ -1355,12 +1357,13 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6076448957780543068">Zahrnúť túto snímku obrazovky</translation>
 <translation id="7052237160939977163">Odosielať údaje sledovania výkonnosti</translation>
 <translation id="5526928694260255286">Priložiť <ph name="BEGIN_LINK"/>denníky rozhrania Bluetooth<ph name="END_LINK"/> (interné informácie Brave Software)</translation>
+<translation id="3047644958362961983">Tieto informácie nám pomôžu lepšie pochopiť problém s vaším Asistentom. Budú uložené maximálne 90 dní a prístup k nim je obmedzený len na príslušné tímy zodpovedajúce za programovanie a spätnú väzbu.</translation>
 <translation id="1705635099498185261">Zamestnanci Googlu môžu do svojich hlásení so spätnou väzbou zahrnúť ďalšie denníky rozhrania Bluetooth, aby bolo možné lepšie diagnostikovať problémy s rozhraním Bluetooth. Keď začiarknete túto možnosť, hlásenie bude obsahovať denníky btsnoop a HCI aktuálnej relácie, z ktorých boli odstránené všetky informácie umožňujúce identifikáciu osôb. Prístup k týmto denníkom bude obmedzený na správcov skupiny produktov so systémom Brave OS v nástroji Listnr. Denníky budú vyčistené po 90 dňoch.</translation>
 <translation id="4206323443866416204">Hlásenie spätnej väzby</translation>
 <translation id="3681311097828166361">Ďakujeme vám za spätnú väzbu. Teraz ste offline a vaše hlásenie sa odošle neskôr.</translation>
 <translation id="8713570323158206935">Odoslať <ph name="BEGIN_LINK1"/>informácie o systéme<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Odosielať <ph name="BEGIN_LINK1"/>informácie o systéme a aplikácii<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Informácie na ladenie Asistenta</translation>
+<translation id="6395423953133416962">Odosielať <ph name="BEGIN_LINK1"/>informácie o systéme<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>metriky<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Posielať <ph name="BEGIN_LINK1"/>informácie o systéme a aplikáciách<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>metriky<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Súbor bude odoslaný Googlu na účely ladenia</translation>
 <translation id="8227119283605456246">Pripojiť súbor</translation>
 <translation id="5367091008316207019">Prebieha čítanie súboru..</translation>
@@ -2577,6 +2580,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4694604912444486114">Opica</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Tučniak</translation>
+<translation id="3021066826692793094">Motýľ</translation>
 <translation id="3809272675881623365">Králik</translation>
 <translation id="4124935795427217608">Jednorožec</translation>
 <translation id="1830550083491357902">Neprihlásený/-á</translation>
@@ -3886,6 +3890,7 @@ s ostatnými, a to všetko na jednom mieste.<ph name="MARKUP_9"/></translation
 <translation id="8339059274628563283">Miestne uložené údaje webu <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Obnoviť povolenia webu <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Vymazať dáta webu?</translation>
+<translation id="4665446389743427678">Odstránia sa všetky údaje, ktoré uložil web <ph name="SITE"/>.</translation>
 <translation id="5300287940468717207">Chcete obnoviť povolenia webov?</translation>
 <translation id="2734760316755174687">Weby v skupine <ph name="SITE_GROUP_NAME"/> budú tiež obnovené.</translation>
 <translation id="3255355328033513170">Všetky údaje uložené skupinou <ph name="SITE_GROUP_NAME"/> a všetkými webmi v nej budú odstránené. Zahŕňa to aj súbory cookie. Systém vás odhlási z týchto webov (aj otvorených kariet).</translation>

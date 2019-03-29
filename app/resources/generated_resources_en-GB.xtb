@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">No, thank you</translation>
 <translation id="9169931577761441333">Add <ph name="APP_NAME"/> to Home screen</translation>
 <translation id="6349101878882523185">Install <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Install <ph name="APP_NAME"/> (no download required)</translation>
 <translation id="3789841737615482174">Install</translation>
 <translation id="5280426389926346830">Create Shortcut?</translation>
 <translation id="7525067979554623046">Create</translation>
@@ -1301,6 +1302,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3071624960923923138">You can click here to open a new tab</translation>
 <translation id="4908811072292128752">Open a new tab to browse two sites at once</translation>
 <translation id="8966870118594285808">Reopen a tab if you accidentally closed it</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> can reopen accidentally closed tabs</translation>
 <translation id="2963151496262057773">The following plug-in is unresponsive: <ph name="PLUGIN_NAME"/>Would you like to stop it?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Page Unresponsive}other{Pages Unresponsive}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{You can wait for it to become responsive or exit the page.}other{You can wait for them to become responsive or exit the pages.}}</translation>
@@ -1355,12 +1357,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6076448957780543068">Include this screenshot</translation>
 <translation id="7052237160939977163">Send performance trace data</translation>
 <translation id="5526928694260255286">Attach <ph name="BEGIN_LINK"/>Bluetooth Logs<ph name="END_LINK"/> (Brave Software internal)</translation>
+<translation id="3047644958362961983">This information helps us better understand your Assistant issue. It’s stored for up to 90 days and access is restricted to appropriate engineering and feedback teams.</translation>
 <translation id="1705635099498185261">To better diagnose Bluetooth issues, Brave Softwarers can include additional Bluetooth logs with their feedback reports. When this option is ticked, your report will include btsnoop and HCI logs from your current session, sanitised to remove as much PII as possible. Access to these logs will be restricted to managers of the Brave OS product group in Listnr. Logs will be purged after 90 days.</translation>
 <translation id="4206323443866416204">Feedback Report</translation>
 <translation id="3681311097828166361">Thank you for your feedback. You are offline now, and your report will be sent later.</translation>
 <translation id="8713570323158206935">Send <ph name="BEGIN_LINK1"/>system information<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Send <ph name="BEGIN_LINK1"/>system and app information<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Info to debug Assistant</translation>
+<translation id="6395423953133416962">Send <ph name="BEGIN_LINK1"/>system information<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>metrics<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Send <ph name="BEGIN_LINK1"/>system and app information<ph name="END_LINK1"/>, and <ph name="BEGIN_LINK2"/>metrics<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">File will be sent to Brave Software for debugging</translation>
 <translation id="8227119283605456246">Attach file</translation>
 <translation id="5367091008316207019">Reading file..</translation>
@@ -2579,6 +2582,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4694604912444486114">Monkey</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Penguin</translation>
+<translation id="3021066826692793094">Butterfly</translation>
 <translation id="3809272675881623365">Rabbit</translation>
 <translation id="4124935795427217608">Unicorn</translation>
 <translation id="1830550083491357902">Not signed in</translation>
@@ -3888,6 +3892,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8339059274628563283"><ph name="SITE"/> locally stored data</translation>
 <translation id="4090947011087001172">Reset site permissions for <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Clear site data?</translation>
+<translation id="4665446389743427678">All data stored by <ph name="SITE"/> will be deleted.</translation>
 <translation id="5300287940468717207">Reset site permissions?</translation>
 <translation id="2734760316755174687">Sites under <ph name="SITE_GROUP_NAME"/> will also be reset.</translation>
 <translation id="3255355328033513170">All data stored by <ph name="SITE_GROUP_NAME"/> and any sites under it will be deleted. This includes cookies. You'll be signed out of these sites, including in open tabs.</translation>
@@ -4361,6 +4366,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4359717112757026264">Cityscape</translation>
 <translation id="6691541770654083180">Earth</translation>
 <translation id="5033266061063942743">Geometric shapes</translation>
+<translation id="7789963078219276159">Start page background has been changed to <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Start page background has been reset to the default background.</translation>
 <translation id="239760341987199724">Set Brave as your default browser</translation>
 <translation id="96037229054033864">Get Brave Software Search and Brave Software smarts every time that you browse</translation>
 <translation id="296137235951584143">Make Brave your own</translation>

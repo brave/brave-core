@@ -147,6 +147,7 @@
 <translation id="9033857511263905942">&amp;הדבק</translation>
 <translation id="1815083418640426271">הדבק כטקסט רגיל</translation>
 <translation id="4022426551683927403">&amp;הוסף למילון</translation>
+<translation id="6849870115130610913">‏קבלת תיאורי תמונות מ-Brave Software</translation>
 <translation id="372722114124766626">רק פעם אחת</translation>
 <translation id="8917490105272468696">כן, מקובל עלי.</translation>
 <translation id="7473891865547856676">לא, תודה</translation>
@@ -408,6 +409,7 @@
 <translation id="2316129865977710310">לא, תודה</translation>
 <translation id="9169931577761441333">הוספה של <ph name="APP_NAME"/> למסך דף הבית</translation>
 <translation id="6349101878882523185">התקן את  <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">התקנת <ph name="APP_NAME"/> (לא דרושה הורדה)</translation>
 <translation id="3789841737615482174">התקן</translation>
 <translation id="5280426389926346830">ליצור קיצור דרך?</translation>
 <translation id="7525067979554623046">צור</translation>
@@ -1299,6 +1301,7 @@
 <translation id="3071624960923923138">אפשר ללחוץ כאן כדי לפתוח כרטיסייה חדשה</translation>
 <translation id="4908811072292128752">פתח כרטיסייה חדשה כדי לגלוש בשני אתרים בו-זמנית</translation>
 <translation id="8966870118594285808">ניתן לפתוח כרטיסייה מחדש אם סגרת אותה בטעות</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> מאפשר לפתוח מחדש כרטיסיות שנסגרו בטעות</translation>
 <translation id="2963151496262057773">הפלאגין הבא אינו מגיב: <ph name="PLUGIN_NAME"/> האם ברצונך לכבות אותו?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{הדף אינו מגיב}two{הדפים אינם מגיבים}many{הדפים אינם מגיבים}other{הדפים אינם מגיבים}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{אפשר להמתין עד שתתקבל תגובה מהדף, או לצאת ממנו.}two{אפשר להמתין עד שתתקבל תגובה מהדפים, או לצאת מהם.}many{אפשר להמתין עד שתתקבל תגובה מהדפים, או לצאת מהם.}other{אפשר להמתין עד שתתקבל תגובה מהדפים, או לצאת מהם.}}</translation>
@@ -1353,12 +1356,13 @@
 <translation id="6076448957780543068">כלול את צילום המסך הזה</translation>
 <translation id="7052237160939977163">שלח נתוני מעקב אחר ביצועים</translation>
 <translation id="5526928694260255286">‏צירוף של <ph name="BEGIN_LINK"/>יומני Bluetooth<ph name="END_LINK"/> (מידע פנימי של Brave Software)</translation>
+<translation id="3047644958362961983">‏המידע הזה עוזר לנו להבין בצורה טובה יותר את הבעיה שלך ב-Assistant. הוא נשמר לתקופה של עד 90 ימים והגישה מוגבלת רק לצוותי ההנדסה והמשוב המתאימים.</translation>
 <translation id="1705635099498185261">‏כדי לשפר את האבחון של בעיות בחיבור Bluetooth, גוגלרים יכולים לכלול יומני Bluetooth נוספים במשובים. אם האפשרות מסומנת, הדוח יכלול את יומני btsnoop ו-HCI מהסשן הנוכחי, והמערכת "תנקה" אותו כדי להסיר כמה שיותר פרטים אישיים מזהים (PII). הגישה ליומנים האלה תוגבל למנהלים של קבוצת מוצרי Brave OS ב-Listnr. המערכת תמחק לצמיתות את היומנים אחרי 90 ימים.</translation>
 <translation id="4206323443866416204">דוח משוב</translation>
 <translation id="3681311097828166361">תודה על המשוב. כרגע אינך מחובר לאינטרנט, כך שהדוח שלך יישלח מאוחר יותר.</translation>
 <translation id="8713570323158206935">שלח <ph name="BEGIN_LINK1"/>פרטי מערכת<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">שליחת <ph name="BEGIN_LINK1"/>מידע על המערכת ועל אפליקציות<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">‏מידע לניפוי באגים ב-Assistant</translation>
+<translation id="6395423953133416962">שלח <ph name="BEGIN_LINK1"/>פרטי מערכת<ph name="END_LINK1"/> ו<ph name="BEGIN_LINK2"/>ערכים<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">שלח <ph name="BEGIN_LINK1"/>פרטי מערכת ויישומים<ph name="END_LINK1"/>, כמו גם <ph name="BEGIN_LINK2"/>מדדים<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">‏הקובץ יישלח אל Brave Software לניפוי באגים</translation>
 <translation id="8227119283605456246">צרף קובץ</translation>
 <translation id="5367091008316207019">קורא את הקובץ..</translation>
@@ -2577,6 +2581,7 @@
 <translation id="4694604912444486114">קוף</translation>
 <translation id="6795884519221689054">פנדה</translation>
 <translation id="1829129547161959350">פינגווין</translation>
+<translation id="3021066826692793094">פרפר</translation>
 <translation id="3809272675881623365">ארנב</translation>
 <translation id="4124935795427217608">חד-קרן</translation>
 <translation id="1830550083491357902">לא מחובר</translation>
@@ -3064,6 +3069,7 @@
 <translation id="5840822070878669614">‏פתח את חנות האינטרנט של Brave</translation>
 <translation id="6073903501322152803">הוסף תכונות נגישות</translation>
 <translation id="7988355189918024273">הפוך תכונות נגישות לפעילות</translation>
+<translation id="3274899353071794175">‏אם אין לתמונה תיאור מועיל, Brave יספק לך תיאור. התמונות נסרקות על-ידי Brave Software.</translation>
 <translation id="2558896001721082624">אפשרויות נגישות מוצגות תמיד בתפריט המערכת</translation>
 <translation id="7280649757394340890">הגדרות קול של המרת טקסט לדיבור</translation>
 <translation id="6635956300022133031">בחירה והתאמה אישית של קולות בהמרת טקסט לדיבור</translation>
@@ -3886,6 +3892,7 @@
 <translation id="8339059274628563283">נתונים המאוחסנים באופן מקומי עבור <ph name="SITE"/></translation>
 <translation id="4090947011087001172">לאפס את ההרשאות של האתר <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">למחוק את נתוני האתר?</translation>
+<translation id="4665446389743427678">כל הנתונים שמאוחסנים על ידי <ph name="SITE"/> יימחקו.</translation>
 <translation id="5300287940468717207">לאפס את הרשאות האתרים?</translation>
 <translation id="2734760316755174687">הפעולה תאפס גם אתרים שהם חלק מ-<ph name="SITE_GROUP_NAME"/>.</translation>
 <translation id="3255355328033513170">‏כל הנתונים שאוחסנו על-ידי <ph name="SITE_GROUP_NAME"/>, או על ידי אתרים הנכללים בקבוצה, יימחקו. גם קובצי cookie יימחקו. תבוצע יציאה מהאתרים האלה, גם בכרטיסיות פתוחות.</translation>
@@ -4273,7 +4280,10 @@
 <translation id="3729506734996624908">אתרים מורשים</translation>
 <translation id="3732078975418297900">שגיאה בשורה <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">שגיאה משורה <ph name="ERROR_LINE_START"/> עד <ph name="ERROR_LINE_END"/></translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/> - יומן פעילות</translation>
 <translation id="8287902281644548111">‏חיפוש לפי קריאה ל-API/כתובת URL</translation>
+<translation id="5008936837313706385">שם הפעילות</translation>
+<translation id="7583948862126372804">מספר</translation>
 <translation id="2841013758207633010">שעה</translation>
 <translation id="2002109485265116295">זמן אמת</translation>
 <translation id="2549985041256363841">התחלת צילום סרטון</translation>

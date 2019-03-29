@@ -42,6 +42,8 @@
 <translation id="520608572871993342">使用私有視窗只會改變 Brave 在您的裝置上所做的事情──它不會改變其他人的行為。Tor 會從您訪問的網站隱藏您的 IP 地址，並對 ISP 或您的雇主隱藏訪問過網站。從選單中以 Tor 打開私有視窗，或使用{{key}}。</translation>
 <translation id="6975708438781948564">更多關於 Brave 中的 Tor 的資訊</translation>
 <translation id="1869685517625607604">阻擋廣告總計：</translation>
+<translation id="4673764878177947707">自訂過濾器</translation>
+<translation id="8803682034537762884">一行一個，以 Adblock Plus 過濾器的語法描述</translation>
 <translation id="6200814343085745765">阻擋區域性的廣告：</translation>
 <translation id="59174027418879706">已啟用</translation>
 <translation id="4176463684765177261">已停用</translation>
@@ -72,6 +74,7 @@
 <translation id="6509523738781937572">本月份目前收入 (預估)</translation>
 <translation id="8157096848242649588">付款日期</translation>
 <translation id="5208388044986603165">收到的廣告通知</translation>
+<translation id="4229016885653790965">抱歉！廣告在您的所在區域不可用。</translation>
 <translation id="654711254769318398">檢視過的廣告頁面</translation>
 <translation id="2532127066761785857">廣告顯示數量上限</translation>
 <translation id="5171071066587880677">每小時 1 則廣告</translation>
@@ -344,7 +347,7 @@
 <translation id="1555452132857939218">從此同步鏈結</translation>
 <translation id="610118613261910287">檢視碼字</translation>
 <translation id="8588535459744752615">正在尋找裝置</translation>
-<translation id="391177677159359824">同步 (測試版)</translation>
+<translation id="6406506848690869874">同步</translation>
 <translation id="28332161031213248">以下的裝置清單包括您的同步鏈中的所有裝置。每項裝置都能從任何其它裝置進行管理。</translation>
 <translation id="8153617760825732120">裝置名稱</translation>
 <translation id="4241512165288542484">(本裝置)</translation>
@@ -357,7 +360,7 @@
 <translation id="5591129654353352557">已儲存網站設定</translation>
 <translation id="7859704718976024901">瀏覽記錄</translation>
 <translation id="2339730291919608488">離開同步鏈結</translation>
-<translation id="4797449295451979552">同步設定 (測試版)</translation>
+<translation id="4332558599726753990">同步設定</translation>
 <translation id="298546024891487702">要開始，您需要在所有計劃進行同步的裝置上安裝 Brave。要將它們鏈結在一起，請開始一條您會用來安全連結所有裝置的同步鏈。</translation>
 <translation id="6200528822592747640">開始一條新的同步鏈</translation>
 <translation id="5184726904895809379">我有組「同步代碼」</translation>

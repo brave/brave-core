@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Nē, paldies</translation>
 <translation id="9169931577761441333">Pievienot lietotni <ph name="APP_NAME"/> sākuma ekrānam</translation>
 <translation id="6349101878882523185">Instalēt <ph name="APP_NAME"/> lietotni</translation>
+<translation id="4918221908152712722">Instalējiet lietotni <ph name="APP_NAME"/> (nav nepieciešama lejupielāde)</translation>
 <translation id="3789841737615482174">Instalēt</translation>
 <translation id="5280426389926346830">Vai izveidot saīsni?</translation>
 <translation id="7525067979554623046">Izveidot</translation>
@@ -1300,6 +1301,7 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="3071624960923923138">Varat noklikšķināt šeit, lai atvērtu jaunu cilni.</translation>
 <translation id="4908811072292128752">Atveriet jaunu cilni, lai pārlūkotu divas vietnes vienlaikus.</translation>
 <translation id="8966870118594285808">Ja nejauši aizvērāt cilni, atveriet to atkārtoti</translation>
+<translation id="8806680466228877631">Izmantojot īsinājumtaustiņu <ph name="SHORTCUT"/>, varat atkārtoti atvērt nejauši aizvērtās cilnes.</translation>
 <translation id="2963151496262057773">Šis spraudnis neatbild: <ph name="PLUGIN_NAME"/>. Vai vēlaties to apturēt?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Nereaģējoša lapa}zero{Nereaģējošas lapas}one{Nereaģējošas lapas}other{Nereaģējošas lapas}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Varat uzgaidīt, līdz lapa reaģēs, vai iziet no lapas.}zero{Varat uzgaidīt, līdz lapas reaģēs, vai iziet no lapām.}one{Varat uzgaidīt, līdz lapas reaģēs, vai iziet no lapām.}other{Varat uzgaidīt, līdz lapas reaģēs, vai iziet no lapām.}}</translation>
@@ -1354,12 +1356,13 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="6076448957780543068">Ietvert šo ekrānuzņēmumu</translation>
 <translation id="7052237160939977163">Sūtīt veiktspējas izsekošanas datus</translation>
 <translation id="5526928694260255286">Pievienot <ph name="BEGIN_LINK"/>Bluetooth žurnālus<ph name="END_LINK"/> (tikai Brave Software darbiniekiem)</translation>
+<translation id="3047644958362961983">Šī informācija palīdz mums labāk izprast jūsu problēmu ar Asistentu. Tā tiek glabāta līdz 90 dienām, un piekļuve ir pieejama tikai attiecīgajām inženieru un atsauksmju komandām.</translation>
 <translation id="1705635099498185261">Lai precīzāk noteiktu problēmas ar Bluetooth savienojumu, Brave Software darbinieki atsauksmju ziņojumam var pievienot papildu Bluetooth žurnālus. Ja šī opcija ir atzīmēta, ziņojumā būs iekļauti pašreizējās sesijas btsnoop un HCI žurnāli, kuros maksimāli noņemta personu identificējoša informācija. Šiem žurnāliem varēs piekļūt tikai Brave OS produktu grupas pārvaldnieki ierīcē Listnr. Žurnāli tiks dzēsti pēc 90 dienām.</translation>
 <translation id="4206323443866416204">Atsauksmju ziņojums</translation>
 <translation id="3681311097828166361">Paldies par atsauksmēm! Pašlaik esat bezsaistē, un jūsu ziņojums tiks nosūtīts vēlāk.</translation>
 <translation id="8713570323158206935">Sūtīt <ph name="BEGIN_LINK1"/>sistēmas informāciju<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Nosūtīt <ph name="BEGIN_LINK1"/>sistēmas un lietotņu informāciju<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Informācija Asistenta atkļūdošanai</translation>
+<translation id="6395423953133416962">Sūtīt <ph name="BEGIN_LINK1"/>sistēmas informāciju<ph name="END_LINK1"/> un <ph name="BEGIN_LINK2"/>datus<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Sūtīt <ph name="BEGIN_LINK1"/>sistēmas un lietotņu informāciju<ph name="END_LINK1"/> un <ph name="BEGIN_LINK2"/>metriku<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Fails tiks nosūtīts Brave Software serveriem atkļūdošanai</translation>
 <translation id="8227119283605456246">Pievienot failu</translation>
 <translation id="5367091008316207019">Notiek faila lasīšana...</translation>
@@ -2579,6 +2582,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="4694604912444486114">Pērtiķis</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pingvīns</translation>
+<translation id="3021066826692793094">Tauriņš</translation>
 <translation id="3809272675881623365">Trusis</translation>
 <translation id="4124935795427217608">Vienradzis</translation>
 <translation id="1830550083491357902">Nav pierakstījies</translation>
@@ -3888,6 +3892,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="8339059274628563283">Vietnes <ph name="SITE"/> lokāli glabātie dati</translation>
 <translation id="4090947011087001172">Vai atiestatīt vietnes <ph name="SITE"/> atļaujas?</translation>
 <translation id="1688867105868176567">Vai notīrīt vietnes datus?</translation>
+<translation id="4665446389743427678">Tiks izdzēsti visi vietnes <ph name="SITE"/> saglabātie dati.</translation>
 <translation id="5300287940468717207">Vai atiestatīt vietņu atļaujas?</translation>
 <translation id="2734760316755174687">Vietnes grupā <ph name="SITE_GROUP_NAME"/> arī tiks atiestatītas.</translation>
 <translation id="3255355328033513170">Tiks dzēsti visi dati, kas tiek glabāti vietņu grupā <ph name="SITE_GROUP_NAME"/> un visās pakārtotajās vietnēs. Tas attiecas arī uz sīkfailiem. Jūs tiksiet izrakstīts no šīm vietnēm, tostarp atvērtajās cilnēs.</translation>
@@ -4361,6 +4366,8 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="4359717112757026264">Pilsētu fotoattēli</translation>
 <translation id="6691541770654083180">Earth</translation>
 <translation id="5033266061063942743">Ģeometriskas formas</translation>
+<translation id="7789963078219276159">Sākumlapas fons tika nomainīts uz <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Sākumlapas fons ir atiestatīts uz noklusējuma fonu.</translation>
 <translation id="239760341987199724">Iestatīt Brave kā noklusējuma pārlūku</translation>
 <translation id="96037229054033864">Iegūstiet iespēju izmantot Brave Software meklēšanu un Brave Software viedās tehnoloģijas katrā pārlūkošanas reizē</translation>
 <translation id="296137235951584143">Pielāgojiet Brave savām prasībām</translation>

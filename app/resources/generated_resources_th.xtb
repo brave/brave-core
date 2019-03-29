@@ -147,6 +147,7 @@
 <translation id="9033857511263905942">&amp;วาง</translation>
 <translation id="1815083418640426271">วางเป็นข้อความธรรมดา</translation>
 <translation id="4022426551683927403">&amp;เพิ่มลงในพจนานุกรม</translation>
+<translation id="6849870115130610913">รับคำอธิบายรูปภาพจาก Brave Software</translation>
 <translation id="372722114124766626">เพียงแค่ครั้งเดียว</translation>
 <translation id="8917490105272468696">ได้สิ ตกลง</translation>
 <translation id="7473891865547856676">ไม่ ขอบคุณ</translation>
@@ -407,6 +408,8 @@
 <translation id="4923279099980110923">ใช่ ฉันต้องการช่วย</translation>
 <translation id="2316129865977710310">ไม่ ขอบคุณ</translation>
 <translation id="9169931577761441333">เพิ่ม <ph name="APP_NAME"/> ในหน้าจอหลัก</translation>
+<translation id="6349101878882523185">ติดตั้ง <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">ติดตั้ง <ph name="APP_NAME"/> (ไม่จำเป็นต้องดาวน์โหลด)</translation>
 <translation id="3789841737615482174">ติดตั้ง</translation>
 <translation id="5280426389926346830">สร้างทางลัดไหม</translation>
 <translation id="7525067979554623046">สร้าง</translation>
@@ -1299,6 +1302,7 @@
 <translation id="3071624960923923138">คุณสามารถคลิกที่นี่เพื่อเปิดแท็บใหม่</translation>
 <translation id="4908811072292128752">เปิดแท็บใหม่เพื่อเรียกดูไซต์ 2 ไซต์พร้อมกัน</translation>
 <translation id="8966870118594285808">เปิดแท็บอีกครั้งหากปิดไปโดยไม่ได้ตั้งใจ</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> จะเปิดแท็บที่ปิดไปโดยไม่ได้ตั้งใจขึ้นมาอีกครั้งได้</translation>
 <translation id="2963151496262057773">ปลั๊กอินต่อไปนี้ไม่ตอบสนอง: <ph name="PLUGIN_NAME"/>คุณต้องการหยุดปลั๊กอินดังกล่าวไหม</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{หน้าไม่ตอบสนอง}other{หน้าไม่ตอบสนอง}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{คุณสามารถรอให้หน้านี้ตอบสนองหรือออกจากหน้าก็ได้}other{คุณสามารถรอให้หน้าเหล่านี้ตอบสนองหรือออกจากหน้าก็ได้}}</translation>
@@ -1353,12 +1357,13 @@
 <translation id="6076448957780543068">รวมภาพหน้าจอนี้</translation>
 <translation id="7052237160939977163">ส่งข้อมูลการติดตามผลการปฏิบัติงาน</translation>
 <translation id="5526928694260255286">แนบ<ph name="BEGIN_LINK"/>บันทึกบลูทูธ<ph name="END_LINK"/> (ใช้ภายใน Brave Software)</translation>
+<translation id="3047644958362961983">ข้อมูลนี้ช่วยให้เราเข้าใจปัญหาที่คุณพบเกี่ยวกับ Assistant ได้ดีขึ้น ระบบจะเก็บข้อมูลไว้สูงสุด 90 วันและจำกัดให้เฉพาะทีมวิศวกรและทีมให้ความคิดเห็นที่เกี่ยวข้องเข้าถึงเท่านั้น</translation>
 <translation id="1705635099498185261">Brave Softwarer จะช่วยรวมบันทึกเพิ่มเติมเกี่ยวกับบลูทูธไว้กับรายงานความคิดเห็นเพื่อการวินิจฉัยปัญหาบลูทูธที่แม่นยำยิ่งขึ้นได้ เมื่อคุณเลือกตัวเลือกนี้ รายงานจะรวมบันทึก btsnoop และ HCI จากเซสชันปัจจุบัน ซึ่งได้รับการปรับแต่งเพื่อนำ PII ออกไปให้ได้มากที่สุด จะมีเพียงผู้จัดการกลุ่มผลิตภัณฑ์ Brave OS ใน Listnr เท่านั้นที่มีสิทธิ์เข้าถึงบันทึกเหล่านี้ และระบบจะลบบันทึกออกโดยถาวรหลังผ่านไป 90 วัน</translation>
 <translation id="4206323443866416204">รายงานความคิดเห็น</translation>
 <translation id="3681311097828166361">ขอขอบคุณสำหรับความคิดเห็น คุณกำลังออฟไลน์อยู่ในขณะนี้ และระบบจะส่งรายงานของคุณในภายหลัง</translation>
 <translation id="8713570323158206935">ส่ง<ph name="BEGIN_LINK1"/>ข้อมูลระบบ<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">ส่ง<ph name="BEGIN_LINK1"/>ข้อมูลระบบและแอป<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">ข้อมูลสำหรับการแก้ไขข้อบกพร่องของ Assistant</translation>
+<translation id="6395423953133416962">ส่ง<ph name="BEGIN_LINK1"/>ข้อมูลระบบ<ph name="END_LINK1"/>และ<ph name="BEGIN_LINK2"/>เมตริก<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">ส่ง<ph name="BEGIN_LINK1"/>ข้อมูลระบบและแอป<ph name="END_LINK1"/>และ<ph name="BEGIN_LINK2"/>เมตริก<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">ระบบจะส่งไฟล์ไปยัง Brave Software เพื่อแก้ไขข้อบกพร่อง</translation>
 <translation id="8227119283605456246">แนบไฟล์</translation>
 <translation id="5367091008316207019">กำลังอ่านไฟล์..</translation>
@@ -2577,6 +2582,7 @@
 <translation id="4694604912444486114">ลิง</translation>
 <translation id="6795884519221689054">แพนด้า</translation>
 <translation id="1829129547161959350">นกเพนกวิน</translation>
+<translation id="3021066826692793094">ผีเสื้อ</translation>
 <translation id="3809272675881623365">กระต่าย</translation>
 <translation id="4124935795427217608">ยูนิคอร์น</translation>
 <translation id="1830550083491357902">ไม่ได้ลงชื่อเข้าใช้</translation>
@@ -3063,6 +3069,7 @@
 <translation id="5840822070878669614">เปิด Brave เว็บสโตร์</translation>
 <translation id="6073903501322152803">เพิ่มฟีเจอร์การสามารถเข้าถึงได้ง่าย</translation>
 <translation id="7988355189918024273">เปิดการใช้งานฟีเจอร์การเข้าถึง</translation>
+<translation id="3274899353071794175">หากรูปภาพไม่มีคำอธิบายที่เป็นประโยชน์ Brave จะใส่คำอธิบายให้คุณ รูปภาพจะได้รับการสแกนโดย Brave Software</translation>
 <translation id="2558896001721082624">แสดงตัวเลือกการเข้าถึงในเมนูระบบไว้เสมอ</translation>
 <translation id="7280649757394340890">การตั้งค่าเสียงของการอ่านออกเสียงข้อความ</translation>
 <translation id="6635956300022133031">เลือกและปรับแต่งเสียงของการอ่านออกเสียงข้อความ</translation>
@@ -3885,6 +3892,7 @@
 <translation id="8339059274628563283">ข้อมูล <ph name="SITE"/> ที่เก็บไว้ในเครื่อง</translation>
 <translation id="4090947011087001172">รีเซ็ตสิทธิ์เว็บไซต์สำหรับ <ph name="SITE"/> ไหม</translation>
 <translation id="1688867105868176567">ล้างข้อมูลเว็บไซต์ไหม</translation>
+<translation id="4665446389743427678">ระบบจะลบข้อมูลทั้งหมดที่ <ph name="SITE"/> จัดเก็บไว้</translation>
 <translation id="5300287940468717207">รีเซ็ตสิทธิ์ของเว็บไซต์ไหม</translation>
 <translation id="2734760316755174687">ระบบจะรีเซ็ตเว็บไซต์ภายใต้ <ph name="SITE_GROUP_NAME"/> ด้วย</translation>
 <translation id="3255355328033513170">ระบบจะลบข้อมูลทั้งหมดที่ <ph name="SITE_GROUP_NAME"/> จัดเก็บไว้และเว็บไซต์ในกลุ่มนี้ คุกกี้จะถูกลบออกไปด้วย คุณจะออกจากระบบเว็บไซต์เหล่านี้ รวมถึงแท็บที่เปิดอยู่</translation>
@@ -4272,7 +4280,10 @@
 <translation id="3729506734996624908">เว็บไซต์ที่อนุญาต</translation>
 <translation id="3732078975418297900">เกิดข้อผิดพลาดในบรรทัดที่ <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">เกิดข้อผิดพลาดในบรรทัดที่ <ph name="ERROR_LINE_START"/> ถึง <ph name="ERROR_LINE_END"/></translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/> - บันทึกกิจกรรม</translation>
 <translation id="8287902281644548111">ค้นหาตามการเรียก API/URL</translation>
+<translation id="5008936837313706385">ชื่อกิจกรรม</translation>
+<translation id="7583948862126372804">จำนวน</translation>
 <translation id="2841013758207633010">เวลา</translation>
 <translation id="2002109485265116295">เรียลไทม์</translation>
 <translation id="2549985041256363841">เริ่มบันทึก</translation>
@@ -4355,6 +4366,8 @@
 <translation id="4359717112757026264">ทิวทัศน์ของเมือง</translation>
 <translation id="6691541770654083180">โลก</translation>
 <translation id="5033266061063942743">รูปทรงเรขาคณิต</translation>
+<translation id="7789963078219276159">เปลี่ยนพื้นหลังของหน้าเริ่มต้นเป็น <ph name="CATEGORY"/></translation>
+<translation id="8771300903067484968">มีการรีเซ็ตพื้นหลังของหน้าเริ่มต้นเป็นพื้นหลังเริ่มต้น</translation>
 <translation id="239760341987199724">ตั้ง Brave เป็นเบราว์เซอร์เริ่มต้นของคุณ</translation>
 <translation id="96037229054033864">ใช้ Brave Software Search และฟีเจอร์เจ๋งๆ จาก Brave Software ทุกครั้งที่ท่องเว็บ</translation>
 <translation id="296137235951584143">ปรับเปลี่ยน Brave ในแบบของคุณ</translation>

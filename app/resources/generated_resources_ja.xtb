@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">いいえ</translation>
 <translation id="9169931577761441333">ホーム画面に <ph name="APP_NAME"/> を追加</translation>
 <translation id="6349101878882523185"><ph name="APP_NAME"/> をインストールします</translation>
+<translation id="4918221908152712722"><ph name="APP_NAME"/> をインストール（ダウンロードは不要です）</translation>
 <translation id="3789841737615482174">インストール</translation>
 <translation id="5280426389926346830">ショートカットを作成しますか？</translation>
 <translation id="7525067979554623046">作成</translation>
@@ -1301,6 +1302,7 @@
 <translation id="3071624960923923138">ここをクリックすると新しいタブが開きます</translation>
 <translation id="4908811072292128752">新しいタブを開いて 2 つのサイトを同時に閲覧できます</translation>
 <translation id="8966870118594285808">間違って閉じたタブをもう一度開きます</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> で、誤って閉じたタブを再度開くことができます</translation>
 <translation id="2963151496262057773">プラグイン（<ph name="PLUGIN_NAME"/>）は応答していません。強制終了しますか？</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{ページが応答しません}other{ページが応答しません}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{応答があるまで待つか、このページを離れるか、いずれかの対応方法をおとりください。}other{応答があるまで待つか、このページを離れるか、いずれかの対応方法をおとりください。}}</translation>
@@ -1359,8 +1361,8 @@
 <translation id="4206323443866416204">ご意見の報告</translation>
 <translation id="3681311097828166361">ご意見をお寄せいただきありがとうございます。現在オフラインのため、ご報告の内容は後で送信されます。</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>システム情報<ph name="END_LINK1"/>を送信する</translation>
-<translation id="8642895855701880552"><ph name="BEGIN_LINK1"/>システムとアプリの情報<ph name="END_LINK1"/>を送信する</translation>
-<translation id="7292696521213967957">アシスタントをデバッグするための情報</translation>
+<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>システム情報<ph name="END_LINK1"/>と<ph name="BEGIN_LINK2"/>指標データ<ph name="END_LINK2"/>を送信する</translation>
+<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>システムとアプリの情報<ph name="END_LINK1"/>と<ph name="BEGIN_LINK2"/>指標<ph name="END_LINK2"/>を送信する</translation>
 <translation id="8329196515830093443">ファイルはデバッグのため Brave Software に送信されます</translation>
 <translation id="8227119283605456246">添付ファイル</translation>
 <translation id="5367091008316207019">ファイルを読み取っています...</translation>
@@ -2579,6 +2581,7 @@
 <translation id="4694604912444486114">サル</translation>
 <translation id="6795884519221689054">パンダ</translation>
 <translation id="1829129547161959350">ペンギン</translation>
+<translation id="3021066826692793094">蝶</translation>
 <translation id="3809272675881623365">ウサギ</translation>
 <translation id="4124935795427217608">ユニコーン</translation>
 <translation id="1830550083491357902">ログインしていません</translation>
@@ -3888,6 +3891,7 @@
 <translation id="8339059274628563283"><ph name="SITE"/> によりデータがローカルに保存されました</translation>
 <translation id="4090947011087001172"><ph name="SITE"/> のサイト権限をリセットしますか？</translation>
 <translation id="1688867105868176567">サイトデータを消去しますか？</translation>
+<translation id="4665446389743427678"><ph name="SITE"/> で保存されたすべてのデータが削除されます。</translation>
 <translation id="5300287940468717207">サイトの権限をリセットしますか。</translation>
 <translation id="2734760316755174687"><ph name="SITE_GROUP_NAME"/> のサイトもリセットされます。</translation>
 <translation id="3255355328033513170"><ph name="SITE_GROUP_NAME"/> とその下位のすべてのサイトにより保存された全データが削除されます。これには Cookie も含まれ、これらのサイトからはログアウトすることになります（開いているタブも含まれます）。</translation>
