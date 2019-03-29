@@ -331,6 +331,12 @@ class BookmarksViewController: SiteTableViewController {
   
   fileprivate func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
     
+    // Make sure Bookmark at index path exists,
+    // `frc.object(at:)` crashes otherwise, doesn't fail safely with nil
+    if let objectsCount = bookmarksFRC?.fetchedObjects?.count, indexPath.row >= objectsCount {
+        fatalError("Bookmarks FRC index out of bounds")
+    }
+    
     guard let item = bookmarksFRC?.object(at: indexPath) else { return }
     cell.tag = item.objectID.hashValue
     
@@ -580,8 +586,12 @@ extension BookmarksViewController: NSFetchedResultsControllerDelegate {
     switch type {
     case .update:
         let update = { (path: IndexPath?) in
-            if let path = path, let cell = self.tableView.cellForRow(at: path) {
-                self.configureCell(cell, atIndexPath: path)
+            // When Bookmark is moved to another folder, it can be interpreted as update action
+            // (since the object is not deleted but updated to have a different parent Bookmark)
+            // Make sure we are not out of bounds here.
+            if let path = path, let cell = self.tableView.cellForRow(at: path),
+                let fetchedObjectsCount = self.bookmarksFRC?.fetchedObjects?.count, path.row < fetchedObjectsCount {
+                    self.configureCell(cell, atIndexPath: path)
             }
         }
         [indexPath, newIndexPath].forEach(update)
