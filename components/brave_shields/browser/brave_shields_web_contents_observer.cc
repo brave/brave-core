@@ -332,7 +332,6 @@ void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
   registry->RegisterUint64Pref(kJavascriptBlocked, 0);
   registry->RegisterUint64Pref(kHttpsUpgrades, 0);
   registry->RegisterUint64Pref(kFingerprintingBlocked, 0);
-  registry->RegisterStringPref(kAdBlockCurrentRegion, "");
 }
 
 void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(

@@ -527,12 +527,11 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }, {
       std::string("adblock"), {
+        { "additionalFiltersTitle", IDS_ADBLOCK_ADDITIONAL_FILTERS_TITLE },
+        { "additionalFiltersWarning", IDS_ADBLOCK_ADDITIONAL_FILTERS_WARNING },                  // NOLINT
         { "adsBlocked", IDS_ADBLOCK_TOTAL_ADS_BLOCKED },
         { "customFiltersTitle", IDS_ADBLOCK_CUSTOM_FILTERS_TITLE },
         { "customFiltersInstructions", IDS_ADBLOCK_CUSTOM_FILTERS_INSTRUCTIONS },                // NOLINT
-        { "regionalAdblockEnabledTitle", IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED_TITLE},           // NOLINT
-        { "regionalAdblockEnabled", IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED },
-        { "regionalAdblockDisabled", IDS_ADBLOCK_REGIONAL_AD_BLOCK_DISABLED },
       }
     }, {
       std::string("donate"), {
@@ -587,4 +586,4 @@ void CustomizeWebUIHTMLSource(const std::string &name,
     }
   };
   AddLocalizedStringsBulk(source, localized_strings[name]);
-}
+}  // NOLINT(readability/fn_size)

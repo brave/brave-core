@@ -8,11 +8,11 @@ const keyName = 'adblock-data'
 
 export const defaultState: AdBlock.State = {
   settings: {
-    customFilters: ''
+    customFilters: '',
+    regionalLists: []
   },
   stats: {
-    numBlocked: 0,
-    regionalAdBlockEnabled: false
+    numBlocked: 0
   }
 }
 
@@ -21,12 +21,8 @@ export const getLoadTimeData = (state: AdBlock.State): AdBlock.State => {
   state.stats = defaultState.stats
 
   // Expected to be numbers
-  ;['adsBlockedStat', 'regionalAdBlockEnabled'].forEach((stat) => {
+  ;['adsBlockedStat'].forEach((stat) => {
     state.stats[stat] = parseInt(chrome.getVariableValue(stat), 10)
-  })
-  // Expected to be Strings
-  ;['regionalAdBlockTitle'].forEach((stat) => {
-    state.stats[stat] = chrome.getVariableValue(stat)
   })
 
   return state
