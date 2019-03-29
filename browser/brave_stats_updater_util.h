@@ -14,10 +14,13 @@ namespace brave {
 
 std::string GetDateAsYMD(const base::Time& time);
 
-
 std::string GetChannelName();
 
 std::string GetPlatformIdentifier();
+
+int GetIsoWeekNumber(base::Time time);
+
+base::Time GetYMDAsDate(base::StringPiece ymd);
 
 }  // namespace brave
 

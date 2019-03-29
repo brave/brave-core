@@ -23,13 +23,20 @@ struct MessageMetainfo {
   std::string platform;
   std::string version;
   std::string channel;
-  std::string woi;  // Week of install.
+  int woi;  // Week of install.
+  int wos;  // Week of survey.
+  std::string country_code;
+  std::string refcode;
 };
 
 void GenerateProchloMessage(uint64_t metric_hash,
                             uint64_t metric_value,
                             const MessageMetainfo& meta,
                             brave_pyxis::PyxisMessage* prochlo_message);
+
+// Ensures that country/refcode represent the big enough cohort that will not
+// let anybody identify the sender.
+void MaybeStripRefcodeAndCountry(prochlo::MessageMetainfo* meta);
 
 }  // namespace prochlo
 

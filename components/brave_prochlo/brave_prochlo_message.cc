@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_prochlo/brave_prochlo_message.h"
 
+#include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "base/stl_util.h"
 #include "base/strings/string_number_conversions.h"
@@ -19,7 +20,6 @@ namespace {
 
 // TODO(iefremov): Make it possible to use testing keys.
 // TODO(iefremov): Key versioning?
-
 constexpr char kShufflerKey[] = R"(
 -----BEGIN PUBLIC KEY-----
 MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEeQ8KZnYLy5Rw7hZbVjIq4SS8RNgE
@@ -117,19 +117,19 @@ void GenerateProchloMessage(uint64_t metric_hash,
   uint8_t* ptr = data;
   ptr++;
 
-  // Encode metric ID. Store only two bytes for now.
-  // TODO(iefremov): I consider this as a temporary solution, though it should
-  // be enough for the test period.
-  *ptr++ = metric_hash & 0xFF;
-  *ptr++ = (metric_hash >> 8) & 0xFF;
+  const std::string metastring =
+      "," + meta.country_code + "," + meta.platform + "," + meta.version + "," +
+      meta.channel + "," + base::NumberToString(meta.woi) + "," +
+      base::NumberToString(meta.wos) + "," + meta.refcode + ",";
 
-  const std::string metastring = "," + meta.platform + "," + meta.version +
-                                 "," + meta.channel + "," + meta.woi + ",";
+  const std::string metric_value_str = base::NumberToString(metric_value);
+
+  // TODO(iefremov): replace with 'if'?
+  CHECK_LE(metastring.size() + metric_value_str.size(),
+           kProchlomationDataLength - 1);
 
   memcpy(ptr, metastring.data(), metastring.size());
   ptr += metastring.size();
-
-  const std::string metric_value_str = base::NumberToString(metric_value);
   memcpy(ptr, metric_value_str.data(), metric_value_str.size());
 
   // TODO(iefremov): Salt?
@@ -139,6 +139,57 @@ void GenerateProchloMessage(uint64_t metric_hash,
   MakeProchlomation(metric_hash, data, crowd_id, &item);
 
   InitProchloMessage(metric_hash, item, pyxis_message);
+}
+
+void MaybeStripRefcodeAndCountry(prochlo::MessageMetainfo* meta) {
+  const std::string& refcode = meta->refcode;
+  const std::string& country = meta->country_code;
+  constexpr char kRefcodeNone[] = "none";
+  constexpr char kCountryOther[] = "other";
+  constexpr char kRefcodeOther[] = "other";
+
+  static base::flat_set<std::string> const kLinuxCountries(
+      {"US", "FR", "DE", "GB", "IN", "BR", "PL", "NL", "ES", "CA", "IT", "AU",
+       "MX", "CH", "RU", "ZA", "SE", "BE", "JP"});
+
+  static base::flat_set<std::string> const kNotableRefcodes(
+      {"BRV001", "GDB255", "APP709", "GBW423", "BRT001", "VNI569", "ICO964",
+       "ILY758"});
+
+  static base::flat_set<std::string> const kNotableCountries(
+      {"FR", "PH", "GB", "IN", "DE", "BR", "CA", "IT", "ES", "NL", "MX", "AU",
+       "RU", "JP", "PL", "ID", "KR", "AR"});
+
+  DCHECK(meta);
+  if (meta->platform == "linux-bc") {
+    // Because Linux has no refcodes, ignore, and if we have more than
+    // 3/0.05 = 60 users in a country for a week of install, we can send
+    // country.
+    meta->refcode = kRefcodeNone;
+    if (kLinuxCountries.count(country) == 0) {
+      meta->country_code = kCountryOther;
+    }
+  } else {
+    // Now the minimum platform is MacOS at ~3%, so cut off for a group under
+    // here becomes 3/(0.05*0.03) = 2000.
+    if (country == "US" or country.empty()) {
+      const bool us_and_ref =
+          country == "US" and (refcode == kRefcodeNone || refcode == "GDB255" ||
+                               refcode == "BRV001");
+      const bool unknown_and_ref =
+          country.empty() and
+          (kNotableRefcodes.count(refcode) > 0 || refcode == kRefcodeNone);
+
+      if (!(us_and_ref or unknown_and_ref)) {
+        meta->refcode = kRefcodeOther;
+      }
+    } else if (kNotableCountries.count(country) > 0) {
+      meta->refcode = kRefcodeOther;
+    } else {
+      meta->country_code = kCountryOther;
+      meta->refcode = kRefcodeOther;
+    }
+  }
 }
 
 }  // namespace prochlo

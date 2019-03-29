@@ -6,6 +6,7 @@
 #include "brave/components/p3a/brave_p3a_service.h"
 
 #include "base/command_line.h"
+#include "base/i18n/timezone.h"
 #include "base/metrics/histogram_samples.h"
 #include "base/metrics/metrics_hashes.h"
 #include "base/metrics/statistics_recorder.h"
@@ -41,7 +42,8 @@ constexpr uint64_t kDefaultUploadIntervalSeconds = 60 * 60;  // 1 hour.
 constexpr int kDefaultMaxRandomDelaySeconds = 5 * 60;  // 5 minutes.
 
 // TODO(iefremov): Provide moar histograms!
-// Whitelist for histograms that we collect.
+// Whitelist for histograms that we collect. Will be replaced with something
+// updating on the fly.
 constexpr const char* kCollectedHistograms[] = {
     "Brave.P3A.SentAnswersCount",
     "DefaultBrowser.State",
@@ -62,7 +64,7 @@ base::TimeDelta GetRandomizedUploadInterval(base::TimeDelta upload_interval,
 
 base::TimeDelta TimeDeltaTillMonday(base::Time time) {
   base::Time::Exploded exploded;
-  time.UTCMidnight().UTCExplode(&exploded);
+  time.LocalMidnight().LocalExplode(&exploded);
   // 1 stands for Monday, 0 for Sunday
   int days_till_monday = 0;
   if (exploded.day_of_week >= 1) {
@@ -72,7 +74,7 @@ base::TimeDelta TimeDeltaTillMonday(base::Time time) {
   }
 
   base::TimeDelta result =
-      base::TimeDelta::FromDays(days_till_monday) - (time - time.UTCMidnight());
+      base::TimeDelta::FromDays(days_till_monday) - (time - time.LocalMidnight());
   return result;
 }
 
@@ -211,16 +213,25 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
   }
 }
 
+
 void BraveP3AService::InitPyxisMeta() {
   pyxis_meta_.platform = brave::GetPlatformIdentifier();
   pyxis_meta_.channel = brave::GetChannelName();
   pyxis_meta_.version =
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
-  pyxis_meta_.woi = local_state_->GetString(kWeekOfInstallation);
+
+  const std::string woi = local_state_->GetString(kWeekOfInstallation);
+  pyxis_meta_.woi = GetIsoWeekNumber(GetYMDAsDate(woi));
+  pyxis_meta_.wos = GetIsoWeekNumber(base::Time::Now());
+  pyxis_meta_.country_code =
+      base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
+  pyxis_meta_.refcode = local_state_->GetString(kReferralPromoCode);
+  MaybeStripRefcodeAndCountry(&pyxis_meta_);
 
   VLOG(2) << "Pyxis meta: " << pyxis_meta_.platform << " "
           << pyxis_meta_.channel << " " << pyxis_meta_.version << " "
-          << pyxis_meta_.woi;
+          << pyxis_meta_.woi << " " << pyxis_meta_.wos << " "
+          << pyxis_meta_.country_code << " " << pyxis_meta_.refcode;
 }
 
 void BraveP3AService::StartScheduledUpload() {
