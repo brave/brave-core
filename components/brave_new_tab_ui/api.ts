@@ -8,7 +8,6 @@ import { bindActionCreators } from 'redux'
 import * as newTabActions from './actions/new_tab_actions'
 import { debounce } from '../common/debounce'
 import store from './store'
-import { isHttpOrHttps } from './helpers/newTabUtils'
 
 let actions: any
 
@@ -53,14 +52,15 @@ export const fetchBookmarkInfo = (url: string) => {
 export const getGridSites = (state: NewTab.State, checkBookmarkInfo?: boolean) => {
   const sizeToCount = { large: 18, medium: 12, small: 6 }
   const count = sizeToCount[state.gridLayoutSize || 'small']
+  const defaultChromeUrl = 'https://chrome.google.com/webstore?hl=en'
 
   // Start with top sites with filtered out ignored sites and pinned sites
   let gridSites = state.topSites.slice()
-    .filter((site) =>
-      !state.ignoredTopSites.find((ignoredSite) => ignoredSite.url === site.url) &&
-      !state.pinnedTopSites.find((pinnedSite) => pinnedSite.url === site.url) &&
-      !isHttpOrHttps(site.url)
-    )
+  .filter((site) =>
+    !state.ignoredTopSites.find((ignoredSite) => ignoredSite.url === site.url) &&
+    !state.pinnedTopSites.find((pinnedSite) => pinnedSite.url === site.url) &&
+    site.url !== defaultChromeUrl
+  )
 
   // Then add in pinned sites at the specified index, these need to be added in the same
   // order as the index they are.
