@@ -276,7 +276,7 @@
     "@types/react-redux": "6.0.4",
     "awesome-typescript-loader": "^5.2.0",
     "brave-ui": "github:brave/brave-ui#fe22e502e5982eb5ebf29727f34cfdbf6a4588b1",
-    "css-loader": "^0.28.9",
+    "css-loader": "^2.1.1",
     "csstype": "^2.5.5",
     "emptykit.css": "^1.0.1",
     "enzyme": "^3.3.0",
