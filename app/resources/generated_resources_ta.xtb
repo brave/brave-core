@@ -147,6 +147,7 @@
 <translation id="9033857511263905942">&amp;ஒட்டு</translation>
 <translation id="1815083418640426271">எளிய உரையாக ஒட்டு</translation>
 <translation id="4022426551683927403">அகராதியில் &amp;சேர்</translation>
+<translation id="6849870115130610913">பட விவரங்களை Brave Softwareளிலிருந்து பெறுக</translation>
 <translation id="372722114124766626">இப்போது மட்டும்</translation>
 <translation id="8917490105272468696">ஏற்கிறேன்</translation>
 <translation id="7473891865547856676">வேண்டாம் நன்றி</translation>
@@ -407,6 +408,8 @@
 <translation id="4923279099980110923">ஆம், எனக்கு உதவி தேவை</translation>
 <translation id="2316129865977710310">வேண்டாம், நன்றி</translation>
 <translation id="9169931577761441333"><ph name="APP_NAME"/>ஐ முகப்புத் திரையில் சேர்க்கவும்</translation>
+<translation id="6349101878882523185"><ph name="APP_NAME"/> ஆப்ஸை நிறுவுக</translation>
+<translation id="4918221908152712722"><ph name="APP_NAME"/>ஐ நிறுவு (பதிவிறக்க வேண்டியதில்லை)</translation>
 <translation id="3789841737615482174">நிறுவுக</translation>
 <translation id="5280426389926346830">ஷார்ட்கட்டை உருவாக்கவா?</translation>
 <translation id="7525067979554623046">உருவாக்கு</translation>
@@ -1300,6 +1303,7 @@
 <translation id="3071624960923923138">புதிய தாவலைத் திறக்க, இங்கே கிளிக் செய்யவும்</translation>
 <translation id="4908811072292128752">ஒரே நேரத்தில் இரண்டு தளங்களைப் பார்வையிட, புதிய தாவலைத் திறக்கவும்</translation>
 <translation id="8966870118594285808">நீங்கள் தாவலைத் தற்செயலாக மூடிவிட்டால் அதை மீண்டும் திறக்கலாம்</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> மூலம் தற்செயலாக மூடியத் தாவல்களைத் திறக்கலாம்</translation>
 <translation id="2963151496262057773">பின்வரும் செருகுநிரல் பதிலளிக்கவில்லை: <ph name="PLUGIN_NAME"/>நிறுத்தவா?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{பக்கம் செயலிழந்தது}other{பக்கங்கள் செயலிழந்தன}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{பக்கம் செயல்படும் வரை காத்திருக்கலாம் அல்லது அதிலிருந்து வெளியேறலாம்.}other{பக்கங்கள் செயல்படும் வரை காத்திருக்கலாம் அல்லது அவற்றிலிருந்து வெளியேறலாம்.}}</translation>
@@ -1358,8 +1362,8 @@
 <translation id="4206323443866416204">கருத்து அறிக்கை</translation>
 <translation id="3681311097828166361">உங்கள் கருத்திற்கு நன்றி. இப்போது ஆஃப்லைனில் உள்ளீர்கள், உங்கள் அறிக்கை பின்னர் அனுப்பப்படும்.</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>கணினியின் தகவலை<ph name="END_LINK1"/> அனுப்பு</translation>
-<translation id="8642895855701880552"><ph name="BEGIN_LINK1"/>சாதனம் மற்றும் ஆப்ஸ் தகவலை<ph name="END_LINK1"/> அனுப்பு</translation>
-<translation id="7292696521213967957">அசிஸ்டண்ட்டைப் பிழைதிருத்துவதற்கான தகவல்</translation>
+<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>கணினியின் தகவல்<ph name="END_LINK1"/> மற்றும் <ph name="BEGIN_LINK2"/>அளவீடுகளை<ph name="END_LINK2"/> அனுப்பு</translation>
+<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>சாதனம் மற்றும் பயன்பாட்டுத் தகவல்<ph name="END_LINK1"/>, <ph name="BEGIN_LINK2"/>அளவீடுகள்<ph name="END_LINK2"/> ஆகியவற்றை அனுப்பு</translation>
 <translation id="8329196515830093443">கோப்பு பிழைத் திருத்தத்திற்காக Brave Softwareளுக்கு அனுப்பப்படும்</translation>
 <translation id="8227119283605456246">கோப்பை இணை</translation>
 <translation id="5367091008316207019">கோப்பைப் படிக்கிறது.</translation>
@@ -2578,6 +2582,7 @@
 <translation id="4694604912444486114">குரங்கு</translation>
 <translation id="6795884519221689054">பாண்டா</translation>
 <translation id="1829129547161959350">பென்குயின்</translation>
+<translation id="3021066826692793094">பட்டர்ஃப்ளை</translation>
 <translation id="3809272675881623365">முயல்</translation>
 <translation id="4124935795427217608">கொம்புக் குதிரை</translation>
 <translation id="1830550083491357902">உள்நுழைந்திருக்கவில்லை</translation>
@@ -3064,6 +3069,7 @@
 <translation id="5840822070878669614">Brave இணைய அங்காடியைத் திற</translation>
 <translation id="6073903501322152803">அணுகல்தன்மை அம்சங்களைச் சேர்</translation>
 <translation id="7988355189918024273">அணுகல்தன்மை அம்சங்களை இயக்கு</translation>
+<translation id="3274899353071794175">ஒரு படத்திற்குப் பயனுள்ள விளக்கம் இல்லையென்றால், Brave உங்களுக்காக அதை வழங்க முயலும். படங்களை Brave Software ஸ்கேன் செய்யும்.</translation>
 <translation id="2558896001721082624">சாதன மெனுவில் அணுகல்தன்மை விருப்பத்தேர்வுகளை எப்போதும் காட்டு</translation>
 <translation id="7280649757394340890">உரையிலிருந்து பேச்சுக்கான குரல் அமைப்புகள்</translation>
 <translation id="6635956300022133031">உரையிலிருந்து பேச்சுக்கான குரல்களைத் தேர்ந்தெடுக்கலாம், தனிப்பயனாக்கலாம்</translation>
@@ -3886,6 +3892,7 @@
 <translation id="8339059274628563283">சாதனத்தில் சேமிக்கப்பட்ட <ph name="SITE"/> தரவு</translation>
 <translation id="4090947011087001172"><ph name="SITE"/>க்கான தள அனுமதிகளை மீட்டமைக்கவா?</translation>
 <translation id="1688867105868176567">தளத் தரவை அழிக்கவா?</translation>
+<translation id="4665446389743427678"><ph name="SITE"/> சேகரித்த தரவு அனைத்தும் நீக்கப்படும்.</translation>
 <translation id="5300287940468717207">தள அனுமதிகளை மீட்டமைக்கவா?</translation>
 <translation id="2734760316755174687"><ph name="SITE_GROUP_NAME"/> குழுவில் உள்ள எல்லா தளங்களும் மீட்டமைக்கப்படும்.</translation>
 <translation id="3255355328033513170"><ph name="SITE_GROUP_NAME"/> மற்றும் அதன் கீழுள்ள தளங்களால் சேமிக்கப்பட்ட தரவு அனைத்தும் நீக்கப்படும். இதில் குக்கீகளும் அடங்கும். திறந்துள்ள தாவல்களில் உள்ளவை உட்பட, இந்தத் தளங்களிலிருந்து வெளியேற்றப்படுவீர்கள்.</translation>
@@ -4273,7 +4280,10 @@
 <translation id="3729506734996624908">அனுமதிக்கப்பட்ட தளங்கள்</translation>
 <translation id="3732078975418297900"><ph name="ERROR_LINE"/>வது வரியில் பிழை</translation>
 <translation id="9063208415146866933"><ph name="ERROR_LINE_START"/> இலிருந்து <ph name="ERROR_LINE_END"/>வது வரி வரை பிழை</translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/> - செயல்பாட்டுப் பதிவு</translation>
 <translation id="8287902281644548111">API அழைப்பு/URLபடி தேடு</translation>
+<translation id="5008936837313706385">செயல்பாட்டின் பெயர்</translation>
+<translation id="7583948862126372804">எண்ணிக்கை</translation>
 <translation id="2841013758207633010">நேரம்</translation>
 <translation id="2002109485265116295">நிகழ்நேரம்</translation>
 <translation id="2549985041256363841">பதிவுசெய்யத் தொடங்கு</translation>

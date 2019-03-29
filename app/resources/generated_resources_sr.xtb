@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Не, хвала</translation>
 <translation id="9169931577761441333">Додајте <ph name="APP_NAME"/> на почетни екран</translation>
 <translation id="6349101878882523185">Инсталирајте <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Инсталирајте апликацију <ph name="APP_NAME"/> (не треба да је преузимате)</translation>
 <translation id="3789841737615482174">Инсталирај</translation>
 <translation id="5280426389926346830">Желите ли да направите пречицу?</translation>
 <translation id="7525067979554623046">Направи</translation>
@@ -1302,6 +1303,7 @@
 <translation id="3071624960923923138">Можете да кликнете овде да бисте отворили нову картицу</translation>
 <translation id="4908811072292128752">Отворите нову картицу да бисте прегледали два сајта истовремено</translation>
 <translation id="8966870118594285808">Поново отворите картицу ако сте је случајно затворили</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> може поново да отвори картице које сте случајно затворили</translation>
 <translation id="2963151496262057773">Следећа додатна компонента се не одазива: <ph name="PLUGIN_NAME"/> Желите ли да је зауставите?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Страница се не одазива}one{Странице се не одазивају}few{Странице се не одазивају}other{Странице се не одазивају}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Можете да сачекате да страница почне да се одазива или да је затворите.}one{Можете да сачекате да странице почну да се одазивају или да их затворите.}few{Можете да сачекате да странице почну да се одазивају или да их затворите.}other{Можете да сачекате да странице почну да се одазивају или да их затворите.}}</translation>
@@ -1356,12 +1358,13 @@
 <translation id="6076448957780543068">Уврсти овај снимак екрана</translation>
 <translation id="7052237160939977163">Шаљи податке о праћењу учинка</translation>
 <translation id="5526928694260255286">Приложите <ph name="BEGIN_LINK"/>Евиденције Bluetooth-а<ph name="END_LINK"/> (Brave Software интерно)</translation>
+<translation id="3047644958362961983">Ове информације нам помажу да боље разумемо проблем који имате са Помоћником. Чувају се највише 90 дана, а приступ је ограничен на одговарајуће тимове за инжењеринг и повратне информације.</translation>
 <translation id="1705635099498185261">Да би боље дијагностиковали проблеме са Bluetooth-ом, запослени у Brave Software-у могу да укључе додатне Bluetooth евиденције у извештаје са повратним информацијама. Кад изаберете ову опцију, извештај ће обухватити btsnoop и HCI евиденције из актуелне очишћене сесије из које је уклоњено што више података који могу да открију идентитет. Приступ тим евиденцијама је ограничен на менаџере групе производа Brave ОС у Listnr-у. Евиденције се трајно бришу после 90 дана.</translation>
 <translation id="4206323443866416204">Извештај са повратним информацијама</translation>
 <translation id="3681311097828166361">Хвала вам на повратним информацијама. Тренутно сте офлајн и касније ћемо вам послати извештај.</translation>
 <translation id="8713570323158206935">Шаљи <ph name="BEGIN_LINK1"/>информације о систему<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Шаљи <ph name="BEGIN_LINK1"/>информације о систему и апликацијама<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Информације за отклањање грешака у Асистенту</translation>
+<translation id="6395423953133416962">Шаљи <ph name="BEGIN_LINK1"/>информације<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>показатеље<ph name="END_LINK2"/> о систему</translation>
+<translation id="6270770586500173387">Шаљи <ph name="BEGIN_LINK1"/>информације о систему и апликацијама<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>показатеље<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Датотека ће бити послата Brave Software-у ради отклањања грешака</translation>
 <translation id="8227119283605456246">Приложи датотеку</translation>
 <translation id="5367091008316207019">Читање датотеке..</translation>
@@ -2580,6 +2583,7 @@
 <translation id="4694604912444486114">Мајмун</translation>
 <translation id="6795884519221689054">Панда</translation>
 <translation id="1829129547161959350">Пингвин</translation>
+<translation id="3021066826692793094">Лептир</translation>
 <translation id="3809272675881623365">Зец</translation>
 <translation id="4124935795427217608">Једнорог</translation>
 <translation id="1830550083491357902">Нисте пријављени</translation>
@@ -3889,6 +3893,7 @@
 <translation id="8339059274628563283">Локално сачувани подаци са сајта <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Желите ли да ресетујете дозволе за сајт <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Желите ли да обришете податке сајта?</translation>
+<translation id="4665446389743427678">Биће избрисани сви подаци које <ph name="SITE"/> чува.</translation>
 <translation id="5300287940468717207">Желите ли да ресетујете дозволе за сајт?</translation>
 <translation id="2734760316755174687">Ресетоваће се и сајтови из групе <ph name="SITE_GROUP_NAME"/>.</translation>
 <translation id="3255355328033513170">Сви подаци које <ph name="SITE_GROUP_NAME"/> сачува и сви сајтови у оквиру те групе биће избрисани. То обухвата колачиће. Бићете одјављени са ових сајтова, укључујући оне на отвореним картицама.</translation>
@@ -4362,6 +4367,8 @@
 <translation id="4359717112757026264">Градски пејзажи</translation>
 <translation id="6691541770654083180">Земља</translation>
 <translation id="5033266061063942743">Геометријски облици</translation>
+<translation id="7789963078219276159">Позадина почетне странице је промењена у: <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Позадина почетне странице је ресетована на подразумевану позадину.</translation>
 <translation id="239760341987199724">Подеси Brave као подразумевани прегледач</translation>
 <translation id="96037229054033864">Добијте Brave Software претрагу и Brave Software паметне функције сваки пут када прегледате</translation>
 <translation id="296137235951584143">Прилагодите Brave себи</translation>

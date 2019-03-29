@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Kein Interesse</translation>
 <translation id="9169931577761441333"><ph name="APP_NAME"/> zum Startbildschirm hinzufügen</translation>
 <translation id="6349101878882523185"><ph name="APP_NAME"/> installieren</translation>
+<translation id="4918221908152712722"><ph name="APP_NAME"/> installieren (kein Download erforderlich)</translation>
 <translation id="3789841737615482174">Installieren</translation>
 <translation id="5280426389926346830">Verknüpfung erstellen?</translation>
 <translation id="7525067979554623046">Erstellen</translation>
@@ -1307,6 +1308,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="3071624960923923138">Wenn Sie einen neuen Tab öffnen möchten, klicken Sie hier</translation>
 <translation id="4908811072292128752">Wenn Sie zwei Websites gleichzeitig ansehen möchten, öffnen Sie einen neuen Tab</translation>
 <translation id="8966870118594285808">Versehentlich geschlossenen Tab wieder öffnen</translation>
+<translation id="8806680466228877631">Mit "<ph name="SHORTCUT"/>" lassen sich versehentlich geschlossene Tabs wieder öffnen</translation>
 <translation id="2963151496262057773">Das folgende Plug-in reagiert nicht: <ph name="PLUGIN_NAME"/>. Möchten Sie es anhalten?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Seite reagiert nicht}other{Seiten reagieren nicht}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Sie können warten, bis die Seite wieder reagiert, oder sie schließen.}other{Sie können warten, bis die Seiten wieder reagieren, oder sie schließen.}}</translation>
@@ -1361,12 +1363,13 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="6076448957780543068">Diesen Screenshot einfügen</translation>
 <translation id="7052237160939977163">Daten der Leistungsnachverfolgung senden</translation>
 <translation id="5526928694260255286"><ph name="BEGIN_LINK"/>Bluetooth-Protokolle<ph name="END_LINK"/> anhängen (Brave Software-intern)</translation>
+<translation id="3047644958362961983">Diese Informationen helfen uns, Ihr Problem mit Assistant besser zu verstehen. Sie werden bis zu 90 Tage gespeichert und der Zugriff ist auf die zuständigen Entwickler- und Feedbackteams beschränkt.</translation>
 <translation id="1705635099498185261">Damit Bluetooth-Probleme besser diagnostiziert werden können, haben Brave Software-Mitarbeiter die Möglichkeit, Feedbackberichte durch zusätzliche Bluetooth-Protokolle zu ergänzen. Wenn diese Option ausgewählt ist, enthält Ihr Bericht btsnoop- und HCI-Protokolle der aktuellen Sitzung. Personenbezogene Daten werden dabei so gut wie möglich entfernt. Nur die Administratoren der entsprechenden Brave OS-Produktgruppe in Listnr haben Zugriff auf die Protokolle. Diese werden nach 90 Tagen dauerhaft gelöscht.</translation>
 <translation id="4206323443866416204">Feedbackbericht</translation>
 <translation id="3681311097828166361">Vielen Dank für Ihr Feedback. Sie sind jetzt offline und Ihr Bericht wird später versendet.</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>Systeminformation<ph name="END_LINK1"/> senden</translation>
-<translation id="8642895855701880552"><ph name="BEGIN_LINK1"/>System- und App-Informationen<ph name="END_LINK1"/> senden</translation>
-<translation id="7292696521213967957">Informationen für die Fehlerbehebung bei Assistant</translation>
+<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>Systeminformationen<ph name="END_LINK1"/> und <ph name="BEGIN_LINK2"/>Messwerte<ph name="END_LINK2"/> senden</translation>
+<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>System- und App-Informationen<ph name="END_LINK1"/> sowie <ph name="BEGIN_LINK2"/>Messwerte<ph name="END_LINK2"/> senden</translation>
 <translation id="8329196515830093443">Datei wird zur Fehlerbehebung an Brave Software gesendet</translation>
 <translation id="8227119283605456246">Datei anhängen</translation>
 <translation id="5367091008316207019">Datei wird gelesen...</translation>
@@ -2584,6 +2587,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="4694604912444486114">Affe</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pinguin</translation>
+<translation id="3021066826692793094">Schmetterling</translation>
 <translation id="3809272675881623365">Kaninchen</translation>
 <translation id="4124935795427217608">Einhorn</translation>
 <translation id="1830550083491357902">Nicht angemeldet</translation>
@@ -3893,6 +3897,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="8339059274628563283">Für <ph name="SITE"/> lokal gespeicherte Daten</translation>
 <translation id="4090947011087001172">Websiteberechtigungen für <ph name="SITE"/> zurücksetzen?</translation>
 <translation id="1688867105868176567">Websitedaten löschen?</translation>
+<translation id="4665446389743427678">Alle von <ph name="SITE"/> gespeicherten Daten werden gelöscht.</translation>
 <translation id="5300287940468717207">Websiteberechtigungen zurücksetzen?</translation>
 <translation id="2734760316755174687">Websites unter <ph name="SITE_GROUP_NAME"/> werden ebenfalls zurückgesetzt.</translation>
 <translation id="3255355328033513170">Alle von <ph name="SITE_GROUP_NAME"/> gespeicherten Daten und alle darin enthaltenen Websites werden gelöscht. Dies bezieht sich auch auf Cookies. Sie werden von diesen Websites abgemeldet, auch in offenen Tabs.</translation>
@@ -4367,6 +4372,8 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="4359717112757026264">Stadtlandschaft</translation>
 <translation id="6691541770654083180">Erde</translation>
 <translation id="5033266061063942743">Geometrische Formen</translation>
+<translation id="7789963078219276159">Der Hintergrund der Startseite wurde zu <ph name="CATEGORY"/> geändert.</translation>
+<translation id="8771300903067484968">Der Hintergrund der Startseite wurde auf den standardmäßigen Hintergrund zurückgesetzt.</translation>
 <translation id="239760341987199724">Brave als Standardbrowser festlegen</translation>
 <translation id="96037229054033864">Cleverer suchen und surfen mit Brave Software</translation>
 <translation id="296137235951584143">Brave personalisieren</translation>

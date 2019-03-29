@@ -1375,12 +1375,13 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6076448957780543068">Dołącz ten zrzut ekranu</translation>
 <translation id="7052237160939977163">Wyślij dane śledzenia wydajności</translation>
 <translation id="5526928694260255286">Dołącz <ph name="BEGIN_LINK"/>dzienniki Bluetooth<ph name="END_LINK"/> (na użytek wewnętrzny Brave Software)</translation>
+<translation id="3047644958362961983">Te informacje pomogą nam lepiej zrozumieć naturę Twojego problemu z Asystentem. Są one przechowywane przez 90 dni, a dostęp do nich mają wyłącznie członkowie odpowiednich zespołów technicznych i pracownicy zajmujący się opiniami użytkowników.</translation>
 <translation id="1705635099498185261">Aby lepiej diagnozować problemy z Bluetoothem, pracownicy Brave Software mogą dołączać do raportów z opiniami dodatkowe dzienniki dotyczące działania Bluetootha. Jeśli ta opcja jest zaznaczona, Twój raport będzie zawierał dzienniki btsnoop i HCI z bieżącej sesji, przy czym zostanie usuniętych możliwie najwięcej informacji umożliwiających identyfikację. Dostęp do tych dzienników zostanie ograniczony do menedżerów grupy produktów Brave OS w Listnr. Dzienniki zostaną usunięte po 90 dniach.</translation>
 <translation id="4206323443866416204">Przesyłanie opinii</translation>
 <translation id="3681311097828166361">Dziękujemy za opinię. Jesteś teraz offline, więc Twoje zgłoszenie zostanie wysłane później.</translation>
 <translation id="8713570323158206935">Wyślij <ph name="BEGIN_LINK1"/>informacje o systemie<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Wyślij <ph name="BEGIN_LINK1">&lt;a href="#" id="sys-info-url"&gt;</ph>informacje o systemie<ph name="END_LINK1">&lt;/a&gt;</ph></translation>
-<translation id="7292696521213967957">Informacje do debugowania Asystenta</translation>
+<translation id="6395423953133416962">Przesyłaj <ph name="BEGIN_LINK1"/>informacje o systemie<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>dane<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Wysyłaj <ph name="BEGIN_LINK1"/>informacje o systemie i aplikacjach<ph name="END_LINK1"/> oraz <ph name="BEGIN_LINK2"/>dane<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Plik zostanie wysłany do Brave Software w celu debugowania</translation>
 <translation id="8227119283605456246">Załącz plik</translation>
 <translation id="5367091008316207019">Odczytuję plik..</translation>
@@ -4402,6 +4403,8 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="4359717112757026264">Pejzaż miejski</translation>
 <translation id="6691541770654083180">Ziemia</translation>
 <translation id="5033266061063942743">Kształty geometryczne</translation>
+<translation id="7789963078219276159">Zmieniono tło strony startowej na <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Na stronie startowej zostało przywrócone domyślne tło.</translation>
 <translation id="239760341987199724">Ustaw Brave jako domyślną przeglądarkę</translation>
 <translation id="96037229054033864">Korzystaj z wyszukiwarki i innych inteligentnych usług Brave Software na każdej stronie, którą otwierasz</translation>
 <translation id="296137235951584143">Dostosuj Brave do swoich potrzeb</translation>

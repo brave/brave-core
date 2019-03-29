@@ -147,6 +147,7 @@
 <translation id="9033857511263905942">K&amp;listra in</translation>
 <translation id="1815083418640426271">Klistra in som oformaterad text</translation>
 <translation id="4022426551683927403">&amp;Lägg till i ordlistan</translation>
+<translation id="6849870115130610913">Hämta bildbeskrivningar från Brave Software</translation>
 <translation id="372722114124766626">Bara den här gången</translation>
 <translation id="8917490105272468696">Ja</translation>
 <translation id="7473891865547856676">Nej tack</translation>
@@ -407,6 +408,8 @@
 <translation id="4923279099980110923">Ja, jag vill hjälpa till</translation>
 <translation id="2316129865977710310">Nej tack</translation>
 <translation id="9169931577761441333">Lägg till <ph name="APP_NAME"/> på startskärmen</translation>
+<translation id="6349101878882523185">Installera <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Installera <ph name="APP_NAME"/> (ingen nedladdning krävs)</translation>
 <translation id="3789841737615482174">Installera</translation>
 <translation id="5280426389926346830">Vill du skapa en genväg?</translation>
 <translation id="7525067979554623046">Skapa</translation>
@@ -1299,6 +1302,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3071624960923923138">Du kan klicka här om du vill öppna en ny flik</translation>
 <translation id="4908811072292128752">Öppna en ny flik om du vill surfa på två webbplatser samtidigt</translation>
 <translation id="8966870118594285808">Öppna en flik på nytt om du stängde den av misstag</translation>
+<translation id="8806680466228877631">Flikar som stängts av misstag kan öppnas på nytt med <ph name="SHORTCUT"/></translation>
 <translation id="2963151496262057773">Följande pluginprogram svarar inte: <ph name="PLUGIN_NAME"/>. Vill du stoppa det?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{sida svarar inte}other{sidor svarar inte}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Du kan vänta och se om sidan svarar eller lämna den.}other{Du kan vänta och se om sidorna svarar eller lämna dem.}}</translation>
@@ -1353,12 +1357,13 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6076448957780543068">Ta med skärmdumpen</translation>
 <translation id="7052237160939977163">Skicka data från resultatspårning</translation>
 <translation id="5526928694260255286">Bifoga <ph name="BEGIN_LINK"/>Bluetooth-loggar<ph name="END_LINK"/> (internt för Brave Software)</translation>
+<translation id="3047644958362961983">Med den här informationen blir det lättare för oss att förstå problemet med assistenten. Informationen lagras i upp till 90 dagar och endast behöriga ingenjörs- och feedbackteam har åtkomst till den.</translation>
 <translation id="1705635099498185261">Anställda hos Brave Software kan inkludera ytterligare Bluetooth-loggar i sina feedbackrapporter för att underlätta diagnosticeringen av problem med Bluetooth. När alternativet är markerat ingår HCI-loggar i btsnoop-format från den nuvarande sessionen i din rapport. Dessa loggar rensas på så mycket personligt identifierande information som möjligt. Åtkomsten till loggarna begränsas till ansvariga i produktgruppen för Brave OS på Listnr. Loggarna raderas permanent efter 90 dagar.</translation>
 <translation id="4206323443866416204">Feedbackrapport</translation>
 <translation id="3681311097828166361">Tack för din feedback. Just nu är du offline, så rapporten skickas senare.</translation>
 <translation id="8713570323158206935">Skicka <ph name="BEGIN_LINK1"/>systeminformation<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Skicka <ph name="BEGIN_LINK1"/>information om systemet och appar<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Felsökningsinformation för assistenten</translation>
+<translation id="6395423953133416962">Skicka <ph name="BEGIN_LINK1"/>systeminformation<ph name="END_LINK1"/> och <ph name="BEGIN_LINK2"/>statistik<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Skicka <ph name="BEGIN_LINK1"/>system- och appinformation<ph name="END_LINK1"/> och <ph name="BEGIN_LINK2"/>statistik<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Filen skickas till Brave Software för felsökning</translation>
 <translation id="8227119283605456246">Bifoga fil</translation>
 <translation id="5367091008316207019">Läser fil ...</translation>
@@ -2577,6 +2582,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4694604912444486114">Apa</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pingvin</translation>
+<translation id="3021066826692793094">Fjäril</translation>
 <translation id="3809272675881623365">Kanin</translation>
 <translation id="4124935795427217608">Enhörning</translation>
 <translation id="1830550083491357902">Inte inloggad</translation>
@@ -3063,6 +3069,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5840822070878669614">Öppna Brave Web Store</translation>
 <translation id="6073903501322152803">Lägg till tillgänglighetsfunktioner</translation>
 <translation id="7988355189918024273">Aktivera tillgänglighetsfunktioner</translation>
+<translation id="3274899353071794175">Om en bild inte har någon användbar beskrivning skapar Brave en åt dig. Bilden skannas av Brave Software.</translation>
 <translation id="2558896001721082624">Visa alltid tillgänglighetsalternativ i systemmenyn</translation>
 <translation id="7280649757394340890">Röstinställningar för text till tal</translation>
 <translation id="6635956300022133031">Välj och anpassa röster för text till tal</translation>
@@ -3885,6 +3892,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8339059274628563283">Lokalt lagrad data för <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Vill du återställa behörigheterna för webbplatsen <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Vill du ta bort webbplatsdata?</translation>
+<translation id="4665446389743427678">All data som lagrats av <ph name="SITE"/> raderas.</translation>
 <translation id="5300287940468717207">Vill du återställa webbplatsernas behörigheter?</translation>
 <translation id="2734760316755174687">Webbplatser som är underordnade <ph name="SITE_GROUP_NAME"/> återställs också.</translation>
 <translation id="3255355328033513170">All data som lagrats av <ph name="SITE_GROUP_NAME"/> och webbplatser under den raderas. Även cookies raderas. Du loggas ut från webbplatserna i fråga, även på öppna flikar.</translation>
@@ -4272,7 +4280,10 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3729506734996624908">Tillåtna webbplatser</translation>
 <translation id="3732078975418297900">Fel på rad <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Fel på rad <ph name="ERROR_LINE_START"/> till och med <ph name="ERROR_LINE_END"/></translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/> – aktivitetslogg</translation>
 <translation id="8287902281644548111">Sök efter API-anrop/webbadress</translation>
+<translation id="5008936837313706385">Aktivitetsnamn</translation>
+<translation id="7583948862126372804">Antal</translation>
 <translation id="2841013758207633010">Tid</translation>
 <translation id="2002109485265116295">Realtid</translation>
 <translation id="2549985041256363841">Börja spela in</translation>
@@ -4355,6 +4366,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4359717112757026264">Cityscape</translation>
 <translation id="6691541770654083180">Jorden</translation>
 <translation id="5033266061063942743">Geometriska former</translation>
+<translation id="7789963078219276159">Startsidans bakgrundsbild har ändrats till <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Startsidans bakgrund har återställts till standardbakgrunden.</translation>
 <translation id="239760341987199724">Använd Brave som standardwebbläsare</translation>
 <translation id="96037229054033864">Få Brave Software Sök och Brave Software-teknik varje gång du surfar</translation>
 <translation id="296137235951584143">Anpassa Brave</translation>

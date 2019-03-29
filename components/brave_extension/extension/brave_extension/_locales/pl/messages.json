@@ -4,7 +4,7 @@
     "description": "The name of the the extension."
   },
   "shields": {
-    "message": "Tarcze",
+    "message": "Tarcze są",
     "description": "The Shields feature name"
   },
   "up": {
@@ -24,7 +24,7 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Przeglądasz stronę bez żadnych zabezpieczeń prywatności lub oprogramowania.",
+    "message": "Przeglądasz tę stronę bez żadnych zabezpieczeń prywatności.",
     "description": "Message telling the user that shields are disabled"
   },
   "itemsBlocked": {
@@ -48,7 +48,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "zablokowane skrypty śledzące stron trzecich",
+    "message": "Zablokowane skrypty śledzące stron trzecich",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
@@ -56,7 +56,7 @@
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "Połączenie zaktualizowane do HTTPS",
+    "message": "Aktualizacja HTTPS",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {

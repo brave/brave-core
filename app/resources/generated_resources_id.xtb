@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Lain kali</translation>
 <translation id="9169931577761441333">Tambahkan <ph name="APP_NAME"/> ke layar Utama</translation>
 <translation id="6349101878882523185">Instal <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Instal <ph name="APP_NAME"/> (tidak perlu didownload)</translation>
 <translation id="3789841737615482174">Instal</translation>
 <translation id="5280426389926346830">Buat pintasan?</translation>
 <translation id="7525067979554623046">Buat</translation>
@@ -1311,6 +1312,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="3071624960923923138">Anda dapat mengklik di sini untuk membuka tab baru</translation>
 <translation id="4908811072292128752">Buka tab baru untuk mengakses 2 situs sekaligus</translation>
 <translation id="8966870118594285808">Membuka kembali tab jika Anda menutupnya secara tidak sengaja</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> dapat membuka kembali tab yang ditutup secara tidak sengaja</translation>
 <translation id="2963151496262057773">Plugin berikut tidak merespons: <ph name="PLUGIN_NAME"/>Ingin menghentikannya?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Halaman Tidak Merespons}other{Halaman Tidak Merespons}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Anda dapat menunggu sampai halaman menjadi responsif atau keluar dari halaman.}other{Anda dapat menunggu sampai halaman menjadi responsif atau keluar dari halaman.}}</translation>
@@ -1365,12 +1367,13 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6076448957780543068">Sertakan screenshot ini</translation>
 <translation id="7052237160939977163">Mengirim data pelacakan kinerja</translation>
 <translation id="5526928694260255286">Lampirkan <ph name="BEGIN_LINK"/>Log Bluetooth<ph name="END_LINK"/> (internal Brave Software)</translation>
+<translation id="3047644958362961983">Informasi ini membantu kami memahami masalah Asisten dengan lebih baik. Informasi tersebut disimpan selama 90 hari dan hanya dapat diakses oleh tim teknis dan masukan yang terkait.</translation>
 <translation id="1705635099498185261">Untuk mendiagnosis masalah Bluetooth dengan lebih baik, Brave Softwarer dapat menyertakan log Bluetooth tambahan dengan laporan umpannya. Jika opsi ini dicentang, laporan Anda akan menyertakan log HCI dan btsnoop dari sesi Anda saat ini, yang dihapus untuk membuang PII sebanyak mungkin. Akses ke log ini akan dibatasi pada pengelola grup produk Brave OS di Listnr. Log akan dihapus setelah 90 hari.</translation>
 <translation id="4206323443866416204">Laporan Masukan</translation>
 <translation id="3681311097828166361">Terima kasih atas masukannya. Anda sedang offline, laporan akan dikirim nanti.</translation>
 <translation id="8713570323158206935">Kirim <ph name="BEGIN_LINK1"/>sistem informasi<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Kirim <ph name="BEGIN_LINK1"/>informasi sistem dan aplikasi<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Info untuk melakukan debug Asisten</translation>
+<translation id="6395423953133416962">Kirim <ph name="BEGIN_LINK1"/>informasi sistem<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>metrik<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Kirim <ph name="BEGIN_LINK1"/>informasi aplikasi dan sistem<ph name="END_LINK1"/> serta <ph name="BEGIN_LINK2"/>metrik<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">File akan dikirim ke Brave Software untuk proses debug</translation>
 <translation id="8227119283605456246">Lampirkan file</translation>
 <translation id="5367091008316207019">Membaca file..</translation>
@@ -2590,6 +2593,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4694604912444486114">Kera</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Penguin</translation>
+<translation id="3021066826692793094">Kupu-kupu</translation>
 <translation id="3809272675881623365">Kelinci</translation>
 <translation id="4124935795427217608">Unicorn</translation>
 <translation id="1830550083491357902">Belum masuk</translation>
@@ -3899,6 +3903,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8339059274628563283">Data <ph name="SITE"/> yang disimpan secara lokal</translation>
 <translation id="4090947011087001172">Setel ulang izin situs untuk <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Hapus data situs?</translation>
+<translation id="4665446389743427678">Semua data yang disimpan oleh <ph name="SITE"/> akan dihapus.</translation>
 <translation id="5300287940468717207">Setel ulang izin situs?</translation>
 <translation id="2734760316755174687">Situs pada <ph name="SITE_GROUP_NAME"/> juga akan disetel ulang.</translation>
 <translation id="3255355328033513170">Semua data yang disimpan oleh <ph name="SITE_GROUP_NAME"/> dan semua situs pada grup tersebut akan dihapus. Data ini mencakup cookie. Anda akan logout dari semua situs tersebut, termasuk di tab yang terbuka.</translation>
@@ -4373,6 +4378,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4359717112757026264">Pemandangan Kota</translation>
 <translation id="6691541770654083180">Bumi</translation>
 <translation id="5033266061063942743">Bentuk geometris</translation>
+<translation id="7789963078219276159">Latar belakang halaman awal telah diubah menjadi <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Latar belakang halaman awal telah disetel ulang ke latar belakang default.</translation>
 <translation id="239760341987199724">Setel Brave sebagai browser default</translation>
 <translation id="96037229054033864">Nikmati kecanggihan Brave Software dan Brave Software Penelusuran setiap kali Anda browsing</translation>
 <translation id="296137235951584143">Sesuaikan Brave dengan selera Anda</translation>

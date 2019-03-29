@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Nee, bedankt</translation>
 <translation id="9169931577761441333"><ph name="APP_NAME"/> toevoegen aan startscherm</translation>
 <translation id="6349101878882523185"><ph name="APP_NAME"/> installeren</translation>
+<translation id="4918221908152712722"><ph name="APP_NAME"/> installeren (geen download vereist)</translation>
 <translation id="3789841737615482174">Installeren</translation>
 <translation id="5280426389926346830">Snelkoppeling maken?</translation>
 <translation id="7525067979554623046">Maken</translation>
@@ -1318,6 +1319,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3071624960923923138">Je kunt hier klikken om een nieuw tabblad te openen</translation>
 <translation id="4908811072292128752">Een nieuw tabblad openen om op twee sites tegelijk te browsen</translation>
 <translation id="8966870118594285808">Een tabblad opnieuw openen wanneer je dit per ongeluk hebt gesloten</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> kan per ongeluk gesloten tabbladen opnieuw openen</translation>
 <translation id="2963151496262057773">De volgende plug-in reageert niet meer: <ph name="PLUGIN_NAME"/>Wil je deze beëindigen?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Pagina reageert niet}other{Pagina's reageren niet}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Je kunt wachten tot de pagina reageert of de pagina afsluiten.}other{Je kunt wachten tot de pagina's reageren of de pagina's afsluiten.}}</translation>
@@ -1372,12 +1374,13 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6076448957780543068">Dit screenshot opnemen</translation>
 <translation id="7052237160939977163">Gegevens over het bijhouden van prestaties verzenden</translation>
 <translation id="5526928694260255286"><ph name="BEGIN_LINK"/>Bluetooth-logboeken<ph name="END_LINK"/> toevoegen (voor intern Brave Software-gebruik)</translation>
+<translation id="3047644958362961983">Deze informatie biedt ons meer inzicht in je probleem met de Assistent. De informatie wordt maximaal negentig dagen opgeslagen en de toegang is beperkt tot de toepasselijke technische en feedbackteams.</translation>
 <translation id="1705635099498185261">Brave Softwarers kunnen aanvullende Bluetooth-logboeken toevoegen aan hun feedbackrapporten om Bluetooth-problemen beter te analyseren. Als deze optie is aangevinkt, bevat je rapport btsnoop- en HCI-logboeken van je huidige sessie die zijn opgeschoond om zo veel mogelijk PII te verwijderen. Toegang tot deze logboeken is beperkt tot beheerders van de productgroep Brave OS in Listnr. Logboeken worden na negentig dagen verwijderd.</translation>
 <translation id="4206323443866416204">Feedbackrapport</translation>
 <translation id="3681311097828166361">Bedankt voor je feedback. Je bent nu offline en je rapport wordt later verzonden.</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>Systeemgegevens<ph name="END_LINK1"/> verzenden</translation>
-<translation id="8642895855701880552"><ph name="BEGIN_LINK1"/>Systeem- en app-gegevens<ph name="END_LINK1"/> verzenden</translation>
-<translation id="7292696521213967957">Foutopsporingsgegevens voor de Assistent</translation>
+<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>Systeeminformatie<ph name="END_LINK1"/> en <ph name="BEGIN_LINK2"/>statistische gegevens<ph name="END_LINK2"/> verzenden</translation>
+<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>Systeem- en app-gegevens<ph name="END_LINK1"/> en <ph name="BEGIN_LINK2"/>statistieken<ph name="END_LINK2"/> verzenden</translation>
 <translation id="8329196515830093443">Bestanden worden naar Brave Software gestuurd voor foutopsporing</translation>
 <translation id="8227119283605456246">Bestand bijvoegen</translation>
 <translation id="5367091008316207019">Bestand lezen...</translation>
@@ -2599,6 +2602,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="4694604912444486114">Aap</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pinguïn</translation>
+<translation id="3021066826692793094">Vlinder</translation>
 <translation id="3809272675881623365">Konijn</translation>
 <translation id="4124935795427217608">Eenhoorn</translation>
 <translation id="1830550083491357902">Niet ingelogd</translation>
@@ -3909,6 +3913,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8339059274628563283">Lokaal opgeslagen gegevens voor <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Siterechten voor <ph name="SITE"/> resetten?</translation>
 <translation id="1688867105868176567">Sitegegevens wissen?</translation>
+<translation id="4665446389743427678">Alle gegevens die zijn opgeslagen door <ph name="SITE"/>, worden verwijderd.</translation>
 <translation id="5300287940468717207">Sitemachtigingen resetten?</translation>
 <translation id="2734760316755174687">Sites onder <ph name="SITE_GROUP_NAME"/> worden ook gereset.</translation>
 <translation id="3255355328033513170">Alle gegevens die door <ph name="SITE_GROUP_NAME"/> en onderliggende sites zijn opgeslagen, worden verwijderd. Dit geldt ook voor cookies. Je wordt uitgelogd bij deze sites, inclusief geopende tabbladen.</translation>
@@ -4383,6 +4388,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="4359717112757026264">Stadsgezicht</translation>
 <translation id="6691541770654083180">Aarde</translation>
 <translation id="5033266061063942743">Geometrische vormen</translation>
+<translation id="7789963078219276159">Achtergrond van startpagina is gewijzigd in <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">De achtergrond van de startpagina is gereset naar de standaardachtergrond.</translation>
 <translation id="239760341987199724">Brave instellen als je standaardbrowser</translation>
 <translation id="96037229054033864">Brave Software Zoeken en slimme Brave Software-functies standaard instellen voor browsen</translation>
 <translation id="296137235951584143">Personaliseer Brave voor jou</translation>

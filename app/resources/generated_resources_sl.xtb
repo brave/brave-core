@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Ne, hvala</translation>
 <translation id="9169931577761441333">Dodajanje aplikacije <ph name="APP_NAME"/> na začetni zaslon</translation>
 <translation id="6349101878882523185">Namestite <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Namestite <ph name="APP_NAME"/> (prenos ni potreben)</translation>
 <translation id="3789841737615482174">Namesti</translation>
 <translation id="5280426389926346830">Želite ustvariti bližnjico?</translation>
 <translation id="7525067979554623046">Ustvari</translation>
@@ -1302,6 +1303,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="3071624960923923138">Če želite odpreti nov zavihek, lahko kliknete tukaj</translation>
 <translation id="4908811072292128752">Odprite nov zavihek, če želite brskati na dveh spletnih mestih hkrati</translation>
 <translation id="8966870118594285808">Znova odprite zavihek, če ste ga pomotoma zaprli</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> lahko odpre pomotoma zaprte zavihke</translation>
 <translation id="2963151496262057773">Ta vtičnik se ne odziva: <ph name="PLUGIN_NAME"/>. Ali ga želite ustaviti?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Stran se ne odziva}one{Strani se ne odzivajo}two{Strani se ne odzivajo}few{Strani se ne odzivajo}other{Strani se ne odzivajo}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Lahko počakate, da se stran začne odzivati, ali jo zaprete.}one{Lahko počakate, da se strani začnejo odzivati, ali jih zaprete.}two{Lahko počakate, da se strani začnejo odzivati, ali jih zaprete.}few{Lahko počakate, da se strani začnejo odzivati, ali jih zaprete.}other{Lahko počakate, da se strani začnejo odzivati, ali jih zaprete.}}</translation>
@@ -1356,12 +1358,13 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="6076448957780543068">Vključuje ta posnetek zaslona</translation>
 <translation id="7052237160939977163">Pošlji podatke za sledenje učinkovitosti delovanja</translation>
 <translation id="5526928694260255286">Priložite <ph name="BEGIN_LINK"/>Dnevnike za Bluetooth<ph name="END_LINK"/> (Brave Software – interno)</translation>
+<translation id="3047644958362961983">S temi podatki si pomagamo pri razumevanju vaše težave s Pomočnikom. Shranjeni so do 90 dni in dostop je omogočen samo ustreznim skupinam inženirjev in skupinam za povratne informacije.</translation>
 <translation id="1705635099498185261">Googlovi uporabniki lahko za boljše diagnosticiranje težav z Bluetoothom v poročila s povratnimi informacijami vključijo dodatne dnevnike za Bluetooth. Če je označena ta možnost, bosta v vašem poročilu vključena dnevnika btsnoop in HCI iz trenutne seje, in sicer prečiščena tako, da je odstranjenih čim več podatkov, ki omogočajo osebno prepoznavo. Dostop do teh dnevnikov bo omejen na skrbnike skupine izdelkov OS Brave za Listnr. Dnevniki bodo trajno odstranjeni po 90 dneh.</translation>
 <translation id="4206323443866416204">Poročilo s povratnimi informacijami</translation>
 <translation id="3681311097828166361">Hvala za povratne informacije. Trenutno nimate povezave, zato bo poročilo poslano pozneje.</translation>
 <translation id="8713570323158206935">Pošlji <ph name="BEGIN_LINK1"/>podatke o sistemu<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Pošlji <ph name="BEGIN_LINK1"/>podatke o sistemu in aplikacijah<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Podatki za odpravljanje napak v Pomočniku</translation>
+<translation id="6395423953133416962">Pošlji <ph name="BEGIN_LINK1"/>podatke o sistemu<ph name="END_LINK1"/> in <ph name="BEGIN_LINK2"/>meritve<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Pošiljanje <ph name="BEGIN_LINK1"/>podatkov o sistemu in aplikacijah<ph name="END_LINK1"/> ter <ph name="BEGIN_LINK2"/>meritev<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Datoteka bo poslana Googlu zaradi odpravljanja napak</translation>
 <translation id="8227119283605456246">Prilaganje datoteke</translation>
 <translation id="5367091008316207019">Branje datoteke ...</translation>
@@ -2580,6 +2583,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="4694604912444486114">Opica</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pingvin</translation>
+<translation id="3021066826692793094">Metulj</translation>
 <translation id="3809272675881623365">Zajec</translation>
 <translation id="4124935795427217608">Samorog</translation>
 <translation id="1830550083491357902">Niste prijavljeni</translation>
@@ -3889,6 +3893,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="8339059274628563283">Lokalno shranjeni podatki za <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Ali želite ponastaviti dovoljenja za spletno mesto <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Ali želite izbrisati podatke spletnega mesta?</translation>
+<translation id="4665446389743427678">Vsi podatki, ki jih shrani <ph name="SITE"/>, bodo izbrisani.</translation>
 <translation id="5300287940468717207">Želite ponastaviti dovoljenja spletnih mest?</translation>
 <translation id="2734760316755174687">Spletna mesta v skupini <ph name="SITE_GROUP_NAME"/> bodo prav tako ponastavljena.</translation>
 <translation id="3255355328033513170">Izbrisani bodo vsi podatki, ki jih shrani skupina <ph name="SITE_GROUP_NAME"/> in vsa spletna mesta v njej. To vključuje piškotke. Odjavljeni boste s teh spletnih mest, vključno s tistimi na odprtih zavihkih.</translation>
@@ -4362,6 +4367,8 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="4359717112757026264">Urbana pokrajina</translation>
 <translation id="6691541770654083180">Zemlja</translation>
 <translation id="5033266061063942743">Geometrijske oblike</translation>
+<translation id="7789963078219276159">Ozadje začetne strani je spremenjeno v <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Ozadje začetne strani je ponastavljeno na privzeto ozadje.</translation>
 <translation id="239760341987199724">Nastavitev Bravea za privzeti brskalnik</translation>
 <translation id="96037229054033864">Vsakič brskajte z Iskanjem Brave Software in Googlovimi pametnimi rešitvami</translation>
 <translation id="296137235951584143">Prilagodite si Brave</translation>

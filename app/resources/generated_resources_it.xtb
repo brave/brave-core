@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">No, grazie</translation>
 <translation id="9169931577761441333">Aggiungi <ph name="APP_NAME"/> alla schermata Home</translation>
 <translation id="6349101878882523185">Installa <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Installa <ph name="APP_NAME"/> (non è richiesto alcun download)</translation>
 <translation id="3789841737615482174">Installa</translation>
 <translation id="5280426389926346830">Vuoi creare una scorciatoia?</translation>
 <translation id="7525067979554623046">Crea</translation>
@@ -1310,6 +1311,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="3071624960923923138">Puoi fare clic qui per aprire una nuova scheda</translation>
 <translation id="4908811072292128752">Apri una nuova scheda per visitare due siti contemporaneamente</translation>
 <translation id="8966870118594285808">Riapri una scheda chiusa accidentalmente</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> può riaprire una scheda chiusa accidentalmente</translation>
 <translation id="2963151496262057773">Il seguente plug-in non risponde: <ph name="PLUGIN_NAME"/>. Interrompere l'esecuzione?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{La pagina non risponde}other{Le pagine non rispondono}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Puoi aspettare che risponda di nuovo o uscire dalla pagina.}other{Puoi aspettare che rispondano di nuovo o uscire dalle pagine.}}</translation>
@@ -1364,12 +1366,13 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6076448957780543068">Includi questo screenshot</translation>
 <translation id="7052237160939977163">Invia dati di rilevamento del rendimento</translation>
 <translation id="5526928694260255286">Allega <ph name="BEGIN_LINK"/>log Bluetooth<ph name="END_LINK"/> (interno di Brave Software)</translation>
+<translation id="3047644958362961983">Queste informazioni ci aiutano a capire meglio il tuo problema con l'assistente. Vengono memorizzate per massimo 90 giorni e l'accesso è limitato ai team di tecnici e responsabili dei feedback competenti.</translation>
 <translation id="1705635099498185261">Per meglio diagnosticare i problemi del Bluetooth, i Brave Softwarer possono includere log Bluetooth aggiuntivi nei loro rapporti di feedback. Quando questa opzione è selezionata, il rapporto includerà i log btsnoop e HCI relativi alla tua sessione attuale, sottoposti a sanitizzazione per rimuovere il maggior numero possibile di PII. L'accesso a questi log verrà limitato agli amministratori del gruppo di prodotti Brave OS in Listnr. I log verranno eliminati dopo 90 giorni.</translation>
 <translation id="4206323443866416204">Rapporto di feedback</translation>
 <translation id="3681311097828166361">Grazie per il tuo feedback. Adesso sei offline; il tuo rapporto verrà inviato in un secondo momento.</translation>
 <translation id="8713570323158206935">Invia <ph name="BEGIN_LINK1"/>informazioni sul sistema<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Invia le <ph name="BEGIN_LINK1"/>informazioni su sistema e app<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Informazioni per il debug dell'assistente</translation>
+<translation id="6395423953133416962">Invia <ph name="BEGIN_LINK1"/>informazioni di sistema<ph name="END_LINK1"/> e <ph name="BEGIN_LINK2"/>metriche<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Invia <ph name="BEGIN_LINK1"/>informazioni relative al sistema/alle app<ph name="END_LINK1"/> e <ph name="BEGIN_LINK2"/>metriche<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Il file sarà inviato a Brave Software per il debug</translation>
 <translation id="8227119283605456246">Allega file</translation>
 <translation id="5367091008316207019">Lettura del file in corso...</translation>
@@ -2587,6 +2590,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4694604912444486114">Scimmia</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pinguino</translation>
+<translation id="3021066826692793094">Farfalla</translation>
 <translation id="3809272675881623365">Coniglio</translation>
 <translation id="4124935795427217608">Unicorno</translation>
 <translation id="1830550083491357902">Accesso non eseguito</translation>
@@ -3895,6 +3899,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8339059274628563283">Dati memorizzati di <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Reimpostare le autorizzazioni per il sito <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Cancellare i dati del sito?</translation>
+<translation id="4665446389743427678">Tutti i dati memorizzati da <ph name="SITE"/> saranno eliminati.</translation>
 <translation id="5300287940468717207">Vuoi reimpostare le autorizzazioni dei siti?</translation>
 <translation id="2734760316755174687">Verranno reimpostati anche i siti su <ph name="SITE_GROUP_NAME"/>.</translation>
 <translation id="3255355328033513170">Tutti i dati memorizzati per il gruppo <ph name="SITE_GROUP_NAME"/> e per gli eventuali siti al suo interno verranno eliminati, inclusi i cookie. Uscirai da questi siti (schede aperte incluse).</translation>
@@ -4369,6 +4374,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4359717112757026264">Cityscape</translation>
 <translation id="6691541770654083180">Terra</translation>
 <translation id="5033266061063942743">Forme geometriche</translation>
+<translation id="7789963078219276159">Lo sfondo della pagina iniziale è ora <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Lo sfondo della pagina iniziale è stato reimpostato allo sfondo predefinito.</translation>
 <translation id="239760341987199724">Imposta Brave come browser predefinito</translation>
 <translation id="96037229054033864">Sfrutta tutti i vantaggi di Ricerca Brave Software e Brave Software ogni volta che navighi</translation>
 <translation id="296137235951584143">Personalizza il tuo Brave</translation>

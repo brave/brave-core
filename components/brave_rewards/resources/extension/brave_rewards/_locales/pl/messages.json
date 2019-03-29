@@ -214,7 +214,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Twoje zaplanowane miesięczne opłaty w celu realizacji wspierania automatycznego i comiesięcznych napiwków nie mogły zostać przetworzone, ponieważ Twój portfel ma niewystarczające środki. Spróbujemy ponownie po 30 dniach.",
+    "message": "Twoje zaplanowane miesięczne płatności, w celu realizacji automatycznego wsparcia i comiesięcznych napiwków nie mogły zostać przetworzone, ponieważ w Twoim portfelu brakuje środków. Spróbujemy ponownie za 30 dni.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -350,7 +350,7 @@
     "description": "The word 'and'"
   },
   "braveRewardsSubTitle": {
-    "message": "Otrzymuj nagrody za przeglądanie!",
+    "message": "Otrzymuj nagrody za przeglądanie internetu!",
     "description": "Subtitle for wallet disabled panel"
   },
   "disabledPanelTextTwo": {

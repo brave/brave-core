@@ -147,6 +147,7 @@
 <translation id="9033857511263905942">I-&amp;paste</translation>
 <translation id="1815083418640426271">I-paste Bilang Plain Text</translation>
 <translation id="4022426551683927403">&amp;Idagdag sa Diksyunaryo</translation>
+<translation id="6849870115130610913">Kumuha ng Mga Paglalarawan ng Larawan mula sa Brave Software</translation>
 <translation id="372722114124766626">Isang Beses Lang</translation>
 <translation id="8917490105272468696">Oo, Tinatanggap Ko</translation>
 <translation id="7473891865547856676">Hindi, Salamat</translation>
@@ -407,6 +408,8 @@
 <translation id="4923279099980110923">Oo, gusto kong makatulong</translation>
 <translation id="2316129865977710310">Hindi, salamat</translation>
 <translation id="9169931577761441333">Idagdag ang <ph name="APP_NAME"/> sa Home screen</translation>
+<translation id="6349101878882523185">I-install ang <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">I-install ang <ph name="APP_NAME"/> (hindi kinakailangang i-download)</translation>
 <translation id="3789841737615482174">Mag-install</translation>
 <translation id="5280426389926346830">Gumawa ng Shortcut?</translation>
 <translation id="7525067979554623046">Gumawa</translation>
@@ -1299,6 +1302,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3071624960923923138">Maaari kang mag-click dito upang magbukas ng bagong tab</translation>
 <translation id="4908811072292128752">Magbukas ng bagong tab upang mag-browse ng dalawang site nang sabay</translation>
 <translation id="8966870118594285808">Muling magbukas ng tab kung naisara mo ito nang hindi sinasadya</translation>
+<translation id="8806680466228877631">Gamit ang <ph name="SHORTCUT"/>, muling mabubuksan ang mga tab na hindi sinasadyang naisara</translation>
 <translation id="2963151496262057773">Hindi tumutugon ang sumusunod na plugin: <ph name="PLUGIN_NAME"/>Gusto mo bang ihinto ito?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Hindi Tumutugon ang Page}one{Hindi Tumutugon ang Mga Page}other{Hindi Tumutugon ang Mga Page}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Maaari mong hintaying tumugon ito o umalis sa page.}one{Maaari mong hintaying tumugon ang mga ito o umalis sa mga page.}other{Maaari mong hintaying tumugon ang mga ito o umalis sa mga page.}}</translation>
@@ -1353,12 +1357,13 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6076448957780543068">Isama ang screenshot na ito</translation>
 <translation id="7052237160939977163">Ipadala ang data ng pagte-trace sa pagganap</translation>
 <translation id="5526928694260255286">Mag-attach ng <ph name="BEGIN_LINK"/>Mga Log ng Bluetooth<ph name="END_LINK"/> (Brave Software internal)</translation>
+<translation id="3047644958362961983">Nakakatulong sa amin ang impormasyong ito na maunawaan nang mas mabuti ang iyong isyu sa Assistant. Iso-store ito sa loob ng hanggang 90 araw at paghihigpitan ang access sa mga naaangkop na engineering at feedback team.</translation>
 <translation id="1705635099498185261">Para mas mahusay na ma-diagnose ang mga isyu sa Bluetooth, maaaring magsama ang mga Brave Softwarer ng karagdagang mga log ng Bluetooth sa kanilang mga ulat ng feedback. Kapag naka-check ang opsyong ito, maisasama sa iyong ulat ang mga log ng btsnoop at HCI mula sa kasalukuyan mong session, na nalinis para maalis ang lahat ng PII na maaaring alisin. Paghihigpitan ang access sa mga log na ito sa mga manager ng grupo ng produkto ng Brave OS sa Listnr. Ipu-purge ang mga log pagkatapos ng 90 araw.</translation>
 <translation id="4206323443866416204">Ulat ng Feedback</translation>
 <translation id="3681311097828166361">Salamat sa iyong feedback. Offline ka na ngayon, at ipapadala ang iyong ulat sa ibang pagkakataon.</translation>
 <translation id="8713570323158206935">Ipadala ang <ph name="BEGIN_LINK1"/>impormasyon ng system<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Ipadala ang <ph name="BEGIN_LINK1"/>impormasyon ng system at app<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Impormasyon para i-debug ang Assistant</translation>
+<translation id="6395423953133416962">Ipadala ang <ph name="BEGIN_LINK1"/>impormasyon ng system<ph name="END_LINK1"/> at <ph name="BEGIN_LINK2"/>mga sukatan<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Ipadala ang <ph name="BEGIN_LINK1"/>impormasyon ng system at app<ph name="END_LINK1"/>, at <ph name="BEGIN_LINK2"/>mga sukatan<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Ipapadala ang file sa Brave Software para sa pagde-debug</translation>
 <translation id="8227119283605456246">Mag-attach ng file</translation>
 <translation id="5367091008316207019">Binabasa ang file..</translation>
@@ -2577,6 +2582,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4694604912444486114">Unggoy</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Penguin</translation>
+<translation id="3021066826692793094">Paruparo</translation>
 <translation id="3809272675881623365">Kuneho</translation>
 <translation id="4124935795427217608">Unicorn</translation>
 <translation id="1830550083491357902">Hindi naka-sign in</translation>
@@ -3063,6 +3069,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5840822070878669614">Buksan ang Brave Web Store</translation>
 <translation id="6073903501322152803">Magdagdag ng mga feature ng pagiging naa-access</translation>
 <translation id="7988355189918024273">Paganahin ang mga tampok sa pagiging maa-access</translation>
+<translation id="3274899353071794175">Kung walang kapaki-pakinabang na paglalarawan ang isang larawan, magbibigay nito ang Brave para sa iyo. Sina-scan ng Brave Software ang mga larawan.</translation>
 <translation id="2558896001721082624">Ipakita ang mga opsyon sa accessibility sa menu ng system</translation>
 <translation id="7280649757394340890">Mga setting ng boses ng Text-to-Speech</translation>
 <translation id="6635956300022133031">Pumili at mag-customize ng mga boses ng text-to-speech</translation>
@@ -3885,6 +3892,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8339059274628563283">Lokal na nakaimbak na data ng <ph name="SITE"/></translation>
 <translation id="4090947011087001172">I-reset ang mga pahintulot sa site para sa <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">I-clear ang data ng site?</translation>
+<translation id="4665446389743427678">Ide-delete ang lahat ng data na naka-store sa <ph name="SITE"/>.</translation>
 <translation id="5300287940468717207">I-reset ang mga pahintulot sa site?</translation>
 <translation id="2734760316755174687">Mare-reset din ang mga site sa ilalim ng <ph name="SITE_GROUP_NAME"/>.</translation>
 <translation id="3255355328033513170">Made-delete ang lahat ng data na na-store ng <ph name="SITE_GROUP_NAME"/> at ng anumang site sa ilalim nito. Kabilang dito ang cookies. Masa-sign out ka sa mga site na ito, pati na rin sa mga nakabukas na tab.</translation>
@@ -4272,7 +4280,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3729506734996624908">Mga pinapahintulutang site</translation>
 <translation id="3732078975418297900">Error sa linya <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Error mula sa linya <ph name="ERROR_LINE_START"/> hanggang <ph name="ERROR_LINE_END"/></translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/> - Log ng Aktibidad</translation>
 <translation id="8287902281644548111">Maghanap ayon sa API call/URL</translation>
+<translation id="5008936837313706385">Pangalan ng Aktibidad</translation>
+<translation id="7583948862126372804">Bilang</translation>
 <translation id="2841013758207633010">Oras</translation>
 <translation id="2002109485265116295">Real-time</translation>
 <translation id="2549985041256363841">Simulang mag-record</translation>
@@ -4355,6 +4366,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4359717112757026264">Cityscape</translation>
 <translation id="6691541770654083180">Mundo</translation>
 <translation id="5033266061063942743">Mga geometric na hugis</translation>
+<translation id="7789963078219276159">Napalitan ng <ph name="CATEGORY"/> ang background ng start page.</translation>
+<translation id="8771300903067484968">Na-reset sa default na background ang background ng start page.</translation>
 <translation id="239760341987199724">Itakda ang Brave bilang iyong default na browser</translation>
 <translation id="96037229054033864">Makakuha ng Brave Software Search at Brave Software smarts sa tuwing magba-browse ka</translation>
 <translation id="296137235951584143">Gawing iyo ang Brave</translation>

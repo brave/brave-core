@@ -147,6 +147,7 @@
 <translation id="9033857511263905942">&amp;Pegar</translation>
 <translation id="1815083418640426271">Pegar como texto sin formato</translation>
 <translation id="4022426551683927403">&amp;Añadir al diccionario</translation>
+<translation id="6849870115130610913">Obtener descripciones de imagen de Brave Software</translation>
 <translation id="372722114124766626">Solo una vez</translation>
 <translation id="8917490105272468696">Sí, acepto</translation>
 <translation id="7473891865547856676">No, gracias</translation>
@@ -407,6 +408,8 @@
 <translation id="4923279099980110923">Sí, quiero ayudar</translation>
 <translation id="2316129865977710310">No, gracias</translation>
 <translation id="9169931577761441333">Añadir <ph name="APP_NAME"/> a la pantalla de inicio</translation>
+<translation id="6349101878882523185">Instalar <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Instala <ph name="APP_NAME"/> (sin descargar nada)</translation>
 <translation id="3789841737615482174">Instalar</translation>
 <translation id="5280426389926346830">¿Quieres crear un acceso directo?</translation>
 <translation id="7525067979554623046">Crear</translation>
@@ -1299,6 +1302,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3071624960923923138">Puedes hacer clic aquí para abrir una pestaña nueva</translation>
 <translation id="4908811072292128752">Abre una pestaña nueva para navegar por dos sitios web a la vez</translation>
 <translation id="8966870118594285808">Vuelve a abrir una pestaña si se cierra por error</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> te permite volver a abrir las pestañas cerradas por error</translation>
 <translation id="2963151496262057773">El complemento <ph name="PLUGIN_NAME"/> no responde. ¿Quieres detenerlo?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{La página no responde}other{Las páginas no responden}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Puedes salir de la página o esperar a que responda.}other{Puedes salir de las páginas o esperar a que respondan.}}</translation>
@@ -1353,12 +1357,13 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="6076448957780543068">Incluir esta captura de pantalla</translation>
 <translation id="7052237160939977163">Enviar datos de seguimiento de rendimiento</translation>
 <translation id="5526928694260255286">Adjuntar <ph name="BEGIN_LINK"/>registros de Bluetooth<ph name="END_LINK"/> (opción interna de Brave Software)</translation>
+<translation id="3047644958362961983">Esta información nos ayudará a entender mejor tu problema con el Asistente. Se almacena durante un máximo de 90 días y solo podrán acceder a estos datos los equipos correspondientes de ingeniería y sugerencias.</translation>
 <translation id="1705635099498185261">Para diagnosticar mejor los problemas de Bluetooth, los Brave Softwarers pueden incluir registros en sus comentarios. Si seleccionas esta opción, tu informe contendrá registros btsnoop y HCI de la sesión actual modificados para retirar tanta información personal identificable como sea posible. Solo los administradores de grupo de Brave OS de Listnr podrán acceder a estos registros, que se eliminarán definitivamente después de 90 días.</translation>
 <translation id="4206323443866416204">Informe de comentarios</translation>
 <translation id="3681311097828166361">Gracias por tus comentarios. Ahora no tienes conexión, por lo que el informe se enviará más tarde.</translation>
 <translation id="8713570323158206935">Enviar <ph name="BEGIN_LINK1"/>información del sistema<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Enviar <ph name="BEGIN_LINK1"/>información sobre el sistema y la aplicación<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Información para la depuración del Asistente</translation>
+<translation id="6395423953133416962">Enviar <ph name="BEGIN_LINK2"/>métricas<ph name="END_LINK2"/> e <ph name="BEGIN_LINK1"/>información del sistema<ph name="END_LINK1"/></translation>
+<translation id="6270770586500173387">Enviar <ph name="BEGIN_LINK2"/>métricas<ph name="END_LINK2"/> e <ph name="BEGIN_LINK1"/>información de aplicaciones y del sistema<ph name="END_LINK1"/></translation>
 <translation id="8329196515830093443">El archivo se enviará a Brave Software para depurarlo</translation>
 <translation id="8227119283605456246">Adjuntar archivo</translation>
 <translation id="5367091008316207019">Leyendo archivo...</translation>
@@ -2576,6 +2581,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="4694604912444486114">Mono</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pingüino</translation>
+<translation id="3021066826692793094">Mariposa</translation>
 <translation id="3809272675881623365">Conejo</translation>
 <translation id="4124935795427217608">Unicornio</translation>
 <translation id="1830550083491357902">No has iniciado sesión.</translation>
@@ -3062,6 +3068,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="5840822070878669614">Abrir Brave Web Store</translation>
 <translation id="6073903501322152803">Añadir funciones de accesibilidad</translation>
 <translation id="7988355189918024273">Habilitar funciones de accesibilidad</translation>
+<translation id="3274899353071794175">Si una imagen no tiene una descripción útil, Brave te proporcionará una. Brave Software se encarga de analizar las imágenes.</translation>
 <translation id="2558896001721082624">Mostrar siempre opciones de accesibilidad en el menú del sistema</translation>
 <translation id="7280649757394340890">Ajustes de voz de síntesis de voz</translation>
 <translation id="6635956300022133031">Seleccionar y personalizar voces de la síntesis de voz</translation>
@@ -3884,6 +3891,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="8339059274628563283"><ph name="SITE"/> ha almacenado datos de forma local</translation>
 <translation id="4090947011087001172">¿Quieres borrar los permisos del sitio web <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">¿Quieres borrar los datos del sitio web?</translation>
+<translation id="4665446389743427678">Se eliminarán todos los datos guardados por <ph name="SITE"/>.</translation>
 <translation id="5300287940468717207">¿Quieres restablecer los permisos de los sitios web?</translation>
 <translation id="2734760316755174687">También se restablecerán los permisos de los sitios web de <ph name="SITE_GROUP_NAME"/>.</translation>
 <translation id="3255355328033513170">Se eliminarán todos los datos guardados por <ph name="SITE_GROUP_NAME"/> y los sitios web que contenga, incluidas las cookies. Se cerrarán tus sesiones en esos sitios web, incluidas las que están en pestañas abiertas.</translation>
@@ -4271,7 +4279,10 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3729506734996624908">Sitios web permitidos</translation>
 <translation id="3732078975418297900">Error en la línea <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Error de la línea <ph name="ERROR_LINE_START"/> a la <ph name="ERROR_LINE_END"/></translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/>: Registro de actividad</translation>
 <translation id="8287902281644548111">Buscar por llamada a la API o URL</translation>
+<translation id="5008936837313706385">Nombre de la actividad</translation>
+<translation id="7583948862126372804">Recuento</translation>
 <translation id="2841013758207633010">Hora</translation>
 <translation id="2002109485265116295">En tiempo real</translation>
 <translation id="2549985041256363841">Iniciar grabación</translation>

@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">નહીં, આભાર</translation>
 <translation id="9169931577761441333"><ph name="APP_NAME"/>ને હોમ સ્ક્રીનમાં ઉમેરો</translation>
 <translation id="6349101878882523185"><ph name="APP_NAME"/> ઇન્સ્ટૉલ કરો</translation>
+<translation id="4918221908152712722"><ph name="APP_NAME"/>ને ઇન્સ્ટૉલ કરો (કોઈ ડાઉનલોડ આવશ્યક નથી)</translation>
 <translation id="3789841737615482174">ઇન્સ્ટોલ કરો</translation>
 <translation id="5280426389926346830">શૉર્ટકટ બનાવીએ?</translation>
 <translation id="7525067979554623046">બનાવો</translation>
@@ -1295,6 +1296,7 @@
 <translation id="3071624960923923138">એક નવું ટૅબ ખોલવા માટે તમે અહીં ક્લિક કરી શકો છો</translation>
 <translation id="4908811072292128752">બે સાઇટ એકસાથે બ્રાઉઝ કરવા માટે એક નવી ટૅબ ખોલો</translation>
 <translation id="8966870118594285808">જો તમે ટૅબ અકસ્માતે બંધ કર્યું હોય, તો તે ફરી ખોલો</translation>
+<translation id="8806680466228877631">આકસ્મિક રીતે બંધ થયેલા ટૅબને <ph name="SHORTCUT"/> ફરી ખોલી શકે છે</translation>
 <translation id="2963151496262057773">નીચેનાં પ્લગ-ઇન ચાલતાં નથી: <ph name="PLUGIN_NAME"/>તમે તેને રોકવા માંગશો?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{પૃષ્ઠ પ્રતિભાવવિહીન}one{પૃષ્ઠો પ્રતિભાવવિહીન}other{પૃષ્ઠો પ્રતિભાવવિહીન}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{તમે પેજ સક્રિય થાય ત્યાં સુધી તેની રાહ જોઈ શકો છો અથવા તેમાંથી બહાર નીકળી શકો છો.}one{તમે પેજ સક્રિય થાય ત્યાં સુધી તેની રાહ જોઈ શકો છો અથવા તેમાંથી બહાર નીકળી શકો છો.}other{તમે પેજ સક્રિય થાય ત્યાં સુધી તેમની રાહ જોઈ શકો છો અથવા તેમાંથી બહાર નીકળી શકો છો.}}</translation>
@@ -1349,12 +1351,13 @@
 <translation id="6076448957780543068">આ સ્ક્રીનશોટ શામેલ કરો</translation>
 <translation id="7052237160939977163">પ્રદર્શન ટ્રેસ ડેટા મોકલો</translation>
 <translation id="5526928694260255286">જોડો <ph name="BEGIN_LINK"/>બ્લૂટૂથ લૉગ<ph name="END_LINK"/> (Brave Software આંતરિક)</translation>
+<translation id="3047644958362961983">આ માહિતી અમને તમારી આસિસ્ટંટ સંબંધિત સમસ્યાને વધુ સારી રીતે સમજવામાં સહાય કરે છે. તેને વધુમાં વધુ 90 દિવસ સુધી સ્ટોર કરવામાં આવે છે અને તેનો ઍક્સેસ એન્જિનિયરિંગ અને પ્રતિસાદ ટીમો સુધી મર્યાદિત હોય છે.</translation>
 <translation id="1705635099498185261">બ્લૂટૂથ સમસ્યાઓ અંગે વધુ સારી તપાસ કરવા માટે, Brave Softwareનાં કર્મચારીઓ તેમના પ્રતિસાદમાં વધારાના બ્લૂટૂથ લૉગનો સમાવેશ કરી શકે છે. જ્યારે આ વિકલ્પને ચેક કરેલ હોય, ત્યારે તમારા રિપોર્ટમાં તમારા વર્તમાન સત્રમાંથી btsnoop અને HCI લૉગનો સમાવેશ થશે અને તેમાંથી શક્ય હોય તેટલાં PIIને દૂર કરવામાં આવશે. આ લૉગ સુધીના ઍક્સેસને Listnrમાં Brave OS પ્રોડક્ટ જૂથના મેનેજરો સુધી જ નિયંત્રિત રાખવામાં આવશે. એ બધા લૉગ 90 દિવસ બાદ કાઢી નાખવામાં આવશે.</translation>
 <translation id="4206323443866416204">પ્રતિસાદ રિપોર્ટ</translation>
 <translation id="3681311097828166361">તમારા પ્રતિસાદ બદલ આભાર. તમે હમણાં ઑફલાઇન છો અને તમારી રિપોર્ટ પછીથી મોકલવામાં આવશે.</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>સિસ્ટમ માહિતી<ph name="END_LINK1"/> મોકલો</translation>
-<translation id="8642895855701880552"><ph name="BEGIN_LINK1"/>સિસ્ટમ અને ઍપ માહિતી<ph name="END_LINK1"/> મોકલો</translation>
-<translation id="7292696521213967957">આસિસ્ટંટ ડિબગ કરવા માટેની માહિતી</translation>
+<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>સિસ્ટમ માહિતી<ph name="END_LINK1"/> અને <ph name="BEGIN_LINK2"/>મેટ્રિક્સ<ph name="END_LINK2"/> મોકલો</translation>
+<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>સિસ્ટમ અને ઍપ્લિકેશન માહિતી<ph name="END_LINK1"/> અને <ph name="BEGIN_LINK2"/>મેટ્રિક્સ<ph name="END_LINK2"/> મોકલો</translation>
 <translation id="8329196515830093443">ડીબગિંગ માટે ફાઇલ Brave Software ને મોકલવામાં આવશે</translation>
 <translation id="8227119283605456246">ફાઇલ જોડો</translation>
 <translation id="5367091008316207019">ફાઇલ વાંચી રહ્યાં છીએ..</translation>
@@ -2574,6 +2577,7 @@ USB ડિવાઇસ</translation>
 <translation id="4694604912444486114">વાનર</translation>
 <translation id="6795884519221689054">પાંડા</translation>
 <translation id="1829129547161959350">પેન્ગ્વિન</translation>
+<translation id="3021066826692793094">પતંગિયું</translation>
 <translation id="3809272675881623365">સસલું</translation>
 <translation id="4124935795427217608">યુનિકોર્ન - એક કાલ્પનિક પાંખવાળો ઘોડો</translation>
 <translation id="1830550083491357902">સાઇન ઇન નથી</translation>
@@ -3883,6 +3887,7 @@ USB ડિવાઇસ</translation>
 <translation id="8339059274628563283"><ph name="SITE"/> એ સ્થાનિક રીતે સ્ટોર કરેલો ડેટા</translation>
 <translation id="4090947011087001172"><ph name="SITE"/> માટે સાઇટ પરવાનગીને રીસેટ કરીએ?</translation>
 <translation id="1688867105868176567">સાઇટનો ડેટા સાફ કરીએ?</translation>
+<translation id="4665446389743427678"><ph name="SITE"/>નો સ્ટોર કરેલો બધો ડેટા ડિલીટ કરવામાં આવશે.</translation>
 <translation id="5300287940468717207">સાઇટ પરવાનગીઓ રીસેટ કરીએ?</translation>
 <translation id="2734760316755174687"><ph name="SITE_GROUP_NAME"/> હેઠળની સાઇટ પણ રીસેટ કરવામાં આવશે.</translation>
 <translation id="3255355328033513170"><ph name="SITE_GROUP_NAME"/> અને તેની હેઠળ આવતી કોઈપણ સાઇટ દ્વારા સ્ટોર કરેલો બધો ડેટા ડિલીટ કરવામાં આવશે. તેમાં કુકીનો સમાવેશ થાય છે. ખુલ્લા ટૅબ સહિત, આ સાઇટમાંથી તમને સાઇન આઉટ કરવામાં આવશે.</translation>
@@ -4356,6 +4361,8 @@ USB ડિવાઇસ</translation>
 <translation id="4359717112757026264">સિટિસ્કેપ</translation>
 <translation id="6691541770654083180">પૃથ્વી</translation>
 <translation id="5033266061063942743">ભૌમિતિક આકાર</translation>
+<translation id="7789963078219276159">આરંભ પેજનું બૅકગ્રાઉન્ડ બદલીને <ph name="CATEGORY"/> કરવામાં આવ્યું છે.</translation>
+<translation id="8771300903067484968">પ્રારંભ પેજના બૅકગ્રાઉન્ડને ડિફૉલ્ટ બૅકગ્રાઉન્ડ તરીકે સેટ કરવામાં આવ્યું છે.</translation>
 <translation id="239760341987199724">Brave ને તમારા ડિફોલ્ટ બ્રાઉઝર તરીકે સેટ કરો</translation>
 <translation id="96037229054033864">તમે બ્રાઉઝ કરો તે દર વખતે Brave Software શોધ અને Brave Software સ્માર્ટ મેળવો</translation>
 <translation id="296137235951584143">Braveને તમારી જરૂરિયાત અનુરૂપ બનાવો</translation>

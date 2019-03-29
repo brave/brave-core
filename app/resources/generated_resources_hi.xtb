@@ -407,6 +407,7 @@
 <translation id="4923279099980110923">हां, मुझे सहायता चाहिए</translation>
 <translation id="2316129865977710310">जी रहने दें</translation>
 <translation id="9169931577761441333">होम स्क्रीन पर <ph name="APP_NAME"/> जोड़ें</translation>
+<translation id="4918221908152712722"><ph name="APP_NAME"/> इंस्टॉल करें (डाउनलोड करने की ज़रूरत नहीं है)</translation>
 <translation id="3789841737615482174">इंस्‍टॉल करें</translation>
 <translation id="5280426389926346830">शॉर्टकट बनाएं?</translation>
 <translation id="7525067979554623046">बनाएं</translation>
@@ -1317,6 +1318,7 @@
 <translation id="3071624960923923138">नया टैब खोलने के लिए आप यहां क्लिक कर सकते हैं</translation>
 <translation id="4908811072292128752">एक बार में दो साइटें ब्राउज़ करने के लिए नया टैब खोलें</translation>
 <translation id="8966870118594285808">अगर आपने गलती से किसी टैब को बंद कर दिया था तो उसे फिर से खोलें</translation>
+<translation id="8806680466228877631">गलती से बंद हुए टैब <ph name="SHORTCUT"/> की मदद से खोले जा सकते हैं</translation>
 <translation id="2963151496262057773">निम्‍न प्‍लग इन प्रतिसाद नहीं दे रहा है: <ph name="PLUGIN_NAME"/>क्‍या उसे रोकना चाहते हैं?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{पेज प्रतिसाद नहीं दे रहा है}one{पेज प्रतिसाद नहीं दे रहे हैं}other{पेज प्रतिसाद नहीं दे रहे हैं}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{आप उसका जवाब मिलने तक रुक सकते हैं या पेज से बाहर निकल सकते हैं.}one{आप उनका जवाब मिलने तक रुक सकते हैं या पेज से बाहर निकल सकते हैं.}other{आप उनका जवाब मिलने तक रुक सकते हैं या पेज से बाहर निकल सकते हैं.}}</translation>
@@ -1375,8 +1377,8 @@
 <translation id="4206323443866416204">फ़ीडबैक रिपोर्ट</translation>
 <translation id="3681311097828166361">आपके फ़ीडबैक के लिए धन्यवाद. आप अब ऑफ़लाइन हैं और आपकी रिपोर्ट बाद में भेज दी जाएगी.</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>सिस्‍टम जानकारी<ph name="END_LINK1"/> भेजें</translation>
-<translation id="8642895855701880552"><ph name="BEGIN_LINK1"/>सिस्टम और ऐप्लिकेशन जानकारी<ph name="END_LINK1"/> भेजें</translation>
-<translation id="7292696521213967957">Assistant को डीबग करने की जानकारी</translation>
+<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>सिस्टम की जानकारी<ph name="END_LINK1"/> और <ph name="BEGIN_LINK2"/>मेट्रिक्स<ph name="END_LINK2"/> भेजें</translation>
+<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>सिस्टम और ऐप्लिकेशन की जानकारी<ph name="END_LINK1"/> और <ph name="BEGIN_LINK2"/>मेट्रिक<ph name="END_LINK2"/> भेजें</translation>
 <translation id="8329196515830093443">डीबग करने के लिए फ़ाइल Brave Software को भेजी जाएगी</translation>
 <translation id="8227119283605456246">फ़ाइल अटैच करें</translation>
 <translation id="5367091008316207019">फ़ाइल पढ़ी जा रही है..</translation>
@@ -2596,6 +2598,7 @@
 <translation id="4694604912444486114">बंदर</translation>
 <translation id="6795884519221689054">पांडा</translation>
 <translation id="1829129547161959350">पेंगुइन</translation>
+<translation id="3021066826692793094">तितली</translation>
 <translation id="3809272675881623365">खरगोश</translation>
 <translation id="4124935795427217608">यूनिकॉर्न</translation>
 <translation id="1830550083491357902">प्रवेश नहीं है</translation>
@@ -3904,6 +3907,7 @@
 <translation id="8339059274628563283"><ph name="SITE"/> स्थानीय रूप से संग्रहित डेटा</translation>
 <translation id="4090947011087001172"><ph name="SITE"/> की 'साइट अनुमतियां' रीसेट करें?</translation>
 <translation id="1688867105868176567">'साइट डेटा' हटाएं?</translation>
+<translation id="4665446389743427678"><ph name="SITE"/> ने जो भी डेटा सेव किया है उसे मिटा दिया जाएगा.</translation>
 <translation id="5300287940468717207">साइट अनुमतियां रीसेट करें?</translation>
 <translation id="2734760316755174687"><ph name="SITE_GROUP_NAME"/> की साइटों को भी रीसेट किया जाएगा.</translation>
 <translation id="3255355328033513170"><ph name="SITE_GROUP_NAME"/> का स्टोर किया हुआ सभी डेटा और इसकी सभी साइट को मिटा दिया जाएगा. इसमें कुकी शामिल हैं. आपको उन साइटों से साइन आउट कर दिया जाएगा, जिनमें खुले हुए टैब भी शामिल हैं.</translation>

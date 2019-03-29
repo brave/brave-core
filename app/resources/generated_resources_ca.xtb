@@ -147,6 +147,7 @@
 <translation id="9033857511263905942">&amp;Enganxa</translation>
 <translation id="1815083418640426271">Enganxa com a text sense format</translation>
 <translation id="4022426551683927403">&amp;Afegeix al diccionari</translation>
+<translation id="6849870115130610913">Obtén descripcions d'imatges de Brave Software</translation>
 <translation id="372722114124766626">Només un cop</translation>
 <translation id="8917490105272468696">Sí, d'acord</translation>
 <translation id="7473891865547856676">No, gràcies</translation>
@@ -407,6 +408,8 @@
 <translation id="4923279099980110923">Sí, vull contribuir-hi</translation>
 <translation id="2316129865977710310">No, gràcies</translation>
 <translation id="9169931577761441333">Afegeix <ph name="APP_NAME"/> a la pantalla d'inici</translation>
+<translation id="6349101878882523185">Instal·la <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Instal·la l'aplicació <ph name="APP_NAME"/> (no cal que la baixis)</translation>
 <translation id="3789841737615482174">Instal·la</translation>
 <translation id="5280426389926346830">Vols crear una drecera?</translation>
 <translation id="7525067979554623046">Crea</translation>
@@ -1300,6 +1303,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3071624960923923138">Pots fer clic aquí per obrir una pestanya nova</translation>
 <translation id="4908811072292128752">Obre una pestanya nova per navegar per dos llocs web a la vegada</translation>
 <translation id="8966870118594285808">Torna a obrir una pestanya si l'has tancat per error</translation>
+<translation id="8806680466228877631">Per tornar a obrir pestanyes tancades per error, utilitza <ph name="SHORTCUT"/></translation>
 <translation id="2963151496262057773">El connector següent no respon: <ph name="PLUGIN_NAME"/>. Voleu aturar-lo?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Pàgina que no respon}other{Pàgines que no responen}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Pots esperar que respongui o sortir de la pàgina.}other{Pots esperar que responguin o sortir de les pàgines.}}</translation>
@@ -1358,8 +1362,8 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4206323443866416204">Informe de suggeriments</translation>
 <translation id="3681311097828166361">Gràcies pels teus suggeriments. Ara mateix no tens connexió, de manera que el teu informe s'enviarà més tard.</translation>
 <translation id="8713570323158206935">Envia <ph name="BEGIN_LINK1"/>informació del sistema<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Envia <ph name="BEGIN_LINK1"/>informació del sistema i de l'aplicació<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Informació per depurar l'Assistent</translation>
+<translation id="6395423953133416962">Envia les <ph name="BEGIN_LINK2"/>mètriques<ph name="END_LINK2"/> i la <ph name="BEGIN_LINK1"/>informació del sistema<ph name="END_LINK1"/></translation>
+<translation id="6270770586500173387">Envia <ph name="BEGIN_LINK1"/>informació del sistema i de l'aplicació<ph name="END_LINK1"/>, així com <ph name="BEGIN_LINK2"/>mètriques<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">El fitxer s'enviarà a Brave Software per depurar-lo</translation>
 <translation id="8227119283605456246">Adjunta un fitxer</translation>
 <translation id="5367091008316207019">S'està llegint el fitxer...</translation>
@@ -2575,6 +2579,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4694604912444486114">Mico</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pingüí</translation>
+<translation id="3021066826692793094">Papallona</translation>
 <translation id="3809272675881623365">Conill</translation>
 <translation id="4124935795427217608">Unicorn</translation>
 <translation id="1830550083491357902">Sessió no iniciada</translation>
@@ -3061,6 +3066,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="5840822070878669614">Obre Brave Web Store</translation>
 <translation id="6073903501322152803">Afegeix funcions d'accessibilitat</translation>
 <translation id="7988355189918024273">Activa les funcions d'accessibilitat</translation>
+<translation id="3274899353071794175">Si una imatge no té una descripció útil, Brave te n'oferirà una. Brave Software escaneja les imatges.</translation>
 <translation id="2558896001721082624">Mostra sempre les opcions d'accessibilitat al menú del sistema</translation>
 <translation id="7280649757394340890">Configuració de la veu de la síntesi de veu</translation>
 <translation id="6635956300022133031">Selecciona i personalitza les veus de la síntesi de veu</translation>
@@ -3883,6 +3889,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8339059274628563283">Dades emmagatzemades localment per <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Vols restablir els permisos del lloc web <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Vols esborrar les dades del lloc web?</translation>
+<translation id="4665446389743427678">Se suprimiran totes les dades emmagatzemades per <ph name="SITE"/>.</translation>
 <translation id="5300287940468717207">Vols restablir els permisos del lloc web?</translation>
 <translation id="2734760316755174687">Els llocs web del domini <ph name="SITE_GROUP_NAME"/> també es restabliran.</translation>
 <translation id="3255355328033513170">Se suprimiran totes les dades que <ph name="SITE_GROUP_NAME"/> hagi emmagatzemat i tots els llocs web que contingui. Això inclou les galetes. Se't tancarà la sessió d'aquests llocs web, també de les pestanyes obertes.</translation>
@@ -4270,7 +4277,10 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3729506734996624908">Llocs web permesos</translation>
 <translation id="3732078975418297900">Hi ha un error a la línia <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Error des de la línia <ph name="ERROR_LINE_START"/> fins a la <ph name="ERROR_LINE_END"/></translation>
+<translation id="6997642619627518301">Registre d'activitat a <ph name="NAME_PH"/></translation>
 <translation id="8287902281644548111">Cerca per crida a l'API o URL</translation>
+<translation id="5008936837313706385">Nom de l'activitat</translation>
+<translation id="7583948862126372804">Recompte</translation>
 <translation id="2841013758207633010">Hora</translation>
 <translation id="2002109485265116295">En temps real</translation>
 <translation id="2549985041256363841">Comença a gravar</translation>

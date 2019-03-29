@@ -147,6 +147,7 @@
 <translation id="9033857511263905942">&amp;Dán</translation>
 <translation id="1815083418640426271">Dán dưới dạng văn bản thuần túy</translation>
 <translation id="4022426551683927403">&amp;Thêm vào Từ điển</translation>
+<translation id="6849870115130610913">Nhận nội dung mô tả hình ảnh của Brave Software</translation>
 <translation id="372722114124766626">Chỉ một lần</translation>
 <translation id="8917490105272468696">Có, tôi đồng ý</translation>
 <translation id="7473891865547856676">Không, cảm ơn</translation>
@@ -407,6 +408,8 @@
 <translation id="4923279099980110923">Vâng, tôi muốn được trợ giúp</translation>
 <translation id="2316129865977710310">Không, cảm ơn</translation>
 <translation id="9169931577761441333">Thêm <ph name="APP_NAME"/> vào Màn hình chính</translation>
+<translation id="6349101878882523185">Cài đặt <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Cài đặt <ph name="APP_NAME"/> (không cần tải xuống)</translation>
 <translation id="3789841737615482174">Cài đặt</translation>
 <translation id="5280426389926346830">Tạo lối tắt?</translation>
 <translation id="7525067979554623046">Tạo</translation>
@@ -1299,6 +1302,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3071624960923923138">Bạn có thể nhấp vào đây để mở tab mới</translation>
 <translation id="4908811072292128752">Mở tab mới để duyệt hai trang web cùng lúc</translation>
 <translation id="8966870118594285808">Mở lại một tab nếu bạn vô tình đóng tab đó</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> có thể mở lại các tab bạn đã vô tình đóng.</translation>
 <translation id="2963151496262057773">Plugin sau không hồi đáp: <ph name="PLUGIN_NAME"/>Bạn có muốn dừng lại không?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Trang không phản hồi}other{Trang không phản hồi}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Bạn có thể chờ trang phản hồi hoặc thoát khỏi trang.}other{Bạn có thể chờ trang phản hồi hoặc thoát khỏi trang.}}</translation>
@@ -1353,12 +1357,13 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6076448957780543068">Bao gồm ảnh chụp màn hình này</translation>
 <translation id="7052237160939977163">Gửi dữ liệu theo dõi hoạt động</translation>
 <translation id="5526928694260255286">Đính kèm <ph name="BEGIN_LINK"/>Nhật ký Bluetooth<ph name="END_LINK"/> (nội bộ Brave Software)</translation>
+<translation id="3047644958362961983">Thông tin này sẽ giúp chúng tôi hiểu rõ hơn vấn đề liên quan đến Trợ lý của bạn. Chúng tôi lưu trữ thông tin này trong tối đa 90 ngày và chỉ các nhóm liên quan phụ trách về kỹ thuật và phản hồi mới được phép truy cập.</translation>
 <translation id="1705635099498185261">Để chẩn đoán chính xác hơn các vấn đề về Bluetooth, nhân viên Brave Software có thể đưa thêm nhật ký Bluetooth vào báo cáo phản hồi của họ. Khi bạn chọn tùy chọn này, báo cáo của bạn sẽ bao gồm cả nhật ký btsnoop và HCI từ phiên hoạt động hiện tại, trong đó đã loại bỏ nhiều thông tin nhận dạng cá nhân nhất có thể. Chỉ người quản lý nhóm sản phẩm Brave OS trong Listnr mới có quyền truy cập vào các nhật ký này. Nhật ký sẽ bị xóa hoàn toàn sau 90 ngày.</translation>
 <translation id="4206323443866416204">Báo cáo phản hồi</translation>
 <translation id="3681311097828166361">Cảm ơn bạn đã phản hồi. Bạn hiện đang ngoại tuyến và báo cáo của bạn sẽ được gửi sau.</translation>
 <translation id="8713570323158206935">Gửi <ph name="BEGIN_LINK1"/>thông tin hệ thống<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Gửi <ph name="BEGIN_LINK1"/>thông tin về ứng dụng và hệ thống<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Thông tin để gỡ lỗi Trợ lý</translation>
+<translation id="6395423953133416962">Gửi <ph name="BEGIN_LINK1"/>thông tin hệ thống<ph name="END_LINK1"/> và <ph name="BEGIN_LINK2"/>số liệu<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Gửi <ph name="BEGIN_LINK1"/>thông tin hệ thống và ứng dụng<ph name="END_LINK1"/> cũng như <ph name="BEGIN_LINK2"/>số liệu<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Tệp sẽ được gửi tới Brave Software để được gỡ lỗi</translation>
 <translation id="8227119283605456246">Đính kèm tệp</translation>
 <translation id="5367091008316207019">Đang đọc tệp..</translation>
@@ -2577,6 +2582,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4694604912444486114">Khỉ</translation>
 <translation id="6795884519221689054">Gấu trúc</translation>
 <translation id="1829129547161959350">Chim cánh cụt</translation>
+<translation id="3021066826692793094">Bướm</translation>
 <translation id="3809272675881623365">Con thỏ</translation>
 <translation id="4124935795427217608">Kỳ lân</translation>
 <translation id="1830550083491357902">Chưa đăng nhập</translation>
@@ -3063,6 +3069,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5840822070878669614">Mở cửa hàng Brave trực tuyến</translation>
 <translation id="6073903501322152803">Thêm tính năng trợ năng</translation>
 <translation id="7988355189918024273">Bật các tính năng hỗ trợ truy cập</translation>
+<translation id="3274899353071794175">Brave sẽ cố gắng mô tả cho bạn những hình ảnh không có nội dung mô tả hữu ích. Các hình ảnh đều do Brave Software quét.</translation>
 <translation id="2558896001721082624">Luôn hiển thị tùy chọn trợ năng trong menu hệ thống</translation>
 <translation id="7280649757394340890">Các cài đặt giọng nói của tính năng chuyển văn bản sang lời nói</translation>
 <translation id="6635956300022133031">Chọn và tùy chỉnh giọng nói của tính năng chuyển văn bản sang lời nói</translation>
@@ -3885,6 +3892,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8339059274628563283"><ph name="SITE"/> đã lưu trữ dữ liệu cục bộ</translation>
 <translation id="4090947011087001172">Đặt lại quyền của trang web cho <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Xóa dữ liệu trang web?</translation>
+<translation id="4665446389743427678">Tất cả dữ liệu do <ph name="SITE"/> lưu trữ sẽ bị xóa.</translation>
 <translation id="5300287940468717207">Bạn muốn đặt lại quyền của trang web?</translation>
 <translation id="2734760316755174687">Các trang web trong <ph name="SITE_GROUP_NAME"/> cũng sẽ được đặt lại.</translation>
 <translation id="3255355328033513170">Mọi dữ liệu do <ph name="SITE_GROUP_NAME"/> lưu trữ và mọi trang web trong đó sẽ bị xóa. Dữ liệu bị xóa bao gồm cả cookie. Bạn sẽ bị đăng xuất khỏi những trang web này, bao gồm cả các tab đang mở.</translation>
@@ -4272,7 +4280,10 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3729506734996624908">Trang web được phép</translation>
 <translation id="3732078975418297900">Lỗi trên dòng <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Lỗi từ dòng <ph name="ERROR_LINE_START"/> đến <ph name="ERROR_LINE_END"/></translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/> - Nhật ký hoạt động</translation>
 <translation id="8287902281644548111">Tìm kiếm theo lệnh gọi API/URL</translation>
+<translation id="5008936837313706385">Tên hoạt động</translation>
+<translation id="7583948862126372804">Số lượng</translation>
 <translation id="2841013758207633010">Thời gian</translation>
 <translation id="2002109485265116295">Thời gian thực</translation>
 <translation id="2549985041256363841">Bắt đầu ghi</translation>
@@ -4355,6 +4366,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4359717112757026264">Cảnh quan thành phố</translation>
 <translation id="6691541770654083180">Trái đất</translation>
 <translation id="5033266061063942743">Hình dạng hình học</translation>
+<translation id="7789963078219276159">Nền của trang chủ đã được đổi thành <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Nền của trang chủ đã được đặt lại thành nền mặc định.</translation>
 <translation id="239760341987199724">Đặt Brave là trình duyệt mặc định của bạn</translation>
 <translation id="96037229054033864">Sử dụng Brave Software Tìm kiếm và các tính năng thông minh của Brave Software mỗi khi duyệt web</translation>
 <translation id="296137235951584143">Tùy chỉnh Brave theo cách của bạn</translation>

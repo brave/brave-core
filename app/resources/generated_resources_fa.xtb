@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">نه متشکرم</translation>
 <translation id="9169931577761441333"><ph name="APP_NAME"/> را به صفحه اصلی اضافه کنید</translation>
 <translation id="6349101878882523185">نصب <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">نصب <ph name="APP_NAME"/> (بارگیری لازم نیست)</translation>
 <translation id="3789841737615482174">نصب</translation>
 <translation id="5280426389926346830">میان‌بر ایجاد شود؟</translation>
 <translation id="7525067979554623046">ایجاد</translation>
@@ -1300,6 +1301,7 @@
 <translation id="3071624960923923138">برای باز کردن برگه جدید، می‌توانید اینجا را کلیک کنید</translation>
 <translation id="4908811072292128752">برای مرور دو سایت به‌طور هم‌زمان، برگه جدیدی را باز کنید</translation>
 <translation id="8966870118594285808">اگر به اشتباه برگه‌ای را بستید، دوباره آن را باز کنید</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> می‌تواند برگه‌هایی را که به‌طور تصادفی بسته شده‌اند دوباره باز کند</translation>
 <translation id="2963151496262057773">این افزایه جواب نمی‌دهد: <ph name="PLUGIN_NAME"/>آیا می‌خواهید متوقف شود؟</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{صفحه غیرپاسخگو}one{صفحه‌های غیرپاسخگو}other{صفحه‌های غیرپاسخگو}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{می‌توانید منتظر پاسخگویی صفحه بمانید یا از آن خارج شوید.}one{می‌توانید منتظر پاسخگویی صفحه‌ها بمانید یا از آن‌ها خارج شوید.}other{می‌توانید منتظر پاسخگویی صفحه‌ها بمانید یا از آن‌ها خارج شوید.}}</translation>
@@ -1354,12 +1356,13 @@
 <translation id="6076448957780543068">اضافه کردن این عکس صفحه‌نمایش</translation>
 <translation id="7052237160939977163">ارسال داده‌های ردیابی عملکرد</translation>
 <translation id="5526928694260255286">‏پیوست <ph name="BEGIN_LINK"/>گزارش‌های بلوتوث<ph name="END_LINK"/> (داخلی Brave Software)</translation>
+<translation id="3047644958362961983">این اطلاعات به ما کمک می‌کند مشکل «دستیار» شما را بهتر تشخیص دهیم. این اطلاعات تا ۹۰ روز ذخیره می‌شود و دسترسی به آن به تیم‌های مهندسی و بازخورد مربوطه محدود می‌شود.</translation>
 <translation id="1705635099498185261">‏برای بهبود رفع مشکلات بلوتوث، کارمندان Brave Software می‌توانند گزارش‌های بلوتوث اضافی‌ای را با گزارش‌های بازخورد شما همراه کنند. وقتی این گزینه انتخاب شود، گزارشتان شامل گزارش‌های btsnoop و HCI جلسهٔ اخیرتان نیز می‌شود، که با برداشتن اطلاعات قابل‌شناسایی شخصی (PII) تا جای ممکن پاک‌سازی شده است. فقط مدیران گروه محصول سیستم‌عامل Brave در Listnr به این گزارش‌ها دسترسی دارند. گزارش‌ها پس از ۹۰ روز حذف دائم می‌شود.</translation>
 <translation id="4206323443866416204">گزارش بازخورد</translation>
 <translation id="3681311097828166361">از بازخوردتان سپاسگزاریم. درحال‌حاضر آفلاین هستید و گزارشتان بعداً ارسال می‌شود.</translation>
 <translation id="8713570323158206935">ارسال <ph name="BEGIN_LINK1"/>اطلاعات سیستم<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">ارسال اطلاعات <ph name="BEGIN_LINK1"/>سیستم و برنامه<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">اطلاعات برای اشکال‌زدایی «دستیار»</translation>
+<translation id="6395423953133416962">ارسال <ph name="BEGIN_LINK1"/>اطلاعات سیستم<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>معیارها<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">ارسال <ph name="BEGIN_LINK1"/>اطلاعات برنامه و سیستم<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>معیارها<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">‏فایل برای اشکال‌زدایی به Brave Software ارسال خواهد شد</translation>
 <translation id="8227119283605456246">پیوست کردن فایل</translation>
 <translation id="5367091008316207019">درحال خواندن فایل ...</translation>
@@ -2578,6 +2581,7 @@
 <translation id="4694604912444486114">میمون</translation>
 <translation id="6795884519221689054">پاندا</translation>
 <translation id="1829129547161959350">پنگوئن</translation>
+<translation id="3021066826692793094">پروانه</translation>
 <translation id="3809272675881623365">خرگوش</translation>
 <translation id="4124935795427217608">تک‌شاخ</translation>
 <translation id="1830550083491357902">وارد سیستم نشده است</translation>
@@ -3887,6 +3891,7 @@
 <translation id="8339059274628563283">داده‌های ذخیره‌شده محلی <ph name="SITE"/></translation>
 <translation id="4090947011087001172">مجوزهای سایت برای <ph name="SITE"/> بازنشانی شود؟</translation>
 <translation id="1688867105868176567">داده‌های سایت پاک شود؟</translation>
+<translation id="4665446389743427678">همه داده‌های ذخیره‌شده توسط <ph name="SITE"/> حذف خواهد شد.</translation>
 <translation id="5300287940468717207">مجوزهای سایت بازنشانی شود؟</translation>
 <translation id="2734760316755174687">سایت‌های زیرگروه <ph name="SITE_GROUP_NAME"/> نیز بازنشانی می‌شود.</translation>
 <translation id="3255355328033513170">همه داده‌های ذخیره‌شده توسط <ph name="SITE_GROUP_NAME"/> و سایت‌های زیرمجموعه آن حذف خواهند شد. این مورد کوکی‌ها را شامل می‌شود. از سیستم این سایت‌ها (ازجمله در برگه‌های باز) خارج خواهید شد.</translation>
@@ -4360,6 +4365,8 @@
 <translation id="4359717112757026264">نمای شهر</translation>
 <translation id="6691541770654083180">Earth</translation>
 <translation id="5033266061063942743">شکل‌های هندسی</translation>
+<translation id="7789963078219276159">پس‌زمینه صفحه شروع به <ph name="CATEGORY"/> تغییر کرد.</translation>
+<translation id="8771300903067484968">پس‌زمینه صفحه شروع روی پس‌زمینه پیش‌فرض بازنشانی شده است.</translation>
 <translation id="239760341987199724">‏تنظیم Brave به عنوان مرورگر پیش‌فرضتان</translation>
 <translation id="96037229054033864">‏دریافت «جستجوی Brave Software» و هوشمندی‌های Brave Software هنگام مرور</translation>
 <translation id="296137235951584143">‏Brave را برای خود اختصاصی کنید</translation>

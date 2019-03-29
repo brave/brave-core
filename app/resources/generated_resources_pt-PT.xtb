@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Não, obrigado</translation>
 <translation id="9169931577761441333">Adicionar <ph name="APP_NAME"/> ao ecrã principal</translation>
 <translation id="6349101878882523185">Instale a aplicação <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Instale a aplicação <ph name="APP_NAME"/> (não é necessária qualquer transferência).</translation>
 <translation id="3789841737615482174">Instalar</translation>
 <translation id="5280426389926346830">Pretende criar um atalho?</translation>
 <translation id="7525067979554623046">Criar</translation>
@@ -1302,6 +1303,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3071624960923923138">Pode clicar aqui para abrir um novo separador</translation>
 <translation id="4908811072292128752">Abra um novo separador para navegar em dois sites em simultâneo</translation>
 <translation id="8966870118594285808">Reabra um separador caso o feche acidentalmente.</translation>
+<translation id="8806680466228877631">O atalho <ph name="SHORTCUT"/> pode reabrir separadores fechados acidentalmente.</translation>
 <translation id="2963151496262057773">O seguinte plug-in está sem resposta: <ph name="PLUGIN_NAME"/>
 Pretende pará-lo?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Página sem resposta}other{Páginas sem resposta}}</translation>
@@ -1357,12 +1359,13 @@ Pretende pará-lo?</translation>
 <translation id="6076448957780543068">Incluir esta captura de ecrã</translation>
 <translation id="7052237160939977163">Enviar dados de rastreio do desempenho</translation>
 <translation id="5526928694260255286">Anexar <ph name="BEGIN_LINK"/>registos do Bluetooth<ph name="END_LINK"/> (interno da Brave Software)</translation>
+<translation id="3047644958362961983">Estas informações ajudam-nos a compreender melhor o seu problema com o Assistente. Ficam armazenadas durante, no máximo, 90 dias e o acesso está restrito às equipas de engenharia e comentários dedicadas.</translation>
 <translation id="1705635099498185261">Para melhorar o diagnóstico de problemas com o Bluetooth, os funcionários da Brave Software podem incluir registos do Bluetooth adicionais nos respetivos relatórios de comentários. Quando esta opção está selecionada, o seu relatório inclui os registos btsnoop e HCI da sua sessão atual, limpos para remover o máximo de PII possível. O acesso a estes registos será restringido aos gestores do grupo de produtos do Brave OS no Listnr. Os registos são removidos completamente após 90 dias.</translation>
 <translation id="4206323443866416204">Relatório de comentários</translation>
 <translation id="3681311097828166361">Obrigado pelos seus comentários. Neste modo, está offline, pelo que o seu relatório será enviado mais tarde.</translation>
 <translation id="8713570323158206935">Enviar <ph name="BEGIN_LINK1"/>informações do sistema<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Enviar <ph name="BEGIN_LINK1"/>informações do sistema e da aplicação<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Informações para depurar o Assistente</translation>
+<translation id="6395423953133416962">Enviar <ph name="BEGIN_LINK1"/>informações do sistema<ph name="END_LINK1"/> e <ph name="BEGIN_LINK2"/>métricas<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Enviar <ph name="BEGIN_LINK1"/>informações do sistema e da aplicação<ph name="END_LINK1"/>, bem como <ph name="BEGIN_LINK2"/>métricas<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">O ficheiro será enviado para a Brave Software para depuração</translation>
 <translation id="8227119283605456246">Anexar ficheiro</translation>
 <translation id="5367091008316207019">A ler ficheiro...</translation>
@@ -2579,6 +2582,7 @@ Pretende pará-lo?</translation>
 <translation id="4694604912444486114">Macaco</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pinguim</translation>
+<translation id="3021066826692793094">Borboleta</translation>
 <translation id="3809272675881623365">Coelho</translation>
 <translation id="4124935795427217608">Unicórnio</translation>
 <translation id="1830550083491357902">Não tem sessão iniciada</translation>
@@ -3888,6 +3892,7 @@ Pretende pará-lo?</translation>
 <translation id="8339059274628563283">Dados de <ph name="SITE"/> armazenados localmente</translation>
 <translation id="4090947011087001172">Pretende repor as autorizações de sites para <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Pretende limpar os dados do site?</translation>
+<translation id="4665446389743427678">Todos os dados armazenados pelo site <ph name="SITE"/> serão eliminados.</translation>
 <translation id="5300287940468717207">Pretende repor as autorizações do site?</translation>
 <translation id="2734760316755174687">Os sites em <ph name="SITE_GROUP_NAME"/> também serão repostos.</translation>
 <translation id="3255355328033513170">Todos os dados armazenados pelo site <ph name="SITE_GROUP_NAME"/> e por quaisquer sites associados a este serão eliminados. Estes dados incluem os cookies. A sua sessão nestes sites será terminada, incluindo em separadores abertos.</translation>
@@ -4361,6 +4366,8 @@ Pretende pará-lo?</translation>
 <translation id="4359717112757026264">Paisagens urbanas</translation>
 <translation id="6691541770654083180">Terra</translation>
 <translation id="5033266061063942743">Formas geométricas</translation>
+<translation id="7789963078219276159">O fundo da página de início foi alterado para <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">O fundo da página de inicio foi reposto para a predefinição.</translation>
 <translation id="239760341987199724">Definir o Brave como o seu navegador predefinido</translation>
 <translation id="96037229054033864">Obtenha a Pesquisa Brave Software e a inteligência da Brave Software sempre que navegar</translation>
 <translation id="296137235951584143">Personalize o Brave Software Brave</translation>

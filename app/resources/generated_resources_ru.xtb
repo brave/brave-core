@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Спасибо, не надо</translation>
 <translation id="9169931577761441333">Добавить приложение "<ph name="APP_NAME"/>" на главный экран</translation>
 <translation id="6349101878882523185">Установить приложение "<ph name="APP_NAME"/>"</translation>
+<translation id="4918221908152712722">Установить приложение "<ph name="APP_NAME"/>" (скачивание не требуется)</translation>
 <translation id="3789841737615482174">Установить</translation>
 <translation id="5280426389926346830">Создать ярлык?</translation>
 <translation id="7525067979554623046">Создать</translation>
@@ -1301,6 +1302,7 @@
 <translation id="3071624960923923138">Нажмите здесь, чтобы открыть новую вкладку</translation>
 <translation id="4908811072292128752">Откройте новую вкладку, чтобы перейти на другой сайт, не закрывая предыдущий</translation>
 <translation id="8966870118594285808">Если вы случайно закрыли вкладку, откройте ее снова</translation>
+<translation id="8806680466228877631">Нажмите <ph name="SHORTCUT"/>, чтобы снова открыть случайно закрытую вкладку</translation>
 <translation id="2963151496262057773">Плагин "<ph name="PLUGIN_NAME"/>" перестал отвечать на запросы. Остановить его?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Страница не отвечает}one{Страницы не отвечают}few{Страницы не отвечают}many{Страницы не отвечают}other{Страницы не отвечают}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Вы можете дождаться ответа страницы или покинуть ее.}one{Вы можете дождаться ответа страниц или покинуть их.}few{Вы можете дождаться ответа страниц или покинуть их.}many{Вы можете дождаться ответа страниц или покинуть их.}other{Вы можете дождаться ответа страниц или покинуть их.}}</translation>
@@ -1355,12 +1357,13 @@
 <translation id="6076448957780543068">Включить этот скриншот</translation>
 <translation id="7052237160939977163">Отправлять данные отслеживания производительности</translation>
 <translation id="5526928694260255286">Прикрепить <ph name="BEGIN_LINK"/>журналы Bluetooth<ph name="END_LINK"/> (доступно только сотрудникам Brave Software)</translation>
+<translation id="3047644958362961983">Эта информация поможет нам понять, в чем причина возникшей неполадки в работе Ассистента. Данные хранятся до 90 дней. Доступ к ним есть только у разработчиков и специалистов по работе с отзывами.</translation>
 <translation id="1705635099498185261">Если установлен этот флажок, сотрудники Brave Software могут прикреплять к своим отчетам дополнительные журналы Bluetooth (btsnoop и HCI), относящиеся к текущему сеансу. Информация, позволяющая идентифицировать личность, удаляется из них. Эти журналы нужны для более точной диагностики, и доступ к ним есть только у менеджеров Brave OS в Listnr. Через 90 дней журналы удаляются без возможности восстановления.</translation>
 <translation id="4206323443866416204">Отправка отзыва</translation>
 <translation id="3681311097828166361">Благодарим за отзыв. Отчет будет отправлен, когда вы подключитесь к Интернету.</translation>
 <translation id="8713570323158206935">Отправлять <ph name="BEGIN_LINK1"/>сведения о системе<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Отправлять <ph name="BEGIN_LINK1"/>сведения о системе и приложениях<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Данные для отладки Ассистента</translation>
+<translation id="6395423953133416962">Отправлять <ph name="BEGIN_LINK1"/>сведения о системе<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>значения показателей<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Отправлять <ph name="BEGIN_LINK1"/>информацию о системе и приложениях<ph name="END_LINK1"/> и различные <ph name="BEGIN_LINK2"/>показатели<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Файл будет отправлен в Brave Software для отладки</translation>
 <translation id="8227119283605456246">Прикрепить файл</translation>
 <translation id="5367091008316207019">Чтение файла…</translation>
@@ -2577,6 +2580,7 @@
 <translation id="4694604912444486114">Обезьяна</translation>
 <translation id="6795884519221689054">Панда</translation>
 <translation id="1829129547161959350">Пингвин</translation>
+<translation id="3021066826692793094">Бабочка</translation>
 <translation id="3809272675881623365">Кролик</translation>
 <translation id="4124935795427217608">Единорог</translation>
 <translation id="1830550083491357902">Вход не выполнен</translation>
@@ -3886,6 +3890,7 @@
 <translation id="8339059274628563283">Локальные данные сайта <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Сбросить разрешения для сайта <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Удалить данные сайта?</translation>
+<translation id="4665446389743427678">Все данные, хранящиеся на сайте <ph name="SITE"/>, будут удалены.</translation>
 <translation id="5300287940468717207">Сбросить все разрешения сайтов?</translation>
 <translation id="2734760316755174687">Разрешения будут также сброшены на всех сайтах <ph name="SITE_GROUP_NAME"/>.</translation>
 <translation id="3255355328033513170">Все данные, сохраненные сайтами <ph name="SITE_GROUP_NAME"/>, будут удалены (включая файлы cookie). При этом вы автоматически выйдете из аккаунтов на этих сайтах.</translation>
@@ -4359,6 +4364,8 @@
 <translation id="4359717112757026264">Городской пейзаж</translation>
 <translation id="6691541770654083180">Планета Земля</translation>
 <translation id="5033266061063942743">Геометрические фигуры</translation>
+<translation id="7789963078219276159">Фон стартовой страницы изменен на изображение "<ph name="CATEGORY"/>".</translation>
+<translation id="8771300903067484968">Фон стартовой страницы изменен на вариант по умолчанию.</translation>
 <translation id="239760341987199724">Сделать Brave браузером по умолчанию</translation>
 <translation id="96037229054033864">Помогите Поиску и другим сервисам Brave Software узнать вас лучше!</translation>
 <translation id="296137235951584143">Настройте Brave для себя</translation>

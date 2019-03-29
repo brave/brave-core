@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Köszönöm, nem</translation>
 <translation id="9169931577761441333"><ph name="APP_NAME"/> hozzáadása a kezdőképernyőhöz</translation>
 <translation id="6349101878882523185"><ph name="APP_NAME"/> telepítése</translation>
+<translation id="4918221908152712722"><ph name="APP_NAME"/> telepítése (nincs szükség letöltésre)</translation>
 <translation id="3789841737615482174">Telepítés</translation>
 <translation id="5280426389926346830">Létrehozza a parancsikont?</translation>
 <translation id="7525067979554623046">Létrehozás</translation>
@@ -1302,6 +1303,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="3071624960923923138">Ide kattintva új lapot nyithat meg</translation>
 <translation id="4908811072292128752">Új lap megnyitása két webhely egyidejű böngészéséhez</translation>
 <translation id="8966870118594285808">Lap újramegnyitása, ha véletlenül bezárja</translation>
+<translation id="8806680466228877631">A <ph name="SHORTCUT"/> billentyűparanccsal újra megnyithatja a véletlenül bezárt lapokat</translation>
 <translation id="2963151496262057773">Az alábbi beépülő modulok nem válaszolnak: <ph name="PLUGIN_NAME"/>. Szeretné leállítani?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Az oldal nem válaszol}other{Több oldal nem válaszol}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Megvárhatja, amíg reagál, vagy elhagyhatja az oldalt.}other{Megvárhatja, amíg reagálnak, vagy elhagyhatja az oldalakat.}}</translation>
@@ -1356,12 +1358,13 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="6076448957780543068">A képernyőkép csatolása</translation>
 <translation id="7052237160939977163">Teljesítménykövetési adatok elküldése</translation>
 <translation id="5526928694260255286"><ph name="BEGIN_LINK"/>Bluetooth-naplók<ph name="END_LINK"/> csatolása (a Brave Software általi belső felhasználásra)</translation>
+<translation id="3047644958362961983">Ezek az információk segítenek nekünk a Segéddel kapcsolatos probléma jobb megértésében. 90 napig tároljuk az adatokat, hozzáférhetőségük pedig a megfelelő mérnöki és ügyfélszolgálati csapatokra korlátozódik.</translation>
 <translation id="1705635099498185261">A Bluetooth-problémák hatékonyabb elemzése érdekében a Brave Software-alkalmazottak kiegészítő Bluetooth-naplókat is csatolhatnak visszajelzéseikhez. Ha be van jelölve ez a beállítás, a jelentés tartalmazni fogja az aktuális munkamenet btsnoop és HCI naplóit, kitörölve belőlük a lehető legtöbb személyazonosításra alkalmas adatot. Ezekhez a naplókhoz kizárólag a Brave OS termékcsalád vezetői férhetnek hozzá a Listnr szolgáltatásban. A naplók törlése 90 nap múlva megtörténik.</translation>
 <translation id="4206323443866416204">Visszajelzés</translation>
 <translation id="3681311097828166361">Köszönjük visszajelzését. Most nincs internetkapcsolata, ezért a jelentést később küldi el a böngésző.</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>Rendszeradatok<ph name="END_LINK1"/> küldése</translation>
-<translation id="8642895855701880552"><ph name="BEGIN_LINK1"/>Rendszer- és alkalmazásadatok<ph name="END_LINK1"/> küldése</translation>
-<translation id="7292696521213967957">Hibakeresését szolgáló adatok a Segédhez</translation>
+<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>Rendszer-információk<ph name="END_LINK1"/> és <ph name="BEGIN_LINK2"/>mutatószámok<ph name="END_LINK2"/> küldése</translation>
+<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>Redszer- és alkalmazásadatok<ph name="END_LINK1"/>, valamint <ph name="BEGIN_LINK2"/>mutatószámok<ph name="END_LINK2"/> küldése</translation>
 <translation id="8329196515830093443">A fájlt elküldjük a Brave Software-nak hibakeresésre</translation>
 <translation id="8227119283605456246">Fájl csatolása</translation>
 <translation id="5367091008316207019">Fájl olvasása..</translation>
@@ -2579,6 +2582,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="4694604912444486114">Majom</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pingvin</translation>
+<translation id="3021066826692793094">Pillangó</translation>
 <translation id="3809272675881623365">Nyúl</translation>
 <translation id="4124935795427217608">Egyszarvú</translation>
 <translation id="1830550083491357902">Nem jelentkezett be</translation>
@@ -3889,6 +3893,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="8339059274628563283"><ph name="SITE"/> – helyben tárolt adatok</translation>
 <translation id="4090947011087001172">Visszavonja a(z) <ph name="SITE"/> minden webhelyengedélyét?</translation>
 <translation id="1688867105868176567">Törli a webhelyadatokat?</translation>
+<translation id="4665446389743427678">A(z) <ph name="SITE"/> által tárolt összes adat törlődik.</translation>
 <translation id="5300287940468717207">Visszaállítja a webhelyengedélyeket?</translation>
 <translation id="2734760316755174687">A(z) <ph name="SITE_GROUP_NAME"/> csoportba tartozó webhelyek visszaállítása is megtörténik.</translation>
 <translation id="3255355328033513170">A(z) <ph name="SITE_GROUP_NAME"/> és a hozzá tartozó összes webhely által tárolt minden adat törlődik. Ez a cookie-kra is vonatkozik. A rendszer kijelentkezteti ezekről a webhelyekről (a megnyitott lapok esetében is).</translation>
@@ -4362,6 +4367,8 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="4359717112757026264">Városkép</translation>
 <translation id="6691541770654083180">Föld</translation>
 <translation id="5033266061063942743">Geometriai alakzatok</translation>
+<translation id="7789963078219276159">A kezdőoldal háttérképe a következőre változott: <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">A kezdőoldal háttere vissza lett állítva az alapértelmezett háttérre.</translation>
 <translation id="239760341987199724">A Brave beállítása alapértelmezett böngészőként</translation>
 <translation id="96037229054033864">Böngészés során mindig hozzájut a Brave Software Keresés találataihoz és a Brave Software okos megoldásaihoz</translation>
 <translation id="296137235951584143">Tegye személyessé a Brave-ot</translation>

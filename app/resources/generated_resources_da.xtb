@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Nej tak</translation>
 <translation id="9169931577761441333">Føj <ph name="APP_NAME"/> til startskærmen</translation>
 <translation id="6349101878882523185">Installer <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Installer <ph name="APP_NAME"/> (kræver ikke download)</translation>
 <translation id="3789841737615482174">Installer</translation>
 <translation id="5280426389926346830">Vil du oprette en genvej?</translation>
 <translation id="7525067979554623046">Opret</translation>
@@ -1300,6 +1301,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="3071624960923923138">Du kan klikke her for at åbne en ny fane</translation>
 <translation id="4908811072292128752">Åbn en ny fane for at se to websites på én gang</translation>
 <translation id="8966870118594285808">Åbn en fane igen, hvis du lukkede den ved et uheld</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> kan åbne faner igen, der blev lukket ved et uheld</translation>
 <translation id="2963151496262057773">Følgende plugins svarer ikke: <ph name="PLUGIN_NAME"/>Vil du stoppe det?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Siden svarer ikke}one{Siderne svarer ikke}other{Siderne svarer ikke}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Du kan afvente svar fra den eller afslutte siden.}one{Du kan afvente svar fra den eller afslutte siden.}other{Du kan afvente svar fra dem eller afslutte siderne.}}</translation>
@@ -1354,12 +1356,13 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6076448957780543068">Inkluder dette screenshot</translation>
 <translation id="7052237160939977163">Send data om ydeevne</translation>
 <translation id="5526928694260255286">Vedhæft <ph name="BEGIN_LINK"/>Bluetooth-logfiler<ph name="END_LINK"/> (internt hos Brave Software)</translation>
+<translation id="3047644958362961983">Disse oplysninger hjælper os til bedre at forstå dit problem med Assistent. De opbevares i op til 90 dage, og adgangen til oplysningerne er begrænset til de relevante udvikler- og feedbackteams.</translation>
 <translation id="1705635099498185261">Brave Softwarere kan medtage yderligere Bluetooth-logfiler i deres feedbackrapporter for at forbedre diagnosticeringen af Bluetooth-problemer. Når denne mulighed er valgt, omfatter din rapport btsnoop- og HCI-logfiler fra din nuværende session. Disse er renset for at fjerne så mange personhenførbare oplysninger som muligt. Det er kun administratorer af Brave OS-produktgruppen i Listnr, der har adgang til disse. Logfiler ryddes efter 90 dage.</translation>
 <translation id="4206323443866416204">Feedbackrapport</translation>
 <translation id="3681311097828166361">Tak for din feedback. Du er offline nu, og din rapport sendes senere.</translation>
 <translation id="8713570323158206935">Send <ph name="BEGIN_LINK1"/>systemoplysninger<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Send <ph name="BEGIN_LINK1"/>system- og appoplysninger<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Oplysninger til fejlretning i Assistent</translation>
+<translation id="6395423953133416962">Send <ph name="BEGIN_LINK1"/>systemoplysninger<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>metrics<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Send <ph name="BEGIN_LINK1"/>system- og appoplysninger<ph name="END_LINK1"/> samt <ph name="BEGIN_LINK2"/>metrics<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Filen sendes til Brave Software til fejlretning</translation>
 <translation id="8227119283605456246">Vedhæft fil</translation>
 <translation id="5367091008316207019">Læser fil...</translation>
@@ -2579,6 +2582,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="4694604912444486114">Abe</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pingvin</translation>
+<translation id="3021066826692793094">Sommerfugl</translation>
 <translation id="3809272675881623365">Kanin</translation>
 <translation id="4124935795427217608">Enhjørning</translation>
 <translation id="1830550083491357902">Ikke logget ind</translation>
@@ -3889,6 +3893,7 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="8339059274628563283">Data fra <ph name="SITE"/>, der er gemt lokalt</translation>
 <translation id="4090947011087001172">Vil du nulstille tilladelserne for <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Ville du rydde websitets data?</translation>
+<translation id="4665446389743427678">Alle data, der gemmes af <ph name="SITE"/>, slettes.</translation>
 <translation id="5300287940468717207">Vil du nulstille websitetilladelserne?</translation>
 <translation id="2734760316755174687">Websites i <ph name="SITE_GROUP_NAME"/> bliver også nulstillet.</translation>
 <translation id="3255355328033513170">Alle data, der gemmes af <ph name="SITE_GROUP_NAME"/>, og alle websites under dem, slettes. Dette omfatter cookies. Du logges ud af disse websites, også i åbne faner.</translation>
@@ -4362,6 +4367,8 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="4359717112757026264">Cityscape</translation>
 <translation id="6691541770654083180">Jorden</translation>
 <translation id="5033266061063942743">Geometriske former</translation>
+<translation id="7789963078219276159">Baggrunden for startsiden blev ændret til <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Baggrunden for startsiden er nulstillet til standardbaggrunden.</translation>
 <translation id="239760341987199724">Angiv Brave som din standardbrowser</translation>
 <translation id="96037229054033864">Få adgang til Brave Software Søgning og Brave Software-intelligens, hver gang du browser</translation>
 <translation id="296137235951584143">Gør Brave til din egen</translation>

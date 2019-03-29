@@ -409,6 +409,7 @@
 <translation id="2316129865977710310">Ačiū, ne</translation>
 <translation id="9169931577761441333">Pridėkite „<ph name="APP_NAME"/>“ prie pagrindinio ekrano</translation>
 <translation id="6349101878882523185">Įdiegti <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Įdiekite „<ph name="APP_NAME"/>“ (nereikia atsisiųsti)</translation>
 <translation id="3789841737615482174">Įdiegti</translation>
 <translation id="5280426389926346830">Sukurti spartųjį klavišą?</translation>
 <translation id="7525067979554623046">Sukurti</translation>
@@ -1302,6 +1303,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="3071624960923923138">Galite spustelėti čia, kad atidarytumėte naują skirtuką</translation>
 <translation id="4908811072292128752">Jei norite naršyti iš karto dvi svetaines, atidarykite naują skirtuką</translation>
 <translation id="8966870118594285808">Atidaryti netyčia uždarytą skirtuką</translation>
+<translation id="8806680466228877631">Naudojant <ph name="SHORTCUT"/> galima iš naujo atidaryti netyčia uždarytus skirtukus</translation>
 <translation id="2963151496262057773">Šis papildinys neatsako: „<ph name="PLUGIN_NAME"/>“ Ar norite jį sustabdyti?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Puslapis nereaguoja}one{Puslapiai nereaguoja}few{Puslapiai nereaguoja}many{Puslapiai nereaguoja}other{Puslapiai nereaguoja}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Galite palaukti, kol puslapis pradės reaguoti į komandas, arba išeiti iš puslapio.}one{Galite palaukti, kol puslapiai pradės reaguoti į komandas, arba išeiti iš puslapių.}few{Galite palaukti, kol puslapiai pradės reaguoti į komandas, arba išeiti iš puslapių.}many{Galite palaukti, kol puslapiai pradės reaguoti į komandas, arba išeiti iš puslapių.}other{Galite palaukti, kol puslapiai pradės reaguoti į komandas, arba išeiti iš puslapių.}}</translation>
@@ -1356,12 +1358,13 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6076448957780543068">Įtraukti šią ekrano kopiją</translation>
 <translation id="7052237160939977163">Siųsti našumo stebėjimo duomenis</translation>
 <translation id="5526928694260255286">Pridėti <ph name="BEGIN_LINK"/>„Bluetooth“ žurnalus<ph name="END_LINK"/> („Brave Software“ darbuotojams)</translation>
+<translation id="3047644958362961983">Ši informacija padeda mums geriau suprasti jums iškilusią Padėjėjo problemą. Ji saugoma iki 90 dienų ir ją gali pasiekti tik atitinkami inžinierių ir atsiliepimų komandų nariai.</translation>
 <translation id="1705635099498185261">Siekdami geriau diagnozuoti „Bluetooth“ problemas, „Brave Software“ darbuotojai gali įtraukti papildomų „Bluetooth“ žurnalų į savo atsiliepimų ataskaitas. Kai ši parinktis pažymėta, į ataskaitą iš dabartinės sesijos bus įtraukti „btsnoop“ ir HCI žurnalai, pašalinus kuo daugiau AAI. Pasiekti šiuos žurnalus galės tik „Listnr“ „Brave“ OS produkto grupės valdytojai. Žurnalai bus panaikinti po 90 dienų.</translation>
 <translation id="4206323443866416204">Pranešimai apie atsiliepimus</translation>
 <translation id="3681311097828166361">Dėkojame už atsiliepimus. Dabar esate neprisijungę, todėl jūsų pranešimas bus išsiųstas vėliau.</translation>
 <translation id="8713570323158206935">Siųsti <ph name="BEGIN_LINK1"/>sistemos informaciją<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Siųsti <ph name="BEGIN_LINK1"/>sistemos ir programų informaciją<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Padėjėjo derinimo informacija</translation>
+<translation id="6395423953133416962">Siųsti <ph name="BEGIN_LINK1"/>sistemos informaciją<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>metriką<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Siųsti <ph name="BEGIN_LINK1"/>sistemos ir programos informaciją<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>metriką<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Failas bus išsiųstas į sistemą „Brave Software“ atlikti derinimą</translation>
 <translation id="8227119283605456246">Pridėtas failas</translation>
 <translation id="5367091008316207019">Skaitomas failas...</translation>
@@ -2580,6 +2583,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="4694604912444486114">Beždžionė</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pingvinas</translation>
+<translation id="3021066826692793094">Drugelis</translation>
 <translation id="3809272675881623365">Triušis</translation>
 <translation id="4124935795427217608">Vienaragis</translation>
 <translation id="1830550083491357902">Neprisijungta</translation>
@@ -3889,6 +3893,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="8339059274628563283"><ph name="SITE"/> vietinėje atmintinėje išsaugojo duomenų</translation>
 <translation id="4090947011087001172">Iš naujo nustatyti <ph name="SITE"/> svetainės leidimus?</translation>
 <translation id="1688867105868176567">Išvalyti svetainės duomenis?</translation>
+<translation id="4665446389743427678">Visi svetainės <ph name="SITE"/> išsaugoti duomenys bus ištrinti.</translation>
 <translation id="5300287940468717207">Iš naujo nustatyti svetainės leidimus?</translation>
 <translation id="2734760316755174687"><ph name="SITE_GROUP_NAME"/> svetainės taip pat bus nustatytos iš naujo.</translation>
 <translation id="3255355328033513170">Visi <ph name="SITE_GROUP_NAME"/> ir į ją įtrauktų svetainių saugomi duomenys bus ištrinti Tai apima slapukus. Būsite atjungti nuo šių svetainių, įskaitant atidarytus skirtukus.</translation>
@@ -4362,6 +4367,8 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="4359717112757026264">Miesto architektūra</translation>
 <translation id="6691541770654083180">Žemė</translation>
 <translation id="5033266061063942743">Geometrinės figūros</translation>
+<translation id="7789963078219276159">Pradžios puslapio fonas pakeistas į <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Pradžios puslapio fonas iš naujo nustatytas kaip numatytasis fonas.</translation>
 <translation id="239760341987199724">Nustatyti „Brave“ kaip numatytąją naršyklę</translation>
 <translation id="96037229054033864">Naudokitės „Brave Software“ paieška ir „Brave Software“ išmaniosiomis funkcijomis kiekvieną kartą naršydami</translation>
 <translation id="296137235951584143">Suasmeninkite „Brave“</translation>

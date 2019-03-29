@@ -147,6 +147,7 @@
 <translation id="9033857511263905942">&amp;Lim inn</translation>
 <translation id="1815083418640426271">Lim inn som ren tekst</translation>
 <translation id="4022426551683927403">&amp;Legg til i ordliste</translation>
+<translation id="6849870115130610913">Få bildebeskrivelser fra Brave Software</translation>
 <translation id="372722114124766626">Bare én gang</translation>
 <translation id="8917490105272468696">Ja, den er grei</translation>
 <translation id="7473891865547856676">Nei takk</translation>
@@ -407,6 +408,8 @@
 <translation id="4923279099980110923">Ja, jeg ønsker å hjelpe</translation>
 <translation id="2316129865977710310">Nei takk</translation>
 <translation id="9169931577761441333">Legg til <ph name="APP_NAME"/> på startskjermen</translation>
+<translation id="6349101878882523185">Installer <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Installer <ph name="APP_NAME"/> (ingen nedlasting nødvendig)</translation>
 <translation id="3789841737615482174">Installer</translation>
 <translation id="5280426389926346830">Vil du opprette en snarvei?</translation>
 <translation id="7525067979554623046">Opprett</translation>
@@ -1299,6 +1302,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="3071624960923923138">Du kan klikke her for å åpne en ny fane</translation>
 <translation id="4908811072292128752">Åpne en ny fane for å surfe på to nettsteder samtidig</translation>
 <translation id="8966870118594285808">Åpne faner på nytt hvis du lukket dem ved et uhell</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> kan gjenåpne faner som er lukket ved et uhell</translation>
 <translation id="2963151496262057773">Følgende programtillegg svarer ikke: <ph name="PLUGIN_NAME"/>Vil du stoppe det?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Siden svarer ikke}other{Sidene svarer ikke}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Du kan vente til siden svarer, eller du kan lukke den.}other{Du kan vente til sidene svarer, eller du kan lukke dem.}}</translation>
@@ -1353,12 +1357,13 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="6076448957780543068">Inkluder denne skjermdumpen</translation>
 <translation id="7052237160939977163">Send ytelsessporingsdata</translation>
 <translation id="5526928694260255286">Legg ved <ph name="BEGIN_LINK"/>Bluetooth-logger<ph name="END_LINK"/> (Brave Software-internt)</translation>
+<translation id="3047644958362961983">Denne informasjonen gir oss bedre forståelse av Assistent-problemet. Den lagres i opptil 90 dager, og bare relevante tekniske team og tilbakemeldingsteam får tilgang.</translation>
 <translation id="1705635099498185261">For å diagnostisere Bluetooth-problemer kan Brave Softwarere inkludere flere Bluetooth-logger i tilbakemeldingsrapportene sine. Når dette alternativet er avmerket, inkluderer rapporten din btsnoop- and HCI-logger fra den gjeldende økten din. Disse er anonymisert for å fjerne så mye personlig identifiserende informasjon (PII) som mulig. Tilgang til disse loggene blir begrenset til administratorer av Brave OS-produktgruppen i Listnr. Logger slettes permanent etter 90 dager.</translation>
 <translation id="4206323443866416204">Tilbakemeldingsrapport</translation>
 <translation id="3681311097828166361">Takk for tilbakemeldingen. Siden du er uten nett akkurat nå, sendes rapporten senere.</translation>
 <translation id="8713570323158206935">Send <ph name="BEGIN_LINK1"/>systeminformasjon<ph name="END_LINK1"/></translation>
-<translation id="8642895855701880552">Send <ph name="BEGIN_LINK1"/>system- og appinformasjon<ph name="END_LINK1"/></translation>
-<translation id="7292696521213967957">Feilsøkingsinfo for assistenten</translation>
+<translation id="6395423953133416962">Send <ph name="BEGIN_LINK1"/>systeminformasjon<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>-målinger<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Send <ph name="BEGIN_LINK1"/>system- og appinformasjon<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>beregninger<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Filen sendes til Brave Software for feilsøking</translation>
 <translation id="8227119283605456246">Legg ved fil</translation>
 <translation id="5367091008316207019">Leser filen …</translation>
@@ -2575,6 +2580,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="4694604912444486114">Ape</translation>
 <translation id="6795884519221689054">Panda</translation>
 <translation id="1829129547161959350">Pingviner</translation>
+<translation id="3021066826692793094">Sommerfugl</translation>
 <translation id="3809272675881623365">Kanin</translation>
 <translation id="4124935795427217608">Enhjørning</translation>
 <translation id="1830550083491357902">Ikke pålogget</translation>
@@ -3061,6 +3067,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="5840822070878669614">Åpne Brave Nettmarked</translation>
 <translation id="6073903501322152803">Legg til tilgjengelighetsfunksjoner</translation>
 <translation id="7988355189918024273">Aktiver funksjoner for tilgjengelighet</translation>
+<translation id="3274899353071794175">Hvis et bilde ikke har noen nyttig beskrivelse, finner Brave en til deg. Bildene skannes av Brave Software.</translation>
 <translation id="2558896001721082624">Vis alltid alternativene for tilgjengelighet i systemmenyen</translation>
 <translation id="7280649757394340890">Stemmeinnstillinger for tekst til tale</translation>
 <translation id="6635956300022133031">Velg og tilpass tekst til tale-stemmer</translation>
@@ -3883,6 +3890,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="8339059274628563283">Data lagret lokalt på <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Vil du tilbakestille nettstedstillatelser for <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Vil du fjerne nettstedsdata?</translation>
+<translation id="4665446389743427678">Alle data som lagres av <ph name="SITE"/>, blir slettet.</translation>
 <translation id="5300287940468717207">Vil du tilbakestille nettstedstillatelsene?</translation>
 <translation id="2734760316755174687">Nettsteder under <ph name="SITE_GROUP_NAME"/> blir også tilbakestilt.</translation>
 <translation id="3255355328033513170">Alle data som er lagret av <ph name="SITE_GROUP_NAME"/> og eventuelle underordnede nettsteder, blir slettet. Dette omfatter også informasjonskapsler. Du blir logget av disse nettstedene – inkludert i åpne faner.</translation>
@@ -4270,7 +4278,10 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="3729506734996624908">Tillatte nettsteder</translation>
 <translation id="3732078975418297900">Feil på linje <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Feil fra linje <ph name="ERROR_LINE_START"/> til linje <ph name="ERROR_LINE_END"/></translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/> – aktivitetslogg</translation>
 <translation id="8287902281644548111">Søk etter API-kall/nettadresser</translation>
+<translation id="5008936837313706385">Aktivitetsnavn</translation>
+<translation id="7583948862126372804">Antall</translation>
 <translation id="2841013758207633010">Klokkeslett</translation>
 <translation id="2002109485265116295">Sanntid</translation>
 <translation id="2549985041256363841">Start opptak</translation>
@@ -4353,6 +4364,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="4359717112757026264">Bybilde</translation>
 <translation id="6691541770654083180">Jorden</translation>
 <translation id="5033266061063942743">Geometriske figurer</translation>
+<translation id="7789963078219276159">Bakgrunnen for startsiden er endret til <ph name="CATEGORY"/>.</translation>
+<translation id="8771300903067484968">Bakgrunnen på startsiden er tilbakestilt til standardbakgrunnen.</translation>
 <translation id="239760341987199724">Bruk Brave som standard nettleser</translation>
 <translation id="96037229054033864">Få Brave Software Søk og smarte funksjoner fra Brave Software hver gang du surfer på nettet</translation>
 <translation id="296137235951584143">Gi Brave et personlig preg</translation>

@@ -147,6 +147,7 @@
 <translation id="9033857511263905942">붙여넣기(&amp;P)</translation>
 <translation id="1815083418640426271">일반 텍스트로 붙여넣기</translation>
 <translation id="4022426551683927403">사전에 추가(&amp;A)</translation>
+<translation id="6849870115130610913">Brave Software에서 이미지 설명 가져오기</translation>
 <translation id="372722114124766626">한 번만</translation>
 <translation id="8917490105272468696">사용</translation>
 <translation id="7473891865547856676">건너뛰기</translation>
@@ -407,6 +408,8 @@
 <translation id="4923279099980110923">네, 돕고 싶습니다.</translation>
 <translation id="2316129865977710310">아니요, 괜찮습니다.</translation>
 <translation id="9169931577761441333">홈 화면에 <ph name="APP_NAME"/> 추가</translation>
+<translation id="6349101878882523185"><ph name="APP_NAME"/> 설치</translation>
+<translation id="4918221908152712722"><ph name="APP_NAME"/> 설치(다운로드 필요 없음)</translation>
 <translation id="3789841737615482174">설치</translation>
 <translation id="5280426389926346830">바로가기를 만드시겠습니까?</translation>
 <translation id="7525067979554623046">만들기</translation>
@@ -1297,6 +1300,7 @@
 <translation id="3071624960923923138">여기를 클릭하여 새 탭을 열 수 있습니다</translation>
 <translation id="4908811072292128752">새 탭을 열어 한 번에 두 개의 사이트를 탐색할 수 있습니다</translation>
 <translation id="8966870118594285808">실수로 탭을 닫은 경우 탭 다시 열기</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> 키를 눌러 실수로 닫은 탭 다시 열기</translation>
 <translation id="2963151496262057773">다음 플러그인에서 응답이 없습니다. <ph name="PLUGIN_NAME"/>을(를) 중단하시겠습니까?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{응답 없는 페이지}other{응답 없는 페이지}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{페이지가 응답할 때까지 기다리거나 페이지를 종료할 수 있습니다.}other{페이지가 응답할 때까지 기다리거나 페이지를 종료할 수 있습니다.}}</translation>
@@ -1355,8 +1359,8 @@
 <translation id="4206323443866416204">의견 보고서</translation>
 <translation id="3681311097828166361">의견을 보내주셔서 감사합니다. 현재 오프라인 상태이므로 보고서는 나중에 전송됩니다.</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>시스템 정보<ph name="END_LINK1"/> 전송</translation>
-<translation id="8642895855701880552"><ph name="BEGIN_LINK1"/>시스템 및 앱 정보<ph name="END_LINK1"/> 보내기</translation>
-<translation id="7292696521213967957">어시스턴트를 디버그하기 위한 정보</translation>
+<translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>시스템 정보<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>통계<ph name="END_LINK2"/> 전송</translation>
+<translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>시스템 및 앱 정보<ph name="END_LINK1"/>와 <ph name="BEGIN_LINK2"/>통계<ph name="END_LINK2"/> 전송</translation>
 <translation id="8329196515830093443">디버깅을 위해 파일이 Brave Software로 전송됩니다.</translation>
 <translation id="8227119283605456246">파일 첨부</translation>
 <translation id="5367091008316207019">파일 읽는 중..</translation>
@@ -2575,6 +2579,7 @@
 <translation id="4694604912444486114">원숭이</translation>
 <translation id="6795884519221689054">판다</translation>
 <translation id="1829129547161959350">펭귄</translation>
+<translation id="3021066826692793094">나비</translation>
 <translation id="3809272675881623365">토끼</translation>
 <translation id="4124935795427217608">유니콘</translation>
 <translation id="1830550083491357902">로그인하지 않음</translation>
@@ -3061,6 +3066,7 @@
 <translation id="5840822070878669614">Brave 웹 스토어 열기</translation>
 <translation id="6073903501322152803">접근성 기능 추가</translation>
 <translation id="7988355189918024273">접근성 기능 사용</translation>
+<translation id="3274899353071794175">이미지에 유용한 설명이 없으면 Brave에서 자동으로 설명을 제공합니다. Brave Software에서 이미지를 스캔합니다.</translation>
 <translation id="2558896001721082624">시스템 메뉴에 접근성 옵션 항상 표시</translation>
 <translation id="7280649757394340890">TTS 음성 설정</translation>
 <translation id="6635956300022133031">텍스트 음성 변환 기능의 음성을 선택하고 맞춤설정합니다.</translation>
@@ -3883,6 +3889,7 @@
 <translation id="8339059274628563283"><ph name="SITE"/>에 로컬 저장된 데이터</translation>
 <translation id="4090947011087001172"><ph name="SITE"/>의 사이트 권한을 재설정하시겠습니까?</translation>
 <translation id="1688867105868176567">사이트 데이터를 삭제하시겠습니까?</translation>
+<translation id="4665446389743427678"><ph name="SITE"/>에서 저장한 모든 데이터가 삭제됩니다.</translation>
 <translation id="5300287940468717207">사이트 권한을 재설정하시겠습니까?</translation>
 <translation id="2734760316755174687"><ph name="SITE_GROUP_NAME"/> 그룹에 있는 사이트의 권한도 초기화됩니다.</translation>
 <translation id="3255355328033513170"><ph name="SITE_GROUP_NAME"/>에서 저장한 모든 데이터 및 모든 하위 사이트가 삭제됩니다. 여기에는 쿠키도 포함됩니다. 열려 있는 탭을 포함하여 이러한 사이트에서 로그아웃됩니다.</translation>
@@ -4270,7 +4277,10 @@
 <translation id="3729506734996624908">허용된 사이트</translation>
 <translation id="3732078975418297900"><ph name="ERROR_LINE"/>행에 오류가 있음</translation>
 <translation id="9063208415146866933"><ph name="ERROR_LINE_START"/>행부터 <ph name="ERROR_LINE_END"/>행까지에 오류가 있음</translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/> - 활동 로그</translation>
 <translation id="8287902281644548111">API 호출/URL로 검색</translation>
+<translation id="5008936837313706385">활동 이름</translation>
+<translation id="7583948862126372804">득표 수</translation>
 <translation id="2841013758207633010">시간</translation>
 <translation id="2002109485265116295">실시간</translation>
 <translation id="2549985041256363841">녹화 시작</translation>
