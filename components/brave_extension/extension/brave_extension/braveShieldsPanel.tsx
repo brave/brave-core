@@ -4,34 +4,39 @@
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-
-import Theme from 'brave-ui/theme/brave-default'
-import { ThemeProvider } from 'brave-ui/theme'
-
+import shieldsDarkTheme from 'brave-ui/theme/shields-dark'
+import shieldsLightTheme from 'brave-ui/theme/shields-light'
 import { Provider } from 'react-redux'
 import { Store } from 'react-chrome-redux'
+import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import BraveShields from './containers/braveShields'
 require('../../../fonts/muli.css')
 require('../../../fonts/poppins.css')
 
-chrome.storage.local.get('state', (obj) => {
-  const store: any = new Store({
-    portName: 'BRAVE'
-  })
+const store: any = new Store({
+  portName: 'BRAVE'
+})
 
-  store.ready()
-    .then(() => {
-      const mountNode: HTMLElement | null = document.querySelector('#root')
-      ReactDOM.render(
-        <Provider store={store}>
-          <ThemeProvider theme={Theme}>
-            <BraveShields />
-          </ThemeProvider>
-        </Provider>,
-        mountNode
-      )
-    })
-    .catch(() => {
-      console.error('Problem mounting brave shields')
-    })
+Promise.all([
+  store.ready(),
+  new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
+])
+.then(([ , themeType ]: [ undefined, chrome.braveTheme.ThemeType ]) => {
+  const mountNode: HTMLElement | null = document.querySelector('#root')
+  ReactDOM.render(
+    <Provider store={store}>
+      <BraveCoreThemeProvider
+        initialThemeType={themeType}
+        dark={shieldsDarkTheme}
+        light={shieldsLightTheme}
+      >
+        <BraveShields />
+      </BraveCoreThemeProvider>
+    </Provider>,
+    mountNode
+  )
+})
+.catch((e) => {
+  console.error('Problem mounting brave shields')
+  console.error(e)
 })
