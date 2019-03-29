@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -14,7 +15,7 @@
 
 namespace brave {
 
-base::Time BraveStatsUpdaterParams::g_current_time(base::Time::Now());
+base::Time BraveStatsUpdaterParams::g_current_time;
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service)
     : BraveStatsUpdaterParams(pref_service,
@@ -84,31 +85,31 @@ std::string BraveStatsUpdaterParams::BooleanToString(bool bool_value) const {
 }
 
 std::string BraveStatsUpdaterParams::GetCurrentDateAsYMD() const {
-  return brave::GetDateAsYMD(g_current_time);
+  return brave::GetDateAsYMD(GetCurrentTimeNow());
 }
 
 std::string BraveStatsUpdaterParams::GetLastMondayAsYMD() const {
-  base::Time now = g_current_time;
+  base::Time now = GetCurrentTimeNow();
   base::Time::Exploded exploded;
   now.LocalExplode(&exploded);
 
-  base::Time last_monday;
-  last_monday = base::Time::FromJsTime(
-      now.ToJsTime() -
-      ((exploded.day_of_week - 1) * base::Time::kMillisecondsPerDay));
+  int days_adjusted =
+      (exploded.day_of_week == 0) ? 6 : exploded.day_of_week - 1;
+  base::Time last_monday = base::Time::FromJsTime(
+      now.ToJsTime() - (days_adjusted * base::Time::kMillisecondsPerDay));
 
   return brave::GetDateAsYMD(last_monday);
 }
 
 int BraveStatsUpdaterParams::GetCurrentMonth() const {
-  base::Time now = g_current_time;
+  base::Time now = GetCurrentTimeNow();
   base::Time::Exploded exploded;
   now.LocalExplode(&exploded);
   return exploded.month;
 }
 
 int BraveStatsUpdaterParams::GetCurrentISOWeekNumber() const {
-  base::Time now = g_current_time;
+  base::Time now = GetCurrentTimeNow();
   base::Time::Exploded now_exploded;
   now.LocalExplode(&now_exploded);
   now_exploded.hour = 0;
@@ -138,12 +139,17 @@ int BraveStatsUpdaterParams::GetCurrentISOWeekNumber() const {
 
   return 1 + std::round(
                  ((now_adjusted.ToJsTime() - jan4_time.ToJsTime()) / 86400000 -
-                  3 + (jan4_exploded.day_of_month + 6) % 7) /
+                  3 + (jan4_exploded.day_of_week + 6) % 7) /
                  7);
 }
 
+base::Time BraveStatsUpdaterParams::GetCurrentTimeNow() const {
+  return g_current_time.is_null() ? base::Time::Now() : g_current_time;
+}
+
 // static
-void BraveStatsUpdaterParams::SetCurrentTimeForTest(const base::Time& current_time) {
+void BraveStatsUpdaterParams::SetCurrentTimeForTest(
+    const base::Time& current_time) {
   g_current_time = current_time;
 }
 
