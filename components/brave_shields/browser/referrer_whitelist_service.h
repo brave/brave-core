@@ -27,6 +27,8 @@
 #define REFERRER_DAT_FILE "ReferrerWhitelist.json"
 #define REFERRER_DAT_FILE_VERSION "1"
 
+class ReferrerWhitelistServiceTest;
+
 namespace brave_shields {
 
 // The brave shields service in charge of referrer whitelist
@@ -45,6 +47,8 @@ class ReferrerWhitelistService : public BaseLocalDataFilesObserver {
                         const std::string& manifest) override;
 
  private:
+  friend class ::ReferrerWhitelistServiceTest;
+
   void OnDATFileDataReady();
 
   typedef std::vector<URLPattern> URLPatternList;

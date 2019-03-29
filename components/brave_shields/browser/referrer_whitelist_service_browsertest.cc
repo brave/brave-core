@@ -32,6 +32,7 @@ public:
 
   void SetUp() override {
     InitService();
+    brave::RegisterPathProvider();
     ExtensionBrowserTest::SetUp();
   }
 
@@ -50,7 +51,6 @@ public:
 
   void GetTestDataDir(base::FilePath* test_data_dir) {
     base::ScopedAllowBlockingForTesting allow_blocking;
-    brave::RegisterPathProvider();
     base::PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
   }
 
@@ -81,6 +81,14 @@ public:
     const GURL& firstPartyOrigin, const GURL& subresourceUrl) {
     return g_brave_browser_process->referrer_whitelist_service()->IsWhitelisted(
       firstPartyOrigin, subresourceUrl);
+  }
+
+  int GetWhitelistSize() {
+    return g_brave_browser_process->referrer_whitelist_service()->referrer_whitelist_.size();
+  }
+
+  void ClearWhitelist() {
+    g_brave_browser_process->referrer_whitelist_service()->referrer_whitelist_.clear();
   }
 };
 
@@ -126,4 +134,21 @@ IN_PROC_BROWSER_TEST_F(ReferrerWhitelistServiceTest, IsWhitelistedReferrer) {
       GURL("https://content.googleapis.com/cryptauth/v1/authzen/awaittx")));
   EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://accounts.google.com"),
       GURL("https://ajax.googleapis.com/ajax/libs/d3js/5.7.0/d3.min.js")));
+}
+
+// Ensure the referrer whitelist service properly clears its cache of
+// precompiled URLPatterns if initialized twice. (This can happen if
+// the parent component is updated while Brave is running.)
+IN_PROC_BROWSER_TEST_F(ReferrerWhitelistServiceTest, ClearCache) {
+  ASSERT_TRUE(InstallReferrerWhitelistExtension());
+  int size = GetWhitelistSize();
+  // clear the cache manually to make sure we're actually
+  // reinitializing it the second time
+  ClearWhitelist();
+  ASSERT_TRUE(InstallReferrerWhitelistExtension());
+  EXPECT_EQ(size, GetWhitelistSize());
+  // now reinitialize without manually clearing (simulates an in-place
+  // component update)
+  ASSERT_TRUE(InstallReferrerWhitelistExtension());
+  EXPECT_EQ(size, GetWhitelistSize());
 }

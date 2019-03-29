@@ -38,7 +38,6 @@ ReferrerWhitelistService::ReferrerWhitelist::~ReferrerWhitelist() = default;
 
 bool ReferrerWhitelistService::IsWhitelisted(
     const GURL& firstPartyOrigin, const GURL& subresourceUrl) const {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   for (auto rw : referrer_whitelist_) {
     if (rw.first_party_pattern.MatchesURL(firstPartyOrigin)) {
       for (auto subresource_pattern : rw.subresource_pattern_list) {
@@ -52,6 +51,8 @@ bool ReferrerWhitelistService::IsWhitelisted(
 }
 
 void ReferrerWhitelistService::OnDATFileDataReady() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  referrer_whitelist_.clear();
   if (file_contents_.empty()) {
     LOG(ERROR) << "Could not obtain referrer whitelist data";
     return;
