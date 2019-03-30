@@ -578,11 +578,11 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
     // Make this tip monthly, if requested
     if (monthly) {
       ASSERT_TRUE(ExecJs(
-          contents(),
+          site_banner_contents,
           "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
           "delay(0).then(() => "
           "  document.querySelector(\"[data-test-id='monthlyCheckbox']\")"
-          "    .click());",
+          "    .children[0].click());",
           content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
           content::ISOLATED_WORLD_ID_CONTENT_END));
     }
@@ -612,6 +612,16 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
           content::ISOLATED_WORLD_ID_CONTENT_END);
       EXPECT_NE(js_result.ExtractString().find(publisher), std::string::npos);
       EXPECT_NE(js_result.ExtractString().find("1.0 BAT"), std::string::npos);
+      if (monthly) {
+        EXPECT_NE(js_result.ExtractString().find(
+                      "Your first monthly tip will be sent on"),
+                  std::string::npos);
+      }
+    }
+
+    // Trigger auto contribution now, for monthly
+    if (monthly) {
+      rewards_service()->StartAutoContributeForTest();
     }
 
     // Signal that donation was made and update wallet with new balance
