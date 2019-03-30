@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -20,7 +21,7 @@ namespace brave {
 
 class BraveStatsUpdaterParams {
  public:
-  BraveStatsUpdaterParams(PrefService* pref_service);
+  explicit BraveStatsUpdaterParams(PrefService* pref_service);
   BraveStatsUpdaterParams(PrefService* pref_service,
                           const std::string& ymd,
                           int woy,
@@ -36,7 +37,7 @@ class BraveStatsUpdaterParams {
 
   void SavePrefs();
 
-private:
+ private:
   friend class ::BraveStatsUpdaterTest;
   PrefService* pref_service_;
   std::string ymd_;
@@ -59,6 +60,7 @@ private:
   std::string GetLastMondayAsYMD() const;
   int GetCurrentMonth() const;
   int GetCurrentISOWeekNumber() const;
+  base::Time GetCurrentTimeNow() const;
 
   static void SetCurrentTimeForTest(const base::Time& current_time);
 

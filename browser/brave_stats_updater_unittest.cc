@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -32,8 +33,8 @@ class BraveStatsUpdaterTest: public testing::Test {
 
   void SetUp() override {
     brave::RegisterPrefsForBraveStatsUpdater(testing_local_state_.registry());
-    brave::RegisterPrefsForBraveReferralsService(testing_local_state_.registry());
-    brave::BraveStatsUpdaterParams::SetCurrentTimeForTest(base::Time::Now());
+    brave::RegisterPrefsForBraveReferralsService(
+        testing_local_state_.registry());
   }
 
   PrefService* GetLocalState() { return &testing_local_state_; }
@@ -216,5 +217,71 @@ TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededOnMondayLastCheckedOnSunday) {
 
     // Make sure that local state also didn't change
     ASSERT_EQ(GetLocalState()->GetInteger(kLastCheckWOY), 45);
+  }
+}
+
+TEST_F(BraveStatsUpdaterTest, HasCorrectWeekOfInstallation) {
+  base::Time::Exploded exploded;
+  base::Time current_time;
+
+  {
+    // Set date to 2019-03-24 (Sunday)
+    exploded.hour = 0;
+    exploded.minute = 0;
+    exploded.second = 0;
+    exploded.millisecond = 0;
+    exploded.day_of_week = 0;
+    exploded.year = 2019;
+    exploded.month = 3;
+    exploded.day_of_month = 24;
+
+    ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &current_time));
+    SetCurrentTimeForTest(current_time);
+
+    // Make sure that week of installation is previous Monday
+    brave::BraveStatsUpdaterParams brave_stats_updater_params(GetLocalState());
+    ASSERT_EQ(brave_stats_updater_params.GetWeekOfInstallationParam(),
+              "2019-03-18");
+  }
+
+  {
+    // Set date to 2019-03-25 (Monday)
+    exploded.hour = 0;
+    exploded.minute = 0;
+    exploded.second = 0;
+    exploded.millisecond = 0;
+    exploded.day_of_week = 0;
+    exploded.year = 2019;
+    exploded.month = 3;
+    exploded.day_of_month = 25;
+
+    ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &current_time));
+    SetCurrentTimeForTest(current_time);
+
+    // Make sure that week of installation is today, since today is a
+    // Monday
+    brave::BraveStatsUpdaterParams brave_stats_updater_params(GetLocalState());
+    ASSERT_EQ(brave_stats_updater_params.GetWeekOfInstallationParam(),
+              "2019-03-25");
+  }
+
+  {
+    // Set date to 2019-03-30 (Saturday)
+    exploded.hour = 0;
+    exploded.minute = 0;
+    exploded.second = 0;
+    exploded.millisecond = 0;
+    exploded.day_of_week = 0;
+    exploded.year = 2019;
+    exploded.month = 3;
+    exploded.day_of_month = 30;
+
+    ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &current_time));
+    SetCurrentTimeForTest(current_time);
+
+    // Make sure that week of installation is previous Monday
+    brave::BraveStatsUpdaterParams brave_stats_updater_params(GetLocalState());
+    ASSERT_EQ(brave_stats_updater_params.GetWeekOfInstallationParam(),
+              "2019-03-25");
   }
 }
