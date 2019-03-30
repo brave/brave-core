@@ -1091,15 +1091,33 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Retrieve the inner text of the wallet panel and verify that it
   // looks as expected
-  content::EvalJsResult js_result = EvalJs(
-      popup_contents,
-      "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-      "delay(0).then(() => "
-      "  document.querySelector(\"[id='wallet-panel']\").innerText);",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
-  EXPECT_NE(js_result.ExtractString().find("Brave Verified Publisher"),
-            std::string::npos);
+  {
+    content::EvalJsResult js_result = EvalJs(
+        popup_contents,
+        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+        "delay(0).then(() => "
+        "  document.querySelector(\"[id='wallet-panel']\").innerText);",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    EXPECT_NE(js_result.ExtractString().find("Brave Verified Publisher"),
+              std::string::npos);
+    EXPECT_NE(js_result.ExtractString().find(publisher), std::string::npos);
+  }
+
+  // Retrieve the inner HTML of the wallet panel and verify that it
+  // contains the expected favicon
+  {
+    content::EvalJsResult js_result = EvalJs(
+        popup_contents,
+        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+        "delay(0).then(() => "
+        "  document.querySelector(\"[id='wallet-panel']\").innerHTML);",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    const std::string favicon =
+        "chrome://favicon/size/48@2x/http://" + publisher;
+    EXPECT_NE(js_result.ExtractString().find(favicon), std::string::npos);
+  }
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
