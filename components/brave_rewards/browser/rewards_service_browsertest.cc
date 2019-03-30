@@ -550,6 +550,10 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
         browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
 
+    // The minimum publisher duration when testing is 1 second (and the
+    // granularity is seconds), so wait for just over 2 seconds to elapse
+    base::PlatformThread::Sleep(base::TimeDelta::FromMilliseconds(2100));
+
     // Open the Rewards popup
     content::WebContents* popup_contents = OpenRewardsPopup();
     ASSERT_TRUE(popup_contents);
@@ -649,7 +653,10 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
 
     if (verified) {
       // Wait for reconciliation to complete successfully
-      WaitForReconcileCompleted();
+      if (monthly) {
+        WaitForReconcileCompleted();
+        ASSERT_EQ(reconcile_status_, ledger::Result::LEDGER_OK);
+      }
 
       // Make sure that balance is updated correctly
       {
@@ -667,14 +674,72 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
 
       // Check that tip table shows the appropriate tip amount
       {
+        const std::string selector =
+            monthly ? "[color='contribute']" : "[color='donation']";
+        content::EvalJsResult js_result = EvalJs(
+            contents(),
+            content::JsReplace(
+                "const delay = t => new Promise(resolve => setTimeout(resolve, "
+                "t));"
+                "delay(0).then(() => "
+                "  document.querySelector($1).innerText);",
+                selector),
+            content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+            content::ISOLATED_WORLD_ID_CONTENT_END);
+        EXPECT_NE(js_result.ExtractString().find("-1.0BAT"), std::string::npos);
+      }
+    } else {
+      // Wait for reconciliation to complete with table empty error
+      if (monthly) {
+        WaitForReconcileCompleted();
+        ASSERT_EQ(reconcile_status_, ledger::Result::AC_TABLE_EMPTY);
+      }
+
+      // Make sure that balance did not change
+      {
+        content::EvalJsResult js_result = EvalJs(
+            contents(),
+            "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+            "delay(1000).then(() => "
+            "  document.querySelector(\"[data-test-id='balance']\")"
+            "    .innerText);",
+            content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+            content::ISOLATED_WORLD_ID_CONTENT_END);
+        EXPECT_NE(js_result.ExtractString().find("30.0 BAT"),
+                  std::string::npos);
+      }
+
+      // Make sure that pending contribution box shows the correct
+      // amount
+      {
+        const std::string amount = monthly ? "20" : "1";
         content::EvalJsResult js_result = EvalJs(
             contents(),
             "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
             "delay(0).then(() => "
-            "  document.querySelector(\"[color='donation']\").innerText);",
+            "  document.querySelector(\"[id='root']\").innerText);",
             content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
             content::ISOLATED_WORLD_ID_CONTENT_END);
-        EXPECT_NE(js_result.ExtractString().find("-1.0BAT"), std::string::npos);
+        EXPECT_NE(js_result.ExtractString().find(
+                      "You\u2019ve designated " + amount +
+                      " BAT for creators who haven\u2019t yet signed up to "
+                      "receive contributions."),
+                  std::string::npos);
+      }
+
+      // Check that tip table shows no tip
+      {
+        content::EvalJsResult js_result = EvalJs(
+            contents(),
+            "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+            "delay(0).then(() => "
+            "  document.querySelector(\"[type='donation']\")"
+            "    .parentElement.parentElement.innerText);",
+            content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+            content::ISOLATED_WORLD_ID_CONTENT_END);
+        EXPECT_NE(
+            js_result.ExtractString().find("Total tips this month\n0.0BAT"),
+            std::string::npos);
       }
     }
   }
@@ -720,8 +785,8 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
                            const std::string& viewing_id,
                            const std::string& category,
                            const std::string& probi) {
-    ASSERT_EQ(result, ledger::Result::LEDGER_OK);
     reconcile_completed_ = true;
+    reconcile_status_ = result;
     if (wait_for_reconcile_completed_loop_)
       wait_for_reconcile_completed_loop_->Quit();
   }
@@ -751,6 +816,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
 
   std::unique_ptr<base::RunLoop> wait_for_reconcile_completed_loop_;
   bool reconcile_completed_ = false;
+  unsigned int reconcile_status_ = ledger::LEDGER_ERROR;
 
   bool donation_made_ = false;
 };
@@ -1194,6 +1260,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
 
   // Wait for reconciliation to complete successfully
   WaitForReconcileCompleted();
+  ASSERT_EQ(reconcile_status_, ledger::Result::LEDGER_OK);
 
   // Make sure that balance is updated correctly
   {
