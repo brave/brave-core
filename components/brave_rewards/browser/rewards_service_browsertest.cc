@@ -429,18 +429,20 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
     // Wait for grant to initialize
     WaitForGrantInitialization();
 
+    // Use the appropriate WebContents
+    content::WebContents* contents =
+        use_panel ? OpenRewardsPopup() : BraveRewardsBrowserTest::contents();
+    ASSERT_TRUE(contents);
+
     // Claim grant via settings page or panel, as instructed
-    content::WebContents* popup_contents = nullptr;
     if (use_panel) {
-      popup_contents = OpenRewardsPopup();
-      ASSERT_TRUE(popup_contents);
-      ASSERT_TRUE(ExecJs(popup_contents,
+      ASSERT_TRUE(ExecJs(contents,
                          "document.getElementsByTagName('button')[0].click();",
                          content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                          content::ISOLATED_WORLD_ID_CONTENT_END));
     } else {
       ASSERT_TRUE(ExecJs(
-          contents(),
+          contents,
           "document.querySelector(\"[data-test-id='claimGrant']\").click();",
           content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
           content::ISOLATED_WORLD_ID_CONTENT_END));
@@ -459,14 +461,10 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
 
     // Dismiss the grant notification
     if (use_panel) {
-      ASSERT_TRUE(ExecJs(
-          popup_contents,
-          "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-          "delay(0).then(() => "
-          "  document.querySelector(\"[data-test-id='grantWrapper']\")"
-          "    .click());",
-          content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-          content::ISOLATED_WORLD_ID_CONTENT_END));
+      ASSERT_TRUE(ExecJs(contents,
+                         "document.getElementsByTagName('button')[0].click();",
+                         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                         content::ISOLATED_WORLD_ID_CONTENT_END));
     }
 
     // Ensure that grant looks as expected
@@ -474,6 +472,22 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
     EXPECT_STREQ(grant_.probi.c_str(), "30000000000000000000");
     EXPECT_STREQ(grant_.promotionId.c_str(), promotion_id.c_str());
     EXPECT_STREQ(grant_.type.c_str(), "ugp");
+
+    // Check that grant notification shows the appropriate amount
+    const std::string selector =
+        use_panel ? "[id='root']" : "[data-test-id='newTokenGrant']";
+    content::EvalJsResult js_result = EvalJs(
+        contents,
+        content::JsReplace(
+            "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+            "delay(0).then(() => "
+            "  document.querySelector($1).innerText);",
+            selector),
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    EXPECT_NE(js_result.ExtractString().find("Free Token Grant"),
+              std::string::npos);
+    EXPECT_NE(js_result.ExtractString().find("30.0 BAT"), std::string::npos);
   }
 
   void VisitPublisher(const std::string& publisher, bool verified) {
