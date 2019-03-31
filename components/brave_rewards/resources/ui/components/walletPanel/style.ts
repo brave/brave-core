@@ -98,7 +98,7 @@ export const StyledNoticeWrapper = styled<StyleProps, 'div'>('div')`
   border-radius: 4px;
   margin: 11px 0 10px;
   max-height: 84px;
-  overflow-y: scroll;
+  overflow-y: auto;
 `
 
 export const StyledNoticeLink = styled<StyleProps, 'a'>('a')`
