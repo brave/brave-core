@@ -37,8 +37,7 @@ class AdsBox extends React.Component<Props, State> {
       <DisabledContent
         type={'ads'}
       >
-        • {getLocale('adsDisabledTextOne')} <br />
-        • {getLocale('adsDisabledTextTwo')}
+        <h3>{getLocale('adsDisabledText')}</h3>
       </DisabledContent>
     )
   }
@@ -89,27 +88,22 @@ class AdsBox extends React.Component<Props, State> {
 
   render () {
     let adsEnabled = false
-    let adsUIEnabled = false
-    const { adsData, enabledMain, firstLoad } = this.props.rewardsData
+    const { adsData, enabledMain } = this.props.rewardsData
 
     if (adsData) {
       adsEnabled = adsData.adsEnabled
-      adsUIEnabled = adsData.adsUIEnabled
     }
-
-    const toggle = !(!enabledMain || !adsUIEnabled)
-    const showDisabled = firstLoad !== false || !toggle || !adsEnabled
 
     return (
       <Box
         title={getLocale('adsTitle')}
         type={'ads'}
         description={getLocale('adsDesc')}
-        toggle={toggle}
+        toggle={false}
         checked={adsEnabled}
         settingsChild={this.adsSettings(adsEnabled && enabledMain)}
         testId={'braveAdsSettings'}
-        disabledContent={showDisabled ? this.adsDisabled() : null}
+        disabledContent={this.adsDisabled()}
         onToggle={this.onAdsSettingChange.bind(this, 'adsEnabled', '')}
         settingsOpened={this.state.settings}
         onSettingsClick={this.onSettingsToggle}
