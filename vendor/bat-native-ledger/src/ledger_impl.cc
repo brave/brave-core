@@ -270,6 +270,12 @@ void LedgerImpl::OnPublisherListLoaded(ledger::Result result,
         "Successfully loaded but failed to parse publish list.";
       BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
         "Failed publisher list: " << data;
+      RefreshPublishersList(true);
+      return;
+    } else {
+      // List was loaded successfully
+      RefreshPublishersList(false);
+      return;
     }
   } else {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
@@ -278,7 +284,7 @@ void LedgerImpl::OnPublisherListLoaded(ledger::Result result,
       "Failed publisher list: " << data;
   }
 
-  RefreshPublishersList(false);
+  RefreshPublishersList(true, true);
 }
 
 std::string LedgerImpl::GenerateGUID() const {
@@ -753,7 +759,7 @@ void LedgerImpl::LoadPublishersListCallback(
   }
 }
 
-void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
+void LedgerImpl::RefreshPublishersList(bool retryAfterError, bool immediately) {
   uint64_t start_timer_in{ 0ull };
 
   if (last_pub_load_timer_id_ != 0) {
@@ -761,15 +767,19 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
     return;
   }
 
-  if (retryAfterError) {
-    start_timer_in = retryRequestSetup(300, 3600);
+  uint64_t lastLoadTimestamp =
+        bat_publishers_->getLastPublishersListLoadTimestamp();
+
+  if (immediately) {
+    start_timer_in = 0ull;
+  } else if (retryAfterError) {
+    start_timer_in = retryRequestSetup(60, 300);
 
     BLOG(this, ledger::LogLevel::LOG_WARNING) <<
-      "Failed to refresh publishesr list, will try again in " << start_timer_in;
+      "Failed to refresh publishesr list, will try again in " <<
+      start_timer_in << " seconds.";
   } else {
     uint64_t now = std::time(nullptr);
-    uint64_t lastLoadTimestamp =
-        bat_publishers_->getLastPublishersListLoadTimestamp();
 
     // check if lastLoadTimestamp doesn't exist or have erroneous value.
     // (start_timer_in == 0) is expected to call callback function immediately.
