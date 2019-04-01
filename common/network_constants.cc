@@ -32,6 +32,9 @@ const char kCRLSetPrefix2[] =
     "*://*.gvt1.com/edgedl/release2/chrome_component/*crl-set*";
 const char kCRLSetPrefix3[] =
     "*://www.google.com/dl/release2/chrome_component/*crl-set*";
+const char kCRLSetPrefix4[] =
+    "*://storage.googleapis.com/update-delta/hfnkpimlhhgieaddgfemjhofmfblmnib"
+    "/*crxd";
 const char kGoogleTagManagerPattern[] =
     "https://www.googletagmanager.com/gtm.js";
 const char kGoogleTagServicesPattern[] =

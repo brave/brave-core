@@ -26,6 +26,8 @@ int OnBeforeURLRequest_StaticRedirectWork(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix2);
   static URLPattern crlSet_pattern3(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix3);
+  static URLPattern crlSet_pattern4(
+      URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix4);
   static URLPattern crxDownload_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRXDownloadPrefix);
 
@@ -62,6 +64,13 @@ int OnBeforeURLRequest_StaticRedirectWork(
   }
 
   if (crlSet_pattern3.MatchesURL(ctx->request_url)) {
+    replacements.SetSchemeStr("https");
+    replacements.SetHostStr("crlsets.brave.com");
+    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    return net::OK;
+  }
+
+  if (crlSet_pattern4.MatchesURL(ctx->request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("crlsets.brave.com");
     ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
