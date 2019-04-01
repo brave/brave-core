@@ -302,6 +302,7 @@ test("brave_browser_tests") {
     "//brave/browser/extensions/brave_extension_functional_test.h",
     "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
     "//brave/browser/extensions/api/brave_theme_api_browsertest.cc",
+    "//brave/browser/extensions/brave_theme_event_router_browsertest.cc",
     "//brave/browser/net/brave_network_delegate_browsertest.cc",
     "//brave/browser/net/brave_network_delegate_hsts_fingerprinting_browsertest.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.cc",
