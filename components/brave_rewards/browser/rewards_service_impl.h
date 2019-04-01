@@ -162,8 +162,11 @@ class RewardsServiceImpl : public RewardsService,
       const GetContributionAmountCallback& callback) override;
   void GetPublisherBanner(const std::string& publisher_id) override;
   void OnPublisherBanner(std::unique_ptr<ledger::PublisherBanner> banner);
-  void RemoveRecurring(const std::string& publisher_key) override;
-  void UpdateRecurringDonationsList() override;
+  void RemoveRecurringTip(const std::string& publisher_key) override;
+  void OnGetRecurringTipsUI(
+      GetRecurringTipsCallback callback,
+      const std::vector<std::string>& json_list);
+  void GetRecurringTipsUI(GetRecurringTipsCallback callback) override;
   void GetOneTimeTips() override;
   void SetContributionAutoInclude(
       const std::string& publisher_key,
@@ -257,15 +260,14 @@ class RewardsServiceImpl : public RewardsService,
                 const ledger::PublisherInfo* publisher_info = NULL) override;
   void OnContributionInfoSaved(const ledger::REWARDS_CATEGORY category,
                                bool success);
-  void OnRecurringDonationSaved(bool success);
-  void SaveRecurringDonation(const std::string& publisher_key,
+  void OnRecurringTipSaved(bool success);
+  void SaveRecurringTip(const std::string& publisher_key,
                              const int amount);
-  void OnRecurringDonationsData(
+  void OnGetRecurringTips(
       const ledger::PublisherInfoListCallback callback,
       const ledger::PublisherInfoList list);
-  void OnRecurringDonationUpdated(const ledger::PublisherInfoList& list);
   void OnGetOneTimeTips(const ledger::PublisherInfoList list);
-  void OnRemovedRecurring(ledger::RecurringRemoveCallback callback,
+  void OnRemovedRecurringTip(ledger::RecurringRemoveCallback callback,
                           bool success);
   void OnRemoveRecurring(const std::string& publisher_key,
                          ledger::RecurringRemoveCallback callback) override;
@@ -370,7 +372,7 @@ class RewardsServiceImpl : public RewardsService,
                             const uint32_t date,
                             const std::string& publisher_key,
                             const ledger::REWARDS_CATEGORY category) override;
-  void GetRecurringDonations(
+  void GetRecurringTips(
       ledger::PublisherInfoListCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(
                      const char* file,

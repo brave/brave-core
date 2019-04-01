@@ -26,14 +26,18 @@ export const onDonate = (publisherKey: string, amount: number, recurring: boolea
   recurring
 })
 
-export const getRecurringDonations = () => action(types.GET_RECURRING_DONATIONS)
+export const getRecurringTips = () => action(types.GET_RECURRING_TIPS)
 
-export const onRecurringDonations = (recurringDonations: RewardsDonate.RecurringDonation[]) => action(types.ON_RECURRING_DONATIONS, {
-  recurringDonations
+export const onRecurringTips = (list: RewardsDonate.RecurringTips[]) => action(types.ON_RECURRING_TIPS, {
+  list
 })
 
 export const getReconcileStamp = () => action(types.GET_RECONCILE_STAMP)
 
 export const onReconcileStamp = (stamp: number) => action(types.ON_RECONCILE_STAMP, {
   stamp
+})
+
+export const onRecurringTipRemoved = (success: boolean) => action(types.ON_RECURRING_TIP_REMOVED, {
+  success
 })

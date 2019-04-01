@@ -90,7 +90,7 @@ interface BatLedger {
 
   DoDirectDonation(string publisher_info, int32 amount, string currency);
 
-  RemoveRecurring(string publisher_key);
+  RemoveRecurringTip(string publisher_key);
   GetBootStamp() => (uint64 boot_stamp);
   GetRewardsMainEnabled() => (bool main_enabled);
 
@@ -103,6 +103,8 @@ interface BatLedger {
   GetConfirmationsHistory(uint64 from_timestamp_seconds,
       uint64 to_timestamp_seconds) => (string transactions);
   GetRewardsInternalsInfo() => (string info);
+
+  GetRecurringTips() => (array<string> list);
 };
 
 interface BatLedgerClient {
@@ -135,7 +137,7 @@ interface BatLedgerClient {
   OnPanelPublisherInfo(int32 result, string info, uint64 window_id);
   FetchFavIcon(string url, string favicon_key) => (bool success,
       string favicon_url);
-  GetRecurringDonations() => (array<string> publisher_info_list,
+  GetRecurringTips() => (array<string> publisher_info_list,
       uint32 next_record);
 
   LoadNicewareList() => (int32 result, string data);

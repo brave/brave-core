@@ -67,15 +67,16 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
       }
       break
     }
-    case types.GET_RECURRING_DONATIONS:
-      chrome.send('brave_rewards_donate.getRecurringDonations')
+    case types.GET_RECURRING_TIPS:
+    case types.ON_RECURRING_TIP_REMOVED:
+      chrome.send('brave_rewards_donate.getRecurringTips')
       break
-    case types.ON_RECURRING_DONATIONS:
+    case types.ON_RECURRING_TIPS:
       state = { ...state }
-      const recurringDonations = action.payload.recurringDonations
+      const tips = action.payload.list
 
-      if (recurringDonations) {
-        state.recurringDonations = recurringDonations
+      if (tips) {
+        state.recurringDonations = tips
       }
       break
     case types.GET_RECONCILE_STAMP: {

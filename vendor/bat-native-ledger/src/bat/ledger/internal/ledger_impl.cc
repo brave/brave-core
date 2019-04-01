@@ -775,9 +775,9 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
   bat_contribution_->OnTimer(timer_id);
 }
 
-void LedgerImpl::GetRecurringDonations(
+void LedgerImpl::GetRecurringTips(
     ledger::PublisherInfoListCallback callback) {
-  ledger_client_->GetRecurringDonations(callback);
+  ledger_client_->GetRecurringTips(callback);
 }
 
 void LedgerImpl::LoadPublishersListCallback(
@@ -958,7 +958,7 @@ void LedgerImpl::OnReconcileCompleteSuccess(
                                                 date);
 }
 
-void LedgerImpl::RemoveRecurring(const std::string& publisher_key) {
+void LedgerImpl::RemoveRecurringTip(const std::string& publisher_key) {
   ledger_client_->OnRemoveRecurring(
       publisher_key,
       std::bind(&LedgerImpl::OnRemovedRecurring,

@@ -32,7 +32,7 @@ class Banner extends React.Component<Props, State> {
 
   componentDidMount () {
     this.actions.getWalletProperties()
-    this.actions.getRecurringDonations()
+    this.actions.getRecurringTips()
     this.actions.getReconcileStamp()
   }
 
@@ -111,7 +111,7 @@ class Banner extends React.Component<Props, State> {
       return false
     }
 
-    const recurringDonation = recurringDonations.find((donation: RewardsDonate.RecurringDonation) => {
+    const recurringDonation = recurringDonations.find((donation: RewardsDonate.RecurringTips) => {
       return donation.publisherKey === publisherKey
     })
 

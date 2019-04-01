@@ -48,7 +48,7 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
                                          const std::string&,
                                          const std::string&,
                                          const std::string&));
-  MOCK_METHOD2(OnRecurringDonationUpdated,
+  MOCK_METHOD2(OnGetRecurringTips,
       void(RewardsService*, brave_rewards::ContentSiteList));
   MOCK_METHOD2(OnCurrentTips,
       void(RewardsService*, brave_rewards::ContentSiteList));

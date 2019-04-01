@@ -119,7 +119,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void DoDirectDonation(const std::string& publisher_info, int32_t amount,
       const std::string& currency) override;
 
-  void RemoveRecurring(const std::string& publisher_key) override;
+  void RemoveRecurringTip(const std::string& publisher_key) override;
   void GetBootStamp(GetBootStampCallback callback) override;
   void GetRewardsMainEnabled(
       GetRewardsMainEnabledCallback callback) override;
@@ -134,6 +134,8 @@ class BatLedgerImpl : public mojom::BatLedger,
       GetConfirmationsHistoryCallback callback) override;
   void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) override;
+
+  void GetRecurringTips(GetRecurringTipsCallback callback) override;
 
  private:
   void SetCatalogIssuers(const std::string& info) override;
@@ -176,6 +178,11 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnGetExcludedPublishersNumber(
       CallbackHolder<GetExcludedPublishersNumberCallback>* holder,
       uint32_t number);
+
+  static void OnGetRecurringTips(
+      CallbackHolder<GetRecurringTipsCallback>* holder,
+      const ledger::PublisherInfoList& list,
+      uint32_t num);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

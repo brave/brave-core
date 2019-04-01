@@ -175,7 +175,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::string& publisher_key,
       const ledger::REWARDS_CATEGORY category));
 
-  MOCK_METHOD1(GetRecurringDonations, void(
+  MOCK_METHOD1(GetRecurringTips, void(
       ledger::PublisherInfoListCallback callback));
 
   MOCK_METHOD2(OnRemoveRecurring, void(

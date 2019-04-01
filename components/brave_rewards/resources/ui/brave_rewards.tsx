@@ -109,8 +109,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onContributionAmount(amount)
   }
 
-  function recurringDonationUpdate (list: Rewards.Publisher[]) {
-    getActions().onRecurringDonationUpdate(list)
+  function recurringTips (list: Rewards.Publisher[]) {
+    getActions().onRecurringTips(list)
   }
 
   function currentTips (list: Rewards.Publisher[]) {
@@ -159,6 +159,14 @@ window.cr.define('brave_rewards', function () {
     getActions().onAdsIsSupportedRegion(supported)
   }
 
+  function recurringTipSaved (success: boolean) {
+    getActions().onRecurringTipSaved(success)
+  }
+
+  function recurringTipRemoved (success: boolean) {
+    getActions().onRecurringTipRemoved(success)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -176,7 +184,7 @@ window.cr.define('brave_rewards', function () {
     balanceReports,
     walletExists,
     contributionAmount,
-    recurringDonationUpdate,
+    recurringTips,
     currentTips,
     initAutoContributeSettings,
     imported,
@@ -187,7 +195,9 @@ window.cr.define('brave_rewards', function () {
     addressesForPaymentId,
     confirmationsHistory,
     confirmationsHistoryChanged,
-    adsIsSupportedRegion
+    adsIsSupportedRegion,
+    recurringTipSaved,
+    recurringTipRemoved
   }
 })
 

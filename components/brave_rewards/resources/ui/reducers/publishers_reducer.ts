@@ -44,7 +44,7 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       state = { ...state }
       chrome.send('brave_rewards.restorePublishers', [])
       break
-    case types.ON_RECURRING_DONATION_UPDATE:
+    case types.ON_RECURRING_TIPS:
       state = { ...state }
       if (state.recurringLoad) {
         state.firstLoad = false
@@ -53,11 +53,11 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       }
       state.recurringList = action.payload.list
       break
-    case types.ON_REMOVE_RECURRING:
+    case types.REMOVE_RECURRING_TIP:
       if (!action.payload.publisherKey) {
         break
       }
-      chrome.send('brave_rewards.removeRecurring', [action.payload.publisherKey])
+      chrome.send('brave_rewards.removeRecurringTip', [action.payload.publisherKey])
       break
     case types.ON_CURRENT_TIPS:
       state = { ...state }
@@ -70,6 +70,10 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       break
     case types.GET_EXCLUDED_PUBLISHERS_NUMBER:
       chrome.send('brave_rewards.getExcludedPublishersNumber')
+      break
+    case types.ON_RECURRING_TIP_SAVED:
+    case types.ON_RECURRING_TIP_REMOVED:
+      chrome.send('brave_rewards.getRecurringTips')
       break
   }
 

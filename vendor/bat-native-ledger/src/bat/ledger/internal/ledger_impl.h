@@ -293,9 +293,9 @@ class LedgerImpl : public ledger::Ledger,
                                   const int year,
                                   const uint32_t date) override;
 
-  void GetRecurringDonations(ledger::PublisherInfoListCallback callback);
+  void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
 
-  void RemoveRecurring(const std::string& publisher_key) override;
+  void RemoveRecurringTip(const std::string& publisher_key) override;
 
   ledger::ActivityInfoFilter CreateActivityFilter(
       const std::string& publisher_id,

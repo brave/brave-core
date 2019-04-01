@@ -263,7 +263,7 @@ class LEDGER_EXPORT Ledger {
       const int year,
       const uint32_t date) = 0;
 
-  virtual void RemoveRecurring(const std::string& publisher_key) = 0;
+  virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
 
   virtual double GetDefaultContributionAmount() = 0;
 
@@ -282,6 +282,8 @@ class LEDGER_EXPORT Ledger {
       const uint64_t to_timestamp_seconds,
       ledger::ConfirmationsHistoryCallback callback) = 0;
   virtual void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) = 0;
+
+  virtual void GetRecurringTips(ledger::PublisherInfoListCallback callback) = 0;
 };
 
 }  // namespace ledger

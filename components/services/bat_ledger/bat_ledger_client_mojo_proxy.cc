@@ -473,9 +473,9 @@ void BatLedgerClientMojoProxy::FetchFavIcon(const std::string& url,
       base::BindOnce(&OnFetchFavIcon, std::move(callback)));
 }
 
-void OnGetRecurringDonations(const ledger::PublisherInfoListCallback& callback,
-    const std::vector<std::string>& publisher_info_list,
-    uint32_t next_record) {
+void OnGetRecurringTips(const ledger::PublisherInfoListCallback& callback,
+                        const std::vector<std::string>& publisher_info_list,
+                        uint32_t next_record) {
   ledger::PublisherInfoList list;
 
   for (const auto& publisher_info : publisher_info_list) {
@@ -487,15 +487,15 @@ void OnGetRecurringDonations(const ledger::PublisherInfoListCallback& callback,
   callback(list, next_record);
 }
 
-void BatLedgerClientMojoProxy::GetRecurringDonations(
+void BatLedgerClientMojoProxy::GetRecurringTips(
     ledger::PublisherInfoListCallback callback) {
   if (!Connected()) {
     callback(std::vector<ledger::PublisherInfo>(), 0);
     return;
   }
 
-  bat_ledger_client_->GetRecurringDonations(
-      base::BindOnce(&OnGetRecurringDonations, std::move(callback)));
+  bat_ledger_client_->GetRecurringTips(
+      base::BindOnce(&OnGetRecurringTips, std::move(callback)));
 }
 
 void OnLoadNicewareList(const ledger::GetNicewareListCallback& callback,

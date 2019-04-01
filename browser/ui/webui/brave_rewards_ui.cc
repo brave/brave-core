@@ -79,8 +79,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RestorePublishers(const base::ListValue* args);
   void WalletExists(const base::ListValue* args);
   void GetContributionAmount(const base::ListValue* args);
-  void RemoveRecurring(const base::ListValue* args);
-  void UpdateRecurringDonationsList(const base::ListValue* args);
+  void RemoveRecurringTip(const base::ListValue* args);
+  void GetRecurringTips(const base::ListValue* args);
   void GetOneTimeTips(const base::ListValue* args);
   void GetContributionList(const base::ListValue* args);
   void CheckImported(const base::ListValue* args);
@@ -115,6 +115,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void OnConfirmationsHistory(int total_viewed, double estimated_earnings);
 
+  void OnGetRecurringTips(
+    std::unique_ptr<brave_rewards::ContentSiteList> list);
+
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
                        int result) override;
@@ -143,11 +146,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                            const std::string& viewing_id,
                            const std::string& category,
                            const std::string& probi) override;
-  void OnRecurringDonationUpdated(
-      brave_rewards::RewardsService* rewards_service,
-      brave_rewards::ContentSiteList) override;
   void OnCurrentTips(brave_rewards::RewardsService* rewards_service,
-                                  brave_rewards::ContentSiteList) override;
+                     brave_rewards::ContentSiteList) override;
 
   void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
@@ -163,6 +163,12 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void OnConfirmationsHistoryChanged(
       brave_rewards::RewardsService* rewards_service) override;
+
+  void OnRecurringTipSaved(brave_rewards::RewardsService* rewards_service,
+                           bool success) override;
+
+  void OnRecurringTipRemoved(brave_rewards::RewardsService* rewards_service,
+                             bool success) override;
 
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
@@ -244,12 +250,12 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.getContributionAmount",
       base::BindRepeating(&RewardsDOMHandler::GetContributionAmount,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.removeRecurring",
-      base::BindRepeating(&RewardsDOMHandler::RemoveRecurring,
+  web_ui()->RegisterMessageCallback("brave_rewards.removeRecurringTip",
+      base::BindRepeating(&RewardsDOMHandler::RemoveRecurringTip,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.updateRecurringDonationsList",
-      base::BindRepeating(&RewardsDOMHandler::UpdateRecurringDonationsList,
+      "brave_rewards.getRecurringTips",
+      base::BindRepeating(&RewardsDOMHandler::GetRecurringTips,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getOneTimeTips",
       base::BindRepeating(&RewardsDOMHandler::GetOneTimeTips,
@@ -786,31 +792,6 @@ void RewardsDOMHandler::OnReconcileComplete(
   GetReconcileStamp(nullptr);
 }
 
-void RewardsDOMHandler::OnRecurringDonationUpdated(
-    brave_rewards::RewardsService* rewards_service,
-    const brave_rewards::ContentSiteList list) {
-  if (web_ui()->CanCallJavascript()) {
-    auto publishers = std::make_unique<base::ListValue>();
-    for (auto const& item : list) {
-      auto publisher = std::make_unique<base::DictionaryValue>();
-      publisher->SetString("id", item.id);
-      publisher->SetDouble("percentage", item.percentage);
-      publisher->SetString("publisherKey", item.id);
-      publisher->SetBoolean("verified", item.verified);
-      publisher->SetInteger("excluded", item.excluded);
-      publisher->SetString("name", item.name);
-      publisher->SetString("provider", item.provider);
-      publisher->SetString("url", item.url);
-      publisher->SetString("favIcon", item.favicon_url);
-      publisher->SetInteger("tipDate", 0);
-      publishers->Append(std::move(publisher));
-    }
-
-    web_ui()->CallJavascriptFunctionUnsafe(
-        "brave_rewards.recurringDonationUpdate", *publishers);
-  }
-}
-
 void RewardsDOMHandler::OnCurrentTips(
     brave_rewards::RewardsService* rewards_service,
     const brave_rewards::ContentSiteList list) {
@@ -832,22 +813,51 @@ void RewardsDOMHandler::OnCurrentTips(
     }
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.currentTips",
-        *publishers);
+                                           *publishers);
   }
 }
 
-void RewardsDOMHandler::RemoveRecurring(const base::ListValue *args) {
+void RewardsDOMHandler::RemoveRecurringTip(const base::ListValue *args) {
   if (rewards_service_) {
     std::string publisherKey;
     args->GetString(0, &publisherKey);
-    rewards_service_->RemoveRecurring(publisherKey);
+    rewards_service_->RemoveRecurringTip(publisherKey);
   }
 }
 
-void RewardsDOMHandler::UpdateRecurringDonationsList(
+void RewardsDOMHandler::GetRecurringTips(
     const base::ListValue *args) {
   if (rewards_service_) {
-    rewards_service_->UpdateRecurringDonationsList();
+    rewards_service_->GetRecurringTipsUI(base::BindOnce(
+          &RewardsDOMHandler::OnGetRecurringTips,
+          weak_factory_.GetWeakPtr()));
+  }
+}
+
+void RewardsDOMHandler::OnGetRecurringTips(
+    std::unique_ptr<brave_rewards::ContentSiteList> list) {
+  if (web_ui()->CanCallJavascript()) {
+    auto publishers = std::make_unique<base::ListValue>();
+
+    if (list) {
+      for (auto const& item : *list) {
+        auto publisher = std::make_unique<base::DictionaryValue>();
+        publisher->SetString("id", item.id);
+        publisher->SetDouble("percentage", item.percentage);
+        publisher->SetString("publisherKey", item.id);
+        publisher->SetBoolean("verified", item.verified);
+        publisher->SetInteger("excluded", item.excluded);
+        publisher->SetString("name", item.name);
+        publisher->SetString("provider", item.provider);
+        publisher->SetString("url", item.url);
+        publisher->SetString("favIcon", item.favicon_url);
+        publisher->SetInteger("tipDate", 0);
+        publishers->Append(std::move(publisher));
+      }
+    }
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.recurringTips",
+                                           *publishers);
   }
 }
 
@@ -1042,6 +1052,26 @@ void RewardsDOMHandler::OnAdsIsSupportedRegion(
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsIsSupportedRegion",
         base::Value(is_supported));
   }
+}
+
+void RewardsDOMHandler::OnRecurringTipSaved(
+    brave_rewards::RewardsService* rewards_service,
+    bool success) {
+  if (web_ui()->CanCallJavascript()) {
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.recurringTipSaved", base::Value(success));
+  }
+}
+
+void RewardsDOMHandler::OnRecurringTipRemoved(
+    brave_rewards::RewardsService* rewards_service,
+    bool success) {
+  if (!web_ui()->CanCallJavascript()) {
+     return;
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.recurringTipRemoved", base::Value(success));
 }
 
 }  // namespace

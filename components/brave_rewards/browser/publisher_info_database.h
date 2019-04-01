@@ -69,15 +69,16 @@ class PublisherInfoDatabase {
   std::unique_ptr<ledger::PublisherInfo> GetMediaPublisherInfo(
       const std::string& media_key);
 
-  bool InsertOrUpdateRecurringDonation(
+  bool InsertOrUpdateRecurringTip(
       const brave_rewards::RecurringDonation& info);
 
-  void GetRecurringDonations(ledger::PublisherInfoList* list);
+  void GetRecurringTips(ledger::PublisherInfoList* list);
 
-  bool RemoveRecurring(const std::string& publisher_key);
+  bool RemoveRecurringTip(const std::string& publisher_key);
+
   bool InsertPendingContribution(const ledger::PendingContributionList& list);
-  double GetReservedAmount();
 
+  double GetReservedAmount();
 
   // Returns the current version of the publisher info database
   int GetCurrentVersion();
@@ -113,10 +114,12 @@ class PublisherInfoDatabase {
 
   bool CreateMediaPublisherInfoTable();
 
-  bool CreateRecurringDonationTable();
+  bool CreateRecurringTipsTable();
 
-  bool CreateRecurringDonationIndex();
+  bool CreateRecurringTipsIndex();
+
   bool CreatePendingContributionsTable();
+
   bool CreatePendingContributionsIndex();
 
   void OnMemoryPressure(

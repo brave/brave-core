@@ -415,7 +415,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateMediaPublisherInfo) {
   EXPECT_FALSE(info_sql_3.Step());
 }
 
-TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringDonation) {
+TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringTip) {
   /**
    * Good path
    */
@@ -428,7 +428,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringDonation) {
   info.amount = 20;
   info.added_date = base::Time::Now().ToJsTime();
 
-  bool success = publisher_info_database_->InsertOrUpdateRecurringDonation(
+  bool success = publisher_info_database_->InsertOrUpdateRecurringTip(
       info);
   EXPECT_TRUE(success);
 
@@ -448,7 +448,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringDonation) {
    */
   info.amount = 30;
 
-  success = publisher_info_database_->InsertOrUpdateRecurringDonation(info);
+  success = publisher_info_database_->InsertOrUpdateRecurringTip(info);
   EXPECT_TRUE(success);
 
   query ="SELECT * FROM recurring_donation WHERE publisher_id=?";
@@ -466,7 +466,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringDonation) {
    * Publisher key is missing
    */
   info.publisher_key = "";
-  success = publisher_info_database_->InsertOrUpdateRecurringDonation(info);
+  success = publisher_info_database_->InsertOrUpdateRecurringTip(info);
   EXPECT_FALSE(success);
 
   query = "SELECT * FROM recurring_donation WHERE publisher_id=?";

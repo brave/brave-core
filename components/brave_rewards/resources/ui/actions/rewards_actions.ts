@@ -117,11 +117,11 @@ export const onContributionAmount = (amount: number) => action(types.ON_CONTRIBU
   amount
 })
 
-export const onRecurringDonationUpdate = (list: Rewards.Publisher[]) => action(types.ON_RECURRING_DONATION_UPDATE, {
+export const onRecurringTips = (list: Rewards.Publisher[]) => action(types.ON_RECURRING_TIPS, {
   list
 })
 
-export const removeRecurring = (publisherKey: string) => action(types.ON_REMOVE_RECURRING, {
+export const removeRecurringTip = (publisherKey: string) => action(types.REMOVE_RECURRING_TIP, {
   publisherKey
 })
 
@@ -193,3 +193,11 @@ export const onAdsIsSupportedRegion = (supported: boolean) => action(types.ON_AD
 })
 
 export const getRewardsMainEnabled = () => action(types.GET_REWARDS_MAIN_ENABLED)
+
+export const onRecurringTipSaved = (success: boolean) => action(types.ON_RECURRING_TIP_SAVED, {
+  success
+})
+
+export const onRecurringTipRemoved = (success: boolean) => action(types.ON_RECURRING_TIP_REMOVED, {
+  success
+})

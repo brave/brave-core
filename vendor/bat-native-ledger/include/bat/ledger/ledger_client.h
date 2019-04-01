@@ -167,7 +167,7 @@ class LEDGER_EXPORT LedgerClient {
       const std::string& publisher_key,
       const ledger::REWARDS_CATEGORY category) = 0;
 
-  virtual void GetRecurringDonations(
+  virtual void GetRecurringTips(
       ledger::PublisherInfoListCallback callback) = 0;
 
   virtual void OnRemoveRecurring(const std::string& publisher_key,

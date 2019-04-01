@@ -71,6 +71,8 @@ using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
 using ConfirmationsHistoryCallback = base::Callback<void(int, double)>;
 using GetRewardsInternalsInfoCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::RewardsInternalsInfo>)>;
+using GetRecurringTipsCallback = base::OnceCallback<void(
+    std::unique_ptr<brave_rewards::ContentSiteList>)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -157,8 +159,8 @@ class RewardsService : public KeyedService {
       bool recurring, const ledger::PublisherInfo* publisher_info = NULL) = 0;
   virtual void OnDonate(const std::string& publisher_key, int amount,
       bool recurring, std::unique_ptr<brave_rewards::ContentSite> site) = 0;
-  virtual void RemoveRecurring(const std::string& publisher_key) = 0;
-  virtual void UpdateRecurringDonationsList() = 0;
+  virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
+  virtual void GetRecurringTipsUI(GetRecurringTipsCallback callback) = 0;
   virtual void GetOneTimeTips() = 0;
   virtual void SetContributionAutoInclude(
     const std::string& publisher_key, bool excluded) = 0;

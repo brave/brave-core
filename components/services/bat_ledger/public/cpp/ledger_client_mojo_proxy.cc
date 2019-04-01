@@ -372,8 +372,8 @@ void LedgerClientMojoProxy::FetchFavIcon(const std::string& url,
 }
 
 // static
-void LedgerClientMojoProxy::OnGetRecurringDonations(
-    CallbackHolder<GetRecurringDonationsCallback>* holder,
+void LedgerClientMojoProxy::OnGetRecurringTips(
+    CallbackHolder<GetRecurringTipsCallback>* holder,
     const ledger::PublisherInfoList& publisher_info_list,
     uint32_t next_record) {
   std::vector<std::string> list;
@@ -386,14 +386,16 @@ void LedgerClientMojoProxy::OnGetRecurringDonations(
   delete holder;
 }
 
-void LedgerClientMojoProxy::GetRecurringDonations(
-    GetRecurringDonationsCallback callback) {
-  // deleted in OnGetRecurringDonations
-  auto* holder = new CallbackHolder<GetRecurringDonationsCallback>(
+void LedgerClientMojoProxy::GetRecurringTips(
+    GetRecurringTipsCallback callback) {
+  // deleted in OnGetRecurringTips
+  auto* holder = new CallbackHolder<GetRecurringTipsCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_client_->GetRecurringDonations(
-      std::bind(LedgerClientMojoProxy::OnGetRecurringDonations,
-        holder, _1, _2));
+  ledger_client_->GetRecurringTips(
+      std::bind(LedgerClientMojoProxy::OnGetRecurringTips,
+                holder,
+                _1,
+                _2));
 }
 
 // static
@@ -689,7 +691,7 @@ void LedgerClientMojoProxy::OnGetExcludedPublishersNumberDB(
 
 void LedgerClientMojoProxy::GetExcludedPublishersNumberDB(
     GetExcludedPublishersNumberDBCallback callback) {
-  // deleted in OnGetRecurringDonations
+  // deleted in OnGetRecurringTips
   auto* holder = new CallbackHolder<GetExcludedPublishersNumberDBCallback>(
       AsWeakPtr(), std::move(callback));
   ledger_client_->GetExcludedPublishersNumberDB(

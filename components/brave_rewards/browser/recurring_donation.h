@@ -7,6 +7,8 @@
 
 #include <string>
 
+// TODO(nejczdovc): Rename to RecurringTip
+
 namespace brave_rewards {
   struct RecurringDonation {
     RecurringDonation();

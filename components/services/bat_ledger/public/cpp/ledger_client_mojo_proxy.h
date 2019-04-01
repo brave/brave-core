@@ -58,7 +58,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void FetchFavIcon(const std::string& url, const std::string& favicon_key,
       FetchFavIconCallback callback) override;
-  void GetRecurringDonations(GetRecurringDonationsCallback callback) override;
+  void GetRecurringTips(GetRecurringTipsCallback callback) override;
 
   void LoadNicewareList(LoadNicewareListCallback callback) override;
   void OnRemoveRecurring(const std::string& publisher_key,
@@ -177,8 +177,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       bool success,
       const std::string& favicon_url);
 
-  static void OnGetRecurringDonations(
-      CallbackHolder<GetRecurringDonationsCallback>* holder,
+  static void OnGetRecurringTips(
+      CallbackHolder<GetRecurringTipsCallback>* holder,
       const ledger::PublisherInfoList& publisher_info_list,
       uint32_t next_record);
 
@@ -210,7 +210,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     bool result);
 
   static void OnGetActivityInfoList(
-      CallbackHolder<GetRecurringDonationsCallback>* holder,
+      CallbackHolder<GetActivityInfoListCallback>* holder,
       const ledger::PublisherInfoList& publisher_info_list,
       uint32_t next_record);
 

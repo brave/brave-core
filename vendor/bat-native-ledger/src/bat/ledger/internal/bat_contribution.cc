@@ -218,7 +218,7 @@ void BatContribution::OnTimerReconcile() {
     return;
   }
 
-  ledger_->GetRecurringDonations(
+  ledger_->GetRecurringTips(
       std::bind(&BatContribution::ReconcilePublisherList,
                 this,
                 ledger::REWARDS_CATEGORY::RECURRING_DONATION,

@@ -64,14 +64,14 @@ bool PublisherInfoDatabase::Init() {
       !CreateContributionInfoTable() ||
       !CreateActivityInfoTable() ||
       !CreateMediaPublisherInfoTable() ||
-      !CreateRecurringDonationTable() ||
+      !CreateRecurringTipsTable() ||
       !CreatePendingContributionsTable()) {
     return false;
   }
 
   CreateContributionInfoIndex();
   CreateActivityInfoIndex();
-  CreateRecurringDonationIndex();
+  CreateRecurringTipsIndex();
   CreatePendingContributionsIndex();
 
   // Version check.
@@ -758,12 +758,13 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
 
 /**
  *
- * RECURRING DONATION
+ * RECURRING TIPS
  *
  */
-bool PublisherInfoDatabase::CreateRecurringDonationTable() {
+bool PublisherInfoDatabase::CreateRecurringTipsTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  // TODO(nejczdovc): migrate name of this table from donation to tips
   const char* name = "recurring_donation";
   if (GetDB().DoesTableExist(name)) {
     return true;
@@ -785,7 +786,7 @@ bool PublisherInfoDatabase::CreateRecurringDonationTable() {
   return GetDB().Execute(sql.c_str());
 }
 
-bool PublisherInfoDatabase::CreateRecurringDonationIndex() {
+bool PublisherInfoDatabase::CreateRecurringTipsIndex() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   return GetDB().Execute(
@@ -793,7 +794,7 @@ bool PublisherInfoDatabase::CreateRecurringDonationIndex() {
       "ON recurring_donation (publisher_id)");
 }
 
-bool PublisherInfoDatabase::InsertOrUpdateRecurringDonation(
+bool PublisherInfoDatabase::InsertOrUpdateRecurringTip(
     const brave_rewards::RecurringDonation& info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -817,7 +818,7 @@ bool PublisherInfoDatabase::InsertOrUpdateRecurringDonation(
   return statement.Run();
 }
 
-void PublisherInfoDatabase::GetRecurringDonations(
+void PublisherInfoDatabase::GetRecurringTips(
     ledger::PublisherInfoList* list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -850,7 +851,8 @@ void PublisherInfoDatabase::GetRecurringDonations(
   }
 }
 
-bool PublisherInfoDatabase::RemoveRecurring(const std::string& publisher_key) {
+bool PublisherInfoDatabase::RemoveRecurringTip(
+    const std::string& publisher_key) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -1052,11 +1054,11 @@ bool PublisherInfoDatabase::MigrateV1toV2() {
     return false;
   }
 
-  if (!CreateRecurringDonationTable()) {
+  if (!CreateRecurringTipsTable()) {
     return false;
   }
 
-  return CreateRecurringDonationIndex();
+  return CreateRecurringTipsIndex();
 }
 
 bool PublisherInfoDatabase::MigrateV2toV3() {
