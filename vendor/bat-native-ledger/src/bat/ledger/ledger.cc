@@ -14,6 +14,7 @@
 namespace ledger {
 
 bool is_production = true;
+bool is_debug = false;
 bool is_testing = false;
 int reconcile_time = 0;  // minutes
 bool short_retries = false;

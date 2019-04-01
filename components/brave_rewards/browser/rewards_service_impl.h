@@ -66,6 +66,7 @@ class PublisherInfoDatabase;
 class RewardsNotificationServiceImpl;
 
 using GetProductionCallback = base::Callback<void(bool)>;
+using GetDebugCallback = base::Callback<void(bool)>;
 using GetReconcileTimeCallback = base::Callback<void(int32_t)>;
 using GetShortRetriesCallback = base::Callback<void(bool)>;
 
@@ -176,6 +177,8 @@ class RewardsServiceImpl : public RewardsService,
   void HandleFlags(const std::string& options);
   void SetProduction(bool production);
   void GetProduction(const GetProductionCallback& callback);
+  void SetDebug(bool debug);
+  void GetDebug(const GetDebugCallback& callback);
   void SetReconcileTime(int32_t time);
   void GetReconcileTime(const GetReconcileTimeCallback& callback);
   void SetShortRetries(bool short_retries);
@@ -399,8 +402,9 @@ class RewardsServiceImpl : public RewardsService,
   void GetExcludedPublishersNumberDB(
       ledger::GetExcludedPublishersNumberDBCallback callback) override;
 
-  void OnGetExcludedPublishersNumberDB(ledger::GetExcludedPublishersNumberDBCallback callback,
-                             int number);
+  void OnGetExcludedPublishersNumberDB(
+      ledger::GetExcludedPublishersNumberDBCallback callback,
+      int number);
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;

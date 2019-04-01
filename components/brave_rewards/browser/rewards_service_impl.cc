@@ -401,6 +401,8 @@ void RewardsServiceImpl::StartLedger() {
   #endif
   SetProduction(isProduction);
 
+  SetDebug(false);
+
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
 
@@ -2444,6 +2446,20 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       continue;
     }
 
+    if (name == "debug") {
+      bool is_debug;
+      std::string lower = base::ToLowerASCII(value);
+
+      if (lower == "true" || lower == "1") {
+        is_debug = true;
+      } else {
+        is_debug = false;
+      }
+
+      SetDebug(is_debug);
+      continue;
+    }
+
     if (name == "reconcile-interval") {
       int reconcile_int;
       bool success = base::StringToInt(value, &reconcile_int);
@@ -2534,6 +2550,10 @@ void RewardsServiceImpl::GetProduction(const GetProductionCallback& callback) {
   bat_ledger_service_->GetProduction(callback);
 }
 
+void RewardsServiceImpl::GetDebug(const GetDebugCallback& callback) {
+  bat_ledger_service_->GetDebug(callback);
+}
+
 void RewardsServiceImpl::GetReconcileTime(
     const GetReconcileTimeCallback& callback) {
   bat_ledger_service_->GetReconcileTime(callback);
@@ -2546,6 +2566,10 @@ void RewardsServiceImpl::GetShortRetries(
 
 void RewardsServiceImpl::SetProduction(bool production) {
   bat_ledger_service_->SetProduction(production);
+}
+
+void RewardsServiceImpl::SetDebug(bool debug) {
+  bat_ledger_service_->SetDebug(debug);
 }
 
 void RewardsServiceImpl::SetReconcileTime(int32_t time) {
@@ -2704,7 +2728,8 @@ void RewardsServiceImpl::GetAddressesForPaymentId(
                      callback));
 }
 
-int GetExcludedPublishersNumberOnFileTaskRunner(PublisherInfoDatabase* backend) {
+int GetExcludedPublishersNumberOnFileTaskRunner(
+    PublisherInfoDatabase* backend) {
   if (!backend) {
     return 0;
   }

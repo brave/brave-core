@@ -22,6 +22,7 @@
 namespace ledger {
 
 extern bool is_production;
+extern bool is_debug;
 extern bool is_testing;
 extern int reconcile_time;  // minutes
 extern bool short_retries;
