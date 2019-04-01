@@ -367,7 +367,11 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
     base::FilePath path;
     GetTestDataDir(&path);
     if (grant_finished_) {
-      if (donation_made_) {
+      if (contribution_made_) {
+        ASSERT_TRUE(base::ReadFileToString(
+            path.AppendASCII("wallet_balance_contributed_resp.json"),
+            &brave_test_resp::wallet_));
+      } else if (donation_made_) {
         ASSERT_TRUE(base::ReadFileToString(
             path.AppendASCII("wallet_balance_donated_resp.json"),
             &brave_test_resp::wallet_));
@@ -642,24 +646,31 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
       rewards_service()->StartAutoContributeForTest();
     }
 
-    // Signal that donation was made and update wallet with new balance
-    donation_made_ = true;
-    UpdateTestData();
-
     // Activate the Rewards settings page tab
     browser()->tab_strip_model()->ActivateTabAt(
         0,
         TabStripModel::UserGestureDetails(TabStripModel::GestureType::kOther));
 
-    if (verified) {
-      // Wait for reconciliation to complete successfully
-      if (monthly) {
-        WaitForReconcileCompleted();
-        ASSERT_EQ(reconcile_status_, ledger::Result::LEDGER_OK);
-      }
+    // Wait for reconciliation to complete
+    if (monthly) {
+      WaitForReconcileCompleted();
+      ASSERT_EQ(reconcile_status_, verified ? ledger::Result::LEDGER_OK
+                                            : ledger::Result::AC_TABLE_EMPTY);
+    }
 
+    // Signal that contribution/donation was made and update wallet with new
+    // balance
+    if (monthly) {
+      contribution_made_ = true;
+    } else {
+      donation_made_ = true;
+    }
+    UpdateTestData();
+
+    if (verified) {
       // Make sure that balance is updated correctly
       {
+        const std::string balance = monthly ? "10.0 BAT" : "29.0 BAT";
         content::EvalJsResult js_result = EvalJs(
             contents(),
             "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
@@ -668,8 +679,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
             "    .innerText);",
             content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
             content::ISOLATED_WORLD_ID_CONTENT_END);
-        EXPECT_NE(js_result.ExtractString().find("29.0 BAT"),
-                  std::string::npos);
+        EXPECT_NE(js_result.ExtractString().find(balance), std::string::npos);
       }
 
       // Check that tip table shows the appropriate tip amount
@@ -689,12 +699,6 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
         EXPECT_NE(js_result.ExtractString().find("-1.0BAT"), std::string::npos);
       }
     } else {
-      // Wait for reconciliation to complete with table empty error
-      if (monthly) {
-        WaitForReconcileCompleted();
-        ASSERT_EQ(reconcile_status_, ledger::Result::AC_TABLE_EMPTY);
-      }
-
       // Make sure that balance did not change
       {
         content::EvalJsResult js_result = EvalJs(
@@ -818,6 +822,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
   bool reconcile_completed_ = false;
   unsigned int reconcile_status_ = ledger::LEDGER_ERROR;
 
+  bool contribution_made_ = false;
   bool donation_made_ = false;
 };
 
@@ -1254,13 +1259,14 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
   // Trigger auto contribution now
   rewards_service()->StartAutoContributeForTest();
 
-  // Signal that donation was made and update wallet with new balance
-  donation_made_ = true;
-  UpdateTestData();
-
   // Wait for reconciliation to complete successfully
   WaitForReconcileCompleted();
   ASSERT_EQ(reconcile_status_, ledger::Result::LEDGER_OK);
+
+  // Signal that contribution was made and update wallet with new
+  // balance
+  contribution_made_ = true;
+  UpdateTestData();
 
   // Make sure that balance is updated correctly
   {
@@ -1272,7 +1278,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
         "document.querySelector(\"[data-test-id='balance']\").innerText);",
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result.ExtractString().find("29.0 BAT"), std::string::npos);
+    EXPECT_NE(js_result.ExtractString().find("10.0 BAT"), std::string::npos);
   }
 
   // Check that summary table shows the appropriate contribution
