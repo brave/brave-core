@@ -20,8 +20,6 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using namespace brave_rewards;
-
 namespace brave_test_resp {
   std::string registrarVK_;
   std::string verification_;
@@ -115,8 +113,9 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     brave::RegisterPathProvider();
     ReadTestData();
-    rewards_service_ = static_cast<RewardsServiceImpl*>(
-        RewardsServiceFactory::GetForProfile(browser()->profile()));
+    rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
+        brave_rewards::RewardsServiceFactory::GetForProfile(
+            browser()->profile()));
     rewards_service_->SetLedgerEnvForTesting();
   }
 
@@ -144,6 +143,12 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
   void GetProduction() {
     rewards_service()->GetProduction(
         base::Bind(&BraveRewardsBrowserTest::OnGetProduction,
+          base::Unretained(this)));
+  }
+
+  void GetDebug() {
+    rewards_service()->GetDebug(
+        base::Bind(&BraveRewardsBrowserTest::OnGetDebug,
           base::Unretained(this)));
   }
 
@@ -200,13 +205,16 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(jsResult.ExtractBool());
   }
 
-  RewardsServiceImpl* rewards_service() { return rewards_service_; }
+  brave_rewards::RewardsServiceImpl* rewards_service() {
+    return rewards_service_;
+  }
 
   MOCK_METHOD1(OnGetProduction, void(bool));
+  MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
   MOCK_METHOD1(OnGetShortRetries, void(bool));
 
-  RewardsServiceImpl* rewards_service_;
+  brave_rewards::RewardsServiceImpl* rewards_service_;
   MockURLFetcherFactory<brave_net::BraveURLFetcher> factory;
 };
 
@@ -387,6 +395,41 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
   GetProduction();
   RunUntilIdle();
 
+  // SetDebug(true)
+  EXPECT_CALL(*this, OnGetDebug(true));
+  // Debug - true and 1
+  EXPECT_CALL(*this, OnGetDebug(true)).Times(2);
+  // Debug - false and random
+  EXPECT_CALL(*this, OnGetDebug(false)).Times(2);
+
+  rewards_service()->SetDebug(true);
+  GetDebug();
+  RunUntilIdle();
+
+  // Debug - true
+  rewards_service()->SetDebug(false);
+  rewards_service()->HandleFlags("debug=true");
+  GetDebug();
+  RunUntilIdle();
+
+  // Debug - 1
+  rewards_service()->SetDebug(false);
+  rewards_service()->HandleFlags("debug=1");
+  GetDebug();
+  RunUntilIdle();
+
+  // Debug - false
+  rewards_service()->SetDebug(true);
+  rewards_service()->HandleFlags("debug=false");
+  GetDebug();
+  RunUntilIdle();
+
+  // Debug - random
+  rewards_service()->SetDebug(true);
+  rewards_service()->HandleFlags("debug=werwe");
+  GetDebug();
+  RunUntilIdle();
+
   // positive number
   EXPECT_CALL(*this, OnGetReconcileTime(10));
   // negative number and string
@@ -428,36 +471,42 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsMultipleFlags) {
   EXPECT_CALL(*this, OnGetProduction(false));
+  EXPECT_CALL(*this, OnGetDebug(true));
   EXPECT_CALL(*this, OnGetReconcileTime(10));
   EXPECT_CALL(*this, OnGetShortRetries(true));
 
   rewards_service()->SetProduction(true);
+  rewards_service()->SetDebug(true);
   rewards_service()->SetReconcileTime(0);
   rewards_service()->SetShortRetries(false);
 
   rewards_service()->HandleFlags(
-      "staging=true,short-retries=true,reconcile-interval=10");
+      "staging=true,debug=true,short-retries=true,reconcile-interval=10");
 
   GetReconcileTime();
   GetShortRetries();
   GetProduction();
+  GetDebug();
   RunUntilIdle();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsWrongInput) {
   EXPECT_CALL(*this, OnGetProduction(true));
+  EXPECT_CALL(*this, OnGetDebug(false));
   EXPECT_CALL(*this, OnGetReconcileTime(0));
   EXPECT_CALL(*this, OnGetShortRetries(false));
 
   rewards_service()->SetProduction(true);
+  rewards_service()->SetDebug(false);
   rewards_service()->SetReconcileTime(0);
   rewards_service()->SetShortRetries(false);
 
   rewards_service()->HandleFlags(
-      "staging=,shortretries=true,reconcile-interval");
+      "staging=,debug=,shortretries=true,reconcile-interval");
 
   GetReconcileTime();
   GetShortRetries();
+  GetDebug();
   GetProduction();
   RunUntilIdle();
 }

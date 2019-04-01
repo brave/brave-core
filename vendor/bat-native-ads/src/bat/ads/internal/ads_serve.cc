@@ -199,6 +199,9 @@ void AdsServe::RetryDownloadingCatalog() {
     next_retry_start_timer_in_ *= 2;
   }
 
+  auto rand_delay = base::RandInt(0, next_retry_start_timer_in_ / 10);
+  next_retry_start_timer_in_ += rand_delay;
+
   ads_->StartCollectingActivity(next_retry_start_timer_in_);
 }
 

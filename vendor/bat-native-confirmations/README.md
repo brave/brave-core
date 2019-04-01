@@ -131,6 +131,12 @@ Use staging Ads Serve as defined by `STAGING_SERVER` in `static_values.h`. Defau
 --rewards=staging=true
 ```
 
+Use shorter timers to help with testing token redemption as defined by `kDebugNextTokenRedemptionAfterSeconds` in `static_values.h`.
+
+```
+--rewards=debug=true
+```
+
 Enable diagnostic logging, where `#` should set to a minimum log level. Valid values are from 0 to 3 where INFO = 0, WARNING = 1, ERROR = 2 and FATAL = 3. So if you want INFO, WARNING and ERROR you would choose 2
 
 ```

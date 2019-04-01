@@ -23,6 +23,9 @@ namespace confirmations {
 // Determines whether to use the staging or production Ad Serve
 extern bool _is_production;
 
+// Determines whether to enable or disable debugging
+extern bool _is_debug;
+
 extern const char _confirmations_name[];
 
 using TransactionInfo = ::ledger::TransactionInfo;
