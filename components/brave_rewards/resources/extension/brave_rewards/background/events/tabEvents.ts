@@ -12,13 +12,12 @@ chrome.tabs.onActivated.addListener((activeInfo: chrome.tabs.TabActiveInfo) => {
   rewardsPanelActions.onTabId(activeInfo.tabId)
 })
 
-chrome.webNavigation.onCompleted.addListener((details: chrome.webNavigation.WebNavigationFramedCallbackDetails) => {
+const twitchHTML = (details: chrome.webNavigation.WebNavigationFramedCallbackDetails) => {
   chrome.tabs.executeScript(details.tabId, {
     code: 'document.body.outerHTML'
   }, function (result: string[]) {
     if (Array.isArray(result)) {
       chrome.tabs.get(details.tabId, (tab: chrome.tabs.Tab) => {
-        console.log(tab, details.tabId, tab.id)
         if (!tab) {
           return
         }
@@ -29,6 +28,21 @@ chrome.webNavigation.onCompleted.addListener((details: chrome.webNavigation.WebN
       })
     }
   })
+}
+
+chrome.webNavigation.onCompleted.addListener(twitchHTML, {
+  url: [
+    {
+      hostSuffix: 'twitch.tv'
+    }
+  ]
+})
+
+chrome.webNavigation.onHistoryStateUpdated.addListener((details: any) => {
+  console.log('onHistoryStateUpdated')
+  if (details.transitionType === 'link') {
+    twitchHTML(details)
+  }
 }, {
   url: [
     {

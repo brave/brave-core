@@ -794,7 +794,6 @@ void BatGetMedia::onFetchPublisherFromDBResponse(
           media_id.begin(), ::tolower);
         std::string media_key = getTwitchMediaKeyFromUrl(
             providerType,
-            media_id,
             visit_data.url);
         info->name = getUserFacingHandle(publisher_blob);
         savePublisherInfo(0,
@@ -926,9 +925,9 @@ void BatGetMedia::processTwitchMediaPanel(
     const ledger::VisitData& visit_data,
     const std::string& providerType,
     const std::string& publisher_blob) {
-  if (publisher_blob == ledger::kIgnorePublisherBlob) {
-    return;
-  }
+
+  std::string media_key = getTwitchMediaKeyFromUrl(providerType,
+                                                   visit_data.url);
 
   if (!publisher_blob.empty()) {
     std::string media_id = getTwitchMediaIdFromUrl(visit_data, publisher_blob);
@@ -936,8 +935,6 @@ void BatGetMedia::processTwitchMediaPanel(
                    media_id.end(),
                    media_id.begin(),
                    ::tolower);
-    std::string media_key = getTwitchMediaKeyFromUrl(providerType, media_id,
-      visit_data.url);
     if (!media_key.empty() && !media_id.empty()) {
       ledger_->GetMediaPublisherInfo(
           media_key,
@@ -954,12 +951,50 @@ void BatGetMedia::processTwitchMediaPanel(
     } else {
       onMediaActivityError(visit_data, providerType, windowId);
     }
+  } else if (!media_key.empty()) {
+      ledger_->GetMediaPublisherInfo(
+          media_key,
+          std::bind(&BatGetMedia::onMediaPublisherTwitch,
+                    this,
+                    _1,
+                    _2,
+                    windowId,
+                    visit_data,
+                    providerType,
+                    media_key));
   } else {
     ledger::VisitData new_visit_data(visit_data);
-      new_visit_data.path = std::string();
-      ledger_->GetPublisherActivityFromUrl(windowId,
-                                           new_visit_data,
-                                           std::string());
+    new_visit_data.path = std::string();
+    ledger_->GetPublisherActivityFromUrl(windowId,
+                                         new_visit_data,
+                                         std::string());
+  }
+}
+
+void BatGetMedia::onMediaPublisherTwitch(
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info,
+    uint64_t windowId,
+    const ledger::VisitData& visit_data,
+    const std::string& providerType,
+    const std::string& media_key) {
+
+  if (info && result == ledger::Result::LEDGER_OK) {
+    std::string media_id = extractData(info->id, "#author:", "/");
+    onMediaPublisherActivity(result,
+                             std::move(info),
+                             windowId,
+                             visit_data,
+                             providerType,
+                             media_key,
+                             media_id,
+                             "");
+  } else {
+    ledger::VisitData new_visit_data(visit_data);
+    new_visit_data.path = std::string();
+    ledger_->GetPublisherActivityFromUrl(windowId,
+                                         new_visit_data,
+                                         std::string());
   }
 }
 
@@ -977,16 +1012,17 @@ std::string BatGetMedia::getTwitchMediaIdFromUrl(
 
 std::string BatGetMedia::getTwitchMediaKeyFromUrl(
   const std::string& provider_type,
-  const std::string& id,
   const std::string& url) const {
-  if (id == "twitch") {
-    return std::string();
-  }
+  // VOD
   if (url.find("twitch.tv/videos/") != std::string::npos) {
     std::string vodId = extractData(url, "twitch.tv/videos/", "/");
-    return provider_type + "_" + id + "_vod_" + vodId;
+    return provider_type + "_vod_" + vodId;
   }
-  return provider_type + "_" + id;
+
+  // Regular site
+  std::string publisher =
+    extractData(url, "twitch.tv/", "/");
+  return provider_type + "_" + publisher;
 }
 
 void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
@@ -1031,14 +1067,16 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
     }
   } else {
     if (providerType == TWITCH_MEDIA_TYPE) {
-      if (info->verified && info->favicon_url.empty()) {
+      if (info->verified &&
+          info->favicon_url.empty() &&
+          !publisher_blob.empty()) {
         std::string publisher_name;
         std::string publisher_favicon_url;
         updateTwitchPublisherData(&publisher_name,
                                   &publisher_favicon_url,
                                   publisher_blob);
 
-        if (!publisher_favicon_url.empty()) {
+        if (!publisher_favicon_url.empty() && !publisher_name.empty()) {
           savePublisherInfo(0,
                             media_key,
                             providerType,
@@ -1078,6 +1116,7 @@ void BatGetMedia::onGetTwitchPublisherInfo(
     onMediaActivityError(visit_data, providerType, windowId);
     return;
   }
+
   if (!publisher_info || result == ledger::Result::NOT_FOUND) {
     if (providerType == TWITCH_MEDIA_TYPE) {
       std::string publisher_name;
@@ -1085,15 +1124,18 @@ void BatGetMedia::onGetTwitchPublisherInfo(
       updateTwitchPublisherData(&publisher_name,
                                 &publisher_favicon_url,
                                 publisher_blob);
-      savePublisherInfo(0,
-                        media_key,
-                        providerType,
-                        visit_data.url,
-                        publisher_name,
-                        visit_data,
-                        windowId,
-                        publisher_favicon_url,
-                        media_id);
+
+      if (!publisher_favicon_url.empty() && !publisher_name.empty()) {
+        savePublisherInfo(0,
+                          media_key,
+                          providerType,
+                          visit_data.url,
+                          publisher_name,
+                          visit_data,
+                          windowId,
+                          publisher_favicon_url,
+                          media_id);
+      }
     }
   } else {
     if (providerType == TWITCH_MEDIA_TYPE) {

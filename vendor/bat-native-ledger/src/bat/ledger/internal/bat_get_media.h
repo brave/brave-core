@@ -145,13 +145,19 @@ class BatGetMedia {
       const std::string& providerType,
       const std::string& publisher_blob);
 
+  void onMediaPublisherTwitch(ledger::Result result,
+                              std::unique_ptr<ledger::PublisherInfo> info,
+                              uint64_t windowId,
+                              const ledger::VisitData& visit_data,
+                              const std::string& providerType,
+                              const std::string& media_key);
+
   std::string getTwitchMediaIdFromUrl(
       const ledger::VisitData& visit_data,
       const std::string& publisher_blob) const;
 
   std::string getTwitchMediaKeyFromUrl(
       const std::string& provider_type,
-      const std::string& id,
       const std::string& url) const;
 
   std::string getUserFacingHandle(const std::string& publisher_blob) const;

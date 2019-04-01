@@ -16,7 +16,6 @@
 namespace ledger {
 
 const char kClearFavicon[] = "clear";
-const char kIgnorePublisherBlob[] = "ignore";
 
 LEDGER_EXPORT enum REWARDS_CATEGORY {
   AUTO_CONTRIBUTE = 1 << 1,  // 2

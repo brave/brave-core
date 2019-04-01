@@ -68,11 +68,12 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       break
     case types.ON_TAB_RETRIEVED: {
       const tab: chrome.tabs.Tab = payload.tab
+      const blob = payload.publisherBlob || ''
       if (
         !tab ||
         !tab.url ||
         tab.incognito ||
-        !tab.active ||
+        (!tab.active && !blob) ||
         !state.walletCreated
       ) {
         break
@@ -81,13 +82,19 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       const id = getWindowId(tab.windowId)
       const publishers: Record<string, RewardsExtension.Publisher> = state.publishers
       const publisher = publishers[id]
+      let reFetch = publisher && (publisher.tabUrl !== tab.url || !publisher.publisher_key)
 
-      if (!publisher || (publisher && (publisher.tabUrl !== tab.url || !publisher.publisher_key))) {
+      // In case twitch base domain was cached we need to retry
+      if (publisher && publisher.publisher_key === 'twitch.tv') {
+        reFetch = true
+      }
+
+      if (!publisher || reFetch) {
         chrome.braveRewards.getPublisherData(
           tab.windowId,
           tab.url,
           tab.favIconUrl || '',
-          payload.publisherBlob || '')
+          blob)
 
         if (publisher) {
           delete publishers[id]

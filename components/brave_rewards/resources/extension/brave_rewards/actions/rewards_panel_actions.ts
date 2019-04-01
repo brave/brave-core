@@ -17,7 +17,7 @@ export const onTabId = (tabId: number | undefined) => action(types.ON_TAB_ID, {
   tabId
 })
 
-export const onTabRetrieved = (tab: chrome.tabs.Tab, publisherBlob: string = 'ignore') =>
+export const onTabRetrieved = (tab: chrome.tabs.Tab, publisherBlob: string = '') =>
   action(types.ON_TAB_RETRIEVED, {
     tab,
     publisherBlob
