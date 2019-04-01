@@ -164,7 +164,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublisherBanner(std::unique_ptr<ledger::PublisherBanner> banner);
   void RemoveRecurring(const std::string& publisher_key) override;
   void UpdateRecurringDonationsList() override;
-  void UpdateTipsList() override;
+  void GetOneTimeTips() override;
   void SetContributionAutoInclude(
       const std::string& publisher_key,
       bool excluded) override;
@@ -264,8 +264,7 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::PublisherInfoListCallback callback,
       const ledger::PublisherInfoList list);
   void OnRecurringDonationUpdated(const ledger::PublisherInfoList& list);
-  void OnTipsUpdatedData(const ledger::PublisherInfoList list);
-  void TipsUpdated();
+  void OnGetOneTimeTips(const ledger::PublisherInfoList list);
   void OnRemovedRecurring(ledger::RecurringRemoveCallback callback,
                           bool success);
   void OnRemoveRecurring(const std::string& publisher_key,

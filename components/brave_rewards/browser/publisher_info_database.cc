@@ -160,9 +160,9 @@ bool PublisherInfoDatabase::InsertContributionInfo(
   return statement.Run();
 }
 
-void PublisherInfoDatabase::GetTips(ledger::PublisherInfoList* list,
-                                    ledger::ACTIVITY_MONTH month,
-                                    int year) {
+void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
+                                           ledger::ACTIVITY_MONTH month,
+                                           int year) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();

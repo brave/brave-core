@@ -38,9 +38,9 @@ class PublisherInfoDatabase {
 
   bool InsertContributionInfo(const brave_rewards::ContributionInfo& info);
 
-  void GetTips(ledger::PublisherInfoList* list,
-               ledger::ACTIVITY_MONTH month,
-               int year);
+  void GetOneTimeTips(ledger::PublisherInfoList* list,
+                      ledger::ACTIVITY_MONTH month,
+                      int year);
 
   bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
 

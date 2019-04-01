@@ -88,7 +88,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     }
     case types.GET_DONATION_TABLE: {
       chrome.send('brave_rewards.updateRecurringDonationsList')
-      chrome.send('brave_rewards.updateTipsList')
+      chrome.send('brave_rewards.getOneTimeTips')
       break
     }
     case types.GET_CONTRIBUTE_LIST: {

@@ -159,7 +159,7 @@ class RewardsService : public KeyedService {
       bool recurring, std::unique_ptr<brave_rewards::ContentSite> site) = 0;
   virtual void RemoveRecurring(const std::string& publisher_key) = 0;
   virtual void UpdateRecurringDonationsList() = 0;
-  virtual void UpdateTipsList() = 0;
+  virtual void GetOneTimeTips() = 0;
   virtual void SetContributionAutoInclude(
     const std::string& publisher_key, bool excluded) = 0;
   virtual RewardsNotificationService* GetNotificationService() const = 0;

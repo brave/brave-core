@@ -81,7 +81,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetContributionAmount(const base::ListValue* args);
   void RemoveRecurring(const base::ListValue* args);
   void UpdateRecurringDonationsList(const base::ListValue* args);
-  void UpdateTipsList(const base::ListValue* args);
+  void GetOneTimeTips(const base::ListValue* args);
   void GetContributionList(const base::ListValue* args);
   void CheckImported(const base::ListValue* args);
   void GetAdsData(const base::ListValue* args);
@@ -251,8 +251,8 @@ void RewardsDOMHandler::RegisterMessages() {
       "brave_rewards.updateRecurringDonationsList",
       base::BindRepeating(&RewardsDOMHandler::UpdateRecurringDonationsList,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.updateTipsList",
-      base::BindRepeating(&RewardsDOMHandler::UpdateTipsList,
+  web_ui()->RegisterMessageCallback("brave_rewards.getOneTimeTips",
+      base::BindRepeating(&RewardsDOMHandler::GetOneTimeTips,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getContributionList",
       base::BindRepeating(&RewardsDOMHandler::GetContributionList,
@@ -851,9 +851,9 @@ void RewardsDOMHandler::UpdateRecurringDonationsList(
   }
 }
 
-void RewardsDOMHandler::UpdateTipsList(const base::ListValue *args) {
+void RewardsDOMHandler::GetOneTimeTips(const base::ListValue *args) {
   if (rewards_service_) {
-    rewards_service_->UpdateTipsList();
+    rewards_service_->GetOneTimeTips();
   }
 }
 
