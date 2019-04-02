@@ -171,6 +171,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onContributionSaved(properties)
   }
 
+  function resetDefaults () {
+    getActions().resetDefaults()
+  }
+
   return {
     initialize,
     walletCreated,
@@ -202,7 +206,8 @@ window.cr.define('brave_rewards', function () {
     adsIsSupportedRegion,
     recurringTipSaved,
     recurringTipRemoved,
-    onContributionSaved
+    onContributionSaved,
+    resetDefaults
   }
 })
 

@@ -39,6 +39,11 @@ window.cr.define('brave_rewards_internals', function () {
     window.i18nTemplate.process(window.document, window.loadTimeData)
   }
 
+  function onReset () {
+    const actions = bindActionCreators(rewardsInternalsActions, store.dispatch.bind(store))
+    actions.onReset()
+  }
+
   function initialize () {
     getRewardsEnabled()
     getRewardsInternalsInfo()
@@ -55,7 +60,8 @@ window.cr.define('brave_rewards_internals', function () {
     getRewardsInternalsInfo,
     initialize,
     onGetRewardsEnabled,
-    onGetRewardsInternalsInfo
+    onGetRewardsInternalsInfo,
+    onReset
   }
 })
 

@@ -868,4 +868,9 @@ void BatPublishers::onPublisherBanner(
   callback(std::move(new_banner));
 }
 
+void BatPublishers::ResetState() {
+  state_.reset(new braveledger_bat_helper::PUBLISHER_STATE_ST);
+  server_list_.clear();
+}
+
 }  // namespace braveledger_bat_publishers

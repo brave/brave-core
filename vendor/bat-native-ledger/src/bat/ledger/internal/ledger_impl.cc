@@ -1445,6 +1445,25 @@ void LedgerImpl::GetConfirmationsHistory(
       to_timestamp_seconds, callback);
 }
 
+void LedgerImpl::DeleteFiles(
+    ledger::OnResetStateCallback callback) {
+  ResetState();
+  bat_confirmations_->ResetConfirmationsState(
+      std::bind(&LedgerImpl::OnResetConfirmationsState,
+        this, callback, _1));
+}
+
+void LedgerImpl::OnResetConfirmationsState(
+    ledger::OnResetStateCallback callback,
+    bool confirmations_result) {
+  ledger_client_->DeleteClientStateFiles(callback);
+}
+
+void LedgerImpl::ResetState() {
+  bat_state_->ResetState();
+  bat_publishers_->ResetState();
+}
+
 scoped_refptr<base::SequencedTaskRunner> LedgerImpl::GetTaskRunner() {
   return task_runner_;
 }

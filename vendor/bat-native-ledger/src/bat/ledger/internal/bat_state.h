@@ -149,6 +149,8 @@ class BatState {
 
   void SetAddress(std::map<std::string, std::string> addresses);
 
+  void ResetState();
+
  private:
   void SaveState();
 

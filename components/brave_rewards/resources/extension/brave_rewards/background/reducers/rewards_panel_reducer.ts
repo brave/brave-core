@@ -343,6 +343,11 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       state.tipAmounts[payload.banner.publisherKey] = payload.banner.amounts
       break
     }
+    case types.ON_RESET: {
+      state = { ...storage.defaultState }
+      setBadgeText(state)
+      break
+    }
   }
   return state
 }

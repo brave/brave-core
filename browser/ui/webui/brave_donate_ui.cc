@@ -72,6 +72,9 @@ class RewardsDonateDOMHandler : public WebUIMessageHandler,
 
   void OnRecurringTipRemoved(brave_rewards::RewardsService* rewards_service,
                              bool success) override;
+  void OnPublisherBanner(brave_rewards::RewardsService* rewards_service,
+                         const brave_rewards::PublisherBanner banner) override;
+  void OnReset(brave_rewards::RewardsService* rewards_service) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   base::WeakPtrFactory<RewardsDonateDOMHandler> weak_factory_;
@@ -328,6 +331,16 @@ void RewardsDonateDOMHandler::OnRecurringTipSaved(
 
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_donate.recurringTipSaved", base::Value(success));
+}
+
+void RewardsDonateDOMHandler::OnReset(
+    brave_rewards::RewardsService* rewards_service) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_donate.resetDefaults",
+      base::Value());
 }
 
 BraveDonateUI::~BraveDonateUI() {

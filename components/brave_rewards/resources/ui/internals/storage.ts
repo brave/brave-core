@@ -6,7 +6,7 @@ import { debounce } from '../../../../common/debounce'
 
 const keyName = 'rewards-internals-data'
 
-const defaultState: RewardsInternals.State = {
+export const defaultState: RewardsInternals.State = {
   isRewardsEnabled: false,
   info: {
     isKeyInfoSeedValid: false,

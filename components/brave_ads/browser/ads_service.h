@@ -41,6 +41,7 @@ class AdsService : public KeyedService {
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
   virtual void IsSupportedRegion(
       IsSupportedRegionCallback callback) = 0;
+  virtual void DisableAds() = 0;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(AdsService);

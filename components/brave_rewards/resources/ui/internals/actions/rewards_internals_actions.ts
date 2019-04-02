@@ -18,3 +18,5 @@ export const onGetRewardsInternalsInfo = (info: RewardsInternals.State) =>
   action(types.ON_GET_REWARDS_INTERNALS_INFO, {
     info
   })
+
+export const onReset = () => action(types.ON_RESET)

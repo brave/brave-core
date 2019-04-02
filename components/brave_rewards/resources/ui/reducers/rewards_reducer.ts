@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { Reducer } from 'redux'
+import * as storage from '../storage'
 
 // Constant
 import { types } from '../constants/rewards_types'
@@ -172,6 +173,10 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       if (properties && properties.success && properties.category === 8) {
         chrome.send('brave_rewards.getOneTimeTips')
       }
+      break
+    }
+    case types.ON_RESET: {
+      state = { ...storage.defaultState }
       break
     }
   }

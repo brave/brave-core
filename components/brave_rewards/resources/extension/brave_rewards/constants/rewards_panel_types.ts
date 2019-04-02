@@ -34,7 +34,8 @@ export const enum types {
   SAVE_RECURRING_TIP = '@@rewards_panel/SAVE_RECURRING_TIP',
   REMOVE_RECURRING_TIP = '@@rewards_panel/REMOVE_RECURRING_TIP',
   ON_RECURRING_TIPS = '@@rewards_panel/ON_RECURRING_TIPS',
-  ON_PUBLISHER_BANNER = '@@rewards_panel/ON_PUBLISHER_BANNER'
+  ON_PUBLISHER_BANNER = '@@rewards_panel/ON_PUBLISHER_BANNER',
+  ON_RESET = '@@rewards_panel/ON_RESET'
 }
 
 // Note: This declaration must match the RewardsNotificationType enum in

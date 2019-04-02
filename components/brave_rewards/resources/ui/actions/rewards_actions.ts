@@ -206,3 +206,5 @@ export const onContributionSaved = (properties: Rewards.ContributionSaved) =>
   action(types.ON_CONTRIBUTION_SAVED, {
     properties
   })
+
+export const resetDefaults = () => action(types.ON_RESET)

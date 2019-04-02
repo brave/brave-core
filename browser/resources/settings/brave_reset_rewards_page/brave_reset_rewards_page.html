@@ -1,0 +1,31 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<link rel="import" href="chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.html">
+<link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="chrome://resources/html/assert.html">
+<link rel="import" href="chrome://resources/html/cr/ui/focus_without_ink.html">
+<link rel="import" href="../route.html">
+<link rel="import" href="../settings_shared_css.html">
+
+<link rel="import" href="brave_reset_rewards_dialog.html">
+
+<dom-module id="settings-brave-reset-rewards">
+  <template>
+    <style include="settings-shared"></style>
+    <cr-link-row
+        class="hr"
+        icon-class="subpage-arrow"
+        id="resetRewards"
+        label="$i18n{resetRewardsTrigger}"
+        on-click="onShowResetRewardsDialog_">
+    </cr-link-row>
+    <cr-lazy-render id="resetRewardsDialog">
+      <template>
+        <settings-brave-reset-rewards-dialog
+            on-close="onResetRewardsDialogClose_">
+        </settings-brave-reset-rewards-dialog>
+      </template>
+    </cr-lazy-render>
+  </template>
+  <script src="brave_reset_rewards_page.js"></script>
+</dom-module>

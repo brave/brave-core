@@ -74,6 +74,8 @@ class ConfirmationsImpl : public Confirmations {
 
   // State
   void SaveState();
+  void ResetConfirmationsState(
+      OnResetConfirmationsStateCallback callback) override;
 
  private:
   bool is_initialized_;
@@ -171,6 +173,10 @@ class ConfirmationsImpl : public Confirmations {
 
   bool GetUnblindedPaymentTokensFromJSON(
       base::DictionaryValue* dictionary);
+
+  void OnResetConfirmationsState(
+      OnResetConfirmationsStateCallback callback,
+      const ledger::Result result);
 
   // Confirmations::Client
   ConfirmationsClient* confirmations_client_;  // NOT OWNED

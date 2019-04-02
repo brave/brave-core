@@ -114,7 +114,15 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"ipfsCompanionEnabledDesc",
       IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC},
     {"manageExtensionsLabel",
-      IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL}
+      IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL},
+    {"resetRewardsTrigger",
+      IDS_SETTINGS_RESET_REWARDS_TRIGGER},
+    {"resetRewardsDialogCommit",
+      IDS_SETTINGS_RESET_REWARDS_TITLE},
+    {"resetRewardsPageExplanation",
+      IDS_RESET_REWARDS_SETTINGS_EXPLANATION},
+    {"resetRewardsError",
+      IDS_RESET_REWARDS_ERROR}
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           base::size(localized_strings));

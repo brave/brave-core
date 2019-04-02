@@ -75,6 +75,7 @@ class AdsServiceImpl : public AdsService,
       IsSupportedRegionCallback callback) override;
 
   void Shutdown() override;
+  void DisableAds() override;
 
  private:
   friend class AdsNotificationHandler;

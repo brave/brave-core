@@ -295,6 +295,14 @@ bool ResetOnFileTaskRunner(const base::FilePath& path) {
   return base::DeleteFile(path, false);
 }
 
+bool ResetClientOnFileTaskRunner(std::vector<base::FilePath> state_file_paths) {
+  bool success = true;
+  for (base::FilePath state_file_path : state_file_paths) {
+    success = ResetOnFileTaskRunner(state_file_path) && success;
+  }
+  return success;
+}
+
 void EnsureRewardsBaseDirectoryExists(const base::FilePath& path) {
   if (!DirectoryExists(path))
     base::CreateDirectory(path);
@@ -2920,6 +2928,61 @@ void RewardsServiceImpl::OnDeleteActivityInfo(
     LOG(ERROR) << "Problem deleting activity info for "
                << publisher_key;
   }
+}
+
+void RewardsServiceImpl::Reset(ResetStateCallback callback) {
+  notification_service_->DeleteAllNotifications();
+  bat_ledger_->DeleteStateFiles(
+      base::BindOnce(&RewardsServiceImpl::OnReset,
+        AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnReset(
+    ResetStateCallback callback,
+    bool success) {
+  std::move(callback).Run(success);
+  for (auto& observer_ : observers_) {
+    observer_.OnReset(this);
+  }
+}
+
+void RewardsServiceImpl::DeleteClientStateFiles(
+    ledger::OnResetClientStateCallback callback) {
+#if defined(OS_WIN)
+  const base::FilePath::StringType
+      kPublisher_info_db_journal(L"publisher_info_db-journal");
+#else
+  const base::FilePath::StringType
+      kPublisher_info_db_journal("publisher_info_db-journal");
+#endif
+  const base::FilePath publisher_info_db_journal_path_(
+      profile_->GetPath().Append(kPublisher_info_db_journal));
+  publisher_info_backend_.release();
+  notification_service_.release();
+  std::vector<base::FilePath> state_file_paths({
+      ledger_state_path_,
+      publisher_state_path_,
+      publisher_info_db_path_,
+      publisher_info_db_journal_path_,
+      rewards_base_path_,
+      publisher_list_path_ });
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&ResetClientOnFileTaskRunner, state_file_paths),
+      base::BindOnce(&RewardsServiceImpl::OnDeleteClientStateFiles,
+                     AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnDeleteClientStateFiles(
+    ledger::OnResetClientStateCallback callback,
+    bool success) {
+  publisher_info_backend_.reset(
+      new PublisherInfoDatabase(publisher_info_db_path_));
+  notification_service_.reset(new RewardsNotificationServiceImpl(profile_));
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+  if (ads_service)
+    ads_service->DisableAds();
+  callback(success);
 }
 
 }  // namespace brave_rewards

@@ -1,0 +1,60 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<link rel="import" href="chrome://resources/cr_elements/cr_checkbox/cr_checkbox.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_dialog/cr_dialog.html">
+<link rel="import" href="chrome://resources/html/action_link.html">
+<link rel="import" href="chrome://resources/html/action_link_css.html">
+<link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
+<link rel="import" href="chrome://resources/polymer/v1_0/paper-button/paper-button.html">
+<link rel="import" href="chrome://resources/polymer/v1_0/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="brave_reset_rewards_dialog_browser_proxy.html">
+<link rel="import" href="../i18n_setup.html">
+<link rel="import" href="../route.html">
+<link rel="import" href="../settings_shared_css.html">
+
+<dom-module id="settings-brave-reset-rewards-dialog">
+  <template>
+    <style include="settings-shared action-link">
+      paper-spinner-lite {
+        margin: 0 8px;
+      }
+
+      cr-dialog {
+        --cr-dialog-body: {
+          /* Add space for the link focus ring. See https://crbug.com/909653. */
+          padding-bottom: 2px;
+        };
+      }
+    </style>
+    <cr-dialog id="dialog" close-text="$i18n{close}"
+        ignore-popstate ignore-enter-key>
+      <div slot="title">
+        $i18n{resetRewardsDialogCommit}
+      </div>
+      <div slot="body">
+        <span>
+          $i18n{resetRewardsPageExplanation}
+          <!-- <a href="$i18nRaw{resetPageLearnMoreUrl}" target="_blank">
+            $i18n{learnMore}
+          </a> -->
+        </span>
+      </div>
+      <div slot="button-container">
+        <paper-spinner-lite id="resetSpinner" active="[[clearingInProgress_]]">
+        </paper-spinner-lite>
+        <paper-button class="cancel-button" on-click="onCancelTap_"
+            id="cancel" disabled="[[clearingInProgress_]]">
+          $i18n{cancel}
+        </paper-button>
+        <paper-button class="action-button" on-click="onResetTap_"
+            id="reset" disabled="[[clearingInProgress_]]">
+          $i18n{resetDialogCommit}
+        </paper-button>
+      </div>
+      <div slot="footer" hidden="[[!showFooter_]]">
+        $i18n{resetRewardsError}
+      </div>
+    </cr-dialog>
+  </template>
+  <script src="brave_reset_rewards_dialog.js"></script>
+</dom-module>

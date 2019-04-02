@@ -91,6 +91,10 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
       state.reconcileStamp = action.payload.stamp
       break
     }
+    case types.ON_RESET: {
+      state = { ...defaultState }
+      break
+    }
   }
 
   return state

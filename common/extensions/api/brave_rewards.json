@@ -327,6 +327,12 @@
             "type": "boolean"
           }
         ]
+      },
+      {
+        "name": "onReset",
+        "type": "function",
+        "description": "Resets Rewards back to default state",
+        "parameters": []
       }
     ],
     "functions": [

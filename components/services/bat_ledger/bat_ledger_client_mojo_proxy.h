@@ -140,6 +140,9 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void GetExcludedPublishersNumberDB(
       ledger::GetExcludedPublishersNumberDBCallback callback) override;
 
+  void DeleteClientStateFiles(
+      ledger::OnResetClientStateCallback callback) override;
+
  private:
   bool Connected() const;
 

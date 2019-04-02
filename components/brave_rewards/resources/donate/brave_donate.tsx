@@ -83,6 +83,10 @@ window.cr.define('brave_rewards_donate', function () {
     getActions().onRecurringTipSaved(success)
   }
 
+  function resetDefaults () {
+    getActions().resetDefaults()
+  }
+
   return {
     initialize,
     publisherBanner,
@@ -90,7 +94,8 @@ window.cr.define('brave_rewards_donate', function () {
     recurringTips,
     reconcileStamp,
     recurringTipRemoved,
-    recurringTipSaved
+    recurringTipSaved,
+    resetDefaults
   }
 })
 

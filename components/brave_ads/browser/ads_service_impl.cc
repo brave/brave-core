@@ -313,6 +313,11 @@ void AdsServiceImpl::OnCreate() {
   }
 }
 
+void AdsServiceImpl::DisableAds() {
+  set_ads_enabled(false);
+  Stop();
+}
+
 void AdsServiceImpl::MaybeStart(bool restart) {
   if (restart)
     Shutdown();

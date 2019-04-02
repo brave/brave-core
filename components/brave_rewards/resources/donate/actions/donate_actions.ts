@@ -45,3 +45,5 @@ export const onRecurringTipRemoved = (success: boolean) => action(types.ON_RECUR
 export const onRecurringTipSaved = (success: boolean) => action(types.ON_RECURRING_TIP_SAVED, {
   success
 })
+
+export const resetDefaults = () => action(types.ON_RESET)

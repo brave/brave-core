@@ -6,5 +6,6 @@ export const enum types {
   GET_REWARDS_ENABLED = '@@rewards_internals/GET_REWARDS_ENABLED',
   ON_GET_REWARDS_ENABLED = '@@rewards_internals/ON_GET_REWARDS_ENABLED',
   GET_REWARDS_INTERNALS_INFO = '@@rewards_internals/GET_REWARDS_INTERNALS_INFO',
-  ON_GET_REWARDS_INTERNALS_INFO = '@@rewards_internals/ON_GET_REWARDS_INTERNALS_INFO'
+  ON_GET_REWARDS_INTERNALS_INFO = '@@rewards_internals/ON_GET_REWARDS_INTERNALS_INFO',
+  ON_RESET = '@@rewards_internals/ON_RESET'
 }

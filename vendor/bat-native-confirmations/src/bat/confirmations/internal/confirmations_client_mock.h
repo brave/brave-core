@@ -247,6 +247,9 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD1(GetExcludedPublishersNumberDB, void(
       ledger::GetExcludedPublishersNumberDBCallback callback));
+
+  MOCK_METHOD1(DeleteClientStateFiles, void(
+      ledger::OnResetClientStateCallback callback));
 };
 
 }  // namespace confirmations

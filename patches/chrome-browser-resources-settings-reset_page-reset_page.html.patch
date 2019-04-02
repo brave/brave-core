@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/resources/settings/reset_page/reset_page.html b/chrome/browser/resources/settings/reset_page/reset_page.html
+index 2910641f45437a6461433f1fde8db6c36f7780db..ffd7056e8c37d7804de0813272e578f90e7ca33f 100644
+--- a/chrome/browser/resources/settings/reset_page/reset_page.html
++++ b/chrome/browser/resources/settings/reset_page/reset_page.html
+@@ -10,6 +10,8 @@
+ <link rel="import" href="../settings_page/settings_animated_pages.html">
+ <link rel="import" href="../settings_shared_css.html">
+ 
++<link rel="import" href="../brave_reset_page/brave_reset_page.html">
++
+ <if expr="chromeos">
+ <link rel="import" href="powerwash_dialog.html">
+ </if>
+@@ -39,6 +41,7 @@
+             </settings-reset-profile-dialog>
+           </template>
+         </cr-lazy-render>
++        <settings-brave-reset></settings-brave-reset>
+ <if expr="chromeos">
+         <cr-link-row
+             class="hr"

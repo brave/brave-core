@@ -33,6 +33,8 @@ using TransactionsInfo = ::ledger::TransactionsInfo;
 
 using OnGetTransactionHistoryCallback =
     ::ledger::ConfirmationsHistoryCallback;
+using OnResetConfirmationsStateCallback =
+    ::ledger::ResetConfirmationsStateCallback;
 
 class CONFIRMATIONS_EXPORT Confirmations {
  public:
@@ -62,6 +64,10 @@ class CONFIRMATIONS_EXPORT Confirmations {
 
   // Should be called when a timer is triggered
   virtual bool OnTimer(const uint32_t timer_id) = 0;
+
+  // Called when user explicitly acts to completely reset Rewards
+  virtual void ResetConfirmationsState(
+      OnResetConfirmationsStateCallback callback) = 0;
 
  private:
   // Not copyable, not assignable

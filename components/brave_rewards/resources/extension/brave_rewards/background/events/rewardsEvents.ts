@@ -86,3 +86,7 @@ chrome.braveRewards.onRecurringTipRemoved.addListener((success: boolean) => {
     })
   }
 })
+
+chrome.braveRewards.onReset.addListener(() => {
+  rewardsPanelActions.onReset()
+})

@@ -135,6 +135,7 @@ class BatLedgerImpl : public mojom::BatLedger,
       GetConfirmationsHistoryCallback callback) override;
   void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) override;
+  void DeleteStateFiles(DeleteStateFilesCallback callback) override;
 
   void GetRecurringTips(GetRecurringTipsCallback callback) override;
 
@@ -211,6 +212,10 @@ class BatLedgerImpl : public mojom::BatLedger,
     CallbackHolder<LoadPublisherInfoCallback>* holder,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> info);
+
+  static void OnDeleteStateFiles(
+      CallbackHolder<DeleteStateFilesCallback>* holder,
+      bool success);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

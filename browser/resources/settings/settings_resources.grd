@@ -33,6 +33,14 @@
       <structure name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_ON_EXIT_PAGE_JS" file="brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_DIALOG_BEHAVIOR_HTML" file="brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_BRAVE_CLEAR_BROWSING_DATA_DIALOG_BEHAVIOR_JS" file="brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_RESET_PAGE_HTML" file="brave_reset_page/brave_reset_page.html" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_RESET_PAGE_JS" file="brave_reset_page/brave_reset_page.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_RESET_REWARDS_PAGE_HTML" file="brave_reset_rewards_page/brave_reset_rewards_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_BRAVE_RESET_REWARDS_PAGE_JS" file="brave_reset_rewards_page/brave_reset_rewards_page.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_RESET_REWARDS_DIALOG_HTML" file="brave_reset_rewards_page/brave_reset_rewards_dialog.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_BRAVE_RESET_REWARDS_DIALOG_JS" file="brave_reset_rewards_page/brave_reset_rewards_dialog.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_RESET_REWARDS_DIALOG_BROWSER_PROXY_HTML" file="brave_reset_rewards_page/brave_reset_rewards_dialog_browser_proxy.html" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_RESET_REWARDS_DIALOG_BROWSER_PROXY_JS" file="brave_reset_rewards_page/brave_reset_rewards_dialog_browser_proxy.js" type="chrome_html" preprocess="true" />
       <!-- brave sync -->
       <structure name="IDR_SETTINGS_BRAVE_SYNC_BROWSER_PROXY_HTML" file="brave_sync_page/brave_sync_browser_proxy.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_BROWSER_PROXY_JS" file="brave_sync_page/brave_sync_browser_proxy.js" type="chrome_html" preprocess="true" />

@@ -403,6 +403,19 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE" desc="Title text for the translate bubble when asking to translate a page.">
         Translate this page? This will send all text on this page to Microsoft for translation.
       </message>
+      <!-- Brave Reset Rewards to default -->
+      <message name="IDS_SETTINGS_RESET_REWARDS_TRIGGER" desc="Resets Rewards to original factory state">
+        Reset Brave Rewards
+      </message>
+      <message name="IDS_SETTINGS_RESET_REWARDS_TITLE" desc="Title reset Brave Rewards Settings. If the user clicks this option, Rewards settings will be returned to their default values, after a confirmation by the user.">
+        Reset Brave Rewards
+      </message>
+      <message name="IDS_RESET_REWARDS_SETTINGS_EXPLANATION" desc="A label describing the consequences of the 'reset profile settings' feature">
+        This will delete your Brave wallet and reset all of your Brave Rewards data, including your earned advertising tokens, contribution history, wallet transaction records, recurring tips to content creators, pending contributions to content creators, and any other Brave Rewards settings you may have saved.
+      </message>
+      <message name="IDS_RESET_REWARDS_ERROR" desc="A label indicating that there was a problem resetting Rewards">
+        Resetting Brave Rewards is failing at the moment. Please restart Brave and try again shortly.
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />

@@ -1055,4 +1055,22 @@ bool ConfirmationsImpl::IsRetryingToGetRefillSignedTokens() const {
   return true;
 }
 
+void ConfirmationsImpl::ResetConfirmationsState(
+    OnResetConfirmationsStateCallback callback) {
+  is_initialized_ = false;
+  state_has_loaded_ = false;
+  confirmations_client_->ResetState(_confirmations_name,
+      std::bind(&ConfirmationsImpl::OnResetConfirmationsState,
+        this, callback, _1));
+}
+
+void ConfirmationsImpl::OnResetConfirmationsState(
+    OnResetConfirmationsStateCallback callback,
+    const ledger::Result result) {
+  StopRetryingToGetRefillSignedTokens();
+  StopRetryingFailedConfirmations();
+  StopPayingOutRedeemedTokens();
+  callback(result == ledger::Result::LEDGER_OK);
+}
+
 }  // namespace confirmations

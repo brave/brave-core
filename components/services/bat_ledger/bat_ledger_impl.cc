@@ -439,7 +439,7 @@ void BatLedgerImpl::OnGetRecurringTips(
 
   if (holder->is_valid()) {
     std::move(holder->get()).Run(json_list);
-  }
+    }
   delete holder;
 }
 
@@ -537,6 +537,23 @@ void BatLedgerImpl::LoadPublisherInfo(
   ledger_->GetPublisherInfo(
       publisher_key,
       std::bind(BatLedgerImpl::OnLoadPublisherInfo, holder, _1, _2));
+}
+
+void BatLedgerImpl::OnDeleteStateFiles(
+    CallbackHolder<DeleteStateFilesCallback>* holder,
+    bool success) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(success);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::DeleteStateFiles(
+    DeleteStateFilesCallback callback) {
+  auto* holder = new CallbackHolder<DeleteStateFilesCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->DeleteFiles(
+      std::bind(BatLedgerImpl::OnDeleteStateFiles, holder, _1));
 }
 
 }  // namespace bat_ledger

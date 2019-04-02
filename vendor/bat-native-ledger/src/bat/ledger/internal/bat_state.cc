@@ -412,4 +412,8 @@ void BatState::SetAddress(std::map<std::string, std::string> addresses) {
   SaveState();
 }
 
+void BatState::ResetState() {
+  state_.reset(new braveledger_bat_helper::CLIENT_STATE_ST());
+}
+
 }  // namespace braveledger_bat_state

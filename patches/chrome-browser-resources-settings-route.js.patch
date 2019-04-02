@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index 337b8c13d19ca4ed3848057608f4a6de62dde82e..14dd9a6c8b348aedb0e482050d8c0c26e7bb84b3 100644
+index 61d7c61c094faed011b513c25cd0061bef5ab87d..9fab1d7066f01e9945ea19acdd1dec38966d4deb 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
 @@ -263,6 +263,9 @@ cr.define('settings', function() {
- 
+
      r.SEARCH = r.BASIC.createSection('/search', 'search');
      r.SEARCH_ENGINES = r.SEARCH.createChild('/searchEngines');
 +    r.SHIELDS = r.BASIC.createSection('/shields', 'braveShieldsDefaults');
@@ -13,7 +13,7 @@ index 337b8c13d19ca4ed3848057608f4a6de62dde82e..14dd9a6c8b348aedb0e482050d8c0c26
      if (loadTimeData.valueExists('assistantEnabled') &&
          loadTimeData.getBoolean('assistantEnabled')) {
 @@ -341,9 +344,12 @@ cr.define('settings', function() {
- 
+
        // TODO(tommycli): Find a way to refactor these repetitive category
        // routes.
 +      // <if expr="_google_chrome">
@@ -27,7 +27,7 @@ index 337b8c13d19ca4ed3848057608f4a6de62dde82e..14dd9a6c8b348aedb0e482050d8c0c26
        r.SITE_SETTINGS_CAMERA = r.SITE_SETTINGS.createChild('camera');
 @@ -401,7 +407,9 @@ cr.define('settings', function() {
        }
- 
+
        r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');
 +      // <if expr="_google_chrome">
        r.CLOUD_PRINTERS = r.PRINTING.createChild('/cloudPrinters');
@@ -35,3 +35,13 @@ index 337b8c13d19ca4ed3848057608f4a6de62dde82e..14dd9a6c8b348aedb0e482050d8c0c26
        // <if expr="chromeos">
        r.CUPS_PRINTERS = r.PRINTING.createChild('/cupsPrinters');
        // </if>
+@@ -419,6 +427,9 @@ cr.define('settings', function() {
+         r.TRIGGERED_RESET_DIALOG =
+             r.ADVANCED.createChild('/triggeredResetProfileSettings');
+         r.TRIGGERED_RESET_DIALOG.isNavigableDialog = true;
++        r.RESET_REWARDS_DIALOG =
++            r.ADVANCED.createChild('/resetRewards');
++        r.RESET_REWARDS_DIALOG.isNavigableDialog = true;
+         // <if expr="_google_chrome and is_win">
+         r.CHROME_CLEANUP = r.RESET.createChild('/cleanup');
+         if (loadTimeData.getBoolean('showIncompatibleApplications')) {

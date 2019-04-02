@@ -96,6 +96,12 @@ void OnExcludedNumberDB(
   callback(result);
 }
 
+void OnDeleteClientStateFiles(
+    const ledger::OnResetClientStateCallback& callback,
+    bool success) {
+  callback(success);
+}
+
 }  // namespace
 
 BatLedgerClientMojoProxy::BatLedgerClientMojoProxy(
@@ -779,6 +785,17 @@ void BatLedgerClientMojoProxy::GetExcludedPublishersNumberDB(
 
   bat_ledger_client_->GetExcludedPublishersNumberDB(
       base::BindOnce(&OnExcludedNumberDB, std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::DeleteClientStateFiles(
+    ledger::OnResetClientStateCallback callback) {
+  if (!Connected()) {
+    callback(false);
+    return;
+  }
+
+  bat_ledger_client_->DeleteClientStateFiles(
+      base::BindOnce(&OnDeleteClientStateFiles, std::move(callback)));
 }
 
 }  // namespace bat_ledger

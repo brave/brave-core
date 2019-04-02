@@ -125,6 +125,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   bool isVerified(const std::string& publisher_id);
 
+  void ResetState();
+
  private:
   void onPublisherActivitySave(uint64_t windowId,
                                const ledger::VisitData& visit_data,

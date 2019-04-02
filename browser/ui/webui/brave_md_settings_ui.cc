@@ -13,6 +13,7 @@
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
+#include "brave/browser/ui/webui/settings/brave_reset_rewards_settings_handler.h"  // NOLINT
 #include "brave/common/brave_switches.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
@@ -34,6 +35,9 @@ BraveMdSettingsUI::BraveMdSettingsUI(content::WebUI* web_ui,
   // Use sparkle's relaunch api for browser relaunch on update.
   web_ui->AddMessageHandler(std::make_unique<BraveRelaunchHandler>());
 #endif
+  web_ui->AddMessageHandler(
+      std::make_unique<settings::BraveResetRewardsSettingsHandler>(
+        Profile::FromWebUI(web_ui)));
 }
 
 BraveMdSettingsUI::~BraveMdSettingsUI() {

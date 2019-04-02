@@ -31,6 +31,9 @@ const rewardsInternalsReducer: Reducer<RewardsInternals.State | undefined> = (st
       state = { ...state }
       state.info = action.payload.info
       break
+    case types.ON_RESET:
+      state = { ...storage.defaultState }
+      break
     default:
       break
   }

@@ -726,4 +726,22 @@ void LedgerClientMojoProxy::GetOneTimeTips(
                 _2));
 }
 
+void LedgerClientMojoProxy::OnDeleteClientStateFiles(
+    CallbackHolder<DeleteClientStateFilesCallback>* holder,
+    bool success) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(success);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::DeleteClientStateFiles(
+    DeleteClientStateFilesCallback callback) {
+  auto* holder = new CallbackHolder<DeleteClientStateFilesCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->DeleteClientStateFiles(
+      std::bind(LedgerClientMojoProxy::OnDeleteClientStateFiles,
+        holder, _1));
+}
+
 }  // namespace bat_ledger
