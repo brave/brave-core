@@ -57,7 +57,7 @@ std::string BatGetMedia::GetLinkType(const std::string& url,
 void BatGetMedia::processMedia(const std::map<std::string, std::string>& parts,
                                const std::string& type,
                                const ledger::VisitData& visit_data) {
-  if (parts.size() == 0) {
+  if (parts.size() == 0 || !ledger_->GetRewardsMainEnabled()) {
     return;
   }
 
