@@ -694,6 +694,8 @@ class RewardsServiceImpl : public RewardsService,
   void RemovePrivateObserver(RewardsServicePrivateObserver* observer) override;
 
 #if defined(OS_ANDROID)
+  void CreateWalletAttestationResult(bool result,
+      const std::string& result_string);
   void FetchGrantAttestationResult(const std::string& lang,
                                 const std::string& payment_id,
                                 bool result, const std::string& result_string);

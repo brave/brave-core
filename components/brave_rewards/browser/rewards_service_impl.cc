@@ -555,7 +555,15 @@ void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
         AsWeakPtr(),
         std::move(callback));
     if (Connected()) {
-      bat_ledger_->CreateWallet(std::move(on_create));
+#if !defined(OS_ANDROID)
+      bat_ledger_->CreateWallet("", std::move(on_create));
+#else
+      safetynet_check::ClientAttestationCallback attest_callback =
+          base::BindOnce(&RewardsServiceImpl::CreateWalletAttestationResult,
+              AsWeakPtr());
+      safetynet_check_runner_.performSafetynetCheck("",
+          std::move(attest_callback));
+#endif
     }
   } else {
     ready().Post(FROM_HERE,
@@ -565,6 +573,19 @@ void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
             std::move(callback)));
   }
 }
+
+#if defined(OS_ANDROID)
+void RewardsServiceImpl::CreateWalletAttestationResult(bool result,
+  const std::string& result_string) {
+  if (result) {
+    auto on_create = base::BindOnce(
+        &RewardsServiceImpl::OnCreateWallet,
+        AsWeakPtr(),
+        std::move(callback));
+    bat_ledger_->CreateWallet(result_string, std::move(on_create));
+  }
+}
+#endif
 
 void RewardsServiceImpl::GetContentSiteList(
     uint32_t start,
@@ -1444,10 +1465,10 @@ void RewardsServiceImpl::OnFetchGrants(
 
 void RewardsServiceImpl::FetchGrants(const std::string& lang,
     const std::string& payment_id) {
-#if !defined(OS_ANDROID)
   if (!Connected()) {
     return;
   }
+#if !defined(OS_ANDROID)
   bat_ledger_->FetchGrants(lang, payment_id, "", base::BindOnce(
       &RewardsServiceImpl::OnFetchGrants,
       AsWeakPtr()));

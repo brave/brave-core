@@ -1929,6 +1929,19 @@ bool getJSONAddresses(const std::string& json,
   return !error;
 }
 
+bool getJSONMessage(const std::string& json,
+                     std::string& message) {
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  if (d.HasMember("message")) {
+    message = d["message"].GetString();
+    return true;
+  }
+
+  return false;
+}
+
 std::vector<uint8_t> generateSeed() {
   std::vector<uint8_t> vSeed(SEED_LENGTH);
   std::random_device r;
