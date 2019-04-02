@@ -64,6 +64,10 @@
 #define PUBLISHERS_DB_NAME              "d2c799cd-f37f-4230-9a04-ca23ba5be240"
 #define MEDIA_CACHE_DB_NAME             "9956db89-9105-420b-9ad4-49348bc536af"
 
+// TODO(samartnik): remove as soon as we move on new safetynet check API
+#define SAFETYNET_ERROR_MESSAGE         \
+"Error profile and integrity must both be true"
+
 #define YOUTUBE_MEDIA_TYPE              "youtube"
 #define TWITCH_MEDIA_TYPE               "twitch"
 #define TWITTER_MEDIA_TYPE              "twitter"

@@ -92,13 +92,14 @@ void LedgerImpl::Initialize() {
   LoadLedgerState(this);
 }
 
-bool LedgerImpl::CreateWallet() {
-  if (initializing_) {
+bool LedgerImpl::CreateWallet(const std::string& safetynet_token) {
+  if (initializing_)
     return false;
   }
 
   initializing_ = true;
   bat_client_->CreateWalletIfNecessary();
+  bat_client_->registerPersona(safetynet_token);
   return true;
 }
 
