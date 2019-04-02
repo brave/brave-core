@@ -419,6 +419,9 @@ bool getJSONResponse(const std::string& json,
 bool getJSONAddresses(const std::string& json,
                       std::map<std::string, std::string>* addresses);
 
+bool getJSONMessage(const std::string& json,
+                     std::string& message);
+
 std::vector<uint8_t> generateSeed();
 
 std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed);
