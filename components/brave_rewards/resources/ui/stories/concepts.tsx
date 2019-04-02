@@ -70,6 +70,8 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
   .add('Welcome Page', () => (
     <WelcomePage
       id={'welcome-page'}
+      onTOSClick={dummyOptInAction}
+      onPrivacyClick={dummyOptInAction}
       optInAction={dummyOptInAction}
     />
   ))
@@ -196,6 +198,8 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             optInAction={creatingTwo}
             creating={store.state.creatingTwo}
             optInErrorAction={dummyOptInAction}
+            onTOSClick={dummyOptInAction}
+            onPrivacyClick={dummyOptInAction}
             error={boolean('Wallet Creation Error', false)}
           />
         </div>

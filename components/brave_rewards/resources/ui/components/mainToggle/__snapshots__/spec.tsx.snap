@@ -79,30 +79,32 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   color: #222326;
 }
 
-.c12 {
-  margin-top: 18px;
-  font-size: 22px;
-  line-height: 1.27;
-  color: #4b4c5c;
-}
-
-.c13 {
-  font-family: Muli,sans-serif;
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 1.75;
-  color: #838391;
-}
-
-.c11 {
-  -webkit-flex-basis: 100%;
-  -ms-flex-preferred-size: 100%;
-  flex-basis: 100%;
-}
-
 .c2 {
   width: 66px;
   height: 66px;
+}
+
+.c11 {
+  display: block;
+  margin-top: 20px;
+  font-family: Muli,sans-serif;
+}
+
+.c12 {
+  color: #3b3e4f;
+  font-size: 14px;
+  font-weight: normal;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 18px;
+}
+
+.c13 {
+  cursor: pointer;
+  color: #339af0;
+  font-weight: 600;
 }
 
 .c6 {
@@ -244,30 +246,26 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   <div
     className="c11"
   >
-    <div
+    <span
       className="c12"
     >
-      MISSING: rewardsWhy
-    </div>
-    <div
-      className="c13"
-    >
-      MISSING: rewardsOffText1
+      MISSING: serviceTextToggle
        
-      <b>
-        MISSING: rewardsOffText2
-      </b>
-    </div>
-    <div
-      className="c12"
-    >
-      MISSING: rewardsOffText3
-    </div>
-    <div
-      className="c13"
-    >
-      MISSING: rewardsOffText4
-    </div>
+      <a
+        className="c13"
+      >
+        MISSING: termsOfService
+      </a>
+       
+      MISSING: and
+       
+      <a
+        className="c13"
+      >
+        MISSING: privacyPolicy
+      </a>
+      .
+    </span>
   </div>
 </div>
 `;

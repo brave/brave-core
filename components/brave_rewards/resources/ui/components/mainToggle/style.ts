@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
+import palette from '../../../theme/colors'
 
 export const MainToggleWrapper = styled<{}, 'div'>('div')`
   font-family: Poppins, sans-serif;
@@ -47,26 +48,27 @@ export const StyledTM = styled<{}, 'span'>('span')`
   color: #222326;
 `
 
-export const StyleTitle = styled<{}, 'div'>('div')`
-  margin-top: 18px;
-  font-size: 22px;
-  line-height: 1.27;
-  color: #4b4c5c;
-`
-
-export const StyleText = styled<{}, 'div'>('div')`
-  font-family: Muli, sans-serif;
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 1.75;
-  color: #838391;
-`
-
-export const StyledContent = styled<{}, 'div'>('div')`
-  flex-basis: 100%;
-`
-
 export const StyledLogoWrapper = styled<{}, 'div'>('div')`
   width: 66px;
   height: 66px;
+`
+
+export const StyledTOSWrapper = styled<{}, 'div'>('div')`
+  display: block;
+  margin-top: 20px;
+  font-family: Muli, sans-serif;
+`
+
+export const StyledServiceText = styled<{}, 'span'>('span')`
+  color: ${palette.grey800};
+  font-size: 14px;
+  font-weight: normal;
+  letter-spacing: 0;
+  line-height: 18px;
+`
+
+export const StyledServiceLink = styled<{}, 'a'>('a')`
+  cursor: pointer;
+  color: ${palette.blue500};
+  font-weight: 600;
 `

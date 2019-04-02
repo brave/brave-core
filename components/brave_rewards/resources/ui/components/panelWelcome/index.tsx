@@ -15,7 +15,10 @@ import {
   StyledFooterText,
   StyledTrademark,
   StyledErrorMessage,
-  StyledJoinButton
+  StyledJoinButton,
+  StyledTOSWrapper,
+  StyledServiceText,
+  StyledServiceLink
 } from './style'
 
 import { BatColorIcon, LoaderIcon } from '../../../components/icons'
@@ -30,6 +33,8 @@ export interface Props {
   moreLink?: () => void
   optInAction: () => void
   optInErrorAction: () => void
+  onTOSClick?: () => void
+  onPrivacyClick?: () => void
 }
 
 export default class PanelWelcome extends React.PureComponent<Props, {}> {
@@ -53,7 +58,14 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, optInAction, optInErrorAction, moreLink } = this.props
+    const {
+      id,
+      optInAction,
+      optInErrorAction,
+      moreLink,
+      onTOSClick,
+      onPrivacyClick
+    } = this.props
 
     let props = {}
 
@@ -79,42 +91,51 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
           <StyledDescText>
             {getLocale(this.locale.desc)}
           </StyledDescText>
-            {
-              this.props.creating && !this.props.error
-              ? <StyledJoinButton
-                level='secondary'
+          {
+            this.props.creating && !this.props.error
+            ? <StyledJoinButton
+              level='secondary'
+              size='call-to-action'
+              type='subtle'
+              text={getLocale('braveRewardsCreatingText')}
+              disabled={true}
+              data-test-id='optInAction'
+              icon={{
+                image: <LoaderIcon />,
+                position: 'after'
+              }}
+            />
+            : this.props.error
+              ? <>
+                  <StyledErrorMessage>
+                    {getLocale('walletFailedTitle')}
+                  </StyledErrorMessage>
+                  <StyledJoinButton
+                    level='secondary'
+                    size='call-to-action'
+                    type='subtle'
+                    text={getLocale('walletFailedButton')}
+                    onClick={optInErrorAction}
+                    data-test-id='optInErrorAction'
+                  />
+                </>
+              : <StyledJoinButton
                 size='call-to-action'
                 type='subtle'
-                text={'Creating wallet'}
-                disabled={true}
-                data-test-id='optInAction'
-                icon={{
-                  image: <LoaderIcon />,
-                  position: 'after'
-                }}
+                level='secondary'
+                onClick={optInAction}
+                text={getLocale(this.locale.button)}
               />
-              : this.props.error
-                ? <>
-                    <StyledErrorMessage>
-                      {getLocale('walletFailedTitle')}
-                    </StyledErrorMessage>
-                    <StyledJoinButton
-                      level='secondary'
-                      size='call-to-action'
-                      type='subtle'
-                      text={getLocale('walletFailedButton')}
-                      onClick={optInErrorAction}
-                      data-test-id='optInErrorAction'
-                    />
-                  </>
-                : <StyledJoinButton
-                  size='call-to-action'
-                  type='subtle'
-                  level='secondary'
-                  onClick={optInAction}
-                  text={getLocale(this.locale.button)}
-                />
-            }
+          }
+          {
+            onTOSClick && onPrivacyClick
+            ? <StyledTOSWrapper>
+                <StyledServiceText>
+                  {getLocale('serviceTextPanelWelcome')} <StyledServiceLink onClick={onTOSClick}>{getLocale('termsOfService')}</StyledServiceLink> {getLocale('and')} <StyledServiceLink onClick={onPrivacyClick}>{getLocale('privacyPolicy')}</StyledServiceLink>.
+                </StyledServiceText>
+              </StyledTOSWrapper>
+            : null
+          }
           <StyledFooterText {...props}>
             {getLocale(this.locale.footer)}
           </StyledFooterText>

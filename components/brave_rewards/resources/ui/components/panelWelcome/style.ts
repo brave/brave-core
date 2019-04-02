@@ -7,6 +7,7 @@ import Heading from '../../../components/text/heading'
 import batOutlineUrl from './assets/batOutline.svg'
 import Button, { Props as ButtonProps } from '../../../components/buttonsIndicators/button'
 import { ComponentType } from 'react'
+import palette from '../../../theme/colors'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
   text-align: center;
@@ -99,4 +100,25 @@ export const StyledErrorMessage = styled<{}, 'span'>('span')`
   margin: 0px auto 20px;
   line-height: 28px;
   color: #FFF;
+`
+
+export const StyledTOSWrapper = styled<{}, 'div'>('div')`
+  display: block;
+  margin: 20px auto;
+  width: 300px;
+`
+
+export const StyledServiceText = styled<{}, 'span'>('span')`
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 14px;
+  font-family: Muli, sans-serif;
+  font-weight: normal;
+  letter-spacing: 0;
+  line-height: 18px;
+`
+
+export const StyledServiceLink = styled<{}, 'a'>('a')`
+  cursor: pointer;
+  color: ${palette.blue500};
+  font-weight: 600;
 `

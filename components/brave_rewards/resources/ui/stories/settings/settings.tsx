@@ -11,7 +11,7 @@ import DonationsBox from './donationsBox'
 import Grant from './grant'
 import PageWallet from './pageWallet'
 import { Grid, Column } from '../../../../src/components'
-import { MainToggle, SettingsPage } from '../../../../src/features/rewards'
+import { DisabledBox, MainToggle, SettingsPage } from '../../../../src/features/rewards'
 
 // Assets
 import '../../../assets/fonts/muli.css'
@@ -29,6 +29,10 @@ class Settings extends React.PureComponent<{}, State> {
     }
   }
 
+  doNothing = () => {
+    console.log('nothing')
+  }
+
   onMainToggle = () => {
     this.setState({ mainToggle: !this.state.mainToggle })
   }
@@ -39,9 +43,16 @@ class Settings extends React.PureComponent<{}, State> {
         <Grid columns={3} customStyle={{ gridGap: '32px' }}>
           <Column size={2} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             <MainToggle
+              onTOSClick={this.doNothing}
+              onPrivacyClick={this.doNothing}
               onToggle={this.onMainToggle}
               enabled={this.state.mainToggle}
             />
+            {
+              !this.state.mainToggle
+              ? <DisabledBox />
+              : null
+            }
             <AdsBox/>
             <ContributeBox/>
             <DonationsBox/>

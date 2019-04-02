@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DisabledBox tests basic tests matches the snapshot 1`] = `
+.c2 {
+  max-width: 100%;
+  width: 100%;
+  min-height: auto;
+  margin: 0;
+  padding: 30px 36px;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
+  font-size: inherit;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.c0 {
+  display: block;
+  width: 100%;
+  margin-bottom: 28px;
+}
+
+.c1 {
+  font-family: Poppins,sans-serif;
+}
+
+.c3 {
+  width: 541px;
+  color: #4C54D2;
+  font-size: 22px;
+  font-weight: 600;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 28px;
+  padding-bottom: 5px;
+}
+
+.c4 {
+  color: #84889c;
+  font-size: 16px;
+  font-weight: normal;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 26px;
+  padding-bottom: 0px;
+  font-family: Muli,sans-serif;
+}
+
+.c4:first-of-type {
+  padding-bottom: 10px;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1 c2"
+  >
+    <span
+      className="c3"
+    >
+      MISSING: whyBraveRewards
+    </span>
+    <p
+      className="c4"
+    >
+      MISSING: rewardsOffText5
+    </p>
+    <span
+      className="c3"
+    >
+      MISSING: rewardsOffText3
+    </span>
+    <p
+      className="c4"
+    >
+      MISSING: rewardsOffText4
+    </p>
+  </div>
+</div>
+`;
