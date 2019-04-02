@@ -26,7 +26,7 @@ class BatClient {
   explicit BatClient(bat_ledger::LedgerImpl* ledger);
   ~BatClient();
 
-  void registerPersona();
+  void registerPersona(const std::string& safetynet_token);
 
   void requestCredentialsCallback(
       int response_status_code,
@@ -81,6 +81,11 @@ class BatClient {
     const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
 
  private:
+  void registerPersonaSafetyNetCallback(
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+
   void getGrantCaptchaCallback(
       int response_status_code,
       const std::string& response,

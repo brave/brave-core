@@ -473,14 +473,32 @@ void RewardsServiceImpl::RemovePrivateObserver(RewardsServicePrivateObserver* ob
 
 void RewardsServiceImpl::CreateWallet() {
   if (ready().is_signaled()) {
-    if (Connected())
-      bat_ledger_->CreateWallet();
+    if (Connected()) {
+#if !defined(OS_ANDROID)
+      bat_ledger_->CreateWallet("");
+#else
+      safetynet_check::ClientAttestationCallback attest_callback =
+          base::BindOnce(&RewardsServiceImpl::CreateWalletAttestationResult,
+              AsWeakPtr());
+      safetynet_check_runner_.performSafetynetCheck("",
+          std::move(attest_callback));
+#endif
+    }
   } else {
     ready().Post(FROM_HERE,
         base::Bind(&brave_rewards::RewardsService::CreateWallet,
             base::Unretained(this)));
   }
 }
+
+#if defined(OS_ANDROID)
+void RewardsServiceImpl::CreateWalletAttestationResult(bool result,
+  const std::string& result_string) {
+  if (result) {
+    bat_ledger_->CreateWallet(result_string);
+  }
+}
+#endif
 
 void RewardsServiceImpl::GetContentSiteList(
     uint32_t start,
@@ -1368,10 +1386,10 @@ void RewardsServiceImpl::FetchWalletProperties() {
 
 void RewardsServiceImpl::FetchGrants(const std::string& lang,
     const std::string& payment_id) {
-#if !defined(OS_ANDROID)
   if (!Connected()) {
     return;
   }
+#if !defined(OS_ANDROID)
   bat_ledger_->FetchGrants(lang, payment_id, "");
 #else
   safetynet_check::ClientAttestationCallback attest_callback =

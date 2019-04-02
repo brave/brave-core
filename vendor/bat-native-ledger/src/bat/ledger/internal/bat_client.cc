@@ -32,7 +32,16 @@ BatClient::BatClient(bat_ledger::LedgerImpl* ledger) :
 BatClient::~BatClient() {
 }
 
-void BatClient::registerPersona() {
+void BatClient::registerPersona(const std::string& safetynet_token) {
+  if (!safetynet_token.empty()) {
+    std::vector<std::string> headers;
+    headers.push_back("safetynet-token:" + safetynet_token);
+    auto callback = std::bind(&BatClient::registerPersonaSafetyNetCallback, this, _1, _2, _3);
+    ledger_->LoadURL(braveledger_bat_helper::buildURL(
+          (std::string)GET_SET_PROMOTION, PREFIX_V3),
+        headers, "", "", ledger::URL_METHOD::GET, callback);
+    return;
+  }
   auto callback = std::bind(&BatClient::requestCredentialsCallback,
                             this,
                             _1,
@@ -42,6 +51,33 @@ void BatClient::registerPersona() {
       braveledger_bat_helper::buildURL(REGISTER_PERSONA, PREFIX_V2),
       std::vector<std::string>(), "", "",
       ledger::URL_METHOD::GET, callback);
+}
+
+void BatClient::registerPersonaSafetyNetCallback(
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers) {
+
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
+
+  unsigned int statusCode;
+  std::string error;
+  bool hasResponseError = braveledger_bat_helper::getJSONResponse(
+    response, statusCode, error);
+  if (hasResponseError && statusCode == 404) {
+    ledger_->SetLastGrantLoadTimestamp(time(0));
+    // TODO(samartnik): as per discussion with @evq we decided to use this
+    // quick hack, because we are going to move on new API soon,
+    // where SafetyNet check failure will be explicit
+    std::string message;
+    if (braveledger_bat_helper::getJSONMessage(response, message) &&
+      message == SAFETYNET_ERROR_MESSAGE) {
+      ledger_->OnWalletInitialized(ledger::Result::SAFETYNET_ATTESTATION_FAILED);
+    }
+    return;
+  }
+  // We passed safetynet check, so just make regular call
+  registerPersona("");
 }
 
 void BatClient::requestCredentialsCallback(

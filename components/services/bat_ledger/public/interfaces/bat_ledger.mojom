@@ -22,8 +22,8 @@ interface BatLedgerService {
 
 interface BatLedger {
   Initialize();
-  CreateWallet();
   FetchWalletProperties() => (int32 result, string wallet_info);
+  CreateWallet(string safetynet_token);
 
   GetAutoContributeProps() => (string props);
   GetPublisherMinVisitTime() => (uint64 min_visit_time);
