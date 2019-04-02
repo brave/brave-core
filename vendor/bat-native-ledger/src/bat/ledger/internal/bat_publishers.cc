@@ -696,6 +696,10 @@ void BatPublishers::getPublisherActivityFromUrl(
     uint64_t windowId,
     const ledger::VisitData& visit_data,
     const std::string& publisher_blob) {
+  if (!ledger_->GetRewardsMainEnabled()) {
+    return;
+  }
+
   if ((visit_data.domain == YOUTUBE_TLD || visit_data.domain == TWITCH_TLD) &&
       visit_data.path != "" && visit_data.path != "/") {
     std::string type = YOUTUBE_MEDIA_TYPE;
