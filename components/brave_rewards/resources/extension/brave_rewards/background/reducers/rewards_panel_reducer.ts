@@ -73,7 +73,8 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         !tab.url ||
         tab.incognito ||
         !tab.active ||
-        !state.walletCreated
+        !state.walletCreated ||
+        !state.enabledMain
       ) {
         break
       }

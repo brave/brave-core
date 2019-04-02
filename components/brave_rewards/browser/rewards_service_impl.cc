@@ -1156,10 +1156,22 @@ void RewardsServiceImpl::LoadURL(
     const std::string& contentType,
     const ledger::URL_METHOD method,
     ledger::LoadURLCallback callback) {
+
+  if (url.empty()) {
+    callback(400, "", {});
+    return;
+  }
+
+  GURL parsed_url(url);
+  if (!parsed_url.is_valid()) {
+    callback(400, "", {});
+    return;
+  }
+
   net::URLFetcher::RequestType request_type = URLMethodToRequestType(method);
 
   net::URLFetcher* fetcher = net::URLFetcher::Create(
-      GURL(url), request_type, this).release();
+      parsed_url, request_type, this).release();
   fetcher->SetRequestContext(g_browser_process->system_request_context());
 
   for (size_t i = 0; i < headers.size(); i++)
