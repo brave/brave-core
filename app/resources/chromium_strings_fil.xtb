@@ -103,6 +103,7 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="8848045066928358658">Upang mas gawing ligtas ang Brave, na-disable namin ang sumusunod na extension na hindi nakalista sa <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> na maaaring naidagdag nang hindi mo nalalalaman.</translation>
 <translation id="8148611988012584308">I-customize at kontrolin ang Brave</translation>
 <translation id="5849446944780602366">I-customize at kontrolin ang Brave. May available na update.</translation>
+<translation id="6315734375101223238">I-customize at kontrolin ang Brave. May kailangan kang pagtuunan ng pansin - mag-click para sa mga detalye.</translation>
 <translation id="9071554113102421877">&amp;Buksan sa Brave</translation>
 <translation id="2176825726964012531">Tungkol sa &amp;Brave</translation>
 <translation id="5450493308072741203">I-update ang &amp;Brave</translation>
@@ -127,6 +128,7 @@ Kapag nag-sign in ka pa rin, isasama sa <ph name="ACCOUNT_EMAIL_NEW"/> ang impor
 <translation id="1853997773668795891">I-link ang iyong data sa Brave sa account na ito?</translation>
 <translation id="1326766910007115955">Nagsa-sign in ka gamit ang isang pinamamahalaang account at nagbibigay sa administrator nito ng kontrol sa iyong profile sa Brave. Permanenteng mauugnay ang iyong data sa Brave, gaya ng iyong apps, mga bookmark, kasaysayan, password, at iba pang mga setting sa <ph name="USER_NAME"/>. Matatanggal mo ang data na ito sa Brave Software Accounts Dashboard, ngunit hindi mo maiuugnay ang data na ito sa isa pang account. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Nagsa-sign in ka gamit ang isang pinamamahalaang account at nagbibigay sa administrator nito ng kontrol sa iyong profile sa Brave. Permanenteng mauugnay ang iyong data sa Brave, gaya ng iyong apps, mga bookmark, kasaysayan, password, at iba pang mga setting sa <ph name="USER_NAME"/>. Matatanggal mo ang data na ito sa Brave Software Accounts Dashboard, ngunit hindi mo maiuugnay ang data na ito sa isa pang account. Maaari ka ring gumawa ng bagong profile upang ihiwalay ang iyong umiiral na data sa Brave. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">Na-configure ng iyong system administrator ang Brave na magbukas ng alternatibong browser para i-access ang <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656">Brave ang dating ginagamit ng <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="1384923383737428730">May mapaminsalang software sa iyong computer. Magagawa ng Brave na alisin ito, i-restore ang iyong mga setting, at i-disable ang mga extension para muling mapagana nang normal ang browser mo.</translation>
 <translation id="8919921662052966648">Hindi mai-sync ng Brave ang iyong data. Paki-update ang iyong passphrase sa Pag-sync.</translation>
@@ -175,7 +177,6 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="2871190378186459992">Tumuklas ng mahuhusay na app, laro, extension at tema para sa Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Inbound na panuntunan para sa Brave upang payagan ang trapiko ng mDNS.</translation>
-<translation id="3795403186582265456">Makikilala ng Brave ang mga larawan at text sa isang larawan sa pamamagitan ng pagpapadala ng mga larawan ng page sa mga server ng Brave Software, na nagbibigay-daan sa iyong mas maunawaan ang content ng page.</translation>
 <translation id="7276297358157391541">Maaaring magbigay ang Brave ng mas pinahusay na pag-i-spell check sa pamamagitan ng pagpapadala sa mga server ng Brave Software ng tina-type mo sa browser, na nagbibigay-daan sa iyo na gamitin ang parehong teknolohiya ng pag-i-spell check na ginamit ng paghahanap sa Brave Software.</translation>
 <translation id="1807774211756215222">Buksan ang link sa bagong &amp;tab ng Brave</translation>
 <translation id="4624945300945265642">Buksan ang link sa inco&amp;gnito window ng Brave</translation>
@@ -192,7 +193,6 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="5173820533850252773">Luma na ang Brave</translation>
 <translation id="6389268239133412586">Hindi ma-update ang Brave</translation>
 <translation id="7963515534397191222">Hindi ma-update ang Brave sa pinakabagong bersyon, kaya may napapalampas kang mga bagong feature at pag-aayos sa seguridad.</translation>
-<translation id="3472158705945346956">Maaaring inalis at idinagdag kang muli ng iyong manager sa Brave.</translation>
 <translation id="1705567146636171298">I-update ang Brave</translation>
 <translation id="3598551856834560515">I-update ang Brave upang simulan ang pag-sync</translation>
 <translation id="4050175100176540509">May available na mahahalagang pagpapahusay sa seguridad at mga bagong feature sa pinakabagong bersyon.</translation>
@@ -271,9 +271,9 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="8372880274820509128">Para sa karagdagang seguridad, ie-encrypt ng Brave ang iyong data.</translation>
 <translation id="7445061995866044926">Mag-sign out sa Brave?</translation>
 <translation id="7453070689008684791">Ia-access ng Brave ang iyong Drive para makapagmungkahi sa address bar</translation>
-<translation id="7713466009760073734">Ipinapakita ang Brave OS sa wikang ito</translation>
+<translation id="9221712274065451529">Ginagamit ang wikang ito para ipakita ang Brave OS UI</translation>
 <translation id="3518788198614984730">Ipakita ang Brave OS sa wikang ito</translation>
-<translation id="8258976055610040706">Ipinapakita ang Brave sa wikang ito</translation>
+<translation id="5757460455745382269">Ginagamit ang wikang ito para ipakita ang Brave UI</translation>
 <translation id="2335583906071111058">Ipakita ang Brave sa wikang ito</translation>
 <translation id="8926637909431618259">Patuloy na magpatakbo ng background na apps kapag nakasara ang Brave</translation>
 <translation id="6056473803837713617">Tulungang pahusayin ang Brave sa pamamagitan ng pag-ulat sa <ph name="BEGIN_LINK"/>mga kasalukuyang setting<ph name="END_LINK"/></translation>

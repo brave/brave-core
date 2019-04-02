@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/sign_versioned_dir.sh.in b/chrome/installer/mac/sign_versioned_dir.sh.in
-index 2a784e232339e8c9259991096b1098eb6f5721f0..0336010e635879a3e34a91ea81653d838cbf1d93 100644
+index 95b93ba0f82299240d9d5d7a3c5f0415c8ecc9dd..6172ca0fcf3ba116747461d519ab652879005b1f 100644
 --- a/chrome/installer/mac/sign_versioned_dir.sh.in
 +++ b/chrome/installer/mac/sign_versioned_dir.sh.in
 @@ -24,7 +24,6 @@ ME="$(basename "${0}")"
@@ -24,7 +24,7 @@ index 2a784e232339e8c9259991096b1098eb6f5721f0..0336010e635879a3e34a91ea81653d83
  framework="${versioned_dir}/@MAC_PRODUCT_NAME@ Framework.framework"
 +sparkle_framework="${framework}/Frameworks/Sparkle.framework"
  notification_service="${framework}/XPCServices/AlertNotificationService.xpc"
- crashpad_handler="${framework}/Helpers/crashpad_handler"
+ crashpad_handler="${framework}/Helpers/chrome_crashpad_handler"
  helper_app="${versioned_dir}/@MAC_PRODUCT_NAME@ Helper.app"
 @@ -124,6 +125,13 @@ xpc_plist="${notification_service}/Contents/Info"
  xpc_bundle_id="$(__CFPREFERENCES_AVOID_DAEMON=1 defaults read \

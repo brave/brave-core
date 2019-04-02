@@ -126,6 +126,9 @@
 <translation id="570208820610947248">S vaší peněženkou je něco v nepořádku. Před zpracováním jakýchkoli transakcí je nutné obnovit vaši záložní peněženku.</translation>
 <translation id="7797604753681168055">Obnovit ihned!</translation>
 <translation id="1184075897575325927">Je nám líto, tento grant byl zjevně již nárokován.</translation>
+<translation id="7180611975245234373">Obnovit</translation>
+<translation id="839736845446313156">Registrace</translation>
+<translation id="583281660410589416">Neznámé</translation>
 <translation id="5094577350232361255">o nás</translation>
 <translation id="4918086044614829423">Přijmout</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave je registrovaná ochranná známka společnosti Brave Software. Názvy stránek mohou být ochrannými známkami nebo registrovanými ochrannými známkami majitele stránek.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">z této synchronizační skupiny</translation>
 <translation id="610118613261910287">Zobrazit znění kódu</translation>
 <translation id="8588535459744752615">Hledá se zařízení</translation>
-<translation id="391177677159359824">Synchronizace (beta)</translation>
+<translation id="6406506848690869874">Synchronizace</translation>
 <translation id="28332161031213248">Níže uvedený seznam obsahuje veškerá zařízení ve vašem synchronizačním řetězci. Každé zařízení může být spravováno z jakéhokoliv jiného zařízení.</translation>
 <translation id="8153617760825732120">název zařízení</translation>
 <translation id="4241512165288542484">(toto zařízení)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">Uložená nastavení stránky</translation>
 <translation id="7859704718976024901">Historie procházení</translation>
 <translation id="2339730291919608488">Opustit synchronizační skupinu</translation>
-<translation id="4797449295451979552">Nastavení synchronizace (beta)</translation>
+<translation id="4332558599726753990">Nastavení synchronizace</translation>
 <translation id="298546024891487702">Pro zahájení je potřeba mít Brave instalovaný na všech zařízeních, které máte v úmyslu synchronizovat. Pro jejich propojení spusťte synchronizační řetězec, který využijete k zabezpečenému vzájemnému propojení všech vašich zařízení.</translation>
 <translation id="6200528822592747640">Spustit nový synchronizační řetězec</translation>
 <translation id="5184726904895809379">Mám synchronizační kód</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Počítač</translation>
 <translation id="1258250624898033822">Neplatný synchronizační kód.</translation>
 <translation id="3259723213051400722">Zkuste to znovu.</translation>
-<translation id="3779810277399252432">Nejste připojeni k internetu.</translation>
-<translation id="4380604249778320975">Zkuste to znovu, až budete připojeni k internetu.</translation>
 <translation id="5257281382608458806">Název zařízení je vyžadován.</translation>
 <translation id="8349682220522608879">Přidejte synchronizační kód.</translation>
 <translation id="1468095392829989299">Synchronizační servery se nepodařilo kontaktovat.</translation>

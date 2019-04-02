@@ -101,6 +101,7 @@ Brave nu poate recupera setările.</translation>
 <translation id="8848045066928358658">Pentru mai multă siguranță în Brave, am dezactivat următoarea extensie care nu este inclusă în <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> și care este posibil să fi fost adăugată fără știrea ta.</translation>
 <translation id="8148611988012584308">Personalizați și controlați Brave</translation>
 <translation id="5849446944780602366">Personalizează și controlează Brave. Este disponibilă o actualizare.</translation>
+<translation id="6315734375101223238">Personalizează și controlează Brave. Ceva are nevoie de atenția ta – dă clic pentru detalii.</translation>
 <translation id="9071554113102421877">&amp;Deschide în Brave</translation>
 <translation id="2176825726964012531">Despre &amp;Brave</translation>
 <translation id="5450493308072741203">Actualizați &amp;Brave</translation>
@@ -125,6 +126,7 @@ Dacă totuși vă conectați, informațiile Brave cum ar fi marcajele, istoricul
 <translation id="1853997773668795891">Vă conectați datele Brave cu acest cont?</translation>
 <translation id="1326766910007115955">Vă conectați cu un cont gestionat și îi permiteți administratorului acestuia controlul asupra profilului dvs. Brave. Datele Brave, cum ar fi aplicațiile, marcajele, istoricul, parolele și alte setări vor fi asociate definitiv cu <ph name="USER_NAME"/>. Veți putea să ștergeți aceste date prin intermediul Tabloului de bord pentru Conturi Brave Software, însă nu veți putea să asociați aceste date cu alt cont. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Vă conectați cu un cont gestionat și îi permiteți administratorului acestuia controlul asupra profilului dvs. Brave. Datele Brave, cum ar fi aplicațiile, marcajele, istoricul, parolele și alte setări vor fi asociate definitiv cu <ph name="USER_NAME"/>. Veți putea să ștergeți aceste date prin intermediul Tabloului de bord pentru Conturi Brave Software, însă nu veți putea să asociați aceste date cu alt cont. Aveți opțiunea de a crea un profil nou, pentru a păstra separat datele Brave existente. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">Administratorul de sistem a configurat Brave să deschidă un browser secundar pentru a accesa <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> a folosit Brave anterior</translation>
 <translation id="1384923383737428730">Ai software dăunător pe computer. Brave poate să îl elimine, să restabilească setările și să dezactiveze extensiile pentru ca browserul să funcționeze normal din nou.</translation>
 <translation id="8919921662052966648">Brave nu a putut sincroniza datele. Actualizați expresia de acces pentru sincronizare.</translation>
@@ -173,7 +175,6 @@ Verifică e-mailul la <ph name="ACCOUNT_EMAIL"/> pentru instrucțiuni suplimenta
 <translation id="2871190378186459992">Descoperă aplicații, jocuri, extensii și teme extraordinare pentru Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Regula de intrare pentru Brave pentru a permite traficul mDNS.</translation>
-<translation id="3795403186582265456">Brave poate recunoaște imaginile și textul dintr-o imagine trimițând imaginile paginii la serverele Brave Software, pentru ca tu să înțelegi mai bine conținutul paginii.</translation>
 <translation id="7276297358157391541">Brave poate oferi o verificare a ortografiei mai inteligentă prin trimiterea textului introdus în browser la serverele Brave Software, permițându-ți să folosești aceeași tehnologie de verificare a ortografiei folosită de Căutare Brave Software.</translation>
 <translation id="1807774211756215222">Deschide linkul într-o &amp;filă Brave nouă</translation>
 <translation id="4624945300945265642">Deschide linkul într-o fereastră Brave inco&amp;gnito</translation>
@@ -190,7 +191,6 @@ Verifică e-mailul la <ph name="ACCOUNT_EMAIL"/> pentru instrucțiuni suplimenta
 <translation id="5173820533850252773">Brave nu este actualizat</translation>
 <translation id="6389268239133412586">Brave nu se poate actualiza</translation>
 <translation id="7963515534397191222">Brave nu s-a putut actualiza la cea mai recentă versiune. Astfel, pierzi noi funcții și remedieri de securitate.</translation>
-<translation id="3472158705945346956">Administratorul trebuie să te elimine și să te adauge din nou în Brave.</translation>
 <translation id="1705567146636171298">Actualizează Brave</translation>
 <translation id="3598551856834560515">Actualizează Brave pentru a începe sincronizarea</translation>
 <translation id="4050175100176540509">În cea mai recentă versiune sunt disponibile îmbunătățiri de securitate și funcții noi importante.</translation>
@@ -269,9 +269,9 @@ Verifică e-mailul la <ph name="ACCOUNT_EMAIL"/> pentru instrucțiuni suplimenta
 <translation id="8372880274820509128">Pentru un plus de securitate, Brave îți va cripta datele.</translation>
 <translation id="7445061995866044926">Te deconectezi de la Brave?</translation>
 <translation id="7453070689008684791">Brave îți va accesa spațiul de stocare Drive pentru a face sugestii în bara de adrese</translation>
-<translation id="7713466009760073734">Sistemul de operare Brave este afișat în această limbă</translation>
+<translation id="9221712274065451529">Această limbă este folosită pentru a afișa IU din sistemul de operare Brave</translation>
 <translation id="3518788198614984730">Afișează sistemul de operare Brave în această limbă</translation>
-<translation id="8258976055610040706">Brave este afișat în această limbă</translation>
+<translation id="5757460455745382269">Această limbă este folosită pentru a afișa IU Brave</translation>
 <translation id="2335583906071111058">Afișează Brave în această limbă</translation>
 <translation id="8926637909431618259">Rulați în continuare aplicații de fundal când Brave este închis</translation>
 <translation id="6056473803837713617">Contribuie la îmbunătățirea browserului Brave raportând <ph name="BEGIN_LINK"/>setările actuale<ph name="END_LINK"/></translation>

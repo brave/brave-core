@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Am detectat că a apărut o eroare cu portofelul dvs. Trebuie să recuperăm copia de rezervă a portofelului dvs. înainte de a putea fi procesate orice tranzacții.</translation>
 <translation id="7797604753681168055">Recuperare acum</translation>
 <translation id="1184075897575325927">Ne pare rău, se pare că acest grant a fost revendicat deja.</translation>
+<translation id="7180611975245234373">Actualizați</translation>
+<translation id="839736845446313156">Înregistrează</translation>
+<translation id="583281660410589416">Necunoscută</translation>
 <translation id="5094577350232361255">despre</translation>
 <translation id="4918086044614829423">Accept</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave este marcă înregistrată a Brave Software. Numele siteurilor pot fi mărci înregistrate ale proprietarilor siteurilor.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">din acest lanț de sincronizare</translation>
 <translation id="610118613261910287">Vizualizare Cuvinte Cod</translation>
 <translation id="8588535459744752615">Căutare dispozitiv</translation>
-<translation id="391177677159359824">Sync (beta)</translation>
+<translation id="6406506848690869874">Sincronizare</translation>
 <translation id="28332161031213248">Lista de dispozitive de mai jos include toate dispozitivele din lanțul de sincronizare. Fiecare dispozitiv poate fi administrat de pe orice alt dispozitiv.</translation>
 <translation id="8153617760825732120">nume dispozitiv</translation>
 <translation id="4241512165288542484">(Acest dispozitiv)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">Setări site salvate</translation>
 <translation id="7859704718976024901">Istoric de navigare</translation>
 <translation id="2339730291919608488">Părăsire lanț de sincronizare</translation>
-<translation id="4797449295451979552">Configurare Sync (beta)</translation>
+<translation id="4332558599726753990">Setare Sincronizare</translation>
 <translation id="298546024891487702">Pentru a porni, trebuie să aveți Brave instalat pe toate dispozitivele pe care vreți să le sincronizați. Pentru a le înlănțui, începeți un lanț de sincronizare pe care îl veți utiliza pentru a conecta în siguranță toate dispozitivele dumneavoastră.</translation>
 <translation id="6200528822592747640">Începeți un nou Lanț de Sincronizare</translation>
 <translation id="5184726904895809379">Am un Cod de Sincronizare</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Computer</translation>
 <translation id="1258250624898033822">Cod de sincronizare nevalid.</translation>
 <translation id="3259723213051400722">Vă rugăm să încercați din nou.</translation>
-<translation id="3779810277399252432">Nu există conexiune la internet.</translation>
-<translation id="4380604249778320975">Vă rugăm să încercați mai târziu când va fi valabilă conexiunea.</translation>
 <translation id="5257281382608458806">Este necesar numele dispozitivului.</translation>
 <translation id="8349682220522608879">Vă rugăm să adăugați un cod de sincronizare.</translation>
 <translation id="1468095392829989299">Serverele de sincronizare nu au putut fi contactate</translation>

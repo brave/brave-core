@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -9,23 +10,27 @@
 
 class BraveProfileChooserView : public ProfileChooserView {
  private:
-   friend class ProfileChooserView;
+  friend class ProfileChooserView;
 
-   BraveProfileChooserView(views::Button* anchor_button,
-                           Browser* browser,
-                           profiles::BubbleViewMode view_mode,
-                           signin::GAIAServiceType service_type,
-                           signin_metrics::AccessPoint access_point);
-   ~BraveProfileChooserView() override;
+  BraveProfileChooserView(views::Button* anchor_button,
+                          const gfx::Rect& anchor_rect,
+                          gfx::NativeView parent_window,
+                          Browser* browser,
+                          profiles::BubbleViewMode view_mode,
+                          signin::GAIAServiceType service_type,
+                          signin_metrics::AccessPoint access_point,
+                          bool is_source_keyboard);
+  ~BraveProfileChooserView() override;
 
   // views::ButtonListener:
   void ButtonPressed(views::Button* sender, const ui::Event& event) override;
 
   void ResetView() override;
 
-  views::View* CreateDiceSyncErrorView(const AvatarMenu::Item& avatar_item,
-    sync_ui_util::AvatarSyncErrorType error,
-    int button_string_id) override;
+  views::View* BraveCreateDiceSyncErrorView(
+      const AvatarMenu::Item& avatar_item,
+      sync_ui_util::AvatarSyncErrorType error,
+      int button_string_id);
 
   void AddTorButton(views::GridLayout* layout);
 

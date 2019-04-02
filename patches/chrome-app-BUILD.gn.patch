@@ -1,8 +1,8 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index db61736b6d4533bdd3f957d6c3766ccaf943f41d..834e5331b36a5c6fa8414449e676268a4c0b084c 100644
+index 8670f53f406ec4fbc41f7e35667fa0f73f6037cb..5547f4533046725932967cba9eb6519cb6d2e7c9 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
-@@ -251,7 +251,7 @@ grit("google_chrome_strings") {
+@@ -259,7 +259,7 @@ grit("google_chrome_strings") {
  }
  
  grit("chromium_strings") {
@@ -11,7 +11,7 @@ index db61736b6d4533bdd3f957d6c3766ccaf943f41d..834e5331b36a5c6fa8414449e676268a
    defines = chrome_grit_defines
    output_dir = "$root_gen_dir/chrome"
    outputs = [
-@@ -335,6 +335,7 @@ static_library("test_support") {
+@@ -344,6 +344,7 @@ static_library("test_support") {
      "//components/nacl/common:buildflags",
      "//components/startup_metric_utils/browser:lib",
      "//components/tracing",

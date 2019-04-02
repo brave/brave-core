@@ -101,6 +101,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="8848045066928358658">为了提高 Brave 的安全性，我们停用了以下扩展程序（该扩展程序未列在<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>中，并且可能是在您不知情的情况下添加的）。</translation>
 <translation id="8148611988012584308">自定义及控制 Brave</translation>
 <translation id="5849446944780602366">有可用的更新。欢迎自定义和控制 Brave。</translation>
+<translation id="6315734375101223238">自定义和控制 Brave。出了点需要您注意的状况 - 点击即可查看详情。</translation>
 <translation id="9071554113102421877">在 Brave 中打开(&amp;O)</translation>
 <translation id="2176825726964012531">关于 Brave(&amp;C)</translation>
 <translation id="5450493308072741203">更新 Brave(&amp;C)</translation>
@@ -125,6 +126,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="1853997773668795891">是否将您的 Brave 数据与此帐号相关联？</translation>
 <translation id="1326766910007115955">您目前登录的帐号是一个托管帐号，该帐号的管理员将能够控制您的 Brave 个人资料。您的 Brave 数据（例如您的应用、书签、历史记录、密码和其他设置）将永远与 <ph name="USER_NAME"/> 相关联。您可以通过 Brave Software 帐号信息中心删除这些数据，但无法将这些数据与其他帐号相关联。<ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">您目前登录的帐号是一个托管帐号，该帐号的管理员将能够控制您的 Brave 个人资料。您的 Brave 数据（例如您的应用、书签、历史记录、密码和其他设置）将永远与 <ph name="USER_NAME"/> 相关联。您可以通过 Brave Software 帐号信息中心删除这些数据，但无法将这些数据与其他帐号相关联。您可以选择创建新的个人资料来单独存储您现有的 Brave 数据。<ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">您的系统管理员已将 Brave 配置为使用备用浏览器访问 <ph name="TARGET_URL_HOSTNAME"/>。</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> 之前使用的是 Brave</translation>
 <translation id="1384923383737428730">您的计算机上存在有害软件。Brave 可以移除该软件、恢复您的设置并停用扩展程序，以确保您的浏览器能够重新正常运行。</translation>
 <translation id="8919921662052966648">Brave无法同步您的数据。请更新您的同步密码。</translation>
@@ -173,7 +175,8 @@ Brave 无法恢复您的设置。</translation>
 <translation id="2871190378186459992">在这里，您可以找到适用于 Brave 的精彩应用、游戏、扩展程序和主题背景。</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Brave的入站规则，允许mDNS流量。</translation>
-<translation id="3795403186582265456">Brave 可通过向 Brave Software 服务器发送网页图片来识别图片和图片中的文字，从而让您更好地了解网页内容。</translation>
+<translation id="8207657266087451193">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave Software。您可以随时在“设置”中关闭此功能。</translation>
+<translation id="5499063270485366718">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave Software。</translation>
 <translation id="7276297358157391541">Brave 会将您在浏览器中输入的内容发送到 Brave Software 服务器，并让您使用 Brave Software 搜索所用的拼写检查技术，从而为您提供更智能的拼写检查功能。</translation>
 <translation id="1807774211756215222">在 Brave 新标签页中打开链接(&amp;T)</translation>
 <translation id="4624945300945265642">在 Brave 无痕式窗口中打开链接(&amp;G)</translation>
@@ -190,7 +193,6 @@ Brave 无法恢复您的设置。</translation>
 <translation id="5173820533850252773">Brave版本太旧</translation>
 <translation id="6389268239133412586">无法更新 Brave</translation>
 <translation id="7963515534397191222">Brave 无法更新至最新版本，因此您未能获得最新的功能和安全修复程序。</translation>
-<translation id="3472158705945346956">您的管理员必须先将您移除，然后再将您重新添加到 Brave。</translation>
 <translation id="1705567146636171298">更新 Brave</translation>
 <translation id="3598551856834560515">更新 Brave 以开始同步</translation>
 <translation id="4050175100176540509">最新版本不仅在安全性方面做出了重要改进，还提供了多项新功能。</translation>
@@ -269,9 +271,9 @@ Brave 无法恢复您的设置。</translation>
 <translation id="8372880274820509128">为了提高安全性，Brave 将对您的数据进行加密。</translation>
 <translation id="7445061995866044926">退出 Brave？</translation>
 <translation id="7453070689008684791">Brave 将访问您的云端硬盘，以在地址栏提供建议</translation>
-<translation id="7713466009760073734">Brave 操作系统界面目前使用的是这种语言</translation>
+<translation id="9221712274065451529">使用此语言显示 Brave 操作系统界面</translation>
 <translation id="3518788198614984730">以这种语言显示 Brave 操作系统</translation>
-<translation id="8258976055610040706">Brave 界面目前使用的是这种语言</translation>
+<translation id="5757460455745382269">使用此语言显示 Brave 界面</translation>
 <translation id="2335583906071111058">以这种语言显示 Brave</translation>
 <translation id="8926637909431618259">关闭 Brave 后继续运行后台应用</translation>
 <translation id="6056473803837713617">报告<ph name="BEGIN_LINK"/>当前设置<ph name="END_LINK"/>，协助我们改进 Brave</translation>

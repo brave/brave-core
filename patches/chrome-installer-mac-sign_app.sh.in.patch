@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/sign_app.sh.in b/chrome/installer/mac/sign_app.sh.in
-index 23ad384119a57c3ff1d09d9f32a35d5325623233..6c9299ed008f201be1d8c5e9a7a27fb3df961cf7 100644
+index 16edd99ae8432c130876beec52834c2211513282..47f495214d1ef5848bf52a759ba713604c7c441a 100644
 --- a/chrome/installer/mac/sign_app.sh.in
 +++ b/chrome/installer/mac/sign_app.sh.in
 @@ -79,10 +79,10 @@ fi

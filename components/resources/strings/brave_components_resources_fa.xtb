@@ -126,6 +126,9 @@
 <translation id="570208820610947248">تشخیص دادیم که کیف پول شما مشکلی دارد. باید قبل از پردازش هرگونه تراکنشی، کیف پول پشتیبان خود بازیابی کنید.</translation>
 <translation id="7797604753681168055">اکنون بازیابی کنید!</translation>
 <translation id="1184075897575325927">متأسفیم، به‌نظر می‌رسد این امتیاز قبلاً مطالبه شده است.</translation>
+<translation id="7180611975245234373">بازخوانی</translation>
+<translation id="839736845446313156">ثبت‌نام</translation>
+<translation id="583281660410589416">ناشناس</translation>
 <translation id="5094577350232361255">درباره</translation>
 <translation id="4918086044614829423">پذیرفتن</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software‏. Brave نشان تجاری ثبت‌شده Brave Software است. ممکن است نام سایت‌ها، نشان‌های تجاری یا نشان‌های تجاری ثبت‌شده مالک آن سایت‌ها باشد.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">از این زنجیره همگام‌سازی</translation>
 <translation id="610118613261910287">مشاهده کدواژه‌ها</translation>
 <translation id="8588535459744752615">درحال جستجوی عکس</translation>
-<translation id="391177677159359824">Sync (بتا)</translation>
+<translation id="6406506848690869874">همگام‌سازی</translation>
 <translation id="28332161031213248">فهرست دستگاه زیر حاوی همه دستگاه‌های موجود در زنجیره همگام‌سازی شما است. هر دستگاه می‌تواند از دستگاه دیگری مدیریت شود.</translation>
 <translation id="8153617760825732120">نام دستگاه</translation>
 <translation id="4241512165288542484">(این دستگاه)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">تنظیمات سایت ذخیره‌شده</translation>
 <translation id="7859704718976024901">سابقه مرور</translation>
 <translation id="2339730291919608488">خروج از زنجیره همگام‌سازی</translation>
-<translation id="4797449295451979552">راه‌اندازی Sync (بتا)</translation>
+<translation id="4332558599726753990">راه‌اندازی همگام‌سازی</translation>
 <translation id="298546024891487702">برای شروع، باید Brave را در همه دستگاه‌هایی که قصد همگام‌سازی‌شان را دارید نصب کنید. برای زنجیر کردن آنها به یکدیگر، یک زنجیره همگام‌سازی شروع کنید. برای پیوند کردن ایمن همه دستگاه‌هایتان به یکدیگر از این زنجیره استفاده خواهید کرد.</translation>
 <translation id="6200528822592747640">شروع «زنجیره همگام‌سازی» جدید</translation>
 <translation id="5184726904895809379">کد همگام‌سازی دارم</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">رایانه</translation>
 <translation id="1258250624898033822">کد همگام‌سازی نامعتبر است.</translation>
 <translation id="3259723213051400722">لطفاً دوباره امتحان کنید.</translation>
-<translation id="3779810277399252432">اتصال اینترنت وجود ندارد.</translation>
-<translation id="4380604249778320975">لطفاً وقتی اتصال دردسترس بود، دوباره امتحان کنید.</translation>
 <translation id="5257281382608458806">نام دستگاه الزامی است</translation>
 <translation id="8349682220522608879">لطفاً کد همگام‌سازی را اضافه کنید.</translation>
 <translation id="1468095392829989299">تماس با سرورهای همگام‌سازی امکان‌پذیر نیست</translation>

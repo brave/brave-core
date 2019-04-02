@@ -42,6 +42,7 @@
 <translation id="520608572871993342">Menggunakan Jendela Privat hanya mengubah apa yang Brave lakukan pada perangkat Anda — dan tidak mengubah perilaku aplikasi lainnya. Tor menyembunyikan alamat IP Anda dari situs yang dikunjungi, dan menyembunyikan situs yang Anda kunjungi dari ISP atau kantor Anda. Buka Jendela Privat dengan Tor dari menu, atau dengan {{ key }}.</translation>
 <translation id="6975708438781948564">Pelajari lebih lanjut tentang Tor di Brave</translation>
 <translation id="1869685517625607604">Total Iklan Diblokir:</translation>
+<translation id="4673764878177947707">Filter Ubahsuai</translation>
 <translation id="6200814343085745765">Pemblokir Iklan Regional:</translation>
 <translation id="59174027418879706">Diaktifkan</translation>
 <translation id="4176463684765177261">Dinonaktifkan</translation>
@@ -79,6 +80,8 @@
 <translation id="2232753742630178222">3 iklan per jam</translation>
 <translation id="905529390827000221">4 iklan per jam</translation>
 <translation id="7694167481321619202">5 iklan per jam</translation>
+<translation id="8845154268466251503">BAT</translation>
+<translation id="3390542282753297856">Peranti ini luring, silakan coba kembali nanti.</translation>
 <translation id="4684554059837592728">Pembayaran Bulanan</translation>
 <translation id="2846354907189538">Tanggal kontribusi berikutnya</translation>
 <translation id="8759716059844800317">Situs yang didukung</translation>
@@ -126,11 +129,22 @@
 <translation id="570208820610947248">Kami mendeteksi terjadinya masalah pada dompet Anda. Anda harus memulihkan dompet cadangan agar transaksi dapat diproses.</translation>
 <translation id="7797604753681168055">Pulihkan sekarang!</translation>
 <translation id="1184075897575325927">Maaf, tampaknya hibah ini sudah diklaim.</translation>
+<translation id="282693359045252357">Tanggal tip bulanan berikutnya</translation>
+<translation id="7422678632904904341">Jumlah:</translation>
+<translation id="5457113250005438886">Tidak valid</translation>
+<translation id="7180611975245234373">Segarkan</translation>
+<translation id="2461822463642141190">Saat ini</translation>
+<translation id="4516620156082016131">Final</translation>
+<translation id="839736845446313156">Daftar</translation>
+<translation id="583281660410589416">Tidak dikenal</translation>
+<translation id="5771119664738037159">Brave Rewards tidak aktif. Aktifkan dengan membuka</translation>
+<translation id="4235360514405112390">Valid</translation>
 <translation id="5094577350232361255">tentang</translation>
 <translation id="4918086044614829423">Terima</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave adalah merek dagang terdaftar dari Brave Software. Nama situs mungkin merupakan merek dagang atau merek dagang terdaftar dari pemilik situs.</translation>
 <translation id="9026369588205476247">Untuk melindungi privasi Anda, laporan Brave Rewards ini tidak simpan, direkam, atau dicatat di mana pun selain di perangkat Anda (komputer ini). Ini tidak dapat diambil kembali dari Brave saat ada kehilangan data di perangkat Anda.</translation>
 <translation id="1036277985068412734">tambah dana</translation>
+<translation id="5441565662498481293">Anda secara otomatis mengirim tip ke:</translation>
 <translation id="4496990471549986619">Pertanyaan Umum</translation>
 <translation id="1688876543043079268">Pengingat: Dompet Brave bekerja searah dan BAT mengalir ke situs penerbit. Untuk informasi lebih lanjut mengenai Brave Rewards, silakan kunjungi</translation>
 <translation id="2790014973538267577">Tampilkan Kode QR</translation>
@@ -174,9 +188,11 @@
 <translation id="245015745140252435">Jumlah tip</translation>
 <translation id="3520817231440482449">Beri Tip Bulanan untuk situs ini</translation>
 <translation id="1827184134638345603">Kirim Tip…</translation>
+<translation id="1628742278973105368">Tip bulanan pertama Anda akan dikirim pada:</translation>
 <translation id="7277134233385925078">Atur tip bulanan</translation>
 <translation id="8003573781961874199">Unduh sebagai PDF</translation>
 <translation id="298067735430872465">Pendapatan dari Iklan</translation>
+<translation id="3521361150443442734">Pendapatan Iklan Anda telah tersedia.</translation>
 <translation id="8764029012618014430">Aktifkan Tip</translation>
 <translation id="3412655388715513818">Kecualikan situs ini</translation>
 <translation id="418343137736963579">Total jumlah situs yang Anda kecualikan dari Kontribusi Otomatis:</translation>
@@ -212,6 +228,7 @@
 <translation id="3630697955794050612">mati</translation>
 <translation id="4921250468871504777">oke</translation>
 <translation id="7866482334467279021">nyala</translation>
+<translation id="1166682575529520472">Bulanan</translation>
 <translation id="8370173854533168890">Satu kali</translation>
 <translation id="9182287025588539628">Tip Satu Kali</translation>
 <translation id="6381574025952123568">Saldo Awal</translation>
@@ -272,6 +289,7 @@
 <translation id="1792148354504719133">situs</translation>
 <translation id="5944430251223015324">situs</translation>
 <translation id="8826007068782654809">Terima kasih</translation>
+<translation id="6665366815203065060">Anda mengirim tip ke:</translation>
 <translation id="6432779622695508363">Tip pada suka</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
@@ -314,7 +332,7 @@
 <translation id="1555452132857939218">dari rantai sinkronisasi ini</translation>
 <translation id="610118613261910287">Lihat Kata Kode</translation>
 <translation id="8588535459744752615">Mencari perangkat</translation>
-<translation id="391177677159359824">Sinkronisasi (beta)</translation>
+<translation id="6406506848690869874">Sync</translation>
 <translation id="28332161031213248">Daftar perangkat di bawah ini mencakup semua perangkat di dalam untai sinkronisasi Anda. Setiap perangkat dapat dikelola dari perangkat lain.</translation>
 <translation id="8153617760825732120">nama perangkat</translation>
 <translation id="4241512165288542484">(Perangkat Ini)</translation>
@@ -327,7 +345,7 @@
 <translation id="5591129654353352557">Pengaturan Situs Tersimpan</translation>
 <translation id="7859704718976024901">Riwayat Penelusuran</translation>
 <translation id="2339730291919608488">Keluar dai Rantai Sinkronisasi</translation>
-<translation id="4797449295451979552">Pengaturan Sinkronisasi (beta)</translation>
+<translation id="4332558599726753990">Pengaturan Sinkronisasi</translation>
 <translation id="298546024891487702">Untuk memulai, Anda harus memasang Brave pada semua perangkat ingin Anda sinkronkan. Untuk menyatukan semuanya, mulailah rantai sinkronisasi yang akan Anda gunakan untuk menghubungkan semua perangkat Anda dengan aman.</translation>
 <translation id="6200528822592747640">Mulai Untai Sinkronisasi baru</translation>
 <translation id="5184726904895809379">Saya punya Kode Sinkronisasi</translation>
@@ -359,8 +377,6 @@
 <translation id="1736420071277903564">Komputer</translation>
 <translation id="1258250624898033822">Kode sinkronisasi tidak valid</translation>
 <translation id="3259723213051400722">Coba lagi.</translation>
-<translation id="3779810277399252432">Tidak ada sambungan internet.</translation>
-<translation id="4380604249778320975">Coba lagi nanti setelah sambungan tersedia.</translation>
 <translation id="5257281382608458806">Nama perangkat harus diisi.</translation>
 <translation id="8349682220522608879">Tambahkan kode sinkronisasi.</translation>
 <translation id="1468095392829989299">Tidak dapat menghubungi server Sinkronisasi</translation>

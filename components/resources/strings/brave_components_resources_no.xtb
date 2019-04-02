@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Vi har oppdaget en feil med lommeboken din. Du må gjenopprette sikkerhetskopien av lommeboken din før det kan foretas en transaksjon.</translation>
 <translation id="7797604753681168055">Gjenopprett nå!</translation>
 <translation id="1184075897575325927">Beklager, men det ser ut til at dette stipendet allerede er gjort krav på.</translation>
+<translation id="7180611975245234373">Last inn på nytt</translation>
+<translation id="839736845446313156">Registrer</translation>
+<translation id="583281660410589416">Ukjent</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Aksepter</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave er et registrert varemerke for Brave Software. Nettstednavn kan være varemerker eller registrerte varemerker for nettstedseieren.</translation>
@@ -315,7 +318,7 @@ dag i hver måned.</translation>
 <translation id="1555452132857939218">fra denne synkroniseringskjeden</translation>
 <translation id="610118613261910287">Vis kodeord</translation>
 <translation id="8588535459744752615">Leter etter enhet</translation>
-<translation id="391177677159359824">Synk (beta)</translation>
+<translation id="6406506848690869874">Synkroniser</translation>
 <translation id="28332161031213248">Enhetslisten under inneholder alle enhetene i synkroniseringskjeden. Hver enhet kan administreres fra en hvilken som helst annen enhet.</translation>
 <translation id="8153617760825732120">navn på enhet</translation>
 <translation id="4241512165288542484">(Denne enheten)</translation>
@@ -328,7 +331,7 @@ dag i hver måned.</translation>
 <translation id="5591129654353352557">Lagret nettsideinnstillinger</translation>
 <translation id="7859704718976024901">Nettleserlogg</translation>
 <translation id="2339730291919608488">Forlat synkroniseringskjede</translation>
-<translation id="4797449295451979552">Synk (beta) Oppsett</translation>
+<translation id="4332558599726753990">Synkroniseringsoppsett</translation>
 <translation id="298546024891487702">For å begynne må du ha Brave installert på alle enhetene du planlegger å synkronisere. Du sammenkjeder dem ved å starte en synkroniseringskjede som brukes til å knytte alle enhetene dine sikkert sammen.</translation>
 <translation id="6200528822592747640">Start en ny synkroniseringskjede</translation>
 <translation id="5184726904895809379">Jeg har en synkroniseringskode</translation>
@@ -360,8 +363,6 @@ dag i hver måned.</translation>
 <translation id="1736420071277903564">Datamaskin</translation>
 <translation id="1258250624898033822">Ugyldig synkroniseringskode.</translation>
 <translation id="3259723213051400722">Prøv på nytt.</translation>
-<translation id="3779810277399252432">Ingen Internett-tilkobling.</translation>
-<translation id="4380604249778320975">Prøv på nytt senere når tilkoblingen din er tilgjengelig.</translation>
 <translation id="5257281382608458806">Krever enhetsnavn.</translation>
 <translation id="8349682220522608879">Legg til en synkroniseringskode</translation>
 <translation id="1468095392829989299">Fikk ikke kontakt med Sync-servere.</translation>

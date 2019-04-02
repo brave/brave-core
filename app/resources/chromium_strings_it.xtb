@@ -104,6 +104,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="8848045066928358658">Per rendere Brave più sicuro, abbiamo disattivato la seguente estensione non presente nel <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> che potrebbe essere stata aggiunta a tua insaputa.</translation>
 <translation id="8148611988012584308">Personalizza e controlla Brave</translation>
 <translation id="5849446944780602366">È disponibile un nuovo aggiornamento.</translation>
+<translation id="6315734375101223238">Personalizza e controlla Brave. C'è qualcosa che richiede la tua attenzione. Fai clic per avere informazioni dettagliate.</translation>
 <translation id="9071554113102421877">&amp;Apri in Brave</translation>
 <translation id="2176825726964012531">Informazioni su &amp;Brave</translation>
 <translation id="5450493308072741203">Aggiorna &amp;Brave</translation>
@@ -128,6 +129,7 @@ Se esegui comunque l'accesso, le informazioni di Brave come Preferiti, cronologi
 <translation id="1853997773668795891">Collegare i tuoi dati Brave a questo account?</translation>
 <translation id="1326766910007115955">Stai per accedere con un account gestito e per dare al relativo amministratore il controllo del tuo profilo Brave. I tuoi dati di Brave, come app, Preferiti, cronologia, password e altre impostazioni, verranno collegati definitivamente a <ph name="USER_NAME"/>. Potrai eliminare questi dati tramite la Dashboard di Brave Software Account, ma non potrai associare questi dati a un altro account. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Stai per accedere con un account gestito e per dare al relativo amministratore il controllo del tuo profilo Brave. I tuoi dati di Brave, come app, Preferiti, cronologia, password e altre impostazioni, verranno collegati definitivamente a <ph name="USER_NAME"/>. Potrai eliminare questi dati tramite la Dashboard di Brave Software Account, ma non potrai associare questi dati a un altro account. Se preferisci puoi creare un nuovo profilo per mantenere separati i dati di Brave esistenti. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">L'amministratore di sistema ha configurato Brave per l'apertura di un browser alternativo per accedere a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656">L'indirizzo <ph name="USER_EMAIL_ADDRESS"/> utilizzava in precedenza Brave</translation>
 <translation id="1384923383737428730">È stato rilevato software dannoso sul tuo computer. Brave può rimuoverlo, ripristinare le tue impostazioni e disattivare le estensioni per ristabilire il normale funzionamento del browser.</translation>
 <translation id="8919921662052966648">Impossibile sincronizzare i dati in Brave. Aggiorna la passphrase di sincronizzazione.</translation>
@@ -179,7 +181,6 @@ Per ulteriori informazioni, controlla l'email all'indirizzo <ph name="ACCOUNT_EM
 <translation id="3599046180970731601">Brave Nightly (mDNS-In)</translation>
 <translation id="7881806463410697784">Brave Dev (mDNS-In)</translation>
 <translation id="1912973375560256099">Regola inbound per consentire il traffico mDNS in Brave.</translation>
-<translation id="3795403186582265456">Brave è in grado di riconoscere le immagini e il testo presente in un'immagine inviando immagini delle pagine ai server di Brave Software per permetterti di comprendere meglio i contenuti delle pagine.</translation>
 <translation id="7276297358157391541">Brave può offrire una funzione di controllo ortografico migliore inviando il testo digitato nel browser ai server di Brave Software. Puoi, così, usufruire della stessa tecnologia di controllo ortografico utilizzata dalla Ricerca Brave Software.</translation>
 <translation id="1807774211756215222">Apri link in una nuova &amp;scheda di Brave</translation>
 <translation id="4624945300945265642">Apri link in una finestra di navigazione in inco&amp;gnito di Brave</translation>
@@ -196,7 +197,6 @@ Per ulteriori informazioni, controlla l'email all'indirizzo <ph name="ACCOUNT_EM
 <translation id="5173820533850252773">Brave non è aggiornato</translation>
 <translation id="6389268239133412586">Impossibile aggiornare Brave</translation>
 <translation id="7963515534397191222">Non è stato possibile aggiornare Brave alla versione più recente, quindi non potrai utilizzare le nuove funzioni e gli aggiornamenti di sicurezza.</translation>
-<translation id="3472158705945346956">Il gestore deve rimuoverti e aggiungerti di nuovo a Brave.</translation>
 <translation id="1705567146636171298">Aggiorna Brave</translation>
 <translation id="3598551856834560515">Aggiorna Brave per avviare la sincronizzazione</translation>
 <translation id="4050175100176540509">Nell'ultima versione sono stati apportati miglioramenti rilevanti in materia di sicurezza e sono state aggiunte nuove funzioni.</translation>
@@ -275,9 +275,9 @@ Per ulteriori informazioni, controlla l'email all'indirizzo <ph name="ACCOUNT_EM
 <translation id="8372880274820509128">Per maggiore sicurezza, Brave cripterà i tuoi dati.</translation>
 <translation id="7445061995866044926">Uscire da Brave?</translation>
 <translation id="7453070689008684791">Brave accederà al tuo Drive per inserire suggerimenti nella barra degli indirizzi</translation>
-<translation id="7713466009760073734">Brave OS è visualizzato in questa lingua</translation>
+<translation id="9221712274065451529">Questa lingua è utilizzata per mostrare l'UI di Brave OS</translation>
 <translation id="3518788198614984730">Visualizza Brave OS in questa lingua</translation>
-<translation id="8258976055610040706">Brave è visualizzato in questa lingua</translation>
+<translation id="5757460455745382269">Questa lingua è utilizzata per la UI di Brave</translation>
 <translation id="2335583906071111058">Visualizza Brave in questa lingua</translation>
 <translation id="8926637909431618259">Continua a eseguire applicazioni in background dopo la chiusura di Brave</translation>
 <translation id="6056473803837713617">Contribuisci a migliorare Brave indicando le <ph name="BEGIN_LINK"/>impostazioni attuali<ph name="END_LINK"/></translation>

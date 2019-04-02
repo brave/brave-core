@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/permissions/permission_manager.cc b/chrome/browser/permissions/permission_manager.cc
-index c086144beda1906d34f828dae4afdb516ece0283..7cf09fc391fc70131f919204bfebd3d2ff4a85f0 100644
+index 7c41959fe6acb8aded0db703e0327c2251c39fe4..f6e6c9e9482a56ac2e3b12ce2609ca2e217e407e 100644
 --- a/chrome/browser/permissions/permission_manager.cc
 +++ b/chrome/browser/permissions/permission_manager.cc
-@@ -86,7 +86,7 @@ PermissionStatus ContentSettingToPermissionStatus(ContentSetting setting) {
+@@ -87,7 +87,7 @@ PermissionStatus ContentSettingToPermissionStatus(ContentSetting setting) {
  }
  
  // Helper method to convert PermissionType to ContentSettingType.
@@ -11,7 +11,7 @@ index c086144beda1906d34f828dae4afdb516ece0283..7cf09fc391fc70131f919204bfebd3d2
    switch (permission) {
      case PermissionType::MIDI:
        return CONTENT_SETTINGS_TYPE_MIDI;
-@@ -128,6 +128,7 @@ ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
+@@ -129,6 +129,7 @@ ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
      case PermissionType::IDLE_DETECTION:
        return CONTENT_SETTINGS_TYPE_IDLE_DETECTION;
      case PermissionType::NUM:

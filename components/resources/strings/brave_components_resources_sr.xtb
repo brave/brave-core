@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Otkrili smo da nešto nije u redu sa vašim novčanikom. Morate osposobiti rezervni novčanik pre obrade bilo kakve transakcije.</translation>
 <translation id="7797604753681168055">Osposobi novčanik odmah!</translation>
 <translation id="1184075897575325927">Izvinite, izgleda da je ovo odobrenje već zatraženo.</translation>
+<translation id="7180611975245234373">Освежи</translation>
+<translation id="839736845446313156">Региструјте се</translation>
+<translation id="583281660410589416">Непознато</translation>
 <translation id="5094577350232361255">o</translation>
 <translation id="4918086044614829423">Прихвати</translation>
 <translation id="6832986780040139899">©2016–2018 Brejv softver. Brejv je registrovani zaštitni znak Brejv softvera. Nazivi lokacija mogu biti zaštićeni znakovi ili registrovani zaštićeni znakovi vlasnika sajta.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">iz ovog lanca sinhronizacije</translation>
 <translation id="610118613261910287">Vidi reči šifre</translation>
 <translation id="8588535459744752615">Traži se uređaj</translation>
-<translation id="391177677159359824">Sinhronizacija (beta)</translation>
+<translation id="6406506848690869874">Sinhronizuj</translation>
 <translation id="28332161031213248">Donja lista uređaja uključuje sve uređaje u vašem lancu sinhronizacije. Svakim uređajem se može upravljati sa bilo kog drugog uređaja.</translation>
 <translation id="8153617760825732120">naziv uređaja</translation>
 <translation id="4241512165288542484">(Ovaj uređaj)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">Podešavanja za sačuvane sajtove</translation>
 <translation id="7859704718976024901">Istorija pregledanja</translation>
 <translation id="2339730291919608488">Napusti lanac sinhronizacije</translation>
-<translation id="4797449295451979552">Sinhronizuj (beta) postavku</translation>
+<translation id="4332558599726753990">Konfigurisanje sinhronizacije</translation>
 <translation id="298546024891487702">Da biste započeli, moraćete da instalirate Brave na svim uređajima koje planirate da sinhronizujete. Da biste ih povezali, pokrenite lanac sinhronizacije koji ćete koristiti da bezbedno povežete sve svoje uređaje zajedno.</translation>
 <translation id="6200528822592747640">Započnite novi lanac sinhronizacije</translation>
 <translation id="5184726904895809379">Imam šifru sinhronizacije</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Računar</translation>
 <translation id="1258250624898033822">Neispravan kod sinhronizacije.</translation>
 <translation id="3259723213051400722">Pokušajte ponovo.</translation>
-<translation id="3779810277399252432">Nema veze sa internetom.</translation>
-<translation id="4380604249778320975">Pokušajte ponovo kada uspostavite vezu.</translation>
 <translation id="5257281382608458806">Neophodan je naziv uređaja.</translation>
 <translation id="8349682220522608879">Dodajte kod sinhronizacije.</translation>
 <translation id="1468095392829989299">Neuspešno povezivanje sa serverima za sinhronizaciju</translation>

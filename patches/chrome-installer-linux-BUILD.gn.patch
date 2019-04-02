@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index cec5121658106e305ef617906e539bfc10811041..fb6d3999a7245cf884fb90763e0c1d4e81b23bae 100644
+index 05e0c5f9f789e140989b16e9a4347b4fd4d11e1f..403bc4300d732211fdbc1fc9fe3f29982666929f 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -27,8 +27,8 @@ declare_args() {
@@ -32,7 +32,7 @@ index cec5121658106e305ef617906e539bfc10811041..fb6d3999a7245cf884fb90763e0c1d4e
    script = "//build/gn_run_binary.py"
    sources = [
      prog_name,
-@@ -220,7 +225,7 @@ branding_dir_100 =
+@@ -221,7 +226,7 @@ branding_dir_100 =
  copy("common_packaging_files") {
    visibility = [ ":*" ]
    sources = [
@@ -41,7 +41,7 @@ index cec5121658106e305ef617906e539bfc10811041..fb6d3999a7245cf884fb90763e0c1d4e
      "common/apt.include",
      "common/default-app-block.template",
      "common/default-app.template",
-@@ -243,8 +248,8 @@ copy("common_packaging_files") {
+@@ -244,8 +249,8 @@ copy("common_packaging_files") {
      ]
    } else {
      sources += [
@@ -52,7 +52,7 @@ index cec5121658106e305ef617906e539bfc10811041..fb6d3999a7245cf884fb90763e0c1d4e
      ]
    }
  
-@@ -354,6 +359,12 @@ group("installer_deps") {
+@@ -355,6 +360,12 @@ group("installer_deps") {
      "//chrome/browser/resources/media/mei_preload:component",
      "//sandbox/linux:chrome_sandbox",
    ]
@@ -65,7 +65,7 @@ index cec5121658106e305ef617906e539bfc10811041..fb6d3999a7245cf884fb90763e0c1d4e
    if (enable_nacl) {
      public_deps += [
        "//components/nacl/loader:nacl_helper",
-@@ -379,6 +390,9 @@ group("installer_deps") {
+@@ -380,6 +391,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -75,7 +75,7 @@ index cec5121658106e305ef617906e539bfc10811041..fb6d3999a7245cf884fb90763e0c1d4e
  
    if (current_cpu == "x86") {
      # The shell scripts use "ia32" instead of "x86".
-@@ -521,3 +535,6 @@ linux_package("beta") {
+@@ -522,3 +536,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }

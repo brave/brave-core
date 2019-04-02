@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Wir haben einen Fehler bei Ihrer Geldbörse festgestellt. Sie müssen Ihre Sicherungsgeldbörse wiederherstellen, bevor Transaktionen weiter verarbeitet werden können.</translation>
 <translation id="7797604753681168055">Jetzt wiederherstellen!</translation>
 <translation id="1184075897575325927">Leider scheint es, dass diese Zuwendung bereits beansprucht wurde.</translation>
+<translation id="7180611975245234373">Aktualisieren</translation>
+<translation id="839736845446313156">Registrieren</translation>
+<translation id="583281660410589416">Unbekannt</translation>
 <translation id="5094577350232361255">über</translation>
 <translation id="4918086044614829423">Annehmen</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave ist ein eingetragenes Warenzeichen von Brave Software. Seitennamen können Marken oder eingetragene Warenzeichen des Seiteninhabers sein.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">aus dieser Sync-Kette</translation>
 <translation id="610118613261910287">Codewörter anzeigen</translation>
 <translation id="8588535459744752615">Gerät wird gesucht</translation>
-<translation id="391177677159359824">Sync (Beta)</translation>
+<translation id="6406506848690869874">Sync</translation>
 <translation id="28332161031213248">Die nachfolgende Geräteliste beinhaltet alle Geräte in Ihrer Synchronisierungskette. Jedes Gerät kann von jedem anderen Gerät aus verwaltet werden.</translation>
 <translation id="8153617760825732120">Gerätename</translation>
 <translation id="4241512165288542484">(dieses Gerät)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">Seiteneinstellungen gespeichert</translation>
 <translation id="7859704718976024901">Browserverlauf</translation>
 <translation id="2339730291919608488">Sync-Kette verlassen</translation>
-<translation id="4797449295451979552">Sync (Beta)-Einrichtung</translation>
+<translation id="4332558599726753990">Sync-Einrichtung</translation>
 <translation id="298546024891487702">Um zu beginnen, müssen Sie Brave auf allen Geräten installiert haben, die Sie zu synchronisieren beabsichtigen. Um sie alle zu verketten, beginnen Sie eine Synchronisierungskette, die Sie verwenden, um alle Ihre Geräte auf sichere Weise miteinander zu verknüpfen.</translation>
 <translation id="6200528822592747640">Eine neue Synchronisierungskette beginnen</translation>
 <translation id="5184726904895809379">Ich habe einen Synchronisierungscode</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Computer</translation>
 <translation id="1258250624898033822">Ungültiger Sync-Code.</translation>
 <translation id="3259723213051400722">Bitte versuchen Sie es erneut.</translation>
-<translation id="3779810277399252432">Keine Internetverbindung.</translation>
-<translation id="4380604249778320975">Bitte versuchen Sie es erneut, wenn eine Verbindung besteht.</translation>
 <translation id="5257281382608458806">Gerätename ist erforderlich.</translation>
 <translation id="8349682220522608879">Bitte fügen Sie einen Sync-Code hinzu.</translation>
 <translation id="1468095392829989299">Keine Verbindung zu den Sync-Servern</translation>
