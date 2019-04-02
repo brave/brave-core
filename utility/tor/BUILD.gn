@@ -1,5 +1,3 @@
-import("//services/service_manager/public/service_manifest.gni")
-
 source_set("tor") {
   sources = [
     "tor_launcher_impl.cc",
@@ -14,9 +12,4 @@ source_set("tor") {
     "//brave/common/tor:tor_mojom_bindings",
     "//services/service_manager",
   ]
-}
-
-service_manifest("tor_launcher_manifest") {
-  name = "tor_launcher"
-  source = "tor_launcher_manifest.json"
 }

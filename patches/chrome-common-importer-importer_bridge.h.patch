@@ -1,5 +1,5 @@
 diff --git a/chrome/common/importer/importer_bridge.h b/chrome/common/importer/importer_bridge.h
-index b4250c91d1b83ea920b3de9cd6b1a7929b30ffc5..c040145ad980af35228fd9e70e49093be85a1e3f 100644
+index b4250c91d1b83ea920b3de9cd6b1a7929b30ffc5..a1b4d74fd1cb2d0b2125b2f4c3bc4dfbe89c291d 100644
 --- a/chrome/common/importer/importer_bridge.h
 +++ b/chrome/common/importer/importer_bridge.h
 @@ -58,6 +58,24 @@ class ImporterBridge : public base::RefCountedThreadSafe<ImporterBridge> {
@@ -7,22 +7,22 @@ index b4250c91d1b83ea920b3de9cd6b1a7929b30ffc5..c040145ad980af35228fd9e70e49093b
        const std::vector<ImporterAutofillFormDataEntry>& entries) = 0;
  
 +  virtual void SetCookies(
-+      const std::vector<net::CanonicalCookie>& cookies) {};
++      const std::vector<net::CanonicalCookie>& cookies) {}
 +
 +  virtual void UpdateStats(
-+      const BraveStats& stats) {};
++      const BraveStats& stats) {}
 +
 +  virtual void UpdateLedger(
-+      const BraveLedger& ledger) {};
++      const BraveLedger& ledger) {}
 +
 +  virtual void UpdateReferral(
-+      const BraveReferral& referral) {};
++      const BraveReferral& referral) {}
 +
 +  virtual void UpdateWindows(
-+      const ImportedWindowState& windowState) {};
++      const ImportedWindowState& windowState) {}
 +
 +  virtual void UpdateSettings(
-+      const SessionStoreSettings& settings) {};
++      const SessionStoreSettings& settings) {}
 +
    // Notifies the coordinator that the import operation has begun.
    virtual void NotifyStarted() = 0;

@@ -3,19 +3,19 @@
 <translationbundle lang="id">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Pemblokir Iklan Brave</translation>
-<translation id="6406506848690869874">Sinkronkan</translation>
+<translation id="6406506848690869874">Sync</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") tidak diizinkan di Brave.</translation>
 <translation id="7450557937477381864">Tutup Chrome</translation>
 <translation id="7008934821596358692">Untuk menyelesaikan impor, tutup semua jendela Chrome.</translation>
 <translation id="5735465527556462863">Tutup Brave (lama)</translation>
 <translation id="7737066986958447692">Untuk menyelesaikan impor, tutup semua jendela Brave (lama)</translation>
-<translation id="6447842834002726250">Cookie</translation>
+<translation id="6447842834002726250">Kuki</translation>
 <translation id="4983925687993168579">Statistik</translation>
-<translation id="6165477144235978006">Pembayaran Brave</translation>
-<translation id="3489524616427966890">Buka jendela dan tab</translation>
-<translation id="9173846700806833701">Widevine tidak terpasang</translation>
-<translation id="2433569048491784801">Widevine tidak terpasang.</translation>
+<translation id="6165477144235978006">Brave Payments</translation>
+<translation id="3489524616427966890">Jendela dan tab terbuka</translation>
 <translation id="3699882589215410581">Pasang dan jalankan Widevine</translation>
+<translation id="8053096063396012732">Pasang Widevine</translation>
+<translation id="4840334696217618631">Mulai ulang peramban untuk mengaktifkan Widevine</translation>
 <translation id="8410111618231938546">Google Widevine adalah sepotong kode Digital Rights Management (DRM) yang tidak kami miliki dan tidak bisa kami periksa di Brave Software. Kode Google Widevine dimuat dari server Google, bukan dari server kami. Kode ini hanya dimuat jika Anda mengaktifkan pilihan ini. Kami tidak menyarankan penggunaan DRM, tetapi kami menghormati pilihan pengguna dan mengakui bahwa beberapa pengguna Brave ingin menggunakan layanan yang memerlukannya.
 
 Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Widevine. Anda setuju bahwa Brave tidak bertanggung jawab untuk setiap kerusakan atau kerugian sehubungan dengan penggunaan Google Widevine.</translation>
@@ -31,6 +31,8 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="7543906827780734027">Brave belum meninjau ekstensi ini, bisa jadi berbahaya. Tetap tambahkan"<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Warna Brave</translation>
 <translation id="5341901626640816374">Gunakan bilah lokasi yang lebar</translation>
+<translation id="6123134130710658846">Sembunyikan tombol Brave Rewards</translation>
+<translation id="7635711399568194460">Sembunyikan tombol Brave Rewards di bilah lokasi saat Brave Rewards tidak diaktifkan.</translation>
 <translation id="7965178729203412357">Identitas Tor Baru</translation>
 <translation id="8784924142044142231">Keluar dari Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -45,11 +47,16 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="2515126961943087659">Layanan Iklan Bat</translation>
 <translation id="7924918279836988121">Layanan Buku Besar BAT</translation>
 <translation id="7372129767729198111">Perisai Brave baku</translation>
+<translation id="6752287096897220686">Tombol Sosial dan Info Masuk</translation>
 <translation id="8029018702721078742">Kontrol Iklan</translation>
 <translation id="3544462288910360084">Kontrol Kuki</translation>
 <translation id="8919235146866304148">Perlindungan sidik jari</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Pemblokiran skrip</translation>
+<translation id="7498695072878479744">Izinkan tombol masuk Google pada situs pihak ketiga</translation>
+<translation id="863171915776379000">Izinkan tombol masuk Facebook dan kiriman tersemat</translation>
+<translation id="5165042248369837294">Izinkan tweet tersemat Twitter</translation>
+<translation id="1160990956439588593">Izinkan tersemat LinkedIn</translation>
 <translation id="6067014455220527258">Blokir iklan</translation>
 <translation id="6985711843506827936">Izinkan iklan dan pelacakan</translation>
 <translation id="6132506775968708399">Blokir kuki pihak ke-3</translation>
@@ -65,10 +72,16 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="5825943197137337319">Hanya antarmuka publik baku</translation>
 <translation id="1689062823386843231">Nonaktifkan UDP yang tidak di-proxy</translation>
 <translation id="6645631466045614531">Akses Sinkronisasi via</translation>
+<translation id="1807246157184219062">Terang</translation>
+<translation id="2414886740292270097">Gelap</translation>
+<translation id="1360441190790440400">Sama seperti Linux</translation>
+<translation id="1336940801687497203">Sama seperti Windows</translation>
+<translation id="5515614985852176310">Sama seperti macOS</translation>
 <translation id="6786747875388722282">Ekstensi</translation>
 <translation id="2896916411183256228">Menggunakan WebTorrent untuk menampilkan torrent langsung di peramban. Mendukung file torrent dan tautan magnet.</translation>
 <translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mengaktifkan berbagi layar dan fitur lainnya di peramban.</translation>
 <translation id="6916590542764765824">Kelola Ekstensi</translation>
 <translation id="4928988318462976765">Toko Ekstensi Web</translation>
 <translation id="9181207987584064303">Lihat di Toko Ekstensi Web</translation>
+<translation id="4846154056248462491">Saat keluar</translation>
 </translationbundle>

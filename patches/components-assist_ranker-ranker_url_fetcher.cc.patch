@@ -1,8 +1,8 @@
 diff --git a/components/assist_ranker/ranker_url_fetcher.cc b/components/assist_ranker/ranker_url_fetcher.cc
-index 8d0f709499b5faf070f32dabef3d70f937751a86..92d14d11eaf347aa1029affcc2aeae5c8e65bac7 100644
+index 1bc28ee49583590caad4585715e2637d514716c3..32233f43c6a7ced84f748c30dc2f94c80ed473a9 100644
 --- a/components/assist_ranker/ranker_url_fetcher.cc
 +++ b/components/assist_ranker/ranker_url_fetcher.cc
-@@ -31,6 +31,7 @@ bool RankerURLFetcher::Request(
+@@ -32,6 +32,7 @@ bool RankerURLFetcher::Request(
      const GURL& url,
      RankerURLFetcher::Callback callback,
      network::mojom::URLLoaderFactory* url_loader_factory) {

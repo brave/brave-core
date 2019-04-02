@@ -679,6 +679,13 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
         </message>
       </if>
 
+      <!-- about:browser-switch strings -->
+      <if expr="is_win or is_macosx or (is_linux and not is_chromeos)">
+        <message name="IDS_ABOUT_BROWSER_SWITCH_DESCRIPTION" desc="Description shown while waiting for an alternative browser to open">
+          Your system administrator has configured Brave to open an alternative browser to access <ph name="TARGET_URL_HOSTNAME">$1<ex>example.com</ex></ph>.
+        </message>
+      </if>
+
       <!-- Signin Email Confirmation tab modal dialog -->
       <if expr="not chromeos">
         <message name="IDS_SIGNIN_EMAIL_CONFIRMATION_TITLE" desc="Title of the signin email confirmation tab modal dialog.">
@@ -899,7 +906,10 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
 
       <if expr="not is_android">
         <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_BUBBLE_TEXT" desc="The text of a bubble that confirms users allows integrating the accessibility labels service of Brave to Brave.">
-          Brave can recognize images and text in an image by sending page images to Brave servers, allowing you to better understand page content.
+          If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave. You can turn this off in settings at any time.
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_BUBBLE_TEXT_ONCE" desc="The text of a bubble that confirms users allows integrating the accessibility labels service of Brave to Brave just once.">
+          If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.
         </message>
         <message name="IDS_CONTENT_CONTEXT_SPELLING_BUBBLE_TEXT" desc="The text of a bubble that confirms users allows integrating the spelling service of Brave to Brave.">
           Brave can provide smarter spell-checking by sending what you type in the browser to Brave servers, allowing you to use the same spell-checking technology used by Brave search.
@@ -974,9 +984,6 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
       </message>
 
       <!-- User menu errors -->
-      <message name="IDS_SYNC_ERROR_USER_MENU_SUPERVISED_SIGNIN_MESSAGE" desc="Message of the out-of-date signin token error for supervised users in the header of desktop user menu.">
-        Your manager must remove and add you back to Brave.
-      </message>
       <message name="IDS_SYNC_ERROR_USER_MENU_UPGRADE_MESSAGE" desc="Message of the out-of-date Brave client error in the header of desktop user menu.">
         Brave is out of date
       </message>

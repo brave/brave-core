@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Tumegundua kwamba kuna kitu hakiko sawa kwenye waleti yako. Unapaswa kurejesha waleti yako ya mbadala kabla ya miamala yoyote haijachakatwa.</translation>
 <translation id="7797604753681168055">Rejesha sasa!</translation>
 <translation id="1184075897575325927">Samahani, inaonekana ruzuku hii imeshadaiwa tayari.</translation>
+<translation id="7180611975245234373">Onyesha upya</translation>
+<translation id="839736845446313156">Sajili</translation>
+<translation id="583281660410589416">Haijulikani</translation>
 <translation id="5094577350232361255">kuhusu</translation>
 <translation id="4918086044614829423">Kubali</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave ni alama ya biashara iliyosajiliwa ya Brave Software. Majina ya tovuti yanaweza kuwa alama za biashara au alama za biashara zilizosajiliwa za mmiliki wa tovuti.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">kutoka katika mnyororo huu wa kuoanisha</translation>
 <translation id="610118613261910287">Tazama Maneno ya Msimbo</translation>
 <translation id="8588535459744752615">Inatafuta kifaa</translation>
-<translation id="391177677159359824">Oanisha (beta)</translation>
+<translation id="6406506848690869874">Oanisha</translation>
 <translation id="28332161031213248">Orodha ya vifaa hapa chini hujumuisha vifaa vyote katika mnyororo wako wa kuoanisha. Kila kifaa kinaweza kusimamiwa kutoka katika kifaa kingine chochote.</translation>
 <translation id="8153617760825732120">jina la kifaa</translation>
 <translation id="4241512165288542484">(Kifaa Hiki)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">Mipangilio ya Tovuti Zilizohifadhiwa</translation>
 <translation id="7859704718976024901">Historia ya Kuvinjari</translation>
 <translation id="2339730291919608488">Ondoka katika Mnyororo wa Kuoanisha</translation>
-<translation id="4797449295451979552">Mipangilio ya Kuoanisha (beta)</translation>
+<translation id="4332558599726753990">Mipangilio ya Kuoanisha</translation>
 <translation id="298546024891487702">Ili kuanza, utahitaji kusanidi Brave katika vifaa vyote unavyopanga kuoanisha. Kuviunganisha pamoja, anzisha mnyororo wa kuaoanisha, ambao utautumia kuunganisha vifaa vyako vyote kwa pamoja.</translation>
 <translation id="6200528822592747640">Anzisha Mnyororo Mpya wa Kuoanisha</translation>
 <translation id="5184726904895809379">Nina Msimbo wa Kuoanisha</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Kompyuta</translation>
 <translation id="1258250624898033822">Msimbo wa kuoanisha ni batili.</translation>
 <translation id="3259723213051400722">Tafadhali jaribu tena.</translation>
-<translation id="3779810277399252432">Hakuna muunganisho wa Intaneti.</translation>
-<translation id="4380604249778320975">Tafadhali jaribu tena muunganisho wako utakapokuwa umerejea.</translation>
 <translation id="5257281382608458806">Jina la kifaa linatakiwa.</translation>
 <translation id="8349682220522608879">Tafadhali ongeza msimbo wa kuoanisha.</translation>
 <translation id="1468095392829989299">Haikuweza kuwasiliana na seva za Kuoanisha</translation>

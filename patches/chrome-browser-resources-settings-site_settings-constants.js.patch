@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings/constants.js b/chrome/browser/resources/settings/site_settings/constants.js
-index c8f59985ca1184d9396902d2153201148c69ff16..b3d41d878fdc942a00422df825f28401eb86a11f 100644
+index de901e4a552bd900012218aea0f26baa515265fc..5d605870996fc0cbe3182a3a05a7c92aafe068e0 100644
 --- a/chrome/browser/resources/settings/site_settings/constants.js
 +++ b/chrome/browser/resources/settings/site_settings/constants.js
 @@ -34,6 +34,7 @@ settings.ContentSettingsTypes = {

@@ -103,6 +103,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8848045066928358658">Brave Software에서는 Brave의 보안을 강화하기 위해 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>에 표시되지 않고 사용자가 모르게 추가되었을 수 있는 다음 확장 프로그램의 사용을 중지했습니다.</translation>
 <translation id="8148611988012584308">Brave 맞춤설정 및 제어</translation>
 <translation id="5849446944780602366">Brave을 맞춤설정하고 제어하세요. 업데이트가 출시되었습니다.</translation>
+<translation id="6315734375101223238">Brave을 맞춤설정 및 제어합니다. 확인이 필요한 항목이 있습니다. 클릭하여 세부정보를 보세요.</translation>
 <translation id="9071554113102421877">&amp;Brave에서 열기</translation>
 <translation id="2176825726964012531">Brave 정보</translation>
 <translation id="5450493308072741203">Brave 업데이트</translation>
@@ -127,6 +128,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="1853997773668795891">Brave 데이터를 이 계정에 연결하시겠습니까?</translation>
 <translation id="1326766910007115955">관리 계정으로 로그인하고 Brave 프로필에 대한 관리자 제어권을 부여하려고 합니다. 앱, 북마크, 방문 기록, 비밀번호 및 기타 설정 등 Brave 데이터가 <ph name="USER_NAME"/> 계정에 영구적으로 연결됩니다. 이후 이 데이터를 Brave Software 계정 대시보드에서 삭제할 수는 있지만 다른 계정에 연결할 수는 없습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">관리 계정으로 로그인하고 Brave 프로필에 대한 관리자 제어권을 부여하려고 합니다. 앱, 북마크, 방문 기록, 비밀번호 및 기타 설정 등 Brave 데이터가 <ph name="USER_NAME"/> 계정에 영구적으로 연결됩니다. 이후 이 데이터를 Brave Software 계정 대시보드에서 삭제할 수는 있지만 다른 계정에 연결할 수는 없습니다. 기존 Brave 데이터를 유지하려면 새 프로필을 만드는 방법이 있습니다. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">시스템 관리자가 <ph name="TARGET_URL_HOSTNAME"/> 액세스를 위해 대체 브라우저를 열도록 Brave을 구성했습니다.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/>에서 이전에 Brave을 사용한 적이 있음</translation>
 <translation id="1384923383737428730">컴퓨터에 유해한 소프트웨어가 있습니다. Brave에서 유해한 소프트웨어를 삭제하고, 설정을 복원하고, 확장 프로그램을 사용 중지하여 브라우저가 다시 정상적으로 작동하도록 할 수 있습니다.</translation>
 <translation id="8919921662052966648">Brave에서 데이터를 동기화하지 못했습니다. 동기화 암호를 업데이트하시기 바랍니다.</translation>
@@ -175,7 +177,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="2871190378186459992">Brave에 유용한 앱, 게임, 확장 프로그램, 테마를 찾아보세요.</translation>
 <translation id="3350544518197210895">Brave(mDNS-In)</translation>
 <translation id="1912973375560256099">Brave이 mDNS 트래픽을 허용하는 인바운드 규칙입니다.</translation>
-<translation id="3795403186582265456">Brave은 페이지 이미지를 Brave Software 서버에 전송하여 이미지 및 이미지에 표시된 텍스트를 인식할 수 있습니다. 이는 사용자가 페이지 콘텐츠를 더욱 효과적으로 이해하는 데 도움이 됩니다.</translation>
 <translation id="7276297358157391541">Brave에서 제공하는 더욱 지능적인 맞춤법 검사 기능은 사용자가 브라우저에 입력한 내용을 Brave Software 서버에 보내는 방식을 사용하므로 사용자가 Brave Software 검색에서 사용하는 것과 동일한 맞춤법 검사 기술을 사용할 수 있습니다.</translation>
 <translation id="1807774211756215222">새 Brave 탭에서 링크 열기(&amp;T)</translation>
 <translation id="4624945300945265642">Brave 시크릿 창에서 링크 열기(&amp;G)</translation>
@@ -192,7 +193,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="5173820533850252773">Brave이 이전 버전임</translation>
 <translation id="6389268239133412586">Brave을 업데이트하지 못함</translation>
 <translation id="7963515534397191222">Brave을 최신 버전으로 업데이트하지 못했기 때문에 새로운 기능과 보안 수정 사항이 적용되지 않았습니다.</translation>
-<translation id="3472158705945346956">관리자가 나를 삭제한 후 다시 Brave에 추가해야 합니다.</translation>
 <translation id="1705567146636171298">Brave 업데이트</translation>
 <translation id="3598551856834560515">동기화를 시작하려면 Brave을 업데이트하세요.</translation>
 <translation id="4050175100176540509">최신 버전에는 중요한 보안 개선사항 및 새로운 기능이 포함되어 있습니다.</translation>
@@ -271,9 +271,9 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8372880274820509128">보안 강화를 위해 Brave에서 사용자 데이터를 암호화합니다.</translation>
 <translation id="7445061995866044926">Brave에서 로그아웃</translation>
 <translation id="7453070689008684791">Brave에서 내 드라이브에 액세스하여 주소 표시줄에 추천 검색어를 표시합니다.</translation>
-<translation id="7713466009760073734">현재 Brave OS에서 사용 중인 언어</translation>
+<translation id="9221712274065451529">Brave OS UI가 이 언어로 표시됩니다.</translation>
 <translation id="3518788198614984730">이 언어로 Brave OS 표시</translation>
-<translation id="8258976055610040706">현재 Brave에서 사용 중인 언어</translation>
+<translation id="5757460455745382269">Brave UI가 이 언어로 표시됩니다.</translation>
 <translation id="2335583906071111058">이 언어로 Brave 표시</translation>
 <translation id="8926637909431618259">Brave 종료 후에도 백그라운드 앱을 계속 실행</translation>
 <translation id="6056473803837713617"><ph name="BEGIN_LINK"/>현재 설정<ph name="END_LINK"/>을 보고하여 Brave 개선에 참여</translation>

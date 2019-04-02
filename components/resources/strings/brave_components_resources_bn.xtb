@@ -126,6 +126,9 @@
 <translation id="570208820610947248">আমরা সনাক্ত করেছি যে আপনার ওয়ালেটের সাথে কোনো সমস্যা হয়েছে। কোনো লেনদেন প্রক্রিয়াকরণের আগে আপনাকে অবশ্যই আপনার ব্যাকআপ ওয়ালেট রিকভার করতে হবে।</translation>
 <translation id="7797604753681168055">এখনই রিকভার করুন!</translation>
 <translation id="1184075897575325927">দুঃখিত, দেখে মনে হচ্ছে এই অনুমোদনটির ইতিমধ্যে দাবি করা হয়েছে।</translation>
+<translation id="7180611975245234373">রিফ্রেশ করুন</translation>
+<translation id="839736845446313156">নিবন্ধ করুন</translation>
+<translation id="583281660410589416">অজানা</translation>
 <translation id="5094577350232361255">সম্বন্ধে</translation>
 <translation id="4918086044614829423">স্বীকার</translation>
 <translation id="6832986780040139899">©2016–2018 Brave সফ্টওয়্যার। Brave হল Brave সফ্টওয়্যারের একটি নিবন্ধিত ট্রেডমার্ক। সাইটের নামগুলি সাইটের মালিকের ট্রেডমার্ক বা নিবন্ধিত ট্রেডমার্ক হতে পারে।</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">এই sync শৃঙ্খল থেকে</translation>
 <translation id="610118613261910287">কোড শব্দগুলি দেখুন</translation>
 <translation id="8588535459744752615">ডিভাইস খোঁজা হচ্ছে</translation>
-<translation id="391177677159359824">সিঙ্ক (বেটা)</translation>
+<translation id="6406506848690869874">সিঙ্ক করুন</translation>
 <translation id="28332161031213248">নীচে দেওয়া ডিভাইসের তালিকাটিতে আপনার sync শৃঙ্খলে থাকা সমস্ত ডিভাইস অন্তর্ভুক্ত রয়েছে। প্রতিটি ডিভাইস অন্য কোনও ডিভাইস থেকে চালনা করা যাবে।</translation>
 <translation id="8153617760825732120">ডিভাইসের</translation>
 <translation id="4241512165288542484">(এই ডিভাইস)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">সংরক্ষিত সাইটের সেটিংস</translation>
 <translation id="7859704718976024901">ব্রাউজিং ইতিহাস</translation>
 <translation id="2339730291919608488">Sync শৃঙ্খল ত্যাগ করুন</translation>
-<translation id="4797449295451979552">সিঙ্ক (বেটা) সেটআপ</translation>
+<translation id="4332558599726753990">সিঙ্ক সেটআপ</translation>
 <translation id="298546024891487702">শুরু করতে আপনি সিঙ্ক করার পরিকল্পনা করেছেন এমন সমস্ত ডিভাইসে আপনাকে Brave ইনস্টল করতে হবে। সেগুলিকে একসাথে শৃঙ্খলিত করতে আপনি আপনার সবকয়টি ডিভাইস নিরাপদে লিঙ্ক করতে যে sync শৃঙ্খলটি ব্যবহার করতে চান সেটি শুরু করুন।</translation>
 <translation id="6200528822592747640">একটি নতুন Sync শৃঙ্খল শুরু করুন</translation>
 <translation id="5184726904895809379">আমার একটি Sync কোড রয়েছে</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">কম্পিউটার</translation>
 <translation id="1258250624898033822">অকার্যকর sync কোড।</translation>
 <translation id="3259723213051400722">অনুগ্রহ করে আবার চেষ্টা করুন|</translation>
-<translation id="3779810277399252432">কোনো ইন্টারনেট সংযোগ নেই।</translation>
-<translation id="4380604249778320975">অনুগ্রহ করে আপনার সংযোগ উপলব্ধ হলে আবার চেষ্টা করুন|</translation>
 <translation id="5257281382608458806">ডিভাইসের নাম প্রয়োজন।</translation>
 <translation id="8349682220522608879">অনুগ্রহ করে একটি sync কোড যোগ করুন।</translation>
 <translation id="1468095392829989299">Sync সার্ভারের সাথে যোগাযোগ করতে পারা যায়নি</translation>

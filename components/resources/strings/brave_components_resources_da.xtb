@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Vi har registreret, at der er noget galt med din tegnebog. Du skal gendanne sikkerhedskopien af din tegnebog, før dine overførsler kan blive behandlet.</translation>
 <translation id="7797604753681168055">Gendan nu!</translation>
 <translation id="1184075897575325927">Beklager, det ser ud til, at dette tilskud allerede er taget.</translation>
+<translation id="7180611975245234373">Opdater</translation>
+<translation id="839736845446313156">Registrer</translation>
+<translation id="583281660410589416">ukendt</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Accepter</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave er et registreret varemærke af Brave Software. Sidenavne kan være varemærker eller registrerede varemærker af sideejeren.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">fra denne synkroniseringskæde</translation>
 <translation id="610118613261910287">Se Kodeord</translation>
 <translation id="8588535459744752615">Leder efter enhed</translation>
-<translation id="391177677159359824">Synkroniser (beta)</translation>
+<translation id="6406506848690869874">Synkroniser</translation>
 <translation id="28332161031213248">Listen over enheder herunder inkluderer alle enheder i din synkroniseringskæde. Hver enhed kan administreres fra alle andre enheder.</translation>
 <translation id="8153617760825732120">enhedens navn</translation>
 <translation id="4241512165288542484">(Denne enhed)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">Gemte sideindstillinger</translation>
 <translation id="7859704718976024901">Browserhistorik</translation>
 <translation id="2339730291919608488">Forlad synkroniseringskæde</translation>
-<translation id="4797449295451979552">Synkroniser (beta) Opsætning</translation>
+<translation id="4332558599726753990">Synkroniseringsopsætning</translation>
 <translation id="298546024891487702">For at begynde skal du have installeret Brave på alle de enheder du planlægger at Synkronisere. For at kæde dem sammen skal du oprette en synkroniseringskæde, som du skal bruge til at forbinde alle dine enheder sikkert.</translation>
 <translation id="6200528822592747640">Start en ny Synkroniseringskæde</translation>
 <translation id="5184726904895809379">Jeg har en Synkroniseringskode</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Computer</translation>
 <translation id="1258250624898033822">Ugyldig synkroniseringskode.</translation>
 <translation id="3259723213051400722">Prøv venligst igen.</translation>
-<translation id="3779810277399252432">Ingen internetforbindelse.</translation>
-<translation id="4380604249778320975">Prøv igen, når din forbindelse er tilgængelig.</translation>
 <translation id="5257281382608458806">Enhedsnavn påkrævet.</translation>
 <translation id="8349682220522608879">Tilføj venligst en synkroniseringskode.</translation>
 <translation id="1468095392829989299">Kunne ikke skabe forbindelse til synkroniseringsservere</translation>

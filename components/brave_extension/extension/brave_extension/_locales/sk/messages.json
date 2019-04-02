@@ -15,10 +15,6 @@
     "message": "dole",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "Zablokovaný celok",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "pre túto stránku",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "Túto stránku si prehliadate bez akéhokoľvek zabezpečenia ochrany súkromia.  ",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "Reklamy a stopovače blokované",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "Items blocked",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "Zablokované okná pop-up",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "Item blocked",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "Obrázky blokované",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "and",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "Blokované súbory cookies pochádzajúce od tretej strany",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "connections upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "Všetky cookies povolené",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "connection upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "Súbory cookies blokované",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "3rd-party trackers blocked",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "Niektoré skripty sú zablokované",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "Connections upgraded to HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "Všetky skrypty povolené",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "Connection upgraded to HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "Zablokované skripty",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "Blokované súbory cookies pochádzajúce od tretej strany",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Súbory cookies blokované",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Všetky cookies povolené",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "Rozpoznávanie zariadenia tretej strany zablokované",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "Rozpoznanie každého zariadenia povolené",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "Rozpoznávanie zariadenia blokované",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "Phishing/malware pokusy blokované",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "Šifrované pripojenia",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "Predvolené nastavenia globálneho štítu",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "Na tejto stránke používame cookies",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "Rozpoznanie každého zariadenia povolené",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "Pokusy o rozpoznanie zariadenia",
@@ -111,49 +103,21 @@
     "message": "Povolené skrypty",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "Povoliť všetky",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "Povoliť",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "Povolené",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "Zablokovať všetko",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Povoliť všetky",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "Blokovať",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "Blokovaný",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "Použiť",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "Použiť raz",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "Použiť až do reštartu",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "Vždy aplikovať",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "Otvoriť",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "Povoliť",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "Zrušiť",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "Vrátiť sa späť",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Použiť raz",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Change global shield defaults",
+    "description": "Message for the button action linking to the settings page"
   }
 }

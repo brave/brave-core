@@ -103,6 +103,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="8848045066928358658">Aby byl prohlížeč Brave bezpečnější, deaktivovali jsme následující rozšíření, které není uvedeno na webu <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> a pravděpodobně bylo přidáno bez vašeho vědomí.</translation>
 <translation id="8148611988012584308">Přizpůsobit a ovládat Brave</translation>
 <translation id="5849446944780602366">Přizpůsobte si prohlížeč Brave a ovládejte jej. Je k dispozici aktualizace.</translation>
+<translation id="6315734375101223238">Přizpůsobte si prohlížeč Brave a ovládejte jej. Něco vyžaduje vaši pozornost – podrobnosti zobrazíte kliknutím.</translation>
 <translation id="9071554113102421877">&amp;Otevřít v prohlížeči Brave</translation>
 <translation id="2176825726964012531">O prohlížeči &amp;Brave</translation>
 <translation id="5450493308072741203">Aktualizovat &amp;Brave</translation>
@@ -127,6 +128,7 @@ Pokud se přesto přihlásíte, budou data prohlížeče Brave (například zál
 <translation id="1853997773668795891">Opravdu chcete propojit údaje prohlížeče Brave s tímto účtem?</translation>
 <translation id="1326766910007115955">Přihlašujete se pomocí spravovaného účtu a poskytujete jeho správci kontrolu nad vaším profilem prohlížeče Brave. Vaše údaje prohlížeče Brave, například aplikace, záložky, historie, hesla a jiná nastavení, budou trvale přidružena k účtu <ph name="USER_NAME"/>. Tyto údaje budete moci smazat pomocí Hlavního panelu v Účtech Brave Software, ale nebudete je moci přidružit k jinému účtu. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Přihlašujete se pomocí spravovaného účtu a poskytujete jeho správci kontrolu nad vaším profilem prohlížeče Brave. Vaše údaje prohlížeče Brave, například aplikace, záložky, historie, hesla a jiná nastavení, budou trvale přidružena k účtu <ph name="USER_NAME"/>. Tyto údaje budete moci smazat pomocí stránky Dashboard služby Účty Brave Software, ale nebudete je moci přidružit k jinému účtu. Pokud chcete uchovat existující údaje prohlížeče Brave odděleně, můžete vytvořit nový profil. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">Administrátor systému nakonfiguroval prohlížeč Brave tak, aby pro přístup k adrese <ph name="TARGET_URL_HOSTNAME"/> otevřel alternativní prohlížeč.</translation>
 <translation id="2591326305549412656">Před vámi prohlížeč Brave používal uživatel <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="1384923383737428730">Máte v počítači škodlivý software. Brave ho může odstranit, obnovit vaše nastavení a zakázat rozšíření, aby prohlížeč opět fungoval jako obvykle.</translation>
 <translation id="8919921662052966648">Prohlížeč Brave vaše data nemohl synchronizovat. Aktualizujte prosím heslovou frázi pro synchronizaci.</translation>
@@ -175,7 +177,8 @@ Další pokyny naleznete v e-mailu ve svém účtu <ph name="ACCOUNT_EMAIL"/>.<
 <translation id="2871190378186459992">Objevte skvělé aplikace, hry, rozšíření a motivy prohlížeče Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Pravidlo příchozího provozu pro prohlížeč Brave, které povolí provoz mDNS.</translation>
-<translation id="3795403186582265456">Brave může rozpoznávat obrázky a text na obrázcích (obrázky za tímto účelem odešle na servery Brave Software), abyste lépe porozuměli obsahu stránky.</translation>
+<translation id="8207657266087451193">Pokud obrázek nemá užitečný popis, Brave se vám jej pokusí poskytnout. Za účelem vytváření popisů jsou obrázky odesílány do Googlu. Tuto funkci můžete kdykoliv vypnout v nastavení.</translation>
+<translation id="5499063270485366718">Pokud obrázek nemá užitečný popis, Brave se vám jej pokusí poskytnout. Za účelem vytváření popisů jsou obrázky odesílány do Googlu.</translation>
 <translation id="7276297358157391541">Brave může poskytovat lepší kontrolu pravopisu tím, že text zadaný do prohlížeče odešle na servery Brave Software. Umožňuje vám tak používat stejnou technologii kontroly pravopisu, jakou používá Vyhledávání Brave Software.</translation>
 <translation id="1807774211756215222">Otevřít odkaz na nové kar&amp;tě prohlížeče Brave</translation>
 <translation id="4624945300945265642">Otevřít odkaz v &amp;anonymním okně prohlížeče Brave</translation>
@@ -192,7 +195,6 @@ Další pokyny naleznete v e-mailu ve svém účtu <ph name="ACCOUNT_EMAIL"/>.<
 <translation id="5173820533850252773">Prohlížeč Brave je zastaralý</translation>
 <translation id="6389268239133412586">Brave nelze aktualizovat</translation>
 <translation id="7963515534397191222">Brave nebylo možné aktualizovat na nejnovější verzi. Nemáte proto k dispozici nové funkce a opravy zabezpečení.</translation>
-<translation id="3472158705945346956">Správce vás musí odebrat a poté vás do prohlížeče Brave znovu přidat.</translation>
 <translation id="1705567146636171298">Aktualizovat Brave</translation>
 <translation id="3598551856834560515">Chcete-li zahájit synchronizaci, aktualizujte Brave</translation>
 <translation id="4050175100176540509">V nejnovější verzi jsou k dispozici důležitá vylepšení zabezpečení a nové funkce.</translation>
@@ -271,9 +273,9 @@ Další pokyny naleznete v e-mailu ve svém účtu <ph name="ACCOUNT_EMAIL"/>.<
 <translation id="8372880274820509128">V zájmu lepšího zabezpečení bude Brave šifrovat vaše data.</translation>
 <translation id="7445061995866044926">Odhlásit se z prohlížeče Brave?</translation>
 <translation id="7453070689008684791">Brave bude za účelem zobrazování návrhů v adresním řádku číst váš obsah na Disku</translation>
-<translation id="7713466009760073734">Brave OS se zobrazuje v tomto jazyce</translation>
+<translation id="9221712274065451529">V tomto jazyce se zobrazuje uživatelské rozhraní systému Brave OS</translation>
 <translation id="3518788198614984730">Zobrazit Brave OS v tomto jazyce</translation>
-<translation id="8258976055610040706">Brave se zobrazuje v tomto jazyce</translation>
+<translation id="5757460455745382269">V tomto jazyce se zobrazuje uživatelské rozhraní prohlížeče Brave</translation>
 <translation id="2335583906071111058">Zobrazit Brave v tomto jazyce</translation>
 <translation id="8926637909431618259">Po ukončení prohlížeče Brave nechat aplikace na pozadí spuštěné</translation>
 <translation id="6056473803837713617">Pomozte s vylepšováním prohlížeče Brave tím, že nahlásíte <ph name="BEGIN_LINK"/>aktuální nastavení<ph name="END_LINK"/></translation>

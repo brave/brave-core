@@ -126,6 +126,9 @@
 <translation id="570208820610947248">ウォレットの問題が検出されました。取引を処理する前にバックアップウォレットを復元する必要があります。</translation>
 <translation id="7797604753681168055">今すぐ復元してください！</translation>
 <translation id="1184075897575325927">申し訳ありません、この助成金はすでに取得されているようです。</translation>
+<translation id="7180611975245234373">更新</translation>
+<translation id="839736845446313156">登録</translation>
+<translation id="583281660410589416">不明</translation>
 <translation id="5094577350232361255">について</translation>
 <translation id="4918086044614829423">承諾</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software。BraveはBrave Softwareの登録商標です。サイトの名称はこのサイト所有者の商標、または登録商標です。</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">この同期チェーンから</translation>
 <translation id="610118613261910287">コードワードを見る</translation>
 <translation id="8588535459744752615">デバイスを探しています</translation>
-<translation id="391177677159359824">同期する（ベータ版）</translation>
+<translation id="6406506848690869874">同期</translation>
 <translation id="28332161031213248">以下のデバイスリストは、あなたの同期チェーンにある全てのデバイスを表示しています。それぞれのデバイスは、他のデバイスから管理することができます。</translation>
 <translation id="8153617760825732120">デバイス名</translation>
 <translation id="4241512165288542484">(このデバイス)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">保存済みのサイト設定</translation>
 <translation id="7859704718976024901">閲覧履歴</translation>
 <translation id="2339730291919608488">同期チェーンから離れる</translation>
-<translation id="4797449295451979552">同期（ベータ版）の設定</translation>
+<translation id="4332558599726753990">同期設定</translation>
 <translation id="298546024891487702">始めるためには、同期予定の全てのデバイスに Brave をインストールする必要があります。それらを一つに繋ぐには、安全にあなたのデバイス全てをリンクさせる、同期チェーンを開始してください。</translation>
 <translation id="6200528822592747640">新たな同期チェーンを開始する</translation>
 <translation id="5184726904895809379">同期コードを持っています</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">コンピューター</translation>
 <translation id="1258250624898033822">同期コードが無効です。</translation>
 <translation id="3259723213051400722">もう一度お試しください。</translation>
-<translation id="3779810277399252432">インターネットに接続されていません。</translation>
-<translation id="4380604249778320975">インターネットに接続してからもう一度お試しください。</translation>
 <translation id="5257281382608458806">デバイス名は必須です。</translation>
 <translation id="8349682220522608879">同期コードを追加してください。</translation>
 <translation id="1468095392829989299">Sync サーバーに接続できませんでした。</translation>

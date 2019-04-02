@@ -106,6 +106,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="8848045066928358658">We hebben de volgende extensie uitgeschakeld die niet wordt vermeld in de <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> en mogelijk zonder je medeweten is toegevoegd. We doen dit om Brave veiliger te maken.</translation>
 <translation id="8148611988012584308">Brave aanpassen en beheren</translation>
 <translation id="5849446944780602366">Brave aanpassen en beheren. Update is beschikbaar</translation>
+<translation id="6315734375101223238">Pas Brave aan en beheer de instellingen. Je aandacht is vereist. Klik voor meer informatie.</translation>
 <translation id="9071554113102421877">&amp;Openen in Brave</translation>
 <translation id="2176825726964012531">Over &amp;Brave</translation>
 <translation id="5450493308072741203">&amp;Brave updaten</translation>
@@ -130,6 +131,7 @@ Als je toch inlogt, worden Brave-gegevens zoals bladwijzers, geschiedenis en and
 <translation id="1853997773668795891">Wil je je Brave-gegevens aan dit account koppelen?</translation>
 <translation id="1326766910007115955">Je logt in op een beheerd account waarmee de eigenaar van dat account beheer krijgt over je Brave-profiel. Je Brave-gegevens zoals je apps, bladwijzers, geschiedenis, wachtwoorden en andere instellingen worden permanent gekoppeld aan <ph name="USER_NAME"/>. Je kunt deze gegevens verwijderen via het Brave Software Accounts Dashboard, maar je kunt deze gegevens niet koppelen aan een ander account.<ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Je logt in op een beheerd account waarmee de eigenaar van dat account beheer krijgt over je Brave-profiel. Je Brave-gegevens zoals je apps, bladwijzers, geschiedenis, wachtwoorden en andere instellingen worden permanent gekoppeld aan <ph name="USER_NAME"/>. Je kunt deze gegevens verwijderen via het Brave Software Accounts Dashboard, maar je kunt deze gegevens niet koppelen aan een ander account. Je kunt een nieuw profiel maken om je bestaande Brave-gegevens apart te houden. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">Je systeembeheerder heeft geconfigureerd dat Brave een alternatieve browser opent voor toegang tot <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> maakte eerder gebruik van Brave</translation>
 <translation id="1384923383737428730">Er staat schadelijke software op je computer. Brave kan deze verwijderen, je instellingen herstellen en extensies uitschakelen, zodat je browser weer normaal werkt.</translation>
 <translation id="8919921662052966648">Brave kan je gegevens niet synchroniseren. Update je synchronisatiewachtwoord.</translation>
@@ -181,7 +183,8 @@ Controleer je e-mail op <ph name="ACCOUNT_EMAIL"/> voor verdere instructies.</tr
 <translation id="3599046180970731601">Brave Nightly (mDNS-In)</translation>
 <translation id="7881806463410697784">Brave Dev (mDNS-In)</translation>
 <translation id="1912973375560256099">Inkomende regel zodat Brave mDNS-verkeer toestaat.</translation>
-<translation id="3795403186582265456">Brave kan afbeeldingen en tekst in een afbeelding herkennen door pagina-afbeeldingen te verzenden naar servers van Brave Software. Zo kun je de paginacontent beter begrijpen.</translation>
+<translation id="8207657266087451193">Als een afbeelding geen nuttige beschrijving bevat, probeert Brave je er een te geven. Afbeeldingen worden naar Brave Software verzonden om beschrijvingen te maken. Je kunt dit op elk gewenst moment uitschakelen in Instellingen.</translation>
+<translation id="5499063270485366718">Als een afbeelding geen nuttige beschrijving bevat, probeert Brave je er een te geven. Afbeeldingen worden naar Brave Software verzonden om beschrijvingen te maken.</translation>
 <translation id="7276297358157391541">Brave kan een betere spellingcontrole leveren door wat je in de browser typt naar Brave Software-servers te verzenden. Hierdoor kun je profiteren van dezelfde technologie voor spellingcontrole die ook voor Brave Software Zoeken wordt gebruikt.</translation>
 <translation id="1807774211756215222">Link openen op een nieuw Brave-&amp;tabblad</translation>
 <translation id="4624945300945265642">Link openen in een Brave-inco&amp;gnitovenster</translation>
@@ -198,7 +201,6 @@ Controleer je e-mail op <ph name="ACCOUNT_EMAIL"/> voor verdere instructies.</tr
 <translation id="5173820533850252773">Brave is verouderd</translation>
 <translation id="6389268239133412586">Kan Brave niet updaten</translation>
 <translation id="7963515534397191222">Brave kan niet worden geüpdatet naar de nieuwste versie, dus je loopt nieuwe functies en beveiligingsoplossingen mis.</translation>
-<translation id="3472158705945346956">Je beheerder moet je uit Brave verwijderen en vervolgens weer toevoegen.</translation>
 <translation id="1705567146636171298">Brave updaten</translation>
 <translation id="3598551856834560515">Brave updaten om de synchronisatie te starten</translation>
 <translation id="4050175100176540509">Er zijn belangrijke beveiligingsverbeteringen en nieuwe functies beschikbaar in de nieuwste versie.</translation>
@@ -277,9 +279,9 @@ Controleer je e-mail op <ph name="ACCOUNT_EMAIL"/> voor verdere instructies.</tr
 <translation id="8372880274820509128">Je gegevens worden voor extra beveiliging door Brave gecodeerd.</translation>
 <translation id="7445061995866044926">Uitloggen bij Brave?</translation>
 <translation id="7453070689008684791">Brave gebruikt de toegang tot je Drive om suggesties te doen in de adresbalk</translation>
-<translation id="7713466009760073734">Brave OS wordt weergegeven in deze taal</translation>
+<translation id="9221712274065451529">Deze taal wordt gebruikt om de Brave OS-UI weer te geven</translation>
 <translation id="3518788198614984730">Brave OS weergeven in deze taal</translation>
-<translation id="8258976055610040706">Brave wordt weergegeven in deze taal</translation>
+<translation id="5757460455745382269">Deze taal wordt gebruikt om de Brave-UI weer te geven</translation>
 <translation id="2335583906071111058">Brave weergeven in deze taal</translation>
 <translation id="8926637909431618259">Achtergrondapps ingeschakeld houden als Brave is gesloten</translation>
 <translation id="6056473803837713617">Help Brave beter te maken door de <ph name="BEGIN_LINK"/>huidige instellingen<ph name="END_LINK"/> te melden</translation>

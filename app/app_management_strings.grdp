@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
+  <message name="IDS_APP_MANAGEMENT_ANDROID_SETTINGS" desc="Label for the open Android settings button on the ARC app permissions page.">
+    Open Android settings
+  </message>
   <message name="IDS_APP_MANAGEMENT_APP_LIST_PREVIEW" desc="A label that summarizes a list of apps by naming up to 3 apps, finishing with 'X more apps' for the rest.">
     {COUNT, plural,
      =0 {None}
@@ -19,6 +22,9 @@
   <message name="IDS_APP_MANAGEMENT_CAMERA" desc="Label for the camera permission toggle.">
     Camera
   </message>
+  <message name="IDS_APP_MANAGEMENT_EXTENSIONS_SETTINGS" desc="Label for the open Extensions settings button on the Brave app permissions page.">
+    Open Extensions settings
+  </message>
   <message name="IDS_APP_MANAGEMENT_LESS_APPS" desc="Label for showing less apps.">
     Show less
   </message>
@@ -30,6 +36,9 @@
   </message>
   <message name="IDS_APP_MANAGEMENT_MORE_APPS" desc="Label for more apps button at bottom of app list card.">
     Show <ph name="NUMBER_OF_MORE_APPS">$1<ex>4</ex></ph> more apps
+  </message>
+  <message name="IDS_APP_MANAGEMENT_NO_RESULTS" desc="Text description of a search that has no results.">
+    No search results found
   </message>
   <message name="IDS_APP_MANAGEMENT_NOTIFICATIONS" desc="Label for notifications section in the app settings page.">
     Notifications

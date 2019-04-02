@@ -3,6 +3,9 @@
 <translationbundle lang="es">
 <translation id="5194812628624740897">Si desvinculas a <ph name="USERNAME"/>, se borrarán tu historial, tus marcadores, tu configuración y otros datos de Brave almacenados en este dispositivo. No obstante, no se borrarán los datos almacenados en tu cuenta de Brave Software y se podrán administrar en el <ph name="GOOGLE_DASHBOARD_LINK"/>Panel de control de Brave Software<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
+<translation id="2069994121511856876">Brave Nightly</translation>
+<translation id="4947625801334180582">Brave Beta</translation>
+<translation id="2566435362010629810">Brave Dev</translation>
 <translation id="6373767849825830651">Brave es un navegador web que ejecuta páginas web y aplicaciones a gran velocidad. Es rápido, estable y fácil de utilizar. Brave te permite navegar en la Web de forma más segura, ya que incluye protección contra software malicioso y phishing.</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logotipo de Brave</translation>
@@ -103,6 +106,7 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="8848045066928358658">Para aumentar la seguridad de Brave, hemos inhabilitado la siguiente extensión que no figura en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> y que puede haberse añadido sin tu conocimiento.</translation>
 <translation id="8148611988012584308">Personaliza y controla Brave</translation>
 <translation id="5849446944780602366">Personaliza y controla Brave. Hay una actualización disponible.</translation>
+<translation id="6315734375101223238">Personaliza y controla Brave. Se requiere tu intervención. Haz clic aquí para obtener más información.</translation>
 <translation id="9071554113102421877">&amp;Abrir en Brave</translation>
 <translation id="2176825726964012531">Información de &amp;Brave</translation>
 <translation id="5450493308072741203">Actualizar &amp;Brave</translation>
@@ -127,6 +131,7 @@ Si decides iniciar sesión de todas formas, se fusionará la información de Bra
 <translation id="1853997773668795891">¿Quieres vincular tus datos de Brave a esta cuenta?</translation>
 <translation id="1326766910007115955">Vas a iniciar sesión con una cuenta gestionada, lo que significa que proporcionarás a su administrador control sobre tu perfil de Brave. Tus datos de Brave como, por ejemplo, tus aplicaciones, tus marcadores, tu historial, tus contraseñas y otras opciones se vincularán de forma permanente a la cuenta <ph name="USER_NAME"/>. Podrás eliminar estos datos a través del Panel de control de cuentas de Brave Software, pero no podrás asociarlos a otra cuenta. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Vas a iniciar sesión con una cuenta gestionada, lo que significa que proporcionarás a su administrador control sobre tu perfil de Brave. Tus datos de Brave como, por ejemplo, tus aplicaciones, tus marcadores, tu historial, tus contraseñas y otras opciones se vincularán de forma permanente a la cuenta <ph name="USER_NAME"/>. Podrás eliminar estos datos a través del Panel de control de cuentas de Brave Software, pero no podrás asociarlos a otra cuenta. De forma opcional, puedes crear un nuevo perfil para mantener separados tus datos de Brave. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">El administrador del sistema ha configurado Brave para que abra otro navegador al acceder a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> usaba Brave anteriormente</translation>
 <translation id="1384923383737428730">Se ha detectado software dañino en tu ordenador. Brave puede eliminarlo, restaurar tu configuración y desactivar las extensiones para que el navegador vuelva a funcionar con normalidad.</translation>
 <translation id="8919921662052966648">Brave no ha podido sincronizar los datos. Actualiza la frase de contraseña de sincronización.</translation>
@@ -175,7 +180,8 @@ Consulta tu correo electrónico (<ph name="ACCOUNT_EMAIL"/>) para obtener más i
 <translation id="2871190378186459992">Descubre aplicaciones, juegos, extensiones y temas increíbles para Brave.</translation>
 <translation id="3350544518197210895">Brave (tráfico mDNS entrante)</translation>
 <translation id="1912973375560256099">Regla entrante para que Brave permita tráfico mDNS.</translation>
-<translation id="3795403186582265456">Brave puede reconocer imágenes y texto en una imagen enviando imágenes de páginas a los servidores de Brave Software, lo que te permitirá entender mejor el contenido de las páginas.</translation>
+<translation id="8207657266087451193">Si una imagen no tiene ninguna descripción útil, Brave intentará proporcionártela. Para crear las descripciones, las imágenes se envían a Brave Software. Puedes desactivar esta opción cuando quieras desde la configuración.</translation>
+<translation id="5499063270485366718">Si una imagen no tiene ninguna descripción útil, Brave intentará proporcionártela. Para crear las descripciones, las imágenes se envían a Brave Software.</translation>
 <translation id="7276297358157391541">Brave puede proporcionar un corrector ortográfico más inteligente si envías el texto que introduces en el navegador a los servidores de Brave Software, lo que te permitirá utilizar la misma tecnología de corrección ortográfica que usa la Búsqueda de Brave Software.</translation>
 <translation id="1807774211756215222">Abrir enlace en una pes&amp;taña nueva de Brave</translation>
 <translation id="4624945300945265642">Abrir enlace en una ventana de incó&amp;gnito de Brave</translation>
@@ -192,7 +198,6 @@ Consulta tu correo electrónico (<ph name="ACCOUNT_EMAIL"/>) para obtener más i
 <translation id="5173820533850252773">Brave no está actualizado</translation>
 <translation id="6389268239133412586">No se puede actualizar Brave</translation>
 <translation id="7963515534397191222">No se ha podido actualizar Brave a la versión más reciente, por lo que no disfrutas de las últimas funciones y correcciones de seguridad.</translation>
-<translation id="3472158705945346956">Tu administrador debe quitarte de Brave y volver a añadirte.</translation>
 <translation id="1705567146636171298">Actualizar Brave</translation>
 <translation id="3598551856834560515">Actualiza Brave para iniciar la sincronización</translation>
 <translation id="4050175100176540509">En la última versión puedes encontrar mejoras de seguridad importantes y nuevas funciones.</translation>
@@ -271,9 +276,9 @@ Consulta tu correo electrónico (<ph name="ACCOUNT_EMAIL"/>) para obtener más i
 <translation id="8372880274820509128">Para mayor seguridad, Brave cifrará tus datos.</translation>
 <translation id="7445061995866044926">¿Cerrar sesión en Brave?</translation>
 <translation id="7453070689008684791">Brave accederá a tu Drive para mostrarte sugerencias en la barra de direcciones</translation>
-<translation id="7713466009760073734">Brave OS se muestra en este idioma</translation>
+<translation id="9221712274065451529">La UI de Brave OS se muestra en este idioma</translation>
 <translation id="3518788198614984730">Mostrar Brave OS en este idioma</translation>
-<translation id="8258976055610040706">Brave se muestra en este idioma</translation>
+<translation id="5757460455745382269">La UI de Brave se muestra en este idioma</translation>
 <translation id="2335583906071111058">Mostrar Brave en este idioma</translation>
 <translation id="8926637909431618259">Seguir ejecutando aplicaciones en segundo plano al cerrar Brave</translation>
 <translation id="6056473803837713617">Genera un informe de la <ph name="BEGIN_LINK"/>configuración actual<ph name="END_LINK"/> para ayudar a mejorar Brave</translation>

@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Esam konstatējuši, ka jūsu makam ir problēma. Jums ir jāatkopj jūsu maka dublējums, lai varētu apstrādāt turpmākus darījumus.</translation>
 <translation id="7797604753681168055">Atkopt tagad!</translation>
 <translation id="1184075897575325927">Piedodiet, bet izskatās, ka šis piešķīrums jau ir izņemts.</translation>
+<translation id="7180611975245234373">Atsvaidzināt</translation>
+<translation id="839736845446313156">Reģistrējiet</translation>
+<translation id="583281660410589416">Nezināma</translation>
 <translation id="5094577350232361255">par</translation>
 <translation id="4918086044614829423">Pieņemt</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave ir Brave Software reģistrēta preču zīme. Vietņu nosaukumi var būt vietnes īpašnieka preču zīmes vai reģistrētas preču zīmes.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">no šīs sinhronizācijas ķēdes</translation>
 <translation id="610118613261910287">Skatīt koda vārdus</translation>
 <translation id="8588535459744752615">Notiek ierīces meklēšana</translation>
-<translation id="391177677159359824">Sync (beta)</translation>
+<translation id="6406506848690869874">Sinhronizācija</translation>
 <translation id="28332161031213248">Tālāk dotajā ierīču sarakstā ir ietvertas visas jūsu sinhronizācijas ķēdē esošās ierīces. Jebkuru no šīm ierīcēm var pārvaldīt no jebkuras citas ierīces.</translation>
 <translation id="8153617760825732120">ierīces nosaukums</translation>
 <translation id="4241512165288542484">(Šī ierīce)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">Saglabātie vietnes iestatījumi</translation>
 <translation id="7859704718976024901">Pārlūkošanas vēsture</translation>
 <translation id="2339730291919608488">Pamest sinhronizācijas ķēdi</translation>
-<translation id="4797449295451979552">Sync (beta) iestatīšana</translation>
+<translation id="4332558599726753990">Sinhronizācijas iestatīšana</translation>
 <translation id="298546024891487702">Vispirms, visās ierīcēs, kuras vēlaties sinhronizēt, jābūt instalētam Brave. Lai savienotu tās ķēdē, aktivizējiet sinhronizācijas ķēdi, ko izmantosiet, lai droši savienotu visas ierīces.</translation>
 <translation id="6200528822592747640">Sākt jaunu sinhronizācijas ķēdi</translation>
 <translation id="5184726904895809379">Man ir sinhronizācijas kods</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Dators</translation>
 <translation id="1258250624898033822">Nepareizs sinhronizācijas kods.</translation>
 <translation id="3259723213051400722">Lūdzu, mēģiniet vēlreiz.</translation>
-<translation id="3779810277399252432">Nav interneta savienojuma.</translation>
-<translation id="4380604249778320975">Lūdzu, mēģiniet vēlreiz, kad savienojums ir pieejams.</translation>
 <translation id="5257281382608458806">Nepieciešams ierīces nosaukums.</translation>
 <translation id="8349682220522608879">Lūdzu, pievienojiet sinhronizācijas kodu.</translation>
 <translation id="1468095392829989299">Neizdevās izveidot savienojumu ar Sinhronizācijas serveriem</translation>

@@ -33,7 +33,7 @@ std::unique_ptr<TemplateURLData> CreatePrepopulateTemplateURLData(
   return data;
 }
 
-};  // namespace
+}  // namespace
 
 class BraveTemplateURLServiceUtilTest : public testing::Test {
  public:

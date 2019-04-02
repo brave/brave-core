@@ -79,6 +79,7 @@
 <translation id="2232753742630178222">Kolm reklaami tunnis</translation>
 <translation id="905529390827000221">Neli reklaami tunnis</translation>
 <translation id="7694167481321619202">Viis reklaami tunnis</translation>
+<translation id="8845154268466251503">BAT</translation>
 <translation id="4684554059837592728">Kuumakse</translation>
 <translation id="2846354907189538">Järgmine annetustähtaeg</translation>
 <translation id="8759716059844800317">Toetatud saidid</translation>
@@ -126,11 +127,15 @@
 <translation id="570208820610947248">Avastasime vea teie rahakotis. Enne tehingute töötlemist peate taastama oma varundatud rahakoti.</translation>
 <translation id="7797604753681168055">Taasta kohe!</translation>
 <translation id="1184075897575325927">Kahjuks tundub, et see toetus on juba välja võetud.</translation>
+<translation id="7180611975245234373">Värskenda</translation>
+<translation id="839736845446313156">Registreerumine</translation>
+<translation id="583281660410589416">Teadmata</translation>
 <translation id="5094577350232361255">teave</translation>
 <translation id="4918086044614829423">Nõustu</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave on ettevõttele Brave Software kuuluv registreeritud kaubamärk. Veebisaidi nimed võivad olla veebisaidi omanikule kuuluvad kaubamärgid või registreeritud kaubamärgid.</translation>
 <translation id="9026369588205476247">Teie privaatsuse kaitseks ei salvestata, säilitata ega logita Brave Rewardsiga seotud andmeid väljaspol teie seadet (seda arvutit). Neid andmeid ei saa pärast andmekadu Brave'is taastada.</translation>
 <translation id="1036277985068412734">lisa vahendeid</translation>
+<translation id="5441565662498481293">Saadad automaatselt preemiaid:</translation>
 <translation id="4496990471549986619">KKK</translation>
 <translation id="1688876543043079268">Meeldetuletus! Brave Wallet on ühesuunaline ja BAT liigub ainult väljaandjate saitideni. Kui soovite lisateavet Brave Rewardsi kohta, siis külastage aadressi</translation>
 <translation id="2790014973538267577">Kuva QR-kood</translation>
@@ -174,6 +179,7 @@
 <translation id="245015745140252435">Premeeri summa</translation>
 <translation id="3520817231440482449">Premeeri seda veebisaiti igakuiselt</translation>
 <translation id="1827184134638345603">Saada preemia…</translation>
+<translation id="1628742278973105368">Sinu esimene igakuuline preemia saadetakse:</translation>
 <translation id="7277134233385925078">Seadista igakuine premeerimine</translation>
 <translation id="8003573781961874199">Laadi alla PDFna</translation>
 <translation id="298067735430872465">Reklaamidest saadud tulu</translation>
@@ -212,6 +218,7 @@
 <translation id="3630697955794050612">väljas</translation>
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">sees</translation>
+<translation id="1166682575529520472">Iga kuu</translation>
 <translation id="8370173854533168890">Ühekordne</translation>
 <translation id="9182287025588539628">Ühekordsed preemiad</translation>
 <translation id="6381574025952123568">Algsaldo</translation>
@@ -272,6 +279,7 @@
 <translation id="1792148354504719133">sait</translation>
 <translation id="5944430251223015324">saidid</translation>
 <translation id="8826007068782654809">Täname</translation>
+<translation id="6665366815203065060">Saatsid just preemia:</translation>
 <translation id="6432779622695508363">Premeeri meeldivaid</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
@@ -314,7 +322,7 @@
 <translation id="1555452132857939218">sellest sünkroonimisahelast</translation>
 <translation id="610118613261910287">Kuva koodisõnad</translation>
 <translation id="8588535459744752615">Otsib seadet</translation>
-<translation id="391177677159359824">Sync (beeta)</translation>
+<translation id="6406506848690869874">Sünkroonimine</translation>
 <translation id="28332161031213248">Allpool on loetletud kõik teie sünkroonimisahela seadmed. Kõiki neid seadmeid saab hallata igast muust seadmest.</translation>
 <translation id="8153617760825732120">Seadme nimi</translation>
 <translation id="4241512165288542484">(See seade)</translation>
@@ -327,7 +335,6 @@
 <translation id="5591129654353352557">Salvestatud saidi seaded</translation>
 <translation id="7859704718976024901">Lehitsemisajalugu</translation>
 <translation id="2339730291919608488">Välju ajakohastamisahelast</translation>
-<translation id="4797449295451979552">Sync-i (beeta) häälestus</translation>
 <translation id="298546024891487702">Alustamiseks peab Brave olema installitud kõikidesse seadmetesse, mida soovite sünkroonida. Seadmete ahelaga liitmiseks käivitage sünkroonimisahel, mida kasutate kõikide oma seadmete turvaliseks linkimiseks.</translation>
 <translation id="6200528822592747640">Käivita uus sünkroonimisahel</translation>
 <translation id="5184726904895809379">Mul on sünkroonimiskood</translation>
@@ -359,8 +366,6 @@
 <translation id="1736420071277903564">Arvuti</translation>
 <translation id="1258250624898033822">Vale sünkroonimiskood.</translation>
 <translation id="3259723213051400722">Palun proovige uuesti.</translation>
-<translation id="3779810277399252432">Internetiühendus puudub.</translation>
-<translation id="4380604249778320975">Palun proovige uuesti, kui teil on internetiühendus.</translation>
 <translation id="5257281382608458806">Seadme nimi on kohustuslik.</translation>
 <translation id="8349682220522608879">Palun sisestage sünkroonimiskood.</translation>
 <translation id="1468095392829989299">Sünkroonimisserveritega ühendumine ebaõnnestus.</translation>

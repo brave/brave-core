@@ -99,6 +99,7 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="8848045066928358658">A Brave biztonságosabbá tétele érdekében kikapcsoltuk a következő bővítményt, amely nem a(z) <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> szolgáltatásból származik, és előfordulhat, hogy az Ön tudta nélkül lett telepítve.</translation>
 <translation id="8148611988012584308">A Brave személyre szabása és beállításai</translation>
 <translation id="5849446944780602366">A Brave személyre szabása és vezérlése. Van rendelkezésre álló frissítés.</translation>
+<translation id="6315734375101223238">Személyre szabhatja a Brave működését. Figyelmet kell fordítania valamire – a részletekért kattintson.</translation>
 <translation id="9071554113102421877">Megnyitás Braveban</translation>
 <translation id="2176825726964012531">A &amp;Brave névjegye</translation>
 <translation id="5450493308072741203">A &amp;Brave frissítése</translation>
@@ -123,6 +124,7 @@ Ha mindenképp bejelentkezik, akkor egyesíti a(z) <ph name="ACCOUNT_EMAIL_NEW"/
 <translation id="1853997773668795891">Társítja Brave-adatait ezzel a fiókkal?</translation>
 <translation id="1326766910007115955">Kezelt fiókkal jelentkezik be, és annak adminisztrátora számára hozzáférést biztosít Brave-profiljához. Brave-adatait – például alkalmazásait, könyvjelzőit, előzményeit, jelszavait és más beállításait – a rendszer véglegesen társítja a(z) <ph name="USER_NAME"/> fiókhoz. Ezen adatokat a Brave Software-fiók Irányítópultján törölheti, de más fiókhoz nem társíthatja őket. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Kezelt fiókkal jelentkezik be, és annak adminisztrátora számára hozzáférést biztosít Brave-profiljához. Brave-adatait – például alkalmazásait, könyvjelzőit, előzményeit, jelszavait és más beállításait – a rendszer véglegesen társítja a(z) <ph name="USER_NAME"/> fiókhoz. Ezen adatokat a Brave Software-fiók Irányítópultján törölheti, de más fiókhoz nem társíthatja őket. Létrehozhat egy új profilt is meglévő Brave-adatainak elkülönített tárolásához. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">Rendszergazdája úgy állította be a Braveot, hogy másik böngészőt nyisson meg a(z) <ph name="TARGET_URL_HOSTNAME"/> eléréséhez.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> előzőleg Braveot használt</translation>
 <translation id="1384923383737428730">A számítógépen kártékony szoftver található. A Brave képes a kártékony szoftver eltávolítására, a beállítások visszaállítására és a bővítmények letiltására, hogy a böngésző újra a szokásos módon működhessen.</translation>
 <translation id="8919921662052966648">A Brave nem tudta szinkronizálni az adatokat. Kérjük, frissítse a szinkronizálás jelszavát.</translation>
@@ -171,7 +173,6 @@ További utasításokat a(z) <ph name="ACCOUNT_EMAIL"/> címére küldött e-mai
 <translation id="2871190378186459992">Fedezzen fel nagyszerű alkalmazásokat, játékokat, bővítményeket és témákat a Bravehoz.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Bejövő szabály a Bravehoz az mDNS forgalom engedélyezése céljából.</translation>
-<translation id="3795403186582265456">Azáltal, hogy az oldal képeit elküldi a Brave Software szervereinek, a Brave fel tudja ismerni a képeket és a képeken található szövegeket, így Ön jobban megértheti az oldal tartalmát.</translation>
 <translation id="7276297358157391541">A Brave pontosabb helyesírás-ellenőrzést tud biztosítani azáltal, hogy a böngészőbe beírt szöveget elküldi a Brave Software szervereinek, ami lehetővé teszi, hogy Ön ugyanazt a helyesírás-ellenőrző technológiát használja, amelyet a Brave Software-keresés is.</translation>
 <translation id="1807774211756215222">Link megnyi&amp;tása új Brave-lapon</translation>
 <translation id="4624945300945265642">Link megnyitása Brave-inko&amp;gnitóablakban</translation>
@@ -188,7 +189,6 @@ További utasításokat a(z) <ph name="ACCOUNT_EMAIL"/> címére küldött e-mai
 <translation id="5173820533850252773">A Brave elavult</translation>
 <translation id="6389268239133412586">Nem sikerült a Brave frissítése</translation>
 <translation id="7963515534397191222">Nem sikerült a Brave frissítése a legújabb verzióra, így Ön lemarad az új funkciókról és biztonsági javításokról.</translation>
-<translation id="3472158705945346956">A kezelőjének el kell távolítania, majd újra hozzá kell adnia Önt a Bravehoz.</translation>
 <translation id="1705567146636171298">A Brave frissítése</translation>
 <translation id="3598551856834560515">Frissítse a Braveot a szinkronizálás megkezdéséhez</translation>
 <translation id="4050175100176540509">A legújabb verzióban fontos biztonsági fejlesztések és új funkciók érhetők el.</translation>
@@ -267,9 +267,9 @@ További utasításokat a(z) <ph name="ACCOUNT_EMAIL"/> címére küldött e-mai
 <translation id="8372880274820509128">A nagyobb biztonság érdekében a Brave titkosítja az Ön adatait.</translation>
 <translation id="7445061995866044926">Kijelentkezik a Braveból?</translation>
 <translation id="7453070689008684791">A Brave hozzáfér Drive-jához, hogy javaslatokat nyújthasson a címsávon.</translation>
-<translation id="7713466009760073734">A Brave OS ezen a nyelven jelenik meg</translation>
+<translation id="9221712274065451529">A Brave OS kezelőfelülete ezen a nyelven jelenik meg.</translation>
 <translation id="3518788198614984730">A Brave operációs rendszer megjelenítése ezen a nyelven</translation>
-<translation id="8258976055610040706">A Brave ezen a nyelven jelenik meg</translation>
+<translation id="5757460455745382269">A Brave kezelőfelülete ezen a nyelven jelenik meg.</translation>
 <translation id="2335583906071111058">A Brave megjelenítése ezen a nyelven</translation>
 <translation id="8926637909431618259">A háttéralkalmazások továbbfuttatása, ha a Braveot bezárják</translation>
 <translation id="6056473803837713617">Segítsen a Brave fejlesztésében a <ph name="BEGIN_LINK"/>jelenlegi beállítások<ph name="END_LINK"/> elküldésével</translation>

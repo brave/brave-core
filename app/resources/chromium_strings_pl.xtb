@@ -97,7 +97,7 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="4054452651944170004">Ukryj w menu Brave</translation>
 <translation id="5660079256336839395">Ukryj w menu Brave</translation>
 <translation id="7456658570432774853">Pomóż ulepszyć Brave, zgłaszając bieżące ustawienia</translation>
-<translation id="6134859571175647580">Ostrzeżenie: Brave nie może uniemożliwić rozszerzeniom zapisywania historii przeglądania. Aby wyłączyć to rozszerzenie w trybie incognito, odznacz tę opcję.</translation>
+<translation id="6134859571175647580">Ostrzeżenie: Brave nie może uniemożliwić rozszerzeniom zapisywania historii przeglądania. Aby wyłączyć to rozszerzenie w trybie prywatnym, odznacz tę opcję.</translation>
 <translation id="777113543093865885">Usuń z Brave...</translation>
 <translation id="6078442581074612226">W Brave</translation>
 <translation id="1448049584457347995">Aby poprawić bezpieczeństwo Brave, wyłączyliśmy niektóre rozszerzenia niedostępne w <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>, które mogły zostać dodane bez Twojej wiedzy.</translation>
@@ -129,6 +129,7 @@ Jeśli jednak zalogujesz się teraz, informacje Brave, takie jak zakładki, hist
 <translation id="1853997773668795891">Połączyć Twoje dane Brave z tym kontem?</translation>
 <translation id="1326766910007115955">Logujesz się na zarządzane konto i przekazujesz jego administratorowi kontrolę nad swoim profilem Brave. Twoje dane Brave, takie jak aplikacje, zakładki, historia, hasła i inne ustawienia, zostaną trwale powiązane z użytkownikiem <ph name="USER_NAME"/>. Będzie można je usunąć w Panelu kont Brave Software, ale nie będzie można ich powiązać z innym kontem. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Logujesz się na zarządzane konto i przekazujesz jego administratorowi kontrolę nad swoim profilem Brave. Twoje dane Brave, takie jak aplikacje, zakładki, historia, hasła i inne ustawienia, zostaną trwale powiązane z użytkownikiem <ph name="USER_NAME"/>. Będzie można je usunąć w Panelu kont Brave Software, ale nie będzie można ich powiązać z innym kontem. Możesz też utworzyć nowy profil, by przechowywać swoje dotychczasowe dane Brave osobno. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">Administrator systemu skonfigurował Brave do otwierania alternatywnej przeglądarki dla witryny <ph name="TARGET_URL_HOSTNAME">$1</ph>.</translation>
 <translation id="2591326305549412656">Użytkownik <ph name="USER_EMAIL_ADDRESS"/> wcześniej używał Brave</translation>
 <translation id="1384923383737428730">Masz na komputerze szkodliwe oprogramowanie. Brave może je usunąć, przywrócić Twoje ustawienia i wyłączyć rozszerzenia, by przeglądarka znów działała normalnie.</translation>
 <translation id="8919921662052966648">Brave nie może zsynchronizować Twoich danych. Zaktualizuj hasło synchronizacji.</translation>
@@ -183,7 +184,8 @@ Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EM
 <translation id="7272074097076644710">Reguła dla ruchu przychodzącego w Brave Beta zezwalająca na ruch mDNS.</translation>
 <translation id="4991512282053949769">Reguła dla ruchu przychodzącego w Brave Nightly zezwalająca na ruch mDNS.</translation>
 <translation id="3856641371299712128">Reguła dla ruchu przychodzącego w Brave Dev zezwalająca na ruch mDNS.</translation>
-<translation id="3795403186582265456">Brave może rozpoznawać obrazy i napisy na nich dzięki wysyłaniu obrazów stron na serwery Brave Software. Pozwoli Ci to lepiej rozumieć zawartość stron.</translation>
+<translation id="8207657266087451193">Jeśli obraz nie ma przydatnego opisu, Brave spróbuje go dla Ciebie stworzyć. W tym celu obrazy zostaną wysłane do Brave Software. W każdej chwili możesz wyłączyć tę funkcję w ustawieniach.</translation>
+<translation id="5499063270485366718">Jeśli obraz nie ma przydatnego opisu, Brave spróbuje go dla Ciebie stworzyć. W tym celu obrazy zostaną wysłane do Brave Software.</translation>
 <translation id="7276297358157391541">Brave może lepiej sprawdzać pisownię, przesyłając do serwerów Brave Software tekst, który wpisujesz w przeglądarce. Dzięki temu możesz korzystać z tej samej technologii sprawdzania pisowni co wyszukiwarka Brave Software.</translation>
 <translation id="1807774211756215222">O&amp;twórz link w nowej karcie Brave</translation>
 <translation id="4624945300945265642">Otwórz link w oknie inco&amp;gnito Brave</translation>
@@ -200,7 +202,6 @@ Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EM
 <translation id="5173820533850252773">Brave jest nieaktualny</translation>
 <translation id="6389268239133412586">Nie można zaktualizować Brave</translation>
 <translation id="7963515534397191222">Aktualizacja Brave do najnowszej wersji nie udała się, więc nie masz dostępu do najnowszych funkcji i poprawek zabezpieczeń.</translation>
-<translation id="3472158705945346956">Twój menedżer musi Cię usunąć i ponownie dodać w Brave.</translation>
 <translation id="1705567146636171298">Zaktualizuj Brave</translation>
 <translation id="3598551856834560515">Zaktualizuj Brave, by rozpocząć synchronizację</translation>
 <translation id="4050175100176540509">W najnowszej wersji zostały wprowadzone ważne poprawki bezpieczeństwa i nowe funkcje.</translation>
@@ -279,9 +280,9 @@ Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EM
 <translation id="8372880274820509128">Dla większego bezpieczeństwa Brave szyfruje dane.</translation>
 <translation id="7445061995866044926">Wylogować z Brave?</translation>
 <translation id="7453070689008684791">Brave będzie mieć dostęp do Dysku, by wyświetlać podpowiedzi na pasku adresu</translation>
-<translation id="7713466009760073734">System operacyjny Brave działa obecnie w tym języku</translation>
+<translation id="9221712274065451529">Ten język jest używany do wyświetlania UI Brave OS</translation>
 <translation id="3518788198614984730">Wyświetlaj system operacyjny Brave w tym języku</translation>
-<translation id="8258976055610040706">Brave działa obecnie w tym języku</translation>
+<translation id="5757460455745382269">Ten język jest używany do wyświetlania UI Brave</translation>
 <translation id="2335583906071111058">Wyświetlaj Brave w tym języku</translation>
 <translation id="8926637909431618259">Kontynuuj działanie aplikacji w tle po zamknięciu Brave</translation>
 <translation id="6056473803837713617">Pomóż ulepszyć Brave, zgłaszając <ph name="BEGIN_LINK"/>bieżące ustawienia<ph name="END_LINK"/></translation>

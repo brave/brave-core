@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/resources/settings/settings.html b/chrome/browser/resources/settings/settings.html
-index 75e1fc2e7e4297cb332b1cc595f0f529f4cdb535..138c9485ce9ba1dadd28ea87d10a1f4aa7e8e1f4 100644
+index c99aed2da137c1e9797c3775852701c955556202..c7be763fbac06633054143a88dd4faee1c14e90b 100644
 --- a/chrome/browser/resources/settings/settings.html
 +++ b/chrome/browser/resources/settings/settings.html
-@@ -7,6 +7,7 @@
- <if expr="not optimize_webui">
+@@ -8,6 +8,7 @@
    <base href="chrome://settings">
  </if>
+   <link rel="stylesheet" href="chrome://resources/css/md_colors.css">
 +  <link rel="stylesheet" href="chrome://brave-resources/page_specific/settings/settings_loading_shim.css">
    <style>
      html {
-       --toolbar-height: 56px;
-@@ -36,6 +37,7 @@
-   <link rel="stylesheet" href="chrome://resources/css/md_colors.css">
+       background: var(--md-background-color);
+@@ -30,6 +31,7 @@
+   <settings-ui></settings-ui>
    <link rel="stylesheet" href="chrome://resources/css/text_defaults_md.css">
    <link rel="import" href="chrome://resources/html/polymer.html">
 +  <link rel="import" href="brave_settings_overrides.html">
