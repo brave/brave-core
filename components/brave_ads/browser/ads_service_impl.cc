@@ -224,14 +224,13 @@ std::string LoadOnFileTaskRunner(
 }
 
 std::vector<ads::AdInfo> GetAdsForCategoryOnFileTaskRunner(
-    const std::string region,
     const std::string category,
     BundleStateDatabase* backend) {
   std::vector<ads::AdInfo> ads;
   if (!backend)
     return ads;
 
-  backend->GetAdsForCategory(region, category, ads);
+  backend->GetAdsForCategory(category, &ads);
 
   return ads;
 }
@@ -373,12 +372,6 @@ void AdsServiceImpl::Start() {
   }
   if (command_line.HasSwitch(switches::kTesting)) {
     is_testing = true;
-  }
-  if (command_line.HasSwitch(switches::kLocale)) {
-    std::string locale = command_line.GetSwitchValueASCII(switches::kLocale);
-    if (!locale.empty()) {
-      command_line_switch_ads_locale_ = locale;
-    }
   }
 
   bat_ads_service_->SetProduction(is_production, base::NullCallback());
@@ -709,31 +702,26 @@ void AdsServiceImpl::OnReset(const ads::OnResetCallback& callback,
 }
 
 void AdsServiceImpl::GetAds(
-      const std::string& region,
       const std::string& category,
       ads::OnGetAdsCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&GetAdsForCategoryOnFileTaskRunner,
-                    region,
                     category,
                     bundle_state_backend_.get()),
       base::BindOnce(&AdsServiceImpl::OnGetAdsForCategory,
                      AsWeakPtr(),
                      std::move(callback),
-                     region,
                      category));
 }
 
 void AdsServiceImpl::OnGetAdsForCategory(
     const ads::OnGetAdsCallback& callback,
-    const std::string& region,
     const std::string& category,
     const std::vector<ads::AdInfo>& ads) {
   if (!connected())
     return;
 
   callback(ads.empty() ? ads::Result::FAILED : ads::Result::SUCCESS,
-      region,
       category,
       ads);
 }
@@ -868,10 +856,6 @@ const std::vector<std::string> AdsServiceImpl::GetLocales() const {
 }
 
 const std::string AdsServiceImpl::GetAdsLocale() const {
-  if (!command_line_switch_ads_locale_.empty()) {
-    return command_line_switch_ads_locale_;
-  }
-
   return g_browser_process->GetApplicationLocale();
 }
 

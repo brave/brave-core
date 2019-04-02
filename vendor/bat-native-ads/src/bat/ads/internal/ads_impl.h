@@ -109,7 +109,6 @@ class AdsImpl : public Ads {
   void ServeAdFromCategory(const std::string& category);
   void OnGetAds(
       const Result result,
-      const std::string& region,
       const std::string& category,
       const std::vector<AdInfo>& ads);
   std::vector<AdInfo> GetUnseenAds(const std::vector<AdInfo>& ads);
