@@ -80,6 +80,12 @@
     <message name="IDS_PRINT_PREVIEW_SCALING_LABEL" desc="Scaling option label.">
       Scale
     </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_DEFAULT_SCALING" desc="Option to print with default (100%) scaling.">
+      Default
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_CUSTOM_SCALING" desc="Option to print with custom scaling.">
+      Custom
+    </message>
     <message name="IDS_PRINT_PREVIEW_PAGES_PER_SHEET_LABEL" desc="Pages per sheet option label.">
       Pages per sheet
     </message>

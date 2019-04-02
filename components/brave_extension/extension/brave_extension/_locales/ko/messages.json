@@ -15,10 +15,6 @@
     "message": "아래",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "총계 차단됨",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "이 사이트를 위한",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "현재 이 사이트를 아무런 개인정보 보호 수단이나 보안 수단 없이 보고 계십니다.",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "광고 및 트래커 차단됨",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "Items blocked",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "팝업 차단됨",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "Item blocked",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "이미지 차단됨",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "and",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "제삼자 쿠키 차단됨",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "connections upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "모든 쿠키 차단됨",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "connection upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "쿠키 차단됨",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "3rd-party trackers blocked",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "일부 스크립트 차단됨",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "Connections upgraded to HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "모든 스크립트 허용됨",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "Connection upgraded to HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "스크립트 차단됨",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "제삼자 쿠키 차단됨",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "쿠키 차단됨",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "모든 쿠키 차단됨",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "제삼자 기기 인식 차단됨",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "모든 장치 인식 허용됨",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "기기 인식 차단됨",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "피싱/맬웨어 공격시도 차단됨",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "연결이 암호화됨",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "글로벌 실드 기본 설정",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "이 사이트의 쿠키",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "모든 장치 인식 허용됨",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "기기 인식 시도",
@@ -111,49 +103,21 @@
     "message": "허용된 스크립트",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "모두 허용하기",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "허용하기",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "허용됨",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "모두 차단하기",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "모두 허용하기",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "차단하기",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "차단됨",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "적용하기",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "한번 적용",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "재시작 시까지 적용하기",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "항상 적용하기",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "원상태로 돌리기",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "허용하기",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "취소하기",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "되돌아가기",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "한번 적용",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Change global shield defaults",
+    "description": "Message for the button action linking to the settings page"
   }
 }

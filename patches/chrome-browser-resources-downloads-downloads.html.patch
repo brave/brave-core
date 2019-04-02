@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/downloads/downloads.html b/chrome/browser/resources/downloads/downloads.html
-index 19caed5f401670e544b895cfc46583a7c886e898..48d21179b57149bd9b1167b4c3c7e14feb125dce 100644
+index dcb81efa7c7e18d410a35e451d747060c496462f..a6ed97244e6b1af5b5fe485e58ae6e1ecc24ba90 100644
 --- a/chrome/browser/resources/downloads/downloads.html
 +++ b/chrome/browser/resources/downloads/downloads.html
-@@ -4,6 +4,7 @@
- <head>
+@@ -5,6 +5,7 @@
    <meta charset="utf-8">
    <title>$i18n{title}</title>
+   <link rel="stylesheet" href="chrome://resources/css/md_colors.css">
 +  <link rel="stylesheet" href="chrome://brave-resources/page_specific/downloads/downloads_loading_shim.css">
    <style>
      html {
-       --toolbar-height: 56px;
+       background: var(--md-background-color);

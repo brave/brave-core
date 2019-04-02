@@ -16,7 +16,7 @@
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "Możesz teraz zarabiać tokeny oglądając reklamy które nie naruszają twojej prywatności.",
+    "message": "Teraz możesz zarabiać tokeny oglądając reklamy, które szanują Twoją prywatność.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeFooterTextOne": {
@@ -28,11 +28,11 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
-    "message": "Wydaliśmy sporą łatkę dla naszego Brave Payments.",
+    "message": "Wydaliśmy sporą aktualizację dla nagród Brave.",
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "Doświadcz nowego Internetu.",
+    "message": "Przygotuj się na nowe oblicze internetu.",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
@@ -136,7 +136,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "Dochody z reklam",
+    "message": "Zarobki z reklam",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
@@ -144,7 +144,7 @@
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
-    "message": "Napiwki jednorazowe",
+    "message": "Jednorazowe napiwki",
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
@@ -185,16 +185,20 @@
     "message": "Czeka na Ciebie darowizna.",
     "description": "Description for new grant notification"
   },
+  "backupNow": {
+    "message": "Utwórz kopię zapasową teraz",
+    "description": "Notification button text when we ask user to backup wallet"
+  },
   "backupWalletTitle": {
-    "message": "Uzupełnij portfel",
+    "message": "Utwórz kopię zapasową portfela",
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Uzupełnij portfel Brave.",
+    "message": "Utwórz kopię zapasową portfela.",
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "Twoje konto płatności Brave oczekuje na depozyt.",
+    "message": "Twoje konto nagród Brave czeka na depozyt.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -206,15 +210,15 @@
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
-    "message": "Wystąpił problem przy przetwarzaniu twojej darowizny.",
+    "message": "Wystąpił problem przy przetwarzaniu Twojego wsparcia.",
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Twoje zaplanowane miesięczne opłaty w celu realizacji wspierania automatycznego i comiesięcznych napiwków nie mogły zostać przetworzone, ponieważ Twój portfel ma niewystarczające środki. Spróbujemy ponownie po 30 dniach.",
+    "message": "Twoje zaplanowane miesięczne płatności, w celu realizacji automatycznego wsparcia i comiesięcznych napiwków nie mogły zostać przetworzone, ponieważ w Twoim portfelu brakuje środków. Spróbujemy ponownie za 30 dni.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "Wystąpil problem przy przetwarzaniu twojego napiwku, spróbuj ponownie.",
+    "message": "Nie można wysłać napiwka. Spróbuj ponownie później.",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -290,7 +294,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Ten twórca nie zarejestrował się jeszcze w celu otrzymywania wkładów od użytkowników przeglądarki Brave. Wszelkie przesłane mu przez Ciebie napiwki pozostaną w Twoim portfelu do czasu weryfikacji twórcy.",
+    "message": "Ten twórca nie zarejestrował się jeszcze w celu otrzymywania wsparcia od użytkowników przeglądarki Brave. Wszelkie przesłane mu przez Ciebie napiwki pozostaną w Twoim portfelu do czasu weryfikacji twórcy.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -298,7 +302,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Przeznaczyłeś {{reservedAmount}} BAT dla twórców, którzy nie zarejestrowali się jeszcze, aby otrzymywać wsparcie. Twoja przeglądarka będzie próbowała wnieść wsparcia do czasu, gdy zostaną zweryfikowani lub gdy minie 90 dni.",
+    "message": "Przeznaczyłeś {{reservedAmount}} BAT dla twórców, którzy nie zarejestrowali się jeszcze, aby otrzymywać wsparcie. Twoja przeglądarka będzie próbowała wnieść wsparcie do czasu, gdy zostaną zweryfikowani, lub gdy minie 90 dni.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -328,5 +332,49 @@
   "walletFailedButton": {
     "message": "Spróbuj ponownie",
     "description": "Button for re-try after wallet creation failed"
+  },
+  "addFunds": {
+    "message": "Dodaj środki",
+    "description": "Button for adding funds"
+  },
+  "rewardsSettings": {
+    "message": "Ustawienia nagród",
+    "description": "Button for opening settings page"
+  },
+  "earningsClaimDefault": {
+    "message": "Twoje zarobki z reklam są dostępne.",
+    "description": "Panel notification text for Ads grant"
+  },
+  "and": {
+    "message": "i",
+    "description": "The word 'and'"
+  },
+  "braveRewardsSubTitle": {
+    "message": "Otrzymuj nagrody za przeglądanie internetu!",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "disabledPanelTextTwo": {
+    "message": "Zarabiaj, oglądając szanujące prywatność reklamy i przekazuj, to co zarobisz, twórcom treści, które lubisz.",
+    "description": "Text block for wallet disabled panel"
+  },
+  "enableRewards": {
+    "message": "Włącz Nagrody Brave",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "privacyPolicy": {
+    "message": "Polityka prywatności",
+    "description": "Privacy Policy"
+  },
+  "serviceText": {
+    "message": "Klikając „Włącz Nagrody Brave”, zaznaczasz, że przeczytałeś i zgadzasz się na",
+    "description": "Terms of service main text"
+  },
+  "termsOfService": {
+    "message": "Warunki świadczenia usługi",
+    "description": "Terms of Service"
+  },
+  "welcomeBack": {
+    "message": "Witaj ponownie!",
+    "description": "Title message for wallet disabled panel"
   }
 }

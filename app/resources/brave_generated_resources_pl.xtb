@@ -13,9 +13,9 @@
 <translation id="4983925687993168579">Statystyki</translation>
 <translation id="6165477144235978006">Płatności Brave</translation>
 <translation id="3489524616427966890">Otwieraj okna  i karty</translation>
-<translation id="9173846700806833701">Widevine nie jest zainstalowany</translation>
-<translation id="2433569048491784801">Widevine nie jest zainstalowany</translation>
 <translation id="3699882589215410581">Zainstaluj i uruchom Widevine</translation>
+<translation id="8053096063396012732">Zainstaluj Widevine</translation>
+<translation id="4840334696217618631">Uruchom ponownie przeglądarkę, aby włączyć Widevine</translation>
 <translation id="8410111618231938546">Google Widevine to fragment kodu zarządzania prawami cyfrowymi (DRM), który nie należy do Brave Software i którego nie jesteśmy w stanie kontrolować. Kod Google Widevine wczytywany jest z serwerów Google, a nie z naszych. Jest wczytywany tylko wtedy, gdy włączysz taką opcję. Odradzamy używanie DRM, ale szanujemy wybór użytkownika i przyjmujemy do wiadomości, że niektórzy użytkownicy Brave chcą korzystać z usług, które tego wymagają.
 
 Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Google Widevine. Akceptujesz to, że Brave nie ponosi odpowiedzialności za jakiekolwiek szkody lub straty związane z używaniem Google Widevine.</translation>
@@ -31,25 +31,32 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="7543906827780734027">Brave nie zbadało jeszcze tego rozszerzenia - może być niebezpieczne. Dodać "<ph name="EXTENSION_NAME">$1</ph>" pomimo tego?</translation>
 <translation id="2044383478723007273">Kolory Brave</translation>
 <translation id="5341901626640816374">Korzystaj z szerokiego paska lokalizacji</translation>
+<translation id="6123134130710658846">Ukryj przycisk nagród Brave</translation>
+<translation id="7635711399568194460">Kiedy nagrody Brave są wyłączone, ukrywa przycisk nagród na pasku lokalizacji.</translation>
 <translation id="7965178729203412357">Nowa tożsamość Tor</translation>
 <translation id="8784924142044142231">Wyjdź z sieci Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Otwórz okno Tor</translation>
-<translation id="1434416574322382019">Nowe prywatne okno z obsługą sieci Tor</translation>
-<translation id="4703780849509456860">Otwórz link w prywatnym oknie z obsługą sieci Tor</translation>
-<translation id="3488584642074079080">Otwórz link w prywatnym oknie z obsługą sieci Tor</translation>
-<translation id="6313675821927505581">Nowe prywatne okno z obsługą sieci Tor</translation>
-<translation id="2638041073279639246">Otwórz link w prywatnym oknie z obsługą sieci Tor</translation>
-<translation id="3425600262621021599">Otwórz link w prywatnym oknie z obsługą sieci Tor</translation>
+<translation id="1434416574322382019">Nowe okno prywatne z obsługą sieci Tor</translation>
+<translation id="4703780849509456860">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
+<translation id="3488584642074079080">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
+<translation id="6313675821927505581">Nowe okno prywatne z obsługą sieci Tor</translation>
+<translation id="2638041073279639246">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
+<translation id="3425600262621021599">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="3155170474926428993">Program uruchamiający oprogramowanie Tor</translation>
 <translation id="2515126961943087659">Usługa Bat Ads</translation>
 <translation id="7924918279836988121">Usługa rejestrowania BAT</translation>
 <translation id="7372129767729198111">Domyślne ustawienia tarcz Brave</translation>
+<translation id="6752287096897220686">Przyciski i logowania za pomocą portali społecznościowych</translation>
 <translation id="8029018702721078742">Kontrola reklam</translation>
 <translation id="3544462288910360084">Kontrola plików cookies</translation>
 <translation id="8919235146866304148">Zabezpieczenie przed zbieraniem odcisków palców</translation>
 <translation id="520895744850022668">Wymuszaj HTTPS</translation>
 <translation id="5259716416204774556">Blokowanie skryptów</translation>
+<translation id="7498695072878479744">Zezwalaj na logowanie za pomocą konta Google na stronach trzecich</translation>
+<translation id="863171915776379000">Zezwalaj na logowanie za pomocą konta Facebook i osadzone posty</translation>
+<translation id="5165042248369837294">Zezwalaj na osadzone Tweety</translation>
+<translation id="1160990956439588593">Zezwalaj na osadzone treści LinkedIn</translation>
 <translation id="6067014455220527258">Blokuj reklamy</translation>
 <translation id="6985711843506827936">Zezwól na reklamy i śledzenie</translation>
 <translation id="6132506775968708399">Blokuj pliki cookies stron trzecich</translation>
@@ -65,10 +72,16 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="5825943197137337319">Tylko domyślny interfejs publiczny</translation>
 <translation id="1689062823386843231">Wyłącz UDP bez proxy</translation>
 <translation id="6645631466045614531">Uzyskaj dostęp do synchronizacji przez</translation>
+<translation id="1807246157184219062">Jasny</translation>
+<translation id="2414886740292270097">Ciemny</translation>
+<translation id="1360441190790440400">Taki sam jak w systemie Linux</translation>
+<translation id="1336940801687497203">Taki sam jak w systemie Windows</translation>
+<translation id="5515614985852176310">Taki sam jak w systemie MacOS</translation>
 <translation id="6786747875388722282">Rozszerzenia</translation>
 <translation id="2896916411183256228">Do prawidłowego wyświetlania torrentów bezpośrednio w przeglądarce używane jest narzędzie WebTorrent. Wspierane są pliki typu torrent i linki magnetyczne.</translation>
 <translation id="6554397389149987360">Stosuje komponent Hangouts, aby umożliwić udostępnianie ekranu i inne funkcje w przeglądarce.</translation>
 <translation id="6916590542764765824">Zarządzaj rozszerzeniami</translation>
 <translation id="4928988318462976765">Sklep z rozszerzeniami sieciowymi</translation>
 <translation id="9181207987584064303">Zobacz w sklepie z rozszerzeniami sieciowymi</translation>
+<translation id="4846154056248462491">Przy wyjściu</translation>
 </translationbundle>

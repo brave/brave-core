@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/svg/svg_text_content_element.cc b/third_party/blink/renderer/core/svg/svg_text_content_element.cc
-index 307267cab6713ddea252c927ad4037336b364737..89c3a506f676219c58e978fc1e3206858e7249aa 100644
+index a08ba521149912886adfd9e0c11aab02bc01ed78..1716ce052610904eb7d382f4110e9f1e6f317495 100644
 --- a/third_party/blink/renderer/core/svg/svg_text_content_element.cc
 +++ b/third_party/blink/renderer/core/svg/svg_text_content_element.cc
 @@ -20,6 +20,7 @@
@@ -17,6 +17,6 @@ index 307267cab6713ddea252c927ad4037336b364737..89c3a506f676219c58e978fc1e320685
 +  if (!AllowFingerprinting(GetDocument().GetFrame())) {
 +    return 0.0f;
 +  }
-   GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
+   GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheetsForNode(this);
    return SVGTextQuery(GetLayoutObject()).TextLength();
  }

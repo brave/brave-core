@@ -52,6 +52,38 @@
     YouTube
   </message>
 
+  <!-- NUX NTP background selection module -->
+  <message name="IDS_ONBOARDING_WELCOME_NTP_BACKGROUND_DESCRIPTION" desc="Description of what this section in the onboarding workflow does. This section lets a user change the wallpaper for their 'start page', which refers to the New Tab Page">
+    Pick a wallpaper for your start page
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NTP_BACKGROUND_DEFAULT_TITLE" desc="Label for the default option when selecting a background. The default is to not have a background.">
+    Default
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NTP_BACKGROUND_ART_TITLE" desc="Label for choosing a background/wallpaper from the 'Art' category">
+    Art
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NTP_BACKGROUND_LANDSCAPE_TITLE" desc="Label for choosing a background/wallpaper from the 'Landscape' category, as in a category of photos of scenery and large outdoor spaces.">
+    Landscape
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NTP_BACKGROUND_CITYSCAPE_TITLE" desc="Label for choosing a background/wallpaper from the 'Cityscape' category">
+    Cityscape
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NTP_BACKGROUND_EARTH_TITLE" desc="Label for choosing a background/wallpaper from the 'Earth' category, as in a category of photos of planets and outer space.">
+    Earth
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NTP_BACKGROUND_GEOMETRIC_SHAPES_TITLE" desc="Label for choosing a background/wallpaper from the 'Geometric Shapes' category">
+    Geometric shapes
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NTP_BACKGROUND_PHOTO_BY_LABEL" desc="Label indicating who the background/wallpaper is created or photographed by">
+    Photo by <ph name="NAME">$1<ex>John Doe</ex></ph>
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NTP_BACKGROUND_PREVIEW_UPDATED" desc="String read for accessibility to inform the user that the background of the New Tab Page (referred to as 'start page') has been changed to a specific photo.">
+    Start page background has been changed to <ph name="CATEGORY">$1<ex>Geometric shapes</ex></ph>.
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NTP_BACKGROUND_RESET" desc="String read for accessibility to inform the user that the background of the New Tab Page (referred to as 'start page') has been reset to the default background.">
+    Start page background has been reset to the default background.
+  </message>
+
   <!-- NUX set default module -->
   <message name="IDS_ONBOARDING_WELCOME_NUX_SET_AS_DEFAULT_HEADER" desc="Header for the page that prompts user to set Brave as their default browser.">
     Set Brave as your default browser

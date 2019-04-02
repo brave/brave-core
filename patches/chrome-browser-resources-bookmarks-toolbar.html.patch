@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/resources/bookmarks/toolbar.html b/chrome/browser/resources/bookmarks/toolbar.html
-index df0329980236ff0b88b70a8763c6373ec61caddc..01104801a796e82d4d4588c309ca0deadbd4c116 100644
+index d6579e9783a4bcdeee441a3824fec30f754b93d5..2f807f8f6466bc65f28f52f62176c747f1ab8589 100644
 --- a/chrome/browser/resources/bookmarks/toolbar.html
 +++ b/chrome/browser/resources/bookmarks/toolbar.html
-@@ -1,6 +1,6 @@
+@@ -1,7 +1,7 @@
  <link rel="import" href="chrome://resources/html/polymer.html">
  
+ <link rel="import" href="chrome://resources/cr_elements/cr_icon_button/cr_icon_button.html">
 -<link rel="import" href="chrome://resources/cr_elements/cr_toolbar/cr_toolbar.html">
 +<link rel="import" href="chrome://brave-resources/br_elements/br_toolbar/br_toolbar.html">
  <link rel="import" href="chrome://resources/cr_elements/cr_toolbar/cr_toolbar_selection_overlay.html">
- <link rel="import" href="chrome://resources/polymer/v1_0/paper-icon-button/paper-icon-button-light.html">
+ <link rel="import" href="chrome://resources/cr_elements/icons.html">
  <link rel="import" href="shared_style.html">

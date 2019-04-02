@@ -59,12 +59,6 @@
     <message name="IDS_BOOKMARK_BAR_OPEN_ALL" desc="Menu title for opening all urls in a bookmark folder">
       &amp;Open all bookmarks
     </message>
-    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_NEW_WINDOW" desc="Menu title for opening all urls in a bookmark folder in a new window">
-      Open all bookmarks in &amp;new window
-    </message>
-    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_INCOGNITO" desc="Menu description for opening all urls in a bookmark folder in a private window">
-        Open all bookmarks in &amp;private window
-    </message>
     <message name="IDS_BOOKMARK_BAR_OPEN_ALL_COUNT" desc="Menu title for opening all urls in a bookmark folder">
         {COUNT, plural,
           =0 {&amp;Open all}
@@ -116,12 +110,6 @@
   <if expr="use_titlecase">
     <message name="IDS_BOOKMARK_BAR_OPEN_ALL" desc="In Title Case: Menu title for opening all urls in a bookmark folder">
         &amp;Open All Bookmarks
-    </message>
-    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_NEW_WINDOW" desc="In Title Case: Menu title for opening all urls in a bookmark folder in a new window">
-        Open All Bookmarks in &amp;New Window
-    </message>
-    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_INCOGNITO" desc="In Title Case: Menu description for opening all urls in a bookmark folder in a private window">
-        Open All Bookmarks in &amp;Private Window
     </message>
     <message name="IDS_BOOKMARK_BAR_OPEN_ALL_COUNT" desc="In Title Case: Menu title for opening all urls in a bookmark folder">
         {COUNT, plural,
@@ -315,64 +303,22 @@
     <message name="IDS_BOOKMARK_MANAGER" desc="The label of the menu item that shows the bookmark manager">
       &amp;Bookmark manager
     </message>
-    <message name="IDS_BOOKMARK_MANAGER_FOLDERS_MENU" desc="Title of the folders menu in the bookmark manager.">
-      Folders
-    </message>
     <message name="IDS_BOOKMARK_MANAGER_ORGANIZE_MENU" desc="Title of the organize menu in the bookmark manager.">
       Organize
     </message>
-    <message name="IDS_BOOKMARK_MANAGER_SHOW_IN_FOLDER" desc="The label of the menu item in the bookmark manager context menu that changes the selection in the tree to match the folder of the selected item in the table.">
-      Show in folder
-    </message>
-    <message name="IDS_BOOKMARK_MANAGER_SORT" desc="The label of the menu item in the bookmark manager organize menu that alphabetizes the bookmarks/folders by title.">
-      Reorder by title
-    </message>
-    <message name="IDS_BOOKMARK_MANAGER_IMPORT_MENU" desc="Title of the import menu item in the bookmark manager.">
-      Import bookmarks from HTML file...
-    </message>
-    <message name="IDS_BOOKMARK_MANAGER_EXPORT_MENU" desc="Title of the export menu item in the bookmark manager.">
-      Export bookmarks to HTML file...
-    </message>
     <message name="IDS_BOOKMARK_MANAGER_INVALID_URL" desc="Error message to display when the user tries to edit or create a bookmark with an invalid URL.">
       Invalid URL
-    </message>
-    <message name="IDS_BOOKMARK_MANAGER_RECENT" desc="The label for the tree item that shows the recently added bookmarks.">
-      Recent
-    </message>
-    <message name="IDS_BOOKMARK_MANAGER_SEARCH" desc="The label for the tree item that shows the search results for the bookmarks.">
-      Search
     </message>
   </if>
   <if expr="use_titlecase">
     <message name="IDS_BOOKMARK_MANAGER" desc="In Title Case: The label of the menu item that shows the bookmark manager">
       &amp;Bookmark Manager
     </message>
-    <message name="IDS_BOOKMARK_MANAGER_FOLDERS_MENU" desc="In Title Case: Title of the folders menu in the bookmark manager.">
-      Folders
-    </message>
     <message name="IDS_BOOKMARK_MANAGER_ORGANIZE_MENU" desc="In Title Case: Title of the organize menu in the bookmark manager.">
       Organize
     </message>
-    <message name="IDS_BOOKMARK_MANAGER_SHOW_IN_FOLDER" desc="In Title Case: The label of the menu item in the bookmark manager context menu that changes the selection in the tree to match the folder of the selected item in the table.">
-      Show in Folder
-    </message>
-    <message name="IDS_BOOKMARK_MANAGER_SORT" desc="In Title Case: The label of the menu item in the bookmark manager organize menu that alphabetizes the bookmarks/folders by title.">
-      Reorder by Title
-    </message>
-    <message name="IDS_BOOKMARK_MANAGER_IMPORT_MENU" desc="In Title Case: Title of the import menu item in the bookmark manager.">
-      Import Bookmarks from HTML File...
-    </message>
-    <message name="IDS_BOOKMARK_MANAGER_EXPORT_MENU" desc="In Title Case: Title of the export menu item in the bookmark manager.">
-      Export Bookmarks to HTML File...
-    </message>
     <message name="IDS_BOOKMARK_MANAGER_INVALID_URL" desc="In Title Case: Error message to display when the user tries to edit or create a bookmark with an invalid URL.">
       Invalid URL.
-    </message>
-    <message name="IDS_BOOKMARK_MANAGER_RECENT" desc="In Title Case: The label for the tree item that shows the recently added bookmarks.">
-      Recent
-    </message>
-    <message name="IDS_BOOKMARK_MANAGER_SEARCH" desc="In Title Case: The label for the tree item that shows the search results for the bookmarks.">
-      Search
     </message>
   </if>
   <message name="IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME" desc="Filename that pre-populates the filename field when user attempts to export their bookmarks from Bookmark Manager.">

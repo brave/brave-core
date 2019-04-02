@@ -101,6 +101,7 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="8848045066928358658">Per tal que Brave sigui més segur, hem desactivat algunes de les extensions que no figuren a <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i que és possible que s'hagin afegit sense que ho sapigueu.</translation>
 <translation id="8148611988012584308">Personalitza i controla Brave</translation>
 <translation id="5849446944780602366">Personalitza i controla Brave. Hi ha una actualització disponible.</translation>
+<translation id="6315734375101223238">Personalitza i controla Brave. Cal la teva intervenció. Fes clic per obtenir més informació.</translation>
 <translation id="9071554113102421877">&amp;Obre a Brave</translation>
 <translation id="2176825726964012531">Quant a &amp;Brave</translation>
 <translation id="5450493308072741203">Actualitza &amp;Brave</translation>
@@ -125,6 +126,7 @@ En iniciar la sessió, sigui amb l'usuari que sigui, es combinarà amb <ph name=
 <translation id="1853997773668795891">Voleu enllaçar les vostres dades de Brave amb aquest compte?</translation>
 <translation id="1326766910007115955">Esteu a punt d'iniciar la sessió amb un compte gestionat i d'atorgar el control del vostre perfil de Brave a l'administrador corresponent. Les dades de Brave, com ara aplicacions, adreces d'interès, historial, contrasenyes i altres configuracions, s'enllaçaran permanentment amb <ph name="USER_NAME"/>. Podreu suprimir aquestes dades mitjançant el Tauler de Comptes de Brave Software, però no les podreu associar amb un altre compte. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Esteu a punt d'iniciar la sessió amb un compte gestionat i d'atorgar el control del vostre perfil de Brave a l'administrador corresponent. Les dades de Brave, com ara aplicacions, adreces d'interès, historial, contrasenyes i altres configuracions, s'enllaçaran permanentment amb <ph name="USER_NAME"/>. Podreu suprimir aquestes dades mitjançant el Tauler de Comptes de Brave Software, però no les podreu associar amb un altre compte. De manera opcional, podeu crear un perfil nou per mantenir les vostres dades de Brave a part. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">L'administrador del sistema ha configurat Brave perquè obri un navegador alternatiu per accedir a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> abans utilitzava Brave</translation>
 <translation id="1384923383737428730">Hi ha programari nociu a l'ordinador. Brave el pot suprimir, restaurar la configuració i desactivar les extensions perquè el navegador torni a funcionar amb normalitat.</translation>
 <translation id="8919921662052966648">Brave no ha pogut sincronitzar les dades. Actualitzeu la frase de contrasenya de sincronització.</translation>
@@ -173,7 +175,6 @@ Per obtenir més instruccions, consulteu el correu electrònic a <ph name="ACCOU
 <translation id="2871190378186459992">Descobriu aplicacions, jocs, extensions i temes genials per a Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Regla d'entrada de Brave per permetre el trànsit de mDNS.</translation>
-<translation id="3795403186582265456">Brave pot reconèixer les imatges i el text d'una imatge perquè entenguis millor el contingut de la pàgina. Per fer-ho, ha d'enviar imatges de la pàgina als servidors de Brave Software.</translation>
 <translation id="7276297358157391541">Perquè el corrector ortogràfic sigui més útil, Brave envia als servidors de Brave Software el text que escriviu al navegador i, així, podeu fer servir la mateixa tecnologia de correcció ortogràfica de la Cerca de Brave Software.</translation>
 <translation id="1807774211756215222">Obre l'enllaç en una pes&amp;tanya nova a Brave</translation>
 <translation id="4624945300945265642">Obre l'enllaç en una finestra d'incò&amp;gnit a Brave</translation>
@@ -190,7 +191,6 @@ Per obtenir més instruccions, consulteu el correu electrònic a <ph name="ACCOU
 <translation id="5173820533850252773">Brave no està actualitzat</translation>
 <translation id="6389268239133412586">Brave no es pot actualitzar</translation>
 <translation id="7963515534397191222">Brave no s'ha pogut actualitzar a la darrera versió, així que no pots gaudir de les noves funcions ni de les correccions de seguretat.</translation>
-<translation id="3472158705945346956">El gestor t'ha de suprimir i tornar a afegir a Brave.</translation>
 <translation id="1705567146636171298">Actualitza Brave</translation>
 <translation id="3598551856834560515">Actualitza Brave per iniciar la sincronització</translation>
 <translation id="4050175100176540509">La versió més recent incorpora millores de seguretat i funcions noves importants.</translation>
@@ -269,9 +269,9 @@ Per obtenir més instruccions, consulteu el correu electrònic a <ph name="ACCOU
 <translation id="8372880274820509128">Per més seguretat, Brave encriptarà les vostres dades.</translation>
 <translation id="7445061995866044926">Voleu tancar la sessió de Brave?</translation>
 <translation id="7453070689008684791">Brave accedirà a Drive per fer suggeriments a la barra d'adreces</translation>
-<translation id="7713466009760073734">Brave OS es mostra en aquest idioma</translation>
+<translation id="9221712274065451529">És l'idioma en què es mostra la IU de Brave OS</translation>
 <translation id="3518788198614984730">Mostra Brave OS en aquest idioma</translation>
-<translation id="8258976055610040706">Brave es mostra en aquest idioma</translation>
+<translation id="5757460455745382269">És l'idioma en què es mostra la IU de Brave</translation>
 <translation id="2335583906071111058">Mostra Brave en aquest idioma</translation>
 <translation id="8926637909431618259">Continua executant les aplicacions en segon pla quan es tanqui Brave</translation>
 <translation id="6056473803837713617">Informa de la <ph name="BEGIN_LINK"/>configuració actual<ph name="END_LINK"/> per ajudar-nos a millorar Brave</translation>

@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Zaznali smo težave z vašo denarnico. Pred nadaljnjo obdelavo transakcij morate obnoviti svojo varnostno kopijo denarnice.</translation>
 <translation id="7797604753681168055">Obnovite zdaj!</translation>
 <translation id="1184075897575325927">Žal je videti, da je bilo to sredstvo že uveljavljeno.</translation>
+<translation id="7180611975245234373">Osveži</translation>
+<translation id="839736845446313156">Registracija</translation>
+<translation id="583281660410589416">Neznano</translation>
 <translation id="5094577350232361255">o</translation>
 <translation id="4918086044614829423">Sprejmi</translation>
 <translation id="6832986780040139899">© Brave Software. Brave je zaščitena blagovna znamka podjetja Brave Software. Imena spletnih mest so lahko blagovne znamke ali registrirane blagovne znamke lastnika spletnega mesta.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">iz te sinhronizacijske verige</translation>
 <translation id="610118613261910287">Ogled kodnih besed</translation>
 <translation id="8588535459744752615">Iskanje naprave</translation>
-<translation id="391177677159359824">Sync (beta)</translation>
+<translation id="6406506848690869874">Sinhronizacija</translation>
 <translation id="28332161031213248">Spodnji seznam naprav vključuje vse naprave v vaši verigi za sinhronizacijo. Posamezno napravo lahko upravljate s poljubne druge naprave.</translation>
 <translation id="8153617760825732120">ime naprave</translation>
 <translation id="4241512165288542484">(Ta naprava)</translation>
@@ -327,7 +330,6 @@
 <translation id="5591129654353352557">Shranjene nastavitve spletne strani</translation>
 <translation id="7859704718976024901">Zgodovina iskanja</translation>
 <translation id="2339730291919608488">Zapusti sinhronizacijsko verigo</translation>
-<translation id="4797449295451979552">Nastavitev Sync (beta)</translation>
 <translation id="298546024891487702">Za začetek morate v vseh napravah, ki jih nameravate sinhronizirati, namestiti Brave. Za povezavo v verigo začnite verigo sinhronizacije, ki jo boste uporabili za varno povezavo vseh vaših naprav.</translation>
 <translation id="6200528822592747640">Zaženite novo verigo sinhronizacije</translation>
 <translation id="5184726904895809379">Imam kodo za sinhronizacijo</translation>
@@ -359,8 +361,6 @@
 <translation id="1736420071277903564">Računalnik</translation>
 <translation id="1258250624898033822">Neveljavna sinhronizacijska koda.</translation>
 <translation id="3259723213051400722">Poskusite znova.</translation>
-<translation id="3779810277399252432">Ni internetne povezave.</translation>
-<translation id="4380604249778320975">Poskusite znova, ko bo povezava na voljo.</translation>
 <translation id="5257281382608458806">Zahtevano je ime naprave.</translation>
 <translation id="8349682220522608879">Dodajte sinhronizacijsko kodo.</translation>
 <translation id="1468095392829989299">Ni mogoče stopiti v stik s strežniki Sync.</translation>

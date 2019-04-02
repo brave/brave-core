@@ -13,9 +13,9 @@
 <translation id="4983925687993168579">Statistika</translation>
 <translation id="6165477144235978006">Brave'i maksed</translation>
 <translation id="3489524616427966890">Ava aknad ja vahekaardid</translation>
-<translation id="9173846700806833701">Widevine ei ole installitud</translation>
-<translation id="2433569048491784801">Widevine ei ole installitud.</translation>
 <translation id="3699882589215410581">Installi ja käivita Widevine</translation>
+<translation id="8053096063396012732">Installi Widevine</translation>
+<translation id="4840334696217618631">Taaskäivita Widevine lubamiseks brauser</translation>
 <translation id="8410111618231938546">Google Widevine on osa digitaalõiguste haldamise (DRM) süsteemist, mida Brave Software ei oma ega saa kontrollida. Google Widevine laaditakse alla Google'i serveritest, mitte meie omadest. See laaditakse alla ainult siis, kui annate selleks oma loa. Me ei soovita DRMi süsteemi kasutamist, kuid austame oma kasutajate valikut ja mõistame, et mõned Brave'i kasutajad soovivad kasutada teenuseid, kus seda vaja on.
 
 Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. Nõustute, et Brave ei vastuta mis tahes kahjude eest, mis tulenevad Google Widevine'i kasutamisest.</translation>
@@ -31,6 +31,8 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="7543906827780734027">Brave pole seda laiendust veel vaadanud - see võib olla pahatahtlik. Kas lisada "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Brave'i värvid</translation>
 <translation id="5341901626640816374">Kasuta laia aadressiriba</translation>
+<translation id="6123134130710658846">Peida Brave Rewards nupp</translation>
+<translation id="7635711399568194460">Peidab omniribalt Brave Rewards nupu, kui Brave Rewards pole lubatud</translation>
 <translation id="7965178729203412357">Uus Tor'i identiteet</translation>
 <translation id="8784924142044142231">Sulge Tor</translation>
 <translation id="5410152065859052603">Tor</translation>

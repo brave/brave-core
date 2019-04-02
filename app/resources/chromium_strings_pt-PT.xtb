@@ -101,6 +101,7 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="8848045066928358658">Para tornar o Brave mais seguro, desativámos a seguinte extensão, que não está listada na <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>, e é possível que tenha sido adicionada sem o seu conhecimento.</translation>
 <translation id="8148611988012584308">Personalizar e controlar o Brave</translation>
 <translation id="5849446944780602366">Personalize e controle o Brave. Está disponível uma atualização.</translation>
+<translation id="6315734375101223238">Personalize e controle o Brave. É necessária a sua atenção – clique para obter detalhes.</translation>
 <translation id="9071554113102421877">&amp;Abrir no Brave</translation>
 <translation id="2176825726964012531">Acerca do &amp;Brave</translation>
 <translation id="5450493308072741203">Atualizar o &amp;Brave</translation>
@@ -125,6 +126,7 @@ Se continuar com este início de sessão, as informações do Brave, como marcad
 <translation id="1853997773668795891">Associar os seus dados do Brave a esta conta?</translation>
 <translation id="1326766910007115955">Está a iniciar sessão com uma conta gerida e a permitir que o gestor controle o seu perfil do Brave. Os seus dados do Brave, como aplicações, marcadores, histórico, palavras-passe e outras definições, ficarão associados definitivamente a <ph name="USER_NAME"/>. Poderá eliminar estes dados através do Painel de Controlo das Contas Brave Software, mas não poderá associá-los a outra conta. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Está a iniciar sessão com uma conta gerida e a permitir que o gestor controle o seu perfil do Brave. Os seus dados do Brave, como aplicações, marcadores, histórico, palavras-passe e outras definições, ficarão associados definitivamente a <ph name="USER_NAME"/>. Poderá eliminar estes dados através do Painel de Controlo das Contas Brave Software, mas não poderá associá-los a outra conta. Opcionalmente, pode criar um perfil novo para manter os seus dados atuais do Brave em separado. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">O administrador do sistema configurou o Brave para abrir um navegador alternativo, de modo a aceder a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> estava a utilizar o Brave</translation>
 <translation id="1384923383737428730">Existe software prejudicial no seu computador. O Brave pode removê-lo, restaurar as suas definições e desativar as extensões para que o navegador volte a funcionar normalmente.</translation>
 <translation id="8919921662052966648">O Brave não conseguiu sincronizar os dados. Atualize a frase de acesso da Sincronização.</translation>
@@ -173,7 +175,8 @@ Para obter mais instruções, verifique o seu email em <ph name="ACCOUNT_EMAIL"/
 <translation id="2871190378186459992">Descubra aplicações, jogos, extensões e temas fantásticos para o Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Regra de importação para o Brave permitir o tráfego mDNS.</translation>
-<translation id="3795403186582265456">O Brave consegue reconhecer imagens e texto de uma imagem ao enviar as imagens de uma página para os servidores da Brave Software, o que lhe permite compreender melhor o conteúdo da página.</translation>
+<translation id="8207657266087451193">Se uma imagem não tiver uma descrição útil, o Brave tenta fornecer uma. Para criar as descrições, são enviadas imagens para a Brave Software. Pode desativar esta opção nas definições em qualquer altura.</translation>
+<translation id="5499063270485366718">Se uma imagem não tiver uma descrição útil, o Brave tenta fornecer uma. Para criar as descrições, são enviadas imagens para a Brave Software.</translation>
 <translation id="7276297358157391541">O Brave pode disponibilizar uma verificação ortográfica mais inteligente ao enviar o que escreve no navegador para os servidores da Brave Software, o que lhe permite utilizar a mesma tecnologia de verificação ortográfica da Pesquisa Brave Software.</translation>
 <translation id="1807774211756215222">Abrir link num novo &amp;separador do Brave</translation>
 <translation id="4624945300945265642">Abrir link numa janela de nave&amp;gação anónima do Brave</translation>
@@ -190,7 +193,6 @@ Para obter mais instruções, verifique o seu email em <ph name="ACCOUNT_EMAIL"/
 <translation id="5173820533850252773">O Brave está desatualizado</translation>
 <translation id="6389268239133412586">Não é possível atualizar o Brave.</translation>
 <translation id="7963515534397191222">Não foi possível atualizar o Brave para a versão mais recente, pelo que não está a beneficiar das novas funcionalidades e correções de segurança.</translation>
-<translation id="3472158705945346956">O seu gestor tem de o remover e adicionar novamente ao Brave.</translation>
 <translation id="1705567146636171298">Atualizar o Brave</translation>
 <translation id="3598551856834560515">Atualize o Brave para iniciar a sincronização</translation>
 <translation id="4050175100176540509">Estão disponíveis na versão mais recente melhorias de segurança importantes e novas funcionalidades.</translation>
@@ -269,9 +271,9 @@ Para obter mais instruções, verifique o seu email em <ph name="ACCOUNT_EMAIL"/
 <translation id="8372880274820509128">Para uma segurança adicional, o Brave encripta os seus dados.</translation>
 <translation id="7445061995866044926">Pretende terminar sessão no Brave?</translation>
 <translation id="7453070689008684791">O Brave vai aceder ao seu Drive para fornecer sugestões na barra de endereço.</translation>
-<translation id="7713466009760073734">O SO Brave é apresentado neste idioma</translation>
+<translation id="9221712274065451529">Este idioma é utilizado para apresentar a IU do Brave OS</translation>
 <translation id="3518788198614984730">Apresentar o SO Brave neste idioma</translation>
-<translation id="8258976055610040706">O Brave é apresentado neste idioma</translation>
+<translation id="5757460455745382269">Este idioma é utilizado para apresentar a IU do Brave</translation>
 <translation id="2335583906071111058">Apresentar o Brave neste idioma</translation>
 <translation id="8926637909431618259">Continuar a executar aplicações em segundo plano quando o Brave está fechado</translation>
 <translation id="6056473803837713617">Ajude a melhorar o Brave ao comunicar as <ph name="BEGIN_LINK"/>definições atuais<ph name="END_LINK"/></translation>

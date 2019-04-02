@@ -12,11 +12,11 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "広告表示に対する支払いを受け取り、先払いでお気に入りコンテンツのクリエイターを支援しましょう。",
+    "message": "広告表示に対する支払いを受け取り、そのお金でお気に入りコンテンツのクリエイターを支援しましょう。",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "あなたはプライバシーを尊重する広告を見るためのトークンを得られるようになりました。",
+    "message": "プライバシーを尊重する広告を見ることでトークンを得られるようになりました。",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeFooterTextOne": {
@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
-    "message": "ブレイブペイメントに重大な更新がありました",
+    "message": "Braveリワードに大きな更新がありました。",
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
@@ -44,7 +44,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "on": {
-    "message": "オン",
+    "message": ":",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
@@ -52,7 +52,7 @@
     "description": "Tells user that this particular publisher is verified publisher"
   },
   "rewardsContributeAttentionScore": {
-    "message": "注目",
+    "message": "注目度",
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
@@ -185,6 +185,10 @@
     "message": "新しいグラントがあります。",
     "description": "Description for new grant notification"
   },
+  "backupNow": {
+    "message": "Backup Now",
+    "description": "Notification button text when we ask user to backup wallet"
+  },
   "backupWalletTitle": {
     "message": "ウォレットをバックアップする",
     "description": "Notification title when we ask user to backup wallet"
@@ -194,7 +198,7 @@
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "あなたの Brave 支払アカウントは、入金を待っています。",
+    "message": "Your Brave Rewards account is waiting for a deposit.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -214,7 +218,7 @@
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "チップの処理中に問題がありました。もう一度やり直してください。",
+    "message": "Unable to send your tip. Please try again later.",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -328,5 +332,49 @@
   "walletFailedButton": {
     "message": "再試行",
     "description": "Button for re-try after wallet creation failed"
+  },
+  "addFunds": {
+    "message": "Add funds",
+    "description": "Button for adding funds"
+  },
+  "rewardsSettings": {
+    "message": "Rewards Settings",
+    "description": "Button for opening settings page"
+  },
+  "earningsClaimDefault": {
+    "message": "Your Ads earnings are available.",
+    "description": "Panel notification text for Ads grant"
+  },
+  "and": {
+    "message": "and",
+    "description": "The word 'and'"
+  },
+  "braveRewardsSubTitle": {
+    "message": "ウェブサイト閲覧で報酬を得よう！",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "disabledPanelTextTwo": {
+    "message": "Earn by viewing privacy-respecting ads, and pay it forward to support content creators you love.",
+    "description": "Text block for wallet disabled panel"
+  },
+  "enableRewards": {
+    "message": "Brave Rewardsを有効にする",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "privacyPolicy": {
+    "message": "Privacy Policy",
+    "description": "Privacy Policy"
+  },
+  "serviceText": {
+    "message": "By clicking 'Enable Brave Rewards', you indicate that you have read and agree to the",
+    "description": "Terms of service main text"
+  },
+  "termsOfService": {
+    "message": "Terms of Service",
+    "description": "Terms of Service"
+  },
+  "welcomeBack": {
+    "message": "Welcome Back!",
+    "description": "Title message for wallet disabled panel"
   }
 }

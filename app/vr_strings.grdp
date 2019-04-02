@@ -68,7 +68,7 @@
   <!-- VR browser -->
   <!-- TODO(https://crbug.com/731802): Only build these when the VR browser is supported. -->
   <message name="IDS_VR_UPDATE_KEYBOARD_PROMPT" desc="Text shown when the keyboard is not installed or needs to be updated on the user's device">
-    Install or update Daydream Keyboard to use Brave in VR
+    To type text, update the Daydream Keyboard app
   </message>
   <message name="IDS_VR_SHELL_EXIT_PROMPT_DESCRIPTION" desc="Text on the exit prompt that shows up when the user tries to use a feature that is not supported in VR">
     This feature is not supported in VR

@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
-    "message": "Kami memberikan Brave Payments peningkatan besar.",
+    "message": "Kami memberikan Brave Rewards peningkatan besar.",
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
@@ -44,7 +44,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "on": {
-    "message": "pada",
+    "message": "di",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
@@ -185,20 +185,24 @@
     "message": "Ada hibah yang menanti Anda.",
     "description": "Description for new grant notification"
   },
+  "backupNow": {
+    "message": "Cadangkan Sekarang",
+    "description": "Notification button text when we ask user to backup wallet"
+  },
   "backupWalletTitle": {
     "message": "Cadangkan Dompet\n",
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Harap buat simpanan cadangan dompet Brave Anda.\n",
+    "message": "Harap buat cadangan dompet Brave Anda.",
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "Akun Pembayaran Brave Anda sedang menunggu setoran.\n",
+    "message": "Akun Brave Rewards Anda menunggu deposit.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
-    "message": "Saldo Tak Mencukupi\n",
+    "message": "Saldo Tak Mencukupi",
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
@@ -214,7 +218,7 @@
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "Terdapat masalah dalam memproses tip Anda, silakan coba kembali.",
+    "message": "Tidak dapat mengirim tip Anda. Coba lagi nanti.",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -222,27 +226,27 @@
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   },
   "captchaDrag": {
-    "message": "Seret ikon BAT ke\n",
+    "message": "Seret ikon BAT ke",
     "description": "Directs the user to drag the BAT icon"
   },
   "captchaLuckyDay": {
-    "message": "Ini hari keberuntungan Anda!\n",
+    "message": "Ini hari keberuntungan Anda!",
     "description": "Cosmetic text upon captcha success"
   },
   "captchaOnTheWay": {
-    "message": "Imbalan token Anda sedang dikirim.\n",
+    "message": "Imbalan token Anda sedang dikirim.",
     "description": "Cosmetic text indicating grant funds are on the way"
   },
   "captchaProveHuman": {
-    "message": "Buktikan bahwa Anda adalah manusia!\n",
+    "message": "Buktikan bahwa Anda adalah manusia!",
     "description": "Cosmetic text for captcha prompt"
   },
   "captchaTarget": {
-    "message": "sasaran.\n",
+    "message": "sasaran.",
     "description": "Captcha Target"
   },
   "captchaMissedTarget": {
-    "message": "Hmm... Kurang Pas. Coba Lagi.\n",
+    "message": "Hmm... Kurang Pas. Coba Lagi.",
     "description": "Message upon failing captcha"
   },
   "claim": {
@@ -250,15 +254,15 @@
     "description": "Claim text"
   },
   "newTokenGrant": {
-    "message": "Hibah Token Gratis\n",
+    "message": "Hibah Token Gratis",
     "description": "Token grant label"
   },
   "grantExpire": {
-    "message": "Tanggal Kedaluwarsa Hibah\n",
+    "message": "Tanggal Kedaluwarsa Hibah",
     "description": "Grant expiry label"
   },
   "grantAlreadyClaimedText": {
-    "message": "Maaf, tampaknya hibah ini sudah diklaim.\n",
+    "message": "Maaf, tampaknya hibah ini sudah diklaim.",
     "description": "Description of the error when grant is already claimed."
   },
   "grantGeneralErrorButton": {
@@ -266,11 +270,11 @@
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
-    "message": "Imbalan Brave mengalami masalah. Silakan coba lagi nanti.\n",
+    "message": "Brave Rewards mengalami masalah. Silakan coba lagi nanti.",
     "description": "Error text when user is having problems claiming a grant."
   },
   "grantGeneralErrorTitle": {
-    "message": "Ups, ada yang keliru. Silakan coba lagi nanti.\n",
+    "message": "Ups, ada yang keliru. Silakan coba lagi nanti.",
     "description": "Error title when user is having problems claiming a grant."
   },
   "grantGoneButton": {
@@ -278,27 +282,27 @@
     "description": "Button text for clearing the error."
   },
   "grantGoneText": {
-    "message": "Maaf, tampaknya hibah ini telah kedaluwarsa.\n",
+    "message": "Maaf, tampaknya hibah ini telah kedaluwarsa.",
     "description": "Error text when user missed a grant."
   },
   "grantGoneTitle": {
-    "message": "Hibah ini tidak lagi tersedia.\n",
+    "message": "Hibah ini tidak lagi tersedia.",
     "description": "Error title when user missed a grant."
   },
   "unVerifiedPublisher": {
-    "message": "Belum diverifikasi\n",
+    "message": "Belum diverifikasi",
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Pembuat ini belum mendaftar untuk menerima kontribusi dari pengguna Brave. Setiap tips yang Anda kirim akan tetap disimpan di dompet Anda sampai mereka memverifikasi.\n",
+    "message": "Pembuat konten ini belum mendaftar untuk menerima kontribusi dari pengguna Brave. Setiap tips yang Anda kirim akan tetap disimpan di dompet Anda sampai mereka memverifikasi.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
-    "message": "Pelajari lebih lanjut.\n",
+    "message": "Pelajari lebih lanjut.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Anda telah menetapkan {{reservedAmount}} BAT untuk pembuat yang belum mendaftar untuk menerima kontribusi. Peramban Anda akan terus berusaha memberi kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.\n",
+    "message": "Anda telah menetapkan {{reservedAmount}} BAT untuk pembuat konten yang belum mendaftar untuk menerima kontribusi. Peramban Anda akan terus berusaha memberi kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -310,7 +314,7 @@
     "description": "Off state text for Panel's disabled state"
   },
   "disabledPanelSettings": {
-    "message": "Pengaturan.\n",
+    "message": "Setelan",
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
@@ -318,7 +322,7 @@
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
-    "message": "Imbalan Brave adalah\n",
+    "message": "Brave Rewards adalah",
     "description": "Title for Panel's disabled state"
   },
   "walletFailedTitle": {
@@ -328,5 +332,49 @@
   "walletFailedButton": {
     "message": "Coba lagi",
     "description": "Button for re-try after wallet creation failed"
+  },
+  "addFunds": {
+    "message": "Tambah dana",
+    "description": "Button for adding funds"
+  },
+  "rewardsSettings": {
+    "message": "Setelan Rewards",
+    "description": "Button for opening settings page"
+  },
+  "earningsClaimDefault": {
+    "message": "Pendapatan Iklan Anda telah tersedia.",
+    "description": "Panel notification text for Ads grant"
+  },
+  "and": {
+    "message": "dan",
+    "description": "The word 'and'"
+  },
+  "braveRewardsSubTitle": {
+    "message": "Dapatkan Hadiah untuk Penjelajahan Anda!",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "disabledPanelTextTwo": {
+    "message": "Earn by viewing privacy-respecting ads, and pay it forward to support content creators you love.",
+    "description": "Text block for wallet disabled panel"
+  },
+  "enableRewards": {
+    "message": "Aktifkan Brave Rewards",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "privacyPolicy": {
+    "message": "Kebijakan Privasi",
+    "description": "Privacy Policy"
+  },
+  "serviceText": {
+    "message": "Dengan mengklik \"Aktifkan Brave Rewards\", Anda menyatakan bahwa Anda telah membaca dan menyetujui",
+    "description": "Terms of service main text"
+  },
+  "termsOfService": {
+    "message": "Ketentuan Layanan",
+    "description": "Terms of Service"
+  },
+  "welcomeBack": {
+    "message": "Selamat Datang Kembali!",
+    "description": "Title message for wallet disabled panel"
   }
 }

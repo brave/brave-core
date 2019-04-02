@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/importer/importer_list.cc b/chrome/browser/importer/importer_list.cc
-index c12f8955c7a608d90b8492b5425958da3e7e429d..f8eb1cfbaec76ac4da3dee4f4cebf9aeaffb7027 100644
+index 71659dd4133d71a90276f364ca685e78533b8979..f33c4354a6e5f7d69ca347e737e272494d1b036e 100644
 --- a/chrome/browser/importer/importer_list.cc
 +++ b/chrome/browser/importer/importer_list.cc
 @@ -29,6 +29,9 @@
@@ -12,7 +12,7 @@ index c12f8955c7a608d90b8492b5425958da3e7e429d..f8eb1cfbaec76ac4da3dee4f4cebf9ae
  namespace {
  
  #if defined(OS_WIN)
-@@ -119,6 +122,7 @@ void DetectFirefoxProfiles(const std::string locale,
+@@ -122,6 +125,7 @@ void DetectFirefoxProfiles(const std::string locale,
      firefox.app_path = app_path;
    firefox.services_supported = importer::HISTORY | importer::FAVORITES |
                                 importer::PASSWORDS | importer::SEARCH_ENGINES |
@@ -20,7 +20,7 @@ index c12f8955c7a608d90b8492b5425958da3e7e429d..f8eb1cfbaec76ac4da3dee4f4cebf9ae
                                 importer::AUTOFILL_FORM_DATA;
    firefox.locale = locale;
    profiles->push_back(firefox);
-@@ -136,21 +140,37 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
+@@ -140,21 +144,37 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
  #if defined(OS_WIN)
    if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);
