@@ -55,8 +55,8 @@ interface BatAdsClient {
   SetCatalogIssuers(string issuers_info);
   ConfirmAd(string notification_info);
   SaveBundleState(string bundle_state) => (int32 result);
-  GetAds(string region, string category) =>
-      (int32 result, string region, string category, array<string> ad_info);
+  GetAds(string category) =>
+      (int32 result, string category, array<string> ad_info);
 };
 
 interface BatAds {
