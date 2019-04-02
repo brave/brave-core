@@ -2163,10 +2163,10 @@ bool SaveContributionInfoOnFileTaskRunner(
 }
 
 void RewardsServiceImpl::OnContributionInfoSaved(
-    const ledger::REWARDS_CATEGORY category, bool success) {
-  if (success && category == ledger::REWARDS_CATEGORY::ONE_TIME_TIP) {
-    // TODO(nejczdovc): this should be triggered from the UI
-    GetOneTimeTips();
+    const ledger::REWARDS_CATEGORY category,
+    bool success) {
+  for (auto& observer : observers_) {
+    observer.OnContributionSaved(this, success, category);
   }
 }
 

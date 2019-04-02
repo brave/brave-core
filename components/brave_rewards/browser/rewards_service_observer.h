@@ -84,6 +84,10 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnRecurringTipRemoved(
       brave_rewards::RewardsService* rewards_service,
       bool success) {}
+  virtual void OnContributionSaved(
+      brave_rewards::RewardsService* rewards_service,
+      bool success,
+      int category) {}
   // DO NOT ADD ANY MORE METHODS HERE UNLESS IT IS A BROADCAST NOTIFICATION
   // RewardsServiceObserver should not be used to return responses to the
   // caller. Method calls on RewardsService should use callbacks to return

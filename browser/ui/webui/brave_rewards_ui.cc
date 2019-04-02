@@ -170,6 +170,11 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnRecurringTipRemoved(brave_rewards::RewardsService* rewards_service,
                              bool success) override;
 
+  void OnContributionSaved(
+    brave_rewards::RewardsService* rewards_service,
+    bool success,
+    int category) override;
+
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -1072,6 +1077,22 @@ void RewardsDOMHandler::OnRecurringTipRemoved(
 
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards.recurringTipRemoved", base::Value(success));
+}
+
+void RewardsDOMHandler::OnContributionSaved(
+    brave_rewards::RewardsService* rewards_service,
+    bool success,
+    int category) {
+  if (!web_ui()->CanCallJavascript()) {
+     return;
+  }
+
+  base::DictionaryValue result;
+  result.SetBoolean("success", success);
+  result.SetInteger("category", category);
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.onContributionSaved", result);
 }
 
 }  // namespace
