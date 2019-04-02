@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_shields/browser/dat_file_util.h"
+
+#include <string>
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -22,7 +25,9 @@ void GetDATFileData(const base::FilePath& file_path,
   }
 
   buffer->resize(size);
-  if (size != base::ReadFile(file_path, (char*)&buffer->front(), size)) {
+  if (size != base::ReadFile(file_path,
+                             reinterpret_cast<char*>(&buffer->front()),
+                             size)) {
     LOG(ERROR) << "GetDATFileData: cannot "
                << "read dat file " << file_path;
   }

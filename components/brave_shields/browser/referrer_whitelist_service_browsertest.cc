@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -27,7 +28,7 @@ const std::string kLocalDataFilesComponentTestBase64PublicKey =
     "qwIDAQAB";
 
 class ReferrerWhitelistServiceTest : public ExtensionBrowserTest {
-public:
+ public:
   ReferrerWhitelistServiceTest() {}
 
   void SetUp() override {
@@ -39,7 +40,8 @@ public:
   void PreRunTestOnMainThread() override {
     ExtensionBrowserTest::PreRunTestOnMainThread();
     WaitForReferrerWhitelistServiceThread();
-    ASSERT_TRUE(g_brave_browser_process->local_data_files_service()->IsInitialized());
+    ASSERT_TRUE(g_brave_browser_process->local_data_files_service()->
+                IsInitialized());
   }
 
   void InitService() {
@@ -58,7 +60,8 @@ public:
     base::FilePath test_data_dir;
     GetTestDataDir(&test_data_dir);
     const extensions::Extension* mock_extension =
-        InstallExtension(test_data_dir.AppendASCII("referrer-whitelist-data"), 1);
+        InstallExtension(test_data_dir.AppendASCII("referrer-whitelist-data"),
+                         1);
     if (!mock_extension)
       return false;
 
@@ -72,23 +75,26 @@ public:
   void WaitForReferrerWhitelistServiceThread() {
     scoped_refptr<base::ThreadTestHelper> io_helper(
         new base::ThreadTestHelper(
-            g_brave_browser_process->referrer_whitelist_service()->GetTaskRunner()));
+            g_brave_browser_process->referrer_whitelist_service()->
+            GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
     base::RunLoop().RunUntilIdle();
   }
 
   bool IsWhitelistedReferrer(
     const GURL& firstPartyOrigin, const GURL& subresourceUrl) {
-    return g_brave_browser_process->referrer_whitelist_service()->IsWhitelisted(
-      firstPartyOrigin, subresourceUrl);
+    return g_brave_browser_process->referrer_whitelist_service()->
+      IsWhitelisted(firstPartyOrigin, subresourceUrl);
   }
 
   int GetWhitelistSize() {
-    return g_brave_browser_process->referrer_whitelist_service()->referrer_whitelist_.size();
+    return g_brave_browser_process->referrer_whitelist_service()->
+      referrer_whitelist_.size();
   }
 
   void ClearWhitelist() {
-    g_brave_browser_process->referrer_whitelist_service()->referrer_whitelist_.clear();
+    g_brave_browser_process->referrer_whitelist_service()->
+      referrer_whitelist_.clear();
   }
 };
 

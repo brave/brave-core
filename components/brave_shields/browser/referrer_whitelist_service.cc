@@ -57,7 +57,7 @@ void ReferrerWhitelistService::OnDATFileDataReady() {
     LOG(ERROR) << "Could not obtain referrer whitelist data";
     return;
   }
-  std::unique_ptr<base::Value> root = base::JSONReader::Read(file_contents_);
+  base::Optional<base::Value> root = base::JSONReader::Read(file_contents_);
   file_contents_.clear();
   if (!root) {
     LOG(ERROR) << "Failed to parse referrer whitelist data";

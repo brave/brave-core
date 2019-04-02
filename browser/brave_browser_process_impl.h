@@ -30,7 +30,7 @@ class HTTPSEverywhereService;
 class LocalDataFilesService;
 class ReferrerWhitelistService;
 class TrackingProtectionService;
-}
+}  // namespace brave_shields
 
 namespace extensions {
 class BraveTorClientUpdater;
