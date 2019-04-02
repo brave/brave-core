@@ -20,7 +20,7 @@ interface BatLedgerService {
 
 interface BatLedger {
   Initialize();
-  CreateWallet();
+  CreateWallet(string safetynet_token);
   FetchWalletProperties();
 
   GetAutoContributeProps() => (string props);

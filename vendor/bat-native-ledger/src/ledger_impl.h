@@ -68,7 +68,7 @@ class LedgerImpl : public ledger::Ledger,
 
   std::string GenerateGUID() const;
   void Initialize() override;
-  bool CreateWallet() override;
+  bool CreateWallet(const std::string& safetynet_token) override;
 
   void SetPublisherInfo(
       std::unique_ptr<ledger::PublisherInfo> publisher_info) override;

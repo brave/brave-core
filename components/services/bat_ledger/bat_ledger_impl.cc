@@ -52,8 +52,8 @@ void BatLedgerImpl::Initialize() {
   ledger_->Initialize();
 }
 
-void BatLedgerImpl::CreateWallet() {
-  ledger_->CreateWallet();
+void BatLedgerImpl::CreateWallet(const std::string& safetynet_token) {
+  ledger_->CreateWallet(safetynet_token);
 }
 
 void BatLedgerImpl::FetchWalletProperties() {

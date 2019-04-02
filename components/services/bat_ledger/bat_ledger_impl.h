@@ -27,7 +27,7 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   // bat_ledger::mojom::BatLedger
   void Initialize() override;
-  void CreateWallet() override;
+  void CreateWallet(const std::string& safetynet_token) override;
   void FetchWalletProperties() override;
 
   void GetAutoContributeProps(
