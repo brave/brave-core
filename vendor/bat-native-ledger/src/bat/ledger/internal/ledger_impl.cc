@@ -724,7 +724,7 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
     ledger::PendingContribution contribution;
     contribution.publisher_key = publisher.id;
     contribution.amount = amount;
-    contribution.category = ledger::REWARDS_CATEGORY::DIRECT_DONATION;
+    contribution.category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
 
     ledger::PendingContributionList list;
     list.list_ = std::vector<ledger::PendingContribution> { contribution };
@@ -741,7 +741,7 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
       std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
   braveledger_bat_helper::PublisherList list;
   bat_contribution_->InitReconcile(GenerateGUID(),
-                         ledger::REWARDS_CATEGORY::DIRECT_DONATION,
+                         ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
                          list,
                          direction_list);
 }

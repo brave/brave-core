@@ -178,12 +178,11 @@ void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
       "FROM contribution_info as ci "
       "INNER JOIN publisher_info AS pi ON ci.publisher_id = pi.publisher_id "
       "AND ci.month = ? AND ci.year = ? "
-      "AND (ci.category = ? OR ci.category = ?)"));
+      "AND ci.category = ?"));
 
   info_sql.BindInt(0, month);
   info_sql.BindInt(1, year);
-  info_sql.BindInt(2, ledger::REWARDS_CATEGORY::DIRECT_DONATION);
-  info_sql.BindInt(3, ledger::REWARDS_CATEGORY::TIPPING);
+  info_sql.BindInt(2, ledger::REWARDS_CATEGORY::ONE_TIME_TIP);
 
   while (info_sql.Step()) {
     std::string id(info_sql.ColumnString(0));

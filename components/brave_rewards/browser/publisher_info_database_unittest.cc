@@ -587,7 +587,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertPendingContribution) {
   contribution2.publisher_key = "key2";
   contribution2.amount = 20;
   contribution2.viewing_id = "aafsofdfsdnf23r23rn";
-  contribution2.category = ledger::REWARDS_CATEGORY::DIRECT_DONATION;
+  contribution2.category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
 
   ledger::PendingContributionList list;
   list.list_.push_back(contribution1);

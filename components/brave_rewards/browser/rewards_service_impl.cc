@@ -907,7 +907,7 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
 
     FetchWalletProperties();
 
-    if (category == ledger::REWARDS_CATEGORY::RECURRING_DONATION) {
+    if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
       MaybeShowNotificationTipsPaid();
     }
 
@@ -2164,7 +2164,7 @@ bool SaveContributionInfoOnFileTaskRunner(
 
 void RewardsServiceImpl::OnContributionInfoSaved(
     const ledger::REWARDS_CATEGORY category, bool success) {
-  if (success && category == ledger::REWARDS_CATEGORY::DIRECT_DONATION) {
+  if (success && category == ledger::REWARDS_CATEGORY::ONE_TIME_TIP) {
     // TODO(nejczdovc): this should be triggered from the UI
     GetOneTimeTips();
   }

@@ -19,9 +19,8 @@ const char _clear_favicon[] = "clear";
 
 LEDGER_EXPORT enum REWARDS_CATEGORY {
   AUTO_CONTRIBUTE = 1 << 1,  // 2
-  TIPPING = 1 << 2,
-  DIRECT_DONATION = 1 << 3,  // 8
-  RECURRING_DONATION = 1 << 4,  // 21
+  ONE_TIME_TIP = 1 << 3,  // 8
+  RECURRING_TIP = 1 << 4,  // 21
   ALL_CATEGORIES = (1 << 5) - 1,
 };
 
