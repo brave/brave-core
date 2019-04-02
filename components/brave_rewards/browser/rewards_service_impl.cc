@@ -1491,25 +1491,37 @@ void RewardsServiceImpl::SetCatalogIssuers(const std::string& json) {
 }
 
 std::pair<uint64_t, uint64_t> RewardsServiceImpl::GetEarningsRange() {
-  auto one_day_in_seconds = base::Time::kMicrosecondsPerDay /
-      base::Time::kMicrosecondsPerSecond;
-
   auto now = base::Time::Now();
   base::Time::Exploded exploded;
   now.LocalExplode(&exploded);
 
-  uint64_t offset_in_seconds;
-  if (exploded.day_of_month > 5) {
-    offset_in_seconds = (exploded.day_of_month - 5) * one_day_in_seconds;
-  } else {
-    offset_in_seconds = exploded.day_of_month * one_day_in_seconds;
+  if (exploded.day_of_month < 5) {
+    exploded.month--;
+    if (exploded.month < 1) {
+      exploded.month = 12;
+
+      exploded.year--;
+    }
   }
 
-  auto now_in_seconds = (now - base::Time()).InSeconds();
-  uint64_t from_timestamp = now_in_seconds - offset_in_seconds;
-  uint64_t to_timestamp = now_in_seconds;
+  exploded.day_of_month = 1;
 
-  return std::make_pair(from_timestamp, to_timestamp);
+  exploded.hour = 0;
+  exploded.minute = 0;
+  exploded.second = 0;
+  exploded.millisecond = 0;
+
+  base::Time from_timestamp;
+  auto success = base::Time::FromLocalExploded(exploded, &from_timestamp);
+  DCHECK(success);
+
+  uint64_t from_timestamp_in_seconds =
+      (from_timestamp - base::Time()).InSeconds();
+
+  uint64_t to_timestamp_in_seconds =
+      (now - base::Time()).InSeconds();
+
+  return std::make_pair(from_timestamp_in_seconds, to_timestamp_in_seconds);
 }
 
 void RewardsServiceImpl::ConfirmAd(const std::string& json) {
