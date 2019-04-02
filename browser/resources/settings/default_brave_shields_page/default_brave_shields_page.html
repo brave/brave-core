@@ -15,25 +15,34 @@
         padding-top: 1em;
         font-size: 1.05em;
       }
+      .label.shields-secondary-title {
+        padding-bottom: 1em;
+      }
     </style>
     <div class="settings-box first">
       <div class="flex">
         <div class="label shields-primary-title">$i18n{braveShieldsDefaultsSectionTitle}</div>
-        <div class="label secondary shields-secondary-title">$i18n{braveShieldsDefaultsSectionDescription}</div>
+        <div class="label secondary shields-secondary-title">
+          <p>$i18n{braveShieldsDefaultsSectionDescription1}</p>
+          <p>$i18n{braveShieldsDefaultsSectionDescription2} <a href="chrome://rewards" target="_blank">Brave Rewards</a> $i18n{braveShieldsDefaultsSectionDescription3}</p>
+        </div>
       </div>
     </div>
-    <div class="settings-box continuation">
-      <div class="start">$i18n{adControlLabel}</div>
-      <select id="adControlType" class="md-select"
-          on-change="onAdControlChange_">
-        <template is="dom-repeat" items="[[adControlTypes_]]">
-          <option value="[[item.value]]"
-              selected="[[controlEqual(item.value, adControlType_)]]">
-            [[item.name]]
-          </option>
-        </template>
-      </select>
-    </div>
+    <settings-toggle-button id="adControlType"
+        pref="{{prefs.brave.ad_default}}"
+        label="$i18n{adControlLabel}"
+        on-settings-boolean-control-change="onAdControlChange_">
+    </settings-toggle-button>
+    <settings-toggle-button id="httpsEverywhereControlType"
+        pref="{{prefs.brave.https_everywhere_default}}"
+        label="$i18n{httpsEverywhereControlLabel}"
+        on-settings-boolean-control-change="onHTTPSEverywhereControlChange_">
+    </settings-toggle-button>
+    <settings-toggle-button id="noScriptControlType"
+        pref="{{prefs.brave.no_script_default}}"
+        label="$i18n{noScriptControlLabel}"
+        on-settings-boolean-control-change="onNoScriptControlChange_">
+    </settings-toggle-button>
     <div class="settings-box">
       <div class="start">$i18n{cookieControlLabel}</div>
       <select id="cookieControlType" class="md-select"
@@ -58,16 +67,6 @@
         </template>
       </select>
     </div>
-    <settings-toggle-button id="httpsEverywhereControlType"
-        pref="{{prefs.brave.https_everywhere_default}}"
-        label="$i18n{httpsEverywhereControlLabel}"
-        on-settings-boolean-control-change="onHTTPSEverywhereControlChange_">
-    </settings-toggle-button>
-    <settings-toggle-button id="noScriptControlType"
-        pref="{{prefs.brave.no_script_default}}"
-        label="$i18n{noScriptControlLabel}"
-        on-settings-boolean-control-change="onNoScriptControlChange_">
-    </settings-toggle-button>
   </template>
   <script src="default_brave_shields_page.js"></script>
 </dom-module>

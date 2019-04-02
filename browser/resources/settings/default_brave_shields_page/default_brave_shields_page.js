@@ -13,17 +13,6 @@ Polymer({
   is: 'settings-default-brave-shields-page',
 
   properties: {
-    adControlTypes_: {
-      readOnly: true,
-      type: Array,
-      value: function() {
-        return [
-          {value: 'block', name: loadTimeData.getString('blockAds')},
-          {value: 'allow', name: loadTimeData.getString('allowAdsAndTracking')}
-        ]
-      }
-    },
-
     cookieControlTypes_: {
       readOnly: true,
       type: Array,
@@ -48,7 +37,6 @@ Polymer({
       }
     },
 
-    adControlType_: String,
     cookieControlType_: String,
     fingerprintingControlType_: String,
   },
@@ -69,9 +57,6 @@ Polymer({
     this.onHTTPSEverywhereControlChange_ = this.onHTTPSEverywhereControlChange_.bind(this)
     this.onNoScriptControlChange_ = this.onNoScriptControlChange_.bind(this)
 
-    this.browserProxy_.getAdControlType().then(value => {
-      this.adControlType_= value;
-    });
     this.browserProxy_.getCookieControlType().then(value => {
       this.cookieControlType_ = value;
     });
@@ -91,7 +76,7 @@ Polymer({
   },
 
   onAdControlChange_: function() {
-    this.browserProxy_.setAdControlType(this.$.adControlType.value);
+    this.browserProxy_.setAdControlType(this.$.adControlType.checked);
   },
   onCookieControlChange_: function() {
     this.browserProxy_.setCookieControlType(this.$.cookieControlType.value);

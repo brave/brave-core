@@ -280,28 +280,34 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Shields
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE" desc="The title for Brave shields Defaults sub-section in settings">
-        Defaults
+        Block trackers and ads which follow you across the web.
       </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION" desc="The description for Brave shields Defaults sub-section in settings">
-        Your current per-site settings will be retained.
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_1" desc="The description for Brave shields Defaults sub-section in settings">
+        These are the default Shields settings. They apply to all websites unless you change something in the Shields panel on a particular site. Changing these won't affect your existing per-site settings.
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2" desc="The partial description for Brave shields Defaults sub-section in settings. The sentence is completed with `Brave rewards settings`">
+        This will block most ads on websites, not Brave private ads — those are controlled in the
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_3" desc="The partial description for Brave shields Defaults sub-section in settings. Partial of `This will block most ads on websites, not Brave private ads — those are controlled in the Brave Rewards (settings)`">
+        settings.
       </message>
       <message name="IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE" desc="The title the settings section which has options for blocking third-party embeds, commonly from social media sites">
         Social media blocking
       </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_AD_CONTROL_LABEL" desc="Default Brave ad control setting label">
-        Ad control
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_AD_CONTROL_LABEL" desc="Default Brave block cross-site trackers control setting label">
+        Block cross-site trackers
       </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookie control setting label">
-        Cookie control
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookies control setting label">
+        Cookies
       </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Brave fingerprinting control setting label">
-        Fingerprinting protection
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Brave device recognition control setting label">
+        Device recognition
       </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL" desc="Default Brave HTTPS Everywhere control setting label">
-        HTTPS Everywhere
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL" desc="Default Brave upgrade connections to HTTPS control setting label">
+        Upgrade connections to HTTPS
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_NO_SCRIPT_CONTROL_LABEL" desc="Default Brave script blocking control setting label">
-        Script blocking
+        Block scripts
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_GOOGLE_LOGIN_LABEL" desc="Label for a switch control which allows Google social buttons to be enabled/disabled">
         Allow Google login buttons on third party sites
@@ -315,14 +321,8 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_LINKEDIN_EMBEDDED_POSTS_LABEL" desc="Label for a switch control which allows LinkedIn embedded posts">
         Allow LinkedIn embedded posts
       </message>
-      <message name="IDS_SETTINGS_BLOCK_ADS" desc="Select value">
-        Block ads
-      </message>
-      <message name="IDS_SETTINGS_ALLOW_ADS_AND_TRACKING" desc="Select value">
-        Allow ads and tracking
-      </message>
       <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_COOKIES" desc="Select value">
-        Block 3rd party cookies
+        Only block cross-site cookies
       </message>
       <message name="IDS_SETTINGS_ALLOW_ALL_COOKIES" desc="Select value">
         Allow all cookies
@@ -331,13 +331,13 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Block all cookies
       </message>
       <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_FINGERPRINTING" desc="Select value">
-        Block 3rd party fingerprinting
+        Only block cross-site device recognition attempts
       </message>
       <message name="IDS_SETTINGS_ALLOW_FINGERPRINTING" desc="Select value">
-        Allow fingerprinting
+        Allow all device recognition attempts
       </message>
       <message name="IDS_SETTINGS_BLOCK_FINGERPRINTING" desc="Select value">
-        Block all fingerprinting
+        Block all device recognition attempts
       </message>
       <!-- WebRTC Policy Setting -->
       <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">

@@ -63,14 +63,14 @@ void DefaultBraveShieldsHandler::GetAdControlType(const base::ListValue* args) {
   AllowJavascript();
   ResolveJavascriptCallback(
       args->GetList()[0].Clone(),
-      base::Value(setting == CONTENT_SETTING_ALLOW ? "allow" : "block"));
+      base::Value(setting == CONTENT_SETTING_ALLOW));
 }
 
 void DefaultBraveShieldsHandler::SetAdControlType(const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
-  std::string value;
-  args->GetString(0, &value);
+  bool value;
+  args->GetBoolean(0, &value);
 
   HostContentSettingsMapFactory::GetForProfile(profile_)->
       SetContentSettingCustomScope(
@@ -78,14 +78,14 @@ void DefaultBraveShieldsHandler::SetAdControlType(const base::ListValue* args) {
         ContentSettingsPattern::Wildcard(),
         CONTENT_SETTINGS_TYPE_PLUGINS,
         brave_shields::kAds,
-        value == "allow" ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
+        value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
   HostContentSettingsMapFactory::GetForProfile(profile_)->
       SetContentSettingCustomScope(
         ContentSettingsPattern::Wildcard(),
         ContentSettingsPattern::Wildcard(),
         CONTENT_SETTINGS_TYPE_PLUGINS,
         brave_shields::kTrackers,
-        value == "allow" ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
+        value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
 }
 
 void DefaultBraveShieldsHandler::GetCookieControlType(const base::ListValue* args) {
