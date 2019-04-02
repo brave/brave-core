@@ -327,9 +327,9 @@ bool BundleStateDatabase::InsertOrUpdateAdInfoCategory(
   return ad_info_statement.Run();
 }
 
-bool BundleStateDatabase::GetAdsForCategory(const std::string& region,
-                                            const std::string& category,
-                                            std::vector<ads::AdInfo>& ads) {
+bool BundleStateDatabase::GetAdsForCategory(
+    const std::string& category,
+    std::vector<ads::AdInfo>* ads) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -348,13 +348,11 @@ bool BundleStateDatabase::GetAdsForCategory(const std::string& region,
           "INNER JOIN ad_info_category AS aic "
           "ON aic.ad_info_uuid = ai.uuid "
           "WHERE aic.category_name = ? and "
-          "ai.region = ? and "
           "ai.start_timestamp <= strftime('%Y-%m-%d %H:%M', "
           "datetime('now','localtime')) and "
           "ai.end_timestamp >= strftime('%Y-%m-%d %H:%M', "
           "datetime('now','localtime'));"));
   info_sql.BindString(0, category);
-  info_sql.BindString(1, region);
 
   while (info_sql.Step()) {
     ads::AdInfo info;
@@ -369,7 +367,7 @@ bool BundleStateDatabase::GetAdsForCategory(const std::string& region,
     info.daily_cap = info_sql.ColumnInt(9);
     info.per_day = info_sql.ColumnInt(10);
     info.total_max = info_sql.ColumnInt(11);
-    ads.emplace_back(info);
+    ads->emplace_back(info);
   }
 
   return true;

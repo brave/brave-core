@@ -291,7 +291,6 @@ void BatAdsClientMojoBridge::Reset(const std::string& name,
 
 void OnGetAds(const ads::OnGetAdsCallback& callback,
               int32_t result,
-              const std::string& region,
               const std::string& category,
               const std::vector<std::string>& ad_info_json_list) {
   std::vector<ads::AdInfo> ad_info_list;
@@ -301,26 +300,24 @@ void OnGetAds(const ads::OnGetAdsCallback& callback,
     if (ad_info.FromJson(it) == ads::Result::SUCCESS) {
       ad_info_list.push_back(ad_info);
     } else {
-      callback(
-          ads::Result::FAILED, region, category, std::vector<ads::AdInfo>());
+      callback(ads::Result::FAILED, category, std::vector<ads::AdInfo>());
       return;
     }
   }
 
-  callback(ToAdsResult(result), region, category, ad_info_list);
+  callback(ToAdsResult(result), category, ad_info_list);
 }
 
 void BatAdsClientMojoBridge::GetAds(
-    const std::string& region,
     const std::string& category,
     ads::OnGetAdsCallback callback) {
   if (!connected()) {
-    callback(ads::Result::FAILED, region, category, std::vector<ads::AdInfo>());
+    callback(ads::Result::FAILED, category, std::vector<ads::AdInfo>());
     return;
   }
 
-  bat_ads_client_->GetAds(region, category,
-      base::BindOnce(&OnGetAds, std::move(callback)));
+  bat_ads_client_->GetAds(category, base::BindOnce(&OnGetAds,
+      std::move(callback)));
 }
 
 void OnLoadSampleBundle(const ads::OnLoadSampleBundleCallback& callback,
