@@ -69,7 +69,7 @@ class LEDGER_EXPORT Ledger {
   virtual void Initialize() = 0;
 
   // returns false if wallet initialization is already in progress
-  virtual bool CreateWallet() = 0;
+  virtual bool CreateWallet(const std::string& safetynet_token) = 0;
 
   virtual void DoDirectTip(const std::string& publisher_id,
                            int amount,

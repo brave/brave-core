@@ -30,9 +30,9 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   // bat_ledger::mojom::BatLedger
   void Initialize() override;
-  void CreateWallet() override;
   void FetchWalletProperties(FetchWalletPropertiesCallback callback) override;
-
+  void CreateWallet(const std::string& safetynet_token) override;
+  
   void GetAutoContributeProps(
       GetAutoContributePropsCallback callback) override;
   void GetPublisherMinVisitTime(

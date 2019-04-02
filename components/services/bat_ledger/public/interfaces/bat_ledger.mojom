@@ -24,7 +24,7 @@ interface BatLedgerService {
 
 interface BatLedger {
   Initialize();
-  CreateWallet();
+  CreateWallet(string safetynet_token);
   FetchWalletProperties() =>
       (int32 result, ledger.mojom.WalletProperties properties);
 
