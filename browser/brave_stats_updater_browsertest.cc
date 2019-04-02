@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -37,7 +38,8 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     brave::RegisterPrefsForBraveStatsUpdater(testing_local_state_.registry());
-    brave::RegisterPrefsForBraveReferralsService(testing_local_state_.registry());
+    brave::RegisterPrefsForBraveReferralsService(
+        testing_local_state_.registry());
     InitEmbeddedTestServer();
     SetBaseUpdateURLForTest();
   }
@@ -90,7 +92,8 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
 };
 
 // Run the stats updater and verify that it sets the first check preference
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest, StatsUpdaterSetsFirstCheckPreference) {
+IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
+                       StatsUpdaterSetsFirstCheckPreference) {
   // Ensure that first check preference is false
   ASSERT_FALSE(GetLocalState()->GetBoolean(kFirstCheckMade));
 
@@ -117,8 +120,9 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest, StatsUpdaterSetsFirstCheckP
 }
 
 // Run the stats updater with no active referral and verify that the
-// update url doesn't include a referral code
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest, StatsUpdaterStartupPingWithNoReferralCode) {
+// update url specifies the default referral code
+IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
+                       StatsUpdaterStartupPingWithDefaultReferralCode) {
   // Ensure that checked for promo code file preference is false
   ASSERT_FALSE(GetLocalState()->GetBoolean(kReferralCheckedForPromoCodeFile));
 
@@ -154,12 +158,13 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest, StatsUpdaterStartupPingWith
 
   // Verify that there is no referral code
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
-  EXPECT_STREQ(query_value.c_str(), "none");
+  EXPECT_STREQ(query_value.c_str(), "BRV001");
 }
 
 // Run the stats updater with an active referral and verify that the
 // update url includes the referral code
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest, StatsUpdaterStartupPingWithReferralCode) {
+IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
+                       StatsUpdaterStartupPingWithReferralCode) {
   // Ensure that checked for promo code file preference is false
   ASSERT_FALSE(GetLocalState()->GetBoolean(kReferralCheckedForPromoCodeFile));
 

@@ -44,6 +44,10 @@ const int kFetchReferralHeadersFrequency = 60 * 60 * 24;
 // Maximum size of the referral server response in bytes.
 const int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
 
+// Default promo code, used when no promoCode file exists on first
+// run.
+const char kDefaultPromoCode[] = "BRV001";
+
 namespace {
 
 std::string GetPlatformIdentifier() {
@@ -326,6 +330,7 @@ base::FilePath BraveReferralsService::GetPromoCodeFileName() const {
 void BraveReferralsService::ReadPromoCode() {
   base::FilePath promo_code_file = GetPromoCodeFileName();
   if (!base::PathExists(promo_code_file)) {
+    promo_code_ = kDefaultPromoCode;
     return;
   }
   if (!base::ReadFileToString(promo_code_file, &promo_code_)) {
@@ -443,7 +448,8 @@ std::string BraveReferralsService::BuildReferralFinalizationCheckPayload()
 
 void BraveReferralsService::FetchReferralHeaders() {
   net::NetworkTrafficAnnotationTag traffic_annotation =
-      net::DefineNetworkTrafficAnnotation("brave_referral_headers_fetcher", R"(
+      net::DefineNetworkTrafficAnnotation(
+        "brave_referral_headers_fetcher", R"(
         semantics {
           sender:
             "Brave Referrals Service"
