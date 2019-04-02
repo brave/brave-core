@@ -389,7 +389,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsContributeAttention", IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION },             // NOLINT
         { "rewardsContributeAttentionScore", IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION_SCORE },  // NOLINT
         { "rewardsContributeText1", IDS_BRAVE_UI_REWARDS_CONTRIBUTE_TEXT1 },
-        { "rewardsOffText1", IDS_BRAVE_UI_REWARDS_OFF_TEXT1 },
         { "rewardsOffText2", IDS_BRAVE_UI_REWARDS_OFF_TEXT2 },
         { "rewardsOffText3", IDS_BRAVE_UI_REWARDS_OFF_TEXT3 },
         { "rewardsOffText4", IDS_BRAVE_UI_REWARDS_OFF_TEXT4 },
@@ -450,7 +449,14 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "whyBraveRewards", IDS_BRAVE_UI_WHY_BRAVE_REWARDS },
         { "whyBraveRewardsDesc1", IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_1 },
         { "whyBraveRewardsDesc2", IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_2 },
-        { "yourWallet", IDS_BRAVE_UI_YOUR_WALLET }
+        { "yourWallet", IDS_BRAVE_UI_YOUR_WALLET },
+
+        { "and", IDS_BRAVE_UI_AND },
+        { "privacyPolicy", IDS_BRAVE_UI_PRIVACY_POLICY },
+        { "rewardsOffText5", IDS_BRAVE_UI_REWARDS_OFF_TEXT5 },
+        { "serviceTextToggle", IDS_BRAVE_UI_SERVICE_TEXT_TOGGLE },
+        { "serviceTextWelcome", IDS_BRAVE_UI_SERVICE_TEXT_WELCOME },
+        { "termsOfService", IDS_BRAVE_UI_TERMS_OF_SERVICE }
       }
     }, {
       std::string("sync"), {

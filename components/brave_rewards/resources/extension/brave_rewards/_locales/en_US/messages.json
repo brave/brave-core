@@ -384,5 +384,9 @@
   "contributionTips": {
     "message": "Contributions & Tips",
     "description": "Title for monthly tips processed notification"
+  },
+  "serviceTextPanelWelcome": {
+    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "description": "Terms of service panel opt-in text"
   }
 }
