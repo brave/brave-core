@@ -331,4 +331,55 @@ TEST(BatGetMediaTest, GetNameFromChannel) {
   delete bat_get_media_;
 }
 
+TEST(BatGetMediaTest, ParsePublisherName) {
+  braveledger_bat_get_media::BatGetMedia* bat_get_media_ =
+      new braveledger_bat_get_media::BatGetMedia(nullptr);
+
+  const std::string json_envelope(
+      "\"author\":\"");
+
+  // empty string
+  std::string publisher_name =
+      bat_get_media_->parsePublisherName(std::string());
+  ASSERT_EQ(publisher_name, std::string());
+
+  // quote
+  publisher_name =
+      bat_get_media_->parsePublisherName("\"");
+  ASSERT_EQ(publisher_name, std::string());
+
+  // double quote
+  publisher_name =
+      bat_get_media_->parsePublisherName("\"\"");
+  ASSERT_EQ(publisher_name, std::string());
+
+  // invalid json
+  std::string subject(
+      json_envelope + "invalid\"json}");
+  publisher_name =
+      bat_get_media_->parsePublisherName(subject);
+  ASSERT_EQ(publisher_name, "invalid");
+
+  // string name
+  subject = json_envelope + "publisher_name";
+  publisher_name =
+      bat_get_media_->parsePublisherName(subject);
+  ASSERT_EQ(publisher_name, "publisher_name");
+
+  // ampersand (& code point)
+  subject = json_envelope + "A\\u0026B";
+  publisher_name =
+      bat_get_media_->parsePublisherName(subject);
+  ASSERT_EQ(publisher_name, "A&B");
+
+  // ampersand (&) straight
+  subject = json_envelope + "A&B";
+  publisher_name =
+      bat_get_media_->parsePublisherName(subject);
+  ASSERT_EQ(publisher_name, "A&B");
+
+  // cleanup
+  delete bat_get_media_;
+}
+
 }  // namespace braveledger_bat_get_media
