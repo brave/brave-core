@@ -204,6 +204,14 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
             : null
           }
           {
+            syncData.error === 'ERR_SYNC_REQUIRES_CORRECT_TIME'
+            ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
+                <Title>{getLocale('errorSyncRequiresCorrectTimeTitle')}</Title>
+                <SubTitle>{getLocale('errorSyncRequiresCorrectTimeDescription')}</SubTitle>
+              </AlertBox>
+            : null
+          }
+          {
             removeDevice
               ? (
                 <RemoveDeviceModal
