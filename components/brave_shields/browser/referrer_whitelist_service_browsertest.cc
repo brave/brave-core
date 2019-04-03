@@ -15,10 +15,10 @@
 
 using extensions::ExtensionBrowserTest;
 
-const std::string kLocalDataFilesComponentTestId(
-    "eclbkhjphkhalklhipiicaldjbnhdfkc");
+const char kLocalDataFilesComponentTestId[] =
+    "eclbkhjphkhalklhipiicaldjbnhdfkc";
 
-const std::string kLocalDataFilesComponentTestBase64PublicKey =
+const char kLocalDataFilesComponentTestBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsleoSxQ3DN+6xym2P1uX"
     "mN6ArIWd9Oru5CSjS0SRE5upM2EnAl/C20TP8JdIlPi/3tk/SN6Y92K3xIhAby5F"
     "0rbPDSTXEWGy72tv2qb/WySGwDdvYQu9/J5sEDneVcMrSHcC0VWgcZR0eof4BfOy"
