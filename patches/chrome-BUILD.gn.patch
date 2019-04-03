@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc487f8962 100644
+index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..e64e935247607c5ddbb74e4ff760aac3e423dcf6 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -191,6 +191,10 @@ if (!is_android && !is_mac) {
@@ -66,6 +66,15 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
+@@ -1111,7 +1124,7 @@ if (is_win) {
+       bundle_resources_dir = "$bundle_contents_dir/Resources"
+ 
+       deps = [
+-        ":framework_widevine_signature",
++        #":framework_widevine_signature",
+         ":widevine_resources_plist_bundle_data",
+       ]
+     }
 @@ -1199,6 +1212,7 @@ if (is_win) {
        "//services/service_manager/embedder",
        "//third_party/cld_3/src/src:cld_3",

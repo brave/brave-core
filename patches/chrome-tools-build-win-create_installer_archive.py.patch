@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index b16b16bdc439014bf647f80ca9b7ce8215cfbb6c..cf36aac8b0d18fb0a1dd6f9018dcd53e9042a331 100755
+index b16b16bdc439014bf647f80ca9b7ce8215cfbb6c..46fdb870dda9de5a3c855c34941ff36b6fc09fe6 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
 @@ -112,6 +112,60 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
@@ -63,23 +63,11 @@ index b16b16bdc439014bf647f80ca9b7ce8215cfbb6c..cf36aac8b0d18fb0a1dd6f9018dcd53e
  
  def CopySectionFilesToStagingDir(config, section, staging_dir, src_dir):
    """Copies installer archive files specified in section from src_dir to
-@@ -531,6 +585,10 @@ def main(options):
-     version_numbers = prev_version.split('.')
-     prev_build_number = version_numbers[2] + '.' + version_numbers[3]
- 
-+  if not options.skip_signing:
-+    from sign_binaries import sign_binaries
-+    sign_binaries(staging_dir)
-+
-   # Name of the archive file built (for example - chrome.7z or
-   # patch-<old_version>-<new_version>.7z or patch-<new_version>.7z
-   archive_file = CreateArchiveFile(options, staging_dir,
-@@ -599,6 +657,8 @@ def _ParseOptions():
-            'with the installer archive {x86|x64}.')
+@@ -600,6 +654,7 @@ def _ParseOptions():
    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                      default=False)
-+  parser.add_option('--skip_signing', default=False)
-+
  
++
    options, _ = parser.parse_args()
    if not options.build_dir:
+     parser.error('You must provide a build dir.')

@@ -1,5 +1,7 @@
 import("//brave/build/config.gni")
 import("//build/config/mac/base_rules.gni")
+import("//build/util/version.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 declare_args() {
   # find with `security find-identity -v -p codesigning`
@@ -82,6 +84,9 @@ action("create_pkg") {
   ]
 
   deps = [":sign_app"]
+  if (enable_widevine_cdm_host_verification) {
+    deps += [ ":sign_chrome_framework_for_widevine" ]
+  }
 }
 
 action("sign_pkg") {
@@ -175,6 +180,47 @@ action("sign_dmg") {
   ]
 
   deps = [":create_dmg"]
+}
+
+if (enable_widevine_cdm_host_verification) {
+  action("sign_chrome_framework_for_widevine") {
+    script = "//third_party/widevine/scripts/signature_generator.py"
+
+    chrome_framework_name = chrome_product_full_name + " Framework"
+    brave_version_path = "$root_out_dir/$chrome_product_full_name.app/Contents/Versions/$chrome_version_full"
+
+    file = "$brave_version_path/$chrome_framework_name.framework/Versions/Current/$chrome_framework_name"
+    signature_file = "$brave_version_path/Widevine Resources.bundle/Contents/Resources/$chrome_framework_name.sig"
+    flags = 1  # blessed binary
+
+    sources = [
+      "$root_out_dir/$brave_exe"
+    ]
+
+    outputs = [
+      "$signature_file",
+    ]
+
+    args = [
+      "--input_file",
+      rebase_path("$file", root_build_dir),
+      "--output_file",
+      rebase_path("$signature_file", root_build_dir),
+      "--flags",
+      "$flags",
+      "--certificate",
+      getenv("SIGN_WIDEVINE_CERT"),
+      "--private_key",
+      getenv("SIGN_WIDEVINE_KEY"),
+      "--private_key_passphrase",
+      getenv("SIGN_WIDEVINE_PASSPHRASE"),
+    ]
+
+    deps = [
+      ":sign_app",
+      "//brave:chrome_app",
+    ]
+  }
 }
 
 group("create_dist_mac") {

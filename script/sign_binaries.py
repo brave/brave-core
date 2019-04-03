@@ -1,5 +1,7 @@
+import optparse
 import os
 import subprocess
+import sys
 
 cert = os.environ.get('CERT')
 signtool_args = (os.environ.get('SIGNTOOL_ARGS') or
@@ -44,3 +46,27 @@ def sign_binaries(base_dir):
 def sign_binary(binary):
     cmd = get_sign_cmd(binary)
     run_cmd(cmd)
+
+
+def _ParseOptions():
+    parser = optparse.OptionParser()
+    parser.add_option(
+        '-b', '--build_dir',
+        help='Build directory. The paths in input_file are relative to this.')
+
+    options, _ = parser.parse_args()
+    if not options.build_dir:
+        parser.error('You must provide a build dir.')
+
+    options.build_dir = os.path.normpath(options.build_dir)
+
+    return options
+
+
+def main(options):
+    sign_binaries(options.build_dir)
+
+
+if '__main__' == __name__:
+    options = _ParseOptions()
+    sys.exit(main(options))
