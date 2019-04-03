@@ -17,6 +17,7 @@
 #include "bat/ads/internal/static_values.h"
 
 #include "base/strings/string_util.h"
+#include "base/strings/string_split.h"
 #include "base/time/time.h"
 
 using std::placeholders::_1;
@@ -117,29 +118,9 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
 
     // Creative Sets
     for (const auto& creative_set : campaign.creative_sets) {
-      // Segments
-      std::vector<std::string> hierarchy = {};
-      for (const auto& segment : creative_set.segments) {
-        auto name = base::ToLowerASCII(segment.name);
-
-        if (std::find(hierarchy.begin(), hierarchy.end(), name)
-            != hierarchy.end()) {
-          continue;
-        }
-
-        hierarchy.push_back(name);
-      }
-
-      if (hierarchy.empty()) {
-        BLOG(ERROR) << "creativeSet segments are empty";
-        return nullptr;
-      }
-
-      std::string category = base::JoinString(hierarchy, "-");
-
-      auto top_level = hierarchy.front();
       uint64_t entries = 0;
 
+      // Creatives
       for (const auto& creative : creative_set.creatives) {
         AdInfo ad_info;
         ad_info.creative_set_id = creative_set.creative_set_id;
@@ -155,22 +136,43 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         ad_info.notification_url = creative.payload.target_url;
         ad_info.uuid = creative.creative_instance_id;
 
-        if (categories.find(category) == categories.end()) {
-          categories.insert({category, {}});
-        }
-        categories.at(category).push_back(ad_info);
-        entries++;
+        // Segments
+        for (const auto& segment : creative_set.segments) {
+          auto segment_name = base::ToLowerASCII(segment.name);
 
-        if (categories.find(top_level) == categories.end()) {
-          categories.insert({top_level, {}});
+          std::vector<std::string> segment_name_hierarchy =
+              base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
+              base::SPLIT_WANT_NONEMPTY);
+
+          if (segment_name_hierarchy.empty()) {
+            BLOG(WARNING) << "creativeSet id " << creative_set.creative_set_id
+                << " has an invalid segment name";
+
+            continue;
+          }
+
+          if (categories.find(segment_name) == categories.end()) {
+            categories.insert({segment_name, {}});
+          }
+          categories.at(segment_name).push_back(ad_info);
+          entries++;
+
+          auto top_level_segment_name = segment_name_hierarchy.front();
+          if (top_level_segment_name != segment_name) {
+            if (categories.find(top_level_segment_name) == categories.end()) {
+              categories.insert({top_level_segment_name, {}});
+            }
+            categories.at(top_level_segment_name).push_back(ad_info);
+            entries++;
+          }
         }
-        categories.at(top_level).push_back(ad_info);
-        entries++;
       }
 
       if (entries == 0) {
-        BLOG(ERROR) << "creativeSet creatives are empty";
-        return nullptr;
+        BLOG(WARNING) << "creativeSet id " << creative_set.creative_set_id
+            << " has an invalid creative";
+
+        continue;
       }
     }
   }
