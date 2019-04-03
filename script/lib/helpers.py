@@ -5,7 +5,8 @@
 
 import os
 import json
-from .config import get_raw_version
+import requests
+from .config import get_raw_version, get_env_var
 
 BRAVE_REPO = "brave/brave-browser"
 BRAVE_CORE_REPO = "brave/brave-core"
@@ -27,14 +28,48 @@ def get_channel_display_name():
     return d[release_channel()]
 
 
-def get_releases_by_tag(repo, tag_name, include_drafts=False):
-    if include_drafts:
-        return [r for r in repo.releases.get() if
-                r['tag_name'] == tag_name]
-    else:
-        return [r for r in repo.releases.get() if
-                r['tag_name'] == tag_name and not r['draft']]
+def call_github_api(url, headers):
+    try:
+        r = requests.get(url, headers=headers)
+    except requests.exceptions.ConnectionError as e:
+        print("Error: Received requests.exceptions.ConnectionError, Exiting...")
+        exit(1)
+    except Exception as e:
+        raise Exception(e)
 
+    if r.status_code is 200:
+        return r
+
+
+def get_releases_by_tag(repo, tag_name, include_drafts=False):
+
+    GITHUB_URL = 'https://api.github.com'
+
+    next_request = ""
+    headers = {'Accept': 'application/vnd.github+json'}
+    release_url = GITHUB_URL + "/repos/brave/brave-browser/releases" + '?access_token=' + \
+        get_env_var('GITHUB_TOKEN') + '&page=1&per_page=100'
+    r = call_github_api(release_url, headers=headers)
+    next_request = ""
+    # The GitHub API returns paginated results of 100 items maximum per
+    # response. We will loop until there is no next link header returned
+    # in the response header. This is documented here:
+    # https://developer.github.com/v3/#pagination
+    while next_request is not None:
+        for item in r.json():
+            # print("DEBUG: release: {}".format(item['name']))
+            if include_drafts:
+                if item['tag_name'] == tag_name:
+                    return [item]
+            else:
+                if item['tag_name'] == tag_name and not item['draft']:
+                    return [item]
+        if r.links.get("next"):
+            next_request = r.links["next"]["url"]
+            r = call_github_api(next_request, headers=headers)
+        else:
+            next_request = None
+    return []
 
 def release_channel():
     channel = os.environ['CHANNEL']
@@ -50,14 +85,6 @@ def get_tag():
 
 def release_name():
     return '{0} Channel'.format(get_channel_display_name())
-
-
-def get_releases_by_tag(repo, tag_name, include_drafts=False):
-    if include_drafts:
-        return [r for r in repo.releases.get() if r['tag_name'] == tag_name]
-    else:
-        return [r for r in repo.releases.get() if
-                r['tag_name'] == tag_name and not r['draft']]
 
 
 def retry_func(try_func, catch, retries, catch_func=None):

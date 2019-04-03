@@ -56,51 +56,80 @@ def download_from_github(args, logging):
         if len(releases) > 1:
             exit("Error: More than 1 release exists with the tag: \'{}\'".format(tag_name))
         release = releases[0]
+    else:
+        exit("Error: Did not get the release \'{}\' from Github.".format(tag_name))
+
+    found_assets_in_github_release = {}
 
     for asset in release['assets']:
-        if re.match(r'.*\.dmg$', asset['name']) \
-                or re.match(r'brave_installer.*\.exe$', asset['name']):
-            filename = asset['name']
-            asset_url = asset['url']
-            if args.debug:
-                logging.debug("GitHub asset_url: {}".format(
-                    asset_url + '/' + filename))
+        if re.match(r'.*\.dmg$', asset['name']):
+            found_assets_in_github_release['darwin'] = {}
+            found_assets_in_github_release['darwin']['name'] = asset['name']
+            found_assets_in_github_release['darwin']['url'] = asset['url']
+        elif re.match(r'brave_installer-ia32\.exe$', asset['name']):
+            found_assets_in_github_release['win32'] = {}
+            found_assets_in_github_release['win32']['name'] = asset['name']
+            found_assets_in_github_release['win32']['url'] = asset['url']
+        elif re.match(r'brave_installer-x64\.exe$', asset['name']):
+            found_assets_in_github_release['win64'] = {}
+            found_assets_in_github_release['win64']['name'] = asset['name']
+            found_assets_in_github_release['win64']['url'] = asset['url']
 
-            # Instantiate new requests session, versus reusing the repo session above.
-            # Headers was likely being reused in that session, and not allowing us
-            # to set the Accept header to the below.
-            headers = {'Accept': 'application/octet-stream'}
+    logging.debug("Found assets in github release: {}".format(
+                  found_assets_in_github_release))
 
-            asset_auth_url = asset_url + '?access_token=' + \
-                os.environ.get('BRAVE_GITHUB_TOKEN')
+    for requested_platform in args.platform:
+        logging.debug("Verifying platform \'{}\' exists in GitHub release".
+                      format(requested_platform))
+        if requested_platform not in found_assets_in_github_release.keys():
+            logging.error("Platform \'{}\' does not exist in GitHub release".
+                          format(requested_platform))
+            exit(1)
 
-            if args.debug:
-                # disable urllib3 logging for this session to avoid showing
-                # access_token in logs
-                logging.getLogger("urllib3").setLevel(logging.WARNING)
+    for platform in args.platform:
+        if args.debug:
+            logging.debug("GitHub asset_url: {}".format(
+                          found_assets_in_github_release[platform]['url'] + '/'
+                          + found_assets_in_github_release[platform]['name']))
 
-            r = requests.get(asset_auth_url, headers=headers, stream=True)
+        # Instantiate new requests session, versus reusing the repo session above.
+        # Headers was likely being reused in that session, and not allowing us
+        # to set the Accept header to the below.
+        headers = {'Accept': 'application/octet-stream'}
 
-            if args.debug:
-                logging.getLogger("urllib3").setLevel(logging.DEBUG)
+        asset_auth_url = found_assets_in_github_release[platform]['url'] + \
+            '?access_token=' + os.environ.get('BRAVE_GITHUB_TOKEN')
 
-            with open(filename, 'wb') as f:
-                for chunk in r.iter_content(chunk_size=1024):
-                    if chunk:
-                        f.write(chunk)
+        if args.debug:
+            # disable urllib3 logging for this session to avoid showing
+            # access_token in logs
+            logging.getLogger("urllib3").setLevel(logging.WARNING)
 
+        r = requests.get(asset_auth_url, headers=headers, stream=True)
+
+        if args.debug:
+            logging.getLogger("urllib3").setLevel(logging.DEBUG)
+
+        logging.debug("Writing GitHub download to file: {}".format(
+                      found_assets_in_github_release[platform]['name']))
+
+        with open(found_assets_in_github_release[platform]['name'], 'wb') as f:
+            for chunk in r.iter_content(chunk_size=1024):
+                if chunk:
+                    f.write(chunk)
+
+        logging.debug(
+            "Requests Response status_code: {}".format(r.status_code))
+        if r.status_code == 200:
+            file_list.append('./' + found_assets_in_github_release[platform]['name'])
+        else:
             logging.debug(
-                "Requests Response status_code: {}".format(r.status_code))
-            if r.status_code == 200:
-                file_list.append('./' + filename)
-            else:
-                logging.debug(
-                    "Requests Response status_code != 200: {}".format(r.status_code))
+                "Requests Response status_code != 200: {}".format(r.status_code))
 
-    if len(file_list) < 3:
-        logging.error(
-            "Cannot get all 3 install files from Github! (\'*.dmg\', \'brave_installer-x64.exe\',"
-            " \'brave-installer-ia32.exe\')")
+    if len(file_list) < len(args.platform):
+        for item in args.platform:
+            logging.error(
+                "Cannot get requested file from Github! {}".format(found_assets_in_github_release[item]['name']))
         remove_github_downloaded_files(file_list, logging)
         exit(1)
 
@@ -163,8 +192,9 @@ def parse_args():
                         ' from Github before uploading to Omaha (cannot be combined with --file)')
     parser.add_argument('-p', '--preview', action='store_true', help='Preview channels for testing'
                         ' omaha/sparkle uploads by QA before production release')
-    parser.add_argument(
-        '-t', '--tag', help='Version tag to download from Github')
+    parser.add_argument('--platform', help='Platform(s) to upload to Omaha (separated by spaces)',
+                        nargs='*', choices=['win32', 'win64', 'darwin'])
+    parser.add_argument('-t', '--tag', help='Version tag to download from Github')
     return parser.parse_args()
 
 
@@ -174,6 +204,13 @@ def main():
     if args.debug:
         logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
         logging.debug('brave_version: {}'.format(get_upload_version()))
+
+    # Default to requiring all 3 platforms
+    if not args.platform:
+        args.platform = ['win32', 'win64', 'darwin']
+
+    if args.debug:
+        logging.debug("args.platform: {}".format(args.platform))
 
     if args.file and args.github:
         exit("Error: --file and --github are mutually exclusive, only one allowed")
