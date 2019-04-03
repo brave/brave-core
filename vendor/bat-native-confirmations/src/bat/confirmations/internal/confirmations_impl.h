@@ -16,6 +16,7 @@
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/notification_info.h"
 #include "bat/confirmations/issuers_info.h"
+#include "bat/confirmations/internal/confirmation_info.h"
 
 #include "base/values.h"
 
@@ -42,12 +43,17 @@ class ConfirmationsImpl : public Confirmations {
   bool IsValidPublicKeyForCatalogIssuers(const std::string& public_key) const;
   double GetEstimatedRedemptionValue(const std::string& public_key) const;
 
+  // Confirmations
+  void AppendConfirmationToQueue(const ConfirmationInfo& confirmation_info);
+  void RemoveConfirmationFromQueue(const ConfirmationInfo& confirmation_info);
+  void StartRetryingFailedConfirmations(const uint64_t start_timer_in);
+
   // Transaction history
   void GetTransactionHistory(
       const uint64_t from_timestamp_in_seconds,
       const uint64_t to_timestamp_in_seconds,
       OnGetTransactionHistoryCallback callback) override;
-  void AppendTransactionToTransactionHistory(
+  void AppendTransactionToHistory(
       const double estimated_redemption_value,
       const ConfirmationType confirmation_type);
 
@@ -79,6 +85,13 @@ class ConfirmationsImpl : public Confirmations {
 
   // Catalog issuers
   std::map<std::string, std::string> catalog_issuers_;
+
+  // Confirmations
+  uint32_t retry_failed_confirmations_timer_id_;
+  void RetryFailedConfirmations() const;
+  void StopRetryingFailedConfirmations();
+  bool IsRetryingFailedConfirmations() const;
+  std::vector<ConfirmationInfo> confirmations_;
 
   // Transaction history
   std::vector<TransactionInfo> transaction_history_;
@@ -123,6 +136,9 @@ class ConfirmationsImpl : public Confirmations {
       const std::string& public_key,
       const std::map<std::string, std::string>& issuers) const;
 
+  base::Value GetConfirmationsAsDictionary(
+      const std::vector<ConfirmationInfo>& confirmations) const;
+
   base::Value GetTransactionHistoryAsDictionary(
       const std::vector<TransactionInfo>& transaction_history) const;
 
@@ -137,6 +153,12 @@ class ConfirmationsImpl : public Confirmations {
 
   bool GetNextTokenRedemptionDateInSecondsFromJSON(
       base::DictionaryValue* dictionary);
+
+  bool GetConfirmationsFromJSON(
+      base::DictionaryValue* dictionary);
+  bool GetConfirmationsFromDictionary(
+      base::DictionaryValue* dictionary,
+      std::vector<ConfirmationInfo>* confirmations);
 
   bool GetTransactionHistoryFromJSON(
       base::DictionaryValue* dictionary);
