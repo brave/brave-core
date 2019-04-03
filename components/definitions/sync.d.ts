@@ -27,6 +27,7 @@ export type SetupErrorType =
   'ERR_SYNC_MISSING_WORDS' |
   'ERR_SYNC_WRONG_WORDS' |
   'ERR_SYNC_INIT_FAILED' |
+  'ERR_SYNC_REQUIRES_CORRECT_TIME' |
   undefined
 
   export interface State {
