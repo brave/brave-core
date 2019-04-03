@@ -234,8 +234,10 @@ class InjectedObject {
         chrome.braveSync.getInitData(arg1/*syncVersion*/);
         break;
       case "sync-setup-error":
-        console.log(`"sync-setup-error" error=${JSON.stringify(arg1)}`);
-        chrome.braveSync.syncSetupError('ERR_SYNC_INIT_FAILED');
+        console.log(`"sync-setup-error" error=${arg1}`);
+        var errorToPass = (arg1 === 'Credential server response 400. Signed request body of the client timestamp is required.') ?
+            'ERR_SYNC_REQUIRES_CORRECT_TIME' : 'ERR_SYNC_INIT_FAILED'
+        chrome.braveSync.syncSetupError(errorToPass);
         break;
       case "sync-debug":
         console.log(`"sync-debug" message=${JSON.stringify(arg1)}`);

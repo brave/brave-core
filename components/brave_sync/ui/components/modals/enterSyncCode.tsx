@@ -125,6 +125,14 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
             </AlertBox>
           : null
         }
+        {
+          syncData.error === 'ERR_SYNC_REQUIRES_CORRECT_TIME'
+          ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
+              <Title>{getLocale('errorSyncRequiresCorrectTimeTitle')}</Title>
+              <SubTitle>{getLocale('errorSyncRequiresCorrectTimeDescription')}</SubTitle>
+            </AlertBox>
+          : null
+        }
         <ModalHeader>
           <div>
             <ModalTitle level={1}>{getLocale('enterSyncCode')}</ModalTitle>
