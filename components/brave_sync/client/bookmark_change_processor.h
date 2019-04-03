@@ -18,6 +18,8 @@
 #include "components/bookmarks/browser/bookmark_node_data.h"
 
 FORWARD_DECLARE_TEST(BraveBookmarkChangeProcessorTest, IgnoreRapidCreateDelete);
+FORWARD_DECLARE_TEST(BraveBookmarkChangeProcessorTest,
+    MigrateOrdersForPermanentNodes);
 
 class BraveBookmarkChangeProcessorTest;
 
@@ -47,6 +49,8 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   friend class ::BraveBookmarkChangeProcessorTest;
   FRIEND_TEST_ALL_PREFIXES(::BraveBookmarkChangeProcessorTest,
                                                        IgnoreRapidCreateDelete);
+  FRIEND_TEST_ALL_PREFIXES(::BraveBookmarkChangeProcessorTest,
+                                                MigrateOrdersForPermanentNodes);
 
   BookmarkChangeProcessor(Profile* profile,
                           BraveSyncClient* sync_client,
@@ -104,6 +108,11 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   void CompletePendingNodesMove(
       const bookmarks::BookmarkNode* created_folder_node,
       const std::string& created_folder_object_id);
+
+  void MigrateOrders();
+  void MigrateOrdersForPermanentNode(bookmarks::BookmarkNode* perm_node);
+  int GetPermanentNodeIndex(const bookmarks::BookmarkNode* node) const;
+  static int FindMigrateSubOrderLength(const std::string& order);
 
   BraveSyncClient* sync_client_;  // not owned
   prefs::Prefs* sync_prefs_;  // not owned

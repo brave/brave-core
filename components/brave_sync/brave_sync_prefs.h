@@ -54,6 +54,9 @@ extern const char kSyncLastFetchTime[];
 extern const char kSyncDeviceList[];
 // the sync api version from the server
 extern const char kSyncApiVersion[];
+// The version of bookmarks state: 0,1,... .
+// Current to migrate to is 1.
+extern const char kSyncMigrateBookmarksVersion[];
 
 class Prefs {
  public:
@@ -91,6 +94,9 @@ class Prefs {
   void SetApiVersion(const std::string& api_version);
 
   std::unique_ptr<Settings> GetBraveSyncSettings() const;
+
+  int GetMigratedBookmarksVersion();
+  void SetMigratedBookmarksVersion(const int);
 
   void Clear();
 
