@@ -151,21 +151,16 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
 
 .c16 {
   width: 100%;
-  margin-bottom: 12px;
+  margin-bottom: 24px;
 }
 
 .c17 {
   width: 100%;
-  font-family: Poppins,sans-serif;
+  font-family: Muli,sans-serif;
   line-height: normal;
   font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 7px;
-  padding-left: 2px;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
+  font-weight: 600;
+  margin-bottom: 8px;
   --controlWrapper-label-color: #686978;
   color: var(--controlWrapper-label-color);
 }

@@ -14,21 +14,20 @@ exports[`TableContribute tests basic tests matches the snapshot 1`] = `
 }
 
 .c0 {
-  width: 100%;
-  margin-bottom: 20px;
+  min-width: 100%;
+  margin: 24px 0;
 }
 
 .c1 {
   text-transform: uppercase;
   text-align: left;
-  font-family: Poppins,sans-serif;
+  font-family: Muli,sans-serif;
   font-size: 12px;
   font-weight: 500;
-  line-height: 2.33;
   border-bottom: 2px solid #dedfe4;
   border-top: 2px solid #dedfe4;
   color: #4B4C5C;
-  padding: 9px 0;
+  padding: 12px 0;
 }
 
 <div

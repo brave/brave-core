@@ -8,17 +8,17 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   margin: 0;
   padding: 30px 36px;
   background-color: #fff;
-  border-radius: 6px;
-  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.15);
   font-size: inherit;
   box-sizing: border-box;
   position: relative;
 }
 
 .c0 {
-  margin-bottom: 15px;
-  padding: 30px;
-  font-family: Poppins,sans-serif;
+  margin-bottom: 12px;
+  padding: 0;
+  font-family: Muli,sans-serif;
 }
 
 .c2 {
@@ -26,9 +26,9 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
 }
 
 .c3 {
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -36,47 +36,30 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
 }
 
 .c5 {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-flex-shrink: 1;
-  -ms-flex-negative: 1;
-  flex-shrink: 1;
-  -webkit-flex-basis: 50%;
-  -ms-flex-preferred-size: 50%;
-  flex-basis: 50%;
-}
-
-.c7 {
-  -webkit-flex-basis: 40px;
-  -ms-flex-preferred-size: 40px;
-  flex-basis: 40px;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  max-height: 30px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0 0 0 24px;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0 24px 0 0;
 }
 
 .c6 {
-  height: 36px;
-  font-size: 18px;
+  font-family: Poppins,sans-serif;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 1.27;
-  -webkit-letter-spacing: normal;
-  -moz-letter-spacing: normal;
-  -ms-letter-spacing: normal;
-  letter-spacing: normal;
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 0px;
   color: #4b4c5c;
-  margin-top: -5px;
 }
 
 .c8 {
@@ -84,18 +67,18 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   display: block;
 }
 
+.c10 {
+  width: 100%;
+  font-size: 14px;
+  line-height: 1.7;
+  padding: 16px 0;
+  color: #5e6175;
+}
+
 .c9 {
   width: 100%;
-  font-family: Muli,sans-serif;
-  font-size: 14px;
-  line-height: 18px;
-  -webkit-letter-spacing: 0px;
-  -moz-letter-spacing: 0px;
-  -ms-letter-spacing: 0px;
-  letter-spacing: 0px;
-  font-weight: 300;
-  color: #AEB1C2;
-  margin-top: -5px;
+  padding: 0px 24px;
+  display: block;
 }
 
 .c4 {
@@ -104,9 +87,17 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  margin-top: -8px;
-  padding: 0px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   z-index: 1;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid #E5E5EA;
 }
 
 <div
@@ -140,10 +131,10 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
         className="c8"
       />
       <div
-        className="c5"
+        className="c9"
       >
         <div
-          className="c9"
+          className="c10"
         />
       </div>
     </div>

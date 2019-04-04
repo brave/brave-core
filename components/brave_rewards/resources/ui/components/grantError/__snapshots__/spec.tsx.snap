@@ -59,7 +59,6 @@ exports[`Grant error tests basic tests matches the snapshot 1`] = `
   text-align: center;
   width: 100%;
   padding: 20px 10px;
-  font-family: Poppins,sans-serif;
   min-height: 350px;
 }
 

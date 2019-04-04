@@ -43,6 +43,7 @@ exports[`Tooltip tests basic tests matches the snapshot 1`] = `
 
 .c4 {
   cursor: pointer;
+  height: 24px;
 }
 
 <div

@@ -6,7 +6,7 @@ exports[`SettingsPageMobile tests basic tests matches the snapshot 1`] = `
   min-height: 100vh;
   width: 100%;
   padding-top: 35px;
-  font-family: "Poppins",sans-serif;
+  font-family: Muli,sans-serif;
 }
 
 .c1 {

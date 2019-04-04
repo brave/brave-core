@@ -8,138 +8,26 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   margin: 0;
   padding: 30px 36px;
   background-color: #fff;
-  border-radius: 6px;
-  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.15);
   font-size: inherit;
   box-sizing: border-box;
   position: relative;
 }
 
 .c0 {
-  display: block;
   width: 100%;
-  margin-bottom: 28px;
+  margin: 0 0 24px;
 }
 
 .c1 {
-  font-family: Poppins,sans-serif;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+  font-family: Muli,sans-serif;
+  padding: 32px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+  font-size: 14px;
 }
 
 .c3 {
-  display: block;
-}
-
-.c4 {
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.c5 {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-flex-shrink: 1;
-  -ms-flex-negative: 1;
-  flex-shrink: 1;
-  -webkit-flex-basis: 50%;
-  -ms-flex-preferred-size: 50%;
-  flex-basis: 50%;
-}
-
-.c7 {
-  -webkit-flex-basis: 40px;
-  -ms-flex-preferred-size: 40px;
-  flex-basis: 40px;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  max-height: 30px;
-}
-
-.c6 {
-  height: 36px;
-  font-size: 22px;
-  font-weight: 600;
-  line-height: 1.27;
-  -webkit-letter-spacing: normal;
-  -moz-letter-spacing: normal;
-  -ms-letter-spacing: normal;
-  letter-spacing: normal;
-  color: #4b4c5c;
-}
-
-.c8 {
-  width: 100%;
-  display: block;
-}
-
-.c9 {
-  width: 100%;
-  padding-right: 20px;
-  font-family: Muli,sans-serif;
-  font-size: 14px;
-  line-height: 1.29;
-  -webkit-letter-spacing: normal;
-  -moz-letter-spacing: normal;
-  -ms-letter-spacing: normal;
-  letter-spacing: normal;
-  color: #838391;
-}
-
-.c15 {
-  width: 27px;
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  color: #A1A8F2;
-}
-
-.c10 {
-  -webkit-flex-basis: 100%;
-  -ms-flex-preferred-size: 100%;
-  flex-basis: 100%;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  margin-top: 25px;
-}
-
-.c11 {
-  background: #fff;
-  display: none;
-}
-
-.c12 {
-  display: none;
-  position: absolute;
-  right: 29px;
-  top: 29px;
-  width: 20px;
-  height: 20px;
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  color: #84889c;
-}
-
-.c14 {
-  margin-bottom: 15px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -154,21 +42,117 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   justify-content: center;
 }
 
-.c17 {
-  font-size: 16px;
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-family: Poppins,sans-serif;
+  font-size: 20px;
   font-weight: 600;
-  line-height: 1.75;
   color: #4b4c5c;
-  margin-left: 20px;
+}
+
+.c8 {
+  width: 100%;
+  font-size: 15px;
+  color: #5e6175;
+  padding: 12px 0 0;
+  line-height: 1.7;
+}
+
+.c9 {
+  -webkit-flex-basis: 100%;
+  -ms-flex-preferred-size: 100%;
+  flex-basis: 100%;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  margin-top: 25px;
+}
+
+.c10 {
+  background: #fff;
+  display: none;
+  width: 100%;
+}
+
+.c11 {
+  display: none;
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: #84889c;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .c13 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0 0 24px;
 }
 
-.c16 {
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c14 {
+  font-size: 20px;
+  font-weight: 600;
+  font-family: Poppins,sans-serif;
+  color: #5e6175;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c12 {
   width: 100%;
   height: 100%;
   fill: currentColor;
@@ -196,36 +180,26 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
           >
             test
           </div>
+          <div
+            className="c7"
+          />
         </div>
-        <div
-          className="c7"
-        />
         <div
           className="c8"
         />
         <div
-          className="c5"
-        >
-          <div
-            className="c9"
-          />
-        </div>
-        <div
-          className="c7"
-        />
-        <div
-          className="c10"
+          className="c9"
         />
       </div>
       <div
-        className="c11"
+        className="c10"
       >
         <button
-          className="c12"
+          className="c11"
         >
           <svg
             aria-hidden="true"
-            className="c13"
+            className="c12"
             focusable="false"
             viewBox="0 0 32 32"
           >
@@ -238,24 +212,10 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
           </svg>
         </button>
         <div
-          className="c14"
+          className="c13"
         >
-          <button
-            className="c15"
-          >
-            <svg
-              aria-hidden="true"
-              className="c16"
-              focusable="false"
-              viewBox="0 0 32 32"
-            >
-              <path
-                d="M4 8h5.18a3 3 0 0 0 5.64 0H28a1 1 0 0 0 0-2H14.82a3 3 0 0 0-5.64 0H4a1 1 0 0 0 0 2zm8-2a1 1 0 1 1-1 1 1 1 0 0 1 1-1zM28 15h-3.18a3 3 0 0 0-5.64 0H4a1 1 0 0 0 0 2h15.18a3 3 0 0 0 5.64 0H28a1 1 0 0 0 0-2zm-6 2a1 1 0 1 1 1-1 1 1 0 0 1-1 1zM28 24H14.82a3 3 0 0 0-5.64 0H4a1 1 0 0 0 0 2h5.18a3 3 0 0 0 5.64 0H28a1 1 0 0 0 0-2zm-16 2a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"
-              />
-            </svg>
-          </button>
           <div
-            className="c17"
+            className="c14"
           >
             test MISSING: settings
           </div>

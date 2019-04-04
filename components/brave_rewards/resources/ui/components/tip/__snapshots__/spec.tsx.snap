@@ -57,7 +57,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
 
 .c4 {
   position: relative;
-  font-family: Poppins,sans-serif;
+  font-family: Muli,sans-serif;
   margin: 0px;
   --donate-content-padding: 0 0 0 23px;
   --donate-send-bg: #392dd1;
@@ -185,7 +185,7 @@ exports[`Tip tests basic tests matches the snapshot 1`] = `
 .c12 {
   color: #838391;
   font-size: 12px;
-  font-family: Poppins,sans-serif;
+  font-family: Muli,sans-serif;
   text-align: right;
   -webkit-letter-spacing: 0.4px;
   -moz-letter-spacing: 0.4px;

@@ -218,7 +218,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
 
 .c18 {
   position: relative;
-  font-family: Poppins,sans-serif;
+  font-family: Muli,sans-serif;
   margin: 0px;
   --donate-content-padding: 0 19px 0 55px;
   --donate-send-bg: #4c54d2;
@@ -305,13 +305,16 @@ exports[`List tests basic tests matches the snapshot 1`] = `
 }
 
 .c23 {
-  font-family: Poppins,sans-serif;
-  line-height: 1.3;
+  font-family: Muli,sans-serif;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  margin-bottom: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-bottom: 4px;
   --checkbox-label-color: #B8B9C4;
   --checkbox-label-size: 14px;
   color: var(--checkbox-label-color);
@@ -334,7 +337,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  padding: 0 2.5px;
+  padding: 2px;
   --checkbox-box-size: 18px;
   --checkbox-box-borderColor: #D1D1DB;
   --checkbox-box-color: #A1A8F2;
@@ -346,7 +349,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   height: var(--checkbox-box-size);
   color: var(--checkbox-box-color);
   border: 1px solid var(--checkbox-box-borderColor);
-  margin-right: var(--checkbox-box-spacing);
+  margin: 8px;
 }
 
 .c25 {

@@ -80,7 +80,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
-  font-family: Poppins,sans-serif;
+  font-family: Muli,sans-serif;
 }
 
 .c5 {
@@ -115,51 +115,43 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 
 .c7 {
   --tokens-value-color: #c12d7c;
-  --tokens-text-size: 12px;
+  --tokens-text-size: 14px;
   --tokens-token-size: 14px;
-  --tokens-tokenNum-size: 16px;
+  --tokens-tokenNum-size: 14px;
 }
 
 .c12 {
   --tokens-value-color: #9752cb;
-  --tokens-text-size: 12px;
+  --tokens-text-size: 14px;
   --tokens-token-size: 14px;
-  --tokens-tokenNum-size: 16px;
+  --tokens-tokenNum-size: 14px;
 }
 
 .c13 {
   --tokens-value-color: #696fdc;
-  --tokens-text-size: 12px;
+  --tokens-text-size: 14px;
   --tokens-token-size: 14px;
-  --tokens-tokenNum-size: 16px;
+  --tokens-tokenNum-size: 14px;
 }
 
 .c8 {
-  font-family: Poppins,sans-serif;
-  font-weight: 300;
-  line-height: 1.4;
-  color: #686978;
   display: inline-block;
 }
 
 .c9 {
   color: var(--tokens-value-color);
   font-size: var(--tokens-tokenNum-size);
-  font-weight: 500;
 }
 
 .c11 {
   color: #9E9FAB;
   font-size: var(--tokens-text-size);
-  font-family: Muli,sans-serif;
-  line-height: 1.29;
   display: inline-block;
-  margin-left: 10px;
+  margin-left: 8px;
 }
 
 .c10 {
   font-size: var(--tokens-token-size);
-  font-weight: 300;
   display: inline-block;
   margin-left: 4px;
 }

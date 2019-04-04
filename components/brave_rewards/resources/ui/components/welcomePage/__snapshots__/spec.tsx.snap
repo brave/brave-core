@@ -20,8 +20,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   background: #fff;
   max-width: 275px;
   margin: 0 auto;
-  box-shadow: 0 0 10px 0 rgba(99,105,110,0.12);
-  font-family: Poppins,sans-serif;
+  box-shadow: 0 2 4px rgba(0,0,0,.2);
 }
 
 .c39 {
@@ -214,13 +213,13 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   background: #f2f4f7;
   min-height: 100vh;
   min-width: 1024px;
-  font-family: "Poppins",sans-serif;
+  font-family: Muli,sans-serif;
 }
 
 .c1 {
-  max-width: 1000px;
+  max-width: 1024px;
   margin: 0 auto;
-  padding: 40px 0;
+  padding: 48px 0;
 }
 
 .c16 {

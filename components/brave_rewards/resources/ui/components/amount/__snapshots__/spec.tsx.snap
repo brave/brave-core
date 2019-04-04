@@ -6,7 +6,7 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  font-family: Poppins,sans-serif;
+  font-family: Muli,sans-serif;
   border: none;
   background: none;
   padding: 0;
@@ -32,8 +32,6 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   padding: 0 12px;
   min-height: 32px;
   min-width: 82px;
-  font-size: 13px;
-  font-weight: 600;
   margin-right: 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -51,12 +49,14 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
 }
 
 .c5 {
-  font-weight: 400;
   margin-left: 5px;
 }
 
 .c4 {
-  font-weight: 400;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .c2 {

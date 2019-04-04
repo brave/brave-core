@@ -7,32 +7,6 @@ exports[`BoxAlert tests basic tests matches the snapshot 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  background: #E9F0FF;
-  padding: 5px 30px;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
-}
-
-.c1 {
-  width: 57px;
-  height: 57px;
-  color: #15A4FA;
-}
-
-.c3 {
-  font-size: 14px;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  line-height: 18px;
-  vertical-align: top;
-  max-width: 387px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -41,14 +15,42 @@ exports[`BoxAlert tests basic tests matches the snapshot 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  padding-left: 5px;
+  background: #fff0f2;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+.c1 {
+  width: 24px;
+  height: 24px;
+  margin: 8px;
+  color: #E32444;
+}
+
+.c3 {
+  font-size: 16px;
+  font-family: Muli,sans-serif;
+  color: #5e6175;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .c4 {
-  color: #000;
-  margin-right: 3px;
-  font-weight: 400;
-  font-size: inherit;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .c2 {

@@ -2,32 +2,23 @@
 
 exports[`MainToggle tests basic tests matches the snapshot 1`] = `
 .c0 {
-  font-family: Poppins,sans-serif;
-  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  width: 100%;
-  border-radius: 6px;
-  background-color: #dee2e6;
-  border: 1px solid #dbdfe3;
+  border-radius: 4px;
+  background-color: #FFF;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  -webkit-align-content: flex-start;
-  -ms-flex-line-pack: start;
-  align-content: flex-start;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  padding: 18px 34px;
-  margin-bottom: 25px;
+  padding: 20px 32px;
+  margin-bottom: 24px;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .c1 {
@@ -40,21 +31,19 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   -ms-flex-align: center;
   align-items: center;
   width: 100%;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 
-.c4 {
-  margin: 0 0 0 11px;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
+.c5 {
   font-size: 28px;
   font-weight: 600;
-  line-height: 1;
-  -webkit-letter-spacing: 0.2px;
-  -moz-letter-spacing: 0.2px;
-  -ms-letter-spacing: 0.2px;
-  letter-spacing: 0.2px;
-  color: #4b4c5c;
+  font-family: Poppins,sans-serif;
+}
+
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -149,7 +138,7 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
 .c7 {
   color: #838391;
   font-size: 14px;
-  font-family: Poppins,sans-serif;
+  font-family: Muli,sans-serif;
   text-align: right;
   -webkit-letter-spacing: 0.4px;
   -moz-letter-spacing: 0.4px;
@@ -162,7 +151,7 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   transition: 100ms ease-out;
 }
 
-.c3 {
+.c4 {
   width: 100%;
   height: 100%;
   fill: currentColor;
@@ -178,44 +167,42 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
     <div
       className="c2"
     >
-      <svg
-        aria-hidden="true"
+      <div
         className="c3"
-        focusable="false"
-        viewBox="0 0 32 32"
       >
-        <path
-          d="M9.61 23.25h12.78L16 12 9.61 23.25z"
-          fill="#fff"
-          fillRule="evenodd"
-        />
-        <path
-          d="M3 26.8l7.67-4.52L16 13V4a.45.45 0 0 0-.38.28l-6.27 11-6.26 11a.48.48 0 0 0 0 .48"
-          fill="#ff4724"
-          fillRule="evenodd"
-        />
-        <path
-          d="M16 4v9l5.29 9.31L29 26.8a.48.48 0 0 0-.05-.48l-6.26-11-6.27-11A.45.45 0 0 0 16 4"
-          fill="#9e1f63"
-          fillRule="evenodd"
-        />
-        <path
-          d="M29 26.8l-7.67-4.52H10.71L3 26.8a.47.47 0 0 0 .43.2h25.1a.47.47 0 0 0 .43-.2"
-          fill="#662d91"
-          fillRule="evenodd"
-        />
-      </svg>
-    </div>
-    <div
-      className="c4"
-    >
-      MISSING: braveRewards
-       
-      <span
+        <svg
+          aria-hidden="true"
+          className="c4"
+          focusable="false"
+          viewBox="0 0 32 32"
+        >
+          <path
+            d="M9.61 23.25h12.78L16 12 9.61 23.25z"
+            fill="#fff"
+            fillRule="evenodd"
+          />
+          <path
+            d="M3 26.8l7.67-4.52L16 13V4a.45.45 0 0 0-.38.28l-6.27 11-6.26 11a.48.48 0 0 0 0 .48"
+            fill="#ff4724"
+            fillRule="evenodd"
+          />
+          <path
+            d="M16 4v9l5.29 9.31L29 26.8a.48.48 0 0 0-.05-.48l-6.26-11-6.27-11A.45.45 0 0 0 16 4"
+            fill="#9e1f63"
+            fillRule="evenodd"
+          />
+          <path
+            d="M29 26.8l-7.67-4.52H10.71L3 26.8a.47.47 0 0 0 .43.2h25.1a.47.47 0 0 0 .43-.2"
+            fill="#662d91"
+            fillRule="evenodd"
+          />
+        </svg>
+      </div>
+      <div
         className="c5"
       >
-        TM
-      </span>
+        MISSING: braveRewards
+      </div>
     </div>
     <div
       className="c6"

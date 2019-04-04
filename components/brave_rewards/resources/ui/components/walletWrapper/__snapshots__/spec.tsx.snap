@@ -3,8 +3,8 @@
 exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
 .c0 {
   overflow: hidden;
-  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
-  font-family: Poppins,sans-serif;
+  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+  font-family: Muli,sans-serif;
   width: 373px;
   background: url(test-file-stub) no-repeat top left, linear-gradient(172deg,#392dd1,rgba(255,26,26,0.53)), linear-gradient(#7d7bdc,#7d7bdc);
   min-height: 715px;
@@ -55,7 +55,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
 .c8 {
   padding: 0px;
   position: relative;
-  background: #f9fbfc;
+  background: #fff;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -102,7 +102,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   height: 240px;
   width: 200%;
   border-radius: 100%;
-  border: 20px solid #f9fbfc;
+  border: 20px solid #fff;
 }
 
 <div

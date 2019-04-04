@@ -13,14 +13,13 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
-  font-family: Poppins,sans-serif;
   border-radius: 8px;
   background-color: #fff;
   overflow: hidden;
   padding-left: 20px;
   margin-bottom: 19px;
   width: 100%;
-  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .c1 {

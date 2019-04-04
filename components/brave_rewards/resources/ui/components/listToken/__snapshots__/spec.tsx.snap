@@ -23,7 +23,7 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
-  font-family: Poppins,sans-serif;
+  font-family: Muli,sans-serif;
 }
 
 .c1 {
@@ -58,28 +58,22 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
 
 .c3 {
   --tokens-value-color: #4b4c5c;
-  --tokens-text-size: 12px;
+  --tokens-text-size: 14px;
   --tokens-token-size: 14px;
-  --tokens-tokenNum-size: 16px;
+  --tokens-tokenNum-size: 14px;
 }
 
 .c4 {
-  font-family: Poppins,sans-serif;
-  font-weight: 300;
-  line-height: 1.4;
-  color: #686978;
   display: inline-block;
 }
 
 .c5 {
   color: var(--tokens-value-color);
   font-size: var(--tokens-tokenNum-size);
-  font-weight: 500;
 }
 
 .c6 {
   font-size: var(--tokens-token-size);
-  font-weight: 300;
   display: inline-block;
   margin-left: 4px;
 }

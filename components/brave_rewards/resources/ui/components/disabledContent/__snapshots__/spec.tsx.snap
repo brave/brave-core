@@ -1,69 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Disabled Content tests basic tests matches the snapshot 1`] = `
-.c4 {
-  font-family: Poppins,sans-serif;
+.c2 {
   font-size: 16px;
-  font-weight: 500;
-  line-height: 1.5;
-  --disabled-content-color: #4b4c5c;
-  --disabled-content-bold: #4b4c5c;
-  color: var(--disabled-content-color);
-}
-
-.c4 b,
-.c4 a {
-  color: var(--disabled-content-bold);
-  font-weight: 500;
-}
-
-.c4 h3 {
-  margin: 0;
-  display: inline-block;
-  padding: 0;
-  font-family: Poppins,sans-serif;
-  font-size: 28px;
-  font-weight: 500;
-  line-height: 0.5;
-  color: #ceb4e1;
+  line-height: 1.7;
+  padding: 8px;
 }
 
 .c0 {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  grid-gap: 32px;
-  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0 48px;
+  margin: 0 0 8px;
 }
 
 .c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  grid-column: span 1;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-}
-
-.c3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  grid-column: span 2;
-}
-
-.c2 {
-  width: 110px;
+  width: 180px;
+  padding: 4px;
 }
 
 <div
@@ -74,18 +33,10 @@ exports[`Disabled Content tests basic tests matches the snapshot 1`] = `
   >
     <div
       className="c1"
-    >
-      <div
-        className="c2"
-      />
-    </div>
+    />
     <div
-      className="c3"
-    >
-      <div
-        className="c4"
-      />
-    </div>
+      className="c2"
+    />
   </div>
 </div>
 `;

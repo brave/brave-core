@@ -3,28 +3,22 @@
 exports[`Tokens tests basic tests matches the snapshot 1`] = `
 .c0 {
   --tokens-value-color: #4b4c5c;
-  --tokens-text-size: 12px;
+  --tokens-text-size: 14px;
   --tokens-token-size: 14px;
-  --tokens-tokenNum-size: 16px;
+  --tokens-tokenNum-size: 14px;
 }
 
 .c1 {
-  font-family: Poppins,sans-serif;
-  font-weight: 300;
-  line-height: 1.4;
-  color: #686978;
   display: inline-block;
 }
 
 .c2 {
   color: var(--tokens-value-color);
   font-size: var(--tokens-tokenNum-size);
-  font-weight: 500;
 }
 
 .c3 {
   font-size: var(--tokens-token-size);
-  font-weight: 300;
   display: inline-block;
   margin-left: 4px;
 }

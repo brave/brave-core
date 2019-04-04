@@ -5,13 +5,13 @@ exports[`SettingsPage tests basic tests matches the snapshot 1`] = `
   background: #f2f4f7;
   min-height: 100vh;
   min-width: 1024px;
-  font-family: "Poppins",sans-serif;
+  font-family: Muli,sans-serif;
 }
 
 .c1 {
-  max-width: 1000px;
+  max-width: 1024px;
   margin: 0 auto;
-  padding: 40px 0;
+  padding: 48px 0;
 }
 
 <div

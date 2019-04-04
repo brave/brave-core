@@ -20,7 +20,6 @@ exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  font-family: Poppins,sans-serif;
   overflow: hidden;
   width: 100%;
   padding: 0 52px 20px;

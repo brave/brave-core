@@ -22,7 +22,7 @@ exports[`Alert tests basic tests matches the snapshot 1`] = `
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
   padding: 15px 38px 15px 19px;
-  font-family: Poppins,sans-serif;
+  font-family: Muli,sans-serif;
   width: 100%;
   --alert-wrapper-color: #fff;
   background: var(--alert-wrapper-color);

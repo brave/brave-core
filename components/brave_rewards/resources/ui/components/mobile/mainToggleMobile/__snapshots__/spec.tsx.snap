@@ -2,7 +2,7 @@
 
 exports[`MainToggleMobile tests basic tests matches the snapshot 1`] = `
 .c0 {
-  font-family: Poppins,sans-serif;
+  font-family: Muli,sans-serif;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -13,32 +13,20 @@ exports[`MainToggleMobile tests basic tests matches the snapshot 1`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  -webkit-align-content: flex-start;
-  -ms-flex-line-pack: start;
-  align-content: flex-start;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
   height: 61px;
   z-index: 2;
-  box-shadow: 0 0 2px 0 rgba(99,105,110,0.55);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  padding: 0 16px;
 }
 
 .c1 {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-flex-shrink: 1;
-  -ms-flex-negative: 1;
-  flex-shrink: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -47,64 +35,43 @@ exports[`MainToggleMobile tests basic tests matches the snapshot 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 0px 13px;
-}
-
-.c6 {
-  height: 66px;
-  position: fixed;
-  right: 15px;
-  top: 18px;
-}
-
-.c4 {
-  color: #4B4C5C;
-  font-size: 22px;
-  font-weight: 500;
-  -webkit-letter-spacing: 0.12px;
-  -moz-letter-spacing: 0.12px;
-  -ms-letter-spacing: 0.12px;
-  letter-spacing: 0.12px;
-  margin-bottom: -23px;
-  line-height: 44px;
 }
 
 .c5 {
-  font-size: 8px;
-  font-weight: 300;
-  -webkit-letter-spacing: 0.2px;
-  -moz-letter-spacing: 0.2px;
-  -ms-letter-spacing: 0.2px;
-  letter-spacing: 0.2px;
-  text-align: center;
-  color: #222326;
-  position: relative;
-  top: -13px;
-  vertical-align: text-top;
-}
-
-.c2 {
-  width: 30px;
-  height: 30px;
-  margin-top: 13px;
-  margin-right: 5px;
-}
-
-.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.c9 {
+.c4 {
+  color: #4B4C5C;
+  font-size: 22px;
+  font-weight: 600;
+  font-family: Poppins,sans-serif;
+}
+
+.c2 {
+  width: 24px;
+  height: 24px;
+  margin: 8px;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c8 {
   position: relative;
   display: block;
   height: 24px;
   width: 40px;
 }
 
-.c10 {
+.c9 {
   background: #A7ACB2;
   height: 8px;
   margin-top: 8px;
@@ -112,7 +79,7 @@ exports[`MainToggleMobile tests basic tests matches the snapshot 1`] = `
   border-radius: 3px;
 }
 
-.c11 {
+.c10 {
   position: relative;
   border-radius: 50%;
   -webkit-transition: all .4s ease;
@@ -129,10 +96,10 @@ exports[`MainToggleMobile tests basic tests matches the snapshot 1`] = `
   box-shadow: 0 3px 3px rgba(0,0,0,0.05);
 }
 
-.c8 {
+.c7 {
   color: #838391;
   font-size: 14px;
-  font-family: Poppins,sans-serif;
+  font-family: Muli,sans-serif;
   text-align: right;
   -webkit-letter-spacing: 0.4px;
   -moz-letter-spacing: 0.4px;
@@ -153,17 +120,7 @@ exports[`MainToggleMobile tests basic tests matches the snapshot 1`] = `
 
 @media (max-width:375px) {
   .c4 {
-    max-width: 250px;
     word-wrap: break-word;
-    display: block;
-    line-height: 20px;
-    margin-top: -12px;
-  }
-}
-
-@media (max-width:375px) {
-  .c5 {
-    top: -2px;
   }
 }
 
@@ -209,37 +166,31 @@ exports[`MainToggleMobile tests basic tests matches the snapshot 1`] = `
       className="c4"
     >
       MISSING: braveRewards
-       
-      <span
-        className="c5"
-      >
-        TM
-      </span>
     </div>
   </div>
   <div
-    className="c6"
+    className="c5"
   >
     <div
-      className="c7"
+      className="c6"
     >
       <div
-        className="c8"
+        className="c7"
         size="large"
       >
         MISSING: off
       </div>
       <div
-        className="c9"
+        className="c8"
         data-test-id="toggle"
         size="large"
       >
         <div
-          className="c10"
+          className="c9"
           size="large"
         />
         <div
-          className="c11"
+          className="c10"
           size="large"
           type="dark"
         />
