@@ -2,12 +2,12 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled from '../../../theme'
 import { Props } from './index'
 
 export const StyledWrapper = styled<Partial<Props>, 'button'>('button')`
   user-select: none;
-  font-family: Poppins, sans-serif;
+  font-family: ${p => p.theme.fontFamily.body};
   border: none;
   background: none;
   padding: 0;
@@ -27,8 +27,6 @@ export const StyledAmount = styled<Partial<Props>, 'div'>('div')`
   padding: ${p => p.type === 'big' ? '0 16px' : '0 12px'};
   min-height: ${p => p.type === 'big' ? 40 : 32}px;
   min-width: ${p => p.isMobile ? '100px' : p.type === 'big' ? '118px' : '82px'};
-  font-size: 13px;
-  font-weight: 600;
   margin-right: ${p => p.isMobile ? 0 : 12}px;
   display: flex;
   align-items: center;
@@ -37,12 +35,11 @@ export const StyledAmount = styled<Partial<Props>, 'div'>('div')`
 `
 
 export const StyledTokens = styled<{}, 'div'>('div')`
-  font-weight: 400;
   margin-left: 5px;
 `
 
 export const StyledNumber = styled.span`
-  font-weight: 400;
+  display: flex;
 `
 
 export const StyledLogo = styled<Partial<Props>, 'div'>('div')`

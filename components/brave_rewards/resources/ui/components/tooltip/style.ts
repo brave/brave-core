@@ -48,4 +48,5 @@ export const StyledPointer = styled<{}, 'div'>('div')`
 
 export const StyledChildWrapper = styled<{}, 'div'>('div')`
   cursor: pointer;
+  height: 24px;
 `

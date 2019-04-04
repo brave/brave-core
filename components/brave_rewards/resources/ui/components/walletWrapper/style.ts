@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { Notification } from './'
-import styled from 'styled-components'
+import styled from '../../../theme'
 import Button, { Props as ButtonProps } from '../../../components/buttonsIndicators/button'
 import { ComponentType } from 'react'
 
@@ -34,8 +34,8 @@ const wrapperBackgroundRules = (notification: Notification | undefined) => {
 
 export const StyledWrapper = styled<StyledProps, 'div'>('div')`
   overflow: hidden;
-  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
-  font-family: Poppins, sans-serif;
+  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+  font-family: ${p => p.theme.fontFamily.body};
   width: ${p => p.isMobile ? '100%' : '373px'};
   background: ${p => wrapperBackgroundRules(p.notification)};
   min-height: ${p => p.compact ? 'unset' : '715px'};
@@ -80,7 +80,7 @@ export const StyledBalanceTokens = styled<{}, 'div'>('div')`
 export const StyledContent = styled<StyledProps, 'div'>('div')`
   padding: ${p => p.contentPadding ? '11px 25px 19px' : '0px'};
   position: relative;
-  background: #f9fbfc;
+  background: #fff;
   flex: 1;
 `
 
@@ -208,7 +208,7 @@ export const StyledCurve = styled<StyledProps, 'div'>('div')`
     height: 240px;
     width: 200%;
     border-radius: 100%;
-    border: 20px solid ${p => p.background ? getRGB(p.background) : '#f9fbfc'};
+    border: 20px solid ${p => p.background ? getRGB(p.background) : '#fff'};
   }
 `
 

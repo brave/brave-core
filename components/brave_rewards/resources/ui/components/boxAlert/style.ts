@@ -4,7 +4,7 @@
 */
 
 import { Type } from './index'
-import styled from 'styled-components'
+import styled from '../../../theme'
 
 interface StyleProps {
   modal?: boolean
@@ -14,48 +14,44 @@ interface StyleProps {
 export const StyledWrapper = styled<{}, 'div'>('div')`
   width: 100%;
   display: flex;
-  background: #E9F0FF;
-  padding: 5px 30px;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
+  align-items: center;
+  justify-content: center;
+  background: ${p => p.theme.palette.blue000};
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border-radius: 4px;
 `
 
 export const StyledAlertIcon = styled<{}, 'div'>('div')`
-  width: 57px;
-  height: 57px;
-  color: #15A4FA;
+  width: 24px;
+  height: 24px;
+  margin: 8px;
+  color: ${p => p.theme.palette.blue500};
 `
 
 export const StyledInfo = styled<StyleProps, 'div'>('div')`
-  font-size: 14px;
-  letter-spacing: 0;
-  line-height: 18px;
-  vertical-align: top;
-  max-width: 387px;
+  font-size: 16px;
+  font-family: ${p => p.theme.fontFamily.body};
+  color: ${p => p.theme.color.text};
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding-left: 5px;
 `
 
 export const StyledMessage = styled<StyleProps, 'span'>('span')`
-  color: #000;
-  margin-right: ${p => p.modal ? 5 : 3}px;
-  font-weight: ${p => p.modal ? 500 : 400};
-  font-size: ${p => p.modal ? '22px' : 'inherit'};
+  display: flex;
+  align-items: center;
 `
 
 export const StyledMonthlyTips = styled<StyleProps, 'span'>('span')`
-  color: #696FDC;
-  font-weight: ${p => p.modal ? 500 : 400};
-  display: inline-block;
-  font-size: ${p => p.modal ? '22px' : 'inherit'};
+  padding: 4px;
+  display: flex;
+  align-items: center;
 `
 
 export const StyledReviewWrapper = styled<{}, 'div'>('div')`
-  vertical-align: top;
-  margin: 20px 0 0 7px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
 `
 
 export const StyledReviewList = styled<{}, 'span'>('span')`

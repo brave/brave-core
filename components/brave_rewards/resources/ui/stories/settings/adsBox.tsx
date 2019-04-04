@@ -16,8 +16,8 @@ class AdsBox extends React.Component {
       <DisabledContent
         type={'ads'}
       >
-        • {locale.adsDisabledTextOne} <br />
-        • {locale.adsDisabledTextTwo}
+        {locale.adsDisabledTextOne} <br />
+        {locale.adsDisabledTextTwo}
       </DisabledContent>
     )
   }

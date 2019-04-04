@@ -2,7 +2,7 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled, { css } from 'styled-components'
+import styled, { css } from '../../../theme'
 import { Props } from './index'
 
 const getBgColor = (p: Props) => {
@@ -59,7 +59,7 @@ export const StyledWrapper = styled<Props, 'div'>('div')`
   align-items: center;
   flex-wrap: nowrap;
   padding: 15px 38px 15px 19px;
-  font-family: Poppins, sans-serif;
+  font-family: ${p => p.theme.fontFamily.body};
   width: 100%;
   ${getBgColor};
   background: var(--alert-wrapper-color);
@@ -75,7 +75,7 @@ export const StyledContent = styled<Props, 'div'>('div')`
   flex-grow: 1;
   flex-basis: 50%;
   padding-left: 19px;
-  font-family: Muli, sans-serif;
+  font-family: ${p => p.theme.fontFamily.body};
   font-size: 16px;
   font-weight: 300;
   letter-spacing: -0.3px;

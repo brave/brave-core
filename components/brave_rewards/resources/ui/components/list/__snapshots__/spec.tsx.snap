@@ -20,9 +20,10 @@ exports[`List tests basic tests matches the snapshot 1`] = `
 }
 
 .c1 {
-  font-size: 14px;
+  font-size: 16px;
   color: #4b4c5c;
-  padding: 20px 0;
+  padding: 16px 0;
+  font-weight: 600;
 }
 
 .c2 {

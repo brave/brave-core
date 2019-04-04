@@ -5,13 +5,11 @@
 import styled from 'styled-components'
 
 export const StyledListContent = styled<{}, 'div'>('div')`
-  padding: 0 25px;
+  padding: 0 24px;
 `
 
 export const StyledSitesNum = styled<{}, 'div'>('div')`
-  height: 50px;
-  padding: 20px 25px;
-  margin-top: -21px;
+  padding: 24px;
 `
 
 export const StyledDisabledContent = styled<{}, 'div'>('div')`
@@ -76,4 +74,9 @@ export const StyledWalletClose = styled<{}, 'div'>('div')`
   position: fixed;
   color: ${p => p.theme.color.subtleExclude};
   width: 25px;
+`
+
+export const StyledMobileSettingsContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
 `

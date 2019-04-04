@@ -2,7 +2,7 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled from '../../../theme'
 import { Props } from './index'
 
 export const StyledWrapper = styled<Partial<Props>, 'div'>('div')`
@@ -14,7 +14,7 @@ export const StyledWrapper = styled<Partial<Props>, 'div'>('div')`
   align-items: baseline;
   align-content: flex-start;
   flex-wrap: nowrap;
-  font-family: Poppins, sans-serif;
+  font-family: ${p => p.theme.fontFamily.body};
 `
 
 export const StyledTitle = styled<{}, 'div'>('div')`

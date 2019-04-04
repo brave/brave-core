@@ -56,8 +56,6 @@ class AdsBoxMobile extends React.Component<Props, State> {
         <List title={<StyledListContent>{locale.adsDisplayed}</StyledListContent>}>
           <StyledListContent>
             <Select
-              type={'light'}
-              floating={true}
               title={locale.adsDisplayed}
             >
               <div data-value='0'>0</div>

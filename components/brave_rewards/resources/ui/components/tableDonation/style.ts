@@ -30,7 +30,6 @@ export const StyledType = styled<{}, 'div'>('div')`
   font-family: Muli, sans-serif;
   font-size: 14px;
   font-weight: 600;
-  line-height: 1.29;
   color: #686978;
 `
 
@@ -46,7 +45,6 @@ export const StyledToggle = styled<{}, 'button'>('button')`
   font-family: Poppins, sans-serif;
   font-size: 13px;
   color: #4c54d2;
-  text-transform: capitalize;
   padding: 0;
   border: none;
   background: none;

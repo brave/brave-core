@@ -6,7 +6,6 @@ import * as React from 'react'
 import {
   StyledWrapper,
   StyledTitle,
-  StyledTM,
   StyledLeft,
   StyledRight,
   StyledLogoWrapper
@@ -33,7 +32,7 @@ export default class MainToggleMobile extends React.PureComponent<Props, {}> {
             <BatColorIcon />
           </StyledLogoWrapper>
           <StyledTitle>
-            {getLocale('braveRewards')} <StyledTM>TM</StyledTM>
+            {getLocale('braveRewards')}
           </StyledTitle>
         </StyledLeft>
         <StyledRight>

@@ -30,7 +30,6 @@ export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   align-items: stretch;
   align-content: flex-start;
   flex-wrap: wrap;
-  font-family: Poppins, sans-serif;
   overflow: hidden;
   width: 100%;
   padding: 0 52px 20px;

@@ -7,7 +7,6 @@ import styled from 'styled-components'
 export const StyledText = styled<{}, 'div'>('div')`
   font-family: Muli, sans-serif;
   font-size: 14px;
-  line-height: 1.29;
   text-align: right;
   color: #686978;
 `

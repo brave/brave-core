@@ -54,25 +54,6 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   align-items: center;
 }
 
-.c5 {
-  -webkit-align-self: flex-start;
-  -ms-flex-item-align: start;
-  align-self: flex-start;
-  font-size: 10px;
-  font-weight: 300;
-  -webkit-letter-spacing: 0.2px;
-  -moz-letter-spacing: 0.2px;
-  -ms-letter-spacing: 0.2px;
-  letter-spacing: 0.2px;
-  text-align: center;
-  color: #222326;
-}
-
-.c2 {
-  width: 66px;
-  height: 66px;
-}
-
 .c11 {
   display: block;
   margin-top: 20px;
@@ -92,8 +73,14 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
 
 .c13 {
   cursor: pointer;
-  color: #339af0;
+  color: #4C54D2;
   font-weight: 600;
+}
+
+.c3 {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
 }
 
 .c6 {

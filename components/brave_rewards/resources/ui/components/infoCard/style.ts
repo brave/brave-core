@@ -12,8 +12,7 @@ export const StyledInfoCard = styled<{}, 'div'>('div')`
   background: #fff;
   max-width: 275px;
   margin: 0 auto;
-  box-shadow: 0 0 10px 0 rgba(99,105,110,0.12);
-  font-family: Poppins, sans-serif;
+  box-shadow: 0 2 4px  rgba(0,0,0,.2);
 `
 
 export const StyledTitle = styled<{}, 'strong'>('strong')`
@@ -21,7 +20,6 @@ export const StyledTitle = styled<{}, 'strong'>('strong')`
   font-size: 18px;
   font-weight: 500;
   line-height: 28px;
-  letter-spacing: 0.16px;
 `
 
 export const StyledDesc = styled<{}, 'p'>('p')`
@@ -41,6 +39,7 @@ export const StyledFigure = styled<{}, 'figure'>('figure')`
   margin: 10px auto 20px;
   height: 80px;
 `
+
 export const StyledGrid = styled<{}, 'div'>('div')`
   display: grid;
   grid-gap: 0px;

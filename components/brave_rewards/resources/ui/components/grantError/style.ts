@@ -8,7 +8,6 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   text-align: center;
   width: 100%;
   padding: 20px 10px;
-  font-family: Poppins, sans-serif;
   min-height: 350px;
 `
 

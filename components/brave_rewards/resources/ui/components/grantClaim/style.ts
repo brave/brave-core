@@ -14,14 +14,13 @@ export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
-  font-family: Poppins, sans-serif;
   border-radius: 8px;
   background-color: #fff;
   overflow: hidden;
   padding-left: 20px;
   margin-bottom: ${p => p.isMobile ? 15 : 19}px;
   width: 100%;
-  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 `
 
 export const StyledIcon = styled<StyleProps, 'div'>('div')`

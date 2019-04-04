@@ -15,9 +15,10 @@ import {
   StyledListContent,
   StyledSitesNum,
   StyledTotalContent,
-  StyledSitesLink
+  StyledSitesLink,
+  StyledMobileSettingsContainer
 } from './style'
-import { Column, Grid, ControlWrapper, Checkbox } from '../../../../src/components'
+import { ControlWrapper, Checkbox } from '../../../../src/components'
 import { BoxMobile, SelectMobile } from '../../../../src/features/rewards/mobile'
 import { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/tableContribute'
 
@@ -71,94 +72,90 @@ class ContributeBoxMobile extends React.Component<Props, State> {
 
   contributeSettingsChild = () => {
     return (
-      <>
-        <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
-            <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-              <ControlWrapper text={locale.contributionMonthly}>
-                <SelectMobile
-                  onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
-                  amountOptions={[
-                    {
-                      value: '10.0',
-                      dataValue: '10',
-                      converted: '4.00'
-                    },
-                    {
-                      value: '20.0',
-                      dataValue: '20',
-                      converted: '6.00'
-                    },
-                    {
-                      value: '40.0',
-                      dataValue: '40',
-                      converted: '12.00'
-                    },
-                    {
-                      value: '60.0',
-                      dataValue: '60',
-                      converted: '17.00'
-                    },
-                    {
-                      value: '100.0',
-                      dataValue: '100',
-                      converted: '30.00'
-                    }
-                  ]}
-                />
-              </ControlWrapper>
-              <ControlWrapper text={locale.contributionMinTime}>
-                <SelectMobile
-                  onChange={this.onSelectSettingChange.bind(this, 'contributionMinTime')}
-                  options={[
-                    {
-                      value: '5',
-                      text: locale.contributionTime5
-                    },
-                    {
-                      value: '8',
-                      text: locale.contributionTime8
-                    },
-                    {
-                      value: '60',
-                      text: locale.contributionTime60
-                    }
-                  ]}
-                />
-              </ControlWrapper>
-              <ControlWrapper text={locale.contributionMinVisits}>
-                <SelectMobile
-                  onChange={this.onSelectSettingChange.bind(this, 'contributionMinVisits')}
-                  options={[
-                    {
-                      value: '1',
-                      text: locale.contributionVisit1
-                    },
-                    {
-                      value: '5',
-                      text: locale.contributionVisit5
-                    },
-                    {
-                      value: '10',
-                      text: locale.contributionVisit10
-                    }
-                  ]}
-                />
-              </ControlWrapper>
-              <ControlWrapper text={locale.contributionAllowed}>
-                <Checkbox
-                  value={{
-                    contributionNonVerified: true,
-                    contributionVideos: true
-                  }}
-                  multiple={true}
-                >
-                  <div data-key='contributionNonVerified'>{locale.contributionNonVerified}</div>
-                  <div data-key='contributionVideos'>{locale.contributionVideos}</div>
-                </Checkbox>
-              </ControlWrapper>
-            </Column>
-          </Grid>
-      </>
+      <StyledMobileSettingsContainer>
+        <ControlWrapper text={locale.contributionMonthly}>
+          <SelectMobile
+            onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
+            amountOptions={[
+              {
+                value: '10.0',
+                dataValue: '10',
+                converted: '4.00'
+              },
+              {
+                value: '20.0',
+                dataValue: '20',
+                converted: '6.00'
+              },
+              {
+                value: '40.0',
+                dataValue: '40',
+                converted: '12.00'
+              },
+              {
+                value: '60.0',
+                dataValue: '60',
+                converted: '17.00'
+              },
+              {
+                value: '100.0',
+                dataValue: '100',
+                converted: '30.00'
+              }
+            ]}
+          />
+        </ControlWrapper>
+        <ControlWrapper text={locale.contributionMinTime}>
+          <SelectMobile
+            onChange={this.onSelectSettingChange.bind(this, 'contributionMinTime')}
+            options={[
+              {
+                value: '5',
+                text: locale.contributionTime5
+              },
+              {
+                value: '8',
+                text: locale.contributionTime8
+              },
+              {
+                value: '60',
+                text: locale.contributionTime60
+              }
+            ]}
+          />
+        </ControlWrapper>
+        <ControlWrapper text={locale.contributionMinVisits}>
+          <SelectMobile
+            onChange={this.onSelectSettingChange.bind(this, 'contributionMinVisits')}
+            options={[
+              {
+                value: '1',
+                text: locale.contributionVisit1
+              },
+              {
+                value: '5',
+                text: locale.contributionVisit5
+              },
+              {
+                value: '10',
+                text: locale.contributionVisit10
+              }
+            ]}
+          />
+        </ControlWrapper>
+        <ControlWrapper text={locale.contributionAllowed}>
+          <Checkbox
+            value={{
+              contributionNonVerified: true,
+              contributionVideos: true
+            }}
+            multiple={true}
+          >
+            <div data-key='contributionNonVerified'>{locale.contributionNonVerified}</div>
+            <div data-key='contributionVideos'>{locale.contributionVideos}</div>
+          </Checkbox>
+        </ControlWrapper>
+      </StyledMobileSettingsContainer>
     )
   }
 
@@ -319,7 +316,7 @@ class ContributeBoxMobile extends React.Component<Props, State> {
         </List>
         <List title={<StyledListContent>{locale.contributionSitesNum}</StyledListContent>}>
           <StyledTotalContent>
-            Total &nbsp;<Tokens value={'55'} hideText={true}/>
+            Total &nbsp;<Tokens value={'55'} hideText={true} />
           </StyledTotalContent>
         </List>
         <StyledListContent>

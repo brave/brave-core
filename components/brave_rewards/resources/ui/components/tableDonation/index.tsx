@@ -58,7 +58,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
             <>
               <StyledType>{getLocale('recurring')}</StyledType>
               <StyledRemove onClick={row.onRemove}>
-              <StyledRemoveIcon><TrashIcon /></StyledRemoveIcon>{getLocale('remove')}
+                <StyledRemoveIcon><TrashIcon /></StyledRemoveIcon>{getLocale('remove')}
               </StyledRemove>
             </>
           )
@@ -131,7 +131,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
       customStyle = {
         border: 'none',
         'border-bottom': `1px solid #696FDC`,
-        padding: '0',
+        padding: '8px 0',
         color: '#696FDC'
       }
     }

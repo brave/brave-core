@@ -40,7 +40,7 @@ class Settings extends React.PureComponent<{}, State> {
   render () {
     return (
       <SettingsPage>
-        <Grid columns={3} customStyle={{ gridGap: '32px' }}>
+        <Grid columns={3} customStyle={{ gridGap: '24px' }}>
           <Column size={2} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             <MainToggle
               onTOSClick={this.doNothing}
@@ -50,17 +50,17 @@ class Settings extends React.PureComponent<{}, State> {
             />
             {
               !this.state.mainToggle
-              ? <DisabledBox />
-              : null
+                ? <DisabledBox />
+                : null
             }
-            <AdsBox/>
-            <ContributeBox/>
-            <DonationsBox/>
+            <AdsBox />
+            <ContributeBox />
+            <DonationsBox />
           </Column>
           <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Grant type={'ugp'}/>
-            <Grant type={'ads'} amount={'30.0'}/>
-            <PageWallet/>
+            <Grant type={'ugp'} />
+            <Grant type={'ads'} amount={'30.0'} />
+            <PageWallet />
           </Column>
         </Grid>
       </SettingsPage>

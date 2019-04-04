@@ -6,12 +6,12 @@ import * as React from 'react'
 import {
   MainToggleWrapper,
   StyledTitle,
-  StyledTM,
   ToggleHeading,
-  StyledLogoWrapper,
   StyledTOSWrapper,
   StyledServiceText,
-  StyledServiceLink
+  StyledServiceLink,
+  StyledLogotypeWrapper,
+  StyledLogoWrapper
 } from './style'
 import Toggle from '../../../components/formControls/toggle/index'
 import { getLocale } from '../../../helpers'
@@ -40,22 +40,24 @@ export default class MainToggle extends React.PureComponent<Props, {}> {
     return (
       <MainToggleWrapper id={id}>
         <ToggleHeading>
-          <StyledLogoWrapper>
-            <BatColorIcon />
-          </StyledLogoWrapper>
-          <StyledTitle>
-            {getLocale('braveRewards')} <StyledTM>TM</StyledTM>
-          </StyledTitle>
+          <StyledLogotypeWrapper>
+            <StyledLogoWrapper>
+              <BatColorIcon />
+            </StyledLogoWrapper>
+            <StyledTitle>
+              {getLocale('braveRewards')}
+            </StyledTitle>
+          </StyledLogotypeWrapper>
           <Toggle checked={enabled} onToggle={onToggle} testId={testId} />
         </ToggleHeading>
         {
           !enabled
-          ? <StyledTOSWrapper>
+            ? <StyledTOSWrapper>
               <StyledServiceText>
                 {getLocale('serviceTextToggle')} <StyledServiceLink onClick={onTOSClick}>{getLocale('termsOfService')}</StyledServiceLink> {getLocale('and')} <StyledServiceLink onClick={onPrivacyClick}>{getLocale('privacyPolicy')}</StyledServiceLink>.
               </StyledServiceText>
             </StyledTOSWrapper>
-          : null
+            : null
         }
       </MainToggleWrapper>
     )

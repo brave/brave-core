@@ -2,7 +2,7 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled, { css } from 'styled-components'
+import styled, { css } from '../../../theme'
 import * as CSS from 'csstype'
 import { DonateType } from './index'
 
@@ -66,7 +66,7 @@ const getAmountStyle = (isMobile?: boolean) => {
 
 export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   position: relative;
-  font-family: Poppins, sans-serif;
+  font-family: ${p => p.theme.fontFamily.body};
   margin: ${p => p.isMobile ? '0 auto 8px auto' : 0}px
   ${getStyle}
 `

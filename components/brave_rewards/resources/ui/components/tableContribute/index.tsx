@@ -68,7 +68,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
       customStyle = {
         border: 'none',
         'border-bottom': `1px solid #9F22A1`,
-        padding: '0',
+        padding: '8px 0',
         color: '#9F22A1'
       }
     }

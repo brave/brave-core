@@ -80,7 +80,7 @@ exports[`ModalDonation tests basic tests matches the snapshot 1`] = `
   padding: 12px 0;
   border: none;
   border-bottom: 1px solid #696FDC;
-  padding: 0;
+  padding: 8px 0;
   color: #696FDC;
 }
 
@@ -98,7 +98,7 @@ exports[`ModalDonation tests basic tests matches the snapshot 1`] = `
   padding-right: 7px;
   border: none;
   border-bottom: 1px solid #696FDC;
-  padding: 0;
+  padding: 8px 0;
   color: #696FDC;
 }
 

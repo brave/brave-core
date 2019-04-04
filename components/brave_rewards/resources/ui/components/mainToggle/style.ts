@@ -2,55 +2,36 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
-import palette from '../../../theme/colors'
+import styled from '../../../theme'
 
 export const MainToggleWrapper = styled<{}, 'div'>('div')`
-  font-family: Poppins, sans-serif;
-  position: relative;
   display: flex;
-  width: 100%;
-  border-radius: 6px;
-  background-color: #dee2e6;
-  border: 1px solid #dbdfe3;
+  border-radius: 4px;
+  background-color: #FFF;
   justify-content: space-between;
-  align-items: flex-start;
-  align-content: flex-start;
-  flex-wrap: wrap;
-  padding: 18px 34px;
-  margin-bottom: 25px;
+  padding: 20px 32px;
+  margin-bottom: 24px;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+  flex-direction: column;
 `
 
 export const ToggleHeading = styled<{}, 'div'>('div')`
   display: flex;
   align-items: center;
   width: 100%;
+  justify-content: space-between;
 `
 
 export const StyledTitle = styled<{}, 'div'>('div')`
-  margin: 0 0 0 11px;
-  flex: 1;
   font-size: 28px;
   font-weight: 600;
-  line-height: 1;
-  letter-spacing: 0.2px;
-  color: #4b4c5c;
+  font-family: ${p => p.theme.fontFamily.heading};
+`
+
+export const StyledLogotypeWrapper = styled('div')`
   display: flex;
   align-items: center;
-`
-
-export const StyledTM = styled<{}, 'span'>('span')`
-  align-self: flex-start;
-  font-size: 10px;
-  font-weight: 300;
-  letter-spacing: 0.2px;
-  text-align: center;
-  color: #222326;
-`
-
-export const StyledLogoWrapper = styled<{}, 'div'>('div')`
-  width: 66px;
-  height: 66px;
 `
 
 export const StyledTOSWrapper = styled<{}, 'div'>('div')`
@@ -60,7 +41,7 @@ export const StyledTOSWrapper = styled<{}, 'div'>('div')`
 `
 
 export const StyledServiceText = styled<{}, 'span'>('span')`
-  color: ${palette.grey800};
+  color: ${p => p.theme.palette.grey800};
   font-size: 14px;
   font-weight: normal;
   letter-spacing: 0;
@@ -69,6 +50,12 @@ export const StyledServiceText = styled<{}, 'span'>('span')`
 
 export const StyledServiceLink = styled<{}, 'a'>('a')`
   cursor: pointer;
-  color: ${palette.blue500};
+  color: ${p => p.theme.palette.blurple500};
   font-weight: 600;
+`
+
+export const StyledLogoWrapper = styled<{}, 'div'>('div')`
+width: 48px;
+height: 48px;
+margin: 8px;
 `

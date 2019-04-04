@@ -6,19 +6,18 @@ import * as React from 'react'
 import {
   StyledWrapper,
   StyledCard,
-  StyledLeft,
-  StyledRight,
   StyledDescription,
   StyledSettingsIcon,
   StyledContent,
   StyledTitle,
-  StyledBreak,
   StyledSettingsWrapper,
   StyledSettingsClose,
   StyledSettingsTitle,
   StyledSettingsText,
+  StyledSettingTitleWrapper,
   StyledContentWrapper,
-  StyledFlip
+  StyledFlip,
+  StyledSettingsToggleContainer
 } from './style'
 import { Tooltip } from '../'
 import Toggle from '../../../components/formControls/toggle/index'
@@ -79,41 +78,38 @@ export default class Box extends React.PureComponent<Props, {}> {
         >
           <StyledFlip>
             <StyledContentWrapper open={!settingsOpened}>
-              <StyledLeft>
-                <StyledTitle type={type} checked={checked}>{title}</StyledTitle>
-              </StyledLeft>
-              <StyledRight>
-                {
-                  toggle ?
-                  <Toggle onToggle={onToggle} checked={checked} testId={testId} />
-                  : null
-                }
-              </StyledRight>
-              <StyledBreak />
-              <StyledLeft>
-                <StyledDescription>
+              <StyledSettingTitleWrapper>
+                <StyledTitle type={type} checked={checked}>
+                  {title}
+                </StyledTitle>
+                <StyledSettingsToggleContainer>
+                  {
+                    settingsChild && ((toggle && checked) || !toggle) ?
+                      <Tooltip
+                        id={'brave-ads-tip'}
+                        content={this.getSettingsTitle(title)}
+                      >
+                        <StyledSettingsIcon onClick={onSettingsClick}>
+                          <SettingsIcon />
+                        </StyledSettingsIcon>
+                      </Tooltip>
+                      : null
+                  }
+                  {
+                    toggle ?
+                      <Toggle onToggle={onToggle} checked={checked} testId={testId} />
+                      : null
+                  }
+                </StyledSettingsToggleContainer>
+              </StyledSettingTitleWrapper>
+              <StyledDescription>
                 {description}
-                </StyledDescription>
-              </StyledLeft>
-              <StyledRight>
-                {
-                  settingsChild && ((toggle && checked) || !toggle) ?
-                  <Tooltip
-                    id={'brave-ads-tip'}
-                    content={this.getSettingsTitle(title)}
-                  >
-                    <StyledSettingsIcon float={'right'} onClick={onSettingsClick}>
-                      <SettingsIcon />
-                    </StyledSettingsIcon>
-                  </Tooltip>
-                  : null
-                }
-              </StyledRight>
+              </StyledDescription>
               <StyledContent>
                 {
                   disabledContent
-                  ? disabledContent
-                  : children
+                    ? disabledContent
+                    : children
                 }
               </StyledContent>
             </StyledContentWrapper>
@@ -122,9 +118,6 @@ export default class Box extends React.PureComponent<Props, {}> {
                 <CloseCircleOIcon />
               </StyledSettingsClose>
               <StyledSettingsTitle>
-                <StyledSettingsIcon>
-                  <SettingsIcon />
-                </StyledSettingsIcon>
                 <StyledSettingsText>{this.getSettingsTitle(title)}</StyledSettingsText>
               </StyledSettingsTitle>
               {settingsChild}

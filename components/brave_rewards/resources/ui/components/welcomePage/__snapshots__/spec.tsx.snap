@@ -28,10 +28,6 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   font-size: 18px;
   font-weight: 500;
   line-height: 28px;
-  -webkit-letter-spacing: 0.16px;
-  -moz-letter-spacing: 0.16px;
-  -ms-letter-spacing: 0.16px;
-  letter-spacing: 0.16px;
 }
 
 .c40 {

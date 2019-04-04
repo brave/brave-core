@@ -5,21 +5,21 @@
 import styled, { css } from 'styled-components'
 import { Props, Size, Type } from './index'
 
-const sizes: Record<Size, {token: string, tokenNum: string, text: string}> = {
+const sizes: Record<Size, { token: string, tokenNum: string, text: string }> = {
   mini: {
-    text: '8px',
-    token: '10px',
-    tokenNum: '12'
+    text: '14px',
+    token: '14px',
+    tokenNum: '14px'
   },
   small: {
-    text: '10px',
-    token: '12px',
+    text: '14px',
+    token: '14px',
     tokenNum: '14px'
   },
   normal: {
-    text: '12px',
+    text: '14px',
     token: '14px',
-    tokenNum: '16px'
+    tokenNum: '14px'
   }
 }
 
@@ -48,31 +48,23 @@ export const StyledWrapper = styled<Partial<Props>, 'span'>('span')`
 `
 
 export const StyledTokens = styled<{}, 'span'>('span')`
-  font-family: Poppins, sans-serif;
-  font-weight: 300;
-  line-height: 1.4;
-  color: #686978;
   display: inline-block;
 `
 
 export const StyledTokenValue = styled<{}, 'span'>('span')`
   color: var(--tokens-value-color);
   font-size: var(--tokens-tokenNum-size);
-  font-weight: 500;
 `
 
 export const StyledContent = styled<{}, 'span'>('span')`
   color: #9E9FAB;
   font-size: var(--tokens-text-size);
-  font-family: Muli, sans-serif;
-  line-height: 1.29;
   display: inline-block;
-  margin-left: 10px;
+  margin-left: 8px;
 `
 
 export const StyledTokenCurrency = styled<{}, 'span'>('span')`
   font-size: var(--tokens-token-size);
-  font-weight: 300;
   display: inline-block;
   margin-left: 4px;
 `

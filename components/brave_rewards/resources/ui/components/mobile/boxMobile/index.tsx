@@ -28,7 +28,8 @@ import {
   StyledChildContent,
   StyledSettingsIcon,
   StyledSettingsText,
-  StyledToggleWrapper
+  StyledToggleWrapper,
+  StyledMobileListWrapper
 } from './style'
 import {
   ArrowLeftIcon,
@@ -157,10 +158,10 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
         <StyledLeft>
           {
             isDetailView
-            ? <StyledBackArrow onClick={this.setView.bind(this, 'detailView') as any}>
+              ? <StyledBackArrow onClick={this.setView.bind(this, 'detailView') as any}>
                 <ArrowLeftIcon />
               </StyledBackArrow>
-            : null
+              : null
           }
           <StyledTitle
             type={type}
@@ -172,14 +173,14 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
         <StyledRight>
           {
             toggle ?
-            <StyledToggleWrapper detailView={isDetailView}>
-              <Toggle
-                size={'small'}
-                onToggle={this.onToggle}
-                checked={checked}
-              />
-            </StyledToggleWrapper>
-            : null
+              <StyledToggleWrapper detailView={isDetailView}>
+                <Toggle
+                  size={'small'}
+                  onToggle={this.onToggle}
+                  checked={checked}
+                />
+              </StyledToggleWrapper>
+              : null
           }
         </StyledRight>
       </StyledToggleHeader>
@@ -198,7 +199,7 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
         <StyleDetailsLink onClick={this.setView.bind(this, 'detailView') as any}>
           {getLocale('viewDetails')}
           <StyledArrow>
-            <CaratRightIcon/>
+            <CaratRightIcon />
           </StyledArrow>
         </StyleDetailsLink>
       </StyledContent>
@@ -207,14 +208,16 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
 
   getSettingsListTitle = () => {
     return (
-      <StyledSettingsListTitle onClick={this.setView.bind(this, 'settings') as any}>
-        <StyledSettingsIcon>
-          <SettingsIcon />
-        </StyledSettingsIcon>
-        <StyledSettingsText>
-          {getLocale('settings')}
-        </StyledSettingsText>
-      </StyledSettingsListTitle>
+      <StyledMobileListWrapper>
+        <StyledSettingsListTitle onClick={this.setView.bind(this, 'settings') as any}>
+          <StyledSettingsText>
+            {getLocale('settings')}
+          </StyledSettingsText>
+          <StyledSettingsIcon>
+            <SettingsIcon />
+          </StyledSettingsIcon>
+        </StyledSettingsListTitle>
+      </StyledMobileListWrapper>
     )
   }
 
@@ -227,6 +230,9 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
 
     return (
       <StyledFullSizeWrapper>
+        <StyledSettingsClose onClick={this.setView.bind(this, 'settings') as any}>
+          <CloseStrokeIcon />
+        </StyledSettingsClose>
         <StyledSettingsHeader>
           <StyledSettingsTitle>
             {this.getSettingsTitle(title)}
@@ -234,10 +240,10 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
           <StyledSettingsClose onClick={this.setView.bind(this, 'settings') as any}>
             <CloseStrokeIcon />
           </StyledSettingsClose>
-          <StyledSettingsContent>
-            {settingsChild}
-          </StyledSettingsContent>
         </StyledSettingsHeader>
+        <StyledSettingsContent>
+          {settingsChild}
+        </StyledSettingsContent>
       </StyledFullSizeWrapper>
     )
   }
@@ -261,8 +267,8 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
           <StyledChildContent>
             {
               settingsChild
-              ? <List title={this.getSettingsListTitle()} />
-              : null
+                ? <List title={this.getSettingsListTitle()} />
+                : null
             }
             {children}
           </StyledChildContent>
@@ -290,11 +296,11 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
           <StyledContentWrapper open={!this.state.settings}>
             {this.getToggleHeader(this.props)}
             <StyledBreak />
-            <StyledLeft>
+            <StyledDetailInfo>
               <StyledDescription>
                 {description}
               </StyledDescription>
-            </StyledLeft>
+            </StyledDetailInfo>
             {this.getBoxContent()}
           </StyledContentWrapper>
         </StyledFlip>

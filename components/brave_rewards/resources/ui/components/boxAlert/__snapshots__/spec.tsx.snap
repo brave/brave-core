@@ -15,7 +15,7 @@ exports[`BoxAlert tests basic tests matches the snapshot 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  background: #fff0f2;
+  background: #f0f8ff;
   padding: 16px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   border-radius: 4px;
@@ -25,7 +25,7 @@ exports[`BoxAlert tests basic tests matches the snapshot 1`] = `
   width: 24px;
   height: 24px;
   margin: 8px;
-  color: #E32444;
+  color: #339af0;
 }
 
 .c3 {

@@ -5,8 +5,6 @@
 import * as React from 'react'
 import {
   StyledContent,
-  StyledGrid,
-  StyledOneColumn,
   StyledTwoColumn,
   StyledIcon
 } from './style'
@@ -52,16 +50,12 @@ export default class DisabledContent extends React.PureComponent<Props, {}> {
 
     return (
       <div id={id}>
-        <StyledGrid>
-          <StyledOneColumn>
-            {this.getIcon(type)}
-          </StyledOneColumn>
-          <StyledTwoColumn>
-            <StyledContent type={type}>
-              {children}
-            </StyledContent>
-          </StyledTwoColumn>
-        </StyledGrid>
+        <StyledTwoColumn>
+          {this.getIcon(type)}
+          <StyledContent type={type}>
+            {children}
+          </StyledContent>
+        </StyledTwoColumn>
       </div>
     )
   }

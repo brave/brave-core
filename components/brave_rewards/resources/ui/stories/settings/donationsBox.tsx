@@ -21,7 +21,7 @@ const doNothing = () => {
   console.log('nothing')
 }
 
-type Check = {yt: boolean, tw: boolean, inst: boolean}
+type Check = { yt: boolean, tw: boolean, inst: boolean }
 
 interface State {
   check: Check,
@@ -90,7 +90,7 @@ class DonationsBox extends React.Component<{}, State> {
     ]
   }
 
-  onChange = (key: string, selected: boolean, child: React.ReactNode, all: {[key: string]: boolean}) => {
+  onChange = (key: string, selected: boolean, child: React.ReactNode, all: { [key: string]: boolean }) => {
     this.setState({
       check: all as Check
     })
@@ -105,21 +105,21 @@ class DonationsBox extends React.Component<{}, State> {
   donationSettingsChild = () => {
     return (
       <>
-        <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
-            <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-              <ControlWrapper text={'Enable ability to give tips on ‘Like’ posts'}>
-                <Checkbox
-                  value={this.state.check}
-                  multiple={true}
-                  onChange={this.onChange}
-                >
-                  <div data-key='yt'>YouTube</div>
-                  <div data-key='tw'>Twitter</div>
-                  <div data-key='inst'>Instagram</div>
-                </Checkbox>
-              </ControlWrapper>
-            </Column>
-          </Grid>
+        <Grid columns={1}>
+          <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+            <ControlWrapper text={'Enable ability to give tips on ‘Like’ posts'}>
+              <Checkbox
+                value={this.state.check}
+                multiple={true}
+                onChange={this.onChange}
+              >
+                <div data-key='yt'>YouTube</div>
+                <div data-key='tw'>Twitter</div>
+                <div data-key='inst'>Instagram</div>
+              </Checkbox>
+            </ControlWrapper>
+          </Column>
+        </Grid>
       </>
     )
   }

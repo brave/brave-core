@@ -2,16 +2,16 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled from '../../../theme'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
-  font-family: Poppins, sans-serif;
+  font-family: ${p => p.theme.fontFamily.body};
 `
 
 export const StyledTitle = styled<{}, 'div'>('div')`
   font-weight: 600;
   color: #1B1D2F;
-  font-family: Poppins, sans-serif;
+  font-family: ${p => p.theme.fontFamily.heading};
   font-size: 16px;
   line-height: 2;
 `

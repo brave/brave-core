@@ -2,7 +2,7 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled, { css } from 'styled-components'
+import styled, { css } from '../../../../theme'
 import { Type } from './index'
 import Card, { CardProps } from '../../../../components/layout/card'
 import { ComponentType } from 'react'
@@ -40,9 +40,9 @@ const getFixedStyling = (detailView?: boolean) => {
 }
 
 export const StyledCard = styled(Card as ComponentType<CardStyleProps>)`
-  margin-bottom: 15px;
-  padding: ${p => p.checked ? '30px 30px 10px' : '30px'};
-  font-family: Poppins, sans-serif;
+  margin-bottom: 12px;
+  padding: 0;
+  font-family: ${p => p.theme.fontFamily.body};
 `
 
 export const StyledFlip = styled<{}, 'div'>('div')`
@@ -50,37 +50,29 @@ export const StyledFlip = styled<{}, 'div'>('div')`
 `
 
 export const StyledContentWrapper = styled<StyleProps, 'div'>('div')`
-  flex-wrap: wrap;
+  flex-direction: column;
   display: ${p => p.open ? 'flex' : 'none'};
 `
 
 export const StyledLeft = styled<{}, 'div'>('div')`
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 50%;
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 24px;
 `
 
 export const StyledRight = styled<{}, 'div'>('div')`
-  flex-basis: 40px;
-  justify-content: flex-end;
   display: flex;
-  max-height: 30px;
+  padding: 0 24px 0 0;
 `
 
 export const StyledTitle = styled<StyleProps, 'div'>('div')`
-  height: 36px;
+  font-family: ${p => p.theme.fontFamily.heading};
   font-size: 18px;
   font-weight: 600;
-  line-height: 1.27;
-  letter-spacing: normal;
-  display: inline-block;
-  vertical-align: ${p => p.contentShown ? 'top' : 'middle'};
-  margin-left: ${p => p.detailView ? 10 : 0}px;
   color: ${p => {
     if (p.enabled === false) return '#838391'
     return p.type && colors[p.type] || '#4b4c5c'
   }};
-  margin-top: ${p => p.contentShown ? 3 : -5}px;
 `
 
 export const StyledBreak = styled<{}, 'div'>('div')`
@@ -90,19 +82,15 @@ export const StyledBreak = styled<{}, 'div'>('div')`
 
 export const StyledDescription = styled<StyleProps, 'div'>('div')`
   width: 100%;
-  font-family: Muli, sans-serif;
   font-size: 14px;
-  line-height: 18px;
-  letter-spacing: 0px;
-  font-weight: 300;
-  color: ${p => p.theme.color.detailDescription};
-  margin-top: ${p => p.contentShown ? 0 : -5}px;
+  line-height: 1.7;
+  padding: 16px 0;
+  color: ${p => p.theme.color.text};
 `
 
 export const StyledContent = styled<StyleProps, 'div'>('div')`
   flex-basis: 100%;
   flex-grow: 1;
-  margin-top: ${p => p.contentShown ? 15 : 10}px;
   text-align: ${p => p.contentShown ? 'default' : 'center'};
 `
 
@@ -115,108 +103,103 @@ export const StyledSettingsWrapper = styled<StyleProps, 'div'>('div')`
 export const StyledSettingsClose = styled<{}, 'button'>('button')`
   display: block;
   position: absolute;
-  right: 15px;
-  top: 30px;
-  width: 21px;
-  height: 21px;
+  right: 16px;
+  top: 16px;
+  width: 20px;
+  height: 20px;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
-  color: #DFDFE8;
+  color: ${p => p.theme.palette.grey600};
 `
 
 export const StyledSettingsTitle = styled<{}, 'span'>('span')`
   color: #4B4C5C;
   font-size: 16px;
   font-weight: 600;
-  letter-spacing: 0;
-  line-height: 32px;
   width: 100%;
-  display: block;
   text-align: center;
-  padding-top: 25px;
 `
 
 export const StyledSettingsText = styled<{}, 'div'>('div')`
-  display: inline-block;
-  vertical-align: top;
   color: #4B4C5C;
   font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 0;
-  line-height: 28px;
-  margin-left: 5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
 `
 
 export const StyleDetailsLink = styled<{}, 'a'>('a')`
   color: #4C54D2;
   font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0;
-  line-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  font-weight: 600;
 `
 
 export const StyledDetailInfo = styled<{}, 'div'>('div')`
   width: 100%;
-  padding: 0px 21px 20px;
+  padding: 0px 24px;
   display: block;
 `
 
 export const StyledDetailContent = styled<{}, 'div'>('div')`
-  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
 `
 
 export const StyledChildContent = styled<{}, 'div'>('div')`
   width: 100%;
-  display: block;
+  display: flex;
+  flex-direction: column;
   border-top: 1px solid #E5E5EA;
 `
 
 export const StyledSettingsContent = styled<{}, 'div'>('div')`
   width: 100%;
-  padding: 25px;
-  display: block;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
 `
 
 export const StyledSettingsHeader = styled<{}, 'div'>('div')`
   width: 100%;
-  display: block;
+  display: flex;
+  padding: 0 24px;
 `
 
 export const StyledSettingsListTitle = styled<{}, 'span'>('span')`
-  vertical-align: top;
-  font-weight: 300;
   font-size: 16px;
-  letter-spacing: 0;
-  line-height: 28px;
-  display: inline-block;
-  margin: 5px 0px -10px 22px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 `
 
 export const StyledArrow = styled<{}, 'span'>('span')`
   color: #4C54D2;
   height: 16px;
   width: 16px;
-  display: inline-block;
-  vertical-align: middle;
-  line-height: 16px;
+  margin: 4px;
 `
 
 export const StyledToggleHeader = styled<StyleProps, 'div'>('div')`
   width: 100%;
   display: flex;
+  align-items: center;
   ${p => getFixedStyling(p.detailView)}
-  margin-top: ${p => p.detailView ? 0 : -8}px;
-  padding: ${p => p.detailView ? '20px 20px 15px 13px' : '0px'};
   z-index: 1;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid #E5E5EA;
 `
 
 export const StyledBackArrow = styled<{}, 'span'>('span')`
-  height: 28px;
-  width: 25px;
-  display: inline-block;
-  margin-right: -3px;
+  height: 24px;
+  width: 24px;
+  margin: 0 8px 0 0;
 `
 
 export const StyledFullSizeWrapper = styled<{}, 'div'>('div')`
@@ -229,18 +212,26 @@ export const StyledFullSizeWrapper = styled<{}, 'div'>('div')`
   background: #fff;
   z-index: 999;
   overflow-y: scroll;
+  padding: 64px 0 0;
 `
 
 export const StyledSettingsIcon = styled<{}, 'button'>('button')`
-  width: 27px;
+  width: 24px;
+  height: 24px;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
   color: #A1A8F2;
+  position: absolute;
+  right: 24px;
+  top: 16px;
 `
 
 export const StyledToggleWrapper = styled<StyleProps, 'div'>('div')`
-  margin-right: -5px;
-  margin-top: ${p => p.contentShown ? 5 : 6}px;
+  display: flex;
+`
+
+export const StyledMobileListWrapper = styled<{}, 'div'>('div')`
+  padding: 0 24px;
 `

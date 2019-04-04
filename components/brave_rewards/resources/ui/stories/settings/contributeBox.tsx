@@ -50,44 +50,44 @@ class ContributeBox extends React.Component<{}, State> {
   contributeSettingsChild = () => {
     return (
       <>
-        <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
-            <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-              <ControlWrapper text={locale.contributionMonthly}>
-                <Select>
-                  <div data-value='10'><Tokens value={'10.0'} converted={'4.00'}/></div>
-                  <div data-value='20'><Tokens value={'20.0'} converted={'6.00'}/></div>
-                  <div data-value='40'><Tokens value={'40.0'} converted={'12.00'}/></div>
-                  <div data-value='100'><Tokens value={'100.0'} converted={'40.00'}/></div>
-                </Select>
-              </ControlWrapper>
-              <ControlWrapper text={locale.contributionMinTime}>
-                <Select>
-                  <div data-value='5'>{locale.contributionTime5}</div>
-                  <div data-value='8'>{locale.contributionTime8}</div>
-                  <div data-value='60'>{locale.contributionTime60}</div>
-                </Select>
-              </ControlWrapper>
-              <ControlWrapper text={locale.contributionMinVisits}>
-                <Select>
-                  <div data-value='5'>{locale.contributionVisit1}</div>
-                  <div data-value='8'>{locale.contributionVisit5}</div>
-                  <div data-value='60'>{locale.contributionVisit10}</div>
-                </Select>
-              </ControlWrapper>
-              <ControlWrapper text={locale.contributionAllowed}>
-                <Checkbox
-                  value={{
-                    contributionNonVerified: true,
-                    contributionVideos: true
-                  }}
-                  multiple={true}
-                >
-                  <div data-key='contributionNonVerified'>{locale.contributionNonVerified}</div>
-                  <div data-key='contributionVideos'>{locale.contributionVideos}</div>
-                </Checkbox>
-              </ControlWrapper>
-            </Column>
-          </Grid>
+        <Grid columns={1} customStyle={{ margin: '0 auto' }}>
+          <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+            <ControlWrapper text={locale.contributionMonthly}>
+              <Select>
+                <div data-value='10'><Tokens value={'10.0'} converted={'4.00'} /></div>
+                <div data-value='20'><Tokens value={'20.0'} converted={'6.00'} /></div>
+                <div data-value='40'><Tokens value={'40.0'} converted={'12.00'} /></div>
+                <div data-value='100'><Tokens value={'100.0'} converted={'40.00'} /></div>
+              </Select>
+            </ControlWrapper>
+            <ControlWrapper text={locale.contributionMinTime}>
+              <Select>
+                <div data-value='5'>{locale.contributionTime5}</div>
+                <div data-value='8'>{locale.contributionTime8}</div>
+                <div data-value='60'>{locale.contributionTime60}</div>
+              </Select>
+            </ControlWrapper>
+            <ControlWrapper text={locale.contributionMinVisits}>
+              <Select>
+                <div data-value='5'>{locale.contributionVisit1}</div>
+                <div data-value='8'>{locale.contributionVisit5}</div>
+                <div data-value='60'>{locale.contributionVisit10}</div>
+              </Select>
+            </ControlWrapper>
+            <ControlWrapper text={locale.contributionAllowed}>
+              <Checkbox
+                value={{
+                  contributionNonVerified: true,
+                  contributionVideos: true
+                }}
+                multiple={true}
+              >
+                <div data-key='contributionNonVerified'>{locale.contributionNonVerified}</div>
+                <div data-key='contributionVideos'>{locale.contributionVideos}</div>
+              </Checkbox>
+            </ControlWrapper>
+          </Column>
+        </Grid>
       </>
     )
   }
@@ -153,8 +153,8 @@ class ContributeBox extends React.Component<{}, State> {
       <DisabledContent
         type={'contribute'}
       >
-        • Pay directly for the content you love. <br/>
-        • Your <b>monthly allowance</b> gets divided based on your attention metric.
+        Pay directly for the content you love. <br />
+        Your <b>monthly allowance</b> gets divided based on your attention metric.
       </DisabledContent>
     )
   }
@@ -201,10 +201,10 @@ class ContributeBox extends React.Component<{}, State> {
         }
         <List title={locale.contributionMonthly}>
           <Select floating={true}>
-            <div data-value='10'><Tokens value={'10.0'} converted={'4.00'}/></div>
-            <div data-value='20'><Tokens value={'20.0'} converted={'6.00'}/></div>
-            <div data-value='40'><Tokens value={'40.0'} converted={'12.00'}/></div>
-            <div data-value='100'><Tokens value={'100.0'} converted={'40.00'}/></div>
+            <div data-value='10'><Tokens value={'10.0'} converted={'4.00'} /></div>
+            <div data-value='20'><Tokens value={'20.0'} converted={'6.00'} /></div>
+            <div data-value='40'><Tokens value={'40.0'} converted={'12.00'} /></div>
+            <div data-value='100'><Tokens value={'100.0'} converted={'40.00'} /></div>
           </Select>
         </List>
         <List
@@ -213,7 +213,7 @@ class ContributeBox extends React.Component<{}, State> {
           <NextContribution>July 25th</NextContribution>
         </List>
         <List title={locale.contributionSites}>
-          Total &nbsp;<Tokens value={'55'} hideText={true}/>
+          Total &nbsp;<Tokens value={'55'} hideText={true} />
         </List>
         <TableContribute
           header={[

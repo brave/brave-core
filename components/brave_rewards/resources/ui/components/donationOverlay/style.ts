@@ -3,7 +3,7 @@
 * You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
-import styled from 'styled-components'
+import styled from '../../../theme'
 import * as CSS from 'csstype'
 
 interface StyleProps {
@@ -26,7 +26,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   width: 100%;
   height: 100%;
   background: rgba(12,13,33,0.85);
-  font-family: "Poppins", sans-serif;
+  font-family: ${p => p.theme.fontFamily.body};
   justify-content: center;
 `
 

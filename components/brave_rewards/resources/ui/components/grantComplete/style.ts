@@ -12,7 +12,6 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   text-align: center;
   width: 100%;
   margin: 40px 0 0;
-  font-family: Poppins, sans-serif;
 `
 
 export const StyledBox = styled<{}, 'div'>('div')`

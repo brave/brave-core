@@ -2,7 +2,7 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled from '../../../../theme'
 import panelBgUrl from './assets/panel.svg'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
@@ -10,11 +10,11 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   display: flex;
   border-radius: 6px;
   margin-bottom: 15px;
-  font-family: Poppins, sans-serif;
+  font-family: ${p => p.theme.fontFamily.heading};
   background: url(${panelBgUrl}) no-repeat top left,
   linear-gradient(to bottom right, #392dd1 0%, #5813a6 100%) 100% no-repeat;
   flex-direction: column;
-  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
+  box-shadow: 0 2px 4px rgba(0,0,0,.2);
 `
 
 export const StyledHeader = styled<{}, 'div'>('div')`
