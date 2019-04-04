@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_NET_URL_CONTEXT_H_
 #define BRAVE_BROWSER_NET_URL_CONTEXT_H_
 
-
 #include <memory>
 #include <string>
 
@@ -54,6 +53,7 @@ struct BraveRequestInfo {
   GURL request_url;
   GURL tab_origin;
   GURL tab_url;
+  GURL initiator_url;
   std::string new_url_spec;
   bool allow_brave_shields = true;
   bool allow_ads = false;

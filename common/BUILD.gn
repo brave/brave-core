@@ -57,6 +57,8 @@ source_set("common") {
       "network_constants.h",
       "resource_bundle_helper.cc",
       "resource_bundle_helper.h",
+      "translate_network_constants.cc",
+      "translate_network_constants.h",
       "url_constants.cc",
       "url_constants.h",
     ]

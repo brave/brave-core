@@ -25,6 +25,8 @@ source_set("net") {
     "brave_system_network_delegate.h",
     "brave_tor_network_delegate_helper.cc",
     "brave_tor_network_delegate_helper.h",
+    "brave_translate_redirect_network_delegate_helper.cc",
+    "brave_translate_redirect_network_delegate_helper.h",
     "url_context.cc",
     "url_context.h",
   ]

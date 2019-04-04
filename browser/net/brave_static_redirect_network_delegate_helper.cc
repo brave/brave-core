@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "brave/common/network_constants.h"
+#include "brave/common/translate_network_constants.h"
 #include "extensions/common/url_pattern.h"
 
 namespace brave {
@@ -30,6 +31,10 @@ int OnBeforeURLRequest_StaticRedirectWork(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix4);
   static URLPattern crxDownload_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRXDownloadPrefix);
+  static URLPattern translate_pattern(URLPattern::SCHEME_HTTPS,
+      kTranslateElementJSPattern);
+  static URLPattern translate_language_pattern(URLPattern::SCHEME_HTTPS,
+      kTranslateLanguagePattern);
 
   if (geo_pattern.MatchesURL(ctx->request_url)) {
     ctx->new_url_spec = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY).spec();
@@ -77,6 +82,19 @@ int OnBeforeURLRequest_StaticRedirectWork(
     return net::OK;
   }
 
+  if (translate_pattern.MatchesURL(ctx->request_url)) {
+    replacements.SetQueryStr(ctx->request_url.query_piece());
+    replacements.SetPathStr(ctx->request_url.path_piece());
+    ctx->new_url_spec =
+      GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
+    return net::OK;
+  }
+
+  if (translate_language_pattern.MatchesURL(ctx->request_url)) {
+    ctx->new_url_spec = GURL(kBraveTranslateLanguageEndpoint).spec();
+    return net::OK;
+  }
+
 #if !defined(NDEBUG)
   GURL gurl = ctx->request_url;
   static std::vector<URLPattern> allowed_patterns({
@@ -88,45 +106,48 @@ int OnBeforeURLRequest_StaticRedirectWork(
       // BRAVE_REFERRALS_SERVER environment variable rather than
       // hardcoding the server name here
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://laptop-updates.brave.com/*"),
+          "https://laptop-updates.brave.com/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://laptop-updates-staging.herokuapp.com/*"),
+          "https://laptop-updates-staging.herokuapp.com/*"),
       // CRX file download
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://brave-core-ext.s3.brave.com/release/*"),
+          "https://brave-core-ext.s3.brave.com/release/*"),
       // Safe Browsing and other files
       URLPattern(URLPattern::SCHEME_HTTPS, "https://static.brave.com/*"),
       // We do allow redirects to the Google update server for extensions we
       // don't support
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://update.googleapis.com/service/update2"),
+          "https://update.googleapis.com/service/update2"),
 
       // Rewards URLs
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://ledger.mercury.basicattentiontoken.org/*"),
+          "https://ledger.mercury.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://balance.mercury.basicattentiontoken.org/*"),
+          "https://balance.mercury.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://publishers.basicattentiontoken.org/*"),
+          "https://publishers.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://publishers-distro.basicattentiontoken.org/*"),
+          "https://publishers-distro.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://ledger-staging.mercury.basicattentiontoken.org/*"),
+          "https://ledger-staging.mercury.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://balance-staging.mercury.basicattentiontoken.org/*"),
+          "https://balance-staging.mercury.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://publishers-staging.basicattentiontoken.org/*"),
+          "https://publishers-staging.basicattentiontoken.org/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://publishers-staging-distro.basicattentiontoken.org/*"),
+          "https://publishers-staging-distro.basicattentiontoken.org/*"),
 
       // Safe browsing
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://safebrowsing.brave.com/v4/*"),
+          "https://safebrowsing.brave.com/v4/*"),
       URLPattern(URLPattern::SCHEME_HTTPS,
-                 "https://ssl.gstatic.com/safebrowsing/*"),
+          "https://ssl.gstatic.com/safebrowsing/*"),
 
       URLPattern(URLPattern::SCHEME_HTTPS, "https://crlsets.brave.com/*"),
       URLPattern(URLPattern::SCHEME_HTTPS, "https://crxdownload.brave.com/*"),
+
+      // Brave's translation relay server
+      URLPattern(URLPattern::SCHEME_HTTPS, kBraveTranslateServerPrefix),
   });
 
   // Check to make sure the URL being requested matches at least one of the
