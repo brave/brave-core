@@ -498,6 +498,31 @@ void BatLedgerClientMojoProxy::GetRecurringTips(
       base::BindOnce(&OnGetRecurringTips, std::move(callback)));
 }
 
+void OnGetOneTimeTips(const ledger::PublisherInfoListCallback& callback,
+                      const std::vector<std::string>& publisher_info_list,
+                      uint32_t next_record) {
+  ledger::PublisherInfoList list;
+
+  for (const auto& publisher_info : publisher_info_list) {
+    ledger::PublisherInfo info;
+    info.loadFromJson(publisher_info);
+    list.push_back(info);
+  }
+
+  callback(list, next_record);
+}
+
+void BatLedgerClientMojoProxy::GetOneTimeTips(
+    ledger::PublisherInfoListCallback callback) {
+  if (!Connected()) {
+    callback(std::vector<ledger::PublisherInfo>(), 0);
+    return;
+  }
+
+  bat_ledger_client_->GetOneTimeTips(
+      base::BindOnce(&OnGetOneTimeTips, std::move(callback)));
+}
+
 void OnLoadNicewareList(const ledger::GetNicewareListCallback& callback,
     int32_t result, const std::string& data) {
   callback(ToLedgerResult(result), data);

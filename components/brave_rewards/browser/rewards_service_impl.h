@@ -167,7 +167,8 @@ class RewardsServiceImpl : public RewardsService,
       GetRecurringTipsCallback callback,
       const std::vector<std::string>& json_list);
   void GetRecurringTipsUI(GetRecurringTipsCallback callback) override;
-  void GetOneTimeTips() override;
+  void GetOneTimeTips(
+      ledger::PublisherInfoListCallback callback) override;
   void SetContributionAutoInclude(
       const std::string& publisher_key,
       bool excluded) override;
@@ -196,6 +197,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetAddressesForPaymentId(const GetAddressesCallback& callback) override;
   std::pair<uint64_t, uint64_t> GetEarningsRange();
+
+  void GetOneTimeTipsUI(GetOneTimeTipsCallback callback) override;
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -266,7 +269,8 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetRecurringTips(
       const ledger::PublisherInfoListCallback callback,
       const ledger::PublisherInfoList list);
-  void OnGetOneTimeTips(const ledger::PublisherInfoList list);
+  void OnGetOneTimeTips(ledger::PublisherInfoListCallback callback,
+                        const ledger::PublisherInfoList list);
   void OnRemovedRecurringTip(ledger::RecurringRemoveCallback callback,
                           bool success);
   void OnRemoveRecurring(const std::string& publisher_key,
@@ -289,6 +293,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnDeleteActivityInfo(const std::string& publisher_key,
                             bool result);
+
+  void OnGetOneTimeTipsUI(GetRecurringTipsCallback callback,
+                          const std::vector<std::string>& json_list);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;

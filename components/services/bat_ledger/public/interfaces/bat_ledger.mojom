@@ -105,6 +105,7 @@ interface BatLedger {
   GetRewardsInternalsInfo() => (string info);
 
   GetRecurringTips() => (array<string> list);
+  GetOneTimeTips() => (array<string> list);
 };
 
 interface BatLedgerClient {
@@ -138,6 +139,8 @@ interface BatLedgerClient {
   FetchFavIcon(string url, string favicon_key) => (bool success,
       string favicon_url);
   GetRecurringTips() => (array<string> publisher_info_list,
+      uint32 next_record);
+  GetOneTimeTips() => (array<string> publisher_info_list,
       uint32 next_record);
 
   LoadNicewareList() => (int32 result, string data);

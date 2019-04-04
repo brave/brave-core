@@ -2280,6 +2280,30 @@ void RewardsServiceImpl::GetRecurringTips(
                  callback));
 }
 
+void RewardsServiceImpl::OnGetOneTimeTipsUI(
+    GetRecurringTipsCallback callback,
+    const std::vector<std::string>& json_list) {
+    std::unique_ptr<brave_rewards::ContentSiteList> new_list(
+      new brave_rewards::ContentSiteList);
+
+  for (auto &json_publisher : json_list) {
+    ledger::PublisherInfo publisher;
+    publisher.loadFromJson(json_publisher);
+    brave_rewards::ContentSite site = PublisherInfoToContentSite(publisher);
+    site.percentage = publisher.weight;
+    new_list->push_back(site);
+  }
+
+  std::move(callback).Run(std::move(new_list));
+}
+
+void RewardsServiceImpl::GetOneTimeTipsUI(GetOneTimeTipsCallback callback) {
+  bat_ledger_->GetOneTimeTips(
+      base::BindOnce(&RewardsServiceImpl::OnGetOneTimeTipsUI,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
 ledger::PublisherInfoList GetOneTimeTipsOnFileTaskRunner(
     PublisherInfoDatabase* backend) {
   ledger::PublisherInfoList list;
@@ -2293,28 +2317,24 @@ ledger::PublisherInfoList GetOneTimeTipsOnFileTaskRunner(
   return list;
 }
 
-void RewardsServiceImpl::GetOneTimeTips() {
+void RewardsServiceImpl::GetOneTimeTips(
+    ledger::PublisherInfoListCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&GetOneTimeTipsOnFileTaskRunner,
                  publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnGetOneTimeTips,
-                 AsWeakPtr()));
+                 AsWeakPtr(),
+                 callback));
 }
 
 void RewardsServiceImpl::OnGetOneTimeTips(
+    ledger::PublisherInfoListCallback callback,
     const ledger::PublisherInfoList list) {
-  brave_rewards::ContentSiteList new_list;
-
-  for (auto &publisher : list) {
-    brave_rewards::ContentSite site = PublisherInfoToContentSite(publisher);
-    site.percentage = publisher.weight;
-    new_list.push_back(site);
+  if (!Connected()) {
+    return;
   }
 
-  // TODO(nejczdovc): remove observer and add callbacks
-  for (auto& observer : observers_) {
-    observer.OnCurrentTips(this, new_list);
-  }
+  callback(list, 0);
 }
 
 void RewardsServiceImpl::RemoveRecurringTip(const std::string& publisher_key) {

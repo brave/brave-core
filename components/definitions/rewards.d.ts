@@ -162,9 +162,9 @@ declare namespace Rewards {
     ONE_TIME_TIP = 8,
     RECURRING_TIP = 21
   }
-  
+
   export interface ContributionSaved {
     success: boolean
-    category: Rewards.Category
+    category: Category
   }
 }

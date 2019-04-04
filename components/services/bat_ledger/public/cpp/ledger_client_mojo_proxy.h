@@ -60,6 +60,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       FetchFavIconCallback callback) override;
   void GetRecurringTips(GetRecurringTipsCallback callback) override;
 
+  void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
+
   void LoadNicewareList(LoadNicewareListCallback callback) override;
   void OnRemoveRecurring(const std::string& publisher_key,
       OnRemoveRecurringCallback callback) override;
@@ -230,6 +232,11 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnGetExcludedPublishersNumberDB(
       CallbackHolder<GetExcludedPublishersNumberDBCallback>* holder,
       uint32_t number);
+
+  static void OnGetOneTimeTips(
+      CallbackHolder<GetOneTimeTipsCallback>* holder,
+      const ledger::PublisherInfoList& publisher_info_list,
+      uint32_t next_record);
 
   ledger::LedgerClient* ledger_client_;
 

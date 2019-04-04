@@ -780,6 +780,11 @@ void LedgerImpl::GetRecurringTips(
   ledger_client_->GetRecurringTips(callback);
 }
 
+void LedgerImpl::GetOneTimeTips(
+    ledger::PublisherInfoListCallback callback) {
+  ledger_client_->GetOneTimeTips(callback);
+}
+
 void LedgerImpl::LoadPublishersListCallback(
     int response_status_code,
     const std::string& response,

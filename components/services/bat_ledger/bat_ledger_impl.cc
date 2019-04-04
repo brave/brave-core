@@ -450,4 +450,29 @@ void BatLedgerImpl::GetRecurringTips(GetRecurringTipsCallback callback) {
       BatLedgerImpl::OnGetRecurringTips, holder, _1, _2));
 }
 
+// static
+void BatLedgerImpl::OnGetOneTimeTips(
+    CallbackHolder<GetRecurringTipsCallback>* holder,
+    const ledger::PublisherInfoList& list,
+    uint32_t num) {
+
+  std::vector<std::string> json_list;
+  for (auto const& item : list) {
+    json_list.push_back(item.ToJson());
+  }
+
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(json_list);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::GetOneTimeTips(GetOneTimeTipsCallback callback) {
+  auto* holder = new CallbackHolder<GetOneTimeTipsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetOneTimeTips(std::bind(
+      BatLedgerImpl::OnGetOneTimeTips, holder, _1, _2));
+}
+
 }  // namespace bat_ledger

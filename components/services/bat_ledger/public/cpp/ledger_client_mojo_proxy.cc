@@ -699,4 +699,31 @@ void LedgerClientMojoProxy::GetExcludedPublishersNumberDB(
         holder, _1));
 }
 
+// static
+void LedgerClientMojoProxy::OnGetOneTimeTips(
+    CallbackHolder<GetOneTimeTipsCallback>* holder,
+    const ledger::PublisherInfoList& publisher_info_list,
+    uint32_t next_record) {
+  std::vector<std::string> list;
+  for (const auto& publisher_info : publisher_info_list) {
+    list.push_back(publisher_info.ToJson());
+  }
+
+  if (holder->is_valid())
+    std::move(holder->get()).Run(list, next_record);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetOneTimeTips(
+    GetOneTimeTipsCallback callback) {
+  // deleted in OnGetOneTimeTips
+  auto* holder = new CallbackHolder<GetOneTimeTipsCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->GetOneTimeTips(
+      std::bind(LedgerClientMojoProxy::OnGetOneTimeTips,
+                holder,
+                _1,
+                _2));
+}
+
 }  // namespace bat_ledger

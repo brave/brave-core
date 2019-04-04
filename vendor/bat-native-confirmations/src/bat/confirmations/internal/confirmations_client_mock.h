@@ -178,6 +178,9 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD1(GetRecurringTips, void(
       ledger::PublisherInfoListCallback callback));
 
+  MOCK_METHOD1(GetOneTimeTips, void(
+      ledger::PublisherInfoListCallback callback));
+
   MOCK_METHOD2(OnRemoveRecurring, void(
       const std::string& publisher_key,
       ledger::RecurringRemoveCallback callback));

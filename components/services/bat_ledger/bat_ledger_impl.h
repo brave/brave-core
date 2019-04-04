@@ -137,6 +137,8 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   void GetRecurringTips(GetRecurringTipsCallback callback) override;
 
+  void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
+
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
@@ -180,6 +182,11 @@ class BatLedgerImpl : public mojom::BatLedger,
       uint32_t number);
 
   static void OnGetRecurringTips(
+      CallbackHolder<GetRecurringTipsCallback>* holder,
+      const ledger::PublisherInfoList& list,
+      uint32_t num);
+
+  static void OnGetOneTimeTips(
       CallbackHolder<GetRecurringTipsCallback>* holder,
       const ledger::PublisherInfoList& list,
       uint32_t num);

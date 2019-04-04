@@ -170,6 +170,9 @@ class LEDGER_EXPORT LedgerClient {
   virtual void GetRecurringTips(
       ledger::PublisherInfoListCallback callback) = 0;
 
+  virtual void GetOneTimeTips(
+      ledger::PublisherInfoListCallback callback) = 0;
+
   virtual void OnRemoveRecurring(const std::string& publisher_key,
                                  ledger::RecurringRemoveCallback callback) = 0;
 

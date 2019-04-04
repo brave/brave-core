@@ -284,6 +284,8 @@ class LEDGER_EXPORT Ledger {
   virtual void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) = 0;
 
   virtual void GetRecurringTips(ledger::PublisherInfoListCallback callback) = 0;
+
+  virtual void GetOneTimeTips(ledger::PublisherInfoListCallback callback) = 0;
 };
 
 }  // namespace ledger

@@ -295,6 +295,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
 
+  void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
+
   void RemoveRecurringTip(const std::string& publisher_key) override;
 
   ledger::ActivityInfoFilter CreateActivityFilter(
