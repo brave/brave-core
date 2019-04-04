@@ -218,6 +218,22 @@ class LEDGER_EXPORT LedgerClient {
                          ledger::OnLoadCallback callback) = 0;
   virtual void ResetState(const std::string& name,
                           ledger::OnResetCallback callback) = 0;
+
+  virtual void SetBooleanState(const std::string& name, bool value) = 0;
+  virtual bool GetBooleanState(const std::string& name) const = 0;
+  virtual void SetIntegerState(const std::string& name, int value) = 0;
+  virtual int GetIntegerState(const std::string& name) const = 0;
+  virtual void SetDoubleState(const std::string& name, double value) = 0;
+  virtual double GetDoubleState(const std::string& name) const = 0;
+  virtual void SetStringState(const std::string& name,
+                              const std::string& value) = 0;
+  virtual std::string GetStringState(const std::string& name) = 0;
+  virtual void SetInt64State(const std::string& name, int64_t value) = 0;
+  virtual int64_t GetInt64State(const std::string& name) const = 0;
+  virtual void SetUint64State(const std::string& name, uint64_t value) = 0;
+  virtual uint64_t GetUint64State(const std::string& name) const = 0;
+  virtual void ClearState(const std::string& name) = 0;
+
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 
   virtual void ConfirmationsTransactionHistoryDidChange() = 0;

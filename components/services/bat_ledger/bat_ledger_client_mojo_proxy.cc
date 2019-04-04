@@ -691,6 +691,77 @@ void BatLedgerClientMojoProxy::ResetState(
       name, base::BindOnce(&OnResetState, std::move(callback)));
 }
 
+void BatLedgerClientMojoProxy::SetBooleanState(const std::string& name,
+                                               bool value) {
+  bat_ledger_client_->SetBooleanState(name, value);
+}
+
+bool BatLedgerClientMojoProxy::GetBooleanState(const std::string& name) const {
+  bool value;
+  bat_ledger_client_->GetBooleanState(name, &value);
+  return value;
+}
+
+void BatLedgerClientMojoProxy::SetIntegerState(const std::string& name,
+                                               int value) {
+  bat_ledger_client_->SetIntegerState(name, value);
+}
+
+int BatLedgerClientMojoProxy::GetIntegerState(const std::string& name) const {
+  int value;
+  bat_ledger_client_->GetIntegerState(name, &value);
+  return value;
+}
+
+void BatLedgerClientMojoProxy::SetDoubleState(const std::string& name,
+                                              double value) {
+  bat_ledger_client_->SetDoubleState(name, value);
+}
+
+double BatLedgerClientMojoProxy::GetDoubleState(const std::string& name) const {
+  double value;
+  bat_ledger_client_->GetDoubleState(name, &value);
+  return value;
+}
+
+void BatLedgerClientMojoProxy::SetStringState(const std::string& name,
+                              const std::string& value) {
+  bat_ledger_client_->SetStringState(name, value);
+}
+
+std::string BatLedgerClientMojoProxy::GetStringState(const std::string& name) {
+  std::string value;
+  bat_ledger_client_->GetStringState(name, &value);
+  return value;
+}
+
+void BatLedgerClientMojoProxy::SetInt64State(const std::string& name,
+                                             int64_t value) {
+  bat_ledger_client_->SetInt64State(name, value);
+}
+
+int64_t BatLedgerClientMojoProxy::GetInt64State(const std::string& name) const {
+  int64_t value;
+  bat_ledger_client_->GetInt64State(name, &value);
+  return value;
+}
+
+void BatLedgerClientMojoProxy::SetUint64State(const std::string& name,
+                                              uint64_t value) {
+  bat_ledger_client_->SetUint64State(name, value);
+}
+
+uint64_t BatLedgerClientMojoProxy::GetUint64State(
+    const std::string& name) const {
+  uint64_t value;
+  bat_ledger_client_->GetUint64State(name, &value);
+  return value;
+}
+
+void BatLedgerClientMojoProxy::ClearState(const std::string& name) {
+  bat_ledger_client_->ClearState(name);
+}
+
 void BatLedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
   if (!Connected())
     return;

@@ -228,6 +228,27 @@ interface BatLedgerClient {
   SaveState(string name, string value) => (int32 result);
   LoadState(string name) => (int32 result, string value);
   ResetState(string name) => (int32 result);
+
+  [Sync]
+  GetBooleanState(string name) => (bool value);
+  SetBooleanState(string name, bool value);
+  [Sync]
+  GetIntegerState(string name) => (int32 value);
+  SetIntegerState(string name, int32 value);
+  [Sync]
+  GetDoubleState(string name) => (double value);
+  SetDoubleState(string name, double value);
+  [Sync]
+  GetStringState(string name) => (string value);
+  SetStringState(string name, string value);
+  [Sync]
+  GetInt64State(string name) => (int64 value);
+  SetInt64State(string name, int64 value);
+  [Sync]
+  GetUint64State(string name) => (uint64 value);
+  SetUint64State(string name, uint64 value);
+  ClearState(string name);
+
   SetConfirmationsIsReady(bool is_ready);
   ConfirmationsTransactionHistoryDidChange();
 

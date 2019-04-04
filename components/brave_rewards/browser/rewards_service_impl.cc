@@ -363,6 +363,8 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTagForURLLoad() {
       })");
 }
 
+const char pref_prefix[] = "brave.rewards.";
+
 }  // namespace
 
 bool IsMediaLink(const GURL& url,
@@ -1639,6 +1641,60 @@ void RewardsServiceImpl::OnLoadedState(
     callback(ledger::Result::LEDGER_ERROR, value);
   else
     callback(ledger::Result::LEDGER_OK, value);
+}
+
+void RewardsServiceImpl::SetBooleanState(const std::string& name, bool value) {
+  profile_->GetPrefs()->SetBoolean(pref_prefix + name, value);
+}
+
+bool RewardsServiceImpl::GetBooleanState(const std::string& name) const {
+  return profile_->GetPrefs()->GetBoolean(pref_prefix + name);
+}
+
+void RewardsServiceImpl::SetIntegerState(const std::string& name, int value) {
+  profile_->GetPrefs()->SetInteger(pref_prefix + name, value);
+}
+
+int RewardsServiceImpl::GetIntegerState(const std::string& name) const {
+  return profile_->GetPrefs()->GetInteger(pref_prefix + name);
+}
+
+void RewardsServiceImpl::SetDoubleState(const std::string& name, double value) {
+  profile_->GetPrefs()->SetDouble(pref_prefix + name, value);
+}
+
+double RewardsServiceImpl::GetDoubleState(const std::string& name) const {
+  return profile_->GetPrefs()->GetDouble(pref_prefix + name);
+}
+
+void RewardsServiceImpl::SetStringState(const std::string& name,
+                                        const std::string& value) {
+  profile_->GetPrefs()->SetString(pref_prefix + name, value);
+}
+
+std::string RewardsServiceImpl::GetStringState(const std::string& name) {
+  return profile_->GetPrefs()->GetString(pref_prefix + name);
+}
+
+void RewardsServiceImpl::SetInt64State(const std::string& name, int64_t value) {
+  profile_->GetPrefs()->SetInt64(pref_prefix + name, value);
+}
+
+int64_t RewardsServiceImpl::GetInt64State(const std::string& name) const {
+  return profile_->GetPrefs()->GetInt64(pref_prefix + name);
+}
+
+void RewardsServiceImpl::SetUint64State(const std::string& name,
+                                        uint64_t value) {
+  profile_->GetPrefs()->SetUint64(pref_prefix + name, value);
+}
+
+uint64_t RewardsServiceImpl::GetUint64State(const std::string& name) const {
+  return profile_->GetPrefs()->GetUint64(pref_prefix + name);
+}
+
+void RewardsServiceImpl::ClearState(const std::string& name) {
+  profile_->GetPrefs()->ClearPref(pref_prefix + name);
 }
 
 void RewardsServiceImpl::KillTimer(uint32_t timer_id) {
