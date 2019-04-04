@@ -585,32 +585,16 @@ void LedgerImpl::OnWalletProperties(
   std::unique_ptr<ledger::WalletInfo> info;
 
   if (result == ledger::Result::LEDGER_OK) {
-    info.reset(new ledger::WalletInfo);
-    info->altcurrency_ = properties.altcurrency_;
-    info->probi_ = properties.probi_;
-    info->balance_ = properties.balance_;
-    info->rates_ = properties.rates_;
-    info->parameters_choices_ = properties.parameters_choices_;
-    info->fee_amount_ = bat_state_->GetContributionAmount();
-    info->parameters_range_ = properties.parameters_range_;
-    info->parameters_days_ = properties.parameters_days_;
-
-    for (size_t i = 0; i < properties.grants_.size(); i ++) {
-      ledger::Grant grant;
-
-      grant.altcurrency = properties.grants_[i].altcurrency;
-      grant.probi = properties.grants_[i].probi;
-      grant.expiryTime = properties.grants_[i].expiryTime;
-
-      info->grants_.push_back(grant);
-    }
+    info.reset(new ledger::WalletInfo(
+        bat_client_->WalletPropertiesToWalletInfo(properties)));
   }
 
   ledger_client_->OnWalletProperties(result, std::move(info));
 }
 
-void LedgerImpl::FetchWalletProperties() const {
-  bat_client_->getWalletProperties();
+void LedgerImpl::FetchWalletProperties(
+    ledger::OnWalletPropertiesCallback callback) const {
+  bat_client_->GetWalletProperties(callback);
 }
 
 void LedgerImpl::FetchGrants(const std::string& lang,
@@ -756,7 +740,7 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
   auto direction_list =
       std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
   braveledger_bat_helper::PublisherList list;
-  bat_contribution_->StartReconcile(GenerateGUID(),
+  bat_contribution_->InitReconcile(GenerateGUID(),
                          ledger::REWARDS_CATEGORY::DIRECT_DONATION,
                          list,
                          direction_list);

@@ -60,6 +60,8 @@ using WalletAddressesCallback =
 using ConfirmationsHistoryCallback = std::function<void(
     std::unique_ptr<ledger::TransactionsInfo> info)>;
 using GetExcludedPublishersNumberDBCallback = std::function<void(uint32_t)>;
+using OnWalletPropertiesCallback = std::function<void(const ledger::Result,
+                                  std::unique_ptr<ledger::WalletInfo>)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -198,7 +200,8 @@ class LEDGER_EXPORT Ledger {
 
   virtual bool GetAutoContribute() const = 0;
 
-  virtual void FetchWalletProperties() const = 0;
+  virtual void FetchWalletProperties(
+      OnWalletPropertiesCallback callback) const = 0;
 
   virtual void FetchGrants(const std::string& lang,
                            const std::string& paymentId) const = 0;

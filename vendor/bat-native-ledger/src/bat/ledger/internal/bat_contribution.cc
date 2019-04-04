@@ -204,7 +204,7 @@ void BatContribution::ReconcilePublisherList(
     new_list.push_back(new_publisher);
   }
 
-  StartReconcile(viewing_id, category, new_list, {}, budget);
+  InitReconcile(viewing_id, category, new_list, {}, budget);
 }
 
 void BatContribution::ResetReconcileStamp() {
@@ -259,12 +259,56 @@ void BatContribution::StartAutoContribute() {
                 _2));
 }
 
-void BatContribution::StartReconcile(
+void BatContribution::OnWalletPropertiesForReconcile(
+    const std::string& viewing_id,
+    const ledger::REWARDS_CATEGORY category,
+    const braveledger_bat_helper::PublisherList& list,
+    const braveledger_bat_helper::Directions& directions,
+    double budget,
+    const ledger::Result result,
+    std::unique_ptr<ledger::WalletInfo> info) {
+  if (result != ledger::Result::LEDGER_OK || !info) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+         "We couldn't get balance from the server.";
+    OnReconcileComplete(ledger::Result::LEDGER_ERROR,
+                        viewing_id,
+                        category);
+    return;
+  }
+
+  StartReconcile(viewing_id,
+                 category,
+                 list,
+                 directions,
+                 budget,
+                 info->balance_);
+}
+
+void BatContribution::InitReconcile(
     const std::string& viewing_id,
     const ledger::REWARDS_CATEGORY category,
     const braveledger_bat_helper::PublisherList& list,
     const braveledger_bat_helper::Directions& directions,
     double budget) {
+  ledger_->FetchWalletProperties(
+      std::bind(&BatContribution::OnWalletPropertiesForReconcile,
+                this,
+                viewing_id,
+                category,
+                list,
+                directions,
+                budget,
+                _1,
+                _2));
+}
+
+void BatContribution::StartReconcile(
+    const std::string& viewing_id,
+    const ledger::REWARDS_CATEGORY category,
+    const braveledger_bat_helper::PublisherList& list,
+    const braveledger_bat_helper::Directions& directions,
+    double budget,
+    double balance) {
   if (ledger_->ReconcileExists(viewing_id)) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Unable to reconcile with the same viewing id: " << viewing_id;
@@ -274,7 +318,6 @@ void BatContribution::StartReconcile(
 
   auto reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
   double fee = .0;
-  double balance = ledger_->GetBalance();
 
   if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
     if (list.size() == 0 || budget > balance || budget == 0) {
