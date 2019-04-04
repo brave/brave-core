@@ -3,10 +3,10 @@ index 195435b5cc3a6aefc5464f9a5bd8919884783bcb..25349fd0787e0fd9c913fab16d3c646b
 --- a/ui/base/BUILD.gn
 +++ b/ui/base/BUILD.gn
 @@ -395,6 +395,7 @@ jumbo_component("base") {
-     "//base:base_static",
-     "//base:i18n",
-     "//base/third_party/dynamic_annotations",
-+    "//brave/ui/webui/resources",
-     "//net",
-     "//third_party/icu",
-     "//third_party/zlib:zlib",
+     "//ui/strings",
+     "//url",
+   ]
++  deps += [ "//brave/ui/base:chromium_deps" ]
+ 
+   if (!is_ios) {
+     # iOS does not use Chromium-specific code for event handling.
