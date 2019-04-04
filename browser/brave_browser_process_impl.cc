@@ -25,6 +25,7 @@
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
+#include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "chrome/browser/io_thread.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
@@ -138,8 +139,7 @@ ProfileManager* BraveBrowserProcessImpl::profile_manager() {
   return profile_manager_.get();
 }
 
-brave_shields::AdBlockService*
-BraveBrowserProcessImpl::ad_block_service() {
+brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
   if (ad_block_service_)
     return ad_block_service_.get();
 
@@ -162,7 +162,7 @@ BraveBrowserProcessImpl::ad_block_regional_service_manager() {
   if (!ad_block_regional_service_manager_)
     ad_block_regional_service_manager_ =
         brave_shields::AdBlockRegionalServiceManagerFactory(
-              brave_component_updater_delegate());
+            brave_component_updater_delegate());
   return ad_block_regional_service_manager_.get();
 }
 
@@ -192,10 +192,19 @@ brave_shields::ReferrerWhitelistService*
 BraveBrowserProcessImpl::referrer_whitelist_service() {
   if (!referrer_whitelist_service_) {
     referrer_whitelist_service_ =
-      brave_shields::ReferrerWhitelistServiceFactory(
-          local_data_files_service());
+        brave_shields::ReferrerWhitelistServiceFactory(
+            local_data_files_service());
   }
   return referrer_whitelist_service_.get();
+}
+
+greaselion::GreaselionDownloadService*
+BraveBrowserProcessImpl::greaselion_download_service() {
+  if (!greaselion_download_service_) {
+    greaselion_download_service_ = greaselion::GreaselionDownloadServiceFactory(
+        local_data_files_service());
+  }
+  return greaselion_download_service_.get();
 }
 
 brave_shields::TrackingProtectionService*
@@ -211,9 +220,8 @@ BraveBrowserProcessImpl::tracking_protection_service() {
 brave_shields::HTTPSEverywhereService*
 BraveBrowserProcessImpl::https_everywhere_service() {
   if (!https_everywhere_service_)
-    https_everywhere_service_ =
-        brave_shields::HTTPSEverywhereServiceFactory(
-            brave_component_updater_delegate());
+    https_everywhere_service_ = brave_shields::HTTPSEverywhereServiceFactory(
+        brave_component_updater_delegate());
   return https_everywhere_service_.get();
 }
 

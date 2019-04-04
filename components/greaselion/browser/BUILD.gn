@@ -1,0 +1,18 @@
+source_set("browser") {
+  sources = [
+    "greaselion_download_service.cc",
+    "greaselion_download_service.h",
+    "greaselion_service.h",
+    "greaselion_service_impl.cc",
+    "greaselion_service_impl.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//content/public/browser",
+    "//content/public/common",
+    "//url",
+  ]
+
+}

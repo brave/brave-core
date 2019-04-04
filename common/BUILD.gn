@@ -25,6 +25,7 @@ source_set("common") {
   sources = [
     "brave_content_client.cc",
     "brave_content_client.h",
+    "brave_isolated_worlds.h",
     "brave_paths.cc",
     "brave_paths.h",
     "brave_switches.cc",
@@ -119,18 +120,8 @@ source_set("shield_exceptions") {
   deps = [
     "//url",
   ]
-  # TODO(bridiver) - convert URLPattern to ContentSettingsPattern
   if (is_android) {
-    sources += [
-      "//extensions/common/url_pattern.cc",
-      "//extensions/common/url_pattern.h",
-    ]
-
-    deps += [
-      "//base",
-      "//components/url_pattern_index",
-      "//extensions/common:common_constants",
-    ]
+    deps += [ "//brave/app/android:common_extensions" ]
   } else {
     deps += [ "//extensions/common" ]
   }
