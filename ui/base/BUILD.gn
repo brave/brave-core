@@ -1,0 +1,6 @@
+group("chromium_deps") {
+  deps = [
+    "//brave/ui/webui/resources",
+    "//brave/app:brave_generated_resources_grit",
+  ]
+}
