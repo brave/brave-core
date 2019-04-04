@@ -25,6 +25,22 @@
       "256": "img/bat-256.png"
     }
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.twitter.com/*"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "js": [
+        "out/brave_rewards_panel_content.bundle.js"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    "img/bat-16.png"
+  ],
   "icons": {
     "16": "img/bat-16.png",
     "32": "img/bat-32.png",

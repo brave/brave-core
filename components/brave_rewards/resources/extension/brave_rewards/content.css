@@ -1,0 +1,6 @@
+.brave-tip-icon {
+    margin-top: 5px;
+    content: url('chrome-extension://__MSG_@@extension_id__/img/bat-16.png');
+    width: 16px;
+    height: 16px;
+}

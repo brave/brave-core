@@ -78,3 +78,19 @@ chrome.runtime.onConnect.addListener(function () {
     }
   })
 })
+
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  const action = typeof msg === 'string' ? msg : msg.type
+  switch (action) {
+    case 'rewardsEnabled': {
+      // Check if rewards is enabled
+      chrome.braveRewards.getRewardsMainEnabled(function (enabled) {
+        sendResponse({ enabled: enabled })
+      })
+      // Must return true for asynchronous calls to sendResponse
+      return true
+    }
+    default:
+      return false
+  }
+})
