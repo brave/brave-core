@@ -325,7 +325,7 @@ if (error_code == ledger::Result::LEDGER_OK) {
     AddNotification(notification_type,
                     args,
                     prefix + properties.promotionId,
-                    true);
+                    false);
   }
 }
 
