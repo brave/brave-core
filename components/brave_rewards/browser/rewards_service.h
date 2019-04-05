@@ -202,6 +202,8 @@ class RewardsService : public KeyedService {
       const std::string& publisher_key,
       RefreshPublisherCallback callback) = 0;
 
+  virtual void ResetTheWholeState(const base::Callback<void(bool)>& callback) = 0;
+
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
 
