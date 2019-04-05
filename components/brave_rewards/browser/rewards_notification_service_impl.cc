@@ -337,7 +337,7 @@ void RewardsNotificationServiceImpl::OnGrant(RewardsService* rewards_service,
   AddNotification(notification_type,
                   args,
                   prefix + properties.promotionId,
-                  true);
+                  false);
 }
 
 void RewardsNotificationServiceImpl::OnGrantFinish(
