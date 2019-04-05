@@ -63,14 +63,26 @@ def download_from_github(args, logging):
 
     for asset in release['assets']:
         if re.match(r'.*\.dmg$', asset['name']):
+            if args.uploaded:
+                if not args.platform:
+                    args.platform = []
+                args.platform.append('darwin')
             found_assets_in_github_release['darwin'] = {}
             found_assets_in_github_release['darwin']['name'] = asset['name']
             found_assets_in_github_release['darwin']['url'] = asset['url']
         elif re.match(r'brave_installer-ia32\.exe$', asset['name']):
+            if args.uploaded:
+                if not args.platform:
+                    args.platform = []
+                args.platform.append('win32')
             found_assets_in_github_release['win32'] = {}
             found_assets_in_github_release['win32']['name'] = asset['name']
             found_assets_in_github_release['win32']['url'] = asset['url']
         elif re.match(r'brave_installer-x64\.exe$', asset['name']):
+            if args.uploaded:
+                if not args.platform:
+                    args.platform = []
+                args.platform.append('win64')
             found_assets_in_github_release['win64'] = {}
             found_assets_in_github_release['win64']['name'] = asset['name']
             found_assets_in_github_release['win64']['url'] = asset['url']
@@ -194,6 +206,8 @@ def parse_args():
                         ' omaha/sparkle uploads by QA before production release')
     parser.add_argument('--platform', help='Platform(s) to upload to Omaha (separated by spaces)',
                         nargs='*', choices=['win32', 'win64', 'darwin'])
+    parser.add_argument('--uploaded', help='Upload all the platform(s) that are already in the GitHub release',
+                        action='store_true')
     parser.add_argument('-t', '--tag', help='Version tag to download from Github')
     return parser.parse_args()
 
@@ -205,11 +219,14 @@ def main():
         logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
         logging.debug('brave_version: {}'.format(get_upload_version()))
 
+    if args.uploaded and args.platform:
+        exit("Error: --platform and --uploaded are mutually exclusive, only one allowed")
+
     # Default to requiring all 3 platforms
-    if not args.platform:
+    if not args.uploaded and not args.platform:
         args.platform = ['win32', 'win64', 'darwin']
 
-    if args.debug:
+    if args.debug and args.platform:
         logging.debug("args.platform: {}".format(args.platform))
 
     if args.file and args.github:
