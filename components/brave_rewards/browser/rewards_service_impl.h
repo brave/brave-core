@@ -217,7 +217,8 @@ class RewardsServiceImpl : public RewardsService,
                              const int amount) override;
 
   const RewardsNotificationService::RewardsNotificationsMap&
-  GetAllNotifications() override;
+    GetAllNotifications() override;
+  void ResetTheWholeState(const base::Callback<void(bool)>& callback) override;
 
   void SetContributionAmount(const double amount) const override;
 
@@ -322,6 +323,8 @@ class RewardsServiceImpl : public RewardsService,
              int amount,
              bool recurring,
              ledger::PublisherInfoPtr publisher_info);
+  void OnResetTheWholeState(base::Callback<void(bool)> callback,
+                                 bool success);
   void OnContributionInfoSaved(const ledger::REWARDS_CATEGORY category,
                                bool success);
   void OnRecurringTipSaved(bool success);
@@ -645,6 +648,7 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
 
   uint32_t next_timer_id_;
+  bool reset_states_;
 
   GetTestResponseCallback test_response_callback_;
   std::string current_country_for_test_;
