@@ -595,6 +595,8 @@ void RewardsServiceImpl::CreateWalletAttestationResult(bool result,
         AsWeakPtr(),
         std::move(callback));
     bat_ledger_->CreateWallet(result_string, std::move(on_create));
+  } else {
+    OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
   }
 }
 #endif
