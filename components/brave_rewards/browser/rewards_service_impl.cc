@@ -315,6 +315,17 @@ bool ResetOnFileTaskRunner(const base::FilePath& path) {
   return base::DeleteFile(path, false);
 }
 
+bool ResetOnFilesTaskRunner(const std::vector<base::FilePath>& paths) {
+  bool res = true;
+  for (size_t i = 0; i < paths.size(); i++) {
+    if (!base::DeleteFile(paths[i], false)) {
+      res = false;
+    }
+  }
+
+  return res;
+}
+
 void EnsureRewardsBaseDirectoryExists(const base::FilePath& path) {
   if (!DirectoryExists(path))
     base::CreateDirectory(path);
@@ -418,7 +429,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       private_observer_(
           std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
 #endif
-      next_timer_id_(0) {
+      next_timer_id_(0),
+      reset_states_(false) {
   file_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&EnsureRewardsBaseDirectoryExists,
                                 rewards_base_path_));
@@ -1100,6 +1112,9 @@ void RewardsServiceImpl::OnPublisherStateLoaded(
 
 void RewardsServiceImpl::SaveLedgerState(const std::string& ledger_state,
                                       ledger::LedgerCallbackHandler* handler) {
+  if (reset_states_) {
+    return;
+  }
   base::ImportantFileWriter writer(
       ledger_state_path_, file_task_runner_);
 
@@ -1126,6 +1141,9 @@ void RewardsServiceImpl::OnLedgerStateSaved(
 
 void RewardsServiceImpl::SavePublisherState(const std::string& publisher_state,
                                       ledger::LedgerCallbackHandler* handler) {
+  if (reset_states_) {
+    return;
+  }
   base::ImportantFileWriter writer(publisher_state_path_, file_task_runner_);
 
   writer.RegisterOnNextWriteCallbacks(
@@ -1678,6 +1696,9 @@ void RewardsServiceImpl::OnGetTransactionHistory(
 void RewardsServiceImpl::SaveState(const std::string& name,
                                    const std::string& value,
                                    ledger::OnSaveCallback callback) {
+  if (reset_states_) {
+    return;
+  }
   base::ImportantFileWriter writer(
       rewards_base_path_.AppendASCII(name), file_task_runner_);
 
@@ -1712,6 +1733,29 @@ void RewardsServiceImpl::ResetState(
                      rewards_base_path_.AppendASCII(name)),
       base::BindOnce(&RewardsServiceImpl::OnResetState,
                      AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::ResetTheWholeState(const base::Callback<void(bool)>& callback) {
+  reset_states_ = true;
+  notification_service_->DeleteAllNotifications();
+  std::vector<base::FilePath> paths;
+  paths.push_back(ledger_state_path_);
+  paths.push_back(publisher_state_path_);
+  paths.push_back(publisher_info_db_path_);
+  paths.push_back(publisher_list_path_);
+  paths.push_back(rewards_base_path_);
+
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&ResetOnFilesTaskRunner,
+                     paths),
+      base::BindOnce(&RewardsServiceImpl::OnResetTheWholeState,
+                     AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnResetTheWholeState(base::Callback<void(bool)> callback,
+                                 bool success) {
+  callback.Run(success);
 }
 
 void RewardsServiceImpl::OnSavedState(

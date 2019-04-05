@@ -223,6 +223,7 @@ class RewardsService : public KeyedService {
                                          const std::string& viewing_id,
                                          uint64_t added_date) = 0;
   virtual void RemoveAllPendingContributionsUI() = 0;
+  virtual void ResetTheWholeState(const base::Callback<void(bool)>& callback) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
