@@ -1,12 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_PUBLISHER_INFO_DATABASE_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_PUBLISHER_INFO_DATABASE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_INFO_DATABASE_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_INFO_DATABASE_H_
 
 #include <memory>
-#include <stddef.h>
+#include <string>
+#include <stddef.h>  // NOLINT
 
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
@@ -27,7 +29,7 @@ namespace brave_rewards {
 
 class PublisherInfoDatabase {
  public:
-  PublisherInfoDatabase(const base::FilePath& db_path);
+  explicit PublisherInfoDatabase(const base::FilePath& db_path);
   ~PublisherInfoDatabase();
 
   // Call before Init() to set the error callback to be used for the
@@ -101,7 +103,6 @@ class PublisherInfoDatabase {
   int GetTableVersionNumber();
 
  private:
-
   bool CreateContributionInfoTable();
 
   bool CreateContributionInfoIndex();
@@ -155,4 +156,4 @@ class PublisherInfoDatabase {
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_PUBLISHER_INFO_DATABASE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_INFO_DATABASE_H_

@@ -123,7 +123,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void ConfirmationsTransactionHistoryDidChange() override;
 
-  void GetExcludedPublishersNumberDB(GetExcludedPublishersNumberDBCallback callback) override;
+  void GetExcludedPublishersNumberDB(
+      GetExcludedPublishersNumberDBCallback callback) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind

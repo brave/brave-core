@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "brave/components/services/bat_ledger/bat_ledger_client_mojo_proxy.h"

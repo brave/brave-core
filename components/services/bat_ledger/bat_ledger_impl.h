@@ -77,7 +77,8 @@ class BatLedgerImpl : public mojom::BatLedger,
     const std::string& promotion_id,
     const std::string& promotion_type) override;
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
-  void GetExcludedPublishersNumber(GetExcludedPublishersNumberCallback callback) override;
+  void GetExcludedPublishersNumber(
+      GetExcludedPublishersNumberCallback callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
   void SolveGrantCaptcha(
       const std::string& solution,

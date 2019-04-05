@@ -7,6 +7,7 @@
 #include <cmath>
 #include <ctime>
 #include <map>
+#include <memory>
 #include <vector>
 #include <utility>
 

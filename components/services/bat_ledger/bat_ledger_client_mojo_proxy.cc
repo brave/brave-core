@@ -90,8 +90,9 @@ void OnResetState(const ledger::OnSaveCallback& callback,
   callback(ToLedgerResult(result));
 }
 
-void OnExcludedNumberDB(const ledger::GetExcludedPublishersNumberDBCallback& callback,
-                        uint32_t result) {
+void OnExcludedNumberDB(
+    const ledger::GetExcludedPublishersNumberDBCallback& callback,
+    uint32_t result) {
   callback(result);
 }
 
