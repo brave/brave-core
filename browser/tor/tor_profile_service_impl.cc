@@ -95,6 +95,11 @@ int64_t TorProfileServiceImpl::GetTorPid() {
 
 void TorProfileServiceImpl::SetHttpAuthPreferences(
     net::HttpAuthHandlerFactory* auth_factory) {
+  LOG(ERROR) << "TorProfileServiceImpl::SetHttpAuthPreferences("
+             << this
+             << ": " << auth_factory
+             << " -> " << &http_auth_prefs_
+             << ")";
   auth_factory->set_http_auth_preferences(&http_auth_prefs_);
 }
 

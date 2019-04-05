@@ -51,6 +51,7 @@ int OnBeforeURLRequest_TorWork(
   // to avoid accidentally identifying ourselves if the user hasn't
   // asked to do so.
   auto* auth_factory = url_request_context->http_auth_handler_factory();
+  LOG(ERROR) << "set auth factory " << auth_factory << "prefs";
   tor_profile_service->SetHttpAuthPreferences(auth_factory);
 
   // Set the proxy if necessary, or fail if the proxy is not ready yet.

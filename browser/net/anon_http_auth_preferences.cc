@@ -12,6 +12,7 @@ AnonHttpAuthPreferences::~AnonHttpAuthPreferences() = default;
 
 bool AnonHttpAuthPreferences::CanUseDefaultCredentials(
     const GURL& auth_origin) const {
+  LOG(ERROR) << "AnonHttpAuthPreferences::CanUseDefaultCredentials";
   return false;
 }
 
