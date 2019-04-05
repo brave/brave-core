@@ -308,6 +308,7 @@ test("brave_browser_tests") {
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h",
     "//brave/browser/renderer_context_menu/brave_spelling_menu_observer_browsertest.cc",
     "//brave/browser/search_engines/search_engine_provider_service_browsertest.cc",
+    "//brave/browser/ui/brave_dark_mode_observer_browsertest.cc",
     "//brave/browser/ui/content_settings/brave_autoplay_blocked_image_model_browsertest.cc",
     "//brave/browser/ui/views/brave_actions/brave_actions_container_browsertest.cc",
     "//brave/browser/ui/views/profiles/brave_profile_chooser_view_browsertest.cc",
