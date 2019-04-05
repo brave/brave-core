@@ -14,6 +14,9 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/ledger.h"
 
+#include "bat/ledger/internal/media/youtube.h"
+#include "bat/ledger/internal/media/twitch.h"
+
 namespace bat_ledger {
 class LedgerImpl;
 }
@@ -21,6 +24,11 @@ class LedgerImpl;
 namespace leveldb {
 class DB;
 }
+
+//namespace braveledger_media {
+//class MediaYouTube;
+//class MediaTwitch;
+//}
 
 namespace braveledger_bat_get_media {
 
@@ -279,6 +287,8 @@ class BatGetMedia {
   static std::string parsePublisherName(const std::string& data);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<braveledger_media::MediaYouTube> media_youtube_;
+  std::unique_ptr<braveledger_media::MediaTwitch> media_twitch_;
 
   std::map<std::string, ledger::TwitchEventInfo> twitchEvents;
 

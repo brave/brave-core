@@ -23,7 +23,9 @@ using std::placeholders::_3;
 namespace braveledger_bat_get_media {
 
 BatGetMedia::BatGetMedia(bat_ledger::LedgerImpl* ledger):
-  ledger_(ledger) {
+  ledger_(ledger),
+  media_youtube_(new braveledger_media::MediaYouTube(ledger)),
+  media_twitch_(new braveledger_media::MediaTwitch(ledger)) {
 }
 
 BatGetMedia::~BatGetMedia() {}
