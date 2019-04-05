@@ -1,5 +1,5 @@
 diff --git a/components/invalidation/impl/fcm_network_handler.cc b/components/invalidation/impl/fcm_network_handler.cc
-index 72388ecec02de11773a1381a48ab21966ddf8f48..291acd52ff665cbe5d86bf8b938004571080f2ad 100644
+index 2220f5e46976c360fb27ccd1dd8b39a324dba240..70a67597a181f3a195f942d596455f9264022ac8 100644
 --- a/components/invalidation/impl/fcm_network_handler.cc
 +++ b/components/invalidation/impl/fcm_network_handler.cc
 @@ -93,6 +93,7 @@ FCMNetworkHandler::~FCMNetworkHandler() {
@@ -7,6 +7,6 @@ index 72388ecec02de11773a1381a48ab21966ddf8f48..291acd52ff665cbe5d86bf8b93800457
  
  void FCMNetworkHandler::StartListening() {
 +  return; // feature disabled in Brave
-   // Adding ourselves as Handler means start listening.
-   // Being the listener is pre-requirement for token operations.
-   gcm_driver_->AddAppHandler(app_id_, this);
+   if (IsListening()) {
+     StopListening();
+   }

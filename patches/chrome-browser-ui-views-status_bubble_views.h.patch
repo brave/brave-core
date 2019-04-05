@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/status_bubble_views.h b/chrome/browser/ui/views/status_bubble_views.h
-index a5df98a86df4e88d2a41b62ea67b2c92b4ac3f4a..80dec519ce50499d6e9cd24dab69f73129afdd32 100644
+index 60e3dc23b6026eca189935fe8987aae1cf134e43..a29f5f67072b110157221ce7b645f237b1a478ef 100644
 --- a/chrome/browser/ui/views/status_bubble_views.h
 +++ b/chrome/browser/ui/views/status_bubble_views.h
-@@ -69,6 +69,9 @@ class StatusBubbleViews : public StatusBubble {
+@@ -73,6 +73,9 @@ class StatusBubbleViews : public StatusBubble {
    void MouseMovedAt(const gfx::Point& location, bool left_content);
  
   private:
