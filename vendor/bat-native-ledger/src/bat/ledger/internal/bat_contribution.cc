@@ -7,6 +7,7 @@
 #include <cmath>
 #include <ctime>
 #include <map>
+#include <memory>
 #include <vector>
 #include <utility>
 
@@ -160,7 +161,7 @@ ledger::PublisherInfoList BatContribution::GetVerifiedListRecurring(
       contribution.amount = publisher.weight;
       contribution.publisher_key = publisher.id;
       contribution.viewing_id = viewing_id;
-      contribution.category = ledger::REWARDS_CATEGORY::RECURRING_DONATION;
+      contribution.category = ledger::REWARDS_CATEGORY::RECURRING_TIP;
 
       non_verified.list_.push_back(contribution);
     }
@@ -218,10 +219,10 @@ void BatContribution::OnTimerReconcile() {
     return;
   }
 
-  ledger_->GetRecurringDonations(
+  ledger_->GetRecurringTips(
       std::bind(&BatContribution::ReconcilePublisherList,
                 this,
-                ledger::REWARDS_CATEGORY::RECURRING_DONATION,
+                ledger::REWARDS_CATEGORY::RECURRING_TIP,
                 _1,
                 _2));
 }
@@ -344,7 +345,7 @@ void BatContribution::StartReconcile(
     fee = budget;
   }
 
-  if (category == ledger::REWARDS_CATEGORY::RECURRING_DONATION) {
+  if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
     double ac_amount = ledger_->GetContributionAmount();
 
     // don't use ac amount if ac is disabled
@@ -372,7 +373,7 @@ void BatContribution::StartReconcile(
     fee = budget;
   }
 
-  if (category == ledger::REWARDS_CATEGORY::DIRECT_DONATION) {
+  if (category == ledger::REWARDS_CATEGORY::ONE_TIME_TIP) {
     for (const auto& direction : directions) {
       if (direction.publisher_key_.empty()) {
         BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
@@ -842,7 +843,7 @@ void BatContribution::OnReconcileComplete(ledger::Result result,
   }
 
   // Trigger auto contribute after recurring donation
-  if (category == ledger::REWARDS_CATEGORY::RECURRING_DONATION) {
+  if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
     StartAutoContribute();
   }
 
@@ -882,12 +883,12 @@ void BatContribution::GetReconcileWinners(const std::string& viewing_id) {
       break;
     }
 
-    case ledger::REWARDS_CATEGORY::RECURRING_DONATION: {
+    case ledger::REWARDS_CATEGORY::RECURRING_TIP: {
       GetDonationWinners(ballots_count, viewing_id, reconcile.list_);
       break;
     }
 
-    case ledger::REWARDS_CATEGORY::DIRECT_DONATION: {
+    case ledger::REWARDS_CATEGORY::ONE_TIME_TIP: {
       // Direct one-time contribution
       braveledger_bat_helper::WINNERS_ST winner;
       winner.votes_ = ballots_count;
@@ -1524,7 +1525,7 @@ void BatContribution::OnReconcileCompleteSuccess(
     return;
   }
 
-  if (category == ledger::REWARDS_CATEGORY::DIRECT_DONATION) {
+  if (category == ledger::REWARDS_CATEGORY::ONE_TIME_TIP) {
     ledger_->SetBalanceReportItem(month,
                                   year,
                                   ledger::ReportType::DONATION,
@@ -1543,7 +1544,7 @@ void BatContribution::OnReconcileCompleteSuccess(
     return;
   }
 
-  if (category == ledger::REWARDS_CATEGORY::RECURRING_DONATION) {
+  if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
     auto reconcile = ledger_->GetReconcileById(viewing_id);
     ledger_->SetBalanceReportItem(month,
                                   year,
@@ -1580,7 +1581,7 @@ void BatContribution::AddRetry(
 
   // Don't retry one-time tip if in phase 1
   if (GetRetryPhase(step) == 1 &&
-      reconcile.category_ == ledger::REWARDS_CATEGORY::DIRECT_DONATION) {
+      reconcile.category_ == ledger::REWARDS_CATEGORY::ONE_TIME_TIP) {
     OnReconcileComplete(ledger::Result::TIP_ERROR,
                         viewing_id,
                         reconcile.category_);

@@ -1,12 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_PUBLISHER_INFO_DATABASE_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_PUBLISHER_INFO_DATABASE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_INFO_DATABASE_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_INFO_DATABASE_H_
 
 #include <memory>
-#include <stddef.h>
+#include <string>
+#include <stddef.h>  // NOLINT
 
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
@@ -27,7 +29,7 @@ namespace brave_rewards {
 
 class PublisherInfoDatabase {
  public:
-  PublisherInfoDatabase(const base::FilePath& db_path);
+  explicit PublisherInfoDatabase(const base::FilePath& db_path);
   ~PublisherInfoDatabase();
 
   // Call before Init() to set the error callback to be used for the
@@ -38,9 +40,9 @@ class PublisherInfoDatabase {
 
   bool InsertContributionInfo(const brave_rewards::ContributionInfo& info);
 
-  void GetTips(ledger::PublisherInfoList* list,
-               ledger::ACTIVITY_MONTH month,
-               int year);
+  void GetOneTimeTips(ledger::PublisherInfoList* list,
+                      ledger::ACTIVITY_MONTH month,
+                      int year);
 
   bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
 
@@ -69,15 +71,16 @@ class PublisherInfoDatabase {
   std::unique_ptr<ledger::PublisherInfo> GetMediaPublisherInfo(
       const std::string& media_key);
 
-  bool InsertOrUpdateRecurringDonation(
+  bool InsertOrUpdateRecurringTip(
       const brave_rewards::RecurringDonation& info);
 
-  void GetRecurringDonations(ledger::PublisherInfoList* list);
+  void GetRecurringTips(ledger::PublisherInfoList* list);
 
-  bool RemoveRecurring(const std::string& publisher_key);
+  bool RemoveRecurringTip(const std::string& publisher_key);
+
   bool InsertPendingContribution(const ledger::PendingContributionList& list);
-  double GetReservedAmount();
 
+  double GetReservedAmount();
 
   // Returns the current version of the publisher info database
   int GetCurrentVersion();
@@ -100,7 +103,6 @@ class PublisherInfoDatabase {
   int GetTableVersionNumber();
 
  private:
-
   bool CreateContributionInfoTable();
 
   bool CreateContributionInfoIndex();
@@ -113,10 +115,12 @@ class PublisherInfoDatabase {
 
   bool CreateMediaPublisherInfoTable();
 
-  bool CreateRecurringDonationTable();
+  bool CreateRecurringTipsTable();
 
-  bool CreateRecurringDonationIndex();
+  bool CreateRecurringTipsIndex();
+
   bool CreatePendingContributionsTable();
+
   bool CreatePendingContributionsIndex();
 
   void OnMemoryPressure(
@@ -152,4 +156,4 @@ class PublisherInfoDatabase {
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_PUBLISHER_INFO_DATABASE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_INFO_DATABASE_H_

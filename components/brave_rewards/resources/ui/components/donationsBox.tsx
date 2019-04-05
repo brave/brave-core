@@ -96,7 +96,7 @@ class DonationBox extends React.Component<Props, State> {
           },
           url: item.url,
           type: 'recurring' as any,
-          onRemove: () => { this.actions.removeRecurring(item.id) }
+          onRemove: () => { this.actions.removeRecurringTip(item.id) }
         }
       })
     }
@@ -126,7 +126,7 @@ class DonationBox extends React.Component<Props, State> {
           url: item.url,
           text: item.tipDate ? new Date(item.tipDate * 1000).toLocaleDateString() : undefined,
           type: 'donation' as any,
-          onRemove: () => { this.actions.removeRecurring(item.id) }
+          onRemove: () => { this.actions.removeRecurringTip(item.id) }
         }
       })
     }

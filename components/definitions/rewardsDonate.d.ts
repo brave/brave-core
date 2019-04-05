@@ -6,7 +6,7 @@ declare namespace RewardsDonate {
     error: boolean
     currentTipAmount?: string
     currentTipRecurring?: boolean
-    recurringDonations?: RecurringDonation[]
+    recurringDonations?: RecurringTips[]  // TODO(nejczdovc): migrate to tips
     reconcileStamp: number
   }
 
@@ -51,7 +51,7 @@ declare namespace RewardsDonate {
     status?: 'wrongPosition' | 'serverError' | number | null
   }
 
-  export interface RecurringDonation {
+  export interface RecurringTips {
     publisherKey?: string
     monthlyDate?: number
   }

@@ -87,8 +87,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.GET_DONATION_TABLE: {
-      chrome.send('brave_rewards.updateRecurringDonationsList')
-      chrome.send('brave_rewards.updateTipsList')
+      chrome.send('brave_rewards.getRecurringTips')
+      chrome.send('brave_rewards.getOneTimeTips')
       break
     }
     case types.GET_CONTRIBUTE_LIST: {
@@ -164,6 +164,14 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     }
     case types.GET_REWARDS_MAIN_ENABLED: {
       chrome.send('brave_rewards.getRewardsMainEnabled', [])
+      break
+    }
+    case types.ON_CONTRIBUTION_SAVED: {
+      const properties = action.payload.properties
+      console.log(properties)
+      if (properties && properties.success && properties.category === 8) {
+        chrome.send('brave_rewards.getOneTimeTips')
+      }
       break
     }
   }

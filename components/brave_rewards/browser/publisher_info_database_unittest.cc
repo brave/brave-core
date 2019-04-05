@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -415,7 +416,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateMediaPublisherInfo) {
   EXPECT_FALSE(info_sql_3.Step());
 }
 
-TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringDonation) {
+TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringTip) {
   /**
    * Good path
    */
@@ -428,7 +429,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringDonation) {
   info.amount = 20;
   info.added_date = base::Time::Now().ToJsTime();
 
-  bool success = publisher_info_database_->InsertOrUpdateRecurringDonation(
+  bool success = publisher_info_database_->InsertOrUpdateRecurringTip(
       info);
   EXPECT_TRUE(success);
 
@@ -448,7 +449,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringDonation) {
    */
   info.amount = 30;
 
-  success = publisher_info_database_->InsertOrUpdateRecurringDonation(info);
+  success = publisher_info_database_->InsertOrUpdateRecurringTip(info);
   EXPECT_TRUE(success);
 
   query ="SELECT * FROM recurring_donation WHERE publisher_id=?";
@@ -466,7 +467,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringDonation) {
    * Publisher key is missing
    */
   info.publisher_key = "";
-  success = publisher_info_database_->InsertOrUpdateRecurringDonation(info);
+  success = publisher_info_database_->InsertOrUpdateRecurringTip(info);
   EXPECT_FALSE(success);
 
   query = "SELECT * FROM recurring_donation WHERE publisher_id=?";
@@ -587,7 +588,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertPendingContribution) {
   contribution2.publisher_key = "key2";
   contribution2.amount = 20;
   contribution2.viewing_id = "aafsofdfsdnf23r23rn";
-  contribution2.category = ledger::REWARDS_CATEGORY::DIRECT_DONATION;
+  contribution2.category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
 
   ledger::PendingContributionList list;
   list.list_.push_back(contribution1);
@@ -698,7 +699,10 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   ledger::ActivityInfoFilter filter_1;
   filter_1.min_duration = 50;
   filter_1.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter_1, &list_1));
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0,
+                                                        0,
+                                                        filter_1,
+                                                        &list_1));
   EXPECT_EQ(static_cast<int>(list_1.size()), 2);
 
   EXPECT_EQ(list_1.at(0).id, "publisher_2");
@@ -711,7 +715,10 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   ledger::ActivityInfoFilter filter_2;
   filter_2.non_verified = false;
   filter_2.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter_2, &list_2));
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0,
+                                                        0,
+                                                        filter_2,
+                                                        &list_2));
   EXPECT_EQ(static_cast<int>(list_2.size()), 2);
 
   EXPECT_EQ(list_2.at(0).id, "publisher_3");
@@ -723,7 +730,10 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   ledger::PublisherInfoList list_3;
   ledger::ActivityInfoFilter filter_3;
   filter_3.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter_3, &list_3));
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0,
+                                                        0,
+                                                        filter_3,
+                                                        &list_3));
   EXPECT_EQ(static_cast<int>(list_3.size()), 5);
 
   EXPECT_EQ(list_3.at(0).id, "publisher_1");
@@ -739,7 +749,10 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   ledger::ActivityInfoFilter filter_4;
   filter_4.min_visits = 5;
   filter_4.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter_4, &list_4));
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0,
+                                                        0,
+                                                        filter_4,
+                                                        &list_4));
   EXPECT_EQ(static_cast<int>(list_4.size()), 2);
 
   EXPECT_EQ(list_4.at(0).id, "publisher_5");
@@ -912,7 +925,6 @@ TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   EXPECT_EQ(list.at(0).id, "publisher_1");
   EXPECT_EQ(list.at(0).reconcile_stamp, 1u);
   EXPECT_EQ(list.at(1).id, "publisher_2");
-
 }
 
 }  // namespace brave_rewards

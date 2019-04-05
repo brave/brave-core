@@ -724,7 +724,7 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
     ledger::PendingContribution contribution;
     contribution.publisher_key = publisher.id;
     contribution.amount = amount;
-    contribution.category = ledger::REWARDS_CATEGORY::DIRECT_DONATION;
+    contribution.category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
 
     ledger::PendingContributionList list;
     list.list_ = std::vector<ledger::PendingContribution> { contribution };
@@ -741,7 +741,7 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
       std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
   braveledger_bat_helper::PublisherList list;
   bat_contribution_->InitReconcile(GenerateGUID(),
-                         ledger::REWARDS_CATEGORY::DIRECT_DONATION,
+                         ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
                          list,
                          direction_list);
 }
@@ -775,9 +775,14 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
   bat_contribution_->OnTimer(timer_id);
 }
 
-void LedgerImpl::GetRecurringDonations(
+void LedgerImpl::GetRecurringTips(
     ledger::PublisherInfoListCallback callback) {
-  ledger_client_->GetRecurringDonations(callback);
+  ledger_client_->GetRecurringTips(callback);
+}
+
+void LedgerImpl::GetOneTimeTips(
+    ledger::PublisherInfoListCallback callback) {
+  ledger_client_->GetOneTimeTips(callback);
 }
 
 void LedgerImpl::LoadPublishersListCallback(
@@ -958,7 +963,7 @@ void LedgerImpl::OnReconcileCompleteSuccess(
                                                 date);
 }
 
-void LedgerImpl::RemoveRecurring(const std::string& publisher_key) {
+void LedgerImpl::RemoveRecurringTip(const std::string& publisher_key) {
   ledger_client_->OnRemoveRecurring(
       publisher_key,
       std::bind(&LedgerImpl::OnRemovedRecurring,
