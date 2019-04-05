@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/dark_mode_observer.h b/chrome/browser/ui/dark_mode_observer.h
+index 2f81334a8f292450c57dce7be8ddff191a704aad..2ac608d5f10ff9bb0df088559cf2ce319462bc0a 100644
+--- a/chrome/browser/ui/dark_mode_observer.h
++++ b/chrome/browser/ui/dark_mode_observer.h
+@@ -21,7 +21,7 @@ class DarkModeObserver : public ui::NativeThemeObserver {
+   // Observe |theme| for changes in dark mode. |callback_| may be immediately
+   // run if |theme_->SystemDarkModeEnabled()| has changed since construction or
+   // last time |Stop()| was called.
+-  void Start();
++  virtual void Start();
+ 
+   // Stop observing |theme|. |callback_| will never be called after stopping.
+   void Stop();
+@@ -29,6 +29,7 @@ class DarkModeObserver : public ui::NativeThemeObserver {
+   bool InDarkMode() const { return in_dark_mode_; }
+ 
+  private:
++  friend class BraveDarkModeObserver;
+   // ui::NativeThemeObserver:
+   void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
+ 
