@@ -22,17 +22,17 @@ class TestGetDraft(unittest.TestCase):
 
     def test_returns_existing_draft(self):
         self.repo.releases._releases = [{'tag_name': 'test', 'draft': True}]
-        self.assertEquals(upload.get_draft(self.repo,
-                                           'test')['tag_name'], 'test')
+        self.assertEquals(upload.get_release(self.repo,
+                                             'test')['tag_name'], 'test', False)
 
     def test_fails_on_existing_release(self):
-        self.repo.releases._releases = [{'tag_name': 'test', 'draft': False}]
-        self.assertRaises(UserWarning, upload.get_draft, self.repo, 'test')
+        self.repo.releases._releases = [{'tag_name': 'test', 'draft': False, 'allow_published_release_updates': False}]
+        self.assertRaises(UserWarning, upload.get_release, self.repo, 'test', False)
 
     def test_returns_none_on_new_draft(self):
         self.repo.releases._releases = [{'tag_name': 'old', 'draft': False}]
-        upload.get_draft(self.repo, 'new')
-        self.assertEquals(upload.get_draft(self.repo, 'test'), None)
+        upload.get_release(self.repo, 'new', False)
+        self.assertEquals(upload.get_release(self.repo, 'test'), None)
 
 
 class TestGetBravePackages(unittest.TestCase):
@@ -52,10 +52,10 @@ class TestGetBravePackages(unittest.TestCase):
                                           else '', chan))
                         with open(os.path.join(self.get_pkgs_dir,
                                                'win32', name), 'w') as f:
-                            f.write(name)
+                            f.write(name + '\n')
                         with open(os.path.join(self.get_pkgs_dir,
                                                'win32', name32), 'w') as f:
-                            f.write(name32)
+                            f.write(name32 + '\n')
                 else:
                     for mode in ['Stub', 'Standalone']:
                         name = 'BraveBrowser{}Setup_70_0_56_8.exe'.format(
@@ -64,10 +64,10 @@ class TestGetBravePackages(unittest.TestCase):
                             mode if mode not in 'Stub' else '')
                         with open(os.path.join(
                                 self.get_pkgs_dir, 'win32', name), 'w') as f:
-                            f.write(name)
+                            f.write(name + '\n')
                         with open(os.path.join(
                                 self.get_pkgs_dir, 'win32', name32), 'w') as f:
-                            f.write(name32)
+                            f.write(name32 + '\n')
         self.__class__._is_setup = True
 
     def test_only_returns_nightly_darwin_package(self):
@@ -146,7 +146,8 @@ class TestGetBravePackages(unittest.TestCase):
         pkgs = list(upload.get_brave_packages(
             os.path.join(self.get_pkgs_dir, upload.PLATFORM), 'nightly', '0.56.8'))
         self.assertEquals(
-            pkgs, ['BraveBrowserNightlySetup32.exe', 'BraveBrowserStandaloneNightlySetup32.exe'])
+            sorted(pkgs), sorted(['BraveBrowserNightlySetup32.exe',
+                                  'BraveBrowserStandaloneNightlySetup32.exe']))
 
     def test_only_returns_dev_win_x64_package(self):
         upload.PLATFORM = 'win32'
@@ -154,7 +155,8 @@ class TestGetBravePackages(unittest.TestCase):
         pkgs = list(upload.get_brave_packages(os.path.join(
             self.get_pkgs_dir, upload.PLATFORM), 'dev', '0.56.8'))
         self.assertEquals(
-            pkgs, ['BraveBrowserDevSetup.exe', 'BraveBrowserStandaloneDevSetup.exe'])
+            sorted(pkgs), sorted(['BraveBrowserDevSetup.exe',
+                                  'BraveBrowserStandaloneDevSetup.exe']))
 
     def test_only_returns_dev_win_ia32_package(self):
         upload.PLATFORM = 'win32'
@@ -162,7 +164,8 @@ class TestGetBravePackages(unittest.TestCase):
         pkgs = list(upload.get_brave_packages(
             os.path.join(self.get_pkgs_dir, upload.PLATFORM), 'dev', '0.56.8'))
         self.assertEquals(
-            pkgs, ['BraveBrowserDevSetup32.exe', 'BraveBrowserStandaloneDevSetup32.exe'])
+            sorted(pkgs), sorted(['BraveBrowserDevSetup32.exe',
+                                  'BraveBrowserStandaloneDevSetup32.exe']))
 
     def test_only_returns_beta_win_x64_package(self):
         upload.PLATFORM = 'win32'
@@ -171,7 +174,8 @@ class TestGetBravePackages(unittest.TestCase):
             os.path.join(self.get_pkgs_dir, upload.PLATFORM),
             'beta', '0.56.8'))
         self.assertEquals(
-            pkgs, ['BraveBrowserBetaSetup.exe', 'BraveBrowserStandaloneBetaSetup.exe'])
+            sorted(pkgs), sorted(['BraveBrowserBetaSetup.exe',
+                                  'BraveBrowserStandaloneBetaSetup.exe']))
 
     def test_only_returns_beta_win_ia32_package(self):
         upload.PLATFORM = 'win32'
@@ -180,7 +184,8 @@ class TestGetBravePackages(unittest.TestCase):
             os.path.join(self.get_pkgs_dir, upload.PLATFORM),
             'beta', '0.56.8'))
         self.assertEquals(
-            pkgs, ['BraveBrowserBetaSetup32.exe', 'BraveBrowserStandaloneBetaSetup32.exe'])
+            sorted(pkgs), sorted(['BraveBrowserBetaSetup32.exe',
+                                  'BraveBrowserStandaloneBetaSetup32.exe']))
 
     def test_only_returns_release_win_x64_package(self):
         upload.PLATFORM = 'win32'

@@ -39,7 +39,7 @@ def main():
     repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
 
     tag = get_brave_version()
-    release = get_draft(repo, tag)
+    release = get_release(repo, tag, allow_published_release_updates=False)
 
     if not release:
         print("[INFO] No existing release found, creating new "
@@ -344,24 +344,6 @@ def get_brave_packages(dir, channel, version):
                         filecopy(file_path, file_desired_standalone_untagged)
                         pkgs.append(file_desired_standalone_untagged)
     return pkgs
-
-
-def get_draft(repo, tag):
-    release = None
-    releases = get_releases_by_tag(repo, tag, include_drafts=True)
-    if releases:
-        print("[INFO] Found existing release draft, merging this upload with "
-              "it")
-        if len(releases) > 1:
-            raise UserWarning("[INFO] More then one draft with the tag '{}' "
-                              "found, not sure which one to merge with."
-                              .format(tag))
-        release = releases[0]
-        if not release['draft']:
-            raise UserWarning("[INFO] Release with tag '{}' is already "
-                              "published, aborting.".format(tag))
-
-    return release
 
 
 def parse_args():
