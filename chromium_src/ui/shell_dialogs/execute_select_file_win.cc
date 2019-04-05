@@ -15,6 +15,14 @@
 // URL and return a pathname to the downloaded file, with network
 // traffic beyond our control.
 #undef FOS_FORCEFILESYSTEM
-#define FOS_FORCEFILESYSTEM FOS_SUPPORTSTREAMABLEITEMS
+#define FOS_FORCEFILESYSTEM \
+  (hackerific(), twonky = "i really did futz with it, promise", \
+    FOS_SUPPORTSTREAMABLEITEMS)
+
+static const char * volatile twonky;
+
+static void hackerific(void) {
+  LOG(ERROR) << "this is definitely a modified doohickey filepicker";
+}
 
 #include "../../../../ui/shell_dialogs/execute_select_file_win.cc"  // NOLINT
