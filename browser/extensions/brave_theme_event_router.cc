@@ -5,45 +5,69 @@
 
 #include "brave/browser/extensions/brave_theme_event_router.h"
 
-#include <utility>
+#include <memory>
 #include <string>
+#include <utility>
 
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/common/extensions/api/brave_theme.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/event_router.h"
-#include "extensions/browser/extension_event_histogram_value.h"
+#include "ui/native_theme/native_theme_dark_aura.h"
 
 namespace extensions {
 
-class BraveThemeEventRouterImpl : public BraveThemeEventRouter {
- public:
-  BraveThemeEventRouterImpl() {}
-  ~BraveThemeEventRouterImpl() override {}
+BraveThemeEventRouter::BraveThemeEventRouter(Profile* profile)
+    : profile_(profile),
+      using_dark_(IsDarkModeEnabled()),
+      observer_(this) {
+  ResetThemeObserver();
+}
 
-  void OnBraveThemeTypeChanged(Profile* profile) override;
+BraveThemeEventRouter::~BraveThemeEventRouter() {}
 
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveThemeEventRouterImpl);
-};
+void BraveThemeEventRouter::OnNativeThemeUpdated(
+    ui::NativeTheme* observed_theme) {
+  DCHECK(observer_.IsObserving(observed_theme));
+  ResetThemeObserver();
 
-void BraveThemeEventRouterImpl::OnBraveThemeTypeChanged(Profile* profile) {
-  EventRouter* event_router = EventRouter::Get(profile);
-  const std::string theme_type = BraveThemeService::GetStringFromBraveThemeType(
-      BraveThemeService::GetActiveBraveThemeType(profile));
+  bool use_dark = IsDarkModeEnabled();
+  if (use_dark == using_dark_)
+    return;
+
+  using_dark_ = use_dark;
+  Notify();
+}
+
+void BraveThemeEventRouter::Notify() {
+  EventRouter* event_router = EventRouter::Get(profile_);
+  const std::string theme_type =
+      BraveThemeService::GetStringFromBraveThemeType(
+          BraveThemeService::GetActiveBraveThemeType(profile_));
 
   auto event = std::make_unique<extensions::Event>(
       extensions::events::BRAVE_ON_BRAVE_THEME_TYPE_CHANGED,
       api::brave_theme::OnBraveThemeTypeChanged::kEventName,
       api::brave_theme::OnBraveThemeTypeChanged::Create(theme_type),
-      profile);
+      profile_);
 
   event_router->BroadcastEvent(std::move(event));
 }
 
-// static
-std::unique_ptr<BraveThemeEventRouter> BraveThemeEventRouter::Create() {
-  return std::make_unique<BraveThemeEventRouterImpl>();
+bool BraveThemeEventRouter::IsDarkModeEnabled() const {
+  return BraveThemeService::GetActiveBraveThemeType(profile_) ==
+      BRAVE_THEME_TYPE_DARK;
+}
+
+void BraveThemeEventRouter::ResetThemeObserver() {
+  auto* current_native_theme =
+      IsDarkModeEnabled() ? ui::NativeThemeDarkAura::instance()
+                          : ui::NativeTheme::GetInstanceForNativeUi();
+  if (!observer_.IsObserving(current_native_theme)) {
+    observer_.RemoveAll();
+    observer_.Add(current_native_theme);
+    current_native_theme_for_testing_ = current_native_theme;
+  }
 }
 
 }  // namespace extensions

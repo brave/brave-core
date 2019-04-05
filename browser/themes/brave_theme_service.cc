@@ -163,6 +163,9 @@ void BraveThemeService::Init(Profile* profile) {
       profile->GetPrefs(),
       base::Bind(&BraveThemeService::OnPreferenceChanged,
                  base::Unretained(this)));
+
+    brave_theme_event_router_.reset(
+        new extensions::BraveThemeEventRouter(profile));
   }
 
   ThemeService::Init(profile);
@@ -209,11 +212,6 @@ void BraveThemeService::OnPreferenceChanged(const std::string& pref_name) {
         ? ui::NativeThemeDarkAura::instance()->NotifyObservers()
         : ui::NativeTheme::GetInstanceForNativeUi()->NotifyObservers();
   }
-
-  if (!brave_theme_event_router_)
-    brave_theme_event_router_ = extensions::BraveThemeEventRouter::Create();
-
-  brave_theme_event_router_->OnBraveThemeTypeChanged(profile());
 }
 
 void BraveThemeService::RecoverPrefStates(Profile* profile) {
