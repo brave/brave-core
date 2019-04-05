@@ -107,7 +107,7 @@ class RewardsServiceImpl : public RewardsService,
       const GetContentSiteListCallback& callback) override;
   void OnGetContentSiteList(
       const GetContentSiteListCallback& callback,
-      const ledger::PublisherInfoList& list,
+      const std::vector<std::string>& json_list,
       uint32_t next_record);
   void OnLoad(SessionID tab_id, const GURL& url) override;
   void OnUnload(SessionID tab_id) override;

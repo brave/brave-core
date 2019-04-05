@@ -476,4 +476,39 @@ void BatLedgerImpl::GetOneTimeTips(GetOneTimeTipsCallback callback) {
       BatLedgerImpl::OnGetOneTimeTips, holder, _1, _2));
 }
 
+// static
+void BatLedgerImpl::OnGetActivityInfoList(
+    CallbackHolder<GetActivityInfoListCallback>* holder,
+    const ledger::PublisherInfoList& list,
+    uint32_t num) {
+  std::vector<std::string> json_list;
+  for (auto const& item : list) {
+    json_list.push_back(item.ToJson());
+  }
+
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(json_list, num);
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::GetActivityInfoList(
+    uint32_t start,
+    uint32_t limit,
+    const std::string& json_filter,
+    GetActivityInfoListCallback callback) {
+  auto* holder = new CallbackHolder<GetActivityInfoListCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger::ActivityInfoFilter filter;
+  if (filter.loadFromJson(json_filter)) {
+    ledger_->GetActivityInfoList(
+        start,
+        limit,
+        filter,
+        std::bind(BatLedgerImpl::OnGetActivityInfoList, holder, _1, _2));
+  }
+}
+
 }  // namespace bat_ledger
